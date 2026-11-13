@@ -39,7 +39,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     --hair: #e9e0d2; --line2: #d8ccb9;
     --ink: #2a2521; --body: #3d3630; --ink-dim: #655c53; --ink-faint: #7b7168;
     --cyan: #0f766e; --warn: #c2410c; --good: #15803d; --bad: #be123c;
-    --v1: #b45309; --v2: #0f766e; --v3: #6d28d9;
+    --v1: #b45309; --v2: #0f766e; --v3: #6d28d9; --v4: #4d7c0f; --v5: #1d4ed8; --v6: #b91c1c; --v7: #a16207;
     --soft: rgba(42,37,33,0.04); --soft-2: rgba(42,37,33,0.07); --track: rgba(42,37,33,0.07);
     --glass-bg: rgba(255,253,248,0.72); --scrim: rgba(60,45,30,0.38);
     --drawer-bg: rgba(250,246,239,0.97);
@@ -65,7 +65,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     --hair: #1e232f; --line2: #2c3445;
     --ink: #e6e9ef; --body: #c9cfda; --ink-dim: #9aa3b2; --ink-faint: #6b7487;
     --cyan: #22d3ee; --warn: #fb7185; --good: #6ee7b7; --bad: #fda4af;
-    --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa;
+    --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa; --v4: #a3e635; --v5: #93c5fd; --v6: #fca5a5; --v7: #facc15;
     --soft: rgba(255,255,255,0.02); --soft-2: rgba(255,255,255,0.05); --track: rgba(255,255,255,0.05);
     --glass-bg: rgba(15,23,42,0.6); --scrim: rgba(3,4,6,0.66);
     --drawer-bg: rgba(10,12,17,0.95);
@@ -221,6 +221,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     font-weight: 800; font-size: clamp(12.5px, 3.3vw, 16px); letter-spacing: .05em; line-height: 1.15; white-space: nowrap;
     padding: 10px 0; flex: 1; display: flex; align-items: center; justify-content: center;
   }
+  .book .tcy { text-combine-upright: all; -webkit-text-combine: horizontal; letter-spacing: 0; }
   .book .pub { position: relative; z-index: 1; text-align: center; font-size: 8.5px; line-height: 1.25; font-weight: 700; letter-spacing: .02em; }
   .book .pub i, .book .pub svg { display: block; width: 14px; height: 14px; margin: 0 auto 3px; }
 
@@ -247,7 +248,7 @@ document.documentElement.setAttribute('data-theme',t);})();
       radial-gradient(circle at 70% 60%, rgba(0,0,0,0.12) 0 1px, transparent 1.5px) 0 0 / 7px 7px,
       linear-gradient(180deg, #1f5652, #123b38);
   }
-  .book.leather .rib { position: absolute; left: 0; right: 0; height: 7px; z-index: 1;
+  .book .rib { position: absolute; left: 0; right: 0; height: 7px; z-index: 1;
     background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.35)); box-shadow: 0 0 0 1px rgba(226,192,109,0.25); }
   .book.leather .ttl { background: linear-gradient(180deg, #0c2725, #0f2f2d); border: 1px solid rgba(226,192,109,0.6); border-radius: 2px; margin: 8px 0; padding: 10px 2px; width: 72%; }
 
@@ -266,6 +267,58 @@ document.documentElement.setAttribute('data-theme',t);})();
   .book.paper .pub { color: #fff; }
   .book.paper .pub i, .book.paper .pub svg { display: none; }
   .book.paper .ttl { color: #2b2340; }
+
+  /* VOL.04 — 올리브 캔버스 천 + 붙인 종이 라벨 */
+  .book.canvas {
+    --w: clamp(56px, 14.5vw, 72px); --h: clamp(256px, 63vw, 300px);
+    --foil: #f4f1e6; --band: repeating-linear-gradient(90deg, #f4f1e6 0 2px, #2f3a1c 2px 4px);
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(-45deg, rgba(0,0,0,0.10) 0 1px, transparent 1px 4px),
+      linear-gradient(180deg, #5f7037, #485629);
+  }
+  .book.canvas .ttl { background: #f3eedf; color: #2f3a1c; width: 76%; margin: 6px 0; padding: 10px 2px; border-radius: 2px;
+    box-shadow: inset 0 0 0 1px rgba(47,58,28,0.25), 0 1px 2px rgba(0,0,0,0.35); }
+
+  /* VOL.05 — 남색 매끈한 천 + 은박 이중선 */
+  .book.navy {
+    --w: clamp(48px, 12.5vw, 62px); --h: clamp(244px, 60vw, 290px);
+    --foil: #e3e8f0; --band: linear-gradient(180deg, #e3e8f0, #9aa6b8);
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 2px),
+      linear-gradient(180deg, #27508f, #172f58);
+  }
+  .book.navy .ttl::before, .book.navy .ttl::after { content: ""; position: absolute; left: 50%; width: 64%; height: 4px; transform: translateX(-50%);
+    border-top: 1px solid var(--foil); border-bottom: 1px solid var(--foil); opacity: .8; }
+  .book.navy .ttl::before { top: 0; } .book.navy .ttl::after { bottom: 0; }
+
+  /* VOL.06 — 두툼한 검정 가죽 + 붉은 제목 라벨 + 금박 */
+  .book.label {
+    --w: clamp(74px, 19vw, 96px); --h: clamp(276px, 69vw, 326px);
+    --foil: #e6c56f; --band: linear-gradient(180deg, #e6c56f, #9b7a2c);
+    border-radius: 7px 7px 4px 4px;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(255,255,255,0.05) 0 1px, transparent 1.5px) 0 0 / 6px 6px,
+      radial-gradient(circle at 70% 70%, rgba(0,0,0,0.25) 0 1px, transparent 1.5px) 0 0 / 8px 8px,
+      linear-gradient(180deg, #2e2a26, #1a1715);
+  }
+  .book.label .ttl { background: linear-gradient(180deg, #a11f1f, #7a1414); color: #f3d98a; width: 66%; margin: 8px 0; padding: 12px 2px;
+    border: 1px solid rgba(230,197,111,0.7); border-radius: 2px; text-shadow: 0 1px 0 rgba(0,0,0,0.4); }
+
+  /* VOL.07 — 얇은 겨자색 소책자(워킹페이퍼) */
+  .book.pamphlet {
+    --w: clamp(36px, 9.5vw, 46px); --h: clamp(226px, 55vw, 266px);
+    --foil: #1d1a14; border-radius: 1px; padding: 9px 2px 9px;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.025) 0 1px, transparent 1px 2px),
+      linear-gradient(180deg, #e4b032, #c99420);
+  }
+  .book.pamphlet .hb { display: none; }
+  .book.pamphlet .ttl { font-size: clamp(11.5px, 3vw, 14px); letter-spacing: .03em; }
+  .book.pamphlet .vol b { font-size: 13px; }
+  .book.pamphlet .vol small { font-size: 7px; letter-spacing: .1em; }
+  .book.pamphlet .pub { font-size: 7.5px; }
+  .book.pamphlet .pub i, .book.pamphlet .pub svg { display: none; }
 
   .book:hover, .book.is-lifted, .book:focus-visible {
     transform: translateZ(32px) translateY(-6px) rotateY(-8deg);
@@ -417,13 +470,14 @@ document.documentElement.setAttribute('data-theme',t);})();
   <section class="pt-8 sm:pt-12 pb-6 sm:pb-8">
     <div class="mono text-[11px] tracking-[0.2em] t-acc mb-3">NARS × NAFI // LANDMARK SLATES 01–03</div>
     <h1 class="font-extrabold tracking-tight leading-[1.15]" style="font-size:var(--fs-hero)">
-      청년의 이직, 지역의 격차, 고령의 일터.<br><span class="t-dim font-semibold">국회 보고서 세 권으로 읽는 고용의 다음 장면</span>
+      청년의 이직, 지역의 격차, 고령의 일터, 그리고 AI.<br><span class="t-dim font-semibold">국내외 보고서 일곱 권으로 읽는 고용의 다음 장면</span>
     </h1>
     <p class="mt-4 max-w-3xl t-dim" style="font-size:var(--fs-base)">
-      국회입법조사처와 국회미래연구원이 2026년 10–11월에 펴낸 보고서를 직업상담 실무의 언어로 다시 엮었습니다. 책장에서 책을 누르면 읽기 책상이 열립니다.
+      윗단에는 국회입법조사처·국회미래연구원 보고서 3권을, 아랫단에는 WEF·ILO·세계은행·CEPR의 영문 보고서 4권을 한국어로 옮겨 꽂았습니다. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
     </p>
     <div class="mt-5 flex flex-wrap gap-2" style="font-size:var(--fs-xs)">
-      <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 3권</span>
+      <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 7권</span>
+      <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 4권 한국어 번역</span>
       <span class="note-tag"><i data-lucide="database" class="w-3.5 h-3.5"></i>수치는 원문 그대로 인용</span>
       <span class="note-tag"><i data-lucide="message-square-quote" class="w-3.5 h-3.5"></i>상담 적용 노트는 편집자 해석</span>
     </div>
@@ -434,7 +488,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     <div class="bookcase">
       <div class="cab-tier"><div class="cab-row" id="tier1"></div></div>
       <div class="board" aria-hidden="true"></div>
-      <div class="cab-tier" aria-hidden="true"><div class="cab-row"></div></div>
+      <div class="cab-tier"><div class="cab-row" id="tier2"></div></div>
       <div class="board" aria-hidden="true"></div>
       <div class="cab-tier" aria-hidden="true"><div class="cab-row"></div></div>
       <div class="board" aria-hidden="true"></div>
@@ -445,7 +499,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   <section class="pb-16" aria-labelledby="catalogTitle">
     <div class="flex items-end justify-between gap-3 mb-4">
       <h2 id="catalogTitle" class="font-bold" style="font-size:var(--fs-lg)">소장 목록</h2>
-      <span class="mono text-[11px] t-faint">CATALOG / 3 ITEMS</span>
+      <span class="mono text-[11px] t-faint">CATALOG / 7 ITEMS</span>
     </div>
     <div id="catalog" class="grid gap-3 md:grid-cols-3"></div>
   </section>
@@ -453,7 +507,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 
 <footer class="border-t hairline">
   <div class="mx-auto max-w-6xl px-3 sm:px-6 py-8 t-faint" style="font-size:var(--fs-xs)">
-    <p class="mb-2">원문: 국회입법조사처 「이슈와 논점」 제2545호(2026.11.08, 구슬이·권다영) · 국회미래연구원 「인구통계 Brief」 26-8호(2026.10, 김봉섭) · 26-9호(2026.10, 정주영). 각 보고서의 내용은 발행 기관의 공식 의견이 아닐 수 있으며, 상담 적용 노트는 본 서재 편집자의 해석입니다.</p>
+    <p class="mb-2">원문: 국회입법조사처 「이슈와 논점」 제2545호(2026.11.08, 구슬이·권다영) · 국회미래연구원 「인구통계 Brief」 26-8호(2026.10, 김봉섭) · 26-9호(2026.10, 정주영) · World Economic Forum, New Economy Skills: Skills for the Energy and Resource Transition(2026.11) · ILO, AI and developing economies(Policy Brief, 2026.11) · World Bank, Making AI Work: Jobs, Firms, and Productivity(ECA Economic Update, 2026.10, CC BY 3.0 IGO) · Aghion·Bergeaud·Bunel·Roulet, Labour market policies in the age of AI(CEPR Europe 2050, 2026.9). 영문 보고서의 한국어 번역은 본 서재의 요약 번역이며 각 기관의 공식 번역이 아닙니다. 각 보고서의 내용은 발행 기관의 공식 의견이 아닐 수 있으며, 상담 적용 노트는 본 서재 편집자의 해석입니다.</p>
     <a href="../" class="tap inline-flex items-center gap-1.5 hover-ink"><i data-lucide="corner-up-left" class="w-3.5 h-3.5"></i>직업상담 통합 자료실로 돌아가기</a>
   </div>
 </footer>
@@ -478,6 +532,7 @@ document.documentElement.setAttribute('data-theme',t);})();
       </div>
       <h2 id="dTitle" class="font-extrabold leading-snug tracking-tight" style="font-size:var(--fs-xl)"></h2>
       <p id="dSub" class="mt-1 t-dim" style="font-size:var(--fs-sm)"></p>
+      <p id="dOrig" class="mt-1 t-faint" style="font-size:var(--fs-xs);font-style:italic"></p>
       <nav id="dNav" class="chip-nav mt-3" aria-label="섹션 이동"></nav>
     </div></div></div>
     <button id="rodBtn" type="button" class="rod-btn" aria-label="머리말 펼치기·말기" tabindex="-1"><div class="rod"></div></button>
@@ -509,7 +564,7 @@ const VOLS = [
   {
     id: 1, serial: 'VOL.01', accent: 'var(--v1)', icon: 'scale',
     authority: '국회입법조사처', issue: '이슈와 논점 제2545호 · 2026.11.08',
-    spine: '자발적 퇴사 청년<br>실업급여', key: '청년 실업급여 논쟁', mat: 'cloth', pub: '국회<br>입법조사처',
+    spine: '자발적 퇴사 청년<br>실업급여', key: '청년 실업급여 논쟁', mat: 'cloth', shelf: 1, pub: '국회<br>입법조사처',
     title: '자발적 퇴사 청년 대상 실업급여 도입논란은 무엇을 놓치고 있나?',
     sub: '제도 밖 청년 보호와 실질적인 청년 고용 지원 방안 모색 필요성 — 구슬이·권다영',
     blurb: '35세 미만 청년에게 사유 불문 생애 1회 구직급여를 주자는 정부안. 쟁점은 도덕적 해이보다 고용보험 밖 청년과 미스매치 예방에 있다.'
@@ -517,7 +572,7 @@ const VOLS = [
   {
     id: 2, serial: 'VOL.02', accent: 'var(--v2)', icon: 'map',
     authority: '국회미래연구원', issue: '인구통계 Brief 26-8호 · 2026.10',
-    spine: '청년 고용<br>지역격차 진단', key: '청년 고용 지역격차', mat: 'leather', pub: '국회<br>미래연구원',
+    spine: '청년 고용<br>지역격차 진단', key: '청년 고용 지역격차', mat: 'leather', shelf: 1, pub: '국회<br>미래연구원',
     title: '청년 고용의 지역격차 진단 및 정책 제언',
     sub: '229개 시군구 · 고용기회 × 보상수준 × 안정성 — 김봉섭',
     blurb: '고용률 하나로는 보이지 않는 격차. 229개 시군구를 진입과 보상으로 나누면 네 개의 서로 다른 청년 노동시장이 드러난다.'
@@ -525,10 +580,46 @@ const VOLS = [
   {
     id: 3, serial: 'VOL.03', accent: 'var(--v3)', icon: 'users',
     authority: '국회미래연구원', issue: '인구통계 Brief 26-9호 · 2026.10',
-    spine: '늘어난 고령 취업자와<br>노동력 재편', key: '고령 취업자의 일터', mat: 'paper', pub: '국회<br>미래연구원',
+    spine: '늘어난 고령 취업자와<br>노동력 재편', key: '고령 취업자의 일터', mat: 'paper', shelf: 1, pub: '국회<br>미래연구원',
     title: '늘어난 고령 취업자는 어디에서 일하는가',
     sub: '지역·산업·세대로 본 노동력 구성의 변화 — 정주영',
     blurb: '7년간 고령 취업자 169만 명 증가. 55~64세까지는 비슷하던 일자리가 65세 이후 지역별로 갈라지고, 비수도권 일터는 이미 세대가 역전됐다.'
+  },
+  {
+    id: 4, serial: 'VOL.04', accent: 'var(--v4)', icon: 'leaf', shelf: 2, lang: 'EN',
+    authority: '세계경제포럼(WEF)', issue: 'White Paper · 2026.11',
+    key: '에너지 전환 역량', mat: 'canvas', pub: 'WEF',
+    title: '신경제 역량: 에너지·자원 전환을 위한 역량',
+    orig: 'New Economy Skills: Skills for the Energy and Resource Transition',
+    sub: '세계경제포럼 ‘신경제 역량’ 시리즈 제4권 — 한국어 요약 번역',
+    blurb: '미국 구인공고의 5.1%만 요구하지만 임금은 10~22% 높은 역량. 학습 시간은 0.7%에 그친다. 녹색 전환 일자리를 위한 네 가지 우선 과제.'
+  },
+  {
+    id: 5, serial: 'VOL.05', accent: 'var(--v5)', icon: 'globe', shelf: 2, lang: 'EN',
+    authority: '국제노동기구(ILO)', issue: 'Policy Brief · 2026.11',
+    key: 'AI 격차와 일자리', mat: 'navy', pub: 'ILO',
+    title: 'AI와 개발도상국: 급속한 기술 변화 속 양질의 일자리 증진',
+    orig: 'AI and developing economies: Promoting decent work in a time of rapid technological change',
+    sub: 'ILO 정책 브리프 — 한국어 요약 번역',
+    blurb: '노출, 도입, 생산성, 좋은 일자리는 각각 다른 단계다. 여성과 청년에게 먼저 다가온 변화와 ‘배당 없는 혼란’을 막는 정책.'
+  },
+  {
+    id: 6, serial: 'VOL.06', accent: 'var(--v6)', icon: 'building-2', shelf: 2, lang: 'EN',
+    authority: '세계은행(World Bank)', issue: 'ECA Economic Update · 2026.10',
+    key: 'AI 도입과 생산성', mat: 'label', pub: 'WORLD<br>BANK',
+    title: 'AI가 제대로 작동하게 하기: 일자리·기업·생산성',
+    orig: 'Making AI Work: Jobs, Firms, and Productivity (Europe and Central Asia Economic Update, October 2026)',
+    sub: '세계은행 유럽·중앙아시아 경제 전망 — 한국어 요약 번역',
+    blurb: '근로자 5명 중 1명이 노출됐지만 AI를 쓰는 기업은 10곳 중 1곳 미만. 가장 큰 위험은 너무 적은 도입이며, 사회보호는 전환의 투입 요소다.'
+  },
+  {
+    id: 7, serial: 'VOL.07', accent: 'var(--v7)', icon: 'scale', shelf: 2, lang: 'EN',
+    authority: '유럽경제정책연구센터(CEPR)', issue: 'Europe 2050 Paper · 2026.09',
+    key: 'AI 시대 노동정책', mat: 'pamphlet', pub: 'CEPR',
+    title: 'AI 시대의 노동시장 정책',
+    orig: 'Labour market policies in the age of AI — Aghion, Bergeaud, Bunel, Roulet',
+    sub: '필리프 아기옹 외 — 한국어 요약 번역',
+    blurb: '‘일의 종말’ 공포는 근거가 약하다. 대신 유연안정성, 배우는 법을 가르치는 교육, 노동을 늘리는 방향의 유럽 산업정책을 제안한다.'
   }
 ];
 
@@ -881,21 +972,437 @@ function renderVol3() {
 }
 
 const icons = () => { if (window.lucide) lucide.createIcons(); };
-const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3 };
+
+/* ---------- 번역본 공통 도우미 ---------- */
+const glossary = rows => `
+  <div class="scroll-x">
+    <table class="matrix min-w-[520px]">
+      <thead><tr><th style="width:38%">원문 용어</th><th style="width:30%">번역어</th><th>뜻</th></tr></thead>
+      <tbody>${rows.map(([en, ko, d]) => `<tr><th class="mono" style="white-space:normal;font-weight:500">${en}</th><td class="hl">${ko}</td><td>${d}</td></tr>`).join('')}</tbody>
+    </table>
+  </div>`;
+const transNote = (extra = '') => `<p class="src">이 내용은 영문 원문을 서재 편집자가 한국어로 요약 번역한 것입니다. 수치는 원문 그대로이며, 정확한 표현은 원문을 확인해 주세요.${extra}</p>`;
+
+/* ---------- VOL.04 · WEF ---------- */
+function renderVol4() {
+  return [
+    sec('v4-def', 'WHAT · 전환 역량이란', 'leaf', '에너지·자원 전환 역량(Transition skills)', `
+      <p>세계경제포럼은 에너지와 천연자원을 <b>캐내고, 만들고, 쓰는 방식</b>을 더 효율적이고 회복력 있으며 환경에 덜 해롭게 바꾸는 지식과 능력을 ‘전환 역량’이라 부릅니다. 태양광 패널 설치만이 아닙니다. 석유·가스 설비의 배출을 줄이는 정비, 공장·건물의 에너지 효율 개선, 물과 토양 관리, 폐기물 감축까지 포함합니다.</p>
+      <p>이 보고서는 WEF ‘신경제 역량’ 시리즈의 네 번째 권으로, 앞선 권에서 다룬 인간 중심 역량, AI·데이터·디지털 역량, 메이커(현장 기술) 역량, 비즈니스·창업 역량과 함께 보도록 구성돼 있습니다.</p>
+      <div class="grid sm:grid-cols-3 gap-2 mt-2">
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">① 에너지·환경 시스템 이해력</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">생태계와 에너지 시스템, 인간 활동이 환경에 미치는 영향을 이해하고 그에 맞게 판단하는 능력</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">② 에너지·유틸리티 관리</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">에너지·설비·자산의 효율, 신뢰성, 지속가능성을 생애주기 전반에서 관리하고 최적화하는 능력</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">③ 지속가능한 자원 관리</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">토지·물·광물·산림 등 자원을 효율적으로 써서 가치는 높이고 환경 영향은 줄이는 능력</p></div>
+      </div>
+      <div class="scroll-x mt-3">
+        <table class="matrix min-w-[560px]">
+          <thead><tr><th style="width:24%">직업 예시</th><th>현장에서 쓰이는 전환 역량</th></tr></thead>
+          <tbody>
+            <tr><th>석유·가스 정비 기술자</th><td>설비를 정비·최적화해 더 안전하고 배출이 적은 생산을 지원</td></tr>
+            <tr><th>전기 기술자</th><td>스마트·저탄소 에너지 기술을 포함한 전기 시스템 설치·정비·고도화</td></tr>
+            <tr><th>투자 분석가</th><td>에너지 자산과 인프라 투자가 회복력·효율·배출에 미치는 영향 평가</td></tr>
+            <tr><th>공급망 관리자</th><td>공급망 전반의 에너지 사용과 배출을 줄일 기회 발굴, 원자재 출처 추적</td></tr>
+            <tr><th>농업인</th><td>관개·기계의 에너지 관리, 토지·물·비료 최적화로 생산성과 토양 건강 개선</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-3">데이터 분석 자체는 전환 역량이 아니지만, 데이터 분석으로 에너지 시스템을 최적화하는 능력은 전환 역량입니다. 프로젝트 관리, 재무, 구매도 마찬가지입니다.</p>`),
+
+    sec('v4-demand', 'DEMAND · 고르지 않지만 커지는 수요', 'trending-up', '미국 구인공고의 5.1%, 그러나 퍼지는 중', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">전환 역량을 하나 이상 요구하는 미국 구인공고 비율 (2025.6~2026.5)</div>
+        ${bars([
+          { label: '에너지·소재', value: 56.0, text: '56.0%', strong: true },
+          { label: '농업·천연자원', value: 40.5, text: '40.5%' },
+          { label: '제조업', value: 20.6, text: '20.6%' },
+          { label: '인프라', value: 17.3, text: '17.3%' },
+          { label: '자동차·항공우주', value: 10.9, text: '10.9%' },
+          { label: '전체 산업', value: 5.1, text: '5.1%', cls: 'muted', strong: true },
+          { label: '교육·훈련', value: 1.2, text: '1.2%', cls: 'muted' },
+        ], 60)}
+        <p class="src">Indeed Hiring Lab 분석. 세 범주 각각은 전체 공고의 1.8~2.4%에 등장.</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
+        ${kpi('전환 직종 임금 프리미엄', '10~22%', '미국 시간당 중위임금, 다른 직종 대비')}
+        ${kpi('에너지 외 전환 직종', '+21.9%', 'ADP 임금 자료')}
+        ${kpi('에너지 직종', '+9.8%', 'ADP 임금 자료')}
+        ${kpi('직장 내 인정 메시지', '+60%', '2019년 대비 2026년 언급 빈도')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">에너지 효율·지속가능성 정보·자문·교육이 더 필요해졌다는 소기업 비율</div>
+        ${bars([
+          { label: '1인 사업체', value: 30, text: '30%', cls: 'muted' },
+          { label: '2~4명', value: 35, text: '35%' },
+          { label: '5~9명', value: 44, text: '44%' },
+          { label: '10~19명', value: 40, text: '40%' },
+          { label: '20~49명', value: 59, text: '59%', strong: true },
+        ], 65)}
+        <p class="src">GoDaddy, 미국 49인 이하 사업체 1,571곳 조사. 전환은 대기업만으로 이뤄지지 않고, 가치사슬 곳곳의 작은 기업까지 실무 지원이 닿아야 한다는 뜻입니다.</p>
+      </div>`),
+
+    sec('v4-gap', 'GAP · 아직 준비되지 않은 역량 생태계', 'alert-triangle', '학습 시간의 0.7%, 1순위 선택은 2%', `
+      <p>수요는 커지는데 인력 공급은 따라가지 못합니다. 역량 부족은 이미 사업 지연, 비용 증가, 운영 역량 제약으로 나타나고 있습니다.</p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('전체 학습 시간 중 전환 역량', '0.7%', '경제 충격 직후에만 잠시 증가')}
+        ${kpi('지속가능성을 학습 1순위로', '2%', '상위 3개 안에는 10%')}
+        ${kpi('AI를 학습 상위 3개로', '44%', '1순위 24%')}
+        ${kpi('고용주의 환경 입장 중요', '48%', '근로자 27,000명 조사')}
+      </div>
+      <p class="mt-3">근로자 42%는 가치관이 맞지 않는 회사의 일자리는 받지 않겠다고 답했습니다. 기업의 지속가능성은 중요하게 여기면서도, 정작 본인의 학습 우선순위에서는 맨 뒤로 밀리는 셈입니다(Randstad Workmonitor, 35개국).</p>
+      <div class="card mt-2">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">공식 인정 제도가 있으면 더 빨리 보인다 (2019→2026 인정 메시지 증가율)</div>
+        ${bars([
+          { label: '지속가능성 인정 항목 있는 조직', value: 150, text: '+150%', strong: true },
+          { label: '해당 항목 없는 조직', value: 21, text: '+21%', cls: 'muted' },
+        ], 160)}
+        <p class="src">그래도 모든 산업에서 전환 역량 언급은 인정 메시지의 0.25% 미만(공식 프로그램 조직 0.136%, 없는 조직 0.067%)에 그칩니다(Workhuman).</p>
+      </div>
+      <p class="mt-3">전환 직종은 비슷한 다른 직종보다 더 넓은 역량을 더 높은 수준으로 요구합니다. 예: 시공·설치 +7.8%, 자재 취급·가공 +7.0%, 디자인·UX +6.6%, 프로그래밍 +5.3%(O*NET 숙련 요구 수준 비교). 전환 역량은 단독이 아니라 <b>역량 묶음</b>으로 길러야 합니다.</p>`),
+
+    sec('v4-priority', 'ACTION · 네 가지 우선 과제', 'list-checks', '전환 역량을 키우는 네 갈래 길', `
+      <div class="grid sm:grid-cols-2 gap-2">
+        <div class="card"><div class="mono text-[11px] acc">PRIORITY 1</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">기존 역량 위에 쌓고, 이동을 지원한다</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">많은 근로자가 이미 새 역할로 옮길 수 있는 능력을 갖고 있습니다. 전환 지식만 더하는 짧은 모듈형 자격을 분명한 일자리 전망과 연결합니다.</p></div>
+        <div class="card"><div class="mono text-[11px] acc">PRIORITY 2</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">단독 기술이 아니라 역량 묶음으로</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">인간 중심 역량, AI·데이터·디지털 역량, 메이커 역량과 함께 길러야 현장에서 쓸 수 있습니다.</p></div>
+        <div class="card"><div class="mono text-[11px] acc">PRIORITY 3</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">교육·훈련을 전환 수요와 잇는다</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">청소년의 손기술·직업교육 경험을 넓히고, 국가 단위 청정에너지 계획과 인력 양성을 맞물립니다.</p></div>
+        <div class="card"><div class="mono text-[11px] acc">PRIORITY 4</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">모든 규모의 조직이 쓸 수 있게</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">전문 인력을 따로 둘 수 없는 중소기업에도 실용적이고 저렴한 역량 지원이 닿아야 합니다.</p></div>
+      </div>
+      <div class="scroll-x mt-3">
+        <table class="matrix min-w-[560px]">
+          <thead><tr><th style="width:22%">사례</th><th>요지</th></tr></thead>
+          <tbody>
+            <tr><th>TCS</th><td>직원 58.4만여 명에게 전환 학습 제공. 2026년 직접·간접 배출(Scope 1·2)이 2016년 대비 84% 감소</td></tr>
+            <tr><th>AXA</th><td>지속가능성 아카데미. 2026년 말까지 임원 180명·사업 리더 120명 교육, 디지털 학습으로 직원 8만 명 이상</td></tr>
+            <tr><th>Siemens</th><td>지속가능성을 AI·데이터 리터러시·사이버보안 등과 함께 13개 핵심 역량 중 하나로 지정</td></tr>
+            <tr><th>인도</th><td>주택 옥상 태양광 사업(공공재원 약 78억 달러)으로 1,000만 가구 보급과 인력·공급업체 기반 구축을 동시에 추진</td></tr>
+          </tbody>
+        </table>
+      </div>`),
+
+    sec('v4-glossary', 'TRANSLATION · 용어 대역', 'languages', '이 권에서 쓴 번역어', glossary([
+      ['Energy and resource transition skills', '에너지·자원 전환 역량', '에너지·자원의 효율·회복력·환경 성과를 높이는 지식과 능력'],
+      ['Capability bundle', '역량 묶음', '전환 역량을 디지털·현장·대인 역량과 함께 묶어 기르는 방식'],
+      ['Maker skills', '메이커(현장 기술) 역량', '장비 운용, 시공·설치, 자재 취급 등 물리적 시스템을 만들고 다루는 능력'],
+      ['Human-centric skills', '인간 중심 역량', '창의성, 협업·소통, 학습 능력, 돌봄 등'],
+      ['Worker mobility', '근로자 이동', '기존 역량을 살려 다른 직무·산업으로 옮겨 가는 것'],
+      ['Modular credentials', '모듈형 자격', '짧은 단위로 쌓아 갈 수 있는 자격·이수 인증'],
+    ]) + transNote()),
+
+    sec('v4-insight', 'COUNSELOR INSIGHT', 'headset', '녹색 전환 직무로의 경력 상담', insight([
+      { t: '“새로 배워야 한다”보다 “이미 가진 것”부터', d: '전기, 설비 정비, 시공, 농업 경력자는 전환 직무와 겹치는 역량이 많습니다. 경력 목록을 세 범주(시스템 이해·설비 관리·자원 관리)에 대어 보고, 빠진 부분만 짧은 훈련으로 채우는 경로를 설계합니다.' },
+      { t: '훈련 추천은 “묶음”으로', d: '전환 관련 과정 하나만 권하기보다 데이터 활용, 현장 기술, 소통 역량을 함께 보완하는 과정 조합을 제안합니다. 보고서는 전환 직종이 더 넓은 역량을 더 높은 수준으로 요구한다고 밝힙니다.' },
+      { t: '임금 근거로 동기 부여', d: '미국 자료지만 전환 관련 직종의 중위임금이 10~22% 높다는 점은 경력 전환을 고민하는 내담자에게 설득력 있는 근거가 됩니다(국내 적용 시 국내 임금 자료로 확인).' },
+      { t: '소규모 사업장 재직자에게 기회 안내', d: '작은 기업일수록 에너지 효율·지속가능성 정보와 교육이 부족합니다. 재직자 훈련을 통해 사내 담당 역할을 맡는 경로도 함께 안내합니다.' },
+    ], '근거: WEF 「New Economy Skills」 2026.11. 수치는 대부분 미국·글로벌 자료입니다.')),
+  ].join('');
+}
+
+/* ---------- VOL.05 · ILO ---------- */
+function renderVol5() {
+  return [
+    sec('v5-key', 'KEY POINTS · 핵심 메시지 번역', 'quote', '일곱 문장으로 읽는 이 보고서', `
+      <ol class="dots" style="list-style:none;padding:0;margin:0">
+        ${[
+          ['영향은 아직 작고 느리다', '선진국에서도 AI의 노동시장 효과는 완만합니다. 개발도상국에는 기반을 다질 시간이 있지만, 늦어지면 인프라·역량·데이터·컴퓨팅·거버넌스 격차가 더 벌어집니다.'],
+          ['노출·도입·실제 결과는 다르다', '지금까지의 증거는 대규모 일자리 소멸보다 고르지 않은 과업 변화, 느린 생산성 향상, 업종별 일하는 방식의 변화를 가리킵니다.'],
+          ['개발도상국의 이중 과제', '당장의 자동화 노출은 낮지만 AI의 이익을 거둘 역량도 약합니다. 이득 없이 충격만 먼저 오는 ‘배당 없는 혼란’이 생길 수 있습니다.'],
+          ['AI 격차는 역량·거버넌스 격차', '단순한 접근성 문제가 아닙니다. 투자와 인프라, 사용이 고소득국과 대기업에 쏠려 있습니다.'],
+          ['설계하면 일자리를 늘릴 수 있다', '노동을 보완하는 활용, 디지털 공공 인프라, 중소기업의 AI 도입, 농업·보건·교육·물류·행정의 현지 맞춤 활용으로 일자리를 만들 수 있습니다.'],
+          ['일자리의 질도 양만큼 중요하다', '플랫폼 노동, 데이터 라벨링, 콘텐츠 검수, AI 업무 위탁은 소득 기회를 넓히지만 보수·감시·자율성·사회보호·정신건강·경력 경로의 위험도 키웁니다.'],
+          ['기술이 아니라 정책이 결정한다', '인프라 투자, 평생학습, 노동자 보호, 사회보호, AI 가치사슬의 양질의 일자리 기준, 현지 기업 지원, 국제 협력을 함께 묶은 포용적 전략이 필요합니다.'],
+        ].map(([t, d], i) => `<li class="card" style="padding-left:14px;margin:8px 0"><span class="mono acc text-[11px]">${String(i + 1).padStart(2, '0')}</span> <b>${t}</b><div class="mt-1" style="font-size:var(--fs-sm);color:var(--body)">${d}</div></li>`).join('')}
+      </ol>`),
+
+    sec('v5-divide', 'DIVIDE · 출발선부터 다르다', 'wifi-off', '디지털·AI 격차', `
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('인터넷 미접속 인구 (2025)', '22억 명', '접속 인구 약 60억 명')}
+        ${kpi('미국 민간 AI 투자 (2024)', '1,091억$', '중국의 약 12배, 영국의 24배')}
+        ${kpi('세계 기업 R&D 중 100개 기업', '약 40%', '주로 중국·미국 기업 (2022)')}
+        ${kpi('MENAAP 기업 중 AI 도입', '27곳', '조사 기업 7,016곳 중')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">인구 대비 인터넷 접속률</div>
+        ${bars([
+          { label: '유럽', value: 92, text: '92%', cls: 'muted' },
+          { label: '아프리카', value: 36, text: '36%', cls: 'warn', strong: true },
+        ], 100)}
+        <p class="src">세계은행의 ‘4C’ 틀: 연결성(Connectivity), 컴퓨팅(Compute), 맥락·데이터(Context), 역량(Competency). 대형 언어모델 개발에는 1억 달러 이상이 들 수 있습니다.</p>
+      </div>
+      <p class="mt-3">Anthropic 경제 지수에 따르면 2026년 Claude 사용량(인구 보정)의 48%가 상위 20개국에 몰려 있습니다(전년 45%). 단, 한 회사 모델의 사용량이므로 전 세계 AI 도입 전체로 해석하면 안 된다고 보고서는 덧붙입니다.</p>`),
+
+    sec('v5-productivity', 'PRODUCTIVITY · 큰 약속, 고르지 않은 확산', 'gauge', '과업에서는 크고, 경제 전체에서는 작다', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">추정 단위에 따라 달라지는 생산성 효과</div>
+        ${bars([
+          { label: '거시 (연간, 미국)', value: 1, text: '0.1~1%p', cls: 'muted' },
+          { label: '거시 (연간, EU)', value: 0.4, text: '0.3~0.4%p', cls: 'muted' },
+          { label: '기업 (연간)', value: 3.3, text: '1.5~3.3%p' },
+          { label: '과업 (실험)', value: 60, text: '15~60%', strong: true },
+        ], 60)}
+        <p class="src">작업 단위 실험의 큰 효과가 경제 전체 통계에는 아직 잘 드러나지 않는 ‘생산성 역설’.</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
+        ${kpi('전문 글쓰기 시간', '−40%', '품질 +18% (ChatGPT 실험)')}
+        ${kpi('상담원 시간당 해결 건수', '+15%', '5,000명+, 경력 짧을수록 효과 큼')}
+        ${kpi('개발자 과제 속도', '55.8%↑', 'GitHub Copilot 실험')}
+        ${kpi('10년 산출 증가 (고성장 시)', '5% vs 2.7%', '선진국 vs 저소득국')}
+      </div>
+      <p class="mt-3">AI가 잘하는 범위 밖의 과업에서는 오히려 성과가 떨어지기도 합니다(‘울퉁불퉁한 경계’). 생산성 이득은 과업, 맥락, 사용자 경험에 따라 크게 다릅니다.</p>`),
+
+    sec('v5-jobs', 'JOBS · 일자리의 양과 구성', 'users', '여성·청년에게 더 가까이 온 변화', `
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div class="card">
+          <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">생성형 AI 노출 일자리 비중 (소득 그룹별)</div>
+          ${bars([
+            { label: '고소득국', value: 34, text: '34%', strong: true },
+            { label: '중상소득국', value: 25, text: '25%' },
+            { label: '중하소득국', value: 20, text: '20%' },
+            { label: '저소득국', value: 11, text: '11%', cls: 'muted' },
+          ], 40)}
+        </div>
+        <div class="card">
+          <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">성별 노출 (세계)</div>
+          ${bars([
+            { label: '여성 고용', value: 28, text: '28%', cls: 'warn', strong: true },
+            { label: '남성 고용', value: 21.3, text: '21.3%', cls: 'muted' },
+            { label: '여성 · 최고 노출 2단계', value: 10.4, text: '10.4%', cls: 'warn' },
+            { label: '남성 · 최고 노출 2단계', value: 6.0, text: '6.0%', cls: 'muted' },
+          ], 40)}
+          <p class="src">고소득국에서는 여성 41% vs 남성 28%.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
+        ${kpi('노출 직종 22~25세 고용', '−6%', '2022~2025, 고령층은 +6~9% (미국)')}
+        ${kpi('글쓰기·번역 프리랜서 수요', '−20~50%', 'ChatGPT 출시 이후 추세 대비')}
+        ${kpi('자동화 쉬운 글·코딩 공고', '−21%', '출시 8개월 내')}
+        ${kpi('디지털 기술의 고용률 효과', '+1.39%p', '저소득국 평균, 40개 기술')}
+      </div>
+      <p class="mt-3">전체 일자리 수가 유지되더라도, AI는 젊고 경험이 적은 사람들이 숙련 직업으로 들어가는 <b>입구를 좁힐</b> 수 있습니다. 보고서는 이것이 경제 전체의 고용 붕괴가 아니라 초기의 재배치라는 점도 분명히 합니다.</p>`),
+
+    sec('v5-quality', 'JOB QUALITY · 새로운 형태의 일', 'shield', '알고리즘 관리와 플랫폼 노동', `
+      <p>채용, 업무 배정, 일정, 성과 평가를 알고리즘이 맡는 일이 늘고 있습니다. 효율은 오르지만 노동자는 자동화된 결정에 이의를 제기하기 어렵고, 통제감이 줄어듭니다.</p>
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">알고리즘 관리 도입 전 지켜야 할 원칙 (보고서 권고)</div>
+        <ul class="dots"><li>노동자와 대표에게 사전 협의</li><li>자동화 시스템 사용 방식에 대한 의미 있는 정보 제공</li><li>과도한 감시 제한, 개인정보 보호</li><li>중요한 결정은 사람이 검토</li><li>쉽게 쓸 수 있는 고충 처리·이의 제기 절차</li></ul>
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">마이크로태스크 플랫폼·AI 업무위탁 노동자의 권리 접근 (2022~23)</div>
+        ${bars([
+          { label: '유급휴가', value: 50, text: '50%' },
+          { label: '병가', value: 65, text: '65%' },
+          { label: '출산휴가', value: 50, text: '50%' },
+        ], 100)}
+      </div>`),
+
+    sec('v5-policy', 'POLICY · 정책 함의', 'landmark', '노출 ≠ 도입 ≠ 생산성 ≠ 좋은 일자리', `
+      <p>보고서는 세 가지 신중론을 제시합니다. AI 노출은 도입과 같지 않고, 도입은 생산성 향상과 같지 않으며, 생산성 향상이 저절로 양질의 일자리로 이어지지도 않습니다.</p>
+      <div class="grid sm:grid-cols-2 gap-2">
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">일자리 목표를 품은 AI 인프라</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">현지 조달, 도제·기술훈련, 여성·청년 기회, 국내 공급업체 지원을 명시합니다.</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">노동 보완형 활용 장려</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">공적 지원을 고용 창출·유지, 훈련, 신입 기회, 양질의 일자리 기준과 연계합니다.</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">모든 노동자에게 노동법 적용</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">플랫폼 노동을 기술·소비자 문제가 아닌 노동시장 정책으로 다룹니다.</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">적극적 노동시장정책·사회보호 강화</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">소득 보호, 구인·구직 연결 서비스, 재훈련·재배치, 위험 계층 대상 임금·고용 보조금.</p></div>
+      </div>`),
+
+    sec('v5-glossary', 'TRANSLATION · 용어 대역', 'languages', '이 권에서 쓴 번역어', glossary([
+      ['Decent work', '양질의 일자리', 'ILO의 핵심 개념. 공정한 소득, 안전, 사회보호, 발언권이 보장되는 일'],
+      ['Disruption without dividend', '배당 없는 혼란', '이익을 얻기 전에 충격부터 먼저 받는 상황'],
+      ['Exposure / Adoption', '노출 / 도입', '노출은 기술적으로 영향받을 가능성, 도입은 실제로 쓰는 것'],
+      ['Algorithmic management', '알고리즘 관리', '채용·배정·평가 등을 알고리즘이 수행하는 관리 방식'],
+      ['Labour-complementing', '노동 보완형', '사람을 대체하기보다 사람의 일을 돕고 늘리는 활용'],
+      ['Jagged frontier', '울퉁불퉁한 경계', 'AI가 잘하는 과업과 못하는 과업의 경계가 고르지 않다는 뜻'],
+      ['Leapfrogging', '도약형 발전', '중간 단계를 건너뛰고 최신 기술로 바로 넘어가는 것'],
+    ]) + transNote()),
+
+    sec('v5-insight', 'COUNSELOR INSIGHT', 'headset', '청년·여성 내담자와 AI 시대 진입 경로', insight([
+      { t: '“입구가 좁아진다”를 상담 안건으로', d: 'AI 노출이 높은 사무·글쓰기·번역·코딩 분야를 희망하는 청년에게는 신입 채용이 줄어들 수 있음을 알리고, 인턴·포트폴리오·인접 직무 경유 등 우회 진입 경로를 함께 설계합니다.' },
+      { t: '여성 사무직 내담자의 노출을 점검', d: '여성 고용이 노출 직종에 더 많이 몰려 있습니다. 현재 업무 중 AI가 대신할 수 있는 과업과 사람이 해야 하는 과업을 나눠 보고, 후자를 키우는 훈련을 연결합니다.' },
+      { t: '플랫폼 일자리 안내 시 권리 확인 항목', d: '데이터 라벨링, 콘텐츠 검수 같은 일을 안내할 때 보수 산정 방식, 휴가·병가, 이의 제기 절차, 정신건강 지원 여부를 체크리스트로 확인하도록 돕습니다.' },
+      { t: 'AI 도구를 “보완”으로 쓰는 연습', d: '경력이 짧은 사람일수록 AI 도구의 생산성 효과가 컸습니다. 구직 서류, 직무 학습에 AI를 보조 도구로 쓰는 법을 함께 연습하되, 결과 검토 습관을 강조합니다.' },
+    ], '근거: ILO Policy Brief 「AI and developing economies」 2026.11.')),
+  ].join('');
+}
+
+/* ---------- VOL.06 · World Bank ---------- */
+function renderVol6() {
+  return [
+    sec('v6-big', 'BIG PICTURE · 한 문장 요약', 'globe-2', '잠재력이 흡수 역량보다 빠르다', `
+      <p>세계은행은 유럽·중앙아시아(ECA) 지역에서 AI의 잠재력이 이를 흡수할 지역의 역량을 앞지르고 있다고 진단합니다. 앞으로 10년간 가장 큰 위험은 AI를 <b>너무 많이</b> 도입하는 것이 아니라 <b>너무 적게</b> 도입하고 적응시키는 것이라는 결론입니다.</p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('ECA 성장률 전망', '2.2%', '2025년 2.6%에서 둔화 (2026)')}
+        ${kpi('가장 빠른 소지역 · 중앙아시아', '5.8%', '키르기스 9.6%, 우즈벡 7.9%')}
+        ${kpi('중위 물가상승률 (8월)', '5.4%', '2018~19년 평균의 약 2배')}
+        ${kpi('평균 재정적자', 'GDP 2.6%', '2026년, 감축 또 지연')}
+      </div>
+      <p class="mt-3">노동시장은 안정적이지만 채용과 빈 일자리가 줄고 있습니다. 동시에 고숙련 직종뿐 아니라 건설·제조·운송에서도 인력 부족이 구조적 제약이 되고 있습니다.</p>`),
+
+    sec('v6-exposure', 'EXPOSURE · 누가 노출되는가', 'scan-search', '근로자 5명 중 1명, 학력이 높을수록', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">AI에 중간 이상 노출된 근로자 비율</div>
+        ${bars([
+          { label: '중등교육 미만', value: 7, text: '7%', cls: 'muted' },
+          { label: '대학 이상', value: 34, text: '34%', strong: true },
+          { label: '여성', value: 25, text: '25%' },
+          { label: '남성', value: 21, text: '21%', cls: 'muted' },
+          { label: '25~34세', value: 27, text: '27%' },
+          { label: '55~64세', value: 17, text: '17%', cls: 'muted' },
+        ], 40)}
+        <p class="src">생성형 AI만 측정한 값. 에이전트형·물리적 AI가 발전하면 노출은 육체노동 직종까지 넓어질 수 있습니다. 노출국 범위: 타지키스탄 4.8%(농업 비중 큼) ~ 폴란드 14.0%(고노출).</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        ${kpi('가장 노출된 사무직의 실제 AI 사용', '27%', '노출과 사용은 다르다')}
+        ${kpi('우즈벡 사무직 · 도움 없이 파일 복사 불가', '약 60%', '사무직 약 80%가 중·고노출')}
+      </div>
+      <p class="mt-3">고령화하는 노동력에 잘 맞는 직업들이 오히려 가장 많이 노출돼 있다는 점도 지적합니다. 노출이 곧 일자리 소멸이나 창출을 뜻하지는 않습니다.</p>`),
+
+    sec('v6-firms', 'FIRMS · 기업은 얼마나 쓰는가', 'building-2', '10곳 중 1곳 미만, EU의 절반', `
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('AI 사용 기업 (ECA)', '10% 미만', 'EU-27은 약 20%')}
+        ${kpi('인구 100만 명당 데이터센터', '2.1MW', '역외 고소득국 31.6MW')}
+        ${kpi('생성형 AI 요구 공고', '4배', '2021→2025, 출발점은 낮음')}
+        ${kpi('EU 기업 노동생산성', '+4%', 'AI 도입 효과, 2019~2024')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">초기 신호: 감원보다 채용 감소와 업무 보완</div>
+        ${bars([
+          { label: '루마니아 · 채용·해고 변화 없음', value: 91, text: '91%', strong: true },
+          { label: '튀르키예 · AI로 채용', value: 7, text: '7%' },
+          { label: '튀르키예 · AI로 해고', value: 2, text: '2%', cls: 'warn' },
+        ], 100)}
+        <p class="src">AI 공고는 일부 국가에서 수도권에 90% 이상 집중. 경영 역량이 도입의 가장 강력한 예측 변수이며, 모델 라이선스 구매가 곧 도입은 아닙니다.</p>
+      </div>
+      <div class="scroll-x mt-3">
+        <table class="matrix min-w-[560px]">
+          <thead><tr><th style="width:26%">얕은 도입 (대부분)</th><th>깊은 도입 (일부 기업·기관)</th></tr></thead>
+          <tbody>
+            <tr><td>고객 문의 챗봇, 사내 지식 검색, 백오피스 지원, 문서 작성(2주 → 몇 시간)</td><td class="hl">금융사의 대출 심사, 유통사의 재고 보충 결정, 에너지 생산 투입 최적화</td></tr>
+            <tr><td>운영 시간은 줄었지만 측정 가능한 생산성 효과는 아직 드묾</td><td class="hl">조지아 스타트업: 영업 통화 100% 전사·평가 (이전엔 팀장이 월 약 5%만 검토)</td></tr>
+            <tr><td>정부: 지식 관리, 챗봇, 신청서 처리</td><td class="hl">튀르키예 국세청: 모든 부가세 납세자 월별 탈세 위험 점수화 · 우크라이나: 국가 디지털 서비스에 AI 비서 내장</td></tr>
+          </tbody>
+        </table>
+      </div>`),
+
+    sec('v6-aging', 'AGING · 일할 사람이 줄어드는 지역', 'hourglass', '적은 인원으로 더 많이 만들어야 한다', `
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('중위연령', '36.4 → 48.9세', '2023 → 2060')}
+        ${kpi('노년부양비', '22.1 → 40.1%', '2025 → 2050')}
+        ${kpi('65세 이상 인구', '27% 초과', '2060 (1990년 9% 미만)')}
+        ${kpi('고령화의 성장 감속', '−0.9%p', '1인당 GDP 성장, 2025~2045')}
+      </div>
+      <p class="mt-3">생산가능인구가 2060년까지 크게 줄어 노동력이 더는 성장의 원천이 되기 어렵습니다. 반복 업무 시간을 줄이는 범용 기술인 AI가 그 공백을 메울 수 있다고 봅니다. 낙관 시나리오에서는 2033~34년 무렵 지역 평균 약 2.0%p(폴란드 등 준비된 국가는 2.3%p 이상)의 성장 기여가 예상되지만, 도입이 성숙하면 줄어드는 일시적 효과입니다.</p>`),
+
+    sec('v6-policy', 'POLICY · 무엇을 할 것인가', 'compass', '‘큰 AI’보다 ‘작은 AI’', `
+      <ul class="dots">
+        <li><b>혁신보다 도입·적응 우선</b>: 현지 여건, 언어, 법제에 맞춘 ‘작은 AI’를 활용하고, 비싼 국가 자체 모델 구축은 경계합니다.</li>
+        <li><b>저렴한 컴퓨팅 접근</b>: 자본 비용과 제도 신뢰도가 컴퓨팅 역량의 핵심 결정 요인입니다.</li>
+        <li><b>역량</b>: 기초·디지털·관리 역량과 비즈니스 감각을 갖춘 기술 인력. 이공계 졸업자는 많지만 업무 과정을 다시 설계할 관리자·엔지니어가 부족합니다.</li>
+        <li><b>데이터</b>: 데이터는 많지만 흩어져 있고 정형화되지 않았습니다. 공공재로서 데이터를 구조화·공개합니다.</li>
+        <li><b>노동시장 프로그램</b>: AI 보완 업무로 옮겨 가야 하는 근로자의 재숙련을 지원합니다.</li>
+        <li><b>사회보호는 ‘완충재’가 아니라 ‘투입 요소’</b>: 구직 중 소득 지원, 효과적인 재훈련, 노동시장 제도가 없으면 인력 재배치가 일어나지 않습니다. 충격이 오기 전에 갖춰야 합니다.</li>
+      </ul>
+      <p class="mt-2">총고용 효과가 작더라도 특정 직업·기업·지역에는 급격한 손실이 집중될 수 있습니다. 민간이 도입의 주된 엔진이고, 정부는 기반 마련, 투자 비용 절감, 경쟁 중립성, 데이터 거버넌스를 맡습니다.</p>`),
+
+    sec('v6-glossary', 'TRANSLATION · 용어 대역', 'languages', '이 권에서 쓴 번역어', glossary([
+      ['Making AI Work', 'AI가 제대로 작동하게 하기', '보고서 제목. 도입을 넘어 실제 성과로 잇는다는 뜻'],
+      ['Adoption and adaptation', '도입과 적응', '최첨단 개발(advancement)과 구분되는, 현지에 맞게 쓰는 일'],
+      ['Small AI', '작은 AI', '현지 언어·법제·업무에 맞춘 실용적 AI'],
+      ['Compute', '컴퓨팅 자원', '연산 장치, 메모리, 데이터센터 등'],
+      ['Frontier firms', '선도 기업', '기술 도입이 가장 앞선 기업'],
+      ['Old-age dependency ratio', '노년부양비', '생산가능인구 대비 65세 이상 인구 비율'],
+    ]) + transNote(' 이 번역은 세계은행이 작성한 것이 아니며 세계은행의 공식 번역이 아닙니다(원문 CC BY 3.0 IGO).')),
+
+    sec('v6-insight', 'COUNSELOR INSIGHT', 'headset', 'AI를 “쓰는 사람”으로 키우는 상담', insight([
+      { t: '노출 직종 내담자에게 “사용 역량” 진단부터', d: '사무직은 노출은 높지만 실제 사용은 27%에 그쳤고, 파일 복사도 어려운 경우가 많았습니다. 디지털 기초 역량을 먼저 점검하고 기초 → AI 활용 순서로 훈련을 연결합니다.' },
+      { t: '채용 감소형 변화에 대비', d: '초기 신호는 대량 해고보다 신규 채용 감소였습니다. 재직자에게는 사내 AI 활용 업무를 먼저 맡아 보는 전략을, 구직자에게는 AI 활용 경험을 이력서에 드러내는 방법을 안내합니다.' },
+      { t: '“업무 재설계 역량”을 경력 목표로', d: '보고서가 가장 부족하다고 지목한 인재는 이공계 지식과 비즈니스 감각을 함께 갖추고 업무 흐름을 다시 짜는 사람입니다. 관리자·현업 전문가의 경력 개발 방향으로 제시할 만합니다.' },
+      { t: '고령 근로자와 AI', d: '고령화로 일손이 줄어드는 만큼, 중장년 내담자에게 AI를 일을 덜어 주는 도구로 소개하고 부담 없는 실습부터 시작하도록 돕습니다.' },
+    ], '근거: World Bank 「Making AI Work」 ECA Economic Update 2026.10.')),
+  ].join('');
+}
+
+/* ---------- VOL.07 · CEPR ---------- */
+function renderVol7() {
+  return [
+    sec('v7-thesis', 'THESIS · ‘일의 종말’은 오지 않는다', 'sunrise', '대량 실업 공포는 근거가 약하다', `
+      <p>필리프 아기옹(2025년 노벨경제학상 공동 수상자) 등 네 명의 경제학자는 AI가 반드시 대량 실업을 부른다는 믿음이 의심스럽다고 봅니다. 비관적인 연구는 대체로 기존 직업을 과업으로 쪼갠 뒤 AI가 할 수 있는 과업의 비율을 계산하는데, 이 방식에는 세 가지 결함이 있다는 것입니다.</p>
+      <div class="grid sm:grid-cols-3 gap-2">
+        <div class="card"><div class="mono text-[11px] acc">결함 1</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">직업의 과업 구성은 고정돼 있지 않다</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">AI가 일부 과업을 맡으면 사람은 다른 과업으로 시간을 옮깁니다. 의사는 더 많은 환자를 보고, 사무직은 자료 준비 대신 고객 발굴에 시간을 씁니다.</p></div>
+        <div class="card"><div class="mono text-[11px] acc">결함 2</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">직업은 쉽게 풀리지 않는 과업 묶음이다</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">AI가 영상의학과 의사를 없앨 것이라는 예언 10년 뒤, 그 수는 오히려 가장 많습니다. 어려운 판독의 판단, 외과의 자문, 진단 서명은 여전히 사람의 몫입니다.</p></div>
+        <div class="card"><div class="mono text-[11px] acc">결함 3</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">대체 효과는 이야기의 절반이다</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">생산성이 오른 기업은 경쟁력을 얻고 생산을 늘려 오히려 더 많이 고용합니다. AI는 새로운 아이디어를 찾기 쉽게 해 새 일자리로도 이어집니다.</p></div>
+      </div>`),
+
+    sec('v7-concern', 'CONCERNS · 그래도 경계할 것', 'alert-circle', '시차, 분배, 청년, 일의 질', `
+      <ul class="dots">
+        <li><b>시차</b>: 대체 효과가 일자리 창출보다 먼저 나타나 일시적 고용 감소가 생기고, 당사자에게는 오래 남을 수 있습니다.</li>
+        <li><b>분배</b>: 총고용이 줄지 않아도 승자와 패자가 생기며, 효과는 고용보다 임금 격차로 드러날 수 있습니다. 처음으로 상위 직업군도 대체 압력을 받지만, 이들은 적응하거나 재기할 여력이 큰 편입니다.</li>
+        <li><b>청년</b>: 미국에서는 생성형 AI 노출이 큰 직업에서 22~25세 초기 경력자의 고용이 크게 줄었습니다. 프랑스·덴마크에서도 비슷한 신입 채용 감소가 관찰되지만, 노르웨이에서는 초기 경력자만의 추세는 보이지 않았습니다.</li>
+        <li><b>일의 질</b>: 사람보다 AI 에이전트와 주로 일하면 고립감이 커지고, 너무 많은 과업을 기술에 넘기면 일의 의미를 잃을 수 있습니다.</li>
+      </ul>
+      <p class="src">저자들은 2022년 말부터의 변화가 ChatGPT 출시와 함께 코로나 정책 종료, 금리 인상 시기와도 겹쳐 해석에 신중해야 한다고 덧붙입니다. 또 AI에 대한 과도한 공포는 이미 기술 도입이 느린 유럽의 도입을 더 늦추는 비용이 있다고 지적합니다.</p>`),
+
+    sec('v7-national', 'NATIONAL · 회원국이 할 일', 'shield-check', '유연안정성과 좋은 교육', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">① 유연안정성(Flexicurity) = 소득 보험 + 적극적 노동시장정책</div>
+        <p class="mb-0" style="font-size:var(--fs-sm)">실직은 건강과 가족에까지 오래가는 충격이지만, 제도에 따라 달라집니다. 덴마크에서는 미국에서 관찰되는 실직 후 건강 악화·사망률 증가가 나타나지 않았습니다. 다만 훈련·상담 같은 적극적 정책의 효과는 사람마다 크게 달라, <b>장기실업 위험이 큰 구직자를 예측해</b> 집중 상담·훈련을 몰아주고 그 배정을 계속 평가·개선해야 한다고 권합니다.</p>
+      </div>
+      <div class="card mt-2">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">② 교육: 배우는 법을 배우게</div>
+        <p class="mb-0" style="font-size:var(--fs-sm)">이직은 잦아지고 어떤 기술이 보상받을지는 예측하기 어려우므로, 적응력을 기르는 질 높은 기초교육이 핵심입니다. 중국 7~12학년 연구에서 AI 사용은 숙제 품질을 높였지만 몇 달 만에 시험 점수를 떨어뜨렸습니다(사회·STEM·언어에서 가장 크게). 읽기, 쓰기, 문법, 미적분, 수학 증명은 먼저 AI 없이 해야 합니다.</p>
+      </div>
+      <div class="card mt-2">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">③ 손기술 직업의 가치 회복</div>
+        <p class="mb-0" style="font-size:var(--fs-sm)">배관공, 요리사 같은 직업을 재평가하고, 스위스처럼 기술·실무 중심 고등교육과 일반 고등교육 사이에 다리를 놓는 과정을 만들자고 제안합니다.</p>
+      </div>`),
+
+    sec('v7-eu', 'EUROPE · 유럽 차원의 산업정책', 'flag', '노동을 늘리는 방향으로 기술을 이끌기', `
+      <p>기술은 목적이 아니라 수단입니다. 시장은 이익이 큰 곳으로 기술을 이끌지만, 그것이 사회에 가장 좋은 용도와 일치한다는 보장은 없습니다. 탄소 배출처럼 사적 유인과 사회적 최적이 어긋날 때 정부가 개입하듯, 노동을 대체하기보다 <b>노동을 증강하는 AI 활용</b>을 유도해야 한다는 주장입니다.</p>
+      <div class="grid sm:grid-cols-3 gap-2">
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">용도 조건부 지원</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">사용 방식에 따라 달라지는 보조금·세액공제 (기후정책에서 빌려 온 도구)</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">공공조달</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">보건·교육·행정처럼 서비스 수요는 크고 일손은 부족한 분야부터</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">보완 자산 제공</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">데이터, 훈련 등 생산성을 높이며 노동을 증강하는 도입에 필요한 기반</p></div>
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">R&D 세액공제를 둔 유럽 국가 비율</div>
+        ${bars([
+          { label: '2000년', value: 22, text: '22%', cls: 'muted' },
+          { label: '2019년', value: 72, text: '72%', strong: true },
+        ], 100)}
+        <p class="src">그런데도 EU의 R&D 지출은 거의 늘지 않았고 디지털 전환에서 뒤처졌습니다. 저자들은 정부가 임무를 정하고 경쟁 공모로 승자를 고르는 ‘임무 지향형’ 산업정책, 그 설계 단계에서 노동시장 영향을 함께 고려할 것을 제안합니다. 회원국 단위로는 시장이 작아 기술의 방향을 바꾸기 어렵기 때문에 유럽 차원이어야 한다는 것입니다.</p>
+      </div>`),
+
+    sec('v7-glossary', 'TRANSLATION · 용어 대역', 'languages', '이 권에서 쓴 번역어', glossary([
+      ['Flexicurity', '유연안정성', '해고·이직의 유연성과 두터운 소득 보장·재취업 지원을 결합한 덴마크식 모델'],
+      ['Active labour market policies', '적극적 노동시장정책', '훈련, 상담, 구직 모니터링 등 재취업을 돕는 정책'],
+      ['Labour-enhancing / labour-replacing', '노동 증강형 / 노동 대체형', '사람의 일을 늘리고 돕는 AI 활용 vs 사람을 대신하는 활용'],
+      ['Mission-oriented industrial policy', '임무 지향형 산업정책', '정부가 목표를 정하고 경쟁 공모로 수행자를 고르는 방식'],
+      ['Early-career workers', '초기 경력자', '경력 초반(연구에서는 22~25세)의 근로자'],
+      ['Deaths of despair', '절망사', '실직·빈곤 등으로 인한 약물·알코올·자살 사망 (케이스·디턴)'],
+    ]) + transNote(' 원문은 스캔 이미지로 제공되어 문자 인식 후 번역했습니다.')),
+
+    sec('v7-insight', 'COUNSELOR INSIGHT', 'headset', '상담 자원을 “필요한 사람”에게', insight([
+      { t: '장기실업 위험 선별을 상담에 반영', d: '보고서는 실업급여 신청 시점의 행정자료와 간단한 설문으로 장기실업 위험군을 예측할 수 있고, 이들에게 집중 상담·훈련을 배정해야 효과가 크다고 봅니다. 초기 상담에서 위험 신호(구직 기간, 경력 단절, 건강, 가족 부담)를 체계적으로 확인합니다.' },
+      { t: '실직을 “사건이 되지 않게”', d: '덴마크 사례처럼 소득 보장과 재취업 지원이 함께 가면 실직의 건강 충격이 사라졌습니다. 실업급여 안내와 재취업 계획 수립을 같은 상담 흐름 안에서 진행합니다.' },
+      { t: 'AI 공포보다 적응 전략', d: '“AI 때문에 내 일이 없어진다”는 불안을 가진 내담자와는 직무를 과업 단위로 나눠, 사람에게 남는 판단·책임·대인 과업을 확인하고 그 부분을 키우는 계획을 세웁니다.' },
+      { t: '손기술 직업을 대안이 아닌 선택지로', d: '기술·기능직을 “차선책”이 아닌 성장 가능한 경로로 소개하고, 이후 상위 교육으로 이어지는 연계 과정을 함께 탐색합니다.' },
+    ], '근거: CEPR Europe 2050 「Labour market policies in the age of AI」 2026.9.')),
+  ].join('');
+}
+
+const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3, 4: renderVol4, 5: renderVol5, 6: renderVol6, 7: renderVol7 };
 
 /* ============================================================
    SHELF + CATALOG
    ============================================================ */
 const $ = s => document.querySelector(s);
 const tier1 = $('#tier1');
-tier1.innerHTML = VOLS.map(v => `
+const bookHTML = v => `
   <button type="button" class="book ${v.mat}" data-vol="${v.id}" aria-label="${v.serial} ${v.title} (${v.authority}) 열기">
-    <span class="hb t" aria-hidden="true"></span>${v.mat === 'leather' ? '<span class="rib" style="top:22%"></span><span class="rib" style="top:78%"></span>' : ''}
+    <span class="hb t" aria-hidden="true"></span>${['leather', 'label'].includes(v.mat) ? '<span class="rib" style="top:22%"></span><span class="rib" style="top:78%"></span>' : ''}
     <span class="vol"><small>VOL</small><b>${v.serial.slice(-2)}</b></span>
-    <span class="ttl">${v.key}</span>
+    <span class="ttl"><span>${v.key.replace(/AI/g, '<span class="tcy">AI</span>')}</span></span>
     <span class="pub"><i data-lucide="landmark"></i>${v.pub}</span>
     <span class="hb b" aria-hidden="true"></span>
-  </button>`).join('') + '<span class="bookend" aria-hidden="true"></span>';
+  </button>`;
+tier1.innerHTML = VOLS.filter(v => v.shelf === 1).map(bookHTML).join('') + '<span class="bookend" aria-hidden="true"></span>';
+$('#tier2').innerHTML = VOLS.filter(v => v.shelf === 2).map(bookHTML).join('') + '<span class="bookend" aria-hidden="true"></span>';
 
 $('#catalog').innerHTML = VOLS.map(v => `
   <button type="button" data-vol="${v.id}" class="cat-item text-left card hover-line transition tap" style="--accent:${v.accent}">
@@ -941,6 +1448,8 @@ function openSlate(vol, secId) {
   $('#dIssue').textContent = v.issue;
   $('#dTitle').textContent = v.title;
   $('#dSub').textContent = v.sub;
+  $('#dOrig').textContent = v.orig ? '원제: ' + v.orig : '';
+  $('#dBadge').textContent = v.authority + (v.lang ? ' · 원문 영어 → 한국어 번역' : '');
   $('#dShort').textContent = v.key;
   setRolled(false);
   dBody.innerHTML = RENDER[vol]();
@@ -1121,7 +1630,7 @@ applyTheme();
    INIT
    ============================================================ */
 icons();
-const m = location.hash.match(/^#vol-0([1-3])$/);
+const m = location.hash.match(/^#vol-0([1-7])$/);
 if (m) setTimeout(() => openSlate(+m[1]), 300);
 </script>
 </body>
