@@ -2,88 +2,527 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>직업상담 자료실</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>직업상담 통합 자료실 // CAREER COUNSELING ARCHIVE</title>
 <meta name="description" content="직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무를 익히는 학습·업무 보조 자료 모음">
+<meta name="theme-color" content="#08090c">
 <style>
+/* 이 스타일만으로 화면이 완성된다. Tailwind와 Lucide가 늦게 오거나 막혀도(오프라인 저장본 포함) 배치는 그대로다. */
 :root{
-  --bg:#f3f5f1;--surface:#ffffff;--ink:#14201b;--muted:#56625c;--line:#d9dfd7;
-  --accent:#0a6b58;--accent-soft:#dcefe8;
-  color-scheme:light;
+  --bg:#08090c;--panel:rgba(15,23,42,.6);--panel-solid:#0d1017;--line:#1e232f;--line-2:#2a3142;
+  --ink:#e6e9ef;--muted:#8d95a8;--dim:#626b80;
+  --teal:#2dd4bf;--cyan:#22d3ee;--amber:#fbbf24;
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme:dark){
-  :root{--bg:#0e1412;--surface:#171f1c;--ink:#e9efeb;--muted:#9aa9a2;--line:#2a3631;--accent:#5fd0b3;--accent-soft:#17332b;color-scheme:dark}
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);
-  font:16px/1.65 "Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
-  letter-spacing:-.01em;word-break:keep-all;overflow-wrap:anywhere;-webkit-text-size-adjust:100%}
-.wrap{max-width:920px;margin:0 auto;padding:0 20px}
-header{padding:56px 0 28px}
-h1{margin:0;font-size:clamp(1.9rem,6vw,2.6rem);line-height:1.25;letter-spacing:-.03em}
-header p{margin:10px 0 0;color:var(--muted);max-width:36em}
-h2{margin:32px 0 12px;font-size:.82rem;font-weight:700;color:var(--muted);letter-spacing:.02em}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;list-style:none;margin:0;padding:0}
-.card{display:flex;flex-direction:column;gap:6px;height:100%;padding:20px;border-radius:16px;
-  background:var(--surface);border:1px solid var(--line);color:inherit;text-decoration:none;
-  transition:border-color .15s,transform .15s}
-.card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.tag{align-self:flex-start;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
-.card b{font-size:1.08rem;line-height:1.4}
-.card span.d{color:var(--muted);font-size:.92rem;line-height:1.55}
-.card span.go{margin-top:auto;padding-top:8px;font-size:.86rem;font-weight:700;color:var(--accent)}
-footer{margin:44px 0 0;padding:20px 0 48px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem;line-height:1.7}
-footer p{margin:0 0 6px}
-@media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+*,*::before,*::after{box-sizing:border-box;border:0 solid var(--line)}
+.a-root *,.a-root *::before,.a-root *::after{border-color:var(--line)}
+html,body{margin:0;overflow-x:hidden;max-width:100%}
+html{-webkit-text-size-adjust:100%}
+body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:-.01em;
+  word-break:keep-all;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased;min-height:100vh}
+:where(.a-root) :where(h1,h2,h3,p,ul,ol){margin:0;padding:0}
+:where(.a-root) :where(ul,ol){list-style:none}
+:where(.a-root) a{color:inherit;text-decoration:none}
+:where(.a-root) :where(button,input){font:inherit;color:inherit;letter-spacing:inherit;margin:0}
+:where(.a-root) button{cursor:pointer;background:none;padding:0;text-align:inherit}
+.a-root :focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:6px}
+.a-root [hidden]{display:none!important}
+.a-mono{font-family:var(--mono);letter-spacing:.02em}
+.a-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* 바탕: 격자와 은은한 빛 */
+.a-backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(60% 45% at 18% 0%,rgba(45,212,191,.09),transparent 70%),
+    radial-gradient(50% 40% at 92% 8%,rgba(34,211,238,.07),transparent 70%),
+    linear-gradient(rgba(30,35,47,.55) 1px,transparent 1px) 0 0/100% 32px,
+    linear-gradient(90deg,rgba(30,35,47,.55) 1px,transparent 1px) 0 0/32px 100%;
+  -webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 92%);mask-image:linear-gradient(#000 0,#000 35%,transparent 92%)}
+.a-shell{position:relative;z-index:1;max-width:1680px;margin:0 auto;padding:0 clamp(14px,3vw,40px) 56px}
+
+/* 머리말 */
+.a-top{position:sticky;top:0;z-index:30;margin:0 calc(clamp(14px,3vw,40px) * -1);padding:10px clamp(14px,3vw,40px);
+  background:rgba(8,9,12,.78);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom-width:1px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.a-brand{display:flex;flex-direction:column;min-width:0;flex:1 1 220px}
+.a-brand b{font-size:clamp(15px,1.1vw + 11px,19px);font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.a-brand span{font-size:10.5px;color:var(--muted);line-height:1.4}
+.a-status{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);white-space:nowrap}
+.a-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(45,212,191,.6);animation:a-pulse 2s infinite}
+@keyframes a-pulse{0%{box-shadow:0 0 0 0 rgba(45,212,191,.55)}70%{box-shadow:0 0 0 8px rgba(45,212,191,0)}100%{box-shadow:0 0 0 0 rgba(45,212,191,0)}}
+.a-clock{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.a-actions{display:flex;gap:8px;flex-wrap:wrap}
+.a-root .a-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;min-width:44px;padding:0 14px;
+  border-width:1px;border-color:var(--line-2);border-radius:10px;background:rgba(15,23,42,.6);font-size:13px;font-weight:600;white-space:nowrap;
+  transition:border-color .15s,background .15s,transform .15s}
+.a-root .a-btn:hover{border-color:var(--cyan);background:rgba(34,211,238,.08)}
+.a-root .a-btn:active{transform:scale(.97)}
+.a-root .a-btn.a-pri{border-color:rgba(45,212,191,.55);color:var(--teal)}
+.a-kbd{font-family:var(--mono);font-size:10.5px;color:var(--muted);border-width:1px;border-color:var(--line-2);border-radius:5px;padding:1px 5px}
+.a-ico{width:16px;height:16px;flex:none;display:inline-block}
+.a-root .a-ico svg,.a-root svg.a-ico{width:16px;height:16px;display:block}
+
+/* 제목부 */
+.a-hero{padding:clamp(28px,5vw,64px) 0 clamp(18px,2.4vw,28px)}
+.a-eyebrow{font-size:11px;color:var(--teal)}
+.a-hero h1{font-size:clamp(28px,5.2vw,64px);line-height:1.12;letter-spacing:-.04em;font-weight:800;margin-top:10px;text-wrap:balance}
+.a-hero h1 em{font-style:normal;color:transparent;background:linear-gradient(90deg,var(--teal),var(--cyan) 55%,var(--amber));-webkit-background-clip:text;background-clip:text}
+.a-hero p{color:var(--muted);font-size:clamp(14px,.5vw + 12.5px,17px);max-width:44em;margin-top:14px}
+
+/* 카드 공통 */
+.a-card{--acc:var(--teal);position:relative;display:flex;flex-direction:column;min-width:0;border-width:1px;border-radius:16px;
+  background:var(--panel);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:clamp(16px,1.4vw,22px);overflow:hidden;
+  transition:transform .28s cubic-bezier(.2,1.4,.4,1),border-color .2s,box-shadow .2s}
+.a-card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .25s;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--acc) 20%,transparent),transparent 62%)}
+.a-card.a-live:hover,.a-card.a-live:focus-within,.a-card.a-lit{transform:translateY(-2px);border-color:color-mix(in srgb,var(--acc) 60%,var(--line));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 22%,transparent),0 18px 44px -24px color-mix(in srgb,var(--acc) 55%,transparent)}
+.a-card.a-live:hover::before,.a-card.a-live:focus-within::before,.a-card.a-lit::before{opacity:1}
+.a-card>*{position:relative}
+.a-teal{--acc:var(--teal)}.a-cyan{--acc:var(--cyan)}.a-amber{--acc:var(--amber)}
+.a-sec{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10.5px;color:var(--muted)}
+.a-sec b{color:var(--acc);font-weight:600}
+.a-chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;line-height:1;padding:5px 8px;border-radius:99px;
+  border-width:1px;border-color:var(--line-2);color:var(--muted);white-space:nowrap}
+.a-chip i.a-led{width:6px;height:6px;border-radius:50%;background:var(--acc)}
+.a-chips{display:flex;flex-wrap:wrap;gap:6px}
+
+/* 상단 2칸: 통찰과 진도 */
+.a-duo{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(12px,1.2vw,18px)}
+@media (min-width:1024px){.a-duo{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}}
+.a-insight{perspective:1200px}
+.a-flip{display:flex;flex-direction:column;gap:12px;margin-top:14px;transform-origin:50% 0;transition:transform .2s ease-in,opacity .2s ease-in}
+.a-flip.a-out{transform:rotateX(-78deg);opacity:0}
+.a-insight h2{font-size:clamp(20px,1.6vw + 14px,34px);line-height:1.25;letter-spacing:-.03em;font-weight:750;text-wrap:balance}
+.a-insight .a-body{color:#c3c9d6;font-size:clamp(14px,.35vw + 13px,16.5px);max-width:60em}
+.a-q{border-left:2px solid var(--acc);padding:8px 0 8px 14px;color:var(--ink);font-size:clamp(14px,.35vw + 13px,16px)}
+.a-q small{display:block;font-family:var(--mono);font-size:10.5px;color:var(--acc);margin-bottom:2px}
+.a-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:auto;padding-top:16px}
+.a-count{margin-left:auto;font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}
+
+.a-track h2{font-size:15px;font-weight:700;margin-top:12px}
+.a-pct{font-family:var(--mono);font-size:clamp(34px,3vw + 20px,54px);font-weight:600;line-height:1;letter-spacing:-.04em;margin-top:10px;font-variant-numeric:tabular-nums}
+.a-pct small{display:block;font-family:var(--sans);font-size:13px;font-weight:500;line-height:1.5;color:var(--muted);letter-spacing:0;margin-top:8px}
+.a-gauge{height:8px;border-radius:99px;background:#151a26;border-width:1px;margin-top:12px;overflow:hidden}
+.a-gauge i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--cyan));transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.a-stamps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:12px}
+.a-stamp{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:48px;border-width:1px;border-style:dashed;border-color:var(--line-2);
+  border-radius:10px;font-family:var(--mono);font-size:10px;color:var(--dim);transition:all .25s}
+.a-stamp.a-on{border-style:solid;border-color:color-mix(in srgb,var(--teal) 60%,var(--line));color:var(--teal);background:rgba(45,212,191,.08)}
+.a-stamp b{font-size:12px;font-weight:600}
+.a-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.a-badge{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:99px;border-width:1px;border-color:var(--line-2);color:var(--dim)}
+.a-badge.a-on{border-color:rgba(251,191,36,.6);color:var(--amber);background:rgba(251,191,36,.08)}
+.a-root .a-link{font-size:12px;color:var(--muted);min-height:44px;display:inline-flex;align-items:center;text-decoration:underline;text-underline-offset:3px}
+.a-root .a-link:hover{color:var(--ink)}
+
+/* 구획 제목 */
+.a-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:clamp(28px,3vw,44px) 0 12px;padding-bottom:10px;border-bottom-width:1px}
+.a-h h2{font-size:12px;font-weight:600;color:var(--ink)}
+.a-h span{font-size:10.5px;color:var(--dim)}
+
+/* 벤토 격자 (Tailwind의 grid-cols-1 md:2 lg:3 xl:4 와 같은 값) */
+.a-bento{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:12px}
+@media (min-width:768px){.a-bento{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
+@media (min-width:1024px){.a-bento{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.a-wide{grid-column:span 2/span 2}}
+@media (min-width:1280px){.a-bento{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.a-wide{grid-column:span 1/span 1}}
+.a-bento>li{display:flex;min-width:0}
+.a-tool{width:100%;min-height:218px;gap:10px}
+.a-tool h3{position:static;font-size:clamp(17px,.6vw + 14px,21px);line-height:1.3;letter-spacing:-.025em;font-weight:700;margin-top:6px}
+.a-tool p{color:var(--muted);font-size:13.5px;line-height:1.6}
+.a-tool .a-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:12px;font-size:11px;color:var(--dim)}
+.a-go{display:inline-flex;align-items:center;gap:6px;color:var(--acc);font-weight:600;font-size:12.5px;font-family:var(--sans);letter-spacing:0}
+.a-stretch::after{content:"";position:absolute;inset:0;z-index:2}
+.a-tool .a-seen{display:none;color:var(--teal)}
+.a-tool.a-visited .a-seen{display:inline}
+.a-preset{border-style:dashed;border-color:rgba(51,65,85,.8);background:rgba(15,23,42,.3);cursor:not-allowed}
+.a-preset h3{color:#aab1c1}
+.a-preset .a-tip{font-size:12px;color:var(--dim);border-top-width:1px;border-top-style:dashed;border-color:rgba(51,65,85,.8);margin-top:auto;padding-top:10px}
+
+.a-foot-note{margin-top:clamp(32px,4vw,56px);padding-top:18px;border-top-width:1px;color:var(--dim);font-size:12px;line-height:1.7;display:grid;gap:6px;max-width:80em}
+
+/* 명령 팔레트 */
+.a-ov{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-start;justify-content:center;padding:max(12px,8vh) 12px 12px;
+  background:rgba(3,4,7,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.a-pal{width:min(640px,100%);max-height:min(560px,84vh);display:flex;flex-direction:column;background:#0b0e15;border-width:1px;border-color:var(--line-2);
+  border-radius:16px;box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 0 1px rgba(34,211,238,.12);overflow:hidden;animation:a-pop .16s ease-out}
+@keyframes a-pop{from{transform:translateY(8px) scale(.985);opacity:0}to{transform:none;opacity:1}}
+.a-pal-top{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;border-bottom-width:1px}
+.a-root .a-input{flex:1;min-width:0;min-height:44px;background:transparent;outline:none;font-size:16px;color:var(--ink)}
+.a-root .a-input::placeholder{color:var(--dim)}
+.a-res{overflow-y:auto;padding:6px;-webkit-overflow-scrolling:touch}
+.a-root .a-opt{display:flex;align-items:flex-start;gap:12px;width:100%;min-height:52px;padding:10px 12px;border-radius:10px;border-width:1px;border-color:transparent}
+.a-root .a-opt[aria-selected="true"]{background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.35)}
+.a-opt .a-code{flex:none;font-family:var(--mono);font-size:10.5px;color:var(--cyan);padding-top:3px;width:52px}
+.a-opt b{display:block;font-size:14.5px;font-weight:600;line-height:1.35}
+.a-opt small{display:block;font-size:12px;color:var(--muted);line-height:1.5}
+.a-empty{padding:22px 14px;color:var(--muted);font-size:13.5px}
+.a-pal-foot{display:flex;flex-wrap:wrap;gap:6px 14px;padding:9px 14px;border-top-width:1px;font-size:11px;color:var(--dim)}
+
+.a-toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translate(-50%,12px);z-index:70;max-width:calc(100% - 28px);
+  background:#e6e9ef;color:#08090c;font-size:13px;font-weight:600;padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+.a-toast.a-on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:520px){.a-status{order:3;flex:1 1 100%;flex-wrap:wrap;white-space:normal;gap:4px 8px}.a-actions{flex:1 1 100%}.a-root .a-actions .a-btn{flex:1 1 0;padding:0 10px}.a-kbd{display:none}}
+@media (prefers-reduced-motion:reduce){.a-root *,.a-root *::before,.a-root *::after{animation:none!important;transition:none!important}}
+@media print{.a-backdrop,.a-top .a-actions,.a-ov,.a-toast{display:none!important}.a-top{position:static}}
 </style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <h1>직업상담 자료실</h1>
-    <p>직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무를 익히기 위한 학습·업무 보조 자료입니다.</p>
+<body class="a-root">
+<div class="a-backdrop" aria-hidden="true"></div>
+<div class="a-shell">
+
+  <header class="a-top">
+    <div class="a-brand">
+      <b>직업상담 통합 자료실</b>
+      <span class="a-mono">// CAREER COUNSELING ARCHIVE</span>
+    </div>
+    <div class="a-status a-mono" role="status" aria-label="사이트 상태와 한국 표준시">
+      <span class="a-dot" aria-hidden="true"></span>
+      <span id="statusText">PAGES: ONLINE // KST REALTIME</span>
+      <time class="a-clock" id="clock" aria-live="off">--:--:--</time>
+    </div>
+    <div class="a-actions">
+      <button class="a-btn" id="btnSearch" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
+        <i class="a-ico" data-lucide="search" aria-hidden="true"></i><span>빠른 검색</span><span class="a-kbd" id="kbdHint">Ctrl K</span>
+      </button>
+      <button class="a-btn a-pri" id="btnSave">
+        <i class="a-ico" data-lucide="download" aria-hidden="true"></i><span>index.html 로컬 저장</span>
+      </button>
+    </div>
   </header>
 
-  <main>
-    <h2>이론과 검사</h2>
-    <ul class="grid">
-      <li><a class="card" href="theory/">
-        <span class="tag">이론</span>
-        <b>직업상담 이론 위키</b>
-        <span class="d">진로·상담·동기 이론을 갈래별로 찾아보고, 헷갈리는 이론을 비교하고, 카드로 복습합니다.</span>
-        <span class="go">열기 →</span></a></li>
-      <li><a class="card" href="vpi/">
-        <span class="tag">심리검사</span>
-        <b>직업선호도검사 L형 해석 시뮬레이터</b>
-        <span class="d">흥미·성격·생활사 점수를 움직여 보며 교차 판독과 상담 발문을 연습합니다.</span>
-        <span class="go">열기 →</span></a></li>
-      <li><a class="card" href="dacum/">
-        <span class="tag">직무분석</span>
-        <b>DACUM 마스터 아키텍처</b>
-        <span class="d">DACUM 직무분석의 원리, 과업 진술문 작성법, 워크숍 8단계를 직업상담사 차트로 익힙니다.</span>
-        <span class="go">열기 →</span></a></li>
-    </ul>
+  <section class="a-hero" aria-labelledby="heroTitle">
+    <p class="a-eyebrow a-mono">ARCHIVE INDEX // VOL.01 // 2026</p>
+    <h1 id="heroTitle">이론에서 실무까지,<br><em>직업상담의 작업대</em></h1>
+    <p>직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무를 다섯 개의 도구로 익히고 바로 씁니다.</p>
+  </section>
 
-    <h2>국민취업지원제도 실무</h2>
-    <ul class="grid">
-      <li><a class="card" href="manual/">
-        <span class="tag">매뉴얼 해설</span>
-        <b>2026 국취 매뉴얼 하이퍼위키</b>
-        <span class="d">업무매뉴얼(2026.1)을 쪽수로 찾아 세 줄 해설, 실무 함정, 근거 조문을 확인합니다.</span>
-        <span class="go">열기 →</span></a></li>
-      <li><a class="card" href="hud/">
-        <span class="tag">상담 도구</span>
-        <b>2026 국취 상담 HUD</b>
-        <span class="d">유형 판정, 수당·기한·재참여 제한 계산, 상담일지 작성을 한 화면에서 처리합니다.</span>
-        <span class="go">열기 →</span></a></li>
-    </ul>
+  <main>
+    <div class="a-duo">
+      <section class="a-card a-insight a-teal a-live" id="insight" aria-labelledby="insightLabel">
+        <div class="a-sec a-mono"><b id="insightLabel">DAILY INSIGHT // 오늘의 직상 1일 1통찰</b><span id="insightTag">--</span></div>
+        <div class="a-flip" id="flip" aria-live="polite">
+          <h2 id="insightTitle"></h2>
+          <p class="a-body" id="insightBody"></p>
+          <p class="a-q"><small>COUNSELING QUESTION // 상담 질문</small><span id="insightQ"></span></p>
+        </div>
+        <div class="a-row">
+          <button class="a-btn a-pri" id="btnShuffle"><i class="a-ico" data-lucide="dices" aria-hidden="true"></i><span>통찰 셔플</span></button>
+          <a class="a-btn" id="insightLink" href="./theory/" data-visit="theory"><span id="insightLinkText">관련 도구 열기</span><i class="a-ico" data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+          <span class="a-count a-mono" id="insightCount"></span>
+        </div>
+      </section>
+
+      <section class="a-card a-track a-amber" aria-labelledby="trackLabel">
+        <div class="a-sec a-mono"><b id="trackLabel">MASTERY TRACKER // 탐색 진도</b><span>LOCAL</span></div>
+        <p class="a-pct" id="pct">0%<small id="pctText">0 / 5 도구</small></p>
+        <div class="a-gauge" role="progressbar" aria-labelledby="trackLabel" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="gauge"><i id="gaugeBar"></i></div>
+        <ol class="a-stamps" id="stamps" aria-label="도구별 방문 스탬프"></ol>
+        <div class="a-badges" id="badges" aria-label="달성 배지"></div>
+        <div class="a-row" style="padding-top:8px">
+          <span style="font-size:12px;color:var(--dim)">방문 기록은 이 브라우저에만 저장됩니다.</span>
+          <button class="a-link" id="btnReset" style="margin-left:auto">기록 지우기</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="a-h"><h2 class="a-mono">MODULES // 운영 중 5 · 확장 예정 3</h2><span class="a-mono">SEC.01 – SEC.08</span></div>
+    <ul class="a-bento grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" id="tools"></ul>
   </main>
 
-  <footer>
+  <footer class="a-foot-note">
     <p>이 사이트의 자료는 AI의 도움을 받아 만든 비공식 학습·업무 보조 자료입니다. 고용노동부, 한국고용정보원 등 어떤 기관의 공식 자료도 아닙니다.</p>
     <p>제도 기준과 수치는 개정될 수 있습니다. 실제 업무 판단은 반드시 공식 매뉴얼 원문과 지침으로 확인하십시오.</p>
+    <p class="a-mono">CCTTSI/JOBCOUNSEL // STATIC ARCHIVE</p>
   </footer>
 </div>
+
+<div class="a-ov" id="ov" hidden>
+  <div class="a-pal" role="dialog" aria-modal="true" aria-label="빠른 검색">
+    <div class="a-pal-top">
+      <i class="a-ico" data-lucide="search" aria-hidden="true"></i>
+      <label class="a-sr" for="q">도구와 주제 검색</label>
+      <input class="a-input" id="q" type="text" inputmode="search" enterkeyhint="go" autocomplete="off" autocapitalize="off" spellcheck="false"
+        placeholder="도구 이름이나 주제 (예: 홀랜드, 수당, 린터)" role="combobox" aria-expanded="true" aria-controls="res" aria-autocomplete="list">
+      <button class="a-btn" id="btnClose" aria-label="검색 닫기"><span class="a-mono" style="font-size:11px">ESC</span></button>
+    </div>
+    <div class="a-res" id="res" role="listbox" aria-label="검색 결과"></div>
+    <div class="a-pal-foot a-mono"><span>↑↓ 이동</span><span>ENTER 열기</span><span>ESC 닫기</span></div>
+  </div>
+</div>
+<div class="a-toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+
+/* ---------- 데이터 ---------- */
+var TOOLS=[
+ {id:'theory',sec:'SEC.01',code:'THEORY WIKI',vol:'VOL.01',badge:'이론',status:'LIVE',color:'teal',icon:'book-open',wide:true,
+  title:'직업상담 이론 위키',path:'./theory/',
+  desc:'163개 직업상담·진로발달 이론 카드, 갈래별·상황별 찾기, 헷갈리는 이론 비교표, 실전 연계와 카드 복습.',
+  meta:['이론 163','용어 135','비교표 9'],
+  tags:['이론','파슨스','홀랜드','수퍼','슈퍼','긴즈버그','크럼볼츠','사비카스','SCCT','CIP','로저스','엘리스','벡','에릭슨','용어','복습','비교','theory','wiki']},
+ {id:'vpi',sec:'SEC.02',code:'PSYCHOMETRIC HUD',vol:'VOL.02',badge:'심리검사',status:'LIVE',color:'cyan',icon:'radar',
+  title:'직업선호도검사 L형 해석 시뮬레이터',path:'./vpi/',
+  desc:'흥미(RIASEC)·성격(Big 5)·생활사 T점수를 움직이는 인터랙티브 차트, 실습 시나리오 5종, 세 검사 교차 판독과 상담 발문.',
+  meta:['RIASEC','Big 5','생활사 9척도'],
+  tags:['직업선호도검사','L형','흥미','성격','생활사','RIASEC','Big5','빅파이브','T점수','분화도','일관성','해석','검사','심리검사','vpi']},
+ {id:'dacum',sec:'SEC.03',code:'DACUM ARCHITECTURE',vol:'VOL.03',badge:'직무분석',status:'LIVE',color:'amber',icon:'network',
+  title:'DACUM 마스터 아키텍처',path:'./dacum/',
+  desc:'데이컴 직무분석의 3공리, 과업 진술문 린터, 직업상담사 5개 책무·26개 과업과 지식·기술·도구·태도 탐색기, 워크숍 8단계.',
+  meta:['책무 5','과업 26','워크숍 8단계'],
+  tags:['DACUM','데이컴','직무분석','과업','책무','진술문','린터','linter','워크숍','퍼실리테이터','KSA','NCS','FJA','결정적 사건법']},
+ {id:'manual',sec:'SEC.04',code:'POLICY HYPERWIKI',vol:'VOL.04',badge:'매뉴얼 해설',status:'LIVE',color:'teal',icon:'file-text',
+  title:'2026 국취 매뉴얼 하이퍼위키',path:'./manual/',
+  desc:'2026.1 업무매뉴얼 본문 288쪽을 쪽수로 바로 찾아, 세 줄 해설·실무 함정·근거 조문을 확인합니다. 공문서어 번역기와 핵심 숫자표 포함.',
+  meta:['본문 288쪽','해설 94항목','7부'],
+  tags:['국민취업지원제도','국취','매뉴얼','수당','구직촉진수당','취업성공수당','업무매뉴얼','수급자격','유예','이관','종료','부정수급','반환명령','추가징수','조건부수급자','빈일자리','쪽수','조문']},
+ {id:'hud',sec:'SEC.05',code:'COUNSELING HUD',vol:'VOL.05',badge:'상담 도구',status:'LIVE',color:'cyan',icon:'calculator',
+  title:'2026 국취 실무 상담 HUD',path:'./hud/',
+  desc:'3초 유형 판정, 구직촉진수당 회차 지급액과 소득 감액 계산, 기한·재참여 제한 계산, 상담일지 작성기, 10턴 실전 스크립트.',
+  meta:['유형 판정','수당·기한','상담일지'],
+  tags:['국취','상담','HUD','수당','구직촉진수당','소득','감액','기준금액','지정일','기한','재참여 제한','유형 판정','Ⅰ유형','Ⅱ유형','상담일지','스크립트','계산기']}
+];
+var PRESETS=[
+ {sec:'SEC.06',icon:'library',title:'국회도서관 미래고용 리포트 서재',tip:'NSP 미래 직업·AI 일자리 3부작 이북 준비 중'},
+ {sec:'SEC.07',icon:'scale',title:'고용노동법 판례 및 실무 지침 분석기',tip:'실무 판례 DB 슬롯'},
+ {sec:'SEC.08',icon:'route',title:'취업활동계획(IAP) 지능형 설계기',tip:'개인별 IAP 자동 매칭 슬롯'}
+];
+var INSIGHTS=[
+ {tag:'THEORY // SUPER',to:'theory',t:'수퍼의 생애진로무지개',
+  b:'진로는 직업 하나를 고르는 일이 아니라, 생애 기간(시간)과 생애 공간(자녀·학생·직업인·배우자·부모 같은 역할)이 겹쳐 만드는 전체 그림입니다. 역할의 비중이 바뀌면 일에 대한 요구도 달라집니다.',
+  q:'지금 삶에서 가장 큰 비중을 차지하는 역할은 무엇이고, 일은 그 사이 어디에 놓여 있나요?'},
+ {tag:'THEORY // KELLY',to:'theory',t:'켈리의 개인구성개념과 레퍼토리 그리드',
+  b:'사람은 저마다의 양극 기준(안정적이다–불안하다, 자유롭다–답답하다)으로 직업을 해석합니다. 레퍼토리 그리드는 그 기준을 꺼내 보는 도구입니다. 상담자의 기준을 내담자에게 씌우지 않는 것이 핵심입니다.',
+  q:'좋은 직업과 그렇지 않은 직업을 가르는 당신만의 기준을 세 가지만 말해 본다면 무엇인가요?'},
+ {tag:'THEORY // HOLLAND',to:'vpi',t:'홀랜드 육각형의 일관성',
+  b:'1·2순위 흥미 코드가 육각형에서 인접하면(RI, SE 등) 일관성이 높고, 정반대에 있으면(RS·IE·AC) 낮습니다. 낮은 일관성은 결함이 아니라 상반된 활동을 함께 원한다는 신호이므로 탐색의 출발점이 됩니다.',
+  q:'두 가지 흥미 가운데 누가 시키지 않아도 계속 하게 되는 쪽은 어느 쪽인가요?'},
+ {tag:'THEORY // GINZBERG',to:'theory',t:'긴즈버그: 타협에서 최적화로',
+  b:'긴즈버그는 직업선택을 환상기–잠정기–현실기로 이어지는 발달 과정으로 보았습니다. 처음에는 바람과 현실 사이의 타협이라고 했지만, 이후 수정하면서 선택을 평생 이어지는 과정으로 보고 타협 대신 최적화라는 말을 썼습니다.',
+  q:'지금의 선택에서 포기한 것은 무엇이고, 그 대신 지키려는 것은 무엇인가요?'},
+ {tag:'POLICY // 국취 소득 신고',to:'hud',t:'구직촉진수당 소득 감액 산식',
+  b:'기준금액은 월 지급액의 2배와 1인가구 중위 60%(2026년 1,538,543원) 가운데 큰 금액입니다. 신고소득이 기준금액보다 적으면 기준금액에서 소득을 뺀 금액 한도로 지급하고, 프로그램 수당을 뺀 소득이 기준금액을 넘으면 지급 정지입니다. (업무매뉴얼 2026.1, p.207~210)',
+  q:'이번 지급주기에 인정일 이후 일한 대가로 받은 돈이 있나요? 언제, 얼마를 받았나요?'},
+ {tag:'DACUM // TASK SYNTAX',to:'dacum',t:'DACUM 과업 진술문의 문법',
+  b:'과업은 한정어 → 목적어 → 행위 동사 순서로, 관찰할 수 있는 동사 하나로 끝냅니다. "이해하다", "알다"처럼 머릿속 상태를 가리키는 동사는 과업이 될 수 없고, 그 내용은 지식 목록으로 옮깁니다.',
+  q:'그 일을 해냈는지 다른 사람이 눈으로 확인하려면 무엇을 보면 되나요?'},
+ {tag:'THEORY // BANDURA',to:'theory',t:'자기효능감의 네 가지 원천',
+  b:'할 수 있다는 믿음은 성공 경험, 대리 경험, 언어적 설득, 생리·정서 상태에서 나옵니다. 가장 강한 것은 직접 해낸 경험이므로, 성공 가능성이 높은 작은 과제부터 설계합니다.',
+  q:'비슷한 일을 해냈던 경험을 떠올리면, 그때 무엇이 도움이 되었나요?'},
+ {tag:'THEORY // SCHLOSSBERG',to:'theory',t:'슐로스버그의 전환 4S',
+  b:'전환에 적응하는 힘은 사건 자체보다 네 가지 자원에서 나옵니다. 상황(Situation), 자기(Self), 지원(Support), 전략(Strategies). 실직이나 이직 직후에는 부족한 자원 한 가지를 먼저 채웁니다.',
+  q:'지금 가장 부족하다고 느끼는 것은 상황을 바꿀 여지, 나 자신의 힘, 주변의 지원, 대처 방법 중 무엇인가요?'},
+ {tag:'THEORY // CIP',to:'theory',t:'인지정보처리 이론의 CASVE 순환',
+  b:'진로결정은 의사소통(문제 인식) → 분석 → 종합(대안 넓히고 좁히기) → 가치평가 → 실행으로 돕니다. 정보만 계속 찾는 내담자는 분석 단계에 머물러 있는 것일 수 있습니다.',
+  q:'지금 필요한 것은 정보를 더 모으는 일인가요, 모은 정보로 대안을 좁히는 일인가요?'},
+ {tag:'THEORY // SAVICKAS',to:'theory',t:'사비카스의 진로적응성 4C',
+  b:'변화에 대처하는 자원은 관심(Concern), 통제(Control), 호기심(Curiosity), 자신감(Confidence)입니다. 네 가지 가운데 낮은 것을 찾아 그에 맞는 구체적 행동을 정합니다.',
+  q:'앞날을 준비하는 마음, 내가 정한다는 느낌, 알아보고 싶은 마음, 해낼 수 있다는 믿음 중 요즘 가장 약한 것은 무엇인가요?'},
+ {tag:'THEORY // TWA',to:'theory',t:'일 적응 이론: 만족과 충족',
+  b:'만족(satisfaction)은 개인이 환경의 보상에 만족하는가, 충족(satisfactoriness)은 환경이 개인의 수행에 만족하는가입니다. 두 축을 나눠 물으면 떠날지 조정할지가 보입니다.',
+  q:'이 일이 나에게 주는 것에 만족하나요? 그리고 조직은 내 수행을 어떻게 보고 있다고 생각하나요?'},
+ {tag:'POLICY // 국취 지급',to:'manual',t:'지급 중단과 지급 정지는 따로 센다',
+  b:'지급 중단은 구직활동 미이행(법 제26조), 지급 정지는 소득 초과(법 제21조)입니다. 중단 3회는 남은 수당 수급권만 소멸하고 서비스는 계속되지만, 정지 3회는 수급자격 인정 철회입니다. 두 횟수는 합치지 않습니다. (업무매뉴얼 2026.1, p.109~114, p.203~215)',
+  q:'이번 회차에 수당이 나가지 않은 이유가 활동 때문인지 소득 때문인지 구분해 안내했나요?'},
+ {tag:'THEORY // KRUMBOLTZ',to:'theory',t:'크럼볼츠의 계획된 우연',
+  b:'예기치 않은 사건을 기회로 바꾸는 다섯 가지 태도는 호기심, 인내, 유연성, 낙관성, 위험 감수입니다. 완벽한 계획보다 정보 인터뷰나 단기 체험 같은 작은 탐색 실험을 권합니다.',
+  q:'최근 우연히 알게 된 사람이나 기회 가운데, 한 번 더 알아볼 만한 것이 있나요?'},
+ {tag:'DACUM // AXIOM 01',to:'dacum',t:'DACUM 제1공리: 숙련 작업자가 가장 잘 안다',
+  b:'숙련 작업자는 자기 직무를 누구보다 정확하게 기술하고 정의할 수 있습니다. 그래서 정보원은 관리자나 교수가 아니라 현직 숙련자 패널이고, 패널 구성이 분석의 타당도를 좌우합니다.',
+  q:'이 일을 실제로 잘하고 있는 사람은 하루 동안 무엇을 하나요? 직접 물어본 적이 있나요?'}
+];
+var KEY='jc-archive-visited';
+var byId={};TOOLS.forEach(function(t){byId[t.id]=t;});
+
+/* ---------- 아이콘 ---------- */
+function icons(){try{if(window.lucide&&window.lucide.createIcons)window.lucide.createIcons();}catch(e){}}
+
+/* ---------- 도구 카드 ---------- */
+function renderTools(){
+  var live=TOOLS.map(function(t){
+    return '<li class="'+(t.wide?'a-wide':'')+'"><article class="a-card a-tool a-live a-'+t.color+'" data-tool="'+t.id+'">'
+      +'<div class="a-sec a-mono"><b>'+t.sec+' // '+t.code+'</b><span>'+t.vol+'</span></div>'
+      +'<div class="a-chips"><span class="a-chip" style="color:var(--acc);border-color:color-mix(in srgb,var(--acc) 45%,var(--line))">'+esc(t.badge)+'</span>'
+      +'<span class="a-chip"><i class="a-led" aria-hidden="true"></i>'+t.status+'</span><span class="a-chip a-seen">✓ 방문함</span></div>'
+      +'<h3><a class="a-stretch" href="'+t.path+'" data-visit="'+t.id+'">'+esc(t.title)+'</a></h3>'
+      +'<p>'+esc(t.desc)+'</p>'
+      +'<div class="a-chips">'+t.meta.map(function(m){return '<span class="a-chip">'+esc(m)+'</span>';}).join('')+'</div>'
+      +'<div class="a-foot a-mono"><span>'+t.path+'</span><span class="a-go"><i class="a-ico" data-lucide="'+t.icon+'" aria-hidden="true"></i>열기 →</span></div>'
+      +'</article></li>';
+  }).join('');
+  var slots=PRESETS.map(function(p){
+    return '<li><a class="a-card a-tool a-preset" href="#" data-preset="1" aria-disabled="true" title="'+esc(p.tip)+'">'
+      +'<div class="a-sec a-mono"><b style="color:var(--dim)">'+p.sec+' // [PRESET]</b><span>RESERVED</span></div>'
+      +'<div class="a-chips"><span class="a-chip"><i class="a-ico" data-lucide="'+p.icon+'" aria-hidden="true" style="width:12px;height:12px"></i>준비 중</span></div>'
+      +'<h3>'+esc(p.title)+'</h3>'
+      +'<p class="a-tip">'+esc(p.tip)+'</p>'
+      +'<div class="a-foot a-mono"><span>#</span><span><i class="a-ico" data-lucide="lock" aria-hidden="true" style="width:12px;height:12px;vertical-align:-2px"></i> LOCKED</span></div>'
+      +'</a></li>';
+  }).join('');
+  $('tools').innerHTML=live+slots;
+}
+
+/* ---------- 진도 ---------- */
+function readVisited(){try{var v=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(v)?v.filter(function(x){return byId[x];}):[];}catch(e){return memVisited;}}
+var memVisited=[];
+function writeVisited(v){memVisited=v;try{localStorage.setItem(KEY,JSON.stringify(v));}catch(e){}}
+function markVisited(id){if(!byId[id])return;var v=readVisited();if(v.indexOf(id)<0){v.push(id);writeVisited(v);}renderTrack();}
+var MILESTONES=[[1,'첫 탐색'],[3,'절반 돌파'],[5,'전권 완주']];
+function renderTrack(){
+  var v=readVisited(),n=v.length,total=TOOLS.length,pct=Math.round(n/total*100);
+  $('pct').firstChild.nodeValue=pct+'%';
+  $('pctText').textContent='탐색 진도율: '+n+' / '+total+' 도구 완료 ['+pct+'%]';
+  $('gaugeBar').style.width=pct+'%';$('gauge').setAttribute('aria-valuenow',n);
+  $('stamps').innerHTML=TOOLS.map(function(t){var on=v.indexOf(t.id)>=0;
+    return '<li class="a-stamp'+(on?' a-on':'')+'" title="'+esc(t.title)+(on?' · 방문함':' · 아직 방문 전')+'"><b>'+(on?'✓':'·')+'</b><span>'+t.sec.replace('SEC.','')+'</span></li>';}).join('');
+  $('badges').innerHTML=MILESTONES.map(function(m){return '<span class="a-badge'+(n>=m[0]?' a-on':'')+'">'+(n>=m[0]?'★ ':'☆ ')+m[1]+'</span>';}).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tool]'),function(el){el.classList.toggle('a-visited',v.indexOf(el.getAttribute('data-tool'))>=0);});
+}
+
+/* ---------- 통찰 셔플 ---------- */
+var cur=-1,flipping=false;
+function kstDayIndex(){return Math.floor((Date.now()+9*3600*1000)/86400000);}
+function paintInsight(i){
+  var x=INSIGHTS[i],t=byId[x.to];cur=i;
+  $('insightTag').textContent=x.tag;$('insightTitle').textContent=x.t;$('insightBody').textContent=x.b;$('insightQ').textContent=x.q;
+  $('insightLink').setAttribute('href',t.path);$('insightLink').setAttribute('data-visit',t.id);$('insightLinkText').textContent=t.title+' 열기';
+  $('insightCount').textContent=(i<9?'0':'')+(i+1)+' / '+INSIGHTS.length;
+  $('insight').className='a-card a-insight a-live a-'+t.color;
+}
+function shuffle(){
+  if(flipping)return;var n;do{n=Math.floor(Math.random()*INSIGHTS.length);}while(n===cur&&INSIGHTS.length>1);
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){paintInsight(n);return;}
+  flipping=true;var f=$('flip');f.classList.add('a-out');
+  setTimeout(function(){paintInsight(n);f.classList.remove('a-out');setTimeout(function(){flipping=false;},210);},210);
+}
+
+/* ---------- 시계 ---------- */
+var fmt=null;try{fmt=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});}catch(e){}
+function tick(){
+  var s;
+  if(fmt&&fmt.formatToParts){var p={};fmt.formatToParts(new Date()).forEach(function(x){p[x.type]=x.value;});
+    s=p.year+'-'+p.month+'-'+p.day+' '+(p.hour==='24'?'00':p.hour)+':'+p.minute+':'+p.second+' KST';}
+  else{var d=new Date(Date.now()+9*3600*1000);s=d.toISOString().slice(0,19).replace('T',' ')+' KST';}
+  $('clock').textContent=s;
+}
+
+/* ---------- 명령 팔레트 ---------- */
+var sel=0,hits=[],lastFocus=null;
+function search(q){
+  q=q.trim().toLowerCase();
+  if(!q)return TOOLS.map(function(t){return {t:t,why:t.meta.join(' · ')};});
+  var out=[];
+  TOOLS.forEach(function(t){
+    var score=0,why='';
+    if(t.title.toLowerCase().indexOf(q)>=0)score+=5;
+    if((t.sec+' '+t.code+' '+t.badge).toLowerCase().indexOf(q)>=0)score+=3;
+    var tg=t.tags.filter(function(x){return x.toLowerCase().indexOf(q)>=0;});
+    if(tg.length){score+=3;why='주제: '+tg.slice(0,4).join(', ');}
+    if(t.desc.toLowerCase().indexOf(q)>=0)score+=1;
+    if(score)out.push({t:t,why:why||t.meta.join(' · '),s:score});
+  });
+  out.sort(function(a,b){return b.s-a.s;});return out;
+}
+function renderRes(){
+  var q=$('q').value;hits=search(q);if(sel>=hits.length)sel=Math.max(0,hits.length-1);
+  $('res').innerHTML=hits.length?hits.map(function(h,i){
+    return '<a class="a-opt" role="option" id="opt'+i+'" aria-selected="'+(i===sel)+'" href="'+h.t.path+'" data-visit="'+h.t.id+'" data-i="'+i+'">'
+      +'<span class="a-code">'+h.t.sec+'</span><span style="min-width:0"><b>'+esc(h.t.title)+'</b><small>'+esc(h.why)+'</small></span></a>';
+  }).join(''):'<p class="a-empty">"'+esc(q)+'"에 맞는 도구가 없습니다. 이론 이름, 검사 이름, 제도 용어로 찾아보십시오.</p>';
+  $('q').setAttribute('aria-activedescendant',hits.length?'opt'+sel:'');
+  var el=$('opt'+sel);if(el&&el.scrollIntoView)el.scrollIntoView({block:'nearest'});
+}
+function openPal(){lastFocus=document.activeElement;$('ov').hidden=false;document.documentElement.style.overflow='hidden';$('q').value='';sel=0;renderRes();setTimeout(function(){$('q').focus();},0);}
+function closePal(){if($('ov').hidden)return;$('ov').hidden=true;document.documentElement.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus();}
+function go(i){var h=hits[i];if(!h)return;markVisited(h.t.id);window.location.href=h.t.path;}
+
+/* ---------- 저장 ---------- */
+var toastT;
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('a-on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('a-on');},3200);}
+function saveBlob(html){
+  var blob=new Blob([html],{type:'text/html'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='index.html';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(function(){URL.revokeObjectURL(url);},2000);
+  toast('index.html을 저장했습니다. 도구 링크는 사이트 주소로 연결됩니다.');
+}
+function absolutize(html){
+  /* 저장본을 내 기기에서 열어도 다섯 도구가 열리도록 상대 경로를 사이트 주소로 바꾼다 */
+  var base=/^https?:/.test(location.protocol)?location.href.replace(/[#?].*$/,'').replace(/[^\/]*$/,''):'https://ccttsi.github.io/jobcounsel/';
+  return html.replace(/(path:')\.\//g,'$1'+base).replace(/(href=")\.\//g,'$1'+base);
+}
+function downloadLocalHTML(){
+  var fallback=function(){saveBlob('<!DOCTYPE html>\n'+absolutize(document.documentElement.outerHTML));};
+  try{
+    if(/^https?:/.test(location.protocol)&&window.fetch){
+      fetch(location.href.replace(/[#?].*$/,''),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.text();})
+        .then(function(src){saveBlob(absolutize(src));},fallback);
+    }else fallback();
+  }catch(e){fallback();}
+}
+window.downloadLocalHTML=downloadLocalHTML;
+
+/* ---------- 이벤트 ---------- */
+document.addEventListener('click',function(e){
+  var p=e.target.closest&&e.target.closest('[data-preset]');
+  if(p){e.preventDefault();toast(p.getAttribute('title')||'준비 중입니다.');return;}
+  var v=e.target.closest&&e.target.closest('[data-visit]');
+  if(v)markVisited(v.getAttribute('data-visit'));
+  if(e.target===$('ov'))closePal();
+});
+document.addEventListener('auxclick',function(e){var v=e.target.closest&&e.target.closest('[data-visit]');if(v)markVisited(v.getAttribute('data-visit'));});
+document.addEventListener('keydown',function(e){
+  var open=!$('ov').hidden;
+  if((e.metaKey||e.ctrlKey)&&!e.altKey&&(e.key==='k'||e.key==='K')){e.preventDefault();open?closePal():openPal();return;}
+  if(!open){
+    var tag=(e.target.tagName||'').toLowerCase();
+    if(e.key==='/'&&tag!=='input'&&tag!=='textarea'&&!e.metaKey&&!e.ctrlKey){e.preventDefault();openPal();}
+    return;
+  }
+  if(e.key==='Escape'){e.preventDefault();closePal();}
+  else if(e.key==='ArrowDown'){e.preventDefault();if(hits.length){sel=(sel+1)%hits.length;renderRes();}}
+  else if(e.key==='ArrowUp'){e.preventDefault();if(hits.length){sel=(sel-1+hits.length)%hits.length;renderRes();}}
+  else if(e.key==='Enter'){if(e.target===$('btnClose'))return;e.preventDefault();go(sel);}
+  else if(e.key==='Tab'){ /* 대화상자 안에서만 초점이 돌게 한다 */
+    var f=[$('q'),$('btnClose')];var i=f.indexOf(document.activeElement);e.preventDefault();f[(i+(e.shiftKey?-1:1)+f.length)%f.length].focus();}
+});
+$('q').addEventListener('input',function(){sel=0;renderRes();});
+$('res').addEventListener('pointermove',function(e){var o=e.target.closest&&e.target.closest('.a-opt');if(o){var i=+o.getAttribute('data-i');if(i!==sel){sel=i;
+  Array.prototype.forEach.call(document.querySelectorAll('.a-opt'),function(x,k){x.setAttribute('aria-selected',k===sel);});$('q').setAttribute('aria-activedescendant','opt'+sel);}}});
+$('btnSearch').addEventListener('click',openPal);
+$('btnClose').addEventListener('click',closePal);
+$('btnSave').addEventListener('click',downloadLocalHTML);
+$('btnShuffle').addEventListener('click',shuffle);
+$('btnReset').addEventListener('click',function(){writeVisited([]);renderTrack();toast('방문 기록을 지웠습니다.');});
+
+/* 포인터를 따라가는 빛 */
+document.addEventListener('pointermove',function(e){
+  var c=e.target.closest&&e.target.closest('.a-card');if(!c)return;var r=c.getBoundingClientRect();
+  c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px');
+},{passive:true});
+/* 터치 화면: 누르는 동안 불이 켜진다 */
+document.addEventListener('touchstart',function(e){var c=e.target.closest&&e.target.closest('.a-card.a-live');if(c)c.classList.add('a-lit');},{passive:true});
+['touchend','touchcancel'].forEach(function(n){document.addEventListener(n,function(){
+  Array.prototype.forEach.call(document.querySelectorAll('.a-lit'),function(c){setTimeout(function(){c.classList.remove('a-lit');},180);});},{passive:true});});
+window.addEventListener('pageshow',renderTrack);
+window.addEventListener('storage',function(e){if(e.key===KEY)renderTrack();});
+
+/* ---------- 시작 ---------- */
+var isMac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'');
+$('kbdHint').textContent=isMac?'⌘K':'Ctrl K';
+if(!/^https?:/.test(location.protocol))$('statusText').textContent='LOCAL COPY // KST REALTIME';
+renderTools();paintInsight(kstDayIndex()%INSIGHTS.length);renderTrack();tick();setInterval(tick,1000);
+icons();window.addEventListener('load',icons);
+})();
+</script>
 </body>
 </html>
