@@ -142,7 +142,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-pct small{display:block;font-size:14px;font-weight:500;line-height:1.5;color:var(--muted);letter-spacing:0;margin-top:8px}
 .a-gauge{height:10px;border-radius:99px;background:var(--panel-soft);border-width:1px;margin-top:12px;overflow:hidden}
 .a-gauge i{display:block;height:100%;width:0;border-radius:99px;background:var(--grad);transition:width .5s cubic-bezier(.2,.8,.2,1)}
-.a-stamps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:12px}
+.a-stamps{display:grid;grid-template-columns:repeat(var(--stamp-cols,6),minmax(0,1fr));gap:6px;margin-top:12px}
 .a-stamp{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:52px;border-width:1px;border-style:dashed;border-color:var(--line-2);
   border-radius:12px;font-size:11.5px;color:var(--dim);transition:all .25s;text-align:center;line-height:1.3}
 .a-stamp.a-on{border-style:solid;border-color:color-mix(in srgb,var(--a1) 55%,var(--line));color:var(--a1);background:var(--soft1)}
@@ -159,12 +159,31 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-h h2{font-size:clamp(18px,.6vw + 15px,22px);font-weight:750;letter-spacing:-.02em}
 .a-h span{font-size:13px;color:var(--dim)}
 
-/* 벤토 격자 (Tailwind의 grid-cols-1 md:2 lg:3 xl:4 와 같은 값) */
-.a-bento{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:12px}
-@media (min-width:768px){.a-bento{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
-@media (min-width:1024px){.a-bento{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.a-wide{grid-column:span 2/span 2}}
-@media (min-width:1280px){.a-bento{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.a-wide{grid-column:span 1/span 1}}
-.a-bento>li{display:flex;min-width:0}
+/* 벤토 격자 */
+.a-root .a-bento{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:12px}
+/* 12칸 격자에 열 수만큼 나눠 놓고, 마지막 줄이 덜 차면 남은 카드가 줄을 나눠 채운다.
+   자료 수가 바뀌어도 빈칸이 생기지 않는다. (1열 → 2열 768px → 3열 1024px → 4열 1280px) */
+.a-root .a-bento>li{display:flex;min-width:0}
+@media (min-width:768px){.a-root .a-bento{grid-template-columns:repeat(12,minmax(0,1fr))}}
+@media (min-width:768px) and (max-width:1023.98px){
+  .a-root .a-bento{gap:14px}
+  .a-root .a-bento>li{grid-column:span 6}
+  .a-root .a-bento>li:nth-child(2n+1):nth-last-child(1){grid-column:span 12}
+}
+@media (min-width:1024px) and (max-width:1279.98px){
+  .a-root .a-bento{gap:16px}
+  .a-root .a-bento>li{grid-column:span 4}
+  .a-root .a-bento>li:nth-child(3n+1):nth-last-child(1){grid-column:span 12}
+  .a-root .a-bento>li:nth-child(3n+1):nth-last-child(2),.a-root .a-bento>li:nth-child(3n+1):nth-last-child(2)~li{grid-column:span 6}
+}
+@media (min-width:1280px){
+  .a-root .a-bento{gap:18px}
+  .a-root .a-bento>li{grid-column:span 3}
+  .a-root .a-bento>li:nth-child(4n+1):nth-last-child(1){grid-column:span 12}
+  .a-root .a-bento>li:nth-child(4n+1):nth-last-child(2),.a-root .a-bento>li:nth-child(4n+1):nth-last-child(2)~li{grid-column:span 6}
+  .a-root .a-bento>li:nth-child(4n+1):nth-last-child(3),.a-root .a-bento>li:nth-child(4n+1):nth-last-child(3)~li{grid-column:span 4}
+}
+
 .a-tool{width:100%;min-height:224px;gap:10px}
 .a-tool h3{position:static;font-size:clamp(18px,.5vw + 15.5px,21px);line-height:1.35;letter-spacing:-.025em;font-weight:750;margin-top:4px}
 .a-tool p{color:var(--muted);font-size:14.5px;line-height:1.65}
@@ -174,10 +193,6 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-tool .a-seen{display:none;color:var(--a1);border-color:color-mix(in srgb,var(--a1) 40%,var(--line))}
 .a-tool.a-visited .a-seen{display:inline-flex}
 .a-noidx{font-size:13px;font-weight:700;color:var(--acc)}
-.a-preset{border-style:dashed;border-color:var(--line-2);background:transparent;box-shadow:none;cursor:default}
-:root[data-theme="dark"] .a-preset{border-color:rgba(51,65,85,.8);background:rgba(15,23,42,.3)}
-.a-preset h3{color:var(--muted)}
-.a-preset .a-noidx{color:var(--dim)}
 
 .a-foot-note{margin-top:clamp(32px,4vw,56px);padding-top:18px;border-top-width:1px;color:var(--dim);font-size:13px;line-height:1.7;display:grid;gap:6px;max-width:80em}
 
@@ -245,7 +260,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   <section class="a-hero" aria-labelledby="heroTitle">
     <p class="a-eyebrow">직업상담사를 위한 학습·실무 자료 모음</p>
     <h1 id="heroTitle">이론에서 실무까지,<br><em>직업상담의 작업대</em></h1>
-    <p>직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무를 다섯 가지 자료로 익히고 바로 씁니다.</p>
+    <p>직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무, 미래고용 보고서까지 <span data-count-word>여섯</span> 가지 자료로 익히고 바로 씁니다.</p>
   </section>
 
   <main>
@@ -267,7 +282,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
       <section class="a-card a-track a-c3" aria-labelledby="trackLabel">
         <div class="a-sec"><b id="trackLabel">나의 탐색 진도</b></div>
         <p class="a-pct a-num" id="pct">0%<small id="pctText"></small></p>
-        <div class="a-gauge" role="progressbar" aria-labelledby="trackLabel" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="gauge"><i id="gaugeBar"></i></div>
+        <div class="a-gauge" role="progressbar" aria-labelledby="trackLabel" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="gauge"><i id="gaugeBar"></i></div>
         <ol class="a-stamps" id="stamps" aria-label="자료별 방문 표시"></ol>
         <div class="a-badges" id="badges" aria-label="달성 배지"></div>
         <div class="a-row" style="padding-top:8px">
@@ -277,8 +292,8 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
       </section>
     </div>
 
-    <div class="a-h"><h2>자료 둘러보기</h2><span>운영 중 6 · 준비 중 2</span></div>
-    <ul class="a-bento grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" id="tools"></ul>
+    <div class="a-h"><h2>자료 둘러보기</h2><span>운영 중 <b class="a-num" data-count>6</b>개</span></div>
+    <ul class="a-bento" id="tools"></ul>
   </main>
 
   <footer class="a-foot-note">
@@ -310,7 +325,7 @@ var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':
 
 /* ---------- 데이터 ---------- */
 var TOOLS=[
- {id:'theory',no:'01',badge:'이론',short:'이론',color:'c1',icon:'book-open',wide:true,
+ {id:'theory',no:'01',badge:'이론',short:'이론',color:'c1',icon:'book-open',
   title:'직업상담 이론 위키',path:'./theory/',
   desc:'163개 직업상담·진로발달 이론을 갈래별·상황별로 찾아보고, 헷갈리는 이론은 비교표로 정리하고, 카드로 복습합니다.',
   meta:['이론 163개','용어 135개','비교표 9개'],
@@ -340,10 +355,6 @@ var TOOLS=[
   desc:'국회·KDI·고용정보원 보고서와 WEF·ILO·세계은행·CEPR 영문 보고서(한국어 번역) 등 13권을 나무 책장 두 개에서 꺼내 핵심 수치와 상담 적용 노트로 읽습니다.',
   meta:['보고서 13권','영문 5권 한국어 번역','상담 적용 노트'],
   tags:['국회','입법조사처','미래연구원','보고서','서재','실업급여','구직급여','자발적 퇴사','청년','지역격차','시군구','고령','고령 취업자','노동력','정년','전직지원','두루누리','AI','인공지능','생성형 AI','WEF','세계경제포럼','ILO','국제노동기구','세계은행','World Bank','CEPR','녹색 전환','전환 역량','양질의 일자리','유연안정성','번역','미래 직업','Future of Jobs','호주','싱가포르','청년수당','KDI','인지역량','임금체계','니트','NEET','쉬었음','초단시간','주휴수당','지역 인구','인구이동','library']}
-];
-var PRESETS=[
- {no:'07',icon:'scale',title:'고용노동법 판례 및 실무 지침 분석기',tip:'실무 판례 자료를 모을 자리입니다'},
- {no:'08',icon:'route',title:'취업활동계획(IAP) 지능형 설계기',tip:'개인별 취업활동계획 설계를 도울 자리입니다'}
 ];
 var INSIGHTS=[
  {tag:'이론 · 수퍼',to:'theory',t:'수퍼의 생애진로무지개',
@@ -410,7 +421,7 @@ function icons(){try{if(window.lucide&&window.lucide.createIcons)window.lucide.c
 /* ---------- 자료 카드 ---------- */
 function renderTools(){
   var live=TOOLS.map(function(t){
-    return '<li class="'+(t.wide?'a-wide':'')+'"><article class="a-card a-tool a-live a-'+t.color+'" data-tool="'+t.id+'">'
+    return '<li><article class="a-card a-tool a-live a-'+t.color+'" data-tool="'+t.id+'">'
       +'<div class="a-chips"><span class="a-noidx a-num" aria-hidden="true">'+t.no+'</span><span class="a-chip a-cat">'+esc(t.badge)+'</span><span class="a-chip a-seen">✓ 살펴봄</span></div>'
       +'<h3><a class="a-stretch" href="'+t.path+'" data-visit="'+t.id+'">'+esc(t.title)+'</a></h3>'
       +'<p>'+esc(t.desc)+'</p>'
@@ -418,15 +429,7 @@ function renderTools(){
       +'<div class="a-foot"><span></span><span class="a-go"><i class="a-ico" data-lucide="'+t.icon+'" aria-hidden="true"></i>열기 →</span></div>'
       +'</article></li>';
   }).join('');
-  var slots=PRESETS.map(function(p){
-    return '<li><a class="a-card a-tool a-preset" href="#" data-preset="1" aria-disabled="true" title="'+esc(p.tip)+'">'
-      +'<div class="a-chips"><span class="a-noidx a-num" aria-hidden="true">'+p.no+'</span><span class="a-chip">준비 중</span></div>'
-      +'<h3>'+esc(p.title)+'</h3>'
-      +'<p>'+esc(p.tip)+'</p>'
-      +'<div class="a-foot"><span></span><span>곧 추가됩니다</span></div>'
-      +'</a></li>';
-  }).join('');
-  $('tools').innerHTML=live+slots;
+  $('tools').innerHTML=live;
 }
 
 /* ---------- 진도 ---------- */
@@ -434,7 +437,15 @@ var memVisited=[];
 function readVisited(){try{var v=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(v)?v.filter(function(x){return byId[x];}):[];}catch(e){return memVisited;}}
 function writeVisited(v){memVisited=v;try{localStorage.setItem(KEY,JSON.stringify(v));}catch(e){}}
 function markVisited(id){if(!byId[id])return;var v=readVisited();if(v.indexOf(id)<0){v.push(id);writeVisited(v);}renderTrack();}
-var MILESTONES=[[1,'첫 탐색'],[3,'절반 돌파'],[5,'전체 완주']];
+function milestones(total){return [[1,'첫 탐색'],[Math.ceil(total/2),'절반 돌파'],[total,'전체 완주']];}
+var KO_NUM=['','한','두','세','네','다섯','여섯','일곱','여덟','아홉','열'];
+function renderCounts(){
+  var n=TOOLS.length;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-count]'),function(el){el.textContent=n;});
+  Array.prototype.forEach.call(document.querySelectorAll('[data-count-word]'),function(el){el.textContent=KO_NUM[n]||String(n);});
+  $('gauge').setAttribute('aria-valuemax',n);
+  $('stamps').style.setProperty('--stamp-cols',n<=6?n:Math.ceil(n/2));
+}
 function renderTrack(){
   var v=readVisited(),n=v.length,total=TOOLS.length,pct=Math.round(n/total*100);
   $('pct').firstChild.nodeValue=pct+'%';
@@ -442,7 +453,7 @@ function renderTrack(){
   $('gaugeBar').style.width=pct+'%';$('gauge').setAttribute('aria-valuenow',n);
   $('stamps').innerHTML=TOOLS.map(function(t){var on=v.indexOf(t.id)>=0;
     return '<li class="a-stamp'+(on?' a-on':'')+'" title="'+esc(t.title)+(on?' · 살펴봄':' · 아직 열어 보지 않음')+'"><b>'+(on?'✓':t.no)+'</b><span>'+esc(t.short)+'</span></li>';}).join('');
-  $('badges').innerHTML=MILESTONES.map(function(m){return '<span class="a-badge'+(n>=m[0]?' a-on':'')+'">'+(n>=m[0]?'★ ':'☆ ')+m[1]+'</span>';}).join('');
+  $('badges').innerHTML=milestones(total).map(function(m){return '<span class="a-badge'+(n>=m[0]?' a-on':'')+'">'+(n>=m[0]?'★ ':'☆ ')+m[1]+'</span>';}).join('');
   Array.prototype.forEach.call(document.querySelectorAll('[data-tool]'),function(el){el.classList.toggle('a-visited',v.indexOf(el.getAttribute('data-tool'))>=0);});
 }
 
@@ -513,7 +524,7 @@ function saveBlob(html){
   toast('index.html 파일로 저장했습니다. 자료 링크는 사이트 주소로 연결됩니다.');
 }
 function absolutize(html){
-  /* 저장본을 내 기기에서 열어도 다섯 자료가 열리도록 상대 경로를 사이트 주소로 바꾼다 */
+  /* 저장본을 내 기기에서 열어도 모든 자료가 열리도록 상대 경로를 사이트 주소로 바꾼다 */
   var base=/^https?:/.test(location.protocol)?location.href.replace(/[#?].*$/,'').replace(/[^\/]*$/,''):'https://ccttsi.github.io/jobcounsel/';
   return html.replace(/(path:')\.\//g,'$1'+base).replace(/(href=")\.\//g,'$1'+base);
 }
@@ -533,8 +544,6 @@ document.addEventListener('click',function(e){
   var tm=e.target.closest&&e.target.closest('[data-theme-mode]');
   if(tm){var m=tm.getAttribute('data-theme-mode');setMode(m);
     toast(m==='auto'?'자동: 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게 바뀝니다.':m==='light'?'밝은 화면으로 고정했습니다.':'어두운 화면으로 고정했습니다.');return;}
-  var p=e.target.closest&&e.target.closest('[data-preset]');
-  if(p){e.preventDefault();toast('준비 중인 자료입니다. '+(p.getAttribute('title')||''));return;}
   var v=e.target.closest&&e.target.closest('[data-visit]');
   if(v)markVisited(v.getAttribute('data-visit'));
   if(e.target===$('ov'))closePal();
@@ -580,7 +589,7 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden)appl
 var isMac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'');
 $('kbdHint').textContent=isMac?'⌘K':'Ctrl K';
 if(!/^https?:/.test(location.protocol))$('statusText').textContent='저장본';
-applyTheme();renderTools();paintInsight(kstDayIndex()%INSIGHTS.length);renderTrack();tick();
+applyTheme();renderCounts();renderTools();paintInsight(kstDayIndex()%INSIGHTS.length);renderTrack();tick();
 setInterval(function(){tick();applyTheme();},1000);
 icons();window.addEventListener('load',icons);
 })();
