@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script>
+/* 사이트 공통 테마. 첫 화면의 설정(jc-theme)을 따르고, 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게 바꾼다.
+   이 문서의 테마 버튼을 누르면 그 선택이 사이트 전체 설정이 된다. */
+(function(){var K='jc-theme',d=document.documentElement,ready=false;
+function mode(){try{var m=localStorage.getItem(K);return (m==='light'||m==='dark')?m:'auto';}catch(e){return 'auto';}}
+function want(){var m=mode();if(m!=='auto')return m;var h=new Date().getHours();return (h>=7&&h<19)?'light':'dark';}
+function apply(){var t=want();if(d.getAttribute('data-theme')!==t)d.setAttribute('data-theme',t);}
+apply();
+if(window.MutationObserver)new MutationObserver(function(list){
+  for(var i=0;i<list.length;i++){
+    if(!ready)continue;
+    var v=d.getAttribute('data-theme');
+    if(v===list[i].oldValue||v===want())continue;
+    try{localStorage.setItem(K,(v==='light'||v==='dark')?v:'auto');}catch(e){}
+    if(v!=='light'&&v!=='dark')apply();
+  }
+}).observe(d,{attributes:true,attributeFilter:['data-theme'],attributeOldValue:true});
+window.addEventListener('load',function(){setTimeout(function(){apply();ready=true;},0);});
+window.addEventListener('pageshow',apply);
+window.addEventListener('storage',function(e){if(e.key===K)apply();});
+document.addEventListener('visibilitychange',function(){if(!document.hidden)apply();});
+setInterval(apply,30000);})();
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>2026 국취 매뉴얼 하이퍼위키</title>
@@ -138,8 +162,8 @@ th{font-size:12.5px;color:var(--mute)}
 </style>
 </head>
 <body>
-<style>.site-home{font:600 13px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#14201b;padding:8px 16px}.site-home a{color:#fff;text-decoration:none}.site-home a:hover{text-decoration:underline}@media print{.site-home{display:none}}</style>
-<nav class="site-home" aria-label="사이트"><a href="../">← 직업상담 자료실</a></nav>
+<style>.site-home{font:600 13.5px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#f5efe4;border-bottom:1px solid #e9e0d2;padding:9px 16px}.site-home a{color:#2a2521;text-decoration:none}.site-home a:hover{text-decoration:underline}:root[data-theme="dark"] .site-home{background:#0d1017;border-bottom-color:#1e232f}:root[data-theme="dark"] .site-home a{color:#e6e9ef}@media print{.site-home{display:none}}</style>
+<nav class="site-home" aria-label="사이트"><a href="../">← 직업상담 통합 자료실</a></nav>
 
 <div class="wrap top">
   <h1>국취 매뉴얼 하이퍼위키 <small>2026.1 업무매뉴얼 동반 해설</small></h1>
