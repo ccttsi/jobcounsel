@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="국회입법조사처·국회미래연구원 보고서 3권(이슈와논점 2545호, 인구통계 Brief 26-8호·26-9호)을 직업상담 관점으로 재구성한 디지털 서재">
+<title>국회 미래고용 디지털 서재 · Future Employment Reading Room</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  if (window.tailwind) tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['"Pretendard Variable"', 'Pretendard', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+        },
+        colors: { obsidian: '#08090c', hair: '#1e232f' }
+      }
+    }
+  };
+</script>
+<style>
+  /* 기본: 밝고 따뜻한 종이 톤 (사이트 첫 화면과 같은 팔레트) */
+  :root {
+    --bg: #faf6ef; --bar: rgba(250,246,239,0.86); --panel: #fffdf8; --panel-soft: #f5efe4; --pal: #fffdf8;
+    --hair: #e9e0d2; --line2: #d8ccb9;
+    --ink: #2a2521; --body: #3d3630; --ink-dim: #655c53; --ink-faint: #7b7168;
+    --cyan: #0f766e; --warn: #c2410c; --good: #15803d; --bad: #be123c;
+    --v1: #b45309; --v2: #0f766e; --v3: #6d28d9;
+    --soft: rgba(42,37,33,0.04); --soft-2: rgba(42,37,33,0.07); --track: rgba(42,37,33,0.07);
+    --glass-bg: rgba(255,253,248,0.72); --scrim: rgba(60,45,30,0.38);
+    --drawer-bg: rgba(250,246,239,0.97);
+    --frame-bg: linear-gradient(180deg, #fffdf8, #f3ece0);
+    --frame-shadow: 0 40px 70px -40px rgba(70,50,25,0.35), inset 0 1px 0 rgba(255,255,255,0.8);
+    --spot: rgba(180,83,9,0.10);
+    --back-panel: linear-gradient(180deg, rgba(233,224,210,0.45), rgba(250,246,239,0));
+    --glare: rgba(255,255,255,0.7);
+    --plank-bg: rgba(255,255,255,0.55); --plank-line: rgba(15,118,110,0.3); --plank-glow: rgba(15,118,110,0.10);
+    --plank-shadow: rgba(70,50,25,0.25);
+    --slate-bg: linear-gradient(90deg, rgba(42,37,33,0.05), transparent 18%), linear-gradient(180deg, #fffdf8, #f1e9dc);
+    --slate-line: #ddd2c1; --slate-shadow: 0 10px 22px -12px rgba(70,50,25,0.45);
+    --reflect: rgba(42,37,33,0.06);
+    --grid-line: rgba(42,37,33,0.035);
+    --amb1: rgba(15,118,110,0.06); --amb2: rgba(180,83,9,0.05);
+    --toast-bg: #2a2521; --toast-ink: #fffdf8;
+    --kpi: #2a2521;
+    color-scheme: light;
+  }
+  /* 어두운 테마: 네오 아카이브 (#08090c) */
+  :root[data-theme="dark"] {
+    --bg: #08090c; --bar: rgba(8,9,12,0.78); --panel: rgba(15,23,42,0.6); --panel-soft: #111623; --pal: #0b0e15;
+    --hair: #1e232f; --line2: #2c3445;
+    --ink: #e6e9ef; --body: #c9cfda; --ink-dim: #9aa3b2; --ink-faint: #6b7487;
+    --cyan: #22d3ee; --warn: #fb7185; --good: #6ee7b7; --bad: #fda4af;
+    --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa;
+    --soft: rgba(255,255,255,0.02); --soft-2: rgba(255,255,255,0.05); --track: rgba(255,255,255,0.05);
+    --glass-bg: rgba(15,23,42,0.6); --scrim: rgba(3,4,6,0.66);
+    --drawer-bg: rgba(10,12,17,0.95);
+    --frame-bg: linear-gradient(180deg, rgba(17,24,39,0.55), rgba(8,9,12,0.4));
+    --frame-shadow: 0 40px 80px -40px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.04);
+    --spot: rgba(34,211,238,0.10);
+    --back-panel: linear-gradient(180deg, rgba(30,35,47,0.25), rgba(8,9,12,0));
+    --glare: rgba(255,255,255,0.18);
+    --plank-bg: rgba(15,23,42,0.4); --plank-line: rgba(34,211,238,0.3); --plank-glow: rgba(34,211,238,0.10);
+    --plank-shadow: rgba(0,0,0,0.9);
+    --slate-bg: linear-gradient(90deg, rgba(255,255,255,0.05), transparent 18%), linear-gradient(180deg, rgba(30,41,59,0.92), rgba(12,15,22,0.96));
+    --slate-line: rgba(255,255,255,0.07); --slate-shadow: 0 10px 22px -12px rgba(0,0,0,0.9);
+    --reflect: rgba(255,255,255,0.07);
+    --grid-line: rgba(255,255,255,0.018);
+    --amb1: rgba(34,211,238,0.07); --amb2: rgba(167,139,250,0.05);
+    --toast-bg: #e6e9ef; --toast-ink: #08090c;
+    --kpi: #e6e9ef;
+    color-scheme: dark;
+  }
+  :root {
+    --fs-xs: clamp(0.76rem, 0.72rem + 0.2vw, 0.84rem);
+    --fs-sm: clamp(0.86rem, 0.82rem + 0.22vw, 0.96rem);
+    --fs-base: clamp(0.98rem, 0.94rem + 0.25vw, 1.08rem);
+    --fs-lg: clamp(1.1rem, 1.02rem + 0.45vw, 1.32rem);
+    --fs-xl: clamp(1.3rem, 1.1rem + 1vw, 1.85rem);
+    --fs-hero: clamp(1.55rem, 1.1rem + 2.4vw, 3rem);
+  }
+  * { box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; background: var(--bg); }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+    font-size: var(--fs-base); line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere;
+    -webkit-font-smoothing: antialiased; transition: background-color .3s ease, color .3s ease;
+  }
+  body.locked { overflow: hidden; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; letter-spacing: 0.02em; }
+  .tap { min-height: 44px; min-width: 44px; }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 8px; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* color utilities (테마 변수 기반, Tailwind 없이도 동작) */
+  .t-ink { color: var(--ink); } .t-dim { color: var(--ink-dim); } .t-faint { color: var(--ink-faint); }
+  .t-acc { color: var(--cyan); } .t-bad { color: var(--bad); } .t-good { color: var(--good); }
+  .hover-ink:hover { color: var(--ink); } .hover-soft:hover { background: var(--soft-2); }
+  .hover-line:hover { border-color: color-mix(in srgb, var(--cyan) 45%, var(--hair)); }
+
+  /* ambient studio backdrop */
+  .studio-bg {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, var(--amb1), transparent 60%),
+      radial-gradient(800px 500px at 100% 30%, var(--amb2), transparent 60%),
+      linear-gradient(var(--bg), var(--bg));
+  }
+  .studio-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 50% 20%, #000 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 20%, #000 20%, transparent 75%);
+  }
+
+  .glass { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--hair); }
+  .hairline { border-color: var(--hair); }
+  .hud { background: var(--bar); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+
+  /* theme switch (첫 화면과 같은 자동/밝게/어둡게) */
+  .seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 12px; background: var(--panel-soft); border: 1px solid var(--hair); }
+  .seg button { min-height: 38px; padding: 0 10px; border-radius: 9px; font-size: var(--fs-xs); font-weight: 600; color: var(--ink-dim); display: inline-flex; align-items: center; gap: 4px; }
+  .seg button[aria-pressed="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.14); }
+  :root[data-theme="dark"] .seg button[aria-pressed="true"] { background: #1c2434; }
+  .theme-cycle { display: none; }
+  @media (max-width: 639px) { .seg { display: none; } .theme-cycle { display: inline-flex; } }
+
+  /* ---------- BOOKSHELF ---------- */
+  .shelf-stage { perspective: 1200px; perspective-origin: 50% 20%; }
+  .shelf-frame {
+    position: relative; border: 1px solid var(--hair); border-radius: 20px; padding: clamp(10px, 2vw, 22px);
+    background: var(--frame-bg);
+    transform: rotateX(4deg); transform-style: preserve-3d;
+    box-shadow: var(--frame-shadow);
+  }
+  .tier { position: relative; transform-style: preserve-3d; padding: clamp(16px, 3vw, 34px) clamp(8px, 2vw, 22px) 0; }
+  .tier + .tier { margin-top: clamp(10px, 2vw, 18px); }
+  .tier::before { /* top-down spotlight */
+    content: ""; position: absolute; left: 8%; right: 8%; top: 0; height: 100%; pointer-events: none;
+    background: radial-gradient(ellipse 60% 85% at 50% 0%, var(--spot), transparent 75%);
+  }
+  .tier-back {
+    position: absolute; inset: 0 0 18px 0; border-radius: 12px; pointer-events: none;
+    background:
+      linear-gradient(115deg, transparent 0 38%, var(--soft-2) 40%, transparent 44% 70%, var(--soft) 72%, transparent 75%),
+      var(--back-panel);
+  }
+  .tier-label { position: absolute; left: clamp(10px, 2vw, 22px); top: 8px; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.18em; }
+  .tier-row { position: relative; display: flex; align-items: flex-end; gap: clamp(8px, 2.2vw, 22px); transform-style: preserve-3d; z-index: 2; }
+  .tier-empty { min-height: clamp(96px, 18vw, 170px); }
+  .plank {
+    position: relative; height: 18px; margin: 0 calc(-1 * clamp(8px, 2vw, 22px));
+    border-bottom: 1px solid var(--plank-line);
+    background: var(--plank-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-radius: 3px 3px 8px 8px;
+    box-shadow: 0 1px 0 var(--plank-glow) inset, 0 18px 30px -12px var(--plank-glow), 0 24px 40px -18px var(--plank-shadow);
+  }
+  .plank::before {
+    content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 12px;
+    background: linear-gradient(180deg, var(--soft), var(--plank-glow));
+    border-top: 1px solid var(--glare);
+    transform: rotateX(70deg); transform-origin: bottom;
+  }
+  .plank::after { content: ""; position: absolute; top: 3px; left: 12%; width: 28%; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--glare), transparent); }
+
+  .slate {
+    --accent: var(--cyan);
+    position: relative; flex: 0 0 auto; text-align: left; cursor: pointer;
+    width: clamp(98px, 27vw, 176px); height: clamp(232px, 58vw, 312px);
+    padding: clamp(10px, 1.6vw, 16px) clamp(10px, 1.5vw, 15px) clamp(10px, 1.6vw, 16px) clamp(15px, 2vw, 21px);
+    border-radius: 6px 10px 10px 6px; border: 1px solid var(--slate-line); color: var(--ink);
+    background: var(--slate-bg);
+    box-shadow: var(--slate-shadow), inset 0 1px 0 var(--glare);
+    transform: translateZ(0) translateY(0) rotateY(0);
+    transform-style: preserve-3d;
+    transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease, border-color .45s ease;
+    display: flex; flex-direction: column; gap: 8px;
+    -webkit-box-reflect: below 3px linear-gradient(transparent 78%, var(--reflect));
+    -webkit-tap-highlight-color: transparent;
+  }
+  .slate-edge { position: absolute; left: 0; top: 0; bottom: 0; width: 6px; border-radius: 6px 0 0 6px; background: var(--accent); box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent); opacity: .92; }
+  .slate .serial { font-size: clamp(11px, 1.3vw, 13px); font-weight: 700; color: var(--accent); }
+  .slate .badge { align-self: flex-start; font-size: clamp(9.5px, 1.1vw, 11px); line-height: 1.2; padding: 4px 7px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); font-weight: 600; }
+  .slate .s-title { font-size: clamp(13px, 1.8vw, 18px); font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; margin-top: 4px; }
+  .slate .s-meta { margin-top: auto; font-size: clamp(9.5px, 1vw, 11px); color: var(--ink-faint); line-height: 1.35; }
+  .slate .s-open { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--ink-dim); }
+  .slate:hover, .slate.is-lifted, .slate:focus-visible {
+    transform: translateZ(32px) translateY(-6px) rotateY(-8deg);
+    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+    box-shadow:
+      0 30px 40px -18px var(--plank-shadow),
+      0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent),
+      0 0 32px -6px color-mix(in srgb, var(--accent) 50%, transparent),
+      inset 0 1px 0 var(--glare);
+  }
+  @media (prefers-reduced-motion: reduce) { .slate, .drawer, .scrim, body { transition: none !important; } }
+
+  /* ---------- DRAWER ---------- */
+  .scrim { position: fixed; inset: 0; background: var(--scrim); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); opacity: 0; pointer-events: none; transition: opacity .35s ease; z-index: 60; }
+  .scrim.open { opacity: 1; pointer-events: auto; }
+  .drawer {
+    position: fixed; top: 0; right: 0; height: 100dvh; width: min(100vw, 820px); z-index: 70;
+    background: var(--drawer-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border-left: 1px solid var(--hair); box-shadow: -40px 0 80px -30px var(--plank-shadow);
+    transform: translateX(104%); transition: transform .5s cubic-bezier(.2,.8,.2,1);
+    display: flex; flex-direction: column;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-body { overflow-y: auto; overscroll-behavior: contain; flex: 1; -webkit-overflow-scrolling: touch; }
+  .chip-nav { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+  .chip-nav::-webkit-scrollbar { display: none; }
+  .chip { flex: 0 0 auto; min-height: 36px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--hair); font-size: var(--fs-xs); color: var(--ink-dim); background: var(--soft); white-space: nowrap; display: inline-flex; align-items: center; }
+  .chip:hover { color: var(--ink); border-color: color-mix(in srgb, var(--accent, var(--cyan)) 50%, var(--hair)); }
+
+  .sec { scroll-margin-top: 12px; padding: clamp(18px, 3vw, 28px) 0; border-top: 1px solid var(--hair); }
+  .sec:first-child { border-top: 0; }
+  .sec-kicker { font-size: 10.5px; letter-spacing: 0.16em; color: var(--accent); }
+  .sec-title { font-size: var(--fs-lg); font-weight: 700; margin: 4px 0 12px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
+  .sec p { color: var(--body); margin: 0 0 10px; }
+  .sec b { color: var(--ink); }
+  .sec ul.dots { margin: 0; padding: 0; list-style: none; }
+  .sec ul.dots li { position: relative; padding-left: 16px; margin: 6px 0; color: var(--body); }
+  .sec ul.dots li::before { content: ""; position: absolute; left: 2px; top: .72em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+  .sec.flash { animation: flash 1.6s ease; }
+  @keyframes flash { 0%,30% { background: color-mix(in srgb, var(--accent) 12%, transparent); } 100% { background: transparent; } }
+
+  .card { border: 1px solid var(--hair); border-radius: 14px; background: var(--panel); padding: clamp(12px, 2vw, 16px); }
+  :root[data-theme="dark"] .card { background: var(--soft); }
+  .kpi-val { font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: clamp(1.2rem, 1rem + 1.2vw, 1.7rem); line-height: 1.15; color: var(--kpi); }
+  .kpi-lbl { font-size: var(--fs-xs); color: var(--ink-dim); }
+  .kpi-sub { font-size: 11.5px; color: var(--ink-faint); margin-top: 4px; }
+  .src { font-size: 11.5px; color: var(--ink-faint); margin-top: 8px; }
+  .acc { color: var(--accent); }
+
+  .bar-row { display: grid; grid-template-columns: minmax(78px, 30%) 1fr minmax(54px, auto); gap: 10px; align-items: center; margin: 7px 0; font-size: var(--fs-sm); }
+  .bar-track { height: 12px; border-radius: 999px; background: var(--track); overflow: hidden; }
+  .bar-fill { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 35%, transparent), var(--accent)); width: 0; transition: width 1s cubic-bezier(.2,.8,.2,1); }
+  .bar-fill.muted { background: linear-gradient(90deg, color-mix(in srgb, var(--ink-faint) 25%, transparent), color-mix(in srgb, var(--ink-faint) 70%, transparent)); }
+  .bar-fill.warn { background: linear-gradient(90deg, color-mix(in srgb, var(--warn) 30%, transparent), var(--warn)); }
+  .bar-val { font-family: "JetBrains Mono", monospace; font-size: var(--fs-xs); text-align: right; color: var(--ink); }
+
+  .matrix { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--fs-sm); }
+  .matrix th, .matrix td { padding: 10px 12px; border-bottom: 1px solid var(--hair); vertical-align: top; text-align: left; color: var(--body); }
+  .matrix thead th { font-size: var(--fs-xs); color: var(--ink-dim); font-weight: 600; background: var(--soft); }
+  .matrix tbody th { color: var(--ink-dim); font-weight: 600; white-space: nowrap; }
+  .matrix td.hl { color: var(--ink); background: color-mix(in srgb, var(--accent) 7%, transparent); }
+  .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--hair); border-radius: 14px; background: var(--panel); }
+  :root[data-theme="dark"] .scroll-x { background: transparent; }
+
+  .quad { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; position: relative; }
+  .quad .q { border: 1px solid var(--hair); border-radius: 12px; padding: 12px; background: var(--panel); min-height: 150px; }
+  :root[data-theme="dark"] .quad .q { background: var(--soft); }
+  .quad .q h5 { margin: 0 0 4px; font-size: var(--fs-sm); font-weight: 700; }
+  .q-count { font-family: "JetBrains Mono", monospace; font-size: clamp(1.15rem, 1rem + 1vw, 1.6rem); font-weight: 700; }
+  .quad .q.hot { border-color: color-mix(in srgb, var(--accent) 40%, var(--hair)); background: color-mix(in srgb, var(--accent) 7%, var(--panel)); }
+  .quad .q.cold { border-color: color-mix(in srgb, var(--warn) 40%, var(--hair)); background: color-mix(in srgb, var(--warn) 6%, var(--panel)); }
+  :root[data-theme="dark"] .quad .q.hot { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+  :root[data-theme="dark"] .quad .q.cold { background: color-mix(in srgb, var(--warn) 5%, transparent); }
+
+  .insight { position: relative; border-radius: 16px; padding: clamp(14px, 2.4vw, 20px); border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--hair)); background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 9%, transparent), var(--soft)); }
+  .insight .step { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 10px 0; border-top: 1px dashed var(--hair); }
+  .insight .step:first-of-type { border-top: 0; }
+  .insight .num { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--bg); background: var(--accent); }
+  .note-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
+
+  /* ---------- SEARCH PALETTE ---------- */
+  .palette-wrap { position: fixed; inset: 0; z-index: 80; display: none; align-items: flex-start; justify-content: center; padding: clamp(12px, 8vh, 96px) 12px 12px; background: var(--scrim); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+  .palette-wrap.open { display: flex; }
+  .palette { width: min(680px, 100%); max-height: min(78dvh, 640px); display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: var(--pal); border: 1px solid var(--line2); box-shadow: 0 30px 60px -20px var(--plank-shadow); }
+  .palette input { color: var(--ink); }
+  .palette input::placeholder { color: var(--ink-faint); }
+  .result { display: block; width: 100%; text-align: left; padding: 12px 16px; border-top: 1px solid var(--hair); min-height: 56px; }
+  .result:hover, .result.active { background: color-mix(in srgb, var(--cyan) 8%, transparent); }
+  .result mark { background: color-mix(in srgb, var(--cyan) 22%, transparent); color: var(--ink); border-radius: 3px; padding: 0 2px; }
+  kbd { font-family: "JetBrains Mono", monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
+
+  .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; transition: all .35s ease; z-index: 90; pointer-events: none; background: var(--toast-bg); color: var(--toast-ink); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+<div class="studio-bg" aria-hidden="true"></div>
+
+<!-- ================= HEADER HUD ================= -->
+<header class="hud sticky top-0 z-40 border-b hairline">
+  <div class="mx-auto max-w-6xl px-3 sm:px-6 py-2 flex items-center gap-2 sm:gap-4">
+    <a href="../" class="tap inline-flex items-center gap-1.5 rounded-xl px-2.5 t-dim hover-ink hover-soft transition" style="font-size:var(--fs-sm)">
+      <i data-lucide="arrow-left" class="w-4 h-4"></i><span class="hidden sm:inline">직업상담 통합 자료실</span><span class="sm:hidden">자료실</span>
+    </a>
+    <div class="min-w-0 flex-1 leading-tight">
+      <div class="truncate font-bold" style="font-size:var(--fs-sm)">국회 미래고용 디지털 서재</div>
+      <div class="mono truncate text-[10px] sm:text-[11px] t-faint">// FUTURE EMPLOYMENT READING ROOM</div>
+    </div>
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <div class="seg" role="group" aria-label="화면 테마">
+        <button type="button" data-theme-mode="auto" aria-pressed="true" title="오전 7시부터 오후 7시까지는 밝게, 그 밖에는 어둡게 바뀝니다">자동</button>
+        <button type="button" data-theme-mode="light" aria-pressed="false">밝게</button>
+        <button type="button" data-theme-mode="dark" aria-pressed="false">어둡게</button>
+      </div>
+      <button id="btnThemeCycle" type="button" class="theme-cycle tap glass rounded-xl px-2.5 items-center justify-center gap-1" style="font-size:var(--fs-xs)" aria-label="화면 테마 바꾸기"><i data-lucide="sun-moon" class="w-4 h-4 t-acc"></i><span id="themeCycleLabel">자동</span></button>
+      <button id="btnSearch" type="button" class="tap glass rounded-xl px-3 inline-flex items-center justify-center gap-2 hover-line transition" style="font-size:var(--fs-xs)" aria-label="이슈 검색 (Ctrl+K)">
+        <i data-lucide="search" class="w-4 h-4 t-acc"></i><span class="hidden md:inline">이슈 검색</span><kbd class="hidden lg:inline">Ctrl K</kbd>
+      </button>
+      <button id="btnDownload" type="button" class="tap glass rounded-xl px-3 inline-flex items-center justify-center gap-2 hover-line transition" style="font-size:var(--fs-xs)" aria-label="index.html 로컬 저장">
+        <i data-lucide="hard-drive-download" class="w-4 h-4 t-acc"></i><span class="hidden md:inline">index.html 로컬 저장</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto max-w-6xl px-3 sm:px-6">
+  <!-- ================= INTRO ================= -->
+  <section class="pt-8 sm:pt-12 pb-6 sm:pb-8">
+    <div class="mono text-[11px] tracking-[0.2em] t-acc mb-3">NARS × NAFI // LANDMARK SLATES 01–03</div>
+    <h1 class="font-extrabold tracking-tight leading-[1.15]" style="font-size:var(--fs-hero)">
+      청년의 이직, 지역의 격차, 고령의 일터.<br><span class="t-dim font-semibold">국회 보고서 세 권으로 읽는 고용의 다음 장면</span>
+    </h1>
+    <p class="mt-4 max-w-3xl t-dim" style="font-size:var(--fs-base)">
+      국회입법조사처와 국회미래연구원이 2026년 10–11월에 펴낸 보고서를 직업상담 실무의 언어로 다시 엮었습니다. 서가의 슬레이트를 누르면 읽기 책상이 열립니다.
+    </p>
+    <div class="mt-5 flex flex-wrap gap-2" style="font-size:var(--fs-xs)">
+      <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 3권</span>
+      <span class="note-tag"><i data-lucide="database" class="w-3.5 h-3.5"></i>수치는 원문 그대로 인용</span>
+      <span class="note-tag"><i data-lucide="message-square-quote" class="w-3.5 h-3.5"></i>상담 적용 노트는 편집자 해석</span>
+    </div>
+  </section>
+
+  <!-- ================= BOOKSHELF ================= -->
+  <section aria-label="디지털 서가" class="shelf-stage pb-10 sm:pb-14">
+    <div class="shelf-frame">
+      <!-- Tier 1 -->
+      <div class="tier">
+        <div class="tier-back"></div>
+        <div class="tier-label mono">TIER 01 · ACTIVE</div>
+        <div class="tier-row" id="tier1"></div>
+        <div class="plank" aria-hidden="true"></div>
+      </div>
+      <!-- Tier 2 -->
+      <div class="tier" aria-hidden="true">
+        <div class="tier-back"></div>
+        <div class="tier-label mono">TIER 02</div>
+        <div class="tier-row tier-empty"></div>
+        <div class="plank"></div>
+      </div>
+      <!-- Tier 3 -->
+      <div class="tier" aria-hidden="true">
+        <div class="tier-back"></div>
+        <div class="tier-label mono">TIER 03</div>
+        <div class="tier-row tier-empty"></div>
+        <div class="plank"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATALOG ================= -->
+  <section class="pb-16" aria-labelledby="catalogTitle">
+    <div class="flex items-end justify-between gap-3 mb-4">
+      <h2 id="catalogTitle" class="font-bold" style="font-size:var(--fs-lg)">소장 목록</h2>
+      <span class="mono text-[11px] t-faint">CATALOG / 3 ITEMS</span>
+    </div>
+    <div id="catalog" class="grid gap-3 md:grid-cols-3"></div>
+  </section>
+</main>
+
+<footer class="border-t hairline">
+  <div class="mx-auto max-w-6xl px-3 sm:px-6 py-8 t-faint" style="font-size:var(--fs-xs)">
+    <p class="mb-2">원문: 국회입법조사처 「이슈와 논점」 제2545호(2026.11.08, 구슬이·권다영) · 국회미래연구원 「인구통계 Brief」 26-8호(2026.10, 김봉섭) · 26-9호(2026.10, 정주영). 각 보고서의 내용은 발행 기관의 공식 의견이 아닐 수 있으며, 상담 적용 노트는 본 서재 편집자의 해석입니다.</p>
+    <a href="../" class="tap inline-flex items-center gap-1.5 hover-ink"><i data-lucide="corner-up-left" class="w-3.5 h-3.5"></i>직업상담 통합 자료실로 돌아가기</a>
+  </div>
+</footer>
+
+<!-- ================= READING DESK (DRAWER) ================= -->
+<div id="scrim" class="scrim" aria-hidden="true"></div>
+<aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" aria-hidden="true">
+  <div class="border-b hairline px-4 sm:px-7 pt-4 pb-3">
+    <div class="flex items-start gap-3">
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-2 mb-1.5">
+          <span id="dSerial" class="mono text-[12px] font-bold acc"></span>
+          <span id="dBadge" class="note-tag"></span>
+          <span id="dIssue" class="mono text-[11px] t-faint"></span>
+        </div>
+        <h2 id="dTitle" class="font-extrabold leading-snug tracking-tight" style="font-size:var(--fs-xl)"></h2>
+        <p id="dSub" class="mt-1 t-dim" style="font-size:var(--fs-sm)"></p>
+      </div>
+      <button id="btnClose" type="button" class="tap rounded-xl inline-flex items-center justify-center border hairline hover-soft" aria-label="읽기 책상 닫기">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <nav id="dNav" class="chip-nav mt-3" aria-label="섹션 이동"></nav>
+  </div>
+  <div id="dBody" class="drawer-body px-4 sm:px-7 pb-16"></div>
+</aside>
+
+<!-- ================= SEARCH PALETTE ================= -->
+<div id="palette" class="palette-wrap" role="dialog" aria-modal="true" aria-label="이슈 검색">
+  <div class="palette">
+    <div class="flex items-center gap-2 px-4 border-b hairline">
+      <i data-lucide="search" class="w-4 h-4 t-acc shrink-0"></i>
+      <input id="q" type="search" autocomplete="off" placeholder="예: 도덕적 해이, 서초구, 농림어업, 두루누리" class="flex-1 bg-transparent outline-none py-4 " style="font-size:16px">
+      <button id="btnPalClose" type="button" class="tap inline-flex items-center justify-center rounded-lg hover-soft" aria-label="검색 닫기"><kbd>Esc</kbd></button>
+    </div>
+    <div id="suggest" class="px-4 py-3 flex flex-wrap gap-1.5"></div>
+    <div id="results" class="overflow-y-auto" role="listbox"></div>
+    <div class="px-4 py-2 border-t hairline flex gap-3 text-[11px] t-faint"><span><kbd>↑</kbd> <kbd>↓</kbd> 이동</span><span><kbd>Enter</kbd> 열기</span><span><kbd>Esc</kbd> 닫기</span></div>
+  </div>
+</div>
+
+<div id="toast" class="toast rounded-xl px-4 py-2.5 text-sm" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   DATA — every figure below is taken from the three source PDFs
+   ============================================================ */
+const VOLS = [
+  {
+    id: 1, serial: 'VOL.01', accent: 'var(--v1)', icon: 'scale',
+    authority: '국회입법조사처', issue: '이슈와 논점 제2545호 · 2026.11.08',
+    spine: '자발적 퇴사 청년<br>실업급여',
+    title: '자발적 퇴사 청년 대상 실업급여 도입논란은 무엇을 놓치고 있나?',
+    sub: '제도 밖 청년 보호와 실질적인 청년 고용 지원 방안 모색 필요성 — 구슬이·권다영',
+    blurb: '35세 미만 청년에게 사유 불문 생애 1회 구직급여를 주자는 정부안. 쟁점은 도덕적 해이보다 고용보험 밖 청년과 미스매치 예방에 있다.'
+  },
+  {
+    id: 2, serial: 'VOL.02', accent: 'var(--v2)', icon: 'map',
+    authority: '국회미래연구원', issue: '인구통계 Brief 26-8호 · 2026.10',
+    spine: '청년 고용<br>지역격차 진단',
+    title: '청년 고용의 지역격차 진단 및 정책 제언',
+    sub: '229개 시군구 · 고용기회 × 보상수준 × 안정성 — 김봉섭',
+    blurb: '고용률 하나로는 보이지 않는 격차. 229개 시군구를 진입과 보상으로 나누면 네 개의 서로 다른 청년 노동시장이 드러난다.'
+  },
+  {
+    id: 3, serial: 'VOL.03', accent: 'var(--v3)', icon: 'users',
+    authority: '국회미래연구원', issue: '인구통계 Brief 26-9호 · 2026.10',
+    spine: '늘어난 고령 취업자와<br>노동력 재편',
+    title: '늘어난 고령 취업자는 어디에서 일하는가',
+    sub: '지역·산업·세대로 본 노동력 구성의 변화 — 정주영',
+    blurb: '7년간 고령 취업자 169만 명 증가. 55~64세까지는 비슷하던 일자리가 65세 이후 지역별로 갈라지고, 비수도권 일터는 이미 세대가 역전됐다.'
+  }
+];
+
+/* ---------- small render helpers ---------- */
+const kpi = (lbl, val, sub = '') => `<div class="card"><div class="kpi-lbl">${lbl}</div><div class="kpi-val mt-1">${val}</div>${sub ? `<div class="kpi-sub">${sub}</div>` : ''}</div>`;
+const bars = (rows, max, opts = {}) => rows.map(r => `
+  <div class="bar-row">
+    <span class="truncate ${r.strong ? 'font-semibold t-ink' : 't-dim'}">${r.label}</span>
+    <span class="bar-track"><span class="bar-fill ${r.cls || ''}" data-w="${(r.value / max * 100).toFixed(2)}"></span></span>
+    <span class="bar-val">${r.text ?? r.value}</span>
+  </div>`).join('');
+const sec = (id, kicker, icon, title, inner) => `
+  <section class="sec" id="${id}" data-sec data-title="${title.replace(/"/g, '&quot;')}">
+    <div class="sec-kicker mono">${kicker}</div>
+    <h3 class="sec-title"><i data-lucide="${icon}" class="w-5 h-5 acc"></i>${title}</h3>
+    ${inner}
+  </section>`;
+const insight = (steps, foot = '') => `
+  <div class="insight">
+    <div class="flex flex-wrap items-center gap-2 mb-2"><span class="note-tag" style="border-color:color-mix(in srgb,var(--accent) 40%,var(--hair))"><i data-lucide="headset" class="w-3.5 h-3.5 acc"></i>COUNSELOR PROTOCOL</span><span class="text-[11px] t-faint">보고서 근거 → 상담 적용(편집자 해석)</span></div>
+    ${steps.map((s, i) => `<div class="step"><span class="num mono">${String(i + 1).padStart(2, '0')}</span><div><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">${s.t}</div><div class="t-dim mt-1" style="font-size:var(--fs-sm)">${s.d}</div></div></div>`).join('')}
+    ${foot ? `<p class="src mt-3">${foot}</p>` : ''}
+  </div>`;
+
+/* ---------- VOL.01 ---------- */
+function renderVol1() {
+  return [
+    sec('v1-dilemma', 'CORE DILEMMA', 'git-fork', '35세 미만 · 생애 1회 · 사유 불문', `
+      <p>고용노동부는 2026년 하반기 업무보고에서, 자발적으로 이직한 35세 미만 청년도 생애 한 차례 구직급여를 받을 수 있도록 「고용보험법」을 개정하겠다고 밝혔습니다. 직업 탐색과 이직이 활발한 청년기에 생계 걱정 때문에 맞지 않는 직장을 떠나지 못하는 일을 줄이려는 취지입니다.</p>
+      <div class="grid grid-cols-2 gap-2 my-3">
+        ${kpi('35세 미만 피보험자격 상실자 (2026.9)', '222,266명', '한국고용정보원 고용행정통계')}
+        ${kpi('그중 개인사정 자진퇴사', '70.1%', '156,015명 · 전 연령은 64.6%')}
+      </div>
+      <p>반대로 수급만을 노린 입·퇴사(도덕적 해이), 고용보험 가입 청년에게만 혜택이 가는 형평성 문제, 불필요한 퇴사를 부추겨 장기근속을 해칠 수 있다는 우려가 제기됐습니다. 보고서는 논의를 <b class="t-ink">제도 밖 청년</b>과 <b class="t-ink">이직 자체의 예방</b>까지 넓혀야 한다고 봅니다.</p>`),
+
+    sec('v1-matrix', 'KEY MATRIX · 01', 'table-2', '현행 수급요건 vs 정부 제안안', `
+      <div class="scroll-x">
+        <table class="matrix min-w-[560px]">
+          <thead><tr><th style="width:22%">구분</th><th>현행 (「고용보험법」 제40조·제58조)</th><th>정부 추진안 (예시)</th></tr></thead>
+          <tbody>
+            <tr><th>대상</th><td>피보험자 전 연령</td><td class="hl">35세 미만 청년</td></tr>
+            <tr><th>이직 사유</th><td>자발적 이직은 원칙적으로 수급 제한. 단 임금체불·직장 내 괴롭힘·질병으로 인한 업무 곤란 등 정당한 사유는 인정</td><td class="hl">사유 불문, 생애 1회 지급</td></tr>
+            <tr><th>가입 기간</th><td>이직일 이전 18개월 중 피보험단위기간 통산 180일 이상 (초단시간 24개월 중 180일, 예술인 24개월 중 9개월, 노무제공자 24개월 중 12개월)</td><td class="hl">미확정</td></tr>
+            <tr><th>기타 요건</th><td>근로 의사·능력이 있으나 미취업 상태, 적극적 재취업활동</td><td class="hl">노사 협의 후 마련 예정</td></tr>
+            <tr><th>지급 수준</th><td>이직 전 평균임금의 60% · 1일 하한액 기준 월 1,981,440원</td><td class="hl">이직 전 임금의 60%, 월 최대 100만 원 수준</td></tr>
+            <tr><th>지급 기간</th><td>피보험기간·연령에 따라 120~270일</td><td class="hl">미확정</td></tr>
+            <tr><th>재정·입법</th><td>—</td><td class="hl">「2027년도 예산안」 미반영 · 국회 계류 법률안 2건(2026.10 말)도 연령과 '생애 1회'만 규정</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">출처: 이슈와 논점 제2545호, 2장. 정부안의 수치는 고용노동부가 제시한 예시이며 확정안이 아닙니다.</p>`),
+
+    sec('v1-hazard', 'KEY MATRIX · 02', 'shield-alert', '도덕적 해이 우려 — 보고서의 판단', `
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div class="card">
+          <div class="flex items-center gap-2 font-semibold t-ink mb-1"><i data-lucide="alert-triangle" class="w-4 h-4 t-bad"></i>제기된 우려</div>
+          <ul class="dots"><li>근로 의사 없이 일단 취업 → 필요 기간만 채우고 퇴사 → 급여 수령</li><li>취업 준비 기간의 생활자금으로 활용</li><li>반복·부정 수급에 대한 기존의 부정적 이미지가 우려를 키움</li></ul>
+        </div>
+        <div class="card">
+          <div class="flex items-center gap-2 font-semibold t-ink mb-1"><i data-lucide="check-circle-2" class="w-4 h-4 t-good"></i>보고서의 평가</div>
+          <ul class="dots"><li>월 최대 100만 원, 생애 1회라는 조건이라면 우려는 크지 않음</li><li>수급 요건·기간을 정교하게 설계하면 가능성은 더 낮아짐</li><li>일본·독일·영국은 자발적 이직에도 지급하되, 급여 일수·금액을 달리하거나 지급 제한 기간을 둠</li></ul>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
+        ${kpi('일본 지급 제한', '1개월', '자발적 실업')}
+        ${kpi('독일 지급 제한', '12주', '자발적 실업')}
+        ${kpi('30일 이내 이직 완료', '46.7%', '노동이동 소요기간')}
+        ${kpi('90일 이내 이직 완료', '61.3%', '한국고용정보원(2025)')}
+      </div>
+      <p class="mt-3">이직자 절반 가까이가 한 달 안에 다음 직장으로 옮겨 가므로, 지급 제한 기간을 적절히 두면 예산 효율성도 높일 수 있다는 것이 보고서의 판단입니다.</p>`),
+
+    sec('v1-equity', 'KEY MATRIX · 03', 'users-round', '형평성 사각지대 — 고용보험 밖 청년', `
+      <p>고용보험 가입 청년은 상대적으로 안정적인 일자리에 있을 가능성이 높아, 이들만 지원하면 <b class="t-ink">역진성</b> 문제가 생깁니다. 초단시간 근로자, 자영업자·무급가족종사자 등 비임금근로자는 여전히 적용에서 빠집니다.</p>
+      <div class="card mt-2">
+        ${bars([
+          { label: '비임금근로 미적용 청년(15~34세, 2023)', value: 55, max: 55, text: '55만 명', cls: 'warn', strong: true },
+        ], 55)}
+        <div class="mt-3 t-dim" style="font-size:var(--fs-xs)">고용보험 가입률 / 미가입률</div>
+        ${bars([
+          { label: '예술인 가입률', value: 29.2, text: '29.2%', cls: 'muted' },
+          { label: '플랫폼·프리랜서 미가입', value: 68.4, text: '68.4%', cls: 'warn' },
+          { label: '플랫폼·프리랜서 가입 여부 모름', value: 23.5, text: '23.5%', cls: 'muted' },
+        ], 100)}
+        <p class="src">미가입 사유: 계약상 가입 요구가 어려운 위치, 사업주의 소극적 태도, 절차상 어려움, 낮은 제도 인지도.</p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-2 mt-3">
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">① 소득기반 고용보험</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">적용기준을 월 60시간(주 15시간) '근로시간'에서 월 보수 80만 원 이상 '소득'으로 전환. 국세 소득자료로 누락자 적극 발굴.</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">② 보험료 지원 강화</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">두루누리: 10인 미만 사업장, 월임금 270만 원 미만 신규가입자의 고용·연금 보험료 80% 지원(최대 36개월). 지원 단절 구간·경력직 역차별·신청주의 한계 보완 필요.</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">③ 상담·신고 지원</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">사업주 비협조·제도 미인지로 가입 권리를 포기하지 않도록 상담·홍보·신고 지원, 가입 유지 현황 점검.</p></div>
+      </div>`),
+
+    sec('v1-mismatch', 'PREVENTION', 'compass', '미스매치 예방과 장기근속 조건', `
+      <p>이직 지원보다 근본적인 것은, 취업 전에 맞는 일자리를 충분히 탐색할 기회입니다. 보고서는 일경험 사업의 품질, 채용 정보의 투명성, 근로환경 개선을 함께 제안합니다.</p>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div class="card">
+          <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">청년 일경험 지원사업 (2025)</div>
+          <div class="flex gap-4 mb-2"><div><div class="kpi-val">6.2만</div><div class="kpi-sub">참여 청년</div></div><div><div class="kpi-val">2,140억</div><div class="kpi-sub">사업 규모(원)</div></div></div>
+          <div class="t-dim" style="font-size:var(--fs-xs)">지역별 참여율 (2024)</div>
+          ${bars([
+            { label: '서울', value: 21.7, text: '21.7%', strong: true },
+            { label: '경기', value: 21.7, text: '21.7%', strong: true },
+            { label: '충남', value: 2.0, text: '2.0%', cls: 'warn' },
+            { label: '충북', value: 1.9, text: '1.9%', cls: 'warn' },
+            { label: '전남', value: 1.3, text: '1.3%', cls: 'warn' },
+          ], 25)}
+          <p class="src">문서정리·행사 지원 등 단순 체험에 그친 사례, 희망 직무(금융·회계, 영업, 공공행정)와 실제 참여 분야(광고·마케팅, '기타')의 불일치가 지적됨.</p>
+        </div>
+        <div class="card">
+          <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">청년이 떠나는 이유</div>
+          ${bars([
+            { label: '첫 직장 퇴사 1순위: 근로여건 불만족', value: 44.4, text: '44.4%' },
+            { label: '이직·구직 시 최우선 고려: 임금', value: 57.9, text: '57.9%' },
+            { label: '중소기업 퇴사: 낮은 임금', value: 41.4, text: '41.4%' },
+            { label: '중소기업 퇴사: 열악한 근무환경', value: 37.2, text: '37.2%' },
+            { label: '중소기업 퇴사: 과도한 업무·장시간', value: 37.2, text: '37.2%' },
+            { label: '중소기업 기피: 근무환경·조직문화', value: 52.3, text: '52.3%' },
+          ], 60)}
+          <p class="src">임금이 가장 중요한 고려 요인인데도 대부분의 채용공고는 급여를 명시하지 않음. 일본은 채용·이직자 수, 평균 근속연수, 연차 취득일수 등 근로 실태 정보 제공을 의무화.</p>
+        </div>
+      </div>`),
+
+    sec('v1-insight', 'COUNSELOR INSIGHT', 'headset', '취업 전 선제 개입 프로토콜', insight([
+      { t: '“아직 확정된 제도가 아닙니다”부터 안내', d: '정부안은 수급요건·지급액·기간이 미확정이고 2027년 예산안에도 반영되지 않았습니다. 현행법상 자발적 퇴사는 원칙적으로 수급이 제한되므로, 퇴사를 고민하는 청년에게는 임금체불·괴롭힘·질병 등 <b>정당한 이직 사유</b> 해당 여부를 먼저 점검합니다.' },
+      { t: '퇴사 사유를 구조화해 다음 직장에서 반복되지 않게', d: '임금, 근로시간, 상사·조직문화, 직무–기술 일치도로 나눠 기록합니다. 직무–기술 일치도가 낮으면 이직 확률이 높아진다는 근거가 있으므로, 이직 목표를 “탈출”이 아닌 “조건 개선”으로 재설정합니다.' },
+      { t: '구직 단계의 정보 비대칭 줄이기', d: '공고에 급여가 없는 경우 면접 전 확인 질문지를 함께 만들고, 직무의 실제 내용, 근속연수, 연차 사용 실태를 확인하도록 돕습니다.' },
+      { t: '일경험은 “희망 직무”에 맞춰 연결', d: '비수도권 내담자는 참여율 자체가 낮으므로 지역 내 경험처를 적극 탐색하고, 단순 체험이 아닌 사전교육·멘토링·채용우대가 있는 프로그램인지 확인합니다.' },
+      { t: '고용보험 밖 청년을 제도 안으로', d: '프리랜서·플랫폼·초단시간 내담자의 가입 여부를 반드시 확인하고, 소득기반 적용 전환과 두루누리 보험료 지원(80%) 대상인지 안내합니다.' },
+    ], '근거: 이슈와 논점 제2545호 2~6장.')),
+  ].join('');
+}
+
+/* ---------- VOL.02 ---------- */
+function renderVol2() {
+  const top = [['서울 서초구', 5329], ['서울 강남구', 5163], ['경기 과천시', 5048], ['서울 용산구', 4911], ['서울 성동구', 4730]];
+  const bot = [['강원 화천군', 2442], ['충북 괴산군', 2497], ['전북 임실군', 2586], ['경기 동두천시', 2610], ['강원 양구군', 2622]];
+  return [
+    sec('v2-frame', '3-PILLAR DIAGNOSTIC FRAME', 'layers', '고용기회 · 보상수준 · 안정성', `
+      <p>고용률·실업률 같은 양적 지표만으로는 저소득·단기 일자리가 많은 지역을 “양호”로 오판할 수 있습니다. 보고서는 2024년 취업활동통계등록부(전수 행정자료)로 229개 시군구의 19~39세 임금근로 청년을 세 측면에서 진단합니다.</p>
+      <div class="grid sm:grid-cols-3 gap-2 mt-2">
+        ${kpi('① 고용기회 · 청년 임금근로 비율', '68.8%', '시군구 범위 42.0%(완도) ~ 77.7%(울릉) · 35.7%p 차')}
+        ${kpi('② 보상수준 · 연 근로소득', '3,578만원', '시군구 범위 2,442만 ~ 5,329만원 · 2.18배')}
+        ${kpi('③ 안정성 · 상시근로 비중', '89.9%', '시군구 범위 77.2%(삼척) ~ 94.9%(강남) · 17.7%p 차')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-2" style="font-size:var(--fs-sm)">격차는 어디서 생기나 — 시도 간 vs 같은 시도 안</div>
+        ${bars([
+          { label: '임금근로 비율', value: 22, text: '시도 간 22%' },
+          { label: '근로소득', value: 43, text: '시도 간 43%' },
+          { label: '상시근로 비중', value: 40, text: '시도 간 40%' },
+        ], 100)}
+        <p class="src">임금근로 비율 격차의 78%는 같은 시도 안 시군구 사이에서 발생. 반면 소득은 광역 산업구조·고임금 기업 입지와 더 밀접. 거주지 기준이므로 인접 지역 통근 여건이 함께 반영됨.</p>
+      </div>`),
+
+    sec('v2-income', 'HARD DATA · INCOME GAP', 'bar-chart-3', '서초구 5,329만원 vs 화천군 2,442만원', `
+      <div class="card">
+        <div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+          <div class="font-semibold t-ink" style="font-size:var(--fs-sm)">청년 임금근로자 연 근로소득 상·하위 5개 시군구 (만원)</div>
+          <div class="mono acc font-bold" style="font-size:var(--fs-lg)">× 2.18</div>
+        </div>
+        ${bars(top.map(([l, v], i) => ({ label: l, value: v, text: v.toLocaleString(), strong: i === 0 })), 5400)}
+        <div class="my-2 border-t border-dashed hairline"></div>
+        ${bars(bot.map(([l, v], i) => ({ label: l, value: v, text: v.toLocaleString(), cls: 'warn', strong: i === 0 })), 5400)}
+        <p class="src">상위 10곳은 모두 수도권, 하위 10곳 중 7곳이 군지역(강원 접경지역 다수). 수도권 평균 3,697만원 vs 비수도권 3,103만원(594만원, 1.19배).</p>
+      </div>
+      <div class="grid grid-cols-3 gap-2 mt-3">
+        ${kpi('시도 1위 서울', '4,033', '만원')}
+        ${kpi('울산', '3,899', '만원')}
+        ${kpi('강원 (최하)', '2,862', '만원 · 전북·제주 2,868')}
+      </div>`),
+
+    sec('v2-cluster', '229 DISTRICTS · 4-CLUSTER TYPOLOGY', 'grid-2x2', '진입 × 보상으로 본 네 가지 청년 노동시장', `
+      <p>임금근로 비율 중위값 <b class="t-ink mono">68.1%</b>와 연 근로소득 중위값 <b class="t-ink mono">3,112만원</b>을 기준으로 229개 시군구를 나눴습니다. 두 지표가 엇갈리는 지역이 68곳(30%)에 달합니다.</p>
+      <div class="flex items-center gap-2 mb-1 text-[11px] t-faint mono"><i data-lucide="arrow-up" class="w-3 h-3"></i>보상(소득) 높음</div>
+      <div class="quad">
+        <div class="q">
+          <h5>③ 저진입·고보상형</h5>
+          <div class="q-count acc">34<span class="text-[12px] t-dim"> 곳 · 14.8%</span></div>
+          <div class="kpi-sub">임금근로 65.6% · 소득 3,706만원(최고) · 청년인구 19.3%</div>
+          <p class="mt-2 mb-0" style="font-size:var(--fs-xs)">서울 마포·서초·강남, 경기 고양 등 대도시 주거지 + 일부 산업지역</p>
+        </div>
+        <div class="q hot">
+          <h5>④ 고진입·고보상형</h5>
+          <div class="q-count acc">81<span class="text-[12px] t-dim"> 곳 · 35.4%</span></div>
+          <div class="kpi-sub">임금근로 71.3% · 소득 3,646만원 · 상시 90.8% · 청년인구 54.3%</div>
+          <p class="mt-2 mb-0" style="font-size:var(--fs-xs)">서울 송파, 경기 화성, 세종, 울산 전역, 충남 당진·아산 등</p>
+        </div>
+        <div class="q cold">
+          <h5>① 저진입·저보상형</h5>
+          <div class="q-count" style="color:var(--warn)">80<span class="text-[12px] t-dim"> 곳 · 34.9%</span></div>
+          <div class="kpi-sub">임금근로 63.8% · 소득 2,865만원 · 상시 86.6% · 청년인구 16.3%</div>
+          <p class="mt-2 mb-0" style="font-size:var(--fs-xs)">전남 완도, 충북 괴산 등 · 군지역 45곳, 수도권 10곳</p>
+        </div>
+        <div class="q">
+          <h5>② 고진입·저보상형</h5>
+          <div class="q-count acc">34<span class="text-[12px] t-dim"> 곳 · 14.8%</span></div>
+          <div class="kpi-sub">임금근로 70.2% · 소득 2,917만원 · 청년인구 10.1%</div>
+          <p class="mt-2 mb-0" style="font-size:var(--fs-xs)">강원 춘천, 대전 서구 등 · 34곳 중 11곳이 강원</p>
+        </div>
+      </div>
+      <div class="flex justify-end items-center gap-2 mt-1 text-[11px] t-faint mono">진입(임금근로 비율) 높음<i data-lucide="arrow-right" class="w-3 h-3"></i></div>
+      <p class="src">청년인구 = 해당 유형에 거주하는 청년이 전국 청년 인구에서 차지하는 비중. 경계값 근처 지역은 조사 시점에 따라 유형이 바뀔 수 있음.</p>`),
+
+    sec('v2-gender', 'HARD DATA · GENDER GAP', 'venus-and-mars', '여성 소득은 남성의 78.9%', `
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div class="card">
+          <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">청년 임금근로자 연 근로소득</div>
+          ${bars([
+            { label: '남성', value: 3962, text: '3,962만', cls: 'muted' },
+            { label: '여성', value: 3125, text: '3,125만', strong: true },
+          ], 4200)}
+          <div class="mt-3 font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">연령대별 남–여 소득 차이 (만원)</div>
+          ${bars([
+            { label: '19~24세', value: 0, text: '−122' },
+            { label: '25~29세', value: 209, text: '209' },
+            { label: '30~34세', value: 837, text: '837', cls: 'warn' },
+            { label: '35~39세', value: 1571, text: '1,571', cls: 'warn', strong: true },
+          ], 1650)}
+          <p class="src">19~24세는 여성이 122만원 높음. 상시근로자만 봐도 78.4%로 격차가 거의 그대로이며, 여성의 상시근로 비율(90.8%)은 오히려 남성(89.1%)보다 높음.</p>
+        </div>
+        <div class="card">
+          <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">격차가 가장 큰 곳 — 제조업·중화학 거점</div>
+          ${bars([
+            { label: '울산 북구', value: 52.1, text: '52.1%', cls: 'warn', strong: true },
+            { label: '충남 당진시', value: 52.6, text: '52.6%', cls: 'warn' },
+            { label: '충남 서산시', value: 56.0, text: '56.0%', cls: 'warn' },
+            { label: '전남 광양시', value: 57.2, text: '57.2%' },
+            { label: '경북 포항시', value: 60.3, text: '60.3%' },
+          ], 100)}
+          <p class="src">여성/남성 소득비. 229곳 중 228곳에서 여성 소득이 더 낮고, 174곳에서 여성 임금근로 비율이 더 낮음. 제조업 비중과 소득비의 상관계수 −0.544. 임금근로 비율 격차는 30~34세 6.7%p, 35~39세 13.4%p로 확대.</p>
+        </div>
+      </div>`),
+
+    sec('v2-insight', 'COUNSELOR INSIGHT', 'headset', '지역 유형별 맞춤 상담 가이드', `
+      <div class="scroll-x mb-3">
+        <table class="matrix min-w-[600px]">
+          <thead><tr><th style="width:26%">유형</th><th>보고서의 정책 방향</th><th>상담 포커스 (적용 노트)</th></tr></thead>
+          <tbody>
+            <tr><th>① 저진입·저보상</th><td>지역산업 연계 일자리 발굴, 직업훈련–채용 연계, 인접 지역 취업 연계와 통근 지원</td><td class="hl">통근권 지도 함께 그리기 · 인접 시군구 공고까지 탐색 범위 확장 · 채용 연계형 훈련 우선 추천</td></tr>
+            <tr><th>② 고진입·저보상</th><td>일자리 수보다 저소득 원인(산업·직종·사업체 규모) 진단, 숙련 향상과 고부가가치 일자리</td><td class="hl">“취업은 되는데 소득이 낮은” 구조임을 공유 · 자격·직무훈련으로 숙련 경로 설계 · 이직 시 사업체 규모·직종 상향을 목표로</td></tr>
+            <tr><th>③ 저진입·고보상</th><td>낮은 진입의 원인(재학·준비·돌봄·교통·직무 불일치) 파악, 기업 수요 연계 훈련·알선·통근·돌봄 지원</td><td class="hl">미취업 사유를 먼저 분류 · 경력단절 우려 청년 여성에게 돌봄·유연근무 연계 · 직무 불일치는 기업 수요 기반 훈련</td></tr>
+            <tr><th>④ 고진입·고보상</th><td>유형 내부의 성별·직종별 격차 별도 점검</td><td class="hl">제조업 거점의 여성 내담자: 주력산업 내 직무 확장 탐색 · 30대 이후 경력 유지 계획을 초기부터 설계</td></tr>
+          </tbody>
+        </table>
+      </div>
+      ${insight([
+        { t: '내담자 거주지의 유형부터 확인', d: '같은 시도 안에서도 시군구별 차이가 크므로(격차의 78%), 시도 평균이 아닌 거주 시군구 기준으로 진입·보상·안정성을 함께 봅니다.' },
+        { t: '고용률만 보고 “괜찮은 지역”이라 판단하지 않기', d: '진입과 보상이 엇갈리는 지역이 30%입니다. 지역 정보를 안내할 때 소득과 상시근로 비중을 함께 제시합니다.' },
+        { t: '30대 성별 격차를 미리 상담 안건으로', d: '격차가 30대에 급격히 커지므로, 20대 여성 내담자와는 첫 직장 선택 단계에서 산업·직종·사업체 규모와 돌봄 지원 여건까지 함께 검토합니다.' },
+      ], '근거: 인구통계 Brief 26-8호 7~8장.')}`),
+  ].join('');
+}
+
+/* ---------- VOL.03 ---------- */
+function renderVol3() {
+  return [
+    sec('v3-shift', 'DEMOGRAPHIC SHIFT', 'trending-up', '7년간 고령 취업자 169만 명 증가', `
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('65세 이상 취업자 (2024)', '395.7만', '2017년 226.7만 → 약 1.7배')}
+        ${kpi('7년 증가 폭', '+169.0만', '청년(19~34) +17.1만의 약 9.9배')}
+        ${kpi('전국 고령층 고용률', '39.67%', '2017년 32.00%')}
+        ${kpi('취업자 중 고령층 비중', '13.75%', '2017년 8.43%')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">취업자 중 65세 이상 비중 (2024)</div>
+        ${bars([
+          { label: '전남', value: 25.06, text: '25.06%', strong: true },
+          { label: '경북', value: 22.65, text: '22.65%' },
+          { label: '전북', value: 22.18, text: '22.18%' },
+          { label: '강원', value: 21.60, text: '21.60%' },
+          { label: '전국', value: 13.75, text: '13.75%', cls: 'muted' },
+          { label: '서울', value: 9.99, text: '9.99%', cls: 'muted' },
+        ], 28)}
+        <p class="src">전남은 취업자 4명 중 1명, 서울은 10명 중 1명(2.5배 차이). 취업자 구성에서 고령층이 청년층을 앞지른 <b>세대역전</b> 지역: 전남(2008년 이미), 전북·경북(2020), 강원(2021), 경남(2024) — 전국 인구 역전(2025 추정)보다 비수도권 일터에서 먼저 일어남.</p>
+      </div>
+      <p class="mt-3">고령·청년 취업자가 함께 늘어난 곳은 수도권과 충청권 등 일부뿐입니다. 부산·대구·광주·울산·전남·경북·경남·제주에서는 고령 취업자만 늘고 청년 취업자는 줄었습니다. 울산은 두 세대 증감률 격차가 13.35%p로 가장 큽니다.</p>`),
+
+    sec('v3-industry', 'WHERE THEY WORK', 'factory', '65세 이후 갈라지는 산업 구성', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">산업 구성비: 65세 이상 vs 전체 취업자 (전국, 2024)</div>
+        ${bars([
+          { label: '농림어업 · 65+', value: 22.71, text: '22.71%', strong: true },
+          { label: '농림어업 · 전체', value: 5.48, text: '5.48%', cls: 'muted' },
+          { label: '광·제조업 · 65+', value: 5.96, text: '5.96%', strong: true },
+          { label: '광·제조업 · 전체', value: 15.56, text: '15.56%', cls: 'muted' },
+          { label: '사업·개인·공공서비스 · 65+', value: 47.14, text: '47.14%', strong: true },
+          { label: '사업·개인·공공서비스 · 전체', value: 39.85, text: '39.85%', cls: 'muted' },
+        ], 50)}
+        <p class="src">농림어업 종사 비율은 전체의 약 4배(4.1배), 광·제조업은 0.4배. 55~64세까지는 지역 전체와 비슷하다가 65세 이상에서 갈라짐.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-2 mt-3">
+        ${kpi('비수도권 65+ 농림어업', '32.55%', '55~64세 12.04% → +20.51%p')}
+        ${kpi('수도권 65+ 사업·개인·공공서비스', '54.48%', '55~64세 38.42% → +16.06%p')}
+      </div>
+      <p class="mt-3">고령 취업자의 40% 이상이 농림어업에 종사하는 곳은 경북(49.75%)·전남(47.98%)·충남(47.56%)·전북(41.78%)·충북(40.69%)입니다. 서울은 0.24%에 불과합니다. 고령층 고용률과 농림어업 종사 비율의 상관계수는 +0.942입니다.</p>`),
+
+    sec('v3-vulnerable', 'VULNERABILITY DATA', 'alert-octagon', '상용직 21.2%, 단시간 51.8%', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">세대별 종사상 지위·근로시간 (전국, 2020 근로환경조사)</div>
+        <div class="t-dim mt-2" style="font-size:var(--fs-xs)">상용 임금근로 비중</div>
+        ${bars([
+          { label: '19~34세', value: 71.47, text: '71.47%', cls: 'muted' },
+          { label: '55~64세', value: 46.94, text: '46.94%', cls: 'muted' },
+          { label: '65세 이상', value: 21.22, text: '21.22%', cls: 'warn', strong: true },
+        ], 80)}
+        <div class="t-dim mt-3" style="font-size:var(--fs-xs)">주 36시간 미만 근로</div>
+        ${bars([
+          { label: '19~34세', value: 19.53, text: '19.53%', cls: 'muted' },
+          { label: '55~64세', value: 20.98, text: '20.98%', cls: 'muted' },
+          { label: '65세 이상', value: 51.82, text: '51.82%', strong: true },
+        ], 60)}
+        <div class="t-dim mt-3" style="font-size:var(--fs-xs)">주 15시간 미만 근로</div>
+        ${bars([
+          { label: '19~34세', value: 5.23, text: '5.23%', cls: 'muted' },
+          { label: '55~64세', value: 3.64, text: '3.64%', cls: 'muted' },
+          { label: '65세 이상', value: 23.20, text: '23.20%', strong: true },
+        ], 60)}
+        <p class="src">65세 이상 자영업 비중 36.24%(청년 6.97%, 중장년 30.08%). 비수도권 고령 취업자는 자영업 39.86%·단시간 58.13%·상용 15.53%, 수도권은 상용 33.93%가 가장 많음. 일부 주 15시간 미만 근로는 노인일자리 공익활동 참여일 수 있음.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-2 mt-3">
+        ${kpi('광·제조업 노동생산성', '132.37', '백만 원/인 · 2022~24 평균')}
+        ${kpi('농림어업 노동생산성', '21.12', '백만 원/인 · 광·제조업의 약 1/6')}
+      </div>
+      <p class="mt-3">다만 이는 <b class="t-ink">산업의 성격</b>(설비·자본 집약도)을 반영한 값이지 고령 노동 자체의 생산성이 아닙니다. 17개 시도에서 고령층 고용률과 지역 노동생산성 사이에는 뚜렷한 관계가 없었습니다(r = −0.022).</p>`),
+
+    sec('v3-2040', 'FUTURE OUTLOOK', 'telescope', '2040년, 비수도권 전체가 오늘의 전남보다 고령화', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">비수도권 고령 취업자 ÷ 청년 취업자 (2024년 고용률 유지 가정)</div>
+        ${bars([
+          { label: '비수도권 2024', value: 0.90, text: '0.90배', cls: 'muted' },
+          { label: '전남 2024', value: 1.68, text: '1.68배' },
+          { label: '비수도권 2040', value: 2.07, text: '2.07배', cls: 'warn', strong: true },
+        ], 2.2)}
+        <p class="src">2040년 비수도권 고령 인구 구성비 전망 37.7% — 2025년 전국 최고인 전남(27.4%)을 10%p 이상 상회. 취업자 구성 세대역전 지역은 5곳에서 15곳(서울·세종 제외 전 지역)으로. 예측이 아니라 “현재 흐름이 이어질 경우”의 계산값.</p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-2 mt-3">
+        <div class="card"><div class="mono text-[11px] acc">[과제 1] 지금</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">395.7만 명의 일하는 조건</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">농림어업 안전·건강 기준, 단시간 근로 실태 파악과 보호 방식, 자영업 폐업·소득 변동 안전망과 업종 전환.</p></div>
+        <div class="card"><div class="mono text-[11px] acc">[과제 2] 10년 내</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">55~64세의 경로 바꾸기</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">계속고용, 직무 기반 평가·임금 체계, 재교육. 중소기업 재직자·비수도권 종사자 우선.</p></div>
+        <div class="card"><div class="mono text-[11px] acc">[과제 3] 2040 지역</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">지역 유형별 설계</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">고령 중심형(도)은 농작업 안전, 저고용형(광역시)은 일자리 확충, 청년 중심형(수도권)은 고령 고용 안정.</p></div>
+      </div>
+      <p class="src">해외 참고: 일본 「고령자고용안정법」(65세 고용확보 의무, 70세 취업기회 노력 의무), 65세 초과 고용추진 조성금(중소 60만 엔). 독일 Perspektive 50Plus(지역 이해관계자 참여형 중고령 고용 패키지, 2005~2015).</p>`),
+
+    sec('v3-insight', 'COUNSELOR INSIGHT', 'headset', '정년 전후 이원 상담 프로토콜', insight([
+      { t: '55~64세: 정년 이전에 경로를 설계 (전직지원)', d: '65세 이후엔 광·제조업과 상용직이 크게 줄어듭니다. 주된 일자리를 떠나는 평균 나이가 53세라는 점을 고려해, 계속고용 가능성 확인과 재교육·직무 전환 계획을 정년 이전에 시작합니다. 중소기업·비수도권 재직자는 재교육 기회가 적으므로 우선 대상입니다.' },
+      { t: '65세 이상: 일자리의 “조건”을 함께 점검', d: '4주 평균 주 소정근로시간이 15시간 미만이면 주휴일·연차휴가·퇴직금 일부 규정이 적용되지 않습니다. 단시간 일자리를 안내할 때 이 차이를 반드시 설명합니다.' },
+      { t: '농작업 종사 내담자: 안전·건강 체크리스트', d: '비수도권 고령 취업자의 32.55%가 농림어업에 있습니다. 작업 강도, 계절성, 건강 상태를 함께 확인하고 지역 농작업 안전 지원 사업과 연결합니다.' },
+      { t: '고령 자영업자: 폐업·전환 위험 대비', d: '비수도권 고령 취업자의 39.86%가 자영업입니다. 매출 변동과 폐업 위험을 점검하고, 업종 전환이나 임금근로 재진입 경로를 함께 탐색합니다.' },
+      { t: '“고령자가 청년 일자리를 뺏는다”는 통념 바로잡기', d: '비수도권 청년 취업자 감소(−15.67만)는 대부분 청년 인구 감소(−31.09만분)로 설명되고, 산업 안에서 비중이 가장 크게 준 세대는 35~54세(−5.93%p)였습니다. 세대 간 갈등보다 지역 노동력 구성의 변화로 설명합니다.' },
+    ], '근거: 인구통계 Brief 26-9호 3~7장. 대체 관계를 검증한 연구는 아니라는 점(동시 발생 사실)을 함께 안내.')),
+  ].join('');
+}
+
+const icons = () => { if (window.lucide) lucide.createIcons(); };
+const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3 };
+
+/* ============================================================
+   SHELF + CATALOG
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const tier1 = $('#tier1');
+tier1.innerHTML = VOLS.map(v => `
+  <button type="button" class="slate" data-vol="${v.id}" style="--accent:${v.accent}" aria-label="${v.serial} ${v.title} 열기">
+    <span class="slate-edge" aria-hidden="true"></span>
+    <span class="serial mono">${v.serial}</span>
+    <span class="badge">${v.authority}</span>
+    <span class="s-title">${v.spine}</span>
+    <span class="s-meta mono">${v.issue.split(' · ')[0]}<br>${v.issue.split(' · ')[1]}</span>
+    <span class="s-open"><i data-lucide="${v.icon}" class="w-3.5 h-3.5" style="color:${v.accent}"></i>열기</span>
+  </button>`).join('');
+
+$('#catalog').innerHTML = VOLS.map(v => `
+  <button type="button" data-vol="${v.id}" class="cat-item text-left card hover-line transition tap" style="--accent:${v.accent}">
+    <div class="flex items-center gap-2 mb-1"><span class="mono text-[12px] font-bold" style="color:${v.accent}">${v.serial}</span><span class="text-[11px] t-faint">${v.authority}</span></div>
+    <div class="font-bold t-ink leading-snug" style="font-size:var(--fs-sm)">${v.title}</div>
+    <p class="mt-2 mb-0 t-dim" style="font-size:var(--fs-xs)">${v.blurb}</p>
+  </button>`).join('');
+
+/* touch: first tap lifts, second tap opens; mouse/keyboard opens directly */
+let lastPointer = 'mouse';
+document.addEventListener('pointerdown', e => { lastPointer = e.pointerType; }, { passive: true });
+document.querySelectorAll('.slate').forEach(el => {
+  el.addEventListener('click', () => {
+    const vol = +el.dataset.vol;
+    if (lastPointer === 'touch' && !el.classList.contains('is-lifted')) {
+      document.querySelectorAll('.slate.is-lifted').forEach(s => s.classList.remove('is-lifted'));
+      el.classList.add('is-lifted');
+      setTimeout(() => openSlate(vol), 260);
+      return;
+    }
+    openSlate(vol);
+  });
+});
+document.querySelectorAll('.cat-item').forEach(el => el.addEventListener('click', () => openSlate(+el.dataset.vol)));
+
+/* ============================================================
+   READING DESK
+   ============================================================ */
+const drawer = $('#drawer'), scrim = $('#scrim'), dBody = $('#dBody');
+let currentVol = null, lastFocus = null;
+
+function animateBars(root) {
+  requestAnimationFrame(() => root.querySelectorAll('.bar-fill').forEach(b => { b.style.width = Math.max(+b.dataset.w, 0.6) + '%'; }));
+}
+
+function openSlate(vol, secId) {
+  const v = VOLS.find(x => x.id === vol); if (!v) return;
+  lastFocus = document.activeElement;
+  currentVol = vol;
+  drawer.style.setProperty('--accent', v.accent);
+  $('#dSerial').textContent = v.serial;
+  $('#dBadge').textContent = v.authority;
+  $('#dIssue').textContent = v.issue;
+  $('#dTitle').textContent = v.title;
+  $('#dSub').textContent = v.sub;
+  dBody.innerHTML = RENDER[vol]();
+  $('#dNav').innerHTML = [...dBody.querySelectorAll('[data-sec]')].map(s => `<a class="chip" href="#${s.id}" data-jump="${s.id}">${s.dataset.title}</a>`).join('');
+  icons();
+  drawer.classList.add('open'); scrim.classList.add('open');
+  drawer.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('locked');
+  history.replaceState(null, '', '#vol-0' + vol);
+  dBody.scrollTop = 0;
+  animateBars(dBody);
+  setTimeout(() => {
+    if (secId) jumpTo(secId); else $('#btnClose').focus({ preventScroll: true });
+  }, 380);
+}
+
+function jumpTo(id) {
+  const el = dBody.querySelector('#' + CSS.escape(id)); if (!el) return;
+  dBody.scrollTo({ top: el.offsetTop - 8, behavior: 'smooth' });
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+}
+
+function closeSlate() {
+  drawer.classList.remove('open'); scrim.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('locked');
+  document.querySelectorAll('.slate.is-lifted').forEach(s => s.classList.remove('is-lifted'));
+  history.replaceState(null, '', location.pathname + location.search);
+  currentVol = null;
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+}
+
+$('#dNav').addEventListener('click', e => { const a = e.target.closest('[data-jump]'); if (!a) return; e.preventDefault(); jumpTo(a.dataset.jump); });
+$('#btnClose').addEventListener('click', closeSlate);
+scrim.addEventListener('click', closeSlate);
+drawer.addEventListener('keydown', e => { /* focus trap */
+  if (e.key !== 'Tab') return;
+  const f = [...drawer.querySelectorAll('a[href],button,[tabindex]:not([tabindex="-1"])')].filter(x => x.offsetParent !== null);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+
+/* ============================================================
+   ISSUE SEARCH (indexes every section of all three slates)
+   ============================================================ */
+const INDEX = [];
+(function buildIndex() {
+  const tmp = document.createElement('div');
+  VOLS.forEach(v => {
+    tmp.innerHTML = RENDER[v.id]();
+    tmp.querySelectorAll('[data-sec]').forEach(s => {
+      INDEX.push({ vol: v.id, serial: v.serial, accent: v.accent, sec: s.id, title: s.dataset.title, text: s.textContent.replace(/\s+/g, ' ').trim() });
+    });
+  });
+})();
+
+const palette = $('#palette'), q = $('#q'), results = $('#results');
+const SUGGEST = ['도덕적 해이', '두루누리', '일경험', '서초구', '4-Cluster', '성별 격차', '농림어업', '단시간', '2040', '정년'];
+$('#suggest').innerHTML = SUGGEST.map(s => `<button type="button" class="chip" data-s="${s}">${s}</button>`).join('');
+$('#suggest').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (!b) return; q.value = b.dataset.s; runSearch(); q.focus(); });
+
+let active = 0, hits = [];
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function snippet(text, term) {
+  const i = text.toLowerCase().indexOf(term.toLowerCase());
+  if (i < 0) return esc(text.slice(0, 110)) + '…';
+  const s = Math.max(0, i - 40), e = Math.min(text.length, i + term.length + 70);
+  return (s > 0 ? '…' : '') + esc(text.slice(s, i)) + '<mark>' + esc(text.slice(i, i + term.length)) + '</mark>' + esc(text.slice(i + term.length, e)) + (e < text.length ? '…' : '');
+}
+function runSearch() {
+  const term = q.value.trim();
+  if (!term) {
+    hits = INDEX.filter(x => /insight/.test(x.sec));
+  } else {
+    const t = term.toLowerCase();
+    hits = INDEX.filter(x => (x.title + ' ' + x.text).toLowerCase().includes(t));
+  }
+  active = 0;
+  results.innerHTML = hits.length ? hits.map((h, i) => `
+    <button type="button" class="result ${i === 0 ? 'active' : ''}" role="option" data-i="${i}">
+      <div class="flex items-center gap-2 mb-0.5"><span class="mono text-[11px] font-bold" style="color:${h.accent}">${h.serial}</span><span class="font-semibold t-ink" style="font-size:var(--fs-sm)">${esc(h.title)}</span></div>
+      <div class="t-dim" style="font-size:var(--fs-xs)">${term ? snippet(h.text, term) : esc(h.text.slice(0, 110)) + '…'}</div>
+    </button>`).join('') : `<div class="px-4 py-8 text-center t-faint" style="font-size:var(--fs-sm)">“${esc(term)}”에 해당하는 내용이 없습니다.</div>`;
+}
+function setActive(n) {
+  const items = results.querySelectorAll('.result'); if (!items.length) return;
+  active = (n + items.length) % items.length;
+  items.forEach((el, i) => el.classList.toggle('active', i === active));
+  items[active].scrollIntoView({ block: 'nearest' });
+}
+function pick(i) { const h = hits[i]; if (!h) return; closePalette(); openSlate(h.vol, h.sec); }
+results.addEventListener('click', e => { const r = e.target.closest('.result'); if (r) pick(+r.dataset.i); });
+q.addEventListener('input', runSearch);
+q.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+  else if (e.key === 'Enter') { e.preventDefault(); pick(active); }
+});
+function openPalette() { palette.classList.add('open'); document.body.classList.add('locked'); runSearch(); setTimeout(() => q.focus(), 30); }
+function closePalette() { palette.classList.remove('open'); if (!drawer.classList.contains('open')) document.body.classList.remove('locked'); }
+$('#btnSearch').addEventListener('click', openPalette);
+$('#btnPalClose').addEventListener('click', closePalette);
+palette.addEventListener('click', e => { if (e.target === palette) closePalette(); });
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); palette.classList.contains('open') ? closePalette() : openPalette(); }
+  else if (e.key === 'Escape') { if (palette.classList.contains('open')) closePalette(); else if (drawer.classList.contains('open')) closeSlate(); }
+});
+
+/* ============================================================
+   LOCAL SAVE — native Blob download of this page
+   ============================================================ */
+const SNAPSHOT = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2400); }
+async function downloadLocalHTML() {
+  let html = null;
+  try {
+    if (location.protocol.startsWith('http')) {
+      const res = await fetch(location.href.split('#')[0], { cache: 'no-store' });
+      if (res.ok) html = await res.text();
+    }
+  } catch (_) { /* fall back to in-memory snapshot */ }
+  if (!html) html = SNAPSHOT;
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'index.html';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+  toast('index.html 저장을 시작했습니다');
+}
+$('#btnDownload').addEventListener('click', downloadLocalHTML);
+
+/* ============================================================
+   THEME — 사이트 공통 설정(jc-theme): auto | light | dark
+   ============================================================ */
+const TKEY = 'jc-theme', MODES = ['auto', 'light', 'dark'], MODE_LABEL = { auto: '자동', light: '밝게', dark: '어둡게' };
+let memMode = 'auto';
+function getMode() { let m = memMode; try { m = localStorage.getItem(TKEY) || 'auto'; } catch (_) {} return MODES.includes(m) ? m : 'auto'; }
+function resolveTheme(m) { if (m !== 'auto') return m; const h = new Date().getHours(); return (h >= 7 && h < 19) ? 'light' : 'dark'; }
+function applyTheme() {
+  const m = getMode(), t = resolveTheme(m), d = document.documentElement;
+  if (d.getAttribute('data-theme') !== t) d.setAttribute('data-theme', t);
+  const meta = document.getElementById('metaTheme'); if (meta) meta.setAttribute('content', t === 'dark' ? '#08090c' : '#faf6ef');
+  document.querySelectorAll('[data-theme-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeMode === m)));
+  const lab = document.getElementById('themeCycleLabel'); if (lab) lab.textContent = MODE_LABEL[m];
+}
+function setMode(m) { memMode = m; try { localStorage.setItem(TKEY, m); } catch (_) {} applyTheme(); toast('화면 테마: ' + MODE_LABEL[m] + (m === 'auto' ? ' (오전 7시~오후 7시 밝게)' : '')); }
+document.querySelectorAll('[data-theme-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.themeMode)));
+$('#btnThemeCycle').addEventListener('click', () => setMode(MODES[(MODES.indexOf(getMode()) + 1) % MODES.length]));
+window.addEventListener('storage', e => { if (e.key === TKEY) applyTheme(); });
+window.addEventListener('pageshow', applyTheme);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) applyTheme(); });
+setInterval(applyTheme, 30000);
+applyTheme();
+
+/* ============================================================
+   INIT
+   ============================================================ */
+icons();
+const m = location.hash.match(/^#vol-0([1-3])$/);
+if (m) setTimeout(() => openSlate(+m[1]), 300);
+</script>
+</body>
+</html>
