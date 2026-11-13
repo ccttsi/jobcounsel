@@ -39,7 +39,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     --hair: #e9e0d2; --line2: #d8ccb9;
     --ink: #2a2521; --body: #3d3630; --ink-dim: #655c53; --ink-faint: #7b7168;
     --cyan: #0f766e; --warn: #c2410c; --good: #15803d; --bad: #be123c;
-    --v1: #b45309; --v2: #0f766e; --v3: #6d28d9; --v4: #4d7c0f; --v5: #1d4ed8; --v6: #b91c1c; --v7: #a16207;
+    --v1: #b45309; --v2: #0f766e; --v3: #6d28d9; --v4: #4d7c0f; --v5: #1d4ed8; --v6: #b91c1c; --v7: #a16207; --v8: #475569; --v9: #0369a1; --v10: #be185d;
     --soft: rgba(42,37,33,0.04); --soft-2: rgba(42,37,33,0.07); --track: rgba(42,37,33,0.07);
     --glass-bg: rgba(255,253,248,0.72); --scrim: rgba(60,45,30,0.38);
     --drawer-bg: rgba(250,246,239,0.97);
@@ -65,7 +65,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     --hair: #1e232f; --line2: #2c3445;
     --ink: #e6e9ef; --body: #c9cfda; --ink-dim: #9aa3b2; --ink-faint: #6b7487;
     --cyan: #22d3ee; --warn: #fb7185; --good: #6ee7b7; --bad: #fda4af;
-    --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa; --v4: #a3e635; --v5: #93c5fd; --v6: #fca5a5; --v7: #facc15;
+    --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa; --v4: #a3e635; --v5: #93c5fd; --v6: #fca5a5; --v7: #facc15; --v8: #cbd5e1; --v9: #7dd3fc; --v10: #f9a8d4;
     --soft: rgba(255,255,255,0.02); --soft-2: rgba(255,255,255,0.05); --track: rgba(255,255,255,0.05);
     --glass-bg: rgba(15,23,42,0.6); --scrim: rgba(3,4,6,0.66);
     --drawer-bg: rgba(10,12,17,0.95);
@@ -320,6 +320,47 @@ document.documentElement.setAttribute('data-theme',t);})();
   .book.pamphlet .pub { font-size: 7.5px; }
   .book.pamphlet .pub i, .book.pamphlet .pub svg { display: none; }
 
+  /* VOL.08 — 회청색 리넨 + 놋쇠 명판 */
+  .book.plate {
+    --w: clamp(56px, 14.5vw, 72px); --h: clamp(248px, 61vw, 294px);
+    --foil: #e9dcb8; --band: linear-gradient(180deg, #d8c08a, #8f7440);
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.07) 0 1px, transparent 1px 3px),
+      linear-gradient(180deg, #56676b, #3e4c50);
+  }
+  .book.plate .ttl { color: #3a2e14; width: 74%; margin: 8px 0; padding: 10px 2px; border-radius: 3px;
+    background: linear-gradient(90deg, #a88a4c, #e9d49a 35%, #c9a95f 60%, #9c7d3e);
+    box-shadow: inset 0 0 0 1px rgba(60,45,15,0.45), 0 2px 3px rgba(0,0,0,0.35); text-shadow: 0 1px 0 rgba(255,255,255,0.35); }
+
+  /* VOL.09 — 두꺼운 양장본 위 흰 광택 커버 + 색 띠 */
+  .book.jacket {
+    --w: clamp(82px, 21vw, 104px); --h: clamp(280px, 70vw, 330px);
+    --foil: #10233f; border-radius: 6px 6px 3px 3px; padding-top: 14px;
+    background:
+      linear-gradient(90deg, transparent 0 62%, rgba(255,255,255,0.55) 70%, transparent 78%),
+      linear-gradient(180deg, #fbfbf8, #e9ebef);
+  }
+  .book.jacket .hb { height: 10px; background: linear-gradient(90deg, #0ea5e9, #6366f1 50%, #d946ef); }
+  .book.jacket .hb.t { top: 0; } .book.jacket .hb.b { bottom: 0; }
+  .book.jacket .vol { color: #0369a1; }
+  .book.jacket .ttl { font-size: clamp(14px, 3.6vw, 18px); color: #10233f; }
+  .book.jacket .pub { color: #10233f; }
+
+  /* VOL.10 — 크라프트지 보고서 + 붉은 도장 */
+  .book.kraft {
+    --w: clamp(44px, 11.5vw, 56px); --h: clamp(236px, 58vw, 280px);
+    --foil: #2a1f14; border-radius: 2px; padding: 12px 3px 10px;
+    background:
+      radial-gradient(circle at 25% 35%, rgba(0,0,0,0.05) 0 1px, transparent 1.5px) 0 0 / 4px 4px,
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 3px),
+      linear-gradient(180deg, #c49a6c, #a87f52);
+  }
+  .book.kraft .hb { display: none; }
+  .book.kraft .pub { width: 30px; height: 30px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%;
+    border: 2px solid #b91c1c; color: #b91c1c; font-size: 8.5px; transform: rotate(-12deg); background: rgba(255,240,230,0.25); }
+  .book.kraft .pub i, .book.kraft .pub svg { display: none; }
+
   .book:hover, .book.is-lifted, .book:focus-visible {
     transform: translateZ(32px) translateY(-6px) rotateY(-8deg);
     box-shadow: 2px 0 0 rgba(0,0,0,0.25), 0 26px 30px -16px var(--cab-shade), 0 0 26px -6px var(--lamp);
@@ -470,14 +511,14 @@ document.documentElement.setAttribute('data-theme',t);})();
   <section class="pt-8 sm:pt-12 pb-6 sm:pb-8">
     <div class="mono text-[11px] tracking-[0.2em] t-acc mb-3">NARS × NAFI // LANDMARK SLATES 01–03</div>
     <h1 class="font-extrabold tracking-tight leading-[1.15]" style="font-size:var(--fs-hero)">
-      청년의 이직, 지역의 격차, 고령의 일터, 그리고 AI.<br><span class="t-dim font-semibold">국내외 보고서 일곱 권으로 읽는 고용의 다음 장면</span>
+      청년의 이직, 지역의 격차, 고령의 일터, 그리고 AI.<br><span class="t-dim font-semibold">국내외 보고서 열 권으로 읽는 고용의 다음 장면</span>
     </h1>
     <p class="mt-4 max-w-3xl t-dim" style="font-size:var(--fs-base)">
-      윗단에는 국회입법조사처·국회미래연구원 보고서 3권을, 아랫단에는 WEF·ILO·세계은행·CEPR의 영문 보고서 4권을 한국어로 옮겨 꽂았습니다. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
+      1단에는 국회입법조사처·국회미래연구원 보고서 3권, 2단에는 WEF·ILO·세계은행·CEPR의 영문 보고서 4권(한국어 번역), 3단에는 해외 구직자 지원제도·미래 직업·근로자 역량을 다룬 3권을 꽂았습니다. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
     </p>
     <div class="mt-5 flex flex-wrap gap-2" style="font-size:var(--fs-xs)">
-      <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 7권</span>
-      <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 4권 한국어 번역</span>
+      <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 10권</span>
+      <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 5권 한국어 번역</span>
       <span class="note-tag"><i data-lucide="database" class="w-3.5 h-3.5"></i>수치는 원문 그대로 인용</span>
       <span class="note-tag"><i data-lucide="message-square-quote" class="w-3.5 h-3.5"></i>상담 적용 노트는 편집자 해석</span>
     </div>
@@ -490,7 +531,7 @@ document.documentElement.setAttribute('data-theme',t);})();
       <div class="board" aria-hidden="true"></div>
       <div class="cab-tier"><div class="cab-row" id="tier2"></div></div>
       <div class="board" aria-hidden="true"></div>
-      <div class="cab-tier" aria-hidden="true"><div class="cab-row"></div></div>
+      <div class="cab-tier"><div class="cab-row" id="tier3"></div></div>
       <div class="board" aria-hidden="true"></div>
     </div>
   </section>
@@ -499,7 +540,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   <section class="pb-16" aria-labelledby="catalogTitle">
     <div class="flex items-end justify-between gap-3 mb-4">
       <h2 id="catalogTitle" class="font-bold" style="font-size:var(--fs-lg)">소장 목록</h2>
-      <span class="mono text-[11px] t-faint">CATALOG / 7 ITEMS</span>
+      <span class="mono text-[11px] t-faint">CATALOG / 10 ITEMS</span>
     </div>
     <div id="catalog" class="grid gap-3 md:grid-cols-3"></div>
   </section>
@@ -507,7 +548,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 
 <footer class="border-t hairline">
   <div class="mx-auto max-w-6xl px-3 sm:px-6 py-8 t-faint" style="font-size:var(--fs-xs)">
-    <p class="mb-2">원문: 국회입법조사처 「이슈와 논점」 제2545호(2026.11.08, 구슬이·권다영) · 국회미래연구원 「인구통계 Brief」 26-8호(2026.10, 김봉섭) · 26-9호(2026.10, 정주영) · World Economic Forum, New Economy Skills: Skills for the Energy and Resource Transition(2026.11) · ILO, AI and developing economies(Policy Brief, 2026.11) · World Bank, Making AI Work: Jobs, Firms, and Productivity(ECA Economic Update, 2026.10, CC BY 3.0 IGO) · Aghion·Bergeaud·Bunel·Roulet, Labour market policies in the age of AI(CEPR Europe 2050, 2026.9). 영문 보고서의 한국어 번역은 본 서재의 요약 번역이며 각 기관의 공식 번역이 아닙니다. 각 보고서의 내용은 발행 기관의 공식 의견이 아닐 수 있으며, 상담 적용 노트는 본 서재 편집자의 해석입니다.</p>
+    <p class="mb-2">원문: 국회입법조사처 「이슈와 논점」 제2545호(2026.11.08, 구슬이·권다영) · 국회미래연구원 「인구통계 Brief」 26-8호(2026.10, 김봉섭) · 26-9호(2026.10, 정주영) · World Economic Forum, New Economy Skills: Skills for the Energy and Resource Transition(2026.11) · ILO, AI and developing economies(Policy Brief, 2026.11) · World Bank, Making AI Work: Jobs, Firms, and Productivity(ECA Economic Update, 2026.10, CC BY 3.0 IGO) · Aghion·Bergeaud·Bunel·Roulet, Labour market policies in the age of AI(CEPR Europe 2050, 2026.9) · 국회도서관 최신외국정책정보 2026-13호(2026.10.28, 오유빈) · World Economic Forum, Future of Jobs Report 2025(2025.1) 및 국회도서관 「2025 미래 직업 보고서」 인포그래픽 · KDI FOCUS 통권 제149호(2026.1.14, 김민섭·박윤수). 영문 보고서의 한국어 번역은 본 서재의 요약 번역이며 각 기관의 공식 번역이 아닙니다. 각 보고서의 내용은 발행 기관의 공식 의견이 아닐 수 있으며, 상담 적용 노트는 본 서재 편집자의 해석입니다.</p>
     <a href="../" class="tap inline-flex items-center gap-1.5 hover-ink"><i data-lucide="corner-up-left" class="w-3.5 h-3.5"></i>직업상담 통합 자료실로 돌아가기</a>
   </div>
 </footer>
@@ -620,6 +661,31 @@ const VOLS = [
     orig: 'Labour market policies in the age of AI — Aghion, Bergeaud, Bunel, Roulet',
     sub: '필리프 아기옹 외 — 한국어 요약 번역',
     blurb: '‘일의 종말’ 공포는 근거가 약하다. 대신 유연안정성, 배우는 법을 가르치는 교육, 노동을 늘리는 방향의 유럽 산업정책을 제안한다.'
+  },
+  {
+    id: 8, serial: 'VOL.08', accent: 'var(--v8)', icon: 'plane', shelf: 3,
+    authority: '국회도서관', issue: '최신외국정책정보 2026-13호 · 2026.10.28',
+    key: '아태 청년 구직지원', mat: 'plate', pub: '국회<br>도서관',
+    title: '아태지역의 구직자 지원제도: 호주와 싱가포르 청년 지원을 중심으로',
+    sub: '해외자료조사관 오유빈',
+    blurb: '호주는 수당과 상호 의무, 싱가포르는 일·학습 병행과 2025년 새 재정 지원. 두 나라 모두 상담·훈련 활동을 포인트로 매겨 지원과 묶는다.'
+  },
+  {
+    id: 9, serial: 'VOL.09', accent: 'var(--v9)', icon: 'compass', shelf: 3, lang: 'EN',
+    authority: '세계경제포럼(WEF) · 국회도서관', issue: 'Future of Jobs Report 2025 · 2025.01',
+    key: '미래 직업 전망', mat: 'jacket', pub: 'WEF',
+    title: '미래 직업 보고서 2025',
+    orig: 'Future of Jobs Report 2025 — World Economic Forum (국회도서관 한국어 인포그래픽 함께 수록)',
+    sub: '2025~2030년 일자리·역량 전망 — 한국어 요약 번역',
+    blurb: '5년간 1억 7천만 개가 생기고 9,200만 개가 사라진다. 핵심 역량의 39%가 바뀌고, 근로자 100명 중 59명은 훈련이 필요하다.'
+  },
+  {
+    id: 10, serial: 'VOL.10', accent: 'var(--v10)', icon: 'brain', shelf: 3,
+    authority: '한국개발연구원(KDI)', issue: 'KDI FOCUS 통권 제149호 · 2026.01.14',
+    key: '인지역량과 임금', mat: 'kraft', pub: 'KDI',
+    title: '근로자 인지역량의 감소 요인과 개선방안',
+    sub: '김민섭 KDI 연구위원 · 박윤수 숙명여대 교수',
+    blurb: '한국 근로자의 인지역량은 20대 후반부터, 다른 나라보다 빠르게 떨어진다. 역량을 키워도 임금 보상은 선진국의 절반에도 못 미친다.'
   }
 ];
 
@@ -1386,7 +1452,295 @@ function renderVol7() {
   ].join('');
 }
 
-const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3, 4: renderVol4, 5: renderVol5, 6: renderVol6, 7: renderVol7 };
+
+/* ---------- VOL.08 · 국회도서관 최신외국정책정보 ---------- */
+function renderVol8() {
+  return [
+    sec('v8-overview', 'OVERVIEW · 두 나라의 공통 철학', 'handshake', '돈만 주지 않는다, 활동과 묶어서 준다', `
+      <p>호주와 싱가포르는 구직자 지원을 단순한 금전 지원에 그치지 않고 <b>적극적 구직 활동이나 교육·훈련 참여와 연계</b>한다는 철학을 공유합니다. 다만 출발점은 다릅니다.</p>
+      <div class="grid sm:grid-cols-2 gap-2">
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">호주 — 수당 + 상호 의무</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">센터링크(Centrelink)를 통해 22세 이상 구직촉진수당(Jobseeker Payment), 청년수당(Youth Allowance)을 지급하고, 취약 청년은 취업전환지원(Transition to Work)으로 돕는 전통적 사회보장 체계</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">싱가포르 — 훈련 중심 + 새 안전망</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">일·학습 병행과 졸업생 현장 실습 중심이었으나, 소득 공백 보완 한계로 2025년부터 비자발적 실직자에게 최대 6개월 재정 지원(SkillsFuture Jobseeker Support) 시작</p></div>
+      </div>`),
+
+    sec('v8-market', 'LABOUR MARKET · 고용시장 현황', 'bar-chart-3', '청년 실업이 더 빨리 오른다', `
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('호주 실업률 (2026.8)', '4.6%', '전년 대비 +0.4%p · 72만 2,900명')}
+        ${kpi('호주 청년(15~24세) 실업률', '10.8%', '+1.1%p · 27만 7,200명(+15.6%)')}
+        ${kpi('싱가포르 실업률 (2026.6)', '1.9%', '전분기 대비 −0.1%p')}
+        ${kpi('싱가포르 30세 미만 실업률', '5.7%', '전분기 6.2% · 2025.2Q 5.1%')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">전체 vs 청년 실업률</div>
+        ${bars([
+          { label: '호주 전체', value: 4.6, text: '4.6%', cls: 'muted' },
+          { label: '호주 15~24세', value: 10.8, text: '10.8%', cls: 'warn', strong: true },
+          { label: '싱가포르 전체', value: 1.9, text: '1.9%', cls: 'muted' },
+          { label: '싱가포르 30세 미만', value: 5.7, text: '5.7%', strong: true },
+        ], 12)}
+      </div>`),
+
+    sec('v8-youth', 'AUSTRALIA · 청년수당', 'wallet', '청년수당(Youth Allowance)의 구조', `
+      <div class="scroll-x">
+        <table class="matrix min-w-[560px]">
+          <thead><tr><th style="width:18%">구분</th><th>청년 구직자 프로그램</th><th>학생·도제 프로그램</th></tr></thead>
+          <tbody>
+            <tr><th>대상 연령</th><td>16~21세</td><td>18~24세 전일제 학생·도제, 16~17세 독립 자격 등</td></tr>
+            <tr><th>주요 대상</th><td>전일제 일자리를 찾는 사람, 질병·부상으로 일시적으로 일·공부를 못 하는 사람</td><td>공인 교육기관 전일제 학생, 정식 승인 도제 과정 이수자</td></tr>
+            <tr><th>유지 의무</th><td class="hl">소득이 없어도 2주마다 상황 보고</td><td class="hl">정규 학업량의 75% 이상 이수, 도제는 정부 수습·도제 제도 등록</td></tr>
+            <tr><th>최대 지급액 (2주)</th><td>A$418.90(부모와 동거·미성년) ~ A$1,068.20(상호 의무 면제 싱글 구직자)</td><td>A$418.90 ~ A$854.20</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="dots mt-3">
+        <li><b>소득·자산 심사</b>: 부양 상태 청년은 부모 소득을 함께 심사. 부모 합산 소득이 A$66,722를 넘으면 초과 1달러당 20센트씩 감액</li>
+        <li><b>상호 의무(Mutual Obligation)</b>: 정해진 횟수 이상 구직 활동, 고용 촉진 프로그램·면접 참여. 국가 고용 서비스(Workforce Australia)는 개인별 <b>월 포인트 목표제</b>를 적용하고, 미달 시 지급 정지 등 제재</li>
+        <li><b>기초 역량 연계</b>: SEE 프로그램으로 읽기·쓰기·수학·컴퓨터 무료 교육, 참여 시 언어·문해력·수리력 수당 2주당 A$20.80 추가</li>
+      </ul>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink" style="font-size:var(--fs-sm)">취업전환지원(Transition to Work) · 15~24세</div>
+        <p class="mt-1 mb-0" style="font-size:var(--fs-sm)">진로 안내, 역량 개발, 성인 생활 기술, 직무 훈련·현장실습·인턴십, 구직·면접 준비, 고용주 네트워킹, 주거·정신건강 서비스 연계까지 한 기관이 함께 설계합니다. 기본 주 25시간(센터링크 수급자는 주 15시간) 참여, 기간은 최대 18개월이며 정신건강·노숙 등의 사유가 있으면 6개월 추가 지원.</p>
+      </div>`),
+
+    sec('v8-sg', 'SINGAPORE · 일·학습과 새 안전망', 'graduation-cap', '스킬스퓨처 3종 세트', `
+      <div class="scroll-x">
+        <table class="matrix min-w-[600px]">
+          <thead><tr><th style="width:18%">프로그램</th><th>대상·기간</th><th>지원 내용</th></tr></thead>
+          <tbody>
+            <tr><th>일·학습 병행 (Work-Study)</th><td>졸업 3년 이내 ITE·폴리테크닉·대학 졸업생. Certificate 6주~18개월, Diploma 12~36개월, Post-Diploma 9~18개월</td><td class="hl">전일제 근무 + 현장교육 + 학위·자격 과정 결합. 가입 인센티브 S$5,000, 고용주는 구조화된 현장훈련(OJT) 제공</td></tr>
+            <tr><th>졸업생 산업현장 실습 (GRIT)</th><td>2024~2026년 졸업(예정)자 중 정규직을 구하지 못한 사람. 3~6개월</td><td class="hl">정부 70%·연수기관 30% 부담으로 월 S$1,800~2,400 훈련 수당. 금융·ICT·제조 등 성장 분야 실무 경험 → 정규직 전환</td></tr>
+            <tr><th>구직자 재정 지원 (Jobseeker Support)</th><td>21세 이상 시민, 월평균 총소득 S$5,000 이하, 최근 12개월 중 6개월 이상 고용, 비자발적 실직, 최근 3년 미수급</td><td class="hl">최대 6개월 S$6,000. 첫 달 S$1,500에서 점차 감소, 재취업 시 즉시 중단</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">Jobseeker Support의 월 포인트 목표 (월 5점 달성 시 해당 월 지급)</div>
+        ${bars([
+          { label: '경력 상담 1회', value: 4, text: '4점', strong: true },
+          { label: '경력 세미나·워크숍', value: 2, text: '2점' },
+          { label: '업계 전문가와 네트워킹', value: 3, text: '3점' },
+          { label: '승인된 활동 (예: 일자리 지원)', value: 1, text: '1점', cls: 'muted' },
+        ], 5)}
+        <p class="src">실직 1~3개월 차는 월 10점, 4~6개월 차는 월 5점. 목표를 넘긴 포인트는 다음 기간으로 이월. 2022년 시작된 국민 참여 과정 ‘Forward Singapore’의 새 사회계약 일환으로 Workforce Singapore(WSG)가 운영.</p>
+      </div>`),
+
+    sec('v8-insight', 'COUNSELOR INSIGHT', 'headset', '국민취업지원제도 상담에 비춰 보기', insight([
+      { t: '“포인트제”는 활동 계획을 구체화하는 도구', d: '호주·싱가포르 모두 상담, 세미나, 지원 활동에 점수를 매겨 구직 활동을 측정합니다. 국민취업지원제도의 취업활동계획을 세울 때도 활동마다 기대 효과와 빈도를 수치로 정리하면 내담자가 실행하기 쉬워집니다.' },
+      { t: '상담 자체를 가장 높게 평가', d: '싱가포르는 경력 상담 1회에 가장 높은 4점을 줍니다. 상담이 단순 확인 절차가 아니라 재취업의 핵심 활동이라는 메시지를 내담자에게 전할 수 있습니다.' },
+      { t: '기초 역량은 수당과 함께', d: '호주는 읽기·쓰기·수리 교육 참여에 추가 수당을 줍니다. 기초 역량이 부족한 내담자는 직업훈련 전에 기초 학습부터 연결하는 순서를 고려합니다.' },
+      { t: '취약 청년은 “한 기관이 끝까지”', d: '취업전환지원처럼 주거·정신건강까지 묶어 최대 2년 가까이 동행하는 모델은 고립·은둔 청년 상담에서 지역 자원 연계 계획을 세울 때 참고할 만합니다.' },
+    ], '근거: 국회도서관 「최신외국정책정보」 2026-13호(2026.10.28, 오유빈).')),
+  ].join('');
+}
+
+/* ---------- VOL.09 · WEF Future of Jobs 2025 + 국회도서관 인포그래픽 ---------- */
+function renderVol9() {
+  return [
+    sec('v9-scope', 'SCOPE · 어떤 조사인가', 'globe', '1,400만 근로자를 대표하는 고용주의 전망', `
+      <p>세계경제포럼이 2025년 1월 펴낸 「미래 직업 보고서 2025」는 55개 경제권, 22개 산업군에서 1,400만 명 이상의 근로자를 대표하는 1,000여 개 기업 고용주를 조사해 2025~2030년 노동시장 변화를 전망합니다. 국회도서관은 이 보고서를 한국어 인포그래픽으로 정리해 펴냈고, 이 권은 두 자료를 함께 엮었습니다.</p>
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">2030년까지 사업을 바꿀 거시 트렌드 (응답 고용주 비율)</div>
+        ${bars([
+          { label: '디지털 접근성 확대', value: 60, text: '60%', strong: true },
+          { label: '생활비 상승', value: 50, text: '50%' },
+          { label: '탄소 감축 노력·투자', value: 47, text: '47%' },
+          { label: '노동·사회 이슈 관심 증가', value: 46, text: '46%' },
+          { label: '경제성장 둔화', value: 42, text: '42%' },
+          { label: '기후변화 적응 노력', value: 41, text: '41%' },
+          { label: '생산가능인구 고령화·감소', value: 40, text: '40%' },
+          { label: '지정학적 분열·갈등', value: 34, text: '34%' },
+        ], 65)}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">사업을 바꿀 기술 트렌드</div>
+        ${bars([
+          { label: 'AI·정보처리 기술', value: 86, text: '86%', strong: true },
+          { label: '로봇·자율 시스템', value: 58, text: '58%' },
+          { label: '에너지 생산·저장·배분', value: 41, text: '41%' },
+          { label: '신소재·복합재', value: 30, text: '30%' },
+          { label: '반도체·컴퓨팅', value: 20, text: '20%', cls: 'muted' },
+        ], 90)}
+        <p class="src">고소득국은 출산율 감소·기대수명 연장으로 생산가능인구가 늙고 줄어드는 반면, 인도와 사하라 이남 아프리카는 향후 신규 생산가능인구의 3분의 2를 차지할 전망입니다.</p>
+      </div>`),
+
+    sec('v9-jobs', 'JOBS · 일자리의 대이동', 'arrow-left-right', '1억 7천만 개 생기고, 9,200만 개 사라진다', `
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('새로 생길 일자리', '1억 7천만', '현재 고용의 14%')}
+        ${kpi('사라질 일자리', '9,200만', '현재 고용의 8%')}
+        ${kpi('순증가', '+7,800만', '현재 고용의 7%')}
+        ${kpi('구조적 변동', '22%', '공식 일자리 12억 개 기준')}
+      </div>
+      <div class="grid sm:grid-cols-2 gap-3 mt-3">
+        <div class="card">
+          <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">가장 빠르게 늘어날 직업 Top 10 (비율 기준)</div>
+          <ol class="m-0 pl-5" style="font-size:var(--fs-sm);color:var(--body)">
+            <li>빅데이터 전문가</li><li>핀테크 엔지니어</li><li>AI·머신러닝 전문가</li><li>소프트웨어·애플리케이션 개발자</li><li>보안 관리 전문가</li><li>데이터웨어하우징 전문가</li><li>자율주행·전기차 전문가</li><li>UI·UX 디자이너</li><li>소형 트럭·배달 운전자</li><li>사물인터넷 전문가</li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">가장 빠르게 줄어들 직업 Top 10</div>
+          <ol class="m-0 pl-5" style="font-size:var(--fs-sm);color:var(--body)">
+            <li>우편 서비스 사무원</li><li>은행 창구 직원</li><li>데이터 입력 사무원</li><li>계산원·매표원</li><li>행정 보조원·비서</li><li>인쇄 관련 종사자</li><li>회계·경리·급여 사무원</li><li>자재 기록·재고 관리 사무원</li><li>운송 사무원</li><li>방문 판매원·노점상</li>
+          </ol>
+          <p class="src">그래픽 디자이너, 법률 비서가 처음으로 감소 상위권 바로 아래에 등장 — 생성형 AI가 지식노동까지 수행하기 시작했다는 신호.</p>
+        </div>
+      </div>
+      <p class="mt-3">절대 규모로는 <b>현장 직무</b>가 가장 많이 늘어납니다. 농업 노동자(+3,500만 개)가 1위이고 배달 운전자, 건설 노동자, 판매원, 식품가공 노동자가 뒤를 잇습니다. 고령화로 간호사, <b>사회복지·상담 전문가</b>, 개인 돌봄 보조원 같은 돌봄 일자리도 크게 늘어날 전망입니다.</p>`),
+
+    sec('v9-skills', 'SKILLS · 역량의 5분의 2가 바뀐다', 'brain', '2030년, 100명 중 59명은 훈련이 필요하다', `
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('바뀌거나 낡을 핵심 역량', '39%', '2025~2030')}
+        ${kpi('분석적 사고를 필수로 보는 기업', '10곳 중 7곳', '여전히 1위 핵심 역량')}
+        ${kpi('훈련을 마친 근로자', '50%', '2023년 보고서 41%')}
+        ${kpi('전환의 최대 장벽: 역량 격차', '63%', '고용주 응답')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">근로자 100명 중 2030년까지 훈련이 필요한 59명은</div>
+        ${bars([
+          { label: '현재 직무에서 역량 향상', value: 29, text: '29명', strong: true },
+          { label: '역량 향상 후 사내 재배치', value: 19, text: '19명' },
+          { label: '필요한 훈련을 받기 어려움', value: 11, text: '11명', cls: 'warn', strong: true },
+        ], 30)}
+        <p class="src">마지막 11명은 고용 전망이 점점 위험해지는 사람들입니다.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-2 mt-3">
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">가장 빠르게 커지는 역량</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">① AI·빅데이터 ② 네트워크·사이버보안 ③ 기술 리터러시. 이어서 창의적 사고, 회복탄력성·유연성·민첩성, 호기심·평생학습, 리더십·사회적 영향력, 인재 관리, 분석적 사고, 환경 관리 의식</p></div>
+        <div class="card"><div class="font-semibold t-ink" style="font-size:var(--fs-sm)">줄어드는 역량</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">손재주·지구력·정밀성 수요는 거의 모든 산업에서 순감소. 과업 비중도 사람 단독 47% → 2030년 33%, 기술 단독 22% → 34%로 이동할 전망</p></div>
+      </div>`),
+
+    sec('v9-employer', 'EMPLOYERS · 기업의 대응', 'briefcase', '재교육이 가장 보편적인 전략', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">2025~2030년 인력 전략 (고용주 비율)</div>
+        ${bars([
+          { label: '인력 역량 향상 우선', value: 85, text: '85%', strong: true },
+          { label: '새 역량 갖춘 인력 채용', value: 70, text: '70%' },
+          { label: '감소 직무 → 성장 직무 전환', value: 50, text: '50%' },
+          { label: '역량이 낡은 인력 감축', value: 40, text: '40%', cls: 'warn' },
+        ], 90)}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">AI에 대응한 인력 전략</div>
+        ${bars([
+          { label: 'AI 협업 위한 기존 인력 재교육*', value: 77, text: '77%', strong: true },
+          { label: 'AI 역량 인력 채용', value: 67, text: '약 3분의 2' },
+          { label: 'AI에 맞춰 사업 방향 재정립', value: 50, text: '약 절반' },
+          { label: 'AI 자동화 가능 분야 감원', value: 40, text: '40%', cls: 'warn' },
+        ], 90)}
+        <p class="src">* 77%는 국회도서관 인포그래픽 수치. 나머지는 보고서 본문 기준.</p>
+      </div>
+      <p class="mt-3">인재 확보를 위한 관행에서는 <b>직원의 건강·복지 지원</b>(64%)이 2023년 9위에서 1위로 뛰어올랐고, 효과적인 재교육·역량 향상(63%), 승진 절차 개선(62%)이 뒤를 이었습니다.</p>`),
+
+    sec('v9-korea', 'KOREA · 한국에서 일하는 기업들', 'map-pin', '지정학 긴장을 세계 평균의 두 배로 체감', `
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        ${kpi('지정학적 긴장을 핵심 트렌드로', '71%', '세계 평균의 2배 이상')}
+        ${kpi('세계 무역 제한 증가를 언급', '53%', '')}
+        ${kpi('신규 역량 인력 채용 계획', '92%', '역량 격차 대응')}
+        ${kpi('인력 증강 기술 도입 계획', '83%', '')}
+      </div>
+      <p class="mt-3">한국에서 활동하는 기업은 반도체, 신소재 같은 기술에서 세계보다 앞서 있다고 봅니다. 47%가 산업 차원의 인재 부족을 우려하며, 인재를 끌어들이고 붙잡기 위해 <b>일하는 부모의 육아 지원</b>(50%)도 검토하고 있습니다. 미국·중국과 교역 비중이 큰 한국(71%)과 싱가포르(64%)는 지경학 트렌드의 영향을 더 크게 예상합니다.</p>`),
+
+    sec('v9-glossary', 'TRANSLATION · 용어 대역', 'languages', '이 권에서 쓴 번역어', glossary([
+      ['Structural labour-market churn', '구조적 노동시장 변동', '창출과 소멸을 합친 일자리 재편 규모'],
+      ['Job displacement', '일자리 대체(소멸)', '거시 트렌드로 기존 일자리가 사라지는 것'],
+      ['Upskilling / Reskilling', '역량 향상 / 재교육', '현재 직무 역량을 높이기 / 다른 직무로 옮기기 위한 교육'],
+      ['Redeployment', '재배치', '조직 안에서 감소 직무에서 성장 직무로 옮기는 것'],
+      ['Geoeconomic fragmentation', '지경학적 분절', '무역·투자 제한, 보조금 경쟁 등으로 세계 경제가 나뉘는 현상'],
+      ['Frontline roles', '현장 직무', '농업, 배달, 건설, 판매, 식품가공 등'],
+      ['Skill instability', '역량 불안정성', '보유 역량이 바뀌거나 낡는 비율 (39%)'],
+    ]) + transNote(' 직업 목록 번역어는 국회도서관 인포그래픽 표기를 따랐습니다.')),
+
+    sec('v9-insight', 'COUNSELOR INSIGHT', 'headset', '“59명 중 11명”을 놓치지 않는 상담', insight([
+      { t: '훈련에서 밀려날 11명을 먼저 찾기', d: '재교육이 필요하지만 받기 어려운 사람이 100명 중 11명입니다. 사무·데이터 입력·창구·회계 보조처럼 감소 직무 종사자, 소규모 사업장 재직자를 우선 상담 대상으로 보고 훈련 접근 경로를 구체적으로 연결합니다.' },
+      { t: '감소 직무 → 성장 직무 “다리” 설계', d: '행정 보조원은 데이터 관리·고객 응대 역량을 살려 데이터 품질 관리나 고객 경험 직무로, 회계 사무원은 핀테크 운영·재무 분석 보조로 옮기는 식으로 기존 역량을 이어 주는 경로를 제안합니다.' },
+      { t: '현장·돌봄 직무도 성장 직무', d: '절대 규모로 가장 많이 느는 일은 농업, 배달, 건설, 돌봄입니다. 디지털 직무만 성장 직무로 소개하지 말고, 사회복지·상담 전문가와 돌봄 직무의 수요 증가도 함께 안내합니다.' },
+      { t: '역량 진단은 “분석적 사고 + 기술 리터러시”로', d: '고용주가 가장 중시하는 분석적 사고와 가장 빠르게 커지는 AI·기술 리터러시를 상담 초기 자기평가 항목에 넣어 훈련 우선순위를 정합니다.' },
+    ], '근거: WEF 「Future of Jobs Report 2025」, 국회도서관 「2025 미래 직업 보고서」 인포그래픽.')),
+  ].join('');
+}
+
+/* ---------- VOL.10 · KDI FOCUS ---------- */
+function renderVol10() {
+  return [
+    sec('v10-why', 'WHY · 인지역량이 중요한 이유', 'lightbulb', '평생직장이 사라진 시대의 기초체력', `
+      <p>수리력과 언어능력 같은 <b>인지역량</b>은 새 기술을 배우고 바뀌는 직무에 적용하는 데 필요한 기초 역량입니다. 과거에는 청년기에 익힌 역량으로 은퇴까지 일할 수 있었지만, AI와 자동화로 직무가 빠르게 재편되는 지금은 평생에 걸쳐 새 역량을 익혀야 합니다. KDI는 OECD 「국제성인역량조사(PIAAC)」 1주기(2011~12)와 2주기(2022~23) 자료로 우리나라 근로자의 인지역량을 진단했습니다.</p>`),
+
+    sec('v10-decline', 'DIAGNOSIS · 너무 이르고 너무 빠른 하락', 'trending-down', '20대 후반부터 떨어지기 시작한다', `
+      <div class="grid grid-cols-2 gap-2">
+        ${kpi('25~29세 수리력 순위 (OECD 17개국)', '6위 → 8위', '1주기 → 2주기')}
+        ${kpi('25~29세 언어능력 순위', '4위 → 8위', '평균 수준으로 하락')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">청년층 → 중년층 점수 변화 (언어능력, 2주기)</div>
+        ${bars([
+          { label: '한국', value: 18.94, text: '−18.94점', cls: 'warn', strong: true },
+          { label: '독일', value: 14.74, text: '−14.74점' },
+          { label: 'OECD 평균', value: 6.86, text: '−6.86점', cls: 'muted' },
+          { label: '미국', value: 4.03, text: '−4.03점', cls: 'muted' },
+          { label: '일본', value: 0.65, text: '−0.65점', cls: 'muted' },
+        ], 50)}
+        <div class="font-semibold t-ink mb-1 mt-3" style="font-size:var(--fs-sm)">중년층 → 장년층 점수 변화 (언어능력)</div>
+        ${bars([
+          { label: '한국', value: 45.77, text: '−45.77점', cls: 'warn', strong: true },
+          { label: '일본', value: 40.35, text: '−40.35점' },
+          { label: 'OECD 평균', value: 28.45, text: '−28.45점', cls: 'muted' },
+          { label: '독일', value: 19.58, text: '−19.58점', cls: 'muted' },
+          { label: '미국', value: 15.59, text: '−15.59점', cls: 'muted' },
+        ], 50)}
+        <p class="src">청년층 25~29세 → 중년층 40~44세. 하락은 특히 50대 중반 이후 가속. 같은 세대를 추적한 부록 분석에서도 결과가 같았습니다.</p>
+      </div>
+      <p class="mt-3">15세 대상 PISA에서는 꾸준히 최상위권인데 성인 조사에서 떨어진다는 것은, 하락이 고등학교·대학·취업 준비 과정에서 생겼을 가능성을 시사합니다. 대학생 1인당 공교육비는 OECD 평균의 71.1%(2011, 9,927달러)에서 43.8%(2022, 6,617달러)로 낮아졌습니다.</p>`),
+
+    sec('v10-wage', 'CAUSE · 역량을 키워도 보상이 적다', 'coins', '근속에 주는 임금, 역량에 주지 않는 임금', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">수리력 1표준편차 향상 시 임금 증가율 (1주기)</div>
+        ${bars([
+          { label: '미국', value: 8.10, text: '8.10%', cls: 'muted' },
+          { label: '독일', value: 7.38, text: '7.38%', cls: 'muted' },
+          { label: '일본', value: 6.43, text: '6.43%', cls: 'muted' },
+          { label: '27개국 평균', value: 6.13, text: '6.13%', cls: 'muted' },
+          { label: '프랑스', value: 4.99, text: '4.99%', cls: 'muted' },
+          { label: '한국', value: 2.99, text: '2.99%', cls: 'warn', strong: true },
+        ], 9)}
+        <p class="src">2주기(OECD 2024 분석): 한국 수리력 2.46%·언어능력 2.01% vs OECD 22개국 평균 8.61%·7.65%. 독일 14.14%, 일본 10.34%(수리력).</p>
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">근속 1년당 임금 증가율 (연공성)</div>
+        ${bars([
+          { label: '한국', value: 2.05, text: '2.05%', cls: 'warn', strong: true },
+          { label: '독일', value: 1.08, text: '1.08%', cls: 'muted' },
+          { label: '일본', value: 1.03, text: '1.03%', cls: 'muted' },
+          { label: '미국', value: 0.89, text: '0.89%', cls: 'muted' },
+          { label: '27개국 평균', value: 0.71, text: '0.71%', cls: 'muted' },
+          { label: '프랑스', value: 0.41, text: '0.41%', cls: 'muted' },
+        ], 2.2)}
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
+        ${kpi('임금체계 자체가 없는 사업체', '63%', '2025.6 사업체노동력조사 부가조사')}
+        ${kpi('직능급 운영 사업체', '9.5%', '직무급 8.6%')}
+        ${kpi('1,000인+ 사업체 임금 프리미엄', '+30.49%', '10인 이하 대비 (1주기)')}
+        ${kpi('평생학습 불참 이유 1위', '54.5%', '직장 업무로 시간 부족')}
+      </div>
+      <p class="mt-3">보고서는 이 구조가 세 가지 비효율을 낳는다고 봅니다. 업무 능력과 무관한 학력·스펙 경쟁의 과열, 경력 성숙기의 역량 감가상각, 그리고 뒤늦게 역량을 키운 ‘늦깎이’ 근로자가 보상받을 기회의 부재입니다.</p>`),
+
+    sec('v10-policy', 'POLICY · 개선 방향', 'wrench', '역량에 보상하고, 배울 시간을 주라', `
+      <ul class="dots">
+        <li><b>역량·성과 기반 임금체계 확산</b>: 직무급·성과급 등. 직무를 체계화하고 성과를 측정하는 체계부터 마련</li>
+        <li><b>학습 시간 확보</b>: 역량 개발 의지가 있는 근로자가 근로시간을 줄이거나 조정할 수 있는 선택권</li>
+        <li><b>훈련 프로그램 내실화</b>: 학습·훈련 성과가 임금 등 보상과 연계되도록</li>
+        <li><b>일하는 방식 점검</b>: 낮은 자율성, 경직적 조직문화, 역량 활용에 미흡한 인사관리 개선</li>
+        <li><b>고등교육 점검</b>: 대학 등 고등교육의 경쟁력과 재직자 학습의 실효성 진단</li>
+      </ul>`),
+
+    sec('v10-insight', 'COUNSELOR INSIGHT', 'headset', '중장년 내담자의 “기초체력” 관리', insight([
+      { t: '중장년 상담에 인지역량 유지 계획을', d: '한국 근로자의 인지역량은 50대 중반 이후 급격히 떨어집니다. 전직 지원 상담에서 직무 훈련만이 아니라 읽기·수리·디지털 문해력을 꾸준히 쓰는 학습 습관을 함께 설계합니다.' },
+      { t: '“시간이 없어서”를 상담 의제로', d: '평생학습을 못 하는 가장 큰 이유가 업무로 인한 시간 부족(54.5%)입니다. 온라인·야간·주말 과정, 짧은 모듈형 과정을 찾아 내담자의 실제 일정에 맞춥니다.' },
+      { t: '청년에게는 “스펙보다 역량”', d: '대기업 진입을 위한 스펙 경쟁이 과열된 구조임을 함께 짚고, 입사 후에도 성장할 수 있는 직무 역량과 학습 환경(교육 지원, 직무급 운영 여부)을 회사 선택 기준에 넣도록 돕습니다.' },
+      { t: '구인 기업 상담 시 임금체계 질문', d: '구인처와 상담할 때 역량·직무에 따른 보상 체계가 있는지 확인하면, 구직자에게 장기 성장 가능성이 큰 일자리를 안내하는 근거가 됩니다.' },
+    ], '근거: KDI FOCUS 통권 제149호(2026.1.14, 김민섭·박윤수). 집필자 개인 의견이며 KDI 공식 견해가 아닙니다.')),
+  ].join('');
+}
+
+const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3, 4: renderVol4, 5: renderVol5, 6: renderVol6, 7: renderVol7, 8: renderVol8, 9: renderVol9, 10: renderVol10 };
 
 /* ============================================================
    SHELF + CATALOG
@@ -1403,6 +1757,7 @@ const bookHTML = v => `
   </button>`;
 tier1.innerHTML = VOLS.filter(v => v.shelf === 1).map(bookHTML).join('') + '<span class="bookend" aria-hidden="true"></span>';
 $('#tier2').innerHTML = VOLS.filter(v => v.shelf === 2).map(bookHTML).join('') + '<span class="bookend" aria-hidden="true"></span>';
+$('#tier3').innerHTML = VOLS.filter(v => v.shelf === 3).map(bookHTML).join('') + '<span class="bookend" aria-hidden="true"></span>';
 
 $('#catalog').innerHTML = VOLS.map(v => `
   <button type="button" data-vol="${v.id}" class="cat-item text-left card hover-line transition tap" style="--accent:${v.accent}">
@@ -1458,7 +1813,7 @@ function openSlate(vol, secId) {
   drawer.classList.add('open'); scrim.classList.add('open');
   drawer.setAttribute('aria-hidden', 'false');
   document.body.classList.add('locked');
-  history.replaceState(null, '', '#vol-0' + vol);
+  history.replaceState(null, '', '#vol-' + String(vol).padStart(2, '0'));
   dBody.scrollTop = 0; anchorTop = 0; lastTop = 0;
   animateBars(dBody);
   setTimeout(() => {
@@ -1630,8 +1985,8 @@ applyTheme();
    INIT
    ============================================================ */
 icons();
-const m = location.hash.match(/^#vol-0([1-7])$/);
-if (m) setTimeout(() => openSlate(+m[1]), 300);
+const m = location.hash.match(/^#vol-(0[1-9]|10)$/);
+if (m) setTimeout(() => openSlate(parseInt(m[1], 10)), 300);
 </script>
 </body>
 </html>
