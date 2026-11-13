@@ -143,75 +143,143 @@ document.documentElement.setAttribute('data-theme',t);})();
   .theme-cycle { display: none; }
   @media (max-width: 639px) { .seg { display: none; } .theme-cycle { display: inline-flex; } }
 
-  /* ---------- BOOKSHELF ---------- */
-  .shelf-stage { perspective: 1200px; perspective-origin: 50% 20%; }
-  .shelf-frame {
-    position: relative; border: 1px solid var(--hair); border-radius: 20px; padding: clamp(10px, 2vw, 22px);
-    background: var(--frame-bg);
-    transform: rotateX(4deg); transform-style: preserve-3d;
-    box-shadow: var(--frame-shadow);
+  /* ---------- BOOKCASE (나무 책장) ---------- */
+  :root {
+    --wood-1: #c99a62; --wood-2: #b4834b; --wood-3: #8d5f30; --wood-edge: #e2bb86;
+    --cab-back: linear-gradient(180deg, #d8c29f 0%, #e6d6ba 55%, #eadcc4 100%);
+    --cab-shade: rgba(70,45,20,0.32); --lamp: rgba(255,226,170,0.55); --book-dim: 1;
   }
-  .tier { position: relative; transform-style: preserve-3d; padding: clamp(16px, 3vw, 34px) clamp(8px, 2vw, 22px) 0; }
-  .tier + .tier { margin-top: clamp(10px, 2vw, 18px); }
-  .tier::before { /* top-down spotlight */
-    content: ""; position: absolute; left: 8%; right: 8%; top: 0; height: 100%; pointer-events: none;
-    background: radial-gradient(ellipse 60% 85% at 50% 0%, var(--spot), transparent 75%);
+  :root[data-theme="dark"] {
+    --wood-1: #5a3e2a; --wood-2: #45301f; --wood-3: #2e1f14; --wood-edge: #7a5638;
+    --cab-back: linear-gradient(180deg, #120e0b 0%, #1a1410 60%, #1e1712 100%);
+    --cab-shade: rgba(0,0,0,0.7); --lamp: rgba(255,196,120,0.16); --book-dim: 0.9;
   }
-  .tier-back {
-    position: absolute; inset: 0 0 18px 0; border-radius: 12px; pointer-events: none;
+  .shelf-stage { perspective: 1400px; perspective-origin: 50% 10%; }
+  .bookcase {
+    position: relative; border-radius: 10px; padding: clamp(10px, 2vw, 16px) clamp(10px, 2vw, 16px) 0;
     background:
-      linear-gradient(115deg, transparent 0 38%, var(--soft-2) 40%, transparent 44% 70%, var(--soft) 72%, transparent 75%),
-      var(--back-panel);
+      repeating-linear-gradient(91deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 11px),
+      repeating-linear-gradient(88deg, rgba(0,0,0,0.06) 0 1px, transparent 1px 17px),
+      linear-gradient(180deg, var(--wood-1), var(--wood-2));
+    box-shadow: 0 30px 60px -30px var(--cab-shade), 0 2px 0 var(--wood-edge) inset, 0 -2px 0 var(--wood-3) inset;
+    transform: rotateX(2deg); transform-style: preserve-3d;
   }
-  .tier-label { position: absolute; left: clamp(10px, 2vw, 22px); top: 8px; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.18em; }
-  .tier-row { position: relative; display: flex; align-items: flex-end; gap: clamp(8px, 2.2vw, 22px); transform-style: preserve-3d; z-index: 2; }
-  .tier-empty { min-height: clamp(96px, 18vw, 170px); }
-  .plank {
-    position: relative; height: 18px; margin: 0 calc(-1 * clamp(8px, 2vw, 22px));
-    border-bottom: 1px solid var(--plank-line);
-    background: var(--plank-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border-radius: 3px 3px 8px 8px;
-    box-shadow: 0 1px 0 var(--plank-glow) inset, 0 18px 30px -12px var(--plank-glow), 0 24px 40px -18px var(--plank-shadow);
+  .bookcase::before { /* crown molding */
+    content: ""; position: absolute; left: -6px; right: -6px; top: -10px; height: 12px; border-radius: 6px 6px 2px 2px;
+    background: linear-gradient(180deg, var(--wood-edge), var(--wood-2) 60%, var(--wood-3));
+    box-shadow: 0 3px 6px -2px var(--cab-shade);
   }
-  .plank::before {
-    content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 12px;
-    background: linear-gradient(180deg, var(--soft), var(--plank-glow));
-    border-top: 1px solid var(--glare);
-    transform: rotateX(70deg); transform-origin: bottom;
+  .bookcase::after { /* plinth */
+    content: ""; position: absolute; left: -4px; right: -4px; bottom: -12px; height: 14px; border-radius: 2px 2px 6px 6px;
+    background: linear-gradient(180deg, var(--wood-2), var(--wood-3));
+    box-shadow: 0 10px 18px -8px var(--cab-shade);
   }
-  .plank::after { content: ""; position: absolute; top: 3px; left: 12%; width: 28%; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--glare), transparent); }
-
-  .slate {
-    --accent: var(--cyan);
-    position: relative; flex: 0 0 auto; text-align: left; cursor: pointer;
-    width: clamp(98px, 27vw, 176px); height: clamp(232px, 58vw, 312px);
-    padding: clamp(10px, 1.6vw, 16px) clamp(10px, 1.5vw, 15px) clamp(10px, 1.6vw, 16px) clamp(15px, 2vw, 21px);
-    border-radius: 6px 10px 10px 6px; border: 1px solid var(--slate-line); color: var(--ink);
-    background: var(--slate-bg);
-    box-shadow: var(--slate-shadow), inset 0 1px 0 var(--glare);
-    transform: translateZ(0) translateY(0) rotateY(0);
+  .cab-tier {
+    position: relative; overflow: hidden; border-radius: 3px 3px 0 0;
+    padding: clamp(18px, 3.2vw, 30px) clamp(10px, 2.4vw, 22px) 0;
+    background: var(--cab-back);
+    box-shadow: inset 0 14px 18px -10px var(--cab-shade), inset 12px 0 16px -12px var(--cab-shade), inset -12px 0 16px -12px var(--cab-shade);
     transform-style: preserve-3d;
-    transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease, border-color .45s ease;
-    display: flex; flex-direction: column; gap: 8px;
-    -webkit-box-reflect: below 3px linear-gradient(transparent 78%, var(--reflect));
+  }
+  .cab-tier::before { /* 위에서 비추는 조명 */
+    content: ""; position: absolute; left: 10%; right: 10%; top: -10px; height: 85%; pointer-events: none;
+    background: radial-gradient(ellipse 55% 80% at 50% 0%, var(--lamp), transparent 72%);
+  }
+  .cab-row { position: relative; display: flex; align-items: flex-end; gap: clamp(3px, 0.8vw, 6px); min-height: clamp(110px, 20vw, 170px); transform-style: preserve-3d; z-index: 2; }
+  .board {
+    position: relative; height: clamp(14px, 2vw, 18px); margin: 0 calc(-1 * clamp(10px, 2vw, 16px));
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 3px, transparent 3px 14px),
+      linear-gradient(180deg, var(--wood-edge) 0, var(--wood-1) 18%, var(--wood-2) 70%, var(--wood-3) 100%);
+    box-shadow: 0 8px 10px -6px var(--cab-shade); z-index: 3;
+  }
+  .board + .cab-tier { margin-top: 0; }
+
+  /* ---------- BOOKS (권별 재질) ---------- */
+  .book {
+    --w: 70px; --h: 280px;
+    position: relative; flex: 0 0 auto; width: var(--w); height: var(--h); cursor: pointer;
+    border-radius: 3px 3px 2px 2px; color: var(--foil);
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    padding: 19px 4px 20px; filter: brightness(var(--book-dim));
+    transform: translateZ(0) translateY(0) rotateY(0); transform-style: preserve-3d;
+    transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease, filter .3s ease;
+    box-shadow: 2px 0 0 rgba(0,0,0,0.25), 6px 4px 10px -4px var(--cab-shade);
     -webkit-tap-highlight-color: transparent;
   }
-  .slate-edge { position: absolute; left: 0; top: 0; bottom: 0; width: 6px; border-radius: 6px 0 0 6px; background: var(--accent); box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent); opacity: .92; }
-  .slate .serial { font-size: clamp(11px, 1.3vw, 13px); font-weight: 700; color: var(--accent); }
-  .slate .badge { align-self: flex-start; font-size: clamp(9.5px, 1.1vw, 11px); line-height: 1.2; padding: 4px 7px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); font-weight: 600; }
-  .slate .s-title { font-size: clamp(13px, 1.8vw, 18px); font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; margin-top: 4px; }
-  .slate .s-meta { margin-top: auto; font-size: clamp(9.5px, 1vw, 11px); color: var(--ink-faint); line-height: 1.35; }
-  .slate .s-open { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--ink-dim); }
-  .slate:hover, .slate.is-lifted, .slate:focus-visible {
-    transform: translateZ(32px) translateY(-6px) rotateY(-8deg);
-    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-    box-shadow:
-      0 30px 40px -18px var(--plank-shadow),
-      0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent),
-      0 0 32px -6px color-mix(in srgb, var(--accent) 50%, transparent),
-      inset 0 1px 0 var(--glare);
+  .book::after { /* 둥근 책등 음영 */
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(0,0,0,0.38) 0%, rgba(255,255,255,0.10) 14%, rgba(255,255,255,0.16) 26%, rgba(255,255,255,0.02) 48%, rgba(0,0,0,0.10) 74%, rgba(0,0,0,0.42) 100%);
   }
-  @media (prefers-reduced-motion: reduce) { .slate, .drawer, .scrim, body { transition: none !important; } }
+  .book .hb { position: absolute; left: 0; right: 0; height: 5px; background: var(--band); }
+  .book .hb.t { top: 7px; } .book .hb.b { bottom: 7px; }
+  .book .vol { position: relative; z-index: 1; text-align: center; line-height: 1; font-family: "JetBrains Mono", monospace; }
+  .book .vol small { display: block; font-size: 8px; letter-spacing: .2em; opacity: .85; }
+  .book .vol b { display: block; font-size: clamp(14px, 3.4vw, 17px); margin-top: 3px; }
+  .book .ttl {
+    position: relative; z-index: 1; writing-mode: vertical-rl; text-orientation: upright;
+    font-weight: 800; font-size: clamp(12.5px, 3.3vw, 16px); letter-spacing: .05em; line-height: 1.15; white-space: nowrap;
+    padding: 10px 0; flex: 1; display: flex; align-items: center; justify-content: center;
+  }
+  .book .pub { position: relative; z-index: 1; text-align: center; font-size: 8.5px; line-height: 1.25; font-weight: 700; letter-spacing: .02em; }
+  .book .pub i, .book .pub svg { display: block; width: 14px; height: 14px; margin: 0 auto 3px; }
+
+  /* VOL.01 — 리넨 천 장정, 벽돌색 + 크림색 박 */
+  .book.cloth {
+    --w: clamp(56px, 14.5vw, 74px); --h: clamp(248px, 62vw, 296px);
+    --foil: #f5e7c8; --band: repeating-linear-gradient(90deg, #f5e7c8 0 3px, #7a2f19 3px 5px);
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.08) 0 1px, transparent 1px 3px),
+      linear-gradient(180deg, #b0512f, #8f3a1f);
+  }
+  .book.cloth .ttl { text-shadow: 0 1px 0 rgba(0,0,0,0.35); }
+  .book.cloth .ttl::before, .book.cloth .ttl::after { content: ""; position: absolute; left: 50%; width: 60%; height: 1px; transform: translateX(-50%); background: var(--foil); opacity: .7; }
+  .book.cloth .ttl::before { top: 0; } .book.cloth .ttl::after { bottom: 0; }
+
+  /* VOL.02 — 가죽 장정, 짙은 청록 + 금박, 책등 마디 */
+  .book.leather {
+    --w: clamp(64px, 16.5vw, 86px); --h: clamp(268px, 67vw, 318px);
+    --foil: #e2c06d; --band: linear-gradient(180deg, #e2c06d, #9b7a2c);
+    border-radius: 6px 6px 4px 4px;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0 1px, transparent 1.5px) 0 0 / 5px 5px,
+      radial-gradient(circle at 70% 60%, rgba(0,0,0,0.12) 0 1px, transparent 1.5px) 0 0 / 7px 7px,
+      linear-gradient(180deg, #1f5652, #123b38);
+  }
+  .book.leather .rib { position: absolute; left: 0; right: 0; height: 7px; z-index: 1;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.35)); box-shadow: 0 0 0 1px rgba(226,192,109,0.25); }
+  .book.leather .ttl { background: linear-gradient(180deg, #0c2725, #0f2f2d); border: 1px solid rgba(226,192,109,0.6); border-radius: 2px; margin: 8px 0; padding: 10px 2px; width: 72%; }
+
+  /* VOL.03 — 페이퍼백, 미색 종이 + 보라 띠, 인쇄 잉크 */
+  .book.paper {
+    --w: clamp(52px, 13.5vw, 68px); --h: clamp(232px, 57vw, 278px);
+    --foil: #2b2340; --band: #5b2bb5;
+    border-radius: 2px; padding: 6px 4px 4px;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.018) 0 1px, transparent 1px 2px),
+      linear-gradient(180deg, #f1ead9, #e4dac3);
+  }
+  .book.paper .hb { height: 34px; background: linear-gradient(180deg, #6d3bd0, #4f24a0); }
+  .book.paper .hb.t { top: 0; } .book.paper .hb.b { bottom: 0; height: 26px; }
+  .book.paper .vol { color: #fff; }
+  .book.paper .pub { color: #fff; }
+  .book.paper .pub i, .book.paper .pub svg { display: none; }
+  .book.paper .ttl { color: #2b2340; }
+
+  .book:hover, .book.is-lifted, .book:focus-visible {
+    transform: translateZ(32px) translateY(-6px) rotateY(-8deg);
+    box-shadow: 2px 0 0 rgba(0,0,0,0.25), 0 26px 30px -16px var(--cab-shade), 0 0 26px -6px var(--lamp);
+    filter: brightness(calc(var(--book-dim) + 0.06));
+    z-index: 5;
+  }
+  .bookend {
+    position: relative; flex: 0 0 auto; width: 10px; height: clamp(92px, 22vw, 120px); margin-left: 4px;
+    border-radius: 2px 2px 0 0; background: linear-gradient(90deg, #6b6f76, #a8adb5 40%, #6b6f76);
+    box-shadow: 3px 3px 8px -3px var(--cab-shade);
+  }
+  .bookend::after { content: ""; position: absolute; left: -2px; bottom: 0; width: 34px; height: 4px; border-radius: 1px; background: linear-gradient(180deg, #a8adb5, #5d6168); }
+  @media (prefers-reduced-motion: reduce) { .book, .drawer, .scrim, body, .dhead-roll { transition: none !important; } }
 
   /* ---------- DRAWER ---------- */
   .scrim { position: fixed; inset: 0; background: var(--scrim); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); opacity: 0; pointer-events: none; transition: opacity .35s ease; z-index: 60; }
@@ -224,6 +292,24 @@ document.documentElement.setAttribute('data-theme',t);})();
     display: flex; flex-direction: column;
   }
   .drawer.open { transform: translateX(0); }
+  /* 두루마리 머리말: 스크롤하면 말리고, 막대를 누르면 펼쳐진다 */
+  .dhead { position: relative; z-index: 2; background: var(--drawer-bg); border-bottom: 1px solid var(--hair); }
+  .dhead-bar { display: flex; align-items: center; gap: 6px; min-height: 56px; padding: 6px 10px 6px 16px; }
+  .dhead-short { min-width: 0; flex: 1; display: flex; align-items: baseline; gap: 8px; }
+  .dhead-short b { font-size: var(--fs-sm); font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dhead-roll { display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows .45s cubic-bezier(.2,.8,.2,1), opacity .3s ease; }
+  .dhead-roll > div { overflow: hidden; min-height: 0; }
+  .dhead.rolled .dhead-roll { grid-template-rows: 0fr; opacity: 0; }
+  .roll-paper { padding: 0 16px 12px; }
+  @media (min-width: 640px) { .dhead-bar { padding-left: 28px; } .roll-paper { padding: 0 28px 14px; } }
+  .rod-btn { display: block; width: 100%; padding: 2px 8px 6px; }
+  .rod { position: relative; height: 10px; margin: 0 14px; border-radius: 999px;
+    background: linear-gradient(180deg, var(--wood-edge), var(--wood-1) 45%, var(--wood-3)); box-shadow: 0 3px 5px -2px var(--cab-shade); }
+  .rod::before, .rod::after { content: ""; position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 50%; transform: translateY(-50%);
+    background: radial-gradient(circle at 35% 35%, var(--wood-edge), var(--wood-2) 60%, var(--wood-3)); box-shadow: 0 2px 4px var(--cab-shade); }
+  .rod::before { left: -12px; } .rod::after { right: -12px; }
+  .roll-toggle i, .roll-toggle svg { transition: transform .35s ease; }
+  .dhead:not(.rolled) .roll-toggle svg, .dhead:not(.rolled) .roll-toggle i { transform: rotate(180deg); }
   .drawer-body { overflow-y: auto; overscroll-behavior: contain; flex: 1; -webkit-overflow-scrolling: touch; }
   .chip-nav { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
   .chip-nav::-webkit-scrollbar { display: none; }
@@ -334,7 +420,7 @@ document.documentElement.setAttribute('data-theme',t);})();
       청년의 이직, 지역의 격차, 고령의 일터.<br><span class="t-dim font-semibold">국회 보고서 세 권으로 읽는 고용의 다음 장면</span>
     </h1>
     <p class="mt-4 max-w-3xl t-dim" style="font-size:var(--fs-base)">
-      국회입법조사처와 국회미래연구원이 2026년 10–11월에 펴낸 보고서를 직업상담 실무의 언어로 다시 엮었습니다. 서가의 슬레이트를 누르면 읽기 책상이 열립니다.
+      국회입법조사처와 국회미래연구원이 2026년 10–11월에 펴낸 보고서를 직업상담 실무의 언어로 다시 엮었습니다. 책장에서 책을 누르면 읽기 책상이 열립니다.
     </p>
     <div class="mt-5 flex flex-wrap gap-2" style="font-size:var(--fs-xs)">
       <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 3권</span>
@@ -345,28 +431,13 @@ document.documentElement.setAttribute('data-theme',t);})();
 
   <!-- ================= BOOKSHELF ================= -->
   <section aria-label="디지털 서가" class="shelf-stage pb-10 sm:pb-14">
-    <div class="shelf-frame">
-      <!-- Tier 1 -->
-      <div class="tier">
-        <div class="tier-back"></div>
-        <div class="tier-label mono">TIER 01 · ACTIVE</div>
-        <div class="tier-row" id="tier1"></div>
-        <div class="plank" aria-hidden="true"></div>
-      </div>
-      <!-- Tier 2 -->
-      <div class="tier" aria-hidden="true">
-        <div class="tier-back"></div>
-        <div class="tier-label mono">TIER 02</div>
-        <div class="tier-row tier-empty"></div>
-        <div class="plank"></div>
-      </div>
-      <!-- Tier 3 -->
-      <div class="tier" aria-hidden="true">
-        <div class="tier-back"></div>
-        <div class="tier-label mono">TIER 03</div>
-        <div class="tier-row tier-empty"></div>
-        <div class="plank"></div>
-      </div>
+    <div class="bookcase">
+      <div class="cab-tier"><div class="cab-row" id="tier1"></div></div>
+      <div class="board" aria-hidden="true"></div>
+      <div class="cab-tier" aria-hidden="true"><div class="cab-row"></div></div>
+      <div class="board" aria-hidden="true"></div>
+      <div class="cab-tier" aria-hidden="true"><div class="cab-row"></div></div>
+      <div class="board" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -390,22 +461,26 @@ document.documentElement.setAttribute('data-theme',t);})();
 <!-- ================= READING DESK (DRAWER) ================= -->
 <div id="scrim" class="scrim" aria-hidden="true"></div>
 <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" aria-hidden="true">
-  <div class="border-b hairline px-4 sm:px-7 pt-4 pb-3">
-    <div class="flex items-start gap-3">
-      <div class="min-w-0 flex-1">
-        <div class="flex flex-wrap items-center gap-2 mb-1.5">
-          <span id="dSerial" class="mono text-[12px] font-bold acc"></span>
-          <span id="dBadge" class="note-tag"></span>
-          <span id="dIssue" class="mono text-[11px] t-faint"></span>
-        </div>
-        <h2 id="dTitle" class="font-extrabold leading-snug tracking-tight" style="font-size:var(--fs-xl)"></h2>
-        <p id="dSub" class="mt-1 t-dim" style="font-size:var(--fs-sm)"></p>
-      </div>
+  <div id="dHead" class="dhead">
+    <div class="dhead-bar">
+      <div class="dhead-short"><span id="dSerial" class="mono text-[12px] font-bold acc"></span><b id="dShort"></b></div>
+      <button id="btnRoll" type="button" class="roll-toggle tap rounded-xl inline-flex items-center justify-center gap-1 hover-soft" aria-expanded="true" aria-controls="dRoll" style="font-size:var(--fs-xs)">
+        <span id="rollLabel" class="t-dim">말기</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
+      </button>
       <button id="btnClose" type="button" class="tap rounded-xl inline-flex items-center justify-center border hairline hover-soft" aria-label="읽기 책상 닫기">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
     </div>
-    <nav id="dNav" class="chip-nav mt-3" aria-label="섹션 이동"></nav>
+    <div id="dRoll" class="dhead-roll"><div><div class="roll-paper">
+      <div class="flex flex-wrap items-center gap-2 mb-1.5">
+        <span id="dBadge" class="note-tag"></span>
+        <span id="dIssue" class="mono text-[11px] t-faint"></span>
+      </div>
+      <h2 id="dTitle" class="font-extrabold leading-snug tracking-tight" style="font-size:var(--fs-xl)"></h2>
+      <p id="dSub" class="mt-1 t-dim" style="font-size:var(--fs-sm)"></p>
+      <nav id="dNav" class="chip-nav mt-3" aria-label="섹션 이동"></nav>
+    </div></div></div>
+    <button id="rodBtn" type="button" class="rod-btn" aria-label="머리말 펼치기·말기" tabindex="-1"><div class="rod"></div></button>
   </div>
   <div id="dBody" class="drawer-body px-4 sm:px-7 pb-16"></div>
 </aside>
@@ -434,7 +509,7 @@ const VOLS = [
   {
     id: 1, serial: 'VOL.01', accent: 'var(--v1)', icon: 'scale',
     authority: '국회입법조사처', issue: '이슈와 논점 제2545호 · 2026.11.08',
-    spine: '자발적 퇴사 청년<br>실업급여',
+    spine: '자발적 퇴사 청년<br>실업급여', key: '청년 실업급여 논쟁', mat: 'cloth', pub: '국회<br>입법조사처',
     title: '자발적 퇴사 청년 대상 실업급여 도입논란은 무엇을 놓치고 있나?',
     sub: '제도 밖 청년 보호와 실질적인 청년 고용 지원 방안 모색 필요성 — 구슬이·권다영',
     blurb: '35세 미만 청년에게 사유 불문 생애 1회 구직급여를 주자는 정부안. 쟁점은 도덕적 해이보다 고용보험 밖 청년과 미스매치 예방에 있다.'
@@ -442,7 +517,7 @@ const VOLS = [
   {
     id: 2, serial: 'VOL.02', accent: 'var(--v2)', icon: 'map',
     authority: '국회미래연구원', issue: '인구통계 Brief 26-8호 · 2026.10',
-    spine: '청년 고용<br>지역격차 진단',
+    spine: '청년 고용<br>지역격차 진단', key: '청년 고용 지역격차', mat: 'leather', pub: '국회<br>미래연구원',
     title: '청년 고용의 지역격차 진단 및 정책 제언',
     sub: '229개 시군구 · 고용기회 × 보상수준 × 안정성 — 김봉섭',
     blurb: '고용률 하나로는 보이지 않는 격차. 229개 시군구를 진입과 보상으로 나누면 네 개의 서로 다른 청년 노동시장이 드러난다.'
@@ -450,7 +525,7 @@ const VOLS = [
   {
     id: 3, serial: 'VOL.03', accent: 'var(--v3)', icon: 'users',
     authority: '국회미래연구원', issue: '인구통계 Brief 26-9호 · 2026.10',
-    spine: '늘어난 고령 취업자와<br>노동력 재편',
+    spine: '늘어난 고령 취업자와<br>노동력 재편', key: '고령 취업자의 일터', mat: 'paper', pub: '국회<br>미래연구원',
     title: '늘어난 고령 취업자는 어디에서 일하는가',
     sub: '지역·산업·세대로 본 노동력 구성의 변화 — 정주영',
     blurb: '7년간 고령 취업자 169만 명 증가. 55~64세까지는 비슷하던 일자리가 65세 이후 지역별로 갈라지고, 비수도권 일터는 이미 세대가 역전됐다.'
@@ -814,14 +889,13 @@ const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3 };
 const $ = s => document.querySelector(s);
 const tier1 = $('#tier1');
 tier1.innerHTML = VOLS.map(v => `
-  <button type="button" class="slate" data-vol="${v.id}" style="--accent:${v.accent}" aria-label="${v.serial} ${v.title} 열기">
-    <span class="slate-edge" aria-hidden="true"></span>
-    <span class="serial mono">${v.serial}</span>
-    <span class="badge">${v.authority}</span>
-    <span class="s-title">${v.spine}</span>
-    <span class="s-meta mono">${v.issue.split(' · ')[0]}<br>${v.issue.split(' · ')[1]}</span>
-    <span class="s-open"><i data-lucide="${v.icon}" class="w-3.5 h-3.5" style="color:${v.accent}"></i>열기</span>
-  </button>`).join('');
+  <button type="button" class="book ${v.mat}" data-vol="${v.id}" aria-label="${v.serial} ${v.title} (${v.authority}) 열기">
+    <span class="hb t" aria-hidden="true"></span>${v.mat === 'leather' ? '<span class="rib" style="top:22%"></span><span class="rib" style="top:78%"></span>' : ''}
+    <span class="vol"><small>VOL</small><b>${v.serial.slice(-2)}</b></span>
+    <span class="ttl">${v.key}</span>
+    <span class="pub"><i data-lucide="landmark"></i>${v.pub}</span>
+    <span class="hb b" aria-hidden="true"></span>
+  </button>`).join('') + '<span class="bookend" aria-hidden="true"></span>';
 
 $('#catalog').innerHTML = VOLS.map(v => `
   <button type="button" data-vol="${v.id}" class="cat-item text-left card hover-line transition tap" style="--accent:${v.accent}">
@@ -833,11 +907,11 @@ $('#catalog').innerHTML = VOLS.map(v => `
 /* touch: first tap lifts, second tap opens; mouse/keyboard opens directly */
 let lastPointer = 'mouse';
 document.addEventListener('pointerdown', e => { lastPointer = e.pointerType; }, { passive: true });
-document.querySelectorAll('.slate').forEach(el => {
+document.querySelectorAll('.book').forEach(el => {
   el.addEventListener('click', () => {
     const vol = +el.dataset.vol;
     if (lastPointer === 'touch' && !el.classList.contains('is-lifted')) {
-      document.querySelectorAll('.slate.is-lifted').forEach(s => s.classList.remove('is-lifted'));
+      document.querySelectorAll('.book.is-lifted').forEach(s => s.classList.remove('is-lifted'));
       el.classList.add('is-lifted');
       setTimeout(() => openSlate(vol), 260);
       return;
@@ -867,6 +941,8 @@ function openSlate(vol, secId) {
   $('#dIssue').textContent = v.issue;
   $('#dTitle').textContent = v.title;
   $('#dSub').textContent = v.sub;
+  $('#dShort').textContent = v.key;
+  setRolled(false);
   dBody.innerHTML = RENDER[vol]();
   $('#dNav').innerHTML = [...dBody.querySelectorAll('[data-sec]')].map(s => `<a class="chip" href="#${s.id}" data-jump="${s.id}">${s.dataset.title}</a>`).join('');
   icons();
@@ -874,10 +950,10 @@ function openSlate(vol, secId) {
   drawer.setAttribute('aria-hidden', 'false');
   document.body.classList.add('locked');
   history.replaceState(null, '', '#vol-0' + vol);
-  dBody.scrollTop = 0;
+  dBody.scrollTop = 0; anchorTop = 0; lastTop = 0;
   animateBars(dBody);
   setTimeout(() => {
-    if (secId) jumpTo(secId); else $('#btnClose').focus({ preventScroll: true });
+    if (secId) { setRolled(true); jumpTo(secId); } else $('#btnClose').focus({ preventScroll: true });
   }, 380);
 }
 
@@ -891,13 +967,31 @@ function closeSlate() {
   drawer.classList.remove('open'); scrim.classList.remove('open');
   drawer.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('locked');
-  document.querySelectorAll('.slate.is-lifted').forEach(s => s.classList.remove('is-lifted'));
+  document.querySelectorAll('.book.is-lifted').forEach(s => s.classList.remove('is-lifted'));
   history.replaceState(null, '', location.pathname + location.search);
   currentVol = null;
   if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
 }
 
-$('#dNav').addEventListener('click', e => { const a = e.target.closest('[data-jump]'); if (!a) return; e.preventDefault(); jumpTo(a.dataset.jump); });
+$('#dNav').addEventListener('click', e => { const a = e.target.closest('[data-jump]'); if (!a) return; e.preventDefault(); setRolled(true); jumpTo(a.dataset.jump); });
+/* 두루마리 머리말 */
+const dHead = $('#dHead');
+let rolled = false, anchorTop = 0, lastTop = 0;
+function setRolled(on) {
+  rolled = on; anchorTop = dBody.scrollTop;
+  dHead.classList.toggle('rolled', on);
+  $('#btnRoll').setAttribute('aria-expanded', String(!on));
+  $('#rollLabel').textContent = on ? '펼치기' : '말기';
+}
+$('#btnRoll').addEventListener('click', () => setRolled(!rolled));
+$('#rodBtn').addEventListener('click', () => setRolled(!rolled));
+dBody.addEventListener('scroll', () => {
+  const t = dBody.scrollTop;
+  if (t <= 2 && rolled && lastTop > t) setRolled(false);             /* 맨 위로 돌아오면 펼침 */
+  else if (!rolled && t > lastTop && t - anchorTop > 40) setRolled(true); /* 아래로 읽어 내려가면 말림 */
+  lastTop = t;
+}, { passive: true });
+
 $('#btnClose').addEventListener('click', closeSlate);
 scrim.addEventListener('click', closeSlate);
 drawer.addEventListener('keydown', e => { /* focus trap */
