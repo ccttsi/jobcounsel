@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DACUM 마스터 아키텍처</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+/* layout idea: a DACUM wall chart. Cards on a quiet wall; verb / object / qualifier each keep one colour everywhere. */
+:root{
+  --bg:#f3f4f1; --surface:#ffffff; --sunk:#eceee9; --ink:#1a1e23; --muted:#59626d; --line:#dcdfd8;
+  --accent:#b3123a; --accent-ink:#ffffff;
+  --verb:#b3123a; --obj:#1c5aa3; --qual:#7c5e00;
+  --good:#1b7549; --warn:#9a5b00; --bad:#b3123a;
+  --c1:#b3123a; --c2:#1c5aa3; --c3:#a36a00; --c4:#1b7549; --c5:#6a45b0;
+  --shadow:0 1px 2px rgba(20,25,30,.06),0 8px 24px rgba(20,25,30,.06);
+  --f-body:"Inter","Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono","Noto Sans KR",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#101317; --surface:#181d23; --sunk:#12161b; --ink:#e7eaee; --muted:#98a2ad; --line:#2a3139;
+    --accent:#ff6f89; --accent-ink:#1a0a0f;
+    --verb:#ff8298; --obj:#7fb5ff; --qual:#e5c05c;
+    --good:#5fd39a; --warn:#f0b354; --bad:#ff8298;
+    --c1:#ff6f89; --c2:#7fb5ff; --c3:#e5b04a; --c4:#5fd39a; --c5:#b79cf5;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#101317; --surface:#181d23; --sunk:#12161b; --ink:#e7eaee; --muted:#98a2ad; --line:#2a3139;
+  --accent:#ff6f89; --accent-ink:#1a0a0f;
+  --verb:#ff8298; --obj:#7fb5ff; --qual:#e5c05c;
+  --good:#5fd39a; --warn:#f0b354; --bad:#ff8298;
+  --c1:#ff6f89; --c2:#7fb5ff; --c3:#e5b04a; --c4:#5fd39a; --c5:#b79cf5;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+html{scroll-behavior:smooth}
+html,body{overflow-x:hidden;max-width:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.3}
+.mono{font-family:var(--f-mono)}
+.muted{color:var(--muted)}
+.hdr{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.mnav{position:sticky;top:57px;z-index:30;background:var(--bg);border-bottom:1px solid var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.mnav::-webkit-scrollbar{display:none}
+.snav{position:sticky;top:76px;align-self:start}
+.navl{display:flex;gap:10px;align-items:baseline;padding:9px 12px;border-radius:10px;color:var(--muted);font-weight:500;width:100%;text-align:left;white-space:nowrap}
+.navl:hover{background:var(--sunk);color:var(--ink)}
+.navl.on{background:var(--surface);color:var(--ink);box-shadow:inset 3px 0 0 var(--accent)}
+.mnav .navl{width:auto;padding:8px 12px;min-height:40px}
+.mnav .navl.on{box-shadow:inset 0 -3px 0 var(--accent)}
+.navl .n{font-family:var(--f-mono);font-size:11px;color:var(--accent)}
+section.mod{scroll-margin-top:112px;padding-top:8px}
+[id]{scroll-margin-top:112px}
+@media(min-width:1024px){section.mod,[id]{scroll-margin-top:76px}}
+.eyebrow{font-family:var(--f-mono);font-size:12px;color:var(--accent);letter-spacing:.04em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.card.sunk{background:var(--sunk)}
+.card h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:600;font-size:14px;transition:background .15s,border-color .15s,transform .1s}
+.btn:hover{border-color:var(--muted)}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:13px;font-weight:500;text-align:left}
+button.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip.ban{border-style:dashed;color:var(--bad);text-decoration:line-through;text-decoration-thickness:1px}
+.xref{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:1px dashed var(--accent);padding:2px 0;text-align:left}
+.xref:hover{border-bottom-style:solid}
+.xref::after{content:"→";font-family:var(--f-mono)}
+.seg{display:flex;flex-wrap:wrap;gap:4px;padding:4px;background:var(--sunk);border:1px solid var(--line);border-radius:12px}
+.seg button{flex:1 1 auto;min-height:38px;padding:6px 12px;border-radius:9px;font-weight:600;font-size:13.5px;color:var(--muted)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.tv{color:var(--verb)} .to{color:var(--obj)} .tq{color:var(--qual)}
+.slot{display:inline-block;padding:1px 7px;border-radius:7px;font-weight:700;border:1px solid currentColor;background:color-mix(in srgb,currentColor 9%,transparent)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:700;border:1px solid currentColor}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.good{color:var(--good)} .pill.warn{color:var(--warn)} .pill.bad{color:var(--bad)}
+.inp{width:100%;min-height:44px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:15px}
+.inp::placeholder{color:var(--muted)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bar{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .3s}
+.issue{display:flex;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);border-left:4px solid var(--muted);background:var(--bg)}
+.issue.bad{border-left-color:var(--bad)} .issue.warn{border-left-color:var(--warn)} .issue.good{border-left-color:var(--good)}
+.axiom{cursor:pointer;text-align:left;display:block;width:100%}
+.axiom.on{border-color:var(--accent);box-shadow:var(--shadow)}
+.axiom .num{font-family:var(--f-mono);font-size:28px;font-weight:700;color:var(--accent);line-height:1}
+.lvl{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 14px}
+.lvl.on{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
+.duty{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.duty>button{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:14px 16px;min-height:56px}
+.duty .code{font-family:var(--f-mono);font-weight:700;width:34px;height:34px;flex:none;border-radius:9px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink)}
+.duty .car{margin-left:auto;font-family:var(--f-mono);color:var(--muted);transition:transform .2s}
+.duty.open .car{transform:rotate(90deg)}
+.tasks{display:none;padding:0 12px 12px;gap:10px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.duty.open .tasks{display:grid}
+.task{text-align:left;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg);display:flex;flex-direction:column;gap:6px;transition:border-color .15s,transform .15s}
+.task:hover{border-color:var(--accent);transform:translateY(-1px)}
+.task.hit{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 30%,transparent)}
+.task .tc{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.tl{position:relative;display:flex;gap:12px;width:100%;text-align:left;padding:10px 12px;border-radius:12px;border:1px solid transparent}
+.tl:hover{background:var(--sunk)}
+.tl.on{background:var(--surface);border-color:var(--accent)}
+.tl .dot{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--bg)}
+.tl.on .dot{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt.right{border-color:var(--good);box-shadow:inset 4px 0 0 var(--good)}
+.opt.wrong{border-color:var(--bad);box-shadow:inset 4px 0 0 var(--bad)}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table.cmp{border-collapse:collapse;min-width:820px;width:100%;font-size:13.5px}
+table.cmp th,table.cmp td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+table.cmp thead th{position:sticky;top:0;background:var(--sunk);font-size:13px}
+table.cmp tr:last-child td,table.cmp tr:last-child th{border-bottom:0}
+table.cmp td.me,table.cmp th.me{background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.pips{display:inline-flex;gap:3px;margin-bottom:4px}
+.pips i{width:9px;height:9px;border-radius:2px;background:var(--line)}
+.pips i.f{background:var(--ink)}
+.ov{position:fixed;inset:0;background:rgba(8,10,14,.5);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
+.ov.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;z-index:60;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);overflow-y:auto;transition:transform .25s;left:0;right:0;bottom:0;max-height:86%;border-radius:18px 18px 0 0;transform:translateY(105%);padding:18px}
+.drawer.open{transform:none}
+@media(min-width:768px){.drawer{left:auto;top:0;bottom:0;width:440px;max-height:none;border-radius:0;transform:translateX(105%)}}
+.sres{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);max-height:60vh;overflow-y:auto;padding:6px;z-index:45}
+.sres button{display:flex;gap:10px;align-items:baseline;width:100%;text-align:left;padding:9px 10px;border-radius:8px;min-height:42px}
+.sres button:hover,.sres button.cur{background:var(--sunk)}
+.sres .ty{flex:none;font-family:var(--f-mono);font-size:11px;color:var(--accent);width:44px}
+kbd{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;color:var(--muted);background:var(--surface)}
+.flash{animation:fl 1.5s ease-out}
+@keyframes fl{0%,40%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 3px transparent}}
+ul.dl{display:grid;gap:6px}
+ul.dl li{padding-left:16px;position:relative}
+ul.dl li::before{content:"";position:absolute;left:2px;top:.72em;width:6px;height:2px;background:var(--accent)}
+.kv{display:grid;grid-template-columns:86px minmax(0,1fr);gap:6px 12px;font-size:14px}
+.kv dt{color:var(--muted);font-weight:600;font-size:13px}
+svg text{font-family:var(--f-body)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<style>.site-home{font:600 13px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#14201b;padding:8px 16px}.site-home a{color:#fff;text-decoration:none}.site-home a:hover{text-decoration:underline}@media print{.site-home{display:none}}</style>
+<nav class="site-home" aria-label="사이트"><a href="../">← 직업상담 자료실</a></nav>
+
+
+<header class="hdr">
+  <div class="max-w-[1240px] mx-auto px-4 h-14 flex items-center gap-3">
+    <button class="flex items-baseline gap-2 flex-none" data-act="go" data-to="sec:m1" aria-label="처음으로">
+      <span class="mono font-bold text-[17px]" style="color:var(--accent)">DACUM</span>
+      <span class="font-bold hidden sm:inline">마스터 아키텍처</span>
+    </button>
+    <div class="relative flex-1 min-w-0 max-w-[520px] ml-auto">
+      <label for="q" class="sr-only">용어, 책무, 과업, 동사 검색</label>
+      <input id="q" class="inp" style="min-height:40px;padding-right:44px" type="search" autocomplete="off" placeholder="용어·책무·과업·동사 검색">
+      <span class="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:block"><kbd>/</kbd></span>
+      <div id="sres" class="sres" hidden></div>
+    </div>
+    <button id="theme" class="btn flex-none" style="padding:8px 10px" data-act="theme" aria-label="밝은 화면과 어두운 화면 전환">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</header>
+
+<nav class="mnav lg:hidden" aria-label="모듈">
+  <div id="mnav" class="flex gap-1 px-3 w-max"></div>
+</nav>
+
+<div class="max-w-[1240px] mx-auto px-4 pb-24 lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-8">
+  <aside class="snav hidden lg:block pt-6" aria-label="모듈">
+    <div id="snav" class="grid gap-1"></div>
+    <p class="muted text-[12.5px] mt-5 px-3">점선 밑줄 링크를 누르면 관련 책무, 규칙, 비교 모델로 이동합니다.</p>
+  </aside>
+
+  <main class="min-w-0 grid gap-14 pt-6">
+
+    <!-- M1 -->
+    <section id="m1" class="mod grid gap-4">
+      <div>
+        <p class="eyebrow">M1 · FOUNDATION</p>
+        <h1 class="text-[26px] sm:text-[30px] font-bold">DACUM은 현직 숙련자가 자기 일을 과업으로 써 내려가는 직무분석이다</h1>
+        <p class="muted mt-2 max-w-[65ch]">Developing A Curriculum. 숙련 작업자 패널이 이틀 안팎의 워크숍에서 직무를 책무와 과업으로 분해하고, 그 차트가 곧 교육과정의 뼈대가 됩니다.</p>
+      </div>
+      <div class="grid gap-4 lg:grid-cols-12">
+        <div class="card lg:col-span-5">
+          <h3>기원과 계보</h3>
+          <div id="origin" class="grid gap-3 mt-2"></div>
+        </div>
+        <div class="lg:col-span-7 grid gap-3" id="axioms"></div>
+      </div>
+      <div class="card">
+        <div class="flex flex-wrap items-center gap-3 justify-between">
+          <h3 class="!mb-0">누가 직무를 정의하는가</h3>
+          <div class="seg" id="srcseg" role="tablist"></div>
+        </div>
+        <div id="srcbox" class="mt-4"></div>
+      </div>
+    </section>
+
+    <!-- M2 -->
+    <section id="m2" class="mod grid gap-4">
+      <div>
+        <p class="eyebrow">M2 · HIERARCHY &amp; GRAMMAR</p>
+        <h2 class="text-[23px] font-bold">직무 → 책무 → 과업, 그리고 과업 진술문의 문법</h2>
+      </div>
+      <div class="grid gap-4 lg:grid-cols-12" id="levelbox">
+        <div class="card lg:col-span-5">
+          <h3>위계 도식</h3>
+          <p class="muted text-[13.5px] mb-3">단계를 누르면 범위, 수량 기준, 판별 질문이 바뀝니다.</p>
+          <div id="levels" class="grid gap-2"></div>
+          <div class="grid grid-cols-3 gap-2 mt-4 text-center" id="nums"></div>
+        </div>
+        <div class="card lg:col-span-7" id="leveldetail"></div>
+      </div>
+
+      <div class="card" id="grammar">
+        <h3>과업 진술문 황금률</h3>
+        <p class="mono text-[15px] sm:text-[17px] my-2 leading-loose">
+          <span class="slot tv">행위 동사</span> + <span class="slot to">목적어</span> + <span class="slot tq">한정어·조건</span>
+        </p>
+        <p class="muted max-w-[65ch] text-[14px]">능동, 현재, 기본형으로 씁니다. 주어와 대명사는 뺍니다. 한국어 어순은 <span class="tq font-semibold">한정어</span> → <span class="to font-semibold">목적어</span> → <span class="tv font-semibold">동사</span>입니다. 머릿속 상태를 가리키는 동사는 관찰할 수 없으므로 과업이 될 수 없고, 그 내용은 <button class="xref" data-act="go" data-to="stage:5">보조 목록의 지식</button>으로 옮깁니다.</p>
+        <div class="grid gap-4 md:grid-cols-2 mt-4">
+          <div>
+            <p class="font-semibold text-[13.5px] mb-2">금지 동사 (내적 상태) · 눌러서 린터로 시험</p>
+            <div id="banlist" class="flex flex-wrap gap-2"></div>
+          </div>
+          <div>
+            <p class="font-semibold text-[13.5px] mb-2">승인 동사 (관찰 가능) · 눌러서 린터에 입력</p>
+            <div id="oklist" class="flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="linter">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h3 class="!mb-0">과업 진술문 린터</h3>
+          <div class="flex flex-wrap gap-2" id="presets"></div>
+        </div>
+        <div class="grid gap-3 md:grid-cols-3 mt-4">
+          <div><label for="lq" class="text-[13px] font-bold tq">① 한정어·조건</label><input id="lq" class="inp mt-1" autocomplete="off" placeholder="예: 표준화된 실시 지침에 따라"></div>
+          <div><label for="lo" class="text-[13px] font-bold to">② 목적어</label><input id="lo" class="inp mt-1" autocomplete="off" placeholder="예: 직업심리검사"></div>
+          <div><label for="lv" class="text-[13px] font-bold tv">③ 행위 동사</label><input id="lv" class="inp mt-1" autocomplete="off" placeholder="예: 실시하다"></div>
+        </div>
+        <div id="lintout" class="mt-4 grid gap-4 lg:grid-cols-12"></div>
+      </div>
+    </section>
+
+    <!-- M3 -->
+    <section id="m3" class="mod grid gap-4">
+      <div>
+        <p class="eyebrow">M3 · CHART EXPLORER</p>
+        <h2 class="text-[23px] font-bold">직업상담사 DACUM 차트</h2>
+        <p class="muted mt-1 max-w-[65ch]">책무를 누르면 과업이 펼쳐지고, 과업을 누르면 필요한 지식, 기술, 도구, 태도가 열립니다. 학습용으로 5개 책무만 추린 축약 차트입니다. 실제 워크숍 차트는 책무 8~12개를 채웁니다.</p>
+      </div>
+      <div class="flex flex-wrap gap-2 items-center">
+        <button class="btn" data-act="allduty" data-v="1">모두 펼치기</button>
+        <button class="btn" data-act="allduty" data-v="0">모두 접기</button>
+        <span id="hitinfo" class="text-[13.5px]"></span>
+      </div>
+      <div id="chart" class="grid gap-3"></div>
+      <div class="card" id="auxbox">
+        <h3>직무 전체에 붙는 4개 보조 목록</h3>
+        <p class="muted text-[13.5px] mb-3">과업마다 따로 쓰지 않고 차트 아래에 한 번 정리합니다. 항목을 누르면 그 요소를 쓰는 과업이 차트에 표시됩니다.</p>
+        <div id="aux" class="grid gap-4 md:grid-cols-2"></div>
+      </div>
+    </section>
+
+    <!-- M4 -->
+    <section id="m4" class="mod grid gap-4">
+      <div>
+        <p class="eyebrow">M4 · WORKSHOP LIFECYCLE</p>
+        <h2 class="text-[23px] font-bold">DACUM 워크숍 8단계</h2>
+      </div>
+      <div class="grid gap-4 lg:grid-cols-12" id="stagebox">
+        <div class="card lg:col-span-5 !p-2"><div id="stages" class="grid gap-1"></div></div>
+        <div class="card lg:col-span-7" id="stagedetail"></div>
+      </div>
+      <div class="card" id="sim">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h3 class="!mb-0">퍼실리테이터 딜레마 시뮬레이터</h3>
+          <span id="simscore" class="mono text-[13px] muted"></span>
+        </div>
+        <div id="simbox" class="mt-3"></div>
+      </div>
+    </section>
+
+    <!-- M5 -->
+    <section id="m5" class="mod grid gap-4">
+      <div>
+        <p class="eyebrow">M5 · COMPARATIVE MATRIX</p>
+        <h2 class="text-[23px] font-bold">DACUM과 다른 직무분석법</h2>
+        <p class="muted mt-1 max-w-[65ch]">점수는 방법 간 상대 위치를 익히기 위한 5점 척도 판단입니다. 실측치가 아닙니다.</p>
+      </div>
+      <div class="grid gap-4 lg:grid-cols-12">
+        <div class="card lg:col-span-5">
+          <h3>레이더 비교</h3>
+          <div id="radarsel" class="flex flex-wrap gap-2 mb-2"></div>
+          <div id="radar"></div>
+        </div>
+        <div class="card lg:col-span-7" id="methodbox"></div>
+      </div>
+      <div class="tblwrap"><table class="cmp" id="cmp"></table></div>
+    </section>
+
+    <!-- M6 -->
+    <section id="m6" class="mod grid gap-4">
+      <div>
+        <p class="eyebrow">M6 · HYPER-GLOSSARY</p>
+        <h2 class="text-[23px] font-bold">용어 사전</h2>
+        <p class="muted mt-1">위쪽 검색창에 입력하면 이 목록도 함께 걸러집니다. <kbd>/</kbd> 키로 검색창에 바로 갑니다.</p>
+      </div>
+      <div id="gloss" class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3"></div>
+    </section>
+
+    <footer class="muted text-[12.5px] border-t pt-4" style="border-color:var(--line)">
+      수량 기준 주석: 이 페이지는 책무 8~12개, 책무당 과업 6~20개, 전체 과업 50~200개, 패널 8~12명을 기준으로 삼았습니다. Norton의 DACUM Handbook은 책무 6~12개, 과업 75~125개, 패널 5~12명으로 제시하므로 시험이나 보고서에서는 출처에 맞는 수치를 쓰십시오.
+    </footer>
+  </main>
+</div>
+
+<div id="ov" class="ov" data-act="closedrawer"></div>
+<aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="과업 상세" tabindex="-1"></aside>
+
+<script>
+(function(){
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const xref=(to,label)=>`<button class="xref" data-act="go" data-to="${to}">${label}</button>`;
+
+/* ---------- DATA ---------- */
+const MODS=[['m1','M1','기초와 3공리'],['m2','M2','위계와 문법'],['m3','M3','차트 탐색기'],['m4','M4','워크숍 8단계'],['m5','M5','방법론 비교'],['m6','M6','용어 사전']];
+
+const ORIGIN=[
+ ['1960년대 후반','캐나다 인력이민부 실험사업국과 미국 General Learning Corporation이 직업훈련 교육과정을 빠르게 설계하려고 고안. 직업단(Job Corps) 훈련 프로그램에 처음 적용.'],
+ ['1970년대','캐나다 Holland College 등 직업교육 기관이 차트 한 장으로 교육과정을 운영하는 방식으로 확산.'],
+ ['1970년대 후반~','오하이오 주립대 CETE(구 국립직업교육연구센터)의 Robert E. Norton이 절차, 퍼실리테이터 양성, 품질 기준을 체계화. DACUM Handbook 발간.'],
+ ['이후','과업 검증과 과업 분석을 잇는 SCID 모형으로 확장되어 역량기반교육(CBE)의 표준 진입로가 됨. 국내 직무분석과 NCS 개발에도 쓰임.']
+];
+
+const AXIOMS=[
+ {t:'숙련 작업자는 자기 직무를 누구보다 정확하게 기술하고 정의할 수 있다.',
+  why:'정보원은 관리자도 교수도 아닌 현직 숙련자입니다. 그래서 패널 자격이 방법의 타당도를 좌우합니다.',
+  so:'패널은 지금 그 일을 전일제로 하고 있고 동료가 인정하는 사람으로 꾸립니다.',
+  refs:[['stage:0','1단계 패널 구성 규칙'],['gloss:panel','용어: 전문가 패널']]},
+ {t:'직무를 정의하는 효과적인 방법은 성공적인 작업자가 수행하는 과업을 기술하는 것이다.',
+  why:'직무를 자질이나 지식 목록이 아니라 눈에 보이는 수행 단위로 씁니다.',
+  so:'모든 과업은 동사 + 목적어 + 한정어 문형을 통과해야 차트에 올라갑니다.',
+  refs:[['linter','과업 진술문 린터'],['level:task','위계: 과업 판별 기준']]},
+ {t:'모든 과업은 올바르게 수행되려면 특정한 지식, 기술, 도구, 작업자 행동을 필요로 한다.',
+  why:'지식과 태도는 과업이 아니라 과업을 가능하게 하는 요소(enabler)입니다.',
+  so:'과업을 다 뽑은 뒤 4개 보조 목록을 따로 만들고, 교육과정에서 과업에 다시 연결합니다.',
+  refs:[['aux','직업상담사 보조 목록'],['stage:5','6단계 보조 목록 도출']]}
+];
+
+const SRC=[
+ {id:'dacum',ko:'DACUM: 숙련자 패널',who:'현직 숙련 작업자 8~12명',prem:'일을 하는 사람이 일을 가장 잘 안다',pro:'현장 언어로 된 과업, 이틀 안팎의 속도, 패널의 합의가 곧 수용성',con:'패널 선정이 잘못되면 차트 전체가 흔들림. 미세 동작은 다루지 않음',out:'DACUM 차트(책무 × 과업) + 4개 보조 목록',ref:['method:dacum','M5에서 수치로 비교']},
+ {id:'mgr',ko:'관리자 주도',who:'부서장, 인사 담당자, 직무기술서',prem:'조직이 기대하는 역할이 곧 직무다',pro:'조직 목표와 정렬, 자료 확보가 쉬움',con:'해야 한다고 믿는 일과 실제 하는 일이 어긋남. 현장 용어와 최신 도구가 빠짐',out:'직무기술서, 역할 기대 목록',ref:['method:survey','설문지법과 묶여 쓰이는 경우']},
+ {id:'obs',ko:'관찰자 주도',who:'훈련된 분석가의 현장 관찰과 면담',prem:'제3자가 봐야 객관적이다',pro:'동작과 시간 단위까지 세밀함. 수행자의 자기 미화가 줄어듦',con:'상담처럼 판단과 대화가 핵심인 일은 겉으로 보이지 않음. 시간과 비용이 큼',out:'관찰 기록, 동작·시간 분석표',ref:['method:obs','관찰법 상세']}
+];
+
+const LEVELS=[
+ {id:'job',ko:'직무',en:'Job',def:'한 사람이 맡는 직위들의 묶음. 분석의 출발 단위.',std:'차트 1장에 직무 1개',ex:'직업상담사',test:'이 이름으로 채용 공고를 낼 수 있는가?',refs:[['stage:1','2단계 직무 정의']]},
+ {id:'duty',ko:'책무',en:'Duty',def:'서로 관련된 과업을 묶은 넓은 책임 영역. 끝이 없이 계속되는 일의 범주.',std:'직무당 8~12개',ex:'B. 직업심리검사 실시 및 해석',test:'그 아래에 과업을 6개 이상 쓸 수 있는가? 지식 영역 이름이 아닌가?',refs:[['duty:B','차트에서 책무 B 보기'],['stage:2','3단계 책무 도출']]},
+ {id:'task',ko:'과업',en:'Task',def:'시작과 끝이 분명하고, 관찰과 측정이 가능하며, 결과물이나 서비스나 결정을 남기는 작업 단위.',std:'책무당 6~20개, 전체 50~200개',ex:'B-2. 표준화된 실시 지침에 따라 직업심리검사를 실시하다',test:'다른 과업과 독립해서 맡길 수 있는가? 둘 이상의 단계로 이루어지는가? 끝났는지 눈으로 확인되는가?',refs:[['task:B-2','과업 B-2 열기'],['linter','린터로 검증']]},
+ {id:'step',ko:'단계',en:'Step',def:'과업 하나를 수행하는 세부 절차. 차트에는 올리지 않고 과업 분석에서 다룸.',std:'과업당 2개 이상',ex:'검사 목적을 안내한다 → 검사지를 배부한다 → 시간을 잰다',test:'이것만 따로 맡기면 어색한가? 그렇다면 단계다.',refs:[['stage:7','8단계 과업 분석'],['gloss:ta','용어: 과업 분석']]}
+];
+
+const BAN={'이해하다':['설명하다','해석하다','분류하다'],'알다':['식별하다','확인하다','설명하다'],'숙지하다':['적용하다','점검하다','확인하다'],'파악하다':['분석하다','확인하다','기록하다'],'인식하다':['식별하다','분류하다'],'인지하다':['식별하다','확인하다'],'습득하다':['실시하다','적용하다'],'배우다':['실시하다','작성하다'],'학습하다':['실시하다','작성하다'],'고려하다':['검토하다','비교하다'],'생각하다':['검토하다','도출하다'],'느끼다':['기록하다','설명하다'],'익히다':['운용하다','실시하다'],'함양하다':['실시하다','지도하다'],'기억하다':['기록하다','확인하다']};
+const BANSTEM=['이해','숙지','파악','인식','인지','습득','학습','고려','함양','암기','터득','기억','체득'];
+const BANHEAD=['알다','안다','알고','배우','느끼','생각','익히','깨닫','믿','감상'];
+const BANEN=/\b(understand|know|learn|appreciate|be aware|be familiar|realize|believe|feel|think|consider)\b/i;
+const VAGUE={'관리':['점검하다','보관하다','집계하다'],'지원':['제공하다','주선하다','추천하다'],'담당':['작성하다','실시하다'],'처리':['입력하다','발송하다','등록하다'],'돕':['지도하다','제공하다'],'수행':['실시하다','작성하다'],'협조':['조정하다','제공하다'],'노력':['실시하다','점검하다'],'책임':['점검하다','보관하다'],'대응':['안내하다','기록하다'],'참여':['작성하다','보고하다'],'활용':['운용하다','입력하다']};
+const OKV=['작성하다','분석하다','운용하다','확인하다','기록하다','평가하다','분류하다','선정하다','실시하다','채점하다','해석하다','도출하다','제공하다','비교하다','수립하다','첨삭하다','지도하다','추천하다','등록하다','선별하다','주선하다','점검하다','집계하다','보관하다','구조화하다','측정하다','설계하다','입력하다','검토하다','발송하다','조정하다','설명하다','식별하다','안내하다','보고하다','적용하다'];
+const SUBJ=/(^|\s)(잘|적절히|적절하게|적절한|효과적으로|효율적으로|충분히|올바르게|성실히|성실하게|최선을|원활히|원활하게|철저히|제대로|능숙하게)(\s|$)/;
+const PRON=/(^|\s)(나는|내가|나의|우리는|우리가|저는|제가|그는|그녀는|상담사는|상담사가|직업상담사는|직업상담사가|작업자는|작업자가|담당자는|담당자가)(\s|$)/;
+const VOBJ=/^(업무|일|것|사항|내용|모든 것|여러 가지)$/;
+const PRESETS=[
+ ['좋은 예','표준화된 실시 지침에 따라','직업심리검사','실시하다'],
+ ['금지 동사','','노동시장 동향','이해하다'],
+ ['주관적 수식','효과적으로','내담자','지원하다'],
+ ['주어·시제 오류','','상담사는 상담 일지','작성했다']
+];
+
+const POOL={
+ k:{k1:'상담 이론과 면담 기법',k2:'심리검사 이론(신뢰도·타당도·규준)',k3:'노동시장과 직업 정보',k4:'진로발달·진로의사결정 이론',k5:'고용 관련 법과 제도',k6:'개인정보 보호 법규',k7:'채용 절차와 직무 요건',k8:'직업훈련 제도',k9:'기초 통계'},
+ s:{s1:'경청과 질문',s2:'검사 실시와 채점',s3:'결과 해석과 피드백',s4:'정보 검색과 가공',s5:'문서 작성과 기록',s6:'구직서류 첨삭',s7:'면접 코칭',s8:'일정·조건 조율',s9:'사례 분류와 판단',s10:'자료 집계'},
+ t:{t1:'구직신청서·초기면담 기록지',t2:'고용24(구 워크넷)',t3:'직업심리검사지와 검사 요강',t4:'상담관리 전산시스템',t5:'의사결정 대차대조표',t6:'취업활동계획(IAP) 양식',t7:'전화·이메일·메신저',t8:'스프레드시트',t9:'취업 장애요인 체크리스트',t10:'이력서·자기소개서 양식'},
+ b:{b1:'비밀 유지',b2:'공감과 수용',b3:'객관성과 공정성',b4:'내담자 자기결정 존중',b5:'정확성과 꼼꼼함',b6:'책임감과 기한 준수',b7:'전문적 한계 인식과 의뢰'}
+};
+const PNAME={k:'관련 지식',s:'필수 기술',t:'도구·장비·시스템',b:'직업 윤리와 태도'};
+const PEN={k:'Knowledge',s:'Skills',t:'Tools',b:'Worker Behaviors'};
+const TRENDS=['AI 기반 일자리 매칭과 챗봇 초기 상담','화상·비대면 상담의 상시화','고령자, 경력보유여성, 이주 배경 구직자 증가','플랫폼 노동과 다중 직업 경력 설계','데이터 기반 성과 관리와 사례 관리'];
+
+const T=(id,q,o,v,k,s,t,b)=>({id,q,o,v,k,s,t,b});
+const DUTIES=[
+ {id:'A',ko:'초기 상담 및 내담자 사정',en:'Intake & Initial Client Assessment',tasks:[
+  T('A-1','구직신청서를 바탕으로','내담자 기본 정보','확인하다',['k1','k6'],['s1','s5'],['t1','t4'],['b1','b5']),
+  T('A-2','첫 면담에서','상담 관계와 진행 절차','구조화하다',['k1'],['s1'],['t1'],['b2','b4']),
+  T('A-3','초기면담 기록지에','내담자의 구직 욕구와 호소 문제','기록하다',['k1'],['s1','s5'],['t1','t4'],['b2','b5']),
+  T('A-4','취업 장애요인 체크리스트로','취업 준비도','평가하다',['k1','k4'],['s9'],['t9'],['b3']),
+  T('A-5','사정 결과에 따라','내담자 지원 유형','분류하다',['k5','k4'],['s9'],['t4','t9'],['b3','b7'])]},
+ {id:'B',ko:'직업심리검사 실시 및 해석',en:'Psychological Testing & Interpretation',tasks:[
+  T('B-1','내담자 특성과 상담 목표에 맞추어','심리검사 도구','선정하다',['k2','k4'],['s9'],['t3'],['b3','b7']),
+  T('B-2','표준화된 실시 지침에 따라','직업심리검사','실시하다',['k2'],['s2'],['t3','t2'],['b3','b5']),
+  T('B-3','검사 요강의 규준에 따라','검사 결과','채점하다',['k2','k9'],['s2'],['t3'],['b5']),
+  T('B-4','내담자가 쓰는 일상 용어로','검사 결과 프로파일','해석하다',['k2','k4'],['s3','s1'],['t3'],['b2','b4']),
+  T('B-5','검사 결과를 근거로','적합 직업 목록','도출하다',['k3','k4'],['s3','s4'],['t2','t3'],['b3','b4'])]},
+ {id:'C',ko:'직업상담 및 취업활동계획 수립',en:'Career Counseling & Action Plan Design',tasks:[
+  T('C-1','고용24 직업정보를 검색하여','희망 직종의 노동시장 정보','제공하다',['k3'],['s4'],['t2'],['b3']),
+  T('C-2','의사결정 대차대조표로','진로 대안','비교하다',['k4'],['s1','s9'],['t5'],['b4']),
+  T('C-3','내담자와 합의하여','개인별 취업활동계획','수립하다',['k4','k5'],['s5','s1'],['t6','t4'],['b4','b6']),
+  T('C-4','지원 직무의 요건에 맞추어','이력서와 자기소개서','첨삭하다',['k7'],['s6','s5'],['t10'],['b5']),
+  T('C-5','모의 면접을 통해','면접 응답 기술','지도하다',['k7','k1'],['s7','s3'],['t10'],['b2']),
+  T('C-6','훈련 상담 기준에 따라','직업훈련 과정','추천하다',['k8','k3'],['s4','s9'],['t2'],['b3','b4'])]},
+ {id:'D',ko:'구인·구직 알선 및 취업지원',en:'Job Placement & Employment Mediation',tasks:[
+  T('D-1','구인 기업에 방문하거나 전화하여','구인 조건','확인하다',['k7','k5'],['s1','s8'],['t7'],['b5','b3']),
+  T('D-2','고용정보 전산망에','구인·구직 정보','등록하다',['k5','k6'],['s5'],['t2','t4'],['b5','b1']),
+  T('D-3','구인 요건과 구직자 프로파일을 대조하여','알선 대상자','선별하다',['k7','k3'],['s9','s4'],['t2','t4'],['b3']),
+  T('D-4','구인처와 일정을 조율하여','채용 면접','주선하다',['k7'],['s8'],['t7'],['b6']),
+  T('D-5','구직자 동의를 받아','동행 면접','실시하다',['k7','k1'],['s7','s8'],['t7'],['b2','b4'])]},
+ {id:'E',ko:'취업 후 사후관리 및 행정관리',en:'Post-Placement Follow-up & Administration',tasks:[
+  T('E-1','취업 후 정해진 주기로','취업자의 직장 적응 상태','점검하다',['k1'],['s1'],['t7','t4'],['b2','b6']),
+  T('E-2','고용보험 취득 이력으로','고용 유지 여부','확인하다',['k5'],['s4'],['t4'],['b5']),
+  T('E-3','상담 종결 당일에','상담 일지','작성하다',['k1','k6'],['s5'],['t4'],['b6','b5']),
+  T('E-4','월 단위로','취업 실적 통계','집계하다',['k9'],['s10'],['t8','t4'],['b5','b6']),
+  T('E-5','개인정보 보호 규정에 따라','내담자 기록','보관하다',['k6'],['s5'],['t4'],['b1'])]}
+];
+const ALLT=DUTIES.flatMap(d=>d.tasks.map(t=>Object.assign(t,{duty:d})));
+
+const STAGES=[
+ {t:'패널 오리엔테이션과 퍼실리테이터 프레이밍',en:'Committee Orientation',goal:'DACUM 철학, 3공리, 진행 규칙을 공유하고 패널이 편하게 말할 분위기를 만든다.',
+  fac:['현직 숙련 작업자 8~12명으로 패널을 구성한다. 직속 감독자는 소수만 허용한다.','퍼실리테이터 1명과 기록자 1명을 둔다. 둘 다 내용에는 의견을 내지 않는다.','참관인은 뒤에 앉고 발언하지 않는다.','브레인스토밍 규칙을 알린다. 비판 금지, 모든 패널은 동등, 합의로 결정.'],
+  out:'합의된 진행 규칙, 벽면과 카드 준비',trap:'관리자나 교수가 패널을 주도하게 두는 것. 제1공리가 무너진다.',refs:[['axiom:0','제1공리'],['gloss:fac','용어: 퍼실리테이터']]},
+ {t:'직무 정의와 범위 검토',en:'Job Definition & Scope',goal:'분석할 직무의 이름, 관련 직함, 조직 내 위치, 포함·제외 범위를 정한다.',
+  fac:['직무명과 유사 직함을 벽에 적는다.','초급자부터 숙련자까지 어느 수준을 담을지 정한다.','인접 직무와의 경계를 말로 확인한다.'],
+  out:'직무 정의문, 조직도상 위치',trap:'범위를 정하지 않고 시작해 인접 직무의 과업이 섞이는 것.',refs:[['level:job','위계: 직무']]},
+ {t:'책무 도출',en:'Identification of Duties',goal:'직무의 넓은 책임 영역 8~12개를 찾는다.',
+  fac:['떠오르는 대로 말하게 하고 카드에 받아 적는다.','비슷한 카드를 묶어 벽 왼쪽에 세로로 붙인다.','지식 영역 이름(예: 상담 이론)은 책무가 아님을 짚는다.'],
+  out:'책무 카드 8~12장',trap:'책무를 과업 수준으로 잘게 쪼개거나 과목명으로 쓰는 것.',refs:[['level:duty','위계: 책무'],['duty:A','직업상담사 책무 보기']]},
+ {t:'책무별 과업 도출',en:'Task Identification',goal:'책무 하나씩 완결하며 과업 6~20개를 진술문으로 쓴다.',
+  fac:['한 책무를 끝내고 다음으로 넘어간다.','모든 문장을 동사 + 목적어 + 한정어로 맞춘다.','"이해한다", "안다"가 나오면 그 지식으로 무엇을 하는지 되묻는다.'],
+  out:'과업 카드 50~200장',trap:'지식·태도 문장이나 단계 수준 문장을 과업으로 받아 적는 것.',refs:[['linter','린터로 문장 검증'],['level:task','위계: 과업']]},
+ {t:'과업 순서화와 매트릭스 구조화',en:'Sequencing & Structuring',goal:'과업과 책무를 논리적 순서로 배열하고 코드를 붙인다.',
+  fac:['과업은 수행 순서나 학습 순서로 왼쪽에서 오른쪽으로 놓는다.','책무도 일의 흐름대로 위에서 아래로 놓는다.','A-1, A-2 식으로 코드를 부여한다.'],
+  out:'책무 × 과업 매트릭스 초안',trap:'순서 논쟁에 시간을 다 쓰는 것. 합의가 안 되면 빈도순으로 정한다.',refs:[['sec:m3','완성된 매트릭스 예']]},
+ {t:'4개 보조 목록 도출',en:'Auxiliary Enabler Lists',goal:'과업 수행을 가능하게 하는 요소를 직무 전체 수준에서 정리한다.',
+  fac:['일반 지식과 기술을 적는다.','도구, 장비, 자재, 시스템을 적는다.','작업자 행동(태도와 윤리)을 적는다.','미래 동향과 우려를 적는다.'],
+  out:'4개 보조 목록',trap:'과업 도출 중간에 지식 목록을 섞어 흐름을 끊는 것. 과업을 다 뽑은 뒤에 한다.',refs:[['axiom:2','제3공리'],['aux','직업상담사 보조 목록']]},
+ {t:'최종 검토, 정련, 검증 설문',en:'Review, Refinement & Verification',goal:'패널이 차트 전체를 다시 읽어 합의하고, 더 넓은 현직자 표본으로 검증한다.',
+  fac:['모든 진술문을 소리 내어 읽고 동사와 한정어를 다듬는다.','중복 과업을 합치고 빠진 과업을 채운다.','현직자와 감독자에게 과업 검증 설문을 돌린다. 문항은 중요도, 수행 빈도, 학습 난이도, 입직 시 필요 여부.','평정 결과로 교육 우선순위를 정한다.'],
+  out:'확정 DACUM 차트, 과업 검증 결과표',trap:'패널 10명 안팎의 합의를 그대로 일반화하는 것. 설문이 표본의 한계를 보완한다.',refs:[['gloss:verify','용어: 과업 검증'],['method:survey','설문지법과의 관계']]},
+ {t:'교육과정 상세화',en:'Task Detailing → Learning Objectives',goal:'검증된 과업을 분석해 학습 목표와 수업으로 옮긴다.',
+  fac:['과업마다 단계, 수행 기준, 도구, 관련 지식, 안전, 태도, 의사결정을 적는다.','과업을 수행 목표로 바꾼다. 조건, 수행, 기준을 갖춘다.','과업을 묶어 모듈과 과목으로 편성한다.'],
+  out:'과업 분석표, 학습 목표, 교육과정 편성표',trap:'차트를 과목 목차로 그대로 옮기고 과업 분석을 건너뛰는 것.',refs:[['level:step','위계: 단계'],['gloss:scid','용어: SCID']]}
+];
+
+const SIM=[
+ {q:'과업 도출 중 15년 차 패널이 말합니다. "노동시장 동향을 이해한다. 이게 제일 중요한 과업이에요." 다른 패널도 고개를 끄덕입니다.',
+  o:[['분위기를 살리려고 그대로 카드에 적는다.',0,'금지 동사가 차트에 올라가면 측정할 수 없는 과업이 교육과정까지 따라갑니다.'],
+     ['"동향을 이해한 상담사는 그걸로 눈에 보이는 무슨 일을 합니까?"라고 되묻는다.',1,'행동으로 바꾸면 "희망 직종의 노동시장 정보를 제공하다"가 나옵니다. 지식 자체는 보조 목록으로 보냅니다.'],
+     ['퍼실리테이터가 직접 더 나은 문장으로 고쳐 쓴다.',0,'퍼실리테이터는 내용을 만들지 않습니다. 질문으로 패널이 스스로 고치게 합니다.']],
+  rule:'금지 동사는 질문으로 행동화한다',ref:['linter','린터에서 직접 시험']},
+ {q:'두 패널이 맞섭니다. 한 명은 심리검사가 초기 상담의 일부라고 하고, 다른 한 명은 독립된 책무라고 합니다.',
+  o:[['시간이 없으니 바로 다수결에 부친다.',0,'표결은 진 쪽의 수용성을 깎습니다. DACUM의 결정 방식은 합의입니다.'],
+     ['심리검사 아래에 올 과업을 카드로 먼저 써 보게 하고, 6개 이상 나오는지 함께 본다.',1,'책무 판별 기준을 근거로 삼으면 의견 대립이 사실 확인으로 바뀝니다.'],
+     ['참관 중인 센터장에게 결정을 맡긴다.',0,'참관인과 관리자는 내용에 개입하지 않습니다. 제1공리에 어긋납니다.']],
+  rule:'경계 다툼은 판별 기준과 카드로 푼다',ref:['level:duty','책무 판별 기준']},
+ {q:'가장 경력이 긴 패널이 거의 혼자 말합니다. 신참 두 명은 한 시간째 말이 없습니다.',
+  o:[['경험이 가장 많으니 그대로 둔다.',0,'한 사람의 직무 경험이 차트가 됩니다. 패널을 여러 명 둔 이유가 사라집니다.'],
+     ['한 사람씩 돌아가며 말하게 하거나, 각자 카드에 쓰게 한 뒤 모은다.',1,'발언 구조를 바꾸면 누구도 지목하지 않고 균형을 되찾습니다.'],
+     ['그 패널에게 발언을 줄여 달라고 모두 앞에서 요청한다.',0,'공개 지적은 분위기를 굳게 만듭니다. 쉬는 시간에 따로 부탁하는 편이 낫습니다.']],
+  rule:'모든 패널은 동등하다',ref:['stage:0','오리엔테이션 규칙']},
+ {q:'한 패널이 "AI 매칭 결과를 검증하다"를 과업으로 넣자고 합니다. 확인해 보니 지금 이 일을 하는 패널은 한 명도 없습니다.',
+  o:[['앞으로 중요해질 테니 과업으로 올린다.',0,'차트는 지금 성공적인 작업자가 실제로 하는 일만 담습니다.'],
+     ['의미 없는 의견이라며 넘어간다.',0,'버리면 교육과정이 변화를 놓칩니다. 담을 자리가 따로 있습니다.'],
+     ['미래 동향 목록에 적어 두고 과업 도출을 이어 간다.',1,'보조 목록의 네 번째가 이런 항목을 받는 자리입니다.']],
+  rule:'현재 하는 일만 과업, 앞으로의 일은 미래 동향',ref:['aux','미래 동향 목록']},
+ {q:'패널이 "검사지를 배부하다", "검사 시간을 재다"를 각각 과업으로 쓰자고 합니다.',
+  o:[['세밀할수록 좋으니 둘 다 올린다.',0,'과업이 200개를 넘기 시작하면 단계가 섞였다는 신호입니다.'],
+     ['"이 일만 따로 떼어 누군가에게 맡길 수 있습니까?"라고 묻고, 아니라면 상위 과업의 단계로 내린다.',1,'둘 다 "직업심리검사를 실시하다"의 단계입니다. 단계는 과업 분석에서 다룹니다.'],
+     ['둘을 합쳐 "검사지를 배부하고 시간을 재다"로 쓴다.',0,'한 문장에 동사는 하나입니다. 동사가 둘이면 과업이 둘이거나 단계가 둘입니다.']],
+  rule:'과업과 단계를 독립성으로 가른다',ref:['level:step','위계: 단계']}
+];
+
+const DIMS=[['신속성','Time Required','높을수록 빨리 끝남'],['비용 효율','Cost Efficiency','높을수록 저렴'],['패널 의존도','Panel Dependency','높을수록 패널 질에 좌우'],['교육과정 직결성','Curriculum Directness','높을수록 바로 교육과정이 됨'],['미세 동작 깊이','Depth of Micro-motions','높을수록 동작 단위까지 봄'],['현장 최신성','Real-world Currency','높을수록 지금의 일을 반영']];
+const METHODS=[
+ {id:'dacum',ko:'DACUM',en:'Developing A Curriculum',by:'Norton · CETE',src:'숙련 작업자 패널 워크숍',out:'책무 × 과업 차트, 4개 보조 목록',sc:[5,4,5,5,2,5],
+  nt:['워크숍 이틀 안팎','소수 패널, 단기 집중','패널의 질이 결과의 전부','차트가 곧 교육과정 골격','과업 단위까지. 동작은 다루지 않음','현직자가 지금 하는 일'],
+  rel:'기준 방법입니다. 빠르고 교육과정에 바로 이어지지만 미세 동작과 표본 대표성은 약합니다. 그 약점을 검증 설문과 과업 분석이 메웁니다.',refs:[['stage:6','7단계 검증 설문'],['stage:7','8단계 과업 분석']]},
+ {id:'fja',ko:'기능적 직무분석',en:'Functional Job Analysis',by:'Sidney A. Fine',src:'훈련된 분석가의 면담과 평정',out:'자료·사람·사물 기능 수준 평정, 과업 진술문',sc:[2,2,2,3,4,3],
+  nt:['면담과 평정에 수 주','훈련된 분석가가 필요','분석가 중심. 작업자는 정보 제공','기능 수준 척도는 간접 연결','자료·사람·사물 기능 수준까지 평정','분석 시점에 고정'],
+  rel:'FJA도 과업 진술문을 쓰지만 주어는 분석가입니다. 모든 과업을 자료, 사람, 사물 세 축의 기능 수준으로 평정하므로 직무 간 비교와 직무 분류에 강합니다. DACUM은 비교보다 교육과정 설계에 강합니다.',refs:[['axiom:0','정보원이 다른 이유: 제1공리']]},
+ {id:'cit',ko:'결정적 사건법',en:'Critical Incident Technique',by:'John C. Flanagan',src:'효과적·비효과적 수행 사례 수집',out:'결정적 행동 범주, 행동 사례집',sc:[2,2,3,3,3,4],
+  nt:['사례 수집과 분류에 수 주 이상','다량의 사례 코딩','보고자의 기억에 의존','평가 기준과 훈련 사례로 활용','결정적 장면만 깊게. 일상 과업은 빠짐','최근 사건 중심'],
+  rel:'CIT는 성패를 가른 장면만 모으므로 직무 전체 지도를 그리지 못합니다. DACUM 차트로 전체를 잡고, 어려운 과업의 수업 사례와 평가 기준을 CIT로 보강하면 서로 맞물립니다.',refs:[['stage:7','과업 분석에서 사례 활용']]},
+ {id:'obs',ko:'관찰법',en:'Observation Method',by:'전통적 직무분석',src:'분석가의 현장 직접 관찰',out:'관찰 기록, 동작·시간 분석표',sc:[1,2,1,2,5,4],
+  nt:['직무 주기 전체를 지켜봐야 함','관찰자 인건비가 큼','패널 없음. 관찰자 역량에 의존','기록을 다시 과업으로 재구성','동작과 시간 단위까지 포착','눈앞의 실제 수행'],
+  rel:'손으로 하는 반복 작업에는 가장 정밀합니다. 상담처럼 판단과 대화가 핵심인 직무는 겉으로 드러나지 않아 놓치는 부분이 큽니다. DACUM은 수행자의 말로 그 부분을 끌어냅니다.',refs:[['sec:m1','M1: 누가 직무를 정의하는가']]},
+ {id:'survey',ko:'설문지법',en:'Questionnaire Survey',by:'전통적 직무분석',src:'다수 현직자의 구조화 응답',out:'과업별 빈도·중요도 통계',sc:[3,4,1,2,1,3],
+  nt:['문항 개발 뒤 배포와 회수','대규모 표본에 저렴','패널 없음. 응답 성실도에 의존','통계는 나오나 구조는 따로 설계','문항에 있는 것만 측정','문항 개발 시점에 묶임'],
+  rel:'설문은 물어볼 과업 목록이 먼저 있어야 합니다. 그래서 DACUM 차트가 문항이 되고, 설문이 차트를 검증하는 순서로 결합합니다.',refs:[['stage:6','7단계 검증 설문'],['gloss:verify','용어: 과업 검증']]}
+];
+
+const GLOSS=[
+ ['dacum','DACUM','Developing A Curriculum','숙련 작업자 패널이 직무를 책무와 과업으로 분석해 교육과정의 기초를 만드는 방법.','sec:m1','기초와 3공리'],
+ ['duty','책무','Duty','관련 과업을 묶은 넓은 책임 영역. 직무당 8~12개.','level:duty','위계: 책무'],
+ ['task','과업','Task','시작과 끝이 있고 관찰·측정이 가능하며 결과물을 남기는 작업 단위.','level:task','위계: 과업'],
+ ['step','단계','Step','과업을 이루는 세부 절차. 차트가 아니라 과업 분석에서 다룬다.','level:step','위계: 단계'],
+ ['stmt','과업 진술문','Task Statement','행위 동사 + 목적어 + 한정어로 쓴 과업 문장.','linter','린터'],
+ ['verb','행위 동사','Action Verb','관찰 가능한 수행을 가리키는 동사. 내적 상태 동사는 금지.','sec:grammar','황금률과 동사 목록'],
+ ['qual','한정어','Qualifier','수행의 조건, 근거, 수단, 범위를 좁히는 구. 주관적 수식어는 쓰지 않는다.','sec:grammar','황금률'],
+ ['panel','전문가 패널','Expert Worker Panel','현직 숙련 작업자 8~12명으로 꾸린 분석 위원회.','stage:0','1단계'],
+ ['fac','퍼실리테이터','Facilitator','절차를 이끌고 질문으로 합의를 돕는 진행자. 내용에는 개입하지 않는다.','sec:sim','딜레마 시뮬레이터'],
+ ['rec','기록자','Recorder','패널의 말을 카드에 받아 적어 벽에 붙이는 보조 진행자.','stage:0','1단계'],
+ ['chart','DACUM 차트','DACUM Chart','책무를 세로, 과업을 가로로 배열한 한 장짜리 직무 지도.','sec:m3','차트 탐색기'],
+ ['enabler','인에이블러','Enabler','과업 수행을 가능하게 하는 지식, 기술, 도구, 작업자 행동.','axiom:2','제3공리'],
+ ['gks','일반 지식과 기술','General Knowledge & Skills','여러 과업에 공통으로 필요한 지식과 기술. 보조 목록 1.','aux','보조 목록'],
+ ['tools','도구와 장비','Tools & Equipment','과업에 쓰는 도구, 장비, 자재, 시스템. 보조 목록 2.','aux','보조 목록'],
+ ['wb','작업자 행동','Worker Behaviors','성공적인 작업자에게서 보이는 태도와 윤리. 보조 목록 3.','aux','보조 목록'],
+ ['ft','미래 동향','Future Trends & Concerns','직무를 바꿀 기술, 제도, 수요 변화. 보조 목록 4.','aux','보조 목록'],
+ ['verify','과업 검증','Task Verification','넓은 현직자 표본에게 과업의 중요도, 빈도, 학습 난이도를 묻는 설문.','stage:6','7단계'],
+ ['ta','과업 분석','Task Analysis','과업을 단계, 수행 기준, 도구, 지식, 안전, 태도로 풀어내는 작업.','stage:7','8단계'],
+ ['scid','SCID','Systematic Curriculum and Instructional Development','분석, 설계, 개발, 실행, 평가로 이어지는 Norton의 교육과정 개발 모형. DACUM이 분석 단계.','stage:7','8단계'],
+ ['cbe','역량기반교육','Competency-Based Education','수행할 수 있는 과업을 기준으로 가르치고 평가하는 교육.','sec:m1','기원과 계보'],
+ ['cons','합의','Consensus','표결이 아니라 모든 패널이 받아들일 수 있는 문장에 이르는 결정 방식.','sec:sim','딜레마 시뮬레이터'],
+ ['bs','브레인스토밍','Brainstorming','비판 없이 책무와 과업 후보를 쏟아내는 발상 기법.','stage:2','3단계'],
+ ['fja','기능적 직무분석','FJA','과업을 자료·사람·사물 기능 수준으로 평정하는 분석가 중심 방법.','method:fja','방법론 비교'],
+ ['cit','결정적 사건법','CIT','성공과 실패를 가른 행동 사례를 모아 범주화하는 방법.','method:cit','방법론 비교'],
+ ['obs','관찰법','Observation','분석가가 현장에서 수행을 직접 보고 기록하는 방법.','method:obs','방법론 비교'],
+ ['survey','설문지법','Questionnaire','구조화된 문항으로 다수 현직자의 응답을 모으는 방법.','method:survey','방법론 비교'],
+ ['ncs','NCS','국가직무능력표준','산업 현장의 직무 수행에 필요한 능력을 국가가 표준화한 것. 개발 과정에 DACUM식 직무분석이 쓰인다.','sec:m1','기원과 계보']
+];
+
+/* ---------- STATE ---------- */
+const S={axiom:0,src:'dacum',level:'duty',open:new Set(['A']),hit:null,stage:0,sim:0,simAns:[],method:'dacum',radar:new Set(['dacum','fja']),q:''};
+
+/* ---------- HELPERS ---------- */
+function josa(w){const c=w.trim().slice(-1).charCodeAt(0);if(c<0xAC00||c>0xD7A3)return '을(를)';return (c-0xAC00)%28?'을':'를';}
+function sent(t,plain){const o=t.o+josa(t.o);return plain?`${t.q} ${o} ${t.v}`:`<span class="tq">${esc(t.q)}</span> <span class="to">${esc(o)}</span> <span class="tv font-bold">${esc(t.v)}</span>`;}
+function flash(el){if(!el)return;el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+function scrollToId(id){const el=document.getElementById(id);if(!el)return;el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});flash(el.classList.contains('mod')?null:el);}
+const taskById=id=>ALLT.find(t=>t.id===id);
+
+/* ---------- NAV ---------- */
+function renderNav(){const h=MODS.map(m=>`<button class="navl" data-act="go" data-to="sec:${m[0]}" data-nav="${m[0]}"><span class="n">${m[1]}</span><span>${m[2]}</span></button>`).join('');$('#snav').innerHTML=h;$('#mnav').innerHTML=h;}
+function spy(){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){$$('[data-nav]').forEach(b=>b.classList.toggle('on',b.dataset.nav===e.target.id));const mb=$('#mnav [data-nav="'+e.target.id+'"]');if(mb){const p=mb.closest('.mnav');p.scrollTo({left:mb.offsetLeft-12,behavior:reduce?'auto':'smooth'});}}});},{rootMargin:'-25% 0px -65% 0px'});$$('section.mod').forEach(s=>io.observe(s));}
+
+/* ---------- M1 ---------- */
+function renderOrigin(){$('#origin').innerHTML=ORIGIN.map(o=>`<div class="grid grid-cols-[92px_minmax(0,1fr)] gap-3"><span class="mono text-[12px] pt-[3px]" style="color:var(--accent)">${o[0]}</span><span class="text-[14px]">${o[1]}</span></div>`).join('')+`<p class="muted text-[13px] border-t pt-3" style="border-color:var(--line)">DACUM을 Norton이 처음 만든 것은 아닙니다. 캐나다에서 시작됐고 Norton과 CETE가 표준 절차로 정립해 세계에 보급했습니다.</p>`;}
+function renderAxioms(){$('#axioms').innerHTML=AXIOMS.map((a,i)=>{const on=S.axiom===i;return `<div class="card axiom ${on?'on':''}" id="axiom-${i}" role="button" tabindex="0" data-act="axiom" data-v="${i}" aria-expanded="${on}">
+ <div class="flex gap-4 items-start"><span class="num">${i+1}</span><div class="min-w-0"><p class="font-bold text-[15.5px]">${a.t}</p>
+ ${on?`<dl class="kv mt-3"><dt>뜻</dt><dd>${a.why}</dd><dt>실무 함의</dt><dd>${a.so}</dd><dt>이어 보기</dt><dd class="flex flex-wrap gap-x-4 gap-y-1">${a.refs.map(r=>xref(r[0],r[1])).join('')}</dd></dl>`:`<p class="muted text-[13px] mt-1">눌러서 뜻과 실무 함의 보기</p>`}
+ </div></div></div>`;}).join('');}
+function renderSrc(){$('#srcseg').innerHTML=SRC.map(s=>`<button role="tab" aria-selected="${S.src===s.id}" class="${S.src===s.id?'on':''}" data-act="src" data-v="${s.id}">${s.ko}</button>`).join('');
+ const s=SRC.find(x=>x.id===S.src);
+ $('#srcbox').innerHTML=`<div class="grid gap-4 md:grid-cols-2"><dl class="kv"><dt>정보원</dt><dd class="font-semibold">${s.who}</dd><dt>전제</dt><dd>${s.prem}</dd><dt>산출물</dt><dd>${s.out}</dd></dl><dl class="kv"><dt>강점</dt><dd>${s.pro}</dd><dt>약점</dt><dd>${s.con}</dd><dt>이어 보기</dt><dd>${xref(s.ref[0],s.ref[1])}</dd></dl></div>`;}
+
+/* ---------- M2 ---------- */
+function renderLevels(){$('#levels').innerHTML=LEVELS.map((l,i)=>`<button class="lvl ${S.level===l.id?'on':''}" style="margin-left:${i*14}px;width:calc(100% - ${i*14}px)" data-act="level" data-v="${l.id}"><span class="mono text-[11px] muted">${l.en.toUpperCase()}</span><span class="block font-bold">${l.ko} <span class="font-normal muted text-[13px]">${l.std}</span></span></button>`).join('');
+ $('#nums').innerHTML=[['8~12','직무당 책무'],['6~20','책무당 과업'],['50~200','전체 과업']].map(n=>`<div class="card sunk !p-3"><div class="mono font-bold text-[18px]" style="font-variant-numeric:tabular-nums">${n[0]}</div><div class="muted text-[12px]">${n[1]}</div></div>`).join('');
+ const l=LEVELS.find(x=>x.id===S.level);
+ $('#leveldetail').innerHTML=`<p class="eyebrow">${l.en.toUpperCase()}</p><h3 class="text-[20px]">${l.ko}</h3><dl class="kv mt-3"><dt>정의</dt><dd>${l.def}</dd><dt>수량 기준</dt><dd class="font-semibold">${l.std}</dd><dt>직업상담사 예</dt><dd>${l.ex}</dd><dt>판별 질문</dt><dd>${l.test}</dd><dt>이어 보기</dt><dd class="flex flex-wrap gap-x-4 gap-y-1">${l.refs.map(r=>xref(r[0],r[1])).join('')}</dd></dl>`;}
+function renderVerbs(){$('#banlist').innerHTML=Object.keys(BAN).map(v=>`<button class="chip ban" data-act="go" data-to="verb:${v}">${v}</button>`).join('');
+ $('#oklist').innerHTML=OKV.slice(0,24).map(v=>`<button class="chip" data-act="go" data-to="verb:${v}">${v}</button>`).join('');
+ $('#presets').innerHTML=PRESETS.map((p,i)=>`<button class="chip" data-act="preset" data-v="${i}">${p[0]}</button>`).join('');}
+
+function lint(q,o,v){
+ q=q.trim();o=o.trim();v=v.trim();const is=[];let obs=100,clar=100,syn=0;const en=/^[\x00-\x7F]+$/.test(v+o+q)&&/[a-z]/i.test(v);
+ if(!v){is.push({l:'bad',m:'행위 동사가 없습니다. 과업은 동사로 끝나야 합니다.'});obs=0;}
+ else{syn+=40;
+  const hit=Object.keys(BAN).find(b=>{const st=b.replace(/하다$|다$/,'');return st.length>1&&v.includes(st);})||BANSTEM.find(s=>v.includes(s))||BANHEAD.find(s=>v.startsWith(s))||(BANEN.test(v)?v:null);
+  const vg=Object.keys(VAGUE).find(s=>v.startsWith(s));
+  if(hit){const fx=BAN[hit]||BAN[Object.keys(BAN).find(b=>b.startsWith(hit))]||['설명하다','분석하다','작성하다'];obs=10;is.push({l:'bad',m:`"${v}"는 머릿속 상태를 가리키는 금지 동사입니다. 그 지식으로 하는 눈에 보이는 행동을 쓰고, 지식은 보조 목록으로 옮기십시오.`,fx});}
+  else if(vg){obs=55;clar-=10;is.push({l:'warn',m:`"${v}"는 범위가 넓어 책무 수준이거나 결과물이 분명하지 않습니다. 끝났는지 확인할 수 있는 동사로 좁히십시오.`,fx:VAGUE[vg]});}
+  else if(OKV.includes(v)){is.push({l:'good',m:`"${v}"는 관찰 가능한 승인 동사입니다.`});}
+  else if(!en){obs=80;is.push({l:'warn',m:`"${v}"는 승인 목록에 없습니다. 수행이 끝났는지 제3자가 눈으로 확인할 수 있는지 직접 판단하십시오.`});}
+  if(/(하고|하며|및|,|\/|·)/.test(v)||/\b(and|or)\b/i.test(v)){syn-=15;clar-=25;is.push({l:'bad',m:'동사가 둘 이상입니다. 한 문장에 동사는 하나입니다. 과업을 나누거나 하나는 단계로 내리십시오.'});}
+  if(!en){
+   if(/(었다|았다|였다|했다)$/.test(v)){syn-=20;is.push({l:'bad',m:'과거형입니다. 현재 기본형 "~하다"로 쓰십시오.',fx:[v.replace(/했다$/,'하다').replace(/하였다$/,'하다')]});}
+   else if(/(것이다|겠다)$/.test(v)){syn-=20;is.push({l:'bad',m:'미래형입니다. 현재 기본형 "~하다"로 쓰십시오.'});}
+   else if(/(니다|세요|해요|어요|아요)$/.test(v)){syn-=10;is.push({l:'warn',m:'경어체입니다. 기본형 "~하다"로 통일하십시오.'});}
+   else if(/(된다|되다|받다|당하다)$/.test(v)){syn-=15;obs-=15;is.push({l:'warn',m:'수동 표현입니다. 작업자가 하는 능동 동사로 쓰십시오.'});}
+   else if(!/(다|기)$/.test(v)){syn-=10;is.push({l:'warn',m:'동사가 기본형으로 끝나지 않습니다. "~하다" 형태로 맞추십시오.'});}
+  }
+ }
+ if(!o){clar-=50;is.push({l:'bad',m:'목적어가 없습니다. 무엇에 대해 수행하는지 써야 합니다.'});}
+ else{syn+=35;
+  if(PRON.test(o)||PRON.test(q)||/^(I|we|he|she|they)\b/i.test(o)){clar-=25;is.push({l:'bad',m:'주어나 대명사가 들어 있습니다. 과업 진술문은 주어 없이 씁니다.'});}
+  if(VOBJ.test(o)){clar-=25;is.push({l:'warn',m:`목적어 "${o}"가 막연합니다. 구체적인 대상이나 산출물 이름으로 바꾸십시오.`});}
+  if(/(을|를)$/.test(o)&&o.length>1){is.push({l:'warn',m:'목적어에 조사를 붙이지 않아도 됩니다. 문장을 조립할 때 자동으로 붙습니다.'});}
+ }
+ if(!q){is.push({l:'warn',m:'한정어가 없습니다. 근거, 수단, 조건 가운데 하나를 붙이면 과업의 범위가 분명해집니다.'});}
+ else{syn+=25;
+  if(SUBJ.test(q)||SUBJ.test(o)||/\b(effectively|properly|well|appropriately)\b/i.test(q)){clar-=20;obs-=15;is.push({l:'bad',m:'주관적 수식어가 있습니다. "효과적으로", "적절히" 같은 말은 측정할 수 없습니다. 지침, 양식, 기준 이름으로 바꾸고 품질 수준은 수행 기준에 적으십시오.'});}
+ }
+ if((q+o+v).length>48){clar-=15;is.push({l:'warn',m:'문장이 깁니다. 과업 진술문은 한눈에 읽히는 길이로 줄이십시오.'});}
+ obs=Math.max(0,obs);clar=Math.max(0,clar);syn=Math.max(0,syn);
+ const total=Math.round(obs*.4+clar*.3+syn*.3);const bad=is.some(i=>i.l==='bad');
+ const verdict=bad?['bad','부적합']:total>=85?['good','DACUM 표준 충족']:['warn','보완 필요'];
+ let s='';if(v||o||q){const oo=o?(/(을|를)$/.test(o)||en?o:o+josa(o)):'';s=en?[v&&`<span class="tv font-bold">${esc(v)}</span>`,o&&`<span class="to">${esc(o)}</span>`,q&&`<span class="tq">${esc(q)}</span>`].filter(Boolean).join(' '):[q&&`<span class="tq">${esc(q)}</span>`,oo&&`<span class="to">${esc(oo)}</span>`,v&&`<span class="tv font-bold">${esc(v)}</span>`].filter(Boolean).join(' ');}
+ return {is,obs,clar,syn,total,verdict,s};
+}
+function renderLint(){const r=lint($('#lq').value,$('#lo').value,$('#lv').value);
+ const bar=(n,l,en)=>{const c=n>=85?'var(--good)':n>=60?'var(--warn)':'var(--bad)';return `<div><div class="flex justify-between text-[13px]"><span class="font-semibold">${l} <span class="muted font-normal">${en}</span></span><span class="mono" style="font-variant-numeric:tabular-nums">${n}</span></div><div class="bar mt-1"><i style="width:${n}%;background:${c}"></i></div></div>`;};
+ const order={bad:0,warn:1,good:2};const is=r.is.slice().sort((a,b)=>order[a.l]-order[b.l]);
+ $('#lintout').innerHTML=`<div class="lg:col-span-5 grid gap-3 content-start">
+  <div class="card sunk"><div class="flex items-center justify-between gap-2 flex-wrap"><span class="pill ${r.verdict[0]}">${r.verdict[1]}</span><span class="mono font-bold text-[22px]" style="font-variant-numeric:tabular-nums">${r.total}<span class="muted text-[13px] font-normal"> / 100</span></span></div>
+  <p class="mt-3 text-[16px] leading-relaxed">${r.s||'<span class="muted">세 칸을 채우면 문장이 조립됩니다.</span>'}</p></div>
+  ${bar(r.obs,'관찰 가능성','Observability')}${bar(r.clar,'명료성','Clarity')}${bar(r.syn,'구문 완결성','Syntax')}</div>
+  <div class="lg:col-span-7 grid gap-2 content-start">${is.map(i=>`<div class="issue ${i.l}"><div class="min-w-0"><p class="text-[14px]">${esc(i.m)}</p>${i.fx?`<div class="flex flex-wrap gap-2 mt-2"><span class="muted text-[12.5px] self-center">바꿔 쓰기</span>${i.fx.map(f=>`<button class="chip" data-act="go" data-to="verb:${esc(f)}">${esc(f)}</button>`).join('')}</div>`:''}</div></div>`).join('')}
+  <p class="muted text-[13px]">통과한 문장은 ${xref('sec:m3','차트의 실제 과업')}과 비교해 보십시오. 차트의 과업 26개는 모두 이 린터를 통과합니다.</p></div>`;}
+function setLint(q,o,v){if(q!=null)$('#lq').value=q;if(o!=null)$('#lo').value=o;if(v!=null)$('#lv').value=v;renderLint();}
+
+/* ---------- M3 ---------- */
+function uses(p,key){return ALLT.filter(t=>t[p].includes(key));}
+function renderChart(){const hs=S.hit?new Set(uses(S.hit[0],S.hit[1]).map(t=>t.id)):new Set();
+ $('#chart').innerHTML=DUTIES.map(d=>`<div class="duty ${S.open.has(d.id)?'open':''}" id="duty-${d.id}">
+  <button data-act="duty" data-v="${d.id}" aria-expanded="${S.open.has(d.id)}"><span class="code">${d.id}</span><span class="min-w-0"><span class="block font-bold">${d.ko}</span><span class="block muted text-[12.5px]">${d.en} · 과업 ${d.tasks.length}개</span></span><span class="car">▶</span></button>
+  <div class="tasks">${d.tasks.map(t=>`<button class="task ${hs.has(t.id)?'hit':''}" data-act="go" data-to="task:${t.id}"><span class="tc">${t.id}</span><span class="text-[14px] leading-snug">${sent(t)}</span></button>`).join('')}</div></div>`).join('');
+ $('#hitinfo').innerHTML=S.hit?`<span class="pill warn">${PNAME[S.hit[0]]}: ${POOL[S.hit[0]][S.hit[1]]} · 과업 ${hs.size}개</span> <button class="xref" style="margin-left:8px" data-act="clearhit">표시 지우기</button>`:'';}
+function renderAux(){const box=(p)=>`<div><p class="font-bold text-[14px] mb-2">${PNAME[p]} <span class="muted font-normal text-[12.5px]">${PEN[p]}</span></p><div class="flex flex-wrap gap-2">${Object.entries(POOL[p]).map(([k,v])=>`<button class="chip ${S.hit&&S.hit[1]===k?'on':''}" data-act="hit" data-p="${p}" data-k="${k}">${v} <span class="mono text-[11px] opacity-70">${uses(p,k).length}</span></button>`).join('')}</div></div>`;
+ $('#aux').innerHTML=box('k')+box('s')+box('t')+box('b')+`<div class="md:col-span-2 border-t pt-4" style="border-color:var(--line)"><p class="font-bold text-[14px] mb-2">미래 동향 <span class="muted font-normal text-[12.5px]">Future Trends</span></p><ul class="dl text-[14px]">${TRENDS.map(t=>`<li>${t}</li>`).join('')}</ul><p class="muted text-[13px] mt-2">지금 하는 일이 아니므로 과업에 올리지 않습니다. ${xref('sec:sim','시뮬레이터 4번 상황')}</p></div>`;}
+function openTask(id,sub){const t=taskById(id);if(!t)return;S.open.add(t.duty.id);renderChart();const i=ALLT.indexOf(t);const prev=ALLT[i-1],next=ALLT[i+1];
+ const grp=p=>`<div><p class="font-bold text-[13.5px] mb-2">${PNAME[p]} <span class="muted font-normal text-[12px]">${PEN[p]}</span></p><div class="flex flex-wrap gap-2">${t[p].map(k=>`<button class="chip ${sub&&sub[1]===k?'on':''}" data-act="sub" data-id="${t.id}" data-p="${p}" data-k="${k}">${POOL[p][k]} <span class="mono text-[11px] opacity-70">${uses(p,k).length}</span></button>`).join('')}</div></div>`;
+ let rel='';if(sub){const o=uses(sub[0],sub[1]).filter(x=>x.id!==t.id);rel=`<div class="card sunk !p-3"><p class="text-[13px] font-bold mb-2">"${POOL[sub[0]][sub[1]]}"을(를) 함께 쓰는 과업 ${o.length}개</p><div class="grid gap-1">${o.map(x=>`<button class="text-left text-[13.5px] py-1.5" data-act="go" data-to="task:${x.id}"><span class="mono text-[12px]" style="color:var(--accent)">${x.id}</span> ${sent(x)}</button>`).join('')||'<span class="muted text-[13px]">이 과업에서만 쓰입니다.</span>'}</div><button class="xref mt-2" data-act="hit" data-p="${sub[0]}" data-k="${sub[1]}" data-close="1">차트에 표시</button></div>`;}
+ $('#drawer').innerHTML=`<div class="flex items-start justify-between gap-3"><div><p class="eyebrow">책무 ${t.duty.id} · ${t.duty.ko}</p><h3 class="mono text-[20px] font-bold mt-1">${t.id}</h3></div><button class="btn" data-act="closedrawer" aria-label="닫기">닫기</button></div>
+ <p class="text-[17px] leading-relaxed mt-2">${sent(t)}</p>
+ <p class="mono text-[12px] mt-2"><span class="tq">한정어</span> · <span class="to">목적어</span> · <span class="tv">행위 동사</span></p>
+ <div class="flex flex-wrap gap-2 mt-3"><button class="btn pri" data-act="tolint" data-id="${t.id}">린터에서 검사</button>${xref('level:task','과업 판별 기준')}</div>
+ <p class="muted text-[13px] mt-4 mb-2">제3공리에 따라 이 과업이 요구하는 요소입니다. 항목을 누르면 같은 요소를 쓰는 다른 과업이 나옵니다.</p>
+ <div class="grid gap-4">${grp('k')}${grp('s')}${grp('t')}${grp('b')}${rel}</div>
+ <div class="flex justify-between gap-2 mt-5 border-t pt-4" style="border-color:var(--line)">${prev?`<button class="btn" data-act="go" data-to="task:${prev.id}">← ${prev.id}</button>`:'<span></span>'}${next?`<button class="btn" data-act="go" data-to="task:${next.id}">${next.id} →</button>`:'<span></span>'}</div>`;
+ $('#drawer').classList.add('open');$('#ov').classList.add('open');if(!sub){$('#drawer').scrollTop=0;$('#drawer').focus({preventScroll:true});}}
+function closeDrawer(){$('#drawer').classList.remove('open');$('#ov').classList.remove('open');}
+
+/* ---------- M4 ---------- */
+function renderStages(){$('#stages').innerHTML=STAGES.map((s,i)=>`<button class="tl ${S.stage===i?'on':''}" data-act="stage" data-v="${i}"><span class="dot">${i+1}</span><span class="min-w-0"><span class="block font-semibold text-[14.5px] leading-snug">${s.t}</span><span class="block muted text-[12px]">${s.en}</span></span></button>`).join('');
+ const s=STAGES[S.stage];
+ $('#stagedetail').innerHTML=`<p class="eyebrow">STAGE ${S.stage+1} / 8</p><h3 class="text-[19px]">${s.t}</h3><p class="mt-2">${s.goal}</p>
+ <p class="font-bold text-[13.5px] mt-4 mb-2">퍼실리테이터가 하는 일</p><ul class="dl text-[14px]">${s.fac.map(f=>`<li>${f}</li>`).join('')}</ul>
+ <dl class="kv mt-4"><dt>산출물</dt><dd class="font-semibold">${s.out}</dd><dt>흔한 실수</dt><dd>${s.trap}</dd><dt>이어 보기</dt><dd class="flex flex-wrap gap-x-4 gap-y-1">${s.refs.map(r=>xref(r[0],r[1])).join('')}</dd></dl>
+ <div class="flex justify-between mt-5"><button class="btn" data-act="stage" data-v="${Math.max(0,S.stage-1)}" ${S.stage===0?'disabled style="opacity:.4"':''}>← 이전</button><button class="btn" data-act="stage" data-v="${Math.min(7,S.stage+1)}" ${S.stage===7?'disabled style="opacity:.4"':''}>다음 →</button></div>`;}
+function renderSim(){const n=SIM.length,score=S.simAns.filter(a=>a&&a.ok).length;$('#simscore').textContent=`상황 ${Math.min(S.sim+1,n)} / ${n} · 정답 ${score}`;
+ if(S.sim>=n){$('#simbox').innerHTML=`<div class="card sunk"><p class="mono font-bold text-[24px]">${score} / ${n}</p><p class="mt-1">${score===n?'모든 상황에서 퍼실리테이터 원칙을 지켰습니다.':score>=3?'원칙은 잡혔습니다. 틀린 상황의 규칙을 다시 보십시오.':'퍼실리테이터는 내용을 만들지 않고, 질문과 구조로 합의를 이끕니다. 다시 해 보십시오.'}</p>
+  <ul class="dl text-[14px] mt-3">${SIM.map((s,i)=>`<li><span class="pill ${S.simAns[i]&&S.simAns[i].ok?'good':'bad'}" style="margin-right:6px">${i+1}</span>${s.rule}</li>`).join('')}</ul><button class="btn pri mt-4" data-act="simreset">처음부터 다시</button></div>`;return;}
+ const sc=SIM[S.sim],ans=S.simAns[S.sim];
+ $('#simbox').innerHTML=`<p class="text-[15.5px] max-w-[65ch]">${sc.q}</p><div class="grid gap-2 mt-3">${sc.o.map((o,i)=>{const show=ans!=null;const cls=show?(o[1]?'right':(ans.i===i?'wrong':'')):'';return `<button class="opt ${cls}" data-act="simpick" data-v="${i}" ${show?'disabled':''}><span class="font-semibold">${o[0]}</span>${show&&(o[1]||ans.i===i)?`<span class="block text-[13.5px] mt-1"><span class="pill ${o[1]?'good':'bad'}" style="margin-right:6px">${o[1]?'권장':'위험'}</span>${o[2]}</span>`:''}</button>`;}).join('')}</div>
+ ${ans!=null?`<div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4"><span class="text-[14px]"><span class="muted">원칙</span> <b>${sc.rule}</b></span>${xref(sc.ref[0],sc.ref[1])}<button class="btn pri ml-auto" data-act="simnext">${S.sim===n-1?'결과 보기':'다음 상황'}</button></div>`:'<p class="muted text-[13px] mt-3">퍼실리테이터라면 어떻게 하겠습니까? 하나를 고르십시오.</p>'}`;}
+
+/* ---------- M5 ---------- */
+function renderRadar(){$('#radarsel').innerHTML=METHODS.map((m,i)=>`<button class="chip ${S.radar.has(m.id)?'on':''}" style="${S.radar.has(m.id)?`background:var(--c${i+1});border-color:var(--c${i+1})`:''}" data-act="radar" data-v="${m.id}" aria-pressed="${S.radar.has(m.id)}">${m.ko}</button>`).join('');
+ const W=360,H=310,cx=180,cy=155,R=100,N=6;const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/N;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+ let g='';for(let k=1;k<=5;k++){g+=`<polygon points="${[...Array(N)].map((_,i)=>pt(i,R*k/5).map(n=>n.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="var(--line)" stroke-width="1"/>`;}
+ for(let i=0;i<N;i++){const [x,y]=pt(i,R);g+=`<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--line)"/>`;const [lx,ly]=pt(i,R+16);const anc=Math.abs(lx-cx)<5?'middle':lx>cx?'start':'end';g+=`<text x="${lx.toFixed(1)}" y="${(ly+4).toFixed(1)}" text-anchor="${anc}" font-size="11.5" font-weight="600" fill="var(--muted)">${DIMS[i][0]}</text>`;}
+ for(let k=1;k<=5;k++){g+=`<text x="${cx+4}" y="${(cy-R*k/5+3).toFixed(1)}" font-size="9" fill="var(--muted)">${k}</text>`;}
+ METHODS.forEach((m,mi)=>{if(!S.radar.has(m.id))return;const ps=m.sc.map((v,i)=>pt(i,R*v/5));g+=`<polygon points="${ps.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ')}" fill="var(--c${mi+1})" fill-opacity=".14" stroke="var(--c${mi+1})" stroke-width="2" stroke-linejoin="round"/>`+ps.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3" fill="var(--c${mi+1})"/>`).join('');});
+ $('#radar').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="선택한 방법의 6개 차원 레이더 비교">${g}</svg><p class="muted text-[12.5px]">패널 의존도는 높을수록 유리하다는 뜻이 아닙니다. 패널의 질에 결과가 좌우되는 정도입니다.</p>`;}
+function renderMethod(){const m=METHODS.find(x=>x.id===S.method);
+ $('#methodbox').innerHTML=`<div class="seg mb-4">${METHODS.map(x=>`<button class="${x.id===S.method?'on':''}" data-act="method" data-v="${x.id}">${x.ko}</button>`).join('')}</div>
+ <p class="eyebrow">${m.en.toUpperCase()}</p><h3 class="text-[19px]">${m.ko}</h3>
+ <dl class="kv mt-3"><dt>대표 인물</dt><dd>${m.by}</dd><dt>정보원</dt><dd>${m.src}</dd><dt>산출물</dt><dd>${m.out}</dd><dt>${m.id==='dacum'?'특징':'DACUM과의 관계'}</dt><dd>${m.rel}</dd><dt>이어 보기</dt><dd class="flex flex-wrap gap-x-4 gap-y-1">${m.refs.map(r=>xref(r[0],r[1])).join('')}</dd></dl>`;}
+function renderCmp(){const pips=n=>`<span class="pips" aria-label="5점 중 ${n}점">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'f':''}"></i>`).join('')}</span>`;
+ $('#cmp').innerHTML=`<thead><tr><th style="width:150px">비교 차원</th>${METHODS.map(m=>`<th class="${m.id===S.method?'me':''}"><button class="xref" data-act="go" data-to="method:${m.id}">${m.ko}</button></th>`).join('')}</tr></thead><tbody>
+ ${DIMS.map((d,i)=>`<tr><th><span class="block">${d[0]}</span><span class="block muted font-normal text-[12px]">${d[1]}</span><span class="block muted font-normal text-[11.5px]">${d[2]}</span></th>${METHODS.map(m=>`<td class="${m.id===S.method?'me':''}">${pips(m.sc[i])}<span class="block">${m.nt[i]}</span></td>`).join('')}</tr>`).join('')}
+ <tr><th>정보원</th>${METHODS.map(m=>`<td class="${m.id===S.method?'me':''}">${m.src}</td>`).join('')}</tr>
+ <tr><th>핵심 산출물</th>${METHODS.map(m=>`<td class="${m.id===S.method?'me':''}">${m.out}</td>`).join('')}</tr></tbody>`;}
+
+/* ---------- M6 + SEARCH ---------- */
+const INDEX=[];
+function buildIndex(){
+ MODS.forEach(m=>INDEX.push({ty:'모듈',l:`${m[1]} ${m[2]}`,s:'',to:'sec:'+m[0]}));
+ GLOSS.forEach(g=>INDEX.push({ty:'용어',l:g[1],s:g[2]+' · '+g[3],to:'gloss:'+g[0]}));
+ DUTIES.forEach(d=>INDEX.push({ty:'책무',l:`${d.id}. ${d.ko}`,s:d.en,to:'duty:'+d.id}));
+ ALLT.forEach(t=>INDEX.push({ty:'과업',l:`${t.id} ${sent(t,true)}`,s:t.duty.ko,to:'task:'+t.id}));
+ OKV.forEach(v=>INDEX.push({ty:'동사',l:v,s:'승인 동사 · 린터에 입력',to:'verb:'+v}));
+ Object.keys(BAN).forEach(v=>INDEX.push({ty:'동사',l:v,s:'금지 동사 · 대체: '+BAN[v].join(', '),to:'verb:'+v}));
+ METHODS.forEach(m=>INDEX.push({ty:'방법',l:m.ko,s:m.en+' · '+m.by,to:'method:'+m.id}));
+ STAGES.forEach((s,i)=>INDEX.push({ty:'단계',l:`${i+1}단계 ${s.t}`,s:s.en,to:'stage:'+i}));
+ AXIOMS.forEach((a,i)=>INDEX.push({ty:'공리',l:`제${i+1}공리`,s:a.t,to:'axiom:'+i}));
+ ['k','s','t','b'].forEach(p=>Object.entries(POOL[p]).forEach(([k,v])=>INDEX.push({ty:'요소',l:v,s:PNAME[p]+' · 쓰는 과업 표시',to:`hit:${p}.${k}`})));
+}
+function find(q){q=q.trim().toLowerCase();if(!q)return [];return INDEX.filter(x=>(x.l+' '+x.s).toLowerCase().includes(q));}
+let cur=0;
+function renderSearch(){const box=$('#sres'),q=S.q;if(!q.trim()){box.hidden=true;return;}const r=find(q).slice(0,14);cur=Math.min(cur,Math.max(0,r.length-1));
+ box.hidden=false;box.innerHTML=r.length?r.map((x,i)=>`<button class="${i===cur?'cur':''}" data-act="go" data-to="${x.to}"><span class="ty">${x.ty}</span><span class="min-w-0"><span class="block font-semibold text-[14px]">${esc(x.l)}</span>${x.s?`<span class="block muted text-[12.5px]">${esc(x.s)}</span>`:''}</span></button>`).join(''):`<p class="muted text-[13.5px] p-3">"${esc(q)}"에 맞는 항목이 없습니다. 책무, 과업, 동사, 방법 이름으로 찾아보십시오.</p>`;}
+function renderGloss(){const q=S.q.trim().toLowerCase();const list=GLOSS.filter(g=>!q||(g[1]+g[2]+g[3]).toLowerCase().includes(q));
+ $('#gloss').innerHTML=list.length?list.map(g=>`<div class="card" id="g-${g[0]}"><p class="font-bold text-[15.5px]">${g[1]}</p><p class="mono text-[11.5px] muted">${g[2]}</p><p class="text-[14px] mt-2">${g[3]}</p><p class="mt-2">${xref(g[4],g[5])}</p></div>`).join(''):`<p class="muted">검색어에 맞는 용어가 없습니다. 검색창을 비우면 전체 ${GLOSS.length}개가 다시 나옵니다.</p>`;}
+
+/* ---------- ROUTER ---------- */
+function go(to){const i=to.indexOf(':');const k=i<0?to:to.slice(0,i),v=i<0?'':to.slice(i+1);
+ $('#sres').hidden=true;if(k!=='task')closeDrawer();
+ switch(k){
+  case 'sec':scrollToId(v);break;
+  case 'axiom':S.axiom=+v;renderAxioms();scrollToId('axiom-'+v);break;
+  case 'level':S.level=v;renderLevels();scrollToId('levelbox');break;
+  case 'linter':scrollToId('linter');break;
+  case 'verb':setLint(null,null,v);scrollToId('linter');break;
+  case 'duty':S.open.add(v);renderChart();scrollToId('duty-'+v);break;
+  case 'task':openTask(v);break;
+  case 'aux':scrollToId('auxbox');break;
+  case 'hit':{const [p,key]=v.split('.');setHit(p,key);scrollToId('m3');break;}
+  case 'stage':S.stage=+v;renderStages();scrollToId('stagebox');break;
+  case 'method':S.method=v;S.radar.add(v);renderMethod();renderCmp();renderRadar();scrollToId('methodbox');break;
+  case 'gloss':if(S.q){S.q='';$('#q').value='';renderGloss();}scrollToId('g-'+v);break;
+ }}
+function setHit(p,k){S.hit=(S.hit&&S.hit[1]===k)?null:[p,k];if(S.hit)DUTIES.forEach(d=>{if(d.tasks.some(t=>t[p].includes(k)))S.open.add(d.id);});renderChart();renderAux();}
+
+/* ---------- THEME ---------- */
+const root=document.documentElement;
+function isDark(){const t=root.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches;}
+function initTheme(){try{const t=localStorage.getItem('dacum-theme');if(t==='dark'||t==='light')root.setAttribute('data-theme',t);}catch(e){}}
+function toggleTheme(){const n=isDark()?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('dacum-theme',n);}catch(e){}}
+
+/* ---------- EVENTS ---------- */
+document.addEventListener('click',e=>{
+ const el=e.target.closest('[data-act]');
+ if(!el){if(!e.target.closest('#sres')&&e.target.id!=='q')$('#sres').hidden=true;return;}
+ const a=el.dataset.act,v=el.dataset.v;
+ if(a==='go'){e.stopPropagation();go(el.dataset.to);return;}
+ switch(a){
+  case 'theme':toggleTheme();break;
+  case 'axiom':S.axiom=+v;renderAxioms();break;
+  case 'src':S.src=v;renderSrc();break;
+  case 'level':S.level=v;renderLevels();break;
+  case 'preset':{const p=PRESETS[+v];setLint(p[1],p[2],p[3]);break;}
+  case 'duty':S.open.has(v)?S.open.delete(v):S.open.add(v);renderChart();break;
+  case 'allduty':S.open=new Set(v==='1'?DUTIES.map(d=>d.id):[]);renderChart();break;
+  case 'hit':setHit(el.dataset.p,el.dataset.k);if(el.dataset.close){closeDrawer();scrollToId('m3');}break;
+  case 'clearhit':S.hit=null;renderChart();renderAux();break;
+  case 'sub':openTask(el.dataset.id,[el.dataset.p,el.dataset.k]);break;
+  case 'tolint':{const t=taskById(el.dataset.id);closeDrawer();setLint(t.q,t.o,t.v);scrollToId('linter');break;}
+  case 'closedrawer':closeDrawer();break;
+  case 'stage':S.stage=+v;renderStages();break;
+  case 'simpick':{const ok=!!SIM[S.sim].o[+v][1];S.simAns[S.sim]={i:+v,ok};renderSim();break;}
+  case 'simnext':S.sim++;renderSim();break;
+  case 'simreset':S.sim=0;S.simAns=[];renderSim();break;
+  case 'radar':S.radar.has(v)?S.radar.delete(v):S.radar.add(v);renderRadar();break;
+  case 'method':S.method=v;renderMethod();renderCmp();break;
+ }});
+document.addEventListener('keydown',e=>{
+ const tag=(e.target.tagName||'').toLowerCase(),typing=tag==='input'||tag==='textarea';
+ if(e.key==='/'&&!typing){e.preventDefault();$('#q').focus();$('#q').select();return;}
+ if(e.key==='Escape'){closeDrawer();$('#sres').hidden=true;if(e.target.id==='q')e.target.blur();return;}
+ if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('axiom')){e.preventDefault();S.axiom=+e.target.dataset.v;renderAxioms();const n=$('#axiom-'+S.axiom);if(n)n.focus();return;}
+ if(e.target.id==='q'){const r=find(S.q).slice(0,14);
+  if(e.key==='ArrowDown'){e.preventDefault();cur=Math.min(cur+1,r.length-1);renderSearch();}
+  else if(e.key==='ArrowUp'){e.preventDefault();cur=Math.max(cur-1,0);renderSearch();}
+  else if(e.key==='Enter'&&r[cur]){e.preventDefault();e.target.blur();go(r[cur].to);}}
+});
+$('#q').addEventListener('input',e=>{S.q=e.target.value;cur=0;renderSearch();renderGloss();});
+$('#q').addEventListener('focus',()=>renderSearch());
+['lq','lo','lv'].forEach(id=>$('#'+id).addEventListener('input',renderLint));
+
+/* ---------- INIT ---------- */
+initTheme();renderNav();renderOrigin();renderAxioms();renderSrc();renderLevels();renderVerbs();
+setLint(PRESETS[0][1],PRESETS[0][2],PRESETS[0][3]);
+renderChart();renderAux();renderStages();renderSim();renderRadar();renderMethod();renderCmp();buildIndex();renderGloss();spy();
+})();
+</script>
+</body>
+</html>

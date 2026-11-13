@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 국취 상담 HUD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+p,h1,h2,h3,ul,ol{margin:0}
+button{font-family:inherit}
+
+/* layout idea: 공문서 결재판 — 한 화면에 판정 결과를 먼저, 근거 쪽수는 문서번호 꼬리표로 */
+:root{--bg:#eef0f4;--panel:#ffffff;--sunk:#e3e7ee;--ink:#141a2b;--mute:#4a5368;--line:#c5ccd9;--acc:#1d3fb8;--acc-soft:#dfe6fb;--good:#0b6b4a;--good-soft:#d9f0e6;--warn:#8a5200;--warn-soft:#fbeccd;--crit:#a3182a;--crit-soft:#fadde0;--onacc:#ffffff;
+--f-body:'IBM Plex Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;--f-num:'IBM Plex Mono',ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1220;--panel:#171d30;--sunk:#0a0e19;--ink:#eef1f8;--mute:#aab3c7;--line:#333c55;--acc:#9db4ff;--acc-soft:#22305f;--good:#6fdcae;--good-soft:#12382b;--warn:#f3c56b;--warn-soft:#3d2e0d;--crit:#ff9aa5;--crit-soft:#47161d;--onacc:#0e1220;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1220;--panel:#171d30;--sunk:#0a0e19;--ink:#eef1f8;--mute:#aab3c7;--line:#333c55;--acc:#9db4ff;--acc-soft:#22305f;--good:#6fdcae;--good-soft:#12382b;--warn:#f3c56b;--warn-soft:#3d2e0d;--crit:#ff9aa5;--crit-soft:#47161d;--onacc:#0e1220;color-scheme:dark}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;margin:0;word-break:keep-all;overflow-wrap:anywhere}
+h1,h2,h3{text-wrap:balance;line-height:1.3;margin:0}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+.lbl{display:block;font-size:12.5px;font-weight:600;color:var(--mute);margin-bottom:4px}
+input[type=number],input[type=date],input[type=text],input[type=search],select,textarea{width:100%;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font:inherit;min-height:42px}
+textarea{line-height:1.55}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:600;cursor:pointer;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn-p{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+.tab{flex:none;padding:10px 14px;border:0;background:none;color:var(--mute);font:inherit;font-weight:600;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tab[aria-selected=true]{color:var(--acc);border-bottom-color:var(--acc)}
+@media (max-width:560px){.tab{flex:1 1 0;padding:10px 2px;font-size:13.5px;text-align:center}}
+.chk{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);cursor:pointer;font-size:14px}
+.chk input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--acc)}
+.pg{font-family:var(--f-num);font-size:11.5px;border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--mute);white-space:nowrap}
+.verdict{border-left:6px solid var(--acc);background:var(--acc-soft)}
+.verdict.v-good{border-color:var(--good);background:var(--good-soft)}
+.verdict.v-warn{border-color:var(--warn);background:var(--warn-soft)}
+.verdict.v-crit{border-color:var(--crit);background:var(--crit-soft)}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:99px;border:1px solid currentColor}
+.t-good{color:var(--good)}.t-warn{color:var(--warn)}.t-crit{color:var(--crit)}.t-acc{color:var(--acc)}
+details.rule{background:var(--panel);border:1px solid var(--line);border-radius:10px}
+details.rule>summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+details.rule>summary::-webkit-details-marker{display:none}
+details.rule[open]>summary{border-bottom:1px solid var(--line)}
+details.rule .body{padding:12px 14px}
+details.rule ul{margin:0;padding-left:18px}
+details.basis{margin-top:10px;background:var(--sunk);border-radius:8px;padding:8px 10px;font-size:13.5px}
+details.basis summary{cursor:pointer;font-weight:600;color:var(--mute)}
+.turn{border-left:3px solid var(--line);padding:2px 0 2px 12px}
+.say-c{background:var(--sunk);border-radius:8px;padding:8px 10px}
+.say-s{background:var(--acc-soft);border-radius:8px;padding:8px 10px}
+#drawer{position:fixed;inset:0 0 0 auto;width:min(420px,100%);background:var(--panel);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .22s;z-index:40;display:flex;flex-direction:column}
+#drawer.on{transform:none}
+#scrim{position:fixed;inset:0;background:#0008;z-index:30;display:none}
+#scrim.on{display:block}
+.view{display:none}.view.on{display:block}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* utilities */
+.grid{display:grid;grid-template-columns:minmax(0,1fr)}
+.grid>*{min-width:0}
+.btn{max-width:100%;text-align:left}
+img,table{max-width:100%}
+.align-top{vertical-align:top}
+.bg-bg{background:var(--bg)}
+.border-b{border-bottom:1px solid var(--line)}
+.border-collapse{border-collapse:collapse}
+.col-span-2{grid-column:span 2/span 2}
+.flex{display:flex}
+.flex-1{flex:1 1 0%}
+.flex-col{flex-direction:column}
+.flex-wrap{flex-wrap:wrap}
+.font-bold{font-weight:700}
+.font-semibold{font-weight:600}
+.gap-1{gap:4px}
+.gap-2{gap:8px}
+.gap-3{gap:12px}
+.gap-4{gap:16px}
+.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.list-none{list-style:none}
+.m-0{margin:0px}
+.max-w-6xl{max-width:72rem}
+.mb-0{margin-bottom:0px}
+.mb-1{margin-bottom:4px}
+.mb-2{margin-bottom:8px}
+.mb-3{margin-bottom:12px}
+.mb-4{margin-bottom:16px}
+.min-w-0{min-width:0}
+.min-w-\[560px\]{min-width:560px}
+.ml-1{margin-left:4px}
+.mt-0{margin-top:0px}
+.mt-1{margin-top:4px}
+.mt-2{margin-top:8px}
+.mt-3{margin-top:12px}
+.mt-4{margin-top:16px}
+.mt-6{margin-top:24px}
+.mx-auto{margin-left:auto;margin-right:auto}
+.my-1{margin-top:4px;margin-bottom:4px}
+.overflow-x-auto{overflow-x:auto}
+.overflow-y-auto{overflow-y:auto}
+.p-2{padding:8px}
+.p-4{padding:16px}
+.pl-0{padding-left:0px}
+.pl-5{padding-left:20px}
+.pt-3{padding-top:12px}
+.px-2{padding-left:8px;padding-right:8px}
+.px-4{padding-left:16px;padding-right:16px}
+.py-1{padding-top:4px;padding-bottom:4px}
+.py-4{padding-top:16px;padding-bottom:16px}
+.sticky{position:sticky}
+.text-\[12\.5px\]{font-size:12.5px}
+.text-\[12px\]{font-size:12px}
+.text-\[13\.5px\]{font-size:13.5px}
+.text-\[13px\]{font-size:13px}
+.text-\[14px\]{font-size:14px}
+.text-\[15px\]{font-size:15px}
+.text-\[17px\]{font-size:17px}
+.text-\[22px\]{font-size:22px}
+.text-\[26px\]{font-size:26px}
+.text-base{font-size:16px}
+.text-left{text-align:left}
+.text-mute{color:var(--mute)}
+.text-right{text-align:right}
+.top-0{top:0}
+.w-full{width:100%}
+.z-20{z-index:20}
+@media (min-width:640px){.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:768px){.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1024px){.lg\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<style>.site-home{font:600 13px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#14201b;padding:8px 16px}.site-home a{color:#fff;text-decoration:none}.site-home a:hover{text-decoration:underline}@media print{.site-home{display:none}}</style>
+<nav class="site-home" aria-label="사이트"><a href="../">← 직업상담 자료실</a></nav>
+
+<header class="sticky top-0 z-20 bg-bg border-b border-line">
+  <div class="max-w-6xl mx-auto px-4 pt-3 flex items-center gap-2">
+    <div class="min-w-0 flex-1">
+      <h1 class="text-[17px] font-bold">국민취업지원제도 상담 HUD</h1>
+      <p class="text-[12px] text-mute m-0">2026.1 업무매뉴얼 기준 · 꼬리표 숫자는 매뉴얼 쪽수</p>
+    </div>
+    <button class="btn" id="btnGloss" type="button">용어</button>
+    <button class="btn" id="btnTheme" type="button" aria-label="밝게/어둡게 전환">◐</button>
+  </div>
+  <div class="max-w-6xl mx-auto px-2 overflow-x-auto"><div class="flex" role="tablist" id="tabs"></div></div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-4">
+
+<!-- ============ 판정 ============ -->
+<section class="view" id="v-triage">
+  <div class="grid gap-4 lg:grid-cols-2">
+    <div class="card">
+      <h2 class="text-base font-bold mb-1">3초 유형 판정</h2>
+      <p class="text-[13px] text-mute mt-0 mb-3">예시 값이 들어 있습니다. 신청인 정보로 바꾸면 바로 다시 판정합니다.</p>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="lbl" for="tAge">만 나이</label><input type="number" id="tAge" value="27" min="0" max="99" inputmode="numeric"></div>
+        <div><label class="lbl" for="tMil">병역 이행(개월)</label><input type="number" id="tMil" value="0" min="0" max="120" inputmode="numeric"></div>
+        <div><label class="lbl" for="tHh">가구원 수</label><select id="tHh"></select></div>
+        <div><label class="lbl" for="tInc">가구 월소득(만원)</label><input type="number" id="tInc" value="230" min="0" inputmode="numeric"></div>
+        <div><label class="lbl" for="tSelf">본인 월소득(만원)</label><input type="number" id="tSelf" value="0" min="0" inputmode="numeric"></div>
+        <div><label class="lbl" for="tAsset">가구 재산(억원)</label><input type="number" id="tAsset" value="1.2" min="0" step="0.1" inputmode="decimal"></div>
+        <div class="col-span-2"><label class="lbl" for="tDays">최근 2년 취업일수(일) · 800시간 이상이면 100 입력</label><input type="number" id="tDays" value="40" min="0" inputmode="numeric"></div>
+      </div>
+      <div class="grid gap-2 mt-3 sm:grid-cols-2" id="tFlags"></div>
+    </div>
+    <div class="flex flex-col gap-4">
+      <div class="card verdict" id="tOut" aria-live="polite"></div>
+      <div class="card" id="tScore"></div>
+    </div>
+  </div>
+  <div class="card mt-4">
+    <h3 class="text-[15px] font-bold mb-2">유형별 요건 한눈에 <span class="pg">2</span> <span class="pg">15</span> <span class="pg">19</span></h3>
+    <div class="overflow-x-auto"><table class="w-full text-[13.5px] border-collapse min-w-[560px]" id="tTable"></table></div>
+  </div>
+</section>
+
+<!-- ============ 수당 계산 ============ -->
+<section class="view" id="v-calc">
+  <div class="grid gap-4 lg:grid-cols-2">
+    <div class="card">
+      <h2 class="text-base font-bold mb-1">구직촉진수당 회차 지급액</h2>
+      <p class="text-[13px] text-mute mt-0 mb-3">소득 신고액과 구직활동 이행 수로 이번 지급주기 금액을 계산합니다. <span class="pg">205</span> <span class="pg">207</span> <span class="pg">209</span></p>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="lbl" for="cDep">가족수당 인원(0~4)</label><select id="cDep"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+        <div><label class="lbl" for="cSplit">분할지급</label><select id="cSplit"><option value="1">아니오(100%)</option><option value="0.5">예(50%)</option></select></div>
+        <div><label class="lbl" for="cInc">신고소득 합계(만원)</label><input type="number" id="cInc" value="120" min="0" inputmode="numeric"></div>
+        <div><label class="lbl" for="cProg">그중 프로그램 수당(만원)</label><input type="number" id="cProg" value="0" min="0" inputmode="numeric"></div>
+        <div><label class="lbl" for="cPlan">계획한 구직활동 수</label><input type="number" id="cPlan" value="2" min="2" inputmode="numeric"></div>
+        <div><label class="lbl" for="cDone">이행한 구직활동 수</label><input type="number" id="cDone" value="2" min="0" inputmode="numeric"></div>
+      </div>
+      <div class="card verdict mt-3" id="cOut" aria-live="polite"></div>
+    </div>
+    <div class="flex flex-col gap-4">
+      <div class="card">
+        <h2 class="text-base font-bold mb-1">기한 계산</h2>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="lbl" for="dApp">취업지원 신청일</label><input type="date" id="dApp"></div>
+          <div><label class="lbl" for="dNote">수급자격 인정 통지일</label><input type="date" id="dNote"></div>
+        </div>
+        <ul class="mt-3 pl-0 list-none flex flex-col gap-1 text-[14px]" id="dOut"></ul>
+        <p class="text-[12.5px] text-mute mb-0 mt-2">7일 연장은 토·일만 제외해 계산했습니다. 공휴일이 끼면 하루씩 더 밀립니다.</p>
+      </div>
+      <div class="card">
+        <h2 class="text-base font-bold mb-1">재참여 제한 계산 <span class="pg">119</span></h2>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="lbl" for="rWhy">종료 사유</label><select id="rWhy">
+            <option value="36">기간만료·그 밖의 사유</option><option value="24">취·창업, 근속 6개월 미만</option><option value="18">취·창업, 6개월~1년 미만</option><option value="12">취·창업, 1년 이상</option><option value="60">부정수급 처분</option></select></div>
+          <div><label class="lbl" for="rDate">종료일(부정수급은 처분일)</label><input type="date" id="rDate"></div>
+        </div>
+        <p class="mt-3 mb-0 text-[14px]" id="rOut"></p>
+      </div>
+    </div>
+  </div>
+  <div class="card mt-4">
+    <h3 class="text-[15px] font-bold mb-2">2026년 수당 금액표</h3>
+    <div class="overflow-x-auto"><table class="w-full text-[13.5px] border-collapse min-w-[560px]" id="payTable"></table></div>
+  </div>
+</section>
+
+<!-- ============ 상담일지 ============ -->
+<section class="view" id="v-log">
+  <div class="grid gap-4 lg:grid-cols-2">
+    <div class="card">
+      <h2 class="text-base font-bold mb-1">상담일지 작성기</h2>
+      <p class="text-[13px] text-mute mt-0 mb-3">매뉴얼이 정한 기록 순서(목적 → 실시·확인 → 결과·결정 → 향후 조치 → 기타)로 문장을 만듭니다. <span class="pg">69</span> 실명·주민번호는 넣지 마세요. 입력값은 이 브라우저 밖으로 나가지 않습니다.</p>
+      <div class="flex flex-wrap gap-2 mb-3" id="lStages" role="group" aria-label="상담 단계"></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="lbl" for="lDate">상담일</label><input type="date" id="lDate"></div>
+        <div><label class="lbl" for="lWay">방식</label><select id="lWay"><option>대면</option><option>유선</option><option>화상(고용24)</option></select></div>
+        <div><label class="lbl" for="lWho">참여자 표기</label><input type="text" id="lWho" value="김○○" autocomplete="off"></div>
+        <div><label class="lbl" for="lType">유형</label><select id="lType"><option>Ⅰ유형 요건심사형</option><option>Ⅰ유형 선발형(청년)</option><option>Ⅰ유형 선발형(비경활)</option><option>Ⅱ유형 청년층</option><option>Ⅱ유형 중장년층</option><option>Ⅱ유형 특정계층</option></select></div>
+        <div class="col-span-2"><label class="lbl" for="lNum" id="lNumLbl">회차·수치</label><input type="text" id="lNum" autocomplete="off"></div>
+      </div>
+      <div class="grid gap-2 mt-3" id="lItems"></div>
+      <label class="lbl mt-3" for="lMemo">추가 메모(사실 위주)</label>
+      <textarea id="lMemo" rows="2" placeholder="예: 희망직종 사무보조, 통근 40분 이내 희망"></textarea>
+    </div>
+    <div class="card flex flex-col gap-3">
+      <div class="flex items-center gap-2"><h2 class="text-base font-bold flex-1">완성된 일지</h2><button class="btn btn-p" id="lCopy" type="button">복사</button></div>
+      <textarea id="lOut" rows="20" class="num text-[13.5px]" aria-label="완성된 상담일지"></textarea>
+      <p class="text-[12.5px] text-mute m-0">상담 시작·종료 시간은 즉시, 내용은 상담일부터 3일 안에 전산망에 입력합니다. 수정도 입력일부터 3일 안에만 됩니다. <span class="pg">69</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 스크립트 ============ -->
+<section class="view" id="v-script">
+  <div class="card mb-4">
+    <h2 class="text-base font-bold mb-1">10턴 실전 스크립트</h2>
+    <p class="text-[14px] text-mute m-0">상황: 28세, Ⅰ유형. 첫 상담에서 수당만 받으면 된다고 말하는 참여자. 턴마다 참여자 말, 상담사 말, 쓰인 기법과 근거를 볼 수 있습니다. 교육용으로 만든 가상 대화입니다.</p>
+    <div class="flex gap-2 mt-3"><button class="btn" id="sAll" type="button">모두 펼치기</button><button class="btn" id="sNone" type="button">모두 접기</button></div>
+  </div>
+  <div class="grid gap-2" id="sList"></div>
+</section>
+
+<!-- ============ 규정 카드 ============ -->
+<section class="view" id="v-rules">
+  <div class="card mb-4">
+    <label class="lbl" for="q">규정 찾기</label>
+    <input type="search" id="q" placeholder="예: 유예, 250만원, 부정수급, 80%" autocomplete="off">
+    <div class="flex flex-wrap gap-2 mt-3" id="qChips"></div>
+    <p class="text-[12.5px] text-mute mb-0 mt-2" id="qCount"></p>
+  </div>
+  <div class="grid gap-2 md:grid-cols-2" id="rList"></div>
+</section>
+
+<p class="text-[12.5px] text-mute mt-6">이 화면은 고용노동부 「국민취업지원제도 업무매뉴얼(2026.1)」을 요약한 보조 도구입니다. 수급자격 결정과 수당 지급은 매뉴얼 원문, 취업지원 전산망, 별도 시달 지침으로 확정하세요. Ⅰ유형 선발형 기준점수는 예산 상황에 따라 바뀝니다.</p>
+</main>
+<footer style="max-width:72rem;margin:0 auto;padding:0 16px 28px;font-size:12.5px;line-height:1.6;color:var(--mute)">이 화면은 고용노동부 「국민취업지원제도 업무매뉴얼(2026.1)」을 바탕으로 AI가 만든 비공식 학습·업무 보조 도구입니다. 고용노동부가 만들거나 검토한 자료가 아닙니다. 수급자격 결정, 수당 지급, 처분은 반드시 매뉴얼 원문과 시달 지침, 취업지원 전산망으로 확인하십시오. 계산 결과와 원문이 다르면 원문이 맞습니다. 상담일지 작성기에 입력한 내용은 이 기기 밖으로 전송되지 않지만, 공용 기기에서는 내담자 정보를 입력하지 마십시오.</footer>
+
+
+<div id="scrim"></div>
+<aside id="drawer" aria-label="용어 사전" aria-hidden="true" inert>
+  <div class="p-4 border-b border-line flex items-center gap-2"><h2 class="text-base font-bold flex-1">용어 사전</h2><button class="btn" id="gClose" type="button">닫기</button></div>
+  <div class="p-4 border-b border-line"><label class="lbl" for="gq">용어 찾기</label><input type="search" id="gq" placeholder="예: IAP, 펌뱅킹" autocomplete="off"></div>
+  <div class="p-4 overflow-y-auto flex-1 flex flex-col gap-3" id="gList"></div>
+</aside>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const won=n=>Math.round(n).toLocaleString('ko-KR')+'원';
+const man=n=>(Math.round(n*10)/10).toLocaleString('ko-KR')+'만원';
+const pg=a=>(a||[]).map(p=>'<span class="pg">'+p+'</span>').join(' ');
+const MED=[0,2564238,4199292,5359036,6494738,7556719,8555952,9515150];
+const med=n=>n<=7?MED[n]:MED[7]+959198*(n-7);
+const SOLO60=1538543; // 1인가구 중위소득 60%
+
+/* ---------- 탭 ---------- */
+const VIEWS=[['triage','유형 판정'],['calc','수당·기한'],['log','상담일지'],['script','스크립트'],['rules','규정 카드']];
+$('#tabs').innerHTML=VIEWS.map(v=>'<button class="tab" role="tab" type="button" data-v="'+v[0]+'">'+v[1]+'</button>').join('');
+function show(v){if(!VIEWS.some(x=>x[0]===v))v='triage';$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.v===v));}
+$('#tabs').addEventListener('click',e=>{const t=e.target.closest('.tab');if(!t)return;try{location.hash=t.dataset.v}catch(_){}show(t.dataset.v);window.scrollTo(0,0)});
+window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+show(location.hash.slice(1));
+$('#btnTheme').onclick=()=>{const r=document.documentElement,cur=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',cur==='dark'?'light':'dark')};
+
+/* ---------- 유형 판정 ---------- */
+$('#tHh').innerHTML=[1,2,3,4,5,6,7,8].map(n=>'<option value="'+n+'"'+(n===2?' selected':'')+'>'+n+'인 · 100% '+man(med(n)/1e4)+'</option>').join('');
+const FLAGS=[['fSpecial','Ⅱ유형 특정계층 해당(북한이탈주민, 한부모, 영세자영업자 등)'],['fLive','생계급여 수급자'],['fUI','구직급여 수급 중'],['fUI6','구직급여 종료 후 6개월 미경과'],['fJob','직접일자리 참여 중'],['fJob6','직접일자리 종료 후 6개월 미경과'],['fWork','주 30시간 이상 근로 또는 월 250만원 이상 소득'],['fBan','재참여 제한기간 중'],['fKid','미취학 자녀와 동거'],['fDup','최근 1년 내 유사 사업 참여·수혜']];
+$('#tFlags').innerHTML=FLAGS.map(f=>'<label class="chk"><input type="checkbox" id="'+f[0]+'"><span>'+f[1]+'</span></label>').join('');
+const v=id=>parseFloat($('#'+id).value)||0,c=id=>$('#'+id).checked;
+function triage(){
+  const age=v('tAge'),mil=Math.min(36,v('tMil')),n=+$('#tHh').value,inc=v('tInc')*1e4,self=v('tSelf')*1e4,asset=v('tAsset'),days=v('tDays');
+  const pct=inc/med(n)*100,youth=age>=15&&age<=34+mil/12;
+  const why=[],next=[];let cls='v-crit',title='',sub='';
+  const P=pct.toFixed(1)+'%';
+  const hard=[];
+  if(age<15||age>69)hard.push('연령 15~69세 범위 밖 '+pg([12]));
+  if(c('fWork'))hard.push('이미 취업 상태(주 30시간 이상 또는 월 250만원 이상). 주 30시간 미만·월 250만원 미만 불완전 취업자만 참여 가능 '+pg([10]));
+  if(c('fUI'))hard.push('구직급여 수급 중에는 참여 불가 '+pg([13]));
+  if(c('fJob'))hard.push('재정지원 직접일자리 참여 중에는 참여 불가 '+pg([13]));
+  if(c('fBan'))hard.push('재참여 제한기간이 지나야 신청 가능 '+pg([14,119]));
+  let score=null;
+  if(hard.length){title='참여 불가';sub='아래 사유가 해소된 뒤 다시 신청하도록 안내하세요.';why.push(...hard);}
+  else{
+    const cap=youth?5:4,lim1=[];
+    if(c('fLive'))lim1.push('생계급여 수급자는 구직촉진수당 제한 '+pg([17]));
+    if(c('fUI6'))lim1.push('구직급여 마지막 수급일 다음 날부터 6개월 미경과 '+pg([17]));
+    if(c('fJob6'))lim1.push('직접일자리 종료 다음 날부터 6개월 미경과(연계 대상 사업 성실 참여자는 즉시 가능) '+pg([17,18]));
+    if(self>=SOLO60)lim1.push('본인 월소득이 1인가구 중위 60%('+won(SOLO60)+') 이상 '+pg([15]));
+    const okAsset=asset<=cap;
+    let t1=null;
+    if(!lim1.length&&okAsset){
+      if(pct<=60&&days>=100)t1='req';
+      else if(youth&&pct<=120)t1='youth';
+      else if(!youth&&pct<=60&&days<100)t1='idle';
+    }
+    if(t1==='req'){cls='v-good';title='Ⅰ유형 요건심사형';sub='요건을 채우면 구직촉진수당 수급자격을 의무적으로 인정합니다.';
+      why.push('가구소득 중위 '+P+' (60% 이하)','재산 '+asset+'억원 ('+cap+'억원 이하'+(youth?', 청년 기준':'')+')','최근 2년 취업 '+days+'일 (100일 또는 800시간 이상) '+pg([15]));}
+    else if(t1==='youth'){cls='';title='Ⅰ유형 선발형 · 청년특례';sub='예산 범위에서 기준점수 이상인 사람만 인정합니다.';
+      why.push('청년(15~34세, 병역기간 가산) · 가구소득 중위 '+P+' (120% 이하)','재산 '+asset+'억원 (5억원 이하)',pct<=60?'소득은 60% 이하지만 취업경험 100일 미만이라 요건심사형이 아님':'소득 60% 초과 120% 이하 구간 '+pg([15]));
+      score=sel('y',pct,asset,days);}
+    else if(t1==='idle'){cls='';title='Ⅰ유형 선발형 · 비경활';sub='예산 범위에서 기준점수 이상인 사람만 인정합니다.';
+      why.push('가구소득 중위 '+P+' (60% 이하) · 재산 '+asset+'억원 (4억원 이하)','최근 2년 취업 '+days+'일 (100일 미만) '+pg([15]));
+      score=sel('i',pct,asset,days);}
+    else{
+      const no1=[...lim1];
+      if(!okAsset)no1.push('재산 '+asset+'억원이 '+cap+'억원 초과');
+      if(!lim1.length&&okAsset)no1.push('가구소득 중위 '+P+'로 Ⅰ유형 소득 기준 초과');
+      if(c('fSpecial')){cls='v-warn';title='Ⅱ유형 특정계층';sub='취업지원서비스와 취업활동비용을 지원합니다. 소득·재산 요건이 없습니다.';}
+      else if(youth){cls='v-warn';title='Ⅱ유형 청년층';sub='소득과 무관하게 참여합니다. 소득·재산 조사를 생략하면 취업성공수당 대상에서 빠지니 본인 확인을 받으세요.';}
+      else if(pct<=100){cls='v-warn';title='Ⅱ유형 중장년층';sub='35~69세, 가구소득 중위 100% 이하입니다.';}
+      else{cls='v-crit';title='참여 불가';sub='중장년층은 가구소득 중위 100% 이하여야 합니다. 특정계층 해당 여부를 다시 확인하세요.';}
+      why.push(...no1.map(x=>'Ⅰ유형 제외: '+x));
+      if(title!=='참여 불가')why.push('Ⅱ유형 세부유형 요건 충족 '+pg([19,34]));
+    }
+    if(title!=='참여 불가'){
+      const succ=pct<=60||(c('fSpecial')&&title.startsWith('Ⅱ'));
+      next.push(succ?'취업성공수당 대상: 6개월 근속 50만원 + 12개월 근속 100만원 '+pg([220]):'취업성공수당 대상 아님(중위 60% 초과, 특정계층 아님) '+pg([220]));
+      if(title.startsWith('Ⅰ'))next.push('구직촉진수당 월 60만원 + 가족수당 1인당 10만원(최대 40만원), 6개월 '+pg([193]));
+      else next.push('취업활동계획 수립 참여수당 15~25만원 + 참여장려수당 회당 2만원(최대 5회) '+pg([217,219]));
+      if(youth&&title.startsWith('Ⅱ'))next.push('빈일자리 업종 취업 희망 여부를 지금 확인해 전산에 체크 '+pg([283]));
+      next.push('결정 통지는 신청서 접수일부터 1개월 이내(7일 연장 가능) '+pg([63]));
+    }
+  }
+  const o=$('#tOut');o.className='card verdict '+cls;
+  o.innerHTML='<p class="text-[12.5px] font-semibold text-mute m-0">판정 결과 · 가구소득 중위 <span class="num">'+P+'</span> · '+(youth?'청년':'청년 아님')+'</p><h2 class="text-[22px] font-bold my-1">'+title+'</h2><p class="m-0 text-[14px]">'+sub+'</p>'
+   +'<h3 class="text-[13px] font-bold mt-3 mb-1">판정 근거</h3><ul class="m-0 pl-5 text-[14px]">'+why.map(x=>'<li>'+x+'</li>').join('')+'</ul>'
+   +(next.length?'<h3 class="text-[13px] font-bold mt-3 mb-1">바로 안내할 것</h3><ul class="m-0 pl-5 text-[14px]">'+next.map(x=>'<li>'+x+'</li>').join('')+'</ul>':'');
+  const s=$('#tScore');
+  if(score){s.innerHTML='<h3 class="text-[15px] font-bold mb-1">선발형 점수 '+pg([16])+'</h3><p class="num text-[26px] font-semibold m-0">'+score.t+'점</p><p class="text-[13.5px] m-0">소득 '+score.a+' + 재산 '+score.b+' + 취업기간 '+score.c+(score.d?' + 자녀 가점 5':'')+(score.e?' − 유사사업 감점 10':'')+'</p><p class="text-[12.5px] text-mute mb-0 mt-2">기준점수는 예산 상황에 따라 바뀝니다. 현재 기준점수와 비교해 인정 여부를 확정하세요. 1년 초과 2년 이내 유사 사업 수혜는 감점 5점입니다.</p>';}
+  else s.innerHTML='<h3 class="text-[15px] font-bold mb-1">2026년 기준 중위소득 '+pg([12])+'</h3><p class="text-[14px] m-0">'+n+'인 가구 100% <span class="num">'+won(med(n))+'</span><br>60% <span class="num">'+won(med(n)*.6)+'</span> · 120% <span class="num">'+won(med(n)*1.2)+'</span></p><p class="text-[12.5px] text-mute mb-0 mt-2">8인 이상은 1인마다 959,198원을 더합니다.</p>';
+}
+function sel(k,p,as,d){
+  const a=k==='i'?(p<=40?40:p<=50?30:20):(p<=40?50:p<=60?45:p<=80?40:p<=100?35:30);
+  const b=as<=1?30:as<=2.5?22:14;
+  const cc=k==='i'?(d>=60?30:d>=30?22:14):(d>=60?20:d>=30?12:4);
+  const dd=c('fKid'),e=c('fDup');return{a,b,c:cc,d:dd,e,t:a+b+cc+(dd?5:0)-(e?10:0)};
+}
+$('#v-triage').addEventListener('input',triage);triage();
+const TH='class="text-left p-2 border-b border-line text-mute font-semibold"',TD='class="p-2 border-b border-line align-top"';
+$('#tTable').innerHTML='<tr>'+['유형','연령','가구소득','재산','취업경험(2년 내)'].map(x=>'<th '+TH+'>'+x+'</th>').join('')+'</tr>'+[
+ ['Ⅰ 요건심사형','15~69세','중위 60% 이하','4억원 이하(청년 5억원)','100일 또는 800시간 이상'],
+ ['Ⅰ 선발형 비경활','15~69세','중위 60% 이하','4억원 이하','100일(800시간) 미만'],
+ ['Ⅰ 선발형 청년특례','15~34세 + 병역(최대 3년)','중위 120% 이하','5억원 이하','선발 시 고려'],
+ ['Ⅱ 특정계층','15~69세','요건 없음','요건 없음','무관'],
+ ['Ⅱ 청년층','15~34세 + 병역(최대 3년)','요건 없음','요건 없음','무관'],
+ ['Ⅱ 중장년층','35~69세','중위 100% 이하','요건 없음','무관']].map(r=>'<tr>'+r.map((x,i)=>'<td '+TD+'>'+(i?x:'<b>'+x+'</b>')+'</td>').join('')+'</tr>').join('');
+
+/* ---------- 수당 계산 ---------- */
+function calc(){
+  const dep=+$('#cDep').value,full=60+dep*10,split=+$('#cSplit').value,inc=v('cInc'),prog=Math.min(inc,v('cProg')),plan=Math.max(2,v('cPlan')),done=Math.min(plan,v('cDone'));
+  const th=Math.max(full*2,SOLO60/1e4),ratio=done/plan;let pay=0,cls='v-good',st='',ex=[];
+  ex.push('월 지급액 '+man(full)+' → 기준금액 <b class="num">'+won(th*1e4)+'</b> (월 지급액의 2배와 1인가구 중위 60% 중 큰 금액)');
+  if(ratio<.5){cls='v-crit';st='전액 부지급';ex.push('구직활동 '+plan+'개 중 '+done+'개 이행(50% 미만). 정당한 사유가 없으면 지급 중단 1회이고, 3회면 남은 수급권이 소멸합니다. '+pg([203,205]));}
+  else{
+    let base=full*split;
+    if(ratio<1){base=Math.min(base,full*.5);ex.push('구직활동 일부만 이행('+done+'/'+plan+') → 50% 감액, 해당 회차는 전액 지급한 것으로 간주 '+pg([205]));}
+    if(inc>=th){
+      if(inc>th&&inc-prog>th){cls='v-crit';st='지급 정지';ex.push('프로그램 수당을 뺀 신고소득이 기준금액 초과. 정지 3회면 수급자격 인정 철회, 취업지원 중단 '+pg([209]));}
+      else{cls='v-warn';st='0원 지급(부지급)';ex.push('신고소득이 기준금액 이상이지만 정지 횟수에는 넣지 않는 구간 '+pg([209]));}
+    }else{pay=Math.min(base,th-inc);
+      if(pay<base){cls='v-warn';st='감액 지급';ex.push('기준금액 − 신고소득 = '+man(th-inc)+' 한도 '+pg([209,210]));}
+      else{st=ratio<1||split<1?'감액 지급':'전액 지급';if(st!=='전액 지급')cls='v-warn';}
+    }
+  }
+  const o=$('#cOut');o.className='card verdict mt-3 '+cls;
+  o.innerHTML='<p class="text-[12.5px] font-semibold text-mute m-0">이번 회차</p><p class="m-0"><span class="num text-[26px] font-semibold">'+won(pay*1e4)+'</span> <span class="pill ml-1">'+st+'</span></p><ul class="mt-2 mb-0 pl-5 text-[13.5px]">'+ex.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+}
+$('#v-calc').addEventListener('input',()=>{calc();dates();ban()});
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const kd=d=>d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+'.('+'일월화수목금토'[d.getDay()]+')';
+function addM(d,m){const r=new Date(d),day=r.getDate();r.setDate(1);r.setMonth(r.getMonth()+m);r.setDate(Math.min(day,new Date(r.getFullYear(),r.getMonth()+1,0).getDate()));return r}
+function addD(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r}
+function addBiz(d,n){let r=new Date(d);while(n>0){r=addD(r,1);if(r.getDay()%6)n--}return r}
+const pd=id=>{const s=$('#'+id).value;if(!s)return null;const p=s.split('-').map(Number);return new Date(p[0],p[1]-1,p[2])};
+const today=new Date();
+$('#dApp').value=iso(addD(today,-20));$('#dNote').value=iso(today);$('#rDate').value=iso(today);$('#lDate').value=iso(today);
+function dates(){
+  const a=pd('dApp'),n=pd('dNote'),L=[];
+  const li=(k,d,p)=>L.push('<li class="flex flex-wrap gap-2 justify-between border-b border-line py-1"><span>'+k+' '+pg(p)+'</span><b class="num text-right">'+d+'</b></li>');
+  if(a){const m=addM(a,1);li('수급자격 결정 통지 기한',kd(m)+' · 연장 '+kd(addD(m,7)),[63]);}
+  if(n){const m=addM(n,1);li('취업활동계획 수립 기한',kd(m)+' · 연장 '+kd(addBiz(m,7)),[72]);
+    li('구직촉진수당 지급기간 끝',kd(addM(n,6)),[195]);li('분할지급 최대 기한',kd(addM(n,12)),[195]);
+    const e=addD(addM(n,12),-1);li('취업지원서비스 기간 만료',kd(e),[67]);li('집중 취업알선기간 시작',kd(addD(addM(e,-3),1)),[67]);
+    li('연장 시 최대 만료(+6개월)',kd(addD(addM(n,18),-1)),[68]);li('사후관리 끝(3개월)',kd(addM(e,3)),[68]);li('유예 가능 한도(2년)',kd(addM(n,24)),[95]);}
+  $('#dOut').innerHTML=L.join('');
+}
+function ban(){const d=pd('rDate'),m=+$('#rWhy').value;if(!d)return;$('#rOut').innerHTML='재신청 가능일 <b class="num">'+kd(addM(d,m))+'</b> · '+(m===60?'처분일부터 5년':'종료일부터 '+(m%12?Math.floor(m/12)+'년 6개월':m/12+'년'))+' 경과 후<br><span class="text-[12.5px] text-mute">근속기간 단축은 주 30시간 이상 임금근로, 월 250만원 이상 노무제공, 창업 종료자만 해당합니다. 본인 희망 취업종료는 3년입니다. '+pg([120])+'</span>';}
+calc();dates();ban();
+$('#payTable').innerHTML='<tr>'+['수당','대상','금액','핵심 조건'].map(x=>'<th '+TH+'>'+x+'</th>').join('')+'</tr>'+[
+ ['구직촉진수당 '+pg([193,195]),'Ⅰ유형','월 60만원 × 6회 = 360만원. 가족수당 1인당 10만원, 월 최대 40만원(총 최대 600만원)','지급주기별 구직활동 2개 이상 이행. 분할지급은 50% 단위, 통지일부터 1년 안'],
+ ['취업활동계획 수립 참여수당 '+pg([217]),'Ⅱ유형','기본 15만원 + 추가 3~10만원(특정계층 최대 25만원, 청년·중장년 최대 20만원)','IAP 수립 완료. 수립일에 신청, 14일 이내 지급'],
+ ['참여장려수당 '+pg([219]),'Ⅱ유형','1회 2만원, 최대 5회(10만원)','월 1회 이상 방문해 30분 이상 집중 취업상담. 일괄 신청'],
+ ['훈련참여지원수당 '+pg([218]),'Ⅱ유형','2026년 폐지','2025년 취업지원 신청자까지만 지원'],
+ ['취업성공수당 '+pg([220,230]),'중위 60% 이하 또는 Ⅱ 특정계층','6개월 근속 50만원 + 12개월 근속 100만원','주 30시간 이상 + 고용보험 취득. 유예기간 중 취업은 제외'],
+ ['빈일자리 훈련참여 지원수당 '+pg([284]),'Ⅱ유형 청년','출석 1일 1만원, 월 최대 20만원, 최대 6개월','IAP에 넣은 1개월 이상 직업훈련 수료'],
+ ['빈일자리 취업성공수당 '+pg([288]),'Ⅱ유형 청년','40만원','빈일자리 업종 우선지원대상기업에서 6개월 근속. 3년 안에 신청']].map(r=>'<tr>'+r.map(x=>'<td '+TD+'>'+x+'</td>').join('')+'</tr>').join('');
+
+/* ---------- 상담일지 ---------- */
+// 항목: [id, 체크박스 문구, 섹션(1 실시·확인,2 결과·결정,3 향후 조치,4 기타), 일지 문장, 기본 체크]
+const ST={
+ init:{n:'초기상담',num:'취업역량평가 점수(예: 71)',numDef:'71',goal:'제도 안내, 참여 의사 재확인, 취업역량 파악',it:[
+  ['a','Ⅰ·Ⅱ유형 차이와 구직활동 의무 안내',1,'Ⅰ·Ⅱ유형 지원내용 차이(구직촉진수당 지급 여부)와 취업활동계획에 따른 구직활동 의무를 안내함.',1],
+  ['b','초기상담 후 신청 취하 불가, 유예 제도 안내',1,'초기상담 이후에는 신청 취하가 불가하며 참여가 어려운 사유 발생 시 취업지원 유예를 활용할 수 있음을 안내하고 참여 의사를 재확인함.',1],
+  ['c','취업역량평가 실시',1,'취업역량평가를 실시함(참여자 직접 작성). 결과 {num}점, {lvl}.',1],
+  ['d','직업심리검사 과제 부여',3,'고용노동부 직업심리검사 1종 이상을 다음 상담 전까지 실시하도록 과제를 부여함.',1],
+  ['e','잡케어 활용 안내',3,'잡케어로 희망직종 필요 역량과 일자리 정보를 조회해 오도록 안내함.',0],
+  ['f','가족수당 대상 확인',1,'가족수당 대상 부양가족(18세 이하, 70세 이상, 중증장애인)을 확인하고 중복 수급 제한을 안내함.',0],
+  ['g','소득 신고 의무·부정수급 제재 안내',4,'지급주기 중 발생 소득의 신고 의무와 거짓 신고 시 반환명령·추가징수·5년간 재참여 제한이 적용됨을 안내함.',1],
+  ['h','전담 상담사 연락처, 다음 상담일 안내',3,'전담 상담사 성명·연락처와 다음 대면상담 일정을 안내함.',1]]},
+ iap:{n:'IAP 수립',num:'대면상담 회차(예: 3)',numDef:'3',goal:'개인별 취업활동계획(IAP) 수립',it:[
+  ['a','대면상담 회차 기록',1,'취업활동계획 수립을 위한 대면상담 {num}회차를 실시함(최소 3회 기준).',1],
+  ['b','직업심리검사 해석 상담',1,'직업심리검사 결과를 해석 상담하고 희망직종과의 적합성을 함께 검토함.',1],
+  ['c','취업목표 합의',2,'참여자와 협의하여 취업목표(희망직종·근무조건)를 정하고 취업활동계획서에 반영함.',1],
+  ['d','지급주기별 구직활동 2개 이상 설정',2,'지급주기별 구직활동을 2개 이상으로 정하고, 일부 이행 시 50% 감액·50% 미만 이행 시 전액 부지급됨을 안내함.',1],
+  ['e','직업훈련 권고(국민내일배움카드)',2,'취업목표 달성을 위해 직업훈련 참여를 권고하고 국민내일배움카드 발급 절차를 진행함. 출석률 80% 이상이어야 구직활동으로 인정됨을 안내함.',0],
+  ['f','일경험 프로그램 연계',2,'일경험 프로그램 참여를 취업활동계획에 포함함.',0],
+  ['g','집단상담·심리안정 프로그램 연계',2,'취업의욕 고취를 위해 집단상담(심리안정) 프로그램 참여를 계획에 포함함.',0],
+  ['h','구직촉진수당 1회차 신청서 접수(Ⅰ유형)',2,'취업활동계획 수립 완료에 따라 구직촉진수당 1회차 지급신청서를 접수함.',1],
+  ['i','취업활동계획 수립 참여수당 신청 접수(Ⅱ유형)',2,'취업활동계획 수립 완료에 따라 취업활동계획 수립 참여수당 신청서를 접수함.',0],
+  ['j','지정일·소득 신고 방법 안내',3,'2회차 이후 지정일(지급주기 마지막 날)과 지급신청서 제출·소득 신고 방법을 안내함. 지정일 연기는 7일 이내 가능함을 안내함.',1]]},
+ act:{n:'구직활동 확인',num:'회차/계획 수/이행 수(예: 3/2/2)',numDef:'3/2/2',goal:'지급주기 구직활동 이행 여부와 소득 발생 확인',it:[
+  ['a','이행 결과 기록',1,'{r}회차 지급주기 구직활동 계획 {p}개 중 {d}개 이행을 확인함.',1],
+  ['b','증빙자료 확인',1,'입사지원 내역·면접 확인 자료·훈련 출석부 등 증빙자료를 확인함.',1],
+  ['c','소득 신고 내역 확인',1,'구직촉진수당 지급신청서의 소득 발생 신고 내용과 증빙을 확인함.',1],
+  ['d','미이행 사유 확인(정당한 사유 여부)',1,'미이행 사유를 청취하고 정당한 사유(7일 이상 입원, 재해 등) 해당 여부를 검토함.',0],
+  ['e','형식적 구직활동 주의 안내',4,'구인이 없는 사업장 지원, 희망 분야와 현저히 다른 지원, 면접 불참 등 형식적 구직활동은 인정되지 않음을 안내함.',0],
+  ['f','취업활동계획 재진단(대면)',1,'IAP 수립 후 3~5개월 시점 재진단 대면상담을 실시하고 구직준비도 점검 설문을 받음.',0],
+  ['g','취업알선·구인정보 제공',2,'희망 조건에 맞는 구인정보를 제공하고 취업알선을 실시함.',1],
+  ['h','지급 의견: 전액',2,'구직활동을 모두 이행하여 해당 회차 구직촉진수당 전액 지급 의견임.',1],
+  ['i','지급 의견: 50% 감액',2,'구직활동 일부 이행(50% 이상)으로 해당 회차 50% 감액 지급 의견임.',0],
+  ['j','지급 의견: 부지급',2,'구직활동 50% 미만 이행으로 해당 회차 부지급 의견이며 지급 중단 횟수에 산입됨을 안내함.',0],
+  ['k','다음 회차 계획 확인',3,'다음 지급주기 구직활동 계획과 지정일을 재확인함.',1]]},
+ post:{n:'취업 후·사후관리',num:'취업일/주 소정근로시간(예: 2026.5.11/40)',numDef:'2026.5.11/40',goal:'취업 사실 확인과 근속 지원, 사후관리',it:[
+  ['a','취업 사실 확인',1,'취업일 {r}, 주 소정근로시간 {p}시간, 고용보험 피보험자격 취득 여부를 확인함.',1],
+  ['b','취업 종료 처리',2,'주 30시간 이상 임금근로자 취업에 따라 취업일로 취업지원 종료 처리함.',1],
+  ['c','취업성공수당 안내',3,'6개월 근속 시 50만원, 12개월 근속 시 100만원의 취업성공수당 신청 방법을 안내함(신청 후 14일 이내 지급).',1],
+  ['d','이직·전직 통지서 안내',3,'첫 취업 후 3개월 이내 이직하고 1개월 이내 재취업하는 경우 수급자 이직 및 전직 통지서를 제출하도록 안내함.',1],
+  ['e','1개월 미만 퇴사 시 지속참여 안내',3,'첫 취업 후 1개월 미만 근무하고 퇴사한 경우 퇴사 후 1개월 이내 지속참여 신청이 가능함을 안내함.',0],
+  ['f','재참여 제한기간 안내',4,'취업 근속기간에 따라 재참여 제한기간이 1년~2년으로 단축됨을 안내함.',0],
+  ['g','미취업자 사후관리 상담',1,'취업지원서비스 기간 만료 후 미취업 상태로, 사후관리기간 월 1회 이상 상담을 실시하고 구인정보를 제공함.',0],
+  ['h','빈일자리 수당 안내(Ⅱ유형 청년)',3,'빈일자리 업종 기업 6개월 근속 시 취업성공수당 40만원 신청이 가능함을 안내함.',0]]}};
+let stage='init';const lState={};
+$('#lStages').innerHTML=Object.keys(ST).map(k=>'<button class="btn" type="button" data-s="'+k+'">'+ST[k].n+'</button>').join('');
+function lRender(){
+  const S=ST[stage];$$('#lStages .btn').forEach(b=>b.classList.toggle('btn-p',b.dataset.s===stage));
+  $('#lNumLbl').textContent=S.num;$('#lNum').value=(lState[stage+'_num']??S.numDef);
+  $('#lItems').innerHTML=S.it.map(i=>{const k=stage+i[0],on=lState[k]??!!i[4];return '<label class="chk"><input type="checkbox" data-k="'+k+'"'+(on?' checked':'')+'><span>'+i[1]+'</span></label>'}).join('');
+  lBuild();
+}
+function lBuild(){
+  const S=ST[stage],num=$('#lNum').value.trim(),parts=num.split('/').map(x=>x.trim());
+  const sc=parseFloat(num),lvl=isNaN(sc)?'유형 미판정':sc<63.5?'취업역량 낮음(종합지원형)':sc<77?'취업역량 보통(의욕향상 또는 능력향상지원형)':'취업역량 높음(빠른 취업지원형)';
+  const fill=t=>t.replace('{num}',num||'○').replace('{lvl}',lvl).replace('{r}',parts[0]||'○').replace('{p}',parts[1]||'○').replace('{d}',parts[2]||'○');
+  const sec={1:[],2:[],3:[],4:[]};
+  S.it.forEach(i=>{const el=document.querySelector('[data-k="'+stage+i[0]+'"]');if(el&&el.checked)sec[i[2]].push(fill(i[3]))});
+  const memo=$('#lMemo').value.trim();if(memo)sec[4].push(memo);
+  const d=pd('lDate'),ds=d?kd(d):'';
+  const blk=(h,a)=>a.length?'\n■ '+h+'\n'+a.map(x=>'- '+x).join('\n')+'\n':'';
+  $('#lOut').value='['+S.n+'] '+ds+' · '+$('#lWay').value+' · '+($('#lWho').value.trim()||'참여자')+' · '+$('#lType').value+'\n\n■ 상담 목적\n- '+S.goal+'\n'+blk('실시 및 확인 내용',sec[1])+blk('결과 및 결정 사항',sec[2])+blk('향후 조치 사항',sec[3])+blk('기타',sec[4]);
+}
+$('#lStages').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(b){stage=b.dataset.s;lRender()}});
+$('#v-log').addEventListener('input',e=>{if(e.target.dataset.k)lState[e.target.dataset.k]=e.target.checked;if(e.target.id==='lNum')lState[stage+'_num']=e.target.value;if(e.target.id!=='lOut')lBuild()});
+$('#lCopy').onclick=function(){const t=$('#lOut'),b=this,ok=()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1500)},fb=()=>{t.focus();t.select();try{document.execCommand('copy')?ok():(b.textContent='길게 눌러 복사')}catch(_){b.textContent='길게 눌러 복사'}};
+  try{navigator.clipboard.writeText(t.value).then(ok,fb)}catch(_){fb()}};
+lRender();
+
+/* ---------- 스크립트 ---------- */
+const SC=[
+ ['솔직히 일은 급하지 않고요, 매달 60만원 나온다길래 신청했어요.','솔직하게 말씀해 주셔서 좋습니다. 60만원이 지금 생활에 어떤 숨통이 되는지부터 듣고 싶어요.','판단 없이 받기. 수당 동기를 부정하지 않고 생활 맥락을 묻는다.','구직의사는 모든 단계에서 계속 확인하는 항목이다.',[14]],
+ ['월세랑 휴대폰 요금이요. 알바는 가끔 하는데 일정하지 않아요.','그러면 6개월 뒤 수당이 끝났을 때 월세는 어떻게 될지 같이 그려 볼까요? 수당은 최대 360만원이고, 기간이 정해져 있습니다.','시간 축 넓히기. 6개월이라는 끝을 숫자로 보여 준다.','기본수당 월 60만원, 6개월.',[193,195]],
+ ['그때 가서 또 생각하죠. 일단 받을 수 있는 건 받고요.','받으실 수 있게 돕는 게 제 일입니다. 다만 이 수당은 매달 구직활동을 2개 이상 하셔야 나옵니다. 절반도 못 채우면 그 달은 0원이고, 세 번 끊기면 남은 수당이 사라져요.','조건을 숨기지 않기. 의무를 초반에 정확히 알려 신뢰를 만든다.','지급주기별 2개 이상, 50% 미만 전액 부지급, 지급 중단 3회 수급권 소멸.',[196,203,205]],
+ ['이력서만 몇 군데 넣으면 되는 거 아니에요?','넣는 것도 구직활동이 맞아요. 그런데 채용 공고가 없는 곳이나 하고 싶은 일과 동떨어진 곳에 넣는 건 인정되지 않고, 나중에 돌려내야 할 수도 있습니다. 어차피 넣을 거면 붙고 싶은 곳에 넣는 게 덜 아깝지 않을까요?','경계 긋기와 재구성. 형식적 활동의 위험을 본인 이익의 언어로 바꾼다.','형식적 구직활동은 부지급, 사후 확인 시 부당이득 반환. 허위는 부정수급.',[199,242]],
+ ['붙고 싶은 곳이 딱히 없어요. 뭘 잘하는지도 모르겠고.','그 말이 오늘 제일 중요한 얘기 같아요. 지금까지 한 알바 중에 시간이 빨리 갔던 일이 있었나요?','예외 찾기. 막연한 무기력에서 구체적 경험 하나를 끌어낸다.','취업역량평가와 직업심리검사로 이어 간다.',[122,139]],
+ ['카페에서 재고 정리하고 발주 넣는 건 재밌었어요. 손님 응대는 힘들었고요.','재고와 발주가 재밌었다는 건 꽤 구체적인 단서예요. 다음 상담까지 직업심리검사 하나를 해 오시면 그 단서가 어떤 직종으로 이어지는지 같이 보겠습니다. 이것도 계획 수립에 필요한 과제예요.','강점 이름 붙이기. 과제를 작게, 다음 만남과 연결한다.','상담사는 IAP 수립에 필요한 과제를 부과할 수 있다.',[71,139]],
+ ['근데 취업하면 남은 수당은 못 받잖아요. 손해 아닌가요?','좋은 질문이에요. 취업한 달의 수당은 그대로 나옵니다. 그리고 6개월 다니면 50만원, 1년 다니면 100만원, 합쳐서 150만원의 취업성공수당이 따로 있어요. 월급에 더해지는 돈입니다.','손실 회피 뒤집기. 빨리 취업하는 쪽의 이득을 숫자로 비교한다.','취·창업일이 든 지급주기는 이행 인정. 취업성공수당은 중위 60% 이하와 Ⅱ 특정계층 대상.',[201,220]],
+ ['150만원이요? 그건 몰랐네요. 그래도 금방 그만두면 소용없겠네요.','그래서 오래 다닐 수 있는 곳을 고르자는 거예요. 물류 사무나 구매 보조 쪽 훈련을 한두 달 듣고 지원하면 어떨까요? 훈련도 80% 이상 출석하면 구직활동 2개로 인정됩니다.','작은 계획 제안. 의무 이행과 역량 쌓기를 한 활동으로 묶는다.','훈련 출석 예정일 10일 이상 과정은 구직활동 2개, 출석률 80% 이상.',[196]],
+ ['훈련 듣는 동안 알바는 해도 돼요?','하셔도 됩니다. 주 30시간 미만이면 계속 참여할 수 있고, 번 돈은 지정일에 신고만 하세요. 한 달 신고소득이 약 153만 8천원 아래면 그 범위에서 수당이 나옵니다. 신고를 빼먹는 게 제일 위험해요.','안전한 길 알려 주기. 신고를 처벌이 아닌 보호 장치로 설명한다.','기준금액은 월 지급액 2배와 1인가구 중위 60%(1,538,543원) 중 큰 금액.',[207,209]],
+ ['알겠어요. 그럼 검사하고, 물류 사무 훈련 과정 두 개만 찾아올게요.','좋습니다. 직접 정하신 계획이라 더 믿음이 가요. 다음 주 같은 시간에 검사 결과와 과정 두 개를 놓고 취업활동계획을 같이 짜겠습니다. 오늘 이야기는 일지에 그대로 남겨 둘게요.','자기 말로 약속하기. 참여자가 말한 계획을 되짚어 확정한다.','IAP는 통지 다음 날부터 1개월 이내, 대면상담 3회 이상.',[72]]];
+$('#sList').innerHTML=SC.map((t,i)=>'<details class="rule"'+(i<2?' open':'')+'><summary><span class="text-[12px] font-semibold text-mute">턴 <span class="num">'+(i+1)+'</span>/10 · '+t[2].split('.')[0]+'</span><span class="font-semibold">“'+t[0]+'”</span></summary><div class="body flex flex-col gap-2"><div class="say-c"><b class="text-[12.5px] text-mute">참여자</b><br>'+t[0]+'</div><div class="say-s"><b class="text-[12.5px] t-acc">상담사</b><br>'+t[1]+'</div><div class="turn text-[13.5px]"><b>기법</b> '+t[2]+'<br><b>근거</b> '+t[3]+' '+pg(t[4])+'</div></div></details>').join('');
+$('#sAll').onclick=()=>$$('#sList details').forEach(d=>d.open=true);
+$('#sNone').onclick=()=>$$('#sList details').forEach(d=>d.open=false);
+
+/* ---------- 규정 카드: [분류, 제목, 한 줄 요약, 실무 규칙[], 근거, 쪽수] ---------- */
+const R=[
+ ['자격','불완전 취업자도 참여 가능','주 30시간 미만 근로, 월 250만원 미만 소득이면 신청할 수 있습니다.',['임금근로자: 주 30시간 미만','노무제공자·사업자등록 보유자: 월 소득 250만원 미만','채용약정형 훈련 등 취업이 확정된 사람은 불가'],'법 제6조. 소득 확인이 안 되면 매출액에 업종별 조정률을 곱해 환산.',[10,44]],
+ ['자격','졸업예정자 참여 시기','대학 2월 졸업예정자는 전년도 7월 1일부터 신청할 수 있습니다.',['고등학생: 2월 졸업예정자는 같은 해 1월 1일부터. 특성화고·마이스터고 미진학 예정 3학년은 7월 1일부터','대학(원): 최종학년 마지막 학기. 8월 졸업예정자는 같은 해 1월 1일부터','의학계열(의·치·한·수의·약학·간호 등)은 2월 졸업이면 같은 해 1월 1일부터','전역 예정자는 전역 2개월 이내부터. IAP 수립일은 전역일 이후로 지정','학점은행제·사이버대·방송대·야간대학은 재학 중 참여 가능'],'구직의사 판단 기준.',[11]],
+ ['자격','청년 연령과 병역 가산','15~34세에 병역 이행기간을 최대 3년 더합니다.',['기준 시점은 취업지원 신청일','육군 18개월, 해군 20개월, 공군·사회복무요원 21개월','전체 참여 연령은 15~69세(65~69세는 고시로 인정)'],'법 제6조제1항제2호, 병역법 제3조.',[12,13]],
+ ['자격','참여할 수 없는 사람','직접일자리 참여자, 구직급여 수급자, 유사 구직수당 수급자는 불가합니다.',['재정지원 직접일자리사업 참여 중','구직급여 수급 중(조기재취업수당은 구직급여 아님)','국가·지자체 구직활동 수당: 구직활동 의무 부과 + 월평균 50만원 이상 또는 총 300만원 이상, 세 요건을 모두 채울 때만 제한','상습·반복 특별민원 3회 이상은 종료 처분. 성희롱·폭언·폭행은 1회로 가능'],'법 제29조제1항제3호·제9호, 시행규칙 제20조.',[13,14]],
+ ['자격','Ⅰ유형 인정 제한','생계급여 수급자와 구직급여 종료 6개월 미경과자는 Ⅰ유형이 안 됩니다.',['생계급여 수급권자: 구직촉진수당 제한(Ⅱ유형 특정계층으로 고용센터 전담)','구직급여를 마지막으로 받은 날의 다음 날부터 6개월','직접일자리 참여 마지막 날의 다음 날부터 6개월. 연계 대상 사업 성실 참여자는 즉시 가능','유사 구직수당을 마지막으로 받은 날의 다음 날부터 6개월','신청인 본인 월소득은 1인가구 중위 60%(1,538,543원) 미만이어야 함'],'법 제7조제3항, 시행령 제5조.',[15,17,18]],
+ ['조사','취업경험 100일·800시간 산정','기간 확인이 어려우면 2년 내 소득 805.6만원 이상으로 인정합니다.',['고용보험 피보험기간과 사업자등록기간을 합산, 중복 제외, 휴업기간 제외','산재보험·국민연금(사업장)·건강보험(직장) 가입기간도 인정','노무제공자는 사업주 확인서(서식 25)와 원천징수영수증 등','소득 환산: 최근 3년 최저시급 평균 10,070원 × 800시간 = 805.6만원. 매출은 그 5배','피보험기간 50일이면 나머지 400시간분 402.8만원 이상 소득'],'2부 Ⅱ-2-라.',[56,57]],
+ ['조사','재산 조사 범위','금융재산은 넣지 않고, 주택 전세금은 95%만 반영합니다.',['일반재산(토지·건축물·주택), 임차보증금, 조합원입주권, 분양권, 승용자동차를 합산','승합·화물·특수·3륜 이하 소형자동차는 제외','공동소유는 지분 비율대로. 종중재산·마을공동재산 제외','등기상 타인 소유라도 실질 사용·수익하면 신청인 재산','기준: 4억원 이하, 청년 5억원 이하'],'2부 Ⅱ-2-다.',[49,50,51,52]],
+ ['절차','신청과 결정 기한','결정 통지는 접수일부터 1개월 이내, 7일 연장할 수 있습니다.',['거주지 관할 고용센터 원칙. 취업 희망지역이나 인근 센터도 가능','요건 미충족이면 불인정 통지 전에 이유와 근거를 먼저 안내','신청 취하는 초기상담 전까지. 이후에는 유예 또는 종료(재참여 제한 적용)','Ⅰ유형 신청자가 서비스 자격만 인정되면 본인 동의로 Ⅱ유형 참여','이의: 고용보험심사관 심사청구 → 고용보험심사위원회 재심사'],'시행규칙 제4조. 신청 취하 서식 21.',[60,62,63]],
+ ['절차','취업지원 기간','서비스 1년, 최대 6개월 연장, 사후관리 3개월(1개월 연장 가능)입니다.',['서비스 기간은 인정 통지를 받은 날부터 1년','마지막 3개월은 집중 취업알선기간. 수당 수급기간·훈련 참여기간과 겹치지 않게','연장은 종료 7일 전까지 결정하고 전산에 기간·사유·결정일 입력','사후관리는 월 1회 이상 유선 등 상담','사후관리를 운영하지 않으면 만료 후 취업해도 취업성공수당과 제한기간 단축이 없음'],'법 제15조.',[67,68]],
+ ['절차','IAP 수립 기한과 상담 횟수','통지 다음 날부터 1개월 이내, 대면상담 3회 이상입니다.',['7일 연장 가능(토요일·공휴일 불산입)','특성화고 졸업예정자는 대면 2회, 특별재난지역은 유선 2회로 단축 가능','불참 시 5일 이내로 상담일 재지정(서식 31) → 2차도 불응하면 처분 사전통지·의견청취 → 수급자격 인정 철회','철회 통지에 대한 심사청구는 안 날부터 90일 이내','수립 후 월 1회 이상 상담, 3~5개월 시점에 대면 재진단','계획 변경은 해당 지급주기 시작 전까지, 횟수 제한 없음'],'법 제12조제4항, 제29조제1항제6호. 행정절차법 제21·22조.',[72,84,85,86,87]],
+ ['절차','상담일지 기록 기준','시간은 즉시, 내용은 3일 이내에 입력합니다.',['육하원칙으로 목적, 실시·확인 내용, 결과·결정, 향후 조치, 기타를 기록','수당 지급과 행정처분 내용은 반드시 기록','「IAP등록/관리 → 취업지원/구직활동」에 서비스와 구직활동 내역 입력','사례 발표 등 공개는 서면 동의 필요. 생명·안전 위협 시 가족·경찰에 즉시 제공','목적 외 사용·누설은 5년 이하 징역 또는 5천만원 이하 벌금'],'법 제37조, 제38조.',[34,69,70]],
+ ['수당','구직촉진수당 금액','월 60만원에 가족수당 1인당 10만원, 최대 월 100만원입니다.',['가족수당 대상: 18세 이하, 70세 이상, 중증장애인, 신청일 이후 출산한 신생아','중증장애가 있는 미성년자·고령자는 1인당 20만원','지급주기 중 하루라도 요건을 채우면 그 회차 전액','한 부양가족 몫으로 두 사람이 동시에 받을 수 없음. 종료 6개월 뒤 다른 신청인 가능','1회차는 IAP 수립 시, 이후 수립일 기준 1개월 단위. 신청서 제출 후 14일 이내 지급','분할지급: 50% 단위, 통지일부터 1년 안, 총액 360만원 + 가족수당 240만원 한도'],'법 제7조, 제18조. 2025년 12월 고용정책심의회 의결.',[193,194,195,211]],
+ ['수당','구직활동 인정 기준','지급주기마다 2개 이상, 훈련은 출석률 80%가 기준입니다.',['직업훈련·일경험: 출석 예정일 10일 이상이면 2개, 미만이면 1개. 80% 이상 출석','원격훈련: 수료 기준. 40시간 이상 2개, 미만 1개','지각·조퇴·외출 3회는 결석 1일. 하루 훈련시간 50% 미만 수강은 결석','집단상담 2일 이상 수료 2개. 단기집단상담·취업특강 각 1개(특강은 전체 기간 2회까지)','상담·이력서 클리닉·입사지원·면접·자격증 시험 응시는 건당 1개','면접 없는 이력서 제출이 3회 이상이면 5회차부터 알선·프로그램 참여 의무 부과','재진단 대면상담을 넣으면 3개 이상으로 수립'],'4부 Ⅱ-4.',[196,197,198,199,200]],
+ ['수당','감액·부지급·수급권 소멸','절반 이상 이행하면 50%, 절반 미만이면 0원입니다.',['일부 이행(50% 이상): 50% 지급, 그 회차는 전액 지급한 것으로 간주','50% 미만: 전액 부지급','정당한 사유 없이 지급 중단 3회 → 남은 수급권 소멸','소득 초과로 지급 정지 3회 → 수급자격 인정 철회, 취업지원 중단','본인 희망 중단: 중단일이 든 회차 부지급'],'법 제21조, 제26조.',[203,205,209]],
+ ['수당','구직활동을 못 해도 되는 정당한 사유','본인이나 가족의 7일 이상 입원, 재해, 사망 등이 해당합니다.',['소개된 일자리가 희망 업종·직종과 현저히 다르거나 임금이 지역 일반 수준의 80% 미만','국가가 인정하는 자연재난','본인, 배우자, 직계존비속의 7일 이상 연속 입원·통원치료','본인 및 배우자 직계존비속의 사망','판단이 어려우면 운영위원회 심의','처리: 수당을 그냥 주지 않고 해당 지급주기 시작일부터 유예 처리해 회차를 보존'],'법 제26조, 시행령 제11조, 운영규정 제10조.',[203,204,205]],
+ ['수당','소득 신고와 기준금액','신고소득이 기준금액보다 적으면 그 차액 한도로 지급합니다.',['기준금액: 월 지급액의 2배와 1인가구 중위 60% 중 큰 금액','월 60·70만원 → 1,538,543원, 80만원 → 160만원, 90만원 → 180만원, 100만원 → 200만원','신고 대상: 인정일 이후 원인행위로 생긴 본인의 근로·사업·재산·이전소득과 프로그램 참여 소득','지정일에 지급신청서로 신고. 합계 70만원 이하는 증빙 생략 가능','체불임금처럼 본인 책임 없이 몰아 받은 소득은 분리 적용 요청 가능(입증은 수급자)','프로그램 수당을 뺀 소득이 기준금액 초과면 지급 정지'],'법 제21조, 시행령 제9조의2.',[206,207,208,209,210]],
+ ['수당','Ⅱ유형 취업활동비용','수립 참여수당 15~25만원과 참여장려수당 최대 10만원입니다.',['수립 참여수당: 기본 15만원. 추가는 특정계층 5·10만원, 청년·중장년 3·5만원','추가 요건: 대면 취업특강·단기집단상담 2회, 심리안정 상담 2회, 기업탐방, 집단상담프로그램','IAP 수립 전에 취업 등으로 종료되면 부지급','참여장려수당: 월 1회 방문해 30분 이상 집중 취업상담, 회당 2만원, 최대 5회, 일괄 신청','훈련참여지원수당은 2026년 폐지(2025년 신청자까지)'],'법 제16조. 세부 기준은 매뉴얼과 지침.',[216,217,218,219]],
+ ['수당','취업성공수당','6개월 근속 50만원, 12개월 근속 100만원입니다.',['대상: 신청 당시 중위 60% 이하 또는 Ⅱ유형 특정계층','IAP 수립 후 취업지원 기간(사후관리 포함) 안에 취·창업으로 종료','임금근로자: 주 30시간 이상 + 고용보험 피보험자격','유예기간 중 취업, 직계존비속·배우자가 대표인 사업장 취업은 제외','첫 취업 후 3개월 이내 이직하고 1개월 이내 재취업하면 재취업 사업장 기준(서식 45)','12개월 뒤 한꺼번에 신청 가능. 접수 후 14일 이내 지급','2025.1.1. 취업자부터 다른 지원금과 중복 가능'],'법 제17조.',[220,221,228,230]],
+ ['수당','청년 빈일자리 수당','훈련수당 최대 120만원과 취업성공수당 40만원입니다.',['대상: Ⅱ유형 청년(특정계층 포함). Ⅰ유형 청년도 희망하면 Ⅱ유형으로 참여','IAP에 넣은 1개월 이상 직업훈련 수료. 동영상 원격훈련 제외','훈련수당: 출석 1일 1만원, 월 최대 20만원, 최대 6개월. 2026년부터 출석률과 무관하게 실제 출석일수','미수료 사유가 빈일자리 기업 조기 취업이면 지급','업종: 제조업 전체, 그 외 8개 업종은 추천기업 2,737개소','기업: 고용보험 적용 + 우선지원대상기업. 주 30시간 이상, 동일 사업장 6개월 근속','신청 가능 시점부터 3년 안에 청구'],'6부. 2026년 지침은 2025.7.1. 이후 취업자부터.',[280,282,283,284,286,287,288]],
+ ['종료','취업지원 유예','통지일부터 2년 범위에서 사유가 해소될 때까지 멈춥니다.',['사유: 임신·출산 후 90일, 본인·배우자 질병·부상, 직계존비속 간병, 의무복무, 6개월 미만 국외 체류','출산 후 최소 45일은 반드시 유예','유산·사산: 임신기간에 따라 10·30·60·90일','유예 기간만큼 서비스 기간 자동 연장. 횟수 제한 없음','유예 중 취업은 취업성공수당 대상이 아님','수당 수급 중 유예: 유예 전날까지 의무를 이행한 경우에만 그 회차 지급'],'3부 Ⅲ-2.',[95,96,97,202]],
+ ['종료','취업 종료 기준','주 30시간 이상 취업, 월 250만원 이상 노무제공, 창업이면 종료합니다.',['고용보험상 일용근로자, 자활근로, 직접일자리는 취업 종료 아님','창업은 사업자등록상 개업일 기준','본인 희망 종료: 주 15시간 이상 또는 월 70만원 이상 노무제공. 이때는 구직활동이 있어야 그 회차 수당 지급','취·창업일이 든 지급주기는 구직활동을 이행한 것으로 인정','첫 취업 후 1개월 미만 퇴사: 퇴사 후 1개월 이내 지속참여 신청서(서식 23)로 종료 취소, 1회 한정'],'법 제29조제1항제2호.',[104,105,106,107,201]],
+ ['종료','재참여 제한기간','원칙 3년, 취·창업 근속에 따라 1~2년으로 줄어듭니다.',['취·창업 6개월 미만: 2년','6개월 이상 1년 미만: 1년 6개월','1년 이상: 1년','부정수급: 처분일부터 5년','운영위원회 심의로 종료 1년 뒤 필요성 인정 가능','근속일수는 월력상 6개월 일수 기준(예: 3.1. 취업이면 184일)'],'법 제29조제3항, 시행령 제13조, 고시 제12조.',[119,120]],
+ ['부정','부정수급 제재','반환명령, 같은 금액 추가징수, 5년 재참여 제한이 따릅니다.',['지급제한: 받은 날 이후 수당을 주지 않고 지급 결정 취소','추가징수는 부정수급액과 같은 금액, 구직촉진수당만 해당','공모자는 연대책임(반환명령액 공동 납부)','벌칙: 1년 이하 징역 또는 1천만원 이하 벌금, 양벌규정','미수는 행정처분 대상이 아님. 받은 경우만 성립','소멸시효 3년: 받은 날부터 3년이 지나면 반환을 명할 수 없음','제3자 착오로 과다 지급된 경우는 부당이득으로 볼 수 있음'],'법 제24조, 제27조, 제28조.',[238,239,240,263,264]],
+ ['부정','허위 구직활동과 형식적 구직활동','허위는 부정수급, 형식적 활동은 부당이득입니다.',['허위: 지원·면접을 하지 않고 한 것처럼 신고. 반환명령, 추가징수는 1회에 한해 면제','형식적: 구인이 없는 곳, 희망 분야와 맞지 않는 곳에 취업 의사 없이 지원. 해당 회차 부지급, 사후 확인 시 반환명령','주요 유형: 취업 사실 미신고, 가구원·소득·재산 거짓 신고, 지정일 변경 사유 거짓 신고'],'5부 Ⅰ.',[241,242]],
+ ['운영','취업역량평가 점수 구간','63.5점 미만 낮음, 77점 이상 높음입니다.',['63.5점 미만: 종합지원형','63.5~77점 미만: 의욕향상지원형 또는 능력향상지원형','77점 이상: 빠른 취업지원형','초기상담 때 실시, 부득이하면 2회차. 참여자가 직접 작성','구직의지·건강상태 문항은 상담사가 질문해 기입 가능'],'3부 Ⅳ-1.',[122]],
+ ['운영','수당 입금과 압류방지 통장','본인 명의 계좌로 입금하고, 행복지킴이 통장을 쓸 수 있습니다.',['행복지킴이 통장은 수급자격 인정 결정 통지서로 개설','농협, 국민, 기업, 신한, 우리, 하나, 우체국 등 13개 기관','펌뱅킹: 지급 검토(담당자) → 지급 결정(과·팀장) → 지급 의뢰 → 실시간 이체','대상: 구직촉진수당, 취업활동비용, 취업성공수당, 민간위탁수수료'],'4부 Ⅴ.',[233,234]],
+ ['운영','운영위원회 심의','재량 판단이 필요한 사안은 고용센터 운영위원회에서 정합니다.',['위원 5~7인, 외부 전문가 3인 이상. 월 1회, 필요 시 14일 이내 개최','대상: 취업의사 판단, 특정계층 해당 여부, 가구원 범위, 생업용 자동차, 기타 부득이한 사유','과반수 의결, 동수면 위원장 결정. 결정 후 3일 이내 통지'],'1부 2-나.',[4,5,6]]];
+const cats=['전체',...new Set(R.map(r=>r[0]))];let cat='전체';
+$('#qChips').innerHTML=cats.map(x=>'<button class="btn" type="button" data-c="'+x+'">'+x+'</button>').join('');
+function rules(){
+  const q=$('#q').value.trim().toLowerCase();$$('#qChips .btn').forEach(b=>b.classList.toggle('btn-p',b.dataset.c===cat));
+  const hit=R.filter(r=>(cat==='전체'||r[0]===cat)&&(!q||JSON.stringify(r).toLowerCase().includes(q)));
+  $('#qCount').textContent=hit.length+'개 카드 · 카드를 누르면 실무 규칙, 한 번 더 누르면 근거가 열립니다.';
+  $('#rList').innerHTML=hit.map(r=>'<details class="rule"'+(q&&hit.length<=3?' open':'')+'><summary><span class="text-[12px] font-semibold t-acc">'+r[0]+'</span><span class="font-bold">'+r[1]+'</span><span class="text-[14px] text-mute">'+r[2]+'</span></summary><div class="body text-[14px]"><ul>'+r[3].map(x=>'<li>'+x+'</li>').join('')+'</ul><details class="basis"><summary>근거와 쪽수</summary><p class="m-0 mt-1">'+r[4]+' '+pg(r[5])+'</p></details></div></details>').join('')||'<p class="text-mute">찾는 내용이 없습니다. 단어를 줄여 보세요.</p>';
+}
+$('#q').addEventListener('input',rules);
+$('#qChips').addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(b){cat=b.dataset.c;rules()}});
+rules();
+
+/* ---------- 용어 사전 ---------- */
+const G=[
+ ['IAP(개인별 취업활동계획)','취업목표와 참여할 프로그램, 구직활동 내용과 시기를 정한 계획. 수급자의 의무이자 구직촉진수당 지급 여부를 가르는 기준.',[71,193]],
+ ['요건심사형','Ⅰ유형 중 소득·재산·취업경험 요건을 채우면 반드시 인정하는 유형. 예산 의무지출.',[16]],
+ ['선발형','Ⅰ유형 중 점수가 기준점수 이상인 사람만 예산 범위에서 인정하는 유형. 비경활과 청년특례로 나뉨.',[16]],
+ ['특정계층','소득·재산 요건 없이 Ⅱ유형으로 참여하는 취업취약계층. 생계급여 수급자, 노숙인, 북한이탈주민, 여성가구주, 결혼이민자, 위기청소년, 한부모, 구직단념청년, 영세자영업자, 노무제공자 등.',[19,20,25]],
+ ['잡케어','AI와 데이터 분석으로 개인 역량 수준에 맞춘 경력 로드맵, 훈련·자격·일자리 정보를 추천하는 진로·직업상담 지원 서비스. IAP 수립 전에 활용.',[144]],
+ ['취업역량평가','초기상담 때 구직의지, 구직장애요인, 건강상태, 구직역량을 묻는 설문. 점수로 지원 유형을 나눔.',[122]],
+ ['지급주기','구직촉진수당을 계산하는 1개월 단위 기간. 1회차는 인정 통지일부터 IAP 수립일까지, 2회차부터는 수립일 다음 날부터 월력 1개월.',[211]],
+ ['지정일','구직촉진수당 지급신청서를 내는 날. 2회차부터는 지급주기 마지막 날이고 7일 이내로 연기 가능.',[211]],
+ ['기준금액','소득이 있을 때 수당을 얼마나 줄지 정하는 선. 월 지급액의 2배와 1인가구 중위 60% 중 큰 금액.',[207]],
+ ['가족수당','부양가족 1인당 월 10만원, 최대 40만원을 더 주는 추가수당.',[193]],
+ ['집중 취업알선기간','취업지원서비스 기간의 마지막 3개월. 취업노력기간이라고도 하며 알선에 집중.',[67]],
+ ['사후관리','서비스 기간이 끝났는데 취업하지 못한 사람에게 3개월(필요 시 4개월) 동안 월 1회 이상 상담하는 기간.',[68]],
+ ['취업지원 유예','임신·질병·간병·입대 등으로 참여가 어려울 때 수급자격을 유지한 채 멈추는 것. 통지일부터 2년 범위.',[95]],
+ ['불완전 취업','주 30시간 미만 근로나 월 250만원 미만 소득 상태. 참여와 계속 지원이 가능.',[10,106]],
+ ['노무제공자','근로자가 아니면서 노무를 제공하고 대가를 받는 사람(보험설계사, 배달기사, 프리랜서 등). 월 250만원이 취업 판단 기준.',[105]],
+ ['조정률','매출(수입)을 소득으로 바꿀 때 곱하는 업종별 비율. 공적자료로 소득이 확인되면 쓰지 않음.',[44,231]],
+ ['펌뱅킹','취업지원 전산망과 금융기관 전산망을 연결해 수당을 수급자 계좌로 실시간 이체하는 방식.',[234]],
+ ['행복지킴이 통장','정부지원금 전용 압류방지 통장. 신용 문제가 있는 수급자의 수당을 보호.',[233]],
+ ['취업성공수당','취·창업 후 6개월 근속 50만원, 12개월 근속 100만원을 주는 근속 인센티브.',[220]],
+ ['조기취업성공수당','2026.1 매뉴얼에는 문서 보존 대상 목록에만 나오는 이름이고 지급 기준은 없습니다. 지금 안내할 수당은 취업성공수당과 빈일자리 취업성공수당입니다.',[94]],
+ ['빈일자리 업종','구인난이 심한 업종. 제조업 전체와 물류·운송, 보건·복지, 음식점, 농업, 건설, 해운, 수산, 자원순환업의 추천기업.',[286]],
+ ['운영위원회','고용센터장이 재량으로 정해야 하는 사안을 심의·의결하는 센터별 위원회.',[4]],
+ ['부당이득','거짓 없이 착오 등으로 더 받은 돈. 반환 대상이지만 부정수급 제재(추가징수, 5년 제한)는 없음.',[240,242]],
+ ['연대책임','부정수급을 공모한 사람이 반환명령액을 함께 낼 책임.',[238]]];
+function gloss(){const q=$('#gq').value.trim().toLowerCase();$('#gList').innerHTML=G.filter(g=>!q||(g[0]+g[1]).toLowerCase().includes(q)).map(g=>'<div><b>'+g[0]+'</b> '+pg(g[2])+'<p class="m-0 text-[14px] text-mute">'+g[1]+'</p></div>').join('')||'<p class="text-mute">찾는 용어가 없습니다.</p>';}
+$('#gq').addEventListener('input',gloss);gloss();
+const dr=$('#drawer'),scr=$('#scrim');
+function drawer(on){dr.classList.toggle('on',on);scr.classList.toggle('on',on);dr.setAttribute('aria-hidden',!on);dr.inert=!on;if(on)$('#gq').focus();else $('#btnGloss').focus()}
+$('#btnGloss').onclick=()=>drawer(true);$('#gClose').onclick=()=>drawer(false);scr.onclick=()=>drawer(false);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dr.classList.contains('on'))drawer(false)});
+})();
+</script>
+</body>
+</html>
