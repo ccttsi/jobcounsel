@@ -55,6 +55,12 @@ h2{font-size:clamp(23px,4.6vw,30px);line-height:1.3;letter-spacing:-.03em;margin
 .sec{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
 .sec h3{margin:0 0 8px;font-size:17px;line-height:1.4}
 .sec h3 small{font-weight:500;font-size:13px;color:var(--muted);margin-left:6px}
+.sec h3.has-per{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 4px}
+.per{margin-left:auto;display:inline-flex;align-items:center;gap:2px;font-size:13px;font-weight:500;color:var(--muted)}
+.per span{margin-right:4px}
+.per button{min-width:36px;height:36px;padding:0 6px;border-radius:10px;font-size:14px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.per button:hover{color:var(--ink)}
+.per button[aria-pressed="true"]{color:var(--acc);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
 .sec p{margin:0 0 8px}.sec p:last-child{margin-bottom:0}
 .filt{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 8px;padding-bottom:2px}
 .filt::-webkit-scrollbar{display:none}
@@ -174,6 +180,9 @@ function build(M){
 
 /* ───────── 쪽 나누기 ───────── */
 var pg={};
+/* 한 쪽에 보일 개수: 5·10·20 중 하나(이 기기에 기억) */
+var PERS=[5,10,20],PER=10;try{var sp=+localStorage.getItem('jc-univ-per');if(PERS.indexOf(sp)>=0)PER=sp;}catch(e){}
+function perSel(key){return '<span class="per" role="group" aria-label="한 쪽에 보일 개수"><span>보기</span>'+PERS.map(function(n){return '<button type="button" data-per="'+n+'" data-perkey="'+key+'" aria-pressed="'+(n===PER)+'" aria-label="'+n+'개씩 보기">'+n+'</button>';}).join('')+'</span>';}
 function page(key,arr,size){var n=Math.max(1,Math.ceil(arr.length/size)),c=Math.min(pg[key]||0,n-1);pg[key]=c;return arr.slice(c*size,(c+1)*size);}
 function pager(key,total,size){
   var n=Math.ceil(total/size);if(n<=1)return '';var c=Math.min(pg[key]||0,n-1),b=[],want={0:1};want[n-1]=1;
@@ -181,7 +190,7 @@ function pager(key,total,size){
   var last=-1;Object.keys(want).map(Number).sort(function(a,b){return a-b;}).forEach(function(i){if(last>=0&&i-last>1)b.push('<span class="gap">…</span>');b.push('<button data-pg="'+key+'" data-v="'+i+'" aria-current="'+(i===c)+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>');last=i;});
   return '<nav class="pg" aria-label="쪽 넘기기" data-pgbox="'+key+'"><button data-pg="'+key+'" data-v="'+(c-1)+'" aria-label="이전 쪽"'+(c===0?' disabled':'')+'>‹</button>'+b.join('')+'<button data-pg="'+key+'" data-v="'+(c+1)+'" aria-label="다음 쪽"'+(c===n-1?' disabled':'')+'>›</button></nav><p class="pg-info">'+num(c*size+1)+'–'+num(Math.min(total,(c+1)*size))+' / '+num(total)+'</p>';
 }
-function sec(title,body,small,attr){return '<section class="sec"'+(attr||'')+'><h3>'+title+(small?'<small>'+small+'</small>':'')+'</h3>'+body+'</section>';}
+function sec(title,body,small,attr,perKey){return '<section class="sec"'+(attr||'')+'><h3'+(perKey?' class="has-per"':'')+'>'+title+(small?'<small>'+small+'</small>':'')+(perKey?perSel(perKey):'')+'</h3>'+body+'</section>';}
 var AR='<span class="ar" aria-hidden="true">›</span>';
 
 function deptRow(r,showUni){var u=U[r.university_id];
@@ -207,7 +216,7 @@ function resultsHTML(){
     var L=UL.filter(fr);
     var nd=0;L.forEach(function(u){nd+=u.open;});
     h+='<div class="stat"><div><b>'+num(L.length)+'</b><span>학교</span></div><div><b>'+num(nd)+'</b><span>개설 학과</span></div><div><b>'+num(Object.keys(majors).length)+'</b><span>표준학과</span></div></div>';
-    h+=sec('학교 둘러보기',regBar+kindBar+page('u',L,20).map(uniRow).join('')+pager('u',L.length,20)+(L.length?'':'<p>조건에 맞는 학교가 없습니다.</p>'),num(L.length)+'곳',' data-sec="u"');
+    h+=sec('학교 둘러보기',regBar+kindBar+page('u',L,PER).map(uniRow).join('')+pager('u',L.length,PER)+(L.length?'':'<p>조건에 맞는 학교가 없습니다.</p>'),num(L.length)+'곳',' data-sec="u"','u');
     return h;
   }
   var ch=isCho(st.q.replace(/\s/g,''));
@@ -215,8 +224,8 @@ function resultsHTML(){
   var md=[];Object.keys(R).forEach(function(k){var r=R[k],u=U[r.university_id];if(r.closed_in_2024_disclosure||!fr(u))return;if(ch?r.c.indexOf(q)>=0:r.n.indexOf(q)>=0)md.push(r);});
   md.sort(function(a,b){var x=a.n.indexOf(q)===0?0:1,y=b.n.indexOf(q)===0?0:1;return (x-y)||uName(U[a.university_id]).localeCompare(uName(U[b.university_id]),'ko');});
   h+=regBar+kindBar;
-  if(mu.length)h+=sec('대학',page('su',mu,8).map(uniRow).join('')+pager('su',mu.length,8),num(mu.length)+'곳',' data-sec="su"');
-  if(md.length)h+=sec('학과',page('sd',md,15).map(function(r){return deptRow(r,true);}).join('')+pager('sd',md.length,15),num(md.length)+'개',' data-sec="sd"');
+  if(mu.length)h+=sec('대학',page('su',mu,PER).map(uniRow).join('')+pager('su',mu.length,PER),num(mu.length)+'곳',' data-sec="su"','su');
+  if(md.length)h+=sec('학과',page('sd',md,PER).map(function(r){return deptRow(r,true);}).join('')+pager('sd',md.length,PER),num(md.length)+'개',' data-sec="sd"','sd');
   if(!mu.length&&!md.length)h+='<div class="sec"><p>"'+esc(st.q)+'"에 맞는 대학이나 학과가 없습니다. 띄어쓰기 없이 줄여서(예: 컴공 → 컴퓨터) 찾아보세요.</p></div>';
   return h;
 }
@@ -236,10 +245,10 @@ function uniView(id){
 function uniListHTML(all,closed){
   var q=norm(uq.q),L=all.filter(function(r){return (uq.closed||!r.closed_in_2024_disclosure)&&(!q||r.n.indexOf(q)>=0);});
   var body='<input class="inline" id="uq" type="search" placeholder="이 학교 안에서 학과 찾기" value="'+esc(uq.q)+'" aria-label="이 학교 안에서 학과 찾기">';
-  body+=page('ud',L,20).map(function(r){return deptRow(r,false);}).join('')+pager('ud',L.length,20);
+  body+=page('ud',L,PER).map(function(r){return deptRow(r,false);}).join('')+pager('ud',L.length,PER);
   if(!L.length)body+='<p>조건에 맞는 학과가 없습니다.</p>';
   if(closed)body+='<button class="more" data-uclosed="1">'+(uq.closed?'폐지 표시 학과 숨기기':'2024 공시 폐지 표시 학과 '+num(closed)+'개도 보기')+'</button>';
-  return sec('개설 학과',body,num(all.length-closed)+'개',' data-sec="ud"');
+  return sec('개설 학과',body,num(all.length-closed)+'개',' data-sec="ud"','ud');
 }
 
 /* ───────── 화면: 학과 ───────── */
@@ -263,7 +272,7 @@ function deptView(id){
     var regs={};sim.forEach(function(x){var g=U[x.university_id].reg;regs[g]=(regs[g]||0)+1;});
     var view=sim.filter(function(x){return !dq.reg||U[x.university_id].reg===dq.reg;}).sort(function(a,b){var ga=U[a.university_id].reg===u.reg?0:1,gb=U[b.university_id].reg===u.reg?0:1;return (ga-gb)||uName(U[a.university_id]).localeCompare(uName(U[b.university_id]),'ko');});
     var bar='<div class="filt"><button class="fb" data-dreg="" aria-pressed="'+(!dq.reg)+'">전국</button>'+REGS.filter(function(g){return regs[g];}).map(function(g){return '<button class="fb" data-dreg="'+g+'" aria-pressed="'+(dq.reg===g)+'">'+g+' '+regs[g]+'</button>';}).join('')+'</div>';
-    h+=sec('유사학과',sim.length?'<p style="color:var(--muted);font-size:15px">이름은 달라도 같은 표준학과(「'+esc(m.name)+'」)로 묶인 다른 대학의 학과입니다. 같은 지역을 먼저 보여 줍니다.</p>'+bar+page('sim',view,10).map(function(x){return deptRow(x,true);}).join('')+pager('sim',view.length,10):'<p>같은 표준학과로 묶인 다른 대학 학과가 없습니다.</p>',num(sim.length)+'개',' data-sec="sim"');
+    h+=sec('유사학과',sim.length?'<p style="color:var(--muted);font-size:15px">이름은 달라도 같은 표준학과(「'+esc(m.name)+'」)로 묶인 다른 대학의 학과입니다. 같은 지역을 먼저 보여 줍니다.</p>'+bar+page('sim',view,PER).map(function(x){return deptRow(x,true);}).join('')+pager('sim',view.length,PER):'<p>같은 표준학과로 묶인 다른 대학 학과가 없습니다.</p>',num(sim.length)+'개',' data-sec="sim"',sim.length>5?'sim':'');
     /* 같은 계열 학과 */
     var key=stdMinor[std],group=key?byMinor[key]:null,label=key;
     if(!group||group.length<2){key=stdMid[std];group=key?byMid[key]:null;label=key;}
@@ -301,8 +310,9 @@ function rerenderKeep(secKey){
   if(secKey){var s=d.querySelector('[data-sec="'+secKey+'"]');if(s&&s.getBoundingClientRect().top<0)s.scrollIntoView({block:'start'});}
 }
 d.addEventListener('click',function(e){
-  var t=e.target.closest('[data-pg],[data-reg],[data-kind],[data-uclosed],[data-dreg]');if(!t)return;
+  var t=e.target.closest('[data-pg],[data-reg],[data-kind],[data-uclosed],[data-dreg],[data-per]');if(!t)return;
   var ds=t.dataset;
+  if(ds.per!=null){PER=+ds.per;try{localStorage.setItem('jc-univ-per',String(PER));}catch(e2){}pg.u=pg.su=pg.sd=pg.ud=pg.sim=0;rerenderKeep(ds.perkey);return;}
   if(ds.pg!=null){if(t.disabled)return;pg[ds.pg]=Math.max(0,+ds.v);rerenderKeep(ds.pg);var s=d.querySelector('[data-sec="'+ds.pg+'"]');if(s)s.scrollIntoView({block:'start'});}
   else if(ds.reg!=null){st.reg=ds.reg;pg.u=pg.su=pg.sd=0;rerenderKeep();}
   else if(ds.kind!=null){st.kind=ds.kind;pg.u=pg.su=pg.sd=0;rerenderKeep();}
