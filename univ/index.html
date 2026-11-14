@@ -67,8 +67,6 @@ h2{font-size:clamp(23px,4.6vw,30px);line-height:1.3;letter-spacing:-.03em;margin
 .row .ar{flex:none;color:var(--dim)}
 .row:hover .nm{color:var(--acc)}
 .row.closed .nm{opacity:.55}
-.kind{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;font-size:12px;font-weight:700;vertical-align:2px;background:var(--acc-soft);color:var(--acc)}
-.kind.jc{background:color-mix(in srgb,var(--job) 12%,transparent);color:var(--job)}
 .badge{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;font-size:12px;font-weight:700;vertical-align:2px;border:1px solid var(--line-2);color:var(--muted)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{display:inline-flex;align-items:center;gap:4px;min-height:40px;padding:0 12px;border-radius:20px;border:1px solid var(--line);background:var(--bg);font-size:15px;font-weight:600;text-decoration:none}
@@ -130,7 +128,9 @@ function normReg(r){r=String(r||'');if(REGS.indexOf(r)>=0)return r;
   var M2={'충청북':'충북','충청남':'충남','전라북':'전북','전북특':'전북','전라남':'전남','경상북':'경북','경상남':'경남','강원':'강원','제주':'제주','경기':'경기','세종':'세종'};
   for(var k in M2)if(r.indexOf(k)===0)return M2[k];
   for(var i=0;i<REGS.length;i++)if(r.indexOf(REGS[i])===0)return REGS[i];return r;}
-function kindOf(u){return u.kind==='대학'||u.kind==='전문대학'?u.kind:'그 밖';}
+function kindOf(u){return u.kind==='대학'||u.kind==='전문대학'?u.kind:'';}
+/* 학교 종류는 모든 학교에 똑같은 모양(옅은 글씨)으로 적는다. 특정 종류만 눈에 띄게 표시하지 않는다. */
+function typeOf(u){return String(u.school_type||u.kind||'').replace(/\((대학|전문)\)$/,'');}
 function uName(u){return (u.name||'')+(u.campus&&u.campus!=='본교'&&!/캠퍼스/.test(u.name||'')?' '+u.campus:'');}
 
 /* ───────── 검색 정규화 ───────── */
@@ -183,11 +183,11 @@ function pager(key,total,size){
 }
 function sec(title,body,small,attr){return '<section class="sec"'+(attr||'')+'><h3>'+title+(small?'<small>'+small+'</small>':'')+'</h3>'+body+'</section>';}
 var AR='<span class="ar" aria-hidden="true">›</span>';
-function kindTag(u){return u.k==='대학'?'':'<span class="kind'+(u.k==='전문대학'?' jc':'')+'">'+(u.k==='전문대학'?'전문대':'그 밖')+'</span>';}
+
 function deptRow(r,showUni){var u=U[r.university_id];
-  var sub=showUni?[u.reg,u.k==='대학'?'대학':u.k==='전문대학'?'전문대':''].filter(Boolean).join(' · '):[dot(r.college&&r.college!=='단과대구분없음'?r.college:''),r.degree,r.duration,r.shift].filter(Boolean).join(' · ');
+  var sub=showUni?[u.reg,typeOf(u)].filter(Boolean).join(' · '):[dot(r.college&&r.college!=='단과대구분없음'?r.college:''),r.degree,r.duration,r.shift].filter(Boolean).join(' · ');
   return '<a class="row'+(r.closed_in_2024_disclosure?' closed':'')+'" href="#'+r.department_id+'"><span class="nm">'+(showUni?esc(uName(u))+' ':'')+esc(dot(r.department_name))+(r.closed_in_2024_disclosure?'<span class="badge">2024 공시 폐지 표시</span>':'')+(sub?'<small>'+esc(sub)+'</small>':'')+'</span>'+AR+'</a>';}
-function uniRow(u){return '<a class="row" href="#'+u.id+'"><span class="nm">'+esc(uName(u))+kindTag(u)+'<small>'+esc(u.reg)+' · 학과 '+num(u.open)+'개</small></span>'+AR+'</a>';}
+function uniRow(u){return '<a class="row" href="#'+u.id+'"><span class="nm">'+esc(uName(u))+'<small>'+esc([u.reg,typeOf(u),'학과 '+num(u.open)+'개'].filter(Boolean).join(' · '))+'</small></span>'+AR+'</a>';}
 function decalLink(std,label){return '../decalcomania/#'+encodeURIComponent(std);}
 
 /* ───────── 화면: 처음 ───────── */
@@ -202,7 +202,7 @@ function resultsHTML(){
   var q=norm(st.q),h='';
   var fr=function(u){return (!st.reg||u.reg===st.reg)&&(!st.kind||u.k===st.kind);};
   var regBar='<div class="filt"><button class="fb" data-reg="" aria-pressed="'+(!st.reg)+'">전국</button>'+REGS.map(function(r){return '<button class="fb" data-reg="'+r+'" aria-pressed="'+(st.reg===r)+'">'+r+'</button>';}).join('')+'</div>';
-  var kindBar='<div class="filt">'+[['','전체'],['대학','대학'],['전문대학','전문대학'],['그 밖','그 밖']].map(function(k){return '<button class="fb" data-kind="'+k[0]+'" aria-pressed="'+(st.kind===k[0])+'">'+k[1]+'</button>';}).join('')+'</div>';
+  var kindBar='<div class="filt">'+[['','전체'],['대학','대학'],['전문대학','전문대학']].map(function(k){return '<button class="fb" data-kind="'+k[0]+'" aria-pressed="'+(st.kind===k[0])+'">'+k[1]+'</button>';}).join('')+'</div>';
   if(!q){
     var L=UL.filter(fr);
     var nd=0;L.forEach(function(u){nd+=u.open;});
@@ -227,8 +227,8 @@ function uniView(id){
   var u=U[id];if(uq.id!==id){uq={id:id,q:'',closed:false};pg.ud=0;}
   var all=byU[id].slice().sort(function(a,b){return dot(a.college||'').localeCompare(dot(b.college||''),'ko')||a.department_name.localeCompare(b.department_name,'ko');});
   var closed=all.filter(function(r){return r.closed_in_2024_disclosure;}).length;
-  var h='<a class="back" href="#">‹ 대학학과위키</a><h2>'+esc(uName(u))+kindTag(u)+'</h2>';
-  h+='<div class="meta"><span>'+esc(u.region||u.reg)+'</span><span>'+esc(u.school_type||u.k)+'</span><span>'+esc(u.campus||'본교')+'</span></div>';
+  var h='<a class="back" href="#">‹ 대학학과위키</a><h2>'+esc(uName(u))+'</h2>';
+  h+='<div class="meta">'+[u.reg,typeOf(u),u.campus||'본교'].filter(Boolean).map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div>';
   h+='<div id="ulist">'+uniListHTML(all,closed)+'</div>';
   h+='<p class="warn">학과 이름과 모집 여부는 해마다 바뀝니다. 지원 전에 '+esc(u.name)+' 입학처에서 확인해 주세요.</p>';
   return h+FOOT;

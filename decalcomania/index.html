@@ -469,6 +469,8 @@ function mapUnis(id,mode){
   else (rowsBy[id]||[]).forEach(function(r){if(r.closed_in_2024_disclosure||seen[r.university_id])return;seen[r.university_id]=1;var u=univ[r.university_id];if(u)out.push(u);});
   return out;
 }
+/* 이 학과 보기에서는 그 대학의 해당 학과로, 전체 대학 보기에서는 대학으로 간다 */
+function mapHref(id,u,mode){if(mode!=='all'){var rs=(rowsBy[id]||[]).filter(function(r){return r.university_id===u.id&&!r.closed_in_2024_disclosure;}).sort(function(a,b){return a.department_name.localeCompare(b.department_name,'ko');});if(rs.length)return rs[0].department_id;}return u.id;}
 function uName(u){return (u.name||'')+(u.campus&&u.campus!=='본교'&&!/캠퍼스/.test(u.name||'')?' '+u.campus:'');}
 function mapView(id){
   var m=majors[id],mp=st.map,all=mapUnis(id,mp.mode),cnt={},max=0;
@@ -481,7 +483,7 @@ function mapView(id){
   h+=sec('지도',t,'색이 진할수록 많습니다');
   if(mp.reg){
     var L=all.filter(function(u){return u.reg===mp.reg;}).sort(function(a,b){return uName(a).localeCompare(uName(b),'ko');});
-    var body=L.length?'<ul class="names">'+page('map',L,16).map(function(u){return '<li><a href="../univ/#'+esc(u.id)+'">'+esc(uName(u))+(u.kind?'<small>'+esc(u.kind)+'</small>':'')+'</a></li>';}).join('')+'</ul>'+pager('map',L.length,16):'<p>이 지역에는 해당 대학이 없습니다.</p>';
+    var body=L.length?'<ul class="names">'+page('map',L,16).map(function(u){var tp=String(u.school_type||u.kind||'').replace(/\((대학|전문)\)$/,'');return '<li><a href="../univ/#'+esc(mapHref(id,u,mp.mode))+'">'+esc(uName(u))+(tp?'<small>'+esc(tp)+'</small>':'')+'</a></li>';}).join('')+'</ul>'+pager('map',L.length,16):'<p>이 지역에는 해당 대학이 없습니다.</p>';
     h+='<div id="mapList">'+sec(esc(REG_FULL[mp.reg]),body,num(L.length)+'곳')+'</div>';
   }else h+='<p class="pg-info" style="margin-bottom:16px">위 지도에서 지역을 눌러 보세요.</p>';
   h+='<p class="src">대학 소재지는 대학알리미 2024 공시 기준이며, 캠퍼스별로 따로 셉니다.</p>'+FOOT;
