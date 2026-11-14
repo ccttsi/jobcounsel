@@ -237,7 +237,8 @@ a{color:inherit}
         <input id="q" type="search" placeholder="학과·대학 학과명·직업 검색" autocomplete="off" enterkeyhint="search" aria-label="학과·대학 학과명·직업 검색" disabled>
         <div id="results" hidden></div>
       </div>
-      <button class="ib theme" id="themeBtn" type="button" title="자동은 오전 7시~오후 7시 밝게, 그 밖에는 어둡게">자동</button>
+      <span data-jc-prefs></span>
+      <button class="ib theme" id="themeBtn" style="display:none" hidden type="button" title="자동은 오전 7시~오후 7시 밝게, 그 밖에는 어둡게">자동</button>
     </div>
     <p class="note" id="note"><b>커리어데칼코마니</b> · 이 자료는 정답이 아닌 참고·실습용 도구입니다.<span class="wide-only"> 연결은 가능성을 보여 줄 뿐 진로를 정해 주지 않습니다.</span></p>
   </header>
@@ -613,5 +614,6 @@ d.addEventListener('pointerdown',function(e){if(!e.target.closest('.search'))res
 })();
 </script>
 <script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
 </body>
 </html>

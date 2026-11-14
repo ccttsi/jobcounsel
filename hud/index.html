@@ -167,7 +167,8 @@ img,table{max-width:100%}
       <p class="text-[12px] text-mute m-0">2026.1 업무매뉴얼 기준 · 꼬리표 숫자는 매뉴얼 쪽수</p>
     </div>
     <button class="btn" id="btnGloss" type="button">용어</button>
-    <button class="btn" id="btnTheme" type="button" aria-label="밝게/어둡게 전환">◐</button>
+    <span data-jc-prefs></span>
+    <button class="btn" id="btnTheme" style="display:none" hidden type="button" aria-label="밝게/어둡게 전환">◐</button>
   </div>
   <div class="max-w-6xl mx-auto px-2 overflow-x-auto"><div class="flex" role="tablist" id="tabs"></div></div>
 </header>
@@ -617,5 +618,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dr.classList.contai
 })();
 </script>
 <script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
 </body>
 </html>

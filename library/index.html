@@ -627,12 +627,13 @@ document.documentElement.setAttribute('data-theme',t);})();
       <div class="mono truncate text-[10px] sm:text-[11px] t-faint">// FUTURE EMPLOYMENT READING ROOM</div>
     </div>
     <div class="flex items-center gap-1.5 sm:gap-2">
-      <div class="seg" role="group" aria-label="화면 테마">
+      <span data-jc-prefs></span>
+      <div class="seg" role="group" aria-label="화면 테마" style="display:none" hidden>
         <button type="button" data-theme-mode="auto" aria-pressed="true" title="오전 7시부터 오후 7시까지는 밝게, 그 밖에는 어둡게 바뀝니다">자동</button>
         <button type="button" data-theme-mode="light" aria-pressed="false">밝게</button>
         <button type="button" data-theme-mode="dark" aria-pressed="false">어둡게</button>
       </div>
-      <button id="btnThemeCycle" type="button" class="theme-cycle tap glass rounded-xl px-2.5 items-center justify-center gap-1" style="font-size:var(--fs-xs)" aria-label="화면 테마 바꾸기"><i data-lucide="sun-moon" class="w-4 h-4 t-acc"></i><span id="themeCycleLabel">자동</span></button>
+      <button id="btnThemeCycle" type="button" style="display:none" hidden class="theme-cycle tap glass rounded-xl px-2.5 items-center justify-center gap-1" style="font-size:var(--fs-xs)" aria-label="화면 테마 바꾸기"><i data-lucide="sun-moon" class="w-4 h-4 t-acc"></i><span id="themeCycleLabel">자동</span></button>
       <button id="btnSearch" type="button" class="tap glass rounded-xl px-3 inline-flex items-center justify-center gap-2 hover-line transition" style="font-size:var(--fs-xs)" aria-label="이슈 검색 (Ctrl+K)">
         <i data-lucide="search" class="w-4 h-4 t-acc"></i><span class="hidden md:inline">이슈 검색</span><kbd class="hidden lg:inline">Ctrl K</kbd>
       </button>
@@ -2454,6 +2455,8 @@ icons();
 const m = location.hash.match(/^#vol-(0[1-9]|1[0-9])$/);
 if (m) setTimeout(() => openSlate(parseInt(m[1], 10)), 300);
 </script>
+<script>window.JC_FS_SKIP = '.book, .bookend';</script>
 <script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
 </body>
 </html>

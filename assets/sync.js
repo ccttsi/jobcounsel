@@ -12,7 +12,7 @@
     url: 'https://vzxwdfswlolhcluljkgi.supabase.co',
     key: 'sb_publishable_1qTUCjJRWlAvBTsW6MDwUw_RfgxMsxW'   // 공개용 키(사이트에 드러나도 되는 값). secret/service_role 키는 절대 넣지 않는다
   };
-  var SYNC_RE = /^(jc-marks:.{0,180}|jc-marker-prefs|jc-archive-visited|jc-theme|jobwiki-2026|kua-wiki-page)$/;
+  var SYNC_RE = /^(jc-marks:.{0,180}|jc-marker-prefs|jc-archive-visited|jc-theme|jc-font|jc-univ-per|jobwiki-2026|kua-wiki-page)$/;
   var META = 'jc-sync-meta', SESS = 'jc-sync-session';
   var d = document, root = d.documentElement;
   var configured = !!(CFG.url && CFG.key);

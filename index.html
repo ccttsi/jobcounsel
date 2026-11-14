@@ -293,7 +293,8 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
       <span id="statusText">운영 중</span>
       <time class="a-num" id="clock" aria-live="off" data-jc-ignore></time>
     </div>
-    <div class="a-seg" role="group" aria-label="화면 테마" id="themeSeg">
+    <span data-jc-prefs class="jc-prefs-slot"></span>
+    <div class="a-seg" role="group" aria-label="화면 테마" id="themeSeg" style="display:none" hidden>
       <button data-theme-mode="auto" aria-pressed="true" title="오전 7시부터 오후 7시까지는 밝게, 그 밖에는 어둡게 바뀝니다">자동</button>
       <button data-theme-mode="light" aria-pressed="false">밝게</button>
       <button data-theme-mode="dark" aria-pressed="false">어둡게</button>
@@ -811,5 +812,6 @@ icons();window.addEventListener('load',icons);
 })();
 </script>
 <script src="./assets/marker.js" defer></script>
+<script src="./assets/prefs.js" defer></script>
 </body>
 </html>

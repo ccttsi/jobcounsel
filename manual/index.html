@@ -46,7 +46,7 @@ button{cursor:pointer}
 :focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:6px}
 .num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
 .wrap{max-width:1240px;margin:0 auto;padding:0 16px}
-.lab{font-size:12.5px;font-weight:700;color:var(--mute);letter-spacing:.01em}
+.lab{font-size:12.5px;font-weight:700;color:var(--mute);letter-spacing:.01em;white-space:nowrap}
 
 /* 머리말과 계기판 */
 .top{display:flex;align-items:center;gap:10px;padding-top:12px;padding-bottom:8px}
@@ -169,7 +169,8 @@ th{font-size:12.5px;color:var(--mute)}
 
 <div class="wrap top">
   <h1>국취 매뉴얼 하이퍼위키 <small>2026.1 업무매뉴얼 동반 해설</small></h1>
-  <button class="btn" id="theme" type="button" aria-label="밝게/어둡게 전환">◐</button>
+  <span data-jc-prefs></span>
+  <button class="btn" id="theme" style="display:none" hidden type="button" aria-label="밝게/어둡게 전환">◐</button>
 </div>
 <div class="hud">
   <div class="wrap">
@@ -342,5 +343,6 @@ setView(location.hash.slice(1)||'map',true);setPage(page);
 })();
 </script>
 <script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
 </body>
 </html>

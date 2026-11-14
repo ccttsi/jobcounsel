@@ -231,7 +231,8 @@ footer p{padding:16px 0 22px;font-size:12.5px;color:var(--muted);max-width:none}
         </div>
         <button class="btn primary" id="btn-save" type="button">💾 로컬 HTML 파일 저장</button>
         <button class="btn" id="btn-print" type="button">인쇄 / PDF (A4)</button>
-        <button class="btn" id="btn-theme" type="button" aria-label="화면 테마 전환">다크 모드</button>
+        <span data-jc-prefs></span>
+        <button class="btn" id="btn-theme" style="display:none" hidden type="button" aria-label="화면 테마 전환">다크 모드</button>
       </div>
     </div>
   </header>
@@ -1253,5 +1254,6 @@ init();
 })();
 </script>
 <script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
 </body>
 </html>
