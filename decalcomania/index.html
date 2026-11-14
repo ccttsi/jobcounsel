@@ -207,10 +207,10 @@ a{color:inherit}
 .foot{font-size:12px;color:var(--muted);border-top:1px dashed var(--line);margin-top:16px;padding-top:8px}
 .state{padding:24px 16px;color:var(--muted);font-size:15px}
 
-/* ── 넓은 화면(960px 이상): 좌우 1:1 데칼코마니 ── */
+/* ── 넓은 화면(720px 이상, 가로로 눕힌 휴대폰 포함): 좌우 1:1 데칼코마니 ── */
 .wide-only{display:none}
 @media (min-width:600px){.brand{display:block}.wide-only{display:inline}}
-@media (min-width:960px){
+@media (min-width:720px){
   .app{max-width:1440px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
   .stage{flex-direction:row}
   .pane.top,.stage.flip .pane.top,.pane.bottom{flex:1 1 0}
@@ -237,7 +237,8 @@ a{color:inherit}
         <input id="q" type="search" placeholder="학과·대학 학과명·직업 검색" autocomplete="off" enterkeyhint="search" aria-label="학과·대학 학과명·직업 검색" disabled>
         <div id="results" hidden></div>
       </div>
-      <button class="ib theme" id="themeBtn" type="button" title="자동은 오전 7시~오후 7시 밝게, 그 밖에는 어둡게">자동</button>
+      <span data-jc-prefs></span>
+      <button class="ib theme" id="themeBtn" style="display:none" hidden type="button" title="자동은 오전 7시~오후 7시 밝게, 그 밖에는 어둡게">자동</button>
     </div>
     <p class="note" id="note"><b>커리어데칼코마니</b> · 이 자료는 정답이 아닌 참고·실습용 도구입니다.<span class="wide-only"> 연결은 가능성을 보여 줄 뿐 진로를 정해 주지 않습니다.</span></p>
   </header>
@@ -613,5 +614,6 @@ d.addEventListener('pointerdown',function(e){if(!e.target.closest('.search'))res
 })();
 </script>
 <script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
 </body>
 </html>

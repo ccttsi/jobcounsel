@@ -596,6 +596,8 @@ document.documentElement.setAttribute('data-theme',t);})();
     #dBody > * { max-width: 900px; }
     .sec p { font-size: 17px; line-height: 1.8; }
   }
+  /* 가로로 눕힌 휴대폰: 위 머리말은 고정하지 않는다 */
+  @media (orientation: landscape) and (max-height: 500px) { header.hud { position: relative !important; } }
   /* ---------- SEARCH PALETTE ---------- */
   .palette-wrap { position: fixed; inset: 0; z-index: 80; display: none; align-items: flex-start; justify-content: center; padding: clamp(12px, 8vh, 96px) 12px 12px; background: var(--scrim); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
   .palette-wrap.open { display: flex; }
@@ -625,12 +627,13 @@ document.documentElement.setAttribute('data-theme',t);})();
       <div class="mono truncate text-[10px] sm:text-[11px] t-faint">// FUTURE EMPLOYMENT READING ROOM</div>
     </div>
     <div class="flex items-center gap-1.5 sm:gap-2">
-      <div class="seg" role="group" aria-label="화면 테마">
+      <span data-jc-prefs></span>
+      <div class="seg" role="group" aria-label="화면 테마" style="display:none" hidden>
         <button type="button" data-theme-mode="auto" aria-pressed="true" title="오전 7시부터 오후 7시까지는 밝게, 그 밖에는 어둡게 바뀝니다">자동</button>
         <button type="button" data-theme-mode="light" aria-pressed="false">밝게</button>
         <button type="button" data-theme-mode="dark" aria-pressed="false">어둡게</button>
       </div>
-      <button id="btnThemeCycle" type="button" class="theme-cycle tap glass rounded-xl px-2.5 items-center justify-center gap-1" style="font-size:var(--fs-xs)" aria-label="화면 테마 바꾸기"><i data-lucide="sun-moon" class="w-4 h-4 t-acc"></i><span id="themeCycleLabel">자동</span></button>
+      <button id="btnThemeCycle" type="button" style="display:none" hidden class="theme-cycle tap glass rounded-xl px-2.5 items-center justify-center gap-1" style="font-size:var(--fs-xs)" aria-label="화면 테마 바꾸기"><i data-lucide="sun-moon" class="w-4 h-4 t-acc"></i><span id="themeCycleLabel">자동</span></button>
       <button id="btnSearch" type="button" class="tap glass rounded-xl px-3 inline-flex items-center justify-center gap-2 hover-line transition" style="font-size:var(--fs-xs)" aria-label="이슈 검색 (Ctrl+K)">
         <i data-lucide="search" class="w-4 h-4 t-acc"></i><span class="hidden md:inline">이슈 검색</span><kbd class="hidden lg:inline">Ctrl K</kbd>
       </button>
@@ -649,11 +652,11 @@ document.documentElement.setAttribute('data-theme',t);})();
       청년의 이직, 지역의 격차, 고령의 일터, 그리고 AI.<br><span class="t-dim font-semibold">국내외 보고서 열세 권으로 읽는 고용의 다음 장면</span>
     </h1>
     <p class="mt-4 max-w-3xl t-dim" style="font-size:var(--fs-base)">
-      1단에는 국회입법조사처·국회미래연구원 보고서 3권, 2단에는 WEF·ILO·세계은행·CEPR의 영문 보고서 4권(한국어 번역), 3단에는 해외 구직자 지원제도·미래 직업·근로자 역량을 다룬 3권을 꽂았습니다. 책장이 차서 오른쪽에 두 번째 책장을 세웠고, 1단에는 청년 니트·초단시간 노동·지역 인구정책 3권이 있습니다. 옆으로 넘겨 보세요. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
+      1단에는 국회입법조사처·국회미래연구원 보고서 3권, 2단에는 WEF·ILO·세계은행·CEPR의 영문 보고서 4권(한국어 요약·해설), 3단에는 해외 구직자 지원제도·미래 직업·근로자 역량을 다룬 3권을 꽂았습니다. 책장이 차서 오른쪽에 두 번째 책장을 세웠고, 1단에는 청년 니트·초단시간 노동·지역 인구정책 3권이 있습니다. 옆으로 넘겨 보세요. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
     </p>
     <div class="mt-5 flex flex-wrap gap-2" style="font-size:var(--fs-xs)">
       <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 13권</span>
-      <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 5권 한국어 번역</span>
+      <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 5권 한국어 요약</span>
       <span class="note-tag"><i data-lucide="database" class="w-3.5 h-3.5"></i>수치는 원문 그대로 인용</span>
       <span class="note-tag"><i data-lucide="message-square-quote" class="w-3.5 h-3.5"></i>상담 적용 노트는 편집자 해석</span>
     </div>
@@ -2452,6 +2455,8 @@ icons();
 const m = location.hash.match(/^#vol-(0[1-9]|1[0-9])$/);
 if (m) setTimeout(() => openSlate(parseInt(m[1], 10)), 300);
 </script>
+<script>window.JC_FS_SKIP = '.book, .bookend';</script>
 <script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
 </body>
 </html>
