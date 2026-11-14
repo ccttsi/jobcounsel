@@ -94,7 +94,8 @@ document.documentElement.setAttribute('data-theme',t);})();
     --fs-hero: clamp(1.55rem, 1.1rem + 2.4vw, 3rem);
   }
   * { box-sizing: border-box; }
-  html, body { overflow-x: hidden; }
+  html, body { overflow-x: clip; }
+  @supports not (overflow-x: clip) { body { overflow-x: hidden; } }
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; background: var(--bg); }
   body {
     margin: 0; background: var(--bg); color: var(--ink);
