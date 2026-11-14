@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="첫 진입·재진입·전직·2막 설계까지, 출발역에서 환승역을 골라 타며 나만의 커리어 노선도를 그려 보는 직업상담 참고·실습 도구">
+<title>환승노선도 · 내 일로 갈아타는 커리어 노선도</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f3ede2;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#7b7168;
+  --acc:#0f766e;--acc-soft:rgba(15,118,110,.09);--stamp:#be123c;
+  --t1:#16934f;--t2:#dd6f12;--t3:#8355c4;
+  --d-lateral:#2563eb;--d-longevity:#0f766e;--d-pivot:#db2f6c;
+  --node:#fffdf8;--glow:0 0 0 6px rgba(15,118,110,.10);
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 12px 32px -20px rgba(70,50,25,.28);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#7c859a;
+  --acc:#2dd4bf;--acc-soft:rgba(45,212,191,.10);--stamp:#fb7185;
+  --t1:#34d399;--t2:#fb923c;--t3:#b794f6;
+  --d-lateral:#60a5fa;--d-longevity:#2dd4bf;--d-pivot:#fb7185;
+  --node:#0b0e15;--glow:0 0 0 6px rgba(45,212,191,.12);
+  --shadow:none;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+/* 자료실 규칙: html·body에 overflow-x:hidden을 걸면 iOS 사파리에서 sticky가 풀린다 → clip, 지원하지 않는 브라우저만 body에 hidden */
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit;-webkit-tap-highlight-color:transparent}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 64px}
+@media (min-width:900px){.wrap{max-width:1180px;padding:0 32px 72px}}
+
+/* 머리말 */
+.hd{display:flex;align-items:center;gap:8px;padding:12px 0}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:1;min-width:0;display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap}
+.brand i{display:inline-flex;gap:3px}
+.brand i b{width:9px;height:9px;border-radius:50%}
+.brand i b:nth-child(1){background:var(--t1)}.brand i b:nth-child(2){background:var(--t2)}.brand i b:nth-child(3){background:var(--t3)}
+.brand span{color:var(--acc)}
+
+/* 이용 안내 (테두리 없는 한 줄) */
+.pv{margin:0 0 8px}
+.pv-t{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:4px 2px;border-radius:12px}
+.pv-t svg{flex:none;width:20px;height:20px;color:var(--acc)}
+.pv-tt{flex:1;min-width:0;font-size:14px;line-height:1.55;color:var(--muted)}
+.pv-tt b{color:var(--ink);font-weight:750;margin-right:8px;white-space:nowrap}
+.pv-c{flex:none;font-size:14px;font-weight:700;color:var(--acc)}
+.pv-b{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .45s cubic-bezier(.3,.7,.2,1),opacity .35s}
+.pv.open .pv-b{grid-template-rows:1fr;opacity:1}
+.pv-b>div{overflow:hidden;min-height:0}
+.pv-b ul{margin:4px 0 12px;padding:0 0 0 2px;list-style:none;display:grid;gap:6px}
+@media (min-width:900px){.pv-b ul{grid-template-columns:1fr 1fr;column-gap:24px}}
+.pv-b li{position:relative;padding-left:16px;font-size:14.5px;line-height:1.65;color:var(--muted)}
+.pv-b li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.pv-b li b{color:var(--ink)}
+
+/* 첫머리 */
+.hero{padding:16px 0 8px}
+.hero h1{margin:0;font-size:clamp(28px,6.2vw,44px);line-height:1.18;letter-spacing:-.045em;font-weight:800}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--t1),var(--t2) 55%,var(--t3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:8px 0 0;color:var(--muted);font-size:16px;max-width:44em}
+
+/* 여정 레일: 4개 역 */
+.rail{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:20px 0 8px;padding:0}
+.rail::before,.rail .fill{content:"";position:absolute;left:12.5%;right:12.5%;top:17px;height:6px;border-radius:3px;background:var(--line)}
+.rail .fill{right:auto;width:0;background:linear-gradient(90deg,var(--t1),var(--t2),var(--t3));transition:width .5s cubic-bezier(.3,.7,.2,1)}
+.rail button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:72px;padding:4px 2px;text-align:center}
+.rail .dot{width:40px;height:40px;border-radius:50%;background:var(--node);border:5px solid var(--line-2);display:grid;place-items:center;font-size:14px;font-weight:800;color:var(--dim);transition:border-color .3s,box-shadow .3s,transform .3s}
+.rail .lb{font-size:13px;font-weight:700;color:var(--muted);line-height:1.3}
+.rail .lb small{display:block;font-weight:500;font-size:12px;color:var(--dim)}
+.rail button[aria-current="step"] .dot{border-color:var(--acc);color:var(--acc);box-shadow:var(--glow);transform:scale(1.08)}
+.rail button[aria-current="step"] .lb{color:var(--ink)}
+.rail button.done .dot{border-color:var(--acc);background:var(--acc);color:var(--bg)}
+@media (max-width:420px){.rail .lb small{display:none}}
+
+/* 공통 덩어리 */
+.panel{animation:fade .35s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.panel{animation:none}}
+.h2{margin:24px 0 4px;font-size:clamp(23px,4.6vw,30px);line-height:1.3;letter-spacing:-.035em}
+.h2 small{display:block;font-size:14px;font-weight:600;letter-spacing:-.01em;color:var(--acc);margin-bottom:2px}
+.lead{margin:0 0 16px;color:var(--muted)}
+.q{margin:24px 0 8px;font-size:17px;font-weight:750;letter-spacing:-.02em;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.q small{font-size:13px;font-weight:500;color:var(--dim)}
+.card{background:var(--panel);border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--line)}
+:root[data-theme="dark"] .card{border-color:var(--line)}
+
+/* 출발 유형 */
+.types{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+@media (min-width:700px){.types{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1100px){.types{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.type{position:relative;display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;border-radius:18px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);text-align:left;transition:border-color .2s,transform .2s,box-shadow .2s}
+.type:hover{transform:translateY(-1px)}
+.type .tg{font-size:13px;font-weight:700;color:var(--dim)}
+.type b{font-size:19px;letter-spacing:-.03em;line-height:1.35}
+.type p{margin:0;font-size:14.5px;line-height:1.6;color:var(--muted)}
+.type .fc{margin-top:auto;padding-top:6px;font-size:13px;color:var(--acc);font-weight:600}
+.type .ck{position:absolute;right:14px;top:14px;width:24px;height:24px;border-radius:50%;border:2px solid var(--line-2);display:grid;place-items:center;color:transparent;transition:all .2s}
+.type .ck svg{width:14px;height:14px}
+.type[aria-checked="true"]{border-color:var(--acc);box-shadow:var(--glow)}
+.type[aria-checked="true"] .ck{background:var(--acc);border-color:var(--acc);color:var(--bg)}
+
+/* 칩 */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:0 14px;border-radius:21px;border:1px solid var(--line);background:var(--panel);font-size:15px;font-weight:600;color:var(--ink);transition:background .2s,border-color .2s,color .2s}
+.chip:hover{border-color:var(--line-2)}
+.chip[aria-pressed="true"],.chip[aria-checked="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.agrp{margin:12px 0 4px;font-size:13px;font-weight:700;color:var(--dim)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0 32px}
+@media (min-width:900px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+
+/* 역량 번역 */
+.trans{display:grid;gap:10px;margin-top:12px}
+@media (min-width:900px){.trans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tr{padding:14px 16px;border-radius:16px;background:var(--soft);display:grid;gap:6px}
+.tr .fr{font-size:13px;color:var(--dim);font-weight:650}
+.tr .to{font-size:16px;font-weight:750;letter-spacing:-.02em;line-height:1.5}
+.tr .to::before{content:"→ ";color:var(--acc)}
+.tr .jb{display:flex;flex-wrap:wrap;gap:4px}
+.tr .jb span{font-size:13px;padding:1px 9px;border-radius:99px;background:var(--panel);color:var(--muted)}
+.tr .pf{font-size:13.5px;color:var(--muted);line-height:1.55}
+.empty{padding:16px;border-radius:16px;background:var(--soft);color:var(--muted);font-size:15px}
+textarea.memo{width:100%;min-height:88px;padding:12px 14px;border-radius:14px;border:1px solid var(--line-2);background:var(--panel);font-size:16px;line-height:1.6;resize:vertical;outline:none}
+textarea.memo:focus,input.inp:focus{border-color:var(--acc)}
+input.inp{width:100%;height:48px;padding:0 14px;border-radius:14px;border:1px solid var(--line-2);background:var(--panel);font-size:16px;outline:none}
+
+.go{display:flex;justify-content:flex-end;gap:8px;margin-top:24px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 22px;border-radius:16px;font-weight:750;font-size:16px;text-decoration:none;transition:transform .15s,background .2s}
+.btn:active{transform:scale(.98)}
+.btn-p{background:var(--acc);color:#fff}
+:root[data-theme="dark"] .btn-p{background:var(--acc-soft);color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}
+.btn-g{background:var(--soft);color:var(--ink)}
+
+/* 환승 구간 덱 */
+.deckbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.deckbar .seg{display:inline-flex;padding:3px;border-radius:14px;background:var(--soft)}
+.deckbar .seg button{min-height:38px;padding:0 12px;border-radius:11px;font-size:14px;font-weight:650;color:var(--muted)}
+.deckbar .seg button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
+.deckbar .cnt{margin-left:auto;font-size:14px;color:var(--muted)}
+.deckbar .cnt b{color:var(--ink)}
+/* 진행 점 노선 */
+.minimap{position:relative;display:flex;align-items:center;gap:0;margin:4px 0 14px;padding:6px 2px;flex-wrap:wrap;row-gap:10px}
+.mm{position:relative;flex:1 1 0;min-width:18px;height:22px;display:grid;place-items:center}
+.mm::before{content:"";position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;background:var(--c);opacity:.35}
+.mm:first-child::before{left:50%}.mm:last-child::before{right:50%}
+.mm i{position:relative;width:14px;height:14px;border-radius:50%;background:var(--node);border:3px solid var(--c);transition:transform .2s}
+.mm.on i{background:var(--c)}
+.mm[aria-current="true"] i{transform:scale(1.45);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 20%,transparent)}
+.viewport{position:relative;overflow:hidden;touch-action:pan-y;border-radius:22px;transition:height .35s cubic-bezier(.3,.7,.2,1)}
+.track{display:flex;align-items:flex-start;will-change:transform;transition:transform .42s cubic-bezier(.25,.8,.25,1)}
+.track.drag{transition:none}
+.slide{flex:0 0 100%;min-width:0;padding:2px}
+.st{position:relative;overflow:hidden;padding:20px 18px 18px;border-radius:22px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow)}
+@media (min-width:700px){.st{padding:28px 30px 24px}}
+.st::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c)}
+.st-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:700}
+.tier{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 6px;border-radius:99px;background:color-mix(in srgb,var(--c) 13%,transparent);color:var(--c)}
+.tier i{width:12px;height:12px;border-radius:50%;border:3px solid var(--c);background:var(--node)}
+.fit{padding:3px 10px;border-radius:99px;background:var(--acc-soft);color:var(--acc)}
+.warn{padding:3px 10px;border-radius:99px;background:color-mix(in srgb,var(--stamp) 10%,transparent);color:var(--stamp)}
+.st-k{margin:12px 0 0;font-size:14px;color:var(--dim);font-weight:600}
+.st h3{margin:2px 0 10px;font-size:clamp(23px,4.8vw,30px);line-height:1.28;letter-spacing:-.04em}
+.meta{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 14px;font-size:14px;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:700}
+.diff{display:inline-flex;gap:3px;vertical-align:-1px}
+.diff i{width:9px;height:9px;border-radius:50%;background:var(--line-2)}
+.diff i.on{background:var(--c)}
+.who{margin:0 0 12px;padding:10px 14px;border-radius:14px;background:var(--soft);font-size:15px}
+.who b{color:var(--dim);font-size:13px;margin-right:6px}
+.core{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+@media (min-width:1000px){.core{grid-template-columns:1fr 1fr;column-gap:28px}}
+.core li{position:relative;padding-left:20px;font-size:16px;line-height:1.7}
+.core li::before{content:"";position:absolute;left:2px;top:.6em;width:9px;height:9px;border-radius:50%;border:2.5px solid var(--c);background:var(--node)}
+.tip{margin:16px 0 0;display:grid;gap:8px}
+@media (min-width:800px){.tip{grid-template-columns:1fr 1fr;gap:12px}}
+.tip p{margin:0;padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.65;background:var(--soft)}
+.tip p b{display:block;font-size:13px;color:var(--dim);margin-bottom:2px}
+.tip p.ask{background:color-mix(in srgb,var(--c) 9%,transparent)}
+.where{margin:14px 0 0;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.where a{color:var(--acc);font-weight:700;text-decoration:none}
+.where a:hover{text-decoration:underline}
+.basis{margin:6px 0 0;font-size:12.5px;color:var(--dim)}
+.board{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;margin-top:18px;border-radius:16px;border:2px dashed color-mix(in srgb,var(--c) 55%,transparent);font-size:17px;font-weight:800;color:var(--c);transition:background .2s,color .2s,border-color .2s}
+.board svg{width:22px;height:22px}
+.board[aria-pressed="true"]{background:var(--c);border-style:solid;border-color:var(--c);color:#fff}
+:root[data-theme="dark"] .board[aria-pressed="true"]{color:#08090c}
+.board .on{display:none}.board[aria-pressed="true"] .on{display:inline}.board[aria-pressed="true"] .off{display:none}
+.decknav{display:flex;align-items:center;gap:8px;margin-top:14px}
+.decknav .btn{flex:1}
+.decknav .pos{flex:none;min-width:72px;text-align:center;font-size:15px;color:var(--muted);font-weight:650}
+.swipe-hint{margin:8px 0 0;text-align:center;font-size:13px;color:var(--dim)}
+.endcard{padding:32px 22px;text-align:center}
+.endcard h3{margin:0 0 6px;font-size:24px;letter-spacing:-.035em}
+.endcard p{margin:0 0 16px;color:var(--muted)}
+
+/* 구직급여 계산기 */
+.ui{margin:16px 0 0;padding:16px;border-radius:18px;background:var(--soft)}
+.ui h4{margin:0 0 10px;font-size:16px;letter-spacing:-.02em}
+.ui .row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.ui .row .chip{min-height:38px;padding:0 12px;font-size:14px}
+.ui label.l{display:block;font-size:13px;font-weight:700;color:var(--dim);margin:6px 0 4px}
+.ui .two{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+@media (min-width:640px){.ui .two{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.ui input[type=number]{width:100%;height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel);font-size:16px;outline:none}
+.ui input[type=range]{width:100%;accent-color:var(--t1);touch-action:pan-y}
+.ui .out{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.ui .out div{padding:10px 12px;border-radius:12px;background:var(--panel)}
+.ui .out b{display:block;font-size:clamp(17px,4.6vw,21px);letter-spacing:-.03em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ui .out span{font-size:12.5px;color:var(--muted)}
+.tl{position:relative;height:44px;margin:8px 0 4px}
+.tl .bar{position:absolute;left:0;right:0;top:16px;height:12px;border-radius:6px;background:linear-gradient(90deg,var(--line-2) 0 var(--w),color-mix(in srgb,var(--t1) 55%,transparent) var(--w) var(--h),color-mix(in srgb,var(--t1) 22%,transparent) var(--h) 100%)}
+.tl .mk{position:absolute;top:8px;width:3px;height:28px;border-radius:2px;background:var(--ink);transform:translateX(-1.5px)}
+.tl .mk.me{background:var(--stamp);width:4px}
+.tl .tx{position:absolute;top:-4px;font-size:11.5px;color:var(--dim);transform:translateX(-50%);white-space:nowrap}
+.tl-l{display:flex;justify-content:space-between;font-size:12px;color:var(--dim)}
+.ui .res{margin:8px 0 0;font-size:15px;line-height:1.65}
+.ui .res b{color:var(--t1)}
+.ui .res.no b{color:var(--stamp)}
+.ui .fine{margin:8px 0 0;font-size:12.5px;color:var(--dim);line-height:1.55}
+
+/* 종착역 */
+.dests{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+@media (min-width:900px){.dests{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.dest{position:relative;display:flex;flex-direction:column;gap:8px;padding:20px 18px;border-radius:20px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);text-align:left;overflow:hidden}
+.dest::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;border:14px solid var(--c);opacity:.13}
+.dest .dn{display:flex;align-items:center;gap:10px}
+.dest .dn i{flex:none;width:26px;height:26px;border-radius:50%;border:6px double var(--c);background:var(--node)}
+.dest .dn b{font-size:21px;letter-spacing:-.035em}
+.dest .sb{font-size:14px;font-weight:700;color:var(--c)}
+.dest .tl2{font-size:14px;color:var(--dim)}
+.dest p{margin:0;font-size:15px;color:var(--muted);line-height:1.65}
+.dest[aria-checked="true"]{border-color:var(--c);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 16%,transparent)}
+.dest .rec{position:absolute;left:18px;top:-1px;padding:2px 8px;border-radius:0 0 8px 8px;background:var(--c);color:#fff;font-size:12px;font-weight:700}
+:root[data-theme="dark"] .dest .rec{color:#08090c}
+.dd{margin-top:16px;padding:20px 18px;border-radius:20px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow)}
+.dd h3{margin:0 0 8px;font-size:20px;letter-spacing:-.03em}
+.dd .cols>div{min-width:0}
+.ex .chip{font-size:14px;min-height:38px}
+.cl{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.cl button{display:flex;align-items:flex-start;gap:10px;width:100%;padding:8px 6px;border-radius:12px;font-size:15px;line-height:1.6;text-align:left}
+.cl button i{flex:none;width:22px;height:22px;margin-top:1px;border-radius:7px;border:2px solid var(--line-2);display:grid;place-items:center;color:transparent}
+.cl button i svg{width:13px;height:13px}
+.cl button[aria-checked="true"] i{background:var(--c);border-color:var(--c);color:#fff}
+.cl button[aria-checked="true"] span{color:var(--muted);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--c) 60%,transparent)}
+.gw{display:flex;flex-wrap:wrap;gap:6px}
+.gw button{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 12px 0 8px;border-radius:19px;font-size:14px;font-weight:650;background:var(--soft)}
+.gw button i{width:12px;height:12px;border-radius:50%;border:3px solid var(--c2);background:var(--node)}
+.gw button[aria-pressed="true"]{background:var(--c2);color:#fff}
+:root[data-theme="dark"] .gw button[aria-pressed="true"]{color:#08090c}
+.gw button[aria-pressed="true"] i{background:#fff;border-color:#fff}
+
+/* 완성 노선도: 승차권 */
+.ticket{position:relative;margin:16px 0 0;border-radius:22px;background:var(--panel);box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden}
+.tk-h{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;padding:20px 18px 18px;background:linear-gradient(110deg,color-mix(in srgb,var(--t1) 12%,transparent),color-mix(in srgb,var(--t2) 10%,transparent) 50%,color-mix(in srgb,var(--t3) 12%,transparent))}
+.tk-h .k{font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.04em}
+.tk-h .v{font-size:clamp(17px,4.2vw,24px);font-weight:800;letter-spacing:-.04em;line-height:1.3}
+.tk-h .to{text-align:right}
+.tk-h .ar{font-size:22px;color:var(--dim)}
+.tk-perf{position:relative;height:0;border-top:2px dashed var(--line-2);margin:0 18px}
+.tk-perf::before,.tk-perf::after{content:"";position:absolute;top:-13px;width:24px;height:24px;border-radius:50%;background:var(--bg);border:1px solid var(--line)}
+.tk-perf::before{left:-31px}.tk-perf::after{right:-31px}
+.tk-m{display:flex;flex-wrap:wrap;gap:8px 22px;padding:14px 18px;font-size:14px;color:var(--muted)}
+.tk-m b{color:var(--ink);font-weight:750}
+.tk-m .over{color:var(--stamp)}
+.tk-m{position:relative;padding-right:92px}
+.stamp{position:absolute;right:14px;top:-6px;width:66px;height:66px;border-radius:50%;border:3px solid var(--stamp);color:var(--stamp);display:grid;place-items:center;text-align:center;font-size:11.5px;font-weight:800;line-height:1.15;transform:rotate(-14deg);opacity:.85;pointer-events:none;mix-blend-mode:multiply}
+:root[data-theme="dark"] .stamp{mix-blend-mode:normal;opacity:.7}
+.stamp::before{content:"";position:absolute;inset:5px;border-radius:50%;border:1px solid var(--stamp)}
+@media (max-width:560px){.stamp{width:60px;height:60px;font-size:10.5px;right:8px;top:-4px}.tk-m{padding-right:76px}}
+
+/* 노선도 본체 */
+.map{position:relative;margin:8px 0 0;padding:8px 18px 22px}
+.map svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.hn{position:absolute;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 4px}
+.hn button{display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:12px;padding:4px 2px}
+.hn b{font-size:14.5px;font-weight:750;letter-spacing:-.025em;line-height:1.35}
+.hn small{font-size:12px;color:var(--muted);line-height:1.35}
+.hn .tg2{font-size:11.5px;font-weight:700;color:var(--c)}
+.vmap{list-style:none;margin:0;padding:0}
+.vn{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;padding:0 0 18px}
+.vn::before{content:"";position:absolute;left:17px;top:22px;bottom:-4px;width:6px;border-radius:3px;background:var(--cn)}
+.vn:last-child::before{display:none}
+.vn .vd{position:relative;z-index:1;justify-self:center;width:24px;height:24px;margin-top:3px;border-radius:50%;background:var(--node);border:5px solid var(--c)}
+.vn.big .vd{width:32px;height:32px;margin-top:0;border-width:7px;border-style:double}
+.vn.start .vd{border-color:var(--ink);border-style:solid;border-width:6px}
+.vn .vt{min-width:0}
+.vn .vt .tg2{display:block;font-size:12px;font-weight:700;color:var(--c)}
+.vn .vt b{display:block;font-size:17px;letter-spacing:-.025em;line-height:1.4}
+.vn .vt small{display:block;font-size:14px;color:var(--muted);line-height:1.55}
+.vn .vt .vw{display:block;margin-top:2px;font-size:13px;color:var(--dim)}
+.notes{display:grid;gap:10px;margin-top:16px}
+@media (min-width:900px){.notes{grid-template-columns:1fr 1fr}}
+.nt{padding:16px 18px;border-radius:18px;background:var(--panel);border:1px solid var(--line)}
+.nt h4{margin:0 0 8px;font-size:16px;letter-spacing:-.02em}
+.nt ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.nt li{position:relative;padding-left:16px;font-size:15px;line-height:1.6;color:var(--muted)}
+.nt li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--c,var(--acc))}
+.nt li b{color:var(--ink)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.actions .btn{flex:1 1 180px}
+.foot{font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:12px;margin-top:32px;line-height:1.7}
+.foot a{color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,20px);padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--bg);font-size:15px;font-weight:650;opacity:0;pointer-events:none;transition:all .3s;z-index:50;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* 가로 휴대폰: 여백 줄이기 */
+@media (orientation:landscape) and (max-height:500px){.hero{padding-top:4px}.rail{margin-top:8px}}
+
+/* 인쇄: 완성 노선도만 */
+@media print{
+  .hd,.pv,.hero,.rail,.actions,.toast,#p1,#p2,#p3,.foot .noprint{display:none!important}
+  body{background:#fff;color:#000}
+  .ticket,.nt{box-shadow:none}
+  #p4{display:block!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></a>
+    <a class="brand" href="#" id="brand"><i aria-hidden="true"><b></b><b></b><b></b></i><span style="color:inherit">환승</span><span>노선도</span></a>
+    <span data-jc-prefs></span>
+  </header>
+
+  <section class="pv" id="pv">
+    <button class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 모든 기능을 쓸 수 있습니다. 자료실의 정보는 정답이 아닌 <span style="white-space:nowrap">참고·실습용입니다.</span></span>
+      <span class="pv-c" id="pvL">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" inert><div><ul>
+      <li><b>입력한 내용은 이 기기의 브라우저에만 저장됩니다.</b> 서버로 보내지 않고, 로그인해도 다른 기기와 연동하지 않습니다. 「처음부터 다시」를 누르면 지워집니다.</li>
+      <li><b>이 노선도는 정답이 아닙니다.</b> 상담 실무 연습과 진로 설계를 돕는 참고 도구이며, 같은 출발역에서도 사람마다 맞는 노선은 다릅니다.</li>
+      <li><b>제도 수치와 요건은 2026년 11월 14일 확인 기준입니다.</b> 실제 대상 여부와 금액은 고용센터(국번 없이 1350)와 각 기관 공고로 확인해 주세요.</li>
+      <li><b>내담자 실습에 쓸 때는 실명·연락처 같은 개인정보를 적지 마세요.</b> 메모 칸에는 상황과 경력만 짧게 적습니다.</li>
+    </ul></div></div>
+  </section>
+
+  <section class="hero">
+    <h1>내 일로 갈아타는 길,<br><em>노선도로 직접 그립니다.</em></h1>
+    <p>출발역에서 지금 상황을 고르고, 환승역을 하나씩 넘기며 쓸모 있는 역에만 탑승하세요. 마지막 칸에 나만의 커리어 노선도가 완성됩니다.</p>
+  </section>
+
+  <nav class="rail" id="rail" aria-label="여정 단계"><span class="fill" id="railFill"></span></nav>
+
+  <main>
+    <section class="panel" id="p1" aria-labelledby="h1t" hidden></section>
+    <section class="panel" id="p2" aria-labelledby="h2t" hidden></section>
+    <section class="panel" id="p3" aria-labelledby="h3t" hidden></section>
+    <section class="panel" id="p4" aria-labelledby="h4t" hidden></section>
+  </main>
+
+  <p class="foot">제도 정보는 고용노동부·고용24·여성새로일하기센터·한국폴리텍대학·한국산업인력공단 등의 공개 안내와 보도자료(2026년 11월 14일 확인)를 바탕으로 요약했습니다. 원문을 옮겨 싣지 않았으며, 기관명은 안내를 위해서만 씁니다. 이 화면은 어떤 기관의 공식 자료도 아닌 참고·실습용 도구입니다. <span class="noprint">국민취업지원제도 세부 내용은 <a href="../manual/">국취 매뉴얼 하이퍼위키</a>, 검사 해석 연습은 <a href="../vpi/">직업선호도검사 시뮬레이터</a>, 학과·직업 연결은 <a href="../decalcomania/">커리어데칼코마니</a>에서 이어집니다.</span></p>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+var d=document,$=function(id){return d.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function won(n){return Math.round(n).toLocaleString('ko-KR')+'원';}
+var CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+var TICKET='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M13 6v2M13 11v2M13 16v2"/></svg>';
+
+/* ───────── 테마: 공통 설정을 따른다 ───────── */
+function applyTheme(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+  var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+  d.documentElement.setAttribute('data-theme',t);$('metaTheme').setAttribute('content',t==='dark'?'#08090c':'#faf6ef');}
+applyTheme();setInterval(applyTheme,60000);
+window.addEventListener('storage',function(e){if(e.key==='jc-theme')applyTheme();});
+
+/* ───────── 이용 안내 접기·펼치기 ───────── */
+$('pvT').addEventListener('click',function(){var o=!$('pv').classList.contains('open');$('pv').classList.toggle('open',o);
+  this.setAttribute('aria-expanded',String(o));$('pvL').textContent=o?'접기':'펼치기';if(o)$('pvB').removeAttribute('inert');else $('pvB').setAttribute('inert','');});
+
+var toastT=0;function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('on');},2200);}
+
+/* ───────── 상태(이 기기에만 저장) ───────── */
+var KEY='jc-transit';
+var S={step:1,type:'',age:'',period:'',dirs:[],assets:[],memo:'',filter:'fit',idx:0,boarded:[],dest:'',target:'',checks:[]};
+try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&typeof sv==='object')for(var k in S)if(k in sv)S[k]=sv[k];}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+var D=null,BY={},TIER={},TYPE={},DEST={},ASSET={},PER={},TIERS_ORDER={t1:0,t2:1,t3:2};
+var TC={t1:'var(--t1)',t2:'var(--t2)',t3:'var(--t3)'},DC={lateral:'var(--d-lateral)',longevity:'var(--d-longevity)',pivot:'var(--d-pivot)'};
+
+fetch('./data/transit.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(j){
+  D=j;D.stations.forEach(function(s){BY[s.id]=s;});D.tiers.forEach(function(t){TIER[t.id]=t;});D.types.forEach(function(t){TYPE[t.id]=t;});
+  D.dests.forEach(function(t){DEST[t.id]=t;});D.assets.forEach(function(t){ASSET[t.id]=t;});D.periods.forEach(function(t){PER[t.id]=t;});
+  S.boarded=S.boarded.filter(function(id){return BY[id];});S.assets=S.assets.filter(function(id){return ASSET[id];});
+  go(S.step,true);
+}).catch(function(){$('p1').hidden=false;$('p1').innerHTML='<p class="empty">노선 자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>';});
+
+/* ───────── 여정 레일 ───────── */
+var STEPS=[['출발역','내 케이스'],['환승 구간','역 고르기'],['종착역','목표 연결'],['나의 노선도','완성본']];
+function renderRail(){
+  var h='<span class="fill" id="railFill"></span>';
+  STEPS.forEach(function(s,i){var n=i+1;
+    h+='<button type="button" data-go="'+n+'"'+(n===S.step?' aria-current="step"':'')+' class="'+(n<S.step?'done':'')+'"><span class="dot num">'+(n<S.step?'✓':n)+'</span><span class="lb">'+s[0]+'<small>'+s[1]+'</small></span></button>';});
+  $('rail').innerHTML=h;
+  $('railFill').style.width=((S.step-1)/3*75)+'%';
+}
+$('rail').addEventListener('click',function(e){var b=e.target.closest('[data-go]');if(b)go(+b.getAttribute('data-go'));});
+$('brand').addEventListener('click',function(e){e.preventDefault();go(1);});
+
+function go(n,first){
+  S.step=n;save();renderRail();
+  for(var i=1;i<=4;i++)$('p'+i).hidden=i!==n;
+  if(n===1)renderStart();else if(n===2)renderDeck();else if(n===3)renderDest();else renderMap();
+  if(!first){var r=$('rail').getBoundingClientRect();if(r.top<0||r.top>innerHeight*.5)window.scrollTo({top:scrollY+r.top-8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+}
+
+/* ───────── 맞춤 판정 ───────── */
+function fits(s){
+  if(S.type&&s.for.indexOf(S.type)<0)return false;
+  if(S.age&&s.age&&s.age.indexOf(S.age)<0)return false;
+  return true;
+}
+function tooLong(s){var p=PER[S.period];return p&&s.dur[0]>p.weeks;}
+function deckList(){
+  var all=D.stations.slice().sort(function(a,b){return TIERS_ORDER[a.tier]-TIERS_ORDER[b.tier];});
+  return S.filter==='all'?all:all.filter(fits);
+}
+function durTxt(s){var a=s.dur[0],b=s.dur[1];function w(x){return x<=0?'바로':x<4?x+'주':x<52?Math.round(x/4.33)+'개월':Math.round(x/52*10)/10+'년';}
+  if(a===b)return w(a);return (a<=0?'바로':w(a))+'~'+w(b);}
+function dotsDiff(n){var h='<span class="diff" aria-label="난이도 '+n+'단계 가운데 3">';for(var i=1;i<=3;i++)h+='<i class="'+(i<=n?'on':'')+'"></i>';return h+'</span>';}
+
+/* ───────── ① 출발역 ───────── */
+function renderStart(){
+  var h='<h2 class="h2" id="h1t"><small>① 출발역</small>지금 어디에서 출발하나요?</h2><p class="lead">가장 가까운 상황 하나를 고릅니다. 고른 출발역에 따라 환승 구간에서 먼저 보여 줄 역이 달라집니다.</p>';
+  h+='<div class="types" role="radiogroup" aria-label="출발 유형">';
+  D.types.forEach(function(t){h+='<button type="button" class="type" role="radio" data-type="'+t.id+'" aria-checked="'+(S.type===t.id)+'"><span class="ck">'+CHECK+'</span><span class="tg">'+esc(t.tag)+'</span><b>'+esc(t.name)+'</b><p>'+esc(t.desc)+'</p><span class="fc">'+esc(t.focus)+'</span></button>';});
+  h+='</div>';
+  h+='<div class="cols"><div><p class="q">나이대 <small>선택 · 나이 기준이 있는 제도를 거릅니다</small></p><div class="chips" role="radiogroup" aria-label="나이대">';
+  D.ages.forEach(function(a){h+='<button type="button" class="chip" role="radio" data-age="'+a.id+'" aria-checked="'+(S.age===a.id)+'">'+esc(a.label)+'</button>';});
+  h+='</div><p class="q">준비에 쓸 수 있는 기간</p><div class="chips" role="radiogroup" aria-label="가용 기간">';
+  D.periods.forEach(function(a){h+='<button type="button" class="chip" role="radio" data-per="'+a.id+'" aria-checked="'+(S.period===a.id)+'">'+esc(a.label)+'</button>';});
+  h+='</div></div><div><p class="q">바라는 방향 <small>여러 개 고를 수 있습니다</small></p><div class="chips">';
+  D.directions.forEach(function(a){h+='<button type="button" class="chip" data-dir="'+a.id+'" aria-pressed="'+(S.dirs.indexOf(a.id)>=0)+'">'+esc(a.label)+'</button>';});
+  h+='</div><p class="q">내 경력·전공을 한 줄로 <small>선택</small></p><textarea class="memo" id="memo" maxlength="300" placeholder="예: 물류센터 재고관리 3년, 경영학 전공, 지게차 자격 보유">'+esc(S.memo)+'</textarea></div></div>';
+  h+='<p class="q">가진 것을 직무 언어로 옮기기 <small>해 본 일을 모두 고르면 아래에 번역 문장이 생깁니다</small></p>';
+  D.assetGroups.forEach(function(g){
+    h+='<p class="agrp">'+esc(g.name)+'</p><div class="chips">';
+    D.assets.filter(function(a){return a.group===g.id;}).forEach(function(a){h+='<button type="button" class="chip" data-asset="'+a.id+'" aria-pressed="'+(S.assets.indexOf(a.id)>=0)+'">'+esc(a.label)+'</button>';});
+    h+='</div>';
+  });
+  h+='<div class="trans" id="trans"></div>';
+  h+='<div class="go"><button type="button" class="btn btn-p" data-next="2">환승 구간으로 <span aria-hidden="true">→</span></button></div>';
+  $('p1').innerHTML=h;renderTrans();
+}
+function renderTrans(){
+  var el=$('trans');if(!el)return;
+  if(!S.assets.length){el.innerHTML='<p class="empty">경험을 하나 고르면, 다른 산업의 채용 공고에서 쓰는 말로 옮긴 문장과 이어질 직무를 보여 줍니다. 직무 경험이 없어도 아르바이트·봉사·생활 경험에서 시작할 수 있습니다.</p>';return;}
+  el.innerHTML=S.assets.map(function(id){var a=ASSET[id];
+    return '<div class="tr"><span class="fr">'+esc(a.label)+'</span><span class="to">'+esc(a.to)+'</span><span class="jb">'+a.jobs.map(function(j){return '<span>'+esc(j)+'</span>';}).join('')+'</span><span class="pf">증거로 말하기 · '+esc(a.proof)+'</span></div>';}).join('');
+}
+$('p1').addEventListener('click',function(e){
+  var b;
+  if((b=e.target.closest('[data-type]'))){var v=b.getAttribute('data-type');S.type=S.type===v?'':v;S.idx=0;save();
+    $('p1').querySelectorAll('[data-type]').forEach(function(x){x.setAttribute('aria-checked',String(x.getAttribute('data-type')===S.type));});return;}
+  if((b=e.target.closest('[data-age]'))){var a=b.getAttribute('data-age');S.age=S.age===a?'':a;S.idx=0;save();
+    $('p1').querySelectorAll('[data-age]').forEach(function(x){x.setAttribute('aria-checked',String(x.getAttribute('data-age')===S.age));});return;}
+  if((b=e.target.closest('[data-per]'))){var p=b.getAttribute('data-per');S.period=S.period===p?'':p;save();
+    $('p1').querySelectorAll('[data-per]').forEach(function(x){x.setAttribute('aria-checked',String(x.getAttribute('data-per')===S.period));});return;}
+  if((b=e.target.closest('[data-dir]'))){toggleIn(S.dirs,b.getAttribute('data-dir'));save();b.setAttribute('aria-pressed',String(S.dirs.indexOf(b.getAttribute('data-dir'))>=0));return;}
+  if((b=e.target.closest('[data-asset]'))){toggleIn(S.assets,b.getAttribute('data-asset'));save();b.setAttribute('aria-pressed',String(S.assets.indexOf(b.getAttribute('data-asset'))>=0));renderTrans();return;}
+  if((b=e.target.closest('[data-next]'))){if(!S.type)toast('출발역을 고르지 않아 모든 역을 보여 드립니다.');go(+b.getAttribute('data-next'));}
+});
+$('p1').addEventListener('input',function(e){if(e.target.id==='memo'){S.memo=e.target.value;save();}});
+function toggleIn(arr,v){var i=arr.indexOf(v);if(i>=0)arr.splice(i,1);else arr.push(v);}
+
+/* ───────── ② 환승 구간: 스와이프 덱 ───────── */
+var LIST=[],deckEls={};
+function renderDeck(){
+  LIST=deckList();
+  if(S.idx>LIST.length)S.idx=0;
+  var nFit=D.stations.filter(fits).length;
+  var h='<h2 class="h2" id="h2t"><small>② 환승 구간</small>쓸모 있는 역에만 탑승하세요</h2>';
+  h+='<p class="lead">쉽고 짧은 역에서 길고 어려운 역 순서로 이어집니다. 넘기면서 나에게 유용하다고 느낀 역에 <b>탑승</b>을 누르세요.</p>';
+  h+='<div class="deckbar"><span class="seg" role="group" aria-label="보기"><button type="button" data-filter="fit" aria-pressed="'+(S.filter==='fit')+'">내 케이스 '+nFit+'</button><button type="button" data-filter="all" aria-pressed="'+(S.filter==='all')+'">모든 역 '+D.stations.length+'</button></span><span class="cnt">탑승 <b class="num" id="bc">'+S.boarded.length+'</b>곳</span></div>';
+  h+='<div class="minimap" id="mm" role="group" aria-label="역 바로 가기">';
+  LIST.forEach(function(s,i){h+='<button type="button" class="mm'+(S.boarded.indexOf(s.id)>=0?' on':'')+'" data-jump="'+i+'" style="--c:'+TC[s.tier]+'" aria-label="'+(i+1)+'번째 역 '+esc(s.name)+'"><i></i></button>';});
+  h+='<button type="button" class="mm" data-jump="'+LIST.length+'" style="--c:var(--ink)" aria-label="종착역 안내"><i></i></button></div>';
+  h+='<div class="viewport" id="vp" role="region" aria-roledescription="넘기는 카드" aria-label="환승역" tabindex="0"><div class="track" id="track">';
+  LIST.forEach(function(s,i){h+='<div class="slide" role="group" aria-roledescription="역" aria-label="'+(i+1)+' / '+LIST.length+'">'+stationCard(s)+'</div>';});
+  h+='<div class="slide" role="group" aria-label="환승 구간 끝"><div class="st endcard" style="--c:var(--ink)"><h3>환승 구간 끝</h3><p>지금까지 <b class="num" id="bc2">'+S.boarded.length+'</b>곳에 탑승했습니다. 이제 종착역을 고릅니다.</p><button type="button" class="btn btn-p" data-next="3">종착역 고르기 <span aria-hidden="true">→</span></button></div></div>';
+  h+='</div></div>';
+  h+='<div class="decknav"><button type="button" class="btn btn-g" id="prev"><span aria-hidden="true">←</span> 이전</button><span class="pos num" id="pos"></span><button type="button" class="btn btn-p" id="next">다음 <span aria-hidden="true">→</span></button></div>';
+  h+='<p class="swipe-hint">카드를 옆으로 밀거나 ← → 키로도 넘길 수 있습니다.</p>';
+  if(!LIST.length)h='<h2 class="h2" id="h2t"><small>② 환승 구간</small>맞는 역이 없습니다</h2><p class="empty">고른 나이대와 출발역에 맞는 역이 없습니다. 「모든 역」을 눌러 전체를 보세요.</p><div class="go"><button type="button" class="btn btn-p" data-filter="all">모든 역 보기</button></div>';
+  $('p2').innerHTML=h;
+  if(!LIST.length)return;
+  bindDeck();show(S.idx,true);
+}
+function stationCard(s){
+  var t=TIER[s.tier],on=S.boarded.indexOf(s.id)>=0;
+  var h='<article class="st" style="--c:'+TC[s.tier]+'" data-sid="'+s.id+'"><div class="st-top"><span class="tier"><i></i>'+esc(t.name)+' · '+esc(t.line)+'</span>';
+  if(S.type&&fits(s))h+='<span class="fit">내 케이스</span>';
+  if(tooLong(s))h+='<span class="warn">가용 기간보다 길 수 있음</span>';
+  h+='</div><p class="st-k">'+esc(s.kicker)+'</p><h3>'+esc(s.name)+'</h3>';
+  h+='<div class="meta"><span>소요 <b>'+durTxt(s)+'</b></span><span>난이도 '+dotsDiff(s.diff)+'</span></div>';
+  h+='<p class="who"><b>대상</b>'+esc(s.who)+'</p><ul class="core">'+s.core.map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ul>';
+  if(s.widget==='ui')h+=uiWidget();
+  h+='<div class="tip"><p><b>실무 팁</b>'+esc(s.tip)+'</p><p class="ask"><b>상담에서 물어볼 질문</b>'+esc(s.ask)+'</p></div>';
+  h+='<p class="where"><span>창구 · '+esc(s.where)+'</span>'+(s.url?'<a href="'+esc(s.url)+'"'+(/^https?:/.test(s.url)?' target="_blank" rel="noopener"':'')+'>'+(/^https?:/.test(s.url)?'공식 안내 열기 ↗':'자료실에서 보기 →')+'</a>':'')+'</p>';
+  h+='<p class="basis">근거 · '+esc(s.basis)+'</p>';
+  h+='<button type="button" class="board" data-board="'+s.id+'" aria-pressed="'+on+'">'+TICKET+'<span class="off">이 역에 탑승</span><span class="on">탑승 완료 · 다시 누르면 내림</span></button></article>';
+  return h;
+}
+
+/* 구직급여 타임라인 계산기 */
+var UI_DAYS={u50:[120,150,180,210,240],o50:[120,180,210,240,270]};
+var UI_INS=['1년 미만','1~3년','3~5년','5~10년','10년 이상'];
+var UI={g:'u50',ins:2,pay:'',day:30};
+function uiWidget(){
+  var h='<div class="ui" id="ui"><h4>소정급여일수와 조기재취업 절반 지점</h4>';
+  h+='<label class="l">이직 당시 나이</label><div class="row" role="radiogroup" aria-label="이직 당시 나이"><button type="button" class="chip" role="radio" data-ug="u50" aria-checked="'+(UI.g==='u50')+'">50세 미만</button><button type="button" class="chip" role="radio" data-ug="o50" aria-checked="'+(UI.g==='o50')+'">50세 이상·장애인</button></div>';
+  h+='<label class="l">고용보험 가입기간</label><div class="row" role="radiogroup" aria-label="가입기간">';
+  UI_INS.forEach(function(x,i){h+='<button type="button" class="chip" role="radio" data-ui="'+i+'" aria-checked="'+(UI.ins===i)+'">'+x+'</button>';});
+  h+='</div><div class="two"><div><label class="l" for="uiPay">퇴직 전 3개월 월평균 임금(세전, 선택)</label><input type="number" id="uiPay" inputmode="numeric" min="0" step="10000" placeholder="예: 3200000" value="'+esc(UI.pay)+'"></div>';
+  h+='<div><label class="l" for="uiDay">지급 시작 후 며칠째에 재취업한다면? <b class="num" id="uiDayV"></b></label><input type="range" id="uiDay" min="0" max="270" step="1" value="'+UI.day+'"></div></div>';
+  h+='<div id="uiOut"></div><p class="fine">평균임금은 월급 × 3 ÷ 91일로 어림했습니다. 실제 금액은 이직확인서의 임금과 1일 소정근로시간(8시간 미만이면 하한액이 낮아짐)으로 정해집니다. 2026년 1월 1일 이후 이직자 기준이며, 대기기간 7일은 소정급여일수에 들어가지 않습니다.</p></div>';
+  return h;
+}
+function uiCalc(){
+  var o=$('uiOut');if(!o)return;
+  var N=UI_DAYS[UI.g][UI.ins],r=$('uiDay');r.max=N;if(UI.day>N)UI.day=N;r.value=UI.day;$('uiDayV').textContent=UI.day+'일째';
+  var pay=+UI.pay||0,daily=0;
+  if(pay>0){daily=pay*3/91*.6;daily=Math.min(68100,Math.max(66048,daily));}
+  var left=N-UI.day,ok=left*2>=N&&UI.day>0;
+  var h='<div class="out"><div><b class="num">'+N+'일</b><span>소정급여일수</span></div><div><b class="num">'+(daily?won(daily):'-')+'</b><span>하루 예상 금액</span></div><div><b class="num">'+(daily?Math.round(daily*N/10000).toLocaleString('ko-KR')+'만 원':'-')+'</b><span>모두 받으면</span></div></div>';
+  var tot=N+7,w=(7/tot*100).toFixed(2)+'%',half=((7+N/2)/tot*100).toFixed(2)+'%',me=((7+UI.day)/tot*100).toFixed(2)+'%';
+  h+='<div class="tl" style="--w:'+w+';--h:'+half+'" aria-hidden="true"><div class="bar"></div><span class="mk" style="left:'+half+'"></span><span class="tx" style="left:'+half+'">절반 '+(N/2)+'일</span><span class="mk me" style="left:'+me+'"></span></div>';
+  h+='<div class="tl-l"><span>신청·대기 7일</span><span>지급 '+N+'일</span><span>수급기간은 이직 다음 날부터 12개월</span></div>';
+  if(UI.day===0)h+='<p class="res">지급 시작 전(대기기간 중) 취업은 조기재취업수당 대상이 아닙니다. 막대를 움직여 재취업 시점을 정해 보세요.</p>';
+  else if(ok)h+='<p class="res">남은 날 <b class="num">'+left+'일</b>이 절반('+(N/2)+'일) 이상이라 조기재취업수당 요건의 하나를 채웁니다.'+(daily?' 12개월 이상 계속 일하면 약 <b class="num">'+won(daily*left/2)+'</b>을 한 번에 받을 수 있습니다.':' 월평균 임금을 넣으면 예상 금액이 나옵니다.')+'</p>';
+  else h+='<p class="res no">남은 날 <b class="num">'+left+'일</b>이 절반('+(N/2)+'일)보다 적어 조기재취업수당은 받을 수 없습니다. 재취업 시점이 <b class="num">'+Math.floor(N/2)+'일째</b> 이전이어야 합니다.</p>';
+  o.innerHTML=h;
+}
+
+var vp,track,dragging=null,suppress=0,lastIdx=-1;
+function bindDeck(){
+  vp=$('vp');track=$('track');
+  $('prev').onclick=function(){show(S.idx-1);};
+  $('next').onclick=function(){show(S.idx+1);};
+  vp.addEventListener('keydown',function(e){if(e.target.closest('input,textarea'))return;if(e.key==='ArrowRight'){e.preventDefault();show(S.idx+1);}else if(e.key==='ArrowLeft'){e.preventDefault();show(S.idx-1);}});
+  vp.addEventListener('pointerdown',onDown);
+  vp.addEventListener('click',function(e){if(Date.now()<suppress){e.preventDefault();e.stopPropagation();}},true);
+  uiCalc();
+  if(window.ResizeObserver){if(ro)ro.disconnect();ro=new ResizeObserver(function(){fitHeight();});Array.prototype.forEach.call(track.children,function(c){ro.observe(c);});}
+}
+var ro=null;
+function onDown(e){
+  if(e.pointerType==='mouse'&&e.button!==0)return;
+  if(e.target.closest('input,textarea,select,a'))return;
+  dragging={x:e.clientX,y:e.clientY,t:Date.now(),axis:null,id:e.pointerId,dx:0};
+  vp.addEventListener('pointermove',onMove);vp.addEventListener('pointerup',onUp);vp.addEventListener('pointercancel',onUp);
+}
+function onMove(e){
+  if(!dragging||e.pointerId!==dragging.id)return;
+  var dx=e.clientX-dragging.x,dy=e.clientY-dragging.y;
+  if(!dragging.axis){
+    if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
+    dragging.axis=Math.abs(dx)>Math.abs(dy)*1.15?'x':'y';
+    if(dragging.axis==='y'){end();return;}
+    try{vp.setPointerCapture(e.pointerId);}catch(_){}
+    track.classList.add('drag');
+  }
+  var n=LIST.length;if((S.idx===0&&dx>0)||(S.idx===n&&dx<0))dx*=.35;
+  dragging.dx=dx;track.style.transform='translate3d(calc('+(-S.idx*100)+'% + '+dx+'px),0,0)';
+  e.preventDefault();
+}
+function onUp(e){
+  if(!dragging)return;
+  var g=dragging;end();
+  if(g.axis!=='x')return;
+  track.classList.remove('drag');
+  var v=g.dx/Math.max(1,Date.now()-g.t),th=Math.min(90,vp.clientWidth*.18);
+  suppress=Date.now()+350;
+  if(g.dx<-th||v<-.45)show(S.idx+1);else if(g.dx>th||v>.45)show(S.idx-1);else show(S.idx);
+}
+function end(){vp.removeEventListener('pointermove',onMove);vp.removeEventListener('pointerup',onUp);vp.removeEventListener('pointercancel',onUp);dragging=null;}
+function show(i,instant){
+  var n=LIST.length;i=Math.max(0,Math.min(n,i));S.idx=i;save();
+  if(instant)track.classList.add('drag');
+  track.style.transform='translate3d('+(-i*100)+'%,0,0)';
+  if(instant){track.offsetWidth;track.classList.remove('drag');}
+  var sl=track.children;for(var k=0;k<sl.length;k++){if(k===i)sl[k].removeAttribute('inert');else sl[k].setAttribute('inert','');}
+  fitHeight();
+  $('pos').textContent=i<n?(i+1)+' / '+n:'끝';
+  $('prev').disabled=i===0;$('prev').style.opacity=i===0?.45:1;
+  $('next').innerHTML=i>=n?'종착역으로 <span aria-hidden="true">→</span>':'다음 <span aria-hidden="true">→</span>';
+  $('mm').querySelectorAll('[data-jump]').forEach(function(b){if(+b.getAttribute('data-jump')===i)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');});
+  if(i>=n)$('next').onclick=function(){go(3);};else $('next').onclick=function(){show(S.idx+1);};
+  if(lastIdx!==-1&&lastIdx!==i){var r=vp.getBoundingClientRect();if(r.top<-40)window.scrollTo({top:scrollY+r.top-90,behavior:'smooth'});}
+  lastIdx=i;
+}
+function fitHeight(){if(!vp)return;var c=track.children[S.idx];if(c)vp.style.height=c.offsetHeight+'px';}
+window.addEventListener('resize',function(){if(S.step===2)fitHeight();else if(S.step===4)layoutMap();});
+$('p2').addEventListener('click',function(e){
+  var b;
+  if((b=e.target.closest('[data-board]'))){var id=b.getAttribute('data-board');toggleIn(S.boarded,id);save();var on=S.boarded.indexOf(id)>=0;
+    b.setAttribute('aria-pressed',String(on));$('bc').textContent=S.boarded.length;var b2=$('bc2');if(b2)b2.textContent=S.boarded.length;
+    var li=LIST.findIndex?LIST.findIndex(function(s){return s.id===id;}):-1;var m=$('mm').querySelector('[data-jump="'+li+'"]');if(m)m.classList.toggle('on',on);
+    if(on)toast(BY[id].name+'에 탑승했습니다.');return;}
+  if((b=e.target.closest('[data-filter]'))){var f=b.getAttribute('data-filter');if(S.filter!==f){S.filter=f;S.idx=0;lastIdx=-1;save();renderDeck();}return;}
+  if((b=e.target.closest('[data-jump]'))){show(+b.getAttribute('data-jump'));return;}
+  if((b=e.target.closest('[data-next]'))){go(+b.getAttribute('data-next'));return;}
+  if((b=e.target.closest('[data-ug]'))){UI.g=b.getAttribute('data-ug');b.parentNode.querySelectorAll('[data-ug]').forEach(function(x){x.setAttribute('aria-checked',String(x===b));});uiCalc();fitHeight();return;}
+  if((b=e.target.closest('[data-ui]'))){UI.ins=+b.getAttribute('data-ui');b.parentNode.querySelectorAll('[data-ui]').forEach(function(x){x.setAttribute('aria-checked',String(x===b));});uiCalc();fitHeight();return;}
+});
+$('p2').addEventListener('input',function(e){
+  if(e.target.id==='uiPay'){UI.pay=e.target.value;uiCalc();fitHeight();}
+  else if(e.target.id==='uiDay'){UI.day=+e.target.value;uiCalc();}
+});
+
+/* ───────── ③ 종착역 ───────── */
+function destScore(t){var s=0;t.dirs.forEach(function(x){if(S.dirs.indexOf(x)>=0)s+=2;});t.goodWith.forEach(function(x){if(S.boarded.indexOf(x)>=0)s+=1;});return s;}
+function renderDest(){
+  var ty=TYPE[S.type],best='',bs=0;
+  D.dests.forEach(function(t){var sc=destScore(t);if(sc>bs){bs=sc;best=t.id;}});
+  var h='<h2 class="h2" id="h3t"><small>③ 종착역</small>어디에서 내릴까요?</h2><p class="lead">취업·전직 목표를 세 갈래 가운데 하나로 연결합니다. 고른 방향과 탑승한 역을 보고 가까운 종착역에 표시를 달았습니다.</p>';
+  h+='<div class="dests" role="radiogroup" aria-label="종착역">';
+  D.dests.forEach(function(t){
+    h+='<button type="button" class="dest" role="radio" data-dest="'+t.id+'" aria-checked="'+(S.dest===t.id)+'" style="--c:'+DC[t.id]+'">'+(best===t.id?'<span class="rec">가까운 종착역</span>':'')+'<span class="dn"><i></i><b>'+esc(t.name)+'</b></span><span class="sb">'+esc(t.sub)+'</span>'+(ty?'<span class="tl2">'+esc(ty.name)+' → '+esc(ty.dest[t.id])+'</span>':'')+'<p>'+esc(t.desc)+'</p></button>';});
+  h+='</div><div id="dd"></div>';
+  h+='<div class="go"><button type="button" class="btn btn-g" data-go2="2"><span aria-hidden="true">←</span> 환승 구간</button><button type="button" class="btn btn-p" data-go2="4">노선도 완성하기 <span aria-hidden="true">→</span></button></div>';
+  $('p3').innerHTML=h;renderDD();
+}
+function renderDD(){
+  var el=$('dd');if(!el)return;var t=DEST[S.dest];
+  if(!t){el.innerHTML='<p class="empty" style="margin-top:16px">종착역을 고르면 예시 목적지, 출발 전 확인할 것, 함께 타면 좋은 역이 나옵니다.</p>';return;}
+  var h='<div class="dd" style="--c:'+DC[t.id]+'"><h3>'+esc(t.name)+' · 목적지 정하기</h3><div class="cols"><div>';
+  h+='<p class="q" style="margin-top:4px">예시 목적지 <small>누르면 아래 칸에 들어갑니다</small></p><div class="chips ex">'+t.examples.map(function(x){return '<button type="button" class="chip" data-ex="'+esc(x)+'" aria-pressed="'+(S.target===x)+'">'+esc(x)+'</button>';}).join('')+'</div>';
+  h+='<p class="q">나의 목표 직무·자리</p><input class="inp" id="target" maxlength="80" placeholder="예: 의료기기 회사 품질보증 경력직" value="'+esc(S.target)+'">';
+  h+='</div><div><p class="q" style="margin-top:4px">출발 전 확인할 것</p><ul class="cl">'+t.checks.map(function(x,i){var k=t.id+':'+i;return '<li><button type="button" role="checkbox" data-chk="'+k+'" aria-checked="'+(S.checks.indexOf(k)>=0)+'"><i>'+CHECK+'</i><span>'+esc(x)+'</span></button></li>';}).join('')+'</ul>';
+  h+='<p class="q">함께 타면 좋은 역 <small>누르면 바로 탑승·하차</small></p><div class="gw">'+t.goodWith.filter(function(id){return BY[id];}).map(function(id){var s=BY[id];return '<button type="button" data-gw="'+id+'" aria-pressed="'+(S.boarded.indexOf(id)>=0)+'" style="--c2:'+TC[s.tier]+'"><i></i>'+esc(s.name)+'</button>';}).join('')+'</div>';
+  h+='</div></div></div>';
+  el.innerHTML=h;
+}
+$('p3').addEventListener('click',function(e){
+  var b;
+  if((b=e.target.closest('[data-dest]'))){S.dest=b.getAttribute('data-dest');save();$('p3').querySelectorAll('[data-dest]').forEach(function(x){x.setAttribute('aria-checked',String(x===b));});renderDD();return;}
+  if((b=e.target.closest('[data-ex]'))){S.target=b.getAttribute('data-ex');save();renderDD();return;}
+  if((b=e.target.closest('[data-chk]'))){toggleIn(S.checks,b.getAttribute('data-chk'));save();b.setAttribute('aria-checked',String(S.checks.indexOf(b.getAttribute('data-chk'))>=0));return;}
+  if((b=e.target.closest('[data-gw]'))){var id=b.getAttribute('data-gw');toggleIn(S.boarded,id);save();b.setAttribute('aria-pressed',String(S.boarded.indexOf(id)>=0));return;}
+  if((b=e.target.closest('[data-go2]'))){var n=+b.getAttribute('data-go2');if(n===4&&!S.dest)toast('종착역을 고르지 않아 목적지를 비워 둡니다.');go(n);}
+});
+$('p3').addEventListener('input',function(e){if(e.target.id==='target'){S.target=e.target.value;save();$('p3').querySelectorAll('[data-ex]').forEach(function(x){x.setAttribute('aria-pressed',String(x.getAttribute('data-ex')===S.target));});}});
+
+/* ───────── ④ 나의 노선도 ───────── */
+function boardedSorted(){return S.boarded.map(function(id){return BY[id];}).filter(Boolean).sort(function(a,b){return TIERS_ORDER[a.tier]-TIERS_ORDER[b.tier]||D.stations.indexOf(a)-D.stations.indexOf(b);});}
+function estimate(list){var mn=0,mx=0;['t1','t2','t3'].forEach(function(t){var a=list.filter(function(s){return s.tier===t;});if(!a.length)return;mn+=Math.max.apply(null,a.map(function(s){return s.dur[0];}));mx+=Math.max.apply(null,a.map(function(s){return s.dur[1];}));});return [mn,mx];}
+function wk(x){return x<=0?'바로':x<9?x+'주':x<52?Math.round(x/4.33)+'개월':(Math.round(x/52*10)/10)+'년';}
+function nodes(){
+  var ty=TYPE[S.type],t=DEST[S.dest],list=boardedSorted();
+  var a=[{kind:'start',tg:'출발역',name:ty?ty.name:'출발역 미선택',sub:S.assets.length?ASSET[S.assets[0]].to:(S.memo||'가진 경험에서 출발'),c:'var(--ink)'}];
+  list.forEach(function(s){a.push({kind:'st',id:s.id,tg:TIER[s.tier].name,name:s.name,sub:durTxt(s)+' · '+s.where.split(',')[0],c:TC[s.tier],where:s.where});});
+  a.push({kind:'end',tg:'종착역',name:t?(ty?ty.dest[t.id]:t.name):'종착역 미선택',sub:S.target||(t?t.sub:'목표를 정하면 여기에 표시됩니다'),c:t?DC[t.id]:'var(--line-2)'});
+  return a;
+}
+function renderMap(){
+  var ty=TYPE[S.type],t=DEST[S.dest],list=boardedSorted(),est=estimate(list),per=PER[S.period];
+  var h='<h2 class="h2" id="h4t"><small>④ 나의 노선도</small>완성된 커리어 노선도</h2><p class="lead">탑승한 역만 뽑아 쉬운 역부터 순서대로 이었습니다. 역을 바꾸려면 위의 단계를 눌러 다시 고르면 됩니다.</p>';
+  h+='<div class="ticket" id="ticket"><div class="tk-h"><div><div class="k">FROM · 출발</div><div class="v">'+esc(ty?ty.name:'출발역 미선택')+'</div></div><div class="ar" aria-hidden="true">→</div><div class="to"><div class="k">TO · 도착</div><div class="v">'+esc(t?(S.target||t.name):'종착역 미선택')+'</div></div></div>';
+  h+='<div class="tk-perf" aria-hidden="true"></div><div class="tk-m"><span>환승 <b class="num">'+list.length+'</b>곳</span>';
+  if(list.length)h+='<span>예상 소요 <b class="num">'+wk(est[0])+' ~ '+wk(est[1])+'</b></span>';
+  if(per)h+='<span>가용 기간 <b>'+esc(per.label)+'</b>'+(list.length&&est[0]>per.weeks?' <b class="over">· 빠듯함</b>':'')+'</span>';
+  if(S.age)h+='<span>나이대 <b>'+esc(D.ages.filter(function(x){return x.id===S.age;})[0].label)+'</b></span>';
+  if(S.dirs.length)h+='<span>방향 <b>'+S.dirs.map(function(x){return D.directions.filter(function(y){return y.id===x;})[0].label;}).join(' · ')+'</b></span>';
+  h+=''+(list.length?'<div class="stamp" aria-hidden="true">탑승<br>확인<br>'+new Date().toISOString().slice(5,10).replace('-','.')+'</div>':'')+'</div><div class="map" id="map"></div></div>';
+  if(!list.length)h+='<p class="empty" style="margin-top:12px">아직 탑승한 역이 없습니다. 환승 구간에서 유용한 역에 탑승하면 노선이 그려집니다. <button type="button" class="btn btn-g" data-go3="2" style="min-height:40px;margin-top:8px">환승 구간으로</button></p>';
+  /* 메모 */
+  h+='<div class="notes">';
+  if(S.assets.length||S.memo){h+='<div class="nt"><h4>출발역의 자산 · 직무 언어로</h4><ul>'+(S.memo?'<li><b>내 한 줄</b> '+esc(S.memo)+'</li>':'')+S.assets.map(function(id){var a=ASSET[id];return '<li><b>'+esc(a.label)+'</b> → '+esc(a.to)+'</li>';}).join('')+'</ul></div>';}
+  if(list.length){h+='<div class="nt"><h4>다음 할 일 · 먼저 들를 창구</h4><ul>'+list.slice(0,4).map(function(s){return '<li style="--c:'+TC[s.tier]+'"><b>'+esc(s.name)+'</b> · '+esc(s.where)+'</li>';}).join('')+'</ul></div>';
+    h+='<div class="nt"><h4>상담에서 이어 갈 질문</h4><ul>'+list.slice(0,5).map(function(s){return '<li style="--c:'+TC[s.tier]+'">'+esc(s.ask)+'</li>';}).join('')+'</ul></div>';}
+  if(t){h+='<div class="nt" style="--c:'+DC[t.id]+'"><h4>'+esc(t.name)+' · 출발 전 확인</h4><ul>'+t.checks.map(function(x,i){var on=S.checks.indexOf(t.id+':'+i)>=0;return '<li>'+(on?'<b>완료</b> ':'')+esc(x)+'</li>';}).join('')+'</ul></div>';}
+  h+='</div>';
+  h+='<div class="actions"><button type="button" class="btn btn-p" data-act="copy">요약 복사</button><button type="button" class="btn btn-g" data-act="txt">텍스트 파일로 저장</button><button type="button" class="btn btn-g" data-act="print">인쇄·PDF</button><button type="button" class="btn btn-g" data-act="reset">처음부터 다시</button></div>';
+  h+='<p class="foot" style="margin-top:20px">이 노선도는 정답이 아니라 상담 연습과 진로 설계를 위한 참고 자료입니다. 소요 기간은 같은 구간의 역을 함께 진행한다고 보고 어림한 값입니다. 제도 요건은 '+esc(D.checked)+' 확인 기준이며, 실제 대상 여부는 고용센터(1350)와 각 기관 공고로 확인해 주세요.</p>';
+  $('p4').innerHTML=h;layoutMap();
+}
+var mq=matchMedia('(min-width:768px)'),mapW=0;
+function layoutMap(){
+  var el=$('map');if(!el)return;var a=nodes();
+  if(!mq.matches){
+    el.style.height='';mapW=0;
+    el.innerHTML='<ol class="vmap">'+a.map(function(n,i){var nx=a[i+1];return '<li class="vn'+(n.kind!=='st'?' big':'')+(n.kind==='start'?' start':'')+'" style="--c:'+n.c+';--cn:'+(nx?nx.c:'transparent')+'"><span class="vd"></span><span class="vt"><span class="tg2">'+esc(n.tg)+'</span><b>'+esc(n.name)+'</b><small>'+esc(n.sub)+'</small></span></li>';}).join('')+'</ol>';
+    return;
+  }
+  var W=el.clientWidth-36;if(W<=0)return;
+  var cols=Math.max(3,Math.min(6,Math.floor(W/170))),cw=W/cols;
+  /* 1차: 이름표를 그려 높이를 잰다 */
+  var html='';a.forEach(function(n,i){html+='<div class="hn" data-i="'+i+'" style="width:'+(cw*.76)+'px;--c:'+n.c+'"><span class="tg2">'+esc(n.tg)+'</span><b>'+esc(n.name)+'</b><small>'+esc(n.sub)+'</small></div>';});
+  el.innerHTML=html;
+  var lbs=el.querySelectorAll('.hn'),mh=0;lbs.forEach(function(x){mh=Math.max(mh,x.offsetHeight);});
+  var top=26,RH=top+26+mh+30,rows=Math.ceil(a.length/cols);
+  var P=a.map(function(n,i){var r=Math.floor(i/cols),k=i%cols,c=r%2===0?k:cols-1-k;return {x:18+(c+.5)*cw,y:top+r*RH,r:r,c:c};});
+  var svg='<svg width="'+(W+36)+'" height="'+(rows*RH)+'" aria-hidden="true">';
+  for(var i=0;i<a.length-1;i++){
+    var p=P[i],q=P[i+1],col=a[i+1].c,dpath;
+    if(p.r===q.r)dpath='M'+p.x+' '+p.y+'H'+q.x;
+    else{var side=p.c===cols-1?1:-1,o1=cw*.18,o2=cw*.26,x1=p.x+side*o1;dpath='M'+p.x+' '+p.y+'H'+x1+'A'+o2+' '+(RH/2)+' 0 0 '+(side>0?1:0)+' '+x1+' '+q.y+'H'+q.x;}
+    svg+='<path d="'+dpath+'" fill="none" stroke="'+col+'" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>';
+  }
+  P.forEach(function(p,i){var n=a[i],big=n.kind!=='st';
+    if(n.kind==='end')svg+='<circle cx="'+p.x+'" cy="'+p.y+'" r="15" fill="var(--node)" stroke="'+n.c+'" stroke-width="5"/><circle cx="'+p.x+'" cy="'+p.y+'" r="6" fill="'+n.c+'"/>';
+    else svg+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(big?14:11)+'" fill="var(--node)" stroke="'+n.c+'" stroke-width="'+(big?6:5)+'"/>';
+  });
+  svg+='</svg>';
+  el.insertAdjacentHTML('afterbegin',svg);
+  lbs.forEach(function(x,i){x.style.left=(P[i].x-cw*.38)+'px';x.style.top=(P[i].y+24)+'px';});
+  el.style.height=(rows*RH-8)+'px';
+}
+if(d.fonts&&d.fonts.ready)d.fonts.ready.then(function(){if(S.step===4)layoutMap();else if(S.step===2)fitHeight();});
+if(mq.addEventListener)mq.addEventListener('change',function(){if(S.step===4)layoutMap();});
+
+function summaryText(){
+  var ty=TYPE[S.type],t=DEST[S.dest],list=boardedSorted(),est=estimate(list),per=PER[S.period];
+  var L=['[환승노선도] 나의 커리어 노선도 · '+new Date().toLocaleDateString('ko-KR'),''];
+  L.push('■ 출발역: '+(ty?ty.name:'미선택')+(S.age?' · '+D.ages.filter(function(x){return x.id===S.age;})[0].label:'')+(per?' · 가용 기간 '+per.label:''));
+  if(S.dirs.length)L.push('  바라는 방향: '+S.dirs.map(function(x){return D.directions.filter(function(y){return y.id===x;})[0].label;}).join(', '));
+  if(S.memo)L.push('  내 한 줄: '+S.memo);
+  S.assets.forEach(function(id){var a=ASSET[id];L.push('  · '+a.label+' → '+a.to+' (이어질 직무: '+a.jobs.join(', ')+')');});
+  L.push('','■ 환승 구간 ('+list.length+'곳'+(list.length?', 예상 '+wk(est[0])+'~'+wk(est[1]):'')+')');
+  list.forEach(function(s,i){L.push('  '+(i+1)+'. ['+TIER[s.tier].name+'] '+s.name+' · '+durTxt(s));L.push('     창구: '+s.where+(s.url&&/^https?:/.test(s.url)?' · '+s.url:''));L.push('     물어볼 질문: '+s.ask);});
+  L.push('','■ 종착역: '+(t?t.name+' ('+t.sub+')'+(ty?' · '+ty.dest[t.id]:''):'미선택'));
+  if(S.target)L.push('  목표: '+S.target);
+  if(t)t.checks.forEach(function(x,i){L.push('  '+(S.checks.indexOf(t.id+':'+i)>=0?'[v] ':'[ ] ')+x);});
+  L.push('','※ 이 노선도는 정답이 아닌 상담 연습·진로 설계 참고 자료입니다. 제도 요건은 '+D.checked+' 확인 기준이며, 고용센터(1350)와 각 기관 공고로 다시 확인하세요.');
+  L.push('직업상담 통합 자료실 · https://ccttsi.github.io/jobcounsel/transit/');
+  return L.join('\n');
+}
+$('p4').addEventListener('click',function(e){
+  var b=e.target.closest('[data-act],[data-go3]');if(!b)return;
+  if(b.hasAttribute('data-go3')){go(+b.getAttribute('data-go3'));return;}
+  var a=b.getAttribute('data-act');
+  if(a==='copy'){var tx=summaryText();
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(tx).then(function(){toast('요약을 복사했습니다.');},fallback);else fallback();
+    function fallback(){var ta=d.createElement('textarea');ta.value=tx;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';d.body.appendChild(ta);ta.select();try{d.execCommand('copy');toast('요약을 복사했습니다.');}catch(_){toast('복사하지 못했습니다. 텍스트 파일로 저장해 주세요.');}d.body.removeChild(ta);}
+  }else if(a==='txt'){var bl=new Blob(['﻿'+summaryText()],{type:'text/plain;charset=utf-8'}),u=URL.createObjectURL(bl),l=d.createElement('a');l.href=u;l.download='나의-커리어-노선도.txt';d.body.appendChild(l);l.click();setTimeout(function(){URL.revokeObjectURL(u);l.remove();},500);toast('텍스트 파일을 저장했습니다.');}
+  else if(a==='print'){window.print();}
+  else if(a==='reset'){if(!confirmReset())return;S={step:1,type:'',age:'',period:'',dirs:[],assets:[],memo:'',filter:'fit',idx:0,boarded:[],dest:'',target:'',checks:[]};try{localStorage.removeItem(KEY);}catch(_){}lastIdx=-1;go(1);toast('처음부터 다시 시작합니다.');}
+});
+var resetArm=0;function confirmReset(){if(Date.now()<resetArm)return true;resetArm=Date.now()+3000;toast('한 번 더 누르면 입력한 내용을 모두 지웁니다.');return false;}
+})();
+</script>
+<script src="../assets/marker.js" defer></script>
+<script>window.JC_FS_SKIP = '.stamp, .rail .dot, .tl .tx';</script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
