@@ -42,7 +42,8 @@
   prefs.penCustom = prefs.penCustom || '#c4a1ff'; prefs.paperCustom = prefs.paperCustom || '#f6e0b5';
   prefs.hidden = !!prefs.hidden;
   function commit() { save(KEY, data); }
-  var commitT; function commitSoon() { clearTimeout(commitT); commitT = setTimeout(commit, 600); }
+  var commitT = null; function commitSoon() { clearTimeout(commitT); commitT = setTimeout(function () { commitT = null; commit(); }, 600); }
+  function flush() { if (commitT) { clearTimeout(commitT); commitT = null; commit(); } }
   function commitPrefs() { save(PKEY, prefs); }
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 
@@ -397,7 +398,6 @@
 
   function build() {
     uiHost = d.createElement('div'); uiHost.id = 'jc-marker-ui';
-    uiHost.style.cssText = 'position:static!important;all:initial;';
     var s = uiHost.attachShadow({ mode: 'open' });
     s.innerHTML = '<style>' + CSS_UI + '</style>' +
       '<div class="pill" id="pill" hidden role="status"></div>' +
@@ -408,11 +408,11 @@
     ['pill', 'pop', 'toast', 'panel', 'fab'].forEach(function (k) { ui[k] = s.getElementById(k); });
 
     layerHost = d.createElement('div'); layerHost.id = 'jc-marker-notes';
-    layerHost.style.cssText = 'all:initial;position:absolute!important;left:0!important;top:0!important;width:0!important;height:0!important;overflow:visible!important;z-index:2147482000!important;pointer-events:none';
+    layerHost.style.cssText = 'position:absolute!important;left:0!important;top:0!important;width:0!important;height:0!important;overflow:visible!important;z-index:2147482000!important;pointer-events:none';
     var ls = layerHost.attachShadow({ mode: 'open' });
     ls.innerHTML = '<style>' + CSS_NOTES + '.wrap>*{pointer-events:auto}</style><div class="wrap" id="notes"></div>';
     notesEl = ls.getElementById('notes');
-    uiHost.style.cssText = 'all:initial;position:fixed!important;z-index:2147483000!important;left:0;top:0;width:0;height:0;overflow:visible';
+    uiHost.style.cssText = 'position:fixed!important;z-index:2147483000!important;left:0;top:0;width:0;height:0;overflow:visible';
     d.body.appendChild(layerHost); d.body.appendChild(uiHost);
     syncTheme();
     wire(s, ls);
@@ -552,7 +552,7 @@
     ls.addEventListener('click', function (e) {
       var b = e.target.closest('[data-act]'); if (!b) return;
       var id = b.closest('.pn').getAttribute('data-id'), a = b.getAttribute('data-act'), it = byId(id); if (!it) return;
-      if (a === 'toggle') { openNote = openNote === id ? null : id; if (openNote === null && !(it.text || '').trim()) { remove(id); return; } placeNotes(); if (openNote) setTimeout(function () { var ta = notesEl.querySelector('[data-id="' + id + '"] textarea'); if (ta) ta.focus(); }, 20); }
+      if (a === 'toggle') { flush(); openNote = openNote === id ? null : id; if (openNote === null && !(it.text || '').trim()) { remove(id); return; } placeNotes(); if (openNote) setTimeout(function () { var ta = notesEl.querySelector('[data-id="' + id + '"] textarea'); if (ta) ta.focus(); }, 20); }
       else if (a === 'ncolor') { it.color = b.getAttribute('data-c'); it.u = Date.now(); commit(); placeNotes(); renderList(); }
       else if (a === 'ndel') { remove(id); toast('포스트잇을 뗐어요.'); }
     });
@@ -561,7 +561,10 @@
       var id = e.target.closest('.pn').getAttribute('data-id'), it = byId(id); if (!it) return;
       it.text = e.target.value; it.u = Date.now(); commitSoon(); renderList();
     });
-    ls.addEventListener('keydown', function (e) { if (e.key === 'Escape') { openNote = null; placeNotes(); } e.stopPropagation(); });
+    ls.addEventListener('focusout', flush);
+    window.addEventListener('pagehide', flush);
+    d.addEventListener('visibilitychange', function () { if (d.hidden) flush(); });
+    ls.addEventListener('keydown', function (e) { if (e.key === 'Escape') { flush(); openNote = null; placeNotes(); } e.stopPropagation(); });
     ls.addEventListener('keyup', function (e) { e.stopPropagation(); });
     ls.addEventListener('keypress', function (e) { e.stopPropagation(); });
 
@@ -574,7 +577,7 @@
       if (isOurs(e)) return;
       if (mode === 'note') { e.preventDefault(); e.stopPropagation(); addNoteAt(e.clientX, e.clientY); setMode('off'); return; }
       if (popId) { hidePop(); }
-      if (openNote && !isOurs(e)) { var o = byId(openNote); openNote = null; if (o && !(o.text || '').trim()) remove(o.id); else placeNotes(); }
+      if (openNote && !isOurs(e)) { flush(); var o = byId(openNote); openNote = null; if (o && !(o.text || '').trim()) remove(o.id); else placeNotes(); }
       if (mode === 'pen') return;
       var s2 = getSelection && getSelection(); if (s2 && !s2.isCollapsed) return;
       var tgt = e.target.closest && e.target.closest('a,button,input,select,textarea,label,summary,[role=button],[onclick]');

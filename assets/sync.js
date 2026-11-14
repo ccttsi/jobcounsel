@@ -9,8 +9,8 @@
   if (window.JCSync) return;
 
   var CFG = window.JC_SYNC_CONFIG || {
-    url: '',   // 예: https://xxxx.supabase.co
-    key: ''    // anon 또는 publishable 키 (공개용)
+    url: 'https://vzxwdfswlolhcluljkgi.supabase.co',
+    key: 'sb_publishable_1qTUCjJRWlAvBTsW6MDwUw_RfgxMsxW'   // 공개용 키(사이트에 드러나도 되는 값). secret/service_role 키는 절대 넣지 않는다
   };
   var SYNC_RE = /^(jc-marks:.{0,180}|jc-marker-prefs|jc-archive-visited|jc-theme|jobwiki-2026|kua-wiki-page)$/;
   var META = 'jc-sync-meta', SESS = 'jc-sync-session';
@@ -77,6 +77,7 @@
     busy = true;
     return rpc('jc_pull', { p_token: sess.token }).then(function (r) {
       if (r.error === 'session') { expire(); return; }
+      if (typeof r.admin === 'boolean' && sess.admin !== r.admin) { sess.admin = r.admin; writeJ(SESS, sess); }
       var server = (r.data && r.data.keys) || {}, meta = readJ(META, {}), out = {}, changed = [], now = Date.now();
       var keys = {}; Object.keys(server).forEach(function (k) { keys[k] = 1; }); syncKeysLocal().forEach(function (k) { keys[k] = 1; }); Object.keys(dirty).forEach(function (k) { keys[k] = 1; });
       Object.keys(keys).forEach(function (k) {
@@ -121,6 +122,7 @@
     bad_username: '아이디는 영문 소문자·숫자·밑줄(_)로 4~20자예요.',
     bad_password: '비밀번호는 8자 이상(72자 이하)이어야 해요.',
     taken: '이미 쓰고 있는 아이디예요. 다른 아이디를 골라 주세요.',
+    reserved: '운영용으로 남겨 둔 아이디예요. 다른 아이디를 골라 주세요.',
     bad_login: '아이디 또는 비밀번호가 맞지 않아요.',
     locked: '비밀번호를 여러 번 틀려서 15분 동안 잠겼어요. 잠시 뒤 다시 시도해 주세요.',
     session: '로그인이 만료됐어요. 다시 로그인해 주세요.',
@@ -169,6 +171,13 @@
     'details{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}',
     'summary{cursor:pointer;min-height:40px;display:flex;align-items:center;font-size:14px;font-weight:650;color:var(--muted)}',
     '.foot{margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6}',
+    '.adm{position:relative;margin-top:12px;padding:14px;border-radius:14px;border:1px solid color-mix(in srgb,#b4532a 45%,var(--line));background:color-mix(in srgb,#f4c996 18%,var(--panel))}',
+    ':host([data-dark]) .adm{border-color:rgba(251,191,36,.45);background:rgba(251,191,36,.07)}',
+    '.adm-hd{display:flex;align-items:center;justify-content:space-between}',
+    '.adm-hd b{font-size:12.5px;font-weight:800;letter-spacing:.04em;color:#b4532a}:host([data-dark]) .adm-hd b{color:#fbbf24}',
+    '.adm-re{min-height:36px;padding:0 10px;border-radius:9px;font-size:12.5px;font-weight:650;color:var(--muted)}.adm-re:hover{background:var(--soft)}',
+    '.adm-n{font-size:15px;font-weight:650;margin-top:2px}.adm-n span{font-size:34px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin-right:2px}',
+    '.adm-sub{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:2px}',
     '.foot a{color:var(--acc)}',
     '@media (prefers-reduced-motion:reduce){*{animation:none!important}}'
   ].join('\n');
@@ -185,6 +194,7 @@
     if (sess) {
       body = '<h2>내 계정</h2><p class="sub">이 기기의 학습 기록과 메모가 계정과 연동되고 있어요.</p>' +
         '<div class="who"><span class="av" aria-hidden="true">' + esc(sess.username.charAt(0).toUpperCase()) + '</span><div><b>' + esc(sess.username) + '</b><span>' + (status.err ? esc(status.err) : ago(status.at || sess.last)) + '</span></div></div>' +
+        (sess.admin ? adminCard() : '') +
         '<div class="row"><button class="btn" data-act="now">지금 연동하기</button><button class="btn" data-act="logout">로그아웃</button></div>' +
         '<p class="msg' + (msg && msg.ok ? ' ok' : '') + '" role="status">' + esc(msg ? msg.t : '') + '</p>' +
         '<details><summary>비밀번호 바꾸기</summary><form data-form="pw"><label class="f">지금 비밀번호<input type="password" name="old" autocomplete="current-password" required></label>' +
@@ -206,6 +216,24 @@
     sr.querySelector('.box').innerHTML = '<span class="tape" aria-hidden="true"></span><button class="x" data-act="close" aria-label="닫기">×</button>' + body +
       '<p class="foot">비밀번호는 되돌릴 수 없는 방식으로 암호화해 저장해요. <a href="' + esc(hubURL()) + '#privacy">개인정보와 보안 안내</a></p>';
   }
+  var stats = null, statsBusy = false;
+  function adminCard() {
+    if (!stats && !statsBusy) loadStats();
+    var s = stats;
+    return '<div class="adm"><div class="adm-hd"><b>관리자</b><button class="adm-re" data-act="stats" aria-label="가입자 수 새로 고침">새로 고침</button></div>' +
+      (s && !s.error ? '<p class="adm-n"><span>' + s.users.toLocaleString('ko-KR') + '</span>개</p><p class="adm-sub">가입된 아이디 수(관리자 포함) · 일반 회원 ' + s.members.toLocaleString('ko-KR') + ' · 최근 7일 가입 ' + s.last7.toLocaleString('ko-KR') + '</p>'
+        : '<p class="adm-sub">' + (s && s.error ? '가입자 수를 불러오지 못했어요.' : '불러오는 중…') + '</p>') +
+      '<p class="adm-sub">개별 아이디와 기록은 사이트에서 보여 주지 않아요.</p></div>';
+  }
+  function loadStats() {
+    if (!sess || statsBusy) return; statsBusy = true;
+    rpc('jc_admin_stats', { p_token: sess.token }).then(function (r) {
+      statsBusy = false;
+      if (r.error === 'forbidden') { sess.admin = false; writeJ(SESS, sess); stats = null; render(); return; }
+      if (r.error === 'session') { expire(); return; }
+      stats = r; render();
+    }).catch(function () { statsBusy = false; stats = { error: 'net' }; render(); });
+  }
   var lastFocus = null;
   function open(v) {
     if (!host) build();
@@ -217,7 +245,7 @@
   function sync2theme() { if (host) { if (isDark()) host.setAttribute('data-dark', ''); else host.removeAttribute('data-dark'); } }
   function build() {
     host = d.createElement('div'); host.id = 'jc-sync-ui'; host.hidden = true;
-    host.style.cssText = 'all:initial;position:fixed!important;z-index:2147483600!important;left:0;top:0;width:0;height:0';
+    host.style.cssText = 'position:fixed!important;z-index:2147483600!important;left:0;top:0;width:0;height:0';
     sr = host.attachShadow({ mode: 'open' });
     sr.innerHTML = '<style>' + CSS + '</style><div class="ov" id="ov"><div class="box" role="dialog" aria-modal="true" aria-label="로그인"></div></div>';
     d.body.appendChild(host);
@@ -228,6 +256,7 @@
       var b = e.target.closest('[data-act]'); if (!b) return; var a = b.getAttribute('data-act');
       if (a === 'close') close();
       else if (a === 'tab') { view = b.getAttribute('data-v'); msg = ''; render(); var i = sr.querySelector('input'); if (i) i.focus(); }
+      else if (a === 'stats') { stats = null; render(); }
       else if (a === 'now') { msg = { t: '연동하는 중…', ok: true }; render(); sync('manual').then(function () { msg = status.err ? { t: status.err } : { t: '연동했어요.', ok: true }; render(); }); }
       else if (a === 'logout') {
         var tok = sess.token; pushNow();
@@ -246,7 +275,7 @@
         rpc(kind === 'signup' ? 'jc_signup' : 'jc_login', { p_username: id, p_password: pw }).then(function (r) {
           working = false;
           if (r.error) return fail(r.error);
-          sess = { token: r.token, username: r.username, last: 0 }; writeJ(SESS, sess);
+          sess = { token: r.token, username: r.username, admin: !!r.admin, last: 0 }; writeJ(SESS, sess); stats = null;
           msg = { t: kind === 'signup' ? '계정을 만들었어요. 이 기기의 기록을 올리는 중…' : '로그인했어요. 기록을 맞추는 중…', ok: true }; render(); paint();
           return sync('login').then(function () { msg = { t: '연동을 시작했어요.', ok: true }; render(); });
         }).catch(function () { working = false; fail('net'); });
