@@ -107,6 +107,10 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-pv-ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--a1);background:var(--soft1);flex:none}
 .a-pv-ico svg{width:20px;height:20px}
 .a-privacy h2{font-size:clamp(17px,.5vw + 15px,20px);font-weight:750;letter-spacing:-.02em}
+.a-pv-lead{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:12px}
+@media (min-width:900px){.a-pv-lead{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.a-pv-lead p{padding:12px 14px;border-radius:12px;background:var(--soft1);font-size:15px;line-height:1.65;color:var(--muted)}
+.a-pv-lead b{display:block;color:var(--ink);font-weight:750;margin-bottom:2px}
 .a-pv-list{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:8px 22px;margin-top:12px}
 @media (min-width:900px){.a-pv-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .a-pv-list li{position:relative;padding-left:18px;font-size:14.5px;line-height:1.65;color:var(--muted)}
@@ -282,7 +286,11 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   <section class="a-privacy" id="privacy" aria-labelledby="privacyTitle">
     <div class="a-pv-head">
       <span class="a-pv-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor"/></svg></span>
-      <h2 id="privacyTitle">개인정보와 보안 안내</h2>
+      <h2 id="privacyTitle">이용 안내 · 개인정보와 보안</h2>
+    </div>
+    <div class="a-pv-lead">
+      <p><b>로그인하지 않아도 자료실의 모든 기능을 제한 없이 사용할 수 있습니다.</b> 로그인은 내가 본 내용과 학습 기록(탐색 진도·형광펜·포스트잇 메모 등)을 저장하고 다른 기기와 동기화하기 위한 선택 기능입니다.</p>
+      <p><b>자료실의 정보는 정답이 아닌 참고·실습용 도구입니다.</b> 직업상담 실무 연습과 탐색을 돕기 위한 자료이므로, 실제 판단은 최신 공식 자료와 기관 안내로 확인해 주세요.</p>
     </div>
     <ul class="a-pv-list">
       <li><b>아이디와 비밀번호만 받습니다.</b> 이름·이메일·전화번호 같은 개인정보는 받지 않습니다. 로그인하지 않으면 모든 기록은 지금 쓰는 기기의 브라우저에만 남습니다.</li>
@@ -307,7 +315,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   <section class="a-hero" aria-labelledby="heroTitle">
     <p class="a-eyebrow">직업상담사를 위한 학습·실무 자료 모음</p>
     <h1 id="heroTitle">이론에서 실무까지,<br><em>직업상담의 작업대</em></h1>
-    <p>직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무, 미래고용 보고서까지 <span data-count-word>여섯</span> 가지 자료로 익히고 바로 씁니다.</p>
+    <p>직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무, 미래고용 보고서, 학과와 직업을 잇는 거울 지도까지 <span data-count-word>여섯</span> 가지 자료로 익히고 바로 씁니다.</p>
   </section>
 
   <main>
@@ -401,7 +409,12 @@ var TOOLS=[
   title:'국회 미래고용 디지털 서재',path:'./library/',
   desc:'국회·KDI·고용정보원 보고서와 WEF·ILO·세계은행·CEPR 영문 보고서(한국어 번역) 등 13권을 나무 책장 두 개에서 꺼내 핵심 수치와 상담 적용 노트로 읽습니다.',
   meta:['보고서 13권','영문 5권 한국어 번역','상담 적용 노트'],
-  tags:['국회','입법조사처','미래연구원','보고서','서재','실업급여','구직급여','자발적 퇴사','청년','지역격차','시군구','고령','고령 취업자','노동력','정년','전직지원','두루누리','AI','인공지능','생성형 AI','WEF','세계경제포럼','ILO','국제노동기구','세계은행','World Bank','CEPR','녹색 전환','전환 역량','양질의 일자리','유연안정성','번역','미래 직업','Future of Jobs','호주','싱가포르','청년수당','KDI','인지역량','임금체계','니트','NEET','쉬었음','초단시간','주휴수당','지역 인구','인구이동','library']}
+  tags:['국회','입법조사처','미래연구원','보고서','서재','실업급여','구직급여','자발적 퇴사','청년','지역격차','시군구','고령','고령 취업자','노동력','정년','전직지원','두루누리','AI','인공지능','생성형 AI','WEF','세계경제포럼','ILO','국제노동기구','세계은행','World Bank','CEPR','녹색 전환','전환 역량','양질의 일자리','유연안정성','번역','미래 직업','Future of Jobs','호주','싱가포르','청년수당','KDI','인지역량','임금체계','니트','NEET','쉬었음','초단시간','주휴수당','지역 인구','인구이동','library']},
+ {id:'decalcomania',no:'07',badge:'학과·직업 지도',short:'데칼',color:'c1',icon:'flip-horizontal-2',
+  title:'커리어데칼코마니',path:'./decalcomania/',
+  desc:'학과 501개와 직업 552개를 접는 선 하나로 마주 놓고, 학과에서 직업으로, 직업에서 학과로 오가며 연결 근거(면허필수·전공우대·관련전공·진출통계)와 개설 대학을 확인합니다.',
+  meta:['학과 501개','직업 552개','연결 6,769건'],
+  tags:['커리어데칼코마니','데칼코마니','학과','전공','대학','개설 대학','대학알리미','커리어넷','직업','직업백과','고용직업분류','KECO','진출','진로','취업률','관련 직업','관련 학과','면허','전공우대','진출통계','decalcomania']}
 ];
 var INSIGHTS=[
  {tag:'이론 · 수퍼',to:'theory',t:'수퍼의 생애진로무지개',

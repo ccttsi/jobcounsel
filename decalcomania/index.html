@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="학과 501개와 직업 552개를 접는 선 하나로 마주 놓고, 연결 근거와 함께 오가며 살펴보는 직업상담 참고·실습 도구">
+<title>커리어데칼코마니 · 학과와 직업의 거울 지도</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ── 색: 사이트 첫 화면과 같은 팔레트 ── */
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#7b7168;
+  --dept:#0f766e;--dept-soft:rgba(15,118,110,.09);
+  --job:#b4532a;--job-soft:rgba(180,83,42,.09);
+  --stamp:#be123c;
+  --glass:rgba(255,253,248,.6);
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 10px 28px -18px rgba(70,50,25,.22);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  /* 크기: 8의 배수 간격, 글자 13·17·21·27(1.25배) */
+  --fs-s:13px;--fs-b:17px;--fs-m:21px;--fs-l:27px;
+  --fold:24px;--peek:clamp(72px,12.7%,96px);
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#111623;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#7c859a;
+  --dept:#2dd4bf;--dept-soft:rgba(45,212,191,.09);
+  --job:#fbbf24;--job-soft:rgba(251,191,36,.09);
+  --stamp:#fb7185;
+  --glass:rgba(16,20,29,.6);
+  --shadow:none;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:var(--fs-b);line-height:1.6;-webkit-text-size-adjust:100%;overflow:hidden;word-break:keep-all;overflow-wrap:anywhere}
+button,input,select{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit}
+.app{height:100vh;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
+
+/* ── 머리말: 한 줄 + 접히는 안내 한 줄 ── */
+.hd{flex:0 0 auto;border-bottom:1px solid var(--line);background:var(--bg);position:relative;z-index:10}
+.bar{height:56px;display:flex;align-items:center;gap:8px;padding:0 16px}
+.ib{width:40px;height:40px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{display:none;font-weight:800;font-size:var(--fs-b);letter-spacing:-.02em;white-space:nowrap}
+.brand em{font-style:normal;color:var(--stamp)}
+.search{flex:1;min-width:0;position:relative}
+.search input{width:100%;height:40px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-size:16px;outline:none;-webkit-appearance:none;appearance:none}
+.search input:focus{border-color:var(--dept)}
+.theme{font-size:var(--fs-s);font-weight:650;width:auto;padding:0 10px}
+.note{margin:0;max-height:48px;overflow:hidden;padding:0 16px 8px;font-size:var(--fs-s);line-height:1.5;color:var(--muted);transition:max-height .3s,padding .3s}
+.note b{color:var(--ink);font-weight:700}
+.app.scrolled .note{max-height:0;padding-bottom:0}
+#results{position:absolute;left:0;right:0;top:calc(100% + 8px);background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px -16px rgba(0,0,0,.35);max-height:60vh;overflow:auto;-webkit-overflow-scrolling:touch;z-index:30}
+#results[hidden]{display:none}
+.res{display:block;width:100%;text-align:left;padding:8px 16px;border-bottom:1px solid var(--line)}
+.res:last-child{border-bottom:0}
+.res b{font-size:16px}
+.res .ty{font-size:12px;font-weight:700;margin-left:8px;padding:0 6px;border-radius:6px;vertical-align:1px}
+.ty.d{background:var(--dept-soft);color:var(--dept)}.ty.j{background:var(--job-soft);color:var(--job)}.ty.e{border:1px dashed var(--dim);color:var(--muted)}
+.res .pth{display:block;font-size:var(--fs-s);color:var(--muted)}
+.res-empty{padding:16px;font-size:14px;color:var(--muted)}
+
+/* ── 무대: 학과트리 / 접는 선 / 직업트리 ── */
+.stage{flex:1 1 0;min-height:0;display:flex;flex-direction:column;position:relative;padding-bottom:env(safe-area-inset-bottom)}
+.pane{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.pane.top{flex:0 0 calc(100% - var(--fold) - var(--peek));transition:flex-basis .4s cubic-bezier(.2,.8,.2,1)}
+.pane.bottom{flex:1 1 0}
+.stage.flip .pane.top{flex-basis:var(--peek)}
+.content{flex:1;min-height:0;display:flex;flex-direction:column;transition:filter .4s,opacity .4s}
+.scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:16px}
+.wrap{max-width:640px}
+.stage:not(.flip) #paneJob .content,.stage.flip #paneDept .content{filter:blur(3px);opacity:.5;pointer-events:none}
+.peek{display:none;position:absolute;inset:0;z-index:2;background:var(--glass);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);padding:8px 16px;flex-direction:column;justify-content:center;gap:4px;cursor:pointer}
+.stage:not(.flip) #peekJob,.stage.flip #peekDept{display:flex}
+.plabel{font-size:var(--fs-s);font-weight:700;display:flex;align-items:center;gap:6px}
+#peekJob .plabel{color:var(--job)}#peekDept .plabel{color:var(--dept)}
+.plabel span{font-weight:500;color:var(--muted)}
+.prow{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-right:72px}
+.prow::-webkit-scrollbar{display:none}
+.pchip{flex:none;height:40px;padding:0 16px;border-radius:20px;border:1px solid var(--line-2);background:var(--panel);font-size:15px;white-space:nowrap}
+
+/* 접는 선: 보이는 두께 24px, 누르는 영역 44px */
+.fold{flex:0 0 var(--fold);position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:16px;background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;transition:box-shadow .4s}
+.fold::before{content:"";position:absolute;left:8px;right:8px;top:50%;border-top:1px dashed var(--line-2)}
+.fold::after{content:"";position:absolute;left:0;right:0;top:-10px;bottom:-10px}
+.stage.moving .fold{box-shadow:0 0 16px rgba(0,0,0,.18)}
+.handle{position:relative;z-index:1;width:40px;height:4px;border-radius:4px;background:var(--line-2)}
+.stamp{position:relative;z-index:1;max-width:38%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--fs-s);font-weight:800;line-height:18px;color:var(--stamp);border:2px solid var(--stamp);border-radius:6px;padding:0 8px;background:var(--panel);transform:rotate(-3deg)}
+.stamp.r{transform:rotate(3deg)}
+.stamp.off{color:var(--dim);border-color:var(--line-2);font-weight:600}
+.stamp.press{animation:press .4s ease-out}
+.stamp.r.press{animation-name:pressR}
+@keyframes press{0%{transform:scale(1.35);opacity:0}60%{transform:scale(.95) rotate(-3deg);opacity:1}}
+@keyframes pressR{0%{transform:scale(1.35);opacity:0}60%{transform:scale(.95) rotate(3deg);opacity:1}}
+
+/* 경로 칩: 두 경로가 접는 선에서 만난다 */
+.crumbs{flex:0 0 auto;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;padding:8px 16px;background:var(--bg);white-space:nowrap}
+.crumbs::-webkit-scrollbar{display:none}
+#paneDept .crumbs{order:2;border-top:1px solid var(--line)}
+#paneJob .crumbs{border-bottom:1px solid var(--line)}
+.crumb{height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line);background:var(--panel);font-size:14px}
+.crumb.root{border:0;background:none;padding:0 4px;font-weight:800}
+#paneDept .crumb.root{color:var(--dept)}#paneJob .crumb.root{color:var(--job)}
+.crumb.cur{font-weight:700;border-color:var(--line-2)}
+.sep{color:var(--dim);font-size:12px}
+
+/* 목록 */
+.up{font-size:15px;color:var(--muted);height:32px;margin-bottom:8px}
+.lvl{font-size:var(--fs-s);color:var(--muted);margin:0 0 8px}
+.item{display:flex;align-items:center;gap:8px;width:100%;min-height:56px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:8px 16px;margin-bottom:8px;box-shadow:var(--shadow)}
+.item .nm{flex:1;min-width:0;font-weight:700}
+.item .ct{font-size:var(--fs-s);color:var(--muted);text-align:right;flex:none}
+.item .ch{color:var(--dim);font-size:var(--fs-m);line-height:1;flex:none}
+#paneJob .item .ch{order:-1}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;border:1.5px solid var(--line-2)}
+#paneJob .item.lk .dot{background:var(--dept);border-color:var(--dept)}
+#paneDept .item.lk .dot{background:var(--job);border-color:var(--job)}
+.badge{display:inline-block;font-size:12px;font-weight:700;line-height:20px;padding:0 6px;border-radius:6px;margin-left:6px;vertical-align:2px}
+.b-lic{background:var(--stamp);color:#fff}
+.b-soft{background:var(--soft);color:var(--muted);font-weight:600}
+
+/* 상세 */
+.dt h2{margin:0;font-size:var(--fs-l);line-height:1.3;letter-spacing:-.02em}
+.dpath{font-size:var(--fs-s);color:var(--muted);margin:4px 0 16px}
+.lead{margin:0 0 16px}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+.sec h3{margin:0 0 8px;font-size:var(--fs-b);line-height:1.4}
+.sec h3 small{font-weight:500;font-size:var(--fs-s);color:var(--muted);margin-left:6px}
+.sec ul{margin:0;padding-left:20px}
+.sec li{margin:4px 0}
+.sec p{margin:0 0 8px}.sec p:last-child{margin-bottom:0}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tg{font-size:15px;line-height:1.5;padding:2px 10px;border-radius:8px;background:var(--soft);border:1px solid var(--line)}
+.course{border-top:1px dashed var(--line);padding:4px 0}
+.course:first-of-type{border-top:0}
+.course summary{cursor:pointer;min-height:36px;display:flex;align-items:center;font-weight:600}
+.course p{font-size:15px;color:var(--muted);margin:0 0 8px}
+.uni{padding:8px 0;border-top:1px dashed var(--line)}
+.uni:first-child{border-top:0}
+.uni .m{display:block;font-size:var(--fs-s);color:var(--muted)}
+.uni.closed{opacity:.6}
+.filt{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 8px;padding-bottom:2px}
+.filt::-webkit-scrollbar{display:none}
+.fb{flex:none;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line);background:var(--soft);font-size:14px}
+.fb[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.more{width:100%;height:44px;margin-top:8px;border:1px solid var(--line);border-radius:12px;background:var(--soft);font-size:15px;font-weight:600}
+.link{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 12px;margin-top:8px}
+.link .nm{flex:1;min-width:0;font-weight:700}
+.link .meta{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.lk-j .dot{background:var(--job);border-color:var(--job)}.lk-d .dot{background:var(--dept);border-color:var(--dept)}
+.rel{flex:none;font-size:12px;font-weight:700;line-height:22px;padding:0 8px;border-radius:6px;white-space:nowrap}
+.r-면허필수{background:var(--stamp);color:#fff}
+.r-전공우대{background:color-mix(in srgb,var(--stamp) 14%,transparent);color:var(--stamp)}
+.r-관련전공{background:var(--soft);color:var(--ink);border:1px solid var(--line)}
+.r-전공무관{border:1px dashed var(--dim);color:var(--muted)}
+.legend{font-size:var(--fs-s);color:var(--muted);margin-top:8px}
+.legend summary{cursor:pointer;min-height:32px;display:flex;align-items:center}
+.legend dl{margin:4px 0 0}.legend dt{font-weight:700;color:var(--ink)}.legend dd{margin:0 0 8px}
+.bars{display:grid;gap:8px}
+.br{display:grid;grid-template-columns:minmax(0,1fr) 52px;gap:4px 8px;align-items:center;font-size:15px}
+.br .tr{grid-column:1/-1;height:8px;border-radius:4px;background:var(--soft);overflow:hidden}
+.br .tr i{display:block;height:100%;border-radius:4px;background:var(--dept)}
+.jside .br .tr i{background:var(--job)}
+.br .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.kv div{background:var(--soft);border-radius:12px;padding:8px 12px}
+.kv b{display:block;font-size:var(--fs-m);line-height:1.3;font-variant-numeric:tabular-nums}
+.kv span{font-size:12px;color:var(--muted)}
+.warn{font-size:var(--fs-s);color:var(--muted);border-left:3px solid var(--line-2);padding-left:8px;margin-top:8px}
+.src{font-size:12px;color:var(--muted);margin:0 0 8px}
+.src a{color:var(--dept)}
+.foot{font-size:12px;color:var(--muted);border-top:1px dashed var(--line);margin-top:16px;padding-top:8px}
+.state{padding:24px 16px;color:var(--muted);font-size:15px}
+
+/* ── 넓은 화면(960px 이상): 좌우 1:1 데칼코마니 ── */
+.wide-only{display:none}
+@media (min-width:600px){.brand{display:block}.wide-only{display:inline}}
+@media (min-width:960px){
+  .app{max-width:1440px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .stage{flex-direction:row}
+  .pane.top,.stage.flip .pane.top,.pane.bottom{flex:1 1 0}
+  .content{filter:none!important;opacity:1!important;pointer-events:auto!important}
+  .peek{display:none!important}
+  .fold{flex:0 0 64px;flex-direction:column;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);cursor:default}
+  .fold::before{left:50%;right:auto;top:8px;bottom:8px;border-top:0;border-left:1px dashed var(--line-2)}
+  .fold::after,.handle{display:none}
+  .stamp{max-width:none;max-height:42%;writing-mode:vertical-rl;padding:8px 0}
+  #paneDept .crumbs{order:0;border-top:0;border-bottom:1px solid var(--line)}
+  .scroll{padding:24px}
+  #paneDept .wrap{margin-left:auto}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="hd">
+    <div class="bar">
+      <a class="ib" href="../" aria-label="자료실 첫 화면으로" title="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg></a>
+      <span class="brand">커리어<em>데칼코마니</em></span>
+      <div class="search">
+        <input id="q" type="search" placeholder="학과·대학 학과명·직업 검색" autocomplete="off" enterkeyhint="search" aria-label="학과·대학 학과명·직업 검색" disabled>
+        <div id="results" hidden></div>
+      </div>
+      <button class="ib theme" id="themeBtn" type="button" title="자동은 오전 7시~오후 7시 밝게, 그 밖에는 어둡게">자동</button>
+    </div>
+    <p class="note" id="note"><b>커리어데칼코마니</b> · 이 자료는 정답이 아닌 참고·실습용 도구입니다.<span class="wide-only"> 연결은 가능성을 보여 줄 뿐 진로를 정해 주지 않습니다.</span></p>
+  </header>
+  <main class="stage" id="stage">
+    <section class="pane top" id="paneDept" aria-label="학과트리">
+      <div class="content" id="deptContent"><div class="state">자료를 불러오는 중입니다…</div></div>
+      <div class="peek" id="peekDept" role="button" tabindex="0" aria-label="학과트리 펼치기"></div>
+    </section>
+    <div class="fold" id="fold" role="button" tabindex="0" aria-label="학과트리와 직업트리 뒤집기">
+      <span class="stamp off" id="stampD">학과</span><span class="handle" aria-hidden="true"></span><span class="stamp r off" id="stampJ">직업</span>
+    </div>
+    <section class="pane bottom" id="paneJob" aria-label="직업트리">
+      <div class="content" id="jobContent"><div class="state">자료를 불러오는 중입니다…</div></div>
+      <div class="peek" id="peekJob" role="button" tabindex="0" aria-label="직업트리 펼치기"></div>
+    </section>
+  </main>
+</div>
+<script>
+(function(){
+'use strict';
+var d=document,$=function(id){return d.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function dot(s){return String(s||'').replace(/・/g,'·');}
+function num(n){return Number(n).toLocaleString('ko-KR');}
+var REL_ORDER={'면허필수':0,'전공우대':1,'관련전공':2,'전공무관':3};
+var FOOT='<p class="foot">이 화면은 참고·실습용 도구입니다. 실제 진학·취업 결정은 최신 공식 자료(대학 입학처, 커리어넷, 고용24)와 상담으로 확인해 주세요.</p>';
+
+/* ───────── 테마 ───────── */
+var MODE_LABEL={auto:'자동',light:'밝게',dark:'어둡게'},mode='auto';
+try{mode=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+function applyTheme(){
+  var t=mode;if(t!=='light'&&t!=='dark'){var h=new Date().getHours();t=(h>=7&&h<19)?'light':'dark';}
+  d.documentElement.setAttribute('data-theme',t);
+  var mt=$('metaTheme');if(mt)mt.setAttribute('content',t==='dark'?'#08090c':'#faf6ef');
+  $('themeBtn').textContent=MODE_LABEL[mode]||'자동';
+}
+$('themeBtn').addEventListener('click',function(){var o=['auto','light','dark'];mode=o[(o.indexOf(mode)+1)%3];try{localStorage.setItem('jc-theme',mode);}catch(e){}applyTheme();});
+applyTheme();setInterval(applyTheme,30000);
+d.addEventListener('visibilitychange',function(){if(!d.hidden)applyTheme();});
+window.addEventListener('storage',function(e){if(e.key==='jc-theme'){mode=e.newValue||'auto';applyTheme();}});
+
+/* ───────── 자료 ───────── */
+var M,J,E,majors={},jobs={},univ={},rowsBy={},estByMinor={},eFrom={},eTo={},jgFrom={},jgTo={},jgName={},cols,DEPT=[],JOB=[],INDEX=[];
+var deptLoc={},jobLoc={};
+function load(u){return fetch(u,{cache:'force-cache'}).then(function(r){if(!r.ok)throw new Error(u);return r.json();});}
+Promise.all([load('./data/majors.json'),load('./data/jobs.json'),load('./data/edges.json')]).then(function(a){
+  M=a[0];J=a[1];E=a[2];build();$('q').disabled=false;openHash()||render();
+}).catch(function(){
+  $('deptContent').innerHTML=$('jobContent').innerHTML='<div class="state">자료를 불러오지 못했습니다. 인터넷 연결을 확인한 뒤 새로 고침해 주세요.</div>';
+});
+
+function build(){
+  cols=M.department_columns;
+  (M.universities||[]).forEach(function(u){univ[u.id]=u;});
+  M.majors.forEach(function(m){majors[m.id]=m;rowsBy[m.id]=[];});
+  J.jobs.forEach(function(j){jobs[j.id]=j;});
+  (J.classifications.job_class_group||[]).forEach(function(g){jgName[g.id]=g.name;});
+  var ci={};cols.forEach(function(c,i){ci[c]=i;});
+  var rows=M.departments.map(function(r){var o={};for(var k in ci)o[k]=r[ci[k]];return o;});
+  /* 표준학과 미연결 학과는 같은 소계열에서 가장 흔한 표준학과로 추정한다 */
+  var minorCnt={};
+  rows.forEach(function(r){
+    if(r.major_id&&rowsBy[r.major_id])rowsBy[r.major_id].push(r);
+    if(r.major_id&&r.standard_class_minor&&r.standard_class_minor.indexOf('N.C.E')<0){var k=r.standard_class_major+'|'+r.standard_class_minor;(minorCnt[k]=minorCnt[k]||{})[r.major_id]=(minorCnt[k][r.major_id]||0)+1;}
+  });
+  for(var k in minorCnt){var best=null,bn=0;for(var id in minorCnt[k])if(minorCnt[k][id]>bn){bn=minorCnt[k][id];best=id;}estByMinor[k]=best;}
+  E.edges.forEach(function(e){
+    if(e.to.indexOf('JG-')===0){(jgFrom[e.from]=jgFrom[e.from]||[]).push(e);(jgTo[e.to]=jgTo[e.to]||[]).push(e);}
+    else{(eFrom[e.from]=eFrom[e.from]||[]).push(e);(eTo[e.to]=eTo[e.to]||[]).push(e);}
+  });
+  /* 학과트리: 커리어넷 7계열 > 중분류(개설 학과들의 대학알리미 중계열 중 가장 많은 것) > 표준학과 */
+  var cats={};
+  (M.classifications.major_category||[]).forEach(function(c,i){cats[c.name]={id:'C'+i,name:c.name,kids:[],mid:{}};DEPT.push(cats[c.name]);});
+  M.majors.forEach(function(m){
+    var cat=cats[m.category];if(!cat){cat=cats[m.category]={id:'C'+DEPT.length,name:m.category||'계열 미지정',kids:[],mid:{}};DEPT.push(cat);}
+    var cnt={},best='그 밖의 학과',bn=0;
+    rowsBy[m.id].forEach(function(r){var md=r.standard_class_middle;if(r.source==='academyinfo'&&md&&md.indexOf('N.C.E')<0)cnt[md]=(cnt[md]||0)+1;});
+    for(var x in cnt)if(cnt[x]>bn){bn=cnt[x];best=dot(x);}
+    var mid=cat.mid[best];if(!mid){mid=cat.mid[best]={id:cat.id+'-M'+cat.kids.length,name:best,kids:[]};cat.kids.push(mid);}
+    mid.kids.push(m.id);
+  });
+  DEPT.forEach(function(c){
+    c.kids.forEach(function(md){md.kids.sort(function(a,b){return majors[a].name.localeCompare(majors[b].name,'ko');});md.kids.forEach(function(id){deptLoc[id]=[c.id,md.id];});});
+    c.kids.sort(function(a,b){return a.name==='그 밖의 학과'?1:b.name==='그 밖의 학과'?-1:b.kids.length-a.kids.length;});
+  });
+  /* 직업트리: 한국고용직업분류 2025 대분류 > 중분류 > 직업 */
+  var keco=J.classifications.keco_2025||[],ki={};
+  keco.forEach(function(g){var node={id:'K'+g.code,name:g.name,kids:[],mid:{}};(g.middle||[]).forEach(function(m){var mn={id:'K'+m.code,name:m.name,kids:[]};node.mid[m.code]=mn;node.kids.push(mn);});ki[g.code]=node;JOB.push(node);});
+  var none={id:'Kx',name:'고용직업분류 코드가 없는 직업',kids:[{id:'Kx0',name:'분류 코드 없음',kids:[]}],mid:{}};
+  J.jobs.forEach(function(j){var k=j.keco||{},g=ki[k.class_code],m=g&&g.mid[k.middle_code];(m||none.kids[0]).kids.push(j.id);});
+  JOB.push(none);
+  JOB=JOB.filter(function(g){g.kids=g.kids.filter(function(m){m.kids.sort(function(a,b){return jobs[a].name.localeCompare(jobs[b].name,'ko');});return m.kids.length;});return g.kids.length;});
+  JOB.forEach(function(g){g.kids.forEach(function(m){m.kids.forEach(function(id){jobLoc[id]=[g.id,m.id];});});});
+  buildIndex(rows);
+}
+function linksOfMajor(id){return (eFrom[id]||[]).slice().sort(function(a,b){return (REL_ORDER[a.relation]-REL_ORDER[b.relation])||jobs[a.to].name.localeCompare(jobs[b.to].name,'ko');});}
+function linksOfJob(id){return (eTo[id]||[]).slice().sort(function(a,b){return (REL_ORDER[a.relation]-REL_ORDER[b.relation])||majors[a.from].name.localeCompare(majors[b.from].name,'ko');});}
+function findNode(tree,id){for(var i=0;i<tree.length;i++){if(tree[i].id===id)return tree[i];for(var k=0;k<tree[i].kids.length;k++)if(tree[i].kids[k].id===id)return tree[i].kids[k];}return null;}
+
+/* ───────── 상태 ───────── */
+var st={flip:false,dp:[],jp:[],uf:{region:'',closed:false,all:false}};
+var stage=$('stage'),wide=window.matchMedia('(min-width:960px)');
+function setFlip(f){
+  if(wide.matches||st.flip===f)return;
+  st.flip=f;stage.classList.toggle('flip',f);stage.classList.add('moving');setTimeout(function(){stage.classList.remove('moving');},400);
+  press(f?$('stampJ'):$('stampD'));
+}
+function press(el){el.classList.remove('press');void el.offsetWidth;el.classList.add('press');}
+function setHash(id){try{history.replaceState(null,'',id?'#'+id:location.pathname+location.search);}catch(e){}}
+function openMajor(id){if(!majors[id])return;st.dp=deptLoc[id].concat(id);st.uf={region:'',closed:false,all:false};setFlip(false);setHash(id);render();top('deptContent');}
+function openJob(id){if(!jobs[id])return;st.jp=jobLoc[id].concat(id);setFlip(true);setHash(id);render();top('jobContent');}
+function top(cid){var s=$(cid).querySelector('.scroll');if(s)s.scrollTop=0;}
+function openHash(){var h=decodeURIComponent(location.hash.slice(1));if(majors[h]){openMajor(h);return true;}if(jobs[h]){openJob(h);return true;}return false;}
+window.addEventListener('hashchange',openHash);
+
+/* ───────── 그리기 ───────── */
+function crumbs(k,tree,path,leaves,rootName){
+  var h='<button class="crumb root" data-'+k+'-go="0">'+rootName+'</button>';
+  path.forEach(function(id,i){var n=i===2?leaves[id].name:findNode(tree,id).name;h+='<span class="sep">›</span><button class="crumb'+(i===path.length-1?' cur':'')+'" data-'+k+'-go="'+(i+1)+'">'+esc(n)+'</button>';});
+  return '<nav class="crumbs" aria-label="'+rootName+' 경로">'+h+'</nav>';
+}
+function list(k,tree,path,linked){
+  var names=k==='d'?['계열','중분류','표준학과']:['직업 대분류','직업 중분류','직업'];
+  var items=path.length?findNode(tree,path[path.length-1]).kids:tree,lv=path.length,h='';
+  if(lv)h+='<button class="up" data-'+k+'-go="'+(lv-1)+'">‹ 위로</button>';
+  var note=k==='d'?(lv===1?' · 중분류는 개설 학과들의 대학알리미 표준분류(중계열) 중 가장 많은 것입니다':lv===0?' · 커리어넷 7계열':''):(lv===0?' · 한국고용직업분류 2025':'');
+  h+='<p class="lvl">'+names[lv]+' '+items.length+'개'+note+'</p>';
+  items.forEach(function(it){
+    var leaf=typeof it==='string',id=leaf?it:it.id,nm,ct,lk=false,extra='';
+    if(leaf){
+      if(k==='d'){var m=majors[id];nm=m.name;ct=(m.school_type||'').replace(/\(.*\)/,'')+' · 개설 '+num(m.department_count_open!=null?m.department_count_open:m.department_count||0)+'곳';}
+      else{var j=jobs[id];nm=j.name;ct='';if(j.license_required)extra='<span class="badge b-lic">면허</span>';}
+      lk=!!linked[id];
+    }else{
+      nm=it.name;var n=0;it.kids.forEach(function(c){n+=typeof c==='string'?1:c.kids.length;if(typeof c==='string'){if(linked[c])lk=true;}else c.kids.forEach(function(x){if(linked[x])lk=true;});});
+      ct=(lv===0?names[1]+' '+it.kids.length+' · ':'')+(k==='d'?'학과 ':'직업 ')+n;
+    }
+    h+='<button class="item'+(lk?' lk':'')+'" data-'+k+'-open="'+esc(id)+'"><span class="dot"></span><span class="nm">'+esc(nm)+extra+'</span><span class="ct">'+esc(ct)+'</span><span class="ch">'+(k==='d'?'›':'‹')+'</span></button>';
+  });
+  return h;
+}
+function relBtn(e,to){
+  var t=to==='j'?jobs[e.to]:majors[e.from];
+  var meta=[e.note,e.source,e.year].filter(Boolean).join(' · ');
+  return '<button class="link lk-'+to+'" data-'+to+'-jump="'+esc(to==='j'?e.to:e.from)+'"><span class="dot"></span><span class="nm">'+esc(t.name)+'<span class="meta">'+esc(meta)+'</span></span><span class="rel r-'+esc(e.relation)+'">'+esc(e.relation)+'</span></button>';
+}
+function legend(){
+  var defs=E.relation_definitions||{},h='';['면허필수','전공우대','관련전공','전공무관','진출통계'].forEach(function(k){if(defs[k])h+='<dt>'+k+'</dt><dd>'+esc(defs[k])+'</dd>';});
+  return '<details class="legend"><summary>연결 종류는 무엇을 뜻하나요?</summary><dl>'+h+'</dl><p>연결은 가능성과 근거를 보여 줄 뿐, 이 학과를 나오면 이 직업을 갖는다는 뜻이 아닙니다.</p></details>';
+}
+function bars(arr,lab,val,max){
+  if(!arr||!arr.length)return '';max=max||Math.max.apply(null,arr.map(function(x){return +x[val]||0;}))||1;
+  return '<div class="bars">'+arr.map(function(x){var v=+x[val]||0;return '<div class="br"><span>'+esc(x[lab])+'</span><span class="v">'+v+'%</span><span class="tr"><i style="width:'+Math.max(2,Math.round(v/max*100))+'%"></i></span></div>';}).join('')+'</div>';
+}
+function sec(title,body,small){return body?'<div class="sec"><h3>'+title+(small?'<small>'+small+'</small>':'')+'</h3>'+body+'</div>':'';}
+function ul(a){return a&&a.length?'<ul>'+a.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'';}
+function tags(a){return a&&a.length?'<div class="tags">'+a.map(function(x){return '<span class="tg">'+esc(x)+'</span>';}).join('')+'</div>':'';}
+
+function majorView(id){
+  var m=majors[id],loc=deptLoc[id],c=findNode(DEPT,loc[0]),md=findNode(DEPT,loc[1]),s=m.stats||{},h='';
+  h+='<button class="up" data-d-go="2">‹ 위로</button><div class="dt"><h2>'+esc(m.name)+'</h2></div>';
+  h+='<p class="dpath">'+esc(c.name)+' › '+esc(md.name)+' · '+esc(m.school_type||'')+'</p>';
+  if(m.summary)h+='<p class="lead">'+esc(m.summary)+'</p>';
+  h+=sec('학과 특성',m.characteristics?'<p>'+esc(m.characteristics)+'</p>':'');
+  h+=sec('배우는 것',m.courses&&m.courses.length?m.courses.map(function(x){return '<details class="course"><summary>'+esc(x.name)+'</summary>'+(x.description?'<p>'+esc(x.description)+'</p>':'')+'</details>';}).join(''):'','주요 교과목 · 누르면 설명');
+  h+=uniSec(id);
+  /* 연결 직업 */
+  var L=linksOfMajor(id),known={};L.forEach(function(e){known[jobs[e.to].name]=1;});
+  var rest=(m.related_job_names||[]).filter(function(n){return !known[n];});
+  h+=sec('연결 직업',(L.length?L.map(function(e){return relBtn(e,'j');}).join(''):'<p>이 데이터에는 아직 연결된 직업이 없습니다.</p>')+(rest.length?'<p class="warn">이 데이터에 없는 관련 직업: '+esc(rest.join(', '))+'</p>':'')+legend(),wide.matches?'누르면 오른쪽에 열립니다':'누르면 직업트리로 뒤집힙니다');
+  var G=(jgFrom[id]||[]).slice().sort(function(a,b){return b.weight-a.weight;});
+  if(G.length)h+=sec('졸업 후 첫 직업분야',bars(G.map(function(e){return{n:jgName[e.to]||e.to,p:e.weight};}),'n','p')+'<p class="src">'+esc(G[0].source)+' '+esc(G[0].year)+' · 한국고용직업분류 대분류 기준</p>','진출통계');
+  var kv='';
+  if(s.employment_rate&&s.employment_rate.total!=null)kv+='<div><b>'+s.employment_rate.total+'%</b><span>취업률 ('+esc(s.employment_rate.year)+')</span></div>';
+  if(s.advancement_rate&&s.advancement_rate.total!=null)kv+='<div><b>'+s.advancement_rate.total+'%</b><span>진학률 ('+esc(s.advancement_rate.year)+')</span></div>';
+  if(s.competition_ratio!=null)kv+='<div><b>'+s.competition_ratio+' : 1</b><span>입학 경쟁률 ('+esc(s.entrance_year)+')</span></div>';
+  if(s.entrants!=null)kv+='<div><b>'+num(s.entrants)+'명</b><span>입학생 ('+esc(s.entrance_year)+')</span></div>';
+  var gp=s.entrant_gender_pct;var gtxt=gp?Object.keys(gp).map(function(k){return k+' '+gp[k]+'%';}).join(' · '):'';
+  var stat=(kv?'<div class="kv">'+kv+'</div>':'')+(gtxt?'<p class="src" style="margin-top:8px">입학생 성비: '+esc(gtxt)+'</p>':'');
+  if(s.first_job_salary_pct&&s.first_job_salary_pct.length)stat+='<p style="margin:16px 0 8px;font-weight:700">첫 직장 월평균 임금</p>'+bars(s.first_job_salary_pct,'range','pct');
+  if(s.first_job_satisfaction_pct&&s.first_job_satisfaction_pct.length)stat+='<p style="margin:16px 0 8px;font-weight:700">첫 직장 만족도</p>'+bars(s.first_job_satisfaction_pct,'level','pct');
+  h+=sec('숫자로 본 학과',stat,'한국교육개발원·대졸자 직업이동 경로조사');
+  h+=sec('졸업 후 진출 분야',(m.career_fields||[]).map(function(x){return '<p><b>'+esc(x.name)+'</b><br><span style="color:var(--muted);font-size:15px">'+esc(x.description||'')+'</span></p>';}).join(''));
+  h+=sec('관련 자격',tags(m.certificates)+(m.required_licenses&&m.required_licenses.length?'<p class="warn">법정 면허: '+esc(m.required_licenses.join(', '))+'</p>':''));
+  h+=sec('이런 사람에게 맞습니다',m.aptitude_note?'<p>'+esc(m.aptitude_note)+'</p>':'');
+  h+='<p class="src">출처: <a href="'+esc(m.source_url)+'" target="_blank" rel="noopener">'+esc(m.source||'커리어넷 학과정보')+'</a> ('+esc(m.year||'')+', 학과 서술 갱신 '+esc(m.updated||'')+') · 대학알리미 학과 공시(2024) · ID '+esc(id)+'</p>'+FOOT;
+  return '<div class="wrap">'+h+'</div>';
+}
+function uniSec(id){
+  var rows=rowsBy[id]||[],f=st.uf;if(!rows.length)return sec('개설 대학','<p>개설 대학이 확인되지 않았습니다.</p>');
+  var closed=rows.filter(function(r){return r.closed_in_2024_disclosure;}).length;
+  var regs={};rows.forEach(function(r){var u=univ[r.university_id];if(u&&u.region)regs[u.region]=(regs[u.region]||0)+1;});
+  var view=rows.filter(function(r){var u=univ[r.university_id]||{};return (f.closed||!r.closed_in_2024_disclosure)&&(!f.region||u.region===f.region);});
+  view.sort(function(a,b){var ua=univ[a.university_id]||{},ub=univ[b.university_id]||{};return (ua.name||'').localeCompare(ub.name||'','ko');});
+  var h='<div class="filt"><button class="fb" data-uf="region" data-v="" aria-pressed="'+(!f.region)+'">전체</button>'+Object.keys(regs).sort(function(a,b){return regs[b]-regs[a];}).map(function(r){return '<button class="fb" data-uf="region" data-v="'+esc(r)+'" aria-pressed="'+(f.region===r)+'">'+esc(r)+' '+regs[r]+'</button>';}).join('')+'</div>';
+  var lim=f.all?view.length:20;
+  h+=view.slice(0,lim).map(function(r){var u=univ[r.university_id]||{};var uname=(u.name||'')+(u.campus&&u.campus!=='본교'?' '+u.campus:'');
+    var meta=[r.college,r.duration,r.shift,u.region,u.kind].filter(Boolean).join(' · ');
+    return '<div class="uni'+(r.closed_in_2024_disclosure?' closed':'')+'"><b>'+esc(uname)+'</b> '+esc(r.department_name)+(r.closed_in_2024_disclosure?'<span class="badge b-soft">2024 공시 폐지 표시</span>':'')+'<span class="m">'+esc(meta)+'</span></div>';}).join('');
+  if(view.length>lim)h+='<button class="more" data-uf="all">'+num(view.length-lim)+'곳 더 보기</button>';
+  if(!view.length)h+='<p>조건에 맞는 학과가 없습니다.</p>';
+  if(closed)h+='<button class="more" data-uf="closed">'+(f.closed?'폐지 표시 학과 숨기기':'2024 공시 폐지 표시 학과 '+num(closed)+'곳도 보기')+'</button>';
+  h+='<p class="warn">실제 모집 여부는 지원 전에 그 대학 입학처에서 확인해 주세요.</p>';
+  return sec('개설 대학',h,num(rows.length-closed)+'곳 · 대학알리미 2024 공시·커리어넷 2025');
+}
+function jobView(id){
+  var j=jobs[id],k=j.keco||{},h='',jg='JG-'+k.class_code;
+  h+='<button class="up" data-j-go="2">‹ 위로</button><div class="dt"><h2>'+esc(j.name)+(j.license_required?'<span class="badge b-lic">면허직</span>':'')+'</h2></div>';
+  h+='<p class="dpath">'+(k.class_name?esc([k.class_name,k.middle_name,k.small_name,k.detail_name].filter(Boolean).join(' › ')):'고용직업분류 코드 없음')+(j.group?' · 커리어넷 '+esc(j.group):'')+'</p>';
+  h+=sec('하는 일',ul(j.works));
+  var ind=(j.industry||[]).map(function(x){return x.name;});
+  if(ind.length||(j.example_companies||[]).length)h+=sec('주로 일하는 산업',tags(ind)+((j.example_companies||[]).length?'<p style="margin-top:8px"><b>업종 대표기업 예시</b><br><span style="color:var(--muted);font-size:15px">'+esc(j.example_companies.join(', '))+'</span></p>':'')+'<p class="warn">'+esc(j.industry_note||'')+'. 공식 연계 자료가 아니며, 특정 기업의 채용을 뜻하지 않습니다.</p>','참고 정보');
+  var L=linksOfJob(id);
+  h+=sec('연결 학과',(L.length?L.map(function(e){return relBtn(e,'d');}).join(''):'<p>이 데이터에는 아직 연결된 학과가 없습니다.</p>')+legend(),wide.matches?'역추적 · 누르면 왼쪽에 열립니다':'역추적 · 누르면 학과트리로 뒤집힙니다');
+  var G=(jgTo[jg]||[]).slice().sort(function(a,b){return b.weight-a.weight;}).slice(0,10);
+  if(G.length)h+=sec('이 분야로 첫 직장을 많이 잡은 학과',G.map(function(e){return '<button class="link lk-d" data-d-jump="'+esc(e.from)+'"><span class="dot"></span><span class="nm">'+esc(majors[e.from].name)+'<span class="meta">졸업생의 '+e.weight+'%가 '+esc(jgName[jg]||'')+'로 진출</span></span></button>';}).join('')+'<p class="src" style="margin-top:8px">'+esc(G[0].source)+' '+esc(G[0].year)+'</p>','진출통계 상위 10');
+  h+=sec('종사자의 전공계열',bars(j.major_distribution,'category','pct'),'워크피디아');
+  var kv='';
+  if(j.salary_10k_krw)kv+='<div><b>'+num(Math.round(j.salary_10k_krw))+'만 원</b><span>평균 연봉(중앙값)</span></div>';
+  if(j.satisfaction_pct!=null)kv+='<div><b>'+j.satisfaction_pct+'%</b><span>직업 만족도</span></div>';
+  if(j.gender_ratio&&j.gender_ratio.male!=null)kv+='<div><b>'+j.gender_ratio.male+' : '+j.gender_ratio.female+'</b><span>남 : 여</span></div>';
+  h+=sec('숫자로 본 직업',(kv?'<div class="kv">'+kv+'</div>':'')+(j.salary_basis?'<p class="warn">'+esc(j.salary_basis)+'</p>':'')+((j.indicators||[]).length?'<p style="margin:16px 0 8px;font-weight:700">직업 지표 (0~100)</p>'+bars(j.indicators.map(function(x){return{n:x.name,p:x.score};}),'n','p',100):'')+((j.education_distribution||[]).filter(function(x){return x.pct>0;}).length?'<p style="margin:16px 0 8px;font-weight:700">종사자 학력</p>'+bars(j.education_distribution.filter(function(x){return x.pct>0;}),'level','pct'):''));
+  h+=sec('관련 자격',tags((j.certificates||[]).map(function(x){return x.name;}))+(j.required_licenses&&j.required_licenses.length?'<p class="warn">법정 면허: '+esc(j.required_licenses.join(', '))+'</p>':''));
+  h+=sec('이런 사람에게 맞습니다',ul((j.aptitude||[]).concat(j.interest||[]))+((j.abilities||[]).length?'<p style="margin-top:8px">'+tags(j.abilities.map(function(x){return x.name;}))+'</p>':''));
+  h+=sec('준비 방법',ul((j.curriculum||[]).concat(j.training||[])));
+  h+=sec('일자리와 전망',ul((j.employment||[]).concat(j.outlook||[])));
+  if((j.related_orgs||[]).length)h+=sec('관련 기관',(j.related_orgs).map(function(o){return '<p>'+(o.url?'<a href="'+esc(o.url)+'" target="_blank" rel="noopener">'+esc(o.name)+'</a>':esc(o.name))+'</p>';}).join(''));
+  h+='<p class="src">출처: <a href="'+esc(j.source_url)+'" target="_blank" rel="noopener">'+esc(j.source||'커리어넷 직업백과')+'</a> ('+esc(j.year||'')+', 갱신 '+esc(j.updated||'')+') · 한국고용직업분류 2025 · ID '+esc(id)+'</p>'+FOOT;
+  return '<div class="wrap jside">'+h+'</div>';
+}
+function render(){
+  var dSel=st.dp.length===3?st.dp[2]:null,jSel=st.jp.length===3?st.jp[2]:null,jl={},dl={};
+  if(dSel)(eFrom[dSel]||[]).forEach(function(e){jl[e.to]=1;});
+  if(jSel)(eTo[jSel]||[]).forEach(function(e){dl[e.from]=1;});
+  var ds=$('deptContent').querySelector('.scroll'),keep=ds&&ds.dataset.k===st.dp.join('/')?ds.scrollTop:0;
+  $('deptContent').innerHTML='<div class="scroll" data-k="'+esc(st.dp.join('/'))+'">'+(dSel?majorView(dSel):'<div class="wrap">'+list('d',DEPT,st.dp,dl)+'</div>')+'</div>'+crumbs('d',DEPT,st.dp,majors,'학과트리');
+  $('jobContent').innerHTML=crumbs('j',JOB,st.jp,jobs,'직업트리')+'<div class="scroll">'+(jSel?jobView(jSel):'<div class="wrap">'+list('j',JOB,st.jp,jl)+'</div>')+'</div>';
+  if(keep)$('deptContent').querySelector('.scroll').scrollTop=keep;
+  var pj='<div class="plabel">▲ 직업트리<span>· 누르면 뒤집힙니다</span></div>';
+  pj+=dSel&&(eFrom[dSel]||[]).length?'<div class="prow">'+linksOfMajor(dSel).slice(0,12).map(function(e){return '<button class="pchip" data-j-jump="'+esc(e.to)+'">'+esc(jobs[e.to].name)+'</button>';}).join('')+'</div>':'<div class="plabel"><span>학과를 고르면 연결된 직업이 이곳에 비칩니다.</span></div>';
+  $('peekJob').innerHTML=pj;
+  var pd='<div class="plabel">▼ 학과트리<span>· 누르면 뒤집힙니다</span></div>';
+  if(jSel&&(eTo[jSel]||[]).length)pd+='<div class="prow">'+linksOfJob(jSel).slice(0,12).map(function(e){return '<button class="pchip" data-d-jump="'+esc(e.from)+'">'+esc(majors[e.from].name)+'</button>';}).join('')+'</div>';
+  else if(dSel)pd+='<div class="prow"><button class="pchip" data-d-jump="'+esc(dSel)+'">'+esc(majors[dSel].name)+'</button></div>';
+  $('peekDept').innerHTML=pd;
+  var sd=$('stampD'),sj=$('stampJ');
+  sd.textContent=dSel?majors[dSel].name:'학과';sd.classList.toggle('off',!dSel);
+  sj.textContent=jSel?jobs[jSel].name:'직업';sj.classList.toggle('off',!jSel);
+  bindScroll();
+}
+function bindScroll(){Array.prototype.forEach.call(d.querySelectorAll('.scroll'),function(s){s.addEventListener('scroll',function(){if(!wide.matches)$('app').classList.toggle('scrolled',s.scrollTop>8);},{passive:true});});}
+
+/* ───────── 조작 ───────── */
+d.addEventListener('click',function(ev){
+  var t=ev.target.closest('[data-d-go],[data-j-go],[data-d-open],[data-j-open],[data-d-jump],[data-j-jump],[data-uf]');
+  if(t){
+    var ds=t.dataset;
+    if(ds.dGo!=null){st.dp=st.dp.slice(0,+ds.dGo);setFlip(false);if(!st.dp.length||st.dp.length<3)setHash('');render();top('deptContent');}
+    else if(ds.jGo!=null){st.jp=st.jp.slice(0,+ds.jGo);setFlip(true);render();top('jobContent');}
+    else if(ds.dOpen){if(majors[ds.dOpen])openMajor(ds.dOpen);else{st.dp.push(ds.dOpen);render();top('deptContent');}}
+    else if(ds.jOpen){if(jobs[ds.jOpen])openJob(ds.jOpen);else{st.jp.push(ds.jOpen);render();top('jobContent');}}
+    else if(ds.dJump)openMajor(ds.dJump);
+    else if(ds.jJump)openJob(ds.jJump);
+    else if(ds.uf){var f=st.uf;if(ds.uf==='region'){f.region=ds.v;f.all=false;}else if(ds.uf==='all')f.all=true;else f.closed=!f.closed;render();}
+    return;
+  }
+  if(ev.target.closest('#peekJob'))setFlip(true);
+  else if(ev.target.closest('#peekDept'))setFlip(false);
+});
+['peekJob','peekDept'].forEach(function(id){$(id).addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();setFlip(id==='peekJob');}});});
+var fold=$('fold'),y0=null;
+fold.addEventListener('pointerdown',function(e){if(wide.matches)return;y0=e.clientY;try{fold.setPointerCapture(e.pointerId);}catch(x){}});
+fold.addEventListener('pointerup',function(e){if(y0==null)return;var dy=e.clientY-y0;y0=null;if(Math.abs(dy)>24)setFlip(dy<0);else setFlip(!st.flip);});
+fold.addEventListener('pointercancel',function(){y0=null;});
+fold.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();setFlip(!st.flip);}});
+wide.addEventListener&&wide.addEventListener('change',function(){stage.classList.remove('flip');st.flip=false;$('app').classList.remove('scrolled');render();});
+
+/* ───────── 검색: 띄어쓰기·접미사 정규화, 별칭, 초성 ───────── */
+var CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+function cho(s){var o='';for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);o+=(c>=0xAC00&&c<=0xD7A3)?CHO[Math.floor((c-0xAC00)/588)]:s[i];}return o;}
+function norm(s){return String(s).toLowerCase().replace(/[\s·・\-_(),.\/]/g,'');}
+function strip(s){return s.replace(/(학과|학부|전공|과)$/,'');}
+function add(label,ty,sub,go,rank){var n=norm(label);INDEX.push({n:n,s:strip(n),c:cho(n),label:label,ty:ty,sub:sub,go:go,r:rank});}
+function buildIndex(rows){
+  M.majors.forEach(function(m){var l=deptLoc[m.id];add(m.name,'d',findNode(DEPT,l[0]).name+' › '+findNode(DEPT,l[1]).name+' › '+m.name,m.id,0);});
+  J.jobs.forEach(function(j){var k=j.keco||{};add(j.name,'j',[k.class_name,k.middle_name].filter(Boolean).join(' › ')||'직업',j.id,1);
+    (j.related_job_names||[]).forEach(function(a){if(a!==j.name)add(a,'j','관련 이름 → '+j.name,j.id,4);});});
+  var seen={};
+  rows.forEach(function(r){
+    var target=r.major_id,est=false;
+    if(!target){target=estByMinor[r.standard_class_major+'|'+r.standard_class_minor];est=true;}
+    if(!target||!majors[target])return;
+    var key=r.department_name+'|'+target;if(seen[key]){seen[key].n++;return;}
+    if(!est&&r.department_name===majors[target].name)return;
+    var u=univ[r.university_id]||{};
+    seen[key]={n:1};var o=seen[key];
+    add(r.department_name,est?'e':'d','',target,est?3:2);
+    var it=INDEX[INDEX.length-1];it.uni=u.name||'';it.std=majors[target].name;it.cnt=o;
+  });
+}
+var q=$('q'),res=$('results'),timer=null;
+function doSearch(){
+  var raw=q.value.trim();if(!raw){res.hidden=true;res.innerHTML='';return;}
+  var nq=norm(raw),isCho=/^[ㄱ-ㅎ]+$/.test(nq),sq=strip(nq)||nq,hits=[];
+  for(var i=0;i<INDEX.length;i++){var e=INDEX[i],sc=-1;
+    if(isCho){if(e.c.indexOf(nq)===0)sc=1;else if(e.c.indexOf(nq)>0)sc=2;}
+    else{if(e.n===nq||e.s===sq)sc=0;else if(e.n.indexOf(nq)===0)sc=1;else if(e.n.indexOf(nq)>0||e.s.indexOf(sq)>=0)sc=2;}
+    if(sc>=0)hits.push([sc*10+e.r,e]);}
+  hits.sort(function(a,b){return a[0]-b[0]||a[1].label.length-b[1].label.length;});
+  var out=hits.slice(0,40);
+  res.innerHTML=out.length?out.map(function(h,i){var e=h[1],ty=e.ty==='j'?'직업':e.ty==='e'?'추정':'학과',sub=e.sub;
+    if(e.cnt){var where=e.uni+(e.cnt.n>1?' 외 '+(e.cnt.n-1)+'곳':'');sub=where+' → 표준학과 '+e.std+(e.ty==='e'?' (같은 소계열에서 가장 가까운 학과로 추정)':'');}
+    return '<button class="res" data-i="'+INDEX.indexOf(e)+'"><b>'+esc(e.label)+'</b><span class="ty '+e.ty+'">'+ty+'</span><span class="pth">'+esc(sub)+'</span></button>';}).join('')
+    :'<div class="res-empty">찾는 학과·직업이 없습니다. 띄어쓰기를 빼거나 더 짧게(예: 인스타 → 미디어) 찾아보세요.</div>';
+  res.hidden=false;
+}
+q.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(doSearch,120);});
+q.addEventListener('focus',function(){if(q.value)doSearch();});
+q.addEventListener('keydown',function(e){if(e.key==='Escape'){res.hidden=true;q.blur();}if(e.key==='Enter'){var b=res.querySelector('.res');if(b){e.preventDefault();b.click();}}});
+res.addEventListener('click',function(e){var b=e.target.closest('.res');if(!b)return;e.stopPropagation();var it=INDEX[+b.dataset.i];(it.ty==='j'?openJob:openMajor)(it.go);q.value='';res.hidden=true;q.blur();});
+d.addEventListener('pointerdown',function(e){if(!e.target.closest('.search'))res.hidden=true;});
+})();
+</script>
+<script src="../assets/marker.js" defer></script>
+</body>
+</html>
