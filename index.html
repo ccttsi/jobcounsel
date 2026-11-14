@@ -549,21 +549,8 @@ function layout(){
   });
   var idx=mod(Math.round(pos),N);if(idx!==shown)show(idx);
 }
-/* 손으로 돌릴 때 한 칸마다 살짝 진동. 안드로이드는 vibrate, 아이폰 사파리(iOS 18 이상)는 스위치 체크박스의 기본 햅틱을 빌린다. */
-var hapLabel=null,coarseMQ=window.matchMedia?window.matchMedia('(pointer: coarse)'):{matches:false};
-function buzz(){
-  if(!coarseMQ.matches)return;
-  try{if(navigator.vibrate){navigator.vibrate(8);return;}}catch(e){}
-  try{
-    if(!hapLabel){hapLabel=document.createElement('label');hapLabel.setAttribute('aria-hidden','true');
-      hapLabel.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0';
-      hapLabel.innerHTML='<input type="checkbox" switch tabindex="-1">';document.body.appendChild(hapLabel);}
-    hapLabel.click();
-  }catch(e){}
-}
 function show(i){
   var t=TOOLS[i],first=shown<0;shown=i;
-  if(!first&&userMove)buzz();
   $('nav').style.setProperty('--acc','var(--'+t.color.replace('c','a')+')');
   $('drum').setAttribute('aria-valuenow',i+1);
   $('drum').setAttribute('aria-valuetext','오늘은 '+t.phrase+' 보고 싶어요. '+t.title);
