@@ -129,7 +129,7 @@
     'svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}' +
     '.t[data-m="dark"] svg path{fill:currentColor;stroke-width:1.2}' +
     '.t[data-m="auto"] svg .sl{stroke-width:1.4;opacity:.7}' +
-    '.f{font:700 13px/1 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;letter-spacing:-.02em;white-space:nowrap}' +
+    '.f{width:auto;min-width:40px;padding:0 6px;font:700 13px/1 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;letter-spacing:-.02em;white-space:nowrap}' +
     '.f[data-l="1"]{font-size:15px}.f[data-l="2"]{font-size:17.5px}' +
     '.f small{font-size:.8em;font-weight:600;opacity:.75}';
   var hosts = [];
@@ -148,7 +148,7 @@
       t.innerHTML = ICON[m]; t.dataset.m = m;
       t.setAttribute('aria-label', '화면 테마: ' + LABEL[m] + '. 누르면 ' + LABEL[MODES[(MODES.indexOf(m) + 1) % 3]].replace(/\(.*\)/, '') + '(으)로 바뀝니다');
       t.title = '화면 테마: ' + LABEL[m];
-      f.innerHTML = '가<small>/a</small>'; f.dataset.l = String(l);
+      f.innerHTML = '<span>가<small>/a</small></span>'; f.dataset.l = String(l);
       f.setAttribute('aria-label', '글자 크기: ' + FS_LABEL[l] + '. 누르면 ' + FS_LABEL[(l + 1) % 3] + '(으)로 바뀝니다');
       f.title = '글자 크기: ' + FS_LABEL[l];
     });
