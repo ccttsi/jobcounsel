@@ -147,7 +147,10 @@ a{color:inherit}
 .course:first-of-type{border-top:0}
 .course summary{cursor:pointer;min-height:36px;display:flex;align-items:center;font-weight:600}
 .course p{font-size:15px;color:var(--muted);margin:0 0 8px}
-.uni{padding:8px 0;border-top:1px dashed var(--line)}
+.uni{display:block;padding:8px 24px 8px 0;border-top:1px dashed var(--line);color:inherit;text-decoration:none;position:relative}
+.uni::after{content:'›';position:absolute;right:4px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:20px}
+.uni:hover b{color:var(--dept)}
+.sec .names a{text-decoration:none;color:inherit;display:block}
 .uni:first-child{border-top:0}
 .uni .m{display:block;font-size:var(--fs-s);color:var(--muted)}
 .uni.closed{opacity:.6}
@@ -155,11 +158,11 @@ a{color:inherit}
 .filt::-webkit-scrollbar{display:none}
 .fb{flex:none;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line);background:var(--soft);font-size:14px}
 .fb[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
-.pg{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;margin-top:12px}
-.pg button{min-width:40px;height:40px;padding:0 8px;border-radius:12px;border:1px solid transparent;background:none;font-size:15px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.pg{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px;margin-top:12px}
+.pg button{min-width:36px;height:40px;padding:0 6px;border-radius:12px;border:1px solid transparent;background:none;font-size:15px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
 .pg button[aria-current="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 .pg button:disabled{opacity:.35}
-.pg .gap{min-width:20px;text-align:center;color:var(--dim)}
+.pg .gap{min-width:16px;text-align:center;color:var(--dim)}
 .pg-info{text-align:center;font-size:var(--fs-s);color:var(--dim);margin-top:2px}
 .sec h3 .go{float:right;margin-left:8px;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--dept);color:var(--dept);background:var(--dept-soft);font-size:14px;font-weight:700}
 .tmap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;max-width:400px;margin:4px auto 8px}
@@ -292,7 +295,7 @@ function normReg(r){r=String(r||'');if(REGS.indexOf(r)>=0)return r;
 function pager(key,total,size){
   var n=Math.ceil(total/size);if(n<=1)return '';var c=Math.min(st.pg[key]||0,n-1),b=[];
   var want={0:1};want[n-1]=1;for(var i=c-1;i<=c+1;i++)if(i>=0&&i<n)want[i]=1;
-  if(c<=2)for(i=0;i<Math.min(n,5);i++)want[i]=1;if(c>=n-3)for(i=Math.max(0,n-5);i<n;i++)want[i]=1;
+  if(c<=2)for(i=0;i<Math.min(n,4);i++)want[i]=1;if(c>=n-3)for(i=Math.max(0,n-4);i<n;i++)want[i]=1;
   var last=-1;Object.keys(want).map(Number).sort(function(a,b){return a-b;}).forEach(function(i){if(last>=0&&i-last>1)b.push('<span class="gap">…</span>');b.push('<button data-pg="'+key+'" data-v="'+i+'" aria-current="'+(i===c)+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>');last=i;});
   return '<nav class="pg" aria-label="쪽 넘기기" data-pgbox="'+key+'"><button data-pg="'+key+'" data-v="'+(c-1)+'" aria-label="이전 쪽"'+(c===0?' disabled':'')+'>‹</button>'+b.join('')+'<button data-pg="'+key+'" data-v="'+(c+1)+'" aria-label="다음 쪽"'+(c===n-1?' disabled':'')+'>›</button></nav>'+
     '<p class="pg-info">'+num(c*size+1)+'–'+num(Math.min(total,(c+1)*size))+' / '+num(total)+'</p>';
@@ -445,17 +448,17 @@ function majorView(id){
 function uniSec(id){
   var rows=rowsBy[id]||[],f=st.uf;if(!rows.length)return sec('개설 대학','<p>개설 대학이 확인되지 않았습니다.</p>');
   var closed=rows.filter(function(r){return r.closed_in_2024_disclosure;}).length;
-  var regs={};rows.forEach(function(r){var u=univ[r.university_id];if(u&&u.reg&&!r.closed_in_2024_disclosure)regs[u.reg]=(regs[u.reg]||0)+1;});
+  var regs={};rows.forEach(function(r){var u=univ[r.university_id];if(u&&u.reg&&(f.closed||!r.closed_in_2024_disclosure))regs[u.reg]=(regs[u.reg]||0)+1;});
   var view=rows.filter(function(r){var u=univ[r.university_id]||{};return (f.closed||!r.closed_in_2024_disclosure)&&(!f.region||u.reg===f.region);});
   view.sort(function(a,b){var ua=univ[a.university_id]||{},ub=univ[b.university_id]||{};return (ua.name||'').localeCompare(ub.name||'','ko');});
   var h='<div class="filt"><button class="fb" data-uf="region" data-v="" aria-pressed="'+(!f.region)+'">전체</button>'+Object.keys(regs).sort(function(a,b){return regs[b]-regs[a];}).map(function(r){return '<button class="fb" data-uf="region" data-v="'+esc(r)+'" aria-pressed="'+(f.region===r)+'">'+esc(r)+' '+regs[r]+'</button>';}).join('')+'</div>';
   h+=page('uni',view,10).map(function(r){var u=univ[r.university_id]||{};var uname=(u.name||'')+(u.campus&&u.campus!=='본교'&&!/캠퍼스/.test(u.name||'')?' '+u.campus:'');
     var meta=[r.college,r.duration,r.shift,u.reg,u.kind].filter(Boolean).join(' · ');
-    return '<div class="uni'+(r.closed_in_2024_disclosure?' closed':'')+'"><b>'+esc(uname)+'</b> '+esc(r.department_name)+(r.closed_in_2024_disclosure?'<span class="badge b-soft">2024 공시 폐지 표시</span>':'')+'<span class="m">'+esc(meta)+'</span></div>';}).join('');
+    return '<a class="uni'+(r.closed_in_2024_disclosure?' closed':'')+'" href="../univ/#'+esc(r.department_id)+'"><b>'+esc(uname)+'</b> '+esc(r.department_name)+(r.closed_in_2024_disclosure?'<span class="badge b-soft">2024 공시 폐지 표시</span>':'')+'<span class="m">'+esc(meta)+'</span></a>';}).join('');
   h+=pager('uni',view.length,10);
   if(!view.length)h+='<p>조건에 맞는 학과가 없습니다.</p>';
   if(closed)h+='<button class="more" data-uf="closed">'+(f.closed?'폐지 표시 학과 숨기기':'2024 공시 폐지 표시 학과 '+num(closed)+'곳도 보기')+'</button>';
-  h+='<p class="warn">실제 모집 여부는 지원 전에 그 대학 입학처에서 확인해 주세요.</p>';
+  h+='<p class="warn">대학을 누르면 대학학과위키에서 유사학과와 같은 계열 학과를 볼 수 있습니다. 실제 모집 여부는 지원 전에 그 대학 입학처에서 확인해 주세요.</p>';
   return sec('개설 대학<button class="go" data-map-open="1">지도로 보기 ›</button>',h,num(rows.length-closed)+'곳 · 대학알리미 2024 공시·커리어넷 2025');
 }
 /* 지역 지도: 시도를 칸으로 단순화한 지도. 누르면 그 지역 대학 이름만 보여 준다. */
@@ -478,7 +481,7 @@ function mapView(id){
   h+=sec('지도',t,'색이 진할수록 많습니다');
   if(mp.reg){
     var L=all.filter(function(u){return u.reg===mp.reg;}).sort(function(a,b){return uName(a).localeCompare(uName(b),'ko');});
-    var body=L.length?'<ul class="names">'+page('map',L,16).map(function(u){return '<li>'+esc(uName(u))+(u.kind?'<small>'+esc(u.kind)+'</small>':'')+'</li>';}).join('')+'</ul>'+pager('map',L.length,16):'<p>이 지역에는 해당 대학이 없습니다.</p>';
+    var body=L.length?'<ul class="names">'+page('map',L,16).map(function(u){return '<li><a href="../univ/#'+esc(u.id)+'">'+esc(uName(u))+(u.kind?'<small>'+esc(u.kind)+'</small>':'')+'</a></li>';}).join('')+'</ul>'+pager('map',L.length,16):'<p>이 지역에는 해당 대학이 없습니다.</p>';
     h+='<div id="mapList">'+sec(esc(REG_FULL[mp.reg]),body,num(L.length)+'곳')+'</div>';
   }else h+='<p class="pg-info" style="margin-bottom:16px">위 지도에서 지역을 눌러 보세요.</p>';
   h+='<p class="src">대학 소재지는 대학알리미 2024 공시 기준이며, 캠퍼스별로 따로 셉니다.</p>'+FOOT;

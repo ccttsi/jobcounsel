@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="전국 대학·전문대학의 개설 학과를 찾아보고, 유사학과와 같은 계열 학과를 묶어 보는 직업상담 참고·실습 도구">
+<title>대학학과위키 · 전국 대학과 개설 학과</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#7b7168;
+  --acc:#0f766e;--acc-soft:rgba(15,118,110,.09);--job:#b4532a;--stamp:#be123c;
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 10px 28px -18px rgba(70,50,25,.22);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#111623;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#7c859a;
+  --acc:#2dd4bf;--acc-soft:rgba(45,212,191,.09);--job:#fbbf24;--stamp:#fb7185;
+  --shadow:none;color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em}
+button,input{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 56px}
+.hd{display:flex;align-items:center;gap:8px;padding:12px 0}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:1;min-width:0;font-weight:800;font-size:18px;letter-spacing:-.03em;text-decoration:none}
+.brand span{color:var(--acc)}
+.note{margin:0 0 12px;font-size:13.5px;color:var(--muted)}
+.note b{color:var(--ink)}
+.srch{position:relative;margin:8px 0 12px}
+.srch input{width:100%;height:52px;padding:0 16px 0 46px;border:1px solid var(--line-2);border-radius:16px;background:var(--panel);font-size:17px;outline:none;box-shadow:var(--shadow)}
+.srch input:focus{border-color:var(--acc)}
+.srch svg{position:absolute;left:16px;top:16px;width:20px;height:20px;color:var(--dim)}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.2;letter-spacing:-.04em;margin:16px 0 4px}
+h2{font-size:clamp(23px,4.6vw,30px);line-height:1.3;letter-spacing:-.03em;margin:8px 0 4px}
+.lead{color:var(--muted);margin:0 0 12px}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
+.sec h3{margin:0 0 8px;font-size:17px;line-height:1.4}
+.sec h3 small{font-weight:500;font-size:13px;color:var(--muted);margin-left:6px}
+.sec p{margin:0 0 8px}.sec p:last-child{margin-bottom:0}
+.filt{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 8px;padding-bottom:2px}
+.filt::-webkit-scrollbar{display:none}
+.fb{flex:none;height:36px;padding:0 12px;border-radius:18px;border:1px solid var(--line);background:var(--soft);font-size:14px;font-weight:600}
+.fb[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.row{display:flex;align-items:center;gap:10px;width:100%;padding:10px 4px;border-top:1px dashed var(--line);text-decoration:none;min-height:52px}
+.row:first-of-type{border-top:0}
+.row .nm{flex:1;min-width:0;font-weight:700;line-height:1.45}
+.row .nm small{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+.row .ar{flex:none;color:var(--dim)}
+.row:hover .nm{color:var(--acc)}
+.row.closed .nm{opacity:.55}
+.kind{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;font-size:12px;font-weight:700;vertical-align:2px;background:var(--acc-soft);color:var(--acc)}
+.kind.jc{background:color-mix(in srgb,var(--job) 12%,transparent);color:var(--job)}
+.badge{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;font-size:12px;font-weight:700;vertical-align:2px;border:1px solid var(--line-2);color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:4px;min-height:40px;padding:0 12px;border-radius:20px;border:1px solid var(--line);background:var(--bg);font-size:15px;font-weight:600;text-decoration:none}
+.chip small{font-size:12px;color:var(--muted);font-weight:500}
+.chip:hover{border-color:var(--acc)}
+.path{font-size:14px;color:var(--muted);margin:0 0 12px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
+.meta span{padding:2px 10px;border-radius:99px;background:var(--soft);font-size:14px;color:var(--muted)}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;border-radius:14px;background:var(--acc);color:#fff;font-weight:700;text-decoration:none;margin:0 0 16px}
+:root[data-theme="dark"] .cta{background:var(--acc-soft);color:var(--acc);border:1px solid var(--acc)}
+.back{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);font-size:15px;font-weight:600;text-decoration:none}
+.pg{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px;margin-top:12px}
+.pg button{min-width:36px;height:40px;padding:0 6px;border-radius:12px;border:1px solid transparent;font-size:15px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.pg button[aria-current="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.pg button:disabled{opacity:.35}
+.pg .gap{min-width:16px;text-align:center;color:var(--dim)}
+.pg-info{text-align:center;font-size:13px;color:var(--dim);margin-top:2px}
+.warn{font-size:14px;color:var(--muted);border-left:3px solid var(--line-2);padding-left:10px;margin-top:12px}
+.more{width:100%;height:44px;margin-top:8px;border:1px solid var(--line);border-radius:12px;background:var(--soft);font-size:15px;font-weight:600}
+.inline{width:100%;height:44px;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);outline:none;margin:0 0 8px}
+.foot{font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:12px;margin-top:24px}
+.loading{padding:48px 0;text-align:center;color:var(--muted)}
+.stat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 16px}
+.stat div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.stat b{display:block;font-size:22px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></a>
+    <a class="brand" href="#">대학<span>학과</span>위키</a>
+    <a class="ib" href="../decalcomania/" aria-label="커리어데칼코마니 열기" title="커리어데칼코마니"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M8 7l-4 5 4 5"/><path d="M16 7l4 5-4 5"/></svg></a>
+  </header>
+  <p class="note"><b>대학학과위키</b> · 이 자료는 정답이 아닌 참고·실습용 도구입니다. 모집 여부와 세부 정보는 각 대학 입학처와 대학알리미에서 확인해 주세요.</p>
+  <main id="view"><p class="loading">전국 대학과 학과 자료를 불러오는 중입니다…</p></main>
+</div>
+<script>
+(function(){
+'use strict';
+var d=document,$=function(id){return d.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function num(n){return Number(n).toLocaleString('ko-KR');}
+function dot(s){return String(s||'').replace(/・/g,'·').replace(/ㆍ/g,'·');}
+var FOOT='<p class="foot">대학알리미 2024 학과 공시와 커리어넷 2025 학과정보를 바탕으로 정리했습니다. 이 화면은 참고·실습용 도구이며, 실제 진학 결정은 최신 공식 자료(대학 입학처, 대학알리미, 커리어넷)와 상담으로 확인해 주세요.</p>';
+
+/* ───────── 테마: 첫 화면 설정을 따른다 ───────── */
+function applyTheme(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+  var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+  d.documentElement.setAttribute('data-theme',t);$('metaTheme').setAttribute('content',t==='dark'?'#08090c':'#faf6ef');}
+applyTheme();setInterval(applyTheme,60000);
+window.addEventListener('storage',function(e){if(e.key==='jc-theme')applyTheme();});
+
+/* ───────── 지역 ───────── */
+var REGS=['서울','경기','인천','강원','대전','세종','충북','충남','광주','전북','전남','대구','경북','부산','울산','경남','제주'];
+function normReg(r){r=String(r||'');if(REGS.indexOf(r)>=0)return r;
+  if(/전남광주/.test(r))return '전남';
+  var M2={'충청북':'충북','충청남':'충남','전라북':'전북','전북특':'전북','전라남':'전남','경상북':'경북','경상남':'경남','강원':'강원','제주':'제주','경기':'경기','세종':'세종'};
+  for(var k in M2)if(r.indexOf(k)===0)return M2[k];
+  for(var i=0;i<REGS.length;i++)if(r.indexOf(REGS[i])===0)return REGS[i];return r;}
+function kindOf(u){return u.kind==='대학'||u.kind==='전문대학'?u.kind:'그 밖';}
+function uName(u){return (u.name||'')+(u.campus&&u.campus!=='본교'&&!/캠퍼스/.test(u.name||'')?' '+u.campus:'');}
+
+/* ───────── 검색 정규화 ───────── */
+var CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+function cho(s){var o='';for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);o+=(c>=0xAC00&&c<=0xD7A3)?CHO[Math.floor((c-0xAC00)/588)]:s[i];}return o;}
+function norm(s){return String(s).toLowerCase().replace(/[\s·・ㆍ\-_(),.\/]/g,'');}
+function isCho(s){return /^[ㄱ-ㅎ]+$/.test(s);}
+
+/* ───────── 자료 ───────── */
+var alias={},U={},UL=[],R={},byU={},byStd={},majors={},stdMid={},stdMinor={},byMinor={},byMid={},estByMinor={};
+function build(M){
+  (M.universities||[]).forEach(function(u){u.reg=normReg(u.region);u.k=kindOf(u);u.n=norm(uName(u));u.c=cho(u.n);U[u.id]=u;byU[u.id]=[];UL.push(u);});
+  M.majors.forEach(function(m){majors[m.id]=m;byStd[m.id]=[];});
+  var ci={};M.department_columns.forEach(function(c,i){ci[c]=i;});
+  var rows=M.departments.map(function(r){var o={};for(var k in ci)o[k]=r[ci[k]];return o;});
+  var minorCnt={},midOf={},minOf={};
+  rows.forEach(function(r){
+    var mi=r.standard_class_minor,md=r.standard_class_middle,ok=function(x){return x&&x.indexOf('N.C.E')<0;};
+    if(r.major_id&&ok(mi)){var k=r.standard_class_major+'|'+mi;(minorCnt[k]=minorCnt[k]||{})[r.major_id]=(minorCnt[k][r.major_id]||0)+1;}
+    if(r.major_id&&ok(md)){(midOf[r.major_id]=midOf[r.major_id]||{})[md]=(midOf[r.major_id][md]||0)+1;}
+    if(r.major_id&&ok(mi)){(minOf[r.major_id]=minOf[r.major_id]||{})[mi]=(minOf[r.major_id][mi]||0)+1;}
+  });
+  for(var k in minorCnt){var best=null,bn=0;for(var id in minorCnt[k])if(minorCnt[k][id]>bn){bn=minorCnt[k][id];best=id;}estByMinor[k]=best;}
+  function top(o){var b=null,n=0;for(var k in o)if(o[k]>n){n=o[k];b=k;}return b;}
+  Object.keys(majors).forEach(function(id){stdMid[id]=top(midOf[id]||{});stdMinor[id]=top(minOf[id]||{});
+    if(stdMinor[id])(byMinor[stdMinor[id]]=byMinor[stdMinor[id]]||[]).push(id);if(stdMid[id])(byMid[stdMid[id]]=byMid[stdMid[id]]||[]).push(id);});
+  /* 같은 대학·같은 이름은 하나로(대학알리미 행을 우선) */
+  var seen={};alias={};
+  rows.sort(function(a,b){return (a.source==='academyinfo'?0:1)-(b.source==='academyinfo'?0:1);});
+  rows.forEach(function(r){
+    var key=r.university_id+'|'+norm(r.department_name);if(seen[key]){alias[r.department_id]=seen[key];return;}seen[key]=r.department_id;
+    if(!U[r.university_id])return;
+    r.std=r.major_id&&majors[r.major_id]?r.major_id:null;r.est=false;
+    if(!r.std){var e=estByMinor[r.standard_class_major+'|'+r.standard_class_minor];if(e){r.std=e;r.est=true;}}
+    r.n=norm(r.department_name);r.c=cho(r.n);
+    R[r.department_id]=r;byU[r.university_id].push(r);if(r.std)byStd[r.std].push(r);
+  });
+  UL.forEach(function(u){u.open=byU[u.id].filter(function(r){return !r.closed_in_2024_disclosure;}).length;});
+  UL.sort(function(a,b){return uName(a).localeCompare(uName(b),'ko');});
+}
+
+/* ───────── 쪽 나누기 ───────── */
+var pg={};
+function page(key,arr,size){var n=Math.max(1,Math.ceil(arr.length/size)),c=Math.min(pg[key]||0,n-1);pg[key]=c;return arr.slice(c*size,(c+1)*size);}
+function pager(key,total,size){
+  var n=Math.ceil(total/size);if(n<=1)return '';var c=Math.min(pg[key]||0,n-1),b=[],want={0:1};want[n-1]=1;
+  for(var i=c-1;i<=c+1;i++)if(i>=0&&i<n)want[i]=1;if(c<=2)for(i=0;i<Math.min(n,4);i++)want[i]=1;if(c>=n-3)for(i=Math.max(0,n-4);i<n;i++)want[i]=1;
+  var last=-1;Object.keys(want).map(Number).sort(function(a,b){return a-b;}).forEach(function(i){if(last>=0&&i-last>1)b.push('<span class="gap">…</span>');b.push('<button data-pg="'+key+'" data-v="'+i+'" aria-current="'+(i===c)+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>');last=i;});
+  return '<nav class="pg" aria-label="쪽 넘기기" data-pgbox="'+key+'"><button data-pg="'+key+'" data-v="'+(c-1)+'" aria-label="이전 쪽"'+(c===0?' disabled':'')+'>‹</button>'+b.join('')+'<button data-pg="'+key+'" data-v="'+(c+1)+'" aria-label="다음 쪽"'+(c===n-1?' disabled':'')+'>›</button></nav><p class="pg-info">'+num(c*size+1)+'–'+num(Math.min(total,(c+1)*size))+' / '+num(total)+'</p>';
+}
+function sec(title,body,small,attr){return '<section class="sec"'+(attr||'')+'><h3>'+title+(small?'<small>'+small+'</small>':'')+'</h3>'+body+'</section>';}
+var AR='<span class="ar" aria-hidden="true">›</span>';
+function kindTag(u){return u.k==='대학'?'':'<span class="kind'+(u.k==='전문대학'?' jc':'')+'">'+(u.k==='전문대학'?'전문대':'그 밖')+'</span>';}
+function deptRow(r,showUni){var u=U[r.university_id];
+  var sub=showUni?[u.reg,u.k==='대학'?'대학':u.k==='전문대학'?'전문대':''].filter(Boolean).join(' · '):[dot(r.college&&r.college!=='단과대구분없음'?r.college:''),r.degree,r.duration,r.shift].filter(Boolean).join(' · ');
+  return '<a class="row'+(r.closed_in_2024_disclosure?' closed':'')+'" href="#'+r.department_id+'"><span class="nm">'+(showUni?esc(uName(u))+' ':'')+esc(dot(r.department_name))+(r.closed_in_2024_disclosure?'<span class="badge">2024 공시 폐지 표시</span>':'')+(sub?'<small>'+esc(sub)+'</small>':'')+'</span>'+AR+'</a>';}
+function uniRow(u){return '<a class="row" href="#'+u.id+'"><span class="nm">'+esc(uName(u))+kindTag(u)+'<small>'+esc(u.reg)+' · 학과 '+num(u.open)+'개</small></span>'+AR+'</a>';}
+function decalLink(std,label){return '../decalcomania/#'+encodeURIComponent(std);}
+
+/* ───────── 화면: 처음 ───────── */
+var st={q:'',reg:'',kind:''};
+function homeView(){
+  var h='<h1>전국 대학과 개설 학과</h1><p class="lead">대학이나 학과 이름으로 찾아보세요. 학과를 누르면 유사학과와 같은 계열 학과를 묶어 보여 주고, 커리어데칼코마니로 이어집니다.</p>';
+  h+='<div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="예: 기계공학, 간호, 부경대, ㄱㄱ" value="'+esc(st.q)+'" aria-label="대학이나 학과 이름 검색"></div>';
+  h+='<div id="results">'+resultsHTML()+'</div>';
+  return h+FOOT;
+}
+function resultsHTML(){
+  var q=norm(st.q),h='';
+  var fr=function(u){return (!st.reg||u.reg===st.reg)&&(!st.kind||u.k===st.kind);};
+  var regBar='<div class="filt"><button class="fb" data-reg="" aria-pressed="'+(!st.reg)+'">전국</button>'+REGS.map(function(r){return '<button class="fb" data-reg="'+r+'" aria-pressed="'+(st.reg===r)+'">'+r+'</button>';}).join('')+'</div>';
+  var kindBar='<div class="filt">'+[['','전체'],['대학','대학'],['전문대학','전문대학'],['그 밖','그 밖']].map(function(k){return '<button class="fb" data-kind="'+k[0]+'" aria-pressed="'+(st.kind===k[0])+'">'+k[1]+'</button>';}).join('')+'</div>';
+  if(!q){
+    var L=UL.filter(fr);
+    var nd=0;L.forEach(function(u){nd+=u.open;});
+    h+='<div class="stat"><div><b>'+num(L.length)+'</b><span>학교</span></div><div><b>'+num(nd)+'</b><span>개설 학과</span></div><div><b>'+num(Object.keys(majors).length)+'</b><span>표준학과</span></div></div>';
+    h+=sec('학교 둘러보기',regBar+kindBar+page('u',L,20).map(uniRow).join('')+pager('u',L.length,20)+(L.length?'':'<p>조건에 맞는 학교가 없습니다.</p>'),num(L.length)+'곳',' data-sec="u"');
+    return h;
+  }
+  var ch=isCho(st.q.replace(/\s/g,''));
+  var mu=UL.filter(function(u){return fr(u)&&(ch?u.c.indexOf(q)>=0:u.n.indexOf(q)>=0);});
+  var md=[];Object.keys(R).forEach(function(k){var r=R[k],u=U[r.university_id];if(r.closed_in_2024_disclosure||!fr(u))return;if(ch?r.c.indexOf(q)>=0:r.n.indexOf(q)>=0)md.push(r);});
+  md.sort(function(a,b){var x=a.n.indexOf(q)===0?0:1,y=b.n.indexOf(q)===0?0:1;return (x-y)||uName(U[a.university_id]).localeCompare(uName(U[b.university_id]),'ko');});
+  h+=regBar+kindBar;
+  if(mu.length)h+=sec('대학',page('su',mu,8).map(uniRow).join('')+pager('su',mu.length,8),num(mu.length)+'곳',' data-sec="su"');
+  if(md.length)h+=sec('학과',page('sd',md,15).map(function(r){return deptRow(r,true);}).join('')+pager('sd',md.length,15),num(md.length)+'개',' data-sec="sd"');
+  if(!mu.length&&!md.length)h+='<div class="sec"><p>"'+esc(st.q)+'"에 맞는 대학이나 학과가 없습니다. 띄어쓰기 없이 줄여서(예: 컴공 → 컴퓨터) 찾아보세요.</p></div>';
+  return h;
+}
+
+/* ───────── 화면: 대학 ───────── */
+var uq={id:'',q:'',closed:false};
+function uniView(id){
+  var u=U[id];if(uq.id!==id){uq={id:id,q:'',closed:false};pg.ud=0;}
+  var all=byU[id].slice().sort(function(a,b){return dot(a.college||'').localeCompare(dot(b.college||''),'ko')||a.department_name.localeCompare(b.department_name,'ko');});
+  var closed=all.filter(function(r){return r.closed_in_2024_disclosure;}).length;
+  var h='<a class="back" href="#">‹ 대학학과위키</a><h2>'+esc(uName(u))+kindTag(u)+'</h2>';
+  h+='<div class="meta"><span>'+esc(u.region||u.reg)+'</span><span>'+esc(u.school_type||u.k)+'</span><span>'+esc(u.campus||'본교')+'</span></div>';
+  h+='<div id="ulist">'+uniListHTML(all,closed)+'</div>';
+  h+='<p class="warn">학과 이름과 모집 여부는 해마다 바뀝니다. 지원 전에 '+esc(u.name)+' 입학처에서 확인해 주세요.</p>';
+  return h+FOOT;
+}
+function uniListHTML(all,closed){
+  var q=norm(uq.q),L=all.filter(function(r){return (uq.closed||!r.closed_in_2024_disclosure)&&(!q||r.n.indexOf(q)>=0);});
+  var body='<input class="inline" id="uq" type="search" placeholder="이 학교 안에서 학과 찾기" value="'+esc(uq.q)+'" aria-label="이 학교 안에서 학과 찾기">';
+  body+=page('ud',L,20).map(function(r){return deptRow(r,false);}).join('')+pager('ud',L.length,20);
+  if(!L.length)body+='<p>조건에 맞는 학과가 없습니다.</p>';
+  if(closed)body+='<button class="more" data-uclosed="1">'+(uq.closed?'폐지 표시 학과 숨기기':'2024 공시 폐지 표시 학과 '+num(closed)+'개도 보기')+'</button>';
+  return sec('개설 학과',body,num(all.length-closed)+'개',' data-sec="ud"');
+}
+
+/* ───────── 화면: 학과 ───────── */
+var dq={id:'',reg:''};
+function deptView(id){
+  var r=R[id],u=U[r.university_id],std=r.std,m=std?majors[std]:null;
+  if(dq.id!==id){dq={id:id,reg:''};pg.sim=0;}
+  var h='<a class="back" href="#'+u.id+'">‹ '+esc(uName(u))+'</a><h2>'+esc(dot(r.department_name))+'</h2>';
+  h+='<p class="path">'+esc(uName(u))+' · '+esc(u.reg)+(r.college&&r.college!=='단과대구분없음'?' · '+esc(dot(r.college)):'')+'</p>';
+  var meta=[r.degree,r.duration,r.shift].filter(Boolean);
+  if(r.closed_in_2024_disclosure)meta.push('2024 공시 폐지 표시');
+  if(meta.length)h+='<div class="meta">'+meta.map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div>';
+  var cls=[r.standard_class_major,r.standard_class_middle,r.standard_class_minor].filter(function(x){return x&&x.indexOf('N.C.E')<0;}).map(dot);
+  if(m){
+    h+='<a class="cta" href="'+decalLink(std)+'">커리어데칼코마니에서 「'+esc(m.name)+'」 보기 →</a>';
+  }
+  h+=sec('분류',(cls.length?'<p>'+esc(cls.join(' › '))+'</p>':'')+(m?'<p>표준학과: <b>'+esc(m.name)+'</b>'+(r.est?' <span class="badge">추정</span>':'')+'</p>':'<p>표준학과와 연결되지 않은 학과입니다.</p>')+(r.est?'<p class="warn">대학알리미 분류(소계열)가 같은 학과들이 가장 많이 속한 표준학과로 추정했습니다.</p>':''));
+  if(m){
+    /* 유사학과: 같은 표준학과로 묶인 다른 대학 학과 */
+    var sim=byStd[std].filter(function(x){return x!==r&&!x.closed_in_2024_disclosure;});
+    var regs={};sim.forEach(function(x){var g=U[x.university_id].reg;regs[g]=(regs[g]||0)+1;});
+    var view=sim.filter(function(x){return !dq.reg||U[x.university_id].reg===dq.reg;}).sort(function(a,b){var ga=U[a.university_id].reg===u.reg?0:1,gb=U[b.university_id].reg===u.reg?0:1;return (ga-gb)||uName(U[a.university_id]).localeCompare(uName(U[b.university_id]),'ko');});
+    var bar='<div class="filt"><button class="fb" data-dreg="" aria-pressed="'+(!dq.reg)+'">전국</button>'+REGS.filter(function(g){return regs[g];}).map(function(g){return '<button class="fb" data-dreg="'+g+'" aria-pressed="'+(dq.reg===g)+'">'+g+' '+regs[g]+'</button>';}).join('')+'</div>';
+    h+=sec('유사학과',sim.length?'<p style="color:var(--muted);font-size:15px">이름은 달라도 같은 표준학과(「'+esc(m.name)+'」)로 묶인 다른 대학의 학과입니다. 같은 지역을 먼저 보여 줍니다.</p>'+bar+page('sim',view,10).map(function(x){return deptRow(x,true);}).join('')+pager('sim',view.length,10):'<p>같은 표준학과로 묶인 다른 대학 학과가 없습니다.</p>',num(sim.length)+'개',' data-sec="sim"');
+    /* 같은 계열 학과 */
+    var key=stdMinor[std],group=key?byMinor[key]:null,label=key;
+    if(!group||group.length<2){key=stdMid[std];group=key?byMid[key]:null;label=key;}
+    var others=(group||[]).filter(function(x){return x!==std;}).sort(function(a,b){return byStd[b].length-byStd[a].length;});
+    if(others.length)h+=sec('같은 계열 학과','<p style="color:var(--muted);font-size:15px">대학알리미 분류 「'+esc(dot(label))+'」에 함께 속한 표준학과입니다. 누르면 커리어데칼코마니에서 연결 직업과 개설 대학을 볼 수 있습니다.</p><div class="chips">'+others.slice(0,24).map(function(x){return '<a class="chip" href="'+decalLink(x)+'">'+esc(majors[x].name)+'<small>'+num(byStd[x].filter(function(y){return !y.closed_in_2024_disclosure;}).length)+'</small></a>';}).join('')+'</div>',num(others.length)+'개');
+    /* 이 학교의 같은 계열 학과 */
+    var mid=stdMid[std],here=byU[u.id].filter(function(x){return x!==r&&!x.closed_in_2024_disclosure&&x.std&&stdMid[x.std]===mid;});
+    if(here.length)h+=sec(esc(uName(u))+'의 같은 계열 학과',here.slice(0,12).map(function(x){return deptRow(x,false);}).join(''),num(here.length)+'개');
+  }
+  h+='<p class="warn">교육과정·정원·전형 같은 세부 정보는 대학 입학처와 대학알리미에서 직접 확인해 주세요.</p>';
+  return h+FOOT;
+}
+
+/* ───────── 이동 ───────── */
+var ready=false;
+function route(){
+  if(!ready)return;
+  var h=decodeURIComponent(location.hash.slice(1)),v=$('view'),html;if(alias[h]&&!R[h]){h=alias[h];try{history.replaceState(null,'','#'+h);}catch(e){}}
+  if(U[h])html=uniView(h);else if(R[h])html=deptView(h);else html=homeView();
+  v.innerHTML=html;
+  var title=U[h]?uName(U[h]):R[h]?uName(U[R[h].university_id])+' '+R[h].department_name:'';
+  d.title=(title?title+' · ':'')+'대학학과위키';
+  if(!keepScroll)window.scrollTo(0,0);keepScroll=false;
+  bindInputs();
+}
+var keepScroll=false,qT;
+function bindInputs(){
+  var q=$('q');if(q){q.addEventListener('input',function(){st.q=q.value;clearTimeout(qT);qT=setTimeout(function(){pg.su=pg.sd=pg.u=0;$('results').innerHTML=resultsHTML();},140);});}
+  var uqi=$('uq');if(uqi){uqi.addEventListener('input',function(){uq.q=uqi.value;pg.ud=0;var pos=uqi.selectionStart;var all=byU[uq.id].slice().sort(function(a,b){return dot(a.college||'').localeCompare(dot(b.college||''),'ko')||a.department_name.localeCompare(b.department_name,'ko');});
+    var closed=all.filter(function(r){return r.closed_in_2024_disclosure;}).length;$('ulist').innerHTML=uniListHTML(all,closed);var n=$('uq');n.focus();try{n.setSelectionRange(pos,pos);}catch(e){}bindInputs();});}
+}
+function rerenderKeep(secKey){
+  var h=decodeURIComponent(location.hash.slice(1));
+  if(!U[h]&&!R[h]){$('results').innerHTML=resultsHTML();}else{keepScroll=true;route();}
+  if(secKey){var s=d.querySelector('[data-sec="'+secKey+'"]');if(s&&s.getBoundingClientRect().top<0)s.scrollIntoView({block:'start'});}
+}
+d.addEventListener('click',function(e){
+  var t=e.target.closest('[data-pg],[data-reg],[data-kind],[data-uclosed],[data-dreg]');if(!t)return;
+  var ds=t.dataset;
+  if(ds.pg!=null){if(t.disabled)return;pg[ds.pg]=Math.max(0,+ds.v);rerenderKeep(ds.pg);var s=d.querySelector('[data-sec="'+ds.pg+'"]');if(s)s.scrollIntoView({block:'start'});}
+  else if(ds.reg!=null){st.reg=ds.reg;pg.u=pg.su=pg.sd=0;rerenderKeep();}
+  else if(ds.kind!=null){st.kind=ds.kind;pg.u=pg.su=pg.sd=0;rerenderKeep();}
+  else if(ds.uclosed){uq.closed=!uq.closed;pg.ud=0;rerenderKeep();}
+  else if(ds.dreg!=null){dq.reg=ds.dreg;pg.sim=0;rerenderKeep('sim');}
+});
+window.addEventListener('hashchange',route);
+fetch('../decalcomania/data/majors.json',{cache:'force-cache'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(M){build(M);ready=true;route();})
+  .catch(function(){$('view').innerHTML='<p class="loading">자료를 불러오지 못했습니다. 잠시 뒤 새로고침해 주세요.</p>';});
+})();
+</script>
+<script src="../assets/marker.js" defer></script>
+</body>
+</html>
