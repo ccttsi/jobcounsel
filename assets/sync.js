@@ -146,6 +146,7 @@
     '.x:hover{background:var(--soft)}',
     'h2{font-size:20px;font-weight:750;letter-spacing:-.02em}',
     '.sub{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.55}',
+    '.sub b{color:var(--ink);font-weight:700}',
     '.tabs{display:flex;gap:4px;padding:3px;margin-top:16px;border-radius:12px;background:var(--soft);border:1px solid var(--line)}',
     '.tabs button{flex:1;min-height:42px;border-radius:9px;font-size:14px;font-weight:650;color:var(--muted)}',
     '.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}',
@@ -154,6 +155,13 @@
     'label.f small{font-weight:500;color:var(--muted);font-size:12px}',
     'input[type=text],input[type=password]{width:100%;min-height:46px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--soft);font-size:16px;color:var(--ink)}',
     'input:focus{outline:2px solid var(--acc);outline-offset:0;border-color:transparent}',
+    '.pwf{position:relative;display:block}',
+    '.pwf input{padding-right:52px}',
+    '.eye{position:absolute;right:2px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:10px;display:grid;place-items:center;color:var(--muted)}',
+    '.eye:hover{color:var(--ink)}',
+    '.eye:focus-visible{outline:2px solid var(--acc);outline-offset:-4px}',
+    '.eye svg{width:22px;height:22px}',
+    '.eye .shut{display:none}.eye[aria-pressed="true"] .open{display:none}.eye[aria-pressed="true"] .shut{display:block}',
     '.agree{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;color:var(--muted);padding:12px;border-radius:12px;background:var(--soft);border:1px dashed var(--line)}',
     '.agree input{width:20px;height:20px;margin-top:1px;flex:none;accent-color:var(--acc)}',
     '.agree ul{margin:6px 0 0;padding-left:16px}',
@@ -181,6 +189,13 @@
     '.foot a{color:var(--acc)}',
     '@media (prefers-reduced-motion:reduce){*{animation:none!important}}'
   ].join('\n');
+  /* 비밀번호 입력란: 오른쪽 눈 아이콘으로 표시·숨김 */
+  var EYE = '<svg class="open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>' +
+    '<svg class="shut" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path d="M4 4l16 16"/></svg>';
+  function pwInput(attrs) {
+    return '<span class="pwf"><input type="password" ' + attrs + ' autocapitalize="off" autocorrect="off" spellcheck="false">' +
+      '<button type="button" class="eye" data-act="eye" aria-pressed="false" aria-label="비밀번호 보기" title="비밀번호 보기">' + EYE + '</button></span>';
+  }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function isDark() { return root.getAttribute('data-theme') === 'dark'; }
   function hubURL() {
@@ -197,18 +212,18 @@
         (sess.admin ? adminCard() : '') +
         '<div class="row"><button class="btn" data-act="now">지금 연동하기</button><button class="btn" data-act="logout">로그아웃</button></div>' +
         '<p class="msg' + (msg && msg.ok ? ' ok' : '') + '" role="status">' + esc(msg ? msg.t : '') + '</p>' +
-        '<details><summary>비밀번호 바꾸기</summary><form data-form="pw"><label class="f">지금 비밀번호<input type="password" name="old" autocomplete="current-password" required></label>' +
-        '<label class="f">새 비밀번호 <small>8자 이상</small><input type="password" name="pw" autocomplete="new-password" minlength="8" maxlength="72" required></label><button class="go" type="submit">바꾸기</button></form></details>' +
+        '<details><summary>비밀번호 바꾸기</summary><form data-form="pw"><label class="f">지금 비밀번호' + pwInput('name="old" autocomplete="current-password" required') + '</label>' +
+        '<label class="f">새 비밀번호 <small>8자 이상</small>' + pwInput('name="pw" autocomplete="new-password" minlength="8" maxlength="72" required') + '</label><button class="go" type="submit">바꾸기</button></form></details>' +
         '<details><summary>계정과 기록 완전히 삭제</summary><form data-form="del"><p class="sub">서버에 저장된 아이디·비밀번호·학습 기록·메모가 모두 지워지고 되돌릴 수 없어요. 이 기기에 남은 기록은 그대로 둡니다.</p>' +
-        '<label class="f">비밀번호 확인<input type="password" name="pw" autocomplete="current-password" required></label><button class="btn bad" type="submit">삭제하기</button></form></details>';
+        '<label class="f">비밀번호 확인' + pwInput('name="pw" autocomplete="current-password" required') + '</label><button class="btn bad" type="submit">삭제하기</button></form></details>';
     } else {
       var su = view === 'signup';
-      body = '<h2>' + (su ? '새 계정 만들기' : '로그인') + '</h2><p class="sub">로그인하면 탐색 진도, 형광펜, 포스트잇 메모가 다른 기기에서도 이어져요.</p>' +
+      body = '<h2>' + (su ? '새 계정 만들기' : '로그인') + '</h2><p class="sub"><b>로그인하지 않아도 모든 기능을 그대로 쓸 수 있어요.</b> 로그인은 선택이며, 하면 탐색 진도, 형광펜, 포스트잇 메모가 저장되어 다른 기기에서도 이어져요.</p>' +
         '<div class="tabs" role="tablist"><button role="tab" data-act="tab" data-v="login" aria-selected="' + !su + '">로그인</button><button role="tab" data-act="tab" data-v="signup" aria-selected="' + su + '">새로 만들기</button></div>' +
         '<form data-form="' + (su ? 'signup' : 'login') + '" novalidate>' +
         '<label class="f">아이디 ' + (su ? '<small>영문 소문자·숫자·밑줄(_) 4~20자</small>' : '') + '<input type="text" name="id" autocomplete="username" autocapitalize="off" spellcheck="false" inputmode="text" maxlength="20" required></label>' +
-        '<label class="f">비밀번호 ' + (su ? '<small>8자 이상</small>' : '') + '<input type="password" name="pw" autocomplete="' + (su ? 'new-password' : 'current-password') + '" maxlength="72" required></label>' +
-        (su ? '<label class="f">비밀번호 확인<input type="password" name="pw2" autocomplete="new-password" maxlength="72" required></label>' +
+        '<label class="f">비밀번호 ' + (su ? '<small>8자 이상</small>' : '') + pwInput('name="pw" autocomplete="' + (su ? 'new-password' : 'current-password') + '" maxlength="72" required') + '</label>' +
+        (su ? '<label class="f">비밀번호 확인' + pwInput('name="pw2" autocomplete="new-password" maxlength="72" required') + '</label>' +
           '<label class="agree"><input type="checkbox" name="ok"><span><b>아래 안내를 읽었어요</b><ul><li>이메일·이름·연락처는 받지 않아요. 그래서 <b>비밀번호를 잊으면 찾을 수 없어요.</b></li><li>메모에 내담자의 이름·연락처 같은 개인정보를 적지 마세요.</li><li>언제든 계정과 기록을 완전히 지울 수 있어요.</li></ul></span></label>' : '') +
         '<p class="msg' + (msg && msg.ok ? ' ok' : '') + '" role="alert">' + esc(msg ? msg.t : '') + '</p>' +
         '<button class="go" type="submit"' + (working ? ' disabled' : '') + '>' + (working ? '잠시만요…' : su ? '만들고 연동 시작' : '로그인') + '</button></form>';
@@ -254,6 +269,14 @@
     sr.addEventListener('keyup', function (e) { e.stopPropagation(); });
     sr.addEventListener('click', function (e) {
       var b = e.target.closest('[data-act]'); if (!b) return; var a = b.getAttribute('data-act');
+      if (a === 'eye') {
+        var inp = b.parentNode.querySelector('input'), show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password';
+        b.setAttribute('aria-pressed', String(show));
+        b.setAttribute('aria-label', show ? '비밀번호 숨기기' : '비밀번호 보기'); b.title = b.getAttribute('aria-label');
+        try { var n = inp.value.length; inp.focus({ preventScroll: true }); inp.setSelectionRange(n, n); } catch (x) {}
+        return;
+      }
       if (a === 'close') close();
       else if (a === 'tab') { view = b.getAttribute('data-v'); msg = ''; render(); var i = sr.querySelector('input'); if (i) i.focus(); }
       else if (a === 'stats') { stats = null; render(); }
