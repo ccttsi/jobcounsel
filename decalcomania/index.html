@@ -147,7 +147,10 @@ a{color:inherit}
 .course:first-of-type{border-top:0}
 .course summary{cursor:pointer;min-height:36px;display:flex;align-items:center;font-weight:600}
 .course p{font-size:15px;color:var(--muted);margin:0 0 8px}
-.uni{padding:8px 0;border-top:1px dashed var(--line)}
+.uni{display:block;padding:8px 24px 8px 0;border-top:1px dashed var(--line);color:inherit;text-decoration:none;position:relative}
+.uni::after{content:'›';position:absolute;right:4px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:20px}
+.uni:hover b{color:var(--dept)}
+.sec .names a{text-decoration:none;color:inherit;display:block}
 .uni:first-child{border-top:0}
 .uni .m{display:block;font-size:var(--fs-s);color:var(--muted)}
 .uni.closed{opacity:.6}
@@ -155,6 +158,26 @@ a{color:inherit}
 .filt::-webkit-scrollbar{display:none}
 .fb{flex:none;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line);background:var(--soft);font-size:14px}
 .fb[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.pg{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px;margin-top:12px}
+.pg button{min-width:36px;height:40px;padding:0 6px;border-radius:12px;border:1px solid transparent;background:none;font-size:15px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.pg button[aria-current="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.pg button:disabled{opacity:.35}
+.pg .gap{min-width:16px;text-align:center;color:var(--dim)}
+.pg-info{text-align:center;font-size:var(--fs-s);color:var(--dim);margin-top:2px}
+.sec h3 .go{float:right;margin-left:8px;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--dept);color:var(--dept);background:var(--dept-soft);font-size:14px;font-weight:700}
+.tmap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;max-width:400px;margin:4px auto 8px}
+.tile{aspect-ratio:1;border-radius:12px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;font-size:15px;font-weight:700;line-height:1.25;
+  background:color-mix(in srgb,var(--dept) var(--h,0%),var(--panel));color:var(--ink);transition:transform .15s}
+.tile small{font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.tile.hot{color:#fff}.tile.hot small{color:rgba(255,255,255,.85)}
+:root[data-theme="dark"] .tile.hot{color:#05201d}:root[data-theme="dark"] .tile.hot small{color:rgba(5,32,29,.8)}
+.tile:disabled{opacity:.4}
+.tile[aria-pressed="true"]{outline:3px solid var(--stamp);outline-offset:2px}
+.tile:active{transform:scale(.95)}
+.mode{display:flex;gap:6px;justify-content:center;margin:0 0 12px}
+.sec ul.names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin:8px 0 0;padding:0;list-style:none}
+.sec .names li{margin:0;padding:6px 10px;border-radius:10px;background:var(--soft);font-size:15px;font-weight:600;line-height:1.4}
+.names li small{display:block;font-size:12px;font-weight:500;color:var(--muted)}
 .more{width:100%;height:44px;margin-top:8px;border:1px solid var(--line);border-radius:12px;background:var(--soft);font-size:15px;font-weight:600}
 .link{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 12px;margin-top:8px}
 .link .nm{flex:1;min-width:0;font-weight:700}
@@ -259,6 +282,25 @@ window.addEventListener('storage',function(e){if(e.key==='jc-theme'){mode=e.newV
 /* ───────── 자료 ───────── */
 var M,J,E,majors={},jobs={},univ={},rowsBy={},estByMinor={},eFrom={},eTo={},jgFrom={},jgTo={},jgName={},cols,DEPT=[],JOB=[],INDEX=[];
 var deptLoc={},jobLoc={};
+/* 시도 이름을 17개 짧은 이름으로 맞춘다(공시 연도마다 표기가 다르다) */
+var REGS=['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주'];
+var REG_FULL={서울:'서울특별시',부산:'부산광역시',대구:'대구광역시',인천:'인천광역시',광주:'광주광역시',대전:'대전광역시',울산:'울산광역시',세종:'세종특별자치시',경기:'경기도',강원:'강원특별자치도',충북:'충청북도',충남:'충청남도',전북:'전북특별자치도',전남:'전라남도',경북:'경상북도',경남:'경상남도',제주:'제주특별자치도'};
+function normReg(r){r=String(r||'');if(REGS.indexOf(r)>=0)return r;
+  if(/전남광주/.test(r))return '전남';
+  var M2={'충청북':'충북','충청남':'충남','전라북':'전북','전북특':'전북','전라남':'전남','경상북':'경북','경상남':'경남','강원':'강원','제주':'제주','경기':'경기','세종':'세종'};
+  for(var k in M2)if(r.indexOf(k)===0)return M2[k];
+  for(var i=0;i<REGS.length;i++)if(r.indexOf(REGS[i])===0)return REGS[i];
+  return r;}
+/* 쪽 나누기: 1 2 3 … 형식 */
+function pager(key,total,size){
+  var n=Math.ceil(total/size);if(n<=1)return '';var c=Math.min(st.pg[key]||0,n-1),b=[];
+  var want={0:1};want[n-1]=1;for(var i=c-1;i<=c+1;i++)if(i>=0&&i<n)want[i]=1;
+  if(c<=2)for(i=0;i<Math.min(n,4);i++)want[i]=1;if(c>=n-3)for(i=Math.max(0,n-4);i<n;i++)want[i]=1;
+  var last=-1;Object.keys(want).map(Number).sort(function(a,b){return a-b;}).forEach(function(i){if(last>=0&&i-last>1)b.push('<span class="gap">…</span>');b.push('<button data-pg="'+key+'" data-v="'+i+'" aria-current="'+(i===c)+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>');last=i;});
+  return '<nav class="pg" aria-label="쪽 넘기기" data-pgbox="'+key+'"><button data-pg="'+key+'" data-v="'+(c-1)+'" aria-label="이전 쪽"'+(c===0?' disabled':'')+'>‹</button>'+b.join('')+'<button data-pg="'+key+'" data-v="'+(c+1)+'" aria-label="다음 쪽"'+(c===n-1?' disabled':'')+'>›</button></nav>'+
+    '<p class="pg-info">'+num(c*size+1)+'–'+num(Math.min(total,(c+1)*size))+' / '+num(total)+'</p>';
+}
+function page(key,arr,size){var n=Math.max(1,Math.ceil(arr.length/size)),c=Math.min(st.pg[key]||0,n-1);st.pg[key]=c;return arr.slice(c*size,(c+1)*size);}
 function load(u){return fetch(u,{cache:'force-cache'}).then(function(r){if(!r.ok)throw new Error(u);return r.json();});}
 Promise.all([load('./data/majors.json'),load('./data/jobs.json'),load('./data/edges.json')]).then(function(a){
   M=a[0];J=a[1];E=a[2];build();$('q').disabled=false;openHash()||render();
@@ -268,7 +310,7 @@ Promise.all([load('./data/majors.json'),load('./data/jobs.json'),load('./data/ed
 
 function build(){
   cols=M.department_columns;
-  (M.universities||[]).forEach(function(u){univ[u.id]=u;});
+  (M.universities||[]).forEach(function(u){u.reg=normReg(u.region);univ[u.id]=u;});
   M.majors.forEach(function(m){majors[m.id]=m;rowsBy[m.id]=[];});
   J.jobs.forEach(function(j){jobs[j.id]=j;});
   (J.classifications.job_class_group||[]).forEach(function(g){jgName[g.id]=g.name;});
@@ -315,7 +357,7 @@ function linksOfJob(id){return (eTo[id]||[]).slice().sort(function(a,b){return (
 function findNode(tree,id){for(var i=0;i<tree.length;i++){if(tree[i].id===id)return tree[i];for(var k=0;k<tree[i].kids.length;k++)if(tree[i].kids[k].id===id)return tree[i].kids[k];}return null;}
 
 /* ───────── 상태 ───────── */
-var st={flip:false,dp:[],jp:[],uf:{region:'',closed:false,all:false}};
+var st={flip:false,dp:[],jp:[],uf:{region:'',closed:false},pg:{},map:null};
 var stage=$('stage'),wide=window.matchMedia('(min-width:960px)');
 function setFlip(f){
   if(wide.matches||st.flip===f)return;
@@ -324,8 +366,8 @@ function setFlip(f){
 }
 function press(el){el.classList.remove('press');void el.offsetWidth;el.classList.add('press');}
 function setHash(id){try{history.replaceState(null,'',id?'#'+id:location.pathname+location.search);}catch(e){}}
-function openMajor(id){if(!majors[id])return;st.dp=deptLoc[id].concat(id);st.uf={region:'',closed:false,all:false};setFlip(false);setHash(id);render();top('deptContent');}
-function openJob(id){if(!jobs[id])return;st.jp=jobLoc[id].concat(id);setFlip(true);setHash(id);render();top('jobContent');}
+function openMajor(id){if(!majors[id])return;st.dp=deptLoc[id].concat(id);st.uf={region:'',closed:false};st.pg={};st.map=null;setFlip(false);setHash(id);render();top('deptContent');}
+function openJob(id){if(!jobs[id])return;st.jp=jobLoc[id].concat(id);st.pg.jd=0;setFlip(true);setHash(id);render();top('jobContent');}
 function top(cid){var s=$(cid).querySelector('.scroll');if(s)s.scrollTop=0;}
 function openHash(){var h=decodeURIComponent(location.hash.slice(1));if(majors[h]){openMajor(h);return true;}if(jobs[h]){openJob(h);return true;}return false;}
 window.addEventListener('hashchange',openHash);
@@ -384,7 +426,7 @@ function majorView(id){
   /* 연결 직업 */
   var L=linksOfMajor(id),known={};L.forEach(function(e){known[jobs[e.to].name]=1;});
   var rest=(m.related_job_names||[]).filter(function(n){return !known[n];});
-  h+=sec('연결 직업',(L.length?L.map(function(e){return relBtn(e,'j');}).join(''):'<p>이 데이터에는 아직 연결된 직업이 없습니다.</p>')+(rest.length?'<p class="warn">이 데이터에 없는 관련 직업: '+esc(rest.join(', '))+'</p>':'')+legend(),wide.matches?'누르면 오른쪽에 열립니다':'누르면 직업트리로 뒤집힙니다');
+  h+=sec('연결 직업',(L.length?page('mj',L,8).map(function(e){return relBtn(e,'j');}).join('')+pager('mj',L.length,8):'<p>이 데이터에는 아직 연결된 직업이 없습니다.</p>')+(rest.length?'<p class="warn">이 데이터에 없는 관련 직업: '+esc(rest.join(', '))+'</p>':'')+legend(),wide.matches?'누르면 오른쪽에 열립니다':'누르면 직업트리로 뒤집힙니다');
   var G=(jgFrom[id]||[]).slice().sort(function(a,b){return b.weight-a.weight;});
   if(G.length)h+=sec('졸업 후 첫 직업분야',bars(G.map(function(e){return{n:jgName[e.to]||e.to,p:e.weight};}),'n','p')+'<p class="src">'+esc(G[0].source)+' '+esc(G[0].year)+' · 한국고용직업분류 대분류 기준</p>','진출통계');
   var kv='';
@@ -406,19 +448,44 @@ function majorView(id){
 function uniSec(id){
   var rows=rowsBy[id]||[],f=st.uf;if(!rows.length)return sec('개설 대학','<p>개설 대학이 확인되지 않았습니다.</p>');
   var closed=rows.filter(function(r){return r.closed_in_2024_disclosure;}).length;
-  var regs={};rows.forEach(function(r){var u=univ[r.university_id];if(u&&u.region)regs[u.region]=(regs[u.region]||0)+1;});
-  var view=rows.filter(function(r){var u=univ[r.university_id]||{};return (f.closed||!r.closed_in_2024_disclosure)&&(!f.region||u.region===f.region);});
+  var regs={};rows.forEach(function(r){var u=univ[r.university_id];if(u&&u.reg&&(f.closed||!r.closed_in_2024_disclosure))regs[u.reg]=(regs[u.reg]||0)+1;});
+  var view=rows.filter(function(r){var u=univ[r.university_id]||{};return (f.closed||!r.closed_in_2024_disclosure)&&(!f.region||u.reg===f.region);});
   view.sort(function(a,b){var ua=univ[a.university_id]||{},ub=univ[b.university_id]||{};return (ua.name||'').localeCompare(ub.name||'','ko');});
   var h='<div class="filt"><button class="fb" data-uf="region" data-v="" aria-pressed="'+(!f.region)+'">전체</button>'+Object.keys(regs).sort(function(a,b){return regs[b]-regs[a];}).map(function(r){return '<button class="fb" data-uf="region" data-v="'+esc(r)+'" aria-pressed="'+(f.region===r)+'">'+esc(r)+' '+regs[r]+'</button>';}).join('')+'</div>';
-  var lim=f.all?view.length:20;
-  h+=view.slice(0,lim).map(function(r){var u=univ[r.university_id]||{};var uname=(u.name||'')+(u.campus&&u.campus!=='본교'?' '+u.campus:'');
-    var meta=[r.college,r.duration,r.shift,u.region,u.kind].filter(Boolean).join(' · ');
-    return '<div class="uni'+(r.closed_in_2024_disclosure?' closed':'')+'"><b>'+esc(uname)+'</b> '+esc(r.department_name)+(r.closed_in_2024_disclosure?'<span class="badge b-soft">2024 공시 폐지 표시</span>':'')+'<span class="m">'+esc(meta)+'</span></div>';}).join('');
-  if(view.length>lim)h+='<button class="more" data-uf="all">'+num(view.length-lim)+'곳 더 보기</button>';
+  h+=page('uni',view,10).map(function(r){var u=univ[r.university_id]||{};var uname=(u.name||'')+(u.campus&&u.campus!=='본교'&&!/캠퍼스/.test(u.name||'')?' '+u.campus:'');
+    var meta=[r.college,r.duration,r.shift,u.reg,u.kind].filter(Boolean).join(' · ');
+    return '<a class="uni'+(r.closed_in_2024_disclosure?' closed':'')+'" href="../univ/#'+esc(r.department_id)+'"><b>'+esc(uname)+'</b> '+esc(r.department_name)+(r.closed_in_2024_disclosure?'<span class="badge b-soft">2024 공시 폐지 표시</span>':'')+'<span class="m">'+esc(meta)+'</span></a>';}).join('');
+  h+=pager('uni',view.length,10);
   if(!view.length)h+='<p>조건에 맞는 학과가 없습니다.</p>';
   if(closed)h+='<button class="more" data-uf="closed">'+(f.closed?'폐지 표시 학과 숨기기':'2024 공시 폐지 표시 학과 '+num(closed)+'곳도 보기')+'</button>';
-  h+='<p class="warn">실제 모집 여부는 지원 전에 그 대학 입학처에서 확인해 주세요.</p>';
-  return sec('개설 대학',h,num(rows.length-closed)+'곳 · 대학알리미 2024 공시·커리어넷 2025');
+  h+='<p class="warn">대학을 누르면 대학학과위키에서 유사학과와 같은 계열 학과를 볼 수 있습니다. 실제 모집 여부는 지원 전에 그 대학 입학처에서 확인해 주세요.</p>';
+  return sec('개설 대학<button class="go" data-map-open="1">지도로 보기 ›</button>',h,num(rows.length-closed)+'곳 · 대학알리미 2024 공시·커리어넷 2025');
+}
+/* 지역 지도: 시도를 칸으로 단순화한 지도. 누르면 그 지역 대학 이름만 보여 준다. */
+var TILES={서울:[1,0],강원:[2,0],인천:[0,1],경기:[1,1],충북:[2,1],경북:[3,1],충남:[0,2],세종:[1,2],대전:[2,2],대구:[3,2],울산:[4,2],전북:[1,3],경남:[3,3],부산:[4,3],광주:[0,4],전남:[1,4],제주:[0,5]};
+function mapUnis(id,mode){
+  var seen={},out=[];
+  if(mode==='all'){Object.keys(univ).forEach(function(k){out.push(univ[k]);});}
+  else (rowsBy[id]||[]).forEach(function(r){if(r.closed_in_2024_disclosure||seen[r.university_id])return;seen[r.university_id]=1;var u=univ[r.university_id];if(u)out.push(u);});
+  return out;
+}
+function uName(u){return (u.name||'')+(u.campus&&u.campus!=='본교'&&!/캠퍼스/.test(u.name||'')?' '+u.campus:'');}
+function mapView(id){
+  var m=majors[id],mp=st.map,all=mapUnis(id,mp.mode),cnt={},max=0;
+  all.forEach(function(u){cnt[u.reg]=(cnt[u.reg]||0)+1;});REGS.forEach(function(r){max=Math.max(max,cnt[r]||0);});
+  var h='<button class="up" data-map-close="1">‹ '+esc(m.name)+'(으)로 돌아가기</button><div class="dt"><h2>지역별 대학</h2></div>';
+  h+='<p class="dpath">'+(mp.mode==='all'?'전국 모든 대학·전문대학':esc(m.name)+'을(를) 연 대학')+' · 지역을 누르면 대학 이름이 나옵니다</p>';
+  var t='<div class="mode"><button class="fb" data-map-mode="major" aria-pressed="'+(mp.mode!=='all')+'">이 학과 개설 대학</button><button class="fb" data-map-mode="all" aria-pressed="'+(mp.mode==='all')+'">전체 대학</button></div>';
+  t+='<div class="tmap" role="group" aria-label="시도 지도">'+REGS.map(function(r){var c=cnt[r]||0,xy=TILES[r],hp=max?Math.round(12+c/max*78):0;
+    return '<button class="tile'+(hp>=55?' hot':'')+'" style="grid-column:'+(xy[0]+1)+';grid-row:'+(xy[1]+1)+';--h:'+(c?hp:0)+'%" data-map-reg="'+r+'" aria-pressed="'+(mp.reg===r)+'"'+(c?'':' disabled')+' aria-label="'+REG_FULL[r]+' '+c+'곳">'+r+'<small>'+c+'</small></button>';}).join('')+'</div>';
+  h+=sec('지도',t,'색이 진할수록 많습니다');
+  if(mp.reg){
+    var L=all.filter(function(u){return u.reg===mp.reg;}).sort(function(a,b){return uName(a).localeCompare(uName(b),'ko');});
+    var body=L.length?'<ul class="names">'+page('map',L,16).map(function(u){return '<li><a href="../univ/#'+esc(u.id)+'">'+esc(uName(u))+(u.kind?'<small>'+esc(u.kind)+'</small>':'')+'</a></li>';}).join('')+'</ul>'+pager('map',L.length,16):'<p>이 지역에는 해당 대학이 없습니다.</p>';
+    h+='<div id="mapList">'+sec(esc(REG_FULL[mp.reg]),body,num(L.length)+'곳')+'</div>';
+  }else h+='<p class="pg-info" style="margin-bottom:16px">위 지도에서 지역을 눌러 보세요.</p>';
+  h+='<p class="src">대학 소재지는 대학알리미 2024 공시 기준이며, 캠퍼스별로 따로 셉니다.</p>'+FOOT;
+  return '<div class="wrap">'+h+'</div>';
 }
 function jobView(id){
   var j=jobs[id],k=j.keco||{},h='',jg='JG-'+k.class_code;
@@ -428,7 +495,7 @@ function jobView(id){
   var ind=(j.industry||[]).map(function(x){return x.name;});
   if(ind.length||(j.example_companies||[]).length)h+=sec('주로 일하는 산업',tags(ind)+((j.example_companies||[]).length?'<p style="margin-top:8px"><b>업종 대표기업 예시</b><br><span style="color:var(--muted);font-size:15px">'+esc(j.example_companies.join(', '))+'</span></p>':'')+'<p class="warn">'+esc(j.industry_note||'')+'. 공식 연계 자료가 아니며, 특정 기업의 채용을 뜻하지 않습니다.</p>','참고 정보');
   var L=linksOfJob(id);
-  h+=sec('연결 학과',(L.length?L.map(function(e){return relBtn(e,'d');}).join(''):'<p>이 데이터에는 아직 연결된 학과가 없습니다.</p>')+legend(),wide.matches?'역추적 · 누르면 왼쪽에 열립니다':'역추적 · 누르면 학과트리로 뒤집힙니다');
+  h+=sec('연결 학과',(L.length?page('jd',L,8).map(function(e){return relBtn(e,'d');}).join('')+pager('jd',L.length,8):'<p>이 데이터에는 아직 연결된 학과가 없습니다.</p>')+legend(),wide.matches?'역추적 · 누르면 왼쪽에 열립니다':'역추적 · 누르면 학과트리로 뒤집힙니다');
   var G=(jgTo[jg]||[]).slice().sort(function(a,b){return b.weight-a.weight;}).slice(0,10);
   if(G.length)h+=sec('이 분야로 첫 직장을 많이 잡은 학과',G.map(function(e){return '<button class="link lk-d" data-d-jump="'+esc(e.from)+'"><span class="dot"></span><span class="nm">'+esc(majors[e.from].name)+'<span class="meta">졸업생의 '+e.weight+'%가 '+esc(jgName[jg]||'')+'로 진출</span></span></button>';}).join('')+'<p class="src" style="margin-top:8px">'+esc(G[0].source)+' '+esc(G[0].year)+'</p>','진출통계 상위 10');
   h+=sec('종사자의 전공계열',bars(j.major_distribution,'category','pct'),'워크피디아');
@@ -450,7 +517,7 @@ function render(){
   if(dSel)(eFrom[dSel]||[]).forEach(function(e){jl[e.to]=1;});
   if(jSel)(eTo[jSel]||[]).forEach(function(e){dl[e.from]=1;});
   var ds=$('deptContent').querySelector('.scroll'),keep=ds&&ds.dataset.k===st.dp.join('/')?ds.scrollTop:0;
-  $('deptContent').innerHTML='<div class="scroll" data-k="'+esc(st.dp.join('/'))+'">'+(dSel?majorView(dSel):'<div class="wrap">'+list('d',DEPT,st.dp,dl)+'</div>')+'</div>'+crumbs('d',DEPT,st.dp,majors,'학과트리');
+  $('deptContent').innerHTML='<div class="scroll" data-k="'+esc(st.dp.join('/'))+'">'+(dSel?(st.map?mapView(dSel):majorView(dSel)):'<div class="wrap">'+list('d',DEPT,st.dp,dl)+'</div>')+'</div>'+crumbs('d',DEPT,st.dp,majors,'학과트리');
   $('jobContent').innerHTML=crumbs('j',JOB,st.jp,jobs,'직업트리')+'<div class="scroll">'+(jSel?jobView(jSel):'<div class="wrap">'+list('j',JOB,st.jp,jl)+'</div>')+'</div>';
   if(keep)$('deptContent').querySelector('.scroll').scrollTop=keep;
   var pj='<div class="plabel">▲ 직업트리<span>· 누르면 뒤집힙니다</span></div>';
@@ -469,7 +536,7 @@ function bindScroll(){Array.prototype.forEach.call(d.querySelectorAll('.scroll')
 
 /* ───────── 조작 ───────── */
 d.addEventListener('click',function(ev){
-  var t=ev.target.closest('[data-d-go],[data-j-go],[data-d-open],[data-j-open],[data-d-jump],[data-j-jump],[data-uf]');
+  var t=ev.target.closest('[data-d-go],[data-j-go],[data-d-open],[data-j-open],[data-d-jump],[data-j-jump],[data-uf],[data-pg],[data-map-open],[data-map-close],[data-map-reg],[data-map-mode]');
   if(t){
     var ds=t.dataset;
     if(ds.dGo!=null){st.dp=st.dp.slice(0,+ds.dGo);setFlip(false);if(!st.dp.length||st.dp.length<3)setHash('');render();top('deptContent');}
@@ -478,7 +545,12 @@ d.addEventListener('click',function(ev){
     else if(ds.jOpen){if(jobs[ds.jOpen])openJob(ds.jOpen);else{st.jp.push(ds.jOpen);render();top('jobContent');}}
     else if(ds.dJump)openMajor(ds.dJump);
     else if(ds.jJump)openJob(ds.jJump);
-    else if(ds.uf){var f=st.uf;if(ds.uf==='region'){f.region=ds.v;f.all=false;}else if(ds.uf==='all')f.all=true;else f.closed=!f.closed;render();}
+    else if(ds.uf){var f=st.uf;if(ds.uf==='region')f.region=ds.v;else f.closed=!f.closed;st.pg.uni=0;render();}
+    else if(ds.pg){if(t.disabled)return;st.pg[ds.pg]=Math.max(0,+ds.v);render();var q=d.querySelector('[data-pgbox="'+ds.pg+'"]');q=q&&q.closest('.sec');if(q&&q.scrollIntoView)q.scrollIntoView({block:'start'});}
+    else if(ds.mapOpen){st.map={mode:'major',reg:''};st.pg.map=0;setFlip(false);render();top('deptContent');}
+    else if(ds.mapClose){st.map=null;render();top('deptContent');var u2=d.querySelector('[data-map-open]');if(u2){var s2=u2.closest('.sec');if(s2)s2.scrollIntoView({block:'start'});}}
+    else if(ds.mapReg){st.map.reg=ds.mapReg;st.pg.map=0;render();var ml=$('mapList');if(ml)ml.scrollIntoView({block:'start',behavior:'smooth'});}
+    else if(ds.mapMode){st.map.mode=ds.mapMode;st.pg.map=0;render();}
     return;
   }
   if(ev.target.closest('#peekJob'))setFlip(true);
