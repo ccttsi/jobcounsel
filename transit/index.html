@@ -36,7 +36,9 @@ document.documentElement.setAttribute('data-theme',t);})();
   --shadow:none;color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:hidden;max-width:100%}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+/* 자료실 규칙: html·body에 overflow-x:hidden을 걸면 iOS 사파리에서 sticky가 풀린다 → clip, 지원하지 않는 브라우저만 body에 hidden */
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
 body{font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
 button,input,textarea,select{font:inherit;color:inherit;letter-spacing:inherit}
 button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit;-webkit-tap-highlight-color:transparent}
