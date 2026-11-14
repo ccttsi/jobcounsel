@@ -1,0 +1,38 @@
+{
+  "schema": "jc-cardbook/1",
+  "id": "choosing-a-vocation-1909",
+  "title": "다시 읽는 『직업의 선택』",
+  "subtitle": "프랭크 파슨스, 1909 · 카드로 읽는 직업상담의 첫 책",
+  "source": {
+    "author": "Frank Parsons (1854–1908)",
+    "title": "Choosing a Vocation",
+    "publisher": "Houghton Mifflin Company, Boston and New York",
+    "year": 1909,
+    "edition": "1909년 초판",
+    "url": "https://archive.org/details/choosingavocati00parsgoog",
+    "text_url": "https://archive.org/stream/choosingavocati00parsgoog/choosingavocati00parsgoog_djvu.txt",
+    "scan": "미시간대학교 도서관 소장본, Google 디지털화, Internet Archive 공개(식별자 choosingavocati00parsgoog)",
+    "structure": "원문은 3부 16장(제1부 개인 조사, 제2부 산업 조사, 제3부 조직과 일)입니다. 이 이북은 16장을 8개 장으로 묶었습니다."
+  },
+  "rights": [
+    "원문은 1909년 미국에서 출판되었고 저자 프랭크 파슨스는 1908년에 세상을 떠났습니다. 미국에서는 1929년 이전 출판물로, 한국에서는 저작자 사후 70년이 지나 저작재산권 보호 기간이 끝난 공유저작물(퍼블릭 도메인)입니다. Internet Archive도 이 판본을 저작권 없음(NOT_IN_COPYRIGHT)으로 표시합니다.",
+    "이 이북은 그 1909년 초판 원문을 바탕으로 자료실이 현대어로 번역·각색하고 도식화한 2차 교육 자료입니다. 원문을 그대로 옮긴 직역본이 아니며, 문장은 2030 독자 눈높이로 다시 썼습니다.",
+    "1909년 초판 원문만 썼습니다. 책머리의 랠프 앨버트슨(Ralph Albertson) 소개글과 이후 재판·복각판에 붙은 서문·해설은 쓰지 않았습니다.",
+    "도식·도표·일러스트는 원문 내용과 수치를 바탕으로 자료실이 새로 그렸습니다. 원문의 그림이나 표 이미지를 복제하지 않았습니다.",
+    "원문의 일부 주장(머리 모양으로 사람의 유형을 짐작하는 대목, 성별로 나눈 직업 목록 등)은 오늘의 과학·윤리 기준과 맞지 않아 「2026 관점」 카드로 짚었습니다.",
+    "정확한 문장이 필요하면 반드시 원문을 확인하십시오. 각색 과정의 잘못을 알려 주시면 고칩니다."
+  ],
+  "chapters": [
+    {"id": "intro", "file": "intro.json", "no": 0, "title": "들어가며", "en": "Before You Read", "orig": [], "hue": 32},
+    {"id": "ch01", "file": "ch01.json", "no": 1, "title": "과학적 방법의 중요성", "en": "The Importance of Scientific Method", "orig": ["I", "II"], "hue": 28},
+    {"id": "ch02", "file": "ch02.json", "no": 2, "title": "상담사와 내담자", "en": "Counselors and Applicants", "orig": ["III"], "hue": 172},
+    {"id": "ch03", "file": "ch03.json", "no": 3, "title": "개인 데이터 심층 분석", "en": "Extended Discussion of Personal Data", "orig": ["IV", "V"], "hue": 222},
+    {"id": "ch04", "file": "ch04.json", "no": 4, "title": "효율과 성공의 조건", "en": "The Conditions of Efficiency and Success", "orig": ["VI"], "hue": 350},
+    {"id": "ch05", "file": "ch05.json", "no": 5, "title": "산업 분류", "en": "Classifications of Industries", "orig": ["VII", "VIII"], "hue": 140},
+    {"id": "ch06", "file": "ch06.json", "no": 6, "title": "통계의 활용", "en": "The Use of Statistics", "orig": ["IX", "X", "XI"], "hue": 258},
+    {"id": "ch07", "file": "ch07.json", "no": 7, "title": "직업국 이야기", "en": "The Vocation Bureau", "orig": ["XII", "XIII", "XIV"], "hue": 44},
+    {"id": "ch08", "file": "ch08.json", "no": 8, "title": "실제 상담 사례", "en": "Sample Cases", "orig": ["XV", "XVI"], "hue": 196},
+    {"id": "outro", "file": "outro.json", "no": 9, "title": "출처와 저작권", "en": "Source & Rights", "orig": [], "hue": 30}
+  ],
+  "glossary": "glossary.json"
+}
