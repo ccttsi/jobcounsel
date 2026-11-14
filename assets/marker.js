@@ -160,7 +160,7 @@
         if (at < 0) return;
         var r = rangeFromOffsets(at, at + it.quote.length); if (!r) { it._found = false; return; }
         liveRanges[it.id] = r;
-        if (it.type === 'hl' && !prefs.hidden) (byColor[it.color] = byColor[it.color] || []).push({ r: r, id: it.id });
+        if (it.type === 'hl' && !prefs.hidden && !it.off) (byColor[it.color] = byColor[it.color] || []).push({ r: r, id: it.id });
       });
       var colors = Object.keys(byColor);
       var all = {}; PENS.forEach(function (p) { all[p.c] = 1; }); all[prefs.penCustom] = 1; colors.forEach(function (c) { all[c] = 1; });
@@ -261,7 +261,7 @@
   }
   function placeNotes() {
     if (!notesEl) return;
-    var notes = data.items.filter(function (it) { return it.type === 'note'; });
+    var notes = data.items.filter(function (it) { return it.type === 'note' && !it.off; });
     var html = prefs.hidden ? '' : notes.map(noteHTML).join('');
     if (notesEl._html !== html) {
       var focusId = null, caret = null, ae = layerHost && layerHost.shadowRoot && layerHost.shadowRoot.activeElement;
@@ -351,6 +351,17 @@
     '.acct b{display:block;font-size:13.5px;font-weight:700}.acct small{display:block;font-size:12px;color:var(--muted)}',
     '.list{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;display:grid;gap:6px}',
     '.list:empty{display:none}',
+    '.row{display:flex;align-items:center;gap:2px}',
+    '.row .li{flex:1;min-width:0}',
+    '.row.off .li{opacity:.45}',
+    '.tg{flex:none;width:44px;height:44px;display:grid;place-items:center}',
+    '.tg b{position:relative;width:32px;height:19px;border-radius:99px;background:var(--line);transition:background .2s}',
+    '.tg b::after{content:"";position:absolute;left:2px;top:2px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .2s}',
+    '.tg[aria-checked="true"] b{background:var(--acc)}',
+    '.tg[aria-checked="true"] b::after{transform:translateX(13px)}',
+    '.lx{flex:none;width:40px;height:44px;display:grid;place-items:center;color:var(--muted);border-radius:10px}',
+    '.lx svg{width:16px;height:16px}',
+    '.lx:hover{color:#c2410c;background:var(--soft)}',
     '.li{display:flex;align-items:flex-start;gap:8px;width:100%;padding:8px;border-radius:10px;text-align:left;font-size:13px;line-height:1.5}',
     '.li:hover{background:var(--soft)}',
     '.li i{flex:none;width:12px;height:12px;margin-top:4px;border-radius:3px;background:var(--c)}',
@@ -464,7 +475,10 @@
     var items = data.items.slice().sort(function (a, b) { return a._found === b._found ? 0 : a._found ? -1 : 1; });
     el.innerHTML = items.map(function (it) {
       var txt = it.type === 'note' ? (it.text || '(빈 메모)') : it.quote;
-      return '<button class="li' + (it.type === 'note' ? ' note' : '') + '" data-act="jump" data-id="' + it.id + '" style="--c:' + it.color + '"><i aria-hidden="true"></i><span>' + esc(txt.slice(0, 160)) + '</span><em>' + (it._found ? (it.type === 'note' ? '메모' : '형광펜') : '다른 화면') + '</em></button>';
+      var kind = it.type === 'note' ? '메모' : '형광펜', on = !it.off, short = esc(txt.slice(0, 40));
+      return '<div class="row' + (on ? '' : ' off') + '"><button class="li' + (it.type === 'note' ? ' note' : '') + '" data-act="jump" data-id="' + it.id + '" style="--c:' + it.color + '"><i aria-hidden="true"></i><span>' + esc(txt.slice(0, 160)) + '</span><em>' + (it._found ? kind : '다른 화면') + '</em></button>' +
+        '<button class="tg" role="switch" aria-checked="' + on + '" data-act="onoff" data-id="' + it.id + '" aria-label="' + kind + ' ' + short + (on ? ' 숨기기' : ' 보이기') + '" title="' + (on ? '켜짐: 누르면 숨김' : '꺼짐: 누르면 보임') + '"><b aria-hidden="true"></b></button>' +
+        '<button class="lx" data-act="lidel" data-id="' + it.id + '" aria-label="' + kind + ' ' + short + ' 지우기" title="지우기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>';
     }).join('');
   }
   var toastT;
@@ -497,7 +511,7 @@
     var c = caretAt(x, y); if (!c || !c.node) return null;
     var hit = null;
     data.items.forEach(function (it) {
-      if (it.type !== 'hl' || hit) return; var r = liveRanges[it.id]; if (!r) return;
+      if (it.type !== 'hl' || hit || it.off) return; var r = liveRanges[it.id]; if (!r) return;
       try { if (r.isPointInRange(c.node, c.offset) && !(r.endContainer === c.node && r.endOffset === c.offset)) hit = it; } catch (e) {}
     });
     return hit;
@@ -532,9 +546,11 @@
         var it = byId(b.getAttribute('data-id')), r = it && liveRanges[it.id];
         if (!r) { toast('이 표시는 지금 열려 있지 않은 화면에 있어요.'); return; }
         var el = r.startContainer.parentNode; if (el && el.scrollIntoView) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-        if (it.type === 'note') { openNote = it.id; placeNotes(); }
+        if (it.type === 'note' && !it.off) { openNote = it.id; placeNotes(); }
         if (matchMedia('(max-width: 520px)').matches) closePanel();
       }
+      else if (a === 'onoff') { var o2 = byId(b.getAttribute('data-id')); if (o2) { o2.off = !o2.off; o2.u = Date.now(); if (o2.off && openNote === o2.id) { flush(); openNote = null; } commit(); repaint(); var nb = ui.panel.querySelector('[data-act=onoff][data-id="' + o2.id + '"]'); if (nb) nb.focus(); } }
+      else if (a === 'lidel') { var o3 = byId(b.getAttribute('data-id')); if (o3) { var nx = b.closest('.row'); nx = nx && (nx.nextElementSibling || nx.previousElementSibling); var nid = nx && nx.querySelector('.lx') && nx.querySelector('.lx').getAttribute('data-id'); remove(o3.id); toast(o3.type === 'note' ? '포스트잇을 뗐어요.' : '형광펜을 지웠어요.'); var f = nid && ui.panel.querySelector('.lx[data-id="' + nid + '"]'); if (f) f.focus(); } }
       else if (a === 'apply') { applyHighlight(); renderPill(); }
       else if (a === 'acct') { if (window.JCSync) window.JCSync.open(); }
       else if (a === 'off') setMode('off');
