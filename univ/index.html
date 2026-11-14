@@ -112,7 +112,7 @@ var d=document,$=function(id){return d.getElementById(id);};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function num(n){return Number(n).toLocaleString('ko-KR');}
 function dot(s){return String(s||'').replace(/・/g,'·').replace(/ㆍ/g,'·');}
-var FOOT='<p class="foot">대학알리미 2024 학과 공시와 커리어넷 2025 학과정보를 바탕으로 정리했습니다. 이 화면은 참고·실습용 도구이며, 실제 진학 결정은 최신 공식 자료(대학 입학처, 대학알리미, 커리어넷)와 상담으로 확인해 주세요.</p>';
+var FOOT='<p class="foot">대학알리미 2024 학과 공시(교육부·한국대학교육협의회)와 커리어넷 2025 학과정보(한국직업능력연구원, 공공누리 제1유형 출처표시)를 바탕으로 정리했습니다. 이 화면은 참고·실습용 도구이며, 실제 진학 결정은 최신 공식 자료(대학 입학처, 대학알리미, 커리어넷)와 상담으로 확인해 주세요.</p>';
 
 /* ───────── 테마: 첫 화면 설정을 따른다 ───────── */
 function applyTheme(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}

@@ -263,7 +263,7 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 function dot(s){return String(s||'').replace(/・/g,'·');}
 function num(n){return Number(n).toLocaleString('ko-KR');}
 var REL_ORDER={'면허필수':0,'전공우대':1,'관련전공':2,'전공무관':3};
-var FOOT='<p class="foot">이 화면은 참고·실습용 도구입니다. 실제 진학·취업 결정은 최신 공식 자료(대학 입학처, 커리어넷, 고용24)와 상담으로 확인해 주세요.</p>';
+var FOOT='<p class="foot">이 화면은 참고·실습용 도구입니다. 실제 진학·취업 결정은 최신 공식 자료(대학 입학처, 커리어넷, 고용24)와 상담으로 확인해 주세요. 학과·직업 설명의 저작권은 커리어넷(한국직업능력연구원)에, 임금·직업지표는 워크피디아(한국고용정보원)에 있습니다.</p>';
 
 /* ───────── 테마 ───────── */
 var MODE_LABEL={auto:'자동',light:'밝게',dark:'어둡게'},mode='auto';
@@ -442,7 +442,7 @@ function majorView(id){
   h+=sec('졸업 후 진출 분야',(m.career_fields||[]).map(function(x){return '<p><b>'+esc(x.name)+'</b><br><span style="color:var(--muted);font-size:15px">'+esc(x.description||'')+'</span></p>';}).join(''));
   h+=sec('관련 자격',tags(m.certificates)+(m.required_licenses&&m.required_licenses.length?'<p class="warn">법정 면허: '+esc(m.required_licenses.join(', '))+'</p>':''));
   h+=sec('이런 사람에게 맞습니다',m.aptitude_note?'<p>'+esc(m.aptitude_note)+'</p>':'');
-  h+='<p class="src">출처: <a href="'+esc(m.source_url)+'" target="_blank" rel="noopener">'+esc(m.source||'커리어넷 학과정보')+'</a> ('+esc(m.year||'')+', 학과 서술 갱신 '+esc(m.updated||'')+') · 대학알리미 학과 공시(2024) · ID '+esc(id)+'</p>'+FOOT;
+  h+='<p class="src">출처: <a href="'+esc(m.source_url)+'" target="_blank" rel="noopener">'+esc(m.source||'커리어넷 학과정보')+'</a>(한국직업능력연구원, 공공누리 제1유형 출처표시) ('+esc(m.year||'')+', 학과 서술 갱신 '+esc(m.updated||'')+') · 대학알리미 학과 공시(2024, 교육부·한국대학교육협의회) · ID '+esc(id)+'</p>'+FOOT;
   return '<div class="wrap">'+h+'</div>';
 }
 function uniSec(id){
@@ -511,7 +511,7 @@ function jobView(id){
   h+=sec('준비 방법',ul((j.curriculum||[]).concat(j.training||[])));
   h+=sec('일자리와 전망',ul((j.employment||[]).concat(j.outlook||[])));
   if((j.related_orgs||[]).length)h+=sec('관련 기관',(j.related_orgs).map(function(o){return '<p>'+(o.url?'<a href="'+esc(o.url)+'" target="_blank" rel="noopener">'+esc(o.name)+'</a>':esc(o.name))+'</p>';}).join(''));
-  h+='<p class="src">출처: <a href="'+esc(j.source_url)+'" target="_blank" rel="noopener">'+esc(j.source||'커리어넷 직업백과')+'</a> ('+esc(j.year||'')+', 갱신 '+esc(j.updated||'')+') · 한국고용직업분류 2025 · ID '+esc(id)+'</p>'+FOOT;
+  h+='<p class="src">출처: <a href="'+esc(j.source_url)+'" target="_blank" rel="noopener">'+esc(j.source||'커리어넷 직업백과')+'</a>(한국직업능력연구원, 공공누리 제1유형 출처표시) ('+esc(j.year||'')+', 갱신 '+esc(j.updated||'')+') · 한국고용직업분류 2025(고용노동부 고시) · ID '+esc(id)+'</p>'+FOOT;
   return '<div class="wrap jside">'+h+'</div>';
 }
 function render(){
