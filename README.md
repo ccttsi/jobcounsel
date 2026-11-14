@@ -17,7 +17,7 @@
 | `/library/` | 국회 미래고용 디지털 서재 |
 | `/decalcomania/` | 커리어데칼코마니 (학과 ↔ 직업 거울 지도) |
 | `/univ/` | 대학학과위키 |
-| `/talk/` | 상담 대화 연습장 (데이터 `talk/data.js`, 화면 `talk/app.js`) |
+| `/talk/` | 상담 대화 연습장 (데이터 `talk/data.js`, 찾기 엔진 `talk/finder.js`, 화면 `talk/app.js`) |
 | `/transit/` | 환승노선도 (첫 진입·재진입·전직·2막 커리어 노선도) |
 | `/assets/marker.js` | 공용 형광펜·포스트잇 도구함 |
 | `/assets/sync.js` | 로그인·기기 간 연동 (선택 기능) |

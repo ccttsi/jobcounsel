@@ -4,9 +4,9 @@
  * data.js(window.TALK_DATA)를 읽어 화면을 그린다. 글·규칙을 바꿀 때는 data.js만 고친다.
  * 외부 API 없이 정규식 패턴 매칭만으로 동작한다. 입력한 글은 저장하거나 보내지 않는다.
  *
- * 주소: #          첫 화면(갈래 고르기)
- *       #reflect   01 되받아 주기        #question 02 질문 바꾸기   #cushion 03 부드럽게 전하기
- *       #cloud     04 엇갈림 찾기        #stuck    05 막힐 때       #frame   06 선 긋고 길 잡기
+ * 주소: #          첫 화면(갈래 고르기 · 여섯 갈래는 순서 없는 같은 층위라 번호 대신 이모지)
+ *       #reflect   🪞 되받아 주기        #question 🗝️ 질문 바꾸기   #cushion 🪶 부드럽게 전하기
+ *       #cloud     ☁️ 엇갈림 찾기        #stuck    🧱 막힐 때       #frame   🧭 선 긋고 길 잡기
  *       #mix       섞어서 연습           #about    이 연습장에 대해(출처)
  */
 (function () {
@@ -73,8 +73,10 @@
     question: { q: '' },
     cushion: { t: '', case: '', parts: ['', '', '', '', ''] },
     cloud: { c: 'm1', t: '' },
-    stuck: { id: '', q: '' },
-    frame: { id: '', q: '', done: {} },
+    stuck: { q: '', pg: 0 },
+    frame: { q: '', pg: 0, done: {} },
+    open: '',
+    home: { q: '' },
     drill: {}
   };
   st.cloud.t = byId(D.cloudCases, 'm1').t;
@@ -83,16 +85,16 @@
   function renderPicks(cur) {
     var h = MODS.map(function (m) {
       return '<a class="pk" href="#' + m.id + '"' + (cur === m.id ? ' aria-current="page"' : '') + '>'
-        + '<span class="pk-no">' + m.no + '</span><span class="pk-tx"><b>' + esc(m.when) + '</b><small>' + esc(m.name) + ' · ' + esc(m.term) + '</small></span></a>';
+        + '<span class="pk-no" aria-hidden="true">' + m.icon + '</span><span class="pk-tx"><b>' + esc(m.when) + '</b><small>' + esc(m.name) + ' · ' + esc(m.term) + '</small></span></a>';
     }).join('');
-    h += '<a class="pk pk-sub" href="#mix"' + (cur === 'mix' ? ' aria-current="page"' : '') + '><span class="pk-no">' + ico('shuffle') + '</span><span class="pk-tx"><b>섞어서 연습하기</b><small>여섯 갈래의 연습 문제 ' + D.drills.length + '개</small></span></a>';
-    h += '<a class="pk pk-sub" href="#about"' + (cur === 'about' ? ' aria-current="page"' : '') + '><span class="pk-no">?</span><span class="pk-tx"><b>이 연습장에 대해</b><small>갈래를 나눈 기준 · 바탕 이론과 출처</small></span></a>';
+    h += '<a class="pk pk-sub" href="#mix"' + (cur === 'mix' ? ' aria-current="page"' : '') + '><span class="pk-no" aria-hidden="true">🎲</span><span class="pk-tx"><b>섞어서 연습하기</b><small>여섯 갈래의 연습 문제 ' + D.drills.length + '개</small></span></a>';
+    h += '<a class="pk pk-sub" href="#about"' + (cur === 'about' ? ' aria-current="page"' : '') + '><span class="pk-no" aria-hidden="true">📖</span><span class="pk-tx"><b>이 연습장에 대해</b><small>갈래를 나눈 기준 · 바탕 이론과 출처</small></span></a>';
     $('picks').innerHTML = h;
   }
 
   /* ───────── 화면 조각 ───────── */
   function modHead(m) {
-    return '<header class="mh"><p class="mh-no"><span>' + m.no + '</span> ' + esc(m.term) + '</p>'
+    return '<header class="mh"><p class="mh-no"><span aria-hidden="true">' + m.icon + '</span> ' + esc(m.term) + '</p>'
       + '<h2>' + esc(m.name) + '</h2><p class="mh-when">이럴 때 · <b>' + esc(m.when) + '</b></p><p class="lead">' + esc(m.lead) + '</p></header>';
   }
   function points(m) {
@@ -103,10 +105,10 @@
   }
   function phraseBlock(m) {
     var a = '', b = '';
-    if (m.phrases && m.phrases.length) a = '<section class="blk"><h3>바로 쓰는 표현</h3><ul class="phr">' + m.phrases.map(function (p) {
+    if (m.phrases && m.phrases.length) a = '<section class="blk" id="phr"><h3>바로 쓰는 표현</h3><ul class="phr">' + m.phrases.map(function (p) {
       return '<li><button type="button" class="phr-t" data-copy="' + esc(p.t.replace(/^"|"$/g, '')) + '" title="눌러서 복사">' + esc(p.t) + '</button><small>' + esc(p.n) + '</small></li>';
     }).join('') + '</ul></section>';
-    if (m.donts && m.donts.length) b = '<section class="blk"><h3>이것만은 피하기</h3><ul class="dnt">' + m.donts.map(function (x) {
+    if (m.donts && m.donts.length) b = '<section class="blk"' + (a ? '' : ' id="phr"') + '><h3>이것만은 피하기</h3><ul class="dnt">' + m.donts.map(function (x) {
       return '<li><b>' + esc(x[0]) + '</b><small>' + esc(x[1]) + '</small></li>';
     }).join('') + '</ul></section>';
     return a || b ? '<div class="two">' + a + b + '</div>' : '';
@@ -116,7 +118,7 @@
   }
   function others(cur) {
     return '<nav class="oth" aria-label="다른 갈래"><p>다른 장면이 필요하면</p><div>' + MODS.filter(function (m) { return m.id !== cur; }).map(function (m) {
-      return '<a href="#' + m.id + '"><span>' + m.no + '</span>' + esc(m.when) + '</a>';
+      return '<a href="#' + m.id + '"><span aria-hidden="true">' + m.icon + '</span>' + esc(m.when) + '</a>';
     }).join('') + '</div></nav>';
   }
 
@@ -133,7 +135,7 @@
       return '<li><button type="button" class="' + cls + '" data-dk="' + key + '" data-op="' + i + '"' + (s.pick >= 0 ? ' aria-disabled="true"' : '') + '><span class="op-l">' + 'ABC'[i] + '</span><span class="op-t">' + esc(o.t) + after + '</span></button></li>';
     }).join('');
     return '<section class="drill" id="drill-' + key + '"><div class="drill-h"><h3>' + esc(title) + '</h3><span class="num">' + ((s.i % list.length) + 1) + ' / ' + list.length + '</span></div>'
-      + (key === 'mix' ? '<p class="drill-tag">' + m.no + ' ' + esc(m.name) + '</p>' : '')
+      + (key === 'mix' ? '<p class="drill-tag"><span aria-hidden="true">' + m.icon + '</span> ' + esc(m.name) + '</p>' : '')
       + '<p class="drill-c"><small>내담자</small>' + esc(q.c) + '</p><p class="drill-ask">어떻게 받으시겠어요?</p><ol class="ops">' + opts + '</ol>'
       + '<div class="drill-f"><button type="button" class="btn" data-dnext="' + key + '" data-dir="-1">이전</button>'
       + (s.pick >= 0 ? '<p class="drill-note">고른 답과 다른 말을 떠올렸다면 그것도 좋은 연습입니다. 보기는 정답이 아니라 비교해 볼 거리입니다.</p>' : '<p class="drill-note">하나를 고르면 세 보기의 설명이 모두 열립니다.</p>')
@@ -156,7 +158,7 @@
     var s = st.reflect, c = reflectSrc();
     var chips = D.reflectCases.map(function (x) { return '<button type="button" class="fb" data-rc="' + x.id + '" aria-pressed="' + (s.c === x.id) + '">' + esc(x.who) + '</button>'; }).join('')
       + '<button type="button" class="fb" data-rc="mine" aria-pressed="' + (s.c === 'mine') + '">직접 넣기</button>';
-    var body = '<div class="filt" role="group" aria-label="연습할 하소연 고르기">' + chips + '</div>';
+    var body = '<div class="filt" id="rcase" role="group" aria-label="연습할 하소연 고르기">' + chips + '</div>';
     if (s.c === 'mine') body += '<label class="lb" for="rMine">내담자가 한 말(실명·연락처 등 개인정보는 넣지 마세요)</label><textarea id="rMine" class="ta" rows="4" placeholder="예: 요즘 아무것도 손에 안 잡혀요. 지원서를 열었다가 그냥 닫아요.">' + esc(s.mine) + '</textarea>';
     var all = c.s.join(' ');
     var key = s.c;
@@ -176,7 +178,7 @@
     body += '<textarea id="rDraft" class="ta ta-line" rows="3" placeholder="' + (s.mode === 're' ? '예: ~하셨다는 거네요.' : s.mode === 'fe' ? '예: ~해서 많이 ~하셨겠어요.' : '예: 정리해 보면 ~, ~, 그리고 ~이네요.') + '">' + esc(s.draft) + '</textarea>';
     body += '<details class="vocab"><summary>감정 낱말 고르기 <small>누르면 쓰는 칸에 들어갑니다</small></summary>' + vocab() + '</details>';
     body += '<div class="acts"><button type="button" class="btn btn-p" data-rcheck>살펴보기</button>' + (c.ex ? '<button type="button" class="btn" data-rtoggle="showEx">' + (s.showEx ? '예시 접기' : '예시 보기') + '</button>' : '') + '</div>';
-    body += '<div id="rOut" aria-live="polite">' + (s.checked ? reflectReport(c) : '') + '</div>';
+    body += '<div id="rOut" aria-live="polite">' + (s.checked ? reflectReport(c) + relatedBlock(c.s.join(' ') + ' ' + s.draft, { title: '이 하소연과 가까운 것', n: 4, heat: false }) : '') + '</div>';
     if (c.ex && s.showEx) body += '<dl class="exs"><dt>재진술</dt><dd>' + esc(c.ex.re) + '</dd><dt>감정 반영</dt><dd>' + esc(c.ex.fe) + '</dd><dt>요약</dt><dd>' + esc(c.ex.su) + '</dd></dl><p class="small">예시는 여러 답 가운데 하나입니다. 같은 말이라도 내담자와의 관계, 말투, 표정에 따라 더 맞는 반영이 달라집니다.</p>';
     return pad('연습장 · 되받아 주기', body);
   }
@@ -235,8 +237,8 @@
     var body = '<label class="lb" for="qIn">평소 하는 질문을 넣어 보세요</label>'
       + '<div class="inrow"><input id="qIn" class="in" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 왜 회사를 그만두셨어요?" value="' + esc(s.q) + '"><button type="button" class="btn btn-p" data-qgo>살펴보기</button></div>'
       + '<div class="filt" role="group" aria-label="예로 넣어 보기"><span class="filt-l">예로 넣기</span>' + D.questionBank.slice(0, 10).map(function (p) { return '<button type="button" class="fb" data-qex="' + esc(p.c) + '">' + esc(p.c) + '</button>'; }).join('') + '</div>'
-      + '<div id="qOut" aria-live="polite">' + (s.q.trim() ? qReport(s.q.trim()) : '') + '</div>';
-    var frames = '<section class="blk"><h3>목적별 열린 질문 틀 <small>눌러서 복사</small></h3><div class="frm">' + D.questionFrames.map(function (f) {
+      + '<div id="qOut" aria-live="polite">' + (s.q.trim() ? qReport(s.q.trim()) + relatedBlock(s.q, { n: 4, sig: false }) : '') + '</div>';
+    var frames = '<section class="blk" id="qframes"><h3>목적별 열린 질문 틀 <small>눌러서 복사</small></h3><div class="frm">' + D.questionFrames.map(function (f) {
       return '<div><b>' + esc(f.k) + '</b>' + f.q.map(function (x) { return '<button type="button" class="phr-t" data-copy="' + esc(x) + '">' + esc(x) + '</button>'; }).join('') + '</div>';
     }).join('') + '</div></section>';
     var bank = '<details class="blk bank"><summary><h3>닫힌 질문 → 열린 질문 짝 ' + D.questionBank.length + '개</h3></summary><ul class="pairs">' + D.questionBank.map(function (p) {
@@ -264,7 +266,7 @@
       + '<div class="filt" role="group" aria-label="상황 고르기">' + D.cushionCases.map(function (c) { return '<button type="button" class="fb" data-cc="' + c.id + '" aria-pressed="' + (s.case === c.id) + '">' + esc(c.k) + '</button>'; }).join('') + '</div>'
       + '<textarea id="cIn" class="ta" rows="2" placeholder="예: 서류가 틀렸어요. 다시 떼 오세요.">' + esc(s.t) + '</textarea>'
       + '<div class="acts"><button type="button" class="btn btn-p" data-cgo>살펴보기</button></div>'
-      + '<div id="cOut" aria-live="polite">' + (s.t.trim() ? cReport(s.t.trim()) : '') + '</div>';
+      + '<div id="cOut" aria-live="polite">' + (s.t.trim() ? cReport(s.t.trim()) + relatedBlock(s.t, { n: 4, sig: false }) : '') + '</div>';
     var p = s.parts, labels = ['쿠션', '사실', '이유', '대안', '확인'];
     var asm = '<p class="step"><b>2</b> 다섯 칸을 채우면 한 문장으로 이어 드립니다. 비워 둔 칸은 빼고 잇습니다.</p>'
       + '<div class="asm">'
@@ -340,8 +342,8 @@
     var body = '<div class="filt" role="group" aria-label="연습할 말 고르기">' + D.cloudCases.map(function (c) { return '<button type="button" class="fb" data-mc="' + c.id + '" aria-pressed="' + (s.c === c.id) + '">' + esc(c.who) + '</button>'; }).join('')
       + '<button type="button" class="fb" data-mc="mine" aria-pressed="' + (s.c === 'mine') + '">직접 넣기</button></div>'
       + '<label class="lb" for="mIn">내담자가 한 말</label><textarea id="mIn" class="ta" rows="4" placeholder="상담 중 들은 말을 옮겨 적어 보세요. 실명·연락처 등 개인정보는 넣지 마세요.">' + esc(s.t) + '</textarea>'
-      + '<div class="acts"><button type="button" class="btn btn-p" data-mgo>구름 띄우기</button></div><div id="mOut" aria-live="polite">' + (s.t.trim() ? cloudReport(s.t.trim()) : '') + '</div>';
-    var types = '<section class="blk"><h3>엇갈림의 네 갈래 <small>빈칸을 채우면 짚는 말이 만들어집니다</small></h3><div class="dtypes">' + D.discrepancyTypes.map(function (x, i) {
+      + '<div class="acts"><button type="button" class="btn btn-p" data-mgo>구름 띄우기</button></div><div id="mOut" aria-live="polite">' + (s.t.trim() ? cloudReport(s.t.trim()) + relatedBlock(s.t, { n: 4, title: '이 말과 가까운 카드·표현', sig: false, heat: false }) : '') + '</div>';
+    var types = '<section class="blk" id="dtypes"><h3>엇갈림의 네 갈래 <small>빈칸을 채우면 짚는 말이 만들어집니다</small></h3><div class="dtypes">' + D.discrepancyTypes.map(function (x, i) {
       return '<div class="dt"><b>' + esc(x.k) + '</b><small>' + esc(x.d) + '</small><input class="in in-s" data-dt="' + i + '" data-ab="A" placeholder="' + (i === 0 ? '앞에서 한 말' : i === 1 ? '하겠다고 한 말' : i === 2 ? '말' : '바라는 것') + '" aria-label="' + esc(x.k) + ' 앞쪽"><input class="in in-s" data-dt="' + i + '" data-ab="B" placeholder="' + (i === 0 ? '지금 한 말' : i === 1 ? '예: 2주째 지원을 미루셨어요' : i === 2 ? '예: 목소리가 작아지셨어요' : '예: 관련 경력이 아직 없으세요') + '" aria-label="' + esc(x.k) + ' 뒤쪽"><p class="dt-o" id="dt' + i + '">' + esc(fillDt(i, '', '')) + '</p></div>';
     }).join('') + '</div><p class="small">짚는 말(직면)은 관계가 어느 정도 다져진 뒤에 씁니다. 판단("말이 다르네요")이 아니라 관찰("두 말씀이 함께 있네요")로 말하고, 내담자가 스스로 설명할 시간을 줍니다.</p></section>';
     return pad('연습장 · 모순 클라우드', body) + types;
@@ -383,18 +385,36 @@
   }
 
   /* ───────── 05·06 상황 카드 ───────── */
+  var SIT_PER = 8;
   function situationTool(key, list, label) {
-    var s = st[key];
-    var found = s.q.trim() ? list.filter(function (x) { return x.hint && test(x.hint, s.q); }) : [];
-    var crisis = found.filter(function (x) { return x.id === 'crisis'; });
-    if (crisis.length) found = crisis.concat(found.filter(function (x) { return x.id !== 'crisis'; }));
-    var body = '<label class="lb" for="' + key + 'In">내담자가 한 말이나 지금 장면을 적으면 맞는 카드를 찾아 드립니다</label>'
-      + '<div class="inrow"><input id="' + key + 'In" class="in" data-sq="' + key + '" type="text" enterkeyhint="search" autocomplete="off" placeholder="' + (key === 'stuck' ? '예: 어차피 해 봤자 소용없어요' : '예: 선생님이 그냥 골라 주세요') + '" value="' + esc(s.q) + '"><button type="button" class="btn btn-p" data-sgo="' + key + '">찾기</button></div>'
-      + '<div id="' + key + 'Found" aria-live="polite">' + (s.q.trim() ? (found.length ? '<p class="small">맞을 만한 카드 ' + found.length + '개 · 눌러서 펼치세요</p>' : '<p class="small">맞는 카드를 찾지 못했습니다. 아래 목록에서 가까운 장면을 골라 보세요.</p>') : '') + '</div>'
-      + '<ul class="sits" role="list">' + (found.length ? found : list).map(function (x) {
-        return '<li><button type="button" class="sit' + (x.id === 'crisis' ? ' sit-c' : '') + '" data-sit="' + key + ':' + x.id + '" aria-expanded="' + (s.id === x.id) + '"><b>' + esc(x.k) + '</b><small>' + esc(x.q) + '</small></button>' + (s.id === x.id ? sitCard(x) : '') + '</li>';
-      }).join('') + '</ul>' + (found.length ? '<button type="button" class="lnk" data-sclear="' + key + '">전체 목록 보기</button>' : '');
+    var s = st[key], q = s.q.trim(), F = window.TalkFinder;
+    var body = '<label class="lb" for="' + key + 'In">내담자가 한 말이나 지금 장면을 아무렇게나 적어 보세요. 가까운 카드부터 순서대로 찾아 드립니다</label>'
+      + '<div class="inrow"><input id="' + key + 'In" class="in" data-sq="' + key + '" type="text" enterkeyhint="search" autocomplete="off" placeholder="' + (key === 'stuck' ? '예: 이 나이에 누가 써 줘요' : '예: 선생님이 그냥 골라 주세요') + '" value="' + esc(q) + '"><button type="button" class="btn btn-p" data-sgo="' + key + '">찾기</button></div>';
+    var rows = '', more = '';
+    if (q && F) {
+      var r = F.search(q, { only: function (it) { return !!it.card; } });
+      var cards = r.hits.slice(0, 5);
+      body += heatLine(r) + sigChips(r);
+      if (cards.length) {
+        body += '<p class="small">가까운 카드 ' + cards.length + '장 · 위에서부터 관련이 높습니다. 다른 갈래의 카드도 함께 찾습니다.</p>';
+        rows = cards.map(function (h) { return sitRow(key, h.key, h.it.card, h.s, r.top.s); }).join('');
+      } else body += '<p class="small">가까운 카드를 찾지 못했습니다. 아래 목록에서 가까운 장면을 골라 보세요.</p>';
+      var other = F.search(q, { only: function (it) { return !it.card; } }).hits.slice(0, 3);
+      if (other.length) more = '<div class="rel"><p class="rel-h">다른 갈래에서 가까운 것</p><ul class="hits">' + other.map(hitRow).join('') + '</ul></div>';
+    }
+    if (!rows) {
+      var pages = Math.ceil(list.length / SIT_PER), pg = Math.min(s.pg || 0, pages - 1);
+      rows = list.slice(pg * SIT_PER, pg * SIT_PER + SIT_PER).map(function (x) { return sitRow(key, key + ':' + x.id, x); }).join('');
+      if (pages > 1) more = '<div class="pg" role="navigation" aria-label="카드 쪽">' + Array.apply(null, Array(pages)).map(function (_, i) { return '<button type="button" data-spg="' + key + ':' + i + '" aria-current="' + (i === pg) + '">' + (i + 1) + '</button>'; }).join('') + '</div>' + more;
+    }
+    body += '<ul class="sits" role="list">' + rows + '</ul>' + (q ? '<button type="button" class="lnk" data-sclear="' + key + '">전체 목록 보기</button>' : '') + more;
     return pad(label, body);
+  }
+  /* 카드 한 줄. 열쇠가 다른 갈래(frame:… 를 stuck에서)여도 그 자리에서 펼친다 */
+  function sitRow(key, ck, x, score, topScore) {
+    var open = st.open === ck, mod = ck.split(':')[0];
+    var badge = mod !== key ? '<em class="from">' + esc(window.TalkFinder ? window.TalkFinder.name[mod] : '') + '</em>' : '';
+    return '<li id="sit-' + ck.replace(':', '-') + '"><button type="button" class="sit' + (x.id === 'crisis' ? ' sit-c' : '') + '" data-sit="' + ck + '" aria-expanded="' + open + '"><b>' + esc(x.k) + badge + '</b><small>' + esc(x.q) + '</small>' + (score != null ? strength(score, topScore) : '') + '</button>' + (open ? sitCard(x) : '') + '</li>';
   }
   function sitCard(x) {
     return '<div class="card' + (x.id === 'crisis' ? ' card-c' : '') + '">'
@@ -405,19 +425,92 @@
   }
   function toolFrame() {
     var s = st.frame, n = D.structureList.filter(function (_, i) { return s.done[i]; }).length, all = D.structureList.length;
-    var chk = '<p class="step"><b>1</b> 첫 만남 구조화 점검표 · 챙긴 것을 눌러 표시하세요 <span class="num">' + n + ' / ' + all + '</span></p><ul class="chk">' + D.structureList.map(function (x, i) {
+    var chk = '<p class="step"><b>1</b> 첫 만남 구조화 점검표 · 챙긴 것을 눌러 표시하세요 <span class="num">' + n + ' / ' + all + '</span></p><ul class="chk" id="chk">' + D.structureList.map(function (x, i) {
       return '<li><button type="button" class="ci" data-sl="' + i + '" role="checkbox" aria-checked="' + !!s.done[i] + '"><span class="cb">' + (s.done[i] ? ico('check') : '') + '</span><span><b>' + esc(x.k) + '</b><small>' + esc(x.line) + '</small></span></button></li>';
     }).join('') + '</ul>' + (n === all ? '<p class="done-stamp" aria-label="모두 챙겼습니다">다 챙김</p>' : '')
       + '<p class="small">말투는 기관과 내담자에 맞게 바꿔 쓰세요. 비밀보장의 예외, 개인정보 이용 범위는 소속 기관의 지침과 동의서 내용을 그대로 따릅니다.</p>';
     return pad('연습장 · 첫 만남 구조화', chk) + situationTool('frame', D.frame, '연습장 · 선 긋기 상황 카드');
   }
 
+  /* ───────── 찾기 결과 (finder.js) ───────── */
+  function strength(sc, top) {
+    var r = sc >= 50 ? 1 : Math.min(1, sc / Math.max(top || sc, .0001)), n = r > .75 ? 3 : r > .45 ? 2 : 1;
+    return '<span class="str" title="관련도" aria-label="관련도 ' + n + '/3">' + [1, 2, 3].map(function (i) { return '<i' + (i <= n ? ' class="on"' : '') + '></i>'; }).join('') + '</span>';
+  }
+  function heatLine(r) {
+    if (!r || !r.text) return '';
+    var t = r.text, out = '', cur = -1, buf = '';
+    for (var i = 0; i < t.length; i++) {
+      var b = Math.min(4, Math.round((r.heat[i] || 0) * 4));
+      if (b !== cur) { if (buf) out += '<span class="h' + cur + '">' + esc(buf) + '</span>'; buf = ''; cur = b; }
+      buf += t[i];
+    }
+    if (buf) out += '<span class="h' + cur + '">' + esc(buf) + '</span>';
+    return '<p class="heat"><small>결과를 끌어온 낱말 · 진할수록 많이 끌어왔습니다</small><span aria-hidden="true">' + out + '</span></p>';
+  }
+  function sigChips(r) {
+    if (!r.signals.length) return '';
+    return '<p class="sigs"><span>이 말에서 보인 것</span>' + r.signals.slice(0, 8).map(function (x) { return '<em class="sg sg-' + (x.kind === '감정' ? 'f' : x.kind === '상황' ? 's' : x.kind === '당기는 쌍' ? 'p' : 'r') + '"><small>' + esc(x.kind) + '</small>' + esc(x.label) + '</em>'; }).join('') + '</p>';
+  }
+  function hitRow(h, i, arr) {
+    var F = window.TalkFinder, it = h.it, top = arr && arr[0] ? arr[0].s : h.s;
+    return '<li class="hit"><span class="hit-i" aria-hidden="true">' + (F.icon[it.mod] || '•') + '</span>'
+      + '<button type="button" class="hit-b" data-open="' + esc(h.key) + '"><small>' + esc(F.name[it.mod] || '') + ' · ' + esc(it.kind) + '</small><b>' + esc(it.title) + '</b>' + (it.snip ? '<span>' + esc(it.snip) + '</span>' : '') + '</button>'
+      + '<span class="hit-r">' + strength(h.s, top) + (it.copy ? '<button type="button" class="btn btn-s" data-copy="' + esc(it.copy) + '">' + ico('copy') + '<span>복사</span></button>' : '') + '</span></li>';
+  }
+  /* 연습장 어디서든 쓰는 "이 말과 가까운 것" 묶음 */
+  function relatedBlock(text, opt) {
+    var F = window.TalkFinder; text = String(text || '').trim();
+    if (!F || !text) return '';
+    opt = opt || {};
+    var r = F.search(text, { only: opt.only }), hits = r.hits.slice(0, opt.n || 5);
+    var h = '<section class="rel"><p class="rel-h">' + esc(opt.title || '이 말과 가까운 것') + ' <small>연습장 전체에서 찾았습니다</small></p>' + (opt.heat === false ? '' : heatLine(r)) + (opt.sig === false ? '' : sigChips(r));
+    if (!hits.length) return h + '<p class="small">가까운 항목을 찾지 못했습니다. 내담자의 말을 조금 더 길게, 들은 그대로 옮겨 적으면 더 잘 찾습니다.</p></section>';
+    h += '<ul class="hits">' + hits.map(hitRow).join('') + '</ul>';
+    var shown = {}; hits.forEach(function (x) { shown[x.key] = 1; });
+    var nb = []; hits.slice(0, 2).forEach(function (x) { F.neighbors(x.key).forEach(function (e) { if (!shown[e[0]] && nb.indexOf(e[0]) < 0 && F.item(e[0]) && e[0] !== 'stuck:crisis') nb.push(e[0]); }); });
+    if (nb.length) h += '<p class="also"><span>함께 보면 좋은 것</span>' + nb.slice(0, 4).map(function (k) { var it = F.item(k); return '<button type="button" class="fb fb-s" data-open="' + esc(k) + '">' + (F.icon[it.mod] || '') + ' ' + esc(it.title) + '</button>'; }).join('') + '</p>';
+    return h + '</section>';
+  }
+  var pendingScroll = '';
+  function go(hash, target) {
+    pendingScroll = target || '';
+    if (curView === hash) { rerender(); doScroll(); }
+    else location.hash = hash;
+  }
+  function doScroll() {
+    if (!pendingScroll) return; var id = pendingScroll; pendingScroll = '';
+    setTimeout(function () { var el = d.getElementById(id); if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 30);
+  }
+  function openKey(k) {
+    var p = k.split(':'), t = p[0];
+    if (t === 'mod') return go(p[1]);
+    if (t === 'stuck' || t === 'frame') { st.open = k; return go(t, 'sit-' + k.replace(':', '-')); }
+    if (t === 'cc') { var cs = byId(D.cushionCases, p[1]); st.cushion.case = cs.id; st.cushion.t = cs.raw; st.cushion.parts = cs.parts.slice(); return go('cushion', 'cIn'); }
+    if (t === 'rc') { st.reflect.c = p[1]; st.reflect.checked = false; return go('reflect', 'rcase'); }
+    if (t === 'mc') { st.cloud.c = p[1]; st.cloud.t = byId(D.cloudCases, p[1]).t; return go('cloud', 'mIn'); }
+    if (t === 'dr') { var q = D.drills[+p[1]], list = drillList(q.m); st.drill[q.m] = { i: list.indexOf(q), pick: -1 }; return go(q.m, 'drill-' + q.m); }
+    if (t === 'dt') return go('cloud', 'dtypes');
+    if (t === 'sl') return go('frame', 'chk');
+    if (t === 'qb' || t === 'qf') return go('question', 'qframes');
+    if (t === 'ph' || t === 'dn') return go(p[1], 'phr');
+  }
+  var HOME_EX = ['이 나이에 누가 써 줘요', '엄마가 옆에서 다 대답해요', '왜 그만두셨어요?', '서류 틀렸어요, 다시 떼 오세요', '하고 싶은데 부모님이 반대해요', '선생님이 그냥 골라 주세요', '요즘 잠만 자요'];
+  function homeFinder() {
+    var q = st.home.q;
+    return '<section class="find" aria-label="아무 말이나 넣어 찾기"><label class="find-l" for="hIn">들은 말, 하려는 말, 막힌 장면을 아무렇게나 적어 보세요</label>'
+      + '<div class="inrow"><input id="hIn" class="in" type="text" enterkeyhint="search" autocomplete="off" placeholder="예: 해 봤자 소용없다고 해요" value="' + esc(q) + '"><button type="button" class="btn btn-p" data-hgo>찾기</button></div>'
+      + (q.trim() ? '' : '<div class="filt" role="group" aria-label="예로 넣어 보기"><span class="filt-l">예로 넣기</span>' + HOME_EX.map(function (x) { return '<button type="button" class="fb fb-s" data-hex="' + esc(x) + '">' + esc(x) + '</button>'; }).join('') + '</div>')
+      + '<div aria-live="polite">' + relatedBlock(q, { n: 6, title: '가까운 것부터' }) + '</div></section>';
+  }
+
   /* ───────── 화면 ───────── */
   function viewHome() {
-    var h = '<section class="intro"><p class="eyebrow">상담 대화 연습장</p><h2>지금 필요한 장면을 바로 고르세요.</h2>'
-      + '<p class="lead">여섯 갈래는 순서가 없습니다. 처음부터 차례로 볼 필요 없이, 상담 중에 막힌 장면이나 연습하고 싶은 기술 하나만 골라 펼치면 됩니다.</p></section>';
-    h += '<ul class="home-picks">' + MODS.map(function (m) {
-      return '<li><a href="#' + m.id + '"><span class="hp-no">' + m.no + '</span><span class="hp-tx"><small>이럴 때</small><b>' + esc(m.when) + '</b><span>' + esc(m.name) + ' · ' + esc(m.term) + '</span></span><span class="hp-ar">' + ico('arrow') + '</span></a></li>';
+    var h = '<section class="intro"><p class="eyebrow">상담 대화 연습장</p><h2>지금 필요한 장면을 바로 찾으세요.</h2>'
+      + '<p class="lead">여섯 갈래는 순서 없이 나란히 놓여 있습니다. 아무 말이나 적으면 연습장 전체에서 가까운 카드·표현·연습 문제를 순서대로 찾아 드리고, 장면을 직접 골라도 됩니다.</p></section>';
+    h += homeFinder();
+    h += '<p class="or"><span>또는 장면 고르기</span></p><ul class="home-picks">' + MODS.map(function (m) {
+      return '<li><a href="#' + m.id + '"><span class="hp-no" aria-hidden="true">' + m.icon + '</span><span class="hp-tx"><small>이럴 때</small><b>' + esc(m.when) + '</b><span>' + esc(m.name) + ' · ' + esc(m.term) + '</span></span><span class="hp-ar">' + ico('arrow') + '</span></a></li>';
     }).join('') + '</ul>';
     h += drillBlock('mix', drillList(), '오늘의 한 문제');
     return h;
@@ -434,19 +527,23 @@
       + drillBlock(m.id, drillList(m.id), '연습 문제') + others(m.id);
   }
   function viewMix() {
-    return '<a class="back" href="#">' + ico('back') + '<span>갈래 고르기</span></a><header class="mh"><p class="mh-no">여섯 갈래 섞기</p><h2>섞어서 연습하기</h2><p class="lead">내담자의 말 한 줄을 보고 세 가지 응답 가운데 더 나은 쪽을 고릅니다. 문제는 무작위 순서로 나옵니다.</p></header>'
+    return '<a class="back" href="#">' + ico('back') + '<span>갈래 고르기</span></a><header class="mh"><p class="mh-no"><span aria-hidden="true">🎲</span> 여섯 갈래 섞기</p><h2>섞어서 연습하기</h2><p class="lead">내담자의 말 한 줄을 보고 세 가지 응답 가운데 더 나은 쪽을 고릅니다. 문제는 무작위 순서로 나옵니다.</p></header>'
       + drillBlock('mix', drillList(), '섞어서 연습') + others('');
   }
   function viewAbout() {
-    var map = [['재진술·감정 반영', '01 되받아 주기', '요약을 더해 "듣고 돌려주기" 한 갈래로 묶었습니다. 셋 다 내담자의 말을 상담사의 말로 되돌려준다는 점이 같습니다.'],
-      ['질문 전환', '02 질문 바꾸기', '닫힌·왜·유도·이중·선택형 질문을 판별하고, 해결중심 질문 틀(예외·척도·기적)을 더했습니다.'],
-      ['쿠션어', '03 부드럽게 전하기', '낱말 목록에 그치지 않도록 "쿠션 → 사실 → 이유 → 대안 → 확인" 다섯 칸 구조와 걸리는 표현 점검기를 더했습니다.'],
-      ['모순 클라우드', '04 엇갈림 찾기', '낱말 쌍 찾기에서 끝나지 않고, 양면 반영과 직면(말↔말, 말↔행동, 말↔표정, 바람↔현실)까지 잇도록 넓혔습니다.'],
-      ['저항·침묵 대응', '05 막힐 때', '침묵을 "생각하는 침묵"과 "막힌 침묵"으로 나누고, 비자발적 참여(의무로 온 내담자), 위험 신호 카드를 더했습니다.'],
-      ['구조화·경계 설정', '06 선 긋고 길 잡기', '첫 만남 구조화 점검표, 시간 초과, 목표 되잡기, 회기 마무리를 더했습니다.']];
-    return '<a class="back" href="#">' + ico('back') + '<span>갈래 고르기</span></a><header class="mh"><p class="mh-no">이 연습장에 대해</p><h2>갈래를 나눈 기준</h2>'
+    var map = [['재진술·감정 반영', '🪞 되받아 주기', '요약을 더해 "듣고 돌려주기" 한 갈래로 묶었습니다. 셋 다 내담자의 말을 상담사의 말로 되돌려준다는 점이 같습니다.'],
+      ['질문 전환', '🗝️ 질문 바꾸기', '닫힌·왜·유도·이중·선택형 질문을 판별하고, 해결중심 질문 틀(예외·척도·기적)을 더했습니다.'],
+      ['쿠션어', '🪶 부드럽게 전하기', '낱말 목록에 그치지 않도록 "쿠션 → 사실 → 이유 → 대안 → 확인" 다섯 칸 구조와 걸리는 표현 점검기를 더했습니다.'],
+      ['모순 클라우드', '☁️ 엇갈림 찾기', '낱말 쌍 찾기에서 끝나지 않고, 양면 반영과 직면(말↔말, 말↔행동, 말↔표정, 바람↔현실)까지 잇도록 넓혔습니다.'],
+      ['저항·침묵 대응', '🧱 막힐 때', '침묵을 "생각하는 침묵"과 "막힌 침묵"으로 나누고, 의무로 온 내담자, 위험 신호, 당장 결과를 원할 때, 민원 예고, 부끄러움, 무기력, "네네" 겉 동의, 가족 대리 응답, 정보 거부, 장황함, 음주 카드까지 19장으로 늘렸습니다.'],
+      ['구조화·경계 설정', '🧭 선 긋고 길 잡기', '첫 만남 구조화 점검표, 시간 초과, 목표 되잡기, 회기 마무리를 더했습니다.']];
+    return '<a class="back" href="#">' + ico('back') + '<span>갈래 고르기</span></a><header class="mh"><p class="mh-no"><span aria-hidden="true">📖</span> 이 연습장에 대해</p><h2>갈래를 나눈 기준</h2>'
       + '<p class="lead">상담 대화 기술을 "언제 쓰는가"로 나누었습니다. 기술 이름보다 상담 중에 마주치는 장면이 먼저 떠오르기 때문입니다. 여섯 갈래는 서로 순서가 없으며, 처음 구상한 여섯 항목을 아래처럼 다듬었습니다.</p></header>'
       + '<section class="blk"><ul class="remap">' + map.map(function (x) { return '<li><span class="rm-a">' + esc(x[0]) + '</span><span class="pa" aria-hidden="true">→</span><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></li>'; }).join('') + '</ul></section>'
+      + '<section class="blk"><h3>아무 말이나 넣으면 무엇을 하나요</h3><ul class="dnt">'
+      + '<li><b>말을 조각내고 신호를 찾습니다.</b><small>띄어쓰기를 지운 두 글자 조각과 함께 감정 낱말, 질문 유형, 걸리는 표현, 당기는 낱말 쌍, 상황 단서를 찾습니다.</small></li>'
+      + '<li><b>드문 조각에 더 무게를 둡니다.</b><small>"~어요"처럼 어디에나 붙는 조각은 가볍게, "월세", "민원"처럼 드문 조각은 무겁게 봅니다. 결과를 끌어온 낱말은 입력 위에 진하기로 보여 줍니다.</small></li>'
+      + '<li><b>숨은 예문과 연결망으로 넓힙니다.</b><small>항목마다 화면에 보이지 않는 예문 수백 개와 견주고, 서로 이어 둔 항목(예: 화가 터졌을 때 ↔ 민원 예고)도 함께 끌어올립니다. 위험 신호가 잡히면 위기 카드를 맨 위에 둡니다.</small></li></ul></section>'
       + '<section class="blk"><h3>이렇게 써 주세요</h3><ul class="dnt">'
       + '<li><b>정답지가 아니라 연습장입니다.</b><small>예문과 판별 결과는 비교해 볼 거리일 뿐입니다. 같은 말도 내담자, 관계, 말투, 표정에 따라 맞는 응답이 달라집니다.</small></li>'
       + '<li><b>판별은 글자 패턴만 봅니다.</b><small>입력한 문장에서 미리 정해 둔 낱말·어미를 찾는 방식이라 맥락과 억양은 읽지 못합니다. 걸리지 않았다고 좋은 말이라는 뜻은 아닙니다.</small></li>'
@@ -473,6 +570,7 @@
       if (curView !== null) window.scrollTo(0, h ? Math.max(0, top) : 0);
     }
     curView = h;
+    doScroll();
     d.title = (MOD[h] ? MOD[h].name + ' · ' : h === 'mix' ? '섞어서 연습 · ' : h === 'about' ? '이 연습장에 대해 · ' : '') + '상담 대화 연습장';
   }
   /* 입력 중인 칸의 포커스·커서를 지키며 일부만 다시 그린다 */
@@ -511,8 +609,12 @@
     if (ds.mc != null) { st.cloud.c = ds.mc; st.cloud.t = ds.mc === 'mine' ? '' : byId(D.cloudCases, ds.mc).t; rerender(); if (ds.mc === 'mine') $('mIn').focus(); return; }
     if (ds.mgo != null) { st.cloud.t = $('mIn').value; rerender(); return; }
     /* 05·06 */
-    if (ds.sit != null) { var p = ds.sit.split(':'); st[p[0]].id = st[p[0]].id === p[1] ? '' : p[1]; rerender(); return; }
-    if (ds.sgo != null) { st[ds.sgo].q = $(ds.sgo + 'In').value; st[ds.sgo].id = ''; rerender(); return; }
+    if (ds.sit != null) { st.open = st.open === ds.sit ? '' : ds.sit; rerender(); return; }
+    if (ds.spg != null) { var sp = ds.spg.split(':'); st[sp[0]].pg = +sp[1]; rerender(); var el0 = d.querySelector('.sits'); if (el0 && el0.getBoundingClientRect().top < 0) el0.scrollIntoView({ block: 'start' }); return; }
+    if (ds.open != null) { openKey(ds.open); return; }
+    if (ds.hgo != null) { st.home.q = $('hIn').value; rerender(); return; }
+    if (ds.hex != null) { st.home.q = ds.hex; rerender(); return; }
+    if (ds.sgo != null) { st[ds.sgo].q = $(ds.sgo + 'In').value; rerender(); return; }
     if (ds.sclear != null) { st[ds.sclear].q = ''; rerender(); return; }
     if (ds.sl != null) { st.frame.done[ds.sl] = !st.frame.done[ds.sl]; rerender(); return; }
   });
@@ -530,7 +632,8 @@
     if (e.key !== 'Enter' || e.isComposing) return;
     var t = e.target;
     if (t.id === 'qIn') { e.preventDefault(); st.question.q = t.value; rerender(); }
-    else if (t.dataset && t.dataset.sq) { e.preventDefault(); st[t.dataset.sq].q = t.value; st[t.dataset.sq].id = ''; rerender(); }
+    else if (t.dataset && t.dataset.sq) { e.preventDefault(); st[t.dataset.sq].q = t.value; rerender(); }
+    else if (t.id === 'hIn') { e.preventDefault(); st.home.q = t.value; rerender(); }
   });
   function insertAt(ta, w) {
     if (!ta) return; var s = ta.selectionStart == null ? ta.value.length : ta.selectionStart, e = ta.selectionEnd == null ? s : ta.selectionEnd;
