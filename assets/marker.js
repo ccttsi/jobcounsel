@@ -128,7 +128,7 @@
       css += 'mark.jc-mk[data-c="' + c + '"]{background:' + bg + '}';
     });
     css += 'mark.jc-mk{color:inherit;padding:0;border-radius:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}';
-    css += 'body.jc-mk-pen,body.jc-mk-pen *{cursor:text}body.jc-mk-note,body.jc-mk-note *{cursor:copy!important}';
+    css += 'body.jc-mk-pen,body.jc-mk-pen *{cursor:text}body.jc-mk-note,body.jc-mk-note *{cursor:copy!important}@media (pointer:coarse){body.jc-mk-note,body.jc-mk-note *{cursor:pointer!important}}';
     styleEl.textContent = css;
   }
   var painting = false;
@@ -193,8 +193,11 @@
     for (var p = host; p && p !== d.body; p = p.parentNode) if (SKIP[p.nodeName] || p === uiHost || p === layerHost) return null;
     return r;
   }
+  /* 아이폰 사파리는 '칠하기'를 누르는 순간 선택이 풀린다. 마지막으로 고른 범위를 기억해 두고 쓴다. */
+  var pendSel = null;
+  function pendingRange() { var r = selectionRange(); if (r) return r; if (pendSel && !pendSel.collapsed && d.body.contains(pendSel.commonAncestorContainer)) return pendSel; return null; }
   function applyHighlight() {
-    var r = selectionRange(); if (!r) return false;
+    var r = pendingRange(); pendSel = null; if (!r) return false;
     buildIndex();
     var a = pointToOffset(r.startContainer, r.startOffset), b = pointToOffset(r.endContainer, r.endOffset);
     if (a < 0 || b < 0) return false;
@@ -470,7 +473,7 @@
   function renderPill() {
     if (mode === 'off') { ui.pill.hidden = true; return; }
     if (mode === 'pen') {
-      var sel = selectionRange();
+      var sel = pendingRange();
       ui.pill.innerHTML = '<i aria-hidden="true"></i><span>' + (sel ? '선택한 글을 칠할까요?' : (coarse ? '글자를 길게 눌러 고르세요' : '칠할 글자를 드래그하세요')) + '</span>' +
         (sel ? '<button class="go" data-act="apply">칠하기</button>' : '') + '<button data-act="off">끄기</button>';
     } else {
@@ -572,13 +575,36 @@
     d.addEventListener('mouseup', function (e) {
       if (mode === 'pen' && e.button === 0 && !coarse && !isOurs(e)) setTimeout(function () { if (selectionRange()) applyHighlight(); }, 0);
     });
-    d.addEventListener('selectionchange', function () { if (mode === 'pen') { clearTimeout(selT); selT = setTimeout(renderPill, 120); } });
+    d.addEventListener('selectionchange', function () { var r = selectionRange(); if (r) pendSel = r.cloneRange(); if (mode === 'pen') { clearTimeout(selT); selT = setTimeout(renderPill, 120); } });
+    // 도구함이 열려 있을 때 바깥을 누르면 닫는다
+    d.addEventListener('pointerdown', function (e) { if (!ui.panel.hidden && !isOurs(e) && mode !== 'note') closePanel(); }, true);
+    // 칠하기 막대를 누를 때 선택이 풀리지 않게 한다(데스크톱)
+    ui.pill.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    /* 아이폰 사파리는 링크가 아닌 글자를 눌러도 click을 보내지 않는 경우가 있다.
+       손가락 탭은 pointerup으로 직접 처리하고, 뒤따르는 click은 한 번 무시한다. */
+    var tap = null, tapDone = 0;
+    d.addEventListener('pointerdown', function (e) { tap = (e.pointerType !== 'mouse' && !isOurs(e)) ? { x: e.clientX, y: e.clientY, t: Date.now() } : null; }, true);
+    d.addEventListener('pointercancel', function () { tap = null; }, true);
+    d.addEventListener('pointerup', function (e) {
+      var t0 = tap; tap = null;
+      if (!t0 || isOurs(e) || Math.abs(e.clientX - t0.x) > 10 || Math.abs(e.clientY - t0.y) > 10 || Date.now() - t0.t > 700) return;
+      if (popId) hidePop();
+      if (openNote && mode !== 'note') { flush(); var o = byId(openNote); openNote = null; if (o && !(o.text || '').trim()) remove(o.id); else placeNotes(); }
+      if (mode === 'note') { tapDone = Date.now(); e.preventDefault(); addNoteAt(e.clientX, e.clientY); setMode('off'); return; }
+      if (mode === 'off' && !(e.target.closest && e.target.closest('a,button,input,select,textarea,label,summary,[role=button],[role=slider],[onclick]'))) {
+        var s3 = getSelection && getSelection(); if (s3 && !s3.isCollapsed) return;
+        var hit = hitHighlight(e.clientX, e.clientY);
+        if (hit) { tapDone = Date.now(); showPop(hit, e.clientX, e.clientY); }
+      }
+    }, true);
     d.addEventListener('click', function (e) {
       if (isOurs(e)) return;
+      if (Date.now() - tapDone < 700) { e.preventDefault(); e.stopPropagation(); return; }
+      if (mode !== 'pen') { var s0 = getSelection && getSelection(); if (!s0 || s0.isCollapsed) pendSel = null; }
       if (mode === 'note') { e.preventDefault(); e.stopPropagation(); addNoteAt(e.clientX, e.clientY); setMode('off'); return; }
       if (popId) { hidePop(); }
       if (openNote && !isOurs(e)) { flush(); var o = byId(openNote); openNote = null; if (o && !(o.text || '').trim()) remove(o.id); else placeNotes(); }
-      if (mode === 'pen') return;
+      if (mode === 'pen') { var s1 = getSelection && getSelection(); if (!s1 || s1.isCollapsed) { pendSel = null; clearTimeout(selT); selT = setTimeout(renderPill, 120); } return; }
       var s2 = getSelection && getSelection(); if (s2 && !s2.isCollapsed) return;
       var tgt = e.target.closest && e.target.closest('a,button,input,select,textarea,label,summary,[role=button],[onclick]');
       if (tgt && ui.panel.hidden) return;   // 링크·버튼은 원래 동작 그대로
