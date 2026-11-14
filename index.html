@@ -183,6 +183,27 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-roll-hint{font-size:13.5px;color:var(--dim);margin-top:2px}
 .a-for-mouse{display:none}
 @media (hover:hover) and (pointer:fine){.a-for-touch{display:none}.a-for-mouse{display:inline}}
+.a-all-btn{display:flex;margin:14px auto 0;min-height:44px;justify-content:center;align-items:center;gap:6px;font-size:14.5px;font-weight:650;color:var(--muted);padding:0 10px;border-radius:12px}
+.a-all-btn:hover{color:var(--ink)}
+.a-all-btn svg{width:16px;height:16px;transition:transform .25s}
+.a-all-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.a-all-btn b{color:var(--a1)}
+/* 전체 목록: 롤링 자리를 대신한다 */
+.a-list{margin:clamp(12px,1.8vw,20px) auto 0;max-width:640px;text-align:left;animation:a-in .25s ease}
+@keyframes a-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.a-list-h{font-size:clamp(22px,4.6vw,28px);font-weight:800;letter-spacing:-.03em;color:var(--ink);margin:0 0 10px;text-align:center}
+.a-list-h b{display:inline;color:var(--a1)}
+.a-list ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.a-root .a-list a{display:flex;gap:14px;align-items:baseline;min-height:56px;padding:12px 6px;border-top:1px dashed var(--line-2);color:inherit;text-decoration:none}
+.a-list li:first-child a{border-top:0}
+.a-root .a-list a:hover b{color:var(--a1)}
+.a-list .a-no{flex:none;font-size:13.5px;font-weight:700;color:var(--a1);min-width:1.6em}
+.a-list li b{display:block;font-size:17px;font-weight:700;line-height:1.4;color:var(--ink)}
+.a-list small{display:block;font-size:14px;color:var(--muted);line-height:1.5}
+.a-pg{display:flex;justify-content:center;align-items:center;gap:2px;margin-top:10px;min-height:44px}
+.a-root .a-pg button{min-width:40px;height:40px;padding:0 6px;border-radius:12px;font-size:15px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
+.a-root .a-pg button[aria-current="true"]{color:var(--a1);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.a-root .a-pg button:disabled{opacity:.3}
 .a-all{margin:14px auto 0;max-width:820px;text-align:left}
 .a-all summary{list-style:none;cursor:pointer;min-height:44px;display:flex;justify-content:center;align-items:center;gap:6px;font-size:14.5px;font-weight:650;color:var(--muted)}
 .a-all summary::-webkit-details-marker{display:none}
@@ -207,6 +228,9 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   .a-nav-go,.a-ctrl{justify-content:flex-start}
   .a-ctrl{margin-left:-10px}
   .a-all{margin-left:0}
+  .a-all-btn{margin-left:-10px}
+  .a-list{margin-left:0}
+  .a-list-h{text-align:left}
   .a-all summary{justify-content:flex-start}
   .a-all ol{grid-template-columns:minmax(0,1fr)}
 }
@@ -349,23 +373,30 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   <main class="a-stage">
   <section class="a-nav" id="nav" aria-label="자료 고르기">
     <p class="a-eyebrow">직업상담사를 위한 학습·실무 자료 <b class="a-num" data-count>7</b>가지</p>
+    <div id="rollView">
     <h1 class="a-say" id="heroTitle">
-      <span class="a-say-l">오늘은</span>
-      <span class="a-dial" id="dial">
-        <span class="a-drum" id="drum" tabindex="0" role="slider" aria-label="보고 싶은 자료" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1"></span>
-      </span>
-      <span class="a-say-l">보고 싶어요.</span>
-    </h1>
-    <p class="a-say-sub" id="saySub" aria-live="off"><b><span id="sayTitle"></span><span class="a-seen-stamp" id="sayStamp" hidden>열람</span></b><span id="sayLead"></span></p>
-    <div class="a-nav-go"><a class="a-btn a-open" id="sayOpen" href="./theory/" data-visit="theory"><span>이 자료 열기</span><span aria-hidden="true">→</span></a></div>
-    <div class="a-ctrl">
-      <button class="a-ib" id="navPrev" aria-label="이전 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <div class="a-dots" id="dots" role="group" aria-label="자료 바로 고르기"></div>
-      <button class="a-ib" id="navNext" aria-label="다음 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <button class="a-ib" id="navPause" aria-pressed="false" aria-label="자동 넘김 멈추기" title="자동 넘김 멈추기"><svg viewBox="0 0 24 24" aria-hidden="true"><g id="icoPause"><rect x="7" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/><rect x="13.6" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/></g><path id="icoPlay" d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4l-10-6.2A.8.8 0 0 0 8 5.8z" fill="currentColor" style="display:none"/></svg></button>
+        <span class="a-say-l">오늘은</span>
+        <span class="a-dial" id="dial">
+          <span class="a-drum" id="drum" tabindex="0" role="slider" aria-label="보고 싶은 자료" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1"></span>
+        </span>
+        <span class="a-say-l">보고 싶어요.</span>
+      </h1>
+      <p class="a-say-sub" id="saySub" aria-live="off"><b><span id="sayTitle"></span><span class="a-seen-stamp" id="sayStamp" hidden>열람</span></b><span id="sayLead"></span></p>
+      <div class="a-nav-go"><a class="a-btn a-open" id="sayOpen" href="./theory/" data-visit="theory"><span>이 자료 열기</span><span aria-hidden="true">→</span></a></div>
+      <div class="a-ctrl">
+        <button class="a-ib" id="navPrev" aria-label="이전 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="a-dots" id="dots" role="group" aria-label="자료 바로 고르기"></div>
+        <button class="a-ib" id="navNext" aria-label="다음 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="a-ib" id="navPause" aria-pressed="false" aria-label="자동 넘김 멈추기" title="자동 넘김 멈추기"><svg viewBox="0 0 24 24" aria-hidden="true"><g id="icoPause"><rect x="7" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/><rect x="13.6" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/></g><path id="icoPlay" d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4l-10-6.2A.8.8 0 0 0 8 5.8z" fill="currentColor" style="display:none"/></svg></button>
+      </div>
+      <p class="a-roll-hint"><span class="a-for-touch">↕ 가운데 문구를 밀어서 돌릴 수 있습니다.</span><span class="a-for-mouse">↕ 가운데 문구를 휠로 굴리거나 위아래로 끌어 돌릴 수 있습니다.</span></p>
     </div>
-    <p class="a-roll-hint"><span class="a-for-touch">↕ 가운데 문구를 밀어서 돌릴 수 있습니다.</span><span class="a-for-mouse">↕ 가운데 문구를 휠로 굴리거나 위아래로 끌어 돌릴 수 있습니다.</span></p>
-    <details class="a-all"><summary>자료 전체 목록 <b class="a-num" data-count>7</b>개 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><ol id="allList"></ol></details>
+    <div id="listView" class="a-list" hidden>
+      <h2 class="a-list-h">자료 전체 목록 <b class="a-num" data-count>7</b>개</h2>
+      <ol id="allList"></ol>
+      <nav class="a-pg" id="allPg" aria-label="목록 쪽 넘기기"></nav>
+    </div>
+    <button type="button" class="a-all-btn" id="allBtn" aria-expanded="false" aria-controls="listView"><span id="allBtnT">자료 전체 목록 <b class="a-num" data-count>7</b>개</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   </section>
       <section class="a-card a-insight a-c1 a-live" id="insight" aria-labelledby="insightLabel">
         <div class="a-sec"><b id="insightLabel">오늘의 직업상담 통찰</b><span id="insightTag"></span></div>
@@ -535,11 +566,28 @@ var pos=0,target=0,shown=-1,drag=null,elapsed=0,paused=false,holdUntil=0,hover=f
 var items=[],dotEls=[];
 function mod(a,n){return ((a%n)+n)%n;}
 function reduce(){return !!reduceMQ.matches;}
+/* 자료 전체 목록: 롤링 자리를 대신해 5개씩 보여 준다 */
+var LIST_PER=5,listPage=0,listOpen=false;
+function renderList(){
+  var n=Math.max(1,Math.ceil(TOOLS.length/LIST_PER));listPage=Math.min(listPage,n-1);
+  $('allList').innerHTML=TOOLS.slice(listPage*LIST_PER,(listPage+1)*LIST_PER).map(function(t){return '<li><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><span style="min-width:0"><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></span></a></li>';}).join('');
+  var h='';if(n>1){h+='<button type="button" data-lp="'+(listPage-1)+'" aria-label="이전 쪽"'+(listPage===0?' disabled':'')+'>‹</button>';
+    for(var i=0;i<n;i++)h+='<button type="button" data-lp="'+i+'" aria-current="'+(i===listPage)+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>';
+    h+='<button type="button" data-lp="'+(listPage+1)+'" aria-label="다음 쪽"'+(listPage===n-1?' disabled':'')+'>›</button>';}
+  $('allPg').innerHTML=h;
+}
+function setList(on){
+  var rv=$('rollView'),lv=$('listView'),bt=$('allBtn');
+  if(on&&!listOpen){lv.style.minHeight=rv.offsetHeight+'px';}
+  listOpen=on;rv.hidden=on;lv.hidden=!on;bt.setAttribute('aria-expanded',String(on));
+  $('allBtnT').innerHTML=on?'롤링으로 돌아가기':'자료 전체 목록 <b class="a-num">'+TOOLS.length+'</b>개';
+  if(on){var f=lv.querySelector('a');if(f)f.focus({preventScroll:true});}
+}
 function buildNav(){
   $('drum').innerHTML=TOOLS.map(function(t,i){return '<span class="a-it" aria-hidden="true" data-i="'+i+'"><span class="a-tx">'+esc(t.phrase)+'</span></span>';}).join('');
   $('drum').setAttribute('aria-valuemax',N);
   $('dots').innerHTML=TOOLS.map(function(t,i){return '<button type="button" data-dot="'+i+'" aria-label="'+esc(t.phrase)+' 보고 싶어요: '+esc(t.title)+'"><i></i></button>';}).join('');
-  $('allList').innerHTML=TOOLS.map(function(t){return '<li><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><span style="min-width:0"><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></span></a></li>';}).join('');
+  renderList();
   items=Array.prototype.slice.call($('drum').children);
   dotEls=Array.prototype.slice.call($('dots').children);
 }
@@ -592,7 +640,7 @@ function frame(now){
   var dt=Math.min(64,now-(lastT||now));lastT=now;
   if(!drag){var diff=target-pos;
     if(Math.abs(diff)>.0004){pos+=diff*(1-Math.exp(-dt/120));if(Math.abs(target-pos)<.0004)pos=target;layout();}}
-  var run=!reduce()&&!paused&&!hover&&!drag&&now>holdUntil&&!document.hidden;
+  var run=!reduce()&&!paused&&!hover&&!drag&&!listOpen&&now>holdUntil&&!document.hidden;
   if(run){elapsed+=dt;if(elapsed>=INTERVAL){elapsed=0;step(1,true);}}
   $('drum').style.setProperty('--t',(reduce()||paused?0:Math.min(100,elapsed/INTERVAL*100)).toFixed(1)+'%');
   requestAnimationFrame(frame);
@@ -639,6 +687,8 @@ function bindNav(){
   $('navPrev').addEventListener('click',function(){step(-1);});
   $('navNext').addEventListener('click',function(){step(1);});
   $('navPause').addEventListener('click',function(){setPaused(!paused);});
+  $('allBtn').addEventListener('click',function(){setList(!listOpen);});
+  $('allPg').addEventListener('click',function(e){var b=e.target.closest('[data-lp]');if(!b||b.disabled)return;listPage=+b.getAttribute('data-lp');renderList();var f=$('allList').querySelector('a');if(f)f.focus({preventScroll:true});});
   $('dots').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-dot]');if(b)goTo(+b.getAttribute('data-dot'));});
   var stage=$('nav');
   stage.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')hover=true;});
