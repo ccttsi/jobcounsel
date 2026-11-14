@@ -78,6 +78,27 @@ main{max-width:880px;margin:auto;padding:20px max(16px,env(safe-area-inset-left)
 .bnav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .bnav button[aria-current="page"]{color:var(--accent)}
 @media (min-width:860px){.bnav{display:none}.tnav{display:flex}main{padding-bottom:64px}}
+/* 가로로 눕힌 휴대폰: 아래 탭 대신 위 탭 */
+@media (orientation:landscape) and (max-height:500px) and (min-width:600px){.bnav{display:none}.tnav{display:flex}main{padding-bottom:40px}.top{position:relative}}
+/* 넓은 화면: 가로를 나눠 쓴다 */
+@media (min-width:1100px){
+.top-in,main{max-width:1240px}
+main[data-view=home]{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:40px;row-gap:26px;align-items:start;grid-auto-flow:row dense}
+main[data-view=home]>header,main[data-view=home]>.search,main[data-view=home]>footer{grid-column:1/-1}
+main[data-view=home]>.search{max-width:none}
+main[data-view=home] #res>.sec:first-child{grid-column:1;grid-row:span 3}
+main[data-view=home] #res>.sec:not(:first-child){grid-column:2}
+main[data-view=theories] .list,main[data-view=compare] .sec .sec .list,main[data-view=review] .list{display:grid;grid-template-columns:1fr 1fr}
+main[data-view=theories] .list>.row,main[data-view=compare] .sec .sec .list>.row,main[data-view=review] .list>.row{border-top:0;border-bottom:1px solid var(--line)}
+main[data-view=compare]>.sec:last-child{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;align-items:start}
+main[data-view=practice]>.sec:last-child{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;align-items:start}
+main[data-view=practice]>.sec:last-child>p,main[data-view=practice]>.sec:last-child>.steps-n{grid-column:1/-1}
+.steps-n{display:grid!important;grid-template-columns:1fr 1fr;column-gap:32px}
+main[data-view=review] .fc{max-width:760px;width:100%;margin:0 auto}
+.sheet{width:min(1120px,94vw)}
+.sh-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px 32px;align-items:start;padding-left:36px;padding-right:36px}
+.sh-body>.d-h,.sh-body>.lead,.sh-body>.viz{grid-column:1/-1}
+}
 
 /* 공통 */
 .hero h1{font-size:clamp(1.7rem,6vw,2.5rem);font-weight:700}
@@ -541,7 +562,7 @@ function openSheet(id){if(!T[id])return;store.seen[id]=(store.seen[id]||0)+1;sto
 function closeSheet(){$('#ov').classList.remove('open');document.documentElement.classList.remove('lock')}
 
 /* 라우팅 */
-function render(){const v=st.view;$('#main').innerHTML=({home:vHome,theories:vTheories,compare:vCompare,practice:vPractice,review:vReview})[v]();
+function render(){const v=st.view;$('#main').dataset.view=v;$('#main').innerHTML=({home:vHome,theories:vTheories,compare:vCompare,practice:vPractice,review:vReview})[v]();
   document.querySelectorAll('[data-nav]').forEach(b=>b.setAttribute('aria-current',b.dataset.nav===v?'page':'false'))}
 function route(){const h=(location.hash||'#home').slice(1);
   if(h.startsWith('t-')&&T[h.slice(2)]){if(!$('#main').innerHTML)render();openSheet(h.slice(2));return}

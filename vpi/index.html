@@ -73,7 +73,8 @@ button,input{font:inherit;color:inherit}
 
 /* HUD */
 .hud{background:var(--surface);border-bottom:1px solid var(--line)}
-@media (min-width:760px){.hud{position:sticky;top:0;z-index:20}}
+@media (min-width:760px){.hud{position:sticky;top:0;z-index:20}
+@media (orientation:landscape) and (max-height:500px){.hud{position:relative}}}
 .hud .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding-top:10px;padding-bottom:10px}
 .brand{flex:1 1 260px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
 .brand h1{font-size:clamp(15px,1vw + 11px,19px);font-weight:700;letter-spacing:-.01em}

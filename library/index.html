@@ -596,6 +596,8 @@ document.documentElement.setAttribute('data-theme',t);})();
     #dBody > * { max-width: 900px; }
     .sec p { font-size: 17px; line-height: 1.8; }
   }
+  /* 가로로 눕힌 휴대폰: 위 머리말은 고정하지 않는다 */
+  @media (orientation: landscape) and (max-height: 500px) { header.hud { position: relative !important; } }
   /* ---------- SEARCH PALETTE ---------- */
   .palette-wrap { position: fixed; inset: 0; z-index: 80; display: none; align-items: flex-start; justify-content: center; padding: clamp(12px, 8vh, 96px) 12px 12px; background: var(--scrim); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
   .palette-wrap.open { display: flex; }
@@ -649,11 +651,11 @@ document.documentElement.setAttribute('data-theme',t);})();
       청년의 이직, 지역의 격차, 고령의 일터, 그리고 AI.<br><span class="t-dim font-semibold">국내외 보고서 열세 권으로 읽는 고용의 다음 장면</span>
     </h1>
     <p class="mt-4 max-w-3xl t-dim" style="font-size:var(--fs-base)">
-      1단에는 국회입법조사처·국회미래연구원 보고서 3권, 2단에는 WEF·ILO·세계은행·CEPR의 영문 보고서 4권(한국어 번역), 3단에는 해외 구직자 지원제도·미래 직업·근로자 역량을 다룬 3권을 꽂았습니다. 책장이 차서 오른쪽에 두 번째 책장을 세웠고, 1단에는 청년 니트·초단시간 노동·지역 인구정책 3권이 있습니다. 옆으로 넘겨 보세요. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
+      1단에는 국회입법조사처·국회미래연구원 보고서 3권, 2단에는 WEF·ILO·세계은행·CEPR의 영문 보고서 4권(한국어 요약·해설), 3단에는 해외 구직자 지원제도·미래 직업·근로자 역량을 다룬 3권을 꽂았습니다. 책장이 차서 오른쪽에 두 번째 책장을 세웠고, 1단에는 청년 니트·초단시간 노동·지역 인구정책 3권이 있습니다. 옆으로 넘겨 보세요. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
     </p>
     <div class="mt-5 flex flex-wrap gap-2" style="font-size:var(--fs-xs)">
       <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 13권</span>
-      <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 5권 한국어 번역</span>
+      <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 5권 한국어 요약</span>
       <span class="note-tag"><i data-lucide="database" class="w-3.5 h-3.5"></i>수치는 원문 그대로 인용</span>
       <span class="note-tag"><i data-lucide="message-square-quote" class="w-3.5 h-3.5"></i>상담 적용 노트는 편집자 해석</span>
     </div>
