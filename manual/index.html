@@ -37,7 +37,7 @@ setInterval(apply,30000);})();
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1220;--panel:#171d30;--sunk:#0a0e19;--ink:#eef1f8;--mute:#b6bfd2;--line:#343d57;--acc:#a9bdff;--acc-soft:#1c2850;--warn:#f3c56b;--warn-soft:#3d2e0d;--onacc:#0e1220;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0e1220;--panel:#171d30;--sunk:#0a0e19;--ink:#eef1f8;--mute:#b6bfd2;--line:#343d57;--acc:#a9bdff;--acc-soft:#1c2850;--warn:#f3c56b;--warn-soft:#3d2e0d;--onacc:#0e1220;color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
-html,body{overflow-x:hidden}
+html,body{overflow-x:clip}@supports not (overflow-x:clip){body{overflow-x:hidden}}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.7;word-break:keep-all;overflow-wrap:anywhere;-webkit-text-size-adjust:100%}
 h1,h2,h3,p,ol,ul{margin:0}
 h1,h2,h3{line-height:1.32;text-wrap:balance}
@@ -146,7 +146,7 @@ th{font-size:12.5px;color:var(--mute)}
 }
 @media (min-width:820px){
   .shell{grid-template-columns:240px minmax(0,1fr);gap:24px}
-  .side{display:block;position:sticky;top:150px;align-self:start;max-height:calc(100vh - 170px);overflow-y:auto;padding-right:4px}
+  .side{display:block;position:sticky;top:calc(var(--hudH,150px) + 12px);align-self:start;max-height:calc(100dvh - var(--hudH,150px) - 24px);overflow-y:auto;overscroll-behavior:contain;padding-right:4px}
   .side h2{font-size:15px;font-weight:700}
   .side .rng{font-size:12.5px;color:var(--mute);margin-bottom:8px}
   .toc{display:flex;flex-direction:column;gap:2px}
@@ -342,6 +342,7 @@ window.addEventListener('hashchange',()=>setView(location.hash.slice(1),true));
 setView(location.hash.slice(1)||'map',true);setPage(page);
 })();
 </script>
+<script>/* 고정 머리말 높이 → 왼쪽 차례 고정 위치 */(function(){var h=document.querySelector('.hud');if(!h)return;function f(){var p=getComputedStyle(h).position;document.documentElement.style.setProperty('--hudH',(p==='sticky'||p==='fixed'?h.offsetHeight:0)+'px');}f();window.addEventListener('resize',f);if(window.ResizeObserver)new ResizeObserver(f).observe(h);})();</script>
 <script src="../assets/marker.js" defer></script>
 <script src="../assets/prefs.js" defer></script>
 </body>
