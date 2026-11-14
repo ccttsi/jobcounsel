@@ -436,6 +436,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     box-shadow: 3px 3px 8px -3px var(--cab-shade);
   }
   .bookend::after { content: ""; position: absolute; left: -2px; bottom: 0; width: 34px; height: 4px; border-radius: 1px; background: linear-gradient(180deg, #a8adb5, #5d6168); }
+
   @media (prefers-reduced-motion: reduce) { .book, .drawer, .scrim, body, .dhead-roll { transition: none !important; } }
 
   /* ---------- DRAWER ---------- */
@@ -528,6 +529,73 @@ document.documentElement.setAttribute('data-theme',t);})();
   .insight .num { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--bg); background: var(--accent); }
   .note-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
 
+  /* ---------- 넓은 화면(태블릿·노트북·데스크톱) ---------- */
+  /* 단마다 남는 자리에 '서가 색인 카드'를 꽂아 둔다(휴대폰에서는 숨김) */
+  .shelf-card { display: none; }
+  @media (min-width: 768px) {
+    .cab-row { min-height: 300px; }
+    .shelf-card {
+      display: flex; flex-direction: column; align-self: center; flex: 1 1 auto; min-width: 0;
+      margin: 0 4px 34px 26px; padding: 22px 24px 18px; position: relative; z-index: 1;
+      background:
+        repeating-linear-gradient(180deg, transparent 0 31px, rgba(80,120,170,0.16) 31px 32px) 0 52px / 100% calc(100% - 52px) no-repeat,
+        linear-gradient(180deg, #fffdf6, #f8f1e2);
+      color: #3a3027; border-radius: 2px; transform: rotate(-0.6deg);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05), 0 14px 22px -14px rgba(60,40,20,0.45);
+    }
+    .shelf-card::before { /* 마스킹테이프 */
+      content: ""; position: absolute; top: -10px; left: 50%; width: 92px; height: 22px; transform: translateX(-50%) rotate(-3deg);
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.25) 0 4px, transparent 4px 8px), rgba(214,190,140,0.75);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+    }
+    .shelf-card .sc-k { font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: .14em; color: #a2463a; }
+    .shelf-card .sc-t { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; margin: 2px 0 10px; color: #2a221b; }
+    .shelf-card ol { list-style: none; margin: 0; padding: 0; }
+    .shelf-card li + li { margin-top: 2px; }
+    .shelf-card button { display: grid; grid-template-columns: 4.2em 1fr; gap: 0 10px; width: 100%; text-align: left; padding: 7px 8px; margin: 0 -8px; border-radius: 8px; min-height: 44px; color: inherit; }
+    .shelf-card button:hover, .shelf-card button:focus-visible { background: rgba(162,70,58,0.08); }
+    .shelf-card .sc-n { font-family: "JetBrains Mono", monospace; font-size: 13px; font-weight: 700; color: var(--c, #a2463a); padding-top: 2px; }
+    .shelf-card .sc-b { font-size: 16px; font-weight: 700; line-height: 1.4; }
+    .shelf-card .sc-s { grid-column: 2; font-size: 14px; line-height: 1.5; color: #6a5d50; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    :root[data-theme="dark"] .shelf-card { background: linear-gradient(180deg, #2a2420, #221d19); color: #e9dfd2; box-shadow: 0 14px 22px -14px rgba(0,0,0,0.8); }
+    :root[data-theme="dark"] .shelf-card .sc-t { color: #f3e9dc; }
+    :root[data-theme="dark"] .shelf-card .sc-s { color: #b5a796; }
+    :root[data-theme="dark"] .shelf-card .sc-k { color: #e7957f; }
+    :root[data-theme="dark"] .shelf-card::before { background: repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 4px, transparent 4px 8px), rgba(150,120,80,0.6); }
+  }
+  @media (min-width: 768px) and (max-width: 1279px) { .shelf-card .sc-s { -webkit-line-clamp: 1; } }
+  @media (min-width: 768px) { .shelf-card.many .sc-s { -webkit-line-clamp: 1; } }
+
+  /* 책을 열면 화면 전체를 읽기 책상으로 쓴다 */
+  .dmain { flex: 1; min-height: 0; display: flex; }
+  .dtoc { display: none; }
+  #dBody { position: relative; }
+  @media (min-width: 768px) {
+    .drawer { width: 100vw; border-left: 0; background: var(--bg); box-shadow: none; transform: translateY(18px); opacity: 0; visibility: hidden;
+      transition: transform .4s cubic-bezier(.2,.8,.2,1), opacity .3s ease, visibility 0s linear .4s; }
+    .drawer.open { transform: none; opacity: 1; visibility: visible; transition: transform .4s cubic-bezier(.2,.8,.2,1), opacity .3s ease; }
+    .dhead { background: var(--bg); }
+    .dhead-bar, .roll-paper { padding-left: max(28px, calc((100vw - 840px) / 2)); padding-right: max(20px, calc((100vw - 840px) / 2)); }
+    .rod { margin: 0 max(14px, calc((100vw - 840px) / 2 - 14px)); }
+    #dBody { padding-left: max(28px, calc((100vw - 840px) / 2)) !important; padding-right: max(28px, calc((100vw - 840px) / 2)) !important; }
+  }
+  @media (min-width: 1024px) {
+    /* 왼쪽 목차 + 가운데 본문(최대 860px) */
+    .dhead-bar, .roll-paper { padding-left: max(32px, calc((100vw - 1200px) / 2)); padding-right: max(24px, calc((100vw - 1200px) / 2)); }
+    .rod { margin: 0 max(14px, calc((100vw - 1200px) / 2 - 14px)); }
+    #dNav { display: none; }
+    .dtoc { display: block; flex: 0 0 calc(max(32px, (100vw - 1200px) / 2) + 236px); padding: 28px 20px 40px max(32px, calc((100vw - 1200px) / 2)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+    .dtoc::-webkit-scrollbar { display: none; }
+    .dtoc .toc-h { font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: .16em; color: var(--ink-faint); margin: 0 0 10px; }
+    .dtoc a { display: block; position: relative; padding: 9px 10px 9px 14px; border-radius: 8px; font-size: 15px; line-height: 1.45; color: var(--ink-dim); }
+    .dtoc a::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 2px; background: transparent; transition: background .2s ease; }
+    .dtoc a:hover { color: var(--ink); background: var(--soft); }
+    .dtoc a[aria-current="true"] { color: var(--ink); font-weight: 700; }
+    .dtoc a[aria-current="true"]::before { background: var(--accent); }
+    #dBody { padding-left: 36px !important; padding-right: max(32px, calc((100vw - 1200px) / 2)) !important; }
+    #dBody > * { max-width: 900px; }
+    .sec p { font-size: 17px; line-height: 1.8; }
+  }
   /* ---------- SEARCH PALETTE ---------- */
   .palette-wrap { position: fixed; inset: 0; z-index: 80; display: none; align-items: flex-start; justify-content: center; padding: clamp(12px, 8vh, 96px) 12px 12px; background: var(--scrim); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
   .palette-wrap.open { display: flex; }
@@ -644,7 +712,10 @@ document.documentElement.setAttribute('data-theme',t);})();
     </div></div></div>
     <button id="rodBtn" type="button" class="rod-btn" aria-label="머리말 펼치기·말기" tabindex="-1"><div class="rod"></div></button>
   </div>
-  <div id="dBody" class="drawer-body px-4 sm:px-7 pb-16"></div>
+  <div class="dmain">
+    <nav id="dToc" class="dtoc" aria-label="목차"></nav>
+    <div id="dBody" class="drawer-body px-4 sm:px-7 pb-16"></div>
+  </div>
 </aside>
 
 <!-- ================= SEARCH PALETTE ================= -->
@@ -2068,6 +2139,15 @@ const bookHTML = v => `
     <span class="hb b" aria-hidden="true"></span>
   </button>`;
 
+/* 단마다 붙이는 색인 카드 제목(넓은 화면에서만 보임) */
+const SHELF_NAMES = { 1: '청년과 고령, 세대별 고용', 2: 'AI·녹색 전환과 노동시장', 3: '구직 지원과 미래 직업', 4: '일자리의 빈틈과 지역' };
+const shelfCard = (n, books) => !books.length ? '' : `
+  <div class="shelf-card${books.length > 3 ? ' many' : ''}" aria-label="제${n}단 색인">
+    <div class="sc-k">제${n}단 · ${books.length}권</div>
+    <div class="sc-t">${SHELF_NAMES[n] || ''}</div>
+    <ol>${books.map(v => `<li><button type="button" data-open="${v.id}" style="--c:${v.accent}"><span class="sc-n">${v.serial}</span><span class="sc-b">${v.key}</span><span class="sc-s">${v.blurb || v.title}</span></button></li>`).join('')}</ol>
+  </div>`;
+
 /* 책장: 한 책장 = 3단. 4단째(테마 4)부터는 오른쪽에 새 책장을 세우고 옆으로 넘겨 본다. */
 const SHELVES_PER_CASE = 3;
 const caseCount = Math.max(1, Math.ceil(Math.max(...VOLS.map(v => v.shelf)) / SHELVES_PER_CASE));
@@ -2076,7 +2156,7 @@ const track = $('#caseTrack');
 track.innerHTML = Array.from({ length: caseCount }, (_, c) => {
   const tiers = Array.from({ length: SHELVES_PER_CASE }, (_, t) => {
     const books = VOLS.filter(v => v.shelf === c * SHELVES_PER_CASE + t + 1);
-    return `<div class="cab-tier"><div class="cab-row">${books.map(bookHTML).join('')}${books.length ? '<span class="bookend" aria-hidden="true"></span>' : ''}</div></div><div class="board" aria-hidden="true"></div>`;
+    return `<div class="cab-tier"><div class="cab-row">${books.map(bookHTML).join('')}${books.length ? '<span class="bookend" aria-hidden="true"></span>' : ''}${shelfCard(c * SHELVES_PER_CASE + t + 1, books)}</div></div><div class="board" aria-hidden="true"></div>`;
   }).join('');
   return `<div class="case-slide${c === 0 ? ' is-active' : ''}" role="group" aria-roledescription="slide" aria-label="제${c + 1}서가 (${caseCount}개 중 ${c + 1})"><div class="bookcase">${tiers}</div></div>`;
 }).join('');
@@ -2150,6 +2230,7 @@ document.querySelectorAll('.book').forEach(el => {
   });
 });
 document.querySelectorAll('.cat-item').forEach(el => el.addEventListener('click', () => openSlate(+el.dataset.vol)));
+document.querySelectorAll('.shelf-card [data-open]').forEach(el => el.addEventListener('click', () => openSlate(+el.dataset.open)));
 
 /* ============================================================
    READING DESK
@@ -2178,6 +2259,7 @@ function openSlate(vol, secId) {
   setRolled(false);
   dBody.innerHTML = RENDER[vol]() + srcCard(v);
   $('#dNav').innerHTML = [...dBody.querySelectorAll('[data-sec]')].map(s => `<a class="chip" href="#${s.id}" data-jump="${s.id}">${s.dataset.title}</a>`).join('');
+  $('#dToc').innerHTML = '<p class="toc-h">CONTENTS</p>' + [...dBody.querySelectorAll('[data-sec]')].map((s, i) => `<a href="#${s.id}" data-jump="${s.id}" aria-current="${i === 0}">${s.dataset.title}</a>`).join('');
   icons();
   drawer.classList.add('open'); scrim.classList.add('open');
   drawer.setAttribute('aria-hidden', 'false');
@@ -2206,6 +2288,19 @@ function closeSlate() {
   if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
 }
 
+$('#dToc').addEventListener('click', e => { const a = e.target.closest('[data-jump]'); if (!a) return; e.preventDefault(); jumpTo(a.dataset.jump); });
+/* 넓은 화면 목차: 지금 읽는 부분 표시 */
+let tocRaf = 0;
+dBody.addEventListener('scroll', () => {
+  cancelAnimationFrame(tocRaf);
+  tocRaf = requestAnimationFrame(() => {
+    const links = [...document.querySelectorAll('#dToc a')]; if (!links.length || !links[0].offsetParent) return;
+    const y = dBody.scrollTop + 120; let cur = links[0].dataset.jump;
+    dBody.querySelectorAll('[data-sec]').forEach(s => { if (s.offsetTop <= y) cur = s.id; });
+    if (dBody.scrollTop + dBody.clientHeight >= dBody.scrollHeight - 4) cur = links[links.length - 1].dataset.jump;
+    links.forEach(a => a.setAttribute('aria-current', String(a.dataset.jump === cur)));
+  });
+}, { passive: true });
 $('#dNav').addEventListener('click', e => { const a = e.target.closest('[data-jump]'); if (!a) return; e.preventDefault(); setRolled(true); jumpTo(a.dataset.jump); });
 /* 두루마리 머리말 */
 const dHead = $('#dHead');
