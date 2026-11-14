@@ -99,7 +99,26 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 :root[data-theme="dark"] .a-root .a-seg button[aria-pressed="true"]{background:#1c2434}
 
 /* 제목부 */
-.a-hero{padding:clamp(26px,4.6vw,60px) 0 clamp(18px,2.4vw,28px)}
+.a-hero{padding:clamp(22px,3.6vw,48px) 0 clamp(18px,2.4vw,28px)}
+/* 개인정보와 보안 안내 */
+.a-privacy{margin-top:clamp(14px,2vw,22px);padding:clamp(16px,1.6vw,22px);border-radius:18px;border-width:1px;border-color:color-mix(in srgb,var(--a1) 35%,var(--line));
+  background:linear-gradient(180deg,color-mix(in srgb,var(--a1) 7%,var(--panel)),var(--panel))}
+.a-pv-head{display:flex;align-items:center;gap:10px}
+.a-pv-ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--a1);background:var(--soft1);flex:none}
+.a-pv-ico svg{width:20px;height:20px}
+.a-privacy h2{font-size:clamp(17px,.5vw + 15px,20px);font-weight:750;letter-spacing:-.02em}
+.a-pv-list{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:8px 22px;margin-top:12px}
+@media (min-width:900px){.a-pv-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.a-pv-list li{position:relative;padding-left:18px;font-size:14.5px;line-height:1.65;color:var(--muted)}
+.a-pv-list li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--a1);transform:rotate(45deg)}
+.a-pv-list b{color:var(--ink);font-weight:650}
+.a-pv-more{margin-top:10px}
+.a-pv-more summary{cursor:pointer;min-height:44px;display:inline-flex;align-items:center;font-size:14px;font-weight:650;color:var(--a1)}
+.a-pv-more dl{display:grid;grid-template-columns:minmax(0,1fr);gap:4px 16px;margin:4px 0 0;font-size:14px;line-height:1.6}
+@media (min-width:700px){.a-pv-more dl{grid-template-columns:150px minmax(0,1fr)}}
+.a-pv-more dt{font-weight:700;color:var(--ink)}
+.a-pv-more dd{margin:0 0 6px;color:var(--muted)}
+.a-root .a-btn.a-login.jc-in{border-color:color-mix(in srgb,var(--a1) 55%,var(--line));color:var(--a1)}
 .a-eyebrow{font-size:13px;font-weight:600;color:var(--a1)}
 .a-hero h1{font-size:clamp(28px,4.8vw,58px);line-height:1.18;letter-spacing:-.035em;font-weight:800;margin-top:8px;text-wrap:balance}
 .a-hero h1 em{font-style:normal;color:transparent;background:var(--grad);-webkit-background-clip:text;background-clip:text}
@@ -248,6 +267,9 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
       <button data-theme-mode="dark" aria-pressed="false">어둡게</button>
     </div>
     <div class="a-actions">
+      <button class="a-btn a-login" data-jc-login hidden>
+        <i class="a-ico" data-lucide="user-round" aria-hidden="true"></i><span data-jc-login-label>로그인</span>
+      </button>
       <button class="a-btn" id="btnSearch" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
         <i class="a-ico" data-lucide="search" aria-hidden="true"></i><span>빠른 검색</span><span class="a-kbd" id="kbdHint">Ctrl K</span>
       </button>
@@ -256,6 +278,30 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
       </button>
     </div>
   </header>
+
+  <section class="a-privacy" id="privacy" aria-labelledby="privacyTitle">
+    <div class="a-pv-head">
+      <span class="a-pv-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor"/></svg></span>
+      <h2 id="privacyTitle">개인정보와 보안 안내</h2>
+    </div>
+    <ul class="a-pv-list">
+      <li><b>아이디와 비밀번호만 받습니다.</b> 이름·이메일·전화번호 같은 개인정보는 받지 않습니다. 로그인하지 않으면 모든 기록은 지금 쓰는 기기의 브라우저에만 남습니다.</li>
+      <li><b>비밀번호는 되돌릴 수 없는 방식(bcrypt)으로 암호화해 저장합니다.</b> 운영자도 원래 비밀번호를 볼 수 없습니다. 그래서 <b>비밀번호를 잊으면 찾을 수 없습니다.</b></li>
+      <li><b>메모에 내담자의 이름·연락처·주민등록번호 등 개인정보를 적지 마세요.</b> 이 사이트는 학습과 업무 정리를 돕는 도구입니다.</li>
+      <li><b>언제든 로그아웃하고, 계정과 서버의 기록을 완전히 지울 수 있습니다.</b> 로그인 → 내 계정 → 계정과 기록 완전히 삭제.</li>
+    </ul>
+    <details class="a-pv-more">
+      <summary>무엇을, 어디에, 어떻게 저장하나요?</summary>
+      <dl>
+        <dt>연동하는 기록</dt><dd>탐색 진도, 형광펜과 포스트잇 메모, 도구함 색 설정, 화면 테마, 이론 위키 학습 기록, 매뉴얼에서 마지막으로 본 쪽</dd>
+        <dt>연동하지 않는 것</dt><dd>상담 HUD에 입력하는 상담일지와 계산 내용(어디에도 저장되지 않습니다), 검색어, 방문 기록</dd>
+        <dt>저장 위치</dt><dd>Supabase 데이터베이스(서울 지역). 오가는 내용은 모두 HTTPS로 암호화됩니다.</dd>
+        <dt>접근 범위</dt><dd>각 계정은 자기 기록만 읽고 쓸 수 있도록 데이터베이스에서 막아 두었습니다. 로그인 상태는 무작위 열쇠로 유지되며 180일 뒤 만료됩니다.</dd>
+        <dt>무단 로그인 방지</dt><dd>같은 아이디로 비밀번호를 10번 틀리면 15분 동안 잠깁니다. 비밀번호는 다른 사이트와 다르게 정해 주세요.</dd>
+        <dt>비공식 서비스</dt><dd>개인이 운영하는 비공식 학습 사이트입니다. 고용노동부, 한국고용정보원 등 어떤 기관과도 관계가 없습니다.</dd>
+      </dl>
+    </details>
+  </section>
 
   <section class="a-hero" aria-labelledby="heroTitle">
     <p class="a-eyebrow">직업상담사를 위한 학습·실무 자료 모음</p>

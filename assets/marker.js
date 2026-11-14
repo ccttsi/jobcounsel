@@ -7,6 +7,13 @@
   'use strict';
   if (window.__jcMarker) return;
   window.__jcMarker = true;
+  var ME = (document.currentScript && document.currentScript.src) || '';
+  // 기기 간 연동(로그인) 모듈을 함께 불러온다
+  (function () {
+    if (!ME || window.JCSync) return;
+    var s = document.createElement('script'); s.src = ME.replace(/marker\.js(\?.*)?$/, 'sync.js'); s.defer = true;
+    (document.head || document.documentElement).appendChild(s);
+  })();
 
   /* ---------------- 설정 ---------------- */
   var PENS = [
@@ -35,6 +42,7 @@
   prefs.penCustom = prefs.penCustom || '#c4a1ff'; prefs.paperCustom = prefs.paperCustom || '#f6e0b5';
   prefs.hidden = !!prefs.hidden;
   function commit() { save(KEY, data); }
+  var commitT; function commitSoon() { clearTimeout(commitT); commitT = setTimeout(commit, 600); }
   function commitPrefs() { save(PKEY, prefs); }
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 
@@ -333,6 +341,10 @@
     '.chip:hover{color:var(--ink);border-color:var(--acc)}',
     '.chip.warn:hover{border-color:#c2410c;color:#c2410c}',
     '.note-hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.55}',
+    '.acct{display:flex;align-items:center;gap:10px;width:100%;margin-top:12px;padding:10px;border-radius:14px;border:1px dashed var(--line);text-align:left}',
+    '.acct:hover{border-color:var(--acc);border-style:solid}',
+    '.acct .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--soft);color:var(--acc);font-weight:800;flex:none}',
+    '.acct b{display:block;font-size:13.5px;font-weight:700}.acct small{display:block;font-size:12px;color:var(--muted)}',
     '.list{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;display:grid;gap:6px}',
     '.list:empty{display:none}',
     '.li{display:flex;align-items:flex-start;gap:8px;width:100%;padding:8px;border-radius:10px;text-align:left;font-size:13px;line-height:1.5}',
@@ -428,15 +440,20 @@
   function renderPanel() {
     var c = counts();
     ui.panel.innerHTML = '<span class="tape" aria-hidden="true"></span>' +
-      '<div class="hd"><b>내 도구함</b><span>이 기기에만 저장돼요</span></div>' +
+      '<div class="hd"><b>내 도구함</b><span>' + (window.JCSync && window.JCSync.user() ? '계정에 연동 중' : '이 기기에 저장돼요') + '</span></div>' +
       '<div class="tool"><button class="big" data-act="pen" aria-pressed="' + (mode === 'pen') + '">' + ICON_PEN + '형광펜<small>' + (mode === 'pen' ? '켜짐' : '켜기') + '</small></button>' + swatches(PENS, prefs.pen, 'pen', prefs.penCustom) + '</div>' +
       '<div class="tool"><button class="big" data-act="note" aria-pressed="' + (mode === 'note') + '">' + ICON_NOTE + '포스트잇<small>' + (mode === 'note' ? '붙일 곳 누르기' : '붙이기') + '</small></button>' + swatches(PAPERS, prefs.paper, 'paper', prefs.paperCustom) + '</div>' +
       '<div class="foot">' +
       (c.h + c.n ? '<button class="chip" data-act="hide" aria-pressed="' + prefs.hidden + '">' + (prefs.hidden ? '다시 보이기' : '잠시 숨기기') + '</button><button class="chip warn" data-act="clear">이 페이지 모두 지우기</button>' : '') +
       '</div>' +
       (c.h + c.n ? '' : '<p class="note-hint">형광펜을 켜고 글자를 드래그하면 칠해져요. 포스트잇은 붙이기를 누른 뒤 원하는 글 위를 누르세요.</p>') +
-      '<div class="list" id="list" aria-label="이 페이지의 표시와 메모"></div>';
+      '<div class="list" id="list" aria-label="이 페이지의 표시와 메모"></div>' + accountRow();
     renderList();
+  }
+  function accountRow() {
+    var S = window.JCSync; if (!S || !S.configured) return '<p class="note-hint">기록은 이 기기에만 저장돼요.</p>';
+    var u = S.user();
+    return '<button class="acct" data-act="acct"><span class="av" aria-hidden="true">' + (u ? esc(u.charAt(0).toUpperCase()) : '☁') + '</span><span><b>' + (u ? esc(u) : '로그인하고 다른 기기와 이어 쓰기') + '</b><small>' + (u ? esc(S.label()) : '진도·형광펜·메모가 기기 사이에 연동돼요') + '</small></span></button>';
   }
   function renderList() {
     if (!ui.panel || ui.panel.hidden) return;
@@ -493,7 +510,8 @@
   }
   function hidePop() { if (ui.pop) { ui.pop.hidden = true; popId = null; } }
   function byId(id) { for (var i = 0; i < data.items.length; i++) if (data.items[i].id === id) return data.items[i]; return null; }
-  function remove(id) { data.items = data.items.filter(function (x) { return x.id !== id; }); commit(); if (openNote === id) openNote = null; repaint(); if (!ui.panel.hidden) renderPanel(); }
+  function tomb(ids) { data.del = (data.del || []).concat(ids).slice(-500); }
+  function remove(id) { data.items = data.items.filter(function (x) { return x.id !== id; }); tomb([id]); commit(); if (openNote === id) openNote = null; repaint(); if (!ui.panel.hidden) renderPanel(); }
 
   function wire(s, ls) {
     s.addEventListener('click', function (e) {
@@ -505,7 +523,7 @@
       else if (a === 'paperc') { prefs.paper = b.getAttribute('data-c'); commitPrefs(); syncTheme(); renderPanel(); paintFab(); }
       else if (a === 'hide') { prefs.hidden = !prefs.hidden; commitPrefs(); repaint(); renderPanel(); }
       else if (a === 'clear') {
-        if (window.confirm('이 페이지의 형광펜과 포스트잇을 모두 지울까요?')) { data.items = []; commit(); openNote = null; repaint(); renderPanel(); toast('모두 지웠어요.'); }
+        if (window.confirm('이 페이지의 형광펜과 포스트잇을 모두 지울까요?')) { tomb(data.items.map(function (x) { return x.id; })); data.items = []; commit(); openNote = null; repaint(); renderPanel(); toast('모두 지웠어요.'); }
       }
       else if (a === 'jump') {
         var it = byId(b.getAttribute('data-id')), r = it && liveRanges[it.id];
@@ -515,8 +533,9 @@
         if (matchMedia('(max-width: 520px)').matches) closePanel();
       }
       else if (a === 'apply') { applyHighlight(); renderPill(); }
+      else if (a === 'acct') { if (window.JCSync) window.JCSync.open(); }
       else if (a === 'off') setMode('off');
-      else if (a === 'recolor') { var h = byId(popId); if (h) { h.color = b.getAttribute('data-c'); commit(); repaint(); } hidePop(); }
+      else if (a === 'recolor') { var h = byId(popId); if (h) { h.color = b.getAttribute('data-c'); h.u = Date.now(); commit(); repaint(); } hidePop(); }
       else if (a === 'rmhl') { if (popId) remove(popId); hidePop(); toast('형광펜을 지웠어요.'); }
     });
     s.addEventListener('input', function (e) {
@@ -534,13 +553,13 @@
       var b = e.target.closest('[data-act]'); if (!b) return;
       var id = b.closest('.pn').getAttribute('data-id'), a = b.getAttribute('data-act'), it = byId(id); if (!it) return;
       if (a === 'toggle') { openNote = openNote === id ? null : id; if (openNote === null && !(it.text || '').trim()) { remove(id); return; } placeNotes(); if (openNote) setTimeout(function () { var ta = notesEl.querySelector('[data-id="' + id + '"] textarea'); if (ta) ta.focus(); }, 20); }
-      else if (a === 'ncolor') { it.color = b.getAttribute('data-c'); commit(); placeNotes(); renderList(); }
+      else if (a === 'ncolor') { it.color = b.getAttribute('data-c'); it.u = Date.now(); commit(); placeNotes(); renderList(); }
       else if (a === 'ndel') { remove(id); toast('포스트잇을 뗐어요.'); }
     });
     ls.addEventListener('input', function (e) {
       if (e.target.tagName !== 'TEXTAREA') return;
       var id = e.target.closest('.pn').getAttribute('data-id'), it = byId(id); if (!it) return;
-      it.text = e.target.value; commit(); renderList();
+      it.text = e.target.value; it.u = Date.now(); commitSoon(); renderList();
     });
     ls.addEventListener('keydown', function (e) { if (e.key === 'Escape') { openNote = null; placeNotes(); } e.stopPropagation(); });
     ls.addEventListener('keyup', function (e) { e.stopPropagation(); });
@@ -588,9 +607,11 @@
     uiHost.style.setProperty('--lift', Math.round(l) + 'px');
   }
 
+  window.JCMarker = { refresh: function () { if (ui.panel && !ui.panel.hidden) renderPanel(); } };
   /* ---------------- 시작 ---------------- */
   function start() {
     build();
+    (function hook(n) { if (window.JCSync && window.JCSync.setToast) window.JCSync.setToast(toast); else if (n < 40) setTimeout(function () { hook(n + 1); }, 250); })(0);
     repaint();
     lift();
     var mo = new MutationObserver(function (list) {
