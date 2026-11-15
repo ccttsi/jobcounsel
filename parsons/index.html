@@ -62,9 +62,12 @@ svg{flex:none}
 .pv-c{flex:none;font-size:14px;font-weight:700;color:var(--acc);display:inline-flex;align-items:center;gap:2px;min-height:44px;padding-left:8px}
 .pv-c svg{width:18px;height:18px;color:inherit;transition:transform .35s}
 .pv.open .pv-c svg{transform:rotate(180deg)}
-.pv-b{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .45s cubic-bezier(.3,.7,.2,1),opacity .35s}
-.pv.open .pv-b{grid-template-rows:1fr;opacity:1}
-.pv-b>div{overflow:hidden;min-height:0}
+/* 펼침: 상자는 즉시, 항목이 차례로 떠오른다(높이 보간 없음 — DESIGN.md 모션 가드레일) */
+.pv-b{display:none}
+.pv.open .pv-b{display:block}
+.pv.open .pv-b li{transition:opacity .3s cubic-bezier(.2,.9,.3,1),transform .34s cubic-bezier(.2,.9,.3,1)}
+@starting-style{.pv.open .pv-b li{opacity:0;transform:translateY(8px)}}
+.pv.open .pv-b li:nth-child(2){transition-delay:34ms}.pv.open .pv-b li:nth-child(3){transition-delay:68ms}.pv.open .pv-b li:nth-child(n+4){transition-delay:102ms}
 .pv-b ul{margin:4px 0 12px;padding:0;list-style:none;display:grid;gap:8px}
 @media (min-width:900px){.pv-b ul{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}}
 .pv-b li{position:relative;padding-left:18px;font-size:14.5px;line-height:1.65;color:var(--muted)}
