@@ -23,6 +23,7 @@
 | `/labor/` | 노동시장 산책 (노동경제 개념 그래프 + 고용 뉴스 읽기 도우미) |
 | `/assets/marker.js` | 공용 형광펜·포스트잇 도구함 |
 | `/assets/sync.js` | 로그인·기기 간 연동 (선택 기능) |
+| `/assets/prefs.js` | 공용 화면 설정: 테마(밝게·세피아·어둡게·자동), 글자 크기, 집중 보기(몰입형 풀화면), 공통 디자인 층 |
 
 각 페이지는 폴더 안의 `index.html` 한 파일로 되어 있고, 빌드 과정 없이 그대로 게시됩니다(`/talk/`, `/parsons/`는 데이터와 화면 파일을 나눴습니다).
 
@@ -50,6 +51,16 @@
 ### 노동시장 산책 데이터
 
 화면(`/labor/index.html`)과 엔진(`/labor/app.js`)은 데이터를 고치지 않고 `/labor/data/` 두 파일을 읽습니다. `concepts.json`은 갈래(`groups`)·개념(`concepts`, 대학원 수준은 `deep: true` → 「깊이 보기」 표시, 그래프는 `widget` 이름)·실업 사례(`unempCases`)·바탕 이론(`sources`), `news.json`은 최근 공식 수치(`latest`, `checked` 날짜 기준)·지표 사전(`indicators`, 찾기 규칙 `re`)·표현 함정(`patterns`)·연습용 가상 기사(`samples`)·확인처(`where`)입니다. 고용동향이 새로 나오면 `latest`와 `checked`만 바꾸면 됩니다. 붙여 넣은 기사 문장은 저장·전송하지 않습니다.
+
+### 집중 보기와 공통 디자인 (`assets/prefs.js`)
+
+모든 페이지는 머리말의 `<span data-jc-prefs></span>`와 `</body>` 앞의 `prefs.js`만으로 아래 기능을 물려받습니다. 새 꼭지도 본문을 `<main>`에 담고 이 두 줄을 넣으면 됩니다.
+
+- **집중 보기**: 버튼을 누르면 본문(`[data-jc-content]` → `main` → `[role=main]` → `#main` → `#app`)과 그 조상만 남기고 머리말·메뉴·옆 목록·바닥글을 숨겨 본문을 화면 가득(100dvh) 띄웁니다. 되는 기기에서는 Fullscreen API를 함께 켭니다. Esc나 떠 있는 도구함으로 끝냅니다.
+- **떠 있는 도구함**: 집중 보기 중 오른쪽 아래에 연하게 떠 있다가, 마우스가 가까이 가거나 손으로 누르면 또렷해집니다(집중 보기 끝내기·테마·글자 크기). 바깥을 누르거나 3.6초 동안 조작이 없으면 다시 연해집니다. 형광펜 도구함 버튼도 함께 연해집니다.
+- **페이지별 조정**: `window.JC_IMMERSIVE = { content, hide, keep, fullscreen }`. 화면을 다시 그리는 요소는 페이지 CSS에서 `html[data-jc-imm] .toc{display:none}`처럼 숨깁니다(예: `/labor/`, `/library/`). 버튼 하나만 둘 때는 `<span data-jc-prefs="immersive"></span>`(서재 읽기 책상).
+- **공통 디자인 층**: 종이 결 바탕, 읽은 만큼 차는 색띠(형광펜 다섯 색), 제목 줄바꿈 고르기, 세피아 종이 색, 집중 보기의 교정지 재단선. 모두 `@layer` 안에 있어 페이지 자체 스타일이 이깁니다. 움직임은 `transform`·`opacity`만 쓰고 `prefers-reduced-motion`과 집중 보기에서는 멈춥니다. 끄려면 `window.JC_DESIGN = { grain: false, progress: false }`.
+- 세피아는 밝은 테마 위에 종이 색을 얹는 방식이라 저장 값은 `jc-theme = light`, `jc-tone = sepia`입니다.
 
 ## 저작권과 출처
 
