@@ -25,7 +25,9 @@
  *    몰입 중인 화면은 html[data-jc-imm]로 꾸민다. 버튼 하나만 따로 둘 때는 <span data-jc-prefs="immersive"></span>.
  * 4) 공통 디자인 층: 종이 결, 읽은 만큼 차는 색띠, 제목 줄바꿈 고르기, 세피아 종이 색, 교정지 재단선.
  *    모두 @layer 안에 있어 페이지 자체 스타일이 언제나 이긴다. 움직임은 transform·opacity만 쓴다.
- *    끄려면 window.JC_DESIGN = { grain: false, progress: false }.
+ *    손맛 층: 위쪽 눈금·색띠(스크롤 rAF), 머리말 2톤 인쇄선, 제목 옆 소인, 눌리는 카드(.jc-pop, 실행 중에 찾아 단다),
+ *    새로 들어온 덩어리의 등장 모션(.jc-in). 주기적으로 다시 그리는 곳은 data-jc-still로 뺀다.
+ *    끄려면 window.JC_DESIGN = { grain: false, progress: false, seal: false, rule: false, enter: false }.
  *    세피아는 밝은 테마 위에 종이 색을 얹는 방식이라 저장 값은 jc-theme = light, jc-tone = sepia.
  */
 (function () {
@@ -240,16 +242,11 @@
     /* 세피아: 밝은 테마 위에 종이 색을 곱해 얹는다 */
     '.jc-tone{display:none;position:fixed;inset:0;z-index:2147481500;pointer-events:none;background:#f6ead0;mix-blend-mode:multiply}' +
     'html[data-jc-tone="sepia"][data-theme="light"] .jc-tone{display:block}' +
-    /* 읽은 만큼 차오르는 색띠(스크롤에 묶인 transform, 합성 단계에서만 움직인다) */
-    '.jc-progress{display:none;position:fixed;left:0;right:0;top:0;height:3px;z-index:2147480000;pointer-events:none;background:' + BAR + ';transform-origin:0 50%;transform:scaleX(0);opacity:.92}' +
-    '@keyframes jc-progress{to{transform:scaleX(1)}}' +
-    '@supports (animation-timeline:scroll()){@media (prefers-reduced-motion:no-preference){.jc-progress{display:block;animation:jc-progress linear both;animation-timeline:scroll(root block)}}}' +
     /* 집중 보기 */
     'html[data-jc-imm] [data-jc-imm="hide"]{display:none!important}' +
     'html[data-jc-imm] [data-jc-imm="path"],html[data-jc-imm] [data-jc-imm="content"]{grid-column:1/-1!important}' +
     /* 본문은 화면 높이를 채우고, 위아래에 숨 쉴 자리를 투명 테두리로 더한다(페이지의 안쪽 여백은 그대로 둔다) */
     'html[data-jc-imm] [data-jc-imm="content"]{min-height:100vh;min-height:100dvh;box-sizing:border-box;border-top:max(18px,env(safe-area-inset-top)) solid transparent;border-bottom:max(18px,env(safe-area-inset-bottom)) solid transparent}' +
-    'html[data-jc-imm] .jc-progress{display:none!important;animation:none!important}' +
     /* 교정지 재단선: 몰입 중에만 네 귀퉁이에 가는 선, 넓은 화면에서는 양옆에 맞춤표 */
     '.jc-crop{display:none;--c:rgba(74,56,38,.4);position:fixed;z-index:2147480500;pointer-events:none;' +
       'top:max(8px,env(safe-area-inset-top));right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom));left:max(8px,env(safe-area-inset-left));' +
@@ -262,7 +259,7 @@
       'background:linear-gradient(var(--c),var(--c)) 50% 50%/17px 1px no-repeat,linear-gradient(var(--c),var(--c)) 50% 50%/1px 17px no-repeat}' +
     '.jc-crop::before{left:-5px}.jc-crop::after{right:-5px}' +
     '@media (min-width:900px){.jc-crop::before,.jc-crop::after{display:block}}' +
-    '@media print{html body.jc-paper{background-image:none}.jc-tone,.jc-progress,.jc-crop,#jc-imm-dock{display:none!important}}';
+    '@media print{html body.jc-paper{background-image:none}.jc-tone,.jc-crop,#jc-imm-dock{display:none!important}}';
 
   function layer(cls) { var el = d.createElement('div'); el.className = cls; el.setAttribute('aria-hidden', 'true'); el.setAttribute('data-jc-ignore', ''); d.body.appendChild(el); return el; }
   function design() {
@@ -271,8 +268,128 @@
     var st = d.createElement('style'); st.id = 'jc-design'; st.textContent = DESIGN_CSS; d.head.appendChild(st);
     // 바탕 무늬를 이미 쓰는 페이지는 건드리지 않는다
     if (opt.grain !== false && getComputedStyle(d.body).backgroundImage === 'none') d.body.classList.add('jc-paper');
-    if (opt.progress !== false) layer('jc-progress');
     layer('jc-tone'); layer('jc-crop');
+  }
+
+  /* ---------- 손맛: 진행 띠, 머리말 2톤 선, 소인, 눌리는 카드, 등장 모션 ---------- */
+  // 꾸밈은 모두 html:not([data-jc-imm]) 조건이라 집중 보기에서는 빠진다. 움직임은 transform·opacity뿐이고
+  // 늘 움직이는 것은 없다(스크롤·누름·화면 전환에만 반응). prefers-reduced-motion이면 움직임을 끈다.
+  var SEAL = '<svg class="jc-seal" viewBox="0 0 86 50" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round">' +
+    '<circle cx="25" cy="25" r="21" stroke-width="2.4"/><circle cx="25" cy="25" r="15.5" stroke-width="1.2" stroke-dasharray="1.5 3.2"/>' +
+    '<path d="m25 16 2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z" fill="currentColor" stroke="none"/>' +
+    '<path d="M50 15c4-4 7 4 11 0s7 4 11 0 7 4 11 0M50 25c4-4 7 4 11 0s7 4 11 0 7 4 11 0M50 35c4-4 7 4 11 0s7 4 11 0 7 4 11 0" stroke-width="2"/></g></svg>';
+  var POP_CSS =
+    'html{--jc-edge:rgba(42,37,33,.14);--jc-edge-2:#2a2521;--jc-hi:#ffe14d;--jc-stamp:#c2452d}' +
+    'html[data-theme="dark"]{--jc-edge:rgba(255,255,255,.11);--jc-edge-2:#f2c94c;--jc-hi:#f2c94c;--jc-stamp:#ff8a80}' +
+    '@layer jc-design{' +
+      '.jc-pop{transition:transform .24s cubic-bezier(.2,1.5,.35,1);box-shadow:3px 3px 0 var(--jc-edge)}' +
+      '@media (hover:hover){.jc-pop:hover{transform:translate(-2px,-3px) rotate(-.35deg);box-shadow:6px 7px 0 var(--jc-edge-2)}.jc-pop.jc-pop-l:hover{transform:translate(-2px,-3px)}}' +
+      '.jc-pop:active{transform:translate(1px,2px) scale(.985);box-shadow:1px 1px 0 var(--jc-edge-2)}' +
+      'html[data-jc-imm] .jc-pop,html[data-jc-imm] .jc-pop:hover,html[data-jc-imm] .jc-pop:active{box-shadow:none;transform:none}' +
+      '@media (prefers-reduced-motion:reduce){.jc-pop,.jc-pop:hover,.jc-pop:active{transition:none;transform:none}}' +
+    '}' +
+    '@keyframes jc-boing{0%{transform:scale(.955)}55%{transform:scale(1.028) rotate(-.5deg)}100%{transform:none}}' +
+    'html:not([data-jc-imm]) .jc-boing{animation:jc-boing .36s cubic-bezier(.3,1.4,.4,1)}' +
+    '@keyframes jc-in{from{opacity:0;transform:translateY(10px) scale(.985)}}' +
+    'html:not([data-jc-imm]) .jc-in{animation:jc-in .34s cubic-bezier(.2,.9,.3,1.15) backwards;animation-delay:calc(var(--jc-i,0) * 34ms)}' +
+    /* 위쪽 눈금 띠 + 읽은 만큼 차는 색띠 */
+    '.jc-track{position:fixed;left:0;right:0;top:0;height:4px;z-index:2147480000;pointer-events:none;background:repeating-linear-gradient(90deg,var(--jc-edge) 0 1px,transparent 1px 8px)}' +
+    '.jc-track i{display:block;height:100%;background:' + BAR + ';transform-origin:0 50%;transform:scaleX(0);will-change:transform}' +
+    'html[data-jc-imm] .jc-track{display:none}' +
+    /* 머리말 아래 어긋난 2톤 인쇄선 */
+    '.jc-rule{position:absolute;left:0;right:0;bottom:-5px;height:7px;pointer-events:none;z-index:1;background:linear-gradient(var(--jc-edge-2),var(--jc-edge-2)) 0 0/100% 2px no-repeat,linear-gradient(var(--jc-hi),var(--jc-hi)) 7px 4px/100% 3px no-repeat}' +
+    'html[data-jc-imm] .jc-rule{display:none}' +
+    /* 제목 옆 소인 */
+    '.jc-seal{display:inline-block;width:1.72em;height:1em;margin-left:.3em;vertical-align:-.12em;color:var(--jc-stamp);opacity:.78;transform:rotate(-9deg);transform-origin:30% 50%;pointer-events:none;-webkit-user-select:none;user-select:none}' +
+    '@keyframes jc-stamp{0%{opacity:0;transform:rotate(-9deg) scale(1.8)}60%{opacity:.9;transform:rotate(-9deg) scale(.94)}100%{opacity:.78;transform:rotate(-9deg) scale(1)}}' +
+    '.jc-seal.jc-new{animation:jc-stamp .46s cubic-bezier(.3,.9,.3,1) .25s backwards}' +
+    'html[data-jc-imm] .jc-seal{display:none}' +
+    '@media (prefers-reduced-motion:reduce){.jc-boing,.jc-in,.jc-seal.jc-new{animation:none!important}.jc-track i{display:none}}' +
+    '@media print{.jc-track,.jc-rule,.jc-seal{display:none!important}.jc-pop{box-shadow:none!important}}';
+
+  var popSeen = typeof WeakSet === 'function' ? new WeakSet() : null, popT = 0, sealed = false, reduce = null;
+  var BLOCK = /^(DIV|SECTION|ARTICLE|LI|A|BUTTON|P|H1|H2|H3|H4|UL|OL|DL|HEADER|FIGURE|DETAILS|NAV|TABLE|TR|FORM|ASIDE|BLOCKQUOTE)$/;
+  function still() { return immersive || (reduce && reduce.matches); }
+  function popRoot() { return contentEl() || d.body; }
+  function scanPop() {
+    if (!popSeen) return;
+    var list = popRoot().querySelectorAll('a,button,summary,[role="button"]'), vh = window.innerHeight, n = 0;
+    for (var i = 0; i < list.length && n < 300; i++) {
+      var el = list[i]; if (popSeen.has(el)) continue;
+      var r = el.getBoundingClientRect(); if (!r.width) continue; // 아직 안 보이면 다음에 다시 본다
+      popSeen.add(el); n++;
+      if (r.width < 120 || r.height < 44 || r.height > vh * .8 || el.closest('[data-jc-still],[data-jc-ignore]')) continue;
+      var cs = getComputedStyle(el);
+      if (parseFloat(cs.borderTopLeftRadius) < 8 || cs.transform !== 'none' || /fixed|sticky|absolute/.test(cs.position) || /inline$/.test(cs.display)) continue;
+      var bg = cs.backgroundColor, hasBg = bg && bg !== 'transparent' && !/rgba\(\s*0,\s*0,\s*0,\s*0\s*\)/.test(bg), hasBorder = parseFloat(cs.borderTopWidth) >= 1 && cs.borderTopStyle !== 'none';
+      if (!hasBg && !hasBorder) continue;
+      el.classList.add('jc-pop'); if (r.width > 420) el.classList.add('jc-pop-l');
+    }
+  }
+  function queuePop() { clearTimeout(popT); popT = setTimeout(scanPop, 380); }
+  function seal() {
+    if ((window.JC_DESIGN || {}).seal === false || d.querySelector('.jc-seal')) return;
+    var hs = d.querySelectorAll('h1');
+    for (var i = 0; i < hs.length; i++) {
+      var h = hs[i]; if (!h.offsetWidth || h.closest('[data-jc-ignore],dialog,[role="dialog"]')) continue;
+      if (parseFloat(getComputedStyle(h).fontSize) < 24) continue;
+      h.insertAdjacentHTML('beforeend', SEAL);
+      if (!sealed) { sealed = true; var sv = h.querySelector('.jc-seal'); if (sv && !still()) sv.classList.add('jc-new'); }
+      return;
+    }
+  }
+  function rule() {
+    var host = d.querySelector('[data-jc-prefs]:not([data-jc-prefs="immersive"])'); if (!host || (window.JC_DESIGN || {}).rule === false) return;
+    var hd = host.closest('header') || host.parentElement; if (!hd || hd.querySelector('.jc-rule')) return;
+    while (hd.parentElement && hd !== d.body && hd.offsetWidth < d.documentElement.clientWidth * .6) hd = hd.parentElement;
+    if (hd === d.body || hd.querySelector('.jc-rule')) return;
+    if (getComputedStyle(hd).position === 'static') hd.style.position = 'relative';
+    var el = d.createElement('i'); el.className = 'jc-rule'; el.setAttribute('aria-hidden', 'true'); hd.appendChild(el);
+  }
+  function enter(records) {
+    queuePop();
+    if (!d.querySelector('.jc-seal')) setTimeout(seal, 60);
+    if ((window.JC_DESIGN || {}).enter === false || still()) return;
+    var ae = d.activeElement; if (ae && (/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) || ae.isContentEditable)) return; // 글자를 치는 동안에는 가만히
+    var added = [], i, j;
+    for (i = 0; i < records.length; i++) for (j = 0; j < records[i].addedNodes.length; j++) {
+      var n = records[i].addedNodes[j];
+      if (n.nodeType === 1 && BLOCK.test(n.tagName) && n.isConnected && !/(^|\s)jc-/.test(n.className && n.className.baseVal === undefined ? n.className : '') && !n.closest('[data-jc-still],[data-jc-ignore],svg')) added.push(n);
+    }
+    if (!added.length) return;
+    added = added.filter(function (n) { for (var k = 0; k < added.length; k++) if (added[k] !== n && added[k].contains(n)) return false; return true; });
+    if (added.length === 1 && added[0].children.length >= 2 && added[0].offsetHeight > 200) { // 통째로 갈아 끼운 화면은 그 안의 덩어리들을 차례로
+      var kids = [].filter.call(added[0].children, function (c) { return BLOCK.test(c.tagName); }); if (kids.length >= 2) added = kids;
+    }
+    var vh = window.innerHeight, k = 0;
+    for (i = 0; i < added.length && k < 10; i++) {
+      var el = added[i], r = el.getBoundingClientRect();
+      if (!r.width || r.bottom < 0 || r.top > vh) continue; // 화면 밖은 움직이지 않는다
+      var cs = getComputedStyle(el); if (cs.animationName !== 'none' || /fixed|absolute|sticky/.test(cs.position) || cs.transform !== 'none') continue;
+      el.style.setProperty('--jc-i', k++); el.classList.add('jc-in');
+      (function (el) { setTimeout(function () { el.classList.remove('jc-in'); el.style.removeProperty('--jc-i'); }, 900); })(el);
+    }
+  }
+  function pop() {
+    var opt = window.JC_DESIGN || {};
+    reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion:reduce)') : null;
+    var st = d.createElement('style'); st.id = 'jc-pop'; st.textContent = POP_CSS; d.head.appendChild(st);
+    // 진행 띠: 스크롤을 rAF로 묶어 scaleX만 바꾼다(아이폰 사파리 포함 전 기종)
+    if (opt.progress !== false) {
+      var tr = layer('jc-track'), fill = d.createElement('i'), raf = 0; tr.appendChild(fill);
+      var upd = function () { raf = 0; var se = d.scrollingElement || root, max = se.scrollHeight - window.innerHeight; fill.style.transform = 'scaleX(' + (max > 8 ? Math.min(1, Math.max(0, se.scrollTop / max)) : 0).toFixed(4) + ')'; };
+      var req = function () { if (!raf && !still()) raf = requestAnimationFrame(upd); };
+      window.addEventListener('scroll', req, { passive: true }); window.addEventListener('resize', req); upd();
+    }
+    rule(); seal(); scanPop(); setTimeout(scanPop, 700); setTimeout(function () { scanPop(); seal(); rule(); }, 2200);
+    if (window.MutationObserver) new MutationObserver(enter).observe(d.body, { childList: true, subtree: true });
+    d.addEventListener('click', queuePop, true);
+    try { d.addEventListener('touchstart', function () {}, { passive: true }); } catch (e) {} // 아이폰에서 :active가 먹도록
+    d.addEventListener('pointerup', function (e) {
+      if (still() || !e.target.closest) return; var el = e.target.closest('.jc-pop'); if (!el) return;
+      el.classList.remove('jc-boing'); void el.offsetWidth; el.classList.add('jc-boing');
+      setTimeout(function () { el.classList.remove('jc-boing'); }, 420);
+    }, true);
   }
 
   /* ---------- 집중 보기(몰입형 풀화면) ---------- */
@@ -319,15 +436,19 @@
   }
 
   /* 떠 있는 도구함: 평소에는 연하게, 가까이 가거나 누르면 또렷하게 */
-  var DOCK_CSS = ':host{all:initial;--ink:#2a2521;--panel:#fffdf8;--line:#e6dccb;--shadow:0 14px 34px -14px rgba(60,40,20,.5),0 2px 5px rgba(60,40,20,.1)}' +
-    ':host([data-dark]){--ink:#e6e9ef;--panel:#111621;--line:#2a3243;--shadow:0 14px 34px -12px rgba(0,0,0,.75)}' +
-    '.dock{position:fixed;right:calc(max(16px,env(safe-area-inset-right)) + 2px);bottom:var(--b,calc(max(16px,env(safe-area-inset-bottom)) + 62px));z-index:1;display:flex;flex-direction:column;gap:2px;padding:3px;border-radius:16px;' +
-      'background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);color:var(--ink);opacity:.3;transition:opacity .28s ease;-webkit-user-select:none;user-select:none;touch-action:manipulation}' +
-    '.dock.on{opacity:1}' +
+  // 평소에는 맨 아래 줄, 형광펜 버튼 왼쪽에 작은 손잡이 하나만 연하게 둔다. 누르거나 마우스가 가까이 오면 왼쪽으로 펼쳐진다.
+  // (세로로 길게 세우면 본문·넘김 단추 옆을 가린다 — 2026-11-15 사용자 지적)
+  var DOCK_CSS = ':host{all:initial;--ink:#2a2521;--panel:#fffdf8;--line:#e6dccb;--shadow:0 10px 24px -12px rgba(60,40,20,.5),0 2px 5px rgba(60,40,20,.1)}' +
+    ':host([data-dark]){--ink:#e6e9ef;--panel:#111621;--line:#2a3243;--shadow:0 10px 24px -10px rgba(0,0,0,.75)}' +
+    '.dock{position:fixed;right:var(--r,max(16px,env(safe-area-inset-right)));bottom:var(--b,max(16px,env(safe-area-inset-bottom)));z-index:1;display:flex;align-items:center;gap:6px;color:var(--ink);-webkit-user-select:none;user-select:none;touch-action:manipulation}' +
     '.dock[hidden]{display:none}' +
-    '.dock::before{content:"";align-self:center;width:18px;height:3px;margin:3px 0 1px;border-radius:2px;background:' + BAR + '}' +
+    '.tools{display:flex;gap:2px;padding:3px;border-radius:16px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);opacity:0;visibility:hidden;pointer-events:none;transform:translateX(10px) scale(.94);transform-origin:100% 50%;transition:opacity .2s ease,transform .24s cubic-bezier(.2,1.3,.4,1),visibility 0s .24s}' +
+    '.dock.on .tools{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .2s ease,transform .24s cubic-bezier(.2,1.3,.4,1),visibility 0s}' +
     'button{all:unset;box-sizing:border-box;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;cursor:pointer;color:inherit;-webkit-tap-highlight-color:transparent;transition:transform .14s ease}' +
-    'button:hover{background:color-mix(in srgb,currentColor 9%,transparent)}' +
+    '.h{width:40px;height:40px;border-radius:50%;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);opacity:.3;transition:opacity .28s ease,transform .14s ease}' +
+    '.dock.on .h,.dock.hi .h{opacity:1}' +
+    '.h svg{width:19px;height:19px}' +
+    '.tools button:hover{background:color-mix(in srgb,currentColor 9%,transparent)}' +
     'button:active{transform:scale(.92)}' +
     'button:focus-visible{outline:2px solid currentColor;outline-offset:-2px}' +
     'svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}' +
@@ -338,38 +459,45 @@
     '.f small{font-size:.8em;font-weight:600;opacity:.75}' +
     '@keyframes sw{from{opacity:0;transform:rotate(-45deg) scale(.7)}}' +
     '.t.sw svg{animation:sw .26s cubic-bezier(.2,.9,.3,1.2)}' +
-    '@media (prefers-reduced-motion:reduce){.dock,button{transition:none}.t.sw svg{animation:none}button:active{transform:none}}';
+    '@media (prefers-reduced-motion:reduce){.tools,.dock.on .tools,.h,button{transition:none}.t.sw svg{animation:none}button:active{transform:none}}';
   function buildDock() {
     if (dock) return;
     var host = d.createElement('div'); host.id = 'jc-imm-dock'; host.setAttribute('data-jc-ignore', '');
     host.style.cssText = 'position:fixed!important;z-index:2147482500!important;left:0;top:0;width:0;height:0;overflow:visible';
     var sr = host.attachShadow ? host.attachShadow({ mode: 'open' }) : host;
     sr.innerHTML = '<style>' + DOCK_CSS + '</style><div class="dock" role="toolbar" aria-label="집중 보기 도구함" hidden>' +
-      '<button class="i" type="button"></button><button class="t" type="button"></button><button class="f" type="button"></button></div>';
+      '<div class="tools"><button class="f" type="button"></button><button class="t" type="button"></button><button class="i" type="button"></button></div>' +
+      '<button class="h" type="button" aria-expanded="false" aria-label="집중 보기 도구 펼치기" title="집중 보기 도구 (Esc로 끝내기)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/></svg></button></div>';
     d.body.appendChild(host);
-    dock = { host: host, sr: sr, el: sr.querySelector('.dock') };
+    dock = { host: host, sr: sr, el: sr.querySelector('.dock'), h: sr.querySelector('.h') };
     wireButtons(sr); hosts.push(sr);
     dock.el.addEventListener('focusin', function () { wake(); });
     dock.el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') wake(true); });
     dock.el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') wake(); });
-    // 연한 상태에서 누른 첫 손길은 깨우기만 하고 버튼을 누르지 않는다
-    dock.el.addEventListener('click', function (e) { if (eatClick) { eatClick = false; e.stopPropagation(); e.preventDefault(); } }, true);
+    // 연한 상태에서 누른 첫 손길은 펼치기만 한다. 펼쳐진 뒤 손잡이를 다시 누르면 접는다.
+    dock.el.addEventListener('click', function (e) {
+      if (eatClick) { eatClick = false; e.stopPropagation(); e.preventDefault(); return; }
+      if (e.target.closest && e.target.closest('.h')) { e.stopPropagation(); sleep(); dock.h.blur(); }
+    }, true);
     applyTheme();
   }
   function markerUi() { return d.getElementById('jc-marker-ui'); }
   function markerFab() { var m = markerUi(); return m && m.shadowRoot ? m.shadowRoot.querySelector('.fab') : null; }
   function placeDock() {
     if (!dock) return;
-    var fab = markerFab(), r = fab && fab.getBoundingClientRect(), vh = window.innerHeight;
-    // 형광펜 도구함 버튼이 있으면 그 바로 위에 한 줄로 앉는다
-    if (r && r.width) dock.el.style.setProperty('--b', Math.max(8, Math.round(vh - r.top + 10)) + 'px');
-    else dock.el.style.setProperty('--b', 'max(16px, env(safe-area-inset-bottom))');
-    var a = dock.el.getBoundingClientRect();
-    zone = { l: a.left - 90, t: a.top - 90, r: a.right + 90, b: (r && r.width ? Math.max(a.bottom, r.bottom) : a.bottom) + 90 };
+    var fab = markerFab(), r = fab && fab.getBoundingClientRect(), vh = window.innerHeight, vw = d.documentElement.clientWidth;
+    // 형광펜 도구함 버튼이 있으면 같은 줄, 그 왼쪽에 앉는다(본문 옆을 세로로 가리지 않게)
+    if (r && r.width) {
+      dock.el.style.setProperty('--b', Math.max(6, Math.round(vh - r.bottom + (r.height - 40) / 2)) + 'px');
+      var fr = parseFloat(getComputedStyle(fab).right) || 16; // 버튼이 가장자리로 물러나 있어도 제자리 기준으로 잡는다
+      dock.el.style.setProperty('--r', Math.round(fr + r.width + 8) + 'px');
+    } else { dock.el.style.removeProperty('--b'); dock.el.style.removeProperty('--r'); }
+    var a = dock.h.getBoundingClientRect();
+    zone = { l: a.left - 80, t: a.top - 80, r: (r && r.width ? Math.max(a.right, r.right) : a.right) + 80, b: a.bottom + 80 };
   }
   function setAwake(on) {
     awake = on;
-    if (dock) dock.el.classList.toggle('on', on);
+    if (dock) { dock.el.classList.toggle('on', on); dock.h.setAttribute('aria-expanded', String(on)); if (on) dock.el.classList.remove('hi'); }
     var m = markerUi(); if (m) { if (immersive && !on) m.setAttribute('data-jc-idle', ''); else m.removeAttribute('data-jc-idle'); }
   }
   function wake(hold) {
@@ -444,7 +572,8 @@
       dock.el.hidden = false;
       fsEnter();
       placeDock();
-      setAwake(true); wake(); // 처음에는 또렷하게 보여 자리를 알린 뒤 연해진다
+      setAwake(false); dock.el.classList.add('hi'); // 펼치지 않고 손잡이만 잠깐 또렷하게 보여 자리를 알린다
+      setTimeout(function () { if (dock) dock.el.classList.remove('hi'); }, 2200);
       setTimeout(placeDock, 400); setTimeout(placeDock, 2300); // 형광펜 버튼이 바닥 막대를 비켜 앉았다가 내려오는 것을 따라간다
     } else {
       clearTimeout(sleepT); eatClick = false;
@@ -464,6 +593,7 @@
     if (typeof window.JC_FS_SKIP === 'string') skip = window.JC_FS_SKIP.split(',').map(function (x) { return x.trim(); }).filter(Boolean);
     design();
     mountAll();
+    pop();
     applyTheme();
     applyFont();
     // 스타일이 새로 생기거나(Tailwind 실행형 등) 화면이 다시 그려지면 다시 적용한다.

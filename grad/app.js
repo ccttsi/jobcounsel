@@ -1,5 +1,5 @@
 /*
- * 석·박사 지도 · 화면 엔진
+ * 대학원 탐구생활 · 화면 엔진
  *
  * 데이터(고치지 않고 읽기만 한다)
  *   data/grad_departments.json  대학 251 · 대학원 1,169 · 개설 학과 12,731 (대학알리미 2024-10-07 공시)
@@ -127,7 +127,7 @@
     else { r.view = 'wiki'; vWiki(''); }
     if (r.view === 'wiki' && !SO[r.id] && !JG[r.id]) d.body.setAttribute('data-home', ''); else d.body.removeAttribute('data-home');
     syncSwap(r.view);
-    d.title = (main.getAttribute('data-title') ? main.getAttribute('data-title') + ' · ' : '') + '석·박사 지도';
+    d.title = (main.getAttribute('data-title') ? main.getAttribute('data-title') + ' · ' : '') + '대학원 탐구생활';
     if (!first && !keepScroll) {
       var top = d.getElementById('swap').getBoundingClientRect().top + window.scrollY - 60;
       if (window.scrollY > top) window.scrollTo(0, top);
@@ -151,28 +151,52 @@
   function degTags(bits) { return (bits & 1 ? '<span class="tg">석사</span>' : '') + (bits & 2 ? '<span class="tg">박사</span>' : '') + (bits & 4 ? '<span class="tg">석박통합</span>' : '') + (bits & 8 ? '<span class="tg">학석통합</span>' : ''); }
   function tyTag(g) { return '<span class="ty ' + TYK[g.type] + '">' + g.type.replace('대학원', '') + '</span>'; }
 
+  /* ---------- 접고 펴는 칸 ---------- */
+  // 휴대폰: 제목과 핵심 낱말만 먼저 보이고, 누른 칸만 펼친다. 넓은 화면: 왼쪽 목록 + 오른쪽 한 칸(가로 배치).
+  function panes(list, cur, open) {
+    cur = cur || 0;
+    return '<div class="pn" style="grid-template-rows:repeat(' + list.length + ',auto) 1fr">' + list.map(function (s, i) {
+      var on = i === cur ? ' cur' : '', op = open === i ? ' open' : '';
+      return '<button type="button" class="pn-t' + on + op + '" data-pn="' + i + '" aria-expanded="' + (open === i) + '" style="grid-row:' + (i + 1) + '"><i>' + esc(s.n) + '</i><span><b>' + s.title + '</b>' +
+        (s.keys && s.keys.length ? '<em>' + s.keys.filter(Boolean).slice(0, 3).map(function (k) { return '<u>' + esc(k) + '</u>'; }).join('') + '</em>' : '') + '</span></button>' +
+        '<section class="pn-s' + on + op + '"><h2 class="pn-h"><i>' + esc(s.n) + '</i>' + s.title + '</h2>' + s.body + '</section>';
+    }).join('') + '</div>';
+  }
+  function bindPanes() {
+    main.querySelectorAll('.pn').forEach(function (pn) {
+      pn.addEventListener('click', function (e) {
+        var b = e.target.closest('.pn-t'); if (!b || b.parentNode !== pn) return;
+        var sec = b.nextElementSibling, wasOpen = b.classList.contains('open');
+        for (var i = 0; i < pn.children.length; i++) pn.children[i].classList.remove('cur');
+        b.classList.add('cur'); sec.classList.add('cur');
+        b.classList.toggle('open', !wasOpen); sec.classList.toggle('open', !wasOpen);
+        b.setAttribute('aria-expanded', String(!wasOpen));
+        if (window.JCPrefs && JCPrefs.rescale) JCPrefs.rescale();
+      });
+    });
+  }
+  function page2(title, html) { page(title, html); bindPanes(); }
+
   /* ---------- 전공 위키: 첫 화면 ---------- */
   function vWiki(anchor) {
     ctx.so = ''; ctx.jg = '';
-    var h = '<div class="sb">' + MAG + '<input id="wq" type="search" inputmode="search" autocomplete="off" placeholder="전공·학과 이름으로 찾기 (예: 상담심리, 인공지능, 간호)" aria-label="전공·학과 이름으로 찾기"></div><div id="wsug"></div>' +
-      '<p class="legend"><span style="--c:var(--tg)">일반대학원</span><span style="--c:var(--tp)">전문대학원</span><span style="--c:var(--ts)">특수대학원</span><span style="--c:transparent">막대는 개설 학과의 종류별 비중</span></p>';
-    T.dae.forEach(function (da, i) {
-      var st = stat('da', da.code);
-      h += '<section class="dae" id="d-' + da.code + '"><div class="dae-h"><i>' + (i + 1) + '</i><h2>' + esc(da.name) + '<small>' + nf(st.n) + '건</small></h2><p>' + esc(W.dae[da.code] || '') + '</p></div><div class="jg">';
-      T.jung.filter(function (j) { return j.dae === da.code; }).map(function (j) { return { j: j, st: stat('jg', j.code) }; })
-        .filter(function (x) { return x.st.n > 0; })
-        .sort(function (a, b) { return isNce(a.j.name) - isNce(b.j.name) || b.st.n - a.st.n; })
-        .forEach(function (x) {
-          var j = x.j, w = wj(j), subs = soOfJung[j.code].filter(function (s) { return s.grad.dept > 0 && !isNce(s.name); }).sort(function (a, b) { return b.grad.dept - a.grad.dept; }).slice(0, 5);
-          h += '<a class="jc" href="#wiki/' + j.code + '"><div class="jc-t">' + esc(jgName(j)) + '<i>' + nf(x.st.n) + '</i></div><p>' + esc(w.one || '') + '</p>' +
-            (subs.length ? '<ul>' + subs.map(function (s) { return '<li>' + esc(nm(s.name)) + '</li>'; }).join('') + '</ul>' : '') + mixBar(x.st.ty) + '</a>';
-        });
-      h += '</div></section>';
+    var h = '<div class="sb">' + MAG + '<input id="wq" type="search" inputmode="search" autocomplete="off" placeholder="전공·학과 이름 (예: 상담심리, 인공지능, 간호)" aria-label="전공·학과 이름으로 찾기"></div><div id="wsug"></div>' +
+      '<p class="legend"><span style="--c:var(--tg)">일반</span><span style="--c:var(--tp)">전문</span><span style="--c:var(--ts)">특수</span><span style="--c:transparent">막대는 종류별 비중</span></p>';
+    var list = T.dae.map(function (da, i) {
+      var st = stat('da', da.code), js = T.jung.filter(function (j) { return j.dae === da.code; }).map(function (j) { return { j: j, st: stat('jg', j.code) }; })
+        .filter(function (x) { return x.st.n > 0; }).sort(function (a, b) { return isNce(a.j.name) - isNce(b.j.name) || b.st.n - a.st.n; });
+      var body = '<p class="pn-lead">' + esc(W.dae[da.code] || '') + '</p><div class="jg">' + js.map(function (x) {
+        var j = x.j, w = wj(j), subs = soOfJung[j.code].filter(function (s) { return s.grad.dept > 0 && !isNce(s.name); }).sort(function (a, b) { return b.grad.dept - a.grad.dept; }).slice(0, 4);
+        return '<a class="jc" href="#wiki/' + j.code + '"><div class="jc-t">' + esc(jgName(j)) + '<i>' + nf(x.st.n) + '</i></div><p>' + esc(w.one || '') + '</p>' +
+          (subs.length ? '<ul>' + subs.map(function (s) { return '<li>' + esc(nm(s.name)) + '</li>'; }).join('') + '</ul>' : '') + mixBar(x.st.ty) + '</a>';
+      }).join('') + '</div>';
+      return { n: i + 1, title: esc(da.name) + '<small>' + nf(st.n) + '건</small>', keys: js.slice(0, 3).map(function (x) { return jgName(x.j); }), body: body };
     });
-    page('전공 위키', h);
+    var ai = -1; T.dae.forEach(function (da, i) { if (da.code === anchor) ai = i; });
+    h += panes(list, ai < 0 ? 0 : ai, ai < 0 ? undefined : ai);
+    page2('전공 위키', h);
     var inp = d.getElementById('wq'), box = d.getElementById('wsug');
     inp.addEventListener('input', function () { box.innerHTML = suggest(inp.value); });
-    if (anchor && DA[anchor]) { var el = d.getElementById('d-' + anchor); if (el) { keepScroll = true; setTimeout(function () { el.scrollIntoView({ block: 'start' }); window.scrollBy(0, -130); }, 30); } }
   }
   function wj(j) { // 중계열 글. 교육은 한 편을 함께 쓰고, 기타(N.C.E.)는 공통 글
     if (isNce(j.name)) return W.jung.NCE;
@@ -198,62 +222,61 @@
   function article(o) { // o: {kind, code, title, w, extra, s, j}
     var st = stat(o.kind, o.code), w = o.w, s = o.s, j = o.j, da = DA[(s || j).dae];
     var ff = {}; ff[o.kind] = o.code;
-    var h = '<div class="art"><div><header class="art-h">' + crumbs(s, j) +
-      '<h1>' + esc(o.title) + '<span class="code">' + o.code + '</span></h1><p class="one">' + esc(w.one || '') + '</p>' +
-      '<div class="figs"><div><b>' + nf(st.n) + '</b><span>개설 학과</span></div><div><b>' + nf(st.schools) + '</b><span>대학원</span></div><div><b>' + nf(st.unis) + '</b><span>대학</span></div></div>' +
-      (st.n ? '<a class="go" href="' + findHref(ff) + '"><span>이 전공을 개설한 대학원 ' + nf(st.n) + '건 보기</span>' + ARROW + '</a>' : '') + '</header>';
+    var tot = st.n || 1, wk = (st.tm['야간'] || 0) + (st.tm['계절제'] || 0) + (st.tm['원격'] || 0);
+    var subs = s ? [] : soOfJung[j.code].filter(function (x) { return x.grad.dept > 0; }).sort(function (a, b) { return isNce(a.name) - isNce(b.name) || b.grad.dept - a.grad.dept; });
+    var h = '<header class="ah"><div>' + crumbs(s, j) + '<h1>' + esc(o.title) + '<span class="code">' + o.code + '</span></h1><p class="one">' + esc(w.one || '') + '</p></div>' +
+      '<div><div class="figs"><div><b>' + nf(st.n) + '</b><span>개설 학과</span></div><div><b>' + nf(st.schools) + '</b><span>대학원</span></div><div><b>' + nf(st.unis) + '</b><span>대학</span></div></div>' +
+      (st.n ? '<a class="go" href="' + findHref(ff) + '"><span>이 전공을 연 대학원 ' + nf(st.n) + '건 보기</span>' + ARROW + '</a>' : '') + '</div></header>';
+    var list = [];
 
     // ① 무엇을 공부하나
-    h += sec(1, '들어가면 무엇을 공부하나', bullets(w.study) + (w.byDae && w.byDae[da.code] ? '<p class="memo"><b>' + esc(da.name) + '의 교육 갈래</b>' + esc(w.byDae[da.code]) + '</p>' : '') +
-      (s && s.top_names && s.top_names.length ? '<h3>대학원에서 실제로 쓰는 학과 이름</h3><div class="chips">' + s.top_names.map(function (t) {
-        return '<a href="' + findHref({ so: s.code, q: t.name }) + '">' + esc(t.name) + '<i>' + t.n + '</i></a>';
-      }).join('') + '</div>' : '') +
-      (!s ? '<h3>세부 분야</h3><div class="subs">' + soOfJung[j.code].filter(function (x) { return x.grad.dept > 0; }).sort(function (a, b) { return isNce(a.name) - isNce(b.name) || b.grad.dept - a.grad.dept; }).map(function (x) {
-        return '<a href="#wiki/' + x.code + '">' + esc(soName(x)) + '<i>' + nf(x.grad.dept) + '</i></a>';
-      }).join('') + '</div>' : ''));
+    list.push({ n: 1, title: '무엇을 공부하나', keys: s ? (s.top_names || []).slice(0, 3).map(function (t) { return t.name; }) : subs.slice(0, 3).map(soName),
+      body: bullets(w.study) + (w.byDae && w.byDae[da.code] ? '<p class="memo"><b>' + esc(da.name) + '의 교육 갈래</b>' + esc(w.byDae[da.code]) + '</p>' : '') +
+        (s && s.top_names && s.top_names.length ? '<h3>대학원에서 실제로 쓰는 학과 이름</h3><div class="chips">' + s.top_names.map(function (t) {
+          return '<a href="' + findHref({ so: s.code, q: t.name }) + '">' + esc(t.name) + '<i>' + t.n + '</i></a>';
+        }).join('') + '</div>' : '') +
+        (!s ? '<h3>세부 분야</h3><div class="subs">' + subs.map(function (x) { return '<a href="#wiki/' + x.code + '">' + esc(soName(x)) + '<i>' + nf(x.grad.dept) + '</i></a>'; }).join('') + '</div>' : '') });
 
     // ② 연구 주제와 방법
     if ((w.topics && w.topics.length) || (w.methods && w.methods.length))
-      h += sec(2, '어떤 연구 주제와 방법을 다루나', bullets(w.topics) + (w.methods && w.methods.length ? '<h3>자주 쓰는 연구 방법</h3><ul class="chips">' + w.methods.map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('') + '</ul>' : ''));
+      list.push({ n: 2, title: '연구 주제와 방법', keys: w.methods || [], body: bullets(w.topics) + (w.methods && w.methods.length ? '<h3>자주 쓰는 연구 방법</h3><ul class="chips">' + w.methods.map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('') + '</ul>' : '') });
 
     // ③ 문턱과 실익
-    h += sec(3, '학사와 달라지는 문턱, 진학의 실익', '<h3>직무·자격 문턱</h3>' + bullets(w.gate) + (o.extra ? '<p class="memo"><b>' + esc(o.title) + '에서 확인할 점</b>' + esc(o.extra) + '</p>' : '') +
-      (w.roi && w.roi.length ? '<h3>실익을 따질 때</h3>' + bullets(w.roi) : '') +
-      '<details class="more"><summary>진학 실익을 스스로 따져 보는 여섯 가지 질문</summary><div><p class="note" style="margin:0 0 6px">' + esc(W.roiNote) + '</p><ul class="qa">' + W.roi.map(function (r) { return '<li><b>' + esc(r[0]) + '</b>' + esc(r[1]) + '</li>'; }).join('') + '</ul></div></details>');
+    list.push({ n: 3, title: '자격 문턱과 진학 실익', keys: [w.gk, o.extra ? '세부 확인 있음' : ''],
+      body: '<div class="g2"><div><h3>학사와 달라지는 직무·자격 문턱</h3>' + bullets(w.gate) + (o.extra ? '<p class="memo"><b>' + esc(o.title) + '에서 확인할 점</b>' + esc(o.extra) + '</p>' : '') + '</div>' +
+        '<div>' + (w.roi && w.roi.length ? '<h3>실익을 따질 때</h3>' + bullets(w.roi) : '') +
+        '<details class="more"><summary>스스로 따져 보는 여섯 가지 질문</summary><div><p class="note" style="margin:0 0 6px">' + esc(W.roiNote) + '</p><ul class="qa">' + W.roi.map(function (r) { return '<li><b>' + esc(r[0]) + '</b>' + esc(r[1]) + '</li>'; }).join('') + '</ul></div></details></div></div>' });
 
-    // ④ 세 트랙
-    var tot = st.n || 1, wk = (st.tm['야간'] || 0) + (st.tm['계절제'] || 0) + (st.tm['원격'] || 0);
-    h += sec(4, '일반·전문·특수, 세 트랙의 차이', (w.track ? '<p class="t">' + esc(w.track) + '</p>' : '') +
-      '<h3>이 전공의 실제 개설 분포 (학과 ' + nf(st.n) + '건)</h3><div class="bars">' +
-      ['g', 'p', 's'].map(function (k) { return '<a href="' + findHref(merge(ff, { ty: k })) + '" style="text-decoration:none">' + bar(TYN[k].replace('대학원', ''), st.ty[k], tot, k === 'g' ? '--tg' : k === 'p' ? '--tp' : '--ts') + '</a>'; }).join('') + '</div>' +
-      '<h3>수업 시간</h3><div class="bars">' + bar('주간', st.tm['주간'] || 0, tot) + '<a href="' + findHref(merge(ff, { tm: 'w' })) + '" style="text-decoration:none">' + bar('야간·계절·원격', wk, tot) + '</a></div>' +
-      '<h3>학위 과정 (한 학과에 여러 과정이 함께 열립니다)</h3><div class="bars">' + bar('석사', st.deg.m, tot) + bar('박사', st.deg.d, tot) + bar('석박사통합', st.deg.i, tot) + '</div>' +
-      '<p class="note">막대를 누르면 그 조건으로 대학원 찾기가 열립니다.</p>' +
-      '<details class="more"><summary>세 종류의 대학원은 무엇이 다른가</summary><div>' + trackCards() + '</div></details>');
+    // ④ 세 트랙과 실제 분포
+    var dom = ['g', 'p', 's'].sort(function (a, b) { return st.ty[b] - st.ty[a]; })[0];
+    list.push({ n: 4, title: '세 트랙과 실제 개설 분포', keys: [TYN[dom].replace('대학원', '') + ' ' + Math.round(pct(st.ty[dom], tot)) + '%', wk ? '야간·계절 ' + Math.round(pct(wk, tot)) + '%' : '주간 중심'],
+      body: (w.track ? '<p class="t">' + esc(w.track) + '</p>' : '') +
+        '<div class="g3"><div><h3>대학원 종류</h3><div class="bars">' + ['g', 'p', 's'].map(function (k) { return '<a href="' + findHref(merge(ff, { ty: k })) + '">' + bar(TYN[k].replace('대학원', ''), st.ty[k], tot, k === 'g' ? '--tg' : k === 'p' ? '--tp' : '--ts') + '</a>'; }).join('') + '</div></div>' +
+        '<div><h3>수업 시간</h3><div class="bars">' + bar('주간', st.tm['주간'] || 0, tot) + '<a href="' + findHref(merge(ff, { tm: 'w' })) + '">' + bar('야간·계절·원격', wk, tot) + '</a></div></div>' +
+        '<div><h3>학위 과정</h3><div class="bars">' + bar('석사', st.deg.m, tot) + bar('박사', st.deg.d, tot) + bar('석박사통합', st.deg.i, tot) + '</div></div></div>' +
+        '<div class="g2" style="margin-top:14px"><div class="box"><h3>많이 개설한 대학원</h3><ul class="tops">' + st.topGs.map(function (x) {
+          return '<li><a href="#gs/' + x.g.id + '">' + tyTag(x.g) + '<span>' + esc(x.g.display) + '</span><i>' + x.n + '</i></a></li>';
+        }).join('') + '</ul></div><div class="box"><h3>지역 (학과 소재지, 상위 5곳)</h3><div class="bars">' + st.topRg.map(function (x) { return '<a href="' + findHref(merge(ff, { rg: x[0] })) + '">' + bar(x[0], x[1], st.topRg[0][1]) + '</a>'; }).join('') + '</div></div></div>' +
+        '<p class="note">학과 ' + nf(st.n) + '건 기준(대학알리미 2024-10-07 공시). 막대를 누르면 그 조건으로 대학원 찾기가 열립니다.</p>' +
+        '<details class="more"><summary>세 종류의 대학원은 무엇이 다른가</summary><div>' + trackCards() + '</div></details>' });
 
     // ⑤ 재정
-    h += sec(5, 'BK21·TA/RA, 장학과 재정', (w.fund ? '<p class="t">' + esc(w.fund) + '</p>' : '') +
-      (st.ct ? '<p class="memo"><b>계약학과</b>이 전공에는 계약학과가 ' + nf(st.ct) + '건 있습니다. <a href="' + findHref(merge(ff, { ct: '1' })) + '" style="font-weight:700;color:var(--acc)">목록 보기</a></p>' : '') +
-      '<details class="more"><summary>장학·재정 지원의 종류와 확인할 점</summary><div class="fund" style="padding-top:8px">' + fundCards() + '</div></details>');
+    list.push({ n: 5, title: 'BK21·TA/RA, 장학과 재정', keys: [w.fk, st.ct ? '계약학과 ' + st.ct + '건' : ''],
+      body: (w.fund ? '<p class="t">' + esc(w.fund) + '</p>' : '') +
+        (st.ct ? '<p class="memo"><b>계약학과</b>이 전공에는 계약학과가 ' + nf(st.ct) + '건 있습니다. <a href="' + findHref(merge(ff, { ct: '1' })) + '" style="font-weight:700;color:var(--acc)">목록 보기</a></p>' : '') +
+        '<details class="more"><summary>지원 종류별로 확인할 점</summary><div class="fund" style="padding-top:8px">' + fundCards() + '</div></details>' });
 
     // ⑥ 준비
-    h += sec(6, '지도교수 컨택과 입학 준비', (w.prep ? '<p class="t">' + esc(w.prep) + '</p>' : '') +
-      '<details class="more"><summary>준비 순서와 컨택 메일에 담을 것</summary><div>' + timeline() + '<h3>컨택 메일</h3>' + mail() + '</div></details>' +
-      '<a class="go line" href="#guide"><span>진학 가이드 전체 보기</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>');
+    list.push({ n: 6, title: '지도교수 컨택과 입학 준비', keys: [w.pk],
+      body: (w.prep ? '<p class="t">' + esc(w.prep) + '</p>' : '') +
+        '<details class="more"><summary>준비 순서</summary><div>' + timeline() + '</div></details><details class="more"><summary>컨택 메일에 담을 것</summary><div>' + mail() + '</div></details>' +
+        '<a class="go line" href="#guide"><span>진학 가이드 전체 보기</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>' });
 
-    h += '<p class="note">전공 설명은 자료실이 새로 쓴 참고용 글이며(' + esc(W.checked) + ' 확인), 개설 수는 대학알리미 2024-10-07 공시에서 화면이 직접 센 값입니다. 자격·제도 요건은 <a href="#about">출처</a>의 확인처에서 다시 확인하십시오.</p></div>';
-
-    // 옆 칸: 실제 개설 현황
-    h += '<aside aria-label="실제 개설 현황"><div class="box"><h3>많이 개설한 대학원</h3><ul class="tops">' + st.topGs.map(function (x) {
-      return '<li><a href="#gs/' + x.g.id + '">' + tyTag(x.g) + '<span>' + esc(x.g.display) + '</span><i>' + x.n + '</i></a></li>';
-    }).join('') + '</ul></div>' +
-      '<div class="box"><h3>지역 (학과 소재지 기준, 상위 5곳)</h3><div class="bars">' + st.topRg.map(function (x) { return '<a href="' + findHref(merge(ff, { rg: x[0] })) + '" style="text-decoration:none">' + bar(x[0], x[1], st.topRg[0][1]) + '</a>'; }).join('') + '</div>' +
-      '<p class="src">대학알리미 공시(2024-10-07). 통계 목적 자료라 실제 모집 학과와 다를 수 있습니다.</p></div>' +
-      (st.n ? '<a class="go" href="' + findHref(ff) + '"><span>대학원 찾기로 넘어가기</span>' + ARROW + '</a>' : '') + '</aside></div>';
-    page(o.title, h);
+    h += panes(list, 0) +
+      '<p class="note">전공 설명은 자료실이 새로 쓴 참고용 글이며(' + esc(W.checked) + ' 확인), 개설 수는 대학알리미 2024-10-07 공시에서 화면이 직접 센 값입니다. 자격·제도 요건은 <a href="#about">출처</a>의 확인처에서 다시 확인하십시오.</p>';
+    page2(o.title, h);
   }
   function merge(a, b) { var o = {}, k; for (k in a) o[k] = a[k]; for (k in b) o[k] = b[k]; return o; }
-  function sec(n, title, body) { return '<section class="sec"><div class="sec-h"><i>' + n + '</i><h2>' + title + '</h2></div>' + body + '</section>'; }
   function vSo(s) { ctx.so = s.code; ctx.jg = ''; var j = JG[s.jung]; article({ kind: 'so', code: s.code, title: soName(s), w: wj(isNce(s.name) ? { name: 'N.C.E.' } : j), extra: W.so[s.code] || '', s: s, j: j }); }
   function vJung(j) { ctx.jg = j.code; ctx.so = ''; article({ kind: 'jg', code: j.code, title: jgName(j), w: wj(j), extra: '', s: null, j: j }); }
 
@@ -338,7 +361,7 @@
     var slice = list.slice((f.p - 1) * PER, f.p * PER);
     if (!list.length) h += '<p class="empty">조건에 맞는 곳이 없습니다. 조건을 하나씩 풀어 보십시오.</p>';
     else {
-      h += '<div class="rows">';
+      h += '<div class="rows two">';
       if (f.v === 'd') slice.forEach(function (i) {
         var r = D[i], g = GS[r[0]];
         h += '<div class="row"><button type="button" data-row="' + i + '" aria-expanded="false"><span class="r-n">' + esc(r[1]) + '</span><span class="r-s">' + esc(g.display) + '</span>' +
@@ -454,39 +477,40 @@
   }
 
   /* ---------- 진학 가이드 ---------- */
+  function qa(list, w) { return '<ul class="qa">' + list.map(function (r) { return '<li><b' + (w ? ' style="min-width:' + w + '"' : '') + '>' + esc(r[0]) + '</b>' + esc(r[1]) + '</li>'; }).join('') + '</ul>'; }
   function vGuide() {
-    var h = '<div class="gd"><h1>석·박사 진학 가이드</h1><p class="lead">어느 전공에나 공통으로 쓰이는 내용을 모았습니다. 전공마다 달라지는 점은 전공 위키의 각 글에 적었습니다.</p>' +
-      sec(1, '세 가지 대학원 트랙', trackCards() + '<ul class="lim" style="margin-top:12px">' + W.trackNotes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>') +
-      sec(2, 'BK21·TA/RA, 장학과 재정', '<div class="fund">' + fundCards() + '</div>') +
-      sec(3, '진학 실익을 따져 보는 여섯 가지 질문', '<p class="note" style="margin:0 0 8px">' + esc(W.roiNote) + '</p><ul class="qa">' + W.roi.map(function (r) { return '<li><b>' + esc(r[0]) + '</b>' + esc(r[1]) + '</li>'; }).join('') + '</ul>') +
-      sec(4, '준비 순서', timeline()) +
-      sec(5, '지도교수 컨택 메일', mail() + '<h3>면담·컨택에서 확인할 것</h3><ul class="ck">' + W.prep.check.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>') +
-      sec(6, '서류', '<ul class="qa">' + W.prep.docs.map(function (r) { return '<li><b style="min-width:7.6em">' + esc(r[0]) + '</b>' + esc(r[1]) + '</li>'; }).join('') + '</ul>') +
-      '<p class="note">제도와 금액은 ' + esc(W.checked) + '에 확인한 내용이며 해마다 바뀝니다. <a href="#about">출처</a>의 확인처에서 다시 확인하십시오.</p></div>';
-    page('진학 가이드', h);
+    var h = '<div class="gd"><h1>석·박사 진학 가이드</h1><p class="lead">어느 전공에나 공통인 내용입니다. 전공마다 달라지는 점은 전공 위키의 각 글에 있습니다.</p>' + panes([
+      { n: 1, title: '세 가지 대학원 트랙', keys: ['일반', '전문', '특수'], body: trackCards() + '<details class="more"><summary>구분의 근거와 수업연한</summary><div><ul class="lim">' + W.trackNotes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></details>' },
+      { n: 2, title: 'BK21·TA/RA, 장학과 재정', keys: ['BK21', 'RA·TA', '연구생활장려금'], body: '<div class="fund">' + fundCards() + '</div>' },
+      { n: 3, title: '진학 실익을 따지는 여섯 질문', keys: ['문턱', '비용', '기간'], body: '<p class="note" style="margin:0 0 8px">' + esc(W.roiNote) + '</p>' + qa(W.roi) },
+      { n: 4, title: '준비 순서', keys: ['6~12개월 전부터'], body: timeline() },
+      { n: 5, title: '지도교수 컨택', keys: ['메일', '면담에서 확인할 것'], body: '<div class="g2"><div><h3>컨택 메일</h3>' + mail() + '</div><div><h3>면담·컨택에서 확인할 것</h3><ul class="ck">' + W.prep.check.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></div>' },
+      { n: 6, title: '서류', keys: ['계획서', '어학', '추천서'], body: qa(W.prep.docs, '7.6em') }
+    ], 0) + '<p class="note">제도와 금액은 ' + esc(W.checked) + '에 확인한 내용이며 해마다 바뀝니다. <a href="#about">출처</a>의 확인처에서 다시 확인하십시오.</p></div>';
+    page2('진학 가이드', h);
   }
 
   /* ---------- 출처와 한계 ---------- */
   function vAbout() {
     var m = G.meta, c = m.counts;
-    var h = '<div class="gd"><h1>출처와 한계</h1><p class="lead">이 화면의 숫자와 목록이 어디에서 왔고, 어디까지 믿을 수 있는지 적었습니다.</p>' +
-      sec(1, '개설 학과 데이터', '<ul class="refs">' + G.sources.map(function (s) {
+    var h = '<div class="gd"><h1>출처와 한계</h1><p class="lead">숫자와 목록이 어디에서 왔고 어디까지 믿을 수 있는지 적었습니다.</p>' + panes([
+      { n: 1, title: '개설 학과 데이터', keys: ['대학알리미', '2024-10-07'], body: '<ul class="refs">' + G.sources.map(function (s) {
         return '<li><a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.name) + '</a><small>' + esc(s.provider) + ' · 기준 ' + esc(s.basis_date) + ' · ' + esc(s.license) + '</small><small>' + esc(s.used_for) + '</small></li>';
-      }).join('') + '</ul><p class="note">원자료 대학원 행 ' + nf(c.source_rows) + '건에서 폐지 학과 ' + nf(c.closed_departments_excluded) + '건을 빼고 ' + nf(c.departments) + '건을 실었습니다. 데이터셋 만든 날 ' + esc(m.built_at) + ', 판 ' + esc(m.version) + '. 구조와 만드는 법은 <a href="./data/README.md">data/README.md</a>에 있습니다. 커리어넷 학과 연결(career_majors)은 데이터에만 있고 이 화면에서는 쓰지 않습니다.</p>') +
-      sec(2, '상담에 쓸 때 알아 둘 한계', '<ul class="lim">' +
+      }).join('') + '</ul><p class="note">원자료 대학원 행 ' + nf(c.source_rows) + '건에서 폐지 학과 ' + nf(c.closed_departments_excluded) + '건을 빼고 ' + nf(c.departments) + '건을 실었습니다. 데이터셋 만든 날 ' + esc(m.built_at) + ', 판 ' + esc(m.version) + '. 구조와 만드는 법은 <a href="./data/README.md">data/README.md</a>에 있습니다. 커리어넷 학과 연결(career_majors)은 데이터에만 있고 이 화면에서는 쓰지 않습니다.</p>' },
+      { n: 2, title: '상담에 쓸 때의 한계', keys: ['통계 목적 자료', '모집요강 확인'], body: '<ul class="lim">' +
         '<li><b>통계 목적 자료입니다.</b> 대학알리미는 이 학과 목록이 실제 모집·운영 학과명과 다를 수 있다고 밝힙니다. 지원 전에 모집요강을 확인합니다.</li>' +
         '<li><b>기준일은 2024-10-07입니다.</b> 그 뒤의 신설·통합·폐과는 들어 있지 않습니다.</li>' +
         '<li><b>학위 과정은 개설된 과정입니다.</b> 지금 모집 중인지는 원자료에 없습니다.</li>' +
         '<li><b>설립 구분은 2023년 공시 기준입니다.</b> 당시 자료에 없던 2곳은 비어 있습니다.</li>' +
-        '<li><b>‘기타’는 표준분류의 N.C.E.(달리 분류되지 않음)입니다.</b> 융합·신설 학과가 많이 들어 있어 학과 이름을 직접 봐야 합니다.</li>' +
+        '<li><b>‘기타’는 표준분류의 N.C.E.(달리 분류되지 않음)입니다.</b> 융합·신설 학과가 많아 학과 이름을 직접 봐야 합니다.</li>' +
         '<li><b>분류 코드(A·M·S)는 데이터셋의 내부 식별자입니다.</b> 교육부 공식 코드가 아닙니다.</li>' +
         '<li><b>건수는 캠퍼스 단위입니다.</b> 캠퍼스가 따로 공시되면 별도 대학으로 셉니다(모교 기준 ' + nf(c.universities_base) + '곳).</li>' +
-        '<li><b>지역은 학과 소재지 기준입니다.</b> 대학원 소재지와 학과 소재지가 다른 경우가 있어 학과 단위로 걸렀습니다.</li></ul>') +
-      sec(3, '전공 글과 제도 정보', '<p class="t">' + esc(W.about) + '</p><h3>확인처</h3><ul class="refs">' + W.refs.map(function (r) {
+        '<li><b>지역은 학과 소재지 기준입니다.</b> 대학원 소재지와 다른 경우가 있어 학과 단위로 걸렀습니다.</li></ul>' },
+      { n: 3, title: '전공 글과 제도 정보', keys: ['새로 쓴 글', '확인처 8곳'], body: '<p class="t">' + esc(W.about) + '</p><h3>확인처</h3><ul class="refs">' + W.refs.map(function (r) {
         return '<li><a href="' + esc(r.u) + '" target="_blank" rel="noopener">' + esc(r.t) + '</a><small>' + esc(r.by) + '</small></li>';
-      }).join('') + '</ul><p class="note">BK21 사업 규모와 수혜 비율은 교육부 발표를 다룬 2026년 7월 보도에서, 연구생활장려금 기준금액은 과학기술정보통신부 보도자료에서 확인했습니다(' + esc(W.checked) + '). 기관명은 출처를 밝히기 위해서만 씁니다.</p>') +
-      '</div>';
-    page('출처와 한계', h);
+      }).join('') + '</ul><p class="note">BK21 사업 규모와 수혜 비율은 교육부 발표를 다룬 2026년 7월 보도에서, 연구생활장려금 기준금액은 과학기술정보통신부 보도자료에서 확인했습니다(' + esc(W.checked) + '). 기관명은 출처를 밝히기 위해서만 씁니다.</p>' }
+    ], 0) + '</div>';
+    page2('출처와 한계', h);
   }
 
   /* ---------- 이용 안내 접기 ---------- */

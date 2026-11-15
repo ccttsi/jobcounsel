@@ -17,7 +17,7 @@
 | `/library/` | 국회 미래고용 디지털 서재 |
 | `/decalcomania/` | 커리어데칼코마니 (학과 ↔ 직업 거울 지도) |
 | `/univ/` | 대학학과위키 |
-| `/grad/` | 석·박사 지도 (석·박사 전공 위키 ↔ 전국 대학원 찾기. 데이터 `grad/data/*.json`, 화면 `grad/app.js`) |
+| `/grad/` | 대학원 탐구생활 (석·박사 전공 위키 ↔ 전국 대학원 찾기. 데이터 `grad/data/*.json`, 화면 `grad/app.js`) |
 | `/talk/` | 상담 대화 연습장 (데이터 `talk/data.js`, 찾기 엔진 `talk/finder.js`, 화면 `talk/app.js`) |
 | `/transit/` | 환승노선도 (첫 진입·재진입·전직·2막 커리어 노선도) |
 | `/parsons/` | 다시 읽는 『직업의 선택』 — 파슨스 1909년 초판 카드뉴스 이북 (데이터 `parsons/data/*.json`, 화면 `parsons/app.js`) |
@@ -53,7 +53,7 @@
 
 화면(`/labor/index.html`)과 엔진(`/labor/app.js`)은 데이터를 고치지 않고 `/labor/data/` 두 파일을 읽습니다. `concepts.json`은 갈래(`groups`)·개념(`concepts`, 대학원 수준은 `deep: true` → 「깊이 보기」 표시, 그래프는 `widget` 이름)·실업 사례(`unempCases`)·바탕 이론(`sources`), `news.json`은 최근 공식 수치(`latest`, `checked` 날짜 기준)·지표 사전(`indicators`, 찾기 규칙 `re`)·표현 함정(`patterns`)·연습용 가상 기사(`samples`)·확인처(`where`)입니다. 고용동향이 새로 나오면 `latest`와 `checked`만 바꾸면 됩니다. 붙여 넣은 기사 문장은 저장·전송하지 않습니다.
 
-### 석·박사 지도 데이터
+### 대학원 탐구생활 데이터
 
 화면(`/grad/index.html`)과 엔진(`/grad/app.js`)은 데이터를 고치지 않고 `/grad/data/` 세 파일을 읽습니다.
 
@@ -73,6 +73,8 @@
 - **떠 있는 도구함**: 집중 보기 중 오른쪽 아래에 연하게 떠 있다가, 마우스가 가까이 가거나 손으로 누르면 또렷해집니다(집중 보기 끝내기·테마·글자 크기). 바깥을 누르거나 3.6초 동안 조작이 없으면 다시 연해집니다. 형광펜 도구함 버튼도 함께 연해집니다.
 - **페이지별 조정**: `window.JC_IMMERSIVE = { content, hide, keep, fullscreen }`. 화면을 다시 그리는 요소는 페이지 CSS에서 `html[data-jc-imm] .toc{display:none}`처럼 숨깁니다(예: `/labor/`, `/library/`). 버튼 하나만 둘 때는 `<span data-jc-prefs="immersive"></span>`(서재 읽기 책상).
 - **공통 디자인 층**: 종이 결 바탕, 읽은 만큼 차는 색띠(형광펜 다섯 색), 제목 줄바꿈 고르기, 세피아 종이 색, 집중 보기의 교정지 재단선. 모두 `@layer` 안에 있어 페이지 자체 스타일이 이깁니다. 움직임은 `transform`·`opacity`만 쓰고 `prefers-reduced-motion`과 집중 보기에서는 멈춥니다. 끄려면 `window.JC_DESIGN = { grain: false, progress: false }`.
+- **손맛 층**(2026-11-15 보강): 위쪽 눈금·색띠(스크롤을 rAF로 묶어 `scaleX`만 바꿔 아이폰 사파리에서도 동작), 머리말 아래 어긋난 2톤 인쇄선, 제목 옆 소인, 눌리는 카드(`.jc-pop` — 본문 안의 큼직한 링크·버튼을 실행 중에 찾아 오프셋 그림자와 들림·눌림을 단다), 새로 들어온 덩어리의 등장 모션(`.jc-in`). 집중 보기에서는 모두 빠집니다. 주기적으로 다시 그리는 곳에는 `data-jc-still`을 답니다.
+- **떠 있는 것은 본문을 가리지 않게**: 집중 보기 도구는 맨 아래 줄의 작은 손잡이 하나로 쉬다가 누를 때만 옆으로 펼쳐집니다. 형광펜 버튼은 손가락으로 쓰는 화면에서 쉬는 동안 오른쪽 가장자리로 반쯤 물러납니다.
 - 세피아는 밝은 테마 위에 종이 색을 얹는 방식이라 저장 값은 `jc-theme = light`, `jc-tone = sepia`입니다.
 
 ## 저작권과 출처

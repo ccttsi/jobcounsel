@@ -317,6 +317,9 @@
     '.fab:active{transform:scale(.94)}',
     /* 집중 보기에서 쉬는 동안(assets/prefs.js가 data-jc-idle을 단다)은 연하게 물러나 있는다 */
     ':host([data-jc-idle]) .fab[data-mode="off"]:not([aria-expanded="true"]){opacity:.3}',
+    /* 손가락으로 쓰는 화면에서는 쉬는 동안 오른쪽 가장자리로 반쯤 물러나 본문·단추를 덜 가린다. 글을 고르거나 누르면 다시 나온다. */
+    '@media (hover:none),(max-width:700px){.fab{width:46px;height:46px;border-radius:15px}.fab.rest{transform:translateX(52%);opacity:.72}.fab.rest:active{transform:translateX(52%) scale(.94)}}',
+    '@media (prefers-reduced-motion:reduce){.fab{transition:none}}',
     '.fab svg{width:26px;height:26px;transform:rotate(-8deg)}',
     '.fab .cnt{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--acc);color:#fff;font-size:11px;font-weight:700;line-height:20px;text-align:center}',
     ':host([data-dark]) .fab .cnt{color:#08221f}',
@@ -446,6 +449,13 @@
     ui.fab.setAttribute('data-mode', mode);
     ui.fab.innerHTML = (mode === 'note' ? ICON_NOTE : ICON_PEN) + (total ? '<span class="cnt" aria-hidden="true">' + total + '</span>' : '');
     ui.fab.setAttribute('aria-label', '도구함 ' + (ui.panel.hidden ? '열기' : '닫기') + ': 형광펜과 포스트잇' + (total ? ', 이 페이지에 ' + total + '개' : ''));
+    restFab();
+  }
+  // 쉬는 상태: 도구를 쓰지 않고, 창이 닫혀 있고, 고른 글이 없을 때
+  function restFab() {
+    if (!ui.fab) return;
+    var sel = window.getSelection && getSelection(), has = !!(sel && !sel.isCollapsed && String(sel).trim());
+    ui.fab.classList.toggle('rest', mode === 'off' && ui.panel.hidden && !has);
   }
   function swatches(list, cur, kind, custom) {
     var inList = list.some(function (p) { return p.c === cur; });
@@ -593,7 +603,7 @@
     d.addEventListener('mouseup', function (e) {
       if (mode === 'pen' && e.button === 0 && !coarse && !isOurs(e)) setTimeout(function () { if (selectionRange()) applyHighlight(); }, 0);
     });
-    d.addEventListener('selectionchange', function () { var r = selectionRange(); if (r) pendSel = r.cloneRange(); if (mode === 'pen') { clearTimeout(selT); selT = setTimeout(renderPill, 120); } });
+    d.addEventListener('selectionchange', function () { var r = selectionRange(); if (r) pendSel = r.cloneRange(); restFab(); if (mode === 'pen') { clearTimeout(selT); selT = setTimeout(renderPill, 120); } });
     // 도구함이 열려 있을 때 바깥을 누르면 닫는다
     d.addEventListener('pointerdown', function (e) { if (!ui.panel.hidden && !isOurs(e) && mode !== 'note') closePanel(); }, true);
     // 칠하기 막대를 누를 때 선택이 풀리지 않게 한다(데스크톱)
