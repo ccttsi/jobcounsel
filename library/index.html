@@ -37,7 +37,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   :root {
     --bg: #faf6ef; --bar: rgba(250,246,239,0.86); --panel: #fffdf8; --panel-soft: #f5efe4; --pal: #fffdf8;
     --hair: #e9e0d2; --line2: #d8ccb9;
-    --ink: #2a2521; --body: #3d3630; --ink-dim: #655c53; --ink-faint: #7b7168;
+    --ink: #2a2521; --body: #3d3630; --ink-dim: #655c53; --ink-faint: #6e645b;
     --cyan: #0f766e; --warn: #c2410c; --good: #15803d; --bad: #be123c;
     --v1: #b45309; --v2: #0f766e; --v3: #6d28d9; --v4: #4d7c0f; --v5: #1d4ed8; --v6: #b91c1c; --v7: #a16207; --v8: #475569; --v9: #0369a1; --v10: #be185d; --v11: #2563eb; --v12: #92400e; --v13: #86198f;
     --soft: rgba(42,37,33,0.04); --soft-2: rgba(42,37,33,0.07); --track: rgba(42,37,33,0.07);
@@ -63,7 +63,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   :root[data-theme="dark"] {
     --bg: #08090c; --bar: rgba(8,9,12,0.78); --panel: rgba(15,23,42,0.6); --panel-soft: #111623; --pal: #0b0e15;
     --hair: #1e232f; --line2: #2c3445;
-    --ink: #e6e9ef; --body: #c9cfda; --ink-dim: #9aa3b2; --ink-faint: #6b7487;
+    --ink: #e6e9ef; --body: #c9cfda; --ink-dim: #9aa3b2; --ink-faint: #7d8699;
     --cyan: #22d3ee; --warn: #fb7185; --good: #6ee7b7; --bad: #fda4af;
     --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa; --v4: #a3e635; --v5: #93c5fd; --v6: #fca5a5; --v7: #facc15; --v8: #cbd5e1; --v9: #7dd3fc; --v10: #f9a8d4; --v11: #a5b4fc; --v12: #fdba74; --v13: #f0abfc;
     --soft: rgba(255,255,255,0.02); --soft-2: rgba(255,255,255,0.05); --track: rgba(255,255,255,0.05);
@@ -214,7 +214,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   .book .hb { position: absolute; left: 0; right: 0; height: 5px; background: var(--band); }
   .book .hb.t { top: 7px; } .book .hb.b { bottom: 7px; }
   .book .vol { position: relative; z-index: 1; text-align: center; line-height: 1; font-family: "JetBrains Mono", monospace; }
-  .book .vol small { display: block; font-size: 8px; letter-spacing: .2em; opacity: .85; }
+  .book .vol small { display: block; font-size: 9px; letter-spacing: .16em; opacity: .9; }
   .book .vol b { display: block; font-size: clamp(14px, 3.4vw, 17px); margin-top: 3px; }
   .book .ttl {
     position: relative; z-index: 1; writing-mode: vertical-rl; text-orientation: upright;
@@ -222,7 +222,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     padding: 10px 0; flex: 1; display: flex; align-items: center; justify-content: center;
   }
   .book .tcy { text-combine-upright: all; -webkit-text-combine: horizontal; letter-spacing: 0; }
-  .book .pub { position: relative; z-index: 1; text-align: center; font-size: 8.5px; line-height: 1.25; font-weight: 700; letter-spacing: .02em; }
+  .book .pub { position: relative; z-index: 1; text-align: center; font-size: 9.5px; line-height: 1.25; font-weight: 700; letter-spacing: 0; }
   .book .pub i, .book .pub svg { display: block; width: 14px; height: 14px; margin: 0 auto 3px; }
 
   /* VOL.01 — 리넨 천 장정, 벽돌색 + 크림색 박 */
@@ -316,8 +316,8 @@ document.documentElement.setAttribute('data-theme',t);})();
   .book.pamphlet .hb { display: none; }
   .book.pamphlet .ttl { font-size: clamp(11.5px, 3vw, 14px); letter-spacing: .03em; }
   .book.pamphlet .vol b { font-size: 13px; }
-  .book.pamphlet .vol small { font-size: 7px; letter-spacing: .1em; }
-  .book.pamphlet .pub { font-size: 7.5px; }
+  .book.pamphlet .vol small { font-size: 8.5px; letter-spacing: .06em; }
+  .book.pamphlet .pub { font-size: 9px; }
   .book.pamphlet .pub i, .book.pamphlet .pub svg { display: none; }
 
   /* VOL.08 — 회청색 리넨 + 놋쇠 명판 */
@@ -372,7 +372,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   .book.journal .hb { height: 44px; background: linear-gradient(180deg, #2e75b6, #1f5a94); }
   .book.journal .hb.t { top: 0; } .book.journal .hb.b { bottom: 0; height: 6px; background: #2e75b6; }
   .book.journal .vol { color: #fff; }
-  .book.journal .pub { color: #1e3a6e; font-size: 8px; }
+  .book.journal .pub { color: #1e3a6e; font-size: 9px; }
   .book.journal .pub i, .book.journal .pub svg { display: none; }
 
   /* VOL.12 — KDI FOCUS 같은 시리즈, 짙은 코코아색 판 + 주황 도장 */

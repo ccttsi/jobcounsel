@@ -127,7 +127,7 @@ function axes(P,xl,yl){
 }
 function line(P,x1,y1,x2,y2,col,wd,dash){return '<line x1="'+P.X(x1).toFixed(1)+'" y1="'+P.Y(y1).toFixed(1)+'" x2="'+P.X(x2).toFixed(1)+'" y2="'+P.Y(y2).toFixed(1)+'" stroke="'+col+'" stroke-width="'+(wd||3)+'" stroke-linecap="round"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>';}
 /* 글자 뒤 종이색 테두리: paint-order를 SVG 속성으로 주면 아이폰 사파리에서 무시되어 테두리가 글자를 덮는다 → CSS(style)로 준다 */
-function label(x,y,txt,col,anchor,sz){return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" font-size="'+(sz||12.5)+'" font-weight="'+((sz||12.5)<12?620:720)+'" fill="'+col+'" text-anchor="'+(anchor||'start')+'" style="paint-order:stroke fill" stroke="var(--paper)" stroke-width="'+((sz||12.5)<12?2:2.6)+'" stroke-linejoin="round">'+esc(txt)+'</text>';}
+function label(x,y,txt,col,anchor,sz){return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" font-size="'+(sz||12.5)+'" font-weight="'+((sz||12.5)<12?620:720)+'" fill="'+col+'" text-anchor="'+(anchor||'start')+'" style="paint-order:stroke fill" stroke="var(--paper)" stroke-width="'+((sz||12.5)<12?1.8:2.2)+'" stroke-linejoin="round">'+esc(txt)+'</text>';}
 /* 직선 a*x+b 를 그림판(0..xmax, 0..ymax) 안으로 잘라 두 끝점을 돌려준다 */
 function clipLine(a,b,xmax,ymax){
   var pts=[],xs=[0,xmax],ys=[0,ymax];

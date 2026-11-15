@@ -82,6 +82,26 @@
   st.cloud.t = byId(D.cloudCases, 'm1').t;
 
   /* ───────── 왼쪽(또는 위) 갈래 목록 ───────── */
+  /* 넓은 화면(1400px 이상): 연습 도구(.pad)는 왼쪽 기둥, 표현·피할 말·연습 문제는 오른쪽 기둥에 담는다.
+     요소를 옮기기만 하므로 id·이벤트는 그대로다. 좁아지면 원래 순서로 돌려놓는다. */
+  var WIDE = window.matchMedia ? window.matchMedia('(min-width:1400px)') : null;
+  function splitCols() {
+    var v = $('view'); if (!v || !WIDE) return;
+    var cl = v.querySelector(':scope > .cols');
+    if (!WIDE.matches) { if (cl) { var l = cl.children[0], r = cl.children[1], order = [].slice.call(l.children).concat([].slice.call(r.children)); order.sort(function (a, b) { return (+a.getAttribute('data-o')) - (+b.getAttribute('data-o')); }).forEach(function (n) { v.insertBefore(n, cl); }); cl.remove(); } return; }
+    if (cl) return;
+    var kids = [].slice.call(v.children), pads = kids.filter(function (n) { return n.classList.contains('pad'); });
+    if (!pads.length) return;
+    var refs = kids.filter(function (n) { return !n.classList.contains('pad') && !n.matches('.back,.mh,.pts,.oth'); });
+    if (!refs.length) return;
+    kids.forEach(function (n, i) { n.setAttribute('data-o', i); });
+    var box = d.createElement('div'); box.className = 'cols'; box.innerHTML = '<div class="col-l"></div><div class="col-r"></div>';
+    v.insertBefore(box, pads[0]);
+    pads.forEach(function (n) { box.children[0].appendChild(n); });
+    refs.forEach(function (n) { box.children[1].appendChild(n); });
+  }
+  if (WIDE) { var onW = function () { splitCols(); }; if (WIDE.addEventListener) WIDE.addEventListener('change', onW); else if (WIDE.addListener) WIDE.addListener(onW); }
+
   function renderPicks(cur) {
     var h = MODS.map(function (m) {
       return '<a class="pk" href="#' + m.id + '"' + (cur === m.id ? ' aria-current="page"' : '') + '>'
@@ -565,6 +585,7 @@
     d.body.setAttribute('data-view', h || 'home');
     renderPicks(h);
     $('view').innerHTML = html;
+    if (MOD[h]) splitCols();
     if (curView !== h && keepScroll !== true) {
       var top = $('view').getBoundingClientRect().top + window.pageYOffset - 8;
       if (curView !== null) window.scrollTo(0, h ? Math.max(0, top) : 0);

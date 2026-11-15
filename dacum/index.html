@@ -803,6 +803,8 @@ renderChart();renderAux();renderStages();renderSim();renderRadar();renderMethod(
 })();
 </script>
 <script src="../assets/marker.js" defer></script>
+<script>/* 휴대폰에서는 용어 사전 카드와 보조 목록을 이름만 보이게 접어 두고, 누르면 풀이가 펼쳐진다 */
+window.JC_FOLD = [{ box: '#gloss > .card', head: '*:first-child' }, { box: '#aux > div', head: '*:first-child' }];</script>
 <script src="../assets/prefs.js" defer></script>
 </body>
 </html>
