@@ -67,9 +67,12 @@ a{color:inherit}
 .pv-tt{flex:1;min-width:0;font-size:14px;line-height:1.55;color:var(--muted)}
 .pv-tt b{color:var(--ink);font-weight:750;margin-right:8px;white-space:nowrap}
 .pv-c{flex:none;font-size:14px;font-weight:700;color:var(--acc)}
-.pv-b{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .45s cubic-bezier(.3,.7,.2,1),opacity .35s}
-.pv.open .pv-b{grid-template-rows:1fr;opacity:1}
-.pv-b>div{overflow:hidden;min-height:0}
+/* 펼침: 상자는 즉시, 항목이 차례로 떠오른다(높이 보간 없음 — DESIGN.md 모션 가드레일) */
+.pv-b{display:none}
+.pv.open .pv-b{display:block}
+.pv.open .pv-b li{transition:opacity .3s cubic-bezier(.2,.9,.3,1),transform .34s cubic-bezier(.2,.9,.3,1)}
+@starting-style{.pv.open .pv-b li{opacity:0;transform:translateY(8px)}}
+.pv.open .pv-b li:nth-child(2){transition-delay:34ms}.pv.open .pv-b li:nth-child(3){transition-delay:68ms}.pv.open .pv-b li:nth-child(4){transition-delay:102ms}.pv.open .pv-b li:nth-child(n+5){transition-delay:136ms}
 .pv-b ul{margin:4px 0 12px;padding:0 0 0 2px;list-style:none;display:grid;gap:6px}
 @media (min-width:900px){.pv-b ul{grid-template-columns:1fr 1fr;column-gap:24px}}
 .pv-b li{position:relative;padding-left:16px;font-size:14.5px;line-height:1.65;color:var(--muted)}
@@ -85,9 +88,9 @@ a{color:inherit}
 /* 여정 레일: 4개 역 */
 .rail{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:20px 0 8px;padding:0}
 .rail::before,.rail .fill{content:"";position:absolute;left:12.5%;right:12.5%;top:17px;height:6px;border-radius:3px;background:var(--line)}
-.rail .fill{right:auto;width:0;background:linear-gradient(90deg,var(--t1),var(--t2),var(--t3));transition:width .5s cubic-bezier(.3,.7,.2,1)}
+.rail .fill{background:linear-gradient(90deg,var(--t1),var(--t2),var(--t3));transform-origin:0 50%;transform:scaleX(0);transition:transform .5s cubic-bezier(.3,.7,.2,1)}
 .rail button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:72px;padding:4px 2px;text-align:center}
-.rail .dot{width:40px;height:40px;border-radius:50%;background:var(--node);border:5px solid var(--line-2);display:grid;place-items:center;font-size:14px;font-weight:800;color:var(--dim);transition:border-color .3s,box-shadow .3s,transform .3s}
+.rail .dot{width:40px;height:40px;border-radius:50%;background:var(--node);border:5px solid var(--line-2);display:grid;place-items:center;font-size:14px;font-weight:800;color:var(--dim);transition:border-color .3s,transform .3s}
 .rail .lb{font-size:13px;font-weight:700;color:var(--muted);line-height:1.3}
 .rail .lb small{display:block;font-weight:500;font-size:12px;color:var(--dim)}
 .rail button[aria-current="step"] .dot{border-color:var(--acc);color:var(--acc);box-shadow:var(--glow);transform:scale(1.08)}
@@ -98,7 +101,7 @@ a{color:inherit}
 /* 공통 덩어리 */
 .panel{animation:fade .35s ease both}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.panel{animation:none}}
+@media (prefers-reduced-motion:reduce){.panel{animation:none}.pv.open .pv-b li,.rail .fill,.track{transition:none}}
 .h2{margin:24px 0 4px;font-size:clamp(23px,4.6vw,30px);line-height:1.3;letter-spacing:-.035em}
 .h2 small{display:block;font-size:14px;font-weight:600;letter-spacing:-.01em;color:var(--acc);margin-bottom:2px}
 .lead{margin:0 0 16px;color:var(--muted)}
@@ -111,7 +114,7 @@ a{color:inherit}
 .types{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
 @media (min-width:700px){.types{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:1100px){.types{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.type{position:relative;display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;border-radius:18px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);text-align:left;transition:border-color .2s,transform .2s,box-shadow .2s}
+.type{position:relative;display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;border-radius:18px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);text-align:left;transition:border-color .2s,transform .2s}
 .type:hover{transform:translateY(-1px)}
 .type .tg{font-size:13px;font-weight:700;color:var(--dim)}
 .type b{font-size:19px;letter-spacing:-.03em;line-height:1.35}
@@ -171,7 +174,7 @@ input.inp{width:100%;height:48px;padding:0 14px;border-radius:14px;border:1px so
 .mm i{position:relative;width:14px;height:14px;border-radius:50%;background:var(--node);border:3px solid var(--c);transition:transform .2s}
 .mm.on i{background:var(--c)}
 .mm[aria-current="true"] i{transform:scale(1.45);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 20%,transparent)}
-.viewport{position:relative;overflow:hidden;touch-action:pan-y;border-radius:22px;transition:height .35s cubic-bezier(.3,.7,.2,1)}
+.viewport{position:relative;overflow:hidden;touch-action:pan-y;border-radius:22px}
 .track{display:flex;align-items:flex-start;will-change:transform;transition:transform .42s cubic-bezier(.25,.8,.25,1)}
 .track.drag{transition:none}
 .slide{flex:0 0 100%;min-width:0;padding:2px}
@@ -351,7 +354,7 @@ input.inp{width:100%;height:48px;padding:0 14px;border-radius:14px;border:1px so
   <section class="pv" id="pv">
     <button class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor"/></svg>
-      <span class="pv-tt"><b>이용 안내</b>로그인 없이 모든 기능을 쓸 수 있습니다. 자료실의 정보는 정답이 아닌 <span style="white-space:nowrap">참고·실습용입니다.</span></span>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 사용 <span aria-hidden="true">·</span> <span style="white-space:nowrap">참고·실습용 자료</span></span>
       <span class="pv-c" id="pvL">펼치기</span>
     </button>
     <div class="pv-b" id="pvB" inert><div><ul>
@@ -425,7 +428,7 @@ function renderRail(){
   STEPS.forEach(function(s,i){var n=i+1;
     h+='<button type="button" data-go="'+n+'"'+(n===S.step?' aria-current="step"':'')+' class="'+(n<S.step?'done':'')+'"><span class="dot num">'+(n<S.step?'✓':n)+'</span><span class="lb">'+s[0]+'<small>'+s[1]+'</small></span></button>';});
   $('rail').innerHTML=h;
-  $('railFill').style.width=((S.step-1)/3*75)+'%';
+  $('railFill').style.transform='scaleX('+((S.step-1)/3).toFixed(4)+')';
 }
 $('rail').addEventListener('click',function(e){var b=e.target.closest('[data-go]');if(b)go(+b.getAttribute('data-go'));});
 $('brand').addEventListener('click',function(e){e.preventDefault();go(1);});
