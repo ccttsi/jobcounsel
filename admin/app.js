@@ -19,7 +19,7 @@
   var WD = ['일', '월', '화', '수', '목', '금', '토'];
   var RANGES = [[1, '오늘'], [7, '7일'], [30, '30일'], [90, '90일']];
 
-  var st = { days: 30, data: null, busy: false, pgPage: 1, pgHost: 1 };
+  var st = { days: 30, data: null, busy: false, pgPage: 1, pgHost: 1, pgStay: 1 };
   var hm = /(?:^|[#&])d=(\d+)/.exec(location.hash); if (hm && [1, 7, 30, 90].indexOf(+hm[1]) >= 0) st.days = +hm[1];
 
   /* ---------- 도움 함수 ---------- */
@@ -36,6 +36,7 @@
     var r = Math.round((cur - prev) / prev * 100);
     return '<span class="dl ' + (r > 0 ? 'up' : r < 0 ? 'down' : 'eq') + '">' + (r > 0 ? '▲ ' + r : r < 0 ? '▼ ' + (-r) : '±0') + '%</span>';
   }
+  function dur(sec) { sec = Math.round(+sec || 0); if (sec < 60) return sec + '초'; var m = Math.floor(sec / 60), r = sec % 60; return m + '분' + (r ? ' ' + r + '초' : ''); }
   function rangeName() { return st.days === 1 ? '오늘' : '최근 ' + st.days + '일'; }
   function prevName() { return st.days === 1 ? '어제' : '그 전 ' + st.days + '일'; }
   var toastT; function toast(m) { var t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('on'); }, 2200); }
@@ -72,7 +73,7 @@
       if (!r || r.error === 'session') return check();
       if (r.error === 'forbidden') return check();
       if (r.error) throw r;
-      st.data = r; st.pgPage = 1; st.pgHost = 1; render();
+      st.data = r; st.pgPage = 1; st.pgHost = 1; st.pgStay = 1; render();
     }).catch(function (e) {
       st.busy = false;
       var j = e && e.j, missing = e && e.status === 404 || (j && (j.code === 'PGRST202' || /jc_admin_dash/.test(j.message || '')));
@@ -130,7 +131,7 @@
       var segs = r.segs || [[r.v, 'c1']];
       return '<div class="hb-r"><span class="hb-l" title="' + esc(r.l) + '">' + esc(r.l) + (r.sub ? '<small>' + esc(r.sub) + '</small>' : '') + '</span>' +
         '<span class="hb-t" aria-hidden="true">' + segs.filter(function (g) { return g[0] > 0; }).map(function (g) { return '<i class="' + g[1] + '" style="width:' + (g[0] / mx * 100) + '%"></i>'; }).join('') + '</span>' +
-        '<span class="hb-v">' + n(r.v) + (r.vs ? '<small>' + esc(r.vs) + '</small>' : '') + '</span></div>';
+        '<span class="hb-v">' + (r.fmt || n(r.v)) + (r.vs ? '<small>' + esc(r.vs) + '</small>' : '') + '</span></div>';
     }).join('') + '</div>';
   }
   // 100% 나눔 막대. parts: [[이름, 값, 'c1'], …]
@@ -213,6 +214,30 @@
         table(['날짜', '페이지 보기', '방문자', '로그인 보기'], days.slice().reverse().map(function (x) { return [md(x.d) + ' (' + wd(x.d) + ')', n(x.pv), n(x.vis), n(x.apv)]; })) + '</section>';
     }
 
+    // 자료별: 많이 연 자료(첫 화면 제외) · 오래 머문 자료
+    var pages = T.pages || [], home = null, res = [];
+    pages.forEach(function (x) { if (x.page === 'home') home = x; else res.push(x); });
+    var hasStay = T.stay_n != null, homeOut = T.home_out || 0;
+    var opens = res.slice().sort(function (a, b) { return b.pv - a.pv; });
+    var PP = 7, pp = st.pgPage, ps = opens.slice((pp - 1) * PP, pp * PP);
+    h += '<section class="card" id="open"><h2>많이 연 자료 <small>첫 화면 제외 · ' + n(opens.length) + '곳</small></h2>' +
+      '<p class="lede">자료 페이지가 열린 횟수입니다.' + (hasStay ? ' 아래 작은 글씨는 그중 첫 화면에서 눌러 들어온 횟수입니다.' : '') + '</p>' +
+      (home && hasStay ? '<div class="mini mini2"><div><b>' + n(home.pv) + '</b><span>첫 화면 열람</span></div><div><b>' + n(homeOut) + '</b><span>첫 화면에서 자료를 누른 횟수</span></div></div>' : '') +
+      (opens.length ? bars(ps.map(function (x, i) {
+        return { l: ((pp - 1) * PP + i + 1) + '. ' + (PAGES[x.page] || x.page), sub: hasStay ? '첫 화면에서 클릭 ' + n(x.vh) : '첫 페이지로 들어온 방문 ' + n(x.visits), v: x.pv, vs: '로그인 ' + pctS(x.apv, x.pv) };
+      }), opens[0].pv) + pager(opens.length, PP, pp, 'page') : '<p class="empty">아직 기록이 없습니다.</p>') + '</section>';
+
+    var MIN = 3, stays = res.filter(function (x) { return x.sn >= MIN; }).sort(function (a, b) { return b.sa - a.sa; }), few = res.filter(function (x) { return x.sn > 0 && x.sn < MIN; }).length;
+    var SP = 7, sp = st.pgStay, ss = stays.slice((sp - 1) * SP, sp * SP);
+    h += '<section class="card" id="stay"><h2>오래 머문 자료 <small>평균 체류 시간</small></h2>' +
+      '<p class="lede">화면을 실제로 보고 있던 시간만 잽니다. 다른 탭에 가 있거나 5분 넘게 손대지 않으면 멈추고, 한 번에 최대 30분까지 셉니다.</p>' +
+      (!hasStay ? '<p class="empty">체류 시간을 재려면 <code>assets/supabase-update-02-stats.sql</code>을 다시 한 번 실행해 주세요.</p>'
+        : stays.length ? bars(ss.map(function (x, i) {
+          return { l: ((sp - 1) * SP + i + 1) + '. ' + (PAGES[x.page] || x.page), sub: '중앙값 ' + dur(x.sm) + ' · 잰 횟수 ' + n(x.sn), v: x.sa, fmt: dur(x.sa) };
+        }), stays[0].sa) + pager(stays.length, SP, sp, 'stay')
+        : '<p class="empty">아직 잰 기록이 부족합니다. 자료마다 ' + MIN + '번 넘게 재면 순위가 나옵니다.</p>') +
+      (hasStay && home && home.sn ? '<p class="lede" style="margin:10px 0 0">첫 화면 평균 ' + dur(home.sa) + (few ? ' · 잰 횟수가 ' + MIN + '번이 안 되는 자료 ' + n(few) + '곳은 순위에서 뺐습니다.' : '') + '</p>' : '') + '</section>';
+
     // 유입 경로
     var srcs = T.sources || {}, visitsTot = 0; SRC_ORDER.forEach(function (k) { visitsTot += srcs[k] || 0; });
     var hosts = T.hosts || [], HP = 6, hp = st.pgHost, hs = hosts.slice((hp - 1) * HP, hp * HP);
@@ -225,20 +250,6 @@
     }
     h += '</section>';
 
-    // 꼭지별
-    var pages = T.pages || [], PP = 7, pp = st.pgPage, ps = pages.slice((pp - 1) * PP, pp * PP);
-    h += '<section class="card" id="pages"><h2>많이 본 꼭지 <small>' + n(pages.length) + '곳</small></h2>' +
-      '<div class="lgd"><span><i class="c1"></i>비로그인</span><span><i class="c2"></i>로그인</span></div>' +
-      (pages.length ? bars(ps.map(function (x, i) {
-        return { l: ((pp - 1) * PP + i + 1) + '. ' + (PAGES[x.page] || x.page), sub: '첫 페이지로 들어온 방문 ' + n(x.visits), v: x.pv, vs: '로그인 ' + pctS(x.apv, x.pv), segs: [[x.pv - x.apv, 'c1'], [x.apv, 'c2']] };
-      }), pages[0].pv) + pager(pages.length, PP, pp, 'page') : '<p class="empty">아직 기록이 없습니다.</p>') + '</section>';
-
-    // 기기
-    var dv = T.devices || {};
-    h += '<section class="card" id="dev"><h2>기기 <small>방문자 기준</small></h2>' +
-      split('방문자', [[DEV.m, dv.m || 0, 'c1'], [DEV.d, dv.d || 0, 'c2'], [DEV.t, dv.t || 0, 'c3']]) +
-      '<p class="lede" style="margin:10px 0 0">기기 종류는 브라우저가 알려 주는 종류(휴대폰·태블릿·PC)만 봅니다. 기종·화면 크기는 남기지 않습니다.</p></section>';
-
     // 시간대·요일
     var hrs = T.hours || [], wds = T.weekdays || [];
     h += '<section class="card" id="time"><h2>시간대 <small>페이지 보기 · 한국 시간</small></h2>' +
@@ -250,8 +261,14 @@
     }
     h += '</section>';
 
+    // 기기
+    var dv = T.devices || {};
+    h += '<section class="card" id="dev"><h2>기기 <small>방문자 기준</small></h2>' +
+      split('방문자', [[DEV.m, dv.m || 0, 'c1'], [DEV.d, dv.d || 0, 'c2'], [DEV.t, dv.t || 0, 'c3']]) +
+      '<p class="lede" style="margin:10px 0 0">기기 종류는 브라우저가 알려 주는 종류(휴대폰·태블릿·PC)만 봅니다. 기종·화면 크기는 남기지 않습니다.</p></section>';
+
     // 이 기기 제외
-    h += '<section class="card wide"><h2>통계에서 빼기</h2><p class="lede">관리자로 로그인한 동안의 방문은 저절로 빠집니다. 로그아웃한 채로 둘러볼 때도 빼려면 아래를 켜 두세요(이 기기·이 브라우저에만 적용).</p>' +
+    h += '<section class="card"><h2>통계에서 빼기</h2><p class="lede">관리자로 로그인한 동안의 방문은 저절로 빠집니다. 로그아웃한 채로 둘러볼 때도 빼려면 아래를 켜 두세요(이 기기·이 브라우저에만 적용).</p>' +
       '<label class="opt"><input type="checkbox" id="offChk"' + (S().statsOff() ? ' checked' : '') + '><span><b>이 기기의 방문은 통계에 넣지 않기</b><br>설정은 이 브라우저에만 저장되고 다른 기기와 연동하지 않습니다.</span></label>' +
       '<p class="lede" style="margin:12px 0 0">' + (T.since ? '방문 기록은 ' + new Date(T.since).toLocaleDateString('ko-KR') + '부터 쌓였습니다. ' : '아직 쌓인 방문 기록이 없습니다. ') + '400일이 지난 기록은 이 화면을 열 때 지웁니다.</p></section>';
 
@@ -270,7 +287,7 @@
     } else if (b.id === 'reBtn') load();
     else if (b.hasAttribute('data-pg')) {
       var k = b.getAttribute('data-pg'), card = b.closest('.card');
-      if (k === 'page') st.pgPage = +b.getAttribute('data-n'); else st.pgHost = +b.getAttribute('data-n');
+      var nn = +b.getAttribute('data-n'); if (k === 'page') st.pgPage = nn; else if (k === 'stay') st.pgStay = nn; else st.pgHost = nn;
       render();
       var c2 = d.getElementById(card.id); if (c2 && c2.getBoundingClientRect().top < 0) c2.scrollIntoView({ block: 'start' });
     }
