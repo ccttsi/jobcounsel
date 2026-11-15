@@ -11,6 +11,13 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 function fx(n,k){return (Math.round(n*Math.pow(10,k))/Math.pow(10,k)).toFixed(k);}
 function sgn(n,k,u){var v=fx(n,k);if(Number(v)===0)return '±0'+u;return (n>0?'+':'')+v+u;}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+/* 받춤에 따라 '을/를'을 고른다. 지표 이름이 한글이 아니면 '를'로 둔다. */
+function josa(s){
+  var t=String(s==null?'':s).replace(/\s+$/,''),ch=t.charAt(t.length-1),c=ch.charCodeAt(0);
+  if(c>=0xAC00&&c<=0xD7A3)return ((c-0xAC00)%28)?'을':'를';
+  if(c>=48&&c<=57)return '013678'.indexOf(ch)>=0?'을':'를';
+  return '를';
+}
 var DEEP_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/><path d="M3 17.5l9 5 9-5" opacity=".55"/></svg>';
 var DEEP_TEXT='조금 묵직한 개념이니 천천히 훑어보셔도 충분합니다.';
 
@@ -422,6 +429,67 @@ function analyze(text){
   return {html:html.replace(/\n/g,'<br>'),order:order,num:num};
 }
 function latestFor(id){return N.latest.items.filter(function(x){return x.see===id;});}
+
+/* 어림셈 자리(#nReal)를 기사·지표와 잇는다.
+   지표 → 개념(see) → 그 개념의 위젯(widget)을 따라가고, 위젯이 없는 개념은
+   '이어서 보기'(related)를 가까운 순서로 한 단계씩 내려가 위젯이 있는 개념을 찾는다. */
+var nrealList=[],nrealCur=0,nrealKind='none';
+function widgetOf(cid){
+  var seen={},q=cid?[cid]:[],i=0;
+  while(q.length&&i++<24){
+    var id=q.shift();if(seen[id])continue;seen[id]=1;
+    var c=BYC[id];if(!c)continue;
+    if(c.widget&&W[c.widget])return {w:c.widget,c:c};
+    (c.related||[]).forEach(function(r){if(!seen[r]&&BYC[r])q.push(r);});
+  }
+  return null;
+}
+function widgetsFor(ids){
+  var out=[],used={};
+  (ids||[]).forEach(function(id){
+    var x=BYI[id];if(!x||!x.see)return;
+    var m=widgetOf(x.see);if(!m||used[m.w])return;used[m.w]=1;
+    out.push({w:m.w,c:m.c,ind:x});
+  });
+  return out;
+}
+function renderNReal(list,kind){
+  nrealList=(list||[]).slice();nrealCur=0;
+  nrealKind=nrealList.length?(kind||'article'):'none';
+  paintNReal();
+}
+/* 그릴 때마다 #nReal 안을 통째로 새로 만든다. 위젯이 host에 직접 붙이는 리스너도
+   함께 버려지므로, 같은 자리에서 위젯을 여러 번 바꿔 그려도 리스너가 겹치지 않는다. */
+function paintNReal(){
+  var host=$('nReal');if(!host)return;
+  var it=nrealList[nrealCur]||null;
+  host.innerHTML='';
+  var hd=d.createElement('div');hd.className='nreal-hd';
+  var lb=d.createElement('p');lb.className='nreal-lb';
+  var kick='<span class="nreal-k">개념 산책</span>';
+  if(it){
+    lb.innerHTML=kick+(nrealKind==='ind'?'지표 <b>'+esc(it.ind.name)+'</b>'+josa(it.ind.name)+' ':'기사에서 짚은 <b>'+esc(it.ind.name)+'</b> — ')+
+      '개념 <b>'+esc(it.c.title)+'</b>에서 이어 봅니다';
+    var go=d.createElement('a');go.className='nreal-go';go.href='#c-'+it.c.id;go.textContent='개념 읽기 ›';
+    hd.appendChild(lb);hd.appendChild(go);
+  }else{
+    lb.innerHTML=kick+'이어 볼 개념을 찾지 못해 <b>명목·실질임금 어림셈</b>을 그대로 보여 드립니다. 기사에 실업률·고용률·물가·구인배수 같은 낱말이 있으면 그 개념으로 바뀝니다.';
+    hd.appendChild(lb);
+  }
+  if(nrealList.length>1){
+    var sw=d.createElement('div');sw.className='nreal-sw';sw.setAttribute('role','group');sw.setAttribute('aria-label','이어 볼 개념 바꾸기');
+    nrealList.forEach(function(x,i){
+      var b=d.createElement('button');b.type='button';b.className='chip';b.setAttribute('data-nw',String(i));
+      b.setAttribute('aria-pressed',String(i===nrealCur));b.textContent=x.ind.name;b.title=x.c.title;
+      sw.appendChild(b);
+    });
+    hd.appendChild(sw);
+  }
+  host.appendChild(hd);
+  var paper=d.createElement('div');paper.className='paper';host.appendChild(paper);
+  if(it&&W[it.w])W[it.w](paper,it.w==='real'?'nr':undefined);
+  else W.real(paper,'nr');
+}
 function indCard(x,n){
   var lt=latestFor(x.id);
   return '<article class="ic" id="k-i-'+x.id+'"><div class="ic-h">'+(n?'<span class="n">'+n+'</span>':'')+'<h4>'+esc(x.name)+'</h4></div>'+
@@ -444,10 +512,9 @@ function renderNews(arg){
       '<p class="lab">지표 낱말로 바로 보기</p><div class="chips">'+N.indicators.filter(function(x){return x.chip;}).map(function(x){return '<button type="button" class="chip" data-ind="'+x.id+'" aria-pressed="'+(arg===x.id)+'">'+esc(x.name)+'</button>';}).join('')+'</div>'+
       '<h3 class="st">기사를 읽을 때 다섯 가지 질문</h3><ol class="fiveq">'+N.fiveQ.map(function(q){return '<li><b>'+esc(q.q)+'</b><span>'+esc(q.a)+'</span></li>';}).join('')+'</ol>'+
     '</div><div id="nOut" aria-live="polite"></div></div>'+
-    '<div class="paper" id="nReal" style="margin-top:32px"></div>'+
+    '<section class="nreal" id="nReal" aria-label="기사와 이어 보는 개념 산책"></section>'+
     '<h3 class="st">공식 숫자는 여기서 확인합니다</h3><ul class="where">'+N.where.map(function(w){return '<li><a href="'+esc(w.url)+'" target="_blank" rel="noopener"><b>'+esc(w.name)+'</b><span>'+esc(w.what)+'</span></a></li>';}).join('')+'</ul>';
   $('main').innerHTML=html;
-  W.real($('nReal'),'nr');
   var ta=$('nt');
   ta.addEventListener('input',function(){newsText=ta.value;});
   $('nGo').addEventListener('click',function(){newsText=ta.value;showResult(true);});
@@ -459,21 +526,25 @@ function renderNews(arg){
 function showResult(scroll){
   var o=$('nOut');if(!o)return;
   var t=(newsText||'').trim();
-  if(!t){o.innerHTML='<div class="out-h"><h3>빨간 펜 메모</h3></div><p class="empty">왼쪽에 기사 문장을 붙여 넣거나 가상 기사를 고르면, 지표에는 밑줄과 번호를, 오해하기 쉬운 표현에는 점선 밑줄을 긋고 여기에 짚을 점을 정리합니다.</p>';return;}
+  if(!t){o.innerHTML='<div class="out-h"><h3>빨간 펜 메모</h3></div><p class="empty">왼쪽에 기사 문장을 붙여 넣거나 가상 기사를 고르면, 지표에는 밑줄과 번호를, 오해하기 쉬운 표현에는 점선 밑줄을 긋고 여기에 짚을 점을 정리합니다.</p>';renderNReal([],'none');return;}
   var r=analyze(t);
   var iN=r.order.filter(function(x){return x.k==='i';}).length,pN=r.order.length-iN;
   o.innerHTML='<div class="out-h"><h3>빨간 펜 메모</h3><small>지표 '+iN+'개 · 표현 '+pN+'개</small></div><div class="marked">'+r.html+'</div>'+
     (r.order.length?'<div style="margin-top:16px">'+r.order.map(function(sp){var n=r.num[sp.k+':'+sp.id];return sp.k==='i'?indCard(BYI[sp.id],n):patNote(N.patterns.filter(function(p){return p.id===sp.id;})[0],n);}).join('')+'</div>':
       '<p class="empty">짚을 지표를 찾지 못했습니다. 실업률·고용률·쉬었음·실질임금·구인배수 같은 낱말이 들어 있는지 확인하거나, 왼쪽 지표 낱말을 눌러 보세요.</p>');
+  renderNReal(widgetsFor(r.order.filter(function(x){return x.k==='i';}).map(function(x){return x.id;})),'article');
   if(scroll&&window.matchMedia('(max-width:999px)').matches)o.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function showOne(id,scroll){
   var o=$('nOut');if(!o||!BYI[id])return;
   Array.prototype.forEach.call(d.querySelectorAll('.chip[data-ind]'),function(c){c.setAttribute('aria-pressed',String(c.getAttribute('data-ind')===id));});
   o.innerHTML='<div class="out-h"><h3>지표 바로 보기</h3><small><a href="#news" class="go" style="font-size:13px">메모로 돌아가기</a></small></div>'+indCard(BYI[id],0);
+  renderNReal(widgetsFor([id]),'ind');
   if(scroll)o.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function onNewsClick(e){
+  var nw=e.target.closest('[data-nw]');
+  if(nw){var k=Number(nw.getAttribute('data-nw'));if(nrealList[k]){nrealCur=k;paintNReal();var nb=$('nReal')&&$('nReal').querySelector('[data-nw="'+k+'"]');if(nb&&nb.focus)nb.focus({preventScroll:true});}return;}
   var s=e.target.closest('[data-s]');
   if(s){var smp=N.samples.filter(function(x){return x.id===s.getAttribute('data-s');})[0];newsText=smp.text;$('nt').value=smp.text;showResult(true);toast('가상 기사 「'+smp.title+'」를 넣었습니다.');return;}
   var ind=e.target.closest('[data-ind]');
