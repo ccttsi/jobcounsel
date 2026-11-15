@@ -296,7 +296,7 @@
     var el = d.getElementById('album'), h = '';
     CATS.forEach(function (c) {
       h += '<a class="bc k-' + c.k + '" href="#list?c=' + c.k + '" data-jc-ignore><p class="nm"><span>' + esc(c.name) + '</span><span class="ct">' + fmt(c.n) + '<small>곳</small></span></p>' +
-        '<p class="bc-top"><b>' + c.k + '</b><span>' + esc(c.src) + '</span></p><p class="ln">' + esc(line[c.k]) + '</p></a>';
+        '<p class="ln"><b>' + esc(c.src) + '</b><span>' + esc(line[c.k]) + '</span></p></a>';
     });
     el.insertAdjacentHTML('afterbegin', h);
   }
