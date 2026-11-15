@@ -1,7 +1,7 @@
 /* 직업상담 통합 자료실 · 기기 간 연동(로그인)
    - marker.js가 자동으로 불러온다. 설정(주소·공개 키)이 비어 있으면 아무것도 하지 않는다.
    - 받는 정보는 아이디와 비밀번호뿐. 비밀번호는 서버에서 bcrypt로만 저장된다(assets/supabase-setup.sql).
-   - 이용 통계: 페이지마다 익명 한 줄(꼭지·로그인 여부·기기 종류·들어온 도메인)만 보낸다. 아래 "사이트 이용 통계" 참고.
+   - 이용 통계: 페이지마다 익명 한 줄(꼭지·로그인 여부·기기 종류·들어온 도메인·앞 꼭지·보고 있던 시간)만 보낸다. 아래 "사이트 이용 통계" 참고.
    - 연동하는 것: 탐색 진도, 형광펜·포스트잇, 도구함 설정, 화면 테마, 이론 위키 학습 기록, 매뉴얼 마지막 쪽.
    - 연동 단위는 localStorage 항목. 항목마다 마지막으로 바꾼 시각(t)을 두고 더 최근 것을 남긴다.
      형광펜·포스트잇과 탐색 진도는 덮어쓰지 않고 합친다. */
@@ -359,8 +359,8 @@
     if (!window.JC_STATS_TEST && (/^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) || location.protocol === 'file:')) return true;
     return false;
   }
-  function pageName() {
-    var base = hubURL().replace(/[?#].*$/, ''), here = location.href.replace(/[?#].*$/, '');
+  function pageName(url) {
+    var base = hubURL().replace(/[?#].*$/, ''), here = String(url || location.href).replace(/[?#].*$/, '');
     if (here.indexOf(base) !== 0) return null;
     var seg = here.slice(base.length).split('/')[0].replace(/\.html?$/, '').toLowerCase();
     if (!seg || seg === 'index') return 'home';
@@ -390,7 +390,38 @@
     if (daily) put(SEEN, today);
     var p = { page: page, auth: !!sess, entry: entry, daily: daily, ret: ret, dev: devKind() };
     if (entry) { p.src = src; if (h) p.host = h; }
+    var via = null; try { if (d.referrer && new URL(d.referrer).hostname === location.hostname) via = pageName(d.referrer); } catch (e) {}
+    if (via && via !== 'admin') p.via = via;
+    p.k = stayKey();
     try { rpc('jc_hit', { p: p }, true).catch(function () {}); } catch (e) {}
+    stayStart();
+  }
+
+  /* 체류 시간: 화면이 보이는 동안만 잰다. 5분 넘게 손대지 않으면 멈추고, 한 번에 최대 30분.
+     열람마다 새로 만드는 무작위 표(k)로 이어 적는다. 표는 저장하지 않는다. */
+  var stayK = null, seg0 = 0, lastAct = 0, acc = 0, sent = 0, IDLE = 300000;
+  function stayKey() {
+    var a = new Uint8Array(8), out = '';
+    try { (window.crypto || window.msCrypto).getRandomValues(a); } catch (e) { for (var i = 0; i < 8; i++) a[i] = Math.floor(Math.random() * 256); }
+    for (var j = 0; j < 8; j++) out += ('0' + a[j].toString(16)).slice(-2);
+    return (stayK = out);
+  }
+  function now() { return Date.now(); }
+  function act() { lastAct = now(); if (!seg0 && !d.hidden && stayK) seg0 = lastAct; }
+  function close1() { if (!seg0) return; var t = now(); acc += Math.max(0, Math.min(t, lastAct + IDLE) - seg0); seg0 = 0; }
+  function staySend() {
+    if (!stayK) return; close1();
+    var sec = Math.min(1800, Math.round(acc / 1000));
+    if (sec >= 1 && sec > sent) { sent = sec; try { rpc('jc_stay', { p_k: stayK, p_sec: sec }, true).catch(function () {}); } catch (e) {} }
+  }
+  function stayStart() {
+    lastAct = now(); seg0 = d.hidden ? 0 : lastAct;
+    ['pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'].forEach(function (ev) { window.addEventListener(ev, act, { passive: true, capture: true }); });
+    d.addEventListener('visibilitychange', function () { if (d.hidden) staySend(); else act(); });
+    window.addEventListener('pagehide', staySend);
+    window.addEventListener('pageshow', function (e) { if (e.persisted) act(); });
+    // 손대지 않은 채 오래 둔 화면: 쉬는 시점에서 끊어 적어 둔다
+    setInterval(function () { if (seg0 && now() - lastAct > IDLE) staySend(); }, 60000);
   }
   api.statsOff = function (v) { if (v === undefined) return get(STATS_OFF) === '1'; put(STATS_OFF, v ? '1' : null); return !!v; };
 

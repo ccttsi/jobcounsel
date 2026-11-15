@@ -99,7 +99,7 @@ a{color:inherit}
 .gate p{margin:0 auto;color:var(--muted);font-size:15px;max-width:440px}
 .gate .go{display:inline-flex;align-items:center;justify-content:center;min-height:48px;min-width:180px;margin-top:16px;padding:0 20px;border-radius:12px;background:var(--acc);color:var(--acc-ink);font-weight:750;font-size:15.5px;text-decoration:none}
 .gate ol{text-align:left;margin:14px auto 0;max-width:460px;padding-left:22px;color:var(--muted);font-size:14.5px}
-.gate code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;padding:1px 6px;border-radius:6px;background:var(--soft);color:var(--ink);word-break:break-all}
+.empty code,.gate code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;padding:1px 6px;border-radius:6px;background:var(--soft);color:var(--ink);word-break:break-all}
 
 /* 큰 숫자 줄 */
 .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 14px}
@@ -129,6 +129,7 @@ a{color:inherit}
 .mini{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 @media (min-width:600px){.mini{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .mini div{padding:10px 12px;border-radius:12px;background:var(--soft);min-width:0}
+.mini2{margin:0 0 12px}@media (min-width:600px){.mini2{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .mini b{display:block;font-size:22px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.25}
 .mini span{font-size:13px;color:var(--muted);line-height:1.45;display:block}
 
@@ -224,7 +225,7 @@ th{position:sticky;top:0;background:var(--panel);color:var(--muted);font-weight:
       <span class="pv-c" id="pvC">펼치기</span>
     </button>
     <div class="pv-b" id="pvB" inert><div><ul>
-      <li><b>페이지를 열 때 한 줄만 남깁니다.</b> 어느 꼭지인지, 로그인 상태였는지(예/아니오), 기기 종류(휴대폰·태블릿·PC), 이 브라우저에서 오늘 처음인지입니다.</li>
+      <li><b>페이지를 열 때 한 줄만 남깁니다.</b> 어느 꼭지인지, 로그인 상태였는지(예/아니오), 기기 종류(휴대폰·태블릿·PC), 이 브라우저에서 오늘 처음인지, 자료실 안에서 옮겨 왔다면 바로 앞 꼭지, 화면을 보고 있던 시간입니다.</li>
       <li><b>들어온 곳은 도메인 이름만 남깁니다.</b> 검색어·전체 주소·쿼리는 남기지 않습니다(예: google.com, cafe.naver.com).</li>
       <li><b>남기지 않는 것:</b> IP 주소, 아이디, 쿠키·기기 고유번호, 화면에 입력한 내용, 형광펜·메모 내용.</li>
       <li><b>어떤 줄도 특정 사람이나 계정과 이어지지 않습니다.</b> 계정 쪽은 마지막 이용 날짜(시각 없이)만 더해 최근 이용 계정 수를 셉니다.</li>
