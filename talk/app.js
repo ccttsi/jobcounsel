@@ -530,7 +530,7 @@
       + '<p class="lead">여섯 갈래는 순서 없이 나란히 놓여 있습니다. 아무 말이나 적으면 연습장 전체에서 가까운 카드·표현·연습 문제를 순서대로 찾아 드리고, 장면을 직접 골라도 됩니다.</p></section>';
     h += homeFinder();
     h += '<p class="or"><span>또는 장면 고르기</span></p><ul class="home-picks">' + MODS.map(function (m) {
-      return '<li><a href="#' + m.id + '"><span class="hp-no" aria-hidden="true">' + m.icon + '</span><span class="hp-tx"><small>이럴 때</small><b>' + esc(m.when) + '</b><span>' + esc(m.name) + ' · ' + esc(m.term) + '</span></span><span class="hp-ar">' + ico('arrow') + '</span></a></li>';
+      return '<li><a href="#' + m.id + '"><span class="hp-no" aria-hidden="true">' + m.icon + '</span><span class="hp-tx"><small>이럴 때</small><b>' + esc(m.when) + '</b><span>' + esc(m.name) + ' · ' + esc(m.term) + '</span></span></a></li>';
     }).join('') + '</ul>';
     h += drillBlock('mix', drillList(), '오늘의 한 문제');
     return h;
