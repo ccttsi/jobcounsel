@@ -236,7 +236,7 @@
           return { l: ((sp - 1) * SP + i + 1) + '. ' + (PAGES[x.page] || x.page), sub: '중앙값 ' + dur(x.sm) + ' · 잰 횟수 ' + n(x.sn), v: x.sa, fmt: dur(x.sa) };
         }), stays[0].sa) + pager(stays.length, SP, sp, 'stay')
         : '<p class="empty">아직 잰 기록이 부족합니다. 자료마다 ' + MIN + '번 넘게 재면 순위가 나옵니다.</p>') +
-      (hasStay && home && home.sn ? '<p class="lede" style="margin:10px 0 0">첫 화면 평균 ' + dur(home.sa) + ' · 잰 횟수가 ' + MIN + '번이 안 되는 자료 ' + n(few) + '곳은 순위에서 뺐습니다.</p>' : '') + '</section>';
+      (hasStay && home && home.sn ? '<p class="lede" style="margin:10px 0 0">첫 화면 평균 ' + dur(home.sa) + (few ? ' · 잰 횟수가 ' + MIN + '번이 안 되는 자료 ' + n(few) + '곳은 순위에서 뺐습니다.' : '') + '</p>' : '') + '</section>';
 
     // 유입 경로
     var srcs = T.sources || {}, visitsTot = 0; SRC_ORDER.forEach(function (k) { visitsTot += srcs[k] || 0; });
