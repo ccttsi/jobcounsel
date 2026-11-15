@@ -687,7 +687,7 @@ document.documentElement.setAttribute('data-theme',t);})();
       <h2 id="catalogTitle" class="font-bold" style="font-size:var(--fs-lg)">소장 목록</h2>
       <span class="mono text-[11px] t-faint">CATALOG / 13 ITEMS</span>
     </div>
-    <div id="catalog" class="grid gap-3 md:grid-cols-3"></div>
+    <div id="catalog" class="grid gap-3 md:grid-cols-3 xl:grid-cols-4"></div>
   </section>
 </main>
 
@@ -2466,6 +2466,8 @@ if (m) setTimeout(() => openSlate(parseInt(m[1], 10)), 300);
 </script>
 <script>window.JC_FS_SKIP = '.book, .bookend';</script>
 <script src="../assets/marker.js" defer></script>
+<script>/* 휴대폰에서는 읽기 책상의 섹션을 제목만 보이게 접어 두고(첫 섹션 「핵심 메시지」는 펼친 채), 누르면 펼친다 */
+window.JC_FOLD = [{ box: '#dBody > section.sec:first-of-type', head: '.sec-title', open: true }, { box: '#dBody > section.sec', head: '.sec-title' }];</script>
 <script src="../assets/prefs.js" defer></script>
 </body>
 </html>
