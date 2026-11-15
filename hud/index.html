@@ -153,7 +153,10 @@ img,table{max-width:100%}
 .z-20{z-index:20}
 @media (min-width:640px){.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:768px){.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (min-width:1024px){.lg\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1024px){.lg\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  /* 큰 화면 가로: 왼쪽 입력을 내려가며 고쳐도 판정 결과가 오른쪽에 붙어 따라온다 */
+  #v-triage>.grid>:last-child{position:sticky;top:116px;align-self:start}
+  html[data-jc-imm] #v-triage>.grid>:last-child{top:24px}}
 </style>
 </head>
 <body>
