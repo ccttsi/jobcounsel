@@ -45,6 +45,8 @@
     out: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
     search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
     x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    pie: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></svg>',
+    turn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg>',
     filt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>'
   };
   var KEYS = ['c', 'g', 'k', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in', 'o', 'q'];
@@ -129,6 +131,7 @@
           var b = Math.min(N - 1, Math.floor((Math.log10(x[f]) - lo) / w)); bins[b]++;
           x[f + 'R'] = (i > 0 && arr[i - 1][f] === x[f]) ? arr[i - 1][f + 'R'] : i + 1; x[f + 'B'] = b;
         });
+        if (f === '_rev' && c.k === 'ENT') { LOGHI = hi; LOGLO = Math.log10(1e8); }
         DIST[c.k + f] = { n: arr.length, lo: arr[arr.length - 1][f], hi: arr[0][f], bins: bins, max: Math.max.apply(null, bins), loL: lo, w: w };
       });
     });
@@ -298,73 +301,135 @@
     el.insertAdjacentHTML('afterbegin', h);
   }
 
+  /* ---------- 그림 조각: 모두 transform·opacity로만 움직인다 ---------- */
+  var PAL = ['var(--p1)', 'var(--p2)', 'var(--p3)', 'var(--p4)', 'var(--p5)', 'var(--p6)', 'var(--p0)'];
+  // 도넛: 조각들이 12시 방향에 포개져 있다가 부채처럼 제자리로 펴진다
+  function donut(parts, center, sub, label) {
+    var T = parts.reduce(function (a, p) { return a + Math.max(0, p.v); }, 0); if (!T) return '';
+    var C = 2 * Math.PI * 42, cum = 0, h = '';
+    parts.forEach(function (p, i) {
+      var v = Math.max(0, p.v); if (!v) return;
+      var len = v / T * C, gap = parts.length > 1 && len > 3 ? 1.4 : 0, a = cum / T * 360 - 90; cum += v;
+      h = '<circle class="sl" cx="60" cy="60" r="42" stroke="' + (p.col || PAL[i % PAL.length]) + '" stroke-dasharray="' + (len - gap).toFixed(2) + ' ' + C.toFixed(2) + '" style="transform:rotate(' + a.toFixed(2) + 'deg);--i:' + i + '"/>' + h; // 앞 조각이 위에 오도록 거꾸로 쌓는다
+    });
+    return '<div class="dn" role="img" aria-label="' + esc(label || '') + '"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="42" class="trk"/>' + h + '</svg>' +
+      '<p class="dn-c"><b>' + esc(center) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</p></div>';
+  }
+  // 세로 막대: 바닥부터 차오른다. 누르면 조건으로 고른다(k·v가 있을 때)
+  function vbars(rows, k) {
+    var max = Math.max.apply(null, rows.map(function (r) { return r.n; }).concat([1]));
+    return '<div class="vb">' + rows.map(function (r, i) {
+      var on = k && st[k] === r.v, tag = k ? 'button type="button" data-k="' + k + '" data-v="' + esc(r.v) + '" aria-pressed="' + on + '"' + (r.n || on ? '' : ' disabled') : 'div';
+      return '<' + tag + ' aria-label="' + esc(r.label + ' ' + fmt(r.n) + '곳') + '"><em>' + fmt(r.n) + '</em><i style="--h:' + (r.n ? Math.max(.04, r.n / max) : 0).toFixed(3) + ';--i:' + i + '"></i><span>' + esc(r.label) + '</span></' + tag.split(' ')[0] + '>';
+    }).join('') + '</div>';
+  }
+  // 가로 막대 순위: 왼쪽부터 뻗어 나간다
+  function hbars(list, x, f, fmtV, n) {
+    var max = Math.max.apply(null, list.slice(0, n).map(function (y) { return Math.abs(y[f] || 0); }).concat([1]));
+    return '<ol class="hb">' + list.slice(0, n).map(function (y, i) {
+      var v = y[f];
+      return '<li><a href="#' + y.id + '"' + (y.id === x.id ? ' aria-current="page"' : '') + '><span class="hb-n">' + esc(y.name) + '</span><em>' + (v != null ? fmtV(v) : '') + '</em><s style="--w:' + (v > 0 ? Math.max(.02, v / max) : 0).toFixed(3) + ';--i:' + i + '"></s></a></li>';
+    }).join('') + '</ol>';
+  }
+  // 화면에 들어올 때 한 번 움직인다(움직임 줄이기·집중 보기에서는 그대로 서 있다)
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('run'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -12% 0px' }) : null;
+  function arm(root) { [].forEach.call(root.querySelectorAll('[data-run]'), function (el) { if (io) io.observe(el); else el.classList.add('run'); }); }
+  function rerun(el) { el.classList.remove('run'); void el.offsetWidth; el.classList.add('run'); }
+
   /* ---------- 찾기 화면 ---------- */
   var EG = ['삼성전자', 'sk하이닉스', '한국전력', '건강보험', '카카오', 'ㅎㄱㄷㄹ'];
+  var PERS = [5, 10, 20];
+  try { var sp0 = +localStorage.getItem('jc-company-per'); PER = PERS.indexOf(sp0) > -1 ? sp0 : 10; } catch (e) { PER = 10; }
+  var MQ_WIDE = window.matchMedia ? window.matchMedia('(min-width:980px)') : { matches: true };
+  var glance = false; // 「한눈에」 판 열림
+  var LOGLO = 0, LOGHI = 1;
   function renderList() {
     view = 'list';
     main.innerHTML =
       '<div class="sb" id="sb">' + IC.search + '<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="기업·기관 이름, 기업집단, 업종, 주무부처로 찾기" aria-label="기업 찾기"><button class="clr" id="qx" type="button" aria-label="검색어 지우기">' + IC.x + '</button></div>' +
       '<p class="eg" id="eg">예: ' + EG.map(function (e) { return '<button type="button">' + esc(e) + '</button>'; }).join('') + '</p>' +
-      '<div class="fd"><aside class="fl" id="fl"><button class="fl-t" id="flT" type="button" aria-expanded="false">' + IC.filt + '조건 고르기<i id="flN"></i></button><div class="fl-b" id="flB"></div></aside>' +
-      '<section id="res" aria-live="polite"></section></div>';
+      '<div class="fd"><aside class="fl" id="fl" aria-label="조건 고르기"><div class="fl-sh"><div class="fl-hd"><b>조건 고르기</b><button type="button" class="fl-x" id="flX" aria-label="닫기">' + IC.x + '</button></div><div class="fl-b" id="flB"></div><div class="fl-ft"><button type="button" class="reset" id="flR">모두 풀기</button><button type="button" class="fl-go" id="flGo">결과 보기</button></div></div></aside>' +
+      '<section id="res" aria-live="polite"></section></div><div class="scrim" id="scrim" hidden></div>';
     var q = d.getElementById('q'); q.value = st.q;
     var tmr = 0;
     q.addEventListener('input', function () { d.getElementById('sb').classList.toggle('has', !!q.value); clearTimeout(tmr); tmr = setTimeout(function () { setState({ q: q.value.trim() }); }, 160); });
     q.addEventListener('keydown', function (e) { if (e.key === 'Enter') q.blur(); });
     d.getElementById('qx').addEventListener('click', function () { q.value = ''; d.getElementById('sb').classList.remove('has'); setState({ q: '' }); q.focus(); });
     d.getElementById('eg').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; q.value = b.textContent; d.getElementById('sb').classList.add('has'); setState({ q: b.textContent }); });
-    d.getElementById('flT').addEventListener('click', function () { var fl = d.getElementById('fl'), on = !fl.classList.contains('open'); fl.classList.toggle('open', on); this.setAttribute('aria-expanded', String(on)); });
-    d.getElementById('fl').addEventListener('click', onFilter);
+    d.getElementById('flX').addEventListener('click', function () { sheet(false); });
+    d.getElementById('flGo').addEventListener('click', function () { sheet(false); });
+    d.getElementById('scrim').addEventListener('click', function () { sheet(false); });
+    d.getElementById('flR').addEventListener('click', function () { var o = {}; FKEYS.forEach(function (k) { o[k] = ''; }); setState(o); });
+    d.getElementById('flB').addEventListener('click', onFilter);
+    d.getElementById('flB').addEventListener('toggle', function (e) { var t = e.target; if (t.matches && t.matches('details[data-fg]')) fgOpen[t.getAttribute('data-fg')] = t.open; }, true);
     d.getElementById('res').addEventListener('click', function (e) {
+      if (e.target.closest('#flOpen')) { sheet(true); return; }
+      if (e.target.closest('#glBtn')) { glance = !glance; updateList(); return; }
+      var pb = e.target.closest('[data-per]'); if (pb) { PER = +pb.getAttribute('data-per'); try { localStorage.setItem('jc-company-per', String(PER)); } catch (er) {} setState({ p: 1 }); return; }
+      var k = e.target.closest('.gl [data-k]'); if (k) { onFilter(e); return; }
       var b = e.target.closest('[data-p]'); if (b) { setState({ p: +b.getAttribute('data-p') }); var r = d.getElementById('res'); window.scrollTo(0, Math.max(0, r.getBoundingClientRect().top + window.pageYOffset - 140)); return; }
       var x = e.target.closest('[data-un]'); if (x) { var o = {}; o[x.getAttribute('data-un')] = ''; setState(o); }
     });
     d.getElementById('sb').classList.toggle('has', !!st.q);
     updateList();
   }
+  // 휴대폰: 조건은 아래에서 올라오는 시트. 넓은 화면: 왼쪽 고정 칸.
+  function sheet(on) {
+    var fl = d.getElementById('fl'), sc = d.getElementById('scrim'); if (!fl) return;
+    if (on && MQ_WIDE.matches) return;
+    fl.classList.toggle('open', on); sc.hidden = !on;
+    d.documentElement.classList.toggle('jc-lock', on);
+    if (on) { var x = d.getElementById('flX'); if (x) x.focus(); }
+  }
+  d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && d.querySelector('.fl.open')) { e.stopPropagation(); sheet(false); } }, true);
+  if (MQ_WIDE.addEventListener) MQ_WIDE.addEventListener('change', function () { sheet(false); });
   function onSelect(e) { var s = e.target.closest('select[name]'); if (!s || view !== 'list') return; var o = {}; o[s.name] = s.value; setState(o); }
   function onFilter(e) {
-    var b = e.target.closest('button[data-k]');
-    if (!b) { if (e.target.closest('.reset')) { var o = {}; FKEYS.forEach(function (k) { o[k] = ''; }); setState(o); } return; }
+    var b = e.target.closest('button[data-k]'); if (!b) return;
     var k = b.getAttribute('data-k'), v = b.getAttribute('data-v'), p = {}; p[k] = st[k] === v ? '' : v; setState(p);
   }
   function chip(k, v, label, n, title) {
     var on = st[k] === v;
     return '<button type="button" data-k="' + k + '" data-v="' + esc(v) + '" aria-pressed="' + on + '"' + (title ? ' title="' + esc(title) + '"' : '') + (!n && !on ? ' disabled' : '') + '>' + esc(label) + '<small>' + fmt(n || 0) + '</small></button>';
   }
-  function select(name, label, cnt, all, order) {
-    var keys = order ? order.filter(function (k) { return cnt[k]; }) : Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a] || ko(a, b); });
+  function select(name, label, cnt, all) {
+    var keys = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a] || ko(a, b); });
     if (st[name] && keys.indexOf(st[name]) < 0) keys.unshift(st[name]);
     var h = '<select name="' + name + '" aria-label="' + label + '"><option value="">' + all + '</option>';
     keys.forEach(function (k) { h += '<option value="' + esc(k) + '"' + (st[name] === k ? ' selected' : '') + '>' + esc(k) + ' (' + fmt(cnt[k] || 0) + ')</option>'; });
     return h + '</select>';
   }
-  function fg(title, inner) { return '<div class="fg"><h3>' + title + '</h3>' + inner + '</div>'; }
+  // 조건 묶음은 접고 펴는 칸. 고른 값이 있으면 제목 옆에 보이고 펼친다.
+  var fgOpen = { g: true, t: true, ve: true, rv: true };
+  function fg(key, title, cur, inner) {
+    var open = key in fgOpen ? fgOpen[key] : !!cur;
+    return '<details class="fg" data-fg="' + key + '"' + (open || cur ? ' open' : '') + '><summary><b>' + title + '</b>' + (cur ? '<em>' + esc(cur) + '</em>' : '') + '</summary><div class="fg-in">' + inner + '</div></details>';
+  }
+  function rvLab(v) { var r = RV.filter(function (x) { return x[0] === v; })[0]; return r ? r[1] : ''; }
+  function emLab(v) { var r = EM.filter(function (x) { return x[0] === v; })[0]; return r ? r[1] : ''; }
   function filters() {
     var h = '', c = st.c;
     if (c === 'ENT') {
-      h += fg('기업집단', select('g', '기업집단', counts(st, 'g', function (x) { return x._grp; }), '모든 기업집단 (102곳)'));
+      h += fg('g', '기업집단', st.g, select('g', '기업집단', counts(st, 'g', function (x) { return x._grp; }), '모든 기업집단 (102곳)'));
       var kc = counts(st, 'k', function (x) { return x._k; });
-      h += fg('업종 대분류', '<div class="opts">' + Object.keys(KSIC).filter(function (k) { return kc[k] || st.k === k; }).sort(function (a, b) { return (kc[b] || 0) - (kc[a] || 0); }).map(function (k) { return chip('k', k, KSIC[k][0], kc[k], KSIC[k][1]); }).join('') + '</div>');
+      h += fg('k', '업종 대분류', st.k ? KSIC[st.k][0] : '', '<div class="opts">' + Object.keys(KSIC).filter(function (k) { return kc[k] || st.k === k; }).sort(function (a, b) { return (kc[b] || 0) - (kc[a] || 0); }).map(function (k) { return chip('k', k, KSIC[k][0], kc[k], KSIC[k][1]); }).join('') + '</div>');
       var cc = counts(st, 'ct', function (x) { return x.corp_type; }), lc = counts(st, 'ls', function (x) { return has(x.listed_date) ? '1' : ''; });
-      h += fg('구분', '<div class="opts">' + Object.keys(cc).sort(function (a, b) { return cc[b] - cc[a]; }).map(function (k) { return chip('ct', k, k, cc[k]); }).join('') + (st.ct && !cc[st.ct] ? chip('ct', st.ct, st.ct, 0) : '') + chip('ls', '1', '기업공개(상장) 법인', lc['1']) + '</div>');
+      h += fg('ct', '구분 · 기업공개', [st.ct, st.ls ? '기업공개' : ''].filter(Boolean).join(' · '), '<div class="opts">' + Object.keys(cc).sort(function (a, b) { return cc[b] - cc[a]; }).map(function (k) { return chip('ct', k, k, cc[k]); }).join('') + (st.ct && !cc[st.ct] ? chip('ct', st.ct, st.ct, 0) : '') + chip('ls', '1', '기업공개(상장) 법인', lc['1']) + '</div>');
     }
     if (c === 'PUB') {
       var tc = counts(st, 't', function (x) { return x.sub_category; });
-      h += fg('기관 유형', '<div class="opts">' + PUBT.map(function (t) { return chip('t', t, t, tc[t]); }).join('') + '</div>');
-      h += fg('주무부처', select('mi', '주무부처', counts(st, 'mi', function (x) { return x.ministry; }), '모든 주무부처'));
-      h += fg('소재지', select('sd', '소재지 시·도', counts(st, 'sd', function (x) { return x.location_sido; }), '모든 시·도'));
+      h += fg('t', '기관 유형', st.t, '<div class="opts">' + PUBT.map(function (t) { return chip('t', t, t, tc[t]); }).join('') + '</div>');
+      h += fg('mi', '주무부처', st.mi, select('mi', '주무부처', counts(st, 'mi', function (x) { return x.ministry; }), '모든 주무부처'));
+      h += fg('sd', '소재지', st.sd, select('sd', '소재지 시·도', counts(st, 'sd', function (x) { return x.location_sido; }), '모든 시·도'));
     }
     if (c === 'MID') {
       var vc = counts(st, 've', function (x) { return x._ve.slice(0, 7); });
-      h += fg('확인서 유효기간이 끝나는 달', '<div class="opts">' + Object.keys(vc).sort().map(function (k) { return chip('ve', k, k.replace('-', '년 ') + '월', vc[k]); }).join('') + '</div>');
-      h += fg('공개 범위', '<p class="nt">중견기업정보마당은 확인서 발급기업의 이름·사업자등록번호·발급번호·유효기간만 공개합니다. 업종·매출·직원수로는 거를 수 없습니다.</p>');
+      h += fg('ve', '확인서가 끝나는 달', st.ve ? st.ve.replace('-', '년 ') + '월' : '', '<div class="opts">' + Object.keys(vc).sort().map(function (k) { return chip('ve', k, k.replace('-', '년 ') + '월', vc[k]); }).join('') + '</div><p class="nt">중견기업정보마당은 이름·사업자등록번호·확인서 정보만 공개합니다.</p>');
     }
     if (c !== 'MID') {
       var rc = counts(st, 'rv', function (x) { return x._rb; }), ec = counts(st, 'em', function (x) { return x._eb; });
-      h += fg('매출 규모 <small>2025 결산</small>', '<div class="opts">' + RV.map(function (r) { return chip('rv', r[0], r[1], rc[r[0]]); }).join('') + '</div>');
-      h += fg('직원 규모', '<div class="opts">' + EM.map(function (r) { return chip('em', r[0], r[1], ec[r[0]]); }).join('') + '</div>');
-      if (!c) h += fg('', '<p class="nt">중견기업은 매출·직원수가 공개되지 않아 규모 조건을 고르면 빠집니다.</p>');
+      h += fg('rv', '매출 규모', rvLab(st.rv), '<div class="opts">' + RV.map(function (r) { return chip('rv', r[0], r[1], rc[r[0]]); }).join('') + '</div>');
+      h += fg('em', '직원 규모', emLab(st.em), '<div class="opts">' + EM.map(function (r) { return chip('em', r[0], r[1], ec[r[0]]); }).join('') + '</div>' + (!c ? '<p class="nt">중견기업은 직원수가 공개되지 않아 규모를 고르면 빠집니다.</p>' : ''));
     }
     return h;
   }
@@ -374,18 +439,44 @@
     if (st.ct) a.push(['ct', st.ct]); if (st.ls) a.push(['ls', '기업공개 법인']);
     if (st.t) a.push(['t', st.t]); if (st.mi) a.push(['mi', st.mi]); if (st.sd) a.push(['sd', st.sd]);
     if (st.ve) a.push(['ve', st.ve.replace('-', '년 ') + '월 만료']);
-    if (st.rv) a.push(['rv', '매출 ' + RV.filter(function (r) { return r[0] === st.rv; })[0][1]]);
-    if (st.em) a.push(['em', '직원 ' + EM.filter(function (r) { return r[0] === st.em; })[0][1]]);
+    if (st.rv) a.push(['rv', '매출 ' + rvLab(st.rv)]); if (st.em) a.push(['em', '직원 ' + emLab(st.em)]);
     return a;
   }
-  function metrics(x) {
+  // 목록 오른쪽: 매출(로그 막대가 왼쪽부터 뻗음)·직원
+  function metrics(x, i) {
     var h = '';
-    if (x._rev != null) h += '<span><small>매출</small><em' + (x._rev < 0 ? ' class="neg"' : '') + '>' + wonShort(x._rev) + '</em></span>';
-    if (x._emp != null) h += '<span><small>' + (x._c === 'PUB' ? '정원' : '직원') + '</small><em>' + fmt(x._emp) + '</em></span>';
-    if (st.o === 'ast' && x._ast != null) h += '<span><small>자산</small><em>' + wonShort(x._ast) + '</em></span>';
-    if ((st.o === 'old' || st.o === 'new') && has(x.established_year)) h += '<span><small>설립</small><em>' + x.established_year + '</em></span>';
-    if (x._c === 'MID' && x._ve) h += '<span><small>확인서</small><em>~' + esc(x._ve) + '</em></span>';
+    if (x._rev != null) {
+      var w = x._rev > 0 ? Math.min(1, Math.max(.03, (Math.log10(x._rev) - LOGLO) / (LOGHI - LOGLO))) : 0;
+      h += '<span class="mv"><small>매출</small><em' + (x._rev < 0 ? ' class="neg"' : '') + '>' + wonShort(x._rev) + '</em></span>' + (w ? '<span class="lb" aria-hidden="true"><s style="--w:' + w.toFixed(3) + ';--i:' + i + '"></s></span>' : '');
+    }
+    if (x._emp != null) h += '<span class="mv"><small>' + (x._c === 'PUB' ? '정원' : '직원') + '</small><em>' + fmt(x._emp) + '</em></span>';
+    if (st.o === 'ast' && x._ast != null) h += '<span class="mv"><small>자산</small><em>' + wonShort(x._ast) + '</em></span>';
+    if ((st.o === 'old' || st.o === 'new') && has(x.established_year)) h += '<span class="mv"><small>설립</small><em>' + x.established_year + '</em></span>';
+    if (x._c === 'MID' && x._ve) h += '<span class="mv"><small>확인서</small><em>~' + esc(x._ve.slice(0, 7).replace('-', '.')) + '</em></span>';
     return h ? '<span class="r-m">' + h + '</span>' : '';
+  }
+  // 「한눈에」: 지금 걸러진 곳들의 구성(도넛)과 매출 규모(막대). 조각·막대를 누르면 그 조건으로 고른다.
+  function glancePanel() {
+    var c = st.c, key, rows;
+    if (!c) { key = 'c'; var cc = counts(st, 'c', function (x) { return x._c; }); var CCOL = { ENT: 'var(--ce)', MID: 'var(--cm)', PUB: 'var(--cp)' }; rows = CATS.map(function (k) { return { v: k.k, label: k.name, n: cc[k.k] || 0, col: CCOL[k.k] }; }); }
+    else if (c === 'ENT') { key = 'k'; var kc = counts(st, 'k', function (x) { return x._k; }); rows = Object.keys(kc).sort(function (a, b) { return kc[b] - kc[a]; }).map(function (k) { return { v: k, label: KSIC[k][0], n: kc[k] }; }); }
+    else if (c === 'PUB') { key = 't'; var tc = counts(st, 't', function (x) { return x.sub_category; }); rows = PUBT.map(function (t) { return { v: t, label: t.replace('준정부기관', '준정부').replace(/\((.+)\)/, ' $1'), n: tc[t] || 0 }; }); }
+    else { key = 've'; var vc = counts(st, 've', function (x) { return x._ve.slice(0, 7); }); rows = Object.keys(vc).sort(function (a, b) { return vc[b] - vc[a]; }).map(function (k) { return { v: k, label: k.replace('-', '.') + ' 만료', n: vc[k] }; }); }
+    rows = rows.filter(function (r) { return r.n; });
+    if (rows.length > 6) { var rest = rows.slice(5).reduce(function (a, r) { return a + r.n; }, 0); rows = rows.slice(0, 5).concat([{ v: '', label: '그 밖 ' + (rows.length - 5) + '갈래', n: rest, col: 'var(--p0)' }]); }
+    var tot = rows.reduce(function (a, r) { return a + r.n; }, 0);
+    var title = { c: '분류', k: '업종 대분류', t: '기관 유형', ve: '확인서 만료 달' }[key];
+    var leg = '<ul class="leg">' + rows.map(function (r, i) {
+      var col = r.col || PAL[i % PAL.length], on = r.v && st[key] === r.v, pct = Math.round(r.n / tot * 1000) / 10;
+      return '<li>' + (r.v ? '<button type="button" data-k="' + key + '" data-v="' + esc(r.v) + '" aria-pressed="' + on + '">' : '<span>') + '<i style="background:' + col + '"></i><b>' + esc(r.label) + '</b><em>' + fmt(r.n) + '<small>' + pct + '%</small></em>' + (r.v ? '</button>' : '</span>') + '</li>';
+    }).join('') + '</ul>';
+    var h = '<div class="gl" data-run data-jc-still><div class="gl-a"><h3>' + title + ' 구성 <small>누르면 고릅니다</small></h3><div class="gl-d">' +
+      donut(rows.map(function (r, i) { return { v: r.n, col: r.col || PAL[i % PAL.length] }; }), fmt(tot), '곳', title + ' 구성') + leg + '</div></div>';
+    if (c !== 'MID') {
+      var rc = counts(st, 'rv', function (x) { return x._rb; });
+      h += '<div class="gl-b"><h3>매출 규모 <small>2025 결산 · 누르면 고릅니다</small></h3>' + vbars(RV.slice().reverse().map(function (r) { return { v: r[0], label: r[1], n: rc[r[0]] || 0 }; }), 'rv') + '</div>';
+    }
+    return h + '</div>';
   }
   function updateList() {
     if (view !== 'list') return;
@@ -395,30 +486,36 @@
     var cdef = main.querySelector('.cdef'), c = st.c ? CK[st.c] : null;
     if (c) { if (!cdef) { cdef = d.createElement('p'); main.insertBefore(cdef, main.firstChild); } cdef.className = 'cdef k-' + c.k; cdef.innerHTML = '<b>' + esc(c.name) + '</b><span>' + esc(c.def) + '</span>'; }
     else if (cdef) cdef.remove();
-    d.getElementById('flB').innerHTML = filters() + (actives().length ? '<button type="button" class="reset">조건 모두 풀기</button>' : '');
+    [].forEach.call(d.querySelectorAll('#flB details[data-fg]'), function (el) { fgOpen[el.getAttribute('data-fg')] = el.open; });
+    d.getElementById('flB').innerHTML = filters();
     var act = actives();
-    d.getElementById('flN').textContent = act.length ? act.length + '개 고름' : '';
+    d.getElementById('flR').hidden = !act.length;
     var arr = sorted(filtered(st), st), pages = Math.max(1, Math.ceil(arr.length / PER));
     if (st.p > pages) st.p = pages;
     var cur = arr.slice((st.p - 1) * PER, st.p * PER), m = qmap(st.q) || {};
-    var so = '<label class="so">정렬<select name="o" aria-label="정렬">' + (st.q ? [['', '찾는 말과 가까운 순'], ['rev', '매출 큰 순']] : [['', '매출 큰 순']]).concat(SORTS).map(function (s) { return '<option value="' + s[0] + '"' + (st.o === s[0] ? ' selected' : '') + '>' + s[1] + '</option>'; }).join('') + '</select></label>';
-    var r = '<div class="vw"><p class="cnt"><b>' + fmt(arr.length) + '</b>곳' + (st.q ? ' · 「' + esc(st.q) + '」' : '') + '</p>' + so +
-      (act.length ? '<div class="act">' + act.map(function (a) { return '<button type="button" data-un="' + a[0] + '" aria-label="' + esc(a[1]) + ' 조건 풀기">' + esc(a[1]) + '</button>'; }).join('') + '</div>' : '') + '</div>';
-    if (!arr.length) r += '<p class="empty">조건에 맞는 곳이 없습니다. 검색어를 줄이거나 <a href="#list' + (st.c ? '?c=' + st.c : '') + '">조건을 풀어</a> 보십시오.' + (st.c ? ' 다른 분류에 있을 수도 있습니다: <a href="' + listHash({ q: st.q, p: 1, c: '', g: '', k: '', ct: '', ls: '', t: '', mi: '', sd: '', ve: '', rv: '', em: '', in: '', o: '' }) + '">전체에서 찾기</a>' : '') + '</p>';
+    var so = '<label class="so"><span>정렬</span><select name="o" aria-label="정렬">' + (st.q ? [['', '찾는 말과 가까운 순'], ['rev', '매출 큰 순']] : [['', '매출 큰 순']]).concat(SORTS).map(function (s) { return '<option value="' + s[0] + '"' + (st.o === s[0] ? ' selected' : '') + '>' + s[1] + '</option>'; }).join('') + '</select></label>';
+    var per = '<span class="per" role="group" aria-label="한 쪽에 보일 개수"><span>보기</span>' + PERS.map(function (n) { return '<button type="button" data-per="' + n + '" aria-pressed="' + (n === PER) + '" aria-label="' + n + '개씩 보기">' + n + '</button>'; }).join('') + '</span>';
+    var r = '<div class="vw"><button type="button" class="fl-t" id="flOpen">' + IC.filt + '조건' + (act.length ? '<i>' + act.length + '</i>' : '') + '</button>' +
+      '<p class="cnt"><b>' + fmt(arr.length) + '</b>곳' + (st.q ? ' · 「' + esc(st.q) + '」' : '') + '</p>' +
+      '<button type="button" class="gl-t" id="glBtn" aria-expanded="' + glance + '">' + IC.pie + '한눈에</button>' + so + per + '</div>' +
+      (act.length ? '<div class="act">' + act.map(function (a) { return '<button type="button" data-un="' + a[0] + '" aria-label="' + esc(a[1]) + ' 조건 풀기">' + esc(a[1]) + '</button>'; }).join('') + '</div>' : '') +
+      (glance && arr.length ? glancePanel() : '');
+    if (!arr.length) r += '<p class="empty">조건에 맞는 곳이 없습니다. 검색어를 줄이거나 <a href="#list' + (st.c ? '?c=' + st.c : '') + '">조건을 풀어</a> 보십시오.' + (st.c && st.q ? ' 다른 분류에 있을 수도 있습니다: <a href="' + q1({ q: st.q }) + '">전체에서 찾기</a>' : '') + '</p>';
     else {
-      r += '<div class="rows two">';
-      cur.forEach(function (x) {
+      r += '<div class="rows' + (PER > 5 ? ' two' : '') + '" data-jc-still>';
+      cur.forEach(function (x, i) {
         var hit = m[x.id] && m[x.id].hit, sub = '';
         if (x._c === 'ENT') sub = (has(x.group) ? '<span class="tg">' + esc(x.group) + '</span>' : '') + (has(x.industry) ? '<span>' + esc(x.industry) + '</span>' : '');
         else if (x._c === 'PUB') sub = '<span class="tg">' + esc(x.sub_category) + '</span>' + (has(x.ministry) ? '<span>' + esc(x.ministry) + '</span>' : '');
         else sub = has(x.biz_no) ? '<span class="code">' + esc(x.biz_no) + '</span>' : '';
         r += '<a class="row k-' + x._c + '" href="#' + x.id + '"><span class="r-n">' + hl(x.name, st.q) + '</span>' +
           '<span class="r-s"><span class="ty">' + CK[x._c].name + '</span>' + sub + '</span>' +
-          (hit && hit.k !== 'group' && hit.k !== 'ind' && hit.k !== 'min' && hit.k !== 'type' ? snippet(hit, st.q) : '') + metrics(x) + '</a>';
+          (hit && (hit.k === 'ceo' || hit.k === 'hq' || hit.k === 'sum') ? snippet(hit, st.q) : '') + metrics(x, i) + '</a>';
       });
       r += '</div>' + pager(st.p, pages);
     }
     d.getElementById('res').innerHTML = r;
+    var g = d.querySelector('#res .gl'); if (g) requestAnimationFrame(function () { g.classList.add('run'); });
   }
   function pager(p, n) {
     if (n <= 1) return '';
@@ -433,140 +530,181 @@
   function sec(title, inner, cls, tag) { return '<section class="sec' + (cls ? ' ' + cls : '') + '"><h2>' + esc(title) + (tag ? ' <small>' + esc(tag) + '</small>' : '') + '</h2>' + inner + '</section>'; }
   function lk(href, text) { return '<a href="' + href + '">' + esc(text) + '</a>'; }
   function q1(o) { return listHash(fix(Object.assign(blank(), o))); }
-  // 하는 일: "; " "□" "1." 으로 이어 적힌 공시 문장을 항목으로 나눈다
+  // 하는 일: "; " "□" "1." 으로 이어 적힌 공시 문장을 항목으로 나누고, 처음엔 셋만
   function doesBlock(s) {
     var parts = String(s).split(/\s*;\s*|\s*□\s*/).map(function (p) { return p.replace(/^\s*(?:\d{1,2}|[①-⑳]|[가-하])\s*[.)]\s*/, '').trim(); }).filter(function (p) { return p.length > 1; });
     if (parts.length < 2) return '<p class="t">' + esc(s) + '</p>';
-    return '<ol class="does">' + parts.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol>';
+    var more = parts.length - 3;
+    return '<ol class="does' + (more > 0 ? ' cut' : '') + '">' + parts.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol>' +
+      (more > 0 ? '<button type="button" class="more-b" data-more>나머지 ' + more + '개 더 보기</button>' : '');
   }
-  function figure(x, f, label, val, ex, basis) {
-    var D = DIST[x._c + f], h = '<div class="fig"><p class="fig-h"><span>' + label + '</span><b' + (x[f] < 0 ? ' class="neg"' : '') + '>' + val + '</b>' + (basis ? '<small>' + esc(basis) + '</small>' : '') + '</p>' + (ex ? '<p class="ex">' + esc(ex) + '</p>' : '');
-    if (D && x[f] > 0) {
-      var bins = '';
-      D.bins.forEach(function (n, i) { bins += '<i' + (i === x[f + 'B'] ? ' class="me"' : '') + ' style="--h:' + (n ? Math.max(.06, n / D.max) : 0).toFixed(3) + ';--i:' + i + '"></i>'; });
-      var r = x[f + 'R'], top = r / D.n * 100;
-      var fmtV = f === '_emp' ? function (v) { return ppl(v); } : function (v) { return wonShort(v); };
-      h += '<div class="hist" role="img" aria-label="' + esc(CK[x._c].name + ' ' + fmt(D.n) + '곳 가운데 ' + fmt(r) + '번째') + '" data-jc-still>' + bins + '</div>' +
-        '<p class="hist-a" aria-hidden="true"><span>' + fmtV(D.lo) + '</span><span>로그 눈금</span><span>' + fmtV(D.hi) + '</span></p>' +
-        '<p class="rank">' + esc(CK[x._c].name) + ' 가운데 값이 있는 ' + fmt(D.n) + '곳 중 <b>' + fmt(r) + '번째</b>' + (top <= 50 ? ' · 상위 ' + (top < 1 ? Math.max(.1, Math.ceil(top * 10) / 10).toFixed(1) : Math.ceil(top)) + '%' : '') + '</p>';
-    }
-    return h + '</div>';
+  // 숫자 칸: 처음엔 값 하나. 누르면 아래 판이 열리며 도넛이 펴지고 막대가 차오른다.
+  var MET = {
+    _rev: { lab: '매출', pub: '매출(수익)', unit: won, short: function (v) { return wonShort(v) + ' 원'; }, asof: function (x) { return (x.revenue_year ? x.revenue_year + ' 결산' : '') + (has(x.revenue_as_of) ? ' · ' + x.revenue_as_of : ''); } },
+    _emp: { lab: '종업원', pub: '정원', unit: function (v) { return fmt(v) + '명'; }, short: ppl, asof: function (x) { return (x._c === 'PUB' ? '임직원 총계(A+B+C) · ' : '') + (x.employees_as_of || ''); } },
+    _ast: { lab: '자산총액', pub: '자산총액', unit: won, short: function (v) { return wonShort(v) + ' 원'; }, asof: function (x) { return x.total_assets_as_of || ''; } }
+  };
+  function pool(x) {
+    if (x._c === 'ENT' && x._grp[0]) return { name: x._grp[0] + ' 소속 ' + GRP[x._grp[0]].length + '곳', list: GRP[x._grp[0]] };
+    if (x._c === 'PUB' && has(x.ministry)) { var L = ITEMS.filter(function (y) { return y._c === 'PUB' && y.ministry === x.ministry; }); return { name: x.ministry + ' 소관 ' + L.length + '곳', list: L }; }
+    return null;
   }
-  function mates(list, x, val, max) {
-    return '<ul class="mates">' + list.slice(0, max).map(function (y) {
-      return '<li><a href="#' + y.id + '"' + (y.id === x.id ? ' aria-current="page"' : '') + '><span>' + esc(y.name) + '</span><i>' + val(y) + '</i></a></li>';
-    }).join('') + '</ul>';
-  }
-  function byRev(a, b) { return cmpNum('_rev', 1)(a, b) || cmpNum('_emp', 1)(a, b) || ko(a._n, b._n); }
-  function renderItem(id) {
-    view = 'item';
-    var x = BYID[id], c = CK[x._c], miss = [];
-    d.body.removeAttribute('data-home'); tabs(x._c);
-    var back = view === 'item' && lastList ? lastList : listHash(st);
-    /* 명함 */
-    var dl = '';
-    function row(label, v) { dl += '<dt>' + label + '</dt><dd>' + v + '</dd>'; }
-    if (x._c === 'ENT') {
-      if (x._grp.length) row('기업집단', x._grp.map(function (g) { return lk(q1({ c: 'ENT', g: g }), g); }).join(' · '));
-      if (has(x.industry)) row('업종', lk(q1({ c: 'ENT', in: x.industry }), x.industry) + (has(x.ksic_code) ? ' <span class="code">' + esc(x.ksic_code) + '</span>' : '')); else miss.push('업종');
-      if (has(x.ceo)) row('대표자', esc(x.ceo)); else miss.push('대표자');
-      if (has(x.established_year)) row('설립', x.established_year + '년'); else miss.push('설립연도');
-      if (has(x.listed_date)) row('기업공개', '<span class="code">' + esc(x.listed_date) + '</span>');
-      if (has(x.corp_type)) row('구분', lk(q1({ c: 'ENT', ct: x.corp_type }), x.corp_type));
-      miss.push('소재지', '홈페이지');
-    } else if (x._c === 'PUB') {
-      row('기관 유형', lk(q1({ c: 'PUB', t: x.sub_category }), x.sub_category));
-      if (has(x.ministry)) row('주무부처', lk(q1({ c: 'PUB', mi: x.ministry }), x.ministry));
-      if (has(x.ceo)) row('기관장', esc(String(x.ceo).replace(/^([가-힣]) ([가-힣]) ([가-힣])$/, '$1$2$3'))); else miss.push('기관장');
-      if (has(x.established_year)) row('설립', x.established_year + '년'); else miss.push('설립연도');
-      if (has(x.headquarters)) row('소재지', (has(x.location_sido) ? lk(q1({ c: 'PUB', sd: x.location_sido }), x.location_sido) + ' ' : '') + esc(String(x.headquarters).replace(x.location_sido || '\u0000', '').trim())); else miss.push('소재지');
-      var u0 = safeUrl(x.official_url); if (u0) row('홈페이지', '<a href="' + esc(u0) + '" target="_blank" rel="noopener noreferrer">' + esc(host(u0)) + '</a>'); else miss.push('홈페이지');
-      miss.push('업종');
-    } else {
-      if (has(x.biz_no)) row('사업자번호', '<span class="code">' + esc(x.biz_no) + '</span>');
-      if (has(x.certificate_no)) row('확인서', '<span class="code">' + esc(x.certificate_no) + '</span>');
-      miss.push('업종', '매출', '직원수', '대표자', '설립연도', '소재지', '홈페이지');
-    }
-    var seal = x._c === 'PUB' ? '<span class="seal round" aria-hidden="true">공공<br>기관</span>' : x._c === 'MID' ? '<span class="seal" aria-hidden="true">확인서<br>발급</span>' : '<span class="seal" aria-hidden="true">공시<br>대상</span>';
-    var card = '<article class="card k-' + x._c + '"><p class="card-top"><b>' + esc(c.name) + '</b><span>' + esc(x.source || '') + '</span><span class="code">' + esc(x.id) + '</span></p>' + seal +
-      '<div class="card-id"><span class="mono" aria-hidden="true">' + esc(initial(x)) + '</span><div><h1>' + esc(x.name) + '</h1><p class="sub">' + esc(lineOf(x)) + '</p></div></div>' +
-      (dl ? '<dl>' + dl + '</dl>' : '') + '</article>';
-    /* 숫자(옆 칸 위) */
-    var s1 = '';
-    if (x._c !== 'MID') {
-      var figs = '';
-      if (x._rev != null) figs += figure(x, '_rev', x._c === 'PUB' ? '매출(수익)' : '매출', won(x._rev), wonFull(x._rev), (x.revenue_year ? x.revenue_year + ' 결산' : '') + (has(x.revenue_as_of) ? ' · ' + x.revenue_as_of : ''));
-      else miss.push('매출');
-      if (x._emp != null) figs += figure(x, '_emp', x._c === 'PUB' ? '정원' : '종업원', fmt(x._emp) + '명', '', (x._c === 'PUB' ? '임직원 총계(A+B+C)' : '') + (has(x.employees_as_of) ? (x._c === 'PUB' ? ' · ' : '') + x.employees_as_of : ''));
-      else miss.push(x._c === 'PUB' ? '정원' : '직원수');
-      if (x._ast != null) figs += figure(x, '_ast', '자산총액', won(x._ast), wonFull(x._ast), has(x.total_assets_as_of) ? x.total_assets_as_of : '');
-      else if (x._c === 'ENT') miss.push('자산총액');
-      if (figs) s1 = '<section class="box s1 k-' + x._c + '"><h2>숫자로 보기<small>공시 원값</small></h2>' + figs +
-        (x._rev != null && x._rev < 0 ? '<p class="src">음수 매출은 투자조합·펀드성 법인의 원자료 값(손실)입니다.</p>' : '') + '</section>';
-    } else if (x._ve) {
+  function tiles(x) {
+    if (x._c === 'MID') {
+      if (!x._ve) return '';
       var from = (String(x.certificate_valid).match(/^(\d{4}-\d{2}-\d{2})/) || [])[1], t0 = Date.parse(from), t1 = Date.parse(x._ve), tn = Date.parse(TODAY);
-      if (t0 && t1 && t1 > t0) {
-        var pos = Math.min(1, Math.max(0, (tn - t0) / (t1 - t0))), left = Math.round((t1 - tn) / 864e5);
-        s1 = '<section class="box s1 k-MID"><h2>확인서 유효기간<small>중견기업정보마당</small></h2><div class="valid">' +
-          '<div class="valid-b" role="img" aria-label="유효기간 ' + esc(x.certificate_valid) + ', 오늘은 ' + Math.round(pos * 100) + '% 지점"><i style="transform:scaleX(' + pos.toFixed(3) + ')"></i><u style="left:calc(' + (pos * 100).toFixed(1) + '% - 1px)"></u></div>' +
-          '<p class="valid-a"><span>' + esc(from) + '</span><span>' + esc(x._ve) + '</span></p>' +
-          '<p>' + (left >= 0 ? '오늘(' + TODAY + ') 기준 <b>' + fmt(left) + '일</b> 남았습니다.' : '오늘 기준 유효기간이 지났습니다.') + ' 확인서는 직전 사업연도 실적으로 해마다 다시 발급받습니다.</p></div></section>';
+      if (!(t0 && t1 && t1 > t0)) return '';
+      var left = Math.round((t1 - tn) / 864e5);
+      return '<section class="tl k-MID"><div class="tl-row"><button type="button" class="tile" data-tile="cert" aria-expanded="false"><span>확인서 남은 기간</span><b>' + (left >= 0 ? fmt(left) + '일' : '지남') + '</b><i>눌러서 보기</i></button></div><div class="tl-p" id="tlP" hidden></div></section>';
+    }
+    var h = '';
+    ['_rev', '_emp', '_ast'].forEach(function (f) {
+      if (x[f] == null) return;
+      var M = MET[f];
+      h += '<button type="button" class="tile" data-tile="' + f + '" aria-expanded="false"><span>' + (x._c === 'PUB' ? M.pub : M.lab) + '</span><b' + (x[f] < 0 ? ' class="neg"' : '') + '>' + M.short(x[f]) + '</b><i>눌러서 보기</i></button>';
+    });
+    return h ? '<section class="tl k-' + x._c + '"><h2 class="tl-h">숫자로 보기 <small>공시 원값 · 누르면 그림으로 풀어 봅니다</small></h2><div class="tl-row">' + h + '</div><div class="tl-p" id="tlP" hidden></div></section>' : '';
+  }
+  function tilePanel(x, f) {
+    if (f === 'cert') {
+      var from = (String(x.certificate_valid).match(/^(\d{4}-\d{2}-\d{2})/) || [])[1], t0 = Date.parse(from), t1 = Date.parse(x._ve), tn = Date.parse(TODAY);
+      var all = Math.round((t1 - t0) / 864e5), gone = Math.max(0, Math.min(all, Math.round((tn - t0) / 864e5))), left = all - gone;
+      return '<div class="tp tp-cert"><div class="tp-d">' + donut([{ v: gone, col: 'var(--p0)' }, { v: left, col: 'var(--c)' }], left >= 0 ? fmt(left) + '일' : '지남', '남음', '유효기간 ' + all + '일 가운데 ' + gone + '일 지남') +
+        '<ul class="leg"><li><span><i style="background:var(--p0)"></i><b>지난 날</b><em>' + fmt(gone) + '일</em></span></li><li><span><i style="background:var(--c)"></i><b>남은 날</b><em>' + fmt(left) + '일</em></span></li></ul></div>' +
+        '<div class="tp-t"><p class="tp-big"><b>' + esc(from) + '</b> → <b>' + esc(x._ve) + '</b></p><p>오늘(' + TODAY + ')은 유효기간 ' + fmt(all) + '일 가운데 ' + fmt(gone) + '일째입니다. 중견기업 확인서는 직전 사업연도 실적으로 해마다 다시 발급받습니다.</p></div></div>';
+    }
+    var M = MET[f], v = x[f], P = pool(x), D = DIST[x._c + f], h = '<div class="tp">';
+    if (P && v > 0) {
+      var sum = P.list.reduce(function (a, y) { return a + (y[f] > 0 ? y[f] : 0); }, 0), share = v / sum, pct = share * 100;
+      if (P.list.length > 1 && sum > v) {
+        h += '<div class="tp-d">' + donut([{ v: v, col: 'var(--c)' }, { v: sum - v, col: 'var(--p0)' }], (pct < 1 ? pct.toFixed(1) : Math.round(pct)) + '%', x._c === 'PUB' ? '부처 합 중' : '집단 합 중', P.name + ' 합계 가운데 ' + pct.toFixed(1) + '%') +
+          '<p class="tp-s">' + esc(P.name) + '의 ' + (x._c === 'PUB' ? M.pub : M.lab) + ' 합 <b>' + M.short(sum) + '</b> 가운데 이곳이 차지하는 몫</p></div>';
       }
     }
+    h += '<div class="tp-t"><p class="tp-big"><b' + (v < 0 ? ' class="neg"' : '') + '>' + M.unit(v) + '</b><small>' + esc(M.asof(x)) + '</small></p>';
+    if (f !== '_emp') h += '<p class="ex">' + esc(wonFull(v)) + '</p>';
+    if (D && v > 0) {
+      var bins = '';
+      D.bins.forEach(function (n, i) { bins += '<i' + (i === x[f + 'B'] ? ' class="me"' : '') + ' style="--h:' + (n ? Math.max(.06, n / D.max) : 0).toFixed(3) + ';--i:' + i + '"></i>'; });
+      var r = x[f + 'R'], top = r / D.n * 100, fv = f === '_emp' ? ppl : function (z) { return wonShort(z); };
+      h += '<div class="hist" role="img" aria-label="' + esc(CK[x._c].name + ' ' + fmt(D.n) + '곳 가운데 ' + fmt(r) + '번째') + '">' + bins + '</div>' +
+        '<p class="hist-a" aria-hidden="true"><span>' + fv(D.lo) + '</span><span>작은 곳 ← 로그 눈금 → 큰 곳</span><span>' + fv(D.hi) + '</span></p>' +
+        '<p class="rank">색칠한 막대가 이곳입니다. ' + esc(CK[x._c].name) + ' ' + fmt(D.n) + '곳 중 <b>' + fmt(r) + '번째</b>' + (top <= 50 ? ' · 상위 ' + (top < 1 ? Math.max(.1, Math.ceil(top * 10) / 10).toFixed(1) : Math.ceil(top)) + '%' : '') + '</p>';
+    }
+    if (f === '_rev' && v > 0 && x._emp) h += '<p class="tp-n">' + (x._c === 'PUB' ? '정원' : '직원') + ' 한 사람당 매출로 나누면 약 <b>' + wonShort(Math.round(v / x._emp)) + ' 원</b>입니다(단순 나눗셈).</p>';
+    if (v < 0) h += '<p class="tp-n">음수 매출은 투자조합·펀드성 법인의 원자료 값(손실)입니다.</p>';
+    return h + '</div></div>';
+  }
+  function openTile(btn) {
+    var x = BYID[curId], p = d.getElementById('tlP'); if (!x || !p) return;
+    var f = btn.getAttribute('data-tile'), on = btn.getAttribute('aria-expanded') !== 'true';
+    [].forEach.call(main.querySelectorAll('[data-tile]'), function (b) { b.setAttribute('aria-expanded', String(on && b === btn)); });
+    if (!on) { p.hidden = true; p.innerHTML = ''; return; }
+    p.innerHTML = tilePanel(x, f); p.hidden = false;
+    var tp = p.firstChild; requestAnimationFrame(function () { requestAnimationFrame(function () { tp.classList.add('run'); }); });
+    var r = p.getBoundingClientRect(); if (r.bottom > window.innerHeight) window.scrollBy({ top: Math.min(r.bottom - window.innerHeight + 24, r.top - 140), behavior: 'smooth' });
+  }
+  function byRev(a, b) { return cmpNum('_rev', 1)(a, b) || cmpNum('_emp', 1)(a, b) || ko(a._n, b._n); }
+  var curId = '';
+  function renderItem(id) {
+    view = 'item'; curId = id;
+    var x = BYID[id], c = CK[x._c];
+    d.body.removeAttribute('data-home'); tabs(x._c);
+    var back = lastList || listHash(st);
+    /* 명함 앞면(핵심)과 뒷면(상세) */
+    var fr = '', bk = '';
+    function row(side, label, v) { var s = '<dt>' + label + '</dt><dd>' + v + '</dd>'; if (side) fr += s; else bk += s; }
+    if (x._c === 'ENT') {
+      if (x._grp.length) row(1, '기업집단', x._grp.map(function (g) { return lk(q1({ c: 'ENT', g: g }), g); }).join(' · '));
+      if (has(x.industry)) row(1, '업종', lk(q1({ c: 'ENT', in: x.industry }), x.industry));
+      if (has(x.ceo)) row(0, '대표자', esc(x.ceo));
+      if (has(x.established_year)) row(0, '설립', x.established_year + '년');
+      if (has(x.listed_date)) row(0, '기업공개', '<span class="code">' + esc(x.listed_date) + '</span>');
+      if (has(x.corp_type)) row(0, '구분', lk(q1({ c: 'ENT', ct: x.corp_type }), x.corp_type));
+      if (x._k) row(0, '산업분류', lk(q1({ c: 'ENT', k: x._k }), KSIC[x._k][1]) + (has(x.ksic_code) ? ' <span class="code">' + esc(x.ksic_code) + '</span>' : ''));
+      if (has(x.corp_reg_no)) row(0, '법인번호', '<span class="code">' + esc(x.corp_reg_no) + '</span>');
+      if (has(x.biz_no)) row(0, '사업자번호', '<span class="code">' + esc(String(x.biz_no).replace(/^(\d{3})(\d{2})(\d{5})$/, '$1-$2-$3')) + '</span>');
+    } else if (x._c === 'PUB') {
+      row(1, '기관 유형', lk(q1({ c: 'PUB', t: x.sub_category }), x.sub_category));
+      if (has(x.ministry)) row(1, '주무부처', lk(q1({ c: 'PUB', mi: x.ministry }), x.ministry));
+      if (has(x.ceo)) row(0, '기관장', esc(String(x.ceo).replace(/^([가-힣]) ([가-힣]) ([가-힣])$/, '$1$2$3')));
+      if (has(x.established_year)) row(0, '설립', x.established_year + '년');
+      if (has(x.headquarters)) row(0, '소재지', (has(x.location_sido) ? lk(q1({ c: 'PUB', sd: x.location_sido }), x.location_sido) + ' ' : '') + esc(String(x.headquarters).replace(x.location_sido || '\u0000', '').trim()));
+      var u0 = safeUrl(x.official_url); if (u0) row(0, '홈페이지', '<a href="' + esc(u0) + '" target="_blank" rel="noopener noreferrer">' + esc(host(u0)) + '</a>');
+      if (has(x.source_ref)) row(0, '공시 기준', esc(String(x.source_ref).replace(/;\s*/g, ' · ').replace(/임직원수/g, '임직원 수').replace(/손익/g, '손익계산서')));
+    } else {
+      if (has(x.biz_no)) row(1, '사업자번호', '<span class="code">' + esc(x.biz_no) + '</span>');
+      if (x._ve) row(1, '확인서', '~ <span class="code">' + esc(x._ve) + '</span>까지 유효');
+      if (has(x.certificate_no)) row(0, '발급번호', '<span class="code">' + esc(x.certificate_no) + '</span>');
+      if (has(x.certificate_valid)) row(0, '유효기간', '<span class="code">' + esc(x.certificate_valid) + '</span>');
+      row(0, '공개 범위', '중견기업정보마당은 확인서 발급기업의 이름·사업자등록번호·발급번호·유효기간만 공개합니다.');
+    }
+    var seal = x._c === 'PUB' ? '<span class="seal round" aria-hidden="true">공공<br>기관</span>' : x._c === 'MID' ? '<span class="seal" aria-hidden="true">확인서<br>발급</span>' : '<span class="seal" aria-hidden="true">공시<br>대상</span>';
+    var flipB = function (t) { return '<button type="button" class="flip-b" data-flip aria-label="' + t + '">' + IC.turn + '<span>' + t + '</span></button>'; };
+    var card = '<div class="flip k-' + x._c + '" id="flip"><div class="flip-in">' +
+      '<article class="card face front"><p class="card-top"><b>' + esc(c.name) + '</b><span>' + esc(x.source || '') + '</span><span class="code">' + esc(x.id) + '</span></p>' + seal +
+      '<div class="card-id"><span class="mono" aria-hidden="true">' + esc(initial(x)) + '</span><div><h1>' + esc(x.name) + '</h1><p class="sub">' + esc(lineOf(x)) + '</p></div></div>' +
+      (fr ? '<dl>' + fr + '</dl>' : '') + (bk ? '<div class="card-ft">' + flipB('뒷면 · 상세 정보') + '</div>' : '') + '</article>' +
+      (bk ? '<article class="card face back" inert aria-label="명함 뒷면"><p class="card-top"><b>상세 정보</b><span class="code">' + esc(x.id) + '</span></p><dl>' + bk + '</dl><div class="card-ft">' + flipB('앞면으로') + '</div></article>' : '') +
+      '</div></div>';
     /* 본문 */
     var b = '';
     if (has(x.business_summary)) b += sec(x._c === 'PUB' ? '하는 일' : '한 줄 소개', doesBlock(x.business_summary), '', x._c === 'PUB' ? '설립목적·주요사업 공시' : '공정위 영위업종 기준');
-    else if (x._c !== 'MID') miss.push('하는 일');
-    if (x._c === 'MID') b += sec('공개된 정보', '<p class="t">중견기업정보마당은 확인서를 발급받은 기업의 이름·사업자등록번호·발급번호·유효기간만 공개합니다. 정부가 중견기업 전체 명단을 공개하지 않으므로, 이 목록은 확인서를 받은 기업만 담은 하한 집합입니다.</p>');
-    var ids = '';
-    if (has(x.corp_reg_no)) ids += '<dt>법인등록번호</dt><dd class="code">' + esc(x.corp_reg_no) + '</dd>';
-    if (has(x.biz_no) && x._c !== 'MID') ids += '<dt>사업자등록번호</dt><dd class="code">' + esc(String(x.biz_no).replace(/^(\d{3})(\d{2})(\d{5})$/, '$1-$2-$3')) + '</dd>';
-    if (has(x.certificate_valid)) ids += '<dt>확인서 유효기간</dt><dd class="code">' + esc(x.certificate_valid) + '</dd>';
-    if (has(x.source_ref)) ids += '<dt>공시 기준</dt><dd>' + esc(String(x.source_ref).replace(/;\s*/g, ' · ').replace(/임직원수/g, '임직원 수').replace(/손익/g, '손익계산서')) + '</dd>';
-    if (ids) b += sec('식별 번호와 기준', '<dl class="kv">' + ids + '</dl>', 'fo');
-    /* 옆 칸 아래: 함께 보기 */
+    if (x._c === 'MID') b += sec('목록에 대해', '<p class="t">정부는 중견기업 전체 명단을 공개하지 않습니다. 이 목록은 확인서를 받은 기업만 담은 하한 집합이어서, 법적으로 중견기업이어도 확인서를 받지 않았으면 빠집니다.</p>');
+    /* 옆 칸: 함께 보기 */
     var s2 = '';
     if (x._c === 'ENT') x._grp.forEach(function (g) {
       var L = (GRP[g] || []).slice().sort(byRev);
-      s2 += '<section class="box s2 k-ENT"><h2>' + esc(g) + ' 소속회사<small>' + fmt(L.length) + '곳 · 매출 순</small></h2>' + mates(L, x, function (y) { return y._rev != null ? wonShort(y._rev) : ''; }, 8) +
-        (L.length > 8 ? '<a class="more" href="' + q1({ c: 'ENT', g: g }) + '">' + esc(g) + ' 소속 ' + fmt(L.length) + '곳 모두 보기 ›</a>' : '') + '</section>';
+      s2 += '<section class="box s2 k-ENT" data-run><h2>' + esc(g) + ' 소속회사<small>' + fmt(L.length) + '곳 · 매출 순</small></h2>' + hbars(L, x, '_rev', function (v) { return wonShort(v); }, 6) +
+        (L.length > 6 ? '<a class="more" href="' + q1({ c: 'ENT', g: g }) + '">' + fmt(L.length) + '곳 모두 보기 ›</a>' : '') + '</section>';
     });
     if (x._c === 'PUB' && has(x.ministry)) {
       var P = ITEMS.filter(function (y) { return y._c === 'PUB' && y.ministry === x.ministry; }).sort(function (a, b) { return cmpNum('_emp', 1)(a, b) || ko(a._n, b._n); });
-      if (P.length > 1) s2 += '<section class="box s2 k-PUB"><h2>' + esc(x.ministry) + ' 소관<small>' + fmt(P.length) + '곳 · 정원 순</small></h2>' + mates(P, x, function (y) { return y._emp != null ? fmt(y._emp) + '명' : ''; }, 8) +
-        (P.length > 8 ? '<a class="more" href="' + q1({ c: 'PUB', mi: x.ministry }) + '">' + fmt(P.length) + '곳 모두 보기 ›</a>' : '') + '</section>';
+      if (P.length > 1) s2 += '<section class="box s2 k-PUB" data-run><h2>' + esc(x.ministry) + ' 소관<small>' + fmt(P.length) + '곳 · 정원 순</small></h2>' + hbars(P, x, '_emp', function (v) { return fmt(v) + '명'; }, 6) +
+        (P.length > 6 ? '<a class="more" href="' + q1({ c: 'PUB', mi: x.ministry }) + '">' + fmt(P.length) + '곳 모두 보기 ›</a>' : '') + '</section>';
     }
     var same = (SAME[x._c + '|' + x._n] || []).filter(function (y) { return y.id !== x.id; });
-    if (same.length) s2 += '<section class="box s2"><h2>이름이 같은 다른 법인<small>' + same.length + '곳</small></h2>' + mates(same, x, function (y) { return esc(y.id.slice(4)); }, 8) + '<p class="src">같은 이름이라도 법인등록번호·사업자등록번호가 다른 별개 회사입니다.</p></section>';
+    if (same.length) s2 += '<section class="box s2"><h2>이름이 같은 다른 법인<small>' + same.length + '곳</small></h2><ul class="mates">' + same.slice(0, 8).map(function (y) { return '<li><a href="#' + y.id + '"><span>' + esc(y.name) + '</span><i>' + esc(y.id.slice(4)) + '</i></a></li>'; }).join('') + '</ul><p class="src">같은 이름이라도 번호가 다른 별개 회사입니다.</p></section>';
     var near = [];
     if (x._c === 'ENT' && has(x.industry)) near.push([q1({ c: 'ENT', in: x.industry }), '같은 업종 · ' + x.industry, ITEMS.filter(function (y) { return y.industry === x.industry; }).length]);
     if (x._c === 'ENT' && x._k) near.push([q1({ c: 'ENT', k: x._k }), '업종 대분류 · ' + KSIC[x._k][0], ITEMS.filter(function (y) { return y._k === x._k; }).length]);
     if (x._c === 'PUB') near.push([q1({ c: 'PUB', t: x.sub_category }), x.sub_category + ' 전체', ITEMS.filter(function (y) { return y.sub_category === x.sub_category && y._c === 'PUB'; }).length]);
-    if (x._c === 'PUB' && has(x.location_sido)) near.push([q1({ c: 'PUB', sd: x.location_sido }), x.location_sido + '에 있는 공공기관', ITEMS.filter(function (y) { return y.location_sido === x.location_sido; }).length]);
+    if (x._c === 'PUB' && has(x.location_sido)) near.push([q1({ c: 'PUB', sd: x.location_sido }), x.location_sido + '의 공공기관', ITEMS.filter(function (y) { return y.location_sido === x.location_sido; }).length]);
     if (x._c === 'MID' && x._ve) near.push([q1({ c: 'MID', ve: x._ve.slice(0, 7) }), x._ve.slice(0, 7).replace('-', '년 ') + '월에 확인서가 끝나는 곳', ITEMS.filter(function (y) { return y._ve && y._ve.slice(0, 7) === x._ve.slice(0, 7); }).length]);
     near = near.filter(function (n) { return n[2] > 1; });
     if (near.length) s2 += '<section class="box s2"><h2>이어서 찾기</h2><ul class="mates">' + near.map(function (n) { return '<li><a href="' + n[0] + '"><span>' + esc(n[1]) + '</span><i>' + fmt(n[2]) + '곳</i></a></li>'; }).join('') + '</ul></section>';
     /* 최하단: 미표기 안내 + 공식 홈페이지 + 출처 */
     var u = safeUrl(x.official_url), S = SRC[x.source] || {}, su = safeUrl(S.url);
-    miss = miss.filter(function (m, i) { return miss.indexOf(m) === i; });
     var mt = '<section class="miss"><p><b>미표기 항목은 공식 공개 데이터(공정위·알리오·중견기업정보마당)에 포함되지 않은 정보입니다.</b></p>' +
-      (miss.length ? '<p class="lst">이 화면에 싣지 않은 항목: ' + miss.map(esc).join(' · ') + '</p>' : '') +
       (u ? '<a class="go" href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + IC.out + '<span>공식 홈페이지 · ' + esc(host(u)) + '</span></a>' : '') +
       (su ? '<a class="go' + (u ? ' line' : '') + '" href="' + esc(su) + '" target="_blank" rel="noopener noreferrer">' + IC.out + '<span>원자료 · ' + esc(S.short || host(su)) + '</span></a>' : '') +
       '<p class="src"><b>이 항목의 출처</b> — ' + esc(S.name || x.source) + (S.as_of ? ' (' + esc(S.as_of) + ')' : '') + '. 기업과 기관의 최신 정보는 각 공식 공시로 확인하십시오.</p></section>';
     main.innerHTML = '<nav class="crumbs" aria-label="위치"><a href="' + back + '">' + IC.back + '목록으로</a><span>/</span>' + esc(c.name) +
       (x._c === 'ENT' && x._grp[0] ? ' <span>/</span> ' + esc(x._grp.join(' · ')) : x._c === 'PUB' ? ' <span>/</span> ' + esc(x.sub_category) : '') + '</nav>' +
-      '<div class="dt">' + card + '<div class="side">' + s1 + s2 + '</div>' + (b ? '<div class="body">' + b + '</div>' : '') + mt + '</div>';
-    var hs = main.querySelectorAll('.hist'); if (hs.length) requestAnimationFrame(function () { for (var i = 0; i < hs.length; i++) hs[i].classList.add('run'); });
+      '<div class="dt"><div class="lead">' + card + tiles(x) + (b ? '<div class="body">' + b + '</div>' : '') + '</div>' + (s2 ? '<div class="side">' + s2 + '</div>' : '') + mt + '</div>';
+    arm(main);
     fitSide();
     window.scrollTo(0, 0);
     try { d.title = x.name + ' · 기업 명함첩'; } catch (e) {}
+  }
+  function onItemClick(e) {
+    if (view !== 'item') return;
+    var t = e.target.closest('[data-tile]'); if (t) { openTile(t); return; }
+    var mb = e.target.closest('[data-more]'); if (mb) { var ol = mb.previousElementSibling; var on = ol.classList.toggle('cut'); mb.textContent = on ? '나머지 ' + (ol.children.length - 3) + '개 더 보기' : '접기'; return; }
+    var fb = e.target.closest('[data-flip]'), face = e.target.closest('.face');
+    if (fb || (face && !e.target.closest('a,button,dd') && !window.getSelection().toString())) {
+      var f = d.getElementById('flip'); if (!f || !f.querySelector('.back')) return;
+      var on = !f.classList.contains('on'); f.classList.toggle('on', on);
+      var fr = f.querySelector('.front'), bk = f.querySelector('.back');
+      if (on) { fr.setAttribute('inert', ''); bk.removeAttribute('inert'); } else { bk.setAttribute('inert', ''); fr.removeAttribute('inert'); }
+      if (fb) { var nb = (on ? bk : fr).querySelector('[data-flip]'); if (nb) setTimeout(function () { nb.focus({ preventScroll: true }); }, 30); }
+    }
   }
   /* 옆 칸이 화면보다 길면 붙여 두지 않는다(아래가 잘려 보이지 않게) */
   function fitSide() {
     var s = main.querySelector('.dt>.side'); if (!s) return;
     s.classList.remove('tall');
-    if (getComputedStyle(s).display === 'contents') return;
+    if (getComputedStyle(s).position !== 'sticky') return;
     if (s.offsetHeight > window.innerHeight - 150) s.classList.add('tall');
   }
   var fitT = 0; window.addEventListener('resize', function () { clearTimeout(fitT); fitT = setTimeout(fitSide, 160); });
@@ -648,7 +786,7 @@
       if (SRC.FTC) SRC.FTC.short = '공정거래위원회'; if (SRC.ALIO) SRC.ALIO.short = '알리오'; if (SRC.MME) SRC.MME.short = '중견기업정보마당';
       for (var i = 0; i < ITEMS.length; i++) { BYID[ITEMS[i].id] = ITEMS[i]; prep(ITEMS[i]); }
       CATS.forEach(function (c) { c.n = ITEMS.filter(function (x) { return x._c === c.k; }).length; });
-      dist(); album(); main.addEventListener('change', onSelect); route();
+      dist(); album(); main.addEventListener('change', onSelect); main.addEventListener('click', onItemClick); route();
       window.addEventListener('hashchange', route);
     }).catch(function () {
       main.innerHTML = '<p class="empty">자료를 불러오지 못했습니다. 잠시 뒤 다시 열어 주십시오.</p>';
