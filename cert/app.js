@@ -113,6 +113,7 @@
       ['duty', x.duties, 3], ['sum', x.summary, 2], ['out', x.outlook, 1]
     ].filter(function (f) { return has(f[1]); }).map(function (f) { return { k: f[0], t: String(f[1]), s: sq(f[1]), w: f[2] }; });
     var fk = famKey(x); if (fk) (FAM[fk] = FAM[fk] || []).push(x);
+    x._stages = stagesOf(x);
   }
   var FLAB = { grade: '등급', subj: '과목', jobs: '관련 직업', agency: '시행처', ministry: '소관부처', law: '법령', method: '시험방식', pass: '합격기준', duty: '직무', sum: '개요', out: '전망' };
 
@@ -232,38 +233,57 @@
   function tally() {
     d.getElementById('heroN').textContent = fmt(ITEMS.length);
     d.getElementById('tally').innerHTML = CATS.map(function (c) {
-      return '<a class="k-' + c.k + '" href="#list?c=' + c.k + '"><i aria-hidden="true"></i><span>' + esc(c.name) + '</span><b>' + fmt(c.n) + '<small>건</small></b></a>';
+      return '<a class="k-' + c.k + '" href="#list?c=' + c.k + '"><i aria-hidden="true"></i><span>' + esc(c.short) + '</span><b>' + fmt(c.n) + '<small>건</small></b></a>';
     }).join('');
   }
 
   /* ---------- 찾기 화면 ---------- */
+  // 한 쪽에 보일 개수: 대학학과위키처럼 5·10·20, 기기에 기억(jc-cert-per)
+  var PERS = [5, 10, 20];
+  try { var sp0 = +localStorage.getItem('jc-cert-per'); if (PERS.indexOf(sp0) > -1) PER = sp0; else PER = 10; } catch (e) { PER = 10; }
+  var MQ_WIDE = window.matchMedia ? window.matchMedia('(min-width:980px)') : { matches: true };
   function renderList() {
     view = 'list';
     var c = st.c ? CK[st.c] : null;
     main.innerHTML =
-      (c ? '<p class="cdef k-' + c.k + '"><b>' + esc(c.short) + '</b><span>' + esc((META.categories_definition || {})[c.key] || '') + '</span></p>' : '') +
-      '<div class="sb" id="sb">' + IC.search + '<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="자격 이름, 과목, 관련 직업, 시행처로 찾기" aria-label="자격증 찾기"><button class="clr" id="qx" type="button" aria-label="검색어 지우기">' + IC.x + '</button></div>' +
-      '<p class="eg" id="eg">예: <button type="button">직업상담사</button><button type="button">데이터베이스</button><button type="button">간호</button><button type="button">ㅈㅂㅊㄹ</button><button type="button">국토교통부</button></p>' +
-      '<div class="fd"><aside class="fl" id="fl"><button class="fl-t" id="flT" type="button" aria-expanded="false">' + IC.filt + '조건 고르기<i id="flN"></i></button><div class="fl-b" id="flB"></div></aside>' +
-      '<section id="res" aria-live="polite"></section></div>';
+      (c ? '<p class="cdef k-' + c.k + '"></p>' : '') +
+      '<div class="sb" id="sb">' + IC.search + '<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="자격 이름, 과목, 관련 직업으로 찾기" aria-label="자격증 찾기"><button class="clr" id="qx" type="button" aria-label="검색어 지우기">' + IC.x + '</button></div>' +
+      '<p class="eg" id="eg"><span>예</span><button type="button">직업상담사</button><button type="button">데이터베이스</button><button type="button">간호</button><button type="button">ㅈㅂㅊㄹ</button></p>' +
+      '<div class="fd"><aside class="fl" id="fl" aria-label="조건 고르기"><div class="fl-sh" id="flSh"><div class="fl-hd"><b>조건 고르기</b><button type="button" class="fl-x" id="flX" aria-label="닫기">' + IC.x + '</button></div><div class="fl-b" id="flB"></div><div class="fl-ft"><button type="button" class="reset" id="flR">모두 풀기</button><button type="button" class="fl-go" id="flGo">결과 보기</button></div></div></aside>' +
+      '<section id="res" aria-live="polite"></section></div><div class="scrim" id="scrim" hidden></div>';
     var q = d.getElementById('q'); q.value = st.q;
     var tmr = 0;
     q.addEventListener('input', function () { d.getElementById('sb').classList.toggle('has', !!q.value); clearTimeout(tmr); tmr = setTimeout(function () { setState({ q: q.value.trim() }); }, 140); });
-    q.addEventListener('keydown', function (e) { if (e.key === 'Enter') { q.blur(); } });
+    q.addEventListener('keydown', function (e) { if (e.key === 'Enter') q.blur(); });
     d.getElementById('qx').addEventListener('click', function () { q.value = ''; d.getElementById('sb').classList.remove('has'); setState({ q: '' }); q.focus(); });
     d.getElementById('eg').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; q.value = b.textContent; d.getElementById('sb').classList.add('has'); setState({ q: b.textContent }); });
-    d.getElementById('flT').addEventListener('click', function () { var fl = d.getElementById('fl'), on = !fl.classList.contains('open'); fl.classList.toggle('open', on); this.setAttribute('aria-expanded', String(on)); });
     d.getElementById('fl').addEventListener('click', onFilter);
     d.getElementById('fl').addEventListener('change', function (e) { var s = e.target.closest('select'); if (!s) return; var o = {}; o[s.name] = s.value; setState(o); });
+    d.getElementById('flX').addEventListener('click', function () { sheet(false); });
+    d.getElementById('flGo').addEventListener('click', function () { sheet(false); });
+    d.getElementById('flR').addEventListener('click', function () { setState({ g: '', f: '', mo: '', m: '', a: '', has: '' }); });
+    d.getElementById('scrim').addEventListener('click', function () { sheet(false); });
     d.getElementById('res').addEventListener('click', function (e) {
+      var pb = e.target.closest('[data-per]'); if (pb) { PER = +pb.getAttribute('data-per'); try { localStorage.setItem('jc-cert-per', String(PER)); } catch (er) {} setState({ p: 1 }); return; }
+      if (e.target.closest('#flOpen')) { sheet(true); return; }
       var b = e.target.closest('[data-p]'); if (b) { setState({ p: +b.getAttribute('data-p') }); var r = d.getElementById('res'); window.scrollTo(0, Math.max(0, r.getBoundingClientRect().top + window.pageYOffset - 140)); return; }
       var x = e.target.closest('[data-un]'); if (x) { var o = {}; o[x.getAttribute('data-un')] = ''; setState(o); }
     });
     d.getElementById('sb').classList.toggle('has', !!st.q);
     updateList();
   }
+  // 휴대폰: 조건은 아래에서 올라오는 시트. 넓은 화면: 왼쪽 고정 칸.
+  function sheet(on) {
+    var fl = d.getElementById('fl'), sc = d.getElementById('scrim'); if (!fl) return;
+    if (on && MQ_WIDE.matches) return;
+    fl.classList.toggle('open', on); sc.hidden = !on;
+    d.documentElement.classList.toggle('jc-lock', on);
+    if (on) { var x = d.getElementById('flX'); if (x) x.focus(); }
+  }
+  d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && d.querySelector('.fl.open')) { e.stopPropagation(); sheet(false); } }, true);
+  if (MQ_WIDE.addEventListener) MQ_WIDE.addEventListener('change', function () { sheet(false); if (view === 'item') route(); });
   function onFilter(e) {
-    var b = e.target.closest('button[data-k]'); if (!b) { if (e.target.closest('.reset')) setState({ g: '', f: '', mo: '', m: '', a: '', has: '' }); return; }
+    var b = e.target.closest('button[data-k]'); if (!b) return;
     var k = b.getAttribute('data-k'), v = b.getAttribute('data-v'), o = {}; o[k] = st[k] === v ? '' : v; setState(o);
   }
   function chip(k, v, label, n) {
@@ -277,6 +297,12 @@
     keys.forEach(function (k) { h += '<option value="' + esc(k) + '"' + (st[name] === k ? ' selected' : '') + '>' + esc(k) + ' (' + fmt(cnt[k] || 0) + ')</option>'; });
     return h + '</select>';
   }
+  // 조건 묶음은 접고 펴는 칸(details). 고른 값이 있으면 제목 옆에 보이고 처음부터 펼친다.
+  var fgOpen = { g: true, f: true };
+  function fg(key, title, cur, inner) {
+    var open = key in fgOpen ? fgOpen[key] : !!cur;
+    return '<details class="fg" data-fg="' + key + '"' + (open || cur ? ' open' : '') + '><summary><b>' + title + '</b>' + (cur ? '<em>' + esc(cur) + '</em>' : '') + '</summary><div class="fg-in">' + inner + '</div></details>';
+  }
   function updateList() {
     if (view !== 'list') return;
     d.body.toggleAttribute('data-home', !st.c && !st.g && !st.f && !st.mo && !st.m && !st.a && !st.has);
@@ -284,47 +310,50 @@
     var cdef = main.querySelector('.cdef'), c = st.c ? CK[st.c] : null;
     if (c) { if (!cdef) { cdef = d.createElement('p'); main.insertBefore(cdef, main.firstChild); } cdef.className = 'cdef k-' + c.k; cdef.innerHTML = '<b>' + esc(c.short) + '</b><span>' + esc((META.categories_definition || {})[c.key] || '') + '</span>'; }
     else if (cdef) cdef.remove();
+    var keep = {}; [].forEach.call(d.querySelectorAll('#flB details[data-fg]'), function (el) { fgOpen[el.getAttribute('data-fg')] = el.open; });
     /* 조건 */
     var h = '';
-    if (st.c === 'KT') { var gc = counts(st, 'g', function (x) { return x._gi > -1 ? x.grade_or_field : null; }); h += '<div class="fg"><h3>등급</h3><div class="opts">' + GRADES.map(function (g) { return chip('g', g, g, gc[g]); }).join('') + '</div></div>'; }
+    if (st.c === 'KT') { var gc = counts(st, 'g', function (x) { return x._gi > -1 ? x.grade_or_field : null; }); h += fg('g', '등급', st.g, '<div class="opts">' + GRADES.map(function (g) { return chip('g', g, g, gc[g]); }).join('') + '</div>'); }
     var fc = counts(st, 'f', function (x) { return x._fq || null; });
-    h += '<div class="fg"><h3>연간 시행 횟수</h3><div class="opts">' + FQ.map(function (f) { return chip('f', f[0], f[1], fc[f[0]]); }).join('') + '</div></div>';
-    var mc = counts(st, 'mo', function (x) { return Object.keys(x._mo.all); });
-    h += '<div class="fg"><h3>시험이 있는 달</h3><div class="mo">';
-    for (var k = 1; k <= 12; k++) { var on = st.mo === String(k), n = mc[k] || 0; h += '<button type="button" data-k="mo" data-v="' + k + '" aria-pressed="' + on + '"' + (!n && !on ? ' disabled' : '') + ' aria-label="' + k + '월, ' + n + '건">' + k + '월<small>' + n + '</small></button>'; }
-    h += '</div></div>';
-    h += '<div class="fg"><h3>소관부처</h3>' + select('m', '소관부처', counts(st, 'm', function (x) { return x.ministry || null; }), '모든 부처') + '</div>';
-    h += '<div class="fg"><h3>시행처 · 자격관리자</h3>' + select('a', '시행처', counts(st, 'a', function (x) { return x._ag || null; }), '모든 시행처') + '</div>';
+    h += fg('f', '연간 시행 횟수', st.f ? FQ.filter(function (f) { return f[0] === st.f; })[0][1] : '', '<div class="opts">' + FQ.map(function (f) { return chip('f', f[0], f[1], fc[f[0]]); }).join('') + '</div>');
+    var mc = counts(st, 'mo', function (x) { return Object.keys(x._mo.all); }), mh = '<div class="mo">';
+    for (var k = 1; k <= 12; k++) { var on = st.mo === String(k), n = mc[k] || 0; mh += '<button type="button" data-k="mo" data-v="' + k + '" aria-pressed="' + on + '"' + (!n && !on ? ' disabled' : '') + ' aria-label="' + k + '월, ' + n + '건">' + k + '월<small>' + n + '</small></button>'; }
+    h += fg('mo', '시험이 있는 달', st.mo ? st.mo + '월' : '', mh + '</div>');
+    h += fg('m', '소관부처', st.m, select('m', '소관부처', counts(st, 'm', function (x) { return x.ministry || null; }), '모든 부처'));
+    h += fg('a', '시행처 · 자격관리자', st.a, select('a', '시행처', counts(st, 'a', function (x) { return x._ag || null; }), '모든 시행처'));
     var hc = counts(st, 'has', function (x) { return x._has ? '1' : null; });
-    h += '<div class="fg"><h3>수록 정보</h3><div class="opts">' + chip('has', '1', '시험과목·방식이 있는 자격만', hc['1']) + '</div></div>';
-    var nAct = ['g', 'f', 'mo', 'm', 'a', 'has'].filter(function (k) { return st[k]; }).length;
-    if (nAct) h += '<button type="button" class="reset">조건 모두 풀기</button>';
+    h += fg('has', '수록 정보', st.has ? '과목·방식 있음' : '', '<div class="opts">' + chip('has', '1', '시험과목·방식이 있는 자격만', hc['1']) + '</div>');
     d.getElementById('flB').innerHTML = h;
-    d.getElementById('flN').textContent = nAct ? nAct + '개 고름' : '';
+    d.getElementById('flB').addEventListener('toggle', function (e) { var t = e.target; if (t.matches && t.matches('details[data-fg]')) fgOpen[t.getAttribute('data-fg')] = t.open; }, true);
+    var nAct = ['g', 'f', 'mo', 'm', 'a', 'has'].filter(function (k) { return st[k]; }).length;
+    d.getElementById('flR').hidden = !nAct;
     /* 결과 */
     var arr = sorted(filtered(st), st), pages = Math.max(1, Math.ceil(arr.length / PER));
     if (st.p > pages) st.p = pages;
+    d.getElementById('flGo').textContent = fmt(arr.length) + '건 보기';
     var cur = arr.slice((st.p - 1) * PER, st.p * PER), m = qmap(st.q);
     var act = [];
     if (st.g) act.push(['g', st.g]); if (st.f) act.push(['f', FQ.filter(function (f) { return f[0] === st.f; })[0][1]]); if (st.mo) act.push(['mo', st.mo + '월 시험']);
     if (st.m) act.push(['m', st.m]); if (st.a) act.push(['a', st.a]); if (st.has) act.push(['has', '과목·방식 있음']);
-    var r = '<div class="vw"><p class="cnt"><b>' + fmt(arr.length) + '</b>건' + (st.q ? ' · 「' + esc(st.q) + '」' : '') + '</p>' +
-      (act.length ? '<div class="act">' + act.map(function (a) { return '<button type="button" data-un="' + a[0] + '" aria-label="' + esc(a[1]) + ' 조건 풀기">' + esc(a[1]) + '</button>'; }).join('') + '</div>' : '') + '</div>';
+    var r = '<div class="vw"><button type="button" class="fl-t" id="flOpen">' + IC.filt + '조건' + (nAct ? '<i>' + nAct + '</i>' : '') + '</button><p class="cnt"><b>' + fmt(arr.length) + '</b>건' + (st.q ? ' · 「' + esc(st.q) + '」' : '') + '</p>' + perSel() + '</div>' +
+      (act.length ? '<div class="act">' + act.map(function (a) { return '<button type="button" data-un="' + a[0] + '" aria-label="' + esc(a[1]) + ' 조건 풀기">' + esc(a[1]) + '</button>'; }).join('') + '</div>' : '');
     if (!arr.length) r += '<p class="empty">조건에 맞는 자격이 없습니다. 검색어를 줄이거나 <a href="#list' + (st.c ? '?c=' + st.c : '') + '">조건을 풀어</a> 보십시오.</p>';
     else {
-      r += '<div class="rows two">';
+      r += '<div class="rows' + (PER > 5 ? ' two' : '') + '">';
       cur.forEach(function (x) {
-        var sp = x.schedule_pattern || {}, fq = has(sp.frequency) ? '<em>' + esc(sp.frequency) + '</em>' : '', hit = m[x.id] && m[x.id].hit;
-        var gr = has(x.grade_or_field) && x.grade_or_field.length <= 24 ? '<span class="tg">' + esc(x.grade_or_field) + '</span>' : '';
-        r += '<a class="row k-' + x._c + '" href="#' + x.id + '"><span class="r-n">' + hl(x.name, st.q) + '</span>' +
-          '<span class="r-s"><span class="ty">' + CK[x._c].short + '</span>' + gr + '<span>' + esc(x._ag) + (x.ministry ? ' · ' + esc(x.ministry) : '') + '</span></span>' +
-          (hit ? snippet(hit, st.q) : '') +
-          ((fq || x._mo.any) ? '<span class="r-m">' + fq + strip(x._mo) + '</span>' : '') + '</a>';
+        var sp = x.schedule_pattern || {}, hit = m[x.id] && m[x.id].hit, gr = x._gi > -1 ? x.grade_or_field : (has(x.grade_or_field) && x.grade_or_field.length <= 10 ? x.grade_or_field : '');
+        var meta = [];
+        if (has(sp.frequency)) meta.push('<span class="r-f">' + esc(String(sp.frequency).replace(/\(.*\)$/, '')) + '</span>');
+        var ns = x._stages.length; if (x._stages[0] && x._stages[0].k) meta.push('<span class="r-st">' + x._stages.map(function (s) { return esc(s.k.split('_')[0]); }).slice(0, 3).join('<i>›</i>') + '</span>');
+        r += '<a class="row k-' + x._c + '" href="#' + x.id + '"><span class="r-n">' + hl(x.name, st.q) + (gr ? ' <span class="tg">' + esc(gr) + '</span>' : '') + '</span>' +
+          '<span class="r-s"><span class="ty">' + CK[x._c].short + '</span>' + meta.join('') + '</span>' +
+          (hit ? snippet(hit, st.q) : '') + (x._mo.any ? '<span class="r-m">' + strip(x._mo) + '</span>' : '') + '</a>';
       });
       r += '</div>' + pager(st.p, pages);
     }
     d.getElementById('res').innerHTML = r;
   }
+  function perSel() { return '<span class="per" role="group" aria-label="한 쪽에 보일 개수"><span>보기</span>' + PERS.map(function (n) { return '<button type="button" data-per="' + n + '" aria-pressed="' + (n === PER) + '" aria-label="' + n + '개씩 보기">' + n + '</button>'; }).join('') + '</span>'; }
   function pager(p, n) {
     if (n <= 1) return '';
     var w = window.innerWidth < 400 ? 1 : 2, h = '<nav class="pg" aria-label="쪽 나누기"><button type="button" data-p="' + (p - 1) + '"' + (p <= 1 ? ' disabled' : '') + ' aria-label="앞 쪽">‹</button>', last = 0;
@@ -334,47 +363,142 @@
     return h + '<button type="button" data-p="' + (p + 1) + '"' + (p >= n ? ' disabled' : '') + ' aria-label="다음 쪽">›</button></nav>';
   }
 
+  /* ---------- 시험 단계 모으기: 과목·방식·합격기준을 단계(필기·실기·면접·1차…) 하나로 묶는다 ---------- */
+  function stagesOf(x) {
+    var S = [], idx = {};
+    function add(k) { if (!(k in idx)) { idx[k] = S.length; S.push({ k: k, subj: null, meth: null, pass: null }); } return S[idx[k]]; }
+    var sj = x.subjects, em = x.exam_method;
+    if (has(sj) && !Array.isArray(sj) && typeof sj === 'object') Object.keys(sj).forEach(function (k) { if (has(sj[k])) add(k).subj = flat(sj[k]); });
+    if (has(em) && typeof em === 'object') Object.keys(em).forEach(function (k) { if (has(em[k])) add(k).meth = flat(em[k]).join(' / '); });
+    if (Array.isArray(sj) && has(sj)) { var t = S.filter(function (s) { return !s.subj; })[0] || add(''); t.subj = flat(sj); }
+    if (typeof em === 'string' && has(em)) { if (!S.length) add(''); var t2 = S.filter(function (s) { return !s.meth; })[0]; if (t2) t2.meth = em; else S[0].meth = em; }
+    var rest = '';
+    if (has(x.pass_criteria)) {
+      var segs = passSegs(x.pass_criteria), used = false;
+      segs.forEach(function (sg) {
+        if (!sg[0]) { rest += (rest ? ' ' : '') + sg[1]; return; }
+        var keys = sg[0].split(/[·,\s]+/), hit = false;
+        S.forEach(function (s) { if (keys.indexOf(s.k) > -1 || (s.k && keys.some(function (k) { return s.k.indexOf(k) === 0; }))) { s.pass = sg[1]; hit = true; } });
+        if (!hit) rest += (rest ? ' ' : '') + sg[0] + ': ' + sg[1]; else used = true;
+      });
+      if (!S.length && rest) { add('').pass = rest; rest = ''; }
+      else if (S.length === 1 && rest && !S[0].pass) { S[0].pass = rest; rest = ''; }
+    }
+    S.rest = rest;
+    return S;
+  }
+  function passSegs(s) {
+    return String(s).split(/\s+-\s+(?=[^:：]{1,14}\s*[:：])/).map(function (p) {
+      var m = p.trim().match(/^([^:：]{1,14}?)\s*[:：]\s*(.+)$/); return m ? [m[1].trim(), m[2].trim()] : ['', p.trim()];
+    }).filter(function (p) { return p[1]; });
+  }
+  var STAGE_IC = {
+    pen: '<path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17z"/>',
+    hand: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3.5 17.5a2.1 2.1 0 0 0 3 3l5.8-5.8a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.5-.6-.6-2.5z"/>',
+    talk: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>',
+    num: '<circle cx="12" cy="12" r="8.5"/><path d="M12 8v8"/>',
+    star: '<path d="m12 4 2.5 5.2 5.6.8-4 3.9 1 5.6-5.1-2.7-5 2.7.9-5.6-4-3.9 5.6-.8z"/>'
+  };
+  function stageIc(k) {
+    var p = /필기|이론|1차/.test(k) ? 'pen' : /실기|작업|실무|2차/.test(k) ? 'hand' : /면접|구술|말하기|3차/.test(k) ? 'talk' : /급|심화|기본|TOPIK/.test(k) ? 'star' : 'num';
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + STAGE_IC[p] + '</svg>';
+  }
+  function stageName(k) { return k ? k.replace(/_/g, ' · ') : '시험'; }
+  /* 시험방식 문장 → 알아보기 쉬운 꼬리표 */
+  function methTags(t) {
+    var o = [], m;
+    if ((m = t.match(/(\d)\s*지\s*택\s*(?:일|1)/))) o.push(['ck', m[1] + '지 택1']);
+    else if (/객관식|선택형|택일/.test(t)) o.push(['ck', '객관식']);
+    if (/필답/.test(t)) o.push(['pen', '필답형']);
+    if (/작업형/.test(t)) o.push(['hand', '작업형']);
+    if (/복합형/.test(t)) o.push(['hand', '복합형']);
+    if (/논술|주관식|서술/.test(t)) o.push(['pen', /논술/.test(t) ? '논술형' : '주관식']);
+    if (/단답/.test(t)) o.push(['pen', '단답형']);
+    if (/면접|구술/.test(t)) o.push(['talk', '면접']);
+    if (/CBT|컴퓨터/.test(t)) o.push(['ck', 'CBT']);
+    if ((m = t.match(/과목당\s*(\d+)\s*문항/))) o.push(['n', '과목당 ' + m[1] + '문항']);
+    else if ((m = t.match(/(\d+)\s*문항/))) o.push(['n', m[1] + '문항']);
+    if ((m = t.match(/(\d+)\s*시간(?:\s*(\d+)\s*분)?/))) o.push(['t', m[1] + '시간' + (m[2] ? ' ' + m[2] + '분' : '')]);
+    else if ((m = t.match(/(\d+)\s*분/))) o.push(['t', m[1] + '분']);
+    return o;
+  }
+  var TAG_IC = { ck: '<path d="m5 12 4 4 10-10"/>', pen: STAGE_IC.pen, hand: STAGE_IC.hand, talk: STAGE_IC.talk, n: '<path d="M5 7h14M5 12h14M5 17h9"/>', t: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>' };
+  function tagHtml(tg) { return '<span class="mt mt-' + tg[0] + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + TAG_IC[tg[0]] + '</svg>' + esc(tg[1]) + '</span>'; }
+  /* 합격기준 문장 → 100점 막대 위의 눈금 */
+  function gaugeOf(t) {
+    t = String(t || ''); var per = t.match(/(?:과목당|매\s*과목|각\s*과목)[^0-9]{0,12}(\d{2})\s*점/), avg = t.match(/평균\s*(\d{2})\s*점/), all = t.match(/(\d{2})\s*점\s*이상/);
+    if (/만점/.test(t) && !/100\s*점/.test(t)) return null;
+    var a = avg ? +avg[1] : (all ? +all[1] : null), p = per ? +per[1] : null;
+    if (a == null && p == null) return null;
+    if (p != null && a === p && !avg) a = null;
+    return { per: p, avg: a };
+  }
+  function gaugeHtml(g, big) {
+    var h = '<div class="gauge' + (big ? ' big' : '') + '" role="img" aria-label="' + (g.per != null ? '과목당 ' + g.per + '점 이상, ' : '') + (g.avg != null ? (g.per != null ? '평균 ' : '') + g.avg + '점 이상' : '') + '"><div class="g-bar">';
+    if (g.per != null) h += '<i class="g-per" style="--v:' + g.per + '"></i>';
+    if (g.avg != null) h += '<i class="g-avg" style="--v:' + g.avg + '"></i>';
+    h += '</div><div class="g-lab">';
+    if (g.per != null) h += '<span style="--v:' + g.per + '"><b>' + g.per + '</b>과목마다</span>';
+    if (g.avg != null) h += '<span class="a" style="--v:' + g.avg + '"><b>' + g.avg + '</b>' + (g.per != null ? '평균' : '이상') + '</span>';
+    return h + '</div></div>';
+  }
+  /* 긴 글: 세 줄만 보이고 「더 읽기」 */
+  function clampText(t) { return '<div class="clamp"><p class="t">' + esc(t) + '</p><button type="button" class="more-b" hidden>더 읽기</button></div>'; }
+  function armClamp(root) {
+    [].forEach.call(root.querySelectorAll('.clamp'), function (c) {
+      var p = c.querySelector('p'), b = c.querySelector('.more-b');
+      if (p.scrollHeight > p.clientHeight + 4) { b.hidden = false; b.onclick = function () { var on = c.classList.toggle('open'); b.textContent = on ? '접기' : '더 읽기'; }; }
+    });
+  }
+
   /* ---------- 자격 한 건 ---------- */
-  function subjBlock(v, c) {
-    if (Array.isArray(v)) { var l = v.filter(has); return '<div class="sj"><div><ol>' + l.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div></div>'; }
-    var ks = Object.keys(v).filter(function (k) { return has(v[k]); });
-    return '<div class="sj ' + (ks.length >= 3 ? 'n3' : ks.length === 2 ? 'n2' : '') + '">' + ks.map(function (k) {
-      var l = flat(v[k]);
-      return '<div><h3>' + esc(k.replace(/_/g, ' · ')) + (l.length > 1 ? '<small>' + l.length + '과목</small>' : '') + '</h3><ol>' + l.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div>';
-    }).join('') + '</div>';
-  }
-  function kvBlock(v) {
-    if (typeof v === 'string') return '<p class="t">' + esc(v) + '</p>';
-    var ks = Object.keys(v).filter(function (k) { return has(v[k]); });
-    return '<dl class="kv">' + ks.map(function (k) { return '<dt>' + esc(k.replace(/_/g, ' · ')) + '</dt><dd>' + esc(flat(v[k]).join(' / ')) + '</dd>'; }).join('') + '</dl>';
-  }
-  function passBlock(s) {
-    var parts = String(s).split(/\s+-\s+(?=[^:：]{1,14}\s*[:：])/).map(function (p) { return p.trim(); }).filter(Boolean);
-    var kv = parts.map(function (p) { var m = p.match(/^([^:：]{1,14}?)\s*[:：]\s*(.+)$/); return m ? [m[1].trim(), m[2].trim()] : null; });
-    if (kv.every(Boolean)) return '<div class="pass"><dl class="kv">' + kv.map(function (a) { return '<dt>' + esc(a[0]) + '</dt><dd>' + esc(a[1]) + '</dd>'; }).join('') + '</dl></div>';
-    return '<div class="pass"><p>' + esc(s) + '</p></div>';
-  }
-  function sec(title, inner, cls, tag) { return '<section class="sec' + (cls ? ' ' + cls : '') + '"><h2>' + esc(title) + (tag ? ' <small>' + esc(tag) + '</small>' : '') + '</h2>' + inner + '</section>'; }
+  var tabSel = 'exam';
   function renderItem(id) {
     view = 'item';
-    var x = BYID[id], c = CK[x._c], sp = x.schedule_pattern || {}, miss = [];
+    var x = BYID[id], c = CK[x._c], sp = x.schedule_pattern || {}, miss = [], S = x._stages;
     d.body.removeAttribute('data-home'); tabs(x._c);
     var back = listHash(st);
     /* 카드 */
     var dl = '';
-    if (has(x._ag)) dl += '<dt>' + (x._c === 'KN' ? '자격관리자' : '시행처') + '</dt><dd><a href="#list?a=' + encodeURIComponent(x._ag) + '">' + esc(x._ag) + '</a></dd>';
-    if (has(x.ministry)) dl += '<dt>소관부처</dt><dd><a href="#list?m=' + encodeURIComponent(x.ministry) + '">' + esc(x.ministry) + '</a></dd>';
-    if (has(x.related_law)) dl += '<dt>근거 법령</dt><dd>' + esc(x.related_law) + '</dd>';
+    if (has(x._ag)) dl += '<dt>' + (x._c === 'KN' ? '관리' : '시행') + '</dt><dd><a href="#list?a=' + encodeURIComponent(x._ag) + '">' + esc(x._ag) + '</a></dd>';
+    if (has(x.ministry)) dl += '<dt>소관</dt><dd><a href="#list?m=' + encodeURIComponent(x.ministry) + '">' + esc(x.ministry) + '</a></dd>';
+    if (has(x.related_law)) dl += '<dt>법령</dt><dd>' + esc(x.related_law) + '</dd>';
     var ac = x.accreditation;
     if (ac && has(ac.valid_from) && has(ac.valid_to)) {
-      var prev = (ac.previous_periods || []).filter(function (p) { return p && p.from; }).length, today = new Date().toISOString().slice(0, 10);
-      dl += '<dt>공인 기간</dt><dd><span class="code">' + esc(ac.valid_from) + ' ~ ' + esc(ac.valid_to) + '</span>' + (ac.valid_to < today ? ' · 이 날짜로는 공인 기간이 지났습니다' : '') + (prev ? ' · 앞선 공인 ' + prev + '회' : '') + '</dd>';
+      var today = new Date().toISOString().slice(0, 10);
+      dl += '<dt>공인</dt><dd><span class="code">' + esc(ac.valid_from.slice(0, 7).replace('-', '.')) + ' ~ ' + esc(ac.valid_to.slice(0, 7).replace('-', '.')) + '</span>' + (ac.valid_to < today ? ' · 기간 지남' : '') + '</dd>';
     }
+    var gr = has(x.grade_or_field) ? x.grade_or_field : '', grLong = gr.length > 40;
     var lic = '<article class="lic k-' + x._c + '"><p class="lic-top"><b>' + esc(c.short) + '</b><span class="code">' + esc(x.id) + '</span></p><span class="holo" aria-hidden="true"></span>' +
-      '<div class="lic-id">' + emb(x._c) + '<div><h1>' + esc(x.name) + '</h1>' + (has(x.grade_or_field) ? '<p class="gr">' + esc(x.grade_or_field) + '</p>' : '') + '</div></div>' +
+      '<div class="lic-id">' + emb(x._c) + '<div><h1>' + esc(x.name) + '</h1>' + (gr ? (grLong ? '<details class="gr-d"><summary>등급·종류 ' + gr.split(/,\s*/).length + '가지</summary><p class="gr">' + esc(gr) + '</p></details>' : '<p class="gr">' + esc(gr) + '</p>') : '') + '</div></div>' +
       (dl ? '<dl>' + dl + '</dl>' : '') + '<span class="seal2">참고용<br>REF.</span></article>';
-    /* 시행 패턴 */
-    var s1 = '';
+    /* 한눈에 */
+    var nSubj = flat(x.subjects).length, g0 = null;
+    S.forEach(function (s) { if (!g0 && s.pass) g0 = gaugeOf(s.pass); }); if (!g0 && S.rest) g0 = gaugeOf(S.rest);
+    var tiles = [];
+    if (has(sp.frequency)) tiles.push(['sched', '시행', '<b>' + esc(String(sp.frequency).replace(/\(.*\)$/, '')) + '</b>' + (x._mo.any ? strip(x._mo) : '')]);
+    if (S.length && (S.length > 1 || S[0].k)) tiles.push(['exam', '단계', '<b class="flow">' + S.slice(0, 3).map(function (s) { return esc(stageName(s.k).split(' · ')[0]); }).join('<i>›</i>') + (S.length > 3 ? '<i>›</i>…' : '') + '</b>']);
+    if (nSubj) tiles.push(['exam', '과목', '<b>' + nSubj + '<small>개</small></b>']);
+    if (g0) tiles.push(['exam', '합격선', '<b>' + (g0.avg != null ? g0.avg : g0.per) + '<small>점↑</small></b>' + gaugeHtml(g0)]);
+    var glance = tiles.length ? '<div class="glance">' + tiles.map(function (t) { return '<button type="button" class="tile" data-go="' + t[0] + '"><span>' + t[1] + '</span>' + t[2] + '</button>'; }).join('') + '</div>' : '';
+    /* 패널: 시험 */
+    var P = {}, T = [];
+    if (S.length) {
+      var steps = S.length > 1 ? '<div class="steps" role="tablist" aria-label="시험 단계">' + S.map(function (s, i) {
+        return '<button type="button" role="tab" class="step" data-st="' + i + '" aria-selected="' + (i === 0) + '">' + stageIc(s.k) + '<span>' + esc(stageName(s.k)) + '</span>' + (s.subj ? '<small>' + s.subj.length + '과목</small>' : '') + '</button>';
+      }).join('<i class="arw" aria-hidden="true"></i>') + '</div>' : '';
+      var bodies = S.map(function (s, i) {
+        var b = '';
+        if (s.subj) b += '<h3>과목<small>' + s.subj.length + '</small></h3><ol class="sl">' + s.subj.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ol>';
+        if (s.meth) { var tg = methTags(s.meth); b += '<h3>방식</h3>' + (tg.length ? '<div class="mts">' + tg.map(tagHtml).join('') + '</div>' : '') + '<p class="mx">' + esc(s.meth) + '</p>'; }
+        if (s.pass) { var g = gaugeOf(s.pass); b += '<h3>합격선</h3>' + (g ? gaugeHtml(g, true) : '') + '<p class="mx">' + esc(s.pass) + '</p>'; }
+        return '<div class="stp' + (i === 0 ? ' on' : '') + '" data-stp="' + i + '"' + (S.length > 1 ? ' role="tabpanel"' : '') + (i ? ' hidden' : '') + '>' + (S.length === 1 && S[0].k ? '<p class="one-st">' + stageIc(S[0].k) + esc(stageName(S[0].k)) + '</p>' : '') + b + '</div>';
+      }).join('');
+      if (S.rest) { var gr2 = gaugeOf(S.rest); bodies += '<div class="pass-all"><h3>합격기준</h3>' + (gr2 ? gaugeHtml(gr2, true) : '') + '<p class="mx">' + esc(S.rest) + '</p></div>'; }
+      P.exam = steps + '<div class="stps">' + bodies + '</div>'; T.push(['exam', '시험']);
+    }
+    if (!has(x.subjects)) miss.push('시험과목'); if (!has(x.exam_method)) miss.push('시험방식'); if (!has(x.pass_criteria)) miss.push('합격기준');
+    /* 패널: 일정 */
     if (has(sp.frequency) || x._mo.any) {
       var cal = '';
       if (x._mo.any) {
@@ -382,69 +506,104 @@
         var n = 0;
         cal = '<div class="cal" role="img" aria-label="' + esc(x._mo.rows.map(function (r) { return (r.lab || '시행') + ' ' + Object.keys(r.on).sort(function (a, b) { return a - b; }).join('·') + '월'; }).join(', ')) + '">' + head +
           x._mo.rows.map(function (r, ri) {
-            var g = ''; for (var k = 1; k <= 12; k++) g += r.on[k] ? '<i class="on" style="--i:' + (n++) + '"></i>' : '<i></i>';
-            return '<div class="cal-r r' + Math.min(ri, 3) + '"><b>' + esc(r.lab || '시행') + '</b><div class="cal-g">' + g + '</div></div>';
+            var gg = ''; for (var k = 1; k <= 12; k++) gg += r.on[k] ? '<i class="on" style="--i:' + (n++) + '"></i>' : '<i></i>';
+            return '<div class="cal-r r' + Math.min(ri, 3) + '"><b>' + esc(r.lab || '시행') + '</b><div class="cal-g">' + gg + '</div></div>';
           }).join('') + '</div>';
       } else miss.push('시행 월');
-      s1 = '<section class="box s1"><h2>시행 패턴<small>최근 공식 일정 기준</small></h2>' +
-        (has(sp.frequency) ? '<p class="freq"><b>' + esc(sp.frequency) + '</b>' + (x._c === 'KT' ? '<span>' + esc(x.grade_or_field) + ' 계열 표준</span>' : '') + '</p>' : '') + cal +
-        (has(sp.note) ? '<p class="note">' + esc(sp.note) + '</p>' : '') + '</section>';
+      P.sched = (has(sp.frequency) ? '<p class="freq"><b>' + esc(sp.frequency) + '</b>' + (x._c === 'KT' && x._gi > -1 ? '<span>' + esc(x.grade_or_field) + ' 등급 표준 일정</span>' : '<span>최근 공식 일정 기준</span>') + '</p>' : '') + cal +
+        (has(sp.note) ? '<details class="more"><summary>이 일정의 기준</summary><p class="note">' + esc(sp.note) + '</p></details>' : '');
+      T.push(['sched', '일정']);
     } else miss.push('시행 횟수·시기');
-    /* 본문 */
-    var b = '';
-    if (has(x.subjects)) b += sec('시험과목', subjBlock(x.subjects), '', flat(x.subjects).length + '과목'); else miss.push('시험과목');
-    if (has(x.exam_method)) b += sec('시험방식', kvBlock(x.exam_method)); else miss.push('시험방식');
-    if (has(x.pass_criteria)) b += sec('합격기준', passBlock(x.pass_criteria)); else miss.push('합격기준');
-    if (has(x.acquisition_raw)) b += sec('취득방법 원문 요약', '<p class="t">' + esc(x.acquisition_raw) + '</p>');
-    if (has(x.note)) b += sec('덧붙임', '<p class="t">' + esc(x.note) + '</p>');
-    if (has(x.summary)) b += sec(x._c === 'KT' ? '자격 개요' : '개요', '<p class="t">' + esc(x.summary) + '</p>', 'fo');
-    if (has(x.duties)) b += sec('수행 직무', '<p class="t">' + esc(x.duties) + '</p>', 'fo');
-    if (has(x.outlook)) b += sec('진로와 전망', '<p class="t">' + esc(x.outlook) + '</p>', 'fo');
-    /* 옆 칸: 사다리·관련 직업·같은 갈래 */
-    var s2 = '', fam = FAM[famKey(x)] || [];
+    /* 패널: 소개 — 진출은 그림 칸, 긴 글은 세 줄 */
+    var intro = '';
+    if (has(x.summary)) intro += '<section class="ibx"><h3><i class="ic-dot"></i>' + (x._c === 'KT' ? '왜 생겼나' : '개요') + '</h3>' + clampText(x.summary) + '</section>';
+    if (has(x.duties)) intro += '<section class="ibx"><h3><i class="ic-dot"></i>하는 일</h3>' + clampText(x.duties) + '</section>';
+    if (has(x.outlook)) {
+      var parts = String(x.outlook).split(/\s+-\s+/).map(function (p) { return p.trim(); }).filter(Boolean);
+      var go = parts.length > 1 ? parts[0] : '', tr = parts.length > 1 ? parts.slice(1).join(' ') : parts[0];
+      if (go) intro += '<section class="ibx"><h3><i class="ic-dot"></i>진출하는 곳</h3>' + placeChips(go) + '</section>';
+      if (tr) intro += '<section class="ibx"><h3><i class="ic-dot"></i>전망</h3>' + clampText(tr) + '</section>';
+    }
+    if (has(x.acquisition_raw)) intro += '<section class="ibx"><h3><i class="ic-dot"></i>취득방법 원문 요약</h3>' + clampText(x.acquisition_raw) + '</section>';
+    if (has(x.note)) intro += '<section class="ibx"><h3><i class="ic-dot"></i>덧붙임</h3><p class="t">' + esc(x.note) + '</p></section>';
+    if (intro) { P.intro = '<div class="ibs">' + intro + '</div>'; T.push(['intro', '소개']); }
+    /* 패널: 연결 */
+    var link = '', fam = FAM[famKey(x)] || [];
     if (fam.length > 1) {
       fam = fam.slice().sort(function (a, b) { return a._gi - b._gi; });
-      s2 += '<section class="box s2 k-' + x._c + '"><h2>같은 종목의 등급 사다리</h2><div class="lad">' + fam.map(function (f) {
+      link += '<section class="box k-' + x._c + '"><h2>같은 종목의 등급 사다리</h2><div class="lad">' + fam.map(function (f) {
         return '<a href="#' + f.id + '"' + (f.id === x.id ? ' aria-current="page"' : '') + '>' + esc(f.name) + '<small>' + esc(f.grade_or_field) + '</small></a>';
       }).join('') + '</div></section>';
     }
     if (x._jobs.length) {
-      s2 += '<section class="box s2"><h2>관련 직업<small>참고용 연결</small></h2><div class="chips">' + x._jobs.map(function (j) {
-        return '<a href="../decalcomania/#' + encodeURIComponent(j.job_id) + '">' + esc(j.name) + (has(j.group) ? '<small>' + esc(j.group) + '</small>' : '') + '</a>';
-      }).join('') + '</div><p class="src">커리어넷 직업명과 자격 이름의 낱말을 맞춘 결과입니다. 누르면 커리어데칼코마니의 직업 화면으로 갑니다.</p></section>';
+      link += '<section class="box"><h2>관련 직업<small>참고용 연결</small></h2><div class="chips">' + x._jobs.map(function (j) {
+        return '<a href="../decalcomania/#' + encodeURIComponent(j.job_id) + '">' + esc(j.name) + '</a>';
+      }).join('') + '</div><p class="src">자격 이름과 직업명의 낱말을 맞춘 결과입니다. 누르면 커리어데칼코마니의 직업 화면으로 갑니다.</p></section>';
     }
     var near = [];
-    if (has(x.ministry)) near.push(['#list?m=' + encodeURIComponent(x.ministry), esc(x.ministry) + ' 소관 자격', ITEMS.filter(function (y) { return y.ministry === x.ministry; }).length]);
-    if (has(x._ag)) near.push(['#list?a=' + encodeURIComponent(x._ag), esc(x._ag) + (x._c === 'KN' ? ' 관리 자격' : ' 시행 자격'), ITEMS.filter(function (y) { return y._ag === x._ag; }).length]);
+    if (has(x.ministry)) near.push(['#list?m=' + encodeURIComponent(x.ministry), esc(x.ministry) + ' 소관', ITEMS.filter(function (y) { return y.ministry === x.ministry; }).length]);
+    if (has(x._ag)) near.push(['#list?a=' + encodeURIComponent(x._ag), esc(x._ag) + (x._c === 'KN' ? ' 관리' : ' 시행'), ITEMS.filter(function (y) { return y._ag === x._ag; }).length]);
     if (x._c === 'KT' && x._gi > -1) near.push(['#list?c=KT&g=' + encodeURIComponent(x.grade_or_field), esc(x.grade_or_field) + ' 등급 전체', ITEMS.filter(function (y) { return y._c === 'KT' && y.grade_or_field === x.grade_or_field; }).length]);
     near = near.filter(function (n) { return n[2] > 1; });
-    if (near.length) s2 += '<section class="box s2"><h2>이어서 찾기</h2><ul class="links">' + near.map(function (n) { return '<li><a href="' + n[0] + '">' + n[1] + '<i>' + fmt(n[2]) + '건</i></a></li>'; }).join('') + '</ul></section>';
-    if (!b) b = '';
-    /* 최하단: 미표기 안내 + 공식 주소 + 출처 */
+    if (near.length) link += '<section class="box"><h2>이어서 찾기</h2><ul class="links">' + near.map(function (n) { return '<li><a href="' + n[0] + '">' + n[1] + '<i>' + fmt(n[2]) + '건</i></a></li>'; }).join('') + '</ul></section>';
+    if (link) { P.link = '<div class="lks">' + link + '</div>'; T.push(['link', '연결']); }
+    /* 최하단: 미표기 안내 + 공식 주소 + 출처(접힘) */
     var urls = [];
     [x.official_url].concat(x.official_urls || []).forEach(function (u) { var s = safeUrl(u); if (s && urls.indexOf(s) < 0) urls.push(s); });
-    var srcs = x.source ? Object.keys(x.source).filter(function (k) { return has(x.source[k]); }).map(function (k) { return '<b>' + esc(SRCLAB[k] || k) + '</b> ' + esc(x.source[k]); }).join(' · ') : '';
+    var srcs = x.source ? Object.keys(x.source).filter(function (k) { return has(x.source[k]); }).map(function (k) { return '<li><b>' + esc(SRCLAB[k] || k) + '</b> ' + esc(x.source[k]) + '</li>'; }).join('') : '';
     var mt = '<section class="miss">' +
       (miss.length ? '<p><b>미표기 항목(' + miss.map(esc).join('·') + ')은 공공데이터·법령상 공식 근거가 확인되지 않은 정보이므로, 시행기관 공식 안내를 확인해 주세요.</b></p>'
-                   : '<p><b>여기 적힌 내용은 최근 공식 자료를 정리한 참고값입니다.</b> 접수·시험일과 바뀐 과목은 시행기관 공식 안내를 확인해 주세요.</p>') +
-      urls.map(function (u, i) { return '<a class="go' + (i ? ' line' : '') + '" href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + IC.out + '<span>' + (i ? '' : '시행기관 공식 안내 · ') + esc(host(u)) + '</span></a>'; }).join('') +
-      (srcs ? '<p class="src">이 항목의 출처 — ' + srcs + '</p>' : '') + '</section>';
+                   : '<p><b>최근 공식 자료를 정리한 참고값입니다.</b> 접수·시험일과 바뀐 과목은 시행기관 공식 안내를 확인해 주세요.</p>') +
+      urls.map(function (u, i) { return '<a class="go' + (i ? ' line' : '') + '" href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + IC.out + '<span>' + (i ? '' : '공식 안내 · ') + esc(host(u)) + '</span></a>'; }).join('') +
+      (srcs ? '<details class="more src-d"><summary>이 항목의 출처</summary><ul class="srcl">' + srcs + '</ul></details>' : '') + '</section>';
+    if (!P[tabSel]) tabSel = T.length ? T[0][0] : '';
+    var tabsH = T.length ? '<div class="ptabs" role="tablist" aria-label="자세히 보기">' + T.map(function (t) { return '<button type="button" role="tab" data-tab="' + t[0] + '" aria-selected="' + (t[0] === tabSel) + '">' + t[1] + '</button>'; }).join('') + '</div>' +
+      T.map(function (t) { return '<div class="pane" role="tabpanel" data-pane="' + t[0] + '"' + (t[0] === tabSel ? '' : ' hidden') + '>' + P[t[0]] + '</div>'; }).join('') : '';
     main.innerHTML = '<nav class="crumbs" aria-label="위치"><a href="' + back + '">' + IC.back + '목록으로</a><span>/</span>' + esc(c.name) + (x._c === 'KT' && x._gi > -1 ? ' <span>/</span> ' + esc(x.grade_or_field) : '') + '</nav>' +
-      '<div class="dt">' + lic + '<div class="side">' + s1 + s2 + '</div>' + (b ? '<div class="body">' + b + '</div>' : '') + mt + '</div>';
-    var calEl = main.querySelector('.cal'); if (calEl) requestAnimationFrame(function () { calEl.classList.add('run'); });
-    fitSide();
+      '<div class="dt k-' + x._c + '"><div class="dt-l">' + lic + glance + '</div><div class="dt-r">' + tabsH + '</div>' + mt + '</div>';
+    main.onclick = onItemClick;
+    armPane();
     window.scrollTo(0, 0);
     try { d.title = x.name + ' · 자격증 도감'; } catch (e) {}
   }
-  /* 옆 칸이 화면보다 길면 붙여 두지 않는다(아래가 잘려 보이지 않게) */
-  function fitSide() {
-    var s = main.querySelector('.dt>.side'); if (!s) return;
-    s.classList.remove('tall');
-    if (getComputedStyle(s).display === 'contents') return;
-    if (s.offsetHeight > window.innerHeight - 150) s.classList.add('tall');
+  function armPane() {
+    var pane = main.querySelector('.pane:not([hidden])'); if (!pane) return;
+    armClamp(pane);
+    var calEl = pane.querySelector('.cal'); if (calEl) { calEl.classList.remove('run'); void calEl.offsetWidth; calEl.classList.add('run'); }
   }
-  var fitT = 0; window.addEventListener('resize', function () { clearTimeout(fitT); fitT = setTimeout(fitSide, 160); });
-  d.addEventListener('jc-immersive', function () { setTimeout(fitSide, 60); });
+  function showTab(k, scroll) {
+    var bs = main.querySelectorAll('.ptabs [data-tab]'); if (!bs.length) return;
+    [].forEach.call(bs, function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-tab') === k)); });
+    [].forEach.call(main.querySelectorAll('.pane'), function (p) { p.hidden = p.getAttribute('data-pane') !== k; });
+    tabSel = k; armPane();
+    if (scroll) { var t = main.querySelector('.ptabs'); if (t) { var r = t.getBoundingClientRect(); if (r.top < 120 || r.top > window.innerHeight * .6) window.scrollTo(0, Math.max(0, r.top + window.pageYOffset - 130)); } }
+  }
+  function onItemClick(e) {
+    if (view !== 'item') return;
+    var t = e.target.closest('[data-tab]'); if (t) { showTab(t.getAttribute('data-tab')); return; }
+    var g = e.target.closest('[data-go]'); if (g) { showTab(g.getAttribute('data-go'), true); return; }
+    var s = e.target.closest('[data-st]'); if (s) {
+      var i = s.getAttribute('data-st');
+      [].forEach.call(main.querySelectorAll('[data-st]'), function (b) { b.setAttribute('aria-selected', String(b === s)); });
+      [].forEach.call(main.querySelectorAll('[data-stp]'), function (p) { var on = p.getAttribute('data-stp') === i; p.hidden = !on; p.classList.toggle('on', on); });
+    }
+  }
+  // 탭 줄에서 좌우 화살표로 옮기기
+  d.addEventListener('keydown', function (e) {
+    var b = e.target.closest && e.target.closest('[role="tab"]'); if (!b || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+    var list = [].slice.call(b.parentNode.querySelectorAll('[role="tab"]')), i = list.indexOf(b) + (e.key === 'ArrowRight' ? 1 : -1);
+    if (list[i]) { list[i].focus(); list[i].click(); e.preventDefault(); }
+  });
+  /* 진출하는 곳: 문장에서 기관·업체 이름만 뽑아 칩으로(뽑지 못하면 세 줄 글) */
+  function placeChips(t) {
+    var s = String(t).replace(/\([^)]*\)/g, ',').replace(/\s등\s/g, ',').replace(/(?:등|등의|등에|등으로)?\s*(?:에|으로|로)?\s*(?:진출|취업|근무|종사|활동)[^,.]*?(?:수 있다|할 수 있으며|가능하다|가능하며|하고 있다|한다)[.]?/g, ',').replace(/이밖에|또한|그리고|그 외|및|또는|기타/g, ',');
+    var bits = s.split(/[,·、ㆍ.\/]|\s-\s/).map(function (b) { return b.replace(/^[\s,]+|[\s,]+$/g, '').replace(/^(?:주로|각종|정부의|관련|일부는|이외|이밖에)\s+/, '').replace(/(?:으로도|로도|에도)$/, '').replace(/\s*(?:등|등의|에|으로|로|에서)$/, ''); })
+      .filter(function (b) { return b.length >= 2 && b.length <= 16 && b.split(' ').length <= 3 && !/[다음함됨]$|있으며|할 수|수 있|이다|하며|하고|에서$|거나$|하는$|[을를]\s|[을를]$|개발$|있다|이며|으며|된다|진출|취업|근무|활동|종사|분야로$|「|의한|걸쳐/.test(b); });
+    var seen = {}; bits = bits.filter(function (b) { if (seen[b]) return false; seen[b] = 1; return true; });
+    if (bits.length < 2) return clampText(t);
+    return '<ul class="places">' + bits.slice(0, 12).map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') + '</ul><details class="more"><summary>원문 문장</summary><p class="note">' + esc(t) + '</p></details>';
+  }
+
   var SRCLAB = { primary: '기본 자료', listing: '종목 목록', ministry: '주무부처', schedule: '일정', license: '이용 조건', subjects: '과목', exam_method: '시험방식', pass_criteria: '합격기준', duty: '직무', exam_rule: '시험 규정', frequency: '시행 횟수' };
 
   /* ---------- 출처와 한계 ---------- */
