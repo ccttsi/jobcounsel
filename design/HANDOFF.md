@@ -1,21 +1,25 @@
-# HANDOFF — 자율 디자인 시스템 구축 + 첫 실행
+# HANDOFF — 자율 디자인 시스템 구축 + 첫 실행 ✅ 완료
 
-브랜치: `feat/design-system` (main 043a146 위)
+브랜치: `feat/design-system` (main 043a146 위). 모든 단계 완료, PR 대기.
 
 ## 완료된 단계
-- [x] Step 1: `CLAUDE.md` · `DESIGN.md` · `.claude/skills/design-lead.md` 생성
+- [x] Step 1: `CLAUDE.md` · `DESIGN.md` · `.claude/skills/design-lead.md`
 - [x] Step 2: 레퍼런스 탐색(Codrops·web.dev·Chrome Developers/MDN) → `design/studies/2026-11-16-progressive-disclosure-motion.md`
-- [x] Step 3: `index.html`(상시 rAF 루프 제거·blur/width/box-shadow/grid-rows 모션 제거·통찰 풀이 접기·키워드 칩·좁은 폭 위치 숫자·섹터 수 고정 제거) · `assets/prefs.js`(공용 접기에 떠오르는 펼침·게이지 밑줄)
+- [x] Step 3: `index.html`(상시 rAF 루프·blur/width/box-shadow/grid-rows 모션 제거, 통찰 풀이 접기, 키워드 칩, 좁은 폭 위치 숫자, 섹터 수 고정 제거) · `assets/prefs.js`(공용 접기에 떠오르는 펼침·게이지 밑줄)
+- [x] Step 4: 묶음 1 환승노선도·서재·커리어데칼코마니 / 묶음 2 국취 매뉴얼·파슨스·DACUM / 묶음 3 대학학과위키·국취 HUD·대학원·기업·자격 + 이용 안내 문구 7개 섹터
+- [x] 최종 검수(헤드리스 크롬, 16개 페이지 × 390·360·844×390·820×1180·1280·1600)
 
-## 남은 작업
-- [ ] Step 4: 섹터 2~3개 단위 점검·개선(묶음마다 이 파일 갱신)
-  - [x] 묶음 1: 환승노선도·서재·커리어데칼코마니
-  - [x] 묶음 2: 국취 매뉴얼·파슨스·DACUM
-  - [x] 묶음 3: 대학학과위키·국취 HUD·대학원 탐구생활·기업 명함첩·자격증 도감(+ 이용 안내 문구를 쓰는 섹터 전체)
-- [ ] 반응형·집중 보기 검수, PR
+## 최종 검수 결과 (main 대비)
+- 가로 넘침 0, 콘솔 오류 0, 실행 중 금지 속성 애니메이션 0(main: 대문 box-shadow 무한 맥박), 집중 보기 왕복 잔여 0
+- 대문 대기 rAF: 3초에 약 180회 → 자동 넘김으로 움직이는 동안만(일시정지·감속 모드 0회)
+- 첫 화면 글자 수(보이는 것만 셈): 대문 1280px 519 → 387, 휴대폰 294 → 281(휴대폰 첫 화면은 큰 제목이 차지). 노동시장·환승노선도 휴대폰은 이용 안내가 짧아진 만큼 본문이 더 올라와 글자 수가 늘었다.
+  ※ Step 3 커밋 메시지의 "796 → 약 260자"는 투명한 숨은 글자까지 센 측정 오류였다. 위 숫자가 바로잡은 값이다.
+
+## 남은 작업 (사용자 실기기 확인)
+- 아이폰 사파리: 펼침 모션(@starting-style, 17.5 이상), 대문 다이얼 넘김·밑줄 진행, 집중 보기
+- 갤럭시 Chrome·삼성 인터넷: 같은 항목, 커리어데칼코마니 접기 전환
+- 폴더블 펼침/접힘 전환 시 대문 점↔위치 숫자(600px 기준), HUD 결과 칸 sticky(1024px 이상)
 
 ## 다음 시작 파일
-최종 검수: `/home/claude/tools/audit.py`(전 섹터), 그다음 README·DESIGN.md 패턴 기록, PR
-
-## 측정 도구(세션마다 새로)
-`/home/claude/tools/audit.py [페이지…]` — 6개 폭 × 가로 넘침·콘솔 오류·첫 화면 글자 수·대기 3초 rAF·금지 속성 애니메이션·집중 보기 왕복. 기준값 `audit-base.json`.
+다음 디자인 작업은 `CLAUDE.md` → `DESIGN.md` → `.claude/skills/design-lead.md` 순서로 시작한다.
+측정 도구(세션마다 새로): `/home/claude/tools/audit.py [페이지…]` — 폭별 넘침·오류·첫 화면 글자 수(checkVisibility+조상 투명도)·대기 rAF·금지 속성 애니메이션·집중 보기 왕복.
