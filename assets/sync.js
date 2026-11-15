@@ -1,6 +1,7 @@
 /* 직업상담 통합 자료실 · 기기 간 연동(로그인)
    - marker.js가 자동으로 불러온다. 설정(주소·공개 키)이 비어 있으면 아무것도 하지 않는다.
    - 받는 정보는 아이디와 비밀번호뿐. 비밀번호는 서버에서 bcrypt로만 저장된다(assets/supabase-setup.sql).
+   - 이용 통계: 페이지마다 익명 한 줄(꼭지·로그인 여부·기기 종류·들어온 도메인)만 보낸다. 아래 "사이트 이용 통계" 참고.
    - 연동하는 것: 탐색 진도, 형광펜·포스트잇, 도구함 설정, 화면 테마, 이론 위키 학습 기록, 매뉴얼 마지막 쪽.
    - 연동 단위는 localStorage 항목. 항목마다 마지막으로 바꾼 시각(t)을 두고 더 최근 것을 남긴다.
      형광펜·포스트잇과 탐색 진도는 덮어쓰지 않고 합친다. */
@@ -183,8 +184,8 @@
     ':host([data-dark]) .adm{border-color:rgba(251,191,36,.45);background:rgba(251,191,36,.07)}',
     '.adm-hd{display:flex;align-items:center;justify-content:space-between}',
     '.adm-hd b{font-size:12.5px;font-weight:800;letter-spacing:.04em;color:#b4532a}:host([data-dark]) .adm-hd b{color:#fbbf24}',
-    '.adm-re{min-height:36px;padding:0 10px;border-radius:9px;font-size:12.5px;font-weight:650;color:var(--muted)}.adm-re:hover{background:var(--soft)}',
-    '.adm-n{font-size:15px;font-weight:650;margin-top:2px}.adm-n span{font-size:34px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin-right:2px}',
+    '.adm-go{display:flex;align-items:center;justify-content:center;gap:6px;min-height:46px;margin:10px 0 8px;border-radius:12px;background:#b4532a;color:#fff;font-size:15px;font-weight:750;text-decoration:none}',
+    '.adm-go:hover{filter:brightness(1.08)}:host([data-dark]) .adm-go{background:#fbbf24;color:#2a1a00}',
     '.adm-sub{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:2px}',
     '.foot a{color:var(--acc)}',
     '@media (prefers-reduced-motion:reduce){*{animation:none!important}}'
@@ -231,23 +232,12 @@
     sr.querySelector('.box').innerHTML = '<span class="tape" aria-hidden="true"></span><button class="x" data-act="close" aria-label="닫기">×</button>' + body +
       '<p class="foot">비밀번호는 되돌릴 수 없는 방식으로 암호화해 저장해요. <a href="' + esc(hubURL()) + '#privacy">개인정보와 보안 안내</a></p>';
   }
-  var stats = null, statsBusy = false;
+  /* 관리자: 통계는 관리 페이지(/admin/)에서 본다. 로그인 창에는 길목만 둔다. */
   function adminCard() {
-    if (!stats && !statsBusy) loadStats();
-    var s = stats;
-    return '<div class="adm"><div class="adm-hd"><b>관리자</b><button class="adm-re" data-act="stats" aria-label="가입자 수 새로 고침">새로 고침</button></div>' +
-      (s && !s.error ? '<p class="adm-n"><span>' + s.users.toLocaleString('ko-KR') + '</span>개</p><p class="adm-sub">가입된 아이디 수(관리자 포함) · 일반 회원 ' + s.members.toLocaleString('ko-KR') + ' · 최근 7일 가입 ' + s.last7.toLocaleString('ko-KR') + '</p>'
-        : '<p class="adm-sub">' + (s && s.error ? '가입자 수를 불러오지 못했어요.' : '불러오는 중…') + '</p>') +
-      '<p class="adm-sub">개별 아이디와 기록은 사이트에서 보여 주지 않아요.</p></div>';
-  }
-  function loadStats() {
-    if (!sess || statsBusy) return; statsBusy = true;
-    rpc('jc_admin_stats', { p_token: sess.token }).then(function (r) {
-      statsBusy = false;
-      if (r.error === 'forbidden') { sess.admin = false; writeJ(SESS, sess); stats = null; render(); return; }
-      if (r.error === 'session') { expire(); return; }
-      stats = r; render();
-    }).catch(function () { statsBusy = false; stats = { error: 'net' }; render(); });
+    return '<div class="adm"><div class="adm-hd"><b>관리자</b></div>' +
+      '<p class="adm-sub">가입 계정 수와 사이트 이용 통계는 관리 페이지에서 한눈에 볼 수 있어요.</p>' +
+      '<a class="adm-go" href="' + esc(hubURL()) + 'admin/">관리 페이지 열기 <span aria-hidden="true">→</span></a>' +
+      '<p class="adm-sub">개별 아이디와 기록은 어디에서도 보여 주지 않아요.</p></div>';
   }
   var lastFocus = null;
   function open(v) {
@@ -279,7 +269,6 @@
       }
       if (a === 'close') close();
       else if (a === 'tab') { view = b.getAttribute('data-v'); msg = ''; render(); var i = sr.querySelector('input'); if (i) i.focus(); }
-      else if (a === 'stats') { stats = null; render(); }
       else if (a === 'now') { msg = { t: '연동하는 중…', ok: true }; render(); sync('manual').then(function () { msg = status.err ? { t: status.err } : { t: '연동했어요.', ok: true }; render(); }); }
       else if (a === 'logout') {
         var tok = sess.token; pushNow();
@@ -298,7 +287,7 @@
         rpc(kind === 'signup' ? 'jc_signup' : 'jc_login', { p_username: id, p_password: pw }).then(function (r) {
           working = false;
           if (r.error) return fail(r.error);
-          sess = { token: r.token, username: r.username, admin: !!r.admin, last: 0 }; writeJ(SESS, sess); stats = null;
+          sess = { token: r.token, username: r.username, admin: !!r.admin, last: 0 }; writeJ(SESS, sess);
           msg = { t: kind === 'signup' ? '계정을 만들었어요. 이 기기의 기록을 올리는 중…' : '로그인했어요. 기록을 맞추는 중…', ok: true }; render(); paint();
           return sync('login').then(function () { msg = { t: '연동을 시작했어요.', ok: true }; render(); });
         }).catch(function () { working = false; fail('net'); });
@@ -333,18 +322,84 @@
     });
     if (window.JCMarker && window.JCMarker.refresh) window.JCMarker.refresh();
     if (host && !host.hidden) render();
+    try { window.dispatchEvent(new CustomEvent('jc-sync-change', { detail: { user: u, admin: !!(sess && sess.admin) } })); } catch (e) {}
   }
   api.open = open;
   api.user = function () { return sess ? sess.username : null; };
   api.state = function () { return { user: sess ? sess.username : null, at: status.at || (sess && sess.last) || 0, err: status.err }; };
   api.label = function () { return sess ? (status.err ? '연결 대기 중' : ago(status.at || sess.last)) : ''; };
   api.setToast = function (fn) { toastFn = fn; };
+  api.admin = function () { return !!(sess && sess.admin); };
+  /* 관리 페이지 전용: 관리자 함수(jc_admin_*)만 부를 수 있다. 서버에서도 관리자 여부를 다시 확인한다. */
+  api.adminCall = function (fn, args) {
+    if (!sess || !/^jc_admin_[a-z_]+$/.test(fn)) return Promise.reject({ error: 'session' });
+    var body = { p_token: sess.token }; Object.keys(args || {}).forEach(function (k) { body[k] = args[k]; });
+    return rpc(fn, body).then(function (r) {
+      if (r && r.error === 'session') expire();
+      if (r && r.error === 'forbidden' && sess) { sess.admin = false; writeJ(SESS, sess); paint(); }
+      return r;
+    });
+  };
+
+  /* ---------- 사이트 이용 통계(익명) ----------
+     페이지를 열 때 한 줄만 보낸다: 꼭지 이름, 로그인 여부, 기기 종류(휴대폰·태블릿·PC),
+     오늘 처음인지·전에 온 적 있는지, 탭에서 처음 연 페이지라면 들어온 곳(도메인 이름만).
+     IP·아이디·쿠키·기기 번호·전체 주소·검색어·입력 내용은 보내지 않는다.
+     이 기기에 남기는 것은 마지막 방문 날짜 한 줄(jc-seen-day)과 탭 표시(sessionStorage)뿐이다.
+     보내지 않는 경우: 관리자 로그인, '추적 안 함'·GPC 설정, 이 기기 제외(jc-stats-off), 관리 페이지. */
+  var STATS_OFF = 'jc-stats-off', SEEN = 'jc-seen-day';
+  var SOCIAL = ['facebook.com', 'instagram.com', 'threads.net', 'threads.com', 'x.com', 'twitter.com', 't.co', 'band.us', 'kakao.com', 'youtube.com', 'youtu.be', 'linkedin.com', 'lnkd.in', 'tiktok.com', 'pinterest.com', 'reddit.com'];
+  var SEARCH = /(^|\.)google\.[a-z.]+$|(^|\.)bing\.com$|(^|\.)search\.naver\.com$|(^|\.)search\.daum\.net$|(^|\.)duckduckgo\.com$|(^|\.)search\.zum\.com$|(^|\.)search\.nate\.com$|(^|\.)search\.yahoo\.[a-z.]+$|(^|\.)ecosia\.org$|(^|\.)baidu\.com$|(^|\.)yandex\.[a-z.]+$/;
+  function ends(h, dm) { return h === dm || h.slice(-dm.length - 1) === '.' + dm; }
+  function statsBlocked() {
+    var n = window.navigator || {};
+    if (n.globalPrivacyControl === true || n.doNotTrack === '1' || window.doNotTrack === '1') return true;
+    if (get(STATS_OFF) === '1') return true;
+    if (sess && sess.admin) return true;
+    if (!window.JC_STATS_TEST && (/^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) || location.protocol === 'file:')) return true;
+    return false;
+  }
+  function pageName() {
+    var base = hubURL().replace(/[?#].*$/, ''), here = location.href.replace(/[?#].*$/, '');
+    if (here.indexOf(base) !== 0) return null;
+    var seg = here.slice(base.length).split('/')[0].replace(/\.html?$/, '').toLowerCase();
+    if (!seg || seg === 'index') return 'home';
+    return /^[a-z0-9_-]{1,30}$/.test(seg) ? seg : null;
+  }
+  function devKind() {
+    var ua = (navigator.userAgent || ''), tp = navigator.maxTouchPoints || 0;
+    if (/iPad|Tablet|PlayBook|Silk/i.test(ua) || (/Macintosh/.test(ua) && tp > 1) || (/Android/i.test(ua) && !/Mobile/i.test(ua))) return 't';
+    if (/Mobi|iPhone|iPod|Android/i.test(ua)) return 'm';
+    return 'd';
+  }
+  function localDay() { var t = new Date(); return t.getFullYear() + '-' + ('0' + (t.getMonth() + 1)).slice(-2) + '-' + ('0' + t.getDate()).slice(-2); }
+  function hit() {
+    if (statsBlocked()) return;
+    var page = pageName(); if (!page || page === 'admin') return;
+    var entry = false, src = null, h = null;
+    try { var SS = window.sessionStorage; if (!SS.getItem('jc-hit-s')) { entry = true; SS.setItem('jc-hit-s', '1'); } } catch (e) {}
+    if (entry) {
+      var utm = (location.search.match(/[?&]utm_source=([^&#]*)/) || [])[1];
+      var ref = ''; try { ref = d.referrer ? new URL(d.referrer).hostname.toLowerCase() : ''; } catch (e) {}
+      if (utm) { src = 'campaign'; try { h = decodeURIComponent(utm); } catch (e) { h = utm; } h = h.toLowerCase().replace(/[^a-z0-9.-]+/g, '-').slice(0, 60) || null; }
+      else if (!ref) src = 'direct';
+      else if (ref === location.hostname) entry = false;          // 자료실 안에서 새 탭으로 연 것은 새 방문이 아니다
+      else { h = ref.replace(/^(www|m|mobile)\./, '').slice(0, 60); src = SEARCH.test(h) ? 'search' : SOCIAL.some(function (dm) { return ends(h, dm); }) ? 'social' : 'link'; }
+    }
+    var last = get(SEEN), today = localDay(), daily = last !== today, ret = !!last && last !== today;
+    if (daily) put(SEEN, today);
+    var p = { page: page, auth: !!sess, entry: entry, daily: daily, ret: ret, dev: devKind() };
+    if (entry) { p.src = src; if (h) p.host = h; }
+    try { rpc('jc_hit', { p: p }, true).catch(function () {}); } catch (e) {}
+  }
+  api.statsOff = function (v) { if (v === undefined) return get(STATS_OFF) === '1'; put(STATS_OFF, v ? '1' : null); return !!v; };
 
   function start() {
     d.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-jc-login]'); if (b) { e.preventDefault(); open(); } });
     paint();
     if (location.hash === '#login') open();
     if (sess) sync('load');
+    setTimeout(hit, 600);
     d.addEventListener('visibilitychange', function () { if (d.hidden) pushNow(); else if (sess) sync('focus'); });
     window.addEventListener('pagehide', pushNow);
     setInterval(function () { if (sess && !d.hidden) sync('tick'); }, 60000);
