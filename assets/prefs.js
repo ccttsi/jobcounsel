@@ -431,7 +431,17 @@
       '.jc-fold-n.jc-fold-sib:not([data-open])+*{display:none!important}' +
     '}' +
     '@media (min-width:900px){.jc-fold-n.jc-fold-h::after,.jc-fold-n>.jc-fold-h::after{display:none}.jc-fold-n>button.jc-fold-h{display:none}}' +
-    '@media (prefers-reduced-motion:reduce){.jc-fold-h::after{transition:none}}' +
+    /* 펼침 모션(2026-11-16, design/studies 참고): 상자는 즉시 열고, 안쪽 덩어리가 순서대로 떠오른다. 높이는 보간하지 않는다.
+       @starting-style을 모르는 브라우저는 그냥 즉시 보인다. */
+    '.jc-fold-box[data-open]>*:not(.jc-fold-h),.jc-fold-sib[data-open]+*{transition:opacity .3s cubic-bezier(.2,.9,.3,1),transform .34s cubic-bezier(.2,.9,.3,1)}' +
+    '@starting-style{.jc-fold-box[data-open]>*:not(.jc-fold-h),.jc-fold-sib[data-open]+*{opacity:0;transform:translateY(8px)}}' +
+    [3, 4, 5, 6, 7, 8, 9, 10].map(function (n) { return '.jc-fold-box[data-open]>:nth-child(' + n + '){transition-delay:' + (n - 2) * 34 + 'ms}'; }).join('') +
+    /* 만들어 넣은 손잡이에는 펼치면 왼쪽부터 차오르는 게이지 밑줄 */
+    'button.jc-fold-h::before{content:"";position:absolute;left:0;right:30px;bottom:4px;height:2px;border-radius:2px;background:currentColor;opacity:.45;transform:scaleX(0);transform-origin:0 50%;transition:transform .34s cubic-bezier(.2,.9,.3,1)}' +
+    'button.jc-fold-h[data-open]::before{transform:scaleX(1)}' +
+    '.jc-fold-h::after{transition:transform .3s cubic-bezier(.2,.9,.3,1)}' +
+    'html[data-jc-imm] .jc-fold-box>*,html[data-jc-imm] .jc-fold-sib+*{transition:none!important}' +
+    '@media (prefers-reduced-motion:reduce){.jc-fold-h::after,button.jc-fold-h::before,.jc-fold-box>*,.jc-fold-sib+*{transition:none!important}}' +
     '@media print{.jc-fold-box>*,.jc-fold-sib+*{display:revert!important}}';
   var foldOpen = {}, foldReady = false;
   function foldKey(i, head) { return i + '|' + location.hash + '|' + (head.id || (head.textContent || '').trim().slice(0, 28)); }
