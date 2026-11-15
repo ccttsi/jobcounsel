@@ -299,6 +299,23 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 }
 @media (prefers-reduced-motion:reduce){.a-root,.a-root *,.a-root *::before,.a-root *::after{animation:none!important;transition:none!important}}
 @media print{.a-backdrop,.a-top .a-actions,.a-seg,.a-ov,.a-toast{display:none!important}.a-top{position:static}}
+
+/* 손맛 층(2026-11-15): 인쇄물 느낌의 오프셋 그림자·테이프·티켓 번호. 움직임은 transform·opacity뿐이고 집중 보기에서는 빠진다. */
+html:not([data-jc-imm]) .a-insight{box-shadow:7px 8px 0 color-mix(in srgb,var(--ink) 88%,transparent);border-color:var(--ink)}
+:root[data-theme="dark"]:not([data-jc-imm]) .a-insight{box-shadow:7px 8px 0 color-mix(in srgb,var(--acc) 55%,transparent);border-color:color-mix(in srgb,var(--acc) 60%,var(--line))}
+html:not([data-jc-imm]) .a-insight::after{content:"";position:absolute;top:-13px;left:30px;width:96px;height:25px;transform:rotate(-3.2deg);pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.26) 0 4px,transparent 4px 8px),color-mix(in srgb,#e8c871 82%,transparent)}
+:root[data-theme="dark"]:not([data-jc-imm]) .a-insight::after{background:repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 4px,transparent 4px 8px),rgba(140,118,70,.62)}
+html:not([data-jc-imm]) .a-card.a-insight.a-live:hover{transform:translate(-2px,-3px) rotate(-.3deg)}
+html:not([data-jc-imm]) .a-root .a-btn.a-open{box-shadow:4px 4px 0 var(--ink);transition:transform .16s cubic-bezier(.2,1.5,.4,1)}
+:root[data-theme="dark"]:not([data-jc-imm]) .a-root .a-btn.a-open{box-shadow:4px 4px 0 color-mix(in srgb,var(--acc) 45%,transparent)}
+@media (hover:hover){html:not([data-jc-imm]) .a-root .a-btn.a-open:hover{transform:translate(-1px,-2px)}}
+html:not([data-jc-imm]) .a-root .a-btn.a-open:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+html:not([data-jc-imm]) .a-list .a-no{align-self:center;min-width:2.5em;padding:3px 0 2px;border:1.5px dashed currentColor;border-radius:7px;text-align:center;transform:rotate(-4deg);background:color-mix(in srgb,var(--a1) 9%,transparent)}
+html:not([data-jc-imm]) .a-list li:nth-child(even) .a-no{transform:rotate(3deg)}
+@keyframes a-thunk{0%{opacity:0;transform:scale(1.9) rotate(-10deg)}60%{opacity:1;transform:scale(.93) rotate(-10deg)}}
+html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic-bezier(.3,.9,.3,1) .15s backwards}
+@media (prefers-reduced-motion:reduce){.a-seen-stamp:not([hidden]){animation:none!important}.a-root .a-btn.a-open,.a-card.a-insight.a-live:hover{transition:none;transform:none!important}}
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest" defer></script>
@@ -374,7 +391,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   <main class="a-stage">
   <section class="a-nav" id="nav" aria-label="자료 고르기">
     <p class="a-eyebrow">직업상담사를 위한 학습·실무 자료 <b class="a-num" data-count>7</b>가지</p>
-    <div id="rollView">
+    <div id="rollView" data-jc-still>
     <h1 class="a-say" id="heroTitle">
         <span class="a-say-l">오늘은</span>
         <span class="a-dial" id="dial">
@@ -485,10 +502,10 @@ var TOOLS=[
   meta:['학교 412곳','개설 학과 1만 7천여 개','유사학과 묶음'],
   tags:['대학학과위키','대학','전문대','전문대학','학과','전공','개설 학과','유사학과','같은 계열','계열','대학알리미','입학','진학','지역','캠퍼스','univ']},
  {id:'grad',no:'09',badge:'석·박사',short:'대학원',color:'c1',icon:'graduation-cap',
-  title:'석·박사 지도',path:'./grad/',
+  title:'대학원 탐구생활',path:'./grad/',
   desc:'전공별로 석·박사 과정에서 무엇을 공부하고 어떤 자격 문턱과 재정 지원이 있는지 읽고, 그 전공을 실제로 개설한 전국 대학원 1,169곳·학과 12,731건(대학알리미 2024-10-07 공시)을 종류·학위·야간·지역으로 걸러 찾습니다. 전공 글과 대학원 목록을 오가며 봅니다.',
   meta:['대학원 1,169곳','개설 학과 12,731건','전공 분류 192개'],
-  tags:['석·박사 지도','석박사','석사','박사','대학원','대학원 진학','일반대학원','전문대학원','특수대학원','교육대학원','로스쿨','법학전문대학원','MBA','야간 대학원','계약학과','BK21','TA','RA','연구실','지도교수','컨택','연구계획서','전공','학위','대학알리미','진학','grad']},
+  tags:['대학원 탐구생활','탐구생활','석·박사 지도','석박사','석사','박사','대학원','대학원 진학','일반대학원','전문대학원','특수대학원','교육대학원','로스쿨','법학전문대학원','MBA','야간 대학원','계약학과','BK21','TA','RA','연구실','지도교수','컨택','연구계획서','전공','학위','대학알리미','진학','grad']},
  {id:'talk',no:'10',badge:'상담 대화',short:'대화',color:'c3',icon:'messages-square',
   title:'상담 대화 연습장',path:'./talk/',
   desc:'되받아 주기(재진술·감정 반영), 질문 바꾸기, 부드럽게 전하기(쿠션어), 엇갈림 찾기(모순 클라우드), 막힐 때(저항·침묵), 선 긋고 길 잡기(구조화·경계) 여섯 갈래를 상황별로 골라 연습합니다. 들은 말을 아무렇게나 적으면 가까운 카드·표현·연습 문제를 순서대로 찾아 줍니다.',
@@ -604,7 +621,7 @@ var NAV={
  library:['미래를 읽어','미래고용 보고서 13권을 꺼내 핵심 수치와 상담 적용 노트로 읽습니다.'],
  decalcomania:['진로를 이어','학과 501개와 직업 552개를 마주 놓고, 서로 잇는 근거를 확인합니다.'],
  univ:['대학을 둘러','전국 대학·전문대의 개설 학과를 찾고, 유사학과와 같은 계열 학과를 묶어 봅니다.'],
- grad:['대학원을 가늠해','석·박사 전공에서 무엇을 공부하는지 읽고, 그 전공을 연 전국 대학원을 종류·학위·지역으로 찾습니다.'],
+ grad:['대학원을 탐구해','석·박사 전공에서 무엇을 공부하는지 읽고, 그 전공을 연 전국 대학원을 종류·학위·지역으로 찾습니다.'],
  talk:['대화해','막힌 장면을 골라 반영·질문·쿠션어·저항 대응·구조화를 바로 연습합니다.'],
  transit:['노선을 그려','출발역에서 환승역을 골라 타며, 첫 진입·재진입·전직·2막 노선도를 직접 그립니다.'],
  parsons:['원전을 넘겨','직업상담의 첫 책, 파슨스의 1909년 『직업의 선택』을 카드뉴스처럼 넘겨 읽습니다.'],
@@ -914,6 +931,7 @@ icons();window.addEventListener('load',icons);
 })();
 </script>
 <script src="./assets/marker.js" defer></script>
+<script>window.JC_DESIGN = { seal: false }; /* 대문 제목은 돌아가는 문장이라 소인을 붙이지 않는다 */</script>
 <script src="./assets/prefs.js" defer></script>
 </body>
 </html>
