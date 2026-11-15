@@ -20,6 +20,7 @@
 | `/talk/` | 상담 대화 연습장 (데이터 `talk/data.js`, 찾기 엔진 `talk/finder.js`, 화면 `talk/app.js`) |
 | `/transit/` | 환승노선도 (첫 진입·재진입·전직·2막 커리어 노선도) |
 | `/parsons/` | 다시 읽는 『직업의 선택』 — 파슨스 1909년 초판 카드뉴스 이북 (데이터 `parsons/data/*.json`, 화면 `parsons/app.js`) |
+| `/labor/` | 노동시장 산책 (노동경제 개념 그래프 + 고용 뉴스 읽기 도우미) |
 | `/assets/marker.js` | 공용 형광펜·포스트잇 도구함 |
 | `/assets/sync.js` | 로그인·기기 간 연동 (선택 기능) |
 
@@ -44,6 +45,11 @@
 ### 환승노선도 데이터
 
 `/transit/data/transit.json` 한 파일을 화면이 그대로 읽습니다. 출발 유형(`types`), 역량 번역(`assets`), 환승역(`stations`, 단기 `t1`·중기 `t2`·장기 `t3`), 종착역(`dests`)으로 나뉩니다. 역을 더하거나 고칠 때는 이 파일만 바꾸면 됩니다. 제도 수치는 `checked` 날짜 기준이며 해마다 다시 확인합니다. 사용자가 입력한 내용은 브라우저(`jc-transit`)에만 저장하고 연동하지 않습니다.
+
+
+### 노동시장 산책 데이터
+
+화면(`/labor/index.html`)과 엔진(`/labor/app.js`)은 데이터를 고치지 않고 `/labor/data/` 두 파일을 읽습니다. `concepts.json`은 갈래(`groups`)·개념(`concepts`, 대학원 수준은 `deep: true` → 「깊이 보기」 표시, 그래프는 `widget` 이름)·실업 사례(`unempCases`)·바탕 이론(`sources`), `news.json`은 최근 공식 수치(`latest`, `checked` 날짜 기준)·지표 사전(`indicators`, 찾기 규칙 `re`)·표현 함정(`patterns`)·연습용 가상 기사(`samples`)·확인처(`where`)입니다. 고용동향이 새로 나오면 `latest`와 `checked`만 바꾸면 됩니다. 붙여 넣은 기사 문장은 저장·전송하지 않습니다.
 
 ## 저작권과 출처
 
