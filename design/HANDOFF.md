@@ -9,10 +9,13 @@
 
 ## 남은 작업
 - [ ] Step 4: 섹터 2~3개 단위 점검·개선(묶음마다 이 파일 갱신)
+  - [x] 묶음 1: 환승노선도·서재·커리어데칼코마니
+  - [ ] 묶음 2: 국취 매뉴얼·파슨스·DACUM
+  - [ ] 묶음 3: 자격증 도감·기업 명함첩·대학원 탐구생활(초면 텍스트·가로 배치 점검)
 - [ ] 반응형·집중 보기 검수, PR
 
 ## 다음 시작 파일
-섹터 묶음 1: `transit/index.html`, `library/index.html`, `decalcomania/index.html`(transition에 box-shadow·width·max-height가 들어간 곳)
+`manual/index.html`(카드 box-shadow 전환), `parsons/index.html`(grid-template-rows 펼침), `dacum/index.html`(width 전환, box-shadow 키프레임)
 
 ## 측정 도구(세션마다 새로)
 `/home/claude/tools/audit.py [페이지…]` — 6개 폭 × 가로 넘침·콘솔 오류·첫 화면 글자 수·대기 3초 rAF·금지 속성 애니메이션·집중 보기 왕복. 기준값 `audit-base.json`.
