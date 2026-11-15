@@ -128,6 +128,9 @@ a{color:inherit}
 .chip:hover{border-color:var(--line-2)}
 .chip[aria-pressed="true"],.chip[aria-checked="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .agrp{margin:12px 0 4px;font-size:13px;font-weight:700;color:var(--dim)}
+/* 넓은 화면: 경험 묶음 여섯 개를 세로 한 줄로 늘어놓지 않고 두세 단으로 */
+@media (min-width:900px){.agrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 28px;align-items:start}}
+@media (min-width:1200px){.agrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0 32px}
 @media (min-width:900px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 
@@ -463,12 +466,13 @@ function renderStart(){
   D.directions.forEach(function(a){h+='<button type="button" class="chip" data-dir="'+a.id+'" aria-pressed="'+(S.dirs.indexOf(a.id)>=0)+'">'+esc(a.label)+'</button>';});
   h+='</div><p class="q">내 경력·전공을 한 줄로 <small>선택</small></p><textarea class="memo" id="memo" maxlength="300" placeholder="예: 물류센터 재고관리 3년, 경영학 전공, 지게차 자격 보유">'+esc(S.memo)+'</textarea></div></div>';
   h+='<p class="q">가진 것을 직무 언어로 옮기기 <small>해 본 일을 모두 고르면 아래에 번역 문장이 생깁니다</small></p>';
+  h+='<div class="agrid">';
   D.assetGroups.forEach(function(g){
-    h+='<p class="agrp">'+esc(g.name)+'</p><div class="chips">';
+    h+='<div class="ag"><p class="agrp">'+esc(g.name)+'</p><div class="chips">';
     D.assets.filter(function(a){return a.group===g.id;}).forEach(function(a){h+='<button type="button" class="chip" data-asset="'+a.id+'" aria-pressed="'+(S.assets.indexOf(a.id)>=0)+'">'+esc(a.label)+'</button>';});
-    h+='</div>';
+    h+='</div></div>';
   });
-  h+='<div class="trans" id="trans"></div>';
+  h+='</div><div class="trans" id="trans"></div>';
   h+='<div class="go"><button type="button" class="btn btn-p" data-next="2">환승 구간으로 <span aria-hidden="true">→</span></button></div>';
   $('p1').innerHTML=h;renderTrans();
 }
@@ -772,6 +776,8 @@ var resetArm=0;function confirmReset(){if(Date.now()<resetArm)return true;resetA
 </script>
 <script src="../assets/marker.js" defer></script>
 <script>window.JC_FS_SKIP = '.stamp, .rail .dot, .tl .tx';</script>
+<script>/* 휴대폰에서는 역 카드의 실무 팁·상담 질문을 접어 둔다 */
+window.JC_FOLD = [{ box: '.st .tip', title: '실무 팁 · 상담에서 물어볼 질문' }];</script>
 <script src="../assets/prefs.js" defer></script>
 </body>
 </html>

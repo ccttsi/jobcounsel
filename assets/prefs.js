@@ -455,6 +455,21 @@
         if (window.JCPrefs && JCPrefs.rescale) JCPrefs.rescale();
       };
       d.addEventListener('click', tog); d.addEventListener('keydown', tog);
+      // 목차·검색·# 링크로 접힌 덩어리 안을 가리키면 그 덩어리를 먼저 펼친다
+      var siv = Element.prototype.scrollIntoView;
+      Element.prototype.scrollIntoView = function () {
+        try {
+          var box = this.closest && this.closest('.jc-fold-box:not([data-open])');
+          if (box) { var h = box.querySelector(':scope > .jc-fold-h'); if (h && foldActive(h)) foldSet(h, true); }
+          var prev = this.previousElementSibling;
+          if (prev && prev.classList.contains('jc-fold-sib') && !prev.hasAttribute('data-open') && foldActive(prev)) foldSet(prev, true);
+        } catch (e) {}
+        return siv.apply(this, arguments);
+      };
+      window.addEventListener('hashchange', function () {
+        var id = decodeURIComponent(location.hash.slice(1)), el = id && d.getElementById(id);
+        if (el) { var box = el.closest('.jc-fold-box:not([data-open])'); if (box) { var h = box.querySelector(':scope > .jc-fold-h'); if (h && foldActive(h)) foldSet(h, true); } }
+      });
     }
     cfgs.forEach(function (c, ci) {
       var cls = c.on === 'always' ? 'jc-fold-a' : 'jc-fold-n', list, i;

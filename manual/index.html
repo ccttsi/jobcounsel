@@ -121,6 +121,8 @@ input[type=search]{width:100%;min-height:46px;background:var(--panel);border:1px
 .pitline b,.tile.pit b{color:var(--warn)}
 .refline{font-size:13.5px;color:var(--mute);margin-top:8px}
 .terms{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+@media (min-width:1100px){.terms{grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:start}}
+@media (min-width:1500px){.terms{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 .term h3{font-size:16.5px;font-weight:700}
 .term .lab{display:block;margin-top:10px}
 .term .btn{margin-top:12px;font-size:14px}
@@ -352,6 +354,8 @@ setView(location.hash.slice(1)||'map',true);setPage(page);
 </script>
 <script>/* 고정 머리말 높이 → 왼쪽 차례 고정 위치 */(function(){var h=document.querySelector('.hud');if(!h)return;function f(){var p=getComputedStyle(h).position;document.documentElement.style.setProperty('--hudH',(p==='sticky'||p==='fixed'?h.offsetHeight:0)+'px');}f();window.addEventListener('resize',f);if(window.ResizeObserver)new ResizeObserver(f).observe(h);})();</script>
 <script src="../assets/marker.js" defer></script>
+<script>/* 휴대폰에서는 공문서어 카드를 낱말만 보이게 접어 두고, 누르면 실무어·할 일이 펼쳐진다 */
+window.JC_FOLD = [{ box: '#terms > article.term', head: 'h3' }];</script>
 <script src="../assets/prefs.js" defer></script>
 </body>
 </html>

@@ -82,9 +82,9 @@
   st.cloud.t = byId(D.cloudCases, 'm1').t;
 
   /* ───────── 왼쪽(또는 위) 갈래 목록 ───────── */
-  /* 넓은 화면(1400px 이상): 연습 도구(.pad)는 왼쪽 기둥, 표현·피할 말·연습 문제는 오른쪽 기둥에 담는다.
+  /* 넓은 화면(1200px 이상): 연습 도구(.pad)는 왼쪽 기둥, 표현·피할 말·연습 문제는 오른쪽 기둥에 담는다.
      요소를 옮기기만 하므로 id·이벤트는 그대로다. 좁아지면 원래 순서로 돌려놓는다. */
-  var WIDE = window.matchMedia ? window.matchMedia('(min-width:1400px)') : null;
+  var WIDE = window.matchMedia ? window.matchMedia('(min-width:1200px)') : null;
   function splitCols() {
     var v = $('view'); if (!v || !WIDE) return;
     var cl = v.querySelector(':scope > .cols');
