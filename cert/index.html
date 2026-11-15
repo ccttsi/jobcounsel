@@ -17,7 +17,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 <style>
 :root{
   --bg:#faf6ef;--panel:#fffdf8;--soft:#f3ede2;--line:#e9e0d2;--line-2:#d8ccb9;
-  --ink:#2a2521;--muted:#655c53;--dim:#7b7168;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
   --acc:#1c6b58;--acc-soft:rgba(28,107,88,.08);--on-acc:#fff;
   --kt:#2f5fa8;--kp:#8a2f45;--kn:#5f6b12;--ka:#9a5a06;
   --kt-s:rgba(47,95,168,.10);--kp-s:rgba(138,47,69,.10);--kn-s:rgba(95,107,18,.12);--ka-s:rgba(154,90,6,.11);
@@ -184,14 +184,14 @@ main{display:block;min-height:50vh;padding-top:20px}
 .opts button small{margin-left:5px;font-family:var(--mono);font-size:12px;color:var(--dim)}
 .opts button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 .opts button[aria-pressed="true"] small{color:inherit;opacity:.7}
-.opts button:disabled{opacity:.35;cursor:default}
+.opts button:disabled{opacity:.6;border-style:dashed;cursor:default} /* 0건이라 고를 수 없어도 글자는 읽히게 */
 /* 시험 있는 달: 달력 한 장 */
 .mo{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
 .mo button{display:grid;place-items:center;gap:0;min-height:46px;padding:4px 0;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:15px;font-weight:700;line-height:1.15}
 .mo button small{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--dim)}
 .mo button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
 .mo button[aria-pressed="true"] small{color:inherit;opacity:.8}
-.mo button:disabled{opacity:.35;cursor:default}
+.mo button:disabled{opacity:.6;border-style:dashed;cursor:default}
 .fg select{width:100%;height:46px;padding:0 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-family:inherit;font-size:15.5px;color:var(--ink)}
 .reset{margin-top:6px;padding:8px 0;border:0;background:none;font-size:14.5px;font-weight:700;color:var(--acc)}
 .vw{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:8px}
@@ -414,7 +414,7 @@ html[data-jc-imm] .fl,html[data-jc-imm] .dt>.side{position:static;max-height:non
 <script src="./app.js" defer></script>
 <script src="../assets/marker.js" defer></script>
 <script>window.JC_FS_SKIP = '.seal2, .lic-top, .cal-h, .strip, .holo';
-window.JC_FOLD = [{ box: '.dt .sec.fo', head: 'h2' }];</script>
+window.JC_FOLD = [{ box: '.dt .sec.fo', head: 'h2' }, { head: '.ab > h2:first-of-type', open: true }, { head: '.ab > h2' }]; /* 휴대폰에서 안내·출처는 제목만 보이고 누르면 펼침 */</script>
 <script src="../assets/prefs.js" defer></script>
 </body>
 </html>
