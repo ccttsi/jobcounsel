@@ -233,12 +233,15 @@ body:not([data-mode="scroll"]) #prog{display:none}
 .cnt b{color:var(--ink)}
 
 /* ---------- ③ 책처럼 펼쳐 ---------- */
-.bk{perspective:2400px;display:flex;justify-content:center;width:100%;-webkit-user-select:none;user-select:none;touch-action:pan-y}
-.spread{position:relative;display:flex;filter:drop-shadow(0 22px 30px rgba(60,40,20,.18))}
-:root[data-theme="dark"] .spread{filter:drop-shadow(0 22px 30px rgba(0,0,0,.6))}
+.bk{display:flex;justify-content:center;width:100%;-webkit-user-select:none;user-select:none;touch-action:pan-y}
+/* 그림자는 펼친 면 뒤 고정 층에 둔다(filter:drop-shadow는 넘김 중 매 프레임 다시 그려져 밝은 테마에서 가장자리가 우글거린다) */
+.spread{position:relative;display:flex;isolation:isolate;perspective:2600px;--sh:40,26,12}
+:root[data-theme="dark"] .spread{--sh:0,0,0}
+.spread::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px;box-shadow:0 2px 4px rgba(var(--sh),.06),0 24px 40px -20px rgba(var(--sh),.34);pointer-events:none}
+:root[data-theme="dark"] .spread::before{box-shadow:0 24px 40px -18px rgba(0,0,0,.75)}
 .spread.per1{overflow:visible}
 .bk:has(.per1){overflow:hidden;padding:0 0 10px}
-.pg{width:var(--pw);height:calc(var(--pw) * 1.25)}
+.pg{position:relative;width:var(--pw);height:calc(var(--pw) * 1.25)}
 .page{width:100%;height:100%;box-shadow:none;background:radial-gradient(90% 55% at 100% 0%,hsl(var(--h) 70% 92% / .8),transparent 60%),var(--paper)!important}
 :root[data-theme="dark"] .page{background:radial-gradient(90% 55% at 100% 0%,hsl(var(--h) 40% 16%),transparent 60%),var(--paper)!important}
 .page.t-now{background:radial-gradient(100% 70% at 100% 0%,hsl(var(--h) 45% 24%),transparent 62%),hsl(var(--h) 28% 13%)!important}
@@ -246,27 +249,33 @@ body:not([data-mode="scroll"]) #prog{display:none}
 .pg.L .page,.leaf.fwd .backf .page,.leaf.back .front .page{border-radius:22px 3px 3px 22px}
 .pg.R .page,.leaf.fwd .front .page,.leaf.back .backf .page{border-radius:3px 22px 22px 3px}
 .pg.one .page,.leaf.one .page{border-radius:6px 22px 22px 6px}
-.pg.L .page::after,.pg.R .page::after{content:"";position:absolute;top:0;bottom:0;width:36px;pointer-events:none}
-.pg.L .page::after{right:0;background:linear-gradient(90deg,transparent,rgba(60,40,20,.10))}
-.pg.R .page::after{left:0;background:linear-gradient(270deg,transparent,rgba(60,40,20,.12))}
-:root[data-theme="dark"] .pg.L .page::after{background:linear-gradient(90deg,transparent,rgba(0,0,0,.4))}
-:root[data-theme="dark"] .pg.R .page::after{background:linear-gradient(270deg,transparent,rgba(0,0,0,.45))}
-.spine{position:absolute;left:calc(var(--pw) - 1px);top:0;bottom:0;width:2px;background:rgba(60,40,20,.14);pointer-events:none}
-.leaf{position:absolute;top:0;width:var(--pw);height:calc(var(--pw) * 1.25);transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .82s cubic-bezier(.45,.05,.25,1);z-index:5;pointer-events:none}
+/* 접힘부 음영: 넘기는 낱장에도 같은 음영을 달아 내려앉는 순간 음영이 갑자기 생기지 않게 한다 */
+.pg.L .page::after,.pg.R .page::after,.leaf .face .page::after{content:"";position:absolute;top:0;bottom:0;width:36px;pointer-events:none;border-radius:inherit}
+.pg.L .page::after,.leaf.fwd .backf .page::after,.leaf.back .front .page::after{right:0;background:linear-gradient(90deg,transparent,rgba(var(--sh),.09))}
+.pg.R .page::after,.leaf.fwd .front .page::after,.leaf.back .backf .page::after,.leaf.one .front .page::after{left:0;right:auto;background:linear-gradient(270deg,transparent,rgba(var(--sh),.10))}
+:root[data-theme="dark"] .pg.L .page::after,:root[data-theme="dark"] .leaf.fwd .backf .page::after,:root[data-theme="dark"] .leaf.back .front .page::after{background:linear-gradient(90deg,transparent,rgba(0,0,0,.4))}
+:root[data-theme="dark"] .pg.R .page::after,:root[data-theme="dark"] .leaf.fwd .front .page::after,:root[data-theme="dark"] .leaf.back .backf .page::after,:root[data-theme="dark"] .leaf.one .front .page::after{background:linear-gradient(270deg,transparent,rgba(0,0,0,.45))}
+.spine{position:absolute;left:calc(var(--pw) - .5px);top:0;bottom:0;width:1px;background:rgba(var(--sh),.10);pointer-events:none;z-index:1}
+:root[data-theme="dark"] .spine{background:rgba(0,0,0,.5)}
+/* 넘기는 낱장: 각도와 그림자는 app.js가 한 진행값으로 함께 움직인다 */
+.leaf{position:absolute;top:0;width:var(--pw);height:calc(var(--pw) * 1.25);transform-style:preserve-3d;-webkit-transform-style:preserve-3d;z-index:5;pointer-events:none;will-change:transform}
 .leaf.fwd{left:var(--pw);transform-origin:left center}
 .leaf.back{left:0;transform-origin:right center}
-.leaf.fwd.go{transform:rotateY(-180deg)}
-.leaf.back.go{transform:rotateY(180deg)}
 .leaf.one{left:0;transform-origin:left center}
-.leaf.one.back.from{transform:rotateY(-180deg)}
-.leaf.one.back.from.go{transform:rotateY(0)}
-.leaf.one.fwd.go{transform:rotateY(-180deg)}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.face.backf{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;-webkit-font-smoothing:antialiased;transform:translateZ(0)}
+.face.backf{transform:rotateY(180deg) translateZ(0)}
 .face.paper{background:var(--paper);border-radius:22px 6px 6px 22px}
-.face .shade{position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(90deg,rgba(0,0,0,.22),transparent 55%);opacity:0}
-.leaf.go .shade{animation:shade .82s ease-in-out}
-@keyframes shade{50%{opacity:1}}
+.face .shade,.pg .cast{position:absolute;inset:0;pointer-events:none;border-radius:inherit;opacity:0}
+.leaf.fwd .backf .shade,.leaf.back .front .shade,.pg.L .cast{border-radius:22px 3px 3px 22px}
+.leaf.fwd .front .shade,.leaf.back .backf .shade,.pg.R .cast{border-radius:3px 22px 22px 3px}
+.leaf.one .shade,.pg.one .cast{border-radius:6px 22px 22px 6px}
+.leaf.fwd .front .shade,.leaf.back .backf .shade,.leaf.one .front .shade{background:linear-gradient(90deg,rgba(var(--sh),.30),rgba(var(--sh),.08) 40%,transparent 75%)}
+.leaf.fwd .backf .shade,.leaf.back .front .shade,.leaf.one .backf .shade{background:linear-gradient(270deg,rgba(var(--sh),.30),rgba(var(--sh),.08) 40%,transparent 75%)}
+.leaf.one .front .shade{background:linear-gradient(90deg,rgba(var(--sh),.30),rgba(var(--sh),.08) 40%,transparent 75%)}
+.leaf.one .backf .shade{background:linear-gradient(270deg,rgba(var(--sh),.30),rgba(var(--sh),.08) 40%,transparent 75%)}
+.pg .cast{z-index:2}
+.pg.R .cast{background:linear-gradient(90deg,rgba(var(--sh),.26),rgba(var(--sh),.06) 38%,transparent 70%)}
+.pg.L .cast{background:linear-gradient(270deg,rgba(var(--sh),.26),rgba(var(--sh),.06) 38%,transparent 70%)}
 
 /* 세로 읽기용 작은 단추 묶음 */
 .dock{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));z-index:45;display:flex;gap:2px;padding:4px;border-radius:99px;background:color-mix(in srgb,var(--panel) 82%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 2px 6px rgba(0,0,0,.08),0 14px 30px -14px rgba(0,0,0,.4);border:1px solid var(--line);transform:translate(-50%,140%);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}

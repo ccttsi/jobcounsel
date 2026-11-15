@@ -344,31 +344,78 @@
     }
     setPos(st.i); updCtl();
   }
+  /* 책장 넘김: 진행값 p(0→1) 하나로 낱장 각도·낱장 음영·아래 쪽에 드리우는 그림자를 함께 그린다.
+     모든 그림자는 p=0과 p=1에서 0이 되도록 잡아, 끌기 시작·놓기·내려앉은 직후에 끊김 없이 이어진다. */
+  var fl = null;
+  function buildFlip(dir) {
+    if (st.busy || fl) return null;
+    var per = st.per, s = per === 2 ? st.i - st.i % 2 : st.i, t = s + dir * per;
+    if (t < 0 || t >= N) return null;
+    var sp = $('spread'), L = $('pgL'), R = $('pgR'); if (!sp || !R) return null;
+    var leaf = d.createElement('div'), under = null, cover = null;
+    closePop();
+    leaf.className = 'leaf ' + (dir > 0 ? 'fwd' : 'back') + (per === 1 ? ' one' : '');
+    if (per === 2) {
+      if (dir > 0) { leaf.innerHTML = face(s + 1, 'front') + face(s + 2, 'backf'); R.innerHTML = cardHTML(s + 3, 'page'); under = R; cover = L; }
+      else { leaf.innerHTML = face(s, 'front') + face(s - 1, 'backf'); L.innerHTML = cardHTML(s - 2, 'page'); under = L; cover = R; }
+    } else {
+      if (dir > 0) { leaf.innerHTML = face(s, 'front') + '<div class="face backf paper"><i class="shade" aria-hidden="true"></i></div>'; R.innerHTML = cardHTML(t, 'page'); under = R; }
+      else { leaf.innerHTML = face(t, 'front') + '<div class="face backf paper"><i class="shade" aria-hidden="true"></i></div>'; cover = R; }
+    }
+    var mk = function (pg) { if (!pg) return null; var c = d.createElement('i'); c.className = 'cast'; c.setAttribute('aria-hidden', 'true'); pg.appendChild(c); return c; };
+    var sh = leaf.querySelectorAll('.shade');
+    fl = { dir: dir, per: per, t: t, leaf: leaf, p: 0, raf: 0,
+      fs: sh[0], bs: sh[1], uc: mk(under), cc: mk(cover) };
+    sp.appendChild(leaf);
+    drawFlip(0);
+    return fl;
+  }
+  function drawFlip(p) {
+    if (!fl) return;
+    p = Math.max(0, Math.min(1, p)); fl.p = p;
+    var a;
+    if (fl.per === 1 && fl.dir < 0) a = -180 * (1 - p);   // 한 쪽 보기에서 뒤로: 왼쪽 밖에서 들어온다
+    else a = fl.dir > 0 ? -180 * p : 180 * p;
+    fl.leaf.style.transform = 'rotateY(' + a.toFixed(2) + 'deg)';
+    var lift = Math.sin(Math.PI * p);                      // 0 → 1(낱장이 섰을 때) → 0
+    // 낱장 음영: 들릴수록 짙어지고 눕을수록 옅어진다(앞·뒷면 중 보이는 면에만 보인다)
+    var ls = Math.min(1, lift * 1.1).toFixed(3);
+    if (fl.fs) fl.fs.style.opacity = ls;
+    if (fl.bs) fl.bs.style.opacity = ls;
+    // 드러나는 쪽: 낱장이 막 들렸을 때 접힘부 그림자가 짙고, 멀어질수록 옅어진다
+    if (fl.uc) fl.uc.style.opacity = (Math.pow(1 - p, 1.4) * Math.min(1, p * 6)).toFixed(3);
+    // 덮이는 쪽: 낱장이 다가올수록 짙어지다 내려앉으며 0
+    if (fl.cc) fl.cc.style.opacity = (p > .5 ? Math.sin((p - .5) * 2 * Math.PI) * .9 : 0).toFixed(3);
+  }
+  function animFlip(to, ms, ease) {
+    if (!fl) return;
+    var f = fl, from = f.p, t0 = 0;
+    st.busy = true;
+    cancelAnimationFrame(f.raf);
+    var tick = function (now) {
+      if (!t0) t0 = now;
+      var k = ms > 0 ? Math.min(1, (now - t0) / ms) : 1;
+      drawFlip(from + (to - from) * ease(k));
+      if (k < 1) f.raf = requestAnimationFrame(tick);
+      else endFlip(to >= 1);
+    };
+    f.raf = requestAnimationFrame(tick);
+  }
+  function endFlip(commit) {
+    if (!fl) return;
+    var t = fl.t; cancelAnimationFrame(fl.raf); fl = null; st.busy = false;
+    if (commit) st.i = t;
+    paintSpread();
+  }
+  var easeIO = function (k) { return k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; };
+  var easeOut = function (k) { return 1 - Math.pow(1 - k, 3); };
   function flip(dir) {
-    if (st.busy) return;
+    if (st.busy || fl) return;
     var per = st.per, s = per === 2 ? st.i - st.i % 2 : st.i, t = s + dir * per;
     if (t < 0 || t >= N) return;
     if (reduce) { st.i = t; paintSpread(); return; }
-    var sp = $('spread'), L = $('pgL'), R = $('pgR'), leaf = d.createElement('div');
-    st.busy = true; closePop();
-    leaf.className = 'leaf ' + (dir > 0 ? 'fwd' : 'back') + (per === 1 ? ' one' : '');
-    if (per === 2) {
-      if (dir > 0) { leaf.innerHTML = face(s + 1, 'front') + face(s + 2, 'backf'); R.innerHTML = cardHTML(s + 3, 'page'); }
-      else { leaf.innerHTML = face(s, 'front') + face(s - 1, 'backf'); L.innerHTML = cardHTML(s - 2, 'page'); }
-    } else {
-      if (dir > 0) { leaf.innerHTML = face(s, 'front') + '<div class="face backf paper"></div>'; R.innerHTML = cardHTML(t, 'page'); }
-      else { leaf.innerHTML = face(t, 'front'); leaf.classList.add('from'); }
-    }
-    sp.appendChild(leaf);
-    leaf.offsetWidth;
-    leaf.classList.add('go');
-    var done = false, end = function () {
-      if (done) return; done = true;
-      st.i = t; st.busy = false;
-      paintSpread();
-    };
-    leaf.addEventListener('transitionend', function (e) { if (e.target === leaf && e.propertyName.indexOf('transform') >= 0) end(); });
-    setTimeout(end, 1100);
+    if (!buildFlip(dir)) return;
+    animFlip(1, 860, easeIO);
   }
   function face(i, cls) { return '<div class="face ' + cls + '">' + cardHTML(i, 'page') + '<i class="shade" aria-hidden="true"></i></div>'; }
 
@@ -379,14 +426,39 @@
     else scrollTo(st.i + dir, true);
   }
   function bindNav(area) {
-    var x0 = 0, y0 = 0, t0 = 0, on = false, swallow = false;
+    var x0 = 0, y0 = 0, t0 = 0, on = false, swallow = false, drag = null;
     area.addEventListener('pointerdown', function (e) {
       if (e.button && e.button !== 0) return;
-      on = true; x0 = e.clientX; y0 = e.clientY; t0 = Date.now();
+      on = true; x0 = e.clientX; y0 = e.clientY; t0 = Date.now(); drag = null;
       swallow = popOpen() && !e.target.closest('.gl');
     });
+    // 책 보기: 손가락·마우스를 따라 책장이 넘어간다
+    area.addEventListener('pointermove', function (e) {
+      if (!on || st.mode !== 'book' || reduce || swallow) return;
+      var dx = e.clientX - x0, dy = e.clientY - y0;
+      if (!drag) {
+        if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+        if (e.target.closest('.tb-w') || (W.getSelection && String(W.getSelection()).length > 0)) return;
+        if (!buildFlip(dx < 0 ? 1 : -1)) { on = false; return; }
+        var pw = fl.leaf.offsetWidth || 400;
+        drag = { span: fl.per === 2 ? pw * 1.5 : pw * 1.1, lx: e.clientX, lt: e.timeStamp, v: 0 };
+        try { area.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+      if (!fl) return;
+      var dt = Math.max(1, e.timeStamp - drag.lt);
+      drag.v = drag.v * .6 + ((e.clientX - drag.lx) / dt) * .4; drag.lx = e.clientX; drag.lt = e.timeStamp;
+      drawFlip((fl.dir > 0 ? -dx : dx) / drag.span);
+      e.preventDefault();
+    });
+    var release = function (cancel) {
+      var f = fl, v = drag.v * (f.dir > 0 ? -1 : 1); drag = null;
+      var go = !cancel && (f.p > .38 || (v > .45 && f.p > .05)) && !(v < -.35);
+      var rest = go ? 1 - f.p : f.p;
+      animFlip(go ? 1 : 0, Math.max(180, 620 * rest), easeOut);
+    };
     area.addEventListener('pointerup', function (e) {
       if (!on) return; on = false;
+      if (drag) { if (fl) release(false); else drag = null; return; }
       if (swallow) { swallow = false; return; }
       if (e.target.closest('.gl, a, button, .tb-w')) return;
       if (W.getSelection && String(W.getSelection()).length > 0) return;
@@ -397,7 +469,7 @@
         step(e.clientX - r.left < r.width * (st.mode === 'book' && st.per === 2 ? 0.5 : 0.35) ? -1 : 1);
       }
     });
-    area.addEventListener('pointercancel', function () { on = false; });
+    area.addEventListener('pointercancel', function () { on = false; if (drag) { if (fl) release(true); else drag = null; } });
     $('bPrev').addEventListener('click', function () { step(-1); });
     $('bNext').addEventListener('click', function () { step(1); });
   }
