@@ -17,7 +17,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 <style>
 :root{
   --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
-  --ink:#2a2521;--muted:#655c53;--dim:#7b7168;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
   --acc:#8f5f00;--acc-soft:rgba(143,95,0,.09);--teal:#0f766e;--teal-soft:rgba(15,118,110,.1);--stamp:#be123c;--stamp-soft:rgba(190,18,60,.08);
   --paper:#fffdf6;--rule:rgba(70,110,160,.13);--margin:rgba(190,18,60,.22);--tape:rgba(236,205,120,.62);
   --shadow:0 1px 2px rgba(70,50,25,.05),0 10px 28px -18px rgba(70,50,25,.22);
@@ -422,6 +422,15 @@ mark{background:none;color:inherit;border-radius:3px;padding:0 1px}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media print{.hd,.pv,.side,.oth,.acts,.drill{display:none}.pad{box-shadow:none;border:1px solid #ccc}}
+/* 아주 넓은 화면(1400px 이상): 본문을 넓히고 연습 도구는 왼쪽, 표현·피할 말·연습 문제는 오른쪽 기둥(app.js splitCols) */
+@media (min-width:1400px){
+  .wrap{max-width:1480px}
+  .shell{grid-template-columns:270px minmax(0,1fr);gap:36px}
+  .cols{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:0 36px;align-items:start}
+  .cols>.col-r>.two{grid-template-columns:minmax(0,1fr)}
+  .cols>.col-r>:first-child{margin-top:24px}
+  .cols>.col-r{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;scrollbar-width:thin;padding-right:4px}
+}
 </style>
 </head>
 <body data-view="home">

@@ -17,7 +17,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 <style>
 :root{
   --bg:#faf6ef;--panel:#fffdf8;--soft:#f3ede2;--line:#e9e0d2;--line-2:#d8ccb9;
-  --ink:#2a2521;--muted:#655c53;--dim:#7b7168;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
   --acc:#3451b2;--acc-soft:rgba(52,81,178,.08);
   --pen:#cf2f38;--pen-soft:rgba(207,47,56,.10);
   --dem:#c95a12;--sup:#0f7f74;--good:#2f7d32;--note:#fff1a8;--note-ink:#4a3f12;
@@ -303,6 +303,14 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:10px 16px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:14.5px;font-weight:650;transition:.25s;z-index:50;max-width:calc(100vw - 32px)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 /* 집중 보기(assets/prefs.js): 왼쪽 차례를 접고 본문 한 단만 남긴다. 차례로 돌아가는 링크는 살려 둔다. */
+/* 어림셈(조작부가 있는 그림판): 넓은 화면에서는 조작부 왼쪽, 막대·결과 오른쪽 */
+@media (min-width:1000px){
+  .paper:has(>.ctrl){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);column-gap:32px;align-items:start}
+  .paper:has(>.ctrl)>*{grid-column:2;min-width:0}
+  .paper:has(>.ctrl)>.clip,.paper:has(>.ctrl)>h4,.paper:has(>.ctrl)>.hint{grid-column:1 / -1}
+  .paper:has(>.ctrl)>.ctrl{grid-column:1;grid-row:span 3}
+  .paper:has(>.ctrl)>.read{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
 html[data-jc-imm] .toc{display:none!important}
 html[data-jc-imm] .cv{display:block;max-width:860px;margin-inline:auto}
 html[data-jc-imm] .mtoc{display:flex}
