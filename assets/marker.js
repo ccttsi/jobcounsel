@@ -313,8 +313,10 @@
     '*{box-sizing:border-box;font:inherit;color:inherit;margin:0}',
     'button{cursor:pointer;background:none;border:0;padding:0;-webkit-tap-highlight-color:transparent}',
     'button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:10px}',
-    '.fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(var(--lift,0px) + max(16px,env(safe-area-inset-bottom)));z-index:2;width:52px;height:52px;border-radius:18px;display:grid;place-items:center;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .2s cubic-bezier(.2,1.4,.4,1),bottom .25s}',
+    '.fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(var(--lift,0px) + max(16px,env(safe-area-inset-bottom)));z-index:2;width:52px;height:52px;border-radius:18px;display:grid;place-items:center;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .2s cubic-bezier(.2,1.4,.4,1),bottom .25s,opacity .28s ease}',
     '.fab:active{transform:scale(.94)}',
+    /* 집중 보기에서 쉬는 동안(assets/prefs.js가 data-jc-idle을 단다)은 연하게 물러나 있는다 */
+    ':host([data-jc-idle]) .fab[data-mode="off"]:not([aria-expanded="true"]){opacity:.3}',
     '.fab svg{width:26px;height:26px;transform:rotate(-8deg)}',
     '.fab .cnt{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--acc);color:#fff;font-size:11px;font-weight:700;line-height:20px;text-align:center}',
     ':host([data-dark]) .fab .cnt{color:#08221f}',

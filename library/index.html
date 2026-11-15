@@ -597,6 +597,13 @@ document.documentElement.setAttribute('data-theme',t);})();
     #dBody > * { max-width: 900px; }
     .sec p { font-size: 17px; line-height: 1.8; }
   }
+  /* 집중 보기(assets/prefs.js): 읽기 책상은 머리말·목차 없이 본문만 화면 가득. 서가에서는 책장만 남는다. */
+  html[data-jc-imm] .drawer { width: 100vw; border-left: 0; }
+  html[data-jc-imm] .drawer .dhead, html[data-jc-imm] .dtoc { display: none !important; }
+  html[data-jc-imm] #dBody { padding-top: max(22px, env(safe-area-inset-top)); }
+  @media (min-width: 1024px) {
+    html[data-jc-imm] #dBody { padding-left: max(32px, calc((100vw - 900px) / 2)) !important; padding-right: max(32px, calc((100vw - 900px) / 2)) !important; }
+  }
   /* 가로로 눕힌 휴대폰: 위 머리말은 고정하지 않는다 */
   @media (orientation: landscape) and (max-height: 500px) { header.hud { position: relative !important; } }
   /* ---------- SEARCH PALETTE ---------- */
@@ -697,6 +704,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   <div id="dHead" class="dhead">
     <div class="dhead-bar">
       <div class="dhead-short"><span id="dSerial" class="mono text-[12px] font-bold acc"></span><b id="dShort"></b></div>
+      <span data-jc-prefs="immersive"></span>
       <button id="btnRoll" type="button" class="roll-toggle tap rounded-xl inline-flex items-center justify-center gap-1 hover-soft" aria-expanded="true" aria-controls="dRoll" style="font-size:var(--fs-xs)">
         <span id="rollLabel" class="t-dim">말기</span><i data-lucide="chevron-down" class="w-4 h-4"></i>
       </button>

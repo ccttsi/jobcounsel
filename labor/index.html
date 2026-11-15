@@ -302,6 +302,10 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .loading{padding:48px 0;text-align:center;color:var(--muted)}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:10px 16px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:14.5px;font-weight:650;transition:.25s;z-index:50;max-width:calc(100vw - 32px)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+/* 집중 보기(assets/prefs.js): 왼쪽 차례를 접고 본문 한 단만 남긴다. 차례로 돌아가는 링크는 살려 둔다. */
+html[data-jc-imm] .toc{display:none!important}
+html[data-jc-imm] .cv{display:block;max-width:860px;margin-inline:auto}
+html[data-jc-imm] .mtoc{display:flex}
 @media print{.tabs,.hd,.pv,.hero-art,.toc,.pn,.act,.mtoc{display:none!important}.paper,.ic{box-shadow:none}}
 </style>
 </head>
