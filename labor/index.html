@@ -366,7 +366,9 @@ html[data-jc-imm] .mtoc{display:flex}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="./app.js" defer></script>
 <script src="../assets/marker.js" defer></script>
-<script>window.JC_FS_SKIP = '.paper .clip, .marked sup, .ic-h .n';</script>
+<script>window.JC_FS_SKIP = '.paper .clip, .marked sup, .ic-h .n';
+/* 휴대폰에서는 풀이·사례·이어 보기·확인처를 접어 두고 제목을 누르면 펼친다. 뉴스 읽기의 다섯 가지 질문은 넓은 화면에서도 접어 둔다. */
+window.JC_FOLD = [{ head: '.desk h3.st', on: 'always' }, { head: 'h3.st' }];</script>
 <script src="../assets/prefs.js" defer></script>
 </body>
 </html>

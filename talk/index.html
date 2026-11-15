@@ -467,7 +467,9 @@ a();setInterval(a,60000);window.addEventListener('storage',function(e){if(e.key=
 <script src="./finder.js"></script>
 <script src="./app.js"></script>
 <script src="../assets/marker.js" defer></script>
-<script>window.JC_FS_SKIP = '.cw, .hp-no, .pk-no';</script>
+<script>window.JC_FS_SKIP = '.cw, .hp-no, .pk-no';
+/* 휴대폰에서는 요점·표현·피할 말·연습 문제를 접어 두고 누르면 펼친다(연습 도구는 그대로 보인다) */
+window.JC_FOLD = [{ box: 'section.pts', title: '요점 먼저 보기' }, { box: 'section.blk', head: 'h3' }, { box: 'section.drill', head: '.drill-h' }];</script>
 <script src="../assets/prefs.js" defer></script>
 </body>
 </html>
