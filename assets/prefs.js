@@ -28,6 +28,8 @@
  *    손맛 층: 위쪽 눈금·색띠(스크롤 rAF), 머리말 2톤 인쇄선, 제목 옆 소인, 눌리는 카드(.jc-pop, 실행 중에 찾아 단다),
  *    새로 들어온 덩어리의 등장 모션(.jc-in). 주기적으로 다시 그리는 곳은 data-jc-still로 뺀다.
  *    끄려면 window.JC_DESIGN = { grain: false, progress: false, seal: false, rule: false, enter: false }.
+ * 5) 접어 두기: window.JC_FOLD = [{ box, head | title, on, open } | { head }] — 휴대폰에서 상세를 접어 두고 제목을 누르면 펼친다.
+ *    DOM 구조는 바꾸지 않고 클래스·속성만 단다(아래 '접어 두기(공용)' 주석 참고).
  *    세피아는 밝은 테마 위에 종이 색을 얹는 방식이라 저장 값은 jc-theme = light, jc-tone = sepia.
  */
 (function () {
@@ -326,7 +328,20 @@
       el.classList.add('jc-pop'); if (r.width > 420) el.classList.add('jc-pop-l');
     }
   }
-  function queuePop() { clearTimeout(popT); popT = setTimeout(scanPop, 380); }
+  // 위에 붙어 있는 머리말·탭 줄의 높이만큼 스크롤 여백을 준다. 항목으로 건너뛸 때(scrollIntoView·# 링크) 제목이 그 밑에 가려지지 않게.
+  function scrollPad() {
+    var list = d.querySelectorAll('header,nav,[class*="tab"],[class*="hud"],[class*="hd"],[class*="swap"],[class*="bar"],[class*="sticky"],[class*="top"]'), max = 0, vw = d.documentElement.clientWidth;
+    for (var i = 0; i < list.length && i < 240; i++) {
+      var el = list[i], cs = getComputedStyle(el); if (cs.position !== 'sticky' && cs.position !== 'fixed') continue;
+      var t = parseFloat(cs.top); if (isNaN(t) || t > 160) continue;
+      var r = el.getBoundingClientRect(); if (!r.height || r.height > 220 || r.width < vw * .5 || el.closest('[role="dialog"],dialog,[data-jc-ignore]')) continue;
+      if (cs.position === 'fixed' && r.top > 160) continue;
+      max = Math.max(max, Math.max(0, t) + r.height);
+    }
+    var v = max ? Math.round(max + 14) + 'px' : '';
+    if (root.style.scrollPaddingTop !== v) root.style.scrollPaddingTop = v;
+  }
+  function queuePop() { clearTimeout(popT); popT = setTimeout(function () { applyFold(); scanPop(); scrollPad(); }, 380); }
   function seal() {
     if ((window.JC_DESIGN || {}).seal === false || d.querySelector('.jc-seal')) return;
     var hs = d.querySelectorAll('h1');
@@ -347,6 +362,7 @@
     var el = d.createElement('i'); el.className = 'jc-rule'; el.setAttribute('aria-hidden', 'true'); hd.appendChild(el);
   }
   function enter(records) {
+    applyFold(); // 새로 그려진 덩어리는 곧바로 접어 둔다(펼쳐졌다 접히는 깜빡임 방지)
     queuePop();
     if (!d.querySelector('.jc-seal')) setTimeout(seal, 60);
     if ((window.JC_DESIGN || {}).enter === false || still()) return;
@@ -381,7 +397,7 @@
       var req = function () { if (!raf && !still()) raf = requestAnimationFrame(upd); };
       window.addEventListener('scroll', req, { passive: true }); window.addEventListener('resize', req); upd();
     }
-    rule(); seal(); scanPop(); setTimeout(scanPop, 700); setTimeout(function () { scanPop(); seal(); rule(); }, 2200);
+    applyFold(); rule(); seal(); scanPop(); scrollPad(); window.addEventListener('resize', queuePop); setTimeout(scanPop, 700); setTimeout(function () { scanPop(); seal(); rule(); }, 2200);
     if (window.MutationObserver) new MutationObserver(enter).observe(d.body, { childList: true, subtree: true });
     d.addEventListener('click', queuePop, true);
     try { d.addEventListener('touchstart', function () {}, { passive: true }); } catch (e) {} // 아이폰에서 :active가 먹도록
@@ -390,6 +406,77 @@
       el.classList.remove('jc-boing'); void el.offsetWidth; el.classList.add('jc-boing');
       setTimeout(function () { el.classList.remove('jc-boing'); }, 420);
     }, true);
+  }
+
+  /* ---------- 접어 두기(공용) ---------- */
+  // 휴대폰에서는 상세를 접어 두고 제목만 보이다가 누르면 펼친다(사용자 지시 2026-11-15). 페이지가 선택자만 알려 주면 된다.
+  //   window.JC_FOLD = [
+  //     { box: 'section.blk', head: 'h3' },          // 덩어리 안의 첫 제목(직계 자식)을 손잡이로, 나머지를 접는다
+  //     { box: 'section.pts', title: '요점' },        // 제목이 없으면 손잡이를 만들어 넣는다
+  //     { head: 'h3.st' },                           // 제목 바로 다음 형제 하나를 접는다
+  //     { head: 'h3.x', on: 'always', open: true }   // on: 'narrow'(기본, 900px 미만에서만) | 'always', open: 처음부터 펼침
+  //   ];
+  // DOM 구조는 바꾸지 않고 클래스·속성만 단다. 다시 그려져도 펼친 상태를 기억한다.
+  var FOLD_CSS =
+    '.jc-fold-h{position:relative;-webkit-tap-highlight-color:transparent}' +
+    '.jc-fold-h::after{content:"";position:absolute;right:6px;top:50%;width:8px;height:8px;margin-top:-7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;opacity:.55;transform:rotate(45deg);transition:transform .2s}' +
+    '.jc-fold-h[data-open]::after{transform:translateY(4px) rotate(-135deg)}' +
+    'button.jc-fold-h{display:block;width:100%;min-height:44px;padding:8px 30px 8px 0;border:0;background:none;font:inherit;font-weight:750;color:inherit;text-align:left}' +
+    '.jc-fold-a.jc-fold-h,.jc-fold-a>.jc-fold-h{cursor:pointer;padding-right:30px}' +
+    '.jc-fold-a.jc-fold-box:not([data-open])>*:not(.jc-fold-h){display:none!important}' +
+    '.jc-fold-a.jc-fold-sib:not([data-open])+*{display:none!important}' +
+    '@media (max-width:899px){' +
+      '.jc-fold-n.jc-fold-h,.jc-fold-n>.jc-fold-h{cursor:pointer;padding-right:30px}' +
+      '.jc-fold-n.jc-fold-box:not([data-open])>*:not(.jc-fold-h){display:none!important}' +
+      '.jc-fold-n.jc-fold-sib:not([data-open])+*{display:none!important}' +
+    '}' +
+    '@media (min-width:900px){.jc-fold-n.jc-fold-h::after,.jc-fold-n>.jc-fold-h::after{display:none}.jc-fold-n>button.jc-fold-h{display:none}}' +
+    '@media (prefers-reduced-motion:reduce){.jc-fold-h::after{transition:none}}' +
+    '@media print{.jc-fold-box>*,.jc-fold-sib+*{display:revert!important}}';
+  var foldOpen = {}, foldReady = false;
+  function foldKey(i, head) { return i + '|' + location.hash + '|' + (head.id || (head.textContent || '').trim().slice(0, 28)); }
+  function foldActive(h) { return h.classList.contains('jc-fold-a') || (h.parentElement && h.parentElement.classList.contains('jc-fold-a')) || !window.matchMedia('(min-width:900px)').matches; }
+  function foldSet(h, on) {
+    var host = h.classList.contains('jc-fold-sib') ? h : h.parentElement;
+    if (on) { h.setAttribute('data-open', ''); host.setAttribute('data-open', ''); } else { h.removeAttribute('data-open'); host.removeAttribute('data-open'); }
+    h.setAttribute('aria-expanded', String(!!on));
+    foldOpen[h.getAttribute('data-jc-fk')] = !!on;
+  }
+  function applyFold() {
+    var cfgs = window.JC_FOLD; if (!cfgs || !cfgs.length) return;
+    if (!foldReady) {
+      foldReady = true;
+      var st = d.createElement('style'); st.id = 'jc-fold'; st.textContent = FOLD_CSS; d.head.appendChild(st);
+      var tog = function (e) {
+        var h = e.target.closest && e.target.closest('.jc-fold-h'); if (!h || !foldActive(h)) return;
+        if (e.type === 'keydown') { if (e.key !== 'Enter' && e.key !== ' ') return; if (h.tagName === 'BUTTON') return; e.preventDefault(); }
+        else if (e.target.closest('a,input,select,textarea') || (e.target.closest('button') && e.target.closest('button') !== h)) return;
+        foldSet(h, !h.hasAttribute('data-open'));
+        if (window.JCPrefs && JCPrefs.rescale) JCPrefs.rescale();
+      };
+      d.addEventListener('click', tog); d.addEventListener('keydown', tog);
+    }
+    cfgs.forEach(function (c, ci) {
+      var cls = c.on === 'always' ? 'jc-fold-a' : 'jc-fold-n', list, i;
+      try { list = d.querySelectorAll(c.box || c.head); } catch (e) { return; }
+      for (i = 0; i < list.length; i++) {
+        var el = list[i], h;
+        if (c.box) {
+          if (el.classList.contains('jc-fold-box')) continue;
+          h = null;
+          if (c.head) { for (var k = 0; k < el.children.length; k++) if (matches(el.children[k], c.head)) { h = el.children[k]; break; } if (!h) continue; }
+          else { h = d.createElement('button'); h.type = 'button'; h.textContent = c.title || '자세히'; el.insertBefore(h, el.firstChild); }
+          el.classList.add('jc-fold-box', cls);
+        } else {
+          if (el.classList.contains('jc-fold-sib') || !el.nextElementSibling) continue;
+          h = el; el.classList.add('jc-fold-sib', cls);
+        }
+        h.classList.add('jc-fold-h');
+        if (h.tagName !== 'BUTTON') { h.setAttribute('role', 'button'); h.setAttribute('tabindex', '0'); }
+        var key = foldKey(ci, h); h.setAttribute('data-jc-fk', key);
+        foldSet(h, key in foldOpen ? foldOpen[key] : !!c.open);
+      }
+    });
   }
 
   /* ---------- 집중 보기(몰입형 풀화면) ---------- */
@@ -583,7 +670,7 @@
       setAwake(false);
       fsExit();
     }
-    paint();
+    paint(); queuePop();
     try { window.dispatchEvent(new CustomEvent('jc-immersive', { detail: { on: on } })); } catch (e) {}
     window.dispatchEvent(new Event('resize')); // 높이를 재는 화면(책 넘김, 고정 차례)이 다시 맞추도록
   }

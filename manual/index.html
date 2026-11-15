@@ -155,7 +155,14 @@ th{font-size:12.5px;color:var(--mute)}
   .toc button.on{background:var(--acc-soft);color:var(--acc);font-weight:700;border-left-color:var(--acc)}
   .toc button span{font-family:var(--f-num);font-size:11.5px;color:var(--mute);white-space:nowrap}
 }
-@media (min-width:1100px){.list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1100px){.list{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
+@media (min-width:1500px){.list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* 항목 카드: 제목만 먼저 보이고 누르면 세 줄 해설·함정·근거가 펼쳐진다 */
+.fold>summary{display:flex;align-items:center;gap:6px;min-height:40px;margin-top:2px;font-size:14px;font-weight:650;color:var(--acc);cursor:pointer;list-style:none}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary::after{content:"";width:7px;height:7px;margin-left:2px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg)}
+.fold[open]>summary::after{transform:translateY(2px) rotate(-135deg)}
+.fold[open]>summary{color:var(--mute)}
 @media (orientation:landscape) and (max-height:500px){.hud{position:relative}.side{top:12px!important;max-height:calc(100vh - 24px)!important}}
 @media (min-width:1280px){.shell{grid-template-columns:280px minmax(0,1fr)}}
 @media (max-width:379px){.top h1 small{display:none}.hud .row{gap:6px}.hud .row .lab{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.hud .btn{padding:6px 8px;min-width:40px}#pin{font-size:16px;min-width:56px;padding:6px 8px}}
@@ -266,11 +273,12 @@ function copyCoord(a,z){
   const no=()=>toast(coord(a,z)+' 원문은 PDF 뷰어 '+(a+OFF)+'쪽입니다. (이 브라우저에서는 복사가 막혀 있습니다)');
   try{navigator.clipboard.writeText(txt).then(ok,no)}catch(_){no()}
 }
-function card(s,i,cur){
+function card(s,i,cur,open){ /* open: 찾는 중이거나 지금 보는 항목이면 펼친 채로 */
   return '<article class="card sec'+(cur?' cur':'')+'" id="s'+i+'"><div class="meta">'+badge(s[1],s[2])+'<span class="lab">'+s[0]+'부 '+pn(s[0])+'</span></div>'
   +'<h3><button type="button" class="go" data-p="'+s[1]+'">'+s[3]+'</button></h3>'
+  +'<details class="fold"'+(open?' open':'')+'><summary>세 줄 해설 · 실무 함정 · 근거</summary>'
   +'<ol class="three">'+s[4].map(x=>'<li>'+x+'</li>').join('')+'</ol>'
-  +'<p class="pitline"><b>실무 함정</b> '+s[5]+'</p><p class="refline"><b>근거·서식</b> '+s[6]+'</p></article>';
+  +'<p class="pitline"><b>실무 함정</b> '+s[5]+'</p><p class="refline"><b>근거·서식</b> '+s[6]+'</p></details></article>';
 }
 function inspect(){
   const i=secOf(page),s=S[i],el=$('#insp');
@@ -294,7 +302,7 @@ function list(){
   const hit=S.map((s,i)=>[s,i]).filter(x=>q?JSON.stringify(x[0]).toLowerCase().includes(q):x[0][0]===part);
   const pp=P[part-1];
   $('#mapInfo').textContent=q?'전권에서 '+hit.length+'개 항목을 찾았습니다.':pp[0]+'부 '+pp[1]+' · p.'+pp[2]+'~p.'+pp[3]+' · '+pp[4]+' · '+hit.length+'개 항목';
-  $('#list').innerHTML=hit.map(x=>card(x[0],x[1],x[1]===ci)).join('')||'<p class="refline">찾는 내용이 없습니다. 단어를 줄여 보세요.</p>';
+  $('#list').innerHTML=hit.map(x=>card(x[0],x[1],x[1]===ci,!!q||x[1]===ci)).join('')||'<p class="refline">찾는 내용이 없습니다. 단어를 줄여 보세요.</p>';
 }
 function setPage(p,top){
   page=Math.max(1,Math.min(MAX,p));part=S[secOf(page)][0];

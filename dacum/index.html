@@ -169,6 +169,12 @@ ul.dl li::before{content:"";position:absolute;left:2px;top:.72em;width:6px;heigh
 .kv dt{color:var(--muted);font-weight:600;font-size:13px}
 svg text{font-family:var(--f-body)}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+/* 모듈은 한 번에 하나만 보인다(여섯 모듈을 세로로 길게 늘어놓지 않는다). 왼쪽·위 모듈 단추로 넘긴다. */
+main>section.mod:not(.cur){display:none}
+.modnext{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;margin-top:8px}
+.modnext button{min-height:48px;padding:8px 16px;border:1px solid var(--line);border-radius:12px;background:transparent;font-size:15px;font-weight:650;text-align:left}
+.modnext button span{display:block;font-size:12.5px;font-weight:500;opacity:.65}
+@media print{main>section.mod{display:grid!important}.modnext{display:none}}
 </style>
 </head>
 <body>
@@ -574,12 +580,15 @@ const S={axiom:0,src:'dacum',level:'duty',open:new Set(['A']),hit:null,stage:0,s
 function josa(w){const c=w.trim().slice(-1).charCodeAt(0);if(c<0xAC00||c>0xD7A3)return '을(를)';return (c-0xAC00)%28?'을':'를';}
 function sent(t,plain){const o=t.o+josa(t.o);return plain?`${t.q} ${o} ${t.v}`:`<span class="tq">${esc(t.q)}</span> <span class="to">${esc(o)}</span> <span class="tv font-bold">${esc(t.v)}</span>`;}
 function flash(el){if(!el)return;el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
-function scrollToId(id){const el=document.getElementById(id);if(!el)return;el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});flash(el.classList.contains('mod')?null:el);}
+function showMod(id,keep){const cur=document.getElementById(id);if(!cur||!cur.classList.contains('mod'))return;const was=cur.classList.contains('cur');$$('section.mod').forEach(s=>s.classList.toggle('cur',s===cur));$$('[data-nav]').forEach(b=>b.classList.toggle('on',b.dataset.nav===id));const mb=$('#mnav [data-nav="'+id+'"]');if(mb){const p=mb.closest('.mnav');if(p)p.scrollTo({left:mb.offsetLeft-12,behavior:'auto'});}if(!was){window.dispatchEvent(new Event('resize'));if(!keep)window.scrollTo(0,0);}}
+/* 다른 모듈 안의 항목으로 건너뛸 때(검색·용어 링크·형광펜 목록)는 그 모듈을 먼저 편다 */
+(function(){const siv=Element.prototype.scrollIntoView;Element.prototype.scrollIntoView=function(){const m=this.closest&&this.closest('section.mod');if(m&&!m.classList.contains('cur'))showMod(m.id,true);return siv.apply(this,arguments);};})();
+function scrollToId(id){const el=document.getElementById(id);if(!el)return;if(el.classList.contains('mod')){showMod(id);return;}el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});flash(el.classList.contains('mod')?null:el);}
 const taskById=id=>ALLT.find(t=>t.id===id);
 
 /* ---------- NAV ---------- */
 function renderNav(){const h=MODS.map(m=>`<button class="navl" data-act="go" data-to="sec:${m[0]}" data-nav="${m[0]}"><span class="n">${m[1]}</span><span>${m[2]}</span></button>`).join('');$('#snav').innerHTML=h;$('#mnav').innerHTML=h;}
-function spy(){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){$$('[data-nav]').forEach(b=>b.classList.toggle('on',b.dataset.nav===e.target.id));const mb=$('#mnav [data-nav="'+e.target.id+'"]');if(mb){const p=mb.closest('.mnav');p.scrollTo({left:mb.offsetLeft-12,behavior:reduce?'auto':'smooth'});}}});},{rootMargin:'-25% 0px -65% 0px'});$$('section.mod').forEach(s=>io.observe(s));}
+function spy(){MODS.forEach((m,i)=>{const sec=document.getElementById(m[0]);if(!sec)return;const pv=MODS[i-1],nx=MODS[i+1];sec.insertAdjacentHTML('beforeend','<div class="modnext">'+(pv?'<button type="button" data-act="go" data-to="sec:'+pv[0]+'"><span>이전 '+pv[1]+'</span>'+pv[2]+'</button>':'<i></i>')+(nx?'<button type="button" data-act="go" data-to="sec:'+nx[0]+'"><span>다음 '+nx[1]+'</span>'+nx[2]+'</button>':'')+'</div>');});showMod(MODS[0][0],true);return;const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){$$('[data-nav]').forEach(b=>b.classList.toggle('on',b.dataset.nav===e.target.id));const mb=$('#mnav [data-nav="'+e.target.id+'"]');if(mb){const p=mb.closest('.mnav');p.scrollTo({left:mb.offsetLeft-12,behavior:reduce?'auto':'smooth'});}}});},{rootMargin:'-25% 0px -65% 0px'});$$('section.mod').forEach(s=>io.observe(s));}
 
 /* ---------- M1 ---------- */
 function renderOrigin(){$('#origin').innerHTML=ORIGIN.map(o=>`<div class="grid grid-cols-[92px_minmax(0,1fr)] gap-3"><span class="mono text-[12px] pt-[3px]" style="color:var(--accent)">${o[0]}</span><span class="text-[14px]">${o[1]}</span></div>`).join('')+`<p class="muted text-[13px] border-t pt-3" style="border-color:var(--line)">DACUM을 Norton이 처음 만든 것은 아닙니다. 캐나다에서 시작됐고 Norton과 CETE가 표준 절차로 정립해 세계에 보급했습니다.</p>`;}
