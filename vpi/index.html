@@ -229,7 +229,6 @@ footer p{padding:16px 0 22px;font-size:12.5px;color:var(--muted);max-width:none}
           <button type="button" id="mode-basic" data-mode="basic" aria-pressed="true">기본</button>
           <button type="button" id="mode-detail" data-mode="detail" aria-pressed="false">세부</button>
         </div>
-        <button class="btn primary" id="btn-save" type="button">💾 로컬 HTML 파일 저장</button>
         <button class="btn" id="btn-print" type="button">인쇄 / PDF (A4)</button>
         <span data-jc-prefs></span>
         <button class="btn" id="btn-theme" style="display:none" hidden type="button" aria-label="화면 테마 전환">다크 모드</button>
@@ -386,7 +385,6 @@ footer p{padding:16px 0 22px;font-size:12.5px;color:var(--muted);max-width:none}
 <script id="vpi-script">
 (function(){
 'use strict';
-var APP_HTML = document.getElementById('app').outerHTML; // pristine markup, used by the HTML export
 
 /* ---------- data model ---------- */
 var TESTS = {
@@ -535,16 +533,6 @@ PRESETS[4].sub={'per.A':[-2,0,2,8,0,-8],'per.N':[20,-4,-4,-4,-4,-4],'per.C':[-4,
 /* ---------- state ---------- */
 var state = {int:{},per:{},life:{},edited:{},jobOn:false,tab:'int',preset:null,theme:null,sub:{},valid:{sd:50,care:50},mode:'basic'};
 Object.keys(TESTS).forEach(function(t){TESTS[t].scales.forEach(function(s){state[t][s.k]=MEAN;});});
-if (window.__VPI_STATE__){
-  try{
-    var saved=window.__VPI_STATE__;
-    ['int','per','life'].forEach(function(t){Object.keys(state[t]).forEach(function(k){
-      if(saved[t]&&typeof saved[t][k]==='number') state[t][k]=clamp(saved[t][k]);});});
-    state.edited=saved.edited||{}; state.jobOn=!!saved.jobOn; state.preset=saved.preset||null; state.theme=saved.theme||null;
-    state.sub=saved.sub||{}; if(saved.valid){state.valid.sd=clamp(saved.valid.sd);state.valid.care=clamp(saved.valid.care);} if(saved.mode==='detail')state.mode='detail';
-    if(saved.tab&&document.getElementById('panel-'+saved.tab)) state.tab=saved.tab;
-  }catch(e){}
-}
 
 function clamp(v){v=Math.round(Number(v));if(isNaN(v))v=MEAN;return Math.max(MIN,Math.min(MAX,v));}
 function $(id){return document.getElementById(id);}
@@ -1177,37 +1165,9 @@ function effectiveTheme(){
 }
 function paintThemeButton(){$('btn-theme').textContent=effectiveTheme()==='dark'?'라이트 모드':'다크 모드';}
 
-/* ---------- export ---------- */
+/* ---------- 알림 ---------- */
 var toastTimer;
 function toast(msg){var t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.hidden=true;},3200);}
-function buildExport(){
-  var snap={int:state.int,per:state.per,life:state.life,edited:state.edited,jobOn:state.jobOn,preset:state.preset,tab:state.tab,theme:state.theme,sub:state.sub,valid:state.valid,mode:state.mode};
-  var font=$('vpi-font'),open='<scr'+'ipt',close='</scr'+'ipt>';
-  return '<!DOCTYPE html>\n<html lang="ko"'+(state.theme?' data-theme="'+state.theme+'"':'')+'>\n<head>\n<meta charset="utf-8">\n'+
-    '<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>'+document.title+'</title>\n'+
-    (font?font.outerHTML+'\n':'')+$('vpi-style').outerHTML+'\n</head>\n<body>\n'+APP_HTML+'\n'+
-    open+'>window.__VPI_STATE__='+JSON.stringify(snap).replace(/</g,'\\u003c')+';'+close+'\n'+
-    open+' id="vpi-script">'+$('vpi-script').textContent+close+'\n</body>\n</html>\n';
-}
-function saveHtml(){
-  var html=buildExport(),name='직업선호도검사-L형-해석-시뮬레이터.html';
-  function direct(){
-    try{
-      var url=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));
-      var a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(function(){URL.revokeObjectURL(url);},2000);
-      toast('HTML 파일을 저장했습니다. 현재 점수가 함께 담깁니다.');
-    }catch(e){toast('이 화면에서는 파일을 저장할 수 없습니다.');}
-  }
-  if(window.claude&&typeof window.claude.use==='function'){
-    toast('저장을 준비하고 있습니다.');
-    window.claude.use('downloads').then(function(d){
-      if(!d){direct();return;}
-      return d.save({filename:name,data:html}).then(function(){toast('HTML 파일을 저장했습니다. 현재 점수가 함께 담깁니다.');},
-        function(err){toast(err&&err.code==='declined'?'저장을 취소했습니다.':'저장하지 못했습니다. 잠시 뒤 다시 시도하세요.');});
-    },direct);
-  }else direct();
-}
 
 /* ---------- init ---------- */
 function init(){
@@ -1236,10 +1196,9 @@ function init(){
       if(d){ev.preventDefault();selectTab(tabs[(i+d+tabs.length)%tabs.length].dataset.tab,true);}
     });
   });
-  $('btn-save').addEventListener('click',saveHtml);
   var framed=false; try{framed=window.self!==window.top;}catch(e){framed=true;}
-  if(framed) $('btn-print').hidden=true; /* embedded viewers block printing; the saved file prints */
-  $('btn-print').addEventListener('click',function(){try{window.print();}catch(e){toast('이 화면에서는 인쇄할 수 없습니다. 저장한 파일을 열어 인쇄하세요.');}});
+  if(framed) $('btn-print').hidden=true; /* embedded viewers block printing */
+  $('btn-print').addEventListener('click',function(){try{window.print();}catch(e){toast('이 화면에서는 인쇄할 수 없습니다. 브라우저 주소로 페이지를 열어 인쇄해 주세요.');}});
   $('btn-theme').addEventListener('click',function(){
     state.theme=effectiveTheme()==='dark'?'light':'dark';
     document.documentElement.setAttribute('data-theme',state.theme); paintThemeButton();

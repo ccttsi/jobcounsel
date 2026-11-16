@@ -651,9 +651,6 @@ document.documentElement.setAttribute('data-theme',t);})();
       <button id="btnSearch" type="button" class="tap glass rounded-xl px-3 inline-flex items-center justify-center gap-2 hover-line transition" style="font-size:var(--fs-xs)" aria-label="이슈 검색 (Ctrl+K)">
         <i data-lucide="search" class="w-4 h-4 t-acc"></i><span class="hidden md:inline">이슈 검색</span><kbd class="hidden lg:inline">Ctrl K</kbd>
       </button>
-      <button id="btnDownload" type="button" class="tap glass rounded-xl px-3 inline-flex items-center justify-center gap-2 hover-line transition" style="font-size:var(--fs-xs)" aria-label="index.html 로컬 저장">
-        <i data-lucide="hard-drive-download" class="w-4 h-4 t-acc"></i><span class="hidden md:inline">index.html 로컬 저장</span>
-      </button>
     </div>
   </div>
 </header>
@@ -2417,28 +2414,9 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============================================================
-   LOCAL SAVE — native Blob download of this page
+   TOAST — 짧은 화면 알림
    ============================================================ */
-const SNAPSHOT = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2400); }
-async function downloadLocalHTML() {
-  let html = null;
-  try {
-    if (location.protocol.startsWith('http')) {
-      const res = await fetch(location.href.split('#')[0], { cache: 'no-store' });
-      if (res.ok) html = await res.text();
-    }
-  } catch (_) { /* fall back to in-memory snapshot */ }
-  if (!html) html = SNAPSHOT;
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'index.html';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1500);
-  toast('index.html 저장을 시작했습니다');
-}
-$('#btnDownload').addEventListener('click', downloadLocalHTML);
 
 /* ============================================================
    THEME — 사이트 공통 설정(jc-theme): auto | light | dark
