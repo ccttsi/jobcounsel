@@ -537,6 +537,33 @@ document.documentElement.setAttribute('data-theme',t);})();
   .insight .num { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--bg); background: var(--accent); }
   .note-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
 
+  /* ---------- 서가 색인: 주제를 고르면 그 서가로 넘어간다(권 수만큼 길어지던 소장 목록을 대신한다) ---------- */
+  .idx { padding: 0 0 12px; }
+  @media (max-width: 767px) { .hero-how { display: none; } }   /* 휴대폰은 색인이 곧 안내다 */
+  .idx-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+  .idx-h h2 { margin: 0; font-size: var(--fs-lg); font-weight: 800; letter-spacing: -0.02em; }
+  .idx-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .idx-chip { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 8px; min-height: 44px; padding: 5px 10px; border: 1px solid var(--hair); border-radius: 12px; background: var(--panel); text-align: left; font-size: 13.5px; font-weight: 650; line-height: 1.3; letter-spacing: -0.02em; color: var(--ink-dim); }
+  .idx-chip .n { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; font-weight: 700; color: var(--ink-faint); }
+  .idx-chip[data-inview="true"] { border-color: var(--line2); color: var(--ink); }
+  .idx-chip[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); background: var(--panel-soft); }
+  .idx-chip[aria-pressed="true"] .n { color: var(--cyan); }
+  .idx-panel { margin-top: 10px; border-top: 1px solid var(--hair); }
+  .idx-panel button { display: grid; grid-template-columns: 4.4em minmax(0, 1fr); gap: 0 10px; align-items: start; width: 100%; text-align: left; min-height: 48px; padding: 7px 2px; border-bottom: 1px solid var(--hair); }
+  .idx-panel .s { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; font-weight: 700; color: var(--c); padding-top: 3px; }
+  .idx-panel .t { font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--ink); }
+  @media (hover: hover) { .idx-chip:hover { border-color: var(--line2); color: var(--ink); } .idx-panel button:hover .t { text-decoration: underline; text-underline-offset: 3px; } }
+  @media (min-width: 768px) {
+    .idx-chips { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+    .idx-panel { display: none; }   /* 넓은 화면은 책장 단마다 색인 카드가 있다 */
+  }
+  @keyframes idxPick { from { opacity: .45; } to { opacity: 1; } }
+  .cab-tier.is-picked .cab-row { animation: idxPick .5s ease-out; }
+  @media (prefers-reduced-motion: reduce) { .cab-tier.is-picked .cab-row { animation: none; } }
+  html[data-jc-imm] .cab-tier.is-picked .cab-row { animation: none; }
+  .src-fold > summary { display: inline-flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 700; }
+  .src-fold[open] > summary { margin-bottom: 4px; }
+
   /* ---------- 넓은 화면(태블릿·노트북·데스크톱) ---------- */
   /* 단마다 남는 자리에 '서가 색인 카드'를 꽂아 둔다(휴대폰에서는 숨김) */
   .shelf-card { display: none; }
@@ -658,24 +685,31 @@ document.documentElement.setAttribute('data-theme',t);})();
 
 <main class="mx-auto max-w-6xl px-3 sm:px-6">
   <!-- ================= INTRO ================= -->
-  <section class="pt-8 sm:pt-12 pb-6 sm:pb-8">
-    <div class="mono text-[11px] tracking-[0.2em] t-acc mb-3">NARS × NAFI // LANDMARK SLATES 01–03</div>
+  <section class="pt-6 sm:pt-12 pb-4 sm:pb-8">
+    <div class="mono text-[11px] tracking-[0.2em] t-acc mb-3">READING ROOM // SHELF 01–<span data-shelf-max></span></div>
     <h1 class="font-extrabold tracking-tight leading-[1.15]" style="font-size:var(--fs-hero)">
       청년의 이직, 지역의 격차, 고령의 일터, 그리고 AI.<br><span class="t-dim font-semibold">국내외 보고서 <span data-vol-count>여러</span> 권으로 읽는 고용의 다음 장면</span>
     </h1>
-    <p class="mt-4 max-w-3xl t-dim" style="font-size:var(--fs-base)">
-      국회·국책연구기관·국제기구의 보고서를 주제별 서가에 꽂았습니다. 서가 색인에서 주제를 고르거나, 책장이 여러 개면 옆으로 넘겨 보세요. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
+    <p class="hero-how mt-4 max-w-3xl t-dim" style="font-size:var(--fs-base)">
+      국회·국책연구기관·국제기구의 보고서를 주제별 서가에 꽂았습니다. 색인에서 주제를 고르면 그 서가로 넘어가고, 책을 누르면 읽기 책상이 열립니다.
     </p>
     <div class="mt-5 flex flex-wrap gap-2" style="font-size:var(--fs-xs)">
       <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 <span data-vol-count></span>권</span>
-      <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 5권 한국어 요약</span>
+      <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 <span data-en-count></span>권 한국어 요약</span>
       <span class="note-tag"><i data-lucide="database" class="w-3.5 h-3.5"></i>수치는 원문 그대로 인용</span>
       <span class="note-tag"><i data-lucide="message-square-quote" class="w-3.5 h-3.5"></i>상담 적용 노트는 편집자 해석</span>
     </div>
   </section>
 
+  <!-- ================= SHELF INDEX ================= -->
+  <section class="idx" aria-labelledby="idxTitle">
+    <div class="idx-h"><h2 id="idxTitle">서가 색인</h2><span id="idxCount" class="mono text-[11px] t-faint"></span></div>
+    <div id="idxChips" class="idx-chips"></div>
+    <div id="idxPanel" class="idx-panel" aria-live="polite"></div>
+  </section>
+
   <!-- ================= BOOKSHELF ================= -->
-  <section aria-label="디지털 서가" aria-roledescription="carousel" class="pb-10 sm:pb-14 -mx-3 sm:-mx-6">
+  <section aria-label="디지털 서가" aria-roledescription="carousel" class="pb-5 sm:pb-14 -mx-3 sm:-mx-6">
     <div id="caseTrack" class="case-track"></div>
     <div id="caseNav" class="case-nav" hidden>
       <button id="casePrev" type="button" class="case-arrow" aria-label="이전 책장"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
@@ -685,19 +719,13 @@ document.documentElement.setAttribute('data-theme',t);})();
     <div id="caseLabel" class="case-label" aria-live="polite"></div>
   </section>
 
-  <!-- ================= CATALOG ================= -->
-  <section class="pb-16" aria-labelledby="catalogTitle">
-    <div class="flex items-end justify-between gap-3 mb-4">
-      <h2 id="catalogTitle" class="font-bold" style="font-size:var(--fs-lg)">소장 목록</h2>
-      <span class="mono text-[11px] t-faint">CATALOG / 13 ITEMS</span>
-    </div>
-    <div id="catalog" class="grid gap-3 md:grid-cols-3 xl:grid-cols-4"></div>
-  </section>
 </main>
 
 <footer class="border-t hairline">
-  <div class="mx-auto max-w-6xl px-3 sm:px-6 py-8 t-faint" style="font-size:var(--fs-xs)">
+  <div class="mx-auto max-w-6xl px-3 sm:px-6 py-4 sm:py-8 t-faint" style="font-size:var(--fs-xs)">
+    <details class="src-fold"><summary>원문 출처</summary>
     <p class="mb-2">원문: 국회입법조사처 「이슈와 논점」 제2545호(2026.11.08, 구슬이·권다영) · 국회미래연구원 「인구통계 Brief」 26-8호(2026.10, 김봉섭) · 26-9호(2026.10, 정주영) · World Economic Forum, New Economy Skills: Skills for the Energy and Resource Transition(2026.11) · ILO, AI and developing economies(Policy Brief, 2026.11) · World Bank, Making AI Work: Jobs, Firms, and Productivity(ECA Economic Update, 2026.10, CC BY 3.0 IGO) · Aghion·Bergeaud·Bunel·Roulet, Labour market policies in the age of AI(CEPR Europe 2050, 2026.9) · 국회도서관 최신외국정책정보 2026-13호(2026.10.28, 오유빈) · World Economic Forum, Future of Jobs Report 2025(2025.1) 및 국회도서관 「2025 미래 직업 보고서」 인포그래픽 · KDI FOCUS 통권 제149호(2026.1.14, 김민섭·박윤수) · 한국고용정보원 「계간 고용이슈」 2025년 봄호 기획특집(송수종) · KDI FOCUS 통권 제148호(2025.12.24, 정수환) · 국회미래연구원 인구통계 Brief 26-5호(2026.9, 정주영·문성호). 영문 보고서의 한국어 내용은 본 서재의 요약·해설이며 각 기관의 공식 번역이 아닙니다. 각 보고서의 저작권은 발행 기관과 저자에게 있고, 권마다 끝의 「출처와 이용 조건」에 원문 링크와 이용 조건을 적었습니다. 각 보고서의 내용은 발행 기관의 공식 의견이 아닐 수 있으며, 상담 적용 노트는 본 서재 편집자의 해석입니다.</p>
+    </details>
     <a href="../" class="tap inline-flex items-center gap-1.5 hover-ink"><i data-lucide="corner-up-left" class="w-3.5 h-3.5"></i>직업상담 통합 자료실로 돌아가기</a>
   </div>
 </footer>
@@ -3797,6 +3825,7 @@ function setCase(i) {
   document.querySelectorAll('.case-dot').forEach((d, k) => d.setAttribute('aria-current', String(k === caseIdx)));
   if (caseCount > 1) { $('#casePrev').disabled = caseIdx === 0; $('#caseNext').disabled = caseIdx === caseCount - 1; }
   $('#caseLabel').textContent = caseLabelText(caseIdx);
+  if (typeof idxFollow === 'function') idxFollow();
 }
 function goToCase(i, smooth = true) {
   const s = slides[Math.max(0, Math.min(caseCount - 1, i))]; if (!s) return;
@@ -3824,14 +3853,36 @@ if (caseCount > 1) {
   });
   window.addEventListener('resize', () => goToCase(caseIdx, false));
 }
+/* 서가 색인: 단 번호·이름은 VOLS·SHELF_NAMES에서 센다(개수를 적어 두지 않는다) */
+const shelfNums = [...new Set(VOLS.map(v => v.shelf))].sort((a, b) => a - b);
+const caseOfShelf = n => Math.ceil(n / SHELVES_PER_CASE) - 1;
+let idxSel = shelfNums[0], idxLock = 0;
+document.querySelectorAll('[data-shelf-max]').forEach(el => { el.textContent = String(shelfNums[shelfNums.length - 1]).padStart(2, '0'); });
+document.querySelectorAll('[data-en-count]').forEach(el => { el.textContent = VOLS.filter(v => v.lang === 'EN').length; });
+$('#idxCount').textContent = `INDEX / ${shelfNums.length} SHELVES`;
+$('#idxChips').innerHTML = shelfNums.map(n => `<button type="button" class="idx-chip" data-shelf="${n}" aria-pressed="false"><span class="n">${String(n).padStart(2, '0')}</span><span>${SHELF_NAMES[n] || ''}</span></button>`).join('');
+function idxPaint() {
+  document.querySelectorAll('.idx-chip').forEach(ch => {
+    const n = +ch.dataset.shelf;
+    ch.setAttribute('aria-pressed', String(n === idxSel));
+    ch.dataset.inview = String(caseOfShelf(n) === caseIdx);
+  });
+  $('#idxPanel').innerHTML = VOLS.filter(v => v.shelf === idxSel).map(v => `<button type="button" data-open="${v.id}" style="--c:${v.accent}"><span class="s">${v.serial}</span><span class="t">${v.title}</span></button>`).join('');
+}
+function idxPick(n) {
+  idxSel = n; clearTimeout(idxLock); idxLock = setTimeout(() => { idxLock = 0; idxFollow(); }, 1100);   // 넘어가는 동안 지나치는 책장은 따라가지 않는다
+  goToCase(caseOfShelf(n));
+  const tier = slides[caseOfShelf(n)] && slides[caseOfShelf(n)].querySelectorAll('.cab-tier')[(n - 1) % SHELVES_PER_CASE];
+  if (tier) { tier.classList.remove('is-picked'); void tier.offsetWidth; tier.classList.add('is-picked'); setTimeout(() => tier.classList.remove('is-picked'), 700); }
+  idxPaint();
+}
+function idxFollow() {   // 책장을 옆으로 넘기면 색인도 그 책장의 첫 단을 따라간다
+  if (!idxLock && caseOfShelf(idxSel) !== caseIdx) idxSel = shelfNums.find(n => caseOfShelf(n) === caseIdx) || idxSel;
+  idxPaint();
+}
+$('#idxChips').addEventListener('click', e => { const ch = e.target.closest('.idx-chip'); if (ch) idxPick(+ch.dataset.shelf); });
+$('#idxPanel').addEventListener('click', e => { const b = e.target.closest('[data-open]'); if (b) openSlate(+b.dataset.open); });
 setCase(0);
-
-$('#catalog').innerHTML = VOLS.map(v => `
-  <button type="button" data-vol="${v.id}" class="cat-item text-left card hover-line transition tap" style="--accent:${v.accent}">
-    <div class="flex items-center gap-2 mb-1"><span class="mono text-[12px] font-bold" style="color:${v.accent}">${v.serial}</span><span class="text-[11px] t-faint">${v.authority}</span></div>
-    <div class="font-bold t-ink leading-snug" style="font-size:var(--fs-sm)">${v.title}</div>
-    <p class="mt-2 mb-0 t-dim" style="font-size:var(--fs-xs)">${v.blurb}</p>
-  </button>`).join('');
 
 /* touch: first tap lifts, second tap opens; mouse/keyboard opens directly */
 let lastPointer = 'mouse';
@@ -3848,7 +3899,6 @@ document.querySelectorAll('.book').forEach(el => {
     openSlate(vol);
   });
 });
-document.querySelectorAll('.cat-item').forEach(el => el.addEventListener('click', () => openSlate(+el.dataset.vol)));
 document.querySelectorAll('.shelf-card [data-open]').forEach(el => el.addEventListener('click', () => openSlate(+el.dataset.open)));
 
 /* ============================================================
