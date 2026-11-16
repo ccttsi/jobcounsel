@@ -38,7 +38,7 @@ button{font-family:inherit}
 
 /* layout idea: 공문서 결재판 — 한 화면에 판정 결과를 먼저, 근거 쪽수는 문서번호 꼬리표로 */
 :root{--bg:#eef0f4;--panel:#ffffff;--sunk:#e3e7ee;--ink:#141a2b;--mute:#4a5368;--line:#c5ccd9;--acc:#1d3fb8;--acc-soft:#dfe6fb;--good:#0b6b4a;--good-soft:#d9f0e6;--warn:#8a5200;--warn-soft:#fbeccd;--crit:#a3182a;--crit-soft:#fadde0;--onacc:#ffffff;
---f-body:'IBM Plex Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;--f-num:'IBM Plex Mono',ui-monospace,monospace}
+--f-body:var(--jc-sans);--f-num:'IBM Plex Mono',ui-monospace,monospace}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1220;--panel:#171d30;--sunk:#0a0e19;--ink:#eef1f8;--mute:#aab3c7;--line:#333c55;--acc:#9db4ff;--acc-soft:#22305f;--good:#6fdcae;--good-soft:#12382b;--warn:#f3c56b;--warn-soft:#3d2e0d;--crit:#ff9aa5;--crit-soft:#47161d;--onacc:#0e1220;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0e1220;--panel:#171d30;--sunk:#0a0e19;--ink:#eef1f8;--mute:#aab3c7;--line:#333c55;--acc:#9db4ff;--acc-soft:#22305f;--good:#6fdcae;--good-soft:#12382b;--warn:#f3c56b;--warn-soft:#3d2e0d;--crit:#ff9aa5;--crit-soft:#47161d;--onacc:#0e1220;color-scheme:dark}
 html,body{overflow-x:clip}@supports not (overflow-x:clip){body{overflow-x:hidden}}
