@@ -21,6 +21,7 @@
 | `/talk/` | 상담 대화 연습장 (데이터 `talk/data.js`, 찾기 엔진 `talk/finder.js`, 화면 `talk/app.js`) |
 | `/transit/` | 환승노선도 (첫 진입·재진입·전직·2막 커리어 노선도, 순행 ↔ 역행(목표 역산) 모드) |
 | `/taxonomy/` | 분류 교차 사전 (NCS 직무 · KECO · KSCO 직업 계층 탐색, 통합 검색, 역추적, 능력단위 KSA) |
+| `/portals/` | 채용 사이트 안내판 (3초 진단, 대분류 × 직무 × 대상 교차 필터, 상담 활용 팁·검증일, 공식 주소 이동) |
 | `/parsons/` | 다시 읽는 『직업의 선택』 — 파슨스 1909년 초판 카드뉴스 이북 (데이터 `parsons/data/*.json`, 화면 `parsons/app.js`) |
 | `/labor/` | 노동시장 산책 (노동경제 개념 그래프 + 고용 뉴스 읽기 도우미) |
 | `/cert/` | 자격증 도감 (4대 분류 자격증 위키 830건. 데이터 `cert/data/certifications.json`, 화면 `cert/app.js`) |
