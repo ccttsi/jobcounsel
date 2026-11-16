@@ -1,0 +1,155 @@
+/* core.js — 자료실 언더시스템(모든 섹터 밑에서 도는 공통 장치)
+ *
+ * 넣는 법: <head>의 <meta charset> 바로 아래에 defer 없이 한 줄.
+ *            <script src="../assets/core.js"></script>      (대문은 ./assets/core.js)
+ *          다른 스크립트보다 먼저 실행돼야 자료 요청을 빠짐없이 지킨다.
+ *
+ * 하는 일
+ * 1) 자료 안전망: 같은 사이트의 data/*.json 요청이 끊기면(연결 오류·서버 5xx) 0.4초, 1.2초 뒤 스스로 다시 받는다.
+ *    그래도 안 되면 섹터가 쓰던 안내 문구는 그대로 두고, 화면 위쪽에 「다시 시도」 띠를 띄운다.
+ *    404(파일 없음)는 다시 받지 않는다 — 있어도 되고 없어도 되는 자료를 섹터가 스스로 판단한다.
+ * 2) 기다림 표시: 자료를 0.6초 넘게 받고 있으면 화면 맨 위에 가는 선을 띄운다(transform만 움직임).
+ * 3) 연결 안내: 인터넷이 끊기면 알리고, 다시 이어지면 끊긴 동안 못 받은 자료가 있을 때만 「다시 불러오기」를 권한다.
+ * 4) 미리 받기: 자료실 안의 다른 화면으로 가는 링크에 손이 닿으면 그 화면 문서를 미리 받아 둔다(데이터 절약 모드에서는 쉼).
+ *
+ * 섹터가 쓸 수 있는 것: window.JCCore = { base, state(), warm(href), notice(text, label, fn), clear() }
+ * 화면 밖으로 내보내는 것은 없다. 외부 서버를 부르지 않는다.
+ */
+(function () {
+  'use strict';
+  if (window.JCCore) return;
+  var d = document, root = d.documentElement;
+  var ME = (d.currentScript && d.currentScript.src) || '';
+  var BASE = ME.replace(/assets\/core\.js(\?.*)?$/, '');          // 자료실 뿌리 주소(끝에 /)
+  var rawFetch = window.fetch ? window.fetch.bind(window) : null;
+  var st = { failed: false, offline: false, pending: 0 };
+  var RETRY = [400, 1200];                                         // 다시 받기 전 쉬는 시간(ms)
+
+  /* ---------- 1) 자료 안전망 ---------- */
+  function urlOf(input) { return typeof input === 'string' ? input : (input && input.url) || String(input); }
+  function isData(input, init) {
+    var m = (init && init.method) || (input && typeof input === 'object' && input.method) || 'GET';
+    if (String(m).toUpperCase() !== 'GET') return false;
+    try { var u = new URL(urlOf(input), location.href); return u.origin === location.origin && /\.json$/i.test(u.pathname); } catch (e) { return false; }
+  }
+  function wait(ms) { return new Promise(function (res) { setTimeout(res, ms); }); }
+  function guarded(input, init) {
+    var n = 0;
+    busy(1);
+    function once() {
+      return rawFetch(input, init).then(function (r) {
+        if (r.status >= 500 && n < RETRY.length) return wait(RETRY[n++]).then(once);
+        if (r.status >= 500) fail();
+        return r;
+      }, function (err) {
+        if (err && err.name === 'AbortError') throw err;            // 섹터가 스스로 그만둔 요청
+        if (n < RETRY.length) return wait(RETRY[n++]).then(once);
+        fail(); throw err;
+      });
+    }
+    return once().then(function (r) { busy(-1); return r; }, function (e) { busy(-1); throw e; });
+  }
+  if (rawFetch) window.fetch = function (input, init) { return isData(input, init) ? guarded(input, init) : rawFetch(input, init); };
+  function fail() {
+    st.failed = true;
+    if (navigator.onLine === false) { st.offline = true; show('인터넷 연결이 끊겨 자료를 불러오지 못했습니다.', null); }
+    else show('자료를 불러오지 못했습니다.', '다시 시도');
+  }
+
+  /* ---------- 화면 조각(그림자 DOM — 섹터 CSS와 섞이지 않는다) ---------- */
+  var host = null, sr = null, bar = null, line = null, busyT = 0;
+  var CSS = ':host{all:initial;position:fixed;left:0;right:0;top:0;z-index:2147482000;pointer-events:none;font-family:inherit}' +
+    '.ln{position:absolute;left:0;right:0;top:0;height:2px;overflow:hidden;opacity:0;transition:opacity .18s}' +
+    '.ln.on{opacity:1}' +
+    '.ln i{position:absolute;left:0;top:0;width:40%;height:100%;background:var(--c);transform:translateX(-100%)}' +
+    '.ln.on i{animation:run 1.1s cubic-bezier(.4,0,.2,1) infinite}' +
+    '@keyframes run{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}' +
+    '.bar{position:absolute;left:0;right:0;margin:0 auto;top:calc(env(safe-area-inset-top,0px) + 10px);display:flex;align-items:center;gap:4px;' +
+    'width:fit-content;max-width:min(92vw,440px);box-sizing:border-box;padding:0 6px 0 16px;min-height:48px;border-radius:12px;' +
+    'background:var(--bg);color:var(--fg);font-size:14px;line-height:1.45;letter-spacing:-.01em;' +
+    'transform:translateY(-140%);opacity:0;transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .18s;pointer-events:none}' +
+    '.bar.on{transform:none;opacity:1;pointer-events:auto}' +
+    '.bar p{margin:0;padding:10px 0;flex:1;min-width:0;word-break:keep-all}' +
+    '.bar button{all:unset;box-sizing:border-box;min-width:44px;min-height:44px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;' +
+    'border-radius:9px;font:inherit;font-weight:700;color:var(--fg);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}' +
+    '.bar button:active{opacity:.6}.bar button:focus-visible{outline:2px solid var(--c);outline-offset:-2px}' +
+    '.bar .go{text-decoration:underline;text-underline-offset:3px}' +
+    ':host{--bg:#2a2521;--fg:#f7f2ea;--c:#0f766e}:host([data-dark]){--bg:#e6e9ef;--fg:#08090c;--c:#2dd4bf}' +
+    ':host([data-still]) .ln.on i{animation:none;transform:none;width:100%;opacity:.45}' +
+    ':host([data-still]) .bar{transition:none}' +
+    '@media (prefers-reduced-motion:reduce){.ln.on i{animation:none;transform:none;width:100%;opacity:.45}.bar{transition:none}}';
+  function build() {
+    if (host || !d.body) return !!host;
+    host = d.createElement('div'); host.id = 'jc-core'; host.setAttribute('data-jc-ignore', '');
+    sr = host.attachShadow ? host.attachShadow({ mode: 'open' }) : host;
+    sr.innerHTML = '<style>' + CSS + '</style><div class="ln" aria-hidden="true"><i></i></div>' +
+      '<div class="bar" role="status" aria-live="polite"><p></p><button type="button" class="go" hidden></button><button type="button" class="x" aria-label="안내 닫기">닫기</button></div>';
+    line = sr.querySelector('.ln'); bar = sr.querySelector('.bar');
+    bar.querySelector('.go').addEventListener('click', function () { if (act) act(); });
+    bar.querySelector('.x').addEventListener('click', hide);
+    d.body.appendChild(host); theme();
+    try { new MutationObserver(theme).observe(root, { attributes: true, attributeFilter: ['data-theme', 'data-jc-imm'] }); } catch (e) {}
+    return true;
+  }
+  function theme() {
+    if (!host) return;
+    if (root.getAttribute('data-theme') === 'dark') host.setAttribute('data-dark', ''); else host.removeAttribute('data-dark');
+    if (root.hasAttribute('data-jc-imm')) host.setAttribute('data-still', ''); else host.removeAttribute('data-still');
+  }
+  function ready(fn) { if (d.body) fn(); else d.addEventListener('DOMContentLoaded', fn, { once: true }); }
+  var act = null;
+  function show(text, label, fn) {
+    ready(function () {
+      if (!build()) return;
+      bar.querySelector('p').textContent = text;
+      var go = bar.querySelector('.go');
+      act = label ? (fn || reload) : null; go.hidden = !label; go.textContent = label || '';
+      bar.classList.add('on');
+    });
+  }
+  function hide() { if (bar) bar.classList.remove('on'); }
+  function reload() { try { location.reload(); } catch (e) {} }
+
+  /* ---------- 2) 기다림 표시 ---------- */
+  function busy(n) {
+    st.pending = Math.max(0, st.pending + n);
+    if (st.pending && !busyT) busyT = setTimeout(function () { busyT = 0; if (st.pending) ready(function () { if (build() && st.pending) line.classList.add('on'); }); }, 600);
+    if (!st.pending) { clearTimeout(busyT); busyT = 0; if (line) line.classList.remove('on'); }
+  }
+
+  /* ---------- 3) 연결 안내 ---------- */
+  window.addEventListener('offline', function () { st.offline = true; show('인터넷 연결이 끊겼습니다. 열어 둔 화면은 그대로 볼 수 있습니다.', null); });
+  window.addEventListener('online', function () {
+    if (!st.offline) return; st.offline = false;
+    if (st.failed) show('다시 연결됐습니다.', '다시 불러오기'); else hide();
+  });
+
+  /* ---------- 4) 미리 받기 ---------- */
+  var warmed = {}, warmN = 0, hoverT = 0;
+  function target(e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null; if (!a || a.target === '_blank' || a.hasAttribute('download')) return null;
+    try {
+      var u = new URL(a.href, location.href);
+      if (u.origin !== location.origin || !BASE || u.href.indexOf(BASE) !== 0) return null;
+      if (u.pathname === location.pathname) return null;                                   // 같은 화면 안의 이동
+      if (!/\/$|\.html$/.test(u.pathname)) return null;
+      return u.origin + u.pathname;
+    } catch (err) { return null; }
+  }
+  function warm(href) {
+    if (!href || warmed[href] || warmN >= 6 || !rawFetch || navigator.onLine === false) return;
+    var c = navigator.connection; if (c && (c.saveData || /2g/.test(c.effectiveType || ''))) return;
+    warmed[href] = 1; warmN++;
+    try { rawFetch(href, { credentials: 'same-origin' }).catch(function () {}); } catch (e) {}
+  }
+  d.addEventListener('touchstart', function (e) { warm(target(e)); }, { passive: true, capture: true });
+  d.addEventListener('mouseover', function (e) { var h = target(e); clearTimeout(hoverT); if (h) hoverT = setTimeout(function () { warm(h); }, 90); }, { passive: true, capture: true });
+
+  window.JCCore = {
+    base: BASE,
+    state: function () { return { failed: st.failed, offline: st.offline, pending: st.pending }; },
+    warm: function (href) { try { var u = new URL(href, location.href); if (u.origin === location.origin) warm(u.origin + u.pathname); } catch (e) {} },
+    notice: function (text, label, fn) { show(String(text || ''), label || null, fn); },
+    clear: hide
+  };
+})();

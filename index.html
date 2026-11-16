@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<script src="./assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>직업상담 통합 자료실</title>
 <meta name="description" content="직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무를 익히는 학습·업무 보조 자료 모음">
@@ -766,6 +767,7 @@ function layout(){
 }
 function show(i){
   var t=TOOLS[i],first=shown<0;shown=i;
+  clearTimeout(show.w);if(userMove)show.w=setTimeout(function(){if(window.JCCore&&shown===i)JCCore.warm(t.path);},500); /* 직접 고른 문장에 머물면 그 화면을 미리 받아 둔다 */
   $('nav').style.setProperty('--acc','var(--'+t.color.replace('c','a')+')');
   $('drum').setAttribute('aria-valuenow',i+1);
   $('drum').setAttribute('aria-valuetext','오늘은 '+t.phrase+' 보고 싶어요. '+t.title);
