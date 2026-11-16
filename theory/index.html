@@ -227,9 +227,8 @@ label.ck input{width:20px;height:20px;margin-top:.2em;accent-color:var(--accent)
 .pop.on{display:flex}
 .pop h3{font-family:var(--body);font-size:.8rem;color:var(--muted)}
 footer{color:var(--muted);font-size:.78rem;line-height:1.6;border-top:1px solid var(--line);padding-top:16px}
-
 </style></head><body>
-<style>.site-home{font:600 13.5px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#f5efe4;border-bottom:1px solid #e9e0d2;padding:9px 16px}.site-home a{color:#2a2521;text-decoration:none}.site-home a:hover{text-decoration:underline}:root[data-theme="dark"] .site-home{background:#0d1017;border-bottom-color:#1e232f}:root[data-theme="dark"] .site-home a{color:#e6e9ef}@media print{.site-home{display:none}}</style>
+<style>.site-home{font:600 13.5px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#f5efe4;border-bottom:1px solid #e9e0d2;padding:9px 16px}.site-home a{color:#2a2521;text-decoration:none}.site-home a:hover{text-decoration:underline}:root[data-theme="dark"] .site-home{background:#0d1017;border-bottom-color:#1e232f}:root[data-theme="dark"] .site-home a{color:#e6e9ef}</style>
 <nav class="site-home" aria-label="사이트"><a href="../">← 직업상담 통합 자료실</a></nav>
 
 <div class="top"><div class="top-in"><button class="brand" data-nav="home"><i></i>직업상담 이론 위키</button>
@@ -512,7 +511,7 @@ function vCompare(){const s=st.seg.compare;let b='';
 function vPractice(){const s=st.seg.practice;let b='';
   if(s==='stage')b=`<p class="hint">국민취업지원제도 상담 흐름에 맞춰 단계마다 꺼내 쓸 이론과 질문입니다.</p><ol class="steps-n">${STAGES.map(g=>`<li><h3 style="font-size:1.08rem">${esc(g.t)}</h3><p class="hint">${esc(g.d)}</p><div class="qs">${g.q.map(q=>`<p class="q">${esc(q)}</p>`).join('')}</div>${mini(g.ids)}</li>`).join('')}</ol>`;
   else if(s==='tool')b=`<div class="card sec"><h3>첫 회기 구조</h3><dl class="kv" style="margin:0">${TOOLS.session.map(r=>`<div><dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd></div>`).join('')}</dl></div>
-   <div class="card sec"><h3>사례 개념화 메모</h3><p class="note">이 칸의 내용은 저장되지 않습니다. 이름과 연락처 같은 식별 정보는 적지 마세요.</p>${TOOLS.memo.map((m,i)=>`<label class="f" for="m${i}">${esc(m)}<textarea id="m${i}"></textarea></label>`).join('')}<div class="btns"><button class="btn p" data-act="memo">메모 복사</button><button class="btn" data-act="memoclr">비우기</button></div></div>
+   <div class="card sec"><h3>사례 개념화 메모</h3><p class="note">이 칸의 내용은 저장되지 않습니다. 이름과 연락처 같은 식별 정보는 적지 마세요.</p>${TOOLS.memo.map((m,i)=>`<label class="f" for="m${i}">${esc(m)}<textarea id="m${i}"></textarea></label>`).join('')}<div class="btns"><button class="btn" data-act="memoclr">비우기</button></div></div>
    <div class="card sec"><h3>회기를 마치기 전 다섯 가지</h3>${TOOLS.close.map((c,i)=>`<label class="ck" for="c${i}"><input type="checkbox" id="c${i}"><span>${esc(c)}</span></label>`).join('')}</div>
    <div class="card sec"><h3>윤리와 안전 점검</h3>${TOOLS.ethic.map((c,i)=>`<label class="ck" for="e${i}"><input type="checkbox" id="e${i}"><span>${esc(c)}</span></label>`).join('')}</div>`;
   else b=`<p class="note">2026년 11월 12일 기준으로 확인한 내용입니다. 예산안은 국회에서 바뀔 수 있으니 시행 지침을 꼭 확인하세요.</p>${TRENDS.map(t=>`<div class="card sec"><h3>${esc(t.t)}</h3><p>${esc(t.d)}</p>${mini(t.ids)}</div>`).join('')}<div class="card sec"><h3>출처</h3>${SOURCES.map(s=>`<p style="font-size:.86rem"><a href="${s[1]}" target="_blank" rel="noopener">${esc(s[0])}</a></p>`).join('')}</div>`;
@@ -557,7 +556,7 @@ function detail(id){const x=T[id];if(!x)return '';const sv=store.saved.includes(
   ${viz(x.viz,x)}
   ${x.core?blk('핵심 개념',`<dl class="kv" style="margin:0">${x.core.map(c=>`<div><dt>${esc(c[0])}</dt><dd>${esc(c[1])}</dd></div>`).join('')}</dl>`,'box'):''}
   ${blk('상담에서 이렇게 씁니다',`<p>${esc(x.use)}</p>`)}
-  ${x.ask?blk('이렇게 물어보세요',`<div class="qs">${x.ask.map(q=>`<p class="q">${esc(q)}</p>`).join('')}</div><button class="btn s" data-act="copy" data-t="${esc(x.ask.join('\n'))}" style="align-self:flex-start">질문 복사</button>`):''}
+  ${x.ask?blk('이렇게 물어보세요',`<div class="qs">${x.ask.map(q=>`<p class="q">${esc(q)}</p>`).join('')}</div>`):''}
   ${blk('주의할 점',`<p>${esc(x.limits)}</p>`,'warn')}
   ${x.exam?blk('시험·헷갈림 포인트',`<p>${esc(x.exam)}</p>`,'box'):''}
   ${blk('핵심어',`<div class="chips">${String(x.keywords).split(',').map(k=>k.trim()).filter(Boolean).map(k=>`<button class="chip" data-act="kw" data-v="${esc(k)}">${esc(k)}</button>`).join('')}</div>`)}
@@ -577,8 +576,6 @@ const go=h=>{if(location.hash==='#'+h)route();else location.hash=h};
 window.addEventListener('hashchange',route);
 
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),1600)}
-function copy(text){const ok=()=>toast('복사했습니다');const no=()=>toast('복사하지 못했습니다. 길게 눌러 직접 복사해 주세요');
-  try{navigator.clipboard.writeText(text).then(ok,no)}catch(e){no()}}
 function applyPrefs(){const r=document.documentElement;r.classList.remove('fs0','fs1','fs2');r.classList.add('fs1'); /* 글자 크기·테마는 사이트 공통 버튼(assets/prefs.js)이 맡는다 */
   document.querySelectorAll('[data-pref]').forEach(b=>{const [k,v]=b.dataset.pref.split(':');b.setAttribute('aria-pressed',String(store[k])===v)})}
 
@@ -597,8 +594,6 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act],[data
   else if(a==='seg'){st.seg[b.dataset.name]=v;render()}
   else if(a==='save'){const id=b.dataset.id;store.saved=store.saved.includes(id)?store.saved.filter(i=>i!==id):[id,...store.saved];persist();const on=store.saved.includes(id);b.textContent=on?'스크랩됨':'스크랩';b.className='btn s'+(on?' p':'');toast(on?'스크랩에 담았습니다':'스크랩에서 뺐습니다');if(st.view==='review')render()}
   else if(a==='kw'){st.q=v;st.filter='all';st.keyOnly=false;st.view='';go('theories')}
-  else if(a==='copy')copy(b.dataset.t);
-  else if(a==='memo'){const t=TOOLS.memo.map((m,i)=>`[${m}]\n${$('#m'+i).value.trim()||'-'}`).join('\n\n');copy(t)}
   else if(a==='memoclr'){TOOLS.memo.forEach((m,i)=>$('#m'+i).value='')}
   else if(a==='flip'){st.shown=true;$('#fc').innerHTML=cardHTML()}
   else if(a==='rate'){const id=st.deck[st.di];store.box[id]=+v===0?0:+v===1?1:Math.min(3,Math.max(2,(store.box[id]||0)+1));persist();st.di++;st.shown=false;render()}

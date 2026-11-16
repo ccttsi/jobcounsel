@@ -82,19 +82,19 @@
   D.modules.forEach(function (m) {
     var sig = { reflect: ['feel:*'], question: ['q:*'], cushion: ['soft:*'], cloud: ['pair:*'] }[m.id] || [];
     add({ key: 'mod:' + m.id, mod: m.id, kind: '갈래', title: m.name, snip: m.when, text: [m.when, m.term, m.lead].concat((m.points || []).map(function (p) { return p.join(' '); })).join(' '), sig: sig });
-    (m.phrases || []).forEach(function (p, i) { add({ key: 'ph:' + m.id + ':' + i, mod: m.id, kind: '바로 쓰는 표현', title: p.t.replace(/^"|"$/g, ''), snip: p.n, text: p.n, copy: p.t.replace(/^"|"$/g, ''), ex: [p.t] }); });
+    (m.phrases || []).forEach(function (p, i) { add({ key: 'ph:' + m.id + ':' + i, mod: m.id, kind: '바로 쓰는 표현', title: p.t.replace(/^"|"$/g, ''), snip: p.n, text: p.n, ex: [p.t] }); });
     (m.donts || []).forEach(function (p, i) { add({ key: 'dn:' + m.id + ':' + i, mod: m.id, kind: '피할 말', title: p[0], snip: p[1], text: p[1], ex: [p[0]] }); });
   });
   D.stuck.forEach(function (c) { add({ key: 'stuck:' + c.id, mod: 'stuck', kind: '상황 카드', title: c.k, snip: c.q, text: [c.q, c.sign, c.tags.join(' '), c.next].concat(c.try, c.avoid.map(function (a) { return a.join(' '); })).join(' '), card: c }); });
   D.frame.forEach(function (c) { add({ key: 'frame:' + c.id, mod: 'frame', kind: '상황 카드', title: c.k, snip: c.q, text: [c.q, c.sign, c.tags.join(' '), c.next].concat(c.try, c.avoid.map(function (a) { return a.join(' '); })).join(' '), card: c }); });
-  D.questionBank.forEach(function (p, i) { add({ key: 'qb:' + i, mod: 'question', kind: '질문 짝', title: p.o, snip: '닫힌 질문: ' + p.c, text: p.c + ' ' + p.tag, copy: p.o, ex: [p.c, p.o] }); });
-  D.questionFrames.forEach(function (f, i) { f.q.forEach(function (q, j) { add({ key: 'qf:' + i + ':' + j, mod: 'question', kind: '질문 틀 · ' + f.k, title: q, snip: f.k, text: f.k, copy: q }); }); });
+  D.questionBank.forEach(function (p, i) { add({ key: 'qb:' + i, mod: 'question', kind: '질문 짝', title: p.o, snip: '닫힌 질문: ' + p.c, text: p.c + ' ' + p.tag, ex: [p.c, p.o] }); });
+  D.questionFrames.forEach(function (f, i) { f.q.forEach(function (q, j) { add({ key: 'qf:' + i + ':' + j, mod: 'question', kind: '질문 틀 · ' + f.k, title: q, snip: f.k, text: f.k }); }); });
   D.cushionCases.forEach(function (c) { add({ key: 'cc:' + c.id, mod: 'cushion', kind: '다듬기 예', title: c.k, snip: '"' + c.raw + '" → ' + c.parts.filter(Boolean).join(' '), text: c.raw + ' ' + c.parts.join(' '), ex: [c.raw] }); });
   D.discrepancyTypes.forEach(function (x, i) { add({ key: 'dt:' + i, mod: 'cloud', kind: '직면 틀', title: x.k, snip: x.d, text: x.d + ' ' + x.f.replace(/\{[AB]\}/g, '') }); });
   D.reflectCases.forEach(function (c) { add({ key: 'rc:' + c.id, mod: 'reflect', kind: '연습 사례', title: c.who, snip: c.s[0] + ' …', text: c.s.join(' ') + ' ' + c.feel.join(' ') + ' ' + c.ex.fe }); });
   D.cloudCases.forEach(function (c) { add({ key: 'mc:' + c.id, mod: 'cloud', kind: '연습 사례', title: c.who, snip: c.t.slice(0, 40) + '…', text: c.t }); });
   D.drills.forEach(function (q, i) { var ok = q.o.filter(function (o) { return o.ok; })[0]; add({ key: 'dr:' + i, mod: q.m, kind: '연습 문제', title: q.c, snip: '더 나은 응답: ' + (ok ? ok.t : ''), text: q.c + ' ' + (ok ? ok.t + ' ' + ok.f : ''), ex: [q.c].concat(q.o.filter(function (o) { return !o.ok; }).map(function (o) { return o.t; })) }); });
-  D.structureList.forEach(function (x, i) { add({ key: 'sl:' + i, mod: 'frame', kind: '구조화 문장', title: x.k, snip: x.line, text: x.line, copy: x.line.replace(/^"|"$/g, '') }); });
+  D.structureList.forEach(function (x, i) { add({ key: 'sl:' + i, mod: 'frame', kind: '구조화 문장', title: x.k, snip: x.line, text: x.line }); });
 
   /* 문서 빈도 → 드문 조각일수록 무겁게 */
   ITEMS.forEach(function (it) { NDOC++; for (var k in it.g) DF[k] = (DF[k] || 0) + 1; });
