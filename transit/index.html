@@ -838,7 +838,7 @@ function renderMap(){
     h+='<div class="nt"><h4>상담에서 이어 갈 질문</h4><ul>'+list.slice(0,5).map(function(s){return '<li style="--c:'+TC[s.tier]+'">'+esc(s.ask)+'</li>';}).join('')+'</ul></div>';}
   if(t){h+='<div class="nt" style="--c:'+DC[t.id]+'"><h4>'+esc(t.name)+' · 출발 전 확인</h4><ul>'+t.checks.map(function(x,i){var on=S.checks.indexOf(t.id+':'+i)>=0;return '<li>'+(on?'<b>완료</b> ':'')+esc(x)+'</li>';}).join('')+'</ul></div>';}
   h+='</div>';
-  h+='<div class="actions"><button type="button" class="btn btn-g" data-act="txt">텍스트 파일로 저장</button><button type="button" class="btn btn-g" data-act="reset">처음부터 다시</button></div>';
+  h+='<div class="actions"><button type="button" class="btn btn-g" data-act="reset">처음부터 다시</button></div>';
   h+='<p class="foot" style="margin-top:20px">이 노선도는 정답이 아니라 상담 연습과 진로 설계를 위한 참고 자료입니다. 소요 기간은 같은 구간의 역을 함께 진행한다고 보고 어림한 값입니다. 제도 요건은 '+esc(D.checked)+' 확인 기준이며, 실제 대상 여부는 고용센터(1350)와 각 기관 공고로 확인해 주세요.</p>';
   $('p4').innerHTML=h;layoutMap();
 }
@@ -877,28 +877,11 @@ function layoutMap(){
 if(d.fonts&&d.fonts.ready)d.fonts.ready.then(function(){if(S.step===4)layoutMap();else if(S.step===2)fitHeight();});
 if(mq.addEventListener)mq.addEventListener('change',function(){if(S.step===4)layoutMap();});
 
-function summaryText(){
-  var ty=TYPE[S.type],t=DEST[S.dest],list=boardedSorted(),est=estimate(list),per=PER[S.period];
-  var L=['[환승노선도] 나의 커리어 노선도 · '+new Date().toLocaleDateString('ko-KR'),''];
-  L.push('■ 출발역: '+(ty?ty.name:'미선택')+(S.age?' · '+D.ages.filter(function(x){return x.id===S.age;})[0].label:'')+(per?' · 가용 기간 '+per.label:''));
-  if(S.dirs.length)L.push('  바라는 방향: '+S.dirs.map(function(x){return D.directions.filter(function(y){return y.id===x;})[0].label;}).join(', '));
-  if(S.memo)L.push('  내 한 줄: '+S.memo);
-  S.assets.forEach(function(id){var a=ASSET[id];L.push('  · '+a.label+' → '+a.to+' (이어질 직무: '+a.jobs.join(', ')+')');});
-  L.push('','■ 환승 구간 ('+list.length+'곳'+(list.length?', 예상 '+wk(est[0])+'~'+wk(est[1]):'')+')');
-  list.forEach(function(s,i){L.push('  '+(i+1)+'. ['+TIER[s.tier].name+'] '+s.name+' · '+durTxt(s));L.push('     창구: '+s.where+(s.url&&/^https?:/.test(s.url)?' · '+s.url:''));L.push('     물어볼 질문: '+s.ask);});
-  L.push('','■ 종착역: '+(t?t.name+' ('+t.sub+')'+(ty?' · '+ty.dest[t.id]:''):'미선택'));
-  if(S.target)L.push('  목표: '+S.target);
-  if(t)t.checks.forEach(function(x,i){L.push('  '+(S.checks.indexOf(t.id+':'+i)>=0?'[v] ':'[ ] ')+x);});
-  L.push('','※ 이 노선도는 정답이 아닌 상담 연습·진로 설계 참고 자료입니다. 제도 요건은 '+D.checked+' 확인 기준이며, 고용센터(1350)와 각 기관 공고로 다시 확인하세요.');
-  L.push('직업상담 통합 자료실 · https://ccttsi.github.io/jobcounsel/transit/');
-  return L.join('\n');
-}
 $('p4').addEventListener('click',function(e){
   var b=e.target.closest('[data-act],[data-go3]');if(!b)return;
   if(b.hasAttribute('data-go3')){go(+b.getAttribute('data-go3'));return;}
   var a=b.getAttribute('data-act');
-  if(a==='txt'){var bl=new Blob(['﻿'+summaryText()],{type:'text/plain;charset=utf-8'}),u=URL.createObjectURL(bl),l=d.createElement('a');l.href=u;l.download='나의-커리어-노선도.txt';d.body.appendChild(l);l.click();setTimeout(function(){URL.revokeObjectURL(u);l.remove();},500);toast('텍스트 파일을 저장했습니다.');}
-  else if(a==='reset'){if(!confirmReset())return;S={step:1,type:'',age:'',period:'',dirs:[],assets:[],memo:'',filter:'fit',idx:0,boarded:[],dest:'',target:'',checks:[]};try{localStorage.removeItem(KEY);}catch(_){}lastIdx=-1;go(1);toast('처음부터 다시 시작합니다.');}
+  if(a==='reset'){if(!confirmReset())return;S={step:1,type:'',age:'',period:'',dirs:[],assets:[],memo:'',filter:'fit',idx:0,boarded:[],dest:'',target:'',checks:[]};try{localStorage.removeItem(KEY);}catch(_){}lastIdx=-1;go(1);toast('처음부터 다시 시작합니다.');}
 });
 
 /* ───────── 11-1 역행(목표 역산) — 직업을 먼저 고르고 거꾸로 짚는다 ─────────
