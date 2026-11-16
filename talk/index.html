@@ -42,7 +42,7 @@ a{color:inherit}
 [hidden]{display:none!important}
 svg{flex:none}
 .wrap{max-width:860px;margin:0 auto;padding:0 16px 56px}
-@media (min-width:900px){.wrap{max-width:1200px;padding:0 32px 64px}}
+@media (min-width:900px){.wrap{max-width:1280px;padding:0 28px 64px}}
 
 /* 머리말 */
 .hd{display:flex;align-items:center;gap:8px;padding:12px 0}
@@ -419,7 +419,7 @@ mark{background:none;color:inherit;border-radius:3px;padding:0 1px}
 
 /* 1200~1399px: 갈래 목록을 좁혀 두 기둥이 들어갈 자리를 만든다 */
 @media (min-width:1200px) and (max-width:1399px){
-  .wrap{max-width:1400px;padding-left:24px;padding-right:24px}
+  .wrap{max-width:1400px;padding-left:28px;padding-right:28px}
   .shell{grid-template-columns:220px minmax(0,1fr);gap:28px}
   .cols{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:0 28px;align-items:start}
   .cols>.col-r>.two{grid-template-columns:minmax(0,1fr)}
@@ -428,7 +428,7 @@ mark{background:none;color:inherit;border-radius:3px;padding:0 1px}
 }
 /* 아주 넓은 화면(1400px 이상): 본문을 넓히고 연습 도구는 왼쪽, 표현·피할 말·연습 문제는 오른쪽 기둥(app.js splitCols) */
 @media (min-width:1400px){
-  .wrap{max-width:1480px}
+  .wrap{max-width:1480px;padding-left:28px;padding-right:28px}
   .shell{grid-template-columns:270px minmax(0,1fr);gap:36px}
   .cols{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:0 36px;align-items:start}
   .cols>.col-r>.two{grid-template-columns:minmax(0,1fr)}

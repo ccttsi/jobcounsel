@@ -46,7 +46,8 @@ button,input{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:6px}
 .num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
-.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px}
+@media (min-width:900px){.wrap{padding-left:clamp(16px,6.4vw,82px);padding-right:clamp(16px,6.4vw,82px)}}
 .lab{font-size:12.5px;font-weight:700;color:var(--mute);letter-spacing:.01em;white-space:nowrap}
 
 /* 머리말과 계기판 */

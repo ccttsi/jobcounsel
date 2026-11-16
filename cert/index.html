@@ -47,15 +47,15 @@ a{color:inherit}
 button{font-family:inherit;color:inherit;cursor:pointer}
 h1,h2,h3,h4,p,ul,ol,dl,dd{margin:0}
 ul,ol{padding:0;list-style:none}
-.wrap{max-width:1240px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) 56px max(16px,env(safe-area-inset-left))}
-@media (min-width:900px){.wrap{padding-left:max(32px,env(safe-area-inset-left));padding-right:max(32px,env(safe-area-inset-right))}}
+.wrap{max-width:1280px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) 56px max(16px,env(safe-area-inset-left))}
+@media (min-width:900px){.wrap{padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right))}}
 .code{font-family:var(--mono)}
 
 /* 분류 색 */
 .k-KT{--c:var(--kt);--cs:var(--kt-s)}.k-KP{--c:var(--kp);--cs:var(--kp-s)}.k-KN{--c:var(--kn);--cs:var(--kn-s)}.k-KA{--c:var(--ka);--cs:var(--ka-s)}
 
 /* 머리말 */
-.hd{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;min-height:60px;padding:8px 0;padding-top:max(8px,env(safe-area-inset-top));background:var(--bg)}
+.hd{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;min-height:68px;padding:12px 0;padding-top:max(8px,env(safe-area-inset-top));background:var(--bg)}
 .ib{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);background:var(--panel);text-decoration:none}
 .ib svg{width:20px;height:20px}
 .brand{display:flex;align-items:center;gap:8px;min-width:0;margin-right:auto;font-size:19px;font-weight:800;letter-spacing:-.02em;text-decoration:none;white-space:nowrap}
@@ -133,7 +133,7 @@ body:not([data-home]) .hero{display:none}
 @media (max-width:639px){.deck .gr{display:none}.deck .nm{font-size:22px}.tally{grid-template-columns:1fr 1fr;gap:4px}.tally a{grid-template-columns:10px minmax(0,1fr);row-gap:0;min-height:52px;padding:6px 8px;background:var(--cs)}.tally a b{grid-column:2}}
 
 /* 분류 탭 */
-.tabs{position:sticky;top:60px;z-index:20;margin-top:16px;background:var(--bg);border-bottom:2px solid var(--ink)}
+.tabs{position:sticky;top:68px;z-index:20;margin-top:16px;background:var(--bg);border-bottom:2px solid var(--ink)}
 .tabs-in{display:flex;align-items:flex-end;gap:4px;padding-top:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .tabs-in::-webkit-scrollbar{display:none}
 .tabs a{position:relative;flex:none;display:flex;align-items:center;gap:7px;min-height:46px;padding:8px 15px 7px;border:1px solid var(--line-2);border-bottom:0;border-radius:12px 12px 0 0;background:var(--soft);font-size:16px;font-weight:750;color:var(--muted);text-decoration:none;white-space:nowrap}
