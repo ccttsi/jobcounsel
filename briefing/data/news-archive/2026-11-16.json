@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1.0",
-  "updated_at": "2026-11-16T13:04:00+09:00",
+  "updated_at": "2026-11-16T23:09:00+09:00",
   "date": "2026-11-16",
   "runs": {
     "kr-0700": {
@@ -11,9 +11,9 @@
     },
     "global-2300": {
       "status": "ok",
-      "updated_at": "2026-11-16T13:04:00+09:00",
+      "updated_at": "2026-11-16T23:09:00+09:00",
       "last_ok": "2026-11-16",
-      "run_id": "br-20261116-1304"
+      "run_id": "br-20261116-2309"
     }
   },
   "main_themes": [
@@ -21,8 +21,25 @@
       "theme_id": "th-ai-job-restructuring",
       "title": "AI 직무 재편",
       "summary": "AI가 일을 없애는가보다 일을 다시 묶는 쪽으로 움직인다. 직무 단위가 흔들리면 상담에서 묻는 것도 직업명이 아니라 \"어떤 일 묶음을 할 수 있는가\"로 바뀐다.",
-      "updated_at": "2026-11-16T13:04:00+09:00",
+      "updated_at": "2026-11-16T23:09:00+09:00",
       "items": [
+        {
+          "issue_id": "iss-ai-two-margins",
+          "title": "AI 시대 고용의 두 문턱 — 감소가 창출보다 먼저 잡힌다(arXiv:2611.17530)",
+          "source": {
+            "source_name": "arXiv (micro1·노스이스턴대)",
+            "source_url": "https://arxiv.org/abs/2611.17530"
+          },
+          "license": {
+            "type": "CC-BY-4.0",
+            "name": "CC BY 4.0 (Attribution 4.0 International)",
+            "verified": true,
+            "verified_at": "2026-11-16"
+          },
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "track": "A"
+        },
         {
           "issue_id": "iss-ai-freelance-rebundling",
           "title": "AI 시대 프리랜스 일의 재묶음(arXiv:2611.14708)",
@@ -327,7 +344,7 @@
     },
     {
       "word": "미국 고용",
-      "count": 3
+      "count": 5
     },
     {
       "word": "실업급여",
@@ -335,7 +352,7 @@
     },
     {
       "word": "AI 직무전망",
-      "count": 2
+      "count": 4
     },
     {
       "word": "구직활동",
@@ -346,11 +363,356 @@
       "count": 1
     },
     {
-      "word": "장기실업",
-      "count": 1
+      "word": "임금",
+      "count": 2
     }
   ],
   "items": [
+    {
+      "id": "n20261116-11",
+      "issue_id": "iss-us-perm-rule",
+      "theme_id": null,
+      "edition": "global-2300",
+      "updated_at": "2026-11-16T23:09:00+09:00",
+      "run_id": "br-20261116-2309",
+      "headline": false,
+      "published_at": "2026-11-16",
+      "source": {
+        "source_name": "미국 노동부(U.S. DOL)",
+        "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261116",
+        "country": "US",
+        "license": {
+          "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
+          "type": "PUBLIC-DOMAIN",
+          "url": "https://www.dol.gov/general/aboutdol/copyright",
+          "scope": "텍스트 한정(제3자 저작물·로고 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "U.S. DOL 「Public Domain Copyright Trademark & Patent Information Schedule」 — 연방정부가 만든 자료는 퍼블릭 도메인(제3자 저작물 제외)(2026-11-16 확인).",
+          "attribution_text": "출처: U.S. Department of Labor"
+        }
+      },
+      "title_original": "US Department of Labor proposes to modernize permanent labor certification recruitment, strengthening protections for American workers",
+      "title_ko": "미 노동부, 영주 취업인증(PERM) 구인 절차 20년 만에 개편 제안",
+      "body_original": "US Department of Labor proposes to modernize permanent labor certification recruitment, strengthening protections for American workers\n\nNovember 16, 2026\n\nWASHINGTON - The U.S. Department of Labor today issued a proposed rule that would enhance American worker protections when employers apply for certification to hire foreign workers permanently in the United States.\n\nThe proposed rule modernizes the Permanent Labor Certification program by strengthening recruitment standards and recordkeeping requirements, eliminating administrative exemptions to the statutory labor market test, and improving safeguards for all American workers, especially those affected by layoffs.\n\nThis proposed update to the PERM program - the first comprehensive set of regulatory reforms to the program in nearly 20 years - will ensure that highly qualified American workers receive fair consideration and first access to job opportunities.\n\n\"American Workers are the best in the world, and they deserve the first and best job opportunities. Existing regulations have instead allowed companies to sponsor foreign workers without fully considering American workers first,\" said Secretary of Labor Keith Sonderling. \"This proposed rule change will ensure American workers are first in line for high-skilled, high-paying job opportunities over foreign labor.\"\n\nThe proposed rule would require employers to level the playing field when recruiting workers by using the same channels and methods when advertising jobs. Proposed changes include a requirement to replace print-based job advertisements with online recruiting through employer websites, online job boards, social media, job fairs, and campus recruitment. Employers would also be required to advertise positions for at least 90 calendar days and demonstrate that they made good-faith efforts to recruit qualified American workers. Under the proposal, employers would be prohibited from tailoring job opportunities to foreign workers.\n\nThe department also proposed to eliminate the administrative exemption employers used to bypass the statutory labor market test for certain occupations. Under the proposal, employers recruiting for physical therapists, nurses, and workers with exceptional abilities in the sciences or arts would be required to consider qualified U.S. workers.\n\nThe proposed rule also protects qualified American workers affected by layoffs by requiring ongoing consideration of laid off workers throughout the labor certification and immigrant petition processes, and prohibiting certain employers that have laid off American workers within the last 2 years from seeking permanent labor certification for the same or similar positions.\n\nComments on the proposed rule are due 60 days after publication in the Federal Register.",
+      "body_ko_ai": "미국 노동부, 영주 취업인증 구인 절차 현대화 제안…미국 근로자 보호 강화\n\n2026년 11월 16일\n\n워싱턴 — 미국 노동부는 오늘, 고용주가 외국인 근로자를 미국 안에서 영구 고용하기 위해 인증을 신청할 때 미국 근로자 보호를 강화하는 제안 규정을 발표했다.\n\n이 제안 규정은 영주 취업인증(PERM) 프로그램의 구인 기준과 기록 보관 요건을 강화하고, 법정 노동시장 테스트에 대한 행정적 예외를 없애며, 해고의 영향을 받은 근로자를 포함한 모든 미국 근로자에 대한 안전장치를 개선한다.\n\n이번 PERM 개편안은 약 20년 만의 첫 포괄적 규제 개혁으로, 자격을 갖춘 미국 근로자가 공정한 검토를 받고 일자리에 먼저 접근하도록 보장하는 것을 목표로 한다.\n\n키스 손더링 노동부 장관은 \"미국 근로자는 세계 최고이며, 가장 먼저 그리고 가장 좋은 일자리 기회를 누릴 자격이 있다. 그동안의 규정은 기업이 미국 근로자를 충분히 고려하지 않은 채 외국인 근로자를 후원하도록 허용해 왔다\"며 \"이번 제안은 미국 근로자가 고숙련·고임금 일자리에서 외국인 노동력보다 먼저 줄을 서도록 보장할 것\"이라고 말했다.\n\n제안 규정은 고용주가 구인 광고를 할 때 같은 채널과 방법을 쓰도록 요구해 출발선을 맞추게 한다. 인쇄 매체 구인 광고를 기업 웹사이트, 온라인 구인 게시판, 소셜미디어, 채용 박람회, 캠퍼스 채용 같은 온라인 모집으로 바꾸고, 최소 90일 동안 공고를 게시하며, 자격을 갖춘 미국 근로자를 모집하기 위해 성실하게 노력했다는 점을 입증하도록 한다. 또한 외국인 근로자에 맞춰 구인 기회를 설계하는 행위를 금지한다.\n\n노동부는 특정 직종에서 고용주가 법정 노동시장 테스트를 우회하던 행정적 예외도 없애는 방안을 제안했다. 이에 따라 물리치료사, 간호사, 과학·예술 분야에서 뛰어난 능력을 갖춘 근로자를 모집하는 고용주도 자격을 갖춘 미국 근로자를 검토해야 한다.\n\n제안 규정은 또한 노동인증과 이민 청원 절차 전반에서 해고된 근로자를 계속 검토하도록 하고, 최근 2년 안에 미국 근로자를 해고한 특정 고용주가 같은 직종이나 유사 직종에 대해 영주 취업인증을 신청하는 것을 금지해, 해고의 영향을 받은 미국 근로자를 보호한다.\n\n제안 규정에 대한 의견은 연방관보 게재 후 60일 동안 접수한다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T23:09:00+09:00"
+      },
+      "topics": [
+        "고용·정책",
+        "글로벌"
+      ],
+      "keywords": [
+        "미국 고용"
+      ],
+      "related_jobs": [
+        "직업상담사",
+        "고용서비스 운영자"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": null,
+      "badges": [
+        "퍼블릭 도메인"
+      ]
+    },
+    {
+      "id": "n20261116-12",
+      "issue_id": "iss-us-productivity-q3",
+      "theme_id": null,
+      "edition": "global-2300",
+      "updated_at": "2026-11-16T23:09:00+09:00",
+      "run_id": "br-20261116-2309",
+      "headline": false,
+      "published_at": "2026-11-13",
+      "source": {
+        "source_name": "미국 노동통계국(BLS) The Economics Daily",
+        "source_url": "https://www.bls.gov/opub/ted/2026/nonfarm-business-productivity-up-2-1-percent-from-third-quarter-2025-to-third-quarter-2026.htm",
+        "country": "US",
+        "license": {
+          "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
+          "type": "PUBLIC-DOMAIN",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "scope": "텍스트·표 한정(사진·삽화 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "BLS 「Copyright Information」 — 연방정부 기관이 발행한 자료는 퍼블릭 도메인(사진·삽화 제외), 출처 표기 요청(2026-11-16 확인).",
+          "attribution_text": "출처: U.S. Bureau of Labor Statistics"
+        }
+      },
+      "title_original": "Nonfarm business productivity up 2.1 percent from third quarter 2025 to third quarter 2026",
+      "title_ko": "미국 비농업 생산성 전년동기비 2.1%…노동시간은 0.2%만 늘어",
+      "body_original": "Nonfarm business productivity up 2.1 percent from third quarter 2025 to third quarter 2026\n\nNovember 13, 2026\n\nFrom the third quarter of 2025 to the third quarter of 2026, nonfarm business labor productivity increased 2.1 percent, reflecting a 2.3-percent increase in output and a 0.2-percent increase in hours worked. Since the third quarter of 2024, increases in labor productivity have ranged from 2.1 percent to 3.1 percent over the year.\n\nPercent change in productivity measures from same quarter in previous year, nonfarm business sector (labor productivity / output / hours worked): Q1 2026 2.8 / 3.2 / 0.4; Q2 2026 2.3 / 2.5 / 0.2; Q3 2026 2.1 / 2.3 / 0.2.\n\nIn manufacturing, labor productivity increased 0.4 percent from the third quarter of 2025 to the third quarter of 2026, reflecting a 1.3-percent increase in output and a 0.9-percent increase in hours worked.\n\nThese data are from the Productivity program and are subject to revision. See Productivity and Costs - Third Quarter 2026, Preliminary to learn more. Labor productivity, or output per hour, is calculated by dividing an index of real output by an index of hours worked for all persons, including employees, proprietors, and unpaid family workers.",
+      "body_ko_ai": "미국 비농업 부문 생산성, 2025년 3분기 대비 2026년 3분기에 2.1% 상승\n\n2026년 11월 13일\n\n미국 노동통계국(BLS)에 따르면 2025년 3분기부터 2026년 3분기까지 비농업 부문 노동생산성은 2.1% 증가했다. 이는 산출 2.3% 증가와 노동시간 0.2% 증가를 반영한다. 2024년 3분기 이후 노동생산성의 전년동기 대비 증가율은 2.1~3.1% 범위에 머물렀다.\n\n비농업 부문 전년동기 대비 변화율(노동생산성/산출/노동시간): 2026년 1분기 2.8/3.2/0.4, 2026년 2분기 2.3/2.5/0.2, 2026년 3분기 2.1/2.3/0.2.\n\n제조업에서는 2025년 3분기 대비 2026년 3분기 노동생산성이 0.4% 증가했고, 이는 산출 1.3% 증가와 노동시간 0.9% 증가를 반영한다.\n\n이 수치는 생산성 프로그램 자료로 개정될 수 있다. 노동생산성(시간당 산출)은 실질 산출 지수를 전체 근로자(피고용자, 자영업자, 무급 가족 종사자 포함)의 노동시간 지수로 나눈 값이다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T23:09:00+09:00"
+      },
+      "topics": [
+        "취업시장",
+        "글로벌"
+      ],
+      "keywords": [
+        "미국 고용"
+      ],
+      "related_jobs": [
+        "직업상담사"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": null,
+      "badges": [
+        "퍼블릭 도메인"
+      ]
+    },
+    {
+      "id": "n20261116-13",
+      "issue_id": "iss-ai-two-margins",
+      "theme_id": "th-ai-job-restructuring",
+      "edition": "global-2300",
+      "updated_at": "2026-11-16T23:09:00+09:00",
+      "run_id": "br-20261116-2309",
+      "headline": true,
+      "published_at": "2026-11-13T06:32:00+09:00",
+      "source": {
+        "source_name": "arXiv (micro1·노스이스턴대)",
+        "source_url": "https://arxiv.org/abs/2611.17530",
+        "country": "US",
+        "license": {
+          "name": "CC BY 4.0 (Attribution 4.0 International)",
+          "type": "CC-BY-4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/",
+          "scope": "텍스트 한정(초록·본문)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "arXiv 초록 페이지의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 연결됨을 직접 확인(2026-11-16).",
+          "attribution_text": "Esposito, M., & Zhang, L. (2026), AI and the Two Margins of Work, arXiv:2611.17530, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·서론 부분)."
+        }
+      },
+      "title_original": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation (arXiv:2611.17530)",
+      "title_ko": "AI와 노동의 두 문턱: 일자리 감소가 창출보다 먼저 보이는 이유(arXiv:2611.17530)",
+      "body_original": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation\n\nMark Esposito (micro1, Northeastern University), Liu Zhang (micro1). November 2026. arXiv:2611.17530.\n\nAbstract\n\nTechnological change acts on labor demand at two margins: adjustment within established activities and the creation of additional activities, often by new firms. Payroll statistics record the first promptly and the second late. In the computing era, firms that entered in 1978 or later held 42 percent of payroll by 1998 and entering cohorts kept about 80 percent of their payroll after five years; in the industries most exposed to automation, incumbents contracted before entrants accumulated, a sequence that is precise early in the period and suggestive by its end. We develop a model in which one AI capability lowers the full cost of acceptable output in existing production and makes additional projects worth attempting, with founder effort separate from hired hours. If operating products re-scale instantly, automation displaces no aggregate hours; if they take time, hours fall first and recover as incumbents re-expand and new products arrive, with the long-run sign set by income effects. Establishment job flows through the first quarter of 2026 show no gradient on language-model exposure on either margin, which is what the model predicts under the observed adoption path and also what no effect on payroll would look like; studies with founding-task exposure find entry rising 10 to 20 percent. We propose a net reinstatement ratio and show that statistics which record new work late overstate displacement for years.\n\nIntroduction (first paragraph)\n\nEvery major technological revolution has arrived with the same forecast: that machines would make human labor redundant. The Luddites smashed stocking frames in 1811, Keynes (1930) warned of technological unemployment, and mid-century commissions in the United States debated automation as a threat to full employment. The historical record combines displacement from established activities with the formation of activities that earlier classifications could not name (Mokyr, Vickers, and Ziebarth, 2015; Autor, 2015). Employment did not simply disappear. It moved, often painfully, into different work.",
+      "body_ko_ai": "AI와 노동의 두 문턱: 일자리 감소가 창출보다 먼저 보이는 이유\n\n마크 에스포지토(micro1·노스이스턴대), 리우 장(micro1). 2026년 11월. arXiv:2611.17530.\n\n초록\n\n기술 변화는 노동수요를 두 개의 문턱에서 움직인다. 이미 확립된 활동 안에서의 조정과, 흔히 새 기업이 만들어 내는 추가 활동의 창출이다. 급여 통계는 첫 번째는 즉각 기록하지만 두 번째는 늦게 기록한다. 컴퓨팅 시대에 1978년 이후 진입한 기업들은 1998년까지 급여의 42%를 차지했고, 진입 코호트는 5년이 지나도 급여의 약 80%를 유지했다. 자동화에 가장 노출된 산업에서는 신규 진입자가 쌓이기 전에 기존 기업들이 먼저 위축됐는데, 이 순서는 시기 초반에는 정확하게, 후반에는 시사적으로 나타난다. 우리는 하나의 AI 역량이 기존 생산에서 수용 가능한 산출의 총비용을 낮추고 추가 프로젝트를 시도할 가치가 있게 만드는 모형을 만든다. 창업자의 노력은 고용된 노동시간과 분리된다. 운영 중인 제품이 즉시 규모를 키운다면 자동화는 총 노동시간을 대체하지 않는다. 시간이 걸린다면 노동시간은 먼저 줄고, 기존 기업이 다시 확장하고 새 제품이 도착하면서 회복되며, 장기 부호는 소득 효과가 정한다. 2026년 1분기까지의 사업체 고용 흐름은 두 문턱 어디에서도 언어모델 노출도에 따른 기울기를 보이지 않는데, 이는 관측된 도입 경로에서 모형이 예측하는 바이며 급여에 아무 효과가 없을 때 나타나는 모습과도 같다. 창업 과업 노출을 사용한 연구들은 진입이 10~20% 증가했다고 본다. 우리는 순재설치 비율을 제안하고, 새 노동을 늦게 기록하는 통계가 수년간 대체를 과대평가한다는 것을 보인다.\n\n서론(첫 문단)\n\n모든 주요 기술 혁명은 같은 전망과 함께 도착했다. 기계가 인간 노동을 불필요하게 만들 것이라는 예측이다. 러다이트들은 1811년 편직기를 부쉈고, 케인스(1930)는 기술적 실업을 경고했으며, 세기 중반 미국의 위원회들은 자동화를 완전고용에 대한 위협으로 논의했다. 역사적 기록은 확립된 활동에서의 대체와, 이전의 분류가 이름 붙일 수 없었던 활동의 형성을 함께 보여 준다. 고용은 단순히 사라지지 않았다. 종종 고통스럽게, 다른 일로 옮겨 갔다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T23:09:00+09:00"
+      },
+      "topics": [
+        "AI·직무"
+      ],
+      "keywords": [
+        "AI 직무전망"
+      ],
+      "related_jobs": [
+        "직업상담사",
+        "청년정책 담당자"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": true,
+      "theme": "AI 직무 재편",
+      "badges": [
+        "메인테마 · AI 직무 재편",
+        "CC BY 4.0"
+      ]
+    },
+    {
+      "id": "n20261116-14",
+      "issue_id": "iss-ai-use-typology",
+      "theme_id": null,
+      "edition": "global-2300",
+      "updated_at": "2026-11-16T23:09:00+09:00",
+      "run_id": "br-20261116-2309",
+      "headline": false,
+      "published_at": "2026-11-11T20:50:00+09:00",
+      "source": {
+        "source_name": "arXiv (오슬로대 TIK센터)",
+        "source_url": "https://arxiv.org/abs/2611.15371",
+        "country": "US",
+        "license": {
+          "name": "CC BY 4.0 (Attribution 4.0 International)",
+          "type": "CC-BY-4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/",
+          "scope": "텍스트 한정(초록·본문)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "arXiv 초록 페이지의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 연결됨을 직접 확인(2026-11-16).",
+          "attribution_text": "Castellacci, F. (2026), From the firm- to the application-level: A new typology of AI use in organisations, arXiv:2611.15371, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록 부분)."
+        }
+      },
+      "title_original": "From the firm- to the application-level: A new typology of AI use in organisations (arXiv:2611.15371)",
+      "title_ko": "기업 단위에서 적용 단위로: 조직 내 AI 활용의 새 유형론(arXiv:2611.15371)",
+      "body_original": "From the firm- to the application-level: A new typology of AI use in organisations\n\nFulvio Castellacci. Submitted 11 November 2026. arXiv:2611.15371.\n\nAbstract\n\nArtificial intelligence is applied in organisations in many different ways. However, the firm-level literature on AI lacks a conceptual framework able to describe that variety. Empirical studies typically examine one dimension of AI use at a time. This paper argues that the difficulty follows from the unit of analysis: a firm may hold many AI applications at once, each with its own novelty, sourcing mode, objective and technology type. These dimensions are defined at the level of the application rather than of the firm. We therefore propose shifting the unit of analysis from the firm to the individual AI application, and develop a typology combining these four conceptual dimensions. The new framework locates any application in a common space, and it points out in particular two types that the prevailing adoption-innovation distinction neglects: co-invention, novel uses of technology the firm did not develop, and internalisation, in-house building of AI that could have been bought instead. Documented use cases illustrate the framework, which is then used to discuss implications for firms strategies and the diffusion of AI in economic systems.",
+      "body_ko_ai": "기업 단위에서 적용 단위로: 조직 내 AI 활용의 새 유형론\n\n풀비오 카스텔라치. 2026년 11월 11일 제출. arXiv:2611.15371.\n\n초록\n\n인공지능은 조직에서 매우 다양한 방식으로 적용된다. 그러나 AI에 대한 기업 단위 연구에는 그 다양성을 서술할 개념 틀이 없다. 실증 연구들은 대개 한 번에 한 차원의 AI 활용만 검토한다. 이 논문은 그 어려움이 분석 단위에서 비롯된다고 주장한다. 한 기업은 각기 다른 새로움, 조달 방식, 목적, 기술 유형을 지닌 여러 AI 적용을 동시에 보유할 수 있고, 이 차원들은 기업이 아니라 적용 수준에서 정의된다. 따라서 우리는 분석 단위를 기업에서 개별 AI 적용으로 옮기고, 이 네 가지 개념 차원을 결합한 유형론을 제안한다. 새 틀은 어떤 적용이든 하나의 공통 공간에 위치시키며, 특히 기존의 도입-혁신 구분이 놓치는 두 유형을 지적한다. 기업이 개발하지 않은 기술을 새롭게 쓰는 '공동발명(co-invention)'과, 사들일 수도 있었던 AI를 사내에서 직접 구축하는 '내부화(internalisation)'다. 문서화된 사례들이 이 틀을 예시하며, 이 틀은 기업 전략과 경제 시스템에서 AI 확산에 대한 함의를 논의하는 데 쓰인다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T23:09:00+09:00"
+      },
+      "topics": [
+        "AI·직무"
+      ],
+      "keywords": [
+        "AI 직무전망"
+      ],
+      "related_jobs": [
+        "직업상담사",
+        "기업 HR 담당자"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": null,
+      "badges": [
+        "CC BY 4.0"
+      ]
+    },
+    {
+      "id": "n20261116-15",
+      "issue_id": "iss-us-real-earnings-oct",
+      "theme_id": null,
+      "edition": "global-2300",
+      "updated_at": "2026-11-16T23:09:00+09:00",
+      "run_id": "br-20261116-2309",
+      "headline": false,
+      "published_at": "2026-11-10",
+      "source": {
+        "source_name": "미국 노동통계국(BLS)",
+        "source_url": "https://www.bls.gov/news.release/realer.nr0.htm",
+        "country": "US",
+        "license": {
+          "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
+          "type": "PUBLIC-DOMAIN",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "scope": "텍스트·표 한정(사진·삽화 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "BLS 「Copyright Information」 — 연방정부 기관이 발행한 자료는 퍼블릭 도메인(사진·삽화 제외), 출처 표기 요청(2026-11-16 확인).",
+          "attribution_text": "출처: U.S. Bureau of Labor Statistics"
+        }
+      },
+      "title_original": "Real Earnings - October 2026 (USDL-26-1686)",
+      "title_ko": "미국 10월 실질임금 보합…임금 상승분이 물가 상승분과 같아",
+      "body_original": "Real Earnings - October 2026\n\nUSDL-26-1686. Released 8:30 a.m. (ET) Tuesday, November 10, 2026.\n\nReal average hourly earnings for all employees were unchanged from September to October, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. This result stems from an increase of 0.4 percent in average hourly earnings combined with an increase of 0.4 percent in the Consumer Price Index for All Urban Consumers (CPI-U).\n\nReal average weekly earnings were unchanged over the month due to no change in real average hourly earnings combined with no change in the average workweek.\n\n[Federal Government Shutdown] This release usually includes an over-the-year analysis of changes to real earnings. BLS could not collect the relevant Consumer Price Index data for the October 2025 reference period due to a lapse in appropriations in late 2025. For that reason, over-the-year comparisons from October 2025 to October 2026 are not available.\n\nProduction and nonsupervisory employees: Real average hourly earnings increased 0.1 percent from September to October, seasonally adjusted. This result stems from a 0.4-percent increase in average hourly earnings combined with an increase of 0.3 percent in the Consumer Price Index for Urban Wage Earners and Clerical Workers (CPI-W). Real average weekly earnings decreased 0.3 percent over the month due to the change in real average hourly earnings combined with a decrease of 0.3 percent in the average workweek.\n\nThe Real Earnings news release for November 2026 is scheduled to be published on Thursday, December 10, 2026, at 8:30 a.m. (ET).",
+      "body_ko_ai": "미국 10월 실질임금, 보합…임금 상승분이 물가 상승분과 같아\n\nUSDL-26-1686. 2026년 11월 10일(화) 오전 8시 30분(미 동부시간) 발표.\n\n미국 노동통계국(BLS)은 계절조정 기준으로 9월에서 10월 사이 전체 근로자의 실질 평균시간당임금이 변동이 없었다고 발표했다. 이는 평균시간당임금이 0.4% 오르고 도시 소비자물가지수(CPI-U)도 0.4% 오른 데 따른 결과다.\n\n실질 평균주간임금도 실질 평균시간당임금이 변하지 않고 평균 노동시간도 변하지 않아 한 달 동안 보합이었다.\n\n[연방정부 셧다운] 이 발표는 보통 실질임금의 전년동기 대비 분석을 포함한다. 그러나 BLS는 2025년 말 예산 중단으로 2025년 10월 기준 소비자물가 자료를 수집할 수 없어, 2025년 10월에서 2026년 10월로 이어지는 전년동기 비교는 제공하지 않는다.\n\n생산·감독직을 제외한 근로자의 실질 평균시간당임금은 계절조정 기준으로 9월 대비 0.1% 올랐다. 평균시간당임금이 0.4% 오르고 도시 임금근로자·사무직 소비자물가지수(CPI-W)가 0.3% 오른 데 따른 것이다. 실질 평균주간임금은 실질 시간당임금 변화와 평균 노동시간 0.3% 감소로 0.3% 줄었다.\n\n다음 실질임금 발표는 2026년 12월 10일(목) 오전 8시 30분(미 동부시간)로 예정되어 있다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T23:09:00+09:00"
+      },
+      "topics": [
+        "취업시장",
+        "글로벌"
+      ],
+      "keywords": [
+        "임금"
+      ],
+      "related_jobs": [
+        "직업상담사"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": null,
+      "badges": [
+        "퍼블릭 도메인"
+      ]
+    },
+    {
+      "id": "n20261116-16",
+      "issue_id": "iss-ilo-monopsony-wages",
+      "theme_id": null,
+      "edition": "global-2300",
+      "updated_at": "2026-11-16T23:09:00+09:00",
+      "run_id": "br-20261116-2309",
+      "headline": false,
+      "published_at": "2026-11-02",
+      "source": {
+        "source_name": "국제노동기구(ILO)",
+        "source_url": "https://www.ilo.org/publications/monopsonic-power-and-wage-dynamics-insights-cross-country-labour-market",
+        "country": "CH",
+        "license": {
+          "name": "CC BY 4.0 (Attribution 4.0 International)",
+          "type": "CC-BY-4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/",
+          "scope": "텍스트 한정(ILO 엠블럼·이름·로고 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "ILO 웹 PDF 2쪽 저작권 고지 'Attribution 4.0 International (CC BY 4.0)'와 번역 시 고지 문구 요구 확인(2026-11-16).",
+          "attribution_text": "출처: ILO Working Paper 183, Davalos·Ernst·Torres (2026), CC BY 4.0. 이 한국어 번역·요약은 ILO가 작성·검토·승인한 공식 번역이 아니며 ILO는 그 내용에 책임지지 않습니다."
+        }
+      },
+      "title_original": "Monopsonistic Power and Wage Dynamics: Insights from Cross-Country Labour Market Analysis (ILO Working Paper 183)",
+      "title_ko": "고용주 교섭력과 임금 동학: 10개국 노동시장 비교 분석(ILO 작업보고서 183)",
+      "body_original": "Monopsonistic Power and Wage Dynamics: Insights from Cross-Country Labour Market Analysis\n\nJorge Davalos, Ekkehard Ernst, Diana Torres. ILO Working Paper 183. Geneva: International Labour Office, November 2026. DOI: 10.54394/00035060\n\nAbstract\n\nThis paper investigates the prevalence, drivers, and implications of monopsonistic power across ten countries using harmonized labour force survey data and a structural estimation framework. We construct a structural index of monopsony that builds on readily available microdata, enabling consistent cross-country comparisons of labour market frictions. Our results reveal that monopsonistic power is systematically higher among women, younger workers, rural populations, and those employed in agriculture or informal sectors. Education and urban location consistently reduce monopsonistic exposure, suggesting that labour mobility and human capital are key buffers. Sectoral analysis confirms that monopsonistic distortions are most acute in agriculture and least severe in diversified, formalized industries. We also explore how monopsony conditions mediate the wage effects of automation, finding that productivity gains are less likely to translate into wage growth in settings with higher employer power. These findings offer new insights into the structural determinants of wage inequality and call for targeted policies to reduce labour market frictions and improve worker bargaining conditions.",
+      "body_ko_ai": "고용주 교섭력과 임금 동학: 10개국 노동시장 비교 분석(ILO 작업보고서 183)\n\n호르헤 다발로스, 에케하르트 에른스트, 디아나 토레스. 국제노동기구(ILO) 작업보고서 183. 제네바: 국제노동사무국, 2026년 11월. DOI: 10.54394/00035060\n\n초록\n\n이 논문은 10개국의 조화된 노동력조사 자료와 구조적 추정 틀을 사용해 고용주 교섭력(모노프소니)의 확산, 결정 요인, 함의를 분석한다. 우리는 손쉽게 구할 수 있는 미시자료에 기반해 노동시장 마찰을 국가 간에 일관되게 비교할 수 있는 구조적 모노프소니 지수를 만든다. 결과는 고용주 교섭력이 여성, 청년, 농촌 인구, 농업·비공식 부문 종사자에게 체계적으로 더 높다는 것을 보여 준다. 교육과 도시 거주는 모노프소니 노출을 일관되게 낮춰, 노동 이동성과 인적자본이 핵심 완충 장치임을 시사한다. 부문별 분석은 모노프소니 왜곡이 농업에서 가장 심하고, 다양화되고 공식화된 산업에서 가장 약하다는 것을 확인한다. 우리는 또한 모노프소니 조건이 자동화의 임금 효과를 매개하는 방식을 살펴보는데, 고용주 교섭력이 높은 환경에서는 생산성 이득이 임금 인상으로 이어질 가능성이 더 낮다. 이 결과는 임금 불평등의 구조적 결정 요인에 대한 새로운 통찰을 주고, 노동시장 마찰을 줄이고 근로자의 교섭 조건을 개선하기 위한 표적화된 정책을 요구한다.\n\n[번역 고지] 이 문서는 국제노동기구(ILO)의 저작물을 번역한 것입니다. 이 번역은 ILO가 작성·검토·승인한 공식 번역이 아니며 ILO의 공식 번역으로 간주되어서는 안 됩니다. ILO는 그 내용과 정확성에 대해 어떠한 책임도 지지 않습니다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T23:09:00+09:00"
+      },
+      "topics": [
+        "고용·정책",
+        "글로벌"
+      ],
+      "keywords": [
+        "임금"
+      ],
+      "related_jobs": [
+        "직업상담사",
+        "노동경제 연구자"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": null,
+      "badges": [
+        "CC BY 4.0"
+      ]
+    },
     {
       "id": "n20261116-01",
       "issue_id": "iss-kr-employment-oct",
@@ -575,8 +937,7 @@
         "취업시장"
       ],
       "keywords": [
-        "미국 고용",
-        "장기실업"
+        "미국 고용"
       ],
       "related_jobs": [
         "직업상담사"
@@ -820,7 +1181,7 @@
       "edition": "global-2300",
       "updated_at": "2026-11-16T13:04:00+09:00",
       "run_id": "br-20261116-1304",
-      "headline": true,
+      "headline": false,
       "published_at": "2026-11-10",
       "source": {
         "source_name": "arXiv (OpenAI 경제연구·Upwork)",
@@ -869,7 +1230,7 @@
     }
   ],
   "excluded": {
-    "count": 8,
+    "count": 9,
     "reasons": [
       {
         "reason": "언론사 기사(연합뉴스·조선비즈·뉴스핌) — 본문 재게시·번역 불가, 17번 요약에서만 다룸",
@@ -880,8 +1241,8 @@
         "count": 2
       },
       {
-        "reason": "arXiv 논문 라이선스 미해당(CC BY-NC-SA 1건, arXiv 기본 라이선스 2건)",
-        "count": 3
+        "reason": "arXiv 논문 라이선스 미해당(CC BY-NC-SA 1건, arXiv 기본·비독점 배포 3건 — 2611.16058 등)",
+        "count": 4
       }
     ]
   },
