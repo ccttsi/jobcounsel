@@ -6,7 +6,7 @@
   var main = $('main'), reader = $('reader');
   var DATA = '../data/', PER = 15;
   var ALLOWED = { 'KOGL-1': 1, 'PUBLIC-DOMAIN': 1, 'CC-BY-4.0': 1 };
-  var S = { d: null, items: [], dropped: 0, kw: '', topic: '', src: '', issue: '', page: 0, mode: 'ko', y: 0, briefCards: {} };
+  var S = { themes: 0, d: null, items: [], dropped: 0, kw: '', topic: '', src: '', issue: '', page: 0, mode: 'ko', y: 0, briefCards: {} };
   var reduce = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -15,6 +15,8 @@
   function foreign(it) { return ((it.source || {}).country || 'KR').toUpperCase() !== 'KR'; }
   function title(it) { return foreign(it) && it.title_ko ? it.title_ko : it.title_original; }
   function when(s) { var m = /^(\d{4}-\d{2}-\d{2})(?:T(\d{2}:\d{2}))?/.exec(String(s || '')); return m ? m[1] + (m[2] ? ' ' + m[2] : '') : ''; }
+  var ED = { 'kr-0700': ['kr', '한국판 07:00'], 'global-2300': ['gl', '해외판 23:00'] };
+  function edB(x) { var e = Array.isArray(x.edition) ? x.edition : (typeof x.edition === 'string' ? [x.edition] : []); return e.filter(function (k) { return ED[k]; }).map(function (k) { return '<span class="bd ed ' + ED[k][0] + '">' + ED[k][1] + '</span>'; }).join(''); }
   function paras(t) { return String(t || '').split(/\n{2,}/).map(function (x) { return x.trim(); }).filter(Boolean); }
 
   /* NEWS-SCHEMA §1: 모두 만족해야 그린다 */
@@ -83,7 +85,7 @@
       var pages = Math.max(1, Math.ceil(list.length / PER)); S.page = Math.min(S.page, pages - 1);
       h += list.length ? '<ol class="feed">' + list.slice(S.page * PER, (S.page + 1) * PER).map(function (it) {
         return '<li><button type="button" data-open="' + esc(it.id) + '"><span class="t">' + esc(title(it)) + '</span><span class="m"><span>' + esc((it.source || {}).source_name) + '</span><span class="num">' + esc(when(it.published_at)) + '</span>' +
-          (foreign(it) ? '<span class="ai">AI 번역</span>' : '<span>국내 원문</span>') + arr(it.topics).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</span></button></li>';
+          (foreign(it) ? '<span class="ai">AI 번역</span>' : '<span>국내 원문</span>') + edB(it) + arr(it.topics).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</span></button></li>';
       }).join('') + '</ol>' + (pages > 1 ? '<div class="pager"><button type="button" class="pbtn" data-pg="-1"' + (S.page ? '' : ' disabled') + '>← 이전</button><span class="num">' + (S.page + 1) + ' / ' + pages + '</span><button type="button" class="pbtn" data-pg="1"' + (S.page < pages - 1 ? '' : ' disabled') + '>다음 →</button></div>' : '')
         : '<p class="empty">이 조건에 맞는 원문이 없습니다. <b>조건 풀기</b>를 누르면 전체가 보입니다.</p>';
     }
@@ -96,6 +98,7 @@
     }).join('') + '</ul>' : '') +
       '<p class="why">왜 이 자료만 싣나요? 번역은 원문을 바꿔 새로 쓰는 일이라, 원문을 다시 게시해도 되고 번역해도 된다고 밝힌 자료(공공누리 제1유형, 미국 연방정부 저작물, CC BY 4.0)만 고릅니다. 언론 기사는 싣지 않고, 요약과 링크만 오늘의 브리핑에서 다룹니다. 사진·도표 이미지는 옮기지 않습니다.</p>';
 
+    if (S.themes) h += '<p class="why"><a href="../#themes">메인테마 ' + S.themes + '개 — 날짜와 무관하게 계속 보는 핵심은 오늘의 브리핑 아래에 →</a></p>';
     var T = d.takedown || {}, tu = url(T.contact_url);
     h += '<div class="sh"><h2>정정·비노출 요청</h2></div><div class="td"><p>권리자나 독자가 요청하면 해당 항목을 바로 내리고 이력을 남깁니다.' + (tu ? ' <a href="' + esc(tu) + '" target="_blank" rel="noopener">요청 창구</a>' : '') + '</p>' +
       (arr(T.recent).length ? '<ul>' + arr(T.recent).map(function (r) { return '<li class="num">' + esc(r.date) + ' · ' + esc(r.title_ko) + ' · ' + esc(r.reason) + '</li>'; }).join('') + '</ul>' : '<p>최근 비노출 이력 없음.</p>') + '</div>' +
@@ -122,7 +125,7 @@
       (f ? '<div class="modes" role="radiogroup" aria-label="읽기 방식">' + [['ko', '번역'], ['orig', '원문'], ['pair', '나란히']].map(function (m) {
         return '<button type="button" role="radio" data-mode="' + m[0] + '" aria-checked="' + (S.mode === m[0]) + '">' + m[1] + '</button>';
       }).join('') + '</div>' : '') + '</div>' +
-      '<div class="rd-meta" style="margin-top:14px">' + licBadges(it) + '<span>' + esc(s.source_name) + '</span><span class="num">게시 ' + esc(when(it.published_at)) + '</span>' +
+      '<div class="rd-meta" style="margin-top:14px">' + licBadges(it) + edB(it) + '<span>' + esc(s.source_name) + '</span><span class="num">게시 ' + esc(when(it.published_at)) + '</span>' +
       (f && T.translated_at ? '<span class="num">번역 ' + esc(when(T.translated_at)) + '</span>' : '') + '</div>' +
       '<h2 class="rd-h" id="rdH">' + esc(f && S.mode !== 'orig' ? (it.title_ko || it.title_original) : it.title_original) + '</h2>' +
       (f ? '<p class="rd-sub" lang="' + (S.mode === 'orig' ? 'ko' : 'en') + '">' + esc(S.mode === 'orig' ? it.title_ko : it.title_original) + '</p>' : '') +
@@ -197,7 +200,7 @@
   var q = new URLSearchParams(location.search);
   S.issue = q.get('issue') || ''; S.topic = q.get('topic') || '';
   var want = q.get('date');
-  get(DATA + 'briefing.json').then(function (b) { arr(b.cards).forEach(function (c) { if (c.issue_id) S.briefCards[c.issue_id] = c.id; }); }).catch(function () {}).then(function () {
+  get(DATA + 'briefing.json').then(function (b) { arr(b.cards).forEach(function (c) { if (c.issue_id) S.briefCards[c.issue_id] = c.id; }); S.themes = arr(b.main_themes).length; }).catch(function () {}).then(function () {
     var first = want && /^\d{4}-\d{2}-\d{2}$/.test(want) ? get(DATA + 'news-archive/' + want + '.json') : get(DATA + 'news.json');
     return first.then(function (d) { use(d); }).catch(function () {
       if (want) return get(DATA + 'news.json').then(function (d) { use(d, want + ' 원문 호가 없어 최신 호를 보여 드립니다.'); });

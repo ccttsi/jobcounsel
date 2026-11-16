@@ -18,6 +18,74 @@
     return t === 'B' ? '<span class="bd B" title="트랙 B: 본문을 옮기지 않고 사실·수치만 새로 씀">B · 사실·수치만</span>'
       : '<span class="bd A" title="트랙 A: 라이선스가 허락한 재가공">A · 재가공 허용</span>';
   }
+  /* ---------- 17-2: 권역 배지(07:00 한국판 / 23:00 해외판)와 갱신 시각 ----------
+     필드가 없으면 아무것도 그리지 않는다(전방 호환). 읽는 필드: 항목의 edition("kr-0700"|"global-2300", 둘이면 배열), updated_at, run_id,
+     루트 runs[edition].status === "failed"·last_ok(선택). */
+  var ED = { 'kr-0700': ['kr', '한국판 07:00', '07:00 한국 갱신'], 'global-2300': ['gl', '해외판 23:00', '23:00 해외 갱신'] };
+  function eds(x) { return arr(Array.isArray(x && x.edition) ? x.edition : (x && typeof x.edition === 'string' ? [x.edition] : [])).filter(function (e) { return ED[e]; }); }
+  function kst(t) { var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}:\d{2})/.exec(String(t || '')); return m ? m[2] + '-' + m[3] + ' ' + m[4] : ''; }
+  function edBadges(x) { return eds(x).map(function (e) { return '<span class="bd ed ' + ED[e][0] + '">' + ED[e][1] + '</span>'; }).join(''); }
+  function edStamp(x) {
+    var e = eds(x); if (!e.length || !x.updated_at) return '';
+    return '<span class="eds num">' + e.map(function (k) { return ED[k][2]; }).join(' · ') + ' · ' + esc(String(x.updated_at).replace('T', ' ').slice(0, 16)) + '</span>';
+  }
+  function edBand(d) {
+    var last = {}, seen = false;
+    arr(d.cards).concat(arr(d.headline_metrics), arr((d.radar || {}).rows)).forEach(function (x) {
+      var e = eds(x); if (!e.length) return; seen = true;
+      if (e.length === 1 && x.updated_at && (!last[e[0]] || x.updated_at > last[e[0]])) last[e[0]] = x.updated_at;   // 두 권역에 걸친 항목의 시각은 어느 권역 것인지 알 수 없어 띠 계산에서 뺀다
+    });
+    var runs = d.runs || {};
+    Object.keys(runs).forEach(function (e) { if (ED[e]) seen = true; });
+    if (!seen) return '';
+    return '<span class="edband">' + Object.keys(ED).map(function (e) {
+      var r = runs[e] || {}, failed = r.status === 'failed';
+      return '<span class="bd ed ' + ED[e][0] + '">' + ED[e][1] + '</span> ' + (last[e] || r.updated_at ? '<span class="num">최근 갱신 ' + esc(kst(last[e] || r.updated_at)) + '</span>' : '<span>아직 없음</span>') +
+        (failed ? ' <span class="bd chk">갱신 실패' + (r.last_ok ? '(직전 ' + esc(String(r.last_ok).slice(5, 10)) + ' 자)' : '') + '</span>' : '');
+    }).join('<span class="sep" aria-hidden="true">·</span>') + '</span>';
+  }
+
+  /* ---------- 17-2: 하단 메인테마(날짜와 무관하게 계속 보는 핵심) ----------
+     읽는 필드: main_themes[{theme_id, title, summary, updated_at, items[{issue_id, title, source, license, first_seen, last_updated, track}]}].
+     license.verified가 true인 항목만. 기본은 접힘 — 테마를 누르면 그 테마 하나만 펼친다(세로로 늘어놓지 않는다). */
+  function themesHtml(d, cards) {
+    var T = arr(d.main_themes).map(function (t) {
+      var items = arr(t.items).filter(function (it) { return it && it.license && it.license.verified === true; });
+      return { t: t, items: items };
+    }).filter(function (x) { return x.items.length; });
+    if (!T.length) return '';
+    var cardByIssue = {}; cards.forEach(function (c) { if (c.issue_id) cardByIssue[c.issue_id] = c.id; });
+    UI.themeData = T; UI.cardByIssue = cardByIssue;
+    return '<section class="themes" id="themes" aria-labelledby="thH"><h2 id="thH">메인테마</h2><small>날짜와 무관하게 계속 보는 핵심</small><div class="th-list">' + T.map(function (x, i) {
+      return '<button type="button" class="th-b" data-theme="' + i + '" aria-haspopup="dialog"><b>' + esc(x.t.title) + '</b><span class="num">' + x.items.length + '건</span></button>';
+    }).join('') + '</div></section>';
+  }
+  /* 테마는 페이지를 늘리지 않고 아래에서 올라오는 시트로 연다(무의미한 세로 스크롤 금지) */
+  var lastThemeBtn = null;
+  function openTheme(i, btn) {
+    var x = (UI.themeData || [])[i]; if (!x) return; lastThemeBtn = btn;
+    var sh = $('thSheet');
+    if (!sh) { document.body.insertAdjacentHTML('beforeend', '<div class="th-sheet" id="thSheet" role="dialog" aria-modal="true" aria-labelledby="thT" hidden></div>'); sh = $('thSheet');
+      sh.addEventListener('click', function (e) { if (e.target === sh || e.target.closest('[data-th-close]')) closeTheme(); else if (e.target.closest('a[href^="#"]')) closeTheme(true); }); }
+    sh.innerHTML = '<div class="th-in"><div class="th-top"><div><b id="thT">' + esc(x.t.title) + '</b>' + (x.t.updated_at ? ' <small class="num">갱신 ' + esc(String(x.t.updated_at).slice(0, 10)) + '</small>' : '') + '</div><button type="button" class="th-x" data-th-close aria-label="닫기">닫기</button></div>' +
+      (x.t.summary ? '<p class="th-s">' + esc(x.t.summary) + '</p>' : '') + '<ol class="th-i">' +
+      x.items.map(function (it) {
+        var src = typeof it.source === 'string' ? { source_name: it.source } : (it.source || {}), L = it.license || {}, su = safeUrl(src.source_url);
+        var go = it.issue_id && UI.cardByIssue[it.issue_id] ? '<a href="#' + esc(UI.cardByIssue[it.issue_id]) + '">오늘 카드</a>' : '';
+        var t = it.track || TRACK_OF[L.type] || 'A';
+        return '<li><span class="th-t">' + esc(it.title) + '</span><span class="th-m">' + trackBadge(t) + '<span>' + esc(src.source_name || '') + (L.name ? ' · ' + esc(L.name) : '') + '</span>' +
+          (it.first_seen ? '<span class="num">처음 ' + esc(String(it.first_seen).slice(0, 10)) + '</span>' : '') + (it.last_updated ? '<span class="num">최근 ' + esc(String(it.last_updated).slice(0, 10)) + '</span>' : '') +
+          go + (su ? '<a href="' + esc(su) + '" target="_blank" rel="noopener">원문</a>' : '') + '</span></li>';
+      }).join('') + '</ol></div>';
+    sh.hidden = false; requestAnimationFrame(function () { sh.classList.add('open'); var c = sh.querySelector('[data-th-close]'); if (c) c.focus({ preventScroll: true }); });
+  }
+  function closeTheme(keepFocus) {
+    var sh = $('thSheet'); if (!sh || sh.hidden) return;
+    sh.classList.remove('open'); setTimeout(function () { if (!sh.classList.contains('open')) sh.hidden = true; }, 260);
+    if (!keepFocus && lastThemeBtn) lastThemeBtn.focus({ preventScroll: true });
+  }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeTheme(); });
+
   function srcLine(t, s) {
     if (!s) return '';
     var L = s.license || {}, url = safeUrl(s.source_url);
@@ -96,7 +164,7 @@
   /* ---------- 화면 ----------
      긴 세로 나열을 하지 않는다: 제호·핵심 수치 아래를 「이슈 카드 / 레이더 / 출처」 탭으로 나누고,
      이슈는 색인 + 카드 한 장, 카드 안 3단은 넓으면 가로 3열·좁으면 ①②③ 탭(순서 그대로). */
-  var current = null, UI = { tab: 'issues', card: 0, step: {}, radar: 0 };
+  var current = null, UI = { tab: 'issues', card: 0, step: {}, radar: 0, theme: '' };
   var STEP_NAMES = ['무슨 일', '수치·근거', '상담 시사점'];
   function render(d, opts) {
     opts = opts || {};
@@ -129,7 +197,7 @@
       var dirTxt = m.direction === 'up' ? '증가' : m.direction === 'down' ? '감소' : '보합';
       return '<li class="jc-pop"><span class="lb">' + esc(m.label) + '</span><span class="vl num">' + esc(m.value_text) + '<span class="ar" aria-label="' + dirTxt + '">' + arw + '</span></span>' +
         '<span class="pd">' + esc(m.period) + (m.delta_from ? ' · ' + esc(m.delta_from) + ' 대비' : '') + '</span>' + spark(m.spark) +
-        '<span class="ft">' + trackBadge(m.track) + '<span>' + esc(s.source_name) + '</span></span></li>';
+        '<span class="ft">' + trackBadge(m.track) + edBadges(m) + '<span>' + esc(s.source_name) + '</span></span></li>';
     }).join('') + '</ul></div>';
 
     var R = d.radar, rows = R ? arr(R.rows) : [];
@@ -148,7 +216,7 @@
       cards.map(function (c, i) {
         var t = c.three_step || {}, st = UI.step[c.id] || 0;
         return '<article class="card" id="' + esc(c.id) + '" data-step="' + st + '" aria-labelledby="t-' + esc(c.id) + '"' + (i === UI.card ? '' : ' hidden') + '>' +
-          '<div class="card-top"><div class="card-h"><div class="card-k"><span class="no">' + String(i + 1).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0') + '</span>' + esc(c.category) + '</div>' +
+          '<div class="card-top"><div class="card-h"><div class="card-k"><span class="no">' + String(i + 1).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0') + '</span>' + esc(c.category) + edBadges(c) + '</div>' +
           '<h3 id="t-' + esc(c.id) + '">' + esc(c.title) + '</h3>' + (c.kicker ? '<p class="kicker">' + esc(c.kicker) + '</p>' : '') +
           (arr(c.key_numbers).length ? '<ul class="kn">' + arr(c.key_numbers).slice(0, 4).map(function (k) {
             return '<li>' + esc(k.label) + ' <b>' + esc(k.value) + '</b>' + (k.delta ? '<i>' + esc(k.delta) + '</i>' : '') + '</li>';
@@ -159,7 +227,7 @@
             return '<button type="button" role="tab" data-step="' + k + '" aria-selected="' + (st === k) + '">' + ['①', '②', '③'][k] + ' ' + n + '</button>';
           }).join('') + '</div>' +
           '<ol class="st"><li><b>무슨 일인가</b>' + esc(t.what) + '</li><li><b>수치·근거</b>' + esc(t.evidence) + '</li><li><b>상담·구직 시사점</b>' + esc(t.implication) + '</li></ol>' +
-          '<div class="card-f">' + srcLine(c.track, c.source) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
+          '<div class="card-f">' + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
       }).join('') + '</div></div></section>';
 
     /* 레이더 */
@@ -169,7 +237,7 @@
         '<div class="rgi" aria-label="갈래 고르기">' + rows.map(function (r, i) { return '<button type="button" data-rad="' + i + '" aria-current="' + (i === UI.radar) + '">' + esc(r.group) + '</button>'; }).join('') + '</div>' +
         '<div class="rd">' + rows.map(function (r, i) {
           var ids = arr(r.source_ids).filter(function (id) { return ok(id, r.id); });
-          return '<section class="rr' + (i === UI.radar ? ' on' : '') + '" aria-label="' + esc(r.group) + '"><h3>' + esc(r.group) + '</h3><div class="two"><div><b>' + esc(cols[0]) + '</b>' + esc(r.abroad) + '</div><div><b>' + esc(cols[1]) + '</b>' + esc(r.domestic) + '</div></div>' +
+          return '<section class="rr' + (i === UI.radar ? ' on' : '') + '" aria-label="' + esc(r.group) + '"><h3>' + esc(r.group) + ' ' + edBadges(r) + '</h3><div class="two"><div><b>' + esc(cols[0]) + '</b>' + esc(r.abroad) + '</div><div><b>' + esc(cols[1]) + '</b>' + esc(r.domestic) + '</div></div>' +
             '<div class="cs"><span class="ch"><b>바뀌는 것</b>' + esc(r.changing) + '</span><span class="sy"><b>남는 것</b>' + esc(r.staying) + '</span></div>' +
             (ids.length ? '<p class="ids">출처: ' + ids.map(function (id) { var s = srcById[id]; return trackBadge(TRACK_OF[(s.license || {}).type] || 'A') + ' ' + esc(s.source_name); }).join(' · ') + '</p>' : '') + '</section>';
         }).join('') + '</div><p class="pol num">기준 ' + esc(R.as_of) + '</p></section>';
@@ -187,11 +255,13 @@
       '<div class="pol">' + [P.summary, P.track_a_note && 'A: ' + P.track_a_note, P.track_b_note && 'B: ' + P.track_b_note, P.quote_limit_words && '인용은 카드당 ' + P.quote_limit_words + '단어 이내로 제한합니다.', P.contact, d.disclaimer]
         .filter(Boolean).map(function (x) { return '<p>' + esc(x) + '</p>'; }).join('') + '<p class="num">갱신 ' + esc(String(d.updated_at || '').replace('T', ' ').slice(0, 16)) + ' · 스키마 ' + esc(d.schema_version) + '</p></div></div></section>';
 
+    html += themesHtml(d, cards);
     main.innerHTML = html;
     current = d; current._cards = cards; current._rows = rows;
     var sel = $('dateSel');
     if (sel) sel.addEventListener('change', function () { go(sel.value); });
     linkNews(d);
+    if (location.hash === '#themes' && $('themes')) $('themes').scrollIntoView({ block: 'start' });
   }
 
   /* ---------- 탭·카드 넘김: 다시 그리지 않고 표시만 바꾼다 ---------- */
@@ -225,6 +295,7 @@
       Array.prototype.forEach.call(card.querySelectorAll('.stp [data-step]'), function (x) { x.setAttribute('aria-selected', String(x === b)); });
       return;
     }
+    if ((b = e.target.closest('[data-theme]'))) { openTheme(+b.getAttribute('data-theme'), b); return; }
     if ((b = e.target.closest('[data-rad]'))) {
       UI.radar = +b.getAttribute('data-rad');
       Array.prototype.forEach.call(main.querySelectorAll('[data-rad]'), function (x) { x.setAttribute('aria-current', String(x === b)); });
@@ -245,6 +316,7 @@
   });
   function fromHash() {
     var h = decodeURIComponent(location.hash.slice(1));
+    if (h === 'themes') { var th = main.querySelector('.themes'); if (th) setTimeout(function () { th.scrollIntoView({ block: 'start' }); }, 0); return; }
     if (h === 'radar' || h === 'sources') UI.tab = h;
     else if (h && current) { current._cards.forEach(function (c, i) { if (c.id === h) { UI.tab = 'issues'; UI.card = i; } }); }
   }
