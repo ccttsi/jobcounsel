@@ -65,11 +65,13 @@ a{color:var(--accent)}
 .top-in{max-width:880px;margin:auto;display:flex;align-items:center;gap:12px;height:54px;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-right))}
 .brand{font-family:var(--display);font-weight:700;font-size:1.02rem;display:flex;align-items:center;gap:8px;margin-right:auto;white-space:nowrap}
 .brand i{width:22px;height:22px;border-radius:7px;background:var(--accent);display:grid;place-items:center}
+.top-in .brand{min-height:44px;min-width:0}
+@media (max-width:480px){.top-in{gap:4px}.top-in .brand{gap:6px;overflow:hidden;text-overflow:ellipsis}.top-in .brand i{display:none}.top-in .jc-ib{margin-right:6px}}
 .brand i:after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-ink)}
 .tnav{display:none;gap:2px}
-.tnav button{padding:7px 13px;border-radius:99px;font-size:.88rem;font-weight:600;color:var(--muted)}
+.tnav button{min-height:44px;min-width:44px;padding:7px 13px;border-radius:99px;font-size:.88rem;font-weight:600;color:var(--muted)}
 .tnav button[aria-current="page"]{background:var(--ink);color:var(--bg)}
-.ib{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:var(--muted);flex:none}
+.ib{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:var(--muted);flex:none}
 .ib:hover{background:var(--sunk);color:var(--ink)}
 main{max-width:880px;margin:auto;padding:20px max(16px,env(safe-area-inset-left)) calc(96px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-right));display:flex;flex-direction:column;gap:26px;min-height:70vh}
 
@@ -230,9 +232,8 @@ label.ck input{width:20px;height:20px;margin-top:.2em;accent-color:var(--accent)
 footer{color:var(--muted);font-size:.78rem;line-height:1.6;border-top:1px solid var(--line);padding-top:16px}
 </style></head><body>
 <link rel="stylesheet" href="../assets/shell.css">
-<nav class="site-home jc-home" aria-label="사이트"><a class="jc-ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a><a class="jc-site" href="../">직업상담 통합 자료실</a></nav>
 
-<div class="top"><div class="top-in"><button class="brand" data-nav="home"><i></i>직업상담 이론 위키</button>
+<div class="top"><div class="top-in"><a class="jc-ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a><button class="brand" data-nav="home"><i></i>직업상담 이론 위키</button>
 <nav class="tnav" aria-label="주 메뉴"><button data-nav="home">홈</button><button data-nav="theories">이론</button><button data-nav="compare">비교</button><button data-nav="practice">실전</button><button data-nav="review">복습</button></nav>
 <span data-jc-prefs></span><button class="ib" id="popBtn" data-act="pop" aria-label="설명 방식과 학습 기록 설정">⋯</button></div></div>
 <div class="pop" id="pop" role="dialog" aria-label="화면 설정">
