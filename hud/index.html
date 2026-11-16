@@ -160,7 +160,7 @@ img,table{max-width:100%}
 </style>
 </head>
 <body>
-<style>.site-home{font:600 13.5px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#f5efe4;border-bottom:1px solid #e9e0d2;padding:9px 16px}.site-home a{color:#2a2521;text-decoration:none}.site-home a:hover{text-decoration:underline}:root[data-theme="dark"] .site-home{background:#0d1017;border-bottom-color:#1e232f}:root[data-theme="dark"] .site-home a{color:#e6e9ef}@media print{.site-home{display:none}}</style>
+<style>.site-home{font:600 13.5px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#f5efe4;border-bottom:1px solid #e9e0d2;padding:9px 16px}.site-home a{color:#2a2521;text-decoration:none}.site-home a:hover{text-decoration:underline}:root[data-theme="dark"] .site-home{background:#0d1017;border-bottom-color:#1e232f}:root[data-theme="dark"] .site-home a{color:#e6e9ef}</style>
 <nav class="site-home" aria-label="사이트"><a href="../">← 직업상담 통합 자료실</a></nav>
 
 <header class="sticky top-0 z-20 bg-bg border-b border-line">
@@ -268,7 +268,7 @@ img,table{max-width:100%}
       <textarea id="lMemo" rows="2" placeholder="예: 희망직종 사무보조, 통근 40분 이내 희망"></textarea>
     </div>
     <div class="card flex flex-col gap-3">
-      <div class="flex items-center gap-2"><h2 class="text-base font-bold flex-1">완성된 일지</h2><button class="btn btn-p" id="lCopy" type="button">복사</button></div>
+      <div class="flex items-center gap-2"><h2 class="text-base font-bold flex-1">완성된 일지</h2></div>
       <textarea id="lOut" rows="20" class="num text-[13.5px]" aria-label="완성된 상담일지"></textarea>
       <p class="text-[12.5px] text-mute m-0">상담 시작·종료 시간은 즉시, 내용은 상담일부터 3일 안에 전산망에 입력합니다. 수정도 입력일부터 3일 안에만 됩니다. <span class="pg">69</span></p>
     </div>
@@ -299,7 +299,6 @@ img,table{max-width:100%}
 <p class="text-[12.5px] text-mute mt-6">이 화면은 고용노동부 「국민취업지원제도 업무매뉴얼(2026.1)」을 요약한 보조 도구입니다. 수급자격 결정과 수당 지급은 매뉴얼 원문, 취업지원 전산망, 별도 시달 지침으로 확정하세요. Ⅰ유형 선발형 기준점수는 예산 상황에 따라 바뀝니다.</p>
 </main>
 <footer style="max-width:72rem;margin:0 auto;padding:0 16px 28px;font-size:12.5px;line-height:1.6;color:var(--mute)">이 화면은 고용노동부 「국민취업지원제도 업무매뉴얼(2026.1)」을 바탕으로 AI가 만든 비공식 학습·업무 보조 도구입니다. 고용노동부가 만들거나 검토한 자료가 아닙니다. 매뉴얼 원문의 저작권은 고용노동부에 있으며, 이 화면은 원문을 옮기지 않고 기준과 수치를 요약해 계산 도구로 만들었습니다. 원문 PDF는 <a href="https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20251201817" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">고용노동부 정책자료실</a>에 공개되어 있습니다. 수급자격 결정, 수당 지급, 처분은 반드시 매뉴얼 원문과 시달 지침, 취업지원 전산망으로 확인하십시오. 계산 결과와 원문이 다르면 원문이 맞습니다. 상담일지 작성기에 입력한 내용은 이 기기 밖으로 전송되지 않지만, 공용 기기에서는 내담자 정보를 입력하지 마십시오.</footer>
-
 
 <div id="scrim"></div>
 <aside id="drawer" aria-label="용어 사전" aria-hidden="true" inert>
@@ -525,8 +524,6 @@ function lBuild(){
 }
 $('#lStages').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(b){stage=b.dataset.s;lRender()}});
 $('#v-log').addEventListener('input',e=>{if(e.target.dataset.k)lState[e.target.dataset.k]=e.target.checked;if(e.target.id==='lNum')lState[stage+'_num']=e.target.value;if(e.target.id!=='lOut')lBuild()});
-$('#lCopy').onclick=function(){const t=$('#lOut'),b=this,ok=()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1500)},fb=()=>{t.focus();t.select();try{document.execCommand('copy')?ok():(b.textContent='길게 눌러 복사')}catch(_){b.textContent='길게 눌러 복사'}};
-  try{navigator.clipboard.writeText(t.value).then(ok,fb)}catch(_){fb()}};
 lRender();
 
 /* ---------- 스크립트 ---------- */

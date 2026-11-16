@@ -1,7 +1,7 @@
 # 패턴 — 모바일 · 태블릿 손맛 (touch-physics)
 
 적용: 모든 섹터(특히 휴대폰·태블릿·폴더블). 다른 패턴 모듈을 읽을 때 이 파일은 항상 함께 읽는다.
-공통 원칙·토큰은 `../../DESIGN.md`. 실측 방법은 `.claude/skills/design-lead.md` ⑥.
+공통 원칙·토큰은 `../../DESIGN.md`. 실측 방법은 `.claude/skills/design-lead/SKILL.md` ⑥.
 
 ## 1. 손맛 기본 장치 (공용 층)
 
@@ -68,7 +68,7 @@
 
 ## 7. 검수 (이 유형에서 반드시 재는 것)
 
-`.claude/skills/design-lead.md` ⑥의 실측 표를 그대로 쓴다.
+`.claude/skills/design-lead/SKILL.md` ⑥의 실측 표를 그대로 쓴다.
 
 - [ ] 터치 타깃 44px 미만 0개(인라인 링크 예외는 목록으로 남긴다)
 - [ ] 끌기·전환 중 백지 프레임 0장

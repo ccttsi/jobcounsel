@@ -3,7 +3,7 @@
 브랜치: `feat/design-system` (main 043a146 위). 모든 단계 완료, PR 대기.
 
 ## 완료된 단계
-- [x] Step 1: `CLAUDE.md` · `DESIGN.md` · `.claude/skills/design-lead.md`
+- [x] Step 1: `CLAUDE.md` · `DESIGN.md` · `.claude/skills/design-lead/SKILL.md`
 - [x] Step 2: 레퍼런스 탐색(Codrops·web.dev·Chrome Developers/MDN) → `design/studies/2026-11-16-progressive-disclosure-motion.md`
 - [x] Step 3: `index.html`(상시 rAF 루프·blur/width/box-shadow/grid-rows 모션 제거, 통찰 풀이 접기, 키워드 칩, 좁은 폭 위치 숫자, 섹터 수 고정 제거) · `assets/prefs.js`(공용 접기에 떠오르는 펼침·게이지 밑줄)
 - [x] Step 4: 묶음 1 환승노선도·서재·커리어데칼코마니 / 묶음 2 국취 매뉴얼·파슨스·DACUM / 묶음 3 대학학과위키·국취 HUD·대학원·기업·자격 + 이용 안내 문구 7개 섹터
@@ -21,7 +21,7 @@
 - 폴더블 펼침/접힘 전환 시 대문 점↔위치 숫자(600px 기준), HUD 결과 칸 sticky(1024px 이상)
 
 ## 다음 시작 파일
-다음 디자인 작업은 `CLAUDE.md` → `DESIGN.md` → `.claude/skills/design-lead.md` 순서로 시작한다.
+다음 디자인 작업은 `CLAUDE.md` → `DESIGN.md` → `.claude/skills/design-lead/SKILL.md` 순서로 시작한다.
 측정 도구(세션마다 새로): `/home/claude/tools/audit.py [페이지…]` — 폭별 넘침·오류·첫 화면 글자 수(checkVisibility+조상 투명도)·대기 rAF·금지 속성 애니메이션·집중 보기 왕복.
 
 ---
@@ -43,7 +43,7 @@
 - [x] `design/patterns/` 신설 — 유형별 모듈 5개: `ebook-reading.md`, `card-directory.md`, `sim-hud.md`, `touch-physics.md`, `hub-landing.md`
 - [x] `DESIGN.md` 축소·재편 — §0 지적재산권 가드레일(최우선), §6 진화형 창조 루프(비지시적 탐색·변이·선택과 도태), §7 패턴 모듈 라우팅 표, §9 적중 이력, §10 도태 목록, §11 인덱스. 상세 패턴은 모듈로 이동
 - [x] `CLAUDE.md` — 작업 유형에 맞는 `design/patterns/*.md`만 읽는 규칙, 노하우는 모듈에 누적·`DESIGN.md`는 요약만, 손맛 실측 의무
-- [x] `.claude/skills/design-lead.md` — ①비지시적 탐색 ②지재권 필터(세 질문) ③변이 2~3시안 ④노트 ⑤구현 ⑥손맛 실측(백지 프레임·프레임 간격·44px·연속 입력) ⑦적중·도태 ⑧마무리
+- [x] `.claude/skills/design-lead/SKILL.md` — ①비지시적 탐색 ②지재권 필터(세 질문) ③변이 2~3시안 ④노트 ⑤구현 ⑥손맛 실측(백지 프레임·프레임 간격·44px·연속 입력) ⑦적중·도태 ⑧마무리
 - [x] `design/studies/2026-11-16-touch-physics-measurement.md` — 측정 방법과 이번 숫자
 - [x] `README.md` 디자인 체계 절 갱신
 
@@ -58,4 +58,25 @@
 3. 첫 적용 대상 추천: `/manual/`(미달 58곳)과 `/transit/`(37곳) — 단추 높이가 32~42px에 몰려 있어 `min-height:44px` 한 줄로 대부분 해소되는지부터 확인.
 
 ### 다음 시작 파일
-`CLAUDE.md` → `DESIGN.md`(§0·§7) → 해당 유형 `design/patterns/*.md` → `.claude/skills/design-lead.md`.
+`CLAUDE.md` → `DESIGN.md`(§0·§7) → 해당 유형 `design/patterns/*.md` → `.claude/skills/design-lead/SKILL.md`.
+
+---
+
+## 2026-11-16 파슨스 이북 모바일 책 보기 (떼어 내기·페이드인, 고주사율)
+- 대상 파일: `parsons/app.js`, `parsons/index.html` (+ 넘김 중 재측정을 미루는 `assets/prefs.js`, `assets/marker.js` 두 줄)
+- 요청: "책으로 읽기는 태블릿등 큰 화면에서 좋은데 모바일은 가시성이 구려짐. 포스트잇이나 달력을 떼는 등 떨어지며 연해지는 걸로 가능? 이전페이지로 가는 경우는 자연스럽게 페이드인하고. 그리고 모바일에서 프레임이 너무 낮게 나옴. 확인하고 최소 60fps 적정 144fps는 나오게 해줘"
+- 방식은 `DESIGN.md` 「패턴 기록」의 2026-11-16 파슨스 모바일 항목에 정리했다. 두 쪽 펼침(태블릿·데스크톱) 넘김은 손대지 않았다.
+- 검수(헤드리스 크롬 390×844·360×780·1024×768, 밝게·어둡게): 53항목 통과 — 한 쪽/두 쪽 전환, 단추·탭·끌기·건반 넘김, 연타, 넘김 도중 보기 전환, 차례 이동, 92쪽 전부, 모션 줄이기, 창 크기 전환. 콘솔 오류 0, 가로 넘침 0, 넘김 중 백지 프레임 0.
+- 성능: 넘김 구간 프레임 간격 16.67ms 고정(빠진 프레임 0), 긴 작업 0, 넘김 중 레이아웃·페인트 0. vsync 해제 시 rAF 평균 0.79ms(144Hz 여유). 넘김 한 번 메인 스레드 일감 55→35ms.
+- 두 쪽 보기(1024×768) 화면을 수정 전과 픽셀 비교: 차이 0.
+- 남은 확인(실기기): 아이폰 사파리에서 떼어 내기·페이드인 체감과 120Hz 프로모션 동작, 아이패드 세로(1쪽)에서 같은 모션.
+
+---
+
+## 2026-11-16 16번 신규 섹터 「취업 현위치」(`/reality/`)
+- 브랜치 `feat/reality-sector`. 대상: `reality/index.html`, `reality/app.js`(새 파일), 대문 `index.html`의 `TOOLS`·`NAV` 한 줄씩, `README.md`, `design/patterns/sim-hud.md` §8, `DESIGN.md` §11 한 줄, 학습 노트 `design/studies/2026-11-16-estimate-then-compare.md`. 데이터 `reality/data/*`는 읽기만 했다.
+- 구성: ① 예측과 실제(10종, 두 표지 눈금자·100점 빈도 그림·리프레임·행동 하나·상담 질문·출처) ② 조건별 내 위치(연령·학력·학교 유형·계열·사업체 규모·경력단절 사유, 주소에 조건 저장) ③ 패배 문장 반박 8개(지원 횟수 확률 모형 계산기 포함) ④ 통제 밖/안 나누기(하나만 고르기)·방패 카드(☆ 고정). 입력값은 이 기기 `localStorage`(`jc-reality`)에만.
+- 검수(헤드리스 크롬 390×844·360×780·844×390·820×1180·1024×768·1280×800·1600×900 × 밝게·어둡게 × 4단계 = 56조합): 가로 넘침 0, 페이지 오류 0(외부 글꼴 CDN은 이 샌드박스에서 막혀 실패 — 화면 오류 아님), 44px 미달 0(④의 라디오 20px은 44px 이상 label 안에 있어 label이 터치 대상).
+- 실측: 슬라이더 연속 입력 20회 p95 10.3ms(390)·8.3ms(1280), long task 0 / 공개 전환 프레임 p95 16.7ms·최대 20.4ms / 단계 전환 최대 33.3ms(390)·50.1ms(1280, 한 번 그리는 순간) / 대기 3초 rAF 0회 / 감속 모드 실행 중 애니메이션 0 / 집중 보기 왕복 잔여 0. 백지 프레임 스크린캐스트 측정은 하지 않았다(넘김 전환이 없고 단계 전환은 동기 교체).
+- 남은 확인(실기기): 아이폰 사파리 슬라이더 손잡이 끌기와 세로 스크롤 충돌 여부, 삼성 인터넷 range 모양, 폴더블 접힘 구간(600–899px)에서 ①의 두 칸 배치.
+- 다음 시작 파일: `reality/app.js`(단계별 함수 `s1`~`s4`). 데이터 갱신 시 `reality/data/README.md` §7 갱신 주기 참고.

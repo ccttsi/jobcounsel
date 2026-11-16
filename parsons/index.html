@@ -239,11 +239,18 @@ body:not([data-mode="scroll"]) #prog{display:none}
 .bk{display:flex;justify-content:center;width:100%;-webkit-user-select:none;user-select:none;touch-action:pan-y}
 /* 그림자는 펼친 면 뒤 고정 층에 둔다(filter:drop-shadow는 넘김 중 매 프레임 다시 그려져 밝은 테마에서 가장자리가 우글거린다) */
 .spread{position:relative;display:flex;isolation:isolate;perspective:2600px;--sh:40,26,12}
-:root[data-theme="dark"] .spread{--sh:0,0,0}
-.spread::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px;box-shadow:0 2px 4px rgba(var(--sh),.06),0 24px 40px -20px rgba(var(--sh),.34);pointer-events:none}
+:root[data-theme="dark"] .spread{--sh:0,0,0}.spread::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px;box-shadow:0 2px 4px rgba(var(--sh),.06),0 24px 40px -20px rgba(var(--sh),.34);pointer-events:none}
 :root[data-theme="dark"] .spread::before{box-shadow:0 24px 40px -18px rgba(0,0,0,.75)}
-.spread.per1{overflow:visible}
-.bk:has(.per1){overflow:hidden;padding:0 0 10px}
+.spread.per1{overflow:visible;perspective:none}
+.spread.per1 .spine{display:none}
+.spread.per1 .pg{height:var(--ph,calc(var(--pw) * 1.25))}
+/* 한 쪽 보기: 책등·접힘 음영·원근을 걷어 내고 종이 한 장에 화면 폭을 다 준다 */
+.spread.per1::before{border-radius:18px;box-shadow:0 1px 2px rgba(var(--sh),.05),0 14px 28px -18px rgba(var(--sh),.32)}
+.spread.per1 .page,.mleaf .page{box-shadow:none;border-radius:18px}
+.spread.per1 .page::after{display:none}
+.bk:has(.per1){overflow:clip;overflow-clip-margin:280px;padding:0}
+/* overflow-clip-margin 을 모르는 브라우저에서는 잘라 버리지 않는다(떨어진 종이가 종이테두리에서 뚝 끊긴다) */
+@supports not (overflow-clip-margin: 1px){.bk:has(.per1){overflow:visible}}
 .pg{position:relative;width:var(--pw);height:calc(var(--pw) * 1.25)}
 .page{width:100%;height:100%;box-shadow:none;background:radial-gradient(90% 55% at 100% 0%,hsl(var(--h) 70% 92% / .8),transparent 60%),var(--paper)!important}
 :root[data-theme="dark"] .page{background:radial-gradient(90% 55% at 100% 0%,hsl(var(--h) 40% 16%),transparent 60%),var(--paper)!important}
@@ -280,6 +287,31 @@ body:not([data-mode="scroll"]) #prog{display:none}
 .pg .cast{z-index:2}
 .pg.R .cast{background:linear-gradient(90deg,rgba(var(--sh),.26),rgba(var(--sh),.06) 38%,transparent 70%)}
 .pg.L .cast{background:linear-gradient(270deg,rgba(var(--sh),.26),rgba(var(--sh),.06) 38%,transparent 70%)}
+/* 떼어 내는 종이·비껴 드는 종이: 움직이는 값은 transform·opacity 둘뿐이라 합성기에서만 돈다 */
+.mleaf{position:absolute;inset:0;z-index:6;pointer-events:none;transform:translateZ(0);transform-origin:14% 6%;will-change:transform,opacity;contain:layout paint style;border-radius:18px}
+.mleaf.tear{box-shadow:0 10px 26px -14px rgba(40,26,12,.45)}
+:root[data-theme="dark"] .mleaf.tear{box-shadow:0 10px 26px -14px rgba(0,0,0,.85)}
+
+/* 좁은 화면 책 보기: 머리말을 걷고 종이 한 장이 화면에 들어오는 크기로 */
+@media (max-width:700px){
+  body[data-mode="book"] .intro{display:none}
+  body[data-mode="book"] .where{display:none}
+  body[data-mode="book"] .pv{margin:0 0 4px}
+  body[data-mode="book"] .pv-t{min-height:42px;padding:2px}
+  body[data-mode="book"] .pv-tt b{font-size:14px}
+  body[data-mode="book"] .pv-tt small{font-size:13px}
+  body[data-mode="book"] .bar{margin:0 0 8px;gap:6px 8px}
+  body[data-mode="book"] .wrap{padding-bottom:10px}
+  body[data-mode="book"] .bk-w{gap:8px}
+  .spread.per1 .cd-top{padding:14px 18px 0;font-size:12px}
+  .spread.per1 .cd-in{padding:2px 18px 14px;gap:12px}
+  .spread.per1 .page,.mleaf .page{border-radius:16px}
+  .spread.per1::before{border-radius:16px}
+  .spread.per1 .tt{font-size:22px}
+  .spread.per1 .bd{font-size:19.5px;line-height:1.7}
+  .spread.per1 .bd.sm{font-size:17.5px;line-height:1.66}
+  .spread.per1 .bd.big{font-size:21px;line-height:1.62}
+}
 
 /* 세로 읽기용 작은 단추 묶음 */
 .dock{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));z-index:45;display:flex;gap:2px;padding:4px;border-radius:99px;background:color-mix(in srgb,var(--panel) 96%,transparent);box-shadow:0 2px 6px rgba(0,0,0,.08),0 14px 30px -14px rgba(0,0,0,.4);border:1px solid var(--line);transform:translate(-50%,140%);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
@@ -321,7 +353,6 @@ body.bar-off[data-mode="scroll"] .dock{transform:translate(-50%,0);opacity:1;poi
 
 @media (orientation:landscape) and (max-height:500px){.intro{margin:4px 0 8px}.intro h2{font-size:24px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-@media print{.hd,.pv,.bar,#prog,.ctl,.segs{display:none}.cd{box-shadow:none;break-inside:avoid;border:1px solid #ccc}}
 </style>
 </head>
 <body data-mode="scroll">

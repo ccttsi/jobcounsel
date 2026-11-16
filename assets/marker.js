@@ -186,7 +186,17 @@
     paintFab();
   }
   var repaintT;
-  function scheduleRepaint(ms) { clearTimeout(repaintT); repaintT = setTimeout(repaint, ms == null ? 350 : ms); }
+  var repaintTries = 0;
+  function scheduleRepaint(ms) {
+    clearTimeout(repaintT);
+    repaintT = setTimeout(function () {
+      /* 책장을 넘기는 중(window.JC_BUSY)에는 문서 전체를 다시 재지 않는다. 그 재측정이 넘김 도중에
+         끼어들면 한 프레임을 통째로 써 버려 화면이 툭 끊긴다. 넘김이 끝난 뒤로 미룬다. */
+      if (window.JC_BUSY && repaintTries < 12) { repaintTries++; scheduleRepaint(160); return; }
+      repaintTries = 0;
+      repaint();
+    }, ms == null ? 350 : ms);
+  }
 
   /* ---------------- 선택 영역 → 형광펜 ---------------- */
   function selectionRange() {
@@ -389,8 +399,7 @@
     '.toast{position:fixed;left:50%;top:max(14px,env(safe-area-inset-top));transform:translateX(-50%);z-index:5;max-width:calc(100vw - 28px);padding:10px 14px;border-radius:12px;background:var(--ink);color:var(--panel);font-size:13.5px;font-weight:600;box-shadow:var(--shadow);animation:pop .16s}',
     '[hidden]{display:none!important}',
     '@media (max-width:520px){.panel{left:12px;right:12px;width:auto;border-radius:20px 20px 16px 16px}}',
-    '@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}',
-    '@media print{:host{display:none!important}}'
+    '@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}'
   ].join('\n');
 
   var CSS_NOTES = [
@@ -415,8 +424,7 @@
     '.dot[aria-pressed="true"]{box-shadow:0 0 0 2px #3b3226}',
     '.pn-x{min-height:32px;padding:0 8px;border-radius:8px;font-size:12.5px;font-weight:700;color:rgba(59,50,38,.75)}',
     '.pn-x:hover{background:rgba(0,0,0,.06)}',
-    'button:focus-visible,textarea:focus-visible{outline:2px solid #0f766e;outline-offset:2px}',
-    '@media print{:host{display:none!important}}'
+    'button:focus-visible,textarea:focus-visible{outline:2px solid #0f766e;outline-offset:2px}'
   ].join('\n');
 
   function build() {
@@ -653,7 +661,11 @@
   function isOurs(e) { var p = e.composedPath ? e.composedPath() : []; return p.indexOf(uiHost) >= 0 || p.indexOf(layerHost) >= 0; }
 
   /* 하단에 고정된 막대(탭바 등)가 있으면 그 위로 비켜 앉는다 */
+  var liftT = 0, liftTries = 0;
   function lift() {
+    /* 책장을 넘기는 중에는 문서를 재지 않는다(넘김이 끝난 뒤로 미룬다) */
+    if (window.JC_BUSY && liftTries < 12) { liftTries++; clearTimeout(liftT); liftT = setTimeout(lift, 200); return; }
+    liftTries = 0;
     if (!uiHost) return;
     var x = innerWidth - 40, y = innerHeight - 6, l = 0;
     var els = d.elementsFromPoint ? d.elementsFromPoint(x, y) : [];

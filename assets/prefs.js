@@ -260,8 +260,7 @@
     '.jc-crop::before,.jc-crop::after{content:"";display:none;position:absolute;top:50%;width:11px;height:11px;margin-top:-6px;border:1px solid var(--c);border-radius:50%;' +
       'background:linear-gradient(var(--c),var(--c)) 50% 50%/17px 1px no-repeat,linear-gradient(var(--c),var(--c)) 50% 50%/1px 17px no-repeat}' +
     '.jc-crop::before{left:-5px}.jc-crop::after{right:-5px}' +
-    '@media (min-width:900px){.jc-crop::before,.jc-crop::after{display:block}}' +
-    '@media print{html body.jc-paper{background-image:none}.jc-tone,.jc-crop,#jc-imm-dock{display:none!important}}';
+    '@media (min-width:900px){.jc-crop::before,.jc-crop::after{display:block}}';
 
   function layer(cls) { var el = d.createElement('div'); el.className = cls; el.setAttribute('aria-hidden', 'true'); el.setAttribute('data-jc-ignore', ''); d.body.appendChild(el); return el; }
   function design() {
@@ -306,8 +305,7 @@
     '@keyframes jc-stamp{0%{opacity:0;transform:rotate(-9deg) scale(1.8)}60%{opacity:.9;transform:rotate(-9deg) scale(.94)}100%{opacity:.78;transform:rotate(-9deg) scale(1)}}' +
     '.jc-seal.jc-new{animation:jc-stamp .46s cubic-bezier(.3,.9,.3,1) .25s backwards}' +
     'html[data-jc-imm] .jc-seal{display:none}' +
-    '@media (prefers-reduced-motion:reduce){.jc-boing,.jc-in,.jc-seal.jc-new{animation:none!important}.jc-track i{display:none}}' +
-    '@media print{.jc-track,.jc-rule,.jc-seal{display:none!important}.jc-pop{box-shadow:none!important}}';
+    '@media (prefers-reduced-motion:reduce){.jc-boing,.jc-in,.jc-seal.jc-new{animation:none!important}.jc-track i{display:none}}';
 
   var popSeen = typeof WeakSet === 'function' ? new WeakSet() : null, popT = 0, sealed = false, sealDone = false, reduce = null;
   var BLOCK = /^(DIV|SECTION|ARTICLE|LI|A|BUTTON|P|H1|H2|H3|H4|UL|OL|DL|HEADER|FIGURE|DETAILS|NAV|TABLE|TR|FORM|ASIDE|BLOCKQUOTE)$/;
@@ -377,12 +375,20 @@
   function pgMeasure() { var se = d.scrollingElement || root; pgMax = (se ? se.scrollHeight : 0) - window.innerHeight; }
   function enter(records) {
     pgMax = -1; // 내용이 늘었으니 길이는 다음에 다시 잰다
+    /* 정적 영역(data-jc-still: 넘기는 동안 스스로 움직이는 곳)만 바뀌었으면 전체 재탐색을 건너뛴다.
+       책장을 넘길 때마다 380ms 뒤에 문서 전체를 다시 재는 일(한 프레임 분량)이 끼어들지 않게. */
+    var live = false, i, j;
+    for (i = 0; i < records.length && !live; i++) for (j = 0; j < records[i].addedNodes.length; j++) {
+      var nn = records[i].addedNodes[j];
+      if (!(nn.nodeType === 1 && nn.closest && nn.closest('[data-jc-still]'))) { live = true; break; }
+    }
+    if (!live) return;
     applyFold(); // 새로 그려진 덩어리는 곧바로 접어 둔다(펼쳐졌다 접히는 깜빡임 방지)
     queuePop();
     if (!sealDone) setTimeout(seal, 60);
     if ((window.JC_DESIGN || {}).enter === false || still()) return;
     var ae = d.activeElement; if (ae && (/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) || ae.isContentEditable)) return; // 글자를 치는 동안에는 가만히
-    var added = [], i, j;
+    var added = [];
     for (i = 0; i < records.length; i++) for (j = 0; j < records[i].addedNodes.length; j++) {
       var n = records[i].addedNodes[j];
       if (n.nodeType === 1 && BLOCK.test(n.tagName) && n.isConnected && !/(^|\s)jc-/.test(n.className && n.className.baseVal === undefined ? n.className : '') && !n.closest('[data-jc-still],[data-jc-ignore],svg')) added.push(n);
@@ -465,8 +471,7 @@
     'button.jc-fold-h[data-open]::before{transform:scaleX(1)}' +
     '.jc-fold-h::after{transition:transform .3s cubic-bezier(.2,.9,.3,1)}' +
     'html[data-jc-imm] .jc-fold-box>*,html[data-jc-imm] .jc-fold-sib+*{transition:none!important}' +
-    '@media (prefers-reduced-motion:reduce){.jc-fold-h::after,button.jc-fold-h::before,.jc-fold-box>*,.jc-fold-sib+*{transition:none!important}}' +
-    '@media print{.jc-fold-box>*,.jc-fold-sib+*{display:revert!important}}';
+    '@media (prefers-reduced-motion:reduce){.jc-fold-h::after,button.jc-fold-h::before,.jc-fold-box>*,.jc-fold-sib+*{transition:none!important}}';
   var foldOpen = {}, foldReady = false;
   function foldKey(i, head) { return i + '|' + location.hash + '|' + (head.id || (head.textContent || '').trim().slice(0, 28)); }
   function foldActive(h) { return h.classList.contains('jc-fold-a') || (h.parentElement && h.parentElement.classList.contains('jc-fold-a')) || !window.matchMedia('(min-width:900px)').matches; }

@@ -49,11 +49,6 @@
     /* 뒤돌아보기 정규식은 옛 사파리에서 문법 오류가 나므로 쓰지 않는다 */
     return (String(t).replace(/\r/g, '').match(/[^.!?…\n]+[.!?…]*/g) || []).map(function (x) { return x.trim(); }).filter(function (x) { return x && !/^[.!?…]+$/.test(x); });
   }
-  function copy(text, btn) {
-    var done = function () { if (!btn) return; var o = btn.textContent; btn.textContent = '복사했습니다'; setTimeout(function () { btn.textContent = o; }, 1600); };
-    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
-    function fallback() { var ta = d.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0'; d.body.appendChild(ta); ta.select(); try { d.execCommand('copy'); } catch (x) {} ta.remove(); done(); }
-  }
   function ico(name) {
     var P = {
       arrow: '<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
@@ -61,7 +56,6 @@
       check: '<path d="M5 12.5l4.5 4.5L19 7"/>',
       x: '<path d="M6 6l12 12M18 6L6 18"/>',
       dot: '<circle cx="12" cy="12" r="3.2" fill="currentColor" stroke="none"/>',
-      copy: '<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
       shuffle: '<path d="M4 7h3.5c4 0 5 10 9 10H20"/><path d="M4 17h3.5c1.6 0 2.6-1.6 3.5-3.4"/><path d="M13 10.4c.9-1.8 1.9-3.4 3.5-3.4H20"/><path d="M17.5 4.5L20 7l-2.5 2.5M17.5 14.5L20 17l-2.5 2.5"/>'
     };
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[name] || '') + '</svg>';
@@ -126,7 +120,7 @@
   function phraseBlock(m) {
     var a = '', b = '';
     if (m.phrases && m.phrases.length) a = '<section class="blk" id="phr"><h3>바로 쓰는 표현</h3><ul class="phr">' + m.phrases.map(function (p) {
-      return '<li><button type="button" class="phr-t" data-copy="' + esc(p.t.replace(/^"|"$/g, '')) + '" title="눌러서 복사">' + esc(p.t) + '</button><small>' + esc(p.n) + '</small></li>';
+      return '<li><span class="phr-t">' + esc(p.t) + '</span><small>' + esc(p.n) + '</small></li>';
     }).join('') + '</ul></section>';
     if (m.donts && m.donts.length) b = '<section class="blk"' + (a ? '' : ' id="phr"') + '><h3>이것만은 피하기</h3><ul class="dnt">' + m.donts.map(function (x) {
       return '<li><b>' + esc(x[0]) + '</b><small>' + esc(x[1]) + '</small></li>';
@@ -258,8 +252,8 @@
       + '<div class="inrow"><input id="qIn" class="in" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 왜 회사를 그만두셨어요?" value="' + esc(s.q) + '"><button type="button" class="btn btn-p" data-qgo>살펴보기</button></div>'
       + '<div class="filt" role="group" aria-label="예로 넣어 보기"><span class="filt-l">예로 넣기</span>' + D.questionBank.slice(0, 10).map(function (p) { return '<button type="button" class="fb" data-qex="' + esc(p.c) + '">' + esc(p.c) + '</button>'; }).join('') + '</div>'
       + '<div id="qOut" aria-live="polite">' + (s.q.trim() ? qReport(s.q.trim()) + relatedBlock(s.q, { n: 4, sig: false }) : '') + '</div>';
-    var frames = '<section class="blk" id="qframes"><h3>목적별 열린 질문 틀 <small>눌러서 복사</small></h3><div class="frm">' + D.questionFrames.map(function (f) {
-      return '<div><b>' + esc(f.k) + '</b>' + f.q.map(function (x) { return '<button type="button" class="phr-t" data-copy="' + esc(x) + '">' + esc(x) + '</button>'; }).join('') + '</div>';
+    var frames = '<section class="blk" id="qframes"><h3>목적별 열린 질문 틀</h3><div class="frm">' + D.questionFrames.map(function (f) {
+      return '<div><b>' + esc(f.k) + '</b>' + f.q.map(function (x) { return '<span class="phr-t">' + esc(x) + '</span>'; }).join('') + '</div>';
     }).join('') + '</div></section>';
     var bank = '<details class="blk bank"><summary><h3>닫힌 질문 → 열린 질문 짝 ' + D.questionBank.length + '개</h3></summary><ul class="pairs">' + D.questionBank.map(function (p) {
       return '<li><span class="pc">' + esc(p.c) + '</span><span class="pa" aria-hidden="true">→</span><span class="po">' + esc(p.o) + '</span><small>' + esc(p.tag) + '</small></li>';
@@ -271,11 +265,11 @@
     var hl = marks(q, a.tags.map(function (r) { return { re: r.re, cls: 'm-no', title: r.label }; }).concat([{ re: D.openWords, cls: 'm-ok', title: '열린 질문 낱말' }]));
     var h = '<p class="qv ' + a.cls + '">' + esc(a.verdict) + '</p><p class="qline">' + hl + '</p>';
     if (a.tags.length) h += '<ul class="ck">' + a.tags.map(function (r) {
-      return '<li class="ck-no">' + ico('x') + '<span><b>' + esc(r.label) + '</b> ' + esc(r.why) + '<span class="fix">' + r.fix.map(function (f) { return '<button type="button" class="phr-t" data-copy="' + esc(f) + '">' + esc(f) + '</button>'; }).join('') + '</span></span></li>';
+      return '<li class="ck-no">' + ico('x') + '<span><b>' + esc(r.label) + '</b> ' + esc(r.why) + '<span class="fix">' + r.fix.map(function (f) { return '<span class="phr-t">' + esc(f) + '</span>'; }).join('') + '</span></span></li>';
     }).join('') + '</ul>';
     if (!a.tags.length && a.closed) h += '<p class="small">사실 확인(날짜, 자격 유무, 연락처)이 목적이라면 닫힌 질문이 맞습니다. 이야기를 넓히고 싶다면 "무엇·어떤·어떻게"로 바꿔 보세요.</p>';
     if (!a.tags.length && a.open) h += '<p class="small">좋습니다. 답을 들은 뒤에는 질문을 하나 더 잇기보다, 들은 말을 한 번 되받아 주면 대화가 깊어집니다.</p>';
-    if (a.best) h += '<div class="near"><small>비슷한 짝</small><p><span class="pc">' + esc(a.best.c) + '</span><span class="pa" aria-hidden="true">→</span><button type="button" class="phr-t po" data-copy="' + esc(a.best.o) + '">' + esc(a.best.o) + '</button></p></div>';
+    if (a.best) h += '<div class="near"><small>비슷한 짝</small><p><span class="pc">' + esc(a.best.c) + '</span><span class="pa" aria-hidden="true">→</span><span class="phr-t po">' + esc(a.best.o) + '</span></p></div>';
     return h;
   }
 
@@ -295,7 +289,7 @@
       + slot(2, '③ 이유', '왜 그런지 한 줄', '예: 신고하신 소득이 기준을 넘었기 때문입니다.')
       + slot(3, '④ 대안', '대신 할 수 있는 일', '예: 다음 회차가 제대로 나가도록 지금 같이 확인해 볼게요.')
       + '<div class="slot"><span class="sl">⑤ 확인</span><div class="chips">' + D.cushionClosers.map(function (o) { return '<button type="button" class="fb fb-s" data-op5="' + esc(o) + '" aria-pressed="' + (p[4] === o) + '">' + esc(o) + '</button>'; }).join('') + '</div></div>'
-      + '</div><div class="outline"><small>이어 붙인 말</small><p id="asmOut">' + esc(assemble()) + '</p><button type="button" class="btn" data-copyasm>' + ico('copy') + '<span>복사</span></button></div>'
+      + '</div><div class="outline"><small>이어 붙인 말</small><p id="asmOut">' + esc(assemble()) + '</p></div>'
       + '<p class="small">상황을 고르면 다섯 칸이 예시로 채워집니다. 예시를 지우고 내 말로 바꿔 써 보세요. ' + labels.join(' → ') + ' 순서는 기본 틀일 뿐, 상황에 따라 줄이거나 바꿔도 됩니다.</p>';
     return pad('연습장 · 부드럽게 전하기', body) + pad('연습장 · 다섯 칸 조립기', asm, 'pad-b');
   }
@@ -440,7 +434,7 @@
     return '<div class="card' + (x.id === 'crisis' ? ' card-c' : '') + '">'
       + '<p class="cd-s"><span class="cd-l">먼저 알아차리기</span>' + esc(x.sign) + '</p>'
       + '<div class="cd-g"><div><span class="cd-l cd-no">피할 말</span><ul>' + x.avoid.map(function (a) { return '<li><b>' + esc(a[0]) + '</b><small>' + esc(a[1]) + '</small></li>'; }).join('') + '</ul></div>'
-      + '<div><span class="cd-l cd-ok">해 볼 말</span><ul>' + x.try.map(function (a) { return '<li><button type="button" class="phr-t" data-copy="' + esc(a.replace(/^"|"$/g, '')) + '">' + esc(a) + '</button></li>'; }).join('') + '</ul></div></div>'
+      + '<div><span class="cd-l cd-ok">해 볼 말</span><ul>' + x.try.map(function (a) { return '<li><span class="phr-t">' + esc(a) + '</span></li>'; }).join('') + '</ul></div></div>'
       + '<p class="cd-s"><span class="cd-l">이어 가기</span>' + esc(x.next) + '</p></div>';
   }
   function toolFrame() {
@@ -476,7 +470,7 @@
     var F = window.TalkFinder, it = h.it, top = arr && arr[0] ? arr[0].s : h.s;
     return '<li class="hit"><span class="hit-i" aria-hidden="true">' + (F.icon[it.mod] || '•') + '</span>'
       + '<button type="button" class="hit-b" data-open="' + esc(h.key) + '"><small>' + esc(F.name[it.mod] || '') + ' · ' + esc(it.kind) + '</small><b>' + esc(it.title) + '</b>' + (it.snip ? '<span>' + esc(it.snip) + '</span>' : '') + '</button>'
-      + '<span class="hit-r">' + strength(h.s, top) + (it.copy ? '<button type="button" class="btn btn-s" data-copy="' + esc(it.copy) + '">' + ico('copy') + '<span>복사</span></button>' : '') + '</span></li>';
+      + '<span class="hit-r">' + strength(h.s, top) + '</span></li>';
   }
   /* 연습장 어디서든 쓰는 "이 말과 가까운 것" 묶음 */
   function relatedBlock(text, opt) {
@@ -607,7 +601,6 @@
   d.addEventListener('click', function (e) {
     var t = e.target.closest('button, a'); if (!t) return;
     var ds = t.dataset;
-    if (ds.copy != null) { copy(ds.copy, null); flash(t); return; }
     if (ds.dk != null) { var s = st.drill[ds.dk]; if (s.pick < 0) { s.pick = +ds.op; rerender(); } return; }
     if (ds.dnext != null) { var k = ds.dnext, sd = st.drill[k], n = drillList(k === 'mix' ? '' : k).length; sd.i = (sd.i + (+ds.dir) + n) % n; sd.pick = -1; rerender(); var el = $('drill-' + k); if (el && el.getBoundingClientRect().top < 0) el.scrollIntoView({ block: 'start' }); return; }
     /* 01 */
@@ -625,7 +618,6 @@
     if (ds.cgo != null) { st.cushion.t = $('cIn').value; rerender(); return; }
     if (ds.op1 != null) { st.cushion.parts[0] = st.cushion.parts[0] === ds.op1 ? '' : ds.op1; rerender(); return; }
     if (ds.op5 != null) { st.cushion.parts[4] = st.cushion.parts[4] === ds.op5 ? '' : ds.op5; rerender(); return; }
-    if (ds.copyasm != null) { copy(assemble(), t.querySelector('span')); return; }
     /* 04 */
     if (ds.mc != null) { st.cloud.c = ds.mc; st.cloud.t = ds.mc === 'mine' ? '' : byId(D.cloudCases, ds.mc).t; rerender(); if (ds.mc === 'mine') $('mIn').focus(); return; }
     if (ds.mgo != null) { st.cloud.t = $('mIn').value; rerender(); return; }
@@ -661,7 +653,6 @@
     var pre = ta.value.slice(0, s), sp = pre && !/\s$/.test(pre) ? ' ' : '';
     ta.value = pre + sp + w + ta.value.slice(e); var p = (pre + sp + w).length; ta.focus(); try { ta.setSelectionRange(p, p); } catch (x) {}
   }
-  function flash(el) { el.classList.add('copied'); setTimeout(function () { el.classList.remove('copied'); }, 1400); }
 
   /* 안내 한 줄 펼치기 */
   $('pvToggle').addEventListener('click', function () {

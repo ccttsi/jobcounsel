@@ -467,7 +467,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 /* 집중 보기(assets/prefs.js): 본문만 남길 때 붙어 있는 칸을 풀어 둔다 */
 html[data-jc-imm] .fl,html[data-jc-imm] .dt>.side{position:static;max-height:none}
 html[data-jc-imm] .gl-t{display:none}
-@media print{.hd,.pv,.hero,.tabs,.fl,.pg,.sb,.eg,.go,.so,.per,.gl-t,.flip-b{display:none!important}.dt{display:block}.flip-in{display:block;transform:none!important}.face{-webkit-backface-visibility:visible;backface-visibility:visible}.flip-in>.back{transform:none;margin-top:12px}}
 </style>
 </head>
 <body data-home>
@@ -485,10 +484,10 @@ html[data-jc-imm] .gl-t{display:none}
       <span class="pv-c" id="pvL">펼치기</span>
     </button>
     <div class="pv-b" id="pvB" inert><div><ul>
-      <li><b>공정거래위원회·알리오(ALIO)·중견기업정보마당·국민연금공단이 스스로 공개한 사실 정보만 정리했습니다</b>(2026-11-16 정리). 어느 기관이나 기업의 공식 안내도, 채용 정보도 아닙니다. 민간 채용 플랫폼의 글과 기업 홍보 문구는 쓰지 않았습니다.</li>
+      <li><b>공정거래위원회·알리오(ALIO)·중견기업정보마당·국민연금공단이 스스로 공개한 사실 정보와, 중견기업에 한해 더한 위키백과·위키데이터·상장 종목 공개 정보로 정리했습니다</b>(2026-11-16 정리). 어느 기관이나 기업의 공식 안내도, 채용 정보도 아닙니다. 민간 채용 플랫폼의 글과 기업 홍보 문구는 쓰지 않았습니다.</li>
       <li><b>공개 자료에 없는 항목은 화면에 칸을 만들지 않았습니다.</b> 매출·직원수가 0으로 적힌 값도 "값이 없거나 0"이라 숫자를 싣지 않았습니다.</li>
       <li><b>대기업은 2026-05-01 공시대상기업집단 지정 기준</b>이고 매출·직원수·자산은 2025년 결산입니다. <b>공공기관 직원수는 정원</b>(임직원 총계)이라 현원과 다를 수 있습니다.</li>
-      <li><b>중견기업은 확인서를 발급받은 기업만 공개됩니다.</b> 법적으로 중견기업이어도 확인서를 받지 않았으면 목록에 없습니다. 업종·국민연금 가입자수·사업장 소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였고(3,946곳 중 3,671곳), 가입자수는 상시근로자수와 다릅니다.</li>
+      <li><b>중견기업은 확인서를 발급받은 기업만 공개됩니다.</b> 법적으로 중견기업이어도 확인서를 받지 않았으면 목록에 없습니다. 업종·국민연금 가입자수·사업장 소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였고(3,946곳 중 3,725곳), 가입자수는 상시근로자수와 다릅니다. 공식 홈페이지는 실제로 접속해 회사명이 확인된 곳만, 주요 사업은 위키백과·상장사 기업개요에서 확인된 곳만 실었습니다.</li>
       <li><b>검색어와 고른 조건은 저장하거나 보내지 않습니다.</b> 주소 표시줄에만 남아 다시 열거나 공유할 수 있습니다.</li>
     </ul></div></div>
   </section>
@@ -496,7 +495,7 @@ html[data-jc-imm] .gl-t{display:none}
   <section class="hero">
     <div>
       <h1>기업 <span id="heroN">7,822</span>곳의 공개된 사실을<br><em>명함 한 장씩</em> 꺼내 봅니다.</h1>
-      <p>공시대상기업집단 소속회사, 중견기업 확인서 발급기업, 지정 공공기관을 이름·기업집단·기관 유형·업종으로 찾고, 매출·직원 규모로 줄 세워 봅니다. 중견기업은 국민연금 가입 사업장 자료로 업종·가입자수·소재지를 더했습니다.</p>
+      <p>공시대상기업집단 소속회사, 중견기업 확인서 발급기업, 지정 공공기관을 이름·기업집단·기관 유형·업종으로 찾고, 매출·직원 규모로 줄 세워 봅니다. 중견기업은 국민연금 가입 사업장 자료로 업종·가입자수·소재지를, 위키백과·위키데이터와 상장 종목 정보로 공식 홈페이지·주요 사업·상장 정보를 더했습니다.</p>
     </div>
     <div class="album" id="album" aria-label="3대 분류">
     </div>

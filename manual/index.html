@@ -100,9 +100,7 @@ ol.three li::marker{font-family:var(--f-num);font-weight:600;color:var(--acc)}
 .hop .btn i{font-style:normal;font-family:var(--f-num);color:var(--acc);margin:0 6px}
 
 /* 원문 좌표 배지 */
-.pgb{display:inline-flex;align-items:center;gap:5px;min-height:30px;font-family:var(--f-num);font-size:12.5px;font-weight:600;color:var(--acc);background:var(--acc-soft);border:1px solid var(--acc);border-radius:7px;padding:3px 9px;white-space:nowrap;transition:transform .12s}
-.pgb:active{transform:scale(.95)}
-.pgb::before{content:"⧉";font-family:var(--f-body);font-size:12px}
+.pgb{display:inline-flex;align-items:center;min-height:30px;font-family:var(--f-num);font-size:12.5px;font-weight:600;color:var(--acc);background:var(--acc-soft);border:1px solid var(--acc);border-radius:7px;padding:3px 9px;white-space:nowrap}
 
 /* 보기 전환 */
 .views{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:4px}
@@ -169,11 +167,10 @@ th{font-size:12.5px;color:var(--mute)}
 @media (min-width:1280px){.shell{grid-template-columns:280px minmax(0,1fr)}}
 @media (max-width:379px){.top h1 small{display:none}.hud .row{gap:6px}.hud .row .lab{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.hud .btn{padding:6px 8px;min-width:40px}#pin{font-size:16px;min-width:56px;padding:6px 8px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-@media print{.hud{position:static}.side,#toast,.views{display:none}}
 </style>
 </head>
 <body>
-<style>.site-home{font:600 13.5px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#f5efe4;border-bottom:1px solid #e9e0d2;padding:9px 16px}.site-home a{color:#2a2521;text-decoration:none}.site-home a:hover{text-decoration:underline}:root[data-theme="dark"] .site-home{background:#0d1017;border-bottom-color:#1e232f}:root[data-theme="dark"] .site-home a{color:#e6e9ef}@media print{.site-home{display:none}}</style>
+<style>.site-home{font:600 13.5px/1.4 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#f5efe4;border-bottom:1px solid #e9e0d2;padding:9px 16px}.site-home a{color:#2a2521;text-decoration:none}.site-home a:hover{text-decoration:underline}:root[data-theme="dark"] .site-home{background:#0d1017;border-bottom-color:#1e232f}:root[data-theme="dark"] .site-home a{color:#e6e9ef}</style>
 <nav class="site-home" aria-label="사이트"><a href="../">← 직업상담 통합 자료실</a></nav>
 
 <div class="wrap top">
@@ -233,7 +230,7 @@ th{font-size:12.5px;color:var(--mute)}
     <section class="view" id="v-nums">
       <div class="card">
         <h2 style="font-size:17px">핵심 숫자표</h2>
-        <p class="refline" style="margin-bottom:6px">현장에서 가장 자주 확인하는 금액, 기한, 기준입니다. 좌표를 누르면 복사됩니다.</p>
+        <p class="refline" style="margin-bottom:6px">현장에서 가장 자주 확인하는 금액, 기한, 기준입니다. 각 항목 옆에 원문 쪽수를 함께 적었습니다.</p>
         <div class="tbl"><table id="nums"></table></div>
       </div>
     </section>
@@ -264,17 +261,11 @@ const S=DATA.S,T=DATA.T,N=DATA.N;
 let page=196,mode='m',part=4,view='map';
 try{const sv=+localStorage.getItem('kua-wiki-page');if(sv>=1&&sv<=MAX)page=sv}catch(_){}
 const coord=(a,b)=>'p.'+a+(b>a?'~p.'+b:'');
-const badge=(a,b)=>'<button class="pgb" type="button" data-a="'+a+'" data-b="'+b+'" aria-label="매뉴얼 '+coord(a,b)+' 원문 좌표 복사">매뉴얼 '+coord(a,b)+' 원문</button>';
+const badge=(a,b)=>'<span class="pgb">매뉴얼 '+coord(a,b)+' 원문</span>';
 const secOf=p=>S.findIndex(s=>p>=s[1]&&p<=s[2]);
 const pn=n=>P[n-1][1];
 
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),3000)}
-function copyCoord(a,z){
-  const txt='국민취업지원제도 업무매뉴얼(2026.1) '+coord(a,z)+' · PDF 뷰어 '+(a+OFF)+(z>a?'~'+(z+OFF):'')+'쪽';
-  const ok=()=>toast('좌표를 복사했습니다. '+coord(a,z)+' 원문은 PDF 뷰어 '+(a+OFF)+'쪽입니다.');
-  const no=()=>toast(coord(a,z)+' 원문은 PDF 뷰어 '+(a+OFF)+'쪽입니다. (이 브라우저에서는 복사가 막혀 있습니다)');
-  try{navigator.clipboard.writeText(txt).then(ok,no)}catch(_){no()}
-}
 function card(s,i,cur,open){ /* open: 찾는 중이거나 지금 보는 항목이면 펼친 채로 */
   return '<article class="card sec'+(cur?' cur':'')+'" id="s'+i+'"><div class="meta">'+badge(s[1],s[2])+'<span class="lab">'+s[0]+'부 '+pn(s[0])+'</span></div>'
   +'<h3><button type="button" class="go" data-p="'+s[1]+'">'+s[3]+'</button></h3>'
@@ -333,7 +324,6 @@ $('#sl').addEventListener('input',e=>setPage(+e.target.value));
 $('#prev').onclick=()=>setPage(page-1);$('#next').onclick=()=>setPage(page+1);
 $('#mM').onclick=()=>setMode('m');$('#mP').onclick=()=>setMode('pdf');
 document.addEventListener('click',e=>{
-  const b=e.target.closest('.pgb');if(b){copyCoord(+b.dataset.a,+b.dataset.b);return}
   const g=e.target.closest('.go');if(g){setPage(+g.dataset.p,true);return}
   const pb=e.target.closest('[data-part]');if(pb){$('#q').value='';if(view!=='map')setView('map');setPage(P[+pb.dataset.part-1][2]===1?1:S.find(s=>s[0]===+pb.dataset.part)[1]);return}
   const vb=e.target.closest('[data-v]');if(vb)setView(vb.dataset.v);
