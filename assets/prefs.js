@@ -360,12 +360,20 @@
     var el = d.createElement('i'); el.className = 'jc-rule'; el.setAttribute('aria-hidden', 'true'); hd.appendChild(el);
   }
   function enter(records) {
+    /* 정적 영역(data-jc-still: 넘기는 동안 스스로 움직이는 곳)만 바뀌었으면 전체 재탐색을 건너뛴다.
+       책장을 넘길 때마다 380ms 뒤에 문서 전체를 다시 재는 일(한 프레임 분량)이 끼어들지 않게. */
+    var live = false, i, j;
+    for (i = 0; i < records.length && !live; i++) for (j = 0; j < records[i].addedNodes.length; j++) {
+      var nn = records[i].addedNodes[j];
+      if (!(nn.nodeType === 1 && nn.closest && nn.closest('[data-jc-still]'))) { live = true; break; }
+    }
+    if (!live) return;
     applyFold(); // 새로 그려진 덩어리는 곧바로 접어 둔다(펼쳐졌다 접히는 깜빡임 방지)
     queuePop();
     if (!d.querySelector('.jc-seal')) setTimeout(seal, 60);
     if ((window.JC_DESIGN || {}).enter === false || still()) return;
     var ae = d.activeElement; if (ae && (/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) || ae.isContentEditable)) return; // 글자를 치는 동안에는 가만히
-    var added = [], i, j;
+    var added = [];
     for (i = 0; i < records.length; i++) for (j = 0; j < records[i].addedNodes.length; j++) {
       var n = records[i].addedNodes[j];
       if (n.nodeType === 1 && BLOCK.test(n.tagName) && n.isConnected && !/(^|\s)jc-/.test(n.className && n.className.baseVal === undefined ? n.className : '') && !n.closest('[data-jc-still],[data-jc-ignore],svg')) added.push(n);
