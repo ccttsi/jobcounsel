@@ -76,10 +76,10 @@ ul,ol{padding:0;list-style:none}
 
 /* 첫머리 */
 .hero{display:grid;gap:24px;align-items:center;padding:22px 0 8px}
-.hero h1{font-size:30px;line-height:1.28;font-weight:850;letter-spacing:-.035em}
+.hero h1{font-size:clamp(28px,1.9vw + 20.5px,42px);line-height:1.25;font-weight:850;letter-spacing:-.045em;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--acc)}
 .hero p{margin-top:12px;max-width:34em;font-size:17px;color:var(--muted)}
-@media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) 380px;gap:48px;padding:36px 0 14px}.hero h1{font-size:42px}}
+@media (min-width:900px){.hero{grid-template-columns:minmax(0,1fr) 380px;gap:48px;padding:36px 0 14px}}
 /* 첫머리는 전공 위키 첫 화면에서만 보인다(글과 목록에서는 본문이 바로 오게) */
 body:not([data-home]) .hero{display:none}
 /* 도서 목록 카드처럼 생긴 집계표(숫자는 데이터에서 읽는다) */

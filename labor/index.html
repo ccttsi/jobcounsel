@@ -81,8 +81,7 @@ a{color:inherit}
 /* 첫머리 */
 .hero{display:grid;gap:8px;padding:16px 0 8px;align-items:center}
 @media (min-width:768px){.hero{grid-template-columns:1fr 320px;gap:32px;padding:24px 0 16px}}
-.hero h1{margin:0;font-size:31px;line-height:1.28;letter-spacing:-.05em;font-weight:850}
-@media (min-width:900px){.hero h1{font-size:40px}}
+.hero h1{margin:0;font-size:clamp(28px,1.9vw + 20.5px,42px);line-height:1.25;font-weight:850;letter-spacing:-.045em;text-wrap:balance}
 .hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--note) 62%);padding:0 2px}
 :root[data-theme="dark"] .hero h1 em{background:none;color:var(--acc)}
 .hero p{margin:12px 0 0;color:var(--muted);font-size:16px;max-width:560px}

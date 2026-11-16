@@ -8,6 +8,9 @@
  *   머리말 첫 줄            높이 52~68px, 왼쪽 끝은 본문 여백과 같은 선
  *   글꼴                    Pretendard Variable 우선
  *   초점 고리               2px, 바깥 2px
+ *   첫 화면 큰 제목(.hero h1) clamp(28px,1.9vw + 20.5px,42px) · 줄 높이 1.25 · 굵기 850 · 자간 -.045em · text-wrap:balance
+ *                           (이론 위키는 명조 제목이라 굵기 700, 브리핑 1면 제목은 기사 제목이라 23/28px로 따로)
+ *   도구 화면 제목(머리말 안) 18px · 굵기 700~800
  */
 :root{--jc-sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif}
 
