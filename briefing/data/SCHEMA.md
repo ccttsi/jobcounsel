@@ -1,8 +1,8 @@
 > 이 저장소에서는 `briefing/data/`에 두고, 17번 섹터 「오늘의 고용·AI 인포 브리핑」(`/briefing/`)이 고치지 않고 읽기만 합니다. `briefing.json`은 **피클이 매일 아침 07:30경 새로 쓰고**, 클로드 코드가 만드는 시각화 엔진은 **읽기만** 합니다. 이 문서(`SCHEMA.md`)와 JSON 두 종류가 계약입니다.
 
-# 브리핑 데이터 스키마 v1.0.0
+# 브리핑 데이터 스키마 v1.1.0
 
-- 스키마 버전: **1.0.0** (2026-11-16 고정)
+- 스키마 버전: **1.1.0** (2026-11-16, `cards[].issue_id` 선택 필드 추가 — 17-1 「오늘의 원문」 연결)
 - 대상 파일: `briefing/data/briefing.json`, `briefing/data/archive/YYYY-MM-DD.json`
 - 소비자: `/briefing/` 시각화 엔진 (클로드 코드가 1회 구현)
 - 생산자: 피클 일일 파이프라인 (07:30 수집·번역·저작권 검수·커밋)
@@ -165,6 +165,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `id` | string | ✔ | `c01`… 파일 안에서 유일. |
+| `issue_id` | string | – | 17-1 원문(`briefing/data/news.json`)과 공유하는 이슈 묶음 id. `NEWS-SCHEMA.md` §5. 같은 값을 가진 원문이 있으면 카드 아래 「오늘의 원문 더 보기」를 그리고, 없으면 아무것도 그리지 않습니다. (v1.1.0) |
 | `order` | integer | ✔ | 1부터. 화면 순서. |
 | `track` | enum `"A"`\|`"B"` | ✔ | §2. |
 | `category` | string | ✔ | `국내 고용지표` / `국내 고용행정` / `해외 노동시장` / `AI·직무` / `채용시장`. |
@@ -339,7 +340,7 @@
 ## 11. 검증 체크리스트 (데이터를 커밋하기 전)
 
 - [ ] `python3 -m json.tool briefing/data/briefing.json` 통과(문법)
-- [ ] `schema_version`이 `"1.0.0"`, `updated_at`이 `+09:00`
+- [ ] `schema_version`이 `"1.1.0"`, `updated_at`이 `+09:00`
 - [ ] `cards` 5~7장, `order`가 1..N 연속, `id` 중복 없음
 - [ ] 모든 `series[].values` 길이 == `labels` 길이
 - [ ] 모든 `source_id`·`source_ids`가 `sources[].id`에 존재

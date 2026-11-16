@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.0.0",
-  "updated_at": "2026-11-16T11:16:53+09:00",
+  "schema_version": "1.1.0",
+  "updated_at": "2026-11-16T13:04:00+09:00",
   "edition": {
     "no": 1,
     "date": "2026-11-16",
@@ -88,6 +88,7 @@
   "cards": [
     {
       "id": "c01",
+      "issue_id": "iss-kr-employment-oct",
       "order": 1,
       "track": "A",
       "category": "국내 고용지표",
@@ -197,6 +198,7 @@
     },
     {
       "id": "c03",
+      "issue_id": "iss-us-employment-oct",
       "order": 3,
       "track": "A",
       "category": "해외 노동시장",
@@ -251,6 +253,7 @@
     },
     {
       "id": "c04",
+      "issue_id": "iss-ai-freelance-rebundling",
       "order": 4,
       "track": "A",
       "category": "AI·직무",

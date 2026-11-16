@@ -1,12 +1,539 @@
 {
   "schema_version": "1.0.0",
-  "updated_at": "2026-11-16T13:00:00+09:00",
+  "updated_at": "2026-11-16T13:04:00+09:00",
   "date": "2026-11-16",
-  "data_status": "partial",
-  "data_status_note": "첫 호 준비 중입니다. 원문 재게시와 번역이 허용된 자료가 모이면 피클 수집 파이프라인이 이 파일을 새로 씁니다.",
-  "keywords": [],
-  "items": [],
-  "excluded": { "count": 0, "reasons": [] },
-  "archive_dates": [],
-  "takedown": { "contact_url": "https://github.com/ccttsi/jobcounsel/issues", "recent": [] }
+  "data_status": "ok",
+  "data_status_note": null,
+  "keywords": [
+    {
+      "word": "청년 고용",
+      "count": 3
+    },
+    {
+      "word": "미국 고용",
+      "count": 3
+    },
+    {
+      "word": "실업급여",
+      "count": 2
+    },
+    {
+      "word": "AI 직무전망",
+      "count": 2
+    },
+    {
+      "word": "구직활동",
+      "count": 2
+    },
+    {
+      "word": "고용률",
+      "count": 1
+    },
+    {
+      "word": "장기실업",
+      "count": 1
+    }
+  ],
+  "items": [
+    {
+      "id": "n20261116-01",
+      "issue_id": "iss-kr-employment-oct",
+      "headline": true,
+      "published_at": "2026-11-11",
+      "source": {
+        "source_name": "국가데이터처",
+        "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156788701",
+        "country": "KR",
+        "license": {
+          "type": "KOGL-1",
+          "name": "공공누리 제1유형(출처표시)",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "attribution_text": "출처: 국가데이터처 「2026년 10월 고용동향」(브리핑룸 부처 브리핑, 2026.11.11), 공공누리 제1유형. 텍스트 일부(질의응답)는 옮기지 않았습니다.",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "정책브리핑 해당 페이지 하단 고지: '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.' (2026-11-16 확인)"
+        }
+      },
+      "title_original": "2026년 10월 고용동향",
+      "body_original": "안녕하십니까? 국가데이터처 사회통계국장입니다.\n\n지금부터 2026년 10월 고용동향에 대해 설명드리겠습니다.\n\n먼저, 15~64세 고용률은 70.4%로 전년동월대비 0.3%p 상승했으나, 청년층 고용률은 42.9%로 1.7%p 하락했습니다.\n\n실업률은 2.0%로 전년동월대비 0.2%p 하락했고, 청년층 실업률은 5.2%로 0.1%p 하락했습니다.\n\n취업자는 2,917만 9,000명으로 전년동월대비 13만 9,000명 증가했습니다.\n\n15~64세 고용률은 50대와 30대 등에서 상승해 전년동월대비 0.3%p 상승했습니다.\n\n실업률은 30대와 50대 등에서 하락해 전년동월대비 0.2%p 하락했습니다.\n\n취업자의 경우 산업별로는 보건업 및 사회복지서비스업 24만 9,000명, 운수 및 창고업 4만 8,000명, 사업시설관리·사업지원 및 임대서비스업 3만 7,000명 등에서 증가했으나, 숙박 및 음식점업 -13만 7,000명, 농림어업 -10만 1,000명, 건설업 -4만 2,000명 등에서 감소했습니다.\n\n임금근로자 중 상용근로자는 28만 7,000명 증가했으나, 임시근로자는 10만 7,000명, 일용근로자는 5만 3,000명 각각 감소했습니다.\n\n비임금근로자 중 고용원 있는 자영업자는 1만 5,000명, 고용원 없는 자영업자는 4만 2,000명 각각 증가했으나, 무급가족종사자는 4만 5,000명 감소했습니다.\n\n실업자는 50대와 30대 등에서 감소해 전년동월대비 5만 6,000명 감소했습니다.\n\n비경제활동인구는 쉬었음 -6만 9,000명 등에서 감소했으나, 재학·수강 13만 1,000명, 연로 6만 8,000명 등에서 증가해 전년동월대비 17만 9,000명 증가했습니다.\n\n구직단념자는 34만 명으로 전년동월대비 2만 7,000명 감소했습니다.\n\n다음은 7쪽, 본문입니다.\n\n2026년 10월 15세 이상 인구는 4,608만 명으로 전년동월대비 26만 1,000명 증가했습니다.\n\n경제활동인구는 2,978만 1,000명으로 전년동월대비 8만 3,000명 증가했습니다.\n\n경제활동참가율은 64.6%로 전년동월대비 0.2%p 하락했습니다.\n\n다음은 취업자 동향입니다.\n\n2026년 10월 15세 이상 취업자는 2,917만 9,000명으로 전년동월대비 13만 9,000명 증가했고, 고용률은 63.3%로 0.1%p 하락했습니다.\n\n성별로 보면 남자는 1,615만 4,000명으로 전년동월대비 14만 9,000명 증가했으나, 여자는 1,302만 5,000명으로 1만 명 감소했습니다.\n\n연령계층별 취업자의 전년동월대비 증감을 살펴보면 20대에서 20만 3,000명, 40대에서 3만 2,000명 각각 감소했으나, 60세 이상에서 19만 6,000명, 30대에서 12만 8,000명, 50대에서 4만 2,000명 각각 증가했습니다.\n\n고용률은 20대와 60세 이상에서 하락했습니다.\n\n직업별 취업자의 전년동월대비 증감을 살펴보면 사무종사자 20만 7,000명, 전문가 및 관련종사자 19만 4,000명, 단순노무종사자 6만 3,000명에서 증가했으나, 판매종사자 -9만 5,000명, 농림어업숙련종사자 -9만 3,000명, 장치·기계조작 및 조립종사자 -9만 3,000명 등에서 감소했습니다.\n\n취업시간대별 취업자의 전년동월대비 증감을 살펴보면 36시간 미만 취업자는 669만 1,000명으로 2만 8,000명 증가했고, 36시간 이상 취업자는 2,207만 3,000명으로 12만 4,000명 증가했습니다.\n\n주당 평균 취업시간은 38.4시간으로 전년동월대비 0.1시간 감소했습니다.\n\n다음은 실업자 동향입니다.\n\n2026년 10월 실업자는 60만 2,000명으로 전년동월대비 5만 6,000명 감소했습니다.\n\n실업률은 2.0%로 전년동월대비 0.2%p 하락했습니다.\n\n연령계층별 실업자 및 실업률의 전년동월대비 증감을 살펴보면 실업자는 50대 -2만 4,000명, 30대 -2만 2,000명 등에서 감소했습니다.\n\n실업률은 30대와 50대 등에서 하락했습니다.\n\n과거 취업경험 유무별 실업자의 전년동월대비 증감을 살펴보면 취업 무경험 실업자는 2만 1,000명으로 1만 8,000명 감소했고, 취업 유경험 실업자는 58만 2,000명으로 3만 8,000명 감소했습니다.\n\n다음은 비경제활동인구입니다.\n\n2026년 10월 비경제활동인구는 1,629만 9,000명으로 전년동월대비 17만 9,000명 증가했습니다.\n\n취업준비자는 61만 9,000명으로 전년동월대비 2만 1,000명 증가했습니다.\n\n비경제활동인구 중 연령계층별 쉬었음 인구는 전년동월대비 20대 -4만 9,000명, 50대 -4만 8,000명 등에서 감소했습니다.\n\n다음은 고용보조지표입니다.\n\n2026년 10월 전체 고용보조지표3은 7.3%로 전년동월대비 0.5%p 하락했습니다. 청년층 고용보조지표3은 15.1%로 0.4%p 상승했습니다.\n\n이상으로 설명을 마치겠습니다.\n\n[질의응답은 원문 참조]\n\n2026년 10월 고용동향 총평입니다. 취업자 증가세가 지속되면서 취업자 증가 폭은 지난달에 비해 확대됐고, 실업자는 감소했으며, 비경제활동인구는 증가했습니다.\n\n취업자는 전년동월대비 13만 9,000명 증가했는데 산업별로는 보건복지업, 운수·창고업, 사업시설업 등에서, 지위별로는 상용직, 고용원 없는 자영업자, 고용원 있는 자영업자에서, 연령별로는 60세 이상, 30대와 50대에서 증가했습니다. 계절조정취업자는 전월대비 5만 명 감소했습니다.\n\n실업자는 50대와 30대, 청년층과 40대에서 감소해 전년동월대비 5만 6,000명 감소했고, 비경제활동인구는 60세 이상과 청년층에서 증가해 전년동월대비 17만 9,000명 증가했습니다.",
+      "topics": [
+        "고용·정책"
+      ],
+      "keywords": [
+        "청년 고용",
+        "고용률"
+      ],
+      "related_jobs": [
+        "직업상담사"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": true,
+      "theme": "청년 고용 사각지대",
+      "badges": [
+        "메인테마 · 청년 고용",
+        "공공누리 제1유형"
+      ]
+    },
+    {
+      "id": "n20261116-02",
+      "issue_id": "iss-youth-employment-policy",
+      "headline": false,
+      "published_at": "2026-09-30",
+      "source": {
+        "source_name": "고용노동부",
+        "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783711",
+        "country": "KR",
+        "license": {
+          "type": "KOGL-1",
+          "name": "공공누리 제1유형(출처표시)",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "attribution_text": "출처: 고용노동부 「2026년 제2차 청년고용촉진 특별위원회 개최」 보도자료(2026.9.30), 공공누리 제1유형. 붙임(회의 계획·장관 인사말)과 담당부서 표는 옮기지 않았습니다.",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다' 고지 확인(2026-11-16). 고용노동부 보도자료 전재본."
+        }
+      },
+      "title_original": "\"청년 첫 경력, 가장 확실한 투자\" 대담한 재정 투자와 세심한 정책 설계로 청년일자리 회복 추진 가속화",
+      "body_original": "고용노동부는 9월 30일(수) 11:00, 김영훈 장관(위원장) 주재로 청년, 경영계, 교육단체, 전문가, 관계 부처가 참여하는 2026년 제2차 청년고용촉진 특별위원회를 개최했다.\n\n청년고용촉진 특별위원회는 「청년고용촉진특별법」 제4조에 근거하여 설치된 위원회로, 청년고용촉진에 관한 주요 사항을 논의하기 위해 운영된다.\n\n이번 위원회는 2027년 청년일자리 정책 방향 및 주요 계획과 공공기관 청년고용의무제 이행 상황을 논의하기 위해 마련됐다.\n\n고용노동부는 청년일자리 어려움 해소를 위해 청년일자리 예산을 2026년 2.6조에서 (정부안) 2027년 3.3조로 약 7천억 증액하는 등 중점 투자할 계획이다.\n\nK-뉴딜아카데미(4,895억 원), 청년첫취업지원제도(3,793억 원), 청년플레이그라운드(201억 원) 등이 그 내용이다.\n\n이를 토대로 향후 청년일자리 정책은 다음의 세 가지 핵심 방향으로 추진된다.\n\n(실무역량 및 경험 확대) 대기업이 직접 설계한 'K-뉴딜 아카데미' 등 훈련과 일경험을 강화하고, '청년 플레이그라운드'를 신설하여 역량을 갖춘 청년들이 멘토링, 커뮤니티, 관계부처 수요 매칭 등을 통해 취업할 수 있도록 끝까지 지원한다.\n\n(첫 일자리 안착 투자) '청년일자리 도약장려금' 지원 범위를 지역 대기업까지 확대하고 지원 인원을 대폭 늘리며, AI 전환 업무를 수행하는 청년에 대해 최대 2년간 임금과 경력 형성을 지원하는 '첫 일자리 경력지원 사업'을 신설한다.\n\n(더 나은 일자리 성장 지원) 수도권 취업 청년을 위한 지원금을 신설하고 지역 청년은 최대 1,800만원까지 근속 인센티브를 늘린다. 또한 프리랜서 등 근무 형태와 관계없이 경력을 인정받는 '통합경력증명서비스'를 확대한다.\n\n한편, 이번 위원회에서는 '2026년 공공기관 청년고용의무제 이행 상황'도 논의했다. 올해 이행 상황을 중간 점검한 결과, 공공기관 신규고용 인원은 올해 상반기(2026년 1~6월) 12,592명으로 지난해 동기 대비 약 2천명 증가한 것으로 확인됐다. 또한 반복 미이행기관에 대한 올해 이행 현황 및 계획도 집중 점검했다.\n\n김영훈 고용노동부 장관은 \"청년 첫 경력은 우리 사회의 지속 가능한 성장을 위한 가장 확실한 투자\"라고 하면서, \"청년들이 실패를 두려워하지 않고 도전할 수 있는 든든한 사다리를 국가와 사회가 놓아주어야 한다\"라고 밝혔다.",
+      "topics": [
+        "고용·정책"
+      ],
+      "keywords": [
+        "청년 고용"
+      ],
+      "related_jobs": [
+        "직업상담사",
+        "청년정책 담당자"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": true,
+      "theme": "청년 고용 사각지대",
+      "badges": [
+        "메인테마 · 청년 고용",
+        "공공누리 제1유형"
+      ]
+    },
+    {
+      "id": "n20261116-03",
+      "issue_id": "iss-youth-labor-inspection",
+      "headline": false,
+      "published_at": "2026-11-03",
+      "source": {
+        "source_name": "고용노동부",
+        "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787696",
+        "country": "KR",
+        "license": {
+          "type": "KOGL-1",
+          "name": "공공누리 제1유형(출처표시)",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "attribution_text": "출처: 고용노동부 「청년 노동자의 장시간·공짜 노동 근절을 위한 장시간 노동 기획감독 실시」 보도자료(2026.11.3), 공공누리 제1유형. 담당부서 표는 옮기지 않았습니다.",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '텍스트에 한하여 공공누리 제1유형(출처표시)' 고지 확인(2026-11-16). 첨부 PDF 본문과 페이지 본문 대조."
+        }
+      },
+      "title_original": "청년 노동자의 장시간·공짜 노동 근절을 위한 장시간 노동 기획감독 실시",
+      "body_original": "고용노동부(장관 김영훈)는 장시간 노동과 공짜 야근을 근절하고, 노동자의 건강권 보호를 위해 11월 3일부터 전국 100개 사업장을 대상으로 '2026년 하반기 장시간 노동 기획감독'을 실시한다고 밝혔다.\n\n이번 감독은 청년 다수 고용 사업장의 장시간 노동과 임금체불 등 불합리한 노동관행을 개선하는 데 중점을 두고, 특별연장근로를 반복적으로 활용하는 사업장에 대해서도 노동자 건강보호조치 등이 적정하게 이행되고 있는지 함께 살펴볼 계획이다.\n\n감독 대상 업종은 정보통신업, 전문·과학·기술서비스업, 숙박·음식점업, 도소매업 등이다.\n\n노사의 자발적 참여와 정부의 노력 등으로 우리나라 실노동시간은 지속적으로 감소하고 있으나, 일부 사업장에서는 여전히 장시간 노동과 일한 만큼 임금을 지급받지 못하는 '공짜 야근' 문제가 제기되고 있다. 특히 지난 10월 13일 고용노동부 국정감사에서는 청년 노동자들의 수당 미지급과 상시적인 초과근무 등 장시간 노동 문제가 지적되었으며, 특별연장근로 인가 사업장의 산업재해 예방과 노동자 건강보호를 위한 관리 필요성도 제기된 바 있다.\n\n임금노동자 연간 실노동시간은 2015년 2,058시간에서 2021년 1,928시간, 2022년 1,904시간, 2023년 1,874시간, 2024년 1,859시간, 2025년 1,846시간으로 줄었다('2026 국제통계연감').\n\n이에 고용노동부는 청년 노동자들의 노동환경 개선과 장시간 노동에 따른 건강권 보호에 감독 역량을 집중할 방침이다.\n\n먼저, 청년 노동자 다수 고용 사업장에 대해서는 장시간 노동과 공짜 야근 등 근로기준법 위반 여부를 집중적으로 감독한다. 청년 고용 비중이 높은 업종을 중심으로 근로시간 한도 준수 여부와 연장·야간·휴일근로수당의 적정 지급 여부 등을 면밀히 살펴볼 예정이다. 특히 국정감사에서 서울 성동구 성수동 일대 청년 노동자들의 장시간 노동과 공짜 야근 문제가 제기된 점을 고려하여, 성동구 소재 사업장을 집중점검할 계획이다.\n\n아울러, 특별연장근로를 반복적으로 활용하는 사업장에 대해서는 노동·산업안전 합동점검을 실시한다. 이를 통해 특별연장근로 인가 시간 준수 여부와 노동자의 건강보호를 위한 조치가 적정하게 이루어지고 있는지를 중심으로 살펴볼 예정이다.\n\n고용노동부는 감독 결과 확인된 근로기준 및 산업안전보건 분야 법 위반사항에 대해 관련 규정에 따라 시정지시, 과태료 및 사법처리 등 엄정하게 조치할 계획이다. 아울러 근로시간 관리체계 개선과 근무체계 개편 등으로 사업장 스스로 장시간 노동을 줄이고 건강한 노동환경을 조성하도록 유도할 방침이다.\n\n김영훈 고용노동부 장관은 \"일한 만큼 정당하게 보상받고, 충분히 쉬면서 건강하게 일할 수 있는 노동환경을 만드는 것이 중요하다\"라면서, \"청년 노동자들의 장시간 노동과 공짜 야근 등 불합리한 노동관행을 개선하고, 노동자들의 건강과 안전이 확보될 수 있도록 노력하겠다\"라고 강조했다.",
+      "topics": [
+        "고용·정책"
+      ],
+      "keywords": [
+        "청년 고용"
+      ],
+      "related_jobs": [
+        "직업상담사",
+        "근로감독관"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": "청년 고용 사각지대",
+      "badges": [
+        "공공누리 제1유형"
+      ]
+    },
+    {
+      "id": "n20261116-04",
+      "issue_id": "iss-public-employment-service",
+      "headline": false,
+      "published_at": "2026-11-02",
+      "source": {
+        "source_name": "고용노동부(노사발전재단)",
+        "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787529",
+        "country": "KR",
+        "license": {
+          "type": "KOGL-1",
+          "name": "공공누리 제1유형(출처표시)",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "attribution_text": "출처: 고용노동부(노사발전재단) 「노사발전재단, 남아시아 3개국과 청년고용 지원을 위한 공공고용서비스 협력 확대」 보도자료(2026.11.2), 공공누리 제1유형.",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '텍스트에 한하여 공공누리 제1유형(출처표시)' 고지 확인(2026-11-16). 첨부 PDF 본문과 페이지 본문 대조."
+        }
+      },
+      "title_original": "노사발전재단, 남아시아 3개국과 청년고용 지원을 위한 공공고용서비스 협력 확대",
+      "body_original": "노사발전재단(사무총장 박종필)은 11월 2일(월)부터 6일(금)까지 서울 엠갤러리에서 방글라데시·부탄·몰디브 정부 관계자 21명을 초청해 한국의 공공고용서비스(Public Employment Services, PES) 정책과 현장 운영 경험을 공유하는 역량강화 연수를 실시한다.\n\n이번 연수는 아시아개발은행(ADB)이 추진하는 남아시아 5개국 공공고용서비스 역량강화 사업의 일환으로, 청년들이 교육과 직업훈련을 마친 후 노동시장에 원활하게 진입할 수 있도록 각국의 고용서비스 정책과 현장 실행역량을 강화하는 데 목적이 있다.\n\n남아시아 5개국은 스리랑카·방글라데시·부탄·몰디브·네팔이다.\n\n재단은 지난 9월 14일부터 18일까지 스리랑카 노동부 인력·고용국(DoME) 공무원 10명을 대상으로 1차 초청연수를 실시하고, 한국의 고용서비스 정책과 현장 운영 사례를 공유했다. 이를 바탕으로 스리랑카의 노동시장 정보 분절, 담당 인력의 전문성 부족, 교육·직업훈련과 노동시장 수요 간 불일치, 진로지도 서비스의 접근 제한 및 분산, 취업성과 추적 미흡 등 5가지 우선 정책과제를 구체화한 바 있다.\n\n이번 2차 연수는 방글라데시·부탄·몰디브 3개국이 함께 참여하는 공동 연수로, 각국의 고용서비스 운영 현황과 정책과제를 공유하고 국가 간 경험을 비교·논의하는 데 중점을 둔다. 특히 한국의 공공고용서비스 정책과 현장 운영 사례를 각국의 여건에 비추어 살펴보고, 자국에 적용 가능한 정책개선 방향을 모색할 예정이다.\n\n연수 프로그램은 한국의 공공고용서비스 발전 과정과 중앙·지역 간 서비스 전달체계, 노동시장정보시스템(LMIS), 디지털 고용서비스 플랫폼 '고용24'의 구축·운영 사례 등을 중심으로 구성됐다. 아울러 인공지능(AI) 기반 고용서비스와 고용행정통계 활용, 직업교육훈련(TVET)과 고용서비스의 연계, 청년 진로개발 및 학교-노동시장 이행 지원 정책 등을 폭넓게 다룬다.\n\n특히 이번 연수에서는 정책과 제도가 실제 현장에서 어떻게 작동하는지 확인할 수 있도록 대학과 지역 고용서비스 기관을 직접 방문한다.\n\n참가자들은 한국외국어대학교 진로취업지원센터에서 대학생의 진로설계와 취업 준비를 지원하는 서비스 운영 사례를 살펴본다. 이어 서울북부고용복지플러스센터를 방문해 구직상담, 취업알선, 직업훈련 연계 등 지역 기반 고용서비스가 구직자에게 전달되는 과정을 확인할 예정이다.\n\n이를 통해 청년의 진로탐색부터 취업 준비와 구직활동에 이르기까지 교육기관과 공공고용서비스 기관이 수행하는 역할을 이해하고, 각국의 서비스 전달체계와 현장 지원역량을 개선하기 위한 시사점을 모색한다.\n\n3개국 대표단은 국가별 발표와 토론을 통해 자국의 노동시장정보시스템(LMIS) 운영 현황과 활용 가능한 고용통계, 정보 격차 및 개선 수요를 공유한다. 이를 바탕으로 국가별 공통 과제와 차이점을 살펴보고, 한국의 디지털 고용서비스 및 청년고용지원 경험을 자국의 정책에 적용할 수 있는 방안을 논의할 계획이다.\n\n연수 마지막 날인 11월 6일(금)에는 정책 강의와 현장 방문, 국가별 토론 결과를 종합하여 각국의 우선 정책과제와 추진 방향을 담은 실행계획(Action Plan)을 수립할 예정이다. 이를 통해 연수에서 습득한 한국의 정책 경험을 각국의 여건에 맞는 구체적인 개선 과제로 발전시키고, 향후 현지 정책협력의 기반을 마련한다.\n\n이번 연수의 성과는 한국에서의 정책학습에 그치지 않고, 각국 현지에서의 정책 논의와 실행계획 구체화로 이어진다.\n\n재단은 내년 남아시아 각국에서 개최되는 이해관계자 워크숍에도 참여할 예정이다. 현지 워크숍에서는 국가별 고용서비스 진단 결과와 초청연수에서 논의된 정책과제를 바탕으로 정부, 고용서비스 기관, 교육훈련기관 등 관계자들이 정책의 필요성과 실행 가능성을 검토하고, 국가별 정책 로드맵을 구체화할 계획이다.\n\n박종필 노사발전재단 사무총장은 \"공공고용서비스의 성과는 좋은 제도를 갖추는 데 그치지 않고, 청년과 구직자들이 현장에서 필요한 지원을 실제로 받을 수 있도록 하는 데 있다\"며, \"이번 연수가 한국의 정책과 현장 경험을 바탕으로 남아시아 각국의 고용서비스 개선 방향을 구체화하는 계기가 되기를 기대한다\"라고 밝혔다.",
+      "topics": [
+        "글로벌",
+        "고용·정책"
+      ],
+      "keywords": [
+        "구직활동"
+      ],
+      "related_jobs": [
+        "직업상담사",
+        "고용서비스 운영자"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": "공공고용서비스",
+      "badges": [
+        "공공누리 제1유형"
+      ]
+    },
+    {
+      "id": "n20261116-05",
+      "issue_id": "iss-us-employment-oct",
+      "headline": true,
+      "published_at": "2026-11-06T08:30:00-05:00",
+      "source": {
+        "source_name": "미국 노동통계국(BLS)",
+        "source_url": "https://www.bls.gov/news.release/empsit.nr0.htm",
+        "country": "US",
+        "license": {
+          "type": "PUBLIC-DOMAIN",
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Employment Situation — October 2026 (USDL-26-1632)",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "미국 저작권법 17 U.S.C. §105(연방정부 저작물은 저작권 보호 대상 아님)와 BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-16 확인): 'BLS가 발행하는 모든 자료는 퍼블릭 도메인이며 사진·삽화 등 기존 저작권 자료만 예외'."
+        }
+      },
+      "title_original": "The Employment Situation — October 2026 (USDL-26-1632)",
+      "title_ko": "2026년 10월 고용상황(미국 노동통계국)",
+      "body_original": "THE EMPLOYMENT SITUATION - OCTOBER 2026\n\nTotal nonfarm payroll employment rose by 165,000 in October, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in professional and business services, in health care, and in transportation and warehousing.\n\nThis news release presents statistics from two monthly surveys. The household survey measures labor force status, including unemployment, by demographic characteristics. The establishment survey measures nonfarm employment, hours, and earnings by industry. For more information about the concepts and statistical methodology used in these two surveys, see the Technical Note.\n\nHousehold Survey Data\n\nBoth the unemployment rate, at 4.1 percent, and the number of unemployed people, at 7.1 million, changed little in October. The unemployment rate has remained in a narrow range of 4.1 percent to 4.3 percent since March.\n\nAmong the major worker groups, the unemployment rates showed little or no change in October for adult men (3.9 percent), adult women (3.6 percent), teenagers (13.9 percent), and people who are White (3.7 percent), Black (6.6 percent), Asian (2.8 percent), or Hispanic (4.7 percent).\n\nThe number of long-term unemployed (those jobless for 27 weeks or more), at 2.0 million, changed little over the month. The long-term unemployed accounted for 27.6 percent of all unemployed people.\n\nBoth the labor force participation rate, at 61.9 percent, and the employment-population ratio, at 59.3 percent, changed little in October. These measures have shown little net change since January.\n\nThe number of people employed part time for economic reasons increased by 339,000 to 4.8 million in October. These individuals would have preferred full-time employment but were working part time because their hours had been reduced or they were unable to find full-time jobs.\n\nIn October, the number of people not in the labor force who currently want a job changed little at 6.0 million. These individuals were not counted as unemployed because they were not actively looking for work during the 4 weeks preceding the survey or were unavailable to take a job.\n\nAmong those not in the labor force who wanted a job, the number of people marginally attached to the labor force changed little at 1.6 million in October. These individuals wanted and were available for work and had looked for a job sometime in the prior 12 months but had not looked for work in the 4 weeks preceding the survey. The number of discouraged workers, a subset of the marginally attached who believed that no jobs were available for them, also changed little over the month at 448,000.\n\nEstablishment Survey Data\n\nTotal nonfarm payroll employment rose by 165,000 in October, higher than the average monthly gain of 48,000 over the prior 12 months. In October, employment increased in professional and business services, in health care, and in transportation and warehousing.\n\nEmployment in professional and business services increased by 70,000 in October, well above the average monthly gain of 15,000 over the prior 12 months. In October, employment continued to trend up in professional, scientific, and technical services (+33,000), in administrative and support and waste management and remediation services (+28,000), and in management of companies and enterprises (+9,000). Professional and business services has added 269,000 jobs since a recent low in October 2025.\n\nHealth care added 42,000 jobs in October, higher than the average monthly gain of 31,000 over the prior 12 months. In October, employment gains occurred in hospitals (+16,000), home health care services (+11,000), and outpatient care centers (+5,000).\n\nIn October, transportation and warehousing added 25,000 jobs, reflecting growth in couriers and messengers (+17,000) and air transportation (+4,000). Transportation and warehousing has added 104,000 jobs since a recent employment low in February, with couriers and messengers (+71,000) contributing most of the gain.\n\nManufacturing employment continued to trend up in October (+19,000) and has increased by 101,000 since a recent low in December 2025. In October, job gains occurred in computer and electronic product manufacturing (+7,000), machinery manufacturing (+4,000), and primary metal manufacturing (+4,000).\n\nEmployment showed little change over the month in other major industries, including mining, quarrying, and oil and gas extraction; construction; wholesale trade; retail trade; information; financial activities; social assistance; leisure and hospitality; other services; and government.\n\nIn October, average hourly earnings for all employees on private nonfarm payrolls increased by 14 cents, or 0.4 percent, to $38.00. Over the past 12 months, average hourly earnings have increased by 3.1 percent. In October, average hourly earnings of private-sector production and nonsupervisory employees rose by 12 cents, or 0.4 percent, to $32.75.\n\nThe average workweek for all employees on private nonfarm payrolls remained at 34.4 hours in October. In manufacturing, the average workweek was unchanged at 40.5 hours, and overtime edged up by 0.1 hour to 3.1 hours. The average workweek for production and nonsupervisory employees on private nonfarm payrolls declined by 0.1 hour to 33.8 hours.\n\nThe change in total nonfarm payroll employment for August was revised up by 53,000, from +133,000 to +186,000, and the change for September was revised up by 31,000, from +29,000 to +60,000. With these revisions, employment in August and September combined is 84,000 higher than previously reported. (Monthly revisions result from additional reports received from businesses and government agencies since the last published estimates and from the recalculation of seasonal factors.)\n\nThe Employment Situation for November 2026 is scheduled to be published on Friday, December 4, 2026, at 8:30 a.m. (ET).",
+      "body_ko_ai": "2026년 10월 고용상황\n\n10월 비농업 부문 고용은 16만5천 개 늘었고, 실업률은 4.1%로 거의 변동이 없었다고 미국 노동통계국(BLS)이 오늘 발표했다. 고용은 전문·사업서비스, 보건의료, 운수·창고업에서 늘었다.\n\n이 보도자료는 두 가지 월간 조사 결과를 담고 있다. 가구조사는 인구 특성별 실업 등 노동력 상태를, 사업체조사는 산업별 비농업 고용·근로시간·임금을 측정한다. 두 조사의 개념과 통계 방법은 기술 해설(Technical Note)을 참조하기 바란다.\n\n가구조사\n\n실업률 4.1%와 실업자 710만 명은 10월에 큰 변화가 없었다. 실업률은 3월 이후 4.1~4.3%의 좁은 범위에 머물렀다.\n\n주요 집단별 실업률은 10월에 큰 변화가 없거나 거의 움직이지 않았다. 성인 남성 3.9%, 성인 여성 3.6%, 청소년 13.9%, 백인 3.7%, 흑인 6.6%, 아시아계 2.8%, 히스패닉 4.7%였다.\n\n27주 이상 일자리가 없는 장기실업자는 200만 명으로 한 달 사이 큰 변화가 없었다. 장기실업자는 전체 실업자의 27.6%를 차지했다.\n\n경제활동참가율 61.9%, 고용인구비율 59.3% 모두 10월에 큰 변화가 없었다. 두 지표는 1월 이후 순변동이 거의 없었다.\n\n경제적 이유로 시간제로 일하는 사람은 10월에 33만9천 명 늘어 480만 명이었다. 이들은 전일제 일자리를 원했지만 근로시간이 줄거나 전일제 일자리를 구하지 못해 시간제로 일하고 있다.\n\n10월에 일자리를 원하는 비경제활동인구는 600만 명으로 큰 변화가 없었다. 이들은 조사 전 4주 동안 적극적으로 구직하지 않았거나 일할 수 없는 상태여서 실업자로 집계되지 않았다.\n\n일자리를 원하는 비경제활동인구 가운데 노동력에 한계적으로 붙어 있는 사람(주변 노동력)은 10월에 160만 명으로 큰 변화가 없었다. 이들은 일할 의사와 능력이 있고 지난 12개월 안에 구직한 적이 있지만 조사 전 4주 동안은 구직하지 않았다. 이 가운데 일자리가 없다고 믿는 실망실업자는 44만8천 명으로 한 달 사이 큰 변화가 없었다.\n\n사업체조사\n\n10월 비농업 부문 고용은 16만5천 개 늘어, 지난 12개월 월평균 증가폭 4만8천 개를 웃돌았다. 10월 고용은 전문·사업서비스, 보건의료, 운수·창고업에서 늘었다.\n\n전문·사업서비스 고용은 10월에 7만 개 늘어 지난 12개월 월평균 1만5천 개를 크게 웃돌았다. 전문·과학·기술서비스(+3만3천 개), 행정·지원 및 폐기물관리·정화서비스(+2만8천 개), 기업·기업체 관리(+9천 개)에서 증가세가 이어졌다. 전문·사업서비스는 2025년 10월 최근 저점 이후 26만9천 개 일자리가 늘었다.\n\n보건의료는 10월에 4만2천 개 늘어 지난 12개월 월평균 3만1천 개를 웃돌았다. 병원(+1만6천 개), 가정간호서비스(+1만1천 개), 외래진료센터(+5천 개)에서 증가했다.\n\n운수·창고업은 10월에 2만5천 개 늘었으며 택배·전령(+1만7천 개)과 항공운송(+4천 개)이 증가를 이끌었다. 운수·창고업은 2월 최근 저점 이후 10만4천 개 일자리가 늘었고, 그 대부분은 택배·전령(+7만1천 개)이 차지했다.\n\n제조업 고용은 10월에도 증가세를 이어(+1만9천 개) 2025년 12월 최근 저점 이후 10만1천 개 늘었다. 컴퓨터·전자제품 제조(+7천 개), 기계 제조(+4천 개), 1차 금속 제조(+4천 개)에서 증가했다.\n\n광업·채석 및 석유가스 추출, 건설, 도매, 소매, 정보, 금융, 사회복지서비스, 여가·접객, 기타 서비스, 정부 등 다른 주요 산업의 고용은 한 달 사이 큰 변화가 없었다.\n\n10월 민영 비농업 부문 전체 근로자의 시간당 평균임금은 14센트(0.4%) 올라 38.00달러였다. 지난 12개월 동안 시간당 평균임금은 3.1% 올랐다. 민간 생산직·비관리직 근로자의 시간당 평균임금은 12센트(0.4%) 올라 32.75달러였다.\n\n민영 비농업 부문 전체 근로자의 주당 평균 근로시간은 10월에 34.4시간으로 변동이 없었다. 제조업은 40.5시간으로 같았고, 초과근로는 0.1시간 늘어 3.1시간이었다. 민간 생산직·비관리직의 주당 평균 근로시간은 0.1시간 줄어 33.8시간이었다.\n\n8월 비농업 고용 증가폭은 13만3천 개에서 18만6천 개로 5만3천 개 상향됐고, 9월은 2만9천 개에서 6만 개로 3만1천 개 상향됐다. 이번 개정으로 8·9월 고용은 이전 발표보다 합쳐 8만4천 개 많아졌다. (월간 개정은 마지막 추정 이후 사업체와 정부기관에서 받은 추가 보고서와 계절조정계수 재계산에 따른 것이다.)\n\n2026년 11월 고용상황은 2026년 12월 4일(금) 오전 8시30분(미 동부시간)에 발표될 예정이다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T13:04:00+09:00"
+      },
+      "topics": [
+        "글로벌",
+        "취업시장"
+      ],
+      "keywords": [
+        "미국 고용",
+        "장기실업"
+      ],
+      "related_jobs": [
+        "직업상담사"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": true,
+      "theme": "장기실업",
+      "badges": [
+        "메인테마 · 장기실업",
+        "퍼블릭 도메인"
+      ]
+    },
+    {
+      "id": "n20261116-06",
+      "issue_id": "iss-ai-occupations-projection",
+      "headline": false,
+      "published_at": "2026-07-16",
+      "source": {
+        "source_name": "미국 노동통계국(BLS) The Economics Daily",
+        "source_url": "https://www.bls.gov/opub/ted/2026/artificial-intelligence-information-technology-and-employment-2024-34.htm",
+        "country": "US",
+        "license": {
+          "type": "PUBLIC-DOMAIN",
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Artificial intelligence, information technology, and employment, 2024–34” (July 16, 2026)",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "BLS 저작권 안내(2026-11-16 확인): BLS 발행물 전체가 퍼블릭 도메인이며 사진·삽화 등 기존 저작권 자료만 예외. 이 글은 도표를 글자로 옮겨 실었고 그림은 싣지 않음."
+        }
+      },
+      "title_original": "Artificial intelligence, information technology, and employment, 2024–34",
+      "title_ko": "인공지능·정보기술과 고용, 2024~2034년(미국 노동통계국)",
+      "body_original": "Artificial intelligence, information technology, and employment, 2024–34\n\nIncreasing use of information technology (IT), including artificial intelligence (AI), will boost demand for workers in some occupations over the 2024–34 decade, while other occupations may see their numbers decrease. Adoption of AI technologies, including generative AI tools, is expected to fuel strong job growth among computer and mathematical occupations in coming years. Employment of data scientists is projected to increase 33.5 percent between 2024 and 2034.\n\n[Table: Employment in selected artificial intelligence- and information technology-related occupations, projected change, 2024–2034. Data scientists 33.5 percent (+82,500); information security analysts 28.5 percent (+52,100); actuaries 21.8 percent (+7,300); operations research analysts 21.5 percent (+24,100); computer and information research scientists 19.7 percent (+7,900); software developers 15.8 percent (+267,700); medical records specialists 7.1 percent (+13,800); sales engineers 5.5 percent (+3,100); medical secretaries and administrative assistants 4.2 percent (+35,300); total employment, all occupations 3.1 percent (+5,211,800); executive secretaries and executive administrative assistants -1.6 percent (-7,900); secretaries and administrative assistants, except legal, medical, and executive -1.6 percent (-30,800); medical transcriptionists -4.9 percent (-2,200); claims adjusters, examiners, and investigators -5.1 percent (-18,200); broadcast announcers and radio disc jockeys -5.5 percent (-1,300); customer service representatives -5.5 percent (-153,700); legal secretaries and administrative assistants -5.8 percent (-9,000); credit authorizers, checkers, and clerks -6.2 percent (-700); procurement clerks -8.7 percent (-5,400).]\n\nInformation security analysts, actuaries, operations research analysts, and computer and information research scientists are projected to see job growth of at least 19.0 percent between 2024 and 2034. The number of software developers is projected to grow by 15.8 percent over this period, though this represents an increase of over 267,000 jobs, the largest increase in the number of jobs among these occupations.\n\nConversely, the growing adoption of AI technology and resulting productivity gains are expected to dampen labor demand in a variety of fields. As the integration of AI technologies into workflows expands, various types of office and administrative support workers are expected to see additional efficiency gains. As a result, demand is expected to be limited for occupations such as procurement clerks; credit authorizers, checkers, and clerks; legal secretaries and administrative assistants; and customer service representatives. Employment of these occupations is projected to decline over the 2024–34 decade.\n\nThese data are from the Employment Projections program.",
+      "body_ko_ai": "인공지능(AI), 정보기술(IT)과 고용, 2024~2034년\n\n인공지능(AI)을 포함한 정보기술(IT) 활용이 늘면서 2024~2034년 10년 동안 일부 직업은 노동 수요가 늘고, 다른 직업은 규모가 줄어들 전망이다. 생성형 AI 도구를 포함한 AI 기술 도입은 앞으로 컴퓨터·수학 관련 직업의 고용을 크게 늘릴 것으로 예상된다. 데이터 과학자 고용은 2024~2034년 사이 33.5% 증가할 전망이다.\n\n[표: AI·IT 관련 주요 직업의 2024~2034년 고용 증감 전망. 데이터 과학자 33.5%(+8만2,500), 정보보안 분석가 28.5%(+5만2,100), 계리사 21.8%(+7,300), 운영연구 분석가 21.5%(+2만4,100), 컴퓨터·정보연구과학자 19.7%(+7,900), 소프트웨어 개발자 15.8%(+26만7,700), 의료기록 전문가 7.1%(+1만3,800), 영업 엔지니어 5.5%(+3,100), 의료 비서·행정 보조 4.2%(+3만5,300), 전체 직업 고용 3.1%(+521만1,800), 임원 비서·행정 보조 -1.6%(-7,900), 법률·의료·임원 외 비서·행정 보조 -1.6%(-3만800), 의료 전사사 -4.9%(-2,200), 보험 청구 심사관·조사관 -5.1%(-1만8,200), 방송 아나운서·라디오 진행자 -5.5%(-1,300), 고객서비스 대표 -5.5%(-15만3,700), 법률 비서·행정 보조 -5.8%(-9,000), 신용 심사·확인·사무원 -6.2%(-700), 구매 사무원 -8.7%(-5,400)]\n\n정보보안 분석가, 계리사, 운영연구 분석가, 컴퓨터·정보연구과학자는 2024~2034년 사이 19.0% 이상의 고용 증가가 예상된다. 소프트웨어 개발자는 같은 기간 15.8% 늘어나는데, 이는 26만7천 개가 넘는 일자리 증가로 이 직업군 가운데 절대 규모가 가장 크다.\n\n반대로 AI 기술 도입이 늘고 그에 따른 생산성 향상이 나타나면서 여러 분야의 노동 수요는 눌릴 것으로 예상된다. AI 기술이 업무 흐름에 통합될수록 사무·행정 지원 직종 전반에서 효율이 더 높아질 것으로 본다. 그 결과 구매 사무원, 신용 심사·확인·사무원, 법률 비서·행정 보조, 고객서비스 대표 같은 직업은 수요가 제한적일 것으로 예상된다. 이 직업들의 고용은 2024~2034년에 줄어들 전망이다.\n\n이 자료는 BLS 고용전망(Employment Projections) 프로그램에서 나온 것이다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T13:04:00+09:00"
+      },
+      "topics": [
+        "AI·직무",
+        "취업시장"
+      ],
+      "keywords": [
+        "AI 직무전망"
+      ],
+      "related_jobs": [
+        "데이터 과학자",
+        "정보보안 분석가",
+        "직업상담사"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": "AI·직무 재편",
+      "badges": [
+        "퍼블릭 도메인",
+        "고용전망"
+      ]
+    },
+    {
+      "id": "n20261116-07",
+      "issue_id": "iss-us-job-openings-sep",
+      "headline": false,
+      "published_at": "2026-11-12",
+      "source": {
+        "source_name": "미국 노동통계국(BLS) The Economics Daily",
+        "source_url": "https://www.bls.gov/opub/ted/2026/job-openings-rate-little-changed-at-4-5-percent-in-september-2026.htm",
+        "country": "US",
+        "license": {
+          "type": "PUBLIC-DOMAIN",
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Job openings rate little changed at 4.5 percent in September 2026” (November 12, 2026)",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "BLS 저작권 안내(2026-11-16 확인): BLS 발행물은 퍼블릭 도메인. 도표는 글자 표로만 옮기고 그림은 싣지 않음."
+        }
+      },
+      "title_original": "Job openings rate little changed at 4.5 percent in September 2026",
+      "title_ko": "2026년 9월 구인율 4.5%, 큰 변화 없음(미국 노동통계국)",
+      "body_original": "Job openings rate little changed at 4.5 percent in September 2026\n\nIn September 2026, the job openings rate was 4.5 percent, little changed from the previous month.\n\n[Table: Job openings rate by industry, September 2026, seasonally adjusted. Total 4.5; total private 4.7; mining and logging 4.1; construction 3.4; manufacturing 4.4; wholesale trade 3.6; retail trade 4.3; transportation, warehousing, and utilities 4.8; information 4.1; finance and insurance 4.2; real estate and rental and leasing 3.0; professional and business services 5.5; private educational services 3.2; health care and social assistance 5.8; arts, entertainment, and recreation 4.3; accommodation and food services 4.4; other services 4.3; government 3.6; federal 3.7; state and local education 2.3; state and local, excluding education 5.0.]\n\nThe job openings rate in government overall was 3.6 percent and at the federal level was 3.7 percent. The job openings rate was 5.0 percent in state and local government, excluding education, and the rate for state and local education was 2.3 percent.\n\nIn private industry, the job openings rate in September 2026 was 4.7 percent. The rate for the healthcare and social assistance industry was 5.8 percent, and for professional and business services was 5.5 percent.\n\nThese data are from the Job Openings and Labor Turnover Survey and are seasonally adjusted. Data for the most recent month are preliminary. Job openings include all positions that are open on the last business day of the month. The job openings rate is computed by dividing the number of job openings by the sum of employment and job openings and multiplying that quotient by 100.",
+      "body_ko_ai": "2026년 9월 구인율은 4.5%로 전월과 거의 같았다\n\n2026년 9월 구인율(구인 건수를 일자리 수와 구인 건수의 합으로 나눈 비율)은 4.5%로 전월과 큰 차이가 없었다.\n\n[표: 2026년 9월 산업별 구인율(계절조정). 전체 4.5, 민간 전체 4.7, 광업·임업 4.1, 건설 3.4, 제조업 4.4, 도매 3.6, 소매 4.3, 운수·창고·유틸리티 4.8, 정보 4.1, 금융·보험 4.2, 부동산·임대 3.0, 전문·사업서비스 5.5, 민간 교육서비스 3.2, 보건·사회복지 5.8, 예술·여가 4.3, 숙박·음식점 4.4, 기타 서비스 4.3, 정부 3.6, 연방 3.7, 주·지방 교육 2.3, 교육 제외 주·지방 5.0]\n\n정부 부문 구인율은 3.6%, 연방 정부는 3.7%였다. 교육을 제외한 주·지방 정부는 5.0%였고, 주·지방 교육은 2.3%였다.\n\n민간 부문 구인율은 2026년 9월 4.7%였다. 보건·사회복지 산업은 5.8%, 전문·사업서비스는 5.5%였다.\n\n이 자료는 구인·이직조사(JOLTS) 결과로 계절조정치다. 가장 최근 월 자료는 잠정치다. 구인은 그 달 마지막 영업일 기준으로 채워지지 않은 모든 일자리를 말한다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T13:04:00+09:00"
+      },
+      "topics": [
+        "취업시장",
+        "글로벌"
+      ],
+      "keywords": [
+        "미국 고용"
+      ],
+      "related_jobs": [
+        "직업상담사"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": "미국 노동시장",
+      "badges": [
+        "퍼블릭 도메인",
+        "구인·이직조사"
+      ]
+    },
+    {
+      "id": "n20261116-08",
+      "issue_id": "iss-us-ui-work-search-rule",
+      "headline": false,
+      "published_at": "2026-11-09",
+      "source": {
+        "source_name": "미국 노동부(U.S. DOL)",
+        "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261109",
+        "country": "US",
+        "license": {
+          "type": "PUBLIC-DOMAIN",
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "url": null,
+          "attribution_text": "Source: U.S. Department of Labor, “US Department of Labor publishes proposed rule setting national minimum weekly work search requirement for unemployment insurance” (November 9, 2026)",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "미국 노동부(연방 행정부) 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 보도자료(2026-11-16 확인)."
+        }
+      },
+      "title_original": "US Department of Labor publishes proposed rule setting national minimum weekly work search requirement for unemployment insurance",
+      "title_ko": "미 실업보험 수급자에 '매주 구직활동 5건' 최소기준 제정안(미국 노동부)",
+      "body_original": "US Department of Labor publishes proposed rule setting national minimum weekly work search requirement for unemployment insurance\n\nRule would set a baseline of five weekly activities, require reporting before payment\n\nWASHINGTON – The U.S. Department of Labor’s Employment and Training Administration today announced a proposed rule designed to improve the integrity and accountability of the Federal-State Unemployment Insurance Program by establishing a national minimum weekly work search standard for individuals claiming unemployment insurance benefits.\n\nUnder the proposed rule, individuals claiming unemployment insurance benefits would be required to complete at least five qualifying work-search activities each week and to report those activities before payment is issued.\n\n“The purpose of unemployment insurance is to provide temporary support while people proactively search for a new job or upskill to meet the needs of employers restoring critical supply chains,” said U.S. Secretary of Labor Keith Sonderling. “This proposed rule helps jobseekers find work faster and ensures efficient use of taxpayer resources while improving the overall integrity of our unemployment system.”\n\nThe proposal would also identify a range of modern job search activities beyond employer contacts, including registration and ongoing contact with placement agencies and unions that are specific, identifiable, and reasonably calculated to lead to reemployment. The department also proposed providing limited, defined circumstances under which individuals may be deemed to have equivalent labor force attachment.\n\nThe department is inviting comments on the rule, as well as a points-based system, which could provide states with flexibility to prioritize activities that connect individuals to sectors with greater job openings. Comments on the proposed rule are due 60 days from its publication in the Federal Register.",
+      "body_ko_ai": "미국 노동부, 실업보험 전국 최소 주간 구직활동 기준을 정하는 규칙 제정안 발표\n\n매주 5건 구직활동을 기본선으로 정하고, 급여 지급 전 신고를 요구\n\n워싱턴 - 미국 노동부 고용훈련청(ETA)은 실업보험 수급자에게 전국 공통의 최소 주간 구직활동 기준을 세워 연방·주 실업보험(UI) 제도의 건전성과 책임성을 높이기 위한 규칙 제정안을 오늘 발표했다.\n\n이 제정안에 따르면 실업보험 수급자는 매주 최소 5건의 인정되는 구직활동을 하고, 급여가 지급되기 전에 그 활동을 신고해야 한다.\n\n키스 손더링 미국 노동부 장관은 “실업보험의 목적은 사람들이 스스로 새 일자리를 찾거나, 핵심 공급망을 복원하는 고용주들의 요구에 맞춰 역량을 키우는 동안 임시로 지원하는 것”이라며 “이 제정안은 구직자가 더 빨리 일자리를 찾도록 돕고, 납세자 자원을 효율적으로 쓰면서 실업제도 전반의 건전성을 높인다”고 말했다.\n\n제정안은 고용주 접촉 외에도, 취업알선기관과 노동조합에 등록하고 계속 연락하는 등 구체적이고 확인 가능하며 재취업으로 이어질 가능성이 합리적으로 높은 현대적 구직활동을 인정 범위에 넣었다. 노동부는 또 제한된 특정 상황에서는 같은 정도의 노동시장 유대가 있는 것으로 인정하는 방안도 제안했다.\n\n노동부는 이 규칙과 함께, 구인 수요가 많은 산업으로 구직자를 연결하는 활동에 우선순위를 둘 수 있도록 주 정부에 유연성을 주는 포인트제에 대한 의견도 받는다. 제정안에 대한 의견 제출 기한은 연방관보 게재일로부터 60일이다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T13:04:00+09:00"
+      },
+      "topics": [
+        "고용·정책",
+        "글로벌"
+      ],
+      "keywords": [
+        "실업급여",
+        "구직활동"
+      ],
+      "related_jobs": [
+        "직업상담사"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": "구직활동·실업급여",
+      "badges": [
+        "퍼블릭 도메인",
+        "규칙 제정안"
+      ]
+    },
+    {
+      "id": "n20261116-09",
+      "issue_id": "iss-us-ui-claims",
+      "headline": false,
+      "published_at": "2026-11-12T08:30:00-05:00",
+      "source": {
+        "source_name": "미국 노동부 고용훈련청(ETA)",
+        "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261112",
+        "country": "US",
+        "license": {
+          "type": "PUBLIC-DOMAIN",
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "url": null,
+          "attribution_text": "Source: U.S. Department of Labor, Employment and Training Administration, Unemployment Insurance Weekly Claims Report, week ending November 7, 2026",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "미국 노동부(연방 행정부) 주간 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 자료(2026-11-16 확인)."
+        }
+      },
+      "title_original": "Unemployment Insurance Weekly Claims Report (week ending November 7, 2026)",
+      "title_ko": "미국 실업보험 주간 청구(2026년 11월 7일 주)",
+      "body_original": "UNEMPLOYMENT INSURANCE WEEKLY CLAIMS\n\nSEASONALLY ADJUSTED DATA\n\nIn the week ending November 7, the advance figure for seasonally adjusted initial claims was 200,000, an increase of 9,000 from the previous week's revised level. The previous week's level was revised up by 2,000 from 189,000 to 191,000. The 4-week moving average was 195,250, unchanged from the previous week's revised average. The previous week's average was revised up by 500 from 194,750 to 195,250.\n\nThe advance seasonally adjusted insured unemployment rate was 1.1 percent for the week ending October 31, unchanged from the previous week's unrevised rate. The advance number for seasonally adjusted insured unemployment during the week ending October 31 was 1,697,000, a decrease of 20,000 from the previous week's revised level. The previous week's level was revised down by 1,000 from 1,718,000 to 1,717,000. The 4-week moving average was 1,707,750, a decrease of 1,500 from the previous week's revised average.\n\nUNADJUSTED DATA\n\nThe advance number of actual initial claims under state programs, unadjusted, totaled 206,982 in the week ending November 7, an increase of 28,870 (or 16.2 percent) from the previous week. The seasonal factors had expected an increase of 19,663 (or 11.0 percent) from the previous week. There were 238,729 initial claims in the comparable week in 2025.\n\nThe advance unadjusted insured unemployment rate was 1.0 percent during the week ending October 31, unchanged from the prior week. The advance unadjusted level of insured unemployment in state programs totaled 1,503,556, an increase of 10,117 (or 0.7 percent) from the preceding week. A year earlier the rate was 1.1 percent and the volume was 1,720,202.\n\nThe total number of continued weeks claimed for benefits in all programs for the week ending October 24 was 1,517,924, an increase of 10,207 from the previous week. There were 1,768,408 weekly claims filed for benefits in all programs in the comparable week in 2025.\n\nNo state was triggered \"on\" the Extended Benefits program during the week ending October 24.\n\nThe highest insured unemployment rates in the week ending October 24 were in New Jersey (2.0), Washington (1.9), Massachusetts (1.8), California (1.7), Puerto Rico (1.6), Nevada (1.5), Oregon (1.5), Rhode Island (1.5), New York (1.4), Illinois (1.3), and the Virgin Islands (1.3).\n\nThe largest increases in initial claims for the week ending October 31 were in Illinois (+728), Indiana (+655), Washington (+647), Missouri (+394), and Oregon (+365), while the largest decreases were in New York (-1,524), Texas (-1,481), Kentucky (-805), Florida (-722), and Michigan (-378).\n\n[Tables: weekly claims data for regular state programs and federal programs, and advance state claims by state — see the original release.]",
+      "body_ko_ai": "실업보험 주간 청구\n\n계절조정 자료\n\n11월 7일로 끝난 주의 계절조정 신규 청구 잠정치는 20만 건으로 전주 개정치보다 9천 건 늘었다. 전주치는 18만9천 건에서 19만1천 건으로 2천 건 상향 개정됐다. 4주 이동평균은 19만5,250건으로 전주 개정 평균과 같았다. 전주 평균은 19만4,750건에서 19만5,250건으로 500건 상향됐다.\n\n10월 31일로 끝난 주의 계절조정 수급 실업률 잠정치는 1.1%로 전주(개정 전)와 같았다. 같은 주 계절조정 수급자 수 잠정치는 169만7천 명으로 전주 개정치보다 2만 명 줄었다. 전주치는 171만8천 명에서 171만7천 명으로 1천 명 하향 개정됐다. 4주 이동평균은 170만7,750명으로 전주 개정 평균보다 1,500명 줄었다.\n\n계절조정 전 자료\n\n11월 7일로 끝난 주의 주(州) 프로그램 실제 신규 청구 잠정치는 계절조정 전 기준 20만6,982건으로 전주보다 2만8,870건(16.2%) 늘었다. 계절 요인은 전주 대비 1만9,663건(11.0%) 증가를 예상했었다. 2025년 같은 주에는 23만8,729건이었다.\n\n10월 31일로 끝난 주의 계절조정 전 수급 실업률 잠정치는 1.0%로 전주와 같았다. 주 프로그램의 계절조정 전 수급자 수는 150만3,556명으로 전주보다 1만117명(0.7%) 늘었다. 1년 전에는 1.1%, 172만202명이었다.\n\n10월 24일로 끝난 주에 모든 프로그램에서 청구된 연속 수급 주 수는 151만7,924건으로 전주보다 1만207건 늘었다. 2025년 같은 주에는 176만8,408건이었다.\n\n10월 24일로 끝난 주에 연장급여(EB) 프로그램이 발동된 주는 없었다.\n\n10월 24일로 끝난 주 수급 실업률이 가장 높은 곳은 뉴저지(2.0), 워싱턴(1.9), 매사추세츠(1.8), 캘리포니아(1.7), 푸에르토리코(1.6), 네바다(1.5), 오리건(1.5), 로드아일랜드(1.5), 뉴욕(1.4), 일리노이(1.3), 버진아일랜드(1.3)였다.\n\n10월 31일로 끝난 주 신규 청구가 가장 많이 늘어난 곳은 일리노이(+728), 인디애나(+655), 워싱턴(+647), 미주리(+394), 오리건(+365)이었고, 가장 많이 줄어든 곳은 뉴욕(-1,524), 텍사스(-1,481), 켄터키(-805), 플로리다(-722), 미시간(-378)이었다.\n\n[표: 주(州) 프로그램·연방 프로그램 주간 청구와 주별 잠정 청구 자료 — 원문 참조]",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T13:04:00+09:00"
+      },
+      "topics": [
+        "취업시장",
+        "글로벌"
+      ],
+      "keywords": [
+        "실업급여",
+        "미국 고용"
+      ],
+      "related_jobs": [
+        "직업상담사"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": false,
+      "theme": "실업급여",
+      "badges": [
+        "퍼블릭 도메인",
+        "주간 지표"
+      ]
+    },
+    {
+      "id": "n20261116-10",
+      "issue_id": "iss-ai-freelance-rebundling",
+      "headline": true,
+      "published_at": "2026-11-10",
+      "source": {
+        "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+        "source_url": "https://arxiv.org/abs/2611.14708",
+        "country": "US",
+        "license": {
+          "type": "CC-BY-4.0",
+          "name": "CC BY 4.0 (Attribution 4.0 International)",
+          "url": "https://creativecommons.org/licenses/by/4.0/",
+          "attribution_text": "Chin, C., Kala, S., Kunievsky, N., Liu, T., Richmond, A. M., & Shan, C. (2026), The Rebundling of Freelance Work in the AI Age, arXiv:2611.14708, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분).",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.14708)에 'License: CC BY 4.0'와 creativecommons.org/licenses/by/4.0/ 링크 표시 확인(2026-11-16). CC BY-NC-SA·arXiv 기본 라이선스 논문은 수록 제외."
+        }
+      },
+      "title_original": "The Rebundling of Freelance Work in the AI Age (arXiv:2611.14708)",
+      "title_ko": "AI 시대 프리랜스 일의 재묶음(arXiv:2611.14708)",
+      "body_original": "The Rebundling of Freelance Work in the AI Age\n\nCaroline Chin (OpenAI), Shagun Kala (Upwork), Nadav Kunievsky (Upwork), Teng Liu (Upwork), Alex Martin Richmond (OpenAI), Carl Shan (OpenAI). November 2026.\n\nAbstract\n\nThis report studies how freelance work is changing in the AI era. We compare the activities people undertake in ChatGPT with the work clients request on Upwork and examine how clients combine tasks into projects. AI-related postings request slightly more tasks on average than other postings. Even among projects with similar numbers of tasks, AI-related postings bring together tasks that clients less often requested together before the generative AI era.\n\nKey findings\n\nAI use and freelance demand have different activity mixes. ChatGPT activities skew toward writing and advice, while Upwork postings lean toward technical implementation and visual production. This pattern is consistent with businesses continuing to hire freelancers for work that requires implementation, production, and delivery.\n\nThe relationship between direct AI use and changes in freelance demand is not uniform: some activities gaining share on Upwork are common in ChatGPT, while others are not. There is not a simple substitution pattern between Upwork tasks and those common on ChatGPT. This contrast suggests a continuing role for workers who provide technical implementation, creative production, and finished deliverables.\n\nAI-related work is becoming more diverse. Work within AI-related postings is becoming less concentrated in a few activities. Among postings with at least two tasks, the average share of historically uncommon task pairs is higher for AI-related work. AI is changing both the breadth and mix of work that clients seek to hire.\n\nAI-related postings carry larger project budgets. Posted fixed-price budgets are approximately 52 percent higher in AI-related postings than for non-AI work after accounting for work subcategory and posting month. The value of AI-related freelance work may lie partly in delivering broader projects that combine many capabilities.",
+      "body_ko_ai": "AI 시대, 프리랜스 일의 재묶음\n\n캐롤라인 친(OpenAI), 샤군 칼라(Upwork), 나다브 쿠니에프스키(Upwork), 텅 리우(Upwork), 알렉스 마틴 리치먼드(OpenAI), 칼 샨(OpenAI). 2026년 11월.\n\n초록\n\n이 보고서는 AI 시대에 프리랜스 일이 어떻게 바뀌는지 살펴본다. 사람들이 ChatGPT에서 하는 활동과 고객이 Upwork에서 요청하는 일을 비교하고, 고객이 과업을 어떻게 프로젝트로 묶는지 분석했다. AI 관련 공고는 다른 공고보다 평균적으로 과업을 조금 더 많이 요구한다. 과업 수가 비슷한 프로젝트끼리 비교해도, AI 관련 공고는 생성형 AI 시대 이전에는 고객이 함께 요청하는 일이 드물었던 과업들을 묶는다.\n\n주요 결과\n\nAI 사용과 프리랜스 수요는 활동 구성이 다르다. ChatGPT 활동은 글쓰기와 조언에 치우치고, Upwork 공고는 기술적 구현과 시각적 제작에 기운다. 이런 양상은 기업이 구현·제작·납품이 필요한 일에 계속 프리랜서를 고용한다는 것과 맞아떨어진다.\n\n직접적인 AI 사용과 프리랜스 수요 변화의 관계는 일정하지 않다. Upwork에서 점유율이 늘어난 활동 중에는 ChatGPT에서도 흔한 것이 있고 그렇지 않은 것도 있다. Upwork의 과업과 ChatGPT에서 흔한 과업 사이에 단순한 대체 관계는 없다. 이 대비는 기술 구현, 창의적 제작, 완성된 산출물을 제공하는 노동자의 역할이 계속 남는다는 것을 시사한다.\n\nAI 관련 일은 더 다양해지고 있다. AI 관련 공고 안의 일은 몇 가지 활동에 덜 집중되는 방향으로 바뀐다. 과업이 두 개 이상인 공고 가운데, 과거에는 흔하지 않았던 과업 조합의 평균 비중이 AI 관련 일에서 더 높다. AI는 고객이 고용하려는 일의 폭과 구성을 함께 바꾸고 있다.\n\nAI 관련 공고는 프로젝트 예산이 더 크다. 업무 하위분류와 게시월을 통제한 뒤에도, AI 관련 공고의 게시된 고정가 예산은 AI 관련이 아닌 일보다 약 52% 높다. AI 관련 프리랜스 일의 가치는 여러 역량을 결합한 더 넓은 프로젝트를 납품하는 데서 일부 나올 수 있다.",
+      "translation": {
+        "mode": "ai",
+        "engine": "Pickle AI 번역",
+        "translated_at": "2026-11-16T13:04:00+09:00"
+      },
+      "topics": [
+        "AI·직무"
+      ],
+      "keywords": [
+        "AI 직무전망"
+      ],
+      "related_jobs": [
+        "프리랜서",
+        "직업상담사"
+      ],
+      "track": "A",
+      "rights": {
+        "full_text_allowed": true,
+        "ai_translation_allowed": true
+      },
+      "is_main_theme": true,
+      "theme": "AI·직무 재편",
+      "badges": [
+        "메인테마 · AI·직무",
+        "CC BY 4.0"
+      ]
+    }
+  ],
+  "excluded": {
+    "count": 8,
+    "reasons": [
+      {
+        "reason": "언론사 기사(연합뉴스·조선비즈·뉴스핌) — 본문 재게시·번역 불가, 17번 요약에서만 다룸",
+        "count": 3
+      },
+      {
+        "reason": "공공누리 미부착 공공자료(한국고용정보원 보도자료 2건) — 담당자 협의 전 사용 불가",
+        "count": 2
+      },
+      {
+        "reason": "arXiv 논문 라이선스 미해당(CC BY-NC-SA 1건, arXiv 기본 라이선스 2건)",
+        "count": 3
+      }
+    ]
+  },
+  "archive_dates": [
+    "2026-11-16"
+  ],
+  "takedown": {
+    "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+    "recent": []
+  }
 }
