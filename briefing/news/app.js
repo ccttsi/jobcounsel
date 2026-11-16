@@ -60,6 +60,10 @@
       return '<button type="button" data-k="kw" data-v="' + esc(k.word) + '" aria-pressed="' + (S.kw === k.word) + '">' + esc(k.word) + '<sup>' + esc(k.count) + '</sup></button>';
     }).join('') + '</nav>';
 
+    if (!total && !arr(d.archive_dates).length) {
+      main.innerHTML = '<header class="mast"><h1>오늘의 원문</h1></header><p class="empty"><b>첫 호를 준비하고 있습니다.</b> 원문 재게시와 번역이 허용된 자료가 모이면 이곳에 매일 아침 올라옵니다. 오늘의 요약은 <a href="../">오늘의 브리핑</a>에서 볼 수 있습니다.</p>';
+      return;
+    }
     if (!total) {
       h += '<div class="sh"><h2>머리기사</h2></div><p class="empty"><b>오늘은 허용된 원문 자료가 0건입니다.</b> ' +
         (dropped ? '수집한 자료 가운데 ' + dropped + '건은 원문 재게시나 번역이 허용되지 않아 싣지 않았습니다. ' : '') + '요약은 <a href="../">오늘의 브리핑</a>에서 볼 수 있습니다.</p>';
