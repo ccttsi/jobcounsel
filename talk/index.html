@@ -219,10 +219,7 @@ mark{background:none;color:inherit;border-radius:3px;padding:0 1px}
 .m-ok{background:var(--teal-soft);color:var(--teal)}
 .m-turn{background:var(--acc-soft);color:var(--acc);font-weight:700}
 .fix{display:flex;flex-direction:column;gap:2px;margin-top:6px}
-.phr-t{display:inline;text-align:left;font-weight:600;color:var(--ink);border-bottom:1px dashed var(--line-2);line-height:1.6;padding:2px 0;transition:color .15s}
-.phr-t:hover{color:var(--acc);border-bottom-color:var(--acc)}
-.phr-t.copied{color:var(--teal)}
-.phr-t.copied::after{content:" · 복사했습니다";font-size:13px;font-weight:500}
+.phr-t{display:inline;font-weight:600;color:var(--ink);line-height:1.6;padding:2px 0}
 .fix .phr-t,.frm .phr-t,.card .phr-t{display:block;width:fit-content;max-width:100%}
 .near{margin:12px 0 4px;padding:10px 14px;border-radius:12px;background:var(--soft)}
 .near small{display:block;font-size:13px;color:var(--dim);font-weight:700}
@@ -418,7 +415,7 @@ mark{background:none;color:inherit;border-radius:3px;padding:0 1px}
 .pg button[aria-current="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-@media print{.hd,.pv,.side,.oth,.acts,.drill{display:none}.pad{box-shadow:none;border:1px solid #ccc}}
+
 /* 1200~1399px: 갈래 목록을 좁혀 두 기둥이 들어갈 자리를 만든다 */
 @media (min-width:1200px) and (max-width:1399px){
   .wrap{max-width:1400px;padding-left:24px;padding-right:24px}
