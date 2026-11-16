@@ -13,7 +13,7 @@ var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'d
 document.documentElement.setAttribute('data-theme',t);})();
 </script>
 <style>
-/* 이 스타일만으로 화면이 완성된다. Tailwind와 Lucide가 늦게 오거나 막혀도(오프라인 저장본 포함) 배치는 그대로다. */
+/* 이 스타일만으로 화면이 완성된다. Tailwind와 Lucide가 늦게 오거나 막혀도 배치는 그대로다. */
 :root{
   /* 기본: 밝고 따뜻한 종이 톤 */
   --bg:#faf6ef;--bar:rgba(250,246,239,.86);--panel:#fffdf8;--panel-soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
@@ -378,9 +378,6 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       </button>
       <button class="a-btn" id="btnSearch" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
         <i class="a-ico" data-lucide="search" aria-hidden="true"></i><span>빠른 검색</span><span class="a-kbd" id="kbdHint">Ctrl K</span>
-      </button>
-      <button class="a-btn" id="btnSave" title="이 첫 화면을 index.html 파일로 내 기기에 저장합니다">
-        <i class="a-ico" data-lucide="download" aria-hidden="true"></i><span>화면 저장</span>
       </button>
     </div>
   </header>
@@ -925,30 +922,9 @@ function openPal(){lastFocus=document.activeElement;$('ov').hidden=false;root.st
 function closePal(){if($('ov').hidden)return;$('ov').hidden=true;root.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus();}
 function go(i){var h=hits[i];if(!h)return;markVisited(h.t.id);window.location.href=h.t.path;}
 
-/* ---------- 저장 ---------- */
+/* ---------- 알림 ---------- */
 var toastT;
 function toast(m){var t=$('toast');t.textContent=m;t.classList.add('a-on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('a-on');},3200);}
-function saveBlob(html){
-  var blob=new Blob([html],{type:'text/html'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download='index.html';document.body.appendChild(a);a.click();a.remove();
-  setTimeout(function(){URL.revokeObjectURL(url);},2000);
-  toast('index.html 파일로 저장했습니다. 자료 링크는 사이트 주소로 연결됩니다.');
-}
-function absolutize(html){
-  /* 저장본을 내 기기에서 열어도 모든 자료가 열리도록 상대 경로를 사이트 주소로 바꾼다 */
-  var base=/^https?:/.test(location.protocol)?location.href.replace(/[#?].*$/,'').replace(/[^\/]*$/,''):'https://ccttsi.github.io/jobcounsel/';
-  return html.replace(/(path:')\.\//g,'$1'+base).replace(/(href="|src=")\.\//g,'$1'+base);
-}
-function downloadLocalHTML(){
-  var fallback=function(){saveBlob('<!DOCTYPE html>\n'+absolutize(document.documentElement.outerHTML));};
-  try{
-    if(/^https?:/.test(location.protocol)&&window.fetch){
-      fetch(location.href.replace(/[#?].*$/,''),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.text();})
-        .then(function(src){saveBlob(absolutize(src));},fallback);
-    }else fallback();
-  }catch(e){fallback();}
-}
-window.downloadLocalHTML=downloadLocalHTML;
 
 /* ---------- 이벤트 ---------- */
 document.addEventListener('click',function(e){
@@ -980,7 +956,6 @@ $('res').addEventListener('pointermove',function(e){var o=e.target.closest&&e.ta
   Array.prototype.forEach.call(document.querySelectorAll('.a-opt'),function(x,k){x.setAttribute('aria-selected',k===sel);});$('q').setAttribute('aria-activedescendant','opt'+sel);}}});
 $('btnSearch').addEventListener('click',openPal);
 $('btnClose').addEventListener('click',closePal);
-$('btnSave').addEventListener('click',downloadLocalHTML);
 $('btnShuffle').addEventListener('click',shuffle);
 $('insTg').addEventListener('click',function(){setIns(!$('insMore').hasAttribute('data-open'));});
 $('pvToggle').addEventListener('click',function(){setScroll(!$('privacy').classList.contains('a-open'));});
