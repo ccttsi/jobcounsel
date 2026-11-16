@@ -1,0 +1,1811 @@
+{
+  "meta": {
+    "dataset": "surgery-lexicon",
+    "version": "1.0.0",
+    "sector": "20. 서류·공고 해부실 — 문장 수술실 내부 엔진",
+    "sector_no": 20,
+    "built_at": "2026-11-16",
+    "repository": "https://github.com/ccttsi/jobcounsel",
+    "license": "자체 설계 · 일반 원칙 (타인 자소서·유료 AI API 미사용)",
+    "notice": "화면에 노출하지 않는 내부 키워드 매핑 DB다. 문장 수술 엔진이 읽어 조립 결과만 화면에 낸다.",
+    "counts": {
+      "entries": 45,
+      "trigger_keywords": 225,
+      "tone_frames": 4,
+      "templates": 24,
+      "categories": 5,
+      "unique_keywords": 225
+    }
+  },
+  "exposure": {
+    "visible": false,
+    "ui_rule": "화면 메뉴·목록·검색 결과·설정 어디에도 이 파일의 키워드 목록, 역량 태그, 매핑 표를 그대로 펼치지 않는다. 사용자에게는 조립된 문장과 '왜 이 단어가 이 역량으로 번역됐는지' 한 줄 설명만 보여 준다.",
+    "export_forbidden": true,
+    "why": "단어 목록을 그대로 보여 주면 사용자가 매핑표를 외워 문장을 짜깁기하게 되고, 실제 경험을 확인하는 과정이 사라진다. 이 DB는 입력을 해석하는 내부 규칙이지 읽을거리가 아니다."
+  },
+  "categories": [
+    {
+      "code": "service",
+      "name": "알바·서비스·현장",
+      "desc": "대면 접점, 매장·현장 운영, 반복 업무",
+      "category_hints": [
+        "알바",
+        "아르바이트",
+        "매장",
+        "현장",
+        "서비스",
+        "손님",
+        "고객"
+      ],
+      "fallback": {
+        "context": "현장",
+        "core_competencies": [
+          "고객 응대",
+          "현장 운영",
+          "정확성"
+        ],
+        "action_verbs": [
+          "응대",
+          "정리",
+          "확인"
+        ],
+        "metric_prompts": [
+          "하루 [숫자]건 응대",
+          "[숫자]% 재방문"
+        ],
+        "evidence_patterns": [
+          "{context}에서 {verb}를 하며 {competency}을(를) 익혔습니다."
+        ]
+      }
+    },
+    {
+      "code": "office",
+      "name": "사무·행정",
+      "desc": "문서, 일정, 정산, 기록, 보고",
+      "category_hints": [
+        "사무",
+        "행정",
+        "문서",
+        "보고",
+        "정산",
+        "기록",
+        "사무직"
+      ],
+      "fallback": {
+        "context": "사무 환경",
+        "core_competencies": [
+          "문서 정리",
+          "일정 관리",
+          "검증"
+        ],
+        "action_verbs": [
+          "정리",
+          "작성",
+          "점검"
+        ],
+        "metric_prompts": [
+          "[숫자]건 처리",
+          "오류 [숫자]건"
+        ],
+        "evidence_patterns": [
+          "{context}에서 {verb}를 맡아 {metric}."
+        ]
+      }
+    },
+    {
+      "code": "external",
+      "name": "대외·협업",
+      "desc": "동아리, 팀 과제, 행사, 봉사, 조율",
+      "category_hints": [
+        "동아리",
+        "팀",
+        "협업",
+        "행사",
+        "봉사",
+        "학생회",
+        "모임"
+      ],
+      "fallback": {
+        "context": "함께한 활동",
+        "core_competencies": [
+          "협업",
+          "조율",
+          "운영"
+        ],
+        "action_verbs": [
+          "조율",
+          "정리",
+          "진행"
+        ],
+        "metric_prompts": [
+          "[숫자]명과 협업",
+          "[숫자]회 진행"
+        ],
+        "evidence_patterns": [
+          "{context}에서 {verb}를 맡아 {metric}."
+        ]
+      }
+    },
+    {
+      "code": "tech",
+      "name": "기술·제작",
+      "desc": "개발, 디자인, 영상, 데이터, 마케팅, 글",
+      "category_hints": [
+        "개발",
+        "디자인",
+        "영상",
+        "데이터",
+        "마케팅",
+        "글",
+        "제작"
+      ],
+      "fallback": {
+        "context": "작업 환경",
+        "core_competencies": [
+          "제작",
+          "분석",
+          "검증"
+        ],
+        "action_verbs": [
+          "제작",
+          "분석",
+          "수정"
+        ],
+        "metric_prompts": [
+          "[숫자]건 제작",
+          "[숫자]% 개선"
+        ],
+        "evidence_patterns": [
+          "{context}에서 {verb}를 하며 {metric}."
+        ]
+      }
+    },
+    {
+      "code": "trait",
+      "name": "성향·상황",
+      "desc": "성실, 꼼꼼, 소통, 갈등, 실패, 공백기, 전환",
+      "category_hints": [
+        "성격",
+        "성향",
+        "태도",
+        "상황",
+        "마음가짐"
+      ],
+      "fallback": {
+        "context": "맡은 일",
+        "core_competencies": [
+          "지속성",
+          "정확성",
+          "소통"
+        ],
+        "action_verbs": [
+          "정리",
+          "확인",
+          "기록"
+        ],
+        "metric_prompts": [
+          "[기간] 유지",
+          "[숫자]건 처리"
+        ],
+        "evidence_patterns": [
+          "{context}에서 {verb}를 같은 기준으로 이어 {metric}."
+        ]
+      }
+    }
+  ],
+  "entries": [
+    {
+      "id": "svc_convenience",
+      "category": "service",
+      "context": "편의점 매장",
+      "trigger_keywords": [
+        "편의점",
+        "아르바이트",
+        "시급",
+        "교대",
+        "진열",
+        "재고"
+      ],
+      "core_competencies": [
+        "고객 응대",
+        "재고 관리",
+        "정확성"
+      ],
+      "action_verbs": [
+        "응대",
+        "재고 정리",
+        "교대 인수인계"
+      ],
+      "metric_prompts": [
+        "하루 [숫자]건 응대",
+        "재고 오차 [숫자]건",
+        "[기간] 무결점 마감"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 하며 {competency}을(를) 익혔습니다.",
+        "교대 때마다 {verb}을(를) 같은 기준으로 맞춰 {metric}."
+      ]
+    },
+    {
+      "id": "svc_cafe",
+      "category": "service",
+      "context": "카페 매장",
+      "trigger_keywords": [
+        "카페",
+        "바리스타",
+        "음료",
+        "주문",
+        "오픈",
+        "마감"
+      ],
+      "core_competencies": [
+        "주문 처리",
+        "위생 관리",
+        "속도"
+      ],
+      "action_verbs": [
+        "주문 처리",
+        "음료 제조",
+        "마감 정리"
+      ],
+      "metric_prompts": [
+        "하루 [숫자]잔 제조",
+        "주문 오류 [숫자]건",
+        "오픈 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "피크 시간대에 {verb} 순서를 바꿔 대기 시간을 [숫자]분 줄였습니다."
+      ]
+    },
+    {
+      "id": "svc_serving",
+      "category": "service",
+      "context": "홀 서비스",
+      "trigger_keywords": [
+        "서빙",
+        "홀서비스",
+        "레스토랑",
+        "테이블",
+        "주방"
+      ],
+      "core_competencies": [
+        "동선 관리",
+        "응대",
+        "위생"
+      ],
+      "action_verbs": [
+        "테이블 안내",
+        "주문 전달",
+        "정리"
+      ],
+      "metric_prompts": [
+        "하루 [숫자]테이블 담당",
+        "클레임 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "테이블 회전이 몰릴 때 {verb} 순서를 정해 {metric}."
+      ]
+    },
+    {
+      "id": "svc_cs",
+      "category": "service",
+      "context": "고객센터",
+      "trigger_keywords": [
+        "CS",
+        "고객응대",
+        "상담",
+        "클레임",
+        "환불"
+      ],
+      "core_competencies": [
+        "불만 조정",
+        "절차 준수",
+        "기록"
+      ],
+      "action_verbs": [
+        "응대",
+        "클레임 처리",
+        "환불 안내"
+      ],
+      "metric_prompts": [
+        "하루 [숫자]건 상담",
+        "재문의 [숫자]% 감소",
+        "처리 [숫자]% 완료"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 하며 {competency}을(를) 기준으로 삼았습니다.",
+        "같은 불만이 반복되는 유형을 정리해 안내문을 만들어 {metric}."
+      ]
+    },
+    {
+      "id": "svc_call",
+      "category": "service",
+      "context": "콜센터",
+      "trigger_keywords": [
+        "콜센터",
+        "인바운드",
+        "아웃바운드",
+        "텔레마케팅",
+        "스크립트"
+      ],
+      "core_competencies": [
+        "경청",
+        "스크립트 운영",
+        "기록"
+      ],
+      "action_verbs": [
+        "전화 응대",
+        "상담 기록",
+        "콜백 처리"
+      ],
+      "metric_prompts": [
+        "하루 [숫자]콜 처리",
+        "연결률 [숫자]%",
+        "재통화 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 하며 {metric}.",
+        "{verb} 뒤에는 반드시 요약을 남겨 다음 상담자가 이어받게 했습니다."
+      ]
+    },
+    {
+      "id": "svc_sales",
+      "category": "service",
+      "context": "판매 현장",
+      "trigger_keywords": [
+        "판매",
+        "매장",
+        "영업",
+        "실적",
+        "목표"
+      ],
+      "core_competencies": [
+        "목표 관리",
+        "제안",
+        "관계 유지"
+      ],
+      "action_verbs": [
+        "판매",
+        "제안",
+        "실적 관리"
+      ],
+      "metric_prompts": [
+        "월 [숫자]건 판매",
+        "목표 [숫자]% 달성",
+        "재구매 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "고객이 망설이는 지점을 정리해 {verb} 방식을 바꿔 {metric}."
+      ]
+    },
+    {
+      "id": "svc_logistics",
+      "category": "service",
+      "context": "물류 현장",
+      "trigger_keywords": [
+        "배송",
+        "물류",
+        "창고",
+        "피킹",
+        "택배"
+      ],
+      "core_competencies": [
+        "정확성",
+        "속도",
+        "안전"
+      ],
+      "action_verbs": [
+        "피킹",
+        "검수",
+        "배송 준비"
+      ],
+      "metric_prompts": [
+        "하루 [숫자]건 피킹",
+        "오출고 [숫자]건",
+        "오류율 [숫자]%"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 하며 {metric}.",
+        "검수 순서를 바꿔 오류를 [숫자]건에서 [숫자]건으로 줄였습니다."
+      ]
+    },
+    {
+      "id": "off_excel",
+      "category": "office",
+      "context": "사무실",
+      "trigger_keywords": [
+        "엑셀",
+        "스프레드시트",
+        "함수",
+        "피벗",
+        "데이터정리"
+      ],
+      "core_competencies": [
+        "데이터 정리",
+        "검증",
+        "자동화"
+      ],
+      "action_verbs": [
+        "데이터 정리",
+        "함수 작성",
+        "검증"
+      ],
+      "metric_prompts": [
+        "[숫자]행 정리",
+        "작업 시간 [숫자]시간 단축",
+        "오류 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "반복 입력을 함수로 바꿔 {metric}."
+      ]
+    },
+    {
+      "id": "off_document",
+      "category": "office",
+      "context": "사무국",
+      "trigger_keywords": [
+        "문서",
+        "한글",
+        "워드",
+        "공문",
+        "기안"
+      ],
+      "core_competencies": [
+        "문서 작성",
+        "형식 준수",
+        "오류 점검"
+      ],
+      "action_verbs": [
+        "문서 작성",
+        "기안",
+        "교정"
+      ],
+      "metric_prompts": [
+        "[숫자]건 작성",
+        "수정 [숫자]회",
+        "오류 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "서식과 표기를 표준으로 맞춰 수정 요청을 [숫자]건에서 [숫자]건으로 줄였습니다."
+      ]
+    },
+    {
+      "id": "off_ga",
+      "category": "office",
+      "context": "총무팀",
+      "trigger_keywords": [
+        "총무",
+        "비품",
+        "사무실",
+        "자산",
+        "차량"
+      ],
+      "core_competencies": [
+        "자산 관리",
+        "예산 집행",
+        "섭외"
+      ],
+      "action_verbs": [
+        "비품 관리",
+        "자산 대장 정리",
+        "업체 조율"
+      ],
+      "metric_prompts": [
+        "자산 [숫자]점 관리",
+        "예산 [숫자]% 절감",
+        "업체 [숫자]곳 비교"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "지출 내역을 표로 정리해 승인 절차를 [숫자]일에서 [숫자]일로 줄였습니다."
+      ]
+    },
+    {
+      "id": "off_accounting",
+      "category": "office",
+      "context": "경리팀",
+      "trigger_keywords": [
+        "회계",
+        "전표",
+        "정산",
+        "세금계산서",
+        "결산"
+      ],
+      "core_competencies": [
+        "정확성",
+        "증빙 관리",
+        "마감 준수"
+      ],
+      "action_verbs": [
+        "전표 처리",
+        "정산",
+        "증빙 검수"
+      ],
+      "metric_prompts": [
+        "월 [숫자]건 전표",
+        "마감 [숫자]회 준수",
+        "오류 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "증빙 누락을 먼저 확인하는 순서를 만들어 {metric}."
+      ]
+    },
+    {
+      "id": "off_schedule",
+      "category": "office",
+      "context": "운영팀",
+      "trigger_keywords": [
+        "일정",
+        "캘린더",
+        "예약",
+        "조율",
+        "일정관리"
+      ],
+      "core_competencies": [
+        "일정 설계",
+        "우선순위",
+        "조율"
+      ],
+      "action_verbs": [
+        "일정 조율",
+        "예약 관리",
+        "우선순위 정리"
+      ],
+      "metric_prompts": [
+        "[숫자]건 일정 조율",
+        "변경 [숫자]회",
+        "충돌 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "일정이 겹치는 지점을 먼저 표시해 두고 {verb}했습니다."
+      ]
+    },
+    {
+      "id": "off_report",
+      "category": "office",
+      "context": "기획팀",
+      "trigger_keywords": [
+        "보고서",
+        "기획서",
+        "요약",
+        "자료조사",
+        "PPT"
+      ],
+      "core_competencies": [
+        "구조화",
+        "자료 조사",
+        "요약"
+      ],
+      "action_verbs": [
+        "보고서 작성",
+        "자료 조사",
+        "요약 정리"
+      ],
+      "metric_prompts": [
+        "[숫자]건 작성",
+        "자료 [숫자]건 검토",
+        "분량 [숫자]% 축소"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "결론을 첫 장에 두는 구조로 바꿔 읽는 시간을 [숫자]분 줄였습니다."
+      ]
+    },
+    {
+      "id": "off_archive",
+      "category": "office",
+      "context": "기록실",
+      "trigger_keywords": [
+        "문서관리",
+        "기록",
+        "파일링",
+        "DB",
+        "입력"
+      ],
+      "core_competencies": [
+        "분류",
+        "정확성",
+        "검색 가능성"
+      ],
+      "action_verbs": [
+        "문서 분류",
+        "데이터 입력",
+        "기록 정리"
+      ],
+      "metric_prompts": [
+        "[숫자]건 분류",
+        "검색 시간 [숫자]분 단축",
+        "누락 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "분류 기준을 문서화해 다른 사람도 같은 이름으로 찾게 했습니다."
+      ]
+    },
+    {
+      "id": "off_hr",
+      "category": "office",
+      "context": "인사팀",
+      "trigger_keywords": [
+        "인사",
+        "채용",
+        "급여",
+        "근태",
+        "온보딩"
+      ],
+      "core_competencies": [
+        "절차 운영",
+        "민감정보 관리",
+        "안내"
+      ],
+      "action_verbs": [
+        "채용 일정 운영",
+        "근태 정리",
+        "온보딩 진행"
+      ],
+      "metric_prompts": [
+        "[숫자]명 채용 진행",
+        "면접 [숫자]회 조율",
+        "온보딩 [숫자]명"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "지원자 안내 문구를 정리해 문의를 [숫자]건 줄였습니다."
+      ]
+    },
+    {
+      "id": "ext_club",
+      "category": "external",
+      "context": "동아리",
+      "trigger_keywords": [
+        "동아리",
+        "학회",
+        "동아리장",
+        "정기모임"
+      ],
+      "core_competencies": [
+        "운영",
+        "구성원 조율",
+        "예산"
+      ],
+      "action_verbs": [
+        "모임 운영",
+        "예산 집행",
+        "회원 관리"
+      ],
+      "metric_prompts": [
+        "회원 [숫자]명 운영",
+        "모임 [숫자]회",
+        "예산 [숫자]원 집행"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "참여가 줄던 시기에 시간대를 바꿔 참석률을 [숫자]%에서 [숫자]%로 올렸습니다."
+      ]
+    },
+    {
+      "id": "ext_team",
+      "category": "external",
+      "context": "팀 과제",
+      "trigger_keywords": [
+        "조별과제",
+        "팀플젝",
+        "협업",
+        "역할분담",
+        "발표"
+      ],
+      "core_competencies": [
+        "역할 분담",
+        "일정 관리",
+        "발표"
+      ],
+      "action_verbs": [
+        "역할 분담",
+        "자료 통합",
+        "발표"
+      ],
+      "metric_prompts": [
+        "[숫자]명 팀",
+        "[기간] 내 완료",
+        "발표 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "중간 점검을 [숫자]회 두어 마감 전 수정을 줄였습니다."
+      ]
+    },
+    {
+      "id": "ext_volunteer",
+      "category": "external",
+      "context": "봉사 현장",
+      "trigger_keywords": [
+        "봉사",
+        "자원봉사",
+        "봉사활동",
+        "후원"
+      ],
+      "core_competencies": [
+        "대상 이해",
+        "운영",
+        "지속성"
+      ],
+      "action_verbs": [
+        "대상자 안내",
+        "물품 배분",
+        "활동 기록"
+      ],
+      "metric_prompts": [
+        "[숫자]명 안내",
+        "[기간] 참여",
+        "물품 [숫자]건 배분"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "대기 순서를 정리해 혼잡을 줄이고 안내문을 붙였습니다."
+      ]
+    },
+    {
+      "id": "ext_council",
+      "category": "external",
+      "context": "학생회",
+      "trigger_keywords": [
+        "학생회",
+        "총학",
+        "축제",
+        "예산",
+        "홍보"
+      ],
+      "core_competencies": [
+        "행사 기획",
+        "예산 관리",
+        "협의"
+      ],
+      "action_verbs": [
+        "행사 기획",
+        "예산 관리",
+        "홍보"
+      ],
+      "metric_prompts": [
+        "참가자 [숫자]명",
+        "예산 [숫자]원",
+        "홍보 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "협찬과 학교 승인 절차를 먼저 정리해 일정 지연을 줄였습니다."
+      ]
+    },
+    {
+      "id": "ext_mentoring",
+      "category": "external",
+      "context": "멘토링 프로그램",
+      "trigger_keywords": [
+        "멘토링",
+        "멘토",
+        "튜터",
+        "스터디",
+        "교육"
+      ],
+      "core_competencies": [
+        "설명",
+        "피드백",
+        "기록"
+      ],
+      "action_verbs": [
+        "과제 설계",
+        "피드백",
+        "진도 관리"
+      ],
+      "metric_prompts": [
+        "[숫자]명 지도",
+        "[기간] 운영",
+        "과제 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "막히는 지점을 유형으로 나눠 설명 자료를 만들어 다시 질문하는 인원을 줄였습니다."
+      ]
+    },
+    {
+      "id": "ext_event",
+      "category": "external",
+      "context": "행사 운영",
+      "trigger_keywords": [
+        "행사",
+        "박람회",
+        "운영",
+        "진행",
+        "사회"
+      ],
+      "core_competencies": [
+        "현장 운영",
+        "동선 설계",
+        "돌발 대응"
+      ],
+      "action_verbs": [
+        "현장 진행",
+        "동선 정리",
+        "참가자 안내"
+      ],
+      "metric_prompts": [
+        "참가자 [숫자]명",
+        "진행 [숫자]시간",
+        "민원 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "돌발 상황별 대응표를 미리 만들어 현장에서 확인만 하게 했습니다."
+      ]
+    },
+    {
+      "id": "ext_negotiation",
+      "category": "external",
+      "context": "이해관계 조정",
+      "trigger_keywords": [
+        "갈등",
+        "협의",
+        "협상",
+        "이해관계",
+        "중재"
+      ],
+      "core_competencies": [
+        "쟁점 분리",
+        "합의 도출",
+        "재발 방지"
+      ],
+      "action_verbs": [
+        "쟁점 정리",
+        "합의안 작성",
+        "조정"
+      ],
+      "metric_prompts": [
+        "쟁점 [숫자]개 정리",
+        "합의 [숫자]건",
+        "재발 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "양쪽이 원하는 것을 따로 적어 겹치는 부분부터 합의했습니다."
+      ]
+    },
+    {
+      "id": "ext_leadership",
+      "category": "external",
+      "context": "프로젝트 팀",
+      "trigger_keywords": [
+        "리더십",
+        "팀장",
+        "총괄",
+        "PM",
+        "리딩"
+      ],
+      "core_competencies": [
+        "의사결정",
+        "위임",
+        "책임"
+      ],
+      "action_verbs": [
+        "팀 운영",
+        "역할 배분",
+        "의사결정"
+      ],
+      "metric_prompts": [
+        "[숫자]명 팀 운영",
+        "일정 [숫자]% 준수",
+        "결정 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "결정이 늦어지는 안건은 기한을 정해 그날 결론을 내는 규칙을 만들었습니다."
+      ]
+    },
+    {
+      "id": "tech_coding",
+      "category": "tech",
+      "context": "개발 환경",
+      "trigger_keywords": [
+        "코딩",
+        "개발",
+        "파이썬",
+        "자바",
+        "프로그램"
+      ],
+      "core_competencies": [
+        "문제 분해",
+        "구현",
+        "테스트"
+      ],
+      "action_verbs": [
+        "코드 작성",
+        "디버깅",
+        "테스트"
+      ],
+      "metric_prompts": [
+        "기능 [숫자]개 구현",
+        "버그 [숫자]건 수정",
+        "처리 시간 [숫자]% 개선"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 하며 {metric}.",
+        "재현 조건을 먼저 적는 방식으로 같은 버그를 두 번 고치지 않았습니다."
+      ]
+    },
+    {
+      "id": "tech_design",
+      "category": "tech",
+      "context": "디자인 작업",
+      "trigger_keywords": [
+        "디자인",
+        "포토샵",
+        "피그마",
+        "시안",
+        "레이아웃"
+      ],
+      "core_competencies": [
+        "시안 제작",
+        "비주얼 정리",
+        "피드백 반영"
+      ],
+      "action_verbs": [
+        "시안 제작",
+        "수정",
+        "에셋 정리"
+      ],
+      "metric_prompts": [
+        "시안 [숫자]종",
+        "수정 [숫자]회",
+        "페이지 [숫자]장"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "피드백을 항목으로 나눠 반영 여부를 표시해 수정 왕복을 줄였습니다."
+      ]
+    },
+    {
+      "id": "tech_video",
+      "category": "tech",
+      "context": "영상 제작",
+      "trigger_keywords": [
+        "영상",
+        "편집",
+        "유튜브",
+        "촬영",
+        "숏폼"
+      ],
+      "core_competencies": [
+        "기획",
+        "편집",
+        "검수"
+      ],
+      "action_verbs": [
+        "촬영",
+        "편집",
+        "자막 작업"
+      ],
+      "metric_prompts": [
+        "영상 [숫자]편",
+        "조회 [숫자]회",
+        "제작 [기간]"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "첫 [숫자]초 구성표를 먼저 만들어 이탈 구간을 줄였습니다."
+      ]
+    },
+    {
+      "id": "tech_data",
+      "category": "tech",
+      "context": "데이터 분석",
+      "trigger_keywords": [
+        "데이터",
+        "분석",
+        "통계",
+        "지표",
+        "대시보드"
+      ],
+      "core_competencies": [
+        "지표 정의",
+        "분석",
+        "시각화"
+      ],
+      "action_verbs": [
+        "데이터 정제",
+        "분석",
+        "대시보드 작성"
+      ],
+      "metric_prompts": [
+        "지표 [숫자]개 정의",
+        "[숫자]% 개선",
+        "[숫자]행 분석"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "지표 정의를 먼저 합의해 같은 숫자를 다르게 읽는 문제를 없앴습니다."
+      ]
+    },
+    {
+      "id": "tech_marketing",
+      "category": "tech",
+      "context": "마케팅 캠페인",
+      "trigger_keywords": [
+        "마케팅",
+        "광고",
+        "캠페인",
+        "퍼포먼스",
+        "전환율"
+      ],
+      "core_competencies": [
+        "타깃 설정",
+        "예산 운용",
+        "성과 측정"
+      ],
+      "action_verbs": [
+        "캠페인 운영",
+        "예산 배분",
+        "성과 분석"
+      ],
+      "metric_prompts": [
+        "전환 [숫자]%",
+        "비용 [숫자]% 절감",
+        "노출 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "소재별 성과를 나눠 보고 남은 예산을 상위 소재로 옮겼습니다."
+      ]
+    },
+    {
+      "id": "tech_sns",
+      "category": "tech",
+      "context": "SNS 채널",
+      "trigger_keywords": [
+        "SNS",
+        "인스타",
+        "블로그",
+        "콘텐츠",
+        "팔로워"
+      ],
+      "core_competencies": [
+        "콘텐츠 기획",
+        "발행 관리",
+        "반응 분석"
+      ],
+      "action_verbs": [
+        "콘텐츠 제작",
+        "발행",
+        "반응 정리"
+      ],
+      "metric_prompts": [
+        "[숫자]건 발행",
+        "반응 [숫자]% 증가",
+        "팔로워 [숫자]명"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "반응이 좋았던 글의 구성을 표로 남겨 다음 글에 재사용했습니다."
+      ]
+    },
+    {
+      "id": "tech_writing",
+      "category": "tech",
+      "context": "글 작업",
+      "trigger_keywords": [
+        "글쓰기",
+        "카피",
+        "원고",
+        "칼럼",
+        "교정"
+      ],
+      "core_competencies": [
+        "구조 설계",
+        "문장 다듬기",
+        "검수"
+      ],
+      "action_verbs": [
+        "원고 작성",
+        "교정",
+        "구조 정리"
+      ],
+      "metric_prompts": [
+        "원고 [숫자]건",
+        "분량 [숫자]자",
+        "수정 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "읽는 사람이 먼저 궁금해할 것을 첫 문단에 두는 규칙을 지켰습니다."
+      ]
+    },
+    {
+      "id": "tech_research",
+      "category": "tech",
+      "context": "리서치",
+      "trigger_keywords": [
+        "리서치",
+        "조사",
+        "설문",
+        "인터뷰",
+        "논문"
+      ],
+      "core_competencies": [
+        "질문 설계",
+        "자료 검증",
+        "요약"
+      ],
+      "action_verbs": [
+        "설문 설계",
+        "인터뷰",
+        "자료 검증"
+      ],
+      "metric_prompts": [
+        "응답 [숫자]명",
+        "자료 [숫자]건 검토",
+        "인터뷰 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "출처가 다른 자료는 기준 연도를 함께 적어 비교했습니다."
+      ]
+    },
+    {
+      "id": "tech_automation",
+      "category": "tech",
+      "context": "업무 자동화",
+      "trigger_keywords": [
+        "자동화",
+        "매크로",
+        "RPA",
+        "엑셀자동화",
+        "반복작업"
+      ],
+      "core_competencies": [
+        "반복 제거",
+        "절차 설계",
+        "검증"
+      ],
+      "action_verbs": [
+        "매크로 작성",
+        "절차 정리",
+        "오류 검수"
+      ],
+      "metric_prompts": [
+        "작업 시간 [숫자]시간 절감",
+        "반복 [숫자]건 제거",
+        "오류 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "자동화 뒤에는 결과를 원본과 대조하는 검수를 붙였습니다."
+      ]
+    },
+    {
+      "id": "tr_diligence",
+      "category": "trait",
+      "context": "맡은 업무",
+      "trigger_keywords": [
+        "성실",
+        "꾸준",
+        "책임",
+        "책임감",
+        "맡은일"
+      ],
+      "core_competencies": [
+        "지속성",
+        "완수",
+        "기준 유지"
+      ],
+      "action_verbs": [
+        "마감 관리",
+        "기록",
+        "인수인계"
+      ],
+      "metric_prompts": [
+        "마감 [숫자]회 준수",
+        "[기간] 유지",
+        "누락 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 같은 기준으로 이어 {metric}.",
+        "체크리스트를 만들어 빠뜨림을 [숫자]건에서 [숫자]건으로 줄였습니다."
+      ]
+    },
+    {
+      "id": "tr_detail",
+      "category": "trait",
+      "context": "검수 업무",
+      "trigger_keywords": [
+        "꼼꼼",
+        "정확",
+        "실수",
+        "검토",
+        "오류"
+      ],
+      "core_competencies": [
+        "정확성",
+        "검증",
+        "오류 관리"
+      ],
+      "action_verbs": [
+        "검수",
+        "대조",
+        "수정"
+      ],
+      "metric_prompts": [
+        "오류 [숫자]건",
+        "검수 [숫자]건",
+        "재작업 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "오류가 나온 유형을 표로 만들어 같은 실수가 반복되지 않게 했습니다."
+      ]
+    },
+    {
+      "id": "tr_comm",
+      "category": "trait",
+      "context": "회의·보고",
+      "trigger_keywords": [
+        "소통",
+        "설명",
+        "경청",
+        "전달",
+        "회의"
+      ],
+      "core_competencies": [
+        "경청",
+        "요약",
+        "확인"
+      ],
+      "action_verbs": [
+        "회의 정리",
+        "보고",
+        "확인"
+      ],
+      "metric_prompts": [
+        "회의 [숫자]회 정리",
+        "쟁점 [숫자]개",
+        "재확인 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "회의 뒤 결정과 담당을 한 줄로 남겨 다시 묻는 일을 줄였습니다."
+      ]
+    },
+    {
+      "id": "tr_conflict",
+      "category": "trait",
+      "context": "의견 충돌",
+      "trigger_keywords": [
+        "의견 대립",
+        "의견충돌",
+        "불만",
+        "오해",
+        "조정"
+      ],
+      "core_competencies": [
+        "쟁점 분리",
+        "중재",
+        "합의"
+      ],
+      "action_verbs": [
+        "조정",
+        "합의안 도출",
+        "재발 방지"
+      ],
+      "metric_prompts": [
+        "합의 [숫자]건",
+        "쟁점 [숫자]개",
+        "재발 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "감정과 사실을 나눠 적게 한 뒤 사실만으로 안건을 다시 세웠습니다."
+      ]
+    },
+    {
+      "id": "tr_failure",
+      "category": "trait",
+      "context": "실패 이후",
+      "trigger_keywords": [
+        "실패",
+        "좌절",
+        "재시도",
+        "개선",
+        "회복"
+      ],
+      "core_competencies": [
+        "원인 분석",
+        "재시도",
+        "회복"
+      ],
+      "action_verbs": [
+        "원인 분석",
+        "수정",
+        "재시도"
+      ],
+      "metric_prompts": [
+        "[숫자]% → [숫자]%",
+        "재시도 [숫자]회",
+        "[기간] 내 회복"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 하며 {metric}.",
+        "실패 원인을 한 문장으로 적어 두고 다음 시도 전에 확인했습니다."
+      ]
+    },
+    {
+      "id": "tr_initiative",
+      "category": "trait",
+      "context": "개선 제안",
+      "trigger_keywords": [
+        "주도",
+        "먼저",
+        "제안",
+        "개선안",
+        "자발"
+      ],
+      "core_competencies": [
+        "문제 발견",
+        "제안",
+        "실행"
+      ],
+      "action_verbs": [
+        "문제 정리",
+        "제안",
+        "실행"
+      ],
+      "metric_prompts": [
+        "제안 [숫자]건",
+        "적용 [숫자]건",
+        "[숫자]% 개선"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 맡아 {metric}.",
+        "제안 전에 작은 범위로 먼저 해 보고 결과를 붙여 설득했습니다."
+      ]
+    },
+    {
+      "id": "tr_gap",
+      "category": "trait",
+      "context": "공백기",
+      "trigger_keywords": [
+        "공백기",
+        "쉬는",
+        "육아",
+        "휴직",
+        "구직기간"
+      ],
+      "core_competencies": [
+        "자기 관리",
+        "재학습",
+        "계획"
+      ],
+      "action_verbs": [
+        "재학습",
+        "활동 기록",
+        "계획 수립"
+      ],
+      "metric_prompts": [
+        "[기간] 동안 [숫자]건",
+        "과정 [숫자]개 수료",
+        "복귀 [숫자]개월"
+      ],
+      "evidence_patterns": [
+        "{context}에 {verb}을(를) 이어 {metric}.",
+        "복귀 전 [도구]를 다시 익혀 [과제]를 [기간] 안에 처리했습니다."
+      ]
+    },
+    {
+      "id": "tr_change",
+      "category": "trait",
+      "context": "직무 전환",
+      "trigger_keywords": [
+        "이직",
+        "전직",
+        "전환",
+        "새분야",
+        "도전"
+      ],
+      "core_competencies": [
+        "전이",
+        "학습 속도",
+        "적응"
+      ],
+      "action_verbs": [
+        "준비",
+        "전이",
+        "적응"
+      ],
+      "metric_prompts": [
+        "[기간] 준비",
+        "과정 [숫자]개",
+        "새 업무 [숫자]개월"
+      ],
+      "evidence_patterns": [
+        "{context}을 위해 {verb}을(를) 이어 {metric}.",
+        "이전 경험에서 쓸 수 있는 부분을 먼저 정리하고 부족한 부분은 교육으로 채웠습니다."
+      ]
+    },
+    {
+      "id": "tr_pressure",
+      "category": "trait",
+      "context": "마감 상황",
+      "trigger_keywords": [
+        "압박",
+        "마감일",
+        "야근",
+        "스트레스",
+        "급한일"
+      ],
+      "core_competencies": [
+        "우선순위",
+        "집중",
+        "회복"
+      ],
+      "action_verbs": [
+        "우선순위 정리",
+        "집중",
+        "재정비"
+      ],
+      "metric_prompts": [
+        "마감 [숫자]건",
+        "초과근무 [숫자]시간",
+        "지연 [숫자]건"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 해 {metric}.",
+        "마감이 몰릴 때는 할 일을 [숫자]개로 줄이고 나머지는 다음 주로 넘겼습니다."
+      ]
+    },
+    {
+      "id": "tr_learning",
+      "category": "trait",
+      "context": "학습",
+      "trigger_keywords": [
+        "배움",
+        "학습",
+        "자격증",
+        "독학",
+        "교육수강"
+      ],
+      "core_competencies": [
+        "자기주도 학습",
+        "적용",
+        "기록"
+      ],
+      "action_verbs": [
+        "수강",
+        "독학",
+        "적용"
+      ],
+      "metric_prompts": [
+        "[기간] 학습",
+        "과정 [숫자]개",
+        "자격 [숫자]개"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 이어 {metric}.",
+        "배운 것을 바로 업무에 적용해 [결과]로 확인했습니다."
+      ]
+    },
+    {
+      "id": "tr_adapt",
+      "category": "trait",
+      "context": "새 환경",
+      "trigger_keywords": [
+        "적응",
+        "변화",
+        "새환경",
+        "빠른습득",
+        "유연"
+      ],
+      "core_competencies": [
+        "빠른 습득",
+        "관계 형성",
+        "유연성"
+      ],
+      "action_verbs": [
+        "적응",
+        "질문",
+        "습득"
+      ],
+      "metric_prompts": [
+        "[기간] 내 적응",
+        "업무 [숫자]개 습득",
+        "질문 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에 {verb}으로(로) 적응해 {metric}.",
+        "첫 주에 모르는 것을 목록으로 만들어 하루에 [숫자]개씩 확인했습니다."
+      ]
+    },
+    {
+      "id": "tr_planning",
+      "category": "trait",
+      "context": "일정 관리",
+      "trigger_keywords": [
+        "계획",
+        "우선순위",
+        "시간관리",
+        "체크리스트",
+        "스케줄"
+      ],
+      "core_competencies": [
+        "계획",
+        "우선순위",
+        "점검"
+      ],
+      "action_verbs": [
+        "계획 수립",
+        "체크리스트",
+        "점검"
+      ],
+      "metric_prompts": [
+        "일정 [숫자]% 준수",
+        "지연 [숫자]건",
+        "점검 [숫자]회"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 해 {metric}.",
+        "주 단위로 점검일을 고정해 밀린 일을 다음 주로 넘기지 않았습니다."
+      ]
+    },
+    {
+      "id": "tr_kindness",
+      "category": "trait",
+      "context": "고객 접점",
+      "trigger_keywords": [
+        "친절",
+        "미소",
+        "배려",
+        "안내",
+        "응대"
+      ],
+      "core_competencies": [
+        "친절",
+        "안내",
+        "배려"
+      ],
+      "action_verbs": [
+        "안내",
+        "응대",
+        "배려"
+      ],
+      "metric_prompts": [
+        "하루 [숫자]명 안내",
+        "칭찬 [숫자]건",
+        "재방문 [숫자]%"
+      ],
+      "evidence_patterns": [
+        "{context}에서 {verb}을(를) 하며 {metric}.",
+        "먼저 말을 거는 기준을 정해 두고 손님이 묻기 전에 안내했습니다."
+      ]
+    }
+  ],
+  "tone_frames": [
+    {
+      "id": "achievement",
+      "name": "성과·수치형",
+      "mood": "결과와 숫자로 말한다. 감정 형용사를 쓰지 않는다.",
+      "best_for": [
+        "영업",
+        "운영",
+        "마케팅",
+        "생산",
+        "프로젝트 성과를 낸 경우"
+      ],
+      "purposes": {
+        "resume_line": [
+          "{context}에서 {verb}을(를) 맡아 {metric}.",
+          "{competency}으로(로) {context}의 {verb}, {metric}.",
+          "{context} {verb} — {metric}, {competency} 확인."
+        ],
+        "cover_para": [
+          "{context}에서 {verb}을(를) 맡았습니다. {competency}을(를) 기준으로 일의 순서를 다시 잡았고, 결과는 {metric}. 지원 직무에서도 같은 방식으로 {keyword} 업무의 기준을 세우겠습니다.",
+          "제 {keyword} 경험은 숫자로 남아 있습니다. {context}에서 {verb}을(를) 했고, 결과는 {metric}. 여기서 쓴 {competency}은(는)(는) 지원 직무의 {keyword} 과제에 그대로 옮길 수 있습니다.",
+          "처음 맡았을 때 {context}에는 기준이 없었습니다. {verb}을(를) 직접 정리했고, 결과는 {metric}. {competency}은(는)(는) 이때 몸에 붙은 역량입니다."
+        ]
+      }
+    },
+    {
+      "id": "problem",
+      "name": "문제해결·논리형",
+      "mood": "원인과 조치를 분리해 말한다. 결론을 먼저 두고 근거를 붙인다.",
+      "best_for": [
+        "기획",
+        "개발",
+        "품질",
+        "데이터",
+        "갈등·개선 경험"
+      ],
+      "purposes": {
+        "resume_line": [
+          "{context}에서 {keyword} 문제를 {verb}으로(로) 좁혀 {metric}.",
+          "원인 → 조치 → 결과: {context} {verb}, {metric}.",
+          "{keyword} 병목을 {competency}으로(로) {verb}, {metric}."
+        ],
+        "cover_para": [
+          "{context}에서 가장 자주 끊기는 지점은 {keyword}이었습니다. 원인을 {verb}으로(로) 좁혔고, 조치 뒤 결과는 {metric}. 문제를 감으로 넘기지 않고 근거로 좁히는 습관은 지원 직무에서도 그대로 씁니다.",
+          "{keyword} 상황을 받으면 저는 먼저 사실과 추정을 나눕니다. {context}에서 {verb}으로(로) 확인했고, 결과는 {metric}. 이 과정에서 {competency}이(가) 남았습니다.",
+          "같은 일이 반복되면 사람보다 절차를 먼저 봅니다. {context}에서 {verb} 절차를 바꿨고, 결과는 {metric}."
+        ]
+      }
+    },
+    {
+      "id": "collaboration",
+      "name": "협업·조율형",
+      "mood": "내 몫과 상대의 몫을 구분해 말한다. 관계 미담이 아니라 합의 기록으로.",
+      "best_for": [
+        "대외 협업",
+        "운영",
+        "PM",
+        "고객·부서 조율",
+        "동아리·팀 과제"
+      ],
+      "purposes": {
+        "resume_line": [
+          "{context}에서 {keyword} 관련 [숫자]명과 {verb}, {metric}.",
+          "{competency}으로(로) {context}의 {keyword} 이견을 {verb}, {metric}.",
+          "역할 분담표를 만들어 {context} {verb} — {metric}."
+        ],
+        "cover_para": [
+          "{context}에서 {keyword}을(를) 두고 의견이 갈렸습니다. 서로의 기준을 {verb} 방식으로 먼저 맞춘 뒤 역할을 나눴고, 결과는 {metric}. 협업에서 제가 맡는 몫은 대개 말이 통하게 만드는 일입니다.",
+          "여러 사람이 함께 움직일 때 필요한 것은 설득보다 정리라고 배웠습니다. {context}에서 {verb}으로(로) 쟁점을 [숫자]개로 줄였고, 결과는 {metric}.",
+          "{keyword} 업무는 혼자 잘해서 되는 일이 아니었습니다. {context}에서 {competency}을(를) 앞세워 {verb}했고, 결과는 {metric}."
+        ]
+      }
+    },
+    {
+      "id": "stability",
+      "name": "성실·안정형",
+      "mood": "눈에 띄지 않는 일을 같은 기준으로 반복한 기록으로 말한다. 과장하지 않는다.",
+      "best_for": [
+        "사무·총무·경리",
+        "품질·검수",
+        "장기 근속",
+        "경력단절 후 복귀"
+      ],
+      "purposes": {
+        "resume_line": [
+          "{context}에서 {verb}을(를) [기간] 동안 이어, 마감 [숫자]회를 모두 지켰습니다.",
+          "꼼꼼함으로 {context} {verb}, 오류 [숫자]건.",
+          "{keyword} 루틴을 만들어 {context} {verb}을(를) [기간] 동안 같은 기준으로."
+        ],
+        "cover_para": [
+          "{context}에서 {verb}은(는) 눈에 띄지 않습니다. 그래도 [기간] 동안 같은 기준으로 반복했고, 결과는 {metric}. 지원 직무에서도 기준을 지키는 사람이 되겠습니다.",
+          "저는 {keyword}에서 강점을 냅니다. {context}에서 {verb}하며 실수 [숫자]건까지 줄였고, 그 과정을 체크리스트로 남겨 다음 사람이 바로 쓰게 했습니다.",
+          "갑작스러운 일보다 매일의 정확성이 결과를 만든다고 믿습니다. {context}에서 {competency}을(를) 유지했고, 결과는 {metric}."
+        ]
+      }
+    }
+  ],
+  "assembly": {
+    "input": "단어 1개 이상. 쉼표·가운뎃점·줄바꿈으로 나눈 여러 단어도 받는다. 예: 편의점 / 엑셀, 보고서 / 갈등",
+    "output_contract": {
+      "always": "서로 다른 톤의 문장 2~4개. 매칭이 약해도 폴백으로 2~4개를 채운다.",
+      "never": "빈 결과, '없는 단어'라는 안내, 키워드 목록 노출, 원문 매핑표 노출",
+      "tone_order": [
+        "achievement",
+        "problem",
+        "collaboration",
+        "stability"
+      ],
+      "purpose_default": "cover_para",
+      "max_length": {
+        "resume_line": 90,
+        "cover_para": 320
+      }
+    },
+    "steps": [
+      "1. 정규화: 앞뒤 공백 제거, 소문자화, 조사·서술어 꼬리 제거(아래 suffix_strip).",
+      "2. 정확 일치: trigger_keywords와 같은 단어면 그 entry를 고른다.",
+      "3. 부분 일치: 두 글자 이상 겹치면(입력이 키워드를 포함하거나 키워드가 입력을 포함) 그 entry를 후보로 둔다. 여러 개면 가장 긴 일치를 대표로 삼고 나머지는 역량만 합친다.",
+      "4. 범주 폴백: 일치가 없으면 입력이 범주 이름·category_hints에 닿는지 보고 그 범주의 fallback을 쓴다. (예: 알바 → service)",
+      "5. 최종 폴백: 그것도 없으면 generic fallback으로 2~4개를 만든다. 입력 단어는 {keyword} 자리에 그대로 넣어 문장이 사용자 말로 시작하게 한다.",
+      "6. 조립: 요청 톤(없으면 tone_order)에서 purpose별 template을 하나씩 골라 슬롯을 채운다. 같은 entry에서 역량·동사·수치를 서로 다르게 골라 문장이 겹치지 않게 한다.",
+      "7. 숫자 처리: 입력이나 사용자가 적은 숫자가 있으면 [숫자]/[기간] 자리에 넣는다. 없으면 자리표시자를 그대로 두고 화면은 '내 숫자로 바꿔 보세요'라고만 안내한다.",
+      "8. 근거 보강: 여러 단어가 들어왔거나 사용자가 근거를 요청하면 entry.evidence_patterns에서 한 문장을 골라 덧붙인다(최대 1문장)."
+    ],
+    "suffix_strip": [
+      "했습니다",
+      "합니다",
+      "하다",
+      "했다",
+      "하는",
+      "하기",
+      "함",
+      "적인",
+      "들",
+      "에서",
+      "으로",
+      "이",
+      "가",
+      "을",
+      "를",
+      "의",
+      "로",
+      "은",
+      "는"
+    ],
+    "slots": [
+      {
+        "token": "{keyword}",
+        "source": "사용자 입력 단어(정규화 전 원형)",
+        "example": "편의점"
+      },
+      {
+        "token": "{context}",
+        "source": "entry.context",
+        "example": "편의점 매장"
+      },
+      {
+        "token": "{competency}",
+        "source": "entry.core_competencies 순환",
+        "example": "고객 응대"
+      },
+      {
+        "token": "{verb}",
+        "source": "entry.action_verbs 순환",
+        "example": "재고 정리"
+      },
+      {
+        "token": "{metric}",
+        "source": "entry.metric_prompts 순환",
+        "example": "하루 [숫자]건 응대"
+      },
+      {
+        "token": "{evidence}",
+        "source": "entry.evidence_patterns 선택",
+        "example": "교대 때마다 같은 기준으로 맞춰 [기간] 무결점 마감"
+      }
+    ],
+    "number_placeholders": [
+      "[숫자]",
+      "[기간]"
+    ],
+    "fallback": {
+      "generic": {
+        "context": "맡은 일",
+        "core_competencies": [
+          "기초 역량",
+          "지속성",
+          "학습"
+        ],
+        "action_verbs": [
+          "정리",
+          "기록",
+          "점검"
+        ],
+        "metric_prompts": [
+          "[숫자]건 처리",
+          "[기간] 유지"
+        ],
+        "evidence_patterns": [
+          "{keyword} 경험에서 {verb}를 맡아 {metric}.",
+          "{context}에서 {verb}를 같은 기준으로 이어 {metric}."
+        ],
+        "note": "어떤 단어가 들어와도 문장이 나오도록 남겨 둔 마지막 그물이다. 다만 사용자가 자기 숫자를 넣기 전까지는 완성된 문장으로 단정하지 않는다."
+      }
+    },
+    "blend_rule": "여러 entry가 잡히면 대표 entry의 context·metric을 쓰고, core_competencies·action_verbs는 후보 전체에서 번갈아 뽑아 한 문장에 서로 다른 근거가 섞이지 않게 한다.",
+    "performance": {
+      "entries_scan": "45개 전수 선형 탐색 (인덱스 불필요)",
+      "target_ms": 10,
+      "note": "네트워크·모델 호출이 없으므로 입력 1건 조립은 0.01초 수준이다. 화면은 조립을 입력 이벤트와 같은 프레임에 끝낸다."
+    }
+  },
+  "quality_rules": [
+    "조립 문장은 사용자가 숫자를 넣기 전까지 '예시'다. 화면은 예시임을 숨기지 않는다.",
+    "확인하지 않은 경력을 만들지 않는다. 슬롯을 채우는 것은 사용자다.",
+    "같은 입력에 같은 출력이 나오도록 순환 순서를 고정한다(난수 금지).",
+    "한 문장에 역량을 두 개 이상 겹쳐 넣지 않는다. 겹치면 읽는 사람이 무엇을 봐야 할지 모른다.",
+    "이 파일의 내용은 화면 어디에도 목록으로 펼치지 않는다."
+  ]
+}
