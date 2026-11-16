@@ -344,6 +344,8 @@
   }
   // 가로 막대 순위: 왼쪽부터 뻗어 나간다
   function hbars(list, x, f, fmtV, n) {
+    // 지금 보는 곳이 앞 n곳 밖이면 마지막 줄을 그곳으로 바꿔, 묶음 안에서의 자리를 항상 보이게 한다
+    if (list.indexOf(x) >= n) list = list.slice(0, n - 1).concat([x]);
     var max = Math.max.apply(null, list.slice(0, n).map(function (y) { return Math.abs(y[f] || 0); }).concat([1]));
     return '<ol class="hb">' + list.slice(0, n).map(function (y, i) {
       var v = y[f];
@@ -721,6 +723,17 @@
       s2 += '<section class="box s2 k-ENT" data-run><h2>' + esc(g) + ' 소속회사<small>' + fmt(L.length) + '곳 · 매출 순</small></h2>' + hbars(L, x, '_rev', function (v) { return wonShort(v); }, 6) +
         (L.length > 6 ? '<a class="more" href="' + q1({ c: 'ENT', g: g }) + '">' + fmt(L.length) + '곳 모두 보기 ›</a>' : '') + '</section>';
     });
+    if (x._c === 'ENT') {
+      /* 같은 집합을 양쪽 화면에 똑같이 보여 준다: A 화면에 B가 있으면 B 화면에도 같은 묶음으로 A가 있다 */
+      var relSec = function (L, title, sub, href) {
+        L = L.slice().sort(byRev); if (L.length < 2) return '';
+        var top = L.slice(0, 6); if (top.indexOf(x) < 0) top = top.slice(0, 5).concat([x]);
+        return '<section class="box s2 k-ENT" data-run><h2>' + esc(title) + '<small>' + fmt(L.length) + '곳 · 매출 순' + (sub ? ' · ' + esc(sub) : '') + '</small></h2>' + hbars(top, x, '_rev', function (v) { return wonShort(v); }, top.length) +
+          (L.length > top.length ? '<a class="more" href="' + href + '">' + fmt(L.length) + '곳 모두 보기 ›</a>' : '') + '</section>';
+      };
+      if (has(x.industry)) s2 += relSec(ITEMS.filter(function (y) { return y._c === 'ENT' && y.industry === x.industry; }), '같은 업종 · ' + x.industry, '공정위 주된 업종이 같은 곳', q1({ c: 'ENT', in: x.industry }));
+      if (x._k2) s2 += relSec(ITEMS.filter(function (y) { return y._k2 === x._k2; }), '같은 산업 갈래 · KSIC ' + x._k2, '업종 코드 앞 세 자리가 같은 곳', q1({ c: 'ENT', k2: x._k2 }));
+    }
     if (x._c === 'MID' && has(x.industry)) {
       var MI = ITEMS.filter(function (y) { return y._c === 'MID' && y.industry === x.industry; }).sort(function (a, b) { return cmpNum('_emp', 1)(a, b) || ko(a._n, b._n); });
       if (MI.length > 1) s2 += '<section class="box s2 k-MID" data-run><h2>' + esc(x.industry) + '<small>' + fmt(MI.length) + '곳 · 가입자 순</small></h2>' + hbars(MI, x, '_emp', function (v) { return fmt(v) + '명'; }, 6) +
@@ -734,8 +747,6 @@
     var same = (SAME[x._c + '|' + x._n] || []).filter(function (y) { return y.id !== x.id; });
     if (same.length) s2 += '<section class="box s2"><h2>이름이 같은 다른 법인<small>' + same.length + '곳</small></h2><ul class="mates">' + same.slice(0, 8).map(function (y) { return '<li><a href="#' + y.id + '"><span>' + esc(y.name) + '</span><i>' + esc(y.id.slice(4)) + '</i></a></li>'; }).join('') + '</ul><p class="src">같은 이름이라도 번호가 다른 별개 회사입니다.</p></section>';
     var near = [];
-    if (x._c === 'ENT' && has(x.industry)) near.push([q1({ c: 'ENT', in: x.industry }), '같은 업종 · ' + x.industry, ITEMS.filter(function (y) { return y.industry === x.industry; }).length]);
-    if (x._c === 'ENT' && x._k2) near.push([q1({ c: 'ENT', k2: x._k2 }), '같은 산업 갈래 · KSIC ' + x._k2, ITEMS.filter(function (y) { return y._k2 === x._k2; }).length]);
     if (x._c === 'ENT' && x._k) near.push([q1({ c: 'ENT', k: x._k }), '업종 대분류 · ' + KSIC[x._k][0], ITEMS.filter(function (y) { return y._k === x._k; }).length]);
     if (x._c === 'PUB') near.push([q1({ c: 'PUB', t: x.sub_category }), x.sub_category + ' 전체', ITEMS.filter(function (y) { return y.sub_category === x.sub_category && y._c === 'PUB'; }).length]);
     if (x._c === 'PUB' && has(x.location_sido)) near.push([q1({ c: 'PUB', sd: x.location_sido }), x.location_sido + '의 공공기관', ITEMS.filter(function (y) { return y.location_sido === x.location_sido; }).length]);
