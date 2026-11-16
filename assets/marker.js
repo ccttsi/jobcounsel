@@ -239,10 +239,30 @@
      consume=true 면 이 손짓은 메모를 접는 데만 쓰이고, 그 다음 동작(쪽 넘기기·단추)은 다음 터치에서 일어난다. */
   function closeNote(consume, e) {
     if (!openNote) return false;
-    flush(); openNote = null; placeNotes();
+    flush(); openNote = null; noteStage = 'edit'; placeNotes();
     if (consume) { swallowNext = true; if (e && e.stopPropagation) e.stopPropagation(); }
     return true;
+  }  /* 포스트잇 6단계(태화님 지정, 2026-11-16): ① 생성 ② 입력 ③ 메모 밖을 누르면 ④ 확정하며 붙는다(펼친 채)
+     ⑤ 한 번 더 밖을 누르면 작아지며 접힌다 ⑥ 그다음 누름부터 페이지가 반응한다. ③·⑤의 누름은 메모 일에만 쓰고 페이지로 보내지 않는다. */
+  var noteStage = 'edit';   // 'edit'(입력 중) → 'pinned'(붙음, 펼친 채) → 접힘
+  function noteOutside(e) {
+    if (!openNote) return false;
+    var el = notesEl && notesEl.querySelector('.pn[data-id="' + openNote + '"]');
+    if (e) { swallowNext = true; if (e.stopPropagation) e.stopPropagation(); }
+    if (noteStage === 'edit') {
+      noteStage = 'pinned'; flush();
+      var ae = layerHost && layerHost.shadowRoot && layerHost.shadowRoot.activeElement; if (ae && ae.blur) ae.blur();
+      if (el) { el.classList.remove('pin'); void el.offsetWidth; el.classList.add('pin', 'pinned'); }
+      return true;
+    }
+    var id = openNote;
+    if (el && !el.classList.contains('shrink') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.classList.add('shrink');
+      setTimeout(function () { if (openNote === id) { flush(); openNote = null; noteStage = 'edit'; placeNotes(); } }, 260);
+    } else if (!el || !el.classList.contains('shrink')) { flush(); openNote = null; noteStage = 'edit'; placeNotes(); }
+    return true;
   }
+
   function caretAt(x, y) {
     if (d.caretPositionFromPoint) { var p = d.caretPositionFromPoint(x, y); if (p) return { node: p.offsetNode, offset: p.offset }; }
     if (d.caretRangeFromPoint) { var r = d.caretRangeFromPoint(x, y); if (r) return { node: r.startContainer, offset: r.startOffset }; }
@@ -266,7 +286,7 @@
     var it = anchorOf(a, b); it.id = uid(); it.type = 'note'; it.color = prefs.paper; it.text = ''; it.t = Date.now();
     data.items.push(it); commit();
     if (prefs.hidden) { prefs.hidden = false; commitPrefs(); }
-    openNote = it.id; dropId = it.id; dropAt = Date.now();
+    openNote = it.id; noteStage = 'edit'; dropId = it.id; dropAt = Date.now();
     repaint();
     // 누른 자리에 정확히 붙도록, 기준 낱말에서 포인터까지의 거리를 함께 저장한다(다시 그려도 같은 자리)
     var lr = liveRanges[it.id], rr = lr && (lr.getClientRects()[0] || lr.getBoundingClientRect());
@@ -471,7 +491,13 @@
     '.pn.drop .pn-card{animation:pn-drop .9s cubic-bezier(.22,.8,.3,1) both}',
     '@keyframes pn-lift{to{opacity:0;transform:translate(10px,-26px) rotate(6deg) scale(.96)}}',
     '.pn.lift .pn-card,.pn.lift .pn-tab{animation:pn-lift .28s ease-in forwards}',
-    '@media (prefers-reduced-motion:reduce){.pn,.pn.gone,.wrap.hold .pn{transition:none}.wrap.reveal .pn-tab,.wrap.reveal .pn-card,.pn.drop .pn-card,.pn.lift .pn-card,.pn.lift .pn-tab{animation:none}}',
+    /* ④ 붙을 때: 손바닥으로 꾹 누르듯 살짝 눌렸다 제자리 */
+    '@keyframes pn-pin{0%{transform:rotate(-1deg) scale(1)}35%{transform:rotate(-.4deg) translateY(2px) scale(.965)}100%{transform:rotate(-1deg) scale(1)}}',
+    '.pn.pin .pn-card{animation:pn-pin .34s cubic-bezier(.3,.7,.3,1)}',
+    /* ⑤ 접힐 때: 테이프 쪽으로 작아지며 옅어진다 */
+    '@keyframes pn-shrink{to{opacity:.2;transform:translate(-8px,-14px) rotate(-3deg) scale(.32)}}',
+    '.pn.shrink .pn-card{transform-origin:20px 0;animation:pn-shrink .26s cubic-bezier(.4,0,.6,1) forwards}',
+    '@media (prefers-reduced-motion:reduce){.pn,.pn.gone,.wrap.hold .pn{transition:none}.wrap.reveal .pn-tab,.wrap.reveal .pn-card,.pn.drop .pn-card,.pn.lift .pn-card,.pn.lift .pn-tab,.pn.pin .pn-card,.pn.shrink .pn-card{animation:none}}',
     '.pn-tab{position:relative;display:flex;align-items:center;max-width:132px;min-height:28px;padding:4px 10px 4px 9px;background:var(--paper);color:var(--ink);font-size:12.5px;font-weight:600;line-height:1.3;border-radius:2px 2px 10px 2px;transform:rotate(-2.5deg);box-shadow:0 1px 1px rgba(0,0,0,.08),0 6px 14px -6px rgba(60,40,20,.45);background-image:linear-gradient(225deg,var(--edge) 0 7px,transparent 7px)}',
     '.pn-tab::after{content:"";position:absolute;inset:-8px -4px}',
     '.pn-peek{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}',
@@ -664,11 +690,11 @@
       var b = e.target.closest('[data-act]');
       if (!b) {
         /* 적던 메모의 종이(입력칸·단추 밖)를 눌러도 작성이 끝난다 — 바깥을 누르는 것과 같은 손짓 */
-        if (openNote && e.target.closest('.pn.open') && !e.target.closest('textarea')) closeNote(false);
+        if (openNote && e.target.closest('.pn.open') && !e.target.closest('textarea')) noteOutside(null);
         return;
       }
       var id = b.closest('.pn').getAttribute('data-id'), a = b.getAttribute('data-act'), it = byId(id); if (!it) return;
-      if (a === 'toggle') { flush(); openNote = openNote === id ? null : id; placeNotes(); if (openNote) setTimeout(function () { var ta = notesEl.querySelector('[data-id="' + id + '"] textarea'); if (ta) ta.focus(); }, 20); }
+      if (a === 'toggle') { flush(); openNote = openNote === id ? null : id; noteStage = 'edit'; placeNotes(); if (openNote) setTimeout(function () { var ta = notesEl.querySelector('[data-id="' + id + '"] textarea'); if (ta) ta.focus(); }, 20); }
       else if (a === 'ncolor') { it.color = b.getAttribute('data-c'); it.u = Date.now(); commit(); placeNotes(); renderList(); }
       else if (a === 'ndel') {
         var pe = e.target.closest('.pn'); if (pe && !matchMedia('(prefers-reduced-motion: reduce)').matches) { pe.classList.add('lift'); setTimeout(function () { remove(id); }, 300); } else remove(id);
@@ -681,9 +707,10 @@
       it.text = e.target.value; it.u = Date.now(); commitSoon(); renderList();
     });
     ls.addEventListener('focusout', flush);
+    ls.addEventListener('focusin', function (e) { if (e.target && e.target.tagName === 'TEXTAREA') { noteStage = 'edit'; var q = e.target.closest('.pn'); if (q) q.classList.remove('pinned'); } });
     window.addEventListener('pagehide', flush);
     d.addEventListener('visibilitychange', function () { if (d.hidden) flush(); });
-    ls.addEventListener('keydown', function (e) { if (e.key === 'Escape') { flush(); openNote = null; placeNotes(); } e.stopPropagation(); });
+    ls.addEventListener('keydown', function (e) { if (e.key === 'Escape') { flush(); openNote = null; noteStage = 'edit'; placeNotes(); } e.stopPropagation(); });
     ls.addEventListener('keyup', function (e) { e.stopPropagation(); });
     ls.addEventListener('keypress', function (e) { e.stopPropagation(); });
 
@@ -702,6 +729,8 @@
     var PEN_PASS = 'a,button,input,select,textarea,label,summary,[role=button],[role=slider],[role=tab],[contenteditable],[data-jc-ignore]';
     var guard = function (e) {
       if (isOurs(e) || (e.button && e.button !== 0)) return;
+      if (e.type === 'pointerdown') swallowNext = false;   // 새 손짓: 지난 삼킴은 끝
+      if (swallowNext || (openNote && mode !== 'note')) { e.stopPropagation(); return; }   // 메모를 붙이거나 접는 누름은 페이지로 보내지 않는다
       var t = e.target && e.target.closest ? e.target : null; if (!t) return;
       var pt = e.touches && e.touches[0] ? e.touches[0] : e;
       if (mode === 'note') { e.stopPropagation(); return; }
@@ -722,10 +751,7 @@
          - 손가락: 그 터치는 메모를 접는 데만 쓴다. 쪽 넘김·단추는 다음 터치에서.
          - 마우스: 접기만 하고 누른 것의 원래 동작(단추·링크·쪽 넘김)은 그대로 둔다.
            (클릭으로만 접으면, 쪽 넘기기가 pointerup에서 먼저 일어나 click이 만들어지지 않아 메모가 열린 채 남았다) */
-      if (mode !== 'note' && !isOurs(e)) {
-        if (e.pointerType === 'mouse') closeNote(false, e);
-        else if (closeNote(true, e)) { tap = null; return; }
-      }
+      if (mode !== 'note' && !isOurs(e) && noteOutside(e)) { tap = null; return; }
       tap = (e.pointerType !== 'mouse' && !isOurs(e)) ? { x: e.clientX, y: e.clientY, t: Date.now() } : null;
     }, true);
     d.addEventListener('pointercancel', function () { tap = null; }, true);
@@ -734,7 +760,6 @@
       if (swallowNext) { e.stopPropagation(); return; }   // 메모를 접은 손짓은 그 손짓에서 끝난다
       if (!t0 || isOurs(e) || Math.abs(e.clientX - t0.x) > 10 || Math.abs(e.clientY - t0.y) > 10 || Date.now() - t0.t > 700) return;
       if (popId) hidePop();
-      if (openNote && mode !== 'note') { closeNote(true, e); return; }   // 빈 메모도 바로 떼지 않고 접어 둔다(나중에 적을 수 있게)
       if (mode === 'note') { tapDone = Date.now(); e.preventDefault(); addNoteAt(e.clientX, e.clientY); setMode('off'); return; }
       if (mode === 'off' && !(e.target.closest && e.target.closest('a,button,input,select,textarea,label,summary,[role=button],[role=slider],[onclick]'))) {
         var s3 = getSelection && getSelection(); if (s3 && !s3.isCollapsed) return;
@@ -749,7 +774,6 @@
       if (mode !== 'pen') { var s0 = getSelection && getSelection(); if (!s0 || s0.isCollapsed) pendSel = null; }
       if (mode === 'note') { e.preventDefault(); e.stopPropagation(); addNoteAt(e.clientX, e.clientY); setMode('off'); return; }
       if (popId) { hidePop(); }
-      if (openNote && !isOurs(e)) closeNote(false);
       if (mode === 'pen') {
         var s1 = getSelection && getSelection();
         if (!s1 || s1.isCollapsed) { pendSel = null; clearTimeout(selT); selT = setTimeout(renderPill, 120); return; }
