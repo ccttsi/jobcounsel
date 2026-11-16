@@ -1,0 +1,278 @@
+{
+ "meta": {
+  "schema_version": "1.0",
+  "dataset": "NCS KSA(지식·기술·태도)",
+  "source_id": "s7",
+  "source": "한국산업인력공단_국가직무능력표준 정보_GW",
+  "dataset_no": "15157547",
+  "license": "이용허락범위 제한 없음",
+  "base_date": "2026-09-08",
+  "collected_at": "2026-11-16",
+  "url": "https://www.data.go.kr/data/15157547/openapi.do",
+  "key": "능력단위 분류번호(taxonomy.json ncs.units[].code)",
+  "shape": "{ units: { code: { e: [ { f: 능력단위요소명, k: [지식], s: [기술], a: [태도] } ] } } }",
+  "shard_by": "능력단위 코드 앞 2자리(대분류)",
+  "counts": {
+   "units": 13304,
+   "elements": 47221,
+   "knowledge": 221772,
+   "skill": 186513,
+   "attitude": 161710,
+   "items": 569995,
+   "shards": 24
+  },
+  "coverage": {
+   "units_total": 13442,
+   "units_with_ksa": 13304,
+   "units_without_ksa": 138,
+   "units_in_notice_with_ksa": 13296,
+   "sebu_requested": 1109,
+   "sebu_with_ksa": 1096,
+   "sebu_empty": 13,
+   "note": "KSA 원천에 없는 능력단위는 모두 고시 별표 밖(in_notice=false) 코드다. KSA가 없는 항목은 비워 두고 생성하지 않는다.",
+   "units_in_notice": 13296
+  }
+ },
+ "shards": [
+  {
+   "major": "01",
+   "file": "01.json",
+   "units": 51,
+   "elements": 174,
+   "k": 850,
+   "s": 747,
+   "a": 642,
+   "bytes": 142582
+  },
+  {
+   "major": "02",
+   "file": "02.json",
+   "units": 281,
+   "elements": 1008,
+   "k": 4825,
+   "s": 3752,
+   "a": 2899,
+   "bytes": 575823
+  },
+  {
+   "major": "03",
+   "file": "03.json",
+   "units": 386,
+   "elements": 1267,
+   "k": 5150,
+   "s": 4130,
+   "a": 3851,
+   "bytes": 581769
+  },
+  {
+   "major": "04",
+   "file": "04.json",
+   "units": 113,
+   "elements": 418,
+   "k": 1811,
+   "s": 1555,
+   "a": 1523,
+   "bytes": 243657
+  },
+  {
+   "major": "05",
+   "file": "05.json",
+   "units": 204,
+   "elements": 756,
+   "k": 3513,
+   "s": 2798,
+   "a": 2529,
+   "bytes": 415828
+  },
+  {
+   "major": "06",
+   "file": "06.json",
+   "units": 122,
+   "elements": 493,
+   "k": 2515,
+   "s": 2125,
+   "a": 1755,
+   "bytes": 348277
+  },
+  {
+   "major": "07",
+   "file": "07.json",
+   "units": 237,
+   "elements": 876,
+   "k": 4386,
+   "s": 3817,
+   "a": 2866,
+   "bytes": 565051
+  },
+  {
+   "major": "08",
+   "file": "08.json",
+   "units": 791,
+   "elements": 2539,
+   "k": 11337,
+   "s": 10180,
+   "a": 9026,
+   "bytes": 1737916
+  },
+  {
+   "major": "09",
+   "file": "09.json",
+   "units": 404,
+   "elements": 1346,
+   "k": 6621,
+   "s": 5576,
+   "a": 4944,
+   "bytes": 910911
+  },
+  {
+   "major": "10",
+   "file": "10.json",
+   "units": 209,
+   "elements": 698,
+   "k": 3140,
+   "s": 2731,
+   "a": 2213,
+   "bytes": 456464
+  },
+  {
+   "major": "11",
+   "file": "11.json",
+   "units": 55,
+   "elements": 166,
+   "k": 842,
+   "s": 741,
+   "a": 572,
+   "bytes": 93619
+  },
+  {
+   "major": "12",
+   "file": "12.json",
+   "units": 627,
+   "elements": 2245,
+   "k": 9044,
+   "s": 8353,
+   "a": 7185,
+   "bytes": 1329710
+  },
+  {
+   "major": "13",
+   "file": "13.json",
+   "units": 145,
+   "elements": 469,
+   "k": 2143,
+   "s": 2076,
+   "a": 2075,
+   "bytes": 270285
+  },
+  {
+   "major": "14",
+   "file": "14.json",
+   "units": 1494,
+   "elements": 5771,
+   "k": 26344,
+   "s": 22889,
+   "a": 19728,
+   "bytes": 3786134
+  },
+  {
+   "major": "15",
+   "file": "15.json",
+   "units": 1646,
+   "elements": 5933,
+   "k": 30025,
+   "s": 23644,
+   "a": 20579,
+   "bytes": 3756683
+  },
+  {
+   "major": "16",
+   "file": "16.json",
+   "units": 667,
+   "elements": 2237,
+   "k": 10204,
+   "s": 8256,
+   "a": 7582,
+   "bytes": 1387857
+  },
+  {
+   "major": "17",
+   "file": "17.json",
+   "units": 734,
+   "elements": 2491,
+   "k": 12364,
+   "s": 10646,
+   "a": 9634,
+   "bytes": 1779655
+  },
+  {
+   "major": "18",
+   "file": "18.json",
+   "units": 336,
+   "elements": 1224,
+   "k": 5125,
+   "s": 4621,
+   "a": 4097,
+   "bytes": 749484
+  },
+  {
+   "major": "19",
+   "file": "19.json",
+   "units": 1381,
+   "elements": 4807,
+   "k": 23242,
+   "s": 20118,
+   "a": 17119,
+   "bytes": 3256374
+  },
+  {
+   "major": "20",
+   "file": "20.json",
+   "units": 1254,
+   "elements": 4487,
+   "k": 24010,
+   "s": 20140,
+   "a": 16319,
+   "bytes": 3343948
+  },
+  {
+   "major": "21",
+   "file": "21.json",
+   "units": 308,
+   "elements": 1336,
+   "k": 4421,
+   "s": 3608,
+   "a": 3893,
+   "bytes": 498225
+  },
+  {
+   "major": "22",
+   "file": "22.json",
+   "units": 341,
+   "elements": 1199,
+   "k": 5028,
+   "s": 4283,
+   "a": 3848,
+   "bytes": 634554
+  },
+  {
+   "major": "23",
+   "file": "23.json",
+   "units": 737,
+   "elements": 2604,
+   "k": 14221,
+   "s": 10838,
+   "a": 9302,
+   "bytes": 1917907
+  },
+  {
+   "major": "24",
+   "file": "24.json",
+   "units": 781,
+   "elements": 2677,
+   "k": 10611,
+   "s": 8889,
+   "a": 7529,
+   "bytes": 1434250
+  }
+ ]
+}

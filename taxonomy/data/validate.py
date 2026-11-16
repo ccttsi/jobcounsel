@@ -13,6 +13,7 @@ from collections import Counter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, "taxonomy.json")
+KSA_DIR = os.path.join(HERE, "ksa")
 
 EXPECTED = {
     ("ncs", "major"): 24,
@@ -182,7 +183,115 @@ def main():
         if u not in ids:
             err("매핑이 가리키는 출처 %s 없음" % u)
 
+    # KSA 샤드
+    check_ksa(doc)
+
     report()
+
+
+def check_ksa(doc):
+    """taxonomy/data/ksa/index.json + 샤드 24개를 검증한다."""
+    idx_path = os.path.join(KSA_DIR, "index.json")
+    if not os.path.exists(idx_path):
+        err("ksa/index.json 없음")
+        return
+    try:
+        with open(idx_path, encoding="utf-8") as f:
+            idx = json.load(f)
+    except json.JSONDecodeError as e:
+        err("ksa/index.json 파싱 실패: %s" % e)
+        return
+
+    meta = idx.get("meta", {})
+    for f in ("schema_version", "dataset", "source_id", "source", "license", "base_date", "collected_at"):
+        if not meta.get(f):
+            err("ksa.meta.%s 없음" % f)
+    if meta.get("source_id") and meta["source_id"] not in {s["id"] for s in doc["sources"]}:
+        err("ksa.meta.source_id %s 가 sources에 없음" % meta["source_id"])
+
+    unit_codes = {u["code"] for u in doc["ncs"]["units"]}
+    seen = {}
+    tot = {"units": 0, "elements": 0, "knowledge": 0, "skill": 0, "attitude": 0}
+
+    shards = idx.get("shards") or []
+    for s in shards:
+        major = s.get("major")
+        fn = s.get("file") or ""
+        if not major or fn != major + ".json":
+            err("ksa.shards 항목 형식 오류: %s" % s)
+            continue
+        path = os.path.join(KSA_DIR, fn)
+        if not os.path.exists(path):
+            err("ksa 샤드 파일 없음: %s" % fn)
+            continue
+        with open(path, encoding="utf-8") as f:
+            shard = json.load(f)
+        if shard.get("major") != major:
+            err("ksa/%s: major 불일치" % fn)
+        units = shard.get("units") or {}
+        cnt = {"units": len(units), "elements": 0, "knowledge": 0, "skill": 0, "attitude": 0}
+        for code, v in units.items():
+            if code[:2] != major:
+                err("ksa/%s: %s 가 샤드 대분류와 불일치" % (fn, code))
+            if code in seen:
+                err("ksa: 능력단위 %s 가 중복(%s, %s)" % (code, seen[code], fn))
+            seen[code] = fn
+            if code not in unit_codes:
+                err("ksa: taxonomy.json에 없는 능력단위 %s" % code)
+            elems = v.get("e")
+            if not elems:
+                err("ksa: %s 요소 배열 없음" % code)
+                continue
+            any_item = False
+            for e in elems:
+                cnt["elements"] += 1
+                if not (e.get("f") or "").strip():
+                    err("ksa: %s 요소명 없음" % code)
+                for g, key in (("k", "knowledge"), ("s", "skill"), ("a", "attitude")):
+                    items = e.get(g)
+                    if not isinstance(items, list):
+                        err("ksa: %s 요소 %s 의 %s 가 배열 아님" % (code, e.get("f"), g))
+                        continue
+                    for it in items:
+                        if not isinstance(it, str) or not it.strip():
+                            err("ksa: %s %s 빈 항목" % (code, g))
+                        else:
+                            any_item = True
+                    cnt[key] += len(items)
+            if not any_item:
+                err("ksa: %s 에 KSA 항목이 하나도 없음" % code)
+        alias = {"k": "knowledge", "s": "skill", "a": "attitude"}
+        for key in ("units", "elements", "k", "s", "a"):
+            real = cnt[alias.get(key, key)]
+            if s.get(key) != real:
+                err("ksa/%s: 색인 %s=%s, 실제 %s" % (fn, key, s.get(key), real))
+        for key in tot:
+            tot[key] += cnt[key]
+
+    files = sorted(x for x in os.listdir(KSA_DIR) if x.endswith(".json") and x != "index.json")
+    if len(files) != len(shards):
+        err("ksa: 색인 %d개, 파일 %d개" % (len(shards), len(files)))
+
+    declared = meta.get("counts", {})
+    actual = {"units": tot["units"], "elements": tot["elements"],
+              "knowledge": tot["knowledge"], "skill": tot["skill"],
+              "attitude": tot["attitude"],
+              "items": tot["knowledge"] + tot["skill"] + tot["attitude"],
+              "shards": len(shards)}
+    for k, v in actual.items():
+        if declared.get(k) != v:
+            err("ksa.meta.counts.%s: 선언 %s, 실제 %s" % (k, declared.get(k), v))
+
+    cov = meta.get("coverage", {})
+    if cov.get("units_total") != len(unit_codes):
+        err("ksa.coverage.units_total %s != taxonomy 능력단위 %d" % (cov.get("units_total"), len(unit_codes)))
+    if cov.get("units_with_ksa") != tot["units"]:
+        err("ksa.coverage.units_with_ksa %s != 실제 %d" % (cov.get("units_with_ksa"), tot["units"]))
+    notice = {u["code"] for u in doc["ncs"]["units"] if u["in_notice"]}
+    if cov.get("units_in_notice_with_ksa") != len(notice & set(seen)):
+        err("ksa.coverage.units_in_notice_with_ksa 불일치")
+    if len(notice & set(seen)) < len(notice):
+        warn("고시 별표 능력단위 중 KSA 없는 것 %d건" % (len(notice) - len(notice & set(seen))))
 
 
 def report():
