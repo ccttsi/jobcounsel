@@ -42,7 +42,6 @@
   var PUBT = ['공기업(시장형)', '공기업(준시장형)', '준정부기관(기금관리형)', '준정부기관(위탁집행형)', '기타공공기관'];
   var RV = [['1', '1조 원 이상', 1e12, Infinity], ['2', '1천억~1조', 1e11, 1e12], ['3', '100억~1천억', 1e10, 1e11], ['4', '100억 미만', 1, 1e10]];
   var EM = [['1', '1만 명 이상', 1e4, Infinity], ['2', '1천~1만', 1e3, 1e4], ['3', '100~1천', 100, 1e3], ['4', '100명 미만', 1, 100]];
-  var SORTS = [['emp', '직원 많은 순'], ['ast', '자산 큰 순'], ['old', '설립 오래된 순'], ['new', '설립 최근 순'], ['name', '이름순']];
   var PER = 20;
   var IC = {
     back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>',
@@ -53,9 +52,9 @@
     turn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg>',
     filt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>'
   };
-  var KEYS = ['c', 'g', 'k', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in', 'o', 'q'];
-  var FKEYS = ['g', 'k', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in'];
-  var META, ITEMS = [], BYID = {}, GRP = {}, SAME = {}, DIST = {}, SRC = {};
+  var KEYS = ['c', 'g', 'k', 'k2', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in', 'o', 'q'];
+  var FKEYS = ['g', 'k', 'k2', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in'];
+  var META, ITEMS = [], BYID = {}, GRP = {}, SAME = {}, DIST = {}, SRC = {}, ENTREV = [];
   var st = blank(), view = '', listY = 0, lastList = '';
   var TODAY = (function () { var t = new Date(); return t.getFullYear() + '-' + ('0' + (t.getMonth() + 1)).slice(-2) + '-' + ('0' + t.getDate()).slice(-2); })();
 
@@ -112,6 +111,7 @@
     x._ast = num(x.total_assets) ? x.total_assets : null;
     x._grp = has(x.group) ? x.group.split(/\s*\/\s*/).filter(Boolean) : [];
     x._k = has(x.sector_code) && KSIC[x.sector_code] ? x.sector_code : (has(x.ksic_code) && KSIC[x.ksic_code.charAt(0)] ? x.ksic_code.charAt(0) : '');
+    x._k2 = x._c === 'ENT' && /^[A-Z]\d\d/.test(String(x.ksic_code || '')) ? String(x.ksic_code).slice(0, 3) : '';   // KSIC 중분류(예: C26)
     x._rb = bucket(x._rev, RV); x._eb = bucket(x._emp, EM);
     x._ve = x._c === 'MID' && has(x.certificate_valid) ? (String(x.certificate_valid).match(/(\d{4}-\d{2}-\d{2})\s*$/) || [])[1] || '' : '';
     var sn = has(x.search_name) ? x.search_name : norm(x.name);
@@ -122,6 +122,7 @@
     function add(k, v, w) { if (has(v)) x._f.push({ k: k, t: String(v), s: norm(v), w: w }); }
     add('group', x.group, 34); add('ind', x.industry, 14); add('min', x.ministry, 14); add('type', x._c === 'PUB' ? x.sub_category : '', 12);
     add('ceo', x.ceo, 7); add('hq', x.headquarters, 6); add('sum', x._c === 'PUB' ? x.business_summary : '', 2);
+    add('prod', x._c === 'MID' ? x.main_products : '', 4);
     (SAME[x._c + '|' + sn] = SAME[x._c + '|' + sn] || []).push(x);
     x._grp.forEach(function (g) { (GRP[g] = GRP[g] || []).push(x); });
   }
@@ -162,7 +163,8 @@
   // 분류에 맞지 않는 조건은 버린다
   function fix(s) {
     if (s.c && !CK[s.c]) s.c = '';
-    if (s.c !== 'ENT') { s.g = ''; s.ct = ''; s.ls = ''; }
+    if (s.c !== 'ENT') { s.g = ''; s.ct = ''; s.ls = ''; s.k2 = ''; }
+    if (s.o && !sortOpts(s).some(function (o) { return o[0] === s.o; })) s.o = '';   // 이 분류에서 쓸 수 없는 정렬은 기본으로
     if (s.c !== 'ENT' && s.c !== 'MID') { s.k = ''; s.in = ''; }
     if (s.c !== 'PUB' && s.c !== 'MID') { s.t = ''; s.mi = ''; s.sd = ''; }
     if (s.c !== 'MID') s.ve = '';
@@ -211,6 +213,7 @@
     if (skip !== 'c' && s.c && x._c !== s.c) return false;
     if (skip !== 'g' && s.g && x._grp.indexOf(s.g) < 0) return false;
     if (skip !== 'k' && s.k && x._k !== s.k) return false;
+    if (skip !== 'k2' && s.k2 && x._k2 !== s.k2) return false;
     if (skip !== 'in' && s.in && x.industry !== s.in) return false;
     if (skip !== 'ct' && s.ct && x.corp_type !== s.ct) return false;
     if (skip !== 'ls' && s.ls && !has(x.listed_date)) return false;
@@ -241,6 +244,13 @@
       return dir * (vb - va);
     };
   }
+  /* 분류마다 실제로 값이 있는 정렬만 보여 준다(중견기업은 매출·자산·설립연도가 원자료에 없다) */
+  function sortOpts(s) {
+    if (s.c === 'MID') return [['', '가입자 많은 순'], ['name', '이름순'], ['sido', '소재지순'], ['ve', '확인서 만료 이른 순']];
+    if (s.c === 'PUB') return [['', '매출 큰 순'], ['emp', '정원 많은 순'], ['old', '설립 오래된 순'], ['new', '설립 최근 순'], ['name', '이름순']];
+    return [['', '매출 큰 순'], ['emp', '직원 많은 순'], ['ast', '자산 큰 순'], ['old', '설립 오래된 순'], ['new', '설립 최근 순'], ['name', '이름순']];
+  }
+  var SORTF = { emp: '_emp', ast: '_ast', old: 'established_year', new: 'established_year', ve: '_ve', sido: 'location_sido' };
   function sorted(arr, s) {
     var m = qmap(s.q), byQ = !!m && !s.o, f;
     if (s.o === 'name') f = function (a, b) { return ko(a._n, b._n); };
@@ -248,6 +258,8 @@
     else if (s.o === 'ast') f = cmpNum('_ast', 1);
     else if (s.o === 'old') f = cmpNum('established_year', -1);
     else if (s.o === 'new') f = cmpNum('established_year', 1);
+    else if (s.o === 've' || s.o === 'sido') { var k = SORTF[s.o]; f = function (a, b) { var va = a[k], vb = b[k]; if (!va && !vb) return 0; if (!va) return 1; if (!vb) return -1; return ko(va, vb); }; }
+    else if (s.c === 'MID') f = cmpNum('_emp', 1);
     else f = cmpNum('_rev', 1);
     return arr.slice().sort(function (a, b) {
       if (byQ) { var d1 = m[b.id].sc - m[a.id].sc; if (d1) return d1; }
@@ -269,7 +281,7 @@
     });
     return t;
   }
-  var FLAB = { group: '기업집단', ind: '업종', min: '주무부처', type: '기관 유형', ceo: '대표자', hq: '소재지', sum: '하는 일' };
+  var FLAB = { group: '기업집단', ind: '업종', min: '주무부처', type: '기관 유형', ceo: '대표자', hq: '소재지', sum: '하는 일', prod: '주요 사업' };
   function snippet(f, q) {
     var t = f.t, w = (String(q || '').trim().split(/\s+/)[0] || '').toLowerCase(), at = t.toLowerCase().indexOf(w);
     if (at < 0) at = 0;
@@ -448,7 +460,7 @@
   }
   function actives() {
     var a = [];
-    if (st.g) a.push(['g', st.g]); if (st.k) a.push(['k', KSIC[st.k] ? KSIC[st.k][0] : st.k]); if (st.in) a.push(['in', st.in]);
+    if (st.g) a.push(['g', st.g]); if (st.k) a.push(['k', KSIC[st.k] ? KSIC[st.k][0] : st.k]); if (st.in) a.push(['in', st.in]); if (st.k2) a.push(['k2', '산업 갈래 KSIC ' + st.k2]);
     if (st.ct) a.push(['ct', st.ct]); if (st.ls) a.push(['ls', '기업공개 법인']);
     if (st.t) a.push(['t', st.t]); if (st.mi) a.push(['mi', st.mi]); if (st.sd) a.push(['sd', st.sd]);
     if (st.ve) a.push(['ve', st.ve.replace('-', '년 ') + '월 만료']);
@@ -510,12 +522,13 @@
     var arr = sorted(filtered(st), st), pages = Math.max(1, Math.ceil(arr.length / PER));
     if (st.p > pages) st.p = pages;
     var cur = arr.slice((st.p - 1) * PER, st.p * PER), m = qmap(st.q) || {};
-    var sdef = st.c === 'MID' ? [['', '가입자 많은 순']] : [['', '매출 큰 순']];
-    if (st.q) sdef = [['', '찾는 말과 가까운 순']].concat(sdef);
-    var so = '<label class="so"><span>정렬</span><select name="o" aria-label="정렬">' + sdef.concat(SORTS).map(function (s) { return '<option value="' + s[0] + '"' + (st.o === s[0] ? ' selected' : '') + '>' + s[1] + '</option>'; }).join('') + '</select></label>';
+    var sdef = sortOpts(st);
+    if (st.q) sdef = [['', '찾는 말과 가까운 순']].concat(sdef.slice(1));
+    var sf = SORTF[st.o] || (st.o ? '' : (st.c === 'MID' ? '_emp' : '_rev')), miss = sf ? arr.filter(function (x) { return x[sf] == null || x[sf] === ''; }).length : 0;
+    var so = '<label class="so"><span>정렬</span><select name="o" aria-label="정렬">' + sdef.map(function (s) { return '<option value="' + s[0] + '"' + (st.o === s[0] ? ' selected' : '') + '>' + s[1] + '</option>'; }).join('') + '</select></label>';
     var per = '<span class="per" role="group" aria-label="한 쪽에 보일 개수"><span>보기</span>' + PERS.map(function (n) { return '<button type="button" data-per="' + n + '" aria-pressed="' + (n === PER) + '" aria-label="' + n + '개씩 보기">' + n + '</button>'; }).join('') + '</span>';
     var r = '<div class="vw"><button type="button" class="fl-t" id="flOpen">' + IC.filt + '조건' + (act.length ? '<i>' + act.length + '</i>' : '') + '</button>' +
-      '<p class="cnt"><b>' + fmt(arr.length) + '</b>곳' + (st.q ? ' · 「' + esc(st.q) + '」' : '') + '</p>' +
+      '<p class="cnt"><b>' + fmt(arr.length) + '</b>곳' + (st.q ? ' · 「' + esc(st.q) + '」' : '') + (miss && !st.q ? ' <small class="fnote">· 정렬 값이 없는 ' + fmt(miss) + '곳은 뒤에</small>' : '') + '</p>' +
       '<button type="button" class="gl-t" id="glBtn" aria-expanded="' + glance + '">' + IC.pie + '한눈에</button>' + so + per + '</div>' +
       (act.length ? '<div class="act">' + act.map(function (a) { return '<button type="button" data-un="' + a[0] + '" aria-label="' + esc(a[1]) + ' 조건 풀기">' + esc(a[1]) + '</button>'; }).join('') + '</div>' : '') +
       (glance && arr.length ? glancePanel() : '');
@@ -681,13 +694,23 @@
       '</div></div>';
     /* 본문 */
     var b = '';
-    if (has(x.business_summary)) b += sec(x._c === 'PUB' ? '하는 일' : '한 줄 소개', doesBlock(x.business_summary), '', x._c === 'PUB' ? '설립목적·주요사업 공시' : '공정위 영위업종 기준');
+    if (x._c === 'PUB' && has(x.business_summary)) b += sec('하는 일', doesBlock(x.business_summary), '', '설립목적·주요사업 공시');
+    if (x._c === 'ENT') {
+      var rk = x._rev > 0 ? ENTREV.indexOf(x) + 1 : 0;
+      b += sec('무슨 회사인가', '<p class="t">' +
+        (x._grp.length ? '공정거래위원회 공시대상기업집단 <b>' + esc(x._grp.join(' · ')) + '</b> 소속 법인입니다. ' : '') +
+        (has(x.industry) ? '공정위에 신고된 주된 영위업종은 <b>' + esc(x.industry) + '</b>' + (has(x.ksic_code) ? '(KSIC <span class="code">' + esc(x.ksic_code) + '</span>' + (x._k ? ' · ' + esc(KSIC[x._k][0]) : '') + ')' : '') + '입니다. ' : '') +
+        (num(x.established_year) ? esc(x.established_year) + '년에 설립했고' + (has(x.listed_date) ? ', 증시에 상장된 법인입니다. ' : ', 비상장 법인입니다. ') : (has(x.listed_date) ? '증시에 상장된 법인입니다. ' : '')) +
+        (rk ? '매출 기준으로 대기업 집단 소속 ' + fmt(ENTREV.length) + '곳 가운데 ' + fmt(rk) + '번째입니다.' : '') + '</p>' +
+        '<p class="t fnote">신고 업종은 회사마다 <b>하나</b>만 적히므로, 여러 사업을 하는 회사의 전체 사업을 다 나타내지는 않습니다. 주요 사업·공식 홈페이지·소재지는 원자료 없음.</p>', '', '공정위 기업집단포털 · KSIC 기준');
+    }
     if (x._c === 'MID' && (has(x.industry) || has(x.employees))) b += sec('무슨 회사인가', '<p class="t">' +
-      (has(x.industry) ? '국민연금 사업장으로 신고된 주된 업종은 <b>' + esc(x.industry) + '</b>입니다. ' : '') +
+      (has(x.industry) ? '국민연금 사업장으로 신고된 업종(참고)은 <b>' + esc(x.industry) + '</b>입니다' + (/업$/.test(x.industry) ? '. ' : ' — 업종이 아닌 직업명으로 신고된 값이라 실제 사업과 다를 수 있습니다. ') : '') +
       (has(x.location_sido) ? '사업장 소재지는 ' + esc(x.location_sido) + (x.nps_workplaces > 1 ? ' 등 ' + fmt(x.nps_workplaces) + '곳' : '') + '이고, ' : '') +
       (has(x.employees) ? '2026년 9월 기준 국민연금 가입자는 ' + fmt(x.employees) + '명입니다.' : '') +
       (has(x.stock_code) ? ' ' + esc(x.market || '') + '에 상장된 법인입니다(<span class="code">' + esc(x.stock_code) + '</span>' + (has(x.listed_at) ? ', ' + esc(String(x.listed_at).slice(0, 4)) + '년 상장' : '') + ').' : '') +
-      (has(x.market_sector) ? ' 증권업종 분류는 ' + esc(x.market_sector) + '입니다.' : '') + '</p>', '', '국민연금 가입 사업장 · 상장 종목 정보 기준');
+      (has(x.market_sector) ? ' 증권업종 분류는 ' + esc(x.market_sector) + '입니다.' : '') + '</p>' +
+      (has(x.industry) ? '<p class="t fnote">국민연금 신고 업종은 사업장 하나의 업종이어서, 아웃소싱·고용서비스처럼 여러 사업을 하는 회사는 실제 사업과 다를 수 있습니다.</p>' : ''), '', '국민연금 가입 사업장 · 상장 종목 정보 기준');
     if (x._c === 'MID' && has(x.main_products)) b += sec('주요 사업', '<p class="t">' + esc(x.main_products) + '</p>', '', x.main_products_source === 'WIKI' ? '위키백과 첫 문장에서 확인' : '상장사 기업개요에서 확인');
     if (x._c === 'MID' && has(x.official_url)) b += sec('공식 홈페이지', '<p class="t"><a href="' + esc(safeUrl(x.official_url)) + '" target="_blank" rel="noopener noreferrer">' + esc(safeUrl(x.official_url)) + '</a></p>', '', x.official_url_checked === 'sources' ? '출처 2곳 일치(사이트 직접 접속은 확인 못함)' : '접속해 회사명·사업자번호 대조');
     if (x._c === 'MID') b += sec('목록에 대해', '<p class="t">정부는 중견기업 전체 명단을 공개하지 않습니다. 이 목록은 확인서를 받은 기업만 담은 하한 집합이어서, 법적으로 중견기업이어도 확인서를 받지 않았으면 빠집니다. 업종·가입자수·소재지는 이름과 사업자등록번호 앞 6자리가 같은 국민연금 사업장을 찾아 붙인 값이고, 주요 사업은 위키백과·상장사 기업개요에서 확인된 것만, 홈페이지는 실제로 접속해 회사명이 확인된 것만 실었습니다.</p>');
@@ -712,6 +735,7 @@
     if (same.length) s2 += '<section class="box s2"><h2>이름이 같은 다른 법인<small>' + same.length + '곳</small></h2><ul class="mates">' + same.slice(0, 8).map(function (y) { return '<li><a href="#' + y.id + '"><span>' + esc(y.name) + '</span><i>' + esc(y.id.slice(4)) + '</i></a></li>'; }).join('') + '</ul><p class="src">같은 이름이라도 번호가 다른 별개 회사입니다.</p></section>';
     var near = [];
     if (x._c === 'ENT' && has(x.industry)) near.push([q1({ c: 'ENT', in: x.industry }), '같은 업종 · ' + x.industry, ITEMS.filter(function (y) { return y.industry === x.industry; }).length]);
+    if (x._c === 'ENT' && x._k2) near.push([q1({ c: 'ENT', k2: x._k2 }), '같은 산업 갈래 · KSIC ' + x._k2, ITEMS.filter(function (y) { return y._k2 === x._k2; }).length]);
     if (x._c === 'ENT' && x._k) near.push([q1({ c: 'ENT', k: x._k }), '업종 대분류 · ' + KSIC[x._k][0], ITEMS.filter(function (y) { return y._k === x._k; }).length]);
     if (x._c === 'PUB') near.push([q1({ c: 'PUB', t: x.sub_category }), x.sub_category + ' 전체', ITEMS.filter(function (y) { return y.sub_category === x.sub_category && y._c === 'PUB'; }).length]);
     if (x._c === 'PUB' && has(x.location_sido)) near.push([q1({ c: 'PUB', sd: x.location_sido }), x.location_sido + '의 공공기관', ITEMS.filter(function (y) { return y.location_sido === x.location_sido; }).length]);
@@ -721,7 +745,7 @@
     if (x._c === 'MID' && x._eb) near.push([q1({ c: 'MID', em: x._eb }), '가입자 ' + emLab(x._eb), ITEMS.filter(function (y) { return y._c === 'MID' && y._eb === x._eb; }).length]);
     if (x._c === 'MID' && x._ve) near.push([q1({ c: 'MID', ve: x._ve.slice(0, 7) }), x._ve.slice(0, 7).replace('-', '년 ') + '월에 확인서가 끝나는 곳', ITEMS.filter(function (y) { return y._ve && y._ve.slice(0, 7) === x._ve.slice(0, 7); }).length]);
     near = near.filter(function (n) { return n[2] > 1; });
-    if (near.length) s2 += '<section class="box s2"><h2>이어서 찾기</h2><ul class="mates">' + near.map(function (n) { return '<li><a href="' + n[0] + '"><span>' + esc(n[1]) + '</span><i>' + fmt(n[2]) + '곳</i></a></li>'; }).join('') + '</ul></section>';
+    if (near.length) s2 += '<section class="box s2"><h2>이어서 찾기</h2>' + (x._c !== 'PUB' ? '<p class="fnote">대기업(KSIC)과 중견기업(국민연금 신고 업종)은 업종 코드 체계가 달라 서로 잇지 않습니다.</p>' : '') + '<ul class="mates">' + near.map(function (n) { return '<li><a href="' + n[0] + '"><span>' + esc(n[1]) + '</span><i>' + fmt(n[2]) + '곳</i></a></li>'; }).join('') + '</ul></section>';
     /* 최하단: 미표기 안내 + 공식 홈페이지 + 출처 */
     var u = safeUrl(x.official_url), ids = (x.sources || [x.source]).filter(Boolean), links = '', names = [];
     ids.forEach(function (id) {
@@ -841,6 +865,7 @@
       (META.sources || []).forEach(function (s) { SRC[s.id] = s; });
       if (SRC.FTC) SRC.FTC.short = '공정거래위원회'; if (SRC.ALIO) SRC.ALIO.short = '알리오'; if (SRC.MME) SRC.MME.short = '중견기업정보마당'; if (SRC.NPS) SRC.NPS.short = '국민연금공단'; if (SRC.WIKI) SRC.WIKI.short = '위키백과'; if (SRC.WD) SRC.WD.short = '위키데이터'; if (SRC.LIST) SRC.LIST.short = '상장 종목 정보';
       for (var i = 0; i < ITEMS.length; i++) { BYID[ITEMS[i].id] = ITEMS[i]; prep(ITEMS[i]); }
+      ENTREV = ITEMS.filter(function (x) { return x._c === 'ENT' && x._rev > 0; }).sort(function (a, b) { return b._rev - a._rev; });
       CATS.forEach(function (c) { c.n = ITEMS.filter(function (x) { return x._c === c.k; }).length; });
       dist(); album(); main.addEventListener('change', onSelect); main.addEventListener('click', onItemClick); route();
       window.addEventListener('hashchange', route);
