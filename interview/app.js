@@ -20,7 +20,7 @@
     K = j; j.vocabularies.card_types.forEach(function (c) { CT[c.code] = c; }); j.vocabularies.sub_modes.forEach(function (m) { MODE[m.code] = m; });
     j.vocabularies.legal_flags.forEach(function (f) { LG[f.code] = f; }); j.vocabularies.pressure_levels.forEach(function (p) { PR[p.level] = p; });
     readHash(); renderTop(); render();
-    $('foot').textContent = (j.meta.notice || '') + ' 출처 · ' + (j.meta.license || '');
+    $('foot').textContent = '학습·실습용 참고 자료입니다. 합격을 보장하지 않으며, 카드의 문장은 예시입니다. 법률 자문이 아닙니다. 질문·카드는 자료실이 직접 만들었고, 법령·공공 안내는 출처를 밝히며 언론 보도는 사실과 수치만 인용합니다.';
   }).catch(function () { $('main').innerHTML = '<p class="foot">덱을 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>'; });
 
   function readHash() {
@@ -149,7 +149,9 @@
   d.addEventListener('visibilitychange', function () { if (d.hidden && TM && TM.run) tGo(); });
 
   /* ───── 역질문 ───── */
+  var rqFirst = true;
   function rqHtml() {
+    if (rqFirst && !mq.matches && !UI.rqT) UI.rqT = K.vocabularies.company_types[0]; rqFirst = false;
     var types = K.vocabularies.company_types, L = K.reverse_questions.filter(function (r) { return !UI.rqT || r.company_type === UI.rqT; });
     var h = '<section class="box pane"><div class="ph"><div class="chips"><button type="button" data-rqt="" aria-pressed="' + !UI.rqT + '">모든 기업 유형</button>' + types.map(function (t) { return '<button type="button" data-rqt="' + esc(t) + '" aria-pressed="' + (UI.rqT === t) + '">' + esc(t) + '</button>'; }).join('') + '</div></div><div class="scr"><div class="rq">';
     h += L.map(function (r) { return '<article class="rqc"><p class="av"><b>쓰지 말아야 할 때</b> · ' + esc(r.avoid_when) + '</p><span class="ex">' + esc(r.company_type) + ' · 예시</span><h4>' + slots(r.question) + '</h4><dl><dt>확인</dt><dd>' + esc(r.verifies) + '</dd><dt>효과</dt><dd>' + esc(r.why_effect) + '</dd><dt>쓸 때</dt><dd>' + esc(r.when_to_use) + '</dd></dl></article>'; }).join('');
@@ -176,7 +178,7 @@
   function trHtml() {
     var S = {}; K.sources.forEach(function (s) { S[s.id] = s; });
     var h = '<section class="box pane"><div class="scr" style="padding:14px"><div class="tr">';
-    h += K.trends_2026.map(function (t) { return '<article class="trc"><span class="cf ' + t.confidence + '">' + esc(CF[t.confidence] || t.confidence) + ' · ' + esc(t.as_of) + '</span><h4>' + esc(t.title) + '</h4><p>' + esc(t.fact) + '</p><p>' + esc(t.evidence) + '</p><p class="im"><b>준비할 것</b> · ' + esc(t.implication) + '</p>' + (t.confidence === 'single_source' ? '<p style="color:var(--warn)">한 출처에서만 확인된 내용입니다. 지원하는 공고 원문에서 다시 확인하세요.</p>' : '') + '<p style="font-size:12px">출처 ' + t.source_ids.map(function (i) { return esc((S[i] || {}).publisher || i); }).join(' · ') + '</p></article>'; }).join('');
+    h += K.trends_2026.map(function (t) { return '<details class="trc"' + (mq.matches ? ' open' : '') + '><summary><span class="cf ' + t.confidence + '">' + esc(CF[t.confidence] || t.confidence) + ' · ' + esc(t.as_of) + '</span><h4>' + esc(t.title) + '</h4></summary><p>' + esc(t.fact) + '</p><p>' + esc(t.evidence) + '</p><p class="im"><b>준비할 것</b> · ' + esc(t.implication) + '</p>' + (t.confidence === 'single_source' ? '<p style="color:var(--warn)">한 출처에서만 확인된 내용입니다. 지원하는 공고 원문에서 다시 확인하세요.</p>' : '') + '<p style="font-size:12px">출처 ' + t.source_ids.map(function (i) { return esc((S[i] || {}).publisher || i); }).join(' · ') + '</p></details>'; }).join('');
     h += '</div><p class="foot" style="margin-top:14px"><b>출처와 한계</b></p><ol class="src">' + K.sources.map(function (s) { return '<li>' + esc(s.publisher) + ' · ' + esc(s.name) + ' (' + esc(s.as_of) + ') <a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">원문 ↗</a></li>'; }).join('') + '</ol>';
     return h + '</div></section>';
   }
