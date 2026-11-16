@@ -54,6 +54,7 @@
 | 누를 때 회색 깜빡임 | `-webkit-tap-highlight-color:transparent` + 직접 만든 눌림(`transform:scale(.98)`, 120ms). |
 | 300ms 지연·더블탭 확대 | `touch-action:manipulation`, `<meta name="viewport" content="width=device-width,initial-scale=1">` |
 | 안전 영역(노치·홈 인디케이터) | `env(safe-area-inset-*)` — 특히 아래 고정 입력창·도구함. |
+| 주소창이 접히고 펴질 때마다 `resize` | 높이만 바뀌는 `resize`에 다시 재기·`scrollTo`를 걸면 스크롤 도중 화면이 튄다. 폭이 실제로 바뀔 때만 반응하게 `ResizeObserver`(요소의 `clientWidth` 비교)로 바꿔 단다. (2026-11-17 서재 색인) |
 | 주소창 접힘/펼침 | 높이는 `resize`·`visualViewport.resize`에서 다시 잰다. 높이를 JS로 고정하지 않는다. |
 | 삼성 인터넷 뒤로 가기 제스처 | 화면 가장자리 20px 안에 끌기 영역을 두지 않는다. |
 | hover로만 보이는 정보 | hover가 없는 기기에서도 보이게 한다(`@media (hover:hover)` 안에서만 hover 효과). |
