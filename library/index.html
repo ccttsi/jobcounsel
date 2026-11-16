@@ -39,7 +39,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     --hair: #e9e0d2; --line2: #d8ccb9;
     --ink: #2a2521; --body: #3d3630; --ink-dim: #655c53; --ink-faint: #6e645b;
     --cyan: #0f766e; --warn: #c2410c; --good: #15803d; --bad: #be123c;
-    --v1: #b45309; --v2: #0f766e; --v3: #6d28d9; --v4: #4d7c0f; --v5: #1d4ed8; --v6: #b91c1c; --v7: #a16207; --v8: #475569; --v9: #0369a1; --v10: #be185d; --v11: #2563eb; --v12: #92400e; --v13: #86198f; --v14: #8a5a44; --v15: #4f6b5d; --v16: #6b5a7a;
+    --v1: #b45309; --v2: #0f766e; --v3: #6d28d9; --v4: #4d7c0f; --v5: #1d4ed8; --v6: #b91c1c; --v7: #a16207; --v8: #475569; --v9: #0369a1; --v10: #be185d; --v11: #2563eb; --v12: #92400e; --v13: #86198f; --v14: #8a5a44; --v15: #4f6b5d; --v16: #6b5a7a; --v17: #3f4a52; --v18: #7a4b3a; --v19: #4a5f7a;
     --soft: rgba(42,37,33,0.04); --soft-2: rgba(42,37,33,0.07); --track: rgba(42,37,33,0.07);
     --glass-bg: rgba(255,253,248,0.72); --scrim: rgba(60,45,30,0.38);
     --drawer-bg: rgba(250,246,239,0.97);
@@ -65,7 +65,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     --hair: #1e232f; --line2: #2c3445;
     --ink: #e6e9ef; --body: #c9cfda; --ink-dim: #9aa3b2; --ink-faint: #7d8699;
     --cyan: #22d3ee; --warn: #fb7185; --good: #6ee7b7; --bad: #fda4af;
-    --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa; --v4: #a3e635; --v5: #93c5fd; --v6: #fca5a5; --v7: #facc15; --v8: #cbd5e1; --v9: #7dd3fc; --v10: #f9a8d4; --v11: #a5b4fc; --v12: #fdba74; --v13: #f0abfc; --v14: #e3b39b; --v15: #a8cbb9; --v16: #c9b6dc;
+    --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa; --v4: #a3e635; --v5: #93c5fd; --v6: #fca5a5; --v7: #facc15; --v8: #cbd5e1; --v9: #7dd3fc; --v10: #f9a8d4; --v11: #a5b4fc; --v12: #fdba74; --v13: #f0abfc; --v14: #e3b39b; --v15: #a8cbb9; --v16: #c9b6dc; --v17: #a9b6bf; --v18: #e0ad97; --v19: #a9bfdc;
     --soft: rgba(255,255,255,0.02); --soft-2: rgba(255,255,255,0.05); --track: rgba(255,255,255,0.05);
     --glass-bg: rgba(15,23,42,0.6); --scrim: rgba(3,4,6,0.66);
     --drawer-bg: rgba(10,12,17,0.95);
@@ -886,6 +886,30 @@ const VOLS = [
     title: "'복지 탈신청주의'는 어떻게 가능한가?",
     sub: '해외 주요국 사례 검토 및 주요 법률 개정 제안 — 정용제',
     blurb: '복지멤버십 가입률 30.4%. 자격이 있어도 신청하지 않아 못 받는 사람들을, 국가가 먼저 찾아가는 제도로 바꾸는 6개국 실험.'
+  },
+{
+    id: 17, serial: 'VOL.17', accent: 'var(--v17)', icon: 'package', shelf: 6,
+    authority: '국회입법조사처', issue: 'NARS 현안분석 제376호 · 2025.12.17',
+    spine: '3차 택배<br>사회적 대화', key: '속도보다 생명', mat: 'kraft', pub: '국회<br>입법조사처',
+    title: "3차 '택배 사회적 대화' 실효성 제고 방안",
+    sub: '1·2차 합의 이행점검과 심야배송 제한 논의를 중심으로 — 한인상·구세주',
+    blurb: '물량은 4년 만에 76.6% 늘고 단가도 49% 올랐다. 그러나 심야배송은 여전히 협상 테이블 밖에 있다.'
+  },
+  {
+    id: 18, serial: 'VOL.18', accent: 'var(--v18)', icon: 'hard-hat', shelf: 6,
+    authority: '국회입법조사처', issue: 'NARS 현안분석 제385호 · 2025.12.29',
+    spine: '한국판 로벤스<br>위원회', key: '산재는 왜 줄지 않는가', mat: 'navy', pub: '국회<br>입법조사처',
+    title: '산업재해 근절 대책으로 한국판 ‘로벤스 위원회’ 설치',
+    sub: '사회적 대화에 기반한 산업안전보건 체계 개편 제안 — 이동영',
+    blurb: '사고사망 10만 명당 3.9명, 영국 1979년(3.1명) 아래로 내려가지 못한다. 영국은 1972년 보고서 하나로 0.8명까지 갔다.'
+  },
+  {
+    id: 19, serial: 'VOL.19', accent: 'var(--v19)', icon: 'shield-check', shelf: 6, lang: 'EN',
+    authority: '국제노동기구(ILO)', issue: 'ILO Report · 2026', key: '사회보장의 빈틈', mat: 'label', pub: '국제노동<br>기구(ILO)',
+    title: '변화하는 노동시장의 보편적 사회보장',
+    orig: 'Universal social protection in changing labour markets: Protecting workers in all types of employment',
+    sub: 'ILO 보고서 — 한국어 요약·해설',
+    blurb: '회사원도 사장도 아니어서 어느 제도에도 안 걸리는 사람들, 이른바 missing middle. 여러 나라 사례로 본 사회보험 확장의 설계도.'
   }
 ];
 
@@ -2274,6 +2298,142 @@ function renderVol16() {
   ].join('');
 }
 
+/* ---------- VOL.17 ---------- */
+function renderVol17() {
+  return [
+    sec('v17-scale', 'SCALE · 늘어난 물량', 'package', '4년 만에 76.6% 늘어난 택배', `
+      <div class="grid grid-cols-2 gap-2">
+        ${kpi('2024년 택배 물량', '59억 5천만 개', '2020년 대비 +76.6%')}
+        ${kpi('1인당 연간 이용 (2023)', '100건 돌파', '')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">평균 단가</div>
+        ${bars([
+          { label: '2016년', value: 1670, text: '1,670원', cls: 'muted' },
+          { label: '2024년', value: 2488, text: '2,488원 (+약 49%)', strong: true },
+        ], 2600)}
+      </div>`),
+
+    sec('v17-deal', 'AGREEMENT · 1·2차 합의', 'handshake', '2021년 합의가 바꾼 것과 남긴 것', `
+      <div class="grid sm:grid-cols-3 gap-2">
+        <div class="card"><div class="mono text-[11px] acc">책임</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">분류작업은 택배사 책임으로 명확히</p></div>
+        <div class="card"><div class="mono text-[11px] acc">시간</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">노동시간 단축 — 주 60시간대로</p></div>
+        <div class="card"><div class="mono text-[11px] acc">계약</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">표준계약서 도입</p></div>
+      </div>
+      <ul class="dots mt-3">
+        <li>한계: 쿠팡 등 일부 사업자 미참여 · 이행점검 미흡 · 심야배송은 논의되지 않음</li>
+        <li>2024년 국정감사에서 택배 노동자 사망 사건과 과로사 산재 인정이 쟁점이 되었고, 2025년 9월 「속도보다 생명」을 내건 3차 사회적 대화가 출범</li>
+      </ul>`),
+
+    sec('v17-agenda', 'AGENDA · 3차 의제', 'list-checks', '심야배송 제한과 소득 보전 사이', `
+      <div class="scroll-x"><table class="matrix min-w-[480px]">
+        <thead><tr><th style="width:36%">의제</th><th>개선 방향</th></tr></thead>
+        <tbody>
+          <tr><th>1·2차 합의 이행 실태 점검</th><td>이행점검 결과 공개, 이해당사자 참여 확대</td></tr>
+          <tr><th>초심야시간 배송 제한</th><td class="hl">제한과 소득 보전의 균형 — 수수료 인상·야간 할증 연계</td></tr>
+          <tr><th>일요일·공휴일</th><td>의무휴업 논의</td></tr>
+        </tbody></table></div>`),
+
+    sec('v17-insight', 'COUNSELOR INSIGHT', 'headset', '「위탁계약」 경력을 다시 읽기', insight([
+      { t: '경력을 직무 언어로', d: '개인사업자·위탁계약으로 적힌 배송 경력도 실제로는 회사 시스템에 맞춰 일한 경험입니다. 「자영업」이 아니라 「물류·배송 운영」 경력으로 다시 쓸 수 있습니다.' },
+      { t: '구조를 개인 탓으로 돌리지 않기', d: '노사정 합의문은 장시간 노동이 개인의 선택만이 아니라 구조의 문제였음을 보여 줍니다. 내담자가 지난 일을 자책하지 않도록 돕는 근거가 됩니다.' },
+      { t: '심야·주말 근무 조건을 미리 확인', d: '배송 직무로 다시 가려는 내담자와는 심야배송 여부, 소득 구조(건당·할증)를 지원 전에 확인합니다.' },
+    ], '근거: 국회입법조사처 NARS 현안분석 제376호(2025.12.17, 한인상·구세주). 상담 적용은 편집자 해석입니다.')),
+  ].join('');
+}
+
+/* ---------- VOL.18 ---------- */
+function renderVol18() {
+  return [
+    sec('v18-rate', 'RATE · 사고사망십만인율', 'activity', '줄었지만, 멈췄다', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">산재 사고사망십만인율 (명)</div>
+        ${bars([
+          { label: '한국 1978년', value: 45, text: '45', cls: 'muted' },
+          { label: '한국 2023년', value: 3.9, text: '3.9', strong: true },
+          { label: '영국 1979년', value: 3.1, text: '3.1' },
+          { label: '영국 2018년', value: 0.8, text: '0.8' },
+        ], 45)}
+        <p class="src">한국은 크게 줄었지만 영국의 1979년 수준보다 높고, 최근에는 감소가 멈췄습니다.</p>
+      </div>`),
+
+    sec('v18-robens', 'ROBENS · 1972년 영국', 'landmark', '보고서 하나가 바꾼 체계', `
+      <p>영국은 1972년 「로벤스 보고서」로 법체계를 정비하고 국가 기구를 세웠습니다. 이후 사고사망십만인율은 1979년 3.1명에서 2018년 0.8명까지 내려갔습니다.</p>
+      <ul class="dots mt-3">
+        <li>정치적 신뢰를 가진 위원장</li>
+        <li>노·사·여·야의 합의</li>
+        <li>정확한 현황 파악과 실무 경험을 가진 전문가 참여</li>
+        <li>산업안전을 정치 공방이 아닌 <b>국가적 과제</b>로 인식</li>
+      </ul>`),
+
+    sec('v18-proposal', 'PROPOSAL · 제언', 'messages-square', '처벌 강화를 넘어 구조 재설계로', `
+      <div class="grid sm:grid-cols-2 gap-2">
+        <div class="card"><div class="mono text-[11px] acc">플랫폼</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">구조 재설계를 위한 사회적 대화 기구 — 한국판 로벤스 위원회 구성·운영</p></div>
+        <div class="card"><div class="mono text-[11px] acc">결과물</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">한국판 「로벤스 보고서」 마련</p></div>
+      </div>
+      <p class="mt-3">단기 규제 강화와 사후 처벌 중심만으로는 감소가 멈춘 지점을 넘기 어렵다는 진단입니다.</p>`),
+
+    sec('v18-insight', 'COUNSELOR INSIGHT', 'headset', '산재·건강 이직을 다루는 루틴', insight([
+      { t: '위험을 상담 초기에 확인', d: '사업장 규모와 직종별 위험을 첫 상담에서 묻는 순서를 만들어 둡니다. 다친 경험이 이직 사유라면 다음 일자리 조건에 바로 반영합니다.' },
+      { t: '안전을 조건으로 말하기', d: '안전교육·보호구·작업 인원 같은 조건을 면접에서 물어도 된다는 점을 알려 줍니다. 안전은 요구가 아니라 확인 사항입니다.' },
+    ], '근거: 국회입법조사처 NARS 현안분석 제385호(2025.12.29, 이동영). 상담 적용은 편집자 해석입니다.')),
+  ].join('');
+}
+
+/* ---------- VOL.19 ---------- */
+function renderVol19() {
+  return [
+    sec('v19-middle', 'MISSING MIDDLE', 'shield-off', '두 제도 사이로 떨어지는 사람들', `
+      <p>소득비례 사회보험에도, 조세 기반 비기여 제도에도 걸리지 않는 근로자 집단을 보고서는 <b class="t-ink">missing middle</b>이라 부릅니다. 임시·초단시간·디지털 플랫폼·농업·자영업 종사자가 특히 취약합니다.</p>
+      <p>보고서는 「표준/비표준」이라는 이분법 대신 <b class="t-ink">구체적인 근로자 범주</b>로 나눠 봐야 정책을 설계할 수 있다고 봅니다.</p>`),
+
+    sec('v19-gap', 'FINANCE · 재정 격차', 'coins', '중저소득국에 필요한 연간 재정', `
+      <div class="grid grid-cols-2 gap-2">
+        ${kpi('보편적 사회보장 재정 격차', 'GDP 3.3%', '연 1.4조 달러 (중저소득국)')}
+        ${kpi('비공식 고용 가구 거주', '아동 60% · 고령자 57%', '중저소득국 OECD 자료')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">GDP 대비 필요 재정 (항목별)</div>
+        ${bars([
+          { label: '필수 의료', value: 2.0, text: '2.0%', strong: true },
+          { label: '아동수당', value: 0.6, text: '0.6%' },
+          { label: '노령연금', value: 0.3, text: '0.3%' },
+          { label: '장애급여', value: 0.2, text: '0.2%' },
+          { label: '실업급여', value: 0.2, text: '0.2%' },
+          { label: '출산급여', value: 0.05, text: '0.05%', cls: 'muted' },
+        ], 2.2)}
+      </div>`),
+
+    sec('v19-groups', 'GROUPS · 가사·여성', 'users', '보호 밖에 남은 일', `
+      <div class="grid grid-cols-2 gap-2">
+        ${kpi('사회보장 혜택을 받는 가사노동자', '5명 중 1명', '75%가 비공식')}
+        ${kpi('여성 비공식 임금근로자의 임금', '정규직 여성의 52%', '')}
+      </div>`),
+
+    sec('v19-platform', 'BOX 6 · 플랫폼 종사자', 'bike', '한국이 사례로 실린 이유', `
+      <div class="scroll-x"><table class="matrix min-w-[480px]">
+        <thead><tr><th style="width:30%">나라</th><th>방식</th></tr></thead>
+        <tbody>
+          <tr><th>크로아티아 · 포르투갈</th><td>일정 요건에서 근로자로 추정</td></tr>
+          <tr><th>한국 2022년</th><td class="hl">배달·지입기사 고용보험 · 출산전후급여 의무 적용</td></tr>
+          <tr><th>한국 2023년</th><td class="hl">산재보험 의무 적용</td></tr>
+        </tbody></table></div>
+      <p class="mt-3">비용은 근로자와 플랫폼이 나눠 내고, 플랫폼이 소득 정보를 제공하며 보험료를 원천징수합니다.</p>`),
+
+    sec('v19-terms', 'GLOSSARY · 용어', 'languages', '원문 용어와 번역어', glossary([
+      ['missing middle', '제도 사이에 낀 계층', '사회보험도 비기여 제도도 적용되지 않는 근로자 집단'],
+      ['social insurance', '사회보험', '보험료를 내고 그만큼 급여를 받는 제도'],
+      ['non-contributory', '비기여(조세 기반)', '보험료 없이 세금으로 주는 급여'],
+      ['portability', '이동 가능성', '일자리나 고용형태가 바뀌어도 권리가 따라가는 것'],
+    ]) + transNote(' 이 요약은 ILO가 작성하거나 검토·승인한 것이 아니며, 원문은 CC BY 4.0으로 공개되었습니다. ILO 로고·엠블럼은 쓰지 않았습니다.')),
+
+    sec('v19-insight', 'COUNSELOR INSIGHT', 'headset', '「어디에도 안 걸리는 사람」을 점검하기', insight([
+      { t: '제도를 한 번에 훑기', d: '「회사원도 아니고 사장도 아니어서 어디에도 안 걸린다」는 말이 바로 missing middle입니다. 국민취업지원제도·근로장려금·지역 사회보장 등 어느 제도에 걸리는지 한 번에 점검합니다.' },
+      { t: '플랫폼 종사자 보험 바로 안내', d: '배달·지입 종사자도 고용보험·산재보험 적용 대상입니다. 다만 실제 수급 요건(피보험기간·이직 사유)은 따로 확인해 안내합니다.' },
+    ], '근거: ILO, Universal social protection in changing labour markets (2026). 상담 적용은 편집자 해석입니다.')),
+  ].join('');
+}
+
 /* ---------- 권별 출처와 이용 조건 (저작권 표기) ---------- */
 const SRC_COMMON = '이 권은 원문을 옮겨 실은 것이 아니라 서재 편집자가 내용을 요약하고 다시 구성한 것입니다. 수치와 사실은 원문에서 가져왔고, 문장과 그래프는 새로 썼습니다. 정확한 표현과 전체 내용은 원문에서 확인하십시오.';
 const SRC = {
@@ -2292,7 +2452,10 @@ const SRC = {
   13: { cite: '정주영·문성호, 「지역 인구정책의 중장기 전환 방향: 인구 유치에서 산업·일자리 연계로」, 국회미래연구원 인구통계 Brief 26-5호, 2026.09.', holder: '국회미래연구원', url: 'https://www.nafi.re.kr', lic: '국회미래연구원 기준 공공누리 제4유형(출처표시·비상업적 이용·변경금지) 대상입니다. 원문을 고치거나 옮겨 싣지 않고 요약과 짧은 인용만 싣습니다.' },
 14: { cite: "정용제, 「'일하는 장애인'의 빈곤탈출을 위한 입법 및 정책과제 — 미국·프랑스·일본 사례분석을 중심으로」, 국회입법조사처 NARS 현안분석 제413호, 2026.04.14.", holder: '국회입법조사처', url: 'https://www.nars.go.kr/report/view.do?brdSeq=49072&cmsCode=CM0043', lic: '공공누리 제1유형(출처표시) — 원문 보고서 페이지의 공공누리 배지를 확인했습니다. 본 저작물은 국회입법조사처에서 작성하여 공공누리 제1유형으로 개방한 저작물을 이용하였으며, 국회입법조사처 누리집에서 무료로 내려받을 수 있습니다.' },
   15: { cite: '구슬이·권다영, 「장애인 노동의 가치는 어떻게 평가되어야 하는가 — 장애인 최저임금 적용 제외 제도의 재검토 필요성과 방향성」, 국회입법조사처 NARS 현안분석 제425호, 2026.07.13.', holder: '국회입법조사처', url: 'https://www.nars.go.kr/report/view.do?brdSeq=49437&cmsCode=CM0043', lic: '공공누리 제1유형(출처표시) — 원문 보고서 페이지의 공공누리 배지를 확인했습니다. 본 저작물은 국회입법조사처에서 작성하여 공공누리 제1유형으로 개방한 저작물을 이용하였으며, 국회입법조사처 누리집에서 무료로 내려받을 수 있습니다.' },
-  16: { cite: "정용제, 「'복지 탈신청주의'는 어떻게 가능한가? — 해외 주요국 사례 검토 및 주요 법률 개정 제안」, 국회입법조사처 NARS 현안분석 제373호, 2025.12.07.", holder: '국회입법조사처', url: 'https://www.nars.go.kr/report/view.do?brdSeq=48525&cmsCode=CM0043', lic: '공공누리 제1유형(출처표시) — 원문 보고서 페이지의 공공누리 배지를 확인했습니다. 본 저작물은 국회입법조사처에서 작성하여 공공누리 제1유형으로 개방한 저작물을 이용하였으며, 국회입법조사처 누리집에서 무료로 내려받을 수 있습니다.' }
+  16: { cite: "정용제, 「'복지 탈신청주의'는 어떻게 가능한가? — 해외 주요국 사례 검토 및 주요 법률 개정 제안」, 국회입법조사처 NARS 현안분석 제373호, 2025.12.07.", holder: '국회입법조사처', url: 'https://www.nars.go.kr/report/view.do?brdSeq=48525&cmsCode=CM0043', lic: '공공누리 제1유형(출처표시) — 원문 보고서 페이지의 공공누리 배지를 확인했습니다. 본 저작물은 국회입법조사처에서 작성하여 공공누리 제1유형으로 개방한 저작물을 이용하였으며, 국회입법조사처 누리집에서 무료로 내려받을 수 있습니다.' },
+17: { cite: "한인상·구세주, 「3차 '택배 사회적 대화' 실효성 제고 방안 — 1·2차 합의 이행점검과 심야배송 제한 논의를 중심으로」, 국회입법조사처 NARS 현안분석 제376호, 2025.12.17.", holder: '국회입법조사처', url: 'https://www.nars.go.kr/report/view.do?brdSeq=48591&cmsCode=CM0043', lic: '공공누리 제1유형(출처표시) — 원문 보고서 페이지의 공공누리 배지를 확인했습니다. 본 저작물은 국회입법조사처에서 작성하여 공공누리 제1유형으로 개방한 저작물을 이용하였으며, 국회입법조사처 누리집에서 무료로 내려받을 수 있습니다.' },
+  18: { cite: "이동영, 「산업재해 근절 대책으로 한국판 '로벤스 위원회' 설치 — 사회적 대화에 기반한 산업안전보건 체계 개편 제안」, 국회입법조사처 NARS 현안분석 제385호, 2025.12.29.", holder: '국회입법조사처', url: 'https://www.nars.go.kr/report/view.do?brdSeq=48670&cmsCode=CM0043', lic: '공공누리 제1유형(출처표시) — 원문 보고서 페이지의 공공누리 배지를 확인했습니다. 본 저작물은 국회입법조사처에서 작성하여 공공누리 제1유형으로 개방한 저작물을 이용하였으며, 국회입법조사처 누리집에서 무료로 내려받을 수 있습니다.' },
+  19: { cite: 'International Labour Office, Universal social protection in changing labour markets: Protecting workers in all types of employment, Geneva: ILO, 2026.', holder: '© International Labour Organization 2026', url: 'https://www.ilo.org/sites/default/files/2026-04/Universal%20Social%20Protection%20in%20changing%20labour%20markets_Web_ENG.pdf', lic: 'CC BY 4.0(원문 PDF 3쪽 저작권 페이지 확인). 바꾼 점: 영어 원문을 한국어로 요약·재구성하고 상담 적용 노트를 덧붙였습니다.', note: 'This is an adaptation of a copyrighted work of the International Labour Organization (ILO). This adaptation has not been prepared, reviewed or endorsed by the ILO and should not be considered an official ILO adaptation. The ILO disclaims all responsibility for its content and accuracy. Responsibility rests solely with the author(s) of the adaptation.' }
 };
 const srcCard = (v) => {
   const s = SRC[v.id]; if (!s) return '';
@@ -2308,7 +2471,7 @@ const srcCard = (v) => {
     <p class="src">${SRC_COMMON}</p>`);
 };
 
-const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3, 4: renderVol4, 5: renderVol5, 6: renderVol6, 7: renderVol7, 8: renderVol8, 9: renderVol9, 10: renderVol10, 11: renderVol11, 12: renderVol12, 13: renderVol13 , 14: renderVol14, 15: renderVol15, 16: renderVol16};
+const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3, 4: renderVol4, 5: renderVol5, 6: renderVol6, 7: renderVol7, 8: renderVol8, 9: renderVol9, 10: renderVol10, 11: renderVol11, 12: renderVol12, 13: renderVol13 , 14: renderVol14, 15: renderVol15, 16: renderVol16, 17: renderVol17, 18: renderVol18, 19: renderVol19};
 
 /* ============================================================
    SHELF + CATALOG
@@ -2324,7 +2487,7 @@ const bookHTML = v => `
   </button>`;
 
 /* 단마다 붙이는 색인 카드 제목(넓은 화면에서만 보임) */
-const SHELF_NAMES = { 1: '청년과 고령, 세대별 고용', 2: 'AI·녹색 전환과 노동시장', 3: '구직 지원과 미래 직업', 4: '일자리의 빈틈과 지역' , 5: '취약계층의 일과 소득안전망'};
+const SHELF_NAMES = { 1: '청년과 고령, 세대별 고용', 2: 'AI·녹색 전환과 노동시장', 3: '구직 지원과 미래 직업', 4: '일자리의 빈틈과 지역' , 5: '취약계층의 일과 소득안전망', 6: '노동의 빈틈과 사회적 대화'};
 const shelfCard = (n, books) => !books.length ? '' : `
   <div class="shelf-card${books.length > 3 ? ' many' : ''}" aria-label="제${n}단 색인">
     <div class="sc-k">제${n}단 · ${books.length}권</div>
