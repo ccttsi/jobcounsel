@@ -71,8 +71,7 @@ a{color:inherit}
 
 /* 첫머리 */
 .hero{padding:12px 0 4px}
-.hero h1{margin:0;font-size:30px;line-height:1.28;letter-spacing:-.05em;font-weight:850;text-wrap:balance}
-@media (min-width:900px){.hero h1{font-size:40px}}
+.hero h1{margin:0;font-size:clamp(28px,1.9vw + 20.5px,42px);line-height:1.25;font-weight:850;letter-spacing:-.045em;text-wrap:balance}
 .hero p{margin:8px 0 0;color:var(--muted);font-size:15.5px;max-width:620px}
 .kw{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;padding:0;list-style:none}
 .kw li{font-size:13px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--acc-soft);color:var(--acc)}
