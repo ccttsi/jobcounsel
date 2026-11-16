@@ -20,7 +20,8 @@
 .jc-ib:active{transform:scale(.96)}
 .jc-ib:focus-visible,.jc-site:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 
-/* 옛 섹터용 사이트 머리띠: 첫 화면 단추 + 자료실 이름 한 줄 */
+/* 사이트 머리띠: 첫 화면 단추 + 자료실 이름 한 줄. 섹터 머리말이 따로 없는 화면에서만 쓴다
+   (2026-11-16 옛 섹터 5곳은 머리띠를 없애고 .jc-ib를 섹터 머리말 첫 줄 맨 앞에 넣었다 — 머리말은 한 줄이 기준) */
 .jc-home{display:flex;align-items:center;gap:10px;min-height:52px;box-sizing:border-box;padding:4px 16px;
   padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));
   font-family:var(--jc-sans);letter-spacing:-.02em;
