@@ -369,7 +369,11 @@ html[data-mode="rev"] .hero h1{font-size:clamp(21px,3vw,26px)}html[data-mode="re
 .jl button small{flex:none;font-size:12px;color:var(--dim)}
 .jl button[aria-pressed="true"]{background:var(--acc-soft);box-shadow:inset 0 0 0 1.5px var(--acc)}
 .sg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
-.sg button{min-height:44px;padding:4px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-size:14px;font-weight:650}
+.sg button{min-height:44px;padding:4px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-size:14px;font-weight:650;transition:border-color .15s,background .15s,transform .12s}
+.sg button:hover{border-color:var(--line-2)}
+.sg button:active{transform:scale(.97)}
+.sg button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft);box-shadow:inset 0 0 0 1px var(--acc)}
+.sg button small{font-size:12px;font-weight:550;color:var(--dim)}
 .hint{margin:6px 0 0;font-size:13px;color:var(--dim);line-height:1.55}
 .none{display:inline-block;padding:6px 10px;border-radius:10px;background:color-mix(in srgb,var(--stamp) 9%,transparent);color:var(--stamp);font-size:13.5px;font-weight:650}
 .cn{list-style:none;margin:0;padding:0}
@@ -910,7 +914,7 @@ function renderRev(){
   var h='<ol class="rr" aria-label="역행 단계">';
   RSTEPS.forEach(function(s,i){var n=i+1,dis=(n>=2&&!R.job)||(n>=3&&!R.sub);
     h+='<li><button type="button" data-rstep="'+n+'"'+(n===R.step?' aria-current="step"':'')+(dis?' disabled':'')+'>'+(n===1?'':'← ')+s[0]+'<small>'+s[1]+'</small></button></li>';});
-  h+='</ol><div class="panel-in" id="rvBody"><p class="loading">직업·직무 자료를 불러오고 있습니다…</p></div>';
+  h+='</ol><div class="panel-in" id="rvBody" data-jc-still><p class="loading">직업·직무 자료를 불러오고 있습니다…</p></div>';
   $('pr').innerHTML=h;
   loadTX().then(function(){rvBody();}).catch(function(){$('rvBody').innerHTML='<p class="empty">직업·직무 자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>';});
 }
@@ -924,12 +928,20 @@ function rvBody(){var b=$('rvBody');if(!b||!TX)return;
 /* ① 목표 직업 */
 var JQ='';
 function myJobs(){var out=[];S.assets.forEach(function(id){var a=ASSET[id];if(a)a.jobs.forEach(function(x){if(out.indexOf(x)<0)out.push(x);});});return out.slice(0,12);}
-function jobHits(q){var n=nz(q);if(!n)return [];var a=[],b=[];TX.JOBS.forEach(function(x){var i=x._n.indexOf(n);if(i===0)a.push(x);else if(i>0)b.push(x);});return a.concat(b).slice(0,40);}
+/* 찾기: 통째로 맞는 것 먼저, 없으면 낱말(두 글자 이상)마다 맞춰 많이 맞는 순. 「보조·관리」 같은 흔한 말만 맞는 것은 뺀다. */
+var WEAK=['보조','관리','운영','지원','일반','사무','업무','담당'];
+function toks(q){return String(q||'').toLowerCase().replace(/[()（）\[\]·‧ㆍ・\/,]/g,' ').split(/\s+/).filter(function(t){return t.length>=2;});}
+var JH_LOOSE=false;
+function jobHits(q){var n=nz(q);JH_LOOSE=false;if(!n)return [];var a=[],b=[];TX.JOBS.forEach(function(x){var i=x._n.indexOf(n);if(i===0)a.push(x);else if(i>0)b.push(x);});
+  if(a.length||b.length)return a.concat(b).slice(0,40);
+  var ts=toks(q);if(ts.length<2)return [];
+  var sc=[];TX.JOBS.forEach(function(x){var s=0,strong=0;ts.forEach(function(t){if(x._n.indexOf(nz(t))>=0){var w=WEAK.indexOf(t)>=0?.3:1;s+=w;if(w===1)strong++;}});if(strong)sc.push([s,x]);});
+  sc.sort(function(p,q2){return q2[0]-p[0]||p[1].name.length-q2[1].name.length;});JH_LOOSE=sc.length>0;return sc.slice(0,40).map(function(p){return p[1];});}
 function rv1(){
   var h='<h2 class="rv-h" id="hrt">어떤 직업에서 내리고 싶나요?</h2><p class="rv-l">목표 직업을 먼저 고르면, 그 직업에 <b>필요한 직무·능력</b>을 거꾸로 짚고 <b>내 경험과 맞는지</b> 하나씩 대조합니다.</p>';
   h+='<div class="rv2"><div class="box"><h3>직업 찾기 · 고용24 직업 '+TX.JOBS.length.toLocaleString('ko-KR')+'개</h3>';
   var mj=myJobs();
-  if(mj.length)h+='<p class="hint" style="margin:0 0 6px">순행 ①에서 고른 경험이 이어지는 직무</p><div class="sg">'+mj.map(function(x){return '<button type="button" data-jq="'+esc(x)+'">'+esc(x)+'</button>';}).join('')+'</div>';
+  if(mj.length)h+='<p class="hint" style="margin:0 0 6px">순행 ①에서 고른 경험이 이어지는 직무</p><div class="sg" data-jc-still>'+mj.map(function(x){var c=jobHits(x).length;return '<button type="button" data-jq="'+esc(x)+'" aria-pressed="'+(JQ===x)+'">'+esc(x)+(c?'':' <small>· 없음</small>')+'</button>';}).join('')+'</div>';
   h+='<div class="jq"><input id="jq" type="search" placeholder="직업명 (예: 품질, 간호, 물류)" autocomplete="off" value="'+esc(JQ)+'" aria-label="목표 직업 찾기"></div><div class="scr"><div class="jl" id="jl">'+jlHtml()+'</div></div></div>';
   h+='<div class="box"><h3>고른 목표</h3>'+jobCard()+'</div></div>';
   return h;
@@ -937,7 +949,7 @@ function rv1(){
 function jlHtml(){if(!JQ)return '<p class="hint">직업명을 두 글자 이상 적으면 찾습니다.</p>';
   if(nz(JQ).length<2)return '<p class="hint">두 글자 이상 적어 주세요.</p>';
   var r=jobHits(JQ);if(!r.length)return '<p class="hint">맞는 직업이 없습니다. 더 짧게 적어 보세요.</p>';
-  return r.map(function(x){return '<button type="button" data-job="'+x.konet+'" aria-pressed="'+(R.job===x.konet)+'"><span class="nm">'+esc(x.name)+'</span><small>'+esc(TX.KECO[x.keco_code]||'')+'</small></button>';}).join('');}
+  return (JH_LOOSE?'<p class="hint" style="margin:0 0 4px">이름이 통째로 같은 직업은 없어, 낱말이 맞는 직업을 보여 줍니다.</p>':'')+r.map(function(x){return '<button type="button" data-job="'+x.konet+'" aria-pressed="'+(R.job===x.konet)+'"><span class="nm">'+esc(x.name)+'</span><small>'+esc(TX.KECO[x.keco_code]||'')+'</small></button>';}).join('');}
 function jobCard(){var x=R.job&&TX.JOB[R.job];
   if(!x)return '<p class="hint">왼쪽(휴대폰은 위)에서 목표 직업을 고르세요.</p>';
   var ks=x.ksco_code,mins=TX.NK[x.keco_code]||[];
@@ -1017,7 +1029,8 @@ function gp(c,t,list,empty){var h='<div class="box gp" style="--c:'+c+'"><h4>'+t
 
 $('pr').addEventListener('click',function(e){var b;
   if((b=e.target.closest('[data-rstep]'))){rgo(+b.getAttribute('data-rstep'));return;}
-  if((b=e.target.closest('[data-jq]'))){JQ=b.getAttribute('data-jq');var i=$('jq');if(i)i.value=JQ;$('jl').innerHTML=jlHtml();return;}
+  if((b=e.target.closest('[data-jq]'))){JQ=b.getAttribute('data-jq');var i=$('jq');if(i)i.value=JQ;$('jl').innerHTML=jlHtml();
+    b.parentNode.querySelectorAll('[data-jq]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});return;}
   if((b=e.target.closest('[data-job]'))){var j=b.getAttribute('data-job');if(R.job!==j){R.job=j;R.sub='';R.own=false;R.chk={};}saveR();
     $('pr').querySelectorAll('[data-job]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});
     var bx=b.closest('.rv2').children[1];bx.innerHTML='<h3>고른 목표</h3>'+jobCard();
