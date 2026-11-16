@@ -93,8 +93,11 @@
       pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '"/><circle cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.4" fill="var(--c-main)"/></svg>';
   }
 
-  /* ---------- 화면 ---------- */
-  var current = null;
+  /* ---------- 화면 ----------
+     긴 세로 나열을 하지 않는다: 제호·핵심 수치 아래를 「이슈 카드 / 레이더 / 출처」 탭으로 나누고,
+     이슈는 색인 + 카드 한 장, 카드 안 3단은 넓으면 가로 3열·좁으면 ①②③ 탭(순서 그대로). */
+  var current = null, UI = { tab: 'issues', card: 0, step: {}, radar: 0 };
+  var STEP_NAMES = ['무슨 일', '수치·근거', '상담 시사점'];
   function render(d, opts) {
     opts = opts || {};
     var E = d.edition || {}, srcById = {};
@@ -109,57 +112,72 @@
       if (lt && TRACK_OF[lt] && TRACK_OF[lt] !== c.track) console.warn('[briefing] 트랙·라이선스 짝 어긋남:', c.id, c.track, lt);
       return true;
     });
+    UI.card = Math.max(0, Math.min(cards.length - 1, UI.card));
 
     var status = '';
     if (E.data_status && E.data_status !== 'ok' || arr(d.cards).length < 5) {
       status = '<p class="status" role="status"><b>' + (E.data_status === 'fallback' ? '오늘 자 갱신 실패' : '일부 자료 누락') + '</b> ' + esc(E.data_status_note || '이번 호는 카드 수가 평소보다 적습니다.') + '</p>';
     }
     if (opts.notice) status += '<p class="status" role="status">' + esc(opts.notice) + '</p>';
-
-    var picker = dates.length > 1 ? '<label><span class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">지난 호 고르기</span><select id="dateSel">' +
+    var picker = dates.length > 1 ? '<label><span class="sr">지난 호 고르기</span><select id="dateSel">' +
       dates.map(function (x) { return '<option value="' + esc(x) + '"' + (x === E.date ? ' selected' : '') + '>' + esc(x) + (x === dates[0] ? ' (최신)' : '') + '</option>'; }).join('') + '</select></label>' : '';
 
-    var html = '<header class="mast"><div class="mast-top"><span class="ed"><b>제' + esc(E.no) + '호</b><span class="num">' + esc(E.date) + ' (' + esc(E.weekday) + ')</span><span>' + esc(E.reading_minutes || 3) + '분 읽기</span></span>' + picker + '</div>' +
+    var html = '<div class="top"><header class="mast"><div class="mast-top"><span class="ed"><b>제' + esc(E.no) + '호</b><span class="num">' + esc(E.date) + ' (' + esc(E.weekday) + ')</span><span>' + esc(E.reading_minutes || 3) + '분 읽기</span></span>' + picker + '</div>' +
       '<h1>' + esc(E.title) + '</h1>' + (E.subtitle ? '<p>' + esc(E.subtitle) + '</p>' : '') + status + '</header>';
-
     html += '<ul class="hm" aria-label="오늘의 핵심 수치">' + arr(d.headline_metrics).filter(function (m) { return ok(m.source_id, m.id); }).slice(0, 4).map(function (m) {
       var s = srcById[m.source_id], arw = m.direction === 'up' ? '▲' : m.direction === 'down' ? '▼' : '–';
       var dirTxt = m.direction === 'up' ? '증가' : m.direction === 'down' ? '감소' : '보합';
       return '<li class="jc-pop"><span class="lb">' + esc(m.label) + '</span><span class="vl num">' + esc(m.value_text) + '<span class="ar" aria-label="' + dirTxt + '">' + arw + '</span></span>' +
         '<span class="pd">' + esc(m.period) + (m.delta_from ? ' · ' + esc(m.delta_from) + ' 대비' : '') + '</span>' + spark(m.spark) +
         '<span class="ft">' + trackBadge(m.track) + '<span>' + esc(s.source_name) + '</span></span></li>';
-    }).join('') + '</ul>';
+    }).join('') + '</ul></div>';
 
-    html += '<div class="sh"><h2>이슈 카드</h2><small class="num">' + cards.length + '장 · 무슨 일 → 수치·근거 → 상담 시사점</small></div><div class="cards">' +
+    var R = d.radar, rows = R ? arr(R.rows) : [];
+    UI.radar = Math.max(0, Math.min(rows.length - 1, UI.radar));
+    var tabs = [['issues', '이슈 카드', cards.length], ['radar', 'AI × 직무 레이더', rows.length], ['sources', '출처·라이선스', arr(d.sources).length]].filter(function (t) { return t[0] !== 'radar' || rows.length; });
+    if (!tabs.some(function (t) { return t[0] === UI.tab; })) UI.tab = 'issues';
+    html += '<div class="tabs" role="tablist" aria-label="오늘 호 구성">' + tabs.map(function (t) {
+      return '<button type="button" role="tab" id="tab-' + t[0] + '" class="tab" data-tab="' + t[0] + '" aria-controls="pane-' + t[0] + '" aria-selected="' + (UI.tab === t[0]) + '" tabindex="' + (UI.tab === t[0] ? 0 : -1) + '">' + esc(t[1]) + '<small>' + t[2] + '</small></button>';
+    }).join('') + '</div>';
+
+    /* 이슈 */
+    html += '<section class="pane" id="pane-issues" role="tabpanel" aria-labelledby="tab-issues"' + (UI.tab === 'issues' ? '' : ' hidden') + '><div class="iss"><div><ol class="idx" aria-label="이슈 색인">' +
       cards.map(function (c, i) {
-        var t = c.three_step || {};
-        return '<article class="card" id="' + esc(c.id) + '" aria-labelledby="t-' + esc(c.id) + '">' +
-          '<div class="card-k"><span class="no">' + String(i + 1).padStart(2, '0') + '</span>' + esc(c.category) + '</div>' +
+        return '<li><button type="button" data-card="' + i + '" aria-current="' + (i === UI.card) + '" aria-label="' + (i + 1) + '번: ' + esc(c.title) + '"><span class="n">' + String(i + 1).padStart(2, '0') + '</span><span class="ca">' + esc(c.category) + '</span><span class="ti">' + esc(c.title) + '</span></button></li>';
+      }).join('') + '</ol></div><div class="cardbox">' +
+      cards.map(function (c, i) {
+        var t = c.three_step || {}, st = UI.step[c.id] || 0;
+        return '<article class="card" id="' + esc(c.id) + '" data-step="' + st + '" aria-labelledby="t-' + esc(c.id) + '"' + (i === UI.card ? '' : ' hidden') + '>' +
+          '<div class="card-top"><div class="card-h"><div class="card-k"><span class="no">' + String(i + 1).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0') + '</span>' + esc(c.category) + '</div>' +
           '<h3 id="t-' + esc(c.id) + '">' + esc(c.title) + '</h3>' + (c.kicker ? '<p class="kicker">' + esc(c.kicker) + '</p>' : '') +
-          (c.chart_data ? chart(c.chart_data) : '') +
           (arr(c.key_numbers).length ? '<ul class="kn">' + arr(c.key_numbers).slice(0, 4).map(function (k) {
             return '<li>' + esc(k.label) + ' <b>' + esc(k.value) + '</b>' + (k.delta ? '<i>' + esc(k.delta) + '</i>' : '') + '</li>';
           }).join('') + '</ul>' : '') +
+          (c.counselor_question ? '<p class="q"><b>내담자에게 물어볼 질문</b>' + esc(c.counselor_question) + '</p>' : '') + '</div>' +
+          (c.chart_data ? chart(c.chart_data) : '') + '</div>' +
+          '<div class="stp" role="tablist" aria-label="3단 읽기">' + STEP_NAMES.map(function (n, k) {
+            return '<button type="button" role="tab" data-step="' + k + '" aria-selected="' + (st === k) + '">' + ['①', '②', '③'][k] + ' ' + n + '</button>';
+          }).join('') + '</div>' +
           '<ol class="st"><li><b>무슨 일인가</b>' + esc(t.what) + '</li><li><b>수치·근거</b>' + esc(t.evidence) + '</li><li><b>상담·구직 시사점</b>' + esc(t.implication) + '</li></ol>' +
-          (c.counselor_question ? '<p class="q"><b>내담자에게 물어볼 질문</b>' + esc(c.counselor_question) + '</p>' : '') +
-          (arr(c.tags).length ? '<div class="tags">' + arr(c.tags).slice(0, 4).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>' : '') +
-          srcLine(c.track, c.source) + '</article>';
-      }).join('') + '</div>';
+          '<div class="card-f">' + srcLine(c.track, c.source) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
+      }).join('') + '</div></div></section>';
 
-    var R = d.radar;
-    if (R && arr(R.rows).length) {
+    /* 레이더 */
+    if (rows.length) {
       var cols = arr(R.columns).length === 2 ? R.columns : ['해외 동향', '국내 영향'];
-      html += '<div class="sh"><h2>' + esc(R.title || 'AI × 직무 변화 레이더') + '</h2><small class="num">기준 ' + esc(R.as_of) + '</small></div><div class="rd">' +
-        arr(R.rows).map(function (r) {
+      html += '<section class="pane" id="pane-radar" role="tabpanel" aria-labelledby="tab-radar"' + (UI.tab === 'radar' ? '' : ' hidden') + '>' +
+        '<div class="rgi" aria-label="갈래 고르기">' + rows.map(function (r, i) { return '<button type="button" data-rad="' + i + '" aria-current="' + (i === UI.radar) + '">' + esc(r.group) + '</button>'; }).join('') + '</div>' +
+        '<div class="rd">' + rows.map(function (r, i) {
           var ids = arr(r.source_ids).filter(function (id) { return ok(id, r.id); });
-          return '<section class="rr" aria-label="' + esc(r.group) + '"><h3>' + esc(r.group) + '</h3><div class="two"><div><b>' + esc(cols[0]) + '</b>' + esc(r.abroad) + '</div><div><b>' + esc(cols[1]) + '</b>' + esc(r.domestic) + '</div></div>' +
+          return '<section class="rr' + (i === UI.radar ? ' on' : '') + '" aria-label="' + esc(r.group) + '"><h3>' + esc(r.group) + '</h3><div class="two"><div><b>' + esc(cols[0]) + '</b>' + esc(r.abroad) + '</div><div><b>' + esc(cols[1]) + '</b>' + esc(r.domestic) + '</div></div>' +
             '<div class="cs"><span class="ch"><b>바뀌는 것</b>' + esc(r.changing) + '</span><span class="sy"><b>남는 것</b>' + esc(r.staying) + '</span></div>' +
             (ids.length ? '<p class="ids">출처: ' + ids.map(function (id) { var s = srcById[id]; return trackBadge(TRACK_OF[(s.license || {}).type] || 'A') + ' ' + esc(s.source_name); }).join(' · ') + '</p>' : '') + '</section>';
-        }).join('') + '</div>';
+        }).join('') + '</div><p class="pol num">기준 ' + esc(R.as_of) + '</p></section>';
     }
 
+    /* 출처 */
     var P = d.copyright_policy || {};
-    html += '<div class="sh"><h2>출처와 라이선스</h2><small class="num">' + arr(d.sources).length + '건</small></div><ul class="srcs">' +
+    html += '<section class="pane" id="pane-sources" role="tabpanel" aria-labelledby="tab-sources"' + (UI.tab === 'sources' ? '' : ' hidden') + '><div class="srcw"><ul class="srcs">' +
       arr(d.sources).map(function (s) {
         var L = s.license || {}, t = TRACK_OF[L.type] || '', url = safeUrl(s.source_url);
         return '<li>' + (t ? trackBadge(t) + ' ' : '') + (L.verified === false ? '<span class="bd chk">확인 중</span> ' : '') + esc(s.source_name) + ' 「' + esc(s.source_title) + '」' +
@@ -167,14 +185,70 @@
           '<span class="ln">' + esc(L.name) + (L.scope ? ' · ' + esc(L.scope) : '') + (s.published_at ? ' · 게시 ' + esc(s.published_at) : '') + (L.verified_at ? ' · 확인 ' + esc(L.verified_at) : '') + (s.usage ? ' · ' + esc(s.usage) : '') + '</span></li>';
       }).join('') + '</ul>' +
       '<div class="pol">' + [P.summary, P.track_a_note && 'A: ' + P.track_a_note, P.track_b_note && 'B: ' + P.track_b_note, P.quote_limit_words && '인용은 카드당 ' + P.quote_limit_words + '단어 이내로 제한합니다.', P.contact, d.disclaimer]
-        .filter(Boolean).map(function (x) { return '<p>' + esc(x) + '</p>'; }).join('') + '<p class="num">갱신 ' + esc(String(d.updated_at || '').replace('T', ' ').slice(0, 16)) + ' · 스키마 ' + esc(d.schema_version) + '</p></div>';
+        .filter(Boolean).map(function (x) { return '<p>' + esc(x) + '</p>'; }).join('') + '<p class="num">갱신 ' + esc(String(d.updated_at || '').replace('T', ' ').slice(0, 16)) + ' · 스키마 ' + esc(d.schema_version) + '</p></div></div></section>';
 
     main.innerHTML = html;
-    current = d;
-    linkNews(d);
+    current = d; current._cards = cards; current._rows = rows;
     var sel = $('dateSel');
     if (sel) sel.addEventListener('change', function () { go(sel.value); });
+    linkNews(d);
   }
+
+  /* ---------- 탭·카드 넘김: 다시 그리지 않고 표시만 바꾼다 ---------- */
+  function setHash() {
+    var h = UI.tab === 'issues' ? (current && current._cards[UI.card] ? '#' + current._cards[UI.card].id : '') : '#' + UI.tab;
+    try { history.replaceState(null, '', location.pathname + location.search + h); } catch (e) {}
+  }
+  function showTab(t, focus) {
+    UI.tab = t;
+    Array.prototype.forEach.call(main.querySelectorAll('[data-tab]'), function (b) { var on = b.getAttribute('data-tab') === t; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
+    Array.prototype.forEach.call(main.querySelectorAll('.pane'), function (p) { p.hidden = p.id !== 'pane-' + t; });
+    setHash();
+  }
+  function showCard(i, focus) {
+    var cs = current._cards; if (!cs.length) return;
+    UI.card = Math.max(0, Math.min(cs.length - 1, i));
+    cs.forEach(function (c, k) { var el = document.getElementById(c.id); if (el) el.hidden = k !== UI.card; });
+    Array.prototype.forEach.call(main.querySelectorAll('[data-card]'), function (b) { b.setAttribute('aria-current', String(+b.getAttribute('data-card') === UI.card)); });
+    var el = document.getElementById(cs[UI.card].id);
+    var top = main.querySelector('.tabs'); if (top && top.getBoundingClientRect().top < 0) top.scrollIntoView({ block: 'start' });
+    if (focus && el) { var h = el.querySelector('h3'); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); } }
+    setHash();
+  }
+  main.addEventListener('click', function (e) {
+    var b;
+    if ((b = e.target.closest('[data-tab]'))) { showTab(b.getAttribute('data-tab')); return; }
+    if ((b = e.target.closest('[data-card]'))) { showCard(+b.getAttribute('data-card')); return; }
+    if ((b = e.target.closest('[data-go]'))) { showCard(UI.card + +b.getAttribute('data-go'), true); return; }
+    if ((b = e.target.closest('.stp [data-step]'))) {
+      var card = b.closest('.card'), k = b.getAttribute('data-step'); card.setAttribute('data-step', k); UI.step[card.id] = +k;
+      Array.prototype.forEach.call(card.querySelectorAll('.stp [data-step]'), function (x) { x.setAttribute('aria-selected', String(x === b)); });
+      return;
+    }
+    if ((b = e.target.closest('[data-rad]'))) {
+      UI.radar = +b.getAttribute('data-rad');
+      Array.prototype.forEach.call(main.querySelectorAll('[data-rad]'), function (x) { x.setAttribute('aria-current', String(x === b)); });
+      Array.prototype.forEach.call(main.querySelectorAll('.rr'), function (r, i) { r.classList.toggle('on', i === UI.radar); });
+    }
+  });
+  main.addEventListener('keydown', function (e) {
+    var t = e.target.closest && e.target.closest('[data-tab]');
+    if (t && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+      var all = Array.prototype.slice.call(main.querySelectorAll('[data-tab]')), i = all.indexOf(t) + (e.key === 'ArrowRight' ? 1 : -1);
+      i = (i + all.length) % all.length; showTab(all[i].getAttribute('data-tab'), true); e.preventDefault();
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (UI.tab !== 'issues' || !current || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('input,textarea,select,[contenteditable],[role=tab]')) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { showCard(UI.card + (e.key === 'ArrowRight' ? 1 : -1), true); }
+  });
+  function fromHash() {
+    var h = decodeURIComponent(location.hash.slice(1));
+    if (h === 'radar' || h === 'sources') UI.tab = h;
+    else if (h && current) { current._cards.forEach(function (c, i) { if (c.id === h) { UI.tab = 'issues'; UI.card = i; } }); }
+  }
+  window.addEventListener('hashchange', function () { if (!current) return; fromHash(); showTab(UI.tab); if (UI.tab === 'issues') showCard(UI.card); });
 
   /* ---------- 17-1 오늘의 원문 연결: news.json이 있을 때만 링크를 그린다 ---------- */
   var news = null;
@@ -184,11 +258,11 @@
       var byIssue = {}, total = 0;
       arr(n.items).forEach(function (it) { if (it && it.track === 'A' && ((it.source || {}).license || {}).verified === true) { total++; if (it.issue_id) byIssue[it.issue_id] = (byIssue[it.issue_id] || 0) + 1; } });
       if (!total) return;
-      var sh = main.querySelector('.sh');
-      if (sh && !main.querySelector('.news-all')) sh.insertAdjacentHTML('afterend', '<p class="news-all"><a href="news/">오늘의 원문 ' + total + '건 — 원문과 번역으로 읽기 →</a></p>');
+      var idx = main.querySelector('.idx');
+      if (idx && !main.querySelector('.news-all')) idx.insertAdjacentHTML('afterend', '<p class="news-all"><a href="news/">오늘의 원문 ' + total + '건 →</a></p>');
       arr(d.cards).forEach(function (c) {
         var el = c.issue_id && byIssue[c.issue_id] && document.getElementById(c.id);
-        if (el && !el.querySelector('.news-more')) el.querySelector('.src').insertAdjacentHTML('beforebegin', '<a class="news-more" href="news/?issue=' + encodeURIComponent(c.issue_id) + '">오늘의 원문 더 보기 →</a>');
+        if (el && !el.querySelector('.news-more')) el.querySelector('.card-f').insertAdjacentHTML('beforebegin', '<a class="news-more" href="news/?issue=' + encodeURIComponent(c.issue_id) + '">오늘의 원문 더 보기 →</a>');
       });
     };
     if (news) { apply(news); return; }
@@ -213,6 +287,7 @@
   get(BASE + 'briefing.json').then(function (d) {
     latest = d;
     var want = new URLSearchParams(location.search).get('date');
+    current = { _cards: arr(d.cards).slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); }) }; fromHash();
     if (want && /^\d{4}-\d{2}-\d{2}$/.test(want) && want !== (d.edition || {}).date) go(want); else render(d);
   }).catch(function () {
     main.innerHTML = '<p class="status" role="status"><b>브리핑을 불러오지 못했습니다.</b> 잠시 뒤 다시 열어 주세요.</p>';
