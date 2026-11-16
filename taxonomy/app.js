@@ -20,6 +20,18 @@
   try { var sv = JSON.parse(localStorage.getItem('jc-taxonomy') || 'null'); if (sv && sv.tab) { UI.tab = sv.tab; if (sv.path) UI.path = sv.path; if (sv.sel) UI.sel = sv.sel; } } catch (e) {}
   function save() { try { localStorage.setItem('jc-taxonomy', JSON.stringify({ tab: UI.tab, path: UI.path, sel: UI.sel })); } catch (e) {} }
 
+  /* 이용 안내 펼치기 */
+  $('pvT').addEventListener('click', function () { var o = $('pvB').hidden; $('pvB').hidden = !o; this.setAttribute('aria-expanded', String(o)); $('pvL').textContent = o ? '접기' : '펼치기'; });
+
+  /* 처음으로: 검색·탭·경로·선택을 모두 비우고 첫 화면(NCS 전체)으로 */
+  $('rst').addEventListener('click', function () {
+    var b = this; b.classList.remove('spin'); void b.offsetWidth; b.classList.add('spin'); setTimeout(function () { b.classList.remove('spin'); }, 450);
+    closeSheet(); UI.tab = 'ncs'; UI.path = { ncs: [], keco: [], ksco: [] }; UI.sel = null; UI.q = ''; UI.more = 50; UI.jobMore = 100;
+    $('q').value = ''; $('qx').hidden = true; save();
+    if (T) { renderTabs(); render(); $('list').scrollTop = 0; $('det').scrollTop = 0; }
+    window.scrollTo(0, 0);
+  });
+
   /* ───── 자료 ───── */
   fetch('./data/taxonomy.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
     T = j; LV = j.meta.level_keys;
@@ -80,7 +92,7 @@
     $('crumb').innerHTML = h; var cs = $('crumb').firstChild; cs.scrollLeft = cs.scrollWidth;
     var list = kids(s, par ? par.code : '');
     var lvl = list[0] ? lvName(list[0]) : '';
-    $('lh').innerHTML = '<b>' + (par ? esc(par.name) : SYS[s].full) + '</b><span>' + (lvl ? lvl + ' ' : '') + n0(list.length) + '개</span>' + (s === 'ncs' ? '<span>· 직무 기준</span>' : '<span>· 직업 기준</span>');
+    $('lh').innerHTML = (par ? '<button type="button" class="upb" data-crumb="' + (p.length - 2) + '" aria-label="한 단계 위로">↑ 상위</button>' : '') + '<b>' + (par ? esc(par.name) : SYS[s].full) + '</b><span>' + (lvl ? lvl + ' ' : '') + n0(list.length) + '개</span>' + (s === 'ncs' ? '<span>· 직무 기준</span>' : '<span>· 직업 기준</span>');
     $('list').innerHTML = list.length ? list.map(function (x) { return rowHtml(x); }).join('') : '<p class="empty">아래 단계가 없습니다.</p>';
     $('list').scrollTop = 0;
   }
@@ -148,12 +160,18 @@
       var x = node(s, c); if (!x) { $('det').innerHTML = pickHtml(); return; }
       var p = pathOf(x);
       h += '<div class="tags">' + badge(s) + '<span class="bd" style="--c:var(--dim)">' + lvName(x) + '</span>' + (x.legacy ? '<span class="bd lg">현행 고시에 없음</span>' : '') + '</div>';
-      h += '<h2>' + esc(x.name) + '</h2><p class="path num">' + esc(c) + (p.length > 1 ? ' · ' + p.slice(0, -1).map(function (y) { return esc(y.name); }).join(' › ') : '') + '</p>';
+      h += '<h2>' + esc(x.name) + '</h2><p class="path num">' + esc(c) + '</p>' + upHtml(x);
       if (s === 'ncs') h += ncsDet(x); else if (s === 'keco') h += kecoDet(x); else h += kscoDet(x);
       var ks = kids(s, c); if (ks.length) h += '<h3>아래 ' + lvName(ks[0]) + ' <small>' + n0(ks.length) + '개 · 왼쪽 목록에서 고릅니다</small></h3>';
     }
     if (s !== 'job' && T.meta.corrections) T.meta.corrections.forEach(function (k) { if (k.code === c && s === 'keco') h += '<p class="path">원자료 오기 정정: 「' + esc(k.asis) + '」 → 「' + esc(k.tobe) + '」</p>'; });
     $('det').innerHTML = h; if (!quiet) $('det').scrollTop = 0;
+  }
+  /* 올라가기: 지금 항목이 어느 소·중·대분류에서 왔는지 한 칸씩 위로 */
+  function upHtml(x, title) {
+    var p = pathOf(x).slice(0, -1).reverse(); if (!p.length) return '';
+    return '<h3>' + (title || '올라가기') + ' <small>' + SYS[x.sys].name + ' · 누르면 그 분류로 이동</small></h3><ol class="up">' + p.map(function (y) {
+      return '<li><button type="button" data-go="' + y.sys + '|' + esc(y.code) + '"><span class="lv">↑ ' + lvName(y) + '</span><span class="cd">' + esc(y.code) + '</span><span class="nm">' + esc(y.name) + '</span></button></li>'; }).join('') + '</ol>';
   }
   function ncsDet(x) {
     var h = '', minor = x.code.length >= 6 ? x.code.slice(0, 6) : null;
@@ -206,6 +224,9 @@
     h += '<div class="r" style="--c:var(--c-ncs)"><b>NCS 직무</b><div class="v">' + (nm.length ? '<div class="lk">' + nm.map(function (m) { return lk('ncs', m); }).join('') + '</div>' : NONE) + '</div></div>';
     h += '<div class="r" style="--c:var(--c-keco)"><b>KECO</b><div class="v"><div class="lk">' + lk('keco', x.keco_code) + '</div></div></div>';
     h += '<div class="r" style="--c:var(--c-ksco)"><b>KSCO</b><div class="v">' + (x.ksco_code && node('ksco', x.ksco_code) ? '<div class="lk">' + lk('ksco', x.ksco_code) + '</div>' : NONE) + '</div></div></div>';
+    var ke = node('keco', x.keco_code), ks = x.ksco_code && node('ksco', x.ksco_code);
+    if (ke) h += upHtml({ sys: 'keco', parent: ke.parent, code: '', name: '' }, '어디에서 왔나 · 고용직업분류').replace('<ol class="up">', '<ol class="up"><li><button type="button" data-go="keco|' + esc(ke.code) + '"><span class="lv">· 세분류</span><span class="cd">' + esc(ke.code) + '</span><span class="nm">' + esc(ke.name) + '</span></button></li>');
+    if (ks) h += upHtml({ sys: 'ksco', parent: ks.parent, code: '', name: '' }, '어디에서 왔나 · 표준직업분류').replace('<ol class="up">', '<ol class="up"><li><button type="button" data-go="ksco|' + esc(ks.code) + '"><span class="lv">· 세분류</span><span class="cd">' + esc(ks.code) + '</span><span class="nm">' + esc(ks.name) + '</span></button></li>');
     return h;
   }
 
