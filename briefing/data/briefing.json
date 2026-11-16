@@ -1,0 +1,669 @@
+{
+  "schema_version": "1.0.0",
+  "updated_at": "2026-11-16T11:16:53+09:00",
+  "edition": {
+    "no": 1,
+    "date": "2026-11-16",
+    "weekday": "월",
+    "title": "청년이 빠진 자리, 경력과 AI가 채운다",
+    "subtitle": "국내 고용지표·미국 노동시장·AI 프리랜스 실험을 한 장으로",
+    "reading_minutes": 3,
+    "data_status": "ok",
+    "data_status_note": null
+  },
+  "headline_metrics": [
+    {
+      "id": "hm_kr_employed",
+      "label": "국내 취업자 (전년동월비)",
+      "value": 13.9,
+      "unit": "만명",
+      "value_text": "+13.9만명",
+      "base_value": 2917.9,
+      "base_unit": "만명",
+      "direction": "up",
+      "period": "2026년 10월",
+      "delta_from": "전년동월",
+      "source_id": "src_mods_202610",
+      "track": "A",
+      "spark": {
+        "labels": ["7월", "8월", "9월", "10월"],
+        "values": [10.8, 18.4, 11.3, 13.9],
+        "unit": "만명"
+      }
+    },
+    {
+      "id": "hm_youth_employed",
+      "label": "청년(15~29세) 취업자",
+      "value": -19.6,
+      "unit": "만명",
+      "value_text": "-19.6만명",
+      "base_value": 332.5,
+      "base_unit": "만명",
+      "direction": "down",
+      "period": "2026년 10월",
+      "delta_from": "전년동월",
+      "source_id": "src_mods_202610",
+      "track": "A",
+      "spark": {
+        "labels": ["7월", "8월", "9월", "10월"],
+        "values": [-19.1, -14.3, -14.7, -19.6],
+        "unit": "만명"
+      }
+    },
+    {
+      "id": "hm_us_payrolls",
+      "label": "미국 비농업 고용",
+      "value": 165,
+      "unit": "천개",
+      "value_text": "+16만5천개",
+      "base_value": null,
+      "base_unit": null,
+      "direction": "up",
+      "period": "2026년 10월",
+      "delta_from": "12개월 월평균(+4만8천개)",
+      "source_id": "src_bls_202610",
+      "track": "A",
+      "spark": {
+        "labels": ["8월", "9월", "10월"],
+        "values": [186, 60, 165],
+        "unit": "천개"
+      }
+    },
+    {
+      "id": "hm_ai_freelance_budget",
+      "label": "AI 관련 프리랜스 예산 격차",
+      "value": 52,
+      "unit": "%",
+      "value_text": "+52%",
+      "base_value": null,
+      "base_unit": null,
+      "direction": "up",
+      "period": "2026년 11월 보고서",
+      "delta_from": "비AI 공고 대비(업무 하위분류·게시월 통제)",
+      "source_id": "src_arxiv_2611_14708",
+      "track": "A",
+      "spark": null
+    }
+  ],
+  "cards": [
+    {
+      "id": "c01",
+      "order": 1,
+      "track": "A",
+      "category": "국내 고용지표",
+      "title": "취업자는 넉 달째 두 자릿수, 20대는 20만명 줄었다",
+      "kicker": "10월 취업자 +13.9만명 · 20대 -20.3만명",
+      "three_step": {
+        "what": "10월 취업자가 1년 전보다 13만9천명 늘며 넉 달 연속 두 자릿수 증가를 이었다. 같은 달 20대 취업자는 20만3천명 줄어, 늘어난 자리가 청년에게 돌아가지 않았다.",
+        "evidence": "15~64세 고용률은 70.4%(+0.3%p)로 10월 기준 가장 높았지만 15세 이상 고용률은 63.3%(-0.1%p)였다. 청년(15~29세) 취업자는 332만5천명으로 19만6천명 줄어 48개월 연속 감소했고, 청년 고용률은 42.9%(-1.7%p)로 30개월 연속 내렸다. 같은 기간 60세 이상 +19만6천명, 30대 +12만8천명, 50대 +4만2천명.",
+        "implication": "청년 내담자에게 '취업자 수 증가'를 시장 회복 신호로 전하지 말고, 증가분이 60세 이상과 30대에 몰렸다는 사실과 함께 전한다. 지원 전략은 공채 대기보다 수시·경력 혼합 트랙과 청년 대상 지원 사업을 같이 검토하는 쪽으로 잡는다."
+      },
+      "key_numbers": [
+        { "label": "취업자", "value": "2,917.9만명", "delta": "+13.9만명", "period": "2026년 10월" },
+        { "label": "15~64세 고용률", "value": "70.4%", "delta": "+0.3%p", "period": "2026년 10월" },
+        { "label": "청년 고용률", "value": "42.9%", "delta": "-1.7%p", "period": "2026년 10월" },
+        { "label": "실업률", "value": "2.0%", "delta": "-0.2%p", "period": "2026년 10월" }
+      ],
+      "chart_data": {
+        "type": "diverging_bar",
+        "unit": "만명",
+        "labels": ["7월", "8월", "9월", "10월"],
+        "series": [
+          { "name": "전체 취업자 증감", "values": [10.8, 18.4, 11.3, 13.9], "emphasis": true },
+          { "name": "청년(15~29세) 증감", "values": [-19.1, -14.3, -14.7, -19.6], "emphasis": false }
+        ],
+        "reference_value": 0,
+        "note": "전년동월비. 국가데이터처 「2026년 10월 고용동향」.",
+        "source_id": "src_mods_202610"
+      },
+      "counselor_question": "지원하려는 직무의 채용 공고가 지난 1년간 늘었는지 줄었는지, 함께 확인해 볼까요?",
+      "tags": ["청년", "고용률", "국내지표"],
+      "ncs": ["직업상담서비스"],
+      "source": {
+        "source_id": "src_mods_202610",
+        "source_name": "국가데이터처",
+        "source_title": "2026년 10월 고용동향",
+        "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156788701",
+        "published_at": "2026-11-11",
+        "license": {
+          "name": "공공누리 제1유형(출처표시)",
+          "type": "KOGL-1",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능",
+          "attribution_text": "출처: 국가데이터처 「2026년 10월 고용동향」(공공누리 제1유형)"
+        },
+        "usage": "수치만 표·도표로 재구성. 원문 문장 복제·이미지 사용 없음."
+      }
+    },
+    {
+      "id": "c02",
+      "order": 2,
+      "track": "B",
+      "category": "국내 고용행정",
+      "title": "고용보험은 10개월째 20만명대, 구인배수는 0.46",
+      "kicker": "가입자 +28.6만명 · 구인배수 0.46",
+      "three_step": {
+        "what": "10월 고용보험 상시가입자가 1년 전보다 28만6천명 늘어 열 달 연속 20만명대 후반 증가를 이어 갔다. 제조업은 석 달 연속 늘고 건설업 감소폭은 줄었다.",
+        "evidence": "가입자 1,597만4천명(+1.8%). 서비스업 +27만6천명(보건복지 +12만명, 숙박음식 +4만9천명), 제조업 +1만4천명, 건설업 -5천명. 29세 이하 -5만4천명, 60세 이상 +20만4천명. 구직급여 신규신청 8만1천명(+7.5%), 지급액 1조25억원(-4.5%). 고용24 신규구인 16만5천명(+16.2%), 신규구직 36만명(+7.4%), 구인배수 0.46(1년 전 0.42).",
+        "implication": "구인배수 0.46은 구직자 두 명에 일자리 한 개꼴이라는 뜻이다. 내담자가 '지원만 하면 된다'는 기대를 내려놓고 지원 직무를 좁히도록 돕는다. 구직급여 신규신청은 늘고 지급액은 줄어 재취업 기간이 길어지는 신호이므로, 수급 중인 내담자와는 3개월 단위 중간 점검 일정을 처음부터 잡아 둔다."
+      },
+      "key_numbers": [
+        { "label": "고용보험 상시가입자", "value": "1,597.4만명", "delta": "+28.6만명", "period": "2026년 10월" },
+        { "label": "구인배수", "value": "0.46", "delta": "+0.04", "period": "2026년 10월" },
+        { "label": "고용24 신규구인", "value": "16.5만명", "delta": "+16.2%", "period": "2026년 10월" },
+        { "label": "구직급여 신규신청", "value": "8.1만명", "delta": "+7.5%", "period": "2026년 10월" }
+      ],
+      "chart_data": {
+        "type": "slope",
+        "unit": "배",
+        "labels": ["2025년 10월", "2026년 10월"],
+        "series": [
+          { "name": "구인배수", "values": [0.42, 0.46], "emphasis": true }
+        ],
+        "reference_value": null,
+        "note": "고용24 기준 신규구인÷신규구직. 고용노동부 「2026년 10월 고용행정 통계로 본 노동시장 동향」.",
+        "source_id": "src_moel_202610"
+      },
+      "counselor_question": "지난달 지원한 곳과 이번 달 지원할 곳을 같은 직무로 좁혀 볼까요?",
+      "tags": ["구인배수", "고용보험", "국내지표"],
+      "ncs": ["직업상담서비스"],
+      "source": {
+        "source_id": "src_moel_202610",
+        "source_name": "고용노동부",
+        "source_title": "2026년 10월 고용행정 통계로 본 노동시장 동향",
+        "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20216",
+        "published_at": "2026-11-09",
+        "license": {
+          "name": "공공누리 미부착(사전 협의 필요)",
+          "type": "KOGL-NONE",
+          "url": null,
+          "scope": "보도자료 본문·첨부파일 재가공 불가",
+          "attribution_required": true,
+          "commercial_use": "unknown",
+          "modification": "unknown",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "정책브리핑 전재본 고지에 '공공누리가 부착되지 않은 자료는 담당자와 협의 후 사용' 확인",
+          "attribution_text": "자료: 고용노동부 「2026년 10월 고용행정 통계로 본 노동시장 동향」"
+        },
+        "usage": "발표된 수치만 사실로 인용. 본문 문장 복제·번역 없음."
+      }
+    },
+    {
+      "id": "c03",
+      "order": 3,
+      "track": "A",
+      "category": "해외 노동시장",
+      "title": "미국은 16만5천개 늘었지만, 장기실업자는 200만명",
+      "kicker": "비농업 +16.5만개 · 실업률 4.1%",
+      "three_step": {
+        "what": "미국 10월 비농업 고용이 16만5천개 늘어 최근 12개월 월평균(4만8천개)을 크게 웃돌았다. 실업률은 4.1%로 거의 움직이지 않았다.",
+        "evidence": "전문·사업서비스 +7만개, 보건의료 +4만2천개, 운송·창고 +2만5천개, 제조업 +1만9천개. 8·9월 고용은 합쳐 8만4천개 상향됐다. 시간당 평균임금 38.00달러(+0.4%, 전년비 +3.1%). 27주 이상 장기실업자는 200만명으로 전체 실업자의 27.6%, 경제적 이유로 시간제로 일하는 사람은 480만명(+33만9천명).",
+        "implication": "구인은 살아나도 채용 문턱과 대기 기간이 길어지는 국면이다. 내담자에게 '미국 고용 호조'를 국내 채용 확대로 번역해 전하지 말고, 장기실업 비중 27.6%처럼 재취업까지 걸리는 시간이 길어진 근거로 3개월 생계·훈련 계획을 먼저 세우게 한다."
+      },
+      "key_numbers": [
+        { "label": "비농업 고용", "value": "+16.5만개", "delta": "12개월 평균 +4.8만개", "period": "2026년 10월" },
+        { "label": "실업률", "value": "4.1%", "delta": "-0.1%p", "period": "2026년 10월" },
+        { "label": "장기실업자(27주+)", "value": "200만명", "delta": "전체의 27.6%", "period": "2026년 10월" },
+        { "label": "시간당 평균임금", "value": "38.00달러", "delta": "+3.1%", "period": "2026년 10월" }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "천개",
+        "labels": ["8월", "9월", "10월"],
+        "series": [
+          { "name": "비농업 고용 증감", "values": [186, 60, 165], "emphasis": true }
+        ],
+        "reference_value": 48,
+        "note": "8·9월은 상향 개정치. 기준선 48은 최근 12개월 월평균. BLS 「The Employment Situation — October 2026」.",
+        "source_id": "src_bls_202610"
+      },
+      "counselor_question": "재취업까지 6개월이 걸린다면, 그동안 쓸 수 있는 훈련과 생계 수단을 지금 점검해 둘까요?",
+      "tags": ["미국", "장기실업", "해외동향"],
+      "ncs": ["직업상담서비스"],
+      "source": {
+        "source_id": "src_bls_202610",
+        "source_name": "미국 노동통계국(BLS)",
+        "source_title": "The Employment Situation — October 2026 (USDL-26-1632)",
+        "source_url": "https://www.bls.gov/news.release/empsit.nr0.htm",
+        "published_at": "2026-11-06",
+        "license": {
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "type": "PUBLIC-DOMAIN",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "scope": "연방정부 발간물 전체",
+          "attribution_required": false,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상 아님",
+          "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Employment Situation — October 2026"
+        },
+        "usage": "수치 번역·도표화. 원문 문장 복제 없음."
+      }
+    },
+    {
+      "id": "c04",
+      "order": 4,
+      "track": "A",
+      "category": "AI·직무",
+      "title": "AI 일자리는 더 넓은 일 묶음에, 값은 52% 높게 붙는다",
+      "kicker": "AI 공고 예산 +52% · 과업 묶음 확대",
+      "three_step": {
+        "what": "AI 관련 프리랜스 공고는 비AI 공고보다 더 많은 과업을 한 프로젝트로 묶고, 예산도 높게 책정되는 것으로 나타났다. AI가 사람을 지우기보다 일을 다시 묶는 방식으로 수요를 바꾸고 있다는 분석이다.",
+        "evidence": "고정가 예산은 업무 하위분류와 게시월을 통제한 뒤에도 비AI 공고보다 약 52% 높았다. ChatGPT에서 많이 쓰이는 활동은 글쓰기·조언에, 실제 의뢰는 구현·제작·납품에 치우쳐 단순 대체 관계가 나타나지 않았다. AI 관련 공고는 평균 과업 수가 조금 더 많고, 예전에 함께 요청되지 않던 과업 조합의 비중도 높았다.",
+        "implication": "내담자의 경력을 '직무 하나'가 아니라 '납품할 수 있는 산출물 묶음'으로 다시 쓰게 한다. 'AI를 쓰는 사람에게 일이 남는다'는 막연한 조언 대신, 기획-제작-AI 통합-검수 중 무엇을 끝까지 책임질 수 있는지 정해 포트폴리오 한 장으로 만들게 한다."
+      },
+      "key_numbers": [
+        { "label": "AI 공고 고정가 예산", "value": "+52%", "delta": "비AI 대비", "period": "2026년 11월 보고서" },
+        { "label": "분석 대상", "value": "ChatGPT 사용 기록 + 업워크 공고", "delta": "", "period": "2026년 11월" },
+        { "label": "ChatGPT 업무 메시지 중 직업 경계 넘는 비중", "value": "43.5%", "delta": "", "period": "2026년(인용 보고서)" }
+      ],
+      "chart_data": {
+        "type": "index_bar",
+        "unit": "지수(비AI=100)",
+        "labels": ["비AI 공고", "AI 관련 공고"],
+        "series": [
+          { "name": "고정가 예산 지수", "values": [100, 152], "emphasis": true }
+        ],
+        "reference_value": 100,
+        "note": "업무 하위분류·게시월 통제 후 비교. arXiv:2611.14708(OpenAI 경제연구·업워크), CC BY 4.0.",
+        "source_id": "src_arxiv_2611_14708"
+      },
+      "counselor_question": "선생님이 끝까지 책임질 수 있는 산출물 하나를 고른다면 무엇인가요?",
+      "tags": ["AI", "프리랜스", "직무재편"],
+      "ncs": ["직업상담서비스"],
+      "source": {
+        "source_id": "src_arxiv_2611_14708",
+        "source_name": "arXiv (OpenAI 경제연구·업워크)",
+        "source_title": "The Rebundling of Freelance Work in the AI Age (arXiv:2611.14708)",
+        "source_url": "https://arxiv.org/abs/2611.14708",
+        "published_at": "2026-11-10",
+        "license": {
+          "name": "CC BY 4.0",
+          "type": "CC-BY-4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/",
+          "scope": "보고서 전체(저자·출처 표시 조건)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "arXiv 초록 페이지에 라이선스 'CC BY 4.0' 표기 확인",
+          "attribution_text": "Chin, Kala, Kunievsky, Liu, Richmond, Shan (2026), arXiv:2611.14708, CC BY 4.0"
+        },
+        "usage": "번역·요약·도표화. 저자·출처 표시."
+      }
+    },
+    {
+      "id": "c05",
+      "order": 5,
+      "track": "B",
+      "category": "AI·직무",
+      "title": "2030년 AI 일자리 순증 170만, 직무 재편은 4억3,550만명",
+      "kicker": "순증 170만 vs 직무 재편 4억3,550만",
+      "three_step": {
+        "what": "가트너는 2030년까지 AI로 일자리가 1,060만개 생기고 890만개 사라져 170만개 순증할 것으로 전망했다. 같은 기간 업무 내용과 책임 범위가 바뀌는 사람은 4억3,550만명으로, 일자리를 잃는 사람의 약 20배다.",
+        "evidence": "중국·인도를 제외한 전 세계 기준이다. AI로 인한 직접 일자리 상실은 전체 근로자의 최대 1.8% 수준. 2026년 한 해 AI 도입 기대에 따른 채용 보류는 약 130만개, 소멸 220만개, 창출 160만개로 추산됐다. 산업별로는 기술 +150만개, 제조·운송·광업 +40만개, 금융·보험 등 서비스 +20만개, 공공 -50만개.",
+        "implication": "내담자에게 'AI가 일자리를 없앤다/늘린다'는 양자택일을 주지 말고, 같은 직무 안에서 바뀌는 부분을 지목한다. 상담 첫 단계에서 직무기술서를 'AI가 해도 결과가 같은 일'과 '내가 책임질 일' 두 칸으로 나눠 적게 하면, 재편에 대한 막연한 불안이 구체적인 학습 과제로 바뀐다."
+      },
+      "key_numbers": [
+        { "label": "2030년 일자리", "value": "순증 170만개", "delta": "창출 1,060만·소멸 890만", "period": "2030년 누적" },
+        { "label": "직무 재편 규모", "value": "4억3,550만명", "delta": "전체 근로자 20%+", "period": "2030년 누적" },
+        { "label": "2026년 채용 보류", "value": "130만개", "delta": "소멸 220만·창출 160만", "period": "2026년" },
+        { "label": "공공부문", "value": "-50만개", "delta": "순감", "period": "2030년 누적" }
+      ],
+      "chart_data": {
+        "type": "diverging_bar",
+        "unit": "만개",
+        "labels": ["기술", "제조·운송·광업", "금융·보험 등 서비스", "공공"],
+        "series": [
+          { "name": "2030년 순증감", "values": [150, 40, 20, -50], "emphasis": true }
+        ],
+        "reference_value": 0,
+        "note": "중국·인도 제외. 가트너 전망을 보도한 연합뉴스 기사(2026-11-15)의 수치만 사용.",
+        "source_id": "src_yna_gartner"
+      },
+      "counselor_question": "지금 하는 일 중 AI가 대신해도 결과가 같은 부분은 어디까지인가요?",
+      "tags": ["AI", "전망", "산업별"],
+      "ncs": ["직업상담서비스"],
+      "source": {
+        "source_id": "src_yna_gartner",
+        "source_name": "연합뉴스",
+        "source_title": "가트너 2030년 AI 고용 전망 보도(2026-11-15)",
+        "source_url": "https://www.yna.co.kr/view/AKR20261113151600017",
+        "published_at": "2026-11-15",
+        "license": {
+          "name": "언론사 저작권 — 본문 복제·번역 금지",
+          "type": "PRESS",
+          "url": null,
+          "scope": "기사 본문·제목·이미지",
+          "attribution_required": true,
+          "commercial_use": "not_allowed",
+          "modification": "not_allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+          "attribution_text": "수치 출처: 가트너 전망(연합뉴스 2026-11-15 보도)"
+        },
+        "usage": "수치·사실만 우리 말로 새로 씀. 인용 15단어 이내, 원문 링크만 제공."
+      }
+    },
+    {
+      "id": "c06",
+      "order": 6,
+      "track": "B",
+      "category": "AI·직무",
+      "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가",
+      "kicker": "청년 -28.5만명 중 -26.8만명이 AI 고노출",
+      "three_step": {
+        "what": "국민연금 가입자 기준으로 4년 동안 15~29세 취업자가 28만5천명 줄었고, 그중 26만8천명(94%)이 AI 노출이 높은 업종에서 빠졌다. 같은 기간 50대는 23만명 늘었는데 75%가 같은 업종이었다.",
+        "evidence": "2022년 6월부터 2026년 6월까지 국민연금 가입자 기준 분석(한국은행 조사국 고용연구팀). AI 고노출 업종은 정보서비스업, 출판업, 소프트웨어 개발업 등이다. 연구자는 AI 탓으로만 단정하지 않고 코로나 이후 과잉채용 조정, 경력직 선호, 사내교육 약화를 함께 지목했다. 별도 분석에서는 AI 노출이 큰 직업의 고용 감소가 뚜렷하지 않았다.",
+        "implication": "청년 내담자에게 'AI 때문에 청년을 안 뽑는다'고 단정해 불안을 키우지 않는다. 대신 같은 업종에서 50대 경력자와 겨루는 구조를 보여 주고, 신입이 하던 초급 업무를 AI로 넘긴 회사에서 남는 일(검수, 고객 대응, 통합)을 첫 직무로 노리게 한다."
+      },
+      "key_numbers": [
+        { "label": "15~29세 취업자", "value": "-28.5만명", "delta": "4년 누적", "period": "2022.6~2026.6" },
+        { "label": "AI 고노출 업종 감소", "value": "-26.8만명", "delta": "청년 감소의 94%", "period": "2022.6~2026.6" },
+        { "label": "50대 취업자", "value": "+23만명", "delta": "75%가 AI 고노출 업종", "period": "2022.6~2026.6" }
+      ],
+      "chart_data": {
+        "type": "grouped_bar",
+        "unit": "만명",
+        "labels": ["15~29세", "50대"],
+        "series": [
+          { "name": "전체 증감", "values": [-28.5, 23.0], "emphasis": false },
+          { "name": "AI 고노출 업종 증감", "values": [-26.8, 17.3], "emphasis": true }
+        ],
+        "reference_value": 0,
+        "note": "국민연금 가입자 기준, 2022.6~2026.6. 50대 AI 고노출 값은 23만명의 75%(약 17.3만명).",
+        "source_id": "src_chosunbiz_hankuk"
+      },
+      "counselor_question": "같은 업종에서 경력자와 겨룬다면, 신입인 선생님의 강점은 무엇으로 말할 수 있을까요?",
+      "tags": ["청년", "AI", "중장년"],
+      "ncs": ["직업상담서비스"],
+      "source": {
+        "source_id": "src_chosunbiz_hankuk",
+        "source_name": "조선비즈",
+        "source_title": "한국은행 청년 고용·AI 고노출 업종 분석 보도(2026-11-12)",
+        "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/",
+        "published_at": "2026-11-12",
+        "license": {
+          "name": "언론사 저작권 — 본문 복제·번역 금지",
+          "type": "PRESS",
+          "url": null,
+          "scope": "기사 본문·제목·이미지",
+          "attribution_required": true,
+          "commercial_use": "not_allowed",
+          "modification": "not_allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+          "attribution_text": "수치 출처: 한국은행 조사국 분석(조선비즈 2026-11-12 보도)"
+        },
+        "usage": "수치·사실만 우리 말로 새로 씀. 인용 15단어 이내, 원문 링크만 제공."
+      }
+    },
+    {
+      "id": "c07",
+      "order": 7,
+      "track": "B",
+      "category": "채용시장",
+      "title": "경력 15년 이상 공고 30% 늘고, AI 역량도 함께 묻는다",
+      "kicker": "15년 이상 +30% vs 경력직 전체 +11.5%",
+      "three_step": {
+        "what": "올해 10월까지 경력 15년 이상을 요구한 채용 공고가 지난해 같은 기간보다 30% 늘었다. 경력직 공고 전체 증가율 11.5%의 두 배가 넘는다. 15년 이상 공고 가운데 AI를 언급한 비중도 6%에서 10%로 올랐다.",
+        "evidence": "연차별로는 15~19년 공고가 33% 늘어 증가 폭이 가장 컸다. 최근 5년 경력직 공고는 17% 줄었지만 15년 이상 공고는 64% 늘었다. 직무별로 엔지니어링·설계 +48%, 법무·사무·총무 +37%, 건축·시설 +32%, 제조·생산 +29%. 기업 규모별로는 대기업 +49%, 중견기업 +39%, 중소기업 +25%. 잡코리아 집계.",
+        "implication": "중장년 내담자에게는 경력 연수를 '오래 일했다'가 아니라 'AI를 붙여 성과를 낸 기간'으로 정리하게 한다. 경력기술서에 AI 활용 사례를 한 줄 넣고, 청년 내담자에게는 경력직 공고가 늘어난 직무(엔지니어링·법무·건축)에서 신입이 들어갈 틈을 함께 찾아본다."
+      },
+      "key_numbers": [
+        { "label": "경력 15년 이상 공고", "value": "+30%", "delta": "경력직 전체 +11.5%", "period": "2026년 1~10월" },
+        { "label": "15~19년 공고", "value": "+33%", "delta": "연차별 최대", "period": "2026년 1~10월" },
+        { "label": "15년 이상 공고 중 AI 언급", "value": "10%", "delta": "지난해 6%", "period": "2026년" },
+        { "label": "대기업 공고", "value": "+49%", "delta": "중견 +39%·중소 +25%", "period": "2026년 1~10월" }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "%",
+        "labels": ["15년 이상", "15~19년", "경력직 전체"],
+        "series": [
+          { "name": "공고 증가율", "values": [30, 33, 11.5], "emphasis": true }
+        ],
+        "reference_value": null,
+        "note": "전년 같은 기간 대비. 잡코리아 집계를 보도한 뉴스핌 기사(2026-11-16)의 수치만 사용.",
+        "source_id": "src_newspim_jobkorea"
+      },
+      "counselor_question": "지난 1년 동안 AI를 써서 결과물이 좋아진 사례를 한 가지만 말해 볼까요?",
+      "tags": ["경력직", "중장년", "AI역량"],
+      "ncs": ["직업상담서비스"],
+      "source": {
+        "source_id": "src_newspim_jobkorea",
+        "source_name": "뉴스핌",
+        "source_title": "잡코리아 경력직 공고 분석 보도(2026-11-16)",
+        "source_url": "https://www.newspim.com/news/view/20261116000174",
+        "published_at": "2026-11-16",
+        "license": {
+          "name": "언론사 저작권 — 본문 복제·번역 금지",
+          "type": "PRESS",
+          "url": null,
+          "scope": "기사 본문·제목·이미지",
+          "attribution_required": true,
+          "commercial_use": "not_allowed",
+          "modification": "not_allowed",
+          "verified": true,
+          "verified_at": "2026-11-16",
+          "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+          "attribution_text": "수치 출처: 잡코리아 집계(뉴스핌 2026-11-16 보도)"
+        },
+        "usage": "수치·사실만 우리 말로 새로 씀. 인용 15단어 이내, 원문 링크만 제공."
+      }
+    }
+  ],
+  "radar": {
+    "title": "AI × 직무 변화 레이더",
+    "as_of": "2026-11-16",
+    "columns": ["해외 동향", "국내 영향"],
+    "rows": [
+      {
+        "id": "r01",
+        "group": "청년·신규 진입",
+        "abroad": "미국은 27주 이상 장기실업자가 200만명(전체 실업자의 27.6%)으로 늘었고, 가트너는 2026년 한 해 AI 도입 기대만으로 채용 130만개가 보류됐다고 본다.",
+        "domestic": "국내 청년(15~29세) 취업자는 48개월 연속 줄어 10월에만 19만6천명 감소했고, 청년 고용률은 42.9%로 30개월 연속 하락했다.",
+        "changing": "신입 초급 업무 감소, 수시·경력 중심 채용",
+        "staying": "현장 경험과 대인 수행",
+        "source_ids": ["src_bls_202610", "src_yna_gartner", "src_mods_202610"]
+      },
+      {
+        "id": "r02",
+        "group": "경력·중장년",
+        "abroad": "AI 관련 프리랜스 공고는 예산이 비AI보다 약 52% 높고 과업 묶음도 넓어, 여러 일을 묶어 낼 수 있는 경험의 수요가 남는다.",
+        "domestic": "경력 15년 이상 공고가 30% 늘었고, 그 공고 중 AI를 언급한 비중이 6%에서 10%로 올랐다.",
+        "changing": "경력자의 AI 병행 역량 요구",
+        "staying": "판단·조율·최종 책임",
+        "source_ids": ["src_arxiv_2611_14708", "src_newspim_jobkorea"]
+      },
+      {
+        "id": "r03",
+        "group": "사무·고객서비스",
+        "abroad": "미국 10월 고용 증가는 전문·사업서비스(+7만개), 보건의료(+4만2천개), 운송·창고(+2만5천개)가 이끌었고 정보·금융업 등은 큰 변화가 없었다.",
+        "domestic": "숙박·음식점 -13만7천명, 농림어업 -10만1천명. 국내 청년 감소의 94%가 AI 고노출 업종에서 발생했다.",
+        "changing": "초급 실무의 AI 위임, 문서·데이터 처리 자동화",
+        "staying": "검토·통합·대면 응대",
+        "source_ids": ["src_bls_202610", "src_mods_202610", "src_chosunbiz_hankuk"]
+      },
+      {
+        "id": "r04",
+        "group": "제조·기술",
+        "abroad": "미국 제조업 고용은 10월 +1만9천개로 늘어 2025년 12월 저점 대비 +10만1천개, 가트너는 기술업 2030년 순증 150만개를 본다.",
+        "domestic": "고용보험 제조업 가입자는 +1만4천명으로 3개월 연속 증가했고, 건설업은 -5천명으로 감소폭이 줄었다.",
+        "changing": "설비·자동화 운용과 AI 통합 직무",
+        "staying": "숙련 기술과 품질 관리",
+        "source_ids": ["src_bls_202610", "src_yna_gartner", "src_moel_202610"]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "src_mods_202610",
+      "source_name": "국가데이터처",
+      "source_title": "2026년 10월 고용동향",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156788701",
+      "published_at": "2026-11-11",
+      "license": {
+        "name": "공공누리 제1유형(출처표시)",
+        "type": "KOGL-1",
+        "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+        "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-16",
+        "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능",
+        "attribution_text": "출처: 국가데이터처 「2026년 10월 고용동향」(공공누리 제1유형)"
+      },
+      "usage": "수치만 표·도표로 재구성. 원문 문장 복제·이미지 사용 없음."
+    },
+    {
+      "id": "src_moel_202610",
+      "source_name": "고용노동부",
+      "source_title": "2026년 10월 고용행정 통계로 본 노동시장 동향",
+      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20216",
+      "published_at": "2026-11-09",
+      "license": {
+        "name": "공공누리 미부착(사전 협의 필요)",
+        "type": "KOGL-NONE",
+        "url": null,
+        "scope": "보도자료 본문·첨부파일 재가공 불가",
+        "attribution_required": true,
+        "commercial_use": "unknown",
+        "modification": "unknown",
+        "verified": true,
+        "verified_at": "2026-11-16",
+        "evidence": "정책브리핑 전재본 고지에 '공공누리가 부착되지 않은 자료는 담당자와 협의 후 사용' 확인",
+        "attribution_text": "자료: 고용노동부 「2026년 10월 고용행정 통계로 본 노동시장 동향」"
+      },
+      "usage": "발표된 수치만 사실로 인용. 본문 문장 복제·번역 없음."
+    },
+    {
+      "id": "src_bls_202610",
+      "source_name": "미국 노동통계국(BLS)",
+      "source_title": "The Employment Situation — October 2026 (USDL-26-1632)",
+      "source_url": "https://www.bls.gov/news.release/empsit.nr0.htm",
+      "published_at": "2026-11-06",
+      "license": {
+        "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+        "type": "PUBLIC-DOMAIN",
+        "url": "https://www.bls.gov/opub/copyright-information.htm",
+        "scope": "연방정부 발간물 전체",
+        "attribution_required": false,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-16",
+        "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상 아님",
+        "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Employment Situation — October 2026"
+      },
+      "usage": "수치 번역·도표화. 원문 문장 복제 없음."
+    },
+    {
+      "id": "src_arxiv_2611_14708",
+      "source_name": "arXiv (OpenAI 경제연구·업워크)",
+      "source_title": "The Rebundling of Freelance Work in the AI Age (arXiv:2611.14708)",
+      "source_url": "https://arxiv.org/abs/2611.14708",
+      "published_at": "2026-11-10",
+      "license": {
+        "name": "CC BY 4.0",
+        "type": "CC-BY-4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "scope": "보고서 전체(저자·출처 표시 조건)",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-16",
+        "evidence": "arXiv 초록 페이지에 라이선스 'CC BY 4.0' 표기 확인",
+        "attribution_text": "Chin, Kala, Kunievsky, Liu, Richmond, Shan (2026), arXiv:2611.14708, CC BY 4.0"
+      },
+      "usage": "번역·요약·도표화. 저자·출처 표시."
+    },
+    {
+      "id": "src_yna_gartner",
+      "source_name": "연합뉴스",
+      "source_title": "가트너 2030년 AI 고용 전망 보도(2026-11-15)",
+      "source_url": "https://www.yna.co.kr/view/AKR20261113151600017",
+      "published_at": "2026-11-15",
+      "license": {
+        "name": "언론사 저작권 — 본문 복제·번역 금지",
+        "type": "PRESS",
+        "url": null,
+        "scope": "기사 본문·제목·이미지",
+        "attribution_required": true,
+        "commercial_use": "not_allowed",
+        "modification": "not_allowed",
+        "verified": true,
+        "verified_at": "2026-11-16",
+        "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+        "attribution_text": "수치 출처: 가트너 전망(연합뉴스 2026-11-15 보도)"
+      },
+      "usage": "수치·사실만 우리 말로 새로 씀. 인용 15단어 이내, 원문 링크만 제공."
+    },
+    {
+      "id": "src_chosunbiz_hankuk",
+      "source_name": "조선비즈",
+      "source_title": "한국은행 청년 고용·AI 고노출 업종 분석 보도(2026-11-12)",
+      "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/",
+      "published_at": "2026-11-12",
+      "license": {
+        "name": "언론사 저작권 — 본문 복제·번역 금지",
+        "type": "PRESS",
+        "url": null,
+        "scope": "기사 본문·제목·이미지",
+        "attribution_required": true,
+        "commercial_use": "not_allowed",
+        "modification": "not_allowed",
+        "verified": true,
+        "verified_at": "2026-11-16",
+        "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+        "attribution_text": "수치 출처: 한국은행 조사국 분석(조선비즈 2026-11-12 보도)"
+      },
+      "usage": "수치·사실만 우리 말로 새로 씀. 인용 15단어 이내, 원문 링크만 제공."
+    },
+    {
+      "id": "src_newspim_jobkorea",
+      "source_name": "뉴스핌",
+      "source_title": "잡코리아 경력직 공고 분석 보도(2026-11-16)",
+      "source_url": "https://www.newspim.com/news/view/20261116000174",
+      "published_at": "2026-11-16",
+      "license": {
+        "name": "언론사 저작권 — 본문 복제·번역 금지",
+        "type": "PRESS",
+        "url": null,
+        "scope": "기사 본문·제목·이미지",
+        "attribution_required": true,
+        "commercial_use": "not_allowed",
+        "modification": "not_allowed",
+        "verified": true,
+        "verified_at": "2026-11-16",
+        "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+        "attribution_text": "수치 출처: 잡코리아 집계(뉴스핌 2026-11-16 보도)"
+      },
+      "usage": "수치·사실만 우리 말로 새로 씀. 인용 15단어 이내, 원문 링크만 제공."
+    }
+  ],
+  "archive_dates": ["2026-11-16"],
+  "copyright_policy": {
+    "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 우리 말로 새로 썼습니다.",
+    "track_a_note": "공공누리 제1유형(출처표시)·퍼블릭 도메인·CC BY 4.0 자료를 카드마다 출처와 라이선스로 표시합니다.",
+    "track_b_note": "언론사 기사와 공공누리 미부착 자료는 본문·번역문을 싣지 않고 수치 사실과 원문 링크만 제공합니다.",
+    "quote_limit_words": 15,
+    "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+  },
+  "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다."
+}
