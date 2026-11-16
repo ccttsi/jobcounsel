@@ -39,7 +39,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     --hair: #e9e0d2; --line2: #d8ccb9;
     --ink: #2a2521; --body: #3d3630; --ink-dim: #655c53; --ink-faint: #6e645b;
     --cyan: #0f766e; --warn: #c2410c; --good: #15803d; --bad: #be123c;
-    --v1: #b45309; --v2: #0f766e; --v3: #6d28d9; --v4: #4d7c0f; --v5: #1d4ed8; --v6: #b91c1c; --v7: #a16207; --v8: #475569; --v9: #0369a1; --v10: #be185d; --v11: #2563eb; --v12: #92400e; --v13: #86198f;
+    --v1: #b45309; --v2: #0f766e; --v3: #6d28d9; --v4: #4d7c0f; --v5: #1d4ed8; --v6: #b91c1c; --v7: #a16207; --v8: #475569; --v9: #0369a1; --v10: #be185d; --v11: #2563eb; --v12: #92400e; --v13: #86198f; --v14: #8a5a44; --v15: #4f6b5d; --v16: #6b5a7a;
     --soft: rgba(42,37,33,0.04); --soft-2: rgba(42,37,33,0.07); --track: rgba(42,37,33,0.07);
     --glass-bg: rgba(255,253,248,0.72); --scrim: rgba(60,45,30,0.38);
     --drawer-bg: rgba(250,246,239,0.97);
@@ -65,7 +65,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     --hair: #1e232f; --line2: #2c3445;
     --ink: #e6e9ef; --body: #c9cfda; --ink-dim: #9aa3b2; --ink-faint: #7d8699;
     --cyan: #22d3ee; --warn: #fb7185; --good: #6ee7b7; --bad: #fda4af;
-    --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa; --v4: #a3e635; --v5: #93c5fd; --v6: #fca5a5; --v7: #facc15; --v8: #cbd5e1; --v9: #7dd3fc; --v10: #f9a8d4; --v11: #a5b4fc; --v12: #fdba74; --v13: #f0abfc;
+    --v1: #f5a524; --v2: #22d3ee; --v3: #a78bfa; --v4: #a3e635; --v5: #93c5fd; --v6: #fca5a5; --v7: #facc15; --v8: #cbd5e1; --v9: #7dd3fc; --v10: #f9a8d4; --v11: #a5b4fc; --v12: #fdba74; --v13: #f0abfc; --v14: #e3b39b; --v15: #a8cbb9; --v16: #c9b6dc;
     --soft: rgba(255,255,255,0.02); --soft-2: rgba(255,255,255,0.05); --track: rgba(255,255,255,0.05);
     --glass-bg: rgba(15,23,42,0.6); --scrim: rgba(3,4,6,0.66);
     --drawer-bg: rgba(10,12,17,0.95);
@@ -660,13 +660,13 @@ document.documentElement.setAttribute('data-theme',t);})();
   <section class="pt-8 sm:pt-12 pb-6 sm:pb-8">
     <div class="mono text-[11px] tracking-[0.2em] t-acc mb-3">NARS × NAFI // LANDMARK SLATES 01–03</div>
     <h1 class="font-extrabold tracking-tight leading-[1.15]" style="font-size:var(--fs-hero)">
-      청년의 이직, 지역의 격차, 고령의 일터, 그리고 AI.<br><span class="t-dim font-semibold">국내외 보고서 열세 권으로 읽는 고용의 다음 장면</span>
+      청년의 이직, 지역의 격차, 고령의 일터, 그리고 AI.<br><span class="t-dim font-semibold">국내외 보고서 <span data-vol-count>여러</span> 권으로 읽는 고용의 다음 장면</span>
     </h1>
     <p class="mt-4 max-w-3xl t-dim" style="font-size:var(--fs-base)">
-      1단에는 국회입법조사처·국회미래연구원 보고서 3권, 2단에는 WEF·ILO·세계은행·CEPR의 영문 보고서 4권(한국어 요약·해설), 3단에는 해외 구직자 지원제도·미래 직업·근로자 역량을 다룬 3권을 꽂았습니다. 책장이 차서 오른쪽에 두 번째 책장을 세웠고, 1단에는 청년 니트·초단시간 노동·지역 인구정책 3권이 있습니다. 옆으로 넘겨 보세요. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
+      국회·국책연구기관·국제기구의 보고서를 주제별 서가에 꽂았습니다. 서가 색인에서 주제를 고르거나, 책장이 여러 개면 옆으로 넘겨 보세요. 모두 직업상담 실무의 언어로 다시 엮었고, 책을 누르면 읽기 책상이 열립니다.
     </p>
     <div class="mt-5 flex flex-wrap gap-2" style="font-size:var(--fs-xs)">
-      <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 13권</span>
+      <span class="note-tag"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>소장 <span data-vol-count></span>권</span>
       <span class="note-tag"><i data-lucide="languages" class="w-3.5 h-3.5"></i>영문 5권 한국어 요약</span>
       <span class="note-tag"><i data-lucide="database" class="w-3.5 h-3.5"></i>수치는 원문 그대로 인용</span>
       <span class="note-tag"><i data-lucide="message-square-quote" class="w-3.5 h-3.5"></i>상담 적용 노트는 편집자 해석</span>
@@ -862,6 +862,30 @@ const VOLS = [
     title: '지역 인구정책의 중장기 전환 방향: 인구 유치에서 산업·일자리 연계로',
     sub: '정주영 연구원 · 문성호 부연구위원',
     blurb: '사람을 데려와도 성장으로 이어지지 않는다. 청년은 경제 여건에 더 민감하고, 부유한 울산에서도 떠난다. 정책의 무게중심을 ‘부르기’에서 ‘잇기’로.'
+  },
+{
+    id: 14, serial: 'VOL.14', accent: 'var(--v14)', icon: 'hand-heart', shelf: 5,
+    authority: '국회입법조사처', issue: 'NARS 현안분석 제413호 · 2026.04.14',
+    spine: '일하는 장애인의<br>빈곤탈출', key: '일할수록 가난해지는 역설', mat: 'cloth', pub: '국회<br>입법조사처',
+    title: "'일하는 장애인'의 빈곤탈출을 위한 입법 및 정책과제",
+    sub: '미국·프랑스·일본 사례분석을 중심으로 — 정용제',
+    blurb: '월 22만 8천 원을 벌면 생계급여가 21만 4천 원 깎인다. 손에 남는 1만 4천 원이 복지 급여 절벽의 실제 크기다.'
+  },
+  {
+    id: 15, serial: 'VOL.15', accent: 'var(--v15)', icon: 'scale', shelf: 5,
+    authority: '국회입법조사처', issue: 'NARS 현안분석 제425호 · 2026.07.13',
+    spine: '장애인 최저임금<br>적용 제외', key: '노동의 값은 어떻게 매겨지는가', mat: 'label', pub: '국회<br>입법조사처',
+    title: '장애인 노동의 가치는 어떻게 평가되어야 하는가',
+    sub: '장애인 최저임금 적용 제외 제도의 재검토 필요성과 방향성 — 구슬이·권다영',
+    blurb: '40년 된 예외, 승인률 97.1%, 월평균 42만 원. 적용 제외자 97%는 일반 사업체가 아닌 직업재활시설에서 일한다.'
+  },
+  {
+    id: 16, serial: 'VOL.16', accent: 'var(--v16)', icon: 'file-check-2', shelf: 5,
+    authority: '국회입법조사처', issue: 'NARS 현안분석 제373호 · 2025.12.07',
+    spine: '복지 탈신청주의', key: '신청하지 않으면 못 받는 나라', mat: 'plate', pub: '국회<br>입법조사처',
+    title: "'복지 탈신청주의'는 어떻게 가능한가?",
+    sub: '해외 주요국 사례 검토 및 주요 법률 개정 제안 — 정용제',
+    blurb: '복지멤버십 가입률 30.4%. 자격이 있어도 신청하지 않아 못 받는 사람들을, 국가가 먼저 찾아가는 제도로 바꾸는 6개국 실험.'
   }
 ];
 
@@ -2108,6 +2132,148 @@ function renderVol13() {
   ].join('');
 }
 
+/* ---------- VOL.14 ---------- */
+function renderVol14() {
+  return [
+    sec('v14-cliff', 'CLIFF · 급여 절벽', 'trending-down', '벌수록 깎이는 생계급여', `
+      <p>생계급여를 받는 장애인 가구 가운데 근로소득이 생긴 가구는 2025년 기준 <b class="t-ink">20.2%(95,077가구)</b>입니다(전체 469,673가구). 그런데 일해서 번 돈이 늘어난 속도보다 급여가 깎이는 속도가 더 빨랐습니다.</p>
+      <div class="grid grid-cols-2 gap-2 my-3">
+        ${kpi('장애인 가구 월평균 근로소득', '+2.7%', '897,059원 → 921,004원')}
+        ${kpi('생계급여 감액액', '+10.4%', '469,167원 → 518,128원')}
+      </div>
+      <p>감액액은 근로소득의 <b class="t-ink">56.3%</b>에 이릅니다. 일을 시작해도 손에 남는 돈이 크게 늘지 않는 구조입니다.</p>`),
+
+    sec('v14-band', 'BY INCOME · 소득 구간별 감액률', 'bar-chart-3', '적게 벌수록 더 많이 깎인다', `
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">근로소득 구간별 생계급여 감액률</div>
+        ${bars([
+          { label: '50만 원 미만', value: 94.1, text: '94.1%', strong: true, cls: 'warn' },
+          { label: '50~100만 원', value: 65.3, text: '65.3%' },
+          { label: '100~150만 원', value: 61.5, text: '61.5%' },
+          { label: '150만 원 이상', value: 58.2, text: '58.2%', cls: 'muted' },
+        ], 100)}
+        <p class="src">50만 원 미만 구간: 22만 8천 원을 벌면 21만 4천 원이 깎여 손에 남는 돈은 1만 4천 원입니다.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        ${kpi('의료급여 자격 상실 시 본인부담', '7배 이상', '증폭')}
+        ${kpi('근로·사업소득으로 수급 중지된 비율', '63.6~67.9%', '2023~2025년 (2022년 87.3%)')}
+      </div>`),
+
+    sec('v14-abroad', 'ABROAD · 해외 사례', 'globe-2', '일을 시작해도 바로 끊지 않는 나라들', `
+      <div class="grid sm:grid-cols-3 gap-2">
+        <div class="card"><div class="mono text-[11px] acc">미국</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">PASS</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">자립을 위해 모으는 돈을 소득 산정에서 뺍니다.</p></div>
+        <div class="card"><div class="mono text-[11px] acc">프랑스</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">성인장애인수당(AAH)</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">취업 초기 6개월은 수당과 근로소득을 완전히 함께 받습니다.</p></div>
+        <div class="card"><div class="mono text-[11px] acc">일본</div><div class="font-semibold t-ink mt-1" style="font-size:var(--fs-sm)">취업자립급여금</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">취업으로 급여가 끝날 때 자립을 돕는 급여를 따로 줍니다.</p></div>
+      </div>
+      <ul class="dots mt-3">
+        <li>개선 과제: 근로소득 공제율 상향 · 점진적 감액</li>
+        <li>의료급여 이행기 특례(2년) · 장애 추가비용을 반영한 다층 안전망</li>
+      </ul>`),
+
+    sec('v14-insight', 'COUNSELOR INSIGHT', 'headset', '“일하면 손해”를 숫자로 함께 보기', insight([
+      { t: '두려움을 먼저 말로 꺼내기', d: '수급 중지의 60%대가 근로·사업소득 때문이라는 통계는, 취업을 망설이는 내담자의 걱정이 실제 제도에서 비롯된 것임을 보여 줍니다. 상담자가 먼저 그 걱정을 꺼내 주면 이야기가 열립니다.' },
+      { t: '실수령액 구조를 함께 계산', d: '22만 8천 원을 벌어 1만 4천 원이 남는 구조를 그대로 보여 주고, 근로소득공제·의료급여 이행기 특례·자산형성 지원을 함께 검토합니다.' },
+      { t: '해외 제도는 “방향”으로만 안내', d: '미국·프랑스·일본 제도는 국내에 그대로 있는 것이 아닙니다. 국내 개선 논의의 방향을 설명할 때만 씁니다.' },
+    ], '근거: 국회입법조사처 NARS 현안분석 제413호(2026.04.14, 정용제). 상담 적용은 편집자 해석입니다.')),
+  ].join('');
+}
+
+/* ---------- VOL.15 ---------- */
+function renderVol15() {
+  return [
+    sec('v15-law', 'EXCEPTION · 40년 된 예외', 'scale', '최저임금법이 이름을 들어 빼는 유일한 대상', `
+      <p>「최저임금법」 제7조는 1986년 시행 이후 40년 동안 장애인을 <b class="t-ink">유일한 명시적 적용 제외 대상</b>으로 두고 있습니다.</p>
+      <div class="grid grid-cols-2 gap-2 my-3">
+        ${kpi('적용 제외 인가 (2025)', '10,145명', '신청 10,206명')}
+        ${kpi('승인률', '97.1%', '')}
+      </div>
+      <div class="card">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">적용 제외자 구성</div>
+        ${bars([
+          { label: '중증', value: 98.2, text: '98.2%', strong: true },
+          { label: '발달장애', value: 89.2, text: '89.2%' },
+          { label: '지적장애', value: 80.2, text: '80.2%', cls: 'muted' },
+          { label: '자폐성장애', value: 9.0, text: '9.0%', cls: 'muted' },
+        ], 100)}
+      </div>`),
+
+    sec('v15-wage', 'WAGE · 받는 돈', 'wallet', '월평균 42만 719원', `
+      <div class="grid grid-cols-2 gap-2">
+        ${kpi('2025년 월평균 임금', '420,719원', '적용 제외자')}
+        ${kpi('월 50만 원 미만', '약 70%', '10만 원 미만도 170명')}
+      </div>
+      <div class="card mt-3">
+        <div class="font-semibold t-ink mb-1" style="font-size:var(--fs-sm)">어디에서 일하나 (적용 제외자)</div>
+        ${bars([
+          { label: '보호작업장', value: 90.0, text: '90.0%', strong: true },
+          { label: '근로사업장', value: 7.1, text: '7.1%' },
+          { label: '일반사업체', value: 1.6, text: '1.6% (164명)', cls: 'warn' },
+        ], 100)}
+        <p class="src">「일반 고용 확대」라는 제도 취지가 사실상 작동하지 않는다는 근거입니다.</p>
+      </div>
+      <div class="scroll-x mt-3"><table class="matrix min-w-[480px]">
+        <thead><tr><th>2022년</th><th>발달장애 비율</th><th>월평균 임금</th><th>시급</th></tr></thead>
+        <tbody>
+          <tr><th>근로사업장</th><td>67.4%</td><td class="hl">125만 5천 원</td><td>8,126원</td></tr>
+          <tr><th>보호작업장</th><td>85.6%</td><td>49만 8천 원</td><td>4,782원</td></tr>
+        </tbody></table></div>`),
+
+    sec('v15-context', 'CONTEXT · 장애인 고용', 'users', '고용률 34.0%의 자리', `
+      <div class="grid grid-cols-2 gap-2">
+        ${kpi('장애인 고용률 (2025 상반기)', '34.0%', '전체 63.8%')}
+        ${kpi('의무고용 장애인 근로자', '309,846명', '1991년 10,462명')}
+      </div>
+      <ul class="dots mt-3">
+        <li>정책 방향: 적용 제외 조항 개선 + 작업능력평가 체계 정비 + 직업재활시설 기능 재편</li>
+        <li>최중증 장애인을 위한 「권리중심 일자리」 검토</li>
+      </ul>`),
+
+    sec('v15-insight', 'COUNSELOR INSIGHT', 'headset', '“월 42만 원”은 능력의 값이 아니다', insight([
+      { t: '임금이 아니라 평가의 문제로', d: '보호작업장·직업재활시설 경력 내담자에게 낮은 임금은 능력의 값이 아니라 오래된 제도 예외의 결과라는 점을 짚고, 작업능력평가와 근로사업장 전환 경로를 함께 살핍니다.' },
+      { t: '일반 사업체로 가는 길을 구체적으로', d: '적용 제외자 가운데 일반 사업체 근무는 1.6%뿐입니다. 근로사업장 경험을 거쳐 일반 고용으로 넘어가는 단계를 함께 계획합니다.' },
+      { t: '최중증 내담자에게 넓은 선택지', d: '기능·실적 중심 일자리 외에 권익옹호·문화예술 같은 공공일자리 선택지도 함께 제시합니다.' },
+    ], '근거: 국회입법조사처 NARS 현안분석 제425호(2026.07.13, 구슬이·권다영). 상담 적용은 편집자 해석입니다.')),
+  ].join('');
+}
+
+/* ---------- VOL.16 ---------- */
+function renderVol16() {
+  return [
+    sec('v16-gap', 'GAP · 신청주의의 빈틈', 'search-x', '받을 자격이 있어도, 신청하지 않으면', `
+      <p>신청주의는 정보 접근 장벽, 낙인, 행정 비효율을 낳습니다. 수급 누락과 복지 사각지대는 송파·수원 세 모녀 사례처럼 비극으로 드러나기도 했습니다.</p>
+      <div class="grid grid-cols-2 gap-2 my-3">
+        ${kpi('사회보장 급여를 하나 이상 받는 인구', '80.2%', '2015년 65.7% → 2022년')}
+        ${kpi('복지멤버십 가입률 (2025.9말)', '30.4%', '2,229만 가구 중 678만 가구')}
+      </div>
+      <p>받는 사람은 늘었지만 사각지대는 남아 있습니다. 복지멤버십 가입률 30.4%는 「신청하지 않아서 못 받는」 규모를 가늠하게 합니다.</p>`),
+
+    sec('v16-abroad', 'ABROAD · 6개국', 'globe-2', '국가가 먼저 찾아가는 방식', `
+      <div class="grid sm:grid-cols-2 gap-2">
+        <div class="card"><div class="mono text-[11px] acc">벨기에</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">교차은행 데이터 자동 교환 · 직권 조사</p></div>
+        <div class="card"><div class="mono text-[11px] acc">프랑스</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">「순 사회적 금액」 단일 공적 소득 자료</p></div>
+        <div class="card"><div class="mono text-[11px] acc">영국</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">고용주 실시간 보고 의무</p></div>
+        <div class="card"><div class="mono text-[11px] acc">캐나다</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">자동 등록 · 사전 통보</p></div>
+        <div class="card"><div class="mono text-[11px] acc">덴마크</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">중앙 지급청</p></div>
+        <div class="card"><div class="mono text-[11px] acc">핀란드</div><p class="mt-1 mb-0" style="font-size:var(--fs-sm)">시스템 결정</p></div>
+      </div>`),
+
+    sec('v16-law', 'LAW · 개정 제안', 'file-pen-line', '무엇을 고쳐야 하나', `
+      <div class="scroll-x"><table class="matrix min-w-[520px]">
+        <thead><tr><th style="width:38%">법률</th><th>개정 방향</th></tr></thead>
+        <tbody>
+          <tr><th>사회보장기본법 · 소득세법</th><td>선제적 급여, 실시간 소득 정보 연계</td></tr>
+          <tr><th>사회보장급여법 · 국민기초생활보장법</th><td class="hl">직권 발굴 · 자동 심사</td></tr>
+          <tr><th>개인정보 보호법</th><td>공익 목적 연계 · 동의 예외 · 거부권</td></tr>
+        </tbody></table></div>`),
+
+    sec('v16-insight', 'COUNSELOR INSIGHT', 'headset', '신청을 상담 과제로 바꾸기', insight([
+      { t: '취업활동계획에 복지 신청을 함께', d: '복지급여 신청과 복지멤버십 가입을 취업 활동과 나란히 과제로 넣습니다. 받을 수 있는데 몰라서 못 받는 일을 줄입니다.' },
+      { t: '자동 지급이 어디까지 왔는지 확인', d: '직권·자동 지급 제도는 계속 바뀝니다. 안내하기 전에 지금 시행 중인 범위를 공식 창구에서 확인합니다.' },
+      { t: '낙인을 덜어 주는 말', d: '급여 신청을 「도움 요청」이 아니라 「권리 확인」으로 설명하면 신청 문턱이 낮아집니다.' },
+    ], '근거: 국회입법조사처 NARS 현안분석 제373호(2025.12.07, 정용제). 상담 적용은 편집자 해석입니다.')),
+  ].join('');
+}
+
 /* ---------- 권별 출처와 이용 조건 (저작권 표기) ---------- */
 const SRC_COMMON = '이 권은 원문을 옮겨 실은 것이 아니라 서재 편집자가 내용을 요약하고 다시 구성한 것입니다. 수치와 사실은 원문에서 가져왔고, 문장과 그래프는 새로 썼습니다. 정확한 표현과 전체 내용은 원문에서 확인하십시오.';
 const SRC = {
@@ -2123,7 +2289,10 @@ const SRC = {
   10: { cite: '김민섭·박윤수, 「근로자 인지역량의 감소 요인과 개선방안」, KDI FOCUS 통권 제149호, 2026.01.14.', holder: '한국개발연구원(KDI)', url: 'https://www.kdi.re.kr', lic: 'KDI 자료는 공공누리 제3유형(출처표시·변경금지)입니다. 원문을 고치거나 옮겨 싣지 않고 요약과 짧은 인용만 싣습니다(KDI 저작권 정책: 원문의 10% 넘게 그대로 쓰지 않음).' },
   11: { cite: '송수종, 「청년니트의 구성변화와 노동시장 유입 촉진 방안」, 한국고용정보원 계간 고용이슈 2025년 봄호.', holder: '한국고용정보원', url: 'https://www.keis.or.kr', lic: '공공누리 미부착 자료(한국고용정보원 저작권정책 적용) — 원문 복제·변경 없이 핵심 사실과 수치만 요약·해설했습니다.' },
   12: { cite: '정수환, 「초단시간 노동의 증가 요인과 정책 제언」, KDI FOCUS 통권 제148호, 2025.12.24.', holder: '한국개발연구원(KDI)', url: 'https://www.kdi.re.kr', lic: 'KDI 자료는 공공누리 제3유형(출처표시·변경금지)입니다. 원문을 고치거나 옮겨 싣지 않고 요약과 짧은 인용만 싣습니다(KDI 저작권 정책: 원문의 10% 넘게 그대로 쓰지 않음).' },
-  13: { cite: '정주영·문성호, 「지역 인구정책의 중장기 전환 방향: 인구 유치에서 산업·일자리 연계로」, 국회미래연구원 인구통계 Brief 26-5호, 2026.09.', holder: '국회미래연구원', url: 'https://www.nafi.re.kr', lic: '국회미래연구원 기준 공공누리 제4유형(출처표시·비상업적 이용·변경금지) 대상입니다. 원문을 고치거나 옮겨 싣지 않고 요약과 짧은 인용만 싣습니다.' }
+  13: { cite: '정주영·문성호, 「지역 인구정책의 중장기 전환 방향: 인구 유치에서 산업·일자리 연계로」, 국회미래연구원 인구통계 Brief 26-5호, 2026.09.', holder: '국회미래연구원', url: 'https://www.nafi.re.kr', lic: '국회미래연구원 기준 공공누리 제4유형(출처표시·비상업적 이용·변경금지) 대상입니다. 원문을 고치거나 옮겨 싣지 않고 요약과 짧은 인용만 싣습니다.' },
+14: { cite: "정용제, 「'일하는 장애인'의 빈곤탈출을 위한 입법 및 정책과제 — 미국·프랑스·일본 사례분석을 중심으로」, 국회입법조사처 NARS 현안분석 제413호, 2026.04.14.", holder: '국회입법조사처', url: 'https://www.nars.go.kr/report/view.do?brdSeq=49072&cmsCode=CM0043', lic: '공공누리 제1유형(출처표시) — 원문 보고서 페이지의 공공누리 배지를 확인했습니다. 본 저작물은 국회입법조사처에서 작성하여 공공누리 제1유형으로 개방한 저작물을 이용하였으며, 국회입법조사처 누리집에서 무료로 내려받을 수 있습니다.' },
+  15: { cite: '구슬이·권다영, 「장애인 노동의 가치는 어떻게 평가되어야 하는가 — 장애인 최저임금 적용 제외 제도의 재검토 필요성과 방향성」, 국회입법조사처 NARS 현안분석 제425호, 2026.07.13.', holder: '국회입법조사처', url: 'https://www.nars.go.kr/report/view.do?brdSeq=49437&cmsCode=CM0043', lic: '공공누리 제1유형(출처표시) — 원문 보고서 페이지의 공공누리 배지를 확인했습니다. 본 저작물은 국회입법조사처에서 작성하여 공공누리 제1유형으로 개방한 저작물을 이용하였으며, 국회입법조사처 누리집에서 무료로 내려받을 수 있습니다.' },
+  16: { cite: "정용제, 「'복지 탈신청주의'는 어떻게 가능한가? — 해외 주요국 사례 검토 및 주요 법률 개정 제안」, 국회입법조사처 NARS 현안분석 제373호, 2025.12.07.", holder: '국회입법조사처', url: 'https://www.nars.go.kr/report/view.do?brdSeq=48525&cmsCode=CM0043', lic: '공공누리 제1유형(출처표시) — 원문 보고서 페이지의 공공누리 배지를 확인했습니다. 본 저작물은 국회입법조사처에서 작성하여 공공누리 제1유형으로 개방한 저작물을 이용하였으며, 국회입법조사처 누리집에서 무료로 내려받을 수 있습니다.' }
 };
 const srcCard = (v) => {
   const s = SRC[v.id]; if (!s) return '';
@@ -2139,7 +2308,7 @@ const srcCard = (v) => {
     <p class="src">${SRC_COMMON}</p>`);
 };
 
-const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3, 4: renderVol4, 5: renderVol5, 6: renderVol6, 7: renderVol7, 8: renderVol8, 9: renderVol9, 10: renderVol10, 11: renderVol11, 12: renderVol12, 13: renderVol13 };
+const RENDER = { 1: renderVol1, 2: renderVol2, 3: renderVol3, 4: renderVol4, 5: renderVol5, 6: renderVol6, 7: renderVol7, 8: renderVol8, 9: renderVol9, 10: renderVol10, 11: renderVol11, 12: renderVol12, 13: renderVol13 , 14: renderVol14, 15: renderVol15, 16: renderVol16};
 
 /* ============================================================
    SHELF + CATALOG
@@ -2155,7 +2324,7 @@ const bookHTML = v => `
   </button>`;
 
 /* 단마다 붙이는 색인 카드 제목(넓은 화면에서만 보임) */
-const SHELF_NAMES = { 1: '청년과 고령, 세대별 고용', 2: 'AI·녹색 전환과 노동시장', 3: '구직 지원과 미래 직업', 4: '일자리의 빈틈과 지역' };
+const SHELF_NAMES = { 1: '청년과 고령, 세대별 고용', 2: 'AI·녹색 전환과 노동시장', 3: '구직 지원과 미래 직업', 4: '일자리의 빈틈과 지역' , 5: '취약계층의 일과 소득안전망'};
 const shelfCard = (n, books) => !books.length ? '' : `
   <div class="shelf-card${books.length > 3 ? ' many' : ''}" aria-label="제${n}단 색인">
     <div class="sc-k">제${n}단 · ${books.length}권</div>
@@ -2165,6 +2334,7 @@ const shelfCard = (n, books) => !books.length ? '' : `
 
 /* 책장: 한 책장 = 3단. 4단째(테마 4)부터는 오른쪽에 새 책장을 세우고 옆으로 넘겨 본다. */
 const SHELVES_PER_CASE = 3;
+document.querySelectorAll('[data-vol-count]').forEach(el => { el.textContent = VOLS.length; });
 const caseCount = Math.max(1, Math.ceil(Math.max(...VOLS.map(v => v.shelf)) / SHELVES_PER_CASE));
 const caseOf = v => Math.ceil(v.shelf / SHELVES_PER_CASE) - 1;
 const track = $('#caseTrack');
@@ -2445,8 +2615,8 @@ applyTheme();
    INIT
    ============================================================ */
 icons();
-const m = location.hash.match(/^#vol-(0[1-9]|1[0-9])$/);
-if (m) setTimeout(() => openSlate(parseInt(m[1], 10)), 300);
+const m = location.hash.match(/^#vol-(\d{2,3})$/);   // 권이 늘어나도 그대로(VOLS에 있는 번호만 연다)
+if (m && VOLS.some(v => v.id === parseInt(m[1], 10))) setTimeout(() => openSlate(parseInt(m[1], 10)), 300);
 </script>
 <script>window.JC_FS_SKIP = '.book, .bookend';</script>
 <script src="../assets/marker.js" defer></script>
