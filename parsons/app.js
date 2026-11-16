@@ -30,6 +30,13 @@
   /* 넘기는 동안에는 다른 모듈(assets/marker.js 의 형광펜 재그리기 등)이 문서 전체를 다시 재지 않도록 알린다.
      그런 재측정이 넘김 도중에 끼어들면 한 프레임을 통째로 잡아먹어 60Hz 에서도 툭 끊긴다. */
   function setBusy(v) { var was = !!W.JC_BUSY; st.busy = v; W.JC_BUSY = v; if (was !== !!v) try { W.dispatchEvent(new CustomEvent('jc-busy', { detail: !!v })); } catch (e) {} }   // 도구함(포스트잇)이 넘김 시작·끝을 알 수 있게
+  var pulseT = 0;
+  /* 짧은 전환(한 장씩 보기·차례 점프)도 넘김과 같은 신호를 보낸다.
+     포스트잇이 옅게 사라졌다가 새 자리에서 떠오르는 것은 이 신호 하나로 결정된다. */
+  function pulseBusy(ms) {
+    setBusy(true); clearTimeout(pulseT);
+    pulseT = setTimeout(function () { setBusy(false); }, ms || 280);
+  }
 
   /* ---------- 불러오기 ---------- */
   function getJSON(u) {
@@ -317,6 +324,9 @@
   function showCard(i, dir) {
     i = Math.max(0, Math.min(N - 1, i));
     var slot = $('slot'); if (!slot) return;
+    /* 한 장씩 보기도 쪽이 바뀌는 전환이다. 포스트잇은 이 신호에 옅게 숨었다가 새 자리에서 떠오른다
+       (예전에는 다시 그리기가 350ms 늦게 돌아 새 쪽에서 메모가 늦게 튀어나왔다). */
+    if (dir && !reduce) pulseBusy(260);
     slot.innerHTML = cardHTML(i, 'solo');
     var el = slot.firstChild;
     if (dir && !reduce) { el.classList.add(dir > 0 ? 'in-r' : 'in-l'); el.offsetWidth; el.classList.remove('in-r', 'in-l'); }
@@ -574,12 +584,12 @@
        다시 그리지 않고, 옮기는 순간에도 화면에 보이는 것은 같은 그림이다(빈 면 0). */
     if (commit && f.dir < 0 && R && f.layer.firstChild) { R.dataset.i = String(f.t); R.replaceChildren(f.layer.firstChild); }
     if (f.layer.parentNode) f.layer.parentNode.removeChild(f.layer);
+    paintSpread();          // 새 면을 먼저 그린 뒤에 넘김을 풀어, 포스트잇이 새 자리에서 떠오르게 한다
     setBusy(false);
-    paintSpread();
   }
   function mStop() {
     var f = mfl; if (!f) return false;
-    mfl = null; clearTimeout(f.timer); setBusy(false);
+    mfl = null; clearTimeout(f.timer);
     if (f.anim) { f.anim.onfinish = null; try { f.anim.cancel(); } catch (_) {} }
     if (f.layer && f.layer.parentNode) f.layer.parentNode.removeChild(f.layer);
     return true;
@@ -595,14 +605,17 @@
     mPlay(go ? 1 : 0, go ? Math.max(130, 330 * (1 - f.p)) : Math.max(130, 240 * f.p));
   }
   function stopFlip() {                     // 보기 방식을 바꾸거나 크기가 달라질 때 낱장을 즉시 거둔다
-    if (mStop() && $('spread') && st.mode === 'book') paintSpread();
+    var hadM = mStop();
     var f = fl;
-    fl = null; setBusy(false);
+    fl = null;
     if (f) {
       cancelAnimationFrame(f.raf);
       if (f.leaf && f.leaf.parentNode) f.leaf.parentNode.removeChild(f.leaf);
     }
     dropCasts();
+    /* 거둔 뒤에 면을 맞추고, 마지막에 넘김을 풀어 포스트잇이 새 자리에서 떠오르게 한다 */
+    if (hadM && $('spread') && st.mode === 'book') paintSpread();
+    setBusy(false);
   }
   var easeIO = function (k) { return k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; };
   var easeOut = function (k) { return 1 - Math.pow(1 - k, 3); };
@@ -740,8 +753,8 @@
     stopFlip();
     st.i = Math.max(0, Math.min(N - 1, i));
     if (st.mode === 'scroll') { setPos(st.i); scrollTo(st.i, true); }
-    else if (st.mode === 'card') showCard(st.i, 0);
-    else paintSpread();
+    else if (st.mode === 'card') { pulseBusy(300); showCard(st.i, 0); }
+    else { pulseBusy(300); paintSpread(); }
   }
 
   /* ---------- 1909 → 2026 띄움 ---------- */
