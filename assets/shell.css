@@ -1,0 +1,30 @@
+/* shell.css — 자료실 공통 겉틀(머리말 규격)
+ *
+ * 섹터마다 따로 그리던 머리말의 「자리·크기·모양」을 한곳에서 정한다. 규격의 근거와 남은 이관 목록은 ops/TODO.md.
+ * 색은 섹터 바탕 위에 얹히도록 currentColor에서 섞어 쓴다 — 밝게·어둡게·세피아 어디서나 그 화면의 글자색을 따른다.
+ *
+ * 규격(실측 기준, ops/qa/look.js가 잰다)
+ *   첫 화면 단추(.jc-ib)   44×44, 모서리 12px, 1px 테두리, 집 아이콘 20px
+ *   머리말 첫 줄            높이 52~68px, 왼쪽 끝은 본문 여백과 같은 선
+ *   글꼴                    Pretendard Variable 우선
+ *   초점 고리               2px, 바깥 2px
+ */
+:root{--jc-sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif}
+
+/* 첫 화면 단추 */
+.jc-ib{width:44px;height:44px;flex:none;display:grid;place-items:center;box-sizing:border-box;border-radius:12px;color:inherit;text-decoration:none;
+  border:1px solid rgba(127,127,127,.28);border-color:color-mix(in srgb,currentColor 16%,transparent);
+  background:rgba(255,255,255,.5);background:color-mix(in srgb,currentColor 3%,transparent);
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.jc-ib svg{width:20px;height:20px;opacity:.78}
+.jc-ib:active{transform:scale(.96)}
+.jc-ib:focus-visible,.jc-site:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+
+/* 옛 섹터용 사이트 머리띠: 첫 화면 단추 + 자료실 이름 한 줄 */
+.jc-home{display:flex;align-items:center;gap:10px;min-height:52px;box-sizing:border-box;padding:4px 16px;
+  padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));
+  font-family:var(--jc-sans);letter-spacing:-.02em;
+  border-bottom:1px solid rgba(127,127,127,.22);border-bottom-color:color-mix(in srgb,currentColor 12%,transparent)}
+.jc-site{display:inline-flex;align-items:center;min-height:44px;font-weight:750;font-size:15px;color:inherit;text-decoration:none;opacity:.86;white-space:nowrap}
+@media (hover:hover){.jc-ib:hover{background:color-mix(in srgb,currentColor 7%,transparent)}.jc-site:hover{opacity:1}}
+@media (prefers-reduced-motion:reduce){.jc-ib:active{transform:none}}
