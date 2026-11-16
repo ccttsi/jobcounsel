@@ -56,10 +56,32 @@ a{color:inherit}
 .brand i b{width:9px;height:9px;border-radius:2px}
 .brand i b:nth-child(1){background:var(--c-ncs)}.brand i b:nth-child(2){background:var(--c-keco)}.brand i b:nth-child(3){background:var(--c-ksco)}
 .brand span{color:var(--acc)}
+.brand{flex:0 1 auto}
+.hd>[data-jc-prefs]{margin-left:auto}
+.rst{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px 0 10px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel);font-size:14px;font-weight:750;color:var(--ink);transition:border-color .15s,transform .12s}
+.rst svg{width:18px;height:18px;color:var(--acc);transition:transform .4s cubic-bezier(.3,.7,.2,1)}
+.rst:hover{border-color:var(--acc)}
+.rst:active{transform:scale(.97)}
+.rst.spin svg{transform:rotate(-360deg)}
+@media (max-width:420px){.rst span{display:none}.rst{width:44px;padding:0;justify-content:center}}
+@media (prefers-reduced-motion:reduce){.rst svg{transition:none}}
 
-/* 한 줄 안내 */
-.kw{display:flex;flex-wrap:wrap;gap:4px 12px;margin:0 0 10px;font-size:13.5px;color:var(--muted);line-height:1.5}
-.kw b{color:var(--ink);font-weight:700}
+/* 이용 안내(접힘) — 다른 섹터와 같은 두루마리 */
+.pv{margin:0 0 6px}
+.pv-t{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:4px 2px;border-radius:12px}
+.pv-t svg{flex:none;width:20px;height:20px;color:var(--acc)}
+.pv-tt{flex:1;min-width:0;font-size:14px;line-height:1.5;color:var(--muted)}
+.pv-tt b{color:var(--ink);font-weight:750;margin-right:8px;white-space:nowrap}
+.pv-c{flex:none;font-size:14px;font-weight:700;color:var(--acc)}
+.pv-b ul{margin:4px 0 12px;padding:0 0 0 2px;list-style:none;display:grid;gap:6px}
+@media (min-width:900px){.pv-b ul{grid-template-columns:1fr 1fr;column-gap:24px}}
+.pv-b li{position:relative;padding-left:16px;font-size:14px;line-height:1.65;color:var(--muted)}
+.pv-b li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.pv-b li b{color:var(--ink)}
+.pv-b li{animation:pv-in .3s cubic-bezier(.2,.9,.3,1) both}
+.pv-b li:nth-child(2){animation-delay:34ms}.pv-b li:nth-child(3){animation-delay:68ms}.pv-b li:nth-child(4){animation-delay:102ms}
+@keyframes pv-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pv-b li{animation:none}}
 
 /* 검색 + 탭 */
 .bar{display:grid;gap:8px;margin-bottom:10px}
@@ -80,8 +102,8 @@ a{color:inherit}
 .split{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
 .pane{min-width:0}
 @media (min-width:900px){.split{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px}}
-.pane{border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:0;height:clamp(340px,calc(100vh - 252px),980px);height:clamp(340px,calc(100dvh - 252px),980px)}
-@media (min-width:900px){.pane{height:clamp(420px,calc(100vh - 214px),980px);height:clamp(420px,calc(100dvh - 214px),980px)}}
+.pane{border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:0;height:clamp(340px,calc(100vh - 274px),980px);height:clamp(340px,calc(100dvh - 274px),980px)}
+@media (min-width:900px){.pane{height:clamp(420px,calc(100vh - 236px),980px);height:clamp(420px,calc(100dvh - 236px),980px)}}
 .crumb{display:flex;align-items:center;gap:4px;padding:6px 6px 6px 8px;border-bottom:1px solid var(--line);flex:none}
 .cr-s{flex:1;min-width:0;display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none}
 .cr-s::-webkit-scrollbar{display:none}
@@ -92,6 +114,17 @@ a{color:inherit}
 @media (min-width:900px){.crumb .more{display:none}}
 .lh{display:flex;align-items:baseline;gap:8px;padding:10px 14px 4px;font-size:13px;color:var(--dim);flex:none}
 .lh b{color:var(--ink);font-weight:750}
+.lh{align-items:center;flex-wrap:wrap}
+.upb{flex:none;min-height:44px;padding:0 12px;margin:-6px 0 -6px -6px;border-radius:12px;border:1px solid var(--line);font-size:13.5px;font-weight:750;color:var(--acc)}
+.up{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.up li{position:relative}
+.up li+li{margin-left:14px}
+.up li+li+li{margin-left:28px}
+.up li+li+li+li{margin-left:42px}
+.up button{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:6px 10px;border-radius:12px;background:var(--soft);font-size:14.5px;font-weight:600;text-align:left}
+.up .lv{flex:none;font-size:12px;font-weight:800;color:var(--acc);min-width:4.6em}
+.up .cd{flex:none;font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+.up .nm{flex:1;min-width:0}
 .list{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:2px 6px 10px;-webkit-overflow-scrolling:touch}
 .row{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:6px 8px;border-radius:12px;text-align:left;transition:background .15s}
 .row:hover{background:var(--soft)}
@@ -193,9 +226,22 @@ html[data-jc-imm] .tabs{display:none}
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
     <a class="brand" href="./" id="brand"><i aria-hidden="true"><b></b><b></b><b></b></i>분류 <span>교차 사전</span></a>
+    <button type="button" class="rst" id="rst" aria-label="처음으로 되돌리기 — 검색·탭·위치를 모두 비웁니다"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>처음으로</span></button>
     <span data-jc-prefs></span>
   </header>
-  <p class="kw"><span><b>로그인 없이 사용</b> · 참고·실습용 자료</span><span>공식 매핑 자료에 있는 연결만 표시 · 없는 연결은 「자료 없음」</span></p>
+  <section class="pv" id="pv">
+    <button type="button" class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 사용 <span aria-hidden="true">·</span> <span style="white-space:nowrap">참고·실습용 자료</span></span>
+      <span class="pv-c" id="pvL">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" hidden><ul>
+      <li><b>공식 매핑 자료에 있는 연결만 보여 줍니다.</b> 없는 연결은 「공식 매핑 자료 없음」으로 표시하며, 이는 「관계 없음」이 아니라 원자료에 적힌 연결이 없다는 뜻입니다.</li>
+      <li><b>명칭·코드·KSA는 원자료 그대로입니다.</b> 새로 쓴 해설이나 추정한 값은 없습니다. 출처와 라이선스는 「출처」 탭에서 봅니다.</li>
+      <li><b>NCS는 직무, KECO·KSCO는 직업 기준입니다.</b> 같은 일이라도 세 분류의 단위와 이름이 다를 수 있습니다.</li>
+      <li><b>마지막으로 본 탭과 위치만 이 기기의 브라우저에 기억합니다.</b> 서버로 보내지 않습니다.</li>
+    </ul></div>
+  </section>
 
   <main id="main">
     <div class="bar">
