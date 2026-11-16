@@ -24,6 +24,7 @@
 | `/labor/` | 노동시장 산책 (노동경제 개념 그래프 + 고용 뉴스 읽기 도우미) |
 | `/cert/` | 자격증 도감 (4대 분류 자격증 위키 830건. 데이터 `cert/data/certifications.json`, 화면 `cert/app.js`) |
 | `/company/` | 기업 명함첩 (대기업·중견기업·공공기관 기업 위키 7,822곳. 데이터 `company/data/companies.json`, 화면 `company/app.js`) |
+| `/reality/` | 취업 현위치 (예측 vs 공식 통계 착시 점검·조건별 분포 위 내 자리·패배 문장 반박·통제 분리와 방패 카드. 데이터 `reality/data/reality_stats.json`(읽기 전용), 화면 `reality/app.js`) |
 | `/assets/marker.js` | 공용 형광펜·포스트잇 도구함 |
 | `/assets/sync.js` | 로그인·기기 간 연동 (선택 기능) |
 | `/assets/prefs.js` | 공용 화면 설정: 테마(밝게·세피아·어둡게·자동), 글자 크기, 집중 보기(몰입형 풀화면), 공통 디자인 층 |
