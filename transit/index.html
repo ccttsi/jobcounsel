@@ -334,63 +334,110 @@ input.inp{width:100%;height:48px;padding:0 14px;border-radius:14px;border:1px so
 /* 가로 휴대폰: 여백 줄이기 */
 @media (orientation:landscape) and (max-height:500px){.hero{padding-top:4px}.rail{margin-top:8px}}
 
-/* ───────── 11-1 역행(목표 역산) 모드 ───────── */
+/* ───────── 11-1 역행(목표 역산) — 직업을 먼저 고르고 거꾸로 짚는다 ───────── */
 .mode{display:flex;padding:4px;margin:16px 0 0;border-radius:16px;background:var(--soft);gap:4px}
 .mode button{flex:1 1 0;min-height:48px;padding:4px 10px;border-radius:12px;font-size:15px;font-weight:700;color:var(--muted);text-align:center;line-height:1.3;transition:background .2s,color .2s}
 .mode button small{display:block;font-size:12px;font-weight:550;color:var(--dim)}
 .mode button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
 html[data-mode="rev"] .rail,html[data-mode="rev"] #p1,html[data-mode="rev"] #p2,html[data-mode="rev"] #p3,html[data-mode="rev"] #p4{display:none!important}
 html:not([data-mode="rev"]) #pr{display:none!important}
-.rv{display:grid;gap:16px;margin-top:8px}
-@media (min-width:900px){.gl{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr) minmax(0,1.6fr);gap:0 24px}.gl>div>h3{margin-top:0}}
 html[data-mode="rev"] .hero p{display:none}
 html[data-mode="rev"] .hero{padding-bottom:0}
 html[data-mode="rev"] .hero h1{font-size:clamp(21px,3vw,26px)}html[data-mode="rev"] .hero h1 br{display:none}
-@media (max-width:899px){html[data-mode="rev"] .rs .k small{display:none}}
-@media (min-width:900px){html[data-mode="rev"] .h2{margin-top:16px}}
-.gl h3{margin:12px 0 6px;font-size:13px;font-weight:700;color:var(--dim);letter-spacing:0}
-.gl h3:first-child{margin-top:0}
-.gs{display:flex;flex-wrap:wrap;gap:6px}
-.gs button{min-height:44px;padding:4px 11px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-size:14.5px;font-weight:650;line-height:1.3;color:var(--ink);transition:border-color .2s,background .2s}
-.gs button i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:1px}
-.gs button[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,var(--panel));box-shadow:inset 0 0 0 1px var(--c)}
-.route{position:relative}
-.route .rhint{margin:0 0 12px;font-size:14.5px;color:var(--muted)}
-.rl{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-@media (min-width:900px){.rl{grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:12px}}
-.rs{position:relative;padding:14px 14px 14px 18px;border-radius:18px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow)}
-.rs::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 3px 3px 0;background:var(--c)}
-.rs .k{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0 0 8px;font-size:13px;font-weight:700;color:var(--c)}
-.rs .k b{font-size:12.5px;font-weight:800;color:var(--dim)}
-.rs .k small{font-weight:550;color:var(--dim)}
-.rs.goal{background:color-mix(in srgb,var(--c) 8%,var(--panel));border-color:color-mix(in srgb,var(--c) 40%,var(--line))}
-.rs.goal h4{margin:0 0 4px;font-size:20px;letter-spacing:-.03em;line-height:1.3}
-.rs.goal p{margin:0;font-size:14px;color:var(--muted);line-height:1.55}
-.rs.here{background:var(--soft);box-shadow:none}
-.rs.here p{margin:0;font-size:14.5px}
-.rs.here .btn{min-height:44px;margin-top:8px;padding:0 14px;font-size:14.5px}
-.rk{display:flex;flex-direction:column;gap:6px}
-.rk button{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:8px 10px;border-radius:12px;background:var(--soft);font-size:14.5px;font-weight:650;line-height:1.35;text-align:left}
-.rk button .nm{flex:1;min-width:0}
-.rk button .tg{flex:none;font-size:12px;font-weight:700;padding:2px 7px;border-radius:8px;background:var(--panel);color:var(--acc)}
-.rk button.out{color:var(--dim);background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
-.rk button.out .tg{color:var(--dim)}
-.rk button.on .tg{background:var(--acc);color:var(--bg)}
-.rk .alt{margin:2px 0 0;font-size:12.5px;color:var(--dim)}
-@media (min-width:900px){.rs:not(:last-child)::after{content:"←";position:absolute;right:-13px;top:22px;z-index:1;font-size:14px;font-weight:800;color:var(--dim)}}
-.rs{animation:rv-in .34s cubic-bezier(.2,.8,.3,1) both}
-.rs:nth-child(2){animation-delay:40ms}.rs:nth-child(3){animation-delay:80ms}.rs:nth-child(4){animation-delay:120ms}.rs:nth-child(5){animation-delay:160ms}
-@keyframes rv-in{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
-.rnote{margin:10px 0 0;font-size:13px;color:var(--dim)}
-/* 역 상세: 아래에서 올라오는 시트 */
+/* 역행 단계: 목표 ← 필요 ← 대조 ← 메울 길 (오른쪽에서 왼쪽으로 거슬러 읽는 레일) */
+.rr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:14px 0 4px;padding:0;list-style:none}
+.rr button{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:0;width:100%;min-height:52px;padding:6px 10px;border-radius:12px;background:var(--soft);font-size:14px;font-weight:750;line-height:1.3;color:var(--muted);text-align:left}
+.rr button small{font-size:11.5px;font-weight:600;color:var(--dim)}
+.rr button[aria-current="step"]{background:var(--ink);color:var(--bg)}
+.rr button[aria-current="step"] small{color:inherit;opacity:.75}
+.rr button:disabled{opacity:.45;cursor:default}
+@media (max-width:520px){.rr button{padding:6px 7px;font-size:13px}.rr button small{display:none}}
+.rv-h{margin:16px 0 4px;font-size:clamp(21px,3.6vw,26px);line-height:1.3;letter-spacing:-.035em}
+.rv-l{margin:0 0 12px;color:var(--muted);font-size:15px}
+.rv-l b{color:var(--ink)}
+.rv2{display:grid;gap:14px}
+@media (min-width:900px){.rv2{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}}
+.box{border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow);padding:14px}
+.box h3{margin:0 0 8px;font-size:14px;font-weight:800;color:var(--dim);letter-spacing:0}
+.scr{max-height:min(52vh,460px);overflow:auto;overscroll-behavior:contain;margin:0 -6px;padding:0 6px}
+.jq{position:relative;margin-bottom:8px}
+.jq input{width:100%;height:48px;padding:0 14px;border-radius:14px;border:1px solid var(--line-2);background:var(--panel);font-size:16px;outline:none}
+.jq input:focus{border-color:var(--acc)}
+.jl{display:flex;flex-direction:column;gap:4px}
+.jl button{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:6px 10px;border-radius:12px;background:var(--soft);font-size:15px;font-weight:600;text-align:left;line-height:1.35}
+.jl button .nm{flex:1;min-width:0}
+.jl button small{flex:none;font-size:12px;color:var(--dim)}
+.jl button[aria-pressed="true"]{background:var(--acc-soft);box-shadow:inset 0 0 0 1.5px var(--acc)}
+.sg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.sg button{min-height:44px;padding:4px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-size:14px;font-weight:650}
+.hint{margin:6px 0 0;font-size:13px;color:var(--dim);line-height:1.55}
+.none{display:inline-block;padding:6px 10px;border-radius:10px;background:color-mix(in srgb,var(--stamp) 9%,transparent);color:var(--stamp);font-size:13.5px;font-weight:650}
+.cn{list-style:none;margin:0;padding:0}
+.cn>li{position:relative;padding:0 0 12px 22px}
+.cn>li::before{content:"";position:absolute;left:5px;top:16px;bottom:0;width:2px;background:var(--line-2)}
+.cn>li:last-child::before{display:none}
+.cn>li::after{content:"";position:absolute;left:0;top:6px;width:12px;height:12px;border-radius:50%;background:var(--node);border:3px solid var(--acc)}
+.cn>li.cut::after{border-style:dashed;border-color:var(--stamp)}
+.cn .k{margin:0 0 2px;font-size:12.5px;font-weight:750;color:var(--acc)}
+.cn .v{margin:0;font-size:15px;font-weight:650;line-height:1.45}
+.duty{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.duty button{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:6px 10px;border-radius:12px;background:var(--soft);font-size:14.5px;font-weight:600;text-align:left}
+.duty button .nm{flex:1;min-width:0}
+.duty button small{flex:none;font-size:12px;color:var(--dim)}
+.duty button[aria-pressed="true"]{background:var(--acc-soft);box-shadow:inset 0 0 0 1.5px var(--acc)}
+.me{display:flex;flex-wrap:wrap;gap:6px}
+.me span{padding:4px 10px;border-radius:9px;background:var(--soft);font-size:13.5px}
+.ul2{display:flex;flex-direction:column;gap:6px}
+.u2{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;padding:8px 10px;border-radius:14px;background:var(--soft)}
+@media (min-width:600px){.u2{grid-template-columns:minmax(0,1fr) auto;align-items:center}}
+.u2 .nm{display:block;width:100%;min-height:44px;text-align:left;font-size:14.5px;font-weight:650;line-height:1.4}
+.u2 .nm small{display:block;font-size:12px;font-weight:500;color:var(--dim)}
+.tri{display:inline-flex;padding:3px;border-radius:12px;background:var(--panel);gap:2px}
+.tri button{min-width:56px;min-height:44px;padding:0 8px;border-radius:9px;font-size:13.5px;font-weight:700;color:var(--muted);text-align:center}
+.tri button[aria-pressed="true"][data-v="2"]{background:var(--t1);color:#fff}
+.tri button[aria-pressed="true"][data-v="1"]{background:var(--t2);color:#fff}
+.tri button[aria-pressed="true"][data-v="0"]{background:var(--ink);color:var(--bg)}
+.meter{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+.meter .bar{flex:1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.meter .bar i{display:block;height:100%;width:100%;background:var(--t1);transform-origin:0 50%;transition:transform .4s cubic-bezier(.3,.7,.2,1)}
+.meter b{font-size:22px;letter-spacing:-.03em}
+.gap3{display:grid;gap:10px}
+@media (min-width:900px){.gap3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.gp h4{margin:0 0 6px;font-size:13.5px;font-weight:800;color:var(--c)}
+.gp ul{margin:0;padding:0 0 0 16px;display:grid;gap:3px;font-size:14px;line-height:1.5}
+.gp p{margin:0;font-size:13.5px;color:var(--dim)}
+.sts{display:flex;flex-direction:column;gap:6px}
+.sts button{display:flex;align-items:center;gap:8px;width:100%;min-height:48px;padding:6px 12px;border-radius:12px;background:var(--soft);font-size:14.5px;font-weight:650;text-align:left}
+.sts button i{flex:none;width:10px;height:10px;border-radius:50%;background:var(--c)}
+.sts button .nm{flex:1;min-width:0}
+.sts button small{flex:none;font-size:12px;color:var(--dim)}
+.rnav{display:flex;gap:8px;margin-top:14px}
+.rnav .btn{flex:1;min-height:48px}
+.chips2{display:flex;flex-wrap:wrap;gap:6px}
+.chips2 span{padding:3px 9px;border-radius:8px;background:var(--soft);font-size:13px;color:var(--muted)}
+#pr .panel-in{animation:fade .3s ease both}
+@media (min-width:900px){.scr{max-height:max(220px,calc(100vh - 470px))}}
+/* 역 상세·KSA: 아래에서 올라오는 시트 */
 .sh{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,16,12,.42);opacity:0;transition:opacity .22s ease}
 .sh.on{opacity:1}
-.sh-b{position:relative;width:min(720px,100%);max-height:88vh;overflow:auto;overscroll-behavior:contain;padding:12px 12px 16px;border-radius:24px 24px 0 0;background:var(--bg);transform:translateY(24px);transition:transform .28s cubic-bezier(.2,.8,.3,1)}
+.sh-b{position:relative;width:min(760px,100%);max-height:88vh;overflow:auto;overscroll-behavior:contain;padding:12px 14px 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));border-radius:24px 24px 0 0;background:var(--bg);transform:translateY(24px);transition:transform .28s cubic-bezier(.2,.8,.3,1)}
 .sh.on .sh-b{transform:none}
-.sh-x{position:sticky;top:0;z-index:2;display:flex;justify-content:flex-end;margin-bottom:6px}
+.sh-x{position:sticky;top:-12px;z-index:2;display:flex;justify-content:flex-end;margin:-4px 0 6px;padding:6px 0;background:var(--bg)}
 .sh-x button{min-width:44px;min-height:44px;padding:0 14px;border-radius:12px;background:var(--soft);font-size:14.5px;font-weight:700}
-@media (prefers-reduced-motion:reduce){.rs{animation:none}.sh,.sh-b{transition:none}}
-html[data-jc-imm] .rs{animation:none}
+.ksa h3{margin:0 0 2px;font-size:20px;letter-spacing:-.03em;line-height:1.35}
+.ksa .m{margin:0 0 10px;font-size:13px;color:var(--dim)}
+.ksa details{border:1px solid var(--line);border-radius:14px;background:var(--panel);margin-bottom:6px}
+.ksa summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:48px;padding:6px 12px;cursor:pointer;font-size:14.5px;font-weight:700;line-height:1.4}
+.ksa summary::-webkit-details-marker{display:none}
+.ksa summary::after{content:"+";margin-left:auto;flex:none;font-size:18px;color:var(--dim)}
+.ksa details[open] summary::after{content:"–"}
+.ksa .kb{display:grid;gap:10px;padding:0 12px 12px}
+@media (min-width:700px){.ksa .kb{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ksa .kb h4{margin:0 0 4px;font-size:12.5px;font-weight:800;color:var(--c)}
+.ksa .kb ul{margin:0;padding:0;list-style:none;display:grid;gap:3px;font-size:13.5px;line-height:1.55;color:var(--muted)}
+.ksa .src{margin:10px 0 0;font-size:12px;color:var(--dim)}
+@media (prefers-reduced-motion:reduce){.sh,.sh-b,.meter .bar i{transition:none}#pr .panel-in{animation:none}}
+html[data-jc-imm] #pr .panel-in{animation:none}
 </style>
 </head>
 <body>
@@ -826,83 +873,201 @@ $('p4').addEventListener('click',function(e){
   else if(a==='reset'){if(!confirmReset())return;S={step:1,type:'',age:'',period:'',dirs:[],assets:[],memo:'',filter:'fit',idx:0,boarded:[],dest:'',target:'',checks:[]};try{localStorage.removeItem(KEY);}catch(_){}lastIdx=-1;go(1);toast('처음부터 다시 시작합니다.');}
 });
 
-/* ───────── 11-1 역행(목표 역산) 루트 ─────────
-   목표를 먼저 고르고, 자료에 적힌 연결(종착역의 goodWith)만 따라 거꾸로 내려온다.
-   자료에 없는 선후 관계는 지어내지 않는다. 연결 자료가 없는 목표는 공통 첫 개찰구(고용24)만 보인다. */
-var MODE='fwd',GOAL='';
-try{MODE=localStorage.getItem('jc-transit-mode')==='rev'?'rev':'fwd';GOAL=localStorage.getItem('jc-transit-goal')||'';}catch(e){}
+/* ───────── 11-1 역행(목표 역산) — 직업을 먼저 고르고 거꾸로 짚는다 ─────────
+   ① 목표 직업(KONET) → ② 그 직업에 필요한 것(KECO → NCS 소분류 → 직무 → 능력단위·KSA)
+   → ③ 내 경험과 하나씩 대조 → ④ 모자란 것을 메울 환승역.
+   직업·직무 자료는 18번 교차 사전(../taxonomy/data/)을 읽기만 한다. 공식 매핑에 없는 연결은 「공식 매핑 자료 없음」으로 끊고 지어내지 않는다. */
+var MODE='fwd',R={step:1,job:'',sub:'',own:false,chk:{}};
+try{MODE=localStorage.getItem('jc-transit-mode')==='rev'?'rev':'fwd';var rs=JSON.parse(localStorage.getItem('jc-transit-rev')||'null');if(rs&&typeof rs==='object')for(var rk in R)if(rk in rs)R[rk]=rs[rk];}catch(e){}
+function saveR(){try{localStorage.setItem('jc-transit-rev',JSON.stringify(R));}catch(e){}}
 function setMode(m){MODE=m;try{localStorage.setItem('jc-transit-mode',m);}catch(e){}
   d.documentElement.setAttribute('data-mode',m);
   $('mode').querySelectorAll('[data-mode]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-mode')===m));});
   if(m==='rev')renderRev();else go(S.step,true);}
 $('mode').addEventListener('click',function(e){var b=e.target.closest('[data-mode]');if(b&&b.getAttribute('data-mode')!==MODE)setMode(b.getAttribute('data-mode'));});
-var FIRST_GATE='work24';
-function goalOf(id){if(DEST[id])return {kind:'dest',id:id,name:DEST[id].name,sub:DEST[id].sub,desc:DEST[id].desc,c:DC[id],top:3};
-  var s=BY[id];if(!s)return null;return {kind:'st',id:id,name:s.name,sub:TIER[s.tier].name+' · '+TIER[s.tier].line,desc:s.kicker,c:TC[s.tier],top:TIERS_ORDER[s.tier]};}
-function revRoute(g){
-  var pool=[],via=[];
-  if(g.kind==='dest'){pool=DEST[g.id].goodWith.slice();via=[g.id];}
-  else D.dests.forEach(function(x){if(x.goodWith.indexOf(g.id)>=0){via.push(x.id);x.goodWith.forEach(function(y){if(pool.indexOf(y)<0&&y!==g.id)pool.push(y);});}});
-  var LB={t3:'직전 필수 관문',t2:'사전 준비',t1:'지금 시작할 첫 환승역'},stages=[];
-  ['t3','t2','t1'].forEach(function(t){if(TIERS_ORDER[t]>=g.top)return;
-    var list=pool.map(function(id){return BY[id];}).filter(function(s){return s&&s.tier===t;});
-    if(t==='t1'&&!list.some(function(s){return s.id===FIRST_GATE;}))list.unshift(BY[FIRST_GATE]);
-    if(!list.length)return;
-    list.sort(function(a,b){return (fits(b)?1:0)-(fits(a)?1:0)||a.dur[0]-b.dur[0];});
-    stages.push({t:t,lb:LB[t],list:list});});
-  // 목표에 가까운 단계 이름을 앞에서부터 붙인다(관문 → 준비 → 첫 역)
-  var names=['직전 필수 관문','사전 준비'];stages.forEach(function(st,i){if(st.t!=='t1')st.lb=names[Math.min(i,1)];});
-  return {stages:stages,via:via};
-}
+
+/* 교차 사전 자료(읽기 전용) */
+var TX=null,TXP=null;
+function nz(s){return String(s||'').toLowerCase().replace(/[·‧ㆍ・\s]/g,'');}
+function loadTX(){if(TXP)return TXP;
+  TXP=fetch('../taxonomy/data/taxonomy.json',{cache:'force-cache'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(j){
+    var t={JOB:{},JOBS:j.jobs,KECO:{},KSCO:{},NCS:{},KIDS:{},UNITS:{},NK:{},TR:{},KK:{}};
+    j.jobs.forEach(function(x){t.JOB[x.konet]=x;x._n=nz(x.name);});
+    j.keco.levels.sub.forEach(function(x){t.KECO[x.code]=x.name;});
+    j.ksco.levels.sub.forEach(function(x){t.KSCO[x.code]=x.name;});
+    ['major','middle','minor','sub'].forEach(function(l){j.ncs.levels[l].forEach(function(x){t.NCS[x.code]=x;x._n=nz(x.name);if(x.parent)(t.KIDS[x.parent]=t.KIDS[x.parent]||[]).push(x);});});
+    (j.ncs.legacy||[]).forEach(function(x){if(!t.NCS[x.code]){x.legacy=true;t.NCS[x.code]=x;}});
+    j.ncs.units.forEach(function(u){u.subs.forEach(function(s){(t.UNITS[s]=t.UNITS[s]||[]).push(u);});});
+    j.mappings.ncs_keco.forEach(function(m){var a=t.NK[m.keco_code]=t.NK[m.keco_code]||[];if(a.indexOf(m.ncs_code)<0)a.push(m.ncs_code);});
+    j.mappings.ncs_training.forEach(function(m){var a=t.TR[m.ncs_code]=t.TR[m.ncs_code]||[];if(a.indexOf(m.training_name)<0)a.push(m.training_name);});
+    j.mappings.keco_ksco.forEach(function(m){t.KK[m.keco_code]=m.ksco_code;});
+    TX=t;return t;});
+  TXP.catch(function(){TXP=null;});return TXP;}
+
+var RSTEPS=[['목표 직업','도착역'],['필요한 것','거꾸로 짚기'],['내 경험 대조','맞는지 확인'],['메울 길','첫 환승역']];
 function renderRev(){
   if(!D)return;
-  var groups=[['전직 목표 · 종착역',D.dests.map(function(x){return x.id;})],['자격·성과 목표 · 장기 환승',D.stations.filter(function(s){return s.tier==='t3';}).map(function(s){return s.id;})],['훈련·관문 목표 · 중기 환승',D.stations.filter(function(s){return s.tier==='t2';}).map(function(s){return s.id;})]];
-  if(GOAL&&!goalOf(GOAL))GOAL='';
-  var h='<h2 class="h2" id="hrt"><small>역행 · 목표 역산</small>도착역부터 고르고, 거꾸로 짚어 내려옵니다</h2>';
-  h+='<div class="rv"><div class="gl" role="group" aria-label="최종 목표 고르기">';
-  groups.forEach(function(g){h+='<div><h3>'+g[0]+'</h3><div class="gs">'+g[1].map(function(id){var o=goalOf(id);return '<button type="button" data-goal="'+id+'" aria-pressed="'+(GOAL===id)+'" style="--c:'+o.c+'"><i aria-hidden="true"></i>'+esc(o.name)+'</button>';}).join('')+'</div></div>';});
-  h+='</div><div class="route" id="route" aria-live="polite">'+routeHtml()+'</div></div>';
+  var h='<ol class="rr" aria-label="역행 단계">';
+  RSTEPS.forEach(function(s,i){var n=i+1,dis=(n>=2&&!R.job)||(n>=3&&!R.sub);
+    h+='<li><button type="button" data-rstep="'+n+'"'+(n===R.step?' aria-current="step"':'')+(dis?' disabled':'')+'>'+(n===1?'':'← ')+s[0]+'<small>'+s[1]+'</small></button></li>';});
+  h+='</ol><div class="panel-in" id="rvBody"><p class="loading">직업·직무 자료를 불러오고 있습니다…</p></div>';
   $('pr').innerHTML=h;
+  loadTX().then(function(){rvBody();}).catch(function(){$('rvBody').innerHTML='<p class="empty">직업·직무 자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>';});
 }
-function routeHtml(){
-  var g=GOAL&&goalOf(GOAL);
-  if(!g)return '<p class="empty">위에서 최종 목표를 하나 고르면, 그 목표에서 지금 자리까지 거꾸로 이어지는 노선이 그려집니다.</p>';
-  var r=revRoute(g),ty=TYPE[S.type];
-  var h='<p class="rhint">목표 ← 앞 단계 순서로 읽습니다. 역을 누르면 요건과 핵심 안내가 열립니다.'+(ty?' <b>내 케이스</b> 표시는 출발역 「'+esc(ty.name)+'」에 맞는 역입니다.':'')+'</p>';
-  h+='<ol class="rl" style="--n:'+(r.stages.length+2)+'">';
-  h+='<li class="rs goal" style="--c:'+g.c+'"><p class="k"><b>도착</b>최종 목표</p><h4>'+esc(g.name)+'</h4><p>'+esc(g.sub)+'</p></li>';
-  r.stages.forEach(function(st){
-    h+='<li class="rs" style="--c:'+TC[st.t]+'"><p class="k"><b>←</b>'+st.lb+'<small>'+esc(TIER[st.t].sub)+'</small></p><div class="rk">';
-    st.list.forEach(function(s){var f=!S.type||fits(s),on=S.boarded.indexOf(s.id)>=0;
-      h+='<button type="button" data-rst="'+s.id+'" class="'+(f?'':'out')+(on?' on':'')+'"><span class="nm">'+esc(s.name)+'</span>'+(on?'<span class="tg">탑승</span>':S.type&&f?'<span class="tg">내 케이스</span>':!f?'<span class="tg">우회</span>':'')+'</button>';});
-    if(st.list.length>1)h+='<p class="alt">갈래 '+st.list.length+'개 · 하나만 거쳐도 됩니다</p>';
-    h+='</div></li>';});
-  h+='<li class="rs here"><p class="k"><b>출발</b>지금 여기</p><p>'+(ty?esc(ty.name):'출발역을 아직 고르지 않았습니다')+'</p><button type="button" class="btn btn-g" data-fwd="1">'+(ty?'순행에서 출발역 바꾸기':'순행에서 출발역 고르기')+'</button></li>';
-  h+='</ol>';
-  if(g.kind==='st'&&!r.via.length)h+='<p class="rnote">이 목표와 이어진 종착역 자료가 없어 공통 첫 개찰구만 보여 줍니다.</p>';
-  else h+='<p class="rnote">연결 근거: '+r.via.map(function(v){return esc(DEST[v].name);}).join(' · ')+' 노선에 함께 쓰이는 역</p>';
+function rgo(n){if((n>=2&&!R.job)||(n>=3&&!R.sub))return;R.step=n;saveR();renderRev();
+  var r=$('pr').getBoundingClientRect();if(r.top<0)window.scrollTo({top:scrollY+r.top-8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+function rvBody(){var b=$('rvBody');if(!b||!TX)return;
+  if(R.job&&!TX.JOB[R.job]){R.job='';R.sub='';R.step=1;}
+  b.innerHTML=R.step===1?rv1():R.step===2?rv2():R.step===3?rv3():rv4();
+  if(R.step===1)bindJQ();}
+
+/* ① 목표 직업 */
+var JQ='';
+function myJobs(){var out=[];S.assets.forEach(function(id){var a=ASSET[id];if(a)a.jobs.forEach(function(x){if(out.indexOf(x)<0)out.push(x);});});return out.slice(0,12);}
+function jobHits(q){var n=nz(q);if(!n)return [];var a=[],b=[];TX.JOBS.forEach(function(x){var i=x._n.indexOf(n);if(i===0)a.push(x);else if(i>0)b.push(x);});return a.concat(b).slice(0,40);}
+function rv1(){
+  var h='<h2 class="rv-h" id="hrt">어떤 직업에서 내리고 싶나요?</h2><p class="rv-l">목표 직업을 먼저 고르면, 그 직업에 <b>필요한 직무·능력</b>을 거꾸로 짚고 <b>내 경험과 맞는지</b> 하나씩 대조합니다.</p>';
+  h+='<div class="rv2"><div class="box"><h3>직업 찾기 · 고용24 직업 '+TX.JOBS.length.toLocaleString('ko-KR')+'개</h3>';
+  var mj=myJobs();
+  if(mj.length)h+='<p class="hint" style="margin:0 0 6px">순행 ①에서 고른 경험이 이어지는 직무</p><div class="sg">'+mj.map(function(x){return '<button type="button" data-jq="'+esc(x)+'">'+esc(x)+'</button>';}).join('')+'</div>';
+  h+='<div class="jq"><input id="jq" type="search" placeholder="직업명 (예: 품질, 간호, 물류)" autocomplete="off" value="'+esc(JQ)+'" aria-label="목표 직업 찾기"></div><div class="scr"><div class="jl" id="jl">'+jlHtml()+'</div></div></div>';
+  h+='<div class="box"><h3>고른 목표</h3>'+jobCard()+'</div></div>';
   return h;
 }
+function jlHtml(){if(!JQ)return '<p class="hint">직업명을 두 글자 이상 적으면 찾습니다.</p>';
+  if(nz(JQ).length<2)return '<p class="hint">두 글자 이상 적어 주세요.</p>';
+  var r=jobHits(JQ);if(!r.length)return '<p class="hint">맞는 직업이 없습니다. 더 짧게 적어 보세요.</p>';
+  return r.map(function(x){return '<button type="button" data-job="'+x.konet+'" aria-pressed="'+(R.job===x.konet)+'"><span class="nm">'+esc(x.name)+'</span><small>'+esc(TX.KECO[x.keco_code]||'')+'</small></button>';}).join('');}
+function jobCard(){var x=R.job&&TX.JOB[R.job];
+  if(!x)return '<p class="hint">왼쪽(휴대폰은 위)에서 목표 직업을 고르세요.</p>';
+  var ks=x.ksco_code,mins=TX.NK[x.keco_code]||[];
+  var h='<ul class="cn"><li><p class="k">도착 · 목표 직업</p><p class="v">'+esc(x.name)+'</p></li>';
+  h+='<li><p class="k">고용직업분류(KECO) 세분류</p><p class="v">'+esc(TX.KECO[x.keco_code]||'')+' <small class="num" style="color:var(--dim)">'+x.keco_code+'</small></p></li>';
+  h+='<li'+(ks?'':' class="cut"')+'><p class="k">표준직업분류(KSCO) 세분류</p><p class="v">'+(ks?esc(TX.KSCO[ks]||'')+' <small class="num" style="color:var(--dim)">'+ks+'</small>':'<span class="none">공식 매핑 자료 없음</span>')+'</p></li>';
+  h+='<li'+(mins.length?'':' class="cut"')+'><p class="k">이어지는 NCS 직무 묶음</p><p class="v">'+(mins.length?mins.length+'개 소분류':'<span class="none">공식 매핑 자료 없음</span> <small style="color:var(--dim)">다음 단계에서 직접 고를 수 있습니다</small>')+'</p></li></ul>';
+  h+='<div class="rnav"><button type="button" class="btn btn-p" data-rstep="2">필요한 것 거꾸로 짚기 →</button></div>';
+  return h;}
+var jqT=0;function bindJQ(){var i=$('jq');if(!i)return;i.addEventListener('input',function(){clearTimeout(jqT);jqT=setTimeout(function(){JQ=i.value;$('jl').innerHTML=jlHtml();},180);});}
+
+/* ② 필요한 것 */
+var NQ='';
+function rv2(){var x=TX.JOB[R.job],mins=(TX.NK[x.keco_code]||[]).filter(function(c){return TX.NCS[c];});
+  var h='<h2 class="rv-h" id="hrt">「'+esc(x.name)+'」에 필요한 직무</h2><p class="rv-l">공식 매핑을 따라 <b>목표 직업 → 고용직업분류 → NCS 직무</b>로 거슬러 내려왔습니다. 대조할 직무 하나를 고르세요.</p>';
+  h+='<div class="rv2"><div class="box"><h3>NCS 직무(세분류) 고르기</h3><div class="scr">';
+  if(mins.length){mins.forEach(function(m){var mn=TX.NCS[m],kids=(TX.KIDS[m]||[]);
+      h+='<p class="k" style="margin:8px 0 2px;font-size:12.5px;font-weight:800;color:var(--acc)">'+esc(mn.name)+(mn.legacy?' · 현행 고시에 없음':'')+'</p><div class="duty">';
+      if(!kids.length)h+='<p class="hint">이 소분류 아래 세분류 자료가 없습니다.</p>';
+      kids.forEach(function(s){var n=(TX.UNITS[s.code]||[]).length;h+='<button type="button" data-sub="'+s.code+'" aria-pressed="'+(R.sub===s.code)+'"><span class="nm">'+esc(s.name)+'</span><small>능력단위 '+n+'</small></button>';});
+      h+='</div>';});}
+  else{h+='<p><span class="none">공식 매핑 자료 없음</span></p><p class="hint">이 직업은 NCS 직무 연결이 원자료에 없습니다. 아래에서 가장 가까운 직무를 <b>직접</b> 고를 수 있습니다(공식 매핑이 아닌 내 선택으로 표시).</p>';
+    h+='<div class="jq" style="margin-top:8px"><input id="nq" type="search" placeholder="직무명 (예: 품질관리, 물류관리)" autocomplete="off" value="'+esc(NQ)+'" aria-label="NCS 직무 찾기"></div><div class="duty" id="nl">'+nlHtml()+'</div>';}
+  h+='</div></div><div class="box"><h3>고른 직무</h3>'+subCard()+'</div></div>';
+  setTimeout(bindNQ,0);return h;}
+function nlHtml(){var n=nz(NQ);if(n.length<2)return '<p class="hint">두 글자 이상 적어 주세요.</p>';var out=[];
+  for(var c in TX.NCS){var x=TX.NCS[c];if(c.length===8&&!x.legacy&&x._n.indexOf(n)>=0)out.push(x);if(out.length>=30)break;}
+  if(!out.length)return '<p class="hint">맞는 직무가 없습니다.</p>';
+  return out.map(function(s){return '<button type="button" data-sub="'+s.code+'" data-own="1" aria-pressed="'+(R.sub===s.code)+'"><span class="nm">'+esc(s.name)+'</span><small>능력단위 '+(TX.UNITS[s.code]||[]).length+'</small></button>';}).join('');}
+var nqT=0;function bindNQ(){var i=$('nq');if(!i)return;i.addEventListener('input',function(){clearTimeout(nqT);nqT=setTimeout(function(){NQ=i.value;$('nl').innerHTML=nlHtml();},180);});}
+function subCard(){var s=R.sub&&TX.NCS[R.sub];if(!s)return '<p class="hint">직무를 고르면 능력단위 수·수준·표준 훈련시간이 보입니다.</p>';
+  var u=TX.UNITS[s.code]||[],lv=u.map(function(x){return x.level;}).filter(function(v){return v!=null;}),hr=u.reduce(function(a,x){return a+(x.hours||0);},0);
+  var tr=(TX.TR[s.code]||[]).concat(TX.TR[s.code.slice(0,6)]||[]).filter(function(v,i,a){return a.indexOf(v)===i;});
+  var h='<ul class="cn"><li><p class="k">NCS 직무 · '+(R.own?'내가 직접 고른 연결':'공식 매핑')+'</p><p class="v">'+esc(s.name)+' <small class="num" style="color:var(--dim)">'+s.code+'</small></p></li>';
+  h+='<li><p class="k">필요한 능력단위</p><p class="v">'+u.length+'개'+(lv.length?' · 수준 '+Math.min.apply(null,lv)+'~'+Math.max.apply(null,lv):'')+(hr?' · 표준 훈련시간 합계 '+hr.toLocaleString('ko-KR')+'시간':'')+'</p></li>';
+  if(tr.length)h+='<li><p class="k">공식 연결 훈련직종(국가기간·전략산업직종)</p><div class="chips2">'+tr.slice(0,8).map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div></li>';
+  h+='</ul><div class="rnav"><button type="button" class="btn btn-g" data-rstep="1">← 직업 다시</button><button type="button" class="btn btn-p" data-rstep="3">내 경험과 대조 →</button></div>';return h;}
+
+/* ③ 내 경험 대조 */
+var TRI=[[2,'해 봤다'],[1,'조금'],[0,'처음']];
+function score(u){var t=0,n=0;u.forEach(function(x){var v=R.chk[x.code];if(v!=null){n++;t+=v/2;}});return {pct:u.length?Math.round(t/u.length*100):0,done:n};}
+function rv3(){var s=TX.NCS[R.sub],u=TX.UNITS[R.sub]||[],sc=score(u);
+  var h='<h2 class="rv-h" id="hrt">내 경험과 맞나요?</h2><p class="rv-l">「'+esc(s.name)+'」의 능력단위마다 <b>해 봤다 · 조금 · 처음</b>을 고릅니다. 이름을 누르면 공식 KSA(지식·기술·태도)가 열립니다.</p>';
+  h+='<div class="rv2"><div class="box"><h3>내 경험 · 순행 ①에서 고른 것</h3>';
+  var as=S.assets.map(function(id){return ASSET[id];}).filter(Boolean);
+  if(as.length){h+='<ul class="cn">'+as.map(function(a){return '<li><p class="k">'+esc(a.label)+'</p><p class="v" style="font-size:14px;font-weight:550">'+esc(a.to)+'</p></li>';}).join('')+'</ul>';}
+  else h+='<p class="hint">아직 고른 경험이 없습니다. 순행 ①에서 경험을 고르면 여기서 직무 언어로 함께 보입니다.</p><div class="rnav"><button type="button" class="btn btn-g" data-fwd="1">순행 ①에서 경험 고르기</button></div>';
+  if(S.memo)h+='<p class="hint">메모 · '+esc(S.memo)+'</p>';
+  h+='</div><div class="box"><div class="meter" aria-live="polite"><b class="num" id="pct">'+sc.pct+'%</b><span class="bar"><i id="pbar" style="transform:scaleX('+(sc.pct/100)+')"></i></span><small class="num" id="pdone" style="color:var(--dim)">'+sc.done+'/'+u.length+'</small></div><div class="scr"><div class="ul2">';
+  u.forEach(function(x){var v=R.chk[x.code];
+    h+='<div class="u2"><button type="button" class="nm" data-ksa="'+x.code+'">'+esc(x.name)+'<small>수준 '+(x.level==null?'—':x.level)+(x.hours?' · '+x.hours+'시간':'')+' · KSA 보기</small></button><span class="tri" role="group" aria-label="'+esc(x.name)+' 경험">'+TRI.map(function(t){return '<button type="button" data-chk="'+x.code+'" data-v="'+t[0]+'" aria-pressed="'+(v===t[0])+'">'+t[1]+'</button>';}).join('')+'</span></div>';});
+  if(!u.length)h+='<p class="empty">이 직무에 연결된 능력단위 자료가 없습니다.</p>';
+  h+='</div></div><div class="rnav"><button type="button" class="btn btn-g" data-rstep="2">← 직무 다시</button><button type="button" class="btn btn-p" data-rstep="4">메울 길 보기 →</button></div></div></div>';
+  return h;}
+
+/* ④ 메울 길 */
+var FILL_TRAIN=['card','kdt','polytech'],FILL_PROOF=['portfolio'];
+function rv4(){var s=TX.NCS[R.sub],u=TX.UNITS[R.sub]||[],sc=score(u);
+  var g={2:[],1:[],0:[],n:[]};u.forEach(function(x){var v=R.chk[x.code];(v==null?g.n:g[v]).push(x);});
+  var hr=g[0].reduce(function(a,x){return a+(x.hours||0);},0);
+  var h='<h2 class="rv-h" id="hrt">지금 자리에서 「'+esc(TX.JOB[R.job].name)+'」까지</h2><p class="rv-l">대조 결과 <b>'+sc.pct+'%</b> 맞습니다'+(g.n.length?' (아직 고르지 않은 능력단위 '+g.n.length+'개)':'')+'. 모자란 것은 훈련으로, 해 본 것은 증거로 바꿉니다.</p>';
+  h+='<div class="gap3">';
+  h+=gp('var(--t1)','가진 것 · 경력기술서 재료',g[2],'해 봤다로 고른 능력단위가 없습니다.');
+  h+=gp('var(--t2)','조금 · 증거로 보강',g[1],'조금으로 고른 능력단위가 없습니다.');
+  h+=gp('var(--stamp)','처음 · 훈련으로 채울 것'+(hr?' (표준 '+hr.toLocaleString('ko-KR')+'시간)':''),g[0],'처음으로 고른 능력단위가 없습니다.');
+  h+='</div><div class="rv2" style="margin-top:14px"><div class="box"><h3>메울 환승역 · 누르면 요건이 열립니다</h3><div class="sts">';
+  var ids=['work24'];if(g[0].length)ids=ids.concat(FILL_TRAIN);if(g[1].length||g[2].length)ids=ids.concat(FILL_PROOF);
+  ids.forEach(function(id){var st=BY[id];if(!st)return;var on=S.boarded.indexOf(id)>=0;
+    h+='<button type="button" data-rst="'+id+'" style="--c:'+TC[st.tier]+'"><i aria-hidden="true"></i><span class="nm">'+esc(st.name)+'</span><small>'+(on?'탑승':esc(TIER[st.tier].name))+(S.type&&!fits(st)?' · 내 케이스 밖':'')+'</small></button>';});
+  h+='</div></div><div class="box"><h3>공식 연결 훈련직종</h3>';
+  var tr=(TX.TR[s.code]||[]).concat(TX.TR[s.code.slice(0,6)]||[]).filter(function(v,i,a){return a.indexOf(v)===i;});
+  h+=tr.length?'<div class="chips2">'+tr.map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div><p class="hint">국민내일배움카드 과정은 이 훈련직종 이름으로 고용24에서 찾습니다.</p>':'<p><span class="none">공식 매핑 자료 없음</span></p>';
+  h+='<div class="rnav"><button type="button" class="btn btn-g" data-rstep="3">← 대조 다시</button><button type="button" class="btn btn-p" data-fwd="4">순행 노선도에서 보기</button></div></div></div>';
+  return h;}
+function gp(c,t,list,empty){var h='<div class="box gp" style="--c:'+c+'"><h4>'+t+'</h4>';
+  h+=list.length?'<ul>'+list.slice(0,8).map(function(x){return '<li>'+esc(x.name)+'</li>';}).join('')+(list.length>8?'<li>외 '+(list.length-8)+'개</li>':'')+'</ul>':'<p>'+empty+'</p>';return h+'</div>';}
+
 $('pr').addEventListener('click',function(e){var b;
-  if((b=e.target.closest('[data-goal]'))){GOAL=b.getAttribute('data-goal');try{localStorage.setItem('jc-transit-goal',GOAL);}catch(_){}
-    $('pr').querySelectorAll('[data-goal]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});$('route').innerHTML=routeHtml();
-    if(innerWidth<900){var q=$('route').getBoundingClientRect();if(q.top>innerHeight*.6)window.scrollTo({top:scrollY+q.top-12,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+  if((b=e.target.closest('[data-rstep]'))){rgo(+b.getAttribute('data-rstep'));return;}
+  if((b=e.target.closest('[data-jq]'))){JQ=b.getAttribute('data-jq');var i=$('jq');if(i)i.value=JQ;$('jl').innerHTML=jlHtml();return;}
+  if((b=e.target.closest('[data-job]'))){var j=b.getAttribute('data-job');if(R.job!==j){R.job=j;R.sub='';R.own=false;R.chk={};}saveR();
+    $('pr').querySelectorAll('[data-job]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});
+    var bx=b.closest('.rv2').children[1];bx.innerHTML='<h3>고른 목표</h3>'+jobCard();
+    $('pr').querySelectorAll('[data-rstep]').forEach(function(x){if(+x.getAttribute('data-rstep')===2&&x.closest('.rr'))x.disabled=false;});
+    if(innerWidth<900){var q=bx.getBoundingClientRect();if(q.top>innerHeight*.55)window.scrollTo({top:scrollY+q.top-12,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
     return;}
+  if((b=e.target.closest('[data-sub]'))){R.sub=b.getAttribute('data-sub');R.own=b.hasAttribute('data-own');R.chk={};saveR();
+    $('pr').querySelectorAll('[data-sub]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});
+    var bx2=b.closest('.rv2').children[1];bx2.innerHTML='<h3>고른 직무</h3>'+subCard();
+    $('pr').querySelectorAll('.rr [data-rstep]').forEach(function(x){if(+x.getAttribute('data-rstep')>=3)x.disabled=false;});
+    if(innerWidth<900){var q2=bx2.getBoundingClientRect();if(q2.top>innerHeight*.55)window.scrollTo({top:scrollY+q2.top-12,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+    return;}
+  if((b=e.target.closest('[data-chk]'))){var c=b.getAttribute('data-chk'),v=+b.getAttribute('data-v');
+    if(R.chk[c]===v)delete R.chk[c];else R.chk[c]=v;saveR();
+    b.parentNode.querySelectorAll('[data-chk]').forEach(function(x){x.setAttribute('aria-pressed',String(R.chk[c]===+x.getAttribute('data-v')));});
+    var sc=score(TX.UNITS[R.sub]||[]);$('pct').textContent=sc.pct+'%';$('pbar').style.transform='scaleX('+(sc.pct/100)+')';$('pdone').textContent=sc.done+'/'+(TX.UNITS[R.sub]||[]).length;return;}
+  if((b=e.target.closest('[data-ksa]'))){openKsa(b.getAttribute('data-ksa'));return;}
   if((b=e.target.closest('[data-rst]'))){openSheet(b.getAttribute('data-rst'));return;}
-  if((b=e.target.closest('[data-fwd]'))){S.step=1;setMode('fwd');return;}
+  if((b=e.target.closest('[data-fwd]'))){var n=+b.getAttribute('data-fwd');S.step=n;save();setMode('fwd');return;}
 });
+
+/* 시트: 역 카드 · KSA */
 var shLast=null;
-function openSheet(id){var s=BY[id];if(!s)return;shLast=d.activeElement;var sh=$('sh');
-  $('shB').innerHTML='<div class="sh-x"><button type="button" data-shx>닫기</button></div>'+stationCard(Object.assign({},s,{widget:null}));
+function showSheet(html){shLast=d.activeElement;var sh=$('sh');
+  $('shB').innerHTML='<div class="sh-x"><button type="button" data-shx>닫기</button></div>'+html;
   sh.hidden=false;void sh.offsetWidth;sh.classList.add('on');d.documentElement.style.overflow='hidden';
   setTimeout(function(){var x=$('shB').querySelector('[data-shx]');if(x)x.focus();},30);}
+function openSheet(id){var s=BY[id];if(s)showSheet(stationCard(Object.assign({},s,{widget:null})));}
+var KSAI=null,KSAS={};
+function openKsa(code){var u=null;(TX.UNITS[R.sub]||[]).forEach(function(x){if(x.code===code)u=x;});if(!u)return;
+  var head='<div class="ksa"><h3>'+esc(u.name)+'</h3><p class="m num">'+esc(u.code)+' · 수준 '+(u.level==null?'—':u.level)+(u.hours?' · 표준 훈련시간 '+u.hours+'시간':'')+'</p>';
+  showSheet(head+'<p class="loading">KSA(지식·기술·태도)를 불러오고 있습니다…</p></div>');
+  var mj=u.code10.slice(0,2);
+  (KSAI?Promise.resolve(KSAI):fetch('../taxonomy/data/ksa/index.json',{cache:'force-cache'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){KSAI=j;return j;}))
+  .then(function(ix){var sh=null;ix.shards.forEach(function(x){if(x.major===mj)sh=x;});if(!sh)return null;
+    return KSAS[mj]?KSAS[mj]:fetch('../taxonomy/data/ksa/'+sh.file.split('/').pop(),{cache:'force-cache'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){KSAS[mj]=j;return j;});})
+  .then(function(sd){if($('sh').hidden)return;var rec=sd&&sd.units&&sd.units[u.code];var h=head;
+    if(!rec||!rec.e||!rec.e.length)h+='<p><span class="none">KSA 원천 자료 없음</span></p>';
+    else rec.e.forEach(function(el,i){h+='<details'+(i===0?' open':'')+'><summary>'+esc(el.f)+'</summary><div class="kb">'+[['k','지식','var(--t1)'],['s','기술','var(--t2)'],['a','태도','var(--t3)']].map(function(z){var a=el[z[0]]||[];
+      return '<div style="--c:'+z[2]+'"><h4>'+z[1]+'</h4>'+(a.length?'<ul>'+a.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>':'<ul><li>원천에 없음</li></ul>')+'</div>';}).join('')+'</div></details>';});
+    h+='<p class="src">출처 · 한국산업인력공단 국가직무능력표준 정보(공공데이터포털 15157547, 이용허락범위 제한 없음). 원문 그대로 보여 줍니다.</p></div>';
+    $('shB').innerHTML='<div class="sh-x"><button type="button" data-shx>닫기</button></div>'+h;})
+  .catch(function(){if(!$('sh').hidden)$('shB').innerHTML='<div class="sh-x"><button type="button" data-shx>닫기</button></div>'+head+'<p class="empty">KSA 자료를 불러오지 못했습니다.</p></div>';});}
 function closeSheet(){var sh=$('sh');if(sh.hidden)return;sh.classList.remove('on');d.documentElement.style.overflow='';
   setTimeout(function(){sh.hidden=true;$('shB').innerHTML='';},matchMedia('(prefers-reduced-motion: reduce)').matches?0:240);
   if(shLast&&shLast.focus)shLast.focus();}
 $('sh').addEventListener('click',function(e){var b;
   if(e.target===$('sh')||e.target.closest('[data-shx]')){closeSheet();return;}
   if((b=e.target.closest('[data-board]'))){var id=b.getAttribute('data-board');toggleIn(S.boarded,id);save();var on=S.boarded.indexOf(id)>=0;b.setAttribute('aria-pressed',String(on));
-    if(on)toast(BY[id].name+'에 탑승했습니다. 순행 노선도에도 담깁니다.');$('route').innerHTML=routeHtml();return;}
+    if(on)toast(BY[id].name+'에 탑승했습니다. 순행 노선도에도 담깁니다.');if(MODE==='rev'&&R.step===4&&TX)rvBody();return;}
 });
 d.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('sh').hidden)closeSheet();});
 var resetArm=0;function confirmReset(){if(Date.now()<resetArm)return true;resetArm=Date.now()+3000;toast('한 번 더 누르면 입력한 내용을 모두 지웁니다.');return false;}
