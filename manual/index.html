@@ -61,9 +61,9 @@ button{cursor:pointer}
 #pin{flex:1 1 90px;min-width:76px;max-width:190px;min-height:44px;border:2px solid var(--acc);border-radius:10px;background:var(--panel);padding:6px 12px;font-family:var(--f-num);font-size:18px;font-weight:600}
 .seg{display:flex;flex:none}
 .seg .btn{border-radius:0}.seg .btn:first-child{border-radius:10px 0 0 10px}.seg .btn:last-child{border-radius:0 10px 10px 0;border-left:0}
-input[type=range]{width:100%;accent-color:var(--acc);height:26px;margin:0}
+input[type=range]{width:100%;accent-color:var(--acc);height:44px;margin:0}
 .parts{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
-.part{min-height:40px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:2px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2;transition:background .15s}
+.part{min-height:44px;min-width:44px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:2px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2;transition:background .15s}
 .part b{font-family:var(--f-num);font-size:13px}
 .part span{display:none;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .part.on{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
@@ -112,7 +112,7 @@ input[type=search]{width:100%;min-height:46px;background:var(--panel);border:1px
 .sec{scroll-margin-top:170px;transition:border-color .2s}
 .sec.cur{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
 .sec h3{font-size:16.5px;font-weight:700;margin:8px 0 6px}
-.sec h3 button{background:none;border:0;padding:0;text-align:left;font-weight:inherit}
+.sec h3 button{background:none;border:0;padding:0;text-align:left;font-weight:inherit;min-height:44px}
 .sec h3 button:hover{color:var(--acc)}
 .sec .meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .pitline{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:6px;padding:8px 12px;margin-top:10px;font-size:14.5px}
@@ -150,7 +150,7 @@ th{font-size:12.5px;color:var(--mute)}
   .side h2{font-size:15px;font-weight:700}
   .side .rng{font-size:12.5px;color:var(--mute);margin-bottom:8px}
   .toc{display:flex;flex-direction:column;gap:2px}
-  .toc button{display:flex;gap:8px;justify-content:space-between;align-items:baseline;text-align:left;width:100%;border:0;background:none;border-radius:8px;padding:7px 9px;font-size:14px;line-height:1.4;border-left:3px solid transparent}
+  .toc button{display:flex;gap:8px;justify-content:space-between;align-items:center;min-height:44px;text-align:left;width:100%;border:0;background:none;border-radius:8px;padding:7px 9px;font-size:14px;line-height:1.4;border-left:3px solid transparent}
   .toc button:hover{background:var(--sunk)}
   .toc button.on{background:var(--acc-soft);color:var(--acc);font-weight:700;border-left-color:var(--acc)}
   .toc button span{font-family:var(--f-num);font-size:11.5px;color:var(--mute);white-space:nowrap}
@@ -158,7 +158,7 @@ th{font-size:12.5px;color:var(--mute)}
 @media (min-width:1100px){.list{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
 @media (min-width:1500px){.list{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* 항목 카드: 제목만 먼저 보이고 누르면 세 줄 해설·함정·근거가 펼쳐진다 */
-.fold>summary{display:flex;align-items:center;gap:6px;min-height:40px;margin-top:2px;font-size:14px;font-weight:650;color:var(--acc);cursor:pointer;list-style:none}
+.fold>summary{display:flex;align-items:center;gap:6px;min-height:44px;margin-top:2px;font-size:14px;font-weight:650;color:var(--acc);cursor:pointer;list-style:none}
 .fold>summary::-webkit-details-marker{display:none}
 .fold>summary::after{content:"";width:7px;height:7px;margin-left:2px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg)}
 .fold[open]>summary::after{transform:translateY(2px) rotate(-135deg)}
