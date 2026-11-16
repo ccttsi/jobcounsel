@@ -466,7 +466,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   .dhead.rolled .dhead-roll { display: none; }
   .roll-paper { padding: 0 16px 12px; }
   @media (min-width: 640px) { .dhead-bar { padding-left: 28px; } .roll-paper { padding: 0 28px 14px; } }
-  .rod-btn { display: block; width: 100%; padding: 2px 8px 6px; }
+  .rod-btn { display: grid; align-items: center; width: 100%; min-height: 44px; padding: 4px 8px; }
   .rod { position: relative; height: 10px; margin: 0 14px; border-radius: 999px;
     background: linear-gradient(180deg, var(--wood-edge), var(--wood-1) 45%, var(--wood-3)); box-shadow: 0 3px 5px -2px var(--cab-shade); }
   .rod::before, .rod::after { content: ""; position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 50%; transform: translateY(-50%);
