@@ -2,9 +2,11 @@
  * 기업 명함첩 · 화면 엔진
  *
  * 데이터(고치지 않고 읽기만 한다)
- *   data/companies.json  company-wiki v1.1.0 · 7,822곳(대기업 3,521 · 중견기업 3,946 · 공공기관 355)
+ *   data/companies.json  company-wiki v1.2.0 · 7,822곳(대기업 3,521 · 중견기업 3,946 · 공공기관 355)
  *     중견기업은 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리 + 법인명으로 대조해
- *     업종·가입자수·사업장 소재지를 붙였다(3,946곳 중 3,671곳). 코드·값은 원자료 그대로다.
+ *     업종·가입자수·사업장 소재지를 붙였다(3,946곳 중 3,725곳). 여기에 공식 홈페이지·주요 사업·
+ *     상장 정보(종목코드·상장일·증권업종)를 한국어 위키백과·위키데이터·상장 종목 공개 정보로 보강했다.
+ *     코드·값은 원자료 그대로다.
  *
  * 주소
  *   #list?c=ENT&g=삼성&k=C&ct=일반회사&ls=1&t=…&mi=…&sd=…&ve=…&rv=1&em=2&in=…&o=emp&q=하이닉스&p=2   찾기(조건은 고를 때만)
@@ -23,7 +25,7 @@
     { k: 'ENT', key: '대기업', name: '대기업', unit: '곳', src: 'FTC',
       def: '공정거래위원회가 2026-05-01 지정한 공시대상기업집단 102곳의 소속회사입니다. 매출·종업원수·자산총액은 2025년 결산 값입니다.' },
     { k: 'MID', key: '중견기업', name: '중견기업', unit: '곳', src: 'MME · NPS',
-      def: '중견기업정보마당에 공개된 확인서 발급기업 가운데 2026-11-16 기준 유효한 곳입니다. 이름·사업자등록번호·확인서만 공개되므로, 업종·국민연금 가입자수·사업장 소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였습니다(3,946곳 중 3,671곳).' },
+      def: '중견기업정보마당에 공개된 확인서 발급기업 가운데 2026-11-16 기준 유효한 곳입니다. 이름·사업자등록번호·확인서만 공개되므로, 업종·국민연금 가입자수·사업장 소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였습니다(3,946곳 중 3,725곳). 공식 홈페이지·주요 사업·상장 정보는 위키백과·위키데이터와 상장 종목 공개 정보로 보강했습니다.' },
     { k: 'PUB', key: '공공기관', name: '공공기관', unit: '곳', src: 'ALIO',
       def: '알리오에 공시되는 지정 공공기관 전체입니다. 직원수는 정원(임직원 총계), 매출은 2025년 결산 값입니다.' }
   ];
@@ -654,6 +656,7 @@
       if (has(x.source_ref)) row(0, '공시 기준', esc(String(x.source_ref).replace(/;\s*/g, ' · ').replace(/임직원수/g, '임직원 수').replace(/손익/g, '손익계산서')));
     } else {
       if (has(x.industry)) row(1, '업종', lk(q1({ c: 'MID', in: x.industry }), x.industry));
+      if (has(x.main_products)) row(1, '주요 사업', esc(x.main_products));
       if (has(x.location_sido)) row(1, '소재지', lk(q1({ c: 'MID', sd: x.location_sido }), x.location_sido) + (has(x.headquarters) ? ' ' + esc(String(x.headquarters).replace(String(x.location_sido || '\u0000'), '').trim()) : ''));
       if (x._ve) row(1, '확인서', '~ <span class="code">' + esc(x._ve) + '</span>까지 유효');
       if (has(x.biz_no)) row(0, '사업자번호', '<span class="code">' + esc(x.biz_no) + '</span>');
@@ -661,6 +664,8 @@
       if (has(x.employees)) row(0, '국민연금 가입자', fmt(x.employees) + '명 <span class="code">' + esc(x.employees_as_of || '') + '</span>' + (x.nps_workplaces > 1 ? ' · 사업장 ' + fmt(x.nps_workplaces) + '곳 합산' : ''));
       if (has(x.certificate_no)) row(0, '발급번호', '<span class="code">' + esc(x.certificate_no) + '</span>');
       if (has(x.certificate_valid)) row(0, '유효기간', '<span class="code">' + esc(x.certificate_valid) + '</span>');
+      if (has(x.stock_code)) row(0, '상장', esc(x.market || '상장') + ' <span class="code">' + esc(x.stock_code) + '</span>' + (has(x.listed_at) ? ' · ' + esc(String(x.listed_at).slice(0, 4)) + '년' : '') + (has(x.market_sector) ? ' · ' + esc(x.market_sector) : ''));
+      var um = safeUrl(x.official_url); if (um) row(0, '홈페이지', '<a href="' + esc(um) + '" target="_blank" rel="noopener noreferrer">' + esc(host(um)) + '</a>' + (x.official_url_checked === 'sources' ? ' <span class="code">출처 대조</span>' : ''));
       if (has(x.industry)) row(0, '업종·가입자 출처', '국민연금 가입 사업장 내역 <span class="code">2026-09</span>');
       row(0, '공개 범위', has(x.biz_no) && has(x.certificate_no) ? '이름·사업자등록번호·확인서는 중견기업정보마당, 업종·가입자수·사업장 주소는 국민연금 가입 사업장 공개 자료입니다.' : '중견기업정보마당은 확인서 발급기업의 이름·사업자등록번호·발급번호·유효기간만 공개합니다.');
     }
@@ -678,8 +683,12 @@
     if (x._c === 'MID' && (has(x.industry) || has(x.employees))) b += sec('무슨 회사인가', '<p class="t">' +
       (has(x.industry) ? '국민연금 사업장으로 신고된 주된 업종은 <b>' + esc(x.industry) + '</b>입니다. ' : '') +
       (has(x.location_sido) ? '사업장 소재지는 ' + esc(x.location_sido) + (x.nps_workplaces > 1 ? ' 등 ' + fmt(x.nps_workplaces) + '곳' : '') + '이고, ' : '') +
-      (has(x.employees) ? '2026년 9월 기준 국민연금 가입자는 ' + fmt(x.employees) + '명입니다.' : '') + '</p>', '', '국민연금 가입 사업장 기준');
-    if (x._c === 'MID') b += sec('목록에 대해', '<p class="t">정부는 중견기업 전체 명단을 공개하지 않습니다. 이 목록은 확인서를 받은 기업만 담은 하한 집합이어서, 법적으로 중견기업이어도 확인서를 받지 않았으면 빠집니다. 업종·가입자수·소재지는 이름과 사업자등록번호 앞 6자리가 같은 국민연금 사업장을 찾아 붙인 값입니다.</p>');
+      (has(x.employees) ? '2026년 9월 기준 국민연금 가입자는 ' + fmt(x.employees) + '명입니다.' : '') +
+      (has(x.stock_code) ? ' ' + esc(x.market || '') + '에 상장된 법인입니다(<span class="code">' + esc(x.stock_code) + '</span>' + (has(x.listed_at) ? ', ' + esc(String(x.listed_at).slice(0, 4)) + '년 상장' : '') + ').' : '') +
+      (has(x.market_sector) ? ' 증권업종 분류는 ' + esc(x.market_sector) + '입니다.' : '') + '</p>', '', '국민연금 가입 사업장 · 상장 종목 정보 기준');
+    if (x._c === 'MID' && has(x.main_products)) b += sec('주요 사업', '<p class="t">' + esc(x.main_products) + '</p>', '', x.main_products_source === 'WIKI' ? '위키백과 첫 문장에서 확인' : '상장사 기업개요에서 확인');
+    if (x._c === 'MID' && has(x.official_url)) b += sec('공식 홈페이지', '<p class="t"><a href="' + esc(safeUrl(x.official_url)) + '" target="_blank" rel="noopener noreferrer">' + esc(safeUrl(x.official_url)) + '</a></p>', '', x.official_url_checked === 'sources' ? '출처 2곳 일치(사이트 직접 접속은 확인 못함)' : '접속해 회사명·사업자번호 대조');
+    if (x._c === 'MID') b += sec('목록에 대해', '<p class="t">정부는 중견기업 전체 명단을 공개하지 않습니다. 이 목록은 확인서를 받은 기업만 담은 하한 집합이어서, 법적으로 중견기업이어도 확인서를 받지 않았으면 빠집니다. 업종·가입자수·소재지는 이름과 사업자등록번호 앞 6자리가 같은 국민연금 사업장을 찾아 붙인 값이고, 주요 사업은 위키백과·상장사 기업개요에서 확인된 것만, 홈페이지는 실제로 접속해 회사명이 확인된 것만 실었습니다.</p>');
     /* 옆 칸: 함께 보기 */
     var s2 = '';
     if (x._c === 'ENT') x._grp.forEach(function (g) {
@@ -757,10 +766,10 @@
   /* ---------- 출처와 한계 ---------- */
   function renderAbout() {
     view = 'about'; d.body.removeAttribute('data-home'); tabs('about');
-    var m = META, h = '<div class="ab"><h1>출처와 한계</h1><p class="lead">이 명함첩은 공정거래위원회·알리오·중견기업정보마당·국민연금공단이 공개한 사실 정보만으로 만든 자료(company-wiki v' + esc(m.version || '') + ', ' + esc(m.built_at || '') + ')를 고치지 않고 읽어 보여 줍니다. 확인되지 않은 값은 화면에 싣지 않았습니다.</p>';
+    var m = META, h = '<div class="ab"><h1>출처와 한계</h1><p class="lead">이 명함첩은 공정거래위원회·알리오·중견기업정보마당·국민연금공단이 공개한 사실 정보와, 중견기업에 한해 더한 한국어 위키백과·위키데이터·상장 종목 공개 정보로 만든 자료(company-wiki v' + esc(m.version || '') + ', ' + esc(m.built_at || '') + ')를 고치지 않고 읽어 보여 줍니다. 확인되지 않은 값은 화면에 싣지 않았습니다.</p>';
     var F = {
       ENT: [['매출', '_rev'], ['종업원수', '_emp'], ['자산총액', '_ast'], ['업종', 'industry'], ['소재지', 'headquarters']],
-      MID: [['국민연금 가입자', '_emp'], ['업종', 'industry'], ['업종 갈래', 'sector'], ['소재지', 'headquarters'], ['확인서', 'certificate_no']],
+      MID: [['국민연금 가입자', '_emp'], ['업종', 'industry'], ['주요 사업', 'main_products'], ['공식 홈페이지', 'official_url'], ['상장 종목코드', 'stock_code'], ['소재지', 'headquarters'], ['확인서', 'certificate_no']],
       PUB: [['매출', '_rev'], ['정원', '_emp'], ['하는 일', 'business_summary'], ['소재지', 'headquarters'], ['홈페이지', 'official_url']]
     };
     h += '<h2>3대 분류와 채움 현황</h2><div class="cats">' + CATS.map(function (c) {
@@ -782,13 +791,14 @@
       '<li><b>음수 매출</b>은 사모투자합자회사·투자목적회사 같은 펀드성 법인의 원자료 값(손실)입니다. 오류가 아닙니다.</li>' +
       '<li><b>공공기관 직원수는 정원</b>(임직원 총계 A+B+C)입니다. 현원과 다를 수 있습니다. 매출은 2025년 결산이며, 금융형 기관은 영업수익, 일반 기관은 매출·수익(매출액) 행입니다.</li>' +
       '<li><b>공공기관 업종은 비어 있습니다.</b> 알리오는 표준산업분류를 공개하지 않습니다. 기관 유형·주무부처·하는 일로 판단하십시오.</li>' +
-      '<li><b>중견기업은 확인서 발급기업만</b> 공개됩니다(하한 집합). 업종·직원수·소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였고, 대조된 곳은 3,946곳 중 3,671곳입니다. 가입자수는 상시근로자수와 다르고, 사업장업종은 사업주가 신고한 값이라 실제 주력 사업과 다를 수 있으며, 주소는 도로명·법정동 단위까지만 있는 경우가 많습니다.</li>' +
+      '<li><b>중견기업은 확인서 발급기업만</b> 공개됩니다(하한 집합). 업종·직원수·소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였고, 대조된 곳은 3,946곳 중 3,725곳입니다(이름 표기가 달라 확신할 수 없는 221곳은 비워 두었습니다). 가입자수는 상시근로자수와 다르고, 사업장업종은 사업주가 신고한 값이라 실제 주력 사업과 다를 수 있으며, 주소는 도로명·법정동 단위까지만 있는 경우가 많습니다.</li>' +
+      '<li><b>중견기업의 공식 홈페이지·주요 사업·상장 정보는 보강한 항목</b>입니다. 홈페이지는 위키백과·위키데이터가 가리키는 주소를 실제로 열어 회사명이나 사업자번호가 확인된 경우에만 실었고(3,946곳 중 ' + fmt(ITEMS.filter(function (x) { return x._c === 'MID' && x.official_url; }).length) + '곳), 접속이 막혀 확인하지 못한 주소는 두 출처가 같은 도메인을 가리킬 때만 실었습니다. 그래서 홈페이지가 있는데도 비어 있는 기업이 있습니다. 주요 사업은 위키백과 첫 문장·상장사 기업개요에서 확인된 짧은 명사구이고, 상장 정보는 종목코드가 있는 곳만입니다.</li>' +
       '<li><b>같은 이름의 다른 법인</b>이 있습니다. 주소의 번호(법인등록번호·사업자등록번호)로 구분합니다.</li>' +
       '<li><b>규모 눈금</b>은 같은 분류 안에서 값이 있는 곳만 모아 로그 눈금 24칸으로 나눈 그림입니다. 순위는 원자료 값의 크기 순서일 뿐 기업의 좋고 나쁨이 아닙니다.</li>' +
       '<li>업종 대분류 이름은 통계청 한국표준산업분류(KSIC) 대분류 명칭이며, 코드 첫 글자로 묶었습니다. 중견기업의 <b>업종 갈래</b>는 국민연금 사업장업종코드(6자리) 앞자리로 묶은 화면용 분류이고, 원자료 코드는 카드에 그대로 적었습니다.</li>' +
       (m.limitations || []).slice(0, 2).map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>';
-    h += '<h2>갱신 주기</h2><ul class="lim"><li><b>공정거래위원회</b> — 해마다 5월 1일 기업집단 지정. 재무·인력은 직전 사업연도 결산.</li><li><b>알리오</b> — 분기 정기공시(1·4·7·10월 중순 마감).</li><li><b>중견기업정보마당</b> — 확인서 발급 때마다 수시로 바뀝니다.</li><li><b>국민연금 가입 사업장 내역</b> — 매달 갱신. 이 자료는 2026-09분입니다.</li></ul>';
-    h += '<h2>저작권과 이용</h2><ul class="lim"><li>명칭·주소·설립일·인원·매출·업종·확인서 번호 같은 단순 사실 정보이며, 공공기관이 공개를 전제로 배포하는 정보입니다. 재배포할 때는 위 출처를 밝혀 주십시오.</li><li>기업 로고·CI·사진·홈페이지 본문, 캐치프레이즈·인재상·복지 홍보 문구는 수집하지 않았습니다. 명함 가운데 동그라미 글자는 이름 첫 글자일 뿐 기업 표장이 아닙니다.</li><li>잡코리아·사람인·원티드·캐치 같은 민간 채용 플랫폼의 정보는 쓰지 않았습니다. 이 화면은 어떤 기관이나 기업의 공식 자료도, 채용 정보도 아닙니다.</li></ul></div>';
+    h += '<h2>갱신 주기</h2><ul class="lim"><li><b>공정거래위원회</b> — 해마다 5월 1일 기업집단 지정. 재무·인력은 직전 사업연도 결산.</li><li><b>알리오</b> — 분기 정기공시(1·4·7·10월 중순 마감).</li><li><b>중견기업정보마당</b> — 확인서 발급 때마다 수시로 바뀝니다.</li><li><b>국민연금 가입 사업장 내역</b> — 매달 갱신. 이 자료는 2026-09분입니다.</li><li><b>위키백과·위키데이터</b> — 수시로 바뀝니다. 이 자료는 2026-11-16에 조회한 값입니다.</li></ul>';
+    h += '<h2>저작권과 이용</h2><ul class="lim"><li>명칭·주소·설립일·인원·매출·업종·홈페이지 주소·종목코드·확인서 번호 같은 단순 사실 정보이며, 공공기관이 공개를 전제로 배포하는 정보입니다. 재배포할 때는 위 출처를 밝혀 주십시오.</li><li>한국어 위키백과는 CC BY-SA 4.0입니다. 문장을 옮기지 않고 문서 존재·사업 분야·공식 웹사이트 주소만 사실 확인에 썼습니다. 위키데이터는 CC0입니다.</li><li>기업 로고·CI·사진·홈페이지 본문, 캐치프레이즈·인재상·복지 홍보 문구는 수집하지 않았습니다. 명함 가운데 동그라미 글자는 이름 첫 글자일 뿐 기업 표장이 아닙니다.</li><li>잡코리아·사람인·원티드·캐치 같은 민간 채용 플랫폼의 정보는 쓰지 않았습니다. 이 화면은 어떤 기관이나 기업의 공식 자료도, 채용 정보도 아닙니다.</li></ul></div>';
     main.innerHTML = h; window.scrollTo(0, 0);
   }
 
@@ -827,7 +837,7 @@
     fetchJson('./data/companies.json').then(function (D) {
       META = D.meta || {}; ITEMS = D.companies || [];
       (META.sources || []).forEach(function (s) { SRC[s.id] = s; });
-      if (SRC.FTC) SRC.FTC.short = '공정거래위원회'; if (SRC.ALIO) SRC.ALIO.short = '알리오'; if (SRC.MME) SRC.MME.short = '중견기업정보마당'; if (SRC.NPS) SRC.NPS.short = '국민연금공단';
+      if (SRC.FTC) SRC.FTC.short = '공정거래위원회'; if (SRC.ALIO) SRC.ALIO.short = '알리오'; if (SRC.MME) SRC.MME.short = '중견기업정보마당'; if (SRC.NPS) SRC.NPS.short = '국민연금공단'; if (SRC.WIKI) SRC.WIKI.short = '위키백과'; if (SRC.WD) SRC.WD.short = '위키데이터'; if (SRC.LIST) SRC.LIST.short = '상장 종목 정보';
       for (var i = 0; i < ITEMS.length; i++) { BYID[ITEMS[i].id] = ITEMS[i]; prep(ITEMS[i]); }
       CATS.forEach(function (c) { c.n = ITEMS.filter(function (x) { return x._c === c.k; }).length; });
       dist(); album(); main.addEventListener('change', onSelect); main.addEventListener('click', onItemClick); route();
