@@ -171,8 +171,28 @@
 
     main.innerHTML = html;
     current = d;
+    linkNews(d);
     var sel = $('dateSel');
     if (sel) sel.addEventListener('change', function () { go(sel.value); });
+  }
+
+  /* ---------- 17-1 오늘의 원문 연결: news.json이 있을 때만 링크를 그린다 ---------- */
+  var news = null;
+  function linkNews(d) {
+    var apply = function (n) {
+      if (!n || !arr(n.items).length || n.date !== (d.edition || {}).date) return;
+      var byIssue = {}, total = 0;
+      arr(n.items).forEach(function (it) { if (it && it.track === 'A' && ((it.source || {}).license || {}).verified === true) { total++; if (it.issue_id) byIssue[it.issue_id] = (byIssue[it.issue_id] || 0) + 1; } });
+      if (!total) return;
+      var sh = main.querySelector('.sh');
+      if (sh && !main.querySelector('.news-all')) sh.insertAdjacentHTML('afterend', '<p class="news-all"><a href="news/">오늘의 원문 ' + total + '건 — 원문과 번역으로 읽기 →</a></p>');
+      arr(d.cards).forEach(function (c) {
+        var el = c.issue_id && byIssue[c.issue_id] && document.getElementById(c.id);
+        if (el && !el.querySelector('.news-more')) el.querySelector('.src').insertAdjacentHTML('beforebegin', '<a class="news-more" href="news/?issue=' + encodeURIComponent(c.issue_id) + '">오늘의 원문 더 보기 →</a>');
+      });
+    };
+    if (news) { apply(news); return; }
+    get(BASE + 'news.json').then(function (n) { news = n; apply(n); }).catch(function () {});
   }
 
   /* ---------- 불러오기·지난 호 ---------- */
