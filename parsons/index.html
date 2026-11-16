@@ -282,7 +282,7 @@ body:not([data-mode="scroll"]) #prog{display:none}
 .pg.L .cast{background:linear-gradient(270deg,rgba(var(--sh),.26),rgba(var(--sh),.06) 38%,transparent 70%)}
 
 /* 세로 읽기용 작은 단추 묶음 */
-.dock{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));z-index:45;display:flex;gap:2px;padding:4px;border-radius:99px;background:color-mix(in srgb,var(--panel) 82%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 2px 6px rgba(0,0,0,.08),0 14px 30px -14px rgba(0,0,0,.4);border:1px solid var(--line);transform:translate(-50%,140%);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
+.dock{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));z-index:45;display:flex;gap:2px;padding:4px;border-radius:99px;background:color-mix(in srgb,var(--panel) 96%,transparent);box-shadow:0 2px 6px rgba(0,0,0,.08),0 14px 30px -14px rgba(0,0,0,.4);border:1px solid var(--line);transform:translate(-50%,140%);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
 @supports not (background:color-mix(in srgb,red,blue)){.dock{background:var(--panel)}}
 body.bar-off[data-mode="scroll"] .dock{transform:translate(-50%,0);opacity:1;pointer-events:auto}
 .dock button{min-height:40px;padding:0 14px;border-radius:99px;font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap}
