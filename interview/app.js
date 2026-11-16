@@ -12,7 +12,8 @@
   var TABS = [['duel', '질문 대전'], ['rq', '마지막 역질문'], ['wp', '약점 조립기'], ['tr', '2026 전형 변화']];
   var WHEN = [['tomorrow', '내일이다', 'duel', 'structured_bei'], ['week', '이번 주다', 'wp', ''], ['none', '아직 없다', 'tr', '']];
   var K = null, CT = {}, MODE = {}, LG = {}, PR = {};
-  var UI = { tab: 'duel', when: '', arena: 'standard', mode: '', enc: '', rqT: '', wp: '', wpL: 0 };
+  var UI = { tab: 'duel', when: '', arena: 'standard', mode: '', enc: '', rqT: '', wp: '', wpL: 0, len: 0 };
+  try { UI.len = +(sessionStorage.getItem('jc-iv-len') || 0) || 0; } catch (e) {}
   var TURN = { intent: false, flip: [], timerCard: -1 };
 
   fetch('./data/deck.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
@@ -82,7 +83,7 @@
     $('turn').innerHTML = h; TURN.introJust = false; TURN.dealJust = false;
     $('encL') && $('encL').querySelectorAll('[data-enc]').forEach(function (b) { b.setAttribute('aria-current', String(b.getAttribute('data-enc') === UI.enc)); });
     if (fresh) $('turn').scrollTop = 0;
-    if (TURN.timerCard > -1) { if (!TM || TM.card !== TURN.timerCard) armTimer(e); else syncTimer(); }
+    if (TURN.timerCard > -1) { if (!TM || TM.card !== TURN.timerCard || TM.len !== pace(e).T) armTimer(e); else syncTimer(); }
   }
   function cardHtml(e, c, i) {
     var t = CT[c.card_type], on = TURN.flip.indexOf(i) > -1, can = canFlip(e, i);
@@ -100,15 +101,23 @@
   var TM = null;
   function timerHtml(e) {
     if (TURN.timerCard < 0) return '';
-    var c = e.hand_cards[TURN.timerCard], p = c.pace_split, T = e.time_limit_sec;
+    var P = pace(e), p = P.p, T = P.T, base = e.time_limit_sec;
     var labs = String(p.note || '').split('·').map(function (s) { return s.trim().replace(/\s*\d+.*$/, ''); });
     if (labs.length !== 3 || labs.some(function (x) { return !x; })) labs = ['도입', '사례', '연결'];
     var a = p.intro / T * 100, b = (p.intro + p.case) / T * 100;
     return '<div class="tt" id="tt" style="--dur:' + T + 's"><div class="tt-line" aria-hidden="true"><i class="ink"></i><i class="mk" style="left:' + a + '%"></i><i class="mk" style="left:' + b + '%"></i></div>' +
       '<div class="tt-seg" aria-hidden="true"><span style="width:' + a + '%" data-s="0">' + esc(labs[0]) + ' ' + p.intro + '</span><span style="width:' + (b - a) + '%" data-s="1">' + esc(labs[1]) + ' ' + p.case + '</span><span style="flex:1" data-s="2">' + esc(labs[2]) + ' ' + p.link + '</span></div>' +
+      '<div class="tt-len" role="group" aria-label="답변 시간"><span>답변 시간</span>' + [0].concat(K.vocabularies.time_limits).filter(function (v) { return v !== base; }).map(function (v) { var on = v === 0 ? !UI.len || UI.len === base : UI.len === v; return '<button type="button" data-len="' + v + '" aria-pressed="' + on + '">' + (v === 0 ? '질문 기준 ' + base + '초' : v + '초') + '</button>'; }).join('') + '</div>' +
       '<div class="tt-row"><span class="n num" id="ttN" aria-live="off">' + T + '<small>초</small></span><span class="sg" id="ttS">' + esc(labs[0]) + '부터</span><span class="sp"></span><button type="button" id="ttGo" data-tgo>말하기 시작</button><button type="button" class="g" id="ttRe" data-tre hidden>처음부터</button></div></div>';
   }
-  function armTimer(e) { TM = { card: TURN.timerCard, T: e.time_limit_sec, p: e.hand_cards[TURN.timerCard].pace_split, acc: 0, at: 0, run: false, iv: 0, low: false, seg: -1 }; }
+  /* 답변 시간 조절: 고른 길이에 맞춰 도입·사례·연결을 같은 비율로 늘리거나 줄인다(데이터는 그대로) */
+  function pace(e) {
+    var p0 = e.hand_cards[TURN.timerCard].pace_split, base = e.time_limit_sec, T = UI.len || base;
+    if (T === base) return { T: base, p: p0 };
+    var f = T / base, a = Math.max(1, Math.round(p0.intro * f)), b = Math.max(1, Math.round(p0.case * f));
+    return { T: T, p: { intro: a, case: b, link: Math.max(0, T - a - b), note: p0.note } };
+  }
+  function armTimer(e) { var P = pace(e); TM = { card: TURN.timerCard, len: P.T, T: P.T, p: P.p, acc: 0, at: 0, run: false, iv: 0, low: false, seg: -1 }; }
   /* 화면을 다시 그려도 진행 중인 타이머를 이어 붙인다(잉크선은 음수 지연으로 같은 지점에서) */
   function syncTimer() {
     var el = $('tt'); if (!el || !TM) return;
@@ -194,6 +203,7 @@
     }
     if (b.hasAttribute('data-tgo')) { tGo(); return; }
     if (b.hasAttribute('data-tre')) { tReset(); return; }
+    if (b.hasAttribute('data-len')) { var v = +b.getAttribute('data-len'); UI.len = v; try { sessionStorage.setItem('jc-iv-len', String(v)); } catch (_) {} tReset(); return; }
     if (b.hasAttribute('data-rqt')) { UI.rqT = b.getAttribute('data-rqt'); render(); return; }
     if (b.hasAttribute('data-wp')) { UI.wp = b.getAttribute('data-wp'); UI.wpL = 0; d.querySelectorAll('[data-wp]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); $('wpB').innerHTML = wpBody(); writeHash(); return; }
     if (b.hasAttribute('data-wpn')) { UI.wpL++; $('wpB').innerHTML = wpBody(); var s = $('wpB').querySelectorAll('.step')[UI.wpL - 1]; if (s && s.animate && !still()) s.animate([{ opacity: .35, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'cubic-bezier(.2,.9,.3,1)' }); return; }
@@ -203,6 +213,6 @@
   function closeList() { var lp = $('lp'); if (lp) lp.classList.remove('open'); if (scrim) { scrim.remove(); scrim = null; } d.documentElement.style.overflow = ''; }
   d.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeList(); });
   $('pvT').addEventListener('click', function () { var o = $('pvB').hidden; $('pvB').hidden = !o; this.setAttribute('aria-expanded', String(o)); $('pvL').textContent = o ? '접기' : '펼치기'; });
-  $('rst').addEventListener('click', function () { stopTimer(); TM = null; closeList(); UI = { tab: 'duel', when: '', arena: 'standard', mode: '', enc: '', rqT: '', wp: '', wpL: 0 }; TURN = { intent: false, flip: [], timerCard: -1 }; renderTop(); render(); window.scrollTo(0, 0); });
+  $('rst').addEventListener('click', function () { stopTimer(); TM = null; closeList(); UI = { tab: 'duel', when: '', arena: 'standard', mode: '', enc: '', rqT: '', wp: '', wpL: 0, len: 0 }; try { sessionStorage.removeItem('jc-iv-len'); } catch (_) {} TURN = { intent: false, flip: [], timerCard: -1 }; renderTop(); render(); window.scrollTo(0, 0); });
   if (mq.addEventListener) mq.addEventListener('change', closeList);
 })();
