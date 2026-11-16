@@ -3,7 +3,7 @@
 브랜치: `feat/design-system` (main 043a146 위). 모든 단계 완료, PR 대기.
 
 ## 완료된 단계
-- [x] Step 1: `CLAUDE.md` · `DESIGN.md` · `.claude/skills/design-lead.md`
+- [x] Step 1: `CLAUDE.md` · `DESIGN.md` · `.claude/skills/design-lead/SKILL.md`
 - [x] Step 2: 레퍼런스 탐색(Codrops·web.dev·Chrome Developers/MDN) → `design/studies/2026-11-16-progressive-disclosure-motion.md`
 - [x] Step 3: `index.html`(상시 rAF 루프·blur/width/box-shadow/grid-rows 모션 제거, 통찰 풀이 접기, 키워드 칩, 좁은 폭 위치 숫자, 섹터 수 고정 제거) · `assets/prefs.js`(공용 접기에 떠오르는 펼침·게이지 밑줄)
 - [x] Step 4: 묶음 1 환승노선도·서재·커리어데칼코마니 / 묶음 2 국취 매뉴얼·파슨스·DACUM / 묶음 3 대학학과위키·국취 HUD·대학원·기업·자격 + 이용 안내 문구 7개 섹터
@@ -21,7 +21,7 @@
 - 폴더블 펼침/접힘 전환 시 대문 점↔위치 숫자(600px 기준), HUD 결과 칸 sticky(1024px 이상)
 
 ## 다음 시작 파일
-다음 디자인 작업은 `CLAUDE.md` → `DESIGN.md` → `.claude/skills/design-lead.md` 순서로 시작한다.
+다음 디자인 작업은 `CLAUDE.md` → `DESIGN.md` → `.claude/skills/design-lead/SKILL.md` 순서로 시작한다.
 측정 도구(세션마다 새로): `/home/claude/tools/audit.py [페이지…]` — 폭별 넘침·오류·첫 화면 글자 수(checkVisibility+조상 투명도)·대기 rAF·금지 속성 애니메이션·집중 보기 왕복.
 
 ---
@@ -43,7 +43,7 @@
 - [x] `design/patterns/` 신설 — 유형별 모듈 5개: `ebook-reading.md`, `card-directory.md`, `sim-hud.md`, `touch-physics.md`, `hub-landing.md`
 - [x] `DESIGN.md` 축소·재편 — §0 지적재산권 가드레일(최우선), §6 진화형 창조 루프(비지시적 탐색·변이·선택과 도태), §7 패턴 모듈 라우팅 표, §9 적중 이력, §10 도태 목록, §11 인덱스. 상세 패턴은 모듈로 이동
 - [x] `CLAUDE.md` — 작업 유형에 맞는 `design/patterns/*.md`만 읽는 규칙, 노하우는 모듈에 누적·`DESIGN.md`는 요약만, 손맛 실측 의무
-- [x] `.claude/skills/design-lead.md` — ①비지시적 탐색 ②지재권 필터(세 질문) ③변이 2~3시안 ④노트 ⑤구현 ⑥손맛 실측(백지 프레임·프레임 간격·44px·연속 입력) ⑦적중·도태 ⑧마무리
+- [x] `.claude/skills/design-lead/SKILL.md` — ①비지시적 탐색 ②지재권 필터(세 질문) ③변이 2~3시안 ④노트 ⑤구현 ⑥손맛 실측(백지 프레임·프레임 간격·44px·연속 입력) ⑦적중·도태 ⑧마무리
 - [x] `design/studies/2026-11-16-touch-physics-measurement.md` — 측정 방법과 이번 숫자
 - [x] `README.md` 디자인 체계 절 갱신
 
@@ -58,7 +58,7 @@
 3. 첫 적용 대상 추천: `/manual/`(미달 58곳)과 `/transit/`(37곳) — 단추 높이가 32~42px에 몰려 있어 `min-height:44px` 한 줄로 대부분 해소되는지부터 확인.
 
 ### 다음 시작 파일
-`CLAUDE.md` → `DESIGN.md`(§0·§7) → 해당 유형 `design/patterns/*.md` → `.claude/skills/design-lead.md`.
+`CLAUDE.md` → `DESIGN.md`(§0·§7) → 해당 유형 `design/patterns/*.md` → `.claude/skills/design-lead/SKILL.md`.
 
 ---
 
