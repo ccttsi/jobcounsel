@@ -12,6 +12,8 @@
  * 3) 연결 안내: 인터넷이 끊기면 알리고, 다시 이어지면 끊긴 동안 못 받은 자료가 있을 때만 「다시 불러오기」를 권한다.
  * 4) 미리 받기: 자료실 안의 다른 화면으로 가는 링크에 손이 닿으면 그 화면 문서를 미리 받아 둔다(데이터 절약 모드에서는 쉼).
  *
+ * 5) 이어 보기: 섹터 장부(tools.js)와 「이어 보기」 줄(next.js)을 불러온다.
+ *
  * 섹터가 쓸 수 있는 것: window.JCCore = { base, state(), warm(href), notice(text, label, fn), clear() }
  * 화면 밖으로 내보내는 것은 없다. 외부 서버를 부르지 않는다.
  */
@@ -144,6 +146,13 @@
   }
   d.addEventListener('touchstart', function (e) { warm(target(e)); }, { passive: true, capture: true });
   d.addEventListener('mouseover', function (e) { var h = target(e); clearTimeout(hoverT); if (h) hoverT = setTimeout(function () { warm(h); }, 90); }, { passive: true, capture: true });
+
+  /* ---------- 5) 이어 보기: 섹터 장부(tools.js)와 이어 보기 줄(next.js)을 대문이 아닌 화면에서 불러온다 ---------- */
+  function load(src, then) { var s = d.createElement('script'); s.src = src; s.async = true; if (then) s.onload = then; (d.head || root).appendChild(s); }
+  ready(function () {
+    if (!BASE || location.href.split(/[?#]/)[0] === BASE) return;
+    if (window.JC_TOOLS) load(BASE + 'assets/next.js'); else load(BASE + 'assets/tools.js', function () { load(BASE + 'assets/next.js'); });
+  });
 
   window.JCCore = {
     base: BASE,
