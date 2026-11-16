@@ -1,0 +1,1628 @@
+{
+ "meta": {
+  "dataset": "job-portals-directory",
+  "version": "1.0.0",
+  "sector": "19. 채용공고 사이트 총망라 디렉토리",
+  "built_at": "2026-11-16",
+  "repository": "ccttsi/jobcounsel",
+  "notice": "채용 사이트의 이름·공식 주소·객관적 특징 요약만 담았습니다. 공고 본문·로고·슬로건은 옮기지 않았습니다. 모든 주소는 2026-11-16에 실제로 접속해 HTTP 200을 확인한 뒤 수록했고, 접속되지 않는 곳은 제외 목록에 남겼습니다.",
+  "counts": {
+   "total": 63,
+   "by_sector": {
+    "pub": 6,
+    "general": 15,
+    "tech": 12,
+    "expert": 5,
+    "industry": 8,
+    "target": 17
+   },
+   "by_method": {
+    "curl": 58,
+    "browser": 3,
+    "curl-mobile": 2
+   }
+  },
+  "verification": {
+   "checked_at": "2026-11-16",
+   "method": "curl GET(리다이렉트 추적, 모바일·데스크톱 UA) + 자동 접속 차단 사이트는 실제 브라우저로 화면 확인",
+   "passed": 63,
+   "excluded": [
+    {
+     "name": "클린아이 잡플러스",
+     "url": "https://job.cleaneye.go.kr/",
+     "reason": "2026-11-16 접속 시간 초과(응답 없음)"
+    },
+    {
+     "name": "메디잡(www.medijob.co.kr)",
+     "url": "https://www.medijob.co.kr/",
+     "reason": "접속 불가(ERR_TUNNEL_CONNECTION_FAILED)"
+    },
+    {
+     "name": "널스잡",
+     "url": "https://www.nursejob.co.kr/",
+     "reason": "응답 없음(시간 초과)"
+    },
+    {
+     "name": "호텔잡(.co.kr)",
+     "url": "http://www.hoteljob.co.kr/",
+     "reason": "도메인 판매 페이지로 바뀜"
+    },
+    {
+     "name": "에듀잡",
+     "url": "https://www.edujob.co.kr/",
+     "reason": "TLS 오류·응답 없음"
+    },
+    {
+     "name": "티처잡",
+     "url": "https://www.teacherjob.co.kr/",
+     "reason": "응답 없음(시간 초과)"
+    },
+    {
+     "name": "쿡잡",
+     "url": "https://www.cookjob.co.kr/",
+     "reason": "응답 없음(시간 초과)"
+    },
+    {
+     "name": "투어잡",
+     "url": "https://www.tourjob.co.kr/",
+     "reason": "응답 없음(시간 초과)"
+    },
+    {
+     "name": "블라인드 하이어",
+     "url": "https://www.blindrecruit.com/",
+     "reason": "TLS 인증서 오류로 접속 불가"
+    },
+    {
+     "name": "로버트월터스 코리아",
+     "url": "https://www.robertwalters.co.kr/",
+     "reason": "HTTP 403(자동 접속 차단) — 브라우저에서도 차단"
+    },
+    {
+     "name": "우아한형제들 채용",
+     "url": "https://www.woowahan.com/recruit",
+     "reason": "HTTP 403(자동 접속 차단)"
+    },
+    {
+     "name": "유니코써치(구 unico.co.kr 루트)",
+     "url": "https://www.unico.co.kr/",
+     "reason": "루트가 도메인 안내 페이지 — 실제 채용관(/kr)으로 대체"
+    },
+    {
+     "name": "지방공기업 클린아이 계열",
+     "url": "https://www.cleaneye.go.kr/",
+     "reason": "응답 없음(시간 초과)"
+    }
+   ]
+  },
+  "license": "사이트 이름·주소는 각 기관의 공개 정보. 요약 문장은 자료실이 직접 작성(복제 없음)."
+ },
+ "sectors": [
+  {
+   "code": "pub",
+   "name": "공공·고용서비스·공무원·공기업",
+   "desc": "정부·공공기관이 운영하는 고용서비스와 공직·공기업 채용 창구."
+  },
+  {
+   "code": "general",
+   "name": "민간 종합·대기업 공채",
+   "desc": "전 직종 종합 구인 사이트와 대기업·중견 그룹의 공채 채용관."
+  },
+  {
+   "code": "tech",
+   "name": "IT·개발·스타트업·테크",
+   "desc": "개발·디자인·기획 직군과 스타트업·테크 기업 채용에 특화된 곳."
+  },
+  {
+   "code": "expert",
+   "name": "경력·전문직·헤드헌팅·외국계",
+   "desc": "경력직·전문직·임원 포지션과 외국계·서치펌 채널."
+  },
+  {
+   "code": "industry",
+   "name": "특수 직무·자격·산업별",
+   "desc": "연구·건설·미디어·디자인·게임·유통·의료·항공 등 산업별 전문 사이트."
+  },
+  {
+   "code": "target",
+   "name": "자격·대상·근무형태별 (상담 실무)",
+   "desc": "청년·중장년·경력단절여성·장애인·외국인·북한이탈주민·직업계고·학생·프리랜서·단기 등 대상과 근무형태로 찾는 창구."
+  }
+ ],
+ "vocabulary": {
+  "roles": [
+   "전 직종",
+   "사무·경영",
+   "영업·판매",
+   "생산·기술",
+   "연구·기술",
+   "연구·교육",
+   "IT·개발",
+   "디자인",
+   "기획·마케팅",
+   "미디어·방송",
+   "게임",
+   "유통·매장",
+   "의료·보건",
+   "간호",
+   "건설·건축",
+   "항공·운송",
+   "물류",
+   "서비스",
+   "공공·행정",
+   "전문직",
+   "교육",
+   "현장실습",
+   "해외취업",
+   "프로젝트"
+  ],
+  "eligibility": [
+   "신입",
+   "경력",
+   "무관",
+   "청년",
+   "중장년",
+   "노인",
+   "장애인",
+   "경력단절여성",
+   "여성",
+   "외국인",
+   "다문화가족",
+   "북한이탈주민",
+   "직업계고",
+   "대학생",
+   "석·박사",
+   "자격증",
+   "면허",
+   "해외취업",
+   "프리랜서",
+   "단기·아르바이트",
+   "인턴",
+   "계약직",
+   "파견",
+   "임원",
+   "외국계"
+  ]
+ },
+ "portals": [
+  {
+   "id": "work24",
+   "name": "고용24",
+   "url": "https://www.work24.go.kr/cm/main.do",
+   "sector": "pub",
+   "operator": "고용노동부·한국고용정보원",
+   "roles": [
+    "전 직종",
+    "공공·행정",
+    "서비스",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년",
+    "장애인"
+   ],
+   "strengths": "워크넷 구인·구직, 국민취업지원제도 신청, 직업심리검사, 직업훈련 안내가 한 사이트에 모여 있다. 공공이 운영해 구인 정보의 범위가 가장 넓다.",
+   "tips": "상담 첫 회차에 여기서 구직등록을 하게 하면 구직 이력이 남아 상담일지 근거로 쓰기 좋다. 국취 참여자는 취업지원 신청과 수급자격 확인도 이 경로로 안내한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.work24.go.kr/cm/main.do",
+   "verify_method": "curl"
+  },
+  {
+   "id": "job_alio",
+   "name": "잡알리오",
+   "url": "https://job.alio.go.kr/",
+   "sector": "pub",
+   "operator": "기획재정부·한국조세재정연구원",
+   "roles": [
+    "공공·행정",
+    "사무·경영",
+    "연구·기술",
+    "전문직"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "장애인",
+    "자격증"
+   ],
+   "strengths": "공공기관이 알리오에 공시하는 채용공고를 한 번에 검색한다. 기관·직무·채용구분으로 걸러 볼 수 있어 공기업 준비의 출발점이 된다.",
+   "tips": "공기업 준비자에게는 기관별 채용 일정을 먼저 뽑아 달력으로 정리해 주고, 장애인 구분모집 여부를 함께 확인한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://job.alio.go.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "gojobs",
+   "name": "나라일터",
+   "url": "https://www.gojobs.go.kr/",
+   "sector": "pub",
+   "operator": "인사혁신처",
+   "roles": [
+    "공공·행정",
+    "전문직",
+    "연구·기술"
+   ],
+   "eligibility": [
+    "경력",
+    "자격증",
+    "신입"
+   ],
+   "strengths": "중앙부처와 소속기관의 경력경쟁채용시험 공고를 원문으로 싣는다. 민간 경력과 자격을 가진 사람이 공직으로 들어가는 길을 확인할 수 있다.",
+   "tips": "변호사·회계사·기술사 같은 자격 보유자의 공직 진입 상담에 쓴다. 임용 요건은 공고 원문의 응시자격 항목을 함께 읽어야 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.gojobs.go.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "gosi",
+   "name": "사이버국가고시센터",
+   "url": "https://gongmuwon.gosi.kr/",
+   "sector": "pub",
+   "operator": "인사혁신처",
+   "roles": [
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력"
+   ],
+   "strengths": "국가공무원 공개경쟁·경력경쟁 채용시험의 일정과 시험과목, 합격자 발표를 공식으로 안내한다.",
+   "tips": "공무원 준비 상담의 기준 일정표로 쓴다. 9급 공채와 경력경쟁은 준비 기간이 크게 달라 먼저 구분해 준다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://gongmuwon.gosi.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "seoul_job",
+   "name": "서울일자리포털",
+   "url": "https://job.seoul.go.kr/",
+   "sector": "pub",
+   "operator": "서울특별시",
+   "roles": [
+    "전 직종",
+    "공공·행정",
+    "서비스"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년"
+   ],
+   "strengths": "서울시와 자치구의 공공일자리와 민간 구인을 함께 싣는다. 서울 지역 취업상담·취업지원 사업 안내도 같은 곳에 있다.",
+   "tips": "서울 거주 구직자는 자치구 단위로 검색하면 통근 가능 범위 안의 공고를 빠르게 좁힐 수 있다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://job.seoul.go.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "daegu_job",
+   "name": "대구일자리포털",
+   "url": "https://job.daegu.go.kr/",
+   "sector": "pub",
+   "operator": "대구광역시",
+   "roles": [
+    "전 직종",
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년"
+   ],
+   "strengths": "대구 지역 구인과 지자체 취업지원 사업을 함께 안내한다. 광역시 단위 일자리 창구의 전형적인 구성이다.",
+   "tips": "지방 거주 구직자는 거주 시·도의 일자리포털을 기본 창구로 삼게 하고, 이 사이트를 그 형식의 예로 보여 준다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://job.daegu.go.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "saramin",
+   "name": "사람인",
+   "url": "https://www.saramin.co.kr/",
+   "sector": "general",
+   "operator": "(주)사람인",
+   "roles": [
+    "전 직종",
+    "사무·경영",
+    "영업·판매",
+    "생산·기술",
+    "서비스"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "인턴",
+    "단기·아르바이트"
+   ],
+   "strengths": "공채·상시·아르바이트를 한 검색에 담고 기업 규모·지역·경력 필터가 촘촘하다. 채용공고 외에 기업 정보와 연봉 통계도 함께 본다.",
+   "tips": "경력 전환 상담에서는 희망 직무의 공고 수를 먼저 세어 보게 한다. 공고가 적은 직무는 인접 직무로 넓히는 근거가 된다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.saramin.co.kr/zf_user/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "jobkorea",
+   "name": "잡코리아",
+   "url": "https://www.jobkorea.co.kr/",
+   "sector": "general",
+   "operator": "(주)잡코리아",
+   "roles": [
+    "전 직종",
+    "사무·경영",
+    "영업·판매",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "인턴"
+   ],
+   "strengths": "대기업 공채와 상시 채용을 함께 다루고, 기업별 채용 일정과 직무별 연봉 정보가 정리돼 있다.",
+   "tips": "공채 시즌 상담에서 기업별 마감일을 뽑아 지원 순서를 정하는 데 쓴다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.jobkorea.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "incruit",
+   "name": "인크루트",
+   "url": "https://www.incruit.com/",
+   "sector": "general",
+   "operator": "(주)인크루트",
+   "roles": [
+    "전 직종",
+    "사무·경영",
+    "영업·판매",
+    "서비스"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "인턴"
+   ],
+   "strengths": "신입 공채와 인턴 정보가 두텁고, 기업 채용관과 헤드헌팅 서비스로 이어진다.",
+   "tips": "신입 구직자에게는 공채와 수시의 차이를 이 사이트의 공고 표기로 설명하면 이해가 빠르다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.incruit.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "catch",
+   "name": "캐치",
+   "url": "https://www.catch.co.kr/",
+   "sector": "general",
+   "operator": "(주)진학사",
+   "roles": [
+    "전 직종",
+    "사무·경영",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "대기업·중견·상위권 기업 공고를 모아 보여 주고, 채용캘린더로 공채 일정을 한눈에 잡을 수 있다. 면접·자소서 자료가 같은 화면에서 이어진다.",
+   "tips": "대졸 신입 상담에서 목표 기업군의 공채 일정을 먼저 확인하고 지원 우선순위를 정하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.catch.co.kr/",
+   "verify_method": "browser"
+  },
+  {
+   "id": "jasoseol",
+   "name": "자소설닷컴",
+   "url": "https://jasoseol.com/",
+   "sector": "general",
+   "operator": "자소설닷컴",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "신입",
+    "대학생",
+    "인턴"
+   ],
+   "strengths": "공채 일정 달력과 기업별 자기소개서 문항 기록이 쌓여 있다. 지원 준비 단계에서 실제 문항 유형을 확인하는 데 강하다.",
+   "tips": "자소서를 처음 쓰는 구직자에게 문항 유형을 보여 주고 경험 정리로 넘어가는 순서로 쓴다. 커뮤니티 글은 참고 자료일 뿐 사실 확인용이 아니다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://jasoseol.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "indeed",
+   "name": "인디드",
+   "url": "https://kr.indeed.com/",
+   "sector": "general",
+   "operator": "Indeed",
+   "roles": [
+    "전 직종",
+    "서비스",
+    "생산·기술",
+    "IT·개발"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "단기·아르바이트"
+   ],
+   "strengths": "키워드와 지역만으로 국내외 기업 공고를 단순하게 찾는다. 영문 공고와 외국계 기업 비중이 다른 종합 사이트보다 높다.",
+   "tips": "외국계·영문 이력서 지원 상담에 쓴다. 공고 본문이 영어이면 직무명을 영문으로 바꿔 검색해야 누락이 없다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://kr.indeed.com/",
+   "verify_method": "browser"
+  },
+  {
+   "id": "jobplanet",
+   "name": "잡플래닛",
+   "url": "https://www.jobplanet.co.kr/",
+   "sector": "general",
+   "operator": "잡플래닛",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관"
+   ],
+   "strengths": "기업 리뷰·연봉·면접 후기와 채용공고를 함께 본다. 기업을 고르는 단계에서 내부 분위기와 보상 수준을 가늠하는 데 쓴다.",
+   "tips": "리뷰는 익명의 주관 자료임을 먼저 밝히고, 확인된 사실(매출·직원수·공고 조건)과 분리해 읽게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.jobplanet.co.kr/welcome/index",
+   "verify_method": "curl-mobile"
+  },
+  {
+   "id": "career",
+   "name": "커리어",
+   "url": "https://www.career.co.kr/",
+   "sector": "general",
+   "operator": "(주)커리어",
+   "roles": [
+    "전 직종",
+    "서비스",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "단기·아르바이트"
+   ],
+   "strengths": "중소·중견기업 구인과 해외취업 공고를 함께 싣는 종합 구인 사이트다.",
+   "tips": "대기업 위주 검색에 지친 구직자에게 중소·중견 공고를 같은 조건으로 비교하게 할 때 쓴다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.career.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "samsung_careers",
+   "name": "삼성 채용",
+   "url": "https://www.samsungcareers.com/",
+   "sector": "general",
+   "operator": "삼성그룹",
+   "roles": [
+    "전 직종",
+    "생산·기술",
+    "연구·기술",
+    "영업·판매"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "삼성 계열사 공채와 수시 채용을 한 곳에서 안내하고, 채용 절차와 직무 소개를 함께 제공한다.",
+   "tips": "계열사별 모집 시기와 직무를 비교해 지원 전략을 세우는 데 쓴다. 전형 일정은 해마다 달라 공지로 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.samsungcareers.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "sk_careers",
+   "name": "SK Careers",
+   "url": "https://www.skcareers.com/",
+   "sector": "general",
+   "operator": "SK그룹",
+   "roles": [
+    "전 직종",
+    "연구·기술",
+    "생산·기술",
+    "사무·경영"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "SK 계열사 채용을 통합 안내하고, 계열사별 직무 설명과 전형 일정을 제공한다.",
+   "tips": "계열사가 많은 집단이라 지원 전에 계열사와 직무를 먼저 좁히게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.skcareers.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "lg_careers",
+   "name": "LG Careers",
+   "url": "https://careers.lg.com/",
+   "sector": "general",
+   "operator": "LG그룹",
+   "roles": [
+    "전 직종",
+    "연구·기술",
+    "생산·기술",
+    "영업·판매"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "LG 계열사 공채와 수시 채용을 한 화면에 모았고, 계열사·직무별 검색이 가능하다.",
+   "tips": "전자·화학·통신 등 계열사 업종이 달라, 지원자의 전공·경력과 맞는 계열사를 먼저 고르게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://careers.lg.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "hyundai_careers",
+   "name": "현대자동차그룹 채용",
+   "url": "https://talent.hyundai.com/main/netFunnel.hc",
+   "sector": "general",
+   "operator": "현대자동차그룹",
+   "roles": [
+    "전 직종",
+    "생산·기술",
+    "연구·기술",
+    "건설·건축"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "자동차·부품·건설·금융 계열사 채용을 한 곳에서 공고한다. 직무별 전형 절차가 상세하다.",
+   "tips": "생산·연구 직무는 전공·자격 요건이 구체적이므로 공고의 응시자격을 먼저 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://talent.hyundai.com/main/netFunnel.hc",
+   "verify_method": "curl"
+  },
+  {
+   "id": "lotte_careers",
+   "name": "롯데 채용",
+   "url": "https://recruit.lotte.co.kr/",
+   "sector": "general",
+   "operator": "롯데그룹",
+   "roles": [
+    "유통·매장",
+    "서비스",
+    "사무·경영",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "유통·식품·화학·금융 계열사 채용을 모아 안내한다. 계열사별 채용 일정을 비교할 수 있다.",
+   "tips": "유통·서비스 직군 지원자는 근무지와 교대 근무 여부를 공고에서 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://recruit.lotte.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "cj_careers",
+   "name": "CJ 채용",
+   "url": "https://recruit.cj.net/",
+   "sector": "general",
+   "operator": "CJ그룹",
+   "roles": [
+    "전 직종",
+    "유통·매장",
+    "물류",
+    "미디어·방송"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "식품·유통·엔터·물류 계열사 채용을 한 곳에서 공고한다.",
+   "tips": "엔터·미디어 계열은 포트폴리오 요건이 따로 있으므로 직무별 안내를 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://recruit.cj.net/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "doosan_careers",
+   "name": "두산 채용",
+   "url": "https://career.doosan.com/",
+   "sector": "general",
+   "operator": "두산그룹",
+   "roles": [
+    "생산·기술",
+    "연구·기술",
+    "건설·건축",
+    "사무·경영"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "기계·에너지·건설 계열사 채용을 통합 공고한다. 기술직 채용 비중이 높다.",
+   "tips": "기술직 지원자는 자격증과 현장 경력 요건을 공고에서 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://career.doosan.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "wanted",
+   "name": "원티드",
+   "url": "https://www.wanted.co.kr/",
+   "sector": "tech",
+   "operator": "원티드랩",
+   "roles": [
+    "IT·개발",
+    "디자인",
+    "기획·마케팅"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "포지션마다 연봉 범위와 기술 스택이 공개된 공고가 많다. 프로필을 채우면 맞춤 추천이 붙는다.",
+   "tips": "이직 상담에서 희망 직무의 연봉 분포를 확인하는 근거로 쓴다. 공고 연봉은 회사가 적은 범위임을 밝힌다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.wanted.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "jumpit",
+   "name": "점핏",
+   "url": "https://jumpit.saramin.co.kr/",
+   "sector": "tech",
+   "operator": "사람인",
+   "roles": [
+    "IT·개발"
+   ],
+   "eligibility": [
+    "신입",
+    "경력"
+   ],
+   "strengths": "개발자 채용에 집중해 기술 스택과 경력 연차로 걸러 볼 수 있다. 개발 직군 공고만 모여 탐색이 빠르다.",
+   "tips": "백엔드·프론트엔드처럼 직무를 기술 스택 단위로 좁혀 검색하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://jumpit.saramin.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "programmers",
+   "name": "프로그래머스",
+   "url": "https://programmers.co.kr/",
+   "sector": "tech",
+   "operator": "그렙",
+   "roles": [
+    "IT·개발"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "코딩테스트와 교육, 채용을 한 계정으로 잇는다. 개발 역량을 시험 결과로 보여 줄 수 있다.",
+   "tips": "비전공 전환자에게는 교육 과정과 채용 연계 흐름을 함께 안내한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://programmers.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "rallit",
+   "name": "랠릿",
+   "url": "https://www.rallit.com/",
+   "sector": "tech",
+   "operator": "랠릿",
+   "roles": [
+    "IT·개발",
+    "디자인"
+   ],
+   "eligibility": [
+    "경력"
+   ],
+   "strengths": "IT 인재 채용에 특화돼 프로필 기반으로 포지션을 제안받는다. 이력서 없이 경력 정보로 지원하는 흐름이다.",
+   "tips": "재직 중 조용히 이직을 알아보는 경력자 상담에 맞는다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.rallit.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "groupby",
+   "name": "그룹바이",
+   "url": "https://groupby.kr/",
+   "sector": "tech",
+   "operator": "그룹바이",
+   "roles": [
+    "IT·개발",
+    "기획·마케팅",
+    "디자인"
+   ],
+   "eligibility": [
+    "신입",
+    "경력"
+   ],
+   "strengths": "AI 매칭으로 공고를 추리고 공고 요약을 제공한다. 기술 직군 공고가 중심이다.",
+   "tips": "공고가 많은 직무에서 연봉·재택·회사 규모 조건으로 빠르게 좁힐 때 쓴다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://groupby.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "rocketpunch",
+   "name": "로켓펀치",
+   "url": "https://www.rocketpunch.com/",
+   "sector": "tech",
+   "operator": "로켓펀치",
+   "roles": [
+    "IT·개발",
+    "기획·마케팅",
+    "디자인"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴",
+    "프리랜서"
+   ],
+   "strengths": "스타트업 채용과 창업·투자 정보가 함께 있다. 초기 단계 회사 공고가 많다.",
+   "tips": "스타트업 지원 상담에서는 회사 규모와 투자 단계, 업력(생존 기간)을 함께 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.rocketpunch.com/",
+   "verify_method": "browser"
+  },
+  {
+   "id": "naver_recruit",
+   "name": "네이버 채용",
+   "url": "https://recruit.navercorp.com/",
+   "sector": "tech",
+   "operator": "네이버",
+   "roles": [
+    "IT·개발",
+    "디자인",
+    "기획·마케팅",
+    "연구·기술"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "네이버와 계열 서비스의 직무별 채용을 공고 단위로 안내한다.",
+   "tips": "기술 직군은 포트폴리오·과제 전형 요건을 공고에서 직접 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://recruit.navercorp.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "kakao_careers",
+   "name": "카카오 채용",
+   "url": "https://careers.kakao.com/",
+   "sector": "tech",
+   "operator": "카카오",
+   "roles": [
+    "IT·개발",
+    "디자인",
+    "기획·마케팅"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "카카오와 계열사 채용을 한 곳에서 보고, 직무 소개와 채용 절차를 함께 읽는다.",
+   "tips": "계열사별 채용이 따로 열리므로 지원할 계열사와 직무를 먼저 정하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://careers.kakao.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "toss_career",
+   "name": "토스 채용",
+   "url": "https://toss.im/career/jobs",
+   "sector": "tech",
+   "operator": "비바리퍼블리카",
+   "roles": [
+    "IT·개발",
+    "디자인",
+    "기획·마케팅",
+    "사무·경영"
+   ],
+   "eligibility": [
+    "신입",
+    "경력"
+   ],
+   "strengths": "금융·핀테크 직무를 직군별로 정리해 공고하고, 채용 절차 설명이 상세하다.",
+   "tips": "핀테크 이직 상담에서 요구 역량(데이터·금융 도메인)을 공고로 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://toss.im/career/jobs",
+   "verify_method": "curl"
+  },
+  {
+   "id": "coupang_jobs",
+   "name": "쿠팡 채용",
+   "url": "https://www.coupang.jobs/kr/",
+   "sector": "tech",
+   "operator": "쿠팡",
+   "roles": [
+    "물류",
+    "IT·개발",
+    "사무·경영",
+    "서비스"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "계약직"
+   ],
+   "strengths": "커머스·물류·기술 직무를 함께 싣고, 대규모 채용 공고가 자주 올라온다.",
+   "tips": "물류·운영직 구직자에게는 근무지와 교대 조건을 공고에서 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.coupang.jobs/kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "ncsoft_careers",
+   "name": "엔씨소프트 채용",
+   "url": "https://careers.ncsoft.com/",
+   "sector": "tech",
+   "operator": "엔씨소프트",
+   "roles": [
+    "게임",
+    "IT·개발",
+    "디자인",
+    "기획·마케팅"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "게임 개발 전 직군(프로그래밍·아트·기획·QA) 공고를 직군별로 본다.",
+   "tips": "게임 직군은 포트폴리오와 과제 전형 비중이 높아 준비 기간을 넉넉히 잡게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://careers.ncsoft.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "nexon_careers",
+   "name": "넥슨 채용",
+   "url": "https://careers.nexon.com/",
+   "sector": "tech",
+   "operator": "넥슨",
+   "roles": [
+    "게임",
+    "IT·개발",
+    "디자인",
+    "기획·마케팅"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "게임사 공채와 상시 채용을 한 곳에서 보고, 직무별 요구 역량을 확인한다.",
+   "tips": "프로젝트 단위 계약과 정규 채용을 구분해 안내하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://careers.nexon.com/",
+   "verify_method": "curl-mobile"
+  },
+  {
+   "id": "linkedin",
+   "name": "링크드인",
+   "url": "https://www.linkedin.com/jobs/",
+   "sector": "expert",
+   "operator": "LinkedIn",
+   "roles": [
+    "전 직종",
+    "전문직"
+   ],
+   "eligibility": [
+    "경력",
+    "임원",
+    "외국계",
+    "해외취업"
+   ],
+   "strengths": "국내외 경력직 채용이 모여 있고 헤드헌터가 직접 접근하는 통로다. 영문 프로필이 그대로 이력서 역할을 한다.",
+   "tips": "경력 5년 이상 상담에서는 프로필 정리(직무 키워드·성과 수치)를 먼저 하게 한다. 채용 문의는 사내 메시지로 오는 경우가 많다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.linkedin.com/jobs/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "remember",
+   "name": "리멤버",
+   "url": "https://career.rememberapp.co.kr/",
+   "sector": "expert",
+   "operator": "드라마앤컴퍼니",
+   "roles": [
+    "전 직종",
+    "전문직",
+    "사무·경영"
+   ],
+   "eligibility": [
+    "경력"
+   ],
+   "strengths": "실명·재직 인증 기반이라 경력직 채용과 커리어 정보의 신뢰도가 높다. 연봉·이직 정보를 함께 본다.",
+   "tips": "재직 중 이직을 조심스러워하는 구직자에게 익명 탐색 통로로 안내한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://career.rememberapp.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "peoplenjob",
+   "name": "피플앤잡",
+   "url": "https://www.peoplenjob.com/",
+   "sector": "expert",
+   "operator": "피플앤잡",
+   "roles": [
+    "전 직종",
+    "전문직",
+    "영업·판매"
+   ],
+   "eligibility": [
+    "경력",
+    "외국계"
+   ],
+   "strengths": "외국계 기업과 헤드헌팅 포지션 비중이 높고, 영문 이력서 안내가 있다.",
+   "tips": "외국계 지원 상담에서 영문 이력서와 인터뷰 준비를 함께 잡는다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.peoplenjob.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "unico",
+   "name": "유니코써치",
+   "url": "https://www.unico.co.kr/kr",
+   "sector": "expert",
+   "operator": "유니코써치",
+   "roles": [
+    "전 직종",
+    "전문직"
+   ],
+   "eligibility": [
+    "경력",
+    "임원"
+   ],
+   "strengths": "서치펌이 직접 다루는 경력·임원 포지션을 산업별 컨설턴트 단위로 본다.",
+   "tips": "경력 10년 이상·관리직 상담에서 헤드헌팅 등록을 권할 때 근거로 쓴다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.unico.co.kr/kr",
+   "verify_method": "curl"
+  },
+  {
+   "id": "manpower",
+   "name": "맨파워코리아",
+   "url": "https://manpower.co.kr/",
+   "sector": "expert",
+   "operator": "맨파워코리아",
+   "roles": [
+    "사무·경영",
+    "생산·기술",
+    "서비스"
+   ],
+   "eligibility": [
+    "무관",
+    "단기·아르바이트",
+    "파견",
+    "계약직"
+   ],
+   "strengths": "파견·도급·아웃소싱 형태의 일자리를 다룬다. 계약직·단기 경력을 쌓으려는 구직자에게 현실적인 통로다.",
+   "tips": "파견·계약직을 권할 때는 근로계약 주체(파견사)와 기간, 정규직 전환 가능성을 반드시 함께 설명한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://manpower.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "hibrain",
+   "name": "하이브레인넷",
+   "url": "https://www.hibrain.net/",
+   "sector": "industry",
+   "operator": "하이브레인넷",
+   "roles": [
+    "연구·교육",
+    "연구·기술",
+    "교육"
+   ],
+   "eligibility": [
+    "석·박사",
+    "경력",
+    "자격증"
+   ],
+   "strengths": "대학·연구소·기업 연구직 공고를 한 곳에 모은다. 석·박사 학위 요건이 명시된 공고가 많다.",
+   "tips": "대학원 진학·연구직 상담에서 학위와 논문 실적 요건을 공고로 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.hibrain.net/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "worker",
+   "name": "건설워커",
+   "url": "https://www.worker.co.kr/",
+   "sector": "industry",
+   "operator": "건설워커",
+   "roles": [
+    "건설·건축",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "경력",
+    "자격증",
+    "무관"
+   ],
+   "strengths": "건설 현장·기술직 채용에 특화돼 있고, 자격·경력 요건이 공고에 구체적으로 적힌다.",
+   "tips": "건설 기능인 상담에서는 자격증(건축·토목·안전)과 경력 연수를 기준으로 현장직과 관리직을 나눠 안내한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.worker.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "mediajob",
+   "name": "미디어잡",
+   "url": "https://www.mediajob.co.kr/",
+   "sector": "industry",
+   "operator": "미디어잡",
+   "roles": [
+    "미디어·방송",
+    "기획·마케팅",
+    "디자인"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "프리랜서"
+   ],
+   "strengths": "방송·언론·제작 직군 공고를 모은다. 기자·PD·작가·촬영 등 직무 구분이 세밀하다.",
+   "tips": "방송·언론 지원자는 포트폴리오와 경력 기술서 요건을 공고별로 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.mediajob.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "designerjob",
+   "name": "디자이너잡",
+   "url": "https://www.designerjob.co.kr/",
+   "sector": "industry",
+   "operator": "디자이너잡",
+   "roles": [
+    "디자인"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "프리랜서"
+   ],
+   "strengths": "시각·웹·제품·편집 디자인 공고를 한 분야에 모았다. 포트폴리오 요건이 공고마다 명시된다.",
+   "tips": "디자인 직군은 포트폴리오가 서류를 대신하므로 지원 전에 포트폴리오 정리를 먼저 하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.designerjob.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "gamejob",
+   "name": "게임잡",
+   "url": "https://www.gamejob.co.kr/main/home",
+   "sector": "industry",
+   "operator": "게임잡",
+   "roles": [
+    "게임",
+    "IT·개발",
+    "디자인"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "게임 업계 채용만 다뤄 직군(프로그래밍·아트·기획·QA·사업) 구분이 명확하다.",
+   "tips": "게임 업계는 프로젝트 단위 계약이 많아 계약 기간과 프로젝트 종료 후 처우를 함께 물어보게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.gamejob.co.kr/main/home",
+   "verify_method": "curl"
+  },
+  {
+   "id": "shopma",
+   "name": "샵마넷",
+   "url": "https://www.shopma.net/",
+   "sector": "industry",
+   "operator": "샵마넷",
+   "roles": [
+    "유통·매장",
+    "영업·판매",
+    "서비스"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관"
+   ],
+   "strengths": "백화점·아울렛·브랜드 매장의 판매·매장관리 공고가 모여 있다. 근무지와 근무형태 표기가 자세하다.",
+   "tips": "판매직 상담에서는 기본급과 인센티브 구조, 교대 근무 조건을 공고에서 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.shopma.net/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "medicaljob",
+   "name": "메디컬잡",
+   "url": "https://www.medicaljob.co.kr/",
+   "sector": "industry",
+   "operator": "메디컬잡",
+   "roles": [
+    "의료·보건",
+    "간호",
+    "서비스"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "자격증",
+    "면허"
+   ],
+   "strengths": "의사·한의사·약사·간호사·간호조무사 채용을 한 곳에 모은 의료 특화 사이트다. 병원·의원·요양기관 공고가 함께 있다.",
+   "tips": "보건의료 직종은 면허·자격이 필수이므로 지원 전 면허 번호와 경력 요건을 공고에서 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.medicaljob.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "koreanair_careers",
+   "name": "대한항공 채용",
+   "url": "https://koreanair.recruiter.co.kr/career/home",
+   "sector": "industry",
+   "operator": "대한항공",
+   "roles": [
+    "항공·운송",
+    "서비스",
+    "생산·기술",
+    "사무·경영"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "인턴"
+   ],
+   "strengths": "객실·운항·정비·일반직 채용을 직무별로 공고한다. 채용 전형과 자격 요건이 상세하다.",
+   "tips": "객실승무원·정비직은 신체·어학·자격 요건이 까다로워 공고 원문의 응시자격을 먼저 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://koreanair.recruiter.co.kr:443/career/home",
+   "verify_method": "curl"
+  },
+  {
+   "id": "saeil",
+   "name": "여성새로일하기센터",
+   "url": "https://saeil.mogef.go.kr/hom/HOM_Main.do",
+   "sector": "target",
+   "operator": "여성가족부·고용노동부",
+   "roles": [
+    "사무·경영",
+    "서비스",
+    "생산·기술",
+    "교육"
+   ],
+   "eligibility": [
+    "경력단절여성",
+    "여성",
+    "중장년"
+   ],
+   "strengths": "경력단절여성의 취업상담·직업교육·취업알선을 지역 센터 단위로 제공한다. 인턴형 지원 사업도 함께 안내한다.",
+   "tips": "경력단절 상담은 여기서 시작한다. 가까운 센터에서 상담을 예약하고 직업교육 과정과 연계하면 훈련비 부담이 줄어든다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://saeil.mogef.go.kr/hom/HOM_Main.do",
+   "verify_method": "curl"
+  },
+  {
+   "id": "seniorro",
+   "name": "노인일자리여기",
+   "url": "https://www.seniorro.or.kr/",
+   "sector": "target",
+   "operator": "한국노인인력개발원",
+   "roles": [
+    "공공·행정",
+    "서비스",
+    "사무·경영"
+   ],
+   "eligibility": [
+    "노인",
+    "중장년"
+   ],
+   "strengths": "노인일자리 사업(공익활동·사회서비스형·시장형)을 지역별로 안내한다. 60세 이상 구직자의 공공 일자리 창구다.",
+   "tips": "고령 구직자는 소득·건강 상태에 따라 참여할 수 있는 사업 유형이 달라지므로 수행기관에 직접 문의해 자격을 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.seniorro.or.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "youthcenter",
+   "name": "온라인청년센터",
+   "url": "https://www.youthcenter.go.kr/",
+   "sector": "target",
+   "operator": "국무조정실·한국고용정보원",
+   "roles": [
+    "전 직종",
+    "공공·행정",
+    "교육"
+   ],
+   "eligibility": [
+    "청년"
+   ],
+   "strengths": "청년 정책·일경험·주거·금융 지원을 한 곳에 모아 안내한다. 청년 구직 상담의 첫 창구로 쓰기 좋다.",
+   "tips": "청년 구직자에게는 일경험 프로그램과 정책 지원을 함께 확인하게 한다. 참여 요건(연령·소득)이 사업마다 다르다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.youthcenter.go.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "worldjob",
+   "name": "월드잡플러스",
+   "url": "https://www.worldjob.or.kr/",
+   "sector": "target",
+   "operator": "한국산업인력공단",
+   "roles": [
+    "전 직종",
+    "해외취업",
+    "교육"
+   ],
+   "eligibility": [
+    "해외취업",
+    "청년",
+    "경력"
+   ],
+   "strengths": "해외취업 공고와 해외 진출 지원 사업을 한 곳에서 안내한다. 국가별 채용 정보가 정리돼 있다.",
+   "tips": "해외취업 상담에서는 비자 요건과 어학 기준을 먼저 확인하게 한다. 현지 계약·급여 관행도 함께 설명한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.worldjob.or.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "eps",
+   "name": "EPS 고용허가제",
+   "url": "https://www.eps.go.kr/",
+   "sector": "target",
+   "operator": "법무부·고용노동부",
+   "roles": [
+    "생산·기술",
+    "건설·건축",
+    "서비스"
+   ],
+   "eligibility": [
+    "외국인"
+   ],
+   "strengths": "외국인 근로자(E-9)의 고용허가 절차와 사업장 정보를 공식으로 안내한다. 송출·입국·사업장 변경 절차가 정리돼 있다.",
+   "tips": "외국인 근로자 상담에서는 체류 자격과 사업장 변경 가능 사유를 먼저 확인하고, 한국어 시험·교육 일정도 함께 안내한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.eps.go.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "koreahana",
+   "name": "남북하나재단",
+   "url": "https://www.koreahana.or.kr/",
+   "sector": "target",
+   "operator": "통일부",
+   "roles": [
+    "전 직종",
+    "교육"
+   ],
+   "eligibility": [
+    "북한이탈주민"
+   ],
+   "strengths": "북한이탈주민의 정착과 취업 지원을 전담한다. 취업지원·직업훈련·자격 취득 지원을 함께 안내한다.",
+   "tips": "북한이탈주민 상담은 지역 하나센터와 연계하는 것이 빠르다. 학력·경력 인정 절차를 먼저 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.koreahana.or.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "kead",
+   "name": "한국장애인고용공단",
+   "url": "https://www.kead.or.kr/",
+   "sector": "target",
+   "operator": "한국장애인고용공단",
+   "roles": [
+    "전 직종",
+    "사무·경영",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "장애인"
+   ],
+   "strengths": "장애인 취업지원·직업훈련·고용장려금 안내를 한 곳에서 제공한다. 사업주 지원 제도도 함께 볼 수 있다.",
+   "tips": "장애인 구직자에게는 장애 유형·정도에 맞는 직무와 지원 제도를 함께 안내하고, 고용24의 장애인 구인정보와 같이 본다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.kead.or.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "hifive",
+   "name": "하이파이브",
+   "url": "https://www.hifive.go.kr/",
+   "sector": "target",
+   "operator": "교육부·한국장학재단",
+   "roles": [
+    "전 직종",
+    "현장실습",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "직업계고",
+    "대학생"
+   ],
+   "strengths": "특성화고·마이스터고 학생의 취업지원과 현장실습 정보를 모은 교육부 포털이다. 학교와 기업의 연계 정보가 있다.",
+   "tips": "직업계고 졸업(예정)자 상담에서 현장실습과 채용 연계를 함께 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.hifive.go.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "liveinkorea",
+   "name": "다누리",
+   "url": "https://www.liveinkorea.kr/intro.do",
+   "sector": "target",
+   "operator": "여성가족부·한국건강가정진흥원",
+   "roles": [
+    "전 직종",
+    "교육",
+    "서비스"
+   ],
+   "eligibility": [
+    "다문화가족",
+    "외국인"
+   ],
+   "strengths": "다문화가족과 외국인을 위한 생활·취업 정보를 다국어로 안내한다. 취업·교육 정보와 지역 센터 연결이 있다.",
+   "tips": "결혼이민자·외국인 배우자 상담에서 한국어 교육과 취업 지원을 함께 안내할 때 쓴다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.liveinkorea.kr/intro.do",
+   "verify_method": "curl"
+  },
+  {
+   "id": "albamon",
+   "name": "알바몬",
+   "url": "https://www.albamon.com/",
+   "sector": "target",
+   "operator": "잡코리아",
+   "roles": [
+    "서비스",
+    "유통·매장",
+    "물류",
+    "사무·경영"
+   ],
+   "eligibility": [
+    "단기·아르바이트",
+    "대학생",
+    "무관"
+   ],
+   "strengths": "단기·아르바이트 공고가 가장 많고, 지역·시간대·요일 조건으로 걸러 볼 수 있다.",
+   "tips": "단기 일자리 상담에서는 근로계약서 작성, 최저임금, 주휴수당 여부를 함께 확인하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.albamon.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "alba",
+   "name": "알바천국",
+   "url": "https://www.alba.co.kr/",
+   "sector": "target",
+   "operator": "알바천국",
+   "roles": [
+    "서비스",
+    "유통·매장",
+    "물류",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "단기·아르바이트",
+    "무관"
+   ],
+   "strengths": "아르바이트 공고를 지역·업종별로 모아 보여 주고, 근무 조건 표기가 비교적 상세하다.",
+   "tips": "여러 공고를 비교할 때 시급·근무시간·4대보험 가입 여부를 같은 기준으로 표로 정리하게 한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.alba.co.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "superookie",
+   "name": "슈퍼루키",
+   "url": "https://www.superookie.com/",
+   "sector": "target",
+   "operator": "슈퍼루키",
+   "roles": [
+    "전 직종",
+    "사무·경영"
+   ],
+   "eligibility": [
+    "대학생",
+    "신입",
+    "인턴"
+   ],
+   "strengths": "대학생·취업준비생 대상 인턴·신입 공고와 채용설명회 정보를 모은다. 기업별 인턴 프로그램이 정리돼 있다.",
+   "tips": "인턴을 첫 경력으로 삼으려는 구직자에게 채용연계형과 체험형을 구분해 설명한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.superookie.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "linkareer",
+   "name": "링커리어",
+   "url": "https://linkareer.com/",
+   "sector": "target",
+   "operator": "링커리어",
+   "roles": [
+    "전 직종",
+    "기획·마케팅"
+   ],
+   "eligibility": [
+    "대학생",
+    "신입",
+    "인턴"
+   ],
+   "strengths": "인턴·공모전·대외활동 정보를 한 곳에 모아 대학생이 경력을 쌓는 통로를 보여 준다.",
+   "tips": "경력이 없는 구직자에게는 공모전·대외활동으로 이력서 한 줄을 만드는 순서를 제안한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://linkareer.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "campuspick",
+   "name": "캠퍼스픽",
+   "url": "https://www.campuspick.com/",
+   "sector": "target",
+   "operator": "캠퍼스픽",
+   "roles": [
+    "전 직종",
+    "교육"
+   ],
+   "eligibility": [
+    "대학생"
+   ],
+   "strengths": "대학생 대상 공모전·인턴·교육 프로그램을 모아 활동 조건을 비교할 수 있다.",
+   "tips": "스펙이 아니라 활동 이력으로 방향을 잡아야 하는 저학년 상담에 쓴다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.campuspick.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "kmong",
+   "name": "크몽",
+   "url": "https://kmong.com/",
+   "sector": "target",
+   "operator": "크몽",
+   "roles": [
+    "디자인",
+    "IT·개발",
+    "기획·마케팅",
+    "프로젝트"
+   ],
+   "eligibility": [
+    "프리랜서"
+   ],
+   "strengths": "프로젝트 단위로 재능을 사고파는 국내 대표 프리랜서 마켓이다. 서비스 단위로 가격이 공개돼 있다.",
+   "tips": "프리랜서 전환 상담에서는 수수료·정산 주기·세금(사업소득) 처리를 함께 안내한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://kmong.com:443/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "soomgo",
+   "name": "숨고",
+   "url": "https://soomgo.com/",
+   "sector": "target",
+   "operator": "숨고",
+   "roles": [
+    "서비스",
+    "교육",
+    "디자인"
+   ],
+   "eligibility": [
+    "프리랜서"
+   ],
+   "strengths": "지역 기반 생활 서비스와 과외·수리 같은 실무형 재능을 연결한다. 고객 요청에 견적을 내는 방식이다.",
+   "tips": "경력 전환이 늦은 구직자에게 기술 기반 부업·전환 경로로 제안할 수 있다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://soomgo.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "wishket",
+   "name": "위시켓",
+   "url": "https://www.wishket.com/",
+   "sector": "target",
+   "operator": "위시켓",
+   "roles": [
+    "IT·개발",
+    "디자인",
+    "프로젝트"
+   ],
+   "eligibility": [
+    "프리랜서"
+   ],
+   "strengths": "기업의 IT 프로젝트를 프리랜서와 팀이 수주하는 방식이다. 프로젝트 규모와 예산이 공개된다.",
+   "tips": "개발자 프리랜서 상담에서 프로젝트 단위 계약의 위험(대금 지급·범위 변경)을 함께 설명한다.",
+   "verified_at": "2026-11-16",
+   "http_status": 200,
+   "final_url": "https://www.wishket.com/",
+   "verify_method": "curl"
+  }
+ ]
+}

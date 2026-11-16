@@ -1,0 +1,205 @@
+#!/usr/bin/env python3
+"""portals.json 구조 검증 스크립트.
+
+사용:  python3 portals/data/validate.py
+종료 코드 0 = 오류 0건(경고는 있어도 무관), 1 = 오류 있음.
+
+네트워크를 쓰지 않는다(오프라인 검증). 실제 접속 검증은 2026-11-16에 끝냈고,
+그 결과가 각 항목의 http_status·verified_at 에 들어 있다. 사이트가 폐쇄되면
+verified_at 을 올릴 때 해당 항목을 빼거나 주소를 고친다.
+"""
+import json
+import os
+import re
+import sys
+from collections import Counter
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+PATH = os.path.join(HERE, "portals.json")
+
+EXPECTED = {
+    "total": 63,
+    "by_sector": {"pub": 6, "general": 15, "tech": 12, "expert": 5, "industry": 8, "target": 17},
+}
+VERIFIED_AT = "2026-11-16"
+METHODS = {"curl", "curl-mobile", "browser"}
+REQUIRED = ["id", "name", "url", "sector", "operator", "roles", "eligibility",
+            "strengths", "tips", "verified_at", "http_status", "final_url", "verify_method"]
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+ID_RE = re.compile(r"^[a-z0-9_]+$")
+
+errors = []
+warnings = []
+
+
+def err(m):
+    errors.append(m)
+
+
+def warn(m):
+    warnings.append(m)
+
+
+def main():
+    if not os.path.exists(PATH):
+        err("portals.json 파일이 없습니다: " + PATH)
+        return
+    with open(PATH, encoding="utf-8") as f:
+        try:
+            d = json.load(f)
+        except json.JSONDecodeError as e:
+            err("JSON 파싱 실패: %s" % e)
+            return
+
+    meta = d.get("meta") or {}
+    portals = d.get("portals")
+    sectors = d.get("sectors") or []
+    vocab = d.get("vocabulary") or {}
+
+    if not isinstance(portals, list):
+        err("portals 가 배열이 아닙니다")
+        return
+
+    # ---- meta ----
+    for k in ["dataset", "version", "sector", "built_at", "repository", "notice", "counts", "verification"]:
+        if not meta.get(k):
+            err("meta.%s 누락" % k)
+    if meta.get("built_at") != VERIFIED_AT:
+        warn("meta.built_at=%r (기대 %s)" % (meta.get("built_at"), VERIFIED_AT))
+
+    # ---- sectors / vocabulary ----
+    codes = [s.get("code") for s in sectors]
+    if len(codes) != len(set(codes)):
+        err("sectors.code 중복")
+    for s in sectors:
+        for k in ["code", "name", "desc"]:
+            if not s.get(k):
+                err("sectors[%s].%s 누락" % (s.get("code"), k))
+    if set(codes) != set(EXPECTED["by_sector"]):
+        err("sectors 코드가 기대와 다릅니다: %s" % sorted(set(codes) ^ set(EXPECTED["by_sector"])))
+
+    v_roles = set(vocab.get("roles") or [])
+    v_elig = set(vocab.get("eligibility") or [])
+    if len(v_roles) < 10:
+        err("vocabulary.roles 가 너무 적습니다")
+    if len(v_elig) < 15:
+        err("vocabulary.eligibility 가 너무 적습니다")
+
+    # ---- records ----
+    ids, urls, names = Counter(), Counter(), Counter()
+    by_sector = Counter()
+    fnum = 0
+    for i, p in enumerate(portals):
+        where = "portals[%d]" % i
+        if not isinstance(p, dict):
+            err("%s 가 객체가 아닙니다" % where)
+            continue
+        for k in REQUIRED:
+            if k not in p or p[k] in (None, "", [], {}):
+                err("%s(%s).%s 누락" % (where, p.get("id"), k))
+        pid = p.get("id", "")
+        where = "portals[%s]" % pid
+        if pid and not ID_RE.match(pid):
+            err("%s: id는 소문자·숫자·밑줄만" % where)
+        ids[pid] += 1
+        urls[p.get("url")] += 1
+        names[p.get("name")] += 1
+
+        url = p.get("url") or ""
+        if not url.startswith("https://"):
+            err("%s: https 주소가 아닙니다 (%s)" % (where, url))
+        if " " in url or url.endswith("/ "):
+            err("%s: 주소에 공백" % where)
+        if not p.get("final_url", "").startswith("https://"):
+            err("%s: final_url 이 https 가 아닙니다" % where)
+
+        if p.get("sector") not in codes:
+            err("%s: 알 수 없는 sector %r" % (where, p.get("sector")))
+        else:
+            by_sector[p["sector"]] += 1
+
+        for r in p.get("roles") or []:
+            if r not in v_roles:
+                err("%s: vocabulary.roles 에 없는 값 %r" % (where, r))
+        for e in p.get("eligibility") or []:
+            if e not in v_elig:
+                err("%s: vocabulary.eligibility 에 없는 값 %r" % (where, e))
+
+        if p.get("http_status") != 200:
+            err("%s: http_status 가 200 이 아닙니다 (%r)" % (where, p.get("http_status")))
+        if p.get("verify_method") not in METHODS:
+            err("%s: verify_method %r" % (where, p.get("verify_method")))
+        if p.get("verified_at") != VERIFIED_AT:
+            err("%s: verified_at %r (전수 재검증일 %s 와 다름)" % (where, p.get("verified_at"), VERIFIED_AT))
+
+        st = p.get("strengths") or ""
+        tp = p.get("tips") or ""
+        if len(st) < 25:
+            err("%s: strengths 가 너무 짧습니다(%d자)" % (where, len(st)))
+        if len(st) > 130:
+            warn("%s: strengths 가 깁니다(%d자)" % (where, len(st)))
+        if len(tp) < 20:
+            err("%s: tips 가 너무 짧습니다(%d자)" % (where, len(tp)))
+        if len(tp) > 170:
+            warn("%s: tips 가 깁니다(%d자)" % (where, len(tp)))
+        for field, val in (("strengths", st), ("tips", tp), ("name", p.get("name") or "")):
+            if "<" in val or ">" in val:
+                err("%s: %s 에 태그 문자(<, >)가 있습니다" % (where, field))
+            if "http" in val.lower():
+                err("%s: %s 에 주소를 넣지 않습니다(링크는 url 필드)" % (where, field))
+        if "  " in (p.get("name") or ""):
+            warn("%s: 이름에 연속 공백" % where)
+        if (p.get("name") or "").strip() != p.get("name"):
+            err("%s: 이름 앞뒤 공백" % where)
+
+    for pid, n in ids.items():
+        if n > 1:
+            err("id 중복: %s (%d건)" % (pid, n))
+    for u, n in urls.items():
+        if n > 1:
+            err("url 중복: %s (%d건)" % (u, n))
+    for nm, n in names.items():
+        if n > 1:
+            warn("이름 중복: %s (%d건)" % (nm, n))
+
+    # ---- counts ----
+    total = len(portals)
+    if total != EXPECTED["total"]:
+        err("총 건수 %d (기대 %d) — 의도한 변경이면 EXPECTED 갱신" % (total, EXPECTED["total"]))
+    counts = meta.get("counts") or {}
+    if counts.get("total") != total:
+        err("meta.counts.total=%r 이 실제 %d 와 다릅니다" % (counts.get("total"), total))
+    if counts.get("by_sector") != EXPECTED["by_sector"]:
+        err("meta.counts.by_sector 가 기대와 다릅니다: %r" % (counts.get("by_sector"),))
+    for code, n in EXPECTED["by_sector"].items():
+        if by_sector.get(code, 0) != n:
+            err("sector %s 실제 %d건 (기대 %d)" % (code, by_sector.get(code, 0), n))
+
+    ver = meta.get("verification") or {}
+    if ver.get("passed") != total:
+        err("meta.verification.passed=%r 이 총 건수와 다릅니다" % (ver.get("passed"),))
+    for x in ver.get("excluded") or []:
+        for k in ["name", "url", "reason"]:
+            if not x.get(k):
+                err("verification.excluded 항목에 %s 누락" % k)
+        if not str(x.get("reason")).strip():
+            err("verification.excluded: 제외 사유가 비었습니다 (%s)" % x.get("url"))
+    if len(ver.get("excluded") or []) < 1:
+        warn("verification.excluded 가 비었습니다 — 접속 불가로 뺀 곳을 남겨 두세요")
+
+    # ---- 리포트 ----
+    print("portals.json  ·  총 %d곳  ·  검증일 %s" % (total, VERIFIED_AT))
+    for s in sectors:
+        print("   %-9s %-28s %d" % (s["code"], s["name"], by_sector.get(s["code"], 0)))
+    print("   검증 방식:", dict(Counter(p.get("verify_method") for p in portals)))
+    print("   제외:", len(ver.get("excluded") or []), "곳")
+    print("오류 %d건, 경고 %d건" % (len(errors), len(warnings)))
+    for m in warnings:
+        print("  [경고]", m)
+    for m in errors:
+        print("  [오류]", m)
+    return 1 if errors else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
