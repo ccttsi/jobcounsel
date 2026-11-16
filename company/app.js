@@ -64,7 +64,9 @@
   function has(v) { return v != null && (typeof v !== 'string' || v.trim() !== ''); }
   function num(v) { return typeof v === 'number' && isFinite(v) && v !== 0; } // 0은 "값이 없거나 0"
   function ko(a, b) { return a.localeCompare(b, 'ko'); }
-  function fmt(n) { return Number(n).toLocaleString('ko-KR'); }
+  // 만 단위 숫자를 화면마다 수천 번 맞춘다. 같은 수는 만든 글자를 다시 쓴다(localeCompare 류 Intl 비용 제거).
+  var _fmtC = {};
+  function fmt(n) { var k = Number(n), v = _fmtC[k]; if (v === undefined) v = _fmtC[k] = k.toLocaleString('ko-KR'); return v; }
 
   /* ---------- 찾기용 정규화 ---------- */
   // search_name과 같은 규칙: (주)·주식회사·(유) 등 법인 표기, 공백·기호를 빼고 소문자

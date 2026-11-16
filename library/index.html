@@ -134,7 +134,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 
   .glass { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--hair); }
   .hairline { border-color: var(--hair); }
-  .hud { background: var(--bar); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .hud { background: color-mix(in srgb, var(--bg) 97%, transparent); }
 
   /* theme switch (첫 화면과 같은 자동/밝게/어둡게) */
   .seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 12px; background: var(--panel-soft); border: 1px solid var(--hair); }
@@ -623,7 +623,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   .result mark { background: color-mix(in srgb, var(--cyan) 22%, transparent); color: var(--ink); border-radius: 3px; padding: 0 2px; }
   kbd { font-family: "JetBrains Mono", monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
 
-  .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; transition: all .35s ease; z-index: 90; pointer-events: none; background: var(--toast-bg); color: var(--toast-ink); }
+  .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; transition: transform .35s ease, opacity .35s ease; z-index: 90; pointer-events: none; background: var(--toast-bg); color: var(--toast-ink); }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 </style>
 </head>

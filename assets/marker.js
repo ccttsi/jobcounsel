@@ -154,16 +154,20 @@
     painting = true;
     try {
       if (!HAS_HL) unwrapMarks();
-      buildIndex();
-      liveRanges = {};
       var byColor = {};
-      data.items.forEach(function (it) {
-        var at = findItem(it); it._found = at >= 0;
-        if (at < 0) return;
-        var r = rangeFromOffsets(at, at + it.quote.length); if (!r) { it._found = false; return; }
-        liveRanges[it.id] = r;
-        if (it.type === 'hl' && !prefs.hidden && !it.off) (byColor[it.color] = byColor[it.color] || []).push({ r: r, id: it.id });
-      });
+      liveRanges = {};
+      // 칠한 곳도 메모도 없으면 문서 전체 글자를 색인할 이유가 없다. 화면이 다시 그려질 때마다
+      // (검색 결과·목록 갱신 때마다) body 전체를 훑던 일이 사라진다. 처음 칠할 때 buildIndex가 스스로 만든다.
+      if (data.items.length) {
+        buildIndex();
+        data.items.forEach(function (it) {
+          var at = findItem(it); it._found = at >= 0;
+          if (at < 0) return;
+          var r = rangeFromOffsets(at, at + it.quote.length); if (!r) { it._found = false; return; }
+          liveRanges[it.id] = r;
+          if (it.type === 'hl' && !prefs.hidden && !it.off) (byColor[it.color] = byColor[it.color] || []).push({ r: r, id: it.id });
+        });
+      } else { idx = null; }
       var colors = Object.keys(byColor);
       var all = {}; PENS.forEach(function (p) { all[p.c] = 1; }); all[prefs.penCustom] = 1; colors.forEach(function (c) { all[c] = 1; });
       paintStyles(Object.keys(all));

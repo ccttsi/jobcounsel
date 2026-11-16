@@ -70,9 +70,10 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   -webkit-mask-image:linear-gradient(#000 0,#000 30%,transparent 85%);mask-image:linear-gradient(#000 0,#000 30%,transparent 85%)}
 .a-shell{position:relative;z-index:1;max-width:1680px;margin:0 auto;padding:0 clamp(14px,3vw,40px) 56px}
 
-/* 머리말 */
+/* 머리말. 스크롤하는 동안 매 프레임 다시 흐리게 만들던 backdrop-filter는 뺀다(휴대폰 GPU 부담).
+   색은 그대로 두고 불투명도만 97%로 올린다. 뒤에 지나가는 글이 비치지 않을 만큼만 바꾼다. */
 .a-top{position:sticky;top:0;z-index:30;margin:0 calc(clamp(14px,3vw,40px) * -1);padding:10px clamp(14px,3vw,40px);
-  background:var(--bar);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom-width:1px;
+  background:color-mix(in srgb,var(--bg) 97%,transparent);border-bottom-width:1px;
   display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
 .a-brand{display:flex;flex-direction:column;min-width:0;flex:1 1 180px}
 .a-brand b{font-size:clamp(16px,1vw + 12px,20px);font-weight:750;letter-spacing:-.025em;line-height:1.3}
@@ -264,7 +265,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-card{--acc:var(--a1);position:relative;display:flex;flex-direction:column;min-width:0;border-width:1px;border-radius:18px;
   background:var(--panel);box-shadow:var(--shadow);padding:clamp(18px,1.4vw,24px);overflow:hidden;
   transition:transform .28s cubic-bezier(.2,1.4,.4,1),border-color .2s}
-:root[data-theme="dark"] .a-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+:root[data-theme="dark"] .a-card{background:color-mix(in srgb,#0f172a 86%,transparent)}
 .a-card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .25s;
   background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--acc) 18%,transparent),transparent 62%)}
 .a-card.a-live:hover,.a-card.a-live:focus-within,.a-card.a-lit{transform:translateY(-2px);border-color:color-mix(in srgb,var(--acc) 55%,var(--line));box-shadow:var(--shadow-up)}

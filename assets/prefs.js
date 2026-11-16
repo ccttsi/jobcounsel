@@ -307,28 +307,39 @@
     'html[data-jc-imm] .jc-seal{display:none}' +
     '@media (prefers-reduced-motion:reduce){.jc-boing,.jc-in,.jc-seal.jc-new{animation:none!important}.jc-track i{display:none}}';
 
-  var popSeen = typeof WeakSet === 'function' ? new WeakSet() : null, popT = 0, sealed = false, reduce = null;
+  var popSeen = typeof WeakSet === 'function' ? new WeakSet() : null, popT = 0, sealed = false, sealDone = false, reduce = null;
   var BLOCK = /^(DIV|SECTION|ARTICLE|LI|A|BUTTON|P|H1|H2|H3|H4|UL|OL|DL|HEADER|FIGURE|DETAILS|NAV|TABLE|TR|FORM|ASIDE|BLOCKQUOTE)$/;
   function still() { return immersive || (reduce && reduce.matches); }
   function popRoot() { return contentEl() || d.body; }
+  // 카드 손맛(.jc-pop)을 달 대상 찾기.
+  // 예전에는 한 바퀴 안에서 재기(getBoundingClientRect·getComputedStyle)와 쓰기(classList.add)를 번갈아 했다.
+  // 쓰기가 스타일을 더럽히면 다음 재기가 처음부터 다시 계산해서, 300개짜리 화면에서 0.2초 넘게 멈췄다.
+  // 재기는 한 번에 몰아 하고, 클래스는 마지막에 한꺼번에 단다.
   function scanPop() {
     if (!popSeen) return;
     var list = popRoot().querySelectorAll('a,button,summary,[role="button"]'), vh = window.innerHeight, n = 0;
-    for (var i = 0; i < list.length && n < 300; i++) {
-      var el = list[i]; if (popSeen.has(el)) continue;
-      var r = el.getBoundingClientRect(); if (!r.width) continue; // 아직 안 보이면 다음에 다시 본다
+    var pick = [], i, el, r, cs, bg, hasBg;
+    for (i = 0; i < list.length && n < 300; i++) {
+      el = list[i]; if (popSeen.has(el)) continue;
+      r = el.getBoundingClientRect(); if (!r.width) continue; // 아직 안 보이면 다음에 다시 본다
       popSeen.add(el); n++;
       if (r.width < 120 || r.height < 44 || r.height > vh * .8 || el.closest('[data-jc-still],[data-jc-ignore]')) continue;
-      var cs = getComputedStyle(el);
+      cs = getComputedStyle(el);
       if (parseFloat(cs.borderTopLeftRadius) < 8 || cs.transform !== 'none' || /fixed|sticky|absolute/.test(cs.position) || /inline$/.test(cs.display)) continue;
-      var bg = cs.backgroundColor, hasBg = bg && bg !== 'transparent' && !/rgba\(\s*0,\s*0,\s*0,\s*0\s*\)/.test(bg), hasBorder = parseFloat(cs.borderTopWidth) >= 1 && cs.borderTopStyle !== 'none';
-      if (!hasBg && !hasBorder) continue;
-      el.classList.add('jc-pop'); if (r.width > 420) el.classList.add('jc-pop-l');
+      bg = cs.backgroundColor; hasBg = bg && bg !== 'transparent' && !/rgba\(\s*0,\s*0,\s*0,\s*0\s*\)/.test(bg);
+      if (!hasBg && !(parseFloat(cs.borderTopWidth) >= 1 && cs.borderTopStyle !== 'none')) continue;
+      pick.push(el, r.width > 420 ? 1 : 0);
     }
+    for (i = 0; i < pick.length; i += 2) { pick[i].classList.add('jc-pop'); if (pick[i + 1]) pick[i].classList.add('jc-pop-l'); }
   }
   // 위에 붙어 있는 머리말·탭 줄의 높이만큼 스크롤 여백을 준다. 항목으로 건너뛸 때(scrollIntoView·# 링크) 제목이 그 밑에 가려지지 않게.
-  function scrollPad() {
-    var list = d.querySelectorAll('header,nav,[class*="tab"],[class*="hud"],[class*="hd"],[class*="swap"],[class*="bar"],[class*="sticky"],[class*="top"]'), max = 0, vw = d.documentElement.clientWidth;
+  // 값은 머리말 높이가 바뀔 때만 달라지므로 매번 240개를 다시 재지 않고 1.5초에 한 번, 화면 폭이 바뀔 때만 잰다.
+  var padW = -1, padAt = -1e9;
+  function scrollPad(force) {
+    var now = Date.now(), vw = d.documentElement.clientWidth;
+    if (!force && padW === vw && now - padAt < 1000) return;
+    padAt = now; padW = vw;
+    var list = d.querySelectorAll('header,nav,[class*="tab"],[class*="hud"],[class*="hd"],[class*="swap"],[class*="bar"],[class*="sticky"],[class*="top"]'), max = 0;
     for (var i = 0; i < list.length && i < 240; i++) {
       var el = list[i], cs = getComputedStyle(el); if (cs.position !== 'sticky' && cs.position !== 'fixed') continue;
       var t = parseFloat(cs.top); if (isNaN(t) || t > 160) continue;
@@ -341,12 +352,13 @@
   }
   function queuePop() { clearTimeout(popT); popT = setTimeout(function () { applyFold(); scanPop(); scrollPad(); }, 380); }
   function seal() {
-    if ((window.JC_DESIGN || {}).seal === false || d.querySelector('.jc-seal')) return;
+    if (sealDone || (window.JC_DESIGN || {}).seal === false || d.querySelector('.jc-seal')) return;
     var hs = d.querySelectorAll('h1');
     for (var i = 0; i < hs.length; i++) {
       var h = hs[i]; if (!h.offsetWidth || h.closest('[data-jc-ignore],dialog,[role="dialog"]')) continue;
       if (parseFloat(getComputedStyle(h).fontSize) < 24) continue;
       h.insertAdjacentHTML('beforeend', SEAL);
+      sealDone = true;
       if (!sealed) { sealed = true; var sv = h.querySelector('.jc-seal'); if (sv && !still()) sv.classList.add('jc-new'); }
       return;
     }
@@ -359,7 +371,10 @@
     if (getComputedStyle(hd).position === 'static') hd.style.position = 'relative';
     var el = d.createElement('i'); el.className = 'jc-rule'; el.setAttribute('aria-hidden', 'true'); hd.appendChild(el);
   }
+  var pgMax = -1; // 진행 띠가 쓰는 문서 스크롤 길이 캐시. 스크롤마다 scrollHeight를 다시 읽으면 그 자체가 강제 레이아웃이다
+  function pgMeasure() { var se = d.scrollingElement || root; pgMax = (se ? se.scrollHeight : 0) - window.innerHeight; }
   function enter(records) {
+    pgMax = -1; // 내용이 늘었으니 길이는 다음에 다시 잰다
     /* 정적 영역(data-jc-still: 넘기는 동안 스스로 움직이는 곳)만 바뀌었으면 전체 재탐색을 건너뛴다.
        책장을 넘길 때마다 380ms 뒤에 문서 전체를 다시 재는 일(한 프레임 분량)이 끼어들지 않게. */
     var live = false, i, j;
@@ -370,7 +385,7 @@
     if (!live) return;
     applyFold(); // 새로 그려진 덩어리는 곧바로 접어 둔다(펼쳐졌다 접히는 깜빡임 방지)
     queuePop();
-    if (!d.querySelector('.jc-seal')) setTimeout(seal, 60);
+    if (!sealDone) setTimeout(seal, 60);
     if ((window.JC_DESIGN || {}).enter === false || still()) return;
     var ae = d.activeElement; if (ae && (/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) || ae.isContentEditable)) return; // 글자를 치는 동안에는 가만히
     var added = [];
@@ -399,11 +414,20 @@
     // 진행 띠: 스크롤을 rAF로 묶어 scaleX만 바꾼다(아이폰 사파리 포함 전 기종)
     if (opt.progress !== false) {
       var tr = layer('jc-track'), fill = d.createElement('i'), raf = 0; tr.appendChild(fill);
-      var upd = function () { raf = 0; var se = d.scrollingElement || root, max = se.scrollHeight - window.innerHeight; fill.style.transform = 'scaleX(' + (max > 8 ? Math.min(1, Math.max(0, se.scrollTop / max)) : 0).toFixed(4) + ')'; };
+      var upd = function () {
+        raf = 0; var se = d.scrollingElement || root;
+        if (pgMax < 0) pgMeasure();
+        fill.style.transform = 'scaleX(' + (pgMax > 8 ? Math.min(1, Math.max(0, se.scrollTop / pgMax)) : 0).toFixed(4) + ')';
+      };
       var req = function () { if (!raf && !still()) raf = requestAnimationFrame(upd); };
-      window.addEventListener('scroll', req, { passive: true }); window.addEventListener('resize', req); upd();
+      window.addEventListener('scroll', req, { passive: true });
+      window.addEventListener('resize', function () { pgMax = -1; req(); }, { passive: true });
+      upd();
     }
-    applyFold(); rule(); seal(); scanPop(); scrollPad(); window.addEventListener('resize', queuePop); setTimeout(scanPop, 700); setTimeout(function () { scanPop(); seal(); rule(); }, 2200);
+    applyFold(); rule(); seal(); scanPop(); scrollPad();
+    window.addEventListener('resize', function () { scrollPad(true); queuePop(); });
+    setTimeout(function () { scanPop(); scrollPad(true); }, 700);
+    setTimeout(function () { scanPop(); seal(); rule(); scrollPad(true); }, 2200);
     if (window.MutationObserver) new MutationObserver(enter).observe(d.body, { childList: true, subtree: true });
     d.addEventListener('click', queuePop, true);
     try { d.addEventListener('touchstart', function () {}, { passive: true }); } catch (e) {} // 아이폰에서 :active가 먹도록

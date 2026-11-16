@@ -120,7 +120,7 @@ a{color:inherit}
 .type b{font-size:19px;letter-spacing:-.03em;line-height:1.35}
 .type p{margin:0;font-size:14.5px;line-height:1.6;color:var(--muted)}
 .type .fc{margin-top:auto;padding-top:6px;font-size:13px;color:var(--acc);font-weight:600}
-.type .ck{position:absolute;right:14px;top:14px;width:24px;height:24px;border-radius:50%;border:2px solid var(--line-2);display:grid;place-items:center;color:transparent;transition:all .2s}
+.type .ck{position:absolute;right:14px;top:14px;width:24px;height:24px;border-radius:50%;border:2px solid var(--line-2);display:grid;place-items:center;color:transparent;transition:background-color .2s,border-color .2s,color .2s}
 .type .ck svg{width:14px;height:14px}
 .type[aria-checked="true"]{border-color:var(--acc);box-shadow:var(--glow)}
 .type[aria-checked="true"] .ck{background:var(--acc);border-color:var(--acc);color:var(--bg)}
@@ -328,7 +328,7 @@ input.inp{width:100%;height:48px;padding:0 14px;border-radius:14px;border:1px so
 .actions .btn{flex:1 1 180px}
 .foot{font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:12px;margin-top:32px;line-height:1.7}
 .foot a{color:var(--muted)}
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,20px);padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--bg);font-size:15px;font-weight:650;opacity:0;pointer-events:none;transition:all .3s;z-index:50;max-width:calc(100% - 32px)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,20px);padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--bg);font-size:15px;font-weight:650;opacity:0;pointer-events:none;transition:transform .3s,opacity .3s;z-index:50;max-width:calc(100% - 32px)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
 /* 가로 휴대폰: 여백 줄이기 */
