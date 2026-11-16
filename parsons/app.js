@@ -29,7 +29,7 @@
   var st = { mode: 'scroll', i: 0, busy: false, per: 2 };
   /* 넘기는 동안에는 다른 모듈(assets/marker.js 의 형광펜 재그리기 등)이 문서 전체를 다시 재지 않도록 알린다.
      그런 재측정이 넘김 도중에 끼어들면 한 프레임을 통째로 잡아먹어 60Hz 에서도 툭 끊긴다. */
-  function setBusy(v) { st.busy = v; W.JC_BUSY = v; }
+  function setBusy(v) { var was = !!W.JC_BUSY; st.busy = v; W.JC_BUSY = v; if (was !== !!v) try { W.dispatchEvent(new CustomEvent('jc-busy', { detail: !!v })); } catch (e) {} }   // 도구함(포스트잇)이 넘김 시작·끝을 알 수 있게
 
   /* ---------- 불러오기 ---------- */
   function getJSON(u) {

@@ -240,6 +240,7 @@
 - 2026-11-16 design-lead 첫 실행(PR #46): 다이얼·점 인디케이터·키워드 칩·통찰 카드·이용 안내 한 줄 → `hub-landing.md`, `touch-physics.md`; 숫자 띠·접는 칸·소인 위치 → `card-directory.md`; 결과 `sticky`·건너뛴 자리 → `sim-hud.md`; 펼침 모션 → `touch-physics.md` §3.
 - 2026-11-16 파슨스 이북 넘김(PR #48): 넘김 엔진 전체 → `ebook-reading.md` §2.
 - 2026-11-16 파슨스 모바일 한 쪽 보기(PR #53): 떼어 내기·페이드인·합성기 전용 넘김·한 면 크기 → `ebook-reading.md` §2-b, §3.
+- 2026-11-16 포스트잇 손맛(색 고르면 붙이기·포인터 정확·체공·빈 메모 보존·넘김 페이드) → `touch-physics.md` §10.
 - 2026-11-16 무의미한 세로 스크롤 금지(태화님 중요 지침): 화면 분량 측정 → `design-lead` ⑥, 17번 재구성 → `card-directory.md` §8.
 - 2026-11-16 오늘의 원문(17-1) 엔진: 활자 색인 키워드 띠·원문 리더 3모드·권리 줄 → `card-directory.md` §8, `design/studies/2026-11-16-briefing-news-flow.md`.
 - 2026-11-16 오늘의 브리핑 신설: 데일리 지면 틀·도표 값 원자료 자릿수·출처 배지 → `card-directory.md` §8.
