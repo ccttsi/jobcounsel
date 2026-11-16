@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="NCS(직무)·KECO·KSCO(직업) 세 분류를 한 화면에서 오가는 교차 사전. 계층 탐색, 통합 검색, KSCO → KECO → NCS 역추적, 능력단위와 KSA(지식·기술·태도).">
+<title>분류 교차 사전 · NCS·KECO·KSCO</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f3ede2;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#24578f;--acc-soft:rgba(36,87,143,.09);
+  --c-ncs:#24578f;--c-keco:#8a4b0f;--c-ksco:#2f6b3a;--c-job:#5f5a54;
+  --warn:#8f5f00;--warn-soft:rgba(143,95,0,.10);
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 10px 28px -18px rgba(70,50,25,.30);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#8db8ec;--acc-soft:rgba(141,184,236,.11);
+  --c-ncs:#8db8ec;--c-keco:#f0b27a;--c-ksco:#8fd19e;--c-job:#b4bac6;
+  --warn:#fbbf24;--warn-soft:rgba(251,191,36,.10);
+  --shadow:none;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 24px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media (min-width:900px){.wrap{max-width:1240px;padding:0 32px 28px}}
+
+/* 머리말 */
+.hd{display:flex;align-items:center;gap:8px;padding:12px 0 6px}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:1;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;overflow:hidden}
+.brand i{display:inline-flex;gap:3px}
+.brand i b{width:9px;height:9px;border-radius:2px}
+.brand i b:nth-child(1){background:var(--c-ncs)}.brand i b:nth-child(2){background:var(--c-keco)}.brand i b:nth-child(3){background:var(--c-ksco)}
+.brand span{color:var(--acc)}
+
+/* 한 줄 안내 */
+.kw{display:flex;flex-wrap:wrap;gap:4px 12px;margin:0 0 10px;font-size:13.5px;color:var(--muted);line-height:1.5}
+.kw b{color:var(--ink);font-weight:700}
+
+/* 검색 + 탭 */
+.bar{display:grid;gap:8px;margin-bottom:10px}
+@media (min-width:900px){.bar{grid-template-columns:minmax(0,360px) minmax(0,1fr);align-items:center;gap:16px}}
+.q{position:relative}
+.q input{width:100%;height:48px;padding:0 44px 0 42px;border-radius:14px;border:1px solid var(--line-2);background:var(--panel);font-size:16px;outline:none}
+.q input:focus{border-color:var(--acc)}
+.q svg{position:absolute;left:14px;top:14px;width:20px;height:20px;color:var(--dim);pointer-events:none}
+.q .x{position:absolute;right:2px;top:2px;width:44px;height:44px;border-radius:12px;color:var(--dim);font-size:20px;display:grid;place-items:center}
+.tabs{display:flex;gap:4px;padding:4px;border-radius:14px;background:var(--soft);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:1 0 auto;min-height:44px;padding:4px 12px;border-radius:11px;font-size:14.5px;font-weight:700;color:var(--muted);white-space:nowrap;text-align:center;line-height:1.25}
+.tabs button small{display:block;font-size:11.5px;font-weight:600;color:var(--dim)}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
+.tabs button[aria-selected="true"] small{color:var(--c)}
+
+/* 목록 | 상세 */
+.split{display:grid;gap:16px}
+@media (min-width:900px){.split{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px}}
+.pane{border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:0;height:clamp(340px,calc(100vh - 252px),980px);height:clamp(340px,calc(100dvh - 252px),980px)}
+@media (min-width:900px){.pane{height:clamp(420px,calc(100vh - 214px),980px);height:clamp(420px,calc(100dvh - 214px),980px)}}
+.crumb{display:flex;align-items:center;gap:2px;padding:6px 6px 6px 8px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;flex:none}
+.crumb::-webkit-scrollbar{display:none}
+.crumb button{flex:none;min-height:44px;padding:0 8px;border-radius:10px;font-size:13.5px;font-weight:650;color:var(--muted);white-space:nowrap;max-width:14em;overflow:hidden;text-overflow:ellipsis}
+.crumb button:last-of-type{color:var(--ink)}
+.crumb .sep{flex:none;color:var(--line-2);font-size:13px}
+.crumb .more{margin-left:auto;color:var(--acc);border:1px solid var(--line)}
+@media (min-width:900px){.crumb .more{display:none}}
+.lh{display:flex;align-items:baseline;gap:8px;padding:10px 14px 4px;font-size:13px;color:var(--dim);flex:none}
+.lh b{color:var(--ink);font-weight:750}
+.list{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:2px 6px 10px;-webkit-overflow-scrolling:touch}
+.row{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:6px 8px;border-radius:12px;text-align:left;transition:background .15s}
+.row:hover{background:var(--soft)}
+.row[aria-current="true"]{background:var(--acc-soft);box-shadow:inset 3px 0 0 var(--acc)}
+.row .cd{flex:none;min-width:4.6em;font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.row .nm{flex:1;min-width:0;font-size:15px;font-weight:600;line-height:1.4}
+.row .nm small{display:block;font-size:12px;font-weight:500;color:var(--dim)}
+.row .ct{flex:none;font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.row .ar{flex:none;color:var(--line-2);font-size:15px}
+.bd{display:inline-flex;align-items:center;flex:none;padding:1px 7px;border-radius:7px;font-size:11.5px;font-weight:750;line-height:1.6;color:var(--c);background:color-mix(in srgb,var(--c) 11%,transparent);white-space:nowrap}
+.bd.lg{--c:var(--warn)}
+.morebtn{display:block;width:100%;min-height:44px;margin:6px 0 0;border-radius:12px;background:var(--soft);font-size:14px;font-weight:700;color:var(--ink);text-align:center}
+.empty{margin:12px 8px;padding:14px;border-radius:14px;background:var(--soft);color:var(--muted);font-size:14.5px}
+.loading{padding:24px 14px;color:var(--muted);font-size:15px}
+
+/* 상세 */
+.det{overflow:auto;overscroll-behavior:contain;padding:16px 18px 20px}
+.det-x{display:none}
+.det h2{margin:6px 0 2px;font-size:clamp(21px,2.4vw,26px);line-height:1.3;letter-spacing:-.035em}
+.det .path{margin:0 0 4px;font-size:13px;color:var(--dim)}
+.det .tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.det h3{display:flex;align-items:baseline;gap:8px;margin:18px 0 8px;font-size:14.5px;font-weight:800;letter-spacing:-.01em}
+.det h3 small{font-size:12.5px;font-weight:550;color:var(--dim)}
+.none{display:inline-block;padding:6px 10px;border-radius:10px;background:var(--warn-soft);color:var(--warn);font-size:13.5px;font-weight:650}
+.lk{display:flex;flex-direction:column;gap:4px}
+.lk button{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:6px 10px;border-radius:12px;background:var(--soft);font-size:14.5px;font-weight:600;text-align:left}
+.lk button .cd{flex:none;font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+.lk button .nm{flex:1;min-width:0}
+.lk button .ct{flex:none;font-size:12px;color:var(--dim)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:4px 10px;border-radius:9px;background:var(--soft);font-size:13.5px;color:var(--muted)}
+/* 역추적 사슬 */
+.chain{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.chain>li{position:relative;padding:0 0 12px 22px}
+.chain>li::before{content:"";position:absolute;left:5px;top:16px;bottom:0;width:2px;background:var(--line-2)}
+.chain>li:last-child::before{display:none}
+.chain>li::after{content:"";position:absolute;left:0;top:7px;width:12px;height:12px;border-radius:50%;background:var(--panel);border:3px solid var(--c)}
+.chain>li.cut::after{border-style:dashed;border-color:var(--warn)}
+.chain .st{font-size:12.5px;font-weight:750;color:var(--c);margin:0 0 4px}
+/* 직업 카드 */
+.jc{display:grid;gap:6px}
+.jc .r{display:grid;grid-template-columns:4.8em minmax(0,1fr);gap:8px;align-items:start;padding:8px 10px;border-radius:12px;background:var(--soft)}
+.jc .r>b{font-size:12.5px;font-weight:800;color:var(--c);padding-top:2px}
+.jc .r .v{font-size:14.5px;line-height:1.5}
+.jc .r .v button{display:block;min-height:44px;width:100%;text-align:left;font-weight:650}
+/* 능력단위 */
+.units{display:flex;flex-direction:column;gap:4px}
+.unit{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:6px 10px;border-radius:12px;background:var(--soft);text-align:left}
+.unit .nm{flex:1;min-width:0;font-size:14.5px;font-weight:600;line-height:1.4}
+.unit .mt{flex:none;font-size:12px;color:var(--dim);text-align:right;line-height:1.35;font-variant-numeric:tabular-nums}
+.unit .cdlk{display:inline-block;margin-left:6px;padding:0 5px;border-radius:5px;font-size:11px;font-weight:700;color:var(--warn);background:var(--warn-soft);vertical-align:1px}
+.back{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px 0 8px;margin:-6px 0 2px -6px;border-radius:12px;font-size:14px;font-weight:700;color:var(--acc)}
+/* KSA */
+.ksa{display:flex;flex-direction:column;gap:8px}
+.el{border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.el>summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:48px;padding:6px 12px;cursor:pointer;font-size:14.5px;font-weight:700;line-height:1.4}
+.el>summary::-webkit-details-marker{display:none}
+.el>summary::after{content:"+";margin-left:auto;flex:none;font-size:18px;color:var(--dim)}
+.el[open]>summary::after{content:"–"}
+.el .kb{display:grid;gap:10px;padding:0 12px 12px}
+@media (min-width:1200px){.el .kb{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.el .kb h4{margin:0 0 4px;font-size:12.5px;font-weight:800;color:var(--c)}
+.el .kb ul{margin:0;padding:0;list-style:none;display:grid;gap:3px}
+.el .kb li{font-size:13.5px;line-height:1.55;color:var(--muted)}
+.el .kb .nil{font-size:13px;color:var(--dim)}
+.pick{display:grid;place-items:center;height:100%;min-height:200px;color:var(--dim);font-size:15px;text-align:center;padding:16px}
+.pick b{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
+
+/* 출처·한계 */
+.src{display:grid;gap:16px}
+@media (min-width:900px){.src{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:20px;align-items:start}}
+.src .pane{height:auto;padding:14px 16px}
+.src h2{margin:0 0 8px;font-size:17px;letter-spacing:-.02em}
+.sl{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sl li{display:grid;gap:2px;padding:8px 10px;border-radius:12px;background:var(--soft);font-size:13.5px;line-height:1.5}
+.sl li b{font-size:14px}
+.sl li .lc{color:var(--c-ksco);font-weight:700}
+.sl li a{font-size:13px;color:var(--acc)}
+.lim{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px;color:var(--muted);line-height:1.55}
+
+/* 휴대폰: 상세는 아래에서 올라오는 시트 */
+@media (max-width:899px){
+  .det-wrap{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;background:rgba(20,16,12,.42);opacity:0;pointer-events:none;transition:opacity .22s ease}
+  .det-wrap.on{opacity:1;pointer-events:auto}
+  .det-wrap .pane{width:100%;height:auto;max-height:90vh;max-height:90dvh;border-radius:22px 22px 0 0;border-bottom:0;transform:translateY(28px);transition:transform .28s cubic-bezier(.2,.8,.3,1);padding-bottom:env(safe-area-inset-bottom)}
+  .det-wrap.on .pane{transform:none}
+  .det-x{display:flex;justify-content:flex-end;position:sticky;top:-16px;z-index:2;margin:-8px -10px 0;padding:8px 0 4px;background:var(--panel)}
+  .det-x button{min-width:44px;min-height:44px;padding:0 14px;border-radius:12px;background:var(--soft);font-size:14.5px;font-weight:700}
+}
+@media (prefers-reduced-motion:reduce){.det-wrap,.det-wrap .pane,.row{transition:none!important}}
+html[data-jc-imm] .tabs{display:none}
+
+.foot{margin:12px 0 0;font-size:12.5px;color:var(--dim);line-height:1.6}
+.foot button{min-height:44px;padding:0 4px;font-weight:700;color:var(--acc);text-decoration:underline;text-underline-offset:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <a class="brand" href="./" id="brand"><i aria-hidden="true"><b></b><b></b><b></b></i>분류 <span>교차 사전</span></a>
+    <span data-jc-prefs></span>
+  </header>
+  <p class="kw"><span><b>로그인 없이 사용</b> · 참고·실습용 자료</span><span>공식 매핑 자료에 있는 연결만 표시 · 없는 연결은 「자료 없음」</span></p>
+
+  <main id="main">
+    <div class="bar">
+      <label class="q"><span class="sr">코드나 명칭으로 찾기</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="코드·명칭 (예: 품질, 2381, 간호)" autocomplete="off" enterkeyhint="search"><button type="button" class="x" id="qx" aria-label="검색어 지우기" hidden>×</button></label>
+      <div class="tabs" id="tabs" role="tablist" aria-label="분류 고르기"></div>
+    </div>
+    <div class="split" id="split">
+      <section class="pane" aria-label="목록"><div class="crumb" id="crumb"></div><div class="lh" id="lh"></div><div class="list" id="list"><p class="loading">분류 자료를 불러오고 있습니다…</p></div></section>
+      <div class="det-wrap" id="detWrap"><section class="pane det" id="det" aria-live="polite" tabindex="-1"><div class="pick"><div><b>항목을 고르면 여기에 연결이 보입니다</b>세 분류 사이의 공식 연결, 능력단위, KSA(지식·기술·태도)</div></div></section></div>
+    </div>
+    <div class="src" id="src" hidden></div>
+  </main>
+  <p class="foot" id="foot">출처: 한국산업인력공단(NCS, 공공누리 제1유형) · 한국고용정보원 · 한국기술교육대학교 · 국가데이터처(KSCO 고시) · 고용노동부(NCS 고시 별표). 명칭·코드는 원자료 그대로이며 새로 쓴 해설은 없습니다. <button type="button" data-tab="src">출처·한계 전체 보기</button></p>
+</div>
+<script src="./app.js" defer></script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
