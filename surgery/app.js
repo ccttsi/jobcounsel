@@ -25,7 +25,7 @@
     A.SG = {}; j.vocabularies.signal_types.forEach(function (c) { A.SG[c.code] = c; });
     A.FM = {}; j.vocabularies.resume_formats.forEach(function (c) { A.FM[c.code] = c; });
     readHash(); renderDx(); render();
-    $('foot').textContent = (j.meta.notice || '') + ' 출처 · ' + (j.meta.license || '');
+    $('foot').textContent = '학습·실습용 참고 자료입니다. 특정 회사의 채용공고 원문이나 다른 사람의 합격 자소서를 옮기지 않았고, 외부 AI를 쓰지 않습니다. 모든 문장 예시는 자료실이 직접 만들었으며, [숫자]·[기간] 자리는 내 사실로 채웁니다.';
   }).catch(function () { $('main').innerHTML = '<p class="empty">자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>'; });
   function loadLex() { if (!LEXP) { LEXP = fetch('./data/lexicon.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) { LEX = j; return j; }); LEXP.catch(function () { LEXP = null; }); } return LEXP; }
 
