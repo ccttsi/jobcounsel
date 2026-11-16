@@ -83,9 +83,9 @@
 
 앞의 두 파일의 구조·출처·한계는 `grad/data/README.md`에 있습니다. 새 공시가 나오면 두 파일만 바꾸면 화면의 숫자가 따라옵니다(개설 수는 글이 아니라 데이터에서 셉니다). 제도·금액이 바뀌면 `wiki.json`의 해당 문장과 `checked`를 고칩니다. 커리어데칼코마니와는 연결하지 않는 독립 섹터이며, 검색어와 조건은 주소(hash)에만 남고 저장·전송하지 않습니다.
 
-### 디자인 체계 (`CLAUDE.md` · `DESIGN.md` · `.claude/skills/design-lead.md`)
+### 디자인 체계 (`CLAUDE.md` · `DESIGN.md` · `design/patterns/` · `.claude/skills/design-lead.md`)
 
-화면을 고치기 전에 `DESIGN.md`(테마·토큰, 90:10 원칙, 휴대폰 세로/큰 화면 가로 별도 배치, 초면 핵심→상호작용 세부, transform·opacity만 쓰는 모션 가드레일, 집중 보기 호환 규칙)를 읽습니다. 새 섹터나 디자인 개편은 `.claude/skills/design-lead.md` 루틴(해외 레퍼런스 탐색 → 저작권 안전 필터 → `design/studies/` 학습 노트 → 셀프 검수)을 따르고, 새로 정리한 패턴은 `DESIGN.md` 맨 아래 「패턴 기록」에 쌓습니다. 큰 작업의 중간 상태는 `design/HANDOFF.md`에 남깁니다.
+화면을 고치기 전에 `DESIGN.md`(지적재산권 가드레일, 90:10 원칙, 휴대폰 세로/큰 화면 가로 별도 배치, 초면 핵심→상호작용 세부, transform·opacity만 쓰는 모션 가드레일, 집중 보기 호환 규칙)를 읽고, 작업할 섹터 유형의 `design/patterns/*.md`만 골라 읽습니다 — `ebook-reading.md`(이북·긴글), `card-directory.md`(명함첩·도감·위키), `sim-hud.md`(계산기·HUD), `touch-physics.md`(모바일·태블릿 손맛), `hub-landing.md`(대문). 새 섹터나 디자인 개편은 `.claude/skills/design-lead.md` 루틴(비지시적 탐색 → 지재권 필터 → 시안 2~3개 → `design/studies/` 학습 노트 → 구현 → 손맛 실측 검수 → 적중·도태 기록)을 따르고, 새 노하우는 해당 유형 모듈에 쌓으며 `DESIGN.md`에는 적중 이력·도태 목록만 갱신합니다. 큰 작업의 중간 상태는 `design/HANDOFF.md`에 남깁니다.
 
 ### 집중 보기와 공통 디자인 (`assets/prefs.js`)
 
