@@ -271,6 +271,7 @@
   /* ---------- ① 세로로 쭉 ---------- */
   var io = null;
   function renderScroll() {
+    stopFlip();
     $('reader').innerHTML = '<div class="scroll">' + CARDS.map(function (_, i) { return cardHTML(i); }).join('') + '</div>';
     if (io) io.disconnect();
     if ('IntersectionObserver' in W) {
@@ -303,6 +304,7 @@
     });
   }
   function renderCard() {
+    stopFlip();
     $('reader').innerHTML = '<div class="deck">' + segsHTML() + '<div class="stage" id="stage"><div class="slot" id="slot"></div></div>' + ctlHTML() + '</div>';
     showCard(st.i, 0);
     bindNav($('stage'));
@@ -327,21 +329,51 @@
     }
   }
 
-  /* ---------- ③ 책처럼 펼쳐 ---------- */
+  /* ---------- ③ 책처럼 펼쳐 ----------
+     페이지 칸(.pg)은 한 번만 만들어 두고 내용만 바꾼다. 넘김이 끝날 때 펼침면을 통째로
+     갈아엎으면 브라우저가 새로 그리는 동안 한두 프레임이 비어 깜빡이므로, 낱장이 덮고 있는
+     동안 목표 쪽을 미리 그려 두고 한 프레임 뒤에 낱장을 걷는다. */
+  function cardNode(i) {
+    var box = d.createElement('div');
+    box.innerHTML = cardHTML(i, 'page');
+    return box.firstChild;
+  }
+  function setPage(pg, i) {
+    if (!pg) return;
+    if (i == null) {
+      if (pg.firstChild || pg.dataset.i) { pg.removeAttribute('data-i'); pg.replaceChildren(); }
+      return;
+    }
+    if (pg.dataset.i === String(i) && pg.firstChild) return;   // 이미 그 쪽이면 건드리지 않는다
+    pg.dataset.i = String(i);
+    pg.replaceChildren(cardNode(i));
+  }
+  function dropCasts() {
+    Array.prototype.forEach.call(d.querySelectorAll('.pg .cast'), function (c) { c.remove(); });
+  }
   function renderBook() {
-    $('reader').innerHTML = '<div class="bk-w">' + segsHTML() + '<div class="bk" id="bk"><div class="spread" id="spread"></div></div>' + ctlHTML() + '</div>';
+    stopFlip();
+    $('reader').innerHTML = '<div class="bk-w">' + segsHTML() + '<div class="bk" id="bk"><div class="spread" id="spread"><div class="pg L" id="pgL" hidden></div><div class="pg R" id="pgR"></div><i class="spine" aria-hidden="true"></i></div></div>' + ctlHTML() + '</div>';
     paintSpread();
     bindNav($('bk'));
   }
   function paintSpread() {
     var sp = $('spread'); if (!sp) return;
-    sp.className = 'spread per' + st.per;
-    if (st.per === 2) {
-      var s = st.i - st.i % 2;
-      sp.innerHTML = '<div class="pg L" id="pgL">' + cardHTML(s, 'page') + '</div><div class="pg R" id="pgR">' + cardHTML(s + 1, 'page') + '</div><i class="spine" aria-hidden="true"></i>';
-    } else {
-      sp.innerHTML = '<div class="pg R one" id="pgR">' + cardHTML(st.i, 'page') + '</div>';
+    var per = st.per, L = $('pgL'), R = $('pgR');
+    if (sp.dataset.per !== String(per)) {
+      sp.classList.toggle('per2', per === 2);
+      sp.classList.toggle('per1', per !== 2);
+      sp.dataset.per = String(per);
+      L.hidden = per !== 2;
+      R.classList.toggle('one', per !== 2);
     }
+    if (per === 2) {
+      var s = st.i - st.i % 2;
+      setPage(L, s); setPage(R, s + 1);
+    } else {
+      setPage(L, null); setPage(R, st.i);
+    }
+    dropCasts();
     setPos(st.i); updCtl();
   }
   /* 책장 넘김: 진행값 p(0→1) 하나로 낱장 각도·낱장 음영·아래 쪽에 드리우는 그림자를 함께 그린다.
@@ -352,16 +384,20 @@
     var per = st.per, s = per === 2 ? st.i - st.i % 2 : st.i, t = s + dir * per;
     if (t < 0 || t >= N) return null;
     var sp = $('spread'), L = $('pgL'), R = $('pgR'); if (!sp || !R) return null;
-    var leaf = d.createElement('div'), under = null, cover = null;
+    var leaf = d.createElement('div'), under = null, cover = null, front, back;
     closePop();
     leaf.className = 'leaf ' + (dir > 0 ? 'fwd' : 'back') + (per === 1 ? ' one' : '');
+    /* 낱장 앞면 = 지금 보이는 쪽, 뒷면 = 넘어가며 드러날 쪽.
+       낱장에 덮인 채로 다음 쪽을 미리 그려 두어야 들추는 순간 빈 면이 보이지 않는다. */
     if (per === 2) {
-      if (dir > 0) { leaf.innerHTML = face(s + 1, 'front') + face(s + 2, 'backf'); R.innerHTML = cardHTML(s + 3, 'page'); under = R; cover = L; }
-      else { leaf.innerHTML = face(s, 'front') + face(s - 1, 'backf'); L.innerHTML = cardHTML(s - 2, 'page'); under = L; cover = R; }
+      if (dir > 0) { front = s + 1; back = s + 2; setPage(R, s + 3); under = R; cover = L; }
+      else { front = s; back = s - 1; setPage(L, s - 2); under = L; cover = R; }
     } else {
-      if (dir > 0) { leaf.innerHTML = face(s, 'front') + '<div class="face backf paper"><i class="shade" aria-hidden="true"></i></div>'; R.innerHTML = cardHTML(t, 'page'); under = R; }
-      else { leaf.innerHTML = face(t, 'front') + '<div class="face backf paper"><i class="shade" aria-hidden="true"></i></div>'; cover = R; }
+      if (dir > 0) { front = s; back = t; setPage(R, t); under = R; }
+      else { front = t; back = s; cover = R; }
     }
+    leaf.appendChild(faceNode(front, 'front'));
+    leaf.appendChild(faceNode(back, 'backf'));
     var mk = function (pg) { if (!pg) return null; var c = d.createElement('i'); c.className = 'cast'; c.setAttribute('aria-hidden', 'true'); pg.appendChild(c); return c; };
     var sh = leaf.querySelectorAll('.shade');
     fl = { dir: dir, per: per, t: t, leaf: leaf, p: 0, raf: 0,
@@ -389,11 +425,14 @@
   }
   function animFlip(to, ms, ease) {
     if (!fl) return;
-    var f = fl, from = f.p, t0 = 0;
+    var f = fl, from = f.p, t0 = -1;
     st.busy = true;
     cancelAnimationFrame(f.raf);
+    drawFlip(from);                            // 시작 자세를 먼저 확정한다
     var tick = function (now) {
-      if (!t0) t0 = now;
+      /* 첫 프레임은 새로 만든 낱장·다음 쪽을 실제로 그리는 데 쓰고, 시계는 그다음 프레임부터.
+         (같은 프레임에서 시계를 시작하면 레이아웃·래스터 시간만큼 진행값이 건너뛰어 앞부분이 툭 튄다) */
+      if (t0 < 0) { t0 = now; f.raf = requestAnimationFrame(tick); return; }
       var k = ms > 0 ? Math.min(1, (now - t0) / ms) : 1;
       drawFlip(from + (to - from) * ease(k));
       if (k < 1) f.raf = requestAnimationFrame(tick);
@@ -403,9 +442,39 @@
   }
   function endFlip(commit) {
     if (!fl) return;
-    var t = fl.t; cancelAnimationFrame(fl.raf); fl = null; st.busy = false;
-    if (commit) st.i = t;
+    var f = fl;
+    cancelAnimationFrame(f.raf);
+    if (commit) st.i = f.t;
+    /* 목표 쪽을 낱장이 덮고 있는 동안 먼저 그려 둔다. 낱장이 보여 주던 면과 같은 내용이라
+       바뀌는 것이 보이지 않고, 한 프레임 뒤에 낱장을 걷어도 이미 그려진 면이 드러난다. */
     paintSpread();
+    /* 낱장은 제자리에 내려앉은 자세 그대로 잠시 더 둔다. 그 면과 아래에 새로 그린 쪽이 같은 그림이라
+       걷어도 바뀌는 것이 없고, 그 사이에 아래 쪽이 실제로 그려져 다음 프레임에 빈 면이 드러나지 않는다. */
+    var n = 0, start = 0, done = false, to;
+    var finish = function () { if (done) return; done = true; clearTimeout(to); dropLeaf(f); };
+    to = setTimeout(finish, 420);           // 화면이 가려 rAF 가 멈춰도 낱장이 남지 않게
+    var step = function (now) {
+      if (!start) start = now;
+      n++;
+      if (n >= 2 && now - start >= 120) finish();
+      else f.raf = requestAnimationFrame(step);
+    };
+    f.raf = requestAnimationFrame(step);
+  }
+  function dropLeaf(f) {
+    if (f.leaf && f.leaf.parentNode) f.leaf.parentNode.removeChild(f.leaf);
+    if (fl === f) fl = null;
+    st.busy = false;
+    dropCasts();
+  }
+  function stopFlip() {                     // 보기 방식을 바꾸거나 크기가 달라질 때 낱장을 즉시 거둔다
+    var f = fl;
+    fl = null; st.busy = false;
+    if (f) {
+      cancelAnimationFrame(f.raf);
+      if (f.leaf && f.leaf.parentNode) f.leaf.parentNode.removeChild(f.leaf);
+    }
+    dropCasts();
   }
   var easeIO = function (k) { return k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; };
   var easeOut = function (k) { return 1 - Math.pow(1 - k, 3); };
@@ -417,7 +486,16 @@
     if (!buildFlip(dir)) return;
     animFlip(1, 860, easeIO);
   }
-  function face(i, cls) { return '<div class="face ' + cls + '">' + cardHTML(i, 'page') + '<i class="shade" aria-hidden="true"></i></div>'; }
+  function faceNode(i, cls) {
+    var f = d.createElement('div');
+    f.className = 'face ' + cls;
+    f.appendChild(cardNode(i));
+    var s = d.createElement('i');
+    s.className = 'shade';
+    s.setAttribute('aria-hidden', 'true');
+    f.appendChild(s);
+    return f;
+  }
 
   /* ---------- 넘기기: 누르기·밀기·건반 ---------- */
   function step(dir) {
@@ -490,7 +568,7 @@
     var per = w >= 720 && W.innerWidth > W.innerHeight * 0.95 ? 2 : 1;
     var pw = Math.min(per === 2 ? Math.floor(w / 2) : w, Math.floor(avail * 0.8), 540);
     r.style.setProperty('--pw', pw + 'px');
-    if (st.mode === 'book' && per !== st.per) { st.per = per; if ($('spread')) paintSpread(); }
+    if (st.mode === 'book' && per !== st.per) { st.per = per; stopFlip(); if ($('spread')) paintSpread(); }
     st.per = per;
   }
   var rT = 0;
@@ -512,6 +590,7 @@
   }
   function go(i) {
     closeSheet();
+    stopFlip();
     st.i = Math.max(0, Math.min(N - 1, i));
     if (st.mode === 'scroll') { setPos(st.i); scrollTo(st.i, true); }
     else if (st.mode === 'card') showCard(st.i, 0);

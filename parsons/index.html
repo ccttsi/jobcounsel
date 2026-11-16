@@ -265,9 +265,10 @@ body:not([data-mode="scroll"]) #prog{display:none}
 .leaf.fwd{left:var(--pw);transform-origin:left center}
 .leaf.back{left:0;transform-origin:right center}
 .leaf.one{left:0;transform-origin:left center}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;-webkit-font-smoothing:antialiased;transform:translateZ(0)}
-.face.backf{transform:rotateY(180deg) translateZ(0)}
-.face.paper{background:var(--paper);border-radius:22px 6px 6px 22px}
+/* 앞·뒷면을 z축으로 1px씩 띄워 둔다. 같은 평면에 두면 0°/180° 통과 순간 WebKit 이
+   어느 면을 그릴지 다투며 한 프레임 반짝인다. */
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;-webkit-font-smoothing:antialiased;transform:translateZ(.5px)}
+.face.backf{transform:rotateY(180deg) translateZ(.5px)}
 .face .shade,.pg .cast{position:absolute;inset:0;pointer-events:none;border-radius:inherit;opacity:0}
 .leaf.fwd .backf .shade,.leaf.back .front .shade,.pg.L .cast{border-radius:22px 3px 3px 22px}
 .leaf.fwd .front .shade,.leaf.back .backf .shade,.pg.R .cast{border-radius:3px 22px 22px 3px}
