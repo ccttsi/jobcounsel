@@ -52,9 +52,11 @@
     turn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg>',
     filt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>'
   };
-  var KEYS = ['c', 'g', 'k', 'k2', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in', 'o', 'q'];
-  var FKEYS = ['g', 'k', 'k2', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in'];
-  var META, ITEMS = [], BYID = {}, GRP = {}, SAME = {}, DIST = {}, SRC = {}, ENTREV = [];
+  var KEYS = ['c', 'g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in', 'o', 'q'];
+  var FKEYS = ['g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in'];
+  var META, ITEMS = [], BYID = {}, GRP = {}, SAME = {}, DIST = {}, SRC = {}, ENTREV = [], TAGV = {}, TAGS = {};
+  /* 고용노동부 허가·등록 태그(business_tags, 피클 v1.3.0)를 찾을 때 함께 걸리는 말. 태그 자체는 원자료 그대로 */
+  var TAGSYN = { '근로자파견': '근로자파견 파견 인력파견 파견사업 아웃소싱', '유료직업소개': '유료직업소개 직업소개 고용알선 헤드헌팅 인력소개', '직업정보제공': '직업정보제공 채용정보 구인구직 정보제공' };
   var st = blank(), view = '', listY = 0, lastList = '';
   var TODAY = (function () { var t = new Date(); return t.getFullYear() + '-' + ('0' + (t.getMonth() + 1)).slice(-2) + '-' + ('0' + t.getDate()).slice(-2); })();
 
@@ -123,6 +125,7 @@
     add('group', x.group, 34); add('ind', x.industry, 14); add('min', x.ministry, 14); add('type', x._c === 'PUB' ? x.sub_category : '', 12);
     add('ceo', x.ceo, 7); add('hq', x.headquarters, 6); add('sum', x._c === 'PUB' ? x.business_summary : '', 2);
     add('prod', x._c === 'MID' ? x.main_products : '', 4);
+    (x.business_tags || []).forEach(function (t) { x._f.push({ k: 'tag', t: (TAGV[t] || {}).label || t, s: norm(TAGSYN[t] || t), w: 30 }); (TAGS[t] = TAGS[t] || []).push(x); });   // 찾기는 비슷한 말까지, 보이는 이름은 공식 명칭
     (SAME[x._c + '|' + sn] = SAME[x._c + '|' + sn] || []).push(x);
     x._grp.forEach(function (g) { (GRP[g] = GRP[g] || []).push(x); });
   }
@@ -214,6 +217,7 @@
     if (skip !== 'g' && s.g && x._grp.indexOf(s.g) < 0) return false;
     if (skip !== 'k' && s.k && x._k !== s.k) return false;
     if (skip !== 'k2' && s.k2 && x._k2 !== s.k2) return false;
+    if (skip !== 'bt' && s.bt && (x.business_tags || []).indexOf(s.bt) < 0) return false;
     if (skip !== 'in' && s.in && x.industry !== s.in) return false;
     if (skip !== 'ct' && s.ct && x.corp_type !== s.ct) return false;
     if (skip !== 'ls' && s.ls && !has(x.listed_date)) return false;
@@ -281,7 +285,7 @@
     });
     return t;
   }
-  var FLAB = { group: '기업집단', ind: '업종', min: '주무부처', type: '기관 유형', ceo: '대표자', hq: '소재지', sum: '하는 일', prod: '주요 사업' };
+  var FLAB = { group: '기업집단', ind: '업종', min: '주무부처', type: '기관 유형', ceo: '대표자', hq: '소재지', sum: '하는 일', prod: '주요 사업', tag: '고용노동부 허가·등록' };
   function snippet(f, q) {
     var t = f.t, w = (String(q || '').trim().split(/\s+/)[0] || '').toLowerCase(), at = t.toLowerCase().indexOf(w);
     if (at < 0) at = 0;
@@ -458,11 +462,13 @@
       h += fg('rv', '매출 규모', rvLab(st.rv), '<div class="opts">' + RV.map(function (r) { return chip('rv', r[0], r[1], rc[r[0]]); }).join('') + '</div>');
       h += fg('em', '직원 규모', emLab(st.em), '<div class="opts">' + EM.map(function (r) { return chip('em', r[0], r[1], ec[r[0]]); }).join('') + '</div>');
     }
+    var btc = counts(st, 'bt', function (x) { return x.business_tags || []; });
+    if (Object.keys(btc).length || st.bt) h += fg('bt', '고용서비스 허가·등록', st.bt ? (TAGV[st.bt] || {}).label : '', '<div class="opts">' + Object.keys(TAGV).map(function (t) { return chip('bt', t, TAGV[t].label, btc[t], TAGV[t].basis); }).join('') + '</div><p class="nt">고용노동부 공개 명단과 이름·소재지가 맞은 곳만 표시합니다.</p>');
     return h;
   }
   function actives() {
     var a = [];
-    if (st.g) a.push(['g', st.g]); if (st.k) a.push(['k', KSIC[st.k] ? KSIC[st.k][0] : st.k]); if (st.in) a.push(['in', st.in]); if (st.k2) a.push(['k2', '산업 갈래 KSIC ' + st.k2]);
+    if (st.g) a.push(['g', st.g]); if (st.k) a.push(['k', KSIC[st.k] ? KSIC[st.k][0] : st.k]); if (st.in) a.push(['in', st.in]); if (st.k2) a.push(['k2', '산업 갈래 KSIC ' + st.k2]); if (st.bt) a.push(['bt', (TAGV[st.bt] || {}).label || st.bt]);
     if (st.ct) a.push(['ct', st.ct]); if (st.ls) a.push(['ls', '기업공개 법인']);
     if (st.t) a.push(['t', st.t]); if (st.mi) a.push(['mi', st.mi]); if (st.sd) a.push(['sd', st.sd]);
     if (st.ve) a.push(['ve', st.ve.replace('-', '년 ') + '월 만료']);
@@ -542,9 +548,10 @@
         if (x._c === 'ENT') sub = (has(x.group) ? '<span class="tg">' + esc(x.group) + '</span>' : '') + (has(x.industry) ? '<span>' + esc(x.industry) + '</span>' : '');
         else if (x._c === 'PUB') sub = '<span class="tg">' + esc(x.sub_category) + '</span>' + (has(x.ministry) ? '<span>' + esc(x.ministry) + '</span>' : '');
         else sub = (has(x.industry) ? '<span>' + esc(x.industry) + '</span>' : '') + (has(x.location_sido) ? '<span>' + esc(x.location_sido) + '</span>' : '') || (has(x.biz_no) ? '<span class="code">' + esc(x.biz_no) + '</span>' : '');
+        if (x.business_tags && x.business_tags.length) sub += x.business_tags.map(function (t) { return '<span class="bt">' + esc(t) + '</span>'; }).join('');
         r += '<a class="row k-' + x._c + '" href="#' + x.id + '"><span class="r-n">' + hl(x.name, st.q) + '</span>' +
           '<span class="r-s"><span class="ty">' + CK[x._c].name + '</span>' + sub + '</span>' +
-          (hit && (hit.k === 'ceo' || hit.k === 'hq' || hit.k === 'sum') ? snippet(hit, st.q) : '') + metrics(x, i) + '</a>';
+          (hit && (hit.k === 'ceo' || hit.k === 'hq' || hit.k === 'sum' || hit.k === 'prod' || hit.k === 'tag') ? snippet(hit, st.q) : '') + metrics(x, i) + '</a>';
       });
       r += '</div>' + pager(st.p, pages);
     }
@@ -713,6 +720,10 @@
       (has(x.stock_code) ? ' ' + esc(x.market || '') + '에 상장된 법인입니다(<span class="code">' + esc(x.stock_code) + '</span>' + (has(x.listed_at) ? ', ' + esc(String(x.listed_at).slice(0, 4)) + '년 상장' : '') + ').' : '') +
       (has(x.market_sector) ? ' 증권업종 분류는 ' + esc(x.market_sector) + '입니다.' : '') + '</p>' +
       (has(x.industry) ? '<p class="t fnote">국민연금 신고 업종은 사업장 하나의 업종이어서, 아웃소싱·고용서비스처럼 여러 사업을 하는 회사는 실제 사업과 다를 수 있습니다.</p>' : ''), '', '국민연금 가입 사업장 · 상장 종목 정보 기준');
+    if (x.business_tags_detail && x.business_tags_detail.length) b += sec('고용서비스 허가·등록', '<ul class="btl">' + x.business_tags_detail.map(function (t) {
+      var v = TAGV[t.tag] || {}, S = SRC[t.source] || {};
+      return '<li><b>' + esc(v.label || t.tag) + '</b><span>' + esc(v.basis || '') + '</span><span>' + [t.license_no ? '허가번호 ' + t.license_no : '', t.office ? t.office + ' 관할' : '', '기준 ' + t.as_of].filter(Boolean).map(esc).join(' · ') + '</span><span class="nt">' + esc(S.name || t.source) + (t.match === 'district' ? ' · 이름과 시·군·구까지 일치' : ' · 이름과 주소 일치') + '</span></li>';
+    }).join('') + '</ul>', '', '고용노동부 공개 명단 대조');
     if (x._c === 'MID' && has(x.main_products)) b += sec('주요 사업', '<p class="t">' + esc(x.main_products) + '</p>', '', x.main_products_source === 'WIKI' ? '위키백과 첫 문장에서 확인' : '상장사 기업개요에서 확인');
     if (x._c === 'MID' && has(x.official_url)) b += sec('공식 홈페이지', '<p class="t"><a href="' + esc(safeUrl(x.official_url)) + '" target="_blank" rel="noopener noreferrer">' + esc(safeUrl(x.official_url)) + '</a></p>', '', x.official_url_checked === 'sources' ? '출처 2곳 일치(사이트 직접 접속은 확인 못함)' : '접속해 회사명·사업자번호 대조');
     if (x._c === 'MID') b += sec('목록에 대해', '<p class="t">정부는 중견기업 전체 명단을 공개하지 않습니다. 이 목록은 확인서를 받은 기업만 담은 하한 집합이어서, 법적으로 중견기업이어도 확인서를 받지 않았으면 빠집니다. 업종·가입자수·소재지는 이름과 사업자등록번호 앞 6자리가 같은 국민연금 사업장을 찾아 붙인 값이고, 주요 사업은 위키백과·상장사 기업개요에서 확인된 것만, 홈페이지는 실제로 접속해 회사명이 확인된 것만 실었습니다.</p>');
@@ -734,6 +745,11 @@
       if (has(x.industry)) s2 += relSec(ITEMS.filter(function (y) { return y._c === 'ENT' && y.industry === x.industry; }), '같은 업종 · ' + x.industry, '공정위 주된 업종이 같은 곳', q1({ c: 'ENT', in: x.industry }));
       if (x._k2) s2 += relSec(ITEMS.filter(function (y) { return y._k2 === x._k2; }), '같은 산업 갈래 · KSIC ' + x._k2, '업종 코드 앞 세 자리가 같은 곳', q1({ c: 'ENT', k2: x._k2 }));
     }
+    (x.business_tags || []).forEach(function (t) {
+      var L = (TAGS[t] || []).slice().sort(function (a, b) { return cmpNum('_emp', 1)(a, b) || ko(a._n, b._n); }); if (L.length < 2) return;
+      s2 += '<section class="box s2" data-run><h2>같은 허가·등록 · ' + esc((TAGV[t] || {}).label || t) + '<small>' + fmt(L.length) + '곳 · 대기업·중견·공공 함께 · 인원 순</small></h2>' + hbars(L, x, '_emp', function (v) { return ppl(v); }, 6) +
+        (L.length > 6 ? '<a class="more" href="' + q1({ bt: t }) + '">' + fmt(L.length) + '곳 모두 보기 ›</a>' : '') + '</section>';
+    });
     if (x._c === 'MID' && has(x.industry)) {
       var MI = ITEMS.filter(function (y) { return y._c === 'MID' && y.industry === x.industry; }).sort(function (a, b) { return cmpNum('_emp', 1)(a, b) || ko(a._n, b._n); });
       if (MI.length > 1) s2 += '<section class="box s2 k-MID" data-run><h2>' + esc(x.industry) + '<small>' + fmt(MI.length) + '곳 · 가입자 순</small></h2>' + hbars(MI, x, '_emp', function (v) { return fmt(v) + '명'; }, 6) +
@@ -874,6 +890,7 @@
     fetchJson('./data/companies.json').then(function (D) {
       META = D.meta || {}; ITEMS = D.companies || [];
       (META.sources || []).forEach(function (s) { SRC[s.id] = s; });
+      (META.tag_vocabulary || []).forEach(function (t) { TAGV[t.tag] = t; });
       if (SRC.FTC) SRC.FTC.short = '공정거래위원회'; if (SRC.ALIO) SRC.ALIO.short = '알리오'; if (SRC.MME) SRC.MME.short = '중견기업정보마당'; if (SRC.NPS) SRC.NPS.short = '국민연금공단'; if (SRC.WIKI) SRC.WIKI.short = '위키백과'; if (SRC.WD) SRC.WD.short = '위키데이터'; if (SRC.LIST) SRC.LIST.short = '상장 종목 정보';
       for (var i = 0; i < ITEMS.length; i++) { BYID[ITEMS[i].id] = ITEMS[i]; prep(ITEMS[i]); }
       ENTREV = ITEMS.filter(function (x) { return x._c === 'ENT' && x._rev > 0; }).sort(function (a, b) { return b._rev - a._rev; });
