@@ -165,13 +165,23 @@
      긴 세로 나열을 하지 않는다: 제호·핵심 수치 아래를 「이슈 카드 / 레이더 / 출처」 탭으로 나누고,
      이슈는 색인 + 카드 한 장, 카드 안 3단은 넓으면 가로 3열·좁으면 ①②③ 탭(순서 그대로). */
   var current = null, UI = { tab: 'issues', card: 0, step: {}, radar: 0, theme: '' };
+  /* 지난 호 목록 — archive/<날짜>.json 은 자기 날짜만 archive_dates 에 담고 있어서, 그 파일만 보고 그리면
+     지난 호를 연 순간 「지난 호 고르기」가 사라져 최신 호로 돌아올 길이 없다. 한 번이라도 본 날짜를 모아 두고,
+     「최신」 표시는 실제 최신 호(오늘)에만 붙인다. */
+  var knownDates = [], latestDate = '';
+  function archiveList(d) {
+    var seen = {};
+    knownDates.concat(arr(d.archive_dates)).forEach(function (x) { x = String(x || ''); if (/^\d{4}-\d{2}-\d{2}$/.test(x)) seen[x] = 1; });
+    knownDates = Object.keys(seen).sort().reverse();
+    return knownDates;
+  }
   var STEP_NAMES = ['무슨 일', '수치·근거', '상담 시사점'];
   function render(d, opts) {
     opts = opts || {};
     var E = d.edition || {}, srcById = {};
     arr(d.sources).forEach(function (s) { if (s && s.id) srcById[s.id] = s; });
     var ok = function (id, where) { if (srcById[id]) return true; console.warn('[briefing] 출처 id 없음:', id, where); return false; };
-    var dates = arr(d.archive_dates);
+    var dates = archiveList(d);
 
     var cards = arr(d.cards).slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); }).filter(function (c) {
       var sid = c.source && c.source.source_id;
@@ -187,8 +197,9 @@
       status = '<p class="status" role="status"><b>' + (E.data_status === 'fallback' ? '오늘 자 갱신 실패' : '일부 자료 누락') + '</b> ' + esc(E.data_status_note || '이번 호는 카드 수가 평소보다 적습니다.') + '</p>';
     }
     if (opts.notice) status += '<p class="status" role="status">' + esc(opts.notice) + '</p>';
+    var latestOn = latestDate || dates[0];
     var picker = dates.length > 1 ? '<label><span class="sr">지난 호 고르기</span><select id="dateSel">' +
-      dates.map(function (x) { return '<option value="' + esc(x) + '"' + (x === E.date ? ' selected' : '') + '>' + esc(x) + (x === dates[0] ? ' (최신)' : '') + '</option>'; }).join('') + '</select></label>' : '';
+      dates.map(function (x) { return '<option value="' + esc(x) + '"' + (x === E.date ? ' selected' : '') + '>' + esc(x) + (x === latestOn ? ' (최신)' : '') + '</option>'; }).join('') + '</select></label>' : '';
 
     var html = '<div class="top"><header class="mast"><div class="mast-top"><span class="ed"><b>제' + esc(E.no) + '호</b><span class="num">' + esc(E.date) + ' (' + esc(E.weekday) + ')</span><span>' + esc(E.reading_minutes || 3) + '분 읽기</span></span>' + picker + '</div>' +
       '<h1>' + esc(E.title) + '</h1>' + (E.subtitle ? '<p>' + esc(E.subtitle) + '</p>' : '') + status + edBand(d) + '</header>';
@@ -357,7 +368,7 @@
     var o = $('pvB').hidden; $('pvB').hidden = !o; this.setAttribute('aria-expanded', String(o)); $('pvL').textContent = o ? '접기' : '펼치기';
   });
   get(BASE + 'briefing.json').then(function (d) {
-    latest = d;
+    latest = d; latestDate = (d.edition || {}).date || ''; archiveList(d);   // 지난 호 직접 링크(?date=)로 들어와도 목록이 남게
     var want = new URLSearchParams(location.search).get('date');
     current = { _cards: arr(d.cards).slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); }) }; fromHash();
     if (want && /^\d{4}-\d{2}-\d{2}$/.test(want) && want !== (d.edition || {}).date) go(want); else render(d);
