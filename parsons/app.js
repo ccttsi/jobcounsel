@@ -27,6 +27,9 @@
 
   var BOOK = null, G = {}, CARDS = [], CH = [], N = 0;
   var st = { mode: 'scroll', i: 0, busy: false, per: 2 };
+  /* 넘기는 동안에는 다른 모듈(assets/marker.js 의 형광펜 재그리기 등)이 문서 전체를 다시 재지 않도록 알린다.
+     그런 재측정이 넘김 도중에 끼어들면 한 프레임을 통째로 잡아먹어 60Hz 에서도 툭 끊긴다. */
+  function setBusy(v) { st.busy = v; W.JC_BUSY = v; }
 
   /* ---------- 불러오기 ---------- */
   function getJSON(u) {
@@ -272,6 +275,7 @@
   var io = null;
   function renderScroll() {
     stopFlip();
+    $('reader').removeAttribute('data-jc-still');
     $('reader').innerHTML = '<div class="scroll">' + CARDS.map(function (_, i) { return cardHTML(i); }).join('') + '</div>';
     if (io) io.disconnect();
     if ('IntersectionObserver' in W) {
@@ -305,6 +309,7 @@
   }
   function renderCard() {
     stopFlip();
+    $('reader').removeAttribute('data-jc-still');
     $('reader').innerHTML = '<div class="deck">' + segsHTML() + '<div class="stage" id="stage"><div class="slot" id="slot"></div></div>' + ctlHTML() + '</div>';
     showCard(st.i, 0);
     bindNav($('stage'));
@@ -353,8 +358,12 @@
   }
   function renderBook() {
     stopFlip();
+    /* 책 보기에서는 쪽이 갈릴 때마다 새 덩어리 등장 모션(.jc-in)이 겹치지 않게 한다.
+       넘기는 동작 자체가 전환이라, 그 위에 또 페이드인이 생기면 끝마다 화면이 한 번 번진다. */
+    $('reader').setAttribute('data-jc-still', '');
     $('reader').innerHTML = '<div class="bk-w">' + segsHTML() + '<div class="bk" id="bk"><div class="spread" id="spread"><div class="pg L" id="pgL" hidden></div><div class="pg R" id="pgR"></div><i class="spine" aria-hidden="true"></i></div></div>' + ctlHTML() + '</div>';
     paintSpread();
+    sizeOne();
     bindNav($('bk'));
   }
   function paintSpread() {
@@ -375,6 +384,24 @@
     }
     dropCasts();
     setPos(st.i); updCtl();
+  }
+  /* 한 쪽 보기(좁은 화면)에서는 종이 한 장이 화면에 꼭 들어오게 잡는다. 위의 머리말·단추가
+     차지한 만큼을 빼고 남은 높이를 재서, 가로로 꽉 차면서 넘침 없이 들어가는 크기를 고른다. */
+  function sizeOne() {
+    var r = $('reader'), sp = $('spread');
+    if (!r || !sp) return;
+    if (st.mode !== 'book' || st.per !== 1 || W.innerWidth > 700) {
+      if (r.style.getPropertyValue('--ph')) r.style.removeProperty('--ph');
+      return;
+    }
+    var vh = W.innerHeight, w = r.clientWidth;
+    var top = sp.getBoundingClientRect().top + W.pageYOffset;
+    var room = Math.max(240, vh - top - 84);          // 아래 단추·여백을 빼고 남는 높이
+    var pw = Math.round(Math.min(w, 540, room / 1.35));
+    var ph = Math.round(Math.min(room, pw * 1.35));
+    if (pw < 200) { pw = Math.max(200, Math.round(w * .9)); ph = Math.round(pw * 1.35); }
+    if (r.style.getPropertyValue('--pw') !== pw + 'px') r.style.setProperty('--pw', pw + 'px');
+    if (r.style.getPropertyValue('--ph') !== ph + 'px') r.style.setProperty('--ph', ph + 'px');
   }
   /* 책장 넘김: 진행값 p(0→1) 하나로 낱장 각도·낱장 음영·아래 쪽에 드리우는 그림자를 함께 그린다.
      모든 그림자는 p=0과 p=1에서 0이 되도록 잡아, 끌기 시작·놓기·내려앉은 직후에 끊김 없이 이어진다. */
@@ -426,7 +453,7 @@
   function animFlip(to, ms, ease) {
     if (!fl) return;
     var f = fl, from = f.p, t0 = -1;
-    st.busy = true;
+    setBusy(true);
     cancelAnimationFrame(f.raf);
     drawFlip(from);                            // 시작 자세를 먼저 확정한다
     var tick = function (now) {
@@ -464,12 +491,113 @@
   function dropLeaf(f) {
     if (f.leaf && f.leaf.parentNode) f.leaf.parentNode.removeChild(f.leaf);
     if (fl === f) fl = null;
-    st.busy = false;
+    setBusy(false);
     dropCasts();
   }
+  /* ---------- ③-b 한 쪽 보기: 떼어 내기 · 페이드인 ----------
+     한 쪽 보기(모바일)에는 3D 낱장·접힘 음영·그림자 갱신이 없다. 넘기는 동안 움직이는 값은
+     transform 과 opacity 두 가지뿐이고, 그마저 브라우저 합성기(compositor)가 처리한다.
+     JS 프레임 루프도, 레이아웃도, 페인트도 넘김 중에는 없다 — 화면 주사율(60·120·144Hz)을
+     그대로 따라간다.
+       다음 쪽: 보던 종이가 위 모서리에서 떼어져 비스듬히 떨어지며 옅어진다. 떼는 동안에도
+                아래에는 다음 쪽이 이미 그려져 있어 빈 면이 드러나지 않는다.
+       이전 쪽: 새 종이가 살짝 비껴 있다가 제자리에 안착하며 나타난다(페이드인). */
+  var mfl = null;
+  var CAN_ANIM = !!(W.Element && W.Element.prototype && W.Element.prototype.animate);
+  var KF_TEAR = [
+    { transform: 'translate3d(0,0,0) rotate(0deg) scale(1)', opacity: 1, offset: 0 },
+    { transform: 'translate3d(-.5%,-1.2%,0) rotate(-2.2deg) scale(1.004)', opacity: 1, offset: .12 },
+    { transform: 'translate3d(1.6%,7%,0) rotate(1.8deg) scale(.982)', opacity: .84, offset: .4 },
+    { transform: 'translate3d(5%,16%,0) rotate(5deg) scale(.935)', opacity: .34, offset: .7 },
+    { transform: 'translate3d(9%,24%,0) rotate(8.5deg) scale(.9)', opacity: 0, offset: 1 }
+  ];
+  var KF_FADE = [
+    { transform: 'translate3d(-3%,2.2%,0)', opacity: 0, offset: 0 },
+    { transform: 'translate3d(0,0,0)', opacity: 1, offset: 1 }
+  ];
+  function mLeaf(i) {
+    var el = d.createElement('div');
+    el.className = 'mleaf';
+    el.setAttribute('aria-hidden', 'true');
+    el.appendChild(cardNode(i));
+    return el;
+  }
+  function mBuild(dir) {
+    if (mfl) return null;
+    var s = st.i, t = s + dir;
+    if (t < 0 || t >= N) return null;
+    var sp = $('spread'), R = $('pgR');
+    if (!sp || !R) return null;
+    closePop();
+    var layer = mLeaf(dir > 0 ? s : t), kf, dur, ease;
+    if (dir > 0) {
+      setPage(R, t);                       // 떼는 종이 아래에 다음 쪽을 먼저 깔아 둔다
+      layer.classList.add('tear');
+      kf = KF_TEAR; dur = 520; ease = 'cubic-bezier(.33,.42,.26,1)';
+    } else {
+      layer.classList.add('fade');
+      kf = KF_FADE; dur = 400; ease = 'cubic-bezier(.22,.68,.24,1)';
+    }
+    sp.appendChild(layer);
+    var anim = null;
+    if (CAN_ANIM) {
+      anim = layer.animate(kf, { duration: dur, easing: ease, fill: 'both' });
+      anim.pause(); anim.currentTime = 0;
+    }
+    setBusy(true);
+    mfl = { dir: dir, s: s, t: t, layer: layer, anim: anim, dur: dur, p: 0, timer: 0 };
+    return mfl;
+  }
+  function mSeek(p) {                       // 끄는 동안: 진행값만 옮긴다(합성기 값 두 개)
+    if (!mfl) return;
+    p = Math.max(0, Math.min(1, p)); mfl.p = p;
+    if (mfl.anim) mfl.anim.currentTime = p * mfl.dur;
+  }
+  function mPlay(to, ms) {                  // 놓았을 때: 남은 만큼만 이어서 GPU 로 완결
+    var f = mfl; if (!f) return;
+    if (!f.anim) { mFinish(to >= .5); return; }
+    var rest = Math.abs(to - f.p);
+    if (rest < .002) { mFinish(to >= .5); return; }
+    clearTimeout(f.timer);
+    f.anim.playbackRate = (to > f.p ? 1 : -1) * (rest * f.dur) / Math.max(120, ms);
+    f.anim.onfinish = function () { mFinish(to >= .5); };
+    f.anim.play();
+    f.timer = setTimeout(function () { mFinish(to >= .5); }, ms + 400);   // 화면이 가려도 남지 않게
+  }
+  function mFinish(commit) {
+    var f = mfl; if (!f) return;
+    mfl = null; clearTimeout(f.timer);
+    if (f.anim) { f.anim.onfinish = null; try { f.anim.cancel(); } catch (_) {} }
+    if (commit) st.i = f.t;
+    var R = $('pgR');
+    /* 이전 쪽으로 갈 때는 방금 나타난 종이를 그대로 바닥 칸으로 옮긴다. 같은 DOM 이라
+       다시 그리지 않고, 옮기는 순간에도 화면에 보이는 것은 같은 그림이다(빈 면 0). */
+    if (commit && f.dir < 0 && R && f.layer.firstChild) { R.dataset.i = String(f.t); R.replaceChildren(f.layer.firstChild); }
+    if (f.layer.parentNode) f.layer.parentNode.removeChild(f.layer);
+    setBusy(false);
+    paintSpread();
+  }
+  function mStop() {
+    var f = mfl; if (!f) return false;
+    mfl = null; clearTimeout(f.timer); setBusy(false);
+    if (f.anim) { f.anim.onfinish = null; try { f.anim.cancel(); } catch (_) {} }
+    if (f.layer && f.layer.parentNode) f.layer.parentNode.removeChild(f.layer);
+    return true;
+  }
+  function mFlip(dir) {
+    if (mfl) return;
+    if (!mBuild(dir)) return;
+    mPlay(1, mfl.dir > 0 ? 520 : 400);
+  }
+  function mRelease(cancel, v) {            // v: 넘기는 방향으로의 손가락 속도(px/ms)
+    var f = mfl; if (!f) return;
+    var go = !cancel && (f.p > .32 || (v > .5 && f.p > .04)) && !(v < -.4);
+    mPlay(go ? 1 : 0, go ? Math.max(130, 330 * (1 - f.p)) : Math.max(130, 240 * f.p));
+  }
   function stopFlip() {                     // 보기 방식을 바꾸거나 크기가 달라질 때 낱장을 즉시 거둔다
+    if (mStop() && $('spread') && st.mode === 'book') paintSpread();
     var f = fl;
-    fl = null; st.busy = false;
+    fl = null; setBusy(false);
     if (f) {
       cancelAnimationFrame(f.raf);
       if (f.leaf && f.leaf.parentNode) f.leaf.parentNode.removeChild(f.leaf);
@@ -479,10 +607,11 @@
   var easeIO = function (k) { return k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; };
   var easeOut = function (k) { return 1 - Math.pow(1 - k, 3); };
   function flip(dir) {
-    if (st.busy || fl) return;
+    if (st.busy || fl || mfl) return;
     var per = st.per, s = per === 2 ? st.i - st.i % 2 : st.i, t = s + dir * per;
     if (t < 0 || t >= N) return;
     if (reduce) { st.i = t; paintSpread(); return; }
+    if (per === 1 && CAN_ANIM) { mFlip(dir); return; }   // 한 쪽 보기: 떼어 내기·페이드인
     if (!buildFlip(dir)) return;
     animFlip(1, 860, easeIO);
   }
@@ -517,26 +646,40 @@
       if (!drag) {
         if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
         if (e.target.closest('.tb-w') || (W.getSelection && String(W.getSelection()).length > 0)) return;
-        if (!buildFlip(dx < 0 ? 1 : -1)) { on = false; return; }
-        var pw = fl.leaf.offsetWidth || 400;
-        drag = { span: fl.per === 2 ? pw * 1.5 : pw * 1.1, lx: e.clientX, lt: e.timeStamp, v: 0 };
+        var k = dx < 0 ? 1 : -1;
+        if (st.per === 1 && CAN_ANIM) {                // 한 쪽 보기: 떼어 내기·페이드인을 끌어 당긴다
+          if (!mBuild(k)) { on = false; return; }
+          drag = { span: (mfl.layer.offsetWidth || 400) * 1.05, lx: e.clientX, lt: e.timeStamp, v: 0, mob: true };
+        } else {
+          if (!buildFlip(k)) { on = false; return; }
+          var pw0 = fl.leaf.offsetWidth || 400;
+          drag = { span: fl.per === 2 ? pw0 * 1.5 : pw0 * 1.1, lx: e.clientX, lt: e.timeStamp, v: 0, mob: false };
+        }
         try { area.setPointerCapture(e.pointerId); } catch (_) {}
       }
-      if (!fl) return;
       var dt = Math.max(1, e.timeStamp - drag.lt);
       drag.v = drag.v * .6 + ((e.clientX - drag.lx) / dt) * .4; drag.lx = e.clientX; drag.lt = e.timeStamp;
-      drawFlip((fl.dir > 0 ? -dx : dx) / drag.span);
+      if (drag.mob) {
+        if (!mfl) return;
+        mSeek((mfl.dir > 0 ? -dx : dx) / drag.span);
+      } else {
+        if (!fl) return;
+        drawFlip((fl.dir > 0 ? -dx : dx) / drag.span);
+      }
       e.preventDefault();
     });
     var release = function (cancel) {
-      var f = fl, v = drag.v * (f.dir > 0 ? -1 : 1); drag = null;
+      var d = drag; drag = null; if (!d) return;
+      if (d.mob) { if (mfl) mRelease(cancel, d.v * (mfl.dir > 0 ? -1 : 1)); return; }
+      if (!fl) { setBusy(false); return; }
+      var f = fl, v = d.v * (f.dir > 0 ? -1 : 1);
       var go = !cancel && (f.p > .38 || (v > .45 && f.p > .05)) && !(v < -.35);
       var rest = go ? 1 - f.p : f.p;
       animFlip(go ? 1 : 0, Math.max(180, 620 * rest), easeOut);
     };
     area.addEventListener('pointerup', function (e) {
       if (!on) return; on = false;
-      if (drag) { if (fl) release(false); else drag = null; return; }
+      if (drag) { release(false); return; }
       if (swallow) { swallow = false; return; }
       if (e.target.closest('.gl, a, button, .tb-w')) return;
       if (W.getSelection && String(W.getSelection()).length > 0) return;
@@ -547,7 +690,7 @@
         step(e.clientX - r.left < r.width * (st.mode === 'book' && st.per === 2 ? 0.5 : 0.35) ? -1 : 1);
       }
     });
-    area.addEventListener('pointercancel', function () { on = false; if (drag) { if (fl) release(true); else drag = null; } });
+    area.addEventListener('pointercancel', function () { on = false; if (drag) release(true); });
     $('bPrev').addEventListener('click', function () { step(-1); });
     $('bNext').addEventListener('click', function () { step(1); });
   }
@@ -570,6 +713,7 @@
     r.style.setProperty('--pw', pw + 'px');
     if (st.mode === 'book' && per !== st.per) { st.per = per; stopFlip(); if ($('spread')) paintSpread(); }
     st.per = per;
+    if ($('spread')) sizeOne();
   }
   var rT = 0;
   W.addEventListener('resize', function () { clearTimeout(rT); rT = setTimeout(function () { fit(); updCtl(); }, 120); });
@@ -585,7 +729,10 @@
     else {
       if (io) { io.disconnect(); io = null; }
       if (m === 'card') renderCard(); else renderBook();
-      if (keep) { var y = $('bar').getBoundingClientRect().top + W.pageYOffset - 6; if (Math.abs(W.pageYOffset - y) > 4) W.scrollTo(0, y); }
+      /* 좁은 화면의 책 보기는 종이 한 장이 화면에 들어오는 것이 기준이다.
+         머리말까지 보이도록 맨 위로 돌아간다. */
+      if (m === 'book' && W.innerWidth <= 700) { if (W.pageYOffset > 0) W.scrollTo(0, 0); }
+      else if (keep) { var y = $('bar').getBoundingClientRect().top + W.pageYOffset - 6; if (Math.abs(W.pageYOffset - y) > 4) W.scrollTo(0, y); }
     }
   }
   function go(i) {

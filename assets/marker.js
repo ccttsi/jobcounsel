@@ -182,7 +182,17 @@
     paintFab();
   }
   var repaintT;
-  function scheduleRepaint(ms) { clearTimeout(repaintT); repaintT = setTimeout(repaint, ms == null ? 350 : ms); }
+  var repaintTries = 0;
+  function scheduleRepaint(ms) {
+    clearTimeout(repaintT);
+    repaintT = setTimeout(function () {
+      /* 책장을 넘기는 중(window.JC_BUSY)에는 문서 전체를 다시 재지 않는다. 그 재측정이 넘김 도중에
+         끼어들면 한 프레임을 통째로 써 버려 화면이 툭 끊긴다. 넘김이 끝난 뒤로 미룬다. */
+      if (window.JC_BUSY && repaintTries < 12) { repaintTries++; scheduleRepaint(160); return; }
+      repaintTries = 0;
+      repaint();
+    }, ms == null ? 350 : ms);
+  }
 
   /* ---------------- 선택 영역 → 형광펜 ---------------- */
   function selectionRange() {
@@ -649,7 +659,11 @@
   function isOurs(e) { var p = e.composedPath ? e.composedPath() : []; return p.indexOf(uiHost) >= 0 || p.indexOf(layerHost) >= 0; }
 
   /* 하단에 고정된 막대(탭바 등)가 있으면 그 위로 비켜 앉는다 */
+  var liftT = 0, liftTries = 0;
   function lift() {
+    /* 책장을 넘기는 중에는 문서를 재지 않는다(넘김이 끝난 뒤로 미룬다) */
+    if (window.JC_BUSY && liftTries < 12) { liftTries++; clearTimeout(liftT); liftT = setTimeout(lift, 200); return; }
+    liftTries = 0;
     if (!uiHost) return;
     var x = innerWidth - 40, y = innerHeight - 6, l = 0;
     var els = d.elementsFromPoint ? d.elementsFromPoint(x, y) : [];
