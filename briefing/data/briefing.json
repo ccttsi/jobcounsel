@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2.0",
-  "updated_at": "2026-11-17T07:09:00+09:00",
+  "updated_at": "2026-11-17T07:11:00+09:00",
   "edition": {
     "no": 2,
     "date": "2026-11-17",
@@ -15,8 +15,8 @@
     {
       "id": "hm_kr_wage_real",
       "edition": "kr-0700",
-      "updated_at": "2026-11-17T07:09:00+09:00",
-      "run_id": "br-20261117-0709",
+      "updated_at": "2026-11-17T07:11:00+09:00",
+      "run_id": "br-20261117-0711",
       "label": "실질임금 상승률",
       "value": 0.3,
       "unit": "%",
@@ -45,8 +45,8 @@
     {
       "id": "hm_kr_employed",
       "edition": "kr-0700",
-      "updated_at": "2026-11-17T07:09:00+09:00",
-      "run_id": "br-20261117-0709",
+      "updated_at": "2026-11-17T07:11:00+09:00",
+      "run_id": "br-20261117-0711",
       "label": "국내 취업자 (전년동월비)",
       "value": 13.9,
       "unit": "만명",
@@ -234,8 +234,8 @@
         "usage": "수치와 발언 요지를 재구성해 카드로 정리. 원문 문장 복제 없음."
       },
       "edition": "kr-0700",
-      "updated_at": "2026-11-17T07:09:00+09:00",
-      "run_id": "br-20261117-0709"
+      "updated_at": "2026-11-17T07:11:00+09:00",
+      "run_id": "br-20261117-0711"
     },
     {
       "id": "c02",
@@ -329,8 +329,8 @@
         "usage": "수치만 재구성. 원문 문장 복제 없음."
       },
       "edition": "kr-0700",
-      "updated_at": "2026-11-17T07:09:00+09:00",
-      "run_id": "br-20261117-0709"
+      "updated_at": "2026-11-17T07:11:00+09:00",
+      "run_id": "br-20261117-0711"
     },
     {
       "id": "c03",
@@ -610,8 +610,8 @@
         "usage": "수치·사실만 새로 쓴 3줄 요약. 본문 복제 없음."
       },
       "edition": "kr-0700",
-      "updated_at": "2026-11-17T07:09:00+09:00",
-      "run_id": "br-20261117-0709"
+      "updated_at": "2026-11-17T07:11:00+09:00",
+      "run_id": "br-20261117-0711"
     },
     {
       "id": "c06",
@@ -701,8 +701,8 @@
         "usage": "제도 기준 수치만 인용. 이미지·문구 복제 없음."
       },
       "edition": "kr-0700",
-      "updated_at": "2026-11-17T07:09:00+09:00",
-      "run_id": "br-20261117-0709"
+      "updated_at": "2026-11-17T07:11:00+09:00",
+      "run_id": "br-20261117-0711"
     },
     {
       "id": "c07",
@@ -790,8 +790,8 @@
         "usage": "사실·수치만 새로 서술. 본문 복제 없음."
       },
       "edition": "kr-0700",
-      "updated_at": "2026-11-17T07:09:00+09:00",
-      "run_id": "br-20261117-0709"
+      "updated_at": "2026-11-17T07:11:00+09:00",
+      "run_id": "br-20261117-0711"
     }
   ],
   "radar": {
@@ -882,9 +882,9 @@
   "runs": {
     "kr-0700": {
       "status": "ok",
-      "updated_at": "2026-11-17T07:09:00+09:00",
+      "updated_at": "2026-11-17T07:11:00+09:00",
       "last_ok": "2026-11-17",
-      "run_id": "br-20261117-0709"
+      "run_id": "br-20261117-0711"
     },
     "global-2300": {
       "status": "ok",
@@ -898,8 +898,26 @@
       "theme_id": "th-ai-job-restructuring",
       "title": "AI 직무 재편",
       "summary": "AI가 일을 없애는가보다 일을 다시 묶는 쪽으로 움직인다. 직무 단위가 흔들리면 상담에서 묻는 것도 직업명이 아니라 \"어떤 일 묶음을 할 수 있는가\"로 바뀐다.",
-      "updated_at": "2026-11-16T23:09:00+09:00",
+      "updated_at": "2026-11-17T07:11:00+09:00",
       "items": [
+        {
+          "issue_id": "iss-ai-exam-integrity",
+          "title": "AI 악용 시험 부정행위 대책 — 국가자격시험제도 전반 재검토 지시",
+          "source": {
+            "source_name": "국무조정실",
+            "source_url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975789"
+          },
+          "license": {
+            "type": "KOGL-1",
+            "name": "공공누리 제1유형(출처표시)",
+            "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+            "verified": true,
+            "verified_at": "2026-11-17"
+          },
+          "first_seen": "2026-11-17",
+          "last_updated": "2026-11-17",
+          "track": "A"
+        },
         {
           "issue_id": "iss-ai-two-margins",
           "title": "AI 시대 고용의 두 문턱 — 감소가 창출보다 먼저 잡힌다(arXiv:2611.17530)",
@@ -1102,9 +1120,45 @@
     {
       "theme_id": "th-employment-indicators-ui",
       "title": "고용 지표·실업급여 변화",
-      "summary": "구인·실업·고용보험 지표와 실업급여 수급 조건이 함께 움직인다. 수치 하나가 아니라 지표 간 방향이 어긋나는 지점을 읽어야 상담에서 \"지금 지원해도 되는가\"를 판단할 수 있다.",
-      "updated_at": "2026-11-16T13:04:00+09:00",
+      "summary": "구인·실업·고용보험·임금 지표와 실업급여 수급 조건이 함께 움직인다. 수치 하나가 아니라 지표 간 방향이 어긋나는 지점을 읽어야 상담에서 \"지금 지원해도 되는가\"를 판단할 수 있다.",
+      "updated_at": "2026-11-17T07:11:00+09:00",
       "items": [
+        {
+          "issue_id": "iss-kr-wage-stagnation",
+          "title": "KDI 「기업 생산성 분석으로 살펴본 실질임금 정체의 배경과 시사점」",
+          "source": {
+            "source_name": "재정경제부·한국개발연구원(KDI)",
+            "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396"
+          },
+          "license": {
+            "type": "KOGL-1",
+            "name": "공공누리 제1유형(출처표시)",
+            "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+            "verified": true,
+            "verified_at": "2026-11-17"
+          },
+          "first_seen": "2026-11-17",
+          "last_updated": "2026-11-17",
+          "track": "A"
+        },
+        {
+          "issue_id": "iss-fake-33",
+          "title": "가짜 3.3 위장고용·사업장 쪼개기 기획감독(140여 개소)",
+          "source": {
+            "source_name": "고용노동부",
+            "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248"
+          },
+          "license": {
+            "type": "KOGL-NONE",
+            "name": "공공누리 미부착(사전 협의 필요)",
+            "verified": true,
+            "verified_at": "2026-11-17",
+            "evidence": "공공누리 표시 없음, '© Ministry of Employment and Labor. All rights reserved.'만 표시(2026-11-17 확인). 사실·수치만 사용."
+          },
+          "first_seen": "2026-11-17",
+          "last_updated": "2026-11-17",
+          "track": "B"
+        },
         {
           "issue_id": "iss-us-employment-oct",
           "title": "2026년 10월 고용상황(미국 노동통계국)",
