@@ -48,11 +48,11 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 h1,h2,h3,h4,p,ul,ol,dl,dd{margin:0}
 ul,ol{padding:0;list-style:none}
 .wrap{max-width:1180px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) 56px max(16px,env(safe-area-inset-left))}
-@media (min-width:900px){.wrap{padding-left:max(32px,env(safe-area-inset-left));padding-right:max(32px,env(safe-area-inset-right))}}
+@media (min-width:900px){.wrap{max-width:1280px;padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right))}}
 
 /* 머리말 */
-.hd{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;min-height:60px;padding:8px 0;padding-top:max(8px,env(safe-area-inset-top));background:var(--bg)}
-.ib{flex:none;width:42px;height:42px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);background:var(--panel);text-decoration:none}
+.hd{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;min-height:68px;padding:12px 0;padding-top:max(8px,env(safe-area-inset-top));background:var(--bg)}
+.ib{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);background:var(--panel);text-decoration:none}
 .ib svg{width:20px;height:20px}
 .brand{display:flex;align-items:center;gap:8px;min-width:0;margin-right:auto;font-size:19px;font-weight:800;letter-spacing:-.02em;text-decoration:none;white-space:nowrap}
 .brand svg{flex:none;width:26px;height:26px}
@@ -99,7 +99,7 @@ body:not([data-home]) .hero{display:none}
 .stamp{position:absolute;right:14px;top:16px;padding:3px 8px 2px;border:2px solid var(--stamp);border-radius:4px;font-family:var(--mono);font-size:11px;font-weight:700;line-height:1.35;letter-spacing:.06em;color:var(--stamp);text-align:center;transform:rotate(7deg);opacity:.86}
 
 /* 두 화면 오가기: 색인 탭 */
-.swap{position:sticky;top:60px;z-index:20;display:flex;align-items:flex-end;gap:4px;margin-top:18px;padding-top:8px;background:var(--bg);border-bottom:2px solid var(--ink)}
+.swap{position:sticky;top:68px;z-index:20;display:flex;align-items:flex-end;gap:4px;margin-top:18px;padding-top:8px;background:var(--bg);border-bottom:2px solid var(--ink)}
 .swap a{position:relative;display:flex;align-items:center;gap:8px;min-height:46px;padding:8px 16px 7px;border:1px solid var(--line-2);border-bottom:0;border-radius:12px 12px 0 0;background:var(--soft);font-size:16px;font-weight:750;color:var(--muted);text-decoration:none;white-space:nowrap}
 .swap a small{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--dim)}
 .swap a[aria-current="page"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}

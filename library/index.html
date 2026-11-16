@@ -466,7 +466,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   .dhead.rolled .dhead-roll { display: none; }
   .roll-paper { padding: 0 16px 12px; }
   @media (min-width: 640px) { .dhead-bar { padding-left: 28px; } .roll-paper { padding: 0 28px 14px; } }
-  .rod-btn { display: block; width: 100%; padding: 2px 8px 6px; }
+  .rod-btn { display: grid; align-items: center; width: 100%; min-height: 44px; padding: 4px 8px; }
   .rod { position: relative; height: 10px; margin: 0 14px; border-radius: 999px;
     background: linear-gradient(180deg, var(--wood-edge), var(--wood-1) 45%, var(--wood-3)); box-shadow: 0 3px 5px -2px var(--cab-shade); }
   .rod::before, .rod::after { content: ""; position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 50%; transform: translateY(-50%);
@@ -651,19 +651,22 @@ document.documentElement.setAttribute('data-theme',t);})();
   .result mark { background: color-mix(in srgb, var(--cyan) 22%, transparent); color: var(--ink); border-radius: 3px; padding: 0 2px; }
   kbd { font-family: "JetBrains Mono", monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
 
+  /* 넓은 화면 좌우 여백: 읽기 화면 82px (ops/TODO.md 「큰 화면 좌우 여백」) */
+  .jc-room { margin-left: auto; margin-right: auto; max-width: 1152px; padding-left: 12px; padding-right: 12px; }
+  @media (min-width: 640px) { .jc-room { padding-left: 24px; padding-right: 24px; } }
+  @media (min-width: 1280px) { .jc-room { max-width: 1280px; padding-left: 82px; padding-right: 82px; } }
   .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; transition: transform .35s ease, opacity .35s ease; z-index: 90; pointer-events: none; background: var(--toast-bg); color: var(--toast-ink); }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 </style>
 </head>
 <body>
+<link rel="stylesheet" href="../assets/shell.css">
 <div class="studio-bg" aria-hidden="true"></div>
 
 <!-- ================= HEADER HUD ================= -->
 <header class="hud sticky top-0 z-40 border-b hairline">
-  <div class="mx-auto max-w-6xl px-3 sm:px-6 py-2 flex items-center gap-2 sm:gap-4">
-    <a href="../" class="tap inline-flex items-center gap-1.5 rounded-xl px-2.5 t-dim hover-ink hover-soft transition" style="font-size:var(--fs-sm)">
-      <i data-lucide="arrow-left" class="w-4 h-4"></i><span class="hidden sm:inline">직업상담 통합 자료실</span><span class="sm:hidden">자료실</span>
-    </a>
+  <div class="jc-room py-2 flex items-center gap-2 sm:gap-4">
+    <a class="jc-ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
     <div class="min-w-0 flex-1 leading-tight">
       <div class="truncate font-bold" style="font-size:var(--fs-sm)">국회 미래고용 디지털 서재</div>
       <div class="mono truncate text-[10px] sm:text-[11px] t-faint">// FUTURE EMPLOYMENT READING ROOM</div>
@@ -683,7 +686,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   </div>
 </header>
 
-<main class="mx-auto max-w-6xl px-3 sm:px-6">
+<main class="jc-room">
   <!-- ================= INTRO ================= -->
   <section class="pt-6 sm:pt-12 pb-4 sm:pb-8">
     <div class="mono text-[11px] tracking-[0.2em] t-acc mb-3">READING ROOM // SHELF 01–<span data-shelf-max></span></div>
@@ -722,7 +725,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 </main>
 
 <footer class="border-t hairline">
-  <div class="mx-auto max-w-6xl px-3 sm:px-6 py-4 sm:py-8 t-faint" style="font-size:var(--fs-xs)">
+  <div class="jc-room py-4 sm:py-8 t-faint" style="font-size:var(--fs-xs)">
     <details class="src-fold"><summary>원문 출처</summary>
     <p class="mb-2">원문: 국회입법조사처 「이슈와 논점」 제2545호(2026.11.08, 구슬이·권다영) · 국회미래연구원 「인구통계 Brief」 26-8호(2026.10, 김봉섭) · 26-9호(2026.10, 정주영) · World Economic Forum, New Economy Skills: Skills for the Energy and Resource Transition(2026.11) · ILO, AI and developing economies(Policy Brief, 2026.11) · World Bank, Making AI Work: Jobs, Firms, and Productivity(ECA Economic Update, 2026.10, CC BY 3.0 IGO) · Aghion·Bergeaud·Bunel·Roulet, Labour market policies in the age of AI(CEPR Europe 2050, 2026.9) · 국회도서관 최신외국정책정보 2026-13호(2026.10.28, 오유빈) · World Economic Forum, Future of Jobs Report 2025(2025.1) 및 국회도서관 「2025 미래 직업 보고서」 인포그래픽 · KDI FOCUS 통권 제149호(2026.1.14, 김민섭·박윤수) · 한국고용정보원 「계간 고용이슈」 2025년 봄호 기획특집(송수종) · KDI FOCUS 통권 제148호(2025.12.24, 정수환) · 국회미래연구원 인구통계 Brief 26-5호(2026.9, 정주영·문성호). 영문 보고서의 한국어 내용은 본 서재의 요약·해설이며 각 기관의 공식 번역이 아닙니다. 각 보고서의 저작권은 발행 기관과 저자에게 있고, 권마다 끝의 「출처와 이용 조건」에 원문 링크와 이용 조건을 적었습니다. 각 보고서의 내용은 발행 기관의 공식 의견이 아닐 수 있으며, 상담 적용 노트는 본 서재 편집자의 해석입니다.</p>
     </details>

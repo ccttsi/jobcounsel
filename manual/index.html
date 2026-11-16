@@ -33,8 +33,8 @@ setInterval(apply,30000);})();
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 /* layout idea: 결재판. 위에는 쪽수 계기판(입력·슬라이더·7부 눈금), 가운데는 지금 펼친 쪽의 벤토 4칸(좌표·해설·함정·근거), 왼쪽은 그 부의 차례 */
-:root{--bg:#eef0f4;--panel:#ffffff;--sunk:#e2e6ee;--ink:#141a2b;--mute:#3f4860;--line:#c3cad8;--acc:#1a37a3;--acc-soft:#e1e8fc;--warn:#6b3d00;--warn-soft:#fbeccd;--onacc:#ffffff;
---f-body:'IBM Plex Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;--f-num:'IBM Plex Mono',ui-monospace,Menlo,monospace;--r:12px}
+:root{--bg:#faf6ef;--panel:#fffdf8;--sunk:#f5efe4;--ink:#141a2b;--mute:#3f4860;--line:#e9e0d2;--acc:#1a37a3;--acc-soft:#e1e8fc;--warn:#6b3d00;--warn-soft:#fbeccd;--onacc:#ffffff;
+--f-body:var(--jc-sans);--f-num:'IBM Plex Mono',ui-monospace,Menlo,monospace;--r:12px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1220;--panel:#171d30;--sunk:#0a0e19;--ink:#eef1f8;--mute:#b6bfd2;--line:#343d57;--acc:#a9bdff;--acc-soft:#1c2850;--warn:#f3c56b;--warn-soft:#3d2e0d;--onacc:#0e1220;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0e1220;--panel:#171d30;--sunk:#0a0e19;--ink:#eef1f8;--mute:#b6bfd2;--line:#343d57;--acc:#a9bdff;--acc-soft:#1c2850;--warn:#f3c56b;--warn-soft:#3d2e0d;--onacc:#0e1220;color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
@@ -44,13 +44,14 @@ h1,h2,h3,p,ol,ul{margin:0}
 h1,h2,h3{line-height:1.32;text-wrap:balance}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer}
-:focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:6px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:6px}
 .num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
-.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px}
+@media (min-width:900px){.wrap{padding-left:clamp(16px,6.4vw,82px);padding-right:clamp(16px,6.4vw,82px)}}
 .lab{font-size:12.5px;font-weight:700;color:var(--mute);letter-spacing:.01em;white-space:nowrap}
 
 /* 머리말과 계기판 */
-.top{display:flex;align-items:center;gap:10px;padding-top:12px;padding-bottom:8px}
+.top{display:flex;align-items:flex-start;gap:10px;padding-top:12px;padding-bottom:8px}
 .top h1{font-size:18px;font-weight:700;letter-spacing:-.03em;flex:1;min-width:0}
 .top h1 small{font-size:12.5px;font-weight:500;color:var(--mute);margin-left:4px}
 .hud{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
@@ -166,7 +167,7 @@ th{font-size:12.5px;color:var(--mute)}
 .fold[open]>summary{color:var(--mute)}
 @media (orientation:landscape) and (max-height:500px){.hud{position:relative}.side{top:12px!important;max-height:calc(100vh - 24px)!important}}
 @media (min-width:1280px){.shell{grid-template-columns:280px minmax(0,1fr)}}
-@media (max-width:379px){.top h1 small{display:none}.hud .row{gap:6px}.hud .row .lab{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.hud .btn{padding:6px 8px;min-width:40px}#pin{font-size:16px;min-width:56px;padding:6px 8px}}
+@media (max-width:379px){.top h1 small{display:none}.hud .row{gap:6px}.hud .row .lab{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.hud .btn{padding:6px 8px;min-width:44px}#pin{font-size:16px;min-width:56px;padding:6px 8px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
