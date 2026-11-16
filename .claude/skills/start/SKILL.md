@@ -7,6 +7,9 @@ description: 자료실 작업 세션을 시작할 때(/start, "시작", "이어�
 
 태화님이 `/start` 또는 "시작"이라고 하면 아래를 순서대로 하고, 끝에 **3~5줄 요약 + 오늘 추천 작업 1~2개**를 보여 준다. 사용자가 고를 때까지 코드를 고치지 않는다.
 
+## 0. 헌장
+- 세션 시작 훅이 보여 준 역할 분리 요약을 따른다. 원본은 `ops/ROLES.md`, 주소는 `ops/CONNECTORS.md`.
+
 ## 1. 저장소 최신화
 - `git fetch --depth=50 origin main` 후 `main` 최신에서 새 브랜치를 판다(작업 내용이 정해진 뒤).
 - 열린 PR 확인: `gh api repos/ccttsi/jobcounsel/pulls --jq '.[] | "#\(.number) \(.head.ref) \(.title)"'` (`gh pr list`는 이 환경에서 막혀 있다).
