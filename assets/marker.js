@@ -128,6 +128,8 @@
       css += 'mark.jc-mk[data-c="' + c + '"]{background:' + bg + '}';
     });
     css += 'mark.jc-mk{color:inherit;padding:0;border-radius:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}';
+    /* 형광펜을 켜면 끌어서 넘기는 화면(책 넘김·노선도 등)에서도 글자를 고를 수 있게, 글자 선택 막힘을 푼다(2026-11-16). */
+    css += 'body.jc-mk-pen,body.jc-mk-pen *{-webkit-user-select:text!important;user-select:text!important}';
     css += 'body.jc-mk-pen,body.jc-mk-pen *{cursor:text}body.jc-mk-note,body.jc-mk-note *{cursor:copy!important}@media (pointer:coarse){body.jc-mk-note,body.jc-mk-note *{cursor:pointer!important}}';
     styleEl.textContent = css;
   }
@@ -614,6 +616,23 @@
     d.addEventListener('selectionchange', function () { var r = selectionRange(); if (r) pendSel = r.cloneRange(); restFab(); if (mode === 'pen') { clearTimeout(selT); selT = setTimeout(renderPill, 120); } });
     // 도구함이 열려 있을 때 바깥을 누르면 닫는다
     d.addEventListener('pointerdown', function (e) { if (!ui.panel.hidden && !isOurs(e) && mode !== 'note') closePanel(); }, true);
+    /* 도구와 페이지가 같은 누르기·끌기를 동시에 가져가지 않게 한다(2026-11-16).
+       - 형광펜: 끌기는 「글자 고르기」다. 끌어 넘기기(파슨스 책장, 노선도·지도·다이얼 끌기 등)로 새지 않게 한다.
+       - 포스트잇: 누른 자리에 메모를 붙이는 것이 전부다. 같은 누르기로 책장이 넘어가거나 단추가 눌리지 않게 한다.
+       - 꺼져 있을 때: 칠해 둔 글자를 누르면 고치기 창만 뜨고, 그 누르기로 책장이 넘어가지 않게 한다.
+       문서 단계(캡처)에서 전파만 멈춘다. 기본 동작(글자 선택)과 이 파일의 다른 문서 단계 처리는 그대로 돈다. */
+    var PEN_PASS = 'a,button,input,select,textarea,label,summary,[role=button],[role=slider],[role=tab],[contenteditable],[data-jc-ignore]';
+    var guard = function (e) {
+      if (isOurs(e) || (e.button && e.button !== 0)) return;
+      var t = e.target && e.target.closest ? e.target : null; if (!t) return;
+      var pt = e.touches && e.touches[0] ? e.touches[0] : e;
+      if (mode === 'note') { e.stopPropagation(); return; }
+      if (t.closest(PEN_PASS)) return;
+      if (mode === 'pen') { if (!/up$/.test(e.type)) e.stopPropagation(); return; }   // 손을 뗄 때는 막지 않는다: 아래 mouseup에서 칠한다
+      if (mode === 'off' && data.items.length && hitHighlight(pt.clientX, pt.clientY)) e.stopPropagation();
+    };
+    ['pointerdown', 'mousedown', 'pointerup', 'mouseup'].forEach(function (t) { d.addEventListener(t, guard, true); });
+    d.addEventListener('touchstart', guard, { capture: true, passive: true });
     // 칠하기 막대를 누를 때 선택이 풀리지 않게 한다(데스크톱)
     ui.pill.addEventListener('mousedown', function (e) { e.preventDefault(); });
     /* 아이폰 사파리는 링크가 아닌 글자를 눌러도 click을 보내지 않는 경우가 있다.
@@ -640,12 +659,18 @@
       if (mode === 'note') { e.preventDefault(); e.stopPropagation(); addNoteAt(e.clientX, e.clientY); setMode('off'); return; }
       if (popId) { hidePop(); }
       if (openNote && !isOurs(e)) { flush(); var o = byId(openNote); openNote = null; if (o && !(o.text || '').trim()) remove(o.id); else placeNotes(); }
-      if (mode === 'pen') { var s1 = getSelection && getSelection(); if (!s1 || s1.isCollapsed) { pendSel = null; clearTimeout(selT); selT = setTimeout(renderPill, 120); } return; }
+      if (mode === 'pen') {
+        var s1 = getSelection && getSelection();
+        if (!s1 || s1.isCollapsed) { pendSel = null; clearTimeout(selT); selT = setTimeout(renderPill, 120); return; }
+        // 글자를 끌어 고른 끝의 click이 카드 열기·쪽 넘기기로 새지 않게 한다(단추·링크·입력칸은 그대로)
+        if (!(e.target.closest && e.target.closest(PEN_PASS))) { e.preventDefault(); e.stopPropagation(); }
+        return;
+      }
       var s2 = getSelection && getSelection(); if (s2 && !s2.isCollapsed) return;
       var tgt = e.target.closest && e.target.closest('a,button,input,select,textarea,label,summary,[role=button],[onclick]');
       if (tgt && ui.panel.hidden) return;   // 링크·버튼은 원래 동작 그대로
       var hit = hitHighlight(e.clientX, e.clientY);
-      if (hit) { if (tgt) { e.preventDefault(); e.stopPropagation(); } showPop(hit, e.clientX, e.clientY); }
+      if (hit) { e.stopPropagation(); if (tgt) e.preventDefault(); showPop(hit, e.clientX, e.clientY); }   // 칠한 글자를 누르면 고치기 창만: 카드 열기로 새지 않게
     }, true);
     d.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') { if (!ui.pop.hidden) hidePop(); else if (mode !== 'off') setMode('off'); else if (!ui.panel.hidden) closePanel(); }
