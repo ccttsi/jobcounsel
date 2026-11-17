@@ -259,7 +259,7 @@
       '<a class="lh-link" href="' + esc(l.law_url) + '" target="_blank" rel="noopener">국가법령정보센터 원문' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></div>';
 
-    var chips = (l.chips || []).length ? '<div class="chips" style="margin-top:10px">' + l.chips.map(function (c) {
+    var chips = (l.chips || []).length ? '<div class="chips chips-law">' + l.chips.map(function (c) {
       return '<button type="button" data-q="' + esc(c) + '">' + esc(c) + '</button>';
     }).join('') + '</div>' : '';
 
@@ -274,7 +274,7 @@
 
     var checks = (l.check || []).map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('');
 
-    var blockA = '<div class="dt-a blk" data-blk="easy">' +
+    var blockA = '<div class="dt-a blk" data-blk="easy">' + chips +
       '<h2 class="b-h"><b>①</b> 쉬운 풀이</h2><div class="easy">' + easy + '</div>' +
       (exs ? '<h2 class="b-h"><b>②</b> 실전 예시</h2><div class="exh">' + exs + '</div>' : '') +
       '</div>';
@@ -298,7 +298,7 @@
     $('view-law').innerHTML =
       '<div class="lawhead"><div class="lh-top"><a class="crumb" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>법전</a>' +
       '<span class="tag">' + esc(l.kind || '') + '</span>' + (l.priority ? '<span class="tag star">⭐ 우선참조</span>' : '') + '</div>' +
-      '<h2>' + esc(l.name) + '</h2><p class="one">' + esc(l.one_line || '') + '</p>' + meta + chips + '</div>' +
+      '<h2>' + esc(l.name) + '</h2><p class="one">' + esc(l.one_line || '') + '</p>' + meta + '</div>' +
       '<div class="tabs" role="tablist" aria-label="법령 보기">' + tabs.map(function (t) {
         return '<button type="button" role="tab" data-tab="' + t.k + '" aria-selected="false">' + t.t +
           (t.n ? '<span class="cnt">' + t.n + '</span>' : '') + '</button>';
