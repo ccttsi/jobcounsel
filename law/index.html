@@ -47,7 +47,7 @@ a{color:inherit}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .num{font-variant-numeric:tabular-nums}
-.wrap{max-width:1280px;margin:0 auto;padding:0 16px 20px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px 12px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
 @media (min-width:900px){.wrap{padding:0 28px 24px}}
 
 /* 머리말 */
@@ -96,6 +96,8 @@ a{color:inherit}
 .chips button{min-height:44px;padding:0 14px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:14.5px;font-weight:650;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
 .chips button::before{content:"#";font-size:13px;color:var(--acc);opacity:.75}
 .chips button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft);color:var(--acc)}
+.chips-law{margin-bottom:2px}
+.chips-law button{min-height:44px;font-size:13.5px;padding:0 12px}
 .bookBtn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 16px;border-radius:14px;background:var(--ink);color:var(--bg);font-size:15.5px;font-weight:800}
 .bookBtn svg{width:19px;height:19px;flex:none}
 .bookBtn small{font-size:13px;font-weight:600;opacity:.7}
@@ -152,6 +154,7 @@ a{color:inherit}
   .dt[data-tab="visual"] .dt-a,.dt[data-tab="visual"] .dt-t,.dt[data-tab="visual"] .dt-c{display:none}
   .dt[data-tab="text"] .dt-a,.dt[data-tab="text"] .dt-v,.dt[data-tab="text"] .dt-c{display:none}
 }
+@media (min-width:900px) and (max-width:1199px){.artchips button small{display:none}.easy .e p{font-size:14px;line-height:1.58}.ex .dlg{font-size:13.5px;line-height:1.54}.lawhead .one{font-size:14px}}
 @media (min-width:900px){
   .tabs{display:none}
   .dt{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);column-gap:30px;align-items:start;
@@ -164,11 +167,12 @@ a{color:inherit}
 .easy .e{border-left:3px solid var(--acc);padding-left:12px}
 .easy .e h3{margin:0 0 3px;font-size:16.5px;font-weight:800;line-height:1.4;letter-spacing:-.02em;text-wrap:balance}
 .easy .e p{margin:0;font-size:15px;line-height:1.66;color:var(--ink)}
+@media (min-width:900px){.easy .e p{font-size:14.5px;line-height:1.62}.ex .dlg{font-size:14px;line-height:1.58}.ex{padding:8px 11px}.art{max-height:min(27vh,260px)}}
 .exh{display:grid;gap:8px}
 .ex{border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:9px 12px;box-shadow:var(--shadow)}
-.ex .scene{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--seal);letter-spacing:.01em}
+.ex .scene{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--seal);letter-spacing:.01em}
 .ex .scene::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
-.ex .dlg{margin:6px 0 0;display:grid;gap:6px;font-size:14.5px;line-height:1.68}
+.ex .dlg{margin:5px 0 0;display:grid;gap:4px;font-size:14.5px;line-height:1.66}
 .ex .dlg p{margin:0}
 .ex .dlg .q{color:var(--muted)}
 .ex .dlg .a{color:var(--ink)}
@@ -283,7 +287,7 @@ a{color:inherit}
 .sheet-b .bk-toc{display:block;border-right:0;max-height:none}
 
 /* 바닥 안내 */
-.foot{margin:16px 0 0;padding-top:9px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.65;color:var(--dim)}
+.foot{margin:10px 0 0;padding-top:9px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.65;color:var(--dim)}
 .foot b{color:var(--muted);font-weight:700}
 .foot a{color:var(--acc);font-weight:700;text-decoration:none}
 .loading{padding:34px 0;font-size:15px;color:var(--muted)}
