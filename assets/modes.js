@@ -37,7 +37,7 @@
   ];
   var ecgStep = 0;
 
-  var DWELL = 5;          /* 아이들 힌트 간격(초) — 5분 → 2분(2026-11-18 R3, 두 트리거 공통) */
+  var DWELL = 120;          /* 아이들 힌트 간격(초) — 5분 → 2분(2026-11-18 R3, 두 트리거 공통) */
   var ARM_IDLE = 9000;      /* 1차만 누른 채 두면 이만큼 뒤 조용히 풀린다 */
 
   var nav, ov, glass, slot, slotBtn, ecgRow, ecgBtn, cards = [], foot, back;
