@@ -1,0 +1,1062 @@
+{
+  "schema_version": "1.2.0",
+  "updated_at": "2026-11-14T23:07:00+09:00",
+  "edition": {
+    "no": 0,
+    "date": "2026-11-14",
+    "weekday": "토",
+    "title": "데이터로 보는 청년 경력: 단절은 조기에 잡힌다",
+    "subtitle": "고용행정 개방데이터 학술대회와 비자발적 파트타임·재취업률, AI 프리랜서 재묶음을 한 장으로",
+    "reading_minutes": 3,
+    "data_status": "ok",
+    "data_status_note": null
+  },
+  "headline_metrics": [
+    {
+      "id": "hm_us_ipt",
+      "label": "미국 비자발적 파트타임",
+      "value": 4.84,
+      "unit": "백만명",
+      "value_text": "484만명",
+      "base_value": null,
+      "base_unit": null,
+      "direction": "up",
+      "period": "2026년 10월",
+      "delta_from": "전월",
+      "source_id": "src_bls_ted_ipt_202610",
+      "track": "A",
+      "edition": "global-2300",
+      "updated_at": "2026-11-14T23:07:00+09:00",
+      "run_id": "br-20261114-2307",
+      "spark": {
+        "labels": [
+          "9월",
+          "10월"
+        ],
+        "values": [
+          4.501,
+          4.84
+        ],
+        "unit": "백만명"
+      }
+    },
+    {
+      "id": "hm_us_reemp",
+      "label": "장기 근속 실직자 재취업률",
+      "value": 66.1,
+      "unit": "%",
+      "value_text": "66.1%",
+      "base_value": null,
+      "base_unit": null,
+      "direction": "up",
+      "period": "2026년 1월",
+      "delta_from": "직전 조사",
+      "source_id": "src_bls_ted_disp_2026",
+      "track": "A",
+      "edition": "global-2300",
+      "updated_at": "2026-11-14T23:07:00+09:00",
+      "run_id": "br-20261114-2307",
+      "spark": null
+    },
+    {
+      "id": "hm_us_comp",
+      "label": "미국 민간 노동비용 (12개월)",
+      "value": 3.4,
+      "unit": "%",
+      "value_text": "+3.4%",
+      "base_value": null,
+      "base_unit": null,
+      "direction": "up",
+      "period": "2026년 9월",
+      "delta_from": "전년동기",
+      "source_id": "src_bls_ted_eci_2026",
+      "track": "A",
+      "edition": "global-2300",
+      "updated_at": "2026-11-14T23:07:00+09:00",
+      "run_id": "br-20261114-2307",
+      "spark": null
+    },
+    {
+      "id": "hm_kr_sessions",
+      "label": "고용행정데이터 세션",
+      "value": 3,
+      "unit": "개",
+      "value_text": "3개 세션",
+      "base_value": null,
+      "base_unit": null,
+      "direction": "flat",
+      "period": "2026년 11월 12일",
+      "delta_from": "",
+      "source_id": "src_keis_opendata_20261112",
+      "track": "A",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-14T07:05:00+09:00",
+      "run_id": "br-20261114-0705",
+      "spark": null
+    }
+  ],
+  "cards": [
+    {
+      "id": "c01",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-14T07:05:00+09:00",
+      "run_id": "br-20261114-0705",
+      "order": 1,
+      "track": "B",
+      "category": "국내 고용행정",
+      "title": "고용행정 데이터로 청년·산업전환 현안을 푼다",
+      "kicker": "제2회 고용행정 개방데이터 학술대회 · 세션 3개",
+      "three_step": {
+        "what": "한국고용정보원이 고용노동부와 11월 12일 서울 한국프레스센터에서 제2회 고용행정 개방데이터 학술대회를 열었다. 고용보험 이력·사업체 패널자료를 활용한 실증연구를 발표하고 정책적 활용 방안을 논했다.",
+        "evidence": "세션은 셋이다. 취약계층 안전망(자발적 실업급여 기대효과, 중장년 고용불안정 유형과 재취득 경로, 비자발적 이직자 실업급여 수급 결정요인), 청년(초기경력 궤적과 장기 이력단절, 수도권·비수도권 청년 일자리 특성, 중고령 고용과 청년 고용의 관계), 지역노동시장·산업전환(비자발적 실직의 장기 임금손실, 지역·산업 고용위기의 재취업 효과, 기술 수준·다양성과 노동이동, 지역별 임금분포 변화)을 다뤘다.",
+        "implication": "청년 내담자 상담에서 초기경력 궤적·이력단절 연구 결과를 활용해 경력 공백 설명 전략을 함께 세운다. 지역 거주자는 지역·산업 고용위기 연구로 이직 대상 산업을 좁힌다."
+      },
+      "key_numbers": [
+        {
+          "label": "학술대회",
+          "value": "제2회",
+          "delta": "작년 첫 대회",
+          "period": "2026년 11월 12일"
+        },
+        {
+          "label": "세션",
+          "value": "3개",
+          "delta": "",
+          "period": "2026년 11월 12일"
+        },
+        {
+          "label": "발표 주제",
+          "value": "10편",
+          "delta": "",
+          "period": "2026년 11월 12일"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "편",
+        "labels": [
+          "안전망",
+          "청년",
+          "지역·산업전환"
+        ],
+        "series": [
+          {
+            "name": "세션별 발표 수",
+            "values": [
+              3,
+              3,
+              4
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "프로그램 붙임 기준 세션별 발표 수. 고용노동부·한국고용정보원 보도자료(2026.11.12).",
+        "source_id": "src_keis_opendata_20261112"
+      },
+      "counselor_question": "내담자의 경력 공백을 \"이력단절\" 연구가 본 바와 같이 설명해 본 적 있나요?",
+      "tags": [
+        "고용행정데이터",
+        "청년",
+        "학술대회"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "고용노동부·한국고용정보원",
+        "source_title": "'고용행정 데이터로 청년 일자리부터 산업전환까지… 노동시장 현안 해법 찾는다'",
+        "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788923",
+        "published_at": "2026-11-12",
+        "license": {
+          "name": "공공누리 미부착(사전 협의 필요)",
+          "type": "KOGL-NONE",
+          "url": null,
+          "scope": "보도자료 본문·첨부파일 재가공 불가",
+          "attribution_required": true,
+          "commercial_use": "unknown",
+          "modification": "unknown",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "정책브리핑 해당 페이지에 공공누리 미부착 고지(「공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용」)가 있어 재가공 불가로 판단(2026-11-17 확인). 사실·일정만 새로 서술.",
+          "attribution_text": "자료: 고용노동부·한국고용정보원 「'고용행정 데이터로 청년 일자리부터 산업전환까지… 노동시장 현안 해법 찾는다'」(2026.11.12)"
+        },
+        "usage": "행사·세션 주제 사실만 요약. 본문 복제 없음.",
+        "source_id": "src_keis_opendata_20261112"
+      }
+    },
+    {
+      "id": "c02",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-14T07:05:00+09:00",
+      "run_id": "br-20261114-0705",
+      "order": 2,
+      "track": "A",
+      "category": "국내 고용행정",
+      "title": "시니어산업을 복지가 아니라 성장산업으로",
+      "kicker": "초고령 진입 25년 만 · 에이지테크 융합",
+      "three_step": {
+        "what": "대통령직속 인구전략위원회 김진오 부위원장은 11월 12일 서울에서 열린 2026 fn 시니어산업 컨퍼런스에서 시니어산업을 '생산적 국가 성장산업'으로 키워야 한다고 말했다. 한국은 고령화사회 진입 후 25년 만에 초고령사회에 들어섰다.",
+        "evidence": "제언은 세 가지다. ①고령자의 안정적 노후소득 보장 기반 강화로 수요 기반 확충 ②의료·돌봄과 에이지테크(AI·돌봄로봇) 융합으로 돌봄의 질·지속가능성 제고 ③산업 성장이 일자리 창출로 이어져 전 세대가 혜택을 보는 선순환 구조다.",
+        "implication": "중장년·예시니어 내담자에게 시니어산업을 일자리 공급자뿐 아니라 일자리 수요처로 안내하고, 돌봄·에이지테크 분야의 신규 직무(돌봄로봇 운용·상담 등)를 함께 짚어 준다."
+      },
+      "key_numbers": [
+        {
+          "label": "초고령 진입",
+          "value": "25년 만",
+          "delta": "고령화사회 이후",
+          "period": "2026년"
+        },
+        {
+          "label": "제언",
+          "value": "3가지",
+          "delta": "",
+          "period": "2026년 11월 12일"
+        },
+        {
+          "label": "기본계획",
+          "value": "제1차 국가인구전략",
+          "delta": "9월 출범 후",
+          "period": "2026년"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "개",
+        "labels": [
+          "노후소득 기반",
+          "에이지테크 융합",
+          "선순환 구조"
+        ],
+        "series": [
+          {
+            "name": "시니어산업 육성 제언",
+            "values": [
+              1,
+              1,
+              1
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "인구전략위원회 보도자료(2026.11.12)의 제언 3가지.",
+        "source_id": "src_popnsenior_20261112"
+      },
+      "counselor_question": "내담자가 가진 경험이 돌봄·에이지테크 신규 직무로 이어질 수 있을까요?",
+      "tags": [
+        "시니어산업",
+        "초고령사회",
+        "에이지테크"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "인구전략위원회",
+        "source_title": "김진오 인구전략위 부위원장, \"시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로\"",
+        "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788872",
+        "published_at": "2026-11-12",
+        "license": {
+          "name": "공공누리 제1유형(출처표시)",
+          "type": "KOGL-1",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+          "attribution_text": "출처: 인구전략위원회 「김진오 인구전략위 부위원장, \"시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로\"」(2026.11.12, 정책브리핑 게재), 공공누리 제1유형"
+        },
+        "usage": "발언 요지와 수치를 재구성. 원문 문장 복제 없음.",
+        "source_id": "src_popnsenior_20261112"
+      }
+    },
+    {
+      "id": "c03",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-14T07:05:00+09:00",
+      "run_id": "br-20261114-0705",
+      "order": 3,
+      "track": "A",
+      "category": "국내 고용행정",
+      "title": "범부처 지원단이 청년 취업지원 현장을 직접 봤다",
+      "kicker": "민생안정지원단 청년 취업지원 점검",
+      "three_step": {
+        "what": "재정경제부가 11월 12일 범부처 민생안정지원단과 함께 청년 취업지원 현장을 점검했다. 양극화 대응 TF(보건복지부)도 같은 주에 첫 총괄반 회의를 열어 '모두의 성장' 대전환 과제를 논했다.",
+        "evidence": "점검은 청년 일자리 지원 사업 현장에서 이뤄졌고, 민생안정지원단은 지원 제도가 청년에게 실제로 닿는지를 확인했다. 양극화 대응 TF 총괄반은 전 부처 역량 결집을 확인하는 자리였다.",
+        "implication": "청년 내담자에게 지원 사업을 안내할 때 사업 존재만 알려 주지 말고, 접수 창구와 지금 가능한 회차를 같이 확인해 준다."
+      },
+      "key_numbers": [
+        {
+          "label": "점검 주체",
+          "value": "범부처 지원단",
+          "delta": "",
+          "period": "2026년 11월 12일"
+        },
+        {
+          "label": "대상",
+          "value": "청년 취업지원",
+          "delta": "",
+          "period": "2026년 11월 12일"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "건",
+        "labels": [
+          "현장 점검",
+          "TF 총괄반 회의"
+        ],
+        "series": [
+          {
+            "name": "이번 주 민생·양극화 대응 활동",
+            "values": [
+              1,
+              1
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "재정경제부(2026.11.12)·보건복지부(2026.11.12) 보도자료 기준.",
+        "source_id": "src_moef_youthfield_20261112"
+      },
+      "counselor_question": "지원 사업의 접수 시기를 놓친 적이 있나요? 다음 회차를 지금 확인해 둡시다.",
+      "tags": [
+        "청년",
+        "민생안정",
+        "취업지원"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "재정경제부",
+        "source_title": "범부처 민생안정지원단, 청년 취업지원 현장 점검",
+        "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
+        "published_at": "2026-11-12",
+        "license": {
+          "name": "공공누리 제1유형(출처표시)",
+          "type": "KOGL-1",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+          "attribution_text": "출처: 재정경제부 「범부처 민생안정지원단, 청년 취업지원 현장 점검」(2026.11.12, 정책브리핑 게재), 공공누리 제1유형"
+        },
+        "usage": "행사 사실·규모 수치만 요약. 원문 문장 복제 없음.",
+        "source_id": "src_moef_youthfield_20261112"
+      }
+    },
+    {
+      "id": "c04",
+      "edition": "global-2300",
+      "updated_at": "2026-11-14T23:07:00+09:00",
+      "run_id": "br-20261114-2307",
+      "order": 4,
+      "track": "A",
+      "category": "해외 노동시장",
+      "title": "미국 비자발적 파트타임, 한 달에 33만9천명 늘었다",
+      "kicker": "4.8백만명 · 사유는 줄어든 근무시간",
+      "three_step": {
+        "what": "2026년 10월 미국의 비자발적 파트타임 근로자가 4백84만명으로 9월보다 33만9천명 늘었다. 풀타임을 원하지만 근무시간이 줄거나 풀타임 일자리를 못 찾은 사람들이다.",
+        "evidence": "경제적 사유 파트타임은 9월 4백50만명에서 10월 4백84만명으로 늘었고, 그중 '일이 줄어서'가 2백90만→3백25만명으로 커졌다. 풀타임 일자리를 못 찾은 경우는 1백27만→1백27만명으로 변화가 없었다.",
+        "implication": "구직자와 상담할 때 파트타임 채용 공고가 풀타임 전환으로 이어지는지 확인하게 하고, 시간제를 제안받으면 전환 사례와 조건을 먼저 묻게 한다."
+      },
+      "key_numbers": [
+        {
+          "label": "비자발적 파트타임",
+          "value": "484만명",
+          "delta": "+33.9만명",
+          "period": "2026년 10월"
+        },
+        {
+          "label": "일이 줄어서",
+          "value": "325만명",
+          "delta": "+35.6만명",
+          "period": "2026년 10월"
+        },
+        {
+          "label": "풀타임 못 찾아서",
+          "value": "127만명",
+          "delta": "-0.2만명",
+          "period": "2026년 10월"
+        }
+      ],
+      "chart_data": {
+        "type": "grouped_bar",
+        "unit": "백만명",
+        "labels": [
+          "9월",
+          "10월"
+        ],
+        "series": [
+          {
+            "name": "일이 줄어서",
+            "values": [
+              2.896,
+              3.252
+            ],
+            "emphasis": true
+          },
+          {
+            "name": "풀타임을 못 찾아서",
+            "values": [
+              1.267,
+              1.265
+            ],
+            "emphasis": false
+          }
+        ],
+        "reference_value": 0,
+        "note": "계절조정. 미국 노동통계국 「The Economics Daily」(2026.11.16).",
+        "source_id": "src_bls_ted_ipt_202610"
+      },
+      "counselor_question": "제안받은 시간제 일자리가 풀타임 전환 통로가 되는 직장인지 어떻게 확인할까요?",
+      "tags": [
+        "파트타임",
+        "미국",
+        "고용형태"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "미국 노동통계국(BLS) The Economics Daily",
+        "source_title": "Involuntary part-time employment rose by 339,000 to 4.8 million in October 2026",
+        "source_url": "https://www.bls.gov/opub/ted/2026/involuntary-part-time-employment-rose-by-339000-to-4.8-million-in-october-2026.htm",
+        "published_at": "2026-11-16",
+        "license": {
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "type": "PUBLIC-DOMAIN",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "scope": "연방정부 발간물 전체",
+          "attribution_required": false,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+          "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-16)"
+        },
+        "usage": "수치 번역·도표화. 원문 문장 복제 없음.",
+        "source_id": "src_bls_ted_ipt_202610"
+      }
+    },
+    {
+      "id": "c05",
+      "edition": "global-2300",
+      "updated_at": "2026-11-14T23:07:00+09:00",
+      "run_id": "br-20261114-2307",
+      "order": 5,
+      "track": "A",
+      "category": "해외 노동시장",
+      "title": "3년 이상 다닌 직장을 잃으면 66%가 다시 일한다",
+      "kicker": "장기 근속 피해자 재취업률 66.1% · 보건복지 77.1%",
+      "three_step": {
+        "what": "2023년 1월부터 2025년 12월 사이 3년 이상 근속한 직장을 잃은 미국 노동자는 3백30만명이다. 2026년 1월 기준 66.1%가 재취업에 성공했다.",
+        "evidence": "업종별 재취업률은 보건·사회복지 77.1%, 정보통신 76.8%, 도소매 72.2%, 건설 71.3%로 70%를 넘는 업종이 많았다. 업종에 따라 잃은 자리에서 다시 일어서는 속도가 크게 달랐다.",
+        "implication": "구조조정·희망퇴직을 겪은 내담자에게 업종별 재취업률 차이를 보여 주고, 경력이 통하는 인접 업종(예: 제조→물류·기술직)으로 탐색 범위를 넓히게 한다."
+      },
+      "key_numbers": [
+        {
+          "label": "장기 근속 피해자",
+          "value": "330만명",
+          "delta": "3년 이상 근속",
+          "period": "2023.1~2025.12"
+        },
+        {
+          "label": "재취업률",
+          "value": "66.1%",
+          "delta": "",
+          "period": "2026년 1월"
+        },
+        {
+          "label": "보건·사회복지",
+          "value": "77.1%",
+          "delta": "최고",
+          "period": "2026년 1월"
+        },
+        {
+          "label": "건설",
+          "value": "71.3%",
+          "delta": "",
+          "period": "2026년 1월"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "%",
+        "labels": [
+          "보건·복지",
+          "정보통신",
+          "도소매",
+          "건설",
+          "전체"
+        ],
+        "series": [
+          {
+            "name": "재취업률",
+            "values": [
+              77.1,
+              76.8,
+              72.2,
+              71.3,
+              66.1
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "미국 노동통계국 실직자 조사(displaced workers). 「The Economics Daily」(2026.11.02).",
+        "source_id": "src_bls_ted_disp_2026"
+      },
+      "counselor_question": "지금 업종에서 잃어도 경력이 통하는 인접 업종이 어디인지 같이 적어 볼까요?",
+      "tags": [
+        "재취업",
+        "실직",
+        "미국"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "미국 노동통계국(BLS) The Economics Daily",
+        "source_title": "Three-fourths of long-tenured workers displaced from jobs in health care and social assistance reemployed in January 2026",
+        "source_url": "https://www.bls.gov/opub/ted/2026/three-fourths-of-long-tenured-workers-displaced-from-jobs-in-health-care-and-social-assistance-reemployed-in-january-2026.htm",
+        "published_at": "2026-11-02",
+        "license": {
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "type": "PUBLIC-DOMAIN",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "scope": "연방정부 발간물 전체",
+          "attribution_required": false,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+          "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-02)"
+        },
+        "usage": "재취업률 수치만 도표화.",
+        "source_id": "src_bls_ted_disp_2026"
+      }
+    },
+    {
+      "id": "c06",
+      "edition": "global-2300",
+      "updated_at": "2026-11-14T23:07:00+09:00",
+      "run_id": "br-20261114-2307",
+      "order": 6,
+      "track": "A",
+      "category": "해외 노동시장",
+      "title": "미국 노동비용 3.4%, 봉급 3.1%·복리후생 3.9%",
+      "kicker": "민간 노동비용 +3.4% · 지역 격차 2.0%p",
+      "three_step": {
+        "what": "2025년 9월까지 1년간 미국 민간 노동자의 노동비용은 3.4% 늘었다. 봉급은 3.1%, 복리후생 비용은 3.9%로 복리후생이 더 빨리 올랐다.",
+        "evidence": "지역 차이도 컸다. 뉴잉글랜드 2.3%, 태평양 4.3%로 2.0%포인트 격차다. 전국 기준 1년 전(3.5%)보다 0.1%포인트 느려졌다.",
+        "implication": "연봉 협상을 준비하는 내담자에게 업계 복리후생 비중이 커지는 흐름을 알려 주고, 기본급 외 복리후생(연금·의료)을 총보상 관점에서 비교하게 한다."
+      },
+      "key_numbers": [
+        {
+          "label": "노동비용",
+          "value": "+3.4%",
+          "delta": "-0.1%p",
+          "period": "2026년 9월까지 1년"
+        },
+        {
+          "label": "봉급",
+          "value": "+3.1%",
+          "delta": "",
+          "period": "2026년 9월까지 1년"
+        },
+        {
+          "label": "복리후생",
+          "value": "+3.9%",
+          "delta": "",
+          "period": "2026년 9월까지 1년"
+        },
+        {
+          "label": "태평양-뉴잉글랜드",
+          "value": "2.0%p",
+          "delta": "",
+          "period": "2026년 9월까지 1년"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "%",
+        "labels": [
+          "뉴잉글랜드",
+          "전국",
+          "태평양"
+        ],
+        "series": [
+          {
+            "name": "12개월 노동비용 증가율",
+            "values": [
+              2.3,
+              3.4,
+              4.3
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "민간 부문, 계절조정 전. 미국 노동통계국 고용비용지수(ECI). 「The Economics Daily」(2026.11.05).",
+        "source_id": "src_bls_ted_eci_2026"
+      },
+      "counselor_question": "제안받은 총보상에서 복리후생이 차지하는 몫을 계산해 본 적 있나요?",
+      "tags": [
+        "노동비용",
+        "임금",
+        "복리후생"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "미국 노동통계국(BLS) The Economics Daily",
+        "source_title": "Compensation costs up 2.3 percent in New England, 4.3 percent in Pacific region, over year ended September 2026",
+        "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-up-2-3-percent-in-new-england-4-3-percent-in-pacific-region-over-year-ended-september-2026.htm",
+        "published_at": "2026-11-05",
+        "license": {
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "type": "PUBLIC-DOMAIN",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "scope": "연방정부 발간물 전체",
+          "attribution_required": false,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+          "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-05)"
+        },
+        "usage": "수치 번역·도표화.",
+        "source_id": "src_bls_ted_eci_2026"
+      }
+    },
+    {
+      "id": "c07",
+      "edition": "global-2300",
+      "updated_at": "2026-11-14T23:07:00+09:00",
+      "run_id": "br-20261114-2307",
+      "order": 7,
+      "track": "A",
+      "category": "AI·직무",
+      "title": "AI 프리랜서 공고는 일을 다시 묶는다",
+      "kicker": "AI 공고 과업 수 많음 · 재묶음(rebundling) 확인",
+      "three_step": {
+        "what": "OpenAI 경제연구팀과 Upwork가 프리랜스 시장을 분석한 결과, AI 관련 공고는 다른 공고보다 평균적으로 더 많은 과업을 한 프로젝트로 묶어 요구했다. 과업 수가 비슷한 프로젝트끼리 비교해도, AI 공고는 생성형 AI 이전에는 함께 요청되지 않던 과업 조합을 가져왔다.",
+        "evidence": "ChatGPT 사용은 글쓰기·조언에 몰리고 Upwork 공고는 기술 구현·시각 제작에 치우쳐 단순 대체 관계는 아니었다. AI 관련 공고 안의 일은 소수 활동에 집중되지 않고 다양해지는 중이었다. 별도 연구(arXiv:2611.17530)는 창업 과업 노출이 큰 분야에서 진입이 10~20% 늘었다고 본다.",
+        "implication": "프리랜서·플랫폼 노동자 내담자에게는 단일 기술 대신 과업 묶음(기획+구현+검수)을 팔 수 있는 포트폴리오를 만들게 하고, AI 도구 사용 경험을 일 단위 성과로 기록하게 한다."
+      },
+      "key_numbers": [
+        {
+          "label": "진입 증가",
+          "value": "10~20%",
+          "delta": "창업 과업 노출 분야",
+          "period": "arXiv:2611.17530"
+        },
+        {
+          "label": "AI 공고 과업 수",
+          "value": "더 많음",
+          "delta": "비AI 공고 대비",
+          "period": "arXiv:2611.14708"
+        },
+        {
+          "label": "과업 다양성",
+          "value": "증가",
+          "delta": "2개 이상 과업 공고",
+          "period": "arXiv:2611.14708"
+        }
+      ],
+      "chart_data": {
+        "type": "slope",
+        "unit": "지수(비AI 공고=100)",
+        "labels": [
+          "과업 수",
+          "과업 조합 신규성"
+        ],
+        "series": [
+          {
+            "name": "AI 관련 공고",
+            "values": [
+              105,
+              112
+            ],
+            "emphasis": true
+          },
+          {
+            "name": "그 밖의 공고",
+            "values": [
+              100,
+              100
+            ],
+            "emphasis": false
+          }
+        ],
+        "reference_value": 100,
+        "note": "개념도: 비AI 공고를 100으로 둔 상대 비교(논문의 방향성 요약, 절대치 아님). arXiv:2611.14708(2026.11.10).",
+        "source_id": "src_arxiv_2611_14708"
+      },
+      "counselor_question": "지금 가진 기술 3개를 하나의 상품처럼 묶어 설명해 볼 수 있나요?",
+      "tags": [
+        "프리랜스",
+        "AI",
+        "과업묶음"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+        "source_title": "The Rebundling of Freelance Work in the AI Age (arXiv:2611.14708)",
+        "source_url": "https://arxiv.org/abs/2611.14708",
+        "published_at": "2026-11-10",
+        "license": {
+          "name": "CC BY 4.0 (저작자표시)",
+          "type": "CC-BY-4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/",
+          "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "arXiv PDF 라이선스 표기 「License: CC BY 4.0」 확인(2026-11-17).",
+          "attribution_text": "Chin, C. et al. (2026), arXiv:2611.14708, CC BY 4.0"
+        },
+        "usage": "초록·핵심 발견 요지 인용·요약. 도표·이미지 없음.",
+        "source_id": "src_arxiv_2611_14708"
+      }
+    }
+  ],
+  "radar": {
+    "title": "AI × 직무 변화 레이더",
+    "as_of": "2026-11-14",
+    "columns": [
+      "해외 동향",
+      "국내 영향"
+    ],
+    "rows": [
+      {
+        "id": "r01",
+        "edition": [
+          "kr-0700",
+          "global-2300"
+        ],
+        "updated_at": "2026-11-14T23:07:00+09:00",
+        "run_id": "br-20261114-2307",
+        "group": "청년·신규 진입",
+        "abroad": "미국 도시권 389곳 가운데 226곳에서 실업률이 1년 전보다 내렸고, 3% 미만 지역은 48곳이었다.",
+        "domestic": "고용행정 개방데이터 학술대회에서 청년 초기경력 궤적과 장기 이력단절이 실증 연구 주제로 다뤄졌다.",
+        "changing": "이력단절 조기 선별과 개입",
+        "staying": "첫 경력의 안정적 진입 지원",
+        "source_ids": [
+          "src_bls_ted_metro_2026",
+          "src_keis_opendata_20261112"
+        ]
+      },
+      {
+        "id": "r02",
+        "edition": [
+          "kr-0700",
+          "global-2300"
+        ],
+        "updated_at": "2026-11-14T23:07:00+09:00",
+        "run_id": "br-20261114-2307",
+        "group": "경력·중장년",
+        "abroad": "3년 이상 근속 후 일자리를 잃은 미국 노동자의 66.1%가 재취업했고 업종별 차이가 10%포인트 넘었다.",
+        "domestic": "시니어산업을 복지가 아니라 성장산업으로 키우라는 논의가 나오며 중장년의 새 일자리 수요처가 거론됐다.",
+        "changing": "재취업 전략의 업종 간 이동",
+        "staying": "숙련·고객 관계의 이전 가능성",
+        "source_ids": [
+          "src_bls_ted_disp_2026",
+          "src_popnsenior_20261112"
+        ]
+      },
+      {
+        "id": "r03",
+        "edition": [
+          "kr-0700",
+          "global-2300"
+        ],
+        "updated_at": "2026-11-14T23:07:00+09:00",
+        "run_id": "br-20261114-2307",
+        "group": "사무·프리랜서",
+        "abroad": "AI 프리랜스 공고는 과업을 다시 묶어 요구했고, ChatGPT 사용(글쓰기·조언)과 공고(구현·제작)의 활동 구성은 달랐다.",
+        "domestic": "청년 취업지원 현장 점검이 이뤄져 지원 사업의 체감이 점검 대상이 됐다.",
+        "changing": "단일 기술에서 과업 묶음으로",
+        "staying": "구현·납품을 끝내는 수행력",
+        "source_ids": [
+          "src_arxiv_2611_14708",
+          "src_moef_youthfield_20261112"
+        ]
+      },
+      {
+        "id": "r04",
+        "edition": [
+          "kr-0700",
+          "global-2300"
+        ],
+        "updated_at": "2026-11-14T23:07:00+09:00",
+        "run_id": "br-20261114-2307",
+        "group": "제조·기술",
+        "abroad": "미국 민간 노동비용은 3.4% 늘었고 복리후생(3.9%)이 봉급(3.1%)보다 빨리 올랐다.",
+        "domestic": "고용보험 데이터를 쓴 산업전환·노동이동 연구가 시군구 단위 공간패널분석으로 발표됐다.",
+        "changing": "복리후생 중심 총보상 경쟁",
+        "staying": "기술 수준 높은 제조 일자리 수요",
+        "source_ids": [
+          "src_bls_ted_eci_2026",
+          "src_keis_opendata_20261112"
+        ]
+      }
+    ]
+  },
+  "runs": {
+    "kr-0700": {
+      "status": "ok",
+      "updated_at": "2026-11-14T07:05:00+09:00",
+      "last_ok": "2026-11-14",
+      "run_id": "br-20261114-0705"
+    },
+    "global-2300": {
+      "status": "ok",
+      "updated_at": "2026-11-14T23:07:00+09:00",
+      "last_ok": "2026-11-14",
+      "run_id": "br-20261114-2307"
+    }
+  },
+  "sources": [
+    {
+      "id": "src_keis_opendata_20261112",
+      "source_name": "고용노동부·한국고용정보원",
+      "source_title": "'고용행정 데이터로 청년 일자리부터 산업전환까지… 노동시장 현안 해법 찾는다'",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788923",
+      "published_at": "2026-11-12",
+      "license": {
+        "name": "공공누리 미부착(사전 협의 필요)",
+        "type": "KOGL-NONE",
+        "url": null,
+        "scope": "보도자료 본문·첨부파일 재가공 불가",
+        "attribution_required": true,
+        "commercial_use": "unknown",
+        "modification": "unknown",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "정책브리핑 해당 페이지에 공공누리 미부착 고지(「공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용」)가 있어 재가공 불가로 판단(2026-11-17 확인). 사실·일정만 새로 서술.",
+        "attribution_text": "자료: 고용노동부·한국고용정보원 「'고용행정 데이터로 청년 일자리부터 산업전환까지… 노동시장 현안 해법 찾는다'」(2026.11.12)"
+      },
+      "usage": "행사·세션 주제 사실만 요약. 본문 복제 없음."
+    },
+    {
+      "id": "src_popnsenior_20261112",
+      "source_name": "인구전략위원회",
+      "source_title": "김진오 인구전략위 부위원장, \"시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로\"",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788872",
+      "published_at": "2026-11-12",
+      "license": {
+        "name": "공공누리 제1유형(출처표시)",
+        "type": "KOGL-1",
+        "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+        "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+        "attribution_text": "출처: 인구전략위원회 「김진오 인구전략위 부위원장, \"시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로\"」(2026.11.12, 정책브리핑 게재), 공공누리 제1유형"
+      },
+      "usage": "발언 요지와 수치를 재구성. 원문 문장 복제 없음."
+    },
+    {
+      "id": "src_moef_youthfield_20261112",
+      "source_name": "재정경제부",
+      "source_title": "범부처 민생안정지원단, 청년 취업지원 현장 점검",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
+      "published_at": "2026-11-12",
+      "license": {
+        "name": "공공누리 제1유형(출처표시)",
+        "type": "KOGL-1",
+        "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+        "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+        "attribution_text": "출처: 재정경제부 「범부처 민생안정지원단, 청년 취업지원 현장 점검」(2026.11.12, 정책브리핑 게재), 공공누리 제1유형"
+      },
+      "usage": "행사 사실·규모 수치만 요약. 원문 문장 복제 없음."
+    },
+    {
+      "id": "src_bls_ted_ipt_202610",
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_title": "Involuntary part-time employment rose by 339,000 to 4.8 million in October 2026",
+      "source_url": "https://www.bls.gov/opub/ted/2026/involuntary-part-time-employment-rose-by-339000-to-4.8-million-in-october-2026.htm",
+      "published_at": "2026-11-16",
+      "license": {
+        "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+        "type": "PUBLIC-DOMAIN",
+        "url": "https://www.bls.gov/opub/copyright-information.htm",
+        "scope": "연방정부 발간물 전체",
+        "attribution_required": false,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+        "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-16)"
+      },
+      "usage": "수치 번역·도표화. 원문 문장 복제 없음."
+    },
+    {
+      "id": "src_bls_ted_disp_2026",
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_title": "Three-fourths of long-tenured workers displaced from jobs in health care and social assistance reemployed in January 2026",
+      "source_url": "https://www.bls.gov/opub/ted/2026/three-fourths-of-long-tenured-workers-displaced-from-jobs-in-health-care-and-social-assistance-reemployed-in-january-2026.htm",
+      "published_at": "2026-11-02",
+      "license": {
+        "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+        "type": "PUBLIC-DOMAIN",
+        "url": "https://www.bls.gov/opub/copyright-information.htm",
+        "scope": "연방정부 발간물 전체",
+        "attribution_required": false,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+        "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-02)"
+      },
+      "usage": "재취업률 수치만 도표화."
+    },
+    {
+      "id": "src_bls_ted_eci_2026",
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_title": "Compensation costs up 2.3 percent in New England, 4.3 percent in Pacific region, over year ended September 2026",
+      "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-up-2-3-percent-in-new-england-4-3-percent-in-pacific-region-over-year-ended-september-2026.htm",
+      "published_at": "2026-11-05",
+      "license": {
+        "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+        "type": "PUBLIC-DOMAIN",
+        "url": "https://www.bls.gov/opub/copyright-information.htm",
+        "scope": "연방정부 발간물 전체",
+        "attribution_required": false,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+        "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-05)"
+      },
+      "usage": "수치 번역·도표화."
+    },
+    {
+      "id": "src_bls_ted_metro_2026",
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_title": "Unemployment rates lower in 226 metro areas from September 2025 to September 2026",
+      "source_url": "https://www.bls.gov/opub/ted/2026/unemployment-rates-lower-in-226-metro-areas-from-september-2025-to-september-2026.htm",
+      "published_at": "2026-11-04",
+      "license": {
+        "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+        "type": "PUBLIC-DOMAIN",
+        "url": "https://www.bls.gov/opub/copyright-information.htm",
+        "scope": "연방정부 발간물 전체",
+        "attribution_required": false,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+        "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-04)"
+      },
+      "usage": "지역별 실업률 수치만 도표화."
+    },
+    {
+      "id": "src_bls_ted_cex_2026",
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_title": "Consumer spending increased 4.3 percent from 2024 to 2025",
+      "source_url": "https://www.bls.gov/opub/ted/2026/consumer-spending-increased-4-3-percent-from-2024-to-2025.htm",
+      "published_at": "2026-11-06",
+      "license": {
+        "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+        "type": "PUBLIC-DOMAIN",
+        "url": "https://www.bls.gov/opub/copyright-information.htm",
+        "scope": "연방정부 발간물 전체",
+        "attribution_required": false,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+        "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-06)"
+      },
+      "usage": "지출·소득 증가율 수치만 도표화."
+    },
+    {
+      "id": "src_arxiv_2611_14708",
+      "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+      "source_title": "The Rebundling of Freelance Work in the AI Age (arXiv:2611.14708)",
+      "source_url": "https://arxiv.org/abs/2611.14708",
+      "published_at": "2026-11-10",
+      "license": {
+        "name": "CC BY 4.0 (저작자표시)",
+        "type": "CC-BY-4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "arXiv PDF 라이선스 표기 「License: CC BY 4.0」 확인(2026-11-17).",
+        "attribution_text": "Chin, C. et al. (2026), arXiv:2611.14708, CC BY 4.0"
+      },
+      "usage": "초록·핵심 발견 요지 인용·요약. 도표·이미지 없음."
+    },
+    {
+      "id": "src_arxiv_2611_17530",
+      "source_name": "arXiv (micro1·노스이스턴대)",
+      "source_title": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation (arXiv:2611.17530)",
+      "source_url": "https://arxiv.org/abs/2611.17530",
+      "published_at": "2026-11-12",
+      "license": {
+        "name": "CC BY 4.0 (저작자표시)",
+        "type": "CC-BY-4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "arXiv PDF 라이선스 표기 creativecommons.org/licenses/by/4.0 확인(2026-11-17).",
+        "attribution_text": "Esposito, M. & Zhang, L. (2026), arXiv:2611.17530, CC BY 4.0"
+      },
+      "usage": "초록 요지 인용·요약. 도표·이미지 없음."
+    }
+  ],
+  "archive_dates": [
+    "2026-11-14"
+  ],
+  "copyright_policy": {
+    "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 우리 말로 새로 썼습니다.",
+    "track_a_note": "공공누리 제1유형(출처표시)·퍼블릭 도메인·CC BY 4.0 자료를 카드마다 출처와 라이선스로 표시합니다.",
+    "track_b_note": "언론사 기사와 공공누리 미부착 자료는 본문·번역문을 싣지 않고 수치 사실과 원문 링크만 제공합니다.",
+    "quote_limit_words": 15,
+    "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+  },
+  "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다."
+}
