@@ -118,6 +118,7 @@ body:not([data-home]) .hero{display:none}
 .lic .gr{margin-top:4px;font-size:15px;line-height:1.5;color:var(--muted)}
 .lic dl{display:grid;grid-template-columns:5.6em minmax(0,1fr);gap:6px 12px;margin-top:14px;font-size:15.5px;line-height:1.5}
 .lic dt{color:var(--dim);font-size:14px;padding-top:1px}
+.lic dd:last-child{padding-right:52px} /* 오른쪽 아래 참고용 소인 자리 */
 .lic dd a{color:var(--acc);text-decoration:none;font-weight:650}
 .lic dd a:hover{text-decoration:underline;text-underline-offset:3px}
 .lic .seal2{position:absolute;right:16px;bottom:14px;padding:3px 8px 2px;border:2px solid var(--stamp);border-radius:5px;font-family:var(--mono);font-size:11px;font-weight:700;line-height:1.35;letter-spacing:.06em;color:var(--stamp);text-align:center;transform:rotate(-8deg);opacity:.82}
@@ -275,8 +276,8 @@ main{display:block;min-height:50vh;padding-top:20px}
 .dt>*,.dt-l>*{min-width:0}
 @media (min-width:980px),(min-width:700px) and (orientation:landscape){
   .dt{grid-template-columns:minmax(300px,400px) minmax(0,1fr);column-gap:36px;align-items:start}
+  /* 왼쪽 카드는 오른쪽 칸을 읽는 동안만 붙박이: 붙박이 칸 바깥(.miss)은 그리드에 넣지 않아 겹칠 수 없게 한다 */
   .dt-l{position:sticky;top:132px}
-  .dt .miss{grid-column:1 / -1}
 }
 @media (orientation:landscape) and (max-height:500px){.dt-l{position:static}}
 @media (min-width:700px) and (max-width:979px) and (orientation:landscape){.dt{grid-template-columns:300px minmax(0,1fr);column-gap:22px}}
@@ -408,6 +409,7 @@ html[data-jc-imm] .dt-l{position:static}
 .links a:hover{color:var(--acc)}
 .links a i{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:13px;color:var(--dim)}
 /* 최하단 미표기 안내·공식 링크 */
+.dt+.miss{margin-top:18px}
 .miss{padding:18px 20px;border:1.5px dashed var(--line-2);border-radius:16px}
 .miss p{font-size:15.5px;line-height:1.7;color:var(--muted)}
 .miss p b{color:var(--ink)}
