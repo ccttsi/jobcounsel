@@ -1015,7 +1015,10 @@ function applyMode(m){
   deckOn=(m!=='all');
   $('stage').hidden=deckOn;
   if(window.JCDECK){if(deckOn)window.JCDECK.show(m);else window.JCDECK.hide();}
-  if(deckOn){clearTimeout(autoT);$('nav').classList.add('a-hold');}
+  if(deckOn){clearTimeout(autoT);$('nav').classList.add('a-hold');
+    /* 목록 아래에서 모드를 골라도 덱은 머리부터 보이게 — 스크롤을 맨 위로 되돌린다 */
+    if(window.scrollY||document.documentElement.scrollTop){window.scrollTo(0,0);}
+  }
   else{restartFill();schedule();}
 }
 /* 가운데 문구를 슬롯처럼 돌린다(레버 당김 = 두 바퀴, 힌트 = 아홉 칸). 움직이는 동안만 rAF. */
