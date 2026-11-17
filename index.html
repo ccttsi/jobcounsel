@@ -203,8 +203,10 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-ib svg{width:20px;height:20px}
 /* 위치 다이얼 — 자료가 늘어도 한 줄을 넘지 않게, 지금 자리를 꼭대기로 한 반원 궤적에 ±3칸(모두 7개)만 띄운다.
    수평선 아래로 내려간 자리는 감춰 수심 밑으로 보이지 않는다. 움직임은 transform·opacity만 쓴다. */
-.a-orbit{position:relative;flex:1 1 300px;min-width:264px;max-width:400px;height:72px;margin:0 2px}
-.a-orbit-dial{position:absolute;left:0;right:0;bottom:20px;height:50px}
+.a-orbit{position:relative;flex:1 1 280px;min-width:262px;max-width:400px;height:72px;margin:0 2px}
+.a-orbit-dial{position:absolute;left:0;right:0;bottom:20px;height:50px;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
+.a-orbit-dial.a-grab{cursor:grabbing}
+.a-orbit-dial.a-grab button{cursor:grabbing}
 .a-orbit-dial::before{content:"";position:absolute;left:16px;right:16px;bottom:0;height:1px;
   background:linear-gradient(90deg,transparent,var(--line-2) 12%,var(--line-2) 88%,transparent)}
 .a-orbit-dial::after{content:"";position:absolute;left:50%;bottom:0;width:132px;height:20px;margin-left:-66px;pointer-events:none;
@@ -218,7 +220,8 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-orbit-n{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:11.5px;line-height:16px;font-weight:650;
   letter-spacing:.1em;color:var(--dim);font-variant-numeric:tabular-nums}
 .a-orbit-n b{color:var(--acc);font-size:13px}
-.a-roll-hint{font-size:13.5px;color:var(--dim);margin-top:2px}
+.a-roll-hint{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;color:var(--dim);margin-top:2px;text-align:left}
+.a-roll-ico{width:15px;height:15px;flex:none;display:block;color:var(--muted);opacity:.9}
 @media (max-width:599px){.a-pv-kw span:nth-child(n+3){display:none}.a-pv-kw span{font-size:12.5px;padding:5px 8px}}
 .a-for-mouse{display:none}
 @media (hover:hover) and (pointer:fine){.a-for-touch{display:none}.a-for-mouse{display:inline}}
@@ -454,10 +457,11 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
         </div>
         <div class="a-slot" id="slot">
           <button type="button" class="a-slot-btn" id="slotBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
-            <span class="a-slot-rail" aria-hidden="true"><span class="a-slot-fill"></span></span>
-            <span class="a-slot-knob" aria-hidden="true"></span>
+            <span class="a-lever" aria-hidden="true">
+              <span class="a-lever-arm"><span class="a-lever-shaft"></span><span class="a-lever-ball"><i></i></span></span>
+              <span class="a-lever-housing"><i></i><i></i></span>
+            </span>
           </button>
-          <span class="a-slot-cap" aria-hidden="true">나누기</span>
         </div>
         <div class="a-ctrl-btns">
           <button class="a-ib" id="navPrev" aria-label="이전 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -465,7 +469,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
           <button class="a-ib" id="navPause" aria-pressed="false" aria-label="자동 넘김 멈추기" title="자동 넘김 멈추기"><svg viewBox="0 0 24 24" aria-hidden="true"><g id="icoPause"><rect x="7" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/><rect x="13.6" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/></g><path id="icoPlay" d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4l-10-6.2A.8.8 0 0 0 8 5.8z" fill="currentColor" style="display:none"/></svg></button>
         </div>
       </div>
-      <p class="a-roll-hint"><span class="a-for-touch">↕ 가운데 문구를 밀어서 돌릴 수 있습니다.</span><span class="a-for-mouse">↕ 가운데 문구를 휠로 굴리거나 위아래로 끌어 돌릴 수 있습니다.</span></p>
+      <p class="a-roll-hint"><svg class="a-roll-ico" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 2.7v14.6" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M6.5 5.9 10 2.5l3.5 3.4M6.5 14.1 10 17.5l3.5-3.4" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="a-for-touch">가운데 문구나 아래 점을 좌우로 밀어 돌립니다.</span><span class="a-for-mouse">가운데 문구나 아래 점을 끌거나, 그 위에서 휠을 굴려 돌립니다.</span></p>
     </div>
     <div id="listView" class="a-list" hidden>
       <h2 class="a-list-h" id="allListH">자료 전체 목록 <b class="a-num" data-count></b>개</h2>
@@ -473,7 +477,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <nav class="a-pg" id="allPg" aria-label="목록 쪽 넘기기"></nav>
       <div class="a-coinrow" id="coinRow">
         <button type="button" class="a-coin-btn" id="coinBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
-          <span class="a-coin" aria-hidden="true"></span>
+          <span class="a-coin" aria-hidden="true"><svg viewBox="0 0 60 42" focusable="false"><defs><linearGradient id="jcCoinFace" x1=".1" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#fff8e2"/><stop offset=".35" stop-color="#f2dca6"/><stop offset=".72" stop-color="#d9b269"/><stop offset="1" stop-color="#bb8f42"/></linearGradient><linearGradient id="jcCoinSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bd9550"/><stop offset=".42" stop-color="#8f6a2b"/><stop offset=".82" stop-color="#6a4c1c"/><stop offset="1" stop-color="#8a6629"/></linearGradient><pattern id="jcCoinMill" width="2.6" height="20" patternUnits="userSpaceOnUse"><rect width="1" height="20" fill="#4f3712" opacity=".34"/><rect x="1.3" width=".6" height="20" fill="#f6e3b4" opacity=".22"/></pattern></defs><path d="M6 15A24 12 0 0 1 54 15L54 26A24 12 0 0 1 6 26Z" fill="url(#jcCoinSide)"/><path d="M6 15A24 12 0 0 1 54 15L54 26A24 12 0 0 1 6 26Z" fill="url(#jcCoinMill)"/><ellipse cx="30" cy="15" rx="24" ry="12" fill="url(#jcCoinFace)" stroke="#7d5a1e" stroke-width="1"/><path d="M6 15A24 12 0 0 1 54 15" fill="none" stroke="#fff4cf" stroke-width="1.1" opacity=".55"/><ellipse cx="30" cy="15.4" rx="17.6" ry="8.3" fill="none" stroke="#8d6524" stroke-width=".9" opacity=".45"/><ellipse cx="30" cy="14.8" rx="11.2" ry="5.1" fill="none" stroke="#8d6524" stroke-width=".8" opacity=".3"/><path d="M10.8 11.6A24 12 0 0 1 30 3.4" fill="none" stroke="#fffdf0" stroke-width="1.6" stroke-linecap="round" opacity=".6"/></svg></span>
         </button>
       </div>
     </div>
@@ -902,7 +906,43 @@ function bindNav(){
   $('navPause').addEventListener('click',function(){setPaused(!paused);});
   $('allBtn').addEventListener('click',function(){setList(!listOpen);schedule();});
   $('allPg').addEventListener('click',function(e){var b=e.target.closest('[data-lp]');if(!b||b.disabled)return;listPage=+b.getAttribute('data-lp');renderList();var f=$('allList').querySelector('a');if(f)f.focus({preventScroll:true});});
-  $('dots').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-dot]');if(b)goTo(+b.getAttribute('data-dot'));});
+  $('dots').addEventListener('click',function(e){
+    if(dotSwallow){dotSwallow=false;return;}
+    var b=e.target.closest&&e.target.closest('[data-dot]');if(b)goTo(+b.getAttribute('data-dot'));
+  });
+  /* 반원 다이얼을 좌우로 문지르면(끌면) 위 문구가 따라 굴러간다. 휠도 같은 방향으로 한 칸씩.
+     끌지 않은 짧은 누름은 그대로 점 고르기(goTo)로 넘긴다. */
+  var dotsEl=$('dots'),ddrag=null,dotSwallow=false,wheel2=0,wheel2T=0;
+  dotsEl.addEventListener('pointerdown',function(e){
+    if(e.button>0)return;
+    ddrag={x0:e.clientX,p:pos,lx:e.clientX,lt:performance.now(),v:0,moved:false};
+  });
+  window.addEventListener('pointermove',function(e){
+    if(!ddrag)return;
+    var dx=e.clientX-ddrag.x0,now=performance.now();
+    if(!ddrag.moved){
+      if(Math.abs(dx)<7)return;
+      ddrag.moved=true;dotsEl.classList.add('a-grab');hold();
+    }
+    var dtm=Math.max(1,now-ddrag.lt);ddrag.v=ddrag.v*.65+((e.clientX-ddrag.lx)/ARC.step/dtm)*.35;ddrag.lx=e.clientX;ddrag.lt=now;
+    pos=ddrag.p-dx/ARC.step;layout();
+  },{passive:true});
+  var dotEnd=function(e,cancel){
+    if(!ddrag)return;var d=ddrag;ddrag=null;dotsEl.classList.remove('a-grab');
+    if(!d.moved){if(e&&e.pointerType!=='mouse'){}return;}
+    dotSwallow=true;setTimeout(function(){dotSwallow=false;},0);
+    if(cancel){target=Math.round(pos);if(reduce()){pos=target;layout();}else kick();return;}
+    var fling=Math.max(-3,Math.min(3,-d.v*260));
+    target=Math.round(pos+fling);if(reduce()){pos=target;layout();}else kick();
+    hold();
+  };
+  window.addEventListener('pointerup',function(e){dotEnd(e,false);});
+  window.addEventListener('pointercancel',function(e){dotEnd(e,true);});
+  dotsEl.addEventListener('wheel',function(e){
+    e.preventDefault();var dy=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?400:1),now=performance.now();
+    wheel2+=dy;if(Math.abs(wheel2)>=30&&now-wheel2T>150){step(wheel2>0?1:-1);wheel2=0;wheel2T=now;}
+    if(now-wheel2T>400)wheel2=dy;
+  },{passive:false});
   var stage=$('nav');
   stage.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){hover=true;schedule();}});
   stage.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hover=false;schedule();}});
@@ -939,12 +979,13 @@ function applyMode(m){
 }
 /* 가운데 문구를 슬롯처럼 돌린다(레버 당김 = 두 바퀴, 힌트 = 아홉 칸). 움직이는 동안만 rAF. */
 var spinT=0;
-function spin(k){
+function spin(k,dur){
   if(reduce()||!N)return;
   if(spinT){cancelAnimationFrame(spinT);spinT=0;}
   if(raf){cancelAnimationFrame(raf);raf=0;}
   hold();
-  var start=pos,total=Math.max(1,Math.round(k||N)),t0=0,dur=780;
+  var start=pos,total=Math.max(1,Math.round(k||N)),t0=0;
+  dur=Math.max(240,dur||780);
   target=Math.round(start+total);
   function run(ts){
     if(!t0)t0=ts;
