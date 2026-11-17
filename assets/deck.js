@@ -18,7 +18,8 @@
   var mode = 'all';
   var hold = null;    /* {id, from} — from=null이면 선반에서 들고 있음, 숫자면 그 칸에서 옮기는 중 */
   var view = null;    /* {id, idx} — 꽂힌 자료 미리보기(고정된 자리) */
-  var drag = null, suppress = false, tutStep = 0, tutOpen = false, built = false;
+  var drag = null, suppress = false, shelfDrag = null, suppressShelf = false;
+  var tutStep = 0, tutOpen = false, built = false;
 
   /* ---------- 장부 ---------- */
   function all() { return window.JC_TOOLS || []; }
@@ -72,6 +73,9 @@
     if (sc) sc.scrollTop = top;
   }
   function renderShelf() {
+    /* 덱과 같은 이유로 스크롤 위치를 지킨다: 자료를 들 때마다 innerHTML을 갈아 끼우는데,
+       그대로 두면 선반이 맨 위로 튀어 다시 내려가야 했다(2026-11-18 R3). */
+    var ssc = $('shelfScroll'), stop = ssc ? ssc.scrollTop : 0;
     var placed = {}, left = [];
     deck[mode].forEach(function (id) { placed[id] = 1; });
     listFor(mode).forEach(function (t) { if (!placed[t.id]) left.push(t); });
@@ -91,6 +95,7 @@
       }).join('');
     }
     $('shelfN').textContent = left.length + ' / ' + maxOf(mode);
+    if (ssc) ssc.scrollTop = stop;
   }
   function renderHint() {
     var h = $('deckHint');
@@ -194,6 +199,7 @@
     });
 
     $('shelfList').addEventListener('click', function (e) {
+      if (suppressShelf) { suppressShelf = false; return; }   /* 끌어서 넘긴 뒤의 클릭은 삼킨다 */
       var b = e.target.closest('[data-id]'); if (!b) return;
       var id = b.getAttribute('data-id');
       if (hold && hold.from === null && hold.id === id) { hold = null; render(); return; }
@@ -202,6 +208,9 @@
 
     /* PC 끌어다 놓기 */
     $('shelfList').addEventListener('dragstart', function (e) {
+      /* 세로로 끌던 중이면 스크롤이다 — 카드 끌기(슬롯으로 놓기)는 가로로 끌 때만 */
+      if (shelfDrag && shelfDrag.moved) { e.preventDefault(); return; }
+      shelfDrag = null;
       var b = e.target.closest('[data-id]'); if (!b) { e.preventDefault(); return; }
       try { e.dataTransfer.setData('text/plain', b.getAttribute('data-id')); e.dataTransfer.effectAllowed = 'copy'; } catch (x) { }
       hold = { id: b.getAttribute('data-id'), from: null }; view = null; render();
@@ -243,6 +252,36 @@
       sc.classList.remove('a-drag'); drag = null;
     });
     window.addEventListener('pointercancel', function () { if (drag) { sc.classList.remove('a-drag'); drag = null; } });
+
+    /* PC: 자료 선반도 클릭 앤 드래그로 넘긴다(세로). 카드를 슬롯으로 끌어다 놓는 기본 끌기와
+       겹치지 않게, 세로로 먼저 움직이면(4px 이상, 가로보다 클 때) 스크롤로 보고 dragstart를 취소한다.
+       가로로 끌면 예전처럼 카드가 슬롯으로 따라온다. 휠·터치 스크롤은 브라우저 기본 그대로. */
+    var ssc = $('shelfScroll');
+    if (ssc) {
+      ssc.addEventListener('pointerdown', function (e) {
+        if (e.pointerType !== 'mouse' || e.button !== 0) return;
+        shelfDrag = { y: e.clientY, x: e.clientX, top: ssc.scrollTop, moved: false };
+      });
+      window.addEventListener('pointermove', function (e) {
+        if (!shelfDrag) return;
+        var dy = e.clientY - shelfDrag.y, dx = e.clientX - shelfDrag.x;
+        if (!shelfDrag.moved) {
+          if (Math.abs(dy) < 4) return;
+          if (Math.abs(dy) <= Math.abs(dx)) { shelfDrag = null; return; }   /* 가로 = 카드 끌기 */
+          shelfDrag.moved = true; ssc.classList.add('a-drag');
+        }
+        ssc.scrollTop = shelfDrag.top - dy;
+        if (e.cancelable) e.preventDefault();
+      }, { passive: false });
+      window.addEventListener('pointerup', function () {
+        if (!shelfDrag) return;
+        if (shelfDrag.moved) { suppressShelf = true; setTimeout(function () { suppressShelf = false; }, 0); }
+        ssc.classList.remove('a-drag'); shelfDrag = null;
+      });
+      window.addEventListener('pointercancel', function () {
+        if (shelfDrag) { ssc.classList.remove('a-drag'); shelfDrag = null; }
+      });
+    }
 
     /* 플로팅 카드 동작 */
     var sheet = $('deckSheet');
