@@ -16,6 +16,9 @@ document.documentElement.setAttribute('data-theme',t);})();
 <script>/* 머리말을 접어 두었으면 첫 그림 전에 정한다(펼친 머리말이 번쩍였다 접히지 않게). */
 try{if(localStorage.getItem('jc-hf')==='off')document.documentElement.setAttribute('data-jc-hf','off');}catch(e){}
 </script>
+<script>/* 시드·매치로 재구성된 화면이면 첫 그림부터 트리거(레버·동전)를 감춘다. */
+try{var jcM=localStorage.getItem('jc-mode');if(jcM==='seed'||jcM==='match')document.documentElement.setAttribute('data-jc-mode',jcM);}catch(e){}
+</script>
 <style>
 /* 이 스타일만으로 화면이 완성된다. Tailwind와 Lucide가 늦게 오거나 막혀도 배치는 그대로다. */
 :root{
@@ -237,7 +240,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-list li b{display:block;font-size:17px;font-weight:700;line-height:1.4;color:var(--ink)}
 .a-list small{display:block;font-size:14px;color:var(--muted);line-height:1.5}
 .a-pg{display:flex;justify-content:center;align-items:center;gap:2px;margin-top:10px;min-height:44px}
-.a-root .a-pg button{min-width:40px;height:40px;padding:0 6px;border-radius:12px;font-size:15px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
+.a-root .a-pg button{min-width:44px;height:44px;padding:0 6px;border-radius:12px;font-size:15px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
 .a-root .a-pg button[aria-current="true"]{color:var(--a1);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
 .a-root .a-pg button:disabled{opacity:.3}
 .a-all{margin:14px auto 0;max-width:820px;text-align:left}
@@ -361,6 +364,8 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 @media (prefers-reduced-motion:reduce){.a-seen-stamp:not([hidden]){animation:none!important}.a-root .a-btn.a-open,.a-card.a-insight.a-live:hover{transition:none;transform:none!important}}
 </style>
 <link rel="stylesheet" href="./assets/headfold.css">
+<link rel="stylesheet" href="./assets/modes.css">
+<link rel="stylesheet" href="./assets/deck.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
@@ -429,7 +434,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       </div></div>
   </section>
 
-  <main class="a-stage">
+  <main class="a-stage" id="stage">
   <section class="a-nav" id="nav" aria-label="자료 고르기">
     <p class="a-eyebrow">직업상담사를 위한 학습·실무 자료 <b class="a-num" data-count></b>가지</p>
     <div id="rollView" data-jc-still>
@@ -447,6 +452,13 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
           <div class="a-orbit-dial" id="dots" role="group" aria-label="자료 바로 고르기"></div>
           <span class="a-orbit-n" aria-hidden="true"><b id="navPosN">1</b> / <span id="navPosT"></span></span>
         </div>
+        <div class="a-slot" id="slot">
+          <button type="button" class="a-slot-btn" id="slotBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
+            <span class="a-slot-rail" aria-hidden="true"><span class="a-slot-fill"></span></span>
+            <span class="a-slot-knob" aria-hidden="true"></span>
+          </button>
+          <span class="a-slot-cap" aria-hidden="true">나누기</span>
+        </div>
         <div class="a-ctrl-btns">
           <button class="a-ib" id="navPrev" aria-label="이전 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <button class="a-ib" id="navNext" aria-label="다음 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -456,9 +468,14 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <p class="a-roll-hint"><span class="a-for-touch">↕ 가운데 문구를 밀어서 돌릴 수 있습니다.</span><span class="a-for-mouse">↕ 가운데 문구를 휠로 굴리거나 위아래로 끌어 돌릴 수 있습니다.</span></p>
     </div>
     <div id="listView" class="a-list" hidden>
-      <h2 class="a-list-h">자료 전체 목록 <b class="a-num" data-count></b>개</h2>
+      <h2 class="a-list-h" id="allListH">자료 전체 목록 <b class="a-num" data-count></b>개</h2>
       <ol id="allList"></ol>
       <nav class="a-pg" id="allPg" aria-label="목록 쪽 넘기기"></nav>
+      <div class="a-coinrow" id="coinRow">
+        <button type="button" class="a-coin-btn" id="coinBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
+          <span class="a-coin" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
     <button type="button" class="a-all-btn" id="allBtn" aria-expanded="false" aria-controls="listView"><span id="allBtnT">자료 전체 목록 <b class="a-num" data-count></b>개</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   </section>
@@ -480,6 +497,50 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       </section>
   </main>
 
+<section class="a-deck" id="deckView" hidden aria-label="내 목차">
+  <div class="a-deck-top">
+    <div class="a-deck-hd">
+      <b class="a-deck-k" id="deckK">시드</b><span class="a-deck-en" id="deckEn">SEED</span>
+      <span class="a-deck-sub" id="deckSub">지식·원리·기준 쌓기</span>
+    </div>
+    <div class="a-deck-acts">
+      <button type="button" class="a-tut" id="tutBtn">튜토리얼</button>
+      <button type="button" class="a-main" id="mainBtn" aria-label="자료 전체 대문으로 돌아가기">MAIN</button>
+    </div>
+  </div>
+  <div class="a-deck-grid">
+    <div class="a-deck-pane">
+      <div class="a-deck-tools"><span class="a-dt" id="deckTool"></span></div>
+      <div class="a-deck-scroll" id="deckScroll" tabindex="0" aria-label="내 목차 슬롯">
+        <ol class="a-dlist" id="deckList"></ol>
+      </div>
+      <p class="a-deck-hint" id="deckHint"></p>
+    </div>
+    <aside class="a-shelf" aria-label="자료 선반">
+      <div class="a-shelf-hd"><b>자료 선반</b><span class="n a-num" id="shelfN"></span></div>
+      <div class="a-shelf-scroll">
+        <ul class="a-shelf-list" id="shelfList"></ul>
+        <p class="a-shelf-empty" id="shelfEmpty" hidden>모든 자료를 꽂았습니다.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<div class="a-tuts" id="tuts" role="dialog" aria-modal="true" aria-labelledby="tutsT" aria-hidden="true">
+  <div class="a-tuts-card">
+    <div class="a-tuts-hd">
+      <b id="tutsT">나만의 목차 꽂는 법</b><small>시드 · 매치</small>
+      <button type="button" class="a-tuts-x" id="tutX" aria-label="튜토리얼 닫기">&#10005;</button>
+    </div>
+    <div class="a-tuts-bd" id="tutsBd"></div>
+    <div class="a-tuts-ft">
+      <div class="a-tuts-dots" id="tutDots"></div>
+      <button type="button" class="a-tuts-b" id="tutPrev">이전</button>
+      <button type="button" class="a-tuts-b pri" id="tutNext">다음</button>
+    </div>
+  </div>
+</div>
+
   <footer class="a-foot-note">
     <p>이 사이트의 자료는 AI의 도움을 받아 만든 비공식 학습·업무 보조 자료입니다. 고용노동부, 한국고용정보원 등 어떤 기관의 공식 자료도 아닙니다.</p>
     <details class="a-foot-more"><summary>기준 개정·저작권 안내</summary>
@@ -487,6 +548,46 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
     <p>인용한 보고서·매뉴얼·검사·공공데이터의 저작권은 각 발행 기관과 저자에게 있습니다. 자료실은 원문을 옮겨 싣지 않고 요약과 짧은 인용만 쓰며, 각 자료 화면에 출처와 이용 조건을 밝힙니다.</p>
     </details>
   </footer>
+</div>
+
+<div class="a-modes" id="modeOv" hidden>
+  <div class="a-modes-glass" id="modeGlass" aria-hidden="true"></div>
+  <div class="a-modes-in" role="dialog" aria-modal="true" aria-labelledby="modeOvT">
+    <h2 class="a-sr" id="modeOvT">보기 방식 고르기 — 시드와 매치</h2>
+    <button type="button" class="a-mode a-mode-seed" data-mode="seed" id="modeSeed">
+      <span class="a-mode-top">
+        <span class="a-mode-hd">
+          <span class="a-mode-h1"><b>시드</b><i>SEED</i></span>
+          <span class="a-mode-h2">실력에 채우기</span>
+        </span>
+        <span class="a-mode-cnt" id="seedCnt">11개</span>
+      </span>
+      <span class="a-mode-sub">지식·원리·기준 쌓기</span>
+      <span class="a-mode-art" aria-hidden="true"><span class="a-art-in">
+        <span class="a-hole"><span class="a-stack"><i></i><i></i><i></i></span></span>
+        <span class="a-coins"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      </span></span>
+    </button>
+    <button type="button" class="a-mode a-mode-match" data-mode="match" id="modeMatch">
+      <span class="a-mode-top">
+        <span class="a-mode-hd">
+          <span class="a-mode-h1"><b>매치</b><i>MATCH</i></span>
+          <span class="a-mode-h2">맞는 자리 열기</span>
+        </span>
+        <span class="a-mode-cnt" id="matchCnt">12개</span>
+      </span>
+      <span class="a-mode-sub">현장·실무 쓰기</span>
+      <span class="a-mode-art" aria-hidden="true"><span class="a-art-in">
+        <span class="a-line"></span>
+        <span class="a-ball"></span>
+        <span class="a-balls"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      </span></span>
+    </button>
+  </div>
+  <div class="a-modes-foot" id="modeFoot">
+    <button type="button" class="a-modes-all" id="modeAll"><span>전체 <b id="modeAllN">23</b>개 보기</span></button>
+    <button type="button" class="a-modes-x" id="modeX">닫기</button>
+  </div>
 </div>
 
 <div class="a-ov" id="ov" hidden>
@@ -513,6 +614,7 @@ var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':
 
 /* ---------- 데이터 ---------- */
 var TOOLS=window.JC_TOOLS||[];   /* 섹터 장부는 assets/tools.js 한곳에서 관리한다 */
+var ALL=TOOLS;                    /* 전체 목록(23). TOOLS는 지금 보고 있는 모드의 목록이다 */
 var INSIGHTS=[
  {tag:'제도 · 대학원',to:'grad',t:'대학원은 세 종류입니다',
   b:'고등교육법은 대학원을 일반대학원(학술 연구), 전문대학원(전문 직업 인력 양성), 특수대학원(직업인·성인의 계속교육)으로 나눕니다. 특수대학원은 석사 과정만 두고, 같은 전공 이름이라도 종류에 따라 수업 시간과 졸업 요건, 받을 수 있는 지원이 달라집니다.',
@@ -724,7 +826,7 @@ function paintSeen(){
   if(shown>=0)$('sayStamp').hidden=v.indexOf(TOOLS[shown].id)<0;
   dotEls.forEach(function(b,k){b.classList.toggle('a-seen',v.indexOf(TOOLS[k].id)>=0);});
 }
-function canRun(){return !reduce()&&!paused&&!hover&&!drag&&!listOpen&&!document.hidden;}
+function canRun(){return !deckOn&&!reduce()&&!paused&&!hover&&!drag&&!listOpen&&!document.hidden;}
 function restartFill(){var n=$('nav');n.classList.remove('a-run');void n.offsetWidth;if(!reduce()&&!paused)n.classList.add('a-run');}
 function schedule(){
   clearTimeout(autoT);autoT=0;var n=$('nav'),now=performance.now();
@@ -750,7 +852,7 @@ function setPaused(p){
   restartFill();schedule();
 }
 function frame(now){
-  raf=0;var dt=Math.min(64,now-(lastT||now));lastT=now;
+  raf=0;if(spinT)return;var dt=Math.min(64,now-(lastT||now));lastT=now;
   if(drag)return;
   var diff=target-pos;
   if(Math.abs(diff)>.0004){pos+=diff*(1-Math.exp(-dt/120));if(Math.abs(target-pos)<.0004)pos=target;layout();}
@@ -818,6 +920,51 @@ function startNav(){
   measureOrbit();layout();kick();restartFill();schedule();
 }
 
+/* ---------- 보기 방식: 전체 대문 / 시드·매치(내 목차 덱) ---------- */
+var MODES={seed:'시드',match:'매치'};
+var mode='all',deckOn=false;
+function modeName(){return MODES[mode]||'';}
+function readMode(){try{var m=localStorage.getItem('jc-mode');return (m==='seed'||m==='match')?m:'all';}catch(e){return 'all';}}
+/* seed·match는 롤링·목록 대신 세로 슬롯 덱 화면(assets/deck.js)으로 바뀐다. */
+function applyMode(m){
+  m=(m==='seed'||m==='match')?m:'all';
+  mode=m;
+  try{localStorage.setItem('jc-mode',m);}catch(e){}
+  if(m==='all')root.removeAttribute('data-jc-mode');else root.setAttribute('data-jc-mode',m);
+  deckOn=(m!=='all');
+  $('stage').hidden=deckOn;
+  if(window.JCDECK){if(deckOn)window.JCDECK.show(m);else window.JCDECK.hide();}
+  if(deckOn){clearTimeout(autoT);$('nav').classList.add('a-hold');}
+  else{restartFill();schedule();}
+}
+/* 가운데 문구를 슬롯처럼 돌린다(레버 당김 = 두 바퀴, 힌트 = 아홉 칸). 움직이는 동안만 rAF. */
+var spinT=0;
+function spin(k){
+  if(reduce()||!N)return;
+  if(spinT){cancelAnimationFrame(spinT);spinT=0;}
+  if(raf){cancelAnimationFrame(raf);raf=0;}
+  hold();
+  var start=pos,total=Math.max(1,Math.round(k||N)),t0=0,dur=780;
+  target=Math.round(start+total);
+  function run(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-p,3);
+    pos=start+total*e;layout();
+    if(p<1){spinT=requestAnimationFrame(run);}
+    else{spinT=0;pos=target;lastT=0;layout();restartFill();schedule();}
+  }
+  spinT=requestAnimationFrame(run);
+}
+window.JC_NAV={
+  getMode:function(){return mode;},
+  applyMode:applyMode,
+  spin:spin,
+  counts:function(){
+    function n(m){return ALL.filter(function(t){return t.mode===m;}).length;}
+    return {all:ALL.length,seed:n('seed'),match:n('match')};
+  }
+};
+
 /* ---------- 두루마리 ---------- */
 function setScroll(open){
   var s=$('privacy'),b=$('pvToggle'),body=$('pvBody');
@@ -872,9 +1019,9 @@ function tick(){
 var sel=0,hits=[],lastFocus=null;
 function search(q){
   q=q.trim().toLowerCase();
-  if(!q)return TOOLS.map(function(t){return {t:t,why:t.meta.join(' · ')};});
+  if(!q)return ALL.map(function(t){return {t:t,why:t.meta.join(' · ')};});
   var out=[];
-  TOOLS.forEach(function(t){
+  ALL.forEach(function(t){
     var score=0,why='';
     if(t.title.toLowerCase().indexOf(q)>=0)score+=5;
     if(t.badge.toLowerCase().indexOf(q)>=0)score+=3;
@@ -953,12 +1100,19 @@ var isMac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'');
 $('kbdHint').textContent=isMac?'⌘K':'Ctrl K';
 if(!/^https?:/.test(location.protocol))$('statusText').textContent='저장본';
 applyTheme();renderCounts();startNav();paintInsight(kstDayIndex()%INSIGHTS.length);tick();
+/* 저장된 모드가 있으면 첫 그림부터 덱 화면. deck.js는 defer라 준비된 뒤에 붙인다. */
+mode=readMode();
+if(mode!=='all'){root.setAttribute('data-jc-mode',mode);$('stage').hidden=true;
+  var bootMode=function(){if(!window.JCDECK){setTimeout(bootMode,20);return;}applyMode(mode);};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootMode);else bootMode();}
 setInterval(function(){tick();applyTheme();},1000);
 icons();window.addEventListener('load',icons);
 })();
 </script>
 <script src="./assets/marker.js" defer></script>
 <script>window.JC_DESIGN = { seal: false }; /* 대문 제목은 돌아가는 문장이라 소인을 붙이지 않는다 */</script>
+<script src="./assets/deck.js" defer></script>
+<script src="./assets/modes.js" defer></script>
 <script src="./assets/prefs.js" defer></script>
 <script src="./assets/headfold.js" defer></script>
 </body>
