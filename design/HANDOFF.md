@@ -327,6 +327,21 @@
 
 ---
 
+## 2026-11-17 포트폴리오 편집실 — 트랙 선반·스캔 인스펙터·재생헤드·차별화 카드
+
+브랜치 `fix/portfolio-track-shelf-diff-inspector` (main `22a0390` 위) → **PR #134**. 대상: `portfolio/index.html` · `portfolio/app.js` · `portfolio/data/studio.js` · `design/patterns/nle-workspace.md` · `design/studies/2026-11-17-포트폴리오-편집실.md`.
+
+- **트랙 선반(03)**: 「빈 트랙 / n자」가 monospace 12.5px에 카드 44px 안에서 하단 여유 0px로 테두리에 붙어 있었다 → 본문 Pretendard 12.5px·650·행간 1.3, 카드 50px, 팬 112→118px, `.p-bd` 아래 8px. 하단 여유 6.48px. 휴대폰은 6칸이 50px라 「문제 …」로 잘리던 것을 **3×2 선반**으로 폈다(비례가 의미 없는 목록이라 격자 허용). 휴대폰 카드가 `span`이라 `data-id`가 없어 입력이 선반에 반영되지 않던 것도 함께 고쳤다.
+- **인스펙터 동기화(01)**: `act==='scene'`·`next`·`fsPrev/fsNext`와 `setT()`가 `renderView()`만 불렀다 → `goScene()`으로 묶어 `renderBin/renderView/renderTline/renderInsp/renderHeads`를 한 번에. 드래그는 노드를 갈아 끼우지 않도록 장면이 바뀔 때만 갱신(끌기 유지).
+- **재생헤드 정가운데**: 장면 선택·초기값은 `(t0+t1)/2`. 더불어 **클립 좌우 여백을 0으로 두고 글자만 안쪽으로**(`.sc{padding:6px 0}`, `.sc b/small{padding:0 9px}`) — 클립에 준 좌우 여백은 flex 비례 밖에서 칸마다 더해져 `t/total` 퍼센트 배치가 최대 6px 어긋났다. 재생헤드는 이제 클립의 실제 좌표 사이 비율로 놓고(`sceneGeom()` 캐시), 누른 자리→시간도 같은 표로 되돌린다(`timeAtPx`) — 짚은 자리와 헤드가 어긋나지 않는다. 900px 이상의 `.sc` 최소 폭(92px)도 걷어냈다(1024에서 표지 칸만 92px로 굳어 비례가 깨지던 원인).
+- **좁은 칸**: 46px 미만으로 좁아진 스캔 칸은 이름 대신 번호(01~05)만(`.sc.tiny`). 비례를 포기하고 고정 폭으로 바꾸면 헤드가 가리키는 시간과 칸이 어긋난다.
+- **차별화 포인트(강사)**: `li`의 flex가 `.dlist li{display:block}`을 이겨 「제목 — 설명」이 좁은 칸에서 나란히 흐르고 제목이 단어 중간에서 끊겼다 → 번호 배지 + 한 줄 제목 + 근거 문장 카드 그리드(600~1239 2열, 그 밖 1열). `.crs-side.diff`의 죽은 2열 규칙도 정리.
+- 실측(헤드리스 크로미움, 세션 폴더 일회성 스크립트·저장소 미포함) **195항목 통과**: 선반 잘림 0·넘침 0·모노 0·하단 여유 6.48px(390·768·1024·1280 × 빈 트랙/n자), 스캔 0s→1/5·45s→3/5·85s→5/5 본문 전환과 0s 복귀, 재생헤드 칸 중심 오차 0.05px 이내, 차별화 카드 8·배지 01~08·겹침 0·열 수 기대 일치, 전 모드 7해상도 × 밝게/어둡게 오류 0·가로 넘침 0, 화면 분량 390 1.63·1.36·1.64·1.50 / 1280 1.29.
+- 남은 확인(실기기): 재생헤드 드래그 중 주소창 접힘, 인스펙터 시트 전환 — 종전과 같다.
+- 다음 시작 파일: `portfolio/app.js`(`goScene`·`sceneGeom`·`syncRail`), `portfolio/index.html`(§타임라인 CSS), `design/patterns/nle-workspace.md` §2·§3.
+
+---
+
 ## 2026-11-17 대문 22·23번 롤링 문구·간략 설명 길이 통일
 
 브랜치 `fix/door-22-23-copy-length` (main `5b62fb7` 위) → **PR #132**. 대상: `index.html`(`NAV`) · `design/patterns/hub-landing.md` · `ops/TODO.md`.
