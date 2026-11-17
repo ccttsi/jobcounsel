@@ -1,0 +1,61 @@
+/* headfold.css — 상단 머리말 접기·펼치기 (2026-11-17)
+ *
+ * 왜: 대문·공용 머리말은 첫 화면에서 146px(휴대폰)를 차지해 본문이 늦게 시작한다.
+ *     접으면 44px 손잡이만 남아 그만큼 본문이 위로 올라온다(모바일에서 체감이 가장 크다).
+ *
+ * 쓰는 법
+ *   1) 접을 머리말 요소에 data-jc-headfold="접었을 때 남길 이름"을 단다(값이 없으면 문서 제목).
+ *   2) <head>의 스타일 뒤에  <link rel="stylesheet" href="assets/headfold.css"> (대문은 ./assets/)
+ *   3) 첫 그림 전에 접힘을 정해 깜빡임을 없앤다 — <head>의 인라인 스크립트 한 줄:
+ *        try{if(localStorage.getItem('jc-hf')==='off')document.documentElement.setAttribute('data-jc-hf','off');}catch(e){}
+ *   4) </body> 앞에  <script src="assets/headfold.js" defer></script>
+ *
+ * 규격: 손잡이·접기 단추 모두 터치 영역 44×44, 움직임은 height·opacity만(한 번짜리), prefers-reduced-motion이면 즉시.
+ *       접힌 채로 남는 것은 html[data-jc-hf="off"] [data-jc-headfold] 안의 .jh-rail 하나뿐이라 본문을 가리지 않는다.
+ */
+html{--jh-rail:44px}
+
+/* 접힌 상태: 높이만 남기고 안쪽은 감춘다(포커스·읽기 순서에서도 빠진다) */
+html[data-jc-hf="off"] [data-jc-headfold]{height:var(--jh-rail);min-height:0;padding-top:0;padding-bottom:0;overflow:hidden}
+html[data-jc-hf="off"] [data-jc-headfold] > :not(.jh-rail){display:none!important}
+
+/* 높이 보간은 접고 펼 때 한 번만 쓴다 */
+[data-jc-headfold].jh-anim{transition:height .26s cubic-bezier(.25,.8,.25,1)}
+[data-jc-headfold].jh-hiding > :not(.jh-rail){opacity:0;transition:opacity .15s ease}
+@keyframes jh-in{from{opacity:0}}
+[data-jc-headfold].jh-showing > :not(.jh-rail){animation:jh-in .18s .05s backwards}
+
+/* ---------- 펼쳤을 때: 머리말 안의 접기 단추 ---------- */
+.jh-fold{all:unset;box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center;
+  height:44px;min-width:44px;padding:0 3px;border-radius:12px;color:inherit;cursor:pointer;vertical-align:middle;
+  -webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none}
+.jh-fold:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.jh-fold:active .jh-chip{transform:scale(.96)}
+
+/* ---------- 접혔을 때: 남는 손잡이 줄 ---------- */
+.jh-rail{display:none;align-items:center;gap:8px;flex:1 1 100%;min-width:0;height:100%}
+html[data-jc-hf="off"] [data-jc-headfold] > .jh-rail{display:flex;animation:jh-rail-in .2s backwards}
+@keyframes jh-rail-in{from{opacity:0;transform:translateY(-4px)}}
+
+.jh-rail .jh-id{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;overflow:hidden}
+.jh-rail .jh-id i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.38;flex:none}
+.jh-rail .jh-id b{font-family:var(--jc-sans,inherit);font-size:12.5px;font-weight:750;letter-spacing:-.02em;line-height:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.8}
+
+.jh-open{all:unset;box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center;
+  height:44px;min-width:44px;padding:0 3px;border-radius:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.jh-open:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.jh-chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px 0 9px;border-radius:999px;
+  border:1px solid color-mix(in srgb,currentColor 22%,transparent);
+  background:color-mix(in srgb,var(--bg,#faf6ef) 88%,transparent);
+  font-family:var(--jc-sans,inherit);font-size:12.5px;font-weight:750;letter-spacing:-.02em;line-height:1;white-space:nowrap;
+  transition:transform .14s ease}
+.jh-chip svg{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.82}
+@media (hover:hover){.jh-open:hover .jh-chip{transform:translateY(1px)}.jh-fold:hover .jh-chip{border-color:color-mix(in srgb,currentColor 38%,transparent);transform:translateY(-1px)}}
+.jh-open:active .jh-chip{transform:scale(.96)}
+
+@media (prefers-reduced-motion:reduce){
+  [data-jc-headfold].jh-anim,[data-jc-headfold].jh-hiding > :not(.jh-rail){transition:none}
+  html[data-jc-hf="off"] [data-jc-headfold] > .jh-rail,[data-jc-headfold].jh-showing > :not(.jh-rail){animation:none}
+  .jh-chip,.jh-fold{transition:none}
+}

@@ -25,9 +25,9 @@
  *    몰입 중인 화면은 html[data-jc-imm]로 꾸민다. 버튼 하나만 따로 둘 때는 <span data-jc-prefs="immersive"></span>.
  * 4) 공통 디자인 층: 종이 결, 읽은 만큼 차는 색띠, 제목 줄바꿈 고르기, 세피아 종이 색, 교정지 재단선.
  *    모두 @layer 안에 있어 페이지 자체 스타일이 언제나 이긴다. 움직임은 transform·opacity만 쓴다.
- *    손맛 층: 위쪽 눈금·색띠(스크롤 rAF), 머리말 2톤 인쇄선, 제목 옆 소인, 눌리는 카드(.jc-pop, 실행 중에 찾아 단다),
+ *    손맛 층: 위쪽 눈금·색띠(스크롤 rAF), 제목 옆 소인, 눌리는 카드(.jc-pop, 실행 중에 찾아 단다),
  *    새로 들어온 덩어리의 등장 모션(.jc-in). 주기적으로 다시 그리는 곳은 data-jc-still로 뺀다.
- *    끄려면 window.JC_DESIGN = { grain: false, progress: false, seal: false, rule: false, enter: false }.
+ *    끄려면 window.JC_DESIGN = { grain: false, progress: false, seal: false, enter: false }.
  * 5) 접어 두기: window.JC_FOLD = [{ box, head | title, on, open } | { head }] — 휴대폰에서 상세를 접어 두고 제목을 누르면 펼친다.
  *    DOM 구조는 바꾸지 않고 클래스·속성만 단다(아래 '접어 두기(공용)' 주석 참고).
  *    세피아는 밝은 테마 위에 종이 색을 얹는 방식이라 저장 값은 jc-theme = light, jc-tone = sepia.
@@ -272,7 +272,7 @@
     layer('jc-tone'); layer('jc-crop');
   }
 
-  /* ---------- 손맛: 진행 띠, 머리말 2톤 선, 소인, 눌리는 카드, 등장 모션 ---------- */
+  /* ---------- 손맛: 진행 띠, 소인, 눌리는 카드, 등장 모션 ---------- */
   // 꾸밈은 모두 html:not([data-jc-imm]) 조건이라 집중 보기에서는 빠진다. 움직임은 transform·opacity뿐이고
   // 늘 움직이는 것은 없다(스크롤·누름·화면 전환에만 반응). prefers-reduced-motion이면 움직임을 끈다.
   var SEAL = '<svg class="jc-seal" viewBox="0 0 86 50" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-linecap="round">' +
@@ -280,8 +280,8 @@
     '<path d="m25 16 2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z" fill="currentColor" stroke="none"/>' +
     '<path d="M50 15c4-4 7 4 11 0s7 4 11 0 7 4 11 0M50 25c4-4 7 4 11 0s7 4 11 0 7 4 11 0M50 35c4-4 7 4 11 0s7 4 11 0 7 4 11 0" stroke-width="2"/></g></svg>';
   var POP_CSS =
-    'html{--jc-edge:rgba(42,37,33,.14);--jc-edge-2:#2a2521;--jc-hi:#ffe14d;--jc-stamp:#c2452d}' +
-    'html[data-theme="dark"]{--jc-edge:rgba(255,255,255,.11);--jc-edge-2:#f2c94c;--jc-hi:#f2c94c;--jc-stamp:#ff8a80}' +
+    'html{--jc-edge:rgba(42,37,33,.14);--jc-edge-2:#2a2521;--jc-stamp:#c2452d}' +
+    'html[data-theme="dark"]{--jc-edge:rgba(255,255,255,.11);--jc-edge-2:#f2c94c;--jc-stamp:#ff8a80}' +
     '@layer jc-design{' +
       '.jc-pop{transition:transform .24s cubic-bezier(.2,1.5,.35,1);box-shadow:3px 3px 0 var(--jc-edge)}' +
       '@media (hover:hover){.jc-pop:hover{transform:translate(-2px,-3px) rotate(-.35deg);box-shadow:6px 7px 0 var(--jc-edge-2)}.jc-pop.jc-pop-l:hover{transform:translate(-2px,-3px)}}' +
@@ -297,9 +297,6 @@
     '.jc-track{position:fixed;left:0;right:0;top:0;height:4px;z-index:2147480000;pointer-events:none;background:repeating-linear-gradient(90deg,var(--jc-edge) 0 1px,transparent 1px 8px)}' +
     '.jc-track i{display:block;height:100%;background:' + BAR + ';transform-origin:0 50%;transform:scaleX(0);will-change:transform}' +
     'html[data-jc-imm] .jc-track{display:none}' +
-    /* 머리말 아래 어긋난 2톤 인쇄선 */
-    '.jc-rule{position:absolute;left:0;right:0;bottom:-5px;height:7px;pointer-events:none;z-index:1;background:linear-gradient(var(--jc-edge-2),var(--jc-edge-2)) 0 0/100% 2px no-repeat,linear-gradient(var(--jc-hi),var(--jc-hi)) 7px 4px/100% 3px no-repeat}' +
-    'html[data-jc-imm] .jc-rule{display:none}' +
     /* 제목 옆 소인 */
     '.jc-seal{display:inline-block;width:1.72em;height:1em;margin-left:.3em;vertical-align:-.12em;color:var(--jc-stamp);opacity:.78;transform:rotate(-9deg);transform-origin:30% 50%;pointer-events:none;-webkit-user-select:none;user-select:none}' +
     '@keyframes jc-stamp{0%{opacity:0;transform:rotate(-9deg) scale(1.8)}60%{opacity:.9;transform:rotate(-9deg) scale(.94)}100%{opacity:.78;transform:rotate(-9deg) scale(1)}}' +
@@ -363,14 +360,6 @@
       return;
     }
   }
-  function rule() {
-    var host = d.querySelector('[data-jc-prefs]:not([data-jc-prefs="immersive"])'); if (!host || (window.JC_DESIGN || {}).rule === false) return;
-    var hd = host.closest('header') || host.parentElement; if (!hd || hd.querySelector('.jc-rule')) return;
-    while (hd.parentElement && hd !== d.body && hd.offsetWidth < d.documentElement.clientWidth * .6) hd = hd.parentElement;
-    if (hd === d.body || hd.querySelector('.jc-rule')) return;
-    if (getComputedStyle(hd).position === 'static') hd.style.position = 'relative';
-    var el = d.createElement('i'); el.className = 'jc-rule'; el.setAttribute('aria-hidden', 'true'); hd.appendChild(el);
-  }
   var pgMax = -1; // 진행 띠가 쓰는 문서 스크롤 길이 캐시. 스크롤마다 scrollHeight를 다시 읽으면 그 자체가 강제 레이아웃이다
   function pgMeasure() { var se = d.scrollingElement || root; pgMax = (se ? se.scrollHeight : 0) - window.innerHeight; }
   function enter(records) {
@@ -424,10 +413,10 @@
       window.addEventListener('resize', function () { pgMax = -1; req(); }, { passive: true });
       upd();
     }
-    applyFold(); rule(); seal(); scanPop(); scrollPad();
+    applyFold(); seal(); scanPop(); scrollPad();
     window.addEventListener('resize', function () { scrollPad(true); queuePop(); });
     setTimeout(function () { scanPop(); scrollPad(true); }, 700);
-    setTimeout(function () { scanPop(); seal(); rule(); scrollPad(true); }, 2200);
+    setTimeout(function () { scanPop(); seal(); scrollPad(true); }, 2200);
     if (window.MutationObserver) new MutationObserver(enter).observe(d.body, { childList: true, subtree: true });
     d.addEventListener('click', queuePop, true);
     try { d.addEventListener('touchstart', function () {}, { passive: true }); } catch (e) {} // 아이폰에서 :active가 먹도록
