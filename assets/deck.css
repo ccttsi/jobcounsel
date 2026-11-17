@@ -248,3 +248,68 @@
 :root[data-theme="dark"] .a-deck-match .a-dslot-empty .a-dslot-b{background:rgba(255,255,255,.02);border-color:#232d3c}
 :root[data-theme="dark"] .a-deck-match .a-dslot.a-on .a-dslot-n{background:radial-gradient(circle at 34% 30%,color-mix(in srgb,var(--acc) 34%,#0f172a),#0c1320);color:var(--acc);border-color:var(--acc)}
 :root[data-theme="dark"] .a-deck-match .a-dslot.a-on .a-dslot-b{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 12%,#0f172a),#0b1220);border-color:color-mix(in srgb,var(--acc) 34%,#1d2634)}
+
+/* ============ 꽂힌 자료 미리보기 · 들고 있는 자료 — 플로팅 카드 (2026-11-18 CP3) ============
+ * 꽂힌 자료는 누른다고 빠지지 않는다. 누르면 이 카드가 떠서 「이 자료 열기 · 자리 옮기기 · 선반으로 빼기」를 고른다.
+ * 안쪽(열기·옮기기)과 바깥(닫기·빼기)을 줄과 위치로 갈라 놓고, 카드 아래 여백(84px)으로 연필 FAB와 겹치지 않는다. */
+.a-dsheet{position:fixed;left:0;right:0;bottom:calc(84px + env(safe-area-inset-bottom));z-index:68;
+  display:flex;justify-content:center;padding:0 12px;pointer-events:none}
+.a-ds-veil{position:fixed;inset:0;z-index:-1;background:rgba(40,28,14,.16);pointer-events:auto;
+  animation:a-ds-veil .18s ease both}
+.a-ds-hold .a-ds-veil{display:none}     /* 들고 있는 동안은 덱을 계속 눌러야 한다 */
+@keyframes a-ds-veil{from{opacity:0}to{opacity:1}}
+:root[data-theme="dark"] .a-ds-veil{background:rgba(0,0,0,.42)}
+.a-ds-card{pointer-events:auto;width:100%;max-width:520px;background:var(--panel);border-width:1px;border-style:solid;
+  border-color:var(--line-2);border-radius:16px;padding:10px 14px 12px;
+  box-shadow:0 2px 6px rgba(70,50,25,.10),0 24px 48px -22px rgba(70,50,25,.55);
+  animation:a-ds-in .2s cubic-bezier(.2,.9,.3,1)}
+:root[data-theme="dark"] .a-ds-card{background:#0c1119;border-color:#28313f;
+  box-shadow:0 0 0 1px rgba(255,255,255,.03),0 26px 50px -24px rgba(0,0,0,.9)}
+@keyframes a-ds-in{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
+.a-ds-top{display:flex;align-items:center;gap:8px;min-height:32px}
+.a-ds-no{font-size:11.5px;font-weight:850;color:var(--acc);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.a-ds-badge{font-size:11px;font-weight:750;line-height:1;padding:4px 8px;border-radius:99px;
+  color:var(--muted);background:var(--panel-soft);border-width:1px;border-style:solid;border-color:var(--line)}
+.a-ds-where{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--dim)}
+.a-root .a-ds-x{width:44px;height:44px;margin:-6px -8px -6px 0;display:grid;place-items:center;border-radius:12px;
+  color:var(--muted);font-size:14px;line-height:1}
+.a-ds-x:hover{color:var(--ink);background:var(--panel-soft)}
+.a-ds-t{display:block;margin:2px 0 0;font-size:16px;font-weight:800;letter-spacing:-.03em;line-height:1.35;color:var(--ink)}
+.a-ds-d{margin:4px 0 0;font-size:13px;line-height:1.55;color:var(--muted);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.a-ds-meta{margin:5px 0 0;font-size:11.5px;line-height:1.4;color:var(--dim)}
+.a-ds-act{display:flex;gap:8px;margin-top:10px}
+.a-root .a-ds-b{flex:1;min-height:44px;padding:0 10px;border-radius:11px;border-width:1px;border-style:solid;
+  border-color:var(--line-2);background:var(--panel);font-size:13px;font-weight:750;color:var(--ink);
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;text-align:center}
+.a-root .a-ds-b:hover{border-color:var(--acc);color:var(--acc)}
+.a-root .a-ds-b.a-ds-pri{flex:1.25;background:var(--acc);border-color:var(--acc);color:#fff}
+:root[data-theme="dark"] .a-root .a-ds-b.a-ds-pri{background:color-mix(in srgb,var(--acc) 15%,transparent);
+  color:var(--acc);border-color:color-mix(in srgb,var(--acc) 55%,transparent)}
+.a-root .a-ds-b.a-ds-pri:hover{color:#fff;filter:brightness(1.06)}
+:root[data-theme="dark"] .a-root .a-ds-b.a-ds-pri{color:#06100f}
+/* 바깥으로 내보내는 동작은 줄을 갈라 따로 — 안쪽(열기·옮기기)과 손이 헷갈리지 않게 */
+.a-ds-sub{display:flex;margin-top:8px;padding-top:8px;border-top-width:1px;border-top-style:dashed;border-top-color:var(--line)}
+.a-root .a-ds-out{flex:none;width:100%;min-height:44px;border-radius:10px;font-size:12.5px;font-weight:750;
+  color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
+.a-root .a-ds-out:hover{color:var(--a2);background:color-mix(in srgb,var(--a2) 8%,transparent)}
+.a-ds-tip{margin:8px 0 0;font-size:12px;line-height:1.45;color:var(--dim);text-align:center}
+/* 들고 있는 자료: 빈 칸이 「여기에 꽂기」로 열린다 */
+.a-dslot.a-take .a-dslot-b{border-style:dashed;border-color:color-mix(in srgb,var(--acc) 45%,var(--line-2))}
+.a-dslot-ph{margin-left:auto;font-size:12px;font-weight:750;color:var(--acc)}
+.a-dslot.a-moving .a-dslot-b{opacity:.45;border-style:dashed}
+@media (max-width:480px){
+  .a-ds-d{-webkit-line-clamp:2}
+  .a-root .a-ds-b{font-size:12.5px;padding:0 8px}
+}
+@media (min-width:768px){
+  .a-dsheet{bottom:calc(26px + env(safe-area-inset-bottom));padding:0 16px}
+}
+/* 들고 있는 동안의 낮은 띠 — 덱의 칸을 가리지 않게 */
+.a-ds-mini{padding:8px 12px 10px;border-radius:14px}
+.a-ds-mini .a-ds-top{min-height:28px;gap:7px}
+.a-ds-t2{flex:1;min-width:0;font-size:13.5px;font-weight:800;letter-spacing:-.02em;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-ds-mini .a-ds-where{margin-left:2px;flex:none}
+.a-ds-mini .a-ds-act{margin-top:8px}
+.a-ds-mini .a-ds-b{min-height:44px}
