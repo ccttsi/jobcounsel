@@ -27,17 +27,21 @@
   function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
   function clearTimers() { while (timers.length) clearTimeout(timers.pop()); }
   /* ---------- 1. 트리거 상태 ---------- */
-  /* 장전만 푼다 — 발동(pulled)의 연출은 각자의 타이머가 끝까지 보여 준다. */
-  function disarm() {
+  /* 장전만 푼다 — 발동(pulled)의 연출은 각자의 타이머가 끝까지 보여 준다.
+     레버 장전을 풀면(바깥 클릭·ESC·타임아웃) 뒤로 감아 둔 롤링도 한 칸 되돌아온다. */
+  function disarm(keepWheel) {
+    var was = armed;
     clearTimeout(armT); armT = 0; armed = '';
     if (slot && slot.getAttribute('data-st') === 'armed') slot.removeAttribute('data-st');
     if (coinRow && coinRow.getAttribute('data-st') === 'armed') coinRow.removeAttribute('data-st');
+    if (!keepWheel && was === 'lever' && nav && nav.spin) nav.spin(1, 240);
   }
   function arm(which) {
     if (armed === which) return true;
     disarm();
     armed = which; dwell = 0;
     (which === 'lever' ? slot : coinRow).setAttribute('data-st', 'armed');
+    if (which === 'lever' && nav && nav.spin) nav.spin(-1, 260);   /* 장전: 롤링을 한 칸 뒤로 감아 둔다 */
     armT = setTimeout(disarm, ARM_IDLE);
     return false;
   }
@@ -53,17 +57,17 @@
   function pullLever() {
     clearTimeout(armT); armed = '';
     slot.setAttribute('data-st', 'pulled');
-    if (nav && nav.spin) nav.spin(8, 620);               /* 가운데 문구가 슬롯처럼 두세 바퀴 */
-    setTimeout(function () { slot.removeAttribute('data-st'); }, 780);
-    openOv(slotBtn, reduce() ? 0 : 560);
+    if (nav && nav.spin) nav.spin(12, 1200);              /* 감아 둔 한 칸을 풀고 여러 바퀴, 감속하며 정차 */
+    setTimeout(function () { slot.removeAttribute('data-st'); }, 1340);
+    openOv(slotBtn, reduce() ? 0 : 1060);
   }
   /* 동전이 820ms 동안 회전하며 화면 위로 떠오른 뒤, 글래스는 800ms에 페이드인한다. */
   function flipCoin() {
     clearTimeout(armT); armed = '';
     coinRow.setAttribute('data-st', 'pulled');
     flyCoin();
-    setTimeout(function () { coinRow.removeAttribute('data-st'); }, 940);
-    openOv(coinBtn, reduce() ? 0 : 800);
+    setTimeout(function () { coinRow.removeAttribute('data-st'); }, 1280);
+    openOv(coinBtn, reduce() ? 0 : 1040);
   }
   function flyCoin() {
     if (reduce() || !coinBtn) return;
@@ -74,7 +78,7 @@
     i.style.left = (r.left + r.width / 2) + 'px';
     i.style.top = (r.top + r.height / 2) + 'px';
     fly.appendChild(i);
-    setTimeout(function () { if (i.parentNode) i.parentNode.removeChild(i); }, 900);
+    setTimeout(function () { if (i.parentNode) i.parentNode.removeChild(i); }, 1320);
   }
 
   /* ---------- 2. 아이들 힌트 (5분마다 반쯤) ---------- */
@@ -89,7 +93,7 @@
       if (!slot || !slot.offsetParent) return;
       slot.setAttribute('data-st', 'hint');
       setTimeout(function () { if (slot.getAttribute('data-st') === 'hint') slot.removeAttribute('data-st'); }, 1300);
-      if (nav && nav.spin) nav.spin(9);                  /* 약 9개만 촤르르 */
+      if (nav && nav.spin) nav.spin(7, 900);               /* 몇 칸만 촤르르 */
     }
   }
   function tickDwell() {
@@ -98,8 +102,9 @@
   }
 
   /* ---------- 3. 오버레이 ---------- */
+  /* 카드에 바로 초점을 주면 열자마자 강조 테두리가 켜져 「네온 상자」처럼 보인다. 무대 자체에 초점을 둔다. */
   function focusFirst() {
-    var c = cards[0] || $('modeSeed');
+    var c = ov && ov.querySelector('.a-modes-in');
     if (c && c.focus) { try { c.focus({ preventScroll: true }); } catch (e) { c.focus(); } }
   }
   function openOv(src, delay) {
@@ -185,8 +190,8 @@
     /* 개수 배지: 11 · 12 · 23 (섹터 개수는 장부에서 센다) */
     var c = (nav && nav.counts) ? nav.counts() : { all: 0, seed: 0, match: 0 };
     var cnt = { seed: $('seedCnt'), match: $('matchCnt') };
-    if (cnt.seed) cnt.seed.textContent = c.seed + '개';
-    if (cnt.match) cnt.match.textContent = c.match + '개';
+    if (cnt.seed) cnt.seed.textContent = c.seed + '칸';
+    if (cnt.match) cnt.match.textContent = c.match + '칸';
     var fa = $('modeAllN'); if (fa) fa.textContent = c.all;
 
     if (slotBtn) slotBtn.addEventListener('click', leverTap);
