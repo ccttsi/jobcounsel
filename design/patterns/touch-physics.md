@@ -37,6 +37,7 @@
 ## 4. 드래그 · 끌기
 
 - `pointerdown`에서 `setPointerCapture`, `pointermove`는 `{passive:true}`, `pointercancel`·`lostpointercapture`에서 원위치.
+- **끌기를 새로 붙이는 곳은 `pointerType`을 먼저 본다.** 터치 스와이프가 이미 되는 가로 스크롤 상자에 마우스 끌기를 겹쳐 붙일 때는 `e.pointerType === 'mouse'`만 받는다(손가락까지 받으면 쪽이 두 번 넘어간다). 끌기 전에는 아무것도 막지 않고, 끌고 난 뒤의 `click`만 캡처 단계에서 한 번 삼켜 「끌었는데 책이 열림」을 막는다. 끄는 동안 `scroll-snap-type:none`(스냅이 끌기를 되돌린다)·`user-select:none`·`cursor:grabbing`. 2026-11-17 서재.
 - 끌기 시작 임계값 6~10px(세로 스크롤과 겹치는 곳은 세로 우선). 임계값 전에는 아무것도 움직이지 않는다.
 - `touch-action`으로 브라우저에 의도를 알린다. 가로 끌기 영역은 `touch-action:pan-y`, 단추·도구함은 `touch-action:manipulation`.
 - 관성·스프링은 손맛이 아니라 멀미의 원인이 되기 쉽다. 회전·이동은 짧고 결정적으로, 놓으면 목표 위치에 정확히 선다.

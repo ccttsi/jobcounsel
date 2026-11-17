@@ -190,22 +190,29 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-nav-go{display:flex;justify-content:center;margin-top:10px}
 .a-root .a-btn.a-open{min-height:50px;padding:0 24px;font-size:16px;border-radius:14px;background:var(--acc);border-color:var(--acc);color:#fff}
 :root[data-theme="dark"] .a-root .a-btn.a-open{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc);border-color:color-mix(in srgb,var(--acc) 60%,transparent)}
-.a-ctrl{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:16px}
+.a-ctrl{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 6px;margin-top:10px}
+.a-ctrl-btns{display:flex;align-items:center;gap:2px}
 .a-root .a-ib{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--muted);transition:background .15s,color .15s}
 .a-root .a-ib:hover{background:var(--panel-soft);color:var(--ink)}
 .a-ib svg{width:20px;height:20px}
-.a-dots{display:flex;align-items:center;margin:0 4px}
-.a-root .a-dots button{height:44px;min-width:22px;display:grid;place-items:center;padding:0 4px}
-.a-dots i{position:relative;display:block;width:8px;height:8px;border-radius:99px;background:var(--line-2)}
-.a-dots i::after{content:"";position:absolute;left:50%;top:0;width:24px;height:8px;margin-left:-12px;border-radius:99px;background:var(--acc);opacity:0;transform:scaleX(.34);transition:transform .32s cubic-bezier(.2,.9,.3,1),opacity .2s}
-.a-dots button[aria-current="true"] i::after{opacity:1;transform:scaleX(1)}
-.a-dots button.a-seen:not([aria-current="true"]) i{background:color-mix(in srgb,var(--a2) 55%,var(--line-2))}
+/* 위치 다이얼 — 자료가 늘어도 한 줄을 넘지 않게, 지금 자리를 꼭대기로 한 반원 궤적에 ±3칸(모두 7개)만 띄운다.
+   수평선 아래로 내려간 자리는 감춰 수심 밑으로 보이지 않는다. 움직임은 transform·opacity만 쓴다. */
+.a-orbit{position:relative;flex:1 1 300px;min-width:264px;max-width:400px;height:72px;margin:0 2px}
+.a-orbit-dial{position:absolute;left:0;right:0;bottom:20px;height:50px}
+.a-orbit-dial::before{content:"";position:absolute;left:16px;right:16px;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--line-2) 12%,var(--line-2) 88%,transparent)}
+.a-orbit-dial::after{content:"";position:absolute;left:50%;bottom:0;width:132px;height:20px;margin-left:-66px;pointer-events:none;
+  background:radial-gradient(closest-side at 50% 0,color-mix(in srgb,var(--acc) 20%,transparent),transparent)}
+.a-root .a-orbit button{position:absolute;left:50%;bottom:0;width:44px;height:44px;padding:0;display:grid;place-items:center;
+  -webkit-tap-highlight-color:transparent}
+.a-orbit i{display:block;width:8px;height:8px;border-radius:99px;background:var(--line-2);transition:background-color .18s}
+.a-orbit button.a-seen i{background:color-mix(in srgb,var(--a2) 55%,var(--line-2))}
+.a-orbit button[aria-current="true"] i{background:var(--acc)}
+.a-root .a-orbit button:focus-visible{outline:2px solid var(--a1);outline-offset:0;border-radius:50%}
+.a-orbit-n{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:11.5px;line-height:16px;font-weight:650;
+  letter-spacing:.1em;color:var(--dim);font-variant-numeric:tabular-nums}
+.a-orbit-n b{color:var(--acc);font-size:13px}
 .a-roll-hint{font-size:13.5px;color:var(--dim);margin-top:2px}
-.a-pos{display:none;align-items:center;gap:8px;min-width:6.5em;justify-content:center;font-size:14px;font-weight:700;color:var(--muted)}
-.a-pos b{color:var(--acc);font-size:16px;min-width:1.4em;text-align:right}
-.a-pos i{display:block;width:22px;height:2px;border-radius:2px;background:var(--line-2);transform:rotate(-58deg)}
-/* 점이 한 줄에 다 들어가지 않는 폭에서는 위치 숫자로 바꾼다(자료 수와 무관) */
-@media (max-width:599px){.a-dots{display:none}.a-pos{display:inline-flex}}
 @media (max-width:599px){.a-pv-kw span:nth-child(n+3){display:none}.a-pv-kw span{font-size:12.5px;padding:5px 8px}}
 .a-for-mouse{display:none}
 @media (hover:hover) and (pointer:fine){.a-for-touch{display:none}.a-for-mouse{display:inline}}
@@ -432,11 +439,15 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <p class="a-say-sub" id="saySub" aria-live="off"><b><span id="sayTitle"></span><span class="a-seen-stamp" id="sayStamp" hidden>열람</span></b><span id="sayLead"></span></p>
       <div class="a-nav-go"><a class="a-btn a-open" id="sayOpen" href="./theory/" data-visit="theory"><span>이 자료 열기</span><span aria-hidden="true">→</span></a></div>
       <div class="a-ctrl">
-        <button class="a-ib" id="navPrev" aria-label="이전 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <div class="a-dots" id="dots" role="group" aria-label="자료 바로 고르기"></div>
-        <span class="a-pos a-num" id="navPos" aria-hidden="true"><b id="navPosN">1</b><i></i><span id="navPosT"></span></span>
-        <button class="a-ib" id="navNext" aria-label="다음 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <button class="a-ib" id="navPause" aria-pressed="false" aria-label="자동 넘김 멈추기" title="자동 넘김 멈추기"><svg viewBox="0 0 24 24" aria-hidden="true"><g id="icoPause"><rect x="7" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/><rect x="13.6" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/></g><path id="icoPlay" d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4l-10-6.2A.8.8 0 0 0 8 5.8z" fill="currentColor" style="display:none"/></svg></button>
+        <div class="a-orbit">
+          <div class="a-orbit-dial" id="dots" role="group" aria-label="자료 바로 고르기"></div>
+          <span class="a-orbit-n" aria-hidden="true"><b id="navPosN">1</b> / <span id="navPosT"></span></span>
+        </div>
+        <div class="a-ctrl-btns">
+          <button class="a-ib" id="navPrev" aria-label="이전 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="a-ib" id="navNext" aria-label="다음 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="a-ib" id="navPause" aria-pressed="false" aria-label="자동 넘김 멈추기" title="자동 넘김 멈추기"><svg viewBox="0 0 24 24" aria-hidden="true"><g id="icoPause"><rect x="7" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/><rect x="13.6" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/></g><path id="icoPlay" d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4l-10-6.2A.8.8 0 0 0 8 5.8z" fill="currentColor" style="display:none"/></svg></button>
+        </div>
       </div>
       <p class="a-roll-hint"><span class="a-for-touch">↕ 가운데 문구를 밀어서 돌릴 수 있습니다.</span><span class="a-for-mouse">↕ 가운데 문구를 휠로 굴리거나 위아래로 끌어 돌릴 수 있습니다.</span></p>
     </div>
@@ -638,6 +649,7 @@ function setList(on){
   listOpen=on;rv.hidden=on;lv.hidden=!on;bt.setAttribute('aria-expanded',String(on));
   $('allBtnT').innerHTML=on?'롤링으로 돌아가기':'자료 전체 목록 <b class="a-num">'+TOOLS.length+'</b>개';
   if(on){var f=lv.querySelector('a');if(f)f.focus({preventScroll:true});}
+  else{measureOrbit();layout();}
 }
 function buildNav(){
   $('drum').innerHTML=TOOLS.map(function(t,i){return '<span class="a-it" aria-hidden="true" data-i="'+i+'"><span class="a-tx">'+esc(t.phrase)+'</span></span>';}).join('');
@@ -646,6 +658,28 @@ function buildNav(){
   renderList();
   items=Array.prototype.slice.call($('drum').children);
   dotEls=Array.prototype.slice.call($('dots').children);
+}
+/* 위치 다이얼: 지금 자리를 꼭대기로 ±3칸(모두 7개)만 반원에 띄우고, 수평선 아래로 넘어간 자리는 감춘다. */
+var ARC={rise:40,base:6,step:52,MAXAD:3.6};
+function measureOrbit(){
+  var w=$('dots').clientWidth;
+  if(w>0)ARC.step=Math.max(38,Math.min(52,(w-44)/6));
+}
+function layoutOrbit(){
+  var n=dotEls.length;if(!n)return;
+  var st=ARC.step;
+  for(var j=0;j<n;j++){
+    var el=dotEls[j],d=j-pos;d=d-Math.round(d/n)*n;
+    var ad=Math.abs(d);
+    if(ad>ARC.MAXAD){if(el.style.visibility!=='hidden')el.style.visibility='hidden';continue;}
+    var t=Math.min(1,ad/3),x=Math.max(-3,Math.min(3,d))*st;
+    var y=ARC.base+ARC.rise*(1-t*t);
+    var op=(1-.45*t)*(ad>3?Math.max(0,1-(ad-3)/.6):1);
+    if(el.style.visibility!=='')el.style.visibility='';
+    el.style.transform='translate3d('+(x-22).toFixed(1)+'px,'+(22-y).toFixed(1)+'px,0)';
+    el.style.opacity=op.toFixed(3);
+    if(el.firstChild)el.firstChild.style.transform='scale('+(1.22-.35*t).toFixed(3)+')';
+  }
 }
 function layout(){
   itemH=(items[0]&&items[0].offsetHeight)||itemH;
@@ -659,6 +693,7 @@ function layout(){
     el.classList.toggle('a-cur',ad<.5);
   });
   var idx=mod(Math.round(pos),N);if(idx!==shown)show(idx);
+  layoutOrbit();
 }
 function show(i){
   var t=TOOLS[i],first=shown<0;shown=i;
@@ -763,8 +798,8 @@ function bindNav(){
   stage.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hover=false;schedule();}});
   document.addEventListener('visibilitychange',schedule);
   if(reduceMQ.addEventListener)reduceMQ.addEventListener('change',function(){restartFill();schedule();});
-  window.addEventListener('resize',layout);
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+  window.addEventListener('resize',function(){measureOrbit();layout();});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measureOrbit();layout();});
 }
 function startNav(){
   buildNav();bindNav();setPaused(false);
@@ -772,7 +807,7 @@ function startNav(){
   /* 처음 열 때 두 칸 앞에서 굴러 들어와, 돌릴 수 있다는 것을 보여 준다 */
   $('nav').style.setProperty('--dur',INTERVAL+'ms');
   if(reduce()){pos=target=start;}else{pos=start-2;target=start;}
-  layout();kick();restartFill();schedule();
+  measureOrbit();layout();kick();restartFill();schedule();
 }
 
 /* ---------- 두루마리 ---------- */
