@@ -1,23 +1,24 @@
-/* deck.js — 시드(11)·매치(12) 재구성 화면: 세로 슬롯 덱 (2026-11-17)
+/* deck.js — 시드(11)·매치(12) 재구성 화면: 세로 슬롯 덱 (2026-11-17, 2026-11-18 CP3 개정)
  *
  * 「내 목차」를 직접 꽂는 화면. 왼쪽(휴대폰은 위)은 1번부터 내려가는 세로 슬롯, 오른쪽(휴대폰은 아래)은 자료 선반.
- *   빈 칸은 처음 5개(연한 번호만) → 꽂을 때마다 다음 번호 칸이 아래로 하나씩 늘어난다(그 모드 최대 개수까지).
- *   PC: 선반 카드를 슬롯으로 끌어다 놓기 / 1클릭(뜸) → 슬롯 1클릭.  휴대폰: 1탭(뜸) → 슬롯 1탭.
- *   꽂힌 카드를 누르면 다시 떠올라 그 자리에서 옮기거나 선반으로 돌려보낼 수 있다(연결리스트처럼 당겨진다).
+ *   PC: 선반 카드를 슬롯으로 끌어다 놓기 / 1클릭(들기) → 슬롯 1클릭.  휴대폰: 1탭(들기) → 슬롯 1탭.
+ *   2026-11-18: 꽂힌 자료는 누른다고 선반으로 빠지지 않는다(고정). 누르면 플로팅 카드가 떠서
+ *   「이 자료 열기 · 자리 옮기기 · 선반으로 빼기」를 고른다. 선반 자료 클릭 = 들고 배치 대기, 꽂힌 자료 클릭 = 미리보기.
  *   배치는 모드별로 이 기기에 저장한다(jc-deck-seed · jc-deck-match).
  */
 (function () {
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
-  var EMPTY_HEAD = 0;               /* 칸은 모드 전체를 미리 만든다(빈 칸 = 연한 번호만) */
   var KEY = { seed: 'jc-deck-seed', match: 'jc-deck-match' };
   var INFO = {
     seed: { k: '시드', en: 'SEED', sub: '지식·원리·기준 쌓기' },
     match: { k: '매치', en: 'MATCH', sub: '현장·실무 쓰기' }
   };
   var deck = { seed: [], match: [] };   /* 칸 수만큼의 배열. 빈 칸은 null */
-  var mode = 'all', floatId = null, floatFrom = null, tools = null, built = false;
-  var drag = null, suppress = false, tutStep = 0, tutOpen = false;
+  var mode = 'all';
+  var hold = null;    /* {id, from} — from=null이면 선반에서 들고 있음, 숫자면 그 칸에서 옮기는 중 */
+  var view = null;    /* {id, idx} — 꽂힌 자료 미리보기(고정된 자리) */
+  var drag = null, suppress = false, tutStep = 0, tutOpen = false, built = false;
 
   /* ---------- 장부 ---------- */
   function all() { return window.JC_TOOLS || []; }
@@ -44,26 +45,31 @@
 
   /* ---------- 그리기 ---------- */
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function slotCount() { return maxOf(mode); }   /* seed 11칸 · match 12칸을 처음부터 전부 만든다 */
+  function slotCount() { return maxOf(mode); }
   function renderDeck() {
+    /* 스크롤 위치 보존: innerHTML을 갈아 끼우면 scrollTop이 0으로 튄다(CP3 버그). 같은 틱에 되돌린다. */
+    var sc = $('deckScroll'), top = sc ? sc.scrollTop : 0;
     var arr = deck[mode], n = slotCount(), h = "";
     for (var i = 0; i < n; i++) {
       var t = arr[i] ? byId(arr[i]) : null;
+      var moving = hold && hold.from === i ? ' a-moving' : '';
       if (t) {
-        h += '<li class="a-dslot a-on a-' + t.color + '" data-i="' + i + '">'
-          + '<button type="button" class="a-dslot-b" data-dslot="' + i + '" aria-label="' + (i + 1) + '번, ' + esc(t.gi || t.title) + '. 눌러서 옮기기">'
+        h += '<li class="a-dslot a-on a-' + t.color + moving + '" data-i="' + i + '">'
+          + '<button type="button" class="a-dslot-b" data-dslot="' + i + '" aria-label="' + (i + 1) + '번 칸, ' + esc(t.title) + '. 미리보기 열기">'
           + '<span class="a-dslot-n a-num">' + (i + 1) + '</span>'
           + '<span class="a-dslot-t"><b>' + esc(t.gi || t.title) + '</b><small>' + esc(t.title) + '</small></span>'
           + '<span class="a-dslot-tag">' + esc(t.badge) + '</span>'
           + '</button></li>';
       } else {
-        h += '<li class="a-dslot a-dslot-empty" data-i="' + i + '">'
-          + '<button type="button" class="a-dslot-b" data-dslot="' + i + '" aria-label="' + (i + 1) + '번 빈 슬롯">'
+        h += '<li class="a-dslot a-dslot-empty' + (hold ? ' a-take' : '') + '" data-i="' + i + '">'
+          + '<button type="button" class="a-dslot-b" data-dslot="' + i + '" aria-label="' + (i + 1) + '번 빈 슬롯' + (hold ? ', 여기에 꽂기' : '') + '">'
           + '<span class="a-dslot-n a-num">' + (i + 1) + '</span>'
+          + (hold ? '<span class="a-dslot-ph">여기에 꽂기</span>' : '')
           + '</button></li>';
       }
     }
     $('deckList').innerHTML = h;
+    if (sc) sc.scrollTop = top;
   }
   function renderShelf() {
     var placed = {}, left = [];
@@ -75,8 +81,9 @@
     } else {
       $('shelfEmpty').hidden = true;
       $('shelfList').innerHTML = left.map(function (t) {
-        return '<li><button type="button" class="a-sc' + (floatId === t.id ? ' a-float' : '') + '" data-id="' + t.id + '"'
-          + ' draggable="true" aria-pressed="' + (floatId === t.id) + '"'
+        var on = hold && hold.from === null && hold.id === t.id;
+        return '<li><button type="button" class="a-sc' + (on ? ' a-float' : '') + '" data-id="' + t.id + '"'
+          + ' draggable="true" aria-pressed="' + on + '"'
           + ' aria-label="' + esc(t.gi || t.title) + ' 골라서 슬롯에 꽂기">'
           + '<span class="a-sc-n a-num">' + esc(t.no) + '</span>'
           + '<span class="a-sc-in"><b>' + esc(t.gi || t.title) + '</b><small>' + esc(t.title) + '</small></span>'
@@ -87,43 +94,76 @@
   }
   function renderHint() {
     var h = $('deckHint');
-    if (floatId) {
-      var t = byId(floatId);
-      h.innerHTML = '<div class="a-float">'
-        + '<a class="a-float-go" href="' + esc(t.path) + '" data-visit="' + esc(t.id) + '" aria-label="' + esc(t.gi || t.title) + ' 열기">'
-        + '<span class="a-float-n a-num">' + esc(t.no) + '</span>'
-        + '<span class="a-float-in"><b>' + esc(t.gi || t.title) + '</b><span class="a-float-d">' + esc(t.lead || t.desc) + '</span></span>'
-        + '<span class="a-float-o">열기</span></a>'
-        + '<button type="button" class="a-float-x" data-float-x="1" aria-label="미리보기 닫고 원래 자리로">&#10005;</button>'
-        + '</div>';
-      h.classList.add('a-onfloat');
-    } else {
-      h.innerHTML = '선반에서 자료를 한 번 눌러 들고, 슬롯을 눌러 꽂으세요.';
-      h.classList.remove('a-onfloat');
-    }
+    h.classList.remove('a-onfloat');
+    if (hold) h.innerHTML = hold.from === null
+      ? '번호 칸을 눌러 꽂으세요. (들고 있는 자료: <b>' + esc((byId(hold.id) || {}).title || '') + '</b>)'
+      : '옮길 칸을 누르세요. 선반으로 빼려면 위 카드에서 「선반으로 빼기」.';
+    else if (view) h.innerHTML = '꽂힌 자료를 눌러 미리보기 · 열기 · 자리 옮기기를 고를 수 있습니다.';
+    else h.innerHTML = '선반에서 자료를 한 번 눌러 들고, 슬롯을 눌러 꽂으세요. 꽂은 자료를 누르면 미리보기가 열립니다.';
   }
-  function closeFloat(restore) {
-    if (!floatId) return;
-    if (restore && floatFrom !== null && floatFrom !== undefined) {
-      deck[mode][floatFrom] = floatId; save();
+  /* 플로팅 카드: 들고 있는 자료(배치 대기) · 꽂힌 자료(미리보기 + 동작) */
+  function renderSheet() {
+    var box = $('deckSheet'); if (!box) return;
+    var t = hold ? byId(hold.id) : (view ? byId(view.id) : null);
+    if (!t) { box.hidden = true; box.innerHTML = ''; box.className = 'a-dsheet'; return; }
+    var placedNow = hold ? hold.from : (view ? view.idx : null);
+    var meta = (t.meta || []).join(' · ');
+    /* 들고 있는 동안은 낮은 띠 하나만 — 덱의 칸을 가리지 않게(칸을 눌러야 하므로) */
+    if (hold) {
+      box.className = 'a-dsheet a-ds-hold';
+      box.innerHTML = '<div class="a-ds-card a-ds-mini" role="group" aria-label="' + esc(t.title) + ' 들고 있음">'
+        + '<div class="a-ds-top">'
+        + '<span class="a-ds-no a-num">' + esc(t.no) + '</span>'
+        + '<span class="a-ds-badge">' + esc(t.badge) + '</span>'
+        + '<b class="a-ds-t2">' + esc(t.title) + '</b>'
+        + '<span class="a-ds-where">' + (placedNow === null ? '선반에서 듦' : (placedNow + 1) + '번 칸에서 옮기는 중') + '</span>'
+        + '</div>'
+        + '<div class="a-ds-act">'
+        + '<a class="a-ds-b a-ds-pri" href="' + esc(t.path) + '" data-visit="' + esc(t.id) + '">이 자료 열기</a>'
+        + '<button type="button" class="a-ds-b" data-act="cancel">들기 취소</button>'
+        + '</div>'
+        + '</div>';
+      box.hidden = false;
+      return;
     }
-    floatId = null; floatFrom = null; render();
+    var acts = '<div class="a-ds-act">'
+      + '<a class="a-ds-b a-ds-pri" href="' + esc(t.path) + '" data-visit="' + esc(t.id) + '">이 자료 열기</a>'
+      + '<button type="button" class="a-ds-b" data-act="move">자리 옮기기</button></div>'
+      + '<div class="a-ds-sub"><button type="button" class="a-ds-out" data-act="out">선반으로 빼기</button></div>';
+    box.className = 'a-dsheet a-ds-view';
+    box.innerHTML = '<div class="a-ds-veil" data-act="cancel"></div>'
+      + '<div class="a-ds-card" role="dialog" aria-modal="true" aria-label="' + esc(t.title) + ' 미리보기">'
+      + '<div class="a-ds-top">'
+      + '<span class="a-ds-no a-num">' + esc(t.no) + '</span>'
+      + '<span class="a-ds-badge">' + esc(t.badge) + '</span>'
+      + '<span class="a-ds-where">' + (placedNow + 1) + '번 칸</span>'
+      + '<button type="button" class="a-ds-x" data-act="cancel" aria-label="닫기">&#10005;</button>'
+      + '</div>'
+      + '<b class="a-ds-t">' + esc(t.title) + '</b>'
+      + '<p class="a-ds-d">' + esc(t.desc || t.lead || '') + '</p>'
+      + (meta ? '<p class="a-ds-meta">' + esc(meta) + '</p>' : '')
+      + acts
+      + '</div>';
+    box.hidden = false;
   }
   function renderTools() {
     $('deckTool').innerHTML = '<b class="a-num">' + placedN() + '</b> / ' + maxOf(mode) + '칸 꽂음';
   }
-  function render() { renderDeck(); renderShelf(); renderHint(); renderTools(); }
+  function render() { renderDeck(); renderShelf(); renderHint(); renderTools(); renderSheet(); }
 
   function flash(i) {
     var li = $('deckList').querySelector('[data-i="' + i + '"]');
     if (!li) return;
     li.classList.add('a-new');
     setTimeout(function () { li.classList.remove('a-new'); }, 460);
-    if (li.scrollIntoView) li.scrollIntoView({ block: 'nearest' });
+    var sc = $('deckScroll'); if (!sc) return;
+    var top = li.offsetTop, bot = top + li.offsetHeight;
+    if (top < sc.scrollTop || bot > sc.scrollTop + sc.clientHeight) {
+      sc.scrollTop = Math.max(0, top - 12);   /* 칸 안에서만 움직인다(페이지가 튀지 않게) */
+    }
   }
 
   /* ---------- 꽂기·빼기 ---------- */
-  function setFloat(id) { floatId = id; render(); }
   function insert(id, idx) {
     var arr = deck[mode], max = maxOf(mode);
     if (idx === undefined || idx === null || idx < 0 || idx >= max) return false;
@@ -144,29 +184,27 @@
       if (suppress) { suppress = false; return; }
       var b = e.target.closest('[data-dslot]'); if (!b) return;
       var i = +b.getAttribute('data-dslot'), arr = deck[mode];
-      if (floatId) {
-        var id = floatId;
-        if (insert(id, i)) { floatId = null; floatFrom = null; render(); flash(i); }
-        else { closeFloat(true); }
+      if (hold) {                                   /* 들고 있으면: 누른 자리에 꽂는다 */
+        if (hold.from === i) { hold = null; render(); return; }
+        var id = hold.id;
+        if (insert(id, i)) { hold = null; view = null; render(); flash(i); }
         return;
       }
-      if (arr[i]) { closeFloat(true); floatId = arr[i]; floatFrom = i; drop(i); render(); }
+      if (arr[i]) { view = { id: arr[i], idx: i }; render(); }   /* 꽂힌 자료: 고정하고 미리보기 */
     });
 
     $('shelfList').addEventListener('click', function (e) {
       var b = e.target.closest('[data-id]'); if (!b) return;
       var id = b.getAttribute('data-id');
-      if (floatId === id) { closeFloat(true); return; }
-      closeFloat(true);
-      floatId = id; floatFrom = null; render();
-      if ($('deckScroll')) $('deckScroll').scrollTop = Math.min($('deckScroll').scrollTop, 20);
+      if (hold && hold.from === null && hold.id === id) { hold = null; render(); return; }
+      hold = { id: id, from: null }; view = null; render();
     });
 
     /* PC 끌어다 놓기 */
     $('shelfList').addEventListener('dragstart', function (e) {
       var b = e.target.closest('[data-id]'); if (!b) { e.preventDefault(); return; }
       try { e.dataTransfer.setData('text/plain', b.getAttribute('data-id')); e.dataTransfer.effectAllowed = 'copy'; } catch (x) { }
-      closeFloat(true); floatId = b.getAttribute('data-id'); floatFrom = null; render();
+      hold = { id: b.getAttribute('data-id'), from: null }; view = null; render();
     });
     $('deckList').addEventListener('dragover', function (e) {
       var s = e.target.closest('.a-dslot'); if (!s) return;
@@ -179,11 +217,10 @@
     $('deckList').addEventListener('drop', function (e) {
       var s = e.target.closest('.a-dslot'); if (!s) return;
       e.preventDefault(); s.classList.remove('a-over');
-      var id = floatId; try { id = e.dataTransfer.getData('text/plain') || id; } catch (x) { }
+      var id = hold && hold.id; try { id = e.dataTransfer.getData('text/plain') || id; } catch (x) { }
       if (!id) return;
       var i = +s.getAttribute('data-i');
-      if (insert(id, i)) { floatId = null; floatFrom = null; render(); flash(i); }
-      else { closeFloat(true); }
+      if (insert(id, i)) { hold = null; view = null; render(); flash(i); }
     });
 
     /* PC: 클릭 앤 드래그로 덱 상하 이동(휠은 브라우저 기본) */
@@ -207,21 +244,28 @@
     });
     window.addEventListener('pointercancel', function () { if (drag) { sc.classList.remove('a-drag'); drag = null; } });
 
-    /* 미리보기 안(설명·열기)은 자료로 이동, ×나 바깥을 누르면 원래 자리로 되돌린다 */
-    $('deckView').addEventListener('click', function (e) {
-      if (!floatId) return;
-      if (e.target.closest('.a-float')) {
-        if (e.target.closest('[data-float-x]')) closeFloat(true);
-        return;
+    /* 플로팅 카드 동작 */
+    var sheet = $('deckSheet');
+    sheet.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-act]');
+      if (b) {
+        var act = b.getAttribute('data-act');
+        if (act === 'cancel') { hold = null; view = null; render(); return; }
+        if (act === 'move' && view) { hold = { id: view.id, from: view.idx }; view = null; render(); return; }
+        if (act === 'out' && view) { drop(view.idx); view = null; render(); return; }
       }
-      if (e.target.closest('[data-dslot],[data-id]')) return;
-      if (e.target.closest('#tutBtn,#mainBtn,.a-tut,.a-main')) return;
-      closeFloat(true);
+      /* 카드 안쪽(설명·여백)을 누르면 닫지 않는다 — 바깥(베일)만 닫기 */
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        if (tutOpen) return;
+        if (view || hold) { e.preventDefault(); hold = null; view = null; render(); }
+      }
     });
 
     /* MAIN · 튜토리얼 */
     $('mainBtn').addEventListener('click', function () {
-      closeFloat(true);
+      hold = null; view = null;
       if (window.JC_NAV && window.JC_NAV.applyMode) window.JC_NAV.applyMode('all');
     });
     $('tutBtn').addEventListener('click', openTut);
@@ -245,23 +289,23 @@
   var TUT = [
     {
       t: '선반에서 자료를 듭니다',
-      p: '오른쪽(휴대폰은 아래) <b>자료 선반</b>에는 이 모드의 자료가 놓여 있습니다. 꽂고 싶은 카드를 한 번 누르면 살짝 떠오릅니다.',
+      p: '오른쪽(휴대폰은 아래) <b>자료 선반</b>에는 이 모드의 자료가 놓여 있습니다. 꽂고 싶은 카드를 한 번 누르면 살짝 떠오르고 아래에 <b>미리보기 카드</b>가 열립니다.',
       f: '<div class="r hi"><span class="n">01</span><span class="w">직업상담 이론 위키</span><em>들었습니다</em></div>'
         + '<div class="r"><span class="n">02</span><span class="w">다시 읽는 『직업의 선택』</span></div>'
         + '<div class="r"><span class="n">03</span><span class="w">DACUM 마스터 아키텍처</span></div>'
     },
     {
       t: '슬롯에 꽂습니다',
-      p: '<b>번호가 적힌 빈 칸</b>을 누르면 그 자리에 꽂힙니다. 컴퓨터에서는 선반 카드를 슬롯까지 <b>끌어다 놓아도</b> 됩니다.',
+      p: '<b>번호가 적힌 칸</b>을 누르면 그 자리에 꽂힙니다. 들고 있는 동안 빈 칸에 「여기에 꽂기」가 뜹니다. 컴퓨터에서는 선반 카드를 슬롯까지 <b>끌어다 놓아도</b> 됩니다.',
       f: '<div class="r"><span class="n">1</span><span class="w">직업상담 이론 위키</span></div>'
         + '<div class="r hi"><span class="n">2</span><span class="w">↓ 여기에 꽂힙니다</span></div>'
         + '<div class="r"><span class="n">3</span><span class="w"></span></div>'
     },
     {
-      t: '옮기기 · 빼기',
-      p: '꽂힌 카드를 누르면 다시 떠오릅니다. 다른 번호를 누르면 <b>그 자리로 옮겨</b> 꽂히고, 미리보기의 <b>×</b>나 바깥을 누르면 <b>원래 자리로</b> 돌아갑니다. 미리보기의 설명이나 <b>열기</b>를 누르면 그 자료가 바로 열립니다.',
+      t: '꽂힌 자료는 그대로 있습니다',
+      p: '꽂힌 카드를 누르면 <b>플로팅 카드</b>가 떠서 <b>이 자료 열기</b> · <b>자리 옮기기</b> · <b>선반으로 빼기</b>를 고를 수 있습니다. 누른다고 선반으로 빠지지 않습니다. 카드 바깥이나 <b>×</b>를 누르면 닫힙니다.',
       f: '<div class="r"><span class="n">1</span><span class="w">다시 읽는 『직업의 선택』</span></div>'
-        + '<div class="r hi"><span class="n">2</span><span class="w">직업상담 이론 위키 · 떠 있음</span><em>옮기는 중</em></div>'
+        + '<div class="r hi"><span class="n">2</span><span class="w">직업상담 이론 위키 · 고정</span><em>3번 칸</em></div>'
         + '<div class="r"><span class="n">3</span><span class="w">DACUM 마스터 아키텍처</span></div>'
     },
     {
@@ -321,10 +365,10 @@
     mode = (m === 'seed' || m === 'match') ? m : 'all';
     if (mode === 'all') { hide(); return; }
     bind();
-    if (prev === mode && floatId && floatFrom !== null) { /* 같은 화면 다시 그리기: 뜬 카드는 그대로 */ }
-    else { floatId = null; floatFrom = null; }
+    if (prev !== mode) { hold = null; view = null; }
     deck[mode] = read(mode);
-    if (floatId) { var fi = deck[mode].indexOf(floatId); floatFrom = null; if (fi >= 0) { deck[mode][fi] = null; floatFrom = fi; } }
+    if (hold) { var hi = deck[mode].indexOf(hold.id); hold = hi >= 0 ? { id: hold.id, from: hi } : null; }
+    if (view) { var vi = deck[mode].indexOf(view.id); view = vi >= 0 ? { id: view.id, idx: vi } : null; }
     var inf = INFO[mode];
     $('deckView').hidden = false;
     $('deckView').className = 'a-deck a-deck-' + mode;
@@ -333,7 +377,11 @@
     $('deckSub').textContent = inf.sub;
     render();
   }
-  function hide() { $('deckView').hidden = true; floatId = null; floatFrom = null; if (tutOpen) closeTut(); }
+  function hide() {
+    $('deckView').hidden = true; hold = null; view = null;
+    var s = $('deckSheet'); if (s) { s.hidden = true; s.innerHTML = ''; }
+    if (tutOpen) closeTut();
+  }
 
   window.JCDECK = {
     show: show, hide: hide,
