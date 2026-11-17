@@ -210,3 +210,41 @@
   background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 16%,#0f172a),color-mix(in srgb,var(--acc) 3%,#0b1220));
   box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 12%,transparent),0 0 26px -8px color-mix(in srgb,var(--acc) 75%,transparent),inset 0 1px 0 rgba(255,255,255,.05)}
 :root[data-theme="dark"] .a-deck-seed .a-dslot.a-on .a-dslot-n{background:rgba(255,255,255,.1);color:var(--acc)}
+
+/* ============ 매치: 연결리스트 포인터 레일 (2026-11-17 확정안 1) ============
+ * 1~12번이 세로 포인터 선으로 이어진 노드 트랙. 빈 칸은 점선 고리(null), 꽂으면
+ * 위아래 연결선이 「탁」 이어지며 점등한다. */
+.a-deck-match .a-deck-scroll{
+  background:linear-gradient(180deg,#fbf8f1 0%,#f5efe4 100%);
+  border-color:#e5dbc9;
+  box-shadow:inset 0 1px 0 #fff,inset 0 10px 26px -20px rgba(176,144,92,.4)}
+.a-deck-match .a-dslot-b{padding-left:14px}
+/* 노드 사이 포인터 선 — 이 칸의 위쪽 반 칸 */
+.a-deck-match .a-dslot:not(:first-child)::before{
+  content:"";position:absolute;left:33px;top:-8px;width:2px;height:8px;border-radius:1px;
+  background:color-mix(in srgb,var(--line-2) 62%,transparent)}
+/* 꽂힌 칸의 위·아래 연결선이 점등 */
+.a-deck-match .a-dslot.a-on::before,
+.a-deck-match .a-dslot.a-on + .a-dslot::before{
+  background:var(--acc);box-shadow:0 0 7px color-mix(in srgb,var(--acc) 68%,transparent);
+  animation:a-rail-lit .5s cubic-bezier(.2,1.2,.4,1) both}
+@keyframes a-rail-lit{0%{transform:scaleY(.15);opacity:0}55%{transform:scaleY(1);opacity:1}100%{transform:none}}
+/* 노드: 빈 칸은 점선 고리, 꽂히면 점등한 고리 */
+.a-deck-match .a-dslot-n{width:36px;height:36px;border-radius:50%;border:1.5px dashed rgba(196,181,158,.9);
+  background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.35));color:#b3a58d}
+.a-deck-match .a-dslot-empty .a-dslot-b{border-style:dashed;border-color:rgba(205,192,171,.66);background:rgba(255,255,255,.34)}
+.a-deck-match .a-dslot-empty .a-dslot-b:hover{border-style:solid;border-color:color-mix(in srgb,var(--acc) 50%,#ded0b9);
+  background:rgba(255,255,255,.6)}
+.a-deck-match .a-dslot.a-on .a-dslot-n{border-style:solid;border-color:color-mix(in srgb,var(--acc) 70%,#ded0b9);
+  background:radial-gradient(circle at 34% 30%,color-mix(in srgb,var(--acc) 34%,#fff),color-mix(in srgb,var(--acc) 12%,#fff));
+  color:color-mix(in srgb,var(--acc) 88%,#000 8%);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 12%,transparent),0 0 16px -4px color-mix(in srgb,var(--acc) 60%,transparent)}
+.a-deck-match .a-dslot.a-on .a-dslot-b{border-color:color-mix(in srgb,var(--acc) 32%,#e5dbc9);
+  background:linear-gradient(180deg,rgba(255,255,255,.95),color-mix(in srgb,var(--acc) 5%,#fff))}
+:root[data-theme="dark"] .a-deck-match .a-deck-scroll{background:linear-gradient(180deg,#0f1521,#0a0f17);border-color:#1d2634;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+:root[data-theme="dark"] .a-deck-match .a-dslot:not(:first-child)::before{background:#2a3444}
+:root[data-theme="dark"] .a-deck-match .a-dslot-n{border-color:#334052;background:rgba(255,255,255,.04);color:#5a6578}
+:root[data-theme="dark"] .a-deck-match .a-dslot-empty .a-dslot-b{background:rgba(255,255,255,.02);border-color:#232d3c}
+:root[data-theme="dark"] .a-deck-match .a-dslot.a-on .a-dslot-n{background:radial-gradient(circle at 34% 30%,color-mix(in srgb,var(--acc) 34%,#0f172a),#0c1320);color:var(--acc);border-color:var(--acc)}
+:root[data-theme="dark"] .a-deck-match .a-dslot.a-on .a-dslot-b{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 12%,#0f172a),#0b1220);border-color:color-mix(in srgb,var(--acc) 34%,#1d2634)}
