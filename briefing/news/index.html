@@ -39,6 +39,7 @@ html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-wid
 body{font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
 body.rd-open{overflow:hidden}
 button{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit;cursor:pointer;background:none;border:0;padding:0;text-align:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+select{font-family:inherit;color:inherit;letter-spacing:inherit}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
 [hidden]{display:none!important}
@@ -56,6 +57,8 @@ a{color:inherit}
 .notice{margin:0 0 10px;padding:10px 12px;border:1px solid var(--line-2);border-radius:12px;background:var(--panel);font-size:13.5px;color:var(--muted)}
 .notice b{color:var(--ink)}
 .mast{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;padding:6px 0 8px;border-bottom:2px solid var(--ink)}
+.mast .mt{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.mast select{min-height:44px;padding:6px 10px;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);font-size:13.5px;font-weight:700}
 .mast h1{margin:0;font-size:26px;font-weight:850;letter-spacing:-.05em}
 @media (min-width:900px){.mast h1{font-size:34px}}
 .mast span{font-size:13.5px;font-weight:700;color:var(--muted)}
