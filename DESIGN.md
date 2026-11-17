@@ -181,6 +181,7 @@
 |---|---|---|
 | 이북 · 긴글 · 책 넘김 | `/parsons/` `/library/` `/theory/` `/manual/` | [`design/patterns/ebook-reading.md`](design/patterns/ebook-reading.md) |
 | 명함첩 · 도감 · 위키 · 목록 | `/company/` `/cert/` `/univ/` `/grad/` `/decalcomania/` `/transit/` | [`design/patterns/card-directory.md`](design/patterns/card-directory.md) |
+| 검색 · 찾아보기 · 법령 리더 | `/law/` | [`design/patterns/search-reference.md`](design/patterns/search-reference.md) |
 | 계산기 · 시뮬레이터 · 실무 HUD | `/hud/` `/vpi/` `/dacum/` `/talk/` | [`design/patterns/sim-hud.md`](design/patterns/sim-hud.md) |
 | 모바일 · 태블릿 손맛 (공통) | 모든 섹터 | [`design/patterns/touch-physics.md`](design/patterns/touch-physics.md) |
 | 대문 · 허브 | `/` | [`design/patterns/hub-landing.md`](design/patterns/hub-landing.md) |
@@ -253,4 +254,5 @@
 - 2026-11-16 메모를 접는 손짓·넘김 페이드: 바깥 누름(pointerdown)으로 접기·한 터치 한 동작·새 자리에서 떠오르기 → `touch-physics.md` §11, `ebook-reading.md` §3.
 - 2026-11-16 턴 타이머 「잉크 악보선」(구간 눈금 + 줄어드는 인쇄선, 음수 지연 재동기) → `sim-hud.md`, `design/studies/2026-11-16-면접-턴-타이머.md`.
 - 2026-11-16 연관 항목 대칭(같은 집합 섹션) → `card-directory.md` §11. 교차 필터 FLIP 디렉토리 → §10.
+- 2026-11-17 직업상담 법전 신설(22번): 검색 한 칸 + 한 줄 결과(맞은 이유) + 세 칸 상세 + 가변 시각자료 슬롯 + 법전 리더 → `search-reference.md`.
 - 2026-11-17 서재 색인 목차 깜빡임: 스크롤·리사이즈 프레임마다 다시 그리던 목록을 멈춘 뒤 한 번만, 스스로 다시 그리는 목록은 `data-jc-still`, 아이폰 주소창 `resize`는 폭 변화만 본다 → `ebook-reading.md` §4·§6, `touch-physics.md` §5.
