@@ -162,10 +162,12 @@
 .a-modes-stage{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:max(16px,env(safe-area-inset-top)) 14px calc(74px + env(safe-area-inset-bottom));
   transform:translate3d(0,0,0);will-change:opacity,transform}
-.a-modes-glass{position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 74%,transparent);
-  -webkit-backdrop-filter:blur(20px) saturate(1.05);backdrop-filter:blur(20px) saturate(1.05);
+.a-modes-glass{position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 95%,transparent);
   opacity:0;transition:opacity .3s ease}
-:root[data-theme="dark"] .a-modes-glass{background:color-mix(in srgb,#06080c 82%,transparent)}
+/* 2026-11-18 밤: `backdrop-filter:blur(20px)`를 걷어냈다. 화면 전체를 덮는 반투명 흐림은
+ * 매 프레임 배경을 다시 흐리게 만들어, 1280×800 실측에서 20ms를 넘는 프레임이 11~20장 나왔다
+ * (끄면 0장). 글래스 대신 **종이 베일(95%)** — 거의 불투명해서 보이는 결은 같고 비용은 0이다. */
+:root[data-theme="dark"] .a-modes-glass{background:color-mix(in srgb,#06080c 96%,transparent)}
 .a-modes.a-open .a-modes-glass{opacity:1}
 .a-modes-in:focus{outline:none}
 .a-modes-in{position:relative;z-index:1;width:100%;max-width:780px;display:flex;flex-direction:column;
