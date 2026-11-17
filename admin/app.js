@@ -9,7 +9,7 @@
 
   var PAGES = {
     home: '첫 화면', theory: '직업상담 이론 위키', vpi: '직업선호도검사 해석', dacum: 'DACUM 직무분석',
-    manual: '국취 매뉴얼 하이퍼위키', hud: '국취 상담 HUD', library: '미래고용 디지털 서재',
+    manual: '구직자취업촉진법 실무 가이드', hud: '국취 상담 HUD', library: '미래고용 디지털 서재',
     decalcomania: '커리어데칼코마니', univ: '대학학과위키', grad: '석·박사 지도', talk: '상담 대화 연습장',
     transit: '환승노선도', parsons: '다시 읽는 『직업의 선택』', labor: '노동시장 산책'
   };
