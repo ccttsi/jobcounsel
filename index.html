@@ -13,6 +13,9 @@
 var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
 document.documentElement.setAttribute('data-theme',t);})();
 </script>
+<script>/* 머리말을 접어 두었으면 첫 그림 전에 정한다(펼친 머리말이 번쩍였다 접히지 않게). */
+try{if(localStorage.getItem('jc-hf')==='off')document.documentElement.setAttribute('data-jc-hf','off');}catch(e){}
+</script>
 <style>
 /* 이 스타일만으로 화면이 완성된다. Tailwind와 Lucide가 늦게 오거나 막혀도 배치는 그대로다. */
 :root{
@@ -357,6 +360,7 @@ html:not([data-jc-imm]) .a-list li:nth-child(even) .a-no{transform:rotate(3deg)}
 html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic-bezier(.3,.9,.3,1) .15s backwards}
 @media (prefers-reduced-motion:reduce){.a-seen-stamp:not([hidden]){animation:none!important}.a-root .a-btn.a-open,.a-card.a-insight.a-live:hover{transition:none;transform:none!important}}
 </style>
+<link rel="stylesheet" href="./assets/headfold.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
@@ -364,7 +368,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 <div class="a-backdrop" aria-hidden="true"></div>
 <div class="a-shell">
 
-  <header class="a-top">
+  <header class="a-top" data-jc-headfold="직업상담 통합 자료실">
     <div class="a-brand">
       <b>직업상담 통합 자료실</b>
       <span>Career Counseling Archive</span>
@@ -956,5 +960,6 @@ icons();window.addEventListener('load',icons);
 <script src="./assets/marker.js" defer></script>
 <script>window.JC_DESIGN = { seal: false }; /* 대문 제목은 돌아가는 문장이라 소인을 붙이지 않는다 */</script>
 <script src="./assets/prefs.js" defer></script>
+<script src="./assets/headfold.js" defer></script>
 </body>
 </html>
