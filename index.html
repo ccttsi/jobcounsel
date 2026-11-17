@@ -187,16 +187,24 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 @keyframes a-fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .a-run .a-it.a-cur .a-tx::after{opacity:1;animation:a-fill var(--dur,5.2s) linear forwards}
 .a-run.a-hold .a-it.a-cur .a-tx::after{animation-play-state:paused}
-.a-say-sub{margin:clamp(14px,2vw,22px) auto 0;max-width:27em;min-height:4.8em;font-size:clamp(17px,.55vw + 15px,21px);line-height:1.6;
+/* 설명 칸은 **4줄(제목 1줄 + 설명 3줄) 높이로 고정**한다(2026-11-18).
+   예전 min-height:4.8em은 짧은 문구에서 3줄, 긴 문구에서 4줄이 되어 아래 「이 자료 열기」·반원 다이얼·레버가
+   27px씩 위아래로 밀렸다(IMG_7756 ↔ 7757). 높이를 고정하고 설명은 3줄에서 자르며, 남는 줄은 위아래로 나눠
+   가운데에 앉힌다 — 문구가 짧든 길든 아래 요소의 Y좌표가 0.00px도 움직이지 않는다. 높이는 em이라 글자 확대를 따라간다. */
+.a-say-sub{margin:clamp(14px,2vw,22px) auto 0;max-width:27em;height:calc(4 * 1.6em);display:flex;flex-direction:column;justify-content:center;
+  font-size:clamp(17px,.55vw + 15px,21px);line-height:1.6;
   color:var(--muted);font-weight:500;letter-spacing:-.02em;transition:opacity .16s,transform .16s}
 .a-say-sub b{display:block;font-weight:700;color:color-mix(in srgb,var(--ink) 62%,var(--bg))}
+.a-say-sub #sayLead{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
 .a-say-sub.a-fade{opacity:0;transform:translateY(4px)}
 .a-seen-stamp{display:inline-block;margin-left:.5em;padding:0 .4em;font-size:12px;font-weight:800;line-height:1.6;letter-spacing:.08em;vertical-align:.2em;
   color:var(--a2);border:1.5px solid currentColor;border-radius:4px;transform:rotate(-7deg);opacity:.85}
 .a-nav-go{display:flex;justify-content:center;margin-top:10px}
 .a-root .a-btn.a-open{min-height:50px;padding:0 24px;font-size:16px;border-radius:14px;background:var(--acc);border-color:var(--acc);color:#fff}
 :root[data-theme="dark"] .a-root .a-btn.a-open{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc);border-color:color-mix(in srgb,var(--acc) 60%,transparent)}
-.a-ctrl{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 6px;margin-top:10px}
+.a-ctrl{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 6px;margin-top:22px}
+/* 반원 다이얼과 슬롯 레버를 한 몸(드럼)으로 묶는다 — 레버 하우징이 다이얼 수평선 오른쪽 끝에 얹힌다. */
+.a-drumkit{display:flex;align-items:flex-end;justify-content:center;flex:1 1 300px;min-width:0}
 .a-ctrl-btns{display:flex;align-items:center;gap:2px}
 .a-root .a-ib{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--muted);transition:background .15s,color .15s}
 .a-root .a-ib:hover{background:var(--panel-soft);color:var(--ink)}
@@ -204,11 +212,12 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 /* 위치 다이얼 — 자료가 늘어도 한 줄을 넘지 않게, 지금 자리를 꼭대기로 한 반원 궤적에 ±3칸(모두 7개)만 띄운다.
    수평선 아래로 내려간 자리는 감춰 수심 밑으로 보이지 않는다. 움직임은 transform·opacity만 쓴다. */
 .a-orbit{position:relative;flex:1 1 280px;min-width:262px;max-width:400px;height:72px;margin:0 2px}
-.a-orbit-dial{position:absolute;left:0;right:0;bottom:20px;height:50px;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
+/* right:24px = 레버 하우징이 앉을 자리. 다이얼·수평선이 하우징 왼쪽 면에서 끝나, 점의 누름 영역이 레버에 가리지 않는다. */
+.a-orbit-dial{position:absolute;left:0;right:24px;bottom:20px;height:50px;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
 .a-orbit-dial.a-grab{cursor:grabbing}
 .a-orbit-dial.a-grab button{cursor:grabbing}
-.a-orbit-dial::before{content:"";position:absolute;left:16px;right:16px;bottom:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--line-2) 12%,var(--line-2) 88%,transparent)}
+.a-orbit-dial::before{content:"";position:absolute;left:16px;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--line-2) 12%,var(--line-2) 100%)}
 .a-orbit-dial::after{content:"";position:absolute;left:50%;bottom:0;width:132px;height:20px;margin-left:-66px;pointer-events:none;
   background:radial-gradient(closest-side at 50% 0,color-mix(in srgb,var(--acc) 20%,transparent),transparent)}
 .a-root .a-orbit button{position:absolute;left:50%;bottom:0;width:44px;height:44px;padding:0;display:grid;place-items:center;
@@ -217,7 +226,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-orbit button.a-seen i{background:color-mix(in srgb,var(--a2) 55%,var(--line-2))}
 .a-orbit button[aria-current="true"] i{background:var(--acc)}
 .a-root .a-orbit button:focus-visible{outline:2px solid var(--a1);outline-offset:0;border-radius:50%}
-.a-orbit-n{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:11.5px;line-height:16px;font-weight:650;
+.a-orbit-n{position:absolute;left:0;right:24px;bottom:0;text-align:center;font-size:11.5px;line-height:16px;font-weight:650;
   letter-spacing:.1em;color:var(--dim);font-variant-numeric:tabular-nums}
 .a-orbit-n b{color:var(--acc);font-size:13px}
 .a-roll-hint{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;color:var(--dim);margin-top:2px;text-align:left}
@@ -451,18 +460,25 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <p class="a-say-sub" id="saySub" aria-live="off"><b><span id="sayTitle"></span><span class="a-seen-stamp" id="sayStamp" hidden>열람</span></b><span id="sayLead"></span></p>
       <div class="a-nav-go"><a class="a-btn a-open" id="sayOpen" href="./theory/" data-visit="theory"><span>이 자료 열기</span><span aria-hidden="true">→</span></a></div>
       <div class="a-ctrl">
-        <div class="a-orbit">
-          <div class="a-orbit-dial" id="dots" role="group" aria-label="자료 바로 고르기"></div>
-          <span class="a-orbit-n" aria-hidden="true"><b id="navPosN">1</b> / <span id="navPosT"></span></span>
-        </div>
-        <div class="a-slot" id="slot">
-          <button type="button" class="a-slot-btn" id="slotBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
-            <span class="a-lever" aria-hidden="true">
-              <span class="a-lever-track"></span>
-              <span class="a-lever-arm"><span class="a-lever-shaft"></span><span class="a-lever-ball"><i></i></span></span>
-              <span class="a-lever-housing"><i></i><i></i></span>
-            </span>
-          </button>
+        <div class="a-drumkit">
+          <div class="a-orbit">
+            <div class="a-orbit-dial" id="dots" role="group" aria-label="자료 바로 고르기"></div>
+            <span class="a-orbit-n" aria-hidden="true"><b id="navPosN">1</b> / <span id="navPosT"></span></span>
+          </div>
+          <div class="a-slot" id="slot">
+            <button type="button" class="a-slot-btn" id="slotBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
+              <span class="a-lever" aria-hidden="true">
+                <span class="a-lever-base"></span>
+                <span class="a-lever-column"><i></i></span>
+                <span class="a-lever-arm">
+                  <span class="a-lever-carriage"></span>
+                  <span class="a-lever-elbow"></span>
+                  <span class="a-lever-shaft"></span>
+                  <span class="a-lever-ball"><i></i></span>
+                </span>
+              </span>
+            </button>
+          </div>
         </div>
         <div class="a-ctrl-btns">
           <button class="a-ib" id="navPrev" aria-label="이전 자료로 돌리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -478,7 +494,8 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <nav class="a-pg" id="allPg" aria-label="목록 쪽 넘기기"></nav>
       <div class="a-coinrow" id="coinRow">
         <button type="button" class="a-coin-btn" id="coinBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
-          <span class="a-coin" aria-hidden="true"><svg viewBox="0 0 60 34" focusable="false"><defs><linearGradient id="jcCoinFace" x1=".1" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#fff8e2"/><stop offset=".35" stop-color="#f2dca6"/><stop offset=".72" stop-color="#d9b269"/><stop offset="1" stop-color="#bb8f42"/></linearGradient><linearGradient id="jcCoinSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bd9550"/><stop offset=".42" stop-color="#8f6a2b"/><stop offset=".82" stop-color="#6a4c1c"/><stop offset="1" stop-color="#8a6629"/></linearGradient><pattern id="jcCoinMill" width="2" height="20" patternUnits="userSpaceOnUse"><rect width=".8" height="20" fill="#4f3712" opacity=".3"/><rect x="1" width=".45" height="20" fill="#f6e3b4" opacity=".2"/></pattern></defs><path d="M6 15A24 12 0 0 1 54 15L54 19.5A24 12 0 0 1 6 19.5Z" fill="url(#jcCoinSide)"/><path d="M6 15A24 12 0 0 1 54 15L54 19.5A24 12 0 0 1 6 19.5Z" fill="url(#jcCoinMill)"/><ellipse cx="30" cy="15" rx="24" ry="12" fill="url(#jcCoinFace)" stroke="#7d5a1e" stroke-width="1"/><path d="M6 15A24 12 0 0 1 54 15" fill="none" stroke="#fff4cf" stroke-width="1.1" opacity=".55"/><ellipse cx="30" cy="15.4" rx="17.6" ry="8.3" fill="none" stroke="#8d6524" stroke-width=".9" opacity=".45"/><ellipse cx="30" cy="14.8" rx="11.2" ry="5.1" fill="none" stroke="#8d6524" stroke-width=".8" opacity=".3"/><path d="M10.8 11.6A24 12 0 0 1 30 3.4" fill="none" stroke="#fffdf0" stroke-width="1.6" stroke-linecap="round" opacity=".6"/></svg></span>
+          <span class="a-coin-floor" aria-hidden="true"></span>
+          <span class="a-coin" aria-hidden="true"><svg viewBox="0 0 64 40" focusable="false"><defs><linearGradient id="jcfFace" x1=".12" y1="0" x2=".58" y2="1"><stop offset="0" stop-color="#fffbee"/><stop offset=".26" stop-color="#f8e8c2"/><stop offset=".58" stop-color="#e3c485"/><stop offset=".82" stop-color="#c99e55"/><stop offset="1" stop-color="#a87c33"/></linearGradient><linearGradient id="jcfEdge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfa966"/><stop offset=".3" stop-color="#a37a33"/><stop offset=".72" stop-color="#70501b"/><stop offset="1" stop-color="#8d6828"/></linearGradient><linearGradient id="jcfInner" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#fffdf4" stop-opacity=".5"/><stop offset=".5" stop-color="#fffdf4" stop-opacity="0"/><stop offset="1" stop-color="#6b4a15" stop-opacity=".22"/></linearGradient><pattern id="jcfMill" width="2.4" height="6" patternUnits="userSpaceOnUse"><rect width=".8" height="6" fill="#4a3310" opacity=".32"/><rect x="1.2" width=".5" height="6" fill="#f9e6b6" opacity=".24"/></pattern></defs><path d="M7 15.2A25 12.6 0 0 1 57 15.2L57 19.2A25 12.6 0 0 1 7 19.2Z" fill="url(#jcfEdge)"/><path d="M7 15.2A25 12.6 0 0 1 57 15.2L57 19.2A25 12.6 0 0 1 7 19.2Z" fill="url(#jcfMill)"/><ellipse cx="32" cy="15.2" rx="25" ry="12.6" fill="url(#jcfFace)" stroke="#7a5518" stroke-width=".9"/><ellipse cx="32" cy="15.2" rx="22.6" ry="11.3" fill="none" stroke="#8a6220" stroke-width=".8" opacity=".5"/><ellipse cx="32" cy="15.2" rx="21.4" ry="10.6" fill="none" stroke="#fff8e4" stroke-width=".7" opacity=".45"/><path d="M52.7 17.9L50.6 17.6M47.1 22.6L45.6 21.8M37.5 25.3L37.0 24.2M26.5 25.3L27.0 24.2M16.9 22.6L18.4 21.8M11.3 17.9L13.4 17.6M11.3 12.5L13.4 12.8M16.9 7.8L18.4 8.6M26.5 5.1L27.0 6.2M37.5 5.1L37.0 6.2M47.1 7.8L45.6 8.6M52.7 12.5L50.6 12.8" fill="none" stroke="#8a6220" stroke-width=".55" opacity=".45"/><ellipse cx="32" cy="15.2" rx="18.6" ry="9" fill="url(#jcfInner)"/><ellipse cx="32" cy="15.2" rx="18.6" ry="9" fill="none" stroke="#8a6220" stroke-width=".6" opacity=".38"/><path d="M32 11.6l3.5 3.6-3.5 3.6-3.5-3.6z" fill="none" stroke="#6f4d17" stroke-width=".6" opacity=".4"/><circle cx="32" cy="15.2" r=".85" fill="#6f4d17" opacity=".32"/><path d="M22.4 15.2h4.6M37 15.2h4.6" fill="none" stroke="#6f4d17" stroke-width=".55" stroke-linecap="round" opacity=".26"/><path d="M13.6 9.1A23 11.8 0 0 1 30.4 3.4" fill="none" stroke="#fffdf2" stroke-width="1.5" stroke-linecap="round" opacity=".6"/><path d="M47.6 21.6A23 11.8 0 0 1 34.6 26.6" fill="none" stroke="#6b4a15" stroke-width="1.1" stroke-linecap="round" opacity=".18"/></svg></span>
         </button>
       </div>
     </div>

@@ -10,105 +10,147 @@
  *   - 트리거(레버·동전)는 mode가 all일 때만 있다. seed/match로 재구성되면 display:none.
  */
 
-/* ============ 1. 슬롯 레버 (롤링 화면, 반원 다이얼 오른쪽) ============
- * 2026-11-18 실기기 피드백: 옆으로 눕히지 말고 손잡이가 위에서 아래로 꾹 내려가야 한다.
- * 황동 하우징 + 세로 홈(트랙) + 크롬/브라스 샤프트 + 입체 손잡이 공.
- * 당기면 샤프트가 하우징 속으로 줄어들며(scaleY) 공이 수직으로 26px 내려간다. */
-.a-slot{position:relative;flex:none;width:48px;margin:0 8px 18px 0;display:flex;align-items:flex-end;justify-content:center;touch-action:manipulation}
-.a-slot::after{content:"";position:absolute;left:50%;bottom:8px;width:32px;height:6px;margin-left:-16px;border-radius:50%;
-  background:radial-gradient(closest-side,rgba(60,40,10,.22),transparent);pointer-events:none}
-:root[data-theme="dark"] .a-slot::after{background:radial-gradient(closest-side,rgba(0,0,0,.6),transparent)}
-.a-root .a-slot-btn{position:relative;width:48px;height:70px;border-radius:14px;display:block;-webkit-tap-highlight-color:transparent}
+/* ============ 1. 반원 롤링 오른쪽 하우징 + L자 슬롯 레버 ============
+ * 2026-11-18 실기기 재설계(IMG_7755 참고): 옆에 떠 있는 조이스틱을 폐기하고,
+ * 반원 다이얼(777 릴 드럼 역할)의 **오른쪽 끝 수평선 위에 얹힌 측면 하우징**에서
+ * L자 암이 꺾여 나와 위로 솟아오른 진짜 슬롯 레버로 다시 지었다.
+ *
+ * 구조(아래에서 위로) — 레버 상자 44×74, y=0이 다이얼 수평선:
+ *   받침판 0~5 · 기둥 5~33(세로 홈 8~30) · 홈 안 슬라이더 24~30 · 가로 꺾임 26~31 ·
+ *   세로 샤프트 28~53 · 손잡이 53~70
+ * 움직이는 것은 `.a-lever-arm` 한 덩어리뿐이다(슬라이더·꺾임·샤프트·손잡이가 함께 강체로 내려간다).
+ * GPU 합성: translate3d·rotate·opacity만. width/height/top/box-shadow/filter 보간 0. */
+.a-slot{position:relative;flex:none;width:44px;height:74px;margin:0 0 20px -24px;display:block;touch-action:manipulation;contain:layout paint}
+/* 바닥 그림자 — 레버가 아니라 수평선 위에 붙박이로 남는다(움직이지 않는다) */
+.a-slot::after{content:"";position:absolute;left:-6px;bottom:-4px;width:44px;height:9px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(58,38,10,.24),transparent)}
+:root[data-theme="dark"] .a-slot::after{background:radial-gradient(closest-side,rgba(0,0,0,.62),transparent)}
+.a-root .a-slot-btn{position:relative;display:block;width:44px;height:74px;border-radius:12px;-webkit-tap-highlight-color:transparent}
 .a-slot-btn:focus-visible{outline:2px solid var(--a1);outline-offset:3px}
-.a-lever{position:absolute;left:50%;bottom:9px;width:38px;height:56px;margin-left:-19px;pointer-events:none}
-/* 세로 홈 — 손잡이가 내려갈 길. 홈 안쪽이 살짝 들어가 보이게 */
-.a-lever-track{position:absolute;left:50%;bottom:11px;width:11px;height:42px;margin-left:-5.5px;border-radius:4px;
-  background:linear-gradient(90deg,rgba(60,40,10,.2),rgba(60,40,10,.04) 38%,rgba(60,40,10,.04) 62%,rgba(60,40,10,.2));
-  box-shadow:inset 0 1px 2px rgba(60,40,10,.28)}
-:root[data-theme="dark"] .a-lever-track{background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,.12) 38%,rgba(0,0,0,.12) 62%,rgba(0,0,0,.55));
-  box-shadow:inset 0 1px 2px rgba(0,0,0,.7)}
-/* 팔: 샤프트는 하우징 속으로 줄어들고, 공은 그만큼 수직으로 내려간다(두 값의 합이 항상 맞물린다) */
-.a-lever-arm{position:absolute;left:50%;bottom:8px;width:6px;height:44px;margin-left:-3px}
-.a-lever-shaft{position:absolute;left:50%;bottom:-3px;width:6px;height:47px;margin-left:-3px;border-radius:3px;
-  transform:scaleY(1);transform-origin:50% 100%;
-  background:linear-gradient(90deg,#8a6a2c 0%,#cfa960 24%,#fff4d2 48%,#d8b671 66%,#7c5b21 100%);
-  box-shadow:0 0 0 .5px rgba(70,50,15,.28);
-  transition:transform .3s cubic-bezier(.3,.9,.35,1)}
-.a-lever-ball{position:absolute;left:50%;top:-11px;width:19px;height:19px;margin-left:-9.5px;border-radius:50%;
-  transform:translateY(0);transition:transform .3s cubic-bezier(.3,.9,.35,1);
-  background:radial-gradient(circle at 33% 26%,#fffcef 0%,#f4dfb0 20%,#d6ae68 50%,#9c7430 80%,#694b17 100%);
-  box-shadow:inset 0 -2px 3px rgba(60,40,10,.45),0 1px 2px rgba(40,25,5,.4)}
-.a-lever-ball i{position:absolute;right:19%;bottom:17%;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.42)}
-/* 받침 하우징 — 황동 판 + 나사 두 개. 샤프트 밑동을 덮는다 */
-.a-lever-housing{position:absolute;left:50%;bottom:0;width:34px;height:13px;margin-left:-17px;border-radius:4px;z-index:2;
-  background:linear-gradient(180deg,#e9d3a0 0%,#cba763 40%,#9d7936 76%,#7c5b21 100%);
-  box-shadow:inset 0 1px 0 rgba(255,248,226,.9),inset 0 -2px 3px rgba(60,40,10,.45),0 2px 4px -1px rgba(60,40,10,.42)}
-:root[data-theme="dark"] .a-lever-housing{background:linear-gradient(180deg,#dcc09c 0%,#b28d55 38%,#84612d 76%,#5e421c 100%);
-  box-shadow:inset 0 1px 0 rgba(255,242,214,.55),inset 0 -2px 3px rgba(0,0,0,.62),0 2px 6px -1px rgba(0,0,0,.7)}
-.a-lever-housing i{position:absolute;top:4.5px;width:4px;height:4px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#fff3d6,#8a6a2c 72%);box-shadow:inset 0 0 0 .5px rgba(70,50,15,.4)}
-.a-lever-housing i:nth-child(1){left:4px}
-.a-lever-housing i:nth-child(2){right:4px}
-/* 장전: 손잡이가 살짝 들리며 대기 */
-/* 장전: 잡아 내리기 직전 손목 스냅 — 5px만 살짝 치켜올린다(과장 금지) */
-.a-slot[data-st="armed"] .a-lever-ball{transform:translateY(-5px)}
-.a-slot[data-st="armed"] .a-lever-shaft{transform:scaleY(1.11)}
-.a-slot[data-st="armed"] .a-lever-ball{box-shadow:inset 0 -2px 3px rgba(60,40,10,.4),0 0 6px -1px color-mix(in srgb,var(--a3) 70%,transparent)}
-/* 당김: 28px까지 내려갔다가 살짝 되돌아 26px에 안착(샤프트는 그만큼 줄어든다) */
-.a-slot[data-st="pulled"] .a-lever-ball{animation:a-lever-pull-ball .42s cubic-bezier(.3,.9,.32,1) both}
-.a-slot[data-st="pulled"] .a-lever-shaft{animation:a-lever-pull-shaft .42s cubic-bezier(.3,.9,.32,1) both}
-@keyframes a-lever-pull-ball{0%{transform:translateY(-5px)}38%{transform:translateY(28px)}66%{transform:translateY(24px)}100%{transform:translateY(26px)}}
-@keyframes a-lever-pull-shaft{0%{transform:scaleY(1.11)}38%{transform:scaleY(.36)}66%{transform:scaleY(.45)}100%{transform:scaleY(.41)}}
+.a-lever{position:absolute;left:0;bottom:0;width:44px;height:74px;pointer-events:none}
+/* 받침판 — 황동 판 + 나사 두 개. 수평선과 같은 높이에 앉는다 */
+.a-lever-base{position:absolute;left:-2px;bottom:0;width:28px;height:6px;border-radius:2px;
+  background:linear-gradient(180deg,#f0dcb0 0%,#cfae6d 38%,#a37d3a 78%,#7f5c22 100%);
+  box-shadow:inset 0 1px 0 rgba(255,248,226,.85),inset 0 -1px 2px rgba(58,38,10,.5),0 1px 2px rgba(58,38,10,.3)}
+.a-lever-base::before,.a-lever-base::after{content:"";position:absolute;top:1.5px;width:2.6px;height:2.6px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff6dc,#8a6a2c 76%);box-shadow:inset 0 0 0 .5px rgba(70,50,15,.4)}
+.a-lever-base::before{left:3px}
+.a-lever-base::after{right:3px}
+:root[data-theme="dark"] .a-lever-base{background:linear-gradient(180deg,#e3c898 0%,#b8915a 38%,#84602c 78%,#5c401b 100%);
+  box-shadow:inset 0 1px 0 rgba(255,242,214,.5),inset 0 -1px 2px rgba(0,0,0,.6),0 1px 3px rgba(0,0,0,.6)}
+/* 기둥 — 잉크색 세로 홈이 파인 황동 기둥(슬라이더가 이 홈을 타고 오르내린다) */
+.a-lever-column{position:absolute;left:2px;bottom:5px;width:17px;height:29px;border-radius:3px 3px 2px 2px;
+  background:linear-gradient(90deg,#7d5b21 0%,#b6914c 16%,#f3e0b4 36%,#d6b271 58%,#a37d3a 82%,#77561d 100%);
+  box-shadow:inset 0 1px 0 rgba(255,248,226,.5),inset 0 -1px 2px rgba(58,38,10,.45),0 1px 3px rgba(58,38,10,.28)}
+:root[data-theme="dark"] .a-lever-column{background:linear-gradient(90deg,#5f4419 0%,#a1803f 16%,#e6cf9e 36%,#c19f60 58%,#8b6829 82%,#543c13 100%)}
+.a-lever-column i{position:absolute;left:6px;top:2.5px;bottom:2.5px;width:5px;border-radius:1px;
+  background:linear-gradient(180deg,rgba(16,10,2,.78),rgba(16,10,2,.42) 26%,rgba(16,10,2,.56) 100%);
+  box-shadow:inset 1px 0 0 rgba(255,246,220,.35),inset -1px 0 0 rgba(20,13,3,.5)}
+/* L자 암 — 한 덩어리로만 움직인다 */
+.a-lever-arm{position:absolute;left:0;bottom:0;width:44px;height:74px;transform:translate3d(0,0,0);transform-origin:11px 27px;
+  will-change:transform;transition:transform .34s cubic-bezier(.3,.9,.32,1)}
+/* 홈을 타고 오르내리는 슬라이더(발) */
+.a-lever-carriage{position:absolute;left:6px;bottom:25px;width:6px;height:5px;border-radius:1px;
+  background:linear-gradient(180deg,#fff6dc,#d4b173 45%,#8a6628 100%);
+  box-shadow:0 1px 2px rgba(24,16,4,.5),inset 0 1px 0 rgba(255,250,232,.7)}
+/* 가로 꺾임 — L의 모서리 */
+.a-lever-elbow{position:absolute;left:12px;bottom:26px;width:14px;height:5px;border-radius:2px;
+  background:linear-gradient(180deg,#fff4d4 0%,#e2c48b 28%,#b3894a 62%,#7a5920 100%);
+  box-shadow:0 1px 2px rgba(58,38,10,.34)}
+/* 세로 샤프트 */
+.a-lever-shaft{position:absolute;left:21px;bottom:28px;width:5px;height:26px;border-radius:2.5px;
+  background:linear-gradient(90deg,#7c5b21 0%,#cfa960 26%,#fff4d2 48%,#d8b671 68%,#77561d 100%);
+  box-shadow:0 0 0 .5px rgba(70,50,15,.24)}
+/* 손잡이 */
+.a-lever-ball{position:absolute;left:14.5px;bottom:53px;width:18px;height:18px;border-radius:50%;
+  background:radial-gradient(circle at 32% 24%,#fffeec 0%,#f8e7bf 22%,#dcb877 48%,#a37d3a 78%,#5e4216 100%);
+  box-shadow:inset 0 -2px 3px rgba(58,38,10,.42),0 1px 2px rgba(40,25,5,.4)}
+.a-lever-ball i{position:absolute;right:20%;bottom:18%;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.42)}
+/* 1차(장전): 손잡이가 5px 들리고 살짝 뒤로 젖혀진다 + 홈의 슬라이더는 그대로 */
+.a-slot[data-st="armed"] .a-lever-arm{transform:translate3d(0,-5px,0) rotate(-2deg)}
+.a-slot[data-st="armed"] .a-lever-ball{box-shadow:inset 0 -2px 3px rgba(58,38,10,.38),0 0 7px -1px color-mix(in srgb,var(--a3) 70%,transparent)}
+/* 2차(격발): 아래로 꾹 내려갔다가 살짝 되돌아 18px에 안착 */
+.a-slot[data-st="pulled"] .a-lever-arm{animation:a-lever-drive .46s cubic-bezier(.3,.9,.32,1) both}
+@keyframes a-lever-drive{
+  0%{transform:translate3d(0,-5px,0) rotate(-2deg)}
+  12%{transform:translate3d(0,-1px,0) rotate(-.6deg)}
+  44%{transform:translate3d(0,20px,0)}
+  70%{transform:translate3d(0,16px,0)}
+  100%{transform:translate3d(0,18px,0)}}
 /* 아이들 힌트: 반만 내려갔다 올라온다 */
-.a-slot[data-st="hint"] .a-lever-ball{animation:a-lever-hint-ball 1.15s cubic-bezier(.36,0,.36,1) both}
-.a-slot[data-st="hint"] .a-lever-shaft{animation:a-lever-hint-shaft 1.15s cubic-bezier(.36,0,.36,1) both}
-@keyframes a-lever-hint-ball{0%{transform:translateY(0)}30%{transform:translateY(13px)}48%{transform:translateY(6px)}66%{transform:translateY(11px)}86%{transform:translateY(1px)}100%{transform:translateY(0)}}
-@keyframes a-lever-hint-shaft{0%{transform:scaleY(1)}30%{transform:scaleY(.7)}48%{transform:scaleY(.86)}66%{transform:scaleY(.75)}86%{transform:scaleY(.98)}100%{transform:scaleY(1)}}
+.a-slot[data-st="hint"] .a-lever-arm{animation:a-lever-hint 1.25s cubic-bezier(.36,0,.36,1) both}
+@keyframes a-lever-hint{
+  0%{transform:translate3d(0,0,0)}
+  28%{transform:translate3d(0,10px,0)}
+  46%{transform:translate3d(0,4px,0)}
+  64%{transform:translate3d(0,9px,0)}
+  84%{transform:translate3d(0,1px,0)}
+  100%{transform:translate3d(0,0,0)}}
 
 /* ============ 2. 동전 (목록 화면, 쪽수 정가운데 아래) ============
- * 위에서 본 평면 원이 아니라, 측면(두께)이 보이는 두툼한 황동 동전. 면·측벽·밀링 홈·광택을 SVG로 그린다.
- * 수평으로 놓여 있다가 1차에 오른쪽으로 기울고, 2차에는 회전하며 위로 떠오른다(820ms). */
+ * 2026-11-18 재설계: 그림자를 코인 몸체에서 떼어 **바닥면 고정 층**(`.a-coin-floor`)으로 옮겼다.
+ * 전에는 코인에 붙은 ::after라 코인이 기울고 날아오르면 그림자도 같이 기울어 따라다녔다(IMG_7758).
+ * 그림자는 코인이 높이 솟을수록 scale 축소·opacity 감소로 동기화한다(둘 다 GPU 합성). */
 .a-coinrow{display:flex;justify-content:center;align-items:center;margin-top:2px}
-.a-root .a-coin-btn{width:56px;height:48px;display:grid;place-items:center;border-radius:14px;-webkit-tap-highlight-color:transparent;perspective:220px}
+.a-root .a-coin-btn{position:relative;width:56px;height:50px;display:grid;place-items:center;border-radius:14px;-webkit-tap-highlight-color:transparent;perspective:220px}
 .a-coin-btn:focus-visible{outline:2px solid var(--a1);outline-offset:3px}
-.a-coin{position:relative;display:block;width:50px;height:28px;transform-origin:50% 78%;
-  transform:rotate(-1.5deg) translateY(0);
+/* 바닥 그림자 — 코인이 아니라 바닥에 있다. transform·opacity로만 맥동한다 */
+.a-coin-floor{position:absolute;left:50%;bottom:8px;width:42px;height:9px;margin-left:-21px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(90,62,18,.3),rgba(90,62,18,.1) 62%,transparent);
+  transform:scale(1);transform-origin:50% 50%;will-change:transform,opacity;transition:transform .26s cubic-bezier(.2,1.2,.4,1),opacity .26s linear}
+:root[data-theme="dark"] .a-coin-floor{background:radial-gradient(closest-side,rgba(0,0,0,.62),rgba(0,0,0,.22) 62%,transparent)}
+.a-coin{position:relative;display:block;width:54px;height:34px;transform-origin:50% 74%;
+  transform:translate3d(0,0,0) rotate(-1.5deg);will-change:transform,opacity;
   transition:transform .26s cubic-bezier(.2,1.35,.4,1),opacity .12s linear}
 .a-coin svg{display:block;width:100%;height:100%;overflow:visible}
-.a-coin::after{content:"";position:absolute;left:7px;right:7px;bottom:-2px;height:4px;border-radius:50%;
-  background:radial-gradient(closest-side,rgba(90,60,15,.3),transparent);pointer-events:none}
-:root[data-theme="dark"] .a-coin::after{background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent)}
-/* 1차(장전): 오른쪽으로 비스듬히 기울며 튕기기 직전의 텐션 */
-.a-coinrow[data-st="armed"] .a-coin{transform:rotate(12deg) translateY(-2px) scale(1.03)}
+/* 1차(장전): 오른쪽으로 비스듬히 기울며 들린다 — 그림자는 줄고 옅어진다(분리 동기화) */
+.a-coinrow[data-st="armed"] .a-coin{transform:translate3d(0,-3px,0) rotate(11deg) scale(1.02)}
+.a-coinrow[data-st="armed"] .a-coin-floor{transform:scale(.9);opacity:.72}
 .a-coinrow[data-st="pulled"] .a-coin{opacity:0}
 /* 아이들 힌트: 살짝 들렸다 기울며 두 번 흔들린다 */
 .a-coinrow[data-st="hint"] .a-coin{animation:a-coin-cue 1.5s cubic-bezier(.36,0,.36,1) both}
+.a-coinrow[data-st="hint"] .a-coin-floor{animation:a-coin-floor-cue 1.5s cubic-bezier(.36,0,.36,1) both}
 @keyframes a-coin-cue{
-  0%{transform:rotate(-1.5deg)}
-  16%{transform:rotate(9deg) translateY(-2px)}
-  32%{transform:rotate(-6deg)}
-  48%{transform:rotate(7deg) translateY(-1px)}
-  70%{transform:rotate(-3deg)}
-  100%{transform:rotate(-1.5deg)}
-}
+  0%{transform:translate3d(0,0,0) rotate(-1.5deg)}
+  16%{transform:translate3d(0,-2px,0) rotate(9deg)}
+  32%{transform:translate3d(0,0,0) rotate(-6deg)}
+  48%{transform:translate3d(0,-1px,0) rotate(7deg)}
+  70%{transform:translate3d(0,0,0) rotate(-3deg)}
+  100%{transform:translate3d(0,0,0) rotate(-1.5deg)}}
+@keyframes a-coin-floor-cue{0%,100%{transform:scale(1);opacity:1}16%{transform:scale(.95);opacity:.86}48%{transform:scale(.98);opacity:.92}}
 
-/* 동전이 화면 위로 떠오르는 층(전체 화면 고정) — 원래 동전을 복제해 그 자리에서 이어 올린다.
- * 1,250ms 포물선: 빠르게 솟아 정점(약 -205px)에서 잠깐 머물다 중력을 받아 떨어지며, 후반에 무대가 열린다. */
+/* 동전이 화면 위로 떠오르는 층(전체 화면 고정) — 코인과 바닥 그림자를 **한 벌로** 함께 놓고,
+ * 같은 시간·같은 keyframe 백분율로 움직여 높이와 그림자 크기가 어긋나지 않는다.
+ * 1,250ms 포물선: 빠르게 솟아 정점(약 -206px)에서 잠깐 머물다 중력을 받아 떨어지며, 후반에 무대가 열린다. */
 .a-coinfly{position:fixed;inset:0;z-index:57;pointer-events:none}
-.a-coinfly .a-coin{position:absolute;margin-left:-25px;margin-top:-14px;opacity:1;transform-origin:50% 55%;
-  animation:a-coin-toss 1.25s linear both}
+.a-coinfly .a-fly-shadow{position:absolute;width:44px;height:10px;margin-left:-22px;margin-top:-5px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(90,62,18,.34),rgba(90,62,18,.11) 60%,transparent);
+  transform-origin:50% 50%;will-change:transform,opacity;animation:a-fly-shadow 1.25s linear both}
+:root[data-theme="dark"] .a-coinfly .a-fly-shadow{background:radial-gradient(closest-side,rgba(0,0,0,.66),rgba(0,0,0,.24) 60%,transparent)}
+.a-coinfly .a-fly-coin{position:absolute;display:block;width:54px;height:34px;margin-left:-27px;margin-top:-17px;transform-origin:50% 50%;
+  will-change:transform,opacity;animation:a-coin-toss 1.25s linear both}
+.a-coinfly .a-fly-coin svg{display:block;width:100%;height:100%;overflow:visible}
 @keyframes a-coin-toss{
-  0%{transform:perspective(320px) translateY(0) rotateX(0deg) rotate(0deg) scale(1);opacity:1;
+  0%{transform:perspective(320px) translate3d(0,0,0) rotateX(0deg) rotate(0deg) scale(1);opacity:1;
     animation-timing-function:cubic-bezier(.22,.62,.45,1)}
-  10%{transform:perspective(320px) translateY(-34px) rotateX(110deg) rotate(22deg) scale(1.03);opacity:1}
-  28%{transform:perspective(320px) translateY(-132px) rotateX(330deg) rotate(62deg) scale(1.07);opacity:1}
-  44%{transform:perspective(320px) translateY(-206px) rotateX(530deg) rotate(104deg) scale(1.1);opacity:1;
+  10%{transform:perspective(320px) translate3d(0,-34px,0) rotateX(110deg) rotate(22deg) scale(1.03);opacity:1}
+  28%{transform:perspective(320px) translate3d(0,-132px,0) rotateX(330deg) rotate(62deg) scale(1.07);opacity:1}
+  44%{transform:perspective(320px) translate3d(0,-206px,0) rotateX(530deg) rotate(104deg) scale(1.1);opacity:1;
     animation-timing-function:cubic-bezier(.5,.02,.88,.42)}
-  62%{transform:perspective(320px) translateY(-184px) rotateX(730deg) rotate(148deg) scale(1.05);opacity:1}
-  82%{transform:perspective(320px) translateY(-62px) rotateX(1010deg) rotate(212deg) scale(.96);opacity:1}
-  94%{transform:perspective(320px) translateY(2px) rotateX(1180deg) rotate(250deg) scale(.9);opacity:1}
-  100%{transform:perspective(320px) translateY(16px) rotateX(1250deg) rotate(266deg) scale(.88);opacity:0}
-}
+  62%{transform:perspective(320px) translate3d(0,-184px,0) rotateX(730deg) rotate(148deg) scale(1.05);opacity:1}
+  82%{transform:perspective(320px) translate3d(0,-62px,0) rotateX(1010deg) rotate(212deg) scale(.96);opacity:1}
+  94%{transform:perspective(320px) translate3d(0,2px,0) rotateX(1180deg) rotate(250deg) scale(.9);opacity:1}
+  100%{transform:perspective(320px) translate3d(0,16px,0) rotateX(1250deg) rotate(266deg) scale(.88);opacity:0}}
+/* 바닥 그림자는 코인의 높이를 그대로 따라간다: 솟으면 작고 옅게, 내려오면 짙고 크게. 백분율·곡선은 코인과 같다. */
+@keyframes a-fly-shadow{
+  0%{transform:scale(1);opacity:.95;animation-timing-function:cubic-bezier(.22,.62,.45,1)}
+  10%{transform:scale(.93);opacity:.84}
+  28%{transform:scale(.72);opacity:.5}
+  44%{transform:scale(.55);opacity:.26;animation-timing-function:cubic-bezier(.5,.02,.88,.42)}
+  62%{transform:scale(.61);opacity:.32}
+  82%{transform:scale(.88);opacity:.7}
+  94%{transform:scale(1.04);opacity:.92}
+  100%{transform:scale(1);opacity:0}}
 
 /* ============ 3. 무대(오버레이) · 글래스 ============
  * 「네온 테두리 상자」를 버리고 자료실의 인쇄·아카이브 톤으로 다시 지은 무대.
