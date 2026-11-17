@@ -701,6 +701,30 @@
   ];
   var tutStep = 0;
 
+  /* 단계 설명에 쓰는 글자를 미리 받아 둔다. 단계를 넘길 때 새 글꼴 조각이 뒤늦게 도착하며
+     글줄이 밀리는 일을 없앤다. */
+  var TUT_TEXT = (function () {
+    var txt = '';
+    for (var i = 0; i < TUT.length; i++) {
+      txt += TUT[i].t + ' ' + TUT[i].d.replace(/<[^>]+>/g, ' ') + ' ' + TUT[i].w + ' ' +
+        TUT[i].fig.replace(/<[^>]+>/g, ' ') + ' ';
+    }
+    return txt;
+  })();
+  function tutPreload(cb) {
+    if (!document.fonts || !document.fonts.load) { if (cb) cb(); return; }
+    var faces = ['850 20px "Pretendard Variable"', '850 16.5px "Pretendard Variable"',
+      '800 12.5px "Pretendard Variable"', '800 12px "Pretendard Variable"',
+      '750 13.5px "Pretendard Variable"', '700 12.5px "Pretendard Variable"'];
+    var jobs = [];
+    for (var i = 0; i < faces.length; i++) {
+      try { jobs.push(document.fonts.load(faces[i], TUT_TEXT)); } catch (e) {}
+    }
+    Promise.all(jobs).then(function () { return document.fonts.ready; })
+      .then(function () { if (cb) cb(); }).catch(function () { if (cb) cb(); });
+  }
+  tutPreload();
+
   function tutBody(i) {
     var t = TUT[i];
     return '<div class="tut-step"><i>' + two(i + 1) + '</i>' + (i + 1) + ' / ' + TUT.length + '</div>' +
@@ -711,7 +735,9 @@
   }
 
   /* 단계를 넘겨도 카드가 자라거나 줄지 않게, 가장 긴 단계의 높이를 재어 본문 최소 높이로 잡는다.
-     높이가 변하지 않으니 스크롤바도 생기지 않고 화면도 움직이지 않는다. */
+     높이가 변하지 않으니 스크롤바도 생기지 않고 화면도 움직이지 않는다.
+     도해·제목·본문 상자도 다섯 단계 모두 같은 높이로 묶는다 — 단계마다 그림 높이가 달라지면
+     아래 제목·본문이 밀려 넘길 때마다 '움찔'거린다. */
   function tutFit() {
     var bd = $('tutBd'), card = bd.parentNode, hd = card.firstElementChild, ft = card.lastElementChild;
     if (!bd || !bd.clientWidth) return;
@@ -719,15 +745,27 @@
     var probe = document.createElement('div');
     probe.className = 'tut-bd';
     probe.setAttribute('aria-hidden', 'true');
+    /* 카드 밖(body)에 둔다 — 카드는 나타날 때 scale 전환이 걸려 있어 그 안에서 재면 높이가 0.99배로 잰힌다. */
     probe.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;pointer-events:none;' +
       'min-height:0;width:' + bd.clientWidth + 'px';
-    card.appendChild(probe);
+    document.body.appendChild(probe);
+    var highest = function (sel) {
+      var best = 0;
+      for (var i = 0; i < TUT.length; i++) {
+        probe.innerHTML = tutBody(i);
+        var n = probe.querySelector(sel);
+        if (n) best = Math.max(best, n.getBoundingClientRect().height);
+      }
+      return Math.ceil(best);
+    };
+    var box = { '--tut-fig-h': highest('.tut-fig'), '--tut-t-h': highest('.tut-t'), '--tut-p-h': highest('.tut-p') };
+    for (var k in box) { bd.style.setProperty(k, box[k] + 'px'); probe.style.setProperty(k, box[k] + 'px'); }
     var tallest = 0;
     for (var i = 0; i < TUT.length; i++) {
       probe.innerHTML = tutBody(i);
       tallest = Math.max(tallest, probe.offsetHeight);
     }
-    card.removeChild(probe);
+    probe.parentNode.removeChild(probe);
     var cs = getComputedStyle(card);
     var limit = parseFloat(cs.maxHeight);
     if (!isFinite(limit)) limit = 1e5;
@@ -753,6 +791,7 @@
     el.classList.add('on'); el.setAttribute('aria-hidden', 'false');
     tutFit();
     tutStep = 0; renderTut();
+    tutPreload(function () { if (el.classList.contains('on')) tutFit(); });
     setTimeout(function () { var x = $('tutX'); if (x) x.focus(); }, 60);
   }
   function closeTut() {

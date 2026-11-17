@@ -127,8 +127,8 @@ a{color:inherit}
 .tut-bd.cut{mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent);-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent)}
 .tut-step{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;font-weight:800;color:var(--acc);letter-spacing:.04em}
 .tut-step i{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:var(--acc-soft);font-style:normal;font-size:11.5px}
-.tut-t{font-size:20px;font-weight:850;letter-spacing:-.03em;line-height:1.3;margin:0}
-.tut-p{margin:0;font-size:15px;line-height:1.65;color:var(--muted)}
+.tut-t{font-size:20px;font-weight:850;letter-spacing:-.03em;line-height:1.3;margin:0;min-height:var(--tut-t-h,0px)}
+.tut-p{margin:0;font-size:15px;line-height:1.65;color:var(--muted);min-height:var(--tut-p-h,0px)}
 .tut-p b{color:var(--ink)}
 .tut-where{margin:0;font-size:13.5px;color:var(--acc);font-weight:750}
 .tut-ft{display:flex;align-items:center;gap:10px;padding:14px 20px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
@@ -136,10 +136,11 @@ a{color:inherit}
 .tut-dots span{width:7px;height:7px;border-radius:99px;background:var(--line-2)}
 .tut-dots span.on{background:var(--acc);width:18px}
 .tut-b{min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line-2);background:var(--bg);color:var(--muted);font-size:14.5px;font-weight:750}
-.tut-b.primary{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
+.tut-b.primary{border-color:var(--acc);background:var(--acc);color:var(--on-acc);min-width:92px}
 .tut-b[disabled]{opacity:.4}
 /* 튜토리얼 도식 */
-.tut-fig{border-radius:14px;background:var(--bg);padding:14px;display:grid;gap:8px}
+.tut-fig{border-radius:14px;background:var(--bg);padding:14px;display:grid;gap:8px;align-content:center;
+  min-height:var(--tut-fig-h,0px)}
 .tut-fig .row{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:9px;padding:7px 10px;font-size:12.5px;color:var(--dim);background:var(--panel)}
 .tut-fig .row.hi{border-color:var(--acc);color:var(--acc);font-weight:800;background:var(--acc-soft)}
 .tut-fig .n{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--dim)}
@@ -604,7 +605,7 @@ html[data-jc-imm] .wk{height:auto}
   <div class="tut-card">
     <div class="tut-hd"><b id="tutT">포트폴리오 편집실 튜토리얼</b>
       <button type="button" class="x" id="tutX" aria-label="튜토리얼 닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-    <div class="tut-bd" id="tutBd"></div>
+    <div class="tut-bd" id="tutBd" data-jc-still></div>
     <div class="tut-ft">
       <div class="tut-dots" id="tutDots" aria-hidden="true"></div>
       <button type="button" class="tut-b" id="tutPrev">이전</button>
