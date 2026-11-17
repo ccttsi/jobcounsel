@@ -27,10 +27,11 @@
   function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
   function clearTimers() { while (timers.length) clearTimeout(timers.pop()); }
   /* ---------- 1. 트리거 상태 ---------- */
+  /* 장전만 푼다 — 발동(pulled)의 연출은 각자의 타이머가 끝까지 보여 준다. */
   function disarm() {
     clearTimeout(armT); armT = 0; armed = '';
-    if (slot) slot.removeAttribute('data-st');
-    if (coinRow) coinRow.removeAttribute('data-st');
+    if (slot && slot.getAttribute('data-st') === 'armed') slot.removeAttribute('data-st');
+    if (coinRow && coinRow.getAttribute('data-st') === 'armed') coinRow.removeAttribute('data-st');
   }
   function arm(which) {
     if (armed === which) return true;
@@ -48,24 +49,28 @@
     if (cur() !== 'all' || open) return;
     if (arm('coin')) flipCoin();
   }
+  /* 당김 → 바퀴가 620ms 동안 빙글빙글 도는 것을 먼저 보여 주고, 560ms에 불투명 글래스가 페이드인한다. */
   function pullLever() {
     clearTimeout(armT); armed = '';
     slot.setAttribute('data-st', 'pulled');
-    if (nav && nav.spin) nav.spin();                     /* 가운데 문구가 슬롯처럼 빠르게 회전 */
-    setTimeout(function () { slot.removeAttribute('data-st'); }, 460);
-    openOv(slotBtn);
+    if (nav && nav.spin) nav.spin(8, 620);               /* 가운데 문구가 슬롯처럼 두세 바퀴 */
+    setTimeout(function () { slot.removeAttribute('data-st'); }, 780);
+    openOv(slotBtn, reduce() ? 0 : 560);
   }
+  /* 동전이 820ms 동안 회전하며 화면 위로 떠오른 뒤, 글래스는 800ms에 페이드인한다. */
   function flipCoin() {
     clearTimeout(armT); armed = '';
     coinRow.setAttribute('data-st', 'pulled');
     flyCoin();
-    setTimeout(function () { coinRow.removeAttribute('data-st'); }, 340);
-    openOv(coinBtn);
+    setTimeout(function () { coinRow.removeAttribute('data-st'); }, 940);
+    openOv(coinBtn, reduce() ? 0 : 800);
   }
   function flyCoin() {
     if (reduce() || !coinBtn) return;
+    var c = coinBtn.querySelector('.a-coin'); if (!c) return;
+    var r = c.getBoundingClientRect();
     if (!fly) { fly = document.createElement('div'); fly.className = 'a-coinfly'; document.body.appendChild(fly); }
-    var r = coinBtn.getBoundingClientRect(), i = document.createElement('i');
+    var i = c.cloneNode(true);
     i.style.left = (r.left + r.width / 2) + 'px';
     i.style.top = (r.top + r.height / 2) + 'px';
     fly.appendChild(i);
@@ -97,18 +102,23 @@
     var c = cards[0] || $('modeSeed');
     if (c && c.focus) { try { c.focus({ preventScroll: true }); } catch (e) { c.focus(); } }
   }
-  function openOv(src) {
+  function openOv(src, delay) {
     if (open || !ov) return;
     open = true; picking = false; dwell = 0;
     restFocus = src || document.activeElement;
     disarm();
+    clearTimers();
+    if (delay) { later(revealOv, delay); return; }   /* 발동 연출을 먼저 보여 준 뒤 무대가 열린다 */
+    revealOv();
+  }
+  function revealOv() {
+    if (!open || !ov) return;
     resetCards();
     ov.hidden = false;
     document.documentElement.setAttribute('data-jc-modeov', '');
     if (slotBtn) slotBtn.setAttribute('aria-expanded', 'true');
     if (coinBtn) coinBtn.setAttribute('aria-expanded', 'true');
     document.documentElement.style.overflow = 'hidden';
-    clearTimers();
     if (reduce()) { ov.classList.add('a-open', 'a-in', 'a-settled'); focusFirst(); return; }
     requestAnimationFrame(function () { ov.classList.add('a-open'); });
     later(function () { ov.classList.add('a-in'); }, 90);                    /* 블록이 제자리로 */
