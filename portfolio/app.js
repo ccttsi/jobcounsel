@@ -701,15 +701,47 @@
   ];
   var tutStep = 0;
 
-  function renderTut() {
-    var t = TUT[tutStep];
-    $('tutBd').innerHTML =
-      '<div class="tut-step"><i>' + two(tutStep + 1) + '</i>' + (tutStep + 1) + ' / ' + TUT.length + '</div>' +
+  function tutBody(i) {
+    var t = TUT[i];
+    return '<div class="tut-step"><i>' + two(i + 1) + '</i>' + (i + 1) + ' / ' + TUT.length + '</div>' +
       '<div class="tut-fig">' + t.fig + '</div>' +
       '<h3 class="tut-t">' + esc(t.t) + '</h3>' +
       '<p class="tut-p">' + t.d + '</p>' +
       '<p class="tut-where">' + esc(t.w) + '</p>';
-    $('tutBd').scrollTop = 0;
+  }
+
+  /* 단계를 넘겨도 카드가 자라거나 줄지 않게, 가장 긴 단계의 높이를 재어 본문 최소 높이로 잡는다.
+     높이가 변하지 않으니 스크롤바도 생기지 않고 화면도 움직이지 않는다. */
+  function tutFit() {
+    var bd = $('tutBd'), card = bd.parentNode, hd = card.firstElementChild, ft = card.lastElementChild;
+    if (!bd || !bd.clientWidth) return;
+    bd.style.minHeight = '0px';
+    var probe = document.createElement('div');
+    probe.className = 'tut-bd';
+    probe.setAttribute('aria-hidden', 'true');
+    probe.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;pointer-events:none;' +
+      'min-height:0;width:' + bd.clientWidth + 'px';
+    card.appendChild(probe);
+    var tallest = 0;
+    for (var i = 0; i < TUT.length; i++) {
+      probe.innerHTML = tutBody(i);
+      tallest = Math.max(tallest, probe.offsetHeight);
+    }
+    card.removeChild(probe);
+    var cs = getComputedStyle(card);
+    var limit = parseFloat(cs.maxHeight);
+    if (!isFinite(limit)) limit = 1e5;
+    var room = limit - hd.offsetHeight - ft.offsetHeight -
+      parseFloat(cs.borderTopWidth) - parseFloat(cs.borderBottomWidth);
+    bd.style.minHeight = Math.max(0, Math.floor(Math.min(tallest, room))) + 'px';
+    bd.classList.toggle('cut', bd.scrollHeight - bd.clientHeight > 1);
+  }
+
+  function renderTut() {
+    var bdT = $('tutBd');
+    bdT.innerHTML = tutBody(tutStep);
+    bdT.scrollTop = 0;
+    bdT.classList.toggle('cut', bdT.scrollHeight - bdT.clientHeight > 1);
     var dots = '';
     for (var i = 0; i < TUT.length; i++) dots += '<span' + (i === tutStep ? ' class="on"' : '') + '></span>';
     $('tutDots').innerHTML = dots;
@@ -719,6 +751,7 @@
   function openTut() {
     var el = $('tut');
     el.classList.add('on'); el.setAttribute('aria-hidden', 'false');
+    tutFit();
     tutStep = 0; renderTut();
     setTimeout(function () { var x = $('tutX'); if (x) x.focus(); }, 60);
   }
@@ -737,6 +770,12 @@
   $('tutPrev').addEventListener('click', function () { tutGo(-1); });
   $('tutNext').addEventListener('click', function () { tutGo(1); });
   $('tut').addEventListener('click', function (e) { if (e.target === $('tut')) closeTut(); });
+  var tutFitT = 0;
+  window.addEventListener('resize', function () {
+    if (!$('tut').classList.contains('on')) return;
+    clearTimeout(tutFitT);
+    tutFitT = setTimeout(tutFit, 150);
+  });
 
   /* ── 그리기 ───────────────────────────────────────── */
   function render() {
