@@ -562,7 +562,7 @@
     var tabsH = T.length ? '<div class="ptabs" role="tablist" aria-label="자세히 보기">' + T.map(function (t) { return '<button type="button" role="tab" data-tab="' + t[0] + '" aria-selected="' + (t[0] === tabSel) + '">' + t[1] + '</button>'; }).join('') + '</div>' +
       T.map(function (t) { return '<div class="pane" role="tabpanel" data-pane="' + t[0] + '"' + (t[0] === tabSel ? '' : ' hidden') + '>' + P[t[0]] + '</div>'; }).join('') : '';
     main.innerHTML = '<nav class="crumbs" aria-label="위치"><a href="' + back + '">' + IC.back + '목록으로</a><span>/</span>' + esc(c.name) + (x._c === 'KT' && x._gi > -1 ? ' <span>/</span> ' + esc(x.grade_or_field) : '') + '</nav>' +
-      '<div class="dt k-' + x._c + '"><div class="dt-l">' + lic + glance + '</div><div class="dt-r">' + tabsH + '</div>' + mt + '</div>';
+      '<div class="dt k-' + x._c + '"><div class="dt-l">' + lic + glance + '</div><div class="dt-r">' + tabsH + '</div></div>' + mt;
     main.onclick = onItemClick;
     armPane();
     window.scrollTo(0, 0);
