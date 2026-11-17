@@ -69,16 +69,24 @@
     setTimeout(function () { coinRow.removeAttribute('data-st'); }, 1280);
     openOv(coinBtn, reduce() ? 0 : 1040);
   }
+  /* 동전과 바닥 그림자를 한 벌로 띄운다 — 그림자는 코인이 아니라 바닥에 남아, 코인이 높이 솟을수록
+     작고 옅어지고 내려올수록 짙고 커진다(코인에 붙어 같이 기울던 IMG_7758 오류를 없앰).
+     두 요소는 같은 1.25s·같은 keyframe 백분율로 움직여 어긋나지 않는다. */
   function flyCoin() {
     if (reduce() || !coinBtn) return;
     var c = coinBtn.querySelector('.a-coin'); if (!c) return;
     var r = c.getBoundingClientRect();
     if (!fly) { fly = document.createElement('div'); fly.className = 'a-coinfly'; document.body.appendChild(fly); }
-    var i = c.cloneNode(true);
+    fly.innerHTML = '';
+    var sh = document.createElement('span'); sh.className = 'a-fly-shadow';
+    sh.style.left = (r.left + r.width / 2) + 'px';
+    sh.style.top = (r.bottom - 3) + 'px';
+    var i = document.createElement('span'); i.className = 'a-fly-coin';
     i.style.left = (r.left + r.width / 2) + 'px';
     i.style.top = (r.top + r.height / 2) + 'px';
-    fly.appendChild(i);
-    setTimeout(function () { if (i.parentNode) i.parentNode.removeChild(i); }, 1320);
+    i.appendChild(c.firstChild.cloneNode(true));
+    fly.appendChild(sh); fly.appendChild(i);
+    setTimeout(function () { fly.innerHTML = ''; }, 1300);
   }
 
   /* ---------- 2. 아이들 힌트 (5분마다 반쯤) ---------- */
