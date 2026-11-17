@@ -1,0 +1,1037 @@
+{
+  "schema_version": "1.2.0",
+  "updated_at": "2026-11-13T23:06:00+09:00",
+  "edition": {
+    "no": 0,
+    "date": "2026-11-13",
+    "weekday": "금",
+    "title": "늘어난 취업자, 줄어든 청년 — 경제동향의 두 얼굴",
+    "subtitle": "가짜 3.3 감독·월급방위대 TF·경제동향(11월)과 미국 생산성·생산자물가를 한 장으로",
+    "reading_minutes": 3,
+    "data_status": "ok",
+    "data_status_note": null
+  },
+  "headline_metrics": [
+    {
+      "id": "hm_kr_employed",
+      "label": "국내 취업자 (전년동월비)",
+      "value": 13.9,
+      "unit": "만명",
+      "value_text": "+13.9만명",
+      "base_value": 2917.9,
+      "base_unit": "만명",
+      "direction": "up",
+      "period": "2026년 10월",
+      "delta_from": "전년동월",
+      "source_id": "src_moef_greenbook_20261113",
+      "track": "A",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-13T07:04:00+09:00",
+      "run_id": "br-20261113-0704",
+      "spark": {
+        "labels": [
+          "7월",
+          "8월",
+          "9월",
+          "10월"
+        ],
+        "values": [
+          10.8,
+          18.4,
+          11.3,
+          13.9
+        ],
+        "unit": "만명"
+      }
+    },
+    {
+      "id": "hm_kr_youth",
+      "label": "청년(15~29세) 취업자",
+      "value": -19.6,
+      "unit": "만명",
+      "value_text": "-19.6만명",
+      "base_value": null,
+      "base_unit": null,
+      "direction": "down",
+      "period": "2026년 10월",
+      "delta_from": "전년동월",
+      "source_id": "src_moef_greenbook_20261113",
+      "track": "A",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-13T07:04:00+09:00",
+      "run_id": "br-20261113-0704",
+      "spark": {
+        "labels": [
+          "7월",
+          "8월",
+          "9월",
+          "10월"
+        ],
+        "values": [
+          -19.1,
+          -14.3,
+          -14.7,
+          -19.6
+        ],
+        "unit": "만명"
+      }
+    },
+    {
+      "id": "hm_us_prod",
+      "label": "미국 비농업 생산성 (전년동기비)",
+      "value": 2.1,
+      "unit": "%",
+      "value_text": "+2.1%",
+      "base_value": null,
+      "base_unit": null,
+      "direction": "up",
+      "period": "2026년 3분기",
+      "delta_from": "전년동기",
+      "source_id": "src_bls_ted_prod_20261113",
+      "track": "A",
+      "edition": "global-2300",
+      "updated_at": "2026-11-13T23:06:00+09:00",
+      "run_id": "br-20261113-2306",
+      "spark": null
+    },
+    {
+      "id": "hm_us_ppi",
+      "label": "미국 생산자물가 (12개월)",
+      "value": 6.5,
+      "unit": "%",
+      "value_text": "+6.5%",
+      "base_value": null,
+      "base_unit": null,
+      "direction": "up",
+      "period": "2026년 10월",
+      "delta_from": "전년동월",
+      "source_id": "src_bls_ppi_202610",
+      "track": "A",
+      "edition": "global-2300",
+      "updated_at": "2026-11-13T23:06:00+09:00",
+      "run_id": "br-20261113-2306",
+      "spark": null
+    }
+  ],
+  "cards": [
+    {
+      "id": "c01",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-13T07:04:00+09:00",
+      "run_id": "br-20261113-0704",
+      "order": 1,
+      "track": "B",
+      "category": "국내 고용행정",
+      "title": "'가짜 3.3' 위장고용 140여 개소, 두 달 집중 감독",
+      "kicker": "감독 대상 140여 개소 · 작년 72개소서 6억8,500만원 체불 적발",
+      "three_step": {
+        "what": "고용노동부가 11월 16일부터 약 2개월간 노동법 회피 탈법인 '가짜 3.3 위장고용'과 '사업장 쪼개기' 의심 사업장 140여 개소를 기획감독한다. '가짜 3.3 계약'은 근로자인데 4대 보험 없이 사업소득세 3.3%만 내는 계약, '사업장 쪼개기'는 한 사업주가 5인 미만 사업장으로 나눠 수당을 피하는 행위다.",
+        "evidence": "작년 첫 전국 감독에서 72개소에서 1,070명의 연장·야간·휴일 수당 등 임금 체불 약 6억8,500만원을 적발·시정했다. 이번에는 익명 제보와 근로복지공단·국민연금공단 가입 정보, 국세청 소득세 납부 신고 내역을 종합해 대상을 선정한다. 음식·숙박·제조·도소매 등 사업소득자가 많은 업종, 근로소득자는 5인 미만이지만 사업소득자를 합치면 20인 이상인 사업장이 중심이다.",
+        "implication": "프리랜서·소규모 사업장 노동자 내담자에게 자신이 4대 보험에 가입되어 있는지 확인하게 하고, '가짜 3.3'으로 의심되면 지방노동관서 신고 창구를 함께 안내한다."
+      },
+      "key_numbers": [
+        {
+          "label": "감독 대상",
+          "value": "140여 개소",
+          "delta": "",
+          "period": "2026. 11. 16.~약 2개월"
+        },
+        {
+          "label": "작년 적발",
+          "value": "72개소",
+          "delta": "1,070명",
+          "period": "2025년 기획감독"
+        },
+        {
+          "label": "체불 적발액",
+          "value": "약 6억8,500만원",
+          "delta": "",
+          "period": "2025년 기획감독"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "개소",
+        "labels": [
+          "작년 적발",
+          "올해 감독 대상"
+        ],
+        "series": [
+          {
+            "name": "가짜 3.3 위장고용 의심사업장",
+            "values": [
+              72,
+              140
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "고용노동부 보도자료(2026.11.13): 작년 기획감독 적발 72개소, 올해 감독 대상 140여 개소.",
+        "source_id": "src_moel_fake33_20261113"
+      },
+      "counselor_question": "지금 일하는 방식이 4대 보험 가입 대상인지 아닌지, 확인해 본 적 있나요?",
+      "tags": [
+        "위장고용",
+        "근로감독",
+        "4대보험"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "고용노동부",
+        "source_title": "'가짜 3.3' 위장고용, '사업장 쪼개기' 등 노동법 회피 꼼수 기업 기획감독 착수",
+        "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248",
+        "published_at": "2026-11-13",
+        "license": {
+          "name": "공공누리 미부착(사전 협의 필요)",
+          "type": "KOGL-NONE",
+          "url": null,
+          "scope": "보도자료 본문·첨부파일 재가공 불가",
+          "attribution_required": true,
+          "commercial_use": "unknown",
+          "modification": "unknown",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "고용노동부 누리집 해당 보도자료 페이지에 공공누리 표시가 없고 하단에 저작권정책(All rights reserved)만 표시됨(2026-11-17 확인). 본문을 옮기지 않고 사실·수치만 새로 서술.",
+          "attribution_text": "자료: 고용노동부 「'가짜 3.3' 위장고용, '사업장 쪼개기' 등 노동법 회피 꼼수 기업 기획감독 착수」(2026.11.13)"
+        },
+        "usage": "감독 대상·과거 적발 수치만 새로 쓴 요약. 본문 복제 없음.",
+        "source_id": "src_moel_fake33_20261113"
+      }
+    },
+    {
+      "id": "c02",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-13T07:04:00+09:00",
+      "run_id": "br-20261113-0704",
+      "order": 2,
+      "track": "A",
+      "category": "국내 고용지표",
+      "title": "10월 취업자 +13.9만명, 청년은 -19.6만명",
+      "kicker": "취업자 4개월 연속 두 자릿수 · 실업률 2.0%",
+      "three_step": {
+        "what": "10월 취업자가 전년동월보다 13만9천명 늘어 4개월 연속 두 자릿수 증가를 이었지만, 청년(15~29세) 취업자는 19만6천명 줄었다. 실업률은 2.0%로 1년 전보다 0.2%포인트 내렸다.",
+        "evidence": "재정경제부 「2026년 11월 최근 경제동향」(11월 13일) 기준이다. 9월 전산업생산 +3.0%(전월비), 소매판매 +3.6%, 설비투자 +5.3%였고 10월 수출은 전년동월비 +93.7%를 기록했다. 10월 소비자물가는 +2.8%로 9월(2.9%)보다 상승폭이 줄었다.",
+        "implication": "청년 내담자에게 총량 지표보다 업종·연령별 차이를 함께 보여 주고, 서비스업 중심의 증가 구조에 맞춰 지원 업종을 상담에서 다시 정한다."
+      },
+      "key_numbers": [
+        {
+          "label": "취업자 증감",
+          "value": "+13.9만명",
+          "delta": "전년동월",
+          "period": "2026년 10월"
+        },
+        {
+          "label": "청년 취업자 증감",
+          "value": "-19.6만명",
+          "delta": "전년동월",
+          "period": "2026년 10월"
+        },
+        {
+          "label": "실업률",
+          "value": "2.0%",
+          "delta": "-0.2%p",
+          "period": "2026년 10월"
+        },
+        {
+          "label": "소비자물가",
+          "value": "2.8%",
+          "delta": "-0.1%p",
+          "period": "2026년 10월"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "만명",
+        "labels": [
+          "청년(15~29)",
+          "제조업",
+          "서비스업"
+        ],
+        "series": [
+          {
+            "name": "10월 취업자 증감(전년동월비)",
+            "values": [
+              -19.6,
+              -0.7,
+              27.2
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "2026년 10월, 전년동월비. 재정경제부 「2026년 11월 최근 경제동향」(2026.11.13).",
+        "source_id": "src_moef_greenbook_20261113"
+      },
+      "counselor_question": "지원하려는 업종에서 지난 1년간 일자리가 늘었는지 표로 함께 볼까요?",
+      "tags": [
+        "취업자",
+        "청년",
+        "국내지표"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "재정경제부",
+        "source_title": "2026년 11월 최근 경제동향",
+        "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
+        "published_at": "2026-11-13",
+        "license": {
+          "name": "공공누리 제1유형(출처표시)",
+          "type": "KOGL-1",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "정책브리핑 해당 페이지 하단 고지: 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다(2026-11-17 확인). 속기·보도자료 텍스트만 이용하고 사진·도표 이미지는 싣지 않았습니다.",
+          "attribution_text": "출처: 재정경제부 「2026년 11월 최근 경제동향」(2026.11.13, 정책브리핑 게재), 공공누리 제1유형"
+        },
+        "usage": "지표 수치만 표·도표로 재구성. 원문 문장 복제·이미지 사용 없음.",
+        "source_id": "src_moef_greenbook_20261113"
+      }
+    },
+    {
+      "id": "c03",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-13T07:04:00+09:00",
+      "run_id": "br-20261113-0704",
+      "order": 3,
+      "track": "A",
+      "category": "국내 고용행정",
+      "title": "'월급방위대 TF' — 월세 공제 1,200만원·근로장려금 360만원",
+      "kicker": "월세 세액공제 한도 1,000→1,200만원 · EITC 최대 360만원",
+      "three_step": {
+        "what": "재정경제부가 11월 13일 범부처 '월급방위대 TF' 킥오프 회의를 열고 직장인 생활비 절감과 실질 가처분소득 증대 과제를 논했다. 생계비·돌봄·자산형성·일자리 안정·건강관리 5대 분야에서 신규 과제를 발굴한다.",
+        "evidence": "'2026년 세법개정안'에는 배우자·부양가족 소득요건 완화(연 100만→300만원 이하), 월세 세액공제 한도 확대(연 1,000→1,200만원)가 담겼다. 근로장려세제(EITC)는 맞벌이 소득요건 4,400→5,200만원, 최대 지급액 330→360만원으로 확대됐다. '모두의 카드' 시차 출퇴근 환급률은 20→50%로 높였다.",
+        "implication": "근로소득 내담자에게 내년에 달라지는 월세 공제·근로장려금 요건을 안내하고, 연말정산 전에 본인 요건을 미리 확인하게 한다."
+      },
+      "key_numbers": [
+        {
+          "label": "월세 공제 한도",
+          "value": "1,200만원",
+          "delta": "+200만원",
+          "period": "2026년 세법개정안"
+        },
+        {
+          "label": "EITC 최대 지급액",
+          "value": "360만원",
+          "delta": "+30만원",
+          "period": "2026년 세법개정안"
+        },
+        {
+          "label": "EITC 맞벌이 소득요건",
+          "value": "5,200만원",
+          "delta": "+800만원",
+          "period": "2026년 세법개정안"
+        },
+        {
+          "label": "시차 출퇴근 환급률",
+          "value": "50%",
+          "delta": "+30%p",
+          "period": "2027년 예산안"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "%",
+        "labels": [
+          "월세 공제 한도",
+          "EITC 최대액",
+          "시차 환급률"
+        ],
+        "series": [
+          {
+            "name": "인상 전 대비 증가율(개념)",
+            "values": [
+              20,
+              9.1,
+              150
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "인상폭의 방향을 비교하기 위한 개념값(환급률은 %p 증가). 재정경제부 보도자료(2026.11.13).",
+        "source_id": "src_moef_payshield_20261113"
+      },
+      "counselor_question": "내년 연말정산에서 달라지는 공제 항목을 미리 확인해 볼까요?",
+      "tags": [
+        "세액공제",
+        "근로장려금",
+        "직장인"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "재정경제부",
+        "source_title": "권대영 1차관, 「월급방위대 TF」 킥오프 회의 개최",
+        "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789089",
+        "published_at": "2026-11-13",
+        "license": {
+          "name": "공공누리 제1유형(출처표시)",
+          "type": "KOGL-1",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+          "attribution_text": "출처: 재정경제부 「권대영 1차관, 「월급방위대 TF」 킥오프 회의 개최」(2026.11.13, 정책브리핑 게재), 공공누리 제1유형"
+        },
+        "usage": "세제·예산 수치만 재구성. 원문 문장 복제 없음.",
+        "source_id": "src_moef_payshield_20261113"
+      }
+    },
+    {
+      "id": "c04",
+      "edition": "global-2300",
+      "updated_at": "2026-11-13T23:06:00+09:00",
+      "run_id": "br-20261113-2306",
+      "order": 4,
+      "track": "B",
+      "category": "국내 고용행정",
+      "title": "한파 취약사업장 3만여 곳, 11월 15일부터 집중 관리",
+      "kicker": "대책기간 11.15~3.15 · 집중점검 200→600개소",
+      "three_step": {
+        "what": "고용노동부가 11월 15일부터 2027년 3월 15일까지 한파 안전 대책기간을 운영한다. 한랭질환 산재가 많은 취약사업장 3만여 개소를 집중 관리하고, 새벽 옥외작업 업종의 작업시간대 조정을 지도한다.",
+        "evidence": "건설·생활폐기물·농축산업 집중점검은 지난해 200개소에서 600개소로 늘어난다. 12~2월에는 약 4천 개소를 점검하고, 환경미화 노동자에게 웜키트 1만4,300세트를 지원한다. 이주노동자용 가이드북 외국어 번역본 18개 언어 배포와 이동노동자 쉼터 152개소 정보 제공도 함께 진행한다.",
+        "implication": "야외·물류 직무로 취업을 준비하는 내담자에게 겨울철 작업시간 조정과 쉼터·웜키트 지원을 함께 안내한다."
+      },
+      "key_numbers": [
+        {
+          "label": "취약사업장",
+          "value": "3만여 개소",
+          "delta": "",
+          "period": "2026. 11. 15.~2027. 3. 15."
+        },
+        {
+          "label": "집중점검",
+          "value": "600개소",
+          "delta": "지난해 200개소",
+          "period": "2026년 12월~2월"
+        },
+        {
+          "label": "웜키트",
+          "value": "1만4,300세트",
+          "delta": "",
+          "period": "2026년 겨울"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "개소",
+        "labels": [
+          "지난해 집중점검",
+          "올해 집중점검"
+        ],
+        "series": [
+          {
+            "name": "건설·폐기물·농축산 집중점검",
+            "values": [
+              200,
+              600
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "고용노동부 보도자료(2026.11.13) 기준.",
+        "source_id": "src_moel_cold_20261113"
+      },
+      "counselor_question": "겨울철 야외 취업 시 사업장에 요구할 수 있는 보호조치를 알고 있나요?",
+      "tags": [
+        "한파",
+        "안전보건",
+        "취약노동자"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "고용노동부",
+        "source_title": "「작업시간대 조정 집중 지도」 한파 대비 노동자 건강보호 대책 추진",
+        "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
+        "published_at": "2026-11-13",
+        "license": {
+          "name": "공공누리 미부착(사전 협의 필요)",
+          "type": "KOGL-NONE",
+          "url": null,
+          "scope": "보도자료 본문·첨부파일 재가공 불가",
+          "attribution_required": true,
+          "commercial_use": "unknown",
+          "modification": "unknown",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "고용노동부 누리집 해당 보도자료 페이지에 공공누리 표시가 없고 저작권정책(All rights reserved)만 표시됨(2026-11-17 확인). 사실·수치만 새로 서술.",
+          "attribution_text": "자료: 고용노동부 「「작업시간대 조정 집중 지도」 한파 대비 노동자 건강보호 대책 추진」(2026.11.13)"
+        },
+        "usage": "점검 대상·수량 수치만 요약. 본문 복제 없음.",
+        "source_id": "src_moel_cold_20261113"
+      }
+    },
+    {
+      "id": "c05",
+      "edition": "global-2300",
+      "updated_at": "2026-11-13T23:06:00+09:00",
+      "run_id": "br-20261113-2306",
+      "order": 5,
+      "track": "A",
+      "category": "해외 노동시장",
+      "title": "생산성 2.1%를 노동시간 0.2%로 만들었다",
+      "kicker": "비농업 생산성 +2.1% · 산출 +2.3% · 시간 +0.2%",
+      "three_step": {
+        "what": "2025년 3분기부터 2026년 3분기까지 미국 비농업 부문 노동생산성이 2.1% 올랐다. 산출은 2.3% 늘었지만 노동시간은 0.2%만 늘어났다.",
+        "evidence": "2024년 3분기 이후 1년 단위 생산성 상승률은 2.1~3.1% 범위다. 시간당 산출 중심으로 일하는 구조가 1년 넘게 이어졌다는 뜻이다.",
+        "implication": "구직자에게 일자리 수보다 시간당 산출이 늘어나는 국면임을 설명하고, AI·자동화 도구 활용 성과를 이력서에 수치로 남기게 한다."
+      },
+      "key_numbers": [
+        {
+          "label": "비농업 생산성",
+          "value": "+2.1%",
+          "delta": "전년동기",
+          "period": "2026년 3분기"
+        },
+        {
+          "label": "산출",
+          "value": "+2.3%",
+          "delta": "전년동기",
+          "period": "2026년 3분기"
+        },
+        {
+          "label": "노동시간",
+          "value": "+0.2%",
+          "delta": "전년동기",
+          "period": "2026년 3분기"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "%",
+        "labels": [
+          "생산성",
+          "산출",
+          "노동시간"
+        ],
+        "series": [
+          {
+            "name": "전년동기비",
+            "values": [
+              2.1,
+              2.3,
+              0.2
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "2025년 3분기→2026년 3분기. 미국 노동통계국 「The Economics Daily」(2026.11.13).",
+        "source_id": "src_bls_ted_prod_20261113"
+      },
+      "counselor_question": "지난 1년간 같은 시간에 더 많은 일을 해낸 사례를 숫자로 정리해 볼까요?",
+      "tags": [
+        "생산성",
+        "노동시간",
+        "미국"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "미국 노동통계국(BLS) The Economics Daily",
+        "source_title": "Nonfarm business productivity up 2.1 percent from third quarter 2025 to third quarter 2026",
+        "source_url": "https://www.bls.gov/opub/ted/2026/nonfarm-business-productivity-up-2-1-percent-from-third-quarter-2025-to-third-quarter-2026.htm",
+        "published_at": "2026-11-13",
+        "license": {
+          "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+          "type": "PUBLIC-DOMAIN",
+          "url": "https://www.bls.gov/opub/copyright-information.htm",
+          "scope": "연방정부 발간물 전체",
+          "attribution_required": false,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+          "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-13)"
+        },
+        "usage": "수치 번역·도표화.",
+        "source_id": "src_bls_ted_prod_20261113"
+      }
+    },
+    {
+      "id": "c06",
+      "edition": "kr-0700",
+      "updated_at": "2026-11-13T07:04:00+09:00",
+      "run_id": "br-20261113-0704",
+      "order": 6,
+      "track": "A",
+      "category": "국내 고용행정",
+      "title": "지역 청년 노동시장 진입, 위원회가 개선과제를 냈다",
+      "kicker": "3기 청년위원회 · 지역 청년 노동시장 진입 실태 발표",
+      "three_step": {
+        "what": "경제사회노동위원회의 청년위원회와 청년일자리 희망 위원회가 11월 13일 연석회의를 열고 3기 청년위원회가 마련한 지역 청년 노동시장 진입 실태와 개선과제를 발표했다.",
+        "evidence": "회의는 지역 간 청년 일자리 격차와 진입 경로의 문제를 다뤘고, 일자리 공론화 특별위원회와 함께 다음 주 시민회의(11월 14일, 30인)로 논의를 이어갔다.",
+        "implication": "지방 거주 청년 내담자와 상담할 때 지역 청년 노동시장 논의 결과(위원회 발표·시민회의 권고)를 근거 자료로 활용하고, 지역 내 지원 사업을 같이 확인한다."
+      },
+      "key_numbers": [
+        {
+          "label": "연석회의",
+          "value": "2개 위원회",
+          "delta": "",
+          "period": "2026년 11월 13일"
+        },
+        {
+          "label": "시민회의",
+          "value": "30인",
+          "delta": "11.14. 개최",
+          "period": "2026년 11월 14일"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "건",
+        "labels": [
+          "연석회의",
+          "시민회의"
+        ],
+        "series": [
+          {
+            "name": "11월 청년 일자리 공론화 일정",
+            "values": [
+              1,
+              1
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "경제사회노동위원회 보도자료(2026.11.13) 기준.",
+        "source_id": "src_escl_youth_20261113"
+      },
+      "counselor_question": "지금 사는 지역의 청년 일자리 지원 사업을 몇 개나 떠올릴 수 있나요?",
+      "tags": [
+        "청년",
+        "지역격차",
+        "공론화"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "경제사회노동위원회",
+        "source_title": "[보도자료]「청년위원회」·「청년일자리 희망 위원회」연석회의 개최 — 3기 청년위원회, 지역 청년 노동시장 진입 실태 및 개선과제 발표",
+        "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
+        "published_at": "2026-11-13",
+        "license": {
+          "name": "공공누리 제1유형(출처표시)",
+          "type": "KOGL-1",
+          "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+          "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+          "attribution_text": "출처: 경제사회노동위원회 「[보도자료]「청년위원회」·「청년일자리 희망 위원회」연석회의 개최」(2026.11.13, 정책브리핑 게재), 공공누리 제1유형"
+        },
+        "usage": "회의 결과·수치만 재구성. 원문 문장 복제 없음.",
+        "source_id": "src_escl_youth_20261113"
+      }
+    },
+    {
+      "id": "c07",
+      "edition": "global-2300",
+      "updated_at": "2026-11-13T23:06:00+09:00",
+      "run_id": "br-20261113-2306",
+      "order": 7,
+      "track": "A",
+      "category": "AI·직무",
+      "title": "AI는 일자리 감소를 먼저 보인다",
+      "kicker": "진입 +10~20% · 감소가 창출보다 먼저",
+      "three_step": {
+        "what": "AI가 노동에 미치는 영향은 두 갈래다. 이미 있는 활동 안에서의 조정과 새 활동의 창출이다. 미국 연구(arXiv:2611.17530)는 급여 통계가 앞의 것은 빨리, 뒤의 것은 늦게 기록한다고 본다.",
+        "evidence": "컴퓨팅 시대에는 1978년 이후 진입 기업이 1998년까지 급여의 42%를 차지했고 진입 집단은 5년 뒤에도 80%를 유지했다. 2026년 1분기까지 사업체 고용 흐름은 언어모델 노출도에 따른 차이를 보이지 않았고, 창업 과업 노출 연구들은 진입이 10~20% 늘었다고 본다. 새 일을 늦게 기록하는 통계는 대체 효과를 수년간 과대평가한다.",
+        "implication": "AI 전환 시대의 상담에서 \"일자리가 사라진다\"는 통계를 그대로 전하지 말고, 새 활동의 창출이 통계에 잡히기까지 걸리는 시차를 함께 설명한다."
+      },
+      "key_numbers": [
+        {
+          "label": "진입 증가",
+          "value": "10~20%",
+          "delta": "창업 과업 노출 분야",
+          "period": "arXiv:2611.17530"
+        },
+        {
+          "label": "급여 점유율",
+          "value": "42%",
+          "delta": "신기업, 20년간",
+          "period": "컴퓨팅 시대 사례"
+        },
+        {
+          "label": "5년 후 유지율",
+          "value": "80%",
+          "delta": "진입 집단",
+          "period": "컴퓨팅 시대 사례"
+        }
+      ],
+      "chart_data": {
+        "type": "bar",
+        "unit": "%",
+        "labels": [
+          "신기업 급여 점유율",
+          "5년 후 유지율"
+        ],
+        "series": [
+          {
+            "name": "컴퓨팅 시대 진입 기업",
+            "values": [
+              42,
+              80
+            ],
+            "emphasis": true
+          }
+        ],
+        "reference_value": 0,
+        "note": "arXiv:2611.17530(2026.11.12)에서 제시한 컴퓨팅 시대 수치.",
+        "source_id": "src_arxiv_2611_17530"
+      },
+      "counselor_question": "AI 때문에 없어진 일과 AI 때문에 생긴 일을 각각 하나씩 떠올려 볼 수 있나요?",
+      "tags": [
+        "AI",
+        "일자리전망",
+        "통계시차"
+      ],
+      "ncs": [
+        "직업상담서비스"
+      ],
+      "source": {
+        "source_name": "arXiv (micro1·노스이스턴대)",
+        "source_title": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation (arXiv:2611.17530)",
+        "source_url": "https://arxiv.org/abs/2611.17530",
+        "published_at": "2026-11-12",
+        "license": {
+          "name": "CC BY 4.0 (저작자표시)",
+          "type": "CC-BY-4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/",
+          "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
+          "attribution_required": true,
+          "commercial_use": "allowed",
+          "modification": "allowed",
+          "verified": true,
+          "verified_at": "2026-11-17",
+          "evidence": "arXiv PDF 라이선스 표기 creativecommons.org/licenses/by/4.0 확인(2026-11-17).",
+          "attribution_text": "Esposito, M. & Zhang, L. (2026), arXiv:2611.17530, CC BY 4.0"
+        },
+        "usage": "초록 요지 인용·요약. 도표·이미지 없음.",
+        "source_id": "src_arxiv_2611_17530"
+      }
+    }
+  ],
+  "radar": {
+    "title": "AI × 직무 변화 레이더",
+    "as_of": "2026-11-13",
+    "columns": [
+      "해외 동향",
+      "국내 영향"
+    ],
+    "rows": [
+      {
+        "id": "r01",
+        "edition": [
+          "kr-0700",
+          "global-2300"
+        ],
+        "updated_at": "2026-11-13T23:06:00+09:00",
+        "run_id": "br-20261113-2306",
+        "group": "청년·신규 진입",
+        "abroad": "미국 연구는 새 활동의 창출이 통계에 늦게 잡혀 일자리 감소가 먼저 보인다고 본다.",
+        "domestic": "청년위원회가 지역 청년 노동시장 진입 실태와 개선과제를 발표하고 30인 시민회의로 논의를 이어갔다.",
+        "changing": "지역·진입 경로별 맞춤 지원",
+        "staying": "첫 경력의 안정적 진입이 과제",
+        "source_ids": [
+          "src_arxiv_2611_17530",
+          "src_escl_youth_20261113"
+        ]
+      },
+      {
+        "id": "r02",
+        "edition": [
+          "kr-0700",
+          "global-2300"
+        ],
+        "updated_at": "2026-11-13T23:06:00+09:00",
+        "run_id": "br-20261113-2306",
+        "group": "경력·중장년",
+        "abroad": "미국 비농업 생산성은 2.1% 올랐지만 노동시간은 0.2%만 늘었다.",
+        "domestic": "10월 취업자는 +13.9만명이지만 청년은 -19.6만명으로 늘어난 자리가 청년에게 돌아가지 않았다.",
+        "changing": "시간당 산출 중심 평가 확산",
+        "staying": "경력자의 판단·조율 수요",
+        "source_ids": [
+          "src_bls_ted_prod_20261113",
+          "src_moef_greenbook_20261113"
+        ]
+      },
+      {
+        "id": "r03",
+        "edition": [
+          "kr-0700",
+          "global-2300"
+        ],
+        "updated_at": "2026-11-13T23:06:00+09:00",
+        "run_id": "br-20261113-2306",
+        "group": "사무·프리랜서",
+        "abroad": "AI 응용마다 참신성·조달 방식·목적·기술 유형이 다르다는 유형론이 제안됐다(arXiv:2611.15371).",
+        "domestic": "'가짜 3.3' 위장고용 140여 개소 감독으로 프리랜서 계약의 4대 보험 문제가 다시 조명됐다.",
+        "changing": "프리랜서 계약의 보험·세무 점검",
+        "staying": "과업 단위 수요의 지속",
+        "source_ids": [
+          "src_arxiv_2611_15371",
+          "src_moel_fake33_20261113"
+        ]
+      },
+      {
+        "id": "r04",
+        "edition": [
+          "kr-0700",
+          "global-2300"
+        ],
+        "updated_at": "2026-11-13T23:06:00+09:00",
+        "run_id": "br-20261113-2306",
+        "group": "제조·기술",
+        "abroad": "미국 최종수요 생산자물가는 12개월 6.5% 올라 2022년 11월 이후 가장 컸다.",
+        "domestic": "10월 수출은 전년동월비 +93.7%로 반도체·컴퓨터·화장품이 이끌었다.",
+        "changing": "수출·물가 격차 속 비용 관리",
+        "staying": "반도체 중심 수출 구조",
+        "source_ids": [
+          "src_bls_ppi_202610",
+          "src_moef_greenbook_20261113"
+        ]
+      }
+    ]
+  },
+  "runs": {
+    "kr-0700": {
+      "status": "ok",
+      "updated_at": "2026-11-13T07:04:00+09:00",
+      "last_ok": "2026-11-13",
+      "run_id": "br-20261113-0704"
+    },
+    "global-2300": {
+      "status": "ok",
+      "updated_at": "2026-11-13T23:06:00+09:00",
+      "last_ok": "2026-11-13",
+      "run_id": "br-20261113-2306"
+    }
+  },
+  "sources": [
+    {
+      "id": "src_moel_fake33_20261113",
+      "source_name": "고용노동부",
+      "source_title": "'가짜 3.3' 위장고용, '사업장 쪼개기' 등 노동법 회피 꼼수 기업 기획감독 착수",
+      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248",
+      "published_at": "2026-11-13",
+      "license": {
+        "name": "공공누리 미부착(사전 협의 필요)",
+        "type": "KOGL-NONE",
+        "url": null,
+        "scope": "보도자료 본문·첨부파일 재가공 불가",
+        "attribution_required": true,
+        "commercial_use": "unknown",
+        "modification": "unknown",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "고용노동부 누리집 해당 보도자료 페이지에 공공누리 표시가 없고 하단에 저작권정책(All rights reserved)만 표시됨(2026-11-17 확인). 본문을 옮기지 않고 사실·수치만 새로 서술.",
+        "attribution_text": "자료: 고용노동부 「'가짜 3.3' 위장고용, '사업장 쪼개기' 등 노동법 회피 꼼수 기업 기획감독 착수」(2026.11.13)"
+      },
+      "usage": "감독 대상·과거 적발 수치만 새로 쓴 요약. 본문 복제 없음."
+    },
+    {
+      "id": "src_moef_greenbook_20261113",
+      "source_name": "재정경제부",
+      "source_title": "2026년 11월 최근 경제동향",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
+      "published_at": "2026-11-13",
+      "license": {
+        "name": "공공누리 제1유형(출처표시)",
+        "type": "KOGL-1",
+        "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+        "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "정책브리핑 해당 페이지 하단 고지: 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다(2026-11-17 확인). 속기·보도자료 텍스트만 이용하고 사진·도표 이미지는 싣지 않았습니다.",
+        "attribution_text": "출처: 재정경제부 「2026년 11월 최근 경제동향」(2026.11.13, 정책브리핑 게재), 공공누리 제1유형"
+      },
+      "usage": "지표 수치만 표·도표로 재구성. 원문 문장 복제·이미지 사용 없음."
+    },
+    {
+      "id": "src_moef_payshield_20261113",
+      "source_name": "재정경제부",
+      "source_title": "권대영 1차관, 「월급방위대 TF」 킥오프 회의 개최",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789089",
+      "published_at": "2026-11-13",
+      "license": {
+        "name": "공공누리 제1유형(출처표시)",
+        "type": "KOGL-1",
+        "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+        "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+        "attribution_text": "출처: 재정경제부 「권대영 1차관, 「월급방위대 TF」 킥오프 회의 개최」(2026.11.13, 정책브리핑 게재), 공공누리 제1유형"
+      },
+      "usage": "세제·예산 수치만 재구성. 원문 문장 복제 없음."
+    },
+    {
+      "id": "src_moel_cold_20261113",
+      "source_name": "고용노동부",
+      "source_title": "「작업시간대 조정 집중 지도」 한파 대비 노동자 건강보호 대책 추진",
+      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
+      "published_at": "2026-11-13",
+      "license": {
+        "name": "공공누리 미부착(사전 협의 필요)",
+        "type": "KOGL-NONE",
+        "url": null,
+        "scope": "보도자료 본문·첨부파일 재가공 불가",
+        "attribution_required": true,
+        "commercial_use": "unknown",
+        "modification": "unknown",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "고용노동부 누리집 해당 보도자료 페이지에 공공누리 표시가 없고 저작권정책(All rights reserved)만 표시됨(2026-11-17 확인). 사실·수치만 새로 서술.",
+        "attribution_text": "자료: 고용노동부 「「작업시간대 조정 집중 지도」 한파 대비 노동자 건강보호 대책 추진」(2026.11.13)"
+      },
+      "usage": "점검 대상·수량 수치만 요약. 본문 복제 없음."
+    },
+    {
+      "id": "src_escl_youth_20261113",
+      "source_name": "경제사회노동위원회",
+      "source_title": "[보도자료]「청년위원회」·「청년일자리 희망 위원회」연석회의 개최 — 3기 청년위원회, 지역 청년 노동시장 진입 실태 및 개선과제 발표",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
+      "published_at": "2026-11-13",
+      "license": {
+        "name": "공공누리 제1유형(출처표시)",
+        "type": "KOGL-1",
+        "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+        "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+        "attribution_text": "출처: 경제사회노동위원회 「[보도자료]「청년위원회」·「청년일자리 희망 위원회」연석회의 개최」(2026.11.13, 정책브리핑 게재), 공공누리 제1유형"
+      },
+      "usage": "회의 결과·수치만 재구성. 원문 문장 복제 없음."
+    },
+    {
+      "id": "src_bls_ppi_202610",
+      "source_name": "미국 노동통계국(BLS)",
+      "source_title": "Producer Price Indexes — October 2026 (USDL 26-1687)",
+      "source_url": "https://www.bls.gov/news.release/ppi.nr0.htm",
+      "published_at": "2026-11-13",
+      "license": {
+        "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+        "type": "PUBLIC-DOMAIN",
+        "url": "https://www.bls.gov/opub/copyright-information.htm",
+        "scope": "연방정부 발간물 전체",
+        "attribution_required": false,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+        "attribution_text": "Source: U.S. Bureau of Labor Statistics, Producer Price Indexes — October 2026"
+      },
+      "usage": "수치 번역·도표화. 원문 문장 복제 없음."
+    },
+    {
+      "id": "src_bls_ted_prod_20261113",
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_title": "Nonfarm business productivity up 2.1 percent from third quarter 2025 to third quarter 2026",
+      "source_url": "https://www.bls.gov/opub/ted/2026/nonfarm-business-productivity-up-2-1-percent-from-third-quarter-2025-to-third-quarter-2026.htm",
+      "published_at": "2026-11-13",
+      "license": {
+        "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+        "type": "PUBLIC-DOMAIN",
+        "url": "https://www.bls.gov/opub/copyright-information.htm",
+        "scope": "연방정부 발간물 전체",
+        "attribution_required": false,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+        "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-13)"
+      },
+      "usage": "수치 번역·도표화."
+    },
+    {
+      "id": "src_arxiv_2611_17530",
+      "source_name": "arXiv (micro1·노스이스턴대)",
+      "source_title": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation (arXiv:2611.17530)",
+      "source_url": "https://arxiv.org/abs/2611.17530",
+      "published_at": "2026-11-12",
+      "license": {
+        "name": "CC BY 4.0 (저작자표시)",
+        "type": "CC-BY-4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "arXiv PDF 라이선스 표기 creativecommons.org/licenses/by/4.0 확인(2026-11-17).",
+        "attribution_text": "Esposito, M. & Zhang, L. (2026), arXiv:2611.17530, CC BY 4.0"
+      },
+      "usage": "초록 요지 인용·요약. 도표·이미지 없음."
+    },
+    {
+      "id": "src_arxiv_2611_15371",
+      "source_name": "arXiv (오슬로대 TIK센터)",
+      "source_title": "From the firm- to the application-level: A new typology of AI use in organisations (arXiv:2611.15371)",
+      "source_url": "https://arxiv.org/abs/2611.15371",
+      "published_at": "2026-11-11",
+      "license": {
+        "name": "CC BY 4.0 (저작자표시)",
+        "type": "CC-BY-4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
+        "attribution_required": true,
+        "commercial_use": "allowed",
+        "modification": "allowed",
+        "verified": true,
+        "verified_at": "2026-11-17",
+        "evidence": "arXiv PDF 라이선스 표기 creativecommons.org/licenses/by/4.0 확인(2026-11-17).",
+        "attribution_text": "Castellacci, F. (2026), arXiv:2611.15371, CC BY 4.0"
+      },
+      "usage": "초록 요지 인용·요약. 도표·이미지 없음."
+    }
+  ],
+  "archive_dates": [
+    "2026-11-13"
+  ],
+  "copyright_policy": {
+    "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 우리 말로 새로 썼습니다.",
+    "track_a_note": "공공누리 제1유형(출처표시)·퍼블릭 도메인·CC BY 4.0 자료를 카드마다 출처와 라이선스로 표시합니다.",
+    "track_b_note": "언론사 기사와 공공누리 미부착 자료는 본문·번역문을 싣지 않고 수치 사실과 원문 링크만 제공합니다.",
+    "quote_limit_words": 15,
+    "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+  },
+  "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다."
+}
