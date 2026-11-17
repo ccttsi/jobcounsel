@@ -131,7 +131,7 @@
       '<div class="wf-box"><div class="wf-h"><span class="wf-b xs" style="width:60%"></span><span class="wf-chip">공고 어휘</span></div><span class="wf-b xs"></span></div>' +
       '<div class="wf-box"><div class="wf-h"><span class="wf-b xs" style="width:52%"></span><span class="wf-chip">증거</span></div><span class="wf-b xs"></span></div>' +
       '<div class="wf-box"><div class="wf-h"><span class="wf-b xs" style="width:66%"></span><span class="wf-chip">행동</span></div></div></div>';
-    if (id === 'project') return '<div class="wf"><div class="wf-h"><span class="wf-b"></span><span class="wf-tag">프로젝트 1</span></div>' +
+    if (id === 'project') return '<div class="wf"><div class="wf-h"><span class="wf-b"></span><span class="wf-tag">프로젝트</span></div>' +
       '<div class="wf-box"><span class="wf-b xs"></span><span class="wf-b xs" style="width:88%"></span><span class="wf-b xs" style="width:70%"></span></div>' +
       '<div class="wf-num"><span>3단계</span><span>4주</span><span>+17%</span></div><div class="wf-b xs" style="width:54%"></div></div>';
     if (id === 'contrib') return '<div class="wf"><div class="wf-h"><span class="wf-b sm" style="width:44%"></span><span class="wf-tag">내 몫 60%</span></div>' +
@@ -397,10 +397,15 @@
     var h = '';
     if (S.mod === 'scan') {
       var row = '<div class="tl-row">' + D.scan.scenes.map(function (s, i) {
+        var lab = clipLabel(s.name, s.t1 - s.t0, TOTAL, s.t0 + 's');
+        var tiny = !lab;
+        if (tiny) lab = '<b>' + two(i + 1) + '</b>'; /* 좁은 칸은 번호만 남긴다 */
         var el = clipEl(i, s.t1 - s.t0, TOTAL,
           'data-act="scene" data-i="' + i + '" title="' + esc(s.name) + ' ' + s.t0 + '–' + s.t1 + '초" aria-current="' + (i === S.scene) + '"',
-          clipLabel(s.name, s.t1 - s.t0, TOTAL, s.t0 + 's'));
-        if (i === S.scene && window.innerWidth < 600) el = el.replace('class="sc"', 'class="sc" aria-current="true"');
+          lab);
+        var cls = 'sc' + (tiny ? ' tiny' : '');
+        if (i === S.scene && window.innerWidth < 600) cls += '" aria-current="true';
+        if (cls !== 'sc') el = el.replace('class="sc"', 'class="' + cls + '"');
         return el;
       }).join('') + '</div>';
       h = '<div class="tl">' + stageHTML(TOTAL, S.t, row, '스캔 재생헤드 (90초)', window.innerWidth < 600 ? 30 : 15) + '</div>';
@@ -421,7 +426,7 @@
         var v = (S.draft[t.id] || '').trim();
         var inner = clipLabel(t.name, 1, 6, v ? v.length + '자' : '빈 트랙');
         var tag = window.innerWidth < 600 ? 'span' : 'button';
-        var attrs = window.innerWidth < 600 ? 'role="presentation"' : 'type="button" data-act="track" data-id="' + t.id + '" title="' + esc(t.name) + '"';
+        var attrs = window.innerWidth < 600 ? 'role="presentation" data-id="' + t.id + '"' : 'type="button" data-act="track" data-id="' + t.id + '" title="' + esc(t.name) + '"';
         return '<' + tag + ' class="sc' + (v ? ' on' : '') + '" ' + attrs + ' style="flex:1 1 0"' + (t.id === S.track ? ' aria-current="true"' : '') + '>' + inner + '</' + tag + '>';
       }).join('') + '</div>' +
         '<p class="tl-hint">' + (window.innerWidth < 600 ? '트랙은 왼쪽 6트랙 목록에서 고릅니다.' : '트랙을 눌러 편집기로 가져옵니다.') + '</p></div>';
@@ -437,7 +442,26 @@
       h = '<div class="tl">' + stageHTML(TALK, S.talkT, prow, '발표 재생헤드 (3분)', window.innerWidth < 600 ? 60 : 30) + '</div>';
     }
     $('tline').innerHTML = h;
+    geomCache = null;
     syncCurrent();
+    syncRail();
+  }
+
+  /* 장면 칸의 실제 위치 — 재생헤드를 칸 안쪽 비율로 놓기 위한 캐시 */
+  var geomCache = null;
+  function sceneGeom() {
+    var row = q('.tline .tl-row'), st = q('.tl-stage');
+    if (!row || !st) return null;
+    var cards = qa('.sc', row);
+    if (cards.length !== D.scan.scenes.length) return null;
+    var base = st.getBoundingClientRect(), w = base.width || 1;
+    var sig = w.toFixed(1) + ':' + cards.length;
+    if (geomCache && geomCache.sig === sig) return geomCache;
+    geomCache = { sig: sig, w: w, x: cards.map(function (c) {
+      var r = c.getBoundingClientRect();
+      return [r.left - base.left, r.right - base.left];
+    }) };
+    return geomCache;
   }
 
   /* --x(퍼센트)만 갱신한다. 폭을 재지 않으므로 선과 손잡이가 함께 움직인다. */
@@ -445,7 +469,16 @@
     var stage = $('stage'); if (!stage) return;
     var total = S.mod === 'gate' ? TALK : TOTAL;
     var t = S.mod === 'gate' ? S.talkT : S.t;
-    var pct = (Math.max(0, Math.min(total, t)) / total * 100).toFixed(4);
+    var g = S.mod === 'scan' ? sceneGeom() : null;
+    var pct;
+    if (g) {
+      /* 칸의 왼쪽·오른쪽 경계 사이에서 시간 비례로 놓는다 — 장면 한가운데면 칸 한가운데 */
+      var si = sceneAt(Math.max(0, Math.min(total, t))), sp = D.scan.scenes[si], seg = g.x[si];
+      var k = Math.max(0, Math.min(1, (t - sp.t0) / Math.max(1e-6, sp.t1 - sp.t0)));
+      pct = ((seg[0] + k * (seg[1] - seg[0])) / g.w * 100).toFixed(4);
+    } else {
+      pct = (Math.max(0, Math.min(total, t)) / total * 100).toFixed(4);
+    }
     stage.style.setProperty('--x', pct + '%');
     var rail = $('rail');
     if (rail) {
@@ -455,11 +488,31 @@
   }
   var placePh = syncRail;
 
+  /* 칸 경계 좌표(x)를 시간으로 되돌린다 — 누른 자리와 재생헤드가 어긋나지 않게 */
+  function timeAtPx(x) {
+    var g = sceneGeom();
+    if (!g) return null;
+    for (var i = 0; i < g.x.length; i++) {
+      var a = g.x[i][0], b = g.x[i][1];
+      if (x <= b || i === g.x.length - 1) {
+        var sp = D.scan.scenes[i];
+        var k = Math.max(0, Math.min(1, (x - a) / Math.max(1, b - a)));
+        return sp.t0 + k * (sp.t1 - sp.t0);
+      }
+    }
+    return null;
+  }
+
   /* ── 스캔 조작 ────────────────────────────────────── */
   function sceneAt(t) {
     var arr = D.scan.scenes, i;
     for (i = 0; i < arr.length; i++) if (t < arr[i].t1) return i;
     return arr.length - 1;
+  }
+  /* 장면을 고를 때는 재생헤드를 그 칸의 정가운데에 둔다 — 칸 경계선에 걸치지 않는다. */
+  function centerOf(i) {
+    var s = D.scan.scenes[i];
+    return (s.t0 + s.t1) / 2;
   }
   function syncCurrent() {
     qa('[data-act="scene"]').forEach(function (b) {
@@ -473,9 +526,18 @@
   function setT(v) {
     S.t = Math.max(0, Math.min(TOTAL, v));
     var si = sceneAt(S.t);
-    if (si !== S.scene) { S.scene = si; renderView(); }
+    if (si !== S.scene) { S.scene = si; renderView(); renderInsp(); renderHeads(); }
     var tc = $('tc'); if (tc) tc.textContent = mmss(S.t) + ' / ' + mmss(TOTAL);
     syncCurrent(); syncRail();
+  }
+  /* 장면을 고르면 모니터·소스 목록·타임라인·인스펙터·머리 숫자를 한 번에 맞춘다 */
+  function goScene(i) {
+    var n = D.scan.scenes.length;
+    S.scene = ((i % n) + n) % n;
+    S.t = centerOf(S.scene);
+    renderBin(); renderView(); renderTline(); renderInsp(); renderHeads();
+    var tc = $('tc'); if (tc) tc.textContent = mmss(S.t) + ' / ' + mmss(TOTAL);
+    if ($('fs').classList.contains('on')) renderFS();
   }
   function setTalk(v) {
     S.talkT = Math.max(0, Math.min(TALK, v));
@@ -510,11 +572,16 @@
       var st = $('taState');
       if (st) { st.textContent = ta.value.trim() ? '적음' : '비어 있음'; }
       var l = $('lint'); if (l) l.innerHTML = lintHTML(ta.value);
-      qa('[data-act="track"], .tl .sc').forEach(function (b) {
-        if (b.dataset.id === S.track) {
-          var sm = q('.m', b) || q('small', b);
-          if (sm) sm.textContent = ta.value.trim() ? ta.value.length + '자' : '비어 있음';
-        }
+      qa('[data-act="track"]').forEach(function (b) {
+        if (b.dataset.id !== S.track) return;
+        var m = q('.m', b); if (m) m.textContent = ta.value.trim() ? ta.value.length + '자' : '비어 있음';
+        var k = q('.k', b); if (k) k.textContent = ta.value.trim() ? '✓' : '—';
+      });
+      qa('.tline .sc').forEach(function (b) {
+        if (b.dataset.id !== S.track) return;
+        var sm = q('small', b);
+        if (sm) sm.textContent = ta.value.trim() ? ta.value.length + '자' : '빈 트랙';
+        b.classList.toggle('on', !!ta.value.trim());
       });
       var f = D.tracks.filter(trackFilled).length;
       $('tc').textContent = f + ' / 6';
@@ -582,9 +649,12 @@
         return '<li><b style="color:var(--ink)">' + esc(x[0]) + '</b> — ' + esc(x[1]) + '</li>';
       }).join('') + '</ul></div>' +
       '<div class="card"><h3>1:1 진단 60분</h3><ul>' + D.ops.oneOnOne.map(function (x) { return '<li>' + esc(x[0]) + ' ' + esc(x[1]) + '</li>'; }).join('') + '</ul></div>';
-    var diff = '<div class="card"><h3>차별화 포인트</h3><ul class="dlist">' + D.diff.map(function (d) {
-      return '<li><b>' + esc(d.t) + '</b> — ' + esc(d.b) + '</li>';
-    }).join('') + '</ul></div>';
+    var diff = '<div class="dpanel-h"><h3>차별화 포인트</h3><span class="cnt">' + two(D.diff.length) + '</span></div>' +
+      '<p class="dpanel-lead">학원·온라인 강의와 견줄 때 수강생이 실제로 보는 지점.</p>' +
+      '<ul class="dlist">' + D.diff.map(function (d, i) {
+        return '<li class="dcard"><span class="num">' + two(i + 1) + '</span><b>' + esc(d.t) + '</b>' +
+          '<span class="tx">' + esc(d.b) + '</span></li>';
+      }).join('') + '</ul>';
 
     var tab = S.crsTab || 'course';
     var on = function (k) { return k === tab ? ' on' : ''; };
@@ -605,7 +675,7 @@
   var TUT = [
     { t: '소스에서 장면 고르기',
       fig: '<div class="row"><span class="n">01</span>표지<span style="margin-left:auto">0–8초</span></div>' +
-           '<div class="row hi"><span class="n">02</span>프로젝트 1<span style="margin-left:auto">26–62초</span></div>' +
+           '<div class="row hi"><span class="n">02</span>프로젝트<span style="margin-left:auto">26–62초</span></div>' +
            '<div class="row"><span class="n">03</span>마무리<span style="margin-left:auto">82–90초</span></div>',
       d: '왼쪽(휴대폰은 아래) <b>소스</b>에서 장면을 누르면 가운데 모니터가 그 장면으로 바뀝니다. 90초 중 무엇을 볼지 여기서 정합니다.',
       w: '소스 칸' },
@@ -688,19 +758,11 @@
     if (!b) return;
     var act = b.dataset.act;
     if (act === 'scene') {
-      var i = +b.dataset.i;
-      S.scene = i; S.t = D.scan.scenes[i].t0;
-      renderBin(); renderView(); renderTline();
-      var tc = $('tc'); if (tc) tc.textContent = mmss(S.t) + ' / ' + mmss(TOTAL);
-      if ($('fs').classList.contains('on')) renderFS();
+      goScene(+b.dataset.i);
     } else if (act === 'next') {
-      S.scene = (S.scene + 1) % D.scan.scenes.length; S.t = D.scan.scenes[S.scene].t0;
-      renderBin(); renderView(); renderTline();
-      var tc2 = $('tc'); if (tc2) tc2.textContent = mmss(S.t) + ' / ' + mmss(TOTAL);
+      goScene(S.scene + 1);
     } else if (act === 'fsPrev' || act === 'fsNext') {
-      S.scene = (S.scene + (act === 'fsNext' ? 1 : D.scan.scenes.length - 1)) % D.scan.scenes.length;
-      S.t = D.scan.scenes[S.scene].t0;
-      renderFS(); renderBin(); renderView(); renderTline();
+      goScene(S.scene + (act === 'fsNext' ? 1 : -1));
     } else if (act === 'keep') {
       var id = b.dataset.id;
       S.keep[id] = !S.keep[id];
@@ -802,7 +864,9 @@
     if (!rail) return;
     var r = rail.getBoundingClientRect();
     var k = Math.max(0, Math.min(1, (clientX - r.left) / (r.width || 1)));
-    if (S.mod === 'gate') setTalk(k * TALK); else setT(k * TOTAL);
+    if (S.mod === 'gate') { setTalk(k * TALK); return; }
+    var tc = timeAtPx(k * r.width);
+    setT(tc === null ? k * TOTAL : tc);
   }
   document.addEventListener('pointerdown', function (e) {
     if ($('tut').classList.contains('on') && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
@@ -853,6 +917,7 @@
     });
   });
 
-  /* 시작 */
+  /* 시작 — 첫 장면(표지)의 정가운데에서 연다 */
+  S.t = centerOf(S.scene);
   render();
 })();
