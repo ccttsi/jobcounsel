@@ -1,6 +1,6 @@
 # 패턴 — 이북 · 긴글 · 책 넘김 (ebook-reading)
 
-적용: `/parsons/`(파슨스 이북), `/library/`(디지털 서재), `/theory/`(이론 위키의 긴 본문), `/manual/`(국취 매뉴얼의 긴 절).
+적용: `/parsons/`(파슨스 이북), `/library/`(디지털 서재), `/theory/`(이론 위키의 긴 본문), `/manual/`(구직자취업촉진법 실무 가이드의 긴 절).
 공통 원칙·토큰은 `../../DESIGN.md`, 손맛·터치 규칙은 `touch-physics.md`를 함께 읽는다.
 
 ## 1. 읽기 면의 기본
