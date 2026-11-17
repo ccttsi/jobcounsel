@@ -458,6 +458,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
         <div class="a-slot" id="slot">
           <button type="button" class="a-slot-btn" id="slotBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
             <span class="a-lever" aria-hidden="true">
+              <span class="a-lever-track"></span>
               <span class="a-lever-arm"><span class="a-lever-shaft"></span><span class="a-lever-ball"><i></i></span></span>
               <span class="a-lever-housing"><i></i><i></i></span>
             </span>
@@ -477,7 +478,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <nav class="a-pg" id="allPg" aria-label="목록 쪽 넘기기"></nav>
       <div class="a-coinrow" id="coinRow">
         <button type="button" class="a-coin-btn" id="coinBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
-          <span class="a-coin" aria-hidden="true"><svg viewBox="0 0 60 42" focusable="false"><defs><linearGradient id="jcCoinFace" x1=".1" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#fff8e2"/><stop offset=".35" stop-color="#f2dca6"/><stop offset=".72" stop-color="#d9b269"/><stop offset="1" stop-color="#bb8f42"/></linearGradient><linearGradient id="jcCoinSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bd9550"/><stop offset=".42" stop-color="#8f6a2b"/><stop offset=".82" stop-color="#6a4c1c"/><stop offset="1" stop-color="#8a6629"/></linearGradient><pattern id="jcCoinMill" width="2.6" height="20" patternUnits="userSpaceOnUse"><rect width="1" height="20" fill="#4f3712" opacity=".34"/><rect x="1.3" width=".6" height="20" fill="#f6e3b4" opacity=".22"/></pattern></defs><path d="M6 15A24 12 0 0 1 54 15L54 26A24 12 0 0 1 6 26Z" fill="url(#jcCoinSide)"/><path d="M6 15A24 12 0 0 1 54 15L54 26A24 12 0 0 1 6 26Z" fill="url(#jcCoinMill)"/><ellipse cx="30" cy="15" rx="24" ry="12" fill="url(#jcCoinFace)" stroke="#7d5a1e" stroke-width="1"/><path d="M6 15A24 12 0 0 1 54 15" fill="none" stroke="#fff4cf" stroke-width="1.1" opacity=".55"/><ellipse cx="30" cy="15.4" rx="17.6" ry="8.3" fill="none" stroke="#8d6524" stroke-width=".9" opacity=".45"/><ellipse cx="30" cy="14.8" rx="11.2" ry="5.1" fill="none" stroke="#8d6524" stroke-width=".8" opacity=".3"/><path d="M10.8 11.6A24 12 0 0 1 30 3.4" fill="none" stroke="#fffdf0" stroke-width="1.6" stroke-linecap="round" opacity=".6"/></svg></span>
+          <span class="a-coin" aria-hidden="true"><svg viewBox="0 0 60 34" focusable="false"><defs><linearGradient id="jcCoinFace" x1=".1" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#fff8e2"/><stop offset=".35" stop-color="#f2dca6"/><stop offset=".72" stop-color="#d9b269"/><stop offset="1" stop-color="#bb8f42"/></linearGradient><linearGradient id="jcCoinSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bd9550"/><stop offset=".42" stop-color="#8f6a2b"/><stop offset=".82" stop-color="#6a4c1c"/><stop offset="1" stop-color="#8a6629"/></linearGradient><pattern id="jcCoinMill" width="2" height="20" patternUnits="userSpaceOnUse"><rect width=".8" height="20" fill="#4f3712" opacity=".3"/><rect x="1" width=".45" height="20" fill="#f6e3b4" opacity=".2"/></pattern></defs><path d="M6 15A24 12 0 0 1 54 15L54 19.5A24 12 0 0 1 6 19.5Z" fill="url(#jcCoinSide)"/><path d="M6 15A24 12 0 0 1 54 15L54 19.5A24 12 0 0 1 6 19.5Z" fill="url(#jcCoinMill)"/><ellipse cx="30" cy="15" rx="24" ry="12" fill="url(#jcCoinFace)" stroke="#7d5a1e" stroke-width="1"/><path d="M6 15A24 12 0 0 1 54 15" fill="none" stroke="#fff4cf" stroke-width="1.1" opacity=".55"/><ellipse cx="30" cy="15.4" rx="17.6" ry="8.3" fill="none" stroke="#8d6524" stroke-width=".9" opacity=".45"/><ellipse cx="30" cy="14.8" rx="11.2" ry="5.1" fill="none" stroke="#8d6524" stroke-width=".8" opacity=".3"/><path d="M10.8 11.6A24 12 0 0 1 30 3.4" fill="none" stroke="#fffdf0" stroke-width="1.6" stroke-linecap="round" opacity=".6"/></svg></span>
         </button>
       </div>
     </div>
@@ -556,37 +557,37 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 
 <div class="a-modes" id="modeOv" hidden>
   <div class="a-modes-glass" id="modeGlass" aria-hidden="true"></div>
-  <div class="a-modes-in" role="dialog" aria-modal="true" aria-labelledby="modeOvT">
-    <h2 class="a-sr" id="modeOvT">보기 방식 고르기 — 시드와 매치</h2>
-    <button type="button" class="a-mode a-mode-seed" data-mode="seed" id="modeSeed">
-      <span class="a-mode-top">
-        <span class="a-mode-hd">
-          <span class="a-mode-h1"><b>시드</b><i>SEED</i></span>
-          <span class="a-mode-h2">실력에 채우기</span>
-        </span>
-        <span class="a-mode-cnt" id="seedCnt">11개</span>
-      </span>
-      <span class="a-mode-sub">지식·원리·기준 쌓기</span>
-      <span class="a-mode-art" aria-hidden="true"><span class="a-art-in">
-        <span class="a-hole"><span class="a-stack"><i></i><i></i><i></i></span></span>
-        <span class="a-coins"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-      </span></span>
-    </button>
-    <button type="button" class="a-mode a-mode-match" data-mode="match" id="modeMatch">
-      <span class="a-mode-top">
-        <span class="a-mode-hd">
-          <span class="a-mode-h1"><b>매치</b><i>MATCH</i></span>
-          <span class="a-mode-h2">맞는 자리 열기</span>
-        </span>
-        <span class="a-mode-cnt" id="matchCnt">12개</span>
-      </span>
-      <span class="a-mode-sub">현장·실무 쓰기</span>
-      <span class="a-mode-art" aria-hidden="true"><span class="a-art-in">
-        <span class="a-line"></span>
-        <span class="a-ball"></span>
-        <span class="a-balls"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-      </span></span>
-    </button>
+  <div class="a-modes-in" role="dialog" aria-modal="true" aria-labelledby="modeOvT" tabindex="-1">
+    <div class="a-modes-hd">
+      <span class="a-modes-k">보기 방식</span>
+      <h2 class="a-modes-t" id="modeOvT">어느 쪽으로 담을까요</h2>
+      <p class="a-modes-p">한 번 눌러 미리 보고, 다시 눌러 그 방식으로 넘어갑니다.</p>
+    </div>
+    <div class="a-modes-cards">
+      <button type="button" class="a-mode a-mode-seed" data-mode="seed" id="modeSeed" aria-label="시드, 지식·원리·기준 쌓기. 눌러서 고르기">
+        <span class="a-mode-top"><span class="a-mode-no">01</span><span class="a-mode-cnt" id="seedCnt">11칸</span></span>
+        <span class="a-mode-name"><b>시드</b><i>SEED</i></span>
+        <span class="a-mode-sub">지식·원리·기준 쌓기</span>
+        <span class="a-mode-art" aria-hidden="true"><span class="a-art a-art-seed">
+          <span class="a-stack"><i class="a-sheet s1"></i><i class="a-sheet s2"></i><i class="a-sheet s3"></i><i class="a-sheet s4"></i><i class="a-sheet s5"><i class="a-mark"></i></i></span>
+          <span class="a-ledge"></span>
+        </span></span>
+        <span class="a-mode-go"><span class="a-go-a">시드로 담기</span><span class="a-go-b">한 번 더 눌러 담기</span><em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 6l6 6-6 6"/></svg></em></span>
+      </button>
+      <button type="button" class="a-mode a-mode-match" data-mode="match" id="modeMatch" aria-label="매치, 현장·실무 쓰기. 눌러서 고르기">
+        <span class="a-mode-top"><span class="a-mode-no">02</span><span class="a-mode-cnt" id="matchCnt">12칸</span></span>
+        <span class="a-mode-name"><b>매치</b><i>MATCH</i></span>
+        <span class="a-mode-sub">현장·실무 쓰기</span>
+        <span class="a-mode-art" aria-hidden="true"><span class="a-art a-art-match">
+          <span class="a-rail"></span>
+          <span class="a-seat q1"></span><span class="a-seat q2"></span><span class="a-seat q3"></span><span class="a-seat q4"></span>
+          <span class="a-bond k1"></span><span class="a-bond k2"></span><span class="a-bond k3"></span>
+          <span class="a-bead b1"></span><span class="a-bead b2"></span><span class="a-bead b3"></span><span class="a-bead b4"></span>
+          <span class="a-sweep"></span>
+        </span></span>
+        <span class="a-mode-go"><span class="a-go-a">매치로 담기</span><span class="a-go-b">한 번 더 눌러 담기</span><em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 6l6 6-6 6"/></svg></em></span>
+      </button>
+    </div>
   </div>
   <div class="a-modes-foot" id="modeFoot">
     <button type="button" class="a-modes-all" id="modeAll"><span>전체 <b id="modeAllN">23</b>개 보기</span></button>
@@ -810,6 +811,7 @@ function layout(){
   layoutOrbit();
 }
 function show(i){
+  if(spinT){spinPending=i;return;}          /* 도는 동안 문구 설명은 마지막에 한 번만 바꾼다 */
   var t=TOOLS[i],first=shown<0;shown=i;
   clearTimeout(show.w);if(userMove)show.w=setTimeout(function(){if(window.JCCore&&shown===i)JCCore.warm(t.path);},500); /* 직접 고른 문장에 머물면 그 화면을 미리 받아 둔다 */
   $('nav').style.setProperty('--acc','var(--'+t.color.replace('c','a')+')');
@@ -978,21 +980,23 @@ function applyMode(m){
   else{restartFill();schedule();}
 }
 /* 가운데 문구를 슬롯처럼 돌린다(레버 당김 = 두 바퀴, 힌트 = 아홉 칸). 움직이는 동안만 rAF. */
-var spinT=0;
+var spinT=0,spinPending=null;
 function spin(k,dur){
   if(reduce()||!N)return;
   if(spinT){cancelAnimationFrame(spinT);spinT=0;}
   if(raf){cancelAnimationFrame(raf);raf=0;}
   hold();
-  var start=pos,total=Math.max(1,Math.round(k||N)),t0=0;
-  dur=Math.max(240,dur||780);
+  var start=pos,total=Math.round(k===undefined||k===null?N:k),t0=0;
+  if(!total)total=1;                       /* 음수도 받는다: 장전할 때 한 칸 뒤로 감는다 */
+  dur=Math.max(160,dur||780);
   target=Math.round(start+total);
   function run(ts){
     if(!t0)t0=ts;
     var p=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-p,3);
     pos=start+total*e;layout();
     if(p<1){spinT=requestAnimationFrame(run);}
-    else{spinT=0;pos=target;lastT=0;layout();restartFill();schedule();}
+    else{spinT=0;pos=target;lastT=0;layout();restartFill();schedule();
+      if(spinPending!==null){var pm=spinPending;spinPending=null;show(mod(pm,N));}}
   }
   spinT=requestAnimationFrame(run);
 }
