@@ -32,6 +32,24 @@
     return '<span class="bd">A · 원문 허용</span><span class="stamp">' + esc(L.name || L.type) + '</span>' + (foreign(it) ? '<span class="ai">AI 번역본(원문 기준)</span>' : '');
   }
 
+  /* ---------- 지난 호 — 날짜 선택 상자 ----------
+     news-archive/<날짜>.json은 자기 날짜만 archive_dates에 담고 있어서, 그 파일만 보고 그리면
+     지난 호를 연 순간 선택 상자가 사라져 최신 호로 돌아올 길이 없다. 한 번이라도 본 날짜를 모아 두고,
+     「최신」 표시는 실제 최신 호(data/news.json)에만 붙인다(오늘의 브리핑과 같은 방식). */
+  var knownDates = [], latestDate = '';
+  function archiveList(d) {
+    var seen = {};
+    knownDates.concat(arr(d && d.archive_dates), [d && d.date]).forEach(function (x) { x = String(x || ''); if (/^\d{4}-\d{2}-\d{2}$/.test(x)) seen[x] = 1; });
+    knownDates = Object.keys(seen).sort().reverse();
+    return knownDates;
+  }
+  function picker(d) {
+    var dates = archiveList(d); if (dates.length < 2) return '';
+    return '<select id="dateSel" aria-label="지난 호 고르기">' + dates.map(function (x) {
+      return '<option value="' + esc(x) + '"' + (x === d.date ? ' selected' : '') + '>' + esc(x) + (x === latestDate ? ' (최신)' : '') + '</option>';
+    }).join('') + '</select>';
+  }
+
   /* ---------- 목록 ---------- */
   function filtered() {
     return S.items.filter(function (it) {
@@ -54,7 +72,8 @@
     var dropped = S.dropped + ((d.excluded || {}).count || 0);
     var nOn = ['kw', 'topic', 'src', 'issue'].filter(function (k) { return S[k]; }).length;
 
-    var h = '<header class="mast"><h1>오늘의 원문</h1><span class="num">' + esc(d.date) + ' · 허용 자료 ' + total + '건' + (dropped ? ' · 라이선스로 뺀 ' + dropped + '건' : '') + '</span></header>';
+    var pk = picker(d);
+    var h = '<header class="mast"><h1>오늘의 원문</h1><div class="mt"><span class="num">' + (pk ? '' : esc(d.date) + ' · ') + '허용 자료 ' + total + '건' + (dropped ? ' · 라이선스로 뺀 ' + dropped + '건' : '') + '</span>' + pk + '</div></header>';
     if (d.data_status && d.data_status !== 'ok') h += '<p class="status" role="status"><b>' + (d.data_status === 'fallback' ? '오늘 자 갱신 실패' : '일부 자료 누락') + '</b> ' + esc(d.data_status_note || '') + '</p>';
     if (notice) h += '<p class="status" role="status">' + esc(notice) + '</p>';
 
@@ -63,7 +82,8 @@
     }).join('') + '</nav>';
 
     if (!total && !arr(d.archive_dates).length) {
-      main.innerHTML = '<header class="mast"><h1>오늘의 원문</h1></header><p class="empty"><b>첫 호를 준비하고 있습니다.</b> 원문 재게시와 번역이 허용된 자료가 모이면 이곳에 매일 아침 올라옵니다. 오늘의 요약은 <a href="../">오늘의 브리핑</a>에서 볼 수 있습니다.</p>';
+      main.innerHTML = '<header class="mast"><h1>오늘의 원문</h1><div class="mt">' + picker(d) + '</div></header><p class="empty"><b>첫 호를 준비하고 있습니다.</b> 원문 재게시와 번역이 허용된 자료가 모이면 이곳에 매일 아침 올라옵니다. 오늘의 요약은 <a href="../">오늘의 브리핑</a>에서 볼 수 있습니다.</p>';
+      bindPicker();
       return;
     }
     if (!total) {
@@ -105,6 +125,11 @@
       '<p class="why num">갱신 ' + esc(String(d.updated_at || '').replace('T', ' ').slice(0, 16)) + ' · 스키마 ' + esc(d.schema_version) + '</p>';
 
     main.innerHTML = h;
+    bindPicker();
+  }
+  function bindPicker() {
+    var sel = $('dateSel');
+    if (sel) sel.addEventListener('change', function () { goDate(sel.value); });
   }
 
   /* ---------- 리더 ---------- */
@@ -196,15 +221,44 @@
   function emptyFirst() {
     main.innerHTML = '<header class="mast"><h1>오늘의 원문</h1></header><p class="empty"><b>첫 호를 준비하고 있습니다.</b> 원문 재게시와 번역이 허용된 자료가 모이면 이곳에 매일 아침 올라옵니다. 오늘의 요약은 <a href="../">오늘의 브리핑</a>에서 볼 수 있습니다.</p>';
   }
+
+  /* ---------- 날짜 바꾸기: 주소의 ?date= 에 남긴다(최신 호는 주소에서 지운다) ---------- */
+  function setDateUrl(date) {
+    var q = new URLSearchParams(location.search);
+    if (!date || date === latestDate) q.delete('date'); else q.set('date', date);
+    var s = q.toString();
+    try { history.replaceState(history.state, '', location.pathname + (s ? '?' + s : '') + location.hash); } catch (e) {}
+  }
+  function goDate(date, fromLink) {
+    if (!date) return;
+    if (date === (S.d || {}).date) return;
+    var y = window.scrollY;
+    if (!fromLink) {   // 이슈·키워드는 그날 자료에만 있는 값이라 날짜를 바꾸면 풀어 준다(빈 화면으로 보이지 않게)
+      S.kw = S.topic = S.src = S.issue = ''; S.page = 0; setUrl();
+    }
+    if (S.latest && date === latestDate) {
+      use(S.latest); setDateUrl(''); window.scrollTo(0, y); return;
+    }
+    get(DATA + 'news-archive/' + date + '.json').then(function (d) { use(d); setDateUrl(date); window.scrollTo(0, y); })
+      .catch(function () {
+        knownDates = knownDates.filter(function (x) { return x !== date; });
+        use(S.latest, date + ' 원문 호가 없어 최신 호를 보여 드립니다.'); setDateUrl('');
+      });
+  }
   try { var mm = localStorage.getItem('jc-news-mode'); if (mm === 'ko' || mm === 'orig' || mm === 'pair') S.mode = mm; } catch (e) {}
   var q = new URLSearchParams(location.search);
   S.issue = q.get('issue') || ''; S.topic = q.get('topic') || '';
   var want = q.get('date');
   get(DATA + 'briefing.json').then(function (b) { arr(b.cards).forEach(function (c) { if (c.issue_id) S.briefCards[c.issue_id] = c.id; }); S.themes = arr(b.main_themes).length; }).catch(function () {}).then(function () {
-    var first = want && /^\d{4}-\d{2}-\d{2}$/.test(want) ? get(DATA + 'news-archive/' + want + '.json') : get(DATA + 'news.json');
-    return first.then(function (d) { use(d); }).catch(function () {
-      if (want) return get(DATA + 'news.json').then(function (d) { use(d, want + ' 원문 호가 없어 최신 호를 보여 드립니다.'); });
-      throw new Error('none');
+    /* 최신 호는 언제나 먼저 받는다 — 지난 호 직접 링크(?date=)로 들어와도 날짜 선택 상자에 최신 호가 남는다. */
+    return get(DATA + 'news.json').then(function (d) {
+      S.latest = d; latestDate = d.date || ''; archiveList(d);
+      if (want && /^\d{4}-\d{2}-\d{2}$/.test(want) && want !== latestDate) {
+        if (knownDates.indexOf(want) < 0) { use(d, want + ' 원문 호가 없어 최신 호를 보여 드립니다.'); setDateUrl(''); return; }   // 없는 호는 부르지 않는다(404 소음 없이)
+        return goDate(want, true);
+      }
+      if (want) setDateUrl('');
+      use(d);
     });
   }).catch(function () { emptyFirst(); });
 })();
