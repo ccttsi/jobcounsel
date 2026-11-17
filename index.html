@@ -574,6 +574,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 </div>
 
 <div class="a-modes" id="modeOv" hidden>
+  <div class="a-modes-stage" id="modeStage">
   <div class="a-modes-glass" id="modeGlass" aria-hidden="true"></div>
   <div class="a-modes-in" role="dialog" aria-modal="true" aria-labelledby="modeOvT" tabindex="-1">
     <div class="a-modes-hd">
@@ -585,7 +586,10 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <button type="button" class="a-mode a-mode-seed" data-mode="seed" id="modeSeed" aria-label="시드, 지식·원리·기준 쌓기. 눌러서 고르기">
         <span class="a-mode-top"><span class="a-mode-no">01</span><span class="a-mode-cnt" id="seedCnt">11칸</span></span>
         <span class="a-mode-name"><b>시드</b><i>SEED</i></span>
-        <span class="a-mode-sub">지식·원리·기준 쌓기</span>
+        <span class="a-mode-meta">
+          <span class="a-mode-sub">지식·원리·기준 쌓는 칸</span>
+          <span class="a-mode-flow">이론 · 직무분석 · 법령 · 지표</span>
+        </span>
         <span class="a-mode-art" aria-hidden="true"><span class="a-art a-art-seed">
           <span class="a-stack"><i class="a-sheet s1"></i><i class="a-sheet s2"></i><i class="a-sheet s3"></i><i class="a-sheet s4"></i><i class="a-sheet s5"><i class="a-mark"></i></i></span>
           <span class="a-ledge"></span>
@@ -595,13 +599,15 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <button type="button" class="a-mode a-mode-match" data-mode="match" id="modeMatch" aria-label="매치, 현장·실무 쓰기. 눌러서 고르기">
         <span class="a-mode-top"><span class="a-mode-no">02</span><span class="a-mode-cnt" id="matchCnt">12칸</span></span>
         <span class="a-mode-name"><b>매치</b><i>MATCH</i></span>
-        <span class="a-mode-sub">현장·실무 쓰기</span>
+        <span class="a-mode-meta">
+          <span class="a-mode-sub">현장·실무에 바로 쓰는 칸</span>
+          <span class="a-mode-flow">검사 · 국취 · 서류 · 면접</span>
+        </span>
         <span class="a-mode-art" aria-hidden="true"><span class="a-art a-art-match">
-          <span class="a-rail"></span>
-          <span class="a-seat q1"></span><span class="a-seat q2"></span><span class="a-seat q3"></span><span class="a-seat q4"></span>
-          <span class="a-bond k1"></span><span class="a-bond k2"></span><span class="a-bond k3"></span>
-          <span class="a-bead b1"></span><span class="a-bead b2"></span><span class="a-bead b3"></span><span class="a-bead b4"></span>
-          <span class="a-sweep"></span>
+          <span class="m-shadow"></span>
+          <span class="m-leaf m-l"><span class="m-lines"></span><span class="m-clip"></span></span>
+          <span class="m-leaf m-r"><span class="m-lines"></span></span>
+          <span class="m-seam"></span>
         </span></span>
         <span class="a-mode-go"><span class="a-go-a">매치로 담기</span><span class="a-go-b">한 번 더 눌러 담기</span><em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 6l6 6-6 6"/></svg></em></span>
       </button>
@@ -610,6 +616,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
   <div class="a-modes-foot" id="modeFoot">
     <button type="button" class="a-modes-all" id="modeAll"><span>전체 <b id="modeAllN">23</b>개 보기</span></button>
     <button type="button" class="a-modes-x" id="modeX">닫기</button>
+  </div>
   </div>
 </div>
 

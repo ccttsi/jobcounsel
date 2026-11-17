@@ -165,22 +165,24 @@
     if (card.getAttribute('data-step') === String(n)) return;
     card.setAttribute('data-step', String(n));
   }
+  /* 고름: 고른 카드가 잠기는 한 박자(맞물림·색인 줄) 뒤에 **무대 전체를 한 번에** 페이드아웃한다.
+     카드·오브제·글래스·바닥이 따로 사라지던 잔상과 프레임드랍을 없앴다(2026-11-18 밤). */
   function pick(m) {
     if (!open || picking) return;
     picking = true;
-    var c = byMode(m); if (c) setStep(c, 2);       /* 시드: 투입구로 빨려 들어감 · 매치: 공 쏟아짐 */
+    var c = byMode(m); if (c) setStep(c, 2);       /* 시드: 색인 줄 · 매치: 잠금 표시 */
     if (reduce()) { apply(m); closeOv(false); return; }
-    later(function () { ov.classList.add('a-pick', 'a-pick-' + m); }, 150);
-    later(function () { apply(m); }, 460);          /* 연출 뒤에서 미리 재구성해 둔다 */
-    later(function () { closeOv(false); }, 820);
+    later(function () { ov.classList.add('a-pick'); }, 110);
+    later(function () { apply(m); }, 360);          /* 연출 뒤에서 미리 재구성해 둔다 */
+    later(function () { closeOv(false); }, 440);
   }
   function pickAll() {
     if (!open || picking) return;
     picking = true;
     if (reduce()) { apply('all'); closeOv(false); return; }
     ov.classList.add('a-pick');
-    later(function () { apply('all'); }, 260);
-    later(function () { closeOv(false); }, 520);
+    later(function () { apply('all'); }, 300);
+    later(function () { closeOv(false); }, 380);
   }
   function apply(m) {
     if (nav && nav.applyMode) nav.applyMode(m);
