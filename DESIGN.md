@@ -183,6 +183,7 @@
 | 명함첩 · 도감 · 위키 · 목록 | `/company/` `/cert/` `/univ/` `/grad/` `/decalcomania/` `/transit/` | [`design/patterns/card-directory.md`](design/patterns/card-directory.md) |
 | 검색 · 찾아보기 · 법령 리더 | `/law/` | [`design/patterns/search-reference.md`](design/patterns/search-reference.md) |
 | 계산기 · 시뮬레이터 · 실무 HUD | `/hud/` `/vpi/` `/dacum/` `/talk/` | [`design/patterns/sim-hud.md`](design/patterns/sim-hud.md) |
+| 편집대 · 작업공간(소스·모니터·인스펙터·타임라인) | `/portfolio/` | [`design/patterns/nle-workspace.md`](design/patterns/nle-workspace.md) |
 | 모바일 · 태블릿 손맛 (공통) | 모든 섹터 | [`design/patterns/touch-physics.md`](design/patterns/touch-physics.md) |
 | 대문 · 허브 | `/` | [`design/patterns/hub-landing.md`](design/patterns/hub-landing.md) |
 
@@ -218,6 +219,9 @@
 | 숫자 띠(대학학과위키 큰 화면) | card-directory | 빈 세 칸 → 한 줄 | PR #46 |
 | 낱장 유지 + 덮인 동안 미리 그리기(파슨스) | ebook-reading | 백지 2프레임 → 0장, 높이 변동 0px | PR #48 |
 | 떼어 내기·페이드인(파슨스 한 쪽 보기) | ebook-reading | 넘김 구간 21프레임 전부 16.67ms, 빠진 프레임 0 | PR #53 |
+| 재생헤드 스크럽(네이티브 range + `--v` 채움) | nle-workspace | 끌기 코드 0줄, 키보드·스크린리더 그대로, 모니터만 다시 그려 끌기 유지 | PR #129 |
+| 두 칸 경계 손잡이 비교대(글은 칸 안에서 다시 흐름) | nle-workspace | 좁혀도 양쪽 문장이 끝까지 읽힘, 겹침 커튼의 글자 잘림 해소 | PR #129 |
+| 작업대 고정 높이 + 칸별 스크롤 | nle-workspace | 문서 분량 1280에서 1.07, 휴대폰 1.52 | PR #129 |
 | 반원 위치 다이얼(대문, ±3칸 7개·수평선) | hub-landing | 점 22개 일렬 → 44px 미달 0, 폭 고정 | 2026-11-17 |
 | 책장 마우스 끌기(서재) | ebook-reading | 서가 이동의 길이 화살표 하나 → 끌기·화살표·키보드 셋 | 2026-11-17 |
 
@@ -240,6 +244,7 @@
 | 카드·항목 세로 적층(17번 첫 구현: 휴대폰 16~18화면, 데스크톱 8~9화면) | 무의미한 세로 스크롤, 태화님 지적 | 탭 + 색인·한 장 보기 + 3단 가로 3열/단계 탭 → 휴대폰 1.8~2.3, 데스크톱 1.2~1.4 | 2026-11-16 |
 
 - 2026-11-16 스크롤 상자 안 3D 카드 뒤집기(preserve-3d + backface) — iOS에서 뒷면 사라짐(`/interview/` 실기기) → `touch-physics.md` 도태 항목.
+- 2026-11-17 글 위에 겹치는 전후 커튼(clip-path로 절반 가리기) — 두 문장이 섞여 어느 쪽도 읽히지 않음 → `nle-workspace.md` §4 두 칸 경계 손잡이.
 
 ## 11. 패턴 기록 인덱스 (날짜 → 어디로 갔는지)
 
@@ -258,4 +263,5 @@
 - 2026-11-16 턴 타이머 「잉크 악보선」(구간 눈금 + 줄어드는 인쇄선, 음수 지연 재동기) → `sim-hud.md`, `design/studies/2026-11-16-면접-턴-타이머.md`.
 - 2026-11-16 연관 항목 대칭(같은 집합 섹션) → `card-directory.md` §11. 교차 필터 FLIP 디렉토리 → §10.
 - 2026-11-17 직업상담 법전 신설(22번): 검색 한 칸 + 한 줄 결과(맞은 이유) + 세 칸 상세 + 가변 시각자료 슬롯 + 법전 리더 → `search-reference.md`.
+- 2026-11-17 포트폴리오 편집실 신설(22번): 네 칸 작업대·재생헤드 스크럽·비례 클립·두 칸 비교대·인스펙터 시트 → `nle-workspace.md`.
 - 2026-11-17 서재 색인 목차 깜빡임: 스크롤·리사이즈 프레임마다 다시 그리던 목록을 멈춘 뒤 한 번만, 스스로 다시 그리는 목록은 `data-jc-still`, 아이폰 주소창 `resize`는 폭 변화만 본다 → `ebook-reading.md` §4·§6, `touch-physics.md` §5.
