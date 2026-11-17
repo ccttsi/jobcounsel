@@ -166,23 +166,25 @@
     card.setAttribute('data-step', String(n));
   }
   /* 고름: 고른 카드가 잠기는 한 박자(맞물림·색인 줄) 뒤에 **무대 전체를 한 번에** 페이드아웃한다.
-     카드·오브제·글래스·바닥이 따로 사라지던 잔상과 프레임드랍을 없앴다(2026-11-18 밤). */
+     카드·오브제·글래스·바닥이 따로 사라지던 잔상과 프레임드랍을 없앴다(2026-11-18 밤).
+     덱 화면은 **페이드가 시작되기 전에** 뒤에서 세운다 — 무대가 아직 불투명할 때 화면을 지어,
+     페이드 중에 덱을 그리느라 프레임이 끊기는 일을 없앤다(어두운 테마에서 33ms 프레임 1장 실측 후 수정). */
   function pick(m) {
     if (!open || picking) return;
     picking = true;
     var c = byMode(m); if (c) setStep(c, 2);       /* 시드: 색인 줄 · 매치: 잠금 표시 */
     if (reduce()) { apply(m); closeOv(false); return; }
-    later(function () { ov.classList.add('a-pick'); }, 110);
-    later(function () { apply(m); }, 360);          /* 연출 뒤에서 미리 재구성해 둔다 */
-    later(function () { closeOv(false); }, 440);
+    apply(m);                                        /* 뒤에서 먼저 세운다(글래스 뒤라 보이지 않는다) */
+    later(function () { ov.classList.add('a-pick'); }, 120);
+    later(function () { closeOv(false); }, 460);
   }
   function pickAll() {
     if (!open || picking) return;
     picking = true;
     if (reduce()) { apply('all'); closeOv(false); return; }
+    apply('all');
     ov.classList.add('a-pick');
-    later(function () { apply('all'); }, 300);
-    later(function () { closeOv(false); }, 380);
+    later(function () { closeOv(false); }, 400);
   }
   function apply(m) {
     if (nav && nav.applyMode) nav.applyMode(m);
