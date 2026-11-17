@@ -290,7 +290,7 @@
 
 ## 2026-11-17 대문 순서(21·22) · 반원 위치 다이얼 · 서재 마우스 끌기
 
-브랜치 `feat/home-dial-shelf-drag` (main `29714df` 위). 대상: `assets/tools.js`(순서) · `index.html`(다이얼) · `library/index.html`(끌기).
+브랜치 `feat/home-dial-shelf-drag` (main `29714df` 위) → **PR #128**. 대상: `assets/tools.js`(순서) · `index.html`(다이얼) · `library/index.html`(끌기).
 
 ### 1. 대문 순서
 - `JC_TOOLS`에서 22번(`law`)이 21번(`interview`)보다 앞에 있어 대문·전체 목록·검색 모두 22가 위에 나왔다. 두 칸의 자리를 바꿔 21 → 22로 맞췄다(번호는 이미 맞게 붙어 있었고 배열 순서만 어긋났다). 순서는 이 장부 하나에서만 나오므로 다른 파일은 손대지 않았다.
