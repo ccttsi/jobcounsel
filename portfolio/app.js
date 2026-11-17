@@ -356,7 +356,7 @@
     if (S.mod === 'scan') {
       h = '<div class="tl"><div class="tl-ruler">' + ruler(TOTAL, 15) + '</div>' +
         '<div class="tl-row">' + D.scan.scenes.map(function (s, i) {
-          return '<button type="button" class="sc" style="flex:' + (s.t1 - s.t0) + ' 1 0" data-act="scene" data-i="' + i + '" aria-current="' + (i === S.scene) + '">' +
+          return '<button type="button" class="sc" style="flex:' + (s.t1 - s.t0) + ' 1 0" data-act="scene" data-i="' + i + '" title="' + esc(s.name) + ' ' + s.t0 + '–' + s.t1 + '초" aria-current="' + (i === S.scene) + '">' +
             '<b>' + esc(s.name) + '</b><small>' + s.t0 + 's</small></button>';
         }).join('') + '</div>' +
         '<div class="tl-scrub"><input type="range" id="scrub" min="0" max="' + TOTAL + '" step="1" value="' + Math.round(S.t) + '" aria-label="스캔 재생헤드 (90초)">' +
@@ -366,10 +366,10 @@
     } else if (S.mod === 'cut') {
       var k = kept();
       var krow = k.length ? k.map(function (s) {
-        return '<button type="button" class="sc on" style="flex:1 1 0" data-act="keep" data-id="' + s.id + '"><b>' + esc(s.name) + '</b><small>' + scoreOf(s) + '점</small></button>';
+        return '<button type="button" class="sc on" style="flex:1 1 0" data-act="keep" data-id="' + s.id + '" title="' + esc(s.name) + '">' + '<b>' + esc(s.name) + '</b><small>' + scoreOf(s) + '점</small></button>';
       }).join('') : '<p class="tl-hint" style="min-height:44px;display:flex;align-items:center">아직 올린 소재가 없습니다.</p>';
       var crow = D.sources.filter(function (s) { return !S.keep[s.id]; }).map(function (s) {
-        return '<button type="button" class="sc off" style="flex:1 1 0" data-act="keep" data-id="' + s.id + '"><b>' + esc(s.name) + '</b><small>' + scoreOf(s) + '점</small></button>';
+        return '<button type="button" class="sc off" style="flex:1 1 0" data-act="keep" data-id="' + s.id + '" title="' + esc(s.name) + '">' + '<b>' + esc(s.name) + '</b><small>' + scoreOf(s) + '점</small></button>';
       }).join('');
       h = '<div class="tl"><div class="tl-row" aria-label="올린 소재">' + krow + '</div>' +
         '<div class="tl-row" aria-label="컷한 소재">' + crow + '</div>' +
@@ -377,14 +377,14 @@
     } else if (S.mod === 'story') {
       h = '<div class="tl"><div class="tl-row">' + D.tracks.map(function (t, i) {
         var v = (S.draft[t.id] || '').trim();
-        return '<button type="button" class="sc' + (v ? ' on' : '') + '" style="flex:1 1 0" data-act="track" data-id="' + t.id + '" aria-current="' + (t.id === S.track) + '">' +
+        return '<button type="button" class="sc' + (v ? ' on' : '') + '" style="flex:1 1 0" data-act="track" data-id="' + t.id + '" title="' + esc(t.name) + '" aria-current="' + (t.id === S.track) + '">' +
           '<b>' + esc(t.name) + '</b><small>' + (v ? v.length + '자' : '빈 트랙') + '</small></button>';
       }).join('') + '</div>' +
         '<p class="tl-hint">6개 트랙이 모두 차면 한 프로젝트가 완성됩니다. 트랙을 눌러 편집기로 가져옵니다.</p></div>';
     } else {
       h = '<div class="tl"><div class="tl-ruler">' + ruler(TALK, 30) + '</div>' +
         '<div class="tl-row">' + D.talk.parts.map(function (p, i) {
-          return '<button type="button" class="sc" style="flex:' + (p.t1 - p.t0) + ' 1 0" data-act="talk" data-t="' + p.t0 + '" aria-current="' + (S.talkT >= p.t0 && S.talkT < p.t1) + '">' +
+          return '<button type="button" class="sc" style="flex:' + (p.t1 - p.t0) + ' 1 0" data-act="talk" data-t="' + p.t0 + '" title="' + esc(p.name) + ' ' + mmss(p.t0) + '–' + mmss(p.t1) + '" aria-current="' + (S.talkT >= p.t0 && S.talkT < p.t1) + '">' +
             '<b>' + esc(p.name) + '</b><small>' + mmss(p.t0) + '</small></button>';
         }).join('') + '</div>' +
         '<div class="tl-scrub"><input type="range" id="tscrub" min="0" max="' + TALK + '" step="1" value="' + Math.round(S.talkT) + '" aria-label="발표 재생헤드 (3분)">' +
