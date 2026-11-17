@@ -167,3 +167,46 @@
 .a-root .a-tuts-b.pri{border-color:var(--acc);background:var(--acc);color:#fff;min-width:88px}
 :root[data-theme="dark"] .a-root .a-tuts-b.pri{color:#06090f}
 .a-root .a-tuts-b[disabled]{opacity:.4}
+
+/* ============ 시드: 라이트테이블 트레이 (2026-11-17 확정안 3) ============
+ * 번호가 새겨진 라이트박스 칸(1~11)에 반투명 필름 슬라이드 칩을 끼워 넣는 구조.
+ * 빈 칸은 연한 숫자와 은은한 창, 꽂히면 뒤에서 백라이트가 켜지며 제목이 살아난다. */
+.a-deck-seed .a-deck-scroll{
+  background:radial-gradient(130% 100% at 50% -30%,#fffdf6 0%,#f8f1e2 55%,#f1e7d4 100%);
+  border-color:#e6d9c4;
+  box-shadow:inset 0 3px 14px -6px rgba(168,136,84,.34),inset 0 0 0 1px rgba(255,255,255,.9),0 1px 0 #fff}
+/* 빈 칸 = 라이트박스 위의 은은한 창(살짝 들어가 보인다) */
+.a-deck-seed .a-dslot-empty .a-dslot-b{border-style:dashed;border-color:rgba(201,186,162,.72);
+  background:linear-gradient(180deg,rgba(255,255,255,.46),rgba(255,255,255,.3));
+  box-shadow:inset 0 2px 6px rgba(150,120,70,.12)}
+.a-deck-seed .a-dslot-empty .a-dslot-b:hover{border-style:solid;border-color:color-mix(in srgb,var(--acc) 48%,#decfb6);
+  background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.55))}
+.a-deck-seed .a-dslot-n{background:rgba(255,255,255,.55);border:1px solid rgba(206,192,168,.55);
+  color:#b8a98f;text-shadow:0 1px 0 #fff}
+/* 꽂힌 칸 = 필름 슬라이드 칩. 뒤에서 백라이트가 번진다 */
+.a-deck-seed .a-dslot.a-on .a-dslot-b{
+  border-color:color-mix(in srgb,var(--acc) 40%,#e6d9c4);
+  background:linear-gradient(180deg,rgba(255,255,255,.98),color-mix(in srgb,var(--acc) 7%,#fff));
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 9%,transparent),
+    0 0 24px -6px color-mix(in srgb,var(--acc) 62%,transparent),
+    inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.7)}
+.a-deck-seed .a-dslot.a-on .a-dslot-b::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(70% 160% at 2% 50%,color-mix(in srgb,var(--acc) 30%,transparent),transparent 60%);
+  animation:a-backlight .62s cubic-bezier(.2,.9,.3,1) both}
+@keyframes a-backlight{0%{opacity:0;transform:scaleX(.94)}100%{opacity:1;transform:none}}
+/* 슬라이드 가장자리 색 띠(끼운 칩임을 알리는 손맛) */
+.a-deck-seed .a-dslot.a-on .a-dslot-b::after{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+  background:color-mix(in srgb,var(--acc) 62%,#fff);opacity:.65}
+.a-deck-seed .a-dslot.a-on .a-dslot-n{position:relative;z-index:1;background:rgba(255,255,255,.92);
+  color:var(--acc);border-color:color-mix(in srgb,var(--acc) 30%,#e6d9c4);text-shadow:none}
+.a-deck-seed .a-dslot.a-on .a-dslot-t,.a-deck-seed .a-dslot.a-on .a-dslot-tag{position:relative;z-index:1}
+:root[data-theme="dark"] .a-deck-seed .a-deck-scroll{
+  background:radial-gradient(130% 100% at 50% -30%,#101a24 0%,#0b1220 60%,#080d15 100%);border-color:#1c2635;
+  box-shadow:inset 0 3px 20px -8px rgba(45,212,191,.22),inset 0 0 0 1px rgba(255,255,255,.03)}
+:root[data-theme="dark"] .a-deck-seed .a-dslot-empty .a-dslot-b{background:rgba(255,255,255,.025);
+  border-color:#232d3c;box-shadow:inset 0 2px 6px rgba(0,0,0,.45)}
+:root[data-theme="dark"] .a-deck-seed .a-dslot-n{background:rgba(255,255,255,.04);border-color:#28323f;color:#59647a;text-shadow:none}
+:root[data-theme="dark"] .a-deck-seed .a-dslot.a-on .a-dslot-b{
+  background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 16%,#0f172a),color-mix(in srgb,var(--acc) 3%,#0b1220));
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 12%,transparent),0 0 26px -8px color-mix(in srgb,var(--acc) 75%,transparent),inset 0 1px 0 rgba(255,255,255,.05)}
+:root[data-theme="dark"] .a-deck-seed .a-dslot.a-on .a-dslot-n{background:rgba(255,255,255,.1);color:var(--acc)}
