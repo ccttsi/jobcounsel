@@ -876,8 +876,12 @@
    "name": "한국과학기술기획평가원(KISTEP)",
    "title": "2026 KISTEP 10대 미래유망기술",
    "url": "https://www.data.go.kr/data/15087732/fileData.do",
-   "lic": "KOGL-1",
-   "lic_name": "공공누리 제1유형(출처표시)",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
    "published": "2026-09-22",
    "track": "A",
    "usage": "‘건강 사회 실현’ 10대 유망기술의 정의·범위·2030~2035 전망"
@@ -887,8 +891,12 @@
    "name": "미국 노동통계국(BLS)",
    "title": "Industry and occupational employment projections overview and highlights, 2024–34",
    "url": "https://www.bls.gov/opub/mlr/2026/article/industry-and-occupational-employment-projections-overview.htm",
-   "lic": "PUBLIC-DOMAIN",
-   "lic_name": "퍼블릭 도메인(미국 연방정부 저작물)",
+   "license": {
+    "type": "PUBLIC-DOMAIN",
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
    "published": "2026",
    "track": "A",
    "usage": "직업별 2024~2034년 고용 증감률·중위임금·진입학력"
@@ -898,8 +906,12 @@
    "name": "한국콘텐츠진흥원(KOCCA)",
    "title": "2025년 4분기 및 연간 콘텐츠산업 동향분석 보고서",
    "url": "https://www.kocca.kr/kocca/koccanews/reportview.do?menuNo=204767&nttNo=1128",
-   "lic": "KOGL-1",
-   "lic_name": "공공누리 제1유형(출처표시)",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
    "published": "2026-04-30",
    "track": "A",
    "usage": "2025년 매출 161조 4,839억 원(+2.6%), 수출 149억 582만 달러(+5.9%), 생성AI 활용률 32.1%"
@@ -909,8 +921,12 @@
    "name": "농림축산식품부",
    "title": "2026년 스마트농업 육성 시행계획",
    "url": "https://www.mafra.go.kr/bbs/home/791/594105/download.do",
-   "lic": "KOGL-1",
-   "lic_name": "공공누리 제1유형(출처표시)",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
    "published": "2025-11",
    "track": "A",
    "usage": "스마트팜 수출 2.96억 불(2023)→9억 불(2030), 스마트온실 도입률 16%→35%, 육성지구 30개소, 스마트농업관리사 자격"
@@ -926,9 +942,549 @@
  "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다.",
  "updated_at": "2026-11-19T04:30:00+09:00",
  "archive_dates": [
+  "2026-11-01",
+  "2026-11-02",
+  "2026-11-03",
+  "2026-11-04",
+  "2026-11-05",
+  "2026-11-06",
+  "2026-11-07",
+  "2026-11-08",
+  "2026-11-09",
+  "2026-11-10",
+  "2026-11-11",
+  "2026-11-12",
+  "2026-11-13",
+  "2026-11-14",
+  "2026-11-15",
+  "2026-11-16",
+  "2026-11-17",
+  "2026-11-18",
   "2026-11-19"
  ],
  "archive_index": [
+  {
+   "date": "2026-11-01",
+   "no": 1,
+   "weekday": "일",
+   "title": "농업과 로봇, 수출의 첫 숫자",
+   "items": [
+    {
+     "id": "ei-20261101-1",
+     "title": "K-스마트팜, 2030년 수출 9억 달러를 겨눈다",
+     "sector": "s1",
+     "cat": "smartfarm",
+     "order": 1
+    },
+    {
+     "id": "ei-20261101-2",
+     "title": "노지 500ha에 자율주행·관수 솔루션, 육성지구 5곳 출발",
+     "sector": "s1",
+     "cat": "smartfarm",
+     "order": 2
+    },
+    {
+     "id": "ei-20261101-3",
+     "title": "휴머노이드 매출 첫 5억 달러, 내년 44억 달러 전망",
+     "sector": "s2",
+     "cat": "robotics",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-02",
+   "no": 2,
+   "weekday": "월",
+   "title": "휴머노이드 10년, 사람은 어디로",
+   "items": [
+    {
+     "id": "ei-20261102-1",
+     "title": "휴머노이드 시장, 10년 뒤 380억 달러",
+     "sector": "s2",
+     "cat": "robotics",
+     "order": 1
+    },
+    {
+     "id": "ei-20261102-2",
+     "title": "로봇 100만 대 보급, 사람은 1만 5천 명",
+     "sector": "s2",
+     "cat": "robotics",
+     "order": 2
+    },
+    {
+     "id": "ei-20261102-3",
+     "title": "스마트농업관리사, 국가자격 첫 시험을 지나",
+     "sector": "s1",
+     "cat": "smartfarm",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-03",
+   "no": 3,
+   "weekday": "화",
+   "title": "콘텐츠가 AI를 만났을 때",
+   "items": [
+    {
+     "id": "ei-20261103-1",
+     "title": "K-콘텐츠 수출 149억 달러, 음악이 끌었다",
+     "sector": "s3",
+     "cat": "content",
+     "order": 1
+    },
+    {
+     "id": "ei-20261103-2",
+     "title": "콘텐츠 3곳 중 1곳이 생성AI를 쓴다",
+     "sector": "s3",
+     "cat": "content",
+     "order": 2
+    },
+    {
+     "id": "ei-20261103-3",
+     "title": "AI 투자, EU는 2,570억 유로·미국 R&D만 900억 유로",
+     "sector": "s4",
+     "cat": "ai",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-04",
+   "no": 4,
+   "weekday": "수",
+   "title": "우주는 이미 반도체 체급",
+   "items": [
+    {
+     "id": "ei-20261104-1",
+     "title": "우주 경제 5,500억 달러, 반도체와 같은 체급",
+     "sector": "s4",
+     "cat": "space",
+     "order": 1
+    },
+    {
+     "id": "ei-20261104-2",
+     "title": "우주 산업 성장률의 격차, 0.8%와 7%",
+     "sector": "s4",
+     "cat": "space",
+     "order": 2
+    },
+    {
+     "id": "ei-20261104-3",
+     "title": "배터리 수요, 처음으로 1TWh를 넘다",
+     "sector": "s2",
+     "cat": "battery",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-05",
+   "no": 5,
+   "weekday": "목",
+   "title": "저장이 병목이 된다",
+   "items": [
+    {
+     "id": "ei-20261105-1",
+     "title": "에너지저장 6배, 배터리 저장은 14배",
+     "sector": "s2",
+     "cat": "battery",
+     "order": 1
+    },
+    {
+     "id": "ei-20261105-2",
+     "title": "청정에너지 6대 기술 시장, 7,000억 달러 돌파",
+     "sector": "s4",
+     "cat": "climate",
+     "order": 2
+    },
+    {
+     "id": "ei-20261105-3",
+     "title": "수소 1억 톤, 그중 저탄소는 1%",
+     "sector": "s4",
+     "cat": "climate",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-06",
+   "no": 6,
+   "weekday": "금",
+   "title": "계획이 줄어든 산업",
+   "items": [
+    {
+     "id": "ei-20261106-1",
+     "title": "수소 프로젝트 파이프라인이 처음 줄었다",
+     "sector": "s4",
+     "cat": "climate",
+     "order": 1
+    },
+    {
+     "id": "ei-20261106-2",
+     "title": "CCUS, 2030년 포집능력 8배 계획",
+     "sector": "s4",
+     "cat": "climate",
+     "order": 2
+    },
+    {
+     "id": "ei-20261106-3",
+     "title": "칩을 쌓는 시대, 첨단패키징이 전면으로",
+     "sector": "s2",
+     "cat": "semicon",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-07",
+   "no": 7,
+   "weekday": "토",
+   "title": "진료의 13%가 화면 너머에서",
+   "items": [
+    {
+     "id": "ei-20261107-1",
+     "title": "원격진료가 전체 진료의 13%",
+     "sector": "s3",
+     "cat": "health",
+     "order": 1
+    },
+    {
+     "id": "ei-20261107-2",
+     "title": "반도체 다음 10년, 수요는 어디서 오나",
+     "sector": "s2",
+     "cat": "semicon",
+     "order": 2
+    },
+    {
+     "id": "ei-20261107-3",
+     "title": "AI 거버넌스, 제품의 일부가 되다",
+     "sector": "s4",
+     "cat": "ai",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-08",
+   "no": 8,
+   "weekday": "일",
+   "title": "일자리는 옮겨 간다",
+   "items": [
+    {
+     "id": "ei-20261108-3",
+     "title": "스마트온실 16%에서 35%로, 남은 4년",
+     "sector": "s1",
+     "cat": "smartfarm",
+     "order": 1
+    },
+    {
+     "id": "ei-20261108-2",
+     "title": "배송·운전 직무가 절대 수에서 가장 크게 는다",
+     "sector": "s3",
+     "cat": "logistics",
+     "order": 2
+    },
+    {
+     "id": "ei-20261108-1",
+     "title": "농업 로봇·드론, 방제와 수확의 자리를 옮긴다",
+     "sector": "s1",
+     "cat": "agri-robot",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-09",
+   "no": 9,
+   "weekday": "월",
+   "title": "깔린 시스템, 쓰지 않는 사람",
+   "items": [
+    {
+     "id": "ei-20261109-1",
+     "title": "온라인 건강서비스, OECD 82%가 제공",
+     "sector": "s3",
+     "cat": "health",
+     "order": 1
+    },
+    {
+     "id": "ei-20261109-2",
+     "title": "양자 플래그십 연 500억, 산업화는 아직",
+     "sector": "s4",
+     "cat": "quantum",
+     "order": 2
+    },
+    {
+     "id": "ei-20261109-3",
+     "title": "배터리를 다시 캐는 산업, 재활용",
+     "sector": "s2",
+     "cat": "battery",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-10",
+   "no": 10,
+   "weekday": "화",
+   "title": "가장 빠른 성장은 금융과 기술 사이",
+   "items": [
+    {
+     "id": "ei-20261110-3",
+     "title": "AI R&D, 미국 900억 유로 vs EU 330억 유로",
+     "sector": "s4",
+     "cat": "ai",
+     "order": 1
+    },
+    {
+     "id": "ei-20261110-1",
+     "title": "핀테크 엔지니어, 가장 빠르게 크는 직무",
+     "sector": "s3",
+     "cat": "fintech",
+     "order": 2
+    },
+    {
+     "id": "ei-20261110-2",
+     "title": "핵융합 장치 160기, 투자 100억 달러",
+     "sector": "s4",
+     "cat": "energy",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-11",
+   "no": 11,
+   "weekday": "수",
+   "title": "촬영장에 엔지니어가 들어온다",
+   "items": [
+    {
+     "id": "ei-20261111-1",
+     "title": "버추얼 프로덕션, 촬영장에 엔지니어가 들어오다",
+     "sector": "s3",
+     "cat": "content",
+     "order": 1
+    },
+    {
+     "id": "ei-20261111-2",
+     "title": "위성 데이터, 보는 사람에서 읽는 사람으로",
+     "sector": "s4",
+     "cat": "space",
+     "order": 2
+    },
+    {
+     "id": "ei-20261111-3",
+     "title": "합성생물학, 실험을 공정으로 바꾸다",
+     "sector": "s2",
+     "cat": "bio-mfg",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "no": 12,
+   "weekday": "목",
+   "title": "농가 5,500호의 데이터",
+   "items": [
+    {
+     "id": "ei-20261112-1",
+     "title": "농가 5,500호가 데이터로 영농을 결정한다",
+     "sector": "s1",
+     "cat": "smartfarm",
+     "order": 1
+    },
+    {
+     "id": "ei-20261112-2",
+     "title": "공장을 멈추지 않고 지키는 보안",
+     "sector": "s4",
+     "cat": "security",
+     "order": 2
+    },
+    {
+     "id": "ei-20261112-3",
+     "title": "청정기술 제조 투자 2,350억 달러, 소재가 승부처",
+     "sector": "s2",
+     "cat": "material",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "no": 13,
+   "weekday": "금",
+   "title": "허가가 속도를 정한다",
+   "items": [
+    {
+     "id": "ei-20261113-1",
+     "title": "금융 심사역, 10년에 18.5% 늘어난다",
+     "sector": "s3",
+     "cat": "fintech",
+     "order": 1
+    },
+    {
+     "id": "ei-20261113-2",
+     "title": "휴머노이드의 두뇌, 온디바이스 AI 반도체",
+     "sector": "s2",
+     "cat": "semicon",
+     "order": 2
+    },
+    {
+     "id": "ei-20261113-3",
+     "title": "로봇 AI, 이제 데이터가 병목",
+     "sector": "s2",
+     "cat": "robotics",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-14",
+   "no": 14,
+   "weekday": "토",
+   "title": "수출의 다음 시장",
+   "items": [
+    {
+     "id": "ei-20261114-2",
+     "title": "게임이 콘텐츠 수출의 60%를 혼자 번다",
+     "sector": "s3",
+     "cat": "content",
+     "order": 1
+    },
+    {
+     "id": "ei-20261114-1",
+     "title": "K-스마트팜, 아세안+3으로 수출 길 넓힌다",
+     "sector": "s1",
+     "cat": "smartfarm",
+     "order": 2
+    },
+    {
+     "id": "ei-20261114-3",
+     "title": "탄소 숫자를 믿게 만드는 일, MRV",
+     "sector": "s4",
+     "cat": "climate",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-15",
+   "no": 15,
+   "weekday": "일",
+   "title": "기술의 40%가 바뀐다",
+   "items": [
+    {
+     "id": "ei-20261115-1",
+     "title": "직업의 22%가 재편, 가르치는 사람이 병목",
+     "sector": "s3",
+     "cat": "edu",
+     "order": 1
+    },
+    {
+     "id": "ei-20261115-2",
+     "title": "기후에 맞서는 식량 생산, 10대 기술에 들다",
+     "sector": "s1",
+     "cat": "resource",
+     "order": 2
+    },
+    {
+     "id": "ei-20261115-3",
+     "title": "로봇 100만 대를 깔려면 시험장이 필요하다",
+     "sector": "s2",
+     "cat": "robotics",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-16",
+   "no": 16,
+   "weekday": "월",
+   "title": "청년과 자본 사이",
+   "items": [
+    {
+     "id": "ei-20261116-1",
+     "title": "임대형 스마트팜, 개소당 200억 원",
+     "sector": "s1",
+     "cat": "smartfarm",
+     "order": 1
+    },
+    {
+     "id": "ei-20261116-2",
+     "title": "리스킬링, 가르치는 것보다 옮기는 일",
+     "sector": "s3",
+     "cat": "edu",
+     "order": 2
+    },
+    {
+     "id": "ei-20261116-3",
+     "title": "정부 R&D 35.5조, 반도체·바이오·양자에 5.9조",
+     "sector": "s2",
+     "cat": "semicon",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-17",
+   "no": 17,
+   "weekday": "화",
+   "title": "투자 8,000억 달러의 방향",
+   "items": [
+    {
+     "id": "ei-20261117-1",
+     "title": "배터리 투자 8,000억 달러, 7년 안에 5배",
+     "sector": "s2",
+     "cat": "battery",
+     "order": 1
+    },
+    {
+     "id": "ei-20261117-2",
+     "title": "청년 창업 보육 1,412명, 임대팜 19곳",
+     "sector": "s1",
+     "cat": "smartfarm",
+     "order": 2
+    },
+    {
+     "id": "ei-20261117-3",
+     "title": "UAM 안전운용 실증에 848억 원",
+     "sector": "s3",
+     "cat": "logistics",
+     "order": 3
+    }
+   ]
+  },
+  {
+   "date": "2026-11-18",
+   "no": 18,
+   "weekday": "수",
+   "title": "지구 지정이 만드는 일자리",
+   "items": [
+    {
+     "id": "ei-20261118-1",
+     "title": "시설원예 육성지구 7곳, 2030년 30곳까지",
+     "sector": "s1",
+     "cat": "smartfarm",
+     "order": 1
+    },
+    {
+     "id": "ei-20261118-2",
+     "title": "UAM 실증, 기술검증에서 지역 상용화로",
+     "sector": "s3",
+     "cat": "logistics",
+     "order": 2
+    },
+    {
+     "id": "ei-20261118-3",
+     "title": "로봇 부품 국산화율 80%, 감속기부터",
+     "sector": "s2",
+     "cat": "robotics",
+     "order": 3
+    }
+   ]
+  },
   {
    "date": "2026-11-19",
    "no": 19,

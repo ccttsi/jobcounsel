@@ -1,0 +1,782 @@
+{
+ "schema_version": "1.0.0",
+ "edition": {
+  "no": 14,
+  "date": "2026-11-14",
+  "weekday": "토",
+  "title": "수출의 다음 시장",
+  "subtitle": "아세안 스마트팜과 게임 수출 60%, 탄소 숫자를 믿게 하는 일",
+  "reading_minutes": 4,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20261114-2",
+   "date": "2026-11-14",
+   "order": 1,
+   "sector": "s3",
+   "cat": "content",
+   "lead": true,
+   "title": "게임이 콘텐츠 수출의 60%를 혼자 번다",
+   "kicker": "문체부 2025년 콘텐츠산업조사(2024년 기준)",
+   "summary": "2024년 콘텐츠산업 수출 141억 달러 가운데 게임이 85억 달러로 60.4%를 차지했다. 나머지 10개 장르가 합쳐 40%를 나눠 갖는 구조다.",
+   "key_numbers": [
+    {
+     "label": "게임 수출",
+     "value": "85억 달러",
+     "note": "전체의 60.4%"
+    },
+    {
+     "label": "콘텐츠 수출 전체",
+     "value": "141억 달러",
+     "note": "2024년"
+    },
+    {
+     "label": "10인 미만 사업체",
+     "value": "93.7%",
+     "note": "산업 구조"
+    }
+   ],
+   "market": {
+    "label": "콘텐츠 수출 구성",
+    "unit": "억 달러",
+    "basis": "2024년",
+    "chart": "bar",
+    "labels": [
+     "게임",
+     "기타 10개 장르"
+    ],
+    "series": [
+     {
+      "name": "수출",
+      "values": [
+       85,
+       56
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "기타는 전체 141억에서 게임 85억을 뺀 값이다.",
+    "source_id": "src_mcst_content2025"
+   },
+   "players": {
+    "domestic": [
+     "크래프톤",
+     "넥슨",
+     "엔씨소프트",
+     "넷마블",
+     "스마일게이트"
+    ],
+    "glob": [
+     "Tencent",
+     "Sony Interactive",
+     "Microsoft Gaming",
+     "Nintendo"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-pd"
+    ],
+    "new": [
+     "j-content-ai",
+     "j-reskill"
+    ]
+   },
+   "source_id": "src_mcst_content2025",
+   "question": "한 장르가 수출의 60%를 번다는 것은 위험하기도 하다. 게임 직무의 기술은 다른 콘텐츠로 옮길 수 있는 자산이다."
+  },
+  {
+   "id": "ei-20261114-1",
+   "date": "2026-11-14",
+   "order": 2,
+   "sector": "s1",
+   "cat": "smartfarm",
+   "lead": false,
+   "title": "K-스마트팜, 아세안+3으로 수출 길 넓힌다",
+   "kicker": "농식품부 아세안+3 농업 협력 보도자료(2026-11-02)",
+   "summary": "농식품부는 아세안+3 역내 농업 협력을 강화하며 K-스마트팜과 K-푸드의 진출 확대를 추진한다. 2030년 스마트팜 수출 9억 달러 목표의 시장 다변화 시도다.",
+   "key_numbers": [
+    {
+     "label": "수출 목표",
+     "value": "9억 달러",
+     "note": "2030년"
+    },
+    {
+     "label": "2023년 실적",
+     "value": "2.96억 달러",
+     "note": "출발점"
+    },
+    {
+     "label": "협력 대상",
+     "value": "아세안+3",
+     "note": "역내 농업 협력"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "농식품부",
+     "KOTRA",
+     "팜에이트",
+     "그린플러스"
+    ],
+    "glob": [
+     "Priva",
+     "Ridder",
+     "Netafim",
+     "Valmont"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-agri"
+    ],
+    "new": [
+     "j-smartfarm"
+    ]
+   },
+   "source_id": "src_mafra_asean",
+   "question": "수출은 장비가 아니라 ‘운영 모델’을 파는 일이다. 현지에서 작물을 키워 본 경험이 있는 인력이 필요하다."
+  },
+  {
+   "id": "ei-20261114-3",
+   "date": "2026-11-14",
+   "order": 3,
+   "sector": "s4",
+   "cat": "climate",
+   "lead": false,
+   "title": "탄소 숫자를 믿게 만드는 일, MRV",
+   "kicker": "IEA CCUS 데이터가 보여 주는 2030년 검증 대상 규모",
+   "summary": "2030년까지 연 4억 3,000만 톤의 포집 능력이 계획돼 있다. 이 숫자가 시장에서 인정받으려면 배출·감축 실적을 측정·보고·검증하는 MRV 절차가 함께 서야 한다.",
+   "key_numbers": [
+    {
+     "label": "2030년 포집능력",
+     "value": "4억 3,000만 톤",
+     "note": "파이프라인 기준"
+    },
+    {
+     "label": "2025년 운영",
+     "value": "5,000만 톤+",
+     "note": "IEA"
+    },
+    {
+     "label": "검증 대상",
+     "value": "배출량·감축량·저장량",
+     "note": "MRV 3요소"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "한국환경공단",
+     "한국품질재단",
+     "SGS Korea",
+     "Bureau Veritas Korea"
+    ],
+    "glob": [
+     "Verra",
+     "Gold Standard",
+     "DNV",
+     "SGS"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-acct",
+     "j-qa"
+    ],
+    "new": [
+     "j-mrv"
+    ]
+   },
+   "source_id": "src_iea_ccus2025",
+   "question": "탄소 시장의 병목은 기술이 아니라 신뢰다. 검증하는 사람의 서명이 곧 가격이 된다."
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-pd",
+   "name": "콘텐츠 PD",
+   "en": "Content Producer / Director",
+   "sector": "s3",
+   "role": "기획부터 제작·편집·공개까지 콘텐츠의 전체 흐름을 책임진다. 예산과 일정, 제작진의 역할을 조정하며 최종 결과물의 기준을 지킨다.",
+   "ksa": {
+    "k": [
+     "서사·연출",
+     "제작 공정·예산",
+     "저작권·계약"
+    ],
+    "s": [
+     "기획서·구성안",
+     "촬영·편집 지휘",
+     "플랫폼 유통"
+    ],
+    "a": [
+     "끝까지 기준을 놓지 않는 고집",
+     "제작진을 이끄는 리더십"
+    ]
+   },
+   "study": [
+    "미디어커뮤니케이션",
+    "영상학",
+    "연출"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "방송영상 제작 민간 교육·공모전"
+   ],
+   "insight": "생성AI가 제작 공정을 바꾸고 있지만 ‘무엇을 만들 것인가’를 정하는 일은 여전히 사람의 몫이다. 다만 도구를 이해하는 PD와 그렇지 않은 PD의 격차가 벌어지고 있다.",
+   "companies": {
+    "domestic": [
+     "CJ ENM",
+     "스튜디오드래곤",
+     "넷플릭스 코리아",
+     "웨이브",
+     "방송사"
+    ],
+    "global": [
+     "Netflix",
+     "Disney+",
+     "Amazon MGM Studios",
+     "YouTube"
+    ]
+   },
+   "kind": "old"
+  },
+  {
+   "id": "j-content-ai",
+   "name": "생성AI 콘텐츠 워크플로 설계자",
+   "en": "Generative AI Content Workflow Designer",
+   "sector": "s3",
+   "role": "기획·제작·검수 단계에 생성AI를 끼워 넣어 제작 시간과 비용을 줄이는 공정을 설계한다. 어떤 단계는 자동화하고 어떤 단계는 사람이 최종 판단하도록 경계를 정한다.",
+   "ksa": {
+    "k": [
+     "콘텐츠 제작 공정",
+     "생성모델 한계와 저작권",
+     "품질 기준 설정"
+    ],
+    "s": [
+     "프롬프트·템플릿 설계",
+     "자동화 도구 연결(API·노코드)",
+     "검수 체크리스트 운영"
+    ],
+    "a": [
+     "‘빠름’과 ‘믿을 수 있음’을 함께 보는 감각",
+     "창작자와 협상하는 소통"
+    ]
+   },
+   "study": [
+    "미디어커뮤니케이션",
+    "콘텐츠학",
+    "디자인",
+    "경영학"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "멀티미디어콘텐츠제작 전문가(민간)",
+    "Adobe 공인 자격"
+   ],
+   "insight": "콘텐츠 산업에서 생성AI 활용률은 이미 3곳 중 1곳이다. 이 직무의 값은 도구 사용이 아니라 ‘사람이 볼 곳을 남기는 설계’에 있다.",
+   "companies": {
+    "domestic": [
+     "CJ ENM",
+     "스튜디오드래곤",
+     "네이버웹툰",
+     "카카오엔터테인먼트",
+     "하이브"
+    ],
+    "global": [
+     "Adobe",
+     "Netflix",
+     "Disney",
+     "Runway"
+    ]
+   },
+   "kind": "new"
+  },
+  {
+   "id": "j-reskill",
+   "name": "사내 리스킬링 설계자",
+   "en": "Workforce Reskilling Designer",
+   "sector": "s3",
+   "role": "AI·자동화로 바뀌는 직무를 분석해 어떤 사람에게 무엇을 가르칠지 설계한다. 교육을 이수한 사람이 실제로 다른 일을 맡을 수 있도록 직무 전환 경로와 평가를 붙인다.",
+   "ksa": {
+    "k": [
+     "직무분석·역량 모델",
+     "성인 학습 원리",
+     "노동시장 변화 데이터"
+    ],
+    "s": [
+     "교육 과정 설계",
+     "효과 측정·평가",
+     "노사·현장 협의"
+    ],
+    "a": [
+     "배우는 사람의 처지를 먼저 보는 공감",
+     "성과를 숫자로 확인하는 책임"
+    ]
+   },
+   "study": [
+    "교육학",
+    "산업교육학",
+    "인사조직",
+    "직업상담학"
+   ],
+   "certs": [
+    "직업상담사",
+    "평생교육사",
+    "인적자원개발 민간 자격"
+   ],
+   "insight": "WEF는 2030년까지 1억 7천만 개 일자리가 생기고 9,200만 개가 사라진다고 본다. 그 사이를 건너게 하는 사람이 리스킬링 설계자다.",
+   "companies": {
+    "domestic": [
+     "삼성전자 인재개발원",
+     "LG·SK 인재개발",
+     "한국산업인력공단",
+     "직업능력개발 훈련기관"
+    ],
+    "global": [
+     "Amazon Upskilling",
+     "IBM SkillsBuild",
+     "Coursera",
+     "OECD Skills"
+    ]
+   },
+   "kind": "new"
+  },
+  {
+   "id": "j-agri",
+   "name": "농업기술자·농촌지도사",
+   "en": "Agricultural Extension Specialist",
+   "sector": "s1",
+   "role": "농가를 찾아가 재배 기술과 병해충 대응을 지도하고, 새 기술이 현장에 맞는지 시험한다. 정책 사업과 농가 사이를 잇는 통역자 역할도 한다.",
+   "ksa": {
+    "k": [
+     "작물 재배·병리",
+     "농업 정책·보조사업",
+     "농가 경영"
+    ],
+    "s": [
+     "현장 진단·처방",
+     "시범포 운영",
+     "교육·컨설팅"
+    ],
+    "a": [
+     "농가의 말을 끝까지 듣는 태도",
+     "현장에서 통하는 언어로 바꾸는 힘"
+    ]
+   },
+   "study": [
+    "농학",
+    "원예학",
+    "식물병리학",
+    "농업경제학"
+   ],
+   "certs": [
+    "농업기술자(관련 학과·경력)",
+    "식물보호기사",
+    "종자기사"
+   ],
+   "insight": "스마트팜이 늘수록 ‘기술을 농가에 맞추는 사람’의 값이 올라간다. 새 장비의 실패는 대개 기술이 아니라 적용 방식에서 나온다.",
+   "companies": {
+    "domestic": [
+     "농촌진흥청",
+     "도 농업기술원",
+     "시군 농업기술센터",
+     "농협"
+    ],
+    "global": [
+     "USDA Extension",
+     "Wageningen University",
+     "FAO"
+    ]
+   },
+   "kind": "old"
+  },
+  {
+   "id": "j-smartfarm",
+   "name": "스마트팜 운영·데이터 관리사",
+   "en": "Smart Farm Operations & Data Manager",
+   "sector": "s1",
+   "role": "온실·노지의 온도·습도·양액·생육 데이터를 모아 환경을 제어하고, 수확량과 품질을 비교해 재배 처방을 만든다. 센서와 제어기가 멈추면 작물이 먼저 다치므로 장애 대응도 함께 맡는다.",
+   "ksa": {
+    "k": [
+     "원예·작물 생리",
+     "환경 제어 원리",
+     "센서·통신 기초"
+    ],
+    "s": [
+     "데이터 정리·대시보드 운용",
+     "관수·양액 처방 조정",
+     "장비 점검과 기록"
+    ],
+    "a": [
+     "작물 상태를 눈으로 먼저 보는 관찰력",
+     "이상치를 놓치지 않는 주의력"
+    ]
+   },
+   "study": [
+    "원예학",
+    "스마트팜학과",
+    "농업생명과학",
+    "바이오시스템공학"
+   ],
+   "certs": [
+    "스마트농업관리사(2025년 첫 시험, 국가전문자격)",
+    "시설원예기사",
+    "농업기술자 관련 교육"
+   ],
+   "insight": "2025년 스마트농업관리사 국가자격이 생기면서 ‘센서를 다루는 농업인’이 하나의 직업으로 제도화됐다. 농업과 데이터 사이의 첫 번째 공식 직무다.",
+   "companies": {
+    "domestic": [
+     "농협·지자체 스마트팜 혁신밸리",
+     "스마트팜코리아 등록 기업",
+     "팜에이트",
+     "그린플러스"
+    ],
+    "global": [
+     "Priva(네덜란드)",
+     "Signify",
+     "Bowery Farming",
+     "AppHarvest 계열 시설"
+    ]
+   },
+   "kind": "new"
+  },
+  {
+   "id": "j-acct",
+   "name": "회계·재무 담당자",
+   "en": "Accountant / Finance",
+   "sector": "s3",
+   "role": "거래를 기록하고 재무제표를 만들며, 예산과 원가를 관리한다. 최근에는 탄소·ESG 데이터처럼 새로 생긴 비재무 지표까지 검증 대상에 들어왔다.",
+   "ksa": {
+    "k": [
+     "회계 기준·세법",
+     "원가·관리회계",
+     "내부통제"
+    ],
+    "s": [
+     "결산·공시",
+     "예산 편성",
+     "감사 대응"
+    ],
+    "a": [
+     "숫자의 근거를 끝까지 확인하는 성실성",
+     "기한을 지키는 책임감"
+    ]
+   },
+   "study": [
+    "회계학",
+    "경영학",
+    "경제학"
+   ],
+   "certs": [
+    "공인회계사",
+    "세무사",
+    "전산회계·전산세무"
+   ],
+   "insight": "ESG 공시와 탄소 검증이 회계의 영역으로 들어왔다. 숫자를 만드는 사람에서 숫자를 신뢰하게 만드는 사람으로 역할이 넓어지고 있다.",
+   "companies": {
+    "domestic": [
+     "삼일·삼정·한영·안진 회계법인",
+     "대기업 재무팀",
+     "금융회사"
+    ],
+    "global": [
+     "Deloitte",
+     "PwC",
+     "EY",
+     "KPMG"
+    ]
+   },
+   "kind": "old"
+  },
+  {
+   "id": "j-qa",
+   "name": "품질관리(QA/QC) 담당자",
+   "en": "Quality Assurance / Control",
+   "sector": "s2",
+   "role": "제품이 규격과 기준에 맞는지 검사하고, 문제가 생기기 전에 공정을 바로잡는다. 고객 클레임과 인증 심사의 창구 역할을 한다.",
+   "ksa": {
+    "k": [
+     "통계적 품질관리",
+     "인증 규격(ISO·IATF)",
+     "측정 장비 원리"
+    ],
+    "s": [
+     "검사 계획·불량 분석",
+     "8D 보고서",
+     "공급사 품질 관리"
+    ],
+    "a": [
+     "‘대충 넘어감’을 견디지 못하는 기준",
+     "사람을 탓하지 않고 공정을 보는 태도"
+    ]
+   },
+   "study": [
+    "산업공학",
+    "기계공학",
+    "화학공학",
+    "통계학"
+   ],
+   "certs": [
+    "품질경영기사",
+    "품질관리기사",
+    "ISO 심사원 민간 자격"
+   ],
+   "insight": "신산업일수록 규격이 아직 없다. 없는 규격을 만들고 지키게 하는 일이 품질 담당자의 새 역할이다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "현대자동차",
+     "LG에너지솔루션",
+     "한국품질재단"
+    ],
+    "global": [
+     "Bosch",
+     "Toyota",
+     "SGS",
+     "TÜV"
+    ]
+   },
+   "kind": "old"
+  },
+  {
+   "id": "j-mrv",
+   "name": "탄소 MRV·배출량 검증 전문가",
+   "en": "Carbon MRV Specialist",
+   "sector": "s4",
+   "role": "기업·사업장의 온실가스 배출량을 측정·보고·검증(MRV)한다. 활동자료와 배출계수를 맞대어 오류를 잡고, 감축 실적이 국제 기준에 맞는지 근거를 남긴다.",
+   "ksa": {
+    "k": [
+     "온실가스 배출계수·산정 방법론",
+     "국제 기준(ISO 14064, GHG Protocol)",
+     "감축사업 방법론"
+    ],
+    "s": [
+     "데이터 감사·표본 검사",
+     "보고서·검증 의견서 작성",
+     "이해관계자 인터뷰"
+    ],
+    "a": [
+     "숫자 뒤의 증빙을 요구하는 태도",
+     "이해 충돌 상황에서 기준을 지키는 용기"
+    ]
+   },
+   "study": [
+    "환경공학",
+    "기후에너지학",
+    "산업공학",
+    "회계·경영"
+   ],
+   "certs": [
+    "온실가스관리기사",
+    "환경영향평가사",
+    "에너지관리기사"
+   ],
+   "insight": "탄소시장의 병목은 기술이 아니라 ‘믿을 수 있는 숫자’다. 검증하는 사람의 서명이 곧 시장의 신뢰가 된다.",
+   "companies": {
+    "domestic": [
+     "한국환경공단(배출량 검증)",
+     "한국품질재단",
+     "Bureau Veritas Korea",
+     "SGS Korea",
+     "탄소감축 스타트업"
+    ],
+    "global": [
+     "Verra",
+     "Gold Standard",
+     "SGS",
+     "Bureau Veritas",
+     "DNV"
+    ]
+   },
+   "kind": "new"
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_mcst_content2025",
+   "name": "문화체육관광부",
+   "title": "2025년 콘텐츠산업조사(2024년 기준) 결과",
+   "url": "https://www.mcst.go.kr/site/s_notice/press/pressView.jsp?pSeq=22266",
+   "license": {
+    "type": "KOGL-0",
+    "name": "공공누리 제0유형(자유이용)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026-02-27",
+   "track": "A",
+   "usage": "2024년 콘텐츠산업 매출 157조 원, 수출 141억 달러, 게임 수출 85억 달러(60.4%)"
+  },
+  {
+   "id": "src_mafra_asean",
+   "name": "농림축산식품부",
+   "title": "아세안+3 역내 농업 협력 강화와 K-스마트팜·K-푸드 진출 확대 도모",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787541",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026-11-02",
+   "track": "A",
+   "usage": "아세안+3 농업 협력, K-스마트팜 진출 확대"
+  },
+  {
+   "id": "src_iea_ccus2025",
+   "name": "국제에너지기구(IEA)",
+   "title": "CCUS projects around the world are reaching new milestones (2025-04-30)",
+   "url": "https://www.iea.org/commentaries/ccus-projects-around-the-world-are-reaching-new-milestones",
+   "license": {
+    "type": "CC-BY-4.0",
+    "name": "CC BY 4.0",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2025-04-30",
+   "track": "A",
+   "usage": "2025년 1분기 운영 포집능력 5,000만 톤, 2030년 파이프라인 4억 3,000만 톤·저장 6억 7,000만 톤"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다.",
+ "updated_at": "2026-11-19T04:30:00+09:00"
+}
