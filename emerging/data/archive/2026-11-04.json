@@ -373,6 +373,157 @@
    },
    "source_id": "src_iea_batteries2024",
    "question": "양이 3배가 되면 ‘만드는 사람’보다 ‘상태를 아는 사람’이 귀해진다. 수명·안전·재활용 지표가 다음 경쟁력이다."
+  },
+  {
+   "id": "ei-20261104-4",
+   "date": "2026-11-04",
+   "order": 4,
+   "sector": "s4",
+   "cat": "space",
+   "lead": false,
+   "title": "상업 우주 매출 5,443억 달러, 1년에 13% 늘었다",
+   "kicker": "OECD가 인용한 Space Foundation 상업 우주 매출",
+   "summary": "2025년 상업 우주 매출은 5,443억 달러로 전년보다 13% 늘었다. 같은 해 유럽우주국(ESA) 집계는 5,640억 유로로 7% 증가였다.",
+   "key_numbers": [
+    {
+     "label": "상업 우주 매출",
+     "value": "5,443억 달러",
+     "note": "2025년, +13%"
+    },
+    {
+     "label": "ESA 집계",
+     "value": "5,640억 유로",
+     "note": "+7%"
+    },
+    {
+     "label": "집계 차이",
+     "value": "정의·범위",
+     "note": "OECD 설명"
+    }
+   ],
+   "market": {
+    "label": "상업 우주 매출",
+    "unit": "억 달러",
+    "basis": "2024·2025년",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2025"
+    ],
+    "series": [
+     {
+      "name": "매출",
+      "values": [
+       481.7,
+       544.3
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 13.0,
+    "note": "2024년 값은 ‘13% 증가’ 서술에서 역산한 근사치다.",
+    "source_id": "src_oecd_space2026"
+   },
+   "players": {
+    "domestic": [
+     "쎄트렉아이",
+     "한화에어로스페이스",
+     "KT SAT"
+    ],
+    "glob": [
+     "SpaceX",
+     "Starlink",
+     "Planet Labs",
+     "Viasat"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-eo-analyst"
+    ]
+   },
+   "source_id": "src_oecd_space2026",
+   "question": "같은 해 같은 산업을 두고 5,443억 달러와 5,640억 유로가 나온다. 우주를 볼 때는 숫자보다 ‘무엇을 셌는지’를 먼저 본다."
+  },
+  {
+   "id": "ei-20261104-5",
+   "date": "2026-11-04",
+   "order": 5,
+   "sector": "s2",
+   "cat": "battery",
+   "lead": false,
+   "title": "전기 트럭 배터리 수요, 1년에 75% 늘었다",
+   "kicker": "IEA 배터리 수요 집계",
+   "summary": "2024년 전기차 배터리 수요 950GWh 가운데 전기 트럭이 차지하는 몫은 아직 3% 안팎이지만, 증가율은 75%를 넘었다. 승용차 다음의 물량은 상용차에서 온다.",
+   "key_numbers": [
+    {
+     "label": "EV 배터리 수요",
+     "value": "950GWh",
+     "note": "2024년, +25%"
+    },
+    {
+     "label": "전기 트럭",
+     "value": "+75%",
+     "note": "2023년 대비"
+    },
+    {
+     "label": "2030년 트럭 비중",
+     "value": "8% 이상",
+     "note": "IEA 전망"
+    }
+   ],
+   "market": {
+    "label": "전기차 배터리 수요",
+    "unit": "GWh",
+    "basis": "2023·2024년",
+    "chart": "bar",
+    "labels": [
+     "2023",
+     "2024"
+    ],
+    "series": [
+     {
+      "name": "EV 배터리",
+      "values": [
+       760,
+       950
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 25.0,
+    "note": "2023년 값은 ‘25% 증가’ 서술에서 역산한 근사치다.",
+    "source_id": "src_iea_batteries2024"
+   },
+   "players": {
+    "domestic": [
+     "LG에너지솔루션",
+     "삼성SDI",
+     "SK온",
+     "현대차"
+    ],
+    "glob": [
+     "CATL",
+     "BYD",
+     "Panasonic Energy",
+     "Tesla"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-logist"
+    ],
+    "new": [
+     "j-bms",
+     "j-battery-recycle"
+    ]
+   },
+   "source_id": "src_iea_batteries2024",
+   "question": "상용차는 하루에 몇 번씩 충전하고 오래 쓴다. 그래서 트럭용 배터리는 ‘수명·안전·충전시간’의 기준을 다시 세운다."
   }
  ],
  "jobs": [
@@ -424,7 +575,13 @@
      "Siemens"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
   },
   {
    "id": "j-proc",
@@ -474,7 +631,13 @@
      "Air Liquide"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
   },
   {
    "id": "j-eo-analyst",
@@ -524,7 +687,13 @@
      "ICEYE"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "위성 농업 자문역",
+     "w": "위성 영상으로 작황·재해를 읽어 보험·유통에 자문"
+    }
+   ]
   },
   {
    "id": "j-qa",
@@ -574,7 +743,13 @@
      "TÜV"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "인증 시험 대행 코디네이터",
+     "w": "해외 인증 일정과 서류를 관리"
+    }
+   ]
   },
   {
    "id": "j-bms",
@@ -625,7 +800,13 @@
      "Tesla"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "배터리 이력 증명서 발급인",
+     "w": "중고 전기차·ESS 배터리의 건강 이력을 인증"
+    }
+   ]
   },
   {
    "id": "j-battery-recycle",
@@ -675,7 +856,70 @@
      "CATL(BRUNP)"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "폐배터리 회수 물류 기획자",
+     "w": "수거·운송·해체 동선을 설계하는 서비스"
+    }
+   ]
+  },
+  {
+   "id": "j-logist",
+   "name": "물류관리사",
+   "en": "Logistics Manager",
+   "sector": "s3",
+   "role": "보관·운송·재고를 계획해 비용과 납기를 맞춘다. 자동화 설비와 배송 데이터가 늘면서 수치로 흐름을 읽는 능력이 중요해졌다.",
+   "ksa": {
+    "k": [
+     "물류 시스템·운송 방식",
+     "재고·원가 관리",
+     "무역·통관 기초"
+    ],
+    "s": [
+     "수요 예측·배차",
+     "창고 운영 관리",
+     "데이터 분석"
+    ],
+    "a": [
+     "현장과 숫자를 함께 보는 감각",
+     "돌발 지연에 침착한 대응"
+    ]
+   },
+   "study": [
+    "물류학",
+    "산업공학",
+    "경영학",
+    "무역학"
+   ],
+   "certs": [
+    "물류관리사",
+    "유통관리사",
+    "국제무역사"
+   ],
+   "insight": "WEF는 2030년까지 배송·운전 직무가 절대 수에서 가장 크게 늘 것으로 본다. 자동화는 이 직무를 없애기보다 ‘자동화 사이의 예외’를 관리하는 쪽으로 옮긴다.",
+   "companies": {
+    "domestic": [
+     "CJ대한통운",
+     "한진",
+     "현대글로비스",
+     "쿠팡",
+     "롯데글로벌로지스"
+    ],
+    "global": [
+     "DHL",
+     "Maersk",
+     "Amazon Logistics",
+     "UPS"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "라스트마일 수요 예측 담당",
+     "w": "지역별 배송량을 예측해 배차를 최적화"
+    }
+   ]
   }
  ],
  "sources": [
@@ -685,13 +929,13 @@
    "title": "The Space Economy at a Glance 2026",
    "url": "https://doi.org/10.1787/cbf9b240-en",
    "license": {
-    "type": "OECD",
-    "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2026-09",
-   "track": "A",
+   "track": "B",
    "usage": "2025년 세계 우주 매출 5,500~6,000억 달러, 2024년 반도체 시장 약 6,200억 달러 등"
   },
   {
@@ -700,13 +944,13 @@
    "title": "The Space Economy in Figures 2023",
    "url": "https://doi.org/10.1787/fa5494aa-en",
    "license": {
-    "type": "OECD",
-    "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2023-12",
-   "track": "A",
+   "track": "B",
    "usage": "2008~2021년 부문별 연평균 성장률(위성항법 지상장비 7%, 제조 0.8% 등)"
   },
   {
@@ -727,8 +971,8 @@
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },

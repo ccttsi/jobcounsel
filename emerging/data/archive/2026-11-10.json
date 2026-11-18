@@ -320,6 +320,135 @@
    },
    "source_id": "src_iaea_fusion2025",
    "question": "핵융합은 아직 전력이 아니라 실험이다. 그런데 실험을 돌리는 직업은 이미 생겼고, 그 경험은 다른 산업에서도 값이 있다."
+  },
+  {
+   "id": "ei-20261110-4",
+   "date": "2026-11-10",
+   "order": 4,
+   "sector": "s3",
+   "cat": "health",
+   "lead": false,
+   "title": "안과 검사 기술자 +19.8%, 기기와 사람 사이",
+   "kicker": "BLS 안과 검사 기술자 전망",
+   "summary": "BLS는 안과 검사 기술자 고용이 2024년 7만 8,800명에서 2034년 9만 4,400명으로 19.8% 늘 것으로 본다. 고령화로 검사 건수가 늘고, 장비는 더 정밀해진다.",
+   "key_numbers": [
+    {
+     "label": "고용",
+     "value": "7.88만 → 9.44만 명",
+     "note": "2024 → 2034"
+    },
+    {
+     "label": "증가율",
+     "value": "+19.8%",
+     "note": "전체 평균 3.1%"
+    },
+    {
+     "label": "증가 인원",
+     "value": "1만 5,600명",
+     "note": "10년"
+    }
+   ],
+   "market": {
+    "label": "안과 검사 기술자 고용",
+    "unit": "천 명",
+    "basis": "BLS 전망",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2034"
+    ],
+    "series": [
+     {
+      "name": "고용",
+      "values": [
+       78.8,
+       94.4
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 1.8,
+    "note": "진입 학력은 준학사 또는 현장 훈련이다.",
+    "source_id": "src_bls_ep2434"
+   },
+   "players": {
+    "domestic": [
+     "김안과병원",
+     "서울대병원 안과",
+     "안경원 체인",
+     "검안 장비사"
+    ],
+    "glob": [
+     "LensCrafters",
+     "Specsavers",
+     "Zeiss",
+     "EssilorLuxottica"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-nurse"
+    ],
+    "new": [
+     "j-dh-coord"
+    ]
+   },
+   "source_id": "src_bls_ep2434",
+   "question": "기기가 정밀해질수록 ‘기기를 다루는 사람’의 훈련이 결과를 좌우한다. 의료기술 직무의 공통점이다."
+  },
+  {
+   "id": "ei-20261110-5",
+   "date": "2026-11-10",
+   "order": 5,
+   "sector": "s2",
+   "cat": "semicon",
+   "lead": false,
+   "title": "반도체 장비·소재, 투자가 공장 밖으로",
+   "kicker": "IEA 청정기술 제조 투자와 반도체 설비 투자",
+   "summary": "2023년 청정에너지 제조 투자 2,350억 달러 가운데 태양광·배터리가 5분의 4를 차지했다. 같은 해 반도체 시장은 6,200억 달러로, 장비·소재 투자가 함께 커졌다.",
+   "key_numbers": [
+    {
+     "label": "청정기술 제조 투자",
+     "value": "2,350억 달러",
+     "note": "2023년, +50%"
+    },
+    {
+     "label": "태양광·배터리",
+     "value": "5분의 4",
+     "note": "2023년"
+    },
+    {
+     "label": "반도체 시장",
+     "value": "6,200억 달러",
+     "note": "2024년"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "한미반도체",
+     "네패스",
+     "원익IPS",
+     "솔브레인"
+    ],
+    "glob": [
+     "Applied Materials",
+     "ASML",
+     "Lam Research",
+     "Tokyo Electron"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec",
+     "j-proc"
+    ],
+    "new": [
+     "j-advanced-pkg"
+    ]
+   },
+   "source_id": "src_iea_etp2024",
+   "question": "공장을 짓는 돈의 절반은 장비로 간다. 그래서 제조업 투자 사이클은 완성품 회사보다 장비 회사에서 먼저 보인다."
   }
  ],
  "jobs": [
@@ -372,7 +501,13 @@
      "Microsoft"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터 제품 기획자",
+     "w": "분석 결과를 반복 판매 가능한 제품으로 만드는 일"
+    }
+   ]
   },
   {
    "id": "j-quantum-app",
@@ -424,7 +559,13 @@
      "Quantinuum"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "양자 활용 가능성 심사역",
+     "w": "기업 과제가 양자로 풀릴 만한지 판정하는 역할"
+    }
+   ]
   },
   {
    "id": "j-ai-gov",
@@ -476,7 +617,13 @@
      "OECD AI Policy Observatory"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "AI 사고 대응 조사관",
+     "w": "모델 사고의 원인과 재발 방지를 문서화"
+    }
+   ]
   },
   {
    "id": "j-acct",
@@ -524,7 +671,13 @@
      "KPMG"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "ESG 데이터 검증 보조",
+     "w": "비재무 지표의 근거를 확인"
+    }
+   ]
   },
   {
    "id": "j-fintech-risk",
@@ -575,7 +728,13 @@
      "Square(Block)"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "규제 샌드박스 신청 대행",
+     "w": "핀테크 창업자의 인허가 서류를 대신 쓰는 일"
+    }
+   ]
   },
   {
    "id": "j-elec",
@@ -625,7 +784,13 @@
      "Siemens"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
   },
   {
    "id": "j-proc",
@@ -675,7 +840,13 @@
      "Air Liquide"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
   },
   {
    "id": "j-fusion",
@@ -723,7 +894,178 @@
      "ITER 한국사업단"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "초전도 자석 정비 기술자",
+     "w": "융합 장치의 자석·진공 부품을 유지보수"
+    }
+   ]
+  },
+  {
+   "id": "j-nurse",
+   "name": "간호사",
+   "en": "Registered Nurse",
+   "sector": "s3",
+   "role": "환자의 상태를 관찰하고 치료·투약·교육을 수행한다. 디지털 헬스 시대에는 측정기 데이터와 원격 모니터링을 해석하는 일이 더해졌다.",
+   "ksa": {
+    "k": [
+     "해부·생리·약리",
+     "간호 과정",
+     "의료 정보 보호"
+    ],
+    "s": [
+     "환자 평가·기록",
+     "기기·모니터 운용",
+     "보호자·의료진 소통"
+    ],
+    "a": [
+     "환자 변화를 먼저 알아차리는 관찰력",
+     "감정 노동을 견디는 회복력"
+    ]
+   },
+   "study": [
+    "간호학"
+   ],
+   "certs": [
+    "간호사 면허",
+    "전문간호사",
+    "보건교육사"
+   ],
+   "insight": "BLS는 2024~34년 간호사(전문간호사) 증가율을 40.1%로 본다. 원격 모니터링이 늘면서 병동 밖에서도 간호 판단이 필요해졌다.",
+   "companies": {
+    "domestic": [
+     "상급종합병원",
+     "요양·재택의료기관",
+     "카카오헬스케어",
+     "방문간호 사업자"
+    ],
+    "global": [
+     "Mayo Clinic",
+     "Cleveland Clinic",
+     "NHS",
+     "Teladoc"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "재택 모니터링 간호사",
+     "w": "원격 측정값을 보고 방문 시점을 정하는 역할"
+    }
+   ]
+  },
+  {
+   "id": "j-dh-coord",
+   "name": "디지털 헬스 케어 코디네이터",
+   "en": "Digital Health Care Coordinator",
+   "sector": "s3",
+   "role": "원격진료·웨어러블 측정값·복약 알림을 환자 생활에 맞춰 연결한다. 이상 수치가 잡히면 의료진에게 넘기고, 환자가 기기를 포기하지 않도록 사용법과 목표를 조정한다.",
+   "ksa": {
+    "k": [
+     "만성질환 관리 기초",
+     "의료정보 보호 규정",
+     "디지털 기기 활용"
+    ],
+    "s": [
+     "환자 상담·교육",
+     "측정값 확인과 에스컬레이션",
+     "기록·보고"
+    ],
+    "a": [
+     "환자의 생활을 판단하지 않고 듣는 태도",
+     "위험 신호를 놓치지 않는 세심함"
+    ]
+   },
+   "study": [
+    "간호학",
+    "보건학",
+    "의료정보학",
+    "사회복지학"
+   ],
+   "certs": [
+    "간호사·보건교육사",
+    "의료정보관리사",
+    "국가자격 없음(기관 교육)"
+   ],
+   "insight": "원격진료가 전체 진료의 13%까지 올라온 뒤 생긴 ‘사이의 직무’다. 의사도 아니고 상담사도 아닌 자리가 환자 유지율을 결정한다.",
+   "companies": {
+    "domestic": [
+     "서울아산병원(디지털헬스)",
+     "분당서울대병원",
+     "카카오헬스케어",
+     "뷰노",
+     "SK텔레콤(NUGU)"
+    ],
+    "global": [
+     "Teladoc Health",
+     "Omada Health",
+     "Epic Systems",
+     "Withings"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "웨어러블 온보딩 코치",
+     "w": "고령 환자가 측정기를 포기하지 않게 돕는 방문 코치"
+    }
+   ]
+  },
+  {
+   "id": "j-advanced-pkg",
+   "name": "반도체 첨단패키징 공정 엔지니어",
+   "en": "Advanced Packaging Process Engineer",
+   "sector": "s2",
+   "role": "칩을 옆으로·위로 쌓아 하나의 시스템으로 만드는 2.5D·3D 패키징 공정을 개발한다. 열·휨·수율 문제를 잡고, AI 가속기 고객의 요구 사양에 맞춰 공정을 조정한다.",
+   "ksa": {
+    "k": [
+     "열기계·재료 특성",
+     "본딩·TSV 공정 원리",
+     "수율 분석"
+    ],
+    "s": [
+     "DOE 실험 설계",
+     "계측·불량 분석",
+     "고객 사양 협의"
+    ],
+    "a": [
+     "미세한 편차를 견디는 인내",
+     "데이터로 원인을 좁히는 논리"
+    ]
+   },
+   "study": [
+    "신소재공학",
+    "전자공학",
+    "기계공학"
+   ],
+   "certs": [
+    "반도체설계기사·반도체장비유지보수 관련 자격",
+    "품질경영기사"
+   ],
+   "insight": "전공정 미세화가 한계에 가까워지며 ‘쌓아서 성능을 내는’ 후공정이 다시 전면에 나왔다. 한국에 설비·소재 기업이 많아 국내 일자리 밀도가 높다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "SK하이닉스",
+     "한미반도체",
+     "네패스",
+     "하나마이크론"
+    ],
+    "global": [
+     "TSMC",
+     "Intel",
+     "Amkor",
+     "ASE"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "칩 열설계 자문역",
+     "w": "AI 가속기의 발열·휨을 잡는 전문 컨설팅"
+    }
+   ]
   }
  ],
  "sources": [
@@ -733,13 +1075,13 @@
    "title": "Advancing the measurement of investments in artificial intelligence (OECD AI Papers No.47)",
    "url": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/09/advancing-the-measurement-of-investments-in-artificial-intelligence_7f58ff65/13e0da2f-en.pdf",
    "license": {
-    "type": "OECD",
-    "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2025-09",
-   "track": "A",
+   "track": "B",
    "usage": "EU27 AI 투자 2023년 2,570억 유로(민간 73%), 미국 AI R&D 약 900억 유로"
   },
   {
@@ -748,13 +1090,13 @@
    "title": "The Future of Jobs Report 2025",
    "url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
    "license": {
-    "type": "WEF",
-    "name": "WEF 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2025-01-07",
-   "track": "A",
+   "track": "B",
    "usage": "2030년까지 신규 일자리 1억 7천만 개·소멸 9,200만 개, 순증 7,800만 개 등 공개 수치만 인용"
   },
   {
@@ -763,20 +1105,50 @@
    "title": "World Fusion Outlook 2025",
    "url": "https://www.iaea.org/publications/15935/iaea-world-fusion-outlook-2025",
    "license": {
-    "type": "IAEA",
-    "name": "IAEA 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2025-10-14",
-   "track": "A",
+   "track": "B",
    "usage": "핵융합 장치 160기 이상, 약 40개국 프로그램, 민간·공공 투자 100억 달러 초과"
+  },
+  {
+   "id": "src_bls_ep2434",
+   "name": "미국 노동통계국(BLS)",
+   "title": "Industry and occupational employment projections overview and highlights, 2024–34",
+   "url": "https://www.bls.gov/opub/mlr/2026/article/industry-and-occupational-employment-projections-overview.htm",
+   "license": {
+    "type": "PUBLIC-DOMAIN",
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026",
+   "track": "A",
+   "usage": "직업별 2024~2034년 고용 증감률·중위임금·진입학력"
+  },
+  {
+   "id": "src_iea_etp2024",
+   "name": "국제에너지기구(IEA)",
+   "title": "Energy Technology Perspectives 2024",
+   "url": "https://www.iea.org/reports/Energy-Technology-Perspectives-2024",
+   "license": {
+    "type": "CC-BY-4.0",
+    "name": "CC BY 4.0",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2024-10-30",
+   "track": "A",
+   "usage": "청정에너지 6대 기술 시장 2023년 7,000억 달러 돌파, 제조 투자 2,350억 달러(+50%)"
   }
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },

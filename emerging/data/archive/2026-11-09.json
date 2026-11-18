@@ -347,6 +347,134 @@
    },
    "source_id": "src_iea_batteries2024",
    "question": "재활용은 환경 사업이 아니라 원료 확보 사업이다. 회수율과 순도를 숫자로 말할 수 있는 공정 인력이 핵심이다."
+  },
+  {
+   "id": "ei-20261109-4",
+   "date": "2026-11-09",
+   "order": 4,
+   "sector": "s3",
+   "cat": "health",
+   "lead": false,
+   "title": "정신건강 인력, 기술자 +20.0%",
+   "kicker": "BLS 정신과 기술자(psychiatric technicians) 전망",
+   "summary": "BLS는 정신과 기술자 고용이 2024년 14만 4,500명에서 2034년 17만 3,300명으로 20.0% 늘 것으로 본다. 정신건강 서비스가 병원 밖으로 나오면서 인력 수요가 커졌다.",
+   "key_numbers": [
+    {
+     "label": "고용",
+     "value": "14.45만 → 17.33만 명",
+     "note": "2024 → 2034"
+    },
+    {
+     "label": "증가율",
+     "value": "+20.0%",
+     "note": "전체 평균 3.1%"
+    },
+    {
+     "label": "증가 인원",
+     "value": "2만 8,900명",
+     "note": "10년"
+    }
+   ],
+   "market": {
+    "label": "정신과 기술자 고용",
+    "unit": "천 명",
+    "basis": "BLS 전망",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2034"
+    ],
+    "series": [
+     {
+      "name": "고용",
+      "values": [
+       144.5,
+       173.3
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 1.8,
+    "note": "진입 학력은 준학사 또는 자격증이다.",
+    "source_id": "src_bls_ep2434"
+   },
+   "players": {
+    "domestic": [
+     "국립정신건강센터",
+     "정신건강복지센터",
+     "서울시 자살예방센터"
+    ],
+    "glob": [
+     "NHS",
+     "Mind",
+     "NAMI",
+     "Community Health Systems"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-nurse",
+     "j-counselor"
+    ],
+    "new": [
+     "j-dh-coord"
+    ]
+   },
+   "source_id": "src_bls_ep2434",
+   "question": "정신건강은 상담 인력만으로 굴러가지 않는다. 약물·생활·응급을 함께 보는 기술 인력이 필요하다."
+  },
+  {
+   "id": "ei-20261109-5",
+   "date": "2026-11-09",
+   "order": 5,
+   "sector": "s4",
+   "cat": "quantum",
+   "lead": false,
+   "title": "양자 기술, 실험실에서 사업으로",
+   "kicker": "KISTEP 10대 미래유망기술의 양자 의료",
+   "summary": "KISTEP는 양자 기반 개인 맞춤형 정밀의료를 10대 미래유망기술로 꼽았다. 양자 센싱과 컴퓨팅으로 생체 신호를 수십~수백 배 정밀하게 읽는 기술이며 2030~2035년 실현을 전망한다.",
+   "key_numbers": [
+    {
+     "label": "선정",
+     "value": "10대 기술 중 1개",
+     "note": "2026 KISTEP"
+    },
+    {
+     "label": "실현 전망",
+     "value": "2030~2035년",
+     "note": "KISTEP"
+    },
+    {
+     "label": "국내 양자 플래그십",
+     "value": "연 500억 원",
+     "note": "2026년"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "KIST",
+     "한국표준과학연구원",
+     "SK텔레콤",
+     "삼성전자"
+    ],
+    "glob": [
+     "IBM",
+     "Google Quantum AI",
+     "IonQ",
+     "Quantinuum"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-quantum-app"
+    ]
+   },
+   "source_id": "src_kistep_10tech",
+   "question": "양자는 아직 의료의 주류가 아니다. 다만 ‘측정’에서 먼저 쓰일 가능성이 커서, 센서·계측 인력이 먼저 필요해진다."
   }
  ],
  "jobs": [
@@ -395,7 +523,13 @@
      "Teladoc"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "재택 모니터링 간호사",
+     "w": "원격 측정값을 보고 방문 시점을 정하는 역할"
+    }
+   ]
   },
   {
    "id": "j-data",
@@ -446,7 +580,13 @@
      "Microsoft"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터 제품 기획자",
+     "w": "분석 결과를 반복 판매 가능한 제품으로 만드는 일"
+    }
+   ]
   },
   {
    "id": "j-dh-coord",
@@ -497,7 +637,13 @@
      "Withings"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "웨어러블 온보딩 코치",
+     "w": "고령 환자가 측정기를 포기하지 않게 돕는 방문 코치"
+    }
+   ]
   },
   {
    "id": "j-cdm",
@@ -547,7 +693,13 @@
      "Medidata"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "임상 데이터 품질 감사역",
+     "w": "여러 병원의 임상 기록을 대조·점검"
+    }
+   ]
   },
   {
    "id": "j-elec",
@@ -597,7 +749,13 @@
      "Siemens"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
   },
   {
    "id": "j-quantum-app",
@@ -649,7 +807,13 @@
      "Quantinuum"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "양자 활용 가능성 심사역",
+     "w": "기업 과제가 양자로 풀릴 만한지 판정하는 역할"
+    }
+   ]
   },
   {
    "id": "j-ai-gov",
@@ -701,7 +865,13 @@
      "OECD AI Policy Observatory"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "AI 사고 대응 조사관",
+     "w": "모델 사고의 원인과 재발 방지를 문서화"
+    }
+   ]
   },
   {
    "id": "j-proc",
@@ -751,7 +921,13 @@
      "Air Liquide"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
   },
   {
    "id": "j-plant",
@@ -802,7 +978,13 @@
      "Siemens Energy"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "설비 원격 진단 기사",
+     "w": "여러 사업장 설비의 진동·온도를 원격 분석"
+    }
+   ]
   },
   {
    "id": "j-battery-recycle",
@@ -852,7 +1034,13 @@
      "CATL(BRUNP)"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "폐배터리 회수 물류 기획자",
+     "w": "수거·운송·해체 동선을 설계하는 서비스"
+    }
+   ]
   },
   {
    "id": "j-mrv",
@@ -904,7 +1092,68 @@
      "DNV"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "탄소 데이터 감사 보조",
+     "w": "중소기업 배출량 장부를 점검하는 실무 인력"
+    }
+   ]
+  },
+  {
+   "id": "j-counselor",
+   "name": "직업상담사",
+   "en": "Career Counselor",
+   "sector": "s3",
+   "role": "구직자의 상황과 역량을 정리해 현실적인 진로·취업 계획을 함께 세운다. 신산업 직무를 이해하고, 그 직무로 가는 훈련·자격 경로를 안내한다.",
+   "ksa": {
+    "k": [
+     "진로발달 이론",
+     "노동시장·직업 정보",
+     "국취·고용정책"
+    ],
+    "s": [
+     "상담 면담·검사 해석",
+     "직무분석·경로 설계",
+     "행정·사례 관리"
+    ],
+    "a": [
+     "사람을 평가절하하지 않는 태도",
+     "정보를 확인하고 말하는 신중함"
+    ]
+   },
+   "study": [
+    "직업상담학",
+    "심리학",
+    "교육학",
+    "사회복지학"
+   ],
+   "certs": [
+    "직업상담사 1·2급",
+    "청소년상담사",
+    "평생교육사"
+   ],
+   "insight": "신산업 직무는 채용공고와 자격 경로가 아직 정리되지 않았다. 상담사가 ‘무엇을 배워 어디로 가는지’를 번역해 줄 수 있으면 상담의 질이 달라진다.",
+   "companies": {
+    "domestic": [
+     "고용센터",
+     "국민취업지원제도 운영기관",
+     "대학 진로센터",
+     "민간 취업 상담사"
+    ],
+    "global": [
+     "OECD Career Guidance",
+     "ILO",
+     "NCDA(미국)"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "신산업 직무 리서처",
+     "w": "새 직무의 채용·자격 경로를 조사해 상담 자료로 만드는 일"
+    }
+   ]
   }
  ],
  "sources": [
@@ -914,13 +1163,13 @@
    "title": "Health at a Glance 2025",
    "url": "https://doi.org/10.1787/8f9e3f98-en",
    "license": {
-    "type": "OECD",
-    "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2025-11-13",
-   "track": "A",
+   "track": "B",
    "usage": "2023년 원격진료가 전체 진료의 13%, 2024년 온라인 디지털 건강서비스 제공 82%"
   },
   {
@@ -952,12 +1201,42 @@
    "published": "2024-04",
    "track": "A",
    "usage": "2030년 에너지저장 1,500GW(6배)·배터리 1,200GW(14배), 배터리 투자 8,000억 달러"
+  },
+  {
+   "id": "src_bls_ep2434",
+   "name": "미국 노동통계국(BLS)",
+   "title": "Industry and occupational employment projections overview and highlights, 2024–34",
+   "url": "https://www.bls.gov/opub/mlr/2026/article/industry-and-occupational-employment-projections-overview.htm",
+   "license": {
+    "type": "PUBLIC-DOMAIN",
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026",
+   "track": "A",
+   "usage": "직업별 2024~2034년 고용 증감률·중위임금·진입학력"
+  },
+  {
+   "id": "src_kistep_10tech",
+   "name": "한국과학기술기획평가원(KISTEP)",
+   "title": "2026 KISTEP 10대 미래유망기술",
+   "url": "https://www.data.go.kr/data/15087732/fileData.do",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026-09-22",
+   "track": "A",
+   "usage": "‘건강 사회 실현’ 10대 유망기술의 정의·범위·2030~2035 전망"
   }
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },

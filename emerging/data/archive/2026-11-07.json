@@ -370,6 +370,135 @@
    },
    "source_id": "src_oecd_ai_invest2025",
    "question": "AI 도입의 비용은 모델값이 아니라 교육·검증값이다. 그래서 ‘AI를 아는 사람’보다 ‘AI가 어디서 틀리는지 아는 사람’이 필요하다."
+  },
+  {
+   "id": "ei-20261107-4",
+   "date": "2026-11-07",
+   "order": 4,
+   "sector": "s3",
+   "cat": "health",
+   "lead": false,
+   "title": "물리치료 보조 +22.0%, 재활 수요가 늘어난다",
+   "kicker": "BLS 물리치료 보조 전망",
+   "summary": "BLS는 물리치료 보조 고용이 2024년 11만 1,500명에서 2034년 13만 6,000명으로 22.0% 늘 것으로 본다. 고령화와 만성질환 관리가 재활 인력을 끌어당긴다.",
+   "key_numbers": [
+    {
+     "label": "고용",
+     "value": "11.15만 → 13.6만 명",
+     "note": "2024 → 2034"
+    },
+    {
+     "label": "증가율",
+     "value": "+22.0%",
+     "note": "전체 평균 3.1%"
+    },
+    {
+     "label": "증가 인원",
+     "value": "2만 4,500명",
+     "note": "10년"
+    }
+   ],
+   "market": {
+    "label": "물리치료 보조 고용",
+    "unit": "천 명",
+    "basis": "BLS 전망",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2034"
+    ],
+    "series": [
+     {
+      "name": "고용",
+      "values": [
+       111.5,
+       136.0
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 2.0,
+    "note": "진입 학력은 준학사(2년제)다.",
+    "source_id": "src_bls_ep2434"
+   },
+   "players": {
+    "domestic": [
+     "요양병원",
+     "재활병원",
+     "방문재활 사업자",
+     "건강보험공단"
+    ],
+    "glob": [
+     "Kindred Healthcare",
+     "Encompass Health",
+     "NHS",
+     "Select Medical"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-nurse"
+    ],
+    "new": [
+     "j-dh-coord"
+    ]
+   },
+   "source_id": "src_bls_ep2434",
+   "question": "재활은 짧게 끝나지 않는다. 그래서 기기와 사람이 함께 붙어 있어야 하고, 원격 모니터링이 가장 잘 붙는 분야이기도 하다."
+  },
+  {
+   "id": "ei-20261107-5",
+   "date": "2026-11-07",
+   "order": 5,
+   "sector": "s2",
+   "cat": "robotics",
+   "lead": false,
+   "title": "로봇 부품 8대 기술, 감속기·자율조작",
+   "kicker": "산업부 첨단로봇 산업 비전과 전략",
+   "summary": "정부는 감속기 등 5개 하드웨어 기술과 자율조작 등 3개 소프트웨어 기술을 8대 핵심기술로 정했다. 2030년까지 민관 3조 원을 투자하고 핵심부품 국산화율을 80%로 올린다.",
+   "key_numbers": [
+    {
+     "label": "핵심기술",
+     "value": "8대",
+     "note": "H/W 5 · S/W 3"
+    },
+    {
+     "label": "투자",
+     "value": "3조 원 이상",
+     "note": "2030년까지 민관"
+    },
+    {
+     "label": "국산화율",
+     "value": "80%",
+     "note": "2030년 목표"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "에스비비테크",
+     "해성티피씨",
+     "로보티즈",
+     "HD현대로보틱스"
+    ],
+    "glob": [
+     "Harmonic Drive",
+     "Nabtesco",
+     "Maxon",
+     "FANUC"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-mech",
+     "j-proc"
+    ],
+    "new": [
+     "j-humanoid-sys"
+    ]
+   },
+   "source_id": "src_motie_robot2030",
+   "question": "로봇의 원가는 감속기 하나에서 갈린다. 부품을 만드는 회사가 커야 로봇 가격이 내려간다."
   }
  ],
  "jobs": [
@@ -418,7 +547,13 @@
      "Teladoc"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "재택 모니터링 간호사",
+     "w": "원격 측정값을 보고 방문 시점을 정하는 역할"
+    }
+   ]
   },
   {
    "id": "j-dh-coord",
@@ -469,7 +604,13 @@
      "Withings"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "웨어러블 온보딩 코치",
+     "w": "고령 환자가 측정기를 포기하지 않게 돕는 방문 코치"
+    }
+   ]
   },
   {
    "id": "j-elec",
@@ -519,7 +660,13 @@
      "Siemens"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
   },
   {
    "id": "j-advanced-pkg",
@@ -568,7 +715,13 @@
      "ASE"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "칩 열설계 자문역",
+     "w": "AI 가속기의 발열·휨을 잡는 전문 컨설팅"
+    }
+   ]
   },
   {
    "id": "j-eo-analyst",
@@ -618,7 +771,13 @@
      "ICEYE"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "위성 농업 자문역",
+     "w": "위성 영상으로 작황·재해를 읽어 보험·유통에 자문"
+    }
+   ]
   },
   {
    "id": "j-data",
@@ -669,7 +828,13 @@
      "Microsoft"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터 제품 기획자",
+     "w": "분석 결과를 반복 판매 가능한 제품으로 만드는 일"
+    }
+   ]
   },
   {
    "id": "j-acct",
@@ -717,7 +882,13 @@
      "KPMG"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "ESG 데이터 검증 보조",
+     "w": "비재무 지표의 근거를 확인"
+    }
+   ]
   },
   {
    "id": "j-ai-gov",
@@ -769,7 +940,13 @@
      "OECD AI Policy Observatory"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "AI 사고 대응 조사관",
+     "w": "모델 사고의 원인과 재발 방지를 문서화"
+    }
+   ]
   },
   {
    "id": "j-reskill",
@@ -819,7 +996,180 @@
      "OECD Skills"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "직무 전환 코디네이터",
+     "w": "교육과 채용 사이를 잇는 사내 이동 설계"
+    }
+   ]
+  },
+  {
+   "id": "j-mech",
+   "name": "기계설계 엔지니어",
+   "en": "Mechanical Design Engineer",
+   "sector": "s2",
+   "role": "제품·설비의 구조와 운동을 설계하고 도면·사양서로 확정한다. 강도·진동·열을 계산해 안전 여유를 두고, 제작·조립 과정의 문제를 다시 설계로 되돌린다.",
+   "ksa": {
+    "k": [
+     "재료역학·기구학",
+     "공차·치수 설계",
+     "제작 공정 이해"
+    ],
+    "s": [
+     "CAD·CAE",
+     "시제작·시험",
+     "부품사 협의"
+    ],
+    "a": [
+     "도면 한 장의 책임을 아는 꼼꼼함",
+     "현장 의견을 설계에 반영하는 유연함"
+    ]
+   },
+   "study": [
+    "기계공학",
+    "자동차공학",
+    "항공우주공학"
+   ],
+   "certs": [
+    "일반기계기사",
+    "기계설계기사",
+    "건설기계설비기사"
+   ],
+   "insight": "새 산업이 등장해도 설계 도면을 그리고 안전 여유를 계산하는 사람은 필요하다. 달라지는 것은 도구와 협업 상대다.",
+   "companies": {
+    "domestic": [
+     "현대자동차",
+     "삼성전자",
+     "두산에너빌리티",
+     "한화에어로스페이스"
+    ],
+    "global": [
+     "Bosch",
+     "Siemens",
+     "Caterpillar",
+     "ASML"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "부품 국산화 매칭 코디네이터",
+     "w": "수요기업과 부품사를 잇는 기술 중개"
+    }
+   ]
+  },
+  {
+   "id": "j-proc",
+   "name": "화학·공정 엔지니어",
+   "en": "Chemical / Process Engineer",
+   "sector": "s2",
+   "role": "원료가 제품이 되는 공정의 흐름·온도·압력·촉매를 설계하고 운전 조건을 최적화한다. 수율과 에너지 사용량, 안전을 동시에 맞춘다.",
+   "ksa": {
+    "k": [
+     "반응공학·열역학",
+     "단위조작",
+     "공정 안전"
+    ],
+    "s": [
+     "공정 시뮬레이션",
+     "시운전·트러블슈팅",
+     "환경·안전 규제 대응"
+    ],
+    "a": [
+     "위험을 최악 기준으로 보는 태도",
+     "현장 데이터를 신뢰하는 실증 정신"
+    ]
+   },
+   "study": [
+    "화학공학",
+    "환경공학",
+    "에너지공학"
+   ],
+   "certs": [
+    "화공기사",
+    "가스기사",
+    "산업안전기사"
+   ],
+   "insight": "수소·CCUS·배터리 재활용은 모두 화학공정 위에 세워진 신산업이다. 공정 엔지니어에게 새로운 산업은 새로운 반응과 새로운 규제의 조합이다.",
+   "companies": {
+    "domestic": [
+     "SK이노베이션",
+     "GS칼텍스",
+     "롯데케미칼",
+     "한화솔루션",
+     "포스코"
+    ],
+    "global": [
+     "BASF",
+     "Dow",
+     "ExxonMobil",
+     "Air Liquide"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
+  },
+  {
+   "id": "j-humanoid-sys",
+   "name": "휴머노이드 시스템 통합 엔지니어",
+   "en": "Humanoid Integration Engineer",
+   "sector": "s2",
+   "role": "액추에이터·감속기·센서·배터리·AI 보드를 한 몸으로 묶어 보행과 조작이 동시에 되게 만든다. 무게 60kg 이하, 자유도 50 이상 같은 사양을 만족시키며 현장 투입 전 안전 시험을 통과시킨다.",
+   "ksa": {
+    "k": [
+     "기구설계·구동기 선정",
+     "실시간 제어와 통신(CAN·EtherCAT)",
+     "기능안전 기준"
+    ],
+    "s": [
+     "CAD·CAE, 제어기 튜닝",
+     "고장 진단과 로그 분석",
+     "시험 계획서 작성"
+    ],
+    "a": [
+     "여러 부품사의 말을 하나로 정리하는 조율",
+     "안전 여유를 먼저 계산하는 신중함"
+    ]
+   },
+   "study": [
+    "기계공학",
+    "전기공학",
+    "메카트로닉스공학"
+   ],
+   "certs": [
+    "일반기계기사·기계설계기사",
+    "전기기사",
+    "산업안전기사"
+   ],
+   "insight": "휴머노이드는 부품이 아니라 ‘균형’의 문제다. 성능표를 한 줄 올리려면 무게·발열·안전 셋을 동시에 다시 계산해야 한다.",
+   "companies": {
+    "domestic": [
+     "현대차(보스턴다이내믹스)",
+     "삼성전자",
+     "두산로보틱스",
+     "HD현대로보틱스",
+     "에이로봇"
+    ],
+    "global": [
+     "Tesla(Optimus)",
+     "Boston Dynamics",
+     "Unitree",
+     "Agility Robotics"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "휴머노이드 안전 인증 심사원",
+     "w": "사람 옆에서 걷고 드는 로봇의 안전 기준을 심사"
+    }
+   ]
   }
  ],
  "sources": [
@@ -829,13 +1179,13 @@
    "title": "Health at a Glance 2025",
    "url": "https://doi.org/10.1787/8f9e3f98-en",
    "license": {
-    "type": "OECD",
-    "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2025-11-13",
-   "track": "A",
+   "track": "B",
    "usage": "2023년 원격진료가 전체 진료의 13%, 2024년 온라인 디지털 건강서비스 제공 82%"
   },
   {
@@ -844,13 +1194,13 @@
    "title": "The Space Economy at a Glance 2026",
    "url": "https://doi.org/10.1787/cbf9b240-en",
    "license": {
-    "type": "OECD",
-    "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2026-09",
-   "track": "A",
+   "track": "B",
    "usage": "2025년 세계 우주 매출 5,500~6,000억 달러, 2024년 반도체 시장 약 6,200억 달러 등"
   },
   {
@@ -859,20 +1209,50 @@
    "title": "Advancing the measurement of investments in artificial intelligence (OECD AI Papers No.47)",
    "url": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/09/advancing-the-measurement-of-investments-in-artificial-intelligence_7f58ff65/13e0da2f-en.pdf",
    "license": {
-    "type": "OECD",
-    "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2025-09",
-   "track": "A",
+   "track": "B",
    "usage": "EU27 AI 투자 2023년 2,570억 유로(민간 73%), 미국 AI R&D 약 900억 유로"
+  },
+  {
+   "id": "src_bls_ep2434",
+   "name": "미국 노동통계국(BLS)",
+   "title": "Industry and occupational employment projections overview and highlights, 2024–34",
+   "url": "https://www.bls.gov/opub/mlr/2026/article/industry-and-occupational-employment-projections-overview.htm",
+   "license": {
+    "type": "PUBLIC-DOMAIN",
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026",
+   "track": "A",
+   "usage": "직업별 2024~2034년 고용 증감률·중위임금·진입학력"
+  },
+  {
+   "id": "src_motie_robot2030",
+   "name": "산업통상부",
+   "title": "첨단로봇 산업 비전과 전략 / 제4차 지능형 로봇 기본계획",
+   "url": "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c/168332/view",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2023-12-14",
+   "track": "A",
+   "usage": "2030년까지 첨단로봇 100만 대 보급, 전문인력 1만 5천 명, 민관 3조 원 투자, 핵심부품 국산화율 80%"
   }
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },

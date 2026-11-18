@@ -379,6 +379,155 @@
    },
    "source_id": "src_iea_h2_2025",
    "question": "수소는 ‘생산’보다 ‘수요 확보’가 어렵다. 그래서 이 산업의 직무는 화학공정과 계약·인증 양쪽을 봐야 한다."
+  },
+  {
+   "id": "ei-20261105-4",
+   "date": "2026-11-05",
+   "order": 4,
+   "sector": "s4",
+   "cat": "climate",
+   "lead": false,
+   "title": "전해조 2GW, 그중 중국이 65%",
+   "kicker": "IEA Global Hydrogen Review 2025",
+   "summary": "2024년 세계 수전해 설비는 2GW를 넘었고, 2025년 7월까지 1GW가 더 들어왔다. 설치 용량의 65%, 제조 능력의 약 60%를 중국이 차지한다.",
+   "key_numbers": [
+    {
+     "label": "설치 용량",
+     "value": "2GW + 1GW",
+     "note": "2024년 말 + 2025년 7월까지"
+    },
+    {
+     "label": "중국 비중",
+     "value": "65%",
+     "note": "설치·FID 기준"
+    },
+    {
+     "label": "제조 능력",
+     "value": "약 60%",
+     "note": "중국"
+    }
+   ],
+   "market": {
+    "label": "수전해 설비의 중국 비중",
+    "unit": "%",
+    "basis": "2025년",
+    "chart": "bar",
+    "labels": [
+     "중국",
+     "그 밖"
+    ],
+    "series": [
+     {
+      "name": "비중",
+      "values": [
+       65,
+       35
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "IEA는 중국 밖 전해조 판매가 인증·가격 장벽에 부딪힌다고 봤다.",
+    "source_id": "src_iea_h2_2025"
+   },
+   "players": {
+    "domestic": [
+     "SK E&S",
+     "효성중공업",
+     "한국가스공사"
+    ],
+    "glob": [
+     "Nel",
+     "ITM Power",
+     "ThyssenKrupp Nucera",
+     "Longi Hydrogen"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc"
+    ],
+    "new": [
+     "j-h2-safety"
+    ]
+   },
+   "source_id": "src_iea_h2_2025",
+   "question": "설비를 만드는 나라와 쓰는 나라가 다르면 공급망이 곧 정책이 된다. 수소의 다음 쟁점은 가격이 아니라 설비 주권이다."
+  },
+  {
+   "id": "ei-20261105-5",
+   "date": "2026-11-05",
+   "order": 5,
+   "sector": "s4",
+   "cat": "ai",
+   "lead": false,
+   "title": "AI 투자의 73%는 민간이 냈다",
+   "kicker": "OECD AI Papers No.47",
+   "summary": "2023년 EU27의 AI 투자 2,570억 유로 가운데 민간이 1,880억 유로로 73%를 차지했다. 공공 투자는 690억 유로였다.",
+   "key_numbers": [
+    {
+     "label": "민간",
+     "value": "1,880억 유로",
+     "note": "73%"
+    },
+    {
+     "label": "공공",
+     "value": "690억 유로",
+     "note": "27%"
+    },
+    {
+     "label": "전체",
+     "value": "2,570억 유로",
+     "note": "EU27, 2023년"
+    }
+   ],
+   "market": {
+    "label": "EU27 AI 투자 구성",
+    "unit": "십억 유로",
+    "basis": "2023년",
+    "chart": "bar",
+    "labels": [
+     "민간",
+     "공공"
+    ],
+    "series": [
+     {
+      "name": "투자",
+      "values": [
+       188,
+       69
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "OECD 추정. 국가별 집계 방식이 달라 비교에 한계가 있다.",
+    "source_id": "src_oecd_ai_invest2025"
+   },
+   "players": {
+    "domestic": [
+     "네이버",
+     "카카오",
+     "삼성전자",
+     "SK텔레콤"
+    ],
+    "glob": [
+     "Microsoft",
+     "Google",
+     "Amazon",
+     "Meta"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-data"
+    ],
+    "new": [
+     "j-ai-gov"
+    ]
+   },
+   "source_id": "src_oecd_ai_invest2025",
+   "question": "AI 투자는 정부 예산보다 기업의 설비투자로 움직인다. 그래서 이 산업의 채용은 정책 발표보다 분기 실적에 먼저 반응한다."
   }
  ],
  "jobs": [
@@ -430,7 +579,13 @@
      "Siemens"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
   },
   {
    "id": "j-plant",
@@ -481,7 +636,13 @@
      "Siemens Energy"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "설비 원격 진단 기사",
+     "w": "여러 사업장 설비의 진동·온도를 원격 분석"
+    }
+   ]
   },
   {
    "id": "j-bms",
@@ -532,7 +693,13 @@
      "Tesla"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "배터리 이력 증명서 발급인",
+     "w": "중고 전기차·ESS 배터리의 건강 이력을 인증"
+    }
+   ]
   },
   {
    "id": "j-logistics-auto",
@@ -583,7 +750,13 @@
      "Dematic"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "물류 예외 처리 설계자",
+     "w": "파손·반품·돌발 주문만 따로 처리하는 동선 설계"
+    }
+   ]
   },
   {
    "id": "j-proc",
@@ -633,7 +806,13 @@
      "Air Liquide"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
   },
   {
    "id": "j-ccus-ops",
@@ -684,7 +863,13 @@
      "Air Liquide"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "포집 설비 원격 감시원",
+     "w": "여러 사업장의 포집 설비를 원격으로 감시"
+    }
+   ]
   },
   {
    "id": "j-h2-safety",
@@ -735,7 +920,128 @@
      "Plug Power"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "수소 충전소 안전 점검 대행",
+     "w": "지역 충전소의 정기 점검을 맡는 서비스"
+    }
+   ]
+  },
+  {
+   "id": "j-data",
+   "name": "데이터 분석가",
+   "en": "Data Analyst",
+   "sector": "s4",
+   "role": "업무 데이터를 정리해 의사결정에 필요한 지표와 해석을 만든다. 질문을 정하는 단계부터 관여해야 분석이 실제로 쓰인다.",
+   "ksa": {
+    "k": [
+     "통계·지표 설계",
+     "도메인 이해",
+     "데이터 거버넌스"
+    ],
+    "s": [
+     "SQL·파이썬",
+     "시각화·대시보드",
+     "실험 설계"
+    ],
+    "a": [
+     "숫자로 말하되 과장하지 않는 태도",
+     "질문을 다시 정의하는 호기심"
+    ]
+   },
+   "study": [
+    "통계학",
+    "산업공학",
+    "컴퓨터공학",
+    "경제학"
+   ],
+   "certs": [
+    "ADsP·SQLD",
+    "정보처리기사",
+    "빅데이터분석기사"
+   ],
+   "insight": "BLS는 데이터 과학자 증가율을 33.5%로 본다. 신산업 브리핑을 읽는 사람에게 분석가는 ‘산업을 숫자로 확인하는 습관’을 주는 직무다.",
+   "companies": {
+    "domestic": [
+     "네이버",
+     "카카오",
+     "쿠팡",
+     "토스",
+     "공공데이터 기관"
+    ],
+    "global": [
+     "Google",
+     "Meta",
+     "Amazon",
+     "Microsoft"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터 제품 기획자",
+     "w": "분석 결과를 반복 판매 가능한 제품으로 만드는 일"
+    }
+   ]
+  },
+  {
+   "id": "j-ai-gov",
+   "name": "AI 거버넌스·안전 평가자",
+   "en": "AI Governance & Safety Evaluator",
+   "sector": "s4",
+   "role": "AI 모델의 위험(편향, 오정보, 개인정보 침해, 자율행동)을 시험하는 평가 절차를 설계하고 실행한다. 배포 전 위험 등급을 매기고, 사고가 났을 때 원인과 재발 방지책을 정리한다.",
+   "ksa": {
+    "k": [
+     "AI 위험 분류·평가 기준",
+     "개인정보·저작권 규범",
+     "모델 평가 방법론"
+    ],
+    "s": [
+     "레드팀 시나리오 설계",
+     "평가 결과 문서화",
+     "정책·법무·개발 부서 조율"
+    ],
+    "a": [
+     "편향을 발견했을 때 불편을 감수하는 용기",
+     "기술과 규범을 함께 읽는 균형"
+    ]
+   },
+   "study": [
+    "컴퓨터공학",
+    "법학",
+    "정책학",
+    "인지과학"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "개인정보관리사(CPPG) 등 민간",
+    "ISO/IEC 42001 관련 교육"
+   ],
+   "insight": "AI를 잘 만드는 사람보다 ‘어디서 다치는지’를 먼저 말하는 사람의 수요가 빠르게 늘고 있다. 규제가 아니라 신뢰가 제품의 일부가 된 결과다.",
+   "companies": {
+    "domestic": [
+     "네이버",
+     "카카오",
+     "LG AI연구원",
+     "한국지능정보사회진흥원(NIA)",
+     "개인정보보호위원회 지원기관"
+    ],
+    "global": [
+     "OpenAI",
+     "Anthropic",
+     "Google DeepMind",
+     "Microsoft",
+     "OECD AI Policy Observatory"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "AI 사고 대응 조사관",
+     "w": "모델 사고의 원인과 재발 방지를 문서화"
+    }
+   ]
   }
  ],
  "sources": [
@@ -783,12 +1089,27 @@
    "published": "2025-09",
    "track": "A",
    "usage": "2024년 수소 수요 약 1억 톤, 저탄소 수소 2030년 420만 톤(확정 사업) 등"
+  },
+  {
+   "id": "src_oecd_ai_invest2025",
+   "name": "OECD",
+   "title": "Advancing the measurement of investments in artificial intelligence (OECD AI Papers No.47)",
+   "url": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/09/advancing-the-measurement-of-investments-in-artificial-intelligence_7f58ff65/13e0da2f-en.pdf",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2025-09",
+   "track": "B",
+   "usage": "EU27 AI 투자 2023년 2,570억 유로(민간 73%), 미국 AI R&D 약 900억 유로"
   }
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },
