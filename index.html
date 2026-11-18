@@ -240,13 +240,19 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-all-btn svg{width:16px;height:16px;transition:transform .25s}
 .a-all-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
 .a-all-btn b{color:var(--a1)}
-/* 전체 목록: 롤링 자리를 대신한다 */
+/* 전체 목록: 롤링 자리를 대신한다.
+   2026-11-18 R4(태화님 지시): 쪽마다 설명 줄 수가 달라 목록 높이가 바뀌며 아래 쪽수·심전도가 들썩이던 것을 없앴다.
+   모든 줄 높이를 가장 긴 카드(설명 3줄)에 맞춰 못 박고(--row-h, JS가 잰다), 목록 상자도 5줄 높이로 고정한다.
+   1~5쪽 어느 쪽을 열어도 페이지네이션·심전도의 Y좌표 변동은 0.00px이다(마지막 쪽 3개도 5줄 자리를 지킨다). */
 .a-list{margin:clamp(12px,1.8vw,20px) auto 0;max-width:640px;text-align:left;animation:a-in .25s ease}
 @keyframes a-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .a-list-h{font-size:clamp(22px,4.6vw,28px);font-weight:800;letter-spacing:-.03em;color:var(--ink);margin:0 0 10px;text-align:center}
 .a-list-h b{display:inline;color:var(--a1)}
-.a-list ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.a-root .a-list a{display:flex;gap:14px;align-items:baseline;min-height:56px;padding:12px 6px;border-top:1px dashed var(--line-2);color:inherit;text-decoration:none}
+.a-list ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;min-height:calc(5 * var(--row-h,56px))}
+.a-root .a-list a{display:flex;gap:14px;align-items:baseline;height:var(--row-h,56px);min-height:56px;padding:12px 6px;border-top:1px dashed var(--line-2);color:inherit;text-decoration:none}
+/* 높이를 재는 잠금 상자 — 화면 밖에 두고 실제 폭으로 모든 줄을 한 번 그려 본다 */
+.a-list-probe{position:absolute;left:-9999px;top:0;margin:0;max-width:none;visibility:hidden;pointer-events:none;animation:none!important}
+.a-list-probe a{height:auto!important;min-height:0!important}
 .a-list li:first-child a{border-top:0}
 .a-root .a-list a:hover b{color:var(--a1)}
 .a-list .a-no{flex:none;font-size:13.5px;font-weight:700;color:var(--a1);min-width:1.6em}
@@ -470,13 +476,17 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
             <button type="button" class="a-slot-btn" id="slotBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
               <span class="a-lever" aria-hidden="true">
                 <span class="a-lever-plate">
-                  <svg class="a-lever-track" viewBox="0 0 44 62" focusable="false"><path d="M24 12A22 22 0 0 1 13 53" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path class="a-lever-ticks" d="M27.4 6.9 24 12M35 31h4M13 53v3.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".55"/></svg>
-                </span>
-                <span class="a-lever-arm">
-                  <span class="a-lever-shaft"></span>
-                  <span class="a-lever-cap"><i></i></span>
+                  <svg class="a-lever-track" viewBox="0 0 44 62" focusable="false">
+                    <path class="a-lv-groove" d="M20 9V50.5M24 9V50.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                    <path class="a-lv-ticks" d="M9 12.7h4.2M30.8 12.7H35M9 20h4.2M30.8 20H35M9 35.2h4.2M30.8 35.2H35" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                    <circle class="a-lv-target" cx="37.5" cy="50" r="1.7" fill="currentColor" stroke="none"/>
+                  </svg>
                 </span>
                 <span class="a-lever-hub"></span>
+                <span class="a-lever-arm">
+                  <span class="a-lever-shaft" id="leverShaft"></span>
+                  <span class="a-lever-cap" id="leverCap"><i></i></span>
+                </span>
               </span>
             </button>
           </div>
@@ -788,21 +798,38 @@ var items=[],dotEls=[];
 function mod(a,n){return ((a%n)+n)%n;}
 function reduce(){return !!reduceMQ.matches;}
 /* 자료 전체 목록: 롤링 자리를 대신해 5개씩 보여 준다 */
-var LIST_PER=5,listPage=0,listOpen=false;
+var LIST_PER=5,listPage=0,listOpen=false,rowH=0;
+function rowHTML(t){return '<li><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><span style="min-width:0"><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></span></a></li>';}
 function renderList(){
   var n=Math.max(1,Math.ceil(TOOLS.length/LIST_PER));listPage=Math.min(listPage,n-1);
-  $('allList').innerHTML=TOOLS.slice(listPage*LIST_PER,(listPage+1)*LIST_PER).map(function(t){return '<li><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><span style="min-width:0"><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></span></a></li>';}).join('');
+  $('allList').innerHTML=TOOLS.slice(listPage*LIST_PER,(listPage+1)*LIST_PER).map(rowHTML).join('');
   var h='';if(n>1){h+='<button type="button" data-lp="'+(listPage-1)+'" aria-label="이전 쪽"'+(listPage===0?' disabled':'')+'>‹</button>';
     for(var i=0;i<n;i++)h+='<button type="button" data-lp="'+i+'" aria-current="'+(i===listPage)+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>';
     h+='<button type="button" data-lp="'+(listPage+1)+'" aria-label="다음 쪽"'+(listPage===n-1?' disabled':'')+'>›</button>';}
   $('allPg').innerHTML=h;
+}
+/* 목록 높이 고정(2026-11-18 R4): 쪽마다 설명 줄 수가 달라 생기던 아래 요소의 흔들림을 없앤다.
+   전체 목록을 같은 폭의 화면 밖 상자에 한 번 그려 **가장 긴 줄**을 재고, 모든 줄 높이를 그 값으로
+   못 박는다(--row-h). 목록 상자도 5줄 높이라 마지막 쪽(3개)에서도 쪽수·심전도가 움직이지 않는다. */
+function measureListRows(){
+  var ol=$('allList'),host=$('listView');
+  if(!ol||!TOOLS.length||host.hidden)return;
+  var w=ol.clientWidth;if(!w)return;
+  var box=document.createElement('div');
+  box.className='a-list a-list-probe';box.style.width=w+'px';
+  box.innerHTML='<ol>'+TOOLS.map(rowHTML).join('')+'</ol>';
+  host.appendChild(box);
+  var hs=[].map.call(box.querySelectorAll('a'),function(a){return a.getBoundingClientRect().height;});
+  host.removeChild(box);
+  var m=Math.ceil(Math.max.apply(null,hs)+.4);
+  if(m&&m!==rowH){rowH=m;host.style.setProperty('--row-h',m+'px');}
 }
 function setList(on){
   var rv=$('rollView'),lv=$('listView'),bt=$('allBtn');
   if(on&&!listOpen){lv.style.minHeight=rv.offsetHeight+'px';}
   listOpen=on;rv.hidden=on;lv.hidden=!on;bt.setAttribute('aria-expanded',String(on));
   $('allBtnT').innerHTML=on?'롤링으로 돌아가기':'자료 전체 목록 <b class="a-num">'+TOOLS.length+'</b>개';
-  if(on){var f=lv.querySelector('a');if(f)f.focus({preventScroll:true});}
+  if(on){measureListRows();var f=lv.querySelector('a');if(f)f.focus({preventScroll:true});}
   else{measureOrbit();layout();}
 }
 function buildNav(){
@@ -989,8 +1016,8 @@ function bindNav(){
   stage.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hover=false;schedule();}});
   document.addEventListener('visibilitychange',schedule);
   if(reduceMQ.addEventListener)reduceMQ.addEventListener('change',function(){restartFill();schedule();});
-  window.addEventListener('resize',function(){measureOrbit();layout();});
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measureOrbit();layout();});
+  window.addEventListener('resize',function(){measureOrbit();layout();if(listOpen)measureListRows();});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measureOrbit();layout();if(listOpen)measureListRows();});
 }
 function startNav(){
   buildNav();bindNav();setPaused(false);
