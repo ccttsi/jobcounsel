@@ -23,9 +23,16 @@
 
   /* ---------- 장부 ---------- */
   function all() { return window.JC_TOOLS || []; }
+  /* 자료 선반은 언제나 표시 번호(no) 오름차순이다 — 01, 03, 04 … 24.
+     (2026-11-19 지적: mo 순서로 늘어놓아 선반이 01 → 12 → 03 으로 섞여 보였다.
+      mo는 같은 번호가 겹칠 때만 쓰는 보조 열쇠로 남긴다.) */
   function listFor(m) {
     return all().filter(function (t) { return t.mode === m; })
-      .sort(function (a, b) { return (a.mo || 99) - (b.mo || 99); });
+      .sort(function (a, b) {
+        var na = parseInt(a.no, 10), nb = parseInt(b.no, 10);
+        if (isNaN(na)) na = 999; if (isNaN(nb)) nb = 999;
+        return (na - nb) || ((a.mo || 99) - (b.mo || 99));
+      });
   }
   function byId(id) { var a = all(); for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i]; return null; }
   function maxOf(m) { return listFor(m).length; }
@@ -330,8 +337,8 @@
       t: '선반에서 자료를 듭니다',
       p: '오른쪽(휴대폰은 아래) <b>자료 선반</b>에는 이 모드의 자료가 놓여 있습니다. 꽂고 싶은 카드를 한 번 누르면 살짝 떠오르고 아래에 <b>미리보기 카드</b>가 열립니다.',
       f: '<div class="r hi"><span class="n">01</span><span class="w">직업상담 이론 위키</span><em>들었습니다</em></div>'
-        + '<div class="r"><span class="n">02</span><span class="w">다시 읽는 『직업의 선택』</span></div>'
         + '<div class="r"><span class="n">03</span><span class="w">DACUM 마스터 아키텍처</span></div>'
+        + '<div class="r"><span class="n">04</span><span class="w">구직자취업촉진법 실무 가이드</span></div>'
     },
     {
       t: '슬롯에 꽂습니다',
