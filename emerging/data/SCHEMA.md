@@ -1,0 +1,159 @@
+# Emerging Industry 데이터 스키마 (v1.0.0)
+
+신산업 브리핑 `/emerging/`이 읽는 자료의 계약서다. 화면(`app.js`)은 **이 파일에 적힌 필드만** 읽고, 모르는 필드는 무시한다(전방 호환). 매일 한 호를 덧붙이는 자동 업로드도 이 계약을 따른다.
+
+- 최신 호: `emerging/data/emerging.json`
+- 지난 호: `emerging/data/archive/YYYY-MM-DD.json` (하루 1파일)
+- 2026-11-01 ~ 2026-11-19: 초기 19일치(19파일). 이후 날짜는 자동 업로드가 채운다.
+
+## 1. 파일 하나의 구조
+
+```jsonc
+{
+  "schema_version": "1.0.0",
+  "updated_at": "2026-11-19T04:30:00+09:00",     // ISO 8601, KST
+  "edition": { ... },                             // 그 날의 제호 (2)
+  "archive_dates": ["2026-11-01", ...],           // 최신 호 파일에만 넣는다(색인)
+  "archive_index": [ ... ],                       // 최신 호 파일에만 넣는다(3)
+  "sectors": [ ... ], "categories": [ ... ],      // 4
+  "items": [ ... ],                               // 그 날의 기사 3건 (5)
+  "jobs":   [ ... ],                              // 그 날 기사가 참조하는 직무만 (6)
+  "sources": [ ... ],                             // 그 날 기사·도표가 참조하는 출처만 (7)
+  "copyright_policy": { ... }, "disclaimer": "…"   // 8
+}
+```
+
+`archive/*.json`은 `archive_dates`·`archive_index`를 넣지 않는다(최신 호 파일이 색인의 원본).
+
+## 2. `edition`
+
+| 필드 | 형 | 설명 |
+|---|---|---|
+| `no` | int | 호 번호. 2026-11-01이 1호, 11-19가 19호. 날짜에서 계산한다 |
+| `date` | `YYYY-MM-DD` | 그 날 |
+| `weekday` | `월`~`일` | 한 글자 |
+| `title` | string | 그 날의 앞기사 제목을 압축한 한 줄(20자 내외) |
+| `subtitle` | string | 세 기사를 한 문장으로 |
+| `reading_minutes` | int | 3~5 |
+| `data_status` | `ok` \| `fallback` | 수집이 실패해 이전 호를 다시 올릴 때 `fallback` |
+
+**규칙**: `date`는 파일 이름과 같아야 한다. `no`는 초기 19일 뒤로 이어서 매일 +1.
+
+## 3. `archive_index` 항목
+
+```jsonc
+{ "date": "2026-11-01", "no": 1, "weekday": "일", "title": "농업과 로봇, 수출의 첫 숫자",
+  "items": [ { "id": "ei-20261101-1", "title": "…", "sector": "s1", "cat": "smartfarm", "order": 1 } ] }
+```
+
+달력·지난 지면·섹터 필터가 이 색인만 보고 그린다(파일 19개를 미리 받지 않는다). 새 호를 올릴 때 **최신 호 파일의 `archive_dates`와 `archive_index` 맨 끝에 한 줄을 더한다.**
+
+## 4. `sectors` · `categories`
+
+```jsonc
+" sectors ": [
+  { "id": "s1", "no": "1", "name": "1차 산업", "sub": "스마트농업 · 자원 · 식량", "short": "1차" },
+  { "id": "s2", "no": "2", "name": "2차 산업", "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체", "short": "2차" },
+  { "id": "s3", "no": "3", "name": "3차 산업", "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠", "short": "3차" },
+  { "id": "s4", "no": "4", "name": "4차 산업", "sub": "AI · 양자 · 우주 · 클린테크", "short": "4차" }
+]
+"categories": [ { "id": "smartfarm", "sector": "s1", "name": "스마트팜" } ]
+```
+
+카테고리 id는 고정 목록을 쓴다: `smartfarm` `agri-robot` `resource` `robotics` `battery` `semicon` `material` `bio-mfg` `fintech` `health` `logistics` `content` `edu` `ai` `quantum` `space` `climate` `energy` `security`. 새 카테고리는 여기에 먼저 추가한 뒤 기사에서 쓴다(기사가 참조하는 카테고리가 없으면 화면에서 라벨을 비운다).
+
+## 5. `items` (기사)
+
+```jsonc
+{
+  "id": "ei-20261119-1",           // ei-YYYYMMDD-순번(1~3)
+  "date": "2026-11-19",
+  "order": 1,                      // 1=앞기사, 2·3
+  "lead": true,                    // order 1만 true
+  "sector": "s4", "cat": "ai",
+  "title": "AI가 지역의 건강 위험을 먼저 본다",     // 40자 안팎
+  "kicker": "출처 또는 각주 한 줄",                 // 1줄
+  "summary": "두 문장. 무엇이 일어났고 숫자가 무엇을 말하는지.",
+  "key_numbers": [ { "label": "…", "value": "…", "note": "…" } ],   // 2~3개, value에 단위 포함
+  "market": { ... },               // 도표 (없으면 null)
+  "players": { "domestic": ["…"], "global": ["…"] },
+  "jobs": { "legacy": ["j-mech"], "new": ["j-bms"] },   // 6의 id
+  "source_id": "src_bls_ep2434",   // 7의 id
+  "question": "상담에서 던질 한 문장"                    // 선택
+}
+```
+
+**`market`(도표)**
+
+```jsonc
+{ "label": "세계 배터리 수요", "unit": "GWh", "basis": "2024년 실적·2030년 전망",
+  "chart": "bar",                  // bar | line
+  "labels": ["2024 전기차", "2024 전체", "2030 전체"],
+  "series": [ { "name": "수요", "values": [950, 1000, 3000], "emphasis": true } ],  // 1~3개
+  "cagr": 20.1,                    // 없으면 null
+  "note": "2030년은 2024년 대비 3배.",
+  "source_id": "src_iea_batteries2024" }
+```
+
+- `values` 길이는 `labels` 길이와 같아야 한다. 값이 없는 칸은 `null`.
+- 도표를 그릴 수 없으면 `market`을 `null`로 두고 문장·핵심 수치로만 적는다. **추정값을 만들어 넣지 않는다.**
+- `cagr`은 공표된 두 값에서 계산한 경우에만 넣고, `note`에 계산했다고 밝힌다.
+- `chart`는 `bar`(기본)와 `line`만 지원한다. 새 유형은 화면 코드가 있어야 한다.
+
+## 6. `jobs` (직무분석)
+
+```jsonc
+{ "id": "j-bms", "kind": "new",      // new = 최근 등장한 직무 / old = 기존 직무
+  "name": "배터리 상태진단(BMS) 데이터 엔지니어", "en": "Battery Data / BMS Engineer", "sector": "s2",
+  "role": "2~3문장. 무엇을 입력받아 무엇을 내놓는지.",     // ① 무슨 일
+  "ksa": { "k": ["…"], "s": ["…"], "a": ["…"] },          // ② Knowledge·Skills·Abilities (각 2~4개)
+  "companies": { "domestic": ["…"], "global": ["…"] },    // ③ 실제 운영·채용 기업
+  "study": ["전기공학", "…"], "certs": ["전기기사", "…"],   // ④ 학과 / 자격 (없으면 "국가자격 없음(… )")
+  "insight": "1~2문장. 이 직무를 한눈에 파악하는 핵심."     // ⑤
+}
+```
+
+- 기사 하나에 `legacy` 1~2개, `new` 1~2개를 붙인다(둘 다 비면 직무 칸을 그리지 않는다).
+- 같은 직무를 여러 기사가 참조해도 된다. 각 호 파일에는 **그 날 쓰인 직무만** 넣는다(같은 내용이 여러 파일에 중복 저장되는 것을 허용).
+- `companies`는 그 직무가 실제로 있는 곳만. 확인되지 않은 기업은 넣지 않는다.
+
+## 7. `sources` (출처·라이선스)
+
+```jsonc
+{ "id": "src_oecd_space2026", "name": "OECD", "title": "The Space Economy at a Glance 2026",
+  "url": "https://doi.org/10.1787/cbf9b240-en",
+  "license": { "type": "OECD", "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)", "verified": true },
+  "published": "2026-09", "track": "A",
+  "usage": "2025년 세계 우주 매출 5,500~6,000억 달러 …" }
+```
+
+| `license.type` | 뜻 | 트랙 |
+|---|---|---|
+| `KOGL-0` `KOGL-1` | 공공누리 자유이용·출처표시 | A |
+| `PUBLIC-DOMAIN` | 퍼블릭 도메인(미국 연방정부 저작물 등) | A |
+| `CC-BY-4.0` | CC BY 4.0 | A |
+| `OECD` `WEF` `IAEA` | 공개 보고서 — 사실·수치만 인용, 원문 링크 | A |
+| `PRESS` | 언론 기사 — 본문을 옮기지 않고 사실만 | B |
+
+**쓰지 않는 것**: 라이선스가 확인되지 않은 상용 리서치 보고서, 언론 기사 본문, 유료 데이터베이스. 값이 없으면 그 항목을 통째로 생략한다.
+
+## 8. 고지
+
+`copyright_policy`(요약·트랙 설명·인용 한도·문의)와 `disclaimer`(투자·법률 조언 아님)를 화면 아래에 그대로 보여 준다.
+
+## 9. 매일 한 호를 올리는 순서 (자동 업로드용)
+
+1. 그 날의 기사 3건을 정한다(1차~4차 산업에서 고르게, 하루에 같은 섹터가 3건이 되지 않게).
+2. 기사마다 출처를 붙인다 — **재가공 허용 출처만**. 값이 확인되지 않으면 `market: null`.
+3. 직무는 기존 1~2 + 최근 등장 1~2. 새 직무는 `jobs`에 5블록을 채워 넣는다.
+4. `archive/YYYY-MM-DD.json`을 쓰고, `emerging.json`을 그 날 문서로 바꾼다.
+5. `emerging.json`의 `archive_dates`·`archive_index` 끝에 그 날을 더한다.
+6. 확인: `items` 3건 · `order` 1·2·3 · `lead` 1건 · 모든 `jobs`/`source_id`/`market.source_id`가 그 파일 안에 존재.
+7. 배포 뒤 `/emerging/`이 그 날 지면을 열고, 달력에 그 날 점이 찍히는지 확인한다.
+
+## 10. 화면이 기대하는 것
+
+- 파일은 `emerging/data/` 아래 `emerging.json`, `archive/<date>.json` 경로에 둔다.
+- 날짜는 **2026-11-01부터 연속**일 필요는 없지만, 달력에 점이 찍히려면 `archive_dates`에 있어야 한다.
+- `edition.no`는 중복되지 않게.
+- 한 파일이 100KB를 넘지 않게(현재 하루 평균 21KB).
