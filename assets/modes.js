@@ -44,7 +44,7 @@
   var open = false, picking = false, armed = '', armT = 0, dwell = 0, timers = [], restFocus = null;
 
   /* ---------- 0. 정면 슬롯 레버 (2026-11-18 R4) ----------
-   * 옆에서 본 팔의 각도 θ를 정면 화면에 3D→2D 원근 투영으로 그린다. 축(22,30)은 화면 안쪽을 향하고,
+   * 옆에서 본 팔의 각도 θ를 정면 화면에 3D→2D 원근 투영으로 그린다. 축(22,30.5)은 화면 안쪽을 향하고,
    *   손잡이 머리 y = 30 - 20·cos θ · 막대 길이 = 20.5·|cos θ| · 머리 크기 = 1 + 0.16·sin²θ
    * 이다. 상태가 바뀌어도 각도에서 각도로만 이어 가므로 중간에 끊기거나 튀지 않는다.
    *   · 1차(장전) 2시→1시: 짧은 감속 곡선(260ms)
@@ -52,7 +52,7 @@
    *   · 방치 유도: 5칸 래칫으로 90ms 이동 + 90ms 정지를 다섯 번, 2초 정지, 같은 5칸 역방향(총 3.8s)
    * 움직이는 값은 손잡이 translate/scale과 막대 scaleY뿐이다(모두 transform). 다만 감속 모드에서는
    * 곡선 없이 결과 자세로 바로 간다. */
-  var LV = { L: 20, th: 60, raf: 0, cap: null, shaft: null };
+  var LV = { L: 19.5, th: 60, raf: 0, cap: null, shaft: null };
   function lvSet(th) {
     var a = th * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
     LV.th = th;
@@ -162,7 +162,8 @@
   function pulseEcg() {
     clearTimeout(armT); armed = '';
     ecgRow.setAttribute('data-st', 'pulled');
-    setTimeout(function () { ecgRow.removeAttribute('data-st'); }, 1200);
+    ecgSync();
+    setTimeout(function () { ecgRow.removeAttribute('data-st'); ecgSync(); }, 1200);
     openOv(ecgBtn, reduce() ? 0 : 900);
   }
   /* ---------- 2. 아이들 힌트 (5분마다 반쯤) ---------- */
@@ -207,8 +208,105 @@
     }
   }
   function tickDwell() {
+    if (!ECG.on && ECG.cx && ecgWanted()) ecgSync();   /* 안전망: 흘러야 하는데 멈춰 있으면 켠다 */
     if (document.hidden || open || armed) return;
     if (++dwell >= DWELL) { dwell = 0; hint(); }
+  }
+
+  /* ---------- 2. 심전도 — 하나의 연속 파형 (2026-11-18 R4) ----------
+   * 상태별로 SVG·애니메이션을 갈아끼우지 않고, 캔버스 168×34 하나에 rAF로 매 프레임 그린다.
+   *   · 박동 위상 ph는 계속 흘러가기만 한다 — 상태가 바뀌어도 선이 리셋·절단되지 않는다.
+   *   · 속도·진폭·톤은 목표값으로 lerp(≈200ms)해서 몃 박동에 걸쳐 부드럽게 변한다.
+   *   · 파형 한 주기는 256칸 표(ECG_TAB)로 미리 계산해 둔다 — P·Q·R·S·T를 가우스로 엮은 모양.
+   * 평상시 2.75초당 1회 · 진폭 R 7px / 장전 1.05초 · 1.16배 / 격발 0.42초 · 1.85배 + 박동마다 R 높이가 흔들린다.
+   * 그리는 중에는 레이아웃·페인트가 없다(캔버스 한 층, 168×34 CSS px) */
+  var ECG = { cv: null, cx: null, on: false, raf: 0, last: 0, dpr: 1,
+    ph: 0, sp: .36, amp: 1, tone: 0, c1: [15, 118, 110], c2: [180, 83, 42] };
+  var ECG_W = 168, ECG_H = 34, ECG_BASE = 20, ECG_BEAT = 84, ECG_R = 7;
+  var ECG_T = { idle: { sp: .36, amp: 1, tone: 0 }, armed: { sp: .95, amp: 1.16, tone: .3 }, pulled: { sp: 2.4, amp: 1.85, tone: 1 } };
+  var ECG_TAB = (function () {
+    var t = new Float32Array(256), i, u, g = function (x, m, s, h) { var d = (x - m) / s; return h * Math.exp(-d * d); };
+    for (i = 0; i < 256; i++) {
+      u = i / 256;
+      t[i] = g(u, .165, .030, .22) + g(u, .300, .012, -.16) + g(u, .345, .014, 1) + g(u, .390, .016, -.30) + g(u, .545, .055, .24);
+    }
+    return t;
+  })();
+  function ecgRGB(v, fb) {
+    v = (v || '').trim();
+    if (v.charAt(0) !== '#') return fb;
+    if (v.length === 4) v = '#' + v[1] + v[1] + v[2] + v[2] + v[3] + v[3];
+    return [parseInt(v.substr(1, 2), 16), parseInt(v.substr(3, 2), 16), parseInt(v.substr(5, 2), 16)];
+  }
+  function ecgColors() {
+    try {
+      var cs = getComputedStyle(document.documentElement);
+      ECG.c1 = ecgRGB(cs.getPropertyValue('--a1'), ECG.c1);
+      ECG.c2 = ecgRGB(cs.getPropertyValue('--a2'), ECG.c2);
+    } catch (e) { }
+  }
+  function ecgState() {
+    var st = ecgRow ? ecgRow.getAttribute('data-st') : '';
+    return ECG_T[st === 'pulled' ? 'pulled' : (st === 'armed' ? 'armed' : 'idle')];
+  }
+  function ecgFit() {
+    var dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    if (dpr !== ECG.dpr || ECG.cv.width !== Math.round(ECG_W * dpr)) {
+      ECG.dpr = dpr;
+      ECG.cv.width = Math.round(ECG_W * dpr);
+      ECG.cv.height = Math.round(ECG_H * dpr);
+      ECG.cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+  }
+  function ecgPaint() {
+    var cx = ECG.cx; if (!cx) return;
+    var amp = ECG_R * ECG.amp, tone = ECG.tone, x, pa, bi, u, uu, i0, fr, v, y, fr2;
+    cx.clearRect(0, 0, ECG_W, ECG_H);
+    cx.beginPath();
+    for (x = 0; x <= ECG_W; x += .6) {
+      pa = ECG.ph - (ECG_W - x) / ECG_BEAT; bi = Math.floor(pa); u = pa - bi;
+      uu = u * 256; i0 = uu | 0; fr = uu - i0;
+      v = ECG_TAB[i0] * (1 - fr) + ECG_TAB[(i0 + 1) & 255] * fr;
+      if (tone > .02) { fr2 = ((bi * 2654435761) >>> 0) % 997 / 997; v *= 1 + (fr2 - .5) * .26 * tone; }   /* 거칠기: 박동마다 R 높이가 흔들린다 */
+      y = ECG_BASE - v * amp;
+      if (x === 0) cx.moveTo(0, y); else cx.lineTo(x, y);
+    }
+    cx.lineWidth = 1.6; cx.lineJoin = 'round'; cx.lineCap = 'round';
+    cx.strokeStyle = 'rgb(' + Math.round(ECG.c1[0] + (ECG.c2[0] - ECG.c1[0]) * tone) + ',' +
+      Math.round(ECG.c1[1] + (ECG.c2[1] - ECG.c1[1]) * tone) + ',' +
+      Math.round(ECG.c1[2] + (ECG.c2[2] - ECG.c1[2]) * tone) + ')';
+    cx.stroke();
+  }
+  function ecgFrame(now) {
+    if (!ECG.on) return;
+    var dt = ECG.last ? Math.min(.05, (now - ECG.last) / 1000) : 0; ECG.last = now;
+    var t = ecgState(), k = 1 - Math.exp(-dt / .20), kt = 1 - Math.exp(-dt / .30);
+    ECG.sp += (t.sp - ECG.sp) * k;
+    ECG.amp += (t.amp - ECG.amp) * k;
+    ECG.tone += (t.tone - ECG.tone) * kt;
+    ECG.ph += ECG.sp * dt;
+    ecgPaint();
+    ECG.raf = requestAnimationFrame(ecgFrame);
+  }
+  function ecgStop() { ECG.on = false; if (ECG.raf) { cancelAnimationFrame(ECG.raf); ECG.raf = 0; } }
+  function ecgWanted() {
+    return !!(ECG.cx && ecgRow && ecgRow.offsetParent && !document.hidden && !open && !reduce() && cur() === 'all');
+  }
+  /* 감속 모드·가려진 화면: 루프 없이 지금 자세의 한 장만 그려 둔다 */
+  function ecgStill() {
+    if (!ECG.cx || !ecgRow || !ecgRow.offsetParent) return;
+    var t = ecgState();
+    ECG.sp = t.sp; ECG.amp = t.amp; ECG.tone = t.tone;
+    if (!reduce()) { ECG.sp = .36; ECG.amp = 1; ECG.tone = 0; }
+    ecgFit(); ecgPaint();
+  }
+  function ecgSync() {
+    if (ecgWanted()) {
+      if (ECG.on) return;
+      ecgFit(); ecgColors();
+      ECG.on = true; ECG.last = 0;
+      ECG.raf = requestAnimationFrame(ecgFrame);
+    } else { ecgStop(); ecgStill(); }
   }
 
   /* ---------- 3. 오버레이 ---------- */
@@ -228,6 +326,7 @@
   }
   function revealOv() {
     if (!open || !ov) return;
+    ecgStop();                                  /* 글래스가 덮이면 파도도 세운다 */
     resetCards();
     ov.hidden = false;
     document.documentElement.setAttribute('data-jc-modeov', '');
@@ -256,6 +355,7 @@
       try { back.focus({ preventScroll: true }); } catch (e) { }
     }
     restFocus = null;
+    ecgSync();                                  /* 무대가 걷히면 파도를 다시 흘린다 */
   }
   function resetCards() {
     for (var i = 0; i < cards.length; i++) { cards[i].removeAttribute('data-step'); cards[i].classList.remove('a-on'); }
@@ -298,6 +398,9 @@
     nav = window.JC_NAV || null;
     ov = $('modeOv'); glass = $('modeGlass'); slot = $('slot'); slotBtn = $('slotBtn');
     ecgRow = $('ecgRow'); ecgBtn = $('ecgBtn'); back = $('modeBack');
+    ECG.cv = $('ecgCv');
+    if (ECG.cv) { try { ECG.cx = ECG.cv.getContext('2d'); } catch (e) { ECG.cx = null; } }
+    ecgColors();
     LV.cap = $('leverCap'); LV.shaft = $('leverShaft'); lvSet(60);
     var seeds = document.querySelectorAll('.a-mode');
     for (var i = 0; i < seeds.length; i++) cards.push(seeds[i]);
@@ -373,8 +476,22 @@
     function ecgPause() {
       if (document.hidden) document.documentElement.setAttribute('data-ecg-off', '');
       else document.documentElement.removeAttribute('data-ecg-off');
+      ecgSync();
     }
     document.addEventListener('visibilitychange', ecgPause); ecgPause();
+
+    /* 목록이 열리고 닫힐 때(index.html setList) 파형을 켜고 끈다 */
+    document.addEventListener('jc-list', ecgSync);
+    /* 테마가 바뀌면 파형 색을 다시 읽는다 */
+    try {
+      new MutationObserver(function (rec) {
+        var theme = false;
+        for (var i = 0; i < rec.length; i++) if (rec[i].attributeName === 'data-theme') theme = true;
+        if (theme) ecgColors();
+        requestAnimationFrame(function () { ecgSync(); });   /* 모드가 바뀌면(덱 → 대문) 파도를 다시 흘린다 */
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-jc-mode'] });
+    } catch (e) { }
+    window.addEventListener('resize', function () { if (!ECG.on) ecgStill(); });
 
     setInterval(tickDwell, 1000);
   }
