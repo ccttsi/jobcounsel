@@ -102,14 +102,26 @@ html.is-locked{overflow:hidden;padding-right:var(--sw,0)}
 .cal-d:disabled{color:var(--c-sub);opacity:.5}
 .cal-f{margin-top:2px;font-size:11px;color:var(--dim);text-align:center;line-height:1.4}
 
-/* 분류 띠: 대분류(1~4차) → 세부분류 */
+/* 분류 띠: 대분류(All·I~IV) → 세부분류 */
 .filters{display:grid;gap:3px;margin-top:6px}
 .filters .mstrip{margin:0}
-.secs{display:flex;flex-wrap:nowrap;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:1px;margin:0}
-.secs::-webkit-scrollbar,.cats::-webkit-scrollbar{display:none}
-.secs button{flex:none;min-height:44px;padding:5px 15px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:13px;font-weight:800;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;gap:6px}
-.secs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.secs button em{font-style:normal;font-size:11px;opacity:.72;font-variant-numeric:tabular-nums}
+/* 매거진 인덱스 탭 — 두 모서리를 자른 도형, 활성 시 잎크 채움과 밑줄 슬라이드 */
+.secs{display:flex;flex-wrap:nowrap;gap:5px;overflow-x:auto;scrollbar-width:none;padding:2px 0 3px;margin:0}
+.secs::-webkit-scrollbar,.cats::-webkit-scrollbar,.flt.cats::-webkit-scrollbar{display:none}
+.tab{--cut:9px;position:relative;isolation:isolate;flex:none;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:46px;padding:0 15px;border:0;background:none;color:var(--muted);transition:color .16s ease}
+.tab::before,.tab::after{content:"";position:absolute;z-index:-1;clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut))}
+.tab::before{inset:0;background:var(--line-2)}
+.tab::after{inset:1px;background:var(--panel);transform:scale(.94);transition:transform .18s cubic-bezier(.2,.9,.3,1),background-color .16s ease}
+.tab[aria-pressed="true"]::after{transform:scale(1)}
+.tab:active{transform:translateY(1px)}
+.tab[aria-pressed="true"]{color:var(--bg)}
+.tab[aria-pressed="true"]::before,.tab[aria-pressed="true"]::after{background:var(--ink)}
+.tab .rl{position:relative;z-index:1;font-family:var(--serif);font-style:italic;font-weight:700;font-size:15px;line-height:1;letter-spacing:.01em}
+.tab sup{position:relative;z-index:1;top:-.52em;font-size:9.5px;font-weight:800;line-height:1;opacity:.62;letter-spacing:.02em}
+.tab[aria-pressed="true"] sup{opacity:.75}
+@media (min-width:900px){.tab{min-height:52px;padding:0 19px;--cut:11px}.tab .rl{font-size:17px}.tab sup{font-size:10.5px}}
+@media (max-width:380px){.secs{gap:4px}.tab{padding:0 12px;gap:3px}}
+@media (hover:hover){.tab:hover::after{background:var(--soft)}}
 .cats{display:flex;flex-wrap:nowrap;gap:4px;overflow-x:auto;scrollbar-width:none;padding:0 0 1px}
 .cats:empty{display:none}
 .cats button{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:4px 13px;border:1px dashed var(--line-2);border-radius:99px;background:none;font-size:12px;font-weight:700;color:var(--muted)}
@@ -146,12 +158,7 @@ html.is-locked{overflow:hidden;padding-right:var(--sw,0)}
 @media (min-width:1000px){.days{max-height:182px;overflow:auto;scrollbar-width:thin}}
 
 /* 섹터 필터 */
-.secs{display:flex;flex-wrap:wrap;gap:4px}
-.secs button{min-height:44px;padding:4px 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:800;color:var(--muted);display:inline-flex;align-items:center;gap:5px}
-.secs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.secs button em{font-style:normal;font-size:11px;opacity:.72;font-variant-numeric:tabular-nums}
-.secs .s{display:none}
-@media (max-width:599px){.secs .f{display:none}.secs .s{display:inline}.secs button{padding:4px 10px}}
+.secs{align-items:center}
 
 
 /* 기사 */
@@ -259,19 +266,32 @@ html.is-locked{overflow:hidden;padding-right:var(--sw,0)}
 .sheet-in{width:100%;max-width:760px;max-height:84svh;overflow:auto;padding:14px 16px calc(14px + env(safe-area-inset-bottom));border-radius:18px 18px 0 0;background:var(--panel);border:1px solid var(--line-2);transform:translateY(20px);transition:transform .26s cubic-bezier(.2,.9,.3,1);overscroll-behavior:contain}
 .sheet.open .sheet-in{transform:none}
 @media (min-width:760px){.sheet{align-items:center}.sheet-in{border-radius:18px;max-height:80vh}}
-.sh-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.sh-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
 .sh-h b{font-size:16px;font-weight:850;letter-spacing:-.03em}
 .sh-x{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 14px;border:1px solid var(--line-2);border-radius:11px;font-weight:800;font-size:13px;text-align:center;line-height:1}
-.flt{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
-.flt button{min-height:44px;padding:4px 11px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:800;color:var(--muted)}
-.flt button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.flt.cats{margin-top:-2px;padding-top:6px;border-top:1px dashed var(--line-2)}
+.flt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.flt .tab{min-height:44px;padding:0 14px}
+.flt .tab .rl{font-size:14px}
+.flt.cats{flex-wrap:nowrap;gap:6px;margin-top:0;padding-top:8px;border-top:1px dashed var(--line-2);overflow-x:auto;scrollbar-width:none}
+.flt.cats button{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:6px 13px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:12px;font-weight:750;color:var(--muted)}
+.flt.cats button .num{font-size:11px;font-variant-numeric:tabular-nums;opacity:.66;letter-spacing:.01em}
+.flt.cats button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .flt.cats button.b{font-weight:700}
-.res{list-style:none;margin:0;padding:0;display:grid;gap:1px}
-.res button{display:grid;grid-template-columns:74px minmax(0,1fr);gap:8px;width:100%;min-height:44px;padding:7px 4px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.4}
-.res b{font-variant-numeric:tabular-nums;font-size:11.5px;color:var(--dim);font-weight:750;padding-top:2px}
-.res span{color:var(--ink);font-weight:650}
-.res em{display:block;font-style:normal;font-size:11px;color:var(--dim);font-weight:750;margin-top:1px}
+.res{list-style:none;margin:0;padding:0;display:grid;grid-auto-rows:64px;gap:1px}
+.res li.ghost{visibility:hidden}
+.res li.empty{grid-auto-rows:auto;display:grid;place-items:center;min-height:120px;color:var(--dim);font-size:13px}
+.res button{display:flex;align-items:center;gap:10px;width:100%;height:100%;min-height:44px;padding:6px 4px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.35;text-align:left}
+.res b{width:64px;flex:none;font-variant-numeric:tabular-nums;font-size:11.5px;color:var(--dim);font-weight:750}
+.res .tw{min-width:0;flex:1;display:grid;gap:1px}
+.res .tt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--ink);font-weight:650}
+.res em{display:block;font-style:normal;font-size:11px;color:var(--dim);font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pager{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:6px;padding-top:6px;border-top:1px solid var(--line)}
+.pager button{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
+.pager button svg{width:16px;height:16px}
+.pager button:hover{background:var(--soft)}
+.pager button:disabled{opacity:.26;cursor:default}
+.pager .pg{min-width:80px;text-align:center;font-size:12px;font-weight:750;color:var(--dim)}
+.pager .pg b{color:var(--ink);font-weight:850;font-size:12.5px}
 .empty{padding:16px 4px;font-size:13px;color:var(--muted)}
 
 /* 직무분석 팝업 */
@@ -355,16 +375,13 @@ html.is-locked{overflow:hidden;padding-right:var(--sw,0)}
 /* 등장 */
 .art,.card,.fig{transition:opacity .26s cubic-bezier(.2,.9,.3,1),transform .3s cubic-bezier(.2,.9,.3,1)}
 @starting-style{.art,.card,.fig{opacity:0;transform:translateY(6px)}}
-@media (prefers-reduced-motion:reduce){.art,.card,.fig,.sheet,.sheet-in,.jm,.jm-in{transition:none}}
+@media (prefers-reduced-motion:reduce){.art,.card,.fig,.sheet,.sheet-in,.jm,.jm-in,.tab::after{transition:none}}
 html[data-jc-imm] .art,html[data-jc-imm] .card,html[data-jc-imm] .fig,html[data-jc-imm] .sheet,html[data-jc-imm] .jm{transition:none}
 @media (max-width:999px){
   .side{grid-template-columns:1fr 1fr;display:grid;gap:8px}
   .side .card:nth-child(3){grid-column:1 / -1}
 }
 @media (max-width:599px){
-  .secs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
-  .secs::-webkit-scrollbar{display:none}
-  .secs button{flex:none}
   .side{grid-template-columns:1fr}
   .side .card:nth-child(n+2){display:none}
   .side .card:nth-child(3){grid-column:auto}
@@ -384,7 +401,7 @@ html[data-jc-imm] .art,html[data-jc-imm] .card,html[data-jc-imm] .fig,html[data-
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></a>
     <span class="sp"></span>
-    <button type="button" class="ed" id="edBtn" aria-haspopup="dialog"><b>제18호</b> 지난 호 · 섹터 찾기</button>
+    <button type="button" class="ed" id="edBtn" aria-haspopup="dialog"><b>지난 지면</b> 섹터로 찾기</button>
     <span data-jc-prefs></span>
   </header>
 
