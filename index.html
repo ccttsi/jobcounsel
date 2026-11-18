@@ -480,6 +480,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
                   <path class="a-lv-link" d="M0 30.5H22" fill="none" stroke="currentColor" stroke-width="1.5"/>
                   <path class="a-lv-groove" d="M20 10V51M24 10V51" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
                   <path class="a-lv-ticks" d="M9 13.6h4.2M30.8 13.6H35M9 20.75h4.2M30.8 20.75H35M9 35.55h4.2M30.8 35.55H35" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                  <line class="a-lv-charge" x1="22" y1="13.6" x2="22" y2="50" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2.8" stroke-linecap="round"/>
                   <circle class="a-lv-target" cx="37.5" cy="50" r="1.7" fill="currentColor" stroke="none"/>
                 </svg>
                 <span class="a-lever-hub"></span>
@@ -787,7 +788,7 @@ var pos=0,target=0,shown=-1,drag=null,paused=false,holdUntil=0,hover=false,lastT
 var raf=0,autoT=0,autoStart=0,remain=INTERVAL;
 /* 방치 유도(짝수분 00초, 5.0초)가 롤링을 움직이는 동안의 기준 자리.
    사용자가 만진 것이 아니므로 hold·userMove를 건드리지 않고, 끝나면 기준 자리로 정확히 돌아와 자동 넘김이 이어진다. */
-var hintBase=null;
+var hintBase=null,hintOff=null;
 var items=[],dotEls=[];
 function mod(a,n){return ((a%n)+n)%n;}
 function reduce(){return !!reduceMQ.matches;}
@@ -912,15 +913,19 @@ function canRun(){return !deckOn&&!reduce()&&!paused&&!hover&&!drag&&!listOpen&&
 function hintRollBegin(){
   if(hintBase!==null||spinT||drag||!N)return false;
   if(raf){cancelAnimationFrame(raf);raf=0;}
-  hintBase=pos;target=pos;lastT=0;
+  hintBase=pos;target=pos;lastT=0;hintOff=null;
   clearTimeout(autoT);autoT=0;autoStart=0;
   $('nav').classList.add('a-hold');
   return true;
 }
-function hintRollTo(off){if(hintBase===null)return;pos=hintBase+off;layout();}
+function hintRollTo(off){
+  if(hintBase===null)return;
+  if(hintOff!==null&&Math.abs(hintOff-off)<1e-4)return;   /* 제자리인 프레임은 다시 그리지 않는다 */
+  hintOff=off;pos=hintBase+off;layout();
+}
 function hintRollEnd(){
   if(hintBase===null)return;
-  pos=hintBase;target=Math.round(hintBase);lastT=0;
+  pos=hintBase;target=Math.round(hintBase);lastT=0;hintOff=null;
   hintBase=null;
   shown=-1;layout();                     /* 제자리로 돌아온 뒤 강조색·낭독기·방문 표시를 한 번에 맞춘다 */
   restartFill();schedule();

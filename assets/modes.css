@@ -46,6 +46,14 @@
 .a-slot[data-st="armed"] .a-lv-ticks{color:color-mix(in srgb,var(--acc) 42%,var(--line-2))}
 .a-slot[data-st="pulled"] .a-lv-groove{color:color-mix(in srgb,var(--acc) 62%,var(--line-2))}
 .a-slot[data-st="pulled"] .a-lv-target{opacity:1;color:var(--acc)}
+/* 장전 유도(2026-11-19): 손잡이가 아직 지나지 않은 나머지 길(1시→6시)을 점선으로 먼저 긋고,
+   표적 점이 세 번 맥동한다 — 「한 번 더 눌러 터뜨리면 여기까지 내려간다」를 눈으로 미리 보여 준다. */
+.a-lv-target{transform-box:fill-box;transform-origin:center}
+.a-lv-charge{transform-origin:22px 13.6px;transform:scaleY(0);opacity:0;
+  transition:transform .72s cubic-bezier(.2,.9,.3,1),opacity .26s linear}
+.a-slot[data-st="armed"] .a-lv-charge{transform:scaleY(1);opacity:.5;color:var(--acc)}
+@keyframes a-lv-tgt{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(2.1);opacity:1}}
+.a-slot[data-st="armed"] .a-lv-target{animation:a-lv-tgt .92s ease-in-out 3}
 /* 축 리벳 — (22,30.5). 막대가 이 점을 지나고, 3시 자세에서는 손잡이가 이 위를 덮는다 */
 .a-lever-hub{position:absolute;left:19.5px;top:28px;width:5px;height:5px;border-radius:50%;box-sizing:border-box;
   background:var(--ink);border:1.2px solid var(--panel)}
@@ -76,6 +84,10 @@
  * 2분 방치 유도에서는 이 캔버스가 opacity만 잃고(위상은 계속 흐른다) 기호 모핑이 그 위를 차지한다.
  * 화면이 가려지거나 오버레이가 열리면 루프를 세운다(프레임 0). 감속 모드에서는 한 장만 정적으로 그린다.
  */
+/* 파형 3단계의 색 — 평상 청록 · 장전 황토 · 격발 벽돌. 어두운 테마에서는 바탕에 묻히지 않게 밝게 띄운다.
+   (예전에는 --a1·--a2를 섞어 썼는데, 어두운 테마의 --a2가 청록이라 격발이 초록으로 보였다.) */
+:root{--ecg-a:#0f766e;--ecg-b:#a26400;--ecg-c:#bf3f24}
+:root[data-theme="dark"]{--ecg-a:#2dd4bf;--ecg-b:#f5b83d;--ecg-c:#f4715e}
 .a-ecgrow{display:flex;justify-content:center;align-items:center;margin:8px 0 2px}
 .a-root .a-ecg-btn{position:relative;display:block;width:188px;height:44px;border-radius:12px;-webkit-tap-highlight-color:transparent}
 .a-ecg-btn:focus-visible{outline:2px solid var(--a1);outline-offset:2px}

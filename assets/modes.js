@@ -54,6 +54,7 @@
    * 곡선 없이 결과 자세로 바로 간다. */
   var LV = { L: 19.5, th: 60, raf: 0, cap: null, shaft: null };
   function lvSet(th) {
+    if (LV.th === th) return;                 /* 같은 자세를 프레임마다 다시 쓰지 않는다(래칫 정지 구간 비용 0) */
     var a = th * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
     LV.th = th;
     if (LV.cap) LV.cap.style.transform = 'translate3d(0,' + (LV.L * (1 - c)).toFixed(2) + 'px,0) scale(' + (1 + .16 * s * s).toFixed(3) + ')';
@@ -144,6 +145,7 @@
     disarm();
     armed = which;
     (which === 'lever' ? slot : ecgRow).setAttribute('data-st', 'armed');
+    if (which === 'ecg') ECG.chg = 1;               /* 장전: 파형 위를 한 줄기 빛이 훑는다 */
     if (which === 'lever') {
       lvTween(30, 260);                             /* 1차: 2시 → 1시 */
       if (nav && nav.spin) nav.spin(-1, 260);       /* 장전: 롤링을 한 칸 뒤로 감아 둔다 */
@@ -245,15 +247,15 @@
    *   · 프레임마다 DOM·SVG·레이아웃을 건드리지 않는다(캔버스 픽셀만). 감속 모드에서는 한 장만 그린다.
    */
   var ECG = { cv: null, cx: null, on: false, raf: 0, last: 0, dpr: 1,
-    ph: 0, sp: 1 / 1.9, amp: 1, tone: 0, beat: 84, lw: 1.5, echo: 0, ceil: 0, chg: 0,
-    c1: [15, 118, 110], c2: [180, 83, 42] };
+    ph: 0, sp: 1 / 1.9, amp: 1, tone: 0, beat: 84, lw: 1.5, echo: 0, ceil: 0, chg: 0, arm: 0,
+    c1: [15, 118, 110], c2: [180, 83, 42], c3: [162, 100, 0], dark: false };
   var ECG_W = 168, ECG_H = 34, ECG_BASE = 20, ECG_R = 8, ECG_CX = ECG_W / 2;
   /* 3단계: 주기(초/회) · 진폭(배) · 박동 폭(px — 작을수록 창 안에 박동이 다닥다닥 붙는다) · 색 톤(0=청록 … 1=벽돌)
      · 선 굵기 · 겹선(장전의 두 겹 박동) · 천장선(장전의 목표 헤어라인) */
   var ECG_T = {
-    idle:   { sp: 1 / 1.7,  amp: 1,    tone: 0,  beat: 84, lw: 1.5, echo: 0, ceil: 0 },
-    armed:  { sp: 1 / .70,  amp: 1.55, tone: .15, beat: 56, lw: 1.7, echo: 0, ceil: 0 },
-    pulled: { sp: 1 / .30,  amp: 2.2,  tone: 1,   beat: 28, lw: 1.9, echo: 0, ceil: 0 }
+    idle:   { sp: 1 / 1.9, amp: 1,    tone: 0,   beat: 84, lw: 1.5, echo: 0,   ceil: 0 },
+    armed:  { sp: 1 / .62, amp: 2.05, tone: .5,  beat: 56, lw: 2.4, echo: .55, ceil: 1 },
+    pulled: { sp: 1 / .26, amp: 2.6,  tone: 1,   beat: 26, lw: 2.7, echo: .18, ceil: 0 }
   };
   var ECG_TAB = (function () {
     var t = new Float32Array(256), i, u, g = function (x, m, s, h) { var d = (x - m) / s; return h * Math.exp(-d * d); };
@@ -272,9 +274,14 @@
   function ecgColors() {
     try {
       var cs = getComputedStyle(document.documentElement);
-      ECG.c1 = ecgRGB(cs.getPropertyValue('--a1'), ECG.c1);
-      ECG.c2 = ecgRGB(cs.getPropertyValue('--a2'), ECG.c2);
-      ECG_KC = ECG_COLORS.map(function (h) { return ecgRGB(h, [15, 118, 110]); });
+      /* 파형의 세 색은 modes.css가 테마별로 정한다 — 평상 · 장전 · 격발 */
+      ECG.c1 = ecgRGB(cs.getPropertyValue('--ecg-a'), ECG.c1);
+      ECG.c3 = ecgRGB(cs.getPropertyValue('--ecg-b'), ECG.c3);
+      ECG.c2 = ecgRGB(cs.getPropertyValue('--ecg-c'), ECG.c2);
+      ECG.dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      /* 한붓그리기 기호 색: 어두운 테마에서는 종이 위 잉크색이 묻히므로 밝게 띄운다 */
+      ECG_KC = (ECG.dark ? ['#2dd4bf', '#f4715e', '#fbbf24', '#e6a6c2'] : ECG_COLORS)
+        .map(function (h) { return ecgRGB(h, [15, 118, 110]); });
     } catch (e) { }
   }
   var ECG_KC = [];
@@ -291,11 +298,14 @@
       ECG.cx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
   }
+  /* 색은 세 정거장을 지난다 — 평상 청록(--a1) → 장전 황토(--a3) → 격발 벽돌(--a2).
+     두 색만 섞으면 장전 중간이 탁한 올리브가 되므로, 채도가 살아 있는 황토를 경유한다. */
   function ecgTone(tone) {
-    var a = ECG.c1, b = ECG.c2;
-    return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * tone) + ',' +
-      Math.round(a[1] + (b[1] - a[1]) * tone) + ',' +
-      Math.round(a[2] + (b[2] - a[2]) * tone) + ')';
+    var a, b, p;
+    if (tone <= .5) { a = ECG.c1; b = ECG.c3; p = tone * 2; } else { a = ECG.c3; b = ECG.c2; p = (tone - .5) * 2; }
+    return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * p) + ',' +
+      Math.round(a[1] + (b[1] - a[1]) * p) + ',' +
+      Math.round(a[2] + (b[2] - a[2]) * p) + ')';
   }
   /* 파형 한 점의 y — 256칸 표를 선형 보간하고, 격발의 거칠기는 박동마다 R 높이를 흔든다 */
   function ecgY(x, ampMul) {
@@ -314,14 +324,58 @@
       if (x === 0) cx.moveTo(px, ecgY(x, 1)); else cx.lineTo(px, ecgY(x, 1));
     }
   }
+  /* R꼭대기 잔불 — 장전에서 박동이 지나간 자리에 작은 점이 잠깐 남는다 */
+  function ecgSparks(cx) {
+    var tone = ECG.tone, beat = ECG.beat, bi, x, age, a;
+    for (bi = Math.floor(ECG.ph) - 2; bi <= Math.floor(ECG.ph) + 1; bi++) {
+      x = ECG_W - (ECG.ph - (bi + .345)) * beat;
+      if (x < 0 || x > ECG_W) continue;
+      age = (ECG.ph - (bi + .345)) / ECG.sp;
+      if (age < 0 || age > .34) continue;
+      a = (1 - age / .34) * .8;
+      cx.globalAlpha = a;
+      cx.beginPath();
+      cx.arc(x, ecgY(x, 1) - 2.6, 1.15 + .9 * (1 - age / .34), 0, 6.2832);
+      cx.fill();
+    }
+    cx.globalAlpha = 1;
+  }
   function ecgPaint() {
     var cx = ECG.cx; if (!cx) return;
     cx.clearRect(0, 0, ECG_W, ECG_H);
     if (HINT.on) { ecgPaintHint(cx); return; }
     var main = ecgTone(ECG.tone);
+    /* 장전: 천장 헤어라인 — R 꼭대기가 닿기 직전의 목표선.
+       장전 3초 동안 4.6px → 2.6px로 내려와 「숨이 차오르고 있다」를 보여 주고,
+       박동이 치솟을 때마다 그 선이 밝아진다(격발하면 이 선을 뚫는다). */
+    if (ECG.ceil > .01) {
+      var cy = 4.6 - 2 * ease(Math.min(1, ECG.arm / 3));
+      var bp = ECG.ph - Math.floor(ECG.ph), bd = (bp - .345) / .075;
+      var glow = Math.exp(-bd * bd);
+      cx.save();
+      cx.globalAlpha = (.22 + .55 * glow) * ECG.ceil; cx.strokeStyle = main; cx.lineWidth = 1;
+      if (cx.setLineDash) cx.setLineDash([2, 3]);
+      cx.beginPath(); cx.moveTo(6, cy); cx.lineTo(ECG_W - 6, cy); cx.stroke();
+      cx.restore();
+    }
     cx.lineJoin = 'round'; cx.lineCap = 'round';
+    /* 장전: 2.4px 위에 옅은 같은 선을 겹쳐 박동이 두 겹으로 아린다 */
+    if (ECG.echo > .02) {
+      cx.save(); cx.globalAlpha = .34 * ECG.echo; cx.strokeStyle = main;
+      cx.lineWidth = Math.max(1, ECG.lw - .9); cx.translate(0, -2.4);
+      ecgPath(cx, 1); cx.stroke(); cx.restore();
+    }
     cx.lineWidth = ECG.lw; cx.strokeStyle = main;
     ecgPath(cx, 1); cx.stroke();
+    /* 장전: 넘어간 직후 0.9초 동안 한 줄기 빛이 파형을 훑고 지나간다 */
+    if (ECG.chg > 0) {
+      var bw = 30, x0 = -bw + (ECG_W + bw) * ECG.chg;
+      cx.save(); cx.beginPath(); cx.rect(x0, 0, bw, ECG_H); cx.clip();
+      cx.globalAlpha = .9; cx.lineWidth = ECG.lw + 1.2;
+      cx.strokeStyle = ecgTone(Math.min(1, ECG.tone + .45));
+      ecgPath(cx, 1); cx.stroke(); cx.restore();
+    }
+    if (ECG.tone > .3) { cx.fillStyle = main; ecgSparks(cx); }
   }
   /* ---------- 방치 유도: 한붓그리기 기호 4개(점 36개)를 캔버스에서 직접 구부린다 ---------- */
   var HINT = { on: false, t: 0, pat: null };
@@ -386,15 +440,16 @@
   function ecgFrame(now) {
     if (!ECG.on) return;
     var dt = ECG.last ? Math.min(.05, (now - ECG.last) / 1000) : 0; ECG.last = now;
-    var t = ecgState(), k = 1 - Math.exp(-dt / .20), kt = 1 - Math.exp(-dt / .30);
+    var t = ecgState(), k = 1 - Math.exp(-dt / .20), kt = 1 - Math.exp(-dt / .30), kc = 1 - Math.exp(-dt / .16);
     ECG.sp += (t.sp - ECG.sp) * k;
     ECG.amp += (t.amp - ECG.amp) * k;
     ECG.beat += (t.beat - ECG.beat) * kt;
-    ECG.tone += (t.tone - ECG.tone) * kt;
+    ECG.tone += (t.tone - ECG.tone) * kc;          /* 색은 빠르게 — 두 색 사이 탁한 중간색을 오래 보이지 않게 */
     ECG.lw += (t.lw - ECG.lw) * k;
     ECG.echo += (t.echo - ECG.echo) * kt;
     ECG.ceil += (t.ceil - ECG.ceil) * kt;
     if (ECG.chg > 0) ECG.chg = Math.max(0, ECG.chg - dt / .9);
+    ECG.arm = (ecgRow && ecgRow.getAttribute('data-st') === 'armed') ? Math.min(4, ECG.arm + dt) : 0;
     ECG.ph += ECG.sp * dt;
     if (HINT.on) HINT.t = Math.min(HINT_MS, HINT.t + dt * 1000);
     ecgPaint();
@@ -409,7 +464,7 @@
     if (!ECG.cx || !ecgRow || !ecgRow.offsetParent) return;
     var t = ecgState();
     ECG.sp = t.sp; ECG.amp = t.amp; ECG.tone = t.tone; ECG.beat = t.beat;
-    ECG.lw = t.lw; ECG.echo = t.echo; ECG.ceil = t.ceil; ECG.chg = 0;
+    ECG.lw = t.lw; ECG.echo = t.echo; ECG.ceil = t.ceil; ECG.chg = 0; ECG.arm = 0;
     if (reduce()) { ECG.sp = 1 / 1.9; ECG.amp = 1; ECG.tone = 0; ECG.beat = 84; ECG.lw = 1.5; ECG.echo = 0; ECG.ceil = 0; }
     ecgFit(); ecgPaint();
   }
