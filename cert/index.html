@@ -210,8 +210,8 @@ main{display:block;min-height:50vh;padding-top:20px}
 .opts button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 .opts button[aria-pressed="true"] small{color:inherit;opacity:.7}
 .opts button:disabled{opacity:.6;border-style:dashed;cursor:default} /* 0건이라 고를 수 없어도 글자는 읽히게 */
-.mo{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
-.mo button{display:grid;place-items:center;gap:0;min-height:46px;padding:4px 0;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:15px;font-weight:700;line-height:1.15}
+.mo{display:grid;grid-template-columns:repeat(auto-fit,minmax(48px,1fr));gap:4px}
+.mo button{display:grid;place-items:center;gap:0;min-height:46px;padding:6px 6px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:15px;font-weight:700;line-height:1.15;text-align:center}
 .mo button small{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--dim)}
 .mo button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
 .mo button[aria-pressed="true"] small{color:inherit;opacity:.8}
@@ -245,8 +245,8 @@ main{display:block;min-height:50vh;padding-top:20px}
 .r-x{grid-column:1;font-size:14px;line-height:1.5;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .r-x b{font-weight:700;color:var(--dim);margin-right:6px}
 .r-m{grid-column:2;grid-row:1 / span 3}
-.ty{display:inline-block;padding:1px 8px;border-radius:5px;font-size:12.5px;font-weight:700;line-height:1.6;white-space:nowrap;color:var(--c);background:var(--cs)}
-.tg{display:inline-block;max-width:10em;overflow:hidden;text-overflow:ellipsis;padding:0 6px;border:1px solid var(--line-2);border-radius:5px;font-size:12.5px;font-weight:600;line-height:1.55;color:var(--muted);white-space:nowrap;vertical-align:2px}
+.ty{display:inline-block;padding:2px 9px;border-radius:5px;font-size:12.5px;font-weight:700;line-height:1.6;white-space:nowrap;color:var(--c);background:var(--cs)}
+.tg{display:inline-block;max-width:10em;overflow:hidden;text-overflow:ellipsis;padding:2px 9px;border:1px solid var(--line-2);border-radius:5px;font-size:12.5px;font-weight:600;line-height:1.55;color:var(--muted);white-space:nowrap;vertical-align:2px}
 /* 열두 칸 띠: 시험이 있는 달 */
 .strip{display:inline-grid;grid-template-columns:repeat(12,4px);gap:2px;height:18px;vertical-align:middle}
 .strip i{display:block;border-radius:1.5px;background:var(--line)}
