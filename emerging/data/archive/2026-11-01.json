@@ -365,6 +365,154 @@
    },
    "source_id": "src_motie_humanoid2026",
    "question": "매출이 1년에 9배 뛰는 시장은 대개 ‘아직 아무도 표준을 못 잡은’ 시장이다. 지금 필요한 사람은 완성품 개발자보다 부품·데이터를 이해하는 사람이다."
+  },
+  {
+   "id": "ei-20261101-4",
+   "date": "2026-11-01",
+   "order": 4,
+   "sector": "s4",
+   "cat": "space",
+   "lead": false,
+   "title": "미국 우주 부문, GDP 1,425억 달러·민간 일자리 37만",
+   "kicker": "OECD The Space Economy at a Glance 2026",
+   "summary": "2023년 미국 우주 부문은 GDP에 1,425억 달러(전체의 0.5%)를 보탰고, 총산출은 2,409억 달러, 민간 고용은 37만 3,000명이었다. 우주가 국가 사업에서 산업으로 옮겨간 뒤의 숫자다.",
+   "key_numbers": [
+    {
+     "label": "GDP 기여",
+     "value": "1,425억 달러",
+     "note": "2023년, 전체의 0.5%"
+    },
+    {
+     "label": "총산출",
+     "value": "2,409억 달러",
+     "note": "2023년"
+    },
+    {
+     "label": "민간 고용",
+     "value": "37만 3,000명",
+     "note": "2023년"
+    }
+   ],
+   "market": {
+    "label": "미국 우주 부문(2023)",
+    "unit": "억 달러",
+    "basis": "부가가치와 총산출",
+    "chart": "bar",
+    "labels": [
+     "GDP 기여",
+     "총산출"
+    ],
+    "series": [
+     {
+      "name": "금액",
+      "values": [
+       142.5,
+       240.9
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "GDP 기여(부가가치)와 총산출은 다른 개념이라 더해도 전체가 되지 않는다.",
+    "source_id": "src_oecd_space2026"
+   },
+   "players": {
+    "domestic": [
+     "한화에어로스페이스",
+     "쎄트렉아이",
+     "컨텍"
+    ],
+    "glob": [
+     "SpaceX",
+     "Planet Labs",
+     "Maxar",
+     "Rocket Lab"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-eo-analyst"
+    ]
+   },
+   "source_id": "src_oecd_space2026",
+   "question": "우주 산업의 일자리는 발사장보다 지상국·데이터센터·측량 사무실에 더 많다. 그래서 이 분야의 채용은 전자·소프트웨어 쪽에서 먼저 늘어난다."
+  },
+  {
+   "id": "ei-20261101-5",
+   "date": "2026-11-01",
+   "order": 5,
+   "sector": "s1",
+   "cat": "smartfarm",
+   "lead": false,
+   "title": "매출 100억 원 스마트팜 기업, 23개에서 120개로",
+   "kicker": "농식품부 제1차 스마트농업 육성 기본계획",
+   "summary": "스마트팜코리아에 등록된 매출 100억 원 이상 기업은 2021년 23개에서 2030년 120개로 늘리는 것이 목표다. 장비를 파는 회사가 커져야 농가의 도입 비용도 내려간다.",
+   "key_numbers": [
+    {
+     "label": "100억 원 기업",
+     "value": "23 → 120개",
+     "note": "2021 → 2030"
+    },
+    {
+     "label": "연평균 성장",
+     "value": "20.2%",
+     "note": "두 목표값으로 계산"
+    },
+    {
+     "label": "등록 기준",
+     "value": "스마트팜코리아",
+     "note": "농식품부"
+    }
+   ],
+   "market": {
+    "label": "매출 100억 원 이상 스마트팜 기업",
+    "unit": "개",
+    "basis": "2021년·2030년 목표",
+    "chart": "bar",
+    "labels": [
+     "2021",
+     "2030"
+    ],
+    "series": [
+     {
+      "name": "기업 수",
+      "values": [
+       23,
+       120
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 20.2,
+    "note": "9년 사이 5.2배. 중간 연도 값은 공표되지 않았다.",
+    "source_id": "src_mafra_smartfarm2026"
+   },
+   "players": {
+    "domestic": [
+     "팜에이트",
+     "그린플러스",
+     "스마트팜코리아 등록기업"
+    ],
+    "glob": [
+     "Priva",
+     "Certhon",
+     "Signify",
+     "Ridder"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-agri"
+    ],
+    "new": [
+     "j-smartfarm"
+    ]
+   },
+   "source_id": "src_mafra_smartfarm2026",
+   "question": "농업 기자재 회사가 커지는 것이 스마트팜 확산의 실제 속도다. 농가가 사는 장비의 가격과 서비스가 곧 도입률이다."
   }
  ],
  "jobs": [
@@ -415,7 +563,13 @@
      "FAO"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "스마트농업 교육 강사",
+     "w": "농가 대상 장비·데이터 교육"
+    }
+   ]
   },
   {
    "id": "j-smartfarm",
@@ -465,7 +619,13 @@
      "AppHarvest 계열 시설"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "농장 데이터 컨설턴트",
+     "w": "여러 농가의 센서 기록을 비교해 재배 처방을 파는 일"
+    }
+   ]
   },
   {
    "id": "j-construct",
@@ -515,7 +675,13 @@
      "Obayashi"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터센터 시공 품질 감리",
+     "w": "전력·냉각·통신 요구를 아는 감리"
+    }
+   ]
   },
   {
    "id": "j-autofarm",
@@ -565,7 +731,13 @@
      "Yanmar"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "농기계 관제 센터 운영자",
+     "w": "지역 농가의 자율주행 장비를 한곳에서 관제"
+    }
+   ]
   },
   {
    "id": "j-mech",
@@ -614,7 +786,13 @@
      "ASML"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "부품 국산화 매칭 코디네이터",
+     "w": "수요기업과 부품사를 잇는 기술 중개"
+    }
+   ]
   },
   {
    "id": "j-elec",
@@ -664,7 +842,13 @@
      "Siemens"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
   },
   {
    "id": "j-robot-ai",
@@ -713,7 +897,17 @@
      "Physical Intelligence"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "로봇 행동 데이터 큐레이터",
+     "w": "공장·가정에서 촬영한 조작 영상을 학습용으로 다듬는 일"
+    },
+    {
+     "n": "시뮬레이션 월드 빌더",
+     "w": "로봇 학습용 가상 공장을 짓는 3D·물리 환경 제작"
+    }
+   ]
   },
   {
    "id": "j-humanoid-sys",
@@ -763,7 +957,69 @@
      "Agility Robotics"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "휴머노이드 안전 인증 심사원",
+     "w": "사람 옆에서 걷고 드는 로봇의 안전 기준을 심사"
+    }
+   ]
+  },
+  {
+   "id": "j-eo-analyst",
+   "name": "위성 데이터(EO) 분석가",
+   "en": "Earth Observation Analyst",
+   "sector": "s4",
+   "role": "위성 영상과 레이더 자료를 처리해 작물 상태, 산림 변화, 재난 피해, 시설물 변동을 읽어낸다. 고객이 이해할 수 있는 지도와 지표로 바꾸는 일이 절반이다.",
+   "ksa": {
+    "k": [
+     "원격탐사·분광 특성",
+     "GIS·좌표계",
+     "변화탐지 알고리즘"
+    ],
+    "s": [
+     "영상 전처리·보정",
+     "분류·세그멘테이션 모델",
+     "지도·보고서 제작"
+    ],
+    "a": [
+     "영상이 말하지 않는 것을 의심하는 감각",
+     "현장 담당자와 언어를 맞추는 소통"
+    ]
+   },
+   "study": [
+    "지리정보공학",
+    "항공우주공학",
+    "농업·산림학",
+    "컴퓨터공학"
+   ],
+   "certs": [
+    "공간정보관리사·지적기사",
+    "정보처리기사"
+   ],
+   "insight": "위성은 사진이 아니라 ‘주기적으로 갱신되는 계측기’다. 시계열로 읽는 순간 농업·보험·안보의 공통 언어가 된다.",
+   "companies": {
+    "domestic": [
+     "쎄트렉아이",
+     "컨텍",
+     "한국항공우주연구원",
+     "LX공간정보",
+     "네이버(항공·위성)"
+    ],
+    "global": [
+     "Planet Labs",
+     "Maxar",
+     "Airbus Defence and Space",
+     "ICEYE"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "위성 농업 자문역",
+     "w": "위성 영상으로 작황·재해를 읽어 보험·유통에 자문"
+    }
+   ]
   }
  ],
  "sources": [
@@ -811,12 +1067,27 @@
    "published": "2026-03-05",
    "track": "A",
    "usage": "카운터포인트 전망: 세계 휴머노이드 매출 2025년 5억 달러 돌파, 2026년 44억 달러"
+  },
+  {
+   "id": "src_oecd_space2026",
+   "name": "OECD",
+   "title": "The Space Economy at a Glance 2026",
+   "url": "https://doi.org/10.1787/cbf9b240-en",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026-09",
+   "track": "B",
+   "usage": "2025년 세계 우주 매출 5,500~6,000억 달러, 2024년 반도체 시장 약 6,200억 달러 등"
   }
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },

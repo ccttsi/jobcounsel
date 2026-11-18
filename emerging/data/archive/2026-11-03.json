@@ -382,6 +382,158 @@
    },
    "source_id": "src_oecd_ai_invest2025",
    "question": "AI 투자의 대부분은 ‘사람을 가르치는 비용’이다. OECD 집계에서도 EU27 AI 투자 1위 항목이 Skills(41.0%)였다."
+  },
+  {
+   "id": "ei-20261103-4",
+   "date": "2026-11-03",
+   "order": 4,
+   "sector": "s4",
+   "cat": "ai",
+   "lead": false,
+   "title": "AI 연구 인력, 컴퓨터·정보 연구과학자 +19.7%",
+   "kicker": "BLS 컴퓨터·정보 연구과학자 전망",
+   "summary": "BLS는 컴퓨터·정보 연구과학자 고용이 2024년 4만 300명에서 2034년 4만 8,300명으로 19.7% 늘 것으로 본다. 모델을 만드는 사람과 그 모델을 연구하는 사람은 다르다.",
+   "key_numbers": [
+    {
+     "label": "고용",
+     "value": "4.0만 → 4.8만 명",
+     "note": "2024 → 2034"
+    },
+    {
+     "label": "증가율",
+     "value": "+19.7%",
+     "note": "전체 평균 3.1%"
+    },
+    {
+     "label": "진입 학력",
+     "value": "대졸 이상",
+     "note": "BLS 분류"
+    }
+   ],
+   "market": {
+    "label": "컴퓨터·정보 연구과학자",
+    "unit": "천 명",
+    "basis": "BLS 전망",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2034"
+    ],
+    "series": [
+     {
+      "name": "고용",
+      "values": [
+       40.3,
+       48.3
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 1.8,
+    "note": "증가 인원은 7,900명. 연구 직무라 규모는 작지만 임금 상단이 높다.",
+    "source_id": "src_bls_ep2434"
+   },
+   "players": {
+    "domestic": [
+     "네이버",
+     "LG AI연구원",
+     "KAIST",
+     "서울대 AI연구소"
+    ],
+    "glob": [
+     "Google DeepMind",
+     "Microsoft Research",
+     "Meta AI",
+     "OpenAI"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-data"
+    ],
+    "new": [
+     "j-quantum-app",
+     "j-robot-ai"
+    ]
+   },
+   "source_id": "src_bls_ep2434",
+   "question": "AI 인력의 병목은 개발자가 아니라 ‘무엇이 왜 작동하는지 설명하는 사람’이다. 연구 직무는 그 자리를 맡는다."
+  },
+  {
+   "id": "ei-20261103-5",
+   "date": "2026-11-03",
+   "order": 5,
+   "sector": "s3",
+   "cat": "fintech",
+   "lead": false,
+   "title": "계리사 +21.8%, 보험·연금의 계산이 바뀐다",
+   "kicker": "BLS 계리사(actuaries) 전망",
+   "summary": "BLS는 계리사 고용이 2024년 3만 3,600명에서 2034년 4만 900명으로 21.8% 늘 것으로 본다. 기후·수명·금리의 불확실성이 커질수록 위험을 계산하는 사람이 필요하다.",
+   "key_numbers": [
+    {
+     "label": "고용",
+     "value": "3.36만 → 4.09만 명",
+     "note": "2024 → 2034"
+    },
+    {
+     "label": "증가율",
+     "value": "+21.8%",
+     "note": "전체 평균 3.1%"
+    },
+    {
+     "label": "증가 인원",
+     "value": "7,300명",
+     "note": "10년"
+    }
+   ],
+   "market": {
+    "label": "계리사 고용",
+    "unit": "천 명",
+    "basis": "BLS 전망",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2034"
+    ],
+    "series": [
+     {
+      "name": "고용",
+      "values": [
+       33.6,
+       40.9
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 2.0,
+    "note": "보험·연금·금융 리스크 계산이 주 업무다.",
+    "source_id": "src_bls_ep2434"
+   },
+   "players": {
+    "domestic": [
+     "삼성생명",
+     "교보생명",
+     "KB손해보험",
+     "국민연금공단"
+    ],
+    "glob": [
+     "Swiss Re",
+     "Munich Re",
+     "Aon",
+     "Willis Towers Watson"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-acct",
+     "j-data"
+    ],
+    "new": [
+     "j-fintech-risk"
+    ]
+   },
+   "source_id": "src_bls_ep2434",
+   "question": "기후와 고령화는 보험의 가정을 흔든다. 계리사는 그 가정을 숫자로 다시 세우는 직무다."
   }
  ],
  "jobs": [
@@ -432,7 +584,13 @@
      "YouTube"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "콘텐츠 IP 라이선싱 매니저",
+     "w": "캐릭터·세계관을 다른 산업에 파는 일"
+    }
+   ]
   },
   {
    "id": "j-content-ai",
@@ -483,7 +641,13 @@
      "Runway"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "AI 콘텐츠 검수 편집자",
+     "w": "생성물의 저작권·사실 오류를 걸러내는 전문 교정"
+    }
+   ]
   },
   {
    "id": "j-vprod",
@@ -532,7 +696,13 @@
      "ARRI"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "가상 로케이션 스카우트",
+     "w": "촬영지 대신 쓸 3D 배경을 기획·대여하는 일"
+    }
+   ]
   },
   {
    "id": "j-elec",
@@ -582,7 +752,13 @@
      "Siemens"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
   },
   {
    "id": "j-data",
@@ -633,7 +809,13 @@
      "Microsoft"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터 제품 기획자",
+     "w": "분석 결과를 반복 판매 가능한 제품으로 만드는 일"
+    }
+   ]
   },
   {
    "id": "j-ai-gov",
@@ -685,7 +867,13 @@
      "OECD AI Policy Observatory"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "AI 사고 대응 조사관",
+     "w": "모델 사고의 원인과 재발 방지를 문서화"
+    }
+   ]
   },
   {
    "id": "j-robot-ai",
@@ -734,7 +922,186 @@
      "Physical Intelligence"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "로봇 행동 데이터 큐레이터",
+     "w": "공장·가정에서 촬영한 조작 영상을 학습용으로 다듬는 일"
+    },
+    {
+     "n": "시뮬레이션 월드 빌더",
+     "w": "로봇 학습용 가상 공장을 짓는 3D·물리 환경 제작"
+    }
+   ]
+  },
+  {
+   "id": "j-quantum-app",
+   "name": "양자 알고리즘 응용 연구원",
+   "en": "Quantum Algorithm Application Researcher",
+   "sector": "s4",
+   "role": "화학·금융·물류의 어려운 계산 문제를 양자 알고리즘으로 바꿔 실험한다. 지금의 양자 하드웨어 한계를 감안해 잡음 완화 기법을 적용하고, 고전 컴퓨터 대비 우위가 있는지 정직하게 평가한다.",
+   "ksa": {
+    "k": [
+     "양자 회로·선형대수",
+     "변분 알고리즘(VQE·QAOA)",
+     "응용 분야 모델링"
+    ],
+    "s": [
+     "Qiskit·Cirq 등 SDK",
+     "시뮬레이터 실험 설계",
+     "논문 재현과 오류 분석"
+    ],
+    "a": [
+     "과장 없이 한계를 말하는 태도",
+     "긴 기초 학습을 견디는 끈기"
+    ]
+   },
+   "study": [
+    "물리학",
+    "컴퓨터공학",
+    "수학",
+    "전자공학"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "대학원 연구 중심(석·박사)",
+    "민간 양자 교육(Qiskit 등)"
+   ],
+   "insight": "아직 ‘쓸모’보다 ‘가능성’으로 움직이는 분야다. 그래서 이 직무의 핵심 능력은 계산이 아니라, 무엇이 진짜 이득인지 판별하는 안목이다.",
+   "companies": {
+    "domestic": [
+     "한국과학기술연구원(KIST)",
+     "한국표준과학연구원",
+     "SK텔레콤",
+     "큐노바",
+     "삼성전자"
+    ],
+    "global": [
+     "IBM Quantum",
+     "Google Quantum AI",
+     "IonQ",
+     "PsiQuantum",
+     "Quantinuum"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "양자 활용 가능성 심사역",
+     "w": "기업 과제가 양자로 풀릴 만한지 판정하는 역할"
+    }
+   ]
+  },
+  {
+   "id": "j-acct",
+   "name": "회계·재무 담당자",
+   "en": "Accountant / Finance",
+   "sector": "s3",
+   "role": "거래를 기록하고 재무제표를 만들며, 예산과 원가를 관리한다. 최근에는 탄소·ESG 데이터처럼 새로 생긴 비재무 지표까지 검증 대상에 들어왔다.",
+   "ksa": {
+    "k": [
+     "회계 기준·세법",
+     "원가·관리회계",
+     "내부통제"
+    ],
+    "s": [
+     "결산·공시",
+     "예산 편성",
+     "감사 대응"
+    ],
+    "a": [
+     "숫자의 근거를 끝까지 확인하는 성실성",
+     "기한을 지키는 책임감"
+    ]
+   },
+   "study": [
+    "회계학",
+    "경영학",
+    "경제학"
+   ],
+   "certs": [
+    "공인회계사",
+    "세무사",
+    "전산회계·전산세무"
+   ],
+   "insight": "ESG 공시와 탄소 검증이 회계의 영역으로 들어왔다. 숫자를 만드는 사람에서 숫자를 신뢰하게 만드는 사람으로 역할이 넓어지고 있다.",
+   "companies": {
+    "domestic": [
+     "삼일·삼정·한영·안진 회계법인",
+     "대기업 재무팀",
+     "금융회사"
+    ],
+    "global": [
+     "Deloitte",
+     "PwC",
+     "EY",
+     "KPMG"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "ESG 데이터 검증 보조",
+     "w": "비재무 지표의 근거를 확인"
+    }
+   ]
+  },
+  {
+   "id": "j-fintech-risk",
+   "name": "핀테크 규제·리스크 매니저",
+   "en": "Fintech Compliance & Risk Manager",
+   "sector": "s3",
+   "role": "새 금융 서비스가 자본·이용자 보호·자금세탁방지 규정을 지키도록 설계를 검토한다. 규제 샌드박스 신청서를 쓰고, 출시 뒤 이상거래 탐지 규칙을 운영한다.",
+   "ksa": {
+    "k": [
+     "금융 규제와 인허가 절차",
+     "AML·이상거래 탐지",
+     "개인신용정보 보호"
+    ],
+    "s": [
+     "정책·약관 검토",
+     "리스크 시나리오 작성",
+     "감독당국 커뮤니케이션"
+    ],
+    "a": [
+     "속도와 규정 사이에서 기준을 세우는 판단",
+     "문서로 설명하는 힘"
+    ]
+   },
+   "study": [
+    "법학",
+    "경영학",
+    "경제학",
+    "금융공학"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "자금세탁방지(AML) 민간 자격",
+    "정보처리기사"
+   ],
+   "insight": "금융에서 기술은 빠르지만 허가는 느리다. 그 속도 차이를 메우는 사람이 출시 일정을 결정한다.",
+   "companies": {
+    "domestic": [
+     "토스",
+     "카카오뱅크",
+     "케이뱅크",
+     "네이버페이",
+     "핀테크 스타트업"
+    ],
+    "global": [
+     "Stripe",
+     "Revolut",
+     "Wise",
+     "Square(Block)"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "규제 샌드박스 신청 대행",
+     "w": "핀테크 창업자의 인허가 서류를 대신 쓰는 일"
+    }
+   ]
   }
  ],
  "sources": [
@@ -759,20 +1126,35 @@
    "title": "Advancing the measurement of investments in artificial intelligence (OECD AI Papers No.47)",
    "url": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/09/advancing-the-measurement-of-investments-in-artificial-intelligence_7f58ff65/13e0da2f-en.pdf",
    "license": {
-    "type": "OECD",
-    "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2025-09",
-   "track": "A",
+   "track": "B",
    "usage": "EU27 AI 투자 2023년 2,570억 유로(민간 73%), 미국 AI R&D 약 900억 유로"
+  },
+  {
+   "id": "src_bls_ep2434",
+   "name": "미국 노동통계국(BLS)",
+   "title": "Industry and occupational employment projections overview and highlights, 2024–34",
+   "url": "https://www.bls.gov/opub/mlr/2026/article/industry-and-occupational-employment-projections-overview.htm",
+   "license": {
+    "type": "PUBLIC-DOMAIN",
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026",
+   "track": "A",
+   "usage": "직업별 2024~2034년 고용 증감률·중위임금·진입학력"
   }
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },

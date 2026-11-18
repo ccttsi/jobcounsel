@@ -346,6 +346,158 @@
    },
    "source_id": "src_oecd_space2026",
    "question": "반도체의 다음 싸움은 전공정이 아니라 후공정에서 벌어진다. 장비·소재 회사가 많은 한국에 유리한 지점이다."
+  },
+  {
+   "id": "ei-20261106-4",
+   "date": "2026-11-06",
+   "order": 4,
+   "sector": "s4",
+   "cat": "climate",
+   "lead": false,
+   "title": "CCUS 운영 능력의 60%는 천연가스 처리에서 나온다",
+   "kicker": "IEA CCUS Projects Database 2025",
+   "summary": "운영 중인 포집 능력의 60% 이상이 천연가스 처리 공정에 몰려 있다. 탄소를 많이 내는 발전·시멘트·철강의 포집은 이제 시작 단계다.",
+   "key_numbers": [
+    {
+     "label": "천연가스 처리",
+     "value": "60% 이상",
+     "note": "운영 능력"
+    },
+    {
+     "label": "2030년 파이프라인",
+     "value": "4억 3,000만 톤",
+     "note": "포집"
+    },
+    {
+     "label": "북미·유럽 비중",
+     "value": "80%",
+     "note": "2030년 능력"
+    }
+   ],
+   "market": {
+    "label": "운영 포집 능력의 업종 구성",
+    "unit": "%",
+    "basis": "2025년",
+    "chart": "bar",
+    "labels": [
+     "천연가스 처리",
+     "그 밖"
+    ],
+    "series": [
+     {
+      "name": "비중",
+      "values": [
+       60,
+       40
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "IEA는 업종 구성이 수소·산업·CDR 쪽으로 옮겨갈 것으로 본다.",
+    "source_id": "src_iea_ccus2025"
+   },
+   "players": {
+    "domestic": [
+     "GS칼텍스",
+     "SK이노베이션",
+     "롯데케미칼",
+     "한국남부발전"
+    ],
+    "glob": [
+     "Equinor",
+     "Shell",
+     "Air Liquide",
+     "Climeworks"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-plant"
+    ],
+    "new": [
+     "j-ccus-ops",
+     "j-mrv"
+    ]
+   },
+   "source_id": "src_iea_ccus2025",
+   "question": "쉬운 곳부터 포집했다. 이제 남은 것은 배출이 많고 공정이 복잡한 곳이라, 기술보다 공정 설계가 승부처가 된다."
+  },
+  {
+   "id": "ei-20261106-5",
+   "date": "2026-11-06",
+   "order": 5,
+   "sector": "s3",
+   "cat": "health",
+   "lead": false,
+   "title": "보건의료 관리자 +23.2%, 14만 명이 더 필요하다",
+   "kicker": "BLS 의료·보건 서비스 관리자 전망",
+   "summary": "BLS는 의료·보건 서비스 관리자 고용이 2024년 61만 6,200명에서 2034년 75만 9,100명으로 23.2% 늘 것으로 본다. 고령화와 디지털 전환이 병원 운영을 바꾸고 있다.",
+   "key_numbers": [
+    {
+     "label": "고용",
+     "value": "61.6만 → 75.9만 명",
+     "note": "2024 → 2034"
+    },
+    {
+     "label": "증가율",
+     "value": "+23.2%",
+     "note": "전체 평균 3.1%"
+    },
+    {
+     "label": "증가 인원",
+     "value": "14만 2,900명",
+     "note": "15개 직업 중 최대"
+    }
+   ],
+   "market": {
+    "label": "의료·보건 서비스 관리자",
+    "unit": "천 명",
+    "basis": "BLS 전망",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2034"
+    ],
+    "series": [
+     {
+      "name": "고용",
+      "values": [
+       616.2,
+       759.1
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 2.1,
+    "note": "증가 인원은 15개 고성장 직업 가운데 가장 많다(14만 2,900명).",
+    "source_id": "src_bls_ep2434"
+   },
+   "players": {
+    "domestic": [
+     "서울아산병원",
+     "삼성서울병원",
+     "분당서울대병원",
+     "보건복지부"
+    ],
+    "glob": [
+     "Mayo Clinic",
+     "Cleveland Clinic",
+     "NHS",
+     "HCA"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-nurse"
+    ],
+    "new": [
+     "j-dh-coord",
+     "j-cdm"
+    ]
+   },
+   "source_id": "src_bls_ep2434",
+   "question": "병원의 병목은 의사가 아니라 운영이다. 디지털 전환이 이 직무의 일을 ‘사람 관리’에서 ‘데이터와 사람 관리’로 바꾼다."
   }
  ],
  "jobs": [
@@ -397,7 +549,13 @@
      "Air Liquide"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
   },
   {
    "id": "j-h2-safety",
@@ -448,7 +606,13 @@
      "Plug Power"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "수소 충전소 안전 점검 대행",
+     "w": "지역 충전소의 정기 점검을 맡는 서비스"
+    }
+   ]
   },
   {
    "id": "j-ccus-ops",
@@ -499,7 +663,13 @@
      "Air Liquide"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "포집 설비 원격 감시원",
+     "w": "여러 사업장의 포집 설비를 원격으로 감시"
+    }
+   ]
   },
   {
    "id": "j-plant",
@@ -550,7 +720,13 @@
      "Siemens Energy"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "설비 원격 진단 기사",
+     "w": "여러 사업장 설비의 진동·온도를 원격 분석"
+    }
+   ]
   },
   {
    "id": "j-qa",
@@ -600,7 +776,13 @@
      "TÜV"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "인증 시험 대행 코디네이터",
+     "w": "해외 인증 일정과 서류를 관리"
+    }
+   ]
   },
   {
    "id": "j-mrv",
@@ -652,7 +834,13 @@
      "DNV"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "탄소 데이터 감사 보조",
+     "w": "중소기업 배출량 장부를 점검하는 실무 인력"
+    }
+   ]
   },
   {
    "id": "j-elec",
@@ -702,7 +890,13 @@
      "Siemens"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
   },
   {
    "id": "j-advanced-pkg",
@@ -751,7 +945,179 @@
      "ASE"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "칩 열설계 자문역",
+     "w": "AI 가속기의 발열·휨을 잡는 전문 컨설팅"
+    }
+   ]
+  },
+  {
+   "id": "j-nurse",
+   "name": "간호사",
+   "en": "Registered Nurse",
+   "sector": "s3",
+   "role": "환자의 상태를 관찰하고 치료·투약·교육을 수행한다. 디지털 헬스 시대에는 측정기 데이터와 원격 모니터링을 해석하는 일이 더해졌다.",
+   "ksa": {
+    "k": [
+     "해부·생리·약리",
+     "간호 과정",
+     "의료 정보 보호"
+    ],
+    "s": [
+     "환자 평가·기록",
+     "기기·모니터 운용",
+     "보호자·의료진 소통"
+    ],
+    "a": [
+     "환자 변화를 먼저 알아차리는 관찰력",
+     "감정 노동을 견디는 회복력"
+    ]
+   },
+   "study": [
+    "간호학"
+   ],
+   "certs": [
+    "간호사 면허",
+    "전문간호사",
+    "보건교육사"
+   ],
+   "insight": "BLS는 2024~34년 간호사(전문간호사) 증가율을 40.1%로 본다. 원격 모니터링이 늘면서 병동 밖에서도 간호 판단이 필요해졌다.",
+   "companies": {
+    "domestic": [
+     "상급종합병원",
+     "요양·재택의료기관",
+     "카카오헬스케어",
+     "방문간호 사업자"
+    ],
+    "global": [
+     "Mayo Clinic",
+     "Cleveland Clinic",
+     "NHS",
+     "Teladoc"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "재택 모니터링 간호사",
+     "w": "원격 측정값을 보고 방문 시점을 정하는 역할"
+    }
+   ]
+  },
+  {
+   "id": "j-dh-coord",
+   "name": "디지털 헬스 케어 코디네이터",
+   "en": "Digital Health Care Coordinator",
+   "sector": "s3",
+   "role": "원격진료·웨어러블 측정값·복약 알림을 환자 생활에 맞춰 연결한다. 이상 수치가 잡히면 의료진에게 넘기고, 환자가 기기를 포기하지 않도록 사용법과 목표를 조정한다.",
+   "ksa": {
+    "k": [
+     "만성질환 관리 기초",
+     "의료정보 보호 규정",
+     "디지털 기기 활용"
+    ],
+    "s": [
+     "환자 상담·교육",
+     "측정값 확인과 에스컬레이션",
+     "기록·보고"
+    ],
+    "a": [
+     "환자의 생활을 판단하지 않고 듣는 태도",
+     "위험 신호를 놓치지 않는 세심함"
+    ]
+   },
+   "study": [
+    "간호학",
+    "보건학",
+    "의료정보학",
+    "사회복지학"
+   ],
+   "certs": [
+    "간호사·보건교육사",
+    "의료정보관리사",
+    "국가자격 없음(기관 교육)"
+   ],
+   "insight": "원격진료가 전체 진료의 13%까지 올라온 뒤 생긴 ‘사이의 직무’다. 의사도 아니고 상담사도 아닌 자리가 환자 유지율을 결정한다.",
+   "companies": {
+    "domestic": [
+     "서울아산병원(디지털헬스)",
+     "분당서울대병원",
+     "카카오헬스케어",
+     "뷰노",
+     "SK텔레콤(NUGU)"
+    ],
+    "global": [
+     "Teladoc Health",
+     "Omada Health",
+     "Epic Systems",
+     "Withings"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "웨어러블 온보딩 코치",
+     "w": "고령 환자가 측정기를 포기하지 않게 돕는 방문 코치"
+    }
+   ]
+  },
+  {
+   "id": "j-cdm",
+   "name": "임상데이터 관리자(CDM)",
+   "en": "Clinical Data Manager",
+   "sector": "s3",
+   "role": "임상시험에서 나오는 방대한 환자 데이터의 품질과 규정 준수를 관리한다. 데이터 입력 오류를 찾아내고, 통계 분석이 가능한 형태로 잠그는 역할을 한다.",
+   "ksa": {
+    "k": [
+     "임상시험 규정(ICH-GCP)",
+     "의료 표준용어(CDISC)",
+     "통계 기초"
+    ],
+    "s": [
+     "데이터 검증 규칙 작성",
+     "쿼리 관리·추적",
+     "시험 문서화"
+    ],
+    "a": [
+     "작은 불일치를 넘기지 않는 꼼꼼함",
+     "마감 일정을 지키는 책임감"
+    ]
+   },
+   "study": [
+    "보건통계학",
+    "의료정보학",
+    "약학",
+    "통계학"
+   ],
+   "certs": [
+    "의료정보관리사",
+    "국제 임상데이터 관리 민간 자격(CCDM)",
+    "GCP 교육"
+   ],
+   "insight": "신약의 성패는 과학만큼 ‘데이터가 깨끗한가’에 달려 있다. 눈에 띄지 않는 이 직무가 임상 지연 비용을 가장 크게 줄인다.",
+   "companies": {
+    "domestic": [
+     "한국임상시험산업본부(KoNECT)",
+     "국가임상시험지원재단",
+     "CRO 기업(아이큐비아·한국파스퇴르 등)",
+     "제약사 임상팀"
+    ],
+    "global": [
+     "IQVIA",
+     "ICON",
+     "Parexel",
+     "Medidata"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "임상 데이터 품질 감사역",
+     "w": "여러 병원의 임상 기록을 대조·점검"
+    }
+   ]
   }
  ],
  "sources": [
@@ -791,20 +1157,35 @@
    "title": "The Space Economy at a Glance 2026",
    "url": "https://doi.org/10.1787/cbf9b240-en",
    "license": {
-    "type": "OECD",
-    "name": "OECD 공개 보고서(사실·수치 인용, 원문 링크)",
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
     "verified": true,
     "verified_at": "2026-11-19"
    },
    "published": "2026-09",
-   "track": "A",
+   "track": "B",
    "usage": "2025년 세계 우주 매출 5,500~6,000억 달러, 2024년 반도체 시장 약 6,200억 달러 등"
+  },
+  {
+   "id": "src_bls_ep2434",
+   "name": "미국 노동통계국(BLS)",
+   "title": "Industry and occupational employment projections overview and highlights, 2024–34",
+   "url": "https://www.bls.gov/opub/mlr/2026/article/industry-and-occupational-employment-projections-overview.htm",
+   "license": {
+    "type": "PUBLIC-DOMAIN",
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026",
+   "track": "A",
+   "usage": "직업별 2024~2034년 고용 증감률·중위임금·진입학력"
   }
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },

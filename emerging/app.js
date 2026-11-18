@@ -13,11 +13,11 @@
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   var TRACK = { 'KOGL-1': 'A', 'KOGL-0': 'A', 'PUBLIC-DOMAIN': 'A', 'CC-BY-4.0': 'A', 'OECD': 'A', 'WEF': 'A', 'IAEA': 'A', 'PRESS': 'B' };
 
-  var UI = { date: '', item: 0, sector: 'all', ym: 0, filterSector: 'all' };
+  var UI = { date: '', item: 0, sector: 'all', ym: 0, filterSector: 'all', filterCat: 'all' };
   var DATA = null, DAY = null, cache = {};
 
   /* ───────── 도표 ───────── */
-  var W = 340, H = 178, PL = 42, PR = 12, PT = 16, PB = 26;
+  var W = 340, H = 152, PL = 42, PR = 12, PT = 14, PB = 24;
 
   function ticks(lo, hi, n) {
     var span = hi - lo || 1, raw = span / Math.max(1, n), mag = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10));
@@ -138,27 +138,39 @@
     arr(DATA && DATA.archive_index).forEach(function (d) { d.items.forEach(function (it) { c[it.sector] = (c[it.sector] || 0) + 1; c.all++; }); });
     return c;
   }
+  /* 분류 띠: ① 대분류(전체·1~4차) ② 그 아래 세부분류(카테고리) */
+  function renderFilters() {
+    var cnt = sectorCounts();
+    var cats = catsFor(UI.sector);
+    var head = dayMeta(UI.date);
+    var ds = arr(DATA && DATA.archive_dates);
+    var i = ds.indexOf(UI.date);
+    $('filters').innerHTML =
+      '<div class="mstrip">' +
+        '<button type="button" class="ms-b" data-mv="-1" aria-label="이전 지면"' + (i <= 0 ? ' disabled' : '') + '>‹</button>' +
+        '<button type="button" class="ms-c" id="calBtn" aria-haspopup="dialog"><b class="num">' + esc(UI.date.slice(5).replace('-', '.')) + ' ' + esc(head.weekday) + '</b><span>달력에서 고르기</span></button>' +
+        '<button type="button" class="ms-b" data-mv="1" aria-label="다음 지면"' + (i >= ds.length - 1 ? ' disabled' : '') + '>›</button></div>' +
+      '<div class="secs" role="group" aria-label="산업 대분류">' +
+        '<button type="button" data-sector="all" aria-pressed="' + (UI.sector === 'all') + '"><span>전체</span><em>' + cnt.all + '</em></button>' +
+        arr(DATA.sectors).map(function (s) {
+          return '<button type="button" data-sector="' + esc(s.id) + '" aria-pressed="' + (UI.sector === s.id) + '" aria-label="' + esc(s.name) + ' 기사 모아 보기"><span class="f">' + esc(s.name) + '</span><span class="s">' + esc(s.no) + '차</span><em>' + (cnt[s.id] || 0) + '</em></button>';
+        }).join('') + '</div>' +
+      '<div class="cats" role="group" aria-label="세부분류">' +
+        (cats.length ? '<button type="button" data-cat="all" aria-pressed="' + (UI.filterCat === 'all') + '"><b>전체 범주</b><em>' + sectorResults(UI.sector).length + '</em></button>' +
+          cats.map(function (c) {
+            var n = sectorResults(UI.sector, c.id).length;
+            return '<button type="button" data-cat="' + esc(c.id) + '" aria-pressed="' + (UI.filterCat === c.id) + '">' + esc(c.name) + '<em>' + n + '</em></button>';
+          }).join('') : '') + '</div>';
+  }
   function renderRail() {
     var ds = arr(DATA && DATA.archive_dates).slice().reverse();
-    var head = dayMeta(UI.date);
-    var cnt = sectorCounts();
     $('rail').innerHTML =
-      '<div class="mstrip">' +
-        '<button type="button" class="ms-b" data-mv="-1" aria-label="이전 지면">‹</button>' +
-        '<button type="button" class="ms-c" id="calBtn" aria-haspopup="dialog"><b class="num">' + esc(UI.date.slice(5).replace('-', '.')) + ' ' + esc(head.weekday) + '</b><span>달력에서 고르기</span></button>' +
-        '<button type="button" class="ms-b" data-mv="1" aria-label="다음 지면">›</button></div>' +
       '<div class="cm" role="group" aria-label="지면 달력">' + miniCal() + '</div>' +
       '<div class="rail-h days-h"><b>지난 지면</b><span class="num">' + ds.length + '일</span></div>' +
       '<ul class="days">' + ds.map(function (d) {
         var t = dayMeta(d);
         return '<li><button type="button" data-day="' + esc(d) + '" aria-current="' + (d === UI.date) + '"><b class="num">' + esc(d.slice(5)) + '</b><span>' + esc(t.title) + '</span></button></li>';
-      }).join('') + '</ul>' +
-      '<div class="rail-h"><b>섹터</b><span>19일 전체</span></div>' +
-      '<div class="secs" role="group" aria-label="섹터로 찾기">' +
-        '<button type="button" data-sector="all" aria-pressed="' + (UI.sector === 'all') + '"><span>전체</span><em>' + cnt.all + '</em></button>' +
-        arr(DATA && DATA.sectors).map(function (s) {
-          return '<button type="button" data-sector="' + esc(s.id) + '" aria-pressed="' + (UI.sector === s.id) + '" aria-label="' + esc(s.name) + '"><span class="f">' + esc(s.name) + '</span><span class="s">' + esc(s.no) + '차</span><em>' + (cnt[s.id] || 0) + '</em></button>';
-        }).join('') + '</div>';
+      }).join('') + '</ul>';
   }
 
   function jobsBlock(it) {
@@ -169,7 +181,8 @@
     var chip = function (j, kind) {
       return '<button type="button" class="chip" data-job="' + esc(j.id) + '" data-kind="' + kind + '" aria-haspopup="dialog"><span>' + esc(j.name) + '</span><span class="ar" aria-hidden="true">↗</span></button>';
     };
-    return '<section class="jobs" aria-labelledby="jobH"><div class="jobs-h"><b id="jobH">직무 분석</b><span>칩을 누르면 다섯 칸으로 펼쳐집니다</span></div><div class="jg">' +
+    return '<section class="jobs" aria-labelledby="jobH"><div class="jobs-h"><b id="jobH">직무 분석</b>' +
+      '<button type="button" class="nl-btn" data-next="1" aria-haspopup="dialog"><span class="st" aria-hidden="true">✧</span>넥스트 롤 랩</button></div><div class="jg">' +
       '<div class="old"><span class="t"><i aria-hidden="true"></i>기존 직무</span><div class="chips">' + leg.map(function (j) { return chip(j, 'old'); }).join('') + '</div></div>' +
       '<div class="new"><span class="t"><i aria-hidden="true"></i>최근 등장한 직무</span><div class="chips">' + neo.map(function (j) { return chip(j, 'new'); }).join('') + '</div></div>' +
       '</div></section>';
@@ -193,7 +206,10 @@
     var keys = arr(it.key_numbers).slice(0, 3);
     var ch = chart(it.market);
     $('art').innerHTML =
-      '<div class="art-h"><span class="nx num">' + pad(UI.item + 1) + ' / ' + pad(items.length) + '</span><span>' + esc(sec.no) + '차 산업</span><span class="cat">' + esc(cat.name || '') + '</span>' + (it.lead ? '<span class="cat dim">앞기사</span>' : '') + '</div>' +
+      '<div class="art-h"><span class="nx num">' + pad(UI.item + 1) + ' / ' + pad(items.length) + '</span>' +
+        '<button type="button" class="cat" data-sector="' + esc(it.sector) + '" aria-haspopup="dialog" aria-label="' + esc(sec.no) + '차 산업 기사 모아 보기">' + esc(sec.no) + '차 산업</button>' +
+        (cat.name ? '<button type="button" class="cat" data-cat="' + esc(it.cat) + '" aria-haspopup="dialog" aria-label="' + esc(cat.name) + ' 범주 기사 모아 보기">' + esc(cat.name) + '</button>' : '') +
+        '</div>' +
       '<div class="pgs" role="group" aria-label="이 번호의 기사">' + items.map(function (x, i) {
         return '<button type="button" data-item="' + i + '" aria-current="' + (i === UI.item) + '" aria-label="' + (i + 1) + '번째 기사">' + pad(i + 1) + '</button>';
       }).join('') + '</div>' +
@@ -213,9 +229,7 @@
     arr(DAY.items).forEach(function (it) { if (it.market) charts++; });
     var mx = Math.max.apply(null, Object.keys(counts).map(function (k) { return counts[k]; }).concat([1]));
     $('side').innerHTML =
-      '<section class="card"><h4>이 번호의 목차</h4><ol class="toc">' + items.map(function (it, i) {
-        return '<li><button type="button" data-item="' + i + '" aria-current="' + (i === UI.item) + '"><b class="num">' + pad(i + 1) + '</b><span>' + esc(it.title) + '</span></button></li>';
-      }).join('') + '</ol><p class="note num" style="margin-top:4px">도표 ' + charts + '개 · 직무 ' + items.reduce(function (a, it) { return a + arr(it.jobs && it.jobs.legacy).length + arr(it.jobs && it.jobs.new).length; }, 0) + '개</p></section>' +
+      '<section class="card"><h4>이 번호</h4><p class="note num">기사 ' + items.length + '건 · 도표 ' + charts + '개 · 직무 ' + items.reduce(function (a, it) { return a + arr(it.jobs && it.jobs.legacy).length + arr(it.jobs && it.jobs.new).length; }, 0) + '개</p><p class="note" style="margin-top:4px">1차부터 4차까지 고르게. 기사마다 도표와 직무 칸이 붙습니다.</p></section>' +
       '<section class="card"><h4>섹터 분포 · 19일</h4><ul class="bars">' + arr(DATA.sectors).map(function (s) {
         var v = counts[s.id] || 0;
         return '<li><span>' + esc(s.no) + '차</span><span class="tr"><i class="' + (s.no === '4' ? 'a' : '') + '" style="transform:scaleX(' + (v / mx).toFixed(3) + ')"></i></span><b>' + v + '</b></li>';
@@ -234,7 +248,7 @@
 
   function render() {
     if (!DAY) return;
-    renderMast(); renderRail(); renderArticle(); renderSide();
+    renderMast(); renderFilters(); renderRail(); renderArticle(); renderSide();
     try {
       var q = '?date=' + UI.date + (UI.item ? '#i' + (UI.item + 1) : '');
       history.replaceState(null, '', location.pathname + q);
@@ -292,34 +306,84 @@
     s.onkeydown = trap(s);
     requestAnimationFrame(function () { s.classList.add('open'); var c = s.querySelector('[data-close]'); if (c) c.focus({ preventScroll: true }); });
   }
-  function sectorResults(sec) {
+  function sectorResults(sec, cat) {
     var out = [];
     arr(DATA.archive_index).forEach(function (d) {
-      d.items.forEach(function (it) { if (sec === 'all' || it.sector === sec) out.push({ date: d.date, wd: d.weekday, no: d.no, item: it }); });
+      d.items.forEach(function (it) {
+        if (sec !== 'all' && it.sector !== sec) return;
+        if (cat && cat !== 'all' && it.cat !== cat) return;
+        out.push({ date: d.date, wd: d.weekday, no: d.no, item: it });
+      });
     });
     return out;
   }
+  function catsFor(sec) {
+    var seen = {}, out = [];
+    arr(DATA.archive_index).forEach(function (d) {
+      d.items.forEach(function (it) {
+        if (sec !== 'all' && it.sector !== sec) return;
+        if (seen[it.cat]) return;
+        seen[it.cat] = 1;
+        var c = arr(DATA.categories).filter(function (x) { return x.id === it.cat; })[0];
+        if (c) out.push(c);
+      });
+    });
+    return out;
+  }
+  /* 섹터 → 카테고리 두 단 필터. 카테고리를 고르면 그 안의 기사만 남는다. */
+  /* 넥스트 롤 랩 — 기사 흐름에서 뽑은 ‘창직·창업 탐색용 가설’. 확정 직무가 아니다. */
+  function openNext() {
+    var day = DAY, items = arr(day.items).slice().sort(function (a, b) { return a.order - b.order; });
+    var it = items[UI.item] || items[0] || { jobs: {}, title: '' };
+    var rows = [], seen = {};
+    (it.jobs && it.jobs.new || []).concat(it.jobs && it.jobs.legacy || []).forEach(function (id) {
+      var j = jobById(id);
+      if (!j) return;
+      arr(j.next_roles).forEach(function (n) {
+        if (seen[n.n]) return;
+        seen[n.n] = 1;
+        rows.push({ name: n.n, why: n.w, from: j.name, kind: j.kind });
+      });
+    });
+    rows = rows.slice(0, 3);
+    var html = '<p class="nl-warn"><b>먼저 알려 드립니다.</b> 아래는 확정된 직무나 산업이 아닙니다. 이 기사의 흐름(수치·기업·기술)에서 “이런 일이 생길 수 있다”고 그려 본 <b>창직·창업 탐색용 예측 가설</b>입니다.</p>' +
+      (rows.length ? '<ul class="nl-list">' + rows.map(function (r) {
+        return '<li><span class="k">' + (r.kind === 'new' ? '신규 직무에서 파생' : '기존 직무에서 파생') + '</span>' +
+          '<h5>' + esc(r.name) + '</h5><p>' + esc(r.why) + '</p></li>';
+      }).join('') + '</ul>' : '<p class="note">이 기사에서는 아직 파생 가설을 만들지 못했습니다.</p>') +
+      '<p class="nl-src">바탕: 「' + esc(it.title) + '」의 직무 분석. 가설은 상담·진로 탐색의 대화 소재로만 쓰고, 채용·자격 정보는 공식 자료로 확인하세요.</p>';
+    openSheet(html, '넥스트 롤 랩', null);
+  }
   function openFilter() {
     function draw() {
-      var sec = UI.filterSector, rows = sectorResults(sec).slice().reverse();
+      var sec = UI.filterSector, cat = UI.filterCat, rows = sectorResults(sec === 'all' ? 'all' : sec, cat).slice().reverse();
+      var cats = catsFor(sec);
       var html = '<div class="flt">' + ['all'].concat(arr(DATA.sectors).map(function (s) { return s.id; })).map(function (id) {
         var nm = id === 'all' ? '전체' : (arr(DATA.sectors).filter(function (s) { return s.id === id; })[0] || {}).name;
         return '<button type="button" data-fs="' + esc(id) + '" aria-pressed="' + (sec === id) + '">' + esc(nm) + ' <span class="num">' + sectorResults(id).length + '</span></button>';
       }).join('') + '</div>' +
+        (cats.length > 1 ? '<div class="flt cats" role="group" aria-label="카테고리">' +
+          '<button type="button" data-fc="all" aria-pressed="' + (!cat || cat === 'all') + '">전체 범주 <span class="num">' + sectorResults(sec, 'all').length + '</span></button>' +
+          cats.map(function (c) {
+            return '<button type="button" data-fc="' + esc(c.id) + '" aria-pressed="' + (cat === c.id) + '">' + esc(c.name) + ' <span class="num">' + sectorResults(sec, c.id).length + '</span></button>';
+          }).join('') + '</div>' : '') +
         '<ol class="res">' + (rows.length ? rows.map(function (r) {
           var s = arr(DATA.sectors).filter(function (x) { return x.id === r.item.sector; })[0] || {};
-          return '<li><button type="button" data-open="' + esc(r.date) + '" data-oi="' + esc(r.item.id) + '"><b class="num">' + esc(r.date.slice(5)) + ' ' + esc(r.wd) + '</b><span>' + esc(r.item.title) + '<em>' + esc(s.no) + '차 · 제' + esc(r.no) + '호</em></span></button></li>';
-        }).join('') : '<li class="empty">이 섹터의 기사가 아직 없습니다.</li>') + '</ol>';
-      openSheet(html, '섹터로 찾기 · 지난 지면', function (e, s) {
+          var cc = arr(DATA.categories).filter(function (x) { return x.id === r.item.cat; })[0] || {};
+          return '<li><button type="button" data-open="' + esc(r.date) + '" data-oi="' + esc(r.item.id) + '"><b class="num">' + esc(r.date.slice(5)) + ' ' + esc(r.wd) + '</b><span>' + esc(r.item.title) + '<em>' + esc(s.no) + '차 · ' + esc(cc.name || '') + ' · 제' + esc(r.no) + '호</em></span></button></li>';
+        }).join('') : '<li class="empty">이 범주의 기사가 아직 없습니다.</li>') + '</ol>';
+      openSheet(html, '섹터·카테고리로 찾기 · 지난 지면', function (e, s) {
         var b = e.target.closest('[data-fs]');
-        if (b) { UI.filterSector = b.getAttribute('data-fs'); draw(); }
+        if (b) { UI.filterSector = b.getAttribute('data-fs'); UI.sector = UI.filterSector === 'all' ? 'all' : UI.filterSector; UI.filterCat = 'all'; renderFilters(); draw(); return; }
+        var c = e.target.closest('[data-fc]');
+        if (c) { UI.filterCat = c.getAttribute('data-fc'); renderFilters(); draw(); }
       });
     }
     draw();
   }
   function openCalendar() {
     function draw() {
-      openSheet('<p class="note">지면은 <b>2026년 11월</b>부터 시작하고, 달은 오늘까지 자동으로 늘어납니다.</p><div style="margin-top:8px">' + calendar() + '</div>', '지면 달력',
+      openSheet('<p class="note">지면은 <b>2026년 11월</b>부터 시작하고, 달은 오늘까지 자동으로 늘어납니다.</p><div class="calwrap">' + calendar() + '</div>', '지면 달력',
         function (e) {
           var b = e.target.closest('[data-ym]');
           if (b) { UI.ym += +b.getAttribute('data-ym'); draw(); }
@@ -349,23 +413,29 @@
     var rows = [['K', K], ['S', S], ['A', A]].filter(function (r) { return r[1].length; });
     var co = j.companies || {};
     var isNew = kind === 'new' || String(j.kind || '') === 'new';
+    var sec = arr(DATA.sectors).filter(function (x) { return x.id === j.sector; })[0] || {};
     var html = '<div class="jm" id="jobm" role="dialog" aria-modal="true" aria-labelledby="jmT" hidden><div class="jm-in">' +
-      '<div class="jm-h"><span class="k' + (isNew ? ' n' : '') + '">' + (isNew ? '최근 등장' : '기존 직무') + '</span><h3 id="jmT">' + esc(j.name) + '</h3><button type="button" class="x" data-close aria-label="닫기">닫기</button></div>' +
-      (j.en ? '<p class="jm-en">' + esc(j.en) + '</p>' : '') +
+      '<div class="jm-h"><span class="k' + (isNew ? ' n' : '') + '">' + (isNew ? '최근 등장' : '기존 직무') + '</span>' +
+        '<div class="who"><h3 id="jmT">' + esc(j.name) + '</h3>' +
+        '<p class="jm-meta">' + (j.en ? '<span>' + esc(j.en) + '</span>' : '') +
+          (sec.name ? '<i aria-hidden="true">·</i><span>' + esc(sec.name) + '</span>' : '') +
+          '<i aria-hidden="true">·</i><span>NCS·O*NET 방식 5칸</span></p></div>' +
+        '<button type="button" class="x" data-close aria-label="닫기">닫기</button></div>' +
       '<div class="jm-b">' +
-        '<section class="blk"><span class="n"><i aria-hidden="true">1</i>무슨 일을 하는지</span><p>' + esc(j.role) + '</p></section>' +
-        '<section class="blk"><span class="n"><i aria-hidden="true">2</i>필요한 KSA</span><div class="ksa">' + rows.map(function (r) {
-          return '<div class="r"><b>' + r[0] + '</b><div class="tags">' + r[1].map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>';
+        '<section class="blk"><div class="blk-h"><span class="ni">01</span><b>하는 일</b><em>핵심 과업</em></div><p class="role">' + esc(j.role) + '</p></section>' +
+        '<section class="blk"><div class="blk-h"><span class="ni">02</span><b>KSA</b><em>지식 · 기술 · 태도</em></div><div class="ksa2">' + rows.map(function (r) {
+          var lb = { K: '지식', S: '기술', A: '태도' }[r[0]];
+          return '<div class="ksa-row"><span class="kb ' + r[0].toLowerCase() + '">' + r[0] + '</span><span class="kl">' + lb + '</span><div class="tags">' + r[1].map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>';
         }).join('') + '</div></section>' +
-        '<section class="blk"><span class="n"><i aria-hidden="true">3</i>국내 / 해외 주요 기업</span><div class="kv two">' +
-          '<div class="row"><b>국내</b><span>' + arr(co.domestic || co.dom).map(esc).join(' · ') + '</span></div>' +
-          '<div class="row"><b>해외</b><span>' + arr(co.global || co.glob).map(esc).join(' · ') + '</span></div>' +
+        '<section class="blk"><div class="blk-h"><span class="ni">03</span><b>채용 기업</b><em>국내 · 해외</em></div><div class="snap">' +
+          '<div class="snap-c"><b>국내</b><div class="tags">' + arr(co.domestic || co.dom).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>' +
+          '<div class="snap-c"><b>해외</b><div class="tags intl">' + arr(co.global || co.glob).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>' +
         '</div></section>' +
-        '<section class="blk"><span class="n"><i aria-hidden="true">4</i>연관 학과 및 자격증</span><div class="kv two">' +
-          '<div class="row"><b>학과</b><span>' + arr(j.study).map(esc).join(' · ') + '</span></div>' +
-          '<div class="row"><b>자격·교육</b><span>' + arr(j.certs).map(esc).join(' · ') + '</span></div>' +
+        '<section class="blk"><div class="blk-h"><span class="ni">04</span><b>진입 경로</b><em>전공 → 자격</em></div><div class="path">' +
+          '<div class="step"><b>전공</b><span>' + arr(j.study).map(esc).join(' · ') + '</span></div>' +
+          '<div class="step"><b>자격·교육</b><span>' + arr(j.certs).map(esc).join(' · ') + '</span></div>' +
         '</div></section>' +
-        '<section class="blk"><span class="n"><i aria-hidden="true">5</i>한눈에 파악하는 핵심 아이디어</span><p class="ins">' + esc(j.insight) + '</p></section>' +
+        '<section class="blk"><div class="blk-h"><span class="ni">05</span><b>핵심 아이디어</b><em>한 문장</em></div><p class="ins">' + esc(j.insight) + '</p></section>' +
       '</div>' +
       '<p class="jm-f">기업은 해당 직무를 실제로 운영하거나 채용하는 곳만 적었습니다. 자격은 국가자격과 민간 교육을 구분했고, 국가자격이 없는 직무는 그렇게 적었습니다.</p>' +
       '</div></div>';
@@ -383,11 +453,19 @@
   document.addEventListener('click', function (e) {
     var t = e.target, b;
     if ((b = t.closest('[data-job]'))) { openJob(b.getAttribute('data-job'), b.getAttribute('data-kind')); return; }
-    if ((b = t.closest('[data-item]'))) { UI.item = +b.getAttribute('data-item'); render(); window.scrollTo({ top: 0, behavior: 'auto' }); return; }
+    if ((b = t.closest('[data-item]'))) { UI.item = +b.getAttribute('data-item'); render(); return; }
     if ((b = t.closest('[data-go]'))) { UI.item += +b.getAttribute('data-go'); render(); return; }
     if ((b = t.closest('[data-ym]'))) { if (b.closest('#sheet')) return; UI.ym += +b.getAttribute('data-ym'); renderRail(); return; }
     if ((b = t.closest('[data-cal]'))) { openCalendar(); return; }
-    if ((b = t.closest('[data-sector]'))) { UI.sector = b.getAttribute('data-sector'); UI.filterSector = UI.sector; openFilter(); return; }
+    if (t.closest('[data-next]')) { openNext(); return; }
+    if ((b = t.closest('[data-sector]'))) {
+      UI.sector = b.getAttribute('data-sector'); UI.filterSector = UI.sector; UI.filterCat = 'all';
+      renderFilters(); openFilter(); return;
+    }
+    if ((b = t.closest('[data-cat]'))) {
+      UI.filterSector = UI.sector; UI.filterCat = b.getAttribute('data-cat');
+      renderFilters(); openFilter(); return;
+    }
     if ((b = t.closest('[data-mv]'))) {
       var ds = arr(DATA.archive_dates), i = ds.indexOf(UI.date) + +b.getAttribute('data-mv');
       if (i >= 0 && i < ds.length) loadDay(ds[i]);
@@ -399,11 +477,10 @@
       loadDay(dt).then(function () {
         var k = arr(DAY.items).map(function (x) { return x.id; }).indexOf(oi);
         if (k >= 0) { UI.item = k; render(); }
-        window.scrollTo({ top: 0, behavior: 'auto' });
       });
       return;
     }
-    if ((b = t.closest('[data-day]'))) { closeSheet(); loadDay(b.getAttribute('data-day')); window.scrollTo({ top: 0, behavior: 'auto' }); return; }
+    if ((b = t.closest('[data-day]'))) { closeSheet(); loadDay(b.getAttribute('data-day')); return; }
     if ((b = t.closest('#calBtn'))) { openCalendar(); return; }
     if ((b = t.closest('#edBtn'))) { openFilter(); return; }
   });

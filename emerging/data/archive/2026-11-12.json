@@ -366,6 +366,138 @@
    },
    "source_id": "src_iea_etp2024",
    "question": "공장을 짓는 돈의 대부분은 소재·공정 장비로 간다. 그래서 신산업의 채용은 완성품 회사보다 소재 회사에서 먼저 늘어난다."
+  },
+  {
+   "id": "ei-20261112-4",
+   "date": "2026-11-12",
+   "order": 4,
+   "sector": "s4",
+   "cat": "energy",
+   "lead": false,
+   "title": "핵융합 160기, 40개국이 동시에 짓는다",
+   "kicker": "IAEA World Fusion Outlook 2025",
+   "summary": "가동·건설·계획 중인 핵융합 장치는 160기를 넘고 약 40개국이 프로그램을 운영한다. 장치가 늘면 플라스마 진단·초전도 자석·진공 부품의 수요가 함께 늘어난다.",
+   "key_numbers": [
+    {
+     "label": "융합 장치",
+     "value": "160기 이상",
+     "note": "가동·건설·계획"
+    },
+    {
+     "label": "참여국",
+     "value": "약 40개국",
+     "note": "IAEA"
+    },
+    {
+     "label": "민간·공공 투자",
+     "value": "100억 달러 초과",
+     "note": "2025년"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "한국핵융합에너지연구원",
+     "서울대",
+     "KAIST",
+     "피코사이언스"
+    ],
+    "glob": [
+     "ITER",
+     "Commonwealth Fusion Systems",
+     "Tokamak Energy",
+     "General Fusion"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec",
+     "j-mech"
+    ],
+    "new": [
+     "j-fusion"
+    ]
+   },
+   "source_id": "src_iaea_fusion2025",
+   "question": "핵융합의 일자리는 발전소가 아니라 부품·진단 장비에서 먼저 생긴다. 초전도·진공 기술자는 다른 산업에서도 귀하다."
+  },
+  {
+   "id": "ei-20261112-5",
+   "date": "2026-11-12",
+   "order": 5,
+   "sector": "s2",
+   "cat": "material",
+   "lead": false,
+   "title": "전기차 공장이 청정기술 투자의 15%를 가져갔다",
+   "kicker": "IEA Energy Technology Perspectives 2024",
+   "summary": "2023년 청정기술 제조 투자 2,350억 달러 가운데 태양광·배터리가 5분의 4, 전기차 공장이 15%를 차지했다. 한국은 배터리·소재 쪽에 강점이 있다.",
+   "key_numbers": [
+    {
+     "label": "청정기술 제조 투자",
+     "value": "2,350억 달러",
+     "note": "2023년"
+    },
+    {
+     "label": "태양광·배터리",
+     "value": "80%",
+     "note": "2023년"
+    },
+    {
+     "label": "전기차 공장",
+     "value": "15%",
+     "note": "2023년"
+    }
+   ],
+   "market": {
+    "label": "청정기술 제조 투자 배분",
+    "unit": "%",
+    "basis": "2023년",
+    "chart": "bar",
+    "labels": [
+     "태양광·배터리",
+     "전기차",
+     "그 밖"
+    ],
+    "series": [
+     {
+      "name": "비중",
+      "values": [
+       80,
+       15,
+       5
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "IEA는 이 여섯 기술 시장이 2023년 7,000억 달러를 넘었다고 밝혔다.",
+    "source_id": "src_iea_etp2024"
+   },
+   "players": {
+    "domestic": [
+     "LG에너지솔루션",
+     "삼성SDI",
+     "포스코퓨처엠",
+     "에코프로"
+    ],
+    "glob": [
+     "CATL",
+     "BYD",
+     "Panasonic Energy",
+     "Tesla"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-qa"
+    ],
+    "new": [
+     "j-bms"
+    ]
+   },
+   "source_id": "src_iea_etp2024",
+   "question": "투자 배분을 보면 어느 직무가 먼저 늘지 보인다. 배터리·소재 공정 인력이 가장 먼저 채용된다."
   }
  ],
  "jobs": [
@@ -416,7 +548,13 @@
      "FAO"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "스마트농업 교육 강사",
+     "w": "농가 대상 장비·데이터 교육"
+    }
+   ]
   },
   {
    "id": "j-smartfarm",
@@ -466,7 +604,13 @@
      "AppHarvest 계열 시설"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "농장 데이터 컨설턴트",
+     "w": "여러 농가의 센서 기록을 비교해 재배 처방을 파는 일"
+    }
+   ]
   },
   {
    "id": "j-autofarm",
@@ -516,7 +660,13 @@
      "Yanmar"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "농기계 관제 센터 운영자",
+     "w": "지역 농가의 자율주행 장비를 한곳에서 관제"
+    }
+   ]
   },
   {
    "id": "j-elec",
@@ -566,7 +716,13 @@
      "Siemens"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
   },
   {
    "id": "j-plant",
@@ -617,7 +773,13 @@
      "Siemens Energy"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "설비 원격 진단 기사",
+     "w": "여러 사업장 설비의 진동·온도를 원격 분석"
+    }
+   ]
   },
   {
    "id": "j-ot-sec",
@@ -667,7 +829,13 @@
      "Siemens"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "공장 보안 모의훈련 진행자",
+     "w": "생산을 멈추지 않는 침해 대응 훈련을 설계"
+    }
+   ]
   },
   {
    "id": "j-proc",
@@ -717,7 +885,13 @@
      "Air Liquide"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
   },
   {
    "id": "j-qa",
@@ -767,7 +941,13 @@
      "TÜV"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "인증 시험 대행 코디네이터",
+     "w": "해외 인증 일정과 서류를 관리"
+    }
+   ]
   },
   {
    "id": "j-bms",
@@ -818,7 +998,13 @@
      "Tesla"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "배터리 이력 증명서 발급인",
+     "w": "중고 전기차·ESS 배터리의 건강 이력을 인증"
+    }
+   ]
   },
   {
    "id": "j-battery-recycle",
@@ -868,7 +1054,122 @@
      "CATL(BRUNP)"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "폐배터리 회수 물류 기획자",
+     "w": "수거·운송·해체 동선을 설계하는 서비스"
+    }
+   ]
+  },
+  {
+   "id": "j-mech",
+   "name": "기계설계 엔지니어",
+   "en": "Mechanical Design Engineer",
+   "sector": "s2",
+   "role": "제품·설비의 구조와 운동을 설계하고 도면·사양서로 확정한다. 강도·진동·열을 계산해 안전 여유를 두고, 제작·조립 과정의 문제를 다시 설계로 되돌린다.",
+   "ksa": {
+    "k": [
+     "재료역학·기구학",
+     "공차·치수 설계",
+     "제작 공정 이해"
+    ],
+    "s": [
+     "CAD·CAE",
+     "시제작·시험",
+     "부품사 협의"
+    ],
+    "a": [
+     "도면 한 장의 책임을 아는 꼼꼼함",
+     "현장 의견을 설계에 반영하는 유연함"
+    ]
+   },
+   "study": [
+    "기계공학",
+    "자동차공학",
+    "항공우주공학"
+   ],
+   "certs": [
+    "일반기계기사",
+    "기계설계기사",
+    "건설기계설비기사"
+   ],
+   "insight": "새 산업이 등장해도 설계 도면을 그리고 안전 여유를 계산하는 사람은 필요하다. 달라지는 것은 도구와 협업 상대다.",
+   "companies": {
+    "domestic": [
+     "현대자동차",
+     "삼성전자",
+     "두산에너빌리티",
+     "한화에어로스페이스"
+    ],
+    "global": [
+     "Bosch",
+     "Siemens",
+     "Caterpillar",
+     "ASML"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "부품 국산화 매칭 코디네이터",
+     "w": "수요기업과 부품사를 잇는 기술 중개"
+    }
+   ]
+  },
+  {
+   "id": "j-fusion",
+   "name": "핵융합 진단·제어 엔지니어",
+   "en": "Fusion Diagnostics & Control Engineer",
+   "sector": "s4",
+   "role": "플라스마의 온도·밀도·자기장을 실시간으로 측정하고, 그 신호로 코일과 가열 장치를 제어한다. 수천만 도의 상태를 수 밀리초 단위로 유지하는 일이다.",
+   "ksa": {
+    "k": [
+     "플라스마 물리",
+     "계측·신호처리",
+     "실시간 제어"
+    ],
+    "s": [
+     "진단 장비 설계·보정",
+     "제어 알고리즘 구현",
+     "데이터 분석"
+    ],
+    "a": [
+     "한 번의 실험을 아끼는 신중함",
+     "긴 주기 프로젝트를 견디는 집중력"
+    ]
+   },
+   "study": [
+    "물리학",
+    "전기공학",
+    "원자력공학",
+    "기계공학"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "원자력 관련 교육·연구 경력",
+    "전기기사"
+   ],
+   "insight": "핵융합은 아직 산업이 아니라 국가 프로젝트다. 하지만 160기 이상의 장치가 돌아가고 투자 100억 달러를 넘어서며 ‘장비를 만들고 운전하는 직업’이 생겼다.",
+   "companies": {
+    "domestic": [
+     "한국핵융합에너지연구원(KSTAR)",
+     "서울대·KAIST 융합연구팀"
+    ],
+    "global": [
+     "ITER",
+     "Commonwealth Fusion Systems",
+     "Tokamak Energy",
+     "ITER 한국사업단"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "초전도 자석 정비 기술자",
+     "w": "융합 장치의 자석·진공 부품을 유지보수"
+    }
+   ]
   }
  ],
  "sources": [
@@ -916,12 +1217,27 @@
    "published": "2024-10-30",
    "track": "A",
    "usage": "청정에너지 6대 기술 시장 2023년 7,000억 달러 돌파, 제조 투자 2,350억 달러(+50%)"
+  },
+  {
+   "id": "src_iaea_fusion2025",
+   "name": "국제원자력기구(IAEA)",
+   "title": "World Fusion Outlook 2025",
+   "url": "https://www.iaea.org/publications/15935/iaea-world-fusion-outlook-2025",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2025-10-14",
+   "track": "B",
+   "usage": "핵융합 장치 160기 이상, 약 40개국 프로그램, 민간·공공 투자 100억 달러 초과"
   }
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },

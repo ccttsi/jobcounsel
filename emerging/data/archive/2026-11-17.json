@@ -318,6 +318,113 @@
    },
    "source_id": "src_molit_uam848",
    "question": "UAM의 병목은 기체가 아니라 이착륙장과 운항 관리다. 그래서 이 산업의 첫 일자리는 하늘보다 지상에 생긴다."
+  },
+  {
+   "id": "ei-20261117-4",
+   "date": "2026-11-17",
+   "order": 4,
+   "sector": "s1",
+   "cat": "resource",
+   "lead": false,
+   "title": "기후 식량, 10대 유망기술에 든 이유",
+   "kicker": "KISTEP 2026 10대 미래유망기술",
+   "summary": "KISTEP는 기후대응형 식량 생산 기술을 10대 미래유망기술로 선정했다. 새로운 공정과 생물학으로 단백질·지방·영양성분을 생산·전환하는 기술이며 2030~2035년 실현을 전망한다.",
+   "key_numbers": [
+    {
+     "label": "선정",
+     "value": "10대 기술 중 1개",
+     "note": "2026"
+    },
+    {
+     "label": "실현 전망",
+     "value": "2030~2035년",
+     "note": "KISTEP"
+    },
+    {
+     "label": "대상",
+     "value": "단백질·지방·영양",
+     "note": "생산·전환"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "CJ제일제당",
+     "농촌진흥청",
+     "KIST",
+     "푸드테크 기업"
+    ],
+    "glob": [
+     "Novo Nordisk",
+     "Perfect Day",
+     "Aleph Farms",
+     "FAO"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-agri",
+     "j-proc"
+    ],
+    "new": [
+     "j-synbio"
+    ]
+   },
+   "source_id": "src_kistep_10tech",
+   "question": "기후가 바뀌면 재배지도 바뀐다. ‘어디서 무엇을 만들 수 있는가’를 다시 계산하는 사람이 농업의 새 전문가다."
+  },
+  {
+   "id": "ei-20261117-5",
+   "date": "2026-11-17",
+   "order": 5,
+   "sector": "s3",
+   "cat": "content",
+   "lead": false,
+   "title": "버추얼 프로덕션, 촬영장의 직업 목록을 바꾼다",
+   "kicker": "문체부 콘텐츠산업조사와 제작 현장 변화",
+   "summary": "LED 월과 실시간 엔진을 쓰는 버추얼 프로덕션은 로케이션 비용을 줄이는 대신 촬영장에 엔진·트래킹 인력을 들인다. 방송·영상 매출은 전체 콘텐츠 매출의 15.9%다.",
+   "key_numbers": [
+    {
+     "label": "방송·영상 비중",
+     "value": "15.9%",
+     "note": "2024년 매출"
+    },
+    {
+     "label": "콘텐츠 매출",
+     "value": "157.4조 원",
+     "note": "2024년"
+    },
+    {
+     "label": "생성AI 활용",
+     "value": "31.9%",
+     "note": "방송·영상"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "CJ ENM",
+     "스튜디오드래곤",
+     "VFX 스튜디오",
+     "방송사 제작센터"
+    ],
+    "glob": [
+     "ILM",
+     "Pixomondo",
+     "Disguise",
+     "ARRI"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-pd"
+    ],
+    "new": [
+     "j-vprod"
+    ]
+   },
+   "source_id": "src_mcst_content2025",
+   "question": "기술이 비용 구조를 바꾸면 직업 목록도 바뀐다. 촬영장의 엔지니어는 이제 제작진의 일부다."
   }
  ],
  "jobs": [
@@ -369,7 +476,13 @@
      "Air Liquide"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
   },
   {
    "id": "j-plant",
@@ -420,7 +533,13 @@
      "Siemens Energy"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "설비 원격 진단 기사",
+     "w": "여러 사업장 설비의 진동·온도를 원격 분석"
+    }
+   ]
   },
   {
    "id": "j-bms",
@@ -471,7 +590,13 @@
      "Tesla"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "배터리 이력 증명서 발급인",
+     "w": "중고 전기차·ESS 배터리의 건강 이력을 인증"
+    }
+   ]
   },
   {
    "id": "j-battery-recycle",
@@ -521,7 +646,13 @@
      "CATL(BRUNP)"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "폐배터리 회수 물류 기획자",
+     "w": "수거·운송·해체 동선을 설계하는 서비스"
+    }
+   ]
   },
   {
    "id": "j-agri",
@@ -570,7 +701,13 @@
      "FAO"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "스마트농업 교육 강사",
+     "w": "농가 대상 장비·데이터 교육"
+    }
+   ]
   },
   {
    "id": "j-smartfarm",
@@ -620,7 +757,13 @@
      "AppHarvest 계열 시설"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "농장 데이터 컨설턴트",
+     "w": "여러 농가의 센서 기록을 비교해 재배 처방을 파는 일"
+    }
+   ]
   },
   {
    "id": "j-construct",
@@ -670,7 +813,13 @@
      "Obayashi"
     ]
    },
-   "kind": "old"
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터센터 시공 품질 감리",
+     "w": "전력·냉각·통신 요구를 아는 감리"
+    }
+   ]
   },
   {
    "id": "j-uam-ops",
@@ -719,7 +868,178 @@
      "Skyports"
     ]
    },
-   "kind": "new"
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "버티포트 시설 운영사",
+     "w": "도심 이착륙장의 운영·정비를 맡는 사업"
+    }
+   ]
+  },
+  {
+   "id": "j-synbio",
+   "name": "합성생물학 바이오파운드리 운영자",
+   "en": "Synthetic Biology Biofoundry Operator",
+   "sector": "s2",
+   "role": "자동화 장비로 유전자 조작·배양·측정 실험을 대량으로 수행한다. 설계도를 실험으로 바꾸고, 실패한 설계의 원인을 데이터로 남겨 다음 회차를 개선한다.",
+   "ksa": {
+    "k": [
+     "분자생물학·대사공학",
+     "자동화 액체핸들링",
+     "데이터 표준(LIMS)"
+    ],
+    "s": [
+     "실험 프로토콜 자동화",
+     "품질 관리·오염 통제",
+     "설계-실험-학습(DBTL) 순환 운영"
+    ],
+    "a": [
+     "무균·정밀 작업의 꾸준함",
+     "실패 기록을 성실히 남기는 태도"
+    ]
+   },
+   "study": [
+    "생명공학",
+    "바이오시스템공학",
+    "화학공학"
+   ],
+   "certs": [
+    "생물공학기사",
+    "품질경영기사",
+    "국가자격 없음(기관 교육)"
+   ],
+   "insight": "실험을 ‘한 번의 발견’에서 ‘반복 가능한 공정’으로 바꾸는 직무다. 자동화된 실험실은 생물학자를 엔지니어로 바꾼다.",
+   "companies": {
+    "domestic": [
+     "한국생명공학연구원",
+     "KRIBB 바이오파운드리",
+     "CJ제일제당",
+     "바이오 스타트업"
+    ],
+    "global": [
+     "Ginkgo Bioworks",
+     "Twist Bioscience",
+     "Amyris",
+     "Novo Nordisk"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "바이오 설계 검수자",
+     "w": "자동화 실험실의 설계도와 결과를 대조"
+    }
+   ]
+  },
+  {
+   "id": "j-pd",
+   "name": "콘텐츠 PD",
+   "en": "Content Producer / Director",
+   "sector": "s3",
+   "role": "기획부터 제작·편집·공개까지 콘텐츠의 전체 흐름을 책임진다. 예산과 일정, 제작진의 역할을 조정하며 최종 결과물의 기준을 지킨다.",
+   "ksa": {
+    "k": [
+     "서사·연출",
+     "제작 공정·예산",
+     "저작권·계약"
+    ],
+    "s": [
+     "기획서·구성안",
+     "촬영·편집 지휘",
+     "플랫폼 유통"
+    ],
+    "a": [
+     "끝까지 기준을 놓지 않는 고집",
+     "제작진을 이끄는 리더십"
+    ]
+   },
+   "study": [
+    "미디어커뮤니케이션",
+    "영상학",
+    "연출"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "방송영상 제작 민간 교육·공모전"
+   ],
+   "insight": "생성AI가 제작 공정을 바꾸고 있지만 ‘무엇을 만들 것인가’를 정하는 일은 여전히 사람의 몫이다. 다만 도구를 이해하는 PD와 그렇지 않은 PD의 격차가 벌어지고 있다.",
+   "companies": {
+    "domestic": [
+     "CJ ENM",
+     "스튜디오드래곤",
+     "넷플릭스 코리아",
+     "웨이브",
+     "방송사"
+    ],
+    "global": [
+     "Netflix",
+     "Disney+",
+     "Amazon MGM Studios",
+     "YouTube"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "콘텐츠 IP 라이선싱 매니저",
+     "w": "캐릭터·세계관을 다른 산업에 파는 일"
+    }
+   ]
+  },
+  {
+   "id": "j-vprod",
+   "name": "버추얼 프로덕션 테크니션",
+   "en": "Virtual Production Technician",
+   "sector": "s3",
+   "role": "LED 월과 실시간 엔진(게임엔진)을 결합한 가상 촬영 세트를 운용한다. 카메라 추적, 색 정합, 조명 동기화를 맞춰 촬영 중 배경과 배우의 빛이 어긋나지 않게 한다.",
+   "ksa": {
+    "k": [
+     "실시간 렌더링·색 관리",
+     "카메라 트래킹 원리",
+     "촬영 조명 기초"
+    ],
+    "s": [
+     "Unreal Engine·nDisplay 운용",
+     "캘리브레이션",
+     "현장 장비 배선·점검"
+    ],
+    "a": [
+     "촬영 중 초 단위로 판단하는 순발력",
+     "감독의 의도를 기술로 번역하는 힘"
+    ]
+   },
+   "study": [
+    "영상·애니메이션학",
+    "미디어공학",
+    "컴퓨터그래픽스"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "Unreal 공인 교육",
+    "방송·영상 제작 민간 자격"
+   ],
+   "insight": "로케이션을 가지 않고도 로케이션을 만드는 기술이다. 제작비 구조를 바꾸는 만큼 ‘촬영장에서 엔지니어’라는 새 자리가 생겼다.",
+   "companies": {
+    "domestic": [
+     "CJ ENM 스튜디오센터",
+     "버추얼 프로덕션 스튜디오(서울·파주)",
+     "VFX 기업",
+     "방송사 제작센터"
+    ],
+    "global": [
+     "Industrial Light & Magic",
+     "Pixomondo",
+     "Disguise",
+     "ARRI"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "가상 로케이션 스카우트",
+     "w": "촬영지 대신 쓸 3D 배경을 기획·대여하는 일"
+    }
+   ]
   }
  ],
  "sources": [
@@ -767,12 +1087,42 @@
    "published": "2026-09-01",
    "track": "A",
    "usage": "2027~2029년 848억 원 투입, 2032년 도심 진입 기반 마련"
+  },
+  {
+   "id": "src_kistep_10tech",
+   "name": "한국과학기술기획평가원(KISTEP)",
+   "title": "2026 KISTEP 10대 미래유망기술",
+   "url": "https://www.data.go.kr/data/15087732/fileData.do",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026-09-22",
+   "track": "A",
+   "usage": "‘건강 사회 실현’ 10대 유망기술의 정의·범위·2030~2035 전망"
+  },
+  {
+   "id": "src_mcst_content2025",
+   "name": "문화체육관광부",
+   "title": "2025년 콘텐츠산업조사(2024년 기준) 결과",
+   "url": "https://www.mcst.go.kr/site/s_notice/press/pressView.jsp?pSeq=22266",
+   "license": {
+    "type": "KOGL-0",
+    "name": "KOGL 0유형(공공저작물 자유이용) — 원문 하단 표기 확인",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026-02-27",
+   "track": "A",
+   "usage": "2024년 콘텐츠산업 매출 157조 원, 수출 141억 달러, 게임 수출 85억 달러(60.4%)"
   }
  ],
  "copyright_policy": {
   "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
-  "track_a_note": "재가공 허용(A): OECD·IEA·WEF·BLS·KISTEP·부처 보도자료의 수치를 표·도표로 다시 그렸습니다.",
-  "track_b_note": "확인되지 않은 추정 시장규모는 싣지 않았습니다. 값이 없으면 도표를 비우고 문장으로만 적었습니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
   "quote_limit_words": 15,
   "contact": "자료 오류는 저장소 이슈로 알려 주세요."
  },
