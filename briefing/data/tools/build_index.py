@@ -156,6 +156,8 @@ def main():
             bucket = themes.setdefault(k, {"label": THEMES.get(k, k), "items": []})["items"]
             if any(x["date"] == date and x["card_id"] == c.get("id") for x in bucket):
                 continue   # briefing.json과 그날 archive가 같은 카드를 두 번 넣지 않게
+            if bucket and any(x["title"] == c.get("title") and x["source_url"] == src.get("source_url") for x in bucket):
+                continue   # 같은 자료를 여러 날 다시 실은 경우 타임라인에는 처음 한 번만
             bucket.append({
                 "date": date,
                 "card_id": c.get("id"),
