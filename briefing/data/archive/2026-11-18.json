@@ -1,6 +1,6 @@
 {
  "schema_version": "1.3.0",
- "updated_at": "2026-11-18T07:10:24+09:00",
+ "updated_at": "2026-11-18T23:12:00+09:00",
  "edition": {
   "date": "2026-11-18",
   "weekday": "수",
@@ -775,6 +775,86 @@
    "theme_key": "th-ai-labor",
    "theme_label": "AI와 직무 재편",
    "region": "global"
+  },
+  {
+   "id": "c08",
+   "order": 8,
+   "track": "B",
+   "category": "AI·직무",
+   "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
+   "kicker": "자연실업률 +0.2%p 추정",
+   "three_step": {
+    "what": "샌프란시스코 연준 연구는 AI 노출도와 활용도가 모두 높은 근로자에서 일자리를 찾거나 옮기는 비율이 더 크게 떨어졌다고 분석했다.",
+    "evidence": "CPS·JOLTS와 OpenAI·Lightcast의 AI 노출·활용 지표를 결합. 자연실업률이 LLM 도입 이후 약 0.2%p 올랐다고 추정(불확실성 큼). 같은 직장 안 과업 전환은 늘었다.",
+    "implication": "이직 상담에서 업종의 AI 노출도를 함께 확인하라. 노출이 큰 직종은 '옮기기'보다 '같은 직장 안에서 과업을 바꾸기'가 먼저일 수 있다."
+   },
+   "key_numbers": [
+    {
+     "label": "자연실업률",
+     "value": "+0.2%p",
+     "delta": "추정",
+     "period": "LLM 도입 이후"
+    },
+    {
+     "label": "분석 자료",
+     "value": "CPS·JOLTS",
+     "delta": "",
+     "period": "미국"
+    }
+   ],
+   "chart_data": {
+    "type": "slope",
+    "unit": "%p",
+    "labels": [
+     "LLM 이전",
+     "2026"
+    ],
+    "series": [
+     {
+      "name": "자연실업률 변화(추정)",
+      "values": [
+       0,
+       0.2
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "샌프란시스코 연준(2026.11.17). 불확실성이 큰 추정치.",
+    "source_id": "src_sfed_ai_20261117"
+   },
+   "tags": [
+    "AI",
+    "이직"
+   ],
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-19T04:40:00+09:00",
+   "run_id": "br-20261119-0440",
+   "source": {
+    "source_id": "src_sfed_ai_20261117",
+    "source_name": "미국 샌프란시스코 연준",
+    "source_title": "Artificial Intelligence and Labor Market Reallocation",
+    "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
+    "published_at": "2026-11-17",
+    "license": {
+     "name": "출처 표시 없음 · 공공누리 미부착",
+     "type": "KOGL-NONE",
+     "url": null,
+     "scope": "사실·수치만",
+     "attribution_required": true,
+     "commercial_use": "unknown",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "공공누리 미부착 고지 — 트랙 B"
+    },
+    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
+   },
+   "issue_id": "iss-sfed-reallocation",
+   "counselor_question": "지금 하는 일 가운데 AI가 대신할 수 있는 과업은 무엇이라고 생각하나요?"
   }
  ],
  "radar": {
@@ -873,9 +953,9 @@
   },
   "global-2300": {
    "status": "ok",
-   "updated_at": "2026-11-16T23:09:00+09:00",
-   "last_ok": "2026-11-16",
-   "run_id": "br-20261116-2309"
+   "updated_at": "2026-11-18T23:12:00+09:00",
+   "last_ok": "2026-11-18",
+   "run_id": "br-20261118-2312"
   }
  },
  "main_themes": [
@@ -1594,15 +1674,49 @@
     "attribution_text": "수치 출처: 연합뉴스 「노사정, 퇴직연금 기능강화 입법 협력…영세사업장 연착륙 지원」(2026.11.16)"
    },
    "usage": "사실·수치만 우리 말로 새로 씀. 인용 15단어 이내, 원문 링크만 제공."
+  },
+  {
+   "source_id": "src_sfed_ai_20261117",
+   "source_name": "미국 샌프란시스코 연준",
+   "source_title": "Artificial Intelligence and Labor Market Reallocation",
+   "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
+   "published_at": "2026-11-17",
+   "license": {
+    "name": "출처 표시 없음 · 공공누리 미부착",
+    "type": "KOGL-NONE",
+    "url": null,
+    "scope": "사실·수치만",
+    "attribution_required": true,
+    "commercial_use": "unknown",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "공공누리 미부착 고지 — 트랙 B"
+   },
+   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
+   "id": "src_sfed_ai_20261117"
   }
  ],
  "archive_dates": [
+  "2026-11-19",
   "2026-11-18",
   "2026-11-17",
   "2026-11-16",
   "2026-11-15",
   "2026-11-14",
-  "2026-11-13"
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-09",
+  "2026-11-08",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-11-02",
+  "2026-11-01"
  ],
  "copyright_policy": {
   "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 우리 말로 새로 썼습니다.",

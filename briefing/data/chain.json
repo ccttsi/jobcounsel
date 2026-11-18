@@ -1,139 +1,334 @@
 {
- "generated_at": "2026-11-19T04:28:30+09:00",
+ "generated_at": "2026-11-19T04:41:24+09:00",
  "schema_version": "1.3.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
+  "2026-11-19",
   "2026-11-18",
   "2026-11-17",
   "2026-11-16",
   "2026-11-15",
   "2026-11-14",
-  "2026-11-13"
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-09",
+  "2026-11-08",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-11-02",
+  "2026-11-01"
  ],
  "themes": {
-  "th-labor-policy": {
-   "label": "고용정책과 감독",
+  "th-macro-economy": {
+   "label": "거시경제와 고용",
    "items": [
     {
-     "date": "2026-11-13",
+     "date": "2026-11-01",
      "card_id": "c01",
-     "title": "'가짜 3.3' 위장고용 140여 개소, 두 달 집중 감독",
-     "kicker": "감독 대상 140여 개소 · 작년 72개소서 6억8,500만원 체불 적발",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-13",
-     "card_id": "c04",
-     "title": "한파 취약사업장 3만여 곳, 11월 15일부터 집중 관리",
-     "kicker": "대책기간 11.15~3.15 · 집중점검 200→600개소",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-15",
-     "card_id": "c06",
-     "title": "한파 대책, 취약사업장 3만 곳·웜키트 1만4300세트",
-     "kicker": "취약사업장 3만여 개소 · 집중점검 200→600개소",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-16",
-     "card_id": "c02",
-     "title": "고용보험은 10개월째 20만명대, 구인배수는 0.46",
-     "kicker": "가입자 +28.6만명 · 구인배수 0.46",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20216",
-     "published_at": "2026-11-09"
-    },
-    {
-     "date": "2026-11-17",
-     "card_id": "c05",
-     "title": "'가짜 3.3' 위장고용 140여 개소, 두 달 집중 감독",
-     "kicker": "의심 사업장 140여 개소 · 지난해 체불 6억8,500만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248",
-     "published_at": "2026-11-13"
-    }
-   ]
-  },
-  "th-youth-employment": {
-   "label": "청년 고용",
-   "items": [
-    {
-     "date": "2026-11-13",
-     "card_id": "c02",
-     "title": "10월 취업자 +13.9만명, 청년은 -19.6만명",
-     "kicker": "취업자 4개월 연속 두 자릿수 · 실업률 2.0%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c03",
-     "title": "범부처 지원단이 청년 취업지원 현장을 직접 봤다",
-     "kicker": "민생안정지원단 청년 취업지원 점검",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
-     "published_at": "2026-11-12"
-    },
-    {
-     "date": "2026-11-15",
-     "card_id": "c02",
-     "title": "취업자는 늘었지만 청년은 19만6천명 줄었다",
-     "kicker": "10월 취업자 +13.9만명 · 청년 -19.6만명",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789113",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-16",
-     "card_id": "c01",
-     "title": "취업자는 넉 달째 두 자릿수, 20대는 20만명 줄었다",
-     "kicker": "10월 취업자 +13.9만명 · 20대 -20.3만명",
+     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
+     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
      "category": "국내 고용지표",
      "region": "kr",
      "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156788701",
-     "published_at": "2026-11-11"
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
     },
     {
-     "date": "2026-11-17",
-     "card_id": "c02",
-     "title": "취업자 넉 달째 두 자릿수, 실질임금도 플러스로",
-     "kicker": "10월 취업자 +13.9만명 · 8월 실질임금 +0.8%",
+     "date": "2026-11-01",
+     "card_id": "c05",
+     "title": "승용차 판매 18.3% — 소비가 살아난 이유는 차였다",
+     "kicker": "소매판매 +3.6% · 내구재 +4.4%",
      "category": "국내 고용지표",
      "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
-     "published_at": "2026-11-13"
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-02",
+     "card_id": "c02",
+     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
+     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-02",
+     "card_id": "c05",
+     "title": "승용차 판매 18.3% — 소비가 살아난 이유는 차였다",
+     "kicker": "소매판매 +3.6% · 내구재 +4.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-03",
+     "card_id": "c05",
+     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
+     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-04",
+     "card_id": "c05",
+     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
+     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c05",
+     "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
+     "kicker": "2026년 3.9% · 2027년 3.3%",
+     "category": "국내 고용지표",
+     "region": "global",
+     "source_name": "국제통화기금(IMF)·재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c06",
+     "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
+     "kicker": "2026년 3.9% · 2027년 3.3%",
+     "category": "국내 고용지표",
+     "region": "global",
+     "source_name": "국제통화기금(IMF)·재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
+     "published_at": "2026-11-17"
     }
    ]
   },
   "th-wage-income": {
    "label": "임금과 소득",
    "items": [
+    {
+     "date": "2026-11-01",
+     "card_id": "c02",
+     "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
+     "kicker": "복리후생 3.9% · 의료비 6.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-01",
+     "card_id": "c03",
+     "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
+     "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-11-02",
+     "card_id": "c01",
+     "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
+     "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-11-02",
+     "card_id": "c03",
+     "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
+     "kicker": "복리후생 3.9% · 의료비 6.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-03",
+     "card_id": "c01",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-03",
+     "card_id": "c03",
+     "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
+     "kicker": "복리후생 3.9% · 의료비 6.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-03",
+     "card_id": "c04",
+     "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
+     "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-11-04",
+     "card_id": "c02",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-04",
+     "card_id": "c04",
+     "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
+     "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-11-05",
+     "card_id": "c02",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-05",
+     "card_id": "c05",
+     "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
+     "kicker": "복리후생 3.9% · 의료비 6.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-06",
+     "card_id": "c04",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-07",
+     "card_id": "c04",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-08",
+     "card_id": "c04",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-08",
+     "card_id": "c05",
+     "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
+     "kicker": "복리후생 3.9% · 의료비 6.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-09",
+     "card_id": "c05",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-10",
+     "card_id": "c05",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-11",
+     "card_id": "c04",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-12",
+     "card_id": "c05",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
     {
      "date": "2026-11-13",
      "card_id": "c03",
@@ -202,9 +397,333 @@
     }
    ]
   },
+  "th-employment-service": {
+   "label": "고용서비스와 상담",
+   "items": [
+    {
+     "date": "2026-11-01",
+     "card_id": "c04",
+     "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
+     "kicker": "입직 107.8만명 · 이직 102.2만명",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-11-02",
+     "card_id": "c04",
+     "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
+     "kicker": "입직 107.8만명 · 이직 102.2만명",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-11-05",
+     "card_id": "c04",
+     "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
+     "kicker": "입직 107.8만명 · 이직 102.2만명",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c06",
+     "title": "지역 청년 노동시장 진입, 위원회가 개선과제를 냈다",
+     "kicker": "3기 청년위원회 · 지역 청년 노동시장 진입 실태 발표",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "경제사회노동위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c01",
+     "title": "고용행정 데이터로 청년·산업전환 현안을 푼다",
+     "kicker": "제2회 고용행정 개방데이터 학술대회 · 세션 3개",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788923",
+     "published_at": "2026-11-12"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c02",
+     "title": "AI 시대 일자리 의제, 국민이 직접 질문한다",
+     "kicker": "국민참여 3주 · 논의체 22명",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
+     "published_at": "2026-11-17"
+    }
+   ]
+  },
   "th-global-labor": {
    "label": "해외 노동시장",
    "items": [
+    {
+     "date": "2026-11-03",
+     "card_id": "c02",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-04",
+     "card_id": "c03",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-05",
+     "card_id": "c03",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-06",
+     "card_id": "c01",
+     "title": "미국 10월 고용 +16만5천, 실업률 4.1% — 오래 쉬는 사람은 늘었다",
+     "kicker": "비농업 +16만5천 · 장기실업 196만명",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-06",
+     "card_id": "c02",
+     "title": "실업자 710만명, 27주 넘게 쉰 사람이 27.6%",
+     "kicker": "실업률 4.1% · U-6 7.9%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-06",
+     "card_id": "c05",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-07",
+     "card_id": "c01",
+     "title": "미국 10월 고용 +16만5천, 실업률 4.1% — 오래 쉬는 사람은 늘었다",
+     "kicker": "비농업 +16만5천 · 장기실업 196만명",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-07",
+     "card_id": "c02",
+     "title": "실업자 710만명, 27주 넘게 쉰 사람이 27.6%",
+     "kicker": "실업률 4.1% · U-6 7.9%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-07",
+     "card_id": "c03",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-08",
+     "card_id": "c01",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-08",
+     "card_id": "c02",
+     "title": "미국 10월 고용 +16만5천, 실업률 4.1% — 오래 쉬는 사람은 늘었다",
+     "kicker": "비농업 +16만5천 · 장기실업 196만명",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-08",
+     "card_id": "c03",
+     "title": "실업자 710만명, 27주 넘게 쉰 사람이 27.6%",
+     "kicker": "실업률 4.1% · U-6 7.9%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-09",
+     "card_id": "c01",
+     "title": "실업자 710만명, 27주 넘게 쉰 사람이 27.6%",
+     "kicker": "실업률 4.1% · U-6 7.9%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-09",
+     "card_id": "c02",
+     "title": "미국 10월 고용 +16만5천, 실업률 4.1% — 오래 쉬는 사람은 늘었다",
+     "kicker": "비농업 +16만5천 · 장기실업 196만명",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-09",
+     "card_id": "c03",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-10",
+     "card_id": "c02",
+     "title": "미국 10월 고용 +16만5천, 실업률 4.1% — 오래 쉬는 사람은 늘었다",
+     "kicker": "비농업 +16만5천 · 장기실업 196만명",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-10",
+     "card_id": "c03",
+     "title": "실업자 710만명, 27주 넘게 쉰 사람이 27.6%",
+     "kicker": "실업률 4.1% · U-6 7.9%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-10",
+     "card_id": "c04",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-11",
+     "card_id": "c02",
+     "title": "미국 10월 고용 +16만5천, 실업률 4.1% — 오래 쉬는 사람은 늘었다",
+     "kicker": "비농업 +16만5천 · 장기실업 196만명",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-11",
+     "card_id": "c03",
+     "title": "실업자 710만명, 27주 넘게 쉰 사람이 27.6%",
+     "kicker": "실업률 4.1% · U-6 7.9%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-11",
+     "card_id": "c05",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-12",
+     "card_id": "c03",
+     "title": "미국 10월 고용 +16만5천, 실업률 4.1% — 오래 쉬는 사람은 늘었다",
+     "kicker": "비농업 +16만5천 · 장기실업 196만명",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+     "published_at": "2026-11-06"
+    },
+    {
+     "date": "2026-11-12",
+     "card_id": "c04",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
+    },
     {
      "date": "2026-11-13",
      "card_id": "c05",
@@ -270,50 +789,193 @@
      "source_name": "미국 노동통계국(BLS) The Economics Daily",
      "source_url": "https://www.bls.gov/opub/ted/2026/ease-of-taking-time-off-during-the-workday-varied-by-sex-and-educational-attainment.htm",
      "published_at": "2026-11-09"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c05",
+     "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+     "kicker": "구인율 4.5% · 해고 164만1천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+     "published_at": "2026-11-03"
     }
    ]
   },
-  "th-employment-service": {
-   "label": "고용서비스와 상담",
+  "th-youth-employment": {
+   "label": "청년 고용",
    "items": [
     {
-     "date": "2026-11-13",
-     "card_id": "c06",
-     "title": "지역 청년 노동시장 진입, 위원회가 개선과제를 냈다",
-     "kicker": "3기 청년위원회 · 지역 청년 노동시장 진입 실태 발표",
-     "category": "국내 고용행정",
+     "date": "2026-11-04",
+     "card_id": "c01",
+     "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
+     "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
+     "category": "국내 고용지표",
      "region": "kr",
-     "source_name": "경제사회노동위원회",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
+     "published_at": "2026-11-04"
+    },
+    {
+     "date": "2026-11-05",
+     "card_id": "c01",
+     "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
+     "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
+     "published_at": "2026-11-04"
+    },
+    {
+     "date": "2026-11-06",
+     "card_id": "c03",
+     "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
+     "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
+     "published_at": "2026-11-04"
+    },
+    {
+     "date": "2026-11-07",
+     "card_id": "c05",
+     "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
+     "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
+     "published_at": "2026-11-04"
+    },
+    {
+     "date": "2026-11-09",
+     "card_id": "c04",
+     "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
+     "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
+     "published_at": "2026-11-04"
+    },
+    {
+     "date": "2026-11-11",
+     "card_id": "c01",
+     "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
+     "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
+     "published_at": "2026-11-11"
+    },
+    {
+     "date": "2026-11-12",
+     "card_id": "c01",
+     "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
+     "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
+     "published_at": "2026-11-11"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c02",
+     "title": "10월 취업자 +13.9만명, 청년은 -19.6만명",
+     "kicker": "취업자 4개월 연속 두 자릿수 · 실업률 2.0%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
      "published_at": "2026-11-13"
     },
     {
      "date": "2026-11-14",
-     "card_id": "c01",
-     "title": "고용행정 데이터로 청년·산업전환 현안을 푼다",
-     "kicker": "제2회 고용행정 개방데이터 학술대회 · 세션 3개",
+     "card_id": "c03",
+     "title": "범부처 지원단이 청년 취업지원 현장을 직접 봤다",
+     "kicker": "민생안정지원단 청년 취업지원 점검",
      "category": "국내 고용행정",
      "region": "kr",
-     "source_name": "고용노동부·한국고용정보원",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788923",
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
      "published_at": "2026-11-12"
     },
     {
-     "date": "2026-11-18",
+     "date": "2026-11-15",
      "card_id": "c02",
-     "title": "AI 시대 일자리 의제, 국민이 직접 질문한다",
-     "kicker": "국민참여 3주 · 논의체 22명",
-     "category": "AI·직무",
+     "title": "취업자는 늘었지만 청년은 19만6천명 줄었다",
+     "kicker": "10월 취업자 +13.9만명 · 청년 -19.6만명",
+     "category": "국내 고용지표",
      "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
-     "published_at": "2026-11-17"
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789113",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-16",
+     "card_id": "c01",
+     "title": "취업자는 넉 달째 두 자릿수, 20대는 20만명 줄었다",
+     "kicker": "10월 취업자 +13.9만명 · 20대 -20.3만명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156788701",
+     "published_at": "2026-11-11"
+    },
+    {
+     "date": "2026-11-17",
+     "card_id": "c02",
+     "title": "취업자 넉 달째 두 자릿수, 실질임금도 플러스로",
+     "kicker": "10월 취업자 +13.9만명 · 8월 실질임금 +0.8%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c01",
+     "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
+     "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
+     "published_at": "2026-11-11"
     }
    ]
   },
   "th-ai-labor": {
    "label": "AI와 직무 재편",
    "items": [
+    {
+     "date": "2026-11-10",
+     "card_id": "c01",
+     "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
+     "kicker": "활용률 +14.7%p · 절감률 9.2%",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261117075000002",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-12",
+     "card_id": "c02",
+     "title": "AI가 줄인 일은 먼저 보이고, 새 일은 5년 뒤에 보인다",
+     "kicker": "신규 진입 +10~20% · 5년 잔존 80%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (micro1·노스이스턴대)",
+     "source_url": "https://arxiv.org/abs/2611.17530",
+     "published_at": "2026-11-12"
+    },
     {
      "date": "2026-11-13",
      "card_id": "c07",
@@ -412,6 +1074,121 @@
      "source_name": "arXiv (micro1·노스이스턴대)",
      "source_url": "https://arxiv.org/abs/2611.17530",
      "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c08",
+     "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
+     "kicker": "자연실업률 +0.2%p 추정",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "미국 샌프란시스코 연준",
+     "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c02",
+     "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
+     "kicker": "활용률 +14.7%p · 절감률 9.2%",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261117075000002",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c03",
+     "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
+     "kicker": "자연실업률 +0.2%p 추정",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "미국 샌프란시스코 연준",
+     "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c04",
+     "title": "AI가 줄인 일은 먼저 보이고, 새 일은 5년 뒤에 보인다",
+     "kicker": "신규 진입 +10~20% · 5년 잔존 80%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (micro1·노스이스턴대)",
+     "source_url": "https://arxiv.org/abs/2611.17530",
+     "published_at": "2026-11-12"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c07",
+     "title": "부정행위 제재 10년, 수능 시험장 스마트기기 총점검",
+     "kicker": "시험장 1,312곳 · 감독 인력 8,400명 추가",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "국무총리비서실(국무총리 한성숙)",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789631",
+     "published_at": "2026-11-17"
+    }
+   ]
+  },
+  "th-labor-policy": {
+   "label": "고용정책과 감독",
+   "items": [
+    {
+     "date": "2026-11-13",
+     "card_id": "c01",
+     "title": "'가짜 3.3' 위장고용 140여 개소, 두 달 집중 감독",
+     "kicker": "감독 대상 140여 개소 · 작년 72개소서 6억8,500만원 체불 적발",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c04",
+     "title": "한파 취약사업장 3만여 곳, 11월 15일부터 집중 관리",
+     "kicker": "대책기간 11.15~3.15 · 집중점검 200→600개소",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-15",
+     "card_id": "c06",
+     "title": "한파 대책, 취약사업장 3만 곳·웜키트 1만4300세트",
+     "kicker": "취약사업장 3만여 개소 · 집중점검 200→600개소",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-16",
+     "card_id": "c02",
+     "title": "고용보험은 10개월째 20만명대, 구인배수는 0.46",
+     "kicker": "가입자 +28.6만명 · 구인배수 0.46",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20216",
+     "published_at": "2026-11-09"
+    },
+    {
+     "date": "2026-11-17",
+     "card_id": "c05",
+     "title": "'가짜 3.3' 위장고용 140여 개소, 두 달 집중 감독",
+     "kicker": "의심 사업장 140여 개소 · 지난해 체불 6억8,500만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248",
+     "published_at": "2026-11-13"
     }
    ]
   },
@@ -471,22 +1248,6 @@
      "region": "kr",
      "source_name": "한국폴리텍대학·고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789591",
-     "published_at": "2026-11-17"
-    }
-   ]
-  },
-  "th-macro-economy": {
-   "label": "거시경제와 고용",
-   "items": [
-    {
-     "date": "2026-11-18",
-     "card_id": "c05",
-     "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
-     "kicker": "2026년 3.9% · 2027년 3.3%",
-     "category": "국내 고용지표",
-     "region": "global",
-     "source_name": "국제통화기금(IMF)·재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
      "published_at": "2026-11-17"
     }
    ]
