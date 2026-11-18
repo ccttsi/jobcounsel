@@ -195,6 +195,8 @@
     });
   }
   var STEP_NAMES = ['무슨 일', '수치·근거', '상담 시사점'];
+  /* 휴대폰 3단 탭은 좁아서 「상담 시사점」을 「시사점」으로 줄여 쓴다(화면 낭독기는 aria-label로 전체 이름을 받는다) */
+  var STEP_TABS = ['무슨 일', '수치·근거', '시사점'];
   var WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
   function weekdayNum(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || '')); return m ? new Date(+m[1], +m[2] - 1, +m[3]).getDay() : 0; }
   function fmtDate(s) { return String(s || '').replace(/-/g, '.'); }
@@ -260,8 +262,8 @@
           }).join('') + '</ul>' : '') +
           (c.counselor_question ? '<p class="q"><b>내담자에게 물어볼 질문</b>' + esc(c.counselor_question) + '</p>' : '') + '</div>' +
           (c.chart_data ? chart(c.chart_data) : '') + '</div>' +
-          '<div class="stp" role="tablist" aria-label="3단 읽기">' + STEP_NAMES.map(function (n, k) {
-            return '<button type="button" role="tab" data-step="' + k + '" aria-selected="' + (st === k) + '">' + ['①', '②', '③'][k] + ' ' + n + '</button>';
+          '<div class="stp" role="tablist" aria-label="3단 읽기">' + STEP_TABS.map(function (n, k) {
+            return '<button type="button" role="tab" data-step="' + k + '" aria-selected="' + (st === k) + '" aria-label="' + ['①', '②', '③'][k] + ' ' + STEP_NAMES[k] + '">' + ['①', '②', '③'][k] + ' ' + n + '</button>';
           }).join('') + '</div>' +
           '<ol class="st"><li><b>무슨 일인가</b>' + esc(t.what) + '</li><li><b>수치·근거</b>' + esc(t.evidence) + '</li><li><b>상담·구직 시사점</b>' + esc(t.implication) + '</li></ol>' +
           '<div class="card-f">' + (c.theme_key ? chainBtn(c.theme_key, c.theme_label, c.region) : '') + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';

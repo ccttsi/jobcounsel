@@ -223,7 +223,7 @@ document.documentElement.setAttribute('data-theme',t);})();
     padding: 10px 0; flex: 1; display: flex; align-items: center; justify-content: center;
   }
   .book .tcy { text-combine-upright: all; -webkit-text-combine: horizontal; letter-spacing: 0; }
-  .book .pub { position: relative; z-index: 1; text-align: center; font-size: 9.5px; line-height: 1.25; font-weight: 700; letter-spacing: 0; }
+  .book .pub { position: relative; z-index: 1; overflow: hidden; text-align: center; font-size: 9px; line-height: 1.22; font-weight: 700; letter-spacing: -.02em; overflow-wrap: anywhere; }
   .book .pub i, .book .pub svg { display: block; width: 14px; height: 14px; margin: 0 auto 3px; }
 
   /* VOL.01 — 리넨 천 장정, 벽돌색 + 크림색 박 */
@@ -542,7 +542,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   .insight .step { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 10px 0; border-top: 1px dashed var(--hair); }
   .insight .step:first-of-type { border-top: 0; }
   .insight .num { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--bg); background: var(--accent); }
-  .note-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
+  .note-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
 
   /* ---------- 서가 색인: 주제를 고르면 그 서가로 넘어간다(권 수만큼 길어지던 소장 목록을 대신한다) ---------- */
   .idx { padding: 0 0 12px; }
@@ -656,7 +656,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   .result { display: block; width: 100%; text-align: left; padding: 12px 16px; border-top: 1px solid var(--hair); min-height: 56px; }
   .result:hover, .result.active { background: color-mix(in srgb, var(--cyan) 8%, transparent); }
   .result mark { background: color-mix(in srgb, var(--cyan) 22%, transparent); color: var(--ink); border-radius: 3px; padding: 0 2px; }
-  kbd { font-family: "JetBrains Mono", monospace; font-size: 10.5px; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
+  kbd { font-family: "JetBrains Mono", monospace; font-size: 10.5px; padding: 3px 7px; border-radius: 6px; border: 1px solid var(--hair); color: var(--ink-dim); background: var(--soft); }
 
   /* 넓은 화면 좌우 여백: 읽기 화면 82px (ops/TODO.md 「큰 화면 좌우 여백」) */
   .jc-room { margin-left: auto; margin-right: auto; max-width: 1152px; padding-left: 12px; padding-right: 12px; }

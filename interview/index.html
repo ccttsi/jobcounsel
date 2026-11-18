@@ -82,7 +82,7 @@ a{color:inherit}
 .when span{font-size:13px;font-weight:700;color:var(--dim)}
 .when button{min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-size:13.5px;font-weight:750}
 .when button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft);box-shadow:inset 0 0 0 1px var(--acc)}
-@media (max-width:899px){.when{margin-left:0;width:100%;flex-wrap:nowrap}.when button{flex:1 1 0;padding:0 6px}}
+@media (max-width:899px){.when{margin-left:0;width:100%;flex-wrap:nowrap}.when button{flex:1 1 0;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px 10px}}
 @media (max-width:520px){.when span{font-size:12px;max-width:4.6em;line-height:1.25}}
 
 .box{border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow);min-width:0}
@@ -139,7 +139,7 @@ a{color:inherit}
 .flag{display:inline-flex;align-items:center;gap:5px;padding:1px 8px;border-radius:8px;font-size:12px;font-weight:800}
 .flag.caution{color:var(--warn);background:var(--warn-soft)}
 .flag.violation_alert{color:var(--alert);background:var(--alert-soft)}
-.mode{padding:1px 8px;border-radius:8px;background:var(--soft)}
+.mode{padding:3px 10px;border-radius:8px;background:var(--soft)}
 /* 잉크 악보선 타이머 (design/studies/2026-11-16-면접-턴-타이머.md) */
 .tt{margin:12px 0 0}
 .tt-line{position:relative;height:16px;margin:0 0 4px}
