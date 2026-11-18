@@ -11,9 +11,8 @@
   },
   "global-2300": {
    "status": "ok",
-   "updated_at": "2026-11-16T23:09:00+09:00",
-   "last_ok": "2026-11-16",
-   "run_id": "br-20261116-2309"
+   "updated_at": "2026-11-18T23:12:00+09:00",
+   "last_ok": "2026-11-18"
   }
  },
  "main_themes": [
@@ -450,6 +449,58 @@
   }
  ],
  "items": [
+  {
+   "id": "n-us-empsit-202610-20261118",
+   "issue_id": "iss-us-empsit-202610",
+   "theme_id": "th-ai-job-restructuring",
+   "edition": "global-2300",
+   "updated_at": "2026-11-18T23:12:00+09:00",
+   "run_id": "br-20261118-2312",
+   "headline": true,
+   "published_at": "2026-11-06T08:30:00-05:00",
+   "source": {
+    "source_name": "미국 노동통계국(BLS)",
+    "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": null,
+     "scope": "텍스트",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "17 U.S.C. §105 연방정부 저작물"
+    }
+   },
+   "title_original": "THE EMPLOYMENT SITUATION — OCTOBER 2026",
+   "title_ko": "미국 10월 고용동향 — 비농업 +16만5천, 실업률 4.1%",
+   "body_original": "Total nonfarm payroll employment rose by 165,000 in October, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in professional and business services, in health care, and in transportation and warehousing.\n\nBoth the unemployment rate, at 4.1 percent, and the number of unemployed people, at 7.1 million, changed little in October. The unemployment rate has remained in a narrow range of 4.1 percent to 4.3 percent since March.\n\nThe number of long-term unemployed (those jobless for 27 weeks or more), at 2.0 million, changed little over the month. The long-term unemployed accounted for 27.6 percent of all unemployed people.\n\nThe number of people employed part time for economic reasons increased by 339,000 to 4.8 million in October. These individuals would have preferred full-time employment but were working part time because their hours had been reduced or they were unable to find full-time jobs.",
+   "body_ko_ai": "미국 노동통계국은 오늘 10월 비농업 고용이 16만5천 명 늘었고 실업률은 4.1%로 큰 변화가 없었다고 밝혔다. 고용은 전문·사업서비스, 보건, 운수·창고업에서 늘었다.\n\n10월 실업률 4.1%와 실업자 710만 명은 큰 변화가 없었다. 실업률은 3월 이후 4.1~4.3%의 좁은 범위에 머물고 있다.\n\n27주 이상 일자리를 찾지 못한 장기 실업자는 196만 명으로 한 달 사이 큰 변화가 없었다. 장기 실업자는 전체 실업자의 27.6%를 차지했다.\n\n경제적 이유로 시간제로 일하는 사람은 33만9천 명 늘어 480만 명이 됐다. 이들은 전일제 일을 원했지만 근로시간이 줄었거나 전일제 일자리를 찾지 못해 시간제로 일하고 있다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle 번역",
+    "translated_at": "2026-11-18T23:05:00+09:00"
+   },
+   "topics": [
+    "고용·정책",
+    "글로벌"
+   ],
+   "keywords": [
+    "미국 고용",
+    "실업률"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
   {
    "id": "n20261118-01",
    "issue_id": "iss-ai-exam-integrity",
@@ -1411,12 +1462,25 @@
   ]
  },
  "archive_dates": [
+  "2026-11-19",
   "2026-11-18",
   "2026-11-17",
   "2026-11-16",
   "2026-11-15",
   "2026-11-14",
-  "2026-11-13"
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-09",
+  "2026-11-08",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-11-02",
+  "2026-11-01"
  ],
  "takedown": {
   "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
