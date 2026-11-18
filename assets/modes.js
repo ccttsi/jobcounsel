@@ -43,6 +43,75 @@
   var nav, ov, glass, slot, slotBtn, ecgRow, ecgBtn, cards = [], foot, back;
   var open = false, picking = false, armed = '', armT = 0, dwell = 0, timers = [], restFocus = null;
 
+  /* ---------- 0. 정면 슬롯 레버 (2026-11-18 R4) ----------
+   * 옆에서 본 팔의 각도 θ를 정면 화면에 3D→2D 원근 투영으로 그린다. 축(22,30)은 화면 안쪽을 향하고,
+   *   손잡이 머리 y = 30 - 20·cos θ · 막대 길이 = 20.5·|cos θ| · 머리 크기 = 1 + 0.16·sin²θ
+   * 이다. 상태가 바뀌어도 각도에서 각도로만 이어 가므로 중간에 끊기거나 튀지 않는다.
+   *   · 1차(장전) 2시→1시: 짧은 감속 곡선(260ms)
+   *   · 2차(격발) 1시→6시: 스프링(K=430, C=31)의 관성 곡선 하나로 6시까지 내려가 살짝 지나쳤다 안착(≈0.6s)
+   *   · 방치 유도: 5칸 래칫으로 90ms 이동 + 90ms 정지를 다섯 번, 2초 정지, 같은 5칸 역방향(총 3.8s)
+   * 움직이는 값은 손잡이 translate/scale과 막대 scaleY뿐이다(모두 transform). 다만 감속 모드에서는
+   * 곡선 없이 결과 자세로 바로 간다. */
+  var LV = { L: 20, th: 60, raf: 0, cap: null, shaft: null };
+  function lvSet(th) {
+    var a = th * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+    LV.th = th;
+    if (LV.cap) LV.cap.style.transform = 'translate3d(0,' + (LV.L * (1 - c)).toFixed(2) + 'px,0) scale(' + (1 + .16 * s * s).toFixed(3) + ')';
+    if (LV.shaft) LV.shaft.style.transform = 'scaleY(' + c.toFixed(4) + ')';
+  }
+  function lvStop() { if (LV.raf) { cancelAnimationFrame(LV.raf); LV.raf = 0; } }
+  function lvTween(to, ms) {
+    lvStop();
+    if (reduce() || !ms) { lvSet(to); return; }
+    var from = LV.th, t0 = performance.now();
+    function f(now) {
+      var p = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - p, 3);
+      lvSet(from + (to - from) * e);
+      LV.raf = p < 1 ? requestAnimationFrame(f) : 0;
+    }
+    LV.raf = requestAnimationFrame(f);
+  }
+  /* 격발: 스프링이 6시(180°)를 향해 가속하고, 끝에서 살짝 지나쳤다 돌아와 무겁게 안착한다(≈0.8s).
+     중간 각도에서 걸리는 구간이 없다 — 한 번의 연속 곡선이다. */
+  function lvFire() {
+    lvStop();
+    if (reduce()) { lvSet(180); return; }
+    var th = LV.th, v = 0, tgt = 180, last = 0, K = 46, C = 10.5;
+    function f(now) {
+      if (!last) last = now;
+      var dt = Math.min(.05, (now - last) / 1000); last = now;
+      v += (K * (tgt - th) - C * v) * dt; th += v * dt;
+      lvSet(th);
+      if (Math.abs(tgt - th) > .05 || Math.abs(v) > 2) LV.raf = requestAnimationFrame(f);
+      else { lvSet(tgt); LV.raf = 0; }
+    }
+    LV.raf = requestAnimationFrame(f);
+  }
+  /* 방치 유도: 손을 놓지 않은 채 5칸 래칫으로 3시 30분(105°)까지 내려갔다 2초 멈추고, 같은 5칸으로 2시에 돌아온다.
+     한 칸 = 180ms(90ms 이동 + 90ms 정지). 롤링도 같은 박자로 5칸 정방향 → 5칸 역방향이다. */
+  function lvHint() {
+    lvStop();
+    if (reduce()) { lvSet(60); return; }
+    var S = [], t = 0, prev = 60, down = [69, 78, 87, 96, 105], i, to;
+    for (i = 0; i < 5; i++) { S.push({ t: t, d: 90, a: prev, b: down[i] }); t += 180; prev = down[i]; }
+    S.push({ t: t, d: 2900 - t, a: prev, b: prev }); t = 2900;
+    for (i = 4; i >= 0; i--) { to = i ? down[i - 1] : 60; S.push({ t: t, d: 90, a: prev, b: to }); t += 180; prev = to; }
+    var t0 = 0, end = t;
+    function f(now) {
+      if (!t0) t0 = now;
+      var el = now - t0, th = 60, k, s, p;
+      for (k = 0; k < S.length; k++) {
+        s = S[k];
+        if (el < s.t) { th = s.a; break; }
+        if (el <= s.t + s.d) { p = s.d ? (el - s.t) / s.d : 1; p = p * p * (3 - 2 * p); th = s.a + (s.b - s.a) * p; break; }
+        th = s.b;
+      }
+      lvSet(th);
+      if (el < end) LV.raf = requestAnimationFrame(f); else { lvSet(60); LV.raf = 0; }
+    }
+    LV.raf = requestAnimationFrame(f);
+  }
+
   function reduce() { return !!reduceMQ.matches; }
   function hoverOK() { return !!hoverMQ.matches; }
   function cur() { return (nav && nav.getMode && nav.getMode()) || 'all'; }
@@ -56,6 +125,7 @@
     clearTimeout(armT); armT = 0; armed = '';
     if (slot && slot.getAttribute('data-st') === 'armed') slot.removeAttribute('data-st');
     if (ecgRow && ecgRow.getAttribute('data-st') === 'armed') ecgRow.removeAttribute('data-st');
+    if (was === 'lever') lvTween(60, 340);          /* 장전을 풀면 2시로 천천히 돌아온다 */
     if (!keepWheel && was === 'lever' && nav && nav.spin) nav.spin(1, 240);
   }
   function arm(which) {
@@ -63,7 +133,10 @@
     disarm();
     armed = which; dwell = 0;
     (which === 'lever' ? slot : ecgRow).setAttribute('data-st', 'armed');
-    if (which === 'lever' && nav && nav.spin) nav.spin(-1, 260);   /* 장전: 롤링을 한 칸 뒤로 감아 둔다 */
+    if (which === 'lever') {
+      lvTween(30, 260);                             /* 1차: 2시 → 1시 */
+      if (nav && nav.spin) nav.spin(-1, 260);       /* 장전: 롤링을 한 칸 뒤로 감아 둔다 */
+    }
     armT = setTimeout(disarm, ARM_IDLE);
     return false;
   }
@@ -79,8 +152,9 @@
   function pullLever() {
     clearTimeout(armT); armed = '';
     slot.setAttribute('data-st', 'pulled');
+    lvFire();                                            /* 스프링 하나로 1시 → 6시 */
     if (nav && nav.spin) nav.spin(12, 1200);              /* 감아 둔 한 칸을 풀고 여러 바퀴, 감속하며 정차 */
-    setTimeout(function () { slot.removeAttribute('data-st'); }, 1340);
+    setTimeout(function () { slot.removeAttribute('data-st'); lvTween(60, 420); }, 1340);
     openOv(slotBtn, reduce() ? 0 : 1060);
   }
   /* 2차(격발): 거친 파형이 0.28초에 한 번씩 마구 뛰는 것을 900ms 보여 준 뒤 무대가 페이드인한다.
@@ -120,6 +194,7 @@
          2시 → 3시 30분까지 **5칸을 한 칸씩 딱딱 걸리며**(한 칸 180ms) 내려가 2초 멈췄다가,
          같은 5칸을 역방향으로 되감아 원래 자료 자리로 정확히 돌아온다. */
       slot.setAttribute('data-st', 'hint');
+      lvHint();
       var hit = function (k, ms) {
         return setTimeout(function () {
           if (slot.getAttribute('data-st') !== 'hint') return;   /* 그새 격발했으면 건드리지 않는다 */
@@ -223,6 +298,7 @@
     nav = window.JC_NAV || null;
     ov = $('modeOv'); glass = $('modeGlass'); slot = $('slot'); slotBtn = $('slotBtn');
     ecgRow = $('ecgRow'); ecgBtn = $('ecgBtn'); back = $('modeBack');
+    LV.cap = $('leverCap'); LV.shaft = $('leverShaft'); lvSet(60);
     var seeds = document.querySelectorAll('.a-mode');
     for (var i = 0; i < seeds.length; i++) cards.push(seeds[i]);
 

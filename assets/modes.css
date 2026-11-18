@@ -10,17 +10,18 @@
  *   - 트리거(레버·심전도)는 mode가 all일 때만 있다. seed/match로 재구성되면 display:none.
  */
 
-/* ============ 1. 반원 다이얼 오른쪽 — 2시에서 6시로 돌아 내려가는 슬롯 레버 ============
- * 2026-11-18 R3(태화님 실기기 지시 + 각도 스펙): 세로 18px 평행 이동을 버리고 **회전축을 도는 레버**로.
- * 정면에서 본 상하 동작을 시계 방향 각도로 투영한다:
- *   평소 2시(60°) → 1차 1시(30°, 손목 스냅으로 더 치켜올림) → 2차 6시(180°, 끝까지 내려감)
- *   방치 유도는 3시 30분(105°)까지 반쯤 내려갔다가 2시로 복귀한다(롤링 반 바퀴와 연동).
- * 회전은 피벗 한 점에서만 일어나고, 손잡이는 각도에 따라 위→아래로 크게 이동한다(원근 투영).
+/* ============ 1. 반원 다이얼 오른쪽 — 정면에서 본 세로 슬롯 레버 ============
+ * 2026-11-18 R4(태화님 실기기 지시): 옆에서 본 반원 트랙을 버리고 **정면 세로 슬롯 레버**로 바꿨다.
+ * 태화님이 든 시계 비유(평소 2시 · 장전 1시 · 방치유도 3시30분 · 격발 6시)는 **옆에서 본 팔의 각도 θ**이고,
+ * 정면 화면에는 그 각도를 3D→2D 원근 투영으로 그린다(축은 화면 안쪽을 향한다):
+ *   세로 홈 위 손잡이 머리   y = 30 - 20·cos θ     (θ=0 위 · 90° 앞(축) · 180° 아래)
+ *   막대가 보이는 길이      |20·cos θ|            (3시에 0으로 줄어든다 = 앞으로 누운 자세)
+ *   손잡이 머리 크기        1 + 0.16·sin²θ        (3시에 가장 가깝고 커 보인다)
+ * 즉 2시(60°)에서 반쯤 올라와 있고, 1시(30°)에 더 올라가고, 3시30분(105°)에 축을 살짝 지나 아래로,
+ * 6시(180°)에 홈 끝에 내려앉는다. 움직이는 값은 손잡이 translate/scale과 막대 scaleY뿐이다(모두 transform).
  *
- * 구조 — 장치판 44×62, 회전축 (13, 31). 축은 반원 다이얼 수평선과 같은 높이에 앉아 하우징과 맞물린다.
- *   트랙: 반지름 22, 1시(24,12) → 오른쪽으로 부푼 호 → 6시(13,53). 눈금은 1시·3시·6시.
- *   팔: 반지름 22, 손잡이 반지름 7.5 → 2시(32,20) · 1시(24,12) · 6시(13,53)
- * 움직이는 것은 `.a-lever-arm`(샤프트+손잡이) 한 덩어리의 rotate 하나뿐이다 — transform만 쓴다.
+ * 구조 — 장치판 44×62, 회전축 (22, 30). 축은 반원 다이얼 수평선과 같은 높이에 앉아 하우징과 맞물린다.
+ *   홈: x=20·24 두 헤어라인(9~50.5), 눈금: 1시(12.7)·2시(20)·3시30분(35.2), 표적: 6시(50) 점.
  * 색은 자료실 팔레트 그대로: 종이(--panel) · 잉크(--ink) · 헤어라인(--line-2), 강조는 --acc 한 점. */
 .a-slot{position:relative;flex:none;width:44px;height:62px;margin:0 0 -11px -24px;display:block;touch-action:manipulation}
 .a-root .a-slot-btn{position:relative;display:block;width:44px;height:62px;border-radius:9px;-webkit-tap-highlight-color:transparent}
@@ -33,78 +34,36 @@
   box-shadow:2px 2px 0 rgba(0,0,0,.55)}
 .a-lever-plate::before{content:"";position:absolute;inset:3px;border-radius:4px;border:1px solid color-mix(in srgb,var(--line) 90%,transparent);pointer-events:none}
 .a-slot-btn:hover .a-lever-plate{border-color:color-mix(in srgb,var(--acc) 34%,var(--line-2))}
-/* 축으로 이어지는 다이얼 수평선 — 판 왼쪽 가장자리에서 축까지 1.5px 선이 들어온다 */
-.a-lever-plate::after{content:"";position:absolute;left:0;top:30.5px;width:13px;height:1.5px;
+/* 축으로 이어지는 다이얼 수평선 — 판 왼쪽 가장자리에서 홈까지 1.5px 선이 들어온다 */
+.a-lever-plate::after{content:"";position:absolute;left:0;top:29.5px;width:19px;height:1.5px;
   background:color-mix(in srgb,var(--line-2) 92%,transparent)}
-/* 트랙 — 손잡이가 지나가는 호(1시→6시). 1.5px 헤어라인, 격발 때만 강조색으로 살아난다 */
+/* 홈·눈금·표적 — 세로 슬롯. 손잡이가 지나갈 자리를 미리 새겨 둔다 */
 .a-lever-track{position:absolute;inset:0;width:44px;height:62px;color:var(--line-2);overflow:visible}
-/* 6시 끝의 표적 점 — 손잡이가 내려앉을 자리 */
-.a-lever-track::after{content:"";position:absolute;left:11.5px;top:51.5px;width:3px;height:3px;border-radius:50%;
-  background:color-mix(in srgb,var(--acc) 60%,transparent)}
-.a-slot[data-st="pulled"] .a-lever-track{color:var(--acc)}
-/* 팔 — 축(13,31)을 중심으로 도는 한 덩어리. 60°=2시 평소 · 30°=1시 장전 · 180°=6시 격발 */
-.a-lever-arm{position:absolute;left:13px;top:31px;width:0;height:0;transform-origin:0 0;
-  transform:translate3d(0,0,0) rotate(60deg);transition:transform .42s cubic-bezier(.3,.9,.32,1)}
-.a-slot[data-st] .a-lever-arm{will-change:transform}
-.a-lever-shaft{position:absolute;left:-1px;bottom:0;width:2px;height:22px;border-radius:1px;background:var(--ink)}
-.a-lever-cap{position:absolute;left:-7.5px;bottom:14.5px;width:15px;height:15px;border-radius:50%;box-sizing:border-box;
+.a-lv-groove{transition:color .18s linear}
+.a-lv-target{color:color-mix(in srgb,var(--acc) 62%,var(--line-2));opacity:.55;transition:opacity .18s linear,color .18s linear}
+.a-slot[data-st="armed"] .a-lv-ticks{color:color-mix(in srgb,var(--acc) 42%,var(--line-2))}
+.a-slot[data-st="pulled"] .a-lv-groove{color:color-mix(in srgb,var(--acc) 62%,var(--line-2))}
+.a-slot[data-st="pulled"] .a-lv-target{opacity:1;color:var(--acc)}
+/* 축 리벳 — (22,31). 막대가 이 점을 지나고, 3시 자세에서는 손잡이가 이 위를 덮는다 */
+.a-lever-hub{position:absolute;left:19.5px;top:27.5px;width:5px;height:5px;border-radius:50%;box-sizing:border-box;
+  background:var(--ink);border:1.2px solid var(--panel)}
+:root[data-theme="dark"] .a-lever-hub{border-color:#101a26}
+/* 팔 — 축(22,31)에서 자란다. 막대는 scaleY(=cos θ), 손잡이는 translate(20.5(1-cos θ)) + scale(1+0.16sin²θ).
+   값은 modes.js가 프레임마다 적는다(스프링·래칫 곡선). CSS는 자리와 색만 잡는다. */
+.a-lever-arm{position:absolute;left:22px;top:30px;width:0;height:0}
+.a-lever-shaft{position:absolute;left:-1.2px;bottom:0;width:2.4px;height:20px;border-radius:1.2px;
+  background:var(--ink);transform-origin:50% 100%;transform:scaleY(1)}
+.a-lever-cap{position:absolute;left:-7.5px;top:-27.5px;width:15px;height:15px;border-radius:50%;box-sizing:border-box;
   background:var(--ink);border:1.5px solid color-mix(in srgb,var(--ink) 82%,var(--bg));
-  transform:scale(1);transition:transform .22s cubic-bezier(.2,1.4,.4,1),border-color .12s linear}
+  transform-origin:50% 50%;transform:translate3d(0,0,0) scale(1);transition:border-color .12s linear}
 /* 손잡이 가운데의 인쇄 표식 — 4px 마름모(요철 대신 인쇄물의 정합 표시) */
 .a-lever-cap i{position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;
   background:color-mix(in srgb,var(--bg) 86%,transparent);transform:rotate(45deg)}
-/* 축 — 손잡이 밑동에서 팔을 붙잡는 리벳. 팔 위에 얹혀 회전이 한 점에서 도는 것으로 읽힌다 */
-.a-lever-hub{position:absolute;left:10px;top:28px;width:6px;height:6px;border-radius:50%;box-sizing:border-box;
-  background:var(--panel);border:1.5px solid var(--ink)}
-:root[data-theme="dark"] .a-lever-hub{background:#101a26}
-/* 1차(장전): 2시 → 1시. 손목 스냅으로 12시 쪽에 더 치켜올리고 손잡이 테두리에 강조색이 돈다 */
-.a-slot[data-st="armed"] .a-lever-arm{transform:rotate(30deg)}
-.a-slot[data-st="armed"] .a-lever-cap{transform:scale(1.08);border-color:var(--acc)}
-/* 2차(격발): 1시 → 3시 → 6시. 6시에서 살짝 지나쳤다(188°) 되돌아 180°에 무겁게 안착한다.
-   내려가는 동안 손잡이는 원근 때문에 조금 작아졌다 제자리 크기로 돌아온다. */
-.a-slot[data-st="pulled"] .a-lever-arm{animation:a-lever-sweep .9s cubic-bezier(.3,.06,.2,1) both}
-.a-slot[data-st="pulled"] .a-lever-cap{animation:a-lever-cap .9s cubic-bezier(.3,.06,.2,1) both}
-@keyframes a-lever-sweep{
-  0%{transform:rotate(30deg)}
-  9%{transform:rotate(24deg)}
-  38%{transform:rotate(104deg)}
-  62%{transform:rotate(152deg)}
-  74%{transform:rotate(188deg)}
-  86%{transform:rotate(176deg)}
-  93%{transform:rotate(182deg)}
-  100%{transform:rotate(180deg)}}
-@keyframes a-lever-cap{
-  0%{transform:scale(1.08)}
-  40%{transform:scale(.96)}
-  74%{transform:scale(.94)}
-  100%{transform:scale(1)}}
-/* 아이들 힌트(2분마다): 격발과 다르게 **손을 놓지 않고 천천히 당겼다 놓는** 동작이다.
-   2시 → 3시 30분(105°)까지 5칸을 한 칸씩 딱딱 걸리며 내려가(래칫) **2초 멈춰 있다가**,
-   같은 5칸을 딱딱 걸리며 2시로 돌아온다. 롤링도 같은 박자로 5칸 정방향 → 5칸 역방향(modes.js).
-   한 칸 = 180ms(90ms 이동 + 90ms 정지). 전체 3.8초. 움직이는 값은 rotate 하나뿐이다. */
-.a-slot[data-st="hint"] .a-lever-arm{animation:a-lever-hint 3.8s linear both}
-@keyframes a-lever-hint{
-  0%{transform:rotate(60deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  2.37%{transform:rotate(69deg);animation-timing-function:linear}
-  4.74%{transform:rotate(69deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  7.11%{transform:rotate(78deg);animation-timing-function:linear}
-  9.47%{transform:rotate(78deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  11.84%{transform:rotate(87deg);animation-timing-function:linear}
-  14.21%{transform:rotate(87deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  16.58%{transform:rotate(96deg);animation-timing-function:linear}
-  18.95%{transform:rotate(96deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  21.32%{transform:rotate(105deg);animation-timing-function:linear}
-  76.32%{transform:rotate(105deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  78.68%{transform:rotate(96deg);animation-timing-function:linear}
-  81.05%{transform:rotate(96deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  83.42%{transform:rotate(87deg);animation-timing-function:linear}
-  85.79%{transform:rotate(87deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  88.16%{transform:rotate(78deg);animation-timing-function:linear}
-  90.53%{transform:rotate(78deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  92.90%{transform:rotate(69deg);animation-timing-function:linear}
-  95.27%{transform:rotate(69deg);animation-timing-function:cubic-bezier(.3,.8,.35,1)}
-  97.64%{transform:rotate(60deg);animation-timing-function:linear}
-  100%{transform:rotate(60deg)}}
+/* 1차(장전): 1시로 치켜올라 손잡이 테두리에 강조색이 돈다 */
+.a-slot[data-st="armed"] .a-lever-cap{border-color:var(--acc)}
+/* 격발·방치 유도는 JS가 프레임마다 transform을 적는다(스프링 곡선·래칫 5칸).
+   움직이는 동안에만 합성 레이어를 승격한다. */
+.a-slot[data-st] .a-lever-shaft,.a-slot[data-st] .a-lever-cap{will-change:transform}
 
 /* ============ 2. 심전도(ECG) 파동 — 목록 화면, 쪽수 아래 정가운데 ============
  * 2026-11-18 R3(태화님 확정 스펙): 모바일에서 프레임이 떨어지던 동전 플립을 걷어내고, 모니터 상자 없이
