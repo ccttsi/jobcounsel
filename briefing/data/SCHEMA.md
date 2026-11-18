@@ -1,8 +1,9 @@
 > 이 저장소에서는 `briefing/data/`에 두고, 17번 섹터 「오늘의 고용·AI 인포 브리핑」(`/briefing/`)이 고치지 않고 읽기만 합니다. `briefing.json`은 **피클이 매일 07:00(한국판)·23:00(해외판) 두 회차로 쓰고**, 클로드 코드가 만드는 시각화 엔진은 **읽기만** 합니다. 이 문서(`SCHEMA.md`)와 JSON 두 종류가 계약입니다.
 
-# 브리핑 데이터 스키마 v1.2.0
+# 브리핑 데이터 스키마 v1.3.0
 
-- 스키마 버전: **1.2.0** (2026-11-16, 17-2 — 권역 `edition`·`updated_at`·`run_id`, 루트 `runs`, 루트 `main_themes` 추가: 하단 메인테마 + 07:00/23:00 배지·갱신 시각)
+- 스키마 버전: **1.3.0** (2026-11-19, 17번 지면 개편 — 호수(`edition.no`) 폐지, 카드 `theme_key`·`theme_label`·`region` 추가, 파생 색인 `chain.json`, `archive_dates`를 「보관된 전 날짜」로 확장)
+  - 1.2.0 (2026-11-16, 17-2): 권역 `edition`·`updated_at`·`run_id`, 루트 `runs`, 루트 `main_themes`
   - 1.1.0 (2026-11-16): `cards[].issue_id` 선택 필드 추가 — 17-1 「오늘의 원문」 연결
 - 대상 파일: `briefing/data/briefing.json`, `briefing/data/archive/YYYY-MM-DD.json`
 - 소비자: `/briefing/` 시각화 엔진 (클로드 코드가 1회 구현)
@@ -43,7 +44,7 @@
 
 ```json
 {
-  "schema_version": "1.2.0",
+  "schema_version": "1.3.0",
   "updated_at": "2026-11-16T13:04:00+09:00",
   "edition": { ... },
   "headline_metrics": [ ... ],
@@ -60,7 +61,7 @@
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `schema_version` | string | ✔ | `"MAJOR.MINOR.PATCH"`. 지금은 `"1.2.0"`. |
+| `schema_version` | string | ✔ | `"MAJOR.MINOR.PATCH"`. 지금은 `"1.3.0"`. |
 | `updated_at` | string (ISO 8601, +09:00) | ✔ | 이 파일을 마지막으로 쓴 시각(= 가장 최근에 갱신된 권역의 실행 시각). |
 | `edition` | object | ✔ | §4 |
 | `headline_metrics` | array(3~4) | ✔ | §5. **첫 화면 최상단 숫자 카드.** |
@@ -69,7 +70,7 @@
 | `runs` | object | – | §10. 권역별 실행 상태(`status`·`updated_at`·`last_ok`). 없으면 엔진은 배지 옆 갱신 시각만 항목에서 계산합니다. |
 | `main_themes` | array(0~) | – | §11. 하단 「메인테마」 — 날짜가 지나도 유지되는 상시 핵심 구획. 없으면 그 구획을 그리지 않습니다. |
 | `sources` | array | ✔ | §8. 카드가 참조하는 출처 목록. |
-| `archive_dates` | array(string `YYYY-MM-DD`) | ✔ | 최근 7일, **최신이 앞**. 오늘 날짜가 첫 원소. |
+| `archive_dates` | array(string `YYYY-MM-DD`) | ✔ | **보관된 전 날짜(최신이 앞).** 엔진의 미니 달력이 이 목록으로 점을 찍고, 고른 날만 `archive/{date}.json`을 추가로 받는다. 오늘 날짜가 첫 원소. (v1.3.0에서 「최근 7일」 → 「전 날짜」) |
 | `copyright_policy` | object | ✔ | §9. 엔진 화면 하단 고지용. |
 | `disclaimer` | string | ✔ | 한 문단. 화면 하단에 그대로 표시. |
 
@@ -92,7 +93,7 @@
 
 | 필드 | 타입 | 설명 |
 |---|---|---|
-| `no` | integer | 창간호부터 1씩 증가. |
+| ~~`no`~~ | — | **폐지(v1.3.0).** 「제N호」 표기를 화면·데이터 어디에도 쓰지 않는다. 엔진은 `no`가 있어도 무시하고 그리지 않는다. |
 | `date` | string `YYYY-MM-DD` | 이 호의 기준일(= 파일 날짜). |
 | `weekday` | string | `월`~`일` 한 글자. |
 | `title` | string | 그날의 한 줄 제목(사실을 왜곡하지 않는 범위에서 압축). |
@@ -173,6 +174,9 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `id` | string | ✔ | `c01`… 파일 안에서 유일. |
+| `theme_key` | string | ✔(v1.3.0) | 연결고리(체인) 주제 키. `th-` 접두. 같은 키를 가진 카드가 날짜를 넘어 「시간순」·「글로벌」로 이어진다. |
+| `theme_label` | string | ✔(v1.3.0) | 화면에 쓰는 주제 이름(예: `AI와 직무 재편`). `theme_key`의 한국어 이름. |
+| `region` | enum `"kr"` \| `"global"` | ✔(v1.3.0) | 이 자료의 권역. `global`이면 글로벌 비교의 「해외」 칸에 놓인다. 국내 공공자료·언론은 `kr`, BLS·ILO·IMF·arXiv 등은 `global`. |
 | `issue_id` | string | – | 17-1 원문(`briefing/data/news.json`)과 공유하는 이슈 묶음 id. `NEWS-SCHEMA.md` §5. 같은 값을 가진 원문이 있으면 카드 아래 「오늘의 원문 더 보기」를 그리고, 없으면 아무것도 그리지 않습니다. (v1.1.0) |
 | `order` | integer | ✔ | 1부터. 화면 순서. |
 | `track` | enum `"A"`\|`"B"` | ✔ | §2. |
@@ -453,7 +457,7 @@
 ## 13. 검증 체크리스트 (데이터를 커밋하기 전)
 
 - [ ] `python3 -m json.tool briefing/data/briefing.json` 통과(문법)
-- [ ] `schema_version`이 `"1.2.0"`, `updated_at`이 `+09:00`
+- [ ] `schema_version`이 `"1.3.0"`, `updated_at`이 `+09:00`
 - [ ] `cards` 5~7장, `order`가 1..N 연속, `id` 중복 없음
 - [ ] 모든 `series[].values` 길이 == `labels` 길이
 - [ ] 모든 `source_id`·`source_ids`가 `sources[].id`에 존재
@@ -472,7 +476,7 @@
 
 ```json
 {
-  "schema_version": "1.2.0",
+  "schema_version": "1.3.0",
   "updated_at": "2026-11-16T13:04:00+09:00",
   "edition": { "no": 1, "date": "2026-11-16", "weekday": "월", "title": "…", "subtitle": "…", "reading_minutes": 3, "data_status": "ok", "data_status_note": null },
   "headline_metrics": [ { "id": "hm_a", "label": "…", "value": 13.9, "unit": "만명", "value_text": "+13.9만명", "base_value": 2917.9, "base_unit": "만명", "direction": "up", "period": "2026년 10월", "delta_from": "전년동월", "source_id": "src_x", "track": "A", "spark": { "labels": ["9월","10월"], "values": [11.3,13.9], "unit": "만명" } } ],
@@ -486,3 +490,32 @@
   "disclaimer": "…"
 }
 ```
+
+---
+
+## 15. `chain.json` — 연결고리 색인 (v1.3.0, 파생 파일)
+
+카드 하단 「연결고리」 단추가 쓰는 **파생 색인**이다. 날짜별 JSON을 모두 받지 않고 이 파일 하나만 받는다.
+
+```json
+{
+  "generated_at": "2026-11-19T04:40:00+09:00",
+  "schema_version": "1.3.0",
+  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 도구를 다시 돌린다.",
+  "dates": ["2026-11-19", "2026-11-18"],
+  "themes": {
+    "th-ai-labor": {
+      "label": "AI와 직무 재편",
+      "items": [
+        { "date": "2026-11-13", "card_id": "c07", "title": "…", "kicker": "…",
+          "category": "AI·직무", "region": "global", "source_name": "arXiv …",
+          "source_url": "https://…", "published_at": "2026-11-12" }
+      ]
+    }
+  }
+}
+```
+
+- 만드는 곳: `briefing/data/tools/build_index.py`(데이터 정비 도구). 사이트 빌드가 아니며, 날짜 JSON을 고친 뒤 한 번 돌린다.
+- 같은 `(date, card_id)`는 한 번만 넣는다. `briefing.json`과 그날 `archive/{date}.json`이 같은 카드를 갖기 때문이다.
+- 엔진은 `theme_key`가 있는 카드에만 「연결고리」 단추를 그리고, 단추를 누를 때만 이 파일을 받는다(첫 화면 요청에 넣지 않는다).

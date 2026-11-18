@@ -175,7 +175,30 @@
     knownDates = Object.keys(seen).sort().reverse();
     return knownDates;
   }
+  /* ---------- 미니 달력 · 연결고리(체인) ---------- */
+  var CAL = null;
+  function initCalendar(cur, dates) {
+    var btn = $('dateBtn'); if (!btn || !window.JC_CAL) return;
+    CAL = JC_CAL({ button: btn, dates: dates, current: cur, label: calLabel, onPick: function (x) { go(x); } });
+    CAL.setDates(dates, cur);
+  }
+  function chainBtn(key, label) {
+    return '<button type="button" class="chain" data-chain="' + esc(key) + '" data-label="' + esc(label || '') + '" aria-haspopup="dialog" aria-label="' + esc((label || '') + ' 같은 흐름의 자료 보기') + '">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9.4 14.6l5.2-5.2"/><path d="M8.1 17.7l-1.5 1.5a3.7 3.7 0 0 1-5.2-5.2l3.1-3.1a3.7 3.7 0 0 1 5.2 0"/><path d="M15.9 6.3l1.5-1.5a3.7 3.7 0 0 1 5.2 5.2l-3.1 3.1a3.7 3.7 0 0 1-5.2 0"/></svg><span>연결고리</span></button>';
+  }
+  function countChains() {
+    var c = (window.JC_CHAIN && JC_CHAIN.counts) ? JC_CHAIN.counts() : {};
+    Array.prototype.forEach.call(main.querySelectorAll('[data-chain]'), function (b) {
+      var n = c[b.getAttribute('data-chain')] || 0, s = b.querySelector('.n');
+      if (n > 1) { if (!s) { s = document.createElement('span'); s.className = 'n'; b.appendChild(s); } s.textContent = n; }
+      else if (s) s.parentNode.removeChild(s);
+    });
+  }
   var STEP_NAMES = ['무슨 일', '수치·근거', '상담 시사점'];
+  var WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
+  function weekdayNum(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || '')); return m ? new Date(+m[1], +m[2] - 1, +m[3]).getDay() : 0; }
+  function fmtDate(s) { return String(s || '').replace(/-/g, '.'); }
+  function calLabel(s) { return fmtDate(s) + ' (' + WEEKDAY[weekdayNum(s)] + ')'; }
   function render(d, opts) {
     opts = opts || {};
     var E = d.edition || {}, srcById = {};
@@ -197,19 +220,22 @@
       status = '<p class="status" role="status"><b>' + (E.data_status === 'fallback' ? '오늘 자 갱신 실패' : '일부 자료 누락') + '</b> ' + esc(E.data_status_note || '이번 호는 카드 수가 평소보다 적습니다.') + '</p>';
     }
     if (opts.notice) status += '<p class="status" role="status">' + esc(opts.notice) + '</p>';
-    var latestOn = latestDate || dates[0];
-    var picker = dates.length > 1 ? '<label><span class="sr">지난 호 고르기</span><select id="dateSel">' +
-      dates.map(function (x) { return '<option value="' + esc(x) + '"' + (x === E.date ? ' selected' : '') + '>' + esc(x) + (x === latestOn ? ' (최신)' : '') + '</option>'; }).join('') + '</select></label>' : '';
-
-    var html = '<div class="top"><header class="mast"><div class="mast-top"><span class="ed"><b>제' + esc(E.no) + '호</b><span class="num">' + esc(E.date) + ' (' + esc(E.weekday) + ')</span><span>' + esc(E.reading_minutes || 3) + '분 읽기</span></span>' + picker + '</div>' +
-      '<h1>' + esc(E.title) + '</h1>' + (E.subtitle ? '<p>' + esc(E.subtitle) + '</p>' : '') + status + edBand(d) + '</header>';
-    html += '<ul class="hm" aria-label="오늘의 핵심 수치">' + arr(d.headline_metrics).filter(function (m) { return ok(m.source_id, m.id); }).slice(0, 4).map(function (m) {
+    var dTxt = fmtDate(E.date), wdTxt = E.weekday || WEEKDAY[weekdayNum(E.date)];
+    var html = '<div class="top"><header class="mast">' +
+      '<div class="mast-rule"></div>' +
+      '<div class="mast-toprow"><h1 class="nameplate">고용·AI 인포 브리핑<small>직업상담 자료실</small></h1>' +
+      '<div class="mast-meta"><span class="l"><span class="num">' + esc(E.reading_minutes || 3) + '분 읽기</span></span>' +
+      '<span class="datewrap"><button type="button" class="datebtn" id="dateBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3.5v4M16 3.5v4"/></svg><span data-cal-label>' + esc(calLabel(E.date)) + '</span><svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></span></div></div>' +
+      '<div class="mast-double"></div>' +
+      '<div class="mast-body"><div class="leadwrap"><span class="mast-kick">오늘의 지면</span><h2 class="mast-lead">' + esc(E.title) + '</h2>' +
+      (E.subtitle ? '<p class="mast-deck">' + esc(E.subtitle) + '</p>' : '') + status + (edBand(d) ? '<div class="mast-band">' + edBand(d) + '</div>' : '') + '</div>' +
+      '<section class="hmw"><div class="section-head"><h2>오늘의 숫자</h2><small>원자료 기준</small></div><ul class="hm" aria-label="오늘의 핵심 수치">' + arr(d.headline_metrics).filter(function (m) { return ok(m.source_id, m.id); }).slice(0, 4).map(function (m) {
       var s = srcById[m.source_id], arw = m.direction === 'up' ? '▲' : m.direction === 'down' ? '▼' : '–';
       var dirTxt = m.direction === 'up' ? '증가' : m.direction === 'down' ? '감소' : '보합';
       return '<li class="jc-pop"><span class="lb">' + esc(m.label) + '</span><span class="vl num">' + esc(m.value_text) + '<span class="ar" aria-label="' + dirTxt + '">' + arw + '</span></span>' +
         '<span class="pd">' + esc(m.period) + (m.delta_from ? ' · ' + esc(m.delta_from) + ' 대비' : '') + '</span>' + spark(m.spark) +
         '<span class="ft">' + trackBadge(m.track) + edBadges(m) + '<span>' + esc(s.source_name) + '</span></span></li>';
-    }).join('') + '</ul></div>';
+    }).join('') + '</ul></section></div></header></div>';
 
     var R = d.radar, rows = R ? arr(R.rows) : [];
     UI.radar = Math.max(0, Math.min(rows.length - 1, UI.radar));
@@ -238,7 +264,7 @@
             return '<button type="button" role="tab" data-step="' + k + '" aria-selected="' + (st === k) + '">' + ['①', '②', '③'][k] + ' ' + n + '</button>';
           }).join('') + '</div>' +
           '<ol class="st"><li><b>무슨 일인가</b>' + esc(t.what) + '</li><li><b>수치·근거</b>' + esc(t.evidence) + '</li><li><b>상담·구직 시사점</b>' + esc(t.implication) + '</li></ol>' +
-          '<div class="card-f">' + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
+          '<div class="card-f">' + (c.theme_key ? chainBtn(c.theme_key, c.theme_label, c.region) : '') + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
       }).join('') + '</div></div></section>';
 
     /* 레이더 */
@@ -269,8 +295,8 @@
     html += themesHtml(d, cards);
     main.innerHTML = html;
     current = d; current._cards = cards; current._rows = rows;
-    var sel = $('dateSel');
-    if (sel) sel.addEventListener('change', function () { go(sel.value); });
+    initCalendar(E.date, dates);
+    countChains();
     linkNews(d);
     if (location.hash === '#themes' && $('themes')) $('themes').scrollIntoView({ block: 'start' });
   }
@@ -306,7 +332,11 @@
       Array.prototype.forEach.call(card.querySelectorAll('.stp [data-step]'), function (x) { x.setAttribute('aria-selected', String(x === b)); });
       return;
     }
-    if ((b = e.target.closest('[data-theme]'))) { openTheme(+b.getAttribute('data-theme'), b); return; }
+    if ((b = e.target.closest('.th-b[data-theme]'))) { openTheme(+b.getAttribute('data-theme'), b); return; }
+    if ((b = e.target.closest('[data-chain]'))) {
+      JC_CHAIN.open(b.getAttribute('data-chain'), { base: BASE, label: b.getAttribute('data-label') || '', today: ((current || {}).edition || {}).date || '' });
+      return;
+    }
     if ((b = e.target.closest('[data-rad]'))) {
       UI.radar = +b.getAttribute('data-rad');
       Array.prototype.forEach.call(main.querySelectorAll('[data-rad]'), function (x) { x.setAttribute('aria-current', String(x === b)); });
@@ -367,6 +397,7 @@
   $('pvT').addEventListener('click', function () {
     var o = $('pvB').hidden; $('pvB').hidden = !o; this.setAttribute('aria-expanded', String(o)); $('pvL').textContent = o ? '접기' : '펼치기';
   });
+  if (window.JC_CHAIN) JC_CHAIN.load(BASE).then(countChains).catch(function () {});
   get(BASE + 'briefing.json').then(function (d) {
     latest = d; latestDate = (d.edition || {}).date || ''; archiveList(d);   // 지난 호 직접 링크(?date=)로 들어와도 목록이 남게
     var want = new URLSearchParams(location.search).get('date');
