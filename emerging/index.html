@@ -70,7 +70,7 @@ html.is-locked{overflow:hidden;padding-right:var(--sw,0)}
 .mast h1{position:relative;margin:6px 0 0;font-family:var(--serif);font-style:italic;font-weight:700;font-size:clamp(32px,8.4vw,58px);line-height:1.02;letter-spacing:-.01em}
 @media (min-width:900px){.mast h1{font-size:clamp(44px,4.4vw,58px)}}
 .mast h1 .jc-seal{display:none}
-@media (min-width:900px){.mast h1{padding-right:118px}.mast h1 .jc-seal{display:block;position:absolute;right:4px;bottom:10px;margin:0;width:104px;height:60px;opacity:.62}}
+@media (min-width:900px){.mast h1{padding-right:118px}.mast h1 .jc-seal{display:block;position:absolute;right:2px;bottom:2px;margin:0;width:92px;height:52px;opacity:.6}}
 .mast .sub{margin:10px 0 0;font-size:13.5px;color:var(--muted);line-height:1.5}
 .mast .sub b{color:var(--ink)}
 .lead-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
@@ -307,7 +307,12 @@ html[data-jc-imm] .art,html[data-jc-imm] .card,html[data-jc-imm] .fig,html[data-
   .keys{grid-template-columns:1fr 1fr}
   .keys li:nth-child(3){grid-column:1 / -1}
 }
-@media (max-width:999px){.cm,.cal,.days,.days-h{display:none!important}}
+@media (max-width:999px){
+  .cm,.cal,.days,.days-h{display:none!important}
+  .pgs{display:flex;gap:4px;margin:2px 0 6px}
+  .pgs button{flex:1;min-height:44px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}
+  .pgs button[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+}
 </style>
 </head>
 <body>
