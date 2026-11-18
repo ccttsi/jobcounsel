@@ -128,16 +128,18 @@
 .a-modes-k::before{content:"";width:18px;height:1px;background:currentColor;opacity:.65}
 .a-modes-t{margin:5px 0 0;font-size:clamp(19px,1.3vw + 14px,24px);font-weight:850;letter-spacing:-.04em;line-height:1.3;color:var(--ink)}
 .a-modes-p{margin:5px 0 0;font-size:13px;line-height:1.55;color:var(--muted)}
-.a-modes-cards{display:grid;grid-template-columns:minmax(0,1fr);gap:11px;pointer-events:none}
+/* 짝 카드 1:1 고정(2026-11-18 R4): 두 카드는 격자에서 **같은 높이의 한 줄**을 나눠 쓰고(grid-auto-rows:1fr),
+   안쪽 정보 칸도 높이가 고정되어 장전 전·1차·2차·테마 전환 어느 순간에도 너비·높이가 같다. */
+.a-modes-cards{display:grid;grid-template-columns:minmax(0,1fr);grid-auto-rows:1fr;gap:11px;pointer-events:none}
 
 /* ============ 4. 카드 — 인쇄 카드 한 장 ============
  * 색 테두리·오프셋 그림자 없이 헤어라인 + 얕은 그림자. 강조색은 번호·오브제·행동 줄에만 쓴다.
  * 왼쪽 가장자리의 3px 띠는 「칸에 꽂히는 슬라이드」 표시(자료실 인쇄물의 색인 띠). */
-.a-mode{--acc:var(--a1);position:relative;display:flex;flex-direction:column;align-items:stretch;width:100%;
+.a-mode{--acc:var(--a1);position:relative;display:flex;flex-direction:column;align-items:stretch;width:100%;height:100%;
   padding:13px 15px 0;border-radius:15px;border-width:1px;border-style:solid;border-color:var(--line-2);
   background:var(--panel);color:var(--ink);text-align:left;overflow:hidden;pointer-events:auto;
   box-shadow:0 1px 2px rgba(70,50,25,.07),0 10px 20px -12px rgba(70,50,25,.22),0 28px 46px -28px rgba(70,50,25,.5);
-  opacity:0;transform:translateY(16px) scale(.99);
+  opacity:0;transform:translateY(16px);
   /* 2026-11-18 밤: box-shadow·border-color 전이를 걷어냈다 — 페인트를 부르는 속성이다.
      1차에서 테두리·그림자는 **즉시** 바뀌고, 보이는 전이는 opacity·transform뿐이다. */
   transition:opacity .34s ease,transform .4s cubic-bezier(.2,.9,.3,1);
@@ -146,7 +148,7 @@
   box-shadow:0 0 0 1px rgba(255,255,255,.02),0 22px 44px -34px rgba(0,0,0,.9)}
 .a-mode::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;
   background:color-mix(in srgb,var(--acc) 62%,transparent);opacity:.55;transition:opacity .2s ease}
-.a-mode-match{--acc:var(--a2);transform:translateY(22px) scale(.99)}
+.a-mode-match{--acc:var(--a2)}   /* 등장 시작점도 시드와 같게 — 짝 카드가 어느 프레임에도 다른 크기로 보이지 않는다 */
 .a-mode:focus-visible{outline:2px solid color-mix(in srgb,var(--ink) 62%,transparent);outline-offset:3px}
 .a-modes.a-in .a-mode{opacity:1;transform:none;transition-delay:.05s}
 .a-modes.a-in .a-mode-match{transition-delay:.11s}
@@ -167,19 +169,21 @@
 .a-mode-name i{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.22em;color:var(--acc);transform:translateY(-1px)}
 /* 한 줄 역할 + 핵심 연계 흐름 — 장전 전(초면)에는 키워드만, 1차에 미니멀 정보가 떠오른다.
    두 줄 높이를 늘 잡아 두어 카드 높이·다른 요소 위치가 변하지 않는다. */
-.a-mode-meta{display:block;min-height:38px;opacity:0;transform:translate3d(0,4px,0);
+/* 정보 칸은 **38px 고정**. 긴 문구가 줄을 늘려 카드를 키우지 않도록 두 줄 모두 한 줄로 자른다. */
+.a-mode-meta{display:block;height:38px;overflow:hidden;opacity:0;transform:translate3d(0,4px,0);
   transition:opacity .26s ease .04s,transform .32s cubic-bezier(.2,.9,.3,1) .04s}
 .a-mode[data-step] .a-mode-meta{opacity:1;transform:none}
-.a-mode-sub{display:block;margin-top:1px;font-size:12.5px;line-height:1.5;color:var(--muted);letter-spacing:-.01em}
+.a-mode-sub{display:block;margin-top:1px;font-size:12.5px;line-height:1.5;color:var(--muted);letter-spacing:-.01em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .a-mode-flow{display:block;margin-top:1px;font-size:11.5px;line-height:1.6;font-weight:650;letter-spacing:.02em;
-  color:color-mix(in srgb,var(--acc) 62%,var(--muted))}
+  color:color-mix(in srgb,var(--acc) 62%,var(--muted));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* 오브제 무대 — 카드 안 고정 크기. 넘치는 것은 이 상자 밖으로 나가지 않는다. */
-.a-mode-art{position:relative;display:block;height:104px;margin:6px 0 4px;overflow:hidden}
+.a-mode-art{position:relative;display:block;flex:1 1 auto;height:104px;min-height:0;margin:6px 0 4px;overflow:hidden}
 .a-art{position:absolute;left:50%;top:50%;width:200px;height:104px;margin:-52px 0 0 -100px;transform:scale(1);transform-origin:50% 50%}
 
 /* 행동 줄 — 장전 전에는 화살표 칩만 조용히 있고, 1차에 무엇을 더 눌러야 하는지 말해 준다. */
-.a-mode-go{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;
+.a-mode-go{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;white-space:nowrap;
   border-top-width:1px;border-top-style:solid;border-top-color:var(--line);font-size:13px;font-weight:750;color:var(--muted)}
 .a-mode-go em{font-style:normal;display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:0 10px;border-radius:99px;
   border-width:1px;border-style:solid;border-color:var(--line-2);color:var(--ink);opacity:.55;transition:opacity .2s ease;
@@ -321,7 +325,7 @@
   .a-mode{padding:15px 17px 0}
   .a-mode-art{height:120px;margin:8px 0 6px}
   .a-art{height:120px;margin-top:-60px;transform:scale(1.14)}
-  .a-mode-match{transform:translateY(16px) scale(.99)}
+  /* 짝 카드 등장에는 scale을 쓰지 않는다 — 한쪽만 늦게 도착해 크기가 달라 보이던 원인 */
 }
 @media (max-height:700px){
   .a-mode-art{height:88px;margin:4px 0 2px}

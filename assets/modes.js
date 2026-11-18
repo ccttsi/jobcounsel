@@ -221,9 +221,15 @@
    * 평상시 2.75초당 1회 · 진폭 R 7px / 장전 1.05초 · 1.16배 / 격발 0.42초 · 1.85배 + 박동마다 R 높이가 흔들린다.
    * 그리는 중에는 레이아웃·페인트가 없다(캔버스 한 층, 168×34 CSS px) */
   var ECG = { cv: null, cx: null, on: false, raf: 0, last: 0, dpr: 1,
-    ph: 0, sp: .36, amp: 1, tone: 0, c1: [15, 118, 110], c2: [180, 83, 42] };
-  var ECG_W = 168, ECG_H = 34, ECG_BASE = 20, ECG_BEAT = 84, ECG_R = 7;
-  var ECG_T = { idle: { sp: .36, amp: 1, tone: 0 }, armed: { sp: .95, amp: 1.16, tone: .3 }, pulled: { sp: 2.4, amp: 1.85, tone: 1 } };
+    ph: 0, sp: .59, amp: 1, tone: 0, beat: 84, c1: [15, 118, 110], c2: [180, 83, 42] };
+  var ECG_W = 168, ECG_H = 34, ECG_BASE = 20, ECG_R = 8;
+  /* 3단계: 주기(초/회) · 진폭(배) · 박동 폭(px — 작을수록 창 안에 박동이 다닥다닥 붙는다) · 색 톤(0=청록 … 1=벽돌)
+     평상 1.7초·2박동 / 장전 0.7초·3박동·1.55배 / 격발 0.3초·6박동·2.2배(위아래 2px까지 치솟는다) */
+  var ECG_T = {
+    idle:   { sp: 1 / 1.7,  amp: 1,    tone: 0,  beat: 84 },
+    armed:  { sp: 1 / .70,  amp: 1.55, tone: .15, beat: 56 },
+    pulled: { sp: 1 / .30,  amp: 2.2,  tone: 1,  beat: 28 }
+  };
   var ECG_TAB = (function () {
     var t = new Float32Array(256), i, u, g = function (x, m, s, h) { var d = (x - m) / s; return h * Math.exp(-d * d); };
     for (i = 0; i < 256; i++) {
@@ -260,11 +266,11 @@
   }
   function ecgPaint() {
     var cx = ECG.cx; if (!cx) return;
-    var amp = ECG_R * ECG.amp, tone = ECG.tone, x, pa, bi, u, uu, i0, fr, v, y, fr2;
+    var amp = ECG_R * ECG.amp, tone = ECG.tone, beat = ECG.beat, stp = Math.min(.6, beat / 70), x, pa, bi, u, uu, i0, fr, v, y, fr2;
     cx.clearRect(0, 0, ECG_W, ECG_H);
     cx.beginPath();
-    for (x = 0; x <= ECG_W; x += .6) {
-      pa = ECG.ph - (ECG_W - x) / ECG_BEAT; bi = Math.floor(pa); u = pa - bi;
+    for (x = 0; x <= ECG_W; x += stp) {
+      pa = ECG.ph - (ECG_W - x) / beat; bi = Math.floor(pa); u = pa - bi;
       uu = u * 256; i0 = uu | 0; fr = uu - i0;
       v = ECG_TAB[i0] * (1 - fr) + ECG_TAB[(i0 + 1) & 255] * fr;
       if (tone > .02) { fr2 = ((bi * 2654435761) >>> 0) % 997 / 997; v *= 1 + (fr2 - .5) * .26 * tone; }   /* 거칠기: 박동마다 R 높이가 흔들린다 */
@@ -283,6 +289,7 @@
     var t = ecgState(), k = 1 - Math.exp(-dt / .20), kt = 1 - Math.exp(-dt / .30);
     ECG.sp += (t.sp - ECG.sp) * k;
     ECG.amp += (t.amp - ECG.amp) * k;
+    ECG.beat += (t.beat - ECG.beat) * kt;
     ECG.tone += (t.tone - ECG.tone) * kt;
     ECG.ph += ECG.sp * dt;
     ecgPaint();
@@ -296,8 +303,8 @@
   function ecgStill() {
     if (!ECG.cx || !ecgRow || !ecgRow.offsetParent) return;
     var t = ecgState();
-    ECG.sp = t.sp; ECG.amp = t.amp; ECG.tone = t.tone;
-    if (!reduce()) { ECG.sp = .36; ECG.amp = 1; ECG.tone = 0; }
+    ECG.sp = t.sp; ECG.amp = t.amp; ECG.tone = t.tone; ECG.beat = t.beat;
+    if (!reduce()) { ECG.sp = 1 / 1.7; ECG.amp = 1; ECG.tone = 0; ECG.beat = 84; }
     ecgFit(); ecgPaint();
   }
   function ecgSync() {
