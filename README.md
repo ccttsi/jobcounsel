@@ -33,6 +33,7 @@
 | `/reality/` | 취업 현위치 (예측 vs 공식 통계 착시 점검·조건별 분포 위 내 자리·패배 문장 반박·통제 분리와 방패 카드. 데이터 `reality/data/reality_stats.json`(읽기 전용), 화면 `reality/app.js`) |
 | `/briefing/` | 오늘의 브리핑 (매일 아침 새 지면: 전통 신문 꼴의 제호·핵심 수치·3단 이슈 카드·AI × 직무 레이더·출처·라이선스. 제호 옆 날짜 단추는 미니 달력(2026-11~현재 달 자동 확장)이고, 카드 바닥 「연결고리」는 같은 주제 자료를 시간순·국내/해외로 모아 본다. 데이터 `briefing/data/briefing.json`·`archive/`·파생 색인 `chain.json`은 수집 쪽이 쓰고 화면 `briefing/app.js`는 읽기만, 계약 `briefing/data/SCHEMA.md` v1.3.0) |
 | `/briefing/news/` | 오늘의 원문(17번의 하위 꼭지, 대문 항목 없음): 원문 재게시·AI 번역이 허용된 자료만 원문/번역/나란히로 읽는 피드. 데이터 `briefing/data/news.json`(계약 `briefing/data/NEWS-SCHEMA.md`)이 없으면 「첫 호 준비 중」 |
+| `/emerging/` | 신산업 브리핑 **Emerging Industry** (1차~4차 산업 19일 지면: 시장 규모·성장률 도표, 섹터 필터, 달력, 기사마다 기존/최근 직무 5칸 직무분석. 데이터 `emerging/data/emerging.json`·`archive/`, 계약 `emerging/data/SCHEMA.md`, 화면 `emerging/app.js`) |
 | `/assets/marker.js` | 공용 형광펜·포스트잇 도구함 |
 | `/assets/sync.js` | 로그인·기기 간 연동 (선택 기능) |
 | `/assets/prefs.js` | 공용 화면 설정: 테마(밝게·세피아·어둡게·자동), 글자 크기, 집중 보기(몰입형 풀화면), 공통 디자인 층 |
