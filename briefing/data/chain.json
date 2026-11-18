@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T04:48:49+09:00",
+ "generated_at": "2026-11-19T07:06:33+09:00",
  "schema_version": "1.3.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -59,6 +59,17 @@
      "source_name": "국제통화기금(IMF)·재정경제부",
      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
      "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c03",
+     "title": "KDI \"내년 성장 3.9%·취업자 20만\" — 20대는 여전히 낮다",
+     "kicker": "2026년 3.8% → 2027년 3.9% · 취업자 +12만 → +20만",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "재정경제부·한국개발연구원(KDI)",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
+     "published_at": "2026-11-18"
     }
    ]
   },
@@ -480,6 +491,17 @@
      "source_name": "미국 샌프란시스코 연준",
      "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
      "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c02",
+     "title": "수능 당일, 필기구도 일괄 지급 — 부정행위 제재는 10년",
+     "kicker": "수험생 55만명 · 위급재난문자 08:30",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
+     "published_at": "2026-11-18"
     }
    ]
   },
@@ -589,6 +611,17 @@
      "source_name": "한국폴리텍대학·고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789591",
      "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c04",
+     "title": "대기업 훈련 참여 53.2%, 중소기업은 5.8% — AI 시대의 벽",
+     "kicker": "훈련 참여율 53.2% 대 5.8% · 수도권 집중 68.5%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20272",
+     "published_at": "2026-11-18"
     }
    ]
   },
