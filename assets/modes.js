@@ -1,13 +1,13 @@
-/* modes.js — 대문의 시드(11) · 매치(12) 모드 전환 경험 (2026-11-17, 2026-11-18 R3)
+/* modes.js — 대문의 시드(11) · 매치(12) 모드 전환 경험 (2026-11-17, 2026-11-18 R3, 2026-11-19 R5)
  *
  * 트리거 두 가지
  *   ① 롤링 화면: 반원 다이얼 오른쪽 슬롯 레버 — 1차(2시→1시 장전) → 2차(1시→6시 회전 & 글래스 + 롤링 회전)
- *   ② 목록 화면: 쪽수 아래 심전도 파동 — 1차(심박 1초) → 2차(거친 파형으로 마구 뛰다 + 글래스)
- * 2분마다 반쯤만 작동하는 아이들 힌트(레버 5칸 래칫·심전도 기호 모핑)로 "이게 트리거"임을 알린다(장전·오버레이 중이면 건너뛴다).
- * 2차로 고르면 블록을 따라 글래스가 빠지거나 내려가며 사라지고, 대문이 그 모드로 재구성된다.
+ *   ② 목록 화면: 쪽수 아래 심전도 파동 — 1차(심박 빨라짐) → 2차(거친 파형으로 마구 뛰다 + 글래스)
+ * 2분마다 짝수분 00초에 5.0초 동안 작동하는 방치 유도(레버 5칸 래칫·심전도 한붓그리기)로 "이게 트리거"임을 알린다.
+ * 방치 유도는 사용자가 만진 것으로 치지 않는다 — 끝나면 롤링이 그 자리에서 이어서 흐른다. 장전·오버레이 중이면 건너뛴다.
  *
  * 모드 재구성은 index.html 안쪽 내비게이션이 맡는다(window.JC_NAV). 이 파일은 기계(트리거·오버레이·연출)만 다룬다.
- * 움직임은 transform·opacity만 쓰고, 감속 모드에서는 연출 없이 바로 결과로 간다.
+ * 움직임은 `transform`·`opacity`와 **캔버스 한 장**뿐이다(2026-11-19: SVG path/SMIL 제거). 감속 모드에서는 연출 없이 바로 결과로 간다.
  */
 (function () {
   'use strict';
@@ -16,8 +16,8 @@
   var reduceMQ = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
 
   /* ---------- 심전도 방치 유도: 2분마다 다른 기호 4개로 모핑하는 5가지 정형 패턴(10분 주기) ----------
-   * 기호는 모두 **점 36개짜리 한붓그리기 path**로 미리 정규화해 두었다. SMIL이 점과 점만 이어 그리므로
-   * CPU 보간이 필요 없고, 어떤 기호에서 어떤 기호로도 이음매 없이 구부러진다(2초 모핑 = 4기호 × 0.5초).
+   * 기호는 모두 **점 36개짜리 한붓그리기 path**(viewBox 44×32, 중심 22,16)다. 방치 유도 때 캔버스가
+   * 점과 점을 선형 보간해 그리므로, 어떤 기호에서 어떤 기호로도 이음매 없이 구부러진다(모양 하나당 0.9초).
    * 색은 기호마다 함께 바뀐다(자료실 팔레트: 청록·벽돌·황토·자주). 5패턴을 10분에 한 바퀴 돌고 다시 1번부터. */
   var ECG_SHAPES = {
     star: 'M22.00 4.00 L22.82 6.21 L23.63 8.42 L24.45 10.63 L25.88 11.99 L28.23 12.09 L30.59 12.18 L32.94 12.27 L31.93 13.46 L30.08 14.92 L28.23 16.38 L26.88 18.00 L27.52 20.27 L28.16 22.53 L28.80 24.80 L27.88 24.92 L25.92 23.62 L23.96 22.31 L22.00 21.00 L20.04 22.31 L18.08 23.62 L16.12 24.92 L15.20 24.80 L15.84 22.53 L16.48 20.27 L17.12 18.00 L15.77 16.38 L13.92 14.92 L12.07 13.46 L11.06 12.27 L13.41 12.18 L15.77 12.09 L18.12 11.99 L19.55 10.63 L20.37 8.42 L21.18 6.21 Z',
@@ -37,11 +37,11 @@
   ];
   var ecgStep = 0;
 
-  var DWELL = 120;          /* 아이들 힌트 간격(초) — 5분 → 2분(2026-11-18 R3, 두 트리거 공통) */
   var ARM_IDLE = 9000;      /* 1차만 누른 채 두면 이만큼 뒤 조용히 풀린다 */
+  var HINT_MS = 5000;       /* 방치 유도 길이 — 레버·심전도 둘 다 5.0초 */
 
   var nav, ov, glass, slot, slotBtn, ecgRow, ecgBtn, cards = [], foot, back;
-  var open = false, picking = false, armed = '', armT = 0, dwell = 0, timers = [], restFocus = null;
+  var open = false, picking = false, armed = '', armT = 0, timers = [], restFocus = null;
 
   /* ---------- 0. 정면 슬롯 레버 (2026-11-18 R4) ----------
    * 옆에서 본 팔의 각도 θ를 정면 화면에 3D→2D 원근 투영으로 그린다. 축(22,30.5)은 화면 안쪽을 향하고,
@@ -87,29 +87,39 @@
     }
     LV.raf = requestAnimationFrame(f);
   }
-  /* 방치 유도: 손을 놓지 않은 채 5칸 래칫으로 3시 30분(105°)까지 내려갔다 2초 멈추고, 같은 5칸으로 2시에 돌아온다.
-     한 칸 = 180ms(90ms 이동 + 90ms 정지). 롤링도 같은 박자로 5칸 정방향 → 5칸 역방향이다. */
+  /* 방치 유도(5.0초, 2026-11-19): 손을 놓지 않은 채 5칸 래칫으로 3시 30분(105°)까지 내려갔다가
+     같은 5칸으로 2시(60°)에 정확히 돌아온다. 롤링도 **보고 있던 자리에서** 같은 박자로 5칸 갔다가 되감긴다.
+     한 칸 = 180ms(90ms 이동 + 90ms 정지) · 내려감 0~0.9초 · 멈춤 0.9~4.1초 · 올라옴 4.1~5.0초 = 5.0초 정각. */
+  var HINT_DOWN = [69, 78, 87, 96, 105];
   function lvHint() {
     lvStop();
-    if (reduce()) { lvSet(60); return; }
-    var S = [], t = 0, prev = 60, down = [69, 78, 87, 96, 105], i, to;
-    for (i = 0; i < 5; i++) { S.push({ t: t, d: 90, a: prev, b: down[i] }); t += 180; prev = down[i]; }
-    S.push({ t: t, d: 2900 - t, a: prev, b: prev }); t = 2900;
-    for (i = 4; i >= 0; i--) { to = i ? down[i - 1] : 60; S.push({ t: t, d: 90, a: prev, b: to }); t += 180; prev = to; }
-    var t0 = 0, end = t;
+    if (reduce()) return false;
+    var navi = (nav && nav.hintRollBegin) ? nav : null;
+    if (!navi || !navi.hintRollBegin()) return false;   /* 롤링이 도는 중이면 방해하지 않는다 */
+    var t0 = 0;
     function f(now) {
       if (!t0) t0 = now;
-      var el = now - t0, th = 60, k, s, p;
-      for (k = 0; k < S.length; k++) {
-        s = S[k];
-        if (el < s.t) { th = s.a; break; }
-        if (el <= s.t + s.d) { p = s.d ? (el - s.t) / s.d : 1; p = p * p * (3 - 2 * p); th = s.a + (s.b - s.a) * p; break; }
-        th = s.b;
+      var el = now - t0, th = 60, off = 0, i, k, from, to;
+      if (el < 4100) {
+        i = Math.min(4, Math.floor(el / 180));
+        k = Math.min(1, (el - i * 180) / 90); k = k * k * (3 - 2 * k);
+        from = i ? HINT_DOWN[i - 1] : 60; to = HINT_DOWN[i];
+        th = from + (to - from) * k; off = i + k;
+      } else if (el < HINT_MS) {
+        i = Math.min(4, Math.floor((el - 4100) / 180));
+        k = Math.min(1, (el - 4100 - i * 180) / 90); k = k * k * (3 - 2 * k);
+        from = i ? HINT_DOWN[4 - i] : 105; to = i < 4 ? HINT_DOWN[3 - i] : 60;
+        th = from + (to - from) * k; off = 5 - (i + k);
+      } else {
+        th = 60; off = 0;
       }
       lvSet(th);
-      if (el < end) LV.raf = requestAnimationFrame(f); else { lvSet(60); LV.raf = 0; }
+      navi.hintRollTo(off);
+      if (el < HINT_MS) { LV.raf = requestAnimationFrame(f); return; }
+      lvSet(60); navi.hintRollTo(0); navi.hintRollEnd(); LV.raf = 0;
     }
     LV.raf = requestAnimationFrame(f);
+    return true;
   }
 
   function reduce() { return !!reduceMQ.matches; }
@@ -130,8 +140,9 @@
   }
   function arm(which) {
     if (armed === which) return true;
+    cancelHint();
     disarm();
-    armed = which; dwell = 0;
+    armed = which;
     (which === 'lever' ? slot : ecgRow).setAttribute('data-st', 'armed');
     if (which === 'lever') {
       lvTween(30, 260);                             /* 1차: 2시 → 1시 */
@@ -166,69 +177,83 @@
     setTimeout(function () { ecgRow.removeAttribute('data-st'); ecgSync(); }, 1200);
     openOv(ecgBtn, reduce() ? 0 : 900);
   }
-  /* ---------- 2. 아이들 힌트 (5분마다 반쯤) ---------- */
+  /* ---------- 2. 방치 유도 — 2분마다 짝수분 00초에 5.0초 ----------
+   * 시각(Date)으로 다음 정각을 계산해 한 번씩 깨어난다. 1초마다 세던 방식은 드리프트가 쌓여 홀수분 50초에
+   * 작동했다(2026-11-19 수정). 작동 중에는 사용자가 만진 것으로 치지 않고, 다 끝나면 롤링이 원래 자리에서
+   * 이어서 흐른다. 장전·오버레이·가려진 화면·감속 모드에서는 거르고 다음 정각을 잡는다. */
   function listOpen() { var lv = $('listView'); return !!lv && !lv.hidden; }
-  function hint() {
-    if (open || armed || picking || reduce() || cur() !== 'all' || document.hidden) return;
-    if (listOpen()) {
-      if (!ecgRow || !ecgRow.offsetParent) return;
-      /* 3.8초: 앞 예고 물결 0.9초 → 기호 4개 모핑 2.0초(0.5초씩) → 뒤 예고 물결 0.9초 */
-      var pat = ECG_PATTERNS[ecgStep % ECG_PATTERNS.length]; ecgStep++;
-      var md = $('ecgMorphD'), mc = $('ecgMorphC'), shape = $('ecgShape');
-      ecgRow.setAttribute('data-st', 'hint');
-      if (md && mc && shape) {
-        var d1 = ECG_SHAPES[pat.s[0]], d2 = ECG_SHAPES[pat.s[1]], d3 = ECG_SHAPES[pat.s[2]], d4 = ECG_SHAPES[pat.s[3]];
-        md.setAttribute('values', [d1, d1, d2, d2, d3, d3, d4, d4, d4].join(';'));
-        md.setAttribute('keyTimes', '0;0.16;0.25;0.41;0.5;0.66;0.75;0.91;1');
-        mc.setAttribute('values', pat.c.map(function (k) { return ECG_COLORS[k]; }).join(';'));
-        mc.setAttribute('keyTimes', '0;0.25;0.5;0.75');
-        shape.setAttribute('d', d1);
-        setTimeout(function () {                       /* 앞 예고가 끝나는 0.9초에 모핑 시작 */
-          if (ecgRow.getAttribute('data-st') !== 'hint') return;
-          try { md.beginElement(); mc.beginElement(); } catch (e) { }
-        }, 900);
-      }
-      setTimeout(function () { if (ecgRow.getAttribute('data-st') === 'hint') ecgRow.removeAttribute('data-st'); }, 3820);
-    } else {
-      if (!slot || !slot.offsetParent) return;
-      /* 격발과 다르게 손을 놓지 않고 천천히 당겼다 놓는다:
-         2시 → 3시 30분까지 **5칸을 한 칸씩 딱딱 걸리며**(한 칸 180ms) 내려가 2초 멈췄다가,
-         같은 5칸을 역방향으로 되감아 원래 자료 자리로 정확히 돌아온다. */
-      slot.setAttribute('data-st', 'hint');
-      lvHint();
-      var hit = function (k, ms) {
-        return setTimeout(function () {
-          if (slot.getAttribute('data-st') !== 'hint') return;   /* 그새 격발했으면 건드리지 않는다 */
-          if (nav && nav.spin) nav.spin(k, 130);
-        }, ms);
-      };
-      for (var i = 0; i < 5; i++) hit(1, i * 180);              /* 내려가며 5칸 정방향 */
-      for (var j = 0; j < 5; j++) hit(-1, 2900 + j * 180);      /* 3시 30분에서 2초 쉰 뒤 5칸 역방향 */
-      setTimeout(function () { if (slot.getAttribute('data-st') === 'hint') slot.removeAttribute('data-st'); }, 3820);
-    }
+  var hintOn = false, hintTimer = 0, hintEndT = 0;
+  function cancelHint() {
+    if (!hintOn) return false;
+    hintOn = false;
+    clearTimeout(hintEndT); hintEndT = 0;
+    if (ecgRow && ecgRow.getAttribute('data-st') === 'hint') ecgRow.removeAttribute('data-st');
+    if (slot && slot.getAttribute('data-st') === 'hint') slot.removeAttribute('data-st');
+    HINT.on = false;
+    if (LV.raf) { lvStop(); lvSet(60); }
+    if (nav && nav.hintRollEnd) nav.hintRollEnd();
+    ecgSync();
+    return true;
   }
-  function tickDwell() {
-    if (!ECG.on && ECG.cx && ecgWanted()) ecgSync();   /* 안전망: 흘러야 하는데 멈춰 있으면 켠다 */
-    if (document.hidden || open || armed) return;
-    if (++dwell >= DWELL) { dwell = 0; hint(); }
+  function hint() {
+    if (hintOn || open || armed || picking || reduce() || cur() !== 'all' || document.hidden) return false;
+    if (listOpen()) {
+      if (!ecgRow || !ecgRow.offsetParent) return false;
+      var pat = ECG_PATTERNS[ecgStep % ECG_PATTERNS.length]; ecgStep++;
+      HINT.on = true; HINT.t = 0; HINT.pat = pat;
+      hintOn = true;
+      ecgRow.setAttribute('data-st', 'hint');
+      ecgSync();
+    } else {
+      if (!slot || !slot.offsetParent) return false;
+      hintOn = true;
+      slot.setAttribute('data-st', 'hint');
+      if (!lvHint()) { cancelHint(); return false; }
+    }
+    /* 끝 시계는 시간표(hintTimer)와 다른 그릇에 둔다 — 다음 정각을 잡을 때 함께 지워지면 안 된다 */
+    hintEndT = setTimeout(function () { if (hintOn) cancelHint(); }, HINT_MS + 40);
+    return true;
+  }
+  /* 다음 「짝수분 00초」의 시각(ms). 이미 지난 정각은 잡지 않는다. */
+  function nextEvenMinute(from) {
+    var d = new Date(from); d.setSeconds(0, 0);
+    var t = d.getTime();
+    while (t <= from) t += 60000;
+    if (new Date(t).getMinutes() % 2 !== 0) t += 60000;
+    return t;
+  }
+  function scheduleHint() {
+    clearTimeout(hintTimer); hintTimer = 0;
+    var now = Date.now(), at = nextEvenMinute(now + 400);
+    hintTimer = setTimeout(function () {
+      hintTimer = 0;
+      var late = Date.now() - at;
+      /* 정각에서 -0.1~+3초 사이에 깨어났을 때만 작동한다(잠들었다 깨어난 탭은 건너뛴다) */
+      if (late > -100 && late < 3000) hint();
+      scheduleHint();
+    }, Math.max(60, at - now));
   }
 
-  /* ---------- 2. 심전도 — 하나의 연속 파형 (2026-11-18 R4) ----------
-   * 상태별로 SVG·애니메이션을 갈아끼우지 않고, 캔버스 168×34 하나에 rAF로 매 프레임 그린다.
-   *   · 박동 위상 ph는 계속 흘러가기만 한다 — 상태가 바뀌어도 선이 리셋·절단되지 않는다.
-   *   · 속도·진폭·톤은 목표값으로 lerp(≈200ms)해서 몃 박동에 걸쳐 부드럽게 변한다.
-   *   · 파형 한 주기는 256칸 표(ECG_TAB)로 미리 계산해 둔다 — P·Q·R·S·T를 가우스로 엮은 모양.
-   * 평상시 2.75초당 1회 · 진폭 R 7px / 장전 1.05초 · 1.16배 / 격발 0.42초 · 1.85배 + 박동마다 R 높이가 흔들린다.
-   * 그리는 중에는 레이아웃·페인트가 없다(캔버스 한 층, 168×34 CSS px) */
+  /* ---------- 2. 심전도 — 캔버스 한 장의 연속 파형 + 방치 유도 한붓그리기 (2026-11-19 R5) ----------
+   * 2026-11-19: SVG path의 `d` 문자열 재작성과 SMIL 모핑을 걷어내고 **캔버스 168×34 한 장**으로 통일했다.
+   *   · 평상·장전·격발은 한 줄이 끊기지 않고 위상(ph) 그대로 이어지며 속도·진폭·굵기·톤이 변한다.
+   *     평상 1.9초·2박동·1배·1.5px → 장전 0.62초·3박동·2.05배·2.4px+겹선+천장선 → 격발 0.26초·6.5박동·2.6배·2.7px.
+   *   · 장전으로 넘어가면 0.9초 동안 한 줄기 빛이 파형을 왼쪽에서 오른쪽으로 훑고, R꼭대기마다 잔불이 튄다.
+   *     위쪽에 천장 헤어라인이 나타나 R이 닿기 직전까지 차오른다 — 한 번 더 눌러 터뜨리고 싶게 하는 장치다.
+   *   · 방치 유도(5.0초)도 같은 캔버스가 그린다: 파동이 가운데로 오므라들며(0.7초)
+   *     한붓그리기 4개 모양으로 0.9초씩 구부러지고(3.6초), 다시 파동으로 풀린다(0.7초).
+   *   · 프레임마다 DOM·SVG·레이아웃을 건드리지 않는다(캔버스 픽셀만). 감속 모드에서는 한 장만 그린다.
+   */
   var ECG = { cv: null, cx: null, on: false, raf: 0, last: 0, dpr: 1,
-    ph: 0, sp: .59, amp: 1, tone: 0, beat: 84, c1: [15, 118, 110], c2: [180, 83, 42] };
-  var ECG_W = 168, ECG_H = 34, ECG_BASE = 20, ECG_R = 8;
+    ph: 0, sp: 1 / 1.9, amp: 1, tone: 0, beat: 84, lw: 1.5, echo: 0, ceil: 0, chg: 0,
+    c1: [15, 118, 110], c2: [180, 83, 42] };
+  var ECG_W = 168, ECG_H = 34, ECG_BASE = 20, ECG_R = 8, ECG_CX = ECG_W / 2;
   /* 3단계: 주기(초/회) · 진폭(배) · 박동 폭(px — 작을수록 창 안에 박동이 다닥다닥 붙는다) · 색 톤(0=청록 … 1=벽돌)
-     평상 1.7초·2박동 / 장전 0.7초·3박동·1.55배 / 격발 0.3초·6박동·2.2배(위아래 2px까지 치솟는다) */
+     · 선 굵기 · 겹선(장전의 두 겹 박동) · 천장선(장전의 목표 헤어라인) */
   var ECG_T = {
-    idle:   { sp: 1 / 1.7,  amp: 1,    tone: 0,  beat: 84 },
-    armed:  { sp: 1 / .70,  amp: 1.55, tone: .15, beat: 56 },
-    pulled: { sp: 1 / .30,  amp: 2.2,  tone: 1,  beat: 28 }
+    idle:   { sp: 1 / 1.7,  amp: 1,    tone: 0,  beat: 84, lw: 1.5, echo: 0, ceil: 0 },
+    armed:  { sp: 1 / .70,  amp: 1.55, tone: .15, beat: 56, lw: 1.7, echo: 0, ceil: 0 },
+    pulled: { sp: 1 / .30,  amp: 2.2,  tone: 1,   beat: 28, lw: 1.9, echo: 0, ceil: 0 }
   };
   var ECG_TAB = (function () {
     var t = new Float32Array(256), i, u, g = function (x, m, s, h) { var d = (x - m) / s; return h * Math.exp(-d * d); };
@@ -249,8 +274,10 @@
       var cs = getComputedStyle(document.documentElement);
       ECG.c1 = ecgRGB(cs.getPropertyValue('--a1'), ECG.c1);
       ECG.c2 = ecgRGB(cs.getPropertyValue('--a2'), ECG.c2);
+      ECG_KC = ECG_COLORS.map(function (h) { return ecgRGB(h, [15, 118, 110]); });
     } catch (e) { }
   }
+  var ECG_KC = [];
   function ecgState() {
     var st = ecgRow ? ecgRow.getAttribute('data-st') : '';
     return ECG_T[st === 'pulled' ? 'pulled' : (st === 'armed' ? 'armed' : 'idle')];
@@ -264,24 +291,97 @@
       ECG.cx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
   }
+  function ecgTone(tone) {
+    var a = ECG.c1, b = ECG.c2;
+    return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * tone) + ',' +
+      Math.round(a[1] + (b[1] - a[1]) * tone) + ',' +
+      Math.round(a[2] + (b[2] - a[2]) * tone) + ')';
+  }
+  /* 파형 한 점의 y — 256칸 표를 선형 보간하고, 격발의 거칠기는 박동마다 R 높이를 흔든다 */
+  function ecgY(x, ampMul) {
+    var pa = ECG.ph - (ECG_W - x) / ECG.beat, bi = Math.floor(pa), u = pa - bi;
+    var uu = u * 256, i0 = uu | 0, fr = uu - i0;
+    var v = ECG_TAB[i0] * (1 - fr) + ECG_TAB[(i0 + 1) & 255] * fr;
+    if (ECG.tone > .02) { var r = ((bi * 2654435761) >>> 0) % 997 / 997; v *= 1 + (r - .5) * (.26 + .22 * ECG.tone) * ECG.tone; }
+    return ECG_BASE - v * ECG_R * ECG.amp * (ampMul || 1);
+  }
+  /* 가로 배율 kx: 1이면 창 전체를 흐르고, 작을수록 가운데로 오므라든다(방치 유도의 물결) */
+  function ecgPath(cx, kx) {
+    var stp = Math.max(.6, Math.min(1.7, ECG.beat / 50)), x, px;
+    cx.beginPath();
+    for (x = 0; x <= ECG_W + .01; x += stp) {
+      px = ECG_CX + (x - ECG_CX) * kx;
+      if (x === 0) cx.moveTo(px, ecgY(x, 1)); else cx.lineTo(px, ecgY(x, 1));
+    }
+  }
   function ecgPaint() {
     var cx = ECG.cx; if (!cx) return;
-    var amp = ECG_R * ECG.amp, tone = ECG.tone, beat = ECG.beat, stp = Math.min(.6, beat / 70), x, pa, bi, u, uu, i0, fr, v, y, fr2;
     cx.clearRect(0, 0, ECG_W, ECG_H);
-    cx.beginPath();
-    for (x = 0; x <= ECG_W; x += stp) {
-      pa = ECG.ph - (ECG_W - x) / beat; bi = Math.floor(pa); u = pa - bi;
-      uu = u * 256; i0 = uu | 0; fr = uu - i0;
-      v = ECG_TAB[i0] * (1 - fr) + ECG_TAB[(i0 + 1) & 255] * fr;
-      if (tone > .02) { fr2 = ((bi * 2654435761) >>> 0) % 997 / 997; v *= 1 + (fr2 - .5) * .26 * tone; }   /* 거칠기: 박동마다 R 높이가 흔들린다 */
-      y = ECG_BASE - v * amp;
-      if (x === 0) cx.moveTo(0, y); else cx.lineTo(x, y);
+    if (HINT.on) { ecgPaintHint(cx); return; }
+    var main = ecgTone(ECG.tone);
+    cx.lineJoin = 'round'; cx.lineCap = 'round';
+    cx.lineWidth = ECG.lw; cx.strokeStyle = main;
+    ecgPath(cx, 1); cx.stroke();
+  }
+  /* ---------- 방치 유도: 한붓그리기 기호 4개(점 36개)를 캔버스에서 직접 구부린다 ---------- */
+  var HINT = { on: false, t: 0, pat: null };
+  var SHAPE_PTS = {};
+  function shapePts(name) {
+    if (SHAPE_PTS[name]) return SHAPE_PTS[name];
+    var m = (ECG_SHAPES[name] || '').match(/-?\d+(?:\.\d+)?/g) || [], a = [], i;
+    for (i = 0; i + 1 < m.length; i += 2) a.push([+m[i], +m[i + 1]]);
+    SHAPE_PTS[name] = a; return a;
+  }
+  function mixColor(a, b, p) {
+    return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * p) + ',' + Math.round(a[1] + (b[1] - a[1]) * p) + ',' + Math.round(a[2] + (b[2] - a[2]) * p) + ')';
+  }
+  var SSC = 1.34;                       /* 한붓그리기 기호를 캔버스 34px 높이에 맞춰 키우는 배율 */
+  function ease(p) { p = p <= 0 ? 0 : (p >= 1 ? 1 : p); return p * p * (3 - 2 * p); }
+  function easeOut(p) { p = p <= 0 ? 0 : (p >= 1 ? 1 : p); return 1 - Math.pow(1 - p, 3); }
+  function ecgPaintHint(cx) {
+    var t = HINT.t, pat = HINT.pat, kx = .16, wa = 0, sa = 0, sc = 1, mp = 0;
+    var A = null, B = null, ca = null, cb = null;
+    if (t < 700) {                                   /* 0.7초: 파동이 가운데로 오므라들며 모양을 준비한다 */
+      var p = t / 700;
+      kx = 1 - .84 * ease(p); wa = 1 - .45 * ease(p);
+      sa = ease((t - 380) / 320) * .9; sc = SSC * (.7 + .3 * ease((t - 380) / 320));
+      A = B = shapePts(pat.s[0]); ca = cb = ECG_KC[pat.c[0]];
+    } else if (t < 4300) {                           /* 3.6초: 모양 하나당 0.9초(0.26초 정지 + 0.64초 morph) */
+      var lt = t - 700, slot = Math.min(3, Math.floor(lt / 900)), local = lt - slot * 900;
+      var nm = pat.s, ci = pat.c;
+      A = shapePts(nm[slot]);
+      B = slot < 3 ? shapePts(nm[slot + 1]) : A;
+      ca = ECG_KC[ci[slot]];
+      cb = ECG_KC[ci[slot < 3 ? slot + 1 : slot]];
+      mp = slot < 3 ? ease((local - 420) / 480) : 0;   /* 0.42초는 또렷이 머물고 0.48초에 구부러진다 */
+      sa = 1; sc = SSC * (.95 + .05 * ease(Math.min(1, (lt - slot * 900) / 320)));
+      kx = .16; wa = 0;
+    } else {                                         /* 0.7초: 모양이 풀리며 파동이 다시 창을 채운다 */
+      var q = Math.min(1, (t - 4300) / 700);
+      kx = .16 + .84 * easeOut(q); wa = .55 + .45 * ease(q);
+      sa = 1 - ease(Math.min(1, q * 1.8)); sc = SSC * (1 - .32 * ease(q));
+      A = B = shapePts(pat.s[3]); ca = cb = ECG_KC[pat.c[3]];
     }
-    cx.lineWidth = 1.6; cx.lineJoin = 'round'; cx.lineCap = 'round';
-    cx.strokeStyle = 'rgb(' + Math.round(ECG.c1[0] + (ECG.c2[0] - ECG.c1[0]) * tone) + ',' +
-      Math.round(ECG.c1[1] + (ECG.c2[1] - ECG.c1[1]) * tone) + ',' +
-      Math.round(ECG.c1[2] + (ECG.c2[2] - ECG.c1[2]) * tone) + ')';
-    cx.stroke();
+    if (wa > 0) {
+      cx.globalAlpha = wa; cx.lineWidth = 1.6; cx.strokeStyle = ecgTone(0);
+      cx.lineJoin = 'round'; cx.lineCap = 'round';
+      ecgPath(cx, kx); cx.stroke();
+      cx.globalAlpha = 1;
+    }
+    if (sa > .01 && A && A.length) {
+      var n = Math.min(A.length, B.length), i, x, y, sx = 62, sy = 1;
+      cx.globalAlpha = sa; cx.lineWidth = 2; cx.lineJoin = 'round'; cx.lineCap = 'round';
+      cx.strokeStyle = mixColor(ca, cb, mp);
+      cx.beginPath();
+      for (i = 0; i < n; i++) {
+        x = A[i][0] + (B[i][0] - A[i][0]) * mp;
+        y = A[i][1] + (B[i][1] - A[i][1]) * mp;
+        x = sx + 22 + (x - 22) * sc; y = sy + 16 + (y - 16) * sc;
+        if (i === 0) cx.moveTo(x, y); else cx.lineTo(x, y);
+      }
+      cx.closePath(); cx.stroke();
+      cx.globalAlpha = 1;
+    }
   }
   function ecgFrame(now) {
     if (!ECG.on) return;
@@ -291,7 +391,12 @@
     ECG.amp += (t.amp - ECG.amp) * k;
     ECG.beat += (t.beat - ECG.beat) * kt;
     ECG.tone += (t.tone - ECG.tone) * kt;
+    ECG.lw += (t.lw - ECG.lw) * k;
+    ECG.echo += (t.echo - ECG.echo) * kt;
+    ECG.ceil += (t.ceil - ECG.ceil) * kt;
+    if (ECG.chg > 0) ECG.chg = Math.max(0, ECG.chg - dt / .9);
     ECG.ph += ECG.sp * dt;
+    if (HINT.on) HINT.t = Math.min(HINT_MS, HINT.t + dt * 1000);
     ecgPaint();
     ECG.raf = requestAnimationFrame(ecgFrame);
   }
@@ -304,7 +409,8 @@
     if (!ECG.cx || !ecgRow || !ecgRow.offsetParent) return;
     var t = ecgState();
     ECG.sp = t.sp; ECG.amp = t.amp; ECG.tone = t.tone; ECG.beat = t.beat;
-    if (!reduce()) { ECG.sp = 1 / 1.7; ECG.amp = 1; ECG.tone = 0; ECG.beat = 84; }
+    ECG.lw = t.lw; ECG.echo = t.echo; ECG.ceil = t.ceil; ECG.chg = 0;
+    if (reduce()) { ECG.sp = 1 / 1.9; ECG.amp = 1; ECG.tone = 0; ECG.beat = 84; ECG.lw = 1.5; ECG.echo = 0; ECG.ceil = 0; }
     ecgFit(); ecgPaint();
   }
   function ecgSync() {
@@ -324,7 +430,7 @@
   }
   function openOv(src, delay) {
     if (open || !ov) return;
-    open = true; picking = false; dwell = 0;
+    open = true; picking = false;
     restFocus = src || document.activeElement;
     disarm();
     clearTimers();
@@ -457,6 +563,7 @@
 
     /* 1차만 누른 채 다른 곳을 누르면 조용히 풀린다 */
     document.addEventListener('pointerdown', function (e) {
+      if (hintOn) cancelHint();            /* 방치 유도 중에 손이 닿으면 그 자리에서 넘겨받는다 */
       if (!armed) return;
       var t = e.target;
       if (armed === 'lever' && slot && slot.contains(t)) return;
@@ -468,6 +575,7 @@
       if (e.key === 'Escape') {
         if (open && !picking) { e.preventDefault(); closeOv(); }
         else if (armed) { e.preventDefault(); disarm(); }
+        else if (hintOn) { e.preventDefault(); cancelHint(); }
         return;
       }
       if (!open || e.key !== 'Tab') return;
@@ -484,6 +592,8 @@
       if (document.hidden) document.documentElement.setAttribute('data-ecg-off', '');
       else document.documentElement.removeAttribute('data-ecg-off');
       ecgSync();
+      if (document.hidden) cancelHint();
+      else scheduleHint();                 /* 돌아오면 다음 짝수분 정각을 다시 잡는다 */
     }
     document.addEventListener('visibilitychange', ecgPause); ecgPause();
 
@@ -494,13 +604,15 @@
       new MutationObserver(function (rec) {
         var theme = false;
         for (var i = 0; i < rec.length; i++) if (rec[i].attributeName === 'data-theme') theme = true;
-        if (theme) ecgColors();
+        if (theme) ecgColors(); else cancelHint();          /* 모드가 바뀌면 방치 유도를 접는다(덱으로 넘어가므로) */
         requestAnimationFrame(function () { ecgSync(); });   /* 모드가 바뀌면(덱 → 대문) 파도를 다시 흘린다 */
       }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-jc-mode'] });
     } catch (e) { }
     window.addEventListener('resize', function () { if (!ECG.on) ecgStill(); });
 
-    setInterval(tickDwell, 1000);
+    scheduleHint();
+    /* 감독·검수용: 정각을 기다리지 않고 방치 유도를 한 번 돌려 본다 */
+    window.JC_HINT = { run: hint, cancel: cancelHint, next: function () { return nextEvenMinute(Date.now()); }, active: function () { return hintOn; } };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

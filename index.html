@@ -509,12 +509,6 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
           <span class="a-ecg" aria-hidden="true">
             <span class="a-ecg-base"></span>
             <span class="a-ecg-bob"><canvas class="a-ecg-cv" id="ecgCv" width="336" height="68"></canvas></span>
-            <svg class="a-ecg-morph" viewBox="0 0 44 32" aria-hidden="true" focusable="false">
-              <path id="ecgShape" fill="none" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round" stroke="#0f766e" d="M22.00 4.00 L22.82 6.21 L23.63 8.42 L24.45 10.63 L25.88 11.99 L28.23 12.09 L30.59 12.18 L32.94 12.27 L31.93 13.46 L30.08 14.92 L28.23 16.38 L26.88 18.00 L27.52 20.27 L28.16 22.53 L28.80 24.80 L27.88 24.92 L25.92 23.62 L23.96 22.31 L22.00 21.00 L20.04 22.31 L18.08 23.62 L16.12 24.92 L15.20 24.80 L15.84 22.53 L16.48 20.27 L17.12 18.00 L15.77 16.38 L13.92 14.92 L12.07 13.46 L11.06 12.27 L13.41 12.18 L15.77 12.09 L18.12 11.99 L19.55 10.63 L20.37 8.42 L21.18 6.21 Z">
-                <animate id="ecgMorphD" attributeName="d" begin="indefinite" dur="2s" fill="freeze" calcMode="linear"/>
-                <animate id="ecgMorphC" attributeName="stroke" begin="indefinite" dur="2s" fill="freeze" calcMode="discrete"/>
-              </path>
-            </svg>
           </span>
         </button>
       </div>
@@ -791,6 +785,9 @@ var reduceMQ=window.matchMedia?window.matchMedia('(prefers-reduced-motion: reduc
 var pos=0,target=0,shown=-1,drag=null,paused=false,holdUntil=0,hover=false,lastT=0,itemH=60,fadeT=0,userMove=false,wheelAcc=0,wheelT=0;
 /* 움직일 때만 rAF를 돌린다(목표에 닿으면 멈춤). 자동 넘김은 setTimeout 한 번 + CSS 밑줄(scaleX)로 남은 시간을 보인다. */
 var raf=0,autoT=0,autoStart=0,remain=INTERVAL;
+/* 방치 유도(짝수분 00초, 5.0초)가 롤링을 움직이는 동안의 기준 자리.
+   사용자가 만진 것이 아니므로 hold·userMove를 건드리지 않고, 끝나면 기준 자리로 정확히 돌아와 자동 넘김이 이어진다. */
+var hintBase=null;
 var items=[],dotEls=[];
 function mod(a,n){return ((a%n)+n)%n;}
 function reduce(){return !!reduceMQ.matches;}
@@ -823,6 +820,7 @@ function measureListRows(){
 }
 function setList(on){
   var rv=$('rollView'),lv=$('listView'),bt=$('allBtn');
+  hintRollEnd();
   if(on&&!listOpen){lv.style.minHeight=rv.offsetHeight+'px';}
   listOpen=on;rv.hidden=on;lv.hidden=!on;bt.setAttribute('aria-expanded',String(on));
   $('allBtnT').innerHTML=on?'롤링으로 돌아가기':'자료 전체 목록 <b class="a-num">'+TOOLS.length+'</b>개';
@@ -878,6 +876,14 @@ function layout(){
 function show(i){
   if(spinT){spinPending=i;return;}          /* 도는 동안 문구 설명은 마지막에 한 번만 바꾼다 */
   var t=TOOLS[i],first=shown<0;shown=i;
+  /* 방치 유도 중: 문구·설명은 따라가되 강조색·낭독기·방문 표시 갱신은 끝난 뒤 한 번에 한다.
+     칸마다 --acc(하위 전체 스타일 재계산)와 localStorage 읽기를 되풀이하면 그 프레임이 튄다. */
+  if(hintBase!==null){
+    /* 방치 유도 중: 문구 줄만 굴러가고 아래 설명은 제자리에 둔다(끝나면 어차피 같은 자리로 돌아온다).
+       칸마다 긴 설명·강조색·방문 표시를 다시 그리면 그 프레임이 튀고, 읽던 글도 깜빡인다. */
+    $('drum').setAttribute('aria-valuenow',i+1);
+    return;
+  }
   clearTimeout(show.w);if(userMove)show.w=setTimeout(function(){if(window.JCCore&&shown===i)JCCore.warm(t.path);},500); /* 직접 고른 문장에 머물면 그 화면을 미리 받아 둔다 */
   $('nav').style.setProperty('--acc','var(--'+t.color.replace('c','a')+')');
   $('drum').setAttribute('aria-valuenow',i+1);
@@ -897,7 +903,28 @@ function paintSeen(){
   if(shown>=0)$('sayStamp').hidden=v.indexOf(TOOLS[shown].id)<0;
   dotEls.forEach(function(b,k){b.classList.toggle('a-seen',v.indexOf(TOOLS[k].id)>=0);});
 }
-function canRun(){return !deckOn&&!reduce()&&!paused&&!hover&&!drag&&!listOpen&&!document.hidden;}
+function canRun(){return !deckOn&&!reduce()&&!paused&&!hover&&!drag&&!listOpen&&!document.hidden&&hintBase===null;}
+/* ---------- 방치 유도 롤링 (2026-11-19) ----------
+   심전도·레버의 5초 방치 유도를 그리며 롤링도 같은 박자로 딱딱 걸어 갔다가 되감는다.
+   · 시작: 지금 보고 있던 자리(hintBase)를 기억하고 자동 넘김 시계만 멈춘다(hold 없음).
+   · 진행: modes.js가 프레임마다 off(칸)을 준다 → pos = hintBase + off.
+   · 끝: 정확히 hintBase로 돌아와 자동 넘김을 새로 건다(멈추지 않는다). */
+function hintRollBegin(){
+  if(hintBase!==null||spinT||drag||!N)return false;
+  if(raf){cancelAnimationFrame(raf);raf=0;}
+  hintBase=pos;target=pos;lastT=0;
+  clearTimeout(autoT);autoT=0;autoStart=0;
+  $('nav').classList.add('a-hold');
+  return true;
+}
+function hintRollTo(off){if(hintBase===null)return;pos=hintBase+off;layout();}
+function hintRollEnd(){
+  if(hintBase===null)return;
+  pos=hintBase;target=Math.round(hintBase);lastT=0;
+  hintBase=null;
+  shown=-1;layout();                     /* 제자리로 돌아온 뒤 강조색·낭독기·방문 표시를 한 번에 맞춘다 */
+  restartFill();schedule();
+}
 function restartFill(){var n=$('nav');n.classList.remove('a-run');void n.offsetWidth;if(!reduce()&&!paused)n.classList.add('a-run');}
 function schedule(){
   clearTimeout(autoT);autoT=0;var n=$('nav'),now=performance.now();
@@ -908,7 +935,10 @@ function schedule(){
   autoStart=now;autoT=setTimeout(function(){autoStart=0;remain=INTERVAL;step(1,true);},remain);
 }
 function kick(){if(!raf)raf=requestAnimationFrame(frame);}
-function hold(){userMove=true;remain=INTERVAL;autoStart=0;holdUntil=performance.now()+IDLE;restartFill();schedule();}
+function hold(){
+  if(hintBase!==null){hintRollEnd();}          /* 방치 유도 중에 손이 닿으면 그 자리에서 넘겨받는다 */
+  userMove=true;remain=INTERVAL;autoStart=0;holdUntil=performance.now()+IDLE;restartFill();schedule();
+}
 function step(k,auto){
   if(!auto)hold();else userMove=false;
   target=Math.round(target)+k;if(reduce()){pos=target;layout();}else kick();
@@ -1039,6 +1069,7 @@ function applyMode(m){
   try{localStorage.setItem('jc-mode',m);}catch(e){}
   if(m==='all')root.removeAttribute('data-jc-mode');else root.setAttribute('data-jc-mode',m);
   deckOn=(m!=='all');
+  hintRollEnd();
   $('stage').hidden=deckOn;
   if(window.JCDECK){if(deckOn)window.JCDECK.show(m);else window.JCDECK.hide();}
   if(deckOn){clearTimeout(autoT);$('nav').classList.add('a-hold');
@@ -1072,6 +1103,15 @@ window.JC_NAV={
   getMode:function(){return mode;},
   applyMode:applyMode,
   spin:spin,
+  hintRollBegin:hintRollBegin,
+  hintRollTo:hintRollTo,
+  hintRollEnd:hintRollEnd,
+  hintActive:function(){return hintBase!==null;},
+  index:function(){return mod(Math.round(pos),N);},
+  count:function(){return N;},
+  position:function(){return pos;},
+  atRest:function(){return hintBase===null&&!spinT&&!raf;},
+  holdClass:function(){return $('nav').classList.contains('a-hold');},
   counts:function(){
     function n(m){return ALL.filter(function(t){return t.mode===m;}).length;}
     return {all:ALL.length,seed:n('seed'),match:n('match')};

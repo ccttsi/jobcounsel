@@ -86,21 +86,9 @@
 .a-ecg-bob{position:absolute;inset:0;will-change:transform}
 .a-ecg-cv{position:absolute;left:0;top:0;width:168px;height:34px;display:block;
   opacity:1;transition:opacity .22s linear}
-.a-ecg-morph{position:absolute;left:50%;top:50%;width:44px;height:32px;margin:-16px 0 0 -22px;opacity:0}
-/* 방치 유도(2분마다) — 3.8초 = 앞 예고 0.9s + 모핑 2.0s(기호 4개 × 0.5s) + 뒤 예고 0.9s.
-   파형은 opacity만 잃고 위상은 그대로 흐르므로, 돌아오면 이어지던 자리에서 다시 그려진다. */
-/* 앞·뒤 예고(0~0.9s·2.9~3.8s)에는 파형이 살아 있고, 가운데 모핑 2초에만 비켜 준다 */
-.a-ecgrow[data-st="hint"] .a-ecg-cv{animation:a-ecg-cv-hint 3.8s linear both}
-@keyframes a-ecg-cv-hint{0%,23%{opacity:1}26%,76%{opacity:0}79%,100%{opacity:1}}
+/* 방치 유도(2분마다 짝수분 00초, 5.0초) — 파동과 한붓그리기 모양은 **캔버스 한 장**이 그린다.
+   0.7초 물결 → 0.9초 × 4모양(3.6초) → 0.7초 복귀. 이 5초 동안 DOM·SVG는 한 번도 바뀌지 않는다. */
 .a-ecgrow[data-st="hint"] .a-ecg-base{opacity:0}
-.a-ecgrow[data-st="hint"] .a-ecg-bob{animation:a-ecg-wob .9s ease-in-out both,a-ecg-wob .9s ease-in-out 2.9s}
-@keyframes a-ecg-wob{
-  0%,100%{transform:translate3d(0,0,0)}
-  25%{transform:translate3d(0,-1.8px,0)}
-  50%{transform:translate3d(0,0,0)}
-  75%{transform:translate3d(0,1.8px,0)}}
-.a-ecgrow[data-st="hint"] .a-ecg-morph{animation:a-ecg-morph-hint 3.8s linear both}
-@keyframes a-ecg-morph-hint{0%,23%{opacity:0}26%,76%{opacity:1}79%,100%{opacity:0}}
 
 /* ============ 3. 무대(오버레이) · 글래스 ============
  * 「네온 테두리 상자」를 버리고 자료실의 인쇄·아카이브 톤으로 다시 지은 무대.
