@@ -43,11 +43,22 @@
     knownDates = Object.keys(seen).sort().reverse();
     return knownDates;
   }
-  function picker(d) {
-    var dates = archiveList(d); if (dates.length < 2) return '';
-    return '<select id="dateSel" aria-label="지난 호 고르기">' + dates.map(function (x) {
-      return '<option value="' + esc(x) + '"' + (x === d.date ? ' selected' : '') + '>' + esc(x) + (x === latestDate ? ' (최신)' : '') + '</option>';
-    }).join('') + '</select>';
+  var WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
+  function wd(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || '')); return m ? WEEKDAY[new Date(+m[1], +m[2] - 1, +m[3]).getDay()] : ''; }
+  function fmtDate(s) { return String(s || '').replace(/-/g, '.'); }
+  function calLabel(s) { return fmtDate(s) + ' (' + wd(s) + ')'; }
+  function dateButton(d) {
+    return '<span class="datewrap"><button type="button" class="datebtn" id="dateBtn" aria-haspopup="dialog">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3.5v4M16 3.5v4"/></svg>' +
+      '<span data-cal-label>' + esc(calLabel(d.date)) + '</span>' +
+      '<svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></span>';
+  }
+  var CAL = null;
+  function initCal(d) {
+    var btn = $('dateBtn'); if (!btn || !window.JC_CAL) return;
+    var dates = archiveList(d);
+    CAL = JC_CAL({ button: btn, dates: dates, current: d.date, label: calLabel, onPick: function (x) { goDate(x); } });
+    CAL.setDates(dates, d.date);
   }
 
   /* ---------- 목록 ---------- */
@@ -72,8 +83,8 @@
     var dropped = S.dropped + ((d.excluded || {}).count || 0);
     var nOn = ['kw', 'topic', 'src', 'issue'].filter(function (k) { return S[k]; }).length;
 
-    var pk = picker(d);
-    var h = '<header class="mast"><h1>오늘의 원문</h1><div class="mt"><span class="num">' + (pk ? '' : esc(d.date) + ' · ') + '허용 자료 ' + total + '건' + (dropped ? ' · 라이선스로 뺀 ' + dropped + '건' : '') + '</span>' + pk + '</div></header>';
+    var h = '<header class="mast"><div class="mast-rule"></div><div class="mast-meta"><span class="l"><span class="num dateonly">' + esc(calLabel(d.date)) + '</span><span class="sep">·</span><span>허용 자료 ' + total + '건' + (dropped ? ' · 라이선스로 뺀 ' + dropped + '건' : '') + '</span></span>' + dateButton(d) + '</div>' +
+      '<h1 class="nameplate">오늘의 원문<small>오늘의 브리핑 · 원문 자료실</small></h1><div class="mast-double"></div></header>';
     if (d.data_status && d.data_status !== 'ok') h += '<p class="status" role="status"><b>' + (d.data_status === 'fallback' ? '오늘 자 갱신 실패' : '일부 자료 누락') + '</b> ' + esc(d.data_status_note || '') + '</p>';
     if (notice) h += '<p class="status" role="status">' + esc(notice) + '</p>';
 
@@ -82,7 +93,7 @@
     }).join('') + '</nav>';
 
     if (!total && !arr(d.archive_dates).length) {
-      main.innerHTML = '<header class="mast"><h1>오늘의 원문</h1><div class="mt">' + picker(d) + '</div></header><p class="empty"><b>첫 호를 준비하고 있습니다.</b> 원문 재게시와 번역이 허용된 자료가 모이면 이곳에 매일 아침 올라옵니다. 오늘의 요약은 <a href="../">오늘의 브리핑</a>에서 볼 수 있습니다.</p>';
+      main.innerHTML = '<header class="mast"><div class="mast-rule"></div><div class="mast-meta"><span class="l"><span class="num">' + esc(calLabel(d.date)) + '</span></span>' + dateButton(d) + '</div><h1 class="nameplate">오늘의 원문<small>오늘의 브리핑 · 원문 자료실</small></h1><div class="mast-double"></div></header><p class="empty"><b>첫 호를 준비하고 있습니다.</b> 원문 재게시와 번역이 허용된 자료가 모이면 이곳에 매일 아침 올라옵니다. 오늘의 요약은 <a href="../">오늘의 브리핑</a>에서 볼 수 있습니다.</p>';
       bindPicker();
       return;
     }
@@ -125,11 +136,7 @@
       '<p class="why num">갱신 ' + esc(String(d.updated_at || '').replace('T', ' ').slice(0, 16)) + ' · 스키마 ' + esc(d.schema_version) + '</p>';
 
     main.innerHTML = h;
-    bindPicker();
-  }
-  function bindPicker() {
-    var sel = $('dateSel');
-    if (sel) sel.addEventListener('change', function () { goDate(sel.value); });
+    initCal(d);
   }
 
   /* ---------- 리더 ---------- */
@@ -219,7 +226,7 @@
     var m = /#a=([A-Za-z0-9-]+)/.exec(location.hash); if (m) openReader(m[1], false);
   }
   function emptyFirst() {
-    main.innerHTML = '<header class="mast"><h1>오늘의 원문</h1></header><p class="empty"><b>첫 호를 준비하고 있습니다.</b> 원문 재게시와 번역이 허용된 자료가 모이면 이곳에 매일 아침 올라옵니다. 오늘의 요약은 <a href="../">오늘의 브리핑</a>에서 볼 수 있습니다.</p>';
+    main.innerHTML = '<header class="mast"><h1 class="nameplate">오늘의 원문<small>오늘의 브리핑 · 원문 자료실</small></h1></header><p class="empty"><b>첫 호를 준비하고 있습니다.</b> 원문 재게시와 번역이 허용된 자료가 모이면 이곳에 매일 아침 올라옵니다. 오늘의 요약은 <a href="../">오늘의 브리핑</a>에서 볼 수 있습니다.</p>';
   }
 
   /* ---------- 날짜 바꾸기: 주소의 ?date= 에 남긴다(최신 호는 주소에서 지운다) ---------- */

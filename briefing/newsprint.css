@@ -1,0 +1,372 @@
+/* 17번 데일리 브리핑 · 전통 신문 지면 층 — 두 화면(/briefing/, /briefing/news/)이 함께 쓴다.
+   바탕·글자·포인트 색은 각 페이지의 토큰(var(--bg)·--ink·--acc …)을 그대로 쓰고, 여기서는 지면 구조만 더한다.
+   모션은 transform·opacity만. 되풀이 애니메이션 없음. */
+
+:root{
+  --serif:"Nanum Myeongjo","Noto Serif KR","AppleMyungjo","Apple SD Gothic Neo",Georgia,"Times New Roman",serif;
+  --rule:#c9bca6;
+  --rule-soft:#ded3c0;
+  --news-acc:var(--acc);
+}
+
+/* ── 제호(머리) ───────────────────────────────────────────── */
+.mast .nameplate{
+  display:block;margin:0;padding:0;
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(30px,8.2vw,44px);line-height:1.16;letter-spacing:.06em;
+  text-align:center;text-wrap:balance;color:var(--ink);
+}
+@media (min-width:900px){.mast .nameplate{font-size:clamp(40px,4.2vw,54px);letter-spacing:.1em}}
+.mast .nameplate small{display:block;margin-top:5px;font-family:var(--sans);font-size:11.5px;font-weight:750;letter-spacing:.2em;color:var(--dim)}
+.mast-rule{height:0;border-top:1px solid var(--ink)}
+.mast-double{height:5px;border-top:3px solid var(--ink);border-bottom:1px solid var(--ink)}
+.mast-meta{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2px 10px;
+  padding:7px 0;font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:.01em;
+}
+.mast-meta .l{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px}
+.mast-meta .sep{color:var(--rule)}
+.mast-meta b{color:var(--ink);font-weight:850}
+.mast-body{padding:12px 0 0;border-top:1px solid var(--line-2)}
+.mast-lead{font-family:var(--serif);font-weight:700;font-size:clamp(22px,5.6vw,30px);line-height:1.32;letter-spacing:-.01em;text-wrap:balance;margin:8px 0 0}
+@media (min-width:900px){.mast-lead{font-size:clamp(26px,2.5vw,36px)}}
+.mast-deck{margin:6px 0 0;font-size:14px;line-height:1.6;color:var(--muted)}
+.mast-kick{
+  display:inline-block;margin:0;font-size:11.5px;font-weight:850;letter-spacing:.16em;color:var(--news-acc);
+}
+.mast-kick::before{content:"";display:inline-block;width:18px;height:1px;background:currentColor;vertical-align:.32em;margin-right:7px}
+
+/* 날짜 단추 + 미니 달력 */
+.datewrap{position:relative;display:inline-flex;flex:none}
+.datebtn{
+  display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;
+  border:1px solid var(--line-2);border-radius:8px;background:var(--panel);
+  font-size:12.5px;font-weight:800;color:var(--ink);white-space:nowrap;
+}
+.datebtn svg{width:15px;height:15px;color:var(--news-acc)}
+.datebtn .cv{transition:transform .2s cubic-bezier(.2,.9,.3,1)}
+.datebtn[aria-expanded="true"] .cv{transform:rotate(180deg)}
+.cal{
+  position:absolute;top:calc(100% + 6px);right:0;z-index:75;width:min(316px,calc(100vw - 28px));
+  padding:10px 12px 8px;background:var(--panel);border:1px solid var(--ink);border-radius:8px;
+  box-shadow:0 14px 34px -20px rgba(40,28,16,.55);
+  opacity:0;transform:translateY(-6px);visibility:hidden;pointer-events:none;
+  transition:opacity .18s,transform .2s cubic-bezier(.2,.9,.3,1),visibility 0s .2s;
+}
+.cal.open{opacity:1;transform:none;visibility:visible;pointer-events:auto;transition:opacity .18s,transform .2s cubic-bezier(.2,.9,.3,1),visibility 0s}
+.cal-hd{display:flex;align-items:center;justify-content:space-between;gap:4px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.cal-hd b{font-family:var(--serif);font-size:16px;font-weight:700;letter-spacing:.02em}
+.cal-mv{width:44px;height:44px;border-radius:8px;display:grid;place-items:center;font-size:20px;color:var(--ink);border:1px solid transparent}
+.cal-mv:hover{border-color:var(--line-2)}
+.cal-mv[disabled]{opacity:.28;cursor:default}
+.cal-wd{display:grid;grid-template-columns:repeat(7,1fr);margin:4px 0 2px;text-align:center;font-size:11px;font-weight:800;color:var(--dim)}
+.cal-wd span:first-child{color:var(--acc)}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.cal-d{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  width:100%;height:42px;border-radius:6px;font-size:13px;font-weight:750;font-variant-numeric:tabular-nums;color:var(--ink);
+}
+.cal-d[disabled]{color:var(--dim);opacity:.42;cursor:default}
+.cal-d:not([disabled]):hover{background:var(--soft)}
+.cal-d[aria-current="true"]{background:var(--ink);color:var(--bg);font-weight:850}
+.cal-d .dot{position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--news-acc)}
+.cal-d[aria-current="true"] .dot{background:var(--bg)}
+.cal-ft{margin-top:6px;padding-top:6px;border-top:1px solid var(--rule-soft);font-size:11.5px;color:var(--dim);line-height:1.45}
+.cal-ft i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--news-acc);vertical-align:.1em;margin-right:4px}
+
+/* ── 지면 머리글(제호 아래) ───────────────────────────────── */
+.top{display:block}
+.mast{padding:0;border:0}
+.mast .mast-top,.mast .mt{border:0}
+.mast .mast-deck{display:block}
+.mast-band{margin-top:7px}
+.hmw{margin-top:12px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin:22px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--ink)}
+.section-head h2{font-family:var(--serif);font-size:19px;font-weight:700;letter-spacing:-.01em;margin:0}
+.section-head small{font-size:12px;color:var(--dim)}
+
+/* ── 카드: 지면 한 장 ─────────────────────────────────────── */
+.card{border-radius:0;border:0;border-top:1px solid var(--rule);background:transparent;box-shadow:none;padding:14px 0 12px}
+.card:first-child{border-top:0}
+@media (min-width:900px){.card{padding:16px 0 14px}}
+.card h3{font-family:var(--serif);font-weight:700;font-size:clamp(20px,4.6vw,23px);line-height:1.38;letter-spacing:-.015em}
+@media (min-width:900px){.card h3{font-size:25px}}
+.card .kicker{font-size:13.5px;color:var(--muted);padding-bottom:6px}
+.card-k{font-size:11.5px;letter-spacing:.08em;font-weight:850;color:var(--news-acc)}
+.card-k .no{color:var(--dim);letter-spacing:.06em}
+.card-top{border-bottom:1px solid var(--rule-soft);padding-bottom:10px}
+figure.ch{border:0;border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);border-radius:0;padding:6px 0 2px;background:transparent}
+.kn li{border-radius:3px}
+.q{border-left-width:2px;border-radius:0;background:transparent;padding:2px 0 2px 12px}
+.q b{letter-spacing:.08em}
+.card-f{border-top:1px solid var(--rule-soft);margin-top:10px;padding-top:6px}
+
+/* 3단: 인쇄 지면처럼 칼럼 구분선 */
+ol.st{gap:0;border-top:1px solid var(--rule-soft)}
+@media (min-width:1000px){
+  ol.st{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;padding-top:0;border-top:1px solid var(--rule-soft)}
+  ol.st li{padding:10px 18px 0;border-left:1px solid var(--rule-soft)}
+  ol.st li:first-child{padding-left:0;border-left:0}
+  ol.st li::before{top:12px}
+  ol.st b{top:14px}
+}
+ol.st li{font-size:15px;line-height:1.78}
+ol.st b{letter-spacing:.08em;color:var(--dim)}
+ol.st li:last-child b{color:var(--news-acc)}
+ol.st li:last-child{font-weight:500}
+
+/* 배지: 잉크 테두리 소인 */
+.bd{border-radius:2px;letter-spacing:.02em}
+.bd.A{background:none;border:1px solid var(--ta);color:var(--ta)}
+.bd.B{background:none;border:1px solid var(--tb);color:var(--tb)}
+.bd.chk{border:1px solid var(--warn);background:none}
+
+/* 핵심 수치: 신문 표 꼴 */
+.hm{gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.hm li{border-radius:0;border:0;border-left:1px solid var(--rule-soft);background:transparent;padding:9px 10px}
+.hm li:first-child{border-left:0}
+.hm .vl{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+.hm .lb{letter-spacing:.01em}
+
+/* 탭: 지면 띠 */
+.tabs{border-bottom:1px solid var(--rule)}
+.tab{font-family:var(--serif);font-weight:700;letter-spacing:0;font-size:16px}
+.tab::after{background:var(--ink);height:2px}
+.idx button{border-radius:4px}
+@media (min-width:1100px){.idx button[aria-current="true"]{box-shadow:inset 2px 0 0 var(--ink),0 0 0 1px var(--rule-soft);background:transparent}}
+
+/* ── 체인(연결고리) 단추 ──────────────────────────────────── */
+.chain{
+  display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;margin-right:2px;
+  border:1px solid var(--line-2);border-radius:8px;background:var(--panel);
+  font-size:12.5px;font-weight:800;color:var(--muted);
+}
+.chain svg{width:17px;height:17px;color:var(--news-acc)}
+.chain .n{font-variant-numeric:tabular-nums;color:var(--dim);font-weight:750}
+.chain[aria-expanded="true"]{border-color:var(--ink);color:var(--ink)}
+
+/* ── 체인 시트 ────────────────────────────────────────────── */
+.cn-sheet{position:fixed;inset:0;z-index:82;display:flex;align-items:flex-end;justify-content:center;background:rgba(22,17,12,.34);opacity:0;visibility:hidden;transition:opacity .2s,visibility 0s .24s}
+.cn-sheet.open{opacity:1;visibility:visible;transition:opacity .2s,visibility 0s}
+.cn-in{
+  width:100%;max-width:1120px;max-height:82vh;display:flex;flex-direction:column;
+  background:var(--panel);border:1px solid var(--ink);border-radius:10px 10px 0 0;
+  transform:translateY(22px);transition:transform .24s cubic-bezier(.2,.9,.3,1);
+  padding:0 0 env(safe-area-inset-bottom);
+}
+.cn-sheet.open .cn-in{transform:none}
+@media (min-width:900px){.cn-sheet{align-items:center}.cn-in{max-height:80vh;border-radius:10px;transform:translateY(10px)}}
+.cn-top{display:flex;align-items:flex-start;gap:10px;padding:12px 14px 8px;border-bottom:1px solid var(--ink)}
+.cn-tt{flex:1;min-width:0}
+.cn-tt b{display:block;font-family:var(--serif);font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.3}
+.cn-tt small{display:block;margin-top:2px;font-size:12px;color:var(--dim)}
+.cn-x{flex:none;min-height:44px;min-width:44px;padding:0 10px;border:1px solid var(--line-2);border-radius:8px;font-weight:800;font-size:13px}
+.cn-tabs{display:flex;gap:0;padding:0 14px;border-bottom:1px solid var(--rule-soft)}
+.cn-tab{position:relative;flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:48px;font-size:13.5px;font-weight:800;color:var(--muted)}
+.cn-tab svg{width:17px;height:17px}
+.cn-tab[aria-selected="true"]{color:var(--ink)}
+.cn-tab::after{content:"";position:absolute;left:14%;right:14%;bottom:-1px;height:2px;background:var(--ink);transform:scaleX(0);transition:transform .22s cubic-bezier(.2,.9,.3,1)}
+.cn-tab[aria-selected="true"]::after{transform:scaleX(1)}
+.cn-body{flex:1;min-height:0;overflow:auto;padding:12px 14px 16px;-webkit-overflow-scrolling:touch}
+.cn-note{margin:0 0 10px;font-size:12.5px;color:var(--dim);line-height:1.55}
+
+/* 시간순: 세로 타임라인 */
+.tl{list-style:none;margin:0;padding:0 0 0 2px}
+.tl li{position:relative;display:grid;grid-template-columns:62px minmax(0,1fr);gap:0 10px;padding:0 0 14px}
+.tl li::before{content:"";position:absolute;left:71px;top:16px;bottom:-2px;width:1px;background:var(--rule-soft)}
+.tl li:last-child::before{display:none}
+.tl .dt{font-family:var(--serif);font-size:13px;font-weight:700;color:var(--ink);padding-top:1px;font-variant-numeric:tabular-nums}
+.tl .dt small{display:block;font-family:var(--sans);font-size:10.5px;font-weight:700;color:var(--dim);letter-spacing:.04em}
+.tl .node{position:relative;padding-left:16px}
+.tl .node::before{content:"";position:absolute;left:0;top:6px;width:7px;height:7px;border-radius:50%;border:1.5px solid var(--ink);background:var(--panel)}
+.tl li.now .node::before{background:var(--news-acc);border-color:var(--news-acc)}
+.tl .tt{display:block;font-family:var(--serif);font-size:15px;font-weight:700;line-height:1.45;color:var(--ink)}
+.tl .mt{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:center;margin-top:3px;font-size:11.5px;color:var(--dim)}
+.tl .rg{font-size:10.5px;font-weight:850;letter-spacing:.06em;padding:0 4px;border:1px solid currentColor;border-radius:2px}
+.tl .rg.gl{color:var(--ta)}.tl .rg.kr{color:var(--acc)}
+.tl .link{display:inline-flex;align-items:center;min-height:44px;font-size:12px;font-weight:800;color:var(--muted)}
+
+/* 글로벌: 국내 | 해외 대비 */
+.gv{display:grid;gap:0}
+@media (min-width:760px){.gv{grid-template-columns:1fr 1fr;gap:0 22px}}
+.gv-c{min-width:0;padding-bottom:8px}
+.gv-c+.gv-c{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-soft)}
+@media (min-width:760px){.gv-c+.gv-c{margin-top:0;padding-top:0;border-top:0;border-left:1px solid var(--rule-soft);padding-left:22px}}
+.gv-h{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin:0 0 6px;padding-bottom:4px;border-bottom:2px solid var(--ink)}
+.gv-h b{font-family:var(--serif);font-size:16px;font-weight:700}
+.gv-h span{font-size:11.5px;font-weight:800;color:var(--dim);font-variant-numeric:tabular-nums}
+.gv-l{list-style:none;margin:0;padding:0}
+.gv-l li{padding:7px 0;border-bottom:1px solid var(--rule-soft)}
+.gv-l li:last-child{border-bottom:0}
+.gv-l .tt{display:block;font-size:14px;font-weight:750;line-height:1.45}
+.gv-l .mt{display:flex;flex-wrap:wrap;gap:2px 8px;margin-top:2px;font-size:11.5px;color:var(--dim)}
+.gv-l a{display:inline-flex;align-items:center;min-height:44px;font-size:12px;font-weight:800;color:var(--muted)}
+.gv-empty{margin:0;padding:10px 0;font-size:12.5px;color:var(--dim);line-height:1.55}
+
+@media (prefers-reduced-motion:reduce){.cal,.cn-sheet,.cn-in,.cn-tab::after,.datebtn .cv{transition:none!important}}
+html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html[data-jc-imm] .cn-tab::after{transition:none!important}
+
+/* ── 17-1 원문 지면 ───────────────────────────────────────── */
+.mast .datebtn span{font-size:12.5px;font-weight:800;color:var(--ink)}
+.heads .head{border-radius:0;border:0;border-top:1px solid var(--rule);box-shadow:none;background:transparent;padding:12px 0}
+.heads .head:last-child{border-bottom:1px solid var(--rule)}
+.head h3{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+.feed .t{font-family:var(--serif);font-weight:700;font-size:16px}
+.sh h2{font-family:var(--serif);font-weight:700}
+.kw button{font-family:var(--serif);font-weight:700}
+.rd-h{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+.rd-body{font-family:var(--serif);font-size:17.5px}
+.lic li{border-bottom:1px solid var(--rule-soft)}
+
+/* ── 지면 비례: 큰 화면은 제호 아래를 좌(머리기사)·우(오늘의 숫자)로, 기사는 본문·3단 2칸 ── */
+.mast-body{display:block}
+@media (min-width:1100px){
+  .mast-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:0 26px;align-items:start}
+  .mast .leadwrap{min-width:0;padding-right:22px;border-right:1px solid var(--rule-soft)}
+  .hmw{margin-top:2px}
+  .hmw .section-head{margin:0 0 6px}
+  .hm .vl{font-size:21px}
+}
+@media (min-width:1100px){
+  .mast .nameplate{font-size:clamp(38px,3.6vw,46px)}
+  .mast-meta{padding:5px 0}
+  .card-top{gap:8px}
+  figure.ch svg{max-height:148px}
+  .card-f{padding-top:5px;margin-top:8px}
+}
+@media (max-width:599px){
+  .mast .nameplate{font-size:27px;letter-spacing:.04em}
+  .mast .nameplate small{font-size:10.5px;letter-spacing:.16em;margin-top:3px}
+  .mast-meta{padding:5px 0;font-size:12px}
+  .mast-body{padding-top:9px}
+  .mast-lead{font-size:21px;line-height:1.3;margin-top:6px}
+  .mast-deck{font-size:13px;margin-top:4px}
+  .hmw{margin-top:8px}
+  .hmw .section-head{margin:0 0 6px;padding-bottom:4px}
+  .hmw .section-head h2{font-size:16px}
+  .hm li{padding:7px 8px}
+  .hm .vl{font-size:19px}
+  .hm svg{height:14px;margin-top:1px}
+  .hm .pd{font-size:10.5px}
+  .hm .ft{padding-top:2px}
+  .card-f{margin-top:8px;padding-top:5px;row-gap:2px}
+  .card{padding:11px 0 9px}
+  figure.ch{padding:4px 0 0}
+  .chain{padding:0 8px}
+}
+
+/* ── 지면 밀도: 수치 표·출처 줄을 인쇄 지면처럼 아껴 쓴다 ── */
+.hm li{gap:0}
+.hm .lb{font-size:11.5px;line-height:1.3}
+.hm .vl{font-size:19px;line-height:1.15}
+.hm .ar{font-size:11.5px}
+.hm .pd{font-size:10.5px;line-height:1.35}
+.hm svg{height:15px;margin-top:1px}
+.hm .ft{font-size:10.5px;gap:3px;padding-top:2px}
+.src{font-size:12px;line-height:1.45}
+.src a{font-size:12px}
+.eds{font-size:11px}
+.card .kicker{font-size:13px}
+.kn li{font-size:12px;padding:2px 8px}
+@media (min-width:1000px){
+  .hm .lb{font-size:12px}
+  .hm .vl{font-size:22px}
+  .hm li{padding:8px 10px}
+  .card-f{flex-wrap:wrap;gap:4px 8px}
+  .card-f .src{flex:1 1 auto;min-width:0}
+  .card-f .pn{flex:none;margin-left:auto}
+}
+@media (min-width:1100px){
+  .hmw .section-head{margin:0 0 5px;padding-bottom:4px}
+  .hmw .section-head h2{font-size:17px}
+  .hm li{padding:7px 9px}
+}
+
+/* 수치 칸 바닥: 배지·출처를 한 줄로 가둔다(줄바꿈이 칸 높이를 키우던 문제) */
+.hm li{min-width:0}
+.hm .ft{flex-wrap:nowrap;overflow:hidden;white-space:nowrap;gap:4px}
+.hm .ft .bd.ed{display:none}
+.hm .ft>span:not(.bd){display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:10.5px}
+.hm .bd{font-size:10px;padding:0 4px}
+@media (min-width:900px){.mast .nameplate{font-size:clamp(34px,3.2vw,40px);line-height:1.1}}
+
+/* 제호 상자: 글자 줄과 작은 표기를 세로 flex로 붙여 빈 줄을 없앤다 */
+.mast .nameplate{display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.08}
+.mast .nameplate small{line-height:1.25}
+/* 출처 줄: 연결고리·쪽 넘김을 한 줄에 두고 출처 문장은 아래 한 줄로 */
+.card-f{display:flex;align-items:center;gap:4px 8px}
+.card-f .pn{order:2;margin-left:0}
+.card-f .src{order:3;flex:1 1 100%;margin-top:2px}
+.card-f .eds{order:4;flex:1 1 100%}
+@media (min-width:700px){
+  .card-f .src{flex:1 1 auto;margin-top:0}
+  .card-f .eds{flex:0 0 auto}
+}
+@media (max-width:599px){
+  figure.ch svg{max-height:118px}
+  .wrap{padding-bottom:44px}
+  .pv{margin-bottom:2px}
+}
+
+/* prefs.js가 제호에 넣는 소인은 글줄을 밀지 않게 모서리로 */
+.mast .nameplate{position:relative;display:block;padding:0}
+.mast .nameplate .jc-seal{position:absolute;right:2px;bottom:0;width:1.5em;height:.88em;margin:0}
+@media (max-width:599px){
+  .hd{padding:8px 0}
+  .mast-meta .l .num.dateonly{display:none}
+  .tabs{margin:6px 0 6px}
+  .iss{gap:6px}
+  .card{padding:9px 0 8px}
+  .card h3{font-size:21px}
+  .q{font-size:13.5px}
+  .src{font-size:11.5px;line-height:1.4}
+  .news-more,.news-all a{font-size:13px}
+  ol.st li{font-size:14.5px;line-height:1.7}
+}
+
+/* 제호 줄: 큰 화면은 제호 왼쪽·날짜 오른쪽 한 줄, 휴대폰은 날짜가 위 */
+.mast-toprow{display:flex;flex-direction:column-reverse;align-items:center;gap:2px;padding:2px 0}
+@media (min-width:900px){
+  .mast-toprow{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:16px}
+  .mast-toprow .nameplate{text-align:left;align-items:flex-start}
+  .mast-toprow .mast-meta{flex:none;padding:0 0 4px}
+  .mast .nameplate{font-size:clamp(30px,2.7vw,36px)}
+}
+@media (min-width:1100px){
+  figure.ch svg{max-height:130px}
+  .card h3{font-size:23px}
+  ol.st li{font-size:13.5px;line-height:1.62}
+  .card-f .src{font-size:11.5px}
+}
+
+/* 큰 화면 지면 여백은 인쇄물처럼 아낀다 */
+@media (min-width:900px){
+  .wrap{padding-bottom:40px}
+  .tabs{margin:8px 0 8px}
+  .themes{margin-top:12px;padding:6px 10px}
+  .mast-lead{font-size:clamp(24px,2.2vw,31px)}
+  .mast-body{padding-top:10px}
+}
+@media (min-width:1100px){
+  figure.ch svg{max-height:112px}
+  ol.st li{line-height:1.55}
+  .card-f .src{font-size:11px}
+  .card{padding:12px 0 10px}
+  .card h3{font-size:22px}
+}
+
+/* 3단 칸: 번호·이름표가 본문 첫 줄을 덮지 않게 위를 비운다 */
+@media (min-width:1000px){
+  ol.st li{padding:26px 18px 0}
+  ol.st li:first-child{padding-left:0}
+  ol.st li::before{top:2px}
+  ol.st b{top:1px}
+}
+@media (max-width:899px){.mast-meta .sep{display:none}}
+
+/* 어두운 지면: 제호 괘선이 흰 막대처럼 보이지 않게 */
+:root[data-theme="dark"]{--rule:#39404f;--rule-soft:#2a303c;--mast-strong:#3f4859}
+.mast-rule{border-top-color:var(--mast-strong,var(--ink))}
+.mast-double{border-top-color:var(--mast-strong,var(--ink));border-bottom-color:var(--mast-strong,var(--ink))}
+@media (max-width:599px){.mast .nameplate .jc-seal{display:none}}
+@media (min-width:900px){.wrap{padding-bottom:24px}}

@@ -255,6 +255,7 @@ html[data-jc-imm] .th-sheet,html[data-jc-imm] .th-in{transition:none}
 @media (prefers-reduced-motion:reduce){.card,.rr,.tab::after{transition:none}}
 html[data-jc-imm] .card,html[data-jc-imm] .rr,html[data-jc-imm] .tab::after{transition:none}
 </style>
+<link rel="stylesheet" href="./newsprint.css">
 </head>
 <body>
 <div class="wrap">
@@ -272,7 +273,7 @@ html[data-jc-imm] .card,html[data-jc-imm] .rr,html[data-jc-imm] .tab::after{tran
     </button>
     <div class="pv-b" id="pvB" hidden><ul>
       <li><b>카드마다 출처와 라이선스를 붙였습니다.</b> 파란 A는 재가공이 허락된 공공·공개 자료, 회색 B는 언론 기사·공공누리 미표시 자료로 사실·수치만 새로 쓰고 원문 링크를 답니다.</li>
-      <li><b>매일 아침 새 호로 바뀝니다.</b> 지난 호는 제호 옆 날짜에서 고릅니다.</li>
+      <li><b>매일 아침 새 지면으로 바뀝니다.</b> 지난 지면은 제호 옆 날짜 단추(미니 달력)에서 고릅니다.</li>
       <li><b>예측이나 투자·법률 조언이 아닙니다.</b> 상담 준비를 돕는 요약이며, 정확한 내용은 원문이 기준입니다.</li>
       <li><b>이 화면 밖으로 내보내는 기능은 두지 않았습니다.</b> 읽고 넘기는 것만 됩니다.</li>
     </ul></div>
@@ -280,6 +281,8 @@ html[data-jc-imm] .card,html[data-jc-imm] .rr,html[data-jc-imm] .tab::after{tran
 
   <main id="main"><p class="loading">오늘 호를 불러오고 있습니다…</p></main>
 </div>
+<script src="./ui-cal.js" defer></script>
+<script src="./ui-chain.js" defer></script>
 <script src="./app.js" defer></script>
 <script src="../assets/marker.js" defer></script>
 <script src="../assets/prefs.js" defer></script>

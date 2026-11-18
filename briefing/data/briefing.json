@@ -1,8 +1,7 @@
 {
- "schema_version": "1.2.0",
+ "schema_version": "1.3.0",
  "updated_at": "2026-11-18T07:10:24+09:00",
  "edition": {
-  "no": 6,
   "date": "2026-11-18",
   "weekday": "수",
   "title": "AI 감독은 시험장까지, 일자리 질문은 국민에게",
@@ -210,7 +209,10 @@
    },
    "edition": "kr-0700",
    "updated_at": "2026-11-18T07:10:24+09:00",
-   "run_id": "br-20261118-0710"
+   "run_id": "br-20261118-0710",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "kr"
   },
   {
    "id": "c02",
@@ -300,7 +302,10 @@
    },
    "edition": "kr-0700",
    "updated_at": "2026-11-18T07:10:24+09:00",
-   "run_id": "br-20261118-0710"
+   "run_id": "br-20261118-0710",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr"
   },
   {
    "id": "c05",
@@ -390,7 +395,10 @@
    },
    "edition": "kr-0700",
    "updated_at": "2026-11-18T07:10:24+09:00",
-   "run_id": "br-20261118-0710"
+   "run_id": "br-20261118-0710",
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "global"
   },
   {
    "id": "c03",
@@ -488,7 +496,10 @@
      "attribution_text": "출처: ILO Working Paper 183, Davalos·Ernst·Torres (2026), CC BY 4.0. 이 한국어 번역·요약은 ILO가 작성·검토·승인한 공식 번역이 아니며 ILO는 그 내용에 책임지지 않습니다."
     },
     "usage": "회귀계수·지수만 재구성해 한국어로 번역·요약. 원문 문장 복제 없음."
-   }
+   },
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global"
   },
   {
    "id": "c06",
@@ -576,7 +587,10 @@
    },
    "edition": "kr-0700",
    "updated_at": "2026-11-18T07:10:24+09:00",
-   "run_id": "br-20261118-0710"
+   "run_id": "br-20261118-0710",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr"
   },
   {
    "id": "c07",
@@ -666,7 +680,10 @@
    },
    "edition": "kr-0700",
    "updated_at": "2026-11-18T07:10:24+09:00",
-   "run_id": "br-20261118-0710"
+   "run_id": "br-20261118-0710",
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr"
   },
   {
    "id": "c04",
@@ -754,7 +771,10 @@
      "attribution_text": "Esposito, M., & Zhang, L. (2026), AI and the Two Margins of Work, arXiv:2611.17530, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·서론 부분)."
     },
     "usage": "초록·서론의 수치만 재구성해 한국어로 번역·요약. 원문 문장 복제 없음."
-   }
+   },
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global"
   }
  ],
  "radar": {
