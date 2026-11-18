@@ -319,16 +319,17 @@
   }
   function catsFor(sec) {
     var seen = {}, out = [];
-    arr(DATA.archive_index).forEach(function (d) {
-      d.items.forEach(function (it) {
-        if (sec !== 'all' && it.sector !== sec) return;
-        if (seen[it.cat]) return;
-        seen[it.cat] = 1;
-        var c = arr(DATA.categories).filter(function (x) { return x.id === it.cat; })[0];
-        if (c) out.push(c);
-      });
+    arr(DATA.categories).forEach(function (c) {
+      if (!c) return;
+      if (sec !== 'all' && c.sector !== sec) return;
+      if (seen[c.id]) return;
+      seen[c.id] = 1;
+      out.push(c);
     });
-    return out;
+    /* 대분류 순서(1차→4차), 그 안에서는 이름 순 — ‘전체’에서도 흐름이 읽히게 */
+    var ord = {};
+    arr(DATA.sectors).forEach(function (s, i) { ord[s.id] = i; });
+    return out.sort(function (a, b) { return (ord[a.sector] || 0) - (ord[b.sector] || 0) || String(a.name).localeCompare(String(b.name), 'ko'); });
   }
   /* 섹터 → 카테고리 두 단 필터. 카테고리를 고르면 그 안의 기사만 남는다. */
   /* 넥스트 롤 랩 — 기사 흐름에서 뽑은 ‘창직·창업 탐색용 가설’. 확정 직무가 아니다. */
