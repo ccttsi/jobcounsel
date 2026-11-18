@@ -384,7 +384,7 @@
   }
   function openCalendar() {
     function draw() {
-      openSheet('<p class="note">지면은 <b>2026년 11월</b>부터 시작하고, 달은 오늘까지 자동으로 늘어납니다.</p><div class="calwrap">' + calendar() + '</div>', '지면 달력',
+      openSheet('<p class="note">지면은 <b>2026년 11월</b>부터 볼 수 있습니다.</p><div class="calwrap">' + calendar() + '</div>', '지면 달력',
         function (e) {
           var b = e.target.closest('[data-ym]');
           if (b) { UI.ym += +b.getAttribute('data-ym'); draw(); }
