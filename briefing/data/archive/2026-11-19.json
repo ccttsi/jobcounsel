@@ -13,60 +13,6 @@
  "headline_metrics": [
   {
    "id": "hm_1",
-   "label": "취업자",
-   "value": 0,
-   "unit": "",
-   "value_text": "+13.9만",
-   "base_value": null,
-   "base_unit": null,
-   "direction": "up",
-   "period": "2026년 10월",
-   "delta_from": "전년동월",
-   "source_id": "src_mods_emp_202610",
-   "track": "A",
-   "edition": "kr-0700",
-   "updated_at": "2026-11-19T04:40:00+09:00",
-   "run_id": "br-20261119-0440",
-   "spark": null
-  },
-  {
-   "id": "hm_2",
-   "label": "청년 취업자",
-   "value": 0,
-   "unit": "",
-   "value_text": "-19.6만",
-   "base_value": null,
-   "base_unit": null,
-   "direction": "down",
-   "period": "2026년 10월",
-   "delta_from": "48개월째",
-   "source_id": "src_mods_emp_202610",
-   "track": "A",
-   "edition": "kr-0700",
-   "updated_at": "2026-11-19T04:40:00+09:00",
-   "run_id": "br-20261119-0440",
-   "spark": null
-  },
-  {
-   "id": "hm_3",
-   "label": "청년 고용률",
-   "value": 0,
-   "unit": "",
-   "value_text": "42.9%",
-   "base_value": null,
-   "base_unit": null,
-   "direction": "up",
-   "period": "2026년 10월",
-   "delta_from": "-1.7%p",
-   "source_id": "src_mods_emp_202610",
-   "track": "A",
-   "edition": "kr-0700",
-   "updated_at": "2026-11-19T04:40:00+09:00",
-   "run_id": "br-20261119-0440",
-   "spark": null
-  },
-  {
-   "id": "hm_4",
    "label": "업무용 AI 활용률",
    "value": 0,
    "unit": "",
@@ -82,98 +28,66 @@
    "updated_at": "2026-11-19T04:40:00+09:00",
    "run_id": "br-20261119-0440",
    "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "주당 절감",
+   "value": 0,
+   "unit": "",
+   "value_text": "3.7시간",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "주 40시간 기준",
+   "delta_from": "1.5→3.7",
+   "source_id": "src_yna_bok_ai_20261117",
+   "track": "B",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-19T04:40:00+09:00",
+   "run_id": "br-20261119-0440",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "절감 시간 재투입",
+   "value": 0,
+   "unit": "",
+   "value_text": "63.1%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "-",
+   "source_id": "src_yna_bok_ai_20261117",
+   "track": "B",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-19T04:40:00+09:00",
+   "run_id": "br-20261119-0440",
+   "spark": null
+  },
+  {
+   "id": "hm_4",
+   "label": "취업자",
+   "value": 0,
+   "unit": "",
+   "value_text": "+13.9만",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 10월",
+   "delta_from": "전년동월",
+   "source_id": "src_mods_emp_202610",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-19T04:40:00+09:00",
+   "run_id": "br-20261119-0440",
+   "spark": null
   }
  ],
  "cards": [
   {
    "id": "c01",
    "order": 1,
-   "track": "A",
-   "category": "국내 고용지표",
-   "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
-   "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
-   "three_step": {
-    "what": "10월 취업자가 1년 전보다 13만9천 명 늘며 넉 달째 두 자릿수 증가를 이어갔다. 그러나 청년 취업자는 19만6천 명 줄어 48개월째 감소했다.",
-    "evidence": "취업자 2,917만9천명(+13.9만). 청년(15~29세) -19.6만·고용률 42.9%(-1.7%p). 15~64세 고용률 70.4%(+0.3%p), 실업률 2.0%, 실업자 60만2천명(-8.5%). 20대 -20.3만, 60세 이상 +19.6만(2026년 10월).",
-    "implication": "청년 내담자에게 '전체 취업자는 늘었다'는 말은 위로가 되지 않는다. 연령·업종별로 어디가 줄었는지 함께 보여 주고, 늘어난 60세 이상·보건복지 업종을 대안으로 검토하라."
-   },
-   "key_numbers": [
-    {
-     "label": "취업자",
-     "value": "+13.9만",
-     "delta": "전년동월",
-     "period": "2026년 10월"
-    },
-    {
-     "label": "청년 취업자",
-     "value": "-19.6만",
-     "delta": "48개월째",
-     "period": "2026년 10월"
-    },
-    {
-     "label": "청년 고용률",
-     "value": "42.9%",
-     "delta": "-1.7%p",
-     "period": "2026년 10월"
-    }
-   ],
-   "chart_data": {
-    "type": "diverging_bar",
-    "unit": "만명",
-    "labels": [
-     "청년",
-     "60세 이상"
-    ],
-    "series": [
-     {
-      "name": "전년동월비",
-      "values": [
-       -19.6,
-       19.6
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": 0,
-    "note": "2026년 10월 고용동향. 청년=15~29세.",
-    "source_id": "src_mods_emp_202610"
-   },
-   "tags": [
-    "청년",
-    "고용동향"
-   ],
-   "theme_key": "th-youth-employment",
-   "theme_label": "청년 고용",
-   "region": "kr",
-   "edition": "kr-0700",
-   "updated_at": "2026-11-19T04:40:00+09:00",
-   "run_id": "br-20261119-0440",
-   "source": {
-    "source_id": "src_mods_emp_202610",
-    "source_name": "국가데이터처",
-    "source_title": "2026년 10월 고용동향",
-    "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
-    "published_at": "2026-11-11",
-    "license": {
-     "name": "공공누리 제1유형(출처표시)",
-     "type": "KOGL-1",
-     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
-     "scope": "텍스트 한정(사진·이미지 제외)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "정책브리핑 해당 페이지 하단 고지 확인"
-    },
-    "usage": "라이선스가 허락한 범위에서 수치를 도표화."
-   },
-   "issue_id": "iss-emp-202610",
-   "counselor_question": "같은 업종에서도 연령대에 따라 채용이 갈립니다. 내 경력에서 강조할 부분은 무엇인가요?"
-  },
-  {
-   "id": "c02",
-   "order": 2,
    "track": "B",
    "category": "AI·직무",
    "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
@@ -256,6 +170,92 @@
    },
    "issue_id": "iss-bok-ai-productivity",
    "counselor_question": "AI로 아낀 시간에 무엇을 했나요? 그 일이 경력서에 남는 일인가요?"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용지표",
+   "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
+   "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
+   "three_step": {
+    "what": "10월 취업자가 1년 전보다 13만9천 명 늘며 넉 달째 두 자릿수 증가를 이어갔다. 그러나 청년 취업자는 19만6천 명 줄어 48개월째 감소했다.",
+    "evidence": "취업자 2,917만9천명(+13.9만). 청년(15~29세) -19.6만·고용률 42.9%(-1.7%p). 15~64세 고용률 70.4%(+0.3%p), 실업률 2.0%, 실업자 60만2천명(-8.5%). 20대 -20.3만, 60세 이상 +19.6만(2026년 10월).",
+    "implication": "청년 내담자에게 '전체 취업자는 늘었다'는 말은 위로가 되지 않는다. 연령·업종별로 어디가 줄었는지 함께 보여 주고, 늘어난 60세 이상·보건복지 업종을 대안으로 검토하라."
+   },
+   "key_numbers": [
+    {
+     "label": "취업자",
+     "value": "+13.9만",
+     "delta": "전년동월",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "청년 취업자",
+     "value": "-19.6만",
+     "delta": "48개월째",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "청년 고용률",
+     "value": "42.9%",
+     "delta": "-1.7%p",
+     "period": "2026년 10월"
+    }
+   ],
+   "chart_data": {
+    "type": "diverging_bar",
+    "unit": "만명",
+    "labels": [
+     "청년",
+     "60세 이상"
+    ],
+    "series": [
+     {
+      "name": "전년동월비",
+      "values": [
+       -19.6,
+       19.6
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "2026년 10월 고용동향. 청년=15~29세.",
+    "source_id": "src_mods_emp_202610"
+   },
+   "tags": [
+    "청년",
+    "고용동향"
+   ],
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-19T04:40:00+09:00",
+   "run_id": "br-20261119-0440",
+   "source": {
+    "source_id": "src_mods_emp_202610",
+    "source_name": "국가데이터처",
+    "source_title": "2026년 10월 고용동향",
+    "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
+    "published_at": "2026-11-11",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 확인"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화."
+   },
+   "issue_id": "iss-emp-202610",
+   "counselor_question": "같은 업종에서도 연령대에 따라 채용이 갈립니다. 내 경력에서 강조할 부분은 무엇인가요?"
   },
   {
    "id": "c03",
@@ -604,7 +604,7 @@
    "run_id": "br-20261118-0710",
    "theme_key": "th-macro-economy",
    "theme_label": "거시경제와 고용",
-   "region": "global"
+   "region": "kr"
   },
   {
    "id": "c07",
@@ -1173,27 +1173,6 @@
  ],
  "sources": [
   {
-   "source_id": "src_mods_emp_202610",
-   "source_name": "국가데이터처",
-   "source_title": "2026년 10월 고용동향",
-   "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
-   "published_at": "2026-11-11",
-   "license": {
-    "name": "공공누리 제1유형(출처표시)",
-    "type": "KOGL-1",
-    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
-    "scope": "텍스트 한정(사진·이미지 제외)",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-19",
-    "evidence": "정책브리핑 해당 페이지 하단 고지 확인"
-   },
-   "usage": "라이선스가 허락한 범위에서 수치를 도표화.",
-   "id": "src_mods_emp_202610"
-  },
-  {
    "source_id": "src_yna_bok_ai_20261117",
    "source_name": "연합뉴스",
    "source_title": "한은 \"AI로 아낀 업무시간 2.4배로…생산성 효과는 제한적\"",
@@ -1213,6 +1192,27 @@
    },
    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
    "id": "src_yna_bok_ai_20261117"
+  },
+  {
+   "source_id": "src_mods_emp_202610",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 10월 고용동향",
+   "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
+   "published_at": "2026-11-11",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 확인"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화.",
+   "id": "src_mods_emp_202610"
   },
   {
    "source_id": "src_sfed_ai_20261117",

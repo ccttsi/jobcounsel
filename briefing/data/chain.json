@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T04:41:24+09:00",
+ "generated_at": "2026-11-19T04:46:15+09:00",
  "schema_version": "1.3.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -99,7 +99,7 @@
      "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
      "kicker": "2026년 3.9% · 2027년 3.3%",
      "category": "국내 고용지표",
-     "region": "global",
+     "region": "kr",
      "source_name": "국제통화기금(IMF)·재정경제부",
      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
      "published_at": "2026-11-17"
@@ -110,7 +110,7 @@
      "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
      "kicker": "2026년 3.9% · 2027년 3.3%",
      "category": "국내 고용지표",
-     "region": "global",
+     "region": "kr",
      "source_name": "국제통화기금(IMF)·재정경제부",
      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
      "published_at": "2026-11-17"
@@ -940,7 +940,7 @@
     },
     {
      "date": "2026-11-19",
-     "card_id": "c01",
+     "card_id": "c02",
      "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
      "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
      "category": "국내 고용지표",
@@ -1088,7 +1088,7 @@
     },
     {
      "date": "2026-11-19",
-     "card_id": "c02",
+     "card_id": "c01",
      "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
      "kicker": "활용률 +14.7%p · 절감률 9.2%",
      "category": "AI·직무",
