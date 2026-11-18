@@ -236,26 +236,39 @@
     arr(DATA.archive_index).forEach(function (d) { d.items.forEach(function (it) { counts[it.sector] = (counts[it.sector] || 0) + 1; total++; }); });
     arr(DAY.items).forEach(function (it) { if (it.market) charts++; });
     var mx = Math.max.apply(null, Object.keys(counts).map(function (k) { return counts[k]; }).concat([1]));
+    var top = arr(DATA.sectors).slice().sort(function (a, b) { return (counts[b.id] || 0) - (counts[a.id] || 0); })[0];
     $('side').innerHTML =
-      '<section class="card"><h4>이 번호</h4><p class="note num">기사 ' + items.length + '건 · 도표 ' + charts + '개 · 직무 ' + items.reduce(function (a, it) { return a + arr(it.jobs && it.jobs.legacy).length + arr(it.jobs && it.jobs.new).length; }, 0) + '개</p><p class="note" style="margin-top:4px">1차부터 4차까지 고르게. 기사마다 도표와 직무 칸이 붙습니다.</p></section>' +
-      '<section class="card"><h4>섹터 분포 · 19일</h4><ul class="bars">' + arr(DATA.sectors).map(function (s) {
+      '<section class="card"><h4>이 번호</h4><p class="note num">기사 ' + items.length + '건 · 도표 ' + charts + '개 · 직무 ' + items.reduce(function (a, it) { return a + arr(it.jobs && it.jobs.legacy).length + arr(it.jobs && it.jobs.new).length; }, 0) + '개</p><p class="note" style="margin-top:4px">날짜마다 기사 수는 다릅니다. 기사마다 부제와 직무 칸이 붙습니다.</p></section>' +
+      '<section class="card"><h4>섹터 분포 · ' + arr(DATA.archive_dates).length + '일</h4><ul class="bars">' + arr(DATA.sectors).map(function (s) {
         var v = counts[s.id] || 0;
-        return '<li><span>' + esc(s.no) + '차</span><span class="tr"><i class="' + (s.no === '4' ? 'a' : '') + '" style="transform:scaleX(' + (v / mx).toFixed(3) + ')"></i></span><b>' + v + '</b></li>';
-      }).join('') + '</ul><p class="note" style="margin-top:6px">기사 ' + total + '건 · 4차 산업 비중이 가장 큽니다.</p></section>' +
+        return '<li><span>' + esc(s.no) + '차</span><span class="tr"><i class="' + (s.no === (top ? top.no : '4') ? 'a' : '') + '" style="transform:scaleX(' + (v / mx).toFixed(3) + ')"></i></span><b>' + v + '</b></li>';
+      }).join('') + '</ul><p class="note" style="margin-top:6px">기사 ' + total + '건 · ' + (top ? esc(top.no) + '차 산업이 가장 많습니다.' : '') + '</p></section>' +
       '<section class="card"><h4>지면 안내</h4><p class="note"><b>도표는 원자료 값을 다시 그린 것입니다.</b> 성장률은 공표된 두 값으로 계산했고, 공표 값이 없으면 비워 두었습니다. <b>직무 칸의 기업은 그 직무를 실제로 운영·채용하는 곳</b>만 적었습니다.</p></section>';
   }
 
   function renderMast() {
     var e = (DAY && DAY.edition) || {};
+    var items = arr(DAY && DAY.items).slice().sort(function (a, b) { return a.order - b.order; });
+    var idx = Math.max(0, Math.min(items.length - 1, UI.item));
+    var it = items[idx] || {};
     $('mDate').textContent = e.date + ' ' + (e.weekday || '');
     $('mRead').textContent = (e.reading_minutes || 4) + '분 읽기';
-    $('mTitle').textContent = e.title || '';
-    $('mCount').textContent = arr(DAY.items).length + '개 기사 · 도표 ' + arr(DAY.items).filter(function (i) { return i.market; }).length + '개';
+    $('mDekNo').textContent = items.length ? pad(idx + 1) : '';
+    /* 제호 아래 한 줄은 그 날의 테마가 아니라 지금 보고 있는 기사의 부제다. */
+    var tx = $('mDek'), sub = it.subtitle || it.dek || it.title || e.title || '';
+    if (tx.textContent !== sub) {
+      tx.textContent = sub;
+      tx.classList.remove('swap'); void tx.offsetWidth; tx.classList.add('swap');
+    }
+    $('mCount').textContent = items.length + '개 기사 · 도표 ' + items.filter(function (i) { return i.market; }).length + '개';
     var b = $('edBtn'); if (b) b.innerHTML = '<b>지난 지면</b> 섹터로 찾기';
   }
 
   function render() {
     if (!DAY) return;
+    var n = arr(DAY.items).length;
+    if (UI.item < 0) UI.item = 0;
+    if (n && UI.item > n - 1) UI.item = n - 1;
     renderMast(); renderFilters(); renderRail(); renderArticle(); renderSide();
     try {
       var q = '?date=' + UI.date + (UI.item ? '#i' + (UI.item + 1) : '');
@@ -539,7 +552,7 @@
     var h = (location.hash || '').replace('#', '');
     var d0 = validDate(want) && arr(d.archive_dates).indexOf(want) >= 0 ? want : (d.edition || {}).date;
     UI.ym = ymOf(d0);
-    var it = /^i[1-3]$/.test(h) ? +h.slice(1) - 1 : 0;
+    var it = /^i([1-9])$/.test(h) ? +h.slice(1) - 1 : 0;
     if (d0 === (d.edition || {}).date) { DAY = d; UI.date = d0; UI.item = it; render(); }
     else loadDay(d0, it);
   }

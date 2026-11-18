@@ -1,11 +1,10 @@
 {
- "schema_version": "1.0.0",
+ "schema_version": "1.1.0",
  "edition": {
   "no": 17,
   "date": "2026-11-17",
   "weekday": "화",
-  "title": "투자 8,000억 달러의 방향",
-  "subtitle": "배터리 투자와 청년 창업 보육, UAM 848억 실증",
+  "title": "배터리 투자 8,000억 달러",
   "reading_minutes": 4,
   "data_status": "ok"
  },
@@ -212,7 +211,8 @@
     ]
    },
    "source_id": "src_iea_batteries2024",
-   "question": "투자가 5배가 되면 사람도 5배 필요하지는 않다. 대신 공정을 자동화하고 상태를 진단하는 쪽으로 인력이 몰린다."
+   "question": "투자가 5배가 되면 사람도 5배 필요하지는 않다. 대신 공정을 자동화하고 상태를 진단하는 쪽으로 인력이 몰린다.",
+   "subtitle": "2023년 1,600억 달러에서 2030년 8,000억 달러, 연평균 25.9%"
   },
   {
    "id": "ei-20261117-2",
@@ -263,7 +263,8 @@
     ]
    },
    "source_id": "src_mafra_smartfarm2026",
-   "question": "농업으로 진로를 바꾸려는 청년에게 ‘교육→단기 임대→장기 임대’의 단계가 있다는 것 자체가 상담의 재료다."
+   "question": "농업으로 진로를 바꾸려는 청년에게 ‘교육→단기 임대→장기 임대’의 단계가 있다는 것 자체가 상담의 재료다.",
+   "subtitle": "누적 1,412명 배출·임대팜 19곳, 2026년에는 208명을 더 뽑는다"
   },
   {
    "id": "ei-20261117-3",
@@ -317,66 +318,13 @@
     ]
    },
    "source_id": "src_molit_uam848",
-   "question": "UAM의 병목은 기체가 아니라 이착륙장과 운항 관리다. 그래서 이 산업의 첫 일자리는 하늘보다 지상에 생긴다."
-  },
-  {
-   "id": "ei-20261117-4",
-   "date": "2026-11-17",
-   "order": 4,
-   "sector": "s1",
-   "cat": "resource",
-   "lead": false,
-   "title": "기후 식량, 10대 유망기술에 든 이유",
-   "kicker": "KISTEP 2026 10대 미래유망기술",
-   "summary": "KISTEP는 기후대응형 식량 생산 기술을 10대 미래유망기술로 선정했다. 새로운 공정과 생물학으로 단백질·지방·영양성분을 생산·전환하는 기술이며 2030~2035년 실현을 전망한다.",
-   "key_numbers": [
-    {
-     "label": "선정",
-     "value": "10대 기술 중 1개",
-     "note": "2026"
-    },
-    {
-     "label": "실현 전망",
-     "value": "2030~2035년",
-     "note": "KISTEP"
-    },
-    {
-     "label": "대상",
-     "value": "단백질·지방·영양",
-     "note": "생산·전환"
-    }
-   ],
-   "market": null,
-   "players": {
-    "domestic": [
-     "CJ제일제당",
-     "농촌진흥청",
-     "KIST",
-     "푸드테크 기업"
-    ],
-    "glob": [
-     "Novo Nordisk",
-     "Perfect Day",
-     "Aleph Farms",
-     "FAO"
-    ]
-   },
-   "jobs": {
-    "legacy": [
-     "j-agri",
-     "j-proc"
-    ],
-    "new": [
-     "j-synbio"
-    ]
-   },
-   "source_id": "src_kistep_10tech",
-   "question": "기후가 바뀌면 재배지도 바뀐다. ‘어디서 무엇을 만들 수 있는가’를 다시 계산하는 사람이 농업의 새 전문가다."
+   "question": "UAM의 병목은 기체가 아니라 이착륙장과 운항 관리다. 그래서 이 산업의 첫 일자리는 하늘보다 지상에 생긴다.",
+   "subtitle": "2027~2029년 848억 원, 2032년 도심 진입을 겨눈 실증"
   },
   {
    "id": "ei-20261117-5",
    "date": "2026-11-17",
-   "order": 5,
+   "order": 4,
    "sector": "s3",
    "cat": "content",
    "lead": false,
@@ -424,7 +372,72 @@
     ]
    },
    "source_id": "src_mcst_content2025",
-   "question": "기술이 비용 구조를 바꾸면 직업 목록도 바뀐다. 촬영장의 엔지니어는 이제 제작진의 일부다."
+   "question": "기술이 비용 구조를 바꾸면 직업 목록도 바뀐다. 촬영장의 엔지니어는 이제 제작진의 일부다.",
+   "subtitle": "LED 월과 실시간 엔진, 로케이션 비용 대신 촬영장에 엔지니어가 들어온다"
+  },
+  {
+   "id": "ei-20261117-6",
+   "date": "2026-11-17",
+   "order": 5,
+   "lead": false,
+   "sector": "s2",
+   "cat": "battery",
+   "title": "배터리 값 90% 내렸다, 1kWh에 140달러",
+   "subtitle": "2010년 1kWh당 1,400달러에서 2023년 140달러 미만, 90%가 빠졌다",
+   "kicker": "IEA Batteries and Secure Energy Transitions — 리튬이온 가격",
+   "summary": "리튬이온 배터리 가격은 2010년 kWh당 1,400달러에서 2023년 140달러 미만으로 90% 떨어졌다. 같은 기간 에너지 부문이 전체 리튬이온 수요에서 차지하는 몫은 50%에서 90% 이상으로 커졌다.",
+   "key_numbers": [
+    {
+     "label": "가격",
+     "value": "1,400 → 140달러",
+     "note": "kWh당, 2010→2023"
+    },
+    {
+     "label": "가격 하락",
+     "value": "90%",
+     "note": "2010년 이후"
+    },
+    {
+     "label": "에너지 부문 수요 비중",
+     "value": "50% → 90%+",
+     "note": "2016→2023"
+    }
+   ],
+   "market": {
+    "label": "리튬이온 배터리 가격",
+    "unit": "달러/kWh",
+    "basis": "2010년·2023년",
+    "chart": "bar",
+    "labels": [
+     "2010",
+     "2023"
+    ],
+    "series": [
+     {
+      "name": "kWh당 가격",
+      "values": [
+       1400,
+       140
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "2023년은 140달러 미만. 13년 동안 90% 하락.",
+    "source_id": "src_iea_batteries2024"
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-plant"
+    ],
+    "new": [
+     "j-bms",
+     "j-battery-recycle"
+    ]
+   },
+   "source_id": "src_iea_batteries2024",
+   "question": "가격이 90% 빠지면 쓰임새가 바뀐다. 원가 계산을 아는 사람이 저장·재사용 사업의 수익을 가른다."
   }
  ],
  "jobs": [
@@ -877,61 +890,6 @@
    ]
   },
   {
-   "id": "j-synbio",
-   "name": "합성생물학 바이오파운드리 운영자",
-   "en": "Synthetic Biology Biofoundry Operator",
-   "sector": "s2",
-   "role": "자동화 장비로 유전자 조작·배양·측정 실험을 대량으로 수행한다. 설계도를 실험으로 바꾸고, 실패한 설계의 원인을 데이터로 남겨 다음 회차를 개선한다.",
-   "ksa": {
-    "k": [
-     "분자생물학·대사공학",
-     "자동화 액체핸들링",
-     "데이터 표준(LIMS)"
-    ],
-    "s": [
-     "실험 프로토콜 자동화",
-     "품질 관리·오염 통제",
-     "설계-실험-학습(DBTL) 순환 운영"
-    ],
-    "a": [
-     "무균·정밀 작업의 꾸준함",
-     "실패 기록을 성실히 남기는 태도"
-    ]
-   },
-   "study": [
-    "생명공학",
-    "바이오시스템공학",
-    "화학공학"
-   ],
-   "certs": [
-    "생물공학기사",
-    "품질경영기사",
-    "국가자격 없음(기관 교육)"
-   ],
-   "insight": "실험을 ‘한 번의 발견’에서 ‘반복 가능한 공정’으로 바꾸는 직무다. 자동화된 실험실은 생물학자를 엔지니어로 바꾼다.",
-   "companies": {
-    "domestic": [
-     "한국생명공학연구원",
-     "KRIBB 바이오파운드리",
-     "CJ제일제당",
-     "바이오 스타트업"
-    ],
-    "global": [
-     "Ginkgo Bioworks",
-     "Twist Bioscience",
-     "Amyris",
-     "Novo Nordisk"
-    ]
-   },
-   "kind": "new",
-   "next_roles": [
-    {
-     "n": "바이오 설계 검수자",
-     "w": "자동화 실험실의 설계도와 결과를 대조"
-    }
-   ]
-  },
-  {
    "id": "j-pd",
    "name": "콘텐츠 PD",
    "en": "Content Producer / Director",
@@ -1087,21 +1045,6 @@
    "published": "2026-09-01",
    "track": "A",
    "usage": "2027~2029년 848억 원 투입, 2032년 도심 진입 기반 마련"
-  },
-  {
-   "id": "src_kistep_10tech",
-   "name": "한국과학기술기획평가원(KISTEP)",
-   "title": "2026 KISTEP 10대 미래유망기술",
-   "url": "https://www.data.go.kr/data/15087732/fileData.do",
-   "license": {
-    "type": "KOGL-1",
-    "name": "공공누리 제1유형(출처표시)",
-    "verified": true,
-    "verified_at": "2026-11-19"
-   },
-   "published": "2026-09-22",
-   "track": "A",
-   "usage": "‘건강 사회 실현’ 10대 유망기술의 정의·범위·2030~2035 전망"
   },
   {
    "id": "src_mcst_content2025",

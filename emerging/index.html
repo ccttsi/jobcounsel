@@ -58,7 +58,8 @@ html.is-locked{overflow:hidden;padding-right:var(--sw,0)}
 .hd{display:flex;align-items:center;gap:8px;min-height:68px;padding:12px 0}
 .ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
 .ib svg{width:20px;height:20px}
-.hd .sp{flex:1}
+.hd .ed{margin-left:0}
+.hd [data-jc-prefs]{margin-left:auto}
 .ed{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid var(--line-2);border-radius:12px;background:var(--panel);font-size:13px;font-weight:750;color:var(--muted)}
 .ed b{color:var(--acc);font-weight:850}
 
@@ -73,10 +74,24 @@ html.is-locked{overflow:hidden;padding-right:var(--sw,0)}
 @media (min-width:900px){.mast h1{padding-right:118px}.mast h1 .jc-seal{display:block;position:absolute;right:2px;bottom:2px;margin:0;width:92px;height:52px;opacity:.6}}
 .mast .sub{margin:8px 0 0;font-size:13.5px;color:var(--muted);line-height:1.5}
 .mast .sub b{color:var(--ink)}
-.lead-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
-.lead-line h2{margin:0;font-size:18px;font-weight:850;letter-spacing:-.035em;line-height:1.3;text-wrap:balance}
-@media (min-width:900px){.lead-line h2{font-size:21px}}
-.lead-line span{font-size:13px;color:var(--dim)}
+.lead-line{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:6px 12px;margin-top:8px;padding:8px 0 6px;border-top:1px solid var(--line);overflow:hidden}
+.lead-line .dek{display:flex;align-items:flex-start;gap:7px;flex:1;min-width:0;margin:0;overflow:hidden}
+.lead-line .dek-n{flex:none;font-size:11px;font-weight:850;line-height:1.5;letter-spacing:.02em;color:var(--acc);font-variant-numeric:tabular-nums;padding-top:2px}
+.lead-line .dek-tx{min-width:0;font-size:13.5px;font-weight:700;line-height:1.5;letter-spacing:-.02em;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:3em}
+.lead-line .meta{flex:none;font-size:12.5px;font-weight:700;line-height:1.5;color:var(--dim);white-space:nowrap;padding-top:2px;font-variant-numeric:tabular-nums}
+/* 글자를 키우면 부제도 세 줄까지 보이게 하고, 그만큼 줄 높이도 함께 커진다(칸 높이는 늘 고정). */
+html[data-jc-font="1"] .lead-line .dek-tx,html[data-jc-font="2"] .lead-line .dek-tx{height:4.5em;-webkit-line-clamp:3}
+@media (min-width:900px){
+  .lead-line{align-items:center;padding:8px 0 4px}
+  .lead-line .dek{align-items:center}
+  .lead-line .dek-tx{font-size:15.5px;display:block;white-space:nowrap;text-overflow:ellipsis;-webkit-line-clamp:1;height:1.5em}
+  html[data-jc-font="1"] .lead-line .dek-tx,html[data-jc-font="2"] .lead-line .dek-tx{height:1.5em;-webkit-line-clamp:1}
+  .lead-line .meta{font-size:13px}
+}
+@keyframes dekIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.lead-line .dek-tx.swap{animation:dekIn .26s cubic-bezier(.2,.9,.3,1)}
+@media (prefers-reduced-motion:reduce){.lead-line .dek-tx.swap{animation:none}}
+html[data-jc-imm] .lead-line .dek-tx.swap{animation:none}
 
 /* ── 지면 3단 ── */
 .grid{display:grid;gap:14px;margin-top:12px}
@@ -400,7 +415,6 @@ html[data-jc-imm] .art,html[data-jc-imm] .card,html[data-jc-imm] .fig,html[data-
 <div class="wrap">
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></a>
-    <span class="sp"></span>
     <button type="button" class="ed" id="edBtn" aria-haspopup="dialog"><b>지난 지면</b> 섹터로 찾기</button>
     <span data-jc-prefs></span>
   </header>
@@ -409,7 +423,10 @@ html[data-jc-imm] .art,html[data-jc-imm] .card,html[data-jc-imm] .fig,html[data-
     <div class="mast-k"><b>신산업 브리핑</b><span class="dot" aria-hidden="true"></span><span>Emerging Industry</span><span class="dot" aria-hidden="true"></span><span class="num" id="mDate">2026-11-19 목</span><span class="dot" aria-hidden="true"></span><span id="mRead">4분 읽기</span></div>
     <h1>Emerging Industry</h1>
     <p class="sub" id="mSub"><b>1차부터 4차까지</b> 신산업의 시장 규모와 성장률을 도표로 읽고, 자료마다 직무분석을 펼칩니다.</p>
-    <div class="lead-line"><h2 id="mTitle">지면을 불러오고 있습니다</h2><span id="mCount">3개 기사</span></div>
+    <div class="lead-line">
+      <p class="dek"><span class="dek-n num" id="mDekNo" aria-hidden="true">01</span><span class="sr">지금 보는 기사 요약: </span><span class="dek-tx" id="mDek">지면을 불러오고 있습니다</span></p>
+      <span class="meta" id="mCount">3개 기사</span>
+    </div>
   </section>
 
   <section class="pv" id="pv">
