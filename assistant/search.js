@@ -8,6 +8,13 @@
  *   - 초성만 친 말                            「ㅂㄷㅊ」 → 반도체, 「ㄱㅊㅈ」 → 공기업
  *   - 구어체·동의어                           「막막해」 → 취업 현위치, 「뜨는 직업」 → 산업 온도계
  *   - 어순이 다른 말                          「자격증 시험 일정」 = 「시험 일정 자격증」
+ *   - 현장 약어·쓰다 만 줄임말                「경단녀」「경단」 → 경력단절여성,
+ *                                             「국취제」「국취」 → 국민취업지원제도, 「내배」 → 국민내일배움카드
+ *
+ * 먼저 보는 것 — 선참조 지도(assistant/data/rag-preface.json, 약 30KB)
+ *   섹터 27장의 핵심 낱말·약어 사전만 담은 작은 지도다. index.json(500KB)보다 먼저 받아
+ *   ① 약어를 정식 용어로 펼치고 ② 어느 섹터부터 볼지 좁힌 뒤(route) ③ 색인 전체에서 순위를 매긴다.
+ *   약어 때문에 점수를 올리는 섹터는 근거가 보이게 하는 것이 아니라 순위만 살짝 민다.
  *
  * 원칙: 색인에 있는 말만 근거로 삼는다. 없는 내용을 만들어 내지 않는다.
  */
@@ -17,6 +24,7 @@
   var BASE = window.JCA_BASE || '';
   var INDEX_URL = BASE + 'assistant/data/index.json';
   var DIRS_URL = BASE + 'assistant/data/index-dirs.json';
+  var PREFACE_URL = BASE + 'assistant/data/rag-preface.json';
 
   /* ---------- 글자 다루기 ---------- */
 
@@ -167,12 +175,64 @@
       t: ['온도', '업황', '지표'], s: { thermometer: 1.45 } }
   ];
 
+  /* ---------- 선참조 지도 · 약어 사전 ----------
+     rag-preface.json 의 dict 가 원본이다(assistant/aliases.json → build_index.py).
+     여기서는 «찾는 법»만 둔다: 같은 말 · 앞부분 · 쓰다 만 줄임말(글자가 차례대로). */
+
+  var PREF = null;                 // 선참조 지도 전체
+
+  function isSubseq(short, long) {
+    var i = 0;
+    for (var k = 0; k < long.length && i < short.length; k++) {
+      if (long.charAt(k) === short.charAt(i)) i++;
+    }
+    return i === short.length;
+  }
+
+  function dictEntries() { return (PREF && PREF.dict) || []; }
+
+  /* 낱말 하나가 사전의 어느 항목과 맞는지 — ①같은 말 ②앞부분 ③쓰다 만 줄임말 */
+  function dictHits(tok) {
+    var list = dictEntries(), out = [];
+    if (!tok || tok.length < 2) return out;
+    var t = tok.replace(/ /g, '');
+    for (var i = 0; i < list.length; i++) {
+      var e = list[i], forms = [String(e.c || '')].concat(e.a || []), kind = '';
+      for (var j = 0; j < forms.length; j++) {
+        var w = norm(forms[j]).replace(/ /g, '');
+        if (!w) continue;
+        if (w === t) { kind = 'same'; break; }
+        if (w.indexOf(t) === 0) kind = kind || 'prefix';
+      }
+      if (!kind) {
+        for (var g = 0; g < forms.length; g++) {
+          var w2 = norm(forms[g]).replace(/ /g, '');
+          if (w2.length > t.length && isSubseq(t, w2)) { kind = 'part'; break; }
+        }
+      }
+      if (kind) out.push({ c: e.c, a: e.a || [], s: e.s || [], x: e.x || '', kind: kind, q: tok });
+      if (out.length >= 3) break;      // 한 낱말이 너무 많은 곳으로 펼쳐지지 않게
+    }
+    return out;
+  }
+
+  function dictAll(toks) {
+    var out = [], seen = {};
+    (toks || []).forEach(function (t) {
+      dictHits(t).forEach(function (h) {
+        if (seen[h.c]) return;
+        seen[h.c] = 1;
+        out.push(h);
+      });
+    });
+    return out;
+  }
+
   /* ---------- 색인 ---------- */
 
   var S = { index: null, dirs: null, ready: false, err: '', loading: null };
   var D = [];     // 문서(정규화된 검색용 필드 포함)
   var DIRROWS = []; // 기업·직업분류
-
   function prepDoc(d) {
     var title = d.t || '';
     var kws = d.k || '';
@@ -189,10 +249,12 @@
     if (S.loading) return S.loading;
     S.loading = Promise.all([
       fetch(INDEX_URL, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error('index ' + r.status); return r.json(); }),
-      fetch(DIRS_URL, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+      fetch(DIRS_URL, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+      fetch(PREFACE_URL, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
     ]).then(function (res) {
       S.index = res[0];
       S.dirs = res[1];
+      PREF = res[2] || null;
       D = (S.index.docs || []).map(prepDoc);
       DIRROWS = [];
       if (S.dirs) {
@@ -234,11 +296,12 @@
   /* 흔한 말(직업·상담·자료)은 가볍게, 드문 말(ㅂㄷㅊ·수습·KECO)은 무겁게 — 색인에서 몇 번 나오는지로 잰다. */
   var DFCACHE = {};
   function dfOf(t) {
-    if (DFCACHE[t] != null) return DFCACHE[t];
+    var key = String(t || '').replace(/ /g, '');
+    if (DFCACHE[key] != null) return DFCACHE[key];
     var n = 0, i;
-    for (i = 0; i < D.length; i++) if (D[i].nt.indexOf(t) >= 0 || D[i].nk.indexOf(t) >= 0) n++;
-    for (i = 0; i < DIRROWS.length; i++) if (DIRROWS[i].nt.indexOf(t) >= 0 || DIRROWS[i].nk.indexOf(t) >= 0) n++;
-    DFCACHE[t] = n;
+    for (i = 0; i < D.length; i++) if (D[i].nt.indexOf(key) >= 0 || D[i].nk.indexOf(key) >= 0) n++;
+    for (i = 0; i < DIRROWS.length; i++) if (DIRROWS[i].nt.indexOf(key) >= 0 || DIRROWS[i].nk.indexOf(key) >= 0) n++;
+    DFCACHE[key] = n;
     return n;
   }
 
@@ -289,6 +352,7 @@
     function add(w, why) {
       w = norm(w);
       if (!w || seen[w]) return;
+      if (!dfOf(w)) return;          // 색인에 없는 말은 더하지 않는다(순위만 흔든다)
       seen[w] = 1; added.push({ word: w, why: why });
     }
     var nq = norm(q);
@@ -301,10 +365,89 @@
       if (!g.k.some(function (w) { return nq.indexOf(norm(w)) >= 0; })) return;
       g.t.forEach(function (w) { add(w, '비슷한 말'); });
     });
+    /* 현장 약어·쓰다 만 줄임말 → 정식 용어 (선참조 지도 dict) */
+    var dh = dictAll(toks);
+    dh.forEach(function (d) {
+      var q = String(d.q || '').replace(/ /g, '');
+      var canon = norm(d.c).replace(/ /g, '');
+      var isAliasQuery = q !== canon;      // 사용자가 별칭(경단녀·니트)을 쳤다
+      var canonAdded = !isAliasQuery;     // 정식 용어를 직접 쳤으면 있는 셈
+      var forms = [d.c].concat(d.a || []);
+      var n = 0;
+      for (var i = 0; i < forms.length && n < 3; i++) {
+        var f = norm(forms[i]).replace(/ /g, '');
+        if (!f || f === q) continue;
+        /* 별칭을 쳤고 정식 용어가 색인에 있으면 그것만 더한다(철자만 다른 별칭은 뺀다).
+           정식 용어가 색인에 없으면 별칭 중 색인에 있는 것으로 잇는다(니트 → NEET). */
+        if (isAliasQuery && i > 0 && canonAdded) continue;
+        if (i > 0 && f.indexOf(q) >= 0 && f.length > q.length) continue;
+        var before = added.length;
+        add(forms[i], '약어');
+        if (added.length > before) { n++; if (i === 0) canonAdded = true; }
+      }
+    });
     var situation = SITU.test(nq) && (toks.length >= 2 || added.length > 0);
-    /* 초성 별칭이 있으면 초성 자체는 점수에서 뺀다(ㄱㅊㅈ → 공기업·공공기관). */
-    var strong = toks.filter(function (t) { return !(CHO_ALIAS[t] && /^[ㄱ-ㅎ]+$/.test(t)); });
-    return { tokens: toks, added: added, situation: situation, all: strong.concat(added.map(function (a) { return a.word; })) };
+    /* 초성 별칭이 있으면 초성 자체는 점수에서 뺀다(ㄱㅊㅈ → 공기업·공공기관).
+       짧은 현장말(경단·니트·실급)도 같은 이유로 뺀다 — 그 글자만으로는 엉뚱한 이름에 걸린다
+       (예: 니트 → 코오롱베니트). 펼친 말이 있을 때만 뺴고, 없으면 그대로 쓴다. */
+    var drop = {};
+    if (added.length) {
+      dh.forEach(function (d) {
+        var q = String(d.q || '').replace(/ /g, '');
+        if (d.kind === 'same' && q.length <= 2 && norm(d.c).replace(/ /g, '') !== q) drop[d.q] = 1;
+      });
+    }
+    var strong = toks.filter(function (t) {
+      if (CHO_ALIAS[t] && /^[ㄱ-ㅎ]+$/.test(t)) return false;
+      return !drop[t];
+    });
+    return { tokens: toks, added: added, dict: dh, situation: situation, dropped: Object.keys(drop),
+             all: strong.concat(added.map(function (a) { return a.word; })) };
+  }
+
+  /* ---------- 선참조: 질문 → 먼저 볼 섹터 ----------
+     색인 전체를 뒤지기 전에 작은 지도만으로 후보 섹터를 좁힌다.
+     약어(경단·국취)나 섹터 이름이 걸리면 그 섹터를 앞에 두고, 추측이 약하면 빈 손으로 돌아온다. */
+  function route(q, opt) {
+    opt = opt || {};
+    if (!PREF) return [];
+    var nq = norm(q);
+    if (!nq) return [];
+    var toks = tokens(q), sc = {}, why = {};
+    function bump(id, w, label) {
+      if (!id) return;
+      sc[id] = (sc[id] || 0) + w;
+      if (label) {
+        var arr = why[id] || (why[id] = []);
+        if (arr.indexOf(label) < 0 && arr.length < 4) arr.push(label);
+      }
+    }
+    dictAll(toks).forEach(function (d) {
+      (d.s || []).forEach(function (id) { bump(id, d.kind === 'part' ? 2 : 3, d.c); });
+    });
+    var terms = PREF.terms || {};
+    Object.keys(terms).forEach(function (k) {
+      if (k.length < 2 || nq.indexOf(norm(k)) < 0) return;
+      terms[k].forEach(function (id) { bump(id, 1.2, k); });
+    });
+    var secs = PREF.sectors || [], byId = {};
+    secs.forEach(function (s) { byId[s.id] = s; });
+    var flat = nq.replace(/ /g, '');
+    secs.forEach(function (s) {
+      var t = compact(s.title);
+      if (t && flat.indexOf(t) >= 0) bump(s.id, 4, s.title);
+      for (var j = 0; j < toks.length; j++) {
+        if (toks[j].length >= 2 && t.indexOf(compact(toks[j])) >= 0) { bump(s.id, 1.5, ''); break; }
+      }
+    });
+    var out = [];
+    Object.keys(sc).forEach(function (id) {
+      if (!byId[id] || sc[id] < 1.2) return;
+      out.push({ id: id, no: byId[id].no || '', title: byId[id].title, url: byId[id].url,
+                 desc: byId[id].d || '', score: sc[id], why: why[id] || [] });
+    });
+    out.sort(function (x, y) { return y.score - x.score; });
+    return out.slice(0, opt.limit || 3);
   }
 
   function search(q, opt) {
@@ -319,12 +462,20 @@
       if (!g.k.some(function (w) { return nq.indexOf(norm(w)) >= 0; })) return;
       Object.keys(g.s || {}).forEach(function (k) { boost[k] = Math.max(boost[k] || 1, g.s[k]); });
     });
+    /* 선참조 지도가 집은 섹터를 살짝 앞으로 — 섹터를 꿰뚫지 않고 순위만 민다. */
+    var rt = route(q, { limit: 4 });
+    rt.forEach(function (r) {
+      boost[r.id] = Math.max(boost[r.id] || 1, 1 + Math.min(0.3, 0.06 * r.score));
+    });
     if (a.situation) {
       ['law', 'manual', 'interview', 'surgery', 'reality', 'hud', 'labor', 'preset'].forEach(function (k) {
         boost[k] = Math.max(boost[k] || 1, 1.22);
       });
     }
     var w = weightsOf(all);
+    /* 펼쳐서 더한 말은 살짝 낮춘다 — 사용자가 적은 말과 같은 무게는 아니다. */
+    var addedFrom = all.length - a.added.length;
+    for (var wi = addedFrom; wi < all.length; wi++) w[wi] *= 0.62;
     var out = [], i, sc;
 
     for (i = 0; i < D.length; i++) {
@@ -395,6 +546,15 @@
     sectors: function () { return (S.index && S.index.sectors) || []; },
     tokenize: tokens,
     analyze: analyze,
+    route: route,
+    /* 선참조 지도 — 비서가 AI 지침에 넘기거나, 화면에 후보 섹터를 바로 보일 때 쓴다. */
+    preface: function () { return PREF; },
+    map: function (limit) {
+      var secs = (PREF && PREF.sectors) || [];
+      return secs.slice(0, limit || secs.length).map(function (s) {
+        return { no: s.no || '', title: s.title, url: s.url };
+      });
+    },
     choseong: toChoseong
   };
 })();

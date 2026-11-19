@@ -214,7 +214,41 @@ def run(args):
         with open(args.summary_file, "a", encoding="utf-8") as fh:
             fh.write("\n".join(lines) + "\n")
 
+    # 비서 검색 회귀 — 같은 게이트에서 같이 돈다(약어·쓰다 만 앞부분·선참조 지도).
+    # 별도 워크플로 단계를 둘 수 없는 환경(워크플로 수정 권한 없음)에서도 매번 검사되게 여기에 붙였다.
+    if args.assistant:
+        failed += run_assistant_checks(args)
+        print("✓ 비서 검색 회귀 통과" if not failed else "✗ 비서 검색 회귀 실패 — 위 항목을 고친 뒤 다시 잰다")
+
     return 1 if failed else 0
+
+
+def run_assistant_checks(args):
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    try:
+        import assistant_search_test as ast
+        fails = ast.check_files()
+        rows = []
+        if not fails:
+            extra, rows = ast.run_cases()
+            fails += extra
+    except Exception as e:            # 브라우저·모듈을 못 띄우면 실패로 남긴다(조용히 건너뛰지 않는다)
+        fails, rows = [f"비서 검색 검사를 돌리지 못했습니다: {e}"], []
+    print("-" * 72)
+    print(f"비서 검색 회귀 — {len(rows)}질문 · 실패 {len(fails)}건")
+    for f in fails:
+        print("    - " + f)
+    if args.summary_file:
+        lines = ["", "## 비서 검색 회귀 (약어·선참조)", "", "| 질문 | 선참조 후보 섹터 | 첫 결과 |", "|---|---|---|"]
+        for q, route, top in rows:
+            lines.append(f"| {q} | {route} | {top} |")
+        lines.append("")
+        lines.append("**통과**" if not fails else f"**실패 {len(fails)}건**")
+        for f in fails:
+            lines.append("- ✗ " + f)
+        with open(args.summary_file, "a", encoding="utf-8") as fh:
+            fh.write("\n".join(lines) + "\n")
+    return len(fails)
 
 
 def main():
@@ -224,6 +258,10 @@ def main():
     parser.add_argument("--settle", type=int, default=2500, help="화면이 그려질 때까지 기다리는 ms")
     parser.add_argument("--shot-dir", help="실패한 화면 그림을 남길 폴더")
     parser.add_argument("--summary-file", help="GitHub Actions Job Summary 파일 경로")
+    parser.add_argument("--assistant", dest="assistant", action="store_true", default=True,
+                        help="비서 검색 회귀도 함께 잰다(기본 켜짐)")
+    parser.add_argument("--no-assistant", dest="assistant", action="store_false",
+                        help="비서 검색 회귀를 건너뛴다")
     args = parser.parse_args()
     args.pages = [p.strip() for p in args.pages.split(",") if p.strip()]
     return run(args)

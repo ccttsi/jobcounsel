@@ -1,0 +1,324 @@
+{
+  "v": 1,
+  "note": "비서 검색 회귀 검사. terms=펼쳐져야 하는 정식 용어, sectors=상위 6건에 있어야 하는 섹터, route=선참조 지도가 집어야 하는 섹터. 실제 화면(Chromium)에서 ops/scripts/assistant_search_test.py 가 잰다.",
+  "cases": [
+    {
+      "q": "경단녀",
+      "terms": [
+        "경력단절여성"
+      ],
+      "sectors": [
+        "translator",
+        "portals",
+        "transit",
+        "reality",
+        "law",
+        "library"
+      ],
+      "route": [
+        "translator",
+        "portals",
+        "transit"
+      ]
+    },
+    {
+      "q": "경단여",
+      "terms": [
+        "경력단절여성"
+      ],
+      "sectors": [
+        "translator",
+        "portals",
+        "transit",
+        "reality",
+        "law",
+        "library"
+      ]
+    },
+    {
+      "q": "경단",
+      "terms": [
+        "경력단절여성"
+      ],
+      "sectors": [
+        "translator",
+        "portals",
+        "transit",
+        "reality",
+        "law",
+        "library"
+      ],
+      "route": [
+        "translator",
+        "portals",
+        "transit"
+      ]
+    },
+    {
+      "q": "경력단",
+      "terms": [
+        "경력단절여성"
+      ],
+      "sectors": [
+        "translator",
+        "portals",
+        "reality",
+        "library"
+      ]
+    },
+    {
+      "q": "국취제",
+      "terms": [
+        "국민취업지원제도"
+      ],
+      "sectors": [
+        "manual",
+        "hud",
+        "transit",
+        "translator"
+      ],
+      "route": [
+        "manual",
+        "hud"
+      ]
+    },
+    {
+      "q": "국취",
+      "terms": [
+        "국민취업지원제도"
+      ],
+      "sectors": [
+        "manual",
+        "hud",
+        "transit",
+        "translator"
+      ]
+    },
+    {
+      "q": "내배카",
+      "terms": [
+        "국민내일배움카드"
+      ],
+      "sectors": [
+        "transit",
+        "translator"
+      ],
+      "route": [
+        "transit",
+        "translator"
+      ]
+    },
+    {
+      "q": "내배",
+      "terms": [
+        "국민내일배움카드"
+      ],
+      "sectors": [
+        "transit",
+        "translator"
+      ]
+    },
+    {
+      "q": "실급",
+      "terms": [
+        "구직급여",
+        "실업급여"
+      ],
+      "sectors": [
+        "transit",
+        "law",
+        "translator"
+      ],
+      "route": [
+        "transit",
+        "law",
+        "translator"
+      ]
+    },
+    {
+      "q": "육휴",
+      "terms": [
+        "육아휴직"
+      ],
+      "sectors": [
+        "law",
+        "translator",
+        "transit"
+      ]
+    },
+    {
+      "q": "고보",
+      "terms": [
+        "고용보험"
+      ],
+      "sectors": [
+        "law",
+        "translator",
+        "labor"
+      ]
+    },
+    {
+      "q": "자립",
+      "sectors": [
+        "taxonomy",
+        "translator",
+        "transit",
+        "portals"
+      ],
+      "route": [
+        "transit",
+        "portals",
+        "reality"
+      ]
+    },
+    {
+      "q": "은둔",
+      "terms": [
+        "청년도전지원사업",
+        "고립은둔청년"
+      ],
+      "sectors": [
+        "translator",
+        "library",
+        "transit",
+        "reality"
+      ],
+      "route": [
+        "translator",
+        "transit",
+        "reality"
+      ]
+    },
+    {
+      "q": "니트",
+      "sectors": [
+        "library",
+        "translator",
+        "reality"
+      ]
+    },
+    {
+      "q": "중장",
+      "terms": [
+        "중장년"
+      ],
+      "sectors": [
+        "transit",
+        "labor",
+        "translator"
+      ],
+      "route": [
+        "transit",
+        "labor"
+      ]
+    },
+    {
+      "q": "4050",
+      "terms": [
+        "중장년"
+      ],
+      "sectors": [
+        "transit",
+        "labor",
+        "translator"
+      ]
+    },
+    {
+      "q": "특성화고",
+      "terms": [
+        "직업계고"
+      ],
+      "sectors": [
+        "translator",
+        "portals",
+        "univ"
+      ],
+      "route": [
+        "translator",
+        "portals"
+      ]
+    },
+    {
+      "q": "직업계고",
+      "terms": [
+        "특성화고"
+      ],
+      "sectors": [
+        "translator",
+        "portals"
+      ]
+    },
+    {
+      "q": "공기업",
+      "terms": [
+        "공공기관"
+      ],
+      "sectors": [
+        "company"
+      ],
+      "route": [
+        "company"
+      ]
+    },
+    {
+      "q": "지방공기업",
+      "terms": [
+        "지방공기업"
+      ],
+      "sectors": [
+        "company"
+      ],
+      "route": [
+        "company"
+      ]
+    },
+    {
+      "q": "중견",
+      "terms": [
+        "중견기업"
+      ],
+      "sectors": [
+        "company"
+      ],
+      "route": [
+        "company"
+      ]
+    },
+    {
+      "q": "ㅂㄷㅊ",
+      "terms": [
+        "반도체"
+      ],
+      "sectors": [
+        "thermometer",
+        "emerging",
+        "cert",
+        "company"
+      ]
+    },
+    {
+      "q": "수습인데 짤렸어요",
+      "terms": [
+        "해고"
+      ],
+      "sectors": [
+        "law",
+        "manual",
+        "labor"
+      ]
+    },
+    {
+      "q": "뜨는 직업",
+      "sectors": [
+        "thermometer",
+        "emerging"
+      ]
+    },
+    {
+      "q": "면접 질문",
+      "sectors": [
+        "interview"
+      ]
+    }
+  ]
+}
