@@ -1,0 +1,476 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-20T02:32:23+09:00",
+ "edition": {
+  "no": 17,
+  "date": "2026-06-02",
+  "weekday": "화",
+  "title": "온디바이스 AI 반도체 8,002억 원",
+  "reading_minutes": 4,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20260602-1",
+   "date": "2026-06-02",
+   "order": 1,
+   "sector": "s2",
+   "cat": "semicon",
+   "lead": true,
+   "title": "기기 안에 국산 AI 두뇌, 8,002억 원 사업이 확정됐다",
+   "kicker": "산업통상부 · 2026.6.2 보도참고자료",
+   "summary": "K-온디바이스 AI반도체 기술개발 사업이 6월 2일 국가연구개발사업평가 총괄위원회에서 총사업비 8,002.3억 원(국비 5,111.1억 원, 2026~2030년)으로 확정됐다. 자동차·IoT가전·기계로봇·방산 4개 업종별로 AI칩과 모듈, 구동 소프트웨어를 함께 개발한다.",
+   "key_numbers": [
+    {
+     "label": "총사업비",
+     "value": "8,002.3억 원",
+     "note": "국비 5,111.1억 원"
+    },
+    {
+     "label": "사업 기간",
+     "value": "2026~2030년",
+     "note": "6월 공고·7월 착수"
+    },
+    {
+     "label": "적용 업종",
+     "value": "4개",
+     "note": "자동차·가전·로봇·방산"
+    }
+   ],
+   "market": {
+    "label": "온디바이스 AI 반도체 시장",
+    "unit": "억 달러",
+    "basis": "2024년 실적·2030년 전망",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2030 전망"
+    ],
+    "series": [
+     {
+      "name": "시장 규모",
+      "values": [
+       173,
+       1033
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "산업통상부 보도자료가 Market.us(2024.8)를 인용한 수치다.",
+    "source_id": "src_motie_ondai2026"
+   },
+   "players": {
+    "domestic": [
+     "산업통상부"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-npu-sw"
+    ]
+   },
+   "source_id": "src_motie_ondai2026",
+   "question": "온디바이스 AI는 완제품 회사가 칩 회사보다 먼저 사람을 뽑는 구조다. 어느 쪽이 내담자에게 가까울까?",
+   "subtitle": "국비 5,111억 원으로 2026~2030년, 자동차·가전·로봇·방산 4개 업종"
+  },
+  {
+   "id": "ei-20260602-2",
+   "date": "2026-06-02",
+   "order": 2,
+   "sector": "s2",
+   "cat": "semicon",
+   "lead": false,
+   "title": "EUV 장비 검사, 34일이 9일이 된다",
+   "kicker": "산업통상부 · 2026.6.2 보도자료",
+   "summary": "고압가스 안전관리법 시행령 일부개정안이 6월 2일 국무회의에서 의결돼 EUV 장비를 고압가스 제조시설이 아닌 특정설비로 분류했다. 기술검토와 완성검사 절차가 줄어 도입 기간이 34일에서 9일로, 장비당 검사비 약 5억 원이 줄어든다.",
+   "key_numbers": [
+    {
+     "label": "검사 기간",
+     "value": "34 → 9일",
+     "note": "장비당 최대 25일 단축"
+    },
+    {
+     "label": "검사비 절감",
+     "value": "약 5억 원",
+     "note": "장비당, 내압·기밀 검사"
+    },
+    {
+     "label": "안전관리",
+     "value": "3년 주기 공장심사",
+     "note": "특정설비 기준"
+    }
+   ],
+   "market": {
+    "label": "EUV 장비 검사 소요",
+    "unit": "일",
+    "basis": "제도 개선 전후",
+    "chart": "bar",
+    "labels": [
+     "현행",
+     "개선"
+    ],
+    "series": [
+     {
+      "name": "소요일",
+      "values": [
+       34,
+       9
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "제조시설 34일 → 특정설비 9일.",
+    "source_id": "src_motie_euv2026"
+   },
+   "players": {
+    "domestic": [
+     "삼성전자",
+     "SK하이닉스"
+    ],
+    "glob": [
+     "ASML"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-advanced-pkg"
+    ]
+   },
+   "source_id": "src_motie_euv2026",
+   "question": "장비 도입이 빨라지면 라인 설치·검수 인력의 일정이 당겨진다. 어떤 직무가 먼저 바빠질까?",
+   "subtitle": "고압가스법 시행령 개정으로 장비당 25일·검사비 5억 원이 줄어든다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-elec",
+   "name": "전기·전자 엔지니어",
+   "en": "Electrical / Electronics Engineer",
+   "sector": "s2",
+   "role": "전력·제어·회로 시스템을 설계하고 시험한다. 배터리·로봇·충전설비처럼 전기를 다루는 모든 신산업의 아래쪽에서 작동한다.",
+   "ksa": {
+    "k": [
+     "회로이론·전력계통",
+     "전자부품 특성",
+     "전기 안전 규정"
+    ],
+    "s": [
+     "회로 설계·PCB",
+     "계측·디버깅",
+     "인증 시험 대응"
+    ],
+    "a": [
+     "감전·화재 위험을 먼저 보는 습관",
+     "측정값을 믿고 확인하는 태도"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "전자공학",
+    "제어계측공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전자기사",
+    "전기안전기사"
+   ],
+   "insight": "신산업의 화려한 부분은 아니지만, 전원이 꺼지면 모든 것이 멈춘다. 로봇·배터리·수소 설비 모두 이 직무 위에 서 있다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "LG전자",
+     "현대모비스",
+     "효성중공업",
+     "LS일렉트릭"
+    ],
+    "global": [
+     "Texas Instruments",
+     "Infineon",
+     "ABB",
+     "Siemens"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
+  },
+  {
+   "id": "j-npu-sw",
+   "kind": "new",
+   "name": "AI 반도체 소프트웨어 스택 엔지니어",
+   "en": "AI Accelerator Software Stack Engineer",
+   "sector": "s2",
+   "role": "국산 신경망처리장치(NPU)가 범용 AI 프레임워크에서 그대로 돌아가도록 컴파일러·런타임·드라이버를 맞춘다. 다른 회사 GPU·CPU와 섞어 쓰는 이기종 환경에서 성능이 나오는지 측정한다.",
+   "ksa": {
+    "k": [
+     "컴파일러·런타임",
+     "GPU·NPU 아키텍처",
+     "AI 프레임워크"
+    ],
+    "s": [
+     "CUDA·ROCm 대응 포팅",
+     "성능 프로파일링",
+     "이기종 연동 시험"
+    ],
+    "a": [
+     "성능 수치를 끝까지 파고드는 집요함"
+    ]
+   },
+   "study": [
+    "컴퓨터공학",
+    "전자공학"
+   ],
+   "certs": [
+    "정보처리기사",
+    "리눅스마스터"
+   ],
+   "insight": "칩 성능은 소프트웨어 스택이 받쳐 줄 때만 숫자로 나온다. 국산 AI 반도체 기업이 가장 먼저 채우는 자리다.",
+   "companies": {
+    "domestic": [
+     "퓨리오사AI",
+     "리벨리온",
+     "딥엑스",
+     "모레",
+     "래블업"
+    ],
+    "global": [
+     "AMD",
+     "NVIDIA"
+    ]
+   }
+  },
+  {
+   "id": "j-advanced-pkg",
+   "name": "반도체 첨단패키징 공정 엔지니어",
+   "en": "Advanced Packaging Process Engineer",
+   "sector": "s2",
+   "role": "칩을 옆으로·위로 쌓아 하나의 시스템으로 만드는 2.5D·3D 패키징 공정을 개발한다. 열·휨·수율 문제를 잡고, AI 가속기 고객의 요구 사양에 맞춰 공정을 조정한다.",
+   "ksa": {
+    "k": [
+     "열기계·재료 특성",
+     "본딩·TSV 공정 원리",
+     "수율 분석"
+    ],
+    "s": [
+     "DOE 실험 설계",
+     "계측·불량 분석",
+     "고객 사양 협의"
+    ],
+    "a": [
+     "미세한 편차를 견디는 인내",
+     "데이터로 원인을 좁히는 논리"
+    ]
+   },
+   "study": [
+    "신소재공학",
+    "전자공학",
+    "기계공학"
+   ],
+   "certs": [
+    "반도체설계기사·반도체장비유지보수 관련 자격",
+    "품질경영기사"
+   ],
+   "insight": "전공정 미세화가 한계에 가까워지며 ‘쌓아서 성능을 내는’ 후공정이 다시 전면에 나왔다. 한국에 설비·소재 기업이 많아 국내 일자리 밀도가 높다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "SK하이닉스",
+     "한미반도체",
+     "네패스",
+     "하나마이크론"
+    ],
+    "global": [
+     "TSMC",
+     "Intel",
+     "Amkor",
+     "ASE"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "칩 열설계 자문역",
+     "w": "AI 가속기의 발열·휨을 잡는 전문 컨설팅"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_motie_ondai2026",
+   "name": "산업통상부",
+   "title": "스마트 기기에 국산 'AI 두뇌' 심는다",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764963",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-06-02",
+   "track": "A",
+   "usage": "K-온디바이스 AI반도체 사업 총사업비 8,002.3억 원(국비 5,111.1억)·2026~2030년, 4개 업종 풀스택 개발, 시장 전망(2024년 173억→2030년 1,033억 달러, Market.us 인용)"
+  },
+  {
+   "id": "src_motie_euv2026",
+   "name": "산업통상부",
+   "title": "반도체 공정 핵심 EUV 장비, 국내 도입 최대 25일 빨라진다",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764896",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-06-02",
+   "track": "A",
+   "usage": "EUV 장비 검사 34일→9일(최대 25일 단축), 검사비 약 5억 원 절감, 고압가스법 시행령 개정"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
