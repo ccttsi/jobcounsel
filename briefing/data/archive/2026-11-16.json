@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-16T23:09:00+09:00",
  "edition": {
   "date": "2026-11-16",
@@ -198,7 +198,9 @@
    },
    "theme_key": "th-ai-labor",
    "theme_label": "AI와 직무 재편",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
   }
  ],
  "radar": {

@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-19T12:35:00+09:00",
  "edition": {
   "date": "2026-10-03",
@@ -156,7 +156,9 @@
      "attribution_text": "자료: U.S. Bureau of Labor Statistics"
     },
     "usage": "비농업 고용·실업률·장기실업 수치만 새로 서술."
-   }
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "해외 노동시장"
   }
  ],
  "radar": null,

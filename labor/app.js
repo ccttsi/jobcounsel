@@ -35,10 +35,13 @@ var toastT=0;function toast(m){var t=$('toast');t.textContent=m;t.classList.add(
 
 /* ───────── 데이터 불러오기 ───────── */
 var C=null,N=null,BYC={},BYI={},GROUP={},ORDER=[];
+/* 데일리 브리핑 실기사 (briefing/data/labor-walk.json — briefing/data/tools/build_index.py가 만든다) */
+var LW=null,LWBY={},lwDate='',lwCur=null,lwApplied=false;
 var newsText='',checked={};/* 메모리에만 둔다 */
 function load(u){return fetch(u,{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(u+' '+r.status);return r.json();});}
-Promise.all([load('./data/concepts.json'),load('./data/news.json')]).then(function(a){
-  C=a[0];N=a[1];
+Promise.all([load('./data/concepts.json'),load('./data/news.json'),load('../briefing/data/labor-walk.json').catch(function(){return null;})]).then(function(a){
+  C=a[0];N=a[1];LW=a[2];
+  if(LW&&LW.articles){LW.articles.forEach(function(x){LWBY[x.date+'|'+x.card_id]=x;});if(LW.dates&&LW.dates.length)lwDate=LW.dates[0];}
   C.groups.forEach(function(g){GROUP[g.id]=g;});
   C.groups.forEach(function(g){C.concepts.forEach(function(c){if(c.group===g.id)ORDER.push(c);});});
   ORDER.forEach(function(c){BYC[c.id]=c;});
@@ -57,6 +60,7 @@ function route(){
   var h=decodeURIComponent((location.hash||'').slice(1)),view,arg='';
   if(h.indexOf('c-')===0&&BYC[h.slice(2)]){view='concept';arg=h.slice(2);}
   else if(h==='news'||h.indexOf('news-')===0){view='news';arg=h.slice(5);}
+  else if(!h&&/\bcard=/.test(location.search))view='news';   /* 브리핑에서 실기사 딥링크로 들어올 때 */
   else if(h==='about')view='about';
   else view='concepts';
   var tab=view==='concept'?'concepts':view;
@@ -500,6 +504,60 @@ function indCard(x,n){
     (x.see&&BYC[x.see]?'<a class="go" href="#c-'+x.see+'">개념으로 이해하기: '+esc(BYC[x.see].title)+' ›</a>':'')+'</article>';
 }
 function patNote(x,n){return '<div class="pnote" id="k-p-'+x.id+'"><b>'+n+'. '+esc(x.title)+'</b>'+esc(x.note)+'</div>';}
+
+/* ───────── 데일리 브리핑 실기사 고르기 ─────────
+   가상 기사 대신 briefing/data/labor-walk.json의 실제 카드(기사 요약)를 날짜별로 고른다. */
+var WD=['일','월','화','수','목','금','토'];
+function lwWeekday(d){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(d||''));return m?WD[new Date(+m[1],+m[2]-1,+m[3]).getDay()]:'';}
+function lwLabel(d){return String(d||'').replace(/-/g,'.')+' ('+lwWeekday(d)+')';}
+function lwBlock(){
+  if(!LW||!LW.articles||!LW.articles.length)
+    return '<p class="lab">데일리 브리핑 실기사</p><p class="empty" style="padding:6px 0">실기사 목록을 불러오지 못했습니다. 위 칸에 기사 문장을 직접 붙여 넣어 분석할 수 있습니다. <a href="../briefing/">데일리 브리핑 열기 ›</a></p>';
+  var d=LW.dates.indexOf(lwDate)>=0?lwDate:LW.dates[0];
+  return '<div class="lwh"><p class="lab">데일리 브리핑 실기사</p><a href="../briefing/">브리핑 전체 ›</a></div>'+
+    '<div class="lwpick"><label for="lwDate">날짜</label><select id="lwDate">'+LW.dates.map(function(x){
+      return '<option value="'+esc(x)+'"'+(x===d?' selected':'')+'>'+esc(lwLabel(x))+' · '+(LW.counts&&LW.counts[x]||0)+'건</option>';
+    }).join('')+'</select></div>'+
+    '<ul class="samples lw" id="lwList"></ul>';
+}
+function renderLWList(date){
+  var box=$('lwList');if(!box||!LW)return;
+  lwDate=date||lwDate||LW.dates[0];
+  var list=(LW.articles||[]).filter(function(a){return a.date===lwDate;});
+  box.innerHTML=list.map(function(a){
+    var on=!!(lwCur&&lwCur.date===a.date&&lwCur.card_id===a.card_id);
+    return '<li><button type="button" data-lw="'+esc(a.date+'|'+a.card_id)+'" aria-pressed="'+on+'">'+
+      '<span class="tp">'+esc(a.topic||a.category||'')+'</span>'+
+      '<span class="tt">'+esc(a.title)+'</span>'+
+      '<span class="mt">'+esc(a.source_name||'')+(a.published_at?' · '+esc(a.published_at):'')+'</span></button></li>';
+  }).join('');
+}
+function lwsrc(a){
+  var tr=a.track==='B'?'B · 사실만':'A · 재가공';
+  return '<div class="lwsrc"><span class="k">데일리 브리핑 · <b class="num">'+esc(lwLabel(a.date))+'</b></span>'+
+    '<span class="tr" title="데일리 브리핑 카드의 저작권 트랙">'+tr+'</span>'+
+    '<span class="t">'+esc(a.title)+'</span>'+
+    '<span class="acts"><a href="../briefing/?date='+encodeURIComponent(a.date)+'#'+encodeURIComponent(a.card_id)+'">그날 지면 →</a>'+
+    (a.source_url?'<a href="'+esc(a.source_url)+'" target="_blank" rel="noopener">원문</a>':'')+'</span></div>';
+}
+function pickLW(key){
+  var a=LWBY[key];if(!a)return;
+  lwCur=a;newsText=a.text;
+  var ta=$('nt');if(ta)ta.value=a.text;
+  if(a.date!==lwDate){lwDate=a.date;var sel=$('lwDate');if(sel)sel.value=a.date;renderLWList(a.date);}
+  try{history.replaceState(null,'','?date='+a.date+'&card='+a.card_id+'#news');}catch(e){}
+  showResult(true);
+  toast('빨간 펜으로 읽을 실기사를 넣었습니다.');
+}
+/* 브리핑 카드의 「실기사로 읽기」 칩(?date=&card=)으로 들어오면 그 기사를 바로 연다. 한 번만. */
+function applyLWQuery(){
+  if(!LW||lwApplied)return;
+  lwApplied=true;
+  var q;try{q=new URLSearchParams(location.search);}catch(e){return;}
+  var dt=q.get('date')||'',cd=q.get('card')||'';
+  if(cd&&LWBY[dt+'|'+cd]){pickLW(dt+'|'+cd);return;}
+  if(dt&&LW.dates.indexOf(dt)>=0){lwDate=dt;var sel=$('lwDate');if(sel)sel.value=dt;renderLWList(dt);}
+}
 function renderNews(arg){
   var L=N.latest;
   var html='<section class="board"><div class="board-h"><h3>'+esc(L.title)+'</h3><small>'+esc(L.asOf)+'</small></div>'+
@@ -508,7 +566,7 @@ function renderNews(arg){
     '<div class="desk"><div>'+
       '<div class="clip-in"><label for="nt">기사 문장이나 지표 낱말을 넣어 보세요</label><textarea id="nt" placeholder="예) 지난달 실업률이 역대 최저를 기록했지만 청년 고용률은 1.5%p 떨어졌다.">'+esc(newsText)+'</textarea>'+
       '<div class="act"><button class="btn pri" type="button" id="nGo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4z"/><path d="M14 6l3 3"/></svg>빨간 펜으로 읽기</button><button class="btn sec" type="button" id="nClr">지우기</button></div></div>'+
-      '<p class="lab">연습용 가상 기사 고르기</p><ul class="samples">'+N.samples.map(function(s){return '<li><button type="button" data-s="'+s.id+'"><span>가상</span>'+esc(s.title)+'</button></li>';}).join('')+'</ul>'+
+      lwBlock() +
       '<p class="lab">지표 낱말로 바로 보기</p><div class="chips">'+N.indicators.filter(function(x){return x.chip;}).map(function(x){return '<button type="button" class="chip" data-ind="'+x.id+'" aria-pressed="'+(arg===x.id)+'">'+esc(x.name)+'</button>';}).join('')+'</div>'+
       '<h3 class="st">기사를 읽을 때 다섯 가지 질문</h3><ol class="fiveq">'+N.fiveQ.map(function(q){return '<li><b>'+esc(q.q)+'</b><span>'+esc(q.a)+'</span></li>';}).join('')+'</ol>'+
     '</div><div id="nOut" aria-live="polite"></div></div>'+
@@ -520,20 +578,30 @@ function renderNews(arg){
   $('nGo').addEventListener('click',function(){newsText=ta.value;showResult(true);});
   $('nClr').addEventListener('click',function(){newsText='';ta.value='';showResult(false);ta.focus();});
   $('main').onclick=onNewsClick;
-  $('main').onchange=(function(e){var c=e.target.closest('[data-ck]');if(c)checked[c.getAttribute('data-ck')]=c.checked;});
+  $('main').onchange=(function(e){var c=e.target.closest('[data-ck]');if(c){checked[c.getAttribute('data-ck')]=c.checked;return;}var s=e.target.closest('#lwDate');if(s)renderLWList(s.value);});
+  renderLWList(lwDate);
   if(arg&&BYI[arg])showOne(arg,false);else showResult(false);
+  applyLWQuery();
+}
+var scrollT=0;
+/* 결과 자리로 옮긴다. 레이아웃(목록·글꼴)이 자리 잡은 뒤에 — 바로 옮기면 높이가 바뀌어 지나쳐 버린다. */
+function scrollToResult(){
+  var o=$('nOut');if(!o)return;
+  clearTimeout(scrollT);
+  scrollT=setTimeout(function(){o.scrollIntoView({behavior:'smooth',block:'start'});},180);
 }
 function showResult(scroll){
   var o=$('nOut');if(!o)return;
   var t=(newsText||'').trim();
-  if(!t){o.innerHTML='<div class="out-h"><h3>빨간 펜 메모</h3></div><p class="empty">왼쪽에 기사 문장을 붙여 넣거나 가상 기사를 고르면, 지표에는 밑줄과 번호를, 오해하기 쉬운 표현에는 점선 밑줄을 긋고 여기에 짚을 점을 정리합니다.</p>';renderNReal([],'none');return;}
+  if(!t){o.innerHTML='<div class="out-h"><h3>빨간 펜 메모</h3></div><p class="empty">왼쪽에서 날짜를 골라 데일리 브리핑 실기사를 누르거나, 기사 문장을 붙여 넣으면 지표에는 밑줄과 번호를, 오해하기 쉬운 표현에는 점선 밑줄을 긋고 여기에 짚을 점을 정리합니다.</p>';renderNReal([],'none');return;}
   var r=analyze(t);
   var iN=r.order.filter(function(x){return x.k==='i';}).length,pN=r.order.length-iN;
-  o.innerHTML='<div class="out-h"><h3>빨간 펜 메모</h3><small>지표 '+iN+'개 · 표현 '+pN+'개</small></div><div class="marked">'+r.html+'</div>'+
+  var ls=(lwCur&&t===lwCur.text)?lwsrc(lwCur):'';
+  o.innerHTML='<div class="out-h"><h3>빨간 펜 메모</h3><small>지표 '+iN+'개 · 표현 '+pN+'개</small></div>'+ls+'<div class="marked">'+r.html+'</div>'+
     (r.order.length?'<div style="margin-top:16px">'+r.order.map(function(sp){var n=r.num[sp.k+':'+sp.id];return sp.k==='i'?indCard(BYI[sp.id],n):patNote(N.patterns.filter(function(p){return p.id===sp.id;})[0],n);}).join('')+'</div>':
       '<p class="empty">짚을 지표를 찾지 못했습니다. 실업률·고용률·쉬었음·실질임금·구인배수 같은 낱말이 들어 있는지 확인하거나, 왼쪽 지표 낱말을 눌러 보세요.</p>');
   renderNReal(widgetsFor(r.order.filter(function(x){return x.k==='i';}).map(function(x){return x.id;})),'article');
-  if(scroll&&window.matchMedia('(max-width:999px)').matches)o.scrollIntoView({behavior:'smooth',block:'start'});
+  if(scroll)scrollToResult();
 }
 function showOne(id,scroll){
   var o=$('nOut');if(!o||!BYI[id])return;
@@ -545,8 +613,8 @@ function showOne(id,scroll){
 function onNewsClick(e){
   var nw=e.target.closest('[data-nw]');
   if(nw){var k=Number(nw.getAttribute('data-nw'));if(nrealList[k]){nrealCur=k;paintNReal();var nb=$('nReal')&&$('nReal').querySelector('[data-nw="'+k+'"]');if(nb&&nb.focus)nb.focus({preventScroll:true});}return;}
-  var s=e.target.closest('[data-s]');
-  if(s){var smp=N.samples.filter(function(x){return x.id===s.getAttribute('data-s');})[0];newsText=smp.text;$('nt').value=smp.text;showResult(true);toast('가상 기사 「'+smp.title+'」를 넣었습니다.');return;}
+  var lw=e.target.closest('[data-lw]');
+  if(lw){pickLW(lw.getAttribute('data-lw'));return;}
   var ind=e.target.closest('[data-ind]');
   if(ind){var id=ind.getAttribute('data-ind');if(BYI[id]){history.replaceState(null,'','#news-'+id);lastView='news:'+id;showOne(id,true);}return;}
   var mk=e.target.closest('mark[data-go]');
@@ -560,13 +628,14 @@ function renderAbout(){
     '<h3 class="st">이 꼭지는 이런 곳입니다</h3><div class="prose">'+
     '<p>노동시장 산책은 직업상담 실무자와 경제학을 따로 공부하지 않은 분들이 고용 뉴스와 노동시장의 기본 원리를 편하게 이해하도록 돕는 상식·참고 도구입니다. 시험 문제의 정답을 외우는 곳이 아니며, 경제학 안에서도 해석이 갈리는 대목은 갈린다고 적었습니다.</p>'+
     '<p>설명 수준은 경제학 학부 과정의 핵심 원리에 맞췄고, 뉴스를 제대로 읽는 데 꼭 필요한 대학원 수준 개념 '+deep.length+'개('+deep.map(function(c){return c.title;}).join(', ')+')에는 「깊이 보기」 표시를 달았습니다.</p>'+
-    '<p>뉴스 읽기 도우미는 외부 AI나 서버를 쓰지 않습니다. 이 화면에 들어 있는 지표 사전과 표현 규칙만으로 붙여 넣은 문장을 바로 살펴보며, 문장은 저장하거나 보내지 않습니다. 규칙으로 찾는 방식이라 문맥을 완전히 이해하지는 못하므로, 짚어 준 점은 스스로 확인할 출발점으로 써 주세요.</p></div>'+
+    '<p>뉴스 읽기 도우미는 외부 AI나 서버를 쓰지 않습니다. 이 화면에 들어 있는 지표 사전과 표현 규칙만으로 붙여 넣은 문장을 바로 살펴보며, 문장은 저장하거나 보내지 않습니다. 규칙으로 찾는 방식이라 문맥을 완전히 이해하지는 못하므로, 짚어 준 점은 스스로 확인할 출발점으로 써 주세요.</p>'+
+    '<p>연습에 쓰는 기사는 <a href="../briefing/">데일리 브리핑</a>이 매일 쓰는 카드 중 고용·임금·직무·정책을 다룬 것('+((LW&&LW.articles)?LW.articles.length:0)+'건)입니다. 카드의 「무슨 일·수치·근거」를 그대로 가져오며, 원문 문장을 옮기지 않고 사실·수치만 새로 쓴 글입니다. 기사마다 「그날 지면」과 원문 링크를 붙였습니다. 브리핑에 새 지면이 쌓이면 이 목록도 함께 늘어납니다.</p></div>'+
     '<h3 class="st">숫자의 출처</h3><ul>'+Object.keys(N.srcs).map(function(k){return '<li><a href="'+esc(N.srcs[k].url)+'" target="_blank" rel="noopener">'+esc(N.srcs[k].name)+'</a></li>';}).join('')+
       '<li>2026년 최저임금 시간당 10,320원: 최저임금위원회 결정, 고용노동부 고시</li></ul>'+
     '<p class="muted" style="font-size:15px">최근 수치는 '+esc(N.checked)+'에 확인했습니다. 통계청은 2025년 10월부터 국가데이터처로 이름이 바뀌었습니다. 수치는 사실만 옮겨 적었고 보도자료 문장은 싣지 않았습니다.</p>'+
     '<h3 class="st">바탕 이론</h3><ul>'+C.sources.map(function(s){return '<li>'+esc(s.name)+' <span class="muted">— '+esc(s.use)+'</span></li>';}).join('')+'</ul>'+
-    '<p class="muted" style="font-size:15px">이론은 이름과 요지만 소개했고, 설명·예시·연습용 가상 기사는 모두 이 자료실에서 새로 쓴 문장입니다. 그래프는 원리를 보이기 위해 단순한 식으로 새로 그렸으며 실제 추정치가 아닙니다.</p>'+
-    '<h3 class="st">함께 보면 좋은 자료실 꼭지</h3><div class="rel"><a href="../library/">국회 미래고용 디지털 서재</a><a href="../transit/">환승노선도</a><a href="../hud/">국취 실무 상담 HUD</a><a href="../theory/">직업상담 이론 위키</a></div>'+
+    '<p class="muted" style="font-size:15px">이론은 이름과 요지만 소개했고, 설명·예시는 모두 이 자료실에서 새로 쓴 문장입니다. 그래프는 원리를 보이기 위해 단순한 식으로 새로 그렸으며 실제 추정치가 아닙니다.</p>'+
+    '<h3 class="st">함께 보면 좋은 자료실 꼭지</h3><div class="rel"><a href="../briefing/">데일리 브리핑</a><a href="../library/">국회 미래고용 디지털 서재</a><a href="../transit/">환승노선도</a><a href="../hud/">국취 실무 상담 HUD</a><a href="../theory/">직업상담 이론 위키</a></div>'+
   '</div>';
 }
 })();

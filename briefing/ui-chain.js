@@ -17,10 +17,10 @@
     return '<ol class="tl">' + asc.map(function (it) {
       var su = url(it.source_url);
       return '<li' + (it.date === items._today ? ' class="now"' : '') + '><span class="dt">' + esc(md(it.date)) + '<small>' + esc(yr(it.date)) + '</small></span>' +
-        '<div class="node"><span class="tt">' + esc(it.title) + '</span><span class="mt">' + rgBadge(region(it)) +
+        '<div class="node"><span class="tt">' + esc(it.title) + '</span><span class="mt"><span class="mm">' + rgBadge(region(it)) +
         '<span>' + esc(it.source_name || '') + '</span>' + (it.category ? '<span>' + esc(it.category) + '</span>' : '') +
-        '<a class="link" href="' + esc(pageLink(it)) + '">그날 지면 →</a>' + (su ? '<a class="link" href="' + esc(su) + '" target="_blank" rel="noopener">원문</a>' : '') +
-        '</span></div></li>';
+        '</span><span class="lk"><a class="link" href="' + esc(pageLink(it)) + '">그날 지면 →</a>' + (su ? '<a class="link" href="' + esc(su) + '" target="_blank" rel="noopener">원문</a>' : '') +
+        '</span></span></div></li>';
     }).join('') + '</ol>';
   }
 
@@ -29,8 +29,8 @@
     function col(name, sub, list) {
       return '<section class="gv-c"><div class="gv-h"><b>' + name + '</b><span>' + sub + ' ' + list.length + '건</span></div>' +
         (list.length ? '<ul class="gv-l">' + list.map(function (it) {
-          return '<li><span class="tt">' + esc(it.title) + '</span><span class="mt"><span class="num">' + esc(md(it.date)) + '</span><span>' + esc(it.source_name || '') + '</span>' +
-            '<a href="' + esc(pageLink(it)) + '">그날 지면 →</a></span></li>';
+          return '<li><span class="tt">' + esc(it.title) + '</span><span class="mt"><span class="mm"><span class="num">' + esc(md(it.date)) + '</span><span>' + esc(it.source_name || '') + '</span></span>' +
+            '<span class="lk"><a href="' + esc(pageLink(it)) + '">그날 지면 →</a></span></span></li>';
         }).join('') + '</ul>'
           : '<p class="gv-empty">이 테마의 ' + (name === '국내' ? '국내' : '해외') + ' 자료는 아직 없습니다. 다른 날짜의 같은 테마가 쌓이면 이 칸에 나란히 놓입니다.</p>') +
         '</section>';

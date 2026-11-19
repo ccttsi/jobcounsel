@@ -206,6 +206,14 @@
     var e = emgOf(c); if (!e) return '';
     return '<a class="emg" href="../emerging/?q=' + encodeURIComponent(e.q) + '" title="신산업 지면에서 「' + esc(e.label) + '」 찾기"><span>신산업</span> <b>' + esc(e.label) + '</b> <i aria-hidden="true">↗</i></a>';
   }
+  /* ---------- 노동시장 산책으로 잇기 ----------
+     카드가 노동시장 산책 실기사로 표시(labor_walk: true)된 경우에만 칩을 붙인다.
+     실기사 목록·날짜는 briefing/data/labor-walk.json이 가지고, 여기서는 그 지면·카드로 딥링크만 건다. */
+  function laborWalk(c, date) {
+    if (c.labor_walk !== true) return '';
+    return '<a class="labw" href="../labor/?date=' + encodeURIComponent(date) + '&card=' + encodeURIComponent(c.id) + '#news" title="노동시장 산책에서 이 기사로 지표 읽기를 연습합니다">' +
+      '<span>노동시장 산책</span> <b>실기사로 읽기</b> <i aria-hidden="true">↗</i></a>';
+  }
   function countChains() {
     var c = (window.JC_CHAIN && JC_CHAIN.counts) ? JC_CHAIN.counts() : {};
     Array.prototype.forEach.call(main.querySelectorAll('[data-chain]'), function (b) {
@@ -286,7 +294,7 @@
             return '<button type="button" role="tab" data-step="' + k + '" aria-selected="' + (st === k) + '" aria-label="' + ['①', '②', '③'][k] + ' ' + STEP_NAMES[k] + '">' + ['①', '②', '③'][k] + ' ' + n + '</button>';
           }).join('') + '</div>' +
           '<ol class="st"><li><b>무슨 일인가</b>' + esc(t.what) + '</li><li><b>수치·근거</b>' + esc(t.evidence) + '</li><li><b>상담·구직 시사점</b>' + esc(t.implication) + '</li></ol>' +
-          '<div class="card-f">' + (c.theme_key ? chainBtn(c.theme_key, c.theme_label, c.region) : '') + emgLink(c) + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
+          '<div class="card-f">' + (c.theme_key ? chainBtn(c.theme_key, c.theme_label, c.region) : '') + emgLink(c) + laborWalk(c, E.date) + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
       }).join('') + '</div></div></section>';
 
     /* 레이더 */

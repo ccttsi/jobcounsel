@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-04T07:10:00+09:00",
  "edition": {
   "date": "2026-11-04",
@@ -169,7 +169,9 @@
     "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
    },
    "issue_id": "iss-cpi-202610",
-   "counselor_question": "지난달 생활비에서 가장 많이 오른 항목은 무엇이었나요?"
+   "counselor_question": "지난달 생활비에서 가장 많이 오른 항목은 무엇이었나요?",
+   "labor_walk": true,
+   "labor_walk_topic": "임금·물가"
   },
   {
    "id": "c02",
@@ -257,7 +259,9 @@
     "usage": "라이선스가 허락한 범위에서 수치를 도표화."
    },
    "issue_id": "iss-us-jolts-202609",
-   "counselor_question": "지원한 곳에서 면접까지 얼마나 걸렸나요?"
+   "counselor_question": "지원한 곳에서 면접까지 얼마나 걸렸나요?",
+   "labor_walk": true,
+   "labor_walk_topic": "해외 노동시장"
   }
  ],
  "radar": {

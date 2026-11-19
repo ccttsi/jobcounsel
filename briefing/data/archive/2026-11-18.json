@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-18T23:12:00+09:00",
  "edition": {
   "date": "2026-11-18",
@@ -179,7 +179,9 @@
     "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
    },
    "issue_id": "iss-bok-ai-productivity",
-   "counselor_question": "AI로 아낀 시간에 무엇을 했나요? 그 일이 경력서에 남는 일인가요?"
+   "counselor_question": "AI로 아낀 시간에 무엇을 했나요? 그 일이 경력서에 남는 일인가요?",
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
   },
   {
    "id": "c02",
@@ -363,7 +365,9 @@
    "run_id": "br-20261118-0710",
    "theme_key": "th-employment-service",
    "theme_label": "고용서비스와 상담",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
   },
   {
    "id": "c04",
@@ -456,7 +460,9 @@
    "run_id": "br-20261118-0710",
    "theme_key": "th-macro-economy",
    "theme_label": "거시경제와 고용",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "거시경제와 고용"
   },
   {
    "id": "c05",
@@ -547,7 +553,9 @@
    "run_id": "br-20261118-0710",
    "theme_key": "th-skills-training",
    "theme_label": "재취업과 직업훈련",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
   },
   {
    "id": "c06",
@@ -627,7 +635,9 @@
     "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
    },
    "issue_id": "iss-sfed-reallocation",
-   "counselor_question": "지금 하는 일 가운데 AI가 대신할 수 있는 과업은 무엇이라고 생각하나요?"
+   "counselor_question": "지금 하는 일 가운데 AI가 대신할 수 있는 과업은 무엇이라고 생각하나요?",
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
   }
  ],
  "radar": {

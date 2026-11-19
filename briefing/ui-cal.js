@@ -12,6 +12,7 @@
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function ym(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1); }
+  function todayKey() { var t = new Date(); return t.getFullYear() + '-' + pad(t.getMonth() + 1) + '-' + pad(t.getDate()); }
   function key(y, m, day) { return y + '-' + pad(m + 1) + '-' + pad(day); }
   function parseYm(s) { var m = /^(\d{4})-(\d{2})$/.exec(String(s || '')); return m ? new Date(+m[1], +m[2] - 1, 1) : null; }
   function later(a, b) { return a > b ? a : b; }
@@ -69,18 +70,20 @@
       var atMax = !max || (y === max.getFullYear() && m === max.getMonth()) || (y > max.getFullYear()) || (y === max.getFullYear() && m > max.getMonth());
       var first = new Date(y, m, 1).getDay();
       var last = new Date(y, m + 1, 0).getDate();
+      var tk = todayKey();
       var cells = '';
       for (var b = 0; b < first; b++) cells += '<span aria-hidden="true"></span>';
       for (var d = 1; d <= last; d++) {
         var k = key(y, m, d), on = !!have[k];
-        cells += '<button type="button" class="cal-d" data-d="' + k + '"' + (on ? '' : ' disabled') +
+        cells += '<button type="button" class="cal-d' + (k === tk ? ' cal-today' : '') + '" data-d="' + k + '"' + (on ? '' : ' disabled') +
           ' aria-current="' + (k === current) + '" aria-label="' + y + '년 ' + (m + 1) + '월 ' + d + '일' + (on ? ' · 브리핑 있음' : ' · 브리핑 없음') + '">' +
           d + (on ? '<i class="dot" aria-hidden="true"></i>' : '') + '</button>';
       }
       cal.innerHTML = '<div class="cal-hd">' +
         '<button type="button" class="cal-mv" data-m="-1" aria-label="이전 달"' + (atMin ? ' disabled' : '') + '>‹</button>' +
         '<button type="button" class="cal-title" data-mode="m" aria-expanded="false" aria-label="' + y + '년 ' + (m + 1) + '월 · 연도와 월 고르기"><b class="num">' + y + '년 ' + (m + 1) + '월</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' +
-        '<button type="button" class="cal-mv" data-m="1" aria-label="다음 달"' + (atMax ? ' disabled' : '') + '>›</button></div>' +
+        '<button type="button" class="cal-mv" data-m="1" aria-label="다음 달"' + (atMax ? ' disabled' : '') + '>›</button>' +
+        '<button type="button" class="cal-now" data-today aria-label="오늘(' + tk + ')이 있는 달로 가기">오늘</button></div>' +
         '<div class="cal-wd" aria-hidden="true">' + WD.map(function (w) { return '<span>' + w + '</span>'; }).join('') + '</div>' +
         '<div class="cal-g">' + cells + '</div>' +
         '<div class="cal-ft"><span><i aria-hidden="true"></i>점이 있는 날은 지면이 있습니다 · 이 달 ' + countInView() + '일</span>' +
@@ -104,12 +107,23 @@
       cal.innerHTML = '<div class="cal-hd">' +
         '<button type="button" class="cal-mv" data-y="-1" aria-label="이전 해"' + (atMinYear ? ' disabled' : '') + '>‹</button>' +
         '<button type="button" class="cal-title" data-mode="d" aria-label="' + yearView + '년 · 일간 달력으로 돌아가기"><b class="num">' + yearView + '년</b></button>' +
-        '<button type="button" class="cal-mv" data-y="1" aria-label="다음 해"' + (atMaxYear ? ' disabled' : '') + '>›</button></div>' +
+        '<button type="button" class="cal-mv" data-y="1" aria-label="다음 해"' + (atMaxYear ? ' disabled' : '') + '>›</button>' +
+        '<button type="button" class="cal-now" data-today aria-label="오늘(' + todayKey() + ')이 있는 달로 가기">오늘</button></div>' +
         '<div class="cal-mg" role="group" aria-label="월 고르기">' + cells + '</div>' +
         '<div class="cal-ft"><span><i aria-hidden="true"></i>색이 있는 달에 지면이 있습니다 · ' + yearView + '년 ' + yearDays + '일</span>' +
         '<span class="cal-since">전체 ' + totalCount() + '일</span></div>';
     }
     function draw() { if (mode === 'm') drawMonths(); else drawDays(); bind(); placeIfOpen(); }
+    /* 오늘 — 오늘 지면이 있으면 그 지면을 바로 열고, 없으면 오늘날이 있는 달로만 옮긴다.
+       (달력은 지면이 있는 날만 고를 수 있으므로, 빈 오늘을 고를 수 있게 만들지는 않는다) */
+    function goToday() {
+      var t = todayKey(), m = parseYm(t.slice(0, 7));
+      if (m) view = m;
+      mode = 'd';
+      if (have[t]) { current = t; close(); syncButton(); if (opts.onPick) opts.onPick(t); return; }
+      draw();
+      focusIn('.cal-d[data-d="' + t + '"]:not([disabled]), .cal-title');
+    }
     function placeIfOpen() {
       if (!cal.classList.contains('open')) return;
       /* 위치는 offset(레이아웃)로 읽는다 — 자기 transform에 영향받지 않게. 화면 밖으로 나가면 안쪽으로 민다. */
@@ -138,6 +152,9 @@
       if (title) title.addEventListener('click', function () {
         if (mode === 'd') { mode = 'm'; yearView = view.getFullYear(); draw(); focusIn('.cal-m[aria-pressed="true"]:not([disabled]), .cal-m:not([disabled])'); }
         else { mode = 'd'; draw(); focusIn('.cal-d[aria-current="true"]:not([disabled])'); }
+      });
+      Array.prototype.forEach.call(cal.querySelectorAll('[data-today]'), function (b) {
+        b.addEventListener('click', goToday);
       });
       Array.prototype.forEach.call(cal.querySelectorAll('.cal-m'), function (b) {
         if (b.disabled) return;

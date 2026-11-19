@@ -2,7 +2,8 @@
 
 # 브리핑 데이터 스키마 v1.3.0
 
-- 스키마 버전: **1.3.0** (2026-11-19, 17번 지면 개편 — 호수(`edition.no`) 폐지, 카드 `theme_key`·`theme_label`·`region` 추가, 파생 색인 `chain.json`, `archive_dates`를 「보관된 전 날짜」로 확장)
+- 스키마 버전: **1.4.0** (2026-11-19, 노동시장 산책 연동 — `cards[].labor_walk`·`labor_walk_topic`, 파생 색인 `labor-walk.json`)
+  - 1.3.0 (2026-11-19, 17번 지면 개편): 호수(`edition.no`) 폐지, 카드 `theme_key`·`theme_label`·`region` 추가, 파생 색인 `chain.json`, `archive_dates`를 「보관된 전 날짜」로 확장
   - 1.2.0 (2026-11-16, 17-2): 권역 `edition`·`updated_at`·`run_id`, 루트 `runs`, 루트 `main_themes`
   - 1.1.0 (2026-11-16): `cards[].issue_id` 선택 필드 추가 — 17-1 「오늘의 원문」 연결
 - 대상 파일: `briefing/data/briefing.json`, `briefing/data/archive/YYYY-MM-DD.json`
@@ -19,6 +20,8 @@
 |---|---|---|---|
 | `briefing/data/briefing.json` | 피클 | 엔진 | **오늘 자** 데이터. 항상 최신 1건. |
 | `briefing/data/archive/YYYY-MM-DD.json` | 피클 | 엔진(지난 브리핑) | 그날의 `briefing.json`을 **그대로 복사한 스냅샷**. 형식은 `briefing.json`과 100% 동일. |
+| `briefing/data/chain.json` | `build_index.py` | 엔진(연결고리) | 날짜별 카드에서 만든 파생 색인. 「연결고리」 시트가 이 파일 하나만 받습니다. |
+| `briefing/data/labor-walk.json` | `build_index.py` | `/labor/` | `labor_walk: true` 카드만 모은 실기사 색인(날짜·제목·갈래·출처·본문 `text`·`key_numbers`). `/labor/`는 이 파일 하나로 날짜 고르기·실기사 목록·출처를 그립니다. |
 | `briefing/data/SCHEMA.md` | 사람·피클 | 엔진 구현자 | 이 문서. |
 
 - 엔진 진입점은 **항상 `briefing/data/briefing.json`** 하나입니다. `fetch('data/briefing.json')` (엔진이 `/briefing/index.html`이면 상대경로 `../briefing/data/briefing.json` 또는 `data/../briefing/data/...`가 아니라 **`briefing/data/briefing.json`을 사이트 루트 기준으로** 지정).
@@ -178,6 +181,8 @@
 | `theme_label` | string | ✔(v1.3.0) | 화면에 쓰는 주제 이름(예: `AI와 직무 재편`). `theme_key`의 한국어 이름. |
 | `region` | enum `"kr"` \| `"global"` | ✔(v1.3.0) | 이 자료의 권역. `global`이면 글로벌 비교의 「해외」 칸에 놓인다. 국내 공공자료·언론은 `kr`, BLS·ILO·IMF·arXiv 등은 `global`. |
 | `issue_id` | string | – | 17-1 원문(`briefing/data/news.json`)과 공유하는 이슈 묶음 id. `NEWS-SCHEMA.md` §5. 같은 값을 가진 원문이 있으면 카드 아래 「오늘의 원문 더 보기」를 그리고, 없으면 아무것도 그리지 않습니다. (v1.1.0) |
+| `labor_walk` | boolean | – | (v1.4.0) 노동시장 산책(`/labor/`)의 실기사로 쓸 수 있는 카드. `build_index.py`가 `theme_key`·제목을 보고 붙이며, 붙은 카드에는 카드 하단에 「노동시장 산책 · 실기사로 읽기」 칩이 생깁니다. 손으로 넣지 않아도 됩니다. |
+| `labor_walk_topic` | string | – | (v1.4.0) 그 카드의 갈래 — `청년·중장년 고용` / `임금·물가` / `AI와 직무` / `해외 노동시장` / `고용정책·감독` / `훈련·재취업` / `고용서비스·채용` / `퇴직·사회안전망` / `거시경제와 고용`. `/labor/`의 날짜별 목록에 표시됩니다. |
 | `order` | integer | ✔ | 1부터. 화면 순서. |
 | `track` | enum `"A"`\|`"B"` | ✔ | §2. |
 | `category` | string | ✔ | `국내 고용지표` / `국내 고용행정` / `해외 노동시장` / `AI·직무` / `채용시장`. |
