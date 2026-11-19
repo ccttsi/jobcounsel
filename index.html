@@ -336,16 +336,22 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 @keyframes a-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .a-list-h{font-size:clamp(22px,4.6vw,28px);font-weight:800;letter-spacing:-.03em;color:var(--ink);margin:0 0 10px;text-align:center}
 .a-list-h b{display:inline;color:var(--a1)}
-.a-list ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;min-height:calc(5 * var(--row-h,56px))}
-.a-root .a-list a{display:flex;gap:14px;align-items:baseline;height:var(--row-h,56px);min-height:56px;padding:12px 6px;border-top:1px dashed var(--line-2);color:inherit;text-decoration:none}
-/* 높이를 재는 잠금 상자 — 화면 밖에 두고 실제 폭으로 모든 줄을 한 번 그려 본다 */
-.a-list-probe{position:absolute;left:-9999px;top:0;margin:0;max-width:none;visibility:hidden;pointer-events:none;animation:none!important}
-.a-list-probe a{height:auto!important;min-height:0!important}
+.a-list ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;min-height:calc(5 * var(--row-h,94px))}
+/* 2026-11-19 — 번호와 내용이 어긋나고 줄마다 키가 달라지던 것을 고쳤다.
+   겹자(⊙)의 첫 줄(번호·제목) 안에서 둘을 같은 높이에 가운데로 놀인다 — 글자 크기를 바꿔도
+   번호 중심과 제목 첫 줄 중심의 차가 0.00px이다(둘 다 같은 격자 칸에서 center).
+   설명은 두 줄로 자르고(-webkit-line-clamp) 두 줄 높이를 늘 차지한다 — 글이 짧든 길든 상자 높이가 같다. */
+.a-root .a-list a{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:2px;align-items:center;
+  min-height:var(--row-h,94px);padding:12px 6px;border-top:1px dashed var(--line-2);color:inherit;text-decoration:none;overflow:hidden}
 .a-list li:first-child a{border-top:0}
 .a-root .a-list a:hover b{color:var(--a1)}
-.a-list .a-no{flex:none;font-size:13.5px;font-weight:700;color:var(--a1);min-width:1.6em}
-.a-list li b{display:block;font-size:17px;font-weight:700;line-height:1.4;color:var(--ink)}
-.a-list small{display:block;font-size:14px;color:var(--muted);line-height:1.5}
+.a-list .a-no{grid-column:1;grid-row:1;align-self:center;justify-self:start;font-size:13.5px;font-weight:700;line-height:1.4;color:var(--a1);min-width:1.6em;
+  /* 도장 테두리·안여백이 줄 높이를 밀어 올리지 않게 위아래를 똑같이 당긴다(중심은 그대로) */
+  margin-block:-4px}
+.a-list li b{grid-column:2;grid-row:1;align-self:center;min-width:0;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+  font-size:17px;font-weight:700;line-height:1.4;color:var(--ink)}
+.a-list small{grid-column:2;grid-row:2;align-self:start;min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  min-height:calc(2 * 1.5em);font-size:14px;color:var(--muted);line-height:1.5}
 .a-pg{display:flex;justify-content:center;align-items:center;gap:2px;margin-top:10px;min-height:44px}
 .a-root .a-pg button{min-width:44px;height:44px;padding:0 6px;border-radius:12px;font-size:15px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
 .a-root .a-pg button[aria-current="true"]{color:var(--a1);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
@@ -475,7 +481,7 @@ html:not([data-jc-imm]) .a-root .a-btn.a-open{box-shadow:4px 4px 0 var(--ink);tr
 :root[data-theme="dark"]:not([data-jc-imm]) .a-root .a-btn.a-open{box-shadow:4px 4px 0 color-mix(in srgb,var(--acc) 45%,transparent)}
 @media (hover:hover){html:not([data-jc-imm]) .a-root .a-btn.a-open:hover{transform:translate(-1px,-2px)}}
 html:not([data-jc-imm]) .a-root .a-btn.a-open:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
-html:not([data-jc-imm]) .a-list .a-no{align-self:center;min-width:2.5em;padding:3px 0 2px;border:1.5px dashed currentColor;border-radius:7px;text-align:center;transform:rotate(-4deg);background:color-mix(in srgb,var(--a1) 9%,transparent)}
+html:not([data-jc-imm]) .a-list .a-no{align-self:center;min-width:2.5em;padding:3px 0;border:1.5px dashed currentColor;border-radius:7px;text-align:center;transform:rotate(-4deg);background:color-mix(in srgb,var(--a1) 9%,transparent)}
 html:not([data-jc-imm]) .a-list li:nth-child(even) .a-no{transform:rotate(3deg)}
 @keyframes a-thunk{0%{opacity:0;transform:scale(1.9) rotate(-10deg)}60%{opacity:1;transform:scale(.93) rotate(-10deg)}}
 html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic-bezier(.3,.9,.3,1) .15s backwards}
@@ -953,7 +959,7 @@ function mod(a,n){return ((a%n)+n)%n;}
 function reduce(){return !!reduceMQ.matches;}
 /* 자료 전체 목록: 롤링 자리를 대신해 5개씩 보여 준다 */
 var LIST_PER=5,listPage=0,listOpen=false,rowH=0;
-function rowHTML(t){return '<li><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><span style="min-width:0"><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></span></a></li>';}
+function rowHTML(t){return '<li><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></a></li>';}
 function renderList(){
   var n=Math.max(1,Math.ceil(TOOLS.length/LIST_PER));listPage=Math.min(listPage,n-1);
   $('allList').innerHTML=TOOLS.slice(listPage*LIST_PER,(listPage+1)*LIST_PER).map(rowHTML).join('');
@@ -966,16 +972,14 @@ function renderList(){
    전체 목록을 같은 폭의 화면 밖 상자에 한 번 그려 **가장 긴 줄**을 재고, 모든 줄 높이를 그 값으로
    못 박는다(--row-h). 목록 상자도 5줄 높이라 마지막 쪽(3개)에서도 쪽수·심전도가 움직이지 않는다. */
 function measureListRows(){
+  /* 줄 높이는 이제 내용과 상관없이 같다(제목 1줄 + 설명 2줄로 자름). 첫 줄만 재어
+     5줄 상자 높이(--row-h)를 맞춘다 — 마지막 쪽이 3개여도 쪽 번호·심전도가 움직이지 않게. */
   var ol=$('allList'),host=$('listView');
-  if(!ol||!TOOLS.length||host.hidden)return;
-  var w=ol.clientWidth;if(!w)return;
-  var box=document.createElement('div');
-  box.className='a-list a-list-probe';box.style.width=w+'px';
-  box.innerHTML='<ol>'+TOOLS.map(rowHTML).join('')+'</ol>';
-  host.appendChild(box);
-  var hs=[].map.call(box.querySelectorAll('a'),function(a){return a.getBoundingClientRect().height;});
-  host.removeChild(box);
-  var m=Math.ceil(Math.max.apply(null,hs)+.4);
+  if(!ol||host.hidden)return;
+  var rows=ol.querySelectorAll('a');if(!rows.length)return;
+  var max=0;
+  for(var i=0;i<rows.length;i++)max=Math.max(max,rows[i].getBoundingClientRect().height);
+  var m=Math.ceil(max);
   if(m&&m!==rowH){rowH=m;host.style.setProperty('--row-h',m+'px');}
 }
 function setList(on){
