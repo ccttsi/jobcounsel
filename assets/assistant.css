@@ -161,6 +161,8 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  /* 스크롤바가 생길 때 본문 폭이 줄어 단계 칩이 1px 흔들리지 않게 자리를 미리 둔다 */
+  scrollbar-gutter: stable;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   padding: 12px 14px 14px;
@@ -289,6 +291,102 @@
 .jca-intro { padding: 6px 2px 10px; color: var(--_muted); }
 .jca-intro b { display: block; margin-bottom: 4px; font-size: 14px; color: var(--_ink); letter-spacing: -.01em; }
 .jca-intro p { margin: 0 0 6px; font-size: 12.5px; line-height: 1.6; }
+.jca-hist-back { margin-top: 10px; }
+
+/* ---------- 대화 목록 줄 ---------- */
+
+.jca-histbar { display: flex; align-items: center; gap: 6px; margin: 0 0 10px; }
+.jca-hbtn {
+  flex: 0 0 auto;
+  display: inline-flex; align-items: center; gap: 5px;
+  min-height: 44px; padding: 0 11px;
+  border: 1px solid var(--_line); border-radius: 11px;
+  background: var(--_paper); color: var(--_muted);
+  font: 700 12px/1 var(--_sans); letter-spacing: -.01em;
+  cursor: pointer;
+}
+.jca-hbtn b { font-weight: 800; color: var(--_acc); font-variant-numeric: tabular-nums; }
+.jca-hbtn:hover { border-color: var(--_line2); color: var(--_ink); }
+.jca-hbtn[aria-expanded="true"] { border-color: var(--_acc); color: var(--_ink); background: color-mix(in srgb, var(--_acc) 7%, var(--_paper)); }
+.jca-hbtn:focus-visible { outline: 2px solid var(--_acc); outline-offset: 1px; }
+.jca-hnew { margin-left: auto; color: var(--_acc); border-color: color-mix(in srgb, var(--_acc) 34%, var(--_line)); }
+.jca-hist-title {
+  flex: 1 1 auto; min-width: 0;
+  font-size: 12px; color: var(--_dim); letter-spacing: -.01em;
+  text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ---------- 지난 대화 시트 (대화 본문 자리를 그대로 덮는다) ---------- */
+
+.jca-hist { display: none; flex-direction: column; gap: 8px; }
+.jca-chat.jca-hist-on .jca-hist { display: flex; }
+.jca-chat.jca-hist-on .jca-thread,
+.jca-chat.jca-hist-on .jca-modes,
+.jca-chat.jca-hist-on .jca-compose,
+.jca-chat.jca-hist-on .jca-opts,
+.jca-chat.jca-hist-on .jca-website,
+.jca-chat.jca-hist-on .jca-off,
+.jca-chat.jca-hist-on .jca-sug,
+.jca-chat.jca-hist-on .jca-welcome { display: none !important; }
+
+.jca-hist-hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.jca-hist-ttl { min-width: 0; }
+.jca-hist-ttl b { display: block; font-size: 14.5px; font-weight: 800; letter-spacing: -.02em; }
+.jca-hist-ttl span { display: block; margin-top: 2px; font-size: 11px; color: var(--_dim); letter-spacing: -.01em; }
+.jca-hist-acts { margin: 0 0 2px; }
+.jca-hist-err { color: #b42318; }
+.jca-hist-list { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.jca-hrow {
+  display: flex; align-items: center; gap: 2px;
+  padding: 2px 2px 2px 2px;
+  border: 1px solid var(--_line); border-radius: 12px;
+  background: var(--_paper);
+}
+.jca-hrow[aria-current="true"] {
+  border-color: color-mix(in srgb, var(--_acc) 45%, var(--_line));
+  background: color-mix(in srgb, var(--_acc) 6%, var(--_paper));
+}
+.jca-hrow-main {
+  flex: 1 1 auto; min-width: 0; min-height: 52px;
+  padding: 7px 9px;
+  border: 0; border-radius: 10px; background: transparent; color: inherit;
+  text-align: left; cursor: pointer;
+  font-family: var(--_sans);
+}
+.jca-hrow-main:hover { background: var(--_panel); }
+.jca-hrow-main:focus-visible { outline: 2px solid var(--_acc); outline-offset: -2px; }
+.jca-hrow-t {
+  display: block; font-size: 13px; font-weight: 700; color: var(--_ink); letter-spacing: -.01em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.jca-hrow-m {
+  display: block; margin-top: 2px; font-size: 11px; color: var(--_dim);
+  letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.jca-hrow-acts { display: flex; flex: 0 0 auto; }
+.jca-hmini {
+  min-width: 44px; min-height: 44px; padding: 0 8px;
+  border: 0; border-radius: 9px; background: transparent; color: var(--_dim);
+  font: 600 11.5px/1 var(--_sans); letter-spacing: -.01em; cursor: pointer;
+}
+.jca-hmini:hover { background: var(--_panel); color: var(--_ink); }
+.jca-hmini:focus-visible { outline: 2px solid var(--_acc); outline-offset: -2px; }
+.jca-hrow-edit { display: flex; align-items: center; gap: 4px; flex: 1 1 auto; min-width: 0; padding: 4px; }
+.jca-hrow-in {
+  flex: 1 1 auto; min-width: 0; height: 44px; padding: 0 10px;
+  border: 1px solid var(--_line2); border-radius: 10px;
+  background: var(--_paper); color: var(--_ink);
+  font: 500 14px/1.2 var(--_sans);
+}
+.jca-hrow-in:focus { outline: none; border-color: var(--_acc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--_acc) 16%, transparent); }
+.jca-hist-import {
+  padding: 11px 12px;
+  border: 1px solid color-mix(in srgb, var(--_acc) 30%, var(--_line));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--_acc) 5%, var(--_paper));
+}
+.jca-hist-import b { display: block; font-size: 12.5px; font-weight: 800; letter-spacing: -.01em; }
+.jca-hist-import p { margin: 4px 0 8px; font-size: 11.5px; line-height: 1.55; color: var(--_muted); }
 
 .jca-turn { display: flex; flex-direction: column; gap: 7px; }
 .jca-q {
@@ -302,7 +400,7 @@
 .jca-q-t { display: block; font-size: 13.5px; line-height: 1.55; letter-spacing: -.01em; word-break: keep-all; }
 .jca-turn-acts { display: flex; gap: 2px; justify-content: flex-end; margin-top: 4px; }
 .jca-mini {
-  min-height: 44px; padding: 0 10px;
+  min-width: 44px; min-height: 44px; padding: 0 10px;
   border: 0; border-radius: 8px;
   background: transparent; color: var(--_dim);
   font: 600 11.5px/1 var(--_sans); cursor: pointer;
@@ -333,13 +431,52 @@
   animation: jca-caret 1s steps(2, start) infinite;
 }
 @keyframes jca-caret { to { visibility: hidden; } }
-.jca-wait { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--_muted); }
-.jca-wait i {
-  width: 12px; height: 12px; border-radius: 50%;
-  border: 2px solid var(--_line2); border-top-color: var(--_acc);
-  animation: jca-spin .8s linear infinite;
+.jca-a-wait { padding-bottom: 11px; }
+
+/* 어두운 테마: 민트 바탕 위 흰 글자는 읽기 어렵다 — 바탕에 맞춰 어두운 글자로. */
+:root[data-theme="dark"] .jca-panel .jca-btn.jca-primary,
+:root[data-theme="dark"] .jca-panel .jca-send,
+:root[data-theme="dark"] .jca-panel .jca-sug-i {
+  color: #06201d;
 }
-@keyframes jca-spin { to { transform: rotate(360deg); } }
+
+/* ---------- 진행 단계 (검색 → 정리 → 추론 → 작성) ---------- */
+
+.jca-stage {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 0 0 2px;
+  min-height: 46px;
+}
+.jca-step { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.jca-seg {
+  display: block; height: 3px; border-radius: 2px;
+  background: var(--_line2);
+  transition: background-color .18s ease;
+}
+.jca-step.done .jca-seg { background: color-mix(in srgb, var(--_acc) 42%, var(--_line2)); }
+.jca-step.on .jca-seg { background: var(--_acc); animation: jca-pulse 1.2s ease-in-out infinite; }
+.jca-step-l {
+  display: block;
+  font-size: 10.5px; font-weight: 700; line-height: 1.2;
+  letter-spacing: -.01em; color: var(--_dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.jca-step.on .jca-step-l { color: var(--_acc); }
+.jca-step.done .jca-step-l { color: var(--_muted); }
+.jca-stage-c {
+  display: block;
+  grid-column: 1 / -1;
+  font-size: 11.5px; line-height: 1.5; color: var(--_muted);
+  letter-spacing: -.01em; font-variant-numeric: tabular-nums;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+@keyframes jca-pulse { 50% { opacity: .35; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .jca-step.on .jca-seg { animation: none; }
+}
 
 .jca-compose { display: flex; gap: 8px; margin-top: 12px; }
 .jca-compose[hidden] { display: none; }
@@ -670,7 +807,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .jca-launch, .jca-panel, .jca-backdrop { transition: none; }
-  .jca-wait i { animation: none; }
+  .jca-stage-c, .jca-step.on .jca-seg { animation: none; }
 }
 
 /* 집중 보기에서는 잠시 숨긴다(읽기·도구함 방해 금지) */

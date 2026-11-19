@@ -638,3 +638,19 @@
 - **실측**(390×844·1280×800 × 밝게·어둡게 × 글자 크기 3단계 = 12조합): 같은 쪽 줄 높이 동일, 번호 중심↔제목 첫 줄 중심 **0.00px**(2단계에서 0.01px 반올림), 상자 밖 넘침 0, 가로 넘침 0, 페이지 1↔4에서 목록 높이·쪽 번호 Y 동일, 콘솔 오류 0. 캡처 `downloads/search-v2-2026-11-19/list-final-{phone,desktop}-{light,dark}.png`.
 - **남은 것**: 아이폰 사파리 실기기에서 목록 스크롤 손맛, 글자 크기 2단계에서 설명 두 줄 말줄임이 답답하지 않은지.
 - **다음 시작 파일**: `index.html` 「전체 목록」 CSS 절 → `rowHTML`/`measureListRows`.
+## 2026-11-19 비서 — 내 대화 기록함(본인 전용 목록) + 기다리는 동안 진행 단계
+
+- **지시**: 「대화 내역 자기만 볼 수 있게 목록 작성 되어 과거대화 볼 수 있게 해줘」 + 「기다리는 사람을 위해 대화의 경우 묻기를 클릭하면 검색 중, 정리 중, 추론 중, 작성 중 등 ai 비서의 현재 업무를 간략화해서 알려줘」.
+- **바뀐 파일**: `assets/assistant.js` · `assets/assistant.css` · `supabase/functions/assistant-proxy/index.ts` · `assets/supabase-update-04-assistant-history.sql`(신규) · `README.md` · `supabase/functions/assistant-proxy/README.md` · 이 문서 · `ops/TODO.md`. **`index.html`·`assistant/search.js`·`build_index.py`·`assistant/data/*` 는 다른 작업과 겹치지 않게 건드리지 않았다.**
+- **내 대화 기록함**: 표 둘(`jc_assistant_threads` · `jc_assistant_messages`). 메시지 한 줄 = 질문+답 한 쌍(`question`·`answer`·`refs`·`web`·`mode`·`websearch`·`err`·`seq`) — 답이 반쯤 저장돼 질문만 남는 상태를 만들지 않으려고 쌍으로 둔다.
+  - **본인만**: 두 표는 RLS 를 켜고 `public·anon·authenticated` 권한을 전부 회수했다(정책 0개 = 전면 거부). 읽고 쓰는 길은 Service Role 을 쓰는 `assistant-proxy` 하나뿐이고, `user_id` 는 **세션 토큰의 SHA-256 을 `jc_sessions` 와 맞춰** 정한다 — 요청 본문의 `user_id` 는 아예 받지 않는다. 모든 쿼리에 `user_id=eq.<세션 사용자>` 를 붙이고, 메시지는 `(thread_id, user_id)` 복합 외래키라 남의 대화방 번호를 넣으면 DB 가 거부한다. 앱이 Supabase Auth(`auth.uid()`)가 아니라 자체 `jc_sessions` 로그인이라 `auth.uid()` 정책은 쓸 수 없다 — 대신 그보다 좁은 「클라이언트 권한 0 + 서버가 토큰으로 사용자 확정」으로 잠갔다.
+  - **화면**: 비서 창 위에 `지난 대화 N` · 지금 대화 제목 · `+ 새 대화` 줄. 「지난 대화」를 누르면 대화 본문 자리를 그대로 덮는 목록 시트가 열린다(높이 흔들림 없음). 줄마다 `이름`(그 자리에서 입력·저장)과 `삭제`, 시트 위에 `+ 새 대화`·`전체 비우기`.
+  - **로그아웃**: 예전처럼 이 브라우저(localStorage, `jc-assist-threads-v1`)에 목록이 쌓인다. 로그인하면 서버 목록이 되고, 이 브라우저에만 있던 대화는 **한 번 물어본 뒤**(`내 계정으로 옮기기` / `이 브라우저에만 두기`) 옮긴다 — 저절로 올리지 않는다.
+  - **이어보기**: 새로고침 사본(`jc-assist-chat-v1` v2)에 대화방 열쇠·제목·사용자를 함께 적어, 다시 열면 같은 대화가 그대로 돌아오고 다음 질문도 **같은 방**에 쌓인다(전에는 열쇠가 없어 새 방이 하나 더 생겼다).
+- **진행 단계**: `묻기`를 누르면 답변 카드 자리에 네 칸 막대 — `검색`(자료실 색인·선참조 지도) → `정리`(근거를 모아 요청 전송) → `추론`(모델 호출, 서버가 SSE `stage` 이벤트) → `작성`(첫 글자 이후). 지난 칸은 ✓, 지금 칸은 민트로 차오르고, 아래 줄에 「AI가 답을 생각하고 있어요 · 3초」처럼 **기다린 초**가 오른다(1초 간격, 그 줄만 다시 씀). 답이 끝나면 막대는 사라진다.
+  - 서버는 스트림이 열린 순간 `event: stage {"stage":"thinking"}` 한 번만 더 보낸다 — 글자 흐름 앞에 붙는 이벤트 하나라 스트리밍 속도에 영향이 없다.
+  - 칸 폭·높이는 `repeat(4, 1fr)` + `min-height:46px` 로 잡아 문구가 바뀌어도 자리가 움직이지 않는다. 단계 줄은 `grid-column:1/-1`(처음엔 1칸에 갇혀 「AI가 …」로 잘렸다).
+- **실측**(로컬 Chromium · 가짜 assistant-proxy가 실제 SSE로 stage→delta→done을 흘림 · 390×844·1280×800 × 밝게·어둡게 + 로그아웃 + 새로고침 + 옮기기):
+  콘솔 오류 0 · 페이지 오류 0 · 가로 넘침 0(대화·목록·단계 모두) · 44px 미만 0(체크박스 16px는 44px 라벨 안) · 네 단계 모두 관찰(`search`→`collect`→`think`→`write`) · 단계 막대 크기 45~46px·폭 변동 2px 이내(소수점 반올림) · 답이 끝나면 막대 0개 · 새로고침 뒤 같은 방 제목·같은 방에 이어 쌓임(방 개수 3→3) · 옮기기 카드 → 서버 1방 · 로컬 목록 0.
+- **남은 것**: ① SQL 적용 + `assistant-proxy` 재배포(§ README) ② 아이폰 사파리 실기기에서 목록 시트 스크롤·이름 고치기 키보드 ③ 두 기기에서 같은 방을 동시에 고칠 때 마지막 저장이 이긴다(충돌 병합은 넣지 않았다).
+- **다음 시작 파일**: `assets/assistant.js` `renderHist`/`renderStage`/`flushSave` → `assets/supabase-update-04-assistant-history.sql` → `supabase/functions/assistant-proxy/index.ts` `history_*`.

@@ -21,19 +21,27 @@
 | 로그인 세션 | `jc_sessions` (기존 표) | 세션 토큰의 SHA-256 값, 만료 시각 |
 | Gemini 키 | `jc_user_api_keys` | **AES-256-GCM 암호문**, IV, 끝 4자리 |
 | 키를 푸는 열쇠 | Edge Function 환경변수 `JC_KEY_MASTER_SECRET` | DB 에는 없음 |
-| 질문·대화·검색어 | **어디에도 저장하지 않음** | 서버 저장 표 없음, `console.log` 없음 |
-| 대화 기록 | **사용자 브라우저(localStorage)** | 사용자가 직접 수정·삭제·전체 삭제 |
+| 내 대화 기록함 | `jc_assistant_threads`·`jc_assistant_messages` | 대화방 제목·시각, 질문·답·근거·모드. **그 사용자만** |
+| 로그아웃 때의 대화 | **사용자 브라우저(localStorage)** | 사용자가 직접 수정·삭제·전체 삭제 |
+| 검색어 | 어디에도 저장하지 않음 | `console.log` 없음 |
 | 호출 횟수 | `jc_assistant_usage` | `user_id`, 분 단위 시각, 횟수 (내용 칸 없음) |
 
-`jc_user_api_keys`·`jc_assistant_usage` 는 **RLS 를 켜고 anon·authenticated 권한을 전부 회수**합니다.
-사이트 코드(공개 키)로는 읽을 수도 쓸 수도 없고, Service Role 을 쓰는 Edge Function 만 만집니다.
+`jc_user_api_keys`·`jc_assistant_usage`·`jc_assistant_threads`·`jc_assistant_messages` 는 **RLS 를 켜고
+anon·authenticated 권한을 전부 회수**합니다. 사이트 코드(공개 키)로는 읽을 수도 쓸 수도 없고,
+Service Role 을 쓰는 Edge Function 만 만집니다.
+
+대화 기록함의 `user_id` 는 **언제나 세션 토큰의 SHA-256 을 `jc_sessions` 와 맞춰 정합니다** — 요청 본문의
+`user_id` 는 아예 받지 않습니다. 모든 쿼리에 `user_id=eq.<세션 사용자>` 가 붙고, 메시지 표는
+`(thread_id, user_id)` 복합 외래키라 남의 대화방 번호를 넣으면 DB 가 거부합니다.
 
 ---
 
 ## 1. SQL 적용 (한 번)
 
-Supabase 대시보드 → **SQL Editor** → New query 에
-[`assets/supabase-update-03-assistant.sql`](../../assets/supabase-update-03-assistant.sql) 전체를 붙여 넣고 Run.
+Supabase 대시보드 → **SQL Editor** → New query 에 두 파일을 차례로 붙여 넣고 Run.
+
+1. [`assets/supabase-update-03-assistant.sql`](../../assets/supabase-update-03-assistant.sql) — 키 보관함·이용 한도
+2. [`assets/supabase-update-04-assistant-history.sql`](../../assets/supabase-update-04-assistant-history.sql) — 내 대화 기록함(스레드·메시지)
 
 - `assets/supabase-setup.sql`(로그인·세션)이 먼저 적용되어 있어야 합니다.
 - 여러 번 실행해도 안전합니다.
@@ -42,8 +50,13 @@ Supabase 대시보드 → **SQL Editor** → New query 에
 
 ```sql
 select relname, relrowsecurity from pg_class
-where relname in ('jc_user_api_keys','jc_assistant_usage');
--- 둘 다 relrowsecurity = true
+where relname in ('jc_user_api_keys','jc_assistant_usage',
+                  'jc_assistant_threads','jc_assistant_messages');
+-- 넷 다 relrowsecurity = true
+
+select tablename, policyname from pg_policies
+where tablename in ('jc_assistant_threads','jc_assistant_messages');
+-- 0건이어야 정상(정책이 없으면 anon·authenticated 는 전부 거부)
 ```
 
 ---
@@ -76,6 +89,20 @@ Service Role 키는 **함수 안에서만** 쓰이고 브라우저로 나가지 
 https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant-proxy
 ```
 
+함수가 받는 `action` (모두 `session_token` 이 필요하고, 사용자 번호는 토큰에서만 정합니다):
+
+| action | 하는 일 |
+|---|---|
+| `list_keys` · `set_key` · `delete_key` | Gemini 키 목록(끝 4자리)·등록·삭제 |
+| `ping` | 연결 테스트(「안녕하세요」 한 번) |
+| `ask` | 자료실 근거로 답하기. `stream:true` 면 SSE `stage`(추론) → `delta`(글자) → `done` |
+| `history_list` | 내 대화방 목록(최근 60개, 최근 순) |
+| `history_get` | 대화방 하나의 메시지(최대 40개) |
+| `history_save` | 대화방 저장(없으면 만들고, 있으면 그 자리에 다시 씀) — 상한 넘은 오래된 방은 정리 |
+| `history_rename` | 제목 바꾸기(80자) |
+| `history_delete` | 대화방 하나 지우기(메시지는 cascade) |
+| `history_clear` | 내 대화 전부 비우기 |
+
 ---
 
 ## 3. 동작 확인
@@ -95,8 +122,10 @@ curl -s -X POST 'https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant
 4. 「웹 교차 확인」을 켜면 **외부 확인(구글 검색)** 출처가 함께 나온다.
 5. 「내 키」에서 **연결 테스트**를 누르면 인사 한 문장·걸린 시간(초)·답한 모델 이름이 나온다.
 6. 대화 화면은 **답이 글자 단위로 실시간으로 이어지고**, 끝나면 근거 카드가 붙는다(마커 `[[REFS:…]]` 는 화면에 안 보인다).
+   기다리는 동안 답변 자리에 **검색 → 정리 → 추론 → 작성** 네 단계 막대가 차례로 차고, 끝나면 사라진다.
 7. 1분에 12번을 넘기면 「잠깐 쉬어 가요」 안내가 나온다.
-8. 대화를 닫았다 열어도 유지되고, 「수정·다시·삭제·전체 삭제」가 동작한다.
+8. 「지난 대화」에 목록이 뜨고, 과거 대화를 열면 그 대화가 그대로 이어진다. `+ 새 대화`·제목 바꾸기·개별 삭제·
+   전체 비우기가 동작하고, 다른 기기에서 로그인해도 같은 목록이 보인다.
 
 ---
 
