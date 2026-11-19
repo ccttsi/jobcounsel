@@ -887,7 +887,7 @@ $('p4').addEventListener('click',function(e){
 /* ───────── 11-1 역행(목표 역산) — 직업을 먼저 고르고 거꾸로 짚는다 ─────────
    ① 목표 직업(KONET) → ② 그 직업에 필요한 것(KECO → NCS 소분류 → 직무 → 능력단위·KSA)
    → ③ 내 경험과 하나씩 대조 → ④ 모자란 것을 메울 환승역.
-   직업·직무 자료는 18번 교차 사전(../taxonomy/data/)을 읽기만 한다. 공식 매핑에 없는 연결은 「공식 매핑 자료 없음」으로 끊고 지어내지 않는다. */
+   직업·직무 자료는 20번 교차 사전(../taxonomy/data/)을 읽기만 한다. 공식 매핑에 없는 연결은 「공식 매핑 자료 없음」으로 끊고 지어내지 않는다. */
 var MODE='fwd',R={step:1,job:'',sub:'',own:false,chk:{}};
 try{MODE=localStorage.getItem('jc-transit-mode')==='rev'?'rev':'fwd';var rs=JSON.parse(localStorage.getItem('jc-transit-rev')||'null');if(rs&&typeof rs==='object')for(var rk in R)if(rk in rs)R[rk]=rs[rk];}catch(e){}
 function saveR(){try{localStorage.setItem('jc-transit-rev',JSON.stringify(R));}catch(e){}}

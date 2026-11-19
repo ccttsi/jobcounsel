@@ -228,6 +228,7 @@
 | 이북 · 긴글 · 책 넘김 | `/parsons/` `/library/` `/theory/` `/manual/` | [`design/patterns/ebook-reading.md`](design/patterns/ebook-reading.md) |
 | 명함첩 · 도감 · 위키 · 목록 | `/company/` `/cert/` `/univ/` `/grad/` `/decalcomania/` `/transit/` | [`design/patterns/card-directory.md`](design/patterns/card-directory.md) |
 | 검색 · 찾아보기 · 법령 리더 | `/law/` | [`design/patterns/search-reference.md`](design/patterns/search-reference.md) |
+| 지표 · 게이지 · 관측대 | `/thermometer/` | [`design/patterns/metric-gauge.md`](design/patterns/metric-gauge.md) |
 | 계산기 · 시뮬레이터 · 실무 HUD | `/hud/` `/vpi/` `/dacum/` `/talk/` | [`design/patterns/sim-hud.md`](design/patterns/sim-hud.md) |
 | 편집대 · 작업공간(소스·모니터·인스펙터·타임라인) | `/portfolio/` | [`design/patterns/nle-workspace.md`](design/patterns/nle-workspace.md) |
 | 모바일 · 태블릿 손맛 (공통) | 모든 섹터 | [`design/patterns/touch-physics.md`](design/patterns/touch-physics.md) |
@@ -314,6 +315,8 @@ Playwright가 실제 사용자 동선을 재현한다: 한 손 터치(엄지 반
 | 3단 정보 차등(키워드 → 미니멀 정보 → 입장) | hub-landing | 초면 글자 수 감소, 두 줄 높이 예약으로 카드 높이 불변 | PR #152 |
 | 마주 보고 맞물리는 인덱스 카드 두 장(맞물림 + 이음선 + 집게) | hub-landing | 점선 원·구슬 폐기, 전이 기반이라 2차에서 자리 유지 | PR #152 |
 | 무대 한 래퍼 통일 페이드아웃(자식 전이·애니메이션 끔) | hub-landing | 잔상 0, 20ms 초과 프레임 0, 820ms → 460ms | PR #152 |
+| 두 자루 온도계(같은 축 −20~+40℃·단색 채움·scaleY) | metric-gauge | 국내·글로벌을 같은 좌표로 그려 크기 차 0.00px, 근거 개수를 점+숫자로 병기 | PR #195 |
+| 근거 커버리지로 온도를 눌러 담기(√가중치) | metric-gauge | 1축짜리 산업이 극단값으로 1위를 차지하지 않음(방산 21.8℃·근거 1축) | PR #195 |
 | 책장 마우스 끌기(서재) | ebook-reading | 서가 이동의 길이 화살표 하나 → 끌기·화살표·키보드 셋 | 2026-11-17 |
 
 ## 10. 도태 목록 (다시 쓰지 않는다)
@@ -364,5 +367,6 @@ Playwright가 실제 사용자 동선을 재현한다: 한 손 터치(엄지 반
 - 2026-11-17 직업상담 법전 신설(22번): 검색 한 칸 + 한 줄 결과(맞은 이유) + 세 칸 상세 + 가변 시각자료 슬롯 + 법전 리더 → `search-reference.md`.
 - 2026-11-17 포트폴리오 편집실 신설(22번): 네 칸 작업대·재생헤드 스크럽·비례 클립·두 칸 비교대·인스펙터 시트 → `nle-workspace.md`.
 - 2026-11-17 서재 색인 목차 깜빡임: 스크롤·리사이즈 프레임마다 다시 그리던 목록을 멈춘 뒤 한 번만, 스스로 다시 그리는 목록은 `data-jc-still`, 아이폰 주소창 `resize`는 폭 변화만 본다 → `ebook-reading.md` §4·§6, `touch-physics.md` §5.
+- 2026-11-19 산업 온도계 신설(16번): 두 자루 온도계(국내·글로벌)·축 4개 접이 근거표·관측대 요약 띠·KSIC↔체감 토글·근거 커버리지 표기 → `design/patterns/metric-gauge.md`, `design/studies/2026-11-19-industry-thermometer.md`
 - 2026-11-19 17번 데일리 브리핑 지면 개편: 제호·겹괘선·3단 칼럼, 호수 폐지, 미니 달력(2026-11~현재 달 자동 확장), 카드 사슬 단추 → 시간순/글로벌 시트, `chain.json` 파생 색인 → `card-directory.md` §8-b, `design/studies/2026-11-19-briefing-newspaper.md`.
 - 2026-11-18 대문 재설계 R2: 설명 칸 고정 높이(27.41→0.00px) · 반원 하우징 L자 레버 · 바닥 고정 동전 그림자 → `hub-landing.md` §1·§9, `DESIGN.md` §9. 3단 정보 차등 · 매치 맞물림 카드 · 무대 통일 페이드아웃 · 95% 종이 베일(전체 backdrop-filter 폐기) → `hub-landing.md` §9-b, `DESIGN.md` §2·§9·§10(PR #151·#152·#153).

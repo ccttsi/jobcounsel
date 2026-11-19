@@ -5,7 +5,7 @@
   python3 ops/scripts/smoke_test.py --base https://ccttsi.github.io/jobcounsel/
   python3 ops/scripts/smoke_test.py --summary-file "$GITHUB_STEP_SUMMARY"
 
-재는 화면: 대문(/), 브리핑(/briefing/), 신산업(/emerging/) — 휴대폰 390·데스크톱 1280
+재는 화면: 대문(/), 브리핑(/briefing/), 신산업(/emerging/), 산업 온도계(/thermometer/) — 휴대폰 390·데스크톱 1280
 재는 것
   · 콘솔·페이지 오류 0 (외부 CDN에서 온 오류는 제외 — 그쪽 사정으로 게이트가 흔들리지 않게)
   · 같은 사이트 안의 404 응답 0 (깨진 상대경로를 잡는다)
@@ -25,7 +25,7 @@ import threading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-PAGES = ["/", "/briefing/", "/emerging/"]
+PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/"]
 VIEWPORTS = [(390, 844, "휴대폰"), (1280, 800, "데스크톱")]
 
 # 페이지마다 「이게 없으면 화면이 안 그려진 것」을 하나씩 정한다.
@@ -42,6 +42,13 @@ PROBES = {
         const tabs = document.querySelectorAll('[data-tab]').length;
         const broken = /불러오지 못했습니다/.test(document.body.innerText);
         return {ok: cards >= 1 && tabs >= 2 && !broken, detail: `카드 ${cards} · 탭 ${tabs}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/thermometer/": """() => {
+        // 산업 목록과 두 온도계가 그려졌는가. 온도는 자료에 따라 달라지므로 게이트로 삼지 않는다.
+        const rows = document.querySelectorAll('[data-id]').length;
+        const thermos = document.querySelectorAll('.thermo svg').length;
+        const broken = /불러오지 못했습니다/.test(document.body.innerText);
+        return {ok: rows >= 5 && thermos >= 2 && !broken, detail: `산업 ${rows} · 온도계 ${thermos}${broken ? ' · 불러오기 실패' : ''}`};
     }""",
     "/emerging/": """() => {
         const art = (document.querySelector('#art') || {innerText: ''}).innerText.trim().length;
