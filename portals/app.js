@@ -5,7 +5,10 @@
   'use strict';
   var d = document, $ = function (id) { return d.getElementById(id); };
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  function nz(s) { return String(s || '').toLowerCase().replace(/[·‧ㆍ・\s]/g, ''); }
+  /* 검색용 정규화: 소문자로 만들고 띄어쓰기·가운뎃점·마침표·붙임표를 지운다.
+     이렇게 해야 `gosi.kr`·`gosi kr`·`GOSI` 가 모두 `gosikr` 로 맞는다. */
+  function nz(s) { return String(s == null ? '' : s).toLowerCase().replace(/[^0-9a-z가-힣]+/g, ''); }
+  function hostOf(u) { return String(u || '').replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, ''); }
   var wide = matchMedia('(min-width:900px)'), xwide = matchMedia('(min-width:1240px)'), rm = matchMedia('(prefers-reduced-motion: reduce)');
   function still() { return rm.matches || d.documentElement.hasAttribute('data-jc-imm'); }
 
@@ -30,6 +33,12 @@
     });
     return o;
   }
+  /* ?q= 로도 검색어를 받는다(다른 화면·메시지에서 바로 링크할 때). */
+  function readQP() {
+    var m = /(?:^|[?&])q=([^&]*)/.exec(location.search || '');
+    if (!m) return '';
+    try { return decodeURIComponent(m[1].replace(/\+/g, ' ')).trim(); } catch (e) { return ''; }
+  }
   function writeHash(push) {
     var a = [];
     if (S.s) a.push('s=' + encodeURIComponent(S.s));
@@ -39,14 +48,26 @@
     if (S.dx) a.push('dx=' + S.dx);
     if (S.p) a.push('p=' + encodeURIComponent(S.p));
     var h = a.length ? '#' + a.join('&') : location.pathname + location.search;
+    if (h.charAt(0) === '#') {
+      var rest = location.search.replace(/^\?/, '').split('&').filter(function (kv) { return kv && kv.indexOf('q=') !== 0; }).join('&');
+      h = location.pathname + (rest ? '?' + rest : '') + h;   // ?q= 는 해시로 옮기고 지운다
+    }
     try { history[push ? 'pushState' : 'replaceState'](null, '', h); } catch (e) {}
   }
 
   fetch('./data/portals.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
     D = j; j.sectors.forEach(function (s) { SEC[s.code] = s; });
-    j.portals.forEach(function (p, i) { p._i = i; p._n = nz([p.name, p.operator, p.strengths, p.tips, p.roles.join(' '), p.eligibility.join(' '), (SEC[p.sector] || {}).name].join(' ')); BY[p.id] = p; });
-    var h = readHash(); S = h; clean();
+    j.portals.forEach(function (p, i) {
+      p._i = i;
+      p._n = nz([p.name, p.operator, p.strengths, p.tips, p.roles.join(' '), p.eligibility.join(' '),
+        (SEC[p.sector] || {}).name, hostOf(p.url), (p.aliases || []).join(' '), (p.shows || []).join(' ')].join(' '));
+      BY[p.id] = p;
+    });
+    var h = readHash(), qp = readQP();
+    if (qp && !h.q) h.q = qp;
+    S = h; clean();
     buildCards(); renderFilters(); renderFoot(); apply(true);
+    if (qp) writeHash(false);   // ?q= 로 들어온 검색어는 해시로 옮기고 주소창의 ?q= 는 지운다
     if (S.p && BY[S.p]) openDet(S.p, true);
   }).catch(function () { $('grid').innerHTML = '<p class="empty">사이트 목록을 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>'; });
   function clean() {
@@ -61,9 +82,23 @@
     if (S.s && p.sector !== S.s) return 0;
     if (S.r.length && !S.r.some(function (x) { return p.roles.indexOf(x) >= 0; })) return 0;
     if (S.e.length && !S.e.some(function (x) { return p.eligibility.indexOf(x) >= 0; })) return 0;
-    if (S.q && p._n.indexOf(nz(S.q)) < 0) return 0;
-    var sc = 1; S.r.forEach(function (x) { if (p.roles.indexOf(x) >= 0) sc++; }); S.e.forEach(function (x) { if (p.eligibility.indexOf(x) >= 0) sc++; });
+    if (S.q && !hitQ(p)) return 0;
+    var sc = 1 + qRank(p) * 4; S.r.forEach(function (x) { if (p.roles.indexOf(x) >= 0) sc++; }); S.e.forEach(function (x) { if (p.eligibility.indexOf(x) >= 0) sc++; });
     return sc;
+  }
+  /* 띄어 쓴 여러 낱말은 모두 들어 있어야 맞는다(도메인·영문 약어 포함). */
+  function qTokens() { return String(S.q || '').split(/\s+/).map(nz).filter(Boolean); }
+  function hitQ(p) { var t = qTokens(); return t.every(function (x) { return p._n.indexOf(x) >= 0; }); }
+  /* 이름 > 별칭·도메인 > 「가서 볼 수 있는 것」 > 본문 순으로 앞세운다. */
+  function qRank(p) {
+    var t = qTokens(); if (!t.length) return 0;
+    var nm = nz(p.name);
+    if (t.every(function (x) { return nm.indexOf(x) >= 0; })) return 3;
+    var al = (p.aliases || []).map(nz).concat([nz(hostOf(p.url))]);
+    if (al.some(function (a) { return a && t.every(function (x) { return a.indexOf(x) >= 0; }); })) return 2;
+    var sh = nz((p.shows || []).join(' '));
+    if (t.every(function (x) { return sh.indexOf(x) >= 0; })) return 1;
+    return 0;
   }
   function results() {
     var out = []; D.portals.forEach(function (p) { var s = hit(p); if (s) out.push([s, p]); });
@@ -77,19 +112,31 @@
     D.portals.forEach(function (p, i) {
       var b = d.createElement('button'); b.type = 'button'; b.className = 'card'; b.setAttribute('data-p', p.id);
       b.style.setProperty('--c', 'var(--s-' + p.sector + ')');
-      b.innerHTML = '<span class="t"><span class="nm">' + esc(p.name) + '</span><span class="no num">' + String(i + 1).padStart(2, '0') + '</span></span><span class="op">' + esc(p.operator) + '</span><span class="kw"></span>';
+      b.innerHTML = '<span class="t"><span class="nm">' + esc(p.name) + '</span><span class="no num">' + String(i + 1).padStart(2, '0') + '</span></span><span class="op">' + esc(p.operator) + (p.verify_method === 'official' ? ' <em class="ict">국내 접속</em>' : '') + '</span><span class="kw"></span>';
       CARDS[p.id] = b; g.appendChild(b);
     });
     var em = d.createElement('div'); em.className = 'empty'; em.id = 'none'; em.hidden = true;
     em.innerHTML = '조건에 맞는 사이트가 없습니다. 조건을 하나씩 풀어 보세요.<br><button type="button" data-clear>조건 모두 풀기</button>';
     g.appendChild(em);
   }
+  /* 카드 한 줄: 검색·필터에 걸린 말을 앞세우고, 그 뒤에 「가서 볼 수 있는 것」을 붙인다. */
   function kwHtml(p) {
-    var sel = S.r.concat(S.e), all = p.roles.filter(function (x) { return x !== '전 직종'; }).concat(p.eligibility), hits = all.filter(function (x) { return sel.indexOf(x) >= 0; });
-    var rest = all.filter(function (x) { return hits.indexOf(x) < 0; });
-    if (p.roles.indexOf('전 직종') >= 0) rest.unshift('전 직종');
-    var show = hits.concat(rest).slice(0, 3);
-    return show.map(function (x) { return '<span' + (hits.indexOf(x) >= 0 ? ' class="hit"' : '') + '>' + esc(x) + '</span>'; }).join('');
+    var hits = [], sel = S.r.concat(S.e), t = qTokens();
+    p.roles.concat(p.eligibility).forEach(function (x) {
+      if (x !== '전 직종' && sel.indexOf(x) >= 0 && hits.indexOf(x) < 0) hits.push(x);
+    });
+    if (t.length) {
+      var al = (p.aliases || []).concat([hostOf(p.url), p.name]);
+      for (var i = 0; i < al.length; i++) {
+        var n = nz(al[i]);
+        if (n && t.some(function (q) { return n.indexOf(q) >= 0; }) && hits.indexOf(al[i]) < 0) { hits.unshift(al[i]); break; }
+      }
+    }
+    var items = hits.slice();
+    (p.shows || []).forEach(function (x) { if (items.indexOf(x) < 0) items.push(x); });
+    var show = items.slice(0, 5), more = items.length - show.length, hn = Math.min(hits.length, show.length);
+    return show.map(function (x, i) { return '<span' + (i < hn ? ' class="hit"' : '') + '>' + esc(x) + '</span>'; }).join('') +
+      (more > 0 ? '<span class="more">+' + more + '</span>' : '');
   }
 
   /* ───── 적용: FLIP ───── */
@@ -178,7 +225,7 @@
   window.addEventListener('popstate', function () { if (!D) return; var h = readHash(); var wasP = S.p; S = h; clean(); $('q').value = S.q; apply(false); if (S.p) openDet(S.p, true); else if (wasP) closeDet(true); });
 
   /* ───── 상세 ───── */
-  var VM = { curl: '자동 접속 확인', 'curl-mobile': '모바일 접속 확인', browser: '브라우저로 화면 확인' };
+  var VM = { curl: '자동 접속 확인', 'curl-mobile': '모바일 접속 확인', browser: '브라우저로 화면 확인', official: '공식 안내로 확인' };
   function openDet(id, quiet) {
     var p = BY[id]; if (!p) return; var pushed = S.p !== id; S.p = id;
     Object.keys(CARDS).forEach(function (k) { CARDS[k].setAttribute('aria-current', String(k === id)); });
@@ -186,11 +233,13 @@
     var h = '<div class="sh-x"><b>사이트 안내</b><button type="button" data-close="dSheet">닫기</button></div>';
     h += '<span class="sb" style="--c:var(--s-' + p.sector + ')"><i></i>' + esc(sec.name) + '</span><h2>' + esc(p.name) + '</h2><p class="op">운영 · ' + esc(p.operator) + '</p>';
     h += '<h3>무엇이 강한가</h3><p class="tx">' + esc(p.strengths) + '</p>';
+    h += '<h3>가서 볼 수 있는 것</h3><div class="tags shw">' + (p.shows || []).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>';
     h += '<h3>상담 활용 팁</h3><p class="tx">' + esc(p.tips) + '</p>';
     h += '<h3>직무</h3><div class="tags">' + p.roles.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>';
     h += '<h3>대상·근무형태</h3><div class="tags">' + p.eligibility.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>';
     if (p.eligibility.some(function (x) { return ['청년', '중장년', '노인'].indexOf(x) >= 0; })) h += '<p class="note">연령 대상은 그 사업을 운영한다는 뜻이며, 다른 연령의 지원을 막는다는 뜻은 아닙니다.</p>';
     h += '<div class="stampv" aria-label="검증일 ' + esc(p.verified_at) + '"><span>접속 확인</span><b>' + esc(dt[0] + '.' + dt[1] + '.' + dt[2]) + '</b><span>' + esc(VM[p.verify_method] || '') + '</span></div>';
+    if (p.verify_method === 'official') h += '<p class="note">' + esc(p.verify_note || '') + ' 국내 접속 기준이며 해외망에서는 차단될 수 있습니다.</p>';
     h += '<a class="go" href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer">사이트로 가기 <span aria-hidden="true">↗</span><small>새 탭</small></a>';
     $('det').innerHTML = h; $('det').scrollTop = 0;
     if (!quiet) writeHash(pushed);
