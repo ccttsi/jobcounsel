@@ -104,6 +104,25 @@ a{color:inherit}
 .row .nm{flex:1;min-width:0;font-size:14.5px;font-weight:650;line-height:1.4}
 .row .nm small{display:block;font-size:12px;font-weight:550;color:var(--dim)}
 .row .lg{flex:none;width:8px;height:8px;border-radius:50%;background:var(--c)}
+/* 답변 시간 판 — 방어·실드 카드를 뒤집으면 턴 상자 바닥에서 펼쳐진다.
+   카드 흐름(정상 흐름) 밖에 두어 펼쳐져도 읽던 카드가 밀리지 않는다. */
+.tdock{flex:none;padding:8px 12px 10px;border-top:1px solid var(--line);background:var(--panel);border-radius:0 0 16px 16px}
+.tdock .tt{margin:0}
+.tdock .tt-len{margin-bottom:4px}
+@media (max-width:899px){
+  .tdock{position:fixed;left:0;right:0;bottom:0;z-index:38;padding:8px 14px calc(8px + env(safe-area-inset-bottom));border:1px solid var(--line-2);border-bottom:0;border-radius:18px 18px 0 0;box-shadow:0 -14px 30px -22px rgba(52,34,16,.55);animation:tdockin .26s cubic-bezier(.2,.9,.3,1)}
+  .tdock .tt-len{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-bottom:2px}
+  .tdock .tt-len::-webkit-scrollbar{display:none}
+  .tdock .tt-len button,.tdock .tt-len span{flex:none}
+  .tdock .tt-row .n{font-size:23px}
+  .tdock .tt-row .sg{font-size:12.5px}
+  .tdock .tt-seg{font-size:11px;margin-bottom:4px}
+  body.tdock-on .wrap{padding-bottom:calc(var(--tdock-h,120px) + 26px)}
+}
+@keyframes tdockin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.tdock{animation:none}}
+/* 판이 열려 있으면 바닥 고정 도구(형광펜·비서)가 판 위로 비켜 앉는다 — assets의 --lift·--jca-lift 기본값을 그대로 쓴다 */
+body.tdock-on #jc-marker-ui{--lift:var(--tdock-lift,0px)!important}
 @media (max-width:899px){
   .pane{height:auto;min-height:0}
   .scr,.fbody{overflow:visible}

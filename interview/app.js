@@ -40,7 +40,7 @@
     stopTimer();
     var h = UI.tab === 'duel' ? duelHtml() : UI.tab === 'rq' ? rqHtml() : UI.tab === 'wp' ? wpHtml() : trHtml();
     $('main').innerHTML = h;
-    if (UI.tab === 'duel') { if (!UI.enc) UI.enc = list()[0].id; drawTurn(true); }
+    if (UI.tab === 'duel') { if (!UI.enc) UI.enc = list()[0].id; drawTurn(true); } else syncDock();
     if (!still()) [].forEach.call($('main').querySelectorAll('.rqc,.trc,.solo'), function (el, i) { if (el.animate) el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 300, delay: Math.min(i, 8) * 34, easing: 'cubic-bezier(.2,.9,.3,1)', fill: 'backwards' }); });
     writeHash();
   }
@@ -52,7 +52,7 @@
     var h = '<div class="two"><section class="box pane list-pane" id="lp" aria-label="질문 카드 목록"><div class="ph"><div class="chips">' + A.map(function (a) { return '<button type="button" data-arena="' + a.code + '" aria-pressed="' + (UI.arena === a.code) + '">' + esc(a.label) + '</button>'; }).join('') + '</div>';
     h += '<div class="chips"><button type="button" data-mode="" aria-pressed="' + !UI.mode + '">모든 모드</button>' + M.map(function (m) { var n = K.encounters.filter(function (e) { return e.sub_mode === m.code; }).length; return '<button type="button" data-mode="' + m.code + '" aria-pressed="' + (UI.mode === m.code) + '" title="' + esc(m.one_line) + '">' + esc(m.label) + '<small>' + n + '</small></button>'; }).join('') + '</div></div>';
     h += '<div class="scr" id="encL">' + rowsHtml() + '</div></section>';
-    h += '<section class="box pane field" aria-label="이번 턴"><div class="fbar"><button type="button" class="lst" data-lst>목록</button><button type="button" data-step="-1" aria-label="이전 질문">‹</button><span class="pos num" id="pos"></span><button type="button" data-step="1" aria-label="다음 질문">›</button></div><div class="fbody" id="turn"></div></section></div>';
+    h += '<section class="box pane field" aria-label="이번 턴"><div class="fbar"><button type="button" class="lst" data-lst>목록</button><button type="button" data-step="-1" aria-label="이전 질문">‹</button><span class="pos num" id="pos"></span><button type="button" data-step="1" aria-label="다음 질문">›</button></div><div class="fbody" id="turn"></div><div class="tdock" id="tdock" hidden></div></section></div>';
     return h;
   }
   function rowsHtml() {
@@ -71,7 +71,7 @@
     var e = encById(UI.enc); if (!e) return;
     var L = list(), idx = L.indexOf(e);
     $('pos').textContent = (idx + 1) + ' / ' + L.length + ' · ' + MODE[e.sub_mode].label;
-    var h = '<article class="qcard' + (fresh && !still() ? ' land' : '') + '"><p class="mt"><span class="mode">' + esc(e.interviewer) + '</span>' + pips(e.pressure_level) + '<span class="num">' + e.time_limit_sec + '초</span>' + (e.legal_flag !== 'ok' ? '<span class="flag ' + e.legal_flag + '">' + esc(LG[e.legal_flag].label) + '</span>' : '') + '</p><h2>「' + esc(e.question) + '」</h2><p class="ctx">' + esc(e.context) + '</p>' + timerHtml(e) + '</article>';
+    var h = '<article class="qcard' + (fresh && !still() ? ' land' : '') + '"><p class="mt"><span class="mode">' + esc(e.interviewer) + '</span>' + pips(e.pressure_level) + '<span class="num">' + e.time_limit_sec + '초</span>' + (e.legal_flag !== 'ok' ? '<span class="flag ' + e.legal_flag + '">' + esc(LG[e.legal_flag].label) + '</span>' : '') + '</p><h2>「' + esc(e.question) + '」</h2><p class="ctx">' + esc(e.context) + '</p></article>';
     if (!TURN.intent) h += '<button type="button" class="next" data-intent>숨은 의도 보기 <span>그다음 손에 든 카드</span></button>';
     else {
       h += '<div class="lay' + (TURN.introJust ? ' in' : '') + '"><h3>숨은 의도 · 면접관이 확인하려는 것</h3><p>' + esc(e.hidden_intent) + '</p><p style="color:var(--muted)"><b style="color:var(--ink)">좋은 답이 보여 줄 것</b> · ' + esc(e.answer_goal) + '</p></div>';
@@ -83,6 +83,10 @@
     $('turn').innerHTML = h; TURN.introJust = false; TURN.dealJust = false;
     $('encL') && $('encL').querySelectorAll('[data-enc]').forEach(function (b) { b.setAttribute('aria-current', String(b.getAttribute('data-enc') === UI.enc)); });
     if (fresh) $('turn').scrollTop = 0;
+    /* 답변 시간은 카드 흐름 밖의 판에서 펼친다 — 카드가 밀리지 않게 */
+    var td = $('tdock');
+    if (td) { var dh = timerHtml(e); if (td.innerHTML !== dh) td.innerHTML = dh; td.hidden = !dh; }
+    syncDock();
     if (TURN.timerCard > -1) { if (!TM || TM.card !== TURN.timerCard || TM.len !== pace(e).T) armTimer(e); else syncTimer(); }
   }
   function cardHtml(e, c, i) {
@@ -110,6 +114,27 @@
       '<div class="tt-len" role="group" aria-label="답변 시간"><span>답변 시간</span>' + [0].concat(K.vocabularies.time_limits).filter(function (v) { return v !== base; }).map(function (v) { var on = v === 0 ? !UI.len || UI.len === base : UI.len === v; return '<button type="button" data-len="' + v + '" aria-pressed="' + on + '">' + (v === 0 ? '질문 기준 ' + base + '초' : v + '초') + '</button>'; }).join('') + '</div>' +
       '<div class="tt-row"><span class="n num" id="ttN" aria-live="off">' + T + '<small>초</small></span><span class="sg" id="ttS">' + esc(labs[0]) + '부터</span><span class="sp"></span><button type="button" id="ttGo" data-tgo>말하기 시작</button><button type="button" class="g" id="ttRe" data-tre hidden>처음부터</button></div></div>';
   }
+  /* 판의 높이만큼 바닥 고정 도구(형광펜·비서)를 위로 비켜 앉힌다 — 판이 오른쪽 아래를 덮지 않게 */
+  var LIFT0 = null;
+  function syncDock() {
+    var td = $('tdock'), h = 0, lift = 0;
+    if (td && !td.hidden) {
+      var r = td.getBoundingClientRect(), fixed = getComputedStyle(td).position === 'fixed';
+      h = td.offsetHeight;
+      /* 펼침 모션(translateY) 중에 재도 어긋나지 않게, 바닥 고정 판은 layout 높이로 위쪽 끝을 구한다 */
+      var top = fixed ? innerHeight - h : r.top;
+      /* 판이 바닥 도구(형광펜·비서, 아래 16px 띄우고 높이 52px)의 띠에 닿을 때만 그 높이만큼 비켜 준다 */
+      if (r.bottom > innerHeight - 68) lift = Math.max(0, Math.round(innerHeight - top) - 8);
+    }
+    var rt = d.documentElement;
+    if (LIFT0 === null) LIFT0 = rt.style.getPropertyValue('--jca-lift') || '';
+    rt.style.setProperty('--tdock-h', h + 'px');
+    rt.style.setProperty('--tdock-lift', lift + 'px');
+    rt.style.setProperty('--jca-lift', lift ? lift + 'px' : LIFT0);
+    d.body.classList.toggle('tdock-on', h > 0);
+  }
+  /* 창 크기가 바뀌면 형광펜 도구가 스스로 다시 앉는다 — 판이 열려 있으면 그 뒤에 한 번 더 맞춘다 */
+  addEventListener('resize', function () { if (d.body.classList.contains('tdock-on')) setTimeout(syncDock, 60); });
   /* 답변 시간 조절: 고른 길이에 맞춰 도입·사례·연결을 같은 비율로 늘리거나 줄인다(데이터는 그대로) */
   function pace(e) {
     var p0 = e.hand_cards[TURN.timerCard].pace_split, base = e.time_limit_sec, T = UI.len || base;
@@ -144,7 +169,7 @@
     if (left < 0) $('ttS').textContent = '시간을 넘겼습니다 · 기록만 합니다';
     if (left <= 15 && left > 0 && !TM.low && !still()) { TM.low = true; el.classList.add('low'); }
   }
-  function tReset() { var e = encById(UI.enc); stopTimer(); armTimer(e); TM.low = false; var el = $('tt'); if (!el) return; el.outerHTML = timerHtml(e); }
+  function tReset() { var e = encById(UI.enc); stopTimer(); armTimer(e); TM.low = false; var el = $('tt'); if (!el) return; el.outerHTML = timerHtml(e); syncDock(); }
   function stopTimer() { if (TM) { clearInterval(TM.iv); if (TM.run) TM.acc += (performance.now() - TM.at) / 1000; TM.run = false; } }
   d.addEventListener('visibilitychange', function () { if (d.hidden && TM && TM.run) tGo(); });
 
