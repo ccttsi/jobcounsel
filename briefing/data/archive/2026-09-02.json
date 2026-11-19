@@ -1,0 +1,246 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-09-02T07:10:00+09:00",
+ "edition": {
+  "date": "2026-09-02",
+  "weekday": "수",
+  "title": "고용보험 개편안, 모성보호 계정 따로 만들고 노·사·정이 나눠 낸다",
+  "subtitle": "16차 TF 논의·모성보호 급여 2.1조→4.3조·실업급여 계정 적자 1.8조",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "모성보호 급여",
+   "value": 0,
+   "unit": "",
+   "value_text": "4.3조원",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025년",
+   "delta_from": "2022년 2.1조원",
+   "source_id": "src_moel_ei_reform_20260901",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-02T07:10:00+09:00",
+   "run_id": "br-20260902-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "육아휴직급여 수급",
+   "value": 0,
+   "unit": "",
+   "value_text": "18.4만명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025년",
+   "delta_from": "+39.1%",
+   "source_id": "src_moel_ei_reform_20260901",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-02T07:10:00+09:00",
+   "run_id": "br-20260902-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "TF 논의",
+   "value": 0,
+   "unit": "",
+   "value_text": "16차",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025.11~2026.9",
+   "delta_from": "노·사·전문가",
+   "source_id": "src_moel_ei_reform_20260901",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-02T07:10:00+09:00",
+   "run_id": "br-20260902-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "고용보험 개편안, 모성보호 계정 따로 만들고 노·사·정이 나눠 낸다",
+   "kicker": "모성보호 급여 2.1조→4.3조 · 실업급여 계정 -1.8조",
+   "three_step": {
+    "what": "정부가 9월 1일 고용보험위원회에서 「고용보험 제도개편 방안」을 심의했다. 모성보호 급여를 따로 떼어 별도 계정을 만들고, 재원은 노·사·정이 함께 부담하는 구조다.",
+    "evidence": "모성보호 급여 지출은 2022년 2.1조원에서 2025년 4.3조원으로 늘었다. 2025년 육아휴직급여 수급자는 18.4만명(+39.1%)이고 남성만 6.7만명(+60.7%)이다. 그해 실업급여 계정은 수입 15.7조·지출 17.4조로 1.8조원 적자였고, 공자기금 차입 7.7조원을 빼면 실적립금은 -6조원이다. 노·사·전문가 TF는 16차례 논의 끝에 적용 확대·재정 지속가능성·실업급여 합리화를 함께 다루기로 했다(2026년 9월 1일, 고용노동부).",
+    "implication": "구직자에게 실업급여 제도가 바뀌는 방향(지급방식 정비·적용 확대)을 미리 알려 주고, 제도 시행 전후로 신청 시점이 달라질 수 있음을 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "모성보호 급여",
+     "value": "2.1조 → 4.3조원",
+     "delta": "2022 → 2025년",
+     "period": "2025년"
+    },
+    {
+     "label": "육아휴직급여 수급자",
+     "value": "18.4만명",
+     "delta": "+39.1%",
+     "period": "2025년"
+    },
+    {
+     "label": "남성 수급자",
+     "value": "6.7만명",
+     "delta": "+60.7%",
+     "period": "2025년"
+    },
+    {
+     "label": "실업급여 계정",
+     "value": "-1.8조원",
+     "delta": "적립금 실적립 -6조원",
+     "period": "2025년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "조원",
+    "labels": [
+     "2022년",
+     "2025년"
+    ],
+    "series": [
+     {
+      "name": "모성보호 급여 지출",
+      "values": [
+       2.1,
+       4.3
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "고용보험 모성보호 급여 지출. 고용노동부 2026.9.1.",
+    "source_id": "src_moel_ei_reform_20260901"
+   },
+   "counselor_question": "육아휴직이나 출산휴가를 쓸 때 회사와 급여에서 가장 걱정되는 부분은 무엇인가요?",
+   "tags": [
+    "고용보험",
+    "모성보호",
+    "재정"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "issue_id": "iss-employment-insurance-reform-2026",
+   "updated_at": "2026-09-02T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_ei_reform_20260901",
+    "source_name": "고용노동부",
+    "source_title": "노·사 및 전문가, 9개월간 논의 거쳐 「고용보험 제도개선 TF 논의결과」 도출",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776969",
+    "published_at": "2026-09-01",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「노·사 및 전문가, 9개월간 논의 거쳐 「고용보험 제도개선 TF 논의결과」 도출」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "퇴직·사회안전망"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_ei_reform_20260901",
+   "source_name": "고용노동부",
+   "source_title": "노·사 및 전문가, 9개월간 논의 거쳐 「고용보험 제도개선 TF 논의결과」 도출",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776969",
+   "published_at": "2026-09-01",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「노·사 및 전문가, 9개월간 논의 거쳐 「고용보험 제도개선 TF 논의결과」 도출」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02"
+ ]
+}
