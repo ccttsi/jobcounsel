@@ -1,0 +1,341 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-07-01T07:10:00+09:00",
+ "edition": {
+  "date": "2026-07-01",
+  "weekday": "수",
+  "title": "육아휴직 인수인계 기간에도 대체인력 쓴다, 보험료 80% 지원도",
+  "subtitle": "7.1 행정해석 변경·휴직 전 2개월·복직 후 1개월·두루누리 180만명",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "인수인계 기간",
+   "value": 0,
+   "unit": "",
+   "value_text": "전 2개월·후 1개월",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 7월 1일부터",
+   "delta_from": "대체인력 사용 가능",
+   "source_id": "src_moel_parental_leave_20260630",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-07-01T07:10:00+09:00",
+   "run_id": "br-20260701-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "두루누리 지원",
+   "value": 0,
+   "unit": "",
+   "value_text": "보험료 80%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "180만명·1,700억원",
+   "source_id": "src_comwel_insurance_20260630",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-07-01T07:10:00+09:00",
+   "run_id": "br-20260701-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "가입 촉진 기간",
+   "value": 0,
+   "unit": "",
+   "value_text": "7~9월",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "3개월",
+   "source_id": "src_comwel_insurance_20260630",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-07-01T07:10:00+09:00",
+   "run_id": "br-20260701-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "육아휴직 인수인계 기간에도 대체인력을 쓸 수 있게 됐다",
+   "kicker": "7월 1일부터 · 휴직 전 2개월·복직 후 1개월",
+   "three_step": {
+    "what": "고용노동부가 7월 1일부터 기간제·파견 대체근로 사용기간에 육아휴직 기간뿐 아니라 휴직 전후 업무 인수인계기간까지 포함하도록 행정해석을 바꿨다.",
+    "evidence": "그동안 대체인력 사용기간을 육아휴직 기간으로 엄격히 해석해 인수인계를 맡기기 어려웠고, 육아휴직 대체인력지원금은 휴직 전 2개월·복직 후 1개월의 인수인계기간까지 지원해 제도 간 불일치가 있었다. 편법 사용을 막기 위해 인수인계 목적에 한정하고 사전 인수인계 기간을 특정하도록 요건도 붙였다(2026년 6월 30일, 고용노동부).",
+    "implication": "육아휴직을 앞둔 내담자에게 인수인계 기간에도 대체인력을 쓸 수 있다는 점을 알려 주고, 회사와 인수인계 기간을 문서로 정해 두게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "시행",
+     "value": "2026년 7월 1일",
+     "delta": "행정해석 변경",
+     "period": "2026년"
+    },
+    {
+     "label": "인수인계",
+     "value": "휴직 전 2개월·복직 후 1개월",
+     "delta": "대체인력 사용 가능",
+     "period": "2026년"
+    },
+    {
+     "label": "요건",
+     "value": "목적 한정·기간 특정",
+     "delta": "편법 차단",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "육아휴직을 낼 때 업무 인수인계가 가장 걱정되시나요?",
+   "tags": [
+    "육아휴직",
+    "대체인력",
+    "기간제"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "issue_id": "iss-parental-leave-handover-2026",
+   "updated_at": "2026-07-01T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_parental_leave_20260630",
+    "source_name": "고용노동부",
+    "source_title": "\"육아휴직 대체인력 활용 제도간 엇박자 해소\" 인수인계기간도 기간제·파견 대체인력 사용 가능",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768877",
+    "published_at": "2026-06-30",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「\"육아휴직 대체인력 활용 제도간 엇박자 해소\" 인수인계기간도 기간제·파견 대체인력 사용 가능」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "퇴직·사회안전망"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "두루누리 보험료 80% 지원, 7~9월 가입 촉진",
+   "kicker": "보험료 80% · 180만명·1,700억원 · 예술인 과태료 면제",
+   "three_step": {
+    "what": "근로복지공단이 7월부터 9월까지 고용·산재보험 가입 촉진 기간을 운영한다. 아르바이트생, 플랫폼 노동자, 예술인 등 사각지대에 있는 사람들을 겨냥했다.",
+    "evidence": "보험료 부담으로 가입을 망설이는 사업장에는 국민연금과 고용보험료의 80%를 지원하는 두루누리 사업을 안내한다. 2025년 말 기준 약 180만명에게 1,700억원을 지원했다. 기간 중 예술인·노무제공자가 피보험자격을 자진 신고하면 과태료를 면제하고, 2027년 시행되는 소득기반 적용·부과체계 개편도 함께 알린다(2026년 6월 30일, 근로복지공단).",
+    "implication": "프리랜서·예술인·플랫폼 종사자에게 이번 3개월이 자진신고로 과태료를 피할 수 있는 창구임을 알려 주고, 두루누리 대상 여부를 사업장과 함께 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "보험료 지원",
+     "value": "80%",
+     "delta": "국민연금·고용보험",
+     "period": "2026년"
+    },
+    {
+     "label": "지원 실적",
+     "value": "180만명·1,700억원",
+     "delta": "2025년 말",
+     "period": "2026년"
+    },
+    {
+     "label": "가입 촉진",
+     "value": "7~9월",
+     "delta": "자진신고 시 과태료 면제",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "고용보험에 가입돼 있는지 확인해 본 적이 있나요?",
+   "tags": [
+    "사회보험",
+    "플랫폼노동",
+    "예술인"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "issue_id": "iss-social-insurance-enrollment-2026",
+   "updated_at": "2026-07-01T07:10:00+09:00",
+   "source": {
+    "source_id": "src_comwel_insurance_20260630",
+    "source_name": "근로복지공단·고용노동부",
+    "source_title": "보험료 80% 지원에 과태료 면제까지… 고용·산재보험 가입 촉진 기간 운영",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768879",
+    "published_at": "2026-06-30",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 근로복지공단·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 근로복지공단·고용노동부 「보험료 80% 지원에 과태료 면제까지… 고용·산재보험 가입 촉진 기간 운영」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "퇴직·사회안전망"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_parental_leave_20260630",
+   "source_name": "고용노동부",
+   "source_title": "\"육아휴직 대체인력 활용 제도간 엇박자 해소\" 인수인계기간도 기간제·파견 대체인력 사용 가능",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768877",
+   "published_at": "2026-06-30",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「\"육아휴직 대체인력 활용 제도간 엇박자 해소\" 인수인계기간도 기간제·파견 대체인력 사용 가능」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_comwel_insurance_20260630",
+   "source_name": "근로복지공단·고용노동부",
+   "source_title": "보험료 80% 지원에 과태료 면제까지… 고용·산재보험 가입 촉진 기간 운영",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768879",
+   "published_at": "2026-06-30",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 근로복지공단·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 근로복지공단·고용노동부 「보험료 80% 지원에 과태료 면제까지… 고용·산재보험 가입 촉진 기간 운영」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22",
+  "2026-07-17",
+  "2026-07-15",
+  "2026-07-14",
+  "2026-07-10",
+  "2026-07-09",
+  "2026-07-08",
+  "2026-07-02",
+  "2026-07-01",
+  "2026-06-30"
+ ]
+}
