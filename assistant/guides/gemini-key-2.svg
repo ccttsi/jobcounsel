@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="API 키 만들기 버튼 위치를 강조한 화면">
+  <rect width="320" height="200" rx="12" fill="#faf6ef"/>
+  <rect x="12" y="12" width="296" height="176" rx="10" fill="#fffdf8" stroke="#d8ccb9"/>
+  <rect x="12" y="12" width="296" height="24" rx="10" fill="#f5efe4"/>
+  <rect x="60" y="16" width="196" height="14" rx="7" fill="#fffdf8" stroke="#e9e0d2"/>
+  <text x="68" y="26" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="8" fill="#655c53">aistudio.google.com/apikey</text>
+  <rect x="12" y="36" width="72" height="152" fill="#f5efe4"/>
+  <text x="22" y="54" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="8" font-weight="700" fill="#2a2521">AI Studio</text>
+  <text x="22" y="72" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="7.5" fill="#655c53">Dashboard</text>
+  <text x="22" y="86" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="7.5" fill="#655c53">API keys</text>
+  <text x="22" y="100" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="7.5" fill="#655c53">Docs</text>
+  <text x="96" y="58" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="10" font-weight="700" fill="#2a2521">API 키</text>
+  <rect x="96" y="70" width="120" height="10" rx="4" fill="#e9e0d2"/>
+  <rect x="96" y="88" width="190" height="10" rx="4" fill="#e9e0d2"/>
+  <rect x="96" y="106" width="160" height="10" rx="4" fill="#e9e0d2"/>
+  <rect x="204" y="44" width="92" height="20" rx="6" fill="#0f766e"/>
+  <text x="216" y="57" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="7.6" font-weight="700" fill="#ffffff">Create API key</text>
+  <rect x="198" y="38" width="104" height="32" rx="8" fill="none" stroke="#c2452d" stroke-width="2.4"/>
+  <path d="M286 74 L286 88 L270 88" fill="none" stroke="#c2452d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="196" y="102" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="7.6" fill="#c2452d">API 키 만들기</text>
+  <text x="96" y="140" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="8" fill="#6e645b">② 오른쪽 위의 「Create API key」를 누르세요.</text>
+  <text x="96" y="154" font-family="-apple-system,'Apple SD Gothic Neo',sans-serif" font-size="7.5" fill="#6e645b">(메뉴에 있으면 「API keys」 → 같은 버튼)</text>
+</svg>

@@ -176,7 +176,7 @@
     '.who{display:flex;align-items:center;gap:12px;margin-top:16px;padding:14px;border-radius:14px;background:var(--soft);border:1px solid var(--line)}',
     '.av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--acc);color:var(--acc-ink);font-weight:800;font-size:18px;flex:none}',
     '.who b{display:block;font-size:16px}.who span{font-size:12.5px;color:var(--muted)}',
-    '.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}',
+    '.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.row .btn{min-height:44px}.row .btn.keys{border-color:var(--acc,#0f766e);color:var(--acc,#0f766e)}',
     'details{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}',
     'summary{cursor:pointer;min-height:40px;display:flex;align-items:center;font-size:14px;font-weight:650;color:var(--muted)}',
     '.foot{margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6}',
@@ -211,7 +211,7 @@
       body = '<h2>내 계정</h2><p class="sub">이 기기의 학습 기록과 메모가 계정과 연동되고 있어요.</p>' +
         '<div class="who"><span class="av" aria-hidden="true">' + esc(sess.username.charAt(0).toUpperCase()) + '</span><div><b>' + esc(sess.username) + '</b><span>' + (status.err ? esc(status.err) : ago(status.at || sess.last)) + '</span></div></div>' +
         (sess.admin ? adminCard() : '') +
-        '<div class="row"><button class="btn" data-act="now">지금 연동하기</button><button class="btn" data-act="logout">로그아웃</button></div>' +
+        '<div class="row"><button class="btn" data-act="now">지금 연동하기</button><button class="btn keys" data-act="keys">API 키 관리</button><button class="btn" data-act="logout">로그아웃</button></div>' +
         '<p class="msg' + (msg && msg.ok ? ' ok' : '') + '" role="status">' + esc(msg ? msg.t : '') + '</p>' +
         '<details><summary>비밀번호 바꾸기</summary><form data-form="pw"><label class="f">지금 비밀번호' + pwInput('name="old" autocomplete="current-password" required') + '</label>' +
         '<label class="f">새 비밀번호 <small>8자 이상</small>' + pwInput('name="pw" autocomplete="new-password" minlength="8" maxlength="72" required') + '</label><button class="go" type="submit">바꾸기</button></form></details>' +
@@ -265,6 +265,13 @@
         b.setAttribute('aria-pressed', String(show));
         b.setAttribute('aria-label', show ? '비밀번호 숨기기' : '비밀번호 보기'); b.title = b.getAttribute('aria-label');
         try { var n = inp.value.length; inp.focus({ preventScroll: true }); inp.setSelectionRange(n, n); } catch (x) {}
+        return;
+      }
+      if (a === 'keys') {
+        /* 자료실 비서의 「내 키」를 바로 연다(창을 닫고 비서를 연다). */
+        close();
+        if (window.JCAssistant && window.JCAssistant.openKeys) window.JCAssistant.openKeys();
+        else setTimeout(function () { if (window.JCAssistant && window.JCAssistant.openKeys) window.JCAssistant.openKeys(); }, 400);
         return;
       }
       if (a === 'close') close();
