@@ -41,6 +41,11 @@ COMPANY_MIN = 30             # 직원 수가 이보다 적은 법인은 넣지 �
 
 _ws = re.compile(r'\s+')
 
+
+def _q(s):
+    from urllib.parse import quote
+    return quote(str(s or ''), safe='')
+
 # 섹터마다 문서에 함께 붙는 찾기 낱말 — 「자격증」처럼 섹터를 가리키는 말로도 그 섹터 자료가 잡히게.
 SECTOR_KW = {
     'theory': '이론,상담이론,진로이론',
@@ -228,7 +233,7 @@ def docs_thermometer(add):
             fact += ' · %s %s%s' % (size['label'], format(int(size['value']), ','), size.get('unit') or '')
         add('thermometer:' + str(it.get('id')), 'thermometer', it.get('name', ''),
             keys(it.get('en'), it.get('tags'), (it.get('ksic') or {}).get('mid')),
-            clip(fact, 150), './thermometer/')
+            clip(fact, 150), './thermometer/?q=' + _q(it.get('name', '')))
 
 
 def docs_emerging(add):
@@ -238,11 +243,11 @@ def docs_emerging(add):
     for it in d.get('items') or []:
         add('emerging:item:' + str(it.get('id')), 'emerging', it.get('title', ''),
             keys(it.get('cat'), it.get('kicker')),
-            clip(it.get('subtitle') or it.get('summary'), 150), './emerging/')
+            clip(it.get('subtitle') or it.get('summary'), 150), './emerging/?q=' + _q(it.get('title', '')))
     for j in d.get('jobs') or []:
         add('emerging:job:' + str(j.get('id')), 'emerging', j.get('name', ''),
             keys(j.get('en'), j.get('certs'), j.get('study'), '기존 직무' if j.get('kind') == 'old' else '신직무'),
-            clip(j.get('role') or j.get('insight'), 145), './emerging/')
+            clip(j.get('role') or j.get('insight'), 145), './emerging/?q=' + _q(j.get('name', '')))
     for c in d.get('categories') or []:
         add('emerging:cat:' + str(c.get('id')), 'emerging', str(c.get('name', '')),
             '분류', '', './emerging/')
