@@ -8,6 +8,7 @@
 //   2) Gemini 키를 AES-256-GCM 으로 암호화해 jc_user_api_keys 에 넣고, 끝 4자리만 돌려준다.
 //   3) 질의(ask)는 서버 안에서만 키를 풀어 Gemini 를 부르고, 답변 JSON 만 돌려준다.
 //      웹 교차 확인을 켜면 google_search 로 확인한 출처를 함께 돌려준다.
+//      stream:true 면 :streamGenerateContent(SSE)로 글자를 바로 흘려보내고, 끝에 done 이벤트로 답·모델·근거·웹 출처를 보낸다.
 //
 // 지키는 선
 //   · 원본 키는 응답·로그 어디에도 다시 나오지 않는다.
@@ -18,14 +19,17 @@
 //   JC_KEY_MASTER_SECRET  필수. 키 암호화 열쇠(32바이트 이상 아무 문자열).
 //   SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY  Supabase 가 자동 주입.
 //   JC_ALLOW_ORIGINS      선택. 쉼표로 구분한 허용 출처. 기본 https://ccttsi.github.io
-//   JC_GEMINI_MODEL       선택. 기본 gemini-flash-latest.
+//   JC_GEMINI_MODEL       선택. 1순위 모델 이름. 비우면 무료 폴백 체인(3.8-flash → 3.6-flash → 3.5-flash-lite → 3.1-flash-lite)을 쓴다.
+//
+// 무료 한도(429)는 **모델마다 따로** 잡혀 있어, 한도가 찬 모델은 건너뛰고 다음 무료 모델로 이어서 답한다.
+// 답한 모델 이름은 응답 JSON 의 model 칸으로 돌려준다(키 탭 「연결 테스트」가 이 값을 보여 준다).
 
 const enc = new TextEncoder();
 
 const SUPABASE_URL = (Deno.env.get('SUPABASE_URL') || '').replace(/\/+$/, '');
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
 const MASTER = Deno.env.get('JC_KEY_MASTER_SECRET') || '';
-const MODEL = Deno.env.get('JC_GEMINI_MODEL') || 'gemini-flash-latest';
+const MODEL_PREF = (Deno.env.get('JC_GEMINI_MODEL') || '').trim();
 const ALLOW = (Deno.env.get('JC_ALLOW_ORIGINS') || 'https://ccttsi.github.io')
   .split(',').map((s) => s.trim()).filter(Boolean);
 
@@ -35,24 +39,58 @@ const MAX_EVIDENCE = 6;      // 근거 개수 상한
 const RATE_LIMIT = 12;       // 분당 호출 수
 const MODES = ['easy3', 'mock', 'compare', 'opening'];
 
+/* 무료 폴백 체인 — 2026-11 Google AI Studio 문서 확인 기준.
+   모델별 무료 한도는 따로 잡히고(429 RESOURCE_EXHAUSTED), 한 모델이 차면 다음 모델로 넘어간다.
+   3.7-flash 는 3.8-flash 로 자동 라우팅되어 따로 셀 한도가 없으므로 넣지 않는다. */
+const FALLBACK_CHAIN = [
+  'gemini-3.8-flash',        // 최신 Flash — 기본 1순위
+  'gemini-3.6-flash',        // 이전 세대 Flash — 별도 무료 한도
+  'gemini-3.5-flash-lite',   // Lite — 무료 한도가 크다
+  'gemini-3.1-flash-lite',   // Lite 예비 — 마지막 한 칸
+];
+/* JC_GEMINI_MODEL 이 있으면 그 모델을 1순위로 두고 뒤에 같은 체인을 잇는다(중복은 뺀다). */
+const MODEL_TRIES = MODEL_PREF
+  ? [MODEL_PREF].concat(FALLBACK_CHAIN.filter((m) => m !== MODEL_PREF))
+  : FALLBACK_CHAIN.slice();
+
+const MODEL_TIMEOUT_MS = 25000;   // 모델 한 번 호출 상한
+const CHAIN_DEADLINE_MS = 55000;  // 체인 전체 상한(Edge Function 실행 한도 안쪽)
+
 const SYS = [
   '당신은 「직업상담 통합 자료실」의 개인 비서입니다. 직업상담사와 구직자의 일을 자료실의 자료로 돕습니다.',
   '',
-  '답변 원칙',
-  '1. [자료실 근거]에 적힌 내용만 "자료실 기준"으로 말합니다. 근거에 없는 수치·법령·직업 정보는 절대 지어내지 않습니다.',
-  '2. [지금 열려 있는 자료]가 함께 오면, 사용자가 "이 자료"라고 할 때 그것을 가리킵니다. 그 자료의 제목과 화면에 보이는 내용 안에서 설명합니다.',
-  '3. [외부 확인]이 함께 오면 답을 세 덩이로 나눠 씁니다.',
+  '■ 지켜야 할 것 (가장 중요)',
+  '1. 근거에 적힌 내용만 "자료실 기준"으로 말합니다. 근거에 없는 수치·법령·직업 정보는 절대 지어내지 않습니다.',
+  '2. 근거만으로 답할 수 없으면 "자료실 자료에서는 확인하지 못했어요"라고 솔직히 말하고, 가장 가까운 자료를 안내합니다.',
+  '3. 법률·의학적 단정은 하지 않습니다. "자료실의 근거"와 "현장에서 확인할 부분"을 구분합니다.',
+  '4. 사용자가 적은 내담자 이름·연락처 같은 개인정보는 답변에 다시 쓰지 않습니다. 사례를 말할 때는 "내담자"라고만 씁니다.',
+  '5. 자료를 안내할 때는 근거에 적힌 주소만 씁니다. 없는 주소를 만들지 않습니다.',
+  '6. 말투는 친절하고 따뜻한 직업상담사입니다. 존댓말로, 결론부터 3~6문장. 필요하면 짧은 목록(최대 5개)을 씁니다.',
+  '',
+  '■ 외부 확인이 함께 오면 답을 세 덩이로 나눠 씁니다.',
   '   · 자료실 기준 — 어떤 자료의 무엇인지(섹터·제목)와 기준 시점을 함께.',
   '   · 외부 확인 — 웹에서 확인된 내용과 출처 주소. 확인된 범위만.',
   '   · 해석 — 둘이 같으면 같다고, 다르면 무엇이 어떻게 다른지와 상담 현장에서 어떻게 쓸지.',
   '   외부 확인이 없으면 외부 사실을 말하지 않습니다.',
-  '4. 근거만으로 답할 수 없으면 "자료실 자료에서는 확인하지 못했어요"라고 솔직히 말하고, 가장 가까운 자료를 안내합니다.',
-  '5. 말투는 친절하고 따뜻한 직업상담사입니다. 존댓말로, 결론부터 3~6문장. 필요하면 짧은 목록(최대 5개)을 씁니다.',
-  '6. 사용자가 적은 내담자 이름·연락처 같은 개인정보는 답변에 다시 쓰지 않습니다. 사례를 말할 때는 "내담자"라고만 씁니다.',
-  '7. 법률·의학적 단정은 하지 않습니다. "자료실의 근거"와 "현장에서 확인할 부분"을 구분합니다.',
-  '8. 자료를 안내할 때는 근거에 적힌 주소만 씁니다. 없는 주소를 만들지 않습니다.',
-  '9. 답변은 반드시 JSON 하나로만 씁니다: {"answer":"…","refs":["e1","e2"]}',
-  '   refs 에는 실제로 답에 쓴 근거 번호만 최대 3개 적습니다. 쓴 근거가 없으면 [] 입니다.',
+  '',
+  '■ 답변 형식은 이 프롬프트 맨 끝의 형식 지시를 그대로 따릅니다.',
+].join('\n');
+
+/* 형식 지시 — 프롬프트 맨 끝(Recency)에 붙여 가장 강하게 작동하게 한다. */
+const FMT_JSON = [
+  '답변은 반드시 JSON 하나로만 씁니다: {"answer":"…","refs":["e1","e2"]}',
+  'refs 에는 실제로 답에 쓴 근거 번호만 최대 3개 적습니다. 쓴 근거가 없으면 [] 입니다.',
+].join('\n');
+const FMT_PLAIN = [
+  '답변 본문은 평문으로 바로 씁니다(JSON·코드블록 금지, 인사말이나 머리말 없이 결론부터).',
+  '답변을 마친 뒤 맨 마지막 줄에만 [[REFS:e1,e2]] 처럼 실제로 답에 쓴 근거 번호를 적습니다. 쓴 근거가 없으면 [[REFS:]] 입니다.',
+].join('\n');
+
+/* 「연결 테스트」 — 키가 실제로 도는지 한 번 불러 보는 아주 짧은 대화. */
+const PING_SYS = [
+  '연결 확인용 짧은 대화입니다.',
+  '사용자의 인사에 다정한 한 문장(30자 안쪽)으로 답하세요.',
+  'JSON·목록·설명 없이 문장 하나만 씁니다.',
 ].join('\n');
 
 /* 실무 활용 모드 — 화면의 빠른 버튼이 이 값을 보낸다. */
@@ -192,11 +230,47 @@ async function getKeyRow(userId: number): Promise<KeyRow | null> {
   return Array.isArray(rows) && rows.length ? rows[0] : null;
 }
 
+/* 분당 한도 — 한 표(분 단위 카운터)에 넘기면 true. DB 가 답하지 않으면 그냥 통과시킨다. */
+async function overRate(userId: number): Promise<boolean> {
+  const r = await sb('rpc/jc_assistant_take', {
+    method: 'POST',
+    body: JSON.stringify({ p_user: userId, p_limit: RATE_LIMIT, p_window_sec: 60 }),
+  });
+  if (!r.ok) return false;
+  try {
+    const left = await r.json();
+    return typeof left === 'number' && left < 0;
+  } catch {
+    return false;
+  }
+}
+
 /* ---------------------------------------------------------------- Gemini 호출 */
 
 type Chat = { system: string; user: string };
 type WebSrc = { title: string; url: string };
-type Reply = { text: string; web: WebSrc[] };
+type Reply = { text: string; web: WebSrc[]; model: string };
+type Ask = { web: boolean; json: boolean; maxTokens: number; thinking: boolean };
+type FailKind = 'quota' | 'key' | 'missing' | 'transient' | 'request';
+
+/* 한 모델 호출의 결과 — 실패는 '왜'만 남긴다. 구글이 준 오류 본문은 분류에만 쓰고 응답·로그에 남기지 않는다. */
+type Attempt =
+  | { ok: true; text: string; web: WebSrc[] }
+  | { ok: false; kind: FailKind };
+
+/* 스트리밍 한 번의 결과 — emitted 는 '이미 글자가 나갔는지'. 나갔으면 다른 모델로 갈아타지 않는다. */
+type StreamOut =
+  | { ok: true; text: string; web: WebSrc[] }
+  | { ok: false; kind: FailKind; emitted: boolean };
+
+/* 체인이 끝까지 갔다 — 어느 쪽이었는지만 handler 에게 전한다. */
+class ChainFail extends Error {
+  kind: 'key' | 'quota' | 'upstream';
+  constructor(kind: 'key' | 'quota' | 'upstream') {
+    super(kind);
+    this.kind = kind;
+  }
+}
 
 function parseJsonAnswer(text: string): { answer: string; refs: string[] } {
   let raw = String(text || '').trim();
@@ -214,42 +288,324 @@ function parseJsonAnswer(text: string): { answer: string; refs: string[] } {
   return { answer: String(text || '').trim().slice(0, 4000), refs: [] };
 }
 
-async function callGemini(key: string, chat: Chat, web: boolean): Promise<Reply> {
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
-    encodeURIComponent(MODEL) + ':generateContent';
+/* 요청 본문 — thinkingLevel 'low' 로 3.x Flash 의 첫 글자 지연을 줄인다(미지원 모델은 400 → 빼고 재시도). */
+function buildBody(chat: Chat, ask: Ask): Record<string, unknown> {
+  const gen: Record<string, unknown> = { temperature: 0.3, maxOutputTokens: ask.maxTokens };
+  if (ask.thinking) gen.thinkingConfig = { thinkingLevel: 'low' };
+  if (ask.json) gen.responseMimeType = 'application/json';
   const body: Record<string, unknown> = {
     systemInstruction: { parts: [{ text: chat.system }] },
     contents: [{ role: 'user', parts: [{ text: chat.user }] }],
-    generationConfig: { temperature: 0.3, maxOutputTokens: 1100 },
+    generationConfig: gen,
   };
-  if (web) {
+  if (ask.web) {
     /* 구글 검색 그라운딩 — 자료실 RAG 와 교차 확인한 출처가 groundingMetadata 로 돌아온다. */
     (body as { tools?: unknown[] }).tools = [{ google_search: {} }];
-  } else {
-    (body.generationConfig as Record<string, unknown>).responseMimeType = 'application/json';
   }
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
-    signal: AbortSignal.timeout(30000),
-    body: JSON.stringify(body),
+  return body;
+}
+
+/* 실패를 '왜'로 분류한다. 상태 코드와 오류 이름만 읽고 본문은 남기지 않는다. */
+async function classifyFail(r: Response): Promise<FailKind> {
+  let status = '';
+  let message = '';
+  try {
+    const err = await r.json();
+    status = String(err?.error?.status || '');
+    message = String(err?.error?.message || '');
+  } catch { /* 본문이 비어 있어도 상태 코드로 판단한다 */ }
+  return classifyTag(status, message, r.status);
+}
+
+function classifyTag(status: string, message: string, code: number): FailKind {
+  if (code === 429 || status === 'RESOURCE_EXHAUSTED') return 'quota';
+  if (code === 401 || code === 403 || status === 'UNAUTHENTICATED' || status === 'PERMISSION_DENIED') return 'key';
+  if (/api[\s_-]?key|credential|permission/i.test(message)) return 'key';
+  if (code === 404) return 'missing';                       // 이름이 바뀌었거나 내려간 모델
+  if (code >= 500 || status === 'UNAVAILABLE' || status === 'INTERNAL') return 'transient';
+  return 'request';                                        // 400 등 — 요청 자체의 문제
+}
+
+/* 요청이 400 으로 막히면 한 가지만 빼고 그 모델에 한 번 더 물어본다(thinking → tools). */
+function relaxAsk(ask: Ask, kind: FailKind): Ask | null {
+  if (kind !== 'request') return null;
+  if (ask.thinking) return { ...ask, thinking: false };
+  if (ask.web) return { ...ask, web: false };
+  return null;
+}
+
+/* 웹 출처 목록 — 스트림·일반 응답 두 곳에서 같이 쓴다. */
+function addWeb(list: WebSrc[], chunks: unknown): void {
+  if (!Array.isArray(chunks)) return;
+  chunks.forEach((c: { web?: { uri?: string; title?: string } }) => {
+    const u = c?.web?.uri;
+    if (!u || !/^https?:\/\//.test(u)) return;
+    if (list.some((x) => x.url === u)) return;
+    list.push({ title: String(c.web?.title || u).slice(0, 120), url: u.slice(0, 400) });
   });
-  if (!r.ok) throw new Error('upstream_' + r.status);
+}
+
+async function geminiOnce(key: string, chat: Chat, model: string, ask: Ask): Promise<Attempt> {
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
+    encodeURIComponent(model) + ':generateContent';
+
+  let r: Response;
+  try {
+    r = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
+      signal: AbortSignal.timeout(MODEL_TIMEOUT_MS),
+      body: JSON.stringify(buildBody(chat, ask)),
+    });
+  } catch {
+    return { ok: false, kind: 'transient' };      // 연결 실패·시간 초과 — 다음 모델로
+  }
+  if (!r.ok) return { ok: false, kind: await classifyFail(r) };
+
   const j = await r.json();
   const cand = j?.candidates?.[0] || {};
   const parts = cand.content?.parts;
   const text = Array.isArray(parts) ? parts.map((p: { text?: string }) => p.text || '').join('') : '';
   const web2: WebSrc[] = [];
-  const chunks = cand.groundingMetadata?.groundingChunks;
-  if (Array.isArray(chunks)) {
-    chunks.forEach((c: { web?: { uri?: string; title?: string } }) => {
-      const u = c?.web?.uri;
-      if (!u || !/^https?:\/\//.test(u)) return;
-      if (web2.some((x) => x.url === u)) return;
-      web2.push({ title: String(c.web?.title || u).slice(0, 120), url: u.slice(0, 400) });
+  addWeb(web2, cand.groundingMetadata?.groundingChunks);
+  if (!text && cand.finishReason && cand.finishReason !== 'STOP') return { ok: false, kind: 'request' };
+  return { ok: true, text, web: web2.slice(0, 6) };
+}
+
+/* 스트리밍 한 번 — 글자가 오는 대로 onDelta 로 넘긴다. 첫 글자 전 오류면 다음 모델로 넘어갈 수 있다. */
+async function streamModelOnce(
+  key: string,
+  chat: Chat,
+  model: string,
+  ask: Ask,
+  onDelta: (s: string) => void,
+): Promise<StreamOut> {
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
+    encodeURIComponent(model) + ':streamGenerateContent?alt=sse';
+
+  let r: Response;
+  try {
+    r = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-goog-api-key': key, accept: 'text/event-stream' },
+      signal: AbortSignal.timeout(MODEL_TIMEOUT_MS + 15000),
+      body: JSON.stringify(buildBody(chat, ask)),
     });
+  } catch {
+    return { ok: false, kind: 'transient', emitted: false };
   }
-  return { text, web: web2.slice(0, 6) };
+  if (!r.ok) return { ok: false, kind: await classifyFail(r), emitted: false };
+  if (!r.body) return { ok: false, kind: 'transient', emitted: false };
+
+  const reader = r.body.getReader();
+  const decoder = new TextDecoder();
+  const web2: WebSrc[] = [];
+  let buf = '';
+  let text = '';
+  let emitted = false;
+
+  /* SSE 한 줄(data: {...})을 풀어 글자·출처를 꺼낸다. 오류가 보이면 그 종류를 돌려준다. */
+  const feed = (payload: string): FailKind | null => {
+    if (!payload || payload === '[DONE]') return null;
+    let j: Record<string, unknown> | null = null;
+    try { j = JSON.parse(payload); } catch { return null; }
+    const err = (j as { error?: { status?: string; message?: string } })?.error;
+    if (err) return classifyTag(String(err.status || ''), String(err.message || ''), 400);
+    const cand = (j as { candidates?: Array<Record<string, unknown>> })?.candidates?.[0] || {};
+    const parts = cand.content as { parts?: Array<{ text?: string }> } | undefined;
+    if (Array.isArray(parts?.parts)) {
+      const piece = parts.parts.map((p) => p?.text || '').join('');
+      if (piece) { text += piece; emitted = true; onDelta(piece); }
+    }
+    addWeb(web2, (cand.groundingMetadata as { groundingChunks?: unknown })?.groundingChunks);
+    return null;
+  };
+
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      let nl = buf.indexOf('\n');
+      while (nl >= 0) {
+        const line = buf.slice(0, nl).trim();
+        buf = buf.slice(nl + 1);
+        if (line.startsWith('data:')) {
+          const kind = feed(line.slice(5).trim());
+          if (kind) {
+            try { await reader.cancel(); } catch { /* 이미 끝났다 */ }
+            return { ok: false, kind, emitted };
+          }
+        }
+        nl = buf.indexOf('\n');
+      }
+    }
+  } catch {
+    if (!emitted) return { ok: false, kind: 'transient', emitted: false };
+  }
+
+  if (!emitted && !text.trim()) return { ok: false, kind: 'transient', emitted: false };
+  return { ok: true, text, web: web2.slice(0, 6) };
+}
+
+/* 무료 한도가 찬 모델은 건너뛰고 다음 무료 모델로 — 실제로 답한 모델 이름을 함께 돌려준다(일반 응답). */
+async function callGemini(key: string, chat: Chat, ask: Ask): Promise<Reply> {
+  const started = Date.now();
+  let tried = 0;
+  let allQuota = true;
+
+  for (const model of MODEL_TRIES) {
+    if (Date.now() - started >= CHAIN_DEADLINE_MS) break;
+    let opts = ask;
+    let quotaOnly = true;
+
+    for (;;) {
+      const attempt = await geminiOnce(key, chat, model, opts);
+      if (attempt.ok) return { text: attempt.text, web: attempt.web, model };
+      if (attempt.kind === 'key') throw new ChainFail('key');       // 키가 틀렸다 — 다른 모델도 마찬가지다
+      const next = relaxAsk(opts, attempt.kind);
+      if (next) { opts = next; continue; }
+      if (attempt.kind === 'request') throw new ChainFail('upstream');
+      if (attempt.kind !== 'quota') quotaOnly = false;
+      break;
+    }
+
+    tried++;
+    if (!quotaOnly) allQuota = false;
+  }
+
+  throw new ChainFail(tried > 0 && allQuota ? 'quota' : 'upstream');
+}
+
+/* 스트리밍 체인 — 첫 글자가 나가기 전에는 다음 모델로 갈아탈 수 있고, 나간 뒤에는 끝까지 간다. */
+async function streamChain(
+  key: string,
+  chat: Chat,
+  ask: Ask,
+  onDelta: (s: string) => void,
+): Promise<{ reply: Reply } | { fail: 'key' | 'quota' | 'upstream' }> {
+  const started = Date.now();
+  let tried = 0;
+  let allQuota = true;
+
+  for (const model of MODEL_TRIES) {
+    if (Date.now() - started >= CHAIN_DEADLINE_MS) break;
+    let opts = ask;
+    let quotaOnly = true;
+
+    for (;;) {
+      const res = await streamModelOnce(key, chat, model, opts, onDelta);
+      if (res.ok) return { reply: { text: res.text, web: res.web, model } };
+      if (res.emitted) return { fail: 'upstream' };         // 이미 글자가 나갔다 — 갈아타지 않는다
+      if (res.kind === 'key') return { fail: 'key' };
+      const next = relaxAsk(opts, res.kind);
+      if (next) { opts = next; continue; }
+      if (res.kind === 'request') return { fail: 'upstream' };
+      if (res.kind !== 'quota') quotaOnly = false;
+      break;
+    }
+
+    tried++;
+    if (!quotaOnly) allQuota = false;
+  }
+
+  return { fail: tried > 0 && allQuota ? 'quota' : 'upstream' };
+}
+
+/* 스트리밍 답 — 본문은 평문, 맨 끝 [[REFS:e1,e2]] 만 근거 번호로 떼어 낸다. */
+function splitRefs(text: string): { answer: string; refs: string[] } {
+  let raw = String(text || '');
+  const refs: string[] = [];
+  const m = /\[\[\s*REFS?\s*:([^\]]*)\]\]/i.exec(raw);
+  if (m) {
+    m[1].split(/[,;\s]+/).forEach((x) => {
+      const id = x.trim().toLowerCase();
+      if (/^e\d$/.test(id) && refs.indexOf(id) < 0) refs.push(id);
+    });
+    raw = (raw.slice(0, m.index) + ' ' + raw.slice(m.index + m[0].length));
+  }
+  raw = raw.replace(/\[\[\s*REFS?[\s\S]*$/i, '').trim();      // 잘려 들어온 마커도 지운다
+  if (!refs.length && /^\s*\{/.test(raw)) {                     // 형식을 어기고 JSON 으로 답한 경우
+    const p = parseJsonAnswer(raw);
+    return { answer: p.answer.replace(/\s+/g, ' ').trim().slice(0, 4000), refs: p.refs };
+  }
+  return { answer: raw.slice(0, 4000), refs: refs.slice(0, 3) };
+}
+
+/* 체인 실패를 사용자에게 보여 줄 응답으로 옮긴다(대화·연결 테스트 두 곳에서 같은 문구). */
+function chainFail(e: unknown, origin: string | null): Response {
+  if (e instanceof ChainFail) {
+    if (e.kind === 'key') return bad(origin, 'bad_key', '키가 거부되었습니다. 키를 다시 확인해 주세요.', 400);
+    if (e.kind === 'quota') {
+      return bad(origin, 'quota',
+        '무료 모델 ' + MODEL_TRIES.length + '개의 한도를 모두 썼습니다. 1분 뒤(분당 한도) 또는 내일(하루 한도가 새로 채워질 때) 다시 시도해 주세요.', 429);
+    }
+  }
+  return bad(origin, 'upstream', 'AI 서비스에 닿지 못했습니다. 잠시 뒤 다시 시도해 주세요.', 502);
+}
+
+/* ---------- 스트리밍 응답 (text/event-stream) ----------
+   delta(글자) → done(답·모델·근거·웹 출처) 또는 error 한 번. 중간 버퍼링 없이 받는 대로 내보낸다. */
+
+const QUOTA_MSG = '무료 모델 ' + MODEL_TRIES.length + '개의 한도를 모두 썼습니다. 1분 뒤(분당 한도) 또는 내일(하루 한도가 새로 채워질 때) 다시 시도해 주세요.';
+
+function sseHeaders(origin: string | null): Headers {
+  const h = cors(origin);
+  h.set('content-type', 'text/event-stream; charset=utf-8');
+  h.set('x-accel-buffering', 'no');
+  return h;
+}
+
+function streamAnswer(
+  key: string, chat: Chat, ask: Ask, ev: Evidence[], webOn: boolean, mode: string, origin: string | null,
+): Response {
+  const encoder = new TextEncoder();
+  const body = new ReadableStream<Uint8Array>({
+    start(controller) {
+      let closed = false;
+      const send = (event: string, data: unknown) => {
+        if (closed) return;
+        try {
+          controller.enqueue(encoder.encode('event: ' + event + '\ndata: ' + JSON.stringify(data) + '\n\n'));
+        } catch {
+          closed = true;      // 브라우저가 먼저 닫았다
+        }
+      };
+      const end = () => {
+        if (closed) return;
+        closed = true;
+        try { controller.close(); } catch { /* 이미 닫혔다 */ }
+      };
+
+      streamChain(key, chat, ask, (d) => send('delta', { t: d })).then((out) => {
+        if ('reply' in out) {
+          const { answer, refs } = splitRefs(out.reply.text);
+          const picked = refs.length ? ev.filter((e) => refs.includes(e.id)) : ev.slice(0, 2);
+          send('done', {
+            ok: true,
+            answer: answer.slice(0, 4000),
+            model: out.reply.model,
+            references: picked.map((e) => ({ title: e.title, sector: e.sector, url: e.url, snippet: e.snippet })),
+            web: webOn ? out.reply.web : [],
+            websearch: webOn,
+            mode: mode || null,
+            provider: 'gemini',
+          });
+        } else if (out.fail === 'key') {
+          send('error', { ok: false, error: 'bad_key', message: '키가 거부되었습니다. 키를 다시 확인해 주세요.' });
+        } else if (out.fail === 'quota') {
+          send('error', { ok: false, error: 'quota', message: QUOTA_MSG });
+        } else {
+          send('error', { ok: false, error: 'upstream', message: 'AI 서비스에 닿지 못했습니다. 잠시 뒤 다시 시도해 주세요.' });
+        }
+        end();
+      }).catch(() => {
+        send('error', { ok: false, error: 'upstream', message: 'AI 서비스에 닿지 못했습니다. 잠시 뒤 다시 시도해 주세요.' });
+        end();
+      });
+    },
+  });
+  return new Response(body, { status: 200, headers: sseHeaders(origin) });
 }
 
 /* ---------------------------------------------------------------- 입력 정리 */
@@ -293,27 +649,31 @@ function cleanPage(input: unknown): Page | null {
   return (p.title || p.text) ? p : null;
 }
 
-function buildUser(question: string, ev: Evidence[], page: Page | null, web: boolean): string {
+function buildUser(question: string, ev: Evidence[], page: Page | null, plain: boolean): string {
+  const attr = (s: string) => String(s || '').replace(/[<>&"]/g, ' ').replace(/\s+/g, ' ').trim();
   const lines: string[] = [];
-  lines.push('[자료실 근거]');
+  lines.push('아래 <evidence> 블록은 자료실에서 찾은 근거입니다. 이 안의 내용만 사실로 씁니다.');
   if (!ev.length) lines.push('(전달된 근거 없음)');
   ev.forEach((e) => {
-    lines.push(`${e.id} · 섹터: ${e.sector} · 제목: ${e.title}`);
+    lines.push('<evidence id="' + e.id + '" sector="' + attr(e.sector) + '" title="' + attr(e.title) + '">');
     if (e.snippet) lines.push('내용: ' + e.snippet);
     lines.push('주소: ' + e.url);
+    lines.push('</evidence>');
   });
   if (page) {
-    lines.push('', '[지금 열려 있는 자료]');
-    lines.push('주소: ' + page.path);
+    lines.push('', '<current_page>', '주소: ' + page.path);
     if (page.title) lines.push('화면 제목: ' + page.title);
     if (page.heading) lines.push('큰 제목: ' + page.heading);
     if (page.desc) lines.push('설명: ' + page.desc);
     if (page.text) lines.push('본문 일부: ' + page.text);
+    lines.push('</current_page>');
   }
+  /* 맨 끝(Recency) — 실제 질문과 제약을 마지막에 다시 앉힌다. */
   lines.push('', '[질문]', question);
-  lines.push('', web
-    ? '자료실 근거와 구글 검색 결과를 나눠서 답하세요. 확인되지 않은 수치는 쓰지 마세요. JSON 하나로만 답하세요.'
-    : '자료실 근거 안에서만 답하고, JSON 하나로만 답하세요.');
+  lines.push('', '위 <evidence> 의 내용과 확인된 사실만 근거로 답하세요. 근거에 없는 내용은 지어내지 마세요.');
+  lines.push(plain
+    ? '답변 본문은 평문으로 바로 쓰고, 맨 마지막 줄에만 [[REFS:e1,e2]] 형식으로 근거 번호를 적으세요.'
+    : '답변은 JSON 하나로만 쓰세요.');
   return lines.join('\n');
 }
 
@@ -398,15 +758,8 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
     const row = await getKeyRow(userId);
     if (!row) return bad(origin, 'no_key', '등록된 키가 없습니다. 내 키를 먼저 등록해 주세요.', 404);
 
-    const limit = await sb('rpc/jc_assistant_take', {
-      method: 'POST',
-      body: JSON.stringify({ p_user: userId, p_limit: RATE_LIMIT, p_window_sec: 60 }),
-    });
-    if (limit.ok) {
-      const left = await limit.json();
-      if (typeof left === 'number' && left < 0) {
-        return bad(origin, 'rate', '잠깐 쉬어 가요. 1분에 ' + RATE_LIMIT + '번까지 여쭤볼 수 있습니다.', 429);
-      }
+    if (await overRate(userId)) {
+      return bad(origin, 'rate', '잠깐 쉬어 가요. 1분에 ' + RATE_LIMIT + '번까지 여쭤볼 수 있습니다.', 429);
     }
 
     let key = '';
@@ -420,19 +773,24 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
     const page = cleanPage(body.page);
     const mode = MODES.includes(String(body.mode || '')) ? String(body.mode) : '';
     const webOn = !!body.websearch;
+    const stream = body.stream === true;
 
+    /* 형식 지시는 프롬프트 맨 끝(Recency)에 둔다 — 모델이 마지막 지시를 가장 잘 따른다. */
     let system = SYS;
     if (mode) system += '\n\n' + MODE_TXT[mode];
+    system += '\n\n■ 형식\n' + (stream ? FMT_PLAIN : FMT_JSON);
 
-    const chat: Chat = { system, user: buildUser(question, ev, page, webOn) };
+    const chat: Chat = { system, user: buildUser(question, ev, page, stream) };
+
+    if (stream) {
+      return streamAnswer(key, chat, { web: webOn, json: false, maxTokens: 800, thinking: true }, ev, webOn, mode, origin);
+    }
+
     let reply: Reply;
     try {
-      reply = await callGemini(key, chat, webOn);
+      reply = await callGemini(key, chat, { web: webOn, json: !webOn, maxTokens: 1100, thinking: true });
     } catch (e) {
-      const msg = e instanceof Error ? e.message : 'upstream';
-      if (/^upstream_(401|403)$/.test(msg)) return bad(origin, 'bad_key', '키가 거부되었습니다. 키를 다시 확인해 주세요.', 400);
-      if (/^upstream_429$/.test(msg)) return bad(origin, 'quota', '제공자의 한도에 걸렸습니다. 잠시 뒤 다시 시도해 주세요.', 429);
-      return bad(origin, 'upstream', 'AI 서비스에 닿지 못했습니다. 잠시 뒤 다시 시도해 주세요.', 502);
+      return chainFail(e, origin);
     }
 
     const { answer, refs } = parseJsonAnswer(reply.text);
@@ -445,6 +803,40 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
       websearch: webOn,
       mode: mode || null,
       provider: 'gemini',
+      model: reply.model,
+    }, origin);
+  }
+
+  /* --- 연결 테스트(내 키 탭): 실제로 한 번 불러 보고 답·걸린 시간·모델 이름을 돌려준다 --- */
+  if (action === 'ping') {
+    const row = await getKeyRow(userId);
+    if (!row) return bad(origin, 'no_key', '등록된 키가 없습니다. 내 키를 먼저 등록해 주세요.', 404);
+
+    if (await overRate(userId)) {
+      return bad(origin, 'rate', '잠깐 쉬어 가요. 1분에 ' + RATE_LIMIT + '번까지 여쭤볼 수 있습니다.', 429);
+    }
+
+    let key = '';
+    try {
+      key = await open_(row.key_ciphertext, row.key_iv, userId + ':gemini');
+    } catch {
+      return bad(origin, 'bad_key', '저장된 키를 풀지 못했습니다. 키를 다시 등록해 주세요.', 409);
+    }
+
+    const chat: Chat = { system: PING_SYS, user: '안녕하세요' };
+    const started = Date.now();
+    let reply: Reply;
+    try {
+      reply = await callGemini(key, chat, { web: false, json: false, maxTokens: 96, thinking: true });
+    } catch (e) {
+      return chainFail(e, origin);
+    }
+    const text = String(reply.text || '').replace(/\s+/g, ' ').trim().slice(0, 160);
+    return out(200, {
+      ok: true,
+      reply: text || '인사말을 받았습니다.',
+      model: reply.model,
+      ms: Date.now() - started,
     }, origin);
   }
 

@@ -268,24 +268,6 @@
 
 /* ---------- 대화 ---------- */
 
-.jca-ctx {
-  display: flex; align-items: center; gap: 8px;
-  margin: 0 0 10px;
-  padding: 8px 10px 8px 12px;
-  border: 1px solid var(--_line);
-  border-radius: 12px;
-  background: var(--_panel);
-}
-.jca-ctx[hidden] { display: none; }
-.jca-ctx-t {
-  flex: 1 1 auto; min-width: 0;
-  font-size: 12px; font-weight: 600; color: var(--_muted);
-  letter-spacing: -.01em;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-.jca-ctx-off { opacity: .6; }
-.jca-ctx-off .jca-ctx-t::after { content: " (보내지 않음)"; color: var(--_dim); font-weight: 500; }
-
 .jca-tog {
   display: inline-flex; align-items: center; gap: 6px;
   min-height: 32px;
@@ -343,7 +325,11 @@
 .jca-refs b { display: block; font-size: 13px; font-weight: 700; letter-spacing: -.01em; }
 .jca-refs span { display: block; margin-top: 2px; font-size: 11.5px; color: var(--_dim); }
 .jca-open { margin-top: 8px; }
-.jca-ctx-used { display: block; margin-top: 8px; font-size: 11px; color: var(--_dim); letter-spacing: -.01em; }
+.jca-a-live::after {
+  content: "▍"; margin-left: 1px; color: var(--_acc);
+  animation: jca-caret 1s steps(2, start) infinite;
+}
+@keyframes jca-caret { to { visibility: hidden; } }
 .jca-wait { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--_muted); }
 .jca-wait i {
   width: 12px; height: 12px; border-radius: 50%;
@@ -507,6 +493,28 @@
   font: 600 12.5px/1 var(--_sans); cursor: pointer;
 }
 .jca-key .jca-del:hover { border-color: var(--_line2); color: var(--_ink); }
+
+.jca-ktest {
+  margin: 12px 0 0;
+  padding: 12px;
+  border: 1px solid var(--_line);
+  border-radius: 12px;
+  background: var(--_panel);
+}
+.jca-ktest-hd {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  margin-bottom: 8px;
+}
+.jca-ktest-hd b { font-size: 12.5px; font-weight: 700; color: var(--_ink); }</n.jca-ktest-hd > span { font-size: 11px; color: var(--_dim); letter-spacing: -.01em; }
+.jca-ktest-btn { width: 100%; min-height: 44px; }
+.jca-ktest-out { margin-top: 10px; }
+.jca-ktest-out[hidden] { display: none; }
+.jca-ktest-out p { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--_muted); }
+.jca-ktest-say { color: var(--_ink) !important; font-size: 13px !important; }
+.jca-ktest-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-top: 6px !important; font-size: 11.5px !important; }
+.jca-ktest-meta b { font-weight: 700; color: var(--_acc); }
+.jca-ktest-meta span { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--_dim); }
+.jca-ktest-out.err p { color: #b42318; }
 
 .jca-msg { margin: 10px 2px 0; font-size: 12.5px; line-height: 1.55; color: var(--_muted); }
 .jca-msg.err { color: #b42318; }
