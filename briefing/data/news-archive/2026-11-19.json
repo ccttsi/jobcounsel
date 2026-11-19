@@ -1,17 +1,54 @@
 {
- "schema_version": "1.2.0",
- "updated_at": "2026-11-19T07:10:00+09:00",
+ "schema_version": "1.1.0",
+ "updated_at": "2026-11-19T23:06:00+09:00",
  "date": "2026-11-19",
  "data_status": "ok",
  "data_status_note": null,
- "runs": {},
+ "runs": {
+  "kr-0700": {
+   "status": "ok",
+   "updated_at": "2026-11-19T07:06:00+09:00",
+   "last_ok": "2026-11-19",
+   "run_id": "br-20261119-0706"
+  },
+  "global-2300": {
+   "status": "ok",
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "last_ok": "2026-11-19",
+   "run_id": "br-20261119-2306"
+  }
+ },
  "main_themes": [
   {
    "theme_id": "th-ai-job-restructuring",
    "title": "AI 직무 재편",
    "summary": "AI가 일을 없애는가보다 일을 다시 묶는 쪽으로 움직인다. 직무 단위가 흔들리면 상담에서 묻는 것도 직업명이 아니라 \"어떤 일 묶음을 할 수 있는가\"로 바뀐다.",
-   "updated_at": "2026-11-19T07:06:00+09:00",
+   "updated_at": "2026-11-19T23:06:00+09:00",
    "items": [
+    {
+     "issue_id": "iss-legal-ai-specialization",
+     "title": "AI가 법률 일을 다시 나눈다 — 자기대리 16.8%, 로펌 매출 +13%(arXiv:2611.23354)",
+     "source": {
+      "source_name": "arXiv (micro1·노스이스턴대)",
+      "source_url": "https://arxiv.org/abs/2611.23354"
+     },
+     "license": {
+      "name": "CC BY 4.0 (Attribution 4.0 International)",
+      "type": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "scope": "논문 본문(초록·본문 텍스트)",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-19",
+      "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
+      "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
+     },
+     "first_seen": "2026-11-19",
+     "last_updated": "2026-11-19",
+     "track": "A"
+    },
     {
      "issue_id": "iss-bok-ai-productivity",
      "title": "한은 분석 — AI로 아낀 주간 3.7시간, 그 63%는 다시 업무로",
@@ -134,30 +171,6 @@
      "first_seen": "2026-11-16",
      "last_updated": "2026-11-16",
      "track": "A"
-    },
-    {
-     "issue_id": null,
-     "title": "잡코리아 경력직 공고 — 15년 이상 +30%, AI 역량 요구 동반",
-     "source": {
-      "source_name": "뉴스핌",
-      "source_url": "https://www.newspim.com/news/view/20261116000174"
-     },
-     "license": {
-      "name": "언론사 저작권 — 본문 복제·번역 금지",
-      "type": "PRESS",
-      "url": null,
-      "scope": "기사 본문·제목·이미지",
-      "attribution_required": true,
-      "commercial_use": "not_allowed",
-      "modification": "not_allowed",
-      "verified": true,
-      "verified_at": "2026-11-16",
-      "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
-      "attribution_text": "수치 출처: 잡코리아 집계(뉴스핌 2026-11-16 보도)"
-     },
-     "first_seen": "2026-11-16",
-     "last_updated": "2026-11-16",
-     "track": "B"
     }
    ]
   },
@@ -434,6 +447,30 @@
   {
    "word": "경제전망",
    "count": 1
+  },
+  {
+   "word": "미국 고용",
+   "count": 2
+  },
+  {
+   "word": "업종별 일자리",
+   "count": 1
+  },
+  {
+   "word": "실업보험",
+   "count": 1
+  },
+  {
+   "word": "산업안전",
+   "count": 1
+  },
+  {
+   "word": "배달·물류",
+   "count": 1
+  },
+  {
+   "word": "전문서비스",
+   "count": 1
   }
  ],
  "items": [
@@ -477,10 +514,227 @@
     "full_text_allowed": true,
     "ai_translation_allowed": true
    }
+  },
+  {
+   "id": "n20261119-02",
+   "issue_id": "iss-us-ui-claims-20261119",
+   "theme_id": null,
+   "is_main_theme": false,
+   "edition": "global-2300",
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "run_id": "br-20261119-2306",
+   "headline": false,
+   "published_at": "2026-11-19T08:30:00-05:00",
+   "source": {
+    "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
+    "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": null,
+     "scope": "보도자료 본문·통계표",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "미국 노동부(연방 행정부) 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 원문 직접 확인(2026-11-19).",
+     "attribution_text": "Source: U.S. Department of Labor, Employment and Training Administration, “Unemployment Insurance Weekly Claims Report” (November 19, 2026)"
+    }
+   },
+   "title_original": "Unemployment Insurance Weekly Claims Report",
+   "title_ko": "실업보험 주간 청구 — 2026년 11월 19일",
+   "body_original": "TRANSMISSION OF MATERIALS IN THIS RELEASE IS EMBARGOED UNTIL 8:30 A.M. (Eastern) Thursday, November 19, 2026\n\nUNEMPLOYMENT INSURANCE WEEKLY CLAIMS\n\nSEASONALLY ADJUSTED DATA\n\nIn the week ending November 14, the advance figure for seasonally adjusted initial claims was 203,000, an increase of 1,000 from the previous week's revised level. The previous week's level was revised up by 2,000 from 200,000 to 202,000. The 4-week moving average was 197,750, an increase of 2,000 from the previous week's revised average. The previous week's average was revised up by 500 from 195,250 to 195,750.\n\nThe advance seasonally adjusted insured unemployment rate was 1.1 percent for the week ending November 7, unchanged from the previous week's unrevised rate. The advance number for seasonally adjusted insured unemployment during the week ending November 7 was 1,763,000, an increase of 70,000 from the previous week's revised level. The previous week's level was revised down by 4,000 from 1,697,000 to 1,693,000. The 4-week moving average was 1,717,000, an increase of 10,250 from the previous week's revised average.\n\nUNADJUSTED DATA\n\nThe advance number of actual initial claims under state programs, unadjusted, totaled 197,492 in the week ending November 14, a decrease of 11,941 (or -5.7 percent) from the previous week. The seasonal factors had expected a decrease of 12,534 (or -6.0 percent) from the previous week. There were 218,228 initial claims in the comparable week in 2025.\n\nThe advance unadjusted insured unemployment rate was 1.0 percent during the week ending November 7, unchanged from the prior week. A year earlier the rate was 1.1 percent and the volume was 1,708,938.\n\nThe total number of continued weeks claimed for benefits in all programs for the week ending October 31 was 1,524,631, an increase of 6,691 from the previous week. There were 1,786,704 weekly claims filed for benefits in all programs in the comparable week in 2025.\n\nNo state was triggered \"on\" the Extended Benefits program during the week ending October 31.\n\nThe highest insured unemployment rates in the week ending October 31 were in New Jersey (2.0), Washington (1.9), California (1.8), Massachusetts (1.8), Oregon (1.6), Puerto Rico (1.6), Nevada (1.5), Rhode Island (1.5), New York (1.4), Alaska (1.3), and Illinois (1.3).",
+   "body_ko_ai": "이 자료는 2026년 11월 19일(목) 오전 8시 30분(미 동부시간)까지 보도 금지입니다.\n\n실업보험 주간 청구\n\n계절조정 자료\n\n11월 14일로 끝난 주의 계절조정 신규 청구 잠정치는 20만3,000건으로, 수정된 전주 값보다 1,000건 늘었다. 전주 값은 20만건에서 20만2,000건으로 2,000건 상향 수정됐다. 4주 이동평균은 19만7,750건으로 수정된 전주 평균보다 2,000건 늘었다. 전주 평균은 19만5,250건에서 19만5,750건으로 500건 상향 수정됐다.\n\n11월 7일로 끝난 주의 계절조정 피보험 실업률 잠정치는 1.1%로 전주(수정 전)와 같았다. 같은 주 계절조정 피보험 실업 잠정치는 176만3,000건으로 수정된 전주 값보다 7만건 늘었다. 전주 값은 169만7,000건에서 169만3,000건으로 4,000건 하향 수정됐다. 4주 이동평균은 171만7,000건으로 수정된 전주 평균보다 1만250건 늘었다.\n\n계절조정 전 자료\n\n11월 14일로 끝난 주 주(州) 프로그램의 실제 신규 청구 잠정치는 계절조정 전 19만7,492건으로 전주보다 1만1,941건(-5.7%) 줄었다. 계절 요인은 전주 대비 1만2,534건(-6.0%) 감소를 예상했었다. 2025년 같은 주에는 신규 청구가 21만8,228건이었다.\n\n11월 7일로 끝난 주의 계절조정 전 피보험 실업률 잠정치는 1.0%로 전주와 같았다. 1년 전 같은 주의 실업률은 1.1%, 규모는 170만8,938건이었다.\n\n10월 31일로 끝난 주 모든 프로그램의 계속 청구 주수는 152만4,631주로 전주보다 6,691주 늘었다. 2025년 같은 주에는 모든 프로그램에서 178만6,704주의 주간 청구가 접수됐다.\n\n10월 31일로 끝난 주에 연장급여(EB) 프로그램이 발동된 주는 없었다.\n\n10월 31일로 끝난 주 피보험 실업률이 가장 높은 곳은 뉴저지(2.0), 워싱턴(1.9), 캘리포니아(1.8), 매사추세츠(1.8), 오리건(1.6), 푸에르토리코(1.6), 네바다(1.5), 로드아일랜드(1.5), 뉴욕(1.4), 알래스카(1.3), 일리노이(1.3)였다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-19T23:06:00+09:00"
+   },
+   "topics": [
+    "글로벌",
+    "고용·정책"
+   ],
+   "keywords": [
+    "실업보험",
+    "미국 고용"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261119-03",
+   "issue_id": "iss-us-payroll-12m-oct2026",
+   "theme_id": null,
+   "is_main_theme": false,
+   "edition": "global-2300",
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "run_id": "br-20261119-2306",
+   "headline": false,
+   "published_at": "2026-11-18",
+   "source": {
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Payroll employment increased by 885,000 from October 2025 to October 2026” (November 18, 2026)"
+    }
+   },
+   "title_original": "Payroll employment increased by 885,000 from October 2025 to October 2026",
+   "title_ko": "비농업 취업자, 2025년 10월~2026년 10월 사이 88만5,000명 증가",
+   "body_original": "Total nonfarm payroll employment increased by 885,000 over the year ending in October 2026.\n\n12-month employment changes by industry, October 2026, seasonally adjusted\n\nIndustry | 12-month net change\nTotal nonfarm | 885,000\nTotal private | 943,000\nService providing | 684,000\nPrivate education and health services | 525,000\nProfessional and business services | 269,000\nGoods-producing | 201,000\nConstruction | 124,000\nManufacturing | 78,000\nRetail trade | 63,300\nOther services | 46,000\nTransportation and warehousing | 17,000\nLeisure and hospitality | 16,000\nWholesale trade | 14,200\nUtilities | 9,600\nMining and logging | -1,000\nGovernment | -58,000\nFinancial activities | -99,000\nInformation | -119,000\n\nAmong service-providing industries, employment rose over the year in private education and health services by 525,000 and in professional and business services by 269,000, while job losses occurred in information (-119,000), financial activities (-99,000), and government (-58,000).\n\nGoods-producing industries added a total of 201,000 jobs over the year, with jobs gains of 124,000 in construction and 78,000 in manufacturing.\n\nThese data are from the Current Employment Statistics program and are seasonally adjusted. The most recent two months are preliminary. To learn more, see The Employment Situation - October 2026.",
+   "body_ko_ai": "비농업 부문 취업자 수는 2026년 10월까지 1년 동안 88만5,000명 늘었다.\n\n업종별 12개월 고용 증감(2026년 10월, 계절조정)\n\n업종 | 12개월 순증감\n비농업 전체 | 885,000\n민간 전체 | 943,000\n서비스 제공 | 684,000\n민간 교육·보건 | 525,000\n전문·사업서비스 | 269,000\n재화 생산 | 201,000\n건설 | 124,000\n제조업 | 78,000\n소매업 | 63,300\n기타 서비스 | 46,000\n운송·창고업 | 17,000\n숙박·음식점업 | 16,000\n도매업 | 14,200\n전기·가스 등 | 9,600\n광업·임업 | -1,000\n정부 | -58,000\n금융·보험 | -99,000\n정보업 | -119,000\n\n서비스 제공 업종 가운데서는 민간 교육·보건이 1년 사이 52만5,000명, 전문·사업서비스가 26만9,000명 늘었고, 정보업(-11만9,000명), 금융(-9만9,000명), 정부(-5만8,000명)에서는 일자리가 줄었다.\n\n재화 생산 업종은 1년 동안 모두 20만1,000명이 늘었으며, 건설이 12만4,000명, 제조업이 7만8,000명 증가했다.\n\n이 자료는 현재 고용통계(CES) 프로그램에서 나온 것으로 계절조정 값이다. 최근 두 달은 잠정치다. 자세한 내용은 「2026년 10월 고용상황」을 보라.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-19T23:06:00+09:00"
+   },
+   "topics": [
+    "글로벌",
+    "고용·정책"
+   ],
+   "keywords": [
+    "업종별 일자리",
+    "미국 고용"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261119-04",
+   "issue_id": "iss-us-soii-2025",
+   "theme_id": null,
+   "is_main_theme": false,
+   "edition": "global-2300",
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "run_id": "br-20261119-2306",
+   "headline": false,
+   "published_at": "2026-11-18T10:00:00-05:00",
+   "source": {
+    "source_name": "미국 노동통계국(BLS)",
+    "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, “Employer-Reported Workplace Injuries and Illnesses — 2025” (USDL-26-1712, November 18, 2026)"
+    }
+   },
+   "title_original": "Employer-Reported Workplace Injuries and Illnesses — 2025",
+   "title_ko": "사업주 보고 산업재해·질병 — 2025년",
+   "body_original": "Private industry employers reported 2.4 million nonfatal workplace injuries and illnesses in 2025, down 3.0 percent from 2024, the U.S. Bureau of Labor Statistics reported today. This represents the third consecutive annual decrease and is the lowest number of employer-reported injuries and illnesses for this data series going back to 2003. The drop in cases for 2025 was driven by decreases in both injuries (down 1.5 percent to 2.3 million) and illnesses (down 26.1 percent to 109,400 cases). Illness cases in 2025 are now lower than the number of illnesses in 2019. The decrease in illnesses included a 67.6-percent drop in respiratory illness cases.\n\nIn 2025, the incidence rate of total recordable cases (TRC) in private industry was 2.3 cases per 100 full-time equivalent (FTE) workers. Injuries occurred at a rate of 2.2 cases per 100 FTE workers. The incidence rate of illnesses decreased in 2025 to 10.2 cases per 10,000 FTE workers, down from 13.9 cases in 2024.\n\nIn 2025, there were 842,500 nonfatal injuries and illnesses involving days away from work (DAFW), which occurred at a rate of 0.8 cases per 100 FTE workers. Additionally, there were 558,300 cases involving days of job transfer or restriction (DJTR), which occurred at a rate of 0.5 cases per 100 FTE workers.\n\nTotal Injuries and Illnesses by Private Industry Sector\n\nIn 2025, total recordable injuries and illnesses decreased in five industry sectors. Total cases decreased 3.3 percent in health care and social assistance to 535,500 cases, down from 553,800 cases in 2024, and the TRC incidence rate was 3.2 cases per 100 FTE workers, down from 3.4 in 2024. Total cases in retail trade decreased 5.9 percent to 319,600, down from 339,800 cases in 2024, and cases in manufacturing fell by 8.5 percent to 304,200 cases, down from 332,600 cases in 2024. Total cases also decreased in the construction and mining industry sectors.\n\nTotal injuries and illnesses increased in two industry sectors in 2025. Total cases increased 13.5 percent in the educational services sector to 42,000 cases in 2025, up from 37,000 cases in 2024. Total cases and incidence rate increased in the real estate and rental and leasing sector to 41,400 cases and 2.0 cases per 100 FTE workers, respectively, from 34,700 cases and a rate of 1.6 in 2024.\n\nAdditional Highlights\n\nThere were 49,500 total injuries and illnesses in transportation equipment manufacturing in 2025, down 13.2 percent from 57,000 in 2024.\n\nCouriers and messengers had an 11.4-percent increase in total cases in 2025, up to 75,200 from 67,500 in 2024, due to a rise in DJTR cases. DJTR cases increased 47.5 percent to 29,500 in 2025, from 20,000 in 2024.\n\nInjuries and illnesses in warehousing and storage fell 5.5 percent in 2025 to 72,800, down from 77,000 in 2024.\n\nIllness cases in nursing and residential care facilities declined 60.0 percent to 9,800 cases in 2025, down from 24,500 cases in 2024.\n\nThis news release is the first of two releases from BLS covering occupational safety and health statistics for the 2025 calendar year.",
+   "body_ko_ai": "미국 노동통계국은 오늘 민간 부문 사업주가 보고한 2025년 비치명적 산업재해·질병이 240만건으로 2024년보다 3.0% 줄었다고 밝혔다. 이는 3년 연속 감소이며, 2003년까지 거슬러 올라가는 이 통계 계열에서 사업주 보고 재해·질병 건수로는 가장 적다. 2025년 건수 감소는 부상(-1.5%, 230만건)과 질병(-26.1%, 10만9,400건)이 함께 줄어든 데서 비롯됐다. 2025년 질병 건수는 이제 2019년보다도 적다. 질병 감소에는 호흡기 질환 사례의 67.6% 감소가 포함됐다.\n\n2025년 민간 부문의 총기록대상(TRC) 발생률은 상시근로자(FTE) 100명당 2.3건이었다. 부상은 FTE 100명당 2.2건 발생했다. 질병 발생률은 2025년 FTE 1만명당 10.2건으로 2024년 13.9건에서 줄었다.\n\n2025년에는 결근을 동반한(DAFW) 비치명적 부상·질병이 84만2,500건 있었고, 이는 FTE 100명당 0.8건에 해당한다. 또한 업무 전환 또는 제한(DJTR) 사례가 55만8,300건 있었으며, FTE 100명당 0.5건이었다.\n\n민간 산업 부문별 재해·질병\n\n2025년에는 5개 산업 부문에서 총기록대상 재해·질병이 줄었다. 보건·사회복지 부문은 건수가 3.3% 줄어 53만5,500건(2024년 55만3,800건)이었고 TRC 발생률은 FTE 100명당 3.2건으로 2024년 3.4건에서 낮아졌다. 소매업은 5.9% 줄어 31만9,600건(2024년 33만9,800건), 제조업은 8.5% 줄어 30만4,200건(2024년 33만2,600건)이었다. 건설업과 광업 부문에서도 총 건수가 줄었다.\n\n2025년에는 2개 산업 부문에서 재해·질병이 늘었다. 교육서비스 부문은 13.5% 늘어 4만2,000건(2024년 3만7,000건)이었다. 부동산·임대업 부문은 4만1,400건, 발생률 FTE 100명당 2.0건으로 2024년 3만4,700건·1.6건에서 모두 늘었다.\n\n주요 내용\n\n2025년 운송장비 제조업의 재해·질병은 4만9,500건으로 2024년 5만7,000건에서 13.2% 줄었다.\n\n특송·메신저 업종은 DJTR 사례가 늘면서 2025년 총 건수가 11.4% 증가해 2024년 6만7,500건에서 7만5,200건이 됐다. DJTR 사례는 2024년 2만건에서 2025년 2만9,500건으로 47.5% 늘었다.\n\n창고·보관업의 재해·질병은 2025년 5.5% 줄어 7만2,800건(2024년 7만7,000건)이었다.\n\n요양·주거형 돌봄시설의 질병 사례는 2025년 60.0% 줄어 9,800건(2024년 2만4,500건)이었다.\n\n이 보도자료는 BLS가 2025년 산업안전보건 통계를 다루는 두 차례 발표 가운데 첫 번째다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-19T23:06:00+09:00"
+   },
+   "topics": [
+    "글로벌",
+    "고용·정책"
+   ],
+   "keywords": [
+    "산업안전",
+    "배달·물류"
+   ],
+   "related_jobs": [
+    "택배기사",
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261119-05",
+   "issue_id": "iss-legal-ai-specialization",
+   "theme_id": "th-ai-job-restructuring",
+   "is_main_theme": true,
+   "edition": "global-2300",
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "run_id": "br-20261119-2306",
+   "headline": false,
+   "published_at": "2026-11-17T14:07:00Z",
+   "source": {
+    "source_name": "arXiv (micro1·노스이스턴대)",
+    "source_url": "https://arxiv.org/abs/2611.23354",
+    "country": "US",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 본문(초록·본문 텍스트)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
+     "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
+    }
+   },
+   "title_original": "AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services",
+   "title_ko": "AI, 전문화, 그리고 지식노동의 조직 — 법률서비스 증거",
+   "body_original": "Artificial intelligence makes specialized knowledge cheaper to use, but its effects on professional-service firms depend on how clients reallocate work and how suppliers respond. We develop a framework linking individual self-provision, enterprise make-or-buy decisions, and pricing by specialist firms. As AI improves lower-priced alternatives, clients may reallocate work across outside providers without bringing it in-house. If the departing work is more price-sensitive than the work that remains, premium firms may raise their optimal markups even as their share of work declines. We examine these margins in U.S. legal services. Across 89 federal districts, a difference-in-differences analysis finds a 6.6-percentage-point increase in non-prisoner self-representation relative to prisoner petitions by fiscal 2025, remaining substantial after adjusting for pre-existing trends. In contrast, lawyer employment shows no clear post-2022 shift toward client firms. Legal-AI benchmarks reveal continuing limitations in reliably completing complex, multi-step work, offering one possible explanation. Meanwhile, the largest law firms reported 13% revenue growth in 2025 despite nearly flat billable hours, while lower-priced firms experienced stronger demand growth. Reported AI integration is also stronger among firms with lower revenue per lawyer. These patterns highlight the importance of changes in work allocation and supplier competition, even as much of the underlying reallocation predates generative AI. The findings illustrate why cheaper expertise need not produce either widespread internalization or declining prices for premium professional services.\n\nThe empirical evidence reveals different patterns across these margins. First, self-representation in federal civil litigation has risen sharply since ChatGPT launched in 2022. The share of non-prisoner cases involving a self-represented party reached 16.8% in fiscal 2025, after remaining between 9.5% and 12.1% for nearly two decades. Using a difference-in-differences design comparing non-prisoner cases with prisoner petitions across 89 federal districts, we estimate a 6.6-percentage-point relative increase by 2025. The finding remains substantial at 5.7 points after accounting for a modest upward pre-existing trend. Increases are particularly pronounced in several case types requiring substantial drafting, consistent with AI reducing the cost of self-representation.\n\nSecond, we find little evidence of a new shift in lawyer employment toward client firms. The share of privately employed lawyers working outside the legal-services industry rose substantially during the 2010s, before generative AI, but stood at 29.0% in 2024, close to 28.7% in 2019. Within-state estimates show no clear post-2022 acceleration in in-house hiring, nor is industry-level AI adoption positively associated with such hiring.\n\nThird, the outside-provider market exhibits changes in demand and pricing consistent with our model predictions. In 2025, the largest U.S. law firms reported 13% revenue growth despite nearly flat billable hours, while lower-priced firms experienced stronger demand growth. Realized rates rose substantially, and midsize firms experienced stronger hours growth. Comparing practice-level demand with legal-agent benchmark results, we find no systematic evidence that specialties with stronger AI capabilities experienced faster declines after 2022. Instead, several of these specialties, particularly patent and tax, had already experienced declining billable hours before generative AI became widely available. Meanwhile, firms with lower revenue per lawyer report stronger AI integration, consistent with AI improving clients' alternatives to premium providers. Together, these patterns suggest that changes in the allocation of work among outside suppliers may be an important margin of adjustment.",
+   "body_ko_ai": "인공지능은 전문지식을 쓰는 비용을 낮추지만, 그 효과가 전문서비스 기업에 어떻게 나타나는지는 의뢰인이 일을 어떻게 재배분하고 공급자가 어떻게 대응하는지에 달려 있다. 우리는 개인의 자기수행, 기업의 내부제작 대 외부구매(make-or-buy) 결정, 전문기업의 가격 책정을 연결하는 틀을 제시한다. AI가 더 낮은 가격의 대안을 개선하면, 의뢰인은 일을 사내로 가져오지 않고 외부 공급자 사이에서 재배분할 수 있다. 빠져나가는 일이 남는 일보다 가격 민감도가 높다면, 프리미엄 기업은 맡는 일의 몫이 줄어들면서도 최적 마크업을 오히려 높일 수 있다. 우리는 이 문제들을 미국 법률서비스 시장에서 살펴본다. 89개 연방지구에 대한 이중차분 분석에서 비수감자 자기대리는 2025회계연도까지 수감자 청구 대비 6.6%포인트 늘었고, 기존 추세를 조정한 뒤에도 상당한 수준으로 남는다. 반면 변호사 고용은 2022년 이후 의뢰기업 쪽으로 뚜렷하게 이동한 흔적이 없다. 법률 AI 벤치마크는 복잡하고 여러 단계로 이뤄진 업무를 안정적으로 완수하는 데 여전히 한계가 있음을 보여주며, 이는 하나의 가능한 설명이 된다. 한편 가장 큰 로펌들은 청구시간이 거의 정체된 가운데 2025년 매출이 13% 늘었고, 가격이 낮은 로펌들은 수요가 더 강하게 늘었다. 변호사 1인당 매출이 낮은 로펌에서 AI 통합이 더 강하다고 보고됐다. 이 같은 양상은 재배분의 상당 부분이 생성형 AI 이전에 시작됐음에도 일의 배분과 공급자 경쟁의 변화가 중요하다는 점을 보여준다. 이 결과는 전문지식이 싸졌다고 해서 프리미엄 전문서비스가 폭넓게 내부화되거나 가격이 내려가지는 않는다는 것을 보여준다.\n\n실증 증거는 이 문제들에서 서로 다른 양상을 드러낸다. 첫째, 연방 민사소송에서 자기대리는 2022년 ChatGPT 출시 이후 급격히 늘었다. 자기대리 당사자가 포함된 비수감자 사건의 비중은 2025회계연도에 16.8%에 이르렀다. 거의 20년 동안 9.5~12.1% 사이에 머물렀던 수치다. 89개 연방지구에서 비수감자 사건을 수감자 청구와 비교하는 이중차분 설계를 쓰면, 2025년까지 상대적으로 6.6%포인트 증가한 것으로 추정된다. 이 결과는 완만한 기존 상승 추세를 고려한 뒤에도 5.7%포인트로 상당하다. 증가는 상당한 문서 작성이 필요한 여러 사건 유형에서 특히 두드러지며, 이는 AI가 자기대리 비용을 낮춘 것과 부합한다.\n\n둘째, 변호사 고용이 의뢰기업 쪽으로 새로 이동했다는 증거는 거의 없다. 법률서비스 산업 밖에서 일하는 민간 고용 변호사의 비중은 생성형 AI 이전인 2010년대에 크게 늘었지만, 2024년에는 29.0%로 2019년의 28.7%와 비슷했다. 주(州) 내 추정치에서도 2022년 이후 사내 채용이 뚜렷하게 빨라지지 않았고, 산업 수준의 AI 도입도 그런 채용과 긍정적으로 연관되지 않는다.\n\n셋째, 외부 공급자 시장은 우리 모형의 예측과 부합하는 수요·가격 변화를 보인다. 2025년 미국 최대 로펌들은 청구시간이 거의 정체된 가운데 매출이 13% 늘었고, 가격이 낮은 로펌들은 수요가 더 강하게 늘었다. 실현 단가는 크게 올랐고 중견 로펌은 시간 증가가 더 강했다. 업무 영역별 수요를 법률 에이전트 벤치마크 결과와 비교해 보면, AI 역량이 강한 전문 영역이 2022년 이후 더 빨리 줄었다는 체계적 증거는 없다. 오히려 그런 영역 몇 곳, 특히 특허와 세무는 생성형 AI가 널리 퍼지기 전에 이미 청구시간이 줄고 있었다. 한편 변호사 1인당 매출이 낮은 로펌이 AI 통합이 더 강하다고 보고하며, 이는 AI가 프리미엄 공급자에 대한 의뢰인의 대안을 개선한다는 것과 부합한다. 종합하면, 외부 공급자 사이의 일 배분 변화가 중요한 조정 경로일 수 있음을 시사한다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-19T23:06:00+09:00"
+   },
+   "topics": [
+    "AI·직무",
+    "글로벌"
+   ],
+   "keywords": [
+    "전문서비스"
+   ],
+   "related_jobs": [
+    "변호사",
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
   }
  ],
  "excluded": {
-  "count": 3,
+  "count": 6,
   "reasons": [
    {
     "reason": "언론사 기사(PRESS) — 본문 재게시 불가",
@@ -489,12 +743,16 @@
    {
     "reason": "공공누리 미부착 보도자료(KOGL-NONE) — 본문 재게시 불가",
     "count": 2
+   },
+   {
+    "reason": "국제기구(ILO) 보고서 — 라이선스 미확인(사전 협의 필요)",
+    "count": 1
+   },
+   {
+    "reason": "기업 보도자료(Gartner 등, PRESS) — 본문 재게시 불가",
+    "count": 2
    }
   ]
- },
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
  },
  "archive_dates": [
   "2026-11-19",
@@ -512,5 +770,9 @@
   "2026-11-03",
   "2026-10-31",
   "2026-10-30"
- ]
+ ],
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ }
 }
