@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T11:08:20+09:00",
+ "generated_at": "2026-11-19T23:06:43+09:00",
  "schema_version": "1.3.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -203,6 +203,28 @@
      "source_name": "미국 노동통계국(BLS) The Economics Daily",
      "source_url": "https://www.bls.gov/opub/ted/2026/involuntary-part-time-employment-rose-by-339000-to-4.8-million-in-october-2026.htm",
      "published_at": "2026-11-16"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c04",
+     "title": "미국 1년 새 일자리 88만5천개, 정보·금융은 마이너스",
+     "kicker": "전년비 +88만5천개(월 7.4만) · 정보업 -11만9천",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
+     "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c06",
+     "title": "배달·특송 부상 47.5% 급증, 전체 산재는 3% 줄었다",
+     "kicker": "특송 7만5,200건(+11.4%) · 업무전환·제한 +47.5%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
+     "published_at": "2026-11-18"
     }
    ]
   },
@@ -635,6 +657,17 @@
      "source_name": "재정경제부·한국개발연구원(KDI)",
      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
      "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c07",
+     "title": "미국 신규 실업수당 20만건대 — 해고는 적고 재취업은 느리다",
+     "kicker": "신규 20만3천건 · 4주 평균 19만7,750건",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
+     "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
+     "published_at": "2026-11-19"
     }
    ]
   },
@@ -788,6 +821,17 @@
      "source_name": "국무조정실",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
      "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c05",
+     "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
+     "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (micro1·노스이스턴대)",
+     "source_url": "https://arxiv.org/abs/2611.23354",
+     "published_at": "2026-11-17"
     }
    ]
   },
