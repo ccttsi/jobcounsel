@@ -1,0 +1,325 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-08-06T07:10:00+09:00",
+ "edition": {
+  "date": "2026-08-06",
+  "weekday": "목",
+  "title": "이름을 불러 주세요 — 이주노동자 노동존중 캠페인, 맨홀 안전가이드",
+  "subtitle": "아산 150여 명 참석·4개 재단 공동·맨홀 질식사고 예방 가이드 배포",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "캠페인 참석",
+   "value": 0,
+   "unit": "",
+   "value_text": "150여 명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 8월 5일",
+   "delta_from": "충남 아산",
+   "source_id": "src_moel_migrant_20260805",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-06T07:10:00+09:00",
+   "run_id": "br-20260806-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "공동 주최",
+   "value": 0,
+   "unit": "",
+   "value_text": "4개 재단",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "노동권익재단",
+   "source_id": "src_moel_migrant_20260805",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-06T07:10:00+09:00",
+   "run_id": "br-20260806-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "맨홀 사망",
+   "value": 0,
+   "unit": "",
+   "value_text": "5명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025년 7월",
+   "delta_from": "인천·서울",
+   "source_id": "src_kosha_manhole_20260806",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-06T07:10:00+09:00",
+   "run_id": "br-20260806-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "이름을 불러 주세요 — 이주노동자 노동존중 캠페인",
+   "kicker": "150여 명 참석 · 4개 재단 · 4월 협약",
+   "three_step": {
+    "what": "고용노동부와 4개 노동권익재단이 8월 5일 충남 아산에서 이주노동자 노동존중 캠페인을 열었다. '야', '너' 대신 이름을 부르는 문화를 일터에 퍼뜨리는 자리다.",
+    "evidence": "충남·대전 지역 기업 관계자와 이주노동자 등 150여 명이 참석했고, 이주노동자에게 이름이 새겨진 안전모를 전달했다. 캠페인은 4월 체결한 노동권익 향상 업무협약에 따라 4월 울산, 5월 광주, 6월 경북 예천에 이어 전국에서 이어지고 있다(2026년 8월 5일, 고용노동부).",
+    "implication": "이주노동자 내담자와 상담할 때 호칭·통역·안전교육 언어를 먼저 확인하라. 이름과 언어를 존중하는 사업장인지가 이직 판단의 기준이 된다."
+   },
+   "key_numbers": [
+    {
+     "label": "참석",
+     "value": "150여 명",
+     "delta": "기업·이주노동자",
+     "period": "2026년 8월 5일"
+    },
+    {
+     "label": "공동 주최",
+     "value": "4개 재단",
+     "delta": "노동권익재단",
+     "period": "2026년"
+    },
+    {
+     "label": "캠페인 지역",
+     "value": "울산·광주·예천 등",
+     "delta": "4월부터 전국",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "일터에서 이름 대신 '야'라고 불린 적이 있나요?",
+   "tags": [
+    "이주노동자",
+    "노동존중",
+    "안전모"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-migrant-respect-2026",
+   "updated_at": "2026-08-06T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_migrant_20260805",
+    "source_name": "고용노동부",
+    "source_title": "\"'야, 너' 대신 이름을 불러주세요\" 이주노동자 노동존중 캠페인 개최",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773490",
+    "published_at": "2026-08-05",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「\"'야, 너' 대신 이름을 불러주세요\" 이주노동자 노동존중 캠페인 개최」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "맨홀 작업 질식·추락, 안전가이드로 막는다",
+   "kicker": "작년 7월 5명 사망 · 올해 6월 부상 6명",
+   "three_step": {
+    "what": "한국산업안전보건공단이 맨홀 작업의 질식·추락 사고를 막기 위한 「맨홀작업 안전가이드」를 만들어 배포했다. 지방정부·지방공기업이 발주한 현장에서 사고가 반복됐기 때문이다.",
+    "evidence": "2025년 7월 인천과 서울 상·하수도 맨홀에서 5명이 숨졌고, 2026년 6월 12일 같은 날 전북과 인천 하수도 맨홀에서 부상자 6명이 나왔다. 사고는 내려가다 산소결핍으로 추락한 뒤 유해가스를 마시는 연쇄 질식, 동료를 구조하려다 당하는 2차 재해 형태로 반복된다. 가이드는 작업 준비부터 종료까지 단계별 안전 방법을 담았다(2026년 8월 6일, KOSHA).",
+    "implication": "공공 발주 하수도·상수도 현장에 투입되는 내담자에게 맨홀 작업 전 산소·유해가스 측정과 구조 장비 착용 여부를 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "2025년 7월 사망",
+     "value": "5명",
+     "delta": "인천·서울 맨홀",
+     "period": "2025년"
+    },
+    {
+     "label": "2026년 6월 부상",
+     "value": "6명",
+     "delta": "전북·인천 하수도",
+     "period": "2026년 6월 12일"
+    },
+    {
+     "label": "사고 유형",
+     "value": "3가지",
+     "delta": "질식·추락·2차 재해",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "맨홀이나 지하 작업을 해 보셨다면, 들어가기 전에 무엇을 확인했나요?",
+   "tags": [
+    "산업안전",
+    "맨홀",
+    "질식"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-manhole-safety-2026",
+   "updated_at": "2026-08-06T07:10:00+09:00",
+   "source": {
+    "source_id": "src_kosha_manhole_20260806",
+    "source_name": "한국산업안전보건공단·고용노동부",
+    "source_title": "\"맨홀작업 안전가이드\"로 질식·추락사고 예방",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773555",
+    "published_at": "2026-08-06",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 한국산업안전보건공단·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 한국산업안전보건공단·고용노동부 「\"맨홀작업 안전가이드\"로 질식·추락사고 예방」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_migrant_20260805",
+   "source_name": "고용노동부",
+   "source_title": "\"'야, 너' 대신 이름을 불러주세요\" 이주노동자 노동존중 캠페인 개최",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773490",
+   "published_at": "2026-08-05",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「\"'야, 너' 대신 이름을 불러주세요\" 이주노동자 노동존중 캠페인 개최」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_kosha_manhole_20260806",
+   "source_name": "한국산업안전보건공단·고용노동부",
+   "source_title": "\"맨홀작업 안전가이드\"로 질식·추락사고 예방",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773555",
+   "published_at": "2026-08-06",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 한국산업안전보건공단·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 한국산업안전보건공단·고용노동부 「\"맨홀작업 안전가이드\"로 질식·추락사고 예방」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05"
+ ]
+}
