@@ -7,8 +7,11 @@
  *   3) 내 키 — Gemini(1순위)·OpenRouter·Groq·DeepSeek·OpenAI 호환 주소.
  *
  * 지키는 것
- *   - 질문·대화는 **서버에 저장하지 않는다.** 대화 기록은 이 브라우저(localStorage)에만 남고
- *     사용자가 직접 고치고 지울 수 있다. 먼저 제안은 브라우저 안에서만 계산한다(토큰 0).
+ *   - 대화는 **본인만** 본다. 로그아웃 상태에서는 이 브라우저(localStorage)에만 남고,
+ *     로그인 상태에서는 내 계정의 「내 대화 기록함」(jc_assistant_threads·jc_assistant_messages)에 쌓인다.
+ *     기록함은 RLS 로 잠겨 있어 남의 계정에서는 열리지 않고, 사용자가 직접 고치고 지울 수 있다.
+ *   - 「묻기」를 누르면 기다리는 동안 지금 무엇을 하는지 네 단계(검색 → 정리 → 추론 → 작성)로 알린다.
+ *     단계는 서버가 SSE stage 이벤트(추론)와 첫 글자(작성)로 알려 주고, 나머지는 화면에서 잰다.
  *   - 키는 서버에서만 풀린다. 브라우저에는 끝 4자리만 보인다.
  *   - 답변은 텍스트로만 그린다(innerHTML 로 넣지 않는다).
  */
@@ -36,7 +39,9 @@
     return 'https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant-proxy';
   })();
 
-  var CHAT_KEY = 'jc-assist-chat-v1';       // 대화 기록(이 브라우저에만)
+  var CHAT_KEY = 'jc-assist-chat-v1';       // 지금 대화의 사본(이 브라우저에만 · 새로고침·오프라인 대비)
+  var HIST_KEY = 'jc-assist-threads-v1';    // 로그아웃 상태의 대화 목록(이 브라우저에만)
+  var IMPORT_KEY = 'jc-assist-import-v1';   // 계정으로 옮기기 안내를 그만 물을지
   var PREF_KEY = 'jc-assist-pref-v1';       // 토글 상태
   var RECENT_KEY = 'jc-assist-recent-v1';   // 최근 본 자료(이 브라우저에만, 제안용)
 
@@ -95,14 +100,32 @@
       tip: '첫 10분 질문 5개' }
   ];
 
+  /* 기다리는 동안의 네 단계 — ① 은 화면이 자료실을 찾는 시간, ② 는 근거를 정리해 보내는 시간,
+     ③ 은 모델이 답을 만드는 시간(서버 stage 이벤트), ④ 는 글자가 흐르는 시간(첫 delta). */
+  var STAGES = [
+    { id: 'search', label: '검색', line: '자료실에서 근거를 찾고 있어요' },
+    { id: 'collect', label: '정리', line: '근거를 정리해 요청을 보내고 있어요' },
+    { id: 'think', label: '추론', line: 'AI가 답을 생각하고 있어요' },
+    { id: 'write', label: '작성', line: '답변을 쓰고 있어요' }
+  ];
+  function stageIndex(id) {
+    for (var i = 0; i < STAGES.length; i++) if (STAGES[i].id === id) return i;
+    return -1;
+  }
+
   var st = {
     open: false, tab: '', q: '', results: [], searched: false, lastQ: '',
     busy: false, keys: [], keysLoaded: false,
     provider: 'gemini', msg: '', msgKind: '',
     thread: [], waitTurn: '',
+    threadId: '', threadKey: '', threadTitle: '', localThreads: [], threads: [], threadsLoaded: false, threadsErr: '',
+    histOpen: false, histBusy: false, renaming: '', renameVal: '', importAsk: false,
+    stage: '', askStart: 0,
     ktest: null, autoOpen: false, webOn: false, suggestOn: true, welcome: true, mode: '', step: 0, guideOpen: true,
     recent: [], sug: null
   };
+  /* 화면 대화방 열쇠 → 서버 uuid. 첫 저장이 방을 만들기 전에 둘이 겹쳐 저장돼도 방이 하나만 생기게. */
+  var ID_MAP = {};
   var el = {};
   var lastFocus = null;
 
@@ -124,12 +147,108 @@
   function loggedIn() { return !!sess(); }
   function hasKey() { return st.keys.length > 0; }
 
-  /* ---------- 브라우저에만 남기는 것 ---------- */
+  /* ---------- 대화 보관함 (로그아웃 = 이 브라우저 / 로그인 = 내 계정 기록함) ---------- */
+
+  var HIST_TURNS_MAX = 30;      // 한 대화방에 남기는 주고받음 수(서버도 40에서 자른다)
+
+  /* 저장·불러오기에 쓰는 모양으로 다듬는다 — 남는 것은 질문·답·근거·모드뿐이다. */
+  function normTurn(x) {
+    if (!x || typeof x !== 'object' || !String(x.q || '').trim()) return null;
+    return {
+      id: String(x.id || '') || newId(),
+      q: String(x.q).slice(0, 1200),
+      a: String(x.a || '').slice(0, 4000),
+      refs: Array.isArray(x.refs) ? x.refs.slice(0, 3) : [],
+      web: Array.isArray(x.web) ? x.web.slice(0, 5) : [],
+      mode: String(x.mode || ''),
+      websearch: !!x.websearch,
+      err: !!x.err
+    };
+  }
+  function normTurns(list) {
+    var out = [];
+    (Array.isArray(list) ? list : []).forEach(function (x) {
+      var v = normTurn(x);
+      if (v) out.push(v);
+    });
+    return out.slice(-HIST_TURNS_MAX);
+  }
+  function plainTurn(x) {
+    return { id: x.id, q: x.q, a: x.a || '', refs: x.refs || [], web: x.web || [],
+             mode: x.mode || '', websearch: !!x.websearch, err: !!x.err };
+  }
+  function makeKey() { return 'l' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function titleOf(turns) {
+    return short((turns && turns[0] ? turns[0].q : '') || '', 34) || '새 대화';
+  }
+
+  /* 로그아웃 상태의 대화 목록 — 이 브라우저에만 */
+  function localLoad() {
+    var raw = null;
+    try { raw = JSON.parse(localStorage.getItem(HIST_KEY) || 'null'); } catch (e) { raw = null; }
+    var list = [];
+    if (raw && Array.isArray(raw.list)) {
+      raw.list.forEach(function (x) {
+        if (!x || typeof x !== 'object') return;
+        var turns = normTurns(x.turns);
+        if (!turns.length) return;
+        list.push({
+          id: String(x.id || makeKey()),
+          title: String(x.title || titleOf(turns)).slice(0, 80),
+          updated: Number(x.updated || 0) || Date.now(),
+          turns: turns
+        });
+      });
+    } else {
+      /* 예전의 한 줄짜리 대화(chat-v1)를 첫 대화방으로 옮긴다. */
+      var old = null;
+      try { old = JSON.parse(localStorage.getItem(CHAT_KEY) || '{}'); } catch (e) { old = null; }
+      var t0 = old && Array.isArray(old.turns) ? normTurns(old.turns) : [];
+      if (t0.length) list.push({ id: makeKey(), title: '이전 대화', updated: Date.now(), turns: t0 });
+    }
+    list.sort(function (a, b) { return b.updated - a.updated; });
+    st.localThreads = list.slice(0, 30);
+    localSaveList();
+  }
+  function localSaveList() {
+    try {
+      var s = JSON.stringify({ v: 1, list: st.localThreads.slice(0, 30) });
+      if (s.length > 300000) st.localThreads = st.localThreads.slice(0, 8);
+      localStorage.setItem(HIST_KEY, JSON.stringify({ v: 1, list: st.localThreads.slice(0, 30) }));
+    } catch (e) {}
+  }
+  function localFind(id) {
+    for (var i = 0; i < st.localThreads.length; i++) if (st.localThreads[i].id === id) return i;
+    return -1;
+  }
+
   function loadLocal() {
+    /* 지금 대화의 사본 — 새로고침해도 보던 대화와 그 대화방 열쇠가 함께 돌아온다 */
     try {
       var o = JSON.parse(localStorage.getItem(CHAT_KEY) || '{}');
-      if (o && Array.isArray(o.turns)) st.thread = o.turns.slice(-30);
+      if (o && Array.isArray(o.turns)) {
+        var who = loggedIn() ? (sess().username || 'user') : '';
+        var same = (o.u || '') === who;
+        if (same) {
+          st.thread = normTurns(o.turns);
+          st.threadTitle = String(o.title || '');
+          var key = String(o.key || '');
+          if (key && /^(s|l|k):/.test(key)) {
+            st.threadKey = key;
+            if (key.indexOf('s:') === 0) { st.threadId = key.slice(2); ID_MAP[key] = st.threadId; }
+          }
+        } else {
+          try { localStorage.removeItem(CHAT_KEY); } catch (e) {}
+        }
+      }
     } catch (e) {}
+    localLoad();
+    /* 사본에서 이어 오지 못했으면, 로그아웃 상태에서는 가장 최근 대화를 보여 준다 */
+    if (!loggedIn() && !st.threadKey && st.localThreads.length) {
+      st.threadKey = 'l:' + st.localThreads[0].id;
+      st.thread = st.localThreads[0].turns.slice();
+      st.threadTitle = st.localThreads[0].title;
+    }
     try {
       var p = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
       if (typeof p.autoOpen === 'boolean') st.autoOpen = p.autoOpen;
@@ -145,13 +264,94 @@
       if (Array.isArray(r)) st.recent = r.slice(-8);
     } catch (e) {}
   }
+
+  /* 지금 대화를 저장한다 — 로그아웃이면 이 브라우저 목록에, 로그인이면 내 계정 기록함에. */
   function saveChat() {
-    st.thread = st.thread.slice(-30);
+    st.thread = st.thread.slice(-HIST_TURNS_MAX);
+    st.thread.forEach(function (x) { x.id = x.id || newId(); });
+    if (st.thread.length && !st.threadTitle) st.threadTitle = titleOf(st.thread);
     try {
-      var s = JSON.stringify({ v: 1, turns: st.thread });
+      var s = JSON.stringify({ v: 2, key: st.threadKey, title: st.threadTitle, u: loggedIn() ? (sess().username || 'user') : '', turns: st.thread });
       if (s.length > 220000) st.thread = st.thread.slice(-12);
-      localStorage.setItem(CHAT_KEY, JSON.stringify({ v: 1, turns: st.thread }));
+      localStorage.setItem(CHAT_KEY, JSON.stringify({ v: 2, key: st.threadKey, title: st.threadTitle, u: loggedIn() ? (sess().username || 'user') : '', turns: st.thread }));
     } catch (e) {}
+    if (!st.thread.length) return;
+
+    if (!loggedIn()) {
+      if (!st.threadKey) st.threadKey = 'l:' + makeKey();
+      var id = st.threadKey.replace(/^l:/, '');
+      var at = localFind(id);
+      var rec = {
+        id: id,
+        title: (at >= 0 && st.localThreads[at].title) || st.threadTitle || titleOf(st.thread),
+        updated: Date.now(),
+        turns: st.thread.slice()
+      };
+      st.threadTitle = rec.title;
+      if (at >= 0) st.localThreads[at] = rec;
+      else st.localThreads.unshift(rec);
+      st.localThreads.sort(function (a, b) { return b.updated - a.updated; });
+      st.localThreads = st.localThreads.slice(0, 30);
+      localSaveList();
+      st.threadsLoaded = true;
+      return;
+    }
+    scheduleSave();
+  }
+
+  /* 계정 저장은 조금 모아서 보낸다(답 한 번에 한 번, 제목 고침과 겹치지 않게). */
+  var saveTimer = null, saveChain = Promise.resolve();
+  function scheduleSave() {
+    if (!loggedIn()) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(flushSave, 400);
+  }
+  function flushSave() {
+    clearTimeout(saveTimer); saveTimer = null;
+    if (!loggedIn() || !st.thread.length) return saveChain;
+    if (!st.threadKey) st.threadKey = 'k:' + makeKey();
+    var key = st.threadKey;
+    var turns = st.thread.slice().map(plainTurn);
+    var title = st.threadTitle || titleOf(st.thread);
+    saveChain = saveChain.then(function () {
+      return call('history_save', { thread_id: ID_MAP[key] || '', title: title, turns: turns })
+        .then(function (j) {
+          if (!j || !j.thread_id) return;
+          var fresh = !ID_MAP[key];
+          ID_MAP[key] = j.thread_id;
+          var current = st.threadKey === key;      // 그사이 다른 대화로 넘어갔을 수 있다
+          if (current) st.threadId = j.thread_id;
+          /* 방이 새로 만들어졌으면 열쇠를 서버 것(s:uuid)으로 바꾼다 —
+             그래야 새로고침 사본에 서버 열쇠가 적혀 다음에 같은 방으로 이어진다. */
+          if (fresh && st.threadKey === key) {
+            st.threadKey = 's:' + j.thread_id;
+            ID_MAP[st.threadKey] = j.thread_id;
+            try {
+              localStorage.setItem(CHAT_KEY, JSON.stringify({ v: 2, key: st.threadKey, title: st.threadTitle,
+                u: loggedIn() ? (sess().username || 'user') : '', turns: st.thread }));
+            } catch (e) {}
+          }
+          if (fresh && current) {
+            st.threadTitle = j.title || title;
+            st.threads.unshift({ id: j.thread_id, title: st.threadTitle, turns: j.turns || turns.length, updated: new Date().toISOString() });
+          } else if (fresh) {
+            st.threads.unshift({ id: j.thread_id, title: j.title || title, turns: j.turns || turns.length, updated: new Date().toISOString() });
+          } else {
+            for (var i = 0; i < st.threads.length; i++) {
+              if (st.threads[i].id === j.thread_id) {
+                st.threads[i].turns = j.turns || turns.length;
+                st.threads[i].updated = new Date().toISOString();
+              }
+            }
+          }
+          st.threadsErr = '';
+        });
+    })['catch'](function (e) {
+      st.threadsErr = e && e.error === 'session'
+        ? '로그인이 풀려 대화를 계정에 저장하지 못했어요.'
+        : '대화를 계정에 저장하지 못했어요. 이 브라우저에는 남아 있어요.';
+    });
+    return saveChain;
   }
   function savePref() {
     try {
@@ -205,6 +405,251 @@
     var c = (e && e.error) || 'server';
     return (e && e.message && (c === 'bad_key' || c === 'bad_base_url' || c === 'rate' || c === 'quota')) ? e.message : (ERR[c] || ERR.server);
   }
+
+  /* ---------- 대화 목록 (로그인 = 내 계정 / 로그아웃 = 이 브라우저) ---------- */
+
+  function importState() {
+    try { return localStorage.getItem(IMPORT_KEY) || ''; } catch (e) { return ''; }
+  }
+  function setImportState(v) {
+    try { localStorage.setItem(IMPORT_KEY, v); } catch (e) {}
+  }
+
+  function listThreads() {
+    if (!loggedIn()) {
+      return Promise.resolve(st.localThreads.map(function (x) {
+        return { id: x.id, title: x.title, turns: x.turns.length, updated: x.updated };
+      }));
+    }
+    return call('history_list').then(function (j) { return j.threads || []; });
+  }
+
+  /* 목록만 다시 읽는다(지금 보는 대화는 그대로 둔다). */
+  function refreshThreads() {
+    if (st.histBusy) return;
+    st.histBusy = true;
+    listThreads().then(function (list) {
+      st.threads = list;
+      st.threadsLoaded = true;
+      st.threadsErr = '';
+      st.histBusy = false;
+      render();
+    })['catch'](function (e) {
+      st.threadsLoaded = true;
+      st.histBusy = false;
+      st.threadsErr = e && e.error === 'session'
+        ? '로그인이 풀려 대화 목록을 불러오지 못했어요.'
+        : '대화 목록을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.';
+      render();
+    });
+  }
+
+  /* 로그인 상태에서 처음 한 번 — 목록을 받고, 보고 있는 대화가 없으면 가장 최근 것을 연다. */
+  function ensureHistory() {
+    if (!loggedIn()) {
+      st.threads = st.localThreads.map(function (x) {
+        return { id: x.id, title: x.title, turns: x.turns.length, updated: x.updated };
+      });
+      st.threadsLoaded = true;
+      return;
+    }
+    if (st.threadsLoaded || st.histBusy) return;
+    st.histBusy = true;
+    listThreads().then(function (list) {
+      st.threads = list;
+      st.threadsLoaded = true;
+      st.threadsErr = '';
+      st.histBusy = false;
+      /* 이 브라우저에만 있던 대화가 있으면 한 번 물어본다(저절로 올리지 않는다). */
+      st.importAsk = !list.length && st.localThreads.length > 0 && importState() === '';
+      if (!st.thread.length && list.length) openThread(list[0].id);
+      else render();
+    })['catch'](function (e) {
+      st.threadsLoaded = true;
+      st.histBusy = false;
+      st.threadsErr = e && e.error === 'session'
+        ? '로그인이 풀려 대화 목록을 불러오지 못했어요.'
+        : '대화 목록을 불러오지 못했어요. 잠시 후 다시 열어 주세요.';
+      render();
+    });
+  }
+
+  function findThread(id) {
+    for (var i = 0; i < st.threads.length; i++) if (st.threads[i].id === id) return st.threads[i];
+    return null;
+  }
+
+  /* 대화방 하나를 연다 — 목록 시트는 닫고 그 대화를 편다. */
+  function openThread(id) {
+    if (!id) return;
+    if (st.busy) {
+      st.msg = '답을 쓰는 중이에요. 끝나면 넘어갈게요.';
+      st.msgKind = '';
+      render();
+      return;
+    }
+    var key = (loggedIn() ? 's:' : 'l:') + id;
+    if (key === st.threadKey) {
+      st.histOpen = false;
+      render();
+      return;
+    }
+    var load;
+    if (!loggedIn()) {
+      var at = localFind(id);
+      if (at < 0) return;
+      load = Promise.resolve({ title: st.localThreads[at].title, turns: st.localThreads[at].turns });
+    } else {
+      ID_MAP[key] = id;
+      load = call('history_get', { thread_id: id }).then(function (j) { return j.thread || null; });
+    }
+    flushSave();
+    load.then(function (th) {
+      if (!th) return;
+      st.threadKey = key;
+      st.threadId = loggedIn() ? id : '';
+      st.threadTitle = th.title || titleOf(th.turns);
+      st.thread = normTurns(th.turns);
+      st.histOpen = false;
+      st.msg = '';
+      render();
+      scrollThread();
+    })['catch'](function (e) {
+      st.msg = errText(e);
+      st.msgKind = 'err';
+      render();
+    });
+  }
+
+  /* 새 대화 — 지금 대화는 목록에 남기고 빈 방에서 다시 시작한다. */
+  function newThread() {
+    if (st.busy) {
+      st.msg = '답을 쓰는 중이에요. 끝나면 넘어갈게요.';
+      st.msgKind = '';
+      render();
+      return;
+    }
+    flushSave();
+    if (st.thread.length) saveChat();
+    st.thread = [];
+    st.threadKey = '';
+    st.threadId = '';
+    st.threadTitle = '';
+    st.histOpen = false;
+    st.msg = '';
+    try { localStorage.removeItem(CHAT_KEY); } catch (e) {}
+    render();
+    if (el.chatInput) { try { el.chatInput.focus({ preventScroll: true }); } catch (e) {} }
+  }
+
+  function renameThread(id, title) {
+    var clean = String(title || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+    if (!clean) return;
+    var row = findThread(id);
+    if (!loggedIn()) {
+      var at = localFind(id);
+      if (at < 0) return;
+      st.localThreads[at].title = clean;
+      localSaveList();
+      if (st.threadKey === 'l:' + id) st.threadTitle = clean;
+      st.threads = st.localThreads.map(function (x) {
+        return { id: x.id, title: x.title, turns: x.turns.length, updated: x.updated };
+      });
+      st.renaming = '';
+      render();
+      return;
+    }
+    call('history_rename', { thread_id: id, title: clean }).then(function () {
+      if (row) row.title = clean;
+      if (st.threadKey === 's:' + id) st.threadTitle = clean;
+      st.renaming = '';
+      render();
+    })['catch'](function (e) {
+      st.msg = errText(e);
+      st.msgKind = 'err';
+      render();
+    });
+  }
+
+  function deleteThread(id, quiet) {
+    if (!id) return Promise.resolve();
+    if (!loggedIn()) {
+      var at = localFind(id);
+      if (at >= 0) st.localThreads.splice(at, 1);
+      localSaveList();
+      st.threads = st.localThreads.map(function (x) {
+        return { id: x.id, title: x.title, turns: x.turns.length, updated: x.updated };
+      });
+      if (st.threadKey === 'l:' + id) { st.thread = []; st.threadKey = ''; st.threadTitle = ''; }
+      render();
+      return Promise.resolve();
+    }
+    return call('history_delete', { thread_id: id }).then(function () {
+      st.threads = st.threads.filter(function (x) { return x.id !== id; });
+      delete ID_MAP['s:' + id];
+      if (st.threadKey === 's:' + id) { st.thread = []; st.threadKey = ''; st.threadId = ''; st.threadTitle = ''; }
+      render();
+    })['catch'](function (e) {
+      if (quiet) return;
+      st.msg = errText(e);
+      st.msgKind = 'err';
+      render();
+    });
+  }
+
+  function clearAllThreads() {
+    if (!window.confirm('내 대화를 모두 지울까요? 되돌릴 수 없어요.')) return;
+    st.thread = []; st.threadKey = ''; st.threadId = ''; st.threadTitle = '';
+    try { localStorage.removeItem(CHAT_KEY); } catch (e) {}
+    if (!loggedIn()) {
+      st.localThreads = [];
+      localSaveList();
+      st.threads = [];
+      render();
+      return;
+    }
+    ID_MAP = {};
+    call('history_clear').then(function () {
+      st.threads = [];
+      render();
+    })['catch'](function (e) {
+      st.msg = errText(e);
+      st.msgKind = 'err';
+      render();
+    });
+  }
+
+  /* 이 브라우저에만 있던 대화를 내 계정으로 옮긴다 — 한 번 물어보고, 물어본 뒤에만. */
+  function importLocalThreads() {
+    if (!loggedIn() || !st.localThreads.length) return;
+    st.histBusy = true;
+    render();
+    var src = st.localThreads.slice(0, 12).reverse();     // 오래된 것부터 올려 가장 최근 것이 맨 위에 오게
+    var done = [];
+    var chain = Promise.resolve();
+    src.forEach(function (rec) {
+      chain = chain.then(function () {
+        return call('history_save', { title: rec.title, turns: rec.turns.map(plainTurn) })
+          .then(function (j) { if (j && j.thread_id) done.push(j.thread_id); });
+      });
+    });
+    chain.then(function () {
+      st.localThreads = [];
+      localSaveList();
+      setImportState('done');
+      st.importAsk = false;
+      st.histBusy = false;
+      refreshThreads();
+      if (done.length) openThread(done[done.length - 1]);
+    })['catch'](function (e) {
+      st.histBusy = false;
+      st.importAsk = false;
+      st.msg = errText(e);
+      st.msgKind = 'err';
+      render();
+    });
+  }
+
 
   /* ---------- 뼈대 ---------- */
 
@@ -283,6 +728,31 @@
     /* ============ 대화 ============ */
     var chat = t('div', 'jca-chat');
     el.chatPane = chat;
+
+    /* 대화 목록 줄 — 왼쪽 「지난 대화」, 가운데 지금 대화 제목, 오른쪽 「+ 새 대화」 */
+    el.histBar = t('div', 'jca-histbar');
+    el.histBtn = t('button', 'jca-hbtn');
+    el.histBtn.type = 'button';
+    el.histBtn.setAttribute('aria-label', '지난 대화 목록 열기');
+    el.histBtn.addEventListener('click', function () {
+      st.histOpen = !st.histOpen;
+      if (st.histOpen) refreshThreads();
+      render();
+    });
+    el.histBar.appendChild(el.histBtn);
+    el.histTitle = t('span', 'jca-hist-title');
+    el.histBar.appendChild(el.histTitle);
+    el.newBtn = t('button', 'jca-hbtn jca-hnew', '+ 새 대화');
+    el.newBtn.type = 'button';
+    el.newBtn.setAttribute('aria-label', '새 대화 시작');
+    el.newBtn.addEventListener('click', newThread);
+    el.histBar.appendChild(el.newBtn);
+    chat.appendChild(el.histBar);
+
+    /* 지난 대화 시트 — 대화 본문 자리를 그대로 덮는다(높이가 흔들리지 않게) */
+    el.hist = t('section', 'jca-hist');
+    el.hist.setAttribute('aria-label', '내 대화 목록');
+    chat.appendChild(el.hist);
 
     el.chatSug = t('div', 'jca-sug');
     el.chatSug.hidden = true;
@@ -511,8 +981,10 @@
     keys.appendChild(kt);
 
     el.privacy = t('p', 'jca-note');
-    el.privacy.innerHTML = '<b>질문과 대화 내용은 서버에 저장·로깅하지 않습니다.</b><br>' +
-      '대화 기록은 이 브라우저에만 남고, 직접 고치거나 지울 수 있어요.<br>' +
+    el.privacy.innerHTML = '<b>대화는 나만 볼 수 있습니다.</b> ' +
+      '로그아웃 상태에서는 이 브라우저에만, 로그인 상태에서는 내 계정의 기록함에 보관되고 다른 사람은 열어 볼 수 없습니다. ' +
+      '두 경우 모두 직접 고치거나 지울 수 있어요.<br>' +
+      '질문은 답을 만들기 위해 AI 서비스(Google Gemini)로 전달되지만, 우리 서버는 질문·답변을 로그로 남기지 않습니다.<br>' +
       '키는 서버에서 암호화해 보관하고, 브라우저에는 끝 4자리만 보입니다.<br>' +
       '내담자 이름·연락처 같은 개인정보는 입력하지 마세요.';
     keys.appendChild(el.privacy);
@@ -544,11 +1016,19 @@
     window.addEventListener('jc-sync-change', function () {
       st.keysLoaded = false; st.keys = [];
       if (st.open) refreshKeys();
+      var who = loggedIn() ? (sess().username || 'user') : '';
+      if (who !== st.userSeen) { st.userSeen = who; switchUser(); }
       render();
     });
     window.addEventListener('storage', function (e) {
       if (e.key === 'jc-sync-session') { st.keysLoaded = false; st.keys = []; st.ktest = null; if (st.open) refreshKeys(); render(); }
-      if (e.key === CHAT_KEY) { st.thread = []; loadLocal(); render(); }
+      if (e.key === HIST_KEY && !loggedIn()) {
+        localLoad();
+        st.threads = st.localThreads.map(function (x) {
+          return { id: x.id, title: x.title, turns: x.turns.length, updated: x.updated };
+        });
+        render();
+      }
     });
   }
 
@@ -578,7 +1058,15 @@
       try { if (f) f.focus({ preventScroll: true }); } catch (e) {}
     }, 80);
     loadIndex();
-    if (loggedIn()) refreshKeys();
+    if (loggedIn()) {
+      refreshKeys();
+      ensureHistory();
+    } else if (!st.threadsLoaded) {
+      st.threads = st.localThreads.map(function (x) {
+        return { id: x.id, title: x.title, turns: x.turns.length, updated: x.updated };
+      });
+      st.threadsLoaded = true;
+    }
   }
 
   function close() {
@@ -906,8 +1394,19 @@
   function renderChat() {
     var ready = loggedIn() && hasKey();
     el.chatPane.classList.toggle('jca-off-mode', !ready);
+    el.chatPane.classList.toggle('jca-hist-on', !!st.histOpen);
 
-    el.chatSug.hidden = !ready;
+    /* 대화 목록 줄 */
+    var n = loggedIn() ? st.threads.length : st.localThreads.length;
+    el.histBtn.innerHTML = '';
+    el.histBtn.appendChild(t('span', null, '지난 대화'));
+    if (n) el.histBtn.appendChild(t('b', null, String(n)));
+    el.histBtn.setAttribute('aria-expanded', String(!!st.histOpen));
+    el.histTitle.textContent = st.thread.length ? (st.threadTitle || titleOf(st.thread)) : '새 대화';
+    el.histTitle.title = el.histTitle.textContent;
+    renderHist();
+
+    el.chatSug.hidden = !ready || !!st.histOpen;
     if (ready) renderSuggestion(el.chatSug);
 
     /* 웹 교차 확인 — Gemini 의 google_search 그라운딩 */
@@ -924,11 +1423,18 @@
       intro.appendChild(t('b', null, '상황을 문장으로 적어 주세요.'));
       intro.appendChild(t('p', null, '예: 「내담자가 3개월 수습 마지막 날 해고를 통보받았대요. 어떤 조문을 봐야 할까요?」'));
       intro.appendChild(t('p', null, '찾은 자료와 지금 열려 있는 자료를 근거로, 친절하게 풀어 드려요.'));
+      if (loggedIn() && st.threads.length) {
+        var back = t('button', 'jca-btn jca-hist-back', '지난 대화 이어서 보기');
+        back.type = 'button';
+        back.addEventListener('click', function () { st.histOpen = true; refreshThreads(); render(); });
+        intro.appendChild(back);
+      }
       el.thread.appendChild(intro);
     } else {
       var hd = t('div', 'jca-thread-hd');
-      hd.appendChild(t('span', null, '대화 ' + st.thread.length + '개 · 이 브라우저에만 저장'));
-      var clr = t('button', 'jca-mini', '전체 삭제');
+      hd.appendChild(t('span', null, '대화 ' + st.thread.length + '개 · ' +
+        (loggedIn() ? '내 기록함에 보관' : '이 브라우저에만')));
+      var clr = t('button', 'jca-mini', '이 대화 지우기');
       clr.type = 'button';
       clr.addEventListener('click', clearChat);
       hd.appendChild(clr);
@@ -950,7 +1456,7 @@
       el.chatOff.hidden = true;
       el.chatFoot.hidden = false;
       el.send.disabled = st.busy;
-      el.send.textContent = st.busy ? '정리 중…' : '묻기';
+      el.send.textContent = st.busy ? '답하는 중…' : '묻기';
     } else {
       el.chatFoot.hidden = true;
       el.chatOff.hidden = false;
@@ -979,6 +1485,213 @@
     scrollThread();
   }
 
+  /* ---------- 지난 대화 시트 ---------- */
+
+  function when(v) {
+    var d = v ? new Date(v) : null;
+    if (!d || isNaN(d.getTime())) return '';
+    var diff = Date.now() - d.getTime();
+    if (diff < 0) diff = 0;
+    if (diff < 60000) return '방금';
+    if (diff < 3600000) return Math.round(diff / 60000) + '분 전';
+    if (diff < 86400000) return Math.round(diff / 3600000) + '시간 전';
+    if (diff < 7 * 86400000) return Math.round(diff / 86400000) + '일 전';
+    return (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
+  }
+  function isCurrentThread(id) {
+    return st.threadKey === (loggedIn() ? 's:' : 'l:') + id;
+  }
+
+  function renderHist() {
+    if (!el.hist) return;
+    /* 제목을 고치는 중이면 다시 그리지 않는다(입력하던 글자·포커스가 날아간다). */
+    if (st.renaming && el.hist.contains(document.activeElement)) return;
+    el.hist.innerHTML = '';
+
+    var hd = t('div', 'jca-hist-hd');
+    var ttl = t('div', 'jca-hist-ttl');
+    ttl.appendChild(t('b', null, '내 대화'));
+    ttl.appendChild(t('span', null, loggedIn() ? '내 계정에만 보관 · 다른 사람은 볼 수 없어요' : '이 브라우저에만 보관돼요'));
+    hd.appendChild(ttl);
+    var closeBtn = t('button', 'jca-mini', '닫기');
+    closeBtn.type = 'button';
+    closeBtn.addEventListener('click', function () { st.histOpen = false; render(); });
+    hd.appendChild(closeBtn);
+    el.hist.appendChild(hd);
+
+    var acts = t('div', 'jca-row jca-hist-acts');
+    var nw = t('button', 'jca-btn jca-primary', '+ 새 대화');
+    nw.type = 'button';
+    nw.disabled = st.busy;
+    nw.addEventListener('click', newThread);
+    acts.appendChild(nw);
+    var list = loggedIn() ? st.threads : st.localThreads;
+    if (list.length) {
+      var all = t('button', 'jca-btn', '전체 비우기');
+      all.type = 'button';
+      all.disabled = st.busy;
+      all.addEventListener('click', clearAllThreads);
+      acts.appendChild(all);
+    }
+    el.hist.appendChild(acts);
+
+    /* 로그아웃 상태 — 로그인하면 무엇이 달라지는지 한 줄로 */
+    if (!loggedIn()) {
+      var note = t('div', 'jca-note');
+      note.innerHTML = '<b>로그인하면 내 대화가 계정에 보관돼요.</b> 다른 기기에서도 이어 볼 수 있고, 다른 사람은 볼 수 없어요. 지금 대화는 이 브라우저에만 남습니다.';
+      addLink(note, '로그인하기', function () {
+        if (window.JCSync && window.JCSync.open) { close(); window.JCSync.open('login'); }
+      });
+      el.hist.appendChild(note);
+    }
+
+    /* 이 브라우저에만 있던 대화 — 계정으로 옮길지 한 번만 묻는다 */
+    if (loggedIn() && st.importAsk && st.localThreads.length) {
+      var card = t('div', 'jca-hist-import');
+      card.appendChild(t('b', null, '이 브라우저에만 있던 대화 ' + st.localThreads.length + '개가 있어요.'));
+      card.appendChild(t('p', null, '내 계정으로 옮기면 기기를 바꿔도 이어 볼 수 있어요. 옮기지 않으면 이 브라우저에만 남습니다.'));
+      var row2 = t('div', 'jca-row');
+      var go = t('button', 'jca-btn jca-primary', '내 계정으로 옮기기');
+      go.type = 'button';
+      go.disabled = st.histBusy;
+      go.addEventListener('click', importLocalThreads);
+      row2.appendChild(go);
+      var keep = t('button', 'jca-btn', '이 브라우저에만 두기');
+      keep.type = 'button';
+      keep.addEventListener('click', function () {
+        setImportState('declined');
+        st.importAsk = false;
+        render();
+      });
+      row2.appendChild(keep);
+      card.appendChild(row2);
+      el.hist.appendChild(card);
+    }
+
+    if (loggedIn() && !st.threadsLoaded) {
+      el.hist.appendChild(t('p', 'jca-hint', '대화 목록을 불러오는 중…'));
+    }
+    if (st.threadsErr) el.hist.appendChild(t('p', 'jca-hint jca-hist-err', st.threadsErr));
+
+    if (!list.length) {
+      if (st.threadsLoaded) {
+        el.hist.appendChild(t('p', 'jca-empty', st.importAsk
+          ? '아래 「내 계정으로 옮기기」를 누르면 이 브라우저의 대화가 여기에 쌓입니다.'
+          : '아직 지난 대화가 없어요. 아래에 상황을 적고 「묻기」를 누르면 여기에 차곡차곡 쌓입니다.'));
+      }
+      return;
+    }
+
+    var ul = t('ul', 'jca-hist-list');
+    list.forEach(function (row) {
+      var li = t('li', 'jca-hrow');
+      if (isCurrentThread(row.id)) li.setAttribute('aria-current', 'true');
+
+      if (st.renaming === row.id) {
+        var ed = t('div', 'jca-hrow-edit');
+        var inp = t('input', 'jca-hrow-in');
+        inp.type = 'text';
+        inp.value = st.renameVal;
+        inp.maxLength = 80;
+        inp.setAttribute('aria-label', '대화 제목');
+        inp.addEventListener('input', function () { st.renameVal = inp.value; });
+        inp.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') { e.preventDefault(); renameThread(row.id, st.renameVal); }
+          else if (e.key === 'Escape') { st.renaming = ''; render(); }
+        });
+        ed.appendChild(inp);
+        var ok = t('button', 'jca-hmini', '저장');
+        ok.type = 'button';
+        ok.addEventListener('click', function () { renameThread(row.id, st.renameVal); });
+        ed.appendChild(ok);
+        var cancel = t('button', 'jca-hmini', '취소');
+        cancel.type = 'button';
+        cancel.addEventListener('click', function () { st.renaming = ''; render(); });
+        ed.appendChild(cancel);
+        li.appendChild(ed);
+        setTimeout(function () { try { inp.focus(); inp.select(); } catch (e) {} }, 0);
+      } else {
+        var main = t('button', 'jca-hrow-main');
+        main.type = 'button';
+        main.addEventListener('click', function () { openThread(row.id); });
+        main.appendChild(t('span', 'jca-hrow-t', row.title || '새 대화'));
+        var cnt = Array.isArray(row.turns) ? row.turns.length : (row.turns || 0);
+        main.appendChild(t('span', 'jca-hrow-m',
+          cnt + '개 주고받음' + (when(row.updated) ? ' · ' + when(row.updated) : '') +
+          (isCurrentThread(row.id) ? ' · 보고 있는 대화' : '')));
+        li.appendChild(main);
+
+        var acts2 = t('div', 'jca-hrow-acts');
+        var ren = t('button', 'jca-hmini', '이름');
+        ren.type = 'button';
+        ren.setAttribute('aria-label', '이 대화 제목 바꾸기');
+        ren.addEventListener('click', function () {
+          st.renaming = row.id;
+          st.renameVal = row.title || '';
+          render();
+        });
+        acts2.appendChild(ren);
+        var del = t('button', 'jca-hmini', '삭제');
+        del.type = 'button';
+        del.setAttribute('aria-label', '이 대화 지우기');
+        del.addEventListener('click', function () {
+          if (!window.confirm('「' + short(row.title || '새 대화', 20) + '」 대화를 지울까요? 되돌릴 수 없어요.')) return;
+          if (isCurrentThread(row.id)) { st.thread = []; st.threadTitle = ''; st.threadKey = ''; st.threadId = ''; try { localStorage.removeItem(CHAT_KEY); } catch (e) {} }
+          deleteThread(row.id);
+        });
+        acts2.appendChild(del);
+        li.appendChild(acts2);
+      }
+      ul.appendChild(li);
+    });
+    el.hist.appendChild(ul);
+    el.hist.appendChild(t('p', 'jca-hint', loggedIn()
+      ? '대화는 내 계정에만 보관되고, 지우면 바로 사라져요.'
+      : '이 목록은 이 브라우저에만 저장돼요. 브라우저 기록을 지우면 함께 사라집니다.'));
+  }
+
+  /* ---------- 진행 단계 (검색 → 정리 → 추론 → 작성) ---------- */
+
+  function renderStage(turn) {
+    var box = t('div', 'jca-stage');
+    box.setAttribute('data-stage', turn.stage || 'search');
+    box.setAttribute('data-tid', turn.id);
+    box.setAttribute('role', 'status');
+    box.setAttribute('aria-live', 'polite');
+    var cur = stageIndex(turn.stage);
+    STAGES.forEach(function (s, i) {
+      var step = t('div', 'jca-step' + (i < cur ? ' done' : (i === cur ? ' on' : '')));
+      step.appendChild(t('span', 'jca-seg'));
+      step.appendChild(t('span', 'jca-step-l', (i < cur ? '✓ ' : '') + s.label));
+      box.appendChild(step);
+    });
+    var sec0 = Math.floor((Date.now() - (st.askStart || Date.now())) / 1000);
+    box.appendChild(t('span', 'jca-stage-c',
+      (cur >= 0 ? STAGES[cur].line : '답을 준비하고 있어요') + (sec0 >= 1 ? ' · ' + sec0 + '초' : '')));
+    return box;
+  }
+
+  var stageTimer = null;
+  function stopStageClock() {
+    if (stageTimer) { clearInterval(stageTimer); stageTimer = null; }
+  }
+  function startStageClock() {
+    stopStageClock();
+    stageTimer = setInterval(stageTick, 1000);
+  }
+  /* 지금 단계와 기다린 시간만 다시 쓴다 — 화면 전체를 다시 그리지 않는다. */
+  function stageTick() {
+    if (!el.thread) return;
+    var box = el.thread.querySelector('.jca-stage');
+    if (!box) return;                      /* 답이 끝나 막대가 사라졌을 때는 조용히 넘어간다 */
+    var line = box.querySelector('.jca-stage-c');
+    if (!line) return;
+    var i = stageIndex(box.getAttribute('data-stage'));
+    if (i < 0) return;
+    var sec = Math.floor((Date.now() - (st.askStart || Date.now())) / 1000);
+    line.textContent = STAGES[i].line + (sec >= 1 ? ' · ' + sec + '초' : '');
+  }
+
   function renderTurn(turn) {
     var wrap = t('div', 'jca-turn');
     var qb = t('div', 'jca-q');
@@ -1002,11 +1715,10 @@
 
     var ab = t('div', 'jca-a');
     if (turn.wait) {
-      var w = t('div', 'jca-wait');
-      w.appendChild(t('i'));
-      w.appendChild(document.createTextNode('자료실 근거를 모아 답을 정리하고 있어요…'));
-      ab.appendChild(w);
-    } else {
+      ab.classList.add('jca-a-wait');
+      ab.appendChild(renderStage(turn));
+    }
+    if (!turn.wait || turn.live) {
       if (turn.mode || turn.websearch) {
         var tag = [];
         if (turn.mode) {
@@ -1018,7 +1730,7 @@
       }
       var body = t('div', 'jca-a-b');
       body.setAttribute('data-tid', turn.id);
-      body.textContent = turn.a || '';
+      body.textContent = turn.live ? visibleStream(turn.a) : (turn.a || '');
       ab.appendChild(body);
       if (turn.err) ab.classList.add('jca-a-err');
 
@@ -1092,13 +1804,28 @@
   }
 
   function ask(q, clearInput) {
-    var turn = { id: newId(), ts: Date.now(), q: q, a: '', refs: [], web: [], wait: true,
+    var turn = { id: newId(), ts: Date.now(), q: q, a: '', refs: [], web: [], wait: true, stage: 'search',
                  mode: st.mode || '', websearch: st.webOn };
     st.thread.push(turn);
     st.busy = true;
+    st.askStart = Date.now();
+    startStageClock();
     if (clearInput && el.chatInput) el.chatInput.value = '';
     render(); saveChat();
 
+    /* 「검색 중」을 먼저 한 프레임 그리고서 실제 일을 시작한다 — 같은 틱에 끝나면 단계가 보이지 않는다. */
+    setTimeout(function () { runAsk(turn, q); }, 60);
+  }
+
+  /* 단계를 바꾸고 그 자리만 다시 그린다(답이 흐르는 중에는 글자를 다시 그리지 않는다). */
+  function setStage(turn, id) {
+    if (!turn || !id || turn.stage === id) return;
+    turn.stage = id;
+    if (!st.busy) return;
+    render();
+  }
+
+  function runAsk(turn, q) {
     var body = { question: q, evidence: evidence(q), provider: st.provider, stream: true };
     if (st.mode) body.mode = st.mode;
     if (st.webOn) body.websearch = true;
@@ -1111,10 +1838,15 @@
         body.route = rt0.map(function (r) { return { no: r.no || '', title: r.title, url: r.url, why: r.why || [] }; });
       }
     }
+    setStage(turn, 'collect');
 
     /* 첫 글자가 오는 대로 말풍선에 붙인다(마커 [[REFS:…]] 부분은 가린다). */
     function paintLive() {
-      if (turn.wait || !turn.live) { turn.live = true; turn.wait = false; render(); }
+      if (!turn.live) {
+        turn.live = true;
+        turn.stage = 'write';
+        render();
+      }
       var node = el.thread ? el.thread.querySelector('.jca-a-b[data-tid="' + turn.id + '"]') : null;
       if (!node) return;
       node.textContent = visibleStream(turn.a);
@@ -1131,15 +1863,19 @@
       delete turn.live;
     }
 
-    streamAsk(body, turn, paintLive, applyDone).then(function () {
+    /* onStage 는 단계 id 하나만 받는다 — 지금 대화(turn)에 붙인다. */
+    streamAsk(body, turn, paintLive, applyDone, function (id) { setStage(turn, id); }).then(function () {
       turn.wait = false;
+      turn.stage = '';
     })['catch'](function (e) {
-      turn.wait = false; turn.err = true;
+      turn.wait = false; turn.stage = ''; turn.err = true;
       var msg = errText(e);
       turn.a = turn.a ? turn.a + '\n\n' + msg : msg;
       turn.refs = []; turn.web = [];
     }).then(function () {
       st.busy = false;
+      stopStageClock();
+      delete turn.wait;
       render(); saveChat();
       if (st.autoOpen && turn.refs && turn.refs.length && !turn.err) {
         setTimeout(function () { openRef(turn.refs[0].url); }, 1400);
@@ -1155,7 +1891,7 @@
   }
 
   /* SSE 로 답을 받아 글자마다 onDelta 로 넘긴다. SSE 가 아니면 일반 JSON 응답으로 처리한다. */
-  function streamAsk(body, turn, onDelta, onDone) {
+  function streamAsk(body, turn, onDelta, onDone, onStage) {
     var s = sess();
     if (!s) return Promise.reject({ error: 'session' });
     var payload = { action: 'ask', session_token: s.token };
@@ -1205,6 +1941,9 @@
                   if (ev === 'delta') {
                     turn.a += (j.t || '');
                     onDelta();
+                  } else if (ev === 'stage') {
+                    /* 서버가 알려 주는 단계 — 지금은 「추론 중」 하나. */
+                    if (onStage) onStage(j.stage === 'thinking' ? 'think' : String(j.stage || ''));
                   } else if (ev === 'done') {
                     onDone(j);
                     stopped = true;
@@ -1256,9 +1995,42 @@
   }
 
   function clearChat() {
-    if (!window.confirm('이 브라우저에 저장된 대화를 모두 지울까요? 되돌릴 수 없어요.')) return;
-    st.thread = [];
-    render(); saveChat();
+    if (st.busy) return;
+    var msg = loggedIn()
+      ? '이 대화를 지울까요? 되돌릴 수 없어요.'
+      : '이 브라우저에 저장된 이 대화를 지울까요? 되돌릴 수 없어요.';
+    if (!window.confirm(msg)) return;
+    var key = st.threadKey, sid = st.threadId;
+    var lid = key && key.indexOf('l:') === 0 ? key.slice(2) : '';
+    st.thread = []; st.threadTitle = ''; st.threadKey = ''; st.threadId = '';
+    try { localStorage.removeItem(CHAT_KEY); } catch (e) {}
+    if (sid) deleteThread(sid, true);
+    else if (lid) deleteThread(lid, true);
+    else render();
+  }
+
+  /* 로그인·로그아웃으로 보는 곳이 바뀔 때 — 지금 대화를 놓고 그 사람 것으로 다시 시작한다. */
+  function switchUser() {
+    stopStageClock();
+    st.thread = []; st.threadKey = ''; st.threadId = ''; st.threadTitle = '';
+    st.threads = []; st.threadsLoaded = false; st.threadsErr = '';
+    st.histOpen = false; st.renaming = ''; st.importAsk = false;
+    ID_MAP = {};
+    try { localStorage.removeItem(CHAT_KEY); } catch (e) {}
+    if (!loggedIn()) {
+      localLoad();
+      st.threads = st.localThreads.map(function (x) {
+        return { id: x.id, title: x.title, turns: x.turns.length, updated: x.updated };
+      });
+      st.threadsLoaded = true;
+      if (st.localThreads.length) {
+        st.threadKey = 'l:' + st.localThreads[0].id;
+        st.thread = st.localThreads[0].turns.slice();
+        st.threadTitle = st.localThreads[0].title;
+      }
+      return;
+    }
+    ensureHistory();
   }
 
   /* ---------- 내 키 ---------- */
@@ -1553,7 +2325,7 @@
     how.addEventListener('click', function () { st.step = 0; st.tab = 'key'; render(); });
     free.appendChild(how);
     el.welcome.appendChild(free);
-    el.welcome.appendChild(t('p', 'jca-w-priv', '질문과 대화는 서버에 저장·로깅하지 않습니다. 키는 서버에서 암호화해 보관해요.'));
+    el.welcome.appendChild(t('p', 'jca-w-priv', '대화는 나만 볼 수 있는 기록함에 보관돼요. 키는 서버에서 암호화해 보관합니다.'));
   }
 
   function render() {
@@ -1579,7 +2351,9 @@
 
     el.foot.innerHTML = st.tab === 'key'
       ? '<b>키는 암호화해 서버에</b> · 원본은 다시 보여 주지 않습니다'
-      : '<b>대화 기록은 이 브라우저에만</b> · 질문은 서버에 저장하지 않습니다';
+      : (loggedIn()
+        ? '<b>대화는 내 기록함에만</b> · 다른 사람은 볼 수 없습니다'
+        : '<b>대화는 이 브라우저에만</b> · 로그인하면 계정에 보관합니다');
 
     if (st.tab === 'chat') renderChat();
     else if (st.tab === 'find') renderFind();
@@ -1624,11 +2398,19 @@
   /* ---------- 시작 ---------- */
   function boot() {
     loadLocal();
+    st.userSeen = loggedIn() ? (sess().username || 'user') : '';
+    if (!loggedIn()) {
+      st.threads = st.localThreads.map(function (x) {
+        return { id: x.id, title: x.title, turns: x.turns.length, updated: x.updated };
+      });
+      st.threadsLoaded = true;
+    }
     recordPage();
     build();
     applyPresetParam();
     if (window.JCAssistSearch) loadIndex();
     render();
+    if (loggedIn()) ensureHistory();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
@@ -1643,7 +2425,8 @@
     },
     close: close,
     history: function () { return st.thread.slice(); },
+    threads: function () { return (loggedIn() ? st.threads : st.localThreads).slice(); },
     clear: clearChat,
-    version: 3
+    version: 4
   };
 })();

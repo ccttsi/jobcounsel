@@ -9,11 +9,15 @@
 //   3) 질의(ask)는 서버 안에서만 키를 풀어 Gemini 를 부르고, 답변 JSON 만 돌려준다.
 //      웹 교차 확인을 켜면 google_search 로 확인한 출처를 함께 돌려준다.
 //      stream:true 면 :streamGenerateContent(SSE)로 글자를 바로 흘려보내고, 끝에 done 이벤트로 답·모델·근거·웹 출처를 보낸다.
+//      스트림이 열리는 순간 stage 이벤트({stage:'thinking'})를 한 번 보내, 기다리는 사람에게 「추론 중」을 알린다.
+//   4) 내 대화 기록함(history_*) — 스레드 목록·메시지의 저장·조회·이름변경·삭제·전체비우기.
+//      user_id 는 언제나 session_token 에서만 정하고, 모든 쿼리에 user_id 조건을 붙인다.
 //
 // 지키는 선
 //   · 원본 키는 응답·로그 어디에도 다시 나오지 않는다.
-//   · **질문·대화·검색어를 저장하지도, console 에 남기지도 않는다.**
-//     DB 에 남는 것은 호출 횟수뿐이다(jc_assistant_usage: user_id, 분, 횟수).
+//   · **질문·검색어를 console 에 남기지 않는다.** 대화는 사용자가 로그인했을 때만,
+//     그 사람의 기록함(jc_assistant_threads·jc_assistant_messages)에만 쌓이고 다른 사람은 볼 수 없다.
+//     남는 것은 그 대화와 호출 횟수(jc_assistant_usage: user_id, 분, 횟수)뿐이다.
 //
 // 환경변수 (README 참고)
 //   JC_KEY_MASTER_SECRET  필수. 키 암호화 열쇠(32바이트 이상 아무 문자열).
@@ -33,7 +37,8 @@ const MODEL_PREF = (Deno.env.get('JC_GEMINI_MODEL') || '').trim();
 const ALLOW = (Deno.env.get('JC_ALLOW_ORIGINS') || 'https://ccttsi.github.io')
   .split(',').map((s) => s.trim()).filter(Boolean);
 
-const MAX_BODY = 32000;      // 요청 본문 상한(바이트)
+const MAX_BODY = 256000;     // 요청 본문 상한(바이트) — 대화 한 편(30턴×답 4,000자)을 저장할 수 있는 크기
+const MAX_ASK_BODY = 32000;  // 질의(ask) 요청 상한 — 질문 1,200자·근거 6건이면 넉넉하다
 const MAX_Q = 1200;          // 질문 길이 상한
 const MAX_EVIDENCE = 6;      // 근거 개수 상한
 const RATE_LIMIT = 12;       // 분당 호출 수
@@ -248,6 +253,128 @@ async function overRate(userId: number): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+/* ---------------------------------------------------------------- 내 대화 기록함 */
+
+/* 한 스레드에 담는 양 — 화면(assets/assistant.js)의 상한과 같은 값이어야 한다. */
+const HIST_THREADS_MAX = 60;
+const HIST_TURNS_MAX = 40;
+const HIST_TITLE_MAX = 80;
+const HIST_Q_MAX = 1200;
+const HIST_A_MAX = 4000;
+
+function cleanUuid(v: unknown): string {
+  const s = String(v || '').toLowerCase();
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s) ? s : '';
+}
+
+function oneLine(v: unknown, n: number): string {
+  return String(v || '').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, ' ')
+    .replace(/\s+/g, ' ').trim().slice(0, n);
+}
+
+/* 제목 — 사용자가 적었으면 그대로, 아니면 첫 질문을 한 줄로 줄인다. */
+function cleanTitle(v: unknown, firstQ: string): string {
+  const t = oneLine(v, HIST_TITLE_MAX);
+  if (t) return t;
+  const q = oneLine(firstQ, 44);
+  return q || '새 대화';
+}
+
+/* 답변 본문 — 줄바꿈은 살리고 제어문자만 지운다. */
+function cleanBody(v: unknown, n: number): string {
+  return String(v || '').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, ' ').slice(0, n);
+}
+
+const PATH_RE = /^\.?\/[A-Za-z0-9._~!$&'()*+,;=:@%\/?#\[\]-]*$/;
+
+function cleanRefs(v: unknown): unknown[] {
+  if (!Array.isArray(v)) return [];
+  const out: unknown[] = [];
+  for (const raw of v.slice(0, 3)) {
+    if (!raw || typeof raw !== 'object') continue;
+    const o = raw as Record<string, unknown>;
+    const url = String(o.url || '');
+    if (!PATH_RE.test(url)) continue;                    // 자료실 안 주소만
+    out.push({
+      title: oneLine(o.title, 120),
+      sector: oneLine(o.sector, 40),
+      url: url.slice(0, 300),
+    });
+  }
+  return out;
+}
+
+function cleanWeb(v: unknown): unknown[] {
+  if (!Array.isArray(v)) return [];
+  const out: unknown[] = [];
+  for (const raw of v.slice(0, 5)) {
+    if (!raw || typeof raw !== 'object') continue;
+    const o = raw as Record<string, unknown>;
+    const url = String(o.url || '');
+    if (!/^https?:\/\//.test(url) || url.length > 400) continue;
+    out.push({ title: oneLine(o.title, 120), url });
+  }
+  return out;
+}
+
+type TurnRow = {
+  turn_id: string;
+  seq: number;
+  question: string;
+  answer: string;
+  refs: unknown;
+  web: unknown;
+  mode: string | null;
+  websearch: boolean;
+  err: boolean;
+};
+
+/* 브라우저가 보낸 메시지 배열을 저장할 모양으로 다듬는다. 빈 질문은 버린다. */
+function cleanTurns(v: unknown): TurnRow[] {
+  if (!Array.isArray(v)) return [];
+  const out: Array<TurnRow> = [];
+  for (const raw of v.slice(-HIST_TURNS_MAX)) {
+    if (!raw || typeof raw !== 'object') continue;
+    const o = raw as Record<string, unknown>;
+    const q = cleanBody(o.q, HIST_Q_MAX).trim();
+    if (!q) continue;
+    out.push({
+      turn_id: oneLine(o.id, 40) || 't' + (out.length + 1),
+      seq: out.length + 1,
+      question: q,
+      answer: cleanBody(o.a, HIST_A_MAX),
+      refs: cleanRefs(o.refs),
+      web: cleanWeb(o.web),
+      mode: MODES.includes(String(o.mode || '')) ? String(o.mode) : null,
+      websearch: o.websearch === true,
+      err: o.err === true,
+    });
+  }
+  return out;
+}
+
+/* 상한을 넘긴 오래된 스레드는 정리한다(대화가 무한정 쌓여 저장소를 먹지 않게). */
+async function trimThreads(userId: number): Promise<void> {
+  const r = await sb('jc_assistant_threads?user_id=eq.' + userId +
+    '&select=id&order=updated_at.desc&offset=' + HIST_THREADS_MAX);
+  if (!r.ok) return;
+  let rows: Array<{ id: string }> = [];
+  try { rows = await r.json(); } catch { return; }
+  for (const row of rows.slice(0, 20)) {
+    const id = cleanUuid(row.id);
+    if (id) await sb('jc_assistant_threads?id=eq.' + id + '&user_id=eq.' + userId, { method: 'DELETE' });
+  }
+}
+
+async function threadRow(userId: number, id: string): Promise<{ id: string; title: string } | null> {
+  const r = await sb('jc_assistant_threads?id=eq.' + id + '&user_id=eq.' + userId +
+    '&select=id,title&limit=1');
+  if (!r.ok) return null;
+  let rows: Array<{ id: string; title: string }> = [];
+  try { rows = await r.json(); } catch { return null; }
+  return rows.length ? rows[0] : null;
 }
 
 /* ---------------------------------------------------------------- Gemini 호출 */
@@ -582,6 +709,10 @@ function streamAnswer(
         try { controller.close(); } catch { /* 이미 닫혔다 */ }
       };
 
+      /* 기다리는 사람에게 「지금 무엇 중인지」를 먼저 알린다 — 스트림이 열린 순간이 곧 모델에 물은 순간이다.
+         글자(delta) 가기 전에 한 번만 보내므로 스트림 속도를 거의 건드리지 않는다. */
+      send('stage', { stage: 'thinking', label: '추론 중' });
+
       streamChain(key, chat, ask, (d) => send('delta', { t: d })).then((out) => {
         if ('reply' in out) {
           const { answer, refs } = splitRefs(out.reply.text);
@@ -808,6 +939,9 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
 
   /* --- 비서 질의 --- */
   if (action === 'ask') {
+    if (JSON.stringify(body).length > MAX_ASK_BODY) {
+      return bad(origin, 'bad_request', '질문에 딸린 내용이 너무 큽니다. 질문을 조금 줄여 주세요.', 413);
+    }
     const question = String(body.question || '').trim();
     if (question.length < 2) return bad(origin, 'bad_request', '질문을 조금 더 적어 주세요.');
     if (question.length > MAX_Q) return bad(origin, 'bad_request', '질문이 너무 깁니다. 조금 줄여 주세요.', 413);
@@ -864,6 +998,144 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
       provider: 'gemini',
       model: reply.model,
     }, origin);
+  }
+
+  /* ---------------------------------------------------------------- 내 대화 기록함 */
+
+  /* --- 대화방 목록 --- */
+  if (action === 'history_list') {
+    const r = await sb('jc_assistant_threads?user_id=eq.' + userId +
+      '&select=id,title,turns,created_at,updated_at&order=updated_at.desc&limit=' + HIST_THREADS_MAX);
+    if (!r.ok) return bad(origin, 'server', '대화 목록을 읽지 못했습니다.', 500);
+    let rows: Array<Record<string, unknown>> = [];
+    try { rows = await r.json(); } catch { rows = []; }
+    return out(200, {
+      ok: true,
+      threads: (rows || []).map((x) => ({
+        id: x.id,
+        title: String(x.title || '새 대화'),
+        turns: Number(x.turns || 0),
+        created: x.created_at,
+        updated: x.updated_at,
+      })),
+    }, origin);
+  }
+
+  /* --- 대화방 하나 열기(메시지 포함) --- */
+  if (action === 'history_get') {
+    const id = cleanUuid(body.thread_id);
+    if (!id) return bad(origin, 'bad_request', '대화방 번호를 확인해 주세요.');
+    const tr = await threadRow(userId, id);
+    if (!tr) return bad(origin, 'not_found', '그 대화를 찾지 못했습니다.', 404);
+    const r = await sb('jc_assistant_messages?thread_id=eq.' + id + '&user_id=eq.' + userId +
+      '&select=turn_id,seq,question,answer,refs,web,mode,websearch,err&order=seq.asc&limit=' + HIST_TURNS_MAX);
+    if (!r.ok) return bad(origin, 'server', '대화를 읽지 못했습니다.', 500);
+    let rows: Array<Record<string, unknown>> = [];
+    try { rows = await r.json(); } catch { rows = []; }
+    return out(200, {
+      ok: true,
+      thread: {
+        id,
+        title: tr.title,
+        turns: (rows || []).map((m) => ({
+          id: String(m.turn_id || ''),
+          q: String(m.question || ''),
+          a: String(m.answer || ''),
+          refs: Array.isArray(m.refs) ? m.refs : [],
+          web: Array.isArray(m.web) ? m.web : [],
+          mode: m.mode || '',
+          websearch: m.websearch === true,
+          err: m.err === true,
+        })),
+      },
+    }, origin);
+  }
+
+  /* --- 대화방 저장(처음이면 만들고, 있으면 그 자리에 다시 쓴다) --- */
+  if (action === 'history_save') {
+    const turns = cleanTurns(body.turns);
+    if (!turns.length) return bad(origin, 'bad_request', '저장할 대화가 비어 있습니다.');
+    const title = cleanTitle(body.title, turns[0].question);
+    const want = cleanUuid(body.thread_id);
+    let id = '';
+    if (want && await threadRow(userId, want)) id = want;
+
+    if (id) {
+      const up = await sb('jc_assistant_threads?id=eq.' + id + '&user_id=eq.' + userId, {
+        method: 'PATCH',
+        headers: { prefer: 'return=minimal' },
+        body: JSON.stringify({ title, turns: turns.length, updated_at: new Date().toISOString() }),
+      });
+      if (!up.ok) id = '';                     // 다른 기기에서 지워졌다 — 새 방으로 이어 간다
+    }
+    if (!id) {
+      const cr = await sb('jc_assistant_threads', {
+        method: 'POST',
+        headers: { prefer: 'return=representation' },
+        body: JSON.stringify({ user_id: userId, title, turns: turns.length }),
+      });
+      if (!cr.ok) return bad(origin, 'server', '대화를 저장하지 못했습니다.', 500);
+      let made: Array<{ id: string }> = [];
+      try { made = await cr.json(); } catch { made = []; }
+      id = made.length ? String(made[0].id) : '';
+      if (!id) return bad(origin, 'server', '대화를 저장하지 못했습니다.', 500);
+    }
+
+    /* 메시지는 「그 차례 그대로」로 다시 쓴다 — 지운 차례·고친 답이 그대로 반영되게. */
+    const del = await sb('jc_assistant_messages?thread_id=eq.' + id + '&user_id=eq.' + userId, {
+      method: 'DELETE',
+      headers: { prefer: 'return=minimal' },
+    });
+    if (!del.ok) return bad(origin, 'server', '대화를 저장하지 못했습니다.', 500);
+    const ins = await sb('jc_assistant_messages', {
+      method: 'POST',
+      headers: { prefer: 'return=minimal' },
+      body: JSON.stringify(turns.map((t) => ({ ...t, thread_id: id, user_id: userId }))),
+    });
+    if (!ins.ok) return bad(origin, 'server', '대화를 저장하지 못했습니다.', 500);
+
+    await trimThreads(userId);
+    return out(200, { ok: true, thread_id: id, title, turns: turns.length }, origin);
+  }
+
+  /* --- 대화방 제목 바꾸기 --- */
+  if (action === 'history_rename') {
+    const id = cleanUuid(body.thread_id);
+    if (!id) return bad(origin, 'bad_request', '대화방 번호를 확인해 주세요.');
+    const title = oneLine(body.title, HIST_TITLE_MAX);
+    if (!title) return bad(origin, 'bad_request', '제목을 적어 주세요.');
+    const r = await sb('jc_assistant_threads?id=eq.' + id + '&user_id=eq.' + userId, {
+      method: 'PATCH',
+      headers: { prefer: 'return=representation' },
+      body: JSON.stringify({ title, updated_at: new Date().toISOString() }),
+    });
+    if (!r.ok) return bad(origin, 'server', '제목을 바꾸지 못했습니다.', 500);
+    let rows: unknown[] = [];
+    try { rows = await r.json(); } catch { rows = []; }
+    if (!Array.isArray(rows) || !rows.length) return bad(origin, 'not_found', '그 대화를 찾지 못했습니다.', 404);
+    return out(200, { ok: true, thread_id: id, title }, origin);
+  }
+
+  /* --- 대화방 하나 지우기(메시지는 cascade) --- */
+  if (action === 'history_delete') {
+    const id = cleanUuid(body.thread_id);
+    if (!id) return bad(origin, 'bad_request', '대화방 번호를 확인해 주세요.');
+    const r = await sb('jc_assistant_threads?id=eq.' + id + '&user_id=eq.' + userId, {
+      method: 'DELETE',
+      headers: { prefer: 'return=minimal' },
+    });
+    if (!r.ok) return bad(origin, 'server', '대화를 지우지 못했습니다.', 500);
+    return out(200, { ok: true }, origin);
+  }
+
+  /* --- 내 대화 전부 비우기 --- */
+  if (action === 'history_clear') {
+    const r = await sb('jc_assistant_threads?user_id=eq.' + userId, {
+      method: 'DELETE',
+      headers: { prefer: 'return=minimal' },
+    });
+    if (!r.ok) return bad(origin, 'server', '대화를 지우지 못했습니다.', 500);
+    return out(200, { ok: true }, origin);
   }
 
   /* --- 연결 테스트(내 키 탭): 실제로 한 번 불러 보고 답·걸린 시간·모델 이름을 돌려준다 --- */
