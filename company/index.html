@@ -511,7 +511,10 @@ html[data-jc-imm] .flip-in{transition:none}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 
 /* 집중 보기(assets/prefs.js): 본문만 남길 때 붙어 있는 칸을 풀어 둔다 */
-html[data-jc-imm] .fl,html[data-jc-imm] .dt>.side{position:static;max-height:none}
+html[data-jc-imm] .dt>.side{position:static;max-height:none}
+/* 휴대폰의 조건 시트는 집중 보기에서도 화면 아래에 붙어 있어야 한다(2026-11-19) —
+   예전에는 집중 보기에서 통째로 position:static이 되어 시트가 본문 흐름 가운데에 박혔다. */
+@media (min-width:980px){html[data-jc-imm] .fl{position:static;max-height:none}}
 html[data-jc-imm] .gl-t{display:none}
 /* 원자료 한계 안내(2026-11-16): 단정하지 않는 작은 각주 */
 .fnote{margin:6px 0 0;font-size:13px;line-height:1.55;color:var(--dim)}

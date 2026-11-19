@@ -101,7 +101,7 @@ a{color:inherit}
 .flt legend{font-size:13.5px;font-weight:800;padding:0;margin-bottom:6px}
 .flt .chips{display:flex;flex-wrap:wrap;gap:8px}
 @media (max-width:899px){
-  .flt{position:fixed;left:0;right:0;bottom:0;z-index:60;max-height:72vh;overflow:auto;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line-2);border-radius:18px 18px 0 0;box-shadow:0 -12px 32px -18px rgba(0,0,0,.35);transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.9,.3,1);visibility:hidden}
+  .flt{position:fixed;left:0;right:0;bottom:0;z-index:60;max-height:72vh;max-height:72dvh;overflow:auto;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line-2);border-radius:18px 18px 0 0;box-shadow:0 -12px 32px -18px rgba(0,0,0,.35);transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.9,.3,1);visibility:hidden}
   .flt.open{transform:none;visibility:visible}
   .flt .done{display:flex;width:100%;justify-content:center;margin-top:6px}
 }

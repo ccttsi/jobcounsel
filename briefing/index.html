@@ -238,7 +238,7 @@ ol.st li:last-child b{color:var(--acc)}
 /* 테마 시트: 아래에서 올라온다(transform만) */
 .th-sheet{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,16,12,.28);opacity:0;transition:opacity .22s}
 .th-sheet.open{opacity:1}
-.th-in{width:100%;max-width:1180px;max-height:78vh;overflow:auto;padding:14px 16px calc(16px + env(safe-area-inset-bottom));border-radius:18px 18px 0 0;background:var(--panel);border:1px solid var(--line-2);transform:translateY(24px);transition:transform .26s cubic-bezier(.2,.9,.3,1)}
+.th-in{width:100%;max-width:1180px;max-height:78vh;max-height:78dvh;overflow:auto;padding:14px 16px calc(16px + env(safe-area-inset-bottom));border-radius:18px 18px 0 0;background:var(--panel);border:1px solid var(--line-2);transform:translateY(24px);transition:transform .26s cubic-bezier(.2,.9,.3,1)}
 .th-sheet.open .th-in{transform:none}
 .th-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
 .th-top b{font-size:18px;font-weight:850;letter-spacing:-.04em}
