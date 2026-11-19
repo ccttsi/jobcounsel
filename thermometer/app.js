@@ -255,6 +255,16 @@
     return encodeURIComponent(row.name.replace(/·.*$/, '').trim());
   }
 
+  /* 두 온도의 차이를 한 줄로 — 이 화면의 답이 "얼마나 다른가"이기 때문. */
+  function gapLine(row) {
+    var d = row.domestic.temperature, g = row.global.temperature;
+    if (d == null || g == null) return '';
+    var gap = Math.round((d - g) * 10) / 10;
+    if (Math.abs(gap) < 0.05) return '<span class="tag gap">국내·글로벌 같은 온도</span>';
+    var hotter = gap > 0 ? '국내' : '글로벌';
+    return '<span class="tag gap"><b>' + hotter + '</b>가 ' + Math.abs(gap).toFixed(1) + '℃ 더 ' + (gap > 0 ? '뜨거움' : '차가움') + '</span>';
+  }
+
   function renderDetail() {
     var row = BYID[state.sel];
     if (!row) { $('det').innerHTML = '<div class="det-in"><div class="empty"><b>산업을 고르세요</b>왼쪽 목록에서 산업을 누르면 국내·글로벌 두 온도와 네 축의 근거가 열립니다.</div></div>'; return; }
@@ -285,7 +295,7 @@
       + '<div class="dt-h">'
       + '<button type="button" class="back" id="backBtn" aria-label="목록으로"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>'
       + '<div class="dt-t"><h2>' + esc(row.name) + ' <span style="font-size:.62em;font-weight:750;color:var(--dim);letter-spacing:0" class="num">' + esc(row.domestic.temperature == null ? '' : (row.domestic.rank ? row.domestic.rank + '위' : '')) + '</span></h2>'
-      + '<div class="tags"><span class="tag k num">' + esc(row.ksic.code) + '</span><span class="tag">' + esc(row.feel.group) + '</span><span class="tag num">종사자 ' + fmtNum(row.size.value) + esc(row.size.unit) + ' · ' + esc(row.size.period) + '</span></div>'
+      + '<div class="tags"><span class="tag k num">' + esc(row.ksic.code) + '</span><span class="tag">' + esc(row.feel.group) + '</span><span class="tag num">종사자 ' + fmtNum(row.size.value) + esc(row.size.unit) + ' · ' + esc(row.size.period) + '</span>' + gapLine(row) + '</div>'
       + '<p>' + esc(row.one_line) + '</p></div>'
       + '<div class="nv"><button type="button" id="prevBtn" aria-label="이전 산업"' + (at <= 0 ? ' disabled' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></button>'
       + '<button type="button" id="nextBtn" aria-label="다음 산업"' + (at < 0 || at >= order.length - 1 ? ' disabled' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>'
