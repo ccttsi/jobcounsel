@@ -49,6 +49,7 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
 [hidden]{display:none!important}
 html.is-locked{overflow:hidden;padding-right:var(--sw,0)}
+html.is-locked .fab{opacity:0;pointer-events:none}   /* 시트·팝업이 열리면 떠 있는 펜은 숨긴다(모서리 글자를 가리지 않게) */
 .num{font-variant-numeric:tabular-nums}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .wrap{max-width:1280px;margin:0 auto;padding:0 16px 56px}
@@ -116,6 +117,18 @@ html[data-jc-imm] .lead-line .dek-tx.swap{animation:none}
 .cal-d[aria-current="true"] i{background:var(--bg)}
 .cal-d:disabled{color:var(--c-sub);opacity:.5}
 .cal-f{margin-top:2px;font-size:11px;color:var(--dim);text-align:center;line-height:1.4}
+.cal-h .cal-t{flex:1;width:auto;height:44px;padding:0 6px;font-size:14px;font-weight:850;letter-spacing:-.02em;color:var(--ink);border-radius:10px;display:flex;align-items:center;justify-content:center;gap:2px}
+.cal-h .cal-t:hover{background:var(--soft)}
+.cal-h .cal-t svg{width:13px;height:13px;color:var(--dim)}
+.cal-mg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.cal-m{min-height:44px;display:grid;place-items:center;gap:0;padding:3px 0;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--dim)}
+.cal-m b{font-size:12.5px;font-weight:800;letter-spacing:-.01em}
+.cal-m .num{font-size:10.5px;font-weight:750;color:var(--dim)}
+.cal-m.on{color:var(--ink);border-color:var(--line-2);background:var(--soft)}
+.cal-m.on .num{color:var(--acc)}
+.cal-m.on:hover{border-color:var(--acc)}
+.cal-m:disabled{opacity:.55;cursor:default}
+@media (min-width:600px){.cal-mg{grid-template-columns:repeat(4,1fr)}}
 
 /* 분류 띠: 대분류(All·I~IV) → 세부분류 */
 .filters{display:grid;gap:3px;margin-top:6px}
@@ -359,6 +372,11 @@ html[data-jc-imm] .lead-line .dek-tx.swap{animation:none}
 .jl span{flex:none;font-size:10px;font-weight:850;letter-spacing:.04em;color:var(--dim)}
 .jl b{min-width:0;font-size:12.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .jl i{margin-left:auto;font-style:normal;font-size:11px;color:var(--acc)}
+.bl{display:flex;align-items:center;gap:8px;min-height:44px;margin:2px 0 10px;padding:0 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);text-decoration:none;color:var(--ink)}
+.bl span{flex:none;font-size:10px;font-weight:850;letter-spacing:.04em;color:var(--dim)}
+.bl b{min-width:0;flex:1;font-size:12.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bl i{flex:none;font-style:normal;font-size:11px;color:var(--acc)}
+.bl:hover{border-color:var(--acc)}
 .sl{list-style:none;margin:0;padding:0;display:grid;gap:4px}
 .sl li{display:grid;gap:2px;min-width:0}
 .sl .sname{font-size:12.5px;line-height:1.55;color:var(--ink)}

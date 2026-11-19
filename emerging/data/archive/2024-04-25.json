@@ -1,0 +1,1218 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-19T11:30:00+09:00",
+ "edition": {
+  "no": 2,
+  "date": "2024-04-25",
+  "weekday": "목",
+  "title": "배터리 수요, 처음 1TWh를 넘다",
+  "reading_minutes": 5,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20240425-1",
+   "date": "2024-04-25",
+   "order": 1,
+   "sector": "s2",
+   "cat": "battery",
+   "lead": true,
+   "title": "배터리 수요, 처음으로 1TWh를 넘다",
+   "kicker": "IEA Global EV Outlook·Batteries and Secure Energy Transitions",
+   "summary": "2024년 세계 배터리 수요는 1테라와트시 규모에 이르렀다. 전기차용이 950GWh로 대부분을 차지했고, 전기 트럭 수요는 1년에 75% 넘게 늘었다. IEA는 2030년 수요를 3TWh 이상으로 본다.",
+   "key_numbers": [
+    {
+     "label": "2024년 배터리 수요",
+     "value": "1TWh 돌파",
+     "note": "전기차 950GWh"
+    },
+    {
+     "label": "2030년 전망",
+     "value": "3TWh 이상",
+     "note": "STEPS 시나리오"
+    },
+    {
+     "label": "전기 트럭 배터리",
+     "value": "+75%",
+     "note": "2023년 대비"
+    }
+   ],
+   "market": {
+    "label": "세계 배터리 수요",
+    "unit": "GWh",
+    "basis": "2024년 실적·2030년 전망",
+    "chart": "bar",
+    "labels": [
+     "2024 전기차",
+     "2024 전체",
+     "2030 전체"
+    ],
+    "series": [
+     {
+      "name": "수요",
+      "values": [
+       950,
+       1000,
+       3000
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 20.1,
+    "note": "2030년은 2024년 대비 3배. 연평균 20.1%로 계산된다.",
+    "source_id": "src_iea_batteries2024"
+   },
+   "players": {
+    "domestic": [
+     "LG에너지솔루션",
+     "삼성SDI",
+     "SK온",
+     "에코프로",
+     "포스코"
+    ],
+    "glob": [
+     "CATL",
+     "Panasonic Energy",
+     "BYD",
+     "Northvolt"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-qa"
+    ],
+    "new": [
+     "j-bms",
+     "j-battery-recycle"
+    ]
+   },
+   "source_id": "src_iea_batteries2024",
+   "question": "양이 3배가 되면 ‘만드는 사람’보다 ‘상태를 아는 사람’이 귀해진다. 수명·안전·재활용 지표가 다음 경쟁력이다.",
+   "subtitle": "2024년 1TWh 돌파, 전기차 950GWh에 2030년 3TWh 전망"
+  },
+  {
+   "id": "ei-20240425-2",
+   "date": "2024-04-25",
+   "order": 2,
+   "sector": "s2",
+   "cat": "battery",
+   "lead": false,
+   "title": "전기 트럭 배터리 수요, 1년에 75% 늘었다",
+   "kicker": "IEA 배터리 수요 집계",
+   "summary": "2024년 전기차 배터리 수요 950GWh 가운데 전기 트럭이 차지하는 몫은 아직 3% 안팎이지만, 증가율은 75%를 넘었다. 승용차 다음의 물량은 상용차에서 온다.",
+   "key_numbers": [
+    {
+     "label": "EV 배터리 수요",
+     "value": "950GWh",
+     "note": "2024년, +25%"
+    },
+    {
+     "label": "전기 트럭",
+     "value": "+75%",
+     "note": "2023년 대비"
+    },
+    {
+     "label": "2030년 트럭 비중",
+     "value": "8% 이상",
+     "note": "IEA 전망"
+    }
+   ],
+   "market": {
+    "label": "전기차 배터리 수요",
+    "unit": "GWh",
+    "basis": "2023·2024년",
+    "chart": "bar",
+    "labels": [
+     "2023",
+     "2024"
+    ],
+    "series": [
+     {
+      "name": "EV 배터리",
+      "values": [
+       760,
+       950
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 25.0,
+    "note": "2023년 값은 ‘25% 증가’ 서술에서 역산한 근사치다.",
+    "source_id": "src_iea_batteries2024"
+   },
+   "players": {
+    "domestic": [
+     "LG에너지솔루션",
+     "삼성SDI",
+     "SK온",
+     "현대차"
+    ],
+    "glob": [
+     "CATL",
+     "BYD",
+     "Panasonic Energy",
+     "Tesla"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-logist"
+    ],
+    "new": [
+     "j-bms",
+     "j-battery-recycle"
+    ]
+   },
+   "source_id": "src_iea_batteries2024",
+   "question": "상용차는 하루에 몇 번씩 충전하고 오래 쓴다. 그래서 트럭용 배터리는 ‘수명·안전·충전시간’의 기준을 다시 세운다.",
+   "subtitle": "전기 트럭 배터리 +75%, 아직 3%지만 승용차 다음 물량은 상용차다"
+  },
+  {
+   "id": "ei-20240425-3",
+   "date": "2024-04-25",
+   "order": 3,
+   "sector": "s2",
+   "cat": "battery",
+   "lead": false,
+   "title": "에너지저장 6배, 배터리 저장은 14배",
+   "kicker": "IEA Batteries and Secure Energy Transitions",
+   "summary": "재생에너지를 3배로 늘리려면 2030년까지 세계 에너지저장 용량을 6배(1,500GW)로 늘려야 한다. 그 증가분의 90%를 배터리가 맡아 1,200GW까지 14배로 커진다.",
+   "key_numbers": [
+    {
+     "label": "에너지저장",
+     "value": "6배 → 1,500GW",
+     "note": "2030년"
+    },
+    {
+     "label": "배터리 저장",
+     "value": "14배 → 1,200GW",
+     "note": "2030년"
+    },
+    {
+     "label": "배터리 투자",
+     "value": "8,000억 달러",
+     "note": "2030년, 2023년 대비 5배"
+    }
+   ],
+   "market": {
+    "label": "저장 용량(2030)",
+    "unit": "GW",
+    "basis": "NZE 시나리오",
+    "chart": "bar",
+    "labels": [
+     "2023",
+     "2030"
+    ],
+    "series": [
+     {
+      "name": "에너지저장 전체",
+      "values": [
+       250,
+       1500
+      ]
+     },
+     {
+      "name": "배터리",
+      "values": [
+       86,
+       1200
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 29.2,
+    "note": "2023년 값은 ‘6배’ 서술에서 역산한 근사치다(전체 250GW, 배터리 약 86GW).",
+    "source_id": "src_iea_batteries2024"
+   },
+   "players": {
+    "domestic": [
+     "LG에너지솔루션",
+     "삼성SDI",
+     "SK온",
+     "효성중공업"
+    ],
+    "glob": [
+     "CATL",
+     "Tesla Energy",
+     "Fluence",
+     "BYD"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec",
+     "j-plant"
+    ],
+    "new": [
+     "j-bms",
+     "j-logistics-auto"
+    ]
+   },
+   "source_id": "src_iea_batteries2024",
+   "question": "발전보다 저장이 병목이 되는 순간이 온다. 계통·인허가·화재 안전을 아는 사람이 저장 사업의 속도를 정한다.",
+   "subtitle": "2030년 저장 1,500GW(6배), 그 90%를 배터리가 맡아 1,200GW(14배)"
+  },
+  {
+   "id": "ei-20240425-4",
+   "date": "2024-04-25",
+   "order": 4,
+   "sector": "s2",
+   "cat": "battery",
+   "lead": false,
+   "title": "배터리를 다시 캐는 산업, 재활용",
+   "kicker": "IEA 배터리 수요 전망과 재활용 수요",
+   "summary": "배터리 수요가 2030년 3TWh를 넘어서면 폐배터리도 함께 쌓인다. 니켈·코발트·리튬을 회수하는 재활용은 광산 대신 도시에서 금속을 얻는 산업이 된다.",
+   "key_numbers": [
+    {
+     "label": "2030년 수요",
+     "value": "3TWh 이상",
+     "note": "2024년의 3배"
+    },
+    {
+     "label": "회수 대상",
+     "value": "니켈·코발트·리튬",
+     "note": "습식·건식 제련"
+    },
+    {
+     "label": "국내 사업자",
+     "value": "에코프로·성일하이텍·포스코HY클린메탈",
+     "note": ""
+    }
+   ],
+   "market": {
+    "label": "배터리 수요와 재활용 원료",
+    "unit": "GWh",
+    "basis": "IEA 전망",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2030"
+    ],
+    "series": [
+     {
+      "name": "배터리 수요",
+      "values": [
+       1000,
+       3000
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 20.1,
+    "note": "재활용 원료량은 공표된 값이 없어 수요만 표시한다.",
+    "source_id": "src_iea_batteries2024"
+   },
+   "players": {
+    "domestic": [
+     "에코프로",
+     "성일하이텍",
+     "포스코HY클린메탈",
+     "LG에너지솔루션"
+    ],
+    "glob": [
+     "Umicore",
+     "Redwood Materials",
+     "Li-Cycle",
+     "CATL(BRUNP)"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-plant"
+    ],
+    "new": [
+     "j-battery-recycle",
+     "j-mrv"
+    ]
+   },
+   "source_id": "src_iea_batteries2024",
+   "question": "재활용은 환경 사업이 아니라 원료 확보 사업이다. 회수율과 순도를 숫자로 말할 수 있는 공정 인력이 핵심이다.",
+   "subtitle": "2030년 3TWh가 지나면 폐배터리, 니켈·코발트·리튬을 도시에서 캔다"
+  },
+  {
+   "id": "ei-20240425-5",
+   "date": "2024-04-25",
+   "order": 5,
+   "sector": "s2",
+   "cat": "battery",
+   "lead": false,
+   "title": "배터리 공장 증설, 2030년까지 4배",
+   "kicker": "IEA Batteries and Secure Energy Transitions",
+   "summary": "발표된 배터리 제조 능력은 2030년까지 세계 생산 능력을 거의 4배로 늘린다. IEA는 이 증설이 2030년 수요를 감당할 수 있다고 본다.",
+   "key_numbers": [
+    {
+     "label": "제조 능력",
+     "value": "약 4배",
+     "note": "2030년까지"
+    },
+    {
+     "label": "2030년 수요",
+     "value": "3TWh 이상",
+     "note": "STEPS"
+    },
+    {
+     "label": "배터리 투자",
+     "value": "8,000억 달러",
+     "note": "2030년 NZE"
+    }
+   ],
+   "market": {
+    "label": "배터리 제조 능력 증설",
+    "unit": "배",
+    "basis": "2024 → 2030",
+    "chart": "bar",
+    "labels": [
+     "2024",
+     "2030"
+    ],
+    "series": [
+     {
+      "name": "능력(배수)",
+      "values": [
+       1,
+       4
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 26.0,
+    "note": "2024년을 1로 둔 배수다. 연평균 26%에 해당한다.",
+    "source_id": "src_iea_batteries2024"
+   },
+   "players": {
+    "domestic": [
+     "LG에너지솔루션",
+     "삼성SDI",
+     "SK온"
+    ],
+    "glob": [
+     "CATL",
+     "BYD",
+     "Panasonic Energy",
+     "Northvolt"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-plant"
+    ],
+    "new": [
+     "j-bms"
+    ]
+   },
+   "source_id": "src_iea_batteries2024",
+   "question": "증설이 수요를 앞지르면 가격이 먼저 떨어진다. 그때 살아남는 것은 원가와 품질을 동시에 잡는 공장이다.",
+   "subtitle": "2030년까지 생산 능력 4배, 3TWh 수요를 감당할 증설이 발표됐다"
+  },
+  {
+   "id": "ei-20240425-6",
+   "date": "2024-04-25",
+   "order": 6,
+   "sector": "s2",
+   "cat": "battery",
+   "lead": false,
+   "title": "배터리 투자 8,000억 달러, 7년 안에 5배",
+   "kicker": "IEA Batteries and Secure Energy Transitions",
+   "summary": "2030년 배터리 투자는 8,000억 달러로 2023년보다 400% 늘어날 전망이다. 같은 기간 배터리가 전체 청정에너지 투자에서 차지하는 비중은 두 배가 된다.",
+   "key_numbers": [
+    {
+     "label": "2030년 투자",
+     "value": "8,000억 달러",
+     "note": "2023년 대비 +400%"
+    },
+    {
+     "label": "2023년 투자",
+     "value": "약 1,600억 달러",
+     "note": "역산 근사치"
+    },
+    {
+     "label": "연평균 성장",
+     "value": "25.9%",
+     "note": "2023 → 2030"
+    }
+   ],
+   "market": {
+    "label": "배터리 투자",
+    "unit": "억 달러",
+    "basis": "NZE 시나리오",
+    "chart": "bar",
+    "labels": [
+     "2023",
+     "2030"
+    ],
+    "series": [
+     {
+      "name": "투자",
+      "values": [
+       160,
+       800
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 25.9,
+    "note": "2023년 값은 ‘400% 증가’ 서술에서 역산한 근사치다.",
+    "source_id": "src_iea_batteries2024"
+   },
+   "players": {
+    "domestic": [
+     "LG에너지솔루션",
+     "삼성SDI",
+     "SK온",
+     "에코프로"
+    ],
+    "glob": [
+     "CATL",
+     "Panasonic Energy",
+     "Northvolt",
+     "Tesla"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-plant"
+    ],
+    "new": [
+     "j-bms",
+     "j-battery-recycle"
+    ]
+   },
+   "source_id": "src_iea_batteries2024",
+   "question": "투자가 5배가 되면 사람도 5배 필요하지는 않다. 대신 공정을 자동화하고 상태를 진단하는 쪽으로 인력이 몰린다.",
+   "subtitle": "2023년 1,600억 달러에서 2030년 8,000억 달러, 연평균 25.9%"
+  },
+  {
+   "id": "ei-20240425-7",
+   "date": "2024-04-25",
+   "order": 7,
+   "lead": false,
+   "sector": "s2",
+   "cat": "battery",
+   "title": "배터리 값 90% 내렸다, 1kWh에 140달러",
+   "subtitle": "2010년 1kWh당 1,400달러에서 2023년 140달러 미만, 90%가 빠졌다",
+   "kicker": "IEA Batteries and Secure Energy Transitions — 리튬이온 가격",
+   "summary": "리튬이온 배터리 가격은 2010년 kWh당 1,400달러에서 2023년 140달러 미만으로 90% 떨어졌다. 같은 기간 에너지 부문이 전체 리튬이온 수요에서 차지하는 몫은 50%에서 90% 이상으로 커졌다.",
+   "key_numbers": [
+    {
+     "label": "가격",
+     "value": "1,400 → 140달러",
+     "note": "kWh당, 2010→2023"
+    },
+    {
+     "label": "가격 하락",
+     "value": "90%",
+     "note": "2010년 이후"
+    },
+    {
+     "label": "에너지 부문 수요 비중",
+     "value": "50% → 90%+",
+     "note": "2016→2023"
+    }
+   ],
+   "market": {
+    "label": "리튬이온 배터리 가격",
+    "unit": "달러/kWh",
+    "basis": "2010년·2023년",
+    "chart": "bar",
+    "labels": [
+     "2010",
+     "2023"
+    ],
+    "series": [
+     {
+      "name": "kWh당 가격",
+      "values": [
+       1400,
+       140
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "2023년은 140달러 미만. 13년 동안 90% 하락.",
+    "source_id": "src_iea_batteries2024"
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-plant"
+    ],
+    "new": [
+     "j-bms",
+     "j-battery-recycle"
+    ]
+   },
+   "source_id": "src_iea_batteries2024",
+   "question": "가격이 90% 빠지면 쓰임새가 바뀐다. 원가 계산을 아는 사람이 저장·재사용 사업의 수익을 가른다."
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-proc",
+   "name": "화학·공정 엔지니어",
+   "en": "Chemical / Process Engineer",
+   "sector": "s2",
+   "role": "원료가 제품이 되는 공정의 흐름·온도·압력·촉매를 설계하고 운전 조건을 최적화한다. 수율과 에너지 사용량, 안전을 동시에 맞춘다.",
+   "ksa": {
+    "k": [
+     "반응공학·열역학",
+     "단위조작",
+     "공정 안전"
+    ],
+    "s": [
+     "공정 시뮬레이션",
+     "시운전·트러블슈팅",
+     "환경·안전 규제 대응"
+    ],
+    "a": [
+     "위험을 최악 기준으로 보는 태도",
+     "현장 데이터를 신뢰하는 실증 정신"
+    ]
+   },
+   "study": [
+    "화학공학",
+    "환경공학",
+    "에너지공학"
+   ],
+   "certs": [
+    "화공기사",
+    "가스기사",
+    "산업안전기사"
+   ],
+   "insight": "수소·CCUS·배터리 재활용은 모두 화학공정 위에 세워진 신산업이다. 공정 엔지니어에게 새로운 산업은 새로운 반응과 새로운 규제의 조합이다.",
+   "companies": {
+    "domestic": [
+     "SK이노베이션",
+     "GS칼텍스",
+     "롯데케미칼",
+     "한화솔루션",
+     "포스코"
+    ],
+    "global": [
+     "BASF",
+     "Dow",
+     "ExxonMobil",
+     "Air Liquide"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
+  },
+  {
+   "id": "j-qa",
+   "name": "품질관리(QA/QC) 담당자",
+   "en": "Quality Assurance / Control",
+   "sector": "s2",
+   "role": "제품이 규격과 기준에 맞는지 검사하고, 문제가 생기기 전에 공정을 바로잡는다. 고객 클레임과 인증 심사의 창구 역할을 한다.",
+   "ksa": {
+    "k": [
+     "통계적 품질관리",
+     "인증 규격(ISO·IATF)",
+     "측정 장비 원리"
+    ],
+    "s": [
+     "검사 계획·불량 분석",
+     "8D 보고서",
+     "공급사 품질 관리"
+    ],
+    "a": [
+     "‘대충 넘어감’을 견디지 못하는 기준",
+     "사람을 탓하지 않고 공정을 보는 태도"
+    ]
+   },
+   "study": [
+    "산업공학",
+    "기계공학",
+    "화학공학",
+    "통계학"
+   ],
+   "certs": [
+    "품질경영기사",
+    "품질관리기사",
+    "ISO 심사원 민간 자격"
+   ],
+   "insight": "신산업일수록 규격이 아직 없다. 없는 규격을 만들고 지키게 하는 일이 품질 담당자의 새 역할이다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "현대자동차",
+     "LG에너지솔루션",
+     "한국품질재단"
+    ],
+    "global": [
+     "Bosch",
+     "Toyota",
+     "SGS",
+     "TÜV"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "인증 시험 대행 코디네이터",
+     "w": "해외 인증 일정과 서류를 관리"
+    }
+   ]
+  },
+  {
+   "id": "j-bms",
+   "name": "배터리 상태진단(BMS) 데이터 엔지니어",
+   "en": "Battery Data / BMS Engineer",
+   "sector": "s2",
+   "role": "셀 전압·온도·충방전 이력을 분석해 수명과 이상 징후를 예측하는 모델을 만든다. 화재 위험 신호를 조기에 잡고, 재사용·재활용 판정에 쓸 ‘건강도’ 지표를 표준화한다.",
+   "ksa": {
+    "k": [
+     "전기화학·배터리 열화 원리",
+     "시계열 분석·이상탐지",
+     "기능안전(ISO 26262 계열) 개념"
+    ],
+    "s": [
+     "파이썬·SQL, 임베디드 로그 해석",
+     "시험 데이터와 실주행 데이터 정합",
+     "지표 검증과 문서화"
+    ],
+    "a": [
+     "수치가 이상할 때 센서를 먼저 의심하는 습관",
+     "안전 문제를 지연 없이 올리는 책임감"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "화학공학",
+    "신소재공학",
+    "데이터과학"
+   ],
+   "certs": [
+    "전기기사·전기산업기사",
+    "정보처리기사",
+    "배터리 관련 민간 교육"
+   ],
+   "insight": "배터리 산업의 경쟁력이 ‘얼마나 많이 만드느냐’에서 ‘얼마나 오래·안전하게 쓰게 하느냐’로 옮겨가면서 생긴 직무다. 재사용·재활용 시장과 함께 커진다.",
+   "companies": {
+    "domestic": [
+     "LG에너지솔루션",
+     "삼성SDI",
+     "SK온",
+     "에코프로",
+     "현대차"
+    ],
+    "global": [
+     "CATL",
+     "Panasonic Energy",
+     "Northvolt",
+     "Tesla"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "배터리 이력 증명서 발급인",
+     "w": "중고 전기차·ESS 배터리의 건강 이력을 인증"
+    }
+   ]
+  },
+  {
+   "id": "j-battery-recycle",
+   "name": "배터리 재활용 공정 엔지니어",
+   "en": "Battery Recycling Process Engineer",
+   "sector": "s2",
+   "role": "사용 후 배터리를 수거·방전·분해해 니켈·코발트·리튬을 회수하는 공정을 설계한다. 회수율과 순도를 올리면서 폐수·불산 취급 안전을 동시에 관리한다.",
+   "ksa": {
+    "k": [
+     "습식·건식 제련 공정",
+     "유해화학물질 취급 규정",
+     "금속 회수율 계산"
+    ],
+    "s": [
+     "공정 시뮬레이션·시험 계획",
+     "설비 트러블슈팅",
+     "환경·안전 보고서 작성"
+    ],
+    "a": [
+     "위험 공정을 낙관하지 않는 태도",
+     "현장 작업자 눈높이로 지시하는 힘"
+    ]
+   },
+   "study": [
+    "화학공학",
+    "금속공학",
+    "환경공학"
+   ],
+   "certs": [
+    "화공기사",
+    "산업안전기사",
+    "위험물산업기사"
+   ],
+   "insight": "광산을 캐지 않고 도시에서 금속을 캐는 산업이다. 공정 기술자에게 요구되는 것은 회수율 숫자와 안전 기록, 두 가지다.",
+   "companies": {
+    "domestic": [
+     "에코프로",
+     "성일하이텍",
+     "포스코HY클린메탈",
+     "LG에너지솔루션",
+     "SK온"
+    ],
+    "global": [
+     "Umicore",
+     "Redwood Materials",
+     "Li-Cycle",
+     "CATL(BRUNP)"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "폐배터리 회수 물류 기획자",
+     "w": "수거·운송·해체 동선을 설계하는 서비스"
+    }
+   ]
+  },
+  {
+   "id": "j-logist",
+   "name": "물류관리사",
+   "en": "Logistics Manager",
+   "sector": "s3",
+   "role": "보관·운송·재고를 계획해 비용과 납기를 맞춘다. 자동화 설비와 배송 데이터가 늘면서 수치로 흐름을 읽는 능력이 중요해졌다.",
+   "ksa": {
+    "k": [
+     "물류 시스템·운송 방식",
+     "재고·원가 관리",
+     "무역·통관 기초"
+    ],
+    "s": [
+     "수요 예측·배차",
+     "창고 운영 관리",
+     "데이터 분석"
+    ],
+    "a": [
+     "현장과 숫자를 함께 보는 감각",
+     "돌발 지연에 침착한 대응"
+    ]
+   },
+   "study": [
+    "물류학",
+    "산업공학",
+    "경영학",
+    "무역학"
+   ],
+   "certs": [
+    "물류관리사",
+    "유통관리사",
+    "국제무역사"
+   ],
+   "insight": "WEF는 2030년까지 배송·운전 직무가 절대 수에서 가장 크게 늘 것으로 본다. 자동화는 이 직무를 없애기보다 ‘자동화 사이의 예외’를 관리하는 쪽으로 옮긴다.",
+   "companies": {
+    "domestic": [
+     "CJ대한통운",
+     "한진",
+     "현대글로비스",
+     "쿠팡",
+     "롯데글로벌로지스"
+    ],
+    "global": [
+     "DHL",
+     "Maersk",
+     "Amazon Logistics",
+     "UPS"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "라스트마일 수요 예측 담당",
+     "w": "지역별 배송량을 예측해 배차를 최적화"
+    }
+   ]
+  },
+  {
+   "id": "j-elec",
+   "name": "전기·전자 엔지니어",
+   "en": "Electrical / Electronics Engineer",
+   "sector": "s2",
+   "role": "전력·제어·회로 시스템을 설계하고 시험한다. 배터리·로봇·충전설비처럼 전기를 다루는 모든 신산업의 아래쪽에서 작동한다.",
+   "ksa": {
+    "k": [
+     "회로이론·전력계통",
+     "전자부품 특성",
+     "전기 안전 규정"
+    ],
+    "s": [
+     "회로 설계·PCB",
+     "계측·디버깅",
+     "인증 시험 대응"
+    ],
+    "a": [
+     "감전·화재 위험을 먼저 보는 습관",
+     "측정값을 믿고 확인하는 태도"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "전자공학",
+    "제어계측공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전자기사",
+    "전기안전기사"
+   ],
+   "insight": "신산업의 화려한 부분은 아니지만, 전원이 꺼지면 모든 것이 멈춘다. 로봇·배터리·수소 설비 모두 이 직무 위에 서 있다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "LG전자",
+     "현대모비스",
+     "효성중공업",
+     "LS일렉트릭"
+    ],
+    "global": [
+     "Texas Instruments",
+     "Infineon",
+     "ABB",
+     "Siemens"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
+  },
+  {
+   "id": "j-plant",
+   "name": "플랜트 운영원",
+   "en": "Plant Operator",
+   "sector": "s4",
+   "role": "발전·화학·수처리 설비를 교대 근무로 운전한다. 계기 값을 읽고 이상을 판단하며, 정지·재가동 절차를 숙지하고 비상 상황에서 먼저 안전 조치를 한다.",
+   "ksa": {
+    "k": [
+     "설비 구성·운전 원리",
+     "안전 작업 허가",
+     "비상 대응 절차"
+    ],
+    "s": [
+     "DCS·현장 조작",
+     "일상 점검·정비 요청",
+     "인수인계 기록"
+    ],
+    "a": [
+     "경보에 민감한 주의력",
+     "교대 근무를 지속하는 체력과 성실성"
+    ]
+   },
+   "study": [
+    "설비공학",
+    "기계공학",
+    "전기공학",
+    "에너지공학"
+   ],
+   "certs": [
+    "산업설비기사",
+    "위험물산업기사",
+    "가스기사"
+   ],
+   "insight": "수소·CCUS·데이터센터 냉각까지, 새 설비는 모두 누군가 밤에 지켜야 돌아간다. 운영 경험은 신산업에서 가장 빨리 몸값이 오르는 자산이다.",
+   "companies": {
+    "domestic": [
+     "한국전력",
+     "한국남부발전",
+     "GS칼텍스",
+     "롯데케미칼",
+     "한국수자원공사"
+    ],
+    "global": [
+     "Equinor",
+     "Shell",
+     "EDF",
+     "Siemens Energy"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "설비 원격 진단 기사",
+     "w": "여러 사업장 설비의 진동·온도를 원격 분석"
+    }
+   ]
+  },
+  {
+   "id": "j-logistics-auto",
+   "name": "스마트물류 자동화 설계자",
+   "en": "Smart Logistics Automation Designer",
+   "sector": "s3",
+   "role": "물류센터의 입고·보관·피킹·출고를 로봇과 소프트웨어로 재설계한다. 처리량과 정확도, 인력 배치를 함께 계산해 투자 회수를 맞춘다.",
+   "ksa": {
+    "k": [
+     "물류 프로세스·창고 설계",
+     "로봇·컨베이어 시스템",
+     "시뮬레이션"
+    ],
+    "s": [
+     "레이아웃 설계·처리량 계산",
+     "WMS 연동",
+     "투자비·운영비 분석"
+    ],
+    "a": [
+     "현장 작업자의 동선을 상상하는 힘",
+     "숫자와 현실의 차이를 확인하는 태도"
+    ]
+   },
+   "study": [
+    "산업공학",
+    "물류학",
+    "기계공학",
+    "경영학"
+   ],
+   "certs": [
+    "물류관리사",
+    "유통관리사",
+    "정보처리기사"
+   ],
+   "insight": "물류 자동화의 성패는 로봇 속도가 아니라 예외 처리에 있다. 파손·반품·돌발 주문을 처리하는 설계가 전체 효율을 결정한다.",
+   "companies": {
+    "domestic": [
+     "CJ대한통운",
+     "쿠팡",
+     "한진",
+     "현대글로비스",
+     "물류 자동화 설비사"
+    ],
+    "global": [
+     "Amazon Robotics",
+     "Ocado",
+     "Symbotic",
+     "Dematic"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "물류 예외 처리 설계자",
+     "w": "파손·반품·돌발 주문만 따로 처리하는 동선 설계"
+    }
+   ]
+  },
+  {
+   "id": "j-mrv",
+   "name": "탄소 MRV·배출량 검증 전문가",
+   "en": "Carbon MRV Specialist",
+   "sector": "s4",
+   "role": "기업·사업장의 온실가스 배출량을 측정·보고·검증(MRV)한다. 활동자료와 배출계수를 맞대어 오류를 잡고, 감축 실적이 국제 기준에 맞는지 근거를 남긴다.",
+   "ksa": {
+    "k": [
+     "온실가스 배출계수·산정 방법론",
+     "국제 기준(ISO 14064, GHG Protocol)",
+     "감축사업 방법론"
+    ],
+    "s": [
+     "데이터 감사·표본 검사",
+     "보고서·검증 의견서 작성",
+     "이해관계자 인터뷰"
+    ],
+    "a": [
+     "숫자 뒤의 증빙을 요구하는 태도",
+     "이해 충돌 상황에서 기준을 지키는 용기"
+    ]
+   },
+   "study": [
+    "환경공학",
+    "기후에너지학",
+    "산업공학",
+    "회계·경영"
+   ],
+   "certs": [
+    "온실가스관리기사",
+    "환경영향평가사",
+    "에너지관리기사"
+   ],
+   "insight": "탄소시장의 병목은 기술이 아니라 ‘믿을 수 있는 숫자’다. 검증하는 사람의 서명이 곧 시장의 신뢰가 된다.",
+   "companies": {
+    "domestic": [
+     "한국환경공단(배출량 검증)",
+     "한국품질재단",
+     "Bureau Veritas Korea",
+     "SGS Korea",
+     "탄소감축 스타트업"
+    ],
+    "global": [
+     "Verra",
+     "Gold Standard",
+     "SGS",
+     "Bureau Veritas",
+     "DNV"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "탄소 데이터 감사 보조",
+     "w": "중소기업 배출량 장부를 점검하는 실무 인력"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_iea_batteries2024",
+   "name": "국제에너지기구(IEA)",
+   "title": "Batteries and Secure Energy Transitions",
+   "url": "https://www.iea.org/reports/batteries-and-secure-energy-transitions",
+   "license": {
+    "type": "CC-BY-4.0",
+    "name": "CC BY 4.0",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2024-04-25",
+   "track": "A",
+   "usage": "2030년 에너지저장 1,500GW(6배)·배터리 1,200GW(14배), 배터리 투자 8,000억 달러"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}

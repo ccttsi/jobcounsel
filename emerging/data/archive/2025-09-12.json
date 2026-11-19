@@ -1,0 +1,762 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-19T11:30:00+09:00",
+ "edition": {
+  "no": 7,
+  "date": "2025-09-12",
+  "weekday": "금",
+  "title": "수소 파이프라인이 처음 줄었다",
+  "reading_minutes": 5,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20250912-1",
+   "date": "2025-09-12",
+   "order": 1,
+   "sector": "s4",
+   "cat": "climate",
+   "lead": true,
+   "title": "수소 프로젝트 파이프라인이 처음 줄었다",
+   "kicker": "IEA Global Hydrogen Review 2025",
+   "summary": "2030년까지 나올 수 있는 저탄소 수소 생산량 전망은 4,900만 톤에서 3,700만 톤으로 1년 만에 줄었다. 취소·지연의 80% 이상이 전기분해(전해조) 사업이다.",
+   "key_numbers": [
+    {
+     "label": "2030년 파이프라인",
+     "value": "4,900 → 3,700만 톤",
+     "note": "2024 → 2025 전망"
+    },
+    {
+     "label": "감소분 중 전해조",
+     "value": "80% 이상",
+     "note": "IEA"
+    },
+    {
+     "label": "FID 도달 비율",
+     "value": "9%",
+     "note": "전체 파이프라인 중"
+    }
+   ],
+   "market": {
+    "label": "2030년 저탄소 수소 생산 전망",
+    "unit": "백만 톤",
+    "basis": "발표 사업 기준",
+    "chart": "bar",
+    "labels": [
+     "2024년 전망",
+     "2025년 전망"
+    ],
+    "series": [
+     {
+      "name": "파이프라인",
+      "values": [
+       49,
+       37
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": -24.5,
+    "note": "1년 사이 24.5% 줄었다. 전망치 자체가 줄어드는 것은 이 산업에서 처음이다.",
+    "source_id": "src_iea_h2_2025"
+   },
+   "players": {
+    "domestic": [
+     "SK E&S",
+     "한국석유공사",
+     "GS칼텍스"
+    ],
+    "glob": [
+     "Nel",
+     "ITM Power",
+     "Plug Power",
+     "ThyssenKrupp Nucera"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc"
+    ],
+    "new": [
+     "j-h2-safety",
+     "j-ccus-ops"
+    ]
+   },
+   "source_id": "src_iea_h2_2025",
+   "question": "전망치가 줄어드는 산업에서도 일자리는 생긴다. 다만 ‘건설’이 아니라 ‘운영·유지·안전’ 쪽으로 먼저 생긴다.",
+   "subtitle": "4,900만→3,700만 톤, 취소·지연의 80%가 전해조 사업에서 나왔다"
+  },
+  {
+   "id": "ei-20250912-2",
+   "date": "2025-09-12",
+   "order": 2,
+   "sector": "s4",
+   "cat": "climate",
+   "lead": false,
+   "title": "수소 1억 톤, 그중 저탄소는 1%",
+   "kicker": "IEA Global Hydrogen Review 2025",
+   "summary": "2024년 세계 수소 수요는 약 1억 톤으로 2% 늘었지만, 저탄소 수소는 100만 톤 안팎으로 전체의 1%에 못 미친다. 수요의 대부분은 여전히 정유·산업 공정이다.",
+   "key_numbers": [
+    {
+     "label": "2024년 수소 수요",
+     "value": "약 1억 톤",
+     "note": "+2%"
+    },
+    {
+     "label": "저탄소 수소",
+     "value": "약 100만 톤",
+     "note": "2025년, 전체의 1% 미만"
+    },
+    {
+     "label": "2030년 확정 생산",
+     "value": "420만 톤",
+     "note": "가동·건설·FID 기준"
+    }
+   ],
+   "market": {
+    "label": "저탄소 수소 생산",
+    "unit": "백만 톤",
+    "basis": "연도별 실적·전망",
+    "chart": "line",
+    "labels": [
+     "2020",
+     "2024",
+     "2025",
+     "2030"
+    ],
+    "series": [
+     {
+      "name": "저탄소 수소",
+      "values": [
+       0.5,
+       0.8,
+       1.0,
+       4.2
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": 31.8,
+    "note": "2030년은 확정 사업 기준. 2024→2030 연평균 31.8%.",
+    "source_id": "src_iea_h2_2025"
+   },
+   "players": {
+    "domestic": [
+     "SK E&S",
+     "효성중공업",
+     "GS칼텍스",
+     "한국가스공사"
+    ],
+    "glob": [
+     "Air Liquide",
+     "Linde",
+     "Nel",
+     "Plug Power",
+     "Equinor"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc",
+     "j-plant"
+    ],
+    "new": [
+     "j-h2-safety"
+    ]
+   },
+   "source_id": "src_iea_h2_2025",
+   "question": "수소는 ‘생산’보다 ‘수요 확보’가 어렵다. 그래서 이 산업의 직무는 화학공정과 계약·인증 양쪽을 봐야 한다.",
+   "subtitle": "1억 톤 수요 중 저탄소는 100만 톤, 2030년 확정 생산은 420만 톤"
+  },
+  {
+   "id": "ei-20250912-3",
+   "date": "2025-09-12",
+   "order": 3,
+   "sector": "s4",
+   "cat": "climate",
+   "lead": false,
+   "title": "전해조 2GW, 그중 중국이 65%",
+   "kicker": "IEA Global Hydrogen Review 2025",
+   "summary": "2024년 세계 수전해 설비는 2GW를 넘었고, 2025년 7월까지 1GW가 더 들어왔다. 설치 용량의 65%, 제조 능력의 약 60%를 중국이 차지한다.",
+   "key_numbers": [
+    {
+     "label": "설치 용량",
+     "value": "2GW + 1GW",
+     "note": "2024년 말 + 2025년 7월까지"
+    },
+    {
+     "label": "중국 비중",
+     "value": "65%",
+     "note": "설치·FID 기준"
+    },
+    {
+     "label": "제조 능력",
+     "value": "약 60%",
+     "note": "중국"
+    }
+   ],
+   "market": {
+    "label": "수전해 설비의 중국 비중",
+    "unit": "%",
+    "basis": "2025년",
+    "chart": "bar",
+    "labels": [
+     "중국",
+     "그 밖"
+    ],
+    "series": [
+     {
+      "name": "비중",
+      "values": [
+       65,
+       35
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "IEA는 중국 밖 전해조 판매가 인증·가격 장벽에 부딪힌다고 봤다.",
+    "source_id": "src_iea_h2_2025"
+   },
+   "players": {
+    "domestic": [
+     "SK E&S",
+     "효성중공업",
+     "한국가스공사"
+    ],
+    "glob": [
+     "Nel",
+     "ITM Power",
+     "ThyssenKrupp Nucera",
+     "Longi Hydrogen"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc"
+    ],
+    "new": [
+     "j-h2-safety"
+    ]
+   },
+   "source_id": "src_iea_h2_2025",
+   "question": "설비를 만드는 나라와 쓰는 나라가 다르면 공급망이 곧 정책이 된다. 수소의 다음 쟁점은 가격이 아니라 설비 주권이다.",
+   "subtitle": "2GW에 1GW가 더 들어왔고, 설치 65%·제조 60%를 중국이 맡는다"
+  },
+  {
+   "id": "ei-20250912-4",
+   "date": "2025-09-12",
+   "order": 4,
+   "sector": "s4",
+   "cat": "climate",
+   "lead": false,
+   "title": "수소 오프테이크 200만 톤, 생산 계획의 5분의 1",
+   "kicker": "IEA Global Hydrogen Review 2025",
+   "summary": "구속력 있는 장기 구매계약이 붙은 저탄소 수소는 연 200만 톤 수준이다. 확정 사업의 생산 능력 420만 톤의 절반에도 못 미친다.",
+   "key_numbers": [
+    {
+     "label": "구속력 있는 오프테이크",
+     "value": "약 200만 톤",
+     "note": "연간"
+    },
+    {
+     "label": "확정 사업 생산",
+     "value": "420만 톤",
+     "note": "2030년"
+    },
+    {
+     "label": "비율",
+     "value": "약 5분의 1",
+     "note": "생산 대비"
+    }
+   ],
+   "market": {
+    "label": "수소 생산과 구매계약",
+    "unit": "백만 톤",
+    "basis": "2030년",
+    "chart": "bar",
+    "labels": [
+     "확정 생산",
+     "구속 구매계약"
+    ],
+    "series": [
+     {
+      "name": "물량",
+      "values": [
+       4.2,
+       2.0
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "IEA는 수요 불확실성을 수소 산업의 최대 장벽으로 꼽았다.",
+    "source_id": "src_iea_h2_2025"
+   },
+   "players": {
+    "domestic": [
+     "SK E&S",
+     "GS칼텍스",
+     "포스코"
+    ],
+    "glob": [
+     "Air Liquide",
+     "Linde",
+     "Nel",
+     "Plug Power"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-proc"
+    ],
+    "new": [
+     "j-h2-safety",
+     "j-mrv"
+    ]
+   },
+   "source_id": "src_iea_h2_2025",
+   "question": "생산 계획은 넘치는데 사는 사람이 없다. 이 산업의 다음 단계는 기술이 아니라 계약이다.",
+   "subtitle": "구속력 있는 구매계약 200만 톤, 확정 생산 420만 톤의 절반에도 못 미친다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-proc",
+   "name": "화학·공정 엔지니어",
+   "en": "Chemical / Process Engineer",
+   "sector": "s2",
+   "role": "원료가 제품이 되는 공정의 흐름·온도·압력·촉매를 설계하고 운전 조건을 최적화한다. 수율과 에너지 사용량, 안전을 동시에 맞춘다.",
+   "ksa": {
+    "k": [
+     "반응공학·열역학",
+     "단위조작",
+     "공정 안전"
+    ],
+    "s": [
+     "공정 시뮬레이션",
+     "시운전·트러블슈팅",
+     "환경·안전 규제 대응"
+    ],
+    "a": [
+     "위험을 최악 기준으로 보는 태도",
+     "현장 데이터를 신뢰하는 실증 정신"
+    ]
+   },
+   "study": [
+    "화학공학",
+    "환경공학",
+    "에너지공학"
+   ],
+   "certs": [
+    "화공기사",
+    "가스기사",
+    "산업안전기사"
+   ],
+   "insight": "수소·CCUS·배터리 재활용은 모두 화학공정 위에 세워진 신산업이다. 공정 엔지니어에게 새로운 산업은 새로운 반응과 새로운 규제의 조합이다.",
+   "companies": {
+    "domestic": [
+     "SK이노베이션",
+     "GS칼텍스",
+     "롯데케미칼",
+     "한화솔루션",
+     "포스코"
+    ],
+    "global": [
+     "BASF",
+     "Dow",
+     "ExxonMobil",
+     "Air Liquide"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
+  },
+  {
+   "id": "j-h2-safety",
+   "name": "수소 안전·인증 전문가",
+   "en": "Hydrogen Safety & Certification Specialist",
+   "sector": "s4",
+   "role": "수소 충전소·저장탱크·배관의 위험성을 평가하고 인증 기준에 맞는 설계를 검토한다. 누출 시나리오를 시뮬레이션하고 비상 대응 절차를 만든다.",
+   "ksa": {
+    "k": [
+     "수소 물성·폭발 한계",
+     "고압가스 안전관리 법령",
+     "위험성 평가 기법(HAZOP)"
+    ],
+    "s": [
+     "위험성 평가 진행",
+     "인증 서류 작성",
+     "소방·지자체 협의"
+    ],
+    "a": [
+     "가능한 최악을 먼저 상정하는 태도",
+     "현장과 규정 사이를 설명하는 설득력"
+    ]
+   },
+   "study": [
+    "화학공학",
+    "안전공학",
+    "기계공학",
+    "에너지공학"
+   ],
+   "certs": [
+    "가스기사",
+    "산업안전기사",
+    "위험물산업기사"
+   ],
+   "insight": "수소경제의 속도는 생산량이 아니라 ‘허가가 나는 속도’로 정해진다. 안전을 아는 사람이 사업의 일정을 쥔다.",
+   "companies": {
+    "domestic": [
+     "한국가스안전공사",
+     "효성중공업",
+     "SK E&S",
+     "GS칼텍스",
+     "수소충전소 운영사"
+    ],
+    "global": [
+     "Linde",
+     "Air Liquide",
+     "Nel",
+     "Plug Power"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "수소 충전소 안전 점검 대행",
+     "w": "지역 충전소의 정기 점검을 맡는 서비스"
+    }
+   ]
+  },
+  {
+   "id": "j-ccus-ops",
+   "name": "CCUS 플랜트 운영 기술자",
+   "en": "CCUS Plant Operations Technician",
+   "sector": "s4",
+   "role": "공장·발전소에서 나온 이산화탄소를 포집·압축·수송하는 설비를 운전한다. 흡수액 재생, 압력·온도 관리, 누출 감시를 하며 저장소 주입량과 모니터링 기록을 남긴다.",
+   "ksa": {
+    "k": [
+     "흡수·분리 공정",
+     "고압 가스 안전",
+     "환경 모니터링 규정"
+    ],
+    "s": [
+     "DCS 운전·비상조치",
+     "설비 정비 계획",
+     "배출·주입 데이터 기록"
+    ],
+    "a": [
+     "경보를 무시하지 않는 습관",
+     "교대 근무에서 인수인계를 정확히 하는 성실성"
+    ]
+   },
+   "study": [
+    "화학공학",
+    "에너지공학",
+    "환경공학",
+    "설비공학"
+   ],
+   "certs": [
+    "화공기사",
+    "가스기사",
+    "산업안전기사"
+   ],
+   "insight": "2030년 세계 포집능력은 지금의 여덟 배 규모로 계획돼 있다. 설비를 실제로 세우고 돌릴 사람이 부족한 것이 이 산업의 첫 번째 병목이다.",
+   "companies": {
+    "domestic": [
+     "한국남부발전",
+     "GS칼텍스",
+     "SK이노베이션",
+     "롯데케미칼",
+     "한국석유공사"
+    ],
+    "global": [
+     "Equinor(Northern Lights)",
+     "Shell",
+     "Climeworks",
+     "Air Liquide"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "포집 설비 원격 감시원",
+     "w": "여러 사업장의 포집 설비를 원격으로 감시"
+    }
+   ]
+  },
+  {
+   "id": "j-plant",
+   "name": "플랜트 운영원",
+   "en": "Plant Operator",
+   "sector": "s4",
+   "role": "발전·화학·수처리 설비를 교대 근무로 운전한다. 계기 값을 읽고 이상을 판단하며, 정지·재가동 절차를 숙지하고 비상 상황에서 먼저 안전 조치를 한다.",
+   "ksa": {
+    "k": [
+     "설비 구성·운전 원리",
+     "안전 작업 허가",
+     "비상 대응 절차"
+    ],
+    "s": [
+     "DCS·현장 조작",
+     "일상 점검·정비 요청",
+     "인수인계 기록"
+    ],
+    "a": [
+     "경보에 민감한 주의력",
+     "교대 근무를 지속하는 체력과 성실성"
+    ]
+   },
+   "study": [
+    "설비공학",
+    "기계공학",
+    "전기공학",
+    "에너지공학"
+   ],
+   "certs": [
+    "산업설비기사",
+    "위험물산업기사",
+    "가스기사"
+   ],
+   "insight": "수소·CCUS·데이터센터 냉각까지, 새 설비는 모두 누군가 밤에 지켜야 돌아간다. 운영 경험은 신산업에서 가장 빨리 몸값이 오르는 자산이다.",
+   "companies": {
+    "domestic": [
+     "한국전력",
+     "한국남부발전",
+     "GS칼텍스",
+     "롯데케미칼",
+     "한국수자원공사"
+    ],
+    "global": [
+     "Equinor",
+     "Shell",
+     "EDF",
+     "Siemens Energy"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "설비 원격 진단 기사",
+     "w": "여러 사업장 설비의 진동·온도를 원격 분석"
+    }
+   ]
+  },
+  {
+   "id": "j-mrv",
+   "name": "탄소 MRV·배출량 검증 전문가",
+   "en": "Carbon MRV Specialist",
+   "sector": "s4",
+   "role": "기업·사업장의 온실가스 배출량을 측정·보고·검증(MRV)한다. 활동자료와 배출계수를 맞대어 오류를 잡고, 감축 실적이 국제 기준에 맞는지 근거를 남긴다.",
+   "ksa": {
+    "k": [
+     "온실가스 배출계수·산정 방법론",
+     "국제 기준(ISO 14064, GHG Protocol)",
+     "감축사업 방법론"
+    ],
+    "s": [
+     "데이터 감사·표본 검사",
+     "보고서·검증 의견서 작성",
+     "이해관계자 인터뷰"
+    ],
+    "a": [
+     "숫자 뒤의 증빙을 요구하는 태도",
+     "이해 충돌 상황에서 기준을 지키는 용기"
+    ]
+   },
+   "study": [
+    "환경공학",
+    "기후에너지학",
+    "산업공학",
+    "회계·경영"
+   ],
+   "certs": [
+    "온실가스관리기사",
+    "환경영향평가사",
+    "에너지관리기사"
+   ],
+   "insight": "탄소시장의 병목은 기술이 아니라 ‘믿을 수 있는 숫자’다. 검증하는 사람의 서명이 곧 시장의 신뢰가 된다.",
+   "companies": {
+    "domestic": [
+     "한국환경공단(배출량 검증)",
+     "한국품질재단",
+     "Bureau Veritas Korea",
+     "SGS Korea",
+     "탄소감축 스타트업"
+    ],
+    "global": [
+     "Verra",
+     "Gold Standard",
+     "SGS",
+     "Bureau Veritas",
+     "DNV"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "탄소 데이터 감사 보조",
+     "w": "중소기업 배출량 장부를 점검하는 실무 인력"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_iea_h2_2025",
+   "name": "국제에너지기구(IEA)",
+   "title": "Global Hydrogen Review 2025",
+   "url": "https://www.iea.org/reports/global-hydrogen-review-2025",
+   "license": {
+    "type": "CC-BY-4.0",
+    "name": "CC BY 4.0",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2025-09-12",
+   "track": "A",
+   "usage": "2024년 수소 수요 약 1억 톤, 저탄소 수소 2030년 420만 톤(확정 사업) 등"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}

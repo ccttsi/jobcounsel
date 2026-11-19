@@ -13,8 +13,9 @@
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   var TRACK = { 'KOGL-1': 'A', 'KOGL-0': 'A', 'PUBLIC-DOMAIN': 'A', 'CC-BY-4.0': 'A', 'OECD': 'A', 'WEF': 'A', 'IAEA': 'A', 'PRESS': 'B' };
 
-  var UI = { date: '', item: 0, sector: 'all', ym: 0, filterSector: 'all', filterCat: 'all', filterPage: 0 };
+  var UI = { date: '', item: 0, sector: 'all', ym: 0, calMode: 'd', calYear: 0, filterSector: 'all', filterCat: 'all', filterPage: 0 };
   var DATA = null, DAY = null, cache = {}, LINKS = {};
+  var BRIEF = null;                       /* 오늘의 브리핑(briefing/data/briefing.json) — 연결 칩에만 쓴다 */
 
   /* ───────── 도표 ───────── */
   var W = 340, H = 152, PL = 42, PR = 12, PT = 14, PB = 24;
@@ -91,10 +92,35 @@
   function ymLabel(ym) { return Math.floor(ym / 12) + '년 ' + (ym % 12 + 1) + '월'; }
   function latestYm() { var d = arr(DATA && DATA.archive_dates); return d.length ? ymOf(d[d.length - 1]) : ymOf('2026-11'); }
   function nowYm() { var t = new Date(); return t.getFullYear() * 12 + t.getMonth(); }
-  function minYm() { return ymOf('2026-11'); }                                  /* 최소 월 고정 */
+  function minYm() {                                                            /* 최소 월 = 보관된 가장 이른 지면의 달 */
+    var d = arr(DATA && DATA.archive_dates);
+    return d.length ? ymOf(d[0]) : nowYm();
+  }
   function maxYm() { return Math.max(nowYm(), latestYm()); }                    /* 현실의 이번 달까지 자동 확장 */
+  function minLabel() { return ymLabel(minYm()); }
 
-  function calendar() {
+  function calendar() { return UI.calMode === 'm' ? monthMatrix() : dayGrid(); }
+
+  /* 1~12월 n×n — 지면이 있는 달만 고를 수 있고, 연도는 ‹ ›로 넘긴다. */
+  function monthMatrix() {
+    var y = UI.calYear, ds = arr(DATA && DATA.archive_dates), cnt = {}, inYear = 0;
+    ds.forEach(function (d) { if (+d.slice(0, 4) === y) { var m = +d.slice(5, 7); cnt[m] = (cnt[m] || 0) + 1; inYear++; } });
+    var minY = Math.floor(minYm() / 12), maxY = Math.floor(maxYm() / 12);
+    var g = '';
+    for (var m = 1; m <= 12; m++) {
+      var n = cnt[m] || 0;
+      g += '<button type="button" class="cal-m' + (n ? ' on' : '') + '" data-mi="' + m + '"' + (n ? '' : ' disabled') +
+        ' aria-label="' + y + '년 ' + m + '월' + (n ? ' · 지면 ' + n + '일' : ' · 지면 없음') + '">' +
+        '<b>' + m + '월</b><span class="num">' + (n ? n + '일' : '–') + '</span></button>';
+    }
+    return '<div class="cal"><div class="cal-h">' +
+      '<button type="button" data-y="-1" aria-label="이전 해"' + (y <= minY ? ' disabled' : '') + '>' + CHEV(-1) + '</button>' +
+      '<button type="button" class="m cal-t" data-mode="d" aria-label="' + y + '년 · 날짜 고르기로 돌아가기">' + y + '년</button>' +
+      '<button type="button" data-y="1" aria-label="다음 해"' + (y >= maxY ? ' disabled' : '') + '>' + CHEV(1) + '</button></div>' +
+      '<div class="cal-mg" role="group" aria-label="월 고르기">' + g + '</div></div>';
+  }
+
+  function dayGrid() {
     var ym = UI.ym, y = Math.floor(ym / 12), mo = ym % 12;
     var start = new Date(y, mo, 1).getDay(), last = new Date(y, mo + 1, 0).getDate();
     var t = new Date(), tKey = t.getFullYear() + '-' + pad(t.getMonth() + 1) + '-' + pad(t.getDate());
@@ -110,7 +136,7 @@
     }
     return '<div class="cal"><div class="cal-h">' +
       '<button type="button" data-ym="-1" aria-label="이전 달"' + (ym <= minYm() ? ' disabled' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
-      '<span class="m num">' + ymLabel(ym) + '</span>' +
+      '<button type="button" class="m cal-t num" data-mode="m" aria-expanded="' + (UI.calMode === 'm') + '" aria-label="' + ymLabel(ym) + ' · 연도와 월 고르기">' + ymLabel(ym) + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' +
       '<button type="button" data-ym="1" aria-label="다음 달"' + (ym >= maxYm() ? ' disabled' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>' +
       '<div class="cal-w" aria-hidden="true"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>' +
       '<div class="cal-g" role="group" aria-label="' + ymLabel(ym) + ' 지면 달력">' + g + '</div>' +
@@ -122,7 +148,7 @@
     var ym = UI.ym;
     return '<div class="cal-h">' +
       '<button type="button" data-ym="-1" aria-label="이전 달"' + (ym <= minYm() ? ' disabled' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
-      '<span class="m num">' + ymLabel(ym) + '</span>' +
+      '<button type="button" class="m num" data-cal aria-label="' + ymLabel(ym) + ' · 달력에서 날짜 고르기">' + ymLabel(ym) + '</button>' +
       '<button type="button" data-ym="1" aria-label="다음 달"' + (ym >= maxYm() ? ' disabled' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>' +
       '<button type="button" class="cm-go" data-cal>달력에서 날짜 고르기</button>';
   }
@@ -234,6 +260,40 @@
       (url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener">원문</a>' : '') + '</div>';
   }
 
+  /* ── 오늘의 데일리 브리핑 연결 ── 기사 주제와 같은 분야를 다룬 브리핑 카드가 있을 때만 칩을 붙인다. */
+  var BKEYS = {
+    ai: ['AI', '인공지능'], semicon: ['반도체'], battery: ['배터리', '이차전지'],
+    energy: ['에너지', '전력', '원전'], climate: ['기후', '탄소', '재생에너지'], robotics: ['로봇'],
+    content: ['콘텐츠', '게임', '미디어'], health: ['의료', '보건', '돌봄', '간호', '건강'],
+    smartfarm: ['농업', '스마트팜'], 'agri-robot': ['농업', '농기계'], space: ['우주', '위성'],
+    quantum: ['양자'], fintech: ['핀테크', '금융'], edu: ['직업훈련', '재교육', '교육'],
+    material: ['소재'], 'bio-mfg': ['바이오'], security: ['보안'],
+    logistics: ['물류', '운송', '모빌리티'], resource: ['식량', '자원']
+  };
+  function loadBrief() {
+    get('../briefing/data/briefing.json').then(function (b) {
+      BRIEF = { date: String((b.edition || {}).date || ''), cards: arr(b.cards) };
+      if (DAY) renderArticle();          /* 브리핑이 늦게 도착해도 지금 기사에 칩만 더한다 */
+    }).catch(function () { BRIEF = null; });
+  }
+  function briefFor(it) {
+    if (!BRIEF) return null;
+    var keys = BKEYS[it.cat] || [];
+    if (!keys.length) return null;
+    for (var i = 0; i < BRIEF.cards.length; i++) {
+      var c = BRIEF.cards[i];
+      var text = [c.category, c.theme_label, c.title].concat(arr(c.tags)).join(' ');
+      for (var k = 0; k < keys.length; k++) if (text.indexOf(keys[k]) >= 0) return c;
+    }
+    return null;
+  }
+  function briefChip(it) {
+    var c = briefFor(it);
+    if (!c) return '';
+    return '<a class="bl" href="../briefing/' + (BRIEF.date ? '?date=' + esc(BRIEF.date) : '') + '">' +
+      '<span>오늘의 브리핑</span><b>' + esc(c.theme_label || c.category || '') + '</b><i aria-hidden="true">↗</i></a>';
+  }
+
   function renderArticle() {
     var items = arr(DAY && DAY.items).slice().sort(function (a, b) { return a.order - b.order; });
     if (!items.length) { $('art').innerHTML = '<p class="empty">이 날의 지면이 없습니다.</p>'; return; }
@@ -258,6 +318,7 @@
       }).join('') + '</ul>' : '') +
       playersBlock(it) +
       jobsBlock(it) +
+      briefChip(it) +
       '<div class="art-f">' + sourceLine(it) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 기사"' + (UI.item ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 기사"' + (UI.item < items.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div>';
   }
 
@@ -312,10 +373,11 @@
     var box = $('art') && $('art').querySelector('.pgs');
     if (!box) return;
     var cur = box.querySelector('[aria-current="true"]');
-    if (!cur || box.scrollWidth <= box.clientWidth + 1) return;
+    if (!cur) return;
+    if (box.scrollWidth <= box.clientWidth + 1) return;
+    box.classList.add('can');          /* 넘치는 것이 있으면 양 끝을 흐리게 — 잘린 번호가 거슬리지 않게 */
     requestAnimationFrame(function () {
       box.scrollLeft = Math.max(0, cur.offsetLeft - (box.clientWidth - cur.offsetWidth) / 2);
-      box.classList.add('can');
     });
   }
 
@@ -473,12 +535,28 @@
     }
     draw();
   }
+  function focusCal(sel) {
+    var s = $('sheet'), el = s && s.querySelector(sel);
+    if (el) requestAnimationFrame(function () { el.focus({ preventScroll: true }); });
+  }
   function openCalendar() {
+    UI.calMode = 'd';
+    UI.calYear = Math.floor(UI.ym / 12);
     function draw() {
-      openSheet('<p class="note">지면은 <b>2026년 11월</b>부터 볼 수 있습니다.</p><div class="calwrap">' + calendar() + '</div>', '지면 달력',
+      openSheet('<p class="note">지면은 <b>' + esc(minLabel()) + '</b>부터 볼 수 있습니다.</p><div class="calwrap">' + calendar() + '</div>', '지면 달력',
         function (e) {
-          var b = e.target.closest('[data-ym]');
-          if (b) { UI.ym += +b.getAttribute('data-ym'); draw(); }
+          var b, m;
+          if ((b = e.target.closest('[data-ym]'))) { UI.ym += +b.getAttribute('data-ym'); draw(); focusCal('[data-mode]'); return; }
+          if ((b = e.target.closest('[data-y]'))) { UI.calYear += +b.getAttribute('data-y'); draw(); focusCal('.cal-m:not([disabled])'); return; }
+          if ((b = e.target.closest('[data-mode]'))) {
+            if (UI.calMode === 'm') UI.calMode = 'd';
+            else { UI.calMode = 'm'; UI.calYear = Math.floor(UI.ym / 12); }
+            draw(); focusCal(UI.calMode === 'm' ? '.cal-m:not([disabled])' : '[data-mode]'); return;
+          }
+          if ((m = e.target.closest('[data-mi]'))) {
+            UI.ym = UI.calYear * 12 + (+m.getAttribute('data-mi') - 1); UI.calMode = 'd';
+            draw(); focusCal('[data-mode]'); return;
+          }
         });
     }
     draw();
@@ -611,6 +689,16 @@
     var nq = nq0(q);
     var hit = arr(DATA.jobs).filter(function (j) { var n = nq0(j.name); return n === nq || n.indexOf(nq) >= 0 || (nq.length > 2 && nq.indexOf(n) === 0); })[0];
     if (hit) { openJob(hit.id, hit.kind); return; }
+    /* 세부분류·대분류 이름이면 그 기사 모음을 바로 연다(예: ?q=반도체·?q=4차) */
+    var cat = arr(DATA.categories).filter(function (c) {
+      var n = nq0(c.name); return n === nq || (nq.length > 1 && n.indexOf(nq) === 0) || (nq.length > 1 && nq.indexOf(n) === 0);
+    })[0];
+    if (cat) { UI.sector = cat.sector; UI.filterSector = cat.sector; UI.filterCat = cat.id; renderFilters(); openFilter(); return; }
+    var sec = arr(DATA.sectors).filter(function (s) {
+      var n = nq0(s.name), sn = nq0(s.sub);
+      return n === nq || n.replace('산업', '') === nq || (nq.length > 1 && sn.indexOf(nq) >= 0);
+    })[0];
+    if (sec) { UI.sector = sec.id; UI.filterSector = sec.id; UI.filterCat = 'all'; renderFilters(); openFilter(); return; }
     var res = [];
     arr(DATA.archive_index).forEach(function (d) {
       arr(d.items).forEach(function (it) { if (nq0(it.title).indexOf(nq) >= 0) res.push({ date: d.date, it: it }); });
@@ -625,6 +713,7 @@
   Promise.all([get(BASE + 'emerging.json'), get(BASE + 'links.json').catch(function () { return null; })]).then(function (a) {
     LINKS = a[1] || {};
     boot(a[0]);
+    loadBrief();
   }).catch(function () {
     main.innerHTML = '<p class="empty" style="padding:16px">지면을 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.</p>';
   });

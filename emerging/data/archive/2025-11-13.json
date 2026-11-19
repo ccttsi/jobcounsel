@@ -1,0 +1,547 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-19T11:30:00+09:00",
+ "edition": {
+  "no": 10,
+  "date": "2025-11-13",
+  "weekday": "목",
+  "title": "원격진료가 전체 진료의 13%",
+  "reading_minutes": 3,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20251113-1",
+   "date": "2025-11-13",
+   "order": 1,
+   "sector": "s3",
+   "cat": "health",
+   "lead": true,
+   "title": "원격진료가 전체 진료의 13%",
+   "kicker": "OECD Health at a Glance 2025",
+   "summary": "2023년 OECD 국가에서 원격진료는 전체 의사 진료의 13%를 차지했다. 1인당 원격진료는 2019년 0.5회에서 2023년 1.0회로 두 배가 됐다.",
+   "key_numbers": [
+    {
+     "label": "원격진료 비중",
+     "value": "13%",
+     "note": "2023년 진료 건수 기준"
+    },
+    {
+     "label": "1인당 원격진료",
+     "value": "0.5 → 1.3 → 1.0회",
+     "note": "2019 → 2021 → 2023"
+    },
+    {
+     "label": "온라인 건강서비스",
+     "value": "82%",
+     "note": "2024년 OECD 평균 제공률"
+    }
+   ],
+   "market": {
+    "label": "1인당 원격진료",
+    "unit": "회/년",
+    "basis": "OECD 평균",
+    "chart": "line",
+    "labels": [
+     "2019",
+     "2021",
+     "2023"
+    ],
+    "series": [
+     {
+      "name": "원격진료",
+      "values": [
+       0.5,
+       1.3,
+       1.0
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "팬데믹 뒤 줄었지만 2019년보다는 높은 수준에서 안정됐다.",
+    "source_id": "src_oecd_health2025"
+   },
+   "players": {
+    "domestic": [
+     "카카오헬스케어",
+     "뷰노",
+     "서울아산병원",
+     "분당서울대병원"
+    ],
+    "glob": [
+     "Teladoc Health",
+     "Epic Systems",
+     "Omada Health",
+     "Withings"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-nurse"
+    ],
+    "new": [
+     "j-dh-coord"
+    ]
+   },
+   "source_id": "src_oecd_health2025",
+   "question": "원격진료는 의사를 대체하지 않았다. 대신 ‘환자가 기기를 계속 쓰게 만드는 사람’이라는 새 자리를 만들었다.",
+   "subtitle": "전체 진료의 13%, 1인당 원격진료는 2019년 0.5회에서 1.0회로"
+  },
+  {
+   "id": "ei-20251113-2",
+   "date": "2025-11-13",
+   "order": 2,
+   "sector": "s3",
+   "cat": "health",
+   "lead": false,
+   "title": "온라인 건강서비스, OECD 82%가 제공",
+   "kicker": "OECD Health at a Glance 2025",
+   "summary": "2024년 OECD 국가 평균 82%가 온라인으로 건강 기록을 확인하거나 건강 데이터를 내려받는 서비스를 제공했다. 서비스가 갖춰져도 실제 사용은 13% 수준이다.",
+   "key_numbers": [
+    {
+     "label": "온라인 서비스 제공",
+     "value": "82%",
+     "note": "2024년 OECD 평균"
+    },
+    {
+     "label": "실제 원격진료 비중",
+     "value": "13%",
+     "note": "2023년"
+    },
+    {
+     "label": "격차",
+     "value": "69%p",
+     "note": "제공과 사용의 차이"
+    }
+   ],
+   "market": {
+    "label": "디지털 건강서비스",
+    "unit": "%",
+    "basis": "2024년 OECD 평균",
+    "chart": "bar",
+    "labels": [
+     "서비스 제공",
+     "원격진료 이용"
+    ],
+    "series": [
+     {
+      "name": "비율",
+      "values": [
+       82,
+       13
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "제공률과 이용률의 기준 연도가 다르다(2024·2023).",
+    "source_id": "src_oecd_health2025"
+   },
+   "players": {
+    "domestic": [
+     "카카오헬스케어",
+     "뉴노멀",
+     "서울대병원",
+     "보건복지부"
+    ],
+    "glob": [
+     "Epic Systems",
+     "Teladoc",
+     "Cerner",
+     "Apple Health"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-nurse",
+     "j-data"
+    ],
+    "new": [
+     "j-dh-coord",
+     "j-cdm"
+    ]
+   },
+   "source_id": "src_oecd_health2025",
+   "question": "시스템은 이미 깔렸는데 사람이 안 쓴다. 이 69%p의 격차가 디지털 헬스 일자리의 실제 수요다.",
+   "subtitle": "서비스는 82%, 실제 진료는 13% — 69%p가 남은 격차"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-nurse",
+   "name": "간호사",
+   "en": "Registered Nurse",
+   "sector": "s3",
+   "role": "환자의 상태를 관찰하고 치료·투약·교육을 수행한다. 디지털 헬스 시대에는 측정기 데이터와 원격 모니터링을 해석하는 일이 더해졌다.",
+   "ksa": {
+    "k": [
+     "해부·생리·약리",
+     "간호 과정",
+     "의료 정보 보호"
+    ],
+    "s": [
+     "환자 평가·기록",
+     "기기·모니터 운용",
+     "보호자·의료진 소통"
+    ],
+    "a": [
+     "환자 변화를 먼저 알아차리는 관찰력",
+     "감정 노동을 견디는 회복력"
+    ]
+   },
+   "study": [
+    "간호학"
+   ],
+   "certs": [
+    "간호사 면허",
+    "전문간호사",
+    "보건교육사"
+   ],
+   "insight": "BLS는 2024~34년 간호사(전문간호사) 증가율을 40.1%로 본다. 원격 모니터링이 늘면서 병동 밖에서도 간호 판단이 필요해졌다.",
+   "companies": {
+    "domestic": [
+     "상급종합병원",
+     "요양·재택의료기관",
+     "카카오헬스케어",
+     "방문간호 사업자"
+    ],
+    "global": [
+     "Mayo Clinic",
+     "Cleveland Clinic",
+     "NHS",
+     "Teladoc"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "재택 모니터링 간호사",
+     "w": "원격 측정값을 보고 방문 시점을 정하는 역할"
+    }
+   ]
+  },
+  {
+   "id": "j-dh-coord",
+   "name": "디지털 헬스 케어 코디네이터",
+   "en": "Digital Health Care Coordinator",
+   "sector": "s3",
+   "role": "원격진료·웨어러블 측정값·복약 알림을 환자 생활에 맞춰 연결한다. 이상 수치가 잡히면 의료진에게 넘기고, 환자가 기기를 포기하지 않도록 사용법과 목표를 조정한다.",
+   "ksa": {
+    "k": [
+     "만성질환 관리 기초",
+     "의료정보 보호 규정",
+     "디지털 기기 활용"
+    ],
+    "s": [
+     "환자 상담·교육",
+     "측정값 확인과 에스컬레이션",
+     "기록·보고"
+    ],
+    "a": [
+     "환자의 생활을 판단하지 않고 듣는 태도",
+     "위험 신호를 놓치지 않는 세심함"
+    ]
+   },
+   "study": [
+    "간호학",
+    "보건학",
+    "의료정보학",
+    "사회복지학"
+   ],
+   "certs": [
+    "간호사·보건교육사",
+    "의료정보관리사",
+    "국가자격 없음(기관 교육)"
+   ],
+   "insight": "원격진료가 전체 진료의 13%까지 올라온 뒤 생긴 ‘사이의 직무’다. 의사도 아니고 상담사도 아닌 자리가 환자 유지율을 결정한다.",
+   "companies": {
+    "domestic": [
+     "서울아산병원(디지털헬스)",
+     "분당서울대병원",
+     "카카오헬스케어",
+     "뷰노",
+     "SK텔레콤(NUGU)"
+    ],
+    "global": [
+     "Teladoc Health",
+     "Omada Health",
+     "Epic Systems",
+     "Withings"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "웨어러블 온보딩 코치",
+     "w": "고령 환자가 측정기를 포기하지 않게 돕는 방문 코치"
+    }
+   ]
+  },
+  {
+   "id": "j-data",
+   "name": "데이터 분석가",
+   "en": "Data Analyst",
+   "sector": "s4",
+   "role": "업무 데이터를 정리해 의사결정에 필요한 지표와 해석을 만든다. 질문을 정하는 단계부터 관여해야 분석이 실제로 쓰인다.",
+   "ksa": {
+    "k": [
+     "통계·지표 설계",
+     "도메인 이해",
+     "데이터 거버넌스"
+    ],
+    "s": [
+     "SQL·파이썬",
+     "시각화·대시보드",
+     "실험 설계"
+    ],
+    "a": [
+     "숫자로 말하되 과장하지 않는 태도",
+     "질문을 다시 정의하는 호기심"
+    ]
+   },
+   "study": [
+    "통계학",
+    "산업공학",
+    "컴퓨터공학",
+    "경제학"
+   ],
+   "certs": [
+    "ADsP·SQLD",
+    "정보처리기사",
+    "빅데이터분석기사"
+   ],
+   "insight": "BLS는 데이터 과학자 증가율을 33.5%로 본다. 신산업 브리핑을 읽는 사람에게 분석가는 ‘산업을 숫자로 확인하는 습관’을 주는 직무다.",
+   "companies": {
+    "domestic": [
+     "네이버",
+     "카카오",
+     "쿠팡",
+     "토스",
+     "공공데이터 기관"
+    ],
+    "global": [
+     "Google",
+     "Meta",
+     "Amazon",
+     "Microsoft"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터 제품 기획자",
+     "w": "분석 결과를 반복 판매 가능한 제품으로 만드는 일"
+    }
+   ]
+  },
+  {
+   "id": "j-cdm",
+   "name": "임상데이터 관리자(CDM)",
+   "en": "Clinical Data Manager",
+   "sector": "s3",
+   "role": "임상시험에서 나오는 방대한 환자 데이터의 품질과 규정 준수를 관리한다. 데이터 입력 오류를 찾아내고, 통계 분석이 가능한 형태로 잠그는 역할을 한다.",
+   "ksa": {
+    "k": [
+     "임상시험 규정(ICH-GCP)",
+     "의료 표준용어(CDISC)",
+     "통계 기초"
+    ],
+    "s": [
+     "데이터 검증 규칙 작성",
+     "쿼리 관리·추적",
+     "시험 문서화"
+    ],
+    "a": [
+     "작은 불일치를 넘기지 않는 꼼꼼함",
+     "마감 일정을 지키는 책임감"
+    ]
+   },
+   "study": [
+    "보건통계학",
+    "의료정보학",
+    "약학",
+    "통계학"
+   ],
+   "certs": [
+    "의료정보관리사",
+    "국제 임상데이터 관리 민간 자격(CCDM)",
+    "GCP 교육"
+   ],
+   "insight": "신약의 성패는 과학만큼 ‘데이터가 깨끗한가’에 달려 있다. 눈에 띄지 않는 이 직무가 임상 지연 비용을 가장 크게 줄인다.",
+   "companies": {
+    "domestic": [
+     "한국임상시험산업본부(KoNECT)",
+     "국가임상시험지원재단",
+     "CRO 기업(아이큐비아·한국파스퇴르 등)",
+     "제약사 임상팀"
+    ],
+    "global": [
+     "IQVIA",
+     "ICON",
+     "Parexel",
+     "Medidata"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "임상 데이터 품질 감사역",
+     "w": "여러 병원의 임상 기록을 대조·점검"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_oecd_health2025",
+   "name": "OECD",
+   "title": "Health at a Glance 2025",
+   "url": "https://doi.org/10.1787/8f9e3f98-en",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2025-11-13",
+   "track": "B",
+   "usage": "2023년 원격진료가 전체 진료의 13%, 2024년 온라인 디지털 건강서비스 제공 82%"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}

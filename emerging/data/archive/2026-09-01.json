@@ -1,0 +1,391 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-19T11:30:00+09:00",
+ "edition": {
+  "no": 18,
+  "date": "2026-09-01",
+  "weekday": "화",
+  "title": "UAM 안전운용 실증에 848억 원",
+  "reading_minutes": 3,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20260901-1",
+   "date": "2026-09-01",
+   "order": 1,
+   "sector": "s3",
+   "cat": "logistics",
+   "lead": true,
+   "title": "UAM 안전운용 실증에 848억 원",
+   "kicker": "국토교통부 K-UAM 안전운용기술 실증(2026-09-01)",
+   "summary": "정부는 2027~2029년 UAM 안전운용기술 실증에 848억 원을 투입하고, 2032년 도심 진입을 위한 기반을 마련한다는 계획이다.",
+   "key_numbers": [
+    {
+     "label": "실증 예산",
+     "value": "848억 원",
+     "note": "2027~2029"
+    },
+    {
+     "label": "도심 진입 목표",
+     "value": "2032년",
+     "note": "국토부"
+    },
+    {
+     "label": "실증 단계",
+     "value": "기술 → 지역 상용화",
+     "note": "2026년 개편"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "현대차(슈퍼널)",
+     "KT",
+     "인천공항공사",
+     "한국항공우주연구원"
+    ],
+    "glob": [
+     "Joby Aviation",
+     "Archer Aviation",
+     "Volocopter",
+     "Skyports"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-construct",
+     "j-plant"
+    ],
+    "new": [
+     "j-uam-ops"
+    ]
+   },
+   "source_id": "src_molit_uam848",
+   "question": "UAM의 병목은 기체가 아니라 이착륙장과 운항 관리다. 그래서 이 산업의 첫 일자리는 하늘보다 지상에 생긴다.",
+   "subtitle": "2027~2029년 848억 원, 2032년 도심 진입을 겨눈 실증"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-construct",
+   "name": "건설기술자",
+   "en": "Construction Engineer",
+   "sector": "s1",
+   "role": "구조물의 시공 계획과 품질·안전을 관리한다. 데이터센터·스마트팜·버티포트처럼 새 시설 유형이 늘며 특수 요구를 반영한 시공이 늘고 있다.",
+   "ksa": {
+    "k": [
+     "시공·구조",
+     "건설 안전 규정",
+     "공정·원가 관리"
+    ],
+    "s": [
+     "시공 도면 검토",
+     "안전 점검·감독",
+     "발주처·협력사 조율"
+    ],
+    "a": [
+     "현장의 위험을 먼저 보는 눈",
+     "일정 압박 속에서도 기준을 지키는 태도"
+    ]
+   },
+   "study": [
+    "건축공학",
+    "토목공학",
+    "건설환경공학"
+   ],
+   "certs": [
+    "건축기사",
+    "토목기사",
+    "건설안전기사"
+   ],
+   "insight": "데이터센터와 스마트팜은 건물이 곧 설비다. 전기·냉각·통신 요구를 이해하는 건설기술자의 몸값이 올라가고 있다.",
+   "companies": {
+    "domestic": [
+     "현대건설",
+     "삼성물산",
+     "대우건설",
+     "GS건설",
+     "DL이앤씨"
+    ],
+    "global": [
+     "Bechtel",
+     "Vinci",
+     "Skanska",
+     "Obayashi"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터센터 시공 품질 감리",
+     "w": "전력·냉각·통신 요구를 아는 감리"
+    }
+   ]
+  },
+  {
+   "id": "j-plant",
+   "name": "플랜트 운영원",
+   "en": "Plant Operator",
+   "sector": "s4",
+   "role": "발전·화학·수처리 설비를 교대 근무로 운전한다. 계기 값을 읽고 이상을 판단하며, 정지·재가동 절차를 숙지하고 비상 상황에서 먼저 안전 조치를 한다.",
+   "ksa": {
+    "k": [
+     "설비 구성·운전 원리",
+     "안전 작업 허가",
+     "비상 대응 절차"
+    ],
+    "s": [
+     "DCS·현장 조작",
+     "일상 점검·정비 요청",
+     "인수인계 기록"
+    ],
+    "a": [
+     "경보에 민감한 주의력",
+     "교대 근무를 지속하는 체력과 성실성"
+    ]
+   },
+   "study": [
+    "설비공학",
+    "기계공학",
+    "전기공학",
+    "에너지공학"
+   ],
+   "certs": [
+    "산업설비기사",
+    "위험물산업기사",
+    "가스기사"
+   ],
+   "insight": "수소·CCUS·데이터센터 냉각까지, 새 설비는 모두 누군가 밤에 지켜야 돌아간다. 운영 경험은 신산업에서 가장 빨리 몸값이 오르는 자산이다.",
+   "companies": {
+    "domestic": [
+     "한국전력",
+     "한국남부발전",
+     "GS칼텍스",
+     "롯데케미칼",
+     "한국수자원공사"
+    ],
+    "global": [
+     "Equinor",
+     "Shell",
+     "EDF",
+     "Siemens Energy"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "설비 원격 진단 기사",
+     "w": "여러 사업장 설비의 진동·온도를 원격 분석"
+    }
+   ]
+  },
+  {
+   "id": "j-uam-ops",
+   "name": "UAM 버티포트·운항관리사",
+   "en": "UAM Vertiport & Operations Manager",
+   "sector": "s3",
+   "role": "도심항공교통의 이착륙장 운영과 운항 스케줄을 관리한다. 기상·교통관리 시스템과 실시간으로 정보를 주고받으며 안전 이격과 승객 흐름을 통제한다.",
+   "ksa": {
+    "k": [
+     "항공 안전 규정·운항 절차",
+     "교통관리(UATM) 개념",
+     "공항·터미널 운영"
+    ],
+    "s": [
+     "운항 계획·스케줄 조정",
+     "비상 대응 훈련",
+     "지자체·기업 협의"
+    ],
+    "a": [
+     "이상 징후에 즉시 멈추는 판단",
+     "여러 기관 사이를 조율하는 인내"
+    ]
+   },
+   "study": [
+    "항공운항학",
+    "교통공학",
+    "산업공학"
+   ],
+   "certs": [
+    "국가자격 없음(항공 관련 교육)",
+    "항공안전·보안 교육 이수"
+   ],
+   "insight": "2026년 11월 실증이 ‘기술검증’에서 ‘지역 상용화’로 넘어갔다. 하늘의 교통은 기체보다 지상 운영에서 먼저 막힌다.",
+   "companies": {
+    "domestic": [
+     "국토교통부 K-UAM 실증 컨소시엄",
+     "KT",
+     "현대차(슈퍼널)",
+     "인천공항공사",
+     "지자체 UAM 실증단"
+    ],
+    "global": [
+     "Joby Aviation",
+     "Archer Aviation",
+     "Volocopter",
+     "Skyports"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "버티포트 시설 운영사",
+     "w": "도심 이착륙장의 운영·정비를 맡는 사업"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_molit_uam848",
+   "name": "국토교통부",
+   "title": "K-UAM 안전운용기술, 실제 운용환경에서 실증한다",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776343",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2026-09-01",
+   "track": "A",
+   "usage": "2027~2029년 848억 원 투입, 2032년 도심 진입 기반 마련"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
