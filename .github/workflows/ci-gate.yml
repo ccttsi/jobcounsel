@@ -1,0 +1,98 @@
+# CI 게이트 (1순위·2순위)
+#   PR과 main push에서 저장소 전체를 검사한다. 실패하면 머지하지 않는다.
+#   검사 이름(브랜치 보호에서 켤 것): static-checks · smoke-tests
+name: ci-gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled, edited]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ci-gate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # 1) 데이터·저작권·JS·역할 가드레일 — 빠르고 결정적이다.
+  static-checks:
+    name: static-checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: PR 정보 모으기 (제목·라벨·변경 파일)
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr view "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --json title,labels,files > "$RUNNER_TEMP/pr.json"
+
+      # [data-only] PR이 화면 코드를 건드리면 여기서 멈춘다(역할 분리 가드레일).
+      - name: 정적 검증
+        run: |
+          if [ -f "$RUNNER_TEMP/pr.json" ]; then
+            python3 ops/scripts/validate_repo.py \
+              --only json,license,js,role \
+              --pr-json "$RUNNER_TEMP/pr.json" \
+              --summary-file "$GITHUB_STEP_SUMMARY"
+          else
+            python3 ops/scripts/validate_repo.py \
+              --only json,license,js \
+              --summary-file "$GITHUB_STEP_SUMMARY"
+          fi
+
+  # 2) 실화면 스모크 — 대문·브리핑·신산업을 실제 Chromium으로 열어 잰다.
+  smoke-tests:
+    name: smoke-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # 한글 글꼴이 없으면 글자 폭이 달라져 가로 넘침 측정이 흔들린다.
+      - name: 한글 글꼴 설치
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+
+      - name: Playwright 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: 실화면 스모크
+        run: |
+          python3 ops/scripts/smoke_test.py \
+            --summary-file "$GITHUB_STEP_SUMMARY" \
+            --shot-dir "$RUNNER_TEMP/shots"
+
+      - name: 실패한 화면 남기기
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-failure-shots
+          path: ${{ runner.temp }}/shots
+          if-no-files-found: ignore
+          retention-days: 7
