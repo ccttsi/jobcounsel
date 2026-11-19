@@ -771,7 +771,18 @@
     var q = (st.q || '').trim();
     st.searched = true;
     if (!q) { st.results = []; render(); return; }
-    st.results = window.JCAssistSearch.search(q, { limit: 12 });
+    var list = window.JCAssistSearch.search(q, { limit: 14 });
+    /* 지금 보고 있는 섹터의 «문»은 뒤로 — 이미 그 안에 있으니 누르면 제자리다. */
+    var cur = sectorOfPath();
+    if (cur) {
+      var doors = [], rest = [];
+      list.forEach(function (r) {
+        var isDoor = r.kind === 'doc' && r.sector === cur && new RegExp('^\\.?/?' + cur + '/?$').test(String(r.url || ''));
+        (isDoor ? doors : rest).push(r);
+      });
+      list = rest.concat(doors);
+    }
+    st.results = list.slice(0, 12);
     if (st.lastQ !== q) { st.lastQ = q; savePref(); st.sug = buildSuggestion(); }
     render();
   }
