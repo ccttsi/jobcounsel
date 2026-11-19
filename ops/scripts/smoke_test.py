@@ -207,7 +207,21 @@ UI_JS = r"""
 #    11px 미만의 아주 작은 주석은 4:1까지 허용한다(표·그림 안의 미세 표기).
 CONTRAST_JS = r"""
 () => {
-  const vis = el => { const s = getComputedStyle(el); if (s.display==='none'||s.visibility==='hidden') return false; const r = el.getBoundingClientRect(); return r.width>0 && r.height>0; };
+  /* 눈에 보이지 않는 글자는 재지 않는다.
+     · 화면낭독기 전용(.sr·.sr-only 등)은 1px로 잘라 두므로 대비를 논할 수 없다(색이 배경과 같아 1:1로 잡힌다).
+     · clip·clip-path로 잘라 둔 글자, 1px 이하로 접힌 글자, 화면 밖으로 밀어 둔 글자도 같은 이유로 뺀다. */
+  const srOnly = el => {
+    const cn = typeof el.className === 'string' ? el.className : '';
+    if (/(^|\s)(sr|sr-only|screen-reader|visually-hidden)(\s|$)/.test(cn)) return true;
+    const s = getComputedStyle(el);
+    if ((s.clip || '').replace(/\s/g, '').match(/^rect\(0(px)?,0(px)?,0(px)?,0(px)?\)$/)) return true;
+    if (/inset\(50%/.test(s.clipPath || '')) return true;
+    const r = el.getBoundingClientRect();
+    if (r.width <= 1 || r.height <= 1) return true;
+    if (r.right <= 1 || r.bottom <= 1 || r.left >= innerWidth - 1 || r.top >= innerHeight - 1) return true;
+    return false;
+  };
+  const vis = el => { const s = getComputedStyle(el); if (s.display==='none'||s.visibility==='hidden') return false; if (srOnly(el)) return false; const r = el.getBoundingClientRect(); return r.width>0 && r.height>0; };
   const txt = el => Array.from(el.childNodes).some(n => n.nodeType===3 && n.textContent.trim().length>0);
   /* 계산된 색은 rgb()/rgba() 말고도 color(srgb r g b / a) 꼴로 올 수 있다(color-mix 결과). 둘 다 읽는다. */
   const parse = c => {
