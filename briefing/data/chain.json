@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T07:34:50+09:00",
+ "generated_at": "2026-11-20T07:41:50+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -221,248 +221,36 @@
   "2025-06-18",
   "2025-06-16",
   "2025-06-15",
-  "2025-06-02"
+  "2025-06-02",
+  "2025-05-28",
+  "2025-05-22"
  ],
  "themes": {
-  "th-employment-service": {
-   "label": "고용서비스와 상담",
-   "items": [
-    {
-     "date": "2025-06-02",
-     "card_id": "c01",
-     "title": "직무능력은행에 군경력·기업자격까지 — 직무능력인정서로 증빙",
-     "kicker": "기업자격 연계 · 군경력 · 직무능력인정서",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·한국산업인력공단",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156692011",
-     "published_at": "2025-06-02"
-    },
-    {
-     "date": "2025-08-14",
-     "card_id": "c01",
-     "title": "폐업 소상공인 임금근로자 전환 — 취업교육·수당 확대, 채무부담 완화",
-     "kicker": "제3차 간담회 · 국민취업지원제도 연계 · 재기 지원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "중소벤처기업부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156718441",
-     "published_at": "2025-08-14"
-    },
-    {
-     "date": "2025-08-20",
-     "card_id": "c01",
-     "title": "고용24 개통 1년 — 개인회원 1,170만명, 생애주기별 화면으로 개편",
-     "kicker": "1,170만명 · 105만명 방문 · 생애주기 화면",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·한국고용정보원",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156726525",
-     "published_at": "2025-08-20"
-    },
-    {
-     "date": "2025-09-18",
-     "card_id": "c01",
-     "title": "장년고용강조주간 — 재취업 성공 5명·기업 7곳 사례 공유",
-     "kicker": "제20회 · 개인 5명·기업 7곳 · 내년 인센티브",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·노사발전재단",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156726633",
-     "published_at": "2025-09-18"
-    },
-    {
-     "date": "2025-11-07",
-     "card_id": "c01",
-     "title": "공정채용 우수기업 22곳 — 전형 피드백·자기소개서 폐지",
-     "kicker": "22곳(민간 12·공공 10) · 108곳 참가 · 전형결과 5일 내",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·한국산업인력공단",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156727026",
-     "published_at": "2025-11-07"
-    },
-    {
-     "date": "2025-11-12",
-     "card_id": "c02",
-     "title": "고용센터 집단상담 — 우수사례 15점, AI 활용 직무분석까지",
-     "kicker": "집단상담 15점 시상 · 180명 참여 · 생성형 AI 직무분석",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156727831",
-     "published_at": "2025-11-12"
-    },
-    {
-     "date": "2026-01-02",
-     "card_id": "c01",
-     "title": "정규직 전환 지원 재개 — 30인 미만 기업에 월 최대 60만원",
-     "kicker": "월 60만원 · 1년 · 예산 69억",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156737822",
-     "published_at": "2026-01-01"
-    },
-    {
-     "date": "2026-01-22",
-     "card_id": "c01",
-     "title": "AI 노동법 상담 11.7만건 — 새벽 2시 주휴수당 문의도 3초",
-     "kicker": "11.7만건 · 87.5% 단축 · 야간·주말 37.7%",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156740665",
-     "published_at": "2026-01-21"
-    },
-    {
-     "date": "2026-02-03",
-     "card_id": "c01",
-     "title": "사회적기업 이차보전 첫 도입, 연 250억 금융 지원 효과",
-     "kicker": "2.3 협약 · 7개 금융기관 · 연 250억",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·한국사회적기업진흥원",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156742817",
-     "published_at": "2026-02-03"
-    },
-    {
-     "date": "2026-02-20",
-     "card_id": "c01",
-     "title": "지역·산업 특화 고용센터 7곳 출범, 해양수산업 인력도 키운다",
-     "kicker": "7개 지역 · 지역 직접 설계 · 해수부 MOU",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·해양수산부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156745256",
-     "published_at": "2026-02-20"
-    },
-    {
-     "date": "2026-06-18",
-     "card_id": "c02",
-     "title": "소상공인 노동법 상담, 소상공인24와 연결된다",
-     "kicker": "AI 노동법 상담 11.7만건 · 소상공인24 연계",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766960",
-     "published_at": "2026-06-17"
-    },
-    {
-     "date": "2026-07-08",
-     "card_id": "c01",
-     "title": "정규직 전환 지원금, 상반기에만 1,247명 승인",
-     "kicker": "1,247명 · 740개 사업장 · 1인당 월 최대 60만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770041",
-     "published_at": "2026-07-08"
-    },
-    {
-     "date": "2026-07-25",
-     "card_id": "c01",
-     "title": "흩어진 경력을 한곳에 — 고용24 통합경력증명 7월 29일 개시",
-     "kicker": "7월 29일 개시 · 증명서 1장 · 이력서 자동완성",
-     "category": "채용시장",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772089",
-     "published_at": "2026-07-24"
-    },
-    {
-     "date": "2026-08-21",
-     "card_id": "c01",
-     "title": "고용센터 102곳, 서류를 내려놓고 사람을 만난다",
-     "kicker": "102곳 · 상담 18분→73.8분 · 연 200만명",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775003",
-     "published_at": "2026-08-20"
-    },
-    {
-     "date": "2026-08-27",
-     "card_id": "c02",
-     "title": "전공별 경력가이드 10종, 진출 직업 290개를 담았다",
-     "kicker": "전공 10종 · 직업 290개 · 2023년부터 매해",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "한국고용정보원·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775559",
-     "published_at": "2026-08-26"
-    },
-    {
-     "date": "2026-09-12",
-     "card_id": "c02",
-     "title": "경력 증빙 62건, 인정서 한 장으로 대체됐다",
-     "kicker": "강원랜드 신입 채용 62건 · 우수사례 10점",
-     "category": "채용시장",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781316",
-     "published_at": "2026-09-11"
-    },
-    {
-     "date": "2026-09-17",
-     "card_id": "c01",
-     "title": "한화에어로 채용지침, 노동부가 감독에 들어갔다",
-     "kicker": "9월 16일 감독 착수 · 80년대생 이하·11개 대학 제한 지침 보도",
-     "category": "채용시장",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781981",
-     "published_at": "2026-09-16"
-    },
-    {
-     "date": "2026-10-30",
-     "card_id": "c02",
-     "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
-     "kicker": "입직 107.8만명 · 이직 102.2만명",
-     "category": "채용시장",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
-     "published_at": "2026-10-29"
-    },
-    {
-     "date": "2026-11-13",
-     "card_id": "c01",
-     "title": "고용행정 데이터로 청년·산업전환 현안을 푼다",
-     "kicker": "제2회 고용행정 개방데이터 학술대회 · 세션 3개",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·한국고용정보원",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788923",
-     "published_at": "2026-11-12"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c09",
-     "title": "지역 청년 노동시장 진입, 위원회가 개선과제를 냈다",
-     "kicker": "3기 청년위원회 · 지역 청년 노동시장 진입 실태 발표",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "경제사회노동위원회",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c03",
-     "title": "AI 시대 일자리 의제, 국민이 직접 질문한다",
-     "kicker": "국민참여 3주 · 논의체 22명",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
-     "published_at": "2026-11-17"
-    }
-   ]
-  },
   "th-labor-policy": {
    "label": "고용정책과 감독",
    "items": [
+    {
+     "date": "2025-05-22",
+     "card_id": "c01",
+     "title": "위험성평가 컨설팅 받은 사업장, 사고사망 66.7% 줄었다",
+     "kicker": "66.7% 감소 · 50인 미만 집중 · 근로자 참여",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156690392",
+     "published_at": "2025-05-22"
+    },
+    {
+     "date": "2025-05-28",
+     "card_id": "c01",
+     "title": "폭염 안전 특별대책반 124일 — 고위험 사업장 6만 곳 집중 대응",
+     "kicker": "124일 · 6만 개소 · 온열질환 63명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156691377",
+     "published_at": "2025-05-28"
+    },
     {
      "date": "2025-06-15",
      "card_id": "c01",
@@ -1507,6 +1295,242 @@
      "source_name": "노사발전재단",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789916",
      "published_at": "2026-11-19"
+    }
+   ]
+  },
+  "th-employment-service": {
+   "label": "고용서비스와 상담",
+   "items": [
+    {
+     "date": "2025-06-02",
+     "card_id": "c01",
+     "title": "직무능력은행에 군경력·기업자격까지 — 직무능력인정서로 증빙",
+     "kicker": "기업자격 연계 · 군경력 · 직무능력인정서",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국산업인력공단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156692011",
+     "published_at": "2025-06-02"
+    },
+    {
+     "date": "2025-08-14",
+     "card_id": "c01",
+     "title": "폐업 소상공인 임금근로자 전환 — 취업교육·수당 확대, 채무부담 완화",
+     "kicker": "제3차 간담회 · 국민취업지원제도 연계 · 재기 지원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "중소벤처기업부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156718441",
+     "published_at": "2025-08-14"
+    },
+    {
+     "date": "2025-08-20",
+     "card_id": "c01",
+     "title": "고용24 개통 1년 — 개인회원 1,170만명, 생애주기별 화면으로 개편",
+     "kicker": "1,170만명 · 105만명 방문 · 생애주기 화면",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156726525",
+     "published_at": "2025-08-20"
+    },
+    {
+     "date": "2025-09-18",
+     "card_id": "c01",
+     "title": "장년고용강조주간 — 재취업 성공 5명·기업 7곳 사례 공유",
+     "kicker": "제20회 · 개인 5명·기업 7곳 · 내년 인센티브",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·노사발전재단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156726633",
+     "published_at": "2025-09-18"
+    },
+    {
+     "date": "2025-11-07",
+     "card_id": "c01",
+     "title": "공정채용 우수기업 22곳 — 전형 피드백·자기소개서 폐지",
+     "kicker": "22곳(민간 12·공공 10) · 108곳 참가 · 전형결과 5일 내",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국산업인력공단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156727026",
+     "published_at": "2025-11-07"
+    },
+    {
+     "date": "2025-11-12",
+     "card_id": "c02",
+     "title": "고용센터 집단상담 — 우수사례 15점, AI 활용 직무분석까지",
+     "kicker": "집단상담 15점 시상 · 180명 참여 · 생성형 AI 직무분석",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156727831",
+     "published_at": "2025-11-12"
+    },
+    {
+     "date": "2026-01-02",
+     "card_id": "c01",
+     "title": "정규직 전환 지원 재개 — 30인 미만 기업에 월 최대 60만원",
+     "kicker": "월 60만원 · 1년 · 예산 69억",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156737822",
+     "published_at": "2026-01-01"
+    },
+    {
+     "date": "2026-01-22",
+     "card_id": "c01",
+     "title": "AI 노동법 상담 11.7만건 — 새벽 2시 주휴수당 문의도 3초",
+     "kicker": "11.7만건 · 87.5% 단축 · 야간·주말 37.7%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156740665",
+     "published_at": "2026-01-21"
+    },
+    {
+     "date": "2026-02-03",
+     "card_id": "c01",
+     "title": "사회적기업 이차보전 첫 도입, 연 250억 금융 지원 효과",
+     "kicker": "2.3 협약 · 7개 금융기관 · 연 250억",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국사회적기업진흥원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156742817",
+     "published_at": "2026-02-03"
+    },
+    {
+     "date": "2026-02-20",
+     "card_id": "c01",
+     "title": "지역·산업 특화 고용센터 7곳 출범, 해양수산업 인력도 키운다",
+     "kicker": "7개 지역 · 지역 직접 설계 · 해수부 MOU",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·해양수산부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156745256",
+     "published_at": "2026-02-20"
+    },
+    {
+     "date": "2026-06-18",
+     "card_id": "c02",
+     "title": "소상공인 노동법 상담, 소상공인24와 연결된다",
+     "kicker": "AI 노동법 상담 11.7만건 · 소상공인24 연계",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766960",
+     "published_at": "2026-06-17"
+    },
+    {
+     "date": "2026-07-08",
+     "card_id": "c01",
+     "title": "정규직 전환 지원금, 상반기에만 1,247명 승인",
+     "kicker": "1,247명 · 740개 사업장 · 1인당 월 최대 60만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770041",
+     "published_at": "2026-07-08"
+    },
+    {
+     "date": "2026-07-25",
+     "card_id": "c01",
+     "title": "흩어진 경력을 한곳에 — 고용24 통합경력증명 7월 29일 개시",
+     "kicker": "7월 29일 개시 · 증명서 1장 · 이력서 자동완성",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772089",
+     "published_at": "2026-07-24"
+    },
+    {
+     "date": "2026-08-21",
+     "card_id": "c01",
+     "title": "고용센터 102곳, 서류를 내려놓고 사람을 만난다",
+     "kicker": "102곳 · 상담 18분→73.8분 · 연 200만명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775003",
+     "published_at": "2026-08-20"
+    },
+    {
+     "date": "2026-08-27",
+     "card_id": "c02",
+     "title": "전공별 경력가이드 10종, 진출 직업 290개를 담았다",
+     "kicker": "전공 10종 · 직업 290개 · 2023년부터 매해",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국고용정보원·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775559",
+     "published_at": "2026-08-26"
+    },
+    {
+     "date": "2026-09-12",
+     "card_id": "c02",
+     "title": "경력 증빙 62건, 인정서 한 장으로 대체됐다",
+     "kicker": "강원랜드 신입 채용 62건 · 우수사례 10점",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781316",
+     "published_at": "2026-09-11"
+    },
+    {
+     "date": "2026-09-17",
+     "card_id": "c01",
+     "title": "한화에어로 채용지침, 노동부가 감독에 들어갔다",
+     "kicker": "9월 16일 감독 착수 · 80년대생 이하·11개 대학 제한 지침 보도",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781981",
+     "published_at": "2026-09-16"
+    },
+    {
+     "date": "2026-10-30",
+     "card_id": "c02",
+     "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
+     "kicker": "입직 107.8만명 · 이직 102.2만명",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c01",
+     "title": "고용행정 데이터로 청년·산업전환 현안을 푼다",
+     "kicker": "제2회 고용행정 개방데이터 학술대회 · 세션 3개",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788923",
+     "published_at": "2026-11-12"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c09",
+     "title": "지역 청년 노동시장 진입, 위원회가 개선과제를 냈다",
+     "kicker": "3기 청년위원회 · 지역 청년 노동시장 진입 실태 발표",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "경제사회노동위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c03",
+     "title": "AI 시대 일자리 의제, 국민이 직접 질문한다",
+     "kicker": "국민참여 3주 · 논의체 22명",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
+     "published_at": "2026-11-17"
     }
    ]
   },
