@@ -2,7 +2,10 @@
  * 기업 명함첩 · 화면 엔진
  *
  * 데이터(고치지 않고 읽기만 한다)
- *   data/companies.json  company-wiki v1.2.0 · 7,822곳(대기업 3,521 · 중견기업 3,946 · 공공기관 355)
+ *   data/companies.json    company-wiki v1.3.0 · 7,822곳(대기업 3,521 · 중견기업 3,946 · 중앙 공공기관 355)
+ *   data/local-public.json company-local-public v1.0.0 · 1,315곳(지방직영기업 256 · 지방공사·공단 167 · 출자기관 103 · 출연기관 789)
+ *     행정안전부 「지방공기업(2026.6.30. 기준) 현황」·「지방자치단체 출자출연기관 현황(2026.6.30. 기준)」의
+ *     명칭·구분·지역·설립 지자체·유형만 옮겼다. 매출·정원·홈페이지는 원자료에 없어 필드 자체를 생략했다.
  *     중견기업은 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리 + 법인명으로 대조해
  *     업종·가입자수·사업장 소재지를 붙였다(3,946곳 중 3,725곳). 여기에 공식 홈페이지·주요 사업·
  *     상장 정보(종목코드·상장일·증권업종)를 한국어 위키백과·위키데이터·상장 종목 공개 정보로 보강했다.
@@ -10,7 +13,8 @@
  *
  * 주소
  *   #list?c=ENT&g=삼성&k=C&ct=일반회사&ls=1&t=…&mi=…&sd=…&ve=…&rv=1&em=2&in=…&o=emp&q=하이닉스&p=2   찾기(조건은 고를 때만)
- *   #ENT-1301110006246 · #MID-1058639463 · #PUB-C0247   한 곳            #about   출처와 한계
+ *   지방공공기관은 t(세부 유형)·tt(업무 유형)·sd(시·도)·rg(수도권/비수도권)·sc(광역/기초)·fd(설립 지자체)로 더 좁힌다.
+ *   #ENT-1301110006246 · #MID-1058639463 · #PUB-C0247 · #LPI-G0001   한 곳            #about   출처와 한계
  *
  * 규칙
  *   - 레코드에 없는 항목(키 생략)은 줄을 만들지 않는다. 매출·직원수·자산이 0이면 "원자료에 값이 없거나 0"이라 싣지 않는다.
@@ -26,8 +30,10 @@
       def: '공정거래위원회가 2026-05-01 지정한 공시대상기업집단 102곳의 소속회사입니다. 매출·종업원수·자산총액은 2025년 결산 값입니다.' },
     { k: 'MID', key: '중견기업', name: '중견기업', unit: '곳', src: 'MME · NPS',
       def: '중견기업정보마당에 공개된 확인서 발급기업 가운데 2026-11-16 기준 유효한 곳입니다. 이름·사업자등록번호·확인서만 공개되므로, 업종·국민연금 가입자수·사업장 소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였습니다(3,946곳 중 3,725곳). 공식 홈페이지·주요 사업·상장 정보는 위키백과·위키데이터와 상장 종목 공개 정보로 보강했습니다.' },
-    { k: 'PUB', key: '공공기관', name: '공공기관', unit: '곳', src: 'ALIO',
-      def: '알리오에 공시되는 지정 공공기관 전체입니다. 직원수는 정원(임직원 총계), 매출은 2025년 결산 값입니다.' }
+    { k: 'PUB', key: '공공기관', name: '중앙 공공기관', unit: '곳', src: 'ALIO',
+      def: '알리오에 공시되는 지정 공공기관(중앙행정기관 소관) 전체입니다. 직원수는 정원(임직원 총계), 매출은 2025년 결산 값입니다. 지방자치단체가 설립한 기관은 「지방공공기관」에 따로 있습니다.' },
+    { k: 'LPI', key: '지방공공기관', name: '지방공공기관', unit: '곳', src: '행안부',
+      def: '행정안전부가 2026-06-30 기준으로 공개한 지방공기업(직영 256 · 공사·공단 167)과 지방자치단체 출자·출연기관(출자 103 · 출연 789) 전체 1,315곳입니다. 원자료가 명칭·구분·지역·설립 지자체·유형만 공개하므로 매출·정원·설립일·홈페이지는 싣지 않았습니다.' }
   ];
   var CK = {}, CN = {}; CATS.forEach(function (c, i) { c.i = i; CK[c.k] = c; CN[c.key] = c; });
   /* 한국표준산업분류(KSIC) 대분류 */
@@ -40,6 +46,12 @@
     S: ['협회·수리·개인', '협회 및 단체, 수리 및 기타 개인 서비스업'], T: ['가구 내 고용', '가구 내 고용활동 및 달리 분류되지 않은 자가 소비 생산활동'], U: ['국제기관', '국제 및 외국기관']
   };
   var PUBT = ['공기업(시장형)', '공기업(준시장형)', '준정부기관(기금관리형)', '준정부기관(위탁집행형)', '기타공공기관'];
+  /* 지방공공기관: 세부 유형 넷 · 광역/기초 · 수도권/비수도권 · 17개 시·도(원자료 이름 그대로) */
+  var LPIT = ['지방직영기업', '지방공사·공단', '출자기관', '출연기관'];
+  var SCOPE = [['광역', '광역'], ['기초', '기초']];
+  var METRO = [['수도권', '수도권'], ['비수도권', '비수도권']];
+  var SIDO = ['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '세종특별자치시', '경기도', '강원특별자치도', '충청북도', '충청남도', '전북특별자치도', '전라남도', '경상북도', '경상남도', '제주특별자치도'];
+  function sidoS(v) { return String(v || '').replace(/(특별시|광역시|특별자치시|특별자치도|도)$/, ''); }
   var RV = [['1', '1조 원 이상', 1e12, Infinity], ['2', '1천억~1조', 1e11, 1e12], ['3', '100억~1천억', 1e10, 1e11], ['4', '100억 미만', 1, 1e10]];
   var EM = [['1', '1만 명 이상', 1e4, Infinity], ['2', '1천~1만', 1e3, 1e4], ['3', '100~1천', 100, 1e3], ['4', '100명 미만', 1, 100]];
   var PER = 20;
@@ -52,9 +64,9 @@
     turn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg>',
     filt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>'
   };
-  var KEYS = ['c', 'g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in', 'o', 'q'];
-  var FKEYS = ['g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'mi', 'sd', 've', 'rv', 'em', 'in'];
-  var META, ITEMS = [], BYID = {}, GRP = {}, SAME = {}, DIST = {}, SRC = {}, ENTREV = [], TAGV = {}, TAGS = {};
+  var KEYS = ['c', 'g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'tt', 'mi', 'sd', 'rg', 'sc', 'fd', 've', 'rv', 'em', 'in', 'o', 'q'];
+  var FKEYS = ['g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'tt', 'mi', 'sd', 'rg', 'sc', 'fd', 've', 'rv', 'em', 'in'];
+  var META, LMETA = null, ITEMS = [], BYID = {}, GRP = {}, SAME = {}, DIST = {}, SRC = {}, ENTREV = [], TAGV = {}, TAGS = {};
   /* 고용노동부 허가·등록 태그(business_tags, 피클 v1.3.0)를 찾을 때 함께 걸리는 말. 태그 자체는 원자료 그대로 */
   var TAGSYN = { '근로자파견': '근로자파견 파견 인력파견 파견사업 아웃소싱', '유료직업소개': '유료직업소개 직업소개 고용알선 헤드헌팅 인력소개', '직업정보제공': '직업정보제공 채용정보 구인구직 정보제공' };
   var st = blank(), view = '', listY = 0, lastList = '';
@@ -122,8 +134,10 @@
     // 찾기 열쇠: [낱말, 무게, 이름표]
     x._f = [];
     function add(k, v, w) { if (has(v)) x._f.push({ k: k, t: String(v), s: norm(v), w: w }); }
-    add('group', x.group, 34); add('ind', x.industry, 14); add('min', x.ministry, 14); add('type', x._c === 'PUB' ? x.sub_category : '', 12);
-    add('ceo', x.ceo, 7); add('hq', x.headquarters, 6); add('sum', x._c === 'PUB' ? x.business_summary : '', 2);
+    add('group', x.group, 34); add('ind', x.industry, 14); add('min', x.ministry, 14); add('type', x._c === 'PUB' || x._c === 'LPI' ? x.sub_category : '', 12);
+    add('dtl', x._c === 'LPI' ? x.type_detail : '', 10);
+    add('ceo', x.ceo, 7); add('hq', has(x.headquarters) ? x.headquarters : (x._c === 'LPI' ? x.founder : ''), 6);
+    add('sum', x._c === 'PUB' ? x.business_summary : '', 2);
     add('prod', x._c === 'MID' ? x.main_products : '', 4);
     (x.business_tags || []).forEach(function (t) { x._f.push({ k: 'tag', t: (TAGV[t] || {}).label || t, s: norm(TAGSYN[t] || t), w: 30 }); (TAGS[t] = TAGS[t] || []).push(x); });   // 찾기는 비슷한 말까지, 보이는 이름은 공식 명칭
     (SAME[x._c + '|' + sn] = SAME[x._c + '|' + sn] || []).push(x);
@@ -151,7 +165,7 @@
   function readHash() {
     var h = location.hash.replace(/^#/, '');
     try { h = decodeURIComponent(h); } catch (e) {}
-    if (/^(ENT|MID|PUB)-/.test(h) && BYID[h]) return { v: 'item', id: h };
+    if (/^(ENT|MID|PUB|LPI)-/.test(h) && BYID[h]) return { v: 'item', id: h };
     if (h === 'about') return { v: 'about' };
     var s = blank(), q = h.indexOf('?');
     if (/^list/.test(h) && q > -1) {
@@ -169,7 +183,9 @@
     if (s.c !== 'ENT') { s.g = ''; s.ct = ''; s.ls = ''; s.k2 = ''; }
     if (s.o && !sortOpts(s).some(function (o) { return o[0] === s.o; })) s.o = '';   // 이 분류에서 쓸 수 없는 정렬은 기본으로
     if (s.c !== 'ENT' && s.c !== 'MID') { s.k = ''; s.in = ''; }
-    if (s.c !== 'PUB' && s.c !== 'MID') { s.t = ''; s.mi = ''; s.sd = ''; }
+    if (s.c !== 'PUB' && s.c !== 'MID' && s.c !== 'LPI') { s.t = ''; s.sd = ''; }
+    if (s.c !== 'PUB' && s.c !== 'MID') s.mi = '';
+    if (s.c !== 'LPI') { s.tt = ''; s.rg = ''; s.sc = ''; s.fd = ''; }
     if (s.c !== 'MID') s.ve = '';
     if (s.c === 'MID') s.rv = '';
     return s;
@@ -222,6 +238,10 @@
     if (skip !== 'ct' && s.ct && x.corp_type !== s.ct) return false;
     if (skip !== 'ls' && s.ls && !has(x.listed_date)) return false;
     if (skip !== 't' && s.t && x.sub_category !== s.t) return false;
+    if (skip !== 'tt' && s.tt && x.type_detail !== s.tt) return false;
+    if (skip !== 'rg' && s.rg && x.metro !== s.rg) return false;
+    if (skip !== 'sc' && s.sc && x.region_scope !== s.sc) return false;
+    if (skip !== 'fd' && s.fd && x.founder !== s.fd) return false;
     if (skip !== 'mi' && s.mi && x.ministry !== s.mi) return false;
     if (skip !== 'sd' && s.sd && x.location_sido !== s.sd) return false;
     if (skip !== 've' && s.ve && x._ve.slice(0, 7) !== s.ve) return false;
@@ -252,9 +272,10 @@
   function sortOpts(s) {
     if (s.c === 'MID') return [['', '가입자 많은 순'], ['name', '이름순'], ['sido', '소재지순'], ['ve', '확인서 만료 이른 순']];
     if (s.c === 'PUB') return [['', '매출 큰 순'], ['emp', '정원 많은 순'], ['old', '설립 오래된 순'], ['new', '설립 최근 순'], ['name', '이름순']];
+    if (s.c === 'LPI') return [['', '이름순'], ['sido', '시·도순'], ['fd', '설립 지자체순'], ['tt', '업무 유형순']];
     return [['', '매출 큰 순'], ['emp', '직원 많은 순'], ['ast', '자산 큰 순'], ['old', '설립 오래된 순'], ['new', '설립 최근 순'], ['name', '이름순']];
   }
-  var SORTF = { emp: '_emp', ast: '_ast', old: 'established_year', new: 'established_year', ve: '_ve', sido: 'location_sido' };
+  var SORTF = { emp: '_emp', ast: '_ast', old: 'established_year', new: 'established_year', ve: '_ve', sido: 'location_sido', fd: 'founder', tt: 'type_detail' };
   function sorted(arr, s) {
     var m = qmap(s.q), byQ = !!m && !s.o, f;
     if (s.o === 'name') f = function (a, b) { return ko(a._n, b._n); };
@@ -262,8 +283,15 @@
     else if (s.o === 'ast') f = cmpNum('_ast', 1);
     else if (s.o === 'old') f = cmpNum('established_year', -1);
     else if (s.o === 'new') f = cmpNum('established_year', 1);
-    else if (s.o === 've' || s.o === 'sido') { var k = SORTF[s.o]; f = function (a, b) { var va = a[k], vb = b[k]; if (!va && !vb) return 0; if (!va) return 1; if (!vb) return -1; return ko(va, vb); }; }
+    else if (s.o === 've') { var k = SORTF[s.o]; f = function (a, b) { var va = a[k], vb = b[k]; if (!va && !vb) return 0; if (!va) return 1; if (!vb) return -1; return ko(va, vb); }; }
+    else if (s.o === 'sido') {
+      // 지방공공기관은 17개 시·도를 법령 순서(서울→제주)대로 늘어놓는다. 그 밖의 분류는 이름순.
+      if (s.c === 'LPI') f = function (a, b) { var ia = SIDO.indexOf(a.location_sido), ib = SIDO.indexOf(b.location_sido); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib); };
+      else f = function (a, b) { var va = a.location_sido, vb = b.location_sido; if (!va && !vb) return 0; if (!va) return 1; if (!vb) return -1; return ko(va, vb); };
+    }
+    else if (s.o === 'fd' || s.o === 'tt') { var k2 = SORTF[s.o]; f = function (a, b) { var va = a[k2], vb = b[k2]; if (!va && !vb) return 0; if (!va) return 1; if (!vb) return -1; return ko(va, vb); }; }
     else if (s.c === 'MID') f = cmpNum('_emp', 1);
+    else if (s.c === 'LPI') f = function (a, b) { return ko(a._n, b._n); };
     else f = cmpNum('_rev', 1);
     return arr.slice().sort(function (a, b) {
       if (byQ) { var d1 = m[b.id].sc - m[a.id].sc; if (d1) return d1; }
@@ -285,7 +313,7 @@
     });
     return t;
   }
-  var FLAB = { group: '기업집단', ind: '업종', min: '주무부처', type: '기관 유형', ceo: '대표자', hq: '소재지', sum: '하는 일', prod: '주요 사업', tag: '고용노동부 허가·등록' };
+  var FLAB = { group: '기업집단', ind: '업종', min: '주무부처', type: '기관 유형', dtl: '업무 유형', hq: '소재지', ceo: '대표자', sum: '하는 일', prod: '주요 사업', tag: '고용노동부 허가·등록' };
   function snippet(f, q) {
     var t = f.t, w = (String(q || '').trim().split(/\s+/)[0] || '').toLowerCase(), at = t.toLowerCase().indexOf(w);
     if (at < 0) at = 0;
@@ -298,6 +326,7 @@
   function lineOf(x) {
     if (x._c === 'ENT') return [x.group, x.industry].filter(has).join(' · ');
     if (x._c === 'PUB') return [x.sub_category, x.ministry].filter(has).join(' · ');
+    if (x._c === 'LPI') return [x.sub_category, x.type_detail].filter(has).join(' · ');
     return [x.industry, x.location_sido].filter(has).join(' · ') || '중견기업 확인서 발급기업';
   }
 
@@ -314,7 +343,8 @@
     var line = {
       ENT: '공시대상기업집단 ' + Object.keys(GRP).length + '곳 소속회사',
       MID: '확인서 발급기업 · 업종·가입자 보강 ' + fmt(ITEMS.filter(function (x) { return x._c === 'MID' && x.employees; }).length) + '곳',
-      PUB: '알리오 지정 공공기관 ' + PUBT.length + '개 유형'
+      PUB: '알리오 지정 공공기관 ' + PUBT.length + '개 유형',
+      LPI: '직영·공사공단·출자·출연 ' + LPIT.length + '갈래 · 2026.6.30 기준'
     };
     var el = d.getElementById('album'), h = '';
     CATS.forEach(function (c) {
@@ -371,7 +401,7 @@
   function renderList() {
     view = 'list';
     main.innerHTML =
-      '<div class="sb" id="sb">' + IC.search + '<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="기업·기관 이름, 기업집단, 업종, 주무부처로 찾기" aria-label="기업 찾기"><button class="clr" id="qx" type="button" aria-label="검색어 지우기">' + IC.x + '</button></div>' +
+      '<div class="sb" id="sb">' + IC.search + '<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="기업·기관 이름, 기업집단, 업종, 주무부처, 기관 유형·지역으로 찾기" aria-label="기업·기관 찾기"><button class="clr" id="qx" type="button" aria-label="검색어 지우기">' + IC.x + '</button></div>' +
       '<p class="eg" id="eg">예: ' + EG.map(function (e) { return '<button type="button">' + esc(e) + '</button>'; }).join('') + '</p>' +
       '<div class="fd"><aside class="fl" id="fl" aria-label="조건 고르기"><div class="fl-sh"><div class="fl-hd"><b>조건 고르기</b><button type="button" class="fl-x" id="flX" aria-label="닫기">' + IC.x + '</button></div><div class="fl-b" id="flB"></div><div class="fl-ft"><button type="button" class="reset" id="flR">모두 풀기</button><button type="button" class="fl-go" id="flGo">결과 보기</button></div></div></aside>' +
       '<section id="res" aria-live="polite"></section></div><div class="scrim" id="scrim" hidden></div>';
@@ -424,6 +454,15 @@
     keys.forEach(function (k) { h += '<option value="' + esc(k) + '"' + (st[name] === k ? ' selected' : '') + '>' + esc(k) + ' (' + fmt(cnt[k] || 0) + ')</option>'; });
     return h + '</select>';
   }
+  // 17개 시·도는 많은 순이 아니라 서울→제주 순으로 늘어놓는다(주소를 떠올리는 순서와 같게)
+  function sidoSelect(name, label, cnt, all) {
+    var keys = Object.keys(cnt).filter(function (k) { return SIDO.indexOf(k) > -1; }).sort(function (a, b) { return SIDO.indexOf(a) - SIDO.indexOf(b); });
+    Object.keys(cnt).forEach(function (k) { if (SIDO.indexOf(k) < 0) keys.push(k); });
+    if (st[name] && keys.indexOf(st[name]) < 0) keys.unshift(st[name]);
+    var h = '<select name="' + name + '" aria-label="' + label + '"><option value="">' + all + '</option>';
+    keys.forEach(function (k) { h += '<option value="' + esc(k) + '"' + (st[name] === k ? ' selected' : '') + '>' + esc(sidoS(k)) + ' (' + fmt(cnt[k] || 0) + ')</option>'; });
+    return h + '</select>';
+  }
   // 조건 묶음은 접고 펴는 칸. 고른 값이 있으면 제목 옆에 보이고 펼친다.
   var fgOpen = { g: true, t: true, ve: true, rv: true };
   function fg(key, title, cur, inner) {
@@ -447,6 +486,22 @@
       h += fg('mi', '주무부처', st.mi, select('mi', '주무부처', counts(st, 'mi', function (x) { return x.ministry; }), '모든 주무부처'));
       h += fg('sd', '소재지', st.sd, select('sd', '소재지 시·도', counts(st, 'sd', function (x) { return x.location_sido; }), '모든 시·도'));
     }
+    if (c === 'LPI') {
+      var lt = counts(st, 't', function (x) { return x.sub_category; });
+      h += fg('t', '세부 유형', st.t, '<div class="opts">' + LPIT.map(function (t) { return chip('t', t, t, lt[t]); }).join('') + '</div>' +
+        '<p class="nt">지방공기업은 지자체가 직접 운영하는 직영기업과, 지자체가 50% 이상 출자한 공사·공단으로 나뉩니다. 출자·출연기관은 「지방자치단체 출자·출연기관의 운영에 관한 법률」에 따라 지정된 법인입니다.</p>');
+      var dt = counts(st, 'tt', function (x) { return x.type_detail; });
+      h += fg('tt', '업무 유형', st.tt, '<div class="opts">' + Object.keys(dt).sort(function (a, b) { return dt[b] - dt[a] || ko(a, b); }).map(function (t) { return chip('tt', t, t, dt[t]); }).join('') + '</div>' +
+        '<p class="nt">원자료의 공기업유형(상수도·하수도·지방공단 등)·기관유형(문화·복지·관광, 장학 등) 값 그대로입니다.</p>');
+      h += fg('sd', '시·도', st.sd, sidoSelect('sd', '시·도', counts(st, 'sd', function (x) { return x.location_sido; }), '모든 시·도'));
+      var rgc = counts(st, 'rg', function (x) { return x.metro; });
+      h += fg('rg', '수도권 · 비수도권', st.rg, '<div class="opts">' + METRO.map(function (r) { return chip('rg', r[0], r[1], rgc[r[0]]); }).join('') + '</div>' +
+        '<p class="nt">지방공기업은 원자료의 구분을 그대로, 출자·출연기관은 시·도가 서울·인천·경기인지로 나눴습니다.</p>');
+      var scc = counts(st, 'sc', function (x) { return x.region_scope; });
+      h += fg('sc', '설립 단위', st.sc, '<div class="opts">' + SCOPE.map(function (r) { return chip('sc', r[0], r[1], scc[r[0]], r[0] === '광역' ? '시·도(본청)가 설립한 기관' : '시·군·구가 설립한 기관'); }).join('') + '</div>' +
+        '<p class="nt">광역은 시·도(본청)가 설립한 기관, 기초는 시·군·구가 설립한 기관입니다.</p>');
+      h += fg('fd', '설립 지자체', st.fd, select('fd', '설립 지자체', counts(st, 'fd', function (x) { return x.founder; }), '모든 설립 지자체'));
+    }
     if (c === 'MID') {
       var mk = counts(st, 'k', function (x) { return x._k; });
       h += fg('k', '업종 갈래', st.k ? KSIC[st.k][0] : '', '<div class="opts">' + Object.keys(KSIC).filter(function (k) { return mk[k] || st.k === k; }).sort(function (a, b) { return (mk[b] || 0) - (mk[a] || 0); }).map(function (k) { return chip('k', k, KSIC[k][0], mk[k], KSIC[k][1]); }).join('') + '</div>');
@@ -457,7 +512,7 @@
       var vc = counts(st, 've', function (x) { return x._ve.slice(0, 7); });
       h += fg('ve', '확인서가 끝나는 달', st.ve ? st.ve.replace('-', '년 ') + '월' : '', '<div class="opts">' + Object.keys(vc).sort().map(function (k) { return chip('ve', k, k.replace('-', '년 ') + '월', vc[k]); }).join('') + '</div><p class="nt">중견기업정보마당은 이름·사업자등록번호·확인서 정보만 공개합니다.</p>');
     }
-    if (c !== 'MID') {
+    if (c !== 'MID' && c !== 'LPI') {
       var rc = counts(st, 'rv', function (x) { return x._rb; }), ec = counts(st, 'em', function (x) { return x._eb; });
       h += fg('rv', '매출 규모', rvLab(st.rv), '<div class="opts">' + RV.map(function (r) { return chip('rv', r[0], r[1], rc[r[0]]); }).join('') + '</div>');
       h += fg('em', '직원 규모', emLab(st.em), '<div class="opts">' + EM.map(function (r) { return chip('em', r[0], r[1], ec[r[0]]); }).join('') + '</div>');
@@ -470,7 +525,8 @@
     var a = [];
     if (st.g) a.push(['g', st.g]); if (st.k) a.push(['k', KSIC[st.k] ? KSIC[st.k][0] : st.k]); if (st.in) a.push(['in', st.in]); if (st.k2) a.push(['k2', '산업 갈래 KSIC ' + st.k2]); if (st.bt) a.push(['bt', (TAGV[st.bt] || {}).label || st.bt]);
     if (st.ct) a.push(['ct', st.ct]); if (st.ls) a.push(['ls', '기업공개 법인']);
-    if (st.t) a.push(['t', st.t]); if (st.mi) a.push(['mi', st.mi]); if (st.sd) a.push(['sd', st.sd]);
+    if (st.t) a.push(['t', st.t]); if (st.tt) a.push(['tt', '업무 ' + st.tt]); if (st.mi) a.push(['mi', st.mi]); if (st.sd) a.push(['sd', st.sd]);
+    if (st.rg) a.push(['rg', st.rg]); if (st.sc) a.push(['sc', st.sc + ' 설립']); if (st.fd) a.push(['fd', '설립 ' + st.fd]);
     if (st.ve) a.push(['ve', st.ve.replace('-', '년 ') + '월 만료']);
     if (st.rv) a.push(['rv', '매출 ' + rvLab(st.rv)]); if (st.em) a.push(['em', '직원 ' + emLab(st.em)]);
     return a;
@@ -491,22 +547,32 @@
   // 「한눈에」: 지금 걸러진 곳들의 구성(도넛)과 매출 규모(막대). 조각·막대를 누르면 그 조건으로 고른다.
   function glancePanel() {
     var c = st.c, key, rows;
-    if (!c) { key = 'c'; var cc = counts(st, 'c', function (x) { return x._c; }); var CCOL = { ENT: 'var(--ce)', MID: 'var(--cm)', PUB: 'var(--cp)' }; rows = CATS.map(function (k) { return { v: k.k, label: k.name, n: cc[k.k] || 0, col: CCOL[k.k] }; }); }
+    if (!c) { key = 'c'; var cc = counts(st, 'c', function (x) { return x._c; }); var CCOL = { ENT: 'var(--ce)', MID: 'var(--cm)', PUB: 'var(--cp)', LPI: 'var(--cl)' }; rows = CATS.map(function (k) { return { v: k.k, label: k.name, n: cc[k.k] || 0, col: CCOL[k.k] }; }); }
     else if (c === 'ENT') { key = 'k'; var kc = counts(st, 'k', function (x) { return x._k; }); rows = Object.keys(kc).sort(function (a, b) { return kc[b] - kc[a]; }).map(function (k) { return { v: k, label: KSIC[k][0], n: kc[k] }; }); }
     else if (c === 'PUB') { key = 't'; var tc = counts(st, 't', function (x) { return x.sub_category; }); rows = PUBT.map(function (t) { return { v: t, label: t.replace('준정부기관', '준정부').replace(/\((.+)\)/, ' $1'), n: tc[t] || 0 }; }); }
     else if (c === 'MID') { key = 'k'; var mk2 = counts(st, 'k', function (x) { return x._k; }); rows = Object.keys(mk2).sort(function (a, b) { return mk2[b] - mk2[a]; }).map(function (k) { return { v: k, label: KSIC[k][0], n: mk2[k] }; }); }
+    else if (c === 'LPI') { key = 't'; var lt2 = counts(st, 't', function (x) { return x.sub_category; }); rows = LPIT.map(function (t) { return { v: t, label: t, n: lt2[t] || 0 }; }); }
     else { key = 've'; var vc = counts(st, 've', function (x) { return x._ve.slice(0, 7); }); rows = Object.keys(vc).sort(function (a, b) { return vc[b] - vc[a]; }).map(function (k) { return { v: k, label: k.replace('-', '.') + ' 만료', n: vc[k] }; }); }
     rows = rows.filter(function (r) { return r.n; });
     if (rows.length > 6) { var rest = rows.slice(5).reduce(function (a, r) { return a + r.n; }, 0); rows = rows.slice(0, 5).concat([{ v: '', label: '그 밖 ' + (rows.length - 5) + '갈래', n: rest, col: 'var(--p0)' }]); }
     var tot = rows.reduce(function (a, r) { return a + r.n; }, 0);
-    var title = { c: '분류', k: c === 'MID' ? '업종 갈래' : '업종 대분류', t: '기관 유형', ve: '확인서 만료 달' }[key];
+    var title = { c: '분류', k: c === 'MID' ? '업종 갈래' : '업종 대분류', t: c === 'LPI' ? '세부 유형' : '기관 유형', ve: '확인서 만료 달' }[key];
     var leg = '<ul class="leg">' + rows.map(function (r, i) {
       var col = r.col || PAL[i % PAL.length], on = r.v && st[key] === r.v, pct = Math.round(r.n / tot * 1000) / 10;
       return '<li>' + (r.v ? '<button type="button" data-k="' + key + '" data-v="' + esc(r.v) + '" aria-pressed="' + on + '">' : '<span>') + '<i style="background:' + col + '"></i><b>' + esc(r.label) + '</b><em>' + fmt(r.n) + '<small>' + pct + '%</small></em>' + (r.v ? '</button>' : '</span>') + '</li>';
     }).join('') + '</ul>';
     var h = '<div class="gl" data-run data-jc-still><div class="gl-a"><h3>' + title + ' 구성 <small>누르면 고릅니다</small></h3><div class="gl-d">' +
       donut(rows.map(function (r, i) { return { v: r.n, col: r.col || PAL[i % PAL.length] }; }), fmt(tot), '곳', title + ' 구성') + leg + '</div></div>';
-    if (c !== 'MID') {
+    if (c === 'LPI') {
+      // 지방공공기관은 매출·정원이 없어, 원자료에 있는 시·도 분포를 보여 준다.
+      var sdc = counts(st, 'sd', function (x) { return x.location_sido; });
+      var srows = SIDO.filter(function (s) { return sdc[s]; }).map(function (s) { return { v: s, label: sidoS(s), n: sdc[s] }; }).sort(function (a, b) { return b.n - a.n; });
+      if (srows.length > 7) { var rest = srows.slice(6).reduce(function (a, r) { return a + r.n; }, 0); srows = srows.slice(0, 6).concat([{ v: '', label: '그 밖 ' + (srows.length - 6) + '개 시·도', n: rest }]); }
+      h += '<div class="gl-b"><h3>시·도 분포 <small>누르면 고릅니다</small></h3><ul class="leg">' + srows.map(function (r, i) {
+        var on = !!r.v && st.sd === r.v;
+        return '<li>' + (r.v ? '<button type="button" data-k="sd" data-v="' + esc(r.v) + '" aria-pressed="' + on + '">' : '<span>') + '<i style="background:' + PAL[i % PAL.length] + '"></i><b>' + esc(r.label) + '</b><em>' + fmt(r.n) + '</em>' + (r.v ? '</button>' : '</span>') + '</li>';
+      }).join('') + '</ul></div>';
+    } else if (c !== 'MID') {
       var rc = counts(st, 'rv', function (x) { return x._rb; });
       h += '<div class="gl-b"><h3>매출 규모 <small>2025 결산 · 누르면 고릅니다</small></h3>' + vbars(RV.slice().reverse().map(function (r) { return { v: r[0], label: r[1], n: rc[r[0]] || 0 }; }), 'rv') + '</div>';
     } else {
@@ -532,7 +598,7 @@
     var cur = arr.slice((st.p - 1) * PER, st.p * PER), m = qmap(st.q) || {};
     var sdef = sortOpts(st);
     if (st.q) sdef = [['', '찾는 말과 가까운 순']].concat(sdef.slice(1));
-    var sf = SORTF[st.o] || (st.o ? '' : (st.c === 'MID' ? '_emp' : '_rev')), miss = sf ? arr.filter(function (x) { return x[sf] == null || x[sf] === ''; }).length : 0;
+    var sf = SORTF[st.o] || (st.o ? '' : (st.c === 'MID' ? '_emp' : st.c === 'LPI' ? '' : '_rev')), miss = sf ? arr.filter(function (x) { return x[sf] == null || x[sf] === ''; }).length : 0;
     var so = '<label class="so"><span>정렬</span><select name="o" aria-label="정렬">' + sdef.map(function (s) { return '<option value="' + s[0] + '"' + (st.o === s[0] ? ' selected' : '') + '>' + s[1] + '</option>'; }).join('') + '</select></label>';
     var per = '<span class="per" role="group" aria-label="한 쪽에 보일 개수"><span>보기</span>' + PERS.map(function (n) { return '<button type="button" data-per="' + n + '" aria-pressed="' + (n === PER) + '" aria-label="' + n + '개씩 보기">' + n + '</button>'; }).join('') + '</span>';
     var r = '<div class="vw"><button type="button" class="fl-t" id="flOpen">' + IC.filt + '조건' + (act.length ? '<i>' + act.length + '</i>' : '') + '</button>' +
@@ -547,6 +613,7 @@
         var hit = m[x.id] && m[x.id].hit, sub = '';
         if (x._c === 'ENT') sub = (has(x.group) ? '<span class="tg">' + esc(x.group) + '</span>' : '') + (has(x.industry) ? '<span>' + esc(x.industry) + '</span>' : '');
         else if (x._c === 'PUB') sub = '<span class="tg">' + esc(x.sub_category) + '</span>' + (has(x.ministry) ? '<span>' + esc(x.ministry) + '</span>' : '');
+        else if (x._c === 'LPI') sub = '<span class="tg">' + esc(x.sub_category) + '</span>' + (has(x.type_detail) ? '<span>' + esc(x.type_detail) + '</span>' : '') + (has(x.founder) ? '<span>' + esc(x.founder) + '</span>' : '');
         else sub = (has(x.industry) ? '<span>' + esc(x.industry) + '</span>' : '') + (has(x.location_sido) ? '<span>' + esc(x.location_sido) + '</span>' : '') || (has(x.biz_no) ? '<span class="code">' + esc(x.biz_no) + '</span>' : '');
         if (x.business_tags && x.business_tags.length) sub += x.business_tags.map(function (t) { return '<span class="bt">' + esc(t) + '</span>'; }).join('');
         r += '<a class="row k-' + x._c + '" href="#' + x.id + '"><span class="r-n">' + hl(x.name, st.q) + '</span>' +
@@ -678,6 +745,15 @@
       if (has(x.headquarters)) row(0, '소재지', (has(x.location_sido) ? lk(q1({ c: 'PUB', sd: x.location_sido }), x.location_sido) + ' ' : '') + esc(String(x.headquarters).replace(x.location_sido || '\u0000', '').trim()));
       var u0 = safeUrl(x.official_url); if (u0) row(0, '홈페이지', '<a href="' + esc(u0) + '" target="_blank" rel="noopener noreferrer">' + esc(host(u0)) + '</a>');
       if (has(x.source_ref)) row(0, '공시 기준', esc(String(x.source_ref).replace(/;\s*/g, ' · ').replace(/임직원수/g, '임직원 수').replace(/손익/g, '손익계산서')));
+    } else if (x._c === 'LPI') {
+      row(1, '세부 유형', lk(q1({ c: 'LPI', t: x.sub_category }), x.sub_category));
+      if (has(x.type_detail)) row(1, '업무 유형', lk(q1({ c: 'LPI', tt: x.type_detail }), x.type_detail));
+      if (has(x.founder)) row(1, '설립 지자체', lk(q1({ c: 'LPI', fd: x.founder }), x.founder));
+      if (has(x.location_sido)) row(0, '시·도', lk(q1({ c: 'LPI', sd: x.location_sido }), sidoS(x.location_sido)));
+      row(0, '설립 단위', lk(q1({ c: 'LPI', sc: x.region_scope }), x.region_scope === '광역' ? '광역 · 시·도(본청)' : '기초 · 시·군·구') + (has(x.metro) ? ' · ' + lk(q1({ c: 'LPI', rg: x.metro }), x.metro) : ''));
+      if (has(x.operating)) row(0, '운영 구분', x.operating === '직영' ? '직영(지자체 직접 운영)' : '간접(지자체 출자 법인)');
+      if (has(x.note)) row(0, '원자료 비고', esc(x.note));
+      if (has(x.source_no)) row(0, '원자료 연번', '<span class="code">' + esc(x.source) + ' ' + esc(x.source_no) + '</span>');
     } else {
       if (has(x.industry)) row(1, '업종', lk(q1({ c: 'MID', in: x.industry }), x.industry));
       if (has(x.main_products)) row(1, '주요 사업', esc(x.main_products));
@@ -693,10 +769,10 @@
       if (has(x.industry)) row(0, '업종·가입자 출처', '국민연금 가입 사업장 내역 <span class="code">2026-09</span>');
       row(0, '공개 범위', has(x.biz_no) && has(x.certificate_no) ? '이름·사업자등록번호·확인서는 중견기업정보마당, 업종·가입자수·사업장 주소는 국민연금 가입 사업장 공개 자료입니다.' : '중견기업정보마당은 확인서 발급기업의 이름·사업자등록번호·발급번호·유효기간만 공개합니다.');
     }
-    var seal = x._c === 'PUB' ? '<span class="seal round" aria-hidden="true">공공<br>기관</span>' : x._c === 'MID' ? '<span class="seal" aria-hidden="true">확인서<br>발급</span>' : '<span class="seal" aria-hidden="true">공시<br>대상</span>';
+    var seal = x._c === 'PUB' ? '<span class="seal round" aria-hidden="true">공공<br>기관</span>' : x._c === 'MID' ? '<span class="seal" aria-hidden="true">확인서<br>발급</span>' : x._c === 'LPI' ? '<span class="seal round" aria-hidden="true">지방<br>공공</span>' : '<span class="seal" aria-hidden="true">공시<br>대상</span>';
     var flipB = function (t) { return '<button type="button" class="flip-b" data-flip aria-label="' + t + '">' + IC.turn + '<span>' + t + '</span></button>'; };
     var card = '<div class="flip k-' + x._c + '" id="flip"><div class="flip-in">' +
-      '<article class="card face front"><p class="card-top"><b>' + esc(c.name) + '</b><span>' + esc((x.sources || [x.source]).filter(Boolean).join(' · ')) + '</span><span class="code">' + esc(x.id) + '</span></p>' + seal +
+      '<article class="card face front"><p class="card-top"><b>' + esc(c.name) + '</b><span>' + esc((x.sources || [x.source]).filter(Boolean).map(function (id) { return (x._c === 'LPI' && SRC[id] && SRC[id].short) ? SRC[id].short : id; }).join(' · ')) + '</span><span class="code">' + esc(x.id) + '</span></p>' + seal +
       '<div class="card-id"><span class="mono" aria-hidden="true">' + esc(initial(x)) + '</span><div><h1>' + esc(x.name) + '</h1><p class="sub">' + esc(lineOf(x)) + '</p></div></div>' +
       (fr ? '<dl>' + fr + '</dl>' : '') + (bk ? '<div class="card-ft">' + flipB('뒷면 · 상세 정보') + '</div>' : '') + '</article>' +
       (bk ? '<article class="card face back" inert aria-label="명함 뒷면"><p class="card-top"><b>상세 정보</b><span class="code">' + esc(x.id) + '</span></p><dl>' + bk + '</dl><div class="card-ft">' + flipB('앞면으로') + '</div></article>' : '') +
@@ -704,6 +780,19 @@
     /* 본문 */
     var b = '';
     if (x._c === 'PUB' && has(x.business_summary)) b += sec('하는 일', doesBlock(x.business_summary), '', '설립목적·주요사업 공시');
+    if (x._c === 'LPI') {
+      var how = {
+        '지방직영기업': '지방자치단체가 공기업특별회계를 두고 직접 사업을 수행하는 기업입니다(직영).',
+        '지방공사·공단': '지방자치단체가 자본금의 50% 이상을 출자해 세운 법인입니다(간접경영).',
+        '출자기관': '지방자치단체가 자본금의 전부 또는 일부(10% 이상)를 출자해 설립한 주식회사입니다.',
+        '출연기관': '지방자치단체가 재산의 전부 또는 일부를 출연해 설립한 재단법인입니다.'
+      }[x.sub_category] || '';
+      b += sec('무슨 기관인가', '<p class="t">' +
+        (has(x.founder) ? '설립기관이 <b>' + esc(x.founder) + '</b>로 적힌 ' : '') + esc(x.sub_category) + '입니다. ' + how +
+        (has(x.type_detail) ? ' 행정안전부 현황에 적힌 업무 유형은 <b>' + esc(x.type_detail) + '</b>입니다.' : '') +
+        (has(x.location_sido) ? ' 시·도는 ' + esc(x.location_sido) + '입니다.' : '') + '</p>' +
+        '<p class="t fnote">행정안전부 현황은 기관 명칭·구분·지역·설립 지자체·유형만 공개합니다. 매출·직원(정원)·설립일·홈페이지는 원자료에 없어 싣지 않았습니다.</p>', '', '행정안전부 현황 2026.6.30');
+    }
     if (x._c === 'ENT') {
       var rk = x._rev > 0 ? ENTREV.indexOf(x) + 1 : 0;
       b += sec('무슨 회사인가', '<p class="t">' +
@@ -760,6 +849,19 @@
       if (P.length > 1) s2 += '<section class="box s2 k-PUB" data-run><h2>' + esc(x.ministry) + ' 소관<small>' + fmt(P.length) + '곳 · 정원 순</small></h2>' + hbars(P, x, '_emp', function (v) { return fmt(v) + '명'; }, 6) +
         (P.length > 6 ? '<a class="more" href="' + q1({ c: 'PUB', mi: x.ministry }) + '">' + fmt(P.length) + '곳 모두 보기 ›</a>' : '') + '</section>';
     }
+    if (x._c === 'LPI') {
+      // 지방공공기관은 매출·정원이 없어 숫자 막대 대신 이름 목록으로 잇는다.
+      var bx = function (title, sub, list, href) {
+        if (list.length < 2) return '';
+        list = list.slice().sort(function (a, b) { return ko(a._n, b._n); });
+        var top = list.slice(0, 8);
+        return '<section class="box s2 k-LPI"><h2>' + esc(title) + '<small>' + fmt(list.length) + '곳' + (sub ? ' · ' + esc(sub) : '') + '</small></h2><ul class="mates">' + top.map(function (y) {
+          return '<li><a href="#' + y.id + '"' + (y.id === x.id ? ' aria-current="page"' : '') + '><span>' + esc(y.name) + '</span><i>' + esc(y.type_detail || y.sub_category) + '</i></a></li>';
+        }).join('') + '</ul>' + (list.length > top.length ? '<a class="more" href="' + href + '">' + fmt(list.length) + '곳 모두 보기 ›</a>' : '') + '</section>';
+      };
+      if (has(x.founder)) s2 += bx(x.founder + ' 설립', '같은 지자체가 세운 기관 · 이름순', ITEMS.filter(function (y) { return y._c === 'LPI' && y.founder === x.founder; }), q1({ c: 'LPI', fd: x.founder }));
+      if (has(x.type_detail)) s2 += bx('같은 업무 유형 · ' + x.type_detail, '원자료 유형이 같은 곳 · 이름순', ITEMS.filter(function (y) { return y._c === 'LPI' && y.type_detail === x.type_detail; }), q1({ c: 'LPI', tt: x.type_detail }));
+    }
     var same = (SAME[x._c + '|' + x._n] || []).filter(function (y) { return y.id !== x.id; });
     if (same.length) s2 += '<section class="box s2"><h2>이름이 같은 다른 법인<small>' + same.length + '곳</small></h2><ul class="mates">' + same.slice(0, 8).map(function (y) { return '<li><a href="#' + y.id + '"><span>' + esc(y.name) + '</span><i>' + esc(y.id.slice(4)) + '</i></a></li>'; }).join('') + '</ul><p class="src">같은 이름이라도 번호가 다른 별개 회사입니다.</p></section>';
     var near = [];
@@ -769,6 +871,12 @@
     if (x._c === 'MID' && has(x.industry)) near.push([q1({ c: 'MID', in: x.industry }), '같은 업종 · ' + x.industry, ITEMS.filter(function (y) { return y._c === 'MID' && y.industry === x.industry; }).length]);
     if (x._c === 'MID' && x._k) near.push([q1({ c: 'MID', k: x._k }), '업종 갈래 · ' + KSIC[x._k][0], ITEMS.filter(function (y) { return y._c === 'MID' && y._k === x._k; }).length]);
     if (x._c === 'MID' && has(x.location_sido)) near.push([q1({ c: 'MID', sd: x.location_sido }), x.location_sido + '의 중견기업', ITEMS.filter(function (y) { return y._c === 'MID' && y.location_sido === x.location_sido; }).length]);
+    if (x._c === 'LPI') {
+      if (has(x.location_sido)) near.push([q1({ c: 'LPI', sd: x.location_sido }), sidoS(x.location_sido) + '의 지방공공기관', ITEMS.filter(function (y) { return y._c === 'LPI' && y.location_sido === x.location_sido; }).length]);
+      if (has(x.founder)) near.push([q1({ c: 'LPI', fd: x.founder }), x.founder + ' 설립', ITEMS.filter(function (y) { return y._c === 'LPI' && y.founder === x.founder; }).length]);
+      if (has(x.type_detail)) near.push([q1({ c: 'LPI', tt: x.type_detail }), '업무 유형 · ' + x.type_detail, ITEMS.filter(function (y) { return y._c === 'LPI' && y.type_detail === x.type_detail; }).length]);
+      if (x.sub_category) near.push([q1({ c: 'LPI', t: x.sub_category }), x.sub_category + ' 전체', ITEMS.filter(function (y) { return y._c === 'LPI' && y.sub_category === x.sub_category; }).length]);
+    }
     if (x._c === 'MID' && x._eb) near.push([q1({ c: 'MID', em: x._eb }), '가입자 ' + emLab(x._eb), ITEMS.filter(function (y) { return y._c === 'MID' && y._eb === x._eb; }).length]);
     if (x._c === 'MID' && x._ve) near.push([q1({ c: 'MID', ve: x._ve.slice(0, 7) }), x._ve.slice(0, 7).replace('-', '년 ') + '월에 확인서가 끝나는 곳', ITEMS.filter(function (y) { return y._ve && y._ve.slice(0, 7) === x._ve.slice(0, 7); }).length]);
     near = near.filter(function (n) { return n[2] > 1; });
@@ -780,13 +888,13 @@
       if (su) links += '<a class="go' + ((u || links) ? ' line' : '') + '" href="' + esc(su) + '" target="_blank" rel="noopener noreferrer">' + IC.out + '<span>원자료 · ' + esc(S.short || host(su)) + '</span></a>';
       if (has(S.name)) names.push(S.name + (has(S.as_of) ? ' (' + S.as_of + ')' : ''));
     });
-    var scope = { ENT: '공정위·기업집단포털', PUB: '알리오', MID: '중견기업정보마당·국민연금 가입 사업장 내역' }[x._c] || '공식 공개 데이터';
+    var scope = { ENT: '공정위·기업집단포털', PUB: '알리오', MID: '중견기업정보마당·국민연금 가입 사업장 내역', LPI: '행정안전부 지방공기업·출자출연기관 현황' }[x._c] || '공식 공개 데이터';
     var mt = '<section class="miss"><p><b>미표기 항목은 ' + esc(scope) + '에 포함되지 않은 정보입니다.</b></p>' +
       (u ? '<a class="go" href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + IC.out + '<span>공식 홈페이지 · ' + esc(host(u)) + '</span></a>' : '') +
       links +
       '<p class="src"><b>이 항목의 출처</b> — ' + esc(names.join(' / ') || x.source) + '. 기업과 기관의 최신 정보는 각 공식 공시로 확인하십시오.</p></section>';
     main.innerHTML = '<nav class="crumbs" aria-label="위치"><a href="' + back + '">' + IC.back + '목록으로</a><span>/</span>' + esc(c.name) +
-      (x._c === 'ENT' && x._grp[0] ? ' <span>/</span> ' + esc(x._grp.join(' · ')) : x._c === 'PUB' ? ' <span>/</span> ' + esc(x.sub_category) : '') + '</nav>' +
+      (x._c === 'ENT' && x._grp[0] ? ' <span>/</span> ' + esc(x._grp.join(' · ')) : x._c === 'PUB' || x._c === 'LPI' ? ' <span>/</span> ' + esc(x.sub_category) : '') + '</nav>' +
       '<div class="dt"><div class="lead">' + card + tiles(x) + (b ? '<div class="body">' + b + '</div>' : '') + '</div>' + (s2 ? '<div class="side">' + s2 + '</div>' : '') + mt + '</div>';
     arm(main);
     fitSide();
@@ -819,13 +927,14 @@
   /* ---------- 출처와 한계 ---------- */
   function renderAbout() {
     view = 'about'; d.body.removeAttribute('data-home'); tabs('about');
-    var m = META, h = '<div class="ab"><h1>출처와 한계</h1><p class="lead">이 명함첩은 공정거래위원회·알리오·중견기업정보마당·국민연금공단이 공개한 사실 정보와, 중견기업에 한해 더한 한국어 위키백과·위키데이터·상장 종목 공개 정보로 만든 자료(company-wiki v' + esc(m.version || '') + ', ' + esc(m.built_at || '') + ')를 고치지 않고 읽어 보여 줍니다. 확인되지 않은 값은 화면에 싣지 않았습니다.</p>';
+    var m = META, h = '<div class="ab"><h1>출처와 한계</h1><p class="lead">이 명함첩은 공정거래위원회·알리오·중견기업정보마당·국민연금공단·행정안전부가 공개한 사실 정보와, 중견기업에 한해 더한 한국어 위키백과·위키데이터·상장 종목 공개 정보로 만든 자료(company-wiki v' + esc(m.version || '') + ', ' + esc(m.built_at || '') + ' · 지방공공기관은 company-local-public v' + esc((LMETA && LMETA.version) || '') + ', ' + esc((LMETA && LMETA.built_at) || '') + ')를 고치지 않고 읽어 보여 줍니다. 확인되지 않은 값은 화면에 싣지 않았습니다.</p>';
     var F = {
       ENT: [['매출', '_rev'], ['종업원수', '_emp'], ['자산총액', '_ast'], ['업종', 'industry'], ['소재지', 'headquarters']],
       MID: [['국민연금 가입자', '_emp'], ['업종', 'industry'], ['주요 사업', 'main_products'], ['공식 홈페이지', 'official_url'], ['상장 종목코드', 'stock_code'], ['소재지', 'headquarters'], ['확인서', 'certificate_no']],
-      PUB: [['매출', '_rev'], ['정원', '_emp'], ['하는 일', 'business_summary'], ['소재지', 'headquarters'], ['홈페이지', 'official_url']]
+      PUB: [['매출', '_rev'], ['정원', '_emp'], ['하는 일', 'business_summary'], ['소재지', 'headquarters'], ['홈페이지', 'official_url']],
+      LPI: [['세부 유형', 'sub_category'], ['업무 유형', 'type_detail'], ['설립 지자체', 'founder'], ['시·도', 'location_sido'], ['설립 단위', 'region_scope']]
     };
-    h += '<h2>3대 분류와 채움 현황</h2><div class="cats">' + CATS.map(function (c) {
+    h += '<h2>4대 분류와 채움 현황</h2><div class="cats">' + CATS.map(function (c) {
       var l = ITEMS.filter(function (x) { return x._c === c.k; }), N = l.length || 1;
       var bars = F[c.k].map(function (b) {
         var n = l.filter(function (x) { return x[b[1]] != null && x[b[1]] !== ''; }).length;
@@ -833,7 +942,7 @@
       }).join('');
       return '<a class="k-' + c.k + '" href="#list?c=' + c.k + '"><h3>' + esc(c.name) + '<b>' + fmt(l.length) + '</b></h3><p>' + esc(c.def) + '</p><div class="fill" aria-label="항목별 채운 곳 수(0인 값은 뺌)">' + bars + '</div></a>';
     }).join('') + '</div>';
-    h += '<h2>원자료</h2><table class="tbl"><thead><tr><th>출처</th><th>무엇을 가져왔나</th><th>기준일 · 이용 조건</th></tr></thead><tbody>' + (m.sources || []).map(function (s) {
+    h += '<h2>원자료</h2><table class="tbl"><thead><tr><th>출처</th><th>무엇을 가져왔나</th><th>기준일 · 이용 조건</th></tr></thead><tbody>' + (m.sources || []).concat((LMETA && LMETA.sources) || []).map(function (s) {
       var u = safeUrl(s.url);
       return '<tr><td>' + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + esc(s.name) + '</a>' : esc(s.name)) + ' <span class="code">' + esc(s.id) + '</span></td><td>' + esc(s.used_for || '') + '</td><td>' + esc(s.as_of || '') + ' · ' + esc(s.license || '') + '</td></tr>';
     }).join('') + '</tbody></table>';
@@ -844,14 +953,16 @@
       '<li><b>음수 매출</b>은 사모투자합자회사·투자목적회사 같은 펀드성 법인의 원자료 값(손실)입니다. 오류가 아닙니다.</li>' +
       '<li><b>공공기관 직원수는 정원</b>(임직원 총계 A+B+C)입니다. 현원과 다를 수 있습니다. 매출은 2025년 결산이며, 금융형 기관은 영업수익, 일반 기관은 매출·수익(매출액) 행입니다.</li>' +
       '<li><b>공공기관 업종은 비어 있습니다.</b> 알리오는 표준산업분류를 공개하지 않습니다. 기관 유형·주무부처·하는 일로 판단하십시오.</li>' +
+      '<li><b>지방공공기관은 행정안전부가 2026-06-30 기준으로 공개한 현황</b>입니다. 지방자치단체가 직접 운영하는 상수도·하수도 사업소(직영기업)도 한 곳으로 세었고, 지방공기업 수 423곳은 그 사무소 수가 아니라 지방공기업법이 적용되는 기업 단위입니다.</li>' +
+      '<li><b>지방공공기관 자료에는 매출·정원·설립일·홈페이지가 없습니다.</b> 원자료가 명칭·구분·지역·설립 지자체·유형만 공개하므로 그 밖의 칸은 만들지 않았습니다. 출자·출연기관은 「지방자치단체 출자·출연기관의 운영에 관한 법률」에 따라 지정·고시된 기관이라, 지정이 바뀌면 목록도 바뀝니다.</li>' +
       '<li><b>중견기업은 확인서 발급기업만</b> 공개됩니다(하한 집합). 업종·직원수·소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였고, 대조된 곳은 3,946곳 중 3,725곳입니다(이름 표기가 달라 확신할 수 없는 221곳은 비워 두었습니다). 가입자수는 상시근로자수와 다르고, 사업장업종은 사업주가 신고한 값이라 실제 주력 사업과 다를 수 있으며, 주소는 도로명·법정동 단위까지만 있는 경우가 많습니다.</li>' +
       '<li><b>중견기업의 공식 홈페이지·주요 사업·상장 정보는 보강한 항목</b>입니다. 홈페이지는 위키백과·위키데이터가 가리키는 주소를 실제로 열어 회사명이나 사업자번호가 확인된 경우에만 실었고(3,946곳 중 ' + fmt(ITEMS.filter(function (x) { return x._c === 'MID' && x.official_url; }).length) + '곳), 접속이 막혀 확인하지 못한 주소는 두 출처가 같은 도메인을 가리킬 때만 실었습니다. 그래서 홈페이지가 있는데도 비어 있는 기업이 있습니다. 주요 사업은 위키백과 첫 문장·상장사 기업개요에서 확인된 짧은 명사구이고, 상장 정보는 종목코드가 있는 곳만입니다.</li>' +
       '<li><b>같은 이름의 다른 법인</b>이 있습니다. 주소의 번호(법인등록번호·사업자등록번호)로 구분합니다.</li>' +
       '<li><b>규모 눈금</b>은 같은 분류 안에서 값이 있는 곳만 모아 로그 눈금 24칸으로 나눈 그림입니다. 순위는 원자료 값의 크기 순서일 뿐 기업의 좋고 나쁨이 아닙니다.</li>' +
       '<li>업종 대분류 이름은 통계청 한국표준산업분류(KSIC) 대분류 명칭이며, 코드 첫 글자로 묶었습니다. 중견기업의 <b>업종 갈래</b>는 국민연금 사업장업종코드(6자리) 앞자리로 묶은 화면용 분류이고, 원자료 코드는 카드에 그대로 적었습니다.</li>' +
       (m.limitations || []).slice(0, 2).map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>';
-    h += '<h2>갱신 주기</h2><ul class="lim"><li><b>공정거래위원회</b> — 해마다 5월 1일 기업집단 지정. 재무·인력은 직전 사업연도 결산.</li><li><b>알리오</b> — 분기 정기공시(1·4·7·10월 중순 마감).</li><li><b>중견기업정보마당</b> — 확인서 발급 때마다 수시로 바뀝니다.</li><li><b>국민연금 가입 사업장 내역</b> — 매달 갱신. 이 자료는 2026-09분입니다.</li><li><b>위키백과·위키데이터</b> — 수시로 바뀝니다. 이 자료는 2026-11-16에 조회한 값입니다.</li></ul>';
-    h += '<h2>저작권과 이용</h2><ul class="lim"><li>명칭·주소·설립일·인원·매출·업종·홈페이지 주소·종목코드·확인서 번호 같은 단순 사실 정보이며, 공공기관이 공개를 전제로 배포하는 정보입니다. 재배포할 때는 위 출처를 밝혀 주십시오.</li><li>한국어 위키백과는 CC BY-SA 4.0입니다. 문장을 옮기지 않고 문서 존재·사업 분야·공식 웹사이트 주소만 사실 확인에 썼습니다. 위키데이터는 CC0입니다.</li><li>기업 로고·CI·사진·홈페이지 본문, 캐치프레이즈·인재상·복지 홍보 문구는 수집하지 않았습니다. 명함 가운데 동그라미 글자는 이름 첫 글자일 뿐 기업 표장이 아닙니다.</li><li>잡코리아·사람인·원티드·캐치 같은 민간 채용 플랫폼의 정보는 쓰지 않았습니다. 이 화면은 어떤 기관이나 기업의 공식 자료도, 채용 정보도 아닙니다.</li></ul></div>';
+    h += '<h2>갱신 주기</h2><ul class="lim"><li><b>공정거래위원회</b> — 해마다 5월 1일 기업집단 지정. 재무·인력은 직전 사업연도 결산.</li><li><b>알리오</b> — 분기 정기공시(1·4·7·10월 중순 마감).</li><li><b>행정안전부 지방공기업·출자출연기관 현황</b> — 분기마다(1·4·7·10월) 기준일로 게시. 이 자료는 2026-06-30 기준입니다.</li><li><b>중견기업정보마당</b> — 확인서 발급 때마다 수시로 바뀝니다.</li><li><b>국민연금 가입 사업장 내역</b> — 매달 갱신. 이 자료는 2026-09분입니다.</li><li><b>위키백과·위키데이터</b> — 수시로 바뀝니다. 이 자료는 2026-11-16에 조회한 값입니다.</li></ul>';
+    h += '<h2>저작권과 이용</h2><ul class="lim"><li>명칭·주소·설립일·인원·매출·업종·홈페이지 주소·종목코드·확인서 번호 같은 단순 사실 정보이며, 공공기관이 공개를 전제로 배포하는 정보입니다. 재배포할 때는 위 출처를 밝혀 주십시오.</li><li>지방공공기관은 행정안전부가 공개한 현황 파일에서 기관 명칭·구분·지역·설립 지자체·유형만 옮겼습니다. 같은 항목을 공공데이터포털에서 「이용허락범위 제한 없음」으로도 개방하고 있습니다(15048282 · 15048281). 현황 파일의 서식·문장·로고는 쓰지 않았습니다.</li><li>한국어 위키백과는 CC BY-SA 4.0입니다. 문장을 옮기지 않고 문서 존재·사업 분야·공식 웹사이트 주소만 사실 확인에 썼습니다. 위키데이터는 CC0입니다.</li><li>기업 로고·CI·사진·홈페이지 본문, 캐치프레이즈·인재상·복지 홍보 문구는 수집하지 않았습니다. 명함 가운데 동그라미 글자는 이름 첫 글자일 뿐 기업 표장이 아닙니다.</li><li>잡코리아·사람인·원티드·캐치 같은 민간 채용 플랫폼의 정보는 쓰지 않았습니다. 이 화면은 어떤 기관이나 기업의 공식 자료도, 채용 정보도 아닙니다.</li></ul></div>';
     main.innerHTML = h; window.scrollTo(0, 0);
   }
 
@@ -860,7 +971,7 @@
     var r = readHash();
     if (view === 'list' && r.v !== 'list') { listY = window.pageYOffset; lastList = listHash(st); }
     if (r.v === 'item') { renderItem(r.id); return; }
-    try { d.title = '기업 명함첩 · 대기업·중견기업·공공기관 기업 위키'; } catch (e) {}
+    try { d.title = '기업 명함첩 · 대기업·중견기업·중앙 공공기관·지방공공기관 기업 위키'; } catch (e) {}
     if (r.v === 'about') { renderAbout(); return; }
     var wasList = view === 'list', from = view;
     st = r.s;
@@ -868,18 +979,18 @@
     else { var q = d.getElementById('q'); if (q && q.value !== st.q) q.value = st.q; updateList(); }
   }
 
-  /* ---------- 불러오기: 4MB를 받는 동안 진행 막대(transform만) ---------- */
-  var EST = 5700000;
-  function fetchJson(url) {
+  /* ---------- 불러오기: 두 파일 6.4MB를 받는 동안 진행 막대(transform만) ---------- */
+  var EST = 6400000;
+  function fetchJson(url, onBytes) {
     return fetch(url).then(function (r) {
       if (!r.ok) throw new Error(r.status);
       if (!r.body || !r.body.getReader || !window.TextDecoder) return r.json();
-      var rd = r.body.getReader(), dec = new TextDecoder('utf-8'), parts = [], got = 0, bar = d.getElementById('ldBar');
+      var rd = r.body.getReader(), dec = new TextDecoder('utf-8'), parts = [], got = 0;
       function pump() {
         return rd.read().then(function (o) {
           if (o.done) { parts.push(dec.decode()); return JSON.parse(parts.join('')); }
           got += o.value.length; parts.push(dec.decode(o.value, { stream: true }));
-          if (bar) bar.style.transform = 'scaleX(' + Math.min(.98, got / EST).toFixed(3) + ')';
+          if (onBytes) onBytes(got);
           return pump();
         });
       }
@@ -887,11 +998,23 @@
     });
   }
   function load() {
-    fetchJson('./data/companies.json').then(function (D) {
-      META = D.meta || {}; ITEMS = D.companies || [];
+    var bar = d.getElementById('ldBar'), done = 0;
+    function prog(n) { if (bar) bar.style.transform = 'scaleX(' + Math.min(.98, n / EST).toFixed(3) + ')'; }
+    // 지방공공기관 파일은 따로 둔다. 이것만 실패하면 나머지 세 분류는 그대로 연다(분류 탭에서 뺐다).
+    var gotL = {};
+    Promise.all([
+      fetchJson('./data/companies.json', function (n) { done += n - (gotL.main || 0); gotL.main = n; prog(done); }),
+      fetchJson('./data/local-public.json', function (n) { done += n - (gotL.lpi || 0); gotL.lpi = n; prog(done); }).catch(function () { return null; })
+    ]).then(function (R) {
+      var D = R[0], L = R[1];
+      META = D.meta || {}; ITEMS = (D.companies || []).slice();
+      if (L) { LMETA = L.meta || {}; ITEMS = ITEMS.concat(L.institutions || []); }
       (META.sources || []).forEach(function (s) { SRC[s.id] = s; });
+      ((LMETA && LMETA.sources) || []).forEach(function (s) { SRC[s.id] = s; });
       (META.tag_vocabulary || []).forEach(function (t) { TAGV[t.tag] = t; });
       if (SRC.FTC) SRC.FTC.short = '공정거래위원회'; if (SRC.ALIO) SRC.ALIO.short = '알리오'; if (SRC.MME) SRC.MME.short = '중견기업정보마당'; if (SRC.NPS) SRC.NPS.short = '국민연금공단'; if (SRC.WIKI) SRC.WIKI.short = '위키백과'; if (SRC.WD) SRC.WD.short = '위키데이터'; if (SRC.LIST) SRC.LIST.short = '상장 종목 정보';
+      if (SRC.MOIS_LGI) SRC.MOIS_LGI.short = '행정안전부'; if (SRC.MOIS_INV) SRC.MOIS_INV.short = '행정안전부'; if (SRC.PUBDATA_LGI) SRC.PUBDATA_LGI.short = '공공데이터포털'; if (SRC.PUBDATA_INV) SRC.PUBDATA_INV.short = '공공데이터포털';
+      if (!L) { CATS = CATS.filter(function (c) { return c.k !== 'LPI'; }); delete CK.LPI; }
       for (var i = 0; i < ITEMS.length; i++) { BYID[ITEMS[i].id] = ITEMS[i]; prep(ITEMS[i]); }
       ENTREV = ITEMS.filter(function (x) { return x._c === 'ENT' && x._rev > 0; }).sort(function (a, b) { return b._rev - a._rev; });
       CATS.forEach(function (c) { c.n = ITEMS.filter(function (x) { return x._c === c.k; }).length; });
