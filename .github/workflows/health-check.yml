@@ -1,0 +1,33 @@
+# 라이브 헬스체크 (3순위)
+#   매일 06:30 KST에 배포본(대문 + 섹터 전부)의 응답과 오늘 자료를 확인해 Job Summary에 남긴다.
+#   수동 실행: Actions → health-check → Run workflow
+name: health-check
+
+on:
+  schedule:
+    - cron: '30 21 * * *'   # 21:30 UTC = 06:30 KST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: health-check
+  cancel-in-progress: false
+
+jobs:
+  live-check:
+    name: live-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 라이브 점검
+        run: |
+          python3 ops/scripts/health_check.py \
+            --summary-file "$GITHUB_STEP_SUMMARY"
