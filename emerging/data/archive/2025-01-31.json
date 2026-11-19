@@ -1,0 +1,329 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-20T06:26:22+09:00",
+ "edition": {
+  "no": 7,
+  "date": "2025-01-31",
+  "weekday": "금",
+  "title": "사업용 태양광, 3GW대 복귀",
+  "reading_minutes": 3,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20250131-1",
+   "date": "2025-01-31",
+   "order": 1,
+   "sector": "s4",
+   "cat": "energy",
+   "lead": true,
+   "title": "사업용 태양광 신규보급, 3년 만에 3GW대로 돌아왔다",
+   "kicker": "산업통상자원부 · 2025.1.31 보도자료",
+   "summary": "산업통상자원부가 1월 31일 2024년 사업용 태양광 보급 현황 잠정치를 발표했다. 신규 설치용량은 3.16GW로 2021년 이후 다시 3GW대를 회복했고, 누적 보급용량은 27.1GW가 됐다. 보급 확대의 주된 원인은 공장부지 안 태양광 설치 증가로 분석됐다.",
+   "key_numbers": [
+    {
+     "label": "2024년 신규",
+     "value": "3.16GW",
+     "note": "2021년 이후 3GW대 회복"
+    },
+    {
+     "label": "누적 보급",
+     "value": "27.1GW",
+     "note": "잠정치"
+    },
+    {
+     "label": "보급 원인",
+     "value": "공장부지 설치 증가",
+     "note": "입지개발 유도·투자여건 개선"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "한국전력공사",
+     "전력거래소"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-pv-om"
+    ]
+   },
+   "source_id": "src_motie_pv2024",
+   "question": "공장 지붕에 붙는 태양광은 누가 점검하고 누가 고칠까?",
+   "subtitle": "2024년 3.16GW를 새로 설치해 누적 27.1GW, 공장부지가 늘렸다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-elec",
+   "name": "전기·전자 엔지니어",
+   "en": "Electrical / Electronics Engineer",
+   "sector": "s2",
+   "role": "전력·제어·회로 시스템을 설계하고 시험한다. 배터리·로봇·충전설비처럼 전기를 다루는 모든 신산업의 아래쪽에서 작동한다.",
+   "ksa": {
+    "k": [
+     "회로이론·전력계통",
+     "전자부품 특성",
+     "전기 안전 규정"
+    ],
+    "s": [
+     "회로 설계·PCB",
+     "계측·디버깅",
+     "인증 시험 대응"
+    ],
+    "a": [
+     "감전·화재 위험을 먼저 보는 습관",
+     "측정값을 믿고 확인하는 태도"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "전자공학",
+    "제어계측공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전자기사",
+    "전기안전기사"
+   ],
+   "insight": "신산업의 화려한 부분은 아니지만, 전원이 꺼지면 모든 것이 멈춘다. 로봇·배터리·수소 설비 모두 이 직무 위에 서 있다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "LG전자",
+     "현대모비스",
+     "효성중공업",
+     "LS일렉트릭"
+    ],
+    "global": [
+     "Texas Instruments",
+     "Infineon",
+     "ABB",
+     "Siemens"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
+  },
+  {
+   "id": "j-pv-om",
+   "kind": "new",
+   "name": "태양광 O&M·계통연계 기술자",
+   "en": "Solar PV O&M / Grid Interconnection Technician",
+   "sector": "s4",
+   "role": "설치된 모듈·인버터의 발전량을 감시하고 고장을 찾아 교체한다. 배전계통과의 연계 조건(보호협조·수용성)을 맞추고, 설치 뒤 20년의 발전량을 책임진다.",
+   "ksa": {
+    "k": [
+     "태양광 모듈·인버터 특성",
+     "배전계통 연계 기준",
+     "발전량·고장 데이터 해석"
+    ],
+    "s": [
+     "절연·I-V 측정 등 현장 진단",
+     "모니터링 시스템(SCADA) 운용",
+     "고장 이력 분석과 교체 계획"
+    ],
+    "a": [
+     "안전 작업 절차를 먼저 확인하는 습관",
+     "발전량 이상을 데이터로 확인하는 태도"
+    ]
+   },
+   "companies": {
+    "domestic": [
+     "한화큐셀",
+     "현대에너지솔루션",
+     "SDN",
+     "신성이엔지"
+    ],
+    "global": [
+     "First Solar",
+     "Nextracker",
+     "SolarEdge",
+     "JinkoSolar"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "신재생에너지공학",
+    "전기설비"
+   ],
+   "certs": [
+    "신재생에너지발전설비기사(태양광)",
+    "전기기사",
+    "전기안전기사"
+   ],
+   "insight": "설치가 끝나면 직무가 바뀐다. 빠르게 늘어난 설비를 20년 동안 돌리는 사람이 다음 수요다.",
+   "next_roles": [
+    {
+     "n": "태양광 자산 관리자",
+     "w": "여러 발전소의 발전량·수익을 비교해 운영"
+    },
+    {
+     "n": "계통 연계 검토원",
+     "w": "배전계통 수용성·보호협조를 검토"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_motie_pv2024",
+   "name": "산업통상자원부",
+   "title": "사업용 태양광 신규보급, 연간 3GW대 재진입",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156672360",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2025-01-31",
+   "track": "A",
+   "usage": "2024년 사업용 태양광 신규 3.16GW(2021년 이후 3GW대 회복), 누적 27.1GW(잠정), 공장부지 설치 증가가 주된 원인"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
