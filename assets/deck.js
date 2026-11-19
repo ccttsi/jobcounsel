@@ -297,10 +297,13 @@
     li.classList.add('a-new');
     setTimeout(function () { li.classList.remove('a-new'); }, 460);
     var sc = $('deckScroll'); if (!sc) return;
-    var top = li.offsetTop, bot = top + li.offsetHeight;
-    if (top < sc.scrollTop || bot > sc.scrollTop + sc.clientHeight) {
-      sc.scrollTop = Math.max(0, top - 12);   /* 칸 안에서만 움직인다(페이지가 튀지 않게) */
-    }
+    /* 2026-11-19: offsetTop은 스크롤 상자가 아닌 **위치가 잡힌 조상**을 기준으로 재어져,
+       4번째 칸부터 스크롤이 어긋나 칸 위쪽이 잘려 보였다. 두 상자의 화면 좌표 차이로
+       스크롤 상자 안에서의 자리를 재고, 위·아래 여유(pad)까지 넣어 칸이 통째로 보이게 한다. */
+    var pad = 12, box = sc.getBoundingClientRect(), r = li.getBoundingClientRect();
+    var top = r.top - box.top + sc.scrollTop, bot = top + r.height;
+    if (top - pad < sc.scrollTop) sc.scrollTop = Math.max(0, top - pad);        /* 위가 잘리면 내린다 */
+    else if (bot + pad > sc.scrollTop + sc.clientHeight) sc.scrollTop = bot + pad - sc.clientHeight;
   }
 
   /* ---------- 꽂기·빼기 ---------- */
@@ -530,6 +533,13 @@
       f: '<div class="r"><span class="n">1</span><span class="w">직업상담 이론 위키</span></div>'
         + '<div class="r"><span class="n">2</span><span class="w">다시 읽는 『직업의 선택』</span></div>'
         + '<div class="r hi"><span class="n">3</span><span class="w">다음 빈 칸이 여기에</span><em>자동</em></div>'
+    },
+    {
+      t: '프리셋으로 한 번에 꽂습니다',
+      p: '손으로 하나씩 꽂는 대신, 덱 위 <b>상황 프리셋</b>(매치는 <b>유형 프리셋</b>) 줄에서 상담 상황 하나를 누르면 그 순서대로 자료가 <b>한 번에</b> 꽂히고, 아래에 <b>단계 → 질문 → 확인</b> 진행판이 열립니다. 손으로 칸을 바꾸면 프리셋 표시만 조용히 풀리고, <b>프리셋 풀기</b>를 누르면 꽂기 전 배치로 돌아갑니다.',
+      f: '<div class="r hi"><span class="n">01</span><span class="w">오늘 고용·산업 동향</span><em>3단계 · 꽂힘</em></div>'
+        + '<div class="r"><span class="n">02</span><span class="w">법령·수당·자격 팩트체크</span><em>4단계</em></div>'
+        + '<div class="r"><span class="n">03</span><span class="w">이론·검사 발문 점검</span><em>4단계</em></div>'
     }
   ];
   function fitTut() {

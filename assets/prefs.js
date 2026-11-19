@@ -1,5 +1,5 @@
 /*
- * 직업상담 통합 자료실 · 공용 화면 설정 (테마 버튼 + 글자 크기 버튼)
+ * Career Consultant Tutorial (CCTT) · 공용 화면 설정 (테마 버튼 + 글자 크기 버튼)
  *
  * 쓰는 법: 페이지 머리말의 원하는 자리에 <span data-jc-prefs></span>를 두고
  *          </body> 앞에 <script src="../assets/prefs.js" defer></script>를 넣는다.
