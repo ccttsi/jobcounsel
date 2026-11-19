@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0.0",
- "generated_at": "2026-11-19T12:08:05+09:00",
+ "generated_at": "2026-11-19T12:27:30+09:00",
  "industry_count": 24,
  "method": {
   "baseline": {
@@ -4143,7 +4143,7 @@
         "value": "2026년 97달러 / 2025년 69달러",
         "period": "2026 전망",
         "source_id": "src_eia_steo_2611",
-        "note": "",
+        "note": "세계 에너지 업종 기준 — 국내 전기·가스업에는 원가 부담이라 방향을 반대로 본다",
         "dir": 1,
         "ratio": 8.12,
         "score": 1.0
