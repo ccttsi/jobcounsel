@@ -245,9 +245,11 @@
    *   · 방치 유도(5.0초)도 같은 캔버스가 그린다: 파동이 가운데로 오므라들며(0.7초)
    *     한붓그리기 4개 모양으로 0.9초씩 구부러지고(3.6초), 다시 파동으로 풀린다(0.7초).
    *   · 프레임마다 DOM·SVG·레이아웃을 건드리지 않는다(캔버스 픽셀만). 감속 모드에서는 한 장만 그린다.
+   *   · 2026-11-19: 창 양 끝이 뚝 잘려 보이던 것을 **알파 페이드**로 없앴다. 파형 색은 그대로 두고
+   *     그린 픽셀의 알파만 좌우 20% 구간에서 0 → .08 → .25 → .55 → .85 → 1로 점점 진해지게 깎는다.
    */
   var ECG = { cv: null, cx: null, on: false, raf: 0, last: 0, dpr: 1,
-    ph: 0, sp: 1 / 1.9, amp: 1, tone: 0, beat: 84, lw: 1.5, echo: 0, ceil: 0, chg: 0, arm: 0,
+    ph: 0, sp: 1 / 1.9, amp: 1, tone: 0, beat: 84, lw: 1.5, echo: 0, ceil: 0, chg: 0, arm: 0, mask: null,
     c1: [15, 118, 110], c2: [180, 83, 42], c3: [162, 100, 0], dark: false };
   var ECG_W = 168, ECG_H = 34, ECG_BASE = 20, ECG_R = 8, ECG_CX = ECG_W / 2;
   /* 3단계: 주기(초/회) · 진폭(배) · 박동 폭(px — 작을수록 창 안에 박동이 다닥다닥 붙는다) · 색 톤(0=청록 … 1=벽돌)
@@ -342,8 +344,32 @@
   }
   function ecgPaint() {
     var cx = ECG.cx; if (!cx) return;
+    cx.globalCompositeOperation = 'source-over';
     cx.clearRect(0, 0, ECG_W, ECG_H);
-    if (HINT.on) { ecgPaintHint(cx); return; }
+    if (HINT.on) ecgPaintHint(cx); else ecgPaintWave(cx);
+    ecgEdgeFade(cx);
+  }
+  /* ---------- 좌우 끝 알파 페이드 (2026-11-19) ----------
+   * 창 가장자리에서 파형이 뚝 끊기지 않고 배경으로 스며들며 사라지게, **그린 픽셀의 알파만** 깎는다.
+   * 색(평상 청록·장전 황토·격발 벽돌)은 한 톤도 섞지 않는다 — 색이 아니라 투명도만 변한다.
+   * 스톱은 왼쪽 0~20%를 0 → .08 → .25 → .55 → .85 → 1로 잇고, 오른쪽 80~100%는 그 거울이다.
+   * 완전 투명에서 본체로 넘어가는 구간이 곧바로 밝아지지 않게 중간 스톱을 촘촘히 둔 것이 핵심이다.
+   * 그라데이션은 한 번 만들어 캐시하고, 프레임마다 destination-in으로 한 번 채운다(168×34 한 판). */
+  var ECG_FADE = [[0, 0], [.032, .08], [.072, .25], [.118, .55], [.164, .85], [.20, 1]];
+  function ecgFadeMask(cx) {
+    if (ECG.mask) return ECG.mask;
+    var g = cx.createLinearGradient(0, 0, ECG_W, 0), i, s;
+    for (i = 0; i < ECG_FADE.length; i++) { s = ECG_FADE[i]; g.addColorStop(s[0], 'rgba(0,0,0,' + s[1] + ')'); }
+    for (i = ECG_FADE.length - 1; i >= 0; i--) { s = ECG_FADE[i]; g.addColorStop(1 - s[0], 'rgba(0,0,0,' + s[1] + ')'); }
+    ECG.mask = g; return g;
+  }
+  function ecgEdgeFade(cx) {
+    cx.globalCompositeOperation = 'destination-in';
+    cx.fillStyle = ecgFadeMask(cx);
+    cx.fillRect(0, 0, ECG_W, ECG_H);
+    cx.globalCompositeOperation = 'source-over';
+  }
+  function ecgPaintWave(cx) {
     var main = ecgTone(ECG.tone);
     /* 장전: 천장 헤어라인 — R 꼭대기가 닿기 직전의 목표선.
        장전 3초 동안 4.6px → 2.6px로 내려와 「숨이 차오르고 있다」를 보여 주고,
