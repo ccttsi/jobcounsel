@@ -103,10 +103,20 @@ a{color:inherit}
 :root[data-theme="dark"] .kw[aria-pressed="true"]{color:#0b0e15}
 .kw-more{min-height:44px;padding:0 15px;border:1px dashed var(--line2);border-radius:999px;font-size:14px;font-weight:700;color:var(--acc);background:none}
 
-/* ---------- 찾기 ---------- */
+/* ---------- 찾기 ----------
+   검색창은 포커스해도 상자 치수가 흔들리지 않게 고정한다.
+   · box-sizing:border-box + width:100%/min-width:0 — 안쪽 여백·테두리가 폭을 밀어내지 않는다.
+   · height:46px 고정 + padding 불변 — 포커스 때 패딩·테두리·글자 크기를 건드리지 않는다(변하는 것은 outline·테두리 색뿐).
+   · font-size:16px 이상 — iOS Safari가 입력칸에 포커스할 때 화면을 확대(자동 줌)하지 않는 최소 크기.
+   · -webkit-appearance:none — iOS가 검색칸에 네이티브 테두리·돋보기를 겹쳐 그려 깨지는 것을 막는다. */
 .find{display:flex;gap:8px;margin-top:14px}
-.find input{flex:1;min-width:0;min-height:46px;padding:0 14px;border:1px solid var(--line2);border-radius:12px;background:var(--bg);font-size:16px}
-.find input:focus{outline:2px solid var(--acc);outline-offset:0;border-color:transparent}
+.find input,.psfind input{box-sizing:border-box;width:100%;min-width:0;max-width:100%;margin:0;height:46px;min-height:46px;
+  padding:0 14px;border:1px solid var(--line2);border-radius:12px;background:var(--bg);color:var(--ink);
+  font-family:inherit;font-size:16px;line-height:normal;letter-spacing:inherit;text-overflow:ellipsis;
+  -webkit-appearance:none;appearance:none;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-margin-block:120px}
+.find input{flex:1 1 auto}
+.find input::-webkit-search-decoration,.psfind input::-webkit-search-decoration{-webkit-appearance:none;display:none}
+.find input:focus,.find input:focus-visible,.psfind input:focus,.psfind input:focus-visible{outline:2px solid var(--acc);outline-offset:-2px;border-color:var(--acc)}
 .find button{flex:none;min-height:46px;padding:0 18px;border-radius:12px;border:1px solid var(--acc);background:var(--acc-soft);color:var(--acc);font-size:15px;font-weight:750}
 
 /* ---------- 시작 자료 카드 ---------- */
@@ -120,6 +130,10 @@ a{color:inherit}
 .pick p{margin:0;font-size:15px;color:var(--muted)}
 .pick .meta{display:flex;flex-wrap:wrap;gap:6px}
 .pick .meta span{display:inline-flex;align-items:center;min-height:26px;padding:0 9px;border-radius:8px;border:1px solid var(--line);font-size:12.5px;font-weight:650;color:var(--muted)}
+.pick .tag.src{background:var(--soft);border:1px solid var(--line2);color:var(--muted)}
+.pick .src{margin:0;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.pick .src b{color:var(--ink);font-weight:750}
+.starts .load-note{margin:10px 0 0;font-size:13.5px;line-height:1.6;color:var(--muted)}
 .pick-go{justify-self:start;min-height:44px;padding:0 18px;border-radius:12px;background:var(--acc);color:var(--panel);font-size:15px;font-weight:750}
 :root[data-theme="dark"] .c-add,:root[data-theme="dark"] .pick-go{color:#0b0e15}
 .c-add[data-over]{background:var(--panel);color:var(--ink);border:1px solid var(--line2)}
@@ -171,9 +185,8 @@ a{color:inherit}
 /* ---------- 단계마다: 다른 자료 직접 찾기 ---------- */
 .psearch{display:grid;gap:8px;margin:0 0 14px;min-width:0}
 .psfind{position:relative;min-width:0}
-.psfind input{width:100%;min-width:0;min-height:46px;padding:0 46px 0 13px;border:1px solid var(--line2);border-radius:12px;background:var(--bg);font-size:15px}
+.psfind input{padding:0 46px 0 13px}
 .psfind input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
-.psfind input:focus{outline:2px solid var(--acc);outline-offset:0;border-color:transparent}
 .psfind input::placeholder{color:var(--muted);opacity:1}
 .psx{position:absolute;right:1px;top:1px;width:44px;height:44px;display:grid;place-items:center;border-radius:11px;font-size:18px;line-height:1;color:var(--muted)}
 .psx:hover{color:var(--ink)}
@@ -294,6 +307,7 @@ a{color:inherit}
       <ul>
         <li><b>후보와 시너지는 자료실 자료로만 셉니다.</b> 「자료실 연결 짝」은 <code>assets/tools.js</code>의 짝이고, 「겹치는 말」은 자료실 지도·번역기 용어에서 두 자료가 함께 쓰는 말입니다. 근거가 없는 조합은 후보로 올리지 않습니다.</li>
         <li><b>추천 가지 밖의 자료도 직접 엮을 수 있습니다.</b> 매 단계 위의 검색창에서 자료 이름·분류·키워드로 찾아 이으면, 근거가 없는 조합은 「직접 엮은 흐름 — 시드/매치 자유 조합」으로 따로 표시합니다.</li>
+        <li><b>기업·대학 이름으로도 찾습니다.</b> 「세스코」·「계명대」처럼 기업 명함첩·대학학과위키에 담긴 이름을 치면 그 이름이 실린 자료를 후보로 올려 바로 다음 단계로 잇습니다(초성 ㅅㅅㅋ·ㄱㅁㄷ, 약어 경단녀·국취도 됩니다).</li>
         <li><b>만든 덱은 내 계정에만 보관됩니다.</b> 로그인하지 않으면 이 브라우저에만 저장되고, 그 사실을 화면에 적어 둡니다. 다른 사람은 볼 수 없습니다.</li>
         <li><b>내담자 이름·연락처는 적지 마세요.</b> 덱에는 자료 이름과 순서만 담깁니다.</li>
         <li><b>자료실의 정보는 정답이 아닌 참고·실습용입니다.</b> 실제 판단은 최신 공식 자료와 기관 안내로 확인해 주세요.</li>
@@ -314,7 +328,7 @@ a{color:inherit}
       <div class="kws" id="kws" role="group" aria-label="시작 키워드"></div>
       <form class="find" id="findForm" role="search">
         <label class="sr" for="q">키워드나 자료 이름</label>
-        <input id="q" type="search" placeholder="예: 경단녀, 직무분석, 면접, 실업급여" autocomplete="off" enterkeyhint="search">
+        <input id="q" type="search" placeholder="예: 세스코, 계명대, 경단녀" autocomplete="off" enterkeyhint="search">
         <button type="submit" id="findBtn">찾기</button>
       </form>
       <div class="starts" id="starts" aria-live="polite"></div>
@@ -346,9 +360,9 @@ a{color:inherit}
           <div class="note" id="note" hidden></div>
           <div class="fork" id="fork">
             <div class="psearch" id="psearch">
-              <label class="plab" for="pq"><b>다른 자료 직접 찾아 엮기</b><span>예: 법전, 번역기, 기업</span></label>
+              <label class="plab" for="pq"><b>다른 자료 직접 찾아 엮기</b><span>예: 법전, 세스코, 계명대</span></label>
               <div class="psfind">
-                <input id="pq" type="search" placeholder="자료 이름 · 분류 · 키워드" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-controls="picks">
+                <input id="pq" type="search" placeholder="자료 이름 · 분류 · 키워드 · 기업·대학" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-controls="picks">
                 <button type="button" class="psx" id="pqClear" aria-label="검색어 지우기" hidden>×</button>
               </div>
               <p class="pstat" id="pqStat" aria-live="polite" hidden></p>

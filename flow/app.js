@@ -23,6 +23,11 @@
   var G = null, SEC = {}, PAIR = {}, CHAIN = [], KW = '', OVERRIDE = false, PENDING = null;
   var DECK_NAME = '', SHEET = '', REH = 0, SHOWALL = false;
   var SIDX = {}, PQ = '', PRAF = 0;   /* PQ — 단계마다 다른 자료를 직접 찾는 검색어 */
+  /* EXT — 메인 화면 검색과 같은 자료실 색인(문서 4,501 + 기업 9,137 + 약어 사전)을 flow 안에서 따로 받아 둔다.
+     「세스코」나 「계명대」처럼 지도(graph.json)에는 없는 이름을 쳐도 그 이름이 실린 자료를 찾아내기 위해서다.
+     처음 검색창을 건드릴 때 한 번만 받고(2MB 안팎), 그 뒤로는 메모리에 둔다. */
+  var EXT = { ready: false, loading: null, err: '', failAt: 0, rows: [], dict: [] };
+  var CHO = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -40,6 +45,31 @@
     var c = s.charCodeAt(s.length - 1);
     if (c < 0xac00 || c > 0xd7a3) return noJong;
     return ((c - 0xac00) % 28) ? withJong : noJong;
+  }
+  /* 초성만 친 말(ㅅㅅㅋ·ㄱㅁㄷ)을 알아보기 위한 두 가지 — 자모만인지, 한글을 초성으로 바꾸면 무엇인지 */
+  function isJamo(s) { return /^[ㄱ-ㅎ]+$/.test(String(s || '')); }
+  function choseong(s) {
+    var out = '', i;
+    for (i = 0; i < s.length; i++) {
+      var c = s.charCodeAt(i);
+      out += (c >= 0xac00 && c <= 0xd7a3) ? CHO[Math.floor((c - 0xac00) / 588)] : s.charAt(i);
+    }
+    return out;
+  }
+  /* 색인 이름 비교용 — 괄호·마침표 같은 기호를 모두 떼고 글자만 남긴다((주)세스코 → 세스코) */
+  function flat(s) { return String(s == null ? '' : s).toLowerCase().replace(/[^0-9a-z가-힣ㄱ-ㅎ]/g, ''); }
+  /* 화면에 보이는 이름 — 법인격 표기((주)·주식회사)는 읽기에 방해만 되므로 뗀다 */
+  function cleanLabel(s) {
+    var t = String(s == null ? '' : s).replace(/^㈜\s*/, '').replace(/^\(주\)\s*/, '')
+      .replace(/\s*㈜$/, '').replace(/\s*주식회사\s*$/, '').replace(/\s*\(주\)\s*$/, '').trim();
+    return t || String(s == null ? '' : s).trim();
+  }
+  /* 「국민취업지원제도」로 / 「경력단절여성」으로 */
+  function josaRo(word) {
+    var s = String(word || ''), c = s.charCodeAt(s.length - 1);
+    if (c < 0xac00 || c > 0xd7a3) return '';
+    var jong = (c - 0xac00) % 28;
+    return (jong && jong !== 8) ? '으로' : '로';
   }
   function toast(msg) {
     var t = $('toast');
@@ -89,6 +119,160 @@
   function metaOf(id, n) { return (SEC[id] || {}).meta || []; }
   function firstMeta(id) { return metaOf(id)[0] || ''; }
 
+  /* ---------- 자료실 색인 (메인 화면 검색과 같은 범위) ----------
+     메인 화면은 assistant/data/index.json(문서)·index-companies.json(기업 9,137곳)·
+     rag-preface.json(약어·현장 말)을 함께 본다. 플로우는 지도(graph.json)만 봐서
+     「세스코」(기업 명함첩)·「계명대」(대학학과위키)처럼 지도에 이름이 없는 말을 못 찾았다.
+     같은 세 파일을 flow 안에서 독립적으로(상대 경로 ../assistant/data/) 받아 이름 색인을 만든다. */
+  function loadExt() {
+    if (EXT.ready) return Promise.resolve(EXT);
+    if (EXT.loading) return EXT.loading;
+    if (EXT.failAt && Date.now() - EXT.failAt < 8000) return Promise.resolve(EXT);   /* 방금 실패했으면 잠깐 쉰다 */
+    var urls = ['../assistant/data/rag-preface.json', '../assistant/data/index.json', '../assistant/data/index-companies.json'];
+    EXT.loading = Promise.all(urls.map(function (u) {
+      return fetch(u, { cache: 'default' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .catch(function () { return null; });
+    })).then(function (res) {
+      /* 세 파일을 하나도 못 받았으면(오프라인·404) 색인 없이 지도만으로 찾는다 — 8초 뒤 다시 시도한다. */
+      if (!res[0] && !res[1] && !res[2]) {
+        EXT.err = 'load';
+        EXT.failAt = Date.now();
+        EXT.loading = null;
+        if ($('pq') && norm(PQ)) { try { renderCands(); } catch (e) {} }
+        return EXT;
+      }
+      try {
+        buildExt(res[0], res[1], res[2]);
+        EXT.ready = true;
+      } catch (e) {
+        EXT.err = String((e && e.message) || e);
+        EXT.failAt = Date.now();
+      }
+      EXT.loading = null;
+      if ($('pq') && norm(PQ)) { try { renderCands(); } catch (e) {} }   /* 단계 검색창이 열려 있었다면 다시 그린다 */
+      return EXT;
+    }, function () {
+      EXT.err = 'load';
+      EXT.failAt = Date.now();
+      EXT.loading = null;
+      return EXT;
+    });
+    return EXT.loading;
+  }
+
+  function buildExt(pref, ix, comp) {
+    var rows = [], seen = {}, i;
+    function push(sec, title, keys, alts) {
+      if (!sec || sec === G.self || !SEC[sec]) return;
+      var t = cleanLabel(title);
+      if (t.length < 2) return;
+      var n = flat(t);
+      if (!n || seen[sec + '|' + n]) return;
+      seen[sec + '|' + n] = 1;
+      var row = { s: sec, t: t.slice(0, 60), n: n, c: choseong(n) };
+      if (keys) { var k = flat(keys); if (k) row.k = k.slice(0, 160); }
+      if (alts) {
+        var a = [];
+        alts.forEach(function (x) { var v = flat(cleanLabel(x)); if (v && v !== n && a.indexOf(v) < 0) a.push(v); });
+        if (a.length) { row.a = a; row.ca = a.map(choseong); }
+      }
+      rows.push(row);
+    }
+    /* ① 자료 색인의 문서 — 대학(계명대학교)·자격·용어 등 이름이 한 줄씩 들어 있다 */
+    ((ix && ix.docs) || []).forEach(function (d) {
+      if (!d || !d.s) return;
+      push(d.s, d.t, d.k ? String(d.k).slice(0, 220) : '');
+    });
+    /* ② 기업 명함첩 — 지연 로드 파일의 한 줄 형식: id|이름|업종|분류|직원수|별칭|키워드 */
+    String((comp && comp.rows) || '').split('\n').forEach(function (line) {
+      var p = line.split('|');
+      if (p.length < 5 || !p[1]) return;
+      push('company', p[1], p[2] || '', (p[5] || '').split(';'));
+    });
+    /* ③ 약어·현장 말 사전 — 「국취」를 국민취업지원제도로 읽고, 그 말이 실린 자료를 가리킨다 */
+    var dict = [];
+    ((pref && pref.dict) || []).forEach(function (e) {
+      if (!e || !e.c) return;
+      var secs = (e.s || []).filter(function (id) { return SEC[id] && id !== G.self; });
+      if (!secs.length) return;
+      var forms = [e.c].concat(e.a || []).map(flat).filter(Boolean);
+      if (!forms.length) return;
+      dict.push({ c: String(e.c), n: flat(e.c), forms: forms, s: secs });
+    });
+    EXT.rows = rows;
+    EXT.dict = dict;
+  }
+
+  /* 색인에서 한 말이 걸린 자료를 섹터 단위로 모은다 — 섹터마다 가장 잘 맞은 이름 하나와 몇 곳이 걸렸는지만 남긴다. */
+  function extHits(q) {
+    var order = [], bySec = {};
+    if (!EXT.ready) return order;
+    var n = flat(q), text = String(q || '').replace(/\s+/g, ' ').trim();
+    if (!n) return order;
+    var jamo = isJamo(n);
+    function add(sec, sc, label, kind) {
+      var h = bySec[sec];
+      if (!h) { h = bySec[sec] = { id: sec, sc: 0, kind: kind, labels: [] }; order.push(h); }
+      if (h.labels.indexOf(label) < 0 && h.labels.length < 40) h.labels.push(label);
+      if (sc > h.sc) { h.sc = sc; h.best = label; h.kind = kind || h.kind; }
+    }
+    var rows = EXT.rows, i;               /* 문서(대학·용어…) → 기업 명함첩 순서 */
+    for (i = 0; i < rows.length; i++) {
+      var r = rows[i], sc = 0;
+      if (jamo) {
+        /* 초성은 «앞머리»를 본다. 짧게 끝나는 이름일수록 그 초성에 더 가깝다(ㅅㅅㅋ → 세스코 > 삼성카드). */
+        if (r.c === n) sc = 100;
+        else if (r.c.indexOf(n) === 0) sc = 88 - Math.min(10, r.c.length - n.length);
+        else if (r.ca && r.ca.some(function (c) { return c.indexOf(n) === 0; })) sc = 76;
+      } else if (r.n === n) sc = 100;
+      else if (r.a && r.a.indexOf(n) >= 0) sc = 92;
+      else if (n.length >= 2 && r.n.indexOf(n) === 0) sc = 84;
+      else if (r.a && n.length >= 2 && r.a.some(function (a) { return a.indexOf(n) === 0; })) sc = 74;
+      else if (n.length >= 2 && r.n.indexOf(n) >= 0) sc = 64;
+      else if (n.length >= 2 && r.k && r.k.indexOf(n) >= 0) sc = 30;
+      if (!sc) continue;
+      add(r.s, sc, r.t, r.s === 'company' ? 'company' : 'doc');
+    }
+    /* 약어 — 사용자가 별칭(국취·경단녀)·줄임말을 쳤을 때만 정식 용어로 펼친다 */
+    if (!jamo && n.length >= 2) {
+      for (var d = 0; d < EXT.dict.length; d++) {
+        var e = EXT.dict[d], hit = 0;
+        if (e.n === n) continue;
+        for (var f = 0; f < e.forms.length; f++) {
+          var w = e.forms[f];
+          if (!w || w === e.n) continue;
+          if (w === n) { hit = 2; break; }
+          if (w.indexOf(n) === 0) hit = Math.max(hit, 1);
+        }
+        if (!hit) continue;
+        for (var j = 0; j < e.s.length; j++) add(e.s[j], (hit === 2 ? 90 : 78) - j * 2, e.c, 'dict');
+      }
+    }
+    /* 근거 문장 만들기 — 이름 하나면 「이름」 수록, 여럿이면 「대표 이름」 외 N곳 수록 */
+    var out = [];
+    order.forEach(function (h) {
+      var s = SEC[h.id] || {};
+      var title = (s.title || h.id) + (s.no ? ' ' + s.no + '번' : '');
+      var label = cleanLabel(h.best || '');
+      var extra = h.labels.length - 1;
+      if (!label) return;
+      if (h.kind === 'dict') {
+        out.push({ id: h.id, sc: h.sc, kind: 'dict', label: label,
+          tag: '약어 「' + text + '」 → ' + label,
+          note: '약어 사전에서 「' + text + '」를 ' + label + josaRo(label) + ' 읽었습니다.' });
+        return;
+      }
+      out.push({ id: h.id, sc: h.sc, kind: h.kind, label: label,
+        tag: extra > 0 ? '「' + label + '」 외 ' + extra + '곳 수록' : '「' + label + '」 수록',
+        note: extra > 0
+          ? '「' + label + '」 외 ' + extra + '곳이 ' + title + ' 자료에 수록돼 있습니다.'
+          : '「' + label + '」' + josa(label, '이', '가') + ' ' + title + ' 자료에 수록돼 있습니다.' });
+    });
+    out.sort(function (a, b) { return (b.sc - a.sc) || (noOf(a.id) - noOf(b.id)); });
+    return out;
+  }
+
   /* ---------- 시작 ---------- */
   function renderKws(expanded) {
     var host = $('kws');
@@ -128,52 +312,85 @@
   function resolve(q) {
     var w = norm(q);
     if (!w) return [];
-    if (G.kw[w]) return G.kw[w];
-    /* 품긴 말로 찾기 — 짧은 말부터(「훈련」→ 「구직자 훈련」) */
-    var keys = Object.keys(G.kw).filter(function (k) { return k.indexOf(w) >= 0; });
-    if (keys.length) {
-      var ids = {}, out = [];
-      keys.forEach(function (k) { G.kw[k].forEach(function (id) { if (!ids[id]) { ids[id] = 1; out.push(id); } }); });
-      return out;
+    var ids = {}, out = [];
+    function add(id) {
+      if (!SEC[id] || id === G.self || ids[id]) return;
+      ids[id] = 1;
+      out.push({ id: id });
     }
-    /* 자료 이름·딱지·검색어에서 찾기 */
-    var byName = [];
-    G.sectors.forEach(function (s) {
-      if (s.id === G.self) return;
-      var hay = norm(s.title + ' ' + s.badge + ' ' + s.short + ' ' + s.kw.join(' '));
-      if (hay.indexOf(w) >= 0) byName.push(s.id);
+    if (G.kw[w]) G.kw[w].forEach(add);
+    else {
+      /* 품긴 말로 찾기 — 짧은 말부터(「훈련」→ 「구직자 훈련」) */
+      var keys = Object.keys(G.kw).filter(function (k) { return k.indexOf(w) >= 0; });
+      if (keys.length) keys.forEach(function (k) { G.kw[k].forEach(add); });
+      else {
+        /* 자료 이름·딱지·검색어에서 찾기 */
+        G.sectors.forEach(function (s) {
+          if (s.id === G.self) return;
+          var hay = norm(s.title + ' ' + s.badge + ' ' + s.short + ' ' + s.kw.join(' '));
+          if (hay.indexOf(w) >= 0) add(s.id);
+        });
+      }
+    }
+    /* 지도에 이름이 없어도 자료실 색인(기업 명함첩·대학학과위키·약어 사전)에 실려 있으면 그 자료를 보여 준다.
+       「세스코」 → 기업 명함첩, 「계명대」 → 대학학과위키. */
+    extHits(q).forEach(function (h) {
+      if (ids[h.id]) return;
+      ids[h.id] = 1;
+      out.push({ id: h.id, ext: h });
     });
-    return byName;
+    return out;
   }
 
   function renderMaterials(ids, label, lead) {
     var host = $('starts');
     clear(host);
-    ids = (ids || []).filter(function (id) { return SEC[id] && id !== G.self; });
+    var seen = {};
+    ids = (ids || []).map(function (x) { return typeof x === 'string' ? { id: x } : x; })
+      .filter(function (e) {
+        if (!e || !SEC[e.id] || e.id === G.self || seen[e.id]) return false;
+        seen[e.id] = 1;
+        return true;
+      });
     if (!ids.length) {
       var p = el('p', 'ok-msg bad', '그 말로 이어지는 자료를 찾지 못했습니다. 위의 키워드를 눌러 보거나, 자료 이름(예: 상담 대화 연습장)으로 적어 보세요.');
       host.appendChild(p);
+      if (!EXT.ready && lead === 'search') {
+        loadExt();
+        host.appendChild(el('p', 'load-note', '자료실 색인(기업 명함첩·대학학과위키 등 1만 3천여 곳)을 불러오는 중입니다. 불러오면 같은 말로 한 번 더 찾습니다.'));
+      }
       return;
     }
     if (label) {
       var h = el('p', 'cover-h', label + ' ' + ids.length + '곳');
       host.appendChild(h);
     }
-    ids.slice(0, 6).forEach(function (id) {
-      host.appendChild(materialCard(id));
+    ids.slice(0, 6).forEach(function (e) {
+      host.appendChild(materialCard(e.id, e.ext));
     });
+    if (!EXT.ready && lead === 'search') {
+      loadExt();
+      host.appendChild(el('p', 'load-note', '기업·대학 이름까지 찾도록 자료실 색인을 불러오는 중입니다.'));
+    }
   }
 
-  function materialCard(id) {
+  function materialCard(id, ext) {
     var s = SEC[id];
     var card = el('div', 'pick');
     var hd = el('div', 'pick-hd');
     var b = el('span', 'tag', s.badge);
     var n = el('span', 'tag num', s.no + '번');
     hd.appendChild(b); hd.appendChild(n);
+    if (ext) hd.appendChild(el('span', 'tag src', ext.tag));
     card.appendChild(hd);
     card.appendChild(el('h3', null, s.title));
     card.appendChild(el('p', null, s.desc));
+    if (ext) {
+      var src = el('p', 'src');
+      src.appendChild(el('b', null, '찾은 까닭 '));
+      src.appendChild(document.createTextNode('— ' + ext.note));
+      card.appendChild(src);
+    }
     var meta = el('div', 'meta');
     metaOf(id).forEach(function (m) { meta.appendChild(el('span', null, m)); });
     if (meta.childNodes.length) card.appendChild(meta);
@@ -182,6 +399,19 @@
     go.addEventListener('click', function () { startChain(id); });
     card.appendChild(go);
     return card;
+  }
+
+  /* 시작 검색창에서 한 번 찾기 — 색인이 늦게 도착하면 같은 말로 다시 찾아 카드를 갈아 끼운다 */
+  function searchStart(q) {
+    KW = '';
+    renderKws(true);
+    renderMaterials(resolve(q), '「' + q + '」로 찾은 자료', 'search');
+    if (EXT.ready) return;
+    loadExt().then(function () {
+      if (($('q').value || '').trim() !== q) return;     /* 그사이 다른 말을 찾았다면 그대로 둔다 */
+      if (!extHits(q).length) return;
+      renderMaterials(resolve(q), '「' + q + '」로 찾은 자료', 'search');
+    });
   }
 
   /* ---------- 흐름 ---------- */
@@ -432,6 +662,16 @@
       if (!sc) return;
       out.push({ id: id, sc: sc, why: why, used: !!used[id] });
     });
+    /* 자료실 색인(기업 명함첩·대학학과위키·약어 사전)에서 걸린 자료 — 지도에 이름이 없는 말도 후보로 올린다. */
+    extHits(q).forEach(function (h) {
+      for (var i = 0; i < out.length; i++) {
+        if (out[i].id !== h.id) continue;
+        /* 그래프에서 이미 걸린 자료는 그 근거를 그대로 두고, 이름·별칭이 꼭 같을 때만 색인 근거를 보탠다 */
+        if (!out[i].ext && h.sc >= 95) out[i].ext = h;
+        return;
+      }
+      out.push({ id: h.id, sc: 54 + h.sc * 0.42, why: [], ext: h, used: !!used[h.id] });
+    });
     out.sort(function (a, b) { return (b.sc - a.sc) || (noOf(a.id) - noOf(b.id)); });
     return out;
   }
@@ -454,16 +694,24 @@
     var all = searchMaterials(q);
     var show = all.filter(function (r) { return !r.used; });
     var usedN = all.length - show.length;
+    if (!EXT.ready) loadExt();
     var stat = $('pqStat');
     clear(stat);
     stat.hidden = false;
     stat.appendChild(el('b', null, '「' + q + '」 ' + show.length + '곳 찾음'));
     if (usedN) stat.appendChild(document.createTextNode(' · 이미 흐름에 담긴 ' + usedN + '곳은 뺐습니다'));
+    if (!EXT.ready) stat.appendChild(document.createTextNode(EXT.err
+      ? ' · 기업·대학 색인을 불러오지 못해 지도 안에서만 찾았습니다'
+      : ' · 기업·대학 색인 불러오는 중'));
     if (!show.length) {
       var box = el('div', 'pick-empty');
       box.appendChild(el('p', null, all.length
         ? '「' + q + '」는 이미 흐름에 담겨 있습니다. 다른 말로 찾거나 검색어를 지워 추천 가지로 돌아가세요.'
-        : '그 말로 이어지는 자료를 찾지 못했습니다. 자료 이름이나 분류(예: 법전, 번역기, 기업)로 다시 적어 보세요.'));
+        : (EXT.ready
+          ? '그 말로 이어지는 자료를 찾지 못했습니다. 자료 이름이나 분류(예: 법전, 번역기, 세스코, 계명대)로 다시 적어 보세요.'
+          : (EXT.err
+            ? '그 말로 이어지는 자료를 찾지 못했습니다. 자료 이름이나 분류(예: 법전, 번역기, 기업)로 다시 적어 보세요.'
+            : '기업·대학 이름까지 찾도록 자료실 색인을 불러오는 중입니다. 잠시 뒤 같은 말로 다시 찾아보세요.'))));
       var row = el('div', 'row');
       var cl = el('button', null, '검색어 지우기');
       cl.type = 'button';
@@ -474,7 +722,7 @@
       return;
     }
     show.slice(0, 12).forEach(function (r, i) {
-      host.appendChild(candCard(searchHit(r.id), i + 1, r.why));
+      host.appendChild(candCard(searchHit(r.id), i + 1, r.why, r.ext));
     });
     if (show.length > 12) {
       host.appendChild(el('p', 'pstat', '나머지 ' + (show.length - 12) + '곳은 검색어를 더 적어 좁혀 보세요.'));
@@ -540,14 +788,14 @@
     }
   }
 
-  function candCard(c, ord, why) {
+  function candCard(c, ord, why, ext) {
     var s = SEC[c.id], p = c.p;
     var card = el('article', 'cand');
     var top = el('div', 'c-top');
     top.appendChild(el('span', 'tag', s.badge));
     top.appendChild(el('span', 'tag num', s.no + '번'));
-    top.appendChild(el('span', 'c-no', why && why.length ? why.join(' · ') + '에서 찾음'
-      : (c.manual ? '직접 엮기' : '후보')));
+    top.appendChild(el('span', 'c-no', ext ? ext.tag
+      : (why && why.length ? why.join(' · ') + '에서 찾음' : (c.manual ? '직접 엮기' : '후보'))));
     card.appendChild(top);
     card.appendChild(el('h3', null, s.title));
     card.appendChild(el('p', 'c-desc', s.desc));
@@ -563,6 +811,13 @@
     }
     syn.appendChild(sh);
     var ul = el('ul', 'syn-l');
+
+    if (ext) {
+      var liS = el('li');
+      liS.appendChild(el('b', null, '찾은 까닭 '));
+      liS.appendChild(document.createTextNode('— ' + ext.note));
+      ul.appendChild(liS);
+    }
 
     var why1 = '';
     if (p && p.link) why1 = '자료실 연결 짝';
@@ -825,10 +1080,7 @@
       e.preventDefault();
       var q = ($('q').value || '').trim();
       if (!q) { renderKws(false); clear($('starts')); return; }
-      KW = '';
-      renderKws(true);
-      var ids = resolve(q);
-      renderMaterials(ids, '「' + q + '」로 찾은 자료', '');
+      searchStart(q);
     });
     $('againBtn').addEventListener('click', function () {
       CHAIN = [];
@@ -845,8 +1097,13 @@
       SHOWALL = !SHOWALL;
       renderCands();
     });
+    /* 시작 검색창 — 지도에 없어도 자료실 색인(기업·대학)에 실린 이름을 찾아 준다.
+       색인을 아직 받는 중이었다면 다 받은 뒤 같은 말로 한 번 더 찾는다. */
+    if ($('q')) $('q').addEventListener('focus', function () { loadExt(); });
+
     /* 단계마다 다른 자료를 직접 찾는 칸 — 입력 즉시 한 프레임에 한 번만 다시 그린다 */
     if ($('pq')) {
+      $('pq').addEventListener('focus', function () { loadExt(); });
       $('pq').addEventListener('input', function () {
         if (PRAF) return;
         PRAF = requestAnimationFrame(function () { PRAF = 0; setQuery($('pq').value); });
@@ -888,6 +1145,8 @@
   function init() {
     renderKws(false);
     bind();
+    /* 점검용 — 자료실 색인을 몇 줄 받았는지 밖에서 잴 수 있게 (화면에는 쓰지 않는다) */
+    window.JCFlowExt = function () { return { ready: EXT.ready, rows: EXT.rows.length, dict: EXT.dict.length, err: EXT.err }; };
     document.documentElement.setAttribute('data-jc-flow', 'ready');
   }
 
