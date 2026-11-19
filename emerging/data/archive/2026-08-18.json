@@ -1,0 +1,498 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-20T02:06:46+09:00",
+ "edition": {
+  "no": 20,
+  "date": "2026-08-18",
+  "weekday": "화",
+  "title": "국산 AI 모델 4개, 파라미터 750B까지",
+  "reading_minutes": 4,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20260818-1",
+   "date": "2026-08-18",
+   "order": 1,
+   "sector": "s4",
+   "cat": "ai",
+   "lead": true,
+   "title": "국산 AI 모델 4개, 750B까지 올라섰다",
+   "kicker": "과학기술정보통신부·정보통신산업진흥원 · 2026.8.18",
+   "summary": "과기정통부와 NIPA가 8월 18일 독자 AI 파운데이션 모델 프로젝트 2차 단계평가 결과를 공개했다. 정예 4개 팀이 파라미터 250B~750B 모델을 오픈소스로 공개했고, 업스테이지·SK텔레콤·LG AI연구원 세 팀이 다음 단계로 진출한다.",
+   "key_numbers": [
+    {
+     "label": "공개 모델",
+     "value": "4개",
+     "note": "250B~750B 파라미터"
+    },
+    {
+     "label": "최대 모델",
+     "value": "750B(A37B)",
+     "note": "LG AI연구원 K-EXAONE 2.0"
+    },
+    {
+     "label": "다음 단계 진출",
+     "value": "3개 팀",
+     "note": "업스테이지·SK텔레콤·LG AI연구원"
+    }
+   ],
+   "market": {
+    "label": "정예팀 모델 파라미터",
+    "unit": "B(십억 개)",
+    "basis": "2026년 상반기 공개 모델",
+    "chart": "bar",
+    "labels": [
+     "Motif 3",
+     "Solar Open2",
+     "A.X K2",
+     "K-EXAONE 2.0"
+    ],
+    "series": [
+     {
+      "name": "파라미터",
+      "values": [
+       314,
+       250,
+       688,
+       750
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "괄호 안 A 숫자는 추론 때 활성화되는 파라미터 수(A13B·A15B·A33B·A37B).",
+    "source_id": "src_msit_aifm2"
+   },
+   "players": {
+    "domestic": [
+     "모티프테크놀로지스",
+     "업스테이지",
+     "SK텔레콤",
+     "LG AI연구원"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-data"
+    ],
+    "new": [
+     "j-llm-train"
+    ]
+   },
+   "source_id": "src_msit_aifm2",
+   "question": "모델을 직접 만드는 팀은 소수다. 대신 모델을 사내에 붙이는 일은 대부분의 회사에서 생긴다.",
+   "subtitle": "314B·250B·688B·750B 네 모델 공개, 3개 팀이 다음 단계로"
+  },
+  {
+   "id": "ei-20260818-2",
+   "date": "2026-08-18",
+   "order": 2,
+   "sector": "s3",
+   "cat": "logistics",
+   "lead": false,
+   "title": "혁신제품 74개, 공공 120곳에서 먼저 써 본다",
+   "kicker": "조달청 · 2026.8.18 보도자료",
+   "summary": "조달청이 8월 18일 2026년 제3차 혁신제품 시범구매 대상으로 74개 혁신제품과 120개 시범사용 기관을 선정해 혁신장터에 공개했다. AI·위성통신 등 미래산업 제품을 공공기관이 먼저 사서 실제 사용 환경에서 성능을 시험한다.",
+   "key_numbers": [
+    {
+     "label": "선정 제품",
+     "value": "74개",
+     "note": "3차 수요매칭"
+    },
+    {
+     "label": "시범사용 기관",
+     "value": "120곳",
+     "note": "공공기관"
+    },
+    {
+     "label": "차수",
+     "value": "2026년 3차",
+     "note": "연중 반복"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "조달청"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-qa"
+    ],
+    "new": [
+     "j-demo-pm"
+    ]
+   },
+   "source_id": "src_pps_demo2026",
+   "question": "공공이 첫 고객이 되면 기업은 레퍼런스를 얻는다. 그 실증을 운영하는 사람은 무슨 일을 할까?",
+   "subtitle": "조달청 3차 수요매칭, AI·위성통신 제품을 실제 현장에서 검증한다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-data",
+   "name": "데이터 분석가",
+   "en": "Data Analyst",
+   "sector": "s4",
+   "role": "업무 데이터를 정리해 의사결정에 필요한 지표와 해석을 만든다. 질문을 정하는 단계부터 관여해야 분석이 실제로 쓰인다.",
+   "ksa": {
+    "k": [
+     "통계·지표 설계",
+     "도메인 이해",
+     "데이터 거버넌스"
+    ],
+    "s": [
+     "SQL·파이썬",
+     "시각화·대시보드",
+     "실험 설계"
+    ],
+    "a": [
+     "숫자로 말하되 과장하지 않는 태도",
+     "질문을 다시 정의하는 호기심"
+    ]
+   },
+   "study": [
+    "통계학",
+    "산업공학",
+    "컴퓨터공학",
+    "경제학"
+   ],
+   "certs": [
+    "ADsP·SQLD",
+    "정보처리기사",
+    "빅데이터분석기사"
+   ],
+   "insight": "BLS는 데이터 과학자 증가율을 33.5%로 본다. 신산업 브리핑을 읽는 사람에게 분석가는 ‘산업을 숫자로 확인하는 습관’을 주는 직무다.",
+   "companies": {
+    "domestic": [
+     "네이버",
+     "카카오",
+     "쿠팡",
+     "토스",
+     "공공데이터 기관"
+    ],
+    "global": [
+     "Google",
+     "Meta",
+     "Amazon",
+     "Microsoft"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "데이터 제품 기획자",
+     "w": "분석 결과를 반복 판매 가능한 제품으로 만드는 일"
+    }
+   ]
+  },
+  {
+   "id": "j-llm-train",
+   "kind": "new",
+   "name": "AI 파운데이션 모델 학습 엔지니어",
+   "en": "Foundation Model Training Engineer",
+   "sector": "s4",
+   "role": "대규모 언어모델의 학습 데이터 큐레이션, 분산 학습 구성, 평가 벤치마크를 설계한다. 제한된 GPU로 더 좋은 성능을 내기 위해 병렬화·양자화·데이터 혼합비를 조정한다.",
+   "ksa": {
+    "k": [
+     "트랜스포머 구조",
+     "분산 학습",
+     "데이터 큐레이션"
+    ],
+    "s": [
+     "GPU 클러스터 운영",
+     "학습 안정화·평가",
+     "오픈소스 공개·재현"
+    ],
+    "a": [
+     "벤치마크 숫자를 의심하고 다시 재는 태도"
+    ]
+   },
+   "study": [
+    "컴퓨터공학",
+    "인공지능학"
+   ],
+   "certs": [
+    "정보처리기사",
+    "빅데이터분석기사"
+   ],
+   "insight": "모델 파라미터 수보다 중요한 것은 같은 자원으로 얼마나 잘 학습시켰는가다. 국내 정예팀의 경쟁력도 여기서 나온다.",
+   "companies": {
+    "domestic": [
+     "업스테이지",
+     "SK텔레콤",
+     "LG AI연구원",
+     "모티프테크놀로지스"
+    ],
+    "global": [
+     "Meta",
+     "Mistral AI"
+    ]
+   }
+  },
+  {
+   "id": "j-qa",
+   "name": "품질관리(QA/QC) 담당자",
+   "en": "Quality Assurance / Control",
+   "sector": "s2",
+   "role": "제품이 규격과 기준에 맞는지 검사하고, 문제가 생기기 전에 공정을 바로잡는다. 고객 클레임과 인증 심사의 창구 역할을 한다.",
+   "ksa": {
+    "k": [
+     "통계적 품질관리",
+     "인증 규격(ISO·IATF)",
+     "측정 장비 원리"
+    ],
+    "s": [
+     "검사 계획·불량 분석",
+     "8D 보고서",
+     "공급사 품질 관리"
+    ],
+    "a": [
+     "‘대충 넘어감’을 견디지 못하는 기준",
+     "사람을 탓하지 않고 공정을 보는 태도"
+    ]
+   },
+   "study": [
+    "산업공학",
+    "기계공학",
+    "화학공학",
+    "통계학"
+   ],
+   "certs": [
+    "품질경영기사",
+    "품질관리기사",
+    "ISO 심사원 민간 자격"
+   ],
+   "insight": "신산업일수록 규격이 아직 없다. 없는 규격을 만들고 지키게 하는 일이 품질 담당자의 새 역할이다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "현대자동차",
+     "LG에너지솔루션",
+     "한국품질재단"
+    ],
+    "global": [
+     "Bosch",
+     "Toyota",
+     "SGS",
+     "TÜV"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "인증 시험 대행 코디네이터",
+     "w": "해외 인증 일정과 서류를 관리"
+    }
+   ]
+  },
+  {
+   "id": "j-demo-pm",
+   "kind": "new",
+   "name": "혁신제품 공공실증 매니저",
+   "en": "Public Procurement Pilot Program Manager",
+   "sector": "s3",
+   "role": "기업의 혁신제품을 공공기관 실제 현장에 붙여 성능을 시험하고, 사용 기관의 요구와 기업의 개선 계획을 맞춘다. 실증 결과를 다음 구매와 개선 과제로 연결한다.",
+   "ksa": {
+    "k": [
+     "공공조달 제도",
+     "혁신제품 지정 기준",
+     "현장 실증 설계"
+    ],
+    "s": [
+     "수요기관 매칭",
+     "실증 지표·보고서 작성",
+     "기업 개선 코칭"
+    ],
+    "a": [
+     "기관과 기업 사이에서 중립을 지키는 태도"
+    ]
+   },
+   "study": [
+    "경영학",
+    "산업공학",
+    "행정학"
+   ],
+   "certs": [
+    "국가자격 없음(공공조달·구매 실무 교육 중심)"
+   ],
+   "insight": "혁신제품은 팔리는 순간보다 현장에서 버티는지가 중요하다. 그 사이를 관리하는 직무가 조달청 사업마다 생긴다.",
+   "companies": {
+    "domestic": [
+     "조달청",
+     "한국조달연구원"
+    ],
+    "global": []
+   }
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_msit_aifm2",
+   "name": "과학기술정보통신부",
+   "title": "「독자 AI 파운데이션 모델」 프로젝트 2차 단계평가 결과 발표",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774699",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-08-18",
+   "track": "A",
+   "usage": "정예 4개 팀 모델(Motif 3 314B-A13B, Solar Open2 250B-A15B, A.X K2 688B-A33B, K-EXAONE 2.0 750B-A37B), 3개 팀 다음 단계 진출"
+  },
+  {
+   "id": "src_pps_demo2026",
+   "name": "조달청",
+   "title": "조달청, AI·위성통신 등 혁신기술 실증으로 미래산업 경쟁력 높여",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774672",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-08-18",
+   "track": "A",
+   "usage": "2026년 3차 수요매칭 혁신제품 74개·시범사용 기관 120곳, 혁신장터 공개"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
