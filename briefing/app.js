@@ -278,7 +278,10 @@
           var ids = arr(r.source_ids).filter(function (id) { return ok(id, r.id); });
           return '<section class="rr' + (i === UI.radar ? ' on' : '') + '" aria-label="' + esc(r.group) + '"><h3>' + esc(r.group) + ' ' + edBadges(r) + '</h3><div class="two"><div><b>' + esc(cols[0]) + '</b>' + esc(r.abroad) + '</div><div><b>' + esc(cols[1]) + '</b>' + esc(r.domestic) + '</div></div>' +
             '<div class="cs"><span class="ch"><b>바뀌는 것</b>' + esc(r.changing) + '</span><span class="sy"><b>남는 것</b>' + esc(r.staying) + '</span></div>' +
-            (ids.length ? '<p class="ids">출처: ' + ids.map(function (id) { var s = srcById[id]; return trackBadge(TRACK_OF[(s.license || {}).type] || 'A') + ' ' + esc(s.source_name); }).join(' · ') + '</p>' : '') + '</section>';
+            (ids.length ? '<div class="ids"><b class="ids-h">출처</b><ul class="ids-l">' + ids.map(function (id) {
+              var s = srcById[id];
+              return '<li>' + trackBadge(TRACK_OF[(s.license || {}).type] || 'A') + '<span class="ids-n">' + esc(s.source_name) + '</span></li>';
+            }).join('') + '</ul></div>' : '') + '</section>';
         }).join('') + '</div><p class="pol num">기준 ' + esc(R.as_of) + '</p></section>';
     }
 
