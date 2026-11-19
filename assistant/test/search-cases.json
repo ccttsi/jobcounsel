@@ -347,6 +347,41 @@
     {
       "q": "ㅎㅋㅅ",
       "top3": "챔프스터디"
+    },
+    {
+      "q": "고용24",
+      "first": "고용24",
+      "url": "portals/#p=work24"
+    },
+    {
+      "q": "work24",
+      "sectors": ["portals"],
+      "top3": "고용24"
+    },
+    {
+      "q": "gosi",
+      "sectors": ["portals"],
+      "top3": "사이버국가고시센터"
+    },
+    {
+      "q": "cleaneye",
+      "first": "클린아이 잡플러스",
+      "url": "portals/#p=job_cleaneye"
+    },
+    {
+      "q": "npas",
+      "first": "NPAS",
+      "url": "portals/#p=npas"
+    },
+    {
+      "q": "DART",
+      "first": "DART",
+      "url": "portals/#p=dart"
+    },
+    {
+      "q": "알리오",
+      "sectors": ["portals"],
+      "top3": "잡알리오"
     }
   ]
 }

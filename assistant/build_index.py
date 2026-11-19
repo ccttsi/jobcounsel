@@ -92,6 +92,12 @@ SECTOR_KW = {
 }
 
 
+def host_of(url):
+    """주소에서 도메인만 — `dart.fss.or.kr`처럼 도메인으로 찾는 사람을 받는다."""
+    h = re.sub(r'^https?://', '', str(url or '')).split('/')[0].lower()
+    return h[4:] if h.startswith('www.') else h
+
+
 def clip(s, n):
     if not s:
         return ''
@@ -394,9 +400,15 @@ def docs_portals(add):
     if not d:
         return
     for p in d.get('portals') or []:
-        add('portals:' + str(p.get('id')), 'portals', p.get('name', ''),
-            keys(p.get('operator'), p.get('roles'), p.get('eligibility')),
-            clip(p.get('strengths'), 130), './portals/')
+        pid = str(p.get('id') or '')
+        if not pid:
+            continue
+        # 별칭·도메인·「가서 볼 수 있는 것」까지 찾기 낱말로 넣는다 — `gosi`·`work24`·`실업급여`로도
+        # 그 포털 문서가 잡히게. 그리고 누르면 `#p=아이디`로 그 카드에 바로 도착한다.
+        add('portals:' + pid, 'portals', p.get('name', ''),
+            keys(p.get('aliases'), host_of(p.get('url')), p.get('shows'),
+                 p.get('operator'), p.get('roles'), p.get('eligibility')),
+            clip(p.get('strengths'), 130), './portals/#p=' + pid)
 
 
 def docs_labor(add):

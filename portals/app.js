@@ -26,16 +26,22 @@
 
   /* 주소(hash)에 상태를 남긴다: #s=tech&r=IT·개발&e=신입&q=…&dx=first&p=work24 */
   function readHash() {
+    var raw = String(location.hash || '').replace(/^#/, '');
     var o = { s: '', r: [], e: [], q: '', dx: '', p: '' };
-    String(location.hash || '').replace(/^#/, '').split('&').forEach(function (kv) {
+    /* `#work24`처럼 아이디만 붙인 짧은 딥링크도 `#p=work24`와 같게 받는다. */
+    if (raw && raw.indexOf('=') < 0) {
+      try { o.p = decodeURIComponent(raw).trim(); } catch (e) { o.p = raw.trim(); }
+      return o;
+    }
+    raw.split('&').forEach(function (kv) {
       if (!kv) return; var i = kv.indexOf('='), k = i < 0 ? kv : kv.slice(0, i), v = i < 0 ? '' : decodeURIComponent(kv.slice(i + 1));
       if (k === 'r' || k === 'e') o[k] = v ? v.split(',') : []; else if (k in o) o[k] = v;
     });
     return o;
   }
-  /* ?q= 로도 검색어를 받는다(다른 화면·메시지에서 바로 링크할 때). */
-  function readQP() {
-    var m = /(?:^|[?&])q=([^&]*)/.exec(location.search || '');
+  /* ?q=·?p= 로도 받는다(다른 화면·메시지에서 바로 링크할 때). */
+  function readQP(name) {
+    var m = new RegExp('(?:^|[?&])' + name + '=([^&]*)').exec(location.search || '');
     if (!m) return '';
     try { return decodeURIComponent(m[1].replace(/\+/g, ' ')).trim(); } catch (e) { return ''; }
   }
@@ -49,8 +55,8 @@
     if (S.p) a.push('p=' + encodeURIComponent(S.p));
     var h = a.length ? '#' + a.join('&') : location.pathname + location.search;
     if (h.charAt(0) === '#') {
-      var rest = location.search.replace(/^\?/, '').split('&').filter(function (kv) { return kv && kv.indexOf('q=') !== 0; }).join('&');
-      h = location.pathname + (rest ? '?' + rest : '') + h;   // ?q= 는 해시로 옮기고 지운다
+      var rest = location.search.replace(/^\?/, '').split('&').filter(function (kv) { return kv && kv.indexOf('q=') !== 0 && kv.indexOf('p=') !== 0; }).join('&');
+      h = location.pathname + (rest ? '?' + rest : '') + h;   // ?q=·?p= 는 해시로 옮기고 지운다
     }
     try { history[push ? 'pushState' : 'replaceState'](null, '', h); } catch (e) {}
   }
@@ -63,12 +69,18 @@
         (SEC[p.sector] || {}).name, hostOf(p.url), (p.aliases || []).join(' '), (p.shows || []).join(' ')].join(' '));
       BY[p.id] = p;
     });
-    var h = readHash(), qp = readQP();
+    var h = readHash(), qp = readQP('q'), pp = readQP('p');
     if (qp && !h.q) h.q = qp;
+    if (pp && !h.p) h.p = pp;
     S = h; clean();
     buildCards(); renderFilters(); renderFoot(); apply(true);
     if (qp) writeHash(false);   // ?q= 로 들어온 검색어는 해시로 옮기고 주소창의 ?q= 는 지운다
-    if (S.p && BY[S.p]) openDet(S.p, true);
+    if (S.p && BY[S.p]) {
+      openDet(S.p, true, true);
+      revealCard(S.p, false);   // 카드가 목록 위쪽에 있도록 스크롤하고 하이라이트
+    } else if (qp) {
+      var r0 = results()[0]; if (r0) markDL(r0.id);
+    }
   }).catch(function () { $('grid').innerHTML = '<p class="empty">사이트 목록을 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>'; });
   function clean() {
     var R = D.vocabulary.roles, E = D.vocabulary.eligibility;
@@ -104,6 +116,26 @@
     var out = []; D.portals.forEach(function (p) { var s = hit(p); if (s) out.push([s, p]); });
     out.sort(function (a, b) { return b[0] - a[0] || a[1]._i - b[1]._i; });
     return out.map(function (x) { return x[1]; });
+  }
+
+  /* ───── 딥링크 도착 표시 ─────
+     메인 검색에서 포털을 누르면 `#p=아이디`로 들어온다. 그 카드를 목록 위쪽에 두고
+     살짝 다른 종이색으로 표시해, 안내판 첫 화면에서 다시 찾지 않게 한다. */
+  var dlId = '';
+  function markDL(id) {
+    if (dlId && CARDS[dlId]) CARDS[dlId].classList.remove('dl');
+    dlId = CARDS[id] ? id : '';
+    if (dlId) CARDS[dlId].classList.add('dl');
+  }
+  function clearDL() { if (dlId && CARDS[dlId]) CARDS[dlId].classList.remove('dl'); dlId = ''; }
+  function revealCard(id, smooth) {
+    var c = CARDS[id]; if (!c) return;
+    markDL(id);
+    var sc = $('scroller');
+    var top = c.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 6;
+    top = Math.max(0, Math.min(top, sc.scrollHeight - sc.clientHeight));
+    try { sc.scrollTo({ top: top, behavior: (smooth && !still()) ? 'smooth' : 'auto' }); }
+    catch (e) { sc.scrollTop = top; }
   }
 
   /* ───── 카드: 한 번만 만든다 ───── */
@@ -204,7 +236,7 @@
     $('cntL').textContent = (S.s || S.r.length || S.e.length || S.q) ? '곳이 조건에 맞습니다' : '곳 · 전체';
   }
   function toggle(arr, v) { var i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); }
-  function changed() { if (S.p && !hit(BY[S.p])) closeDet(true); writeHash(false); apply(false); }
+  function changed() { clearDL(); if (S.p && !hit(BY[S.p])) closeDet(true); writeHash(false); apply(false); }
 
   d.addEventListener('click', function (e) {
     if (!D) return; var b = e.target.closest('button,a'); if (!b) return;
@@ -214,19 +246,19 @@
     if (b.hasAttribute('data-e')) { toggle(S.e, b.getAttribute('data-e')); S.dx = ''; changed(); return; }
     if (b.hasAttribute('data-un')) { var u = b.getAttribute('data-un').split('|'); if (u[0] === 'dx') { S.dx = ''; S.e = []; } else if (u[0] === 's') S.s = ''; else toggle(S[u[0]], u[1]); changed(); return; }
     if (b.hasAttribute('data-clear')) { S.s = ''; S.r = []; S.e = []; S.q = ''; S.dx = ''; $('q').value = ''; changed(); return; }
-    if (b.hasAttribute('data-p') && b.classList.contains('card')) { openDet(b.getAttribute('data-p')); return; }
+    if (b.hasAttribute('data-p') && b.classList.contains('card')) { clearDL(); openDet(b.getAttribute('data-p')); return; }
     if (b.hasAttribute('data-close')) { var w = b.getAttribute('data-close'); if (w === 'dSheet') closeDet(); else closeSheet('fSheet'); return; }
     if (b.id === 'fbtn') { openSheet('fSheet'); return; }
   });
   var qT = 0;
   $('q').addEventListener('input', function () { var v = this.value; clearTimeout(qT); qT = setTimeout(function () { S.q = v.trim(); changed(); }, 200); });
-  $('rst').addEventListener('click', function () { if (!D) return; closeSheet('fSheet'); S = { s: '', r: [], e: [], q: '', dx: '', p: '' }; $('q').value = ''; closeDet(true); writeHash(false); apply(false); $('scroller').scrollTop = 0; window.scrollTo(0, 0); });
+  $('rst').addEventListener('click', function () { if (!D) return; closeSheet('fSheet'); clearDL(); S = { s: '', r: [], e: [], q: '', dx: '', p: '' }; $('q').value = ''; closeDet(true); writeHash(false); apply(false); $('scroller').scrollTop = 0; window.scrollTo(0, 0); });
   $('pvT').addEventListener('click', function () { var o = $('pvB').hidden; $('pvB').hidden = !o; this.setAttribute('aria-expanded', String(o)); $('pvL').textContent = o ? '접기' : '펼치기'; });
-  window.addEventListener('popstate', function () { if (!D) return; var h = readHash(); var wasP = S.p; S = h; clean(); $('q').value = S.q; apply(false); if (S.p) openDet(S.p, true); else if (wasP) closeDet(true); });
+  window.addEventListener('popstate', function () { if (!D) return; var h = readHash(); var wasP = S.p; S = h; clean(); $('q').value = S.q; apply(false); if (S.p) { openDet(S.p, true, true); revealCard(S.p, true); } else if (wasP) closeDet(true); });
 
   /* ───── 상세 ───── */
   var VM = { curl: '자동 접속 확인', 'curl-mobile': '모바일 접속 확인', browser: '브라우저로 화면 확인', official: '공식 안내로 확인' };
-  function openDet(id, quiet) {
+  function openDet(id, quiet, land) {
     var p = BY[id]; if (!p) return; var pushed = S.p !== id; S.p = id;
     Object.keys(CARDS).forEach(function (k) { CARDS[k].setAttribute('aria-current', String(k === id)); });
     var sec = SEC[p.sector], dt = p.verified_at.split('-');
@@ -243,9 +275,12 @@
     h += '<a class="go" href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer">사이트로 가기 <span aria-hidden="true">↗</span><small>새 탭</small></a>';
     $('det').innerHTML = h; $('det').scrollTop = 0;
     if (!quiet) writeHash(pushed);
-    if (!xwide.matches) openSheet('dSheet');
+    /* 딥링크로 도착했을 때는 넓지 않은 화면에서도 상세 시트를 덮지 않는다 —
+       카드가 목록 맨 위에 보이는 것이 이 링크의 목적이다. 카드를 누르면 그때 펼친다. */
+    if (!xwide.matches && !land) openSheet('dSheet');
   }
   function closeDet(silent) {
+    clearDL();
     S.p = ''; Object.keys(CARDS).forEach(function (k) { CARDS[k].setAttribute('aria-current', 'false'); });
     $('det').innerHTML = '<div class="pick"><div><b>카드를 누르면 여기에 펼쳐집니다</b>특징 · 상담 활용 팁 · 검증일 · 사이트로 가기</div></div>';
     closeSheet('dSheet'); if (!silent) writeHash(false);

@@ -5,7 +5,7 @@
   python3 ops/scripts/smoke_test.py --base https://ccttsi.github.io/jobcounsel/
   python3 ops/scripts/smoke_test.py --summary-file "$GITHUB_STEP_SUMMARY"
 
-재는 화면: 대문(/), 브리핑(/briefing/), 신산업(/emerging/), 산업 온도계(/thermometer/), 내담자 언어 번역기(/translator/), 채용 사이트 안내판(/portals/ · ?q= 검색) — 휴대폰 390·데스크톱 1280
+재는 화면: 대문(/), 브리핑(/briefing/), 신산업(/emerging/), 산업 온도계(/thermometer/), 내담자 언어 번역기(/translator/), 채용 사이트 안내판(/portals/ · ?q= 검색 · #p= 딥링크) — 휴대폰 390·데스크톱 1280
 재는 것
   · 콘솔·페이지 오류 0 (외부 CDN에서 온 오류는 제외 — 그쪽 사정으로 게이트가 흔들리지 않게)
   · 같은 사이트 안의 404 응답 0 (깨진 상대경로를 잡는다)
@@ -25,7 +25,8 @@ import threading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi"]
+PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
+         "/portals/#p=work24"]
 VIEWPORTS = [(390, 844, "휴대폰"), (1280, 800, "데스크톱")]
 
 # 페이지마다 「이게 없으면 화면이 안 그려진 것」을 하나씩 정한다.
@@ -71,6 +72,19 @@ PROBES = {
         const ok = q === 'gosi' && names.length > 0 && names.length <= 4 &&
                    names.some(n => /사이버국가고시센터|국가공무원채용시스템/.test(n));
         return {ok, detail: `?q=${q} · 결과 ${names.length}곳`};
+    }""",
+    "/portals/#p=work24": """() => {
+        // 메인 검색에서 「고용24」를 누르면 오는 주소 — 그 카드가 목록 맨 위에 강조되어 있는가.
+        const card = document.querySelector('.card[data-p=work24]');
+        const sc = document.getElementById('scroller');
+        const q = (document.getElementById('q') || {}).value || '';
+        const names = [...document.querySelectorAll('.card:not([hidden]) .nm')].map(x => x.textContent);
+        const box = card ? card.getBoundingClientRect() : null;
+        const sbox = sc.getBoundingClientRect();
+        const gap = box ? Math.round(box.top - sbox.top) : -999;
+        const ok = !!card && !card.hidden && card.getAttribute('aria-current') === 'true' &&
+                   card.classList.contains('dl') && q === '' && names.length > 10 && gap >= -2 && gap <= 24;
+        return {ok, detail: `카드 ${names.length} · 도착 ${gap}px · 강조 ${card ? card.classList.contains('dl') : '없음'}`};
     }""",
     "/emerging/": """() => {
         const art = (document.querySelector('#art') || {innerText: ''}).innerText.trim().length;

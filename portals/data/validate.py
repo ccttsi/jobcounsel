@@ -24,7 +24,7 @@ EXPECTED = {
 }
 # 항목마다 실제로 접속을 확인한 날을 적는다. 한 날짜로 통일하지 않는다 —
 # 자동 접속 차단(403) 사이트는 마지막으로 확인한 날짜를 그대로 둔다.
-ALLOWED_DATES = {"2026-11-16", "2026-11-19"}
+ALLOWED_DATES = {"2026-11-16", "2026-11-19", "2026-11-20"}
 VERIFIED_AT = "2026-11-19"
 METHODS = {"curl", "curl-mobile", "browser", "official"}
 REQUIRED = ["id", "name", "url", "sector", "operator", "roles", "eligibility",
