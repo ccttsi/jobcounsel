@@ -1,0 +1,201 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-09-04T07:10:00+09:00",
+ "edition": {
+  "date": "2026-09-04",
+  "weekday": "금",
+  "title": "10대 그룹 인사책임자 만난 노동부 장관, 청년 채용 확대를 요청",
+  "subtitle": "삼성·SK·현대차·LG 등 CHO 간담회·K-뉴딜 아카데미 확대·청년 플레이그라운드 신설",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "참여 그룹",
+   "value": 0,
+   "unit": "",
+   "value_text": "10대 그룹",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월 3일",
+   "delta_from": "CHO 간담회",
+   "source_id": "src_moel_youth_cho_20260903",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-04T07:10:00+09:00",
+   "run_id": "br-20260904-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "내년 확대",
+   "value": 0,
+   "unit": "",
+   "value_text": "K-뉴딜 아카데미",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2027년",
+   "delta_from": "대폭 확대",
+   "source_id": "src_moel_youth_cho_20260903",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-04T07:10:00+09:00",
+   "run_id": "br-20260904-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "10대 그룹 인사책임자 만난 노동부 장관, 청년 채용 확대를 요청",
+   "kicker": "10대 그룹 CHO · K-뉴딜 아카데미 확대",
+   "three_step": {
+    "what": "고용노동부 장관이 9월 3일 한국경제인협회에서 삼성·SK·현대차·LG 등 10대 그룹 최고인사책임자(CHO)와 만나 청년 일자리 확대를 요청했다. 정부가 내놓은 청년일자리 회복방안을 기업이 함께 이행해 달라는 자리였다.",
+    "evidence": "장관은 내년에 K-뉴딜 아카데미를 대폭 늘리고 청년이 활동할 오프라인 공간인 '청년 플레이그라운드'를 새로 만들 계획이라며 기업의 관심을 요청했다. 주요 그룹은 신규 채용 확대와 직무경험 기회를 넓히는 방안을 공유했다(2026년 9월 3일, 고용노동부).",
+    "implication": "청년 내담자에게 기업의 채용 계획을 기다리게 하지 말고, K-뉴딜 아카데미와 직무경험 프로그램 일정을 먼저 확인해 지원 계획에 넣게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "참여 그룹",
+     "value": "10대 그룹",
+     "delta": "CHO 간담회",
+     "period": "2026년 9월 3일"
+    },
+    {
+     "label": "K-뉴딜 아카데미",
+     "value": "2027년 확대",
+     "delta": "장관 요청 사항",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "신설 프로그램",
+     "value": "청년 플레이그라운드",
+     "delta": "오프라인 공간",
+     "period": "2026년 9월"
+    }
+   ],
+   "counselor_question": "대기업 신입 채용 말고 직무경험으로 시작할 수 있는 길을 생각해 보셨나요?",
+   "tags": [
+    "청년",
+    "채용",
+    "K-뉴딜"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "issue_id": "iss-youth-cho-meeting-2026",
+   "updated_at": "2026-09-04T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_youth_cho_20260903",
+    "source_name": "고용노동부",
+    "source_title": "\"청년에게 더 많은 일자리 기회를\" 노동부 장관, 10대 그룹과 정책 간담회 개최",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780092",
+    "published_at": "2026-09-03",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「\"청년에게 더 많은 일자리 기회를\" 노동부 장관, 10대 그룹과 정책 간담회 개최」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "청년·중장년 고용"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_youth_cho_20260903",
+   "source_name": "고용노동부",
+   "source_title": "\"청년에게 더 많은 일자리 기회를\" 노동부 장관, 10대 그룹과 정책 간담회 개최",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780092",
+   "published_at": "2026-09-03",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「\"청년에게 더 많은 일자리 기회를\" 노동부 장관, 10대 그룹과 정책 간담회 개최」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02"
+ ]
+}
