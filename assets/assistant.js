@@ -934,8 +934,10 @@
 
     el.keyIntro = t('p', 'jca-hint');
     keys.appendChild(el.keyIntro);
-    var again = t('button', 'jca-link', '처음 안내 다시 보기');
+    /* 글자 링크가 아니라 테두리·배경이 있는 정식 단추로 둔다(2026-11-19 지적). */
+    var again = t('button', 'jca-again');
     again.type = 'button';
+    again.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.3-5.4"/><path d="M4.2 4.6v4.2h4.2"/></svg><span>처음 안내 다시 보기</span>';
     again.addEventListener('click', function () { st.welcome = true; savePref(); render(); });
     keys.appendChild(again);
 
