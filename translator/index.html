@@ -12,7 +12,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
 <meta name="description" content="내담자가 상담실에서 쓰는 직무·산업·학력·고용제도 용어와 약어를 한 줄 뜻·실제 맥락·이어 물을 질문·연계 자료로 바로 옮겨 주는 실무용 번역기.">
-<title>내담자 언어 번역기 · 용어 625</title>
+<title>내담자 언어 번역기 · 용어 201</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -21,7 +21,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
   --acc:#155a6b;--acc-soft:rgba(21,90,107,.09);--on-acc:#fffdf8;
   --seal:#a8442c;--hl:rgba(255,214,0,.42);
-  --c-job:#155a6b;--c-ind:#8f4413;--c-edu:#5a3d8f;--c-pol:#1a4fa0;--c-slang:#5c6b1f;--c-derog:#a8442c;--seal-soft:rgba(168,68,44,.10);
+  --c-job:#155a6b;--c-ind:#8f4413;--c-edu:#5a3d8f;--c-pol:#1a4fa0;
   --shadow:0 1px 2px rgba(70,50,25,.05),0 12px 30px -20px rgba(70,50,25,.32);
   --shadow-bar:0 2px 0 rgba(42,37,33,.10),0 14px 30px -22px rgba(70,50,25,.45);
   --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
@@ -33,7 +33,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
   --acc:#7fd6e8;--acc-soft:rgba(127,214,232,.12);--on-acc:#08131a;
   --seal:#f0947c;--hl:rgba(242,201,76,.30);
-  --c-job:#7fd6e8;--c-ind:#f0ab7a;--c-edu:#bda6ee;--c-pol:#93b4f5;--c-slang:#c9d27a;--c-derog:#f0947c;--seal-soft:rgba(240,148,124,.13);
+  --c-job:#7fd6e8;--c-ind:#f0ab7a;--c-edu:#bda6ee;--c-pol:#93b4f5;
   --shadow:none;--shadow-bar:0 0 0 1px rgba(127,214,232,.18);
   color-scheme:dark;
 }
@@ -101,24 +101,14 @@ a{color:inherit}
 .quick button:hover{border-color:var(--acc);color:var(--acc)}
 
 /* 분야 탭 */
-.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:12px 0 0}
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:12px 0 0}
 .tabs button{min-height:44px;padding:5px 10px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);font-size:13.5px;font-weight:750;color:var(--muted);display:grid;place-items:center;line-height:1.2;text-align:center}
 .tabs .tl{display:none}
 .tabs .ts{display:block}
 .tabs button small{display:block;font-size:11px;font-weight:650;color:var(--dim);font-variant-numeric:tabular-nums}
 .tabs button[aria-selected="true"]{border-color:var(--acc);background:var(--acc-soft);color:var(--acc)}
 .tabs button[aria-selected="true"] small{color:var(--acc);opacity:.8}
-@media (min-width:600px){.tabs{grid-template-columns:repeat(7,minmax(0,1fr))}}
-@media (min-width:900px){.tabs{grid-template-columns:repeat(7,minmax(0,150px));justify-content:start;margin-top:12px}.tabs .tl{display:block}.tabs .ts{display:none}}
-
-/* 상위 묶음 2단 필터 */
-.grps{display:flex;gap:6px;margin-top:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:1px 0 2px}
-.grps::-webkit-scrollbar{display:none}
-.grps button{flex:none;min-height:44px;display:inline-flex;align-items:center;gap:6px;padding:0 13px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}
-.grps button small{font-size:11px;font-weight:650;color:var(--dim);font-variant-numeric:tabular-nums}
-.grps button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft);color:var(--acc)}
-.grps button[aria-pressed="true"] small{color:var(--acc);opacity:.8}
-@media (min-width:900px){.grps{flex-wrap:wrap;overflow:visible}}
+@media (min-width:900px){.tabs{grid-template-columns:repeat(5,minmax(0,150px));justify-content:start;margin-top:12px}.tabs .tl{display:block}.tabs .ts{display:none}}
 
 /* 목록 | 상세 */
 .split{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:12px;align-items:start}
@@ -141,9 +131,8 @@ a{color:inherit}
 .r-t b em{font-style:normal;background:linear-gradient(transparent 60%,var(--hl) 60%)}
 .r-t small{font-size:12px;font-weight:650;color:var(--dim)}
 .r-e{display:block;margin-top:2px;font-size:13px;line-height:1.45;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.r-bn{display:inline-flex;align-items:center;min-height:18px;padding:0 5px;border:1px solid var(--seal);border-radius:4px;font-size:10.5px;font-weight:800;color:var(--seal);letter-spacing:-.01em}
 .r-b{flex:none;justify-self:end;display:inline-flex;align-items:center;min-height:22px;padding:2px 9px;border-radius:99px;font-size:11.5px;font-weight:750;border:1px solid currentColor;opacity:.9}
-.b-job{color:var(--c-job)}.b-industry{color:var(--c-ind)}.b-edu{color:var(--c-edu)}.b-policy{color:var(--c-pol)}.b-slang{color:var(--c-slang)}.b-derog{color:var(--c-derog)}
+.b-job{color:var(--c-job)}.b-industry{color:var(--c-ind)}.b-edu{color:var(--c-edu)}.b-policy{color:var(--c-pol)}
 .pg{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 0 2px}
 .pg button{width:44px;height:44px;flex:none;padding:0 12px;display:grid;place-items:center;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);color:var(--ink);font-size:17px;font-weight:700}
 .pg button:disabled{opacity:.35}
@@ -161,9 +150,6 @@ a{color:inherit}
 .c-hd{display:grid;gap:5px;padding-bottom:11px;border-bottom:1px solid var(--line)}
 .c-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .c-top .badge{display:inline-flex;align-items:center;min-height:24px;padding:3px 9px;border-radius:99px;border:1px solid currentColor;font-size:11.5px;font-weight:750}
-.c-ban{display:inline-flex;align-items:center;gap:5px;margin-left:auto;padding:4px 9px;border:1.5px solid var(--seal);border-radius:6px;background:var(--seal-soft);color:var(--seal);font-size:11.5px;font-weight:850;letter-spacing:-.01em;transform:rotate(-2deg);white-space:nowrap}
-.c-ban svg{flex:none}
-.c-path{margin:0;font-size:12.5px;font-weight:700;color:var(--acc);letter-spacing:-.01em}
 .c-hd h2{margin:1px 0 0;font-size:clamp(23px,4.6vw,30px);line-height:1.2;letter-spacing:-.035em;font-weight:850;word-break:break-word}
 .c-hd h2.mono{font-family:var(--mono);letter-spacing:-.01em;font-size:clamp(21px,4.4vw,27px)}
 .c-sub{margin:0;font-size:13px;line-height:1.5;color:var(--muted)}
@@ -174,16 +160,6 @@ a{color:inherit}
 .blk p{margin:0;font-size:14.5px;line-height:1.66}
 .blk.b-easy p{font-size:16px;font-weight:650;line-height:1.6;letter-spacing:-.02em}
 .blk.b-ctx p{color:var(--muted)}
-.blk.b-ban{margin:10px 0 2px;padding:12px 13px;border:1px solid var(--seal);border-left-width:4px;border-radius:10px;background:var(--seal-soft)}
-.blk.b-ban h3{color:var(--seal);letter-spacing:.03em}
-.blk.b-ban .ban-note{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink)}
-.ban-swap{margin-top:9px;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--seal) 40%,transparent)}
-.ban-swap b{display:block;margin-bottom:5px;font-size:12px;font-weight:800;color:var(--seal)}
-.ban-swap ul{margin:0;padding:0;list-style:none;display:grid;gap:5px}
-.ban-swap li{position:relative;padding-left:16px;font-size:14px;font-weight:650;line-height:1.5}
-.ban-swap li::before{content:"→";position:absolute;left:0;color:var(--seal);font-weight:700}
-.blk.b-ban .ban-say{margin:9px 0 0;padding:7px 10px;border-radius:8px;background:var(--panel);font-size:13px;line-height:1.55;color:var(--muted)}
-.blk.b-ban .ban-say b{margin-right:5px;color:var(--seal);font-weight:800}
 .blk ol{margin:0;padding:0;list-style:none;display:grid;gap:6px;counter-reset:q}
 .blk ol li{position:relative;padding-left:22px;font-size:14px;line-height:1.55}
 .blk ol li::before{counter-increment:q;content:counter(q);position:absolute;left:0;top:2px;width:16px;height:16px;border-radius:50%;background:var(--acc-soft);color:var(--acc);font-size:10.5px;font-weight:800;display:grid;place-items:center;font-family:var(--mono)}
@@ -205,7 +181,7 @@ a{color:inherit}
   body.detail .lst{display:none}
   body:not(.detail) .det{display:none}
   body.detail .hero,body.detail .tabs{display:none}
-  body.detail .pv,body.detail .grps{display:none}
+  body.detail .pv{display:none}
 }
 .foot{margin:14px 0 0;padding-top:9px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.65;color:var(--dim)}
 .foot b{color:var(--muted);font-weight:700}
@@ -234,7 +210,6 @@ html[data-jc-imm] .hd .brand,html[data-jc-imm] .pv{display:none}
         <li><b>풀이는 자료실이 새로 쓴 글입니다.</b> 기관 문서·사전의 문장을 옮기지 않았습니다. 공식 정의가 있는 말은 출처를 달았고, 공식 정의가 없는 현장 약어는 그 사실을 밝혔습니다.</li>
         <li><b>“가능성이 큽니다”는 추정입니다.</b> 내담자가 그 말을 썼을 때 실제로 했을 일을 짐작해 적은 것이니, 확인 질문으로 사실을 채우세요.</li>
         <li><b>제도·금액은 기준일 뒤에 바뀔 수 있습니다.</b> 국취 수당·실업급여 같은 수치는 법령과 고용24 안내로 다시 확인하세요.</li>
-        <li><b>비하·속어 항목은 이해용입니다.</b> 상담사가 먼저 쓰거나 따라 쓰지 않도록 카드 우상단에 <b>상담사 사용 금지</b>를 붙였고, 대신 쓸 중립 표현을 함께 적었습니다.</li>
         <li><b>검색어와 입력 내용은 서버로 보내지 않습니다.</b> 화면 안에서만 쓰고 저장하지 않습니다.</li>
       </ul>
     </div>
@@ -260,7 +235,6 @@ html[data-jc-imm] .hd .brand,html[data-jc-imm] .pv{display:none}
     </section>
 
     <div class="tabs" id="tabs" role="tablist" aria-label="분야"></div>
-    <div class="grps" id="grps" role="group" aria-label="상위 카테고리" hidden></div>
 
     <div class="split">
       <section class="lst" aria-labelledby="lstTitle">
@@ -281,7 +255,7 @@ html[data-jc-imm] .hd .brand,html[data-jc-imm] .pv{display:none}
   </main>
 
   <p class="foot" id="foot">
-    <b>풀이</b> 자료실이 새로 쓴 글 · <b>출처</b> NCS·Q-net·고용24·고용노동부·국가법령정보센터·식약처·안전보건공단 등 공개 자료의 사실만 확인해 재서술했습니다. <b>주의</b> 제도·금액은 기준일(2026-11-19) 뒤에 바뀔 수 있으니 법령·기관 안내로 다시 확인하세요. <b>비하·속어</b>는 내담자의 말을 이해하기 위한 참고용이며 상담사는 쓰지 않습니다.
+    <b>풀이</b> 자료실이 새로 쓴 글 · <b>출처</b> NCS·Q-net·고용24·고용노동부·국가법령정보센터·식약처·안전보건공단 등 공개 자료의 사실만 확인해 재서술했습니다. <b>주의</b> 제도·금액은 기준일(2026-11-19) 뒤에 바뀔 수 있으니 법령·기관 안내로 다시 확인하세요.
   </p>
 </div>
 

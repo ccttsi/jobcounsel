@@ -2,7 +2,7 @@
  * 내담자 언어 번역기 · 화면 엔진 (26번 섹터)
  *
  * 데이터(고치지 않고 읽기만 한다)
- *   data/terms.json  client-language-translator v2.0.0 — 용어 625
+ *   data/terms.json  client-language-translator v1.0.0 — 용어 201(직무 65 · 산업 51 · 학력 40 · 제도 45)
  *
  * 주소
  *   ?q=MES          다른 섹터·개인비서에서 낱말로 바로 들어온다(정확히 맞으면 그 용어를 연다)
@@ -12,7 +12,6 @@
  *   - 외부 API·저장 없음. 검색어는 화면 안에서만 쓴다.
  *   - 목록은 쪽 단위로 끊어 그린다(끝없는 세로 스크롤 금지). 휴대폰은 목록 ↔ 한 장 보기.
  *   - 화면에 그리는 글은 모두 data/terms.json 에서 나온다(화면에 문장을 지어 넣지 않는다).
- *   - 분야 탭 아래 상위 묶음(grp) 2단 필터. 비하·속어는 상담사 사용 금지 딱지를 붙인다.
  */
 (function () {
   'use strict';
@@ -37,14 +36,13 @@
   var BY = {};           /* id → 용어 */
   var SRC = {};          /* 출처 id → 출처 */
   var CATN = {};         /* 분야 id → 이름 */
-  var GRP = {};          /* 묶음 id → {name, short, cat} */
-  var st = { cat: 'all', grp: 'all', q: '', page: 0, sel: null };
+  var st = { cat: 'all', q: '', page: 0, sel: null };
 
   var mq = window.matchMedia ? window.matchMedia('(max-width: 899px)') : { matches: false };
   function narrow() { return !!mq.matches; }
 
   /* ---------- 글 다듬기 ---------- */
-  function norm(s) { return String(s || '').toLowerCase().replace(/[\s·・\-_/()[\].,]/g, ''); }
+  function norm(s) { return String(s || '').toLowerCase().replace(/[\s·・\-_/()[\].]/g, ''); }
   var CHO = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
   /* 한글 첫소리만 뽑는다 — 「ㄱㅊㅈ」로 「국취제」를 찾기 위해 */
   function chosung(s) {
@@ -95,7 +93,6 @@
     for (var i = 0; i < T.length; i++) {
       var t = T[i];
       if (st.cat !== 'all' && t.cat !== st.cat) continue;
-      if (st.grp !== 'all' && t.grp !== st.grp) continue;
       var s = score(t, q, qc);
       if (!s) continue;
       out.push({ t: t, s: s });
@@ -114,17 +111,6 @@
     return c;
   }
 
-  function groupCounts(cat) {
-    var q = st.q.trim(), qc = isChosungStr(q) ? q : chosung(q.toLowerCase()), c = { all: 0 };
-    for (var i = 0; i < T.length; i++) {
-      var t = T[i];
-      if (t.cat !== cat) continue;
-      if (q && !score(t, q, qc)) continue;
-      c[t.grp] = (c[t.grp] || 0) + 1; c.all++;
-    }
-    return c;
-  }
-
   /* ---------- 그리기: 탭 ---------- */
   function renderTabs() {
     var c = catCounts();
@@ -135,24 +121,6 @@
         + ' aria-label="' + esc(x.name + ' ' + n + '개') + '">'
         + '<span class="tl">' + esc(x.name) + '</span><span class="ts">' + esc(x.short || x.name) + '</span>'
         + '<small>' + n + '</small></button>';
-    }).join('');
-  }
-
-  /* ---------- 그리기: 상위 묶음 2단 필터 ---------- */
-  function catGroups(cat) {
-    return (D.groups || []).filter(function (g) { return g.cat === cat; });
-  }
-  function renderGroups() {
-    var box = $('grps');
-    if (!box) return;
-    if (st.cat === 'all') { box.hidden = true; box.innerHTML = ''; return; }
-    box.hidden = false;
-    var c = groupCounts(st.cat);
-    var list = [{ id: 'all', short: '전체' }].concat(catGroups(st.cat));
-    box.innerHTML = list.map(function (g) {
-      var on = st.grp === g.id, n = c[g.id] || 0;
-      return '<button type="button" data-grp="' + esc(g.id) + '" aria-pressed="' + on + '">'
-        + esc(g.short || g.name) + '<small>' + n + '</small></button>';
     }).join('');
   }
 
@@ -168,15 +136,11 @@
     return out + esc(s.slice(at));
   }
   function rowHTML(t) {
-    var g = GRP[t.grp];
-    var ko = (t.ko && norm(t.ko) !== norm(t.term)) ? '<small>' + esc(t.ko) + '</small>' : '';
-    var tag = g ? (g.short || g.name) : (CATN[t.cat] || '');
-    var ban = t.ban ? '<span class="r-bn">' + (t.ban === 'forbid' ? '사용 금지' : '따라 쓰지 않기') + '</span>' : '';
-    return '<li><button type="button" class="row' + (t.ban ? ' is-ban' : '') + '" data-id="' + esc(t.id) + '" aria-current="' + (st.sel === t.id) + '">'
+    return '<li><button type="button" class="row" data-id="' + esc(t.id) + '" aria-current="' + (st.sel === t.id) + '">'
       + '<span class="r-m"><span class="r-t"><b' + (isHangul(t.term) ? '' : ' class="num"') + '>' + hl(t.term, st.q) + '</b>'
-      + ko + ban + '</span>'
+      + '<small>' + esc(t.ko) + '</small></span>'
       + '<span class="r-e">' + esc(t.easy) + '</span></span>'
-      + '<span class="r-b b-' + esc(t.cat) + '">' + esc(tag) + '</span>'
+      + (st.cat === 'all' ? '<span class="r-b b-' + esc(t.cat) + '">' + esc(CATN[t.cat] || '') + '</span>' : '')
       + '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="color:var(--dim)"><path d="m9 18 6-6-6-6"/></svg>'
       + '</button></li>';
   }
@@ -186,10 +150,7 @@
     if (st.page < 0) st.page = 0;
     var from = st.page * PAGE, slice = a.slice(from, from + PAGE);
     $('lstN').textContent = String(n);
-    var gname = st.grp !== 'all' && GRP[st.grp] ? GRP[st.grp].name : '';
-    $('lstSub').textContent = n
-      ? (st.q ? '「' + st.q.trim() + '」에 걸린 말' : (gname ? gname + '에서' : '누르면 뜻과 이어 물을 질문이 열립니다'))
-      : '찾은 말이 없습니다';
+    $('lstSub').textContent = n ? (st.q ? '「' + st.q.trim() + '」에 걸린 말' : '누르면 뜻과 이어 물을 질문이 열립니다') : '찾은 말이 없습니다';
     $('clr').hidden = !st.q;
     if (!n) {
       $('rows').innerHTML = '<li class="empty"><b>그 말을 찾지 못했습니다</b>'
@@ -209,7 +170,7 @@
   function bindEmpty() {
     var c = $('eClr'), a = $('eAll');
     if (c) c.addEventListener('click', function () { setQ('', true); });
-    if (a) a.addEventListener('click', function () { st.cat = 'all'; st.grp = 'all'; setQ('', true); });
+    if (a) a.addEventListener('click', function () { st.cat = 'all'; setQ('', true); });
   }
 
   /* ---------- 그리기: 상세 ---------- */
@@ -219,39 +180,14 @@
     if (q && QPATTERN[to]) return '../' + to + '/?q=' + encodeURIComponent(q);
     return '../' + to + '/';
   }
-  function banBlock(t) {
-    if (!t.ban) return '';
-    var forbid = t.ban === 'forbid';
-    var notice = (D.banNotice || {})[t.ban] || '';
-    var swaps = (t.swap || []).map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('');
-    return '<section class="blk b-ban' + (forbid ? ' is-forbid' : '') + '">'
-      + '<h3>' + (forbid ? '상담사는 쓰지 않습니다' : '따라 쓰지 않습니다') + '</h3>'
-      + '<p class="ban-note">' + esc(notice) + '</p>'
-      + (swaps ? '<div class="ban-swap"><b>이렇게 바꿔 말하세요</b><ul>' + swaps + '</ul></div>' : '')
-      + (t.say ? '<p class="ban-say"><b>응답 예</b> ' + esc(t.say) + '</p>' : '')
-      + '</section>';
-  }
   function detailHTML(t) {
     var src = t.src ? SRC[t.src] : null;
-    var g = GRP[t.grp];
-    var path = [CATN[t.cat] || ''].concat(g ? [g.name] : []).filter(Boolean).join(' › ');
-    var sub = [t.full, t.ko].filter(Boolean).filter(function (v) { return norm(v) !== norm(t.term); })
-      .filter(function (v, i, a) {
-        return a.findIndex(function (w) { return norm(w) === norm(v); }) === i;
-      });
-    var seal = t.ban
-      ? '<span class="c-ban' + (t.ban === 'forbid' ? ' is-forbid' : '') + '" role="note">'
-        + '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg>'
-        + (t.ban === 'forbid' ? '상담사 사용 금지' : '따라 쓰지 않기') + '</span>'
-      : '';
-    var out = '<article class="card' + (t.ban ? ' is-ban' : '') + '" data-term="' + esc(t.id) + '">'
-      + '<div class="c-hd"><div class="c-top"><span class="badge b-' + esc(t.cat) + '">' + esc(CATN[t.cat] || '') + '</span>'
-      + seal + '</div>'
+    var sub = [t.full, t.ko].filter(Boolean);
+    var out = '<article class="card" data-term="' + esc(t.id) + '">'
+      + '<div class="c-hd"><div class="c-top"><span class="badge b-' + esc(t.cat) + '">' + esc(CATN[t.cat] || '') + '</span></div>'
       + '<h2 class="' + (isHangul(t.term) ? '' : 'mono') + '">' + esc(t.term) + '</h2>'
-      + '<p class="c-path">' + esc(path) + '</p>'
       + (sub.length ? '<p class="c-sub">' + esc(sub.join(' · ')) + '</p>' : '')
       + '</div>'
-      + banBlock(t)
       + '<section class="blk b-easy"><h3>한 줄 뜻</h3><p>' + esc(t.easy) + '</p></section>'
       + '<section class="blk b-ctx"><h3>내담자 말 속에서는</h3><p>' + esc(t.ctx) + '</p></section>'
       + '<section class="blk b-qs"><h3>이어서 물어볼 질문</h3><ol>' + t.qs.map(function (q) { return '<li>' + esc(q) + '</li>'; }).join('') + '</ol></section>'
@@ -277,22 +213,18 @@
   /* ---------- 상태 바꾸기 ---------- */
   function draw() {
     renderTabs();
-    renderGroups();
     renderList();
     renderDetail();
   }
   function setQ(v, keepCat) {
     st.q = v; st.page = 0;
-    if (!keepCat) { st.cat = 'all'; st.grp = 'all'; }
+    if (!keepCat) st.cat = 'all';
     $('q').value = v;
     $('qx').hidden = !v;
     draw();
   }
   function setCat(c) {
-    st.cat = c; st.grp = 'all'; st.page = 0; draw();
-  }
-  function setGrp(g) {
-    st.grp = g; st.page = 0; draw();
+    st.cat = c; st.page = 0; draw();
   }
   function hashOf(id) { return id ? '#t=' + encodeURIComponent(id) : ''; }
   function select(id, opt) {
@@ -353,14 +285,14 @@
     input.addEventListener('input', function () {
       $('qx').hidden = !input.value;
       if (rafQ) return;
-      rafQ = requestAnimationFrame(function () { rafQ = 0; st.q = input.value; st.page = 0; renderTabs(); renderGroups(); renderList(); });
+      rafQ = requestAnimationFrame(function () { rafQ = 0; st.q = input.value; st.page = 0; renderTabs(); renderList(); });
     });
     $('qform').addEventListener('submit', function (e) {
       e.preventDefault();
       st.q = input.value; st.page = 0;
       var a = hits();
       if (a.length) { if (narrow()) input.blur(); select(a[0].id, { push: true }); }
-      else { renderTabs(); renderGroups(); renderList(); }
+      else { renderTabs(); renderList(); }
     });
     $('qx').addEventListener('click', function () { setQ('', true); input.focus(); });
     $('clr').addEventListener('click', function () { setQ('', true); });
@@ -368,10 +300,6 @@
     $('tabs').addEventListener('click', function (e) {
       var b = e.target.closest('[data-cat]'); if (!b) return;
       setCat(b.getAttribute('data-cat'));
-    });
-    $('grps').addEventListener('click', function (e) {
-      var b = e.target.closest('[data-grp]'); if (!b) return;
-      setGrp(b.getAttribute('data-grp'));
     });
     $('rows').addEventListener('click', function (e) {
       var b = e.target.closest('[data-id]'); if (!b) return;
@@ -402,7 +330,7 @@
   }
 
   function quickChips() {
-    var want = ['MES', '수율', '국취', '내일배움카드', '취뽀', '경력단절여성'];
+    var want = ['MES', '수율', '국취', '내일배움카드', 'SI', '경력단절여성'];
     $('quick').innerHTML = '<b>자주 듣는 말</b>' + want.map(function (w) {
       return '<button type="button" data-q="' + esc(w) + '">' + esc(w) + '</button>';
     }).join('');
@@ -411,7 +339,6 @@
   function start(data) {
     D = data; T = (data.terms || []).slice();
     (data.categories || []).forEach(function (c) { CATN[c.id] = c.name; });
-    (data.groups || []).forEach(function (g) { GRP[g.id] = g; });
     (data.sources || []).forEach(function (s) { SRC[s.id] = s; });
     T.forEach(function (t) { BY[t.id] = t; });
     index();
@@ -420,7 +347,7 @@
     d.title = '내담자 언어 번역기 · 용어 ' + T.length;
     fromQuery();
     if (!fromHash() && !st.sel) draw();
-    else { renderTabs(); renderGroups(); renderList(); }
+    else { renderTabs(); renderList(); }
     /* 큰 화면은 오른쪽이 비지 않게 첫 용어를 미리 펼친다(주소에는 남기지 않는다) */
     if (!st.sel && !narrow()) {
       var first = hits()[0];

@@ -395,30 +395,6 @@ def check_terms(document, path):
                 fail("json", f"{label}: 분야 '{cat.get('id', '?')}'에 {key}가 없다")
         cat_ids.add(cat.get("id"))
 
-    # 상위 묶음(grp) — 분야마다 하위 카테고리를 두어 직업군·현장·계열로 좁혀 본다.
-    groups = document.get("groups")
-    group_cat = {}
-    if not isinstance(groups, list) or not groups:
-        fail("json", f"{label}: groups가 비어 있다")
-        groups = []
-    for grp in groups:
-        gid = grp.get("id")
-        if not str(gid or "").strip():
-            fail("json", f"{label}: 묶음에 id가 없다")
-            continue
-        if gid in group_cat:
-            fail("json", f"{label}: 묶음 id가 중복된다: {gid}")
-        for key in ("cat", "name", "short"):
-            if not str(grp.get(key) or "").strip():
-                fail("json", f"{label}: 묶음 '{gid}'에 {key}가 없다")
-        if grp.get("cat") not in cat_ids:
-            fail("json", f"{label}: 묶음 '{gid}'의 분야 '{grp.get('cat')}'가 categories에 없다")
-        group_cat[gid] = grp.get("cat")
-
-    notice = document.get("banNotice")
-    if not isinstance(notice, dict) or not notice.get("forbid") or not notice.get("care"):
-        fail("json", f"{label}: banNotice에 forbid·care 안내문이 있어야 한다")
-
     sources = document.get("sources")
     source_ids = set()
     if not isinstance(sources, list) or not sources:
@@ -451,20 +427,6 @@ def check_terms(document, path):
         seen.add(tid)
         if term.get("cat") not in cat_ids:
             fail("json", f"{label}: 용어 {tid}의 분야 '{term.get('cat')}'가 categories에 없다")
-        grp = term.get("grp")
-        if grp not in group_cat:
-            fail("json", f"{label}: 용어 {tid}의 묶음 '{grp}'가 groups에 없다")
-        elif group_cat.get(grp) != term.get("cat"):
-            fail("json", f"{label}: 용어 {tid}의 묶음 '{grp}'가 분야 '{term.get('cat')}'와 다르다")
-        ban = term.get("ban")
-        if ban is not None and ban not in ("forbid", "care"):
-            fail("json", f"{label}: 용어 {tid}의 ban은 forbid·care여야 한다")
-        if ban:
-            swap = term.get("swap")
-            if not isinstance(swap, list) or not (1 <= len(swap) <= 3):
-                fail("json", f"{label}: 용어 {tid}에 상담사가 대신 쓸 중립 표현(swap) 1~3개가 없다")
-            if not str(term.get("say") or "").strip():
-                fail("json", f"{label}: 용어 {tid}에 대응 문장(say)이 없다")
         counts[term.get("cat")] = counts.get(term.get("cat"), 0) + 1
         if len(str(term.get("easy") or "")) > 90:
             fail("json", f"{label}: 용어 {tid}의 easy가 90자를 넘는다({len(str(term.get('easy')))}자)")
@@ -484,9 +446,8 @@ def check_terms(document, path):
         src = term.get("src")
         if src is not None and src not in source_ids:
             fail("json", f"{label}: 용어 {tid}의 출처 '{src}'가 sources에 없다")
-    note(f"내담자 언어 번역기 용어 {len(terms)}개 · 묶음 {len(groups)}개 · 출처 {len(sources)}곳 · "
-         + " · ".join(f"{k} {counts.get(k, 0)}" for k in [c.get('id') for c in categories])
-         + f" · 금지 표시 {sum(1 for t in terms if t.get('ban'))}개")
+    note(f"내담자 언어 번역기 용어 {len(terms)}개 · 출처 {len(sources)}곳 · "
+         + " · ".join(f"{k} {counts.get(k, 0)}" for k in [c.get('id') for c in categories]))
 
 
 CURRENT_CHECKERS = {
