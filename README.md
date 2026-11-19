@@ -27,6 +27,7 @@
 | `/interview/` | 면접 전술 덱 (질문 카드 38장 한 턴씩: 숨은 의도·법적 신호 → 함정·방어·실드·카운터 카드 → 구간 타이머, 역질문·약점 조립기·2026 전형 변화) |
 | `/portfolio/` | 포트폴리오 편집실 (편집대 네 단계: 90초 스캔 모니터 · 소재 12종 선별·컷 · 6트랙 스토리보드 조립과 전후 첨삭 비교 · 보안·윤리 검문소와 면접 꼬리질문. 상담사·강사용 4~6회 설계표. 자료 `portfolio/data/studio.js`, 계약 `portfolio/data/SCHEMA.md`, 화면 `portfolio/app.js`) |
 | `/law/` | 직업상담 법전 (법령·조례 검색기: 상담 상황 키워드 검색, 쉬운 풀이·실전 예시, 가변형 시각자료, 조문 전문, 책처럼 보기 리더. 데이터 `law/data/laws.json`, 계약 `law/data/SCHEMA.md`, 화면 `law/app.js`) |
+| `/translator/` | 내담자 언어 번역기 (내담자가 상담실에서 쓰는 직무·산업·학력·고용제도 용어와 약어 201개. 한 줄 쉬운 뜻 · 내담자 말 속 실제 맥락 · 이어 물을 질문 · 연계 자료 칩(`?q=`). 초성·영문·부분 검색, 분야 탭, 쪽 나눔. 데이터 `translator/data/terms.json`, 계약 `translator/data/SCHEMA.md`, 화면 `translator/app.js`) |
 | `/parsons/` | 다시 읽는 『직업의 선택』 — 파슨스 1909년 초판 카드뉴스 이북 (데이터 `parsons/data/*.json`, 화면 `parsons/app.js`) |
 | `/labor/` | 노동시장 산책 (노동경제 개념 그래프 + 고용 뉴스 읽기 도우미) |
 | `/cert/` | 자격증 도감 (4대 분류 자격증 위키 830건. 데이터 `cert/data/certifications.json`, 화면 `cert/app.js`) |
