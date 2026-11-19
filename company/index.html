@@ -11,18 +11,19 @@ document.documentElement.setAttribute('data-theme',t);})();
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
-<meta name="description" content="공시대상기업집단 소속회사·중견기업 확인서 발급기업·지정 공공기관 7,822곳을 공정거래위원회·알리오·중견기업정보마당·국민연금공단의 공식 공개 사실 정보로만 찾아보는 참고용 기업 위키">
-<title>기업 명함첩 · 대기업·중견기업·공공기관 기업 위키</title>
+<meta name="description" content="공시대상기업집단 소속회사·중견기업 확인서 발급기업·지정 공공기관·지방공공기관 9,137곳을 공정거래위원회·알리오·중견기업정보마당·국민연금공단·행정안전부의 공식 공개 사실 정보로만 찾아보는 참고용 기업 위키">
+<title>기업 명함첩 · 대기업·중견기업·중앙 공공기관·지방공공기관 기업 위키</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preload" href="./data/companies.json" as="fetch" type="application/json" crossorigin>
+<link rel="preload" href="./data/local-public.json" as="fetch" type="application/json" crossorigin>
 <style>
 :root{
   --bg:#faf6ef;--panel:#fffdf8;--soft:#f3ede2;--line:#e9e0d2;--line-2:#d8ccb9;
   --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
   --acc:#8f4413;--acc-soft:rgba(143,68,19,.08);--on-acc:#fff;
-  --ce:#2f4f9f;--cm:#16725c;--cp:#a3392a;
-  --ce-s:rgba(47,79,159,.09);--cm-s:rgba(22,114,92,.09);--cp-s:rgba(163,57,42,.085);
+  --ce:#2f4f9f;--cm:#16725c;--cp:#a3392a;--cl:#4d6b2c;
+  --ce-s:rgba(47,79,159,.09);--cm-s:rgba(22,114,92,.09);--cp-s:rgba(163,57,42,.085);--cl-s:rgba(77,107,44,.10);
   --p1:#2f4f9f;--p2:#16725c;--p3:#c0702a;--p4:#7b55a8;--p5:#a3392a;--p6:#3d8aa3;--p0:#d9cfbf;
   --card:#fffefa;--stamp:#b3392f;--sleeve:rgba(255,255,255,.2);
   --shadow:0 1px 2px rgba(70,50,25,.05),0 14px 34px -22px rgba(70,50,25,.30);
@@ -35,8 +36,8 @@ document.documentElement.setAttribute('data-theme',t);})();
   --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
   --ink:#e6e9ef;--muted:#9aa2b4;--dim:#7d8699;
   --acc:#f2b27c;--acc-soft:rgba(242,178,124,.10);--on-acc:#2a1405;
-  --ce:#9fb5ff;--cm:#7fd6bd;--cp:#ff9f8a;
-  --ce-s:rgba(159,181,255,.12);--cm-s:rgba(127,214,189,.11);--cp-s:rgba(255,159,138,.11);
+  --ce:#9fb5ff;--cm:#7fd6bd;--cp:#ff9f8a;--cl:#bcd98b;
+  --ce-s:rgba(159,181,255,.12);--cm-s:rgba(127,214,189,.11);--cp-s:rgba(255,159,138,.11);--cl-s:rgba(188,217,139,.12);
   --p1:#9fb5ff;--p2:#7fd6bd;--p3:#f2b27c;--p4:#c6a6f2;--p5:#ff9f8a;--p6:#86cde3;--p0:#2c3445;
   --card:#121823;--stamp:#ff8a80;--sleeve:rgba(160,180,220,.07);
   --shadow:none;color-scheme:dark;
@@ -54,8 +55,8 @@ ul,ol{padding:0;list-style:none}
 @media (min-width:900px){.wrap{padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right))}}
 .code{font-family:var(--mono)}
 
-/* 분류 색: 대기업 남색 · 중견기업 청록 · 공공기관 인주색 */
-.k-ENT{--c:var(--ce);--cs:var(--ce-s)}.k-MID{--c:var(--cm);--cs:var(--cm-s)}.k-PUB{--c:var(--cp);--cs:var(--cp-s)}
+/* 분류 색: 대기업 남색 · 중견기업 청록 · 중앙 공공기관 인주색 · 지방공공기관 올리브색 */
+.k-ENT{--c:var(--ce);--cs:var(--ce-s)}.k-MID{--c:var(--cm);--cs:var(--cm-s)}.k-PUB{--c:var(--cp);--cs:var(--cp-s)}.k-LPI{--c:var(--cl);--cs:var(--cl-s)}
 
 /* 머리말 */
 .hd{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;min-height:68px;padding:12px 0;padding-top:max(8px,env(safe-area-inset-top));background:var(--bg)}
@@ -89,19 +90,21 @@ ul,ol{padding:0;list-style:none}
 body:not([data-home]) .hero{display:none}
 @media (max-width:639px){.hero>div:first-child>p{display:none}.hero{gap:16px;padding-top:12px}}
 
-/* 첫머리 명함첩: 명함 세 장이 비스듬히 겹쳐 있고, 맨 앞 장만 온전히 보인다 */
-.album{position:relative;justify-self:center;width:min(100%,430px);height:232px;margin:4px 0 8px}
-.album .bc{position:absolute;left:4%;width:92%;height:104px;text-decoration:none;transform-origin:50% 100%}
-.album .bc:nth-child(1){top:4px;transform:rotate(-2deg) translateX(-4px)}
-.album .bc:nth-child(2){top:62px;transform:rotate(1.2deg) translateX(5px)}
-.album .bc:nth-child(3){top:120px;transform:rotate(-.5deg)}
+/* 첫머리 명함첩: 명함 네 장이 비스듬히 겹쳐 있고, 맨 앞 장만 온전히 보인다 */
+.album{position:relative;justify-self:center;width:min(100%,430px);height:274px;margin:4px 0 8px}
+.album .bc{position:absolute;left:4%;width:92%;height:100px;text-decoration:none;transform-origin:50% 100%}
+.album .bc:nth-child(1){top:2px;transform:rotate(-2deg) translateX(-4px)}
+.album .bc:nth-child(2){top:56px;transform:rotate(1.2deg) translateX(5px)}
+.album .bc:nth-child(3){top:110px;transform:rotate(-.9deg) translateX(-5px)}
+.album .bc:nth-child(4){top:164px;transform:rotate(.4deg)}
 @media (prefers-reduced-motion:no-preference) and (hover:hover){
   .album .bc{transition:transform .42s cubic-bezier(.2,1.3,.35,1)}
   .album .bc:nth-child(1):hover{transform:rotate(-3deg) translate(-8px,-10px)}
   .album .bc:nth-child(2):hover{transform:rotate(2deg) translate(8px,-12px)}
-  .album .bc:nth-child(3):hover{transform:rotate(-1deg) translateY(-12px)}
+  .album .bc:nth-child(3):hover{transform:rotate(-1.6deg) translate(-8px,-12px)}
+  .album .bc:nth-child(4):hover{transform:rotate(1deg) translateY(-12px)}
 }
-@media (max-width:420px){.album{height:222px}.album .bc{height:100px;left:2%;width:96%}.album .bc:nth-child(2){top:58px}.album .bc:nth-child(3){top:112px}}
+@media (max-width:420px){.album{height:262px}.album .bc{height:96px;left:2%;width:96%}.album .bc:nth-child(2){top:54px}.album .bc:nth-child(3){top:106px}.album .bc:nth-child(4){top:158px}}
 
 /* 명함(첫머리·상세 공용) */
 .bc{position:relative;display:block;overflow:hidden;padding:10px 18px 14px 24px;border:1px solid var(--line-2);border-radius:10px;background:var(--card);box-shadow:var(--shadow)}
@@ -154,7 +157,7 @@ body:not([data-home]) .hero{display:none}
 .tabs a[aria-current="page"] small{color:inherit;opacity:.7}
 .tabs a.sm{margin-left:auto;border:0;background:none;padding:8px 6px 7px;font-size:14.5px;font-weight:650}
 .tabs a.sm[aria-current="page"]{background:none;color:var(--ink);text-decoration:underline;text-underline-offset:4px}
-@media (max-width:520px){.tabs a{padding:8px 11px 7px;font-size:15px}.tabs a small{display:none}}
+@media (max-width:520px){.tabs a{padding:8px 9px 7px;font-size:15px}.tabs a small{display:none}}
 @media (orientation:landscape) and (max-height:500px){.hd,.tabs{position:static}}
 
 main{display:block;min-height:50vh;padding-top:20px}
@@ -305,7 +308,7 @@ main{display:block;min-height:50vh;padding-top:20px}
 .r-m .neg{color:var(--stamp)}
 .ty{display:inline-block;padding:2px 9px;border-radius:5px;font-size:13px;font-weight:700;line-height:1.6;white-space:nowrap;color:var(--c);background:var(--cs)}
 .tg{display:inline-block;max-width:16em;overflow:hidden;text-overflow:ellipsis;padding:2px 9px;border:1px solid var(--line-2);border-radius:5px;font-size:13px;line-height:1.6;color:var(--muted);white-space:nowrap;vertical-align:middle}
-@media (min-width:760px){.row{grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:18px}.r-m{grid-column:2;grid-row:1 / span 3;flex-direction:column;align-items:flex-end;gap:2px}}
+@media (min-width:760px){.row{grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:18px}.r-m{grid-column:2;grid-row:1 / span 3;flex-direction:column;align-items:flex-end;gap:2px}.row>.r-s{grid-column:1}}
 @media (min-width:1320px){
   .rows.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px;border-top:0;background:linear-gradient(var(--ink),var(--ink)) 0 0/100% 2px no-repeat}
 }
@@ -440,7 +443,8 @@ html[data-jc-imm] .flip-in{transition:none}
 .ab>p.lead{margin-top:8px;max-width:40em;color:var(--muted)}
 .ab h2{margin:30px 0 10px;font-size:21px;font-weight:800;letter-spacing:-.02em}
 .cats{display:grid;gap:12px;margin-top:14px}
-@media (min-width:900px){.cats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:760px){.cats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1180px){.cats{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .cats a{display:block;padding:16px 18px;border:1px solid var(--line);border-top:4px solid var(--c);border-radius:4px 4px 16px 16px;background:var(--panel);text-decoration:none}
 .cats h3{display:flex;align-items:baseline;gap:8px;font-size:18.5px;font-weight:800;color:var(--c)}
 .cats h3 b{margin-left:auto;font-family:var(--mono);font-size:18px}
@@ -495,28 +499,29 @@ html[data-jc-imm] .gl-t{display:none}
       <span class="pv-c" id="pvL">펼치기</span>
     </button>
     <div class="pv-b" id="pvB" inert><div><ul>
-      <li><b>공정거래위원회·알리오(ALIO)·중견기업정보마당·국민연금공단이 스스로 공개한 사실 정보와, 중견기업에 한해 더한 위키백과·위키데이터·상장 종목 공개 정보로 정리했습니다</b>(2026-11-16 정리). 어느 기관이나 기업의 공식 안내도, 채용 정보도 아닙니다. 민간 채용 플랫폼의 글과 기업 홍보 문구는 쓰지 않았습니다.</li>
+      <li><b>공정거래위원회·알리오(ALIO)·중견기업정보마당·국민연금공단·행정안전부가 스스로 공개한 사실 정보와, 중견기업에 한해 더한 위키백과·위키데이터·상장 종목 공개 정보로 정리했습니다</b>(2026-11-19 정리). 어느 기관이나 기업의 공식 안내도, 채용 정보도 아닙니다. 민간 채용 플랫폼의 글과 기업 홍보 문구는 쓰지 않았습니다.</li>
       <li><b>공개 자료에 없는 항목은 화면에 칸을 만들지 않았습니다.</b> 매출·직원수가 0으로 적힌 값도 "값이 없거나 0"이라 숫자를 싣지 않았습니다.</li>
       <li><b>대기업은 2026-05-01 공시대상기업집단 지정 기준</b>이고 매출·직원수·자산은 2025년 결산입니다. <b>공공기관 직원수는 정원</b>(임직원 총계)이라 현원과 다를 수 있습니다.</li>
       <li><b>중견기업은 확인서를 발급받은 기업만 공개됩니다.</b> 법적으로 중견기업이어도 확인서를 받지 않았으면 목록에 없습니다. 업종·국민연금 가입자수·사업장 소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였고(3,946곳 중 3,725곳), 가입자수는 상시근로자수와 다릅니다. 공식 홈페이지는 실제로 접속해 회사명이 확인된 곳만, 주요 사업은 위키백과·상장사 기업개요에서 확인된 곳만 실었습니다.</li>
+      <li><b>지방공공기관은 행정안전부의 2026-06-30 기준 현황</b>입니다. 지방공기업 423곳(직영 256 · 공사·공단 167)과 지방자치단체 출자·출연기관 892곳(출자 103 · 출연 789)을 합쳤고, 원자료가 명칭·구분·지역·설립 지자체·유형만 공개하므로 매출·정원·홈페이지는 싣지 않았습니다.</li>
       <li><b>검색어와 고른 조건은 저장하거나 보내지 않습니다.</b> 주소 표시줄에만 남아 다시 열거나 공유할 수 있습니다.</li>
     </ul></div></div>
   </section>
 
   <section class="hero">
     <div>
-      <h1>기업 <span id="heroN">7,822</span>곳의 공개된 사실을<br><em>명함 한 장씩</em> 꺼내 봅니다.</h1>
-      <p>공시대상기업집단 소속회사, 중견기업 확인서 발급기업, 지정 공공기관을 이름·기업집단·기관 유형·업종으로 찾고, 매출·직원 규모로 줄 세워 봅니다. 중견기업은 국민연금 가입 사업장 자료로 업종·가입자수·소재지를, 위키백과·위키데이터와 상장 종목 정보로 공식 홈페이지·주요 사업·상장 정보를 더했습니다.</p>
+      <h1>기업·기관 <span id="heroN">9,137</span>곳의 공개된 사실을<br><em>명함 한 장씩</em> 꺼내 봅니다.</h1>
+      <p>공시대상기업집단 소속회사, 중견기업 확인서 발급기업, 중앙 공공기관, 지방공공기관을 이름·기업집단·기관 유형·업무 유형·지역으로 찾고, 매출·직원 규모로 줄 세워 봅니다. 중견기업은 국민연금 가입 사업장 자료로 업종·가입자수·소재지를 더했고, 지방공공기관은 행정안전부 현황으로 설립 지자체·시·도·유형까지 좁혀 봅니다.</p>
     </div>
-    <div class="album" id="album" aria-label="3대 분류">
+    <div class="album" id="album" aria-label="4대 분류">
     </div>
   </section>
 
-  <nav class="tabs" id="tabs" aria-label="3대 분류"><div class="tabs-in" id="tabsIn"></div></nav>
+  <nav class="tabs" id="tabs" aria-label="4대 분류"><div class="tabs-in" id="tabsIn"></div></nav>
 
-  <main id="main"><div class="loading"><p>기업 7,822곳을 불러오는 중입니다…</p><span class="ld-bar" aria-hidden="true"><i id="ldBar"></i></span></div></main>
+  <main id="main"><div class="loading"><p>기업·기관 9,137곳을 불러오는 중입니다…</p><span class="ld-bar" aria-hidden="true"><i id="ldBar"></i></span></div></main>
 
-  <p class="foot"><b>공정거래위원회·알리오(ALIO)·중견기업정보마당·국민연금공단의 공식 공개 사실 정보를 정리한 참고용 자료입니다.</b> 대기업은 공정거래위원회 2026년 공시대상기업집단 지정 결과와 기업집단포털 소속회사 개요, 공공기관은 알리오 기관정보·정기공시(2026년 3분기), 중견기업은 중견기업정보마당의 확인서 발급정보(2026-11-16 기준 유효)와 국민연금 가입 사업장 내역(2026-09)입니다. 명칭·설립일·인원·매출·업종 같은 단순 사실만 옮겼고, 기업 로고·소개 문구·채용 정보는 싣지 않았습니다. 투자·취업 판단은 각 기관과 기업의 최신 공시로 확인하십시오. 자세한 출처는 <a href="#about">출처와 한계</a>에 있습니다.</p>
+  <p class="foot"><b>공정거래위원회·알리오(ALIO)·중견기업정보마당·국민연금공단·행정안전부의 공식 공개 사실 정보를 정리한 참고용 자료입니다.</b> 대기업은 공정거래위원회 2026년 공시대상기업집단 지정 결과와 기업집단포털 소속회사 개요, 중앙 공공기관은 알리오 기관정보·정기공시(2026년 3분기), 지방공공기관은 행정안전부 지방공기업·지방자치단체 출자출연기관 현황(2026-06-30), 중견기업은 중견기업정보마당의 확인서 발급정보(2026-11-16 기준 유효)와 국민연금 가입 사업장 내역(2026-09)입니다. 명칭·설립일·인원·매출·업종·지역 같은 단순 사실만 옮겼고, 기업 로고·소개 문구·채용 정보는 싣지 않았습니다. 투자·취업 판단은 각 기관과 기업의 최신 공시로 확인하십시오. 자세한 출처는 <a href="#about">출처와 한계</a>에 있습니다.</p>
 </div>
 <script src="./app.js" defer></script>
 <script src="../assets/marker.js" defer></script>
