@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-13T23:06:00+09:00",
  "edition": {
   "date": "2026-11-13",
@@ -119,7 +119,9 @@
    },
    "theme_key": "th-employment-service",
    "theme_label": "고용서비스와 상담",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
   },
   {
    "id": "c02",
@@ -209,7 +211,9 @@
    },
    "theme_key": "th-skills-training",
    "theme_label": "재취업과 직업훈련",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
   },
   {
    "id": "c03",
@@ -291,7 +295,9 @@
    },
    "theme_key": "th-youth-employment",
    "theme_label": "청년 고용",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "청년·중장년 고용"
   },
   {
    "id": "c04",
@@ -387,7 +393,9 @@
    },
    "theme_key": "th-ai-labor",
    "theme_label": "AI와 직무 재편",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
   }
  ],
  "radar": null,

@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-01T07:10:00+09:00",
  "edition": {
   "date": "2026-10-30",
@@ -149,7 +149,9 @@
     "usage": "라이선스가 허락한 범위에서 수치를 도표화."
    },
    "issue_id": "iss-biz-survey-202609",
-   "counselor_question": "지금 하는 일은 계약 기간이 정해져 있나요, 정해지지 않았나요?"
+   "counselor_question": "지금 하는 일은 계약 기간이 정해져 있나요, 정해지지 않았나요?",
+   "labor_walk": true,
+   "labor_walk_topic": "임금·물가"
   },
   {
    "id": "c02",
@@ -235,7 +237,9 @@
     "usage": "라이선스가 허락한 범위에서 수치를 도표화."
    },
    "issue_id": "iss-biz-survey-202609",
-   "counselor_question": "최근 1년 안에 스스로 그만둔 일이 있나요, 그만두게 된 일이 있나요?"
+   "counselor_question": "최근 1년 안에 스스로 그만둔 일이 있나요, 그만두게 된 일이 있나요?",
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
   }
  ],
  "radar": null,

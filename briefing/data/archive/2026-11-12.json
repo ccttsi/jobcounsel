@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-12T07:10:00+09:00",
  "edition": {
   "date": "2026-11-12",
@@ -149,7 +149,9 @@
     "usage": "라이선스가 허락한 범위에서 수치를 도표화."
    },
    "issue_id": "iss-emp-202610",
-   "counselor_question": "같은 업종에서도 연령대에 따라 채용이 갈립니다. 내 경력에서 강조할 부분은 무엇인가요?"
+   "counselor_question": "같은 업종에서도 연령대에 따라 채용이 갈립니다. 내 경력에서 강조할 부분은 무엇인가요?",
+   "labor_walk": true,
+   "labor_walk_topic": "청년·중장년 고용"
   }
  ],
  "radar": {

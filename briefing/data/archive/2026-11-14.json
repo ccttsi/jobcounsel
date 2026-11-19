@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-14T23:07:00+09:00",
  "edition": {
   "date": "2026-11-14",
@@ -171,7 +171,9 @@
    "updated_at": "2026-11-17T07:11:00+09:00",
    "theme_key": "th-labor-policy",
    "theme_label": "고용정책과 감독",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
   },
   {
    "id": "c02",
@@ -267,7 +269,9 @@
    "updated_at": "2026-11-17T07:11:00+09:00",
    "theme_key": "th-youth-employment",
    "theme_label": "청년 고용",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "청년·중장년 고용"
   },
   {
    "id": "c03",
@@ -356,7 +360,9 @@
    },
    "theme_key": "th-ai-labor",
    "theme_label": "AI와 직무 재편",
-   "region": "global"
+   "region": "global",
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
   },
   {
    "id": "c04",
@@ -452,7 +458,9 @@
    },
    "theme_key": "th-wage-income",
    "theme_label": "임금과 소득",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "임금·물가"
   },
   {
    "id": "c05",
@@ -548,7 +556,9 @@
    },
    "theme_key": "th-global-labor",
    "theme_label": "해외 노동시장",
-   "region": "global"
+   "region": "global",
+   "labor_walk": true,
+   "labor_walk_topic": "해외 노동시장"
   },
   {
    "id": "c06",
@@ -638,7 +648,9 @@
    },
    "theme_key": "th-global-labor",
    "theme_label": "해외 노동시장",
-   "region": "global"
+   "region": "global",
+   "labor_walk": true,
+   "labor_walk_topic": "해외 노동시장"
   },
   {
    "id": "c07",
@@ -732,7 +744,9 @@
    },
    "theme_key": "th-labor-policy",
    "theme_label": "고용정책과 감독",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
   },
   {
    "id": "c08",
@@ -824,7 +838,9 @@
    "updated_at": "2026-11-17T07:11:00+09:00",
    "theme_key": "th-skills-training",
    "theme_label": "재취업과 직업훈련",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
   },
   {
    "id": "c09",
@@ -906,7 +922,9 @@
    },
    "theme_key": "th-employment-service",
    "theme_label": "고용서비스와 상담",
-   "region": "kr"
+   "region": "kr",
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
   }
  ],
  "radar": null,

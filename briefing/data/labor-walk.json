@@ -1,0 +1,2800 @@
+{
+ "schema_version": "1.4.0",
+ "generated_at": "2026-11-19T23:41:08+09:00",
+ "note": "briefing.json·archive/*.json의 카드 중 labor_walk:true(고용·임금·직무·정책 등)를 모은 실기사 색인. 본문은 카드의 「무슨 일·수치·근거」를 그대로 옮긴 우리 말 요약이며 원문 문장이 아니다.",
+ "dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22"
+ ],
+ "counts": {
+  "2026-11-19": 6,
+  "2026-11-18": 5,
+  "2026-11-17": 5,
+  "2026-11-16": 1,
+  "2026-11-14": 9,
+  "2026-11-13": 4,
+  "2026-11-12": 1,
+  "2026-11-11": 1,
+  "2026-11-10": 2,
+  "2026-11-07": 2,
+  "2026-11-06": 1,
+  "2026-11-05": 1,
+  "2026-11-04": 2,
+  "2026-11-03": 2,
+  "2026-10-31": 1,
+  "2026-10-30": 2,
+  "2026-10-22": 2,
+  "2026-10-21": 1,
+  "2026-10-20": 1,
+  "2026-10-17": 1,
+  "2026-10-16": 1,
+  "2026-10-15": 2,
+  "2026-10-09": 1,
+  "2026-10-06": 1,
+  "2026-10-03": 1,
+  "2026-10-01": 1,
+  "2026-09-30": 1,
+  "2026-09-26": 1,
+  "2026-09-25": 2,
+  "2026-09-23": 2,
+  "2026-09-22": 2
+ },
+ "articles": [
+  {
+   "date": "2026-11-19",
+   "card_id": "c02",
+   "order": 2,
+   "title": "KDI \"내년 성장 3.9%·취업자 20만\" — 20대는 여전히 낮다",
+   "kicker": "2026년 3.8% → 2027년 3.9% · 취업자 +12만 → +20만",
+   "category": "국내 고용지표",
+   "topic": "거시경제와 고용",
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "kr",
+   "track": "A",
+   "source_name": "재정경제부·한국개발연구원(KDI)",
+   "source_title": "KDI 경제전망(2026. 하반기)",
+   "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
+   "published_at": "2026-11-18",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "2026년 성장률",
+     "value": "3.8%",
+     "delta": "",
+     "period": "KDI 전망"
+    },
+    {
+     "label": "2027년 성장률",
+     "value": "3.9%",
+     "delta": "+0.1%p",
+     "period": "KDI 전망"
+    },
+    {
+     "label": "2027년 취업자 증가",
+     "value": "+20만명",
+     "delta": "2026년 +12만",
+     "period": "KDI 전망"
+    },
+    {
+     "label": "실질임금 하락 산업 종사자",
+     "value": "50% 내외",
+     "delta": "",
+     "period": "KDI 분석"
+    }
+   ],
+   "text": "KDI가 2026년 하반기 경제전망을 내놓고 반도체·AI 인프라 호황을 반영해 올해 성장률을 3.8%, 내년을 3.9%로 전망했다. 취업자 증가도 올해 12만 명에서 내년 20만 명으로 늘어날 것으로 봤다.\n\n2026년 실질 GDP 3.8%·2027년 3.9%, 소비자물가 2.7%→2.4% 전망. 취업자는 올해 12만 명에서 내년 20만 명으로, 제조업·건설업 업황 개선을 반영했다. 다만 20대 고용률은 여전히 낮은 수준이고 실질임금이 하락한 산업 종사자 비중이 50% 내외다(2026년 11월 18일)."
+  },
+  {
+   "date": "2026-11-19",
+   "card_id": "c03",
+   "order": 3,
+   "title": "대기업 훈련 참여 53.2%, 중소기업은 5.8% — AI 시대의 벽",
+   "kicker": "훈련 참여율 53.2% 대 5.8% · 수도권 집중 68.5%",
+   "category": "국내 고용행정",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부",
+   "source_title": "\"인공지능(AI) 시대 직업훈련의 미래는?\" 한국기술교육대, 개교 35주년 고용·평생직업능력개발 발전 전략 포럼 개최",
+   "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20272",
+   "published_at": "2026-11-18",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "대기업 훈련 참여율",
+     "value": "53.2%",
+     "delta": "",
+     "period": "2026년"
+    },
+    {
+     "label": "중소기업 훈련 참여율",
+     "value": "5.8%",
+     "delta": "",
+     "period": "2026년"
+    },
+    {
+     "label": "훈련 수도권 집중",
+     "value": "68.5%",
+     "delta": "",
+     "period": "2026년"
+    },
+    {
+     "label": "청년 감소 일자리 중 AI 고노출",
+     "value": "94%",
+     "delta": "",
+     "period": "발제 진단"
+    }
+   ],
+   "text": "한국기술교육대가 개교 35주년 포럼에서 AI 시대 직업훈련·고용서비스 전략을 내놨다. 기조발제는 직업명이 아니라 과업·스킬·업무흐름 중심으로 훈련 단위가 재편된다고 진단했다.\n\n대·중소기업 훈련 참여율 격차가 53.2% 대 5.8%, 훈련의 수도권 집중도가 68.5%로 제시됐다. 청년층 감소 일자리의 94%가 AI 고노출 업종에 몰린다는 진단도 나왔다. 교·강사 교육과정은 2027년부터 AI 기반으로 전면 전환하고, 2027년 3월 개인 맞춤 'AI 학습비서'를 연다(2026년 11월 18일)."
+  },
+  {
+   "date": "2026-11-19",
+   "card_id": "c04",
+   "order": 4,
+   "title": "미국 1년 새 일자리 88만5천개, 정보·금융은 마이너스",
+   "kicker": "전년비 +88만5천개(월 7.4만) · 정보업 -11만9천",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Payroll employment increased by 885,000 from October 2025 to October 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
+   "published_at": "2026-11-18",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "비농업 일자리(전년비)",
+     "value": "+88만5천개",
+     "delta": "월평균 약 7만4천",
+     "period": "2025.10~2026.10"
+    },
+    {
+     "label": "의료·교육",
+     "value": "+52만5천개",
+     "delta": "",
+     "period": "2026년 10월 기준"
+    },
+    {
+     "label": "전문·사업서비스",
+     "value": "+26만9천개",
+     "delta": "",
+     "period": "2026년 10월 기준"
+    },
+    {
+     "label": "정보업",
+     "value": "-11만9천개",
+     "delta": "12개월",
+     "period": "2026년 10월 기준"
+    }
+   ],
+   "text": "미국 노동통계국이 2026년 10월까지 1년 동안의 업종별 일자리 증감을 내놨다. 늘어난 자리는 의료·교육과 전문·사업서비스에 몰렸고, 정보와 금융은 줄었다.\n\n비농업 일자리는 1년 새 88만5,000개 늘어 월평균 약 7만4,000개 수준이다. 의료·교육 +52만5,000개, 전문·사업서비스 +26만9,000개, 건설 +12만4,000개, 제조 +7만8,000개인 반면 정보 -11만9,000개, 금융·보험 -9만9,000개, 정부 -5만8,000개였다(2026년 10월 기준·계절조정)."
+  },
+  {
+   "date": "2026-11-19",
+   "card_id": "c05",
+   "order": 5,
+   "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
+   "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "track": "A",
+   "source_name": "arXiv (micro1·노스이스턴대)",
+   "source_title": "AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services (arXiv:2611.23354)",
+   "source_url": "https://arxiv.org/abs/2611.23354",
+   "published_at": "2026-11-17",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "연방 민사 자기대리 비중",
+     "value": "16.8%",
+     "delta": "+6.6%p",
+     "period": "2025회계연도"
+    },
+    {
+     "label": "대형 로펌 매출",
+     "value": "+13%",
+     "delta": "청구시간 거의 정체",
+     "period": "2025년"
+    },
+    {
+     "label": "민간 변호사 사내 비중",
+     "value": "29.0%",
+     "delta": "2019년 28.7%",
+     "period": "2024년"
+    }
+   ],
+   "text": "micro1과 노스이스턴대 연구진이 미국 법률서비스 시장에서 AI가 전문지식 일을 어떻게 다시 나누는지 분석했다. AI로 값싼 대안이 좋아지면 의뢰인은 일을 사내로 가져오기보다 다른 공급자 쪽으로 옮긴다.\n\n89개 연방지구 분석에서 비수감자 민사소송의 자기대리 비중이 2025회계연도 16.8%로, 20년 가까이 9.5~12.1%에 머물던 범위를 넘어 이중차분 기준 6.6%p 올랐다(기존 추세 조정 후 5.7%p). 로펌 변호사의 사내 이동은 뚜렷하지 않고(민간 고용 변호사 중 법률서비스업 밖 비중 2024년 29.0%, 2019년 28.7%), 대형 로펌은 청구시간이 거의 늘지 않았는데 2025년 매출이 13% 늘었다."
+  },
+  {
+   "date": "2026-11-19",
+   "card_id": "c06",
+   "order": 6,
+   "title": "배달·특송 부상 47.5% 급증, 전체 산재는 3% 줄었다",
+   "kicker": "특송 7만5,200건(+11.4%) · 업무전환·제한 +47.5%",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Employer-Reported Workplace Injuries and Illnesses — 2025 (USDL-26-1712)",
+   "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
+   "published_at": "2026-11-18",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "민간 부문 산재·질병",
+     "value": "240만건",
+     "delta": "-3.0%",
+     "period": "2025년"
+    },
+    {
+     "label": "특송·메신저 전체",
+     "value": "7만5,200건",
+     "delta": "+11.4%",
+     "period": "2025년"
+    },
+    {
+     "label": "특송 업무 전환·제한",
+     "value": "2만9,500건",
+     "delta": "+47.5%",
+     "period": "2025년"
+    },
+    {
+     "label": "민간 전체 발생률",
+     "value": "2.3건/100 FTE",
+     "delta": "",
+     "period": "2025년"
+    }
+   ],
+   "text": "미국 노동통계국이 2025년 사업장 산재·질병 통계를 발표했다. 민간 부문 전체는 줄었는데 특송·메신저 업종만 늘었고, 늘어난 몫은 업무 전환·제한 사례에 몰렸다.\n\n민간 부문 비치명 산재·질병은 240만건으로 1년 새 3.0% 줄어 2003년 이후 가장 적었고 발생률은 2.3건/100 FTE였다. 반면 특송·메신저는 7만5,200건으로 11.4% 늘었고, 그중 업무 전환·제한(DJTR) 사례가 2만건에서 2만9,500건으로 47.5% 증가했다. 창고·보관은 7만2,800건(-5.5%), 보건·사회복지는 53만5,500건(-3.3%)이었다(2025년 기준)."
+  },
+  {
+   "date": "2026-11-19",
+   "card_id": "c07",
+   "order": 7,
+   "title": "미국 신규 실업수당 20만건대 — 해고는 적고 재취업은 느리다",
+   "kicker": "신규 20만3천건 · 4주 평균 19만7,750건",
+   "category": "해외 노동시장",
+   "topic": "거시경제와 고용",
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
+   "source_title": "Unemployment Insurance Weekly Claims Report (2026년 11월 19일)",
+   "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
+   "published_at": "2026-11-19",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "신규 청구(계절조정)",
+     "value": "20만3천건",
+     "delta": "전주 +1천건",
+     "period": "2026.11.8~14"
+    },
+    {
+     "label": "4주 이동평균",
+     "value": "19만7,750건",
+     "delta": "+2,000건",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "계속 수급(피보험 실업)",
+     "value": "176만3천건",
+     "delta": "전주 +7만건",
+     "period": "2026.11.1~7"
+    },
+    {
+     "label": "피보험 실업률",
+     "value": "1.1%",
+     "delta": "1년 전 1.3%",
+     "period": "2026.11.1~7"
+    }
+   ],
+   "text": "미국 노동부가 주간 실업보험 신규 청구를 발표했다. 신규 청구는 20만건대로 낮게 유지됐지만, 수급을 이어가는 사람은 늘어 재취업이 느린 흐름을 보였다.\n\n11월 8~14일 주 계절조정 신규 청구는 20만3,000건으로 전주(20만2,000건, 2,000건 상향 수정)보다 1,000건 늘었고 1년 전 같은 주(22만2,000건)보다는 낮다. 반면 계속 수급(피보험 실업)은 176만3,000건으로 전주보다 7만건 늘었고, 4주 이동평균은 19만7,750건이다(2026년 11월 19일 발표)."
+  },
+  {
+   "date": "2026-11-18",
+   "card_id": "c01",
+   "order": 1,
+   "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
+   "kicker": "활용률 +14.7%p · 절감률 9.2%",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "kr",
+   "track": "B",
+   "source_name": "연합뉴스",
+   "source_title": "한은 \"AI로 아낀 업무시간 2.4배로…생산성 효과는 제한적\"",
+   "source_url": "https://www.yna.co.kr/view/AKR20261117075000002",
+   "published_at": "2026-11-17",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "업무용 AI 활용률",
+     "value": "66.5%",
+     "delta": "+14.7%p",
+     "period": "2026년 8~9월"
+    },
+    {
+     "label": "주당 절감",
+     "value": "3.7시간",
+     "delta": "1.5→3.7",
+     "period": "주 40시간 기준"
+    },
+    {
+     "label": "절감 시간 재투입",
+     "value": "63.1%",
+     "delta": "",
+     "period": "2026년"
+    }
+   ],
+   "text": "업무에 생성형 AI를 쓰는 비율이 1년 새 51.8%에서 66.5%로 올랐다. 주 40시간 기준 3.7시간을 아꼈지만, 아낀 시간의 63.1%가 다시 업무에 투입됐다.\n\n활용률 66.5%(+14.7%p), 정기 사용 30.6%(17.1%→). 업무시간 절감률 3.8%→9.2%, 주 40시간 기준 1.5→3.7시간. 산출량 상관 0.08, 품질 상관 0.09(2026년 8~9월, 1만6,342명)."
+  },
+  {
+   "date": "2026-11-18",
+   "card_id": "c03",
+   "order": 3,
+   "title": "AI 시대 일자리 의제, 국민이 직접 질문한다",
+   "kicker": "국민참여 3주 · 논의체 22명",
+   "category": "AI·직무",
+   "topic": "고용서비스·채용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부",
+   "source_title": "인공지능(AI) 시대 고용노동정책, 국민이 질문한다",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
+   "published_at": "2026-11-17",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "국민의견 수렴",
+     "value": "3주",
+     "delta": "",
+     "period": "2026.11.17~12.7"
+    },
+    {
+     "label": "논의체 참여",
+     "value": "22명",
+     "delta": "",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "주제(안)",
+     "value": "7개",
+     "delta": "",
+     "period": "녹서 논의체"
+    }
+   ],
+   "text": "고용노동부가 'AI시대 새로운 사회계약을 위한 녹서'에 담을 질문을 국민에게 직접 받는 온라인 창구를 11월 17일부터 3주간(12월 7일까지) 운영한다. 9월 출범한 노사정·전문가 논의체가 정리한 의제가 바탕이 된다.\n\n논의체는 노동계·경영계 대표 4명, 노동부·경사노위 고위공무원 2명, 전문가 13명 등 모두 22명이다(2026년 11월 17일 보도자료). 주요 주제(안)는 AI 도입에 따른 청년 일자리 변화, 노무제공 형태 확산, K자형 양극화 완화, 새로운 유연안정성, 사회적 투자 등 7개다."
+  },
+  {
+   "date": "2026-11-18",
+   "card_id": "c04",
+   "order": 4,
+   "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
+   "kicker": "2026년 3.9% · 2027년 3.3%",
+   "category": "국내 고용지표",
+   "topic": "거시경제와 고용",
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "kr",
+   "track": "A",
+   "source_name": "국제통화기금(IMF)·재정경제부",
+   "source_title": "2026년 IMF 연례협의 결과 주요내용 발표",
+   "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
+   "published_at": "2026-11-17",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "2026년 성장률",
+     "value": "3.9%",
+     "delta": "2025년 1.1%",
+     "period": "IMF 전망"
+    },
+    {
+     "label": "2027년 성장률",
+     "value": "3.3%",
+     "delta": "",
+     "period": "IMF 전망"
+    },
+    {
+     "label": "잠재성장률",
+     "value": "약 2.5%",
+     "delta": "2%대 중반",
+     "period": "AI 투자 반영"
+    }
+   ],
+   "text": "IMF가 2026년 연례협의 결과를 발표하고, AI·반도체 호황을 반영해 올해 성장률 전망을 크게 높였다. 다만 성장의 결실이 첨단산업에 몰려 있다며 구조개혁을 함께 요구했다.\n\n실질 GDP 성장률은 2025년 1.1%에서 2026년 3.9%, 2027년 3.3%로 전망됐다. AI 설비·데이터센터 투자(중기 GDP 약 4% 규모)를 반영해 잠재성장률은 2% 중반, 약 2.5%까지 개선될 것으로 봤다(2026년 11월 17일)."
+  },
+  {
+   "date": "2026-11-18",
+   "card_id": "c05",
+   "order": 5,
+   "title": "뿌리산업 74만명 중 50대 36.7%, 진주에 네 번째 훈련센터",
+   "kicker": "20대는 10.3% · 기존 3개 센터 수료율 94%",
+   "category": "국내 고용행정",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "B",
+   "source_name": "한국폴리텍대학·고용노동부",
+   "source_title": "폴리텍대학, 뿌리산업 빈 일자리 해결을 위해 네 번째 뿌리산업센터 개소",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789591",
+   "published_at": "2026-11-17",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "50대 이상 비중",
+     "value": "36.7%",
+     "delta": "",
+     "period": "2025년 뿌리산업실태조사"
+    },
+    {
+     "label": "20대 비중",
+     "value": "10.3%",
+     "delta": "",
+     "period": "2025년 뿌리산업실태조사"
+    },
+    {
+     "label": "기존 센터 수료율",
+     "value": "94%",
+     "delta": "교육 500여명",
+     "period": "2026년 10월 기준"
+    }
+   ],
+   "text": "한국폴리텍대학이 11월 17일 진주캠퍼스에 뿌리산업특화교육센터를 열었다. 남인천·순천·포항에 이은 네 번째 센터로, 서부경남 산업 수요에 맞춘 중장년 기술인력 양성을 맡는다.\n\n2025년 뿌리산업실태조사에서 뿌리산업 종사자는 약 74만명, 50대 이상이 36.7%인 반면 20대는 10.3%였다. 기존 3개 센터는 올해 10월까지 중장년 특화과정에서 500여 명을 교육해 수료율 94%를 기록했다(2026년 11월 17일)."
+  },
+  {
+   "date": "2026-11-18",
+   "card_id": "c06",
+   "order": 6,
+   "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
+   "kicker": "자연실업률 +0.2%p 추정",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "track": "B",
+   "source_name": "미국 샌프란시스코 연준",
+   "source_title": "Artificial Intelligence and Labor Market Reallocation",
+   "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
+   "published_at": "2026-11-17",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "자연실업률",
+     "value": "+0.2%p",
+     "delta": "추정",
+     "period": "LLM 도입 이후"
+    },
+    {
+     "label": "분석 자료",
+     "value": "CPS·JOLTS",
+     "delta": "",
+     "period": "미국"
+    }
+   ],
+   "text": "샌프란시스코 연준 연구는 AI 노출도와 활용도가 모두 높은 근로자에서 일자리를 찾거나 옮기는 비율이 더 크게 떨어졌다고 분석했다.\n\nCPS·JOLTS와 OpenAI·Lightcast의 AI 노출·활용 지표를 결합. 자연실업률이 LLM 도입 이후 약 0.2%p 올랐다고 추정(불확실성 큼). 같은 직장 안 과업 전환은 늘었다."
+  },
+  {
+   "date": "2026-11-17",
+   "card_id": "c01",
+   "order": 1,
+   "title": "실질임금 0.3%, 반도체 밖 생산성이 멈춰서다",
+   "kicker": "2026년 상반기 실질임금 +0.3% · 비반도체 생산성 연 +1.0%",
+   "category": "국내 고용지표",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "kr",
+   "track": "A",
+   "source_name": "한국개발연구원(KDI)·재정경제부",
+   "source_title": "KDI 현안분석 「기업 생산성 분석으로 살펴본 실질임금 정체의 배경과 시사점」",
+   "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396",
+   "published_at": "2026-11-16",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "실질임금 상승률",
+     "value": "0.3%",
+     "delta": "2011~2021년 연 2.2%",
+     "period": "2026년 상반기"
+    },
+    {
+     "label": "실질임금 하락 산업",
+     "value": "53.2%",
+     "delta": "상용근로자 기준 44.4%",
+     "period": "2026년 상반기"
+    },
+    {
+     "label": "비반도체 생산성",
+     "value": "연 1.0%",
+     "delta": "반도체 연 11.3%",
+     "period": "2011~2025년"
+    },
+    {
+     "label": "비반도체 한계기업",
+     "value": "6.2%",
+     "delta": "+3.0%p",
+     "period": "2025년(2021년 3.2%)"
+    }
+   ],
+   "text": "한국개발연구원(KDI)이 기업 생산성 분석으로 2021년 이후 이어지는 실질임금 정체의 배경을 설명했다. 임금 상승이 반도체 등 일부 고임금 산업에 몰려 있고, 그 밖 산업의 생산성이 정체한 것이 원인이라는 진단이다.\n\n2026년 상반기 전체 근로자 평균 실질임금 상승률은 0.3%였고, 실질임금이 오히려 줄어든 산업의 비중은 53.2%(상용근로자 규모 기준 44.4%)였다. 2011~2025년 생산성은 반도체가 연평균 11.3%, 비반도체가 1.0% 늘었고 2021~2025년에는 비반도체가 연 0.4% 감소했다. 비반도체 한계기업 비중은 2021년 3.2%에서 2025년 6.2%로 커졌다."
+  },
+  {
+   "date": "2026-11-17",
+   "card_id": "c02",
+   "order": 2,
+   "title": "미국 비자발적 파트타임, 한 달에 33만9천명 늘었다",
+   "kicker": "4.8백만명 · 사유는 줄어든 근무시간",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Involuntary part-time employment rose by 339,000 to 4.8 million in October 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/involuntary-part-time-employment-rose-by-339000-to-4.8-million-in-october-2026.htm",
+   "published_at": "2026-11-16",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "비자발적 파트타임",
+     "value": "484만명",
+     "delta": "+33.9만명",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "일이 줄어서",
+     "value": "325만명",
+     "delta": "+35.6만명",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "풀타임 못 찾아서",
+     "value": "127만명",
+     "delta": "-0.2만명",
+     "period": "2026년 10월"
+    }
+   ],
+   "text": "2026년 10월 미국의 비자발적 파트타임 근로자가 4백84만명으로 9월보다 33만9천명 늘었다. 풀타임을 원하지만 근무시간이 줄거나 풀타임 일자리를 못 찾은 사람들이다.\n\n경제적 사유 파트타임은 9월 4백50만명에서 10월 4백84만명으로 늘었고, 그중 '일이 줄어서'가 2백90만→3백25만명으로 커졌다. 풀타임 일자리를 못 찾은 경우는 1백27만→1백27만명으로 변화가 없었다."
+  },
+  {
+   "date": "2026-11-17",
+   "card_id": "c03",
+   "order": 3,
+   "title": "퇴직급여 사외적립, 2030년 전 사업장으로 넓힌다",
+   "kicker": "2028년 100인 이상 · 2030년 10인 미만",
+   "category": "국내 고용행정",
+   "topic": "퇴직·사회안전망",
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "track": "B",
+   "source_name": "연합뉴스",
+   "source_title": "노사정, 퇴직연금 기능강화 입법 협력…영세사업장 연착륙 지원",
+   "source_url": "https://www.yna.co.kr/view/AKR20261113167000530",
+   "published_at": "2026-11-16",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "100인 이상 적용",
+     "value": "2028년",
+     "delta": "",
+     "period": "사외적립 의무화"
+    },
+    {
+     "label": "10~99인 적용",
+     "value": "2029년",
+     "delta": "",
+     "period": "사외적립 의무화"
+    },
+    {
+     "label": "10인 미만 적용",
+     "value": "2030년",
+     "delta": "",
+     "period": "사외적립 의무화"
+    }
+   ],
+   "text": "고용노동부가 11월 16일 퇴직연금 노사정TF 간담회를 열고, 10월 29일 발표한 퇴직연금 기능강화 방안의 입법 추진을 노사와 논의했다. 핵심은 전 사업장 퇴직급여 사외적립 의무화다.\n\n사외적립 의무는 2028년 100인 이상, 2029년 10~99인, 2030년 10인 미만 사업장 순으로 단계 적용된다. 기금형 퇴직연금 활성화와 근로자퇴직급여보장법 개정도 함께 추진된다(2026년 11월 16일 보도)."
+  },
+  {
+   "date": "2026-11-17",
+   "card_id": "c04",
+   "order": 4,
+   "title": "경력 15년 이상 공고 30% 늘고, AI 역량도 함께 묻는다",
+   "kicker": "15년 이상 +30% vs 경력직 전체 +11.5%",
+   "category": "채용시장",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "B",
+   "source_name": "뉴스핌",
+   "source_title": "잡코리아 경력직 공고 분석 보도(2026-11-16)",
+   "source_url": "https://www.newspim.com/news/view/20261116000174",
+   "published_at": "2026-11-16",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "경력 15년 이상 공고",
+     "value": "+30%",
+     "delta": "경력직 전체 +11.5%",
+     "period": "2026년 1~10월"
+    },
+    {
+     "label": "15~19년 공고",
+     "value": "+33%",
+     "delta": "연차별 최대",
+     "period": "2026년 1~10월"
+    },
+    {
+     "label": "15년 이상 공고 중 AI 언급",
+     "value": "10%",
+     "delta": "지난해 6%",
+     "period": "2026년"
+    },
+    {
+     "label": "대기업 공고",
+     "value": "+49%",
+     "delta": "중견 +39%·중소 +25%",
+     "period": "2026년 1~10월"
+    }
+   ],
+   "text": "올해 10월까지 경력 15년 이상을 요구한 채용 공고가 지난해 같은 기간보다 30% 늘었다. 경력직 공고 전체 증가율 11.5%의 두 배가 넘는다. 15년 이상 공고 가운데 AI를 언급한 비중도 6%에서 10%로 올랐다.\n\n연차별로는 15~19년 공고가 33% 늘어 증가 폭이 가장 컸다. 최근 5년 경력직 공고는 17% 줄었지만 15년 이상 공고는 64% 늘었다. 직무별로 엔지니어링·설계 +48%, 법무·사무·총무 +37%, 건축·시설 +32%, 제조·생산 +29%. 기업 규모별로는 대기업 +49%, 중견기업 +39%, 중소기업 +25%. 잡코리아 집계."
+  },
+  {
+   "date": "2026-11-17",
+   "card_id": "c05",
+   "order": 5,
+   "title": "중장년 자동차 진단평가, 전국 단위 고용서비스로",
+   "kicker": "경기 지역 협업 → 전국 광역형 · 다섯 번째 산업 분야",
+   "category": "채용시장",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부·노사발전재단",
+   "source_title": "노사발전재단-한국자동차진단보증협회, '자동차 진단평가 분야 광역형 특화 고용서비스' 맞손",
+   "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20258",
+   "published_at": "2026-11-16",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "광역형 특화 분야",
+     "value": "5개",
+     "delta": "2025.12 보건업 시작",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "협약일",
+     "value": "2026.11.14",
+     "delta": "",
+     "period": "2026년"
+    },
+    {
+     "label": "지원 대상",
+     "value": "중장년",
+     "delta": "전국 단위",
+     "period": "2026년"
+    }
+   ],
+   "text": "노사발전재단과 한국자동차진단보증협회가 11월 14일 전국 중장년 고용안정을 위한 업무협약을 맺었다. 경기 지역에서 하던 중장년 취업지원을 지역·산업 경계를 넘는 광역형 체계로 넓힌다.\n\n협약은 자동차 진단평가 분야 인력 양성과 채용 수요 발굴, 전국 중장년내일센터의 진단평가사 양성교육·인프라 지원을 담았다. 노사발전재단의 광역형 특화 서비스는 2025년 12월 보건업을 시작으로 해운업, 복합리조트산업, 승강기유지보수업에 이어 이번이 다섯 번째 분야다."
+  },
+  {
+   "date": "2026-11-16",
+   "card_id": "c02",
+   "order": 2,
+   "title": "2030년 AI 일자리 순증 170만, 직무 재편은 4억3,550만명",
+   "kicker": "순증 170만 vs 직무 재편 4억3,550만",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "kr",
+   "track": "B",
+   "source_name": "연합뉴스",
+   "source_title": "가트너 2030년 AI 고용 전망 보도(2026-11-15)",
+   "source_url": "https://www.yna.co.kr/view/AKR20261113151600017",
+   "published_at": "2026-11-15",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "2030년 일자리",
+     "value": "순증 170만개",
+     "delta": "창출 1,060만·소멸 890만",
+     "period": "2030년 누적"
+    },
+    {
+     "label": "직무 재편 규모",
+     "value": "4억3,550만명",
+     "delta": "전체 근로자 20%+",
+     "period": "2030년 누적"
+    },
+    {
+     "label": "2026년 채용 보류",
+     "value": "130만개",
+     "delta": "소멸 220만·창출 160만",
+     "period": "2026년"
+    },
+    {
+     "label": "공공부문",
+     "value": "-50만개",
+     "delta": "순감",
+     "period": "2030년 누적"
+    }
+   ],
+   "text": "가트너는 2030년까지 AI로 일자리가 1,060만개 생기고 890만개 사라져 170만개 순증할 것으로 전망했다. 같은 기간 업무 내용과 책임 범위가 바뀌는 사람은 4억3,550만명으로, 일자리를 잃는 사람의 약 20배다.\n\n중국·인도를 제외한 전 세계 기준이다. AI로 인한 직접 일자리 상실은 전체 근로자의 최대 1.8% 수준. 2026년 한 해 AI 도입 기대에 따른 채용 보류는 약 130만개, 소멸 220만개, 창출 160만개로 추산됐다. 산업별로는 기술 +150만개, 제조·운송·광업 +40만개, 금융·보험 등 서비스 +20만개, 공공 -50만개."
+  },
+  {
+   "date": "2026-11-14",
+   "card_id": "c01",
+   "order": 1,
+   "title": "'가짜 3.3' 위장고용 140여 개소, 두 달 집중 감독",
+   "kicker": "의심 사업장 140여 개소 · 지난해 체불 6억8,500만원",
+   "category": "국내 고용행정",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부",
+   "source_title": "'가짜 3.3' 위장고용, '사업장 쪼개기' 등 노동법 회피 꼼수 기업 기획감독 착수",
+   "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248",
+   "published_at": "2026-11-13",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "감독 대상",
+     "value": "140여 개소",
+     "delta": "지난해 72개소",
+     "period": "2026년 11~12월"
+    },
+    {
+     "label": "지난해 체불 적발",
+     "value": "6억8,500만원",
+     "delta": "72개소",
+     "period": "2025년"
+    },
+    {
+     "label": "피해 노동자",
+     "value": "1,070명",
+     "delta": "",
+     "period": "2025년"
+    },
+    {
+     "label": "감독 기간",
+     "value": "약 2개월",
+     "delta": "11.16부터",
+     "period": "2026년"
+    }
+   ],
+   "text": "고용노동부가 11월 16일부터 약 두 달간 '가짜 3.3 위장고용'과 '사업장 쪼개기' 의심 사업장 140여 개소를 기획감독한다. 국세청 소득세 납부 정보와 익명 제보, 사업장 보험·연금 가입 정보를 겹쳐 대상지를 골랐다.\n\n지난해 전국 단위 첫 감독에서는 72개소에서 노동자 1,070명의 연장·야간·휴일 수당 등 6억8,500만원 체불이 적발됐다. 올해 대상은 음식·숙박, 제조, 도소매, 시설관리, 이동통신 등 사업소득자 다수 고용 업종과, 근로소득자는 5인 미만이지만 사업소득자를 합치면 20인 이상인 사업장이 중심이다."
+  },
+  {
+   "date": "2026-11-14",
+   "card_id": "c02",
+   "order": 2,
+   "title": "취업자 넉 달째 두 자릿수, 실질임금도 플러스로",
+   "kicker": "10월 취업자 +13.9만명 · 8월 실질임금 +0.8%",
+   "category": "국내 고용지표",
+   "topic": "청년·중장년 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "track": "A",
+   "source_name": "재정경제부",
+   "source_title": "2026년 11월 최근 경제동향",
+   "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
+   "published_at": "2026-11-13",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "취업자 증가",
+     "value": "+13.9만명",
+     "delta": "4개월 연속 두 자릿수",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "실질임금",
+     "value": "+0.8%",
+     "delta": "명목 +3.9%",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "소비자물가",
+     "value": "+2.8%",
+     "delta": "9월 +2.9%",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "실질 GDP",
+     "value": "+1.0%",
+     "delta": "1~3분기 누적 +3.6%",
+     "period": "2026년 3분기(전기비)"
+    }
+   ],
+   "text": "재정경제부가 11월 최근 경제동향에서 고용과 임금 흐름이 함께 개선되고 있다고 평가했다. 경기에 대한 판단도 지난달 '회복세'에서 '견조한 회복세'로 한 단계 높였다.\n\n10월 취업자는 전년동월대비 13.9만명 늘어 4개월 연속 두 자릿수 증가를 이었다. 2분기에는 증가폭이 3.2만명까지 줄었으나 3분기부터 다시 확대됐다. 8월 명목임금은 전년동월비 3.9% 올라 실질임금도 0.8% 증가로 돌아섰고, 10월 소비자물가는 2.8% 상승했다."
+  },
+  {
+   "date": "2026-11-14",
+   "card_id": "c03",
+   "order": 3,
+   "title": "AI가 줄인 일은 먼저 보이고, 새 일은 5년 뒤에 보인다",
+   "kicker": "진입기업 급여 비중 42%(1998) · 5년 뒤에도 80%",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "track": "A",
+   "source_name": "arXiv (micro1·노스이스턴대)",
+   "source_title": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation (arXiv:2611.17530)",
+   "source_url": "https://arxiv.org/abs/2611.17530",
+   "published_at": "2026-11-13",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "1998년 진입기업 급여 비중",
+     "value": "42%",
+     "delta": "",
+     "period": "1978년 이후 진입 기업"
+    },
+    {
+     "label": "진입 5년 뒤 급여 유지",
+     "value": "약 80%",
+     "delta": "",
+     "period": "진입 코호트"
+    },
+    {
+     "label": "창업 과업 노출 연구의 진입 증가",
+     "value": "10~20%",
+     "delta": "",
+     "period": "선행 연구"
+    }
+   ],
+   "text": "기술 변화는 이미 있는 활동 안의 조정과 새 활동의 창출, 두 문턱에서 노동수요를 바꾼다. 급여 통계는 첫째 문턱은 바로 잡아내지만 둘째 문턱은 늦게 잡아내서, AI의 일자리 대체가 과대평가된다는 분석이다.\n\n1978년 이후 진입한 기업이 1998년까지 미국 급여의 42%를 차지했고, 진입 코호트는 5년이 지나도 급여의 약 80%를 유지했다. 미국 사업체 고용 흐름은 2026년 1분기까지 언어모델 노출도에 따른 기울기가 나타나지 않았고, 창업 과업 노출을 쓴 선행 연구들은 진입이 10~20% 늘었다고 본다."
+  },
+  {
+   "date": "2026-11-14",
+   "card_id": "c04",
+   "order": 4,
+   "title": "'월급방위대 TF' — 월세 공제 1,200만원·근로장려금 360만원",
+   "kicker": "월세 세액공제 한도 1,000→1,200만원 · EITC 최대 360만원",
+   "category": "국내 고용행정",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "kr",
+   "track": "A",
+   "source_name": "재정경제부",
+   "source_title": "권대영 1차관, 「월급방위대 TF」 킥오프 회의 개최",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789089",
+   "published_at": "2026-11-13",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "월세 공제 한도",
+     "value": "1,200만원",
+     "delta": "+200만원",
+     "period": "2026년 세법개정안"
+    },
+    {
+     "label": "EITC 최대 지급액",
+     "value": "360만원",
+     "delta": "+30만원",
+     "period": "2026년 세법개정안"
+    },
+    {
+     "label": "EITC 맞벌이 소득요건",
+     "value": "5,200만원",
+     "delta": "+800만원",
+     "period": "2026년 세법개정안"
+    },
+    {
+     "label": "시차 출퇴근 환급률",
+     "value": "50%",
+     "delta": "+30%p",
+     "period": "2027년 예산안"
+    }
+   ],
+   "text": "재정경제부가 11월 13일 범부처 '월급방위대 TF' 킥오프 회의를 열고 직장인 생활비 절감과 실질 가처분소득 증대 과제를 논했다. 생계비·돌봄·자산형성·일자리 안정·건강관리 5대 분야에서 신규 과제를 발굴한다.\n\n'2026년 세법개정안'에는 배우자·부양가족 소득요건 완화(연 100만→300만원 이하), 월세 세액공제 한도 확대(연 1,000→1,200만원)가 담겼다. 근로장려세제(EITC)는 맞벌이 소득요건 4,400→5,200만원, 최대 지급액 330→360만원으로 확대됐다. '모두의 카드' 시차 출퇴근 환급률은 20→50%로 높였다."
+  },
+  {
+   "date": "2026-11-14",
+   "card_id": "c05",
+   "order": 5,
+   "title": "생산자물가 6.5%, 2022년 11월 이후 가장 큰 폭",
+   "kicker": "10월 PPI +0.3%(전월) · +6.5%(12개월)",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Producer Price Indexes — October 2026 (USDL 26-1687)",
+   "source_url": "https://www.bls.gov/news.release/ppi.nr0.htm",
+   "published_at": "2026-11-13",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "최종수요 PPI",
+     "value": "+0.3%",
+     "delta": "전월",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "최종수요 PPI",
+     "value": "+6.5%",
+     "delta": "12개월",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "상품 PPI",
+     "value": "+10.2%",
+     "delta": "12개월",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "식품·에너지·무역 제외",
+     "value": "+4.9%",
+     "delta": "12개월",
+     "period": "2026년 10월"
+    }
+   ],
+   "text": "미국 10월 생산자물가(최종수요)가 전월보다 0.3% 올랐고, 12개월 기준으로는 6.5% 올라 2022년 11월(7.4%) 이후 가장 큰 상승폭을 기록했다.\n\n9월 1.4%, 8월 0.4%에 이어 3개월 연속 상승이다. 최종수요 상품은 0.5%, 서비스는 0.2% 올랐고 상품의 12개월 상승률 10.2%는 2022년 10월 이후 최대다. 식품·에너지·무역서비스 제외 지수는 4.9% 올랐다."
+  },
+  {
+   "date": "2026-11-14",
+   "card_id": "c06",
+   "order": 6,
+   "title": "생산성 2.1%를 노동시간 0.2%로 만들었다",
+   "kicker": "비농업 생산성 +2.1% · 산출 +2.3% · 시간 +0.2%",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Nonfarm business productivity up 2.1 percent from third quarter 2025 to third quarter 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/nonfarm-business-productivity-up-2-1-percent-from-third-quarter-2025-to-third-quarter-2026.htm",
+   "published_at": "2026-11-13",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "비농업 생산성",
+     "value": "+2.1%",
+     "delta": "전년동기",
+     "period": "2026년 3분기"
+    },
+    {
+     "label": "산출",
+     "value": "+2.3%",
+     "delta": "전년동기",
+     "period": "2026년 3분기"
+    },
+    {
+     "label": "노동시간",
+     "value": "+0.2%",
+     "delta": "전년동기",
+     "period": "2026년 3분기"
+    }
+   ],
+   "text": "2025년 3분기부터 2026년 3분기까지 미국 비농업 부문 노동생산성이 2.1% 올랐다. 산출은 2.3% 늘었지만 노동시간은 0.2%만 늘어났다.\n\n2024년 3분기 이후 1년 단위 생산성 상승률은 2.1~3.1% 범위다. 시간당 산출 중심으로 일하는 구조가 1년 넘게 이어졌다는 뜻이다."
+  },
+  {
+   "date": "2026-11-14",
+   "card_id": "c07",
+   "order": 7,
+   "title": "한파 대책, 취약사업장 3만 곳·웜키트 1만4300세트",
+   "kicker": "취약사업장 3만여 개소 · 집중점검 200→600개소",
+   "category": "국내 고용행정",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부",
+   "source_title": "「작업시간대 조정 집중 지도」 한파 대비 노동자 건강보호 대책 추진",
+   "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
+   "published_at": "2026-11-13",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "취약사업장",
+     "value": "3만여 개소",
+     "delta": "",
+     "period": "2026년 11월~2027년 3월"
+    },
+    {
+     "label": "집중점검",
+     "value": "600개소",
+     "delta": "지난해 200개소",
+     "period": "2026년 12월~2027년 2월"
+    },
+    {
+     "label": "웜키트",
+     "value": "1만4300세트",
+     "delta": "",
+     "period": "2026년 겨울"
+    },
+    {
+     "label": "이동노동자 쉼터",
+     "value": "152개소",
+     "delta": "",
+     "period": "2026년 11월"
+    }
+   ],
+   "text": "고용노동부가 11월 15일부터 2027년 3월 15일까지 한파 안전 대책기간을 운영한다. 한랭질환 산재가 많은 취약사업장 3만여 개소를 지정해 예방 가이드북을 배포하고, 새벽 옥외작업 업종의 작업시간대 조정을 지도한다.\n\n건설·생활폐기물·농축산업 집중점검을 지난해 200개소에서 600개소로 늘리고, 12~2월에는 약 4천 개소를 점검한다. 환경미화 노동자에게 웜키트 1만4300세트를 지원하고 이동노동자 쉼터 152개소 정보를 제공한다."
+  },
+  {
+   "date": "2026-11-14",
+   "card_id": "c08",
+   "order": 8,
+   "title": "50세 이상 재취업지원, 300인 사업장까지 번진다",
+   "kicker": "현재 1,000인 이상 → 2029년 7월 300인 이상",
+   "category": "국내 고용행정",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부",
+   "source_title": "[인포그래픽] 재취업지원 의무사업주 확대",
+   "source_url": "https://www.moel.go.kr/news/cardinfo/view.do?bbs_seq=20261100478",
+   "published_at": "2026-11-13",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "의무 사업주 기준",
+     "value": "300인 이상",
+     "delta": "현재 1,000인 이상",
+     "period": "2029년 7월"
+    },
+    {
+     "label": "1차 확대",
+     "value": "500인 이상",
+     "delta": "1,000인 → 500인",
+     "period": "2027년 7월"
+    },
+    {
+     "label": "대상 연령",
+     "value": "50세 이상",
+     "delta": "함께 일한 노동자",
+     "period": "2026년 11월"
+    }
+   ],
+   "text": "국무회의가 11월 3일 고용상 연령차별금지 및 고령자고용촉진법 시행령 개정안을 의결해, 함께 일한 50세 이상 노동자에게 재취업지원을 해야 하는 사업주 범위가 단계적으로 넓어진다.\n\n현재는 상시 1,000인 이상 사업주가 의무 대상이고, 2027년 7월 500인 이상, 2029년 7월 300인 이상으로 확대된다. 대상 사업주는 재취업지원 서비스를 제공하거나, 노동자가 고른 직업훈련을 받을 수 있게 근로시간 조정 등 편의를 제공해야 한다."
+  },
+  {
+   "date": "2026-11-14",
+   "card_id": "c09",
+   "order": 9,
+   "title": "지역 청년 노동시장 진입, 위원회가 개선과제를 냈다",
+   "kicker": "3기 청년위원회 · 지역 청년 노동시장 진입 실태 발표",
+   "category": "국내 고용행정",
+   "topic": "고용서비스·채용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "track": "A",
+   "source_name": "경제사회노동위원회",
+   "source_title": "[보도자료]「청년위원회」·「청년일자리 희망 위원회」연석회의 개최 — 3기 청년위원회, 지역 청년 노동시장 진입 실태 및 개선과제 발표",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
+   "published_at": "2026-11-13",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "연석회의",
+     "value": "2개 위원회",
+     "delta": "",
+     "period": "2026년 11월 13일"
+    },
+    {
+     "label": "시민회의",
+     "value": "30인",
+     "delta": "11.14. 개최",
+     "period": "2026년 11월 14일"
+    }
+   ],
+   "text": "경제사회노동위원회의 청년위원회와 청년일자리 희망 위원회가 11월 13일 연석회의를 열고 3기 청년위원회가 마련한 지역 청년 노동시장 진입 실태와 개선과제를 발표했다.\n\n회의는 지역 간 청년 일자리 격차와 진입 경로의 문제를 다뤘고, 일자리 공론화 특별위원회와 함께 다음 주 시민회의(11월 14일, 30인)로 논의를 이어갔다."
+  },
+  {
+   "date": "2026-11-13",
+   "card_id": "c01",
+   "order": 1,
+   "title": "고용행정 데이터로 청년·산업전환 현안을 푼다",
+   "kicker": "제2회 고용행정 개방데이터 학술대회 · 세션 3개",
+   "category": "국내 고용행정",
+   "topic": "고용서비스·채용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부·한국고용정보원",
+   "source_title": "'고용행정 데이터로 청년 일자리부터 산업전환까지… 노동시장 현안 해법 찾는다'",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788923",
+   "published_at": "2026-11-12",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "학술대회",
+     "value": "제2회",
+     "delta": "작년 첫 대회",
+     "period": "2026년 11월 12일"
+    },
+    {
+     "label": "세션",
+     "value": "3개",
+     "delta": "",
+     "period": "2026년 11월 12일"
+    },
+    {
+     "label": "발표 주제",
+     "value": "10편",
+     "delta": "",
+     "period": "2026년 11월 12일"
+    }
+   ],
+   "text": "한국고용정보원이 고용노동부와 11월 12일 서울 한국프레스센터에서 제2회 고용행정 개방데이터 학술대회를 열었다. 고용보험 이력·사업체 패널자료를 활용한 실증연구를 발표하고 정책적 활용 방안을 논했다.\n\n세션은 셋이다. 취약계층 안전망(자발적 실업급여 기대효과, 중장년 고용불안정 유형과 재취득 경로, 비자발적 이직자 실업급여 수급 결정요인), 청년(초기경력 궤적과 장기 이력단절, 수도권·비수도권 청년 일자리 특성, 중고령 고용과 청년 고용의 관계), 지역노동시장·산업전환(비자발적 실직의 장기 임금손실, 지역·산업 고용위기의 재취업 효과, 기술 수준·다양성과 노동이동, 지역별 임금분포 변화)을 다뤘다."
+  },
+  {
+   "date": "2026-11-13",
+   "card_id": "c02",
+   "order": 2,
+   "title": "시니어산업을 복지가 아니라 성장산업으로",
+   "kicker": "초고령 진입 25년 만 · 에이지테크 융합",
+   "category": "국내 고용행정",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "A",
+   "source_name": "인구전략위원회",
+   "source_title": "김진오 인구전략위 부위원장, \"시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로\"",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788872",
+   "published_at": "2026-11-12",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "초고령 진입",
+     "value": "25년 만",
+     "delta": "고령화사회 이후",
+     "period": "2026년"
+    },
+    {
+     "label": "제언",
+     "value": "3가지",
+     "delta": "",
+     "period": "2026년 11월 12일"
+    },
+    {
+     "label": "기본계획",
+     "value": "제1차 국가인구전략",
+     "delta": "9월 출범 후",
+     "period": "2026년"
+    }
+   ],
+   "text": "대통령직속 인구전략위원회 김진오 부위원장은 11월 12일 서울에서 열린 2026 fn 시니어산업 컨퍼런스에서 시니어산업을 '생산적 국가 성장산업'으로 키워야 한다고 말했다. 한국은 고령화사회 진입 후 25년 만에 초고령사회에 들어섰다.\n\n제언은 세 가지다. ①고령자의 안정적 노후소득 보장 기반 강화로 수요 기반 확충 ②의료·돌봄과 에이지테크(AI·돌봄로봇) 융합으로 돌봄의 질·지속가능성 제고 ③산업 성장이 일자리 창출로 이어져 전 세대가 혜택을 보는 선순환 구조다."
+  },
+  {
+   "date": "2026-11-13",
+   "card_id": "c03",
+   "order": 3,
+   "title": "범부처 지원단이 청년 취업지원 현장을 직접 봤다",
+   "kicker": "민생안정지원단 청년 취업지원 점검",
+   "category": "국내 고용행정",
+   "topic": "청년·중장년 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "track": "A",
+   "source_name": "재정경제부",
+   "source_title": "범부처 민생안정지원단, 청년 취업지원 현장 점검",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
+   "published_at": "2026-11-12",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "점검 주체",
+     "value": "범부처 지원단",
+     "delta": "",
+     "period": "2026년 11월 12일"
+    },
+    {
+     "label": "대상",
+     "value": "청년 취업지원",
+     "delta": "",
+     "period": "2026년 11월 12일"
+    }
+   ],
+   "text": "재정경제부가 11월 12일 범부처 민생안정지원단과 함께 청년 취업지원 현장을 점검했다. 양극화 대응 TF(보건복지부)도 같은 주에 첫 총괄반 회의를 열어 '모두의 성장' 대전환 과제를 논했다.\n\n점검은 청년 일자리 지원 사업 현장에서 이뤄졌고, 민생안정지원단은 지원 제도가 청년에게 실제로 닿는지를 확인했다. 양극화 대응 TF 총괄반은 전 부처 역량 결집을 확인하는 자리였다."
+  },
+  {
+   "date": "2026-11-13",
+   "card_id": "c04",
+   "order": 4,
+   "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가",
+   "kicker": "청년 -28.5만명 중 -26.8만명이 AI 고노출",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "kr",
+   "track": "B",
+   "source_name": "조선비즈",
+   "source_title": "한국은행 청년 고용·AI 고노출 업종 분석 보도(2026-11-12)",
+   "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/",
+   "published_at": "2026-11-12",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "15~29세 취업자",
+     "value": "-28.5만명",
+     "delta": "4년 누적",
+     "period": "2022.6~2026.6"
+    },
+    {
+     "label": "AI 고노출 업종 감소",
+     "value": "-26.8만명",
+     "delta": "청년 감소의 94%",
+     "period": "2022.6~2026.6"
+    },
+    {
+     "label": "50대 취업자",
+     "value": "+23만명",
+     "delta": "75%가 AI 고노출 업종",
+     "period": "2022.6~2026.6"
+    }
+   ],
+   "text": "국민연금 가입자 기준으로 4년 동안 15~29세 취업자가 28만5천명 줄었고, 그중 26만8천명(94%)이 AI 노출이 높은 업종에서 빠졌다. 같은 기간 50대는 23만명 늘었는데 75%가 같은 업종이었다.\n\n2022년 6월부터 2026년 6월까지 국민연금 가입자 기준 분석(한국은행 조사국 고용연구팀). AI 고노출 업종은 정보서비스업, 출판업, 소프트웨어 개발업 등이다. 연구자는 AI 탓으로만 단정하지 않고 코로나 이후 과잉채용 조정, 경력직 선호, 사내교육 약화를 함께 지목했다. 별도 분석에서는 AI 노출이 큰 직업의 고용 감소가 뚜렷하지 않았다."
+  },
+  {
+   "date": "2026-11-12",
+   "card_id": "c01",
+   "order": 1,
+   "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
+   "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
+   "category": "국내 고용지표",
+   "topic": "청년·중장년 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "track": "A",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 10월 고용동향",
+   "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
+   "published_at": "2026-11-11",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "취업자",
+     "value": "+13.9만",
+     "delta": "전년동월",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "청년 취업자",
+     "value": "-19.6만",
+     "delta": "48개월째",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "청년 고용률",
+     "value": "42.9%",
+     "delta": "-1.7%p",
+     "period": "2026년 10월"
+    }
+   ],
+   "text": "10월 취업자가 1년 전보다 13만9천 명 늘며 넉 달째 두 자릿수 증가를 이어갔다. 그러나 청년 취업자는 19만6천 명 줄어 48개월째 감소했다.\n\n취업자 2,917만9천명(+13.9만). 청년(15~29세) -19.6만·고용률 42.9%(-1.7%p). 15~64세 고용률 70.4%(+0.3%p), 실업률 2.0%, 실업자 60만2천명(-8.5%). 20대 -20.3만, 60세 이상 +19.6만(2026년 10월)."
+  },
+  {
+   "date": "2026-11-11",
+   "card_id": "c01",
+   "order": 1,
+   "title": "AI 프리랜서 공고는 일을 다시 묶는다",
+   "kicker": "AI 공고 과업 수 많음 · 재묶음(rebundling) 확인",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "track": "A",
+   "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+   "source_title": "The Rebundling of Freelance Work in the AI Age (arXiv:2611.14708)",
+   "source_url": "https://arxiv.org/abs/2611.14708",
+   "published_at": "2026-11-10",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "진입 증가",
+     "value": "10~20%",
+     "delta": "창업 과업 노출 분야",
+     "period": "arXiv:2611.17530"
+    },
+    {
+     "label": "AI 공고 과업 수",
+     "value": "더 많음",
+     "delta": "비AI 공고 대비",
+     "period": "arXiv:2611.14708"
+    },
+    {
+     "label": "과업 다양성",
+     "value": "증가",
+     "delta": "2개 이상 과업 공고",
+     "period": "arXiv:2611.14708"
+    }
+   ],
+   "text": "OpenAI 경제연구팀과 Upwork가 프리랜스 시장을 분석한 결과, AI 관련 공고는 다른 공고보다 평균적으로 더 많은 과업을 한 프로젝트로 묶어 요구했다. 과업 수가 비슷한 프로젝트끼리 비교해도, AI 공고는 생성형 AI 이전에는 함께 요청되지 않던 과업 조합을 가져왔다.\n\nChatGPT 사용은 글쓰기·조언에 몰리고 Upwork 공고는 기술 구현·시각 제작에 치우쳐 단순 대체 관계는 아니었다. AI 관련 공고 안의 일은 소수 활동에 집중되지 않고 다양해지는 중이었다. 별도 연구(arXiv:2611.17530)는 창업 과업 노출이 큰 분야에서 진입이 10~20% 늘었다고 본다."
+  },
+  {
+   "date": "2026-11-10",
+   "card_id": "c01",
+   "order": 1,
+   "title": "고용보험은 10개월째 20만명대, 구인배수는 0.46",
+   "kicker": "가입자 +28.6만명 · 구인배수 0.46",
+   "category": "국내 고용행정",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부",
+   "source_title": "2026년 10월 고용행정 통계로 본 노동시장 동향",
+   "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20216",
+   "published_at": "2026-11-09",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "고용보험 상시가입자",
+     "value": "1,597.4만명",
+     "delta": "+28.6만명",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "구인배수",
+     "value": "0.46",
+     "delta": "+0.04",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "고용24 신규구인",
+     "value": "16.5만명",
+     "delta": "+16.2%",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "구직급여 신규신청",
+     "value": "8.1만명",
+     "delta": "+7.5%",
+     "period": "2026년 10월"
+    }
+   ],
+   "text": "10월 고용보험 상시가입자가 1년 전보다 28만6천명 늘어 열 달 연속 20만명대 후반 증가를 이어 갔다. 제조업은 석 달 연속 늘고 건설업 감소폭은 줄었다.\n\n가입자 1,597만4천명(+1.8%). 서비스업 +27만6천명(보건복지 +12만명, 숙박음식 +4만9천명), 제조업 +1만4천명, 건설업 -5천명. 29세 이하 -5만4천명, 60세 이상 +20만4천명. 구직급여 신규신청 8만1천명(+7.5%), 지급액 1조25억원(-4.5%). 고용24 신규구인 16만5천명(+16.2%), 신규구직 36만명(+7.4%), 구인배수 0.46(1년 전 0.42)."
+  },
+  {
+   "date": "2026-11-10",
+   "card_id": "c02",
+   "order": 2,
+   "title": "업무 중 1~2시간 빼기, 남성 72% vs 여성 66%",
+   "kicker": "어렵지 않음 69.1% · 매우 어려움 10.6%",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Ease of taking time off during the workday varied by sex and educational attainment",
+   "source_url": "https://www.bls.gov/opub/ted/2026/ease-of-taking-time-off-during-the-workday-varied-by-sex-and-educational-attainment.htm",
+   "published_at": "2026-11-09",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "어렵지 않음",
+     "value": "69.1%",
+     "delta": "",
+     "period": "2024~25년 평균"
+    },
+    {
+     "label": "다소 어려움",
+     "value": "20.3%",
+     "delta": "",
+     "period": "2024~25년 평균"
+    },
+    {
+     "label": "매우 어려움",
+     "value": "10.6%",
+     "delta": "",
+     "period": "2024~25년 평균"
+    },
+    {
+     "label": "여성 매우 어려움",
+     "value": "12.4%",
+     "delta": "남성 9.0%",
+     "period": "2024~25년 평균"
+    }
+   ],
+   "text": "2024~25년 미국 임금근로자의 69.1%는 업무 중 1~2시간을 빼는 것이 어렵지 않다고 답했다. 남성(72.0%)이 여성(66.0%)보다 높았고, 매우 어렵다는 응답은 여성 12.4%로 남성 9.0%보다 높았다.\n\n다소 어렵다 20.3%, 매우 어렵다 10.6%였다. 어렵지 않다는 응답의 성별 격차는 6.0%포인트, 매우 어렵다는 응답의 격차는 3.4%포인트다."
+  },
+  {
+   "date": "2026-11-07",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 10월 고용 +16만5천, 실업률 4.1% — 오래 쉬는 사람은 늘었다",
+   "kicker": "비농업 +16만5천 · 장기실업 196만명",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Employment Situation — October 2026",
+   "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+   "published_at": "2026-11-06",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "비농업 고용",
+     "value": "+16.5만",
+     "delta": "전월비",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "실업률",
+     "value": "4.1%",
+     "delta": "-0.1%p",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "평균 실업기간",
+     "value": "27.1주",
+     "delta": "+2.3주",
+     "period": "2026년 10월"
+    }
+   ],
+   "text": "미국 10월 비농업 고용이 16만5천 명 늘고 실업률은 4.1%로 내렸다. 다만 평균 실업 기간이 27.1주로 길어져 재취업까지 걸리는 시간은 늘었다.\n\n비농업 +165천(전월 +60천), 실업률 4.1%, 시간당 임금 +3.1%. 27주 이상 실업자 196만명(전체 실업자의 27.6%), 평균 실업 기간 27.1주(2026년 10월)."
+  },
+  {
+   "date": "2026-11-07",
+   "card_id": "c02",
+   "order": 2,
+   "title": "실업자 710만명, 27주 넘게 쉰 사람이 27.6%",
+   "kicker": "실업률 4.1% · U-6 7.9%",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Employment Situation — October 2026",
+   "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+   "published_at": "2026-11-06",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "실업자",
+     "value": "710만명",
+     "delta": "변동 없음",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "27주 이상",
+     "value": "196만명",
+     "delta": "27.6%",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "시간제 근로",
+     "value": "480만명",
+     "delta": "+33.9만",
+     "period": "경제적 이유"
+    }
+   ],
+   "text": "미국 실업자는 710만 명으로 큰 변화가 없었다. 그 가운데 196만 명이 27주 넘게 일자리를 찾고 있다.\n\n실업자 7.1백만 명, 27주 이상 196만 명(27.6%). 평균 실업 기간 27.1주. 경제적 이유의 시간제 근로자는 33만9천 명 늘어 480만 명(2026년 10월)."
+  },
+  {
+   "date": "2026-11-06",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 노동비용 3.4%, 봉급 3.1%·복리후생 3.9%",
+   "kicker": "민간 노동비용 +3.4% · 지역 격차 2.0%p",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Compensation costs up 2.3 percent in New England, 4.3 percent in Pacific region, over year ended September 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-up-2-3-percent-in-new-england-4-3-percent-in-pacific-region-over-year-ended-september-2026.htm",
+   "published_at": "2026-11-05",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "노동비용",
+     "value": "+3.4%",
+     "delta": "-0.1%p",
+     "period": "2026년 9월까지 1년"
+    },
+    {
+     "label": "봉급",
+     "value": "+3.1%",
+     "delta": "",
+     "period": "2026년 9월까지 1년"
+    },
+    {
+     "label": "복리후생",
+     "value": "+3.9%",
+     "delta": "",
+     "period": "2026년 9월까지 1년"
+    },
+    {
+     "label": "태평양-뉴잉글랜드",
+     "value": "2.0%p",
+     "delta": "",
+     "period": "2026년 9월까지 1년"
+    }
+   ],
+   "text": "2025년 9월까지 1년간 미국 민간 노동자의 노동비용은 3.4% 늘었다. 봉급은 3.1%, 복리후생 비용은 3.9%로 복리후생이 더 빨리 올랐다.\n\n지역 차이도 컸다. 뉴잉글랜드 2.3%, 태평양 4.3%로 2.0%포인트 격차다. 전국 기준 1년 전(3.5%)보다 0.1%포인트 느려졌다."
+  },
+  {
+   "date": "2026-11-05",
+   "card_id": "c01",
+   "order": 1,
+   "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
+   "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
+   "category": "국내 고용지표",
+   "topic": "청년·중장년 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "track": "B",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 8월 경제활동인구조사 비경제활동인구 부가조사",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
+   "published_at": "2026-11-04",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "쉬었음",
+     "value": "255.1만명",
+     "delta": "-8.9만명",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "30대 쉬었음",
+     "value": "30.3만명",
+     "delta": "-2.5만명",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "30대 사유 1위",
+     "value": "32.3%",
+     "delta": "+5.0%p",
+     "period": "원하는 일자리 없음"
+    }
+   ],
+   "text": "일도 구직도 하지 않는 '쉬었음' 인구가 255만1천명으로 집계됐다. 30대는 쉬는 이유 1위가 처음으로 '원하는 일자리를 찾기 어려워서'로 바뀌었다.\n\n쉬었음 255만1천명(1년 전 264만1천명). 30대 30만3천명 가운데 32.3%가 '원하는 일자리 없음'(+5.0%p), 20대 37만7천명. 1년 안에 취업·창업 의향은 19.9%(2026년 8월)."
+  },
+  {
+   "date": "2026-11-04",
+   "card_id": "c01",
+   "order": 1,
+   "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+   "kicker": "근원 2.8% · 생활물가 2.6%",
+   "category": "국내 고용지표",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "kr",
+   "track": "B",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 10월 소비자물가동향",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+   "published_at": "2026-11-03",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "소비자물가",
+     "value": "+2.8%",
+     "delta": "전년동월",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "석유류",
+     "value": "+14.9%",
+     "delta": "전년동월",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "신선식품",
+     "value": "-6.2%",
+     "delta": "전년동월",
+     "period": "2026년 10월"
+    }
+   ],
+   "text": "10월 소비자물가가 1년 전보다 2.8% 올랐다. 농축수산물은 내렸지만 석유류와 가공식품·외식이 상승을 이끌었다.\n\n소비자물가 +2.8%, 근원(식료품·에너지 제외) +2.8%, 생활물가 +2.6%. 석유류 +14.9%, 가공식품 +2.9%, 외식 +2.9%, 신선식품 -6.2%(2026년 10월, 전년동월비)."
+  },
+  {
+   "date": "2026-11-04",
+   "card_id": "c02",
+   "order": 2,
+   "title": "구인 752만3천, 자발적 퇴사는 336만5천으로 늘었다",
+   "kicker": "구인율 4.5% · 해고 164만1천",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Job Openings and Labor Turnover — September 2026",
+   "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+   "published_at": "2026-11-03",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "구인",
+     "value": "752.3만",
+     "delta": "+33.3만",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "구인율",
+     "value": "4.5%",
+     "delta": "+0.2%p",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "퇴사",
+     "value": "336.5만",
+     "delta": "+32.1만",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "미국 9월 구인은 752만3천 건으로 한 달 전보다 33만3천 건 늘었다. 채용은 정체된 가운데 자발적 퇴사만 늘었다.\n\n구인 7,523천(+333천), 구인율 4.5%. 채용 5,402천, 퇴사 3,365천(+321천, 퇴사율 2.1%), 해고 1,641천. 구인 1건당 실업자 1.06명(2026년 9월)."
+  },
+  {
+   "date": "2026-11-03",
+   "card_id": "c01",
+   "order": 1,
+   "title": "임금을 누르는 건 고용주의 교섭력, 10개국에서 확인",
+   "kicker": "마크업 2010→2023 +0.150 · 도시 거주 -0.065",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "track": "A",
+   "source_name": "국제노동기구(ILO)",
+   "source_title": "Monopsonistic Power and Wage Dynamics: Insights from Cross-Country Labour Market Analysis (ILO Working Paper 183)",
+   "source_url": "https://www.ilo.org/publications/monopsonic-power-and-wage-dynamics-insights-cross-country-labour-market",
+   "published_at": "2026-11-02",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "마크업 지수(기준 범주)",
+     "value": "0.161",
+     "delta": "",
+     "period": "2010년, 9개국"
+    },
+    {
+     "label": "2023년 마크업 상승분",
+     "value": "+0.150",
+     "delta": "",
+     "period": "2010년 대비, 9개국"
+    },
+    {
+     "label": "여성 − 남성",
+     "value": "+0.036",
+     "delta": "",
+     "period": "2011~2023년, 9개국"
+    },
+    {
+     "label": "도시 − 농촌",
+     "value": "-0.065",
+     "delta": "",
+     "period": "2011~2023년, 9개국"
+    }
+   ],
+   "text": "국제노동기구(ILO)가 10개국 노동력조사 자료를 같은 방식으로 다시 계산해, 고용주가 근로자 생산성과 임금 사이에서 남기는 몫(마크업)을 국가 간에 비교했다. 이 몫은 여성·청년·농촌·농업·비공식 부문에서 더 컸고, 2010년 이후 대부분 국가에서 커졌다.\n\n미국을 뺀 9개국에서 2010년·남성·기초학력 미만·농업·15~24세를 기준 범주로 둔 마크업 지수는 0.161이었고, 2023년 계수는 +0.150이었다. 여성은 남성보다 0.036 높았고, 도시 거주는 농촌보다 0.065 낮았으며, 고학력은 기초학력보다 0.029 낮았다(2011~2023년, ILO 작업보고서 183 표1)."
+  },
+  {
+   "date": "2026-11-03",
+   "card_id": "c02",
+   "order": 2,
+   "title": "3년 이상 다닌 직장을 잃으면 66%가 다시 일한다",
+   "kicker": "장기 근속 피해자 재취업률 66.1% · 보건복지 77.1%",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Three-fourths of long-tenured workers displaced from jobs in health care and social assistance reemployed in January 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/three-fourths-of-long-tenured-workers-displaced-from-jobs-in-health-care-and-social-assistance-reemployed-in-january-2026.htm",
+   "published_at": "2026-11-02",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "장기 근속 피해자",
+     "value": "330만명",
+     "delta": "3년 이상 근속",
+     "period": "2023.1~2025.12"
+    },
+    {
+     "label": "재취업률",
+     "value": "66.1%",
+     "delta": "",
+     "period": "2026년 1월"
+    },
+    {
+     "label": "보건·사회복지",
+     "value": "77.1%",
+     "delta": "최고",
+     "period": "2026년 1월"
+    },
+    {
+     "label": "건설",
+     "value": "71.3%",
+     "delta": "",
+     "period": "2026년 1월"
+    }
+   ],
+   "text": "2023년 1월부터 2025년 12월 사이 3년 이상 근속한 직장을 잃은 미국 노동자는 3백30만명이다. 2026년 1월 기준 66.1%가 재취업에 성공했다.\n\n업종별 재취업률은 보건·사회복지 77.1%, 정보통신 76.8%, 도소매 72.2%, 건설 71.3%로 70%를 넘는 업종이 많았다. 업종에 따라 잃은 자리에서 다시 일어서는 속도가 크게 달랐다."
+  },
+  {
+   "date": "2026-10-31",
+   "card_id": "c02",
+   "order": 2,
+   "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
+   "kicker": "복리후생 3.9% · 의료비 6.4%",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Employment Cost Index — September 2026",
+   "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+   "published_at": "2026-10-30",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "전체 보상",
+     "value": "+3.4%",
+     "delta": "12개월",
+     "period": "2026년 3분기"
+    },
+    {
+     "label": "임금·급여",
+     "value": "+3.1%",
+     "delta": "12개월",
+     "period": "2026년 3분기"
+    },
+    {
+     "label": "실질 임금",
+     "value": "-0.6%",
+     "delta": "12개월",
+     "period": "2026년 3분기"
+    }
+   ],
+   "text": "미국 고용주가 지불한 임금과 복리후생 비용이 1년 새 3.4% 늘었다. 임금 상승은 둔해지고 복리후생, 특히 의료비가 빠르게 올랐다.\n\n임금·급여 +3.1%, 복리후생 +3.9%, 전체 보상 +3.4%. 물가를 반영한 실질 임금은 -0.6%로 2012년 1분기 이후 가장 낮았다. 민간 의료보험 비용은 +6.4%(2026년 9월까지 12개월)."
+  },
+  {
+   "date": "2026-10-30",
+   "card_id": "c01",
+   "order": 1,
+   "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
+   "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
+   "category": "국내 고용지표",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "kr",
+   "track": "A",
+   "source_name": "고용노동부",
+   "source_title": "2026년 9월 사업체노동력조사 및 2026년 4월 산업소분류별 고용통계",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+   "published_at": "2026-10-29",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "사업체 종사자",
+     "value": "2,074.8만명",
+     "delta": "+20.9만명",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "상용근로자",
+     "value": "+7.3만명",
+     "delta": "0.4%",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "임시·일용",
+     "value": "+12.3만명",
+     "delta": "6.3%",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "9월 말 사업체 종사자가 2,074만8천명으로 1년 전보다 20만9천명 늘었다. 늘어난 인원의 약 59%가 임시·일용근로자였다.\n\n상용근로자 +7만3천명(0.4%), 임시·일용 +12만3천명(6.3%). 8월 실질임금 340만9천원(+0.8%)으로 5개월 만에 상승 전환했고, 빈 일자리는 16만개(+8.6%)였다(2026년 9월 말 기준)."
+  },
+  {
+   "date": "2026-10-30",
+   "card_id": "c02",
+   "order": 2,
+   "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
+   "kicker": "입직 107.8만명 · 이직 102.2만명",
+   "category": "채용시장",
+   "topic": "고용서비스·채용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "track": "A",
+   "source_name": "고용노동부",
+   "source_title": "2026년 9월 사업체노동력조사 및 2026년 4월 산업소분류별 고용통계",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+   "published_at": "2026-10-29",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "입직자",
+     "value": "107.8만명",
+     "delta": "+12.3만명",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "이직자",
+     "value": "102.2만명",
+     "delta": "+16만명",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "빈 일자리",
+     "value": "16만개",
+     "delta": "+8.6%",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "9월 한 달 입직자가 107만8천명으로 1년 전보다 12만3천명 늘고, 이직자도 102만2천명으로 16만명 늘었다. 사람이 오가는 폭이 넓어진 달이었다.\n\n입직률 5.6%(+0.6%p), 이직률 5.3%(+0.8%p). 이직 가운데 자발적 이직 29만1천명(+13.4%), 비자발적 이직 65만3천명(+19.8%). 빈 일자리는 16만개로 8.6% 늘었다(2026년 9월)."
+  },
+  {
+   "date": "2026-10-22",
+   "card_id": "c01",
+   "order": 1,
+   "title": "주간임금 +1.5%, 물가 +3.5% — 실질임금은 1.9% 뒤졌다",
+   "kicker": "중위 주간임금 1,232달러 · 여성 83.4%",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Usual Weekly Earnings of Wage and Salary Workers — Third Quarter 2026 (USDL-26-1604)",
+   "source_url": "https://www.bls.gov/news.release/archives/wkyeng_10212026.htm",
+   "published_at": "2026-10-21",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "중위 주간임금",
+     "value": "1,232달러",
+     "delta": "+1.5%",
+     "period": "2026년 3분기"
+    },
+    {
+     "label": "소비자물가 상승",
+     "value": "+3.5%",
+     "delta": "",
+     "period": "2026년 3분기(전년동기비)"
+    },
+    {
+     "label": "여성/남성 임금비",
+     "value": "83.4%",
+     "delta": "여성 1,127달러",
+     "period": "2026년 3분기"
+    },
+    {
+     "label": "임금근로자",
+     "value": "1억2,220만명",
+     "delta": "",
+     "period": "2026년 3분기"
+    }
+   ],
+   "text": "미국 3분기 전일제 임금근로자의 중위 주간임금이 1,232달러로 1년 전보다 1.5% 올랐다. 같은 기간 소비자물가가 3.5% 오르면서 명목임금 상승을 물가가 앞질렀다.\n\n여성 중위 주간임금은 1,127달러로 남성(1,352달러)의 83.4%였다. 인종별로는 아시아 1,633달러, 백인 1,261달러, 흑인 1,012달러, 히스패닉 981달러 순이었다. 16~24세는 남성 813달러·여성 720달러로 가장 낮았고, 45~54세 남성이 1,563달러로 가장 높았다(2026년 10월 21일, BLS)."
+  },
+  {
+   "date": "2026-10-22",
+   "card_id": "c02",
+   "order": 2,
+   "title": "석탄발전 폐지 지역, 노동자 전환 대책을 먼저 짠다",
+   "kicker": "특별법 2027년 9월 시행 · 특별지구 지정",
+   "category": "국내 고용행정",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "track": "B",
+   "source_name": "기후에너지환경부",
+   "source_title": "석탄발전 폐지에 대응한 고용 안정과 일자리 전환 방안 논의",
+   "source_url": "https://mcee.go.kr/m/mob/board/read.do?boardId=1901100&boardMasterId=939&maxIndexPages=5&maxPageItems=10&menuId=156&orgCd=&pagerOffset=0&searchKey=&searchValue=",
+   "published_at": "2026-10-21",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "특별법 시행",
+     "value": "2027년 9월 16일",
+     "delta": "",
+     "period": "예정"
+    },
+    {
+     "label": "석탄발전 폐지 완료",
+     "value": "2040년",
+     "delta": "단계적 폐지",
+     "period": "목표"
+    },
+    {
+     "label": "토론회",
+     "value": "10월 22일",
+     "delta": "국회의원회관",
+     "period": "2026년"
+    },
+    {
+     "label": "참여 패널",
+     "value": "6명",
+     "delta": "노동계·정부·전문가",
+     "period": "2026년"
+    }
+   ],
+   "text": "기후에너지환경부가 10월 22일 국회의원회관에서 석탄발전 폐지에 따른 고용 안정과 일자리 전환을 다루는 노동정책 토론회를 연다. 노동계·정부·전문가가 한자리에 모여 발전소와 협력업체 노동자의 전환 지원책을 논의한다.\n\n2027년 9월 16일 시행 예정인 석탄화력발전소 노동자·폐지 지역 지원 특별법의 이행 방안과 정의로운 전환 특별지구 지정 기준·절차가 핵심 의제다. 김주영 의원 등 14개 의원실이 함께 열고, 한국노동연구원 부원장이 좌장을 맡는 패널 6명이 참여한다. 정부는 2040년까지 석탄발전소를 단계적으로 폐지할 계획이다(2026년 10월 21일, 기후에너지환경부)."
+  },
+  {
+   "date": "2026-10-21",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 9월 실업률 4.2%, 주별로는 2.0%에서 5.6%까지",
+   "kicker": "사우스다코타 2.0% · 워싱턴DC 5.6%",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "State Employment and Unemployment — September 2026 (USDL-26-1603)",
+   "source_url": "https://www.bls.gov/news.release/archives/laus_10202026.htm",
+   "published_at": "2026-10-20",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "미국 전체 실업률",
+     "value": "4.2%",
+     "delta": "전월 보합",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "가장 낮은 주",
+     "value": "2.0%",
+     "delta": "사우스다코타",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "가장 높은 곳",
+     "value": "5.6%",
+     "delta": "워싱턴DC",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "비농고용 보합",
+     "value": "47개 주",
+     "delta": "",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "미국 9월 실업률이 4.2%로 한 달 전과 비슷하게 유지됐다. 주별로는 45개 주와 워싱턴DC가 보합이었고, 5개 주만 실업률이 내렸다.\n\n가장 낮은 곳은 사우스다코타 2.0%, 다음이 노스다코타 2.2%였고 가장 높은 곳은 워싱턴DC 5.6%였다. 비농고용은 47개 주에서 거의 변동이 없었고, 뉴저지 +1만4,900명·사우스캐롤라이나 +1만2,500명이 늘고 위스콘신이 1만3,700명 줄었다. 1년 전과 비교하면 텍사스 +15만4,300명, 캘리포니아 +12만9,300명이 가장 크게 늘었다(2026년 10월 20일, BLS)."
+  },
+  {
+   "date": "2026-10-20",
+   "card_id": "c01",
+   "order": 1,
+   "title": "청년 일자리·창업 예산 5.1조, 직업훈련은 두 배로",
+   "kicker": "내년 예산 +41.6% · 첨단 직업훈련 12만명",
+   "category": "국내 고용행정",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "B",
+   "source_name": "뉴스핌",
+   "source_title": "청년 일자리·창업에 5.1조…내년 예산 41.6% 늘린다",
+   "source_url": "https://www.newspim.com/news/view/20261019001141",
+   "published_at": "2026-10-19",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "청년 일자리·창업 예산",
+     "value": "5조1천억원",
+     "delta": "+1조5천억",
+     "period": "2027년"
+    },
+    {
+     "label": "첨단 직업훈련",
+     "value": "12만명",
+     "delta": "6만→12만",
+     "period": "2027년"
+    },
+    {
+     "label": "청년 첫취업 지원",
+     "value": "16만명",
+     "delta": "신설",
+     "period": "2027년"
+    },
+    {
+     "label": "청년일자리도약장려금",
+     "value": "13만명",
+     "delta": "지원 대상 확대",
+     "period": "2027년"
+    }
+   ],
+   "text": "정부가 2027년 청년 일자리·창업 지원 예산을 올해 3조6천억원에서 5조1천억원으로 늘린다. 박홍근 기획예산처 장관이 19일 서울 종로의 의료로봇 스타트업에서 기업 인사담당자 간담회를 열고 민간 일자리 확대 방안을 논의한 자리에서 나온 규모다.\n\n증가분은 1조5천억원(+41.6%)이다. 첨단·선호분야 직업훈련을 올해 6만명에서 12만명으로 두 배 늘리고(K-뉴딜아카데미 5만명·AI 특화 K-디지털트레이닝 2만명), 취업 경험이 없는 청년 16만명을 위한 첫취업 지원을 새로 만든다. 일경험 3만9천명·취약청년 3천명, 청년일자리도약장려금은 13만명까지 확대한다(2026년 10월 19일, 뉴스핌)."
+  },
+  {
+   "date": "2026-10-17",
+   "card_id": "c01",
+   "order": 1,
+   "title": "9월 취업자 +11.3만, 청년은 47개월째 줄었다",
+   "kicker": "15~64세 고용률 70.6% · 청년 44.0%",
+   "category": "국내 고용지표",
+   "topic": "청년·중장년 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "track": "A",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 9월 고용동향",
+   "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156785404",
+   "published_at": "2026-10-16",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "취업자",
+     "value": "2,926만6천명",
+     "delta": "+11.3만",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "청년(15~29세) 취업자",
+     "value": "-14.7만",
+     "delta": "47개월째 감소",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "15~64세 고용률",
+     "value": "70.6%",
+     "delta": "+0.2%p",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "15~34세 고용률",
+     "value": "56.1%",
+     "delta": "-0.4%p·이번 달 신규",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "9월 취업자가 2,926만6천명으로 1년 전보다 11만3천명 늘었다. 증가폭은 8월 18만4천명에서 다시 10만명대로 줄었다.\n\n15~64세 고용률은 70.6%로 0.2%p 올라 9월 기준 가장 높았지만, 15~29세 취업자는 14만7천명 줄어 47개월째 감소했고 고용률은 44.0%(-1.1%p)로 29개월째 내렸다. 60세 이상 +17만2천명, 20대 -17만명, 보건·사회복지 +20만7천명, 숙박·음식점 -9만7천명이다. 이번 달부터 15~34세 지표도 나온다 — 취업자 -9만8천명, 고용률 56.1%(-0.4%p), 실업률 4.2%(+0.1%p)(2026년 10월 16일, 국가데이터처)."
+  },
+  {
+   "date": "2026-10-16",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 생산자물가 1.3%, 2022년 3월 이후 가장 큰 폭",
+   "kicker": "1년 +6.3% · 상품 +2.6%",
+   "category": "해외 노동시장",
+   "topic": "거시경제와 고용",
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Producer Price Indexes — September 2026 (USDL 26-1576)",
+   "source_url": "https://www.bls.gov/news.release/archives/ppi_10152026.htm",
+   "published_at": "2026-10-15",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "생산자물가(한 달)",
+     "value": "+1.3%",
+     "delta": "2022년 3월 이후 최대",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "생산자물가(1년)",
+     "value": "+6.3%",
+     "delta": "2022년 12월 이후 최대",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "상품",
+     "value": "+2.6%",
+     "delta": "2009년 집계 이후 최대",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "에너지",
+     "value": "+10.8%",
+     "delta": "상승분 80% 이상",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "미국 9월 생산자물가(최종수요)가 한 달에 1.3% 올랐다. 2022년 3월(1.7%) 이후 가장 큰 상승폭이고, 1년 전과 비교하면 6.3% 올라 2022년 12월 이후 최대다.\n\n상품이 2.6% 올라 2009년 집계 이후 가장 크게 뛰었고, 상승분의 80% 이상을 에너지(+10.8%)가 만들었다. 서비스는 0.8% 올랐다. 식료품·에너지·무역서비스를 뺀 지수는 한 달 0.5%, 1년 5.0%다(2026년 10월 15일, BLS)."
+  },
+  {
+   "date": "2026-10-15",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 9월 물가 3.7%, 휘발유가 한 달에 9.1% 올랐다",
+   "kicker": "전년비 +3.7% · 근원 2.6%",
+   "category": "해외 노동시장",
+   "topic": "거시경제와 고용",
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Consumer Price Index — September 2026 (USDL-26-1574)",
+   "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm",
+   "published_at": "2026-10-14",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "소비자물가(1년)",
+     "value": "+3.7%",
+     "delta": "8월 3.4%",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "소비자물가(한 달)",
+     "value": "+0.6%",
+     "delta": "8월 +0.4%",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "근원물가(1년)",
+     "value": "+2.6%",
+     "delta": "",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "에너지(1년)",
+     "value": "+20.4%",
+     "delta": "휘발유 월 +9.1%",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "미국 9월 소비자물가(CPI-U)가 한 달에 0.6% 올랐다. 8월 0.4%보다 상승폭이 커졌고, 1년 전과 비교하면 3.7% 올랐다.\n\n휘발유가 한 달에 9.1% 오르며 전체 상승분의 절반 이상을 차지했고 에너지가 5.2% 올랐다. 1년 기준으로는 에너지 20.4%, 식료품 2.5%다. 주거비는 0.4%, 식료품은 보합이었다. 식료품·에너지를 뺀 근원지수는 한 달 0.3%, 1년 2.6%다(2026년 10월 14일, BLS)."
+  },
+  {
+   "date": "2026-10-15",
+   "card_id": "c02",
+   "order": 2,
+   "title": "실질임금 1년에 -0.7%, 한 달 새 -0.5%",
+   "kicker": "명목 +0.1% · 물가 +0.6%",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Real Earnings — September 2026 (USDL-26-1575)",
+   "source_url": "https://www.bls.gov/news.release/archives/realer_10142026.htm",
+   "published_at": "2026-10-14",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "실질 시간당 임금(한 달)",
+     "value": "-0.5%",
+     "delta": "",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "실질 시간당 임금(1년)",
+     "value": "-0.7%",
+     "delta": "",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "명목 시간당 임금",
+     "value": "+0.1%",
+     "delta": "",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "주당 근로시간(1년)",
+     "value": "+0.6%",
+     "delta": "",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "미국 9월 실질 시간당 임금이 한 달 전보다 0.5% 줄었다. 명목 임금은 0.1% 올랐지만 물가가 0.6% 올라 실질로는 뒷걸음쳤다.\n\n1년 전과 비교하면 실질 시간당 임금은 0.7% 줄었고, 주당 근로시간이 0.6% 늘어 실질 주간임금 감소는 0.1%로 작아졌다. 생산·비관리직 근로자는 실질 시간당 임금이 한 달에 0.6% 줄었다(2026년 10월 14일, BLS)."
+  },
+  {
+   "date": "2026-10-09",
+   "card_id": "c01",
+   "order": 1,
+   "title": "일자리 TF — 취업자는 늘었지만 청년·제조·건설은 그대로",
+   "kicker": "취업자 증가 6월 6.3만 → 8월 18.4만 · 9월은 기저효과",
+   "category": "국내 고용행정",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "track": "A",
+   "source_name": "재정경제부·고용노동부",
+   "source_title": "관계부처 합동 일자리전담반 회의 개최",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784628",
+   "published_at": "2026-10-08",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "취업자 증가(6월)",
+     "value": "+6.3만",
+     "delta": "",
+     "period": "2026년 6월"
+    },
+    {
+     "label": "취업자 증가(8월)",
+     "value": "+18.4만",
+     "delta": "3개월 연속 확대",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "지난해 9월 증가",
+     "value": "+31.2만",
+     "delta": "기저효과 요인",
+     "period": "2025년 9월"
+    },
+    {
+     "label": "점검한 대책",
+     "value": "2건",
+     "delta": "청년뉴딜(4.29)·회복방안(8.28)",
+     "period": "2026년"
+    }
+   ],
+   "text": "재정경제부와 고용노동부가 10월 8일 정부세종청사에서 합동 일자리전담반 회의를 열고 일자리 분야의 한계와 부문별 과제를 점검했다.\n\n취업자 증가폭(전년동월비)은 6월 6만3천명 → 7월 10만8천명 → 8월 18만4천명으로 커졌다. 다만 지난해 9월 증가폭이 31만2천명이었던 기저효과가 9월 이후 제약 요인으로 작용할 수 있고, 청년·제조·건설 등 취약부문의 어려움은 이어지고 있다고 봤다. 4월 29일 청년뉴딜 추진방안과 8월 28일 청년일자리 회복방안의 집행·준비 상황을 점검했으며, 새 사업의 대상·예산·시행일은 발표하지 않았다(2026년 10월 8일, 재정경제부·고용노동부)."
+  },
+  {
+   "date": "2026-10-06",
+   "card_id": "c01",
+   "order": 1,
+   "title": "온라인 직업훈련 4,500개 콘텐츠, 참여기관 문 연다",
+   "kicker": "AI 콘텐츠 162개 · 10월 23일까지",
+   "category": "국내 고용행정",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "B",
+   "source_name": "천지일보",
+   "source_title": "한국기술교육대 STEP, LMS 신규 참여기관 모집… 온라인 직업훈련 확대",
+   "source_url": "https://www.newscj.com/news/articleView.html?idxno=3437989",
+   "published_at": "2026-10-05",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "STEP 콘텐츠",
+     "value": "4,500여 개",
+     "delta": "",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "AI 관련 콘텐츠",
+     "value": "162개",
+     "delta": "",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "참여기관 모집 마감",
+     "value": "10월 23일",
+     "delta": "선정 11월 중",
+     "period": "2026년"
+    },
+    {
+     "label": "해외 활용 수료율",
+     "value": "86%",
+     "delta": "하나마이크론·약 2,300명",
+     "period": "2026년"
+    }
+   ],
+   "text": "한국기술교육대 온라인평생교육원이 고용노동부와 함께 STEP 학습관리시스템(LMS)에 참여할 기관을 10월 23일까지 모집한다. 훈련기관과 기업, 공공기관, 직업계고가 대상이다.\n\nSTEP에는 AI 기초·AI+X 등 162개를 포함해 4,500여 개 오픈마켓 콘텐츠가 올라 있다. 경북기계공업고는 STEP 활용 인원이 2025년 1,047명에서 2026년 7월 1,540명으로 늘었고, 하나마이크론은 베트남어 콘텐츠 20개로 약 2,300명을 교육해 수료율 86%를 냈다. 선정 결과는 11월 중 발표된다(2026년 10월 5일, 천지일보)."
+  },
+  {
+   "date": "2026-10-03",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 9월 고용 +2.9만, 실업률은 4.2%로 제자리",
+   "kicker": "실업자 710만 · 장기실업 27.1%",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "The Employment Situation — September 2026 (USDL-26-1549)",
+   "source_url": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+   "published_at": "2026-10-02",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "비농업 고용",
+     "value": "+2.9만명",
+     "delta": "주요 산업 거의 변화 없음",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "실업률",
+     "value": "4.2%",
+     "delta": "3월 이후 4.1~4.3%",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "장기실업자(27주+)",
+     "value": "190만명",
+     "delta": "실업자의 27.1%",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "경제활동참가율",
+     "value": "61.8%",
+     "delta": "",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "미국 9월 비농업 고용이 2만9천명 늘고 실업률은 4.2%로 한 달 전과 비슷했다. 모든 주요 산업의 고용이 거의 변하지 않았다.\n\n실업률은 3월 이후 4.1~4.3%의 좁은 범위에 머물렀다. 흑인 실업률만 7.0%로 올랐고 성인 남성 3.9%·성인 여성 3.6%·청소년 14.5%·백인 3.6%·아시아 2.9%·히스패닉 4.7%는 큰 변화가 없었다. 27주 넘게 쉰 장기실업자는 190만명으로 전체 실업자의 27.1%를 차지했고, 경제활동참가율 61.8%·고용인구비율 59.2%였다(2026년 10월 2일, BLS)."
+  },
+  {
+   "date": "2026-10-01",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 대도시권 387곳 중 234곳, 1년 전보다 실업률 내렸다",
+   "kicker": "실업률 3% 미만 27곳 · 8% 이상 6곳",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Metropolitan Area Employment and Unemployment — August 2026 (USDL-26-1548)",
+   "source_url": "https://www.bls.gov/news.release/archives/metro_09302026.htm",
+   "published_at": "2026-09-30",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "실업률 하락",
+     "value": "234곳",
+     "delta": "전체 387곳 중",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "실업률 상승",
+     "value": "126곳",
+     "delta": "",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "실업률 3% 미만",
+     "value": "27곳",
+     "delta": "",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "실업률 8% 이상",
+     "value": "6곳",
+     "delta": "전국 4.3%",
+     "period": "2026년 8월"
+    }
+   ],
+   "text": "미국 387개 대도시권 가운데 234곳이 1년 전보다 실업률이 낮아졌고, 126곳은 높아졌다. 27곳은 그대로였다.\n\n실업률이 3.0% 미만인 곳이 27곳, 8.0% 이상인 곳이 6곳이었다. 비농업 고용은 9개 대도시권에서만 1년 전보다 늘었고 5곳에서 줄었으며 373곳은 거의 변하지 않았다. 8월 전국 실업률(계절조정 전)은 4.3%였다(2026년 9월 30일, BLS)."
+  },
+  {
+   "date": "2026-09-30",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 구인 710만·자발적 퇴사 310만, 다 비슷한 채로 멈춰 있다",
+   "kicker": "구인율 4.3% · 채용률 3.3%",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Job Openings and Labor Turnover — August 2026 (USDL-26-1547)",
+   "source_url": "https://www.bls.gov/news.release/archives/jolts_09292026.htm",
+   "published_at": "2026-09-29",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "구인",
+     "value": "710만건",
+     "delta": "구인율 4.3%",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "채용",
+     "value": "520만건",
+     "delta": "채용률 3.3%",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "자발적 퇴사",
+     "value": "310만건",
+     "delta": "보합",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "해고·정리해고",
+     "value": "160만건",
+     "delta": "보합",
+     "period": "2026년 8월"
+    }
+   ],
+   "text": "미국 8월 구인 건수가 710만건으로 한 달 전과 비슷했다. 채용(520만)과 전체 이직(510만), 자발적 퇴사(310만), 해고·정리해고(160만)도 모두 큰 변화가 없었다.\n\n구인율은 4.3%, 채용률은 3.3%였다. 모든 산업에서 구인과 채용이 거의 변하지 않았고, 자발적 퇴사율은 노동자가 스스로 일자리를 옮길 여지가 얼마나 되는지를 보여 주는 지표로 2%대 초반에 머물렀다(2026년 9월 29일, BLS)."
+  },
+  {
+   "date": "2026-09-26",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 민간 노동자 71% 의료보험 문은 있는데, 가입은 46%뿐",
+   "kicker": "퇴직연금 접근 72%·가입 52% · 유급병가 81%",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Employee Benefits in the United States — March 2026 (USDL-26-1534)",
+   "source_url": "https://www.bls.gov/news.release/archives/ebs2_09252026.htm",
+   "published_at": "2026-09-25",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "의료보험 접근",
+     "value": "71%",
+     "delta": "가입 46%",
+     "period": "2026년 3월"
+    },
+    {
+     "label": "퇴직연금 접근",
+     "value": "72%",
+     "delta": "가입 52%",
+     "period": "2026년 3월"
+    },
+    {
+     "label": "유급병가",
+     "value": "81%",
+     "delta": "숙박·음식 58%",
+     "period": "2026년 3월"
+    },
+    {
+     "label": "가족·의료휴가",
+     "value": "49%",
+     "delta": "개인 휴가 51%",
+     "period": "2026년 3월"
+    }
+   ],
+   "text": "2026년 3월 기준 미국 민간기업 노동자의 71%가 고용주 의료보험에 가입할 수 있었지만 실제 가입자는 46%였다. 퇴직연금은 72%가 가입할 수 있고 52%가 가입했다.\n\n유급 휴가는 80%, 유급 공휴일과 유급 병가는 각각 81%, 가족·의료휴가는 49%, 개인 휴가는 51%가 이용할 수 있었다. 유급 병가 접근률은 숙박·음식 58%에서 정보·금융보험 98%까지 벌어졌고, 학자금 상환 지원은 임금 하위 25% 3%·상위 25% 15%였다(2026년 9월 25일, BLS)."
+  },
+  {
+   "date": "2026-09-25",
+   "card_id": "c01",
+   "order": 1,
+   "title": "미국 근속 중앙값 4.1년, 2024년 3.9년보다 길어졌다",
+   "kicker": "여성 3.6→4.0년 · 숙박·음식 2.4년",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Employee Tenure in 2026 (USDL-26-1532)",
+   "source_url": "https://www.bls.gov/news.release/archives/tenure_09242026.htm",
+   "published_at": "2026-09-24",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "근속 중앙값",
+     "value": "4.1년",
+     "delta": "2024년 3.9년",
+     "period": "2026년 1월"
+    },
+    {
+     "label": "여성 근속",
+     "value": "4.0년",
+     "delta": "2024년 3.6년",
+     "period": "2026년 1월"
+    },
+    {
+     "label": "1년 이하 근속",
+     "value": "20.6%",
+     "delta": "2024년 22.2%",
+     "period": "2026년 1월"
+    },
+    {
+     "label": "숙박·음식 근속",
+     "value": "2.4년",
+     "delta": "업종 최저",
+     "period": "2026년 1월"
+    }
+   ],
+   "text": "미국 임금근로자가 한 직장에 머문 기간의 중앙값이 2026년 1월 4.1년으로, 2024년 1월 3.9년보다 0.2년 길어졌다.\n\n남성 4.3년(2024년 4.2년), 여성 4.0년(3.6년)이었다. 55~64세가 9.6년으로 25~34세 3.0년의 세 배를 넘었고, 현 직장 근속 1년 이하 비율은 20.6%로 2024년 22.2%보다 줄었다. 공공부문 5.6년이 민간 3.9년보다 길었고, 업종별로는 금융 5.0년·제조 4.9년·정보 4.9년, 숙박·음식 2.4년이었다(2026년 9월 24일, BLS)."
+  },
+  {
+   "date": "2026-09-25",
+   "card_id": "c02",
+   "order": 2,
+   "title": "미국 임금근로자 57% 유연근무, 34%는 재택근무 경험",
+   "kicker": "재택 가능 37% · 근무표 하루 전 통보 9%",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Job Flexibilities and Work Schedules — 2024-2025 (USDL-26-1533)",
+   "source_url": "https://www.bls.gov/news.release/archives/flex2_09242026.htm",
+   "published_at": "2026-09-24",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "유연근무",
+     "value": "57%",
+     "delta": "출퇴근 시각 조정",
+     "period": "2024~2025년"
+    },
+    {
+     "label": "재택 경험",
+     "value": "34%",
+     "delta": "5,100만 명",
+     "period": "2024~2025년"
+    },
+    {
+     "label": "재택 가능",
+     "value": "37%",
+     "delta": "5,600만 명",
+     "period": "2024~2025년"
+    },
+    {
+     "label": "근무표 4주 전 통보",
+     "value": "59%",
+     "delta": "하루 전 9%",
+     "period": "2024~2025년"
+    }
+   ],
+   "text": "2024~2025년 미국 임금근로자의 57%가 출퇴근 시각을 조정할 수 있는 유연근무제를 가졌고, 34%(5,100만 명)가 적어도 가끔 재택근무를 했다.\n\n재택이 가능한 근로자는 37%(5,600만 명)였고, 재택근무자의 87%가 주 1일 이상, 3분의 1 이상이 주 5일 이상 재택했다. 근무 중 1~2시간을 떼기 어렵지 않다고 답한 비율은 69%, 근무표를 4주 전에 아는 사람은 59%, 하루 전에 아는 사람은 9%였다. 비주간 근무는 15%였다(2026년 9월 24일, BLS)."
+  },
+  {
+   "date": "2026-09-23",
+   "card_id": "c01",
+   "order": 1,
+   "title": "거짓 구인광고, 게재 전에 걸러내고 게재 뒤엔 삭제 명령",
+   "kicker": "입법예고 9.22~11.2(40일) · 시행 12.10",
+   "category": "국내 고용행정",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "track": "A",
+   "source_name": "고용노동부",
+   "source_title": "구직자 절박함을 이용하는 거짓 구인광고, 끝까지 책임지겠습니다",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782832",
+   "published_at": "2026-09-22",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "입법예고",
+     "value": "40일",
+     "delta": "9.22~11.2",
+     "period": "2026년"
+    },
+    {
+     "label": "시행",
+     "value": "12월 10일",
+     "delta": "법률 제21787호",
+     "period": "2026년"
+    },
+    {
+     "label": "게재 전 확인 사유",
+     "value": "4가지",
+     "delta": "조치명령·신고 이력 등",
+     "period": "2026년"
+    },
+    {
+     "label": "경미 위반",
+     "value": "1차 경고",
+     "delta": "선계도·후처분",
+     "period": "2026년"
+    }
+   ],
+   "text": "고용노동부가 9월 22일부터 11월 2일까지 40일간 「직업안정법」 하위법령 개정안을 입법예고했다. 12월 10일 시행되는 개정 법률이 위임한 거짓 구인광고 조치명령의 방법·절차와 모니터링 기준을 정하는 내용이다.\n\n장관의 수정·게시 중지·삭제 명령은 문서로 하되 구직자에게 중대한 피해가 날 우려가 있으면 말·전화로 먼저 명하고 문서로 통지하게 했다. 직업정보제공사업자는 최근 6개월 안에 조치명령을 받았거나 거짓 광고 신고가 인정된 구인자의 광고, 유사 직종보다 현저히 높은 임금을 제시한 광고 등을 게재 전에 확인해야 하고, 이미 게재된 광고도 모니터링해 수정 요청·게시 중지·삭제를 할 수 있다(2026년 9월 22일, 고용노동부)."
+  },
+  {
+   "date": "2026-09-23",
+   "card_id": "c02",
+   "order": 2,
+   "title": "추석 전 7,079개 사업장 점검, 임금체불 105.4억 원 적발",
+   "kicker": "9.1~9.21 · 기관장 현장 방문 59곳",
+   "category": "국내 고용행정",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "kr",
+   "track": "A",
+   "source_name": "고용노동부",
+   "source_title": "(참고) 추석 전 임금체불 적발·청산 총력",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782951",
+   "published_at": "2026-09-22",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "적발 체불액",
+     "value": "105.4억 원",
+     "delta": "9.1~9.21",
+     "period": "2026년"
+    },
+    {
+     "label": "지도 사업장",
+     "value": "7,079개소",
+     "delta": "전국 49개 관서",
+     "period": "2026년"
+    },
+    {
+     "label": "기관장 현장 방문",
+     "value": "59곳",
+     "delta": "고액·다수 체불",
+     "period": "2026년"
+    },
+    {
+     "label": "간이대지급금 처리",
+     "value": "7일",
+     "delta": "14일→7일(한시)",
+     "period": "9.1~10.31"
+    }
+   ],
+   "text": "고용노동부가 추석을 앞두고 9월 1일부터 21일까지 전국 49개 관서로 7,079개 사업장을 직접 지도·감독해 105.4억 원의 임금체불을 적발했다. 고액·다수 피해가 발생한 59개 현장은 청장·지청장이 직접 방문해 청산을 지도했다.\n\n자체 청산이 어려운 노동자는 대지급금과 생계비 융자로 권리를 구제받도록 안내하고 있다. 9월 1일부터 10월 31일까지 간이대지급금 처리기간을 14일에서 7일로 줄이고, 체불근로자 생계비 융자 금리는 1.5%에서 1.0%로 낮췄다(2026년 9월 22일, 고용노동부)."
+  },
+  {
+   "date": "2026-09-22",
+   "card_id": "c01",
+   "order": 1,
+   "title": "APEC 21개 회원경제체, AI 전환 고용 대책 공동선언…K-뉴딜 훈련 5만 명으로",
+   "kicker": "K-뉴딜 아카데미 1만→5만 명 · 회원경제체 21개",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "고용노동부",
+   "source_title": "권창준 고용노동부 차관, 제8차 APEC 노동장관회의 참석",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782787",
+   "published_at": "2026-09-21",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "K-뉴딜 아카데미",
+     "value": "5만 명",
+     "delta": "기존 1만 명",
+     "period": "지원 대상 확대"
+    },
+    {
+     "label": "APEC 회원경제체",
+     "value": "21개",
+     "delta": "공동선언 채택",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "국제기능올림픽",
+     "value": "48회",
+     "delta": "9.22~27 상하이",
+     "period": "2026년"
+    }
+   ],
+   "text": "권창준 고용노동부 차관이 9월 21일 중국 난징에서 열린 제8차 APEC 고용노동장관회의에 참석해 AI 확산에 대응하는 우리 고용정책을 소개했다. APEC 21개 회원경제체 대표들은 양질의 완전고용, 사람에 대한 투자와 직업능력훈련, 사회보장체계 강화를 담은 공동선언문을 채택했다.\n\n정부는 산업전환 고용안정 기본계획의 고용영향 모니터링과 AI 직업훈련·평생학습, 중장년 직무전환 훈련을 설명했다. 특히 금융·전자·모빌리티 분야에서 기업이 주도하는 K-뉴딜 아카데미의 지원 대상을 1만 명에서 5만 명으로 늘리겠다고 밝혔다(2026년 9월 21일, 고용노동부)."
+  },
+  {
+   "date": "2026-09-22",
+   "card_id": "c02",
+   "order": 2,
+   "title": "AI 시대 청년 일자리, 사회적기업 일경험·창업에서 답을 찾다",
+   "kicker": "정부·기업·학계·청년 200명 · 2개 세션",
+   "category": "AI·직무",
+   "topic": "청년·중장년 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "track": "A",
+   "source_name": "고용노동부",
+   "source_title": "인공지능(AI) 시대 청년 일자리, 새로운 해법을 함께 찾는다",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782925",
+   "published_at": "2026-09-22",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "포럼 참석",
+     "value": "약 200명",
+     "delta": "정부·기업·학계·청년",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "세션",
+     "value": "2개",
+     "delta": "청년 일자리 진단 / 사회적기업",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "고용노동부와 대한상공회의소가 9월 22일 서울 코엑스에서 「AI 시대, 청년 일자리 포럼」을 공동 개최했다. 정부·기업·학계·사회적기업·청년 등 약 200명이 참석해 AI 확산으로 좁아진 청년의 노동시장 진입 문제를 논의했다.\n\n첫 세션은 「AI 시대, 청년 일자리 문제 진단 및 해결 방안」을 주제로 대한상의 인력개발사업단의 사업주단체 지원 현황과 과제, AI 시대 청년 일자리의 현황, 기업의 ESG 활동 사례가 발표됐고, 정흥준 서울과학기술대 교수가 좌장을 맡은 토론에 한국직업능력연구원 청장년센터장과 인지어스코리아 대표이사가 참여했다. 두 번째 세션에서는 국가인공지능전략위원회 이재흥 위원이 사회연대경제와 AI 전환을 잇는 일자리 가능성을, 엠와이소셜컴퍼니 김정태 대표가 청년고용의 사회적 성과를 측정·거래하는 제도 도입을 제안했다(2026년 9월 22일, 고용노동부)."
+  }
+ ]
+}

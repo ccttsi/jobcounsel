@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-19T23:06:00+09:00",
  "edition": {
   "date": "2026-11-19",
@@ -702,7 +702,9 @@
    },
    "updated_at": "2026-11-19T07:06:00+09:00",
    "run_id": "br-20261119-0706",
-   "edition": "kr-0700"
+   "edition": "kr-0700",
+   "labor_walk": true,
+   "labor_walk_topic": "거시경제와 고용"
   },
   {
    "id": "c03",
@@ -799,7 +801,9 @@
    },
    "updated_at": "2026-11-19T07:06:00+09:00",
    "run_id": "br-20261119-0706",
-   "edition": "kr-0700"
+   "edition": "kr-0700",
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
   },
   {
    "id": "c04",
@@ -905,7 +909,8 @@
    },
    "updated_at": "2026-11-19T23:06:00+09:00",
    "run_id": "br-20261119-2306",
-   "edition": "global-2300"
+   "edition": "global-2300",
+   "labor_walk_topic": "해외 노동시장"
   },
   {
    "id": "c05",
@@ -997,7 +1002,8 @@
    },
    "updated_at": "2026-11-19T23:06:00+09:00",
    "run_id": "br-20261119-2306",
-   "edition": "global-2300"
+   "edition": "global-2300",
+   "labor_walk_topic": "AI와 직무"
   },
   {
    "id": "c06",
@@ -1099,7 +1105,8 @@
    },
    "updated_at": "2026-11-19T23:06:00+09:00",
    "run_id": "br-20261119-2306",
-   "edition": "global-2300"
+   "edition": "global-2300",
+   "labor_walk_topic": "해외 노동시장"
   },
   {
    "id": "c07",
@@ -1199,7 +1206,8 @@
    },
    "updated_at": "2026-11-19T23:06:00+09:00",
    "run_id": "br-20261119-2306",
-   "edition": "global-2300"
+   "edition": "global-2300",
+   "labor_walk_topic": "거시경제와 고용"
   }
  ],
  "radar": null,

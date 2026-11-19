@@ -1,5 +1,5 @@
 {
- "schema_version": "1.3.0",
+ "schema_version": "1.4.0",
  "updated_at": "2026-11-07T07:10:00+09:00",
  "edition": {
   "date": "2026-11-07",
@@ -169,7 +169,9 @@
     "usage": "라이선스가 허락한 범위에서 수치를 도표화."
    },
    "issue_id": "iss-us-empsit-202610",
-   "counselor_question": "마지막으로 일한 뒤 얼마나 지났나요? 그동안 무엇을 준비했나요?"
+   "counselor_question": "마지막으로 일한 뒤 얼마나 지났나요? 그동안 무엇을 준비했나요?",
+   "labor_walk": true,
+   "labor_walk_topic": "해외 노동시장"
   },
   {
    "id": "c02",
@@ -253,7 +255,9 @@
     "usage": "라이선스가 허락한 범위에서 수치를 도표화."
    },
    "issue_id": "iss-us-empsit-202610",
-   "counselor_question": "실업 기간이 길어질수록 설명해야 할 공백이 커집니다. 무엇으로 채울 수 있을까요?"
+   "counselor_question": "실업 기간이 길어질수록 설명해야 할 공백이 커집니다. 무엇으로 채울 수 있을까요?",
+   "labor_walk": true,
+   "labor_walk_topic": "해외 노동시장"
   }
  ],
  "radar": {
