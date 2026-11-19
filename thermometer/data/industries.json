@@ -1,0 +1,217 @@
+{
+  "schema_version": "1.0.0",
+  "classifications": {
+    "ksic": {
+      "name": "표준산업분류(KSIC) 정석",
+      "note": "제11차 한국표준산업분류의 대분류 → 세분류 순서. 이 자료실이 다루는 산업만 싣는다(전 분류를 옮겨 적지 않는다)."
+    },
+    "feel": {
+      "name": "구직자 체감 산업군",
+      "note": "구인공고·상담 현장에서 쓰는 이름으로 묶은 갈래. 같은 산업을 두 이름으로 본다."
+    }
+  },
+  "feel_groups": [
+    {"id": "fg-chip", "name": "첨단·정밀 제조", "sub": "반도체 · 디스플레이 · 이차전지 · 바이오 · 방산"},
+    {"id": "fg-material", "name": "소재·장치", "sub": "철강 · 석유화학 · 일반기계"},
+    {"id": "fg-mobility", "name": "모빌리티", "sub": "자동차 · 조선"},
+    {"id": "fg-life", "name": "생활·소비", "sub": "식품 · 뷰티 · 유통 · 관광"},
+    {"id": "fg-digital", "name": "디지털", "sub": "AI·SW · 콘텐츠 · 통신"},
+    {"id": "fg-money", "name": "금융·부동산", "sub": "금융·보험 · 부동산"},
+    {"id": "fg-social", "name": "사회 기반", "sub": "건설 · 물류 · 보건 · 교육"},
+    {"id": "fg-energy", "name": "에너지", "sub": "전기·가스"}
+  ],
+  "industries": [
+    {
+      "id": "semicon", "name": "반도체", "en": "Semiconductor",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C261", "mid": "261 반도체 제조업"},
+      "feel_group": "fg-chip", "feel_name": "반도체",
+      "one_line": "메모리 고정가와 AI 서버 수요가 만든 우리 수출의 절반.",
+      "size": {"value": 169450, "unit": "명", "period": "2026-04", "label": "반도체 제조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["반도체", "메모리", "D램", "HBM", "파운드리", "시스템반도체", "소부장", "AI서버", "semiconductor", "chip"]
+    },
+    {
+      "id": "display", "name": "디스플레이", "en": "Display",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C262", "mid": "262 전자부품 제조업(표시장치)"},
+      "feel_group": "fg-chip", "feel_name": "디스플레이",
+      "one_line": "OLED 전환과 중국 물량이 맞붙는 화면 산업.",
+      "size": {"value": 147267, "unit": "명", "period": "2026-04", "label": "전자부품 제조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["디스플레이", "OLED", "LCD", "패널", "표시장치", "display", "panel"]
+    },
+    {
+      "id": "battery", "name": "이차전지", "en": "Battery",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C282", "mid": "282 일차전지 및 이차전지 제조업"},
+      "feel_group": "fg-chip", "feel_name": "이차전지",
+      "one_line": "전기차 판매 속도에 생산이 따라붙는 산업.",
+      "size": {"value": 38621, "unit": "명", "period": "2026-04", "label": "일차전지·이차전지 제조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["이차전지", "배터리", "양극재", "음극재", "분리막", "전해액", "LFP", "NCM", "battery"]
+    },
+    {
+      "id": "auto", "name": "자동차", "en": "Automobile",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C30", "mid": "30 자동차 및 트레일러 제조업"},
+      "feel_group": "fg-mobility", "feel_name": "자동차·부품",
+      "one_line": "하이브리드 수출이 끌고 내연기관이 버티는 구조.",
+      "size": {"value": 80856, "unit": "명", "period": "2026-04", "label": "자동차용 엔진·자동차 제조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["자동차", "완성차", "부품", "전기차", "하이브리드", "EV", "자동차부품", "automobile", "auto"]
+    },
+    {
+      "id": "shipbuilding", "name": "조선", "en": "Shipbuilding",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C311", "mid": "311 선박 및 보트 건조업"},
+      "feel_group": "fg-mobility", "feel_name": "조선",
+      "one_line": "수주잔량과 신조선가가 실적을 미리 말해 주는 산업.",
+      "size": {"value": 112382, "unit": "명", "period": "2026-04", "label": "선박 및 보트 건조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["조선", "선박", "LNG선", "수주잔량", "신조선가", "해양플랜트", "shipbuilding"]
+    },
+    {
+      "id": "steel", "name": "철강", "en": "Steel",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C241", "mid": "241 1차 철강 제조업"},
+      "feel_group": "fg-material", "feel_name": "철강·금속",
+      "one_line": "건설이 줄면 가장 먼저 식는 기초 소재.",
+      "size": {"value": 108791, "unit": "명", "period": "2026-04", "label": "1차 철강 제조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["철강", "조강", "고로", "전기로", "후판", "봉형강", "steel"]
+    },
+    {
+      "id": "petrochem", "name": "석유화학", "en": "Petrochemical",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C19·C20", "mid": "19 코크스·석유정제품 / 20 화학물질·화학제품"},
+      "feel_group": "fg-material", "feel_name": "석유화학·정유",
+      "one_line": "유가와 중국 증설 사이에서 마진이 결정되는 산업.",
+      "size": {"value": 40734, "unit": "명", "period": "2026-04", "label": "기초 화학물질 제조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["석유화학", "정유", "나프타", "에틸렌", "합성수지", "화학", "petrochemical", "refinery"]
+    },
+    {
+      "id": "bio", "name": "바이오·의약품", "en": "Bio & Pharma",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C21", "mid": "21 의료용 물질 및 의약품 제조업"},
+      "feel_group": "fg-chip", "feel_name": "바이오·제약",
+      "one_line": "위탁생산(CDMO)과 신약 수출이 만드는 새 수출 품목.",
+      "size": {"value": 52323, "unit": "명", "period": "2026-04", "label": "의약품 제조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["바이오", "제약", "의약품", "CDMO", "바이오의약품", "임상", "bio", "pharma"]
+    },
+    {
+      "id": "machinery", "name": "일반기계", "en": "Machinery",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C29", "mid": "29 기타 기계 및 장비 제조업"},
+      "feel_group": "fg-material", "feel_name": "기계·장비",
+      "one_line": "설비투자가 늘면 가장 먼저 주문이 들어오는 산업.",
+      "size": {"value": 231240, "unit": "명", "period": "2026-04", "label": "특수 목적용 기계 제조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["기계", "장비", "공작기계", "설비", "자동화", "machinery"]
+    },
+    {
+      "id": "defense", "name": "방산", "en": "Defense",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C252", "mid": "252 무기 및 총포탄 제조업"},
+      "feel_group": "fg-chip", "feel_name": "방산",
+      "one_line": "유럽·중동의 증액이 우리 수출 계약으로 이어지는 산업.",
+      "size": {"value": 13409, "unit": "명", "period": "2026-04", "label": "무기 및 총포탄 제조업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["방산", "방위산업", "무기", "K방산", "수출계약", "defense"]
+    },
+    {
+      "id": "food", "name": "식품", "en": "Food",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C10", "mid": "10 식료품 제조업"},
+      "feel_group": "fg-life", "feel_name": "식품",
+      "one_line": "K-푸드 수출과 내수 소비가 따로 움직이는 산업.",
+      "size": {"value": 58177, "unit": "명", "period": "2026-04", "label": "도축·육류 가공업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["식품", "식료품", "K푸드", "가공식품", "라면", "food"]
+    },
+    {
+      "id": "beauty", "name": "화장품·뷰티", "en": "Beauty",
+      "ksic": {"major": "C", "major_name": "제조업", "code": "C20", "mid": "20 화학물질·화학제품(기타 화학제품 중 화장품)"},
+      "feel_group": "fg-life", "feel_name": "뷰티·화장품",
+      "one_line": "수출이 두 자릿수로 늘어도 국내 생산은 화학 업종 평균에 묶여 있다.",
+      "size": {"value": 101806, "unit": "명", "period": "2026-04", "label": "기타 화학제품 제조업 종사자(화장품 포함)", "source_id": "src_moel_lfs_2609"},
+      "tags": ["화장품", "뷰티", "코스메틱", "K뷰티", "beauty", "cosmetic"]
+    },
+    {
+      "id": "ai", "name": "AI·소프트웨어", "en": "AI & Software",
+      "ksic": {"major": "J", "major_name": "정보통신업", "code": "J62", "mid": "62 컴퓨터 프로그래밍·시스템 통합·관리업"},
+      "feel_group": "fg-digital", "feel_name": "AI·SW",
+      "one_line": "전 산업의 설비투자를 데이터센터로 끌어오는 산업.",
+      "size": {"value": 334181, "unit": "명", "period": "2026-04", "label": "소프트웨어 개발·공급업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["AI", "인공지능", "소프트웨어", "SW", "개발자", "클라우드", "데이터", "IT", "software"]
+    },
+    {
+      "id": "content", "name": "콘텐츠·미디어", "en": "Content & Media",
+      "ksic": {"major": "J", "major_name": "정보통신업", "code": "J59·J60", "mid": "59 영상·오디오물 제작·배급 / 60 방송업"},
+      "feel_group": "fg-digital", "feel_name": "콘텐츠·미디어",
+      "one_line": "제작 인력은 늘고 광고는 방송으로 몰리는 산업.",
+      "size": {"value": 53188, "unit": "명", "period": "2026-04", "label": "영화·비디오물·방송프로그램 제작·배급업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["콘텐츠", "미디어", "방송", "영상", "OTT", "K콘텐츠", "content", "media"]
+    },
+    {
+      "id": "telecom", "name": "통신", "en": "Telecom",
+      "ksic": {"major": "J", "major_name": "정보통신업", "code": "J61", "mid": "61 전기 통신업"},
+      "feel_group": "fg-digital", "feel_name": "통신",
+      "one_line": "가입자는 그대로인데 설비투자 주기가 실적을 흔드는 산업.",
+      "size": {"value": 33934, "unit": "명", "period": "2026-04", "label": "전기 통신업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["통신", "통신사", "이동통신", "5G", "6G", "통신장비", "telecom"]
+    },
+    {
+      "id": "finance", "name": "금융·보험", "en": "Finance",
+      "ksic": {"major": "K", "major_name": "금융 및 보험업", "code": "K", "mid": "64 금융업 / 65 보험 및 연금업"},
+      "feel_group": "fg-money", "feel_name": "금융·보험",
+      "one_line": "금리와 예대마진이 온도를 거의 다 결정하는 산업.",
+      "size": {"value": 898000, "unit": "명", "period": "2026-09", "label": "금융 및 보험업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["금융", "은행", "보험", "증권", "핀테크", "금리", "finance", "bank"]
+    },
+    {
+      "id": "retail", "name": "유통·소매", "en": "Retail",
+      "ksic": {"major": "G", "major_name": "도매 및 소매업", "code": "G", "mid": "45 자동차 판매 / 47 소매업"},
+      "feel_group": "fg-life", "feel_name": "유통·판매",
+      "one_line": "온라인으로 무게중심이 옮겨가는 동안 매출은 늘고 생산은 줄었다.",
+      "size": {"value": 2216000, "unit": "명", "period": "2026-09", "label": "도매 및 소매업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["유통", "소매", "도매", "판매", "이커머스", "마트", "retail"]
+    },
+    {
+      "id": "logistics", "name": "물류·운송", "en": "Logistics",
+      "ksic": {"major": "H", "major_name": "운수 및 창고업", "code": "H", "mid": "49 육상 / 50 수상 / 51 항공 / 52 창고·운송관련"},
+      "feel_group": "fg-social", "feel_name": "물류·운송",
+      "one_line": "수출 물량이 늘면 창고와 배가 먼저 바빠진다.",
+      "size": {"value": 807000, "unit": "명", "period": "2026-09", "label": "운수 및 창고업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["물류", "운송", "택배", "창고", "해운", "항공화물", "logistics"]
+    },
+    {
+      "id": "construction", "name": "건설", "en": "Construction",
+      "ksic": {"major": "F", "major_name": "건설업", "code": "F", "mid": "41 종합건설 / 42 전문건설"},
+      "feel_group": "fg-social", "feel_name": "건설",
+      "one_line": "수주는 살아났지만 기성과 매출은 아직 바닥을 긁는다.",
+      "size": {"value": 1384000, "unit": "명", "period": "2026-09", "label": "건설업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["건설", "시공", "토목", "건축", "현장", "건설사", "construction"]
+    },
+    {
+      "id": "realestate", "name": "부동산", "en": "Real Estate",
+      "ksic": {"major": "L", "major_name": "부동산업", "code": "L68", "mid": "68 부동산업"},
+      "feel_group": "fg-money", "feel_name": "부동산",
+      "one_line": "거래량은 줄고 중개 인력은 늘어나는 엇갈림.",
+      "size": {"value": 477000, "unit": "명", "period": "2026-09", "label": "부동산업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["부동산", "중개", "공인중개사", "임대", "realestate"]
+    },
+    {
+      "id": "health", "name": "보건·의료", "en": "Health",
+      "ksic": {"major": "Q", "major_name": "보건업 및 사회복지 서비스업", "code": "Q86·Q87", "mid": "86 보건업 / 87 사회복지 서비스업"},
+      "feel_group": "fg-social", "feel_name": "보건·복지",
+      "one_line": "고용이 가장 꾸준히 늘어나는 산업.",
+      "size": {"value": 2748000, "unit": "명", "period": "2026-09", "label": "보건업 및 사회복지 서비스업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["보건", "의료", "병원", "간호", "요양", "사회복지", "healthcare", "health"]
+    },
+    {
+      "id": "education", "name": "교육", "en": "Education",
+      "ksic": {"major": "P", "major_name": "교육 서비스업", "code": "P85", "mid": "85 교육 서비스업"},
+      "feel_group": "fg-social", "feel_name": "교육",
+      "one_line": "학령인구가 줄어도 사교육 인력은 늘어난 산업.",
+      "size": {"value": 1639000, "unit": "명", "period": "2026-09", "label": "교육서비스업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["교육", "학원", "강사", "교사", "평생교육", "education"]
+    },
+    {
+      "id": "tourism", "name": "관광·숙박", "en": "Tourism",
+      "ksic": {"major": "I", "major_name": "숙박 및 음식점업", "code": "I55·I56", "mid": "55 숙박업 / 56 음식점 및 주점업"},
+      "feel_group": "fg-life", "feel_name": "관광·외식",
+      "one_line": "외국인은 돌아오는데 내수 외식은 줄어드는 산업.",
+      "size": {"value": 1251000, "unit": "명", "period": "2026-09", "label": "숙박 및 음식점업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["관광", "숙박", "호텔", "외식", "음식점", "여행", "tourism", "hotel"]
+    },
+    {
+      "id": "energy", "name": "에너지", "en": "Energy",
+      "ksic": {"major": "D", "major_name": "전기·가스·증기 및 공기조절 공급업", "code": "D35", "mid": "35 전기·가스·증기 및 공기조절 공급업"},
+      "feel_group": "fg-energy", "feel_name": "에너지·전력",
+      "one_line": "유가가 뛰면 원가가 오르고 요금은 늦게 따라오는 산업.",
+      "size": {"value": 68000, "unit": "명", "period": "2026-09", "label": "전기·가스·증기 및 공기조절 공급업 종사자", "source_id": "src_moel_lfs_2609"},
+      "tags": ["에너지", "전력", "발전", "한전", "가스", "전기요금", "energy", "power"]
+    }
+  ]
+}

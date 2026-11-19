@@ -23,7 +23,7 @@ import sys
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DATA_DIRS = ("briefing/data", "emerging/data")
+DATA_DIRS = ("briefing/data", "emerging/data", "thermometer/data")
 
 # 재가공이 허락되지 않는 라이선스 — 이 라이선스를 단 자료는 절대 Track A가 될 수 없다.
 RESTRICTED_LICENSE_TYPES = {"PRESS", "KOGL-NONE", "FACTS-ONLY"}
@@ -314,11 +314,66 @@ def check_emerging(document, path):
         fail("json", f"{label}: archive_dates에 YYYY-MM-DD가 아닌 값이 있다")
 
 
+def check_thermometer(document, path):
+    """thermometer.json — 16번 산업 온도계의 계약(thermometer/data/SCHEMA.md v1.0.0)."""
+    label = rel(path)
+    for key in ("schema_version", "generated_at", "industry_count", "method",
+                "classifications", "feel_groups", "sources", "industries"):
+        if key not in document:
+            fail("json", f"{label}: 필수 키 '{key}'가 없다")
+    industries = document.get("industries")
+    if not isinstance(industries, list) or not industries:
+        fail("json", f"{label}: industries가 비어 있다")
+        industries = []
+    elif document.get("industry_count") != len(industries):
+        fail("json", f"{label}: industry_count({document.get('industry_count')})가 실제 산업 수({len(industries)})와 다르다")
+    sources = document.get("sources")
+    source_ids = set()
+    if not isinstance(sources, list) or not sources:
+        fail("json", f"{label}: sources가 비어 있다")
+        sources = []
+    for src in sources:
+        sid = src.get("source_id")
+        source_ids.add(sid)
+        if not str(src.get("name") or "").strip():
+            fail("json", f"{label}: 출처 {sid}에 name이 없다")
+        if not str(src.get("url") or "").startswith("https://"):
+            fail("json", f"{label}: 출처 {sid}의 url이 https가 아니다")
+        if not isinstance(src.get("license"), dict):
+            fail("json", f"{label}: 출처 {sid}에 license가 없다")
+    for industry in industries:
+        iid = industry.get("id", "?")
+        for key in ("id", "name", "ksic", "feel", "size", "domestic", "global"):
+            if key not in industry:
+                fail("json", f"{label}: 산업 {iid}에 '{key}'가 없다")
+        for side in ("domestic", "global"):
+            block = industry.get(side) or {}
+            if not isinstance(block, dict) or "axes" not in block:
+                fail("json", f"{label}: {iid}.{side}에 axes가 없다")
+                continue
+            if not block.get("axes"):
+                fail("json", f"{label}: {iid}.{side}.axes가 비어 있다")
+            temp = block.get("temperature")
+            if temp is not None and not (-20 <= temp <= 40):
+                fail("json", f"{label}: {iid}.{side} 온도 {temp}가 -20~40℃ 밖이다")
+            for axis, info in (block.get("axes") or {}).items():
+                for item in (info or {}).get("items") or []:
+                    if item.get("source_id") not in source_ids:
+                        fail("json", f"{label}: {iid}.{side}.{axis}의 출처 '{item.get('source_id')}'가 sources에 없다")
+                    if not str(item.get("period") or "").strip():
+                        fail("json", f"{label}: {iid}.{side}.{axis} '{item.get('label')}'에 기준시점(period)이 없다")
+        for item in industry.get("info") or []:
+            if item.get("source_id") not in source_ids:
+                fail("json", f"{label}: {iid}.info의 출처 '{item.get('source_id')}'가 sources에 없다")
+    note(f"산업 온도계 {len(industries)}개 산업 · 출처 {len(sources)}곳")
+
+
 CURRENT_CHECKERS = {
     "briefing/data/briefing.json": check_briefing,
     "briefing/data/news.json": check_news,
     "briefing/data/chain.json": check_chain,
     "emerging/data/emerging.json": check_emerging,
+    "thermometer/data/thermometer.json": check_thermometer,
 }
 
 
