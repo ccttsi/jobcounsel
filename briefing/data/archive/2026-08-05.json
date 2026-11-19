@@ -1,0 +1,324 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-08-05T07:10:00+09:00",
+ "edition": {
+  "date": "2026-08-05",
+  "weekday": "수",
+  "title": "상반기 산재 사망 253명 역대 최저, 임금체불은 9,248억원",
+  "subtitle": "고용노동부 하반기 업무보고·폴리텍 교수 120명 초빙을 한 장으로",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "상반기 산재 사망",
+   "value": 0,
+   "unit": "",
+   "value_text": "253명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 상반기",
+   "delta_from": "-11.8%",
+   "source_id": "src_moel_report_20260804",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-05T07:10:00+09:00",
+   "run_id": "br-20260805-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "임금체불액",
+   "value": 0,
+   "unit": "",
+   "value_text": "9,248억원",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 상반기",
+   "delta_from": "-10.7%",
+   "source_id": "src_moel_report_20260804",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-05T07:10:00+09:00",
+   "run_id": "br-20260805-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "폴리텍 신규 교수",
+   "value": 0,
+   "unit": "",
+   "value_text": "120명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "19개 계열",
+   "source_id": "src_polytech_20260804",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-05T07:10:00+09:00",
+   "run_id": "br-20260805-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "상반기 산재 사망 253명 역대 최저, 임금체불은 9,248억원",
+   "kicker": "사망 -11.8% · 체불 -10.7% · 경사노위 17개 위원회",
+   "three_step": {
+    "what": "고용노동부가 8월 4일 2026년 하반기 업무보고에서 상반기 성과와 하반기 방향을 내놨다. 산재 사망과 임금체불이 모두 두 자릿수로 줄었다.",
+    "evidence": "상반기 산재 사고사망자는 253명으로 1년 전보다 11.8% 줄어 역대 최저였고, 임금체불액은 9,248억원으로 10.7% 줄며 감소세로 돌아섰다. 개정 노조법 현장 안착과 함께 경사노위가 3월 19일 출범해 17개 위원회가 순차적으로 발족했다. 하반기 과제로는 생명·안전과 정당한 보상, 청년·중장년 상생일자리, 사회안전망 확충을 꼽았다(2026년 8월 4일).",
+    "implication": "상담에서 '일자리 숫자'만 보지 말고, 그 일자리가 안전과 임금 지급에서 나아졌는지를 정부 지표로 함께 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "산재 사고사망",
+     "value": "253명",
+     "delta": "-11.8%",
+     "period": "2026년 상반기"
+    },
+    {
+     "label": "임금체불액",
+     "value": "9,248억원",
+     "delta": "-10.7%",
+     "period": "2026년 상반기"
+    },
+    {
+     "label": "경사노위",
+     "value": "17개 위원회",
+     "delta": "3월 19일 출범",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "지금 다니는 곳에서 안전과 임금, 둘 다 지켜진다고 느끼시나요?",
+   "tags": [
+    "산업안전",
+    "임금체불",
+    "노사"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-moel-half-2026",
+   "updated_at": "2026-08-05T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_report_20260804",
+    "source_name": "고용노동부",
+    "source_title": "노동과 함께하는 진짜 성장으로 대체불가 대한민국 달성 — 2026년 하반기 업무보고",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773364",
+    "published_at": "2026-08-04",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「노동과 함께하는 진짜 성장으로 대체불가 대한민국 달성 — 2026년 하반기 업무보고」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "폴리텍, 역대 최대 교수 120명 뽑는다 — 반도체 10·전기 22",
+   "kicker": "교수 120명 · 19개 계열 · 교양 26명",
+   "three_step": {
+    "what": "한국폴리텍대학이 19개 계열에서 교수 120명을 초빙한다. 역대 최대 규모로, 반도체·AI·전기 등 전략산업과 교양 분야를 함께 늘린다.",
+    "evidence": "계열별로 전기 22명, 반도체 10명, 산업설비 9명, 자동화 8명, 기계 8명, 정보통신IT 7명, 자동차 6명, 교양 26명 등이다. 3대 메가프로젝트에 맞춰 첨단 전략산업 교원을 확충하고, 의사소통·문제해결·창업·진로 설계·심리상담 같은 교양교육도 강화한다(2026년 8월 4일, 한국폴리텍대학).",
+    "implication": "직업훈련을 권할 때 훈련 과정만 보지 말고, 그 기관이 어떤 교원을 새로 들이는지 확인하게 하라. 반도체·전기처럼 교원을 늘리는 분야는 훈련 정원도 함께 늘어난다."
+   },
+   "key_numbers": [
+    {
+     "label": "신규 교수",
+     "value": "120명",
+     "delta": "역대 최대",
+     "period": "2026년"
+    },
+    {
+     "label": "계열",
+     "value": "19개",
+     "delta": "전략산업+전통산업",
+     "period": "2026년"
+    },
+    {
+     "label": "반도체 / 전기",
+     "value": "10명 / 22명",
+     "delta": "교양 26명",
+     "period": "2026년"
+    }
+   ],
+   "tags": [
+    "폴리텍",
+    "직업훈련",
+    "반도체"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "issue_id": "iss-polytech-faculty-2026",
+   "updated_at": "2026-08-05T07:10:00+09:00",
+   "source": {
+    "source_id": "src_polytech_20260804",
+    "source_name": "한국폴리텍대학·고용노동부",
+    "source_title": "폴리텍대학, 역대 최대 규모 '교수 120명' 초빙",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773368",
+    "published_at": "2026-08-04",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 한국폴리텍대학·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 한국폴리텍대학·고용노동부 「폴리텍대학, 역대 최대 규모 '교수 120명' 초빙」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_report_20260804",
+   "source_name": "고용노동부",
+   "source_title": "노동과 함께하는 진짜 성장으로 대체불가 대한민국 달성 — 2026년 하반기 업무보고",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773364",
+   "published_at": "2026-08-04",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「노동과 함께하는 진짜 성장으로 대체불가 대한민국 달성 — 2026년 하반기 업무보고」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_polytech_20260804",
+   "source_name": "한국폴리텍대학·고용노동부",
+   "source_title": "폴리텍대학, 역대 최대 규모 '교수 120명' 초빙",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773368",
+   "published_at": "2026-08-04",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 한국폴리텍대학·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 한국폴리텍대학·고용노동부 「폴리텍대학, 역대 최대 규모 '교수 120명' 초빙」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05"
+ ]
+}
