@@ -116,7 +116,7 @@
 
   /* ---------- 온도계 그림 ---------- */
   /* 눈금: -20℃(아래) ~ +40℃(위). 두 자루가 언제나 같은 크기·같은 좌표를 쓴다. */
-  var Y_TOP = 20, Y_BOT = 168, Y_BULB = 182;
+  var Y_TOP = 16, Y_BOT = 150, Y_BULB = 168;
   function yOf(t) { return Y_BOT - (Math.max(-20, Math.min(40, t)) + 20) / 60 * (Y_BOT - Y_TOP); }
 
   function thermo(side, t, band, used, total) {
@@ -130,15 +130,14 @@
     var dots = '';
     for (var i = 0; i < total; i++) dots += '<s class="' + (i < used ? 'on' : '') + '"></s>';
     return '<div class="thermo">'
-      + '<div class="th-g"><svg viewBox="0 0 120 200" preserveAspectRatio="xMidYMid meet" role="img" aria-label="' + (side === 'domestic' ? '국내' : '글로벌') + ' 온도 ' + (t == null ? '근거 없음' : t + '도') + '">'
+      + '<div class="th-g"><svg viewBox="0 0 120 184" preserveAspectRatio="xMidYMid meet" role="img" aria-label="' + (side === 'domestic' ? '국내' : '글로벌') + ' 온도 ' + (t == null ? '근거 없음' : t + '도') + '">'
       + '<rect x="24" y="' + Y_TOP + '" width="36" height="' + (Y_BULB - Y_TOP) + '" rx="18" fill="var(--track)"/>'
       + (t == null
         ? '<line x1="24" x2="60" y1="' + (Y_BOT - 8) + '" y2="' + (Y_BOT - 8) + '" stroke="var(--line-2)" stroke-width="2" stroke-dasharray="3 3"/>'
-        : '<rect class="merc" x="24" y="' + Y_TOP + '" width="36" height="' + (Y_BULB - Y_TOP) + '" rx="18" fill="' + fillColor + '"/>'
+        : '<rect class="merc" x="24" y="' + Y_TOP + '" width="36" height="' + (Y_BULB - Y_TOP) + '" rx="18" style="--k:' + k.toFixed(3) + ';transform:scaleY(' + k.toFixed(3) + ')" fill="' + fillColor + '"/>'
           + '<line x1="24" x2="60" y1="' + yOf(t) + '" y2="' + yOf(t) + '" stroke="var(--panel)" stroke-width="1.6" opacity=".6"/>')
-      + '<circle cx="42" cy="' + Y_BULB + '" r="16" fill="' + fillColor + '"/>'
       + '<rect x="24" y="' + Y_TOP + '" width="36" height="' + (Y_BULB - Y_TOP) + '" rx="18" fill="none" stroke="var(--line-2)" stroke-width="1"/>'
-      + '<circle cx="42" cy="' + Y_BULB + '" r="16" fill="none" stroke="var(--line-2)" stroke-width="1"/>'
+
       + ticks
       + '</svg></div>'
       + '<div class="th-x">'
@@ -153,7 +152,7 @@
   function renderDeck() {
     var rows = DATA.industries.filter(function (r) { return r.domestic.temperature != null || r.global.temperature != null; });
     function pick(side, dir) {
-      var list = rows.filter(function (r) { return r[side].temperature != null && r[side].axes_used >= 2; });
+      var list = rows.filter(function (r) { return r[side].temperature != null; });
       if (!list.length) return null;
       list.sort(function (a, b) { return dir > 0 ? b[side].temperature - a[side].temperature : a[side].temperature - b[side].temperature; });
       return list[0];
@@ -167,8 +166,9 @@
     $('deck').innerHTML = cells.map(function (c) {
       if (!c.pick) return '';
       var r = c.pick, t = r[c.side].temperature;
+      var thin = r[c.side].axes_used < 2 ? '<em>근거 1축</em>' : '';
       return '<button type="button" class="dk ' + tone(t) + '" data-jump="' + r.id + '">'
-        + '<span><b>' + c.label + '</b><span>' + esc(r.name) + '</span></span>'
+        + '<span><b>' + c.label + '</b><span>' + esc(r.name) + thin + '</span></span>'
         + '<span class="t">' + tempText(t) + '</span></button>';
     }).join('');
   }
