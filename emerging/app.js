@@ -14,7 +14,7 @@
   var TRACK = { 'KOGL-1': 'A', 'KOGL-0': 'A', 'PUBLIC-DOMAIN': 'A', 'CC-BY-4.0': 'A', 'OECD': 'A', 'WEF': 'A', 'IAEA': 'A', 'PRESS': 'B' };
 
   var UI = { date: '', item: 0, sector: 'all', ym: 0, filterSector: 'all', filterCat: 'all', filterPage: 0 };
-  var DATA = null, DAY = null, cache = {};
+  var DATA = null, DAY = null, cache = {}, LINKS = {};
 
   /* ───────── 도표 ───────── */
   var W = 340, H = 152, PL = 42, PR = 12, PT = 14, PB = 24;
@@ -181,6 +181,36 @@
       }).join('') + '</ul>';
   }
 
+  /* ───────── 다른 자료실로 잇기 (emerging/data/links.json) ─────────
+     링크는 그 섹터에서 실제로 결과가 나오는 검색어만 쓴다. 확인되지 않은 곳은 굵은 글자로만 둔다. */
+  function coChip(label) {
+    var c = (LINKS.companies || {})[label];
+    if (!c) return '<span>' + esc(label) + '</span>';
+    return '<a class="tagl" href="../company/?q=' + encodeURIComponent(c.q) + '" title="기업 명함첩에서 찾기">' + esc(label) + '<i aria-hidden="true">↗</i></a>';
+  }
+  function studyItem(s) {
+    var L = (LINKS.studies || {})[s];
+    if (!L) return '<li><span class="sname">' + esc(s) + '</span></li>';
+    var acts = '';
+    if (L.uq) acts += '<a href="../univ/?q=' + encodeURIComponent(L.uq) + '" aria-label="대학 학과에서 ' + esc(s) + ' 찾기">대학 <b class="num">' + fmt(L.un) + '</b>곳<i aria-hidden="true">↗</i></a>';
+    if (L.gq) acts += '<a href="../grad/?q=' + encodeURIComponent(L.gq) + '" aria-label="대학원에서 ' + esc(s) + ' 찾기">대학원 <b class="num">' + fmt(L.gn) + '</b>건<i aria-hidden="true">↗</i></a>';
+    return '<li><span class="sname">' + esc(s) + '</span>' + (acts ? '<span class="sacts">' + acts + '</span>' : '') + '</li>';
+  }
+  function jobLinks(j) {
+    var L = (LINKS.jobs || {})[j.id] || {}, out = '';
+    if (L.tax) out += '<a class="jl" href="../taxonomy/?q=' + encodeURIComponent(L.tax.q) + '"><span>직무 분류</span><b>' + esc(L.tax.q) + '</b><i aria-hidden="true">↗</i></a>';
+    if (L.decal) out += '<a class="jl" href="../decalcomania/?q=' + encodeURIComponent(j.name) + '"><span>커리어데칼코마니</span><b>학과·직업 흐름</b><i aria-hidden="true">↗</i></a>';
+    return out ? '<div class="jlx">' + out + '</div>' : '';
+  }
+  function playersBlock(it) {
+    var p = it.players || {}, dom = arr(p.domestic), glob = arr(p.glob);
+    if (!dom.length && !glob.length) return '';
+    var row = function (label, list, intl) {
+      return list.length ? '<div class="row"><b>' + label + '</b><div class="tags' + (intl ? ' intl' : '') + '">' + list.map(coChip).join('') + '</div></div>' : '';
+    };
+    return '<section class="pl2" aria-labelledby="plH"><div class="ph"><b id="plH">주요 플레이어</b><span>기업·기관 · 명함첩에 있으면 눌러서 엽니다</span></div>' + row('국내', dom) + row('해외', glob, 1) + '</section>';
+  }
+
   function jobsBlock(it) {
     var byId = {}; arr(DAY.jobs).forEach(function (j) { byId[j.id] = j; });
     var leg = arr(it.jobs && it.jobs.legacy).map(function (k) { return byId[k]; }).filter(Boolean);
@@ -226,6 +256,7 @@
       (keys.length ? '<ul class="keys">' + keys.map(function (k) {
         return '<li><span class="l">' + esc(k.label) + '</span><span class="v num">' + esc(k.value) + '</span><span class="n">' + esc(k.note || '') + '</span></li>';
       }).join('') + '</ul>' : '') +
+      playersBlock(it) +
       jobsBlock(it) +
       '<div class="art-f">' + sourceLine(it) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 기사"' + (UI.item ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 기사"' + (UI.item < items.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div>';
   }
@@ -269,11 +300,23 @@
     var n = arr(DAY.items).length;
     if (UI.item < 0) UI.item = 0;
     if (n && UI.item > n - 1) UI.item = n - 1;
-    renderMast(); renderFilters(); renderRail(); renderArticle(); renderSide();
+    renderMast(); renderFilters(); renderRail(); renderArticle(); renderSide(); centerPgs();
     try {
       var q = '?date=' + UI.date + (UI.item ? '#i' + (UI.item + 1) : '');
       history.replaceState(null, '', location.pathname + q);
     } catch (err) {}
+  }
+
+  /* 기사 번호 줄: 지금 번호가 화면 밖이면 가운데로 데려온다(390px·9건에서 08·09 잘림). */
+  function centerPgs() {
+    var box = $('art') && $('art').querySelector('.pgs');
+    if (!box) return;
+    var cur = box.querySelector('[aria-current="true"]');
+    if (!cur || box.scrollWidth <= box.clientWidth + 1) return;
+    requestAnimationFrame(function () {
+      box.scrollLeft = Math.max(0, cur.offsetLeft - (box.clientWidth - cur.offsetWidth) / 2);
+      box.classList.add('can');
+    });
   }
 
   /* ───────── 불러오기 ───────── */
@@ -470,23 +513,23 @@
           (sec.name ? '<i aria-hidden="true">·</i><span>' + esc(sec.name) + '</span>' : '') +
           '<i aria-hidden="true">·</i><span>NCS·O*NET 방식 5칸</span></p></div>' +
         '<button type="button" class="x" data-close aria-label="닫기">닫기</button></div>' +
-      '<div class="jm-b">' +
+      '<div class="jm-b">' + jobLinks(j) +
         '<section class="blk"><div class="blk-h"><span class="ni">01</span><b>하는 일</b><em>핵심 과업</em></div><p class="role">' + esc(j.role) + '</p></section>' +
         '<section class="blk"><div class="blk-h"><span class="ni">02</span><b>KSA</b><em>지식 · 기술 · 태도</em></div><div class="ksa2">' + rows.map(function (r) {
           var lb = { K: '지식', S: '기술', A: '태도' }[r[0]];
           return '<div class="ksa-row"><span class="kb ' + r[0].toLowerCase() + '">' + r[0] + '</span><span class="kl">' + lb + '</span><div class="tags">' + r[1].map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>';
         }).join('') + '</div></section>' +
         '<section class="blk"><div class="blk-h"><span class="ni">03</span><b>채용 기업</b><em>국내 · 해외</em></div><div class="snap">' +
-          '<div class="snap-c"><b>국내</b><div class="tags">' + arr(co.domestic || co.dom).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>' +
-          '<div class="snap-c"><b>해외</b><div class="tags intl">' + arr(co.global || co.glob).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>' +
+          '<div class="snap-c"><b>국내</b><div class="tags">' + arr(co.domestic || co.dom).map(coChip).join('') + '</div></div>' +
+          '<div class="snap-c"><b>해외</b><div class="tags intl">' + arr(co.global || co.glob).map(coChip).join('') + '</div></div>' +
         '</div></section>' +
         '<section class="blk"><div class="blk-h"><span class="ni">04</span><b>진입 경로</b><em>전공 → 자격</em></div><div class="path">' +
-          '<div class="step"><b>전공</b><span>' + arr(j.study).map(esc).join(' · ') + '</span></div>' +
+          '<div class="step"><b>전공</b><ul class="sl">' + arr(j.study).map(studyItem).join('') + '</ul></div>' +
           '<div class="step"><b>자격·교육</b><span>' + arr(j.certs).map(esc).join(' · ') + '</span></div>' +
         '</div></section>' +
         '<section class="blk"><div class="blk-h"><span class="ni">05</span><b>핵심 아이디어</b><em>한 문장</em></div><p class="ins">' + esc(j.insight) + '</p></section>' +
       '</div>' +
-      '<p class="jm-f">기업은 해당 직무를 실제로 운영하거나 채용하는 곳만 적었습니다. 자격은 국가자격과 민간 교육을 구분했고, 국가자격이 없는 직무는 그렇게 적었습니다.</p>' +
+      '<p class="jm-f">기업은 해당 직무를 실제로 운영하거나 채용하는 곳만 적었습니다. <b>기업 명함첩에 등재된 곳은 눌러서 바로 열 수 있습니다</b>(대기업·중견기업·공공기관만 담은 명함첩입니다). 전공은 대학·대학원 개설 학과로 이어집니다. 자격은 국가자격과 민간 교육을 구분했고, 국가자격이 없는 직무는 그렇게 적었습니다.</p>' +
       '</div></div>';
     var host = document.getElementById('jobhost');
     if (!host) { host = document.createElement('div'); host.id = 'jobhost'; document.body.appendChild(host); }
@@ -548,6 +591,7 @@
   /* ───────── 시작 ───────── */
   function boot(d) {
     DATA = d; cache[(d.edition || {}).date] = d;
+    var ask = readQ();                 /* render 가 주소를 ?date=… 로 바꾸기 전에 받아 둔다 */
     var want = new URLSearchParams(location.search).get('date');
     var h = (location.hash || '').replace('#', '');
     var d0 = validDate(want) && arr(d.archive_dates).indexOf(want) >= 0 ? want : (d.edition || {}).date;
@@ -555,8 +599,33 @@
     var it = /^i([1-9])$/.test(h) ? +h.slice(1) - 1 : 0;
     if (d0 === (d.edition || {}).date) { DAY = d; UI.date = d0; UI.item = it; render(); }
     else loadDay(d0, it);
+    urlQuery(ask);
   }
-  get(BASE + 'emerging.json').then(boot).catch(function () {
+  /* 다른 섹터에서 ?q=로 들어오면: 직무 이름이면 그 직무분석을, 아니면 제목에 그 말이 듣 지면을 보여 준다. */
+  function nq0(s) { return String(s || '').toLowerCase().replace(/[\s·・ㆍ._\-()]/g, ''); }
+  function readQ() {
+    try { return (new URLSearchParams(location.search).get('q') || '').trim(); } catch (e) { return ''; }
+  }
+  function urlQuery(q) {
+    if (!q || !DATA) return;
+    var nq = nq0(q);
+    var hit = arr(DATA.jobs).filter(function (j) { var n = nq0(j.name); return n === nq || n.indexOf(nq) >= 0 || (nq.length > 2 && nq.indexOf(n) === 0); })[0];
+    if (hit) { openJob(hit.id, hit.kind); return; }
+    var res = [];
+    arr(DATA.archive_index).forEach(function (d) {
+      arr(d.items).forEach(function (it) { if (nq0(it.title).indexOf(nq) >= 0) res.push({ date: d.date, it: it }); });
+    });
+    if (!res.length) return;
+    var rows = res.slice(0, 30).map(function (r) {
+      var s = arr(DATA.sectors).filter(function (x) { return x.id === r.it.sector; })[0] || {};
+      return '<li><button type="button" data-open="' + esc(r.date) + '" data-oi="' + esc(r.it.id) + '"><b class="num">' + esc(r.date.slice(5)) + '</b><span class="tw"><span class="tt">' + esc(r.it.title) + '</span><em>' + esc(s.no) + '차</em></span></button></li>';
+    }).join('');
+    openSheet('<p class="note">「' + esc(q) + '」이 제목에 든 지면입니다. 누르면 그 지면으로 갑니다.</p><ol class="res">' + rows + '</ol>', '지면 찾기 · ' + q, null);
+  }
+  Promise.all([get(BASE + 'emerging.json'), get(BASE + 'links.json').catch(function () { return null; })]).then(function (a) {
+    LINKS = a[1] || {};
+    boot(a[0]);
+  }).catch(function () {
     main.innerHTML = '<p class="empty" style="padding:16px">지면을 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.</p>';
   });
 })();

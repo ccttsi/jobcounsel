@@ -247,6 +247,7 @@ html[data-jc-imm] .lead-line .dek-tx.swap{animation:none}
 .pn button{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 14px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);font-size:13px;font-weight:800}
 .pn button[disabled]{opacity:.35;cursor:default}
 .pgs{display:flex;gap:4px;margin:5px 0 8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.pgs.can{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%)}
 .pgs::-webkit-scrollbar{display:none}
 .pgs button{flex:1 1 44px;min-width:44px;min-height:44px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}
 .pgs button[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
@@ -345,7 +346,32 @@ html[data-jc-imm] .lead-line .dek-tx.swap{animation:none}
 .snap-c{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;align-items:start}
 .snap-c b{font-size:10.5px;font-weight:850;color:var(--dim);letter-spacing:.03em;padding-top:3px}
 .snap-c .tags span{font-size:11.5px;padding:3px 9px;background:var(--soft)}
+.snap-c .tags span,.snap-c .tags a.tagl{min-height:44px;display:inline-flex;align-items:center;padding:0 13px}
+.snap-c .tags span{border:1px solid transparent}
 .snap-c .tags.intl span{background:var(--slate-soft);color:var(--ink)}
+/* 다른 자료실로 잇는 칩 — 명함첩에 있는 기업·눌러서 넘어가는 전공·학과 */
+.tags a.tagl{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 12px;border-radius:99px;background:var(--slate-soft);border:1px solid color-mix(in srgb,var(--slate) 30%,transparent);font-size:12px;line-height:1.4;font-weight:700;color:var(--ink);text-decoration:none}
+.tags a.tagl i{font-style:normal;font-size:10.5px;color:var(--slate)}
+.tags a.tagl:active{transform:translateY(1px)}
+.jlx{display:grid;gap:6px;margin-bottom:2px}
+@media (min-width:600px){.jlx{grid-template-columns:1fr 1fr}}
+.jl{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);text-decoration:none;color:var(--ink)}
+.jl span{flex:none;font-size:10px;font-weight:850;letter-spacing:.04em;color:var(--dim)}
+.jl b{min-width:0;font-size:12.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jl i{margin-left:auto;font-style:normal;font-size:11px;color:var(--acc)}
+.sl{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.sl li{display:grid;gap:2px;min-width:0}
+.sl .sname{font-size:12.5px;line-height:1.55;color:var(--ink)}
+.sacts{display:flex;flex-wrap:wrap;gap:6px}
+.sacts a{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:11.5px;font-weight:750;color:var(--ink);text-decoration:none}
+.sacts a b{font-weight:850;color:var(--acc)}
+.sacts a i{font-style:normal;font-size:10px;color:var(--dim)}
+.pl2{margin:11px 0 0;border-top:1px solid var(--line-2);padding-top:6px}
+.pl2 .ph{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;margin-bottom:2px}
+.pl2 .ph b{font-size:13px;font-weight:850;letter-spacing:-.02em}
+.pl2 .ph span{font-size:11px;color:var(--dim)}
+.pl2 .row{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;align-items:start;margin-top:4px}
+.pl2 .row>b{font-size:10.5px;font-weight:800;color:var(--dim);letter-spacing:.03em;padding-top:15px}
 .path{display:grid;gap:6px}
 .path .step{display:grid;grid-template-columns:74px minmax(0,1fr);gap:8px;align-items:start;padding:8px 11px;border-left:2px solid var(--line-2);background:var(--soft);border-radius:0 8px 8px 0}
 .path .step b{font-size:10.5px;font-weight:850;color:var(--acc);letter-spacing:.02em;padding-top:2px}
