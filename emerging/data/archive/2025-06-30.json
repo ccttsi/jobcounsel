@@ -1,0 +1,346 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-20T05:34:51+09:00",
+ "edition": {
+  "no": 9,
+  "date": "2025-06-30",
+  "weekday": "월",
+  "title": "소부장에 8,501억 민간투자",
+  "reading_minutes": 3,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20250630-1",
+   "date": "2025-06-30",
+   "order": 1,
+   "sector": "s2",
+   "cat": "semicon",
+   "lead": true,
+   "title": "첨단 소부장에 8,501억 원 민간투자가 붙었다",
+   "kicker": "산업통상자원부 · 2025.6.30 보도자료",
+   "summary": "산업통상자원부가 6월 30일 소부장 투자연계형 기술개발사업으로 183개 기업에서 8,501억 원의 민간투자를 유치했다고 밝혔다. 2025년 사업비 237억 5,000만 원으로 지난해보다 653억 원 많은 투자를 끌어냈고, AI반도체가 2,602억 원으로 가장 컸다.",
+   "key_numbers": [
+    {
+     "label": "민간투자 유치",
+     "value": "8,501억 원",
+     "note": "183개 기업, 역대 최고"
+    },
+    {
+     "label": "기업당 평균",
+     "value": "46.5억 원",
+     "note": "2024년 36.3억 원에서 증가"
+    },
+    {
+     "label": "AI반도체",
+     "value": "2,602억 원",
+     "note": "24개 기업"
+    },
+    {
+     "label": "정부 사업비",
+     "value": "237.5억 원",
+     "note": "2025년"
+    }
+   ],
+   "market": {
+    "label": "분야별 민간투자 유치",
+    "unit": "억 원",
+    "basis": "2025년 소부장 투자연계형 사업",
+    "chart": "bar",
+    "labels": [
+     "AI반도체",
+     "디지털 헬스케어",
+     "로봇·자동화",
+     "차세대 전지"
+    ],
+    "series": [
+     {
+      "name": "투자 유치",
+      "values": [
+       2602,
+       627,
+       441,
+       433
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "AI반도체 24개 기업, 디지털 헬스케어 13개, 로봇·자동화 12개, 차세대 전지 12개 기업이다.",
+    "source_id": "src_motie_somubu2025b"
+   },
+   "players": {
+    "domestic": [
+     "오픈엣지테크놀로지",
+     "이티에스"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-npu-sw"
+    ]
+   },
+   "source_id": "src_motie_somubu2025b",
+   "question": "정부 237억 원이 민간 8,501억 원을 불렀다. 이 비율이 유지되려면 무엇이 필요할까?",
+   "subtitle": "AI반도체 24개 기업이 2,602억 원으로 가장 큰 몫을 냈다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-elec",
+   "name": "전기·전자 엔지니어",
+   "en": "Electrical / Electronics Engineer",
+   "sector": "s2",
+   "role": "전력·제어·회로 시스템을 설계하고 시험한다. 배터리·로봇·충전설비처럼 전기를 다루는 모든 신산업의 아래쪽에서 작동한다.",
+   "ksa": {
+    "k": [
+     "회로이론·전력계통",
+     "전자부품 특성",
+     "전기 안전 규정"
+    ],
+    "s": [
+     "회로 설계·PCB",
+     "계측·디버깅",
+     "인증 시험 대응"
+    ],
+    "a": [
+     "감전·화재 위험을 먼저 보는 습관",
+     "측정값을 믿고 확인하는 태도"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "전자공학",
+    "제어계측공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전자기사",
+    "전기안전기사"
+   ],
+   "insight": "신산업의 화려한 부분은 아니지만, 전원이 꺼지면 모든 것이 멈춘다. 로봇·배터리·수소 설비 모두 이 직무 위에 서 있다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "LG전자",
+     "현대모비스",
+     "효성중공업",
+     "LS일렉트릭"
+    ],
+    "global": [
+     "Texas Instruments",
+     "Infineon",
+     "ABB",
+     "Siemens"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
+  },
+  {
+   "id": "j-npu-sw",
+   "kind": "new",
+   "name": "AI 반도체 소프트웨어 스택 엔지니어",
+   "en": "AI Accelerator Software Stack Engineer",
+   "sector": "s2",
+   "role": "국산 신경망처리장치(NPU)가 범용 AI 프레임워크에서 그대로 돌아가도록 컴파일러·런타임·드라이버를 맞춘다. 다른 회사 GPU·CPU와 섞어 쓰는 이기종 환경에서 성능이 나오는지 측정한다.",
+   "ksa": {
+    "k": [
+     "컴파일러·런타임",
+     "GPU·NPU 아키텍처",
+     "AI 프레임워크"
+    ],
+    "s": [
+     "CUDA·ROCm 대응 포팅",
+     "성능 프로파일링",
+     "이기종 연동 시험"
+    ],
+    "a": [
+     "성능 수치를 끝까지 파고드는 집요함"
+    ]
+   },
+   "study": [
+    "컴퓨터공학",
+    "전자공학"
+   ],
+   "certs": [
+    "정보처리기사",
+    "리눅스마스터"
+   ],
+   "insight": "칩 성능은 소프트웨어 스택이 받쳐 줄 때만 숫자로 나온다. 국산 AI 반도체 기업이 가장 먼저 채우는 자리다.",
+   "companies": {
+    "domestic": [
+     "퓨리오사AI",
+     "리벨리온",
+     "딥엑스",
+     "모레",
+     "래블업"
+    ],
+    "global": [
+     "AMD",
+     "NVIDIA"
+    ]
+   }
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_motie_somubu2025b",
+   "name": "산업통상자원부",
+   "title": "첨단 소부장 투자, 역대 최고치 경신... AI반도체·디지털 헬스케어가 주도",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156754641",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2025-06-30",
+   "track": "A",
+   "usage": "2025년 소부장 투자연계형 사업으로 183개 기업 8,501억 원 민간투자 유치(역대 최고), AI반도체 24개 기업 2,602억 원, 기업당 평균 46.5억 원"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
