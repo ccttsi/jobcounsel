@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T04:52:22+09:00",
+ "generated_at": "2026-11-20T04:57:44+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -138,12 +138,317 @@
   "2026-01-27",
   "2026-01-22",
   "2026-01-21",
-  "2026-01-20"
+  "2026-01-20",
+  "2026-01-16",
+  "2026-01-15",
+  "2026-01-12"
  ],
  "themes": {
+  "th-macro-economy": {
+   "label": "거시경제와 고용",
+   "items": [
+    {
+     "date": "2026-01-12",
+     "card_id": "c01",
+     "title": "12월 고용보험 가입자 +18.2만, 증가폭이 눈에 띄게 줄었다",
+     "kicker": "1,549.3만명 · +1.2% · 제조 7개월·건설 29개월",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156739308",
+     "published_at": "2026-01-12"
+    },
+    {
+     "date": "2026-02-09",
+     "card_id": "c01",
+     "title": "1월 고용보험 가입자 +26.3만, 구직급여 신규는 8.0% 늘었다",
+     "kicker": "1,543.7만명 · 서비스 +27.7만 · 제조 8개월 연속 감소",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156743783",
+     "published_at": "2026-02-09"
+    },
+    {
+     "date": "2026-02-24",
+     "card_id": "c01",
+     "title": "지역이 설계하는 고용위기 대응에 450억, 여수·서산·포항·광산",
+     "kicker": "450억원 · 4개 지역 · 지역 직접 개발",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156745461",
+     "published_at": "2026-02-23"
+    },
+    {
+     "date": "2026-03-17",
+     "card_id": "c01",
+     "title": "고용보험 가입자 +25.8만, 제조업 9개월·건설업 31개월 연속 감소",
+     "kicker": "1,563.9만명 · 서비스 +26.9만 · 구직급여 -25.8%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156749151",
+     "published_at": "2026-03-16"
+    },
+    {
+     "date": "2026-03-19",
+     "card_id": "c01",
+     "title": "2월 고용률 61.8% 2월 기준 최고, 청년 고용률만 1.0%p 내렸다",
+     "kicker": "61.8% · 69.2%(15~64세) · 청년 43.3%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156749607",
+     "published_at": "2026-03-18"
+    },
+    {
+     "date": "2026-04-02",
+     "card_id": "c01",
+     "title": "중동전쟁 고용충격 대비, 고용·체불상황판까지 띄운다",
+     "kicker": "7개 지방청 · 매주 점검 · 상황판 설치",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156752626",
+     "published_at": "2026-04-02"
+    },
+    {
+     "date": "2026-05-22",
+     "card_id": "c01",
+     "title": "플라스틱·섬유 업계 원자재값 비상 — 영세 2.1만곳이 버틴다",
+     "kicker": "플라스틱 17.5만명 · 중소 80% · 고용유지지원 확대",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156763016",
+     "published_at": "2026-05-21"
+    },
+    {
+     "date": "2026-06-10",
+     "card_id": "c01",
+     "title": "고용보험 가입자 +26.8만, 구직급여 지급액은 7.0% 줄었다",
+     "kicker": "1,584.8만명 · 제조업 -1만 · 구직급여 -780억원",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156765764",
+     "published_at": "2026-06-09"
+    },
+    {
+     "date": "2026-06-16",
+     "card_id": "c02",
+     "title": "울산 남구와 당진시, 2년간 산업위기선제대응지역 지정",
+     "kicker": "2년 지정 · 석유화학 40% · 철강 57%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766594",
+     "published_at": "2026-06-15"
+    },
+    {
+     "date": "2026-06-30",
+     "card_id": "c01",
+     "title": "사업체 종사자 2,070만1천명, 입직과 이직이 함께 늘었다",
+     "kicker": "종사자 +1.0% · 입직 +12.0% · 이직 +14.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768873",
+     "published_at": "2026-06-30"
+    },
+    {
+     "date": "2026-07-14",
+     "card_id": "c01",
+     "title": "고용보험 가입자 +26.4만, 제조업은 13개월째 줄고 폭은 커졌다",
+     "kicker": "1,585.5만명 · 제조업 -9천 · 구인 +21.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770584",
+     "published_at": "2026-07-13"
+    },
+    {
+     "date": "2026-07-22",
+     "card_id": "c02",
+     "title": "석유화학 불황, 노·사·정·지자체가 한 테이블에",
+     "kicker": "중앙단위 첫 협의체 · 여수·서산·울산 남구",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "경제사회노동위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771586",
+     "published_at": "2026-07-21"
+    },
+    {
+     "date": "2026-08-11",
+     "card_id": "c01",
+     "title": "고용보험 가입자 +27.7만, 구인배수는 0.44로 올랐다",
+     "kicker": "상시가입자 1,587.7만 · 제조업 14개월째 감소 · 구인배수 0.44",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773911",
+     "published_at": "2026-08-10"
+    },
+    {
+     "date": "2026-08-12",
+     "card_id": "c02",
+     "title": "미국 생산성 2.2% 올랐지만 노동시간은 0.2%만 늘었다",
+     "kicker": "생산성 +2.2% · 산출 +2.5% · 노동시간 +0.2%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/productivity-up-2-2-percent-from-second-quarter-2025-to-second-quarter-2026.htm",
+     "published_at": "2026-08-11"
+    },
+    {
+     "date": "2026-08-20",
+     "card_id": "c01",
+     "title": "하반기 제조업 일자리 — 반도체 +5.1%·조선 +2.7%, 섬유는 -3.5%",
+     "kicker": "반도체 +8천명 · 조선 +3천명 · 섬유 -5천명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "한국고용정보원·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774844",
+     "published_at": "2026-08-19"
+    },
+    {
+     "date": "2026-09-08",
+     "card_id": "c01",
+     "title": "고용보험 가입자 8개월째 20만명대, 제조업은 15개월 만에 늘었다",
+     "kicker": "상시가입자 +27.8만명 · 구인배수 0.46 · 구직급여 1조84억원",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780503",
+     "published_at": "2026-09-07"
+    },
+    {
+     "date": "2026-09-17",
+     "card_id": "c03",
+     "title": "미국 생산자물가 5.4%, 운송·창고는 13.0% 올랐다",
+     "kicker": "최종수요 +5.4% · 에너지 +24.4% · 운송·창고 +13.0%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/producer-price-index-up-5-4-percent-for-the-12-months-ended-august-2026.htm",
+     "published_at": "2026-09-16"
+    },
+    {
+     "date": "2026-10-15",
+     "card_id": "c01",
+     "title": "미국 9월 물가 3.7%, 휘발유가 한 달에 9.1% 올랐다",
+     "kicker": "전년비 +3.7% · 근원 2.6%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm",
+     "published_at": "2026-10-14"
+    },
+    {
+     "date": "2026-10-16",
+     "card_id": "c01",
+     "title": "미국 생산자물가 1.3%, 2022년 3월 이후 가장 큰 폭",
+     "kicker": "1년 +6.3% · 상품 +2.6%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/ppi_10152026.htm",
+     "published_at": "2026-10-15"
+    },
+    {
+     "date": "2026-10-31",
+     "card_id": "c01",
+     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
+     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-10-31",
+     "card_id": "c03",
+     "title": "승용차 판매 18.3% — 소비가 살아난 이유는 차였다",
+     "kicker": "소매판매 +3.6% · 내구재 +4.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c04",
+     "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
+     "kicker": "2026년 3.9% · 2027년 3.3%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국제통화기금(IMF)·재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c02",
+     "title": "KDI \"내년 성장 3.9%·취업자 20만\" — 20대는 여전히 낮다",
+     "kicker": "2026년 3.8% → 2027년 3.9% · 취업자 +12만 → +20만",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "재정경제부·한국개발연구원(KDI)",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
+     "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c07",
+     "title": "미국 신규 실업수당 20만건대 — 해고는 적고 재취업은 느리다",
+     "kicker": "신규 20만3천건 · 4주 평균 19만7,750건",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
+     "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
+     "published_at": "2026-11-19"
+    }
+   ]
+  },
   "th-labor-policy": {
    "label": "고용정책과 감독",
    "items": [
+    {
+     "date": "2026-01-15",
+     "card_id": "c01",
+     "title": "E-9 1회차 접수 시작, 비수도권 제조업 한도는 30%로",
+     "kicker": "1.26~2.10 · 연 5회 · 비수도권 30%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156739884",
+     "published_at": "2026-01-15"
+    },
+    {
+     "date": "2026-01-15",
+     "card_id": "c02",
+     "title": "한파에 배달 종사자 위험 커진다 — 6개 플랫폼과 안전 점검",
+     "kicker": "6개사 · 쉼터 정보 · 기상정보 신속 제공",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156739700",
+     "published_at": "2026-01-14"
+    },
+    {
+     "date": "2026-01-16",
+     "card_id": "c01",
+     "title": "쿠팡 불법파견 의혹 근로감독 착수, 감독관 17명 투입",
+     "kicker": "1.16 착수 · 17명 · PIP·블랙리스트 의혹",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156740048",
+     "published_at": "2026-01-16"
+    },
     {
      "date": "2026-01-20",
      "card_id": "c01",
@@ -1939,264 +2244,6 @@
      "source_name": "arXiv (micro1·노스이스턴대)",
      "source_url": "https://arxiv.org/abs/2611.23354",
      "published_at": "2026-11-17"
-    }
-   ]
-  },
-  "th-macro-economy": {
-   "label": "거시경제와 고용",
-   "items": [
-    {
-     "date": "2026-02-09",
-     "card_id": "c01",
-     "title": "1월 고용보험 가입자 +26.3만, 구직급여 신규는 8.0% 늘었다",
-     "kicker": "1,543.7만명 · 서비스 +27.7만 · 제조 8개월 연속 감소",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156743783",
-     "published_at": "2026-02-09"
-    },
-    {
-     "date": "2026-02-24",
-     "card_id": "c01",
-     "title": "지역이 설계하는 고용위기 대응에 450억, 여수·서산·포항·광산",
-     "kicker": "450억원 · 4개 지역 · 지역 직접 개발",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156745461",
-     "published_at": "2026-02-23"
-    },
-    {
-     "date": "2026-03-17",
-     "card_id": "c01",
-     "title": "고용보험 가입자 +25.8만, 제조업 9개월·건설업 31개월 연속 감소",
-     "kicker": "1,563.9만명 · 서비스 +26.9만 · 구직급여 -25.8%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156749151",
-     "published_at": "2026-03-16"
-    },
-    {
-     "date": "2026-03-19",
-     "card_id": "c01",
-     "title": "2월 고용률 61.8% 2월 기준 최고, 청년 고용률만 1.0%p 내렸다",
-     "kicker": "61.8% · 69.2%(15~64세) · 청년 43.3%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156749607",
-     "published_at": "2026-03-18"
-    },
-    {
-     "date": "2026-04-02",
-     "card_id": "c01",
-     "title": "중동전쟁 고용충격 대비, 고용·체불상황판까지 띄운다",
-     "kicker": "7개 지방청 · 매주 점검 · 상황판 설치",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156752626",
-     "published_at": "2026-04-02"
-    },
-    {
-     "date": "2026-05-22",
-     "card_id": "c01",
-     "title": "플라스틱·섬유 업계 원자재값 비상 — 영세 2.1만곳이 버틴다",
-     "kicker": "플라스틱 17.5만명 · 중소 80% · 고용유지지원 확대",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156763016",
-     "published_at": "2026-05-21"
-    },
-    {
-     "date": "2026-06-10",
-     "card_id": "c01",
-     "title": "고용보험 가입자 +26.8만, 구직급여 지급액은 7.0% 줄었다",
-     "kicker": "1,584.8만명 · 제조업 -1만 · 구직급여 -780억원",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156765764",
-     "published_at": "2026-06-09"
-    },
-    {
-     "date": "2026-06-16",
-     "card_id": "c02",
-     "title": "울산 남구와 당진시, 2년간 산업위기선제대응지역 지정",
-     "kicker": "2년 지정 · 석유화학 40% · 철강 57%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "산업통상부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766594",
-     "published_at": "2026-06-15"
-    },
-    {
-     "date": "2026-06-30",
-     "card_id": "c01",
-     "title": "사업체 종사자 2,070만1천명, 입직과 이직이 함께 늘었다",
-     "kicker": "종사자 +1.0% · 입직 +12.0% · 이직 +14.4%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768873",
-     "published_at": "2026-06-30"
-    },
-    {
-     "date": "2026-07-14",
-     "card_id": "c01",
-     "title": "고용보험 가입자 +26.4만, 제조업은 13개월째 줄고 폭은 커졌다",
-     "kicker": "1,585.5만명 · 제조업 -9천 · 구인 +21.4%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770584",
-     "published_at": "2026-07-13"
-    },
-    {
-     "date": "2026-07-22",
-     "card_id": "c02",
-     "title": "석유화학 불황, 노·사·정·지자체가 한 테이블에",
-     "kicker": "중앙단위 첫 협의체 · 여수·서산·울산 남구",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "경제사회노동위원회",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771586",
-     "published_at": "2026-07-21"
-    },
-    {
-     "date": "2026-08-11",
-     "card_id": "c01",
-     "title": "고용보험 가입자 +27.7만, 구인배수는 0.44로 올랐다",
-     "kicker": "상시가입자 1,587.7만 · 제조업 14개월째 감소 · 구인배수 0.44",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773911",
-     "published_at": "2026-08-10"
-    },
-    {
-     "date": "2026-08-12",
-     "card_id": "c02",
-     "title": "미국 생산성 2.2% 올랐지만 노동시간은 0.2%만 늘었다",
-     "kicker": "생산성 +2.2% · 산출 +2.5% · 노동시간 +0.2%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/productivity-up-2-2-percent-from-second-quarter-2025-to-second-quarter-2026.htm",
-     "published_at": "2026-08-11"
-    },
-    {
-     "date": "2026-08-20",
-     "card_id": "c01",
-     "title": "하반기 제조업 일자리 — 반도체 +5.1%·조선 +2.7%, 섬유는 -3.5%",
-     "kicker": "반도체 +8천명 · 조선 +3천명 · 섬유 -5천명",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "한국고용정보원·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774844",
-     "published_at": "2026-08-19"
-    },
-    {
-     "date": "2026-09-08",
-     "card_id": "c01",
-     "title": "고용보험 가입자 8개월째 20만명대, 제조업은 15개월 만에 늘었다",
-     "kicker": "상시가입자 +27.8만명 · 구인배수 0.46 · 구직급여 1조84억원",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780503",
-     "published_at": "2026-09-07"
-    },
-    {
-     "date": "2026-09-17",
-     "card_id": "c03",
-     "title": "미국 생산자물가 5.4%, 운송·창고는 13.0% 올랐다",
-     "kicker": "최종수요 +5.4% · 에너지 +24.4% · 운송·창고 +13.0%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/producer-price-index-up-5-4-percent-for-the-12-months-ended-august-2026.htm",
-     "published_at": "2026-09-16"
-    },
-    {
-     "date": "2026-10-15",
-     "card_id": "c01",
-     "title": "미국 9월 물가 3.7%, 휘발유가 한 달에 9.1% 올랐다",
-     "kicker": "전년비 +3.7% · 근원 2.6%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm",
-     "published_at": "2026-10-14"
-    },
-    {
-     "date": "2026-10-16",
-     "card_id": "c01",
-     "title": "미국 생산자물가 1.3%, 2022년 3월 이후 가장 큰 폭",
-     "kicker": "1년 +6.3% · 상품 +2.6%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/ppi_10152026.htm",
-     "published_at": "2026-10-15"
-    },
-    {
-     "date": "2026-10-31",
-     "card_id": "c01",
-     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
-     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
-     "published_at": "2026-10-30"
-    },
-    {
-     "date": "2026-10-31",
-     "card_id": "c03",
-     "title": "승용차 판매 18.3% — 소비가 살아난 이유는 차였다",
-     "kicker": "소매판매 +3.6% · 내구재 +4.4%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
-     "published_at": "2026-10-30"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c04",
-     "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
-     "kicker": "2026년 3.9% · 2027년 3.3%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국제통화기금(IMF)·재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c02",
-     "title": "KDI \"내년 성장 3.9%·취업자 20만\" — 20대는 여전히 낮다",
-     "kicker": "2026년 3.8% → 2027년 3.9% · 취업자 +12만 → +20만",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "재정경제부·한국개발연구원(KDI)",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
-     "published_at": "2026-11-18"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c07",
-     "title": "미국 신규 실업수당 20만건대 — 해고는 적고 재취업은 느리다",
-     "kicker": "신규 20만3천건 · 4주 평균 19만7,750건",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
-     "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
-     "published_at": "2026-11-19"
     }
    ]
   },
