@@ -1,0 +1,425 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-20T02:57:44+09:00",
+ "edition": {
+  "no": 18,
+  "date": "2026-03-24",
+  "weekday": "화",
+  "title": "폴리텍 사천에 우주항공 캠퍼스",
+  "reading_minutes": 4,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20260324-1",
+   "date": "2026-03-24",
+   "order": 1,
+   "sector": "s3",
+   "cat": "edu",
+   "lead": true,
+   "title": "폴리텍 사천, 항공기 6대가 교재가 됐다",
+   "kicker": "한국폴리텍대학 · 2026.3.24 보도자료",
+   "summary": "한국폴리텍대학이 3월 24일 사천 항공캠퍼스에서 우주항공 안보 역사 테마 캠퍼스 제막식을 열었다. 공군 F-4·F-5 전투기와 해군 UH-1H 헬기를 더해 항공기 6대를 광장에 배치하고, 교육 시설을 지역에 개방하는 공간으로 바꿨다.",
+   "key_numbers": [
+    {
+     "label": "전시 항공기",
+     "value": "6대",
+     "note": "기존 3대 + 신규 3대"
+    },
+    {
+     "label": "신규 기체",
+     "value": "F-4·F-5·UH-1H",
+     "note": "공군·해군"
+    },
+    {
+     "label": "개장일",
+     "value": "2026년 3월 24일",
+     "note": "사천 항공캠퍼스"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "한국폴리텍대학",
+     "사천시"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-mech"
+    ],
+    "new": [
+     "j-aero-cert"
+    ]
+   },
+   "source_id": "src_kopo_sacheon2026",
+   "question": "항공 정비 교육은 기체가 있어야 시작된다. 지방 캠퍼스의 실습 인프라가 왜 채용과 연결될까?",
+   "subtitle": "F-4·F-5·UH-1H까지 확보해 개방형 우주항공 테마 캠퍼스로 연다"
+  },
+  {
+   "id": "ei-20260324-2",
+   "date": "2026-03-24",
+   "order": 2,
+   "sector": "s4",
+   "cat": "space",
+   "lead": false,
+   "title": "한-미 심우주 광통신, 공동연구가 넓어진다",
+   "kicker": "우주항공청 · 2026.3.24 보도자료",
+   "summary": "우주항공청이 3월 24일부터 27일까지 한국천문연구원에서 제2회 심우주 탐사를 위한 KASA-NASA 양자 팀미팅을 연다. 2024년 9월 협력 합의서 후속으로 태양-지구 L4 관측탐사선, 심우주 광통신, 우주방사선 연구의 중장기 계획을 논의한다.",
+   "key_numbers": [
+    {
+     "label": "회의 기간",
+     "value": "3월 24~27일",
+     "note": "4일간"
+    },
+    {
+     "label": "협력 출발",
+     "value": "2024년 9월 합의서",
+     "note": "L4 활동 협력"
+    },
+    {
+     "label": "공동 연구축",
+     "value": "3개",
+     "note": "광통신·우주환경·방사선"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "한국천문연구원",
+     "한국전자통신연구원",
+     "한국원자력연구원"
+    ],
+    "glob": [
+     "NASA"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-mech"
+    ],
+    "new": [
+     "j-satcom"
+    ]
+   },
+   "source_id": "src_kasa_nasa_l4",
+   "question": "심우주 광통신은 지상 광통신과 장비도 사람도 다르다. 어느 연구실 경험이 이어질까?",
+   "subtitle": "3월 24일부터 나흘, L4 관측탐사선과 광통신을 함께 설계한다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-mech",
+   "name": "기계설계 엔지니어",
+   "en": "Mechanical Design Engineer",
+   "sector": "s2",
+   "role": "제품·설비의 구조와 운동을 설계하고 도면·사양서로 확정한다. 강도·진동·열을 계산해 안전 여유를 두고, 제작·조립 과정의 문제를 다시 설계로 되돌린다.",
+   "ksa": {
+    "k": [
+     "재료역학·기구학",
+     "공차·치수 설계",
+     "제작 공정 이해"
+    ],
+    "s": [
+     "CAD·CAE",
+     "시제작·시험",
+     "부품사 협의"
+    ],
+    "a": [
+     "도면 한 장의 책임을 아는 꼼꼼함",
+     "현장 의견을 설계에 반영하는 유연함"
+    ]
+   },
+   "study": [
+    "기계공학",
+    "자동차공학",
+    "항공우주공학"
+   ],
+   "certs": [
+    "일반기계기사",
+    "기계설계기사",
+    "건설기계설비기사"
+   ],
+   "insight": "새 산업이 등장해도 설계 도면을 그리고 안전 여유를 계산하는 사람은 필요하다. 달라지는 것은 도구와 협업 상대다.",
+   "companies": {
+    "domestic": [
+     "현대자동차",
+     "삼성전자",
+     "두산에너빌리티",
+     "한화에어로스페이스"
+    ],
+    "global": [
+     "Bosch",
+     "Siemens",
+     "Caterpillar",
+     "ASML"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "부품 국산화 매칭 코디네이터",
+     "w": "수요기업과 부품사를 잇는 기술 중개"
+    }
+   ]
+  },
+  {
+   "id": "j-aero-cert",
+   "kind": "new",
+   "name": "항공부품 공정·인증 엔지니어",
+   "en": "Aerospace Parts Process & Certification Engineer",
+   "sector": "s2",
+   "role": "항공기 부품의 초도품과 양산 공정을 설계하고, 보잉·에어버스 같은 원청의 품질 요구와 인증 절차를 통과시킨다. 공정을 바꿀 때마다 다시 입증해야 하는 항목을 관리한다.",
+   "ksa": {
+    "k": [
+     "항공기 구조·재료",
+     "특수공정(열처리·표면처리)",
+     "항공 품질규격"
+    ],
+    "s": [
+     "공정 설계·개선",
+     "인증 서류·감사 대응",
+     "수주 기술 협의"
+    ],
+    "a": [
+     "문서와 현장을 같은 기준으로 보는 꼼꼼함"
+    ]
+   },
+   "study": [
+    "항공우주공학",
+    "기계공학",
+    "재료공학"
+   ],
+   "certs": [
+    "항공산업기사",
+    "기계가공기능장",
+    "품질경영기사"
+   ],
+   "insight": "항공부품은 기술보다 인증이 진입장벽이다. 인증을 통과한 공정 기록이 곧 수주 경쟁력이 된다.",
+   "companies": {
+    "domestic": [
+     "대한항공",
+     "켄코아에어로스페이스",
+     "케이피항공산업",
+     "세우항공"
+    ],
+    "global": [
+     "Boeing",
+     "Airbus"
+    ]
+   }
+  },
+  {
+   "id": "j-satcom",
+   "kind": "new",
+   "name": "위성 통신·항법 시스템 엔지니어",
+   "en": "Satellite Communication & Navigation Engineer",
+   "sector": "s4",
+   "role": "지구와 달 사이처럼 먼 거리에서도 끊기지 않는 통신 링크를 설계한다. 안테나·광통신 단말과 지상국을 맞추고, 궤도 운용 중 생기는 지연과 음영 구간을 계산해 임무 일정에 반영한다.",
+   "ksa": {
+    "k": [
+     "위성통신 링크 설계",
+     "궤도역학",
+     "광통신·RF"
+    ],
+    "s": [
+     "링크 버짓 계산",
+     "지상국 연동 시험",
+     "국제 주파수 조정"
+    ],
+    "a": [
+     "한 번의 통신 두절도 임무 실패로 보는 기준"
+    ]
+   },
+   "study": [
+    "전자공학",
+    "항공우주공학",
+    "정보통신공학"
+   ],
+   "certs": [
+    "정보통신기사",
+    "전파전자기사"
+   ],
+   "insight": "달 탐사가 본격화되면 위성 본체보다 통신·항법 인력이 먼저 부족해진다. 국내 7개 기업이 이미 이 시장을 보고 있다.",
+   "companies": {
+    "domestic": [
+     "레오스페이스",
+     "AP위성",
+     "LIG D&A",
+     "한국항공우주산업",
+     "한화시스템"
+    ],
+    "global": [
+     "SpaceX",
+     "Intuitive Machines"
+    ]
+   }
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_kopo_sacheon2026",
+   "name": "한국폴리텍대학",
+   "title": "한국폴리텍대학, 사천에 전투기 품은 '우주항공 테마 캠퍼스' 개장",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156750590",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-03-24",
+   "track": "A",
+   "usage": "폴리텍 사천 항공캠퍼스 테마 개장(3.24), 항공기 6대 전시, F-4·F-5·UH-1H 신규 확보"
+  },
+  {
+   "id": "src_kasa_nasa_l4",
+   "name": "우주항공청",
+   "title": "우주환경, 심우주 광통신 등 심우주 탐사 전반으로 한·미 공동연구 확대",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156750552",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-03-24",
+   "track": "A",
+   "usage": "제2회 KASA-NASA 팀미팅(3.24~27), 2024년 9월 L4 협력 합의서 후속, 심우주 광통신·우주환경·방사선 워킹그룹"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
