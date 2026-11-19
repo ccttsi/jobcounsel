@@ -13,9 +13,11 @@
  * 4) 미리 받기: 자료실 안의 다른 화면으로 가는 링크에 손이 닿으면 그 화면 문서를 미리 받아 둔다(데이터 절약 모드에서는 쉼).
  *
  * 5) 이어 보기: 섹터 장부(tools.js)와 「이어 보기」 줄(next.js)을 불러온다.
+ * 6) 오류 수집: 운영 도메인(ccttsi.github.io)에서만 Sentry 로더를 한 번 불러온다. 로컬·검사 화면에서는 부르지 않는다.
  *
  * 섹터가 쓸 수 있는 것: window.JCCore = { base, state(), warm(href), notice(text, label, fn), clear() }
- * 화면 밖으로 내보내는 것은 없다. 외부 서버를 부르지 않는다.
+ * 화면 밖으로 내보내는 것은 없다. 외부 서버를 부르지 않는다 — 예외는 6) 오류 수집 하나뿐이고,
+ * 그마저도 운영 도메인에서만이다.
  */
 (function () {
   'use strict';
@@ -26,6 +28,20 @@
   var rawFetch = window.fetch ? window.fetch.bind(window) : null;
   var st = { failed: false, offline: false, pending: 0 };
   var RETRY = [400, 1200];                                         // 다시 받기 전 쉬는 시간(ms)
+
+  /* ---------- 0) 오류 수집(Sentry) ----------
+   * Sentry 프로젝트 jobcounsel의 Browser JavaScript Loader Script.
+   * 운영 도메인에서만, 한 번만 붙인다. 로컬 서버·Playwright 검사(127.0.0.1·localhost)에서는 요청이 나가지 않는다.
+   * 로더 주소를 바꿀 때는 Sentry 프로젝트 설정의 Loader Script에서 받은 주소로만 바꾼다. */
+  var SENTRY_LOADER = 'https://js.sentry-cdn.com/a4dd71f88a40c92db04ab84f35b062c0.min.js';
+  if (location.hostname === 'ccttsi.github.io' && !d.querySelector('script[data-jc-sentry]')) {
+    var sentryScript = d.createElement('script');
+    sentryScript.src = SENTRY_LOADER;
+    sentryScript.crossOrigin = 'anonymous';
+    sentryScript.async = true;
+    sentryScript.setAttribute('data-jc-sentry', '1');
+    (d.head || root).appendChild(sentryScript);
+  }
 
   /* ---------- 1) 자료 안전망 ---------- */
   function urlOf(input) { return typeof input === 'string' ? input : (input && input.url) || String(input); }

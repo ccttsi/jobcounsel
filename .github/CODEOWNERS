@@ -1,0 +1,27 @@
+# CODEOWNERS — 역할 분리 가드레일 (2순위)
+#
+# 이 파일은 「누가 어느 파일을 책임지는가」를 적어 두는 곳이다. GitHub은 여기 적힌
+# 소유자에게 PR 검토를 자동으로 청한다. 검토 요청은 알림이고, 머지를 막는 것은
+# 브랜치 보호의 required checks(static-checks · smoke-tests)다.
+#
+# 원칙(ops/ROLES.md): 수집 데이터는 수집 담당(피클·Make), 화면 코드는 개발 담당(클로드),
+# 공용 뼈대·운영 파일은 상위 모델이 맡는다. 경계를 넘는 PR은 [data-only]·[code-only]
+# 라벨로 성격을 밝히고, ci-gate.yml의 역할 가드레일이 그 약속을 검사한다.
+
+# 저장소 전체의 기본 소유자
+*                       @ccttsi
+
+# 운영·인프라 (워크플로·검증 스크립트·역할 헌장)
+/.github/               @ccttsi
+/ops/                   @ccttsi
+
+# 화면 공용 뼈대 (모든 섹터가 함께 쓰는 파일 — 한 번 고치면 전 화면이 바뀐다)
+/assets/                @ccttsi
+
+# 수집 데이터 (하루 두 회차 파이프라인이 쓴다 — 스키마 계약을 지킨다)
+/briefing/data/         @ccttsi
+/emerging/data/         @ccttsi
+
+# 섹터 코드 — 섹터마다 한 PR 원칙(ops/TODO.md §3)
+/briefing/              @ccttsi
+/emerging/              @ccttsi
