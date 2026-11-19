@@ -11,6 +11,7 @@
              + 대문 상담 프리셋(assets/presets.js)이 섹터 장부(assets/tools.js)와 맞는지
   license  — 저작권 Track A/B 교차 가드레일 (PRESS·KOGL-NONE·FACTS-ONLY·미확인 라이선스가 Track A면 실패)
   js       — 저장소에 든 .js 전부 `node --check` 문법 검사
+  css      — .css 파일과 .html 안 <style>의 중괄호 짝·고아 닫는 괄호·일찍 닫힌 블록 검사
   role     — PR 제목/라벨 기반 역할 분리 가드레일 ([data-only] PR이 화면 코드를 건드리면 실패)
 
 종료 코드 0 = 통과, 1 = 실패. 실패 항목은 전부 모아서 한 번에 보여 준다(첫 오류에서 멈추지 않는다).
@@ -665,6 +666,170 @@ def run_preset_checks():
          f"(시드 {slots['seed']}칸 · 매치 {slots['match']}칸)")
 
 
+# ---------------------------------------------------------------- 3-2) CSS 문법 (7종 기초 결함 게이트 ①)
+#   화면이 깨지는 가장 흔한 원인은 중괄호 짝이 틀어지거나 `}` 하나가 속성 사이에 끼는 것이다.
+#   브라우저는 그런 파일을 조용히 일부만 적용해, 눈으로 보기 전에는 모른다.
+#   그래서 .css 파일과 .html 안 <style> 블록을 전부 훑어 (1) 괄호 짝 (2) 고아 닫는 괄호
+#   (3) 닫히지 않은 블록 (4) 닫는 괄호 뒤에 붙은 속성 선언을 센다.
+CSS_TOKEN = re.compile(r"\{|\}|\(|\)|\[|\]")
+STYLE_BLOCK = re.compile(r"<style\b[^>]*>(.*?)</style\s*>", re.S | re.I)
+
+
+def strip_css(text):
+    """주석과 문자열을 지운 사본 — 괄호 세기 전에 지워야 주석 속 괄호를 오해하지 않는다."""
+    out = []
+    i, n = 0, len(text)
+    while i < n:
+        ch = text[i]
+        if ch == "/" and i + 1 < n and text[i + 1] == "*":
+            end = text.find("*/", i + 2)
+            i = n if end < 0 else end + 2
+            out.append(" ")
+        elif ch in "\"'":
+            quote = ch
+            i += 1
+            while i < n:
+                if text[i] == "\\":
+                    i += 2
+                    continue
+                if text[i] == quote:
+                    i += 1
+                    break
+                i += 1
+            out.append(" ")
+        else:
+            out.append(ch)
+            i += 1
+    return "".join(out)
+
+
+def css_syntax_problems(text):
+    """(줄 번호, 사유) 목록. 중괄호·괄호 짝과 고아 선언을 본다."""
+    clean = strip_css(text)
+    problems = []
+    stack = []          # (글자, 위치)
+    pairs = {"}": "{", ")": "(", "]": "["}
+    for m in CSS_TOKEN.finditer(clean):
+        ch, pos = m.group(0), m.start()
+        if ch in "{([":
+            stack.append((ch, pos))
+        else:
+            if not stack or stack[-1][0] != pairs[ch]:
+                problems.append((clean.count("\n", 0, pos) + 1, f"짝 없는 '{ch}'"))
+                continue
+            stack.pop()
+    for ch, pos in stack[:6]:
+        problems.append((clean.count("\n", 0, pos) + 1, f"'{ch}'가 닫히지 않았다"))
+    # 닫는 중괄호 바로 뒤에 속성처럼 보이는 `이름:`이 오면, 블록 하나가 일찍 닫힌 것이다.
+    for m in re.finditer(r"}\s*([a-zA-Z-]{2,})\s*:", clean):
+        word = m.group(1)
+        if word.startswith(("hover", "focus", "active", "before", "after", "not", "is", "where", "has")):
+            continue                       # }div:hover 같은 오탐 방지(선택자)
+        if "-" in word or word in ("color", "display", "margin", "padding", "width", "height",
+                                   "background", "border", "font", "opacity", "transform"):
+            problems.append((clean.count("\n", 0, m.start()) + 1, f"닫는 '}}' 뒤에 속성 '{word}:'가 붙었다"))
+    # 속성 이름 없이 `:`만 있는 선언(예: `: ;`)
+    for m in re.finditer(r"\{\s*:\s*;", clean):
+        problems.append((clean.count("\n", 0, m.start()) + 1, "이름 없는 속성 선언 ':'"))
+    return problems[:8]
+
+
+def repo_files(suffixes):
+    """저장소에 든 파일 중 주어진 확장자만 — git이 있으면 git ls-files, 없으면 폴더를 훑는다."""
+    try:
+        listed = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT,
+                                capture_output=True, check=True).stdout.decode("utf-8")
+        names = [f for f in listed.split("\0") if f]
+    except (OSError, subprocess.CalledProcessError):
+        names = []
+        for dirpath, dirnames, filenames in os.walk(ROOT):
+            dirnames[:] = [d for d in dirnames if d not in (".git", "node_modules")]
+            for name in filenames:
+                names.append(rel(os.path.join(dirpath, name)))
+    return [n for n in names if n.endswith(tuple(suffixes)) and "node_modules/" not in n]
+
+
+def css_sources():
+    """(.css 파일, .html 안 <style> 블록)을 (이름, 내용)으로 낸다."""
+    for name in repo_files((".css",)):
+        path = os.path.join(ROOT, name)
+        try:
+            yield name, open(path, encoding="utf-8").read()
+        except OSError as exc:
+            fail("css", f"{name}: 읽지 못했다 — {exc}")
+    for name in repo_files((".html",)):
+        path = os.path.join(ROOT, name)
+        try:
+            raw = open(path, encoding="utf-8").read()
+        except OSError:
+            continue
+        for i, block in enumerate(STYLE_BLOCK.findall(raw), 1):
+            yield f"{name} <style#{i}>", block
+
+
+def run_css_checks():
+    count = 0
+    bad = 0
+    for name, text in css_sources():
+        count += 1
+        for line, why in css_syntax_problems(text):
+            fail("css", f"{name}:{line}: {why}")
+            bad += 1
+    note(f"CSS {count}곳(.css 파일 + .html 안 <style>)의 괄호 짝·고아 선언을 검사했다" + (f" (문제 {bad})" if bad else ""))
+
+
+# ---------------------------------------------------------------- 3-3) 심전도 방치 모션 표
+#   대문 심전도는 0~59분 60분 한 바퀴를 표(ECG_SEQ)로 돈다. 표를 손으로 고치다 이웃한 분에 같은
+#   문양이 이어지거나 한 분 안에서 문양이 겹치면 "부드럽게 이어진다"는 약속이 깨진다.
+#   그래서 표의 규칙을 글로만 두지 않고 배포 전에 센다(2026-11-19).
+ECG_SEQ_BLOCK = re.compile(r"var\s+ECG_SEQ\s*=\s*\[(.*?)\]\s*;", re.S)
+ECG_ROW = re.compile(r"\[([0-9,\s]+)\]")
+ECG_NAMES_BLOCK = re.compile(r"var\s+ECG_NAMES\s*=\s*(\[[^\]]*\])")
+
+
+def run_ecg_checks():
+    path = os.path.join(ROOT, "assets", "modes.js")
+    if not os.path.exists(path):
+        fail("ecg", "assets/modes.js가 없다")
+        return
+    raw = open(path, encoding="utf-8").read()
+    names_match = ECG_NAMES_BLOCK.search(raw)
+    block = ECG_SEQ_BLOCK.search(raw)
+    if not names_match or not block:
+        fail("ecg", "modes.js에서 ECG_NAMES·ECG_SEQ 표를 찾지 못했다")
+        return
+    try:
+        names = json.loads(names_match.group(1))
+    except json.JSONDecodeError as exc:
+        fail("ecg", f"ECG_NAMES를 읽지 못했다 — {exc}")
+        return
+    rows = [[int(x) for x in m.group(1).replace(" ", "").split(",") if x != ""] for m in ECG_ROW.finditer(block.group(1))]
+    if len(rows) != 60:
+        fail("ecg", f"60분 표여야 하는데 {len(rows)}줄이다")
+        return
+    for i, row in enumerate(rows):
+        if len(row) != 4:
+            fail("ecg", f"{i}분: 문양이 4개가 아니다({len(row)}개)")
+            continue
+        if len(set(row)) != 4:
+            fail("ecg", f"{i}분: 같은 문양이 한 분 안에서 겹친다 {row}")
+        for k in row:
+            if not 0 <= k < len(names):
+                fail("ecg", f"{i}분: 문양 번호 {k}가 목록({len(names)}개) 밖이다")
+    flat = [k for row in rows for k in row]
+    for i in range(len(flat)):
+        if flat[i] == flat[(i + 1) % len(flat)]:
+            fail("ecg", f"{i // 4}분 → {(i + 1) // 4}분 경계에서 같은 문양이 이어진다")
+    for i in range(60):
+        if set(rows[i]) == set(rows[(i + 1) % 60]):
+            fail("ecg", f"{i}분과 {(i + 1) % 60}분이 같은 네 문양이다")
+    counts = {k: flat.count(k) for k in range(len(names))}
+    if min(counts.values()) < 10:
+        fail("ecg", f"한 시간에 거의 안 나오는 문양이 있다 {counts}")
+    note(f"심전도 60분 표 — 문양 {len(names)}종 · 분마다 4개 · 경계 중복 0"
+         f" · 한 시간 등장 {min(counts.values())}~{max(counts.values())}회")
+
+
 # ---------------------------------------------------------------- 4) 역할 분리 가드레일
 def classify(path):
     if path.startswith(".github/") or path.startswith("ops/"):
@@ -728,6 +893,8 @@ def main():
         run_license_checks()
     if "js" in selected:
         run_js_checks()
+        run_css_checks()      # CSS 문법도 같은 단계에서 돈다(CI 워크플로를 고치지 않아도 되게)
+        run_ecg_checks()      # 심전도 60분 표의 약속(이웃한 분 중복 금지)도 함께 센다
     if "role" in selected:
         if args.pr_json:
             run_role_checks(args.pr_json)
@@ -743,8 +910,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS 문법", "presets": "상담 프리셋 장부", "role": "역할 가드레일"}
-        for check in ("json", "license", "js", "presets", "role"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "role": "역할 가드레일"}
+        for check in ("json", "license", "js", "css", "ecg", "presets", "role"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
@@ -758,7 +925,7 @@ def main():
         print("✓ 모든 정적 검사 통과")
 
     if args.summary_file:
-        lines = ["## 정적 검증 (JSON·저작권·JS·프리셋·역할)", ""]
+        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·역할)", ""]
         lines += [f"- {line}" for line in notes]
         if problems:
             lines += ["", f"**실패 {len(problems)}건**", ""]

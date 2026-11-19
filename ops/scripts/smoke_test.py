@@ -98,6 +98,139 @@ MEASURE = """() => {
 }"""
 
 
+# ---------------------------------------------------------------- 7종 기초 결함 게이트 (2026-11-19)
+#   반복되는 디자인·UI 결함을 배포 전에 잡는다. 브라우저 안에서 실제 좌표·색을 재므로
+#   CSS만 읽어서는 알 수 없는 겹침·잘림·정렬 어긋남을 잡아낸다.
+#   ① CSS 문법은 validate_repo.py가 본다(여기서는 화면 쪽 6가지를 잰다).
+#   ② 단추·배지 글자 정중앙 ③ 한 줄 형제 단추 크기 ④ 3테마 명암 대비
+#   ⑤ 시트·모달 잘림 ⑥ 요소 겹침·밀착 ⑦ 비서 3탭 실제 클릭 검수
+UI_JS = r"""
+() => {
+  const out = {center: [], size: [], overlap: [], overflow: []};
+  const vis = el => { const s = getComputedStyle(el); if (s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity)<0.05) return false; const r = el.getBoundingClientRect(); return r.width>0 && r.height>0; };
+  const txt = el => Array.from(el.childNodes).some(n => n.nodeType===3 && n.textContent.trim().length>0);
+
+  /* ② 단추·배지 글자가 상자 한가운데인가 — 글자 잉크 상자와 안쪽 여백 상자의 중심을 견준다. */
+  document.querySelectorAll('button, .btn, [role="button"], .cnt, .badge').forEach(el => {
+    if (!vis(el) || !txt(el)) return;
+    const s = getComputedStyle(el);
+    const centered = s.textAlign === 'center' || (s.display.indexOf('flex') >= 0 && s.justifyContent === 'center' && s.alignItems === 'center');
+    if (!centered) return;
+    const box = el.getBoundingClientRect();
+    /* 글자가 단추의 **보이는 상자(테두리 상자) 한가운데**에 있는가.
+       안쪽 여백이 한쪽으로 치우쳐 글자가 구석으로 밀린 경우를 잡는다(2026-11-19 지적). */
+    const cx = box.left + box.width/2;
+    const cy = box.top + box.height/2;
+    const range = document.createRange(); range.selectNodeContents(el);
+    const tr = range.getBoundingClientRect();
+    if (!tr.width || !tr.height) return;
+    const dx = Math.abs((tr.left+tr.right)/2 - cx), dy = Math.abs((tr.top+tr.bottom)/2 - cy);
+    if (dx > 3 || dy > 3) out.center.push({el:(el.id||el.className||el.tagName).toString().slice(0,40), dx:+dx.toFixed(1), dy:+dy.toFixed(1), text:el.textContent.trim().slice(0,18)});
+  });
+
+  /* ③ 한 줄에 나란한 형제 단추의 높이·패딩이 같은가. */
+  const rows = new Set();
+  document.querySelectorAll('button, a.btn, .btn').forEach(b => { if (vis(b) && b.parentElement) rows.add(b.parentElement); });
+  rows.forEach(par => {
+    const kids = Array.from(par.children).filter(k => vis(k) && (k.tagName==='BUTTON' || k.tagName==='A' || k.classList.contains('btn')));
+    if (kids.length < 2) return;
+    const rects = kids.map(k => k.getBoundingClientRect());
+    if (Math.max(...rects.map(r=>Math.round(r.top))) - Math.min(...rects.map(r=>Math.round(r.top))) > 4) return;
+    const hs = rects.map(r => +r.height.toFixed(1));
+    const pads = kids.map(k => { const s=getComputedStyle(k); return +(parseFloat(s.paddingTop)+parseFloat(s.paddingBottom)).toFixed(1); });
+    if (Math.max(...hs) - Math.min(...hs) > 1.5 || Math.max(...pads) - Math.min(...pads) > 1.5) {
+      out.size.push({parent:(par.id||par.className||par.tagName).toString().slice(0,36), heights:hs, pads:pads, texts:kids.map(k=>k.textContent.trim().slice(0,10))});
+    }
+  });
+
+  /* ⑥ 겹침(음수 간격)과 밀착(0 간격). 형제 요소끼리만 잰다. */
+  rows.forEach(par => {
+    const styled = getComputedStyle(par);
+    const isRow = styled.display.indexOf('flex') >= 0 || styled.display.indexOf('grid') >= 0;
+    const kids = Array.from(par.children).filter(k => {
+      if (!vis(k)) return false;
+      const pos = getComputedStyle(k).position;          /* 떠 있는 층(겹침이 설계인 곳)은 뺀다 */
+      return pos !== 'absolute' && pos !== 'fixed' && pos !== 'sticky';
+    }).map(k => ({k, r: k.getBoundingClientRect()}));
+    for (let i=0;i<kids.length;i++) for (let j=i+1;j<kids.length;j++) {
+      const a=kids[i].r, b=kids[j].r;
+      const ox = Math.min(a.right,b.right)-Math.max(a.left,b.left);
+      const oy = Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);
+      if (ox > .5 && oy > 2) {
+        out.overlap.push({kind:'겹침', parent:(par.id||par.className||par.tagName).toString().slice(0,36), a:(kids[i].k.id||kids[i].k.className||kids[i].k.tagName).toString().slice(0,24), b:(kids[j].k.id||kids[j].k.className||kids[j].k.tagName).toString().slice(0,24), ox:+ox.toFixed(1), oy:+oy.toFixed(1)});
+        continue;
+      }
+      if (i !== j-1) continue;                    /* 밀착은 바로 옆자리끼리만 */
+      const gap = isRow ? b.left - a.right : b.top - a.bottom;
+      const cross = isRow ? Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top) : Math.min(a.right,b.right)-Math.max(a.left,b.left);
+      if (Math.abs(gap) <= .5 && cross > 2) {
+        const sa=getComputedStyle(kids[i].k), sb=getComputedStyle(kids[j].k);
+        const framed = sa.borderTopWidth!=='0px'||sb.borderTopWidth!=='0px'||sa.boxShadow!=='none'||sb.boxShadow!=='none';
+        if (framed) out.overlap.push({kind:'밀착', parent:(par.id||par.className||par.tagName).toString().slice(0,36), a:(kids[i].k.id||kids[i].k.className||kids[i].k.tagName).toString().slice(0,24), b:(kids[j].k.id||kids[j].k.className||kids[j].k.tagName).toString().slice(0,24), gap:+gap.toFixed(1)});
+      }
+    }
+  });
+  return out;
+}
+"""
+
+# ④ 3테마 명암 대비 — 텍스트 색과 (조상 배경을 차례로 합성한) 실제 배경의 WCAG 대비율.
+#    큰 글씨(24px 이상 또는 굵은 18.66px 이상)는 3:1, 보통 글씨는 4.5:1.
+#    11px 미만의 아주 작은 주석은 4:1까지 허용한다(표·그림 안의 미세 표기).
+CONTRAST_JS = r"""
+() => {
+  const vis = el => { const s = getComputedStyle(el); if (s.display==='none'||s.visibility==='hidden') return false; const r = el.getBoundingClientRect(); return r.width>0 && r.height>0; };
+  const txt = el => Array.from(el.childNodes).some(n => n.nodeType===3 && n.textContent.trim().length>0);
+  /* 계산된 색은 rgb()/rgba() 말고도 color(srgb r g b / a) 꼴로 올 수 있다(color-mix 결과). 둘 다 읽는다. */
+  const parse = c => {
+    let m = c.match(/rgba?\(([^)]+)\)/);
+    if (m) { const p = m[1].split(/[\s,\/]+/).filter(Boolean).map(Number); return {r:p[0], g:p[1], b:p[2], a:p.length>3?p[3]:1}; }
+    m = c.match(/color\(srgb\s+([^)]+)\)/);
+    if (m) { const p = m[1].split(/[\s\/]+/).filter(Boolean).map(Number); return {r:p[0]*255, g:p[1]*255, b:p[2]*255, a:p.length>3?p[3]:1}; }
+    return null;
+  };
+  const L = c => { const f=v=>{v/=255; return v<=.03928? v/12.92 : Math.pow((v+.055)/1.055,2.4)}; return .2126*f(c.r)+.7152*f(c.g)+.0722*f(c.b); };
+  const over = (f,b) => ({r:f.r*f.a+b.r*(1-f.a), g:f.g*f.a+b.g*(1-f.a), b:f.b*f.a+b.b*(1-f.a), a:1});
+  const bgOf = el => {
+    let n = el, acc = null;
+    while (n && n.nodeType===1) {
+      const s = getComputedStyle(n);
+      const c = parse(s.backgroundColor);
+      if (c && c.a > 0) { acc = acc ? over(acc, c) : c; if (acc.a >= .999) return acc; }
+      /* 바탕색이 전혀 없는 채로 그림·그라데이션만 깔린 자리(사진 위 글자)는 잴 수 없다 */
+      if (!acc && s.backgroundImage && s.backgroundImage !== 'none') return null;
+      n = n.parentElement;
+    }
+    return acc || {r:255,g:255,b:255,a:1};
+  };
+  const out = [];
+  let n = 0;
+  for (const el of document.querySelectorAll('h1,h2,h3,h4,p,li,a,button,label,th,td,dt,dd,small,span,strong,em')) {
+    if (n++ > 900) break;
+    if (!vis(el) || !txt(el) || el.closest('[aria-hidden="true"], [hidden]')) continue;
+    const s = getComputedStyle(el);
+    if (parseFloat(s.opacity) < .55) continue;
+    if (s.textDecorationLine.indexOf('line-through') >= 0) continue;
+    /* 다른 층(가림막·덮개)에 덮여 실제로는 안 보이는 글자는 재지 않는다 */
+    const rr = el.getBoundingClientRect();
+    const hit = document.elementFromPoint(Math.min(innerWidth - 1, Math.max(0, (rr.left + rr.right) / 2)), Math.min(innerHeight - 1, Math.max(0, (rr.top + rr.bottom) / 2)));
+    if (hit && hit !== el && !el.contains(hit) && !hit.contains(el)) continue;
+    const fg = parse(s.color); if (!fg) continue;
+    const bg = bgOf(el); if (!bg) continue;
+    const c = over(fg, bg), l1 = L(c), l2 = L(bg);
+    const ratio = (Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05);
+    const size = parseFloat(s.fontSize), bold = parseInt(s.fontWeight,10) >= 700;
+    let need = (size >= 24 || (bold && size >= 18.66)) ? 3 : 4.5;
+    if (size < 11) need = 4;
+    if (ratio < need - .3) out.push({el:(el.id||el.className||el.tagName).toString().slice(0,36), ratio:+ratio.toFixed(2), need, size:+size.toFixed(1), text:el.textContent.trim().slice(0,16)});
+  }
+  return out;
+}
+"""
+
+THEMES = [("밝게", "light", ""), ("세피아", "light", "sepia"), ("어둡게", "dark", "")]
+
+
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *args):
         pass
@@ -113,6 +246,103 @@ def serve():
 
 def external(url, base):
     return bool(url) and not url.startswith(base)
+
+
+# ⑦ 비서 3탭 — 지금 보이는 탭 내용의 넘침·삐져나옴·조작부 크기·탭 정렬을 잰다.
+TAB_JS = r"""
+() => {
+  const probs = [];
+  const panel = document.querySelector('.jca-panel');
+  if (!panel) return ['비서 시트가 없다'];
+  const pr = panel.getBoundingClientRect();
+  const panes = ['.jca-chat', '.jca-find', '.jca-keys-pane']
+    .map(s => document.querySelector(s)).filter(p => p && !p.hidden && p.offsetParent !== null);
+  if (!panes.length) return ['보이는 탭 내용이 없다'];
+  panes.forEach(p => {
+    if (p.scrollWidth > p.clientWidth + 1) probs.push('가로 넘침 ' + (p.scrollWidth - p.clientWidth) + 'px');
+    p.querySelectorAll('button, textarea, input[type="text"], input[type="search"], input[type="password"], input:not([type]), a.jca-btn, .jca-chip').forEach(el => {
+      const s = getComputedStyle(el);
+      if (s.display === 'none' || s.visibility === 'hidden') return;
+      const r = el.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      if (r.right > pr.right + .5) probs.push('시트 오른쪽 밖으로 삐져나옴: ' + (el.className || el.tagName));
+      if (r.left < pr.left - .5) probs.push('시트 왼쪽 밖으로 삐져나옴: ' + (el.className || el.tagName));
+      if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && r.height < 43.5) probs.push('입력칸 높이 ' + Math.round(r.height) + 'px ' + (el.className || el.tagName));
+    });
+  });
+  const tabs = [...document.querySelectorAll('.jca-tab')];
+  const hs = tabs.map(t => t.getBoundingClientRect().height);
+  if (hs.length !== 3) probs.push('탭이 3개가 아니다: ' + hs.length);
+  if (hs.length && (Math.max(...hs) - Math.min(...hs) > 1.5 || Math.min(...hs) < 43.5)) probs.push('탭 높이 ' + hs.map(h => Math.round(h)).join('/'));
+  tabs.forEach(t => {
+    const r = t.getBoundingClientRect();
+    const range = document.createRange(); range.selectNodeContents(t);
+    const tr = range.getBoundingClientRect();
+    if (tr.width && Math.abs((tr.left + tr.right) / 2 - (r.left + r.right) / 2) > 2.5) probs.push('탭 글자 가로 어긋남: ' + t.textContent.trim());
+  });
+  return probs;
+}
+"""
+
+
+def check_panels(page):
+    """⑤ 시트 잘림 · ⑦ 비서 3탭 실제 클릭 검수.
+
+    비서 시트를 정말로 열어 「대화」「찾기」「내 키」를 차례로 눌러 보고,
+    보이는 내용의 가로 넘침·시트 밖 삐져나옴·탭 높이/글자 정렬을 잰다.
+    도구함(형광펜·포스트잇) 시트도 열어 화면 밖으로 잘리지 않는지 잰다.
+    로그인 뒤 화면은 시험 계정이 없으면 잴 수 없으므로, 로그인 전 화면을 잰다.
+    """
+    issues = []
+    vw, vh = page.evaluate("() => [innerWidth, innerHeight]")
+
+    def inside(rect, what):
+        if not rect:
+            return
+        left, top, right, bottom = rect[:4]
+        if right > vw + .5 or bottom > vh + .5 or left < -.5 or top < -.5:
+            over_w, over_h = max(0, right - vw), max(0, bottom - vh)
+            issues.append(f"{what}가 화면 밖으로 잘린다(오른쪽 {over_w:.0f}px · 아래 {over_h:.0f}px)")
+
+    launch = page.locator(".jca-launch")
+    if launch.count():
+        try:
+            launch.click(timeout=5000)
+            page.wait_for_timeout(420)
+            panel = page.evaluate(
+                "() => { const p = document.querySelector('.jca-panel'); if (!p) return null;"
+                " const r = p.getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom, p.clientWidth, p.scrollWidth]; }")
+            if not panel:
+                issues.append("비서 시트가 열리지 않았다")
+            else:
+                inside(panel, "비서 시트")
+                if panel[5] > panel[4] + 1:
+                    issues.append(f"비서 시트 가로 넘침 {panel[5] - panel[4]}px")
+                for tab in ("대화", "찾기", "내 키"):
+                    page.click(f'.jca-tab:has-text("{tab}")', timeout=4000)
+                    page.wait_for_timeout(260)
+                    for problem in page.evaluate(TAB_JS):
+                        issues.append(f"비서 «{tab}» — {problem}")
+                page.keyboard.press("Escape")
+                page.wait_for_timeout(260)
+        except Exception as exc:                     # noqa: BLE001 — 실패 사유를 그대로 보여 준다
+            issues.append(f"비서 시트 검수 실패: {str(exc).splitlines()[0][:110]}")
+
+    try:
+        page.evaluate("() => { const h = document.querySelector('#jc-marker-ui');"
+                      " const f = h && h.shadowRoot && h.shadowRoot.getElementById('fab'); if (f) f.click(); }")
+        page.wait_for_timeout(320)
+        rect = page.evaluate(
+            "() => { const h = document.querySelector('#jc-marker-ui'); const s = h && h.shadowRoot;"
+            " const p = s && s.getElementById('panel'); if (!p || p.hidden) return null;"
+            " const r = p.getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom]; }")
+        inside(rect, "도구함 시트")
+        page.evaluate("() => { const h = document.querySelector('#jc-marker-ui');"
+                      " const f = h && h.shadowRoot && h.shadowRoot.getElementById('fab'); if (f) f.click(); }")
+        page.wait_for_timeout(200)
+    except Exception:                                # 도구함이 없는 화면도 있다
+        pass
+    return issues
 
 
 def run(args):
@@ -178,6 +408,50 @@ def run(args):
                         issues.append(f"44px 미달 {measured['smallCount']}개 — " + " | ".join(measured["small"][:4]))
                     if not probe["ok"]:
                         issues.append(f"화면이 그려지지 않았다 — {probe['detail']}")
+
+                    # ---- 7종 기초 결함 게이트 (②③⑥ + ④ 3테마) ----
+                    ui = page.evaluate(UI_JS)
+                    for item in ui["center"][:3]:
+                        issues.append(f"단추 글자가 정중앙이 아니다({item['dx']}px·{item['dy']}px): {item['text']}")
+                    if len(ui["center"]) > 3:
+                        issues.append(f"단추 글자 정렬 어긋남 {len(ui['center'])}곳")
+                    for item in ui["size"][:3]:
+                        issues.append(f"한 줄 단추 높이/패딩 불일치 {item['heights']} {item['pads']}: {' / '.join(item['texts'])}")
+                    if len(ui["size"]) > 3:
+                        issues.append(f"형제 단추 크기 불일치 {len(ui['size'])}줄")
+                    for item in ui["overlap"][:3]:
+                        issues.append(f"요소 {item['kind']}({item.get('ox', item.get('gap'))}px): {item['a']} ↔ {item['b']}")
+                    if len(ui["overlap"]) > 3:
+                        issues.append(f"겹침·밀착 {len(ui['overlap'])}곳")
+
+                    # ---- ⑤ 시트 잘림 · ⑦ 비서 3탭 클릭 검수 (비서가 있는 대문에서) ----
+                    if page_path == "/":
+                        issues.extend(check_panels(page))
+
+                    # ---- ④ 3테마 대비: 테마는 저장값으로 바꿔 **다시 열어** 잰다 ----
+                    #   요소의 data-theme만 바꾸면 페이지 쪽 코드가 곧 되돌려 실제 화면과 다르게 잰다.
+                    #   사용자가 테마를 고를 때와 같은 길(localStorage)로 바꾸고 새로 연다.
+                    saved_theme = page.evaluate(
+                        "() => [localStorage.getItem('jc-theme'), localStorage.getItem('jc-tone')]")
+                    for label, theme, tone in THEMES:
+                        page.evaluate(
+                            "([t, n]) => { localStorage.setItem('jc-theme', t);"
+                            " if (n) localStorage.setItem('jc-tone', n); else localStorage.removeItem('jc-tone'); }",
+                            [theme, tone])
+                        try:
+                            page.reload(wait_until="domcontentloaded", timeout=45000)
+                        except Exception:                       # noqa: BLE001
+                            issues.append(f"{label} 테마로 다시 열지 못했다")
+                            continue
+                        page.wait_for_timeout(1600)
+                        bad = page.evaluate(CONTRAST_JS)
+                        for item in bad[:2]:
+                            issues.append(f"{label} 테마 대비 {item['ratio']}:1 (기준 {item['need']}:1, {item['size']}px) — {item['text']}")
+                        if len(bad) > 2:
+                            issues.append(f"{label} 테마 대비 미달 {len(bad)}곳")
+                    page.evaluate(
+                        "([t, n]) => { if (t) localStorage.setItem('jc-theme', t); else localStorage.removeItem('jc-theme');"
+                        " if (n) localStorage.setItem('jc-tone', n); else localStorage.removeItem('jc-tone'); }", saved_theme)
 
                     if issues and args.shot_dir:
                         os.makedirs(args.shot_dir, exist_ok=True)
