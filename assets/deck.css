@@ -419,3 +419,65 @@
   .a-why{font-size:12px}
 }
 .a-hint-tx{min-width:0}
+
+/* ===== 2026-11-19 통합 개편 — 내 목차 덱 고급화 ===== */
+/* 머리: [홈] 시드 · 매치 + 프리셋 핵심 키워드 3개 */
+.a-deck-hd{align-items:center}
+.a-deck-home{flex:none;display:grid;place-items:center;width:44px;height:44px;margin-right:2px;border-radius:12px;
+  color:inherit;text-decoration:none;border:1px solid color-mix(in srgb,currentColor 16%,transparent);
+  background:color-mix(in srgb,currentColor 3%,transparent);-webkit-tap-highlight-color:transparent}
+.a-deck-home svg{width:20px;height:20px;opacity:.8}
+.a-deck-home:hover{border-color:color-mix(in srgb,var(--acc) 50%,transparent);color:var(--acc)}
+.a-deck-home:active{transform:scale(.96)}
+.a-deck-home:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.a-deck-kw{display:inline-flex;flex-wrap:wrap;align-items:center;gap:5px;margin-left:2px}
+.a-deck-kw span{font-size:11.5px;line-height:1;font-weight:700;letter-spacing:-.01em;padding:4px 8px;border-radius:99px;white-space:nowrap;
+  color:color-mix(in srgb,var(--acc) 88%,var(--ink));border:1px solid color-mix(in srgb,var(--acc) 32%,var(--line));
+  background:color-mix(in srgb,var(--acc) 8%,transparent)}
+@media (max-width:767px){
+  .a-deck-kw{flex-basis:100%;margin:2px 0 0;padding-left:46px}
+}
+
+/* 다크: 「이 자료 열기」에 은은한 백라이트 — 어두운 바탕에서도 글자가 살아나게 */
+:root[data-theme="dark"] .a-root .a-ds-b.a-ds-pri{
+  color:#f4fbff;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 34%,#0a0e16),color-mix(in srgb,var(--acc) 13%,#0a0e16));
+  border-color:color-mix(in srgb,var(--acc) 62%,transparent);
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 24%,transparent),
+             0 0 20px -3px color-mix(in srgb,var(--acc) 65%,transparent),
+             inset 0 1px 0 rgba(255,255,255,.22);
+  text-shadow:0 0 12px color-mix(in srgb,var(--acc) 55%,transparent);
+}
+:root[data-theme="dark"] .a-root .a-ds-b.a-ds-pri:hover{
+  color:#fff;filter:none;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 36%,transparent),
+             0 0 28px -2px color-mix(in srgb,var(--acc) 78%,transparent),
+             inset 0 1px 0 rgba(255,255,255,.3);
+}
+/* 다크: 꽂힌 카드의 테두리에도 같은 빛을 옅게 */
+:root[data-theme="dark"] .a-dslot.a-on .a-dslot-b{
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 16%,transparent),0 10px 26px -22px color-mix(in srgb,var(--acc) 80%,transparent)
+}
+/* 라이트·세피아: 힙·키치 마스킹 테이프 — 카드 위 모서리에 비스듬히 붙인다(정지 상태, 움직임 없음) */
+:root:not([data-theme="dark"]) .a-dslot.a-on .a-dslot-b::after{
+  content:"";position:absolute;top:-6px;left:18px;width:58px;height:13px;pointer-events:none;z-index:2;
+  transform:rotate(-3.6deg);
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.42) 0 4px,transparent 4px 8px),
+             color-mix(in srgb,#e6c574 74%,transparent);
+  clip-path:polygon(2% 0,97% 5%,100% 88%,4% 100%);
+  box-shadow:0 1px 2px rgba(90,70,30,.12);
+}
+:root:not([data-theme="dark"]) .a-dslot:nth-child(even).a-on .a-dslot-b::after{
+  left:auto;right:20px;width:50px;transform:rotate(3.2deg);
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.38) 0 4px,transparent 4px 8px),
+             color-mix(in srgb,#9fd0c4 70%,transparent);
+}
+.a-dslot-b{position:relative;overflow:visible}
+:root[data-jc-tone="sepia"] .a-dslot.a-on .a-dslot-b::after{background:repeating-linear-gradient(90deg,rgba(255,255,255,.4) 0 4px,transparent 4px 8px),color-mix(in srgb,#dcc07a 78%,transparent)}
+/* 떠 있는 미리보기 카드에도 테이프 한 조각 */
+:root:not([data-theme="dark"]) .a-ds-card{position:relative}
+:root:not([data-theme="dark"]) .a-ds-card::after{
+  content:"";position:absolute;top:-7px;left:26px;width:64px;height:14px;pointer-events:none;transform:rotate(-3deg);
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.42) 0 4px,transparent 4px 8px),color-mix(in srgb,#e6c574 74%,transparent);
+  clip-path:polygon(2% 0,97% 5%,100% 88%,4% 100%);
+}

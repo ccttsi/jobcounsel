@@ -1,0 +1,266 @@
+/* brand.css — 자료실 공통 브랜드·겉틀 (2026-11-19 통합 개편)
+ *
+ * 한곳에서 정하는 것
+ *   1) CCTT 로고(Career Consultant Tutorial) — OFL 오픈 폰트 Cormorant Garamond 이탤릭.
+ *      밝게·세피아는 검은 글씨에 스미는 황금빛, 어둡게는 실버에 메탈실버빛.
+ *      네 이니셜 C·C·T·t만 아주 미묘하게 빛·명도를 달리한다(두 번째 t는 소문자).
+ *   2) 26개 자료의 테마색(라이트·세피아 파스텔 / 다크 네온, 대비 4.5:1 이상 자동 계산).
+ *   3) 26개 자료의 좌우 여백·최대 폭을 대문과 같은 규격(--jc-shell · --jc-pad)으로 통일.
+ *   4) 26개 자료의 상단 제목을 로고와 같은 세리프(OFL) 정자체로, 핵심 낱말만 그 자료의 테마색.
+ *
+ * 이 파일은 각 페이지의 <style> 뒤에 붙는다(같은 선택자면 이 파일이 이긴다).
+ * 페이지 쪽에서 <body data-jc-tool="theory">처럼 자기 id를 적으면 테마색이 붙는다.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Noto+Serif+KR:wght@500;600&display=swap");
+
+:root{
+  --jc-shell:1680px;
+  --jc-pad:clamp(14px,3vw,40px);
+  --jc-serif:"Cormorant Garamond","Noto Serif KR","Apple SD Gothic Neo","Malgun Gothic",Georgia,serif;
+  /* 전체 목록·시드/매치 두 갈래 색 */
+  --jc-seed:#0f766e;
+  --jc-match:#a4451f;
+}
+:root[data-theme="dark"]{--jc-seed:#2dd4bf;--jc-match:#fbbf24}
+
+/* ---------- 26개 자료 테마색 ---------- */
+:root{
+  --tc-theory:#1c7360;
+  --tc-parsons:#8b5339;
+  --tc-dacum:#02717a;
+  --tc-taxonomy:#017272;
+  --tc-decalcomania:#854f6e;
+  --tc-library:#7d5d23;
+  --tc-briefing:#8d4e4f;
+  --tc-emerging:#755485;
+  --tc-labor:#586c33;
+  --tc-reality:#3b6692;
+  --tc-manual:#506094;
+  --tc-law:#236c8a;
+  --tc-vpi:#466394;
+  --tc-hud:#3d7149;
+  --tc-talk:#8c523d;
+  --tc-translator:#06726e;
+  --tc-cert:#795f22;
+  --tc-univ:#0e6f81;
+  --tc-grad:#635a90;
+  --tc-company:#8d4f4a;
+  --tc-portals:#2a7257;
+  --tc-thermometer:#8c4e5d;
+  --tc-surgery:#7e517a;
+  --tc-interview:#2f698f;
+  --tc-portfolio:#6f568a;
+  --tc-transit:#4e6e3b;
+}
+:root[data-jc-tone="sepia"]{
+  --tc-theory:#006c59;
+  --tc-parsons:#854a2f;
+  --tc-dacum:#006a74;
+  --tc-taxonomy:#006b6c;
+  --tc-decalcomania:#804668;
+  --tc-library:#775613;
+  --tc-briefing:#884647;
+  --tc-emerging:#6f4c7f;
+  --tc-labor:#516528;
+  --tc-reality:#315f8d;
+  --tc-manual:#48598f;
+  --tc-law:#0f6585;
+  --tc-vpi:#3d5c8f;
+  --tc-hud:#326a40;
+  --tc-talk:#864933;
+  --tc-translator:#006c67;
+  --tc-cert:#735712;
+  --tc-univ:#00687c;
+  --tc-grad:#5c538b;
+  --tc-company:#884642;
+  --tc-portals:#1a6c4f;
+  --tc-thermometer:#864555;
+  --tc-surgery:#784874;
+  --tc-interview:#22628a;
+  --tc-portfolio:#684e85;
+  --tc-transit:#456731;
+}
+:root[data-theme="dark"]{
+  --tc-theory:#36d3b2;
+  --tc-parsons:#fe9a6c;
+  --tc-dacum:#00cfe0;
+  --tc-taxonomy:#00d2d2;
+  --tc-decalcomania:#f493cb;
+  --tc-library:#e4ad44;
+  --tc-briefing:#ff9293;
+  --tc-emerging:#d89cf3;
+  --tc-labor:#a4c661;
+  --tc-reality:#70bdff;
+  --tc-manual:#96b2ff;
+  --tc-law:#43c7fd;
+  --tc-vpi:#84b8ff;
+  --tc-hud:#72cf88;
+  --tc-talk:#ff9873;
+  --tc-translator:#00d2ca;
+  --tc-cert:#dfb042;
+  --tc-univ:#17cced;
+  --tc-grad:#b6a8ff;
+  --tc-company:#ff938b;
+  --tc-portals:#50d2a2;
+  --tc-thermometer:#ff91ac;
+  --tc-surgery:#e897e0;
+  --tc-interview:#5bc2ff;
+  --tc-portfolio:#cba0fc;
+  --tc-transit:#91cb70;
+}
+
+/* 페이지가 자기 자료 id를 적으면 그 색이 --jc-acc로 붙는다 */
+body[data-jc-tool="theory"]{--jc-acc:var(--tc-theory)}
+body[data-jc-tool="parsons"]{--jc-acc:var(--tc-parsons)}
+body[data-jc-tool="dacum"]{--jc-acc:var(--tc-dacum)}
+body[data-jc-tool="taxonomy"]{--jc-acc:var(--tc-taxonomy)}
+body[data-jc-tool="decalcomania"]{--jc-acc:var(--tc-decalcomania)}
+body[data-jc-tool="library"]{--jc-acc:var(--tc-library)}
+body[data-jc-tool="briefing"]{--jc-acc:var(--tc-briefing)}
+body[data-jc-tool="emerging"]{--jc-acc:var(--tc-emerging)}
+body[data-jc-tool="labor"]{--jc-acc:var(--tc-labor)}
+body[data-jc-tool="reality"]{--jc-acc:var(--tc-reality)}
+body[data-jc-tool="manual"]{--jc-acc:var(--tc-manual)}
+body[data-jc-tool="law"]{--jc-acc:var(--tc-law)}
+body[data-jc-tool="vpi"]{--jc-acc:var(--tc-vpi)}
+body[data-jc-tool="hud"]{--jc-acc:var(--tc-hud)}
+body[data-jc-tool="talk"]{--jc-acc:var(--tc-talk)}
+body[data-jc-tool="translator"]{--jc-acc:var(--tc-translator)}
+body[data-jc-tool="cert"]{--jc-acc:var(--tc-cert)}
+body[data-jc-tool="univ"]{--jc-acc:var(--tc-univ)}
+body[data-jc-tool="grad"]{--jc-acc:var(--tc-grad)}
+body[data-jc-tool="company"]{--jc-acc:var(--tc-company)}
+body[data-jc-tool="portals"]{--jc-acc:var(--tc-portals)}
+body[data-jc-tool="thermometer"]{--jc-acc:var(--tc-thermometer)}
+body[data-jc-tool="surgery"]{--jc-acc:var(--tc-surgery)}
+body[data-jc-tool="interview"]{--jc-acc:var(--tc-interview)}
+body[data-jc-tool="portfolio"]{--jc-acc:var(--tc-portfolio)}
+body[data-jc-tool="transit"]{--jc-acc:var(--tc-transit)}
+
+/* ---------- 로고: Career Consultant Tutorial ----------
+   네 이니셜(C · C · T · t)만 빛과 명도를 아주 조금 달리한다. 나머지 글자는 본문 톤. */
+.cctt-logo{
+  display:inline-block;white-space:nowrap;
+  font-family:"Cormorant Garamond",Georgia,"Noto Serif KR",serif;
+  font-style:italic;font-weight:600;
+  font-size:clamp(15.5px,1.15vw + 10px,21.5px);
+  letter-spacing:-.012em;line-height:1.15;
+  color:#221c15;
+  text-shadow:0 0 12px rgba(178,132,52,.16);
+  -webkit-font-smoothing:antialiased;
+}
+.cctt-logo .lgi{font-style:italic;font-weight:600}
+.cctt-logo .lg1{color:#2b241b;text-shadow:0 0 7px rgba(196,148,62,.34)}
+.cctt-logo .lg2{color:#2f271d;text-shadow:0 0 8px rgba(188,142,58,.26)}
+.cctt-logo .lg3{color:#3a3020;text-shadow:0 0 9px rgba(205,160,74,.22)}
+.cctt-logo .lg4{color:#40351f;text-shadow:0 0 6px rgba(214,170,86,.4)}
+:root[data-jc-tone="sepia"] .cctt-logo{color:#241d14;text-shadow:0 0 12px rgba(150,104,32,.2)}
+:root[data-theme="dark"] .cctt-logo{
+  color:#cfd6e2;
+  text-shadow:0 0 14px rgba(190,208,235,.28),0 0 2px rgba(226,234,246,.35);
+}
+:root[data-theme="dark"] .cctt-logo .lg1{color:#e8eef8;text-shadow:0 0 9px rgba(214,228,246,.55)}
+:root[data-theme="dark"] .cctt-logo .lg2{color:#dde4ef;text-shadow:0 0 8px rgba(190,208,235,.42)}
+:root[data-theme="dark"] .cctt-logo .lg3{color:#eef2f9;text-shadow:0 0 10px rgba(224,234,248,.5)}
+:root[data-theme="dark"] .cctt-logo .lg4{color:#f2f5fa;text-shadow:0 0 7px rgba(236,243,252,.6)}
+@media (max-width:430px){.cctt-logo{font-size:15px}}
+
+/* ---------- 공통 겉틀: 좌우 여백·최대 폭 = 대문 규격 ---------- */
+body[data-jc-tool] .wrap{
+  max-width:var(--jc-shell)!important;
+  margin-left:auto!important;margin-right:auto!important;
+  padding-left:max(var(--jc-pad),env(safe-area-inset-left))!important;
+  padding-right:max(var(--jc-pad),env(safe-area-inset-right))!important;
+}
+/* theory: 머리말 .top-in과 본문 main이 서로 다른 폭이었다 — 둘 다 같은 규격으로 */
+body[data-jc-tool="theory"] .top-in,body[data-jc-tool="theory"] main{
+  max-width:var(--jc-shell);margin-left:auto;margin-right:auto;
+  padding-left:max(var(--jc-pad),env(safe-area-inset-left));
+  padding-right:max(var(--jc-pad),env(safe-area-inset-right));
+}
+body[data-jc-tool="theory"] .top-in{width:100%;height:auto;min-height:60px;padding-top:6px;padding-bottom:6px}
+/* vpi: 머리말·본문이 각각 .wrap을 쓴다 */
+body[data-jc-tool="vpi"] .wrap{
+  max-width:var(--jc-shell)!important;width:100%;
+  padding-left:max(var(--jc-pad),env(safe-area-inset-left))!important;
+  padding-right:max(var(--jc-pad),env(safe-area-inset-right))!important;
+}
+/* decalcomania: .wrap은 안쪽 목록 상자다 — 겉틀(.app)은 그대로, 머리말 띠만 규격에 맞춘다 */
+body[data-jc-tool="decalcomania"] .hd .bar{padding-left:max(var(--jc-pad),env(safe-area-inset-left));padding-right:max(var(--jc-pad),env(safe-area-inset-right))}
+body[data-jc-tool="decalcomania"] .hd .note{padding-left:max(var(--jc-pad),env(safe-area-inset-left));padding-right:max(var(--jc-pad),env(safe-area-inset-right))}
+/* hud·dacum·library: Tailwind/전용 겉틀 */
+body[data-jc-tool="hud"] header .max-w-6xl,body[data-jc-tool="hud"] main.max-w-6xl,body[data-jc-tool="hud"] .jc-foot{
+  max-width:var(--jc-shell)!important;
+  padding-left:max(var(--jc-pad),env(safe-area-inset-left))!important;
+  padding-right:max(var(--jc-pad),env(safe-area-inset-right))!important;
+}
+body[data-jc-tool="dacum"] .max-w-\[1280px\]{
+  max-width:var(--jc-shell)!important;
+  padding-left:max(var(--jc-pad),env(safe-area-inset-left))!important;
+  padding-right:max(var(--jc-pad),env(safe-area-inset-right))!important;
+}
+body[data-jc-tool="library"] .jc-room{
+  max-width:var(--jc-shell)!important;
+  padding-left:max(var(--jc-pad),env(safe-area-inset-left))!important;
+  padding-right:max(var(--jc-pad),env(safe-area-inset-right))!important;
+}
+
+/* ---------- 공통 머리말: 홈 단추 · 제목 서체 ---------- */
+.jc-ib,.ib{width:44px;height:44px;flex:none;display:grid;place-items:center;box-sizing:border-box;border-radius:12px;
+  color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.jc-ib svg,.ib svg{width:20px;height:20px}
+.jc-ib:focus-visible,.ib:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+
+/* 제목: 로고와 같은 세리프 패밀리의 정자체(이탤릭·필기체·빛 효과 없음) */
+body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1){
+  text-decoration:none;
+  font-family:var(--jc-serif);font-style:normal;font-weight:600;
+  letter-spacing:-.015em;line-height:1.25;
+}
+body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1) :is(span,em,i.kw){font-style:normal}
+body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1) :is(span,em,kw){
+  font-weight:600;
+}
+/* 핵심 낱말만 그 자료의 테마색 */
+body[data-jc-tool] .hd .brand>span,
+body[data-jc-tool] .hd .brand>em,
+body[data-jc-tool] .hd .brand a>span,
+body[data-jc-tool] .hud .brand>span,
+body[data-jc-tool] .hdr .brand>span,
+body[data-jc-tool] .jc-kw,
+body[data-jc-tool] .brand .jc-kw{color:var(--jc-acc)}
+
+/* 제목 크기: 자료마다 제각각이던 17~19px를 한 값으로 */
+body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1){font-size:clamp(16.5px,1vw + 11px,20px)!important}
+body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1) svg{flex:none}
+
+/* 머리말 줄 높이·정렬 통일(단추 44px 기준) */
+body[data-jc-tool] :is(.hd,.hud,.hdr,.top){border-color:var(--line)}
+body[data-jc-tool] :is(.hd,.hud,.hdr) .brand{min-width:0;min-height:44px;align-items:center}
+body[data-jc-tool] :is(.hd,.hud,.hdr) [data-jc-prefs]{margin-left:auto;display:inline-flex;align-items:center;gap:6px}
+
+/* ---------- 상단 제목 색이 배경에 묻히지 않게 ---------- */
+body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1){color:var(--ink,#2a2521)}
+
+/* 제목을 .brand·h1 대신 div로 쓰는 자료(서재)도 같은 서체 */
+body[data-jc-tool] .jc-title,body[data-jc-tool] .jc-title span{
+  font-family:var(--jc-serif);font-style:normal;font-weight:600;letter-spacing:-.015em;line-height:1.25
+}
+body[data-jc-tool] .jc-title{font-size:clamp(16.5px,1vw + 11px,20px);color:var(--ink,#2a2521)}
+body[data-jc-tool] .jc-title span{color:var(--jc-acc)}
+/* 산업 온도계: 순번 16을 빼고 제호를 제목으로 */
+body[data-jc-tool="thermometer"] .hd .kick{
+  font-family:var(--jc-serif);font-style:normal!important;font-weight:600;text-transform:none;
+  font-size:clamp(16.5px,1vw + 11px,20px);letter-spacing:-.015em;color:var(--ink,#2a2521)
+}
+body[data-jc-tool="thermometer"] .hd .kick .jc-kw{color:var(--jc-acc);font-weight:600}
+
+/* decalcomania: 좁은 화면에서 숨겨 두었던 제목을 다른 자료와 같이 보인다 */
+body[data-jc-tool="decalcomania"] .hd .brand{display:flex;align-items:center;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:clamp(16.5px,1vw + 11px,20px);color:var(--ink)}
+body[data-jc-tool="decalcomania"] .hd .brand em{font-style:normal;color:var(--jc-acc);font-weight:600}
+/* 머리말 높이를 한 값으로(온도계만 48px로 낮았다) */
+body[data-jc-tool] :is(.hd,.hdr){min-height:64px;box-sizing:border-box}
+
+/* theory: 가로로 미는 칩 줄이 본문 폭을 2px 넘겨 문서 폭을 늘리던 것 — 본문 안에서만 넘치게 */
+body[data-jc-tool="theory"] main{overflow-x:clip}

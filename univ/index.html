@@ -103,6 +103,15 @@ h2{font-size:clamp(23px,4.6vw,30px);line-height:1.3;letter-spacing:-.03em;margin
 .inline{width:100%;height:44px;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);outline:none;margin:0 0 8px}
 .foot{font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:12px;margin-top:24px}
 .loading{padding:48px 0;text-align:center;color:var(--muted)}
+.sumbar{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:12px 0 16px}
+.sumbar .stat{margin:0;flex:1 1 240px;grid-template-columns:repeat(2,minmax(0,1fr))}
+/* 필터와 무관한 전체 기준은 다른 톤의 작은 배지로 떼어 둔다 */
+.stat-fixed{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:12px;
+  border:1px dashed color-mix(in srgb,var(--acc) 45%,var(--line));background:color-mix(in srgb,var(--acc) 6%,transparent)}
+.stat-fixed b{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--acc);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stat-fixed .sf-k{font-size:12px;font-weight:700;color:var(--muted)}
+.stat-fixed .sf-n{font-size:11px;color:var(--dim);white-space:nowrap}
+@media (max-width:640px){.sumbar{gap:6px}.stat-fixed{flex:1 1 100%;justify-content:center;padding:7px 10px}}
 .stat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 16px}
 .stat div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
 .stat b{display:block;font-size:clamp(18px,5.6vw,22px);white-space:nowrap;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
@@ -114,8 +123,9 @@ h2{font-size:clamp(23px,4.6vw,30px);line-height:1.3;letter-spacing:-.03em;margin
   .stat b{display:inline;font-size:22px}
 }
 </style>
+<link rel="stylesheet" href="../assets/brand.css">
 </head>
-<body>
+<body data-jc-tool="univ">
 <div class="wrap">
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></a>
@@ -149,7 +159,15 @@ function normReg(r){r=String(r||'');if(REGS.indexOf(r)>=0)return r;
   var M2={'충청북':'충북','충청남':'충남','전라북':'전북','전북특':'전북','전라남':'전남','경상북':'경북','경상남':'경남','강원':'강원','제주':'제주','경기':'경기','세종':'세종'};
   for(var k in M2)if(r.indexOf(k)===0)return M2[k];
   for(var i=0;i<REGS.length;i++)if(r.indexOf(REGS[i])===0)return REGS[i];return r;}
-function kindOf(u){return u.kind==='대학'||u.kind==='전문대학'?u.kind:'';}
+/* 2026-11-19: 유형은 셋 중 하나다 — 대학 / 전문대학 / 사이버·특수.
+   사이버대학·사내대학·각종학교·기술대학·방송통신대학처럼 일반 학제 밖의 학교를 한 갈래로 묶어
+   「전체 = 대학 + 전문대학 + 사이버·특수」가 모든 지역에서 맞아떨어지게 한다. */
+function catOf(u){
+  var st=String(u.school_type||'');
+  if(/사이버|사내|각종|기술대학|방송통신/.test(st)||/사이버/.test(String(u.name||'')))return '사이버·특수';
+  return u.kind==='전문대학'?'전문대학':'대학';
+}
+function kindOf(u){return catOf(u);}
 /* 학교 종류는 모든 학교에 똑같은 모양(옅은 글씨)으로 적는다. 특정 종류만 눈에 띄게 표시하지 않는다. */
 function typeOf(u){return String(u.school_type||u.kind||'').replace(/\((대학|전문)\)$/,'');}
 function uName(u){return (u.name||'')+(u.campus&&u.campus!=='본교'&&!/캠퍼스/.test(u.name||'')?' '+u.campus:'');}
@@ -226,11 +244,12 @@ function resultsHTML(){
   var q=norm(st.q),h='';
   var fr=function(u){return (!st.reg||u.reg===st.reg)&&(!st.kind||u.k===st.kind);};
   var regBar='<div class="filt"><button class="fb" data-reg="" aria-pressed="'+(!st.reg)+'">전국</button>'+REGS.map(function(r){return '<button class="fb" data-reg="'+r+'" aria-pressed="'+(st.reg===r)+'">'+r+'</button>';}).join('')+'</div>';
-  var kindBar='<div class="filt">'+[['','전체'],['대학','대학'],['전문대학','전문대학']].map(function(k){return '<button class="fb" data-kind="'+k[0]+'" aria-pressed="'+(st.kind===k[0])+'">'+k[1]+'</button>';}).join('')+'</div>';
+  var kindBar='<div class="filt">'+[['','전체'],['대학','대학'],['전문대학','전문대학'],['사이버·특수','사이버·특수']].map(function(k){return '<button class="fb" data-kind="'+k[0]+'" aria-pressed="'+(st.kind===k[0])+'">'+k[1]+'</button>';}).join('')+'</div>';
   if(!q){
     var L=UL.filter(fr);
     var nd=0;L.forEach(function(u){nd+=u.open;});
-    h+='<div class="stat"><div><b>'+num(L.length)+'</b><span>학교</span></div><div><b>'+num(nd)+'</b><span>개설 학과</span></div><div><b>'+num(Object.keys(majors).length)+'</b><span>표준학과</span></div></div>';
+    h+='<div class="sumbar"><div class="stat"><div><b>'+num(L.length)+'</b><span>학교</span></div><div><b>'+num(nd)+'</b><span>개설 학과</span></div></div>'
+      +'<div class="stat-fixed" title="자료 전체 기준 — 지역·유형을 골라도 바뀌지 않습니다"><span class="sf-k">표준학과</span><b>'+num(Object.keys(majors).length)+'</b><span class="sf-n">전체 기준</span></div></div>';
     h+=sec('학교 둘러보기',regBar+kindBar+page('u',L,PER).map(uniRow).join('')+pager('u',L.length,PER)+(L.length?'':'<p>조건에 맞는 학교가 없습니다.</p>'),num(L.length)+'곳',' data-sec="u"','u');
     return h;
   }
@@ -332,7 +351,7 @@ d.addEventListener('click',function(e){
   var t=e.target.closest('[data-pg],[data-reg],[data-kind],[data-uclosed],[data-dreg],[data-per]');if(!t)return;
   var ds=t.dataset;
   if(ds.per!=null){PER=+ds.per;try{localStorage.setItem('jc-univ-per',String(PER));}catch(e2){}pg.u=pg.su=pg.sd=pg.ud=pg.sim=0;rerenderKeep(ds.perkey);return;}
-  if(ds.pg!=null){if(t.disabled)return;pg[ds.pg]=Math.max(0,+ds.v);rerenderKeep(ds.pg);var s=d.querySelector('[data-sec="'+ds.pg+'"]');if(s)s.scrollIntoView({block:'start'});}
+  if(ds.pg!=null){if(t.disabled)return;pg[ds.pg]=Math.max(0,+ds.v);rerenderKeep(ds.pg);}   /* 2026-11-19: 쪽 번호를 눌러도 화면을 억지로 내리지 않는다 */
   else if(ds.reg!=null){st.reg=ds.reg;pg.u=pg.su=pg.sd=0;rerenderKeep();}
   else if(ds.kind!=null){st.kind=ds.kind;pg.u=pg.su=pg.sd=0;rerenderKeep();}
   else if(ds.uclosed){uq.closed=!uq.closed;pg.ud=0;rerenderKeep();}

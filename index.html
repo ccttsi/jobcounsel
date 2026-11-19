@@ -18,7 +18,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 try{if(localStorage.getItem('jc-hf')==='off')document.documentElement.setAttribute('data-jc-hf','off');}catch(e){}
 </script>
 <script>/* 시드·매치로 재구성된 화면이면 첫 그림부터 트리거(레버·심전도)를 감춘다. */
-try{var jcM=localStorage.getItem('jc-mode');if(jcM==='seed'||jcM==='match')document.documentElement.setAttribute('data-jc-mode',jcM);}catch(e){}
+try{var ju=new URLSearchParams(location.search).get('mode'),jcM=(ju==='seed'||ju==='match')?ju:localStorage.getItem('jc-mode');if(jcM==='seed'||jcM==='match')document.documentElement.setAttribute('data-jc-mode',jcM);}catch(e){}
 </script>
 <style>
 /* 이 스타일만으로 화면이 완성된다. Tailwind와 Lucide가 늦게 오거나 막혀도 배치는 그대로다. */
@@ -80,29 +80,43 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 
 /* 머리말. 스크롤하는 동안 매 프레임 다시 흐리게 만들던 backdrop-filter는 뺀다(휴대폰 GPU 부담).
    색은 그대로 두고 불투명도만 97%로 올린다. 뒤에 지나가는 글이 비치지 않을 만큼만 바꾼다. */
-.a-top{position:sticky;top:0;z-index:30;margin:0 calc(clamp(14px,3vw,40px) * -1);padding:10px clamp(14px,3vw,40px);
+/* 머리말(2026-11-19 통일): 왼쪽 로고 · 오른쪽은 [로그인 · 빠른검색 · 리얼타임 운영중] 다음에 [배경테마 · 글씨크기 · 몰입화면].
+   접기는 모바일·폴더블(~767px)에서만 — 태블릿부터는 접기 자체가 없다(assets/headfold.css). */
+.a-top{position:sticky;top:0;z-index:30;margin:0 calc(clamp(14px,3vw,40px) * -1);padding:9px clamp(14px,3vw,40px);
   background:color-mix(in srgb,var(--bg) 97%,transparent);border-bottom-width:1px;
-  display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
-.a-brand{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;min-height:44px;flex:1 1 180px;
+  display:flex;align-items:center;gap:10px 14px;flex-wrap:nowrap}
+.a-brand{display:flex;align-items:center;min-width:0;min-height:44px;flex:1 1 auto;
   color:inherit;text-decoration:none;cursor:pointer;border-radius:10px}
-.a-brand:hover .a-word{color:var(--acc)}
 .a-brand:focus-visible{outline:2px solid var(--a1);outline-offset:3px}
-/* 로고(2026-11-19): 모노그램 CCTT + 영문 워드마크. 자간을 넓힌 대문자 한 줄이라 작은 화면에서도 한 줄에 앉는다. */
-.a-brand .a-logo{display:flex;align-items:center;gap:9px;min-width:0;line-height:1.2}
-.a-brand .a-mono{flex:none;display:grid;place-items:center;height:23px;padding:0 6px;border:1px solid var(--line-2);border-radius:6px;
-  background:var(--panel);color:var(--acc);font-size:10px;font-weight:850;letter-spacing:.16em;font-variant-numeric:tabular-nums}
-.a-brand .a-word{min-width:0;font-size:clamp(12.5px,2.5vw + 3px,18px);font-weight:700;letter-spacing:.075em;text-transform:uppercase;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
-/* 좁은 화면: 로고를 잘라 내지 않고 두 줄로 내려 쓴다(모노그램과 이름이 한 덩이로 남게). */
-@media (max-width:620px){
-  .a-brand .a-word{white-space:normal;font-size:12px;line-height:1.22;letter-spacing:.06em}
-} 
-.a-brand .a-brand-sub{font-size:12px;color:var(--muted);line-height:1.4;letter-spacing:-.01em}
-.a-status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap}
+.a-brand .cctt-logo{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-brand:hover .cctt-logo{filter:brightness(1.04)}
+.a-right{display:flex;align-items:center;gap:8px;flex:none;margin-left:auto}
+.a-status{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);white-space:nowrap}
+.a-status .a-live-t{font-weight:650;letter-spacing:-.01em;color:var(--muted)}
+.a-status time{font-variant-numeric:tabular-nums;letter-spacing:.005em}
 .a-dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--a1);flex:none}
 .a-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--a1);opacity:0;animation:a-ring 2.4s cubic-bezier(.2,.7,.3,1) .6s 3}
 @keyframes a-ring{0%{opacity:.5;transform:scale(1)}80%,100%{opacity:0;transform:scale(3)}}
-.a-actions{display:flex;gap:8px;flex-wrap:wrap}
+.a-actions{display:flex;gap:8px;flex-wrap:nowrap}
+@media (max-width:767px){
+  .a-top{flex-wrap:wrap;gap:8px;padding-top:7px;padding-bottom:9px}
+  .a-brand{order:1;flex:1 1 auto}
+  .jc-prefs-slot{order:2;margin-left:auto}
+  .a-right{order:3;flex:1 1 100%;margin-left:0;flex-wrap:wrap;gap:8px}
+  .a-actions{flex:1 1 100%;order:1}
+  .a-root .a-actions .a-btn{flex:1 1 0;padding:0 10px}
+  .a-status{order:2;flex:1 1 100%;gap:6px}
+  .a-kbd{display:none}
+  /* 접기 단추는 첫 줄 오른쪽 끝(로고·화면설정과 같은 줄) */
+  .a-top>.jh-fold{order:3}
+}
+/* 태블릿(768~1023): 한 줄에 다 앉도록 곁글자를 줄인다 — 로고가 잘리지 않게 */
+@media (min-width:768px) and (max-width:1023px){
+  .a-status{font-size:12px;gap:5px}
+  .a-actions #btnSearch>span:not(.a-kbd){display:none}
+  .a-actions #btnSearch{padding:0 12px}
+  .a-kbd{display:none}
+}
 .a-root .a-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;min-width:44px;padding:0 14px;
   border-width:1px;border-color:var(--line-2);border-radius:12px;background:var(--panel);font-size:14px;font-weight:600;white-space:nowrap;
   transition:border-color .15s,background .15s,transform .15s}
@@ -259,7 +273,9 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 /* 문장 내비게이션: "오늘은 [문구] 보고 싶어요." 가운데 문구가 위아래로 굴러간다.
    휴대폰은 가운데 정렬 한 단, 768px 이상은 왼쪽 문장 + 오른쪽 오늘의 통찰 두 단. */
 @property --glow{syntax:'<color>';inherits:true;initial-value:transparent}
-.a-stage{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(8px,2vw,28px);align-items:center;position:relative}
+.a-stage{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(8px,2vw,28px);align-items:start;position:relative}
+/* 2026-11-19: 통찰 카드가 세로 가운데에 붙어 내용이 길어지면 위아래로 퍼지던 것을 위쪽 고정으로 */
+.a-stage>.a-card{align-self:start}
 .a-nav{--acc:var(--a1);--glow:color-mix(in srgb,var(--acc) 13%,transparent);
   position:relative;text-align:center;padding:clamp(28px,5.5vw,72px) 0 clamp(18px,3vw,32px)}
 /* 문구 색을 따라 번지는 은은한 빛 */
@@ -357,7 +373,19 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-root .a-list a{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:2px;align-items:center;
   min-height:var(--row-h,94px);padding:12px 6px;border-top:1px dashed var(--line-2);color:inherit;text-decoration:none;overflow:hidden}
 .a-list li:first-child a{border-top:0}
-.a-root .a-list a:hover b{color:var(--a1)}
+.a-root .a-list a:hover b{color:var(--ink)}
+/* 2026-11-19: 전체 목록은 자료별 테마색 대신 **시드·매치 두 색**으로만 나눈다(번호는 01~26 아라비아 숫자). */
+.a-list li[data-m="seed"] .a-no{color:var(--jc-seed)}
+.a-list li[data-m="match"] .a-no{color:var(--jc-match)}
+.a-list li[data-m="seed"] a{background:color-mix(in srgb,var(--jc-seed) 6%,transparent)}
+.a-list li[data-m="match"] a{background:color-mix(in srgb,var(--jc-match) 6%,transparent)}
+.a-list li a{border-radius:12px}
+.a-list li[data-m="seed"] a:hover{background:color-mix(in srgb,var(--jc-seed) 10%,transparent)}
+.a-list li[data-m="match"] a:hover{background:color-mix(in srgb,var(--jc-match) 10%,transparent)}
+.a-list li[data-m="seed"] a:hover b{color:var(--jc-seed)}
+.a-list li[data-m="match"] a:hover b{color:var(--jc-match)}
+.a-list li[data-m="seed"] .a-no{border-color:color-mix(in srgb,var(--jc-seed) 55%,transparent)}
+.a-list li[data-m="match"] .a-no{border-color:color-mix(in srgb,var(--jc-match) 55%,transparent)}
 .a-list .a-no{grid-column:1;grid-row:1;align-self:center;justify-self:start;font-size:13.5px;font-weight:700;line-height:1.4;color:var(--a1);min-width:1.6em;
   /* 도장 테두리·안여백이 줄 높이를 밀어 올리지 않게 위아래를 똑같이 당긴다(중심은 그대로) */
   margin-block:-4px}
@@ -482,10 +510,7 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
   background:var(--toast-bg);color:var(--toast-ink);font-size:14px;font-weight:600;padding:11px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
 .a-toast.a-on{opacity:1;transform:translate(-50%,0)}
 
-@media (max-width:640px){
-  .a-status{order:3;flex:1 1 100%;flex-wrap:wrap;white-space:normal;gap:4px 8px}
-  .a-actions{order:4;flex:1 1 100%}.a-root .a-actions .a-btn{flex:1 1 0;padding:0 10px}.a-kbd{display:none}
-}
+/* (2026-11-19) 좁은 화면 머리말 순서는 위 767px 규칙 하나로 정리했다 */
 @media (prefers-reduced-motion:reduce){.a-root,.a-root *,.a-root *::before,.a-root *::after{animation:none!important;transition:none!important}}
 
 /* 손맛 층(2026-11-15): 인쇄물 느낌의 오프셋 그림자·테이프·티켓 번호. 움직임은 transform·opacity뿐이고 집중 보기에서는 빠진다. */
@@ -508,6 +533,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 <link rel="stylesheet" href="./assets/headfold.css">
 <link rel="stylesheet" href="./assets/modes.css">
 <link rel="stylesheet" href="./assets/deck.css">
+<link rel="stylesheet" href="./assets/brand.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
@@ -515,30 +541,26 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 <div class="a-backdrop" aria-hidden="true"></div>
 <div class="a-shell">
 
-  <header class="a-top" data-jc-headfold="CCTT · Career Consultant Tutorial">
+  <header class="a-top" data-jc-headfold="Career Consultant Tutorial">
     <a class="a-brand" id="brandGo" href="./" aria-label="Career Consultant Tutorial — 첫 화면으로">
-      <b class="a-logo"><span class="a-mono" aria-hidden="true">CCTT</span><span class="a-word">Career Consultant Tutorial</span></b>
-      <span class="a-brand-sub">직업상담·커리어 상담 자료실 · 시드 · 매치</span>
+      <span class="cctt-logo" aria-hidden="true"><span class="lgi lg1">C</span>areer <span class="lgi lg2">C</span>onsultant <span class="lgi lg3">T</span>u<span class="lgi lg4">t</span>orial</span>
     </a>
-    <div class="a-status" role="status" aria-label="사이트 상태와 한국 시간">
-      <span class="a-dot" aria-hidden="true"></span>
-      <span id="statusText">운영 중</span>
-      <time class="a-num" id="clock" aria-live="off" data-jc-ignore></time>
+    <div class="a-right">
+      <div class="a-actions">
+        <button class="a-btn a-login" data-jc-login hidden>
+          <i class="a-ico" data-lucide="user-round" aria-hidden="true"></i><span data-jc-login-label>로그인</span>
+        </button>
+        <button class="a-btn" id="btnSearch" aria-label="빠른 검색" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
+          <i class="a-ico" data-lucide="search" aria-hidden="true"></i><span>빠른 검색</span><span class="a-kbd" id="kbdHint">Ctrl K</span>
+        </button>
+      </div>
+      <div class="a-status" role="status" aria-label="사이트 상태와 한국 시간">
+        <span class="a-dot" aria-hidden="true"></span>
+        <span id="statusText" class="a-live-t">리얼타임 운영중</span>
+        <time class="a-num" id="clock" aria-live="off" data-jc-ignore></time>
+      </div>
     </div>
     <span data-jc-prefs class="jc-prefs-slot"></span>
-    <div class="a-seg" role="group" aria-label="화면 테마" id="themeSeg" style="display:none" hidden>
-      <button data-theme-mode="auto" aria-pressed="true" title="오전 7시부터 오후 7시까지는 밝게, 그 밖에는 어둡게 바뀝니다">자동</button>
-      <button data-theme-mode="light" aria-pressed="false">밝게</button>
-      <button data-theme-mode="dark" aria-pressed="false">어둡게</button>
-    </div>
-    <div class="a-actions">
-      <button class="a-btn a-login" data-jc-login hidden>
-        <i class="a-ico" data-lucide="user-round" aria-hidden="true"></i><span data-jc-login-label>로그인</span>
-      </button>
-      <button class="a-btn" id="btnSearch" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
-        <i class="a-ico" data-lucide="search" aria-hidden="true"></i><span>빠른 검색</span><span class="a-kbd" id="kbdHint">Ctrl K</span>
-      </button>
-    </div>
   </header>
 
   <section class="a-pv" id="privacy" aria-labelledby="privacyTitle">
@@ -676,8 +698,12 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 <section class="a-deck" id="deckView" hidden aria-label="내 목차">
   <div class="a-deck-top">
     <div class="a-deck-hd">
+      <a class="a-deck-home" id="deckHome" href="./" aria-label="자료실 대문으로">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      </a>
       <b class="a-deck-k" id="deckK">시드</b><span class="a-deck-en" id="deckEn">SEED</span>
       <span class="a-deck-sub" id="deckSub">지식·원리·기준 쌓기</span>
+      <span class="a-deck-kw" id="deckKw"></span>
     </div>
     <div class="a-deck-acts">
       <button type="button" class="a-tut" id="tutBtn">튜토리얼</button>
@@ -962,12 +988,12 @@ var NAV={
  surgery:['서류를 해부해','공고 문구의 숨은 의도와 감점 문장의 원인을 한 겹씩 열고, 단어 하나로 자소서 문장 예시를 조립합니다.'],
  interview:['면접을 연습해','질문 카드 한 장씩 숨은 의도를 보고, 함정·방어·카운터 카드와 구간 타이머로 답의 뼈대와 리듬을 잡습니다.'],
  portfolio:['포트폴리오를 엮어','90초 스캔으로 채용 담당자의 시선을 재현하고, 소재를 3~5개로 컷해 6트랙으로 엮습니다.'],
- law:['법령을 찾아','상담 상황 키워드로 법령·조례 8건을 찾아, 쉬운 풀이와 조문 전문을 책처럼 넘겨 읽습니다.'],
+ law:['조문을 펼쳐','상담 상황 키워드로 법령·조례 8건을 찾아, 쉬운 풀이와 조문 전문을 책처럼 넘겨 읽습니다.'],
  translator:['내담자 말을 풀어','상담실에서 나온 약어·전문용어를 한 줄 뜻과 실제 맥락, 이어 물을 질문, 연계 자료로 옮깁니다.']
 };
 TOOLS.forEach(function(t){var n=NAV[t.id]||[];t.phrase=n[0]||(t.short+' 자료를 펼쳐');t.lead=n[1]||t.desc;});
 
-var N=TOOLS.length,INTERVAL=5000,IDLE=12000;
+var N=TOOLS.length,INTERVAL=5000,IDLE=0;   /* 2026-11-19: 12초 유예(IDLE=12000) 삭제 — 풀리는 즉시 다음 5초 눈금 */
 /* 자동 넘김은 **시계의 5초 격자**(00·05·10…초)에 맞춘다(2026-11-19).
    호버·끌기·장전·일시정지·방치 유도·탭 가림 등 어떤 이유로 멈췄다 풀리든,
    다음 눈금까지 조용히 기다렸다가 그 눈금에서 이어 간다 — 매번 Date.now()로 새로 계산해 오차가 쌓이지 않는다.
@@ -985,14 +1011,30 @@ function mod(a,n){return ((a%n)+n)%n;}
 function reduce(){return !!reduceMQ.matches;}
 /* 자료 전체 목록: 롤링 자리를 대신해 5개씩 보여 준다 */
 var LIST_PER=5,listPage=0,listOpen=false,rowH=0;
-function rowHTML(t){return '<li><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></a></li>';}
+function rowHTML(t){return '<li data-m="'+t.mode+'"><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></a></li>';}
 function renderList(){
   var n=Math.max(1,Math.ceil(TOOLS.length/LIST_PER));listPage=Math.min(listPage,n-1);
   $('allList').innerHTML=TOOLS.slice(listPage*LIST_PER,(listPage+1)*LIST_PER).map(rowHTML).join('');
-  var h='';if(n>1){h+='<button type="button" data-lp="'+(listPage-1)+'" aria-label="이전 쪽"'+(listPage===0?' disabled':'')+'>‹</button>';
-    for(var i=0;i<n;i++)h+='<button type="button" data-lp="'+i+'" aria-current="'+(i===listPage)+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>';
-    h+='<button type="button" data-lp="'+(listPage+1)+'" aria-label="다음 쪽"'+(listPage===n-1?' disabled':'')+'>›</button>';}
-  $('allPg').innerHTML=h;
+  var pg=$('allPg');
+  /* 2026-11-19: 쪽 번호를 누를 때마다 단추를 통째로 다시 그리면, 새로 들어온 단추에만
+     공용 등장 모션(assets/prefs.js)이 붙어 앞쪽 번호만 물결처럼 깜빡였다(뒤쪽은 10개 제한 밖).
+     번호판은 한 번만 만들고, 쪽이 바뀌면 상태만 제자리에서 고친다 — 모든 번호가 똑같이 움직인다. */
+  if(pg.getAttribute('data-n')!==String(n)){
+    var h='';
+    if(n>1){
+      h+='<button type="button" data-lp="-1" aria-label="이전 쪽">‹</button>';
+      for(var i=0;i<n;i++)h+='<button type="button" data-lp="'+i+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>';
+      h+='<button type="button" data-lp="'+n+'" aria-label="다음 쪽">›</button>';
+    }
+    pg.innerHTML=h;pg.setAttribute('data-n',String(n));
+  }
+  var bs=pg.children;
+  for(var j=0;j<bs.length;j++){
+    var b=bs[j],lp=+b.getAttribute('data-lp');
+    if(lp<0){b.disabled=(listPage===0);b.removeAttribute('aria-current');}
+    else if(lp>=n){b.disabled=(listPage===n-1);b.removeAttribute('aria-current');}
+    else{b.disabled=false;b.setAttribute('aria-current',String(lp===listPage));}
+  }
 }
 /* 목록 높이 고정(2026-11-18 R4): 쪽마다 설명 줄 수가 달라 생기던 아래 요소의 흔들림을 없앤다.
    전체 목록을 같은 폭의 화면 밖 상자에 한 번 그려 **가장 긴 줄**을 재고, 모든 줄 높이를 그 값으로
@@ -1014,7 +1056,9 @@ function setList(on){
   if(on&&!listOpen){lv.style.minHeight=rv.offsetHeight+'px';}
   listOpen=on;rv.hidden=on;lv.hidden=!on;bt.setAttribute('aria-expanded',String(on));
   $('allBtnT').innerHTML=on?'롤링으로 돌아가기':'자료 전체 목록 <b class="a-num">'+TOOLS.length+'</b>개';
-  if(on){measureListRows();var f=lv.querySelector('a');if(f)f.focus({preventScroll:true});}
+  /* 2026-11-19: 목록을 열 때 첫 줄에 자동 초점을 잡아 초록 테두리(블락)가 보이던 것을 없앤다.
+     초점은 여는 단추에 그대로 두고, 키보드로 쪽을 넘길 때만 그 단추로 옮긴다(:focus-visible만 그린다). */
+  if(on){measureListRows();}
   else{measureOrbit();layout();}
   /* 심전도(assets/modes.js)가 목록이 열린 동안만 흐르도록 알린다 */
   try{document.dispatchEvent(new CustomEvent('jc-list',{detail:{open:on}}));}catch(e){}
@@ -1075,7 +1119,7 @@ function show(i){
     return;
   }
   clearTimeout(show.w);if(userMove)show.w=setTimeout(function(){if(window.JCCore&&shown===i)JCCore.warm(t.path);},500); /* 직접 고른 문장에 머물면 그 화면을 미리 받아 둔다 */
-  $('nav').style.setProperty('--acc','var(--'+t.color.replace('c','a')+')');
+  $('nav').style.setProperty('--acc','var(--tc-'+t.color+')');
   $('drum').setAttribute('aria-valuenow',i+1);
   $('drum').setAttribute('aria-valuetext','오늘은 '+t.phrase+' 보고 싶어요. '+t.title);
   $('sayOpen').setAttribute('href',t.path);$('sayOpen').setAttribute('data-visit',t.id);
@@ -1206,7 +1250,7 @@ function bindNav(){
   $('navNext').addEventListener('click',function(){step(1);});
   $('navPause').addEventListener('click',function(){setPaused(!paused);});
   $('allBtn').addEventListener('click',function(){setList(!listOpen);schedule();});
-  $('allPg').addEventListener('click',function(e){var b=e.target.closest('[data-lp]');if(!b||b.disabled)return;listPage=+b.getAttribute('data-lp');renderList();var f=$('allList').querySelector('a');if(f)f.focus({preventScroll:true});});
+  $('allPg').addEventListener('click',function(e){var b=e.target.closest('[data-lp]');if(!b||b.disabled)return;listPage=+b.getAttribute('data-lp');renderList();});
   $('dots').addEventListener('click',function(e){
     if(dotSwallow){dotSwallow=false;return;}
     var b=e.target.closest&&e.target.closest('[data-dot]');if(b)goTo(+b.getAttribute('data-dot'));
@@ -1265,12 +1309,31 @@ function startNav(){
 var MODES={seed:'시드',match:'매치'};
 var mode='all',deckOn=false;
 function modeName(){return MODES[mode]||'';}
-function readMode(){try{var m=localStorage.getItem('jc-mode');return (m==='seed'||m==='match')?m:'all';}catch(e){return 'all';}}
+/* 2026-11-19: 시드·매치를 자료와 같은 위계의 **별도 화면**으로 — 주소에 ?mode=seed / ?mode=match를 남긴다.
+   브라우저 뒤로·앞으로가 그대로 따라오고, 주소를 복사해 열어도 같은 화면에서 시작한다. */
+function urlMode(){try{var m=new URLSearchParams(location.search).get('mode');return (m==='seed'||m==='match')?m:'all';}catch(e){return 'all';}}
+function readMode(){var u=urlMode();if(u!=='all')return u;try{var m=localStorage.getItem('jc-mode');return (m==='seed'||m==='match')?m:'all';}catch(e){return 'all';}}
+function modeURL(m){
+  var q=new URLSearchParams(location.search);
+  if(m==='seed'||m==='match')q.set('mode',m);else q.delete('mode');
+  var qs=q.toString();
+  return location.pathname+(qs?'?'+qs:'')+location.hash;
+}
+function writeModeURL(m,replace){
+  try{
+    var u=modeURL(m);
+    if(location.pathname+location.search+location.hash===u)return;
+    if(replace)history.replaceState({jcMode:m},'',u);
+    else history.pushState({jcMode:m},'',u);
+  }catch(e){}
+}
 /* seed·match는 롤링·목록 대신 세로 슬롯 덱 화면(assets/deck.js)으로 바뀐다. */
-function applyMode(m){
+function applyMode(m,opt){
+  opt=opt||{};
   m=(m==='seed'||m==='match')?m:'all';
   mode=m;
   try{localStorage.setItem('jc-mode',m);}catch(e){}
+  if(opt.url!==false)writeModeURL(m,opt.replace===true);
   if(m==='all')root.removeAttribute('data-jc-mode');else root.setAttribute('data-jc-mode',m);
   deckOn=(m!=='all');
   hintRollEnd();
@@ -1357,7 +1420,7 @@ function paintInsight(i){
   go.setAttribute('aria-label','오늘의 직업상담 통찰 — '+t.title+' 열기');
   $('insightLink').setAttribute('href',href);$('insightLink').setAttribute('data-visit',t.id);$('insightLinkText').textContent=t.title+' 열기';
   $('insightCount').textContent=(i+1)+' / '+INSIGHTS.length;
-  $('insight').className='a-card a-insight a-live a-'+t.color;
+  $('insight').style.setProperty('--acc','var(--tc-'+t.color+')');$('insight').className='a-card a-insight a-live';
   setIns(false);
 }
 function setIns(on){var m=$('insMore'),b=$('insTg');if(on)m.setAttribute('data-open','');else m.removeAttribute('data-open');
@@ -1370,13 +1433,22 @@ function shuffle(){
   setTimeout(function(){paintInsight(n);f.classList.remove('a-out');setTimeout(function(){flipping=false;},210);},210);
 }
 
-/* ---------- 시계 (한국 시간) ---------- */
-var fmt=null;try{fmt=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'long',day:'numeric',weekday:'short',hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});}catch(e){}
+/* ---------- 시계 (한국 시간) ----------
+   2026-11-19: 표기를 「Nov. 19 (Thu) HH:MM:SS」로 통일한다(24시간제 · 영문 월 약자·요일 약자).
+   기기 언어 설정과 무관하게 같은 모양이 나오도록 en-US 형식 조각을 그대로 쓴다. */
+var KSTF=null;try{KSTF=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',month:'short',day:'numeric',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});}catch(e){}
+var MONN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WDD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 function tick(){
-  var s;
-  if(fmt){s=fmt.format(new Date());}
-  else{var d=new Date(Date.now()+9*3600*1000);s=d.toISOString().slice(5,19).replace('T',' ');}
-  $('clock').textContent='· '+s;
+  var s='';
+  try{
+    var p={};KSTF.formatToParts(new Date()).forEach(function(x){p[x.type]=x.value;});
+    s=(p.month||MONN[new Date().getMonth()])+'. '+(p.day||new Date().getDate())+' ('+(p.weekday||WDD[new Date().getDay()])+') '+(p.hour||'00')+':'+(p.minute||'00')+':'+(p.second||'00');
+  }catch(e){
+    var d=new Date(Date.now()+9*3600*1000);
+    d=new Date(d.getTime()+d.getTimezoneOffset()*60000);
+    s=MONN[d.getMonth()]+'. '+d.getDate()+' ('+WDD[d.getDay()]+') '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2);
+  }
+  $('clock').textContent=' · '+s;
 }
 
 /* ---------- 빠른 검색 ----------
@@ -1557,6 +1629,7 @@ $('res').addEventListener('pointermove',function(e){var o=e.target.closest&&e.ta
 $('btnSearch').addEventListener('click',openPal);
 $('btnClose').addEventListener('click',closePal);
 /* 로고(CCTT)를 누르면 대문 첫 화면으로 — 다른 보기(목록·시드·매치)에 있어도 새로고침 없이 제자리로 돌아온다. */
+var deckHome=$('deckHome');if(deckHome)deckHome.addEventListener('click',function(e){e.preventDefault();applyMode('all');});
 $('brandGo').addEventListener('click',function(e){
   var deckShown=$('deckView')?!!$('deckView').offsetParent:false;
   if(mode!=='all'||deckOn||listOpen||deckShown){e.preventDefault();applyMode('all');setList(false);}
@@ -1580,6 +1653,11 @@ document.addEventListener('pointermove',function(e){
 document.addEventListener('touchstart',function(e){var c=e.target.closest&&e.target.closest('.a-card.a-live');if(c)c.classList.add('a-lit');},{passive:true});
 ['touchend','touchcancel'].forEach(function(n){document.addEventListener(n,function(){
   Array.prototype.forEach.call(document.querySelectorAll('.a-lit'),function(c){setTimeout(function(){c.classList.remove('a-lit');},180);});},{passive:true});});
+window.addEventListener('popstate',function(){
+  var m=urlMode();
+  applyMode(m,{url:false});
+  window.scrollTo({top:0,behavior:'auto'});
+});
 window.addEventListener('pageshow',function(){paintSeen();applyTheme();});
 window.addEventListener('storage',function(e){if(e.key===KEY)paintSeen();if(e.key===TKEY)applyTheme();});
 document.addEventListener('visibilitychange',function(){if(!document.hidden)applyTheme();});
@@ -1592,7 +1670,8 @@ applyTheme();renderCounts();startNav();paintInsight(kstDayIndex()%INSIGHTS.lengt
 /* 저장된 모드가 있으면 첫 그림부터 덱 화면. deck.js는 defer라 준비된 뒤에 붙인다. */
 mode=readMode();
 if(mode!=='all'){root.setAttribute('data-jc-mode',mode);$('stage').hidden=true;
-  var bootMode=function(){if(!window.JCDECK){setTimeout(bootMode,20);return;}applyMode(mode);};
+  try{history.replaceState({jcMode:mode},'',modeURL(mode));}catch(e){}
+  var bootMode=function(){if(!window.JCDECK){setTimeout(bootMode,20);return;}applyMode(mode,{url:false});};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootMode);else bootMode();}
 setInterval(function(){tick();applyTheme();},1000);
 icons();window.addEventListener('load',icons);

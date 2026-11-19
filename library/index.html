@@ -665,8 +665,9 @@ document.documentElement.setAttribute('data-theme',t);})();
   .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; transition: transform .35s ease, opacity .35s ease; z-index: 90; pointer-events: none; background: var(--toast-bg); color: var(--toast-ink); }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 </style>
+<link rel="stylesheet" href="../assets/brand.css">
 </head>
-<body>
+<body data-jc-tool="library">
 <link rel="stylesheet" href="../assets/shell.css">
 <div class="studio-bg" aria-hidden="true"></div>
 
@@ -675,11 +676,10 @@ document.documentElement.setAttribute('data-theme',t);})();
   <div class="jc-room py-2 flex items-center gap-2 sm:gap-4">
     <a class="jc-ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
     <div class="min-w-0 flex-1 leading-tight">
-      <div class="truncate font-bold" style="font-size:var(--fs-sm)">국회 미래고용 디지털 서재</div>
+      <div class="jc-title truncate font-bold" style="font-size:var(--fs-sm)">국회 미래고용 <span>디지털 서재</span></div>
       <div class="mono truncate text-[10px] sm:text-[11px] t-faint">// FUTURE EMPLOYMENT READING ROOM</div>
     </div>
     <div class="flex items-center gap-1.5 sm:gap-2">
-      <span data-jc-prefs></span>
       <div class="seg" role="group" aria-label="화면 테마" style="display:none" hidden>
         <button type="button" data-theme-mode="auto" aria-pressed="true" title="오전 7시부터 오후 7시까지는 밝게, 그 밖에는 어둡게 바뀝니다">자동</button>
         <button type="button" data-theme-mode="light" aria-pressed="false">밝게</button>
@@ -689,6 +689,7 @@ document.documentElement.setAttribute('data-theme',t);})();
       <button id="btnSearch" type="button" class="tap glass rounded-xl px-3 inline-flex items-center justify-center gap-2 hover-line transition" style="font-size:var(--fs-xs)" aria-label="이슈 검색 (Ctrl+K)">
         <i data-lucide="search" class="w-4 h-4 t-acc"></i><span class="hidden md:inline">이슈 검색</span><kbd class="hidden lg:inline">Ctrl K</kbd>
       </button>
+      <span data-jc-prefs></span>
     </div>
   </div>
 </header>

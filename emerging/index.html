@@ -65,15 +65,15 @@ html.is-locked .fab{opacity:0;pointer-events:none}   /* 시트·팝업이 열리
 .ed b{color:var(--acc);font-weight:850}
 
 /* ── 제호 ── */
-.mast{border-top:2px solid var(--ink);border-bottom:1px solid var(--line-2);padding:6px 0 6px}
+.mast{border-top:2px solid var(--ink);border-bottom:1px solid var(--line-2);padding:6px 0 8px}
 .mast-k{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .mast-k b{color:var(--acc)}
 .mast-k .dot{width:3px;height:3px;border-radius:50%;background:var(--line-2)}
-.mast h1{position:relative;margin:3px 0 0;font-family:var(--serif);font-style:italic;font-weight:700;font-size:clamp(32px,8.4vw,58px);line-height:1.02;letter-spacing:-.01em}
-@media (min-width:900px){.mast h1{font-size:clamp(44px,4.4vw,58px)}}
+.mast h1{position:relative;margin:2px 0 0;font-family:var(--serif);font-style:italic;font-weight:700;font-size:clamp(22px,2.4vw,29px);line-height:1.1;letter-spacing:-.01em}
+@media (min-width:900px){.mast h1{font-size:clamp(24px,1.9vw,30px)}}
 .mast h1 .jc-seal{display:none}
-@media (min-width:900px){.mast h1{padding-right:118px}.mast h1 .jc-seal{display:block;position:absolute;right:2px;bottom:2px;margin:0;width:92px;height:52px;opacity:.6}}
-.mast .sub{margin:8px 0 0;font-size:13.5px;color:var(--muted);line-height:1.5}
+@media (min-width:900px){.mast h1{padding-right:84px}.mast h1 .jc-seal{display:block;position:absolute;right:2px;top:0;margin:0;width:70px;height:40px;opacity:.45}}
+.mast .sub{margin:5px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
 .mast .sub b{color:var(--ink)}
 .lead-line{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:6px 12px;margin-top:8px;padding:8px 0 6px;border-top:1px solid var(--line);overflow:hidden}
 .lead-line .dek{display:flex;align-items:flex-start;gap:7px;flex:1;min-width:0;margin:0;overflow:hidden}
@@ -454,18 +454,18 @@ html[data-jc-imm] .art,html[data-jc-imm] .card,html[data-jc-imm] .fig,html[data-
 .calwrap .cal{padding:6px 6px 4px}
 .sheet .note{margin:0 0 2px}
 </style>
+<link rel="stylesheet" href="../assets/brand.css">
 </head>
-<body>
+<body data-jc-tool="emerging">
 <div class="wrap">
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></a>
-    <button type="button" class="ed" id="edBtn" aria-haspopup="dialog"><b>지난 지면</b> 섹터로 찾기</button>
+    <a class="brand" href="./"><span>Emerging</span> Industry</a>
     <span data-jc-prefs></span>
   </header>
 
   <section class="mast">
     <div class="mast-k"><b>신산업 브리핑</b><span class="dot" aria-hidden="true"></span><span>Emerging Industry</span><span class="dot" aria-hidden="true"></span><span class="num" id="mDate">2026-11-19 목</span><span class="dot" aria-hidden="true"></span><span id="mRead">4분 읽기</span></div>
-    <h1>Emerging Industry</h1>
     <p class="sub" id="mSub"><b>1차부터 4차까지</b> 신산업의 시장 규모와 성장률을 도표로 읽고, 자료마다 직무분석을 펼칩니다.</p>
     <div class="lead-line">
       <p class="dek"><span class="dek-n num" id="mDekNo" aria-hidden="true">01</span><span class="sr">지금 보는 기사 요약: </span><span class="dek-tx" id="mDek">지면을 불러오고 있습니다</span></p>
