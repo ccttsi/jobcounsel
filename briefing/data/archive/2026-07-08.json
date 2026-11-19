@@ -1,0 +1,370 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-07-08T07:10:00+09:00",
+ "edition": {
+  "date": "2026-07-08",
+  "weekday": "수",
+  "title": "고용위기 선제대응지역 인천 제물포구 신규, 정규직 전환 1,247명",
+  "subtitle": "울산 남구 6개월 연장·석유화학 3곳 모두 지정·정규직 전환 지원 62% 소진",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "정규직 전환 승인",
+   "value": 0,
+   "unit": "",
+   "value_text": "1,247명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 상반기",
+   "delta_from": "목표 2,010명의 62%",
+   "source_id": "src_moel_conversion_20260708",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-07-08T07:10:00+09:00",
+   "run_id": "br-20260708-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "지원 사업장",
+   "value": 0,
+   "unit": "",
+   "value_text": "740곳",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 6월 말",
+   "delta_from": "30인 미만",
+   "source_id": "src_moel_conversion_20260708",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-07-08T07:10:00+09:00",
+   "run_id": "br-20260708-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "위기지역",
+   "value": 0,
+   "unit": "",
+   "value_text": "3곳",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "여수·서산·울산 남구",
+   "source_id": "src_moel_crisis_region_20260707",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-07-08T07:10:00+09:00",
+   "run_id": "br-20260708-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "정규직 전환 지원금, 상반기에만 1,247명 승인",
+   "kicker": "1,247명 · 740개 사업장 · 1인당 월 최대 60만원",
+   "three_step": {
+    "what": "고용노동부가 올해 1월 재개한 정규직 전환 지원 사업의 상반기 실적을 냈다. 목표 2,010명 가운데 1,247명(62.0%)이 승인됐고, 하반기에도 30인 미만 기업을 지원한다.",
+    "evidence": "6개월 이상 근속한 비정규직을 정규직으로 전환하거나 직접 고용한 30인 미만 기업에 전환자 1인당 월 최대 60만원을 1년간 준다. 2026년 6월 말 기준 740개 사업장이 승인됐고, 업종은 보건·사회복지 29.7%, 제조 15.5%, 도·소매 13.9%, 과학·기술서비스 7.5%, 정보통신 6.5% 순이다(2026년 7월 8일, 고용노동부).",
+    "implication": "비정규직으로 일하는 내담자에게 사업장 규모(30인 미만)만 맞으면 정규직 전환 지원금을 쓸 수 있다는 점을 알려 주고, 회사 인사담당자에게 직접 문의하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "상반기 승인",
+     "value": "1,247명",
+     "delta": "목표 2,010명의 62.0%",
+     "period": "2026년 상반기"
+    },
+    {
+     "label": "사업장",
+     "value": "740곳",
+     "delta": "30인 미만",
+     "period": "2026년 6월 말"
+    },
+    {
+     "label": "지원액",
+     "value": "월 최대 60만원",
+     "delta": "최대 1년",
+     "period": "2026년"
+    },
+    {
+     "label": "업종 1위",
+     "value": "보건·사회복지 29.7%",
+     "delta": "제조 15.5%",
+     "period": "2026년 상반기"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "보건·사회복지",
+     "제조",
+     "도·소매",
+     "과학·기술",
+     "정보통신"
+    ],
+    "series": [
+     {
+      "name": "승인 비중",
+      "values": [
+       29.7,
+       15.5,
+       13.9,
+       7.5,
+       6.5
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "2026년 상반기 정규직 전환 지원 승인 1,247명의 업종 비중. 고용노동부 2026.7.8.",
+    "source_id": "src_moel_conversion_20260708"
+   },
+   "counselor_question": "지금 일하는 곳이 30인 미만인가요, 정규직 전환 이야기가 있나요?",
+   "tags": [
+    "정규직 전환",
+    "지원금",
+    "비정규직"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "issue_id": "iss-regular-conversion-2026",
+   "updated_at": "2026-07-08T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_conversion_20260708",
+    "source_name": "고용노동부",
+    "source_title": "정규직 전환 지원금, \"기업의 인재 확보\"와 \"청년의 안정된 일자리\"를 지원합니다",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770041",
+    "published_at": "2026-07-08",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「정규직 전환 지원금, \"기업의 인재 확보\"와 \"청년의 안정된 일자리\"를 지원합니다」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용지표",
+   "title": "인천 제물포구 고용위기 선제대응지역 신규 지정",
+   "kicker": "울산 남구 6개월 연장 · 철강 침체 · 석유화학 3곳 모두 지정",
+   "three_step": {
+    "what": "고용노동부가 제5차 고용정책심의회에서 울산 남구의 고용위기 선제대응지역 지정을 6개월 연장하고 인천 제물포구를 1년간 새로 지정했다.",
+    "evidence": "울산 남구 연장은 석유화학 사업재편과 중동전쟁에 따른 지정학적 위험을 고려한 조치로, 이로써 여수·서산·울산 남구 세 곳 모두 1년간 집중 지원을 받는다. 인천 제물포구는 철강산업 침체가 배경이다. 지정 지역에는 고용유지지원금, 직업능력개발지원, 생활안정자금융자 등 우대 혜택이 주어진다(2026년 7월 7일, 고용노동부).",
+    "implication": "해당 지역 내담자에게 지역 지정 혜택(고용유지지원금·훈련·생활안정자금)을 알려 주고, 실직 전에 신청할 수 있는 항목을 먼저 챙기게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "울산 남구",
+     "value": "6개월 연장",
+     "delta": "2026.1.12~2027.1.11",
+     "period": "2026년 7월"
+    },
+    {
+     "label": "인천 제물포구",
+     "value": "1년 신규",
+     "delta": "철강산업 침체",
+     "period": "2026년 7월"
+    },
+    {
+     "label": "석유화학 위기지역",
+     "value": "3곳",
+     "delta": "여수·서산·울산 남구",
+     "period": "2026년 7월"
+    }
+   ],
+   "tags": [
+    "지역고용",
+    "고용위기",
+    "철강"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-crisis-region-202607",
+   "updated_at": "2026-07-08T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_crisis_region_20260707",
+    "source_name": "고용노동부",
+    "source_title": "고용노동부, 고용위기 선제대응지역 심의·의결",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156769904",
+    "published_at": "2026-07-07",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「고용노동부, 고용위기 선제대응지역 심의·의결」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_conversion_20260708",
+   "source_name": "고용노동부",
+   "source_title": "정규직 전환 지원금, \"기업의 인재 확보\"와 \"청년의 안정된 일자리\"를 지원합니다",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770041",
+   "published_at": "2026-07-08",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「정규직 전환 지원금, \"기업의 인재 확보\"와 \"청년의 안정된 일자리\"를 지원합니다」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_moel_crisis_region_20260707",
+   "source_name": "고용노동부",
+   "source_title": "고용노동부, 고용위기 선제대응지역 심의·의결",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156769904",
+   "published_at": "2026-07-07",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「고용노동부, 고용위기 선제대응지역 심의·의결」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22",
+  "2026-07-17",
+  "2026-07-15",
+  "2026-07-14",
+  "2026-07-10",
+  "2026-07-09",
+  "2026-07-08"
+ ]
+}
