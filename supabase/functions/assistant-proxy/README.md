@@ -83,6 +83,8 @@ Service Role 키는 **함수 안에서만** 쓰이고 브라우저로 나가지 
 
 **무료 한도 자동 폴백** — `gemini-3.8-flash` → `gemini-3.6-flash` → `gemini-3.5-flash-lite` → `gemini-3.1-flash-lite` 순으로, `429`(한도 초과)·`404`(내려간 모델)·`5xx`면 다음 무료 모델로 자동 전환합니다(무료 한도는 모델마다 따로 잡혀 있어 [모델별로 소진 시점이 다릅니다](https://aistudio.google.com/docs/rate-limits)). 실제 답한 모델은 응답 JSON 의 `model` 칸에 담기고, 키가 잘못된 `400·401·403`은 재시도하지 않고 바로 알려 줍니다. `3.7-flash` 는 `3.8-flash` 로 자동 라우팅되어 체인에서 뺐습니다.
 
+**속도 상한** — 모델 한 번을 기다리는 시간은 일반 대화 12초(`MODEL_TIMEOUT_MS`), 연결 테스트 8초(`PING_TIMEOUT_MS`)입니다. 남은 시간이 줄면 다음 모델의 상한도 그만큼 깎이므로, 연결 테스트(`ping`)는 **9초 안**(`PING_DEADLINE_MS`)에 끝납니다. 연결 테스트는 `thinking` 을 끄고 `maxOutputTokens` 16으로 짧게 묻습니다.
+
 부를 주소:
 
 ```
@@ -94,7 +96,7 @@ https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant-proxy
 | action | 하는 일 |
 |---|---|
 | `list_keys` · `set_key` · `delete_key` | Gemini 키 목록(끝 4자리)·등록·삭제 |
-| `ping` | 연결 테스트(「안녕하세요」 한 번) |
+| `ping` | 연결 테스트(「안녕하세요」 한 번) — `skipped`(건너뛴 모델·사유·HTTP 코드), 타임아웃·5xx면 `google_status` 도 함께 |
 | `ask` | 자료실 근거로 답하기. `stream:true` 면 SSE `stage`(추론) → `delta`(글자) → `done` |
 | `history_list` | 내 대화방 목록(최근 60개, 최근 순) |
 | `history_get` | 대화방 하나의 메시지(최대 40개) |
@@ -120,7 +122,7 @@ curl -s -X POST 'https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant
 2. 첫 안내 카드에서 「로그인하고 키 연결」 → 4단계 도해대로 Gemini 무료 키를 만들어 등록한다.
 3. 같은 질문에 **AI 답변 + 자료실 근거 카드**가 나온다.
 4. 「웹 교차 확인」을 켜면 **외부 확인(구글 검색)** 출처가 함께 나온다.
-5. 「내 키」에서 **연결 테스트**를 누르면 인사 한 문장·걸린 시간(초)·답한 모델 이름이 나온다.
+5. 「내 키」에서 **연결 테스트**를 누르면 인사 한 문장·걸린 시간(초)·답한 모델 이름이 나온다. 그 아래에 **건너뛴 모델과 이유**(`gemini-3.8-flash 한도초과(429)` 처럼 모델명·사유·코드만)가 한 줄로 붙고, 타임아웃·5xx로 밀렸을 때는 **구글 공식 서버 상태**(`정상 (공식 장애 공지 없음)` 또는 `공식 장애/지연 공지 확인됨: …`)와 상태 페이지 링크가 함께 나온다.
 6. 대화 화면은 **답이 글자 단위로 실시간으로 이어지고**, 끝나면 근거 카드가 붙는다(마커 `[[REFS:…]]` 는 화면에 안 보인다).
    기다리는 동안 답변 자리에 **검색 → 정리 → 추론 → 작성** 네 단계 막대가 차례로 차고, 끝나면 사라진다.
 7. 1분에 12번을 넘기면 「잠깐 쉬어 가요」 안내가 나온다.
@@ -151,6 +153,7 @@ curl -s -X POST 'https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant
 - 근거 주소는 자료실 안 상대 경로만 받습니다(`/`, `./` 로 시작).
 - 선참조 지도(`map`: 섹터 32개까지)와 후보 섹터(`route`: 3개까지)도 같은 주소 규칙으로 검사한 뒤 프롬프트에 넣습니다.
 - 한 사용자 분당 12회. 401/403이면 「키가 거부되었습니다」, 무료 모델 한도를 모두 쓰면 「한도」로 알려 줍니다.
+- 연결 테스트의 진단에는 **모델명·사유·HTTP 코드**만 담습니다. 키·질문·오류 본문은 응답에도 로그에도 남기지 않습니다. 구글 상태 확인은 공개 피드(`status.cloud.google.com/incidents.json`)에서 **끝나지 않은(end 없는)** 인시던트 중 Gemini·Vertex·AI Studio 관련이 있는지만 2초 안에 봅니다(429·정상 응답 때는 부르지 않음).
 - 질의는 `stream: true` 면 **SSE** 로 글자를 바로 흘려보냅니다(첫 글자 전 `429·404·5xx` 면 다음 무료 모델로 갈아탐). 스트리밍 답은 평문이고 마지막 줄 `[[REFS:e1,e2]]` 만 근거 번호로 떼어 봅니다. `stream` 이 없으면 기존 JSON 응답 그대로입니다.
 - 속도: `thinkingConfig.thinkingLevel='low'`, 웹 교차 확인이 꺼져 있으면 `google_search` 를 붙이지 않습니다(미지원 모델이 400 을 주면 그 설정만 빼고 재시도).
 - CORS 는 `JC_ALLOW_ORIGINS`(기본 `https://ccttsi.github.io`)만 허용합니다.

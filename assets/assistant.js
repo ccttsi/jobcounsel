@@ -2106,13 +2106,37 @@
         state: 'ok',
         text: String(j.reply || '').slice(0, 120),
         model: String(j.model || ''),
-        secs: (Math.max(0, ms) / 1000).toFixed(1)
+        secs: (Math.max(0, ms) / 1000).toFixed(1),
+        skipped: skipList(j.skipped),
+        google: googleNote(j)
       };
       renderKeys();
     }).catch(function (e) {
-      st.ktest = { state: 'err', text: errText(e) };
+      st.ktest = { state: 'err', text: errText(e), skipped: skipList(e && e.skipped), google: googleNote(e) };
       renderKeys();
     });
+  }
+
+  /* 서버가 준 «건너뛴 모델»은 모델명·사유·HTTP 코드만 쓴다. 모자란 값은 버린다. */
+  function skipList(v) {
+    if (!Array.isArray(v)) return [];
+    return v.slice(0, 4).map(function (s) {
+      return {
+        model: String((s && s.model) || ''),
+        reason: String((s && s.reason) || ''),
+        code: Number((s && s.code) || 0)
+      };
+    }).filter(function (s) { return !!s.model; });
+  }
+
+  /* 타임아웃·5xx로 밀렸을 때만 서버가 실어 보내는 구글 공식 상태 한 줄. */
+  function googleNote(j) {
+    if (!j || !j.google_status) return null;
+    return { text: String(j.google_status).slice(0, 200), url: String(j.google_status_url || '') };
+  }
+
+  function skipText(s) {
+    return s.model + ' ' + s.reason + (s.code ? '(' + s.code + ')' : '');
   }
 
   function delKey(provider) {
@@ -2279,13 +2303,44 @@
     }
     if (res.state === 'err') {
       el.ktestOut.appendChild(t('p', null, res.text || '테스트에 실패했어요.'));
+      /* 실패해도 «어디서 밀렸는지»와 «구글 쪽 상태»는 그대로 보여 준다. */
+      appendTestNotes(res);
       return;
     }
-    el.ktestOut.appendChild(t('p', 'jca-ktest-say', '“' + (res.text || '인사말을 받았습니다.') + '”'));
+    el.ktestOut.appendChild(t('p', 'jca-ktest-say', '“' + (res.text || '연결됐어요') + '”'));
     var meta = t('p', 'jca-ktest-meta');
     meta.appendChild(t('b', null, '연결됨 · ' + res.secs + '초'));
     if (res.model) meta.appendChild(t('span', null, res.model));
     el.ktestOut.appendChild(meta);
+    appendTestNotes(res);
+  }
+
+  /* 연결 테스트 카드 아래 진단 두 줄 — ① 건너뛴 모델과 이유 ② 구글 서버 상태. */
+  function appendTestNotes(res) {
+    if (res.skipped && res.skipped.length) {
+      var line = t('p', 'jca-ktest-note');
+      line.appendChild(t('b', null, res.skipped.length + '개 모델 건너뜀'));
+      res.skipped.forEach(function (s, i) {
+        var tail = i < res.skipped.length - 1 ? ',' : '';
+        line.appendChild(t('span', 'jca-ktest-sk', skipText(s) + tail));
+      });
+      el.ktestOut.appendChild(line);
+    }
+    if (res.google && res.google.text) {
+      var gs = t('p', 'jca-ktest-note jca-ktest-status');
+      gs.appendChild(t('b', null, '구글 서버 상태'));
+      var gt = t('span', 'jca-ktest-gtxt', res.google.text);
+      gt.title = res.google.text;              // 좁은 화면에서 줄임표로 잘려도 전체 문장은 tooltip 으로
+      gs.appendChild(gt);
+      if (res.google.url) {
+        var a = t('a', 'jca-ktest-link', '상태 페이지 ↗');
+        a.href = res.google.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        gs.appendChild(a);
+      }
+      el.ktestOut.appendChild(gs);
+    }
   }
 
   /* ---------- 그리기 ---------- */
