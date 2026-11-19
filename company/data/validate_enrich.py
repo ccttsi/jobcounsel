@@ -18,8 +18,10 @@ import re
 import sys
 import collections
 
-PATH = sys.argv[1] if len(sys.argv) > 1 else 'enrich.json'
-STEM = PATH.rsplit('/', 1)[0] + '/' if '/' in PATH else ''
+import os
+HERE = os.path.dirname(os.path.abspath(__file__))
+PATH = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'enrich.json')
+STEM = os.path.dirname(PATH) + '/'
 COMPANIES = STEM + 'companies.json'
 LOCAL = STEM + 'local-public.json'
 
