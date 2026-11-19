@@ -1,0 +1,349 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-06-24T07:10:00+09:00",
+ "edition": {
+  "date": "2026-06-24",
+  "weekday": "수",
+  "title": "지방정부 30곳 중 28곳에서 113건 위반, 배우자 출산휴가 지원도 넓어져",
+  "subtitle": "비정규직 기획감독 결과·쪼개기 계약·수당 차별 66명 1억원·7.1 시행령",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "위반 지방정부",
+   "value": 0,
+   "unit": "",
+   "value_text": "28곳",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "감독 30곳 중",
+   "source_id": "src_moel_local_contract_20260623",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-06-24T07:10:00+09:00",
+   "run_id": "br-20260624-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "위반 건수",
+   "value": 0,
+   "unit": "",
+   "value_text": "113건",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "노동관계법",
+   "source_id": "src_moel_local_contract_20260623",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-06-24T07:10:00+09:00",
+   "run_id": "br-20260624-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "차별적 처우",
+   "value": 0,
+   "unit": "",
+   "value_text": "66명·1억원",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "수당 미지급 3곳",
+   "source_id": "src_moel_local_contract_20260623",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-06-24T07:10:00+09:00",
+   "run_id": "br-20260624-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "지방정부 30곳 중 28곳에서 113건 위반, 쪼개기 계약이 뿌리",
+   "kicker": "28곳 · 113건 · 수당 차별 66명 1억원",
+   "three_step": {
+    "what": "고용노동부가 3월 11일부터 지방정부 30곳의 비정규직 노동조건을 기획감독한 결과 28곳에서 노동관계법 위반 113건을 적발했다.",
+    "evidence": "단기계약을 반복해 사실상 1년 넘게 일한 기간제 노동자의 퇴직금 미지급(1곳·1명·250만원), 기간제 수당 미지급 등 차별적 처우(3곳·66명·1억원), 성희롱 예방교육 미실시(10곳·10건)가 주요 위반이다. 모든 지방정부에서 단기·반복 계약과 사전심사제 미실시 등 고용관행이 확인됐고, 27개 기관에서 11개월 이상 반복 계약이 드러났다(2026년 6월 23일, 고용노동부).",
+    "implication": "공공기관 기간제로 일한 내담자에게 계약서상 기간과 실제 근무 기간을 대조해 보게 하라. 1년을 넘겼는데 계약이 쪼개졌다면 퇴직금·수당을 다시 계산해 볼 수 있다."
+   },
+   "key_numbers": [
+    {
+     "label": "감독",
+     "value": "지방정부 30곳",
+     "delta": "2026.3.11~",
+     "period": "2026년"
+    },
+    {
+     "label": "위반",
+     "value": "28곳·113건",
+     "delta": "노동관계법",
+     "period": "2026년"
+    },
+    {
+     "label": "차별적 처우",
+     "value": "3곳·66명·1억원",
+     "delta": "수당 미지급",
+     "period": "2026년"
+    },
+    {
+     "label": "쪼개기 계약",
+     "value": "27개 기관",
+     "delta": "11개월 이상 반복",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "공공기관에서 계약이 몇 번 끊겼나요, 실제로는 계속 일하셨나요?",
+   "tags": [
+    "비정규직",
+    "공공부문",
+    "기획감독"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-local-fixed-term-2026",
+   "updated_at": "2026-06-24T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_local_contract_20260623",
+    "source_name": "고용노동부",
+    "source_title": "불합리한 고용관행 근절을 위한 지방정부 비정규직 기획감독 결과 발표",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767714",
+    "published_at": "2026-06-23",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「불합리한 고용관행 근절을 위한 지방정부 비정규직 기획감독 결과 발표」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "배우자 출산휴가 20일 쓰면 업무분담 지원금도 나온다",
+   "kicker": "7월 1일 시행 · 배우자 출산휴가 20일 · 지역고용촉진지원금 개선",
+   "three_step": {
+    "what": "정부가 6월 23일 국무회의에서 고용보험법·산업재해보상보험법 시행령 개정안을 의결했다. 7월 1일부터 배우자 출산휴가를 20일 연속 쓰면 업무분담 지원금을 받을 수 있다.",
+    "evidence": "그동안 업무분담 지원금은 육아휴직이나 육아기 근로시간 단축에만 지급됐다. 앞으로는 배우자 출산휴가 20일 연속 사용 시 동료에게 업무를 나눠 주고 보상한 사업주도 지원 대상이 된다. 지역고용촉진지원금은 고용위기 지역으로 이전·신설하는 사업주가 지역 구직자를 6개월 이상 채용할 때 임금 일부를 지원하는 제도로, 요건이 개선됐다(2026년 6월 23일, 고용노동부).",
+    "implication": "출산을 앞둔 남성 내담자에게 배우자 출산휴가 20일과 업무분담 지원금을 함께 알려 주고, 중소기업일수록 동료 업무 분담 계획을 미리 세우게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "시행",
+     "value": "2026년 7월 1일",
+     "delta": "고용보험법 시행령",
+     "period": "2026년"
+    },
+    {
+     "label": "배우자 출산휴가",
+     "value": "20일 연속",
+     "delta": "업무분담 지원금",
+     "period": "2026년"
+    },
+    {
+     "label": "지역고용촉진지원금",
+     "value": "6개월 이상 채용",
+     "delta": "고용위기 지역",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "배우자 출산휴가를 다 쓰셨나요, 못 썼다면 무엇 때문이었나요?",
+   "tags": [
+    "출산휴가",
+    "남성육아",
+    "고용보험"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "issue_id": "iss-paternity-leave-2026",
+   "updated_at": "2026-06-24T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_paternity_20260623",
+    "source_name": "고용노동부",
+    "source_title": "「고용보험법 시행령」, 「산업재해보상보험법 시행령」 개정안 국무회의 심의·의결",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767715",
+    "published_at": "2026-06-23",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「「고용보험법 시행령」, 「산업재해보상보험법 시행령」 개정안 국무회의 심의·의결」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "퇴직·사회안전망"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_local_contract_20260623",
+   "source_name": "고용노동부",
+   "source_title": "불합리한 고용관행 근절을 위한 지방정부 비정규직 기획감독 결과 발표",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767714",
+   "published_at": "2026-06-23",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「불합리한 고용관행 근절을 위한 지방정부 비정규직 기획감독 결과 발표」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_moel_paternity_20260623",
+   "source_name": "고용노동부",
+   "source_title": "「고용보험법 시행령」, 「산업재해보상보험법 시행령」 개정안 국무회의 심의·의결",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767715",
+   "published_at": "2026-06-23",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「「고용보험법 시행령」, 「산업재해보상보험법 시행령」 개정안 국무회의 심의·의결」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22",
+  "2026-07-17",
+  "2026-07-15",
+  "2026-07-14",
+  "2026-07-10",
+  "2026-07-09",
+  "2026-07-08",
+  "2026-07-02",
+  "2026-07-01",
+  "2026-06-30",
+  "2026-06-24",
+  "2026-06-22"
+ ]
+}
