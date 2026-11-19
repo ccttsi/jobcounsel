@@ -423,7 +423,11 @@
       }
     }
     dictAll(toks).forEach(function (d) {
-      (d.s || []).forEach(function (id) { bump(id, d.kind === 'part' ? 2 : 3, d.c); });
+      var base = d.kind === 'part' ? 2 : 3;
+      /* 사전에 적힌 차례가 곧 우선순위 — 첫 자리에 적힌 섹터부터 앞으로. */
+      (d.s || []).forEach(function (id, i) {
+        bump(id, Math.max(1.6, base - i * 0.45), d.c);
+      });
     });
     var terms = PREF.terms || {};
     Object.keys(terms).forEach(function (k) {
