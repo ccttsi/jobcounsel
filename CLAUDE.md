@@ -34,6 +34,7 @@
    | `/parsons/` `/library/` `/theory/` `/manual/` (이북·긴글) | `design/patterns/ebook-reading.md` |
    | `/company/` `/cert/` `/univ/` `/grad/` `/decalcomania/` `/transit/` (명함첩·도감·위키) | `design/patterns/card-directory.md` |
    | `/hud/` `/vpi/` `/dacum/` `/talk/` (계산기·HUD) | `design/patterns/sim-hud.md` |
+   | `/thermometer/` (지표·게이지·관측대) | `design/patterns/metric-gauge.md` |
    | `/` (대문) | `design/patterns/hub-landing.md` |
    | 휴대폰·태블릿 손맛 (모든 섹터) | `design/patterns/touch-physics.md` |
 

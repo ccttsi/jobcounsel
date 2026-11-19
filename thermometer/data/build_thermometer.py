@@ -211,7 +211,8 @@ def main():
             "info": row.get("info", []),
         })
 
-    ranked = sorted([r for r in out_rows if r["domestic"]["temperature"] is not None],
+    # 순위는 근거가 2축 이상인 산업끼리만 매긴다 — 1축짜리 온도로 1위를 만들지 않는다.
+    ranked = sorted([r for r in out_rows if r["domestic"]["temperature"] is not None and r["domestic"]["axes_used"] >= 2],
                     key=lambda r: r["domestic"]["temperature"], reverse=True)
     for idx, row in enumerate(ranked):
         row["domestic"]["rank"] = idx + 1

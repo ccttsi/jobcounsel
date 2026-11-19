@@ -1,4 +1,4 @@
-> 이 저장소에서는 `reality/data/`에 두고, 앞으로 만들 16번 섹터 「취업 객관위치·자신감 도구」(`/reality/`)가 고치지 않고 읽기만 합니다. 본문에 나오는 `build_reality_stats.py`·`validate_reality_stats.py`는 만든 쪽 작업 공간 기준이며 이 저장소에는 들어 있지 않습니다. 데이터 파일(`reality_stats.json`)과 이 문서 두 개가 저장소에 들어온 전부입니다.
+> 이 저장소에서는 `reality/data/`에 두고, 앞으로 만들 17번 섹터 「취업 객관위치·자신감 도구」(`/reality/`)가 고치지 않고 읽기만 합니다. 본문에 나오는 `build_reality_stats.py`·`validate_reality_stats.py`는 만든 쪽 작업 공간 기준이며 이 저장소에는 들어 있지 않습니다. 데이터 파일(`reality_stats.json`)과 이 문서 두 개가 저장소에 들어온 전부입니다.
 
 # 취업 객관 위치·자신감 회복 공식 통계 데이터셋 (career-reality-stats)
 

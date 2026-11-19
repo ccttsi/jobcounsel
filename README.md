@@ -30,6 +30,7 @@
 | `/labor/` | 노동시장 산책 (노동경제 개념 그래프 + 고용 뉴스 읽기 도우미) |
 | `/cert/` | 자격증 도감 (4대 분류 자격증 위키 830건. 데이터 `cert/data/certifications.json`, 화면 `cert/app.js`) |
 | `/company/` | 기업 명함첩 (대기업·중견기업·공공기관 기업 위키 7,822곳. 데이터 `company/data/companies.json`, 화면 `company/app.js`) |
+| `/thermometer/` | 산업 온도계 (같은 산업을 국내·글로벌 두 온도로 −20~+40℃에 앉힌다. 고용·생산·매출·트렌드 네 축의 공식 수치 전년비로 계산, 모든 값에 기준시점·출처. KSIC 정석 ↔ 체감 산업군 토글·검색(`?q=`)·정렬 3종. 데이터 `thermometer/data/thermometer.json`, 산출 `build_thermometer.py`, 계약 `thermometer/data/SCHEMA.md` v1.0.0, 화면 `thermometer/app.js`) |
 | `/reality/` | 취업 현위치 (예측 vs 공식 통계 착시 점검·조건별 분포 위 내 자리·패배 문장 반박·통제 분리와 방패 카드. 데이터 `reality/data/reality_stats.json`(읽기 전용), 화면 `reality/app.js`) |
 | `/briefing/` | 오늘의 브리핑 (매일 아침 새 지면: 전통 신문 꼴의 제호·핵심 수치·3단 이슈 카드·AI × 직무 레이더·출처·라이선스. 제호 옆 날짜 단추는 미니 달력(2026-11~현재 달 자동 확장)이고, 카드 바닥 「연결고리」는 같은 주제 자료를 시간순·국내/해외로 모아 본다. 데이터 `briefing/data/briefing.json`·`archive/`·파생 색인 `chain.json`은 수집 쪽이 쓰고 화면 `briefing/app.js`는 읽기만, 계약 `briefing/data/SCHEMA.md` v1.3.0) |
 | `/briefing/news/` | 오늘의 원문(17번의 하위 꼭지, 대문 항목 없음): 원문 재게시·AI 번역이 허용된 자료만 원문/번역/나란히로 읽는 피드. 데이터 `briefing/data/news.json`(계약 `briefing/data/NEWS-SCHEMA.md`)이 없으면 「첫 호 준비 중」 |
