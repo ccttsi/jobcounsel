@@ -366,7 +366,7 @@
 
   /* 두 말 이상을 함께 적었을 때 — 말마디마다 걸린 자료를 모아 모든 말에 걸린 자료만 남긴다 */
   function resolveAll(T) {
-    var maps = T.map(termMap), keep = [];
+    var maps = T.map(function (t) { return termMap(t, true); }), keep = [];
     Object.keys(maps[0]).forEach(function (id) {
       var terms = [], ext = null, sc = 0;
       for (var i = 0; i < maps.length; i++) {
@@ -810,9 +810,12 @@
   /* ---------- 단계마다: 다른 자료 직접 찾기 ---------- */
   /* 검색어 한 마디가 걸린 자료를 센다 — 이름·분류(딱지)·키워드(영문 포함)·설명 순으로 무게를 준다.
      자료실 색인(기업 명함첩·대학학과위키·약어 사전)에만 실린 이름도 함께 본다.
-     한 조건의 결과는 TMAPC에 담아 두어, 쉼표로 여러 말을 칠 때 같은 말을 거듭 훑지 않는다. */
-  function termMap(t) {
-    var hit = TMAPC[t.n];
+     한 조건의 결과는 TMAPC에 담아 두어, 쉼표로 여러 말을 칠 때 같은 말을 거듭 훑지 않는다.
+     strict = 여러 조건을 함께 볼 때. 색인 근거가 흐릿한 것(문서 키워드 속 글자, 약어의 앞부분만 걸린 것)은
+     「공통 매칭」의 조건 충족으로 세지 않는다 — 근거라고 내민 문장이 엉뚱해지기 때문이다. 한 말일 때는 예전 그대로. */
+  function termMap(t, strict) {
+    var ck = t.n + (strict ? '!' : '');
+    var hit = TMAPC[ck];
     if (hit) return hit;
     var n = t.n, map = {};
     Object.keys(SIDX).forEach(function (id) {
@@ -826,12 +829,13 @@
     });
     /* 자료실 색인에서 걸린 자료 — 지도에 이름이 없는 말도 후보로 올라간다. */
     extHits(t.raw).forEach(function (h) {
+      if (strict && (h.sc < 60 || (h.kind === 'dict' && h.sc < 90))) return;
       var cur = map[h.id];
       /* 그래프에서 이미 걸린 자료는 그 근거를 그대로 두고, 이름·별칭이 꼭 같을 때만 색인 근거를 보탠다 */
       if (cur) { if (!cur.ext && h.sc >= 95) cur.ext = h; return; }
       map[h.id] = { sc: 54 + h.sc * 0.42, why: [], ext: h };
     });
-    TMAPC[t.n] = map;
+    TMAPC[ck] = map;
     return map;
   }
 
@@ -840,7 +844,7 @@
     var T = splitTerms(q), used = {}, out = [], i;
     if (!T.length) return out;
     CHAIN.forEach(function (id) { used[id] = 1; });
-    var maps = T.map(termMap);
+    var maps = T.map(function (t) { return termMap(t, T.length > 1); });
     Object.keys(maps[0]).forEach(function (id) {
       var sc = 0, why = [], terms = [], ext = null;
       for (i = 0; i < maps.length; i++) {
