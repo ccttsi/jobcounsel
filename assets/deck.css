@@ -174,9 +174,12 @@
 .a-tuts-dots{display:flex;gap:6px;margin-right:auto}
 .a-tuts-dots span{width:7px;height:7px;border-radius:99px;background:var(--line-2)}
 .a-tuts-dots span.on{background:var(--acc);width:18px}
-.a-root .a-tuts-b{min-height:44px;padding:0 16px;border-radius:12px;border-width:1px;border-color:var(--line-2);
-  background:var(--bg);color:var(--muted);font-size:14px;font-weight:750}
-.a-root .a-tuts-b.pri{border-color:var(--acc);background:var(--acc);color:#fff;min-width:88px}
+/* 발/뒤 단추는 **같은 크기**로 못 박는다 — 글자 길이(이전 2자·다음 2자·알겠습니다 5자)가 달라도
+   상자 폭이 흔들리지 않게 width 고정, 글자는 가로·세로 정중앙(상속된 text-align:start를 덮는다). */
+.a-root .a-tuts-b{width:96px;min-width:0;height:44px;min-height:44px;padding:0 8px;border-radius:12px;border-width:1px;border-color:var(--line-2);
+  background:var(--bg);color:var(--muted);font-size:14px;font-weight:750;line-height:1;
+  display:inline-flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap}
+.a-root .a-tuts-b.pri{border-color:var(--acc);background:var(--acc);color:#fff}
 :root[data-theme="dark"] .a-root .a-tuts-b.pri{color:#06090f}
 .a-root .a-tuts-b[disabled]{opacity:.4}
 

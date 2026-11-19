@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <script src="./assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>직업상담 통합 자료실</title>
-<meta name="description" content="직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무를 익히는 학습·업무 보조 자료 모음">
+<title>Career Consultant Tutorial · CCTT</title>
+<meta name="application-name" content="Career Consultant Tutorial">
+<meta name="description" content="Career Consultant Tutorial(CCTT) — 직업상담 이론, 심리검사 해석, 직무분석, 국민취업지원제도 실무를 익히는 학습·업무 보조 자료 모음">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
 <script>
 /* 테마를 그리기 전에 정한다. 자동: 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
@@ -82,9 +83,21 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-top{position:sticky;top:0;z-index:30;margin:0 calc(clamp(14px,3vw,40px) * -1);padding:10px clamp(14px,3vw,40px);
   background:color-mix(in srgb,var(--bg) 97%,transparent);border-bottom-width:1px;
   display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
-.a-brand{display:flex;flex-direction:column;min-width:0;flex:1 1 180px}
-.a-brand b{font-size:clamp(16px,1vw + 12px,20px);font-weight:750;letter-spacing:-.025em;line-height:1.3}
-.a-brand span{font-size:12px;color:var(--muted);line-height:1.4}
+.a-brand{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;min-height:44px;flex:1 1 180px;
+  color:inherit;text-decoration:none;cursor:pointer;border-radius:10px}
+.a-brand:hover .a-word{color:var(--acc)}
+.a-brand:focus-visible{outline:2px solid var(--a1);outline-offset:3px}
+/* 로고(2026-11-19): 모노그램 CCTT + 영문 워드마크. 자간을 넓힌 대문자 한 줄이라 작은 화면에서도 한 줄에 앉는다. */
+.a-brand .a-logo{display:flex;align-items:center;gap:9px;min-width:0;line-height:1.2}
+.a-brand .a-mono{flex:none;display:grid;place-items:center;height:23px;padding:0 6px;border:1px solid var(--line-2);border-radius:6px;
+  background:var(--panel);color:var(--acc);font-size:10px;font-weight:850;letter-spacing:.16em;font-variant-numeric:tabular-nums}
+.a-brand .a-word{min-width:0;font-size:clamp(12.5px,2.5vw + 3px,18px);font-weight:700;letter-spacing:.075em;text-transform:uppercase;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+/* 좁은 화면: 로고를 잘라 내지 않고 두 줄로 내려 쓴다(모노그램과 이름이 한 덩이로 남게). */
+@media (max-width:620px){
+  .a-brand .a-word{white-space:normal;font-size:12px;line-height:1.22;letter-spacing:.06em}
+} 
+.a-brand .a-brand-sub{font-size:12px;color:var(--muted);line-height:1.4;letter-spacing:-.01em}
 .a-status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap}
 .a-dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--a1);flex:none}
 .a-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--a1);opacity:0;animation:a-ring 2.4s cubic-bezier(.2,.7,.3,1) .6s 3}
@@ -409,6 +422,11 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-chips{display:flex;flex-wrap:wrap;gap:6px}
 
 .a-insight{perspective:1200px}
+/* 통찰 카드 제목·질문을 누르면 그 통찰의 섹터로 간다(2026-11-19: 누르면 아무 일도 없던 곳).
+   카드 안의 단추(풀이 보기·다른 통찰 보기)는 그대로 자기 일을 한다. */
+.a-root .a-ins-go{display:flex;flex-direction:column;gap:12px;margin:-6px -8px 0;padding:6px 8px;border-radius:12px;color:inherit;text-decoration:none}
+.a-ins-go:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+@media (hover:hover) and (pointer:fine){.a-ins-go:hover h2{color:var(--acc)}}
 .a-flip{display:flex;flex-direction:column;gap:12px;margin-top:14px;transform-origin:50% 0;transition:transform .2s ease-in,opacity .2s ease-in}
 .a-flip.a-out{transform:rotateX(-78deg);opacity:0}
 .a-insight h2{font-size:clamp(21px,1.5vw + 15px,32px);line-height:1.3;letter-spacing:-.03em;font-weight:750;text-wrap:balance}
@@ -497,11 +515,11 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 <div class="a-backdrop" aria-hidden="true"></div>
 <div class="a-shell">
 
-  <header class="a-top" data-jc-headfold="직업상담 통합 자료실">
-    <div class="a-brand">
-      <b>직업상담 통합 자료실</b>
-      <span>Career Counseling Archive</span>
-    </div>
+  <header class="a-top" data-jc-headfold="CCTT · Career Consultant Tutorial">
+    <a class="a-brand" id="brandGo" href="./" aria-label="Career Consultant Tutorial — 첫 화면으로">
+      <b class="a-logo"><span class="a-mono" aria-hidden="true">CCTT</span><span class="a-word">Career Consultant Tutorial</span></b>
+      <span class="a-brand-sub">직업상담·커리어 상담 자료실 · 시드 · 매치</span>
+    </a>
     <div class="a-status" role="status" aria-label="사이트 상태와 한국 시간">
       <span class="a-dot" aria-hidden="true"></span>
       <span id="statusText">운영 중</span>
@@ -535,6 +553,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
     <div class="a-pv-lead">
       <p><b>로그인하지 않아도 자료실의 모든 기능을 제한 없이 사용할 수 있습니다.</b> 로그인은 내가 본 내용과 학습 기록(탐색 진도·형광펜·포스트잇 메모 등)을 저장하고 다른 기기와 동기화하기 위한 선택 기능입니다.</p>
       <p><b>자료실의 정보는 정답이 아닌 참고·실습용 도구입니다.</b> 직업상담 실무 연습과 탐색을 돕기 위한 자료이므로, 실제 판단은 최신 공식 자료와 기관 안내로 확인해 주세요.</p>
+      <p><b>「시드 · 매치」는 나만의 목차를 직접 꽂아 쓰는 화면입니다.</b> 대문의 심전도 단추를 한 번 누르고 한 번 더 누르면 <b>시드</b>(지식·원리·기준)와 <b>매치</b>(현장·실무) 중 하나를 고를 수 있습니다. 자료 선반에서 카드를 골라 번호 칸에 꽂으면 그 순서가 내 목차가 되고, <b>상황 프리셋</b>(매치는 <b>유형 프리셋</b>)을 고르면 상담 순서대로 카드가 한 번에 꽂히며 단계별 질문·확인 진행판이 함께 열립니다. 꽂은 순서는 지금 쓰는 기기의 브라우저에 저장되고, 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
     </div>
     <ul class="a-pv-list">
       <li><b>아이디와 비밀번호만 받습니다.</b> 이름·이메일·전화번호 같은 개인정보는 받지 않습니다. 로그인하지 않으면 모든 기록은 지금 쓰는 기기의 브라우저에만 남습니다.</li>
@@ -637,8 +656,10 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <section class="a-card a-insight a-c1 a-live" id="insight" aria-labelledby="insightLabel">
         <div class="a-sec"><b id="insightLabel">오늘의 직업상담 통찰</b><span id="insightTag"></span></div>
         <div class="a-flip" id="flip" aria-live="polite">
-          <h2 id="insightTitle"></h2>
-          <p class="a-q"><small>상담에서 이렇게 물어보세요</small><span id="insightQ"></span></p>
+          <a class="a-ins-go" id="insightGo" href="./theory/" data-visit="theory" aria-label="오늘의 직업상담 통찰 — 관련 자료 열기">
+            <h2 id="insightTitle"></h2>
+            <p class="a-q"><small>상담에서 이렇게 물어보세요</small><span id="insightQ"></span></p>
+          </a>
           <div class="a-ins-more" id="insMore">
             <button type="button" class="a-ins-tg a-gauge" id="insTg" aria-expanded="false" aria-controls="insBody"><span id="insTgT">풀이 보기</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             <div class="a-ins-body" id="insBody"><p class="a-body" id="insightBody"></p></div>
@@ -825,73 +846,73 @@ var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':
 var TOOLS=window.JC_TOOLS||[];   /* 섹터 장부는 assets/tools.js 한곳에서 관리한다 */
 var ALL=TOOLS;                    /* 전체 목록(23). TOOLS는 지금 보고 있는 모드의 목록이다 */
 var INSIGHTS=[
- {tag:'제도 · 대학원',to:'grad',t:'대학원은 세 종류입니다',
+ {tag:'제도 · 대학원',to:'grad',t:'대학원은 세 종류입니다',dk:'./grad/#guide',
   b:'고등교육법은 대학원을 일반대학원(학술 연구), 전문대학원(전문 직업 인력 양성), 특수대학원(직업인·성인의 계속교육)으로 나눕니다. 특수대학원은 석사 과정만 두고, 같은 전공 이름이라도 종류에 따라 수업 시간과 졸업 요건, 받을 수 있는 지원이 달라집니다.',
   q:'가려는 자리의 요건에 학위가 명시되어 있나요, 아니면 경력이나 자격으로도 갈 수 있나요?'},
- {tag:'이론 · 수퍼',to:'theory',t:'수퍼의 생애진로무지개',
+ {tag:'이론 · 수퍼',to:'theory',t:'수퍼의 생애진로무지개',dk:'./theory/#t-super',
   b:'진로는 직업 하나를 고르는 일이 아니라, 생애 기간(시간)과 생애 공간(자녀·학생·직업인·배우자·부모 같은 역할)이 겹쳐 만드는 전체 그림입니다. 역할의 비중이 바뀌면 일에 대한 요구도 달라집니다.',
   q:'지금 삶에서 가장 큰 비중을 차지하는 역할은 무엇이고, 일은 그 사이 어디에 놓여 있나요?'},
- {tag:'이론 · 켈리',to:'theory',t:'켈리의 개인구성개념과 레퍼토리 그리드',
+ {tag:'이론 · 켈리',to:'theory',t:'켈리의 개인구성개념과 레퍼토리 그리드',dk:'./theory/#t-kelly',
   b:'사람은 저마다의 양극 기준(안정적이다–불안하다, 자유롭다–답답하다)으로 직업을 해석합니다. 레퍼토리 그리드는 그 기준을 꺼내 보는 도구입니다. 상담자의 기준을 내담자에게 씌우지 않는 것이 핵심입니다.',
   q:'좋은 직업과 그렇지 않은 직업을 가르는 당신만의 기준을 세 가지만 말해 본다면 무엇인가요?'},
- {tag:'검사 해석 · 홀랜드',to:'vpi',t:'홀랜드 육각형의 일관성',
+ {tag:'검사 해석 · 홀랜드',to:'vpi',t:'홀랜드 육각형의 일관성',dk:'./vpi/',
   b:'1·2순위 흥미 코드가 육각형에서 인접하면(RI, SE 등) 일관성이 높고, 정반대에 있으면(RS·IE·AC) 낮습니다. 낮은 일관성은 결함이 아니라 상반된 활동을 함께 원한다는 신호이므로 탐색의 출발점이 됩니다.',
   q:'두 가지 흥미 가운데 누가 시키지 않아도 계속 하게 되는 쪽은 어느 쪽인가요?'},
- {tag:'이론 · 긴즈버그',to:'theory',t:'긴즈버그: 타협에서 최적화로',
+ {tag:'이론 · 긴즈버그',to:'theory',t:'긴즈버그: 타협에서 최적화로',dk:'./theory/#t-ginzberg',
   b:'긴즈버그는 직업선택을 환상기–잠정기–현실기로 이어지는 발달 과정으로 보았습니다. 처음에는 바람과 현실 사이의 타협이라고 했지만, 이후 수정하면서 선택을 평생 이어지는 과정으로 보고 타협 대신 최적화라는 말을 썼습니다.',
   q:'지금의 선택에서 포기한 것은 무엇이고, 그 대신 지키려는 것은 무엇인가요?'},
- {tag:'제도 · 국취 소득 신고',to:'hud',t:'구직촉진수당 소득 감액 산식',
+ {tag:'제도 · 국취 소득 신고',to:'hud',t:'구직촉진수당 소득 감액 산식',dk:'./hud/#calc',
   b:'기준금액은 월 지급액의 2배와 1인가구 중위 60%(2026년 1,538,543원) 가운데 큰 금액입니다. 신고소득이 기준금액보다 적으면 기준금액에서 소득을 뺀 금액 한도로 지급하고, 프로그램 수당을 뺀 소득이 기준금액을 넘으면 지급 정지입니다. (법 제21조, 영 제9조의2)',
   q:'이번 지급주기에 인정일 이후 일한 대가로 받은 돈이 있나요? 언제, 얼마를 받았나요?'},
- {tag:'직무분석 · DACUM',to:'dacum',t:'DACUM 과업 진술문의 문법',
+ {tag:'직무분석 · DACUM',to:'dacum',t:'DACUM 과업 진술문의 문법',dk:'./dacum/',
   b:'과업은 한정어 → 목적어 → 행위 동사 순서로, 관찰할 수 있는 동사 하나로 끝냅니다. "이해하다", "알다"처럼 머릿속 상태를 가리키는 동사는 과업이 될 수 없고, 그 내용은 지식 목록으로 옮깁니다.',
   q:'그 일을 해냈는지 다른 사람이 눈으로 확인하려면 무엇을 보면 되나요?'},
- {tag:'이론 · 반두라',to:'theory',t:'자기효능감의 네 가지 원천',
+ {tag:'이론 · 반두라',to:'theory',t:'자기효능감의 네 가지 원천',dk:'./theory/#t-bandura',
   b:'할 수 있다는 믿음은 성공 경험, 대리 경험, 언어적 설득, 생리·정서 상태에서 나옵니다. 가장 강한 것은 직접 해낸 경험이므로, 성공 가능성이 높은 작은 과제부터 설계합니다.',
   q:'비슷한 일을 해냈던 경험을 떠올리면, 그때 무엇이 도움이 되었나요?'},
- {tag:'이론 · 슐로스버그',to:'theory',t:'슐로스버그의 전환 4S',
+ {tag:'이론 · 슐로스버그',to:'theory',t:'슐로스버그의 전환 4S',dk:'./theory/#t-schlossberg',
   b:'전환에 적응하는 힘은 사건 자체보다 네 가지 자원에서 나옵니다. 상황(Situation), 자기(Self), 지원(Support), 전략(Strategies). 실직이나 이직 직후에는 부족한 자원 한 가지를 먼저 채웁니다.',
   q:'지금 가장 부족하다고 느끼는 것은 상황을 바꿀 여지, 나 자신의 힘, 주변의 지원, 대처 방법 중 무엇인가요?'},
- {tag:'이론 · 인지정보처리',to:'theory',t:'인지정보처리 이론의 CASVE 순환',
+ {tag:'이론 · 인지정보처리',to:'theory',t:'인지정보처리 이론의 CASVE 순환',dk:'./theory/#t-cip',
   b:'진로결정은 의사소통(문제 인식) → 분석 → 종합(대안 넓히고 좁히기) → 가치평가 → 실행으로 돕니다. 정보만 계속 찾는 내담자는 분석 단계에 머물러 있는 것일 수 있습니다.',
   q:'지금 필요한 것은 정보를 더 모으는 일인가요, 모은 정보로 대안을 좁히는 일인가요?'},
- {tag:'이론 · 사비카스',to:'theory',t:'사비카스의 진로적응성 4C',
+ {tag:'이론 · 사비카스',to:'theory',t:'사비카스의 진로적응성 4C',dk:'./theory/#t-savickas',
   b:'변화에 대처하는 자원은 관심(Concern), 통제(Control), 호기심(Curiosity), 자신감(Confidence)입니다. 네 가지 가운데 낮은 것을 찾아 그에 맞는 구체적 행동을 정합니다.',
   q:'앞날을 준비하는 마음, 내가 정한다는 느낌, 알아보고 싶은 마음, 해낼 수 있다는 믿음 중 요즘 가장 약한 것은 무엇인가요?'},
- {tag:'이론 · 일 적응',to:'theory',t:'일 적응 이론: 만족과 충족',
+ {tag:'이론 · 일 적응',to:'theory',t:'일 적응 이론: 만족과 충족',dk:'./theory/#t-twa',
   b:'만족(satisfaction)은 개인이 환경의 보상에 만족하는가, 충족(satisfactoriness)은 환경이 개인의 수행에 만족하는가입니다. 두 축을 나눠 물으면 떠날지 조정할지가 보입니다.',
   q:'이 일이 나에게 주는 것에 만족하나요? 그리고 조직은 내 수행을 어떻게 보고 있다고 생각하나요?'},
- {tag:'제도 · 국취 수당 지급',to:'manual',t:'지급 중단과 지급 정지는 따로 센다',
+ {tag:'제도 · 국취 수당 지급',to:'manual',t:'지급 중단과 지급 정지는 따로 센다',dk:'./manual/#terms',
   b:'지급 중단은 구직활동 미이행(법 제26조), 지급 정지는 소득 초과(법 제21조)입니다. 중단 3회는 남은 수당 수급권만 소멸하고 서비스는 계속되지만, 정지 3회는 수급자격 인정 철회입니다. 두 횟수는 합치지 않습니다. (법 제26조·제21조, 영 제11조·제9조의2)',
   q:'이번 회차에 수당이 나가지 않은 이유가 활동 때문인지 소득 때문인지 구분해 안내했나요?'},
- {tag:'이론 · 크럼볼츠',to:'theory',t:'크럼볼츠의 계획된 우연',
+ {tag:'이론 · 크럼볼츠',to:'theory',t:'크럼볼츠의 계획된 우연',dk:'./theory/#t-krumboltz',
   b:'예기치 않은 사건을 기회로 바꾸는 다섯 가지 태도는 호기심, 인내, 유연성, 낙관성, 위험 감수입니다. 완벽한 계획보다 정보 인터뷰나 단기 체험 같은 작은 탐색 실험을 권합니다.',
   q:'최근 우연히 알게 된 사람이나 기회 가운데, 한 번 더 알아볼 만한 것이 있나요?'},
- {tag:'제도 · 전직지원',to:'transit',t:'조기재취업수당은 절반 지점이 기준',
+ {tag:'제도 · 전직지원',to:'transit',t:'조기재취업수당은 절반 지점이 기준',dk:'./transit/',
   b:'구직급여를 받던 중 재취업한 날의 전날을 기준으로 소정급여일수가 절반 이상 남아 있고, 새 직장에서 12개월 이상 일하면 남은 날수의 절반에 해당하는 금액을 한 번에 받습니다. (고용보험법 제64조, 시행령 제84조)',
   q:'입사 제안을 받은 날, 남은 수급 일수가 소정급여일수의 절반을 넘는지 함께 계산해 보았나요?'},
- {tag:'직무분석 · DACUM',to:'dacum',t:'DACUM의 첫째 전제: 숙련 작업자가 가장 잘 안다',
+ {tag:'직무분석 · DACUM',to:'dacum',t:'DACUM의 첫째 전제: 숙련 작업자가 가장 잘 안다',dk:'./dacum/',
   b:'숙련 작업자는 자기 직무를 누구보다 정확하게 기술하고 정의할 수 있습니다. 그래서 정보원은 관리자나 교수가 아니라 현직 숙련자 패널이고, 패널 구성이 분석의 타당도를 좌우합니다.',
   q:'이 일을 실제로 잘하고 있는 사람은 하루 동안 무엇을 하나요? 직접 물어본 적이 있나요?'},
- {tag:'상담 대화 · 양면 반영',to:'talk',t:'"하지만" 대신 "그리고"',
+ {tag:'상담 대화 · 양면 반영',to:'talk',t:'"하지만" 대신 "그리고"',dk:'./talk/#reflect',
   b:'"하고 싶지만 자신이 없다"를 그대로 돌려주면 뒤쪽만 남습니다. "한편으로는 하고 싶고, 다른 한편으로는 자신이 없으시군요"처럼 두 마음을 나란히 놓으면 내담자가 스스로 저울질을 시작합니다(동기강화상담의 양면 반영).',
   q:'두 마음 가운데 어느 쪽 목소리가 지금 더 크게 들리세요?'},
- {tag:'원전 · 파슨스 1909',to:'parsons',t:'결정의 주인은 내담자',
+ {tag:'원전 · 파슨스 1909',to:'parsons',t:'결정의 주인은 내담자',dk:'./parsons/#p3',
   b:'파슨스가 정리한 상담 7단계에서 셋째는 본인의 선택과 결정이고, 상담사의 분석은 그 뒤에 옵니다. 상담사는 안내하고, 바로잡고, 조언하고, 거들 수 있을 뿐이라고 했습니다(『직업의 선택』 1909, 제5장).',
   q:'이 결정을 내린다면, 그 이유를 내 말로 어떻게 설명하시겠어요?'},
- {tag:'상담 대화 · 질문',to:'talk',t:'"왜"를 "어떤 일이 있어서"로',
+ {tag:'상담 대화 · 질문',to:'talk',t:'"왜"를 "어떤 일이 있어서"로',dk:'./talk/#question',
   b:'"왜 그만두셨어요?"는 이유를 묻지만 듣는 사람에게는 해명하라는 말로 들리기 쉽습니다. 과정을 묻는 열린 질문으로 바꾸면 내담자가 자기 속도로 이야기합니다.',
   q:'전 직장을 떠나게 된 과정을 들려주실 수 있을까요?'},
- {tag:'기업정보 · 중견기업',to:'company',t:'중견기업 명단은 확인서를 받은 곳만 보입니다',
+ {tag:'기업정보 · 중견기업',to:'company',t:'중견기업 명단은 확인서를 받은 곳만 보입니다',dk:'./company/?q=중견기업',
   b:'정부는 중견기업 전체 명단을 공개하지 않습니다. 중견기업정보마당에는 「중견기업법」에 따른 확인서를 발급받은 기업의 이름과 유효기간만 공개되므로, 법적으로 중견기업이어도 확인서를 받지 않았으면 목록에 없습니다. 규모는 공시와 회사 안내로 함께 확인합니다.',
   q:'지원하려는 회사의 규모와 지위는 어떤 자료로 확인해 보셨나요?'},
- {tag:'자격 · 4대 분류',to:'cert',t:'민간자격과 국가공인 민간자격은 다릅니다',
+ {tag:'자격 · 4대 분류',to:'cert',t:'민간자격과 국가공인 민간자격은 다릅니다',dk:'./cert/#list?q=민간자격',
   b:'민간자격은 「자격기본법」에 따라 등록하면 운영할 수 있고, 국가공인 민간자격은 그 가운데 소관부처의 공인을 따로 받은 종목입니다. 공인에는 유효기간이 있어 기간이 끝나면 공인 여부가 달라질 수 있습니다.',
   q:'준비하려는 자격이 등록만 된 민간자격인지, 국가공인을 받은 종목인지, 공인 기간은 언제까지인지 함께 확인해 볼까요?'},
- {tag:'노동경제 · 지표 읽기',to:'labor',t:'실업률이 내려가도 좋은 소식이 아닐 때',
+ {tag:'노동경제 · 지표 읽기',to:'labor',t:'실업률이 내려가도 좋은 소식이 아닐 때',dk:'./labor/#c-unemp',
   b:'실업률의 분모는 경제활동인구입니다. 일자리를 찾다 지쳐 구직을 멈춘 사람은 실업자에서 비경제활동인구로 옮겨 가므로, 일하는 사람이 늘지 않아도 실업률은 내려갈 수 있습니다. 그래서 고용률·참가율을 함께 봅니다.',
   q:'요즘 구직 활동을 잠시 멈추신 적이 있다면, 어떤 일이 있어서였나요?'},
- {tag:'노동경제 · 베버리지 곡선',to:'labor',t:'구인난과 취업난이 함께 있는 이유',
+ {tag:'노동경제 · 베버리지 곡선',to:'labor',t:'구인난과 취업난이 함께 있는 이유',dk:'./labor/#c-beveridge',
   b:'빈 일자리와 실업이 동시에 많다면 경기보다 매칭이 문제일 가능성이 큽니다. 지역·직무·기술이 어긋난 미스매치는 경기 부양보다 훈련·정보·이동 지원으로 풉니다.',
   q:'희망하는 일과 지금 사람을 많이 찾는 일 사이에 이어 볼 수 있는 다리가 있을까요?'}
 ];
@@ -946,12 +967,17 @@ var NAV={
 };
 TOOLS.forEach(function(t){var n=NAV[t.id]||[];t.phrase=n[0]||(t.short+' 자료를 펼쳐');t.lead=n[1]||t.desc;});
 
-var N=TOOLS.length,INTERVAL=5200,IDLE=12000;
+var N=TOOLS.length,INTERVAL=5000,IDLE=12000;
+/* 자동 넘김은 **시계의 5초 격자**(00·05·10…초)에 맞춘다(2026-11-19).
+   호버·끌기·장전·일시정지·방치 유도·탭 가림 등 어떤 이유로 멈췄다 풀리든,
+   다음 눈금까지 조용히 기다렸다가 그 눈금에서 이어 간다 — 매번 Date.now()로 새로 계산해 오차가 쌓이지 않는다.
+   눈금 위(±30ms)에서 풀리면 쉬지 않고 부드럽게 잇는다(방치 유도는 00.00초에 시작해 05.00초에 끝난다). */
+var GRID=5000,GRID_SLACK=30;
 var reduceMQ=window.matchMedia?window.matchMedia('(prefers-reduced-motion: reduce)'):{matches:false};
 var pos=0,target=0,shown=-1,drag=null,paused=false,holdUntil=0,hover=false,lastT=0,itemH=60,fadeT=0,userMove=false,wheelAcc=0,wheelT=0;
 /* 움직일 때만 rAF를 돌린다(목표에 닿으면 멈춤). 자동 넘김은 setTimeout 한 번 + CSS 밑줄(scaleX)로 남은 시간을 보인다. */
 var raf=0,autoT=0,autoStart=0,remain=INTERVAL;
-/* 방치 유도(짝수분 00초, 5.0초)가 롤링을 움직이는 동안의 기준 자리.
+/* 방치 유도(매 분 00초, 5.0초)가 롤링을 움직이는 동안의 기준 자리.
    사용자가 만진 것이 아니므로 hold·userMove를 건드리지 않고, 끝나면 기준 자리로 정확히 돌아와 자동 넘김이 이어진다. */
 var hintBase=null,hintOff=null;
 var items=[],dotEls=[];
@@ -1094,18 +1120,28 @@ function hintRollEnd(){
   restartFill();schedule();
 }
 function restartFill(){var n=$('nav');n.classList.remove('a-run');void n.offsetWidth;if(!reduce()&&!paused)n.classList.add('a-run');}
+/* 자동 넘김 시계 — 시계의 5초 눈금(00·05·10…초)에 맞춰 넘긴다.
+   멈췄다 풀리든(resume), 달리던 중이든 다음 눈금까지 기다렸다가 **그 눈금에서** 넘긴다.
+   다음 눈금을 매번 Date.now()로 새로 재므로 타이머 오차가 쌓이지 않는다.
+   예: 01초에 플면 4초 쉬고 05초부터 · 0.1초에 플면 4.9초 쉬고 05초부터 · 00초에 플면 곧바로
+   (쉬는 동안 밑줄도 그 길이만큼만 찼다가 눈금에서 넘어간다 — --dur를 남은 시간으로 맞춘다). */
 function schedule(){
   clearTimeout(autoT);autoT=0;var n=$('nav'),now=performance.now();
   if(autoStart){remain=Math.max(0,remain-(now-autoStart));autoStart=0;}
   if(!canRun()){n.classList.add('a-hold');if(paused||reduce())n.classList.remove('a-run');return;}
   if(now<holdUntil){n.classList.add('a-hold');autoT=setTimeout(schedule,holdUntil-now+20);return;}
-  n.classList.remove('a-hold');if(!n.classList.contains('a-run'))restartFill();
-  autoStart=now;autoT=setTimeout(function(){autoStart=0;remain=INTERVAL;step(1,true);},remain);
+  var r=Date.now()%GRID,w=GRID-(r<GRID_SLACK?0:r);     /* 눈금 바로 위(±30ms)면 꼬박 한 바퀴 */
+  n.classList.remove('a-hold');
+  n.style.setProperty('--dur',w+'ms');restartFill();
+  autoStart=now;remain=w;
+  autoT=setTimeout(function(){autoStart=0;remain=INTERVAL;step(1,true);},w);
 }
 function kick(){if(!raf)raf=requestAnimationFrame(frame);}
-function hold(){
+/* hold(idle): 손이 닿은 뒤 자동 넘김을 멈춰 두는 시간. idle=0이면 곧바로 5초 눈금에 맡긴다
+   (레버 장전·해제처럼 「풀자마자 다음 눈금에서 이어 가야 하는」 경우에 쓴다). */
+function hold(idle){
   if(hintBase!==null){hintRollEnd();}          /* 방치 유도 중에 손이 닿으면 그 자리에서 넘겨받는다 */
-  userMove=true;remain=INTERVAL;autoStart=0;holdUntil=performance.now()+IDLE;restartFill();schedule();
+  userMove=true;remain=INTERVAL;autoStart=0;holdUntil=performance.now()+(idle==null?IDLE:idle);restartFill();schedule();
 }
 function step(k,auto){
   if(!auto)hold();else userMove=false;
@@ -1248,11 +1284,11 @@ function applyMode(m){
 }
 /* 가운데 문구를 슬롯처럼 돌린다(레버 당김 = 두 바퀴, 힌트 = 아홉 칸). 움직이는 동안만 rAF. */
 var spinT=0,spinPending=null;
-function spin(k,dur){
+function spin(k,dur,idle){
   if(reduce()||!N)return;
   if(spinT){cancelAnimationFrame(spinT);spinT=0;}
   if(raf){cancelAnimationFrame(raf);raf=0;}
-  hold();
+  hold(idle);
   var start=pos,total=Math.round(k===undefined||k===null?N:k),t0=0;
   if(!total)total=1;                       /* 음수도 받는다: 장전할 때 한 칸 뒤로 감는다 */
   dur=Math.max(160,dur||780);
@@ -1311,8 +1347,15 @@ var cur=-1,flipping=false;
 function kstDayIndex(){return Math.floor((Date.now()+9*3600*1000)/86400000);}
 function paintInsight(i){
   var x=INSIGHTS[i],t=byId[x.to];cur=i;
+  /* dk: 그 통찰이 가리키는 **실제 자료**의 주소(이론 위키 #t-이론, 노동시장 #c-개념, 대화 연습 #갈래…).
+     섹터에 하위 주소가 없는 곳(vpi·dacum·transit)은 섹터 첫 화면이 가장 깊은 자리다. */
+  var href=x.dk||t.path;
   $('insightTag').textContent=x.tag;$('insightTitle').textContent=x.t;$('insightBody').textContent=x.b;$('insightQ').textContent=x.q;
-  $('insightLink').setAttribute('href',t.path);$('insightLink').setAttribute('data-visit',t.id);$('insightLinkText').textContent=t.title+' 열기';
+  /* 카드 제목·질문도 그 자료로 가는 진짜 링크다 */
+  var go=$('insightGo');
+  go.setAttribute('href',href);go.setAttribute('data-visit',t.id);
+  go.setAttribute('aria-label','오늘의 직업상담 통찰 — '+t.title+' 열기');
+  $('insightLink').setAttribute('href',href);$('insightLink').setAttribute('data-visit',t.id);$('insightLinkText').textContent=t.title+' 열기';
   $('insightCount').textContent=(i+1)+' / '+INSIGHTS.length;
   $('insight').className='a-card a-insight a-live a-'+t.color;
   setIns(false);
@@ -1513,8 +1556,20 @@ $('res').addEventListener('pointermove',function(e){var o=e.target.closest&&e.ta
   Array.prototype.forEach.call(document.querySelectorAll('.a-opt'),function(x,k){x.setAttribute('aria-selected',k===sel);});$('q').setAttribute('aria-activedescendant','opt'+sel);}}});
 $('btnSearch').addEventListener('click',openPal);
 $('btnClose').addEventListener('click',closePal);
+/* 로고(CCTT)를 누르면 대문 첫 화면으로 — 다른 보기(목록·시드·매치)에 있어도 새로고침 없이 제자리로 돌아온다. */
+$('brandGo').addEventListener('click',function(e){
+  var deckShown=$('deckView')?!!$('deckView').offsetParent:false;
+  if(mode!=='all'||deckOn||listOpen||deckShown){e.preventDefault();applyMode('all');setList(false);}
+  else{e.preventDefault();}
+  window.scrollTo({top:0,behavior:reduce()?'auto':'smooth'});
+});
 $('btnShuffle').addEventListener('click',shuffle);
 $('insTg').addEventListener('click',function(){setIns(!$('insMore').hasAttribute('data-open'));});
+/* 카드의 빈 자리를 눌러도 그 통찰의 자료로 간다(단추·링크를 누를 때는 각자 맡은 일을 그대로 한다). */
+$('insight').addEventListener('click',function(e){
+  if(e.target.closest&&e.target.closest('a,button'))return;
+  var go=$('insightGo');if(go)go.click();
+});
 $('pvToggle').addEventListener('click',function(){setScroll(!$('privacy').classList.contains('a-open'));});
 
 /* 포인터를 따라가는 빛 (어두운 테마에서 보인다) */

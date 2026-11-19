@@ -332,7 +332,7 @@
   function quickChips() {
     var want = ['MES', '수율', '국취', '내일배움카드', 'SI', '경력단절여성'];
     $('quick').innerHTML = '<b>자주 듣는 말</b>' + want.map(function (w) {
-      return '<button type="button" data-q="' + esc(w) + '">' + esc(w) + '</button>';
+      return '<button type="button" data-q="' + esc(w) + '"><span>' + esc(w) + '</span></button>';
     }).join('');
   }
 

@@ -1,4 +1,4 @@
-/* 직업상담 통합 자료실 · 형광펜과 포스트잇 도구함
+/* Career Consultant Tutorial (CCTT) · 형광펜과 포스트잇 도구함
    - 모든 페이지가 <script src="…/assets/marker.js" defer></script> 한 줄로 불러 쓴다.
    - 기록은 이 기기의 localStorage에 페이지별로 저장된다(서버로 보내지 않는다).
    - 형광펜은 문서 구조를 건드리지 않도록 CSS Custom Highlight API로 칠한다. 지원하지 않는 브라우저는 <mark>로 감싼다.
@@ -399,12 +399,16 @@
     '*{box-sizing:border-box;font:inherit;color:inherit;margin:0}',
     'button{cursor:pointer;background:none;border:0;padding:0;-webkit-tap-highlight-color:transparent}',
     'button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:10px}',
-    '.fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(var(--lift,0px) + max(16px,env(safe-area-inset-bottom)));z-index:2;width:52px;height:52px;border-radius:18px;display:grid;place-items:center;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .2s cubic-bezier(.2,1.4,.4,1),bottom .25s,opacity .28s ease}',
+    '.fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(var(--lift,0px) + max(16px,env(safe-area-inset-bottom)));z-index:2;width:52px;height:52px;border-radius:18px;display:grid;place-items:center;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);opacity:.42;transition:transform .2s cubic-bezier(.2,1.4,.4,1),bottom .25s,opacity .18s ease}',
     '.fab:active{transform:scale(.94)}',
-    /* 집중 보기에서 쉬는 동안(assets/prefs.js가 data-jc-idle을 단다)은 연하게 물러나 있는다 */
-    ':host([data-jc-idle]) .fab[data-mode="off"]:not([aria-expanded="true"]){opacity:.3}',
-    /* 손가락으로 쓰는 화면에서는 쉬는 동안 오른쪽 가장자리로 반쯤 물러나 본문·단추를 덜 가린다. 글을 고르거나 누르면 다시 나온다. */
-    '@media (hover:none),(max-width:700px){.fab{width:46px;height:46px;border-radius:15px}.fab.rest{transform:translateX(52%);opacity:.72}.fab.rest:active{transform:translateX(52%) scale(.94)}}',
+    /* 평소에는 본문을 가리지 않게 반투명 — 누르는 동안·열려 있는 동안·연필/포스트잇을 쓰는 동안만 진해진다 */
+    '.fab:active,.fab[aria-expanded="true"],.fab[data-mode="pen"],.fab[data-mode="note"]{opacity:1}',
+    /* 호버는 마우스가 있는 화면에서만(터치에서 눌린 뒤 호버가 남지 않게) */
+    '@media (hover:hover) and (pointer:fine){.fab:hover{opacity:1}}',
+    /* 집중 보기에서 쉬는 동안(assets/prefs.js가 data-jc-idle을 단다)은 더 물러나 있는다 */
+    ':host([data-jc-idle]) .fab[data-mode="off"]:not([aria-expanded="true"]){opacity:.26}',
+    /* 손가락으로 쓰는 화면에서는 쉬는 동안 오른쪽 가장자리로 반쯤 물러나 본문·단추를 덜 가린다(서랍 탭처럼 걸쳐 있는 자리 — 일부러 그렇게 둔다). */
+    '@media (hover:none),(max-width:700px){.fab{width:46px;height:46px;border-radius:15px}.fab.rest{transform:translateX(52%)}.fab.rest:active{transform:translateX(52%) scale(.94)}}',
     '@media (prefers-reduced-motion:reduce){.fab{transition:none}}',
     '.fab svg{width:26px;height:26px;transform:rotate(-8deg)}',
     '.fab .cnt{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--acc);color:#fff;font-size:11px;font-weight:700;line-height:20px;text-align:center}',

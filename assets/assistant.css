@@ -39,9 +39,17 @@
   font: 600 13.5px/1 var(--_sans);
   letter-spacing: -.01em;
   cursor: pointer;
-  transition: transform .16s cubic-bezier(.2, 1.4, .4, 1), opacity .2s ease;
+  /* 평소에는 본 내용을 가리지 않게 반투명 — 손이 닿거나 열려 있을 때만 진해진다 */
+  opacity: .42;
+  transition: transform .22s cubic-bezier(.2, .9, .3, 1), opacity .18s ease;
 }
-.jca-launch:hover { transform: translateY(-1px); }
+/* 마우스가 있는 화면에서만 호버로 진해진다(터치에서 호버가 눌린 뒤 남지 않게). */
+@media (hover: hover) and (pointer: fine) {
+  .jca-launch:hover { opacity: 1; transform: translateY(-1px); }
+}
+.jca-launch:active,
+.jca-launch:focus-visible,
+.jca-launch[aria-expanded="true"] { opacity: 1; }
 .jca-launch:active { transform: translateY(0) scale(.98); }
 .jca-launch[hidden] { display: none; }
 .jca-launch svg { width: 21px; height: 21px; display: block; }
@@ -496,6 +504,9 @@
   border: 0; border-radius: 12px;
   background: var(--_acc); color: #fff;
   font: 700 13.5px/1 var(--_sans); cursor: pointer;
+  /* 글자가 왼쪽·아래로 치우치지 않게 가로·세로 모두 정중앙에 둔다(버튼의 text-align 상속값 무시) */
+  display: inline-flex; align-items: center; justify-content: center;
+  text-align: center; white-space: nowrap;
 }
 .jca-send:disabled { opacity: .55; cursor: default; }
 .jca-send:focus-visible { outline: 2px solid var(--_ink); outline-offset: 2px; }
@@ -785,12 +796,19 @@
 /* ---------- 휴대폰: 아래에서 올라오는 시트 ---------- */
 
 @media (max-width: 760px) {
+  /* 휴대폰: 화면 아래 가장자리에 살짝 걸린 서랍 탭. 누르면 위로 쏙 올라와 진해진다.
+     걸린 높이(8px)를 빼고도 보이는 높이가 48px이라 손가락 목표 44px은 그대로 지킨다. */
   .jca-launch {
     right: calc(max(12px, env(safe-area-inset-right)) + 52px + 8px);
-    bottom: calc(max(12px, env(safe-area-inset-bottom)) + var(--jca-lift, 0px));
-    width: 52px; padding: 0; justify-content: center;
+    bottom: calc(max(0px, env(safe-area-inset-bottom) - 30px) - 8px + var(--jca-lift, 0px));
+    width: 52px; height: 56px; padding: 0; justify-content: center;
     border-radius: 18px;
+    transform: translateY(0);
+    transform-origin: 50% 100%;
   }
+  .jca-launch:active,
+  .jca-launch:focus-visible,
+  .jca-launch[aria-expanded="true"] { transform: translateY(-12px); }
   .jca-launch .jca-launch-x { display: none; }
   .jca-panel {
     left: 8px; right: 8px; width: auto;
