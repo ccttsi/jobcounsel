@@ -12,7 +12,7 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var root = document.documentElement;
-  var DATA = null, BYID = {};
+  var DATA = null, BYID = {}, drawnSel = null;
   var state = { cls: 'feel', sort: 'temp', q: '', sel: null, page: 0 };
   var indexScrollTop = 0;
   /* 한 쪽에 놓는 산업 수 — 24개를 세로로 다 펼치면 첫 화면이 목록만 된다.
@@ -153,6 +153,9 @@
   }
 
   /* ---------- 관측 요약 ---------- */
+  /* 이 띠는 자료가 정해 놓은 값(가장 뜨거운·차가운 산업)이라 분류·정렬·검색과 상관없다.
+     그래서 한 번만 그리고, 버튼을 누를 때마다 갈아 끼우지 않는다(다시 그리면 등장 모션과
+     카드 손맛 탐색이 한쪽 카드에만 늦게 붙어 덜커덕거린다). */
   function renderDeck() {
     var rows = DATA.industries.filter(function (r) { return r.domestic.temperature != null || r.global.temperature != null; });
     function pick(side, dir) {
@@ -172,7 +175,8 @@
       var r = c.pick, t = r[c.side].temperature;
       var thin = r[c.side].axes_used < 2 ? '<em>근거 1축</em>' : '';
       return '<button type="button" class="dk ' + tone(t) + '" data-jump="' + r.id + '">'
-        + '<span><b>' + c.label + '</b><span>' + esc(r.name) + thin + '</span></span>'
+        + '<span class="lb">' + c.label + '</span>'
+        + '<span class="nmw"><span class="nm">' + esc(r.name) + '</span>' + thin + '</span>'
         + '<span class="t">' + tempText(t) + '</span></button>';
     }).join('');
   }
@@ -333,6 +337,7 @@
   }
 
   function renderDetail() {
+    drawnSel = state.sel;
     var row = BYID[state.sel];
     if (!row) { $('det').innerHTML = '<div class="det-in"><div class="empty"><b>산업을 고르세요</b>왼쪽 목록에서 산업을 누르면 국내·글로벌 두 온도와 네 축의 근거가 열립니다.</div></div>'; return; }
     var d = row.domestic, g = row.global;
@@ -477,9 +482,10 @@
 
   function renderAll() {
     paintSegs();
-    renderDeck();
     renderIndex();
-    renderDetail();
+    /* 상세는 고른 산업이 바뀔 때만 다시 그린다 — 정렬·분류를 바꿔도 같은 산업이면 온도계 막대가
+       다시 차오르는 애니메이션만 되풀이되어 화면이 덜커덕거린다. */
+    if (drawnSel !== state.sel) renderDetail();
   }
 
   /* ---------- 시작 ---------- */
@@ -504,6 +510,7 @@
     /* 주소로 특정 산업을 열고 들어왔으면 목록도 그 산업이 있는 쪽을 펼친다 */
     state.followSel = !!(i && BYID[i]);
     renderMore();
+    renderDeck();
     renderAll();
     if (i && BYID[i] && window.innerWidth < 900) showDetail();
 

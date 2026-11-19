@@ -19,7 +19,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 :root{
   --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
   --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
-  --acc:#8f3a22;--acc-soft:rgba(143,58,34,.08);
+  --acc:#8f3a22;--acc-soft:rgba(143,58,34,.08);--dk-edge:rgba(42,37,33,.14);
   --hot:#b4402a;--hot-2:#e08a63;--cold:#2f6f8f;--cold-2:#7db6d2;--mild:#8f6a1c;
   --t-cold:#2f6f8f;--t-cool:#5f9db3;--t-mid:#b3a68c;--t-hot2:#c08a52;--t-hot:#a63a24;
   --track:#efe7d9;--track-2:#e6dbc9;
@@ -30,7 +30,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 :root[data-theme="dark"]{
   --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
   --ink:#e6e9ef;--muted:#9aa2b4;--dim:#7c859a;
-  --acc:#e08a6a;--acc-soft:rgba(224,138,106,.12);
+  --acc:#e08a6a;--acc-soft:rgba(224,138,106,.12);--dk-edge:rgba(255,255,255,.11);
   --hot:#e08168;--hot-2:#f0a98c;--cold:#74b6d8;--cold-2:#a8d4e8;--mild:#fbbf24;
   --t-cold:#5aa6cf;--t-cool:#7fbdd4;--t-mid:#7e7a6b;--t-hot2:#c98f5a;--t-hot:#d1603f;
   --track:#182031;--track-2:#222c3f;
@@ -108,15 +108,19 @@ html:not([data-jc-imm]) .jchm .rule{opacity:1}
 }
 
 /* ── 관측 요약 띠 ── */
-.deck{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 0 0}
+/* 칸은 minmax(0,1fr) — 1fr만 쓰면 긴 이름표가 최소 폭을 밀어 올려 오른쪽 카드가 화면 밖으로 잘린다.
+   두 카드는 같은 격자 줄에 앉으므로 높이가 같고, 안쪽 두 줄(이름표 / 이름·값)도 같은 활자를 써서 높이가 같다. */
+.deck{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:8px 0 0}
 @media (max-width:599px){.deck .dk:nth-child(n+3){display:none}}
 @media (min-width:900px){.deck{grid-template-columns:repeat(4,minmax(0,1fr));padding:6px 0 0}}
-.dk{display:flex;align-items:center;gap:10px;min-height:48px;padding:4px 11px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
-.dk b{display:block;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--dim);line-height:1.3}
-.dk span{display:block;font-size:13.5px;font-weight:750;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dk em{font-style:normal;font-size:9.5px;font-weight:800;color:var(--dim);margin-left:4px;white-space:nowrap}
-.dk .t{flex:none;margin-left:auto;font-size:15px;font-weight:850;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.dk{display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;align-items:baseline;column-gap:8px;row-gap:0;min-width:0;min-height:48px;padding:4px 11px;border:1px solid var(--line);border-radius:12px;background:var(--panel);box-shadow:3px 3px 0 var(--dk-edge);text-align:left}
+.dk .lb{grid-column:1/-1;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--dim);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dk .nmw{display:flex;align-items:baseline;gap:4px;min-width:0}
+.dk .nm{min-width:0;font-size:13.5px;font-weight:750;line-height:1.35;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dk em{flex:none;font-style:normal;font-size:9.5px;font-weight:800;line-height:1;color:var(--dim);white-space:nowrap}
+.dk .t{justify-self:end;font-size:15px;font-weight:850;line-height:1.2;font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap}
 .dk.cold .t{color:var(--cold)}.dk.hot .t{color:var(--hot)}
+@media (hover:hover){.dk:hover{border-color:var(--line-2)}}
 
 /* ── 본문 ── */
 .grid{display:block;padding-top:8px}
@@ -348,7 +352,9 @@ html:not([data-jc-imm]) .jchm .rule{opacity:1}
       </label>
     </div>
 
-    <section class="deck" id="deck" aria-label="이번 자료 기준 가장 뜨겁고 차가운 산업"></section>
+    <!-- 요약 띠는 자료가 정해 놓은 값이라 필터·정렬 때 다시 그리지 않는다.
+         data-jc-still: 공용 등장 모션(.jc-in)과 카드 손맛 재탐색에서 빼 두 카드가 늘 같은 모습으로 앉아 있게 한다. -->
+    <section class="deck" id="deck" data-jc-still aria-label="이번 자료 기준 가장 뜨겁고 차가운 산업"></section>
 
     <div class="grid">
       <div class="index" id="index">
