@@ -172,9 +172,15 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-root .a-vfo-close{min-height:44px;margin-left:auto;padding:0 18px;border-radius:12px;border:1px solid var(--line-2);
   background:var(--bg);font-size:13.5px;font-weight:750;color:var(--ink)}
 @media (max-width:520px){
-  .a-vf-btn{gap:9px;padding:6px 8px}
+  .a-vf-btn{gap:9px;padding:7px 8px}
+  /* 좁은 화면은 제목 한 줄 + 키워드 한 줄로 갈라 둔다 — 섞이면 둘째 줄이 어정쩡하게 남는다 */
+  .a-vf-tx{flex-direction:column;align-items:flex-start;gap:4px}
   .a-vf-tx b{font-size:13px}
-  .a-vf-go{font-size:0;gap:0;padding-left:4px}
+  .a-vf-kw{gap:4px}
+  .a-vf-kw span{font-size:11px;padding:3px 7px}
+  .a-vf-seal{width:30px;height:30px}
+  .a-vf-seal svg{width:16px;height:16px}
+  .a-vf-go{font-size:0;gap:0;padding-left:2px}
   .a-vf-go-f{display:none}
   .a-vf-go-m{display:inline;font-size:12px}
   .a-vf-go svg{width:18px;height:18px}
