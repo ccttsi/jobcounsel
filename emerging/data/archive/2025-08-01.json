@@ -1,0 +1,484 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-20T05:28:57+09:00",
+ "edition": {
+  "no": 7,
+  "date": "2025-08-01",
+  "weekday": "금",
+  "title": "ESS 563MW, 전남에 7곳",
+  "reading_minutes": 4,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20250801-1",
+   "date": "2025-08-01",
+   "order": 1,
+   "sector": "s4",
+   "cat": "energy",
+   "lead": true,
+   "title": "ESS 563MW, 전남 7곳과 제주 1곳에 선다",
+   "kicker": "산업통상자원부 · 2025.8.1 보도자료",
+   "summary": "산업통상자원부와 전력거래소가 7월 31일 ESS 중앙계약시장위원회를 열고 8곳, 563MW 규모의 에너지저장장치 구축사업 낙찰자를 확정했다. 육지 500MW·제주 40MW를 공고해 51건의 제안서가 들어왔고, 전남 7곳 523MW와 제주 1곳 40MW가 선정됐다.",
+   "key_numbers": [
+    {
+     "label": "낙찰 규모",
+     "value": "563MW",
+     "note": "8곳, 공고 540MW의 105% 범위"
+    },
+    {
+     "label": "지역별",
+     "value": "전남 523MW·제주 40MW",
+     "note": "전남 7곳, 제주 1곳"
+    },
+    {
+     "label": "2030년 목표",
+     "value": "2.22GW",
+     "note": "제11차 전력수급기본계획, 2029년까지"
+    }
+   ],
+   "market": {
+    "label": "2025년 ESS 중앙계약시장 낙찰",
+    "unit": "MW",
+    "basis": "지역별 낙찰 물량",
+    "chart": "bar",
+    "labels": [
+     "전남",
+     "제주"
+    ],
+    "series": [
+     {
+      "name": "낙찰 물량",
+      "values": [
+       523,
+       40
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "공고는 육지 500MW·제주 40MW였고, 공고 물량의 105%까지 조정할 수 있어 563MW가 됐다.",
+    "source_id": "src_motie_ess2025"
+   },
+   "players": {
+    "domestic": [
+     "전력거래소"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-ldes"
+    ]
+   },
+   "source_id": "src_motie_ess2025",
+   "question": "출력제어를 줄이는 일은 발전소 밖에서 벌어진다. 어떤 사람이 이 설비를 운영하게 될까?",
+   "subtitle": "공고 540MW보다 23MW 많은 8곳, 내년 말까지 설비를 짓는다"
+  },
+  {
+   "id": "ei-20250801-2",
+   "date": "2025-08-01",
+   "order": 2,
+   "sector": "s2",
+   "cat": "semicon",
+   "lead": false,
+   "title": "7월 수출 608억 달러, 두 달 연속 최대",
+   "kicker": "산업통상자원부 · 2025.8.1 보도자료",
+   "summary": "산업통상자원부가 8월 1일 낸 7월 수출입 동향에서 수출은 608억 2,000만 달러로 전년 동월보다 5.9% 늘며 두 달 연속 월 기준 최대치를 다시 썼다. 반도체가 147억 1,000만 달러로 31.6% 늘었고 선박은 107.6% 늘어난 22억 4,000만 달러였다.",
+   "key_numbers": [
+    {
+     "label": "7월 수출",
+     "value": "608억 달러",
+     "note": "+5.9%, 역대 7월 최대"
+    },
+    {
+     "label": "반도체 수출",
+     "value": "147억 달러",
+     "note": "+31.6%, 메모리 94.7억 달러"
+    },
+    {
+     "label": "선박 수출",
+     "value": "22억 달러",
+     "note": "+107.6%"
+    }
+   ],
+   "market": {
+    "label": "반도체 월 수출",
+    "unit": "억 달러",
+    "basis": "2025년 1~7월",
+    "chart": "line",
+    "labels": [
+     "1월",
+     "2월",
+     "3월",
+     "4월",
+     "5월",
+     "6월",
+     "7월"
+    ],
+    "series": [
+     {
+      "name": "수출",
+      "values": [
+       101,
+       96,
+       131,
+       117,
+       138,
+       150,
+       147
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "6월 150억 달러에 이어 7월에도 147억 달러로 140억 달러를 넘겼다.",
+    "source_id": "src_motie_trade2507"
+   },
+   "players": {
+    "domestic": [
+     "산업통상자원부",
+     "관세청"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-advanced-pkg"
+    ]
+   },
+   "source_id": "src_motie_trade2507",
+   "question": "같은 반도체인데 메모리 값이 오르면 수출액이 먼저 움직인다. 물량과 단가를 어떻게 나눠 볼까?",
+   "subtitle": "반도체 147억 달러로 31.6% 늘고 선박은 107.6% 뛰었다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-elec",
+   "name": "전기·전자 엔지니어",
+   "en": "Electrical / Electronics Engineer",
+   "sector": "s2",
+   "role": "전력·제어·회로 시스템을 설계하고 시험한다. 배터리·로봇·충전설비처럼 전기를 다루는 모든 신산업의 아래쪽에서 작동한다.",
+   "ksa": {
+    "k": [
+     "회로이론·전력계통",
+     "전자부품 특성",
+     "전기 안전 규정"
+    ],
+    "s": [
+     "회로 설계·PCB",
+     "계측·디버깅",
+     "인증 시험 대응"
+    ],
+    "a": [
+     "감전·화재 위험을 먼저 보는 습관",
+     "측정값을 믿고 확인하는 태도"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "전자공학",
+    "제어계측공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전자기사",
+    "전기안전기사"
+   ],
+   "insight": "신산업의 화려한 부분은 아니지만, 전원이 꺼지면 모든 것이 멈춘다. 로봇·배터리·수소 설비 모두 이 직무 위에 서 있다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "LG전자",
+     "현대모비스",
+     "효성중공업",
+     "LS일렉트릭"
+    ],
+    "global": [
+     "Texas Instruments",
+     "Infineon",
+     "ABB",
+     "Siemens"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
+  },
+  {
+   "id": "j-ldes",
+   "kind": "new",
+   "name": "장주기 에너지저장(ESS) 엔지니어",
+   "en": "Long-Duration Energy Storage Engineer",
+   "sector": "s4",
+   "role": "8시간 이상 전력을 저장하는 흐름전지·액체공기 저장 설비의 용량과 효율을 설계한다. 전해액·펌프·열교환기 같은 구성품을 고르고, 계통에 붙였을 때 충·방전 계획이 맞는지 검증한다.",
+   "ksa": {
+    "k": [
+     "전기화학·열역학",
+     "전력계통",
+     "ESS 안전기준"
+    ],
+    "s": [
+     "용량·효율 설계",
+     "시운전·성능시험",
+     "계통 연계 검증"
+    ],
+    "a": [
+     "20년 운전을 기준으로 보는 설계 감각"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "화학공학",
+    "기계공학"
+   ],
+   "certs": [
+    "전기기사",
+    "에너지관리기사",
+    "산업안전기사"
+   ],
+   "insight": "리튬 배터리로는 8시간을 채우기 어렵다. 바나듐·액체공기처럼 다른 화학과 기계가 들어오면서 새 직무가 열린다.",
+   "companies": {
+    "domestic": [
+     "에이치투",
+     "스탠다드에너지",
+     "한국기계연구원"
+    ],
+    "global": [
+     "Sumitomo Electric",
+     "Invinity Energy Systems"
+    ]
+   }
+  },
+  {
+   "id": "j-advanced-pkg",
+   "name": "반도체 첨단패키징 공정 엔지니어",
+   "en": "Advanced Packaging Process Engineer",
+   "sector": "s2",
+   "role": "칩을 옆으로·위로 쌓아 하나의 시스템으로 만드는 2.5D·3D 패키징 공정을 개발한다. 열·휨·수율 문제를 잡고, AI 가속기 고객의 요구 사양에 맞춰 공정을 조정한다.",
+   "ksa": {
+    "k": [
+     "열기계·재료 특성",
+     "본딩·TSV 공정 원리",
+     "수율 분석"
+    ],
+    "s": [
+     "DOE 실험 설계",
+     "계측·불량 분석",
+     "고객 사양 협의"
+    ],
+    "a": [
+     "미세한 편차를 견디는 인내",
+     "데이터로 원인을 좁히는 논리"
+    ]
+   },
+   "study": [
+    "신소재공학",
+    "전자공학",
+    "기계공학"
+   ],
+   "certs": [
+    "반도체설계기사·반도체장비유지보수 관련 자격",
+    "품질경영기사"
+   ],
+   "insight": "전공정 미세화가 한계에 가까워지며 ‘쌓아서 성능을 내는’ 후공정이 다시 전면에 나왔다. 한국에 설비·소재 기업이 많아 국내 일자리 밀도가 높다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "SK하이닉스",
+     "한미반도체",
+     "네패스",
+     "하나마이크론"
+    ],
+    "global": [
+     "TSMC",
+     "Intel",
+     "Amkor",
+     "ASE"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "칩 열설계 자문역",
+     "w": "AI 가속기의 발열·휨을 잡는 전문 컨설팅"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_motie_ess2025",
+   "name": "산업통상자원부",
+   "title": "563MW 에너지저장장치(ESS) 구축사업 확정",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156754733",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2025-08-01",
+   "track": "A",
+   "usage": "2025년 ESS 중앙계약시장 8곳 563MW 낙찰(전남 523MW·제주 40MW), 공고 540MW, 제안서 51건, 2029년까지 2.22GW 목표"
+  },
+  {
+   "id": "src_motie_trade2507",
+   "name": "산업통상자원부",
+   "title": "2025년 7월 수출입 동향",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156754736",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2025-08-01",
+   "track": "A",
+   "usage": "2025년 7월 수출 608.2억 달러(+5.9%)·무역수지 66.1억 달러 흑자, 반도체 147.1억 달러(+31.6%), 선박 22.4억 달러(+107.6%)"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
