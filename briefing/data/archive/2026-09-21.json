@@ -1,0 +1,445 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-09-21T07:10:00+09:00",
+ "edition": {
+  "date": "2026-09-21",
+  "weekday": "월",
+  "title": "반도체 27곳 점검에 338건 위반, 미국은 2035년까지 3.5% 늘어난다",
+  "subtitle": "SK하이닉스 청주 119건·노인일자리 주간·미국 고용전망 2025~2035를 한 장으로",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "반도체 점검 위반",
+   "value": 0,
+   "unit": "",
+   "value_text": "338건",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 6~9월",
+   "delta_from": "27개 사업장",
+   "source_id": "src_moel_semi_20260920",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-21T07:10:00+09:00",
+   "run_id": "br-20260921-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "사법 처리",
+   "value": 0,
+   "unit": "",
+   "value_text": "28건",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "SK하이닉스 청주",
+   "source_id": "src_moel_semi_20260920",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-21T07:10:00+09:00",
+   "run_id": "br-20260921-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "미국 고용 전망",
+   "value": 0,
+   "unit": "",
+   "value_text": "+3.5%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025~2035년",
+   "delta_from": "10년",
+   "source_id": "src_bls_ted_projection_20260921",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-21T07:10:00+09:00",
+   "run_id": "br-20260921-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "반도체 27곳 점검에 338건 위반, 청주는 119건",
+   "kicker": "위반 338건 · 사법처리 28건 · 과태료 3,200만원",
+   "three_step": {
+    "what": "고용노동부가 불소 누출 사고가 잇따른 SK하이닉스 청주캠퍼스를 포함한 반도체 사업장 27곳을 6월 26일부터 9월 18일까지 점검해 산업안전보건법 위반 338건을 적발했다.",
+    "evidence": "SK하이닉스 청주캠퍼스에서만 119건이 나왔고, 안전보건규칙 위반 28건은 사법처리 대상이다. 과태료는 84건에 약 3,200만원을 부과했다. 이천 사업장은 작업절차 미준수로 도급승인이 취소됐다(2026년 9월 20일, 고용노동부).",
+    "implication": "반도체·화학 등 위험 업종으로 이직을 준비하는 내담자에게는 면접에서 안전보건 조직과 도급 구조를 직접 묻고, 최근 감독 이력을 확인하라고 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "적발",
+     "value": "338건",
+     "delta": "27개 사업장",
+     "period": "2026.6.26~9.18"
+    },
+    {
+     "label": "SK하이닉스 청주",
+     "value": "119건",
+     "delta": "사법처리 28건",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "과태료",
+     "value": "84건·3,200만원",
+     "delta": "경고표시·MSDS 미게시 등",
+     "period": "2026년 9월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "건",
+    "labels": [
+     "전체 적발",
+     "청주 사법처리",
+     "청주 과태료"
+    ],
+    "series": [
+     {
+      "name": "건수",
+      "values": [
+       338,
+       28,
+       84
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "반도체 사업장 27곳 집중점검(2026.6.26~9.18). 사법처리·과태료는 SK하이닉스 청주 기준. 고용노동부 2026.9.20.",
+    "source_id": "src_moel_semi_20260920"
+   },
+   "counselor_question": "일할 때 위험한 작업을 하면서 안전교육을 실제로 받은 적이 있나요?",
+   "tags": [
+    "산업안전",
+    "반도체",
+    "감독"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-semiconductor-safety-202609",
+   "updated_at": "2026-09-21T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_semi_20260920",
+    "source_name": "고용노동부",
+    "source_title": "반도체 제조업 집중 점검 결과 발표",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782525",
+    "published_at": "2026-09-20",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「반도체 제조업 집중 점검 결과 발표」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "노인일자리 주간, 5일간 기념식·심포지엄·국민참여관",
+   "kicker": "9.21~9.25 · 기념식·심포지엄·국민참여관 3개 행사",
+   "three_step": {
+    "what": "보건복지부가 9월 21일부터 25일까지 '2026 노인일자리 주간'을 운영한다. 기념식과 정책 심포지엄, 서울광장 국민참여관이 함께 열린다.",
+    "evidence": "9월 21일 기념식(더플라자 호텔)과 심포지엄(14:30~17:45)이 열리고, 9월 21~22일 서울광장에서 노익짱 페스티벌이 운영된다. 온라인 참여관은 9월 25일까지 이어진다. 기념식에서는 2025년 평가 우수기관·기업과 공모전 수상자가 시상된다(2026년 9월 20일, 보건복지부).",
+    "implication": "고령 내담자 상담에서 노인일자리 참여를 '소일거리'가 아니라 다음 일로 이어지는 경로로 설계하려면, 수행기관 상담 창구와 참여 이력 관리 방법을 함께 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "운영 기간",
+     "value": "9.21~9.25",
+     "delta": "5일",
+     "period": "2026년"
+    },
+    {
+     "label": "현장 행사",
+     "value": "9.21~9.22",
+     "delta": "서울광장 국민참여관",
+     "period": "2026년"
+    },
+    {
+     "label": "온라인 참여관",
+     "value": "9.21~9.25",
+     "delta": "한국노인인력개발원",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "지금 하시는 일 다음에 어떤 일을 하고 싶으신가요?",
+   "tags": [
+    "노인일자리",
+    "고령자",
+    "사회안전망"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "issue_id": "iss-senior-job-week-2026",
+   "updated_at": "2026-09-21T07:10:00+09:00",
+   "source": {
+    "source_id": "src_mopb_senior_20260920",
+    "source_name": "보건복지부",
+    "source_title": "「2026 노인일자리 주간」 개최",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782522",
+    "published_at": "2026-09-20",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 보건복지부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 보건복지부 「「2026 노인일자리 주간」 개최」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "퇴직·사회안전망"
+  },
+  {
+   "id": "c03",
+   "order": 3,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 일자리는 2035년까지 3.5% 늘고, 의료지원직이 13.3% 는다",
+   "kicker": "전체 +3.5% · 의료지원 +13.3% · 신규 일자리 3분의 1이 의료",
+   "three_step": {
+    "what": "미국 전체 고용이 2025년에서 2035년 사이 3.5% 늘어날 것으로 전망됐다. 늘어나는 일자리의 약 3분의 1을 두 의료 직군이 가져간다.",
+    "evidence": "직군별로는 의료지원(Healthcare support)이 +13.3%로 가장 빠르고, 의료기사·기술직이 +8.0%로 뒤를 이었다. 두 직군은 각각 112만2,700개, 81만9,500개 일자리를 만들며 2035년까지 신규 일자리의 약 3분의 1을 차지한다(2026년 9월 21일, BLS 고용전망).",
+    "implication": "자격·훈련 상담에서 '성장 직군'을 말할 때 의료지원직의 임금과 근무 강도를 함께 제시해, 숫자만 보고 뛰어들지 않게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "전체 고용",
+     "value": "+3.5%",
+     "delta": "2025~2035년",
+     "period": "2026년 9월 전망"
+    },
+    {
+     "label": "의료지원",
+     "value": "+13.3%",
+     "delta": "112만2,700개",
+     "period": "2025~2035년"
+    },
+    {
+     "label": "의료기사·기술",
+     "value": "+8.0%",
+     "delta": "81만9,500개",
+     "period": "2025~2035년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "의료지원",
+     "의료기사·기술",
+     "생명·자연·사회과학",
+     "전체"
+    ],
+    "series": [
+     {
+      "name": "2025~2035년 증가율",
+      "values": [
+       13.3,
+       8.0,
+       7.5,
+       3.5
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "직군별 고용 증가 전망. BLS Employment Projections, 2026.9.21.",
+    "source_id": "src_bls_ted_projection_20260921"
+   },
+   "counselor_question": "사람을 돌보는 일을 직업으로 생각해 본 적이 있으신가요?",
+   "tags": [
+    "고용전망",
+    "의료직",
+    "직업훈련"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "issue_id": "iss-us-projections-2035",
+   "updated_at": "2026-09-21T07:10:00+09:00",
+   "source": {
+    "source_id": "src_bls_ted_projection_20260921",
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_title": "Total employment projected to grow 3.5 percent between 2025 and 2035",
+    "source_url": "https://www.bls.gov/opub/ted/2026/total-employment-projected-to-grow-3-5-percent-between-2025-and-2035.htm",
+    "published_at": "2026-09-21",
+    "license": {
+     "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "BLS Copyright Information(2026-11-20 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+     "attribution_text": "출처: 미국 노동통계국(BLS) The Economics Daily 「Total employment projected to grow 3.5 percent between 2025 and 2035」(미국 연방정부 저작물·퍼블릭 도메인)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_semi_20260920",
+   "source_name": "고용노동부",
+   "source_title": "반도체 제조업 집중 점검 결과 발표",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782525",
+   "published_at": "2026-09-20",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「반도체 제조업 집중 점검 결과 발표」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_mopb_senior_20260920",
+   "source_name": "보건복지부",
+   "source_title": "「2026 노인일자리 주간」 개최",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782522",
+   "published_at": "2026-09-20",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 보건복지부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 보건복지부 「「2026 노인일자리 주간」 개최」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_bls_ted_projection_20260921",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Total employment projected to grow 3.5 percent between 2025 and 2035",
+   "source_url": "https://www.bls.gov/opub/ted/2026/total-employment-projected-to-grow-3-5-percent-between-2025-and-2035.htm",
+   "published_at": "2026-09-21",
+   "license": {
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "텍스트·표",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "BLS Copyright Information(2026-11-20 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+    "attribution_text": "출처: 미국 노동통계국(BLS) The Economics Daily 「Total employment projected to grow 3.5 percent between 2025 and 2035」(미국 연방정부 저작물·퍼블릭 도메인)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12"
+ ]
+}

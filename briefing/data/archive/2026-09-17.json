@@ -1,0 +1,419 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-09-17T07:10:00+09:00",
+ "edition": {
+  "date": "2026-09-17",
+  "weekday": "목",
+  "title": "한화에어로 채용지침 감독 착수, 미국 생산자물가는 5.4%",
+  "subtitle": "연령·출신학교 제한 의혹 감독·정상화 과제 9개·미국 PPI 5.4%를 한 장으로",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "미국 생산자물가",
+   "value": 0,
+   "unit": "",
+   "value_text": "5.4%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 8월",
+   "delta_from": "12개월",
+   "source_id": "src_bls_ted_ppi_20260916",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-17T07:10:00+09:00",
+   "run_id": "br-20260917-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "에너지 생산자물가",
+   "value": 0,
+   "unit": "",
+   "value_text": "24.4%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 8월",
+   "delta_from": "12개월",
+   "source_id": "src_bls_ted_ppi_20260916",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-17T07:10:00+09:00",
+   "run_id": "br-20260917-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "정상화 과제안",
+   "value": 0,
+   "unit": "",
+   "value_text": "9개",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "2차 회의",
+   "source_id": "src_moel_tf_20260916",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-17T07:10:00+09:00",
+   "run_id": "br-20260917-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "채용시장",
+   "title": "한화에어로 채용지침, 노동부가 감독에 들어갔다",
+   "kicker": "9월 16일 감독 착수 · 80년대생 이하·11개 대학 제한 지침 보도",
+   "three_step": {
+    "what": "고용노동부가 한화에어로스페이스의 연령·출신학교 제한 채용지침 의혹에 대해 9월 16일부터 감독에 착수했다. 채용공고·내부 기준·평가자료를 통해 실제 차별 기준이 적용됐는지 본다.",
+    "evidence": "'80년대생 이하, 11개 대학 출신만'이라는 채용지침이 있었다는 언론 보도(2026년 9월 9일 KBS) 이후 사흘 만에 감독이 시작됐다. 위법 사항이 확인되면 과태료·시정명령 등으로 조치한다고 고용노동부는 밝혔다(2026년 9월 16일).",
+    "implication": "채용 공고에 나이·학교 조건이 보이면 지원 전에 근로기준법상 차별 금지 조항을 확인하게 하고, 내담자에게 탈락 사유를 기록해 두라고 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "감독 착수",
+     "value": "2026년 9월 16일",
+     "delta": "보도 사흘 만",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "보도된 제한",
+     "value": "80년대생 이하·11개 대학",
+     "delta": "출신학교 제한",
+     "period": "2026년 9월 9일"
+    },
+    {
+     "label": "조치",
+     "value": "과태료·시정명령",
+     "delta": "위법 확인 시",
+     "period": "2026년 9월"
+    }
+   ],
+   "counselor_question": "지원했던 공고 가운데 나이·학교 조건이 걸렸던 적이 있으신가요?",
+   "tags": [
+    "공정채용",
+    "채용차별",
+    "감독"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "issue_id": "iss-hanwha-hiring-probe-202609",
+   "updated_at": "2026-09-17T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_hanwha_20260916",
+    "source_name": "고용노동부",
+    "source_title": "고용노동부, \"연령 학력 제한 의혹\", 한화에어로스페이스에 감독 착수",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781981",
+    "published_at": "2026-09-16",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「고용노동부, \"연령 학력 제한 의혹\", 한화에어로스페이스에 감독 착수」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "자격증 불법 대여부터 퇴직연금 적립까지, 9개 과제",
+   "kicker": "2차 정상화 과제안 9개 · 5월 1차에 이어",
+   "three_step": {
+    "what": "고용노동부가 9월 16일 '고용노동분야 정상화 과제 추진 TF' 2차 회의를 열고 현장 문제 9개에 대한 개선안을 논의했다. 국민제안과 전문가 의견, 부처 자체 발굴을 함께 모은 결과다.",
+    "evidence": "고용 분야에서는 국가기술자격 불법 대여와 임금 정보가 없는 채용공고 개선이, 노동 분야에서는 퇴직연금 적립 의무와 사내·공동근로복지기금 목적 외 사용 방지가 과제로 올랐다. 산업안전 분야는 부실 건강진단과 미등록 기관의 안전보건교육기관 사칭, 반복 사고 사업장 관리가 다뤄졌다(2026년 9월 16일, 고용노동부).",
+    "implication": "자격증 대여나 임금 미기재 공고를 일자리로 권하지 말고, 정상화 과제가 법령·지침으로 확정되는지 분기마다 확인해 상담 기준을 갱신하라."
+   },
+   "key_numbers": [
+    {
+     "label": "개선 과제안",
+     "value": "9개",
+     "delta": "2차 정상화 과제",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "1차 과제",
+     "value": "2026년 5월",
+     "delta": "이어서 발굴",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "논의 분야",
+     "value": "3개",
+     "delta": "산업안전·고용·노동",
+     "period": "2026년 9월"
+    }
+   ],
+   "tags": [
+    "고용정책",
+    "자격증",
+    "퇴직연금"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-moel-normalization-tf2-202609",
+   "updated_at": "2026-09-17T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_tf_20260916",
+    "source_name": "고용노동부",
+    "source_title": "고용노동부, '고용노동 분야 정상화 과제' 논의 위한 TF 회의 개최(2차)",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781980",
+    "published_at": "2026-09-16",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「고용노동부, '고용노동 분야 정상화 과제' 논의 위한 TF 회의 개최(2차)」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c03",
+   "order": 3,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 생산자물가 5.4%, 운송·창고는 13.0% 올랐다",
+   "kicker": "최종수요 +5.4% · 에너지 +24.4% · 운송·창고 +13.0%",
+   "three_step": {
+    "what": "미국 생산자물가가 2026년 8월까지 1년 사이 5.4% 올랐다. 재화가 서비스보다, 그중에서도 에너지와 운송·창고가 크게 올라 물류비 부담이 두드러졌다.",
+    "evidence": "최종수요 생산자물가는 12개월 +5.4%. 재화 +7.7%, 서비스 +4.5%였고, 재화 중 에너지가 +24.4%, 식료품은 +0.1%였다. 서비스에서는 운송·창고가 +13.0%로 전체를 끌어올렸다(2026년 9월 16일, BLS).",
+    "implication": "물류·운송 직무 구직자에게는 임금 협상 때 업종 물가(운송·창고 13.0%)를 근거로 제시하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "최종수요 PPI",
+     "value": "+5.4%",
+     "delta": "12개월",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "에너지",
+     "value": "+24.4%",
+     "delta": "12개월",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "운송·창고",
+     "value": "+13.0%",
+     "delta": "12개월",
+     "period": "2026년 8월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "최종수요",
+     "재화",
+     "서비스",
+     "에너지",
+     "운송·창고"
+    ],
+    "series": [
+     {
+      "name": "12개월 상승률",
+      "values": [
+       5.4,
+       7.7,
+       4.5,
+       24.4,
+       13.0
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "계절조정 안 함. BLS PPI, 2026.9.16.",
+    "source_id": "src_bls_ted_ppi_20260916"
+   },
+   "tags": [
+    "생산자물가",
+    "물류",
+    "미국"
+   ],
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "global",
+   "issue_id": "iss-us-ppi-202608",
+   "updated_at": "2026-09-17T07:10:00+09:00",
+   "source": {
+    "source_id": "src_bls_ted_ppi_20260916",
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_title": "Producer Price Index up 5.4 percent for the 12 months ended August 2026",
+    "source_url": "https://www.bls.gov/opub/ted/2026/producer-price-index-up-5-4-percent-for-the-12-months-ended-august-2026.htm",
+    "published_at": "2026-09-16",
+    "license": {
+     "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "BLS Copyright Information(2026-11-20 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+     "attribution_text": "출처: 미국 노동통계국(BLS) The Economics Daily 「Producer Price Index up 5.4 percent for the 12 months ended August 2026」(미국 연방정부 저작물·퍼블릭 도메인)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "거시경제와 고용"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_hanwha_20260916",
+   "source_name": "고용노동부",
+   "source_title": "고용노동부, \"연령 학력 제한 의혹\", 한화에어로스페이스에 감독 착수",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781981",
+   "published_at": "2026-09-16",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「고용노동부, \"연령 학력 제한 의혹\", 한화에어로스페이스에 감독 착수」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_moel_tf_20260916",
+   "source_name": "고용노동부",
+   "source_title": "고용노동부, '고용노동 분야 정상화 과제' 논의 위한 TF 회의 개최(2차)",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781980",
+   "published_at": "2026-09-16",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「고용노동부, '고용노동 분야 정상화 과제' 논의 위한 TF 회의 개최(2차)」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_bls_ted_ppi_20260916",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Producer Price Index up 5.4 percent for the 12 months ended August 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/producer-price-index-up-5-4-percent-for-the-12-months-ended-august-2026.htm",
+   "published_at": "2026-09-16",
+   "license": {
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "텍스트·표",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "BLS Copyright Information(2026-11-20 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+    "attribution_text": "출처: 미국 노동통계국(BLS) The Economics Daily 「Producer Price Index up 5.4 percent for the 12 months ended August 2026」(미국 연방정부 저작물·퍼블릭 도메인)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12"
+ ]
+}

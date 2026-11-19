@@ -1,0 +1,367 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-09-18T07:10:00+09:00",
+ "edition": {
+  "date": "2026-09-18",
+  "weekday": "금",
+  "title": "허위근로자 57명 모집한 사업주 구속, 미국은 시간당 46.89달러",
+  "subtitle": "고용보험 부정수급 5.8억원·미국 민간 고용비용 시간당 46.89달러를 한 장으로",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "부정수급 규모",
+   "value": 0,
+   "unit": "",
+   "value_text": "5.8억원",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2019.3~2026.2",
+   "delta_from": "7년",
+   "source_id": "src_moel_fraud_20260917",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-18T07:10:00+09:00",
+   "run_id": "br-20260918-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "허위근로자",
+   "value": 0,
+   "unit": "",
+   "value_text": "57명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "브로커 4명 동원",
+   "source_id": "src_moel_fraud_20260917",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-18T07:10:00+09:00",
+   "run_id": "br-20260918-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "미국 고용비용",
+   "value": 0,
+   "unit": "",
+   "value_text": "46.89달러",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 6월",
+   "delta_from": "시간당·민간",
+   "source_id": "src_bls_ted_ecec_20260917",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-18T07:10:00+09:00",
+   "run_id": "br-20260918-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "허위근로자 57명 모집한 사업주, 구속됐다",
+   "kicker": "부정수급 5.8억원 · 7년간 5개 사업장",
+   "three_step": {
+    "what": "브로커를 동원해 허위근로자 57명을 모집하고 실업급여를 받게 한 사업주가 구속됐다. 사업주와 브로커가 역할을 나눠 7년간 반복한 조직적 부정수급 사건이다.",
+    "evidence": "대구지방고용노동청은 사업주 A씨가 2019년 3월부터 2026년 2월까지 5개 사업장에서 브로커 4명 등을 통해 허위근로자를 모집하고 고용보험 피보험자격을 허위 신고한 혐의로 구속했다. 부정수급액은 5억8천여만원으로 구직급여 5억4천여만원, 고용유지지원금 2천여만원, 청년채용특별장려금 2천여만원이다. 대구지법은 9월 16일 구속영장을 발부했다(2026년 9월 17일, 고용노동부).",
+    "implication": "실업급여·장려금을 안내할 때 허위 근로 이력이 부정수급으로 형사처벌까지 갈 수 있음을 사례로 짚고, 이력 기재는 실제 근무한 사실만 하도록 확인하라."
+   },
+   "key_numbers": [
+    {
+     "label": "부정수급액",
+     "value": "5.8억원",
+     "delta": "구직급여 5.4억원",
+     "period": "2019.3~2026.2"
+    },
+    {
+     "label": "허위근로자",
+     "value": "57명",
+     "delta": "브로커 4명 동원",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "사업장",
+     "value": "5개",
+     "delta": "대구 지역",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "구속영장",
+     "value": "2026년 9월 16일",
+     "delta": "대구지법 발부",
+     "period": "2026년 9월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "억원",
+    "labels": [
+     "구직급여",
+     "고용유지지원금",
+     "청년채용장려금"
+    ],
+    "series": [
+     {
+      "name": "부정수급액",
+      "values": [
+       5.4,
+       0.2,
+       0.2
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "2026.9.17 고용노동부. 고용유지지원금·청년채용장려금은 '2천여만원' 표기를 억원으로 환산.",
+    "source_id": "src_moel_fraud_20260917"
+   },
+   "counselor_question": "이력서에 적은 경력 중 실제 근무 기간과 다르게 적힌 곳이 있나요?",
+   "tags": [
+    "고용보험",
+    "부정수급",
+    "실업급여"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-insurance-fraud-202609",
+   "updated_at": "2026-09-18T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_fraud_20260917",
+    "source_name": "고용노동부",
+    "source_title": "브로커 동원해 57명 허위근로자 모집… 5.8억원 고용보험 부정수급 사업주 구속",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782336",
+    "published_at": "2026-09-17",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「브로커 동원해 57명 허위근로자 모집… 5.8억원 고용보험 부정수급 사업주 구속」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 민간 고용비용 시간당 46.89달러, 30%는 복리후생",
+   "kicker": "임금 32.82달러 · 복리후생 14.07달러 · 상용직 54.00달러",
+   "three_step": {
+    "what": "미국 민간기업이 시간당 근로자에게 쓰는 돈은 2026년 6월 기준 46.89달러였다. 임금이 32.82달러, 복리후생이 14.07달러로 복리후생이 30%를 차지했다.",
+    "evidence": "상용직은 시간당 54.00달러(임금 36.97달러), 시간제는 25.20달러(임금 20.15달러)로 같은 일터에서도 고용 형태에 따라 두 배 넘게 벌어졌다. 임금 비중은 상용직 68.5%, 전체 70.0%다(2026년 9월 17일, BLS ECEC).",
+    "implication": "총보수로 비교해 보게 하라. 시간제로 일하다 상용직으로 옮기면 임금뿐 아니라 복리후생에서도 격차가 크다는 점을 상담에서 수치로 보여 줄 수 있다."
+   },
+   "key_numbers": [
+    {
+     "label": "전체 고용비용",
+     "value": "46.89달러",
+     "delta": "시간당·민간",
+     "period": "2026년 6월"
+    },
+    {
+     "label": "임금·복리후생",
+     "value": "32.82 / 14.07달러",
+     "delta": "복리후생 30.0%",
+     "period": "2026년 6월"
+    },
+    {
+     "label": "상용직 / 시간제",
+     "value": "54.00 / 25.20달러",
+     "delta": "시간당",
+     "period": "2026년 6월"
+    }
+   ],
+   "chart_data": {
+    "type": "grouped_bar",
+    "unit": "달러/시간",
+    "labels": [
+     "전체",
+     "상용직",
+     "시간제"
+    ],
+    "series": [
+     {
+      "name": "임금·급여",
+      "values": [
+       32.82,
+       36.97,
+       20.15
+      ],
+      "emphasis": true
+     },
+     {
+      "name": "복리후생",
+      "values": [
+       14.07,
+       17.03,
+       5.05
+      ],
+      "emphasis": false
+     }
+    ],
+    "reference_value": 0,
+    "note": "민간 부문 시간당 고용비용(2026년 6월). BLS ECEC, 2026.9.17.",
+    "source_id": "src_bls_ted_ecec_20260917"
+   },
+   "counselor_question": "지금 일자리의 복리후생을 돈으로 계산하면 시간당 얼마라고 생각하시나요?",
+   "tags": [
+    "고용비용",
+    "복리후생",
+    "미국"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "issue_id": "iss-us-ecec-202606",
+   "updated_at": "2026-09-18T07:10:00+09:00",
+   "source": {
+    "source_id": "src_bls_ted_ecec_20260917",
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_title": "Compensation costs for private industry workers averaged $46.89 per hour worked in June 2026",
+    "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-for-private-industry-workers-averaged-46-89-per-hour-worked-in-june-2026.htm",
+    "published_at": "2026-09-17",
+    "license": {
+     "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "BLS Copyright Information(2026-11-20 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+     "attribution_text": "출처: 미국 노동통계국(BLS) The Economics Daily 「Compensation costs for private industry workers averaged $46.89 per hour worked in June 2026」(미국 연방정부 저작물·퍼블릭 도메인)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "임금·물가"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_fraud_20260917",
+   "source_name": "고용노동부",
+   "source_title": "브로커 동원해 57명 허위근로자 모집… 5.8억원 고용보험 부정수급 사업주 구속",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782336",
+   "published_at": "2026-09-17",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「브로커 동원해 57명 허위근로자 모집… 5.8억원 고용보험 부정수급 사업주 구속」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_bls_ted_ecec_20260917",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Compensation costs for private industry workers averaged $46.89 per hour worked in June 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-for-private-industry-workers-averaged-46-89-per-hour-worked-in-june-2026.htm",
+   "published_at": "2026-09-17",
+   "license": {
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "텍스트·표",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "BLS Copyright Information(2026-11-20 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+    "attribution_text": "출처: 미국 노동통계국(BLS) The Economics Daily 「Compensation costs for private industry workers averaged $46.89 per hour worked in June 2026」(미국 연방정부 저작물·퍼블릭 도메인)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12"
+ ]
+}
