@@ -77,6 +77,12 @@
   var ARM_IDLE = 9000;      /* 1차만 누른 채 두면 이만큼 뒤 조용히 풀린다 */
   var HINT_MS = 5000;       /* 방치 유도 길이 — 레버·심전도 둘 다 5.0초 */
   var SURGE_MS = 2600;      /* 2차(격발) 고조 길이 — 1.9초→2.6초. 이 동안 진폭·속도가 점점 커지고 화면이 떨린다 */
+  /* 2026-11-20 — 심전도 예비동작·복귀·이탈의 세 시간 */
+  var LEAN_ARM = 560;       /* 클릭 직후: 150ms 뒤로 쓱 빠졌다가 410ms 동안 튀어나와 장전에 닿는다 */
+  var LEAN_ARM_PULL = 150;
+  var LEAN_FIRE = 150;      /* 격발 직전: 150ms 뒤로 당긴 뒤 고조가 시작된다 */
+  var CALM_MS = 1500;       /* 장전 → 기본: 한 곡선으로 속도↓·진폭↓·파장↑ */
+  var EXIT_MS = 520;        /* 격발 → 글래스: 좌로 더 빠르게 흐르며 알파로 빠진다 */
 
   var nav, ov, glass, slot, slotBtn, ecgRow, ecgBtn, cards = [], foot, back;
   var open = false, picking = false, armed = '', armT = 0, timers = [], restFocus = null;
@@ -126,29 +132,35 @@
     }
     LV.raf = requestAnimationFrame(f);
   }
-  /* 방치 유도(5.0초, 2026-11-19): 손을 놓지 않은 채 5칸 래칫으로 3시 30분(105°)까지 내려갔다가
-     같은 5칸으로 2시(60°)에 정확히 돌아온다. 롤링도 **보고 있던 자리에서** 같은 박자로 5칸 갔다가 되감긴다.
-     한 칸 = 180ms(90ms 이동 + 90ms 정지) · 내려감 0~0.9초 · 멈춤 0.9~4.1초 · 올라옴 4.1~5.0초 = 5.0초 정각. */
-  var HINT_DOWN = [69, 78, 87, 96, 105];
+  /* 방치 유도(5.0초, 2026-11-20): 손을 놓지 않은 채 **9칸**을 내려갔다가 같은 9칸으로 2시(60°)에 돌아온다.
+     · 내려감(0~2.4초): 한 칸씩 끊지 않고 smoothstep 하나로 연속 이동한다 — 뚜벅뚜벅 끊기던 느낌을 없앴다.
+       격발(1.2초에 12칸 ≈ 10칸/초)보다 느린 3.75칸/초라 「손을 놓지 않고 감고 있다」로 읽힌다.
+     · 멈춤(2.4~2.8초): 3시 30분에서 0.4초.
+     · 올라옴(2.8~5.0초): **태엽인형의 래칫** — 한 칸당 244ms(90ms 딸깍 이동 + 154ms 정지)를 9번.
+       이동은 easeOut으로 짧게 끊고 곧바로 멈춘다(그 정지가 「딸깍」이다). 롤링도 같은 박자로 되감긴다. */
+  var HINT_N = 9;
   function lvHint() {
     lvStop();
     if (reduce()) return false;
     var navi = (nav && nav.hintRollBegin) ? nav : null;
     if (!navi || !navi.hintRollBegin()) return false;   /* 롤링이 도는 중이면 방해하지 않는다 */
-    var t0 = 0;
+    var FWD = 2400, STOP = 2800, t0 = 0;
     function f(now) {
       if (!t0) t0 = now;
-      var el = now - t0, th = 60, off = 0, i, k, from, to;
-      if (el < 4100) {
-        i = Math.min(4, Math.floor(el / 180));
-        k = Math.min(1, (el - i * 180) / 90); k = k * k * (3 - 2 * k);
-        from = i ? HINT_DOWN[i - 1] : 60; to = HINT_DOWN[i];
-        th = from + (to - from) * k; off = i + k;
-      } else if (el < HINT_MS) {
-        i = Math.min(4, Math.floor((el - 4100) / 180));
-        k = Math.min(1, (el - 4100 - i * 180) / 90); k = k * k * (3 - 2 * k);
-        from = i ? HINT_DOWN[4 - i] : 105; to = i < 4 ? HINT_DOWN[3 - i] : 60;
-        th = from + (to - from) * k; off = 5 - (i + k);
+      var el = now - t0, th = 60, off = 0;
+      if (el < FWD) {                                  /* 내려감: 연속 감속 없이 한 곡선 */
+        var p = el / FWD, e = p * p * (3 - 2 * p);
+        th = 60 + (105 - 60) * e; off = HINT_N * e;
+      } else if (el < STOP) {                          /* 3시 30분에서 잠깐 */
+        th = 105; off = HINT_N;
+      } else if (el < HINT_MS) {                       /* 래칫: 9번 딸깍딸깍 */
+        var q = (el - STOP) / (HINT_MS - STOP) * HINT_N;   /* 0~9 */
+        var s = Math.min(HINT_N - 1, Math.floor(q));
+        var k = Math.min(1, (q - s) / .37);                /* 한 칸의 앞 37%만 움직이고 나머지는 정지 */
+        k = 1 - Math.pow(1 - k, 3);                        /* easeOut — 딱 멈추는 순간이 「딸깍」 */
+        var from = HINT_N - s, to = from - 1;
+        off = from + (to - from) * k;
+        th = 60 + 5 * off;
       } else {
         th = 60; off = 0;
       }
@@ -175,7 +187,23 @@
     if (slot && slot.getAttribute('data-st') === 'armed') slot.removeAttribute('data-st');
     if (ecgRow && ecgRow.getAttribute('data-st') === 'armed') ecgRow.removeAttribute('data-st');
     if (was === 'lever') lvTween(60, 340);          /* 장전을 풀면 2시로 천천히 돌아온다 */
+    if (was === 'ecg') ecgCalm();                   /* 장전 풀림: 멈칫 없이 한 곡선으로 기본에 돌아간다 */
     if (!keepWheel && was === 'lever' && nav && nav.spin) nav.spin(1, 240);
+  }
+  /* 장전 → 기본 복귀의 시작값을 붙잡는다(2026-11-20). 여러 값이 각자의 시상수로 따로 줄어들면
+     중간에 한 번 멈칫하는 것처럼 보인다 — 하나의 진행도(ce)로 모든 값을 함께 줄인다. */
+  function ecgCalm() {
+    ECG.lean = -1;
+    ECG.calmFrom = { sp: ECG.sp, amp: ECG.amp, beat: ECG.beat, tone: ECG.tone,
+      lw: ECG.lw, echo: ECG.echo, jit: ECG.jit, ceil: ECG.ceil, arm: ECG.arm };
+    ECG.calm = 0;
+  }
+  /* 장전 직후의 예비동작을 걸어 둔다 — 실제 위상·진폭 처리는 ecgFrame이 한다 */
+  function ecgLeanArm() {
+    ECG.calm = -1; ECG.exit = -1;
+    if (reduce()) { ECG.lean = -1; return; }
+    ECG.lean = 0; ECG.leanDur = LEAN_ARM; ECG.leanPull = LEAN_ARM_PULL;
+    ECG.leanT = ECG_T.idle; ECG.leanStep = -2.8;
   }
   function arm(which) {
     if (armed === which) return true;
@@ -183,7 +211,7 @@
     disarm();
     armed = which;
     (which === 'lever' ? slot : ecgRow).setAttribute('data-st', 'armed');
-    if (which === 'ecg') ECG.chg = 1;               /* 장전: 파형 위를 한 줄기 빛이 훑는다 */
+    if (which === 'ecg') { ECG.chg = 1; ecgLeanArm(); }   /* 장전: 후진 예비동작 + 파형 위를 훑는 빛 */
     if (which === 'lever') {
       lvTween(30, 260);                             /* 1차: 2시 → 1시 */
       if (nav && nav.spin) nav.spin(-1, 260);       /* 장전: 롤링을 한 칸 뒤로 감아 둔다 */
@@ -208,15 +236,26 @@
     setTimeout(function () { slot.removeAttribute('data-st'); lvTween(60, 420); }, 1340);
     openOv(slotBtn, reduce() ? 0 : 1060);
   }
-  /* 2차(격발): 문턱을 넘은 파형이 1.9초 동안 점점 커지고 빨라진 뒤(고조) 무대가 페이드인한다.
-     파형은 한 겹의 캔버스만 다시 그리므로, 이 1.9초 동안에도 DOM·레이아웃 비용은 0이다. */
+  /* 2차(격발): 누른 순간 150ms 뒤로 쓱 빠졌다가(예비동작) 2.6초 고조로 몰아친 뒤 무대가 페이드인한다.
+     글래스가 덮이는 순간 파형을 세우지 않고, 왼쪽으로 더 빠르게 흐르며 알파로 빠져나간 뒤에야 루프를 세운다. */
   function pulseEcg() {
     clearTimeout(armT); armed = '';
-    ecgRow.setAttribute('data-st', 'pulled');
-    ECG.surge = 0;                                    /* 고조 시작 — 프레임마다 진폭·속도가 올라간다 */
+    var lead = reduce() ? 0 : LEAN_FIRE;
+    ECG.calm = -1; ECG.exit = -1; ECG.surge = -1;
+    ECG.lean = 0; ECG.leanDur = lead; ECG.leanPull = lead;
+    ECG.leanT = ECG_T.armed; ECG.leanStep = -1.7;
+    if (!lead) ECG.lean = -1;
     ecgSync();
-    setTimeout(function () { ecgRow.removeAttribute('data-st'); ECG.surge = -1; ecgSync(); }, SURGE_MS + 420);
-    openOv(ecgBtn, reduce() ? 0 : SURGE_MS + 60);
+    setTimeout(function () {
+      ecgRow.setAttribute('data-st', 'pulled');
+      ECG.lean = -1; ECG.surge = 0; ecgSync();
+    }, lead);
+    openOv(ecgBtn, reduce() ? 0 : lead + SURGE_MS + 60);
+    if (lead) ecgRow.setAttribute('data-st', 'armed');   /* 예비동작 동안은 장전 자세 그대로(천장선이 깜빡이지 않는다) */
+    setTimeout(function () {
+      ecgRow.removeAttribute('data-st');
+      if (ECG.exit < 0) { ECG.surge = -1; ecgSync(); }
+    }, lead + SURGE_MS + 60 + EXIT_MS + 40);
   }
   /* ---------- 2. 방치 유도 — 매 분 00초에 5.0초 ----------
    * 시각(Date)으로 다음 정각을 계산해 한 번씩 깨어난다. 1초마다 세던 방식은 드리프트가 쌓여 홀수분 50초에
@@ -299,6 +338,8 @@
   var ECG = { cv: null, cx: null, on: false, raf: 0, last: 0, dpr: 1,
     ph: 0, sp: 1 / 1.9, amp: 1, tone: 0, beat: 84, lw: 1.5, echo: 0, ceil: 0, chg: 0, arm: 0, jit: 0, surge: -1, mask: null,
     shk: 0, bob: null, gkey: '', grad: null, shakeT: '',
+    lean: -1, leanDur: 0, leanPull: 0, leanT: null, leanStep: -2.8, preAmp: 1,
+    calm: -1, calmFrom: null, exit: -1,
     c1: [15, 118, 110], c2: [180, 83, 42], c3: [162, 100, 0], dark: false };
   var ECG_W = 168, ECG_H = 34, ECG_BASE = 20, ECG_R = 8, ECG_CX = ECG_W / 2;
   /* 3단계: 주기(초/회) · 진폭(배) · 박동 폭(px — 작을수록 창 안에 박동이 다닥다닥 붙는다) · 색 톤(0=청록 … 1=벽돌)
@@ -403,7 +444,7 @@
     var uu = u * 256, i0 = uu | 0, fr = uu - i0;
     var v = ECG_TAB[i0] * (1 - fr) + ECG_TAB[(i0 + 1) & 255] * fr;
     if (ECG.jit > .002) { var r = ((bi * 2654435761) >>> 0) % 997 / 997; v *= 1 + (r - .5) * ECG.jit; }
-    var y = ECG_BASE - v * ECG_R * ECG.amp * (ampMul || 1);
+    var y = ECG_BASE - v * ECG_R * ECG.amp * (ampMul || 1) * ECG.preAmp;
     /* 격발의 큰 진폭·흔들림이 캔버스 위(0)나 아래(34)를 넘지 않게 1.5~32.5px에서 묶는다 */
     return y < 1.5 ? 1.5 : (y > 32.5 ? 32.5 : y);
   }
@@ -616,25 +657,76 @@
   function ecgFrame(now) {
     if (!ECG.on) return;
     var dt = ECG.last ? Math.min(.05, (now - ECG.last) / 1000) : 0; ECG.last = now;
-    var t = ecgState();
+    var t = ecgState(), phStep = 1, lag = .20, lagb = .30;
+    ECG.preAmp = 1;
+    /* (1) 예비동작 — 누른 순간 진행 방향에서 살짝 후진했다가 튀어나온다(2026-11-20).
+       카툰의 「달리기 전 뒤로 쓱」과 같은 결: 위상이 역방향으로 0.15박동 남짓 흐르고,
+       진폭은 20% 눌린다. 그 뒤 위상을 1+2.6배로 밀어 한 번에 장전 자세로 들어간다.
+       후진 구간에서는 색·속도 목표를 건드리지 않아(leanT) 선이 끊기지 않고 그대로 이어진다. */
+    if (ECG.lean >= 0) {
+      ECG.lean += dt * 1000;
+      if (ECG.lean >= ECG.leanDur) {
+        ECG.lean = -1;                     /* 예비동작 끝 — 여기서 반드시 빠져나온다(위상 배율이 계속 커지지 않게) */
+      } else {
+        var pull = ECG.leanPull || 1;
+        if (ECG.lean < pull) {
+          var lp = ECG.lean / pull;
+          t = ECG.leanT || ecgState();
+          phStep = ECG.leanStep || -2.8;   /* 진행 방향에서 뒤로 쓱 — 카툰의 예비동작 */
+          ECG.preAmp = 1 - .22 * Math.sin(Math.PI * lp);
+          lag = .26; lagb = .34;
+        } else {
+          var u = (ECG.lean - pull) / Math.max(1, ECG.leanDur - pull);
+          t = ECG_T.armed;
+          phStep = 1 + 2.6 * Math.pow(1 - u, 2);   /* 튀어나오는 앞 구간일수록 크게 */
+          ECG.preAmp = 1 + .10 * Math.sin(Math.PI * u);
+          lag = .075; lagb = .11;
+        }
+      }
+    }
     if (ECG.surge >= 0) {                          /* 격발 고조: 목표값이 프레임마다 위로 올라간다 */
       ECG.surge = Math.min(SURGE_MS, ECG.surge + dt * 1000);
       t = ecgSurgeT(ECG.surge / SURGE_MS);
+      lag = .07; lagb = .10;
     }
-    /* 고조 중에는 목표값을 더 곧게 따라간다 — 1.9초 안에 끝까지 올라서야 하기 때문이다. */
-    var lag = ECG.surge >= 0 ? .07 : .20, lagb = ECG.surge >= 0 ? .10 : .30;
-    var k = 1 - Math.exp(-dt / lag), kt = 1 - Math.exp(-dt / lagb), kc = 1 - Math.exp(-dt / .16);
-    ECG.sp += (t.sp - ECG.sp) * k;
-    ECG.amp += (t.amp - ECG.amp) * k;
-    ECG.beat += (t.beat - ECG.beat) * kt;
-    ECG.tone += (t.tone - ECG.tone) * kc;          /* 색은 빠르게 — 두 색 사이 탁한 중간색을 오래 보이지 않게 */
-    ECG.lw += (t.lw - ECG.lw) * k;
-    ECG.echo += (t.echo - ECG.echo) * kt;
-    ECG.ceil += (t.ceil - ECG.ceil) * kt;
-    ECG.jit += (t.jit - ECG.jit) * kt;
+    if (ECG.calm >= 0) {                           /* (2) 장전 → 기본: 멈칫 없는 하나의 곡선 */
+      ECG.calm += dt * 1000;
+      var cp = Math.min(1, ECG.calm / CALM_MS);
+      var ce = cp * cp * (3 - 2 * cp);             /* 앞뒤가 평평한 smoothstep */
+      var F = ECG.calmFrom, I = ECG_T.idle;
+      ECG.sp = F.sp + (I.sp - F.sp) * ce;
+      ECG.amp = F.amp + (I.amp - F.amp) * ce;
+      ECG.beat = F.beat + (I.beat - F.beat) * ce;  /* 파장이 길어진다 */
+      ECG.tone = F.tone + (I.tone - F.tone) * ce;
+      ECG.lw = F.lw + (I.lw - F.lw) * ce;
+      ECG.echo = F.echo * (1 - ce);
+      ECG.ceil = F.ceil * (1 - ce);
+      ECG.jit = F.jit * (1 - ce);
+      ECG.arm = F.arm;                             /* 천장선은 자리에 둔 채 옅어지기만 한다 */
+      if (cp >= 1) ECG.calm = -1;
+    } else {
+      var k = 1 - Math.exp(-dt / lag), kt = 1 - Math.exp(-dt / lagb), kc = 1 - Math.exp(-dt / .16);
+      ECG.sp += (t.sp - ECG.sp) * k;
+      ECG.amp += (t.amp - ECG.amp) * k;
+      ECG.beat += (t.beat - ECG.beat) * kt;
+      ECG.tone += (t.tone - ECG.tone) * kc;        /* 색은 빠르게 — 두 색 사이 탁한 중간색을 오래 보이지 않게 */
+      ECG.lw += (t.lw - ECG.lw) * k;
+      ECG.echo += (t.echo - ECG.echo) * kt;
+      ECG.ceil += (t.ceil - ECG.ceil) * kt;
+      ECG.jit += (t.jit - ECG.jit) * kt;
+    }
     if (ECG.chg > 0) ECG.chg = Math.max(0, ECG.chg - dt / .9);
-    ECG.arm = (ecgRow && ecgRow.getAttribute('data-st') === 'armed') ? Math.min(4, ECG.arm + dt) : 0;
-    ECG.ph += ECG.sp * dt;
+    ECG.arm = (ECG.calm >= 0) ? ECG.arm : ((ecgRow && ecgRow.getAttribute('data-st') === 'armed') ? Math.min(4, ECG.arm + dt) : 0);
+    /* (3) 격발 → 글래스: 글래스가 불투명해질 때까지 왼쪽으로 더 빠르게 흐르며 옅어진다.
+       예전에는 revealOv가 그 자리에서 rAF를 세워 파형이 고진폭으로 얼어붙었다(「가다가 걸린 듯」). */
+    if (ECG.exit >= 0) {
+      ECG.exit += dt * 1000;
+      var ep = Math.min(1, ECG.exit / EXIT_MS);
+      phStep = 1 + 3.4 * ep;
+      if (ECG.cv) ECG.cv.style.opacity = (1 - ease(ep)).toFixed(3);
+      if (ep >= 1) { ECG.surge = -1; ecgStop(); return; }
+    }
+    ECG.ph += ECG.sp * dt * phStep;
     if (HINT.on) HINT.t = Math.min(HINT_MS, HINT.t + dt * 1000);
     ecgPaint();
     ecgShake(now, dt);
@@ -660,9 +752,21 @@
     ECG.shk = 0;
     if (ECG.bob && ECG.shakeT) { ECG.bob.style.transform = ''; ECG.shakeT = ''; }
   }
-  function ecgStop() { ECG.on = false; if (ECG.raf) { cancelAnimationFrame(ECG.raf); ECG.raf = 0; } ecgShakeReset(); }
+  function ecgStop() {
+    ECG.on = false; if (ECG.raf) { cancelAnimationFrame(ECG.raf); ECG.raf = 0; }
+    ECG.exit = -1; ECG.lean = -1; ECG.preAmp = 1;
+    if (ECG.cv) {                                  /* 알파를 애니메이션 없이 즉시 되돌린다(다음에 열 때 깜빡임 0) */
+      ECG.cv.style.transition = 'none'; ECG.cv.style.opacity = '';
+      void ECG.cv.offsetWidth;
+      ECG.cv.style.transition = '';
+    }
+    ecgShakeReset();
+  }
   function ecgWanted() {
-    return !!(ECG.cx && ecgRow && ecgRow.offsetParent && !document.hidden && !open && !reduce() && cur() === 'all');
+    /* 이탈(exit) 중에는 무대가 열렸어도(open=true) 파형을 계속 그린다 — 글래스가 불투명해지기 전까지.
+       고조(surge)도 마찬가지다: openOv는 미리 open을 세우고 연출 뒤에 무대를 열기 때문이다. */
+    return !!(ECG.cx && ecgRow && ecgRow.offsetParent && !document.hidden && !reduce() && cur() === 'all'
+      && (!open || ECG.exit >= 0 || ECG.surge >= 0));
   }
   /* 감속 모드·가려진 화면: 루프 없이 지금 자세의 한 장만 그려 둔다 */
   function ecgStill() {
@@ -670,6 +774,8 @@
     var t = ecgState();
     ECG.sp = t.sp; ECG.amp = t.amp; ECG.tone = t.tone; ECG.beat = t.beat;
     ECG.lw = t.lw; ECG.echo = t.echo; ECG.ceil = t.ceil; ECG.jit = t.jit; ECG.chg = 0; ECG.arm = 0;
+    ECG.lean = -1; ECG.calm = -1; ECG.exit = -1; ECG.preAmp = 1;
+    if (ECG.cv) { ECG.cv.style.opacity = ''; ECG.cv.style.transition = ''; }
     if (reduce()) { ECG.sp = 1 / 1.9; ECG.amp = 1; ECG.tone = 0; ECG.beat = 84; ECG.lw = 1.5; ECG.echo = 0; ECG.ceil = 0; ECG.jit = 0; ECG.surge = -1; }
     ecgShakeReset();
     ecgFit(); ecgPaint();
@@ -679,6 +785,8 @@
       if (ECG.on) return;
       ecgFit(); ecgColors();
       ECG.on = true; ECG.last = 0;
+      ECG.exit = -1;
+      if (ECG.cv) { ECG.cv.style.opacity = ''; ECG.cv.style.transition = ''; }
       ECG.raf = requestAnimationFrame(ecgFrame);
     } else { ecgStop(); ecgStill(); }
   }
@@ -700,8 +808,15 @@
   }
   function revealOv() {
     if (!open || !ov) return;
-    ecgStop();                                  /* 글래스가 덮이면 파도도 세운다 */
-    ECG.surge = -1;                              /* 고조는 글래스가 덮는 순간 끝난다(닫고 나서 다시 올라가지 않게) */
+    /* 글래스가 덮이는 순간 파형을 얼리지 않는다(2026-11-20) — 격발 파형은 계속 왼쪽으로 흐르며
+       캔버스 알파만 옅어지고, 다 빠져나간 뒤 ecgFrame이 스스로 루프를 세운다. */
+    if (ECG.on && ECG.surge >= 0 && ECG.exit < 0 && !reduce()) {
+      ECG.exit = 0;
+      if (ECG.cv) ECG.cv.style.transition = 'none';
+    } else {
+      ecgStop();
+      ECG.surge = -1;                            /* 고조는 글래스가 덮는 순간 끝난다(닫고 나서 다시 올라가지 않게) */
+    }
     resetCards();
     ov.hidden = false;
     document.documentElement.setAttribute('data-jc-modeov', '');
@@ -883,7 +998,7 @@
       state: function () { return { on: hintOn, t: HINT.t, min: HINT.min, pat: HINT.pat }; }
     };
     /* 감독·검수용: 격발 고조의 지금 값(진폭·속도·흔들림)을 읽어 본다 */
-    window.JC_ECG = { state: function () { return { sp: ECG.sp, amp: ECG.amp, beat: ECG.beat, lw: ECG.lw, jit: ECG.jit, surge: ECG.surge }; } };
+    window.JC_ECG = { state: function () { return { sp: ECG.sp, amp: ECG.amp, beat: ECG.beat, lw: ECG.lw, jit: ECG.jit, surge: ECG.surge, ph: ECG.ph, tone: ECG.tone, preAmp: ECG.preAmp, lean: ECG.lean, calm: ECG.calm, exit: ECG.exit, on: ECG.on }; } };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

@@ -90,6 +90,22 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-brand:focus-visible{outline:2px solid var(--a1);outline-offset:3px}
 .a-brand .cctt-logo{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .a-brand:hover .cctt-logo{filter:brightness(1.04)}
+/* ---------- 사이트 로고 (2026-11-20) ----------
+   원본은 투명 누끼 + 흰 글씨 PNG 한 장(assets/cctt-logo.png, 900×172)이다.
+   그림 자체를 테마마다 다시 만들지 않고, **알파 마스크**로 쓰고 background-color만 바꾼다.
+   · 다크: 흰 글씨(#f5f7fb) 그대로 — 원본의 밝기를 살린다
+   · 라이트: 진한 먹색(#1b1611), 세피아: 진한 세피아 잉크(#2b2013)
+   모두 종이 바탕 대비 4.5:1을 넘는다. 마스크는 iOS Safari까지 `-webkit-mask-*`를 함께 적는다.
+   높이는 헤더의 44px 단추들과 눈높이를 맞춰 26~30px, 폭은 원본 비율(1475:275 ≈ 5.36:1)을 지킨다. */
+.cctt-wordmark{display:block;width:auto;height:clamp(26px,1.3vw + 17px,30px);aspect-ratio:1475/275;flex:none;align-self:center;
+  background-color:#1b1611;
+  -webkit-mask-image:url("./assets/cctt-logo.png");mask-image:url("./assets/cctt-logo.png");
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-size:contain;mask-size:contain;
+  -webkit-mask-position:left center;mask-position:left center}
+:root[data-jc-tone="sepia"] .cctt-wordmark{background-color:#2b2013}
+:root[data-theme="dark"] .cctt-wordmark{background-color:#f5f7fb}
+@supports not ((mask-image:url("")) or (-webkit-mask-image:url(""))){.cctt-wordmark{display:none}}
 .a-right{display:flex;align-items:center;gap:8px;flex:none;margin-left:auto}
 .a-status{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);white-space:nowrap}
 .a-status .a-live-t{font-weight:650;letter-spacing:-.01em;color:var(--muted)}
@@ -295,7 +311,7 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
   -webkit-mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent)}
 .a-drum:focus-visible{outline:none}
 .a-it{position:absolute;left:0;right:0;top:50%;height:1.25em;margin-top:-.625em;line-height:1.25em;white-space:nowrap;transform-origin:50% 50%;
-  color:var(--dim);font-weight:700}
+  color:var(--dim);font-weight:700;transition:color .14s ease}
 .a-it.a-cur{color:var(--acc);font-weight:800}
 /* 현재 문구 밑줄이 차오르면 다음 문구로 넘어간다 */
 .a-it .a-tx{position:relative;padding-bottom:.04em;background-repeat:no-repeat;background-position:0 100%}
@@ -346,7 +362,7 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-root .a-orbit button:focus-visible{outline:2px solid var(--a1);outline-offset:0;border-radius:50%}
 .a-orbit-n{position:absolute;left:0;right:24px;bottom:0;text-align:center;font-size:11.5px;line-height:16px;font-weight:650;
   letter-spacing:.1em;color:var(--dim);font-variant-numeric:tabular-nums}
-.a-orbit-n b{color:var(--acc);font-size:13px}
+.a-orbit-n b{color:var(--acc);font-size:13px;transition:color .14s ease}
 .a-roll-hint{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;color:var(--dim);margin-top:2px;text-align:left}
 .a-roll-ico{width:15px;height:15px;flex:none;display:block;color:var(--muted);opacity:.9}
 @media (max-width:599px){.a-pv-kw span:nth-child(n+3){display:none}.a-pv-kw span{font-size:12.5px;padding:5px 8px}}
@@ -543,7 +559,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 
   <header class="a-top" data-jc-headfold="Career Consultant Tutorial">
     <a class="a-brand" id="brandGo" href="./" aria-label="Career Consultant Tutorial — 첫 화면으로">
-      <span class="cctt-logo" aria-hidden="true"><span class="lgi lg1">C</span>areer <span class="lgi lg2">C</span>onsultant <span class="lgi lg3">T</span>u<span class="lgi lg4">t</span>orial</span>
+      <span class="cctt-wordmark" aria-hidden="true"></span>
     </a>
     <div class="a-right">
       <div class="a-actions">
@@ -1106,7 +1122,18 @@ function layout(){
     el.classList.toggle('a-cur',ad<.5);
   });
   var idx=mod(Math.round(pos),N);if(idx!==shown)show(idx);
+  setAccent(idx);
   layoutOrbit();
+}
+/* 자료마다의 테마색(--tc-*)을 **지금 꼭대기에 온 자료**에 맞춰 바꾼다(2026-11-20).
+   예전에는 show() 안에서만 바꿨는데, 격발(spin) 중에는 show가 미뤄지고 방치 유도 중에는
+   일찍 돌아가 버려서, 지나가는 문구가 **직전 자료의 색**에 묶여 있었다.
+   이제 자리(index)가 바뀔 때마다 layout에서 한 번만 적는다 — 같은 자리면 다시 쓰지 않는다. */
+var accIdx=-1;
+function setAccent(i){
+  if(i===accIdx)return;accIdx=i;
+  var t=TOOLS[i];if(!t)return;
+  $('nav').style.setProperty('--acc','var(--tc-'+t.color+')');
 }
 function show(i){
   if(spinT){spinPending=i;return;}          /* 도는 동안 문구 설명은 마지막에 한 번만 바꾼다 */
@@ -1120,7 +1147,6 @@ function show(i){
     return;
   }
   clearTimeout(show.w);if(userMove)show.w=setTimeout(function(){if(window.JCCore&&shown===i)JCCore.warm(t.path);},500); /* 직접 고른 문장에 머물면 그 화면을 미리 받아 둔다 */
-  $('nav').style.setProperty('--acc','var(--tc-'+t.color+')');
   $('drum').setAttribute('aria-valuenow',i+1);
   $('drum').setAttribute('aria-valuetext','오늘은 '+t.phrase+' 보고 싶어요. '+t.title);
   $('sayOpen').setAttribute('href',t.path);$('sayOpen').setAttribute('data-visit',t.id);
