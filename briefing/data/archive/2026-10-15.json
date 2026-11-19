@@ -1,0 +1,336 @@
+{
+ "schema_version": "1.3.0",
+ "updated_at": "2026-11-19T12:10:00+09:00",
+ "edition": {
+  "date": "2026-10-15",
+  "weekday": "목",
+  "title": "물가 3.7%, 실질임금은 0.5% 줄었다",
+  "subtitle": "미국 9월 CPI +0.6%(전년비 3.7%)·에너지 +20.4%, 실질 시간당 임금은 한 달 -0.5%",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_us_cpi_y",
+   "label": "미국 소비자물가(1년)",
+   "value": 3.7,
+   "unit": "%",
+   "value_text": "+3.7%",
+   "base_value": 3.4,
+   "base_unit": "%",
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "8월 3.4%",
+   "source_id": "src_bls_cpi_202609",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_us_energy_y",
+   "label": "에너지 물가(1년)",
+   "value": 20.4,
+   "unit": "%",
+   "value_text": "+20.4%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": null,
+   "source_id": "src_bls_cpi_202609",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_us_real_hr",
+   "label": "실질 시간당 임금(1년)",
+   "value": -0.7,
+   "unit": "%",
+   "value_text": "-0.7%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "down",
+   "period": "2026년 9월",
+   "delta_from": null,
+   "source_id": "src_bls_realer_202609",
+   "track": "A",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 9월 물가 3.7%, 휘발유가 한 달에 9.1% 올랐다",
+   "kicker": "전년비 +3.7% · 근원 2.6%",
+   "three_step": {
+    "what": "미국 9월 소비자물가(CPI-U)가 한 달에 0.6% 올랐다. 8월 0.4%보다 상승폭이 커졌고, 1년 전과 비교하면 3.7% 올랐다.",
+    "evidence": "휘발유가 한 달에 9.1% 오르며 전체 상승분의 절반 이상을 차지했고 에너지가 5.2% 올랐다. 1년 기준으로는 에너지 20.4%, 식료품 2.5%다. 주거비는 0.4%, 식료품은 보합이었다. 식료품·에너지를 뺀 근원지수는 한 달 0.3%, 1년 2.6%다(2026년 10월 14일, BLS).",
+    "implication": "생활비 상담에서 물가 3.7%를 월세·교통·식비로 나눠 보게 하고, 1년 상승을 끌고 있는 에너지 20.4%가 내담자 통근·차량 비용에 어떻게 닿는지 확인하라."
+   },
+   "key_numbers": [
+    {
+     "label": "소비자물가(1년)",
+     "value": "+3.7%",
+     "delta": "8월 3.4%",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "소비자물가(한 달)",
+     "value": "+0.6%",
+     "delta": "8월 +0.4%",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "근원물가(1년)",
+     "value": "+2.6%",
+     "delta": "",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "에너지(1년)",
+     "value": "+20.4%",
+     "delta": "휘발유 월 +9.1%",
+     "period": "2026년 9월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "전체",
+     "근원",
+     "식료품",
+     "에너지"
+    ],
+    "series": [
+     {
+      "name": "전년동월비",
+      "values": [
+       3.7,
+       2.6,
+       2.5,
+       20.4
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "2026년 9월 전년동월비. BLS Consumer Price Index, 2026.10.14.",
+    "source_id": "src_bls_cpi_202609"
+   },
+   "tags": [
+    "미국",
+    "물가",
+    "에너지"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "global",
+   "issue_id": "iss-us-cpi-202609",
+   "source": {
+    "source_id": "src_bls_cpi_202609",
+    "id": "src_bls_cpi_202609",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "Consumer Price Index — September 2026 (USDL-26-1574)",
+    "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm",
+    "published_at": "2026-10-14",
+    "license": {
+     "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표·도표(사진·도해 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "BLS Copyright Information(2026-11-19 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+     "attribution_text": "자료: U.S. Bureau of Labor Statistics"
+    },
+    "usage": "물가 상승률·품목별 수치만 새로 서술."
+   }
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "실질임금 1년에 -0.7%, 한 달 새 -0.5%",
+   "kicker": "명목 +0.1% · 물가 +0.6%",
+   "three_step": {
+    "what": "미국 9월 실질 시간당 임금이 한 달 전보다 0.5% 줄었다. 명목 임금은 0.1% 올랐지만 물가가 0.6% 올라 실질로는 뒷걸음쳤다.",
+    "evidence": "1년 전과 비교하면 실질 시간당 임금은 0.7% 줄었고, 주당 근로시간이 0.6% 늘어 실질 주간임금 감소는 0.1%로 작아졌다. 생산·비관리직 근로자는 실질 시간당 임금이 한 달에 0.6% 줄었다(2026년 10월 14일, BLS).",
+    "implication": "임금 인상률이 물가보다 낮은 내담자에게는 주당 근로시간으로 만회할 수 있는 일인지, 아니면 이직·직무 전환으로 임금 자체를 올려야 하는지 함께 계산하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "실질 시간당 임금(한 달)",
+     "value": "-0.5%",
+     "delta": "",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "실질 시간당 임금(1년)",
+     "value": "-0.7%",
+     "delta": "",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "명목 시간당 임금",
+     "value": "+0.1%",
+     "delta": "",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "주당 근로시간(1년)",
+     "value": "+0.6%",
+     "delta": "",
+     "period": "2026년 9월"
+    }
+   ],
+   "chart_data": {
+    "type": "diverging_bar",
+    "unit": "%",
+    "labels": [
+     "명목 임금",
+     "물가",
+     "실질 임금"
+    ],
+    "series": [
+     {
+      "name": "한 달 증감",
+      "values": [
+       0.1,
+       0.6,
+       -0.5
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "2026년 9월 전월비. BLS Real Earnings, 2026.10.14.",
+    "source_id": "src_bls_realer_202609"
+   },
+   "tags": [
+    "미국",
+    "실질임금",
+    "물가"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "issue_id": "iss-us-real-earnings-202609",
+   "source": {
+    "source_id": "src_bls_realer_202609",
+    "id": "src_bls_realer_202609",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "Real Earnings — September 2026 (USDL-26-1575)",
+    "source_url": "https://www.bls.gov/news.release/archives/realer_10142026.htm",
+    "published_at": "2026-10-14",
+    "license": {
+     "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표·도표(사진·도해 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "BLS Copyright Information(2026-11-19 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+     "attribution_text": "자료: U.S. Bureau of Labor Statistics"
+    },
+    "usage": "실질임금 증감률만 새로 서술."
+   }
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_bls_cpi_202609",
+   "id": "src_bls_cpi_202609",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Consumer Price Index — September 2026 (USDL-26-1574)",
+   "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm",
+   "published_at": "2026-10-14",
+   "license": {
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "텍스트·표·도표(사진·도해 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "BLS Copyright Information(2026-11-19 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+    "attribution_text": "자료: U.S. Bureau of Labor Statistics"
+   },
+   "usage": "물가 상승률·품목별 수치만 새로 서술."
+  },
+  {
+   "source_id": "src_bls_realer_202609",
+   "id": "src_bls_realer_202609",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Real Earnings — September 2026 (USDL-26-1575)",
+   "source_url": "https://www.bls.gov/news.release/archives/realer_10142026.htm",
+   "published_at": "2026-10-14",
+   "license": {
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "텍스트·표·도표(사진·도해 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "BLS Copyright Information(2026-11-19 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+    "attribution_text": "자료: U.S. Bureau of Labor Statistics"
+   },
+   "usage": "실질임금 증감률만 새로 서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 우리 말로 새로 썼습니다.",
+  "track_a_note": "공공누리 제1유형(출처표시)·퍼블릭 도메인·CC BY 4.0 자료를 카드마다 출처와 라이선스로 표시합니다.",
+  "track_b_note": "언론사 기사와 공공누리 미부착 자료는 본문·번역문을 싣지 않고 수치 사실과 원문 링크만 제공합니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15"
+ ]
+}
