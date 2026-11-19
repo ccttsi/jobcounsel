@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T10:47:04+09:00",
+ "generated_at": "2026-11-19T10:50:13+09:00",
  "schema_version": "1.3.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -21,9 +21,247 @@
   "2026-10-30",
   "2026-10-22",
   "2026-10-21",
-  "2026-10-20"
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15"
  ],
  "themes": {
+  "th-macro-economy": {
+   "label": "거시경제와 고용",
+   "items": [
+    {
+     "date": "2026-10-15",
+     "card_id": "c01",
+     "title": "미국 9월 물가 3.7%, 휘발유가 한 달에 9.1% 올랐다",
+     "kicker": "전년비 +3.7% · 근원 2.6%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm",
+     "published_at": "2026-10-14"
+    },
+    {
+     "date": "2026-10-16",
+     "card_id": "c01",
+     "title": "미국 생산자물가 1.3%, 2022년 3월 이후 가장 큰 폭",
+     "kicker": "1년 +6.3% · 상품 +2.6%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/ppi_10152026.htm",
+     "published_at": "2026-10-15"
+    },
+    {
+     "date": "2026-10-31",
+     "card_id": "c01",
+     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
+     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-10-31",
+     "card_id": "c03",
+     "title": "승용차 판매 18.3% — 소비가 살아난 이유는 차였다",
+     "kicker": "소매판매 +3.6% · 내구재 +4.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c04",
+     "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
+     "kicker": "2026년 3.9% · 2027년 3.3%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국제통화기금(IMF)·재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c02",
+     "title": "KDI \"내년 성장 3.9%·취업자 20만\" — 20대는 여전히 낮다",
+     "kicker": "2026년 3.8% → 2027년 3.9% · 취업자 +12만 → +20만",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "재정경제부·한국개발연구원(KDI)",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
+     "published_at": "2026-11-18"
+    }
+   ]
+  },
+  "th-wage-income": {
+   "label": "임금과 소득",
+   "items": [
+    {
+     "date": "2026-10-15",
+     "card_id": "c02",
+     "title": "실질임금 1년에 -0.7%, 한 달 새 -0.5%",
+     "kicker": "명목 +0.1% · 물가 +0.6%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/realer_10142026.htm",
+     "published_at": "2026-10-14"
+    },
+    {
+     "date": "2026-10-22",
+     "card_id": "c01",
+     "title": "주간임금 +1.5%, 물가 +3.5% — 실질임금은 1.9% 뒤졌다",
+     "kicker": "중위 주간임금 1,232달러 · 여성 83.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/wkyeng_10212026.htm",
+     "published_at": "2026-10-21"
+    },
+    {
+     "date": "2026-10-30",
+     "card_id": "c01",
+     "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
+     "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-10-31",
+     "card_id": "c02",
+     "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
+     "kicker": "복리후생 3.9% · 의료비 6.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-03",
+     "card_id": "c01",
+     "title": "임금을 누르는 건 고용주의 교섭력, 10개국에서 확인",
+     "kicker": "마크업 2010→2023 +0.150 · 도시 거주 -0.065",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "국제노동기구(ILO)",
+     "source_url": "https://www.ilo.org/publications/monopsonic-power-and-wage-dynamics-insights-cross-country-labour-market",
+     "published_at": "2026-11-02"
+    },
+    {
+     "date": "2026-11-04",
+     "card_id": "c01",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-06",
+     "card_id": "c01",
+     "title": "미국 노동비용 3.4%, 봉급 3.1%·복리후생 3.9%",
+     "kicker": "민간 노동비용 +3.4% · 지역 격차 2.0%p",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-up-2-3-percent-in-new-england-4-3-percent-in-pacific-region-over-year-ended-september-2026.htm",
+     "published_at": "2026-11-05"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c04",
+     "title": "'월급방위대 TF' — 월세 공제 1,200만원·근로장려금 360만원",
+     "kicker": "월세 세액공제 한도 1,000→1,200만원 · EITC 최대 360만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789089",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-17",
+     "card_id": "c01",
+     "title": "실질임금 0.3%, 반도체 밖 생산성이 멈춰서다",
+     "kicker": "2026년 상반기 실질임금 +0.3% · 비반도체 생산성 연 +1.0%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "한국개발연구원(KDI)·재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396",
+     "published_at": "2026-11-16"
+    }
+   ]
+  },
+  "th-youth-employment": {
+   "label": "청년 고용",
+   "items": [
+    {
+     "date": "2026-10-17",
+     "card_id": "c01",
+     "title": "9월 취업자 +11.3만, 청년은 47개월째 줄었다",
+     "kicker": "15~64세 고용률 70.6% · 청년 44.0%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156785404",
+     "published_at": "2026-10-16"
+    },
+    {
+     "date": "2026-11-05",
+     "card_id": "c01",
+     "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
+     "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
+     "published_at": "2026-11-04"
+    },
+    {
+     "date": "2026-11-12",
+     "card_id": "c01",
+     "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
+     "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
+     "published_at": "2026-11-11"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c03",
+     "title": "범부처 지원단이 청년 취업지원 현장을 직접 봤다",
+     "kicker": "민생안정지원단 청년 취업지원 점검",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
+     "published_at": "2026-11-12"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c02",
+     "title": "취업자 넉 달째 두 자릿수, 실질임금도 플러스로",
+     "kicker": "10월 취업자 +13.9만명 · 8월 실질임금 +0.8%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
+     "published_at": "2026-11-13"
+    }
+   ]
+  },
   "th-skills-training": {
    "label": "재취업과 직업훈련",
    "items": [
@@ -210,99 +448,6 @@
     }
    ]
   },
-  "th-wage-income": {
-   "label": "임금과 소득",
-   "items": [
-    {
-     "date": "2026-10-22",
-     "card_id": "c01",
-     "title": "주간임금 +1.5%, 물가 +3.5% — 실질임금은 1.9% 뒤졌다",
-     "kicker": "중위 주간임금 1,232달러 · 여성 83.4%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/wkyeng_10212026.htm",
-     "published_at": "2026-10-21"
-    },
-    {
-     "date": "2026-10-30",
-     "card_id": "c01",
-     "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
-     "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
-     "published_at": "2026-10-29"
-    },
-    {
-     "date": "2026-10-31",
-     "card_id": "c02",
-     "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
-     "kicker": "복리후생 3.9% · 의료비 6.4%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
-     "published_at": "2026-10-30"
-    },
-    {
-     "date": "2026-11-03",
-     "card_id": "c01",
-     "title": "임금을 누르는 건 고용주의 교섭력, 10개국에서 확인",
-     "kicker": "마크업 2010→2023 +0.150 · 도시 거주 -0.065",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "국제노동기구(ILO)",
-     "source_url": "https://www.ilo.org/publications/monopsonic-power-and-wage-dynamics-insights-cross-country-labour-market",
-     "published_at": "2026-11-02"
-    },
-    {
-     "date": "2026-11-04",
-     "card_id": "c01",
-     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
-     "kicker": "근원 2.8% · 생활물가 2.6%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
-     "published_at": "2026-11-03"
-    },
-    {
-     "date": "2026-11-06",
-     "card_id": "c01",
-     "title": "미국 노동비용 3.4%, 봉급 3.1%·복리후생 3.9%",
-     "kicker": "민간 노동비용 +3.4% · 지역 격차 2.0%p",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-up-2-3-percent-in-new-england-4-3-percent-in-pacific-region-over-year-ended-september-2026.htm",
-     "published_at": "2026-11-05"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c04",
-     "title": "'월급방위대 TF' — 월세 공제 1,200만원·근로장려금 360만원",
-     "kicker": "월세 세액공제 한도 1,000→1,200만원 · EITC 최대 360만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789089",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-17",
-     "card_id": "c01",
-     "title": "실질임금 0.3%, 반도체 밖 생산성이 멈춰서다",
-     "kicker": "2026년 상반기 실질임금 +0.3% · 비반도체 생산성 연 +1.0%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "한국개발연구원(KDI)·재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396",
-     "published_at": "2026-11-16"
-    }
-   ]
-  },
   "th-labor-policy": {
    "label": "고용정책과 감독",
    "items": [
@@ -398,104 +543,6 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
      "published_at": "2026-11-17"
-    }
-   ]
-  },
-  "th-macro-economy": {
-   "label": "거시경제와 고용",
-   "items": [
-    {
-     "date": "2026-10-31",
-     "card_id": "c01",
-     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
-     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
-     "published_at": "2026-10-30"
-    },
-    {
-     "date": "2026-10-31",
-     "card_id": "c03",
-     "title": "승용차 판매 18.3% — 소비가 살아난 이유는 차였다",
-     "kicker": "소매판매 +3.6% · 내구재 +4.4%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
-     "published_at": "2026-10-30"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c04",
-     "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
-     "kicker": "2026년 3.9% · 2027년 3.3%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국제통화기금(IMF)·재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c02",
-     "title": "KDI \"내년 성장 3.9%·취업자 20만\" — 20대는 여전히 낮다",
-     "kicker": "2026년 3.8% → 2027년 3.9% · 취업자 +12만 → +20만",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "재정경제부·한국개발연구원(KDI)",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
-     "published_at": "2026-11-18"
-    }
-   ]
-  },
-  "th-youth-employment": {
-   "label": "청년 고용",
-   "items": [
-    {
-     "date": "2026-11-05",
-     "card_id": "c01",
-     "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
-     "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
-     "published_at": "2026-11-04"
-    },
-    {
-     "date": "2026-11-12",
-     "card_id": "c01",
-     "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
-     "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
-     "published_at": "2026-11-11"
-    },
-    {
-     "date": "2026-11-13",
-     "card_id": "c03",
-     "title": "범부처 지원단이 청년 취업지원 현장을 직접 봤다",
-     "kicker": "민생안정지원단 청년 취업지원 점검",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
-     "published_at": "2026-11-12"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c02",
-     "title": "취업자 넉 달째 두 자릿수, 실질임금도 플러스로",
-     "kicker": "10월 취업자 +13.9만명 · 8월 실질임금 +0.8%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
-     "published_at": "2026-11-13"
     }
    ]
   },
