@@ -1,8 +1,8 @@
 /*
- * 내담자 언어 번역기 · 화면 엔진 (26번 섹터)
+ * 내담자 언어 번역기 · 화면 엔진
  *
  * 데이터(고치지 않고 읽기만 한다)
- *   data/terms.json  client-language-translator v2.0.0 — 용어 625
+ *   data/terms.json  client-language-translator v2.1.0 — 용어 1,813
  *
  * 주소
  *   ?q=MES          다른 섹터·개인비서에서 낱말로 바로 들어온다(정확히 맞으면 그 용어를 연다)
@@ -12,12 +12,16 @@
  *   - 외부 API·저장 없음. 검색어는 화면 안에서만 쓴다.
  *   - 목록은 쪽 단위로 끊어 그린다(끝없는 세로 스크롤 금지). 휴대폰은 목록 ↔ 한 장 보기.
  *   - 화면에 그리는 글은 모두 data/terms.json 에서 나온다(화면에 문장을 지어 넣지 않는다).
- *   - 분야 탭 아래 상위 묶음(grp) 2단 필터. 비하·속어는 상담사 사용 금지 딱지를 붙인다.
+ *   - 분야 탭 아래 상위 묶음(grp) 2단 필터. 비하·속어는 진한 빨강 X의 「상담사 절대 사용 금지」 딱지를 붙인다.
  */
 (function () {
   'use strict';
   var d = document;
   var $ = function (id) { return d.getElementById(id); };
+  /* 굵은 X 마크 — 금지 딱지·경고 박스에 함께 쓴다(원형 슬래시를 쓰지 않는다). */
+  var xmark = function (size, sw) {
+    return '<svg viewBox="0 0 24 24" width="' + size + '" height="' + size + '" fill="none" stroke="currentColor" stroke-width="' + (sw || 3.2) + '" stroke-linecap="round" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>';
+  };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
 
   var PAGE = 8;
@@ -171,7 +175,11 @@
     var g = GRP[t.grp];
     var ko = (t.ko && norm(t.ko) !== norm(t.term)) ? '<small>' + esc(t.ko) + '</small>' : '';
     var tag = g ? (g.short || g.name) : (CATN[t.cat] || '');
-    var ban = t.ban ? '<span class="r-bn">' + (t.ban === 'forbid' ? '사용 금지' : '따라 쓰지 않기') + '</span>' : '';
+    var ban = t.ban
+      ? (t.ban === 'forbid'
+        ? '<span class="r-bn is-forbid">' + xmark(11, 3.4) + '절대 사용 금지</span>'
+        : '<span class="r-bn">따라 쓰지 않기</span>')
+      : '';
     return '<li><button type="button" class="row' + (t.ban ? ' is-ban' : '') + '" data-id="' + esc(t.id) + '" aria-current="' + (st.sel === t.id) + '">'
       + '<span class="r-m"><span class="r-t"><b' + (isHangul(t.term) ? '' : ' class="num"') + '>' + hl(t.term, st.q) + '</b>'
       + ko + ban + '</span>'
@@ -225,7 +233,7 @@
     var notice = (D.banNotice || {})[t.ban] || '';
     var swaps = (t.swap || []).map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('');
     return '<section class="blk b-ban' + (forbid ? ' is-forbid' : '') + '">'
-      + '<h3>' + (forbid ? '상담사는 쓰지 않습니다' : '따라 쓰지 않습니다') + '</h3>'
+      + '<h3>' + (forbid ? xmark(15, 3.2) + '상담사는 절대 사용하지 않습니다' : '따라 쓰지 않습니다') + '</h3>'
       + '<p class="ban-note">' + esc(notice) + '</p>'
       + (swaps ? '<div class="ban-swap"><b>이렇게 바꿔 말하세요</b><ul>' + swaps + '</ul></div>' : '')
       + (t.say ? '<p class="ban-say"><b>응답 예</b> ' + esc(t.say) + '</p>' : '')
@@ -241,8 +249,10 @@
       });
     var seal = t.ban
       ? '<span class="c-ban' + (t.ban === 'forbid' ? ' is-forbid' : '') + '" role="note">'
-        + '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg>'
-        + (t.ban === 'forbid' ? '상담사 사용 금지' : '따라 쓰지 않기') + '</span>'
+        + (t.ban === 'forbid'
+          ? xmark(14, 3.2) + '상담사 절대 사용 금지'
+          : '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg>따라 쓰지 않기')
+        + '</span>'
       : '';
     var out = '<article class="card' + (t.ban ? ' is-ban' : '') + '" data-term="' + esc(t.id) + '">'
       + '<div class="c-hd"><div class="c-top"><span class="badge b-' + esc(t.cat) + '">' + esc(CATN[t.cat] || '') + '</span>'
@@ -428,7 +438,7 @@
     }
   }
 
-  fetch('./data/terms.json', { cache: 'force-cache' })
+  fetch('./data/terms.json', { cache: 'no-cache' })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(start)
     .catch(function () {
