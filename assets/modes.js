@@ -956,7 +956,7 @@
         return;
       }
       if (!open || e.key !== 'Tab') return;
-      var f = [], all = ov.querySelectorAll('button');
+      var f = [], all = ov.querySelectorAll('button, a[href]');
       for (var i = 0; i < all.length; i++) if (all[i].offsetParent !== null) f.push(all[i]);
       if (!f.length) return;
       var at = f.indexOf(document.activeElement);
