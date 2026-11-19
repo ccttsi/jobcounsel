@@ -18,13 +18,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, "portals.json")
 
 EXPECTED = {
-    "total": 63,
-    "by_sector": {"pub": 6, "general": 15, "tech": 12, "expert": 5, "industry": 8, "target": 17},
+    "total": 75,
+    "by_sector": {"pub": 8, "disclosure": 10, "general": 15, "tech": 12, "expert": 5,
+                  "industry": 8, "target": 17},
 }
-VERIFIED_AT = "2026-11-16"
-METHODS = {"curl", "curl-mobile", "browser"}
+# 항목마다 실제로 접속을 확인한 날을 적는다. 한 날짜로 통일하지 않는다 —
+# 자동 접속 차단(403) 사이트는 마지막으로 확인한 날짜를 그대로 둔다.
+ALLOWED_DATES = {"2026-11-16", "2026-11-19"}
+VERIFIED_AT = "2026-11-19"
+METHODS = {"curl", "curl-mobile", "browser", "official"}
 REQUIRED = ["id", "name", "url", "sector", "operator", "roles", "eligibility",
-            "strengths", "tips", "verified_at", "http_status", "final_url", "verify_method"]
+            "strengths", "tips", "shows", "verified_at", "final_url", "verify_method"]
+# http_status 는 아래 verify_method 검사에서 함께 본다(official 은 null 이 정상).
+OPTIONAL = ["aliases", "verify_note"]
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 ID_RE = re.compile(r"^[a-z0-9_]+$")
 
@@ -66,6 +72,8 @@ def main():
             err("meta.%s 누락" % k)
     if meta.get("built_at") != VERIFIED_AT:
         warn("meta.built_at=%r (기대 %s)" % (meta.get("built_at"), VERIFIED_AT))
+    if meta.get("version") != "1.1.0":
+        warn("meta.version=%r (기대 1.1.0)" % (meta.get("version"),))
 
     # ---- sectors / vocabulary ----
     codes = [s.get("code") for s in sectors]
@@ -125,12 +133,38 @@ def main():
             if e not in v_elig:
                 err("%s: vocabulary.eligibility 에 없는 값 %r" % (where, e))
 
-        if p.get("http_status") != 200:
-            err("%s: http_status 가 200 이 아닙니다 (%r)" % (where, p.get("http_status")))
-        if p.get("verify_method") not in METHODS:
-            err("%s: verify_method %r" % (where, p.get("verify_method")))
-        if p.get("verified_at") != VERIFIED_AT:
-            err("%s: verified_at %r (전수 재검증일 %s 와 다름)" % (where, p.get("verified_at"), VERIFIED_AT))
+        method = p.get("verify_method")
+        if method not in METHODS:
+            err("%s: verify_method %r" % (where, method))
+        if method == "official":
+            # 공식 안내로 확인한 국내 전용 포털 — 응답 코드를 지어내지 않는다.
+            if p.get("http_status") is not None:
+                err("%s: official 검증은 http_status 가 null 이어야 합니다 (%r)" % (where, p.get("http_status")))
+            if not str(p.get("verify_note") or "").strip():
+                err("%s: official 검증은 verify_note(확인 근거·접속 제한)가 필요합니다" % where)
+        else:
+            if p.get("http_status") != 200:
+                err("%s: http_status 가 200 이 아닙니다 (%r)" % (where, p.get("http_status")))
+        if p.get("verified_at") not in ALLOWED_DATES:
+            err("%s: verified_at %r (허용 %s)" % (where, p.get("verified_at"), sorted(ALLOWED_DATES)))
+
+        shows = p.get("shows")
+        if not isinstance(shows, list) or not (2 <= len(shows) <= 4):
+            err("%s: shows 는 2~4개 배열이어야 합니다 (%r)" % (where, shows))
+        else:
+            for x in shows:
+                if not isinstance(x, str) or not (2 <= len(x.strip()) <= 24):
+                    err("%s: shows 항목이 2~24자가 아닙니다 (%r)" % (where, x))
+                elif "<" in x or ">" in x or "http" in x.lower():
+                    err("%s: shows 에 태그·주소를 넣지 않습니다 (%r)" % (where, x))
+            if len(set(shows)) != len(shows):
+                err("%s: shows 에 같은 항목이 겹칩니다" % where)
+        al = p.get("aliases")
+        if al is not None:
+            if not isinstance(al, list) or not all(isinstance(x, str) and 1 <= len(x.strip()) <= 30 for x in al):
+                err("%s: aliases 는 1~30자 문자열 배열이어야 합니다" % where)
+            elif len(set(al)) != len(al):
+                err("%s: aliases 에 같은 값이 겹칩니다" % where)
 
         st = p.get("strengths") or ""
         tp = p.get("tips") or ""
@@ -171,6 +205,10 @@ def main():
         err("meta.counts.total=%r 이 실제 %d 와 다릅니다" % (counts.get("total"), total))
     if counts.get("by_sector") != EXPECTED["by_sector"]:
         err("meta.counts.by_sector 가 기대와 다릅니다: %r" % (counts.get("by_sector"),))
+    if counts.get("by_sector") != dict(by_sector):
+        err("meta.counts.by_sector 가 실제와 다릅니다: %r vs %r" % (counts.get("by_sector"), dict(by_sector)))
+    if counts.get("by_method") != dict(Counter(p.get("verify_method") for p in portals)):
+        err("meta.counts.by_method 가 실제와 다릅니다")
     for code, n in EXPECTED["by_sector"].items():
         if by_sector.get(code, 0) != n:
             err("sector %s 실제 %d건 (기대 %d)" % (code, by_sector.get(code, 0), n))

@@ -5,7 +5,7 @@
   python3 ops/scripts/smoke_test.py --base https://ccttsi.github.io/jobcounsel/
   python3 ops/scripts/smoke_test.py --summary-file "$GITHUB_STEP_SUMMARY"
 
-재는 화면: 대문(/), 브리핑(/briefing/), 신산업(/emerging/), 산업 온도계(/thermometer/), 내담자 언어 번역기(/translator/) — 휴대폰 390·데스크톱 1280
+재는 화면: 대문(/), 브리핑(/briefing/), 신산업(/emerging/), 산업 온도계(/thermometer/), 내담자 언어 번역기(/translator/), 채용 사이트 안내판(/portals/ · ?q= 검색) — 휴대폰 390·데스크톱 1280
 재는 것
   · 콘솔·페이지 오류 0 (외부 CDN에서 온 오류는 제외 — 그쪽 사정으로 게이트가 흔들리지 않게)
   · 같은 사이트 안의 404 응답 0 (깨진 상대경로를 잡는다)
@@ -25,7 +25,7 @@ import threading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/"]
+PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi"]
 VIEWPORTS = [(390, 844, "휴대폰"), (1280, 800, "데스크톱")]
 
 # 페이지마다 「이게 없으면 화면이 안 그려진 것」을 하나씩 정한다.
@@ -56,6 +56,21 @@ PROBES = {
         const total = Number((document.getElementById('lstN') || {}).textContent || 0);
         const broken = /불러오지 못했습니다/.test(document.body.innerText);
         return {ok: rows >= 1 && total >= 100 && !broken, detail: `목록 ${rows} · 용어 ${total}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/portals/": """() => {
+        // 카드·「가서 볼 수 있는 것」 칩이 그려지고, 자료를 불러오지 못한 문구가 없는가.
+        const cards = document.querySelectorAll('.card:not([hidden])').length;
+        const chips = document.querySelectorAll('.card:not([hidden]) .kw span').length;
+        const broken = /불러오지 못했습니다/.test(document.body.innerText);
+        return {ok: cards >= 20 && chips >= 40 && !broken, detail: `카드 ${cards} · 설명 칩 ${chips}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/portals/?q=gosi": """() => {
+        // ?q= 로 들어온 검색어가 실제로 먹는가 — gosi 로 좁혀지고 공무원 채용 사이트가 남아야 한다.
+        const names = [...document.querySelectorAll('.card:not([hidden]) .nm')].map(x => x.textContent);
+        const q = (document.getElementById('q') || {}).value || '';
+        const ok = q === 'gosi' && names.length > 0 && names.length <= 4 &&
+                   names.some(n => /사이버국가고시센터|국가공무원채용시스템/.test(n));
+        return {ok, detail: `?q=${q} · 결과 ${names.length}곳`};
     }""",
     "/emerging/": """() => {
         const art = (document.querySelector('#art') || {innerText: ''}).innerText.trim().length;
