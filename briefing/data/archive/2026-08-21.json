@@ -1,0 +1,351 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-08-21T07:10:00+09:00",
+ "edition": {
+  "date": "2026-08-21",
+  "weekday": "금",
+  "title": "고용센터 102곳, 서류를 내려놓고 사람을 만난다 — 상담 18분→73.8분",
+  "subtitle": "국가 고용서비스 혁신방안·고용위기 선제대응지역 여수 연장·당진 신규",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "고용센터",
+   "value": 0,
+   "unit": "",
+   "value_text": "102곳",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "30년 만의 혁신",
+   "source_id": "src_moel_employment_service_20260820",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-21T07:10:00+09:00",
+   "run_id": "br-20260821-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "상담 시간",
+   "value": 0,
+   "unit": "",
+   "value_text": "73.8분",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "시범사업",
+   "delta_from": "18분에서 4배",
+   "source_id": "src_moel_employment_service_20260820",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-21T07:10:00+09:00",
+   "run_id": "br-20260821-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "청년 고용률",
+   "value": 0,
+   "unit": "",
+   "value_text": "44.2%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 7월",
+   "delta_from": "-1.6%p",
+   "source_id": "src_moel_crisis_area_20260820",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-21T07:10:00+09:00",
+   "run_id": "br-20260821-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "고용센터 102곳, 서류를 내려놓고 사람을 만난다",
+   "kicker": "102곳 · 상담 18분→73.8분 · 연 200만명",
+   "three_step": {
+    "what": "고용노동부가 8월 20일 고용정책심의회에서 국가 고용서비스 혁신방안을 발표했다. 실업급여 서류 처리 중심이던 고용센터를 상담 중심으로 바꾸고, 반복 행정은 AI에 맡긴다.",
+    "evidence": "고용센터는 연 200만명 이상의 구직자와 기업을 잇는데, 실업급여 담당 직원 1명이 하루 평균 70건 넘는 실업인정 업무를 처리해 왔다. 국민취업지원제도 시범사업에서는 상담 시간이 18분에서 73.8분으로 4배 늘었다. 정부는 '25년 8월부터 전문가 연구와 현장·노사 의견을 모아 이 방안을 만들었고, 시범운영부터 단계적으로 추진한다(2026년 8월 20일, 고용노동부).",
+    "implication": "내담자에게 고용센터 상담을 '실업급여 받으러 가는 곳'이 아니라 직업 여정을 함께 설계하는 곳으로 안내하고, 상담 전에 경력·희망 직무를 한 장으로 정리해 오게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "고용센터",
+     "value": "102곳",
+     "delta": "혁신 대상",
+     "period": "2026년"
+    },
+    {
+     "label": "상담 시간",
+     "value": "18분 → 73.8분",
+     "delta": "시범사업",
+     "period": "2026년"
+    },
+    {
+     "label": "연간 이용",
+     "value": "200만명 이상",
+     "delta": "구직자·기업",
+     "period": "2026년"
+    },
+    {
+     "label": "실업인정",
+     "value": "1인당 하루 70건 이상",
+     "delta": "담당 직원",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "분",
+    "labels": [
+     "기존",
+     "국민취업지원제도 시범사업"
+    ],
+    "series": [
+     {
+      "name": "1인당 상담 시간",
+      "values": [
+       18,
+       73.8
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "상담 시간 비교. 고용노동부 2026.8.20.",
+    "source_id": "src_moel_employment_service_20260820"
+   },
+   "counselor_question": "고용센터에서 받은 상담이 실제 구직에 얼마나 도움이 됐나요?",
+   "tags": [
+    "고용센터",
+    "상담",
+    "국민취업지원제도"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "issue_id": "iss-employment-service-innovation-2026",
+   "updated_at": "2026-08-21T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_employment_service_20260820",
+    "source_name": "고용노동부",
+    "source_title": "\"30년 만의 102개 고용센터 혁신\" 전 국민 평생 일자리 토털케어 — 국가 고용서비스 혁신방안 발표",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775003",
+    "published_at": "2026-08-20",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「\"30년 만의 102개 고용센터 혁신\" 전 국민 평생 일자리 토털케어 — 국가 고용서비스 혁신방안 발표」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용지표",
+   "title": "고용위기 선제대응지역, 여수 1년 연장하고 당진 새로 지정",
+   "kicker": "여수 연장 · 당진 신규 · 청년 고용률 44.2%",
+   "three_step": {
+    "what": "정부가 8월 20일 제6차 고용정책심의회에서 여수시의 고용위기 선제대응지역 지정을 1년 연장하고 당진시를 새로 지정했다.",
+    "evidence": "2026년 7월 취업자는 전년 동기보다 10만8천명 늘었지만 15세 이상 고용률은 63.3%로 0.1%p 떨어졌고, 제조업·건설업 취업자는 줄었다. 청년층 고용률은 44.2%로 1.6%p 하락했다. 심의회는 같은 날 고용서비스 혁신방안과 2026년 재정지원 일자리사업 평가·개선방안도 의결했다(2026년 8월 20일, 고용노동부).",
+    "implication": "지역 고용 충격이 있는 곳의 내담자에게는 선제대응지역 지정 여부와 그 지역 지원사업을 함께 확인해, 개인 노력만으로 설명하지 않게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "여수시",
+     "value": "1년 연장",
+     "delta": "선제대응지역",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "당진시",
+     "value": "신규 지정",
+     "delta": "선제대응지역",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "7월 취업자",
+     "value": "+10만8천명",
+     "delta": "전년동월",
+     "period": "2026년 7월"
+    },
+    {
+     "label": "청년 고용률",
+     "value": "44.2%",
+     "delta": "-1.6%p",
+     "period": "2026년 7월"
+    }
+   ],
+   "tags": [
+    "지역고용",
+    "고용위기",
+    "청년"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-regional-crisis-202608",
+   "updated_at": "2026-08-21T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_crisis_area_20260820",
+    "source_name": "고용노동부",
+    "source_title": "고용위기 선제대응지역 여수시 1년 연장, 당진시 신규 지정!",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774996",
+    "published_at": "2026-08-20",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「고용위기 선제대응지역 여수시 1년 연장, 당진시 신규 지정!」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_employment_service_20260820",
+   "source_name": "고용노동부",
+   "source_title": "\"30년 만의 102개 고용센터 혁신\" 전 국민 평생 일자리 토털케어 — 국가 고용서비스 혁신방안 발표",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775003",
+   "published_at": "2026-08-20",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「\"30년 만의 102개 고용센터 혁신\" 전 국민 평생 일자리 토털케어 — 국가 고용서비스 혁신방안 발표」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_moel_crisis_area_20260820",
+   "source_name": "고용노동부",
+   "source_title": "고용위기 선제대응지역 여수시 1년 연장, 당진시 신규 지정!",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774996",
+   "published_at": "2026-08-20",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「고용위기 선제대응지역 여수시 1년 연장, 당진시 신규 지정!」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19"
+ ]
+}
