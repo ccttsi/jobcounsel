@@ -1,0 +1,483 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-20T02:40:49+09:00",
+ "edition": {
+  "no": 18,
+  "date": "2026-05-13",
+  "weekday": "수",
+  "title": "장주기 ESS, 8시간 저장이 목표다",
+  "reading_minutes": 4,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20260513-1",
+   "date": "2026-05-13",
+   "order": 1,
+   "sector": "s4",
+   "cat": "energy",
+   "lead": true,
+   "title": "8시간 저장, 비리튬 장주기 ESS가 온다",
+   "kicker": "기후에너지환경부 · 2026.5.13 보도자료",
+   "summary": "기후에너지환경부 장관이 5월 13일 에이치투·스탠다드에너지·한국기계연구원을 찾아 장주기 에너지저장 기술을 점검했다. 정부는 8시간 이상 저장(LDES)을 핵심 과제로 두고, 화재 위험이 적고 25~30년 운전이 가능한 비리튬 기술을 밀고 있다.",
+   "key_numbers": [
+    {
+     "label": "저장 시간 목표",
+     "value": "8시간 이상",
+     "note": "장주기(LDES)"
+    },
+    {
+     "label": "설비 수명",
+     "value": "25~30년",
+     "note": "비리튬계 기준"
+    },
+    {
+     "label": "에이치투 생산",
+     "value": "연 330MWh",
+     "note": "1.2GWh 제2공장 건설"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "에이치투",
+     "스탠다드에너지",
+     "한국기계연구원"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-ldes",
+     "j-grid-plan"
+    ]
+   },
+   "source_id": "src_me_ldes2026",
+   "question": "바나듐·액체공기는 화공·기계 지식이 전기와 만나는 자리다. 어느 전공자가 유리할까?",
+   "subtitle": "에이치투는 연 330MWh 생산에 1.2GWh 제2공장을 짓는다"
+  },
+  {
+   "id": "ei-20260513-2",
+   "date": "2026-05-13",
+   "order": 2,
+   "sector": "s2",
+   "cat": "semicon",
+   "lead": false,
+   "title": "한-UAE, AI 인프라와 반도체로 손잡는다",
+   "kicker": "산업통상부·과학기술정보통신부 · 2026.5.13",
+   "summary": "산업통상부와 과기정통부, 국가인공지능전략위원회가 5월 13일 서울에서 한-UAE AI인프라·반도체 투자포럼을 열었다. UAE 투자부 차관과 Core42·MGX·ATRC·TII·무바달라 등 주요 인사 25명이 방한해 NPU 기반 저전력 AI 인프라와 자국어 모델 협력을 논의했다.",
+   "key_numbers": [
+    {
+     "label": "UAE 방한단",
+     "value": "25명",
+     "note": "투자부 차관 포함"
+    },
+    {
+     "label": "협력 분야",
+     "value": "AI 인프라·반도체·모델",
+     "note": "3개 축"
+    },
+    {
+     "label": "출발점",
+     "value": "2025년 11월 워킹그룹",
+     "note": "UAE 국빈 방문 계기"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "대한상공회의소",
+     "정보통신산업진흥원"
+    ],
+    "glob": [
+     "Core42",
+     "MGX",
+     "ATRC",
+     "TII",
+     "Mubadala"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-npu-sw"
+    ]
+   },
+   "source_id": "src_motie_uae2026",
+   "question": "해외 투자 유치가 성사되면 그 일자리는 어느 나라에 생길까? 국내 기업에 남는 몫은 무엇일까?",
+   "subtitle": "UAE 투자부 차관 등 25명 방한, Core42·MGX·무바달라가 함께 왔다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-elec",
+   "name": "전기·전자 엔지니어",
+   "en": "Electrical / Electronics Engineer",
+   "sector": "s2",
+   "role": "전력·제어·회로 시스템을 설계하고 시험한다. 배터리·로봇·충전설비처럼 전기를 다루는 모든 신산업의 아래쪽에서 작동한다.",
+   "ksa": {
+    "k": [
+     "회로이론·전력계통",
+     "전자부품 특성",
+     "전기 안전 규정"
+    ],
+    "s": [
+     "회로 설계·PCB",
+     "계측·디버깅",
+     "인증 시험 대응"
+    ],
+    "a": [
+     "감전·화재 위험을 먼저 보는 습관",
+     "측정값을 믿고 확인하는 태도"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "전자공학",
+    "제어계측공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전자기사",
+    "전기안전기사"
+   ],
+   "insight": "신산업의 화려한 부분은 아니지만, 전원이 꺼지면 모든 것이 멈춘다. 로봇·배터리·수소 설비 모두 이 직무 위에 서 있다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "LG전자",
+     "현대모비스",
+     "효성중공업",
+     "LS일렉트릭"
+    ],
+    "global": [
+     "Texas Instruments",
+     "Infineon",
+     "ABB",
+     "Siemens"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
+  },
+  {
+   "id": "j-ldes",
+   "kind": "new",
+   "name": "장주기 에너지저장(ESS) 엔지니어",
+   "en": "Long-Duration Energy Storage Engineer",
+   "sector": "s4",
+   "role": "8시간 이상 전력을 저장하는 흐름전지·액체공기 저장 설비의 용량과 효율을 설계한다. 전해액·펌프·열교환기 같은 구성품을 고르고, 계통에 붙였을 때 충·방전 계획이 맞는지 검증한다.",
+   "ksa": {
+    "k": [
+     "전기화학·열역학",
+     "전력계통",
+     "ESS 안전기준"
+    ],
+    "s": [
+     "용량·효율 설계",
+     "시운전·성능시험",
+     "계통 연계 검증"
+    ],
+    "a": [
+     "20년 운전을 기준으로 보는 설계 감각"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "화학공학",
+    "기계공학"
+   ],
+   "certs": [
+    "전기기사",
+    "에너지관리기사",
+    "산업안전기사"
+   ],
+   "insight": "리튬 배터리로는 8시간을 채우기 어렵다. 바나듐·액체공기처럼 다른 화학과 기계가 들어오면서 새 직무가 열린다.",
+   "companies": {
+    "domestic": [
+     "에이치투",
+     "스탠다드에너지",
+     "한국기계연구원"
+    ],
+    "global": [
+     "Sumitomo Electric",
+     "Invinity Energy Systems"
+    ]
+   }
+  },
+  {
+   "id": "j-grid-plan",
+   "name": "전력망 계획·계통 연계 엔지니어",
+   "en": "Grid Planning & Interconnection Engineer",
+   "sector": "s4",
+   "role": "재생에너지와 데이터센터 같은 새 부하가 붙는 전력망에 무엇을 어디에 더 지어야 하는지 계산한다. 계통 연계 신청을 검토하고 송전선·변전소 투자 순서를 정한다.",
+   "ksa": {
+    "k": [
+     "전력계통 해석",
+     "송배전 설비",
+     "재생에너지 출력 변동성"
+    ],
+    "s": [
+     "계통 모의(조류·안정도)",
+     "연계 심사 자료 작성",
+     "투자 우선순위 분석"
+    ],
+    "a": [
+     "지역·이해관계자 요구를 조정하는 판단력",
+     "수십 년 단위 설비를 견디는 인내"
+    ]
+   },
+   "companies": {
+    "domestic": [
+     "한국전력공사",
+     "전력거래소",
+     "LS일렉트릭",
+     "효성중공업"
+    ],
+    "global": [
+     "Siemens Energy",
+     "Hitachi Energy",
+     "GE Vernova",
+     "Prysmian"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "에너지시스템공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전기공사기사",
+    "전기안전기술사"
+   ],
+   "insight": "전기화 목표는 발전설비보다 전력망에서 먼저 막힌다. 연계 심사와 계통 계획 인력은 국가 간 협력 사업에서도 가장 먼저 요구되는 쪽이다.",
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "에너지 안보 데이터 분석가",
+     "w": "국가별 수급·위험 정보를 모아 협력 과제를 고르는 역할"
+    }
+   ]
+  },
+  {
+   "id": "j-npu-sw",
+   "kind": "new",
+   "name": "AI 반도체 소프트웨어 스택 엔지니어",
+   "en": "AI Accelerator Software Stack Engineer",
+   "sector": "s2",
+   "role": "국산 신경망처리장치(NPU)가 범용 AI 프레임워크에서 그대로 돌아가도록 컴파일러·런타임·드라이버를 맞춘다. 다른 회사 GPU·CPU와 섞어 쓰는 이기종 환경에서 성능이 나오는지 측정한다.",
+   "ksa": {
+    "k": [
+     "컴파일러·런타임",
+     "GPU·NPU 아키텍처",
+     "AI 프레임워크"
+    ],
+    "s": [
+     "CUDA·ROCm 대응 포팅",
+     "성능 프로파일링",
+     "이기종 연동 시험"
+    ],
+    "a": [
+     "성능 수치를 끝까지 파고드는 집요함"
+    ]
+   },
+   "study": [
+    "컴퓨터공학",
+    "전자공학"
+   ],
+   "certs": [
+    "정보처리기사",
+    "리눅스마스터"
+   ],
+   "insight": "칩 성능은 소프트웨어 스택이 받쳐 줄 때만 숫자로 나온다. 국산 AI 반도체 기업이 가장 먼저 채우는 자리다.",
+   "companies": {
+    "domestic": [
+     "퓨리오사AI",
+     "리벨리온",
+     "딥엑스",
+     "모레",
+     "래블업"
+    ],
+    "global": [
+     "AMD",
+     "NVIDIA"
+    ]
+   }
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_me_ldes2026",
+   "name": "기후에너지환경부",
+   "title": "재생에너지 시대를 견인할 차세대 장주기 에너지저장장치 현장 점검",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156761190",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-05-13",
+   "track": "A",
+   "usage": "8시간 이상 장주기 저장 목표, 비리튬계 25~30년 수명, 에이치투 연 330MWh·1.2GWh 제2공장, LAES 1.5MWh 테스트베드"
+  },
+  {
+   "id": "src_motie_uae2026",
+   "name": "산업통상부",
+   "title": "한-UAE AI인프라·반도체 투자포럼 개최",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156761267",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-05-13",
+   "track": "A",
+   "usage": "한-UAE 투자포럼(5.13), UAE 주요 인사 25명 방한, NPU 기반 AI 인프라·자국어 모델 협력 논의"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
