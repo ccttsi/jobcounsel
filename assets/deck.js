@@ -132,7 +132,7 @@
       var t = arr[i] ? byId(arr[i]) : null;
       var moving = hold && hold.from === i ? ' a-moving' : '';
       if (t) {
-        h += '<li class="a-dslot a-on a-' + t.color + moving + '" data-i="' + i + '">'
+        h += '<li class="a-dslot a-on' + moving + '" data-i="' + i + '" style="--acc:var(--tc-' + t.color + ')">'
           + '<button type="button" class="a-dslot-b" data-dslot="' + i + '" aria-label="' + (i + 1) + '번 칸, ' + esc(t.title) + '. 미리보기 열기">'
           + '<span class="a-dslot-n a-num">' + (i + 1) + '</span>'
           + '<span class="a-dslot-t"><b>' + esc(t.gi || t.title) + '</b><small>' + esc(t.title) + '</small></span>'
@@ -163,7 +163,7 @@
       $('shelfEmpty').hidden = true;
       $('shelfList').innerHTML = left.map(function (t) {
         var on = hold && hold.from === null && hold.id === t.id;
-        return '<li><button type="button" class="a-sc' + (on ? ' a-float' : '') + '" data-id="' + t.id + '"'
+        return '<li style="--acc:var(--tc-' + t.color + ')"><button type="button" class="a-sc' + (on ? ' a-float' : '') + '" data-id="' + t.id + '"'
           + ' draggable="true" aria-pressed="' + on + '"'
           + ' aria-label="' + esc(t.gi || t.title) + ' 골라서 슬롯에 꽂기">'
           + '<span class="a-sc-n a-num">' + esc(t.no) + '</span>'
@@ -289,7 +289,7 @@
         + '</button>';
     }).join('');
   }
-  function render() { renderRail(); renderFlow(); renderDeck(); renderShelf(); renderHint(); renderTools(); renderSheet(); }
+  function render() { paintKw(); renderRail(); renderFlow(); renderDeck(); renderShelf(); renderHint(); renderTools(); renderSheet(); }
 
   function flash(i) {
     var li = $('deckList').querySelector('[data-i="' + i + '"]');
@@ -585,6 +585,15 @@
     try { $('tutBtn').focus({ preventScroll: true }); } catch (e) { }
   }
 
+  /* 머리 옆 핵심 키워드 3개 — 고른 프리셋의 단계 이름, 없으면 모드의 기본 셋 */
+  function paintKw() {
+    var kwBox = $('deckKw'); if (!kwBox) return;
+    var p = presetOf(mode, pre[mode]), ks = [];
+    if (p && p.steps) p.steps.forEach(function (s) { if (s.k && ks.indexOf(s.k) < 0 && ks.length < 3) ks.push(s.k); });
+    if (!ks.length) ks = mode === 'seed' ? ['원리', '기준', '근거'] : ['현장', '판단', '적용'];
+    kwBox.innerHTML = ks.slice(0, 3).map(function (k) { return '<span>' + esc(k) + '</span>'; }).join('');
+  }
+
   /* ---------- 보이기/숨기기 ---------- */
   function show(m) {
     var was = mode;
@@ -603,6 +612,7 @@
     $('deckK').textContent = inf.k;
     $('deckEn').textContent = inf.en;
     $('deckSub').textContent = inf.sub;
+    paintKw();
     render();
   }
   function hide() {

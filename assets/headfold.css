@@ -15,9 +15,22 @@
  */
 html{--jh-rail:44px}
 
+/* 2026-11-19: 접기는 모바일·폴더블(~767px)에서만이다. 태블릿(≥768px)부터는 접기 자체를 없애
+   헤더가 언제나 펼쳐진 채로 위·아래 틈 없이 붙는다. */
+@media (min-width:768px){
+  .jh-fold{display:none!important}
+  .jh-rail{display:none!important}
+}
+
+/* 모바일 머리말에서 접기 단추는 로고·화면설정과 같은 줄 오른쪽 끝 */
+@media (max-width:767px){.jh-fold{order:3}}
+
 /* 접힌 상태: 높이만 남기고 안쪽은 감춘다(포커스·읽기 순서에서도 빠진다) */
-html[data-jc-hf="off"] [data-jc-headfold]{height:var(--jh-rail);min-height:0;padding-top:0;padding-bottom:0;overflow:hidden}
-html[data-jc-hf="off"] [data-jc-headfold] > :not(.jh-rail){display:none!important}
+@media (max-width:767px){
+  html[data-jc-hf="off"] [data-jc-headfold]{height:var(--jh-rail);min-height:0;padding-top:0;padding-bottom:0;overflow:hidden}
+  html[data-jc-hf="off"] [data-jc-headfold] > :not(.jh-rail){display:none!important}
+  html[data-jc-hf="off"] [data-jc-headfold] > .jh-rail{display:flex;animation:jh-rail-in .2s backwards}
+}
 
 /* 높이 보간은 접고 펼 때 한 번만 쓴다 */
 [data-jc-headfold].jh-anim{transition:height .26s cubic-bezier(.25,.8,.25,1)}
@@ -34,7 +47,6 @@ html[data-jc-hf="off"] [data-jc-headfold] > :not(.jh-rail){display:none!importan
 
 /* ---------- 접혔을 때: 남는 손잡이 줄 ---------- */
 .jh-rail{display:none;align-items:center;gap:8px;flex:1 1 100%;min-width:0;height:100%}
-html[data-jc-hf="off"] [data-jc-headfold] > .jh-rail{display:flex;animation:jh-rail-in .2s backwards}
 @keyframes jh-rail-in{from{opacity:0;transform:translateY(-4px)}}
 
 .jh-rail .jh-id{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;overflow:hidden}
