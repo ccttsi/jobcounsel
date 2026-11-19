@@ -22,8 +22,13 @@ index.json
     q=그 주소 뒤에 ?q=로 붙일 낱말(있을 때만). 이동 주소는 클라이언트가 인코딩한다.
 
 index-dirs.json
-    {"v":1,"built":"…","company":[[이름,업종,직원수,분류],…],"taxonomy":[[이름,KECO,KSCO],…]}
-    분류: 0=대기업 1=중견기업 2=공공기관
+    {"v":1,"built":"…","company":[],"taxonomy":[[이름,KECO,KSCO],…]}
+    company 는 빈 배열로 남겨 둔다(예전 판과 모양을 맞춘다). 기업은 아래 index-companies.json 이 맡는다.
+
+index-companies.json — 기업 명함첩 9,137곳(대문·비서가 «검색할 때만» 받는다)
+    {"v":1,"built":"…","fields":"id|name|industry|cat|emp|alias|kw","cats":"E=대기업,…","rows":"…"}
+    한 줄에 한 곳: 아이디|이름|업종|분류|직원수|별칭(;로 이음)|찾기 낱말(대표 브랜드·주요 사업)
+    아이디는 앞머리를 뺀다(분류 글자 E/M/P/L 이 ENT-/MID-/PUB-/LPI- 를 정한다).
 
 rag-preface.json — 비서가 **맨 먼저** 보는 선참조 지도(작다)
     {"v":1,"built":"…","dict":[…],"sectors":[…],"terms":{…}}
@@ -44,6 +49,7 @@ ROOT = os.path.dirname(HERE)
 OUT = os.path.join(HERE, 'data', 'index.json')
 OUT_DIRS = os.path.join(HERE, 'data', 'index-dirs.json')
 OUT_PREFACE = os.path.join(HERE, 'data', 'rag-preface.json')
+OUT_COMPANIES = os.path.join(HERE, 'data', 'index-companies.json')
 
 COMPANY_KEEP = 1200          # 기업: 직원 수 큰 순으로 이만큼(공공기관은 전부)
 COMPANY_MIN = 30             # 직원 수가 이보다 적은 법인은 넣지 않는다
@@ -249,9 +255,12 @@ def docs_cert(add):
     if not d:
         return
     for it in d.get('items') or []:
+        # 요약이 없는 종목도 있다 — 그때는 어느 갈래·등급·시행처인지로 한 줄을 채운다(지어내지 않는다).
+        fact = it.get('summary') or ' · '.join(x for x in (it.get('category'), it.get('grade_or_field'),
+                                                           it.get('agency')) if x)
         add('cert:' + str(it.get('id')), 'cert', it.get('name', ''),
             keys(it.get('grade_or_field'), it.get('category'), it.get('agency'), it.get('ministry')),
-            clip(it.get('summary'), 48),
+            clip(fact, 60),
             './cert/#' + str(it.get('id')))
 
 
@@ -419,6 +428,41 @@ def docs_grad(add):
                     '대학원,진학,석사,박사', clip(t.get('one') or t.get('note'), 140), './grad/')
 
 
+def docs_univ(add):
+    """대학학과위키 — 대학 412곳과 학과 501개(커리어넷·대학알리미 공시). 학과는 한 줄 요약까지."""
+    d = read_json('decalcomania', 'data', 'majors.json')
+    if not d:
+        return
+    for u in d.get('universities') or []:
+        name = u.get('name')
+        if not name:
+            continue
+        add('univ:u:' + str(u.get('id')), 'univ', name,
+            keys(u.get('kind'), u.get('region'), u.get('school_type')),
+            clip(' · '.join(x for x in (u.get('kind'), u.get('region')) if x), 26),
+            './univ/?q=' + name)
+    for m in d.get('majors') or []:
+        name = m.get('name')
+        if not name:
+            continue
+        summary = str(m.get('summary') or '')
+        first = summary.split('. ')[0].strip()
+        add('univ:m:' + str(m.get('id')), 'univ', name,
+            keys(m.get('category'), m.get('keyword'), cap=40),
+            clip(first, 44), './univ/?q=' + name)
+
+
+def docs_talk(add):
+    """상담 대화 연습장 — 여섯 갈래(되받아 주기·질문·공감…)를 대화 상황으로 찾게."""
+    src = read_text('talk', 'data.js')
+    if not src:
+        return
+    for m in re.finditer(r"\{\s*\n?\s*id: '([a-z0-9_-]+)', icon: '([^']*)', name: '([^']*)', term: '([^']*)',\s*\n?\s*when: '([^']*)',", src):
+        add('talk:' + m.group(1), 'talk', m.group(3) + ' — ' + m.group(4),
+            keys(m.group(5), '상담 대화,멘트,연습'),
+            clip(m.group(5), 140), './talk/')
+
+
 def docs_decal(add):
     d = read_json('decalcomania', 'data', 'links.json')
     if not d:
@@ -433,13 +477,22 @@ def docs_decal(add):
                 clip('관련 학과: ' + txt, 140), './decalcomania/')
 
 
+PARSONS_CH = {'intro': '들어가며', 'ch06': '6장 직업 세계를 숫자로', 'ch07': '7장 보스턴 직업국',
+              'ch08': '8장 상담 노트', 'outro': '나가며 · 출처와 저작권'}
+
+
 def docs_parsons(add):
     for ch in ('intro', 'ch06', 'ch07', 'ch08', 'outro'):
         d = read_json('parsons', 'data', ch + '.json')
         if not d:
             continue
-        add('parsons:' + ch, 'parsons', clip(d.get('title') or d.get('name') or ch, 75), keys(d.get('subtitle')),
-            clip(d.get('summary') or d.get('intro') or d.get('lead'), 140), './parsons/')
+        cards = d.get('cards') or []
+        lead = next((c.get('lead') for c in cards if isinstance(c, dict) and c.get('type') == 'cover' and c.get('lead')), '')
+        first = next((c.get('title') for c in cards if isinstance(c, dict) and c.get('title')), '')
+        label = PARSONS_CH.get(ch, ch)
+        add('parsons:' + ch, 'parsons', clip((label + ' · ' + first).strip(' ·'), 75),
+            keys(d.get('title'), d.get('subtitle'), label, '파슨스,직업의 선택,이북,장'),
+            clip(lead or first, 150), './parsons/')
     g = read_json('parsons', 'data', 'glossary.json')
     if isinstance(g, dict):
         rows = g.get('terms') or g.get('items') or []
@@ -580,27 +633,86 @@ def docs_vpi(add):
 
 CAT_KO = {'대기업': 0, '중견기업': 1, '공공기관': 2}
 
+# 기업 명함첩 색인 — 9,137곳 전부를 한 줄씩 담는다. 대문·비서가 «검색할 때만» 받는다.
+#   줄 형식: 아이디|이름|업종|분류|직원수|별칭|찾기 낱말
+#   아이디는 앞머리(ENT-/MID-/PUB-/LPI-)를 빼고 담는다(분류 글자가 그 앞머리를 정한다).
+#   분류: E=대기업, M=중견기업, P=중앙 공공기관, L=지방 공공기관
+CAT_LETTER = {'대기업': 'E', '중견기업': 'M', '공공기관': 'P', '지방공공기관': 'L'}
+ID_HEAD = {'E': 'ENT-', 'M': 'MID-', 'P': 'PUB-', 'L': 'LPI-'}
+
+
+def _field(s, n):
+    """한 줄 색인의 칸 — 구분자(|)와 줄바꿈을 없애고 길이를 자른다."""
+    s = _ws.sub(' ', str(s or '')).replace('|', '/').strip()
+    return s[:n]
+
+
+def build_companies():
+    """기업·기관 9,137곳 + 보강 레이어(별칭·대표 브랜드·주요 사업)를 한 파일로.
+
+    이름은 원자료 그대로 두고, 검색용 별칭(해커스·삼전·파바)과 대표 브랜드·주요 사업만
+    `company/data/enrich.json` 에서 옮겨 붙인다. 확인되지 않은 값은 넣지 않는다.
+    """
+    enrich = read_json('company', 'data', 'enrich.json') or {}
+    aliases, profiles = {}, {}
+    for a in enrich.get('aliases') or []:
+        if not isinstance(a, dict):
+            continue
+        word = _field(a.get('a'), 40)
+        if not word:
+            continue
+        for cid in a.get('ids') or []:
+            arr = aliases.setdefault(str(cid), [])
+            if word not in arr and len(arr) < 6:
+                arr.append(word)
+    for cid, p in (enrich.get('profiles') or {}).items():
+        if isinstance(p, dict):
+            profiles[str(cid)] = p
+
+    rows, seen = [], set()
+
+    def put(c, cat_default=''):
+        cid = str(c.get('id') or '')
+        if not cid or cid in seen:
+            return
+        letter = CAT_LETTER.get(str(c.get('category') or cat_default))
+        if not letter:
+            return
+        name = _field(c.get('name'), 60)
+        if not name:
+            return
+        seen.add(cid)
+        if letter == 'P':
+            industry = c.get('sub_category') or c.get('industry') or ''
+        elif letter == 'L':
+            industry = c.get('type_detail') or c.get('sub_category') or ''
+        else:
+            industry = c.get('industry') or ''
+        p = profiles.get(cid) or {}
+        kw = []
+        if p.get('b'):
+            kw.append(str(p['b']))
+        for x in (p.get('p') or [])[:3]:
+            kw.append(str(x))
+        parts = [cid.split('-', 1)[1] if '-' in cid else cid, name, _field(industry, 16), letter,
+                 str(int(c.get('employees') or 0)),
+                 _field(';'.join(aliases.get(cid, [])), 46), _field(', '.join(kw), 34)]
+        rows.append('|'.join(parts))
+
+    for c in (read_json('company', 'data', 'companies.json') or {}).get('companies') or []:
+        put(c)
+    for c in (read_json('company', 'data', 'local-public.json') or {}).get('institutions') or []:
+        put(c, '지방공공기관')
+    rows.sort()
+    return {'v': 1, 'built': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
+            'fields': 'id|name|industry|cat|emp|alias|kw',
+            'cats': ','.join('%s=%s' % (v, k) for k, v in CAT_LETTER.items()),
+            'rows': '\n'.join(rows)}
+
 
 def build_dirs():
+    """직업분류(6,700여 개) 한 줄 색인. 기업은 index-companies.json 으로 옮겼다."""
     out = {'v': 1, 'company': [], 'taxonomy': []}
-    d = read_json('company', 'data', 'companies.json')
-    if d:
-        rows = []
-        for c in d.get('companies') or []:
-            cat = CAT_KO.get(c.get('category'))
-            if cat is None:
-                continue
-            emp = int(c.get('employees') or 0)
-            if cat != 2 and emp < COMPANY_MIN:
-                continue
-            rows.append((cat, c, emp))
-        rows.sort(key=lambda r: (1 if r[0] == 2 else 0, r[2], c_rev(r[1])), reverse=True)
-        keep = [r for r in rows if r[0] == 2] + [r for r in rows if r[0] != 2][:COMPANY_KEEP]
-        for cat, c, emp in keep:
-            name = c.get('search_name') or c.get('name')
-            if not name:
-                continue
-            out['company'].append([name, clip(c.get('industry'), 20), emp, cat])
     t = read_json('taxonomy', 'data', 'taxonomy.json')
     if t:
         rows = []
@@ -726,7 +838,7 @@ def build():
     for fn in (docs_theory, docs_cert, docs_law, docs_thermometer, docs_emerging, docs_briefing,
                docs_interview, docs_surgery, docs_reality, docs_transit, docs_portals, docs_labor,
                docs_grad, docs_decal, docs_parsons, docs_library, docs_manual, docs_dacum,
-               docs_hud, docs_vpi, docs_translator, docs_preset):
+               docs_hud, docs_vpi, docs_translator, docs_preset, docs_univ, docs_talk):
         try:
             fn(add)
         except Exception as e:
@@ -750,16 +862,22 @@ def main():
     preface = payload.pop('_preface')
     alias_bad = payload.pop('_alias_bad')
     dirs = build_dirs()
+    comp = build_companies()
     blob = json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
     blob2 = json.dumps(dirs, ensure_ascii=False, separators=(',', ':'))
     blob3 = json.dumps(preface, ensure_ascii=False, separators=(',', ':'))
+    blob4 = json.dumps(comp, ensure_ascii=False, separators=(',', ':'))
     a, b, c = len(blob.encode()), len(blob2.encode()), len(blob3.encode())
+    e = len(blob4.encode())
     print('섹터 %d개 · 문서 %d개 · %.0f KB' % (len(sectors), len(payload['docs']), a / 1024))
     ntax = len(dirs['taxonomy'].split('\n')) if dirs['taxonomy'] else 0
-    print('디렉터리 · 기업 %d · 직업분류 %d · %.0f KB' % (len(dirs['company']), ntax, b / 1024))
+    ncomp = len(comp['rows'].split('\n')) if comp['rows'] else 0
+    print('디렉터리 · 직업분류 %d · %.0f KB' % (ntax, b / 1024))
+    print('기업 색인 · %d곳(별칭 %d곳) · %.0f KB — 검색할 때만 받는다'
+          % (ncomp, sum(1 for r in comp['rows'].split('\n') if r.count('|') == 6 and r.split('|')[5]), e / 1024))
     print('선참조 · 약어 %d개 · 섹터 %d개 · 낱말 %d개 · %.1f KB'
           % (len(preface['dict']), len(preface['sectors']), len(preface['terms']), c / 1024))
-    print('합계 %.0f KB (gzip 전)' % ((a + b + c) / 1024))
+    print('합계 %.0f KB (gzip 전)' % ((a + b + c + e) / 1024))
     for k, v in sorted(counts.items(), key=lambda kv: -kv[1]):
         print('  %-14s %5d' % (k, v))
     if alias_bad:
@@ -774,9 +892,12 @@ def main():
         f.write(blob2)
     with open(OUT_PREFACE, 'w', encoding='utf-8') as f:
         f.write(blob3)
+    with open(OUT_COMPANIES, 'w', encoding='utf-8') as f:
+        f.write(blob4)
     print('→ %s' % os.path.relpath(OUT, ROOT))
     print('→ %s' % os.path.relpath(OUT_DIRS, ROOT))
     print('→ %s' % os.path.relpath(OUT_PREFACE, ROOT))
+    print('→ %s' % os.path.relpath(OUT_COMPANIES, ROOT))
     return 0
 
 

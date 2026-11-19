@@ -440,8 +440,19 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-opt .a-code{flex:none;font-size:13px;font-weight:700;color:var(--a1);padding-top:2px;width:26px}
 .a-opt b{display:block;font-size:15.5px;font-weight:650;line-height:1.4}
 .a-opt small{display:block;font-size:13px;color:var(--muted);line-height:1.5}
+/* 결과 한 줄: 이름 · (오른쪽)어느 섹터인지 / (둘째 줄) 왜 떴는지 + 짧은 설명 */
+.a-opt-b{min-width:0;flex:1;display:flex;flex-direction:column;gap:3px}
+.a-opt-1{display:flex;align-items:baseline;gap:8px;min-width:0}
+.a-opt-1 b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-opt-kind{flex:none;margin-left:auto;font-size:11.5px;font-weight:600;color:var(--muted);background:var(--soft1);border-radius:99px;padding:3px 8px;white-space:nowrap}
+.a-opt-2{display:flex;align-items:center;gap:6px;min-width:0}
+.a-opt-2 .a-why{flex:none;font-size:11.5px;font-weight:700;color:var(--acc);background:color-mix(in srgb,var(--acc) 11%,transparent);border-radius:99px;padding:2px 7px;white-space:nowrap}
+.a-opt-2 small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-opt .a-more{font-size:13.5px;font-weight:650;color:var(--acc)}
 .a-root .a-empty{padding:22px 14px;color:var(--muted);font-size:14.5px}
-.a-pal-foot{display:flex;flex-wrap:wrap;gap:6px 14px;padding:10px 14px;border-top-width:1px;font-size:12.5px;color:var(--dim)}
+.a-pal-foot{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:10px 14px;border-top-width:1px;font-size:12.5px;color:var(--dim)}
+.a-pal-foot .a-stat{margin-left:auto;color:var(--muted);font-weight:600}
+.a-pal-foot .a-stat[hidden]{display:none}
 
 .a-toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translate(-50%,12px);z-index:70;max-width:calc(100% - 28px);
   background:var(--toast-bg);color:var(--toast-ink);font-size:14px;font-weight:600;padding:11px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
@@ -787,11 +798,11 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <i class="a-ico" data-lucide="search" aria-hidden="true"></i>
       <label class="a-sr" for="q">자료와 주제 검색</label>
       <input class="a-input" id="q" type="text" inputmode="search" enterkeyhint="go" autocomplete="off" autocapitalize="off" spellcheck="false"
-        placeholder="자료 이름이나 주제 (예: 홀랜드, 수당, 린터)" role="combobox" aria-expanded="true" aria-controls="res" aria-autocomplete="list">
+        placeholder="자료·회사·브랜드 (예: 해커스, 삼전, 국취)" role="combobox" aria-expanded="true" aria-controls="res" aria-autocomplete="list">
       <button class="a-btn" id="btnClose" aria-label="검색 닫기">닫기</button>
     </div>
     <div class="a-res" id="res" role="listbox" aria-label="검색 결과"></div>
-    <div class="a-pal-foot"><span>↑↓ 이동</span><span>Enter 열기</span><span>Esc 닫기</span></div>
+    <div class="a-pal-foot"><span>↑↓ 이동</span><span>Enter 열기</span><span>Esc 닫기</span><span class="a-stat" id="palStat" role="status" hidden></span></div>
   </div>
 </div>
 <div class="a-toast" id="toast" role="status"></div>
@@ -1321,35 +1332,105 @@ function tick(){
   $('clock').textContent='· '+s;
 }
 
-/* ---------- 빠른 검색 ---------- */
+/* ---------- 빠른 검색 ----------
+   섹터 이름만이 아니라 그 안의 자료(기업·자격증·용어·직무·법령·이론…)까지 같은 엔진으로 찾는다.
+   엔진은 assistant/search.js — 비서 「찾기」와 같은 색인·같은 점수라 어디서 쳐도 같은 결과가 나온다.
+   색인(약 0.8MB)은 이 화면을 그릴 때 받지 않고, 팔레트를 열거나 첫 글자를 칠 때만 받아 둔다. */
 var sel=0,hits=[],lastFocus=null;
-function search(q){
-  q=q.trim().toLowerCase();
-  if(!q)return ALL.map(function(t){return {t:t,why:t.meta.join(' · ')};});
+var SS=null,ssWait=null;
+var ssIndex='idle',ssComp='idle',ssHooked=false;
+
+function palStat(msg){var el=$('palStat');if(!el)return;el.textContent=msg||'';el.hidden=!msg;}
+/* 엔진(assistant/search.js)도 팔레트를 처음 열 때만 받는다 — 첫 화면이 무거워지지 않게. */
+function ssScript(cb){
+  if(window.JCAssistSearch){SS=window.JCAssistSearch;cb();return;}
+  if(ssWait){ssWait.push(cb);return;}
+  ssWait=[cb];
+  var s=document.createElement('script');
+  s.src='./assistant/search.js';
+  s.onload=function(){SS=window.JCAssistSearch;var q=ssWait||[];ssWait=null;q.forEach(function(f){try{f();}catch(e){}});};
+  s.onerror=function(){ssWait=null;ssIndex='fail';palStat('검색 엔진을 불러오지 못했습니다. 섹터 이름으로는 찾을 수 있습니다.');};
+  document.head.appendChild(s);
+}
+function ssBoot(){
+  ssScript(function(){
+    if(!SS||!SS.onUpdate)return;
+    if(!ssHooked){SS.onUpdate(function(){if(!$('ov').hidden)renderRes();});ssHooked=true;}
+    if(ssIndex==='ready'||ssIndex==='loading')return;
+    ssIndex='loading';palStat('자료실 전체 색인을 불러오는 중…');
+    SS.load().then(function(){ssIndex='ready';palStat(ssComp==='loading'?'기업 명함첩까지 불러오는 중…':'');if(!$('ov').hidden)renderRes();})
+      .catch(function(){ssIndex='fail';palStat('색인을 불러오지 못했습니다. 섹터 이름으로는 찾을 수 있습니다.');});
+  });
+}
+function ssCompanyBoot(){   /* 9,137곳 색인은 첫 글자를 칠 때 받는다 */
+  if(!SS||ssComp!=='idle')return;
+  ssComp='loading';palStat('기업 명함첩까지 불러오는 중…');
+  SS.loadCompanies().then(function(){ssComp='ready';palStat('');if(!$('ov').hidden)renderRes();})
+    .catch(function(){ssComp='fail';palStat('');if(!$('ov').hidden)renderRes();});
+}
+
+function byPath(p){var out=null;ALL.forEach(function(t){if(t.path===p)out=t;});return out;}
+
+/* 엔진이 없거나 아직 색인을 받는 중이면, 섹터(27장)만으로 먼저 답한다 — 빈 화면을 보여 주지 않는다. */
+function sectorHits(q){
+  var ql=q.toLowerCase();
+  if(!q)return ALL.map(function(t){return {path:t.path,id:t.id,title:t.title,no:t.no,kind:'sector',why:'',sub:t.meta.join(' · ')};});
   var out=[];
   ALL.forEach(function(t){
     var score=0,why='';
-    if(t.title.toLowerCase().indexOf(q)>=0)score+=5;
-    if(t.badge.toLowerCase().indexOf(q)>=0)score+=3;
-    var tg=t.tags.filter(function(x){return x.toLowerCase().indexOf(q)>=0;});
-    if(tg.length){score+=3;why='관련 주제: '+tg.slice(0,4).join(', ');}
-    if(t.desc.toLowerCase().indexOf(q)>=0)score+=1;
-    if(score)out.push({t:t,why:why||t.meta.join(' · '),s:score});
+    if(t.title.toLowerCase().indexOf(ql)>=0)score+=5;
+    if(t.badge.toLowerCase().indexOf(ql)>=0)score+=3;
+    var tg=t.tags.filter(function(x){return x.toLowerCase().indexOf(ql)>=0;});
+    if(tg.length){score+=3;why='관련 주제: '+tg.slice(0,3).join(', ');}
+    if(t.desc.toLowerCase().indexOf(ql)>=0)score+=1;
+    if(score)out.push({path:t.path,id:t.id,title:t.title,no:t.no,kind:'sector',why:why,s:score,sub:t.meta.join(' · ')});
   });
   out.sort(function(a,b){return b.s-a.s;});return out;
 }
+
+function search(q){
+  q=(q||'').trim();
+  var local=sectorHits(q);
+  if(!q||!SS||!SS.ready())return local;
+  var res=SS.search(q,{limit:20});
+  if(!res.length)return local;
+  var out=res.map(function(r){
+    var kind=r.kind==='company'?'company':r.kind==='job'?'job':(r.type==='sector'?'sector':'doc');
+    var t=kind==='sector'?byPath(r.url):null;
+    return {path:r.url,id:r.kind==='job'?'taxonomy':r.sector,title:r.title,no:t?t.no:'',kind:kind,
+            why:r.why||'',sub:r.snippet||'',badge:r.sectorTitle||''};
+  });
+  /* 기업은 9,137곳이라 목록이 잘린다 — 「명함첩에서 더 찾기」로 이어 준다. */
+  if(out.some(function(h){return h.kind==='company';})){
+    out.push({path:'./company/#list?q='+encodeURIComponent(q),id:'company',title:'기업 명함첩에서 더 찾기',
+              no:'',kind:'more',why:'',sub:'이름·별칭·업종으로 명함첩 전체 검색'});
+  }
+  return out;
+}
+
 function renderRes(){
-  var q=$('q').value;hits=search(q);if(sel>=hits.length)sel=Math.max(0,hits.length-1);
+  var q=$('q').value.trim();hits=search(q);if(sel>=hits.length)sel=Math.max(0,hits.length-1);
+  if(q&&SS&&SS.ready()&&ssComp==='idle')ssCompanyBoot();
   $('res').innerHTML=hits.length?hits.map(function(h,i){
-    return '<a class="a-opt" role="option" id="opt'+i+'" aria-selected="'+(i===sel)+'" href="'+h.t.path+'" data-visit="'+h.t.id+'" data-i="'+i+'">'
-      +'<span class="a-code a-num">'+h.t.no+'</span><span style="min-width:0"><b>'+esc(h.t.title)+'</b><small>'+esc(h.why)+'</small></span></a>';
-  }).join(''):'<p class="a-empty">"'+esc(q)+'"에 맞는 자료가 없습니다. 이론 이름, 검사 이름, 제도 용어로 찾아보세요.</p>';
+    if(h.kind==='more'){
+      return '<a class="a-opt" role="option" id="opt'+i+'" aria-selected="'+(i===sel)+'" href="'+h.path+'" data-visit="company" data-i="'+i+'">'
+        +'<span class="a-opt-b"><span class="a-opt-1"><b class="a-more">'+esc(h.title)+'</b></span>'
+        +'<span class="a-opt-2"><small>'+esc(h.sub)+'</small></span></span></a>';
+    }
+    var chip=(h.kind==='company')?'기업 명함첩':(h.kind==='job')?'직업분류':(h.kind==='sector'?'':h.badge);
+    var l1='<span class="a-opt-1"><b>'+esc(h.title)+'</b>'
+      +(chip?'<span class="a-opt-kind">'+esc(chip)+'</span>':'')+'</span>';
+    var l2=(h.why?'<span class="a-why">'+esc(h.why)+'</span>':'')+(h.sub?'<small>'+esc(h.sub)+'</small>':'');
+    var code=(h.kind==='sector'&&h.no)?'<span class="a-code">'+esc(h.no)+'</span>':'';
+    return '<a class="a-opt" role="option" id="opt'+i+'" aria-selected="'+(i===sel)+'" href="'+h.path+'" data-visit="'+h.id+'" data-i="'+i+'">'
+      +code+'<span class="a-opt-b">'+l1+(l2?'<span class="a-opt-2">'+l2+'</span>':'')+'</span></a>';
+  }).join(''):'<p class="a-empty">"'+esc(q)+'"에 맞는 자료가 없습니다. 회사·브랜드 이름(해커스, 삼전), 제도 이름(국취), 초성(ㅎㅋㅅ)으로도 찾아보세요.</p>';
   $('q').setAttribute('aria-activedescendant',hits.length?'opt'+sel:'');
   var el=$('opt'+sel);if(el&&el.scrollIntoView)el.scrollIntoView({block:'nearest'});
 }
-function openPal(){lastFocus=document.activeElement;$('ov').hidden=false;root.style.overflow='hidden';$('q').value='';sel=0;renderRes();setTimeout(function(){$('q').focus();},0);}
+function openPal(){lastFocus=document.activeElement;$('ov').hidden=false;root.style.overflow='hidden';$('q').value='';sel=0;renderRes();ssBoot();setTimeout(function(){$('q').focus();},0);}
 function closePal(){if($('ov').hidden)return;$('ov').hidden=true;root.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus();}
-function go(i){var h=hits[i];if(!h)return;markVisited(h.t.id);window.location.href=h.t.path;}
+function go(i){var h=hits[i];if(!h)return;markVisited(h.id);window.location.href=h.path;}
 
 /* ---------- 값의 출처와 검증 시트 ---------- */
 var vfLast=null;

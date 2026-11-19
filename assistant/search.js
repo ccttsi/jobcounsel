@@ -25,6 +25,7 @@
   var INDEX_URL = BASE + 'assistant/data/index.json';
   var DIRS_URL = BASE + 'assistant/data/index-dirs.json';
   var PREFACE_URL = BASE + 'assistant/data/rag-preface.json';
+  var COMPANIES_URL = BASE + 'assistant/data/index-companies.json';
 
   /* ---------- 글자 다루기 ---------- */
 
@@ -232,7 +233,14 @@
 
   var S = { index: null, dirs: null, ready: false, err: '', loading: null };
   var D = [];     // 문서(정규화된 검색용 필드 포함)
-  var DIRROWS = []; // 기업·직업분류
+  var DIRROWS = []; // 직업분류
+
+  /* 기업 명함첩(9,137곳)은 따로 — 검색을 처음 할 때만 받는다.
+     대문 첫 화면과 비서를 여는 순간에는 내려받지 않는다(휴대폰 데이터·첫 그리기 보호). */
+  var COMP = { rows: [], ready: false, loading: null, err: '' };
+  var UPD = [];   // 기업 색인이 늦게 도착하면 화면에 다시 그리라고 알린다
+  var CAT_NAME = { E: '대기업', M: '중견기업', P: '중앙 공공기관', L: '지방 공공기관' };
+  var CAT_HEAD = { E: 'ENT-', M: 'MID-', P: 'PUB-', L: 'LPI-' };
   function prepDoc(d) {
     var title = d.t || '';
     var kws = d.k || '';
@@ -242,6 +250,49 @@
       cs: toChoseong(compact(title)), ck: toChoseong(compact(kws)),
       raw: d
     };
+  }
+
+  /* 기업 한 줄 색인 → 검색용 행. 형식은 assistant/build_index.py 의 index-companies.json 머리말 참고. */
+  function parseCompanies(d) {
+    var out = [], lines = String((d && d.rows) || '').split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      var p = lines[i].split('|');
+      if (p.length < 5 || !p[1]) continue;
+      var cat = CAT_HEAD[p[3]] ? p[3] : 'E';
+      var ind = p[2] || '', kw = p[6] || '', al = (p[5] || '').split(';');
+      var row = { kind: 'company', id: CAT_HEAD[cat] + p[0], cat: cat, title: p[1],
+        industry: ind, emp: parseInt(p[4], 10) || 0, kw: kw, al: [], na: [], cas: [],
+        nt: compact(p[1]), ni: compact(ind), nk: compact(kw), cs: toChoseong(compact(p[1])),
+        sector: 'company' };
+      for (var j = 0; j < al.length; j++) {
+        var a = al[j].trim();
+        if (!a) continue;
+        row.al.push(a);
+        row.na.push(compact(a));
+        row.cas.push(toChoseong(compact(a)));   // 「ㅎㅋㅅ」으로 해커스까지
+      }
+      out.push(row);
+    }
+    return out;
+  }
+
+  function loadCompanies() {
+    if (COMP.ready) return Promise.resolve(COMP);
+    if (COMP.loading) return COMP.loading;
+    COMP.loading = fetch(COMPANIES_URL, { cache: 'default' })
+      .then(function (r) { if (!r.ok) throw new Error('companies ' + r.status); return r.json(); })
+      .then(function (d) {
+        COMP.rows = parseCompanies(d);
+        COMP.ready = true;
+        UPD.forEach(function (fn) { try { fn('companies'); } catch (e) {} });
+        return COMP;
+      })
+      .catch(function (e) {
+        COMP.err = String(e && e.message || e);
+        COMP.loading = null;      // 다음 검색에서 다시 시도한다
+        throw e;
+      });
+    return COMP.loading;
   }
 
   function load() {
@@ -258,7 +309,9 @@
       D = (S.index.docs || []).map(prepDoc);
       DIRROWS = [];
       if (S.dirs) {
+        /* 기업은 index-companies.json 이 맡는다(예전 판의 index-dirs.company 는 빈 배열). */
         (S.dirs.company || []).forEach(function (c) {
+          if (!c || !c[0]) return;
           var catWo = c[3] === 2 ? '공공기관 공기업' : c[3] === 1 ? '중견기업' : '대기업';
           DIRROWS.push({ kind: 'company', title: c[0], name: c[0], industry: c[1] || '', emp: c[2] || 0, cat: c[3],
             nt: compact(c[0]), nk: compact((c[1] || '') + ' ' + catWo + ' 기업 회사'),
@@ -316,31 +369,82 @@
     return w;
   }
 
+  /* 왜 이 자료가 떴는지 — 화면에 그대로 적는 짧은 이름표. */
+  var WHY = { same: '이름이 같음', prefix: '이름 앞부분', name: '이름에 있음', key: '찾기 낱말', body: '본문', cho: '초성',
+    alias: '별칭', brand: '대표 브랜드', industry: '업종', product: '제품·서비스' };
+
+  /* 반환값 {s:점수, why:근거 이름표, mw:걸린 낱말} — 근거를 같이 돌려줘 화면이 «왜 떴는지»를 적는다. */
   function scoreFields(nt, nk, nx, cs, ck, toks, phrase, isDir, w) {
-    var s = 0, hit = 0;
+    var s = 0, hit = 0, why = '', mw = '';
     for (var i = 0; i < toks.length; i++) {
       var t = toks[i];
-      var got = 0;
-      if (nt.indexOf(t) >= 0) got = nt.indexOf(t) === 0 ? 10 : 7.5;
-      else if (nk && nk.indexOf(t) >= 0) got = 5.5;
-      else if (nx && nx.indexOf(t) >= 0) got = 2.2;
-      else if (t.length >= 2 && nt.indexOf(t.slice(0, 2)) >= 0) got = 1.6;
-      if (got) { s += got * (w ? w[i] : 1); hit++; continue; }
+      var got = 0, wy = '';
+      if (nt.indexOf(t) >= 0) {
+        got = nt === t ? 12 : nt.indexOf(t) === 0 ? 10 : 7.5;
+        wy = nt === t ? WHY.same : nt.indexOf(t) === 0 ? WHY.prefix : WHY.name;
+      } else if (nk && nk.indexOf(t) >= 0) { got = 5.5; wy = WHY.key; }
+      else if (nx && nx.indexOf(t) >= 0) { got = 2.2; wy = WHY.body; }
+      else if (t.length >= 2 && nt.indexOf(t.slice(0, 2)) >= 0) { got = 1.6; wy = WHY.name; }
+      if (got) { s += got * (w ? w[i] : 1); hit++; if (!why) { why = wy; mw = t; } continue; }
       /* 초성: 「ㅂㄷㅊ」로 반도체를, 「공ㄱㅊ」처럼 섞인 입력도 받는다 */
       /* 초성 검색은 사용자가 실제로 초성(ㄱ·ㅊ 같은 자모)을 쳤을 때만 — 일반 낱말을 초성으로 바꿔
          맞추면 「번아웃」이 「바이오」와 걸리는 식의 오탐이 난다. */
       var ct = /[ㄱ-ㅎ]/.test(t) ? toChoseong(t) : '';
       if (ct && ct.length >= 2) {
-        if (cs.indexOf(ct) >= 0) { s += 6.5 * (w ? w[i] : 1); hit++; }
-        else if (ck && ck.indexOf(ct) >= 0) { s += 4.5 * (w ? w[i] : 1); hit++; }
+        if (cs.indexOf(ct) >= 0) { s += 6.5 * (w ? w[i] : 1); hit++; if (!why) { why = WHY.cho; mw = t; } }
+        else if (ck && ck.indexOf(ct) >= 0) { s += 4.5 * (w ? w[i] : 1); hit++; if (!why) { why = WHY.cho; mw = t; } }
       }
     }
-    if (phrase && nt.indexOf(phrase) >= 0) s += 9;
-    if (!hit) return 0;
+    if (phrase && nt.indexOf(phrase) >= 0) { s += 9; if (!why) { why = WHY.same; mw = phrase; } }
+    if (!hit) return { s: 0, why: '', mw: '' };
     var cov = hit / Math.max(1, toks.length);
     s *= 0.5 + 0.5 * cov;
     if (isDir) s *= 0.9;   // 이름 한 줄짜리 색인은 문서보다 살짝 아래로
-    return s;
+    return { s: s, why: why, mw: mw };
+  }
+
+  /* 기업 한 곳 — 이름·별칭·업종·대표 제품 순으로 본다.
+     이름이 같거나 부르는 별칭이 같으면(해커스·삼전·파바) 섹터 문보다도 위로 올린다. */
+  function scoreCompany(c, toks, phrase, w) {
+    var s = 0, hit = 0, why = '', mw = '';
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i], got = 0, wy = '', m = '';
+      if (/[ㄱ-ㅎ]/.test(t)) {
+        /* 초성은 «앞머리»만 본다 — 『ㅎㅋㅅ』이 한국능률협회컨설팅까지 끌어오면 안 된다. */
+        var ct = toChoseong(t);
+        if (ct.length >= 2 && c.cs.indexOf(ct) === 0) { got = 11; wy = WHY.cho; m = t; }
+        else if (ct.length >= 2) {
+          for (var z = 0; z < c.cas.length; z++) {
+            if (c.cas[z].indexOf(ct) === 0) { got = 10; wy = WHY.cho + ' · ' + WHY.alias; m = c.al[z]; break; }
+          }
+        }
+      } else if (c.nt === t) { got = 26; wy = WHY.same; m = t; }
+      else if (c.nt.indexOf(t) === 0) { got = 16; wy = WHY.prefix; m = t; }
+      else if (c.nt.indexOf(t) >= 0) { got = 9; wy = WHY.name; m = t; }
+      if (!got) {
+        var best = 0, bi = -1;
+        for (var j = 0; j < c.na.length; j++) {
+          var a = c.na[j];
+          if (!a) continue;
+          if (a === t) { best = 24; bi = j; break; }
+          if (a.indexOf(t) === 0) { best = Math.max(best, 15); bi = j; }
+          else if (a.indexOf(t) > 0) { best = Math.max(best, 8); bi = j; }
+        }
+        if (best) { got = best; wy = WHY.alias; m = bi >= 0 ? c.al[bi] : t; }
+      }
+      if (!got && c.nk && c.nk.indexOf(t) >= 0) { got = 5; wy = WHY.brand; m = t; }
+      if (!got && c.ni && c.ni.indexOf(t) >= 0) { got = 4; wy = WHY.industry; m = t; }
+      if (got) { s += got * (w ? w[i] : 1); hit++; if (!why) { why = wy; mw = m; } }
+    }
+    if (phrase && phrase.length >= 3) {
+      if (c.nt === phrase) s += 14;
+      else if (c.nt.indexOf(phrase) >= 0) s += 6;
+    }
+    if (!hit) return { s: 0, why: '', mw: '' };
+    var cov = hit / Math.max(1, toks.length);
+    s *= 0.55 + 0.45 * cov;
+    if (c.emp) s += Math.log10(1 + c.emp) * 0.35;   // 이름값이 비기면 큰 기관이 위로(아주 살짝)
+    return { s: s, why: why, mw: mw };
   }
 
   var SITU = /(내담자|내담|고객|학생|분이|분은|사람이|친구가|동생이|엄마|아빠|와이프|남편|저는|제가|저희|상담|사례|상황|고민|힘들|막막|모르겠|어떡|어떻게 해|뭐부터)/;
@@ -480,73 +584,97 @@
     /* 펼쳐서 더한 말은 살짝 낮춘다 — 사용자가 적은 말과 같은 무게는 아니다. */
     var addedFrom = all.length - a.added.length;
     for (var wi = addedFrom; wi < all.length; wi++) w[wi] *= 0.62;
-    var out = [], i, sc;
+    var out = [], i;
 
     for (i = 0; i < D.length; i++) {
       var d = D[i];
-      sc = scoreFields(d.nt, d.nk, d.nx, d.cs, d.ck, all, phrase, false, w);
-      if (!sc) continue;
+      var r0 = scoreFields(d.nt, d.nk, d.nx, d.cs, d.ck, all, phrase, false, w);
+      if (!r0.s) continue;
+      var sc = r0.s;
       if (boost[d.sector]) {
         sc *= boost[d.sector];
         /* 섹터를 콕 집은 말이면 그 섹터의 «문»(섹터 문서)을 앞에 세운다 — 들어가서 더 찾도록 */
         if (d.id && d.id.indexOf('sector:') === 0) sc *= 1.3;
       }
-      out.push({ d: d, s: sc });
+      out.push({ d: d, s: sc, why: r0.why, mw: r0.mw });
     }
     for (i = 0; i < DIRROWS.length; i++) {
       var r = DIRROWS[i];
-      sc = scoreFields(r.nt, r.nk, '', r.cs, '', all, phrase, true, w);
-      if (!sc) continue;
-      if (boost[r.sector]) sc *= boost[r.sector];
+      var r1 = scoreFields(r.nt, r.nk, '', r.cs, '', all, phrase, true, w);
+      if (!r1.s) continue;
+      var s1 = r1.s;
+      if (boost[r.sector]) s1 *= boost[r.sector];
       /* 「공기업」처럼 섹터를 콕 집은 말이면 그 섹터의 해당 갈래를 더 위로 */
-      if (r.kind === 'company' && r.cat === 2 && boost.company) sc *= 1.5;
-      if (r.kind === 'company' && r.emp) sc += Math.log10(1 + r.emp) * 0.7;   // 같은 이름값이면 큰 기관이 위로
-      out.push({ d: r, s: sc });
+      if (r.kind === 'company' && r.cat === 2 && boost.company) s1 *= 1.5;
+      if (r.kind === 'company' && r.emp) s1 += Math.log10(1 + r.emp) * 0.7;   // 같은 이름값이면 큰 기관이 위로
+      out.push({ d: r, s: s1, why: r1.why, mw: r1.mw });
+    }
+    /* 기업 명함첩 — 색인이 아직 없으면 지금 받아 두고(다음 검색·다시 그리기에 반영), 있으면 함께 줄 세운다. */
+    if (!COMP.ready) { try { loadCompanies(); } catch (e) {} }
+    for (i = 0; i < COMP.rows.length; i++) {
+      var c = COMP.rows[i];
+      var r2 = scoreCompany(c, all, phrase, w);
+      if (!r2.s) continue;
+      if (boost.company) r2.s *= boost.company;
+      out.push({ d: c, s: r2.s, why: r2.why, mw: r2.mw });
     }
     out.sort(function (x, y) { return y.s - x.s || x.d.title.length - y.d.title.length; });
 
-    var limit = opt.limit || 14, seen = {}, res = [];
-    for (var k = 0; k < out.length && res.length < limit; k++) {
+    var limit = opt.limit || 14, seen = {}, res = [], rest = [];
+    /* 한 섹터가 목록을 다 차지하지 않게 — 「국취」에 실무 가이드 장만 일곱 줄 깔리면 다른 곳을 못 본다. */
+    var cap = opt.perSector || 3, per = {};
+    for (var k = 0; k < out.length && (res.length < limit || rest.length < limit * 2); k++) {
       var it = out[k].d;
       var key = it.kind + ':' + it.title;
       if (seen[key]) continue;
       seen[key] = 1;
-      var rr = toResult(it, out[k].s);
+      var rr = toResult(it, out[k].s, out[k].why, out[k].mw);
       rr.situation = a.situation;
-      res.push(rr);
+      per[it.sector] = per[it.sector] || 0;
+      if (per[it.sector] < cap && res.length < limit) { per[it.sector]++; res.push(rr); }
+      else rest.push(rr);
     }
+    /* 자리가 남으면 막아 둔 것부터 채운다(결과가 모자라지 않게). */
+    for (var q2 = 0; q2 < rest.length && res.length < limit; q2++) res.push(rest[q2]);
     return res;
   }
 
   function encodeQ(s) { return encodeURIComponent(String(s || '')); }
 
-  function toResult(it, score) {
+  function toResult(it, score, why, mw) {
     var sec = sectorOf(it.sector);
+    var reason = why ? String(why) + (mw ? ' “' + mw + '”' : '') : '';
     if (it.kind === 'company') {
+      /* 한 곳을 바로 연다 — 목록으로 보내면 다시 찾아야 한다. */
       return { kind: 'company', title: it.title, sector: 'company', sectorTitle: sec.title,
-        snippet: [it.industry, it.emp ? '직원 ' + it.emp.toLocaleString('ko-KR') + '명' : '',
-          it.cat === 2 ? '공공기관' : it.cat === 1 ? '중견기업' : '대기업'].filter(Boolean).join(' · '),
-        url: './company/?q=' + encodeQ(it.title), score: score };
+        snippet: [CAT_NAME[it.cat] || '', it.industry,
+          it.emp ? '직원 ' + it.emp.toLocaleString('ko-KR') + '명' : ''].filter(Boolean).join(' · '),
+        url: './company/#' + encodeQ(it.id), why: reason, reason: why || '', score: score };
     }
     if (it.kind === 'job') {
       var codes = [it.keco ? 'KECO ' + it.keco : '', it.ksco ? 'KSCO ' + it.ksco : ''].filter(Boolean).join(' · ');
       return { kind: 'job', title: it.title, sector: 'taxonomy', sectorTitle: sec.title,
-        snippet: codes, url: './taxonomy/?q=' + encodeQ(it.title), score: score };
+        snippet: codes, url: './taxonomy/?q=' + encodeQ(it.title), why: reason, reason: why || '', score: score };
     }
     var url = it.url;
     if (url && url.indexOf('./') !== 0) url = './' + url;
-    return { kind: 'doc', title: it.title, sector: it.sector, sectorTitle: sec.title,
-      snippet: it.snippet, url: url, score: score };
+    var door = it.id && it.id.indexOf('sector:') === 0;
+    return { kind: 'doc', type: door ? 'sector' : 'doc', title: it.title, sector: it.sector, sectorTitle: sec.title,
+      snippet: it.snippet, url: url, why: reason, reason: why || '', score: score };
   }
 
   /* ---------- 바깥에 내놓는 것 ---------- */
 
   window.JCAssistSearch = {
     load: load,
+    loadCompanies: loadCompanies,
+    companiesReady: function () { return COMP.ready; },
+    /* 기업 색인이 늦게 도착하면 화면을 다시 그린다 — hub 팔레트·비서 찾기가 같이 쓴다. */
+    onUpdate: function (fn) { if (typeof fn === 'function') UPD.push(fn); },
     search: search,
     ready: function () { return S.ready; },
     error: function () { return S.err; },
-    count: function () { return D.length + DIRROWS.length; },
+    count: function () { return D.length + DIRROWS.length + COMP.rows.length; },
     sectors: function () { return (S.index && S.index.sectors) || []; },
     tokenize: tokens,
     analyze: analyze,
