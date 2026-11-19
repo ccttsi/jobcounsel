@@ -1,0 +1,471 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-05-30T07:10:00+09:00",
+ "edition": {
+  "date": "2026-05-30",
+  "weekday": "토",
+  "title": "대지급금 3,868억 안 갚은 사업주 2,057명, 첫 신용제재",
+  "subtitle": "임금채권보장법 개정 후 첫 제재·재취업지원 의무 300인까지·건설사 폭염 대책",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "신용제재 사업주",
+   "value": 0,
+   "unit": "",
+   "value_text": "2,057명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 5월 29일",
+   "delta_from": "첫 제재",
+   "source_id": "src_moel_subrogation_20260529",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-05-30T07:10:00+09:00",
+   "run_id": "br-20260530-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "미변제금",
+   "value": 0,
+   "unit": "",
+   "value_text": "3,868억원",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "1년 이상 미납",
+   "source_id": "src_moel_subrogation_20260529",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-05-30T07:10:00+09:00",
+   "run_id": "br-20260530-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "재취업지원 의무",
+   "value": 0,
+   "unit": "",
+   "value_text": "300인",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2029년 하반기",
+   "delta_from": "현행 1,000인",
+   "source_id": "src_moel_reemployment_20260529",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-05-30T07:10:00+09:00",
+   "run_id": "br-20260530-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "대지급금 3,868억 안 갚은 사업주 2,057명, 첫 신용제재",
+   "kicker": "2,057명 · 3,868억원 · 임금채권보장법 개정 후 첫 제재",
+   "three_step": {
+    "what": "고용노동부와 근로복지공단이 5월 29일 대지급금을 장기간 갚지 않은 사업주 2,057명에게 처음으로 신용제재를 했다. 미변제금은 3,868억원이다.",
+    "evidence": "대지급금은 체불로 생계가 어려워진 노동자에게 국가가 사업주 대신 임금을 먼저 주고 사업주에게 청구하는 제도다. 2024년 8월 7일 시행된 개정 임금채권보장법이 신용제재를 도입했고, 1년 이상 미납하고 미회수액이 2천만원 이상인 사업주가 대상이다. 미회수금과 인적사항이 한국신용정보원에 제공된다(2026년 5월 29일, 고용노동부).",
+    "implication": "체불을 겪은 내담자에게 대지급금으로 먼저 받을 수 있는 금액과 절차를 안내하고, 사업주가 갚지 않으면 신용제재까지 간다는 점을 함께 알려 주라."
+   },
+   "key_numbers": [
+    {
+     "label": "제재 사업주",
+     "value": "2,057명",
+     "delta": "첫 신용제재",
+     "period": "2026년 5월 29일"
+    },
+    {
+     "label": "미변제금",
+     "value": "3,868억원",
+     "delta": "—",
+     "period": "2026년"
+    },
+    {
+     "label": "제재 기준",
+     "value": "1년 이상·2천만원 이상",
+     "delta": "2024.8.7 이후",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "회사가 임금을 안 줘서 국가에 신청해 본 적이 있나요?",
+   "tags": [
+    "임금체불",
+    "대지급금",
+    "신용제재"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "kr",
+   "issue_id": "iss-subrogation-credit-2026",
+   "updated_at": "2026-05-30T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_subrogation_20260529",
+    "source_name": "고용노동부·근로복지공단",
+    "source_title": "대지급금 장기 미변제 사업주 2,057명 처음으로 신용제재 실시",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764491",
+    "published_at": "2026-05-29",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부·근로복지공단의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부·근로복지공단 「대지급금 장기 미변제 사업주 2,057명 처음으로 신용제재 실시」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "임금·물가"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "재취업지원서비스 의무, 300인 사업장까지 단계적으로 넓힌다",
+   "kicker": "1,000인 → 2027년 500인 → 2029년 300인",
+   "three_step": {
+    "what": "고용노동부가 5월 29일 고령자고용법 시행령 개정안을 입법예고했다. 재취업지원서비스 제공 의무 사업장을 단계적으로 넓히는 내용이다.",
+    "evidence": "현재 1,000인 이상 사업주에만 있던 의무가 2027년 하반기 500인 이상, 2029년 하반기 300인 이상으로 확대된다. 근로자가 고르는 재취업지원서비스에 사업주가 편의를 제공하는 방식도 새로 만들었다. 입법예고는 5월 29일부터 7월 8일까지다(2026년 5월 29일, 고용노동부).",
+    "implication": "이직이 잦은 중견기업 재직자에게 재취업지원서비스가 곧 의무화된다는 점을 알려 주고, 퇴직 전 상담·교육을 회사에 요구할 수 있다고 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "현행",
+     "value": "1,000인 이상",
+     "delta": "재취업지원 의무",
+     "period": "2026년"
+    },
+    {
+     "label": "1차 확대",
+     "value": "500인 이상",
+     "delta": "2027년 하반기",
+     "period": "2027년"
+    },
+    {
+     "label": "2차 확대",
+     "value": "300인 이상",
+     "delta": "2029년 하반기",
+     "period": "2029년"
+    },
+    {
+     "label": "입법예고",
+     "value": "5.29~7.8",
+     "delta": "40일",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "인",
+    "labels": [
+     "현행",
+     "2027년 하반기",
+     "2029년 하반기"
+    ],
+    "series": [
+     {
+      "name": "의무 사업장 규모",
+      "values": [
+       1000,
+       500,
+       300
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "재취업지원서비스 의무 사업장 규모(상시 근로자 수). 고용노동부 2026.5.29.",
+    "source_id": "src_moel_reemployment_20260529"
+   },
+   "tags": [
+    "재취업지원",
+    "고령자",
+    "이직"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "issue_id": "iss-reemployment-service-2026",
+   "updated_at": "2026-05-30T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_reemployment_20260529",
+    "source_name": "고용노동부",
+    "source_title": "재취업지원서비스 제도 관련 고령자고용법 시행령 입법예고",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764490",
+    "published_at": "2026-05-29",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「재취업지원서비스 제도 관련 고령자고용법 시행령 입법예고」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "퇴직·사회안전망"
+  },
+  {
+   "id": "c03",
+   "order": 3,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "20대 건설사 CEO, 폭염중대경보에는 옥외작업 멈춘다",
+   "kicker": "20대 건설사 · 38℃ 폭염중대경보 · 특별대책반 5.15~9.30",
+   "three_step": {
+    "what": "고용노동부가 5월 29일 시공순위 상위 20대 건설사 대표와 간담회를 열고 폭염 대책을 점검했다. 올해 새로 도입한 '폭염중대경보(38℃ 이상)' 때 옥외작업 중지를 적극 활용하도록 당부했다.",
+    "evidence": "삼성물산·대우건설·GS건설 등 주요 건설사가 폭염안전 5대 기본수칙 조치와 하절기 안전관리 계획을 발표했다. 고용노동부는 5월 15일부터 9월 30일까지 폭염안전 특별대책반을 가동하고 전국 건설현장을 세분화해 점검한다(2026년 5월 29일, 고용노동부).",
+    "implication": "건설 일용·하도급 내담자에게 38℃ 폭염중대경보와 작업 중지 기준을 알려 주고, 중지 시 임금 처리(휴업수당 등)를 함께 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "간담회",
+     "value": "20대 건설사",
+     "delta": "CEO",
+     "period": "2026년 5월 29일"
+    },
+    {
+     "label": "폭염중대경보",
+     "value": "38℃ 이상",
+     "delta": "옥외작업 중지",
+     "period": "2026년"
+    },
+    {
+     "label": "특별대책반",
+     "value": "5.15~9.30",
+     "delta": "전국 건설현장",
+     "period": "2026년"
+    }
+   ],
+   "tags": [
+    "폭염",
+    "건설",
+    "옥외작업"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-heat-construction-2026",
+   "updated_at": "2026-05-30T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_heat_construction_20260529",
+    "source_name": "고용노동부",
+    "source_title": "고용노동부 장관, 20대 건설사와 건설현장 폭염 대책 총력 대응 선언",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764494",
+    "published_at": "2026-05-29",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「고용노동부 장관, 20대 건설사와 건설현장 폭염 대책 총력 대응 선언」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_subrogation_20260529",
+   "source_name": "고용노동부·근로복지공단",
+   "source_title": "대지급금 장기 미변제 사업주 2,057명 처음으로 신용제재 실시",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764491",
+   "published_at": "2026-05-29",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부·근로복지공단의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부·근로복지공단 「대지급금 장기 미변제 사업주 2,057명 처음으로 신용제재 실시」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_moel_reemployment_20260529",
+   "source_name": "고용노동부",
+   "source_title": "재취업지원서비스 제도 관련 고령자고용법 시행령 입법예고",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764490",
+   "published_at": "2026-05-29",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「재취업지원서비스 제도 관련 고령자고용법 시행령 입법예고」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_moel_heat_construction_20260529",
+   "source_name": "고용노동부",
+   "source_title": "고용노동부 장관, 20대 건설사와 건설현장 폭염 대책 총력 대응 선언",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764494",
+   "published_at": "2026-05-29",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「고용노동부 장관, 20대 건설사와 건설현장 폭염 대책 총력 대응 선언」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22",
+  "2026-07-17",
+  "2026-07-15",
+  "2026-07-14",
+  "2026-07-10",
+  "2026-07-09",
+  "2026-07-08",
+  "2026-07-02",
+  "2026-07-01",
+  "2026-06-30",
+  "2026-06-24",
+  "2026-06-22",
+  "2026-06-18",
+  "2026-06-16",
+  "2026-06-11",
+  "2026-06-10",
+  "2026-06-09",
+  "2026-06-08",
+  "2026-06-05",
+  "2026-06-02",
+  "2026-05-30",
+  "2026-05-27"
+ ]
+}
