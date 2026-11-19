@@ -1,0 +1,257 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-08-25T07:10:00+09:00",
+ "edition": {
+  "date": "2026-08-25",
+  "weekday": "화",
+  "title": "임금근로 일자리 2,082만8천개, 60대는 늘고 20대는 줄었다",
+  "subtitle": "2026년 1분기 일자리동향·신규 222.6만·소멸 193.4만·60대 +23.3만",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "임금근로 일자리",
+   "value": 0,
+   "unit": "",
+   "value_text": "2,082.8만개",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 1분기",
+   "delta_from": "+29.2만개",
+   "source_id": "src_kostat_jobs_2026q1",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-25T07:10:00+09:00",
+   "run_id": "br-20260825-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "60대 이상",
+   "value": 0,
+   "unit": "",
+   "value_text": "+23.3만개",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 1분기",
+   "delta_from": "전년동기",
+   "source_id": "src_kostat_jobs_2026q1",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-25T07:10:00+09:00",
+   "run_id": "br-20260825-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "20대 이하",
+   "value": 0,
+   "unit": "",
+   "value_text": "-7.6만개",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 1분기",
+   "delta_from": "전년동기",
+   "source_id": "src_kostat_jobs_2026q1",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-25T07:10:00+09:00",
+   "run_id": "br-20260825-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용지표",
+   "title": "임금근로 일자리 2,082만8천개, 60대는 늘고 20대는 줄었다",
+   "kicker": "전체 +29.2만개 · 60대 +23.3만 · 20대 -7.6만",
+   "three_step": {
+    "what": "2026년 1분기(2월 기준) 임금근로 일자리가 2,082만8천개로 1년 전보다 29만2천개 늘었다. 늘어난 자리는 60대 이상이, 줄어든 자리는 20대 이하가 만들었다.",
+    "evidence": "전년동기와 같은 사람이 지킨 지속일자리는 1,541만6천개(74.0%), 퇴직·이직으로 사람이 바뀐 대체일자리는 318만6천개(15.3%), 새로 생긴 신규일자리는 222만6천개(10.7%)였다. 산업별로는 보건·사회복지 +12만7천개, 숙박·음식 +5만9천개였고, 연령별로는 60대 이상 +23만3천개·30대 +11만5천개·50대 +4만개, 20대 이하 -7만6천개·40대 -1만9천개였다(2026년 8월 24일, 국가데이터처).",
+    "implication": "20대 구직자에게 '일자리가 없다'고 말할 때, 같은 기간 30대·60대 자리는 늘었다는 사실을 함께 보여 주고 첫 직장의 문턱이 좁아진 것으로 설명하라."
+   },
+   "key_numbers": [
+    {
+     "label": "전체 일자리",
+     "value": "2,082.8만개",
+     "delta": "+29.2만개",
+     "period": "2026년 1분기"
+    },
+    {
+     "label": "신규 / 소멸",
+     "value": "222.6만 / 193.4만개",
+     "delta": "순증 29.2만개",
+     "period": "2026년 1분기"
+    },
+    {
+     "label": "60대 이상",
+     "value": "+23.3만개",
+     "delta": "전년동기",
+     "period": "2026년 1분기"
+    },
+    {
+     "label": "20대 이하",
+     "value": "-7.6만개",
+     "delta": "전년동기",
+     "period": "2026년 1분기"
+    }
+   ],
+   "chart_data": {
+    "type": "diverging_bar",
+    "unit": "만개",
+    "labels": [
+     "20대 이하",
+     "30대",
+     "40대",
+     "50대",
+     "60대 이상"
+    ],
+    "series": [
+     {
+      "name": "일자리 증감",
+      "values": [
+       -7.6,
+       11.5,
+       -1.9,
+       4.0,
+       23.3
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "2026년 1분기(2월 기준) 임금근로 일자리 전년동기비. 국가데이터처 2026.8.24.",
+    "source_id": "src_kostat_jobs_2026q1"
+   },
+   "counselor_question": "첫 직장을 구할 때 나이 때문에 좁아졌다고 느낀 적이 있나요?",
+   "tags": [
+    "일자리동향",
+    "연령",
+    "청년"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "issue_id": "iss-wage-jobs-2026q1",
+   "updated_at": "2026-08-25T07:10:00+09:00",
+   "source": {
+    "source_id": "src_kostat_jobs_2026q1",
+    "source_name": "국가데이터처",
+    "source_title": "2026년 1분기(2월 기준) 임금근로 일자리동향",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775272",
+    "published_at": "2026-08-24",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 국가데이터처의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 국가데이터처 「2026년 1분기(2월 기준) 임금근로 일자리동향」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "청년·중장년 고용"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_kostat_jobs_2026q1",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 1분기(2월 기준) 임금근로 일자리동향",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775272",
+   "published_at": "2026-08-24",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 국가데이터처의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 국가데이터처 「2026년 1분기(2월 기준) 임금근로 일자리동향」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25"
+ ]
+}

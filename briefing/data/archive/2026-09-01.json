@@ -1,0 +1,227 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-09-01T07:10:00+09:00",
+ "edition": {
+  "date": "2026-09-01",
+  "weekday": "화",
+  "title": "추석 전 임금체불 청산, 점검 사업장 8,000곳으로 늘렸다",
+  "subtitle": "9.1~9.23 4주 집중 지도·2025년 6,000곳에서 확대·악의 체불은 구속수사",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "점검 사업장",
+   "value": 0,
+   "unit": "",
+   "value_text": "8,000곳",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 추석 전",
+   "delta_from": "2025년 6,000곳",
+   "source_id": "src_moel_wage_arrears_20260831",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-01T07:10:00+09:00",
+   "run_id": "br-20260901-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "지도 기간",
+   "value": 0,
+   "unit": "",
+   "value_text": "9.1~9.23",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "4주",
+   "delta_from": "추석 전",
+   "source_id": "src_moel_wage_arrears_20260831",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-01T07:10:00+09:00",
+   "run_id": "br-20260901-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "추석 전 임금체불 청산, 점검 사업장 8,000곳으로 늘렸다",
+   "kicker": "8,000곳 · 9.1~9.23 · 2025년 6,000곳",
+   "three_step": {
+    "what": "고용노동부가 9월 1일부터 23일까지 4주간 임금체불 집중 청산 지도기간을 운영한다. 신고가 반복된 사업장과 건설업 등 고위험 사업장 8,000곳을 전수조사·감독한다.",
+    "evidence": "점검 대상은 2025년 6,000곳에서 2,000곳 늘었다. 고액 체불이나 피해 근로자가 많은 사업장은 지방관서 기관장이 직접 현장을 찾고, 경영난으로 체불이 우려되는 사업주에는 체불청산지원 융자를 안내한다. 악의·상습 체불 사업주는 구속수사 등 무관용으로 대응한다(2026년 8월 31일, 고용노동부).",
+    "implication": "임금을 못 받은 내담자에게 명절 전 지도기간을 알려 주고, 진정 접수와 체불청산지원 융자 두 갈래를 함께 검토하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "점검 사업장",
+     "value": "8,000곳",
+     "delta": "2025년 6,000곳",
+     "period": "2026년 추석 전"
+    },
+    {
+     "label": "지도 기간",
+     "value": "9.1~9.23",
+     "delta": "4주",
+     "period": "2026년"
+    },
+    {
+     "label": "확대",
+     "value": "+2,000곳",
+     "delta": "전년 대비",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "곳",
+    "labels": [
+     "2025년",
+     "2026년"
+    ],
+    "series": [
+     {
+      "name": "체불 점검 사업장",
+      "values": [
+       6000,
+       8000
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "추석 전 임금체불 집중 점검 대상. 고용노동부 2026.8.31.",
+    "source_id": "src_moel_wage_arrears_20260831"
+   },
+   "counselor_question": "받지 못한 임금이 있다면 마지막으로 회사에 언제 요구해 보셨나요?",
+   "tags": [
+    "임금체불",
+    "추석",
+    "감독"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-wage-arrears-202609",
+   "updated_at": "2026-09-01T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_wage_arrears_20260831",
+    "source_name": "고용노동부",
+    "source_title": "\"민생안정 최우선, 추석 전 임금체불 집중 청산\"",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776209",
+    "published_at": "2026-08-31",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「\"민생안정 최우선, 추석 전 임금체불 집중 청산\"」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_wage_arrears_20260831",
+   "source_name": "고용노동부",
+   "source_title": "\"민생안정 최우선, 추석 전 임금체불 집중 청산\"",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776209",
+   "published_at": "2026-08-31",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「\"민생안정 최우선, 추석 전 임금체불 집중 청산\"」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25"
+ ]
+}

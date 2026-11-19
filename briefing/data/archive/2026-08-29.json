@@ -1,0 +1,289 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-08-29T07:10:00+09:00",
+ "edition": {
+  "date": "2026-08-29",
+  "weekday": "토",
+  "title": "청년일자리 회복방안 — 2030년까지 전문인력·일자리 각 30만",
+  "subtitle": "20~24세 고용률 46.0%→42.6%·청년 쉬었음 36.7만·지방 중소기업 2년 월 최대 100만원",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "20~24세 고용률",
+   "value": 0,
+   "unit": "",
+   "value_text": "42.6%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 7월",
+   "delta_from": "2022년 46.0%",
+   "source_id": "src_moel_youth_recovery_20260828",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-29T07:10:00+09:00",
+   "run_id": "br-20260829-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "청년 쉬었음",
+   "value": 0,
+   "unit": "",
+   "value_text": "36.7만명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 7월",
+   "delta_from": "전년비 -6.9만",
+   "source_id": "src_moel_youth_recovery_20260828",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-29T07:10:00+09:00",
+   "run_id": "br-20260829-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "전문인력 양성",
+   "value": 0,
+   "unit": "",
+   "value_text": "30만명 이상",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "~2030년",
+   "delta_from": "첨단·선호분야",
+   "source_id": "src_moel_youth_recovery_20260828",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-29T07:10:00+09:00",
+   "run_id": "br-20260829-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_4",
+   "label": "일자리·창업",
+   "value": 0,
+   "unit": "",
+   "value_text": "30만개 이상",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "~2030년",
+   "delta_from": "민간·공공",
+   "source_id": "src_moel_youth_recovery_20260828",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-29T07:10:00+09:00",
+   "run_id": "br-20260829-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "청년일자리 회복방안 — 2030년까지 전문인력·일자리 각 30만",
+   "kicker": "20~24세 고용률 42.6% · 지방 중소기업 2년 월 최대 100만원",
+   "three_step": {
+    "what": "정부가 8월 28일 비상경제본부 회의에서 「청년일자리 회복방안」을 확정했다. 첫 출발부터 일자리, 경력·성장까지 전 주기를 밀착 지원하는 것이 뼈대다.",
+    "evidence": "20~24세 고용률은 2022년 46.0%에서 2025년 43.6%, 2026년 1분기 40.5%까지 떨어졌다가 7월 42.6%로 올랐고, 25~29세도 2022년 71.4%에서 2025년 71.8%로 정체됐다. 청년 '쉬었음'은 2026년 7월 36만7천명으로 1년 전보다 6만9천명 줄었다. 방안은 2030년까지 첨단산업·청년선호분야 전문인력 30만명 이상 양성, 민간·공공 괜찮은 일자리와 창업 30만개 이상 창출을 목표로 한다. 청년이 지방 중소기업에 들어가면 2년간 월 최대 100만원 안팎(도약장려금 75만원·미래적금 20만원·문화예술패스 1만원 수준)을 받는 효과를 내도록 설계했다(2026년 8월 28일, 고용노동부).",
+    "implication": "지방 중소기업 취업을 고려하는 청년에게 장려금·적금·패스 세 가지를 합친 2년 지원액을 계산해 보여 주고, 훈련 참여가 첫 일자리와 경력 성장까지 이어지는 경로로 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "20~24세 고용률",
+     "value": "46.0% → 42.6%",
+     "delta": "2022년 → 2026년 7월",
+     "period": "2026년 7월"
+    },
+    {
+     "label": "청년 쉬었음",
+     "value": "36.7만명",
+     "delta": "-6.9만명",
+     "period": "2026년 7월"
+    },
+    {
+     "label": "전문인력 양성",
+     "value": "30만명 이상",
+     "delta": "2030년까지",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "일자리·창업",
+     "value": "30만개 이상",
+     "delta": "2030년까지",
+     "period": "2026년 8월"
+    }
+   ],
+   "chart_data": {
+    "type": "line",
+    "unit": "%",
+    "labels": [
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026 1분기",
+     "2026 7월"
+    ],
+    "series": [
+     {
+      "name": "20~24세 고용률",
+      "values": [
+       46.0,
+       45.7,
+       45.1,
+       43.6,
+       40.5,
+       42.6
+      ],
+      "emphasis": true
+     },
+     {
+      "name": "25~29세 고용률",
+      "values": [
+       71.4,
+       72.3,
+       72.5,
+       71.8,
+       70.6,
+       71.4
+      ],
+      "emphasis": false
+     }
+    ],
+    "reference_value": 0,
+    "note": "청년 고용률 추이. 고용노동부 「청년일자리 회복방안」 2026.8.28.",
+    "source_id": "src_moel_youth_recovery_20260828"
+   },
+   "counselor_question": "지방 중소기업에 가면 2년 동안 월 100만원을 더 받는 셈인데, 그래도 망설여지는 이유는 무엇인가요?",
+   "tags": [
+    "청년",
+    "고용률",
+    "장려금"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "issue_id": "iss-youth-recovery-plan-2026",
+   "updated_at": "2026-08-29T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_youth_recovery_20260828",
+    "source_name": "고용노동부",
+    "source_title": "첫출발-일자리-경력·성장까지 전주기 밀착지원 — 청년일자리 회복방안 발표",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775942",
+    "published_at": "2026-08-28",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「첫출발-일자리-경력·성장까지 전주기 밀착지원 — 청년일자리 회복방안 발표」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "청년·중장년 고용"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_youth_recovery_20260828",
+   "source_name": "고용노동부",
+   "source_title": "첫출발-일자리-경력·성장까지 전주기 밀착지원 — 청년일자리 회복방안 발표",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775942",
+   "published_at": "2026-08-28",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「첫출발-일자리-경력·성장까지 전주기 밀착지원 — 청년일자리 회복방안 발표」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25"
+ ]
+}
