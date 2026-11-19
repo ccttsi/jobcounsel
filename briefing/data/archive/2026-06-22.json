@@ -1,0 +1,387 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-06-22T07:10:00+09:00",
+ "edition": {
+  "date": "2026-06-22",
+  "weekday": "월",
+  "title": "중장년 폴리텍 2년 새 3배, 노조법 시행 100일엔 교섭요구 439곳",
+  "subtitle": "중장년특화과정 7,700명·경쟁률 3.8:1·하청노조 1,161개 16.4만명",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "중장년과정 인원",
+   "value": 0,
+   "unit": "",
+   "value_text": "7,700명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "2024년 2,500명",
+   "source_id": "src_polytech_midlife_20260622",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-06-22T07:10:00+09:00",
+   "run_id": "br-20260622-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "평균 경쟁률",
+   "value": 0,
+   "unit": "",
+   "value_text": "3.8:1",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "인기 직종 11:1",
+   "source_id": "src_polytech_midlife_20260622",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-06-22T07:10:00+09:00",
+   "run_id": "br-20260622-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "교섭요구 원청",
+   "value": 0,
+   "unit": "",
+   "value_text": "439곳",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026.3.10~6.19",
+   "delta_from": "하청노조 1,161개",
+   "source_id": "src_moel_union_20260622",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-06-22T07:10:00+09:00",
+   "run_id": "br-20260622-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "중장년 폴리텍 2년 새 3배, 20명 뽑는 곳에 200명 몰렸다",
+   "kicker": "7,700명 · 경쟁률 3.8:1 · 퇴직연령 52.9세",
+   "three_step": {
+    "what": "한국폴리텍대학 중장년특화과정 교육 인원이 2024년 2,500명에서 2026년 7,700명으로 3배 이상 늘었다. 전국 평균 경쟁률은 3.8대 1, 인기 직종은 11대 1을 넘었다.",
+    "evidence": "임금근로자의 주된 일자리 평균 퇴직연령이 52.9세인데 국민연금 수급은 63~65세에 시작해 길게는 10년 이상 소득 공백이 생긴다. 폴리텍은 이 공백을 메우려 4개월 안팎의 실무 중심 압축 과정을 늘렸고, 자동차 정비 등 기술을 익혀 재취업한 사례가 나왔다(2026년 6월 22일, 한국폴리텍대학).",
+    "implication": "50대 내담자에게 '은퇴까지 몇 년'이 아니라 '연금까지 몇 년'을 기준으로 계획을 세우게 하고, 4개월 압축 훈련과 자격 취득을 한 묶음으로 제시하라."
+   },
+   "key_numbers": [
+    {
+     "label": "교육 인원",
+     "value": "2,500 → 7,700명",
+     "delta": "2024 → 2026년",
+     "period": "2026년"
+    },
+    {
+     "label": "경쟁률",
+     "value": "3.8:1",
+     "delta": "인기 직종 11:1",
+     "period": "2026년"
+    },
+    {
+     "label": "평균 퇴직연령",
+     "value": "52.9세",
+     "delta": "연금 수급 63~65세",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "명",
+    "labels": [
+     "2024년",
+     "2026년"
+    ],
+    "series": [
+     {
+      "name": "중장년특화과정 인원",
+      "values": [
+       2500,
+       7700
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "한국폴리텍대학 중장년특화과정 교육 인원. 2026.6.22.",
+    "source_id": "src_polytech_midlife_20260622"
+   },
+   "counselor_question": "연금을 받기 시작할 때까지 몇 년이 남았나요?",
+   "tags": [
+    "중장년",
+    "폴리텍",
+    "재취업"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "issue_id": "iss-polytech-midlife-2026",
+   "updated_at": "2026-06-22T07:10:00+09:00",
+   "source": {
+    "source_id": "src_polytech_midlife_20260622",
+    "source_name": "한국폴리텍대학·고용노동부",
+    "source_title": "20명 모집에 200명 몰렸다… 중장년의 기술연금 '기술교육' 열풍",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767558",
+    "published_at": "2026-06-22",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 한국폴리텍대학·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 한국폴리텍대학·고용노동부 「20명 모집에 200명 몰렸다… 중장년의 기술연금 '기술교육' 열풍」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "개정 노조법 100일, 원청 439곳에 하청노조 1,161개 교섭요구",
+   "kicker": "원청 439곳 · 하청노조 1,161개 · 16.4만명",
+   "three_step": {
+    "what": "개정 노동조합법 시행 100일(3월 10일~6월 19일) 동안 원청 사업장 439곳에 하청 노동조합 1,161개, 16만4천명이 교섭을 요구했다. 고용노동부는 교섭요구가 빠르게 안정되고 있다고 평가했다.",
+    "evidence": "교섭요구는 시행 첫 달 원청 363곳에 집중된 뒤 4월 42곳, 5월 23곳으로 빠르게 줄었다. 우려했던 폭발적 증가나 교섭단위 과도한 세분화는 나타나지 않았고, 노동위원회 사용자성 판단이 나온 사업장은 후속 절차를 진행 중이다(2026년 6월 22일, 고용노동부).",
+    "implication": "원·하청 구조 사업장 내담자에게 교섭 요구가 곧 분쟁은 아니라는 점, 절차가 정해져 있다는 점을 알려 주고 노동조합 상담 창구를 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "교섭요구 원청",
+     "value": "439곳",
+     "delta": "3.10~6.19",
+     "period": "2026년"
+    },
+    {
+     "label": "하청 노조",
+     "value": "1,161개",
+     "delta": "16만4천명",
+     "period": "2026년"
+    },
+    {
+     "label": "월별 원청",
+     "value": "363 → 42 → 23곳",
+     "delta": "3월 → 4월 → 5월",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "곳",
+    "labels": [
+     "3월",
+     "4월",
+     "5월"
+    ],
+    "series": [
+     {
+      "name": "교섭요구 원청",
+      "values": [
+       363,
+       42,
+       23
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "개정 노조법 시행 후 월별 교섭요구 원청 사업장 수. 고용노동부 2026.6.22.",
+    "source_id": "src_moel_union_20260622"
+   },
+   "counselor_question": "회사에 노동조합이 있나요, 교섭 소식을 들어 보셨나요?",
+   "tags": [
+    "노동조합",
+    "원하청",
+    "교섭"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-union-law-100days-2026",
+   "updated_at": "2026-06-22T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_union_20260622",
+    "source_name": "고용노동부",
+    "source_title": "개정 노동조합법 시행 100일, 원·하청 상생·대화 조금씩 진전",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767571",
+    "published_at": "2026-06-22",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「개정 노동조합법 시행 100일, 원·하청 상생·대화 조금씩 진전」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_polytech_midlife_20260622",
+   "source_name": "한국폴리텍대학·고용노동부",
+   "source_title": "20명 모집에 200명 몰렸다… 중장년의 기술연금 '기술교육' 열풍",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767558",
+   "published_at": "2026-06-22",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 한국폴리텍대학·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 한국폴리텍대학·고용노동부 「20명 모집에 200명 몰렸다… 중장년의 기술연금 '기술교육' 열풍」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_moel_union_20260622",
+   "source_name": "고용노동부",
+   "source_title": "개정 노동조합법 시행 100일, 원·하청 상생·대화 조금씩 진전",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767571",
+   "published_at": "2026-06-22",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「개정 노동조합법 시행 100일, 원·하청 상생·대화 조금씩 진전」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22",
+  "2026-07-17",
+  "2026-07-15",
+  "2026-07-14",
+  "2026-07-10",
+  "2026-07-09",
+  "2026-07-08",
+  "2026-07-02",
+  "2026-07-01",
+  "2026-06-30",
+  "2026-06-24",
+  "2026-06-22"
+ ]
+}
