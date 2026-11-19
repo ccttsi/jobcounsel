@@ -136,6 +136,25 @@
     return n;
   }
 
+  /* 도해 넘김 화살표 — 글꼴 글리프(‹ ›)는 글꼴마다 자리가 달라 상자 가운데에서 흔들린다.
+     선으로 그린 SVG 를 넣어 어떤 글꼴에서도 44×44 상자 한가운데에 오게 한다. */
+  function chev(dir) {
+    var NS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 16 16');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    var path = document.createElementNS(NS, 'path');
+    path.setAttribute('d', dir === 'prev' ? 'M10 3.5 5.5 8 10 12.5' : 'M6 3.5 10.5 8 6 12.5');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', 'currentColor');
+    path.setAttribute('stroke-width', '1.8');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    svg.appendChild(path);
+    return svg;
+  }
+
   /* ---------- 로그인 ---------- */
   function sess() {
     try {
@@ -1366,27 +1385,27 @@
     el.findNote.hidden = false;
     if (!loggedIn()) {
       el.findNote.innerHTML = '<b>지금은 바로 찾기 모드예요.</b> 로그인하고 내 AI 키를 등록하시면, 찾은 자료를 근거로 설명과 맥락까지 정리해 드려요.';
-      addLink(el.findNote, '로그인하기', function () {
+      var fnote = t('div', 'jca-note-act');
+      fnote.appendChild(noteBtn('로그인하기', 'jca-primary', function () {
         if (window.JCSync && window.JCSync.open) { close(); window.JCSync.open('login'); }
-      });
+      }));
+      el.findNote.appendChild(fnote);
     } else if (!hasKey()) {
       el.findNote.innerHTML = '<b>한 걸음만 더 하면 AI 설명이 켜져요.</b> Gemini 무료 키를 1순위로 권해 드려요.';
-      var b = t('button', 'jca-link', '내 키 등록하기');
-      b.type = 'button';
-      b.addEventListener('click', function () { st.tab = 'key'; render(); });
-      el.findNote.appendChild(t('br'));
-      el.findNote.appendChild(b);
+      var fnote2 = t('div', 'jca-note-act');
+      fnote2.appendChild(noteBtn('내 키 등록하기', 'jca-primary', function () { st.tab = 'key'; render(); }));
+      el.findNote.appendChild(fnote2);
     } else {
       el.findNote.hidden = true;
     }
   }
 
-  function addLink(host, label, fn) {
-    var b = t('a', 'jca-link', label);
-    b.href = '#';
-    b.addEventListener('click', function (e) { e.preventDefault(); fn(); });
-    host.appendChild(t('br'));
-    host.appendChild(b);
+  /* 안내문 속 링크 대신 쓰는 정식 단추 — 안내문 아래 한 줄에 같은 높이로 놓인다. */
+  function noteBtn(label, cls, fn) {
+    var b = t('button', 'jca-btn jca-btn-sm' + (cls ? ' ' + cls : ''), label);
+    b.type = 'button';
+    b.addEventListener('click', fn);
+    return b;
   }
 
   /* ---------- 대화 ---------- */
@@ -1402,7 +1421,7 @@
     el.histBtn.appendChild(t('span', null, '지난 대화'));
     if (n) el.histBtn.appendChild(t('b', null, String(n)));
     el.histBtn.setAttribute('aria-expanded', String(!!st.histOpen));
-    el.histTitle.textContent = st.thread.length ? (st.threadTitle || titleOf(st.thread)) : '새 대화';
+    el.histTitle.textContent = st.thread.length ? (st.threadTitle || titleOf(st.thread)) : '';
     el.histTitle.title = el.histTitle.textContent;
     renderHist();
 
@@ -1464,22 +1483,20 @@
       var box = t('div', 'jca-note');
       if (!loggedIn()) {
         box.innerHTML = '<b>AI 대화는 로그인과 내 키가 필요해요.</b> 지금은 「찾기」에서 자료실 전체를 바로 찾을 수 있어요.';
-        addLink(box, '로그인하기', function () {
-          if (window.JCSync && window.JCSync.open) { close(); window.JCSync.open('login'); }
-        });
       } else {
         box.innerHTML = '<b>AI 대화를 켜려면 내 키가 필요해요.</b> Google Gemini 무료 키를 1순위로 권해 드려요.';
-        var b2 = t('button', 'jca-link', '내 키 등록하기');
-        b2.type = 'button';
-        b2.addEventListener('click', function () { st.tab = 'key'; render(); });
-        box.appendChild(t('br'));
-        box.appendChild(b2);
       }
-      var goFind = t('button', 'jca-btn', '찾기로 이동');
-      goFind.type = 'button';
-      goFind.addEventListener('click', function () { st.tab = 'find'; render(); });
-      box.appendChild(t('br'));
-      box.appendChild(goFind);
+      /* 안내문 아래 단추 줄 — 같은 높이·같은 폭으로 나란히 */
+      var offRow = t('div', 'jca-note-act');
+      if (!loggedIn()) {
+        offRow.appendChild(noteBtn('로그인하기', 'jca-primary', function () {
+          if (window.JCSync && window.JCSync.open) { close(); window.JCSync.open('login'); }
+        }));
+      } else {
+        offRow.appendChild(noteBtn('내 키 등록하기', 'jca-primary', function () { st.tab = 'key'; render(); }));
+      }
+      offRow.appendChild(noteBtn('찾기로 이동', '', function () { st.tab = 'find'; render(); }));
+      box.appendChild(offRow);
       el.chatOff.appendChild(box);
     }
     scrollThread();
@@ -1539,9 +1556,11 @@
     if (!loggedIn()) {
       var note = t('div', 'jca-note');
       note.innerHTML = '<b>로그인하면 내 대화가 계정에 보관돼요.</b> 다른 기기에서도 이어 볼 수 있고, 다른 사람은 볼 수 없어요. 지금 대화는 이 브라우저에만 남습니다.';
-      addLink(note, '로그인하기', function () {
+      var hnote = t('div', 'jca-note-act');
+      hnote.appendChild(noteBtn('로그인하기', 'jca-primary', function () {
         if (window.JCSync && window.JCSync.open) { close(); window.JCSync.open('login'); }
-      });
+      }));
+      note.appendChild(hnote);
       el.hist.appendChild(note);
     }
 
@@ -2148,8 +2167,7 @@
     cap.appendChild(t('b', null, (i + 1) + '. ' + g.title));
     cap.appendChild(t('p', null, g.desc));
     if (g.link) {
-      var a = t('a', 'jca-kpage', 'Google AI Studio 열기 ↗');
-      a.href = KEY_PAGE;
+      var a = t('a', 'jca-kpage', 'Google AI Studio 열기 ↗');      a.href = KEY_PAGE;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
       cap.appendChild(a);
@@ -2157,13 +2175,16 @@
     el.guide.appendChild(cap);
 
     var nav = t('div', 'jca-guide-nav');
-    var prev = t('button', 'jca-arrow', '‹');
+    var prev = t('button', 'jca-arrow');
     prev.type = 'button';
     prev.setAttribute('aria-label', '이전 단계');
+    prev.appendChild(chev('prev'));
     prev.disabled = i === 0;
     prev.addEventListener('click', function () { st.step = Math.max(0, i - 1); renderGuide(); });
     nav.appendChild(prev);
 
+    /* 가운데 묶음 — 점 인디케이터와 「1 / 4」 를 한 덩이로 묶어 좌·우 화살표 사이 정가운데에 둔다 */
+    var mid = t('div', 'jca-guide-mid');
     var dots = t('div', 'jca-dots');
     GUIDE_STEPS.forEach(function (_, k) {
       var d = t('button', 'jca-dot' + (k === i ? ' on' : ''));
@@ -2173,12 +2194,14 @@
       d.addEventListener('click', function () { st.step = k; renderGuide(); });
       dots.appendChild(d);
     });
-    nav.appendChild(dots);
-    nav.appendChild(t('span', 'jca-guide-n', (i + 1) + ' / ' + GUIDE_STEPS.length));
+    mid.appendChild(dots);
+    mid.appendChild(t('span', 'jca-guide-n', (i + 1) + ' / ' + GUIDE_STEPS.length));
+    nav.appendChild(mid);
 
-    var next = t('button', 'jca-arrow', '›');
+    var next = t('button', 'jca-arrow');
     next.type = 'button';
     next.setAttribute('aria-label', '다음 단계');
+    next.appendChild(chev('next'));
     next.disabled = i === GUIDE_STEPS.length - 1;
     next.addEventListener('click', function () { st.step = Math.min(GUIDE_STEPS.length - 1, i + 1); renderGuide(); });
     nav.appendChild(next);
@@ -2319,12 +2342,15 @@
     fa.target = '_blank';
     fa.rel = 'noopener noreferrer';
     free.appendChild(fa);
-    free.appendChild(document.createTextNode('에서 30초면 만들 수 있어요. '));
-    var how = t('button', 'jca-link', '4단계로 알려 주기');
+    free.appendChild(document.createTextNode('에서 30초면 만들 수 있어요.'));
+    el.welcome.appendChild(free);
+
+    var freeAct = t('div', 'jca-w-free-act');
+    var how = t('button', 'jca-btn jca-btn-sm', '4단계로 알려 주기');
     how.type = 'button';
     how.addEventListener('click', function () { st.step = 0; st.tab = 'key'; render(); });
-    free.appendChild(how);
-    el.welcome.appendChild(free);
+    freeAct.appendChild(how);
+    el.welcome.appendChild(freeAct);
     el.welcome.appendChild(t('p', 'jca-w-priv', '대화는 나만 볼 수 있는 기록함에 보관돼요. 키는 서버에서 암호화해 보관합니다.'));
   }
 
