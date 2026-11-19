@@ -2,6 +2,8 @@
  *
  * 하는 일
  *   1) 키워드(또는 직접 적은 말)로 첫 자료를 고르고, 그 자료가 **무엇이며 무엇을 설명하는지** 먼저 보여 준다.
+ *      시작 화면의 개념 칩은 **여러 개를 눌러 함께** 좁힐 수 있고, 검색창에도 쉼표(,)로 여러 말을 적을 수 있다.
+ *      두 말 이상이면 **모든 말에 걸리는 자료만**(AND 교집합) 남기고, 카드마다 어느 말에 왜 걸렸는지 적는다.
  *   2) 고른 자료마다 다음 가지(후보)를 자료실의 실제 연결로 뻗는다. 후보마다
  *      「앞 자료와의 근거(자료실 연결 짝·겹치는 말)」와 「지금 흐름 + 이 자료가 함께 덮는 것」을 적는다.
  *      추천 가지 밖의 자료도 매 단계 검색창(이름·분류·키워드·설명)에서 직접 찾아 이을 수 있고,
@@ -23,6 +25,14 @@
   var G = null, SEC = {}, PAIR = {}, CHAIN = [], KW = '', OVERRIDE = false, PENDING = null;
   var DECK_NAME = '', SHEET = '', REH = 0, SHOWALL = false;
   var SIDX = {}, PQ = '', PRAF = 0;   /* PQ — 단계마다 다른 자료를 직접 찾는 검색어 */
+  /* SEL — 시작 화면 개념 칩 가운데 지금 골라 둔 말(여러 개). 검색창(#q)과 같은 조건을 가리킨다. */
+  var SEL = [];
+  var KWEXP = false;   /* 시작 칩 목록을 펼쳐 두었는가(칩을눌러도 접힘 상태가 저절로 바뀌지 않게) */
+  /* CHIPS — 시작 화면 칩. 「세스코」·「계명대」 같은 세부 사례 대신 자료실이 덮는 **큰 개념**만 둔다.
+     검색 엔진 자체는 그대로라, 세부 이름을 직접 적으면 예전처럼 찾는다. */
+  var CHIPS = ['이론', '심리검사', '기업', '법령', '청년', '상담', '자격', '직무',
+               '노동시장', '구직급여', '직무분석', '자격증', '면접', '신산업', '훈련', '중장년'];
+  var TMAPC = {};   /* 검색어 한 마디 → {id:{sc,why,ext}} 메모. 자료실 색인이 늦게 도착하면 비운다. */
   /* EXT — 메인 화면 검색과 같은 자료실 색인(문서 4,501 + 기업 9,137 + 약어 사전)을 flow 안에서 따로 받아 둔다.
      「세스코」나 「계명대」처럼 지도(graph.json)에는 없는 이름을 쳐도 그 이름이 실린 자료를 찾아내기 위해서다.
      처음 검색창을 건드릴 때 한 번만 받고(2MB 안팎), 그 뒤로는 메모리에 둔다. */
@@ -71,6 +81,32 @@
     var jong = (c - 0xac00) % 28;
     return (jong && jong !== 8) ? '으로' : '로';
   }
+  /* ---------- 검색어 나누기 (쉼표 = 여러 조건) ----------
+     「청년, 기업」처럼 쉼표로 나눈 말을 조건 목록으로 만든다. 같은 뜻(공백·기호 차이)은 한 번만 센다.
+     조건이 하나면 예전과 똑같이 그 한 말로 찾는다. */
+  function splitTerms(v) {
+    var seen = {}, out = [];
+    String(v == null ? '' : v).split(/[,，]/).forEach(function (part) {
+      var raw = part.replace(/\s+/g, ' ').trim();
+      var n = norm(raw);
+      if (!n || seen[n]) return;
+      seen[n] = 1;
+      out.push({ raw: raw, n: n });
+    });
+    return out;
+  }
+  /* 조건 이름 — 「청년」·「지원」 */
+  function condLabel(T) {
+    return (T || []).map(function (t) { return '「' + t.raw + '」'; }).join('·');
+  }
+  /* 카드에 적는 말마디별 근거 — 「청년」 키워드 · 「지원」 설명 · 「세스코」 자료실 색인 */
+  function termWhy(terms) {
+    return (terms || []).map(function (t) {
+      var how = t.ext ? '자료실 색인 「' + t.ext.label + '」' : (t.why && t.why.length ? t.why.join(' · ') : '설명');
+      return '「' + t.raw + '」 ' + how;
+    }).join(' / ');
+  }
+
   function toast(msg) {
     var t = $('toast');
     if (!t) return;
@@ -202,6 +238,7 @@
     });
     EXT.rows = rows;
     EXT.dict = dict;
+    TMAPC = {};   /* 색인이 새로 들어왔으니 말마디별 검색 결과를 다시 잰다 */
   }
 
   /* 색인에서 한 말이 걸린 자료를 섹터 단위로 모은다 — 섹터마다 가장 잘 맞은 이름 하나와 몇 곳이 걸렸는지만 남긴다. */
@@ -274,44 +311,82 @@
   }
 
   /* ---------- 시작 ---------- */
+  /* 개념 칩 — 누를 때마다 조건으로 담기거나(선택) 빠진다(해제). 여럿을 고르면 그 말들에 **모두** 걸리는 자료만 남는다.
+     칩을 누를 때 목록을 억지로 펼치지 않는다(화면이 출렁이면 방금 고른 결과가 시야 밖으로 밀린다).
+     집힌 개념어가 접힌 목록 밖에 있으면 그 칩만 접힌 목록 뒤에 붙여, 선택 상태가 항상 보이게 한다. */
   function renderKws(expanded) {
+    if (expanded === undefined) expanded = KWEXP;
+    KWEXP = !!expanded;
     var host = $('kws');
     clear(host);
-    var primary = ['경력단절여성', '국민취업지원제도', '구직급여', '직무분석', '법령', '면접', '자격증', '신산업'];
-    var list = G.starts.slice();
-    list.sort(function (a, b) {
-      var ia = primary.indexOf(a.k), ib = primary.indexOf(b.k);
-      if (ia < 0 && ib < 0) return 0;
-      if (ia < 0) return 1;
-      if (ib < 0) return -1;
-      return ia - ib;
-    });
-    var show = expanded ? list : list.slice(0, 8);
-    show.forEach(function (s) {
-      var b = el('button', 'kw', s.k);
+    var list = CHIPS.slice();
+    function on(k) { return SEL.some(function (w) { return norm(w) === norm(k); }); }
+    var show = expanded ? list : list.slice(0, 8).concat(list.slice(8).filter(on));
+    show.forEach(function (k) {
+      var b = el('button', 'kw', k);
       b.type = 'button';
-      b.setAttribute('aria-pressed', String(norm(KW) === norm(s.k)));
-      b.addEventListener('click', function () { pickKeyword(s.k, s.to); });
+      b.setAttribute('aria-pressed', String(on(k)));
+      b.addEventListener('click', function () { toggleChip(k); });
       host.appendChild(b);
     });
     if (!expanded && list.length > show.length) {
-      var more = el('button', 'kw-more', '키워드 ' + (list.length - show.length) + '개 더');
+      var more = el('button', 'kw-more', '개념어 ' + (list.length - show.length) + '개 더');
       more.type = 'button';
       more.addEventListener('click', function () { renderKws(true); });
       host.appendChild(more);
     }
   }
 
-  function pickKeyword(word, targets) {
-    KW = word;
-    renderKws(true);
-    var label = '「' + word + '」에 이어지는 첫 자료';
-    renderMaterials(targets || G.kw[norm(word)] || [], label, '이 말로 시작하는 자료입니다. 하나를 고르면 그 자료가 무엇인지 먼저 보여 드립니다.');
+  function toggleChip(word) {
+    var i = -1;
+    SEL.forEach(function (w, k) { if (norm(w) === norm(word)) i = k; });
+    if (i >= 0) SEL.splice(i, 1);          /* 이미 고른 칩을 다시 누르면 조건에서 빠진다 */
+    else SEL.push(word);
+    var q = SEL.join(', ');
+    $('q').value = q;
+    if (!SEL.length) {
+      KW = '';
+      renderKws();
+      renderConds($('qConds'), [], dropStartTerm, clearStart);
+      clear($('starts'));
+      return;
+    }
+    searchStart(q);
+  }
+
+  /* 검색창에 직접 쓴 말 가운데 개념 칩과 꼭 같은 말은 칩도 눌린 상태로 맞춘다(입력창 ↔ 칩 동기화) */
+  function syncSEL(q) {
+    var out = [];
+    splitTerms(q).forEach(function (t) {
+      CHIPS.forEach(function (c) { if (norm(c) === t.n && out.indexOf(c) < 0) out.push(c); });
+    });
+    SEL = out;
+    renderKws();
+  }
+
+  /* 두 말 이상을 함께 적었을 때 — 말마디마다 걸린 자료를 모아 모든 말에 걸린 자료만 남긴다 */
+  function resolveAll(T) {
+    var maps = T.map(termMap), keep = [];
+    Object.keys(maps[0]).forEach(function (id) {
+      var terms = [], ext = null, sc = 0;
+      for (var i = 0; i < maps.length; i++) {
+        var m = maps[i][id];
+        if (!m) return;
+        sc += m.sc;
+        terms.push({ raw: T[i].raw, why: m.why, ext: m.ext || null });
+        if (!ext && m.ext) ext = m.ext;
+      }
+      keep.push({ id: id, sc: sc, terms: terms, ext: ext });
+    });
+    keep.sort(function (a, b) { return (b.sc - a.sc) || (noOf(a.id) - noOf(b.id)); });
+    return keep;
   }
 
   function resolve(q) {
-    var w = norm(q);
-    if (!w) return [];
+    var T = splitTerms(q);
+    if (!T.length) return [];
+    if (T.length > 1) return resolveAll(T);   /* 쉼표로 여러 말 — 모든 말에 걸린 자료만 */
+    var w = T[0].n;
     var ids = {}, out = [];
     function add(id) {
       if (!SEC[id] || id === G.self || ids[id]) return;
@@ -334,7 +409,7 @@
     }
     /* 지도에 이름이 없어도 자료실 색인(기업 명함첩·대학학과위키·약어 사전)에 실려 있으면 그 자료를 보여 준다.
        「세스코」 → 기업 명함첩, 「계명대」 → 대학학과위키. */
-    extHits(q).forEach(function (h) {
+    extHits(T[0].raw).forEach(function (h) {
       if (ids[h.id]) return;
       ids[h.id] = 1;
       out.push({ id: h.id, ext: h });
@@ -342,7 +417,7 @@
     return out;
   }
 
-  function renderMaterials(ids, label, lead) {
+  function renderMaterials(ids, label, lead, T) {
     var host = $('starts');
     clear(host);
     var seen = {};
@@ -353,8 +428,12 @@
         return true;
       });
     if (!ids.length) {
-      var p = el('p', 'ok-msg bad', '그 말로 이어지는 자료를 찾지 못했습니다. 위의 키워드를 눌러 보거나, 자료 이름(예: 상담 대화 연습장)으로 적어 보세요.');
-      host.appendChild(p);
+      if (T && T.length > 1) {
+        host.appendChild(noCommon(T, dropStartTerm, '조건 모두 지우기', clearStart));
+      } else {
+        var p = el('p', 'ok-msg bad', '그 말로 이어지는 자료를 찾지 못했습니다. 위의 개념어를 눌러 보거나, 자료 이름·개념어로 다시 적어 보세요.');
+        host.appendChild(p);
+      }
       if (!EXT.ready && lead === 'search') {
         loadExt();
         host.appendChild(el('p', 'load-note', '자료실 색인(기업 명함첩·대학학과위키 등 1만 3천여 곳)을 불러오는 중입니다. 불러오면 같은 말로 한 번 더 찾습니다.'));
@@ -366,7 +445,7 @@
       host.appendChild(h);
     }
     ids.slice(0, 6).forEach(function (e) {
-      host.appendChild(materialCard(e.id, e.ext));
+      host.appendChild(materialCard(e.id, e.ext, e.terms));
     });
     if (!EXT.ready && lead === 'search') {
       loadExt();
@@ -374,22 +453,78 @@
     }
   }
 
-  function materialCard(id, ext) {
+  /* 조건 안내 — 한 말이라도 걸리지 않아 교집합이 0건일 때, 어느 말을 빼면 되는지 단추로 보여 준다. */
+  function noCommon(T, onDrop, allText, onAll) {
+    var box = el('div', 'pick-empty');
+    var p = el('p', null, '');
+    p.appendChild(el('b', null, condLabel(T)));
+    p.appendChild(document.createTextNode(' — ' + T.length + '개 조건을 모두 만족하는 자료가 없습니다.'));
+    box.appendChild(p);
+    box.appendChild(el('p', null, '한 조건씩 빼거나, 더 넓은 개념어로 바꿔 보세요.'));
+    var row = el('div', 'row');
+    T.forEach(function (t) {
+      var b = el('button', null, '「' + t.raw + '」 빼기');
+      b.type = 'button';
+      b.setAttribute('aria-label', '「' + t.raw + '」 조건 빼기');
+      b.addEventListener('click', function () { onDrop(t.raw); });
+      row.appendChild(b);
+    });
+    if (onAll) {
+      var a = el('button', null, allText);
+      a.type = 'button';
+      a.addEventListener('click', onAll);
+      row.appendChild(a);
+    }
+    box.appendChild(row);
+    return box;
+  }
+
+  /* 고른 조건을 한 줄로 — 두 말 이상일 때만 보인다(한 말이면 검색창 자체가 조건이다).
+     말마다 빼기(×)를 달아 두면, 말 하나만 빼고 바로 다시 찾을 수 있다. */
+  function renderConds(host, T, onDrop, onAll, allText) {
+    if (!host) return;
+    clear(host);
+    T = T || [];
+    host.hidden = T.length < 2;
+    if (T.length < 2) return;
+    T.forEach(function (t) {
+      var b = el('button', 'cond', '「' + t.raw + '」 ×');
+      b.type = 'button';
+      b.setAttribute('aria-label', '「' + t.raw + '」 조건 빼기');
+      b.addEventListener('click', function () { onDrop(t.raw); });
+      host.appendChild(b);
+    });
+    if (T.length > 1 && onAll) {
+      var a = el('button', 'cond all', allText || '조건 모두 지우기');
+      a.type = 'button';
+      a.addEventListener('click', onAll);
+      host.appendChild(a);
+    }
+  }
+
+  function materialCard(id, ext, terms) {
     var s = SEC[id];
     var card = el('div', 'pick');
     var hd = el('div', 'pick-hd');
     var b = el('span', 'tag', s.badge);
     var n = el('span', 'tag num', s.no + '번');
     hd.appendChild(b); hd.appendChild(n);
-    if (ext) hd.appendChild(el('span', 'tag src', ext.tag));
+    if (ext && !(terms && terms.length > 1)) hd.appendChild(el('span', 'tag src', ext.tag));
+    var many = !!(terms && terms.length > 1);
+    if (many) hd.appendChild(el('span', 'tag src', '공통 매칭'));
     card.appendChild(hd);
     card.appendChild(el('h3', null, s.title));
     card.appendChild(el('p', null, s.desc));
-    if (ext) {
+    if (many) {
       var src = el('p', 'src');
       src.appendChild(el('b', null, '찾은 까닭 '));
-      src.appendChild(document.createTextNode('— ' + ext.note));
+      src.appendChild(document.createTextNode('— ' + termWhy(terms)));
       card.appendChild(src);
+    } else if (ext) {
+      var src1 = el('p', 'src');
+      src1.appendChild(el('b', null, '찾은 까닭 '));
+      src1.appendChild(document.createTextNode('— ' + ext.note));
+      card.appendChild(src1);
     }
     var meta = el('div', 'meta');
     metaOf(id).forEach(function (m) { meta.appendChild(el('span', null, m)); });
@@ -401,17 +536,39 @@
     return card;
   }
 
-  /* 시작 검색창에서 한 번 찾기 — 색인이 늦게 도착하면 같은 말로 다시 찾아 카드를 갈아 끼운다 */
+  /* 시작 검색창에서 한 번 찾기 — 쉼표로 여러 말을 적으면 모든 말에 걸린 자료만. 색인이 늦게 도착하면 같은 말로 다시 찾는다 */
   function searchStart(q) {
-    KW = '';
-    renderKws(true);
-    renderMaterials(resolve(q), '「' + q + '」로 찾은 자료', 'search');
+    var T = splitTerms(q);
+    if (!T.length) return;
+    KW = T.map(function (t) { return t.raw; }).join(', ');
+    renderKws();
+    renderConds($('qConds'), T, dropStartTerm, clearStart, '조건 모두 지우기');
+    var label = T.length > 1 ? condLabel(T) + ' 공통 매칭'
+      : '「' + T[0].raw + '」' + (josaRo(T[0].raw) || '로') + ' 찾은 자료';
+    renderMaterials(resolve(q), label, 'search', T);
     if (EXT.ready) return;
     loadExt().then(function () {
       if (($('q').value || '').trim() !== q) return;     /* 그사이 다른 말을 찾았다면 그대로 둔다 */
-      if (!extHits(q).length) return;
-      renderMaterials(resolve(q), '「' + q + '」로 찾은 자료', 'search');
+      renderMaterials(resolve(q), label, 'search', T);
     });
+  }
+
+  /* 시작 화면에서 조건 하나 빼기 — 검색창·칩·결과를 함께 맞춘다 */
+  function dropStartTerm(raw) {
+    var T = splitTerms($('q').value).filter(function (t) { return t.n !== norm(raw); });
+    SEL = SEL.filter(function (w) { return norm(w) !== norm(raw); });
+    var q = T.map(function (t) { return t.raw; }).join(', ');
+    $('q').value = q;
+    if (!q) { clearStart(); return; }
+    searchStart(q);
+  }
+  function clearStart() {
+    SEL = [];
+    KW = '';
+    $('q').value = '';
+    renderKws(false);
+    renderConds($('qConds'), [], dropStartTerm, clearStart);
+    clear($('starts'));
   }
 
   /* ---------- 흐름 ---------- */
@@ -438,14 +595,17 @@
     if (on) {
       var s = SEC[CHAIN[0]] || {};
       $('sumKw').textContent = KW || '직접 고른 자료';
-      $('sumTxt').textContent = '로 시작 — ' + (s.title || '');
+      var lastT = splitTerms(KW).pop();
+      $('sumTxt').textContent = (lastT ? (josaRo(lastT.raw) || '로') : '로') + ' 시작 — ' + (s.title || '');
     }
   }
   function uncutStart() {
     cutStart(false);
     $('q').value = '';
     KW = '';
+    SEL = [];
     renderKws(false);
+    renderConds($('qConds'), [], dropStartTerm, clearStart);
     clear($('starts'));
   }
 
@@ -548,7 +708,8 @@
       bd.appendChild(el('b', 'n-tt', s.title));
       var why = el('p', 'n-why');
       if (i === 0) {
-        why.textContent = (KW ? '「' + KW + '」로 이어진 시작 자료입니다. ' : '시작 자료입니다. ') +
+        var lastT = splitTerms(KW).pop();
+        why.textContent = (KW ? '「' + KW + '」' + (lastT ? (josaRo(lastT.raw) || '로') : '로') + ' 이어진 시작 자료입니다. ' : '시작 자료입니다. ') +
           '여기서 할 일 — ' + s.gi;
       } else {
         var prev = CHAIN[i - 1], p = pairOf(prev, id);
@@ -647,30 +808,50 @@
   }
 
   /* ---------- 단계마다: 다른 자료 직접 찾기 ---------- */
-  /* 검색어 한 마디로 나머지 자료 전부를 훑는다 — 이름·분류(딱지)·키워드(영문 포함)·설명 순으로 무게를 준다 */
-  function searchMaterials(q) {
-    var n = norm(q), used = {}, out = [];
-    CHAIN.forEach(function (id) { used[id] = 1; });
+  /* 검색어 한 마디가 걸린 자료를 센다 — 이름·분류(딱지)·키워드(영문 포함)·설명 순으로 무게를 준다.
+     자료실 색인(기업 명함첩·대학학과위키·약어 사전)에만 실린 이름도 함께 본다.
+     한 조건의 결과는 TMAPC에 담아 두어, 쉼표로 여러 말을 칠 때 같은 말을 거듭 훑지 않는다. */
+  function termMap(t) {
+    var hit = TMAPC[t.n];
+    if (hit) return hit;
+    var n = t.n, map = {};
     Object.keys(SIDX).forEach(function (id) {
       var x = SIDX[id], sc = 0, why = [];
-      var kwHit = x.kw.some(function (k) { return k && k.indexOf(n) >= 0; });
-      if (kwHit) { sc += 100; why.push('키워드'); }
-      if (x.name === n) { sc += 90; if (why.indexOf('이름') < 0) why.push('이름'); }
-      else if (x.name.indexOf(n) >= 0) { sc += 60; if (why.indexOf('이름') < 0) why.push('이름'); }
+      if (x.kw.some(function (k) { return k && k.indexOf(n) >= 0; })) { sc += 100; why.push('키워드'); }
+      if (x.name === n) { sc += 90; why.push('이름'); }
+      else if (x.name.indexOf(n) >= 0) { sc += 60; why.push('이름'); }
       if (x.badge.indexOf(n) >= 0) { sc += 45; why.push('분류'); }
       if (x.body.indexOf(n) >= 0) { sc += 20; why.push('설명'); }
-      if (!sc) return;
-      out.push({ id: id, sc: sc, why: why, used: !!used[id] });
+      if (sc) map[id] = { sc: sc, why: why };
     });
-    /* 자료실 색인(기업 명함첩·대학학과위키·약어 사전)에서 걸린 자료 — 지도에 이름이 없는 말도 후보로 올린다. */
-    extHits(q).forEach(function (h) {
-      for (var i = 0; i < out.length; i++) {
-        if (out[i].id !== h.id) continue;
-        /* 그래프에서 이미 걸린 자료는 그 근거를 그대로 두고, 이름·별칭이 꼭 같을 때만 색인 근거를 보탠다 */
-        if (!out[i].ext && h.sc >= 95) out[i].ext = h;
-        return;
+    /* 자료실 색인에서 걸린 자료 — 지도에 이름이 없는 말도 후보로 올라간다. */
+    extHits(t.raw).forEach(function (h) {
+      var cur = map[h.id];
+      /* 그래프에서 이미 걸린 자료는 그 근거를 그대로 두고, 이름·별칭이 꼭 같을 때만 색인 근거를 보탠다 */
+      if (cur) { if (!cur.ext && h.sc >= 95) cur.ext = h; return; }
+      map[h.id] = { sc: 54 + h.sc * 0.42, why: [], ext: h };
+    });
+    TMAPC[t.n] = map;
+    return map;
+  }
+
+  /* 검색어로 나머지 자료 전부를 훑는다 — 쉼표로 여러 말을 적으면 **모든 말에 걸리는 자료만** 남긴다. */
+  function searchMaterials(q) {
+    var T = splitTerms(q), used = {}, out = [], i;
+    if (!T.length) return out;
+    CHAIN.forEach(function (id) { used[id] = 1; });
+    var maps = T.map(termMap);
+    Object.keys(maps[0]).forEach(function (id) {
+      var sc = 0, why = [], terms = [], ext = null;
+      for (i = 0; i < maps.length; i++) {
+        var m = maps[i][id];
+        if (!m) return;                                /* 한 조건이라도 걸리지 않으면 뺐다(AND 교집합) */
+        sc += m.sc;
+        m.why.forEach(function (w) { if (why.indexOf(w) < 0) why.push(w); });
+        terms.push({ raw: T[i].raw, why: m.why, ext: m.ext || null });
+        if (!ext && m.ext) ext = m.ext;
       }
-      out.push({ id: h.id, sc: 54 + h.sc * 0.42, why: [], ext: h, used: !!used[h.id] });
+      out.push({ id: id, sc: sc, why: why, terms: terms, ext: ext, used: !!used[id] });
     });
     out.sort(function (a, b) { return (b.sc - a.sc) || (noOf(a.id) - noOf(b.id)); });
     return out;
@@ -691,6 +872,7 @@
     var host = $('picks');
     clear(host);
     var q = PQ.trim();
+    var T = splitTerms(q);
     var all = searchMaterials(q);
     var show = all.filter(function (r) { return !r.used; });
     var usedN = all.length - show.length;
@@ -698,19 +880,23 @@
     var stat = $('pqStat');
     clear(stat);
     stat.hidden = false;
-    stat.appendChild(el('b', null, '「' + q + '」 ' + show.length + '곳 찾음'));
+    stat.appendChild(el('b', null, (T.length > 1 ? condLabel(T) + ' 공통 ' : (T.length ? '「' + T[0].raw + '」 ' : '')) + show.length + '곳 찾음'));
     if (usedN) stat.appendChild(document.createTextNode(' · 이미 흐름에 담긴 ' + usedN + '곳은 뺐습니다'));
     if (!EXT.ready) stat.appendChild(document.createTextNode(EXT.err
       ? ' · 기업·대학 색인을 불러오지 못해 지도 안에서만 찾았습니다'
       : ' · 기업·대학 색인 불러오는 중'));
     if (!show.length) {
+      if (T.length > 1 && !all.length) {
+        host.appendChild(noCommon(T, dropQueryTerm, '검색어 모두 지우기', clearQuery));
+        return;
+      }
       var box = el('div', 'pick-empty');
       box.appendChild(el('p', null, all.length
-        ? '「' + q + '」는 이미 흐름에 담겨 있습니다. 다른 말로 찾거나 검색어를 지워 추천 가지로 돌아가세요.'
+        ? condLabel(T) + ' — 이미 흐름에 담겨 있습니다. 다른 말로 찾거나 검색어를 지워 추천 가지로 돌아가세요.'
         : (EXT.ready
-          ? '그 말로 이어지는 자료를 찾지 못했습니다. 자료 이름이나 분류(예: 법전, 번역기, 세스코, 계명대)로 다시 적어 보세요.'
+          ? '그 말로 이어지는 자료를 찾지 못했습니다. 자료 이름이나 개념어(예: 상담이론, 자격, 기업)로 다시 적어 보세요.'
           : (EXT.err
-            ? '그 말로 이어지는 자료를 찾지 못했습니다. 자료 이름이나 분류(예: 법전, 번역기, 기업)로 다시 적어 보세요.'
+            ? '그 말로 이어지는 자료를 찾지 못했습니다. 자료 이름이나 개념어(예: 상담이론, 자격, 기업)로 다시 적어 보세요.'
             : '기업·대학 이름까지 찾도록 자료실 색인을 불러오는 중입니다. 잠시 뒤 같은 말로 다시 찾아보세요.'))));
       var row = el('div', 'row');
       var cl = el('button', null, '검색어 지우기');
@@ -722,7 +908,7 @@
       return;
     }
     show.slice(0, 12).forEach(function (r, i) {
-      host.appendChild(candCard(searchHit(r.id), i + 1, r.why, r.ext));
+      host.appendChild(candCard(searchHit(r.id), i + 1, r.why, r.ext, r.terms));
     });
     if (show.length > 12) {
       host.appendChild(el('p', 'pstat', '나머지 ' + (show.length - 12) + '곳은 검색어를 더 적어 좁혀 보세요.'));
@@ -734,7 +920,13 @@
     var inp = $('pq'), cl = $('pqClear');
     if (inp && inp.value !== PQ) inp.value = PQ;
     if (cl) cl.hidden = !PQ;
+    renderConds($('pqConds'), splitTerms(PQ), dropQueryTerm, clearQuery, '검색어 모두 지우기');
     if (CHAIN.length) renderCands();
+  }
+  /* 단계 검색에서 조건 하나 빼기 */
+  function dropQueryTerm(raw) {
+    var T = splitTerms($('pq').value).filter(function (t) { return t.n !== norm(raw); });
+    setQuery(T.map(function (t) { return t.raw; }).join(', '));
   }
   function clearQuery() {
     setQuery('');
@@ -788,14 +980,15 @@
     }
   }
 
-  function candCard(c, ord, why, ext) {
+  function candCard(c, ord, why, ext, terms) {
     var s = SEC[c.id], p = c.p;
     var card = el('article', 'cand');
     var top = el('div', 'c-top');
     top.appendChild(el('span', 'tag', s.badge));
     top.appendChild(el('span', 'tag num', s.no + '번'));
-    top.appendChild(el('span', 'c-no', ext ? ext.tag
-      : (why && why.length ? why.join(' · ') + '에서 찾음' : (c.manual ? '직접 엮기' : '후보'))));
+    var many = !!(terms && terms.length > 1);
+    top.appendChild(el('span', 'c-no', many ? condLabel(terms) + ' 공통 매칭' : (ext ? ext.tag
+      : (why && why.length ? why.join(' · ') + '에서 찾음' : (c.manual ? '직접 엮기' : '후보')))));
     card.appendChild(top);
     card.appendChild(el('h3', null, s.title));
     card.appendChild(el('p', 'c-desc', s.desc));
@@ -811,6 +1004,13 @@
     }
     syn.appendChild(sh);
     var ul = el('ul', 'syn-l');
+
+    if (many) {
+      var liT = el('li');
+      liT.appendChild(el('b', null, '찾은 조건 '));
+      liT.appendChild(document.createTextNode('— ' + termWhy(terms)));
+      ul.appendChild(liT);
+    }
 
     if (ext) {
       var liS = el('li');
@@ -1079,7 +1279,8 @@
     $('findForm').addEventListener('submit', function (e) {
       e.preventDefault();
       var q = ($('q').value || '').trim();
-      if (!q) { renderKws(false); clear($('starts')); return; }
+      if (!q) { clearStart(); return; }
+      syncSEL(q);            /* 검색창에 적은 말과 칩 선택을 맞춘다 */
       searchStart(q);
     });
     $('againBtn').addEventListener('click', function () {

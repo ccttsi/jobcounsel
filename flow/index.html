@@ -11,7 +11,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
-<meta name="description" content="키워드 하나로 시작해 자료실 27개 자료가 실제로 이어지는 순서를 따라가며, 근거 있는 상담 덱을 짓는 직업상담 참고·실습 도구">
+<meta name="description" content="키워드 하나, 또는 쉼표로 여럿을 적어 자료실 27개 자료가 실제로 이어지는 순서를 따라가며, 근거 있는 상담 덱을 짓는 직업상담 참고·실습 도구">
 <title>상담 플로우 아키텍트 · 근거로 잇는 상담 순서</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -118,6 +118,17 @@ a{color:inherit}
 .find input::-webkit-search-decoration,.psfind input::-webkit-search-decoration{-webkit-appearance:none;display:none}
 .find input:focus,.find input:focus-visible,.psfind input:focus,.psfind input:focus-visible{outline:2px solid var(--acc);outline-offset:-2px;border-color:var(--acc)}
 .find button{flex:none;min-height:46px;padding:0 18px;border-radius:12px;border:1px solid var(--acc);background:var(--acc-soft);color:var(--acc);font-size:15px;font-weight:750}
+.find-hint{margin:8px 0 0;font-size:13px;line-height:1.55;color:var(--muted)}
+.find-hint b{color:var(--ink);font-weight:750}
+
+/* ---------- 고른 조건(쉼표로 여러 말) ----------
+   조건마다 빼기(×)를 달아, 말 하나만 빼고 바로 다시 찾을 수 있게 한다. 터치 44px은 전 화면 공통 규칙. */
+.conds{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
+.conds:empty{display:none}
+.cond{min-height:44px;padding:0 13px;border:1px solid var(--acc);border-radius:999px;background:var(--acc-soft);color:var(--acc);font-size:13.5px;font-weight:750;letter-spacing:-.01em}
+.cond:hover{filter:brightness(.97)}
+.cond.all{border-color:var(--line2);background:none;color:var(--muted)}
+.psearch .conds{margin:0 0 2px}
 
 /* ---------- 시작 자료 카드 ---------- */
 .starts{display:grid;gap:12px;margin-top:16px}
@@ -162,7 +173,7 @@ a{color:inherit}
 .cover .why b{color:var(--ink)}
 
 /* ---------- 시작 구간 접기(첫 자료를 고르면 한 줄로) ---------- */
-#startSec.cut .kws,#startSec.cut .find,#startSec.cut .starts,#startSec.cut .s-note{display:none}
+#startSec.cut .kws,#startSec.cut .find,#startSec.cut .find-hint,#startSec.cut .conds,#startSec.cut .starts,#startSec.cut .s-note{display:none}
 .sum{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
 .sum span.txt{font-size:14.5px;color:var(--muted)}
 .sum span.txt b{color:var(--ink)}
@@ -307,7 +318,7 @@ a{color:inherit}
       <ul>
         <li><b>후보와 시너지는 자료실 자료로만 셉니다.</b> 「자료실 연결 짝」은 <code>assets/tools.js</code>의 짝이고, 「겹치는 말」은 자료실 지도·번역기 용어에서 두 자료가 함께 쓰는 말입니다. 근거가 없는 조합은 후보로 올리지 않습니다.</li>
         <li><b>추천 가지 밖의 자료도 직접 엮을 수 있습니다.</b> 매 단계 위의 검색창에서 자료 이름·분류·키워드로 찾아 이으면, 근거가 없는 조합은 「직접 엮은 흐름 — 시드/매치 자유 조합」으로 따로 표시합니다.</li>
-        <li><b>기업·대학 이름으로도 찾습니다.</b> 「세스코」·「계명대」처럼 기업 명함첩·대학학과위키에 담긴 이름을 치면 그 이름이 실린 자료를 후보로 올려 바로 다음 단계로 잇습니다(초성 ㅅㅅㅋ·ㄱㅁㄷ, 약어 경단녀·국취도 됩니다).</li>
+        <li><b>여러 말을 함께 찾습니다.</b> 시작 화면·매 단계 검색창에 쉼표(,)로 「청년, 기업」처럼 적거나 개념 칩을 여럿 누르면, <b>모든 말에 걸리는 자료만</b> 남깁니다. 기업·대학 이름과 약어도 자료실 색인에서 그대로 찾습니다.</li>
         <li><b>만든 덱은 내 계정에만 보관됩니다.</b> 로그인하지 않으면 이 브라우저에만 저장되고, 그 사실을 화면에 적어 둡니다. 다른 사람은 볼 수 없습니다.</li>
         <li><b>내담자 이름·연락처는 적지 마세요.</b> 덱에는 자료 이름과 순서만 담깁니다.</li>
         <li><b>자료실의 정보는 정답이 아닌 참고·실습용입니다.</b> 실제 판단은 최신 공식 자료와 기관 안내로 확인해 주세요.</li>
@@ -319,18 +330,20 @@ a{color:inherit}
     <section class="hero">
       <p class="kick"><span class="no">27</span><span>매치 · 실무</span></p>
       <h1>상담 <em>플로우</em> 아키텍트</h1>
-      <p class="lede">키워드 하나로 시작해, 자료실 자료가 실제로 이어지는 순서를 한 칸씩 따라갑니다. 후보마다 <b>왜 그 다음인지</b> 근거를 함께 보여 주고, 2개든 3개든 4개든 어디서든 <b>「이대로 만들어볼래요」</b>로 내 덱을 완성합니다.</p>
+      <p class="lede">키워드 하나로, 또는 쉼표로 여럿을 적어 시작해, 자료실 자료가 실제로 이어지는 순서를 한 칸씩 따라갑니다. 후보마다 <b>왜 그 다음인지</b> 근거를 함께 보여 주고, 2개든 3개든 4개든 어디서든 <b>「이대로 만들어볼래요」</b>로 내 덱을 완성합니다.</p>
     </section>
 
     <section class="step" id="startSec" aria-labelledby="startT">
       <div class="s-hd"><span class="s-no" aria-hidden="true">1</span><h2 id="startT">어디서 시작할까요</h2></div>
-      <p class="s-note">상담실에서 먼저 나오는 말을 고르거나, 아래에 직접 적어 보세요. 고른 말에 이어지는 <b>첫 자료</b>를 보여 줍니다.</p>
-      <div class="kws" id="kws" role="group" aria-label="시작 키워드"></div>
+      <p class="s-note">상담실에서 먼저 나오는 말을 고르거나, 아래에 직접 적어 보세요. 개념어는 <b>여럿을 눌러</b> 함께 좁힐 수 있고, 고른 말에 이어지는 <b>첫 자료</b>를 보여 줍니다.</p>
+      <div class="kws" id="kws" role="group" aria-label="시작 개념어 — 여러 개를 골라 함께 좁히기"></div>
       <form class="find" id="findForm" role="search">
-        <label class="sr" for="q">키워드나 자료 이름</label>
-        <input id="q" type="search" placeholder="예: 세스코, 계명대, 경단녀" autocomplete="off" enterkeyhint="search">
+        <label class="sr" for="q">개념어나 자료 이름 (쉼표로 여러 개)</label>
+        <input id="q" type="search" placeholder="예: 이론, 심리검사, 기업" autocomplete="off" enterkeyhint="search">
         <button type="submit" id="findBtn">찾기</button>
       </form>
+      <p class="find-hint">쉼표(<b>,</b>)로 여러 말을 적으면 <b>모두에 걸리는 자료만</b> 남깁니다. 예: <b>청년, 기업</b> · <b>이론, 심리검사</b></p>
+      <div class="conds" id="qConds" hidden></div>
       <div class="starts" id="starts" aria-live="polite"></div>
       <div class="sum" id="startSum" hidden>
         <span class="tag" id="sumKw"></span>
@@ -360,11 +373,12 @@ a{color:inherit}
           <div class="note" id="note" hidden></div>
           <div class="fork" id="fork">
             <div class="psearch" id="psearch">
-              <label class="plab" for="pq"><b>다른 자료 직접 찾아 엮기</b><span>예: 법전, 세스코, 계명대</span></label>
+              <label class="plab" for="pq"><b>다른 자료 직접 찾아 엮기</b><span>예: 상담이론, 노동시장, 자격</span></label>
               <div class="psfind">
-                <input id="pq" type="search" placeholder="자료 이름 · 분류 · 키워드 · 기업·대학" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-controls="picks">
+                <input id="pq" type="search" placeholder="이름 · 분류 · 개념어 — 쉼표로 여러 개" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-controls="picks">
                 <button type="button" class="psx" id="pqClear" aria-label="검색어 지우기" hidden>×</button>
               </div>
+              <div class="conds" id="pqConds" hidden></div>
               <p class="pstat" id="pqStat" aria-live="polite" hidden></p>
             </div>
             <p class="fork-hd"><b id="forkT">다음 가지</b> <span id="forkN"></span></p>
