@@ -18,8 +18,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, "portals.json")
 
 EXPECTED = {
-    "total": 75,
-    "by_sector": {"pub": 8, "disclosure": 10, "general": 15, "tech": 12, "expert": 5,
+    "total": 76,
+    "by_sector": {"pub": 8, "disclosure": 11, "general": 15, "tech": 12, "expert": 5,
                   "industry": 8, "target": 17},
 }
 # 항목마다 실제로 접속을 확인한 날을 적는다. 한 날짜로 통일하지 않는다 —
