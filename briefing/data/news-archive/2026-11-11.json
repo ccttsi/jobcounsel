@@ -1,21 +1,10 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-11T23:12:00+09:00",
+ "updated_at": "2026-11-16T23:09:00+09:00",
  "date": "2026-11-11",
  "data_status": "ok",
  "data_status_note": null,
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-11T07:10:00+09:00",
-   "last_ok": "2026-11-11"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-11T23:12:00+09:00",
-   "last_ok": "2026-11-11"
-  }
- },
+ "runs": {},
  "main_themes": [
   {
    "theme_id": "th-ai-job-restructuring",
@@ -419,73 +408,70 @@
  ],
  "keywords": [
   {
-   "word": "미국 고용",
-   "count": 1
-  },
-  {
-   "word": "실업률",
-   "count": 1
-  },
-  {
-   "word": "구인",
-   "count": 1
+   "word": "AI 직무전망",
+   "count": 2
   },
   {
    "word": "임금",
+   "count": 2
+  },
+  {
+   "word": "프리랜스",
    "count": 1
   },
   {
-   "word": "복리후생",
+   "word": "물가",
    "count": 1
   },
   {
-   "word": "장기실업",
+   "word": "실질임금",
    "count": 1
   }
  ],
  "items": [
   {
-   "id": "n-us-empsit-202610-20261111",
-   "issue_id": "iss-us-empsit-202610",
-   "theme_id": "th-ai-job-restructuring",
+   "id": "n20261114-06",
+   "issue_id": "iss-ai-freelance-rebundle",
+   "theme_id": null,
    "edition": "global-2300",
-   "updated_at": "2026-11-11T23:12:00+09:00",
-   "run_id": "br-20261111-2312",
-   "headline": true,
-   "published_at": "2026-11-06T08:30:00-05:00",
+   "updated_at": "2026-11-14T23:07:00+09:00",
+   "run_id": "br-20261114-2307",
+   "headline": false,
+   "published_at": "2026-11-10",
    "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+    "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+    "source_url": "https://arxiv.org/abs/2611.14708",
     "country": "US",
     "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
+     "name": "CC BY 4.0 (저작자표시)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
      "attribution_required": true,
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
+     "verified_at": "2026-11-17",
+     "evidence": "arXiv PDF 라이선스 표기 「License: CC BY 4.0」 확인(2026-11-17).",
+     "attribution_text": "Chin, C. et al. (2026), arXiv:2611.14708, CC BY 4.0"
     }
    },
-   "title_original": "THE EMPLOYMENT SITUATION — OCTOBER 2026",
-   "title_ko": "미국 10월 고용동향 — 비농업 +16만5천, 실업률 4.1%",
-   "body_original": "Total nonfarm payroll employment rose by 165,000 in October, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in professional and business services, in health care, and in transportation and warehousing.\n\nBoth the unemployment rate, at 4.1 percent, and the number of unemployed people, at 7.1 million, changed little in October. The unemployment rate has remained in a narrow range of 4.1 percent to 4.3 percent since March.\n\nThe number of long-term unemployed (those jobless for 27 weeks or more), at 2.0 million, changed little over the month. The long-term unemployed accounted for 27.6 percent of all unemployed people.\n\nThe number of people employed part time for economic reasons increased by 339,000 to 4.8 million in October. These individuals would have preferred full-time employment but were working part time because their hours had been reduced or they were unable to find full-time jobs.",
-   "body_ko_ai": "미국 노동통계국은 오늘 10월 비농업 고용이 16만5천 명 늘었고 실업률은 4.1%로 큰 변화가 없었다고 밝혔다. 고용은 전문·사업서비스, 보건, 운수·창고업에서 늘었다.\n\n10월 실업률 4.1%와 실업자 710만 명은 큰 변화가 없었다. 실업률은 3월 이후 4.1~4.3%의 좁은 범위에 머물고 있다.\n\n27주 이상 일자리를 찾지 못한 장기 실업자는 196만 명으로 한 달 사이 큰 변화가 없었다. 장기 실업자는 전체 실업자의 27.6%를 차지했다.\n\n경제적 이유로 시간제로 일하는 사람은 33만9천 명 늘어 480만 명이 됐다. 이들은 전일제 일을 원했지만 근로시간이 줄었거나 전일제 일자리를 찾지 못해 시간제로 일하고 있다.",
+   "title_original": "The Rebundling of Freelance Work in the AI Age",
+   "title_ko": "AI 시대 프리랜스 일의 재묶음(arXiv:2611.14708)",
+   "body_original": "The Rebundling of Freelance Work in the AI Age\n\nCaroline Chin, Shagun Kala, Nadav Kunievsky, Teng Liu, Alex Martin Richmond, Carl Shan. OpenAI and Upwork. November 2026.\n\nAbstract: This report studies how freelance work is changing in the AI era. We compare the activities people undertake in ChatGPT with the work clients request on Upwork and examine how clients combine tasks into projects. AI-related postings request slightly more tasks on average than other postings. Even among projects with similar numbers of tasks, AI-related postings bring together tasks that clients less often requested together before the generative AI era.\n\nKey findings: AI use and freelance demand have different activity mixes. ChatGPT activities skew toward writing and advice, while Upwork postings lean toward technical implementation and visual production. The relationship between direct AI use and changes in freelance demand is not uniform: there is not a simple substitution pattern between Upwork tasks and those common on ChatGPT. This contrast suggests a continuing role for workers who provide technical implementation, creative production, and finished deliverables. AI-related work is becoming more diverse: work within AI-related postings is becoming less concentrated in a few activities.",
+   "body_ko_ai": "AI 시대에 프리랜스 일이 어떻게 바뀌는지를 본 보고서다. ChatGPT에서 사람들이 하는 활동과 Upwork 의뢰인이 요청하는 일을 비교하고, 의뢰인이 과업을 프로젝트로 묶는 방식을 살폈다. AI 관련 공고는 다른 공고보다 평균적으로 약간 더 많은 과업을 요구했고, 과업 수가 비슷한 프로젝트끼리 비교해도 AI 공고는 생성형 AI 이전에 함께 요청되지 않던 과업 조합을 담고 있었다.\n\n핵심 발견: AI 사용과 프리랜스 수요의 활동 구성은 다르다. ChatGPT 활동은 글쓰기·조언에 치우치고 Upwork 공고는 기술 구현·시각 제작에 치우쳐 단순한 대체 관계가 아니었다. AI 관련 공고 안의 일은 소수 활동에 집중되지 않고 다양해지는 중이었다. 이는 기술 구현·창작물 제작·완성된 결과물을 내놓는 노동자의 역할이 계속된다는 뜻이다.",
    "translation": {
     "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-11T23:05:00+09:00"
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-14T23:07:00+09:00"
    },
    "topics": [
-    "고용·정책",
+    "AI·직무",
     "글로벌"
    ],
    "keywords": [
-    "미국 고용",
-    "실업률"
+    "AI 직무전망",
+    "프리랜스"
    ],
    "related_jobs": [
     "직업상담사"
@@ -494,50 +480,163 @@
    "rights": {
     "full_text_allowed": true,
     "ai_translation_allowed": true
-   }
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
   },
   {
-   "id": "n-us-jolts-202609-20261111",
-   "issue_id": "iss-us-jolts-202609",
-   "theme_id": "th-ai-job-restructuring",
+   "id": "n20261115-05",
+   "issue_id": "iss-us-cpi-oct",
+   "theme_id": null,
    "edition": "global-2300",
-   "updated_at": "2026-11-11T23:12:00+09:00",
-   "run_id": "br-20261111-2312",
+   "updated_at": "2026-11-15T23:08:00+09:00",
+   "run_id": "br-20261115-2308",
    "headline": false,
-   "published_at": "2026-11-03T10:00:00-05:00",
+   "published_at": "2026-11-10",
    "source": {
     "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+    "source_url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "연방정부 발간물 전체",
+     "attribution_required": false,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-17",
+     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, Consumer Price Index — October 2026"
+    }
+   },
+   "title_original": "Consumer Price Index — October 2026",
+   "title_ko": "미국 10월 소비자물가 0.4%↑…주거비가 상승분 30% 이상",
+   "body_original": "Consumer Price Index — October 2026\n\nThe Consumer Price Index for All Urban Consumers (CPI-U) increased 0.4 percent on a seasonally adjusted basis in October after rising 0.6 percent in September, the U.S. Bureau of Labor Statistics reported today.\n\nThe index for shelter rose 0.3 percent in October, accounting for over thirty percent of the monthly all items increase. The food index increased 0.5 percent in October, as the food at home index rose 0.4 percent and the food away from home index increased 0.5 percent. The index for energy increased 0.7 percent over the month following a 5.2-percent increase in September.\n\nThe index for all items less food and energy rose 0.3 percent in October, as it did in September and August. Indexes that increased over the month include recreation, medical care, motor vehicle insurance, household furnishings and operations, and education. Conversely, the index for used cars and trucks and the index for communication were among the small number of major indexes that decreased in October.\n\nBLS did not collect survey data for October 2025 because of a lapse in appropriations. For most CPI series, BLS could not publish October 2025 indexes. As a result, BLS cannot publish 12-month percent changes for October 2026 for indexes where October 2025 data are unavailable.",
+   "body_ko_ai": "소비자물가지수 — 2026년 10월\n\n미국 노동통계국은 도시 소비자 전체(CPI-U) 소비자물가지수가 계절조정 기준으로 9월 0.6% 상승에 이어 10월 0.4% 올랐다고 밝혔다.\n\n10월 주거비 지수는 0.3% 올라 월간 전체 상승분의 30% 이상을 차지했다. 식품 지수는 0.5% 올랐고, 집에서 먹는 음식은 0.4%, 외식은 0.5% 올랐다. 에너지 지수는 9월 5.2% 상승에 이어 10월 0.7% 올랐다.\n\n식품·에너지를 제외한 지수는 9월과 8월에 이어 10월에도 0.3% 올랐다. 여가, 의료, 자동차보험, 가구·가사, 교육 지수가 올랐고, 중고차와 통신은 내린 소수 지수에 들었다.\n\n노동통계국은 2025년 예산 중단(lapse in appropriations)으로 2025년 10월 조사 자료를 수집하지 못했다. 대부분 지수에서 2025년 10월 값이 없어, 2026년 10월의 12개월 상승률은 발표할 수 없다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-15T23:08:00+09:00"
+   },
+   "topics": [
+    "글로벌"
+   ],
+   "keywords": [
+    "물가"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
+  },
+  {
+   "id": "n20261115-06",
+   "issue_id": "iss-us-real-earnings",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-15T23:08:00+09:00",
+   "run_id": "br-20261115-2308",
+   "headline": false,
+   "published_at": "2026-11-10",
+   "source": {
+    "source_name": "미국 노동통계국(BLS)",
+    "source_url": "https://www.bls.gov/news.release/realer.nr0.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "연방정부 발간물 전체",
+     "attribution_required": false,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-17",
+     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, Real Earnings — October 2026"
+    }
+   },
+   "title_original": "Real Earnings — October 2026",
+   "title_ko": "미국 10월 실질임금 보합…시간당 임금 0.4%↑, 물가도 0.4%↑",
+   "body_original": "Real Earnings — October 2026\n\nReal average hourly earnings for all employees were unchanged from September to October, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. This result stems from an increase of 0.4 percent in average hourly earnings combined with an increase of 0.4 percent in the Consumer Price Index for All Urban Consumers (CPI-U).\n\nReal average weekly earnings were unchanged over the month due to no change in real average hourly earnings combined with no change in the average workweek.",
+   "body_ko_ai": "실질임금 — 2026년 10월\n\n미국 노동통계국은 전 직원의 실질 평균 시간당 임금이 계절조정 기준으로 9월에서 10월 사이 변동이 없었다고 밝혔다. 평균 시간당 임금이 0.4% 오른 것과 도시 소비자 전체(CPI-U) 소비자물가지수가 0.4% 오른 것이 맞물린 결과다.\n\n실질 평균 주간 임금도 변동이 없었다. 실질 시간당 임금이 그대로였고 평균 주당 노동시간도 그대로였기 때문이다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-15T23:08:00+09:00"
+   },
+   "topics": [
+    "글로벌",
+    "고용·정책"
+   ],
+   "keywords": [
+    "실질임금",
+    "임금"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
+  },
+  {
+   "id": "n20261116-15",
+   "issue_id": "iss-us-real-earnings-oct",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-16T23:09:00+09:00",
+   "run_id": "br-20261116-2309",
+   "headline": false,
+   "published_at": "2026-11-10",
+   "source": {
+    "source_name": "미국 노동통계국(BLS)",
+    "source_url": "https://www.bls.gov/news.release/realer.nr0.htm",
     "country": "US",
     "license": {
      "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
      "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표 한정(사진·삽화 제외)",
      "attribution_required": true,
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
+     "verified_at": "2026-11-16",
+     "evidence": "BLS 「Copyright Information」 — 연방정부 기관이 발행한 자료는 퍼블릭 도메인(사진·삽화 제외), 출처 표기 요청(2026-11-16 확인).",
+     "attribution_text": "출처: U.S. Bureau of Labor Statistics"
     }
    },
-   "title_original": "JOB OPENINGS AND LABOR TURNOVER — SEPTEMBER 2026",
-   "title_ko": "미국 9월 구인·이직 — 구인 750만, 퇴사 340만",
-   "body_original": "The number of job openings was little changed at 7.5 million in September, the U.S. Bureau of Labor Statistics reported today. Hires and total separations changed little at 5.4 million and 5.3 million, respectively. Within separations, quits (3.4 million) increased, while layoffs and discharges (1.6 million) were little changed.\n\nThe number and rate of job openings were little changed at 7.5 million and 4.5 percent, respectively, in September. Job openings increased in state and local government, excluding education (+104,000).\n\nIn September, the number of total separations was little changed at 5.3 million, while the rate was unchanged at 3.3 percent. Total separations increased in accommodation and food services (+195,000).\n\nThe number of quits increased to 3.4 million, while the rate was little changed at 2.1 percent in September. Quits increased in accommodation and food services (+197,000) but decreased in arts, entertainment, and recreation (-19,000). Over the year, total nonfarm quits increased by 375,000.",
-   "body_ko_ai": "미국 노동통계국은 9월 구인 건수가 750만 건으로 큰 변화가 없었다고 밝혔다. 채용은 540만 건, 총 이직은 530만 건으로 큰 변화가 없었다. 이직 가운데 자발적 퇴사(340만 건)는 늘었고 해고(160만 건)는 큰 변화가 없었다.\n\n9월 구인 건수와 구인율은 각각 750만 건, 4.5%로 큰 변화가 없었다. 구인은 교육을 제외한 주·지방정부에서 10만4천 건 늘었다.\n\n9월 총 이직은 530만 건으로 큰 변화가 없었고 이직률은 3.3%로 같았다. 총 이직은 숙박·음식서비스업에서 19만5천 건 늘었다.\n\n9월 자발적 퇴사는 340만 건으로 늘었고 퇴사율은 2.1%로 큰 변화가 없었다. 퇴사는 숙박·음식서비스업에서 19만7천 건 늘었고 예술·오락·여가업에서는 1만9천 건 줄었다. 1년 사이 전체 퇴사는 37만5천 건 늘었다.",
+   "title_original": "Real Earnings - October 2026 (USDL-26-1686)",
+   "title_ko": "미국 10월 실질임금 보합…임금 상승분이 물가 상승분과 같아",
+   "body_original": "Real Earnings - October 2026\n\nUSDL-26-1686. Released 8:30 a.m. (ET) Tuesday, November 10, 2026.\n\nReal average hourly earnings for all employees were unchanged from September to October, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. This result stems from an increase of 0.4 percent in average hourly earnings combined with an increase of 0.4 percent in the Consumer Price Index for All Urban Consumers (CPI-U).\n\nReal average weekly earnings were unchanged over the month due to no change in real average hourly earnings combined with no change in the average workweek.\n\n[Federal Government Shutdown] This release usually includes an over-the-year analysis of changes to real earnings. BLS could not collect the relevant Consumer Price Index data for the October 2025 reference period due to a lapse in appropriations in late 2025. For that reason, over-the-year comparisons from October 2025 to October 2026 are not available.\n\nProduction and nonsupervisory employees: Real average hourly earnings increased 0.1 percent from September to October, seasonally adjusted. This result stems from a 0.4-percent increase in average hourly earnings combined with an increase of 0.3 percent in the Consumer Price Index for Urban Wage Earners and Clerical Workers (CPI-W). Real average weekly earnings decreased 0.3 percent over the month due to the change in real average hourly earnings combined with a decrease of 0.3 percent in the average workweek.\n\nThe Real Earnings news release for November 2026 is scheduled to be published on Thursday, December 10, 2026, at 8:30 a.m. (ET).",
+   "body_ko_ai": "미국 10월 실질임금, 보합…임금 상승분이 물가 상승분과 같아\n\nUSDL-26-1686. 2026년 11월 10일(화) 오전 8시 30분(미 동부시간) 발표.\n\n미국 노동통계국(BLS)은 계절조정 기준으로 9월에서 10월 사이 전체 근로자의 실질 평균시간당임금이 변동이 없었다고 발표했다. 이는 평균시간당임금이 0.4% 오르고 도시 소비자물가지수(CPI-U)도 0.4% 오른 데 따른 결과다.\n\n실질 평균주간임금도 실질 평균시간당임금이 변하지 않고 평균 노동시간도 변하지 않아 한 달 동안 보합이었다.\n\n[연방정부 셧다운] 이 발표는 보통 실질임금의 전년동기 대비 분석을 포함한다. 그러나 BLS는 2025년 말 예산 중단으로 2025년 10월 기준 소비자물가 자료를 수집할 수 없어, 2025년 10월에서 2026년 10월로 이어지는 전년동기 비교는 제공하지 않는다.\n\n생산·감독직을 제외한 근로자의 실질 평균시간당임금은 계절조정 기준으로 9월 대비 0.1% 올랐다. 평균시간당임금이 0.4% 오르고 도시 임금근로자·사무직 소비자물가지수(CPI-W)가 0.3% 오른 데 따른 것이다. 실질 평균주간임금은 실질 시간당임금 변화와 평균 노동시간 0.3% 감소로 0.3% 줄었다.\n\n다음 실질임금 발표는 2026년 12월 10일(목) 오전 8시 30분(미 동부시간)로 예정되어 있다.",
    "translation": {
     "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-11T23:05:00+09:00"
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-16T23:09:00+09:00"
    },
    "topics": [
-    "글로벌",
-    "취업시장"
+    "취업시장",
+    "글로벌"
    ],
    "keywords": [
-    "구인",
-    "퇴사"
+    "임금"
    ],
    "related_jobs": [
     "직업상담사"
@@ -546,36 +645,91 @@
    "rights": {
     "full_text_allowed": true,
     "ai_translation_allowed": true
-   }
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": [
+    "퍼블릭 도메인"
+   ]
+  },
+  {
+   "id": "n20261116-10",
+   "issue_id": "iss-ai-freelance-rebundling",
+   "theme_id": "th-ai-job-restructuring",
+   "edition": "global-2300",
+   "updated_at": "2026-11-16T13:04:00+09:00",
+   "run_id": "br-20261116-1304",
+   "headline": false,
+   "published_at": "2026-11-10",
+   "source": {
+    "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+    "source_url": "https://arxiv.org/abs/2611.14708",
+    "country": "US",
+    "license": {
+     "type": "CC-BY-4.0",
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "attribution_text": "Chin, C., Kala, S., Kunievsky, N., Liu, T., Richmond, A. M., & Shan, C. (2026), The Rebundling of Freelance Work in the AI Age, arXiv:2611.14708, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분).",
+     "verified": true,
+     "verified_at": "2026-11-16",
+     "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.14708)에 'License: CC BY 4.0'와 creativecommons.org/licenses/by/4.0/ 링크 표시 확인(2026-11-16). CC BY-NC-SA·arXiv 기본 라이선스 논문은 수록 제외."
+    }
+   },
+   "title_original": "The Rebundling of Freelance Work in the AI Age (arXiv:2611.14708)",
+   "title_ko": "AI 시대 프리랜스 일의 재묶음(arXiv:2611.14708)",
+   "body_original": "The Rebundling of Freelance Work in the AI Age\n\nCaroline Chin (OpenAI), Shagun Kala (Upwork), Nadav Kunievsky (Upwork), Teng Liu (Upwork), Alex Martin Richmond (OpenAI), Carl Shan (OpenAI). November 2026.\n\nAbstract\n\nThis report studies how freelance work is changing in the AI era. We compare the activities people undertake in ChatGPT with the work clients request on Upwork and examine how clients combine tasks into projects. AI-related postings request slightly more tasks on average than other postings. Even among projects with similar numbers of tasks, AI-related postings bring together tasks that clients less often requested together before the generative AI era.\n\nKey findings\n\nAI use and freelance demand have different activity mixes. ChatGPT activities skew toward writing and advice, while Upwork postings lean toward technical implementation and visual production. This pattern is consistent with businesses continuing to hire freelancers for work that requires implementation, production, and delivery.\n\nThe relationship between direct AI use and changes in freelance demand is not uniform: some activities gaining share on Upwork are common in ChatGPT, while others are not. There is not a simple substitution pattern between Upwork tasks and those common on ChatGPT. This contrast suggests a continuing role for workers who provide technical implementation, creative production, and finished deliverables.\n\nAI-related work is becoming more diverse. Work within AI-related postings is becoming less concentrated in a few activities. Among postings with at least two tasks, the average share of historically uncommon task pairs is higher for AI-related work. AI is changing both the breadth and mix of work that clients seek to hire.\n\nAI-related postings carry larger project budgets. Posted fixed-price budgets are approximately 52 percent higher in AI-related postings than for non-AI work after accounting for work subcategory and posting month. The value of AI-related freelance work may lie partly in delivering broader projects that combine many capabilities.",
+   "body_ko_ai": "AI 시대, 프리랜스 일의 재묶음\n\n캐롤라인 친(OpenAI), 샤군 칼라(Upwork), 나다브 쿠니에프스키(Upwork), 텅 리우(Upwork), 알렉스 마틴 리치먼드(OpenAI), 칼 샨(OpenAI). 2026년 11월.\n\n초록\n\n이 보고서는 AI 시대에 프리랜스 일이 어떻게 바뀌는지 살펴본다. 사람들이 ChatGPT에서 하는 활동과 고객이 Upwork에서 요청하는 일을 비교하고, 고객이 과업을 어떻게 프로젝트로 묶는지 분석했다. AI 관련 공고는 다른 공고보다 평균적으로 과업을 조금 더 많이 요구한다. 과업 수가 비슷한 프로젝트끼리 비교해도, AI 관련 공고는 생성형 AI 시대 이전에는 고객이 함께 요청하는 일이 드물었던 과업들을 묶는다.\n\n주요 결과\n\nAI 사용과 프리랜스 수요는 활동 구성이 다르다. ChatGPT 활동은 글쓰기와 조언에 치우치고, Upwork 공고는 기술적 구현과 시각적 제작에 기운다. 이런 양상은 기업이 구현·제작·납품이 필요한 일에 계속 프리랜서를 고용한다는 것과 맞아떨어진다.\n\n직접적인 AI 사용과 프리랜스 수요 변화의 관계는 일정하지 않다. Upwork에서 점유율이 늘어난 활동 중에는 ChatGPT에서도 흔한 것이 있고 그렇지 않은 것도 있다. Upwork의 과업과 ChatGPT에서 흔한 과업 사이에 단순한 대체 관계는 없다. 이 대비는 기술 구현, 창의적 제작, 완성된 산출물을 제공하는 노동자의 역할이 계속 남는다는 것을 시사한다.\n\nAI 관련 일은 더 다양해지고 있다. AI 관련 공고 안의 일은 몇 가지 활동에 덜 집중되는 방향으로 바뀐다. 과업이 두 개 이상인 공고 가운데, 과거에는 흔하지 않았던 과업 조합의 평균 비중이 AI 관련 일에서 더 높다. AI는 고객이 고용하려는 일의 폭과 구성을 함께 바꾸고 있다.\n\nAI 관련 공고는 프로젝트 예산이 더 크다. 업무 하위분류와 게시월을 통제한 뒤에도, AI 관련 공고의 게시된 고정가 예산은 AI 관련이 아닌 일보다 약 52% 높다. AI 관련 프리랜스 일의 가치는 여러 역량을 결합한 더 넓은 프로젝트를 납품하는 데서 일부 나올 수 있다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-16T13:04:00+09:00"
+   },
+   "topics": [
+    "AI·직무"
+   ],
+   "keywords": [
+    "AI 직무전망"
+   ],
+   "related_jobs": [
+    "프리랜서",
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": true,
+   "theme": "AI·직무 재편",
+   "badges": [
+    "메인테마 · AI·직무",
+    "CC BY 4.0"
+   ]
   }
  ],
  "excluded": {
   "count": 0,
   "reasons": []
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }

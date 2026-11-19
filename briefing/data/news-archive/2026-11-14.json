@@ -1,60 +1,62 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-14T23:07:00+09:00",
+ "updated_at": "2026-11-17T07:11:00+09:00",
  "date": "2026-11-14",
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-14T07:05:00+09:00",
-   "last_ok": "2026-11-14"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-14T23:07:00+09:00",
-   "last_ok": "2026-11-14"
-  }
- },
  "data_status": "ok",
  "data_status_note": null,
+ "runs": {},
+ "main_themes": [],
  "keywords": [
   {
-   "word": "미국 고용",
-   "count": 5
-  },
-  {
-   "word": "AI 직무전망",
-   "count": 2
-  },
-  {
-   "word": "재취업",
-   "count": 1
+   "word": "청년 고용",
+   "count": 3
   },
   {
    "word": "임금",
+   "count": 2
+  },
+  {
+   "word": "생산자물가",
    "count": 1
   },
   {
-   "word": "청년 고용",
+   "word": "물가",
    "count": 1
   },
   {
-   "word": "시니어산업",
+   "word": "AI 직무전망",
+   "count": 1
+  },
+  {
+   "word": "실질임금",
+   "count": 1
+  },
+  {
+   "word": "구직활동",
+   "count": 1
+  },
+  {
+   "word": "미국 고용",
+   "count": 1
+  },
+  {
+   "word": "한파",
    "count": 1
   }
  ],
  "items": [
   {
-   "id": "n20261114-01",
-   "issue_id": "iss-us-involuntary-pt",
+   "id": "n20261115-01",
+   "issue_id": "iss-us-ppi-oct",
    "theme_id": null,
    "edition": "global-2300",
-   "updated_at": "2026-11-14T23:07:00+09:00",
-   "run_id": "br-20261114-2307",
+   "updated_at": "2026-11-15T23:08:00+09:00",
+   "run_id": "br-20261115-2308",
    "headline": true,
-   "published_at": "2026-11-16",
+   "published_at": "2026-11-13",
    "source": {
-    "source_name": "미국 노동통계국(BLS) The Economics Daily",
-    "source_url": "https://www.bls.gov/opub/ted/2026/involuntary-part-time-employment-rose-by-339000-to-4.8-million-in-october-2026.htm",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_url": "https://www.bls.gov/news.release/ppi.nr0.htm",
     "country": "US",
     "license": {
      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
@@ -67,137 +69,25 @@
      "verified": true,
      "verified_at": "2026-11-17",
      "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-16)"
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, Producer Price Indexes — October 2026"
     }
    },
-   "title_original": "Involuntary part-time employment rose by 339,000 to 4.8 million in October 2026",
-   "title_ko": "미국 비자발적 파트타임 33만9천명 증가해 484만명",
-   "body_original": "Involuntary part-time employment rose by 339,000 to 4.8 million in October 2026\n\nIn October 2026, the number of people employed part time for economic reasons, or involuntary part-time workers, totaled 4.8 million. This was an increase of 339,000 people from the previous month. These individuals, who would have preferred full-time employment, were working part time because their hours had been reduced or they were unable to find full-time jobs.\n\nEmployed people by part-time status, October 2026, seasonally adjusted:\nPart time for economic reasons: 4,501,000 (Sep 2026) / 4,840,000 (Oct 2026)\nSlack work or business conditions: 2,896,000 / 3,252,000\nCould only find part-time work: 1,267,000 / 1,265,000\nPart time for noneconomic reasons: 22,813,000 / 22,664,000\n\nNote: Part time refers to those who worked 1 to 34 hours during the survey reference week.",
-   "body_ko_ai": "2026년 10월 미국의 경제적 사유 파트타임 근로자(비자발적 파트타임)는 4백84만명으로 전월보다 33만9천명 늘었다. 이들은 풀타임을 원하지만 근무시간이 줄었거나 풀타임 일자리를 찾지 못한 사람들이다.\n\n파트타임 상태별 취업자 수(계절조정, 9월→10월): 경제적 사유 파트타임 4백50만1천→4백84만명, 일이나 사업이 줄어서 2백89만6천→3백25만2천명, 풀타임 일자리를 찾지 못해 1백26만7천→1백26만5천명. 경제적 사유가 아닌 파트타임은 2천2백81만3천→2천2백66만4천명.\n\n파트타임은 조사 기준 주에 1~34시간 일한 사람을 뜻한다.",
+   "title_original": "Producer Price Indexes — October 2026",
+   "title_ko": "미국 10월 생산자물가 0.3%↑…12개월 6.5%로 2022년 11월 이후 최대",
+   "body_original": "Producer Price Indexes — October 2026\n\nThe Producer Price Index for final demand rose 0.3 percent in October, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 1.4 percent in September and 0.4 percent in August. On an unadjusted basis, the index for final demand increased 6.5 percent for the 12 months ended in October, the largest 12-month rise since moving up 7.4 percent in November 2022.\n\nLeading the October advance in final demand prices, the index for final demand goods increased 0.5 percent. Prices for final demand services moved up 0.2 percent.\n\nThe index for final demand less foods, energy, and trade services rose 0.5 percent in October, the same as in September. For the 12 months ended in October, prices for final demand less foods, energy, and trade services advanced 4.9 percent.\n\nFinal demand goods: The index for final demand goods increased 0.5 percent in October following a 2.5-percent rise in September. Over 60 percent of the advance in October is attributable to prices for final demand goods less foods and energy, which moved up 0.5 percent. The index for final demand foods increased 1.3 percent. In contrast, prices for final demand energy edged down 0.1 percent. For the 12 months ended in October, the index for final demand goods increased 10.2 percent, the largest 12-month rise since advancing 10.5 percent in October 2022.\n\nFinal demand services: The index for final demand services moved up 0.2 percent in October, the fifth consecutive advance. Three-fourths of the October rise can be traced to a 2.0-percent increase in prices for final demand transportation and warehousing services.",
+   "body_ko_ai": "생산자물가지수 — 2026년 10월\n\n미국 노동통계국은 계절조정 기준 최종수요 생산자물가지수가 10월에 0.3% 올랐다고 밝혔다. 최종수요 물가는 9월 1.4%, 8월 0.4% 올랐다. 계절조정 전 기준으로 10월까지 12개월 동안 최종수요 지수는 6.5% 올라, 2022년 11월 7.4% 이후 가장 큰 12개월 상승폭을 기록했다.\n\n10월 상승을 이끈 것은 최종수요 상품으로 0.5% 올랐다. 최종수요 서비스 가격은 0.2% 올랐다.\n\n식품·에너지·무역서비스를 제외한 최종수요 지수는 10월 0.5% 올라 9월과 같았다. 10월까지 12개월 동안 이 지수는 4.9% 올랐다.\n\n최종수요 상품: 9월 2.5% 상승에 이어 10월 0.5% 올랐다. 10월 상승분의 60% 이상이 식품·에너지를 제외한 상품 가격(0.5% 상승)에서 나왔다. 최종수요 식품은 1.3% 올랐고, 반대로 최종수요 에너지 가격은 0.1% 내렸다. 12개월 기준 최종수요 상품 지수는 10.2% 올라 2022년 10월 10.5% 이후 가장 컸다.\n\n최종수요 서비스: 10월 0.2% 올라 5개월 연속 상승했다. 10월 상승분의 4분의 3은 운송·창고 서비스 가격 2.0% 상승에서 나왔다.",
    "translation": {
     "mode": "ai",
     "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-14T23:07:00+09:00"
-   },
-   "topics": [
-    "글로벌",
-    "취업시장"
-   ],
-   "keywords": [
-    "파트타임",
-    "미국 고용"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   },
-   "is_main_theme": false,
-   "theme": null,
-   "badges": []
-  },
-  {
-   "id": "n20261114-02",
-   "issue_id": "iss-us-displaced",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-14T23:07:00+09:00",
-   "run_id": "br-20261114-2307",
-   "headline": true,
-   "published_at": "2026-11-02",
-   "source": {
-    "source_name": "미국 노동통계국(BLS) The Economics Daily",
-    "source_url": "https://www.bls.gov/opub/ted/2026/three-fourths-of-long-tenured-workers-displaced-from-jobs-in-health-care-and-social-assistance-reemployed-in-january-2026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.bls.gov/opub/copyright-information.htm",
-     "scope": "연방정부 발간물 전체",
-     "attribution_required": false,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-02)"
-    }
-   },
-   "title_original": "Three-fourths of long-tenured workers displaced from jobs in health care and social assistance reemployed in January 2026",
-   "title_ko": "3년 이상 근속 실직자의 66.1%가 재취업…보건·복지 77.1%",
-   "body_original": "Three-fourths of long-tenured workers displaced from jobs in health care and social assistance reemployed in January 2026\n\nFrom January 2023 through December 2025, there were 3.3 million workers displaced from jobs they had held for at least 3 years. In January 2026, 66.1 percent of these long-tenured workers were reemployed. Among long-tenured workers displaced from jobs in health care and social assistance, 77.1 percent were reemployed. For those displaced from jobs in information, 76.8 percent were reemployed. Reemployment rates were also above 70.0 percent for those workers displaced from jobs in wholesale and retail trade (72.2 percent) and construction (71.3 percent).",
-   "body_ko_ai": "2023년 1월부터 2025년 12월 사이 3년 이상 근속한 일자리에서 잘린 미국 노동자는 3백30만명이다. 2026년 1월 기준 이들 가운데 66.1%가 재취업했다. 업종별로는 보건·사회복지업에서 잘린 사람의 77.1%, 정보통신업 76.8%, 도소매업 72.2%, 건설업 71.3%가 재취업해 70%를 넘는 업종이 많았다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-14T23:07:00+09:00"
-   },
-   "topics": [
-    "글로벌",
-    "취업시장"
-   ],
-   "keywords": [
-    "재취업",
-    "미국 고용"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   },
-   "is_main_theme": false,
-   "theme": null,
-   "badges": []
-  },
-  {
-   "id": "n20261114-03",
-   "issue_id": "iss-us-eci-2026",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-14T23:07:00+09:00",
-   "run_id": "br-20261114-2307",
-   "headline": false,
-   "published_at": "2026-11-05",
-   "source": {
-    "source_name": "미국 노동통계국(BLS) The Economics Daily",
-    "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-up-2-3-percent-in-new-england-4-3-percent-in-pacific-region-over-year-ended-september-2026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.bls.gov/opub/copyright-information.htm",
-     "scope": "연방정부 발간물 전체",
-     "attribution_required": false,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-05)"
-    }
-   },
-   "title_original": "Compensation costs up 2.3 percent in New England, 4.3 percent in Pacific region, over year ended September 2026",
-   "title_ko": "미국 민간 노동비용 3.4%↑…복리후생 3.9%가 봉급 3.1%를 앞질러",
-   "body_original": "Compensation costs up 2.3 percent in New England, 4.3 percent in Pacific region, over year ended September 2026\n\nCompensation costs for private industry workers increased 3.4 percent for the United States as a whole (not seasonally adjusted) for the 12-month period ending in September 2026. Within compensation costs, wages and salaries increased 3.1 percent, and benefit costs increased 3.9 percent over the year. For the 12 months ended September 2025, private industry compensation costs increased 3.5 percent.\n\n12-month percent change, total compensation costs for private industry workers, by region, September 2026: United States 3.4, New England 2.3, Middle Atlantic 3.2, South Atlantic 3.5, East South Central 3.5, Pacific 4.3.",
-   "body_ko_ai": "2026년 9월까지 12개월 동안 미국 민간 노동자의 노동비용은 전국 기준 3.4% 늘었다(계절조정 전). 그 안에서 봉급은 3.1%, 복리후생 비용은 3.9% 올랐다. 2025년 9월까지 12개월의 노동비용 상승률은 3.5%였다.\n\n지역별 12개월 상승률(2026년 9월): 전국 3.4, 뉴잉글랜드 2.3, 중부대서양 3.2, 남부대서양 3.5, 동남중앙 3.5, 태평양 4.3.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-14T23:07:00+09:00"
+    "translated_at": "2026-11-15T23:08:00+09:00"
    },
    "topics": [
     "글로벌",
     "고용·정책"
    ],
    "keywords": [
-    "노동비용",
-    "임금"
+    "생산자물가",
+    "물가"
    ],
    "related_jobs": [
     "직업상담사"
@@ -212,212 +102,94 @@
    "badges": []
   },
   {
-   "id": "n20261114-04",
-   "issue_id": "iss-us-metro-unemp",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-14T23:07:00+09:00",
-   "run_id": "br-20261114-2307",
-   "headline": false,
-   "published_at": "2026-11-04",
-   "source": {
-    "source_name": "미국 노동통계국(BLS) The Economics Daily",
-    "source_url": "https://www.bls.gov/opub/ted/2026/unemployment-rates-lower-in-226-metro-areas-from-september-2025-to-september-2026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.bls.gov/opub/copyright-information.htm",
-     "scope": "연방정부 발간물 전체",
-     "attribution_required": false,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-04)"
-    }
-   },
-   "title_original": "Unemployment rates lower in 226 metro areas from September 2025 to September 2026",
-   "title_ko": "미국 도시권 실업률, 226곳에서 1년 전보다 낮아",
-   "body_original": "Unemployment rates lower in 226 metro areas from September 2025 to September 2026\n\nUnemployment rates were lower in September 2026 than a year earlier in 226 of the 387 metropolitan areas, higher in 138 areas, and unchanged in 23 areas. A total of 48 areas had jobless rates of less than 3.0 percent, and 5 areas had rates of at least 8.0 percent.",
-   "body_ko_ai": "2026년 9월 미국 도시권(389곳)의 실업률은 1년 전보다 226곳에서 낮았고 138곳에서 높았으며 23곳은 변동이 없었다. 실업률이 3% 미만인 도시권은 48곳, 8% 이상인 곳은 5곳이었다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-14T23:07:00+09:00"
-   },
-   "topics": [
-    "글로벌",
-    "취업시장"
-   ],
-   "keywords": [
-    "실업률"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   },
-   "is_main_theme": false,
-   "theme": null,
-   "badges": []
-  },
-  {
-   "id": "n20261114-05",
-   "issue_id": "iss-us-cex-2025",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-14T23:07:00+09:00",
-   "run_id": "br-20261114-2307",
-   "headline": false,
-   "published_at": "2026-11-06",
-   "source": {
-    "source_name": "미국 노동통계국(BLS) The Economics Daily",
-    "source_url": "https://www.bls.gov/opub/ted/2026/consumer-spending-increased-4-3-percent-from-2024-to-2025.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.bls.gov/opub/copyright-information.htm",
-     "scope": "연방정부 발간물 전체",
-     "attribution_required": false,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-06)"
-    }
-   },
-   "title_original": "Consumer spending increased 4.3 percent from 2024 to 2025",
-   "title_ko": "미국 가구 지출 4.3%↑ 소득 6.4%↑(2024→2025)",
-   "body_original": "Consumer spending increased 4.3 percent from 2024 to 2025\n\nIn 2025, average annual consumer expenditures increased by 4.3 percent from 2024. Average annual income increased by 6.4 percent. Consumer spending on food was up by 4.6 percent over the year, in part due to an 11.7-percent increase in expenditures on meats, poultry, fish, and eggs.",
-   "body_ko_ai": "2025년 미국 가구의 연평균 소비지출은 2024년보다 4.3% 늘었고 연평균 소득은 6.4% 늘었다. 식품 지출은 1년에 4.6% 올랐는데, 육류·가금류·어패류·달걀 지출이 11.7% 오른 것이 그 일부다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-14T23:07:00+09:00"
-   },
-   "topics": [
-    "글로벌"
-   ],
-   "keywords": [
-    "소비지출"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   },
-   "is_main_theme": false,
-   "theme": null,
-   "badges": []
-  },
-  {
-   "id": "n20261114-06",
-   "issue_id": "iss-ai-freelance-rebundle",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-14T23:07:00+09:00",
-   "run_id": "br-20261114-2307",
-   "headline": false,
-   "published_at": "2026-11-10",
-   "source": {
-    "source_name": "arXiv (OpenAI 경제연구·Upwork)",
-    "source_url": "https://arxiv.org/abs/2611.14708",
-    "country": "US",
-    "license": {
-     "name": "CC BY 4.0 (저작자표시)",
-     "type": "CC-BY-4.0",
-     "url": "https://creativecommons.org/licenses/by/4.0/",
-     "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "arXiv PDF 라이선스 표기 「License: CC BY 4.0」 확인(2026-11-17).",
-     "attribution_text": "Chin, C. et al. (2026), arXiv:2611.14708, CC BY 4.0"
-    }
-   },
-   "title_original": "The Rebundling of Freelance Work in the AI Age",
-   "title_ko": "AI 시대 프리랜스 일의 재묶음(arXiv:2611.14708)",
-   "body_original": "The Rebundling of Freelance Work in the AI Age\n\nCaroline Chin, Shagun Kala, Nadav Kunievsky, Teng Liu, Alex Martin Richmond, Carl Shan. OpenAI and Upwork. November 2026.\n\nAbstract: This report studies how freelance work is changing in the AI era. We compare the activities people undertake in ChatGPT with the work clients request on Upwork and examine how clients combine tasks into projects. AI-related postings request slightly more tasks on average than other postings. Even among projects with similar numbers of tasks, AI-related postings bring together tasks that clients less often requested together before the generative AI era.\n\nKey findings: AI use and freelance demand have different activity mixes. ChatGPT activities skew toward writing and advice, while Upwork postings lean toward technical implementation and visual production. The relationship between direct AI use and changes in freelance demand is not uniform: there is not a simple substitution pattern between Upwork tasks and those common on ChatGPT. This contrast suggests a continuing role for workers who provide technical implementation, creative production, and finished deliverables. AI-related work is becoming more diverse: work within AI-related postings is becoming less concentrated in a few activities.",
-   "body_ko_ai": "AI 시대에 프리랜스 일이 어떻게 바뀌는지를 본 보고서다. ChatGPT에서 사람들이 하는 활동과 Upwork 의뢰인이 요청하는 일을 비교하고, 의뢰인이 과업을 프로젝트로 묶는 방식을 살폈다. AI 관련 공고는 다른 공고보다 평균적으로 약간 더 많은 과업을 요구했고, 과업 수가 비슷한 프로젝트끼리 비교해도 AI 공고는 생성형 AI 이전에 함께 요청되지 않던 과업 조합을 담고 있었다.\n\n핵심 발견: AI 사용과 프리랜스 수요의 활동 구성은 다르다. ChatGPT 활동은 글쓰기·조언에 치우치고 Upwork 공고는 기술 구현·시각 제작에 치우쳐 단순한 대체 관계가 아니었다. AI 관련 공고 안의 일은 소수 활동에 집중되지 않고 다양해지는 중이었다. 이는 기술 구현·창작물 제작·완성된 결과물을 내놓는 노동자의 역할이 계속된다는 뜻이다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-14T23:07:00+09:00"
-   },
-   "topics": [
-    "AI·직무",
-    "글로벌"
-   ],
-   "keywords": [
-    "AI 직무전망",
-    "프리랜스"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   },
-   "is_main_theme": false,
-   "theme": null,
-   "badges": []
-  },
-  {
-   "id": "n20261114-07",
+   "id": "n20261116-13",
    "issue_id": "iss-ai-two-margins",
-   "theme_id": null,
+   "theme_id": "th-ai-job-restructuring",
    "edition": "global-2300",
-   "updated_at": "2026-11-14T23:07:00+09:00",
-   "run_id": "br-20261114-2307",
-   "headline": false,
-   "published_at": "2026-11-12",
+   "updated_at": "2026-11-16T23:09:00+09:00",
+   "run_id": "br-20261116-2309",
+   "headline": true,
+   "published_at": "2026-11-13T06:32:00+09:00",
    "source": {
     "source_name": "arXiv (micro1·노스이스턴대)",
     "source_url": "https://arxiv.org/abs/2611.17530",
     "country": "US",
     "license": {
-     "name": "CC BY 4.0 (저작자표시)",
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
      "type": "CC-BY-4.0",
      "url": "https://creativecommons.org/licenses/by/4.0/",
-     "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
+     "scope": "텍스트 한정(초록·본문)",
      "attribution_required": true,
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "arXiv PDF 라이선스 표기 creativecommons.org/licenses/by/4.0 확인(2026-11-17).",
-     "attribution_text": "Esposito, M. & Zhang, L. (2026), arXiv:2611.17530, CC BY 4.0"
+     "verified_at": "2026-11-16",
+     "evidence": "arXiv 초록 페이지의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 연결됨을 직접 확인(2026-11-16).",
+     "attribution_text": "Esposito, M., & Zhang, L. (2026), AI and the Two Margins of Work, arXiv:2611.17530, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·서론 부분)."
     }
    },
-   "title_original": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation",
+   "title_original": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation (arXiv:2611.17530)",
    "title_ko": "AI와 노동의 두 문턱: 일자리 감소가 창출보다 먼저 보이는 이유(arXiv:2611.17530)",
-   "body_original": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation\n\nMark Esposito (micro1 and Northeastern University), Liu Zhang (micro1). November 2026.\n\nAbstract: Technological change acts on labor demand at two margins: adjustment within established activities and the creation of additional activities, often by new firms. Payroll statistics record the first promptly and the second late. In the computing era, firms that entered in 1978 or later held 42 percent of payroll by 1998 and entering cohorts kept about 80 percent of their payroll after five years; in the industries most exposed to automation, incumbents contracted before entrants accumulated, a sequence that is precise early in the period and suggestive by its end. We develop a model in which one AI capability lowers the full cost of acceptable output in existing production and makes additional projects worth attempting, with founder effort separate from hired hours. If operating products re-scale instantly, automation displaces no aggregate hours; if they take time, hours fall first and recover as incumbents re-expand and new products arrive, with the long-run sign set by income effects. Establishment job flows through the first quarter of 2026 show no gradient on language-model exposure on either margin, which is what the model predicts under the observed adoption path and also what no effect on payroll would look like; studies with founding-task exposure find entry rising 10 to 20 percent. We propose a net reinstatement ratio and show that statistics which record new work late overstate displacement for years.",
-   "body_ko_ai": "기술 변화는 두 갈래로 노동 수요에 작용한다. 이미 있는 활동 안에서의 조정과, 대개 새 기업이 만드는 새 활동의 창출이다. 급여 통계는 앞의 것을 빨리, 뒤의 것을 늦게 기록한다. 컴퓨팅 시대에 1978년 이후 진입한 기업은 1998년까지 급여의 42%를 차지했고 진입 집단은 5년 뒤에도 급여의 약 80%를 유지했다. 자동화 노출이 큰 업종에서는 새 진입자가 쌓이기 전에 기존 기업이 먼저 줄었다.\n\n저자들은 AI 역량 하나가 기존 생산의 수용 가능한 산출 비용을 낮추고 새 사업의 시도를 가능하게 하는 모형을 만든다. 운영 중인 제품이 곧바로 규모를 조정하면 자동화는 총 노동시간을 줄이지 않지만 시간이 걸리면 노동시간이 먼저 줄고 기존 기업의 재확장과 새 제품 도착으로 회복된다. 2026년 1분기까지 사업체 고용 흐름은 언어모델 노출도에 따른 기울기를 보이지 않았고, 창업 과업 노출을 본 연구들은 진입이 10~20% 늘었다고 본다. 새 일을 늦게 기록하는 통계가 대체 효과를 수년간 과대평가한다고 저자들은 지적한다.",
+   "body_original": "AI and the Two Margins of Work: Why Job Losses Show Up Before Job Creation\n\nMark Esposito (micro1, Northeastern University), Liu Zhang (micro1). November 2026. arXiv:2611.17530.\n\nAbstract\n\nTechnological change acts on labor demand at two margins: adjustment within established activities and the creation of additional activities, often by new firms. Payroll statistics record the first promptly and the second late. In the computing era, firms that entered in 1978 or later held 42 percent of payroll by 1998 and entering cohorts kept about 80 percent of their payroll after five years; in the industries most exposed to automation, incumbents contracted before entrants accumulated, a sequence that is precise early in the period and suggestive by its end. We develop a model in which one AI capability lowers the full cost of acceptable output in existing production and makes additional projects worth attempting, with founder effort separate from hired hours. If operating products re-scale instantly, automation displaces no aggregate hours; if they take time, hours fall first and recover as incumbents re-expand and new products arrive, with the long-run sign set by income effects. Establishment job flows through the first quarter of 2026 show no gradient on language-model exposure on either margin, which is what the model predicts under the observed adoption path and also what no effect on payroll would look like; studies with founding-task exposure find entry rising 10 to 20 percent. We propose a net reinstatement ratio and show that statistics which record new work late overstate displacement for years.\n\nIntroduction (first paragraph)\n\nEvery major technological revolution has arrived with the same forecast: that machines would make human labor redundant. The Luddites smashed stocking frames in 1811, Keynes (1930) warned of technological unemployment, and mid-century commissions in the United States debated automation as a threat to full employment. The historical record combines displacement from established activities with the formation of activities that earlier classifications could not name (Mokyr, Vickers, and Ziebarth, 2015; Autor, 2015). Employment did not simply disappear. It moved, often painfully, into different work.",
+   "body_ko_ai": "AI와 노동의 두 문턱: 일자리 감소가 창출보다 먼저 보이는 이유\n\n마크 에스포지토(micro1·노스이스턴대), 리우 장(micro1). 2026년 11월. arXiv:2611.17530.\n\n초록\n\n기술 변화는 노동수요를 두 개의 문턱에서 움직인다. 이미 확립된 활동 안에서의 조정과, 흔히 새 기업이 만들어 내는 추가 활동의 창출이다. 급여 통계는 첫 번째는 즉각 기록하지만 두 번째는 늦게 기록한다. 컴퓨팅 시대에 1978년 이후 진입한 기업들은 1998년까지 급여의 42%를 차지했고, 진입 코호트는 5년이 지나도 급여의 약 80%를 유지했다. 자동화에 가장 노출된 산업에서는 신규 진입자가 쌓이기 전에 기존 기업들이 먼저 위축됐는데, 이 순서는 시기 초반에는 정확하게, 후반에는 시사적으로 나타난다. 우리는 하나의 AI 역량이 기존 생산에서 수용 가능한 산출의 총비용을 낮추고 추가 프로젝트를 시도할 가치가 있게 만드는 모형을 만든다. 창업자의 노력은 고용된 노동시간과 분리된다. 운영 중인 제품이 즉시 규모를 키운다면 자동화는 총 노동시간을 대체하지 않는다. 시간이 걸린다면 노동시간은 먼저 줄고, 기존 기업이 다시 확장하고 새 제품이 도착하면서 회복되며, 장기 부호는 소득 효과가 정한다. 2026년 1분기까지의 사업체 고용 흐름은 두 문턱 어디에서도 언어모델 노출도에 따른 기울기를 보이지 않는데, 이는 관측된 도입 경로에서 모형이 예측하는 바이며 급여에 아무 효과가 없을 때 나타나는 모습과도 같다. 창업 과업 노출을 사용한 연구들은 진입이 10~20% 증가했다고 본다. 우리는 순재설치 비율을 제안하고, 새 노동을 늦게 기록하는 통계가 수년간 대체를 과대평가한다는 것을 보인다.\n\n서론(첫 문단)\n\n모든 주요 기술 혁명은 같은 전망과 함께 도착했다. 기계가 인간 노동을 불필요하게 만들 것이라는 예측이다. 러다이트들은 1811년 편직기를 부쉈고, 케인스(1930)는 기술적 실업을 경고했으며, 세기 중반 미국의 위원회들은 자동화를 완전고용에 대한 위협으로 논의했다. 역사적 기록은 확립된 활동에서의 대체와, 이전의 분류가 이름 붙일 수 없었던 활동의 형성을 함께 보여 준다. 고용은 단순히 사라지지 않았다. 종종 고통스럽게, 다른 일로 옮겨 갔다.",
    "translation": {
     "mode": "ai",
     "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-14T23:07:00+09:00"
+    "translated_at": "2026-11-16T23:09:00+09:00"
    },
    "topics": [
-    "AI·직무",
-    "글로벌"
+    "AI·직무"
    ],
    "keywords": [
     "AI 직무전망"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "청년정책 담당자"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": true,
+   "theme": "AI 직무 재편",
+   "badges": [
+    "메인테마 · AI 직무 재편",
+    "CC BY 4.0"
+   ]
+  },
+  {
+   "id": "n20261117-03",
+   "issue_id": "iss-kr-greenbook-nov",
+   "theme_id": null,
+   "edition": "kr-0700",
+   "updated_at": "2026-11-17T07:11:00+09:00",
+   "run_id": "br-20261117-0711",
+   "headline": false,
+   "published_at": "2026-11-13",
+   "source": {
+    "source_name": "재정경제부",
+    "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
+    "country": "KR",
+    "license": {
+     "type": "KOGL-1",
+     "name": "공공누리 제1유형(출처표시)",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "attribution_text": "출처: 재정경제부 「2026년 11월 최근 경제동향」(2026.11.13), 공공누리 제1유형. 질의응답과 사진은 옮기지 않았습니다.",
+     "verified": true,
+     "verified_at": "2026-11-17",
+     "evidence": "정책브리핑 해당 페이지 하단 '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다' 고지 확인(2026-11-17)."
+    }
+   },
+   "title_original": "2026년 11월 최근 경제동향",
+   "body_original": "경제분석과장입니다.\n\n경제동향 브리핑 시작하도록 하겠습니다.\n\n지난 10월 27일 발표된 3분기 실질 국내총생산은 전기비 1.0% 성장하면서 우리 경제는 올해 1/4분기부터 3/4분기까지 누적으로 3.6% 성장했습니다. 이는 지난해 상반기 0.4% 성장, 지난해 하반기 1.8% 성장에 비해 성장세가 확대되고 있는 모습입니다.\n\n10월 30일 발표된 9월 산업활동동향지표는 주요 생산과 지출 항목이 모두 크게 증가하며, 증가하였고, 분기 말 높은 증가에 따른 다음 분기 이월 효과도 긍정적으로 작용할 것으로 예상됩니다.\n\n오늘 아침 발표된 10월 수출물량지수는 전년동월대비 43.9% 늘면서 7월의 20.1%, 8월 25.9%, 9월 32.2%보다 증가세가 확대되는 모습입니다. 가격 효과에 이어서 수출 물량도 본격적으로 증가하고 있는 상황입니다.\n\n11일에 발표된 11월 10일까지의 누적 수출액은 9,637억 달러 수준으로 사상 첫 수출 1조 달러 달성이 다음 주말 이전에는 달성될 것으로 예상하고 있습니다.\n\n소비자심리지수도 6개월 연속 장기 평균 100을 상회하고 있고, 기업심리는 10월 실적의 경우 5년 6개월 만에 최대 폭 상승, 11월 전망도 모두 크게 상승하는 등 경제주체의 심리도 양호한 상황입니다.\n\n민간소비의 경우 GDP 성장률에 비해서 회복 속도가 다소 더디지만 그리고 등락은 있지만 추세적으로 놓고 보면 2024년에 1.3% 성장, 2025년에 1.5% 성장, 올해 2% 내외 그리고 내년에는 2% 초반 증가가 예상되는 등 완만히 회복되고 있다는 평가를 유지할 수 있습니다. 어제 KDI에서 발표한 현안 분석 보고서도 이와 같은 궤를 같이하고 있습니다.\n\n산업활동의 월별 변동성이 다소 큽니다. 통상 경기 판단은 수준과 방향과 속도 등을 모두 고려합니다. 성장률이 낮을 때 저성장 상황에서는 방향과 속도가 중요합니다. 그러나 최근은 수준, 즉 볼륨 자체가 워낙 높은 수준에 있는 상황이기 때문에 수준에 좀 더 주목하면서 방향과 속도를 함께 고려할 필요가 있다고 봅니다. 특히나 지금과 같은 상황에서는 월별 지표보다는 적어도 분기 단위의 흐름을 놓고 경기를 판단하는 것이 적절합니다.\n\n10월 취업자 수는 전년동월대비 13.9만 명 증가해서 4개월 연속 두 자릿수 증가세를 이어가고 있습니다.\n\n중동전쟁 영향에 따른 공급망 이슈 등으로 2/4분기에는 취업자 증가 수가 전년동월대비 3.2만 명 느는 수준까지 크게 둔화됐으나, 수출과 생산의 긍정적 영향이 시차를 두고 반영되면서 3/4분기부터는 증가세가, 취업자 증가세가 확대되는 모습입니다.\n\n10월 29일 발표된 사업체노동력조사의 8월 임금 동향도 명목임금은 3.9%가 증가했고 실질임금도 0.8% 증가세로 전환되는 등 임금도 조금씩 개선되는 모습입니다.\n\n10월 소비자물가는 2.8% 상승해서 지난달 9월 2.9%에 비해 증가세가 소폭 둔화되었습니다.\n\n최근 금융시장은 미국 중간선거 이후에 AI 산업 정책에 대한 불확실성 등으로 변동성이 다소 확대된 모습입니다.\n\n경제 상황에 대한 총평을 이어 가겠습니다.\n\n최근 우리 경제는 수출이 큰 폭 증가하고 있고 투자 증가세가 확대되는 가운데, 소비는 완만하게 개선되는 등 견조한 성장세가 이어지는 모습입니다.\n\n다만, 중동전쟁에 따른 불확실성이 지속되는 가운데 고유가에 따른 물가 상승 압력, 취약계층과 취약 부문의 어려운 고용 여건 등 민생 부담은 여전합니다.\n\n글로벌 경제는 완만한 성장세를 이어가고 있으나, 중동전쟁 전개 양상과 AI 산업 관련 정책 방향 등 불확실성은 지속되고 있습니다. 정부는 3대 메가프로젝트, 7대 SEED, 한국형 녹색대전환(K-GX), 서비스 산업 육성 등을 통해 성장 저변을 넓게 확대하려는 노력을 가속화하는 한편, 성장의 온기가 경제 전반으로 확산될 수 있도록 민생안정과 양극화 완화를 위한 정책 노력을 강화해 나갈 계획입니다.\n\n경기에 대한 판단이 지난달까지는 회복세였는데 저희가 3분기 실질 GDP 성장률, 산업활동동향 그리고 올해 연간 성장률 그리고 내년 성장 흐름 등을 놓고 봤을 때 성장세는, 경기에 대한 판단은 견조한 회복세로 조금 더 높였다는 말씀을 드립니다.\n\n이상 최근경제동향에 대한 브리핑을 마치겠습니다.\n\n(06:11)",
+   "topics": [
+    "고용·정책"
+   ],
+   "keywords": [
+    "실질임금",
+    "구직활동"
    ],
    "related_jobs": [
     "직업상담사"
@@ -429,20 +201,22 @@
    },
    "is_main_theme": false,
    "theme": null,
-   "badges": []
+   "badges": [
+    "공공누리 제1유형"
+   ]
   },
   {
-   "id": "n20261114-08",
-   "issue_id": "iss-senior-industry",
+   "id": "n20261113-05",
+   "issue_id": "iss-pay-shield-tf",
    "theme_id": null,
    "edition": "kr-0700",
-   "updated_at": "2026-11-14T07:05:00+09:00",
-   "run_id": "br-20261114-0705",
+   "updated_at": "2026-11-13T07:04:00+09:00",
+   "run_id": "br-20261113-0704",
    "headline": false,
-   "published_at": "2026-11-12",
+   "published_at": "2026-11-13",
    "source": {
-    "source_name": "인구전략위원회",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788872",
+    "source_name": "재정경제부",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789089",
     "country": "KR",
     "license": {
      "name": "공공누리 제1유형(출처표시)",
@@ -455,19 +229,20 @@
      "verified": true,
      "verified_at": "2026-11-17",
      "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
-     "attribution_text": "출처: 인구전략위원회 「김진오 인구전략위 부위원장, \"시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로\"」(2026.11.12, 정책브리핑), 공공누리 제1유형"
+     "attribution_text": "출처: 재정경제부 「권대영 1차관, 「월급방위대 TF」 킥오프 회의 개최」(2026.11.13, 정책브리핑), 공공누리 제1유형"
     }
    },
-   "title_original": "김진오 인구전략위 부위원장, \"시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로\"",
-   "title_ko": "시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로(인구전략위)",
-   "body_original": "대통령직속 인구전략위원회 김진오 부위원장은 11월 12일 서울 명동 은행회관에서 열린 「2026 fn 시니어산업 컨퍼런스」에 참석해, 초고령사회의 부담을 새로운 성장의 기회로 바꾸기 위한 '생산적 국가 성장산업으로 시니어산업 육성'을 강조했다.\n\n김 부위원장은 \"지금 대한민국은 고령화사회 진입 후 단 25년 만에 초고령사회에 들어섰고, 베이비붐 세대의 은퇴와 75세 이상 후기 고령층의 급증으로 의료·돌봄 수요가 더욱 확대될 것\"이라며 \"고용과 소득, 주거와 여가는 물론 AI와 돌봄로봇 등 에이지테크에 이르기까지 사회 전반의 정책과 산업 생태계를 근본적으로 재설계해야 한다\"고 밝혔다.\n\n또한 시니어산업을 '고령층만을 위한 보조적 복지 서비스'나 '단순 재정 지출'로 보아서는 안 되며 ①고령자의 안정적 노후소득 보장 기반 강화 ②의료·돌봄과 에이지테크의 융합 ③일자리 창출로 이어지는 전 세대 선순환 구조를 만들어야 한다고 제언했다.\n\n인구전략위원회는 지난 9월 출범했으며 '제1차 국가인구전략 기본계획'을 바탕으로 연금·고용·주거·돌봄·기술 과제의 현장 추진을 지원하겠다고 밝혔다.",
+   "title_original": "권대영 1차관, 「월급방위대 TF」 킥오프 회의 개최",
+   "title_ko": "'월급방위대 TF' 가동 — 월세 공제 1,200만원·근로장려금 360만원",
+   "body_original": "정부가 직장인의 생활비 부담을 줄이고 실질적인 가처분소득을 늘리기 위해 범부처 '월급방위대 TF'를 가동한다.\n\n생계비 부담 경감과 자녀·부모 돌봄, 자산형성, 일자리 안정, 건강관리 등 5대 분야를 중심으로 세제·재정·금융 전반에서 체감도 높은 신규 지원과제를 발굴하고, 내년부터 달라지는 월세 세액공제와 근로장려세제, 교통비·등록금 지원 등 기존 대책의 이행도 점검한다.\n\n재정경제부는 권대영 제1차관이 13일 관계부처와 함께 '월급방위대 TF' 킥오프 회의를 개최하고 직장인 생활비 절감과 실질 가처분소득 증대를 위한 정책과제를 논의했다고 밝혔다.\n\n세법개정안에는 종합소득 기본공제 대상자인 배우자와 부양가족의 소득요건을 연간 100만 원 이하에서 300만 원 이하로 완화하고, 월세 세액공제 대상 월세한도를 연간 1000만 원에서 1200만 원으로 확대하는 방안이 담겼다.\n\n저소득 가구를 위한 근로장려세제(EITC)도 확대한다. 맞벌이 가구 기준 소득요건을 4400만 원에서 5200만 원으로 완화하고, 최대 지급액은 330만 원에서 360만 원으로 인상한다. 최대 지급액이 적용되는 소득구간도 800만~1700만 원에서 800만~1800만 원으로 확대한다.\n\n2027년 예산안에는 대중교통 이용 부담을 줄이기 위한 '모두의 카드' 환급 확대 방안이 포함됐다. 출퇴근 시차시간대 환급률을 30%포인트 높여 일반 국민의 경우 기존 20%에서 50%로 확대하는 내용이다.\n\n권대영 차관은 \"우선 11~12월 두 달간 범부처 TF를 집중 운영해 직장인들이 현장에서 체감할 수 있는 정책과제를 적극 발굴·추진하겠다\"고 밝혔다.",
    "body_ko_ai": null,
    "translation": null,
    "topics": [
     "고용·정책"
    ],
    "keywords": [
-    "시니어산업"
+    "임금",
+    "청년 고용"
    ],
    "related_jobs": [
     "직업상담사"
@@ -482,17 +257,17 @@
    "badges": []
   },
   {
-   "id": "n20261114-09",
-   "issue_id": "iss-youth-field-check",
+   "id": "n20261113-06",
+   "issue_id": "iss-youth-council-region",
    "theme_id": null,
    "edition": "kr-0700",
-   "updated_at": "2026-11-14T07:05:00+09:00",
-   "run_id": "br-20261114-0705",
+   "updated_at": "2026-11-13T07:04:00+09:00",
+   "run_id": "br-20261113-0704",
    "headline": false,
-   "published_at": "2026-11-12",
+   "published_at": "2026-11-13",
    "source": {
-    "source_name": "재정경제부",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
+    "source_name": "경제사회노동위원회",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
     "country": "KR",
     "license": {
      "name": "공공누리 제1유형(출처표시)",
@@ -505,12 +280,12 @@
      "verified": true,
      "verified_at": "2026-11-17",
      "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
-     "attribution_text": "출처: 재정경제부 「범부처 민생안정지원단, 청년 취업지원 현장 점검」(2026.11.12, 정책브리핑), 공공누리 제1유형"
+     "attribution_text": "출처: 경제사회노동위원회 「[보도자료]「청년위원회」·「청년일자리 희망 위원회」연석회의 개최」(2026.11.13, 정책브리핑), 공공누리 제1유형"
     }
    },
-   "title_original": "범부처 민생안정지원단, 청년 취업지원 현장 점검",
-   "title_ko": "범부처 민생안정지원단, 청년 취업지원 현장 점검",
-   "body_original": "재정경제부는 11월 12일 범부처 민생안정지원단과 함께 청년 취업지원 현장을 점검했다. 지원 제도가 청년에게 실제로 닿는지를 확인하는 자리였다.\n\n같은 주 보건복지부는 양극화 대응 TF 총괄반 1차 회의를 열고 '모두의 성장'으로의 대전환을 위해 전 부처 역량 결집을 확인했다.",
+   "title_original": "[보도자료]「청년위원회」·「청년일자리 희망 위원회」연석회의 개최 - 3기 청년위원회, 지역 청년 노동시장 진입 실태 및 개선과제 발표",
+   "title_ko": "청년위원회·청년일자리 희망 위원회 연석회의 — 지역 청년 노동시장 진입 실태 발표",
+   "body_original": "경제사회노동위원회의 청년위원회와 청년일자리 희망 위원회가 연석회의를 개최하고, 3기 청년위원회가 지역 청년 노동시장 진입 실태와 개선과제를 발표했다.\n\n「일자리 공론화 특별위원회」는 11월 14일(토) '30인 시민회의'를 개최해 청년 일자리 의제의 국민 논의를 이어갔다.",
    "body_ko_ai": null,
    "translation": null,
    "topics": [
@@ -518,6 +293,164 @@
    ],
    "keywords": [
     "청년 고용"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
+  },
+  {
+   "id": "n20261116-12",
+   "issue_id": "iss-us-productivity-q3",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-16T23:09:00+09:00",
+   "run_id": "br-20261116-2309",
+   "headline": false,
+   "published_at": "2026-11-13",
+   "source": {
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_url": "https://www.bls.gov/opub/ted/2026/nonfarm-business-productivity-up-2-1-percent-from-third-quarter-2025-to-third-quarter-2026.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표 한정(사진·삽화 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-16",
+     "evidence": "BLS 「Copyright Information」 — 연방정부 기관이 발행한 자료는 퍼블릭 도메인(사진·삽화 제외), 출처 표기 요청(2026-11-16 확인).",
+     "attribution_text": "출처: U.S. Bureau of Labor Statistics"
+    }
+   },
+   "title_original": "Nonfarm business productivity up 2.1 percent from third quarter 2025 to third quarter 2026",
+   "title_ko": "미국 비농업 생산성 전년동기비 2.1%…노동시간은 0.2%만 늘어",
+   "body_original": "Nonfarm business productivity up 2.1 percent from third quarter 2025 to third quarter 2026\n\nNovember 13, 2026\n\nFrom the third quarter of 2025 to the third quarter of 2026, nonfarm business labor productivity increased 2.1 percent, reflecting a 2.3-percent increase in output and a 0.2-percent increase in hours worked. Since the third quarter of 2024, increases in labor productivity have ranged from 2.1 percent to 3.1 percent over the year.\n\nPercent change in productivity measures from same quarter in previous year, nonfarm business sector (labor productivity / output / hours worked): Q1 2026 2.8 / 3.2 / 0.4; Q2 2026 2.3 / 2.5 / 0.2; Q3 2026 2.1 / 2.3 / 0.2.\n\nIn manufacturing, labor productivity increased 0.4 percent from the third quarter of 2025 to the third quarter of 2026, reflecting a 1.3-percent increase in output and a 0.9-percent increase in hours worked.\n\nThese data are from the Productivity program and are subject to revision. See Productivity and Costs - Third Quarter 2026, Preliminary to learn more. Labor productivity, or output per hour, is calculated by dividing an index of real output by an index of hours worked for all persons, including employees, proprietors, and unpaid family workers.",
+   "body_ko_ai": "미국 비농업 부문 생산성, 2025년 3분기 대비 2026년 3분기에 2.1% 상승\n\n2026년 11월 13일\n\n미국 노동통계국(BLS)에 따르면 2025년 3분기부터 2026년 3분기까지 비농업 부문 노동생산성은 2.1% 증가했다. 이는 산출 2.3% 증가와 노동시간 0.2% 증가를 반영한다. 2024년 3분기 이후 노동생산성의 전년동기 대비 증가율은 2.1~3.1% 범위에 머물렀다.\n\n비농업 부문 전년동기 대비 변화율(노동생산성/산출/노동시간): 2026년 1분기 2.8/3.2/0.4, 2026년 2분기 2.3/2.5/0.2, 2026년 3분기 2.1/2.3/0.2.\n\n제조업에서는 2025년 3분기 대비 2026년 3분기 노동생산성이 0.4% 증가했고, 이는 산출 1.3% 증가와 노동시간 0.9% 증가를 반영한다.\n\n이 수치는 생산성 프로그램 자료로 개정될 수 있다. 노동생산성(시간당 산출)은 실질 산출 지수를 전체 근로자(피고용자, 자영업자, 무급 가족 종사자 포함)의 노동시간 지수로 나눈 값이다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-16T23:09:00+09:00"
+   },
+   "topics": [
+    "취업시장",
+    "글로벌"
+   ],
+   "keywords": [
+    "미국 고용"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": [
+    "퍼블릭 도메인"
+   ]
+  },
+  {
+   "id": "n20261115-09",
+   "issue_id": "iss-pay-shield-tf",
+   "theme_id": null,
+   "edition": "kr-0700",
+   "updated_at": "2026-11-15T07:06:00+09:00",
+   "run_id": "br-20261115-0706",
+   "headline": false,
+   "published_at": "2026-11-13",
+   "source": {
+    "source_name": "재정경제부",
+    "source_url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975680",
+    "country": "KR",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-17",
+     "evidence": "정책브리핑 기사 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+     "attribution_text": "출처: 재정경제부 「직장인 생활비 줄이고 가처분소득 늘린다…‘월급방위대 TF’ 가동」(2026.11.13, 정책브리핑), 공공누리 제1유형"
+    }
+   },
+   "title_original": "직장인 생활비 줄이고 가처분소득 늘린다…'월급방위대 TF' 가동",
+   "title_ko": "직장인 생활비 줄이고 가처분소득 늘린다…'월급방위대 TF' 가동",
+   "body_original": "직장인 생활비 줄이고 가처분소득 늘린다…'월급방위대 TF' 가동\n\n정부가 직장인의 생활비 부담을 줄이고 실질적인 가처분소득을 늘리기 위해 범부처 '월급방위대 TF'를 가동한다.\n\n생계비 부담 경감과 자녀·부모 돌봄, 자산형성, 일자리 안정, 건강관리 등 5대 분야를 중심으로 세제·재정·금융 전반에서 체감도 높은 신규 지원과제를 발굴하고, 내년부터 달라지는 월세 세액공제와 근로장려세제, 교통비·등록금 지원 등 기존 대책의 이행도 점검한다.\n\n재정경제부는 권대영 제1차관이 13일 관계부처와 함께 '월급방위대 TF' 킥오프 회의를 개최하고 직장인 생활비 절감과 실질 가처분소득 증대를 위한 정책과제를 논의했다고 밝혔다.\n\n이번 TF는 지난 9일 대통령비서실 수석·보좌관 회의의 후속조치로, 관계부처 차원에서 신규 지원과제를 발굴하고 기존 대책의 이행 상황을 점검하기 위해 구성됐다.\n\nTF는 기존 지원대책 점검반, 세제반, 재정반, 금융반 등 4개 반으로 운영한다.\n\n특히 산업구조 전환에 따른 노동시장 변화와 생계비·돌봄 부담 증가 등을 고려해 ▲생계비 부담 경감 ▲자녀·부모 돌봄 지원 ▲자산형성 ▲일자리 안정 ▲건강관리 등 5개 분야를 중심으로 정책과제를 발굴할 계획이다.\n\n회의에서는 '2026년 세법개정안'과 '2027년 예산안'에 포함된 직장인 지원과제를 중점적으로 논의했다.\n\n세법개정안에는 종합소득 기본공제 대상자인 배우자와 부양가족의 소득요건을 연간 100만 원 이하에서 300만 원 이하로 완화하고, 월세 세액공제 대상 월세한도를 연간 1000만 원에서 1200만 원으로 확대하는 방안이 담겼다.\n\n저소득 가구를 위한 근로장려세제(EITC)도 확대한다. 맞벌이 가구 기준 소득요건을 4400만 원에서 5200만 원으로 완화하고, 최대 지급액은 330만 원에서 360만 원으로 인상한다. 최대 지급액이 적용되는 소득구간도 800만~1700만 원에서 800만~1800만 원으로 확대한다.\n\n2027년 예산안에는 대중교통 이용 부담을 줄이기 위한 '모두의 카드' 환급 확대 방안이 포함됐다. 출퇴근 시차시간대 환급률을 30%포인트 높여 일반 국민의 경우 기존 20%에서 50%로 확대하는 내용이다.\n\n아울러 2027년 지방국립대 신입생 6만 명을 대상으로 등록금 전액을 지원하고, 자녀의 자산형성을 돕기 위한 '우리아이자립펀드'를 신설하는 방안도 논의했다.\n\n정부는 해당 과제들이 직장인의 내년 가계 살림과 직결되는 만큼 국회 논의를 존중하면서 여야와 긴밀히 협의하고, 관련 법안과 예산안이 통과되면 신속히 추진할 방침이다.\n\n이와 함께 관계부처별로 세제·재정·금융 분야의 신규 지원과제를 발굴하고, 이날 논의한 과제들은 추가 협의를 거쳐 구체화하기로 했다.\n\n권대영 차관은 \"대통령비서실 내 '월급방위대 TF'와 유기적으로 연계해 긴밀히 소통·협의해 나갈 것\"이라며 \"우선 11~12월 두 달간 범부처 TF를 집중 운영해 직장인들이 현장에서 체감할 수 있는 정책과제를 적극 발굴·추진하겠다\"고 밝혔다.\n\n문의: 재정경제부 정책조정총괄과",
+   "body_ko_ai": null,
+   "translation": null,
+   "topics": [
+    "고용·정책"
+   ],
+   "keywords": [
+    "임금",
+    "청년 고용"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
+  },
+  {
+   "id": "n20261115-10",
+   "issue_id": "iss-cold-wave-safety",
+   "theme_id": null,
+   "edition": "kr-0700",
+   "updated_at": "2026-11-15T07:06:00+09:00",
+   "run_id": "br-20261115-0706",
+   "headline": false,
+   "published_at": "2026-11-13",
+   "source": {
+    "source_name": "고용노동부",
+    "source_url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975675",
+    "country": "KR",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-17",
+     "evidence": "정책브리핑 기사 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+     "attribution_text": "출처: 고용노동부 「\"새벽 옥외작업 시 주의\"…한파 취약사업장 3만여 곳 집중 관리」(2026.11.13, 정책브리핑), 공공누리 제1유형"
+    }
+   },
+   "title_original": "\"새벽 옥외작업 시 주의\"…한파 취약사업장 3만여 곳 집중 관리",
+   "title_ko": "\"새벽 옥외작업 시 주의\"…한파 취약사업장 3만여 곳 집중 관리",
+   "body_original": "\"새벽 옥외작업 시 주의\"…한파 취약사업장 3만여 곳 집중 관리\n\n정부는 올겨울 한파 취약사업장 3만여 개소를 집중 관리하고, 환경미화·건설·물류 등 새벽 옥외작업 업종 중심으로 작업시간대 조정 여부 등 지도에 나선다.\n\n고용노동부는 노동자의 안전과 건강을 보호하기 위해 11월 15일부터 내년 3월 15일까지 범정부 한파 안전 대책기간을 운영한다.\n\n관계부처 및 지방정부 등 관계기관과 협력해 한파 특보 발령 시 새벽 시간대 작업시간대 조정, 따뜻한 옷과 물·쉼터 제공 등 '한파 안전 5대 기본수칙'을 중심으로 노동자 한랭질환 예방에 총력 대응할 계획이다.\n\n한파 재난 위기경보 단계에 따라 비상대응반을 운영하고 '심각' 단계에서는 산업안전보건본부장 주관으로 격상해 가용 인력과 자원을 총동원하는 '한파 특별 대응기간'을 운영한다.\n\n한랭질환 산재가 다수 발생하는 한파 취약사업장 3만여 개소를 선정해 지방노동관서 전담 감독관과 한국산업안전보건공단 전담자가 한파특보 발령 전 '한파안전 5대 기본수칙'이 담긴 한랭질환 예방 가이드북을 배포한다.\n\n11월 30일까지 한파 취약사업장 대상으로 한랭질환 위험요인과 휴게시설 설치·관리기준 자율점검 기간을 운영하고, 12~2월 한파 취약시기에는 약 4000개소를 대상으로 수칙 준수 여부를 점검한다.\n\n특히 옥외작업이 많아 한랭질환에 매우 취약한 건설업, 생활폐기물 수집·운반업, 농축산업에 대한 집중점검을 지난해 200개소에서 600개소로 확대한다.\n\n건설현장 200개소는 새벽 작업 시간대 조정 여부를 집중 지도하고 질식, 화재·폭발, 떨어짐·무너짐 등 겨울철 주요 위험요인에 대한 안전조치 이행 여부도 병행 점검한다.\n\n산업안전보건법 개정으로 한파가 공사기간 연장 요청 사유로 명시됨에 따라 공공발주기관과 건설업체에 한파로 공사가 지연된 경우 공사기간 연장을 요청할 수 있도록 안내한다.\n\n생활폐기물 수집·운반, 청소, 건물관리 등 새벽 옥외작업이 많은 환경미화 노동자 등은 한파특보 발령 시 작업시간대 조정 지도와 함께 장갑·핫팩·귀덮개로 구성된 웜키트 1만 4300세트를 지원한다.\n\n이주노동자를 위해 고용 사업장 약 1만개소, 외국인노동자지원센터 및 취업교육기관을 대상으로 한랭질환 예방 가이드북 외국어 번역본을 배포한다. 전국이동노동자 쉼터 152개소 정보는 배달 앱과 안전보건공단 누리집에서 제공한다.\n\n김영훈 고용노동부 장관은 \"올겨울은 평년보다 따뜻할 것으로 전망되지만 갑작스러운 강추위가 찾아올 수 있고, 새벽 시간대에는 기온이 크게 떨어지는 만큼 방심은 금물\"이라고 강조했다.",
+   "body_ko_ai": null,
+   "translation": null,
+   "topics": [
+    "고용·정책"
+   ],
+   "keywords": [
+    "한파"
    ],
    "related_jobs": [
     "직업상담사"
@@ -549,29 +482,25 @@
    }
   ]
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }

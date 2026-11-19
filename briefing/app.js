@@ -86,13 +86,13 @@
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeTheme(); });
 
-  function srcLine(t, s) {
+  function srcLine(t, s, extra) {
     if (!s) return '';
     var L = s.license || {}, url = safeUrl(s.source_url);
     return '<div class="src">' + trackBadge(t) +
       (L.verified === false ? '<span class="bd chk">라이선스 확인 중</span>' : '') +
       '<span>' + esc(L.attribution_text || (s.source_name + (s.source_title ? ' 「' + s.source_title + '」' : '') + (L.name ? ' (' + L.name + ')' : ''))) + '</span>' +
-      (url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener">원문 보기</a>' : '') + '</div>';
+      (url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener">원문 보기</a>' : '') + (extra || '') + '</div>';
   }
 
   /* ---------- 도표 (SVG, 카드당 하나) ---------- */
@@ -186,6 +186,26 @@
     return '<button type="button" class="chain" data-chain="' + esc(key) + '" data-label="' + esc(label || '') + '" aria-haspopup="dialog" aria-label="' + esc((label || '') + ' 같은 흐름의 자료 보기') + '">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9.4 14.6l5.2-5.2"/><path d="M8.1 17.7l-1.5 1.5a3.7 3.7 0 0 1-5.2-5.2l3.1-3.1a3.7 3.7 0 0 1 5.2 0"/><path d="M15.9 6.3l1.5-1.5a3.7 3.7 0 0 1 5.2 5.2l-3.1 3.1a3.7 3.7 0 0 1-5.2 0"/></svg><span>연결고리</span></button>';
   }
+  /* ---------- 신산업 지면으로 잇기 ----------
+     카드의 태그·제목·주제에서 /emerging/ 이 실제로 결과를 내는 검색어만 고른다(없는 말은 링크를 걸지 않는다). */
+  var EMG_TAGS = [
+    [/반도체/, '반도체', '반도체'], [/배터리|이차전지/, '배터리', '배터리'], [/로봇/, '로봇', '로봇'],
+    [/돌봄/, '돌봄', '돌봄'], [/의료|보건|헬스/, '의료', '디지털헬스'], [/연금/, '연금', '연금'],
+    [/훈련/, '훈련', '직업훈련'], [/콘텐츠/, '콘텐츠', '콘텐츠'], [/보안/, '보안', '보안'],
+    [/양자/, '양자', '양자'], [/우주/, '우주', '우주'], [/수소/, '수소', '수소'],
+    [/전력|에너지/, '에너지', '에너지'], [/데이터/, '데이터', '데이터'], [/(^|\s|·)AI(\s|$|·)|인공지능/, 'AI', 'AI']
+  ];
+  var EMG_THEME = { 'th-ai-labor': ['AI', 'AI'], 'th-skills-training': ['훈련', '직업훈련'], 'th-pension-social': ['연금', '연금'] };
+  function emgOf(c) {
+    var bag = arr(c.tags).join(' ') + ' ' + (c.title || '') + ' ' + (c.category || '');
+    for (var i = 0; i < EMG_TAGS.length; i++) if (EMG_TAGS[i][0].test(bag)) return { q: EMG_TAGS[i][1], label: EMG_TAGS[i][2] };
+    var t = EMG_THEME[c.theme_key];
+    return t ? { q: t[0], label: t[1] } : null;
+  }
+  function emgLink(c) {
+    var e = emgOf(c); if (!e) return '';
+    return '<a class="emg" href="../emerging/?q=' + encodeURIComponent(e.q) + '" title="신산업 지면에서 「' + esc(e.label) + '」 찾기"><span>신산업</span> <b>' + esc(e.label) + '</b> <i aria-hidden="true">↗</i></a>';
+  }
   function countChains() {
     var c = (window.JC_CHAIN && JC_CHAIN.counts) ? JC_CHAIN.counts() : {};
     Array.prototype.forEach.call(main.querySelectorAll('[data-chain]'), function (b) {
@@ -218,7 +238,7 @@
     UI.card = Math.max(0, Math.min(cards.length - 1, UI.card));
 
     var status = '';
-    if (E.data_status && E.data_status !== 'ok' || arr(d.cards).length < 5) {
+    if (E.data_status && E.data_status !== 'ok') {
       status = '<p class="status" role="status"><b>' + (E.data_status === 'fallback' ? '오늘 자 갱신 실패' : '일부 자료 누락') + '</b> ' + esc(E.data_status_note || '이번 호는 카드 수가 평소보다 적습니다.') + '</p>';
     }
     if (opts.notice) status += '<p class="status" role="status">' + esc(opts.notice) + '</p>';
@@ -231,13 +251,13 @@
       '<div class="mast-double"></div>' +
       '<div class="mast-body"><div class="leadwrap"><span class="mast-kick">오늘의 지면</span><h2 class="mast-lead">' + esc(E.title) + '</h2>' +
       (E.subtitle ? '<p class="mast-deck">' + esc(E.subtitle) + '</p>' : '') + status + (edBand(d) ? '<div class="mast-band">' + edBand(d) + '</div>' : '') + '</div>' +
-      '<section class="hmw"><div class="section-head"><h2>오늘의 숫자</h2><small>원자료 기준</small></div><ul class="hm" aria-label="오늘의 핵심 수치">' + arr(d.headline_metrics).filter(function (m) { return ok(m.source_id, m.id); }).slice(0, 4).map(function (m) {
+      (arr(d.headline_metrics).filter(function (m) { return ok(m.source_id, m.id); }).length ? '<section class="hmw"><div class="section-head"><h2>오늘의 숫자</h2><small>원자료 기준</small></div><ul class="hm" aria-label="오늘의 핵심 수치">' + arr(d.headline_metrics).filter(function (m) { return ok(m.source_id, m.id); }).slice(0, 4).map(function (m) {
       var s = srcById[m.source_id], arw = m.direction === 'up' ? '▲' : m.direction === 'down' ? '▼' : '–';
       var dirTxt = m.direction === 'up' ? '증가' : m.direction === 'down' ? '감소' : '보합';
       return '<li class="jc-pop"><span class="lb">' + esc(m.label) + '</span><span class="vl num">' + esc(m.value_text) + '<span class="ar" aria-label="' + dirTxt + '">' + arw + '</span></span>' +
         '<span class="pd">' + esc(m.period) + (m.delta_from ? ' · ' + esc(m.delta_from) + ' 대비' : '') + '</span>' + spark(m.spark) +
         '<span class="ft">' + trackBadge(m.track) + edBadges(m) + '<span>' + esc(s.source_name) + '</span></span></li>';
-    }).join('') + '</ul></section></div></header></div>';
+    }).join('') + '</ul></section>' : '') + '</div></header></div>';
 
     var R = d.radar, rows = R ? arr(R.rows) : [];
     UI.radar = Math.max(0, Math.min(rows.length - 1, UI.radar));
@@ -266,7 +286,7 @@
             return '<button type="button" role="tab" data-step="' + k + '" aria-selected="' + (st === k) + '" aria-label="' + ['①', '②', '③'][k] + ' ' + STEP_NAMES[k] + '">' + ['①', '②', '③'][k] + ' ' + n + '</button>';
           }).join('') + '</div>' +
           '<ol class="st"><li><b>무슨 일인가</b>' + esc(t.what) + '</li><li><b>수치·근거</b>' + esc(t.evidence) + '</li><li><b>상담·구직 시사점</b>' + esc(t.implication) + '</li></ol>' +
-          '<div class="card-f">' + (c.theme_key ? chainBtn(c.theme_key, c.theme_label, c.region) : '') + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
+          '<div class="card-f">' + (c.theme_key ? chainBtn(c.theme_key, c.theme_label, c.region) : '') + emgLink(c) + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
       }).join('') + '</div></div></section>';
 
     /* 레이더 */

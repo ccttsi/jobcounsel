@@ -2,8 +2,8 @@
 """17번 브리핑 데이터 색인·연결고리 메타 도구 (사이트 빌드가 아니라 데이터 정비용).
 
 하는 일
- 1) 모든 날짜 파일(archive/*.json, news-archive/*.json)의 `archive_dates`를 "보관된 전 날짜(최신이 앞)"로 맞춘다.
-    → 미니 달력이 점을 찍을 수 있는 날짜 목록이 여기서 나온다.
+ 1) `archive_dates`를 "그 갈래에 보관된 전 날짜(최신이 앞)"로 맞춘다.
+    → 17번 지면 달력은 17번 지면 날짜만, 17-1 원문 달력은 원문 호가 있는 날짜만 점을 찍는다.
  2) `edition.no`(제N호)를 지운다 — 2026-11-19 지면 개편으로 호수 표기를 쓰지 않는다.
  3) 카드마다 `theme_key`·`theme_label`·`region`을 붙인다(이미 있으면 보존).
  4) `chain.json`을 만든다 — 날짜별 카드에서 뽑은 연결고리 색인. 화면은 이 파일 하나만 받는다.
@@ -29,26 +29,6 @@ THEMES = {
 }
 
 # 날짜·카드별 주제(사람이 읽고 정한 값). 이후 날짜는 규칙으로 채운다.
-MAP = {
-    "2026-11-13": {"c01": "th-labor-policy", "c02": "th-youth-employment", "c03": "th-wage-income",
-                   "c04": "th-labor-policy", "c05": "th-global-labor", "c06": "th-employment-service",
-                   "c07": "th-ai-labor"},
-    "2026-11-14": {"c01": "th-employment-service", "c02": "th-skills-training", "c03": "th-youth-employment",
-                   "c04": "th-global-labor", "c05": "th-global-labor", "c06": "th-wage-income",
-                   "c07": "th-ai-labor"},
-    "2026-11-15": {"c01": "th-ai-labor", "c02": "th-youth-employment", "c03": "th-global-labor",
-                   "c04": "th-global-labor", "c05": "th-global-labor", "c06": "th-labor-policy"},
-    "2026-11-16": {"c01": "th-youth-employment", "c02": "th-labor-policy", "c03": "th-wage-income",
-                   "c04": "th-ai-labor", "c05": "th-ai-labor", "c06": "th-ai-labor",
-                   "c07": "th-skills-training"},
-    "2026-11-17": {"c01": "th-wage-income", "c02": "th-youth-employment", "c03": "th-wage-income",
-                   "c04": "th-ai-labor", "c05": "th-labor-policy", "c06": "th-skills-training",
-                   "c07": "th-skills-training"},
-    "2026-11-18": {"c01": "th-ai-labor", "c02": "th-employment-service", "c03": "th-wage-income",
-                   "c04": "th-ai-labor", "c05": "th-macro-economy", "c06": "th-skills-training",
-                   "c07": "th-pension-social"},
-}
-
 GLOBAL_SRC = re.compile(r"BLS|노동통계국|ILO|국제노동기구|IMF|국제통화기금|arXiv|OECD|World Bank|Eurostat|Indeed|Upwork", re.I)
 
 
@@ -98,11 +78,16 @@ def save(p, d):
 
 def main():
     bdir = os.path.join(ROOT, "archive")
+    bp = os.path.join(ROOT, "briefing.json")
+    np_ = os.path.join(ROOT, "news.json")
     ndir = os.path.join(ROOT, "news-archive")
     bfiles = sorted(glob.glob(os.path.join(bdir, "*.json")))
     nfiles = sorted(glob.glob(os.path.join(ndir, "*.json")))
-    dates = sorted({os.path.basename(p)[:10] for p in bfiles} | {os.path.basename(p)[:10] for p in nfiles},
-                   reverse=True)
+    today_date = (load(bp).get("edition") or {}).get("date") if os.path.exists(bp) else None
+    bdates = sorted({os.path.basename(p)[:10] for p in bfiles} |
+                    ({today_date} if today_date else set()), reverse=True)
+    ndates = sorted({os.path.basename(p)[:10] for p in nfiles}, reverse=True)
+    dates = bdates
 
     for p in bfiles:
         d = load(p)
@@ -112,9 +97,9 @@ def main():
         E.setdefault("date", date)
         d["edition"] = E
         d["schema_version"] = SCHEMA
-        d["archive_dates"] = list(dates)
+        d["archive_dates"] = list(bdates)
         for c in d.get("cards", []):
-            key = MAP.get(date, {}).get(c["id"]) or c.get("theme_key") or guess_theme(c)
+            key = c.get("theme_key") or guess_theme(c)
             c["theme_key"] = key
             c["theme_label"] = THEMES[key]
             c["region"] = c.get("region") or region_of(c)
@@ -123,25 +108,23 @@ def main():
     for p in nfiles:
         d = load(p)
         d["schema_version"] = "1.2.0"
-        d["archive_dates"] = list(dates)
+        d["archive_dates"] = list(ndates)
         save(p, d)
 
     # 오늘 자(briefing.json / news.json)
-    bp = os.path.join(ROOT, "briefing.json")
     if os.path.exists(bp):
         d = load(bp)
         E = d.get("edition", {}); E.pop("no", None); d["edition"] = E
         d["schema_version"] = SCHEMA
-        d["archive_dates"] = list(dates)
+        d["archive_dates"] = list(bdates)
         for c in d.get("cards", []):
-            key = MAP.get(E.get("date"), {}).get(c["id"]) or c.get("theme_key") or guess_theme(c)
+            key = c.get("theme_key") or guess_theme(c)
             c["theme_key"] = key
             c["theme_label"] = THEMES[key]
             c["region"] = c.get("region") or region_of(c)
         save(bp, d)
-    np_ = os.path.join(ROOT, "news.json")
     if os.path.exists(np_):
-        d = load(np_); d["archive_dates"] = list(dates); save(np_, d)
+        d = load(np_); d["archive_dates"] = list(ndates); save(np_, d)
 
     # chain.json — 화면이 받는 유일한 연결고리 색인
     themes = {}
@@ -180,7 +163,8 @@ def main():
         "themes": themes,
     }
     save(os.path.join(ROOT, "chain.json"), out)
-    print("dates:", len(dates), dates[0] if dates else "-", "~", dates[-1] if dates else "-")
+    print("briefing dates:", len(bdates), bdates[-1] if bdates else "-", "~", bdates[0] if bdates else "-")
+    print("news dates:", len(ndates), ndates[-1] if ndates else "-", "~", ndates[0] if ndates else "-")
     print("themes:", {k: len(v["items"]) for k, v in themes.items()})
 
 

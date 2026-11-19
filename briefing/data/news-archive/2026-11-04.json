@@ -1,21 +1,10 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-04T23:12:00+09:00",
+ "updated_at": "2026-11-16T13:04:00+09:00",
  "date": "2026-11-04",
  "data_status": "ok",
  "data_status_note": null,
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-04T07:10:00+09:00",
-   "last_ok": "2026-11-04"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-04T23:12:00+09:00",
-   "last_ok": "2026-11-04"
-  }
- },
+ "runs": {},
  "main_themes": [
   {
    "theme_id": "th-ai-job-restructuring",
@@ -419,111 +408,81 @@
  ],
  "keywords": [
   {
-   "word": "미국 고용",
-   "count": 1
-  },
-  {
-   "word": "실업률",
-   "count": 1
-  },
-  {
-   "word": "구인",
-   "count": 1
-  },
-  {
-   "word": "임금",
-   "count": 1
-  },
-  {
-   "word": "복리후생",
-   "count": 1
-  },
-  {
-   "word": "장기실업",
+   "word": "청년 고용",
    "count": 1
   }
  ],
  "items": [
   {
-   "id": "n-us-jolts-202609-20261104",
-   "issue_id": "iss-us-jolts-202609",
-   "theme_id": "th-ai-job-restructuring",
-   "edition": "global-2300",
-   "updated_at": "2026-11-04T23:12:00+09:00",
-   "run_id": "br-20261104-2312",
-   "headline": true,
-   "published_at": "2026-11-03T10:00:00-05:00",
+   "id": "n20261116-03",
+   "issue_id": "iss-youth-labor-inspection",
+   "theme_id": "th-youth-employment-gap",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-16T13:04:00+09:00",
+   "run_id": "br-20261116-1304",
+   "headline": false,
+   "published_at": "2026-11-03",
    "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
-    "country": "US",
+    "source_name": "고용노동부",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787696",
+    "country": "KR",
     "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
+     "type": "KOGL-1",
+     "name": "공공누리 제1유형(출처표시)",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "attribution_text": "출처: 고용노동부 「청년 노동자의 장시간·공짜 노동 근절을 위한 장시간 노동 기획감독 실시」 보도자료(2026.11.3), 공공누리 제1유형. 담당부서 표는 옮기지 않았습니다.",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
+     "verified_at": "2026-11-16",
+     "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '텍스트에 한하여 공공누리 제1유형(출처표시)' 고지 확인(2026-11-16). 첨부 PDF 본문과 페이지 본문 대조."
     }
    },
-   "title_original": "JOB OPENINGS AND LABOR TURNOVER — SEPTEMBER 2026",
-   "title_ko": "미국 9월 구인·이직 — 구인 750만, 퇴사 340만",
-   "body_original": "The number of job openings was little changed at 7.5 million in September, the U.S. Bureau of Labor Statistics reported today. Hires and total separations changed little at 5.4 million and 5.3 million, respectively. Within separations, quits (3.4 million) increased, while layoffs and discharges (1.6 million) were little changed.\n\nThe number and rate of job openings were little changed at 7.5 million and 4.5 percent, respectively, in September. Job openings increased in state and local government, excluding education (+104,000).\n\nIn September, the number of total separations was little changed at 5.3 million, while the rate was unchanged at 3.3 percent. Total separations increased in accommodation and food services (+195,000).\n\nThe number of quits increased to 3.4 million, while the rate was little changed at 2.1 percent in September. Quits increased in accommodation and food services (+197,000) but decreased in arts, entertainment, and recreation (-19,000). Over the year, total nonfarm quits increased by 375,000.",
-   "body_ko_ai": "미국 노동통계국은 9월 구인 건수가 750만 건으로 큰 변화가 없었다고 밝혔다. 채용은 540만 건, 총 이직은 530만 건으로 큰 변화가 없었다. 이직 가운데 자발적 퇴사(340만 건)는 늘었고 해고(160만 건)는 큰 변화가 없었다.\n\n9월 구인 건수와 구인율은 각각 750만 건, 4.5%로 큰 변화가 없었다. 구인은 교육을 제외한 주·지방정부에서 10만4천 건 늘었다.\n\n9월 총 이직은 530만 건으로 큰 변화가 없었고 이직률은 3.3%로 같았다. 총 이직은 숙박·음식서비스업에서 19만5천 건 늘었다.\n\n9월 자발적 퇴사는 340만 건으로 늘었고 퇴사율은 2.1%로 큰 변화가 없었다. 퇴사는 숙박·음식서비스업에서 19만7천 건 늘었고 예술·오락·여가업에서는 1만9천 건 줄었다. 1년 사이 전체 퇴사는 37만5천 건 늘었다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-04T23:05:00+09:00"
-   },
+   "title_original": "청년 노동자의 장시간·공짜 노동 근절을 위한 장시간 노동 기획감독 실시",
+   "body_original": "고용노동부(장관 김영훈)는 장시간 노동과 공짜 야근을 근절하고, 노동자의 건강권 보호를 위해 11월 3일부터 전국 100개 사업장을 대상으로 '2026년 하반기 장시간 노동 기획감독'을 실시한다고 밝혔다.\n\n이번 감독은 청년 다수 고용 사업장의 장시간 노동과 임금체불 등 불합리한 노동관행을 개선하는 데 중점을 두고, 특별연장근로를 반복적으로 활용하는 사업장에 대해서도 노동자 건강보호조치 등이 적정하게 이행되고 있는지 함께 살펴볼 계획이다.\n\n감독 대상 업종은 정보통신업, 전문·과학·기술서비스업, 숙박·음식점업, 도소매업 등이다.\n\n노사의 자발적 참여와 정부의 노력 등으로 우리나라 실노동시간은 지속적으로 감소하고 있으나, 일부 사업장에서는 여전히 장시간 노동과 일한 만큼 임금을 지급받지 못하는 '공짜 야근' 문제가 제기되고 있다. 특히 지난 10월 13일 고용노동부 국정감사에서는 청년 노동자들의 수당 미지급과 상시적인 초과근무 등 장시간 노동 문제가 지적되었으며, 특별연장근로 인가 사업장의 산업재해 예방과 노동자 건강보호를 위한 관리 필요성도 제기된 바 있다.\n\n임금노동자 연간 실노동시간은 2015년 2,058시간에서 2021년 1,928시간, 2022년 1,904시간, 2023년 1,874시간, 2024년 1,859시간, 2025년 1,846시간으로 줄었다('2026 국제통계연감').\n\n이에 고용노동부는 청년 노동자들의 노동환경 개선과 장시간 노동에 따른 건강권 보호에 감독 역량을 집중할 방침이다.\n\n먼저, 청년 노동자 다수 고용 사업장에 대해서는 장시간 노동과 공짜 야근 등 근로기준법 위반 여부를 집중적으로 감독한다. 청년 고용 비중이 높은 업종을 중심으로 근로시간 한도 준수 여부와 연장·야간·휴일근로수당의 적정 지급 여부 등을 면밀히 살펴볼 예정이다. 특히 국정감사에서 서울 성동구 성수동 일대 청년 노동자들의 장시간 노동과 공짜 야근 문제가 제기된 점을 고려하여, 성동구 소재 사업장을 집중점검할 계획이다.\n\n아울러, 특별연장근로를 반복적으로 활용하는 사업장에 대해서는 노동·산업안전 합동점검을 실시한다. 이를 통해 특별연장근로 인가 시간 준수 여부와 노동자의 건강보호를 위한 조치가 적정하게 이루어지고 있는지를 중심으로 살펴볼 예정이다.\n\n고용노동부는 감독 결과 확인된 근로기준 및 산업안전보건 분야 법 위반사항에 대해 관련 규정에 따라 시정지시, 과태료 및 사법처리 등 엄정하게 조치할 계획이다. 아울러 근로시간 관리체계 개선과 근무체계 개편 등으로 사업장 스스로 장시간 노동을 줄이고 건강한 노동환경을 조성하도록 유도할 방침이다.\n\n김영훈 고용노동부 장관은 \"일한 만큼 정당하게 보상받고, 충분히 쉬면서 건강하게 일할 수 있는 노동환경을 만드는 것이 중요하다\"라면서, \"청년 노동자들의 장시간 노동과 공짜 야근 등 불합리한 노동관행을 개선하고, 노동자들의 건강과 안전이 확보될 수 있도록 노력하겠다\"라고 강조했다.",
    "topics": [
-    "글로벌",
-    "취업시장"
+    "고용·정책"
    ],
    "keywords": [
-    "구인",
-    "퇴사"
+    "청년 고용"
    ],
    "related_jobs": [
-    "직업상담사"
+    "직업상담사",
+    "근로감독관"
    ],
    "track": "A",
    "rights": {
     "full_text_allowed": true,
     "ai_translation_allowed": true
-   }
+   },
+   "is_main_theme": true,
+   "theme": "청년 고용 사각지대",
+   "badges": [
+    "공공누리 제1유형"
+   ]
   }
  ],
  "excluded": {
   "count": 0,
   "reasons": []
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }

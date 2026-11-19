@@ -1,0 +1,419 @@
+{
+ "schema_version": "1.3.0",
+ "updated_at": "2026-11-01T07:10:00+09:00",
+ "edition": {
+  "date": "2026-10-31",
+  "weekday": "토",
+  "title": "생산·소비·투자가 함께 올랐다, 미국 실질임금은 -0.6%",
+  "subtitle": "9월 산업활동 3.0%·소매 3.6%·설비 5.3%, 승용차 18.3%, 미국 고용비용 3.1%",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "전산업생산",
+   "value": 0,
+   "unit": "",
+   "value_text": "+3.0%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "전월비",
+   "source_id": "src_mods_ind_202609",
+   "track": "B",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-01T07:10:00+09:00",
+   "run_id": "br-20261101-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "소매판매",
+   "value": 0,
+   "unit": "",
+   "value_text": "+3.6%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "전월비",
+   "source_id": "src_mods_ind_202609",
+   "track": "B",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-01T07:10:00+09:00",
+   "run_id": "br-20261101-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "설비투자",
+   "value": 0,
+   "unit": "",
+   "value_text": "+5.3%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "전월비",
+   "source_id": "src_mods_ind_202609",
+   "track": "B",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-01T07:10:00+09:00",
+   "run_id": "br-20261101-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_4",
+   "label": "전체 보상",
+   "value": 0,
+   "unit": "",
+   "value_text": "+3.4%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 3분기",
+   "delta_from": "12개월",
+   "source_id": "src_bls_eci_2026q3",
+   "track": "A",
+   "edition": "global-2300",
+   "updated_at": "2026-11-01T07:10:00+09:00",
+   "run_id": "br-20261101-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "B",
+   "category": "국내 고용지표",
+   "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
+   "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
+   "three_step": {
+    "what": "9월 생산·소비·투자가 석 달 만에 동시에 증가했다. 반도체와 자동차 생산이 늘며 제조업이 회복을 이끌었다.",
+    "evidence": "전산업생산 +3.0%(2011년 3월 이후 최대), 광공업 +9.0%, 제조업 +9.9%. 소매판매 +3.6%, 설비투자 +5.3%. 반도체 +19.2%, 자동차 +39.9%(2026년 9월, 전월비).",
+    "implication": "제조업 회복이 채용으로 이어지는지는 시차가 있다. 구직자에게 '생산 회복'을 곧바로 '일자리 증가'로 말하지 말고 3개월 뒤 고용지표로 확인하라고 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "전산업생산",
+     "value": "+3.0%",
+     "delta": "전월비",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "소매판매",
+     "value": "+3.6%",
+     "delta": "전월비",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "설비투자",
+     "value": "+5.3%",
+     "delta": "전월비",
+     "period": "2026년 9월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "생산",
+     "소매",
+     "설비"
+    ],
+    "series": [
+     {
+      "name": "전월비",
+      "values": [
+       3.0,
+       3.6,
+       5.3
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "2026년 9월 산업활동동향. 계절조정 전월비.",
+    "source_id": "src_mods_ind_202609"
+   },
+   "tags": [
+    "생산",
+    "제조업"
+   ],
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "kr",
+   "updated_at": "2026-11-01T07:10:00+09:00",
+   "source": {
+    "source_id": "src_mods_ind_202609",
+    "source_name": "국가데이터처",
+    "source_title": "2026년 9월 산업활동동향",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+    "published_at": "2026-10-30",
+    "license": {
+     "name": "공공누리 제2유형(출처표시+상업적 이용금지) — 사실·수치만",
+     "type": "KOGL-NONE",
+     "url": "https://www.kogl.or.kr/info/license.do",
+     "scope": "원문 재게시 불가 · 사실·수치 인용",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "페이지 하단 공공누리 제2유형 고지 — 트랙 B로 내림"
+    },
+    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
+   },
+   "issue_id": "iss-industry-202609",
+   "counselor_question": "다시 일할 때 같은 업종을 생각하나요, 생산이 늘어난 다른 업종도 열어 두나요?"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
+   "kicker": "복리후생 3.9% · 의료비 6.4%",
+   "three_step": {
+    "what": "미국 고용주가 지불한 임금과 복리후생 비용이 1년 새 3.4% 늘었다. 임금 상승은 둔해지고 복리후생, 특히 의료비가 빠르게 올랐다.",
+    "evidence": "임금·급여 +3.1%, 복리후생 +3.9%, 전체 보상 +3.4%. 물가를 반영한 실질 임금은 -0.6%로 2012년 1분기 이후 가장 낮았다. 민간 의료보험 비용은 +6.4%(2026년 9월까지 12개월).",
+    "implication": "명목 임금이 올라도 실질 임금은 줄 수 있다. 임금 협상·이직 상담에서 '연봉 인상률'과 '물가 반영 실질 임금'을 나눠 계산해 보여 주라."
+   },
+   "key_numbers": [
+    {
+     "label": "전체 보상",
+     "value": "+3.4%",
+     "delta": "12개월",
+     "period": "2026년 3분기"
+    },
+    {
+     "label": "임금·급여",
+     "value": "+3.1%",
+     "delta": "12개월",
+     "period": "2026년 3분기"
+    },
+    {
+     "label": "실질 임금",
+     "value": "-0.6%",
+     "delta": "12개월",
+     "period": "2026년 3분기"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "임금",
+     "복리후생",
+     "전체"
+    ],
+    "series": [
+     {
+      "name": "12개월 상승률",
+      "values": [
+       3.1,
+       3.9,
+       3.4
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "미국 ECI 2026년 3분기. 물가 반영 실질 임금은 -0.6%.",
+    "source_id": "src_bls_eci_2026q3"
+   },
+   "tags": [
+    "임금",
+    "미국"
+   ],
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "updated_at": "2026-11-01T07:10:00+09:00",
+   "source": {
+    "source_id": "src_bls_eci_2026q3",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "Employment Cost Index — September 2026",
+    "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+    "published_at": "2026-10-30",
+    "license": {
+     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": null,
+     "scope": "텍스트",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "17 U.S.C. §105 연방정부 저작물"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화."
+   },
+   "issue_id": "iss-us-eci-2026q3",
+   "counselor_question": "지금 받는 임금이 1년 전보다 물가만큼 올랐다고 느끼나요?"
+  },
+  {
+   "id": "c03",
+   "order": 3,
+   "track": "B",
+   "category": "국내 고용지표",
+   "title": "승용차 판매 18.3% — 소비가 살아난 이유는 차였다",
+   "kicker": "소매판매 +3.6% · 내구재 +4.4%",
+   "three_step": {
+    "what": "9월 소매판매가 3.6% 늘며 2023년 2월 이후 가장 큰 폭으로 증가했다. 승용차 판매가 8월 -13.3%에서 9월 +18.3%로 돌아선 영향이 컸다.",
+    "evidence": "소매판매 +3.6%(내구재 +4.4%, 비내구재 +4.2%, 준내구재 +0.6%). 승용차 +18.3%, 서비스업생산 +0.5%, 건설기성 +5.8%(2026년 9월, 전월비).",
+    "implication": "소비 회복이 특정 품목에 몰려 있으면 고용도 그렇다. 판매직·정비직 상담에서 자동차 관련 채용 흐름을 함께 확인하라."
+   },
+   "key_numbers": [
+    {
+     "label": "소매판매",
+     "value": "+3.6%",
+     "delta": "전월비",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "승용차",
+     "value": "+18.3%",
+     "delta": "-13.3%→",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "서비스업생산",
+     "value": "+0.5%",
+     "delta": "전월비",
+     "period": "2026년 9월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "내구재",
+     "비내구재",
+     "준내구재"
+    ],
+    "series": [
+     {
+      "name": "전월비",
+      "values": [
+       4.4,
+       4.2,
+       0.6
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "2026년 9월 산업활동동향.",
+    "source_id": "src_mods_ind_202609"
+   },
+   "tags": [
+    "소비",
+    "자동차"
+   ],
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "kr",
+   "updated_at": "2026-11-01T07:10:00+09:00",
+   "source": {
+    "source_id": "src_mods_ind_202609",
+    "source_name": "국가데이터처",
+    "source_title": "2026년 9월 산업활동동향",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+    "published_at": "2026-10-30",
+    "license": {
+     "name": "공공누리 제2유형(출처표시+상업적 이용금지) — 사실·수치만",
+     "type": "KOGL-NONE",
+     "url": "https://www.kogl.or.kr/info/license.do",
+     "scope": "원문 재게시 불가 · 사실·수치 인용",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "페이지 하단 공공누리 제2유형 고지 — 트랙 B로 내림"
+    },
+    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
+   },
+   "issue_id": "iss-industry-202609",
+   "counselor_question": null
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_mods_ind_202609",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 9월 산업활동동향",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+   "published_at": "2026-10-30",
+   "license": {
+    "name": "공공누리 제2유형(출처표시+상업적 이용금지) — 사실·수치만",
+    "type": "KOGL-NONE",
+    "url": "https://www.kogl.or.kr/info/license.do",
+    "scope": "원문 재게시 불가 · 사실·수치 인용",
+    "attribution_required": true,
+    "commercial_use": "not_allowed",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "페이지 하단 공공누리 제2유형 고지 — 트랙 B로 내림"
+   },
+   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
+   "id": "src_mods_ind_202609"
+  },
+  {
+   "source_id": "src_bls_eci_2026q3",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Employment Cost Index — September 2026",
+   "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+   "published_at": "2026-10-30",
+   "license": {
+    "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
+    "type": "PUBLIC-DOMAIN",
+    "url": null,
+    "scope": "텍스트",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "17 U.S.C. §105 연방정부 저작물"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화.",
+   "id": "src_bls_eci_2026q3"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30"
+ ]
+}

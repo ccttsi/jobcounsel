@@ -1,21 +1,10 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-10T23:12:00+09:00",
+ "updated_at": "2026-11-16T13:04:00+09:00",
  "date": "2026-11-10",
  "data_status": "ok",
  "data_status_note": null,
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-10T07:10:00+09:00",
-   "last_ok": "2026-11-10"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-10T23:12:00+09:00",
-   "last_ok": "2026-11-10"
-  }
- },
+ "runs": {},
  "main_themes": [
   {
    "theme_id": "th-ai-job-restructuring",
@@ -419,125 +408,66 @@
  ],
  "keywords": [
   {
-   "word": "미국 고용",
+   "word": "시간유연성",
    "count": 1
   },
   {
-   "word": "실업률",
+   "word": "돌봄",
    "count": 1
   },
   {
-   "word": "구인",
+   "word": "실업급여",
    "count": 1
   },
   {
-   "word": "임금",
-   "count": 1
-  },
-  {
-   "word": "복리후생",
-   "count": 1
-  },
-  {
-   "word": "장기실업",
+   "word": "구직활동",
    "count": 1
   }
  ],
  "items": [
   {
-   "id": "n-us-empsit-202610-20261110",
-   "issue_id": "iss-us-empsit-202610",
-   "theme_id": "th-ai-job-restructuring",
+   "id": "n20261115-04",
+   "issue_id": "iss-us-flexibility",
+   "theme_id": null,
    "edition": "global-2300",
-   "updated_at": "2026-11-10T23:12:00+09:00",
-   "run_id": "br-20261110-2312",
-   "headline": true,
-   "published_at": "2026-11-06T08:30:00-05:00",
-   "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
-    }
-   },
-   "title_original": "THE EMPLOYMENT SITUATION — OCTOBER 2026",
-   "title_ko": "미국 10월 고용동향 — 비농업 +16만5천, 실업률 4.1%",
-   "body_original": "Total nonfarm payroll employment rose by 165,000 in October, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in professional and business services, in health care, and in transportation and warehousing.\n\nBoth the unemployment rate, at 4.1 percent, and the number of unemployed people, at 7.1 million, changed little in October. The unemployment rate has remained in a narrow range of 4.1 percent to 4.3 percent since March.\n\nThe number of long-term unemployed (those jobless for 27 weeks or more), at 2.0 million, changed little over the month. The long-term unemployed accounted for 27.6 percent of all unemployed people.\n\nThe number of people employed part time for economic reasons increased by 339,000 to 4.8 million in October. These individuals would have preferred full-time employment but were working part time because their hours had been reduced or they were unable to find full-time jobs.",
-   "body_ko_ai": "미국 노동통계국은 오늘 10월 비농업 고용이 16만5천 명 늘었고 실업률은 4.1%로 큰 변화가 없었다고 밝혔다. 고용은 전문·사업서비스, 보건, 운수·창고업에서 늘었다.\n\n10월 실업률 4.1%와 실업자 710만 명은 큰 변화가 없었다. 실업률은 3월 이후 4.1~4.3%의 좁은 범위에 머물고 있다.\n\n27주 이상 일자리를 찾지 못한 장기 실업자는 196만 명으로 한 달 사이 큰 변화가 없었다. 장기 실업자는 전체 실업자의 27.6%를 차지했다.\n\n경제적 이유로 시간제로 일하는 사람은 33만9천 명 늘어 480만 명이 됐다. 이들은 전일제 일을 원했지만 근로시간이 줄었거나 전일제 일자리를 찾지 못해 시간제로 일하고 있다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-10T23:05:00+09:00"
-   },
-   "topics": [
-    "고용·정책",
-    "글로벌"
-   ],
-   "keywords": [
-    "미국 고용",
-    "실업률"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
-  },
-  {
-   "id": "n-us-jolts-202609-20261110",
-   "issue_id": "iss-us-jolts-202609",
-   "theme_id": "th-ai-job-restructuring",
-   "edition": "global-2300",
-   "updated_at": "2026-11-10T23:12:00+09:00",
-   "run_id": "br-20261110-2312",
+   "updated_at": "2026-11-15T23:08:00+09:00",
+   "run_id": "br-20261115-2308",
    "headline": false,
-   "published_at": "2026-11-03T10:00:00-05:00",
+   "published_at": "2026-11-09",
    "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_url": "https://www.bls.gov/opub/ted/2026/ease-of-taking-time-off-during-the-workday-varied-by-sex-and-educational-attainment.htm",
     "country": "US",
     "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
      "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
-     "attribution_required": true,
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "연방정부 발간물 전체",
+     "attribution_required": false,
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
+     "verified_at": "2026-11-17",
+     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-09)"
     }
    },
-   "title_original": "JOB OPENINGS AND LABOR TURNOVER — SEPTEMBER 2026",
-   "title_ko": "미국 9월 구인·이직 — 구인 750만, 퇴사 340만",
-   "body_original": "The number of job openings was little changed at 7.5 million in September, the U.S. Bureau of Labor Statistics reported today. Hires and total separations changed little at 5.4 million and 5.3 million, respectively. Within separations, quits (3.4 million) increased, while layoffs and discharges (1.6 million) were little changed.\n\nThe number and rate of job openings were little changed at 7.5 million and 4.5 percent, respectively, in September. Job openings increased in state and local government, excluding education (+104,000).\n\nIn September, the number of total separations was little changed at 5.3 million, while the rate was unchanged at 3.3 percent. Total separations increased in accommodation and food services (+195,000).\n\nThe number of quits increased to 3.4 million, while the rate was little changed at 2.1 percent in September. Quits increased in accommodation and food services (+197,000) but decreased in arts, entertainment, and recreation (-19,000). Over the year, total nonfarm quits increased by 375,000.",
-   "body_ko_ai": "미국 노동통계국은 9월 구인 건수가 750만 건으로 큰 변화가 없었다고 밝혔다. 채용은 540만 건, 총 이직은 530만 건으로 큰 변화가 없었다. 이직 가운데 자발적 퇴사(340만 건)는 늘었고 해고(160만 건)는 큰 변화가 없었다.\n\n9월 구인 건수와 구인율은 각각 750만 건, 4.5%로 큰 변화가 없었다. 구인은 교육을 제외한 주·지방정부에서 10만4천 건 늘었다.\n\n9월 총 이직은 530만 건으로 큰 변화가 없었고 이직률은 3.3%로 같았다. 총 이직은 숙박·음식서비스업에서 19만5천 건 늘었다.\n\n9월 자발적 퇴사는 340만 건으로 늘었고 퇴사율은 2.1%로 큰 변화가 없었다. 퇴사는 숙박·음식서비스업에서 19만7천 건 늘었고 예술·오락·여가업에서는 1만9천 건 줄었다. 1년 사이 전체 퇴사는 37만5천 건 늘었다.",
+   "title_original": "Ease of taking time off during the workday varied by sex and educational attainment",
+   "title_ko": "업무 중 1~2시간 빼기 “어렵지 않다” 69.1%…여성 12.4%는 “매우 어렵다”",
+   "body_original": "Ease of taking time off during the workday varied by sex and educational attainment\n\nDoctor's appointments (for ourselves, our family, and our pets), school functions, errands—occasionally workers need to take an hour or two off during work hours. Whatever the reason, taking time off during work hours may be easier for some workers than others.\n\nOn average, 69.1 percent of wage and salary workers found it would not be difficult to take an hour or two off during work hours in 2024–25. In contrast, 20.3 percent of workers found it somewhat difficult, and 10.6 percent found it very difficult. A higher share of men (72.0 percent) than women (66.0 percent) found it not difficult to take an hour or two off. Accordingly, a higher share of women (12.4 percent) than men (9.0 percent) found it would be very difficult.",
+   "body_ko_ai": "병원 예약, 학교 행사, 볼일 같은 이유로 일하는 중에 한두 시간을 비워야 할 때가 있다. 그런데 그 시간을 빼는 일은 누구에게나 똑같이 쉽지는 않다.\n\n2024~25년 임금근로자의 69.1%는 일하는 중에 한두 시간을 빼는 것이 어렵지 않다고 답했다. 다소 어렵다는 20.3%, 매우 어렵다는 10.6%였다. 어렵지 않다는 응답은 남성 72.0%로 여성 66.0%보다 높았고, 매우 어렵다는 응답은 여성 12.4%로 남성 9.0%보다 높았다.",
    "translation": {
     "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-10T23:05:00+09:00"
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-15T23:08:00+09:00"
    },
    "topics": [
     "글로벌",
     "취업시장"
    ],
    "keywords": [
-    "구인",
-    "퇴사"
+    "시간유연성",
+    "돌봄"
    ],
    "related_jobs": [
     "직업상담사"
@@ -546,36 +476,90 @@
    "rights": {
     "full_text_allowed": true,
     "ai_translation_allowed": true
-   }
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
+  },
+  {
+   "id": "n20261116-08",
+   "issue_id": "iss-us-ui-work-search-rule",
+   "theme_id": "th-employment-indicators-ui",
+   "edition": "global-2300",
+   "updated_at": "2026-11-16T13:04:00+09:00",
+   "run_id": "br-20261116-1304",
+   "headline": false,
+   "published_at": "2026-11-09",
+   "source": {
+    "source_name": "미국 노동부(U.S. DOL)",
+    "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261109",
+    "country": "US",
+    "license": {
+     "type": "PUBLIC-DOMAIN",
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "url": null,
+     "attribution_text": "Source: U.S. Department of Labor, “US Department of Labor publishes proposed rule setting national minimum weekly work search requirement for unemployment insurance” (November 9, 2026)",
+     "verified": true,
+     "verified_at": "2026-11-16",
+     "evidence": "미국 노동부(연방 행정부) 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 보도자료(2026-11-16 확인)."
+    }
+   },
+   "title_original": "US Department of Labor publishes proposed rule setting national minimum weekly work search requirement for unemployment insurance",
+   "title_ko": "미 실업보험 수급자에 '매주 구직활동 5건' 최소기준 제정안(미국 노동부)",
+   "body_original": "US Department of Labor publishes proposed rule setting national minimum weekly work search requirement for unemployment insurance\n\nRule would set a baseline of five weekly activities, require reporting before payment\n\nWASHINGTON – The U.S. Department of Labor’s Employment and Training Administration today announced a proposed rule designed to improve the integrity and accountability of the Federal-State Unemployment Insurance Program by establishing a national minimum weekly work search standard for individuals claiming unemployment insurance benefits.\n\nUnder the proposed rule, individuals claiming unemployment insurance benefits would be required to complete at least five qualifying work-search activities each week and to report those activities before payment is issued.\n\n“The purpose of unemployment insurance is to provide temporary support while people proactively search for a new job or upskill to meet the needs of employers restoring critical supply chains,” said U.S. Secretary of Labor Keith Sonderling. “This proposed rule helps jobseekers find work faster and ensures efficient use of taxpayer resources while improving the overall integrity of our unemployment system.”\n\nThe proposal would also identify a range of modern job search activities beyond employer contacts, including registration and ongoing contact with placement agencies and unions that are specific, identifiable, and reasonably calculated to lead to reemployment. The department also proposed providing limited, defined circumstances under which individuals may be deemed to have equivalent labor force attachment.\n\nThe department is inviting comments on the rule, as well as a points-based system, which could provide states with flexibility to prioritize activities that connect individuals to sectors with greater job openings. Comments on the proposed rule are due 60 days from its publication in the Federal Register.",
+   "body_ko_ai": "미국 노동부, 실업보험 전국 최소 주간 구직활동 기준을 정하는 규칙 제정안 발표\n\n매주 5건 구직활동을 기본선으로 정하고, 급여 지급 전 신고를 요구\n\n워싱턴 - 미국 노동부 고용훈련청(ETA)은 실업보험 수급자에게 전국 공통의 최소 주간 구직활동 기준을 세워 연방·주 실업보험(UI) 제도의 건전성과 책임성을 높이기 위한 규칙 제정안을 오늘 발표했다.\n\n이 제정안에 따르면 실업보험 수급자는 매주 최소 5건의 인정되는 구직활동을 하고, 급여가 지급되기 전에 그 활동을 신고해야 한다.\n\n키스 손더링 미국 노동부 장관은 “실업보험의 목적은 사람들이 스스로 새 일자리를 찾거나, 핵심 공급망을 복원하는 고용주들의 요구에 맞춰 역량을 키우는 동안 임시로 지원하는 것”이라며 “이 제정안은 구직자가 더 빨리 일자리를 찾도록 돕고, 납세자 자원을 효율적으로 쓰면서 실업제도 전반의 건전성을 높인다”고 말했다.\n\n제정안은 고용주 접촉 외에도, 취업알선기관과 노동조합에 등록하고 계속 연락하는 등 구체적이고 확인 가능하며 재취업으로 이어질 가능성이 합리적으로 높은 현대적 구직활동을 인정 범위에 넣었다. 노동부는 또 제한된 특정 상황에서는 같은 정도의 노동시장 유대가 있는 것으로 인정하는 방안도 제안했다.\n\n노동부는 이 규칙과 함께, 구인 수요가 많은 산업으로 구직자를 연결하는 활동에 우선순위를 둘 수 있도록 주 정부에 유연성을 주는 포인트제에 대한 의견도 받는다. 제정안에 대한 의견 제출 기한은 연방관보 게재일로부터 60일이다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-16T13:04:00+09:00"
+   },
+   "topics": [
+    "고용·정책",
+    "글로벌"
+   ],
+   "keywords": [
+    "실업급여",
+    "구직활동"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": true,
+   "theme": "구직활동·실업급여",
+   "badges": [
+    "퍼블릭 도메인",
+    "규칙 제정안"
+   ]
   }
  ],
  "excluded": {
   "count": 0,
   "reasons": []
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }
