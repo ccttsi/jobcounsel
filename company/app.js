@@ -344,7 +344,7 @@
       ENT: '공시대상기업집단 ' + Object.keys(GRP).length + '곳 소속회사',
       MID: '확인서 발급기업 · 업종·가입자 보강 ' + fmt(ITEMS.filter(function (x) { return x._c === 'MID' && x.employees; }).length) + '곳',
       PUB: '알리오 지정 공공기관 ' + PUBT.length + '개 유형',
-      LPI: '직영·공사공단·출자·출연 ' + LPIT.length + '갈래 · 2026.6.30 기준'
+      LPI: '직영·공사공단·출자·출연 ' + LPIT.length + '갈래'
     };
     var el = d.getElementById('album'), h = '';
     CATS.forEach(function (c) {
