@@ -591,6 +591,9 @@
       var r0 = scoreFields(d.nt, d.nk, d.nx, d.cs, d.ck, all, phrase, false, w);
       if (!r0.s) continue;
       var sc = r0.s;
+      /* 포털 이름을 그대로 치면(「고용24」·「링크드인」) 그 포털 카드를 먼저 보여 준다 —
+         같은 이름의 용어·설명 문서보다 "가서 볼 곳"이 먼저다. */
+      if (phrase && d.id && d.id.indexOf('portals:') === 0 && d.nt === phrase) sc += 2;
       if (boost[d.sector]) {
         sc *= boost[d.sector];
         /* 섹터를 콕 집은 말이면 그 섹터의 «문»(섹터 문서)을 앞에 세운다 — 들어가서 더 찾도록 */
@@ -625,7 +628,9 @@
     var cap = opt.perSector || 3, per = {};
     for (var k = 0; k < out.length && (res.length < limit || rest.length < limit * 2); k++) {
       var it = out[k].d;
-      var key = it.kind + ':' + it.title;
+      /* 같은 이름이라도 가는 곳이 다르면 둘 다 남긴다 — 「고용24」 포털 문서가
+         같은 이름의 용어 문서에 가려 사라지지 않게. 같은 곳으로 가는 중복만 막는다. */
+      var key = it.kind + ':' + it.title + ':' + (it.url || '');
       if (seen[key]) continue;
       seen[key] = 1;
       var rr = toResult(it, out[k].s, out[k].why, out[k].mw);
