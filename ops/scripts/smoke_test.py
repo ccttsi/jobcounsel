@@ -116,6 +116,9 @@ def run(args):
                     page.on("console", on_console)
 
                     def on_response(response):
+                        # 브라우저가 저절로 찾는 favicon은 사이트 회귀가 아니므로 뺀다.
+                        if response.url.rstrip('/').endswith('/favicon.ico'):
+                            return
                         if response.url.startswith(base) and response.status >= 400:
                             broken_assets.append(f"{response.status} {response.url[len(base) - 1:][:80]}")
 
