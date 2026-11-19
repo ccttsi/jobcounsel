@@ -24,7 +24,7 @@ import sys
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DATA_DIRS = ("briefing/data", "emerging/data", "thermometer/data")
+DATA_DIRS = ("briefing/data", "emerging/data", "thermometer/data", "translator/data")
 
 # 재가공이 허락되지 않는 라이선스 — 이 라이선스를 단 자료는 절대 Track A가 될 수 없다.
 RESTRICTED_LICENSE_TYPES = {"PRESS", "KOGL-NONE", "FACTS-ONLY"}
@@ -369,12 +369,94 @@ def check_thermometer(document, path):
     note(f"산업 온도계 {len(industries)}개 산업 · 출처 {len(sources)}곳")
 
 
+def check_terms(document, path):
+    """terms.json — 26번 내담자 언어 번역기의 계약(translator/data/SCHEMA.md v1.0.0).
+
+    용어 한 건이 화면 한 장이므로, 필수 칸·길이·연계 섹터 id를 배포 전에 본다.
+    특히 links[].to 가 섹터 장부에 없으면 그 칩이 조용히 죽으므로 여기서 잡는다.
+    """
+    label = rel(path)
+    for key in ("schema_version", "dataset", "updated_at", "notice", "categories", "sources", "terms"):
+        if key not in document:
+            fail("json", f"{label}: 필수 키 '{key}'가 없다")
+    if not re.fullmatch(r"\d+\.\d+\.\d+", str(document.get("schema_version", ""))):
+        fail("json", f"{label}: schema_version이 'MAJOR.MINOR.PATCH' 형식이 아니다")
+    if not is_date(document.get("updated_at")):
+        fail("json", f"{label}: updated_at이 YYYY-MM-DD가 아니다")
+
+    categories = document.get("categories")
+    cat_ids = set()
+    if not isinstance(categories, list) or not categories:
+        fail("json", f"{label}: categories가 비어 있다")
+        categories = []
+    for cat in categories:
+        for key in ("id", "name", "short", "desc"):
+            if not str(cat.get(key) or "").strip():
+                fail("json", f"{label}: 분야 '{cat.get('id', '?')}'에 {key}가 없다")
+        cat_ids.add(cat.get("id"))
+
+    sources = document.get("sources")
+    source_ids = set()
+    if not isinstance(sources, list) or not sources:
+        fail("json", f"{label}: sources가 비어 있다")
+        sources = []
+    for src in sources:
+        sid = src.get("id")
+        source_ids.add(sid)
+        if not str(src.get("name") or "").strip():
+            fail("json", f"{label}: 출처 {sid}에 name이 없다")
+        if not str(src.get("url") or "").startswith("https://"):
+            fail("json", f"{label}: 출처 {sid}의 url이 https가 아니다")
+
+    tools_path = os.path.join(ROOT, "assets", "tools.js")
+    sector_ids = set(re.findall(r"\{id:'([^']+)'", open(tools_path, encoding="utf-8").read()))
+
+    terms = document.get("terms")
+    if not isinstance(terms, list) or not terms:
+        fail("json", f"{label}: terms가 비어 있다")
+        return
+    seen = set()
+    counts = {}
+    for term in terms:
+        tid = term.get("id", "?")
+        for key in ("id", "term", "full", "ko", "cat", "easy", "ctx"):
+            if not str(term.get(key) or "").strip():
+                fail("json", f"{label}: 용어 {tid}에 '{key}'가 없다")
+        if tid in seen:
+            fail("json", f"{label}: 용어 id가 중복된다: {tid}")
+        seen.add(tid)
+        if term.get("cat") not in cat_ids:
+            fail("json", f"{label}: 용어 {tid}의 분야 '{term.get('cat')}'가 categories에 없다")
+        counts[term.get("cat")] = counts.get(term.get("cat"), 0) + 1
+        if len(str(term.get("easy") or "")) > 90:
+            fail("json", f"{label}: 용어 {tid}의 easy가 90자를 넘는다({len(str(term.get('easy')))}자)")
+        if len(str(term.get("ctx") or "")) > 130:
+            fail("json", f"{label}: 용어 {tid}의 ctx가 130자를 넘는다({len(str(term.get('ctx')))}자)")
+        qs = term.get("qs")
+        if not isinstance(qs, list) or not (1 <= len(qs) <= 3):
+            fail("json", f"{label}: 용어 {tid}의 질문은 1~3개여야 한다")
+        links = term.get("links")
+        if not isinstance(links, list) or not (1 <= len(links) <= 3):
+            fail("json", f"{label}: 용어 {tid}의 연계는 1~3개여야 한다")
+            links = links if isinstance(links, list) else []
+        for link in links:
+            target = link.get("to")
+            if target not in sector_ids:
+                fail("json", f"{label}: 용어 {tid}의 연계 '{target}'가 섹터 장부(assets/tools.js)에 없다")
+        src = term.get("src")
+        if src is not None and src not in source_ids:
+            fail("json", f"{label}: 용어 {tid}의 출처 '{src}'가 sources에 없다")
+    note(f"내담자 언어 번역기 용어 {len(terms)}개 · 출처 {len(sources)}곳 · "
+         + " · ".join(f"{k} {counts.get(k, 0)}" for k in [c.get('id') for c in categories]))
+
+
 CURRENT_CHECKERS = {
     "briefing/data/briefing.json": check_briefing,
     "briefing/data/news.json": check_news,
     "briefing/data/chain.json": check_chain,
     "emerging/data/emerging.json": check_emerging,
     "thermometer/data/thermometer.json": check_thermometer,
+    "translator/data/terms.json": check_terms,
 }
 
 
