@@ -12,6 +12,8 @@
 //      스트림이 열리는 순간 stage 이벤트({stage:'thinking'})를 한 번 보내, 기다리는 사람에게 「추론 중」을 알린다.
 //   4) 내 대화 기록함(history_*) — 스레드 목록·메시지의 저장·조회·이름변경·삭제·전체비우기.
 //      user_id 는 언제나 session_token 에서만 정하고, 모든 쿼리에 user_id 조건을 붙인다.
+//   5) 연결 테스트(ping) — 9초 안에 끝난다. 건너뛴 모델은 모델명·사유·HTTP 코드만 `skipped` 로 돌려주고,
+//      타임아웃·5xx로 밀렸을 때만 구글 공식 상태 피드를 2초 안에 확인해 `google_status` 로 붙인다.
 //
 // 지키는 선
 //   · 원본 키는 응답·로그 어디에도 다시 나오지 않는다.
@@ -58,8 +60,13 @@ const MODEL_TRIES = MODEL_PREF
   ? [MODEL_PREF].concat(FALLBACK_CHAIN.filter((m) => m !== MODEL_PREF))
   : FALLBACK_CHAIN.slice();
 
-const MODEL_TIMEOUT_MS = 25000;   // 모델 한 번 호출 상한
+const MODEL_TIMEOUT_MS = 12000;   // 모델 한 번 호출 상한(일반 대화 첫 응답) — 25초는 너무 느렸다
 const CHAIN_DEADLINE_MS = 55000;  // 체인 전체 상한(Edge Function 실행 한도 안쪽)
+const PING_TIMEOUT_MS = 8000;     // 연결 테스트 — 모델 한 번 호출 상한(타사이트처럼 10초 안쪽)
+const PING_DEADLINE_MS = 9000;    // 연결 테스트 — 체인 전체 상한(구글 상태 확인 2초는 겹쳐 돌린다)
+const STATUS_TIMEOUT_MS = 2000;   // 구글 공식 상태 피드 확인 상한
+const STATUS_URL = 'https://status.cloud.google.com/incidents.json';
+const STATUS_PAGE = 'https://status.cloud.google.com/';
 
 const SYS = [
   '당신은 「직업상담 통합 자료실」의 개인 비서입니다. 직업상담사와 구직자의 일을 자료실의 자료로 돕습니다.',
@@ -96,11 +103,12 @@ const FMT_PLAIN = [
   '답변을 마친 뒤 맨 마지막 줄에만 [[REFS:e1,e2]] 처럼 실제로 답에 쓴 근거 번호를 적습니다. 쓴 근거가 없으면 [[REFS:]] 입니다.',
 ].join('\n');
 
-/* 「연결 테스트」 — 키가 실제로 도는지 한 번 불러 보는 아주 짧은 대화. */
+/* 「연결 테스트」 — 키가 실제로 도는지 한 번 불러 보는 아주 짧은 대화.
+   출력 토큰을 16개로 묶으므로 답도 그 안에 들어오는 한 문장(15자 안쪽)만 시킨다. */
 const PING_SYS = [
   '연결 확인용 짧은 대화입니다.',
-  '사용자의 인사에 다정한 한 문장(30자 안쪽)으로 답하세요.',
-  'JSON·목록·설명 없이 문장 하나만 씁니다.',
+  '사용자의 인사에는 "연결됐어요"처럼 15자 안쪽의 아주 짧은 한 문장으로만 답하세요.',
+  'JSON·목록·설명·이모지 없이 문장 하나만 씁니다.',
 ].join('\n');
 
 /* 실무 활용 모드 — 화면의 빠른 버튼이 이 값을 보낸다. */
@@ -153,8 +161,8 @@ function out(status: number, body: unknown, origin: string | null): Response {
   return new Response(JSON.stringify(body), { status, headers: cors(origin) });
 }
 
-function bad(origin: string | null, code: string, message: string, status = 400): Response {
-  return out(status, { ok: false, error: code, message }, origin);
+function bad(origin: string | null, code: string, message: string, status = 400, extra?: Record<string, unknown>): Response {
+  return out(status, Object.assign({}, extra || {}, { ok: false, error: code, message }), origin);
 }
 
 function b64(buf: ArrayBuffer | Uint8Array): string {
@@ -383,12 +391,31 @@ type Chat = { system: string; user: string };
 type WebSrc = { title: string; url: string };
 type Reply = { text: string; web: WebSrc[]; model: string };
 type Ask = { web: boolean; json: boolean; maxTokens: number; thinking: boolean };
-type FailKind = 'quota' | 'key' | 'missing' | 'transient' | 'request';
+type FailKind = 'quota' | 'key' | 'missing' | 'timeout' | 'transient' | 'request';
+
+/* 건너뛴 모델 한 줄 — 모델 이름·사유·HTTP 코드만 담는다. 키·요청 본문·질문·오류 원문은 담지 않는다. */
+type Skip = { model: string; reason: string; code: number };
+const SKIP_REASON: Record<FailKind, string> = {
+  quota: '한도초과',
+  key: '권한',
+  missing: '모델없음',
+  timeout: '타임아웃',
+  transient: '일시오류',
+  request: '요청거부',
+};
+
+/* 체인 실행 옵션 — 연결 테스트는 짧은 상한과 건너뛴 이유 수집을 함께 넘긴다. */
+type ChainOpts = {
+  timeoutMs?: number;                              // 모델 한 번 호출 상한(기본 MODEL_TIMEOUT_MS)
+  deadlineMs?: number;                             // 체인 전체 상한(기본 CHAIN_DEADLINE_MS)
+  skipped?: Skip[];                                // 건너뛴 모델을 여기에 쌓는다
+  onSkip?: (s: Skip) => void;                      // 건너뛸 때마다 알린다(연결 테스트가 구글 상태 확인을 겹쳐 띄운다)
+};
 
 /* 한 모델 호출의 결과 — 실패는 '왜'만 남긴다. 구글이 준 오류 본문은 분류에만 쓰고 응답·로그에 남기지 않는다. */
 type Attempt =
   | { ok: true; text: string; web: WebSrc[] }
-  | { ok: false; kind: FailKind };
+  | { ok: false; kind: FailKind; code: number };
 
 /* 스트리밍 한 번의 결과 — emitted 는 '이미 글자가 나갔는지'. 나갔으면 다른 모델로 갈아타지 않는다. */
 type StreamOut =
@@ -438,7 +465,7 @@ function buildBody(chat: Chat, ask: Ask): Record<string, unknown> {
 }
 
 /* 실패를 '왜'로 분류한다. 상태 코드와 오류 이름만 읽고 본문은 남기지 않는다. */
-async function classifyFail(r: Response): Promise<FailKind> {
+async function classifyFail(r: Response): Promise<{ kind: FailKind; code: number }> {
   let status = '';
   let message = '';
   try {
@@ -446,7 +473,7 @@ async function classifyFail(r: Response): Promise<FailKind> {
     status = String(err?.error?.status || '');
     message = String(err?.error?.message || '');
   } catch { /* 본문이 비어 있어도 상태 코드로 판단한다 */ }
-  return classifyTag(status, message, r.status);
+  return { kind: classifyTag(status, message, r.status), code: r.status };
 }
 
 function classifyTag(status: string, message: string, code: number): FailKind {
@@ -477,7 +504,7 @@ function addWeb(list: WebSrc[], chunks: unknown): void {
   });
 }
 
-async function geminiOnce(key: string, chat: Chat, model: string, ask: Ask): Promise<Attempt> {
+async function geminiOnce(key: string, chat: Chat, model: string, ask: Ask, timeoutMs = MODEL_TIMEOUT_MS): Promise<Attempt> {
   const url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
     encodeURIComponent(model) + ':generateContent';
 
@@ -486,13 +513,19 @@ async function geminiOnce(key: string, chat: Chat, model: string, ask: Ask): Pro
     r = await fetch(url, {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
-      signal: AbortSignal.timeout(MODEL_TIMEOUT_MS),
+      signal: AbortSignal.timeout(timeoutMs),
       body: JSON.stringify(buildBody(chat, ask)),
     });
-  } catch {
-    return { ok: false, kind: 'transient' };      // 연결 실패·시간 초과 — 다음 모델로
+  } catch (e) {
+    /* 시간 초과와 연결 실패를 구분한다 — 시간 초과일 때만 구글 서버 상태를 확인해 보여 준다. */
+    const name = String((e as { name?: string })?.name || '');
+    if (name === 'TimeoutError' || name === 'AbortError') return { ok: false, kind: 'timeout', code: 0 };
+    return { ok: false, kind: 'transient', code: 0 };      // 연결 실패 — 다음 모델로
   }
-  if (!r.ok) return { ok: false, kind: await classifyFail(r) };
+  if (!r.ok) {
+    const f = await classifyFail(r);
+    return { ok: false, kind: f.kind, code: f.code };
+  }
 
   const j = await r.json();
   const cand = j?.candidates?.[0] || {};
@@ -500,7 +533,7 @@ async function geminiOnce(key: string, chat: Chat, model: string, ask: Ask): Pro
   const text = Array.isArray(parts) ? parts.map((p: { text?: string }) => p.text || '').join('') : '';
   const web2: WebSrc[] = [];
   addWeb(web2, cand.groundingMetadata?.groundingChunks);
-  if (!text && cand.finishReason && cand.finishReason !== 'STOP') return { ok: false, kind: 'request' };
+  if (!text && cand.finishReason && cand.finishReason !== 'STOP') return { ok: false, kind: 'request', code: 200 };
   return { ok: true, text, web: web2.slice(0, 6) };
 }
 
@@ -526,7 +559,10 @@ async function streamModelOnce(
   } catch {
     return { ok: false, kind: 'transient', emitted: false };
   }
-  if (!r.ok) return { ok: false, kind: await classifyFail(r), emitted: false };
+  if (!r.ok) {
+    const f = await classifyFail(r);
+    return { ok: false, kind: f.kind, emitted: false };
+  }
   if (!r.body) return { ok: false, kind: 'transient', emitted: false };
 
   const reader = r.body.getReader();
@@ -580,25 +616,33 @@ async function streamModelOnce(
   return { ok: true, text, web: web2.slice(0, 6) };
 }
 
-/* 무료 한도가 찬 모델은 건너뛰고 다음 무료 모델로 — 실제로 답한 모델 이름을 함께 돌려준다(일반 응답). */
-async function callGemini(key: string, chat: Chat, ask: Ask): Promise<Reply> {
+/* 무료 한도가 찬 모델은 건너뛰고 다음 무료 모델로 — 실제로 답한 모델 이름을 함께 돌려준다(일반 응답).
+   chain.skipped 를 넘기면 「어느 모델을 왜 건너뛰었는지」를 모아 준다(연결 테스트가 그대로 보여 준다). */
+async function callGemini(key: string, chat: Chat, ask: Ask, chain: ChainOpts = {}): Promise<Reply> {
   const started = Date.now();
+  const deadline = started + (chain.deadlineMs ?? CHAIN_DEADLINE_MS);
+  const perModel = chain.timeoutMs ?? MODEL_TIMEOUT_MS;
   let tried = 0;
   let allQuota = true;
 
   for (const model of MODEL_TRIES) {
-    if (Date.now() - started >= CHAIN_DEADLINE_MS) break;
+    if (deadline - Date.now() <= 0) break;
     let opts = ask;
     let quotaOnly = true;
 
     for (;;) {
-      const attempt = await geminiOnce(key, chat, model, opts);
+      /* 남은 시간을 넘기지 않게 모델 한 번의 상한을 깎는다 — 연결 테스트가 10초를 넘지 않는 이유. */
+      const budget = Math.min(perModel, deadline - Date.now());
+      const attempt = await geminiOnce(key, chat, model, opts, budget);
       if (attempt.ok) return { text: attempt.text, web: attempt.web, model };
       if (attempt.kind === 'key') throw new ChainFail('key');       // 키가 틀렸다 — 다른 모델도 마찬가지다
       const next = relaxAsk(opts, attempt.kind);
-      if (next) { opts = next; continue; }
+      if (next && deadline - Date.now() > 1500) { opts = next; continue; }
       if (attempt.kind === 'request') throw new ChainFail('upstream');
       if (attempt.kind !== 'quota') quotaOnly = false;
+      const skip: Skip = { model, reason: SKIP_REASON[attempt.kind], code: attempt.code };
+      if (chain.skipped) chain.skipped.push(skip);
+      if (chain.onSkip) { try { chain.onSkip(skip); } catch { /* 알림 실패는 무시 */ } }
       break;
     }
 
@@ -607,6 +651,45 @@ async function callGemini(key: string, chat: Chat, ask: Ask): Promise<Reply> {
   }
 
   throw new ChainFail(tried > 0 && allQuota ? 'quota' : 'upstream');
+}
+
+/* ---------- 구글 공식 서버 상태 ----------
+   연결 테스트에서 타임아웃·5xx로 밀렸을 때만 부른다(정상 200·한도초과 429는 추가 호출 없이 넘긴다).
+   공개 피드(incidents.json)에서 **아직 안 끝난(end 없음)** 인시던트 중 Gemini·Vertex·AI Studio 관련이
+   있는지만 본다. 확인에 실패하면 «정상»이라고 꾸미지 않고 확인하지 못했다고 그대로 알린다. */
+const GEMINI_STATUS_RE = /gemini|vertex|generative\s*language|ai\s*studio|google\s*ai/i;
+
+type StatusOut = { text: string; url: string };
+
+function isGeminiIncident(it: Record<string, unknown>): boolean {
+  if (!it || it.end) return false;
+  const products = Array.isArray(it.affected_products) ? it.affected_products as Array<{ title?: string }> : [];
+  const names = [it.service_name, it.external_desc].concat(products.map((p) => p && p.title));
+  return names.some((x) => GEMINI_STATUS_RE.test(String(x || '')));
+}
+
+async function checkGoogleStatus(): Promise<StatusOut> {
+  const unknown: StatusOut = {
+    text: '확인하지 못했습니다 (공식 상태 페이지에서 직접 볼 수 있어요)',
+    url: STATUS_PAGE,
+  };
+  try {
+    const r = await fetch(STATUS_URL, {
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(STATUS_TIMEOUT_MS),
+    });
+    if (!r.ok) return unknown;
+    const list: unknown = await r.json();
+    if (!Array.isArray(list)) return unknown;
+    const hit = list.find((x) => isGeminiIncident(x as Record<string, unknown>)) as
+      { external_desc?: string; begin?: string } | undefined;
+    if (!hit) return { text: '정상 (공식 장애 공지 없음)', url: STATUS_PAGE };
+    const desc = String(hit.external_desc || '진행 중인 장애').replace(/\s+/g, ' ').trim().slice(0, 60);
+    const when = String(hit.begin || '').slice(0, 16).replace('T', ' ');
+    return { text: '공식 장애/지연 공지 확인됨: ' + desc + (when ? ' (' + when + ' UTC)' : ''), url: STATUS_PAGE };
+  } catch {
+    return unknown;
+  }
 }
 
 /* 스트리밍 체인 — 첫 글자가 나가기 전에는 다음 모델로 갈아탈 수 있고, 나간 뒤에는 끝까지 간다. */
@@ -664,16 +747,17 @@ function splitRefs(text: string): { answer: string; refs: string[] } {
   return { answer: raw.slice(0, 4000), refs: refs.slice(0, 3) };
 }
 
-/* 체인 실패를 사용자에게 보여 줄 응답으로 옮긴다(대화·연결 테스트 두 곳에서 같은 문구). */
-function chainFail(e: unknown, origin: string | null): Response {
+/* 체인 실패를 사용자에게 보여 줄 응답으로 옮긴다(대화·연결 테스트 두 곳에서 같은 문구).
+   extra 를 주면 걸린 시간·건너뛴 모델·구글 상태 같은 진단을 오류 응답에도 함께 실어 보낸다. */
+function chainFail(e: unknown, origin: string | null, extra?: Record<string, unknown>): Response {
   if (e instanceof ChainFail) {
-    if (e.kind === 'key') return bad(origin, 'bad_key', '키가 거부되었습니다. 키를 다시 확인해 주세요.', 400);
+    if (e.kind === 'key') return bad(origin, 'bad_key', '키가 거부되었습니다. 키를 다시 확인해 주세요.', 400, extra);
     if (e.kind === 'quota') {
       return bad(origin, 'quota',
-        '무료 모델 ' + MODEL_TRIES.length + '개의 한도를 모두 썼습니다. 1분 뒤(분당 한도) 또는 내일(하루 한도가 새로 채워질 때) 다시 시도해 주세요.', 429);
+        '무료 모델 ' + MODEL_TRIES.length + '개의 한도를 모두 썼습니다. 1분 뒤(분당 한도) 또는 내일(하루 한도가 새로 채워질 때) 다시 시도해 주세요.', 429, extra);
     }
   }
-  return bad(origin, 'upstream', 'AI 서비스에 닿지 못했습니다. 잠시 뒤 다시 시도해 주세요.', 502);
+  return bad(origin, 'upstream', 'AI 서비스에 닿지 못했습니다. 잠시 뒤 다시 시도해 주세요.', 502, extra);
 }
 
 /* ---------- 스트리밍 응답 (text/event-stream) ----------
@@ -1156,18 +1240,47 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
 
     const chat: Chat = { system: PING_SYS, user: '안녕하세요' };
     const started = Date.now();
+
+    /* 건너뛴 모델은 «모델명·사유·HTTP 코드»만 모은다. 타임아웃·5xx가 처음 나오는 순간
+       구글 공식 상태 확인을 «겹쳐» 띄워, 상태 확인 2초가 전체 시간 뒤에 더 붙지 않게 한다. */
+    const skipped: Skip[] = [];
+    const probe: { job: Promise<StatusOut> | null } = { job: null };   // onSkip 안에서 채워진다
+    const needStatus = (s: Skip) => {
+      if (!probe.job && (s.reason === SKIP_REASON.timeout || s.reason === SKIP_REASON.transient)) {
+        probe.job = checkGoogleStatus();
+      }
+    };
+
     let reply: Reply;
     try {
-      reply = await callGemini(key, chat, { web: false, json: false, maxTokens: 96, thinking: true });
+      reply = await callGemini(key, chat, { web: false, json: false, maxTokens: 16, thinking: false }, {
+        timeoutMs: PING_TIMEOUT_MS,
+        deadlineMs: PING_DEADLINE_MS,
+        skipped,
+        onSkip: needStatus,
+      });
     } catch (e) {
-      return chainFail(e, origin);
+      const extra: Record<string, unknown> = { ms: Date.now() - started };
+      if (skipped.length) extra.skipped = skipped;
+      if (probe.job) {
+        const g = await probe.job;
+        extra.google_status = g.text;
+        extra.google_status_url = g.url;
+      }
+      return chainFail(e, origin, extra);
     }
+
+    /* 체인은 이미 끝났다. 상태 확인이 떠 있으면 그 결과만 받아 붙는다(보통 1초 안쪽). */
+    const status = probe.job ? await probe.job : null;
     const text = String(reply.text || '').replace(/\s+/g, ' ').trim().slice(0, 160);
     return out(200, {
       ok: true,
-      reply: text || '인사말을 받았습니다.',
+      reply: text || '연결됐어요',
       model: reply.model,
       ms: Date.now() - started,
+      skipped,
+      google_status: status ? status.text : '',
+      google_status_url: status ? status.url : '',
     }, origin);
   }
 
