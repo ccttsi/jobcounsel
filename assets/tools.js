@@ -150,5 +150,6 @@ window.JC_LINKS=[
  ['labor','briefing'],['labor','reality'],['reality','briefing'],['reality','portals'],
  ['company','portals'],['thermometer','company'],['thermometer','emerging'],['thermometer','taxonomy'],['thermometer','briefing'],['company','interview'],['portals','surgery'],['surgery','interview'],['interview','talk'],
  ['law','manual'],['law','hud'],['law','interview'],
- ['portfolio','interview'],['portfolio','surgery'],['portfolio','law'],['portfolio','cert']
+ ['portfolio','interview'],['portfolio','surgery'],['portfolio','law'],['portfolio','cert'],
+ ['translator','talk'],['translator','taxonomy'],['translator','cert'],['translator','law']
 ];
