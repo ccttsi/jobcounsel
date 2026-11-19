@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T03:33:28+09:00",
+ "generated_at": "2026-11-20T03:40:24+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -93,12 +93,36 @@
   "2026-05-20",
   "2026-05-19",
   "2026-05-13",
-  "2026-05-12"
+  "2026-05-12",
+  "2026-05-07",
+  "2026-05-04"
  ],
  "themes": {
   "th-labor-policy": {
    "label": "고용정책과 감독",
    "items": [
+    {
+     "date": "2026-05-04",
+     "card_id": "c01",
+     "title": "고용위기지역·특별고용지원업종 지정 요건, 더 빨리 잡히게 바꾼다",
+     "kicker": "5.4 요건 개선 · 4.13 회의 후속 · 적시 대응",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156759710",
+     "published_at": "2026-05-04"
+    },
+    {
+     "date": "2026-05-07",
+     "card_id": "c01",
+     "title": "연 1,859시간 vs OECD 1,708시간 — 생산성으로 노동시간 줄인다",
+     "kicker": "1,859시간 · OECD +151시간 · 생산성 21위",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·산업통상부·중소벤처기업부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156760012",
+     "published_at": "2026-05-06"
+    },
     {
      "date": "2026-05-12",
      "card_id": "c01",
@@ -516,6 +540,165 @@
      "source_name": "고용노동부",
      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
      "published_at": "2026-11-13"
+    }
+   ]
+  },
+  "th-ai-labor": {
+   "label": "AI와 직무 재편",
+   "items": [
+    {
+     "date": "2026-05-07",
+     "card_id": "c02",
+     "title": "중소기업 근로자 AI 훈련, 우선지원대상기업은 전액 지원",
+     "kicker": "AI기초·AI융합 · 전액 지원 · 비대면 실시간",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국산업인력공단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156760013",
+     "published_at": "2026-05-06"
+    },
+    {
+     "date": "2026-07-30",
+     "card_id": "c01",
+     "title": "AI 고용 충격을 실시간으로 보는 '카나리아 대시보드'",
+     "kicker": "국책 연구기관 4곳 · 7월 29일 점검회의",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772576",
+     "published_at": "2026-07-29"
+    },
+    {
+     "date": "2026-09-12",
+     "card_id": "c01",
+     "title": "자동화 4년, 고용은 37% 늘었다 — 울산 조일공업",
+     "kicker": "고용 +37% · 2007년부터 로봇 자동화",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781328",
+     "published_at": "2026-09-11"
+    },
+    {
+     "date": "2026-09-21",
+     "card_id": "c03",
+     "title": "미국 일자리는 2035년까지 3.5% 늘고, 의료지원직이 13.3% 는다",
+     "kicker": "전체 +3.5% · 의료지원 +13.3% · 신규 일자리 3분의 1이 의료",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/total-employment-projected-to-grow-3-5-percent-between-2025-and-2035.htm",
+     "published_at": "2026-09-21"
+    },
+    {
+     "date": "2026-11-11",
+     "card_id": "c01",
+     "title": "AI 프리랜서 공고는 일을 다시 묶는다",
+     "kicker": "AI 공고 과업 수 많음 · 재묶음(rebundling) 확인",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+     "source_url": "https://arxiv.org/abs/2611.14708",
+     "published_at": "2026-11-10"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c04",
+     "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가",
+     "kicker": "청년 -28.5만명 중 -26.8만명이 AI 고노출",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "조선비즈",
+     "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/",
+     "published_at": "2026-11-12"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c03",
+     "title": "AI가 줄인 일은 먼저 보이고, 새 일은 5년 뒤에 보인다",
+     "kicker": "진입기업 급여 비중 42%(1998) · 5년 뒤에도 80%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (micro1·노스이스턴대)",
+     "source_url": "https://arxiv.org/abs/2611.17530",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-16",
+     "card_id": "c01",
+     "title": "세무사 시험 AI 부정행위, 올해 국가자격시험 전부 다시 본다",
+     "kicker": "2026년 국가자격시험 전수조사 · 응시제한 5년",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20256",
+     "published_at": "2026-11-15"
+    },
+    {
+     "date": "2026-11-16",
+     "card_id": "c02",
+     "title": "2030년 AI 일자리 순증 170만, 직무 재편은 4억3,550만명",
+     "kicker": "순증 170만 vs 직무 재편 4억3,550만",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261113151600017",
+     "published_at": "2026-11-15"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c01",
+     "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
+     "kicker": "활용률 +14.7%p · 절감률 9.2%",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261117075000002",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c02",
+     "title": "부정행위 제재 10년, 수능 시험장 스마트기기 총점검",
+     "kicker": "시험장 1,312곳 · 감독 인력 8,400명 추가",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "국무총리비서실(국무총리 한성숙)",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789631",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c06",
+     "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
+     "kicker": "자연실업률 +0.2%p 추정",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "미국 샌프란시스코 연준",
+     "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c01",
+     "title": "수능 당일, 필기구도 일괄 지급 — 부정행위 제재는 10년",
+     "kicker": "수험생 55만명 · 위급재난문자 08:30",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
+     "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c05",
+     "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
+     "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (micro1·노스이스턴대)",
+     "source_url": "https://arxiv.org/abs/2611.23354",
+     "published_at": "2026-11-17"
     }
    ]
   },
@@ -1557,154 +1740,6 @@
      "region": "kr",
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
-     "published_at": "2026-11-17"
-    }
-   ]
-  },
-  "th-ai-labor": {
-   "label": "AI와 직무 재편",
-   "items": [
-    {
-     "date": "2026-07-30",
-     "card_id": "c01",
-     "title": "AI 고용 충격을 실시간으로 보는 '카나리아 대시보드'",
-     "kicker": "국책 연구기관 4곳 · 7월 29일 점검회의",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772576",
-     "published_at": "2026-07-29"
-    },
-    {
-     "date": "2026-09-12",
-     "card_id": "c01",
-     "title": "자동화 4년, 고용은 37% 늘었다 — 울산 조일공업",
-     "kicker": "고용 +37% · 2007년부터 로봇 자동화",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781328",
-     "published_at": "2026-09-11"
-    },
-    {
-     "date": "2026-09-21",
-     "card_id": "c03",
-     "title": "미국 일자리는 2035년까지 3.5% 늘고, 의료지원직이 13.3% 는다",
-     "kicker": "전체 +3.5% · 의료지원 +13.3% · 신규 일자리 3분의 1이 의료",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/total-employment-projected-to-grow-3-5-percent-between-2025-and-2035.htm",
-     "published_at": "2026-09-21"
-    },
-    {
-     "date": "2026-11-11",
-     "card_id": "c01",
-     "title": "AI 프리랜서 공고는 일을 다시 묶는다",
-     "kicker": "AI 공고 과업 수 많음 · 재묶음(rebundling) 확인",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "arXiv (OpenAI 경제연구·Upwork)",
-     "source_url": "https://arxiv.org/abs/2611.14708",
-     "published_at": "2026-11-10"
-    },
-    {
-     "date": "2026-11-13",
-     "card_id": "c04",
-     "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가",
-     "kicker": "청년 -28.5만명 중 -26.8만명이 AI 고노출",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "조선비즈",
-     "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/",
-     "published_at": "2026-11-12"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c03",
-     "title": "AI가 줄인 일은 먼저 보이고, 새 일은 5년 뒤에 보인다",
-     "kicker": "진입기업 급여 비중 42%(1998) · 5년 뒤에도 80%",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "arXiv (micro1·노스이스턴대)",
-     "source_url": "https://arxiv.org/abs/2611.17530",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-16",
-     "card_id": "c01",
-     "title": "세무사 시험 AI 부정행위, 올해 국가자격시험 전부 다시 본다",
-     "kicker": "2026년 국가자격시험 전수조사 · 응시제한 5년",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20256",
-     "published_at": "2026-11-15"
-    },
-    {
-     "date": "2026-11-16",
-     "card_id": "c02",
-     "title": "2030년 AI 일자리 순증 170만, 직무 재편은 4억3,550만명",
-     "kicker": "순증 170만 vs 직무 재편 4억3,550만",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "연합뉴스",
-     "source_url": "https://www.yna.co.kr/view/AKR20261113151600017",
-     "published_at": "2026-11-15"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c01",
-     "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
-     "kicker": "활용률 +14.7%p · 절감률 9.2%",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "연합뉴스",
-     "source_url": "https://www.yna.co.kr/view/AKR20261117075000002",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c02",
-     "title": "부정행위 제재 10년, 수능 시험장 스마트기기 총점검",
-     "kicker": "시험장 1,312곳 · 감독 인력 8,400명 추가",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "국무총리비서실(국무총리 한성숙)",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789631",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c06",
-     "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
-     "kicker": "자연실업률 +0.2%p 추정",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "미국 샌프란시스코 연준",
-     "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c01",
-     "title": "수능 당일, 필기구도 일괄 지급 — 부정행위 제재는 10년",
-     "kicker": "수험생 55만명 · 위급재난문자 08:30",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "국무조정실",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
-     "published_at": "2026-11-18"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c05",
-     "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
-     "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "arXiv (micro1·노스이스턴대)",
-     "source_url": "https://arxiv.org/abs/2611.23354",
      "published_at": "2026-11-17"
     }
    ]
