@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T05:33:26+09:00",
+ "generated_at": "2026-11-20T05:38:00+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -161,12 +161,62 @@
   "2025-12-08",
   "2025-12-05",
   "2025-12-03",
-  "2025-12-01"
+  "2025-12-01",
+  "2025-11-29",
+  "2025-11-27",
+  "2025-11-25",
+  "2025-11-21",
+  "2025-11-18",
+  "2025-11-17"
  ],
  "themes": {
   "th-labor-policy": {
    "label": "고용정책과 감독",
    "items": [
+    {
+     "date": "2025-11-17",
+     "card_id": "c01",
+     "title": "한파 안전 5대 기본수칙 — 취약사업장 3만 곳 집중관리",
+     "kicker": "3만 개소 · 4천 개소 불시점검 · 외국인 2만 개소 18개 언어",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156728669",
+     "published_at": "2025-11-17"
+    },
+    {
+     "date": "2025-11-18",
+     "card_id": "c01",
+     "title": "포항·서산 고용위기 선제대응지역 지정 — 훈련·생계비 지원 상향",
+     "kicker": "포항·서산 · 배움카드 500만원 · 생계비 대부 2천만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156728960",
+     "published_at": "2025-11-18"
+    },
+    {
+     "date": "2025-11-25",
+     "card_id": "c01",
+     "title": "3분기 사고사망 457명 — 5인 미만·5억 미만 현장에서 늘었다",
+     "kicker": "457명(+3.2%) · 건설 210명 · 50인 미만 275명(+26명)",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156731280",
+     "published_at": "2025-11-25"
+    },
+    {
+     "date": "2025-11-29",
+     "card_id": "c01",
+     "title": "장관, 밤 10시 반 물류센터 불시점검 — 야간노동 건강권",
+     "kicker": "11.28 22:30 · 쿠팡 물류센터 실태점검 지시 · 건강진단·휴게시설",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156732176",
+     "published_at": "2025-11-28"
+    },
     {
      "date": "2025-12-01",
      "card_id": "c01",
@@ -983,9 +1033,300 @@
     }
    ]
   },
+  "th-youth-employment": {
+   "label": "청년 고용",
+   "items": [
+    {
+     "date": "2025-11-18",
+     "card_id": "c02",
+     "title": "기업 52.8%가 '전문성' 우선 — 전공·일경험·직무훈련 순으로 본다",
+     "kicker": "52.8% 전문성 · 전공 22.3% · 일경험 19.1%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156728910",
+     "published_at": "2025-11-18"
+    },
+    {
+     "date": "2025-11-21",
+     "card_id": "c01",
+     "title": "고용률 63.4% 역대 최고, 그래도 청년은 — '쉬었음' 40만명 넘어",
+     "kicker": "고용률 63.4% · 쉬었음 청년 40만명+ · 실업률 2.5%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "기획재정부·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156730710",
+     "published_at": "2025-11-21"
+    },
+    {
+     "date": "2025-12-08",
+     "card_id": "c01",
+     "title": "경제5단체-정부 「청년 일자리 첫걸음 실천 선언」 — 채용박람회 지역 확대",
+     "kicker": "경제5단체 · 채용박람회 지역 확대 · 상생협의회",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·산업통상부·중소벤처기업부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156733743",
+     "published_at": "2025-12-08"
+    },
+    {
+     "date": "2025-12-19",
+     "card_id": "c01",
+     "title": "청년 일경험 민관협의회 — '쉬는 청년' 40만명, 경력직 채용의 문턱",
+     "kicker": "쉬는 청년 40만명 · 우수기업 4곳 · 2026년 특화 프로그램",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156735950",
+     "published_at": "2025-12-19"
+    },
+    {
+     "date": "2025-12-26",
+     "card_id": "c01",
+     "title": "제2차 청년정책 기본계획 — 5대 분야 282개 과제, 청년위원 10%→20%",
+     "kicker": "282개 과제 · 청년위원 20% · 관계장관회의 신설",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "국무조정실·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156737006",
+     "published_at": "2025-12-26"
+    },
+    {
+     "date": "2026-01-02",
+     "card_id": "c02",
+     "title": "청년의 지역 정착, 계간지로 정책 과제 짚었다",
+     "kicker": "겨울호 통권 18호 · 수도권 쏠림 · 지역 대학 연계",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156737710",
+     "published_at": "2025-12-31"
+    },
+    {
+     "date": "2026-02-11",
+     "card_id": "c01",
+     "title": "해외 일경험 494명 — 18개 운영기관이 10개국에 보낸다",
+     "kicker": "494명 · 18개 기관 · 2~4개월",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국산업인력공단·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156743989",
+     "published_at": "2026-02-10"
+    },
+    {
+     "date": "2026-03-06",
+     "card_id": "c01",
+     "title": "청년 일자리 정책, 청년이 설계자로 나선다",
+     "kicker": "청년 30여 명 · 예산 수립 전 · 자유토론",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156747419",
+     "published_at": "2026-03-05"
+    },
+    {
+     "date": "2026-03-31",
+     "card_id": "c01",
+     "title": "커피 3잔 횡령 고소가 드러낸 것 — 청주 카페 기획감독 착수",
+     "kicker": "12,800원 고소 · 괴롭힘 진정 · 카페 전반 점검",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156752060",
+     "published_at": "2026-03-31"
+    },
+    {
+     "date": "2026-04-22",
+     "card_id": "c02",
+     "title": "K-뉴딜 아카데미 시동, 운영기관과 참여기업 모집",
+     "kicker": "4.22~5.22 모집 · 대기업 주도 · 추경 신설",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156756931",
+     "published_at": "2026-04-21"
+    },
+    {
+     "date": "2026-04-30",
+     "card_id": "c01",
+     "title": "청년뉴딜 — 청년 10만명에게 훈련·일경험·회복 프로그램",
+     "kicker": "고용률 43.5% · 171만명 · K-뉴딜 1만명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·재정경제부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156759148",
+     "published_at": "2026-04-29"
+    },
+    {
+     "date": "2026-06-09",
+     "card_id": "c01",
+     "title": "청주 프랜차이즈 30곳 감독, 49명 임금 300만원 체불 적발",
+     "kicker": "30곳 · 49명 · 약 300만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156765567",
+     "published_at": "2026-06-08"
+    },
+    {
+     "date": "2026-06-11",
+     "card_id": "c01",
+     "title": "음식점·카페 아르바이트, 처벌보다 예방으로 — 업계 7개 단체와 머리 맞대",
+     "kicker": "업계 7개 단체 · 노무교육 확대 · 예방 지원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156765962",
+     "published_at": "2026-06-10"
+    },
+    {
+     "date": "2026-07-17",
+     "card_id": "c01",
+     "title": "청년 일경험 4.5만명으로 늘린다 — SK하이닉스·네이버도 함께",
+     "kicker": "4.5만명 · 3년 14만명 · 특화 1,500명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771124",
+     "published_at": "2026-07-16"
+    },
+    {
+     "date": "2026-08-14",
+     "card_id": "c01",
+     "title": "청년내일저축계좌 3년, 월 소득 52만원 늘고 상용직 4.1%p 올랐다",
+     "kicker": "183만→235만원 · 상용직 41.1%→45.2%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774327",
+     "published_at": "2026-08-13"
+    },
+    {
+     "date": "2026-08-25",
+     "card_id": "c01",
+     "title": "임금근로 일자리 2,082만8천개, 60대는 늘고 20대는 줄었다",
+     "kicker": "전체 +29.2만개 · 60대 +23.3만 · 20대 -7.6만",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775272",
+     "published_at": "2026-08-24"
+    },
+    {
+     "date": "2026-08-29",
+     "card_id": "c01",
+     "title": "청년일자리 회복방안 — 2030년까지 전문인력·일자리 각 30만",
+     "kicker": "20~24세 고용률 42.6% · 지방 중소기업 2년 월 최대 100만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775942",
+     "published_at": "2026-08-28"
+    },
+    {
+     "date": "2026-09-04",
+     "card_id": "c01",
+     "title": "10대 그룹 인사책임자 만난 노동부 장관, 청년 채용 확대를 요청",
+     "kicker": "10대 그룹 CHO · K-뉴딜 아카데미 확대",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780092",
+     "published_at": "2026-09-03"
+    },
+    {
+     "date": "2026-09-16",
+     "card_id": "c01",
+     "title": "청년 70여 명이 장관 앞에서 말한 것",
+     "kicker": "청년 70여 명 · 현장 발제 5명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781760",
+     "published_at": "2026-09-15"
+    },
+    {
+     "date": "2026-09-22",
+     "card_id": "c02",
+     "title": "AI 시대 청년 일자리, 사회적기업 일경험·창업에서 답을 찾다",
+     "kicker": "정부·기업·학계·청년 200명 · 2개 세션",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782925",
+     "published_at": "2026-09-22"
+    },
+    {
+     "date": "2026-10-17",
+     "card_id": "c01",
+     "title": "9월 취업자 +11.3만, 청년은 47개월째 줄었다",
+     "kicker": "15~64세 고용률 70.6% · 청년 44.0%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156785404",
+     "published_at": "2026-10-16"
+    },
+    {
+     "date": "2026-11-05",
+     "card_id": "c01",
+     "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
+     "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
+     "published_at": "2026-11-04"
+    },
+    {
+     "date": "2026-11-12",
+     "card_id": "c01",
+     "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
+     "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
+     "published_at": "2026-11-11"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c03",
+     "title": "범부처 지원단이 청년 취업지원 현장을 직접 봤다",
+     "kicker": "민생안정지원단 청년 취업지원 점검",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
+     "published_at": "2026-11-12"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c02",
+     "title": "취업자 넉 달째 두 자릿수, 실질임금도 플러스로",
+     "kicker": "10월 취업자 +13.9만명 · 8월 실질임금 +0.8%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
+     "published_at": "2026-11-13"
+    }
+   ]
+  },
   "th-skills-training": {
    "label": "재취업과 직업훈련",
    "items": [
+    {
+     "date": "2025-11-25",
+     "card_id": "c02",
+     "title": "폴리텍-부천시, 중장년 경력전환 맞손 — 내년부터 지역 맞춤 교육",
+     "kicker": "11.25 MOU · 지역산업 연계 실무교육 · 취업연계·상담",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국폴리텍대학",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156731283",
+     "published_at": "2025-11-25"
+    },
     {
      "date": "2025-12-03",
      "card_id": "c02",
@@ -1274,459 +1615,20 @@
     }
    ]
   },
-  "th-youth-employment": {
-   "label": "청년 고용",
-   "items": [
-    {
-     "date": "2025-12-08",
-     "card_id": "c01",
-     "title": "경제5단체-정부 「청년 일자리 첫걸음 실천 선언」 — 채용박람회 지역 확대",
-     "kicker": "경제5단체 · 채용박람회 지역 확대 · 상생협의회",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·산업통상부·중소벤처기업부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156733743",
-     "published_at": "2025-12-08"
-    },
-    {
-     "date": "2025-12-19",
-     "card_id": "c01",
-     "title": "청년 일경험 민관협의회 — '쉬는 청년' 40만명, 경력직 채용의 문턱",
-     "kicker": "쉬는 청년 40만명 · 우수기업 4곳 · 2026년 특화 프로그램",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156735950",
-     "published_at": "2025-12-19"
-    },
-    {
-     "date": "2025-12-26",
-     "card_id": "c01",
-     "title": "제2차 청년정책 기본계획 — 5대 분야 282개 과제, 청년위원 10%→20%",
-     "kicker": "282개 과제 · 청년위원 20% · 관계장관회의 신설",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "국무조정실·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156737006",
-     "published_at": "2025-12-26"
-    },
-    {
-     "date": "2026-01-02",
-     "card_id": "c02",
-     "title": "청년의 지역 정착, 계간지로 정책 과제 짚었다",
-     "kicker": "겨울호 통권 18호 · 수도권 쏠림 · 지역 대학 연계",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "한국고용정보원",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156737710",
-     "published_at": "2025-12-31"
-    },
-    {
-     "date": "2026-02-11",
-     "card_id": "c01",
-     "title": "해외 일경험 494명 — 18개 운영기관이 10개국에 보낸다",
-     "kicker": "494명 · 18개 기관 · 2~4개월",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "한국산업인력공단·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156743989",
-     "published_at": "2026-02-10"
-    },
-    {
-     "date": "2026-03-06",
-     "card_id": "c01",
-     "title": "청년 일자리 정책, 청년이 설계자로 나선다",
-     "kicker": "청년 30여 명 · 예산 수립 전 · 자유토론",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156747419",
-     "published_at": "2026-03-05"
-    },
-    {
-     "date": "2026-03-31",
-     "card_id": "c01",
-     "title": "커피 3잔 횡령 고소가 드러낸 것 — 청주 카페 기획감독 착수",
-     "kicker": "12,800원 고소 · 괴롭힘 진정 · 카페 전반 점검",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156752060",
-     "published_at": "2026-03-31"
-    },
-    {
-     "date": "2026-04-22",
-     "card_id": "c02",
-     "title": "K-뉴딜 아카데미 시동, 운영기관과 참여기업 모집",
-     "kicker": "4.22~5.22 모집 · 대기업 주도 · 추경 신설",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·산업통상부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156756931",
-     "published_at": "2026-04-21"
-    },
-    {
-     "date": "2026-04-30",
-     "card_id": "c01",
-     "title": "청년뉴딜 — 청년 10만명에게 훈련·일경험·회복 프로그램",
-     "kicker": "고용률 43.5% · 171만명 · K-뉴딜 1만명",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·재정경제부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156759148",
-     "published_at": "2026-04-29"
-    },
-    {
-     "date": "2026-06-09",
-     "card_id": "c01",
-     "title": "청주 프랜차이즈 30곳 감독, 49명 임금 300만원 체불 적발",
-     "kicker": "30곳 · 49명 · 약 300만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156765567",
-     "published_at": "2026-06-08"
-    },
-    {
-     "date": "2026-06-11",
-     "card_id": "c01",
-     "title": "음식점·카페 아르바이트, 처벌보다 예방으로 — 업계 7개 단체와 머리 맞대",
-     "kicker": "업계 7개 단체 · 노무교육 확대 · 예방 지원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156765962",
-     "published_at": "2026-06-10"
-    },
-    {
-     "date": "2026-07-17",
-     "card_id": "c01",
-     "title": "청년 일경험 4.5만명으로 늘린다 — SK하이닉스·네이버도 함께",
-     "kicker": "4.5만명 · 3년 14만명 · 특화 1,500명",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771124",
-     "published_at": "2026-07-16"
-    },
-    {
-     "date": "2026-08-14",
-     "card_id": "c01",
-     "title": "청년내일저축계좌 3년, 월 소득 52만원 늘고 상용직 4.1%p 올랐다",
-     "kicker": "183만→235만원 · 상용직 41.1%→45.2%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "보건복지부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774327",
-     "published_at": "2026-08-13"
-    },
-    {
-     "date": "2026-08-25",
-     "card_id": "c01",
-     "title": "임금근로 일자리 2,082만8천개, 60대는 늘고 20대는 줄었다",
-     "kicker": "전체 +29.2만개 · 60대 +23.3만 · 20대 -7.6만",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775272",
-     "published_at": "2026-08-24"
-    },
-    {
-     "date": "2026-08-29",
-     "card_id": "c01",
-     "title": "청년일자리 회복방안 — 2030년까지 전문인력·일자리 각 30만",
-     "kicker": "20~24세 고용률 42.6% · 지방 중소기업 2년 월 최대 100만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775942",
-     "published_at": "2026-08-28"
-    },
-    {
-     "date": "2026-09-04",
-     "card_id": "c01",
-     "title": "10대 그룹 인사책임자 만난 노동부 장관, 청년 채용 확대를 요청",
-     "kicker": "10대 그룹 CHO · K-뉴딜 아카데미 확대",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780092",
-     "published_at": "2026-09-03"
-    },
-    {
-     "date": "2026-09-16",
-     "card_id": "c01",
-     "title": "청년 70여 명이 장관 앞에서 말한 것",
-     "kicker": "청년 70여 명 · 현장 발제 5명",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781760",
-     "published_at": "2026-09-15"
-    },
-    {
-     "date": "2026-09-22",
-     "card_id": "c02",
-     "title": "AI 시대 청년 일자리, 사회적기업 일경험·창업에서 답을 찾다",
-     "kicker": "정부·기업·학계·청년 200명 · 2개 세션",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782925",
-     "published_at": "2026-09-22"
-    },
-    {
-     "date": "2026-10-17",
-     "card_id": "c01",
-     "title": "9월 취업자 +11.3만, 청년은 47개월째 줄었다",
-     "kicker": "15~64세 고용률 70.6% · 청년 44.0%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156785404",
-     "published_at": "2026-10-16"
-    },
-    {
-     "date": "2026-11-05",
-     "card_id": "c01",
-     "title": "'쉬었음' 255만1천명, 30대는 원하는 일자리가 없어서",
-     "kicker": "30대 30.3만명 중 32.3%가 '일자리 없음'",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787907",
-     "published_at": "2026-11-04"
-    },
-    {
-     "date": "2026-11-12",
-     "card_id": "c01",
-     "title": "취업자 +13.9만, 청년은 -19.6만 — 48개월째 줄었다",
-     "kicker": "청년 고용률 42.9% · 15~64세 70.4%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://mods.go.kr/board.es?act=view&bid=210&list_no=447893&mainXml=Y&mid=a10301010000",
-     "published_at": "2026-11-11"
-    },
-    {
-     "date": "2026-11-13",
-     "card_id": "c03",
-     "title": "범부처 지원단이 청년 취업지원 현장을 직접 봤다",
-     "kicker": "민생안정지원단 청년 취업지원 점검",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
-     "published_at": "2026-11-12"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c02",
-     "title": "취업자 넉 달째 두 자릿수, 실질임금도 플러스로",
-     "kicker": "10월 취업자 +13.9만명 · 8월 실질임금 +0.8%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
-     "published_at": "2026-11-13"
-    }
-   ]
-  },
-  "th-ai-labor": {
-   "label": "AI와 직무 재편",
-   "items": [
-    {
-     "date": "2025-12-10",
-     "card_id": "c02",
-     "title": "AI 고용서비스 윤리원칙 — 4대 가치·10대 원칙, 설명 가능성과 공정성",
-     "kicker": "4대 가치 · 10대 원칙 · 운영 가이드라인 예고",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "한국고용정보원",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156734419",
-     "published_at": "2025-12-10"
-    },
-    {
-     "date": "2026-01-08",
-     "card_id": "c01",
-     "title": "AI 캠퍼스로 전문인력 1만명 — 비수도권은 월 60만원 수당",
-     "kicker": "1만명 · 연 1,300억 · 월 최대 60만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·한국기술교육대",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156738769",
-     "published_at": "2026-01-07"
-    },
-    {
-     "date": "2026-02-06",
-     "card_id": "c02",
-     "title": "폴리텍에 협동로봇 4대 들어온다 — 피지컬 AI 인재 양성",
-     "kicker": "2.6 기증식 · 협동로봇 4대 · 실습 장비 무상 지원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "한국폴리텍대학·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156743452",
-     "published_at": "2026-02-06"
-    },
-    {
-     "date": "2026-05-07",
-     "card_id": "c02",
-     "title": "중소기업 근로자 AI 훈련, 우선지원대상기업은 전액 지원",
-     "kicker": "AI기초·AI융합 · 전액 지원 · 비대면 실시간",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·한국산업인력공단",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156760013",
-     "published_at": "2026-05-06"
-    },
-    {
-     "date": "2026-07-30",
-     "card_id": "c01",
-     "title": "AI 고용 충격을 실시간으로 보는 '카나리아 대시보드'",
-     "kicker": "국책 연구기관 4곳 · 7월 29일 점검회의",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772576",
-     "published_at": "2026-07-29"
-    },
-    {
-     "date": "2026-09-12",
-     "card_id": "c01",
-     "title": "자동화 4년, 고용은 37% 늘었다 — 울산 조일공업",
-     "kicker": "고용 +37% · 2007년부터 로봇 자동화",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781328",
-     "published_at": "2026-09-11"
-    },
-    {
-     "date": "2026-09-21",
-     "card_id": "c03",
-     "title": "미국 일자리는 2035년까지 3.5% 늘고, 의료지원직이 13.3% 는다",
-     "kicker": "전체 +3.5% · 의료지원 +13.3% · 신규 일자리 3분의 1이 의료",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/total-employment-projected-to-grow-3-5-percent-between-2025-and-2035.htm",
-     "published_at": "2026-09-21"
-    },
-    {
-     "date": "2026-11-11",
-     "card_id": "c01",
-     "title": "AI 프리랜서 공고는 일을 다시 묶는다",
-     "kicker": "AI 공고 과업 수 많음 · 재묶음(rebundling) 확인",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "arXiv (OpenAI 경제연구·Upwork)",
-     "source_url": "https://arxiv.org/abs/2611.14708",
-     "published_at": "2026-11-10"
-    },
-    {
-     "date": "2026-11-13",
-     "card_id": "c04",
-     "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가",
-     "kicker": "청년 -28.5만명 중 -26.8만명이 AI 고노출",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "조선비즈",
-     "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/",
-     "published_at": "2026-11-12"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c03",
-     "title": "AI가 줄인 일은 먼저 보이고, 새 일은 5년 뒤에 보인다",
-     "kicker": "진입기업 급여 비중 42%(1998) · 5년 뒤에도 80%",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "arXiv (micro1·노스이스턴대)",
-     "source_url": "https://arxiv.org/abs/2611.17530",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-16",
-     "card_id": "c01",
-     "title": "세무사 시험 AI 부정행위, 올해 국가자격시험 전부 다시 본다",
-     "kicker": "2026년 국가자격시험 전수조사 · 응시제한 5년",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20256",
-     "published_at": "2026-11-15"
-    },
-    {
-     "date": "2026-11-16",
-     "card_id": "c02",
-     "title": "2030년 AI 일자리 순증 170만, 직무 재편은 4억3,550만명",
-     "kicker": "순증 170만 vs 직무 재편 4억3,550만",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "연합뉴스",
-     "source_url": "https://www.yna.co.kr/view/AKR20261113151600017",
-     "published_at": "2026-11-15"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c01",
-     "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
-     "kicker": "활용률 +14.7%p · 절감률 9.2%",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "연합뉴스",
-     "source_url": "https://www.yna.co.kr/view/AKR20261117075000002",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c02",
-     "title": "부정행위 제재 10년, 수능 시험장 스마트기기 총점검",
-     "kicker": "시험장 1,312곳 · 감독 인력 8,400명 추가",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "국무총리비서실(국무총리 한성숙)",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789631",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c06",
-     "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
-     "kicker": "자연실업률 +0.2%p 추정",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "미국 샌프란시스코 연준",
-     "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c01",
-     "title": "수능 당일, 필기구도 일괄 지급 — 부정행위 제재는 10년",
-     "kicker": "수험생 55만명 · 위급재난문자 08:30",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "국무조정실",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
-     "published_at": "2026-11-18"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c05",
-     "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
-     "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "arXiv (micro1·노스이스턴대)",
-     "source_url": "https://arxiv.org/abs/2611.23354",
-     "published_at": "2026-11-17"
-    }
-   ]
-  },
   "th-wage-income": {
    "label": "임금과 소득",
    "items": [
+    {
+     "date": "2025-11-27",
+     "card_id": "c01",
+     "title": "일·생활 균형 우수기업 183곳 — 주35시간제와 출산지원 사례",
+     "kicker": "183개소 · 공공조달 가점·감독 유예 · 주35시간제",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "중소벤처기업부·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156731901",
+     "published_at": "2025-11-27"
+    },
     {
      "date": "2025-12-16",
      "card_id": "c01",
@@ -2056,6 +1958,198 @@
      "source_name": "한국개발연구원(KDI)·재정경제부",
      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396",
      "published_at": "2026-11-16"
+    }
+   ]
+  },
+  "th-ai-labor": {
+   "label": "AI와 직무 재편",
+   "items": [
+    {
+     "date": "2025-12-10",
+     "card_id": "c02",
+     "title": "AI 고용서비스 윤리원칙 — 4대 가치·10대 원칙, 설명 가능성과 공정성",
+     "kicker": "4대 가치 · 10대 원칙 · 운영 가이드라인 예고",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156734419",
+     "published_at": "2025-12-10"
+    },
+    {
+     "date": "2026-01-08",
+     "card_id": "c01",
+     "title": "AI 캠퍼스로 전문인력 1만명 — 비수도권은 월 60만원 수당",
+     "kicker": "1만명 · 연 1,300억 · 월 최대 60만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국기술교육대",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156738769",
+     "published_at": "2026-01-07"
+    },
+    {
+     "date": "2026-02-06",
+     "card_id": "c02",
+     "title": "폴리텍에 협동로봇 4대 들어온다 — 피지컬 AI 인재 양성",
+     "kicker": "2.6 기증식 · 협동로봇 4대 · 실습 장비 무상 지원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국폴리텍대학·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156743452",
+     "published_at": "2026-02-06"
+    },
+    {
+     "date": "2026-05-07",
+     "card_id": "c02",
+     "title": "중소기업 근로자 AI 훈련, 우선지원대상기업은 전액 지원",
+     "kicker": "AI기초·AI융합 · 전액 지원 · 비대면 실시간",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국산업인력공단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156760013",
+     "published_at": "2026-05-06"
+    },
+    {
+     "date": "2026-07-30",
+     "card_id": "c01",
+     "title": "AI 고용 충격을 실시간으로 보는 '카나리아 대시보드'",
+     "kicker": "국책 연구기관 4곳 · 7월 29일 점검회의",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772576",
+     "published_at": "2026-07-29"
+    },
+    {
+     "date": "2026-09-12",
+     "card_id": "c01",
+     "title": "자동화 4년, 고용은 37% 늘었다 — 울산 조일공업",
+     "kicker": "고용 +37% · 2007년부터 로봇 자동화",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781328",
+     "published_at": "2026-09-11"
+    },
+    {
+     "date": "2026-09-21",
+     "card_id": "c03",
+     "title": "미국 일자리는 2035년까지 3.5% 늘고, 의료지원직이 13.3% 는다",
+     "kicker": "전체 +3.5% · 의료지원 +13.3% · 신규 일자리 3분의 1이 의료",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/total-employment-projected-to-grow-3-5-percent-between-2025-and-2035.htm",
+     "published_at": "2026-09-21"
+    },
+    {
+     "date": "2026-11-11",
+     "card_id": "c01",
+     "title": "AI 프리랜서 공고는 일을 다시 묶는다",
+     "kicker": "AI 공고 과업 수 많음 · 재묶음(rebundling) 확인",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+     "source_url": "https://arxiv.org/abs/2611.14708",
+     "published_at": "2026-11-10"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c04",
+     "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가",
+     "kicker": "청년 -28.5만명 중 -26.8만명이 AI 고노출",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "조선비즈",
+     "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/",
+     "published_at": "2026-11-12"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c03",
+     "title": "AI가 줄인 일은 먼저 보이고, 새 일은 5년 뒤에 보인다",
+     "kicker": "진입기업 급여 비중 42%(1998) · 5년 뒤에도 80%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (micro1·노스이스턴대)",
+     "source_url": "https://arxiv.org/abs/2611.17530",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-16",
+     "card_id": "c01",
+     "title": "세무사 시험 AI 부정행위, 올해 국가자격시험 전부 다시 본다",
+     "kicker": "2026년 국가자격시험 전수조사 · 응시제한 5년",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20256",
+     "published_at": "2026-11-15"
+    },
+    {
+     "date": "2026-11-16",
+     "card_id": "c02",
+     "title": "2030년 AI 일자리 순증 170만, 직무 재편은 4억3,550만명",
+     "kicker": "순증 170만 vs 직무 재편 4억3,550만",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261113151600017",
+     "published_at": "2026-11-15"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c01",
+     "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
+     "kicker": "활용률 +14.7%p · 절감률 9.2%",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261117075000002",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c02",
+     "title": "부정행위 제재 10년, 수능 시험장 스마트기기 총점검",
+     "kicker": "시험장 1,312곳 · 감독 인력 8,400명 추가",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "국무총리비서실(국무총리 한성숙)",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789631",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c06",
+     "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
+     "kicker": "자연실업률 +0.2%p 추정",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "미국 샌프란시스코 연준",
+     "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c01",
+     "title": "수능 당일, 필기구도 일괄 지급 — 부정행위 제재는 10년",
+     "kicker": "수험생 55만명 · 위급재난문자 08:30",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
+     "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c05",
+     "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
+     "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (micro1·노스이스턴대)",
+     "source_url": "https://arxiv.org/abs/2611.23354",
+     "published_at": "2026-11-17"
     }
    ]
   },
