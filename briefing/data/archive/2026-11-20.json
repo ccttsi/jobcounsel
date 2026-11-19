@@ -1,0 +1,1614 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-11-20T07:05:00+09:00",
+ "edition": {
+  "date": "2026-11-20",
+  "weekday": "금",
+  "title": "경력 멈춘 96만명, 절반 가까이 10년 넘게",
+  "subtitle": "기혼여성 고용률 66.2%·중소기업 AI 2조원·실근로 36.2시간을 한 장으로",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_women_rate",
+   "label": "기혼여성 고용률",
+   "value": 66.2,
+   "unit": "%",
+   "value_text": "66.2%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 상반기",
+   "delta_from": "전년대비 +1.9%p",
+   "source_id": "src_kostat_women_2026h1",
+   "track": "B",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "spark": null
+  },
+  {
+   "id": "hm_career_break",
+   "label": "경력보유여성",
+   "value": 96,
+   "unit": "만명",
+   "value_text": "96만명",
+   "base_value": 715,
+   "base_unit": "만명(15~54세 기혼여성)",
+   "direction": "down",
+   "period": "2026년 상반기",
+   "delta_from": "전년대비 -14만5천명",
+   "source_id": "src_kostat_women_2026h1",
+   "track": "B",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "spark": null
+  },
+  {
+   "id": "hm_break_10y",
+   "label": "10년 이상 경력 공백",
+   "value": 43.1,
+   "unit": "%",
+   "value_text": "43.1%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "flat",
+   "period": "2026년 상반기",
+   "delta_from": "경력보유여성 중",
+   "source_id": "src_kostat_women_2026h1",
+   "track": "B",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "spark": null
+  },
+  {
+   "id": "hm_sme_smart_factory",
+   "label": "중소 스마트공장 5년 목표",
+   "value": 2000,
+   "unit": "개",
+   "value_text": "2,000개",
+   "base_value": 20000,
+   "base_unit": "억원(5년 조성)",
+   "direction": "up",
+   "period": "2027~2031년",
+   "delta_from": "중기부 상생협약",
+   "source_id": "src_mss_ai_alliance_20261119",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "spark": null
+  }
+ ],
+ "main_themes": [
+  {
+   "theme_id": "th-ai-job-restructuring",
+   "title": "AI 직무 재편",
+   "summary": "AI가 일을 없애는가보다 일을 다시 묶는 쪽으로 움직인다. 직무 단위가 흔들리면 상담에서 묻는 것도 직업명이 아니라 \"어떤 일 묶음을 할 수 있는가\"로 바뀐다.",
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "items": [
+    {
+     "issue_id": "iss-legal-ai-specialization",
+     "title": "AI가 법률 일을 다시 나눈다 — 자기대리 16.8%, 로펌 매출 +13%(arXiv:2611.23354)",
+     "source": {
+      "source_name": "arXiv (micro1·노스이스턴대)",
+      "source_url": "https://arxiv.org/abs/2611.23354"
+     },
+     "license": {
+      "name": "CC BY 4.0 (Attribution 4.0 International)",
+      "type": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "scope": "논문 본문(초록·본문 텍스트)",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-19",
+      "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
+      "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
+     },
+     "first_seen": "2026-11-19",
+     "last_updated": "2026-11-19",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-bok-ai-productivity",
+     "title": "한은 분석 — AI로 아낀 주간 3.7시간, 그 63%는 다시 업무로",
+     "source": {
+      "source_name": "연합뉴스",
+      "source_url": "https://www.yna.co.kr/view/AKR20261117075000002"
+     },
+     "license": {
+      "name": "언론사 저작권 — 본문 복제·번역 금지",
+      "type": "PRESS",
+      "url": null,
+      "scope": "기사 본문·제목·이미지",
+      "attribution_required": true,
+      "commercial_use": "not_allowed",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-19",
+      "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+      "attribution_text": "수치 출처: 한국은행 BOK 이슈노트(연합뉴스 2026-11-17 보도)"
+     },
+     "first_seen": "2026-11-19",
+     "last_updated": "2026-11-19",
+     "track": "B"
+    },
+    {
+     "issue_id": "iss-ai-green-paper",
+     "title": "AI시대 새로운 사회계약을 위한 녹서 — 국민참여창구 운영(2026.11.17~12.7)",
+     "source": {
+      "source_name": "고용노동부",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516"
+     },
+     "license": {
+      "name": "공공누리 미부착(사전 협의 필요)",
+      "type": "KOGL-NONE",
+      "url": null,
+      "scope": "보도자료 본문·첨부 이미지",
+      "attribution_required": true,
+      "commercial_use": "not_allowed",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-18",
+      "evidence": "정책브리핑 해당 보도자료 페이지 하단 고지 직접 확인(2026-11-18): '이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.'",
+      "attribution_text": "출처: 고용노동부 「인공지능(AI) 시대 고용노동정책, 국민이 질문한다」(2026.11.17) — 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     },
+     "first_seen": "2026-11-18",
+     "last_updated": "2026-11-18",
+     "track": "B"
+    },
+    {
+     "issue_id": "iss-ai-exam-integrity",
+     "title": "AI 악용 시험 부정행위 대책 — 국가자격시험제도 전반 재검토 지시",
+     "source": {
+      "source_name": "국무조정실",
+      "source_url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975789"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "verified": true,
+      "verified_at": "2026-11-17"
+     },
+     "first_seen": "2026-11-17",
+     "last_updated": "2026-11-19",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-ai-two-margins",
+     "title": "AI 시대 고용의 두 문턱 — 감소가 창출보다 먼저 잡힌다(arXiv:2611.17530)",
+     "source": {
+      "source_name": "arXiv (micro1·노스이스턴대)",
+      "source_url": "https://arxiv.org/abs/2611.17530"
+     },
+     "license": {
+      "type": "CC-BY-4.0",
+      "name": "CC BY 4.0 (Attribution 4.0 International)",
+      "verified": true,
+      "verified_at": "2026-11-16"
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-ai-freelance-rebundling",
+     "title": "AI 시대 프리랜스 일의 재묶음(arXiv:2611.14708)",
+     "source": {
+      "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+      "source_url": "https://arxiv.org/abs/2611.14708"
+     },
+     "license": {
+      "type": "CC-BY-4.0",
+      "name": "CC BY 4.0 (Attribution 4.0 International)",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution_text": "Chin, C., Kala, S., Kunievsky, N., Liu, T., Richmond, A. M., & Shan, C. (2026), The Rebundling of Freelance Work in the AI Age, arXiv:2611.14708, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분).",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.14708)에 'License: CC BY 4.0'와 creativecommons.org/licenses/by/4.0/ 링크 표시 확인(2026-11-16). CC BY-NC-SA·arXiv 기본 라이선스 논문은 수록 제외."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-ai-occupations-projection",
+     "title": "인공지능·정보기술과 고용, 2024~2034년(미국 노동통계국)",
+     "source": {
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_url": "https://www.bls.gov/opub/ted/2026/artificial-intelligence-information-technology-and-employment-2024-34.htm"
+     },
+     "license": {
+      "type": "PUBLIC-DOMAIN",
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "url": "https://www.bls.gov/opub/copyright-information.htm",
+      "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Artificial intelligence, information technology, and employment, 2024–34” (July 16, 2026)",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "BLS 저작권 안내(2026-11-16 확인): BLS 발행물 전체가 퍼블릭 도메인이며 사진·삽화 등 기존 저작권 자료만 예외. 이 글은 도표를 글자로 옮겨 실었고 그림은 싣지 않음."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    }
+   ]
+  },
+  {
+   "theme_id": "th-youth-employment-gap",
+   "title": "청년 고용 사각지대",
+   "summary": "취업자 총수는 늘어도 청년층만 빠지는 구조가 이어진다. 청년 고용률·구직단념·첫 일자리 정책을 한 묶음으로 보고, 상담에서는 \"몇 살이라서\"가 아니라 \"어느 업종·직무에서 빠졌는지\"를 먼저 확인한다.",
+   "updated_at": "2026-11-19T07:06:00+09:00",
+   "items": [
+    {
+     "issue_id": "iss-kdi-outlook-2026h2",
+     "title": "KDI 2026년 하반기 경제전망 — 2027년 취업자 +20만, 20대 고용률은 여전히 낮다",
+     "source": {
+      "source_name": "재정경제부·한국개발연구원(KDI)",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757"
+     },
+     "license": {
+      "name": "공공누리 제1유형(출처표시)",
+      "type": "KOGL-1",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "scope": "텍스트 한정(사진·이미지 제외)",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-19",
+      "evidence": "정책브리핑 해당 페이지 하단 '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다' 고지 확인(2026-11-19).",
+      "attribution_text": "출처: 재정경제부·KDI 「KDI 경제전망(2026. 하반기)」(2026.11.18, 정책브리핑), 공공누리 제1유형. 속기 텍스트만 이용했습니다."
+     },
+     "first_seen": "2026-11-19",
+     "last_updated": "2026-11-19",
+     "track": "A"
+    },
+    {
+     "issue_id": null,
+     "title": "2026년 10월 고용동향",
+     "source": {
+      "source_name": "국가데이터처",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156788701"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "attribution_text": "출처: 국가데이터처 「2026년 10월 고용동향」(브리핑룸 부처 브리핑, 2026.11.11), 공공누리 제1유형. 텍스트 일부(질의응답)는 옮기지 않았습니다.",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "정책브리핑 해당 페이지 하단 고지: '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.' (2026-11-16 확인)"
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": null,
+     "title": "\"청년 첫 경력, 가장 확실한 투자\" 대담한 재정 투자와 세심한 정책 설계로 청년일자리 회복 추진 가속화",
+     "source": {
+      "source_name": "고용노동부",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783711"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "attribution_text": "출처: 고용노동부 「2026년 제2차 청년고용촉진 특별위원회 개최」 보도자료(2026.9.30), 공공누리 제1유형. 붙임(회의 계획·장관 인사말)과 담당부서 표는 옮기지 않았습니다.",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다' 고지 확인(2026-11-16). 고용노동부 보도자료 전재본."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": null,
+     "title": "청년 노동자의 장시간·공짜 노동 근절을 위한 장시간 노동 기획감독 실시",
+     "source": {
+      "source_name": "고용노동부",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787696"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "attribution_text": "출처: 고용노동부 「청년 노동자의 장시간·공짜 노동 근절을 위한 장시간 노동 기획감독 실시」 보도자료(2026.11.3), 공공누리 제1유형. 담당부서 표는 옮기지 않았습니다.",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '텍스트에 한하여 공공누리 제1유형(출처표시)' 고지 확인(2026-11-16). 첨부 PDF 본문과 페이지 본문 대조."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": null,
+     "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가 채웠다(한국은행 분석 보도)",
+     "source": {
+      "source_name": "조선비즈",
+      "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/"
+     },
+     "license": {
+      "name": "언론사 저작권 — 본문 복제·번역 금지",
+      "type": "PRESS",
+      "url": null,
+      "scope": "기사 본문·제목·이미지",
+      "attribution_required": true,
+      "commercial_use": "not_allowed",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+      "attribution_text": "수치 출처: 한국은행 조사국 분석(조선비즈 2026-11-12 보도)"
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "B"
+    }
+   ]
+  },
+  {
+   "theme_id": "th-employment-indicators-ui",
+   "title": "고용 지표·실업급여 변화",
+   "summary": "구인·실업·고용보험·임금 지표와 실업급여 수급 조건이 함께 움직인다. 수치 하나가 아니라 지표 간 방향이 어긋나는 지점을 읽어야 상담에서 \"지금 지원해도 되는가\"를 판단할 수 있다.",
+   "updated_at": "2026-11-18T07:10:24+09:00",
+   "items": [
+    {
+     "issue_id": "iss-imf-article4-2026",
+     "title": "2026년 IMF 연례협의 — 잠재성장률 2.5%·경활참가율·임금격차·사회안전망 권고",
+     "source": {
+      "source_name": "국제통화기금(IMF)·재정경제부",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604"
+     },
+     "license": {
+      "name": "공공누리 제1유형(출처표시)",
+      "type": "KOGL-1",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "scope": "텍스트 한정(사진·이미지·일러스트·동영상 제외)",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-18",
+      "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-18): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다.'",
+      "attribution_text": "출처: 재정경제부 「2026년 IMF 연례협의 결과 주요내용 발표」(2026.11.17, 정책브리핑 게재), 공공누리 제1유형. 속기자료(텍스트)만 이용했습니다."
+     },
+     "first_seen": "2026-11-18",
+     "last_updated": "2026-11-18",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-kr-wage-stagnation",
+     "title": "KDI 「기업 생산성 분석으로 살펴본 실질임금 정체의 배경과 시사점」",
+     "source": {
+      "source_name": "재정경제부·한국개발연구원(KDI)",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "verified": true,
+      "verified_at": "2026-11-17"
+     },
+     "first_seen": "2026-11-17",
+     "last_updated": "2026-11-17",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-fake-33",
+     "title": "가짜 3.3 위장고용·사업장 쪼개기 기획감독(140여 개소)",
+     "source": {
+      "source_name": "고용노동부",
+      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248"
+     },
+     "license": {
+      "type": "KOGL-NONE",
+      "name": "공공누리 미부착(사전 협의 필요)",
+      "verified": true,
+      "verified_at": "2026-11-17",
+      "evidence": "공공누리 표시 없음, '© Ministry of Employment and Labor. All rights reserved.'만 표시(2026-11-17 확인). 사실·수치만 사용."
+     },
+     "first_seen": "2026-11-17",
+     "last_updated": "2026-11-17",
+     "track": "B"
+    },
+    {
+     "issue_id": "iss-us-employment-oct",
+     "title": "2026년 10월 고용상황(미국 노동통계국)",
+     "source": {
+      "source_name": "미국 노동통계국(BLS)",
+      "source_url": "https://www.bls.gov/news.release/empsit.nr0.htm"
+     },
+     "license": {
+      "type": "PUBLIC-DOMAIN",
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "url": "https://www.bls.gov/opub/copyright-information.htm",
+      "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Employment Situation — October 2026 (USDL-26-1632)",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "미국 저작권법 17 U.S.C. §105(연방정부 저작물은 저작권 보호 대상 아님)와 BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-16 확인): 'BLS가 발행하는 모든 자료는 퍼블릭 도메인이며 사진·삽화 등 기존 저작권 자료만 예외'."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-us-job-openings-sep",
+     "title": "2026년 9월 구인율 4.5%, 큰 변화 없음(미국 노동통계국)",
+     "source": {
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_url": "https://www.bls.gov/opub/ted/2026/job-openings-rate-little-changed-at-4-5-percent-in-september-2026.htm"
+     },
+     "license": {
+      "type": "PUBLIC-DOMAIN",
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "url": "https://www.bls.gov/opub/copyright-information.htm",
+      "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Job openings rate little changed at 4.5 percent in September 2026” (November 12, 2026)",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "BLS 저작권 안내(2026-11-16 확인): BLS 발행물은 퍼블릭 도메인. 도표는 글자 표로만 옮기고 그림은 싣지 않음."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-us-ui-work-search-rule",
+     "title": "미 실업보험 수급자에 '매주 구직활동 5건' 최소기준 제정안(미국 노동부)",
+     "source": {
+      "source_name": "미국 노동부(U.S. DOL)",
+      "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261109"
+     },
+     "license": {
+      "type": "PUBLIC-DOMAIN",
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "url": null,
+      "attribution_text": "Source: U.S. Department of Labor, “US Department of Labor publishes proposed rule setting national minimum weekly work search requirement for unemployment insurance” (November 9, 2026)",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "미국 노동부(연방 행정부) 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 보도자료(2026-11-16 확인)."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": null,
+     "title": "고용보험 10개월째 20만명대, 구인배수 0.46 — 고용행정 통계",
+     "source": {
+      "source_name": "고용노동부",
+      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20216"
+     },
+     "license": {
+      "name": "공공누리 미부착(사전 협의 필요)",
+      "type": "KOGL-NONE",
+      "url": null,
+      "scope": "보도자료 본문·첨부파일 재가공 불가",
+      "attribution_required": true,
+      "commercial_use": "unknown",
+      "modification": "unknown",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "정책브리핑 전재본 고지에 '공공누리가 부착되지 않은 자료는 담당자와 협의 후 사용' 확인",
+      "attribution_text": "자료: 고용노동부 「2026년 10월 고용행정 통계로 본 노동시장 동향」"
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "B"
+    }
+   ]
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "B",
+   "category": "국내 고용지표",
+   "title": "경력보유여성 96만명 — 43%는 10년 넘게 비었다",
+   "kicker": "기혼여성 고용률 66.2%(+1.9%p) · 육아로 그만둔 51.1%",
+   "three_step": {
+    "what": "국가데이터처가 2026년 상반기 지역별고용조사로 18세 미만 자녀와 함께 사는 15~54세 기혼여성의 고용 현황을 내놨다. 일을 그만둔 경력보유여성은 96만명으로 1년 전보다 14만5천명 줄었고, 이들의 고용률은 66.2%로 1.9%p 올랐다.",
+    "evidence": "자녀수별 고용률은 1명 66.1%·2명 66.8%·3명 이상 62.5%였다. 경력보유여성 96만명은 15~54세 기혼여성의 13.4%(-1.5%p)이고, 직장을 그만둔 사유는 육아 51.1%·결혼 21.6%·임신·출산 18.2% 순이다. 공백이 10년 이상인 경우가 43.1%, 18세 미만 자녀를 둔 경력보유여성은 77만2천명이다(2026년 11월 19일, 국가데이터처).",
+    "implication": "공백이 길수록 경력을 없던 일로 지우기 쉬우니, 마지막 직무와 그 뒤 배움·돌봄·봉사로 맡았던 일을 한 줄씩 적어 이력서 경력란 옆에 붙이게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "경력보유여성",
+     "value": "96만명",
+     "delta": "-14만5천명",
+     "period": "2026년 상반기"
+    },
+    {
+     "label": "18세 미만 자녀 동거 기혼여성 고용률",
+     "value": "66.2%",
+     "delta": "+1.9%p",
+     "period": "2026년 상반기"
+    },
+    {
+     "label": "육아로 그만둔 비율",
+     "value": "51.1%",
+     "delta": "",
+     "period": "2026년 상반기"
+    },
+    {
+     "label": "10년 이상 경력 공백",
+     "value": "43.1%",
+     "delta": "",
+     "period": "2026년 상반기"
+    }
+   ],
+   "chart_data": {
+    "type": "grouped_bar",
+    "unit": "%",
+    "labels": [
+     "자녀 1명",
+     "자녀 2명",
+     "자녀 3명 이상"
+    ],
+    "series": [
+     {
+      "name": "2025년 상반기",
+      "values": [
+       64.6,
+       64.6,
+       60.6
+      ],
+      "emphasis": false
+     },
+     {
+      "name": "2026년 상반기",
+      "values": [
+       66.1,
+       66.8,
+       62.5
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "18세 미만 자녀와 함께 사는 15~54세 기혼여성의 자녀수별 고용률(%). 국가데이터처 지역별고용조사, 2026.11.19.",
+    "source_id": "src_kostat_women_2026h1"
+   },
+   "counselor_question": "일을 그만둔 뒤 10년 동안 맡아서 했거나 배운 일을 세 가지만 꼽으면 무엇인가요?",
+   "tags": [
+    "경력보유여성",
+    "기혼여성",
+    "고용률"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "issue_id": "iss-women-employment-2026h1",
+   "source": {
+    "source_id": "src_kostat_women_2026h1",
+    "source_name": "국가데이터처",
+    "source_title": "2026년 상반기 지역별고용조사 기혼여성의 고용 현황",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789895",
+    "published_at": "2026-11-19",
+    "license": {
+     "name": "공공누리 제2유형(출처표시+상업적 이용금지) — 사실·수치만",
+     "type": "KOGL-NONE",
+     "url": "https://www.kogl.or.kr/info/license.do",
+     "scope": "원문 재게시 불가 · 사실·수치 인용",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제2유형(출처표시+상업적 이용금지)의 조건에 따라 이용할 수 있습니다.' — 제1유형이 아니어서 트랙 B로 내리고 사실·수치만 사용."
+    },
+    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
+   },
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "edition": "kr-0700",
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "AI·직무",
+   "title": "중소기업 AI 전환, 5년 2조원 — 스마트공장 2,000개",
+   "kicker": "대기업 11곳·유관기관 5곳 협약 · '27년 피지컬 AI 300억원",
+   "three_step": {
+    "what": "중소벤처기업부가 삼성전자·현대자동차·LG전자·포스코 등 대기업 11곳, 유관기관 5곳과 'AI 대전환 상생협약'을 맺고 중소 제조 현장의 AI 확산을 지원하기로 했다. 개방형혁신·상생형 스마트공장·동반사업전환 세 갈래로 나눠 기업의 성장단계별로 지원한다.",
+    "evidence": "2027~2031년 5년간 민간기업과 함께 2조원을 조성해 2,000개 이상 중소기업의 스마트공장 구축을 지원하고, 2031년까지 주관기관 참여 규모를 100개사로 늘린다. 2027년에는 피지컬 AI 동반사업전환에 신규 예산 300억원을 넣어 100개 기업을 지원한다. 협약식에는 대기업·유관기관·중소기업 관계자 100여 명이 참석했다(2026년 11월 19일, 중소벤처기업부).",
+    "implication": "중소 제조 구직자에게는 'AI 설비·스마트공장을 다뤄 본 경험'을 직무기술서 한 줄로 적게 하고, 지원 기업이 어떤 지원사업에 참여했는지 먼저 확인하라."
+   },
+   "key_numbers": [
+    {
+     "label": "5년간 조성",
+     "value": "2조원",
+     "delta": "",
+     "period": "2027~2031년"
+    },
+    {
+     "label": "스마트공장 지원 목표",
+     "value": "2,000개 이상",
+     "delta": "",
+     "period": "2027~2031년"
+    },
+    {
+     "label": "피지컬 AI 동반전환 예산",
+     "value": "300억원",
+     "delta": "신규",
+     "period": "2027년"
+    },
+    {
+     "label": "주관기관 참여 규모",
+     "value": "100개사",
+     "delta": "",
+     "period": "2031년까지"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "개",
+    "labels": [
+     "오픈이노베이션 주관기관(2031)",
+     "스마트공장 지원(2027~2031)",
+     "동반전환 지원(2027)"
+    ],
+    "series": [
+     {
+      "name": "지원·참여 목표 기업 수",
+      "values": [
+       100,
+       2000,
+       100
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "중소벤처기업부 'AI 대전환 상생협약' 목표 기업 수(개), 2026.11.19.",
+    "source_id": "src_mss_ai_alliance_20261119"
+   },
+   "counselor_question": "스마트공장이나 자동화 설비를 도입한 회사에서 일해 본 적이 있나요? 그때 어떤 설비를 다뤘나요?",
+   "tags": [
+    "중소기업",
+    "AI 전환",
+    "스마트공장"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "kr",
+   "issue_id": "iss-sme-ai-alliance",
+   "source": {
+    "source_id": "src_mss_ai_alliance_20261119",
+    "source_name": "중소벤처기업부",
+    "source_title": "대·중소기업, AI로 연결하고 상생으로 도약한다 — AI 대전환 상생협약",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789845",
+    "published_at": "2026-11-19",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지·일러스트·동영상 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.'",
+     "attribution_text": "출처: 중소벤처기업부 「대·중소기업, AI로 연결하고 상생으로 도약한다」 보도자료(2026.11.19, 정책브리핑 게재), 공공누리 제1유형. 텍스트만 이용했습니다."
+    },
+    "usage": "보도자료 본문(텍스트)을 17-1 원문에 게재하고, 17번 카드는 협약 분야·지원 규모·예산을 요약."
+   },
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "edition": "kr-0700",
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
+  },
+  {
+   "id": "c03",
+   "order": 3,
+   "track": "B",
+   "category": "국내 고용행정",
+   "title": "노동시간 줄였더니 이직률 44%→16% — 일터혁신 사례",
+   "kicker": "주 평균 실근로 38.3→36.2시간 · 사무직 주 35시간",
+   "three_step": {
+    "what": "노사발전재단이 19일 제8차 일터혁신 사례공유 포럼에서 노동시간을 줄여 인력 이탈을 막은 두 기업 사례를 공개했다. 근로자와 함께 직무를 다시 설계해 단축 효과를 낸 사례다.",
+    "evidence": "LED 전광판 업체 디스플레이허브는 2021년 8명에서 2026년 37명으로 늘면서 2024년 이직률이 44%까지 올랐으나, 사무·영업직은 주 40시간을 35시간으로 줄이고 기술직은 40시간을 유지하는 직군별 단축으로 이직률을 16%로 낮췄다. 전체 근로자 주 평균 실근로시간은 38.3시간에서 36.2시간으로 줄었다. 의료기기 업체 바이오프로테크는 주 4.5일제를 도입하면서 사무직 AI 활용 교육과 신규 인력 10명 채용을 함께 진행했다(2026년 11월 19일, 노사발전재단).",
+    "implication": "임금이 조금 낮아도 오래 다닐 수 있는 회사를 비교 기준으로 세우려면, 공고에 적힌 주 4.5일제·유연근무가 근로계약서에도 있는지 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "이직률",
+     "value": "16%",
+     "delta": "44%에서",
+     "period": "디스플레이허브"
+    },
+    {
+     "label": "주 평균 실근로시간",
+     "value": "36.2시간",
+     "delta": "-2.1시간",
+     "period": "단축 후"
+    },
+    {
+     "label": "사무·영업직 근로시간",
+     "value": "주 35시간",
+     "delta": "-5시간",
+     "period": "단축 후"
+    },
+    {
+     "label": "신규 채용",
+     "value": "10명",
+     "delta": "",
+     "period": "바이오프로테크"
+    }
+   ],
+   "chart_data": {
+    "type": "slope",
+    "unit": "시간",
+    "labels": [
+     "단축 전",
+     "단축 후"
+    ],
+    "series": [
+     {
+      "name": "주 평균 실근로시간",
+      "values": [
+       38.3,
+       36.2
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "디스플레이허브 전체 근로자 주 평균 실근로시간(시간). 노사발전재단 제8차 일터혁신 사례공유 포럼, 2026.11.19.",
+    "source_id": "src_nosa_worktekh_20261119"
+   },
+   "counselor_question": "지금 회사에서 가장 줄이고 싶은 근무 조건은 무엇인가요? 그게 줄면 더 오래 다닐 수 있나요?",
+   "tags": [
+    "노동시간",
+    "일터혁신",
+    "이직률"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-workplace-innovation",
+   "source": {
+    "source_id": "src_nosa_worktekh_20261119",
+    "source_name": "노사발전재단",
+    "source_title": "노동시간 변화로 그리는 일터혁신 — 2026년 제8차 일터혁신 사례공유 포럼",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789916",
+    "published_at": "2026-11-19",
+    "license": {
+     "name": "공공누리 미부착(사전 협의 필요)",
+     "type": "KOGL-NONE",
+     "url": null,
+     "scope": "보도자료 본문·첨부파일",
+     "attribution_required": true,
+     "commercial_use": "unknown",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-20): '이 자료는 노사발전재단의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 사실·수치만 사용.",
+     "attribution_text": "출처: 노사발전재단 「노동시간 변화로 그리는 일터혁신」 보도자료(2026.11.19, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    },
+    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
+   },
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "edition": "kr-0700",
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c04",
+   "order": 4,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 1년 새 일자리 88만5천개, 정보·금융은 마이너스",
+   "kicker": "전년비 +88만5천개(월 7.4만) · 정보업 -11만9천",
+   "three_step": {
+    "what": "미국 노동통계국이 2026년 10월까지 1년 동안의 업종별 일자리 증감을 내놨다. 늘어난 자리는 의료·교육과 전문·사업서비스에 몰렸고, 정보와 금융은 줄었다.",
+    "evidence": "비농업 일자리는 1년 새 88만5,000개 늘어 월평균 약 7만4,000개 수준이다. 의료·교육 +52만5,000개, 전문·사업서비스 +26만9,000개, 건설 +12만4,000개, 제조 +7만8,000개인 반면 정보 -11만9,000개, 금융·보험 -9만9,000개, 정부 -5만8,000개였다(2026년 10월 기준·계절조정).",
+    "implication": "구직 상담에서 지원 업종의 1년 증감부터 함께 확인하고, 정보·금융 출신은 같은 기술을 쓰는 의료·전문서비스·제조의 인접 직무로 지원 범위를 넓히게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "비농업 일자리(전년비)",
+     "value": "+88만5천개",
+     "delta": "월평균 약 7만4천",
+     "period": "2025.10~2026.10"
+    },
+    {
+     "label": "의료·교육",
+     "value": "+52만5천개",
+     "delta": "",
+     "period": "2026년 10월 기준"
+    },
+    {
+     "label": "전문·사업서비스",
+     "value": "+26만9천개",
+     "delta": "",
+     "period": "2026년 10월 기준"
+    },
+    {
+     "label": "정보업",
+     "value": "-11만9천개",
+     "delta": "12개월",
+     "period": "2026년 10월 기준"
+    }
+   ],
+   "chart_data": {
+    "type": "diverging_bar",
+    "unit": "만명",
+    "labels": [
+     "정보",
+     "금융·보험",
+     "정부",
+     "제조",
+     "전문·사업서비스",
+     "의료·교육"
+    ],
+    "series": [
+     {
+      "name": "12개월 순증감",
+      "values": [
+       -11.9,
+       -9.9,
+       -5.8,
+       7.8,
+       26.9,
+       52.5
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "미국 비농업 일자리 12개월 순증감(2026년 10월 기준, 계절조정). BLS The Economics Daily 2026.11.18.",
+    "source_id": "src_bls_ted_payroll_20261118"
+   },
+   "counselor_question": "지원하려는 업종은 지난 1년 사이 일자리가 늘었나요, 줄었나요? 줄었다면 그 안에서 늘고 있는 직무는 무엇일까요?",
+   "tags": [
+    "미국 고용",
+    "업종별 일자리",
+    "정보업"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "issue_id": "iss-us-payroll-12m-oct2026",
+   "labor_walk": true,
+   "source": {
+    "source_id": "src_bls_ted_payroll_20261118",
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_title": "Payroll employment increased by 885,000 from October 2025 to October 2026",
+    "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
+    "published_at": "2026-11-18",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Payroll employment increased by 885,000 from October 2025 to October 2026” (November 18, 2026)"
+    },
+    "usage": "본문·도표(12개월 업종별 증감)를 한국어로 옮겨 싣고, 카드는 업종별 증감만 요약. 그림은 싣지 않고 글자 표로 옮김."
+   },
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "run_id": "br-20261119-2306",
+   "edition": "global-2300",
+   "labor_walk_topic": "해외 노동시장"
+  },
+  {
+   "id": "c05",
+   "order": 5,
+   "track": "A",
+   "category": "AI·직무",
+   "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
+   "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
+   "three_step": {
+    "what": "micro1과 노스이스턴대 연구진이 미국 법률서비스 시장에서 AI가 전문지식 일을 어떻게 다시 나누는지 분석했다. AI로 값싼 대안이 좋아지면 의뢰인은 일을 사내로 가져오기보다 다른 공급자 쪽으로 옮긴다.",
+    "evidence": "89개 연방지구 분석에서 비수감자 민사소송의 자기대리 비중이 2025회계연도 16.8%로, 20년 가까이 9.5~12.1%에 머물던 범위를 넘어 이중차분 기준 6.6%p 올랐다(기존 추세 조정 후 5.7%p). 로펌 변호사의 사내 이동은 뚜렷하지 않고(민간 고용 변호사 중 법률서비스업 밖 비중 2024년 29.0%, 2019년 28.7%), 대형 로펌은 청구시간이 거의 늘지 않았는데 2025년 매출이 13% 늘었다.",
+    "implication": "전문직 내담자에게 'AI가 없앨 직무'가 아니라 'AI가 값싸게 만든 업무 단계'를 먼저 적게 하고, 남는 판단·관계·책임 업무로 경력 서사를 다시 쓰게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "연방 민사 자기대리 비중",
+     "value": "16.8%",
+     "delta": "+6.6%p",
+     "period": "2025회계연도"
+    },
+    {
+     "label": "대형 로펌 매출",
+     "value": "+13%",
+     "delta": "청구시간 거의 정체",
+     "period": "2025년"
+    },
+    {
+     "label": "민간 변호사 사내 비중",
+     "value": "29.0%",
+     "delta": "2019년 28.7%",
+     "period": "2024년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "20년간 최고(2019년 이전)",
+     "2025회계연도"
+    ],
+    "series": [
+     {
+      "name": "연방 민사소송 자기대리 비중",
+      "values": [
+       12.1,
+       16.8
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "미국 연방지구 민사소송 자기대리 비중(%). 20년간 9.5~12.1% 범위의 최고치와 2025회계연도 비교. arXiv:2611.23354(2026.11.17).",
+    "source_id": "src_arxiv_2611_23354"
+   },
+   "counselor_question": "지금 하는 일 가운데 초안·검토처럼 AI가 값싸게 만들 수 있는 단계는 어디까지이고, 끝까지 남는 판단은 무엇인가요?",
+   "tags": [
+    "전문직",
+    "법률서비스",
+    "AI 재배치"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "issue_id": "iss-legal-ai-specialization",
+   "labor_walk": true,
+   "source": {
+    "source_id": "src_arxiv_2611_23354",
+    "source_name": "arXiv (micro1·노스이스턴대)",
+    "source_title": "AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services (arXiv:2611.23354)",
+    "source_url": "https://arxiv.org/abs/2611.23354",
+    "published_at": "2026-11-17",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 본문(초록·본문 텍스트)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
+     "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
+    },
+    "usage": "초록·주요 결과 문단을 그대로 싣고 한국어로 번역. 카드는 자기대리·변호사 고용·로펌 매출 수치만 요약."
+   },
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "run_id": "br-20261119-2306",
+   "edition": "global-2300",
+   "labor_walk_topic": "AI와 직무"
+  },
+  {
+   "id": "c06",
+   "order": 6,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "배달·특송 부상 47.5% 급증, 전체 산재는 3% 줄었다",
+   "kicker": "특송 7만5,200건(+11.4%) · 업무전환·제한 +47.5%",
+   "three_step": {
+    "what": "미국 노동통계국이 2025년 사업장 산재·질병 통계를 발표했다. 민간 부문 전체는 줄었는데 특송·메신저 업종만 늘었고, 늘어난 몫은 업무 전환·제한 사례에 몰렸다.",
+    "evidence": "민간 부문 비치명 산재·질병은 240만건으로 1년 새 3.0% 줄어 2003년 이후 가장 적었고 발생률은 2.3건/100 FTE였다. 반면 특송·메신저는 7만5,200건으로 11.4% 늘었고, 그중 업무 전환·제한(DJTR) 사례가 2만건에서 2만9,500건으로 47.5% 증가했다. 창고·보관은 7만2,800건(-5.5%), 보건·사회복지는 53만5,500건(-3.3%)이었다(2025년 기준).",
+    "implication": "배달·물류로 진입하려는 내담자에게 실제 업무가 운전뿐 아니라 상·하차와 반복 운반을 포함한다는 점을 확인시키고, 지원 전에 사업장의 안전보건 교육·보호구·업무복귀 지원 여부를 묻게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "민간 부문 산재·질병",
+     "value": "240만건",
+     "delta": "-3.0%",
+     "period": "2025년"
+    },
+    {
+     "label": "특송·메신저 전체",
+     "value": "7만5,200건",
+     "delta": "+11.4%",
+     "period": "2025년"
+    },
+    {
+     "label": "특송 업무 전환·제한",
+     "value": "2만9,500건",
+     "delta": "+47.5%",
+     "period": "2025년"
+    },
+    {
+     "label": "민간 전체 발생률",
+     "value": "2.3건/100 FTE",
+     "delta": "",
+     "period": "2025년"
+    }
+   ],
+   "chart_data": {
+    "type": "diverging_bar",
+    "unit": "%",
+    "labels": [
+     "특송·메신저",
+     "민간 전체",
+     "보건·사회복지",
+     "창고·보관"
+    ],
+    "series": [
+     {
+      "name": "산재·질병 건수 증감률",
+      "values": [
+       11.4,
+       -3.0,
+       -3.3,
+       -5.5
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "미국 민간 부문 산재·질병 건수 전년비 증감률(2025년). BLS 2026.11.18.",
+    "source_id": "src_bls_soii_2025"
+   },
+   "counselor_question": "이 일을 할 때 하루에 몇 번, 얼마나 무거운 것을 직접 들고 옮기게 되는지 알고 지원하나요?",
+   "tags": [
+    "산업안전",
+    "배달·물류",
+    "플랫폼 노동"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "issue_id": "iss-us-soii-2025",
+   "labor_walk": true,
+   "source": {
+    "source_id": "src_bls_soii_2025",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "Employer-Reported Workplace Injuries and Illnesses — 2025 (USDL-26-1712)",
+    "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
+    "published_at": "2026-11-18",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, “Employer-Reported Workplace Injuries and Illnesses — 2025” (USDL-26-1712, November 18, 2026)"
+    },
+    "usage": "보도자료 본문을 한국어로 옮겨 싣고, 카드는 전체·업종별 증감률만 요약. 표·그림은 글자로만 옮김."
+   },
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "run_id": "br-20261119-2306",
+   "edition": "global-2300",
+   "labor_walk_topic": "해외 노동시장"
+  },
+  {
+   "id": "c07",
+   "order": 7,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 신규 실업수당 20만건대 — 해고는 적고 재취업은 느리다",
+   "kicker": "신규 20만3천건 · 4주 평균 19만7,750건",
+   "three_step": {
+    "what": "미국 노동부가 주간 실업보험 신규 청구를 발표했다. 신규 청구는 20만건대로 낮게 유지됐지만, 수급을 이어가는 사람은 늘어 재취업이 느린 흐름을 보였다.",
+    "evidence": "11월 8~14일 주 계절조정 신규 청구는 20만3,000건으로 전주(20만2,000건, 2,000건 상향 수정)보다 1,000건 늘었고 1년 전 같은 주(22만2,000건)보다는 낮다. 반면 계속 수급(피보험 실업)은 176만3,000건으로 전주보다 7만건 늘었고, 4주 이동평균은 19만7,750건이다(2026년 11월 19일 발표).",
+    "implication": "해외 취업·이직을 준비하는 내담자에게 '공고 수'가 아니라 '채용을 끝내는 속도'를 기준으로 준비 기간을 잡게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "신규 청구(계절조정)",
+     "value": "20만3천건",
+     "delta": "전주 +1천건",
+     "period": "2026.11.8~14"
+    },
+    {
+     "label": "4주 이동평균",
+     "value": "19만7,750건",
+     "delta": "+2,000건",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "계속 수급(피보험 실업)",
+     "value": "176만3천건",
+     "delta": "전주 +7만건",
+     "period": "2026.11.1~7"
+    },
+    {
+     "label": "피보험 실업률",
+     "value": "1.1%",
+     "delta": "1년 전 1.3%",
+     "period": "2026.11.1~7"
+    }
+   ],
+   "chart_data": {
+    "type": "line",
+    "unit": "천건",
+    "labels": [
+     "10/31",
+     "11/7",
+     "11/14"
+    ],
+    "series": [
+     {
+      "name": "신규 실업보험 청구(계절조정)",
+      "values": [
+       191,
+       202,
+       203
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "미국 계절조정 주간 신규 실업보험 청구(천건). 미 노동부 2026.11.19 발표.",
+    "source_id": "src_dol_ui_claims_20261119"
+   },
+   "counselor_question": null,
+   "tags": [
+    "미국 실업보험",
+    "해고",
+    "노동시장 지표"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "global",
+   "issue_id": "iss-us-ui-claims-20261119",
+   "labor_walk": true,
+   "source": {
+    "source_id": "src_dol_ui_claims_20261119",
+    "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
+    "source_title": "Unemployment Insurance Weekly Claims Report (2026년 11월 19일)",
+    "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
+    "published_at": "2026-11-19",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": null,
+     "scope": "보도자료 본문·통계표",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "미국 노동부(연방 행정부) 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 원문 직접 확인(2026-11-19).",
+     "attribution_text": "Source: U.S. Department of Labor, Employment and Training Administration, “Unemployment Insurance Weekly Claims Report” (November 19, 2026)"
+    },
+    "usage": "본문을 한국어로 옮겨 싣고, 카드는 신규 청구·계속 수급·피보험 실업률만 요약."
+   },
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "run_id": "br-20261119-2306",
+   "edition": "global-2300",
+   "labor_walk_topic": "거시경제와 고용"
+  }
+ ],
+ "radar": null,
+ "runs": {
+  "kr-0700": {
+   "status": "ok",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "last_ok": "2026-11-20",
+   "run_id": "br-20261120-0705"
+  },
+  "global-2300": {
+   "status": "ok",
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "last_ok": "2026-11-19",
+   "run_id": "br-20261119-2306"
+  }
+ },
+ "sources": [
+  {
+   "source_id": "src_arxiv_2611_23354",
+   "source_name": "arXiv (micro1·노스이스턴대)",
+   "source_title": "AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services (arXiv:2611.23354)",
+   "source_url": "https://arxiv.org/abs/2611.23354",
+   "published_at": "2026-11-17",
+   "license": {
+    "name": "CC BY 4.0 (Attribution 4.0 International)",
+    "type": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "scope": "논문 본문(초록·본문 텍스트)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
+    "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
+   },
+   "usage": "초록·주요 결과 문단을 그대로 싣고 한국어로 번역. 카드는 자기대리·변호사 고용·로펌 매출 수치만 요약.",
+   "id": "src_arxiv_2611_23354"
+  },
+  {
+   "source_id": "src_bls_soii_2025",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Employer-Reported Workplace Injuries and Illnesses — 2025 (USDL-26-1712)",
+   "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
+   "published_at": "2026-11-18",
+   "license": {
+    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+    "attribution_text": "Source: U.S. Bureau of Labor Statistics, “Employer-Reported Workplace Injuries and Illnesses — 2025” (USDL-26-1712, November 18, 2026)"
+   },
+   "usage": "보도자료 본문을 한국어로 옮겨 싣고, 카드는 전체·업종별 증감률만 요약. 표·그림은 글자로만 옮김.",
+   "id": "src_bls_soii_2025"
+  },
+  {
+   "source_id": "src_bls_ted_payroll_20261118",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Payroll employment increased by 885,000 from October 2025 to October 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
+   "published_at": "2026-11-18",
+   "license": {
+    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+    "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Payroll employment increased by 885,000 from October 2025 to October 2026” (November 18, 2026)"
+   },
+   "usage": "본문·도표(12개월 업종별 증감)를 한국어로 옮겨 싣고, 카드는 업종별 증감만 요약. 그림은 싣지 않고 글자 표로 옮김.",
+   "id": "src_bls_ted_payroll_20261118"
+  },
+  {
+   "source_id": "src_dol_ui_claims_20261119",
+   "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
+   "source_title": "Unemployment Insurance Weekly Claims Report (2026년 11월 19일)",
+   "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+    "type": "PUBLIC-DOMAIN",
+    "url": null,
+    "scope": "보도자료 본문·통계표",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "미국 노동부(연방 행정부) 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 원문 직접 확인(2026-11-19).",
+    "attribution_text": "Source: U.S. Department of Labor, Employment and Training Administration, “Unemployment Insurance Weekly Claims Report” (November 19, 2026)"
+   },
+   "usage": "본문을 한국어로 옮겨 싣고, 카드는 신규 청구·계속 수급·피보험 실업률만 요약.",
+   "id": "src_dol_ui_claims_20261119"
+  },
+  {
+   "source_id": "src_kostat_women_2026h1",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 상반기 지역별고용조사 기혼여성의 고용 현황",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789895",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "공공누리 제2유형(출처표시+상업적 이용금지) — 사실·수치만",
+    "type": "KOGL-NONE",
+    "url": "https://www.kogl.or.kr/info/license.do",
+    "scope": "원문 재게시 불가 · 사실·수치 인용",
+    "attribution_required": true,
+    "commercial_use": "not_allowed",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제2유형(출처표시+상업적 이용금지)의 조건에 따라 이용할 수 있습니다.' — 제1유형이 아니어서 트랙 B로 내리고 사실·수치만 사용."
+   },
+   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
+   "id": "src_kostat_women_2026h1"
+  },
+  {
+   "source_id": "src_mss_ai_alliance_20261119",
+   "source_name": "중소벤처기업부",
+   "source_title": "대·중소기업, AI로 연결하고 상생으로 도약한다 — AI 대전환 상생협약",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789845",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지·일러스트·동영상 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.'",
+    "attribution_text": "출처: 중소벤처기업부 「대·중소기업, AI로 연결하고 상생으로 도약한다」 보도자료(2026.11.19, 정책브리핑 게재), 공공누리 제1유형. 텍스트만 이용했습니다."
+   },
+   "usage": "보도자료 본문(텍스트)을 17-1 원문에 게재하고, 17번 카드는 협약 분야·지원 규모·예산을 요약.",
+   "id": "src_mss_ai_alliance_20261119"
+  },
+  {
+   "source_id": "src_nosa_worktekh_20261119",
+   "source_name": "노사발전재단",
+   "source_title": "노동시간 변화로 그리는 일터혁신 — 2026년 제8차 일터혁신 사례공유 포럼",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789916",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "공공누리 미부착(사전 협의 필요)",
+    "type": "KOGL-NONE",
+    "url": null,
+    "scope": "보도자료 본문·첨부파일",
+    "attribution_required": true,
+    "commercial_use": "unknown",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-20): '이 자료는 노사발전재단의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 사실·수치만 사용.",
+    "attribution_text": "출처: 노사발전재단 「노동시간 변화로 그리는 일터혁신」 보도자료(2026.11.19, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+   },
+   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
+   "id": "src_nosa_worktekh_20261119"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 우리 말로 새로 썼습니다.",
+  "track_a_note": "공공누리 제1유형(출처표시)·퍼블릭 도메인·CC BY 4.0 자료를 카드마다 출처와 라이선스로 표시합니다.",
+  "track_b_note": "언론사 기사와 공공누리 미부착 자료는 본문·번역문을 싣지 않고 수치 사실과 원문 링크만 제공합니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다.",
+ "archive_dates": [
+  "2026-11-20",
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22",
+  "2026-07-17",
+  "2026-07-15",
+  "2026-07-14",
+  "2026-07-10",
+  "2026-07-09",
+  "2026-07-08",
+  "2026-07-02",
+  "2026-07-01",
+  "2026-06-30",
+  "2026-06-24",
+  "2026-06-22",
+  "2026-06-18",
+  "2026-06-16",
+  "2026-06-11",
+  "2026-06-10",
+  "2026-06-09",
+  "2026-06-08",
+  "2026-06-05",
+  "2026-06-02",
+  "2026-05-30",
+  "2026-05-27",
+  "2026-05-22",
+  "2026-05-20",
+  "2026-05-19",
+  "2026-05-13",
+  "2026-05-12",
+  "2026-05-07",
+  "2026-05-04",
+  "2026-04-30",
+  "2026-04-27",
+  "2026-04-22",
+  "2026-04-20",
+  "2026-04-14",
+  "2026-04-11",
+  "2026-04-10",
+  "2026-04-08",
+  "2026-04-03",
+  "2026-04-02",
+  "2026-03-31",
+  "2026-03-27",
+  "2026-03-26",
+  "2026-03-23",
+  "2026-03-20",
+  "2026-03-19",
+  "2026-03-17",
+  "2026-03-16",
+  "2026-03-13",
+  "2026-03-11",
+  "2026-03-10",
+  "2026-03-06",
+  "2026-03-05",
+  "2026-03-03",
+  "2026-02-27",
+  "2026-02-25",
+  "2026-02-24",
+  "2026-02-23",
+  "2026-02-20",
+  "2026-02-16",
+  "2026-02-13",
+  "2026-02-11",
+  "2026-02-09",
+  "2026-02-06",
+  "2026-02-03",
+  "2026-02-02",
+  "2026-01-30",
+  "2026-01-29",
+  "2026-01-28",
+  "2026-01-27",
+  "2026-01-22",
+  "2026-01-21",
+  "2026-01-20",
+  "2026-01-16",
+  "2026-01-15",
+  "2026-01-12",
+  "2026-01-08",
+  "2026-01-07",
+  "2026-01-06",
+  "2026-01-02",
+  "2025-12-30",
+  "2025-12-26",
+  "2025-12-24",
+  "2025-12-23",
+  "2025-12-22",
+  "2025-12-19",
+  "2025-12-18",
+  "2025-12-17",
+  "2025-12-16",
+  "2025-12-12",
+  "2025-12-10",
+  "2025-12-09",
+  "2025-12-08",
+  "2025-12-05",
+  "2025-12-03",
+  "2025-12-01",
+  "2025-11-29",
+  "2025-11-27",
+  "2025-11-25",
+  "2025-11-21",
+  "2025-11-18",
+  "2025-11-17",
+  "2025-11-15",
+  "2025-11-12",
+  "2025-11-11",
+  "2025-11-10",
+  "2025-11-07",
+  "2025-11-05",
+  "2025-11-03",
+  "2025-10-30",
+  "2025-10-29",
+  "2025-10-27",
+  "2025-10-22",
+  "2025-10-21",
+  "2025-10-19",
+  "2025-10-17",
+  "2025-10-16",
+  "2025-10-02",
+  "2025-10-01",
+  "2025-09-30",
+  "2025-09-25",
+  "2025-09-24",
+  "2025-09-23",
+  "2025-09-18",
+  "2025-09-17",
+  "2025-09-16",
+  "2025-09-15",
+  "2025-09-11",
+  "2025-09-10",
+  "2025-09-03",
+  "2025-09-02",
+  "2025-09-01",
+  "2025-08-28",
+  "2025-08-27",
+  "2025-08-21",
+  "2025-08-20",
+  "2025-08-19",
+  "2025-08-14",
+  "2025-08-11",
+  "2025-08-08",
+  "2025-08-05",
+  "2025-07-31",
+  "2025-07-30"
+ ]
+}

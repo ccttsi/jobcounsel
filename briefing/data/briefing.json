@@ -1,86 +1,86 @@
 {
  "schema_version": "1.4.0",
- "updated_at": "2026-11-19T23:06:00+09:00",
+ "updated_at": "2026-11-20T07:05:00+09:00",
  "edition": {
-  "date": "2026-11-19",
-  "weekday": "목",
-  "title": "AI는 시험장까지, 내년 일자리는 20만",
-  "subtitle": "수능 시험장 총점검·KDI 2027년 취업자 +20만·대기업 훈련 참여 53.2%를 한 장으로",
-  "reading_minutes": 2,
+  "date": "2026-11-20",
+  "weekday": "금",
+  "title": "경력 멈춘 96만명, 절반 가까이 10년 넘게",
+  "subtitle": "기혼여성 고용률 66.2%·중소기업 AI 2조원·실근로 36.2시간을 한 장으로",
+  "reading_minutes": 3,
   "data_status": "ok",
   "data_status_note": null
  },
  "headline_metrics": [
   {
-   "id": "hm_kdi_emp",
-   "label": "2027년 취업자 증가",
-   "value": 20,
-   "unit": "만명",
-   "value_text": "+20만명",
-   "base_value": null,
-   "base_unit": null,
-   "direction": "up",
-   "period": "2027년 전망",
-   "delta_from": "2026년 +12만명",
-   "source_id": "src_kdi_outlook_2026h2",
-   "track": "A",
-   "edition": "kr-0700",
-   "updated_at": "2026-11-19T07:06:00+09:00",
-   "run_id": "br-20261119-0706",
-   "spark": null
-  },
-  {
-   "id": "hm_kdi_gdp",
-   "label": "2027년 성장률",
-   "value": 3.9,
+   "id": "hm_women_rate",
+   "label": "기혼여성 고용률",
+   "value": 66.2,
    "unit": "%",
-   "value_text": "3.9%",
+   "value_text": "66.2%",
    "base_value": null,
    "base_unit": null,
    "direction": "up",
-   "period": "2027년 전망",
-   "delta_from": "2026년 3.8%",
-   "source_id": "src_kdi_outlook_2026h2",
-   "track": "A",
+   "period": "2026년 상반기",
+   "delta_from": "전년대비 +1.9%p",
+   "source_id": "src_kostat_women_2026h1",
+   "track": "B",
    "edition": "kr-0700",
-   "updated_at": "2026-11-19T07:06:00+09:00",
-   "run_id": "br-20261119-0706",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
    "spark": null
   },
   {
-   "id": "hm_suneung",
-   "label": "수능 수험생",
-   "value": 55,
+   "id": "hm_career_break",
+   "label": "경력보유여성",
+   "value": 96,
    "unit": "만명",
-   "value_text": "55만명",
+   "value_text": "96만명",
+   "base_value": 715,
+   "base_unit": "만명(15~54세 기혼여성)",
+   "direction": "down",
+   "period": "2026년 상반기",
+   "delta_from": "전년대비 -14만5천명",
+   "source_id": "src_kostat_women_2026h1",
+   "track": "B",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "spark": null
+  },
+  {
+   "id": "hm_break_10y",
+   "label": "10년 이상 경력 공백",
+   "value": 43.1,
+   "unit": "%",
+   "value_text": "43.1%",
    "base_value": null,
    "base_unit": null,
    "direction": "flat",
-   "period": "2026년 11월 19일",
-   "delta_from": "-",
-   "source_id": "src_pm_suneung_20261119",
+   "period": "2026년 상반기",
+   "delta_from": "경력보유여성 중",
+   "source_id": "src_kostat_women_2026h1",
    "track": "B",
    "edition": "kr-0700",
-   "updated_at": "2026-11-19T07:06:00+09:00",
-   "run_id": "br-20261119-0706",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
    "spark": null
   },
   {
-   "id": "hm_training_big",
-   "label": "대기업 사업주훈련 참여율",
-   "value": 53.2,
-   "unit": "%",
-   "value_text": "53.2%",
-   "base_value": null,
-   "base_unit": null,
-   "direction": null,
-   "period": "2026년",
-   "delta_from": "중소기업 5.8%",
-   "source_id": "src_moel_koreatech_20261118",
-   "track": "B",
+   "id": "hm_sme_smart_factory",
+   "label": "중소 스마트공장 5년 목표",
+   "value": 2000,
+   "unit": "개",
+   "value_text": "2,000개",
+   "base_value": 20000,
+   "base_unit": "억원(5년 조성)",
+   "direction": "up",
+   "period": "2027~2031년",
+   "delta_from": "중기부 상생협약",
+   "source_id": "src_mss_ai_alliance_20261119",
+   "track": "A",
    "edition": "kr-0700",
-   "updated_at": "2026-11-19T07:06:00+09:00",
-   "run_id": "br-20261119-0706",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
    "spark": null
   }
  ],
@@ -514,66 +514,177 @@
    "id": "c01",
    "order": 1,
    "track": "B",
-   "category": "AI·직무",
-   "title": "수능 당일, 필기구도 일괄 지급 — 부정행위 제재는 10년",
-   "kicker": "수험생 55만명 · 위급재난문자 08:30",
+   "category": "국내 고용지표",
+   "title": "경력보유여성 96만명 — 43%는 10년 넘게 비었다",
+   "kicker": "기혼여성 고용률 66.2%(+1.9%p) · 육아로 그만둔 51.1%",
    "three_step": {
-    "what": "2027학년도 수능이 열리는 19일, 정부가 시험장 감독을 최대 수준으로 올렸다. 흑색 연필을 뺀 모든 필기구를 휴대 금지 물품으로 지정하고, 컴퓨터용 사인펜·샤프·수정테이프·지우개를 시험장에서 1인당 1개씩 나눠 준다.",
-    "evidence": "지우개 70만개·수정테이프 66만3,540개·샤프심 7만7,040개(30개입)를 전 시험장에 배부한다. 미제출 스마트기기를 가려내는 위급재난문자를 08:30부터 보내고, 복도 감독관은 와이파이 신호를 상시 탐지한다. 적발되면 응시자격 제한 최대 10년·형사 책임 최대 5년, 신고 포상금은 최대 1억원이다(2026년 11월 18일, 국무조정실).",
-    "implication": "국가기술자격·채용시험을 준비하는 내담자에게 '가방에만 넣어도 부정행위'라는 기준과 제출 시각을 시험 전날 다시 확인하게 하라."
+    "what": "국가데이터처가 2026년 상반기 지역별고용조사로 18세 미만 자녀와 함께 사는 15~54세 기혼여성의 고용 현황을 내놨다. 일을 그만둔 경력보유여성은 96만명으로 1년 전보다 14만5천명 줄었고, 이들의 고용률은 66.2%로 1.9%p 올랐다.",
+    "evidence": "자녀수별 고용률은 1명 66.1%·2명 66.8%·3명 이상 62.5%였다. 경력보유여성 96만명은 15~54세 기혼여성의 13.4%(-1.5%p)이고, 직장을 그만둔 사유는 육아 51.1%·결혼 21.6%·임신·출산 18.2% 순이다. 공백이 10년 이상인 경우가 43.1%, 18세 미만 자녀를 둔 경력보유여성은 77만2천명이다(2026년 11월 19일, 국가데이터처).",
+    "implication": "공백이 길수록 경력을 없던 일로 지우기 쉬우니, 마지막 직무와 그 뒤 배움·돌봄·봉사로 맡았던 일을 한 줄씩 적어 이력서 경력란 옆에 붙이게 하라."
    },
    "key_numbers": [
     {
-     "label": "수험생",
-     "value": "약 55만명",
-     "delta": "",
-     "period": "2027학년도 수능"
+     "label": "경력보유여성",
+     "value": "96만명",
+     "delta": "-14만5천명",
+     "period": "2026년 상반기"
     },
     {
-     "label": "일괄 지급 지우개",
-     "value": "70만개",
-     "delta": "",
-     "period": "2026년 11월"
+     "label": "18세 미만 자녀 동거 기혼여성 고용률",
+     "value": "66.2%",
+     "delta": "+1.9%p",
+     "period": "2026년 상반기"
     },
     {
-     "label": "응시자격 제한",
-     "value": "최대 10년",
-     "delta": "기존 1년",
-     "period": "적발 시"
+     "label": "육아로 그만둔 비율",
+     "value": "51.1%",
+     "delta": "",
+     "period": "2026년 상반기"
     },
     {
-     "label": "신고 포상금",
-     "value": "최대 1억원",
+     "label": "10년 이상 경력 공백",
+     "value": "43.1%",
      "delta": "",
-     "period": "이번 수능부터 추진"
+     "period": "2026년 상반기"
     }
    ],
    "chart_data": {
-    "type": "bar",
-    "unit": "년",
+    "type": "grouped_bar",
+    "unit": "%",
     "labels": [
-     "응시자격 제한",
-     "형사 책임"
+     "자녀 1명",
+     "자녀 2명",
+     "자녀 3명 이상"
     ],
     "series": [
      {
-      "name": "제재 상한",
+      "name": "2025년 상반기",
       "values": [
-       10,
-       5
+       64.6,
+       64.6,
+       60.6
+      ],
+      "emphasis": false
+     },
+     {
+      "name": "2026년 상반기",
+      "values": [
+       66.1,
+       66.8,
+       62.5
       ],
       "emphasis": true
      }
     ],
     "reference_value": null,
-    "note": "부정행위 제재 상한(년). 국무조정실 보도자료 2026.11.18.",
-    "source_id": "src_pm_suneung_20261119"
+    "note": "18세 미만 자녀와 함께 사는 15~54세 기혼여성의 자녀수별 고용률(%). 국가데이터처 지역별고용조사, 2026.11.19.",
+    "source_id": "src_kostat_women_2026h1"
    },
-   "counselor_question": null,
+   "counselor_question": "일을 그만둔 뒤 10년 동안 맡아서 했거나 배운 일을 세 가지만 꼽으면 무엇인가요?",
    "tags": [
-    "수능",
-    "부정행위",
-    "자격시험"
+    "경력보유여성",
+    "기혼여성",
+    "고용률"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "issue_id": "iss-women-employment-2026h1",
+   "source": {
+    "source_id": "src_kostat_women_2026h1",
+    "source_name": "국가데이터처",
+    "source_title": "2026년 상반기 지역별고용조사 기혼여성의 고용 현황",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789895",
+    "published_at": "2026-11-19",
+    "license": {
+     "name": "공공누리 제2유형(출처표시+상업적 이용금지) — 사실·수치만",
+     "type": "KOGL-NONE",
+     "url": "https://www.kogl.or.kr/info/license.do",
+     "scope": "원문 재게시 불가 · 사실·수치 인용",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제2유형(출처표시+상업적 이용금지)의 조건에 따라 이용할 수 있습니다.' — 제1유형이 아니어서 트랙 B로 내리고 사실·수치만 사용."
+    },
+    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
+   },
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "edition": "kr-0700",
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "AI·직무",
+   "title": "중소기업 AI 전환, 5년 2조원 — 스마트공장 2,000개",
+   "kicker": "대기업 11곳·유관기관 5곳 협약 · '27년 피지컬 AI 300억원",
+   "three_step": {
+    "what": "중소벤처기업부가 삼성전자·현대자동차·LG전자·포스코 등 대기업 11곳, 유관기관 5곳과 'AI 대전환 상생협약'을 맺고 중소 제조 현장의 AI 확산을 지원하기로 했다. 개방형혁신·상생형 스마트공장·동반사업전환 세 갈래로 나눠 기업의 성장단계별로 지원한다.",
+    "evidence": "2027~2031년 5년간 민간기업과 함께 2조원을 조성해 2,000개 이상 중소기업의 스마트공장 구축을 지원하고, 2031년까지 주관기관 참여 규모를 100개사로 늘린다. 2027년에는 피지컬 AI 동반사업전환에 신규 예산 300억원을 넣어 100개 기업을 지원한다. 협약식에는 대기업·유관기관·중소기업 관계자 100여 명이 참석했다(2026년 11월 19일, 중소벤처기업부).",
+    "implication": "중소 제조 구직자에게는 'AI 설비·스마트공장을 다뤄 본 경험'을 직무기술서 한 줄로 적게 하고, 지원 기업이 어떤 지원사업에 참여했는지 먼저 확인하라."
+   },
+   "key_numbers": [
+    {
+     "label": "5년간 조성",
+     "value": "2조원",
+     "delta": "",
+     "period": "2027~2031년"
+    },
+    {
+     "label": "스마트공장 지원 목표",
+     "value": "2,000개 이상",
+     "delta": "",
+     "period": "2027~2031년"
+    },
+    {
+     "label": "피지컬 AI 동반전환 예산",
+     "value": "300억원",
+     "delta": "신규",
+     "period": "2027년"
+    },
+    {
+     "label": "주관기관 참여 규모",
+     "value": "100개사",
+     "delta": "",
+     "period": "2031년까지"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "개",
+    "labels": [
+     "오픈이노베이션 주관기관(2031)",
+     "스마트공장 지원(2027~2031)",
+     "동반전환 지원(2027)"
+    ],
+    "series": [
+     {
+      "name": "지원·참여 목표 기업 수",
+      "values": [
+       100,
+       2000,
+       100
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "중소벤처기업부 'AI 대전환 상생협약' 목표 기업 수(개), 2026.11.19.",
+    "source_id": "src_mss_ai_alliance_20261119"
+   },
+   "counselor_question": "스마트공장이나 자동화 설비를 도입한 회사에서 일해 본 적이 있나요? 그때 어떤 설비를 다뤘나요?",
+   "tags": [
+    "중소기업",
+    "AI 전환",
+    "스마트공장"
    ],
    "ncs": [
     "직업상담서비스"
@@ -581,110 +692,13 @@
    "theme_key": "th-ai-labor",
    "theme_label": "AI와 직무 재편",
    "region": "kr",
-   "issue_id": "iss-ai-exam-integrity",
+   "issue_id": "iss-sme-ai-alliance",
    "source": {
-    "source_id": "src_pm_suneung_20261119",
-    "source_name": "국무조정실",
-    "source_title": "[보도자료] \"수능 부정행위, 결코 용납하지 않겠습니다.\" 범정부, 모든 역량 총동원",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
-    "published_at": "2026-11-18",
-    "license": {
-     "name": "공공누리 미부착(사전 협의 필요)",
-     "type": "KOGL-NONE",
-     "url": null,
-     "scope": "보도자료 본문·첨부파일",
-     "attribution_required": true,
-     "commercial_use": "unknown",
-     "modification": "not_allowed",
-     "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-19): '이 자료는 국무조정실의 보도자료를 전재하여 제공함을 알려드립니다.' — 공공누리 배지·이용허락 문구 없음. 사실·수치만 사용.",
-     "attribution_text": "출처: 국무조정실 「수능 부정행위, 결코 용납하지 않겠습니다 — 범정부, 모든 역량 총동원」 보도자료(2026.11.18). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
-    },
-    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
-   },
-   "updated_at": "2026-11-19T07:06:00+09:00",
-   "run_id": "br-20261119-0706",
-   "edition": "kr-0700"
-  },
-  {
-   "id": "c02",
-   "order": 2,
-   "track": "A",
-   "category": "국내 고용지표",
-   "title": "KDI \"내년 성장 3.9%·취업자 20만\" — 20대는 여전히 낮다",
-   "kicker": "2026년 3.8% → 2027년 3.9% · 취업자 +12만 → +20만",
-   "three_step": {
-    "what": "KDI가 2026년 하반기 경제전망을 내놓고 반도체·AI 인프라 호황을 반영해 올해 성장률을 3.8%, 내년을 3.9%로 전망했다. 취업자 증가도 올해 12만 명에서 내년 20만 명으로 늘어날 것으로 봤다.",
-    "evidence": "2026년 실질 GDP 3.8%·2027년 3.9%, 소비자물가 2.7%→2.4% 전망. 취업자는 올해 12만 명에서 내년 20만 명으로, 제조업·건설업 업황 개선을 반영했다. 다만 20대 고용률은 여전히 낮은 수준이고 실질임금이 하락한 산업 종사자 비중이 50% 내외다(2026년 11월 18일).",
-    "implication": "내년 채용 확대는 반도체·설비투자 연관 업종에 몰린다. 구직자에게 업종별 온도차를 숫자로 보여 주고, 20대는 지역·직무 범위를 넓히는 상담으로 연결하라."
-   },
-   "key_numbers": [
-    {
-     "label": "2026년 성장률",
-     "value": "3.8%",
-     "delta": "",
-     "period": "KDI 전망"
-    },
-    {
-     "label": "2027년 성장률",
-     "value": "3.9%",
-     "delta": "+0.1%p",
-     "period": "KDI 전망"
-    },
-    {
-     "label": "2027년 취업자 증가",
-     "value": "+20만명",
-     "delta": "2026년 +12만",
-     "period": "KDI 전망"
-    },
-    {
-     "label": "실질임금 하락 산업 종사자",
-     "value": "50% 내외",
-     "delta": "",
-     "period": "KDI 분석"
-    }
-   ],
-   "chart_data": {
-    "type": "bar",
-    "unit": "만명",
-    "labels": [
-     "2026년",
-     "2027년"
-    ],
-    "series": [
-     {
-      "name": "취업자 증가(전년비)",
-      "values": [
-       12,
-       20
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "KDI 경제전망(2026년 하반기), 2026.11.18. 취업자 수 전년비 증가 전망.",
-    "source_id": "src_kdi_outlook_2026h2"
-   },
-   "counselor_question": "내 업종은 내년에 채용이 늘어나는 쪽인가요, 반도체·설비투자와 이어져 있나요?",
-   "tags": [
-    "경제전망",
-    "취업자",
-    "반도체"
-   ],
-   "ncs": [
-    "직업상담서비스"
-   ],
-   "theme_key": "th-macro-economy",
-   "theme_label": "거시경제와 고용",
-   "region": "kr",
-   "issue_id": "iss-kdi-outlook-2026h2",
-   "source": {
-    "source_id": "src_kdi_outlook_2026h2",
-    "source_name": "재정경제부·한국개발연구원(KDI)",
-    "source_title": "KDI 경제전망(2026. 하반기)",
-    "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
-    "published_at": "2026-11-18",
+    "source_id": "src_mss_ai_alliance_20261119",
+    "source_name": "중소벤처기업부",
+    "source_title": "대·중소기업, AI로 연결하고 상생으로 도약한다 — AI 대전환 상생협약",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789845",
+    "published_at": "2026-11-19",
     "license": {
      "name": "공공누리 제1유형(출처표시)",
      "type": "KOGL-1",
@@ -694,96 +708,96 @@
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-19): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.'",
-     "attribution_text": "출처: 재정경제부·한국개발연구원(KDI) 「KDI 경제전망(2026. 하반기)」 브리핑(2026.11.18, 정책브리핑 게재), 공공누리 제1유형. 속기자료(텍스트)만 이용했습니다."
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.'",
+     "attribution_text": "출처: 중소벤처기업부 「대·중소기업, AI로 연결하고 상생으로 도약한다」 보도자료(2026.11.19, 정책브리핑 게재), 공공누리 제1유형. 텍스트만 이용했습니다."
     },
-    "usage": "속기 텍스트를 그대로 게시(17-1 원문)하고, 17번 카드는 성장률·취업자 전망·임금 격차를 요약."
+    "usage": "보도자료 본문(텍스트)을 17-1 원문에 게재하고, 17번 카드는 협약 분야·지원 규모·예산을 요약."
    },
-   "updated_at": "2026-11-19T07:06:00+09:00",
-   "run_id": "br-20261119-0706",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
    "edition": "kr-0700",
    "labor_walk": true,
-   "labor_walk_topic": "거시경제와 고용"
+   "labor_walk_topic": "AI와 직무"
   },
   {
    "id": "c03",
    "order": 3,
    "track": "B",
    "category": "국내 고용행정",
-   "title": "대기업 훈련 참여 53.2%, 중소기업은 5.8% — AI 시대의 벽",
-   "kicker": "훈련 참여율 53.2% 대 5.8% · 수도권 집중 68.5%",
+   "title": "노동시간 줄였더니 이직률 44%→16% — 일터혁신 사례",
+   "kicker": "주 평균 실근로 38.3→36.2시간 · 사무직 주 35시간",
    "three_step": {
-    "what": "한국기술교육대가 개교 35주년 포럼에서 AI 시대 직업훈련·고용서비스 전략을 내놨다. 기조발제는 직업명이 아니라 과업·스킬·업무흐름 중심으로 훈련 단위가 재편된다고 진단했다.",
-    "evidence": "대·중소기업 훈련 참여율 격차가 53.2% 대 5.8%, 훈련의 수도권 집중도가 68.5%로 제시됐다. 청년층 감소 일자리의 94%가 AI 고노출 업종에 몰린다는 진단도 나왔다. 교·강사 교육과정은 2027년부터 AI 기반으로 전면 전환하고, 2027년 3월 개인 맞춤 'AI 학습비서'를 연다(2026년 11월 18일).",
-    "implication": "중소기업 재직자·지역 구직자에게는 '훈련을 받을 수 있는 사업장인지'가 먼저다. 상담에서 사업주훈련·KDT 과정 여부를 확인하고, 경력을 과업 단위로 정리하게 하라."
+    "what": "노사발전재단이 19일 제8차 일터혁신 사례공유 포럼에서 노동시간을 줄여 인력 이탈을 막은 두 기업 사례를 공개했다. 근로자와 함께 직무를 다시 설계해 단축 효과를 낸 사례다.",
+    "evidence": "LED 전광판 업체 디스플레이허브는 2021년 8명에서 2026년 37명으로 늘면서 2024년 이직률이 44%까지 올랐으나, 사무·영업직은 주 40시간을 35시간으로 줄이고 기술직은 40시간을 유지하는 직군별 단축으로 이직률을 16%로 낮췄다. 전체 근로자 주 평균 실근로시간은 38.3시간에서 36.2시간으로 줄었다. 의료기기 업체 바이오프로테크는 주 4.5일제를 도입하면서 사무직 AI 활용 교육과 신규 인력 10명 채용을 함께 진행했다(2026년 11월 19일, 노사발전재단).",
+    "implication": "임금이 조금 낮아도 오래 다닐 수 있는 회사를 비교 기준으로 세우려면, 공고에 적힌 주 4.5일제·유연근무가 근로계약서에도 있는지 확인하게 하라."
    },
    "key_numbers": [
     {
-     "label": "대기업 훈련 참여율",
-     "value": "53.2%",
-     "delta": "",
-     "period": "2026년"
+     "label": "이직률",
+     "value": "16%",
+     "delta": "44%에서",
+     "period": "디스플레이허브"
     },
     {
-     "label": "중소기업 훈련 참여율",
-     "value": "5.8%",
-     "delta": "",
-     "period": "2026년"
+     "label": "주 평균 실근로시간",
+     "value": "36.2시간",
+     "delta": "-2.1시간",
+     "period": "단축 후"
     },
     {
-     "label": "훈련 수도권 집중",
-     "value": "68.5%",
-     "delta": "",
-     "period": "2026년"
+     "label": "사무·영업직 근로시간",
+     "value": "주 35시간",
+     "delta": "-5시간",
+     "period": "단축 후"
     },
     {
-     "label": "청년 감소 일자리 중 AI 고노출",
-     "value": "94%",
+     "label": "신규 채용",
+     "value": "10명",
      "delta": "",
-     "period": "발제 진단"
+     "period": "바이오프로테크"
     }
    ],
    "chart_data": {
-    "type": "bar",
-    "unit": "%",
+    "type": "slope",
+    "unit": "시간",
     "labels": [
-     "대기업",
-     "중소기업"
+     "단축 전",
+     "단축 후"
     ],
     "series": [
      {
-      "name": "직업훈련 참여율",
+      "name": "주 평균 실근로시간",
       "values": [
-       53.2,
-       5.8
+       38.3,
+       36.2
       ],
       "emphasis": true
      }
     ],
     "reference_value": null,
-    "note": "기업 규모별 훈련 참여율(%). 한국기술교육대 35주년 포럼 기조발제, 2026.11.18.",
-    "source_id": "src_moel_koreatech_20261118"
+    "note": "디스플레이허브 전체 근로자 주 평균 실근로시간(시간). 노사발전재단 제8차 일터혁신 사례공유 포럼, 2026.11.19.",
+    "source_id": "src_nosa_worktekh_20261119"
    },
-   "counselor_question": "지금 다니는(지원할) 사업장에서 사업주훈련이나 KDT 과정을 들을 수 있나요?",
+   "counselor_question": "지금 회사에서 가장 줄이고 싶은 근무 조건은 무엇인가요? 그게 줄면 더 오래 다닐 수 있나요?",
    "tags": [
-    "직업훈련",
-    "중소기업",
-    "AI"
+    "노동시간",
+    "일터혁신",
+    "이직률"
    ],
    "ncs": [
     "직업상담서비스"
    ],
-   "theme_key": "th-skills-training",
-   "theme_label": "재취업과 직업훈련",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
    "region": "kr",
-   "issue_id": "iss-ai-training-vision",
+   "issue_id": "iss-workplace-innovation",
    "source": {
-    "source_id": "src_moel_koreatech_20261118",
-    "source_name": "고용노동부",
-    "source_title": "\"인공지능(AI) 시대 직업훈련의 미래는?\" 한국기술교육대, 개교 35주년 고용·평생직업능력개발 발전 전략 포럼 개최",
-    "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20272",
-    "published_at": "2026-11-18",
+    "source_id": "src_nosa_worktekh_20261119",
+    "source_name": "노사발전재단",
+    "source_title": "노동시간 변화로 그리는 일터혁신 — 2026년 제8차 일터혁신 사례공유 포럼",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789916",
+    "published_at": "2026-11-19",
     "license": {
      "name": "공공누리 미부착(사전 협의 필요)",
      "type": "KOGL-NONE",
@@ -793,17 +807,17 @@
      "commercial_use": "unknown",
      "modification": "not_allowed",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "고용노동부 보도자료 원문 페이지에 공공누리 표시 없음(2026-11-19 확인). 정책브리핑 전재본에도 '공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' 고지. 사실·수치만 사용.",
-     "attribution_text": "출처: 고용노동부 「\"인공지능(AI) 시대 직업훈련의 미래는?\" 한국기술교육대, 개교 35주년 고용·평생직업능력개발 발전 전략 포럼 개최」 보도자료(2026.11.18). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-20): '이 자료는 노사발전재단의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 사실·수치만 사용.",
+     "attribution_text": "출처: 노사발전재단 「노동시간 변화로 그리는 일터혁신」 보도자료(2026.11.19, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
     },
     "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
    },
-   "updated_at": "2026-11-19T07:06:00+09:00",
-   "run_id": "br-20261119-0706",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
    "edition": "kr-0700",
    "labor_walk": true,
-   "labor_walk_topic": "훈련·재취업"
+   "labor_walk_topic": "고용정책·감독"
   },
   {
    "id": "c04",
@@ -1214,9 +1228,9 @@
  "runs": {
   "kr-0700": {
    "status": "ok",
-   "updated_at": "2026-11-19T07:06:00+09:00",
-   "last_ok": "2026-11-19",
-   "run_id": "br-20261119-0706"
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "last_ok": "2026-11-20",
+   "run_id": "br-20261120-0705"
   },
   "global-2300": {
    "status": "ok",
@@ -1227,92 +1241,26 @@
  },
  "sources": [
   {
-   "source_id": "src_pm_suneung_20261119",
-   "source_name": "국무조정실",
-   "source_title": "[보도자료] \"수능 부정행위, 결코 용납하지 않겠습니다.\" 범정부, 모든 역량 총동원",
-   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
-   "published_at": "2026-11-18",
+   "source_id": "src_arxiv_2611_23354",
+   "source_name": "arXiv (micro1·노스이스턴대)",
+   "source_title": "AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services (arXiv:2611.23354)",
+   "source_url": "https://arxiv.org/abs/2611.23354",
+   "published_at": "2026-11-17",
    "license": {
-    "name": "공공누리 미부착(사전 협의 필요)",
-    "type": "KOGL-NONE",
-    "url": null,
-    "scope": "보도자료 본문·첨부파일",
-    "attribution_required": true,
-    "commercial_use": "unknown",
-    "modification": "not_allowed",
-    "verified": true,
-    "verified_at": "2026-11-19",
-    "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-19): '이 자료는 국무조정실의 보도자료를 전재하여 제공함을 알려드립니다.' — 공공누리 배지·이용허락 문구 없음. 사실·수치만 사용.",
-    "attribution_text": "출처: 국무조정실 「수능 부정행위, 결코 용납하지 않겠습니다 — 범정부, 모든 역량 총동원」 보도자료(2026.11.18). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
-   },
-   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
-   "id": "src_pm_suneung_20261119"
-  },
-  {
-   "source_id": "src_kdi_outlook_2026h2",
-   "source_name": "재정경제부·한국개발연구원(KDI)",
-   "source_title": "KDI 경제전망(2026. 하반기)",
-   "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
-   "published_at": "2026-11-18",
-   "license": {
-    "name": "공공누리 제1유형(출처표시)",
-    "type": "KOGL-1",
-    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
-    "scope": "텍스트 한정(사진·이미지·일러스트·동영상 제외)",
+    "name": "CC BY 4.0 (Attribution 4.0 International)",
+    "type": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "scope": "논문 본문(초록·본문 텍스트)",
     "attribution_required": true,
     "commercial_use": "allowed",
     "modification": "allowed",
     "verified": true,
     "verified_at": "2026-11-19",
-    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-19): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.'",
-    "attribution_text": "출처: 재정경제부·한국개발연구원(KDI) 「KDI 경제전망(2026. 하반기)」 브리핑(2026.11.18, 정책브리핑 게재), 공공누리 제1유형. 속기자료(텍스트)만 이용했습니다."
+    "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
+    "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
    },
-   "usage": "속기 텍스트를 그대로 게시(17-1 원문)하고, 17번 카드는 성장률·취업자 전망·임금 격차를 요약.",
-   "id": "src_kdi_outlook_2026h2"
-  },
-  {
-   "source_id": "src_moel_koreatech_20261118",
-   "source_name": "고용노동부",
-   "source_title": "\"인공지능(AI) 시대 직업훈련의 미래는?\" 한국기술교육대, 개교 35주년 고용·평생직업능력개발 발전 전략 포럼 개최",
-   "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20272",
-   "published_at": "2026-11-18",
-   "license": {
-    "name": "공공누리 미부착(사전 협의 필요)",
-    "type": "KOGL-NONE",
-    "url": null,
-    "scope": "보도자료 본문·첨부파일",
-    "attribution_required": true,
-    "commercial_use": "unknown",
-    "modification": "not_allowed",
-    "verified": true,
-    "verified_at": "2026-11-19",
-    "evidence": "고용노동부 보도자료 원문 페이지에 공공누리 표시 없음(2026-11-19 확인). 정책브리핑 전재본에도 '공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' 고지. 사실·수치만 사용.",
-    "attribution_text": "출처: 고용노동부 「\"인공지능(AI) 시대 직업훈련의 미래는?\" 한국기술교육대, 개교 35주년 고용·평생직업능력개발 발전 전략 포럼 개최」 보도자료(2026.11.18). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
-   },
-   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
-   "id": "src_moel_koreatech_20261118"
-  },
-  {
-   "source_id": "src_bls_ted_payroll_20261118",
-   "source_name": "미국 노동통계국(BLS) The Economics Daily",
-   "source_title": "Payroll employment increased by 885,000 from October 2025 to October 2026",
-   "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
-   "published_at": "2026-11-18",
-   "license": {
-    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-    "type": "PUBLIC-DOMAIN",
-    "url": "https://www.bls.gov/opub/copyright-information.htm",
-    "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-19",
-    "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-    "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Payroll employment increased by 885,000 from October 2025 to October 2026” (November 18, 2026)"
-   },
-   "usage": "본문·도표(12개월 업종별 증감)를 한국어로 옮겨 싣고, 카드는 업종별 증감만 요약. 그림은 싣지 않고 글자 표로 옮김.",
-   "id": "src_bls_ted_payroll_20261118"
+   "usage": "초록·주요 결과 문단을 그대로 싣고 한국어로 번역. 카드는 자기대리·변호사 고용·로펌 매출 수치만 요약.",
+   "id": "src_arxiv_2611_23354"
   },
   {
    "source_id": "src_bls_soii_2025",
@@ -1337,6 +1285,28 @@
    "id": "src_bls_soii_2025"
   },
   {
+   "source_id": "src_bls_ted_payroll_20261118",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Payroll employment increased by 885,000 from October 2025 to October 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
+   "published_at": "2026-11-18",
+   "license": {
+    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+    "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Payroll employment increased by 885,000 from October 2025 to October 2026” (November 18, 2026)"
+   },
+   "usage": "본문·도표(12개월 업종별 증감)를 한국어로 옮겨 싣고, 카드는 업종별 증감만 요약. 그림은 싣지 않고 글자 표로 옮김.",
+   "id": "src_bls_ted_payroll_20261118"
+  },
+  {
    "source_id": "src_dol_ui_claims_20261119",
    "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
    "source_title": "Unemployment Insurance Weekly Claims Report (2026년 11월 19일)",
@@ -1359,26 +1329,69 @@
    "id": "src_dol_ui_claims_20261119"
   },
   {
-   "source_id": "src_arxiv_2611_23354",
-   "source_name": "arXiv (micro1·노스이스턴대)",
-   "source_title": "AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services (arXiv:2611.23354)",
-   "source_url": "https://arxiv.org/abs/2611.23354",
-   "published_at": "2026-11-17",
+   "source_id": "src_kostat_women_2026h1",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 상반기 지역별고용조사 기혼여성의 고용 현황",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789895",
+   "published_at": "2026-11-19",
    "license": {
-    "name": "CC BY 4.0 (Attribution 4.0 International)",
-    "type": "CC-BY-4.0",
-    "url": "https://creativecommons.org/licenses/by/4.0/",
-    "scope": "논문 본문(초록·본문 텍스트)",
+    "name": "공공누리 제2유형(출처표시+상업적 이용금지) — 사실·수치만",
+    "type": "KOGL-NONE",
+    "url": "https://www.kogl.or.kr/info/license.do",
+    "scope": "원문 재게시 불가 · 사실·수치 인용",
+    "attribution_required": true,
+    "commercial_use": "not_allowed",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제2유형(출처표시+상업적 이용금지)의 조건에 따라 이용할 수 있습니다.' — 제1유형이 아니어서 트랙 B로 내리고 사실·수치만 사용."
+   },
+   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
+   "id": "src_kostat_women_2026h1"
+  },
+  {
+   "source_id": "src_mss_ai_alliance_20261119",
+   "source_name": "중소벤처기업부",
+   "source_title": "대·중소기업, AI로 연결하고 상생으로 도약한다 — AI 대전환 상생협약",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789845",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지·일러스트·동영상 제외)",
     "attribution_required": true,
     "commercial_use": "allowed",
     "modification": "allowed",
     "verified": true,
-    "verified_at": "2026-11-19",
-    "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
-    "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.'",
+    "attribution_text": "출처: 중소벤처기업부 「대·중소기업, AI로 연결하고 상생으로 도약한다」 보도자료(2026.11.19, 정책브리핑 게재), 공공누리 제1유형. 텍스트만 이용했습니다."
    },
-   "usage": "초록·주요 결과 문단을 그대로 싣고 한국어로 번역. 카드는 자기대리·변호사 고용·로펌 매출 수치만 요약.",
-   "id": "src_arxiv_2611_23354"
+   "usage": "보도자료 본문(텍스트)을 17-1 원문에 게재하고, 17번 카드는 협약 분야·지원 규모·예산을 요약.",
+   "id": "src_mss_ai_alliance_20261119"
+  },
+  {
+   "source_id": "src_nosa_worktekh_20261119",
+   "source_name": "노사발전재단",
+   "source_title": "노동시간 변화로 그리는 일터혁신 — 2026년 제8차 일터혁신 사례공유 포럼",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789916",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "공공누리 미부착(사전 협의 필요)",
+    "type": "KOGL-NONE",
+    "url": null,
+    "scope": "보도자료 본문·첨부파일",
+    "attribution_required": true,
+    "commercial_use": "unknown",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-20): '이 자료는 노사발전재단의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 사실·수치만 사용.",
+    "attribution_text": "출처: 노사발전재단 「노동시간 변화로 그리는 일터혁신」 보도자료(2026.11.19, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+   },
+   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
+   "id": "src_nosa_worktekh_20261119"
   }
  ],
  "copyright_policy": {
@@ -1390,6 +1403,7 @@
  },
  "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다.",
  "archive_dates": [
+  "2026-11-20",
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",

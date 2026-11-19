@@ -1,8 +1,9 @@
 {
- "generated_at": "2026-11-20T07:00:13+09:00",
+ "generated_at": "2026-11-20T07:08:19+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
+  "2026-11-20",
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
@@ -1939,6 +1940,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
      "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-20",
+     "card_id": "c03",
+     "title": "노동시간 줄였더니 이직률 44%→16% — 일터혁신 사례",
+     "kicker": "주 평균 실근로 38.3→36.2시간 · 사무직 주 35시간",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "노사발전재단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789916",
+     "published_at": "2026-11-19"
     }
    ]
   },
@@ -3257,6 +3269,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20272",
      "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-20",
+     "card_id": "c01",
+     "title": "경력보유여성 96만명 — 43%는 10년 넘게 비었다",
+     "kicker": "기혼여성 고용률 66.2%(+1.9%p) · 육아로 그만둔 51.1%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789895",
+     "published_at": "2026-11-19"
     }
    ]
   },
@@ -3449,6 +3472,17 @@
      "source_name": "arXiv (micro1·노스이스턴대)",
      "source_url": "https://arxiv.org/abs/2611.23354",
      "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-20",
+     "card_id": "c02",
+     "title": "중소기업 AI 전환, 5년 2조원 — 스마트공장 2,000개",
+     "kicker": "대기업 11곳·유관기관 5곳 협약 · '27년 피지컬 AI 300억원",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "중소벤처기업부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789845",
+     "published_at": "2026-11-19"
     }
    ]
   },
