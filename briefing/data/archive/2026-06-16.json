@@ -1,0 +1,344 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-06-16T07:10:00+09:00",
+ "edition": {
+  "date": "2026-06-16",
+  "weekday": "화",
+  "title": "포스코에 특단 대책 요구, 울산 남구·당진은 산업위기지역",
+  "subtitle": "신안산선 떨어짐 사망 1명·그룹 경영진 5명 면담·석유화학 40%·철강 57% 지역",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "포스코 면담",
+   "value": 0,
+   "unit": "",
+   "value_text": "6월 15일",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "그룹 경영진 5명",
+   "source_id": "src_moel_posco_20260615",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-06-16T07:10:00+09:00",
+   "run_id": "br-20260616-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "울산 남구",
+   "value": 0,
+   "unit": "",
+   "value_text": "석유화학 40%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "제조업 생산 중",
+   "source_id": "src_motie_crisis_20260615",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-06-16T07:10:00+09:00",
+   "run_id": "br-20260616-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "당진시",
+   "value": 0,
+   "unit": "",
+   "value_text": "철강 57%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "지역 산업 중",
+   "source_id": "src_motie_crisis_20260615",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-06-16T07:10:00+09:00",
+   "run_id": "br-20260616-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "포스코에 특단 대책 요구 — 떨어짐 사망 한 건이 마지막이 아니었다",
+   "kicker": "6.9 사망 1명 · 경영진 5명 면담 · 재발방지 요구",
+   "three_step": {
+    "what": "고용노동부 장관이 6월 15일 포스코 그룹 회장과 계열사 대표들을 만나 중대재해 재발방지를 위한 그룹 차원의 대책을 마련하라고 촉구했다. 6월 9일 포스코이앤씨 신안산선 공사현장에서 떨어짐 사망사고가 난 직후다.",
+    "evidence": "사고는 6월 9일 17시 26분께 서울 관악구 철도 공사현장 전기 배관실 개구부에서 발생해 1명이 숨졌다. 장관은 포스코 계열 사업장에서 같은 유형의 중대재해가 반복되는 점을 지적하며 위험 현장에 대한 본사 안전투자 확대와 현장 작동성을 요구했다(2026년 6월 15일, 고용노동부).",
+    "implication": "건설·플랜트 협력업체 소속 내담자에게 개구부·단부 등 떨어짐 위험 구간의 방호 조치와 작업 전 안전점검 기록을 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "사고",
+     "value": "2026년 6월 9일",
+     "delta": "떨어짐·사망 1명",
+     "period": "2026년"
+    },
+    {
+     "label": "면담",
+     "value": "그룹 경영진 5명",
+     "delta": "회장 포함",
+     "period": "2026년 6월 15일"
+    },
+    {
+     "label": "요구",
+     "value": "본사 안전투자 확대",
+     "delta": "동일 유형 반복",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "일하는 현장에서 떨어질 위험이 있는 곳에 방호 시설이 있었나요?",
+   "tags": [
+    "산업안전",
+    "포스코",
+    "중대재해"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-posco-safety-202606",
+   "updated_at": "2026-06-16T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_posco_20260615",
+    "source_name": "고용노동부",
+    "source_title": "고용노동부, 포스코 그룹의 중대재해 예방을 위한 특단의 대책 마련 촉구",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766562",
+    "published_at": "2026-06-15",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「고용노동부, 포스코 그룹의 중대재해 예방을 위한 특단의 대책 마련 촉구」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용지표",
+   "title": "울산 남구와 당진시, 2년간 산업위기선제대응지역 지정",
+   "kicker": "2년 지정 · 석유화학 40% · 철강 57%",
+   "three_step": {
+    "what": "산업통상부가 6월 15일 울산 남구와 충남 당진시를 2028년 6월 14일까지 2년간 산업위기선제대응지역으로 새로 지정했다.",
+    "evidence": "울산 남구는 중동전쟁, 나프타 수급 불안, 사업재편으로 석유화학 산업이 구조적 위기를 겪고 있고, 이 산업이 제조업 생산의 40% 이상을 차지한다. 당진시는 글로벌 공급과잉과 저가 수입재 증가로 철강이 어려운데, 철강이 지역 산업의 57% 이상을 차지한다(2026년 6월 15일, 산업통상부).",
+    "implication": "해당 지역 내담자에게 산업위기지역 지정으로 기업 지원·고용안정 사업이 열린다는 점을 알리고, 전직을 준비한다면 지역 사업과 훈련을 함께 묶어 계획하라."
+   },
+   "key_numbers": [
+    {
+     "label": "지정 기간",
+     "value": "2년",
+     "delta": "2026.6.15~2028.6.14",
+     "period": "2026년"
+    },
+    {
+     "label": "울산 남구",
+     "value": "석유화학 40% 이상",
+     "delta": "제조업 생산 중",
+     "period": "2026년"
+    },
+    {
+     "label": "당진시",
+     "value": "철강 57% 이상",
+     "delta": "지역 산업 중",
+     "period": "2026년"
+    }
+   ],
+   "tags": [
+    "지역산업",
+    "석유화학",
+    "철강"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "kr",
+   "issue_id": "iss-industrial-crisis-region-202606",
+   "updated_at": "2026-06-16T07:10:00+09:00",
+   "source": {
+    "source_id": "src_motie_crisis_20260615",
+    "source_name": "산업통상부",
+    "source_title": "울산 남구와 충남 당진시, '산업위기선제대응지역' 신규 지정",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766594",
+    "published_at": "2026-06-15",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 산업통상부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 산업통상부 「울산 남구와 충남 당진시, '산업위기선제대응지역' 신규 지정」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "거시경제와 고용"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_posco_20260615",
+   "source_name": "고용노동부",
+   "source_title": "고용노동부, 포스코 그룹의 중대재해 예방을 위한 특단의 대책 마련 촉구",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766562",
+   "published_at": "2026-06-15",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「고용노동부, 포스코 그룹의 중대재해 예방을 위한 특단의 대책 마련 촉구」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_motie_crisis_20260615",
+   "source_name": "산업통상부",
+   "source_title": "울산 남구와 충남 당진시, '산업위기선제대응지역' 신규 지정",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766594",
+   "published_at": "2026-06-15",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 산업통상부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 산업통상부 「울산 남구와 충남 당진시, '산업위기선제대응지역' 신규 지정」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22",
+  "2026-07-17",
+  "2026-07-15",
+  "2026-07-14",
+  "2026-07-10",
+  "2026-07-09",
+  "2026-07-08",
+  "2026-07-02",
+  "2026-07-01",
+  "2026-06-30",
+  "2026-06-24",
+  "2026-06-22",
+  "2026-06-18",
+  "2026-06-16"
+ ]
+}
