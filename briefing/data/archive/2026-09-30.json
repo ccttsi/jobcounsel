@@ -1,0 +1,225 @@
+{
+ "schema_version": "1.3.0",
+ "updated_at": "2026-11-19T13:00:00+09:00",
+ "edition": {
+  "date": "2026-09-30",
+  "weekday": "수",
+  "title": "미국 구인 710만·자발적 퇴사 310만, 다 비슷한 채로 멈춰 있다",
+  "subtitle": "BLS 8월 JOLTS — 구인율 4.3%·채용률 3.3%, 구인·채용·퇴사·해고 모두 보합",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_us_openings",
+   "label": "구인",
+   "value": 7.1,
+   "unit": "백만건",
+   "value_text": "710만건",
+   "base_value": null,
+   "base_unit": null,
+   "direction": null,
+   "period": "2026년 8월",
+   "delta_from": "구인율 4.3%",
+   "source_id": "src_bls_jolts_202608",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_us_hires",
+   "label": "채용",
+   "value": 5.2,
+   "unit": "백만건",
+   "value_text": "520만건",
+   "base_value": null,
+   "base_unit": null,
+   "direction": null,
+   "period": "2026년 8월",
+   "delta_from": "채용률 3.3%",
+   "source_id": "src_bls_jolts_202608",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_us_quits",
+   "label": "자발적 퇴사",
+   "value": 3.1,
+   "unit": "백만건",
+   "value_text": "310만건",
+   "base_value": null,
+   "base_unit": null,
+   "direction": null,
+   "period": "2026년 8월",
+   "delta_from": null,
+   "source_id": "src_bls_jolts_202608",
+   "track": "A",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 구인 710만·자발적 퇴사 310만, 다 비슷한 채로 멈춰 있다",
+   "kicker": "구인율 4.3% · 채용률 3.3%",
+   "three_step": {
+    "what": "미국 8월 구인 건수가 710만건으로 한 달 전과 비슷했다. 채용(520만)과 전체 이직(510만), 자발적 퇴사(310만), 해고·정리해고(160만)도 모두 큰 변화가 없었다.",
+    "evidence": "구인율은 4.3%, 채용률은 3.3%였다. 모든 산업에서 구인과 채용이 거의 변하지 않았고, 자발적 퇴사율은 노동자가 스스로 일자리를 옮길 여지가 얼마나 되는지를 보여 주는 지표로 2%대 초반에 머물렀다(2026년 9월 29일, BLS).",
+    "implication": "구직자에게 미국 노동시장이 \"구인은 많은데 채용은 굳은\" 상태임을 보여 주고, 지원할 때 구인 건수보다 그 산업의 채용·퇴사 흐름을 함께 보게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "구인",
+     "value": "710만건",
+     "delta": "구인율 4.3%",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "채용",
+     "value": "520만건",
+     "delta": "채용률 3.3%",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "자발적 퇴사",
+     "value": "310만건",
+     "delta": "보합",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "해고·정리해고",
+     "value": "160만건",
+     "delta": "보합",
+     "period": "2026년 8월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "백만건",
+    "labels": [
+     "구인",
+     "채용",
+     "전체 이직",
+     "자발적 퇴사",
+     "해고"
+    ],
+    "series": [
+     {
+      "name": "2026년 8월",
+      "values": [
+       7.1,
+       5.2,
+       5.1,
+       3.1,
+       1.6
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "2026년 8월 구인·채용·이직. BLS JOLTS, 2026.9.29.",
+    "source_id": "src_bls_jolts_202608"
+   },
+   "tags": [
+    "미국",
+    "구인",
+    "이직"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "issue_id": "iss-us-jolts-202608",
+   "source": {
+    "source_id": "src_bls_jolts_202608",
+    "id": "src_bls_jolts_202608",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "Job Openings and Labor Turnover — August 2026 (USDL-26-1547)",
+    "source_url": "https://www.bls.gov/news.release/archives/jolts_09292026.htm",
+    "published_at": "2026-09-29",
+    "license": {
+     "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표·도표(사진·도해 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "BLS Copyright Information(2026-11-19 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+     "attribution_text": "자료: U.S. Bureau of Labor Statistics"
+    },
+    "usage": "구인·채용·이직·해고 수치만 새로 서술."
+   }
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_bls_jolts_202608",
+   "id": "src_bls_jolts_202608",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Job Openings and Labor Turnover — August 2026 (USDL-26-1547)",
+   "source_url": "https://www.bls.gov/news.release/archives/jolts_09292026.htm",
+   "published_at": "2026-09-29",
+   "license": {
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "텍스트·표·도표(사진·도해 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "BLS Copyright Information(2026-11-19 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+    "attribution_text": "자료: U.S. Bureau of Labor Statistics"
+   },
+   "usage": "구인·채용·이직·해고 수치만 새로 서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 우리 말로 새로 썼습니다.",
+  "track_a_note": "공공누리 제1유형(출처표시)·퍼블릭 도메인·CC BY 4.0 자료를 카드마다 출처와 라이선스로 표시합니다.",
+  "track_b_note": "언론사 기사와 공공누리 미부착 자료는 본문·번역문을 싣지 않고 수치 사실과 원문 링크만 제공합니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30"
+ ]
+}
