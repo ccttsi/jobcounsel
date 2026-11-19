@@ -215,6 +215,17 @@ a{color:inherit}
 .foot{font-size:12px;color:var(--muted);border-top:1px dashed var(--line);margin-top:16px;padding-top:8px}
 .state{padding:24px 16px;color:var(--muted);font-size:15px}
 
+/* 다른 자료실로 잇는 칩: 무엇을 여는지 이름 먼저, 값은 아래 한 줄 */
+.jump-h{font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--muted);margin:0 0 6px}
+.jump{display:grid;grid-template-columns:repeat(auto-fit,minmax(142px,1fr));gap:6px;margin:0 0 16px}
+.jl{display:flex;flex-direction:column;justify-content:center;gap:1px;min-height:52px;padding:6px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);text-decoration:none;color:inherit;min-width:0}
+.jl span{font-size:12px;font-weight:650;line-height:1.4;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jl b{font-size:14px;font-weight:750;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jl:hover{border-color:var(--dept)}
+.jl:hover b{color:var(--dept)}
+.jl:active{transform:translateY(1px)}
+@media (min-width:720px){.jump{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
+
 /* ── 넓은 화면(720px 이상, 가로로 눕힌 휴대폰 포함): 좌우 1:1 데칼코마니 ── */
 .wide-only{display:none}
 @media (min-width:600px){.brand{display:block}.wide-only{display:inline}}
@@ -290,7 +301,7 @@ d.addEventListener('visibilitychange',function(){if(!d.hidden)applyTheme();});
 window.addEventListener('storage',function(e){if(e.key==='jc-theme'){mode=e.newValue||'auto';applyTheme();}});
 
 /* ───────── 자료 ───────── */
-var M,J,E,majors={},jobs={},univ={},rowsBy={},estByMinor={},eFrom={},eTo={},jgFrom={},jgTo={},jgName={},cols,DEPT=[],JOB=[],INDEX=[];
+var M,J,E,L,majors={},jobs={},univ={},rowsBy={},estByMinor={},eFrom={},eTo={},jgFrom={},jgTo={},jgName={},cols,DEPT=[],JOB=[],INDEX=[];
 var deptLoc={},jobLoc={};
 /* 시도 이름을 17개 짧은 이름으로 맞춘다(공시 연도마다 표기가 다르다) */
 var REGS=['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주'];
@@ -312,8 +323,9 @@ function pager(key,total,size){
 }
 function page(key,arr,size){var n=Math.max(1,Math.ceil(arr.length/size)),c=Math.min(st.pg[key]||0,n-1);st.pg[key]=c;return arr.slice(c*size,(c+1)*size);}
 function load(u){return fetch(u,{cache:'force-cache'}).then(function(r){if(!r.ok)throw new Error(u);return r.json();});}
-Promise.all([load('./data/majors.json'),load('./data/jobs.json'),load('./data/edges.json')]).then(function(a){
-  M=a[0];J=a[1];E=a[2];build();$('q').disabled=false;openHash()||render();
+Promise.all([load('./data/majors.json'),load('./data/jobs.json'),load('./data/edges.json'),load('./data/links.json')]).then(function(a){
+  M=a[0];J=a[1];E=a[2];L=a[3]||{};build();$('q').disabled=false;
+  if(!openHash()){render();openQuery();}
 }).catch(function(){
   $('deptContent').innerHTML=$('jobContent').innerHTML='<div class="state">자료를 불러오지 못했습니다. 인터넷 연결을 확인한 뒤 새로 고침해 주세요.</div>';
 });
@@ -381,6 +393,18 @@ function openJob(id){if(!jobs[id])return;st.jp=jobLoc[id].concat(id);st.pg.jd=0;
 function top(cid){var s=$(cid).querySelector('.scroll');if(s)s.scrollTop=0;}
 function openHash(){var h=decodeURIComponent(location.hash.slice(1));if(majors[h]){openMajor(h);return true;}if(jobs[h]){openJob(h);return true;}return false;}
 window.addEventListener('hashchange',openHash);
+/* 다른 섹터에서 ?q=학과·직업명 으로 들어오면 그 항목을 바로 연다. 정확히 같은 이름이 없으면 검색 결과를 펼친다. */
+function urlq(){try{return (new URLSearchParams(location.search).get('q')||'').trim();}catch(e){return '';}}
+function openQuery(){
+  var raw=urlq();if(!raw)return false;
+  var nq=norm(raw),sq=strip(nq)||nq,best=null,bs=9;
+  for(var i=0;i<INDEX.length;i++){var e=INDEX[i];
+    var sc=e.n===nq?0:(e.s===sq?1+Math.abs(e.label.length-raw.length)*0.02:9);
+    if(sc<bs||(sc===bs&&best&&e.r<best.r)){bs=sc;best=e;}
+  }
+  if(best&&bs<9){(best.ty==='j'?openJob:openMajor)(best.go);return true;}
+  q.value=raw;doSearch();return true;
+}
 
 /* ───────── 그리기 ───────── */
 function crumbs(k,tree,path,leaves,rootName){
@@ -425,11 +449,42 @@ function sec(title,body,small){return body?'<div class="sec"><h3>'+title+(small?
 function ul(a){return a&&a.length?'<ul>'+a.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'';}
 function tags(a){return a&&a.length?'<div class="tags">'+a.map(function(x){return '<span class="tg">'+esc(x)+'</span>';}).join('')+'</div>':'';}
 
+/* ── 다른 자료실로 잇기 (data/links.json) ──
+   링크는 그 섹터에서 실제로 결과가 나오는 검색어만 쓴다. */
+function xchip(label,value,path,q){
+  return '<a class="jl" href="'+path+(q?'?q='+encodeURIComponent(q):'')+'"><span>'+esc(label)+'</span><b>'+esc(value)+'</b></a>';
+}
+function jumpBox(list){
+  if(!list.length)return '';
+  return '<div class="jump-h">다른 자료실에서 이어 보기</div><div class="jump" role="group" aria-label="다른 자료실에서 이어 보기">'+list.join('')+'</div>';
+}
+function majorJumps(id){
+  var l=(L&&L.majors&&L.majors[id])||{},out=[],un=l.un!=null?l.un:(rowsBy[id]||[]).length;
+  if(un>0)out.push(xchip('대학 학과 · '+num(un)+'곳',l.uq||majors[id].name,'../univ/',l.uq||majors[id].name));
+  if(l.gq)out.push(xchip('대학원 · '+num(l.gn)+'건',l.gq,'../grad/',l.gq));
+  if(l.tax)out.push(xchip('직무 분류',l.tax.q,'../taxonomy/',l.tax.q));
+  if(l.co)out.push(xchip('기업 예시',l.co.name||l.co.q,'../company/',l.co.q));
+  out.push(xchip('신산업 지면',l.emg?l.emg.q:'이번 지면','../emerging/',l.emg?l.emg.q:''));
+  return jumpBox(out);
+}
+function jobJumps(id){
+  var l=(L&&L.jobs&&L.jobs[id])||{},out=[],lm=null;
+  var jl=linksOfJob(id);
+  if(jl.length){var mid=jl[0].from,mj=(L&&L.majors&&L.majors[mid])||{};lm={un:mj.un>0?mj.uq:null,unc:mj.un,gn:mj.gn>0?mj.gq:null,gnc:mj.gn};}
+  if(l.tax)out.push(xchip('직무 분류',l.tax.q,'../taxonomy/',l.tax.q));
+  if(l.co)out.push(xchip('기업 명함첩',l.co.name||l.co.q,'../company/',l.co.q));
+  if(lm&&lm.un)out.push(xchip('대학 학과 · '+num(lm.unc)+'곳',lm.un,'../univ/',lm.un));
+  if(lm&&lm.gn)out.push(xchip('대학원 · '+num(lm.gnc)+'건',lm.gn,'../grad/',lm.gn));
+  out.push(xchip('신산업 지면',l.emg?l.emg.q:'이번 지면','../emerging/',l.emg?l.emg.q:''));
+  return jumpBox(out);
+}
+
 function majorView(id){
   var m=majors[id],loc=deptLoc[id],c=findNode(DEPT,loc[0]),md=findNode(DEPT,loc[1]),s=m.stats||{},h='';
   h+='<button class="up" data-d-go="2">‹ 위로</button><div class="dt"><h2>'+esc(m.name)+'</h2></div>';
   h+='<p class="dpath">'+esc(c.name)+' › '+esc(md.name)+' · '+esc(m.school_type||'')+'</p>';
   if(m.summary)h+='<p class="lead">'+esc(m.summary)+'</p>';
+  h+=majorJumps(id);
   h+=sec('학과 특성',m.characteristics?'<p>'+esc(m.characteristics)+'</p>':'');
   h+=sec('배우는 것',m.courses&&m.courses.length?m.courses.map(function(x){return '<details class="course"><summary>'+esc(x.name)+'</summary>'+(x.description?'<p>'+esc(x.description)+'</p>':'')+'</details>';}).join(''):'','주요 교과목 · 누르면 설명');
   h+=uniSec(id);
@@ -503,6 +558,7 @@ function jobView(id){
   var j=jobs[id],k=j.keco||{},h='',jg='JG-'+k.class_code;
   h+='<button class="up" data-j-go="2">‹ 위로</button><div class="dt"><h2>'+esc(j.name)+(j.license_required?'<span class="badge b-lic">면허직</span>':'')+'</h2></div>';
   h+='<p class="dpath">'+(k.class_name?esc([k.class_name,k.middle_name,k.small_name,k.detail_name].filter(Boolean).join(' › ')):'고용직업분류 코드 없음')+(j.group?' · 커리어넷 '+esc(j.group):'')+'</p>';
+  h+=jobJumps(id);
   h+=sec('하는 일',ul(j.works));
   var ind=(j.industry||[]).map(function(x){return x.name;});
   if(ind.length||(j.example_companies||[]).length)h+=sec('주로 일하는 산업',tags(ind)+((j.example_companies||[]).length?'<p style="margin-top:8px"><b>업종 대표기업 예시</b><br><span style="color:var(--muted);font-size:15px">'+esc(j.example_companies.join(', '))+'</span></p>':'')+'<p class="warn">'+esc(j.industry_note||'')+'. 공식 연계 자료가 아니며, 특정 기업의 채용을 뜻하지 않습니다.</p>','참고 정보');
