@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="직업상담 통합 자료실의 숫자·조문·요건을 어떤 기준으로 확인하고 어떤 검사를 통과한 화면만 배포하는지 공개하는 검사 내역">
+<title>검사 내역 · 직업상담 통합 자료실</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f4eee3;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --a1:#0f766e;--a2:#b4532a;--a3:#8f5f00;
+  --soft1:rgba(15,118,110,.08);--soft2:rgba(180,83,42,.07);
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 14px 34px -24px rgba(70,50,25,.35);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#a6aebf;--dim:#8d96a9;
+  --a1:#2dd4bf;--a2:#f0a58a;--a3:#fbbf24;
+  --soft1:rgba(45,212,191,.09);--soft2:rgba(240,165,138,.09);
+  --shadow:none;color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;
+  word-break:keep-all;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3,p,ul,ol,dl,dd{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:1120px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+
+/* 머리말 */
+.hd{display:flex;align-items:center;gap:10px;padding:8px 0 10px}
+.back{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-size:13.5px;font-weight:750;color:var(--muted)}
+.back:hover{color:var(--ink)}
+.back svg{width:17px;height:17px}
+.hd .prefs{margin-left:auto;display:inline-flex;align-items:center}
+
+/* 첫머리 */
+.hero{padding:2px 0 18px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.14em;color:var(--a1)}
+.hero h1{margin:6px 0 10px;font-size:clamp(25px,3.6vw,36px);font-weight:850;letter-spacing:-.035em;line-height:1.22}
+.hero .lead{max-width:78ch;font-size:14px;line-height:1.72;color:var(--muted)}
+.stamp{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.stamp span{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:99px;border:1px solid var(--line-2);
+  background:var(--panel);font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.stamp span b{font-weight:850;color:var(--ink)}
+.stamp .ok b{color:var(--a1)}
+
+/* 구역 */
+.sec{padding:22px 0 2px}
+.sec-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec-h h2{font-size:16.5px;font-weight:850;letter-spacing:-.025em}
+.sec-h p{font-size:12.5px;color:var(--dim)}
+
+/* 규칙 3장 */
+.rules{display:grid;gap:12px;margin-top:12px}
+.rule{padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow)}
+.rule .tag{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:.02em;color:var(--a1)}
+.rule .tag i{width:6px;height:6px;border-radius:99px;background:var(--a1);display:inline-block}
+.rule h3{margin:5px 0 4px;font-size:14.5px;font-weight:850;letter-spacing:-.02em}
+.rule p{font-size:13px;line-height:1.7;color:var(--muted)}
+.rule p b{color:var(--ink);font-weight:800}
+.rule .ab{margin-top:9px;display:grid;gap:7px}
+.rule .ab p{font-size:12.5px;line-height:1.65}
+.rule .ab b{display:inline-flex;align-items:center;padding:1px 7px;margin-right:5px;border-radius:7px;
+  font-size:11px;font-weight:850;letter-spacing:.02em;vertical-align:1px;white-space:nowrap}
+.rule .ab .ta b{background:var(--soft1);color:var(--a1);border:1px solid color-mix(in srgb,var(--a1) 32%,transparent)}
+.rule .ab .tb b{background:var(--soft2);color:var(--a2);border:1px solid color-mix(in srgb,var(--a2) 32%,transparent)}
+
+/* 수량 */
+.facts{margin-top:12px;display:grid;border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
+.facts li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1px 14px;align-items:baseline;
+  padding:11px 16px;border-top:1px solid var(--line)}
+.facts li:first-child{border-top:0}
+.facts b{font-size:13px;font-weight:800;letter-spacing:-.01em}
+.facts span{font-size:14px;font-weight:850;color:var(--a1);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.facts em{grid-column:1/-1;font-style:normal;font-size:11.5px;line-height:1.55;color:var(--dim)}
+
+/* 지면 */
+.sectors{margin-top:12px}
+.sector-lead{display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--muted)}
+.sector-lead b{font-size:19px;font-weight:850;color:var(--a1);font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.chips li{padding:4px 9px;border-radius:8px;border:1px solid var(--line);background:var(--panel);font-size:11.5px;color:var(--muted)}
+
+/* 하지 않는 것 */
+.limit{margin-top:12px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--a3);border-radius:14px;
+  background:var(--soft);font-size:13px;line-height:1.72;color:var(--muted)}
+.limit b{color:var(--ink);font-weight:800}
+
+/* 바닥 */
+.foot{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);display:grid;gap:6px}
+.foot p{font-size:12px;line-height:1.65;color:var(--dim)}
+.foot .fb{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-size:13px;font-weight:750;color:var(--a1)}
+.foot .fb svg{width:16px;height:16px}
+
+@media (min-width:900px){
+  .rules{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .facts{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .facts li:nth-child(-n+3){border-top:0}
+  .facts li:not(:nth-child(3n)){border-right:1px solid var(--line)}
+  .sec{padding-top:22px}
+  .end-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0 26px;align-items:start}
+}
+@media (max-width:899px){
+  .sec{padding:16px 0 2px}
+  .hero{padding:0 0 14px}
+  .hero h1{margin:4px 0 8px}
+  .hero .lead{font-size:13.5px;line-height:1.66}
+  .stamp{margin-top:11px}
+  .rule{padding:11px 13px}
+  .rule h3{margin:3px 0 3px}
+  .rule p{font-size:12.5px;line-height:1.64}
+  .rule .ab p{font-size:12px;line-height:1.6}
+  .facts li{padding:8px 13px}
+  .facts em{font-size:11px;line-height:1.48}
+  .chips{gap:4px;margin-top:8px}
+  .chips li{font-size:11px;padding:3px 7px}
+  .limit{font-size:12.5px;padding:11px 13px}
+  .foot{margin-top:16px;padding-top:12px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hd">
+    <a class="back" href="../">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      자료실
+    </a>
+    <span class="prefs"><span data-jc-prefs></span></span>
+  </header>
+
+  <section class="hero">
+    <p class="eyebrow">검사 내역</p>
+    <h1>숫자와 조문을 어떻게 확인했는지</h1>
+    <p class="lead">이 자료실은 숫자·조문·요건을 기억이나 추측으로 쓰지 않습니다. 값마다 공식 출처와 기준시점을 붙이고, 확인되지 않은 값은 싣지 않습니다. 아래는 그 원칙과 함께, 어떤 검사를 통과한 화면만 배포하는지 공개하는 내역입니다.</p>
+    <div class="stamp">
+      <span class="ok"><b>최근 검사</b> 2026-11-19</span>
+      <span><b id="hfN">—</b> 지면 통과</span>
+      <span><b>기준 위반 0건</b> 오류 · 넘침 · 좁은 누름 단추</span>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="ruleH">
+    <div class="sec-h"><h2 id="ruleH">무엇을 검사하나</h2><p>값 · 저작권 · 화면</p></div>
+    <ul class="rules">
+      <li class="rule">
+        <span class="tag"><i aria-hidden="true"></i>값</span>
+        <h3>지어낸 값 0건</h3>
+        <p>원자료에 없는 값은 <b>지어내지 않습니다.</b> 빈칸으로 남기지도 않고 그 항목을 아예 싣지 않습니다. 대신 화면 아래에 <b>「미표기 항목」</b>으로 밝히고 시행기관 공식 안내로 잇습니다. 기업 명함첩의 매출·정원, 자격증 도감의 시험 일정이 그렇게 비어 있습니다.</p>
+      </li>
+      <li class="rule">
+        <span class="tag"><i aria-hidden="true"></i>저작권</span>
+        <h3>인용과 요약의 경계</h3>
+        <p>모든 자료를 두 갈래로 나눠 다룹니다. 제한이 붙은 자료가 재가공 쪽으로 잘못 들어가면 그 변경은 <b>배포되지 않습니다.</b></p>
+        <div class="ab">
+          <p class="ta"><b>A · 재가공</b>재사용을 허락한 자료(공공누리 1·2유형, 법령, 퍼블릭 도메인, 이용허락범위 제한 없음 공공데이터). 출처를 밝히고 수치와 사실을 인용합니다.</p>
+          <p class="tb"><b>B · 요약</b>언론사 기사와 라이선스를 확인하지 못한 자료. 원문을 옮기지 않고 사실과 수치만 새로 씁니다.</p>
+        </div>
+      </li>
+      <li class="rule">
+        <span class="tag"><i aria-hidden="true"></i>화면</span>
+        <h3>실화면 검사</h3>
+        <p>휴대폰 <b>390×844</b>와 데스크톱 <b>1280×800</b>에서 실제 브라우저로 열어 잽니다. 콘솔 오류 <b>0</b>, 같은 사이트 안의 404 <b>0</b>, 가로 넘침 <b>0px</b>, 44px보다 작은 누름 대상 <b>0개</b>. 자료를 못 읽어 빈 화면이 되지 않았는지도 함께 봅니다.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sec" aria-labelledby="factH">
+    <div class="sec-h"><h2 id="factH">공식 자료 수량</h2><p>출처와 기준시점을 붙인 값</p></div>
+    <ul class="facts">
+      <li><b>기업 명함첩</b><span>9,137곳</span><em>대기업·중견기업 7,822곳에 행정안전부 지방공공기관 1,315곳(2026.6.30)을 더한 수. 공정거래위원회 공시대상기업집단 · 중견기업 확인서</em></li>
+      <li><b>자격증 도감</b><span>830건</span><em>공공데이터포털과 법령 기준. 원자료에 없는 시험 일정·과목은 비우고 시행기관 안내로 연결</em></li>
+      <li><b>직업상담 법전</b><span>법령·조례 8건 · 조문 50개</span><em>국가법령정보센터 원문(2026-11-17 확인)</em></li>
+      <li><b>산업 온도계</b><span>산업 24개</span><em>공식 출처 16곳. 고용·생산·매출·흐름 값마다 기준시점</em></li>
+      <li><b>취업 현위치</b><span>착시 점검 10종</span><em>공식 통계 출처 8건, 통계마다 기준시점 표기</em></li>
+      <li><b>오늘의 브리핑</b><span>매일 새 지면</span><em>기사마다 출처와 라이선스 표기, 원문 대신 사실 요약</em></li>
+    </ul>
+  </section>
+
+  <div class="end-grid">
+  <section class="sec" aria-labelledby="secH">
+    <div class="sec-h"><h2 id="secH">검증을 통과한 지면</h2><p>마지막 검사 기준</p></div>
+    <div class="sectors">
+      <p class="sector-lead"><b id="vfSectorN">—</b>곳 모두 위 기준과 실화면 검사를 통과했습니다.</p>
+      <ul class="chips" id="vfSectors"><li>지면 목록을 불러오는 중입니다…</li></ul>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="limH">
+    <div class="sec-h"><h2 id="limH">이 검사가 하지 않는 것</h2></div>
+    <p class="limit"><b>숫자가 사실인지 자동으로 판정하지는 않습니다.</b> 원문 대조는 사람이 합니다. 요약 문장 일부는 AI가 작성했으므로, 숫자·조문은 각 지면에 붙은 출처에서 다시 확인하실 수 있게 달아 두었습니다. 실제 판단은 최신 공식 원문과 기관 안내로 확인하십시오.</p>
+  </section>
+  </div>
+
+  <footer class="foot">
+    <p>개인이 운영하는 비공식 학습 사이트입니다. 고용노동부, 한국고용정보원 등 어떤 기관과도 관계가 없습니다. 이 검사 내역은 2026-11-19에 마지막으로 확인했습니다.</p>
+    <a class="fb" href="../">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      자료실로 돌아가기
+    </a>
+  </footer>
+</div>
+
+<script src="../assets/tools.js"></script>
+<script>
+(function(){
+  'use strict';  var esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+  var list=window.JC_TOOLS||[];
+  var n=document.getElementById('vfSectorN'), box=document.getElementById('vfSectors'), hf=document.getElementById('hfN');
+  if(n) n.textContent=list.length;
+  if(hf) hf.textContent=list.length;
+  if(box) box.innerHTML=list.length? list.map(function(t){return '<li>'+esc(t.title)+'</li>';}).join('') : '<li>지면 목록을 불러오지 못했습니다.</li>';
+})();
+</script>
+<script>window.JC_DESIGN={seal:false};</script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
