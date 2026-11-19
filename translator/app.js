@@ -140,7 +140,7 @@
       + '<span class="r-m"><span class="r-t"><b' + (isHangul(t.term) ? '' : ' class="num"') + '>' + hl(t.term, st.q) + '</b>'
       + '<small>' + esc(t.ko) + '</small></span>'
       + '<span class="r-e">' + esc(t.easy) + '</span></span>'
-      + '<span class="r-b b-' + esc(t.cat) + '">' + esc(st.cat === 'all' ? (CATN[t.cat] || '') : (CATN[t.cat] || '')) + '</span>'
+      + (st.cat === 'all' ? '<span class="r-b b-' + esc(t.cat) + '">' + esc(CATN[t.cat] || '') + '</span>' : '')
       + '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="color:var(--dim)"><path d="m9 18 6-6-6-6"/></svg>'
       + '</button></li>';
   }
