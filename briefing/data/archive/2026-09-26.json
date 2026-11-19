@@ -1,0 +1,243 @@
+{
+ "schema_version": "1.3.0",
+ "updated_at": "2026-11-19T13:00:00+09:00",
+ "edition": {
+  "date": "2026-09-26",
+  "weekday": "토",
+  "title": "미국 민간 노동자 71% 의료보험 문은 있는데, 가입은 46%뿐",
+  "subtitle": "BLS 2026년 3월 고용주 복지 — 퇴직연금 72%·52%, 유급병가 81%, 가족돌봄휴가 49%",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_med_access",
+   "label": "의료보험 접근",
+   "value": 71,
+   "unit": "%",
+   "value_text": "71%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": null,
+   "period": "2026년 3월",
+   "delta_from": "가입 46%",
+   "source_id": "src_bls_ebs_202603",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_ret_access",
+   "label": "퇴직연금 접근",
+   "value": 72,
+   "unit": "%",
+   "value_text": "72%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": null,
+   "period": "2026년 3월",
+   "delta_from": "가입 52%",
+   "source_id": "src_bls_ebs_202603",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_sick",
+   "label": "유급병가",
+   "value": 81,
+   "unit": "%",
+   "value_text": "81%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": null,
+   "period": "2026년 3월",
+   "delta_from": "숙박·음식 58%",
+   "source_id": "src_bls_ebs_202603",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_family_leave",
+   "label": "가족·의료휴가",
+   "value": 49,
+   "unit": "%",
+   "value_text": "49%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": null,
+   "period": "2026년 3월",
+   "delta_from": "개인 휴가 51%",
+   "source_id": "src_bls_ebs_202603",
+   "track": "A",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 민간 노동자 71% 의료보험 문은 있는데, 가입은 46%뿐",
+   "kicker": "퇴직연금 접근 72%·가입 52% · 유급병가 81%",
+   "three_step": {
+    "what": "2026년 3월 기준 미국 민간기업 노동자의 71%가 고용주 의료보험에 가입할 수 있었지만 실제 가입자는 46%였다. 퇴직연금은 72%가 가입할 수 있고 52%가 가입했다.",
+    "evidence": "유급 휴가는 80%, 유급 공휴일과 유급 병가는 각각 81%, 가족·의료휴가는 49%, 개인 휴가는 51%가 이용할 수 있었다. 유급 병가 접근률은 숙박·음식 58%에서 정보·금융보험 98%까지 벌어졌고, 학자금 상환 지원은 임금 하위 25% 3%·상위 25% 15%였다(2026년 9월 25일, BLS).",
+    "implication": "해외 취업이나 외국계 기업을 비교하는 내담자에게 복지가 있다와 내가 받는다가 다르다는 것을 수치로 보여 주고, 연봉 협상 때 가입률과 본인부담을 함께 물으라고 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "의료보험 접근",
+     "value": "71%",
+     "delta": "가입 46%",
+     "period": "2026년 3월"
+    },
+    {
+     "label": "퇴직연금 접근",
+     "value": "72%",
+     "delta": "가입 52%",
+     "period": "2026년 3월"
+    },
+    {
+     "label": "유급병가",
+     "value": "81%",
+     "delta": "숙박·음식 58%",
+     "period": "2026년 3월"
+    },
+    {
+     "label": "가족·의료휴가",
+     "value": "49%",
+     "delta": "개인 휴가 51%",
+     "period": "2026년 3월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "의료 접근",
+     "의료 가입",
+     "연금 접근",
+     "연금 가입",
+     "유급병가"
+    ],
+    "series": [
+     {
+      "name": "민간기업 노동자",
+      "values": [
+       71,
+       46,
+       72,
+       52,
+       81
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "2026년 3월 기준 접근률·가입률. BLS Employee Benefits, 2026.9.25.",
+    "source_id": "src_bls_ebs_202603"
+   },
+   "tags": [
+    "미국",
+    "복리후생",
+    "의료보험"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "source": {
+    "source_id": "src_bls_ebs_202603",
+    "id": "src_bls_ebs_202603",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "Employee Benefits in the United States — March 2026 (USDL-26-1534)",
+    "source_url": "https://www.bls.gov/news.release/archives/ebs2_09252026.htm",
+    "published_at": "2026-09-25",
+    "license": {
+     "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표·도표(사진·도해 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "BLS Copyright Information(2026-11-19 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+     "attribution_text": "자료: U.S. Bureau of Labor Statistics"
+    },
+    "usage": "접근률·가입률·휴가·학자금 지원 수치만 새로 서술."
+   }
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_bls_ebs_202603",
+   "id": "src_bls_ebs_202603",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "Employee Benefits in the United States — March 2026 (USDL-26-1534)",
+   "source_url": "https://www.bls.gov/news.release/archives/ebs2_09252026.htm",
+   "published_at": "2026-09-25",
+   "license": {
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "텍스트·표·도표(사진·도해 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "BLS Copyright Information(2026-11-19 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+    "attribution_text": "자료: U.S. Bureau of Labor Statistics"
+   },
+   "usage": "접근률·가입률·휴가·학자금 지원 수치만 새로 서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 우리 말로 새로 썼습니다.",
+  "track_a_note": "공공누리 제1유형(출처표시)·퍼블릭 도메인·CC BY 4.0 자료를 카드마다 출처와 라이선스로 표시합니다.",
+  "track_b_note": "언론사 기사와 공공누리 미부착 자료는 본문·번역문을 싣지 않고 수치 사실과 원문 링크만 제공합니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22"
+ ]
+}

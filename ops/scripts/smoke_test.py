@@ -36,10 +36,12 @@ PROBES = {
         return {ok: tools >= 10 && entries >= 1, detail: `섹터 장부 ${tools} · 대문 항목 ${entries}`};
     }""",
     "/briefing/": """() => {
+        // 카드는 하루 1~9장이다(SCHEMA v1.3). 여기서는 'JS가 살아 카드가 그려졌는가'만 본다 —
+        // 장수는 수집량에 따라 달라지므로 게이트로 삼지 않는다.
         const cards = document.querySelectorAll('[data-card]').length;
         const tabs = document.querySelectorAll('[data-tab]').length;
         const broken = /불러오지 못했습니다/.test(document.body.innerText);
-        return {ok: cards >= 5 && tabs >= 2 && !broken, detail: `카드 ${cards} · 탭 ${tabs}${broken ? ' · 불러오기 실패' : ''}`};
+        return {ok: cards >= 1 && tabs >= 2 && !broken, detail: `카드 ${cards} · 탭 ${tabs}${broken ? ' · 불러오기 실패' : ''}`};
     }""",
     "/emerging/": """() => {
         const art = (document.querySelector('#art') || {innerText: ''}).innerText.trim().length;
