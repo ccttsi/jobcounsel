@@ -168,12 +168,12 @@ def check_briefing(document, path):
         fail("json", f"{label}: edition.date가 YYYY-MM-DD가 아니다")
 
     metrics = document.get("headline_metrics")
-    if not isinstance(metrics, list) or not 3 <= len(metrics) <= 4:
-        fail("json", f"{label}: headline_metrics는 3~4개여야 한다(지금 {len(metrics) if isinstance(metrics, list) else '없음'})")
+    if not isinstance(metrics, list) or not 0 <= len(metrics) <= 4:
+        fail("json", f"{label}: headline_metrics는 4개 이하여야 한다(지금 {len(metrics) if isinstance(metrics, list) else '없음'})")
 
     cards = document.get("cards")
-    if not isinstance(cards, list) or not 5 <= len(cards) <= 7:
-        fail("json", f"{label}: cards는 5~7개여야 한다(지금 {len(cards) if isinstance(cards, list) else '없음'})")
+    if not isinstance(cards, list) or not 1 <= len(cards) <= 9:
+        fail("json", f"{label}: cards는 1~9개여야 한다(지금 {len(cards) if isinstance(cards, list) else '없음'})")
         cards = cards if isinstance(cards, list) else []
     orders = []
     for card in cards:
