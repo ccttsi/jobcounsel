@@ -1,0 +1,488 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-20T01:47:46+09:00",
+ "edition": {
+  "no": 23,
+  "date": "2026-10-14",
+  "weekday": "수",
+  "title": "양자 다자대화 13개국, 서울에 모인다",
+  "reading_minutes": 4,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20261014-1",
+   "date": "2026-10-14",
+   "order": 1,
+   "sector": "s4",
+   "cat": "quantum",
+   "lead": true,
+   "title": "양자 다자대화 13개국, 서울에 모인다",
+   "kicker": "과학기술정보통신부 · 2026.10.14 보도자료",
+   "summary": "제9차 양자 기술 다자대화가 10월 14일부터 16일까지 서울에서 열린다. 2022년 미국에서 시작해 2023년 한국이 합류한 정부 간 협의체로, 현재 13개국이 참여해 정책 경험과 연구 역량·인재·기반 시설을 잇는다.",
+   "key_numbers": [
+    {
+     "label": "참여국",
+     "value": "13개국",
+     "note": "한국·미국·영국·일본·프랑스 등"
+    },
+    {
+     "label": "한국 합류",
+     "value": "2023년",
+     "note": "2022년 미국에서 시작"
+    },
+    {
+     "label": "회의 기간",
+     "value": "10월 14~16일",
+     "note": "서울 정동"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-quantum-app"
+    ]
+   },
+   "source_id": "src_msit_mdq9",
+   "question": "양자 기술은 아직 '직업'이 아니라 '연구 과제'로 보인다. 그 안에서 이미 채용이 도는 자리는 무엇일까?",
+   "subtitle": "한국·미국·영국·일본 등 13개국, OECD 양자 권고안도 의제로"
+  },
+  {
+   "id": "ei-20261014-2",
+   "date": "2026-10-14",
+   "order": 2,
+   "sector": "s2",
+   "cat": "semicon",
+   "lead": false,
+   "title": "메모리 중심 컴퓨팅, K-문샷이 연다",
+   "kicker": "과학기술정보통신부 · 2026.10.14 보도자료",
+   "summary": "과기정통부가 10월 14일 K-문샷 반도체 분야 운영위원회와 기술위원회를 출범했다. 12대 임무 중 반도체는 성능·전력 한계를 넘는 차세대 반도체 원천기술과 메모리 중심 컴퓨팅 전환, AI 연산 생산성(Token/W) 향상을 목표로 한다.",
+   "key_numbers": [
+    {
+     "label": "K-문샷 임무",
+     "value": "12대",
+     "note": "반도체는 그중 하나"
+    },
+    {
+     "label": "참여 전문가",
+     "value": "20여 명",
+     "note": "산·학·연"
+    },
+    {
+     "label": "목표 지표",
+     "value": "Token/W",
+     "note": "AI 연산 생산성"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "삼성전자",
+     "SK하이닉스",
+     "주성엔지니어링"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-advanced-pkg",
+     "j-npu-sw"
+    ]
+   },
+   "source_id": "src_msit_kmoon",
+   "question": "메모리 병목을 푸는 일은 소자·패키징·시스템 중 어디서 먼저 사람을 뽑을까?",
+   "subtitle": "K-문샷 12대 임무 중 반도체, 산·학·연 20여 명이 로드맵을 짠다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-elec",
+   "name": "전기·전자 엔지니어",
+   "en": "Electrical / Electronics Engineer",
+   "sector": "s2",
+   "role": "전력·제어·회로 시스템을 설계하고 시험한다. 배터리·로봇·충전설비처럼 전기를 다루는 모든 신산업의 아래쪽에서 작동한다.",
+   "ksa": {
+    "k": [
+     "회로이론·전력계통",
+     "전자부품 특성",
+     "전기 안전 규정"
+    ],
+    "s": [
+     "회로 설계·PCB",
+     "계측·디버깅",
+     "인증 시험 대응"
+    ],
+    "a": [
+     "감전·화재 위험을 먼저 보는 습관",
+     "측정값을 믿고 확인하는 태도"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "전자공학",
+    "제어계측공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전자기사",
+    "전기안전기사"
+   ],
+   "insight": "신산업의 화려한 부분은 아니지만, 전원이 꺼지면 모든 것이 멈춘다. 로봇·배터리·수소 설비 모두 이 직무 위에 서 있다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "LG전자",
+     "현대모비스",
+     "효성중공업",
+     "LS일렉트릭"
+    ],
+    "global": [
+     "Texas Instruments",
+     "Infineon",
+     "ABB",
+     "Siemens"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
+  },
+  {
+   "id": "j-quantum-app",
+   "name": "양자 알고리즘 응용 연구원",
+   "en": "Quantum Algorithm Application Researcher",
+   "sector": "s4",
+   "role": "화학·금융·물류의 어려운 계산 문제를 양자 알고리즘으로 바꿔 실험한다. 지금의 양자 하드웨어 한계를 감안해 잡음 완화 기법을 적용하고, 고전 컴퓨터 대비 우위가 있는지 정직하게 평가한다.",
+   "ksa": {
+    "k": [
+     "양자 회로·선형대수",
+     "변분 알고리즘(VQE·QAOA)",
+     "응용 분야 모델링"
+    ],
+    "s": [
+     "Qiskit·Cirq 등 SDK",
+     "시뮬레이터 실험 설계",
+     "논문 재현과 오류 분석"
+    ],
+    "a": [
+     "과장 없이 한계를 말하는 태도",
+     "긴 기초 학습을 견디는 끈기"
+    ]
+   },
+   "study": [
+    "물리학",
+    "컴퓨터공학",
+    "수학",
+    "전자공학"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "대학원 연구 중심(석·박사)",
+    "민간 양자 교육(Qiskit 등)"
+   ],
+   "insight": "아직 ‘쓸모’보다 ‘가능성’으로 움직이는 분야다. 그래서 이 직무의 핵심 능력은 계산이 아니라, 무엇이 진짜 이득인지 판별하는 안목이다.",
+   "companies": {
+    "domestic": [
+     "한국과학기술연구원(KIST)",
+     "한국표준과학연구원",
+     "SK텔레콤",
+     "큐노바",
+     "삼성전자"
+    ],
+    "global": [
+     "IBM Quantum",
+     "Google Quantum AI",
+     "IonQ",
+     "PsiQuantum",
+     "Quantinuum"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "양자 활용 가능성 심사역",
+     "w": "기업 과제가 양자로 풀릴 만한지 판정하는 역할"
+    }
+   ]
+  },
+  {
+   "id": "j-advanced-pkg",
+   "name": "반도체 첨단패키징 공정 엔지니어",
+   "en": "Advanced Packaging Process Engineer",
+   "sector": "s2",
+   "role": "칩을 옆으로·위로 쌓아 하나의 시스템으로 만드는 2.5D·3D 패키징 공정을 개발한다. 열·휨·수율 문제를 잡고, AI 가속기 고객의 요구 사양에 맞춰 공정을 조정한다.",
+   "ksa": {
+    "k": [
+     "열기계·재료 특성",
+     "본딩·TSV 공정 원리",
+     "수율 분석"
+    ],
+    "s": [
+     "DOE 실험 설계",
+     "계측·불량 분석",
+     "고객 사양 협의"
+    ],
+    "a": [
+     "미세한 편차를 견디는 인내",
+     "데이터로 원인을 좁히는 논리"
+    ]
+   },
+   "study": [
+    "신소재공학",
+    "전자공학",
+    "기계공학"
+   ],
+   "certs": [
+    "반도체설계기사·반도체장비유지보수 관련 자격",
+    "품질경영기사"
+   ],
+   "insight": "전공정 미세화가 한계에 가까워지며 ‘쌓아서 성능을 내는’ 후공정이 다시 전면에 나왔다. 한국에 설비·소재 기업이 많아 국내 일자리 밀도가 높다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "SK하이닉스",
+     "한미반도체",
+     "네패스",
+     "하나마이크론"
+    ],
+    "global": [
+     "TSMC",
+     "Intel",
+     "Amkor",
+     "ASE"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "칩 열설계 자문역",
+     "w": "AI 가속기의 발열·휨을 잡는 전문 컨설팅"
+    }
+   ]
+  },
+  {
+   "id": "j-npu-sw",
+   "kind": "new",
+   "name": "AI 반도체 소프트웨어 스택 엔지니어",
+   "en": "AI Accelerator Software Stack Engineer",
+   "sector": "s2",
+   "role": "국산 신경망처리장치(NPU)가 범용 AI 프레임워크에서 그대로 돌아가도록 컴파일러·런타임·드라이버를 맞춘다. 다른 회사 GPU·CPU와 섞어 쓰는 이기종 환경에서 성능이 나오는지 측정한다.",
+   "ksa": {
+    "k": [
+     "컴파일러·런타임",
+     "GPU·NPU 아키텍처",
+     "AI 프레임워크"
+    ],
+    "s": [
+     "CUDA·ROCm 대응 포팅",
+     "성능 프로파일링",
+     "이기종 연동 시험"
+    ],
+    "a": [
+     "성능 수치를 끝까지 파고드는 집요함"
+    ]
+   },
+   "study": [
+    "컴퓨터공학",
+    "전자공학"
+   ],
+   "certs": [
+    "정보처리기사",
+    "리눅스마스터"
+   ],
+   "insight": "칩 성능은 소프트웨어 스택이 받쳐 줄 때만 숫자로 나온다. 국산 AI 반도체 기업이 가장 먼저 채우는 자리다.",
+   "companies": {
+    "domestic": [
+     "퓨리오사AI",
+     "리벨리온",
+     "딥엑스",
+     "모레",
+     "래블업"
+    ],
+    "global": [
+     "AMD",
+     "NVIDIA"
+    ]
+   }
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_msit_mdq9",
+   "name": "과학기술정보통신부",
+   "title": "주요 13개국, 양자기술 정책부터 연구개발, 산업화 등 전주기 협력 강화",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785186",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-10-14",
+   "track": "A",
+   "usage": "양자 기술 다자대화 참여 13개국, 2022년 출범·2023년 한국 합류, OECD 양자 권고안(2026.5) 논의"
+  },
+  {
+   "id": "src_msit_kmoon",
+   "name": "과학기술정보통신부",
+   "title": "성능·전력 한계 넘는 차세대 반도체 개발 도전",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785053",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true
+   },
+   "published": "2026-10-14",
+   "track": "A",
+   "usage": "K-문샷 12대 임무 중 반도체, 메모리 중심 컴퓨팅·Token/W 목표, 운영위원회 참여 기관"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
