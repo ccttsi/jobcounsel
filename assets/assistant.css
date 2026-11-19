@@ -333,7 +333,8 @@
 .jca-hist-ttl { min-width: 0; }
 .jca-hist-ttl b { display: block; font-size: 14.5px; font-weight: 800; letter-spacing: -.02em; }
 .jca-hist-ttl span { display: block; margin-top: 2px; font-size: 11px; color: var(--_dim); letter-spacing: -.01em; }
-.jca-hist-acts { margin: 0 0 2px; }
+.jca-hist-acts { margin: 0 0 2px; gap: 6px; }
+.jca-hist .jca-hist-acts .jca-btn { flex: 0 0 auto; min-width: 120px; }
 .jca-hist-err { color: #b42318; }
 .jca-hist-list { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .jca-hrow {
