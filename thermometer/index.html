@@ -65,6 +65,17 @@ a{color:inherit}
 .mast{border-top:2px solid var(--ink);padding:6px 0 0}
 .mast h1{position:relative;margin:0;font-size:clamp(26px,7.2vw,38px);line-height:1.06;letter-spacing:-.045em;font-weight:850}
 .mast h1 small{display:inline-block;margin-left:.42em;font-size:.42em;font-weight:800;letter-spacing:.16em;color:var(--dim);vertical-align:.5em;text-transform:uppercase}
+/* 관측 시각 — 눈금(+40℃) 뒤에 조금 띄워, 눈금과 같은 활자 크기로 적는다.
+   좁은 화면에서는 제목과 같은 줄에서 잘리지 않도록 눈금 아래 한 줄로 내려 앉는다. */
+.mast h1 .obs{display:inline-block;margin-left:.5em;font-size:.42em;font-weight:750;letter-spacing:.01em;line-height:1.35;color:var(--muted);vertical-align:.5em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.mast h1 .obs::before{content:"";display:inline-block;width:1px;height:.92em;margin-right:.6em;background:var(--line-2);vertical-align:-.1em}
+.mast h1 .obs time{font-weight:850;color:var(--ink);letter-spacing:0}
+.mast h1 .obs .dot{color:var(--dim);opacity:.7}
+@media (max-width:700px){
+  .mast h1 .obs{display:block;margin:.3em 0 0;vertical-align:baseline;line-height:1.45}
+  .mast h1 .obs::before{display:none}
+  .mast h1 + .sub{margin-top:6px}
+}
 .mast h1 .jc-seal{display:none}
 @media (min-width:900px){.mast h1{padding-right:104px}.mast h1 .jc-seal{display:block;position:absolute;right:2px;bottom:0;margin:0;width:84px;height:44px;opacity:.5}}
 .mast .sub{margin:3px 0 0;font-size:12px;line-height:1.42;color:var(--muted)}
@@ -328,7 +339,7 @@ html:not([data-jc-imm]) .jchm .rule{opacity:1}
   </header>
 
   <div class="mast">
-    <h1>산업 온도계<small>-20℃ ~ +40℃</small></h1>
+    <h1>산업 온도계<small>-20℃ ~ +40℃</small><span class="obs"><time id="obsDate" datetime="2026-11-19">2026.11.19</time> 측정 <span class="dot" aria-hidden="true">·</span> 매주 월요일 갱신</span></h1>
     <p class="sub"><b>같은 산업을 국내와 글로벌 두 온도로</b> 잽니다. 고용·생산·매출·트렌드 네 축의 공식 수치를 전년비로 재어, 확인된 근거만으로 온도를 냅니다.</p>
     <div class="rule" aria-hidden="true"><span>-20</span><span>-10</span><span>0</span><span>10</span><span>20</span><span>30</span><span>+40</span></div>
   </div>

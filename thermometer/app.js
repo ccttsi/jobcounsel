@@ -57,6 +57,12 @@
   }
   function pct(t) { return t == null ? 0 : Math.max(0, Math.min(100, (t + 20) / 60 * 100)); }
   function norm(s) { return String(s || '').toLowerCase().replace(/\s+/g, ''); }
+  /* 주격 조사(이/가) — 앞 글자의 받침을 보고 고른다. 국내는 받침이 없어 「가」, 글로벌은 ㄹ 받침이라 「이」.
+     「국내가」를 베껴 「글로벌가」라고 쓰는 일이 없도록 이름표와 조사를 따로 두지 않고 여기서 붙인다. */
+  function gaJosa(word) {
+    var s = String(word || ''), c = s.charCodeAt(s.length - 1);
+    return (c >= 0xac00 && c <= 0xd7a3 && (c - 0xac00) % 28) ? '이' : '가';
+  }
 
   function match(row) {
     if (!state.q) return true;
@@ -326,14 +332,16 @@
     return encodeURIComponent(row.name.replace(/·.*$/, '').trim());
   }
 
-  /* 두 온도의 차이를 한 줄로 — 이 화면의 답이 "얼마나 다른가"이기 때문. */
+  /* 두 온도의 차이를 한 줄로 — 이 화면의 답이 "얼마나 다른가"이기 때문.
+     주어는 늘 더 뜨거운 쪽이다. 예전에는 글로벌이 더울 때 「글로벌이 …더 차가움」이라고
+     반대로 적혔다(주어만 바꾸고 서술어를 그대로 둔 탓) — 서술어는 뜨거움 하나로 고정한다. */
   function gapLine(row) {
     var d = row.domestic.temperature, g = row.global.temperature;
     if (d == null || g == null) return '';
     var gap = Math.round((d - g) * 10) / 10;
     if (Math.abs(gap) < 0.05) return '<span class="tag gap">국내·글로벌 같은 온도</span>';
     var hotter = gap > 0 ? '국내' : '글로벌';
-    return '<span class="tag gap"><b>' + hotter + '</b>가 ' + Math.abs(gap).toFixed(1) + '℃ 더 ' + (gap > 0 ? '뜨거움' : '차가움') + '</span>';
+    return '<span class="tag gap"><b>' + hotter + '</b>' + gaJosa(hotter) + ' ' + Math.abs(gap).toFixed(1) + '℃ 더 뜨거움</span>';
   }
 
   function renderDetail() {
@@ -417,6 +425,16 @@
   }
 
   /* ---------- 방법·출처 ---------- */
+  /* 제목 옆 관측 시각 — 자료를 만든 시각(generated_at)을 그대로 쓴다.
+     손으로 적어 두면 자료를 새로 재고도 날짜만 낡으므로, 화면은 늘 자료가 말하는 날짜를 보여 준다. */
+  function stampObserved() {
+    var el = $('obsDate'), g = String((DATA && DATA.generated_at) || '');
+    if (!el || !/^\d{4}-\d{2}-\d{2}/.test(g)) return;
+    var d = g.slice(0, 10);
+    el.setAttribute('datetime', d);
+    el.textContent = d.replace(/-/g, '.');
+  }
+
   function renderMore() {
     var m = DATA.method || {};
     var w = m.weights || {}, b = m.baseline || {};
@@ -436,6 +454,7 @@
       + '<p><b>국내</b>는 국가데이터처 산업활동동향(생산·소매판매·건설수주) · 고용노동부 사업체노동력조사(종사자) · 한국은행 기업경영분석(매출) · 산업통상부 수출입동향(수출)입니다. <b>글로벌</b>은 미국 BLS 산업별 고용 · 업종 국제기구 지표(SIA·WSTS·worldsteel·Clarksons·IEA) · FAO·EIA 가격지수 · 시장 전망(WSTS·IEA·SIPRI·UNWTO)입니다.</p>'
       + '<h3>지키는 선</h3>'
       + '<ul><li>모든 수치에 <b>기준시점</b>을 답니다. 2026년 9월 생산지수와 2025년 연간 매출액은 다른 달의 값입니다 — 섞어서 「이번 달」이라고 말하지 않습니다.</li>'
+      + '<li>온도는 <b>매주 월요일</b>에 다시 잽니다. 언제 잰 온도인지는 제목 옆에 적혀 있습니다.</li>'
       + '<li><b>확인되지 않은 값은 지어내지도, 0으로 채우지도 않습니다.</b> 근거가 없으면 그 축을 비우고, 비운 사실을 화면에 적습니다.</li>'
       + '<li>보도자료·민간 조사기관(Track B)은 <b>사실·수치만</b> 인용하고 문장·표·그림을 옮기지 않습니다. 재가공이 허락된 자료(Track A)만 원문 표기를 붙입니다.</li>'
       + '<li>민간 잡포털·블로그는 출처로 쓰지 않습니다.</li></ul>'
@@ -492,6 +511,7 @@
   function boot(data) {
     DATA = data;
     (DATA.industries || []).forEach(function (r) { BYID[r.id] = r; });
+    stampObserved();
     var q = '', i = '';
     try {
       var p = new URLSearchParams(location.search);
