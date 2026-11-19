@@ -396,6 +396,9 @@
   var CSS_UI = [
     ':host{all:initial;--ink:#2a2521;--muted:#6b6158;--panel:#fffdf8;--line:#e6dccb;--soft:#f5efe4;--acc:#0f766e;--shadow:0 18px 50px -18px rgba(60,40,20,.45),0 2px 6px rgba(60,40,20,.08);font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink);-webkit-text-size-adjust:100%}',
     ':host([data-dark]){--ink:#e6e9ef;--muted:#9aa2b4;--panel:#111621;--line:#2a3243;--soft:#182030;--acc:#2dd4bf;--shadow:0 18px 50px -14px rgba(0,0,0,.7)}',
+    /* 세피아(종이 색) — 대문의 종이 결 겹침은 이 도구함(z-index 2147483000)보다 아래라,
+       도구함만 흰 종이로 뜨다. 같은 종이 색을 도구함이 직접 쓴다. */
+    ':host([data-tone="sepia"]){--ink:#2f2820;--muted:#6a5d49;--panel:#f6ead0;--line:#e2d1af;--soft:#f0e2c5;--acc:#0f766e;--shadow:0 18px 50px -18px rgba(90,66,32,.4),0 2px 6px rgba(90,66,32,.08)}',
     '*{box-sizing:border-box;font:inherit;color:inherit;margin:0}',
     'button{cursor:pointer;background:none;border:0;padding:0;-webkit-tap-highlight-color:transparent}',
     'button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:10px}',
@@ -546,7 +549,12 @@
   }
   function syncTheme() {
     var dk = isDark();
-    [uiHost, layerHost].forEach(function (h) { if (h) { if (dk) h.setAttribute('data-dark', ''); else h.removeAttribute('data-dark'); } });
+    var sepia = !dk && root.getAttribute('data-jc-tone') === 'sepia';
+    [uiHost, layerHost].forEach(function (h) {
+      if (!h) return;
+      if (dk) h.setAttribute('data-dark', ''); else h.removeAttribute('data-dark');
+      if (sepia) h.setAttribute('data-tone', 'sepia'); else h.removeAttribute('data-tone');
+    });
     if (uiHost) { uiHost.style.setProperty('--pen', prefs.pen); uiHost.style.setProperty('--paper', prefs.paper); }
   }
   function counts() { var h = 0, n = 0; data.items.forEach(function (it) { if (it.type === 'hl') h++; else n++; }); return { h: h, n: n }; }
@@ -846,7 +854,7 @@
       }
     });
     mo.observe(d.body, { childList: true, subtree: true, characterData: true });
-    new MutationObserver(function () { syncTheme(); scheduleRepaint(60); setTimeout(lift, 300); }).observe(root, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+    new MutationObserver(function () { syncTheme(); scheduleRepaint(60); setTimeout(lift, 300); }).observe(root, { attributes: true, attributeFilter: ['data-theme', 'class', 'data-jc-tone'] });
     window.addEventListener('storage', function (e) {
       if (e.key === KEY) { data = load(KEY, { v: 1, items: [] }); repaint(); }
       if (e.key === PKEY) { prefs = load(PKEY, prefs); syncTheme(); repaint(); }
