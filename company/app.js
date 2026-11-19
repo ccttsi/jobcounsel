@@ -694,7 +694,8 @@
       '<button type="button" class="gl-t" id="glBtn" aria-expanded="' + glance + '">' + IC.pie + '한눈에</button>' + so + per + '</div>' +
       (act.length ? '<div class="act">' + act.map(function (a) { return '<button type="button" data-un="' + a[0] + '" aria-label="' + esc(a[1]) + ' 조건 풀기">' + esc(a[1]) + '</button>'; }).join('') + '</div>' : '') +
       (glance && arr.length ? glancePanel() : '');
-    if (!arr.length) r += '<p class="empty">조건에 맞는 곳이 없습니다. 검색어를 줄이거나 <a href="#list' + (st.c ? '?c=' + st.c : '') + '">조건을 풀어</a> 보십시오.' + (st.c && st.q ? ' 다른 분류에 있을 수도 있습니다: <a href="' + q1({ q: st.q }) + '">전체에서 찾기</a>' : '') + '</p>';
+    if (!arr.length) r += '<p class="empty">조건에 맞는 곳이 없습니다. 검색어를 줄이거나 <a href="#list' + (st.c ? '?c=' + st.c : '') + '">조건을 풀어</a> 보십시오.' + (st.c && st.q ? ' 다른 분류에 있을 수도 있습니다: <a href="' + q1({ q: st.q }) + '">전체에서 찾기</a>' : '') +
+      (st.q ? ' <span class="fnote">이 명함첩은 공정위 공시대상기업집단 소속 법인·중견기업 확인서 발급기업·중앙·지방 공공기관만 담습니다. 금융지주회사나 창업·벤처기업처럼 이 명단에 없는 곳은 나오지 않습니다.</span>' : '') + '</p>';
     else {
       r += '<div class="rows' + (PER > 5 ? ' two' : '') + '" data-jc-still>';
       cur.forEach(function (x, i) {
