@@ -1,0 +1,350 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-08-31T07:10:00+09:00",
+ "edition": {
+  "date": "2026-08-31",
+  "weekday": "월",
+  "title": "지게차·크레인 쓰는 제조업 1,000곳 집중점검, 의료비 3조760억 환급",
+  "subtitle": "9.7~9.11 고위험 기계 점검·본인부담상한액 226만명 환급·1인당 평균 136만원",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "집중점검 사업장",
+   "value": 0,
+   "unit": "",
+   "value_text": "1,000곳",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월 7~11일",
+   "delta_from": "제조업",
+   "source_id": "src_moel_machinery_20260830",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-31T07:10:00+09:00",
+   "run_id": "br-20260831-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "의료비 환급 대상",
+   "value": 0,
+   "unit": "",
+   "value_text": "226만명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025년 진료",
+   "delta_from": "+5.9%",
+   "source_id": "src_mohw_refund_20260830",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-31T07:10:00+09:00",
+   "run_id": "br-20260831-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "환급액",
+   "value": 0,
+   "unit": "",
+   "value_text": "3조760억원",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025년 진료",
+   "delta_from": "1인당 136만원",
+   "source_id": "src_mohw_refund_20260830",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-31T07:10:00+09:00",
+   "run_id": "br-20260831-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "지게차·크레인 쓰는 제조업 1,000곳, 9월 첫 주 불시점검",
+   "kicker": "1,000곳 · 9.7~9.11 · 상반기 사고사망 -11.8%",
+   "three_step": {
+    "what": "고용노동부가 9월 7일부터 11일까지 지게차·크레인·컨베이어를 쓰는 제조업 사업장 1,000곳을 집중점검한다. 전국 49개 지방관서장이 직접 현장을 찾아 불시점검한다.",
+    "evidence": "올해 상반기 재해조사 대상 사고사망자는 1년 전보다 34명(11.8%) 줄어 상반기 기준 역대 최저였지만, 세 기계에서 끼임·떨어짐·맞음 사고가 계속됐다. 6월에만 김해 지게차 떨어짐, 영암 천장크레인 맞음, 용인 컨베이어 끼임 사고가 있었다. 8월 31일부터 9월 4일까지는 사업장이 스스로 점검표로 위험요인을 확인하는 기간을 둔다(2026년 8월 30일, 고용노동부).",
+    "implication": "제조업 생산직으로 이직하려는 내담자에게 지게차·크레인·컨베이어 작업 여부와 자율점검표 작성 경험을 물어, 안전을 확인하는 사업장인지 가늠하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "집중점검",
+     "value": "1,000곳",
+     "delta": "제조업",
+     "period": "2026.9.7~9.11"
+    },
+    {
+     "label": "상반기 사고사망",
+     "value": "-34명(-11.8%)",
+     "delta": "역대 최저",
+     "period": "2026년 상반기"
+    },
+    {
+     "label": "불시점검",
+     "value": "49개 지방관서",
+     "delta": "기관장 직접",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "자율점검 기간",
+     "value": "8.31~9.4",
+     "delta": "점검표 활용",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "지게차나 크레인을 다루는 일을 해 보셨나요, 그때 안전교육은 어땠나요?",
+   "tags": [
+    "산업안전",
+    "제조업",
+    "지게차"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-machinery-inspection-202609",
+   "updated_at": "2026-08-31T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_machinery_20260830",
+    "source_name": "고용노동부",
+    "source_title": "제조업 \"중대재해 고위험 기계·기구\" 지게차, 크레인, 컨베이어 집중점검",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775997",
+    "published_at": "2026-08-30",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「제조업 \"중대재해 고위험 기계·기구\" 지게차, 크레인, 컨베이어 집중점검」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "의료비 본인부담 초과금 226만명에게 3조760억원 돌려준다",
+   "kicker": "226만명 · 3조760억원 · 1인당 136만원",
+   "three_step": {
+    "what": "2025년에 낸 의료비가 본인부담상한액을 넘은 226만2,605명에게 3조760억원이 돌아간다. 보건복지부와 국민건강보험공단이 8월 31일부터 지급 절차를 시작했다.",
+    "evidence": "1인당 평균 환급액은 약 136만원이다. 소득 하위 50% 이하가 201만6,503명(89.1%)·2조3,556억원(76.6%)으로 대부분을 차지했고, 65세 이상이 57.9%였다. 2025년 개인별 상한액은 89만~1,074만원이다. 지급동의계좌를 등록하면 신청 없이 자동으로 받는다(2026년 8월 30일, 보건복지부).",
+    "implication": "치료비 때문에 구직 활동을 멈춘 내담자에게 본인부담상한액 환급 대상인지 확인하게 하고, 지급동의계좌 등록으로 신청 없이 받는 방법을 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "환급 대상",
+     "value": "226만2,605명",
+     "delta": "+5.9%",
+     "period": "2025년 진료"
+    },
+    {
+     "label": "환급액",
+     "value": "3조760억원",
+     "delta": "+10.2%",
+     "period": "2025년 진료"
+    },
+    {
+     "label": "1인당 평균",
+     "value": "약 136만원",
+     "delta": "—",
+     "period": "2025년 진료"
+    },
+    {
+     "label": "소득 하위 50% 비중",
+     "value": "89.1%",
+     "delta": "2조3,556억원",
+     "period": "2025년 진료"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "조원",
+    "labels": [
+     "2021",
+     "2023",
+     "2025"
+    ],
+    "series": [
+     {
+      "name": "본인부담상한액 환급",
+      "values": [
+       2.386,
+       2.628,
+       3.076
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "연도별 환급액(2조3,860억·2조6,278억·3조760억원). 보건복지부 2026.8.30.",
+    "source_id": "src_mohw_refund_20260830"
+   },
+   "counselor_question": "지난해 병원비로 낸 돈이 기억나시나요?",
+   "tags": [
+    "의료비",
+    "건강보험",
+    "환급"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "issue_id": "iss-medical-refund-2025",
+   "updated_at": "2026-08-31T07:10:00+09:00",
+   "source": {
+    "source_id": "src_mohw_refund_20260830",
+    "source_name": "보건복지부",
+    "source_title": "의료비 부담 완화 위해 226만 명에게 본인부담상한액 초과금 3조 760억 원 환급",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775992",
+    "published_at": "2026-08-30",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 보건복지부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 보건복지부 「의료비 부담 완화 위해 226만 명에게 본인부담상한액 초과금 3조 760억 원 환급」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "퇴직·사회안전망"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_machinery_20260830",
+   "source_name": "고용노동부",
+   "source_title": "제조업 \"중대재해 고위험 기계·기구\" 지게차, 크레인, 컨베이어 집중점검",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775997",
+   "published_at": "2026-08-30",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「제조업 \"중대재해 고위험 기계·기구\" 지게차, 크레인, 컨베이어 집중점검」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_mohw_refund_20260830",
+   "source_name": "보건복지부",
+   "source_title": "의료비 부담 완화 위해 226만 명에게 본인부담상한액 초과금 3조 760억 원 환급",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775992",
+   "published_at": "2026-08-30",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 보건복지부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 보건복지부 「의료비 부담 완화 위해 226만 명에게 본인부담상한액 초과금 3조 760억 원 환급」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25"
+ ]
+}

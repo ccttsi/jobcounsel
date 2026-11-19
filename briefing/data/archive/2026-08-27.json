@@ -1,0 +1,344 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-08-27T07:10:00+09:00",
+ "edition": {
+  "date": "2026-08-27",
+  "weekday": "목",
+  "title": "DB 퇴직연금 수익률 3.5%, DC·IRP의 절반에도 못 미쳤다",
+  "subtitle": "적립금 501.4조 중 DB 45.7%·원리금보장 편중 91.9%·전공별 경력가이드 10종",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "DB 수익률",
+   "value": 0,
+   "unit": "",
+   "value_text": "3.5%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025년",
+   "delta_from": "DC 8.5%·IRP 9.4%",
+   "source_id": "src_moel_db_pension_20260826",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-27T07:10:00+09:00",
+   "run_id": "br-20260827-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "원리금보장 편중",
+   "value": 0,
+   "unit": "",
+   "value_text": "91.9%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025년말",
+   "delta_from": "DB 적립금",
+   "source_id": "src_moel_db_pension_20260826",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-27T07:10:00+09:00",
+   "run_id": "br-20260827-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "경력가이드",
+   "value": 0,
+   "unit": "",
+   "value_text": "10종",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "직업 290개",
+   "source_id": "src_keis_major_20260826",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-27T07:10:00+09:00",
+   "run_id": "br-20260827-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "DB 퇴직연금 수익률 3.5%, DC·IRP의 절반에도 못 미쳤다",
+   "kicker": "DB 3.5% · DC 8.5% · IRP 9.4%",
+   "three_step": {
+    "what": "기업이 운용 책임을 지는 확정급여형(DB) 퇴직연금의 2025년 수익률이 3.5%로, 근로자가 운용하는 DC형(8.5%)과 IRP(9.4%)의 절반에도 못 미쳤다.",
+    "evidence": "2025년 말 퇴직연금 적립금 501.4조원 가운데 DB가 45.7%로 가장 큰데, 그중 91.9%가 원리금보장형에 몰려 있다. DB 적립금 운용 성과는 기업의 다음 해 납입 부담과 근로자 수급권에 직접 영향을 준다. 고용노동부는 300인 이상 사업장에 적립금운용계획서 작성을 의무화하고, 목표수익률에 기반한 부채 연계 자산배분을 안내했다(2026년 8월 26일).",
+    "implication": "퇴직을 앞둔 내담자에게 '퇴직연금이 있다'에서 끝내지 말고, DB·DC·IRP 중 무엇인지와 수익률이 어디에 적혀 있는지 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "DB 수익률",
+     "value": "3.5%",
+     "delta": "2025년",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "DC / IRP 수익률",
+     "value": "8.5% / 9.4%",
+     "delta": "2025년",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "퇴직연금 적립금",
+     "value": "501.4조원",
+     "delta": "DB 45.7%",
+     "period": "2025년 말"
+    },
+    {
+     "label": "원리금보장형 비중",
+     "value": "91.9%",
+     "delta": "DB 적립금 중",
+     "period": "2025년 말"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "DB",
+     "DC",
+     "IRP"
+    ],
+    "series": [
+     {
+      "name": "2025년 수익률",
+      "values": [
+       3.5,
+       8.5,
+       9.4
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "퇴직연금 제도별 2025년 수익률. 고용노동부 2026.8.26.",
+    "source_id": "src_moel_db_pension_20260826"
+   },
+   "counselor_question": "회사 퇴직연금이 DB인지 DC인지 알고 계신가요?",
+   "tags": [
+    "퇴직연금",
+    "노후",
+    "수익률"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "issue_id": "iss-db-pension-2025",
+   "updated_at": "2026-08-27T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_db_pension_20260826",
+    "source_name": "고용노동부",
+    "source_title": "기업에게 알려드립니다! 확정급여형(DB) 퇴직연금, 이렇게 운용하면 달라집니다",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775557",
+    "published_at": "2026-08-26",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「기업에게 알려드립니다! 확정급여형(DB) 퇴직연금, 이렇게 운용하면 달라집니다」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "퇴직·사회안전망"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "전공별 경력가이드 10종, 진출 직업 290개를 담았다",
+   "kicker": "전공 10종 · 직업 290개 · 2023년부터 매해",
+   "three_step": {
+    "what": "한국고용정보원이 대학 전공별 경력가이드 10종을 발간했다. 인문사회 7개, 자연과학 3개 전공에서 진출할 수 있는 직업과 경력개발 정보를 담았다.",
+    "evidence": "올해는 영어영문학·철학윤리학·행정학·관광학·무역유통학·경제학·경영정보학 7개, 의류·의상학·조리과학·식품가공학 3개 전공을 다뤘고, 진출 가능한 직업 290개를 소개했다. 전공별 교수 인터뷰와 산업·사회 구조 변화가 전공에 미치는 영향도 함께 실었다(2026년 8월 26일, 한국고용정보원).",
+    "implication": "전공과 직업이 바로 이어지지 않아 막막한 대학생·졸업생에게, 자기 전공 가이드에서 직업 290개 중 3개를 골라 실제 채용공고와 비교해 보게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "경력가이드",
+     "value": "10종",
+     "delta": "2026년",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "소개 직업",
+     "value": "290개",
+     "delta": "전공 기반 진출 직업",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "다룬 전공",
+     "value": "인문사회 7·자연 3",
+     "delta": "2026년",
+     "period": "2026년 8월"
+    }
+   ],
+   "counselor_question": "전공에서 이어지는 직업을 몇 개나 알고 계신가요?",
+   "tags": [
+    "전공",
+    "경력개발",
+    "대학생"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "issue_id": "iss-major-career-guide-2026",
+   "updated_at": "2026-08-27T07:10:00+09:00",
+   "source": {
+    "source_id": "src_keis_major_20260826",
+    "source_name": "한국고용정보원·고용노동부",
+    "source_title": "한국고용정보원, 전공선택 및 경력개발 위한 대학 전공별 경력가이드 10종 발간",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775559",
+    "published_at": "2026-08-26",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 한국고용정보원·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 한국고용정보원·고용노동부 「한국고용정보원, 전공선택 및 경력개발 위한 대학 전공별 경력가이드 10종 발간」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_db_pension_20260826",
+   "source_name": "고용노동부",
+   "source_title": "기업에게 알려드립니다! 확정급여형(DB) 퇴직연금, 이렇게 운용하면 달라집니다",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775557",
+   "published_at": "2026-08-26",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「기업에게 알려드립니다! 확정급여형(DB) 퇴직연금, 이렇게 운용하면 달라집니다」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_keis_major_20260826",
+   "source_name": "한국고용정보원·고용노동부",
+   "source_title": "한국고용정보원, 전공선택 및 경력개발 위한 대학 전공별 경력가이드 10종 발간",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775559",
+   "published_at": "2026-08-26",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 한국고용정보원·고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 한국고용정보원·고용노동부 「한국고용정보원, 전공선택 및 경력개발 위한 대학 전공별 경력가이드 10종 발간」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25"
+ ]
+}
