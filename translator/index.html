@@ -12,7 +12,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
 <meta name="description" content="내담자가 상담실에서 쓰는 직무·산업·학력·고용제도 용어와 약어를 한 줄 뜻·실제 맥락·이어 물을 질문·연계 자료로 바로 옮겨 주는 실무용 번역기.">
-<title>내담자 언어 번역기 · 용어 625</title>
+<title>내담자 언어 번역기 · 용어 1813</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -21,6 +21,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
   --acc:#155a6b;--acc-soft:rgba(21,90,107,.09);--on-acc:#fffdf8;
   --seal:#a8442c;--hl:rgba(255,214,0,.42);
+  --ban:#8d0d12;--ban-bg:#8d0d12;--ban-bd:#560206;--ban-fg:#fff7f4;--ban-soft:rgba(141,13,18,.11);--ban-tx:#8d0d12;
   --c-job:#155a6b;--c-ind:#8f4413;--c-edu:#5a3d8f;--c-pol:#1a4fa0;--c-slang:#5c6b1f;--c-derog:#a8442c;--seal-soft:rgba(168,68,44,.10);
   --shadow:0 1px 2px rgba(70,50,25,.05),0 12px 30px -20px rgba(70,50,25,.32);
   --shadow-bar:0 2px 0 rgba(42,37,33,.10),0 14px 30px -22px rgba(70,50,25,.45);
@@ -33,6 +34,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
   --acc:#7fd6e8;--acc-soft:rgba(127,214,232,.12);--on-acc:#08131a;
   --seal:#f0947c;--hl:rgba(242,201,76,.30);
+  --ban:#ff5f56;--ban-bg:#b30f18;--ban-bd:#ff7168;--ban-fg:#fff3f0;--ban-soft:rgba(255,95,86,.16);--ban-tx:#ff8a82;
   --c-job:#7fd6e8;--c-ind:#f0ab7a;--c-edu:#bda6ee;--c-pol:#93b4f5;--c-slang:#c9d27a;--c-derog:#f0947c;--seal-soft:rgba(240,148,124,.13);
   --shadow:none;--shadow-bar:0 0 0 1px rgba(127,214,232,.18);
   color-scheme:dark;
@@ -77,7 +79,6 @@ a{color:inherit}
 .hero{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:16px 0 6px}
 .hero>*{min-width:0}
 .eye{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.13em;color:var(--acc)}
-.eye i{font-style:normal;display:inline-grid;place-items:center;min-width:27px;height:22px;padding:0 9px;border:1.4px solid currentColor;border-radius:6px;font-size:11.5px;letter-spacing:.02em}
 .hero h1{margin:0;font-size:clamp(26px,6.2vw,39px);line-height:1.16;letter-spacing:-.045em;font-weight:850;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--acc)}
 .hero .lead{margin:0;font-size:14.5px;line-height:1.6;color:var(--muted);max-width:46em}
@@ -148,7 +149,9 @@ a{color:inherit}
 .r-t b em{font-style:normal;background:linear-gradient(transparent 60%,var(--hl) 60%)}
 .r-t small{font-size:12px;font-weight:650;color:var(--dim)}
 .r-e{display:block;margin-top:2px;font-size:13px;line-height:1.45;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.r-bn{display:inline-flex;align-items:center;min-height:18px;padding:0 5px;border:1px solid var(--seal);border-radius:4px;font-size:10.5px;font-weight:800;color:var(--seal);letter-spacing:-.01em}
+.r-bn{display:inline-flex;align-items:center;gap:2px;min-height:18px;padding:0 5px;border:1px solid var(--seal);border-radius:4px;font-size:10.5px;font-weight:800;color:var(--seal);letter-spacing:-.01em}
+.r-bn svg{flex:none}
+.r-bn.is-forbid{padding:0 6px 0 4px;border:1.5px solid var(--ban-bd);border-radius:5px;background:var(--ban-bg);color:var(--ban-fg);font-weight:900;letter-spacing:-.02em}
 .r-b{flex:none;justify-self:end;display:inline-flex;align-items:center;min-height:22px;padding:2px 9px;border-radius:99px;font-size:11.5px;font-weight:750;border:1px solid currentColor;opacity:.9}
 .b-job{color:var(--c-job)}.b-industry{color:var(--c-ind)}.b-edu{color:var(--c-edu)}.b-policy{color:var(--c-pol)}.b-slang{color:var(--c-slang)}.b-derog{color:var(--c-derog)}
 .pg{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 0 2px}
@@ -170,6 +173,8 @@ a{color:inherit}
 .c-top .badge{display:inline-flex;align-items:center;min-height:24px;padding:3px 9px;border-radius:99px;border:1px solid currentColor;font-size:11.5px;font-weight:750}
 .c-ban{display:inline-flex;align-items:center;gap:5px;margin-left:auto;padding:4px 9px;border:1.5px solid var(--seal);border-radius:6px;background:var(--seal-soft);color:var(--seal);font-size:11.5px;font-weight:850;letter-spacing:-.01em;transform:rotate(-2deg);white-space:nowrap}
 .c-ban svg{flex:none}
+.c-ban.is-forbid{padding:5px 11px 5px 8px;border:2px solid var(--ban-bd);border-radius:7px;background:var(--ban-bg);color:var(--ban-fg);font-size:12px;font-weight:900;letter-spacing:-.02em;box-shadow:0 0 0 2px var(--ban-soft),0 3px 10px -6px rgba(0,0,0,.55);transform:rotate(-1.4deg)}
+.c-ban.is-forbid svg{stroke-width:3.2}
 .c-path{margin:0;font-size:12.5px;font-weight:700;color:var(--acc);letter-spacing:-.01em}
 .c-hd h2{margin:1px 0 0;font-size:clamp(23px,4.6vw,30px);line-height:1.2;letter-spacing:-.035em;font-weight:850;word-break:break-word}
 .c-hd h2.mono{font-family:var(--mono);letter-spacing:-.01em;font-size:clamp(21px,4.4vw,27px)}
@@ -183,6 +188,13 @@ a{color:inherit}
 .blk.b-ctx p{color:var(--muted)}
 .blk.b-ban{margin:10px 0 2px;padding:12px 13px;border:1px solid var(--seal);border-left-width:4px;border-radius:10px;background:var(--seal-soft)}
 .blk.b-ban h3{color:var(--seal);letter-spacing:.03em}
+.blk.b-ban.is-forbid{border:2px solid var(--ban-tx);border-left-width:7px;background:var(--ban-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.blk.b-ban.is-forbid h3{display:flex;align-items:center;gap:6px;color:var(--ban-tx);font-size:12.5px;font-weight:900;letter-spacing:.02em}
+.blk.b-ban.is-forbid h3 svg{flex:none;stroke-width:3.2}
+.blk.b-ban.is-forbid .ban-swap b,.blk.b-ban.is-forbid .ban-say b{color:var(--ban-tx)}
+.blk.b-ban.is-forbid .ban-swap{border-top-color:color-mix(in srgb,var(--ban-tx) 45%,transparent)}
+.blk.b-ban.is-forbid .ban-swap li::before{color:var(--ban-tx)}
+.blk.b-ban.is-forbid .ban-note{font-weight:600}
 .blk.b-ban .ban-note{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink)}
 .ban-swap{margin-top:9px;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--seal) 40%,transparent)}
 .ban-swap b{display:block;margin-bottom:5px;font-size:12px;font-weight:800;color:var(--seal)}
@@ -241,7 +253,7 @@ html[data-jc-imm] .hd .brand,html[data-jc-imm] .pv{display:none}
         <li><b>풀이는 자료실이 새로 쓴 글입니다.</b> 기관 문서·사전의 문장을 옮기지 않았습니다. 공식 정의가 있는 말은 출처를 달았고, 공식 정의가 없는 현장 약어는 그 사실을 밝혔습니다.</li>
         <li><b>“가능성이 큽니다”는 추정입니다.</b> 내담자가 그 말을 썼을 때 실제로 했을 일을 짐작해 적은 것이니, 확인 질문으로 사실을 채우세요.</li>
         <li><b>제도·금액은 기준일 뒤에 바뀔 수 있습니다.</b> 국취 수당·실업급여 같은 수치는 법령과 고용24 안내로 다시 확인하세요.</li>
-        <li><b>비하·속어 항목은 이해용입니다.</b> 상담사가 먼저 쓰거나 따라 쓰지 않도록 카드 우상단에 <b>상담사 사용 금지</b>를 붙였고, 대신 쓸 중립 표현을 함께 적었습니다.</li>
+        <li><b>비하·속어 항목은 이해용입니다.</b> 상담사가 먼저 쓰거나 따라 쓰지 않도록 카드 우상단에 진한 빨강 X 표시로 <b>상담사 절대 사용 금지</b>를 붙였고, 대신 쓸 중립 표현을 함께 적었습니다.</li>
         <li><b>검색어와 입력 내용은 서버로 보내지 않습니다.</b> 화면 안에서만 쓰고 저장하지 않습니다.</li>
       </ul>
     </div>
@@ -250,7 +262,7 @@ html[data-jc-imm] .hd .brand,html[data-jc-imm] .pv{display:none}
   <main id="main" data-jc-still>
     <section class="hero">
       <div class="h-l">
-        <p class="eye"><i>26</i>CLIENT LANGUAGE TRANSLATOR</p>
+        <p class="eye">CLIENT LANGUAGE TRANSLATOR</p>
         <h1>내담자 <em>언어 번역기</em></h1>
         <p class="lead">“MES 운영했고 FAB에서 수율 잡았어요” 같은 말을, 한 줄 뜻과 실제 업무 맥락, 이어 물을 질문, 연계 자료까지 한 장으로 옮깁니다.</p>
       </div>
@@ -288,7 +300,7 @@ html[data-jc-imm] .hd .brand,html[data-jc-imm] .pv{display:none}
   </main>
 
   <p class="foot" id="foot">
-    <b>풀이</b> 자료실이 새로 쓴 글 · <b>출처</b> NCS·Q-net·고용24·고용노동부·국가법령정보센터·식약처·안전보건공단 등 공개 자료의 사실만 확인해 재서술했습니다. <b>주의</b> 제도·금액은 기준일(2026-11-19) 뒤에 바뀔 수 있으니 법령·기관 안내로 다시 확인하세요. <b>비하·속어</b>는 내담자의 말을 이해하기 위한 참고용이며 상담사는 쓰지 않습니다.
+    <b>풀이</b> 자료실이 새로 쓴 글 · <b>출처</b> NCS·Q-net·고용24·고용노동부·국가법령정보센터·식약처·안전보건공단 등 공개 자료의 사실만 확인해 재서술했습니다. <b>주의</b> 제도·금액은 기준일(2026-11-19) 뒤에 바뀔 수 있으니 법령·기관 안내로 다시 확인하세요. <b>비하·속어</b>는 내담자의 말을 이해하기 위한 참고용이며 상담사는 절대 쓰지 않습니다.
   </p>
 </div>
 
