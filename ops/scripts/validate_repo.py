@@ -8,6 +8,7 @@
 
 검사 항목
   json     — briefing/·emerging/ 의 모든 .json 파싱·중복 키·스키마 필수 필드·참조 무결성
+             + 대문 상담 프리셋(assets/presets.js)이 섹터 장부(assets/tools.js)와 맞는지
   license  — 저작권 Track A/B 교차 가드레일 (PRESS·KOGL-NONE·FACTS-ONLY·미확인 라이선스가 Track A면 실패)
   js       — 저장소에 든 .js 전부 `node --check` 문법 검사
   role     — PR 제목/라벨 기반 역할 분리 가드레일 ([data-only] PR이 화면 코드를 건드리면 실패)
@@ -470,6 +471,79 @@ def run_js_checks():
     note(f"JS {len(files)}개를 node --check로 검사했다" + (f" (오류 {bad})" if bad else ""))
 
 
+# ---------------------------------------------------------------- 3-1) 상담 프리셋 장부
+#   대문 덱의 프리셋은 섹터 id로만 카드를 가리킨다. 오타·중복이 있으면 그 카드가 조용히 빠져
+#   상담 순서가 끊긴 채로 배포되므로, 배포 전에 장부와 대조한다.
+def run_preset_checks():
+    path = os.path.join(ROOT, "assets", "presets.js")
+    tools_path = os.path.join(ROOT, "assets", "tools.js")
+    if not os.path.exists(path):
+        fail("presets", "assets/presets.js가 없다")
+        return
+    raw = open(path, encoding="utf-8").read()
+    start = raw.find("window.JC_PRESETS")
+    if start < 0:
+        fail("presets", "window.JC_PRESETS 선언을 찾지 못했다")
+        return
+    start = raw.find("{", start)
+    try:
+        data, _end = json.JSONDecoder().raw_decode(raw[start:])
+    except Exception as exc:
+        fail("presets", f"프리셋 JSON을 읽지 못했다 — {exc}")
+        return
+    tools_raw = open(tools_path, encoding="utf-8").read()
+    ids = set(re.findall(r"\{id:'([^']+)'", tools_raw))
+    modes = dict(re.findall(r"\{id:'([^']+)'[^}]*?mode:'(seed|match)'", tools_raw))
+    slots = {m: sum(1 for v in modes.values() if v == m) for m in ("seed", "match")}
+
+    seen, total, placed = set(), 0, 0
+    for mode in ("seed", "match"):
+        group = data.get(mode)
+        if not isinstance(group, list) or not group:
+            fail("presets", f"{mode} 프리셋이 비어 있다")
+            continue
+        for i, preset in enumerate(group):
+            where = f"{mode}[{i}]"
+            if not isinstance(preset, dict):
+                fail("presets", f"{where}가 객체가 아니다")
+                continue
+            for key in ("id", "k", "w", "why", "basis", "steps"):
+                if not preset.get(key):
+                    fail("presets", f"{where} {key} 누락")
+            pid = preset.get("id")
+            if pid in seen:
+                fail("presets", f"{where} id가 중복된다: {pid}")
+            seen.add(pid)
+            if len(str(preset.get("why", ""))) > 170:
+                fail("presets", f"{where} why가 너무 길다(한 줄 근거): {len(preset['why'])}자")
+            steps = preset.get("steps") or []
+            if not (2 <= len(steps) <= 6):
+                fail("presets", f"{where} 단계는 2~6개: {len(steps)}개")
+            cards = []
+            for j, step in enumerate(steps):
+                label = f"{where} {j + 1}단계"
+                for key in ("k", "q", "c", "cards"):
+                    if not step.get(key):
+                        fail("presets", f"{label} {key} 누락")
+                if len(str(step.get("q", ""))) > 80:
+                    fail("presets", f"{label} 질문이 너무 길다: {len(step['q'])}자")
+                if len(str(step.get("c", ""))) > 110:
+                    fail("presets", f"{label} 확인 문장이 너무 길다: {len(step['c'])}자")
+                for cid in step.get("cards") or []:
+                    if cid not in ids:
+                        fail("presets", f"{label} 카드 '{cid}'가 섹터 장부에 없다")
+                    elif cid in cards:
+                        fail("presets", f"{label} 카드 '{cid}'가 같은 프리셋에 두 번 나온다")
+                    else:
+                        cards.append(cid)
+            if len(cards) > slots[mode]:
+                fail("presets", f"{where} 카드 {len(cards)}장이 {mode} 칸 {slots[mode]}개를 넘는다")
+            total += 1
+            placed += len(cards)
+    note(f"상담 프리셋 {total}개 · 단계별 카드 {placed}자리를 섹터 장부 {len(ids)}개와 대조했다"
+         f"(시드 {slots['seed']}칸 · 매치 {slots['match']}칸)")
+
+
 # ---------------------------------------------------------------- 4) 역할 분리 가드레일
 def classify(path):
     if path.startswith(".github/") or path.startswith("ops/"):
@@ -527,6 +601,8 @@ def main():
 
     if "json" in selected:
         run_json_checks()
+    if "json" in selected or "presets" in selected:
+        run_preset_checks()   # 프리셋 장부도 데이터다 — json 검사에 함께 돌려 CI 워크플로를 고치지 않아도 되게 한다
     if "license" in selected:
         run_license_checks()
     if "js" in selected:
@@ -546,8 +622,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS 문법", "role": "역할 가드레일"}
-        for check in ("json", "license", "js", "role"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS 문법", "presets": "상담 프리셋 장부", "role": "역할 가드레일"}
+        for check in ("json", "license", "js", "presets", "role"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
@@ -561,7 +637,7 @@ def main():
         print("✓ 모든 정적 검사 통과")
 
     if args.summary_file:
-        lines = ["## 정적 검증 (JSON·저작권·JS·역할)", ""]
+        lines = ["## 정적 검증 (JSON·저작권·JS·프리셋·역할)", ""]
         lines += [f"- {line}" for line in notes]
         if problems:
             lines += ["", f"**실패 {len(problems)}건**", ""]

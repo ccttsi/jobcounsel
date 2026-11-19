@@ -1,10 +1,15 @@
-/* deck.js — 시드(11)·매치(12) 재구성 화면: 세로 슬롯 덱 (2026-11-17, 2026-11-18 CP3 개정)
+/* deck.js — 시드(11)·매치(12) 재구성 화면: 세로 슬롯 덱 (2026-11-17, 2026-11-18 CP3, 2026-11-19 프리셋)
  *
  * 「내 목차」를 직접 꽂는 화면. 왼쪽(휴대폰은 위)은 1번부터 내려가는 세로 슬롯, 오른쪽(휴대폰은 아래)은 자료 선반.
  *   PC: 선반 카드를 슬롯으로 끌어다 놓기 / 1클릭(들기) → 슬롯 1클릭.  휴대폰: 1탭(들기) → 슬롯 1탭.
  *   2026-11-18: 꽂힌 자료는 누른다고 선반으로 빠지지 않는다(고정). 누르면 플로팅 카드가 떠서
  *   「이 자료 열기 · 자리 옮기기 · 선반으로 빼기」를 고른다. 선반 자료 클릭 = 들고 배치 대기, 꽂힌 자료 클릭 = 미리보기.
  *   배치는 모드별로 이 기기에 저장한다(jc-deck-seed · jc-deck-match).
+ *
+ * 2026-11-19 — 상담 프리셋(assets/presets.js). 덱 머리 아래 한 줄 칩을 누르면 그 프리셋의 카드가
+ *   **단계 순서대로** 1번 칸부터 꽂히고, 슬롯 사이에 「1단계 · 지표」 같은 단계 머리와 그 단계의 질문이 끼어
+ *   상담 진행 순서가 덱 자체에 남는다. 덱 아래 한 줄에 「왜 이 순서」 근거가 뜨고 「프리셋 풀기」로 되돌린다.
+ *   프리셋 카드는 id로만 가리키므로, 아직 없는 섹터는 조용히 건너뛴다. 손으로 꽂거나 빼면 프리셋 표시만 풀린다.
  */
 (function () {
   'use strict';
@@ -15,6 +20,9 @@
     match: { k: '매치', en: 'MATCH', sub: '현장·실무 쓰기' }
   };
   var deck = { seed: [], match: [] };   /* 칸 수만큼의 배열. 빈 칸은 null */
+  var PKEY = { seed: 'jc-preset-seed', match: 'jc-preset-match' };
+  var pre = { seed: '', match: '' };        /* 지금 적용된 프리셋 id */
+  var prev = { seed: null, match: null };   /* 프리셋 적용 직전 배치 — 「프리셋 풀기」가 되돌린다 */
   var mode = 'all';
   var hold = null;    /* {id, from} — from=null이면 선반에서 들고 있음, 숫자면 그 칸에서 옮기는 중 */
   var view = null;    /* {id, idx} — 꽂힌 자료 미리보기(고정된 자리) */
@@ -36,10 +44,11 @@
   }
   function byId(id) { var a = all(); for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i]; return null; }
   function maxOf(m) { return listFor(m).length; }
-  /* 칸은 처음부터 전부 있고, 배치는 「몇 번 칸에 무엇」이다(빈 칸 null). 모드별로 따로 저장한다. */
+  /* 칸은 처음부터 전부 있고, 배치는 「몇 번 칸에 무엇」이다(빈 칸 null). 모드별로 따로 저장한다.
+     프리셋은 다른 모드의 섹터도 한 흐름에 꽂으므로, 칸이 받는 id는 그 모드 목록이 아니라 **장부 전체**다. */
   function valid(m, arr) {
     var ids = {}, out = [], max = maxOf(m);
-    listFor(m).forEach(function (t) { ids[t.id] = 1; });
+    all().forEach(function (t) { ids[t.id] = 1; });
     arr = Array.isArray(arr) ? arr : [];
     for (var i = 0; i < max; i++) {
       var x = arr[i];
@@ -50,6 +59,67 @@
   }
   function read(m) { try { return valid(m, JSON.parse(localStorage.getItem(KEY[m]) || '[]')); } catch (e) { return valid(m, []); } }
   function save() { try { localStorage.setItem(KEY[mode], JSON.stringify(deck[mode])); } catch (e) { } }
+
+  /* ---------- 상담 프리셋 (assets/presets.js) ---------- */
+  function presetList(m) {
+    var src = (window.JC_PRESETS || {})[m];
+    return Array.isArray(src) ? src.filter(function (p) { return p && p.id && p.steps && p.steps.length; }) : [];
+  }
+  function presetOf(m, id) {
+    var a = presetList(m);
+    for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i];
+    return null;
+  }
+  function presetCards(p) {
+    var out = [];
+    (p.steps || []).forEach(function (s) {
+      (s.cards || []).forEach(function (c) { if (out.indexOf(c) < 0) out.push(c); });
+    });
+    return out;
+  }
+  /* 아직 없는 섹터(머지 전)는 세지 않는다 — 프리셋이 조용히 줄어들 뿐 빈 칸이 생기지 않는다 */
+  function presetLive(p) { return presetCards(p).filter(function (c) { return !!byId(c); }); }
+  function readPre(m) {
+    try { var v = localStorage.getItem(PKEY[m]) || ''; return v && presetOf(m, v) ? v : ''; } catch (e) { return ''; }
+  }
+  function savePre() {
+    try { if (pre[mode]) localStorage.setItem(PKEY[mode], pre[mode]); else localStorage.removeItem(PKEY[mode]); } catch (e) { }
+  }
+  /* 저장된 표시가 실제 배치와 맞는지 — 손으로 고친 뒤 남은 표시를 지운다 */
+  function deckFitsPreset(m, id) {
+    var p = presetOf(m, id); if (!p) return false;
+    var want = presetLive(p), arr = deck[m] || [];
+    if (!want.length) return false;
+    for (var i = 0; i < want.length; i++) if (arr[i] !== want[i]) return false;
+    return true;
+  }
+  function applyPreset(id) {
+    var p = presetOf(mode, id); if (!p) return false;
+    var max = maxOf(mode), arr = [], n = 0;
+    for (var k = 0; k < max; k++) arr[k] = null;
+    presetLive(p).forEach(function (c) {
+      if (n < max && arr.indexOf(c) < 0) arr[n++] = c;
+    });
+    if (!n) return false;
+    prev[mode] = deck[mode].slice();
+    deck[mode] = valid(mode, arr);
+    pre[mode] = id; stepSel = 0; save(); savePre();
+    hold = null; view = null;
+    render(); flash(0);
+    var sc = $('deckScroll'); if (sc) sc.scrollTop = 0;
+    return true;
+  }
+  function clearPreset() {
+    if (prev[mode]) { deck[mode] = valid(mode, prev[mode]); save(); }
+    prev[mode] = null; pre[mode] = ''; savePre();
+    hold = null; view = null;
+    render();
+  }
+  /* 손으로 꽂거나 빼면 프리셋 표시만 조용히 푼다(배치는 그대로) */
+  function unmark() {
+    if (!pre[mode]) return;
+    pre[mode] = ''; prev[mode] = null; savePre();
+  }
 
   /* ---------- 그리기 ---------- */
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -107,6 +177,10 @@
   function renderHint() {
     var h = $('deckHint');
     h.classList.remove('a-onfloat');
+    if (!hold && !view && pre[mode]) {
+      h.innerHTML = '<span class="a-hint-tx">프리셋은 <b>내담자 유형·상황만</b> 고릅니다. 이름·연령·연락처는 받지 않고, 꽂은 순서만 이 기기에 저장됩니다.</span>';
+      return;
+    }
     if (hold) h.innerHTML = hold.from === null
       ? '번호 칸을 눌러 꽂으세요. (들고 있는 자료: <b>' + esc((byId(hold.id) || {}).title || '') + '</b>)'
       : '옮길 칸을 누르세요. 선반으로 빼려면 위 카드에서 「선반으로 빼기」.';
@@ -141,7 +215,9 @@
     var acts = '<div class="a-ds-act">'
       + '<a class="a-ds-b a-ds-pri" href="' + esc(t.path) + '" data-visit="' + esc(t.id) + '">이 자료 열기</a>'
       + '<button type="button" class="a-ds-b" data-act="move">자리 옮기기</button></div>'
-      + '<div class="a-ds-sub"><button type="button" class="a-ds-out" data-act="out">선반으로 빼기</button></div>';
+      + '<div class="a-ds-sub"><button type="button" class="a-ds-out" data-act="out">'
+      + (t.mode === mode ? '선반으로 빼기' : (t.mode === 'match' ? '매치 선반으로 빼기' : '시드 선반으로 빼기'))
+      + '</button></div>';
     box.className = 'a-dsheet a-ds-view';
     box.innerHTML = '<div class="a-ds-veil" data-act="cancel"></div>'
       + '<div class="a-ds-card" role="dialog" aria-modal="true" aria-label="' + esc(t.title) + ' 미리보기">'
@@ -159,9 +235,61 @@
     box.hidden = false;
   }
   function renderTools() {
-    $('deckTool').innerHTML = '<b class="a-num">' + placedN() + '</b> / ' + maxOf(mode) + '칸 꽂음';
+    var p = pre[mode] ? presetOf(mode, pre[mode]) : null;
+    $('deckTool').innerHTML = '<b class="a-num">' + placedN() + '</b> / ' + maxOf(mode) + '칸 꽂음'
+      + (p ? '<button type="button" class="a-dt-x" data-act="unpreset" aria-label="프리셋을 풀고 꽂기 전 배치로 되돌리기">프리셋 풀기</button>' : '');
   }
-  function render() { renderDeck(); renderShelf(); renderHint(); renderTools(); renderSheet(); }
+  /* ---------- 프리셋 진행판: 단계 → 질문 → 확인 ---------- */
+  var stepSel = 0;
+  function renderFlow() {
+    var box = $('preFlow'), p = pre[mode] ? presetOf(mode, pre[mode]) : null;
+    if (!box) return;
+    var deckEl = $('deckView');
+    if (deckEl) deckEl.classList.toggle('a-haspre', !!p);
+    if (!p) { box.hidden = true; box.innerHTML = ''; return; }
+    var steps = p.steps || [];
+    if (stepSel >= steps.length) stepSel = 0;
+    var tabs = steps.map(function (s, i) {
+      var on = i === stepSel;
+      return '<button type="button" role="tab" class="a-flow-t' + (on ? ' a-on' : '') + '" data-step="' + i + '"'
+        + ' aria-selected="' + on + '" aria-controls="flowBody" aria-label="' + (i + 1) + '단계 ' + esc(s.k) + '">'
+        + '<span class="a-flow-n a-num">' + (i + 1) + '</span><span class="a-flow-k">' + esc(s.k) + '</span></button>';
+    }).join('');
+    var st = steps[stepSel] || { k: '', q: '', c: '', cards: [] };
+    box.hidden = false;
+    box.innerHTML = '<div class="a-flow-steps" id="flowSteps" role="tablist" aria-label="상담 진행 단계">' + tabs + '</div>'
+      + '<div class="a-flow-body" id="flowBody" role="tabpanel" aria-live="polite">'
+      + '<p class="a-flow-q">' + esc(st.q) + '</p>'
+      + '<p class="a-flow-c"><b>확인</b>' + esc(st.c) + '</p>'
+      + '<p class="a-flow-w"><b>왜 이 순서</b>' + esc(p.why) + '</p>'
+      + (p.basis ? '<p class="a-flow-b"><b>이론·현장 근거</b>' + esc(p.basis) + '</p>' : '')
+      + '</div>';
+  }
+  /* 단계를 고르면 그 단계의 첫 카드가 꽂힌 칸으로 덱을 내린다 */
+  function jumpStep(i) {
+    var p = presetOf(mode, pre[mode]); if (!p) return;
+    var s = p.steps[i]; if (!s) return;
+    var firstId = (s.cards || []).filter(function (c) { return !!byId(c); })[0];
+    if (!firstId) return;
+    var idx = deck[mode].indexOf(firstId);
+    if (idx < 0) return;
+    flash(idx);
+  }
+  function renderRail() {
+    var box = $('preList'); if (!box) return;
+    var a = presetList(mode), k = $('preK');
+    if (k) k.textContent = mode === 'seed' ? '상황 프리셋' : '유형 프리셋';
+    box.innerHTML = a.map(function (p, i) {
+      var on = pre[mode] === p.id;
+      return '<button type="button" class="a-pre-c' + (on ? ' a-on' : '') + '" data-pre="' + esc(p.id) + '"'
+        + ' aria-pressed="' + on + '" aria-label="' + esc(p.k) + ' — ' + esc(p.w) + ' (프리셋으로 꽂기)">'
+        + '<span class="a-pre-n a-num">' + ('0' + (i + 1)).slice(-2) + '</span>'
+        + '<span class="a-pre-t">' + esc(p.k) + '</span>'
+        + '<span class="a-pre-s">' + p.steps.length + '단계</span>'
+        + '</button>';
+    }).join('');
+  }
+  function render() { renderRail(); renderFlow(); renderDeck(); renderShelf(); renderHint(); renderTools(); renderSheet(); }
 
   function flash(i) {
     var li = $('deckList').querySelector('[data-i="' + i + '"]');
@@ -183,9 +311,10 @@
     var at = arr.indexOf(id);           /* 다른 칸에 있던 같은 자료는 빼고 옮긴다 */
     if (at >= 0) arr[at] = null;
     arr[idx] = id;
+    unmark();
     save(); return true;
   }
-  function drop(i) { if (i < 0 || i >= deck[mode].length) return false; deck[mode][i] = null; save(); return true; }
+  function drop(i) { if (i < 0 || i >= deck[mode].length) return false; deck[mode][i] = null; unmark(); save(); return true; }
   function placedN() { var n = 0; deck[mode].forEach(function (x) { if (x) n++; }); return n; }
 
   /* ---------- 붙이기 ---------- */
@@ -309,6 +438,47 @@
       }
     });
 
+    /* 프리셋 칩 · 단계 · 풀기 */
+    var rail = $('preList');
+    if (rail) rail.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-pre]'); if (!b) return;
+      applyPreset(b.getAttribute('data-pre'));
+    });
+    var tabs = $('preFlow');
+    if (tabs) tabs.addEventListener('click', function (e) {
+      var u = e.target.closest('[data-act="unpreset"]');
+      if (u) { clearPreset(); return; }
+      var b = e.target.closest('[data-step]'); if (!b) return;
+      stepSel = +b.getAttribute('data-step');
+      renderFlow();
+      var row = $('flowSteps'), on = row ? row.querySelector('.a-flow-t.a-on') : null;
+      if (row && on) row.scrollLeft = Math.max(0, on.offsetLeft - 6);   /* 넘친 단계를 골라도 그 탭이 보이게 */
+      jumpStep(stepSel);
+    });
+    /* 단계 탭은 방향키로도 오간다(role=tab) */
+    if (tabs) tabs.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var cur = e.target.closest('[data-step]'); if (!cur) return;
+      var p = presetOf(mode, pre[mode]); if (!p) return;
+      e.preventDefault();
+      stepSel = (stepSel + (e.key === 'ArrowRight' ? 1 : -1) + p.steps.length) % p.steps.length;
+      renderFlow();
+      var row = $('flowSteps'), on = row ? row.querySelector('.a-flow-t.a-on') : null;
+      if (row && on) { row.scrollLeft = Math.max(0, on.offsetLeft - 6); try { on.focus({ preventScroll: true }); } catch (x) { } }
+      jumpStep(stepSel);
+    });
+    var hint = $('deckHint');
+    if (hint) hint.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-act="unpreset"]'); if (!b) return;
+      clearPreset();
+    });
+    var tools = $('deckTool');
+    if (tools) tools.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-act="unpreset"]'); if (!b) return;
+      clearPreset();
+    });
+
+
     /* MAIN · 튜토리얼 */
     $('mainBtn').addEventListener('click', function () {
       hold = null; view = null;
@@ -407,12 +577,14 @@
 
   /* ---------- 보이기/숨기기 ---------- */
   function show(m) {
-    var prev = mode;
+    var was = mode;
     mode = (m === 'seed' || m === 'match') ? m : 'all';
     if (mode === 'all') { hide(); return; }
     bind();
-    if (prev !== mode) { hold = null; view = null; }
+    if (was !== mode) { hold = null; view = null; prev[mode] = null; }
     deck[mode] = read(mode);
+    pre[mode] = readPre(mode);
+    if (pre[mode] && !deckFitsPreset(mode, pre[mode])) pre[mode] = '';   /* 배치가 바뀌었으면 표시를 지운다 */
     if (hold) { var hi = deck[mode].indexOf(hold.id); hold = hi >= 0 ? { id: hold.id, from: hi } : null; }
     if (view) { var vi = deck[mode].indexOf(view.id); view = vi >= 0 ? { id: view.id, idx: vi } : null; }
     var inf = INFO[mode];
@@ -431,6 +603,9 @@
 
   window.JCDECK = {
     show: show, hide: hide,
+    preset: function (id) { return applyPreset(id); },
+    unpreset: function () { clearPreset(); },
+    presetNow: function () { return pre[mode] || ''; },
     count: function (m) { return (m === 'seed' || m === 'match') ? maxOf(m) : 0; },
     placed: function (m) {
       if (m !== 'seed' && m !== 'match') return 0;

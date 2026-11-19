@@ -11,6 +11,7 @@
 | `static-checks` | briefing·emerging의 JSON 61개 파싱·중복 키·스키마 필수 항목·참조(카드→출처) | JSON을 고친다. 스키마를 바꿨으면 `*/SCHEMA.md`를 먼저 고친다 |
 | | 저작권 Track A/B — `PRESS`·`KOGL-NONE`·`FACTS-ONLY`·미확인 라이선스가 Track A면 실패 | 그 자료를 Track B로 내리거나 재가공 허용 자료로 바꾼다 |
 | | JS 33개 `node --check` 문법 | 문법 오류를 고친다 |
+| | 상담 프리셋 장부 — `assets/presets.js`의 10개 프리셋·39자리 카드가 `assets/tools.js`의 섹터 id와 맞는지, 단계·확인 문장이 빠지지 않았는지(대문 덱의 진행 순서가 끊기지 않게). `json` 검사에 함께 돈다 | 오타 난 id·빠진 단계를 고친다(`python3 ops/scripts/validate_repo.py --only presets`) |
 | | 역할 가드레일 — `[data-only]` PR이 `.html`/`.css`/`.js`를 건드리면 실패, `[code-only]` PR이 수집 JSON을 건드리면 실패 | 라벨을 떼거나 PR을 나눈다 |
 | `smoke-tests` | 대문·`/briefing/`·`/emerging/` 을 Chromium으로 390·1280에서 열어 콘솔 오류 0 · 같은 사이트 404 0 · 가로 넘침 0 · 44px 미달 0 · 화면이 실제로 그려졌는지 | 실패한 화면 그림(Actions artifact `smoke-failure-shots`)을 보고 고친다 |
 | `live-check` (매일) | 대문 + `assets/tools.js`의 지면 전부 200, `briefing.json`·`emerging.json`의 오늘 자 여부 | Actions 요약 표에서 실패한 지면을 본다. 2일 이상 지난 자료는 실패 |
@@ -18,7 +19,7 @@
 ## 2. 로컬에서 먼저 돌리기
 
 ```bash
-python3 ops/scripts/validate_repo.py                 # JSON·저작권·JS·(PR이면) 역할
+python3 ops/scripts/validate_repo.py                 # JSON·저작권·JS·프리셋·(PR이면) 역할
 python3 ops/scripts/smoke_test.py                    # 저장소를 로컬 서버로 띄워 잰다
 python3 ops/scripts/health_check.py                  # 배포본 라이브 점검
 ```
