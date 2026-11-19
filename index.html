@@ -129,12 +129,17 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-vf-go svg{width:16px;height:16px}
 .a-vf-go-m{display:none}
 
-/* 시트 */
-.a-vfo{position:fixed;inset:0;z-index:86;display:grid;place-items:center;padding:16px;background:var(--ov);
-  opacity:0;visibility:hidden;transition:opacity .18s,visibility .18s}
+/* 시트 — 화면(visual viewport) 전체를 빈틈없이 덮는다.
+   아이폰은 주소창·홈 표시줄 높이가 바뀌면 고정 요소의 아래가 화면 끝보다 위에 걸려 배경이 비친다.
+   그래서 높이를 dvh로 잡고, 브라우저가 알려 주는 실제 보이는 높이(--vfo-h)·위치(--vfo-t)를 덮어쓰며,
+   안전영역까지 막을 늘려 아래에 페이지가 비치지 않게 한다. */
+.a-vfo{position:fixed;top:var(--vfo-t,0px);left:0;width:100%;height:100vh;height:var(--vfo-h,100dvh);z-index:86;
+  display:grid;place-items:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  background:var(--ov);overscroll-behavior:contain;opacity:0;visibility:hidden;transition:opacity .18s,visibility .18s}
+.a-vfo::after{content:"";position:absolute;left:0;right:0;top:100%;height:320px;background:var(--ov);pointer-events:none}
 .a-vfo.on{opacity:1;visibility:visible}
 .a-vfo[hidden]{display:none}
-.a-vfo-card{width:100%;max-width:640px;max-height:min(90dvh,760px);display:flex;flex-direction:column;
+.a-vfo-card{width:100%;max-width:640px;max-height:min(90dvh,760px,calc(var(--vfo-h,100dvh) - 32px));display:flex;flex-direction:column;
   background:var(--panel);border:1px solid var(--line-2);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.3);
   transform:translateY(8px);transition:transform .2s cubic-bezier(.2,.9,.3,1)}
 .a-vfo.on .a-vfo-card{transform:none}
@@ -740,7 +745,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <button type="button" class="a-vfo-x" id="vfX" aria-label="닫기">&#10005;</button>
     </div>
     <div class="a-vfo-bd">
-      <p class="a-vfo-lead">숫자·조문·요건은 기억이나 추측으로 쓰지 않습니다. 값마다 공식 출처와 기준시점을 붙이고, 확인되지 않은 값은 비웁니다. 아래는 그 규칙과, 저장소에서 실제로 자동 검사하는 항목입니다.</p>
+      <p class="a-vfo-lead">숫자·조문·요건은 기억이나 추측으로 쓰지 않습니다. 값마다 공식 출처와 기준시점을 붙이고, 확인되지 않은 값은 비웁니다. 아래는 그 규칙과, 실제로 자동 검사하는 항목입니다.</p>
       <h3 class="a-vfo-h3">세 가지 규칙</h3>
       <ol class="a-vfo-rules">
         <li><b>값마다 출처와 기준시점</b><span>법령 조문·공시·공공데이터·공식 통계만 싣고, 기관과 기준일을 함께 적습니다. 예: 지방공공기관 1,315곳 — 행정안전부 2026.6.30 현황.</span></li>
@@ -749,11 +754,11 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       </ol>
       <h3 class="a-vfo-h3">자동 검사 — 통과해야 배포됩니다</h3>
       <ul class="a-vfo-checks">
-        <li><b>정적 검사</b><span>데이터 JSON 79개의 스키마·참조 무결성, 저작권 라이선스 교차, JS 35개 문법, 상담 프리셋 10개의 카드 39자리와 섹터 장부 대조 — PR마다.</span></li>
-        <li><b>실화면 검사</b><span>대문·브리핑·신산업·산업 온도계를 Chromium으로 휴대폰 390·데스크톱 1280에서 — 콘솔 오류 0 · 같은 사이트 404 0 · 가로 넘침 0 · 44px 미달 0.</span></li>
+        <li><b>자료 검사</b><span>모든 자료 파일의 형식과 서로 가리키는 항목이 맞는지, 저작권 표시가 바르게 달렸는지, 화면에 넣은 계산·판정 규칙이 지면 목록과 어긋나지 않는지 — 고칠 때마다.</span></li>
+        <li><b>실화면 검사</b><span>대문·브리핑·산업 온도계를 실제 브라우저로 휴대폰 390·데스크톱 1280에서 — 콘솔 오류 0 · 같은 사이트 404 0 · 가로 넘침 0 · 44px 미달 0.</span></li>
         <li><b>매일 라이브 검사</b><span>매일 06:30(KST)에 섹터 전 지면이 열리는지, 오늘 지면이 실렸는지 확인합니다.</span></li>
       </ul>
-      <p class="a-vfo-note">이 대문을 올린 변경도 정적·실화면 검사를 통과한 뒤 배포되었습니다.</p>
+      <p class="a-vfo-note">이 대문을 올린 변경도 위 검사를 통과한 뒤 배포되었습니다.</p>
       <h3 class="a-vfo-h3">실제 수치</h3>
       <ul class="a-vfo-facts">
         <li><b>기업 명함첩</b><span class="a-num">9,137곳</span><em>공정거래위원회 공시대상기업집단 · 중견기업 확인서 · 행정안전부 지방공공기관(2026.6.30)</em></li>
@@ -767,7 +772,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <p class="a-vfo-lim">숫자가 사실인지 자동으로 판정하지는 않습니다. 원문 대조는 사람이 합니다. 요약 문장 일부는 AI가 작성했으므로, 숫자·조문은 위 출처에서 다시 확인하실 수 있게 달아 두었습니다. 실제 판단은 최신 공식 원문과 기관 안내로 확인하십시오.</p>
     </div>
     <div class="a-vfo-ft">
-      <a class="a-vfo-link" href="https://github.com/ccttsi/jobcounsel/actions" target="_blank" rel="noopener">검사 실행 기록 보기</a>
+      <a class="a-vfo-link" href="./verify/">검사 내역 자세히 보기</a>
       <button type="button" class="a-vfo-close" id="vfClose">닫기</button>
     </div>
   </div>
@@ -1344,13 +1349,23 @@ function go(i){var h=hits[i];if(!h)return;markVisited(h.t.id);window.location.hr
 
 /* ---------- 값의 출처와 검증 시트 ---------- */
 var vfLast=null;
+/* 시트가 화면 끝까지 덮이게: 브라우저가 알려 주는 실제 보이는 높이·위치로 다시 잡는다. */
+function vfFit(){
+  var o=$('vfOv');if(!o||o.hidden)return;
+  var v=window.visualViewport;
+  if(!v){o.style.removeProperty('--vfo-t');o.style.removeProperty('--vfo-h');return;}
+  o.style.setProperty('--vfo-t',Math.round(v.offsetTop)+'px');
+  o.style.setProperty('--vfo-h',Math.ceil(v.height)+'px');
+}
+if(window.visualViewport){window.visualViewport.addEventListener('resize',vfFit);window.visualViewport.addEventListener('scroll',vfFit);}
 function openVf(){
   vfLast=document.activeElement;
   $('vfOv').hidden=false;
+  vfFit();
   $('vfOv').style.visibility='visible';   /* 전환 중에도 초점을 받을 수 있게 먼저 보인다 */
   root.style.overflow='hidden';
   setTimeout(function(){
-    var o=$('vfOv');if(o)o.classList.add('on');
+    var o=$('vfOv');if(!o)return;o.classList.add('on');vfFit();
     try{$('vfCard').focus({preventScroll:true});}catch(e){}
   },30);
 }
