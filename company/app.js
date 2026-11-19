@@ -5,6 +5,8 @@
  *   data/companies.json    company-wiki v1.3.0 · 7,822곳(대기업 3,521 · 중견기업 3,946 · 중앙 공공기관 355)
  *   data/public-2026.json  공공기관 2026년 지정(342)과 알리오 부설기관(13) 대조 — 유형 칩·부설 표시의 근거
  *   data/local-public.json company-local-public v1.0.0 · 1,315곳(지방직영기업 256 · 지방공사·공단 167 · 출자기관 103 · 출연기관 789)
+ *   data/enrich.json       보강 레이어(2026-11-19) — 실제 법인명으로 대조한 별칭(검색용)과 회사 요약·주요 제품/서비스·주요 고객층(표시용).
+ *     원자료는 고치지 않는다. 별칭은 .aliases, 설명은 .profiles 이고, 없는 법인은 만들지 않았다.
  *     행정안전부 「지방공기업(2026.6.30. 기준) 현황」·「지방자치단체 출자출연기관 현황(2026.6.30. 기준)」의
  *     명칭·구분·지역·설립 지자체·유형만 옮겼다. 매출·정원·홈페이지는 원자료에 없어 필드 자체를 생략했다.
  *     중견기업은 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리 + 법인명으로 대조해
@@ -87,6 +89,8 @@
   var KEYS = ['c', 'g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'tt', 'mi', 'sd', 'rg', 'sc', 'fd', 've', 'rv', 'em', 'in', 'o', 'q'];
   var FKEYS = ['g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'tt', 'mi', 'sd', 'rg', 'sc', 'fd', 've', 'rv', 'em', 'in'];
   var META, LMETA = null, ITEMS = [], BYID = {}, BYN = {}, GRP = {}, SAME = {}, DIST = {}, SRC = {}, ENTREV = [], TAGV = {}, TAGS = {};
+  /* 보강 레이어(data/enrich.json): id → 별칭[], id → {d 요약, p 제품·서비스[], c 고객층, b 대표 브랜드} */
+  var ALI = {}, PROF = {}, ENRICH = null;
   /* 고용노동부 허가·등록 태그(business_tags, 피클 v1.3.0)를 찾을 때 함께 걸리는 말. 태그 자체는 원자료 그대로 */
   var TAGSYN = { '근로자파견': '근로자파견 파견 인력파견 파견사업 아웃소싱', '유료직업소개': '유료직업소개 직업소개 고용알선 헤드헌팅 인력소개', '직업정보제공': '직업정보제공 채용정보 구인구직 정보제공' };
   var st = blank(), view = '', listY = 0, lastList = '';
@@ -161,6 +165,8 @@
     x._ve = x._c === 'MID' && has(x.certificate_valid) ? (String(x.certificate_valid).match(/(\d{4}-\d{2}-\d{2})\s*$/) || [])[1] || '' : '';
     var sn = has(x.search_name) ? x.search_name : norm(x.name);
     x._n = sn; x._cho = cho(sn);
+    if (ALI[x.id]) x._al = ALI[x.id];
+    if (PROF[x.id]) x._px = PROF[x.id];
     x._id = digits(x.biz_no) + ' ' + digits(x.corp_reg_no) + ' ' + digits(x.certificate_no);
     // 찾기 열쇠: [낱말, 무게, 이름표]
     x._f = [];
@@ -171,6 +177,9 @@
     add('sum', x._c === 'PUB' ? x.business_summary : '', 2);
     add('prod', x._c === 'MID' ? x.main_products : '', 4);
     (x.business_tags || []).forEach(function (t) { x._f.push({ k: 'tag', t: (TAGV[t] || {}).label || t, s: norm(TAGSYN[t] || t), w: 30 }); (TAGS[t] = TAGS[t] || []).push(x); });   // 찾기는 비슷한 말까지, 보이는 이름은 공식 명칭
+    /* 보강 레이어: 별칭은 이름 다음으로 세게 걸리고, 사업 설명은 낱말 하나로도 걸리게 둔다 */
+    (x._al || []).forEach(function (a) { if (a && a.a) x._f.push({ k: 'alias', t: a.a, s: a.n || norm(a.a), w: 150 }); });
+    if (x._px) x._f.push({ k: 'rich', t: x._px.d, s: norm([x._px.d].concat(x._px.p || []).concat(x._px.c || []).join(' ')), w: 8 });
     (SAME[x._c + '|' + sn] = SAME[x._c + '|' + sn] || []).push(x);
     x._grp.forEach(function (g) { (GRP[g] = GRP[g] || []).push(x); });
     if (!BYN[norm(x.name)]) BYN[norm(x.name)] = x;
@@ -251,7 +260,12 @@
           if (!w || (wi && w === t.n)) return;
           var at = x._n.indexOf(w);
           if (at > -1) { var sc = x._n === w ? 200 : at === 0 ? 150 : 110; if (sc > best) { best = sc; bf = { k: 'name' }; } }
-          for (var j = 0; j < x._f.length; j++) { var f = x._f[j]; if (f.w > best && f.s.indexOf(w) > -1) { best = f.w; bf = f; } }
+          for (var j = 0; j < x._f.length; j++) {
+            var f = x._f[j], fa = f.s.indexOf(w); if (fa < 0) continue;
+            // 별칭은 「이 이름으로도 부른다」는 표시라 이름 바로 뒤에 둔다(정확 175 · 앞머리 160 · 안쪽 130)
+            var fw = f.k === 'alias' ? (f.s === w ? 175 : fa === 0 ? 160 : 130) : f.w;
+            if (fw > best) { best = fw; bf = f; }
+          }
         });
       }
       if (!best) return null;
@@ -345,7 +359,7 @@
     });
     return t;
   }
-  var FLAB = { group: '기업집단', ind: '업종', min: '주무부처', type: '기관 유형', dtl: '업무 유형', hq: '소재지', ceo: '대표자', sum: '하는 일', prod: '주요 사업', tag: '고용노동부 허가·등록' };
+  var FLAB = { group: '기업집단', ind: '업종', min: '주무부처', type: '기관 유형', dtl: '업무 유형', hq: '소재지', ceo: '대표자', sum: '하는 일', prod: '주요 사업', tag: '고용노동부 허가·등록', alias: '별칭' };
   function snippet(f, q) {
     var t = f.t, w = (String(q || '').trim().split(/\s+/)[0] || '').toLowerCase(), at = t.toLowerCase().indexOf(w);
     if (at < 0) at = 0;
@@ -353,6 +367,28 @@
     return '<p class="r-x"><b>' + FLAB[f.k] + '</b>' + (a > 0 ? '…' : '') + hl(t.slice(a, b), q) + (b < t.length ? '…' : '') + '</p>';
   }
   function safeUrl(u) { u = String(u || '').trim(); if (!u) return ''; if (!/^https?:\/\//i.test(u)) u = 'http://' + u.replace(/^\/+/, ''); return /^https?:\/\/[^\s"'<>]+$/i.test(u) ? u : ''; }
+  /* 보강 레이어 표시 — 목록은 한 줄에 「별칭」과 첫 문장만, 상세는 전문과 제품·고객 */
+  function firstSentence(s) { var t = String(s || ''), i = t.indexOf('. '); return i > 20 ? t.slice(0, i + 1) : t; }
+  function descLine(x, hit, q) {
+    var a = hit && hit.k === 'alias' && hit.t ? '<b>별칭</b>' + hl(hit.t, q) : '';
+    var d = x._px && x._px.d ? '<span class="rq">' + esc(firstSentence(x._px.d)) + '</span>' : '';
+    if (!a && !d) return '';
+    return '<p class="r-x r-a">' + a + (a && d ? '<i class="sep" aria-hidden="true">·</i>' : '') + d + '</p>';
+  }
+  function profSec(x, tag) {
+    var P = x._px; if (!P) return '';
+    var gong = x._c === 'PUB' || x._c === 'LPI';
+    var h = '<p class="t">' + esc(P.d) + '</p>';
+    var left = '';
+    if (P.p && P.p.length) left = '<div class="pfc"><h3>주요 ' + (gong ? '서비스·사업' : '제품·서비스') + '</h3><ul class="pfl">' + P.p.map(function (v) { return '<li>' + esc(v) + '</li>'; }).join('') + '</ul></div>';
+    var right = P.c ? '<div class="pfc"><h3>' + (gong ? '주요 대상(민원인)' : '주요 고객') + '</h3><p class="t">' + esc(P.c) + '</p></div>' : '';
+    if (left || right) h += '<div class="pf2">' + left + right + '</div>';
+    var alt = (x._al || []).filter(function (a) { return a.n !== x._n; });
+    if (alt.length) h += '<p class="al"><b>다른 이름</b>' + alt.map(function (a) { return esc(a.a); }).join(' · ') + '</p>';
+    h += '<p class="t fnote">요약·제품·고객은 공개된 ' + (gong ? '기관' : '회사') + ' 소개를 바탕으로 보강한 값입니다. 아래 원자료에 적힌 ' + (gong ? '유형·분류' : '업종·분류') + '와 함께 보십시오.' +
+      (x._c === 'LPI' ? ' 행정안전부 현황은 명칭·구분·지역·설립 지자체·유형만 공개해, 매출·정원·설립일·홈페이지는 싣지 않았습니다.' : '') + '</p>';
+    return sec('무슨 ' + (gong ? '기관인가' : '회사인가'), h, '', tag || '공개된 ' + (gong ? '기관' : '회사') + ' 소개');
+  }
   function host(u) { return u.replace(/^https?:\/\//i, '').replace(/\/$/, ''); }
   function initial(x) { var s = String(x._n || x.name).replace(/^(재|사)(?=[가-힣]{3})/, ''); var m = s.match(/[가-힣a-z0-9]/i); return m ? m[0].toUpperCase() : '·'; }
   function lineOf(x) {
@@ -440,7 +476,7 @@
   function rerun(el) { el.classList.remove('run'); void el.offsetWidth; el.classList.add('run'); }
 
   /* ---------- 찾기 화면 ---------- */
-  var EG = ['삼성전자', 'sk하이닉스', '한국전력', '건강보험', '카카오', 'ㅎㄱㄷㄹ'];
+  var EG = ['삼전', '해커스', '파바', '올영', '건보', '코레일', 'ㅎㄱㄷㄹ'];
   var PERS = [5, 10, 20];
   try { var sp0 = +localStorage.getItem('jc-company-per'); PER = PERS.indexOf(sp0) > -1 ? sp0 : 10; } catch (e) { PER = 10; }
   var MQ_WIDE = window.matchMedia ? window.matchMedia('(min-width:980px)') : { matches: true };
@@ -450,8 +486,8 @@
     view = 'list';
     main.innerHTML =
       '<div id="cdef" hidden></div><div class="clf" id="clf" hidden></div>' +
-      '<div class="sb" id="sb">' + IC.search + '<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="기업·기관 이름, 기업집단, 업종, 주무부처, 기관 유형·지역으로 찾기" aria-label="기업·기관 찾기"><button class="clr" id="qx" type="button" aria-label="검색어 지우기">' + IC.x + '</button></div>' +
-      '<p class="eg" id="eg">예: ' + EG.map(function (e) { return '<button type="button">' + esc(e) + '</button>'; }).join('') + '</p>' +
+      '<div class="sb" id="sb">' + IC.search + '<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="이름·브랜드·줄임말로 찾기 (예: 삼전, 해커스)" aria-label="기업·기관 찾기"><button class="clr" id="qx" type="button" aria-label="검색어 지우기">' + IC.x + '</button></div>' +
+      '<p class="eg" id="eg"><span class="eg-l">이렇게도 찾습니다</span>' + EG.map(function (e) { return '<button type="button">' + esc(e) + '</button>'; }).join('') + '</p>' +
       '<div class="fd"><aside class="fl" id="fl" aria-label="조건 고르기"><div class="fl-sh"><div class="fl-hd"><b>조건 고르기</b><button type="button" class="fl-x" id="flX" aria-label="닫기">' + IC.x + '</button></div><div class="fl-b" id="flB"></div><div class="fl-ft"><button type="button" class="reset" id="flR">모두 풀기</button><button type="button" class="fl-go" id="flGo">결과 보기</button></div></div></aside>' +
       '<section id="res" aria-live="polite"></section></div><div class="scrim" id="scrim" hidden></div>';
     var q = d.getElementById('q'); q.value = st.q;
@@ -670,6 +706,7 @@
         if (x.business_tags && x.business_tags.length) sub += x.business_tags.map(function (t) { return '<span class="bt">' + esc(t) + '</span>'; }).join('');
         r += '<a class="row k-' + x._c + '" href="#' + x.id + '"><span class="r-n">' + hl(x.name, st.q) + '</span>' +
           '<span class="r-s"><span class="ty">' + esc(CK[x._c].full || CK[x._c].name) + '</span>' + sub + '</span>' +
+          descLine(x, hit, st.q) +
           (hit && (hit.k === 'ceo' || hit.k === 'hq' || hit.k === 'sum' || hit.k === 'prod' || hit.k === 'tag') ? snippet(hit, st.q) : '') + metrics(x, i) + '</a>';
       });
       r += '</div>' + pager(st.p, pages);
@@ -833,6 +870,14 @@
     /* 본문 */
     var b = '';
     if (x._c === 'PUB' && x._sub) b += sec('부설기관', '<p class="t">알리오가 <b>' + esc(x._sub) + '</b> 산하 부설기관으로 함께 공시합니다. 2026년 지정 공공기관 342곳에는 따로 세지 않습니다. 알리오가 적은 기관 유형은 <b>' + esc(PUBNAME[x.sub_category] || x.sub_category) + '</b>입니다.</p>', '', '알리오 부설기관');
+    if (x._c === 'PUB') {
+      b += profSec(x) || sec('무슨 기관인가', '<p class="t">' +
+        (has(x.ministry) ? esc(x.ministry) + ' 소관 ' : '') + esc(ptype(x)) + '입니다. ' +
+        (num(x.established_year) ? esc(x.established_year) + '년에 설립했고 ' : '') +
+        (has(x.location_sido) ? esc(x.location_sido) + '에 있습니다. ' : '') +
+        '알리오에 공시된 설립목적·주요사업은 아래 「하는 일」에 그대로 실었습니다.</p>' +
+        '<p class="t fnote">기관의 사업 설명은 알리오 공시를 그대로 옮겼고, 이 화면이 따로 만들지 않았습니다.</p>', '', '알리오 · 공공기관 일반현황');
+    }
     if (x._c === 'PUB' && has(x.business_summary)) b += sec('하는 일', doesBlock(x.business_summary), '', '설립목적·주요사업 공시');
     if (x._c === 'LPI') {
       var how = {
@@ -841,28 +886,35 @@
         '출자기관': '지방자치단체가 자본금의 전부 또는 일부(10% 이상)를 출자해 설립한 주식회사입니다.',
         '출연기관': '지방자치단체가 재산의 전부 또는 일부를 출연해 설립한 재단법인입니다.'
       }[x.sub_category] || '';
-      b += sec('무슨 기관인가', '<p class="t">' +
+      b += (profSec(x) || sec('무슨 기관인가', '<p class="t">' +
         (has(x.founder) ? '설립기관이 <b>' + esc(x.founder) + '</b>로 적힌 ' : '') + esc(ptype(x)) + '입니다. ' + how +
         (has(x.type_detail) ? ' 행정안전부 현황에 적힌 업무 유형은 <b>' + esc(x.type_detail) + '</b>입니다.' : '') +
         (has(x.location_sido) ? ' 시·도는 ' + esc(x.location_sido) + '입니다.' : '') + '</p>' +
-        '<p class="t fnote">행정안전부 현황은 기관 명칭·구분·지역·설립 지자체·유형만 공개합니다. 매출·직원(정원)·설립일·홈페이지는 원자료에 없어 싣지 않았습니다.</p>', '', '행정안전부 현황 2026.6.30');
+        '<p class="t fnote">행정안전부 현황은 기관 명칭·구분·지역·설립 지자체·유형만 공개합니다. 매출·직원(정원)·설립일·홈페이지는 원자료에 없어 싣지 않았습니다.</p>', '', '행정안전부 현황 2026.6.30'));
     }
     if (x._c === 'ENT') {
       var rk = x._rev > 0 ? ENTREV.indexOf(x) + 1 : 0;
-      b += sec('무슨 회사인가', '<p class="t">' +
+      var sameInd = has(x.industry) ? ITEMS.filter(function (y) { return y._c === 'ENT' && y.industry === x.industry; }).length : 0;
+      var entPar = '<p class="t">' +
         (x._grp.length ? '공정거래위원회 공시대상기업집단 <b>' + esc(x._grp.join(' · ')) + '</b> 소속 법인입니다. ' : '') +
         (has(x.industry) ? '공정위에 신고된 주된 영위업종은 <b>' + esc(x.industry) + '</b>' + (has(x.ksic_code) ? '(KSIC <span class="code">' + esc(x.ksic_code) + '</span>' + (x._k ? ' · ' + esc(KSIC[x._k][0]) : '') + ')' : '') + '입니다. ' : '') +
         (num(x.established_year) ? esc(x.established_year) + '년에 설립했고' + (has(x.listed_date) ? ', 증시에 상장된 법인입니다. ' : ', 비상장 법인입니다. ') : (has(x.listed_date) ? '증시에 상장된 법인입니다. ' : '')) +
+        (sameInd > 1 ? '같은 업종을 신고한 대기업 소속 법인이 ' + fmt(sameInd) + '곳 있습니다. ' : '') +
         (rk ? '매출 기준으로 대기업 집단 소속 ' + fmt(ENTREV.length) + '곳 가운데 ' + fmt(rk) + '번째입니다.' : '') + '</p>' +
-        '<p class="t fnote">신고 업종은 회사마다 <b>하나</b>만 적히므로, 여러 사업을 하는 회사의 전체 사업을 다 나타내지는 않습니다. 주요 사업·공식 홈페이지·소재지는 원자료 없음.</p>', '', '공정위 기업집단포털 · KSIC 기준');
+        '<p class="t fnote">신고 업종은 회사마다 <b>하나</b>만 적히므로, 여러 사업을 하는 회사의 전체 사업을 다 나타내지는 않습니다. 주요 사업·공식 홈페이지·소재지는 원자료 없음.</p>';
+      b += profSec(x) + (x._px ? sec('원자료에 적힌 것', entPar, '', '공정위 기업집단포털 · KSIC 기준') : sec('무슨 회사인가', entPar, '', '공정위 기업집단포털 · KSIC 기준'));
     }
-    if (x._c === 'MID' && (has(x.industry) || has(x.employees))) b += sec('무슨 회사인가', '<p class="t">' +
-      (has(x.industry) ? '국민연금 사업장으로 신고된 업종(참고)은 <b>' + esc(x.industry) + '</b>입니다' + (/업$/.test(x.industry) ? '. ' : ' — 업종이 아닌 직업명으로 신고된 값이라 실제 사업과 다를 수 있습니다. ') : '') +
-      (has(x.location_sido) ? '사업장 소재지는 ' + esc(x.location_sido) + (x.nps_workplaces > 1 ? ' 등 ' + fmt(x.nps_workplaces) + '곳' : '') + '이고, ' : '') +
-      (has(x.employees) ? '2026년 9월 기준 국민연금 가입자는 ' + fmt(x.employees) + '명입니다.' : '') +
-      (has(x.stock_code) ? ' ' + esc(x.market || '') + '에 상장된 법인입니다(<span class="code">' + esc(x.stock_code) + '</span>' + (has(x.listed_at) ? ', ' + esc(String(x.listed_at).slice(0, 4)) + '년 상장' : '') + ').' : '') +
-      (has(x.market_sector) ? ' 증권업종 분류는 ' + esc(x.market_sector) + '입니다.' : '') + '</p>' +
-      (has(x.industry) ? '<p class="t fnote">국민연금 신고 업종은 사업장 하나의 업종이어서, 아웃소싱·고용서비스처럼 여러 사업을 하는 회사는 실제 사업과 다를 수 있습니다.</p>' : ''), '', '국민연금 가입 사업장 · 상장 종목 정보 기준');
+    if (x._c === 'MID' && (has(x.industry) || has(x.employees) || x._px)) {
+      var midPar = '<p class="t">' +
+        (has(x.sector) ? '<b>' + esc(x.sector) + '</b> 분야 중견기업입니다. ' : '') +
+        (has(x.industry) ? '국민연금 사업장으로 신고된 업종은 <b>' + esc(x.industry) + '</b>' + (/업$/.test(x.industry) ? '입니다. ' : '입니다 — 업종이 아닌 직업명으로 신고된 값이라 실제 사업과 다를 수 있습니다. ') : '') +
+        (has(x.location_sido) ? '사업장 소재지는 ' + esc(x.location_sido) + (x.nps_workplaces > 1 ? ' 등 ' + fmt(x.nps_workplaces) + '곳' : '') + '이고, ' : '') +
+        (has(x.employees) ? '2026년 9월 기준 국민연금 가입자는 ' + fmt(x.employees) + '명입니다.' : '') +
+        (has(x.stock_code) ? ' ' + esc(x.market || '') + '에 상장된 법인입니다(<span class="code">' + esc(x.stock_code) + '</span>' + (has(x.listed_at) ? ', ' + esc(String(x.listed_at).slice(0, 4)) + '년 상장' : '') + ').' : '') +
+        (has(x.market_sector) ? ' 증권업종 분류는 ' + esc(x.market_sector) + '입니다.' : '') + '</p>' +
+        (has(x.industry) ? '<p class="t fnote">국민연금 신고 업종은 사업장 하나의 업종이어서, 아웃소싱·고용서비스처럼 여러 사업을 하는 회사는 실제 사업과 다를 수 있습니다.</p>' : '');
+      b += profSec(x) + (x._px ? sec('원자료에 적힌 것', midPar, '', '국민연금 가입 사업장 · 상장 종목 정보 기준') : sec('무슨 회사인가', midPar, '', '국민연금 가입 사업장 · 상장 종목 정보 기준'));
+    }
     if (x.business_tags_detail && x.business_tags_detail.length) b += sec('고용서비스 허가·등록', '<ul class="btl">' + x.business_tags_detail.map(function (t) {
       var v = TAGV[t.tag] || {}, S = SRC[t.source] || {};
       return '<li><b>' + esc(v.label || t.tag) + '</b><span>' + esc(v.basis || '') + '</span><span>' + [t.license_no ? '허가번호 ' + t.license_no : '', t.office ? t.office + ' 관할' : '', '기준 ' + t.as_of].filter(Boolean).map(esc).join(' · ') + '</span><span class="nt">' + esc(S.name || t.source) + (t.match === 'district' ? ' · 이름과 시·군·구까지 일치' : ' · 이름과 주소 일치') + '</span></li>';
@@ -1009,6 +1061,13 @@
       '<ul class="lim"><li><b>중앙 ' + fmt(pg.length) + '곳 = 지정 ' + fmt(pds.length) + '곳 + ' + PUBSUB + ' ' + fmt(pg.length - pds.length) + '곳</b>입니다. 재정경제부가 2026-01-29 발표한 지정 기관은 342곳(시장형 14 · 준시장형 16 · 기금관리형 12 · 위탁집행형 46 · 기타 254)이고, 알리오는 이 기관들과 함께 부설기관 13곳을 따로 공시합니다. 알리오 공시 단위 355곳이 이 화면의 「중앙」과 같습니다.</li>' +
       '<li><b>기관별 유형은 대조한 값</b>입니다. 알리오 기관 정보와 2026년도 공공기관 지정 고시(재정경제부고시 제2026-58호)를 기준으로 342곳의 유형을 맞춰 보아 다른 곳이 없었고(0건), 지정 기관에 없는 13곳만 부설기관으로 표시했습니다. 대조되지 않은 기관을 추측으로 채운 곳은 없습니다.</li>' +
       '<li><b>지방 공공기관</b>은 행정안전부가 2026-06-30 기준으로 공개한 지방공기업·출자출연기관 현황의 구분 그대로입니다. 「지방공기업법」이 적용되는 직영기업·공사·공단과 「지방자치단체 출자·출연기관의 운영에 관한 법률」에 따라 지정·고시된 출자·출연기관을 한 화면에 모았습니다.</li></ul>';
+    var en = ENRICH && ENRICH.meta && ENRICH.meta.counts ? ENRICH.meta.counts : null;
+    h += '<h2>브랜드·줄임말로 찾기와 「무슨 회사인가」</h2><p class="lead">법인명과 다르게 부르는 이름으로도 찾을 수 있게 별칭을 따로 모았습니다. 예를 들어 「삼전」은 삼성전자, 「해커스」는 (주)챔프스터디, 「파바」는 (주)파리크라상, 「건보」는 국민건강보험공단으로 이어집니다.</p>' +
+      '<ul class="lim">' +
+      '<li><b>별칭은 지어내지 않았습니다.</b> 이름을 하나하나 원자료에서 조회해 그 법인이 실제로 있는지 확인한 뒤 얶었습니다. 원자료에 없는 법인·기관은 별칭을 만들지 않았습니다' + (en ? ' (별칭 ' + fmt(en.aliases) + '개 · 설명 ' + fmt(en.profiles) + '곳)' : '') + '.</li>' +
+      '<li><b>설명·주요 제품·주요 고객은 보강한 값</b>입니다. 공개된 회사·기관 소개(브랜드·제품·사업)와 원자료의 업종·기업집단·설립목적 공시를 바탕으로 적었고, 확인되지 않은 사업은 쓰지 않았습니다. 설명이 없는 기업은 원자료의 업종·소재지·가입자수만으로 문장을 만듭니다.</li>' +
+      '<li><b>원자료는 고치지 않았습니다.</b> 별칭과 설명은 <span class="code">data/enrich.json</span> 한 파일에만 있고, 숫자·업종·주소·분류는 모두 원자료 그대로입니다.</li>' +
+      '</ul>';
     h += '<h2>원자료</h2><table class="tbl"><thead><tr><th>출처</th><th>무엇을 가져왔나</th><th>기준일 · 이용 조건</th></tr></thead><tbody>' + (m.sources || []).concat((LMETA && LMETA.sources) || []).concat((PMETA && PMETA.sources) || []).map(function (s) {
       var u = safeUrl(s.url);
       return '<tr><td>' + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + esc(s.name) + '</a>' : esc(s.name)) + ' <span class="code">' + esc(s.id) + '</span></td><td>' + esc(s.used_for || '') + '</td><td>' + esc(s.as_of || '') + ' · ' + esc(s.license || '') + '</td></tr>';
@@ -1073,10 +1132,17 @@
     Promise.all([
       fetchJson('./data/companies.json', function (n) { done += n - (gotL.main || 0); gotL.main = n; prog(done); }),
       fetchJson('./data/local-public.json', function (n) { done += n - (gotL.lpi || 0); gotL.lpi = n; prog(done); }).catch(function () { return null; }),
-      fetchJson('./data/public-2026.json').catch(function () { return null; })
+      fetchJson('./data/public-2026.json').catch(function () { return null; }),
+      fetchJson('./data/enrich.json').catch(function () { return null; })
     ]).then(function (R) {
-      var D = R[0], L = R[1], P = R[2];
+      var D = R[0], L = R[1], P = R[2], E = R[3];
       META = D.meta || {}; ITEMS = (D.companies || []).slice();
+      /* 보강 레이어: 없거나 깨져도 원자료만으로 화면이 열린다(실패는 조용히 넘긴다) */
+      if (E && E.aliases && E.profiles) {
+        ENRICH = E;
+        E.aliases.forEach(function (a) { (a.ids || []).forEach(function (id) { (ALI[id] = ALI[id] || []).push(a); }); });
+        PROF = E.profiles;
+      }
       if (P) {
         PMETA = P;
         (P.subsidiaries || []).forEach(function (s) { if (s && s.name) SUB[norm(s.name)] = { parent: s.parent || '' }; });

@@ -194,10 +194,11 @@ main{display:block;min-height:50vh;padding-top:20px}
 .sb input:focus{border-color:var(--acc)}
 .sb input::-webkit-search-cancel-button{display:none}
 .sb>svg{position:absolute;left:16px;top:18px;width:20px;height:20px;color:var(--dim);pointer-events:none}
-.sb .clr{position:absolute;right:8px;top:8px;width:40px;height:40px;display:none;place-items:center;border:0;border-radius:10px;background:none;color:var(--dim)}
+.sb .clr{position:absolute;right:6px;top:6px;width:44px;height:44px;display:none;place-items:center;border:0;border-radius:10px;background:none;color:var(--dim)}
 .sb .clr svg{width:18px;height:18px}
 .sb.has .clr{display:grid}
 .eg{display:flex;flex-wrap:wrap;gap:6px;margin:-6px 0 16px;font-size:14px;color:var(--dim)}
+.eg-l{display:inline-flex;align-items:center;min-height:44px;margin-right:2px;font-size:13.5px;color:var(--dim)}
 .eg button{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px dashed var(--line-2);border-radius:99px;background:none;font-size:14px;color:var(--muted)}
 .eg button:hover{border-color:var(--acc);color:var(--acc)}
 
@@ -321,6 +322,17 @@ main{display:block;min-height:50vh;padding-top:20px}
 .r-s{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:14.5px;line-height:1.5;color:var(--muted)}
 .r-x{font-size:14.5px;line-height:1.55;color:var(--muted)}
 .r-x b{font-weight:700;color:var(--dim);margin-right:6px}
+/* 보강 레이어: 목록은 한 줄만(별칭 + 첫 문장), 상세는 제품·고객 상자 */
+.r-a{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+.r-a .sep{font-style:normal;margin:0 6px;color:var(--line-2)}
+.r-a .rq{color:var(--muted)}
+.pf2{display:grid;gap:12px;margin:2px 0 10px}
+@media (min-width:600px){.pf2{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:22px}}
+.pfc h3{margin:0 0 6px;font-size:13.5px;font-weight:700;letter-spacing:.01em;color:var(--dim)}
+.pfl{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.pfl li{padding:3px 10px;border:1px solid var(--line-2);border-radius:7px;font-size:14px;line-height:1.5;color:var(--muted)}
+.al{margin:8px 0 0;font-size:14px;color:var(--muted)}
+.al b{font-weight:700;color:var(--dim);margin-right:8px}
 .r-m{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;font-size:14px;color:var(--muted);white-space:nowrap}
 .r-m .mv{display:inline-flex;align-items:baseline;gap:5px}
 .r-m .lb{display:block;width:72px;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
