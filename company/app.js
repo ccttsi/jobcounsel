@@ -122,7 +122,7 @@
   function ko(a, b) { return a.localeCompare(b, 'ko'); }
   // 만 단위 숫자를 화면마다 수천 번 맞춘다. 같은 수는 만든 글자를 다시 쓴다(localeCompare 류 Intl 비용 제거).
   var _fmtC = {};
-  function fmt(n) { var k = Number(n), v = _fmtC[k]; if (v === undefined) v = _fmtC[k] = k.toLocaleString('ko-KR'); return v; }
+  function fmt(n) { var k = Number(n); if (!isFinite(k)) return '–'; var v = _fmtC[k]; if (v === undefined) v = _fmtC[k] = k.toLocaleString('ko-KR'); return v; }
 
   /* ---------- 찾기용 정규화 ---------- */
   // search_name과 같은 규칙: (주)·주식회사·(유) 등 법인 표기, 공백·기호를 빼고 소문자
@@ -156,7 +156,8 @@
     if (jo) p.push(fmt(jo) + '조'); if (eok) p.push(fmt(eok) + '억'); if (man) p.push(fmt(man) + '만'); if (r) p.push(fmt(r));
     return (n < 0 ? '−' : '') + (p.join(' ') || '0') + '원';
   }
-  function wonShort(n) { var a = Math.abs(n), s = n < 0 ? '−' : ''; return s + (a >= 1e12 ? (a / 1e12).toFixed(1).replace(/\.0$/, '') + '조' : a >= 1e8 ? fmt(Math.round(a / 1e8)) + '억' : fmt(Math.round(a / 1e4)) + '만'); }
+  // 값이 없는 집단(공시대상 아님)은 부르는 쪽에서 항목을 빼고, 여기서도 숫자가 아니면 'NaN만' 대신 '–'만 돌려준다
+  function wonShort(n) { if (typeof n !== 'number' || !isFinite(n)) return '–'; var a = Math.abs(n), s = n < 0 ? '−' : ''; return s + (a >= 1e12 ? (a / 1e12).toFixed(1).replace(/\.0$/, '') + '조' : a >= 1e8 ? fmt(Math.round(a / 1e8)) + '억' : fmt(Math.round(a / 1e4)) + '만'); }
   function ppl(n) { return n >= 1e4 ? (n / 1e4).toFixed(1).replace(/\.0$/, '') + '만 명' : fmt(n) + '명'; }
   function bucket(v, B) { if (!num(v) || v < 0) return ''; for (var i = 0; i < B.length; i++) if (v >= B[i][2] && v < B[i][3]) return B[i][0]; return ''; }
 
@@ -389,11 +390,14 @@
       (g.affiliates ? '<span>계열회사 ' + fmt(g.affiliates) + '곳</span>' : '') +
       '<span>수록 ' + fmt(g._members.length) + '곳</span>';
     var top = g._top.map(function (x) { return esc(x.name); }).join(' · ');
+    // 공정자산 공시값이 없는 집단(공시대상 아님)은 숫자 대신 사실만 적는다 — 'NaN만'·'undefined' 가 화면에 나오지 않게
+    var ast = num(g.assets) ? '<span class="mv"><small>공정자산</small><em>' + wonShort(g.assets) + '</em></span>' :
+      g.undesignated ? '<span class="mv"><small>공정자산</small><em>공시 없음</em></span>' : '';
     return '<a class="row k-GRP" href="#' + g.id + '">' +
       '<span class="r-n"><b class="rk">' + (g.rank || '–') + '</b>' + hl(g.name, q) + (g._new ? '<span class="nw">신규</span>' : '') + '</span>' +
       '<span class="r-s">' + sub + '</span>' +
       (top ? '<p class="r-x r-a">' + top + '</p>' : '') +
-      '<span class="r-m"><span class="mv"><small>공정자산</small><em>' + wonShort(g.assets) + '</em></span>' +
+      '<span class="r-m">' + ast +
       (g._rev > 0 ? '<span class="mv"><small>수록 매출 합</small><em>' + wonShort(g._rev) + '</em></span>' : g._emp > 0 ? '<span class="mv"><small>수록 가입자 합</small><em>' + fmt(g._emp) + '명</em></span>' : '') + '</span></a>';
   }
   // 찾기 결과 위에 붙는 기업집단 띠 — 'SPC'로 찾으면 SPC그룹이 먼저 보이게
@@ -981,7 +985,7 @@
     if (g.owner) row(1, '동일인', esc(g.owner));
     if (!und) {
       row(1, '자산 순위', '<b>' + g.rank + '위</b>' + (g.rank_2025 ? ' <span class="code">2025년 ' + g.rank_2025 + '위</span>' : ' <span class="code">2026년 신규</span>'));
-      row(1, '공정자산', wonShort(g.assets) + ' 원');
+      row(1, '공정자산', num(g.assets) ? wonShort(g.assets) + ' 원' : '공시 없음');
       row(0, '계열회사', '공시 ' + fmt(g.affiliates) + '곳 · 이 명함첩 ' + fmt(g._members.length) + '곳');
       row(0, '지정', '2026-05-01 공시대상기업집단' + (g.mutual ? ' · <b>상호출자제한</b>' : ''));
     } else {
