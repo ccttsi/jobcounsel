@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T03:12:07+09:00",
+ "generated_at": "2026-11-20T03:18:14+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -83,9 +83,539 @@
   "2026-06-16",
   "2026-06-11",
   "2026-06-10",
-  "2026-06-09"
+  "2026-06-09",
+  "2026-06-08",
+  "2026-06-05",
+  "2026-06-02"
  ],
  "themes": {
+  "th-labor-policy": {
+   "label": "고용정책과 감독",
+   "items": [
+    {
+     "date": "2026-06-02",
+     "card_id": "c01",
+     "title": "물류·유통 10개사 최고안전책임자, 폭염 대책 현장에 걸겠다",
+     "kicker": "물류 6·유통 4개사 · 7.15부터 집중감독",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764943",
+     "published_at": "2026-06-02"
+    },
+    {
+     "date": "2026-06-05",
+     "card_id": "c02",
+     "title": "하반기 임단협 앞두고 8개 청에 '노사교섭 지원팀'",
+     "kicker": "8개 청 · 노사교섭 지원팀 · 원·하청 교섭 총력",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156765181",
+     "published_at": "2026-06-04"
+    },
+    {
+     "date": "2026-06-16",
+     "card_id": "c01",
+     "title": "포스코에 특단 대책 요구 — 떨어짐 사망 한 건이 마지막이 아니었다",
+     "kicker": "6.9 사망 1명 · 경영진 5명 면담 · 재발방지 요구",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766562",
+     "published_at": "2026-06-15"
+    },
+    {
+     "date": "2026-06-18",
+     "card_id": "c01",
+     "title": "배달라이더 36.6만명, 폭염 앞두고 안전대책 회의",
+     "kicker": "종사자 36.6만 · 사상자 6,745명 · 3년 새 10만명 증가",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766962",
+     "published_at": "2026-06-17"
+    },
+    {
+     "date": "2026-06-22",
+     "card_id": "c02",
+     "title": "개정 노조법 100일, 원청 439곳에 하청노조 1,161개 교섭요구",
+     "kicker": "원청 439곳 · 하청노조 1,161개 · 16.4만명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767571",
+     "published_at": "2026-06-22"
+    },
+    {
+     "date": "2026-06-24",
+     "card_id": "c01",
+     "title": "지방정부 30곳 중 28곳에서 113건 위반, 쪼개기 계약이 뿌리",
+     "kicker": "28곳 · 113건 · 수당 차별 66명 1억원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767714",
+     "published_at": "2026-06-23"
+    },
+    {
+     "date": "2026-06-30",
+     "card_id": "c02",
+     "title": "제조업 끼임사고 반복 사업장 1,000곳, 10일간 긴급점검",
+     "kicker": "1,000곳 · 7.1~7.10 · 정비·수리·청소 작업",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768878",
+     "published_at": "2026-06-30"
+    },
+    {
+     "date": "2026-07-02",
+     "card_id": "c01",
+     "title": "간호사 괴롭힘 사건 병원 근로감독, 병·의원 전반으로 넓힌다",
+     "kicker": "7월 1일 착수 · 전 직원 조사 · 중소 병의원 확대",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156769130",
+     "published_at": "2026-07-01"
+    },
+    {
+     "date": "2026-07-08",
+     "card_id": "c02",
+     "title": "인천 제물포구 고용위기 선제대응지역 신규 지정",
+     "kicker": "울산 남구 6개월 연장 · 철강 침체 · 석유화학 3곳 모두 지정",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156769904",
+     "published_at": "2026-07-07"
+    },
+    {
+     "date": "2026-07-22",
+     "card_id": "c01",
+     "title": "안전보건공시제 8월 시행, 500명 이상 기업은 매년 공시",
+     "kicker": "상시 500명 · 건설 1,200억 · 8월 1일 시행",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771552",
+     "published_at": "2026-07-21"
+    },
+    {
+     "date": "2026-07-23",
+     "card_id": "c01",
+     "title": "지방 노동감독 시대 — 경기도, 감독관 170명 채용 착수",
+     "kicker": "감독관 170명 · 12월 8일 시행 · 사업장 최다 지역",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771742",
+     "published_at": "2026-07-22"
+    },
+    {
+     "date": "2026-07-28",
+     "card_id": "c01",
+     "title": "폭염 취약사업장 1,000곳 점검, 체감 35도면 옥외작업 중단",
+     "kicker": "8.3~8.14 · 1,000곳 · 48개 지방관서",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772446",
+     "published_at": "2026-07-28"
+    },
+    {
+     "date": "2026-08-05",
+     "card_id": "c01",
+     "title": "상반기 산재 사망 253명 역대 최저, 임금체불은 9,248억원",
+     "kicker": "사망 -11.8% · 체불 -10.7% · 경사노위 17개 위원회",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773364",
+     "published_at": "2026-08-04"
+    },
+    {
+     "date": "2026-08-06",
+     "card_id": "c01",
+     "title": "이름을 불러 주세요 — 이주노동자 노동존중 캠페인",
+     "kicker": "150여 명 참석 · 4개 재단 · 4월 협약",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773490",
+     "published_at": "2026-08-05"
+    },
+    {
+     "date": "2026-08-06",
+     "card_id": "c02",
+     "title": "맨홀 작업 질식·추락, 안전가이드로 막는다",
+     "kicker": "작년 7월 5명 사망 · 올해 6월 부상 6명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국산업안전보건공단·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773555",
+     "published_at": "2026-08-06"
+    },
+    {
+     "date": "2026-08-08",
+     "card_id": "c01",
+     "title": "활주로 50℃, 김포공항 지상조업 불시점검",
+     "kicker": "폭염 5대 수칙 · 2시간마다 20분 휴식",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773781",
+     "published_at": "2026-08-08"
+    },
+    {
+     "date": "2026-08-12",
+     "card_id": "c01",
+     "title": "주 6일 45시간을 주 5일 40시간으로 — 노동시간 단축 현장",
+     "kicker": "부산도시철도 45→40시간 · 이행점검단 8차",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774200",
+     "published_at": "2026-08-12"
+    },
+    {
+     "date": "2026-08-19",
+     "card_id": "c01",
+     "title": "일주일 새 끼임 사망 2건, HD현대중공업에 감독관 62명 투입",
+     "kicker": "감독반 62명 · 1주일 새 2건 · 재감독 예고",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774732",
+     "published_at": "2026-08-18"
+    },
+    {
+     "date": "2026-08-21",
+     "card_id": "c02",
+     "title": "고용위기 선제대응지역, 여수 1년 연장하고 당진 새로 지정",
+     "kicker": "여수 연장 · 당진 신규 · 청년 고용률 44.2%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774996",
+     "published_at": "2026-08-20"
+    },
+    {
+     "date": "2026-08-31",
+     "card_id": "c01",
+     "title": "지게차·크레인 쓰는 제조업 1,000곳, 9월 첫 주 불시점검",
+     "kicker": "1,000곳 · 9.7~9.11 · 상반기 사고사망 -11.8%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775997",
+     "published_at": "2026-08-30"
+    },
+    {
+     "date": "2026-09-01",
+     "card_id": "c01",
+     "title": "추석 전 임금체불 청산, 점검 사업장 8,000곳으로 늘렸다",
+     "kicker": "8,000곳 · 9.1~9.23 · 2025년 6,000곳",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776209",
+     "published_at": "2026-08-31"
+    },
+    {
+     "date": "2026-09-05",
+     "card_id": "c01",
+     "title": "제주 호텔리조트 상생협약, 서비스업 첫 지역 모델",
+     "kicker": "재원 12.2억원 · 제조업 중심에서 서비스업으로",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780330",
+     "published_at": "2026-09-04"
+    },
+    {
+     "date": "2026-09-08",
+     "card_id": "c02",
+     "title": "대전 벤처기업에 물었다, 포괄임금에 실제 근로시간이 담기나",
+     "kicker": "포괄임금 기획감독 5차 · 지도지침 4.9 시행",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780531",
+     "published_at": "2026-09-07"
+    },
+    {
+     "date": "2026-09-17",
+     "card_id": "c02",
+     "title": "자격증 불법 대여부터 퇴직연금 적립까지, 9개 과제",
+     "kicker": "2차 정상화 과제안 9개 · 5월 1차에 이어",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781980",
+     "published_at": "2026-09-16"
+    },
+    {
+     "date": "2026-09-18",
+     "card_id": "c01",
+     "title": "허위근로자 57명 모집한 사업주, 구속됐다",
+     "kicker": "부정수급 5.8억원 · 7년간 5개 사업장",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782336",
+     "published_at": "2026-09-17"
+    },
+    {
+     "date": "2026-09-19",
+     "card_id": "c01",
+     "title": "공무직위원회 출범, 공공부문 비정규직 논의 창구 열렸다",
+     "kicker": "9월 18일 출범 · 국무조정실장 위원장",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782482",
+     "published_at": "2026-09-18"
+    },
+    {
+     "date": "2026-09-21",
+     "card_id": "c01",
+     "title": "반도체 27곳 점검에 338건 위반, 청주는 119건",
+     "kicker": "위반 338건 · 사법처리 28건 · 과태료 3,200만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782525",
+     "published_at": "2026-09-20"
+    },
+    {
+     "date": "2026-09-23",
+     "card_id": "c01",
+     "title": "거짓 구인광고, 게재 전에 걸러내고 게재 뒤엔 삭제 명령",
+     "kicker": "입법예고 9.22~11.2(40일) · 시행 12.10",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782832",
+     "published_at": "2026-09-22"
+    },
+    {
+     "date": "2026-10-09",
+     "card_id": "c01",
+     "title": "일자리 TF — 취업자는 늘었지만 청년·제조·건설은 그대로",
+     "kicker": "취업자 증가 6월 6.3만 → 8월 18.4만 · 9월은 기저효과",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "재정경제부·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784628",
+     "published_at": "2026-10-08"
+    },
+    {
+     "date": "2026-10-22",
+     "card_id": "c02",
+     "title": "석탄발전 폐지 지역, 노동자 전환 대책을 먼저 짠다",
+     "kicker": "특별법 2027년 9월 시행 · 특별지구 지정",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "기후에너지환경부",
+     "source_url": "https://mcee.go.kr/m/mob/board/read.do?boardId=1901100&boardMasterId=939&maxIndexPages=5&maxPageItems=10&menuId=156&orgCd=&pagerOffset=0&searchKey=&searchValue=",
+     "published_at": "2026-10-21"
+    },
+    {
+     "date": "2026-11-10",
+     "card_id": "c01",
+     "title": "고용보험은 10개월째 20만명대, 구인배수는 0.46",
+     "kicker": "가입자 +28.6만명 · 구인배수 0.46",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20216",
+     "published_at": "2026-11-09"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c01",
+     "title": "'가짜 3.3' 위장고용 140여 개소, 두 달 집중 감독",
+     "kicker": "의심 사업장 140여 개소 · 지난해 체불 6억8,500만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c07",
+     "title": "한파 대책, 취약사업장 3만 곳·웜키트 1만4300세트",
+     "kicker": "취약사업장 3만여 개소 · 집중점검 200→600개소",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
+     "published_at": "2026-11-13"
+    }
+   ]
+  },
+  "th-pension-social": {
+   "label": "퇴직과 사회안전망",
+   "items": [
+    {
+     "date": "2026-06-05",
+     "card_id": "c01",
+     "title": "이주노동자 산재 승인 1만215건, 11개국 공관과 보호 강화",
+     "kicker": "외국인 취업자 110.9만 · 산재 7,778→1만215건 · 24개 언어",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "근로복지공단·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156765183",
+     "published_at": "2026-06-04"
+    },
+    {
+     "date": "2026-06-08",
+     "card_id": "c01",
+     "title": "어르신이 어르신을 돌본다 — 통합돌봄 노인일자리 3만명",
+     "kicker": "3만675명 · 건강관리 86.1% · 우선지정일자리",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156765456",
+     "published_at": "2026-06-07"
+    },
+    {
+     "date": "2026-06-24",
+     "card_id": "c02",
+     "title": "배우자 출산휴가 20일 쓰면 업무분담 지원금도 나온다",
+     "kicker": "7월 1일 시행 · 배우자 출산휴가 20일 · 지역고용촉진지원금 개선",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767715",
+     "published_at": "2026-06-23"
+    },
+    {
+     "date": "2026-07-01",
+     "card_id": "c01",
+     "title": "육아휴직 인수인계 기간에도 대체인력을 쓸 수 있게 됐다",
+     "kicker": "7월 1일부터 · 휴직 전 2개월·복직 후 1개월",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768877",
+     "published_at": "2026-06-30"
+    },
+    {
+     "date": "2026-07-01",
+     "card_id": "c02",
+     "title": "두루누리 보험료 80% 지원, 7~9월 가입 촉진",
+     "kicker": "보험료 80% · 180만명·1,700억원 · 예술인 과태료 면제",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "근로복지공단·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768879",
+     "published_at": "2026-06-30"
+    },
+    {
+     "date": "2026-07-17",
+     "card_id": "c02",
+     "title": "인구구조 변화와 일자리, 국민 공론화 시작",
+     "kicker": "특위 15명 · 6개월 · 상생·평생 일자리",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "경제사회노동위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771196",
+     "published_at": "2026-07-16"
+    },
+    {
+     "date": "2026-07-24",
+     "card_id": "c01",
+     "title": "중장년내일센터 서포터즈, 20~30대까지 문을 넓혔다",
+     "kicker": "5기 20명 · 20~30대 포함 · 공개모집",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "노사발전재단·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771946",
+     "published_at": "2026-07-23"
+    },
+    {
+     "date": "2026-07-29",
+     "card_id": "c01",
+     "title": "기준 중위소득 6.70% 인상, 4인 가구 생계급여 221만7,563원",
+     "kicker": "역대 최대 인상 · 4인 221만7,563원 · 1인 87만5,533원",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772464",
+     "published_at": "2026-07-28"
+    },
+    {
+     "date": "2026-08-24",
+     "card_id": "c01",
+     "title": "난임치료휴가 유급 2일→4일, 11월 27일부터",
+     "kicker": "연 6일 중 유급 4일 · 급여 상한 33만7천원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775189",
+     "published_at": "2026-08-23"
+    },
+    {
+     "date": "2026-08-27",
+     "card_id": "c01",
+     "title": "DB 퇴직연금 수익률 3.5%, DC·IRP의 절반에도 못 미쳤다",
+     "kicker": "DB 3.5% · DC 8.5% · IRP 9.4%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775557",
+     "published_at": "2026-08-26"
+    },
+    {
+     "date": "2026-08-31",
+     "card_id": "c02",
+     "title": "의료비 본인부담 초과금 226만명에게 3조760억원 돌려준다",
+     "kicker": "226만명 · 3조760억원 · 1인당 136만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775992",
+     "published_at": "2026-08-30"
+    },
+    {
+     "date": "2026-09-02",
+     "card_id": "c01",
+     "title": "고용보험 개편안, 모성보호 계정 따로 만들고 노·사·정이 나눠 낸다",
+     "kicker": "모성보호 급여 2.1조→4.3조 · 실업급여 계정 -1.8조",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776969",
+     "published_at": "2026-09-01"
+    },
+    {
+     "date": "2026-09-21",
+     "card_id": "c02",
+     "title": "노인일자리 주간, 5일간 기념식·심포지엄·국민참여관",
+     "kicker": "9.21~9.25 · 기념식·심포지엄·국민참여관 3개 행사",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782522",
+     "published_at": "2026-09-20"
+    },
+    {
+     "date": "2026-11-17",
+     "card_id": "c03",
+     "title": "퇴직급여 사외적립, 2030년 전 사업장으로 넓힌다",
+     "kicker": "2028년 100인 이상 · 2030년 10인 미만",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261113167000530",
+     "published_at": "2026-11-16"
+    }
+   ]
+  },
   "th-youth-employment": {
    "label": "청년 고용",
    "items": [
@@ -437,352 +967,6 @@
     }
    ]
   },
-  "th-labor-policy": {
-   "label": "고용정책과 감독",
-   "items": [
-    {
-     "date": "2026-06-16",
-     "card_id": "c01",
-     "title": "포스코에 특단 대책 요구 — 떨어짐 사망 한 건이 마지막이 아니었다",
-     "kicker": "6.9 사망 1명 · 경영진 5명 면담 · 재발방지 요구",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766562",
-     "published_at": "2026-06-15"
-    },
-    {
-     "date": "2026-06-18",
-     "card_id": "c01",
-     "title": "배달라이더 36.6만명, 폭염 앞두고 안전대책 회의",
-     "kicker": "종사자 36.6만 · 사상자 6,745명 · 3년 새 10만명 증가",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "국무조정실",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156766962",
-     "published_at": "2026-06-17"
-    },
-    {
-     "date": "2026-06-22",
-     "card_id": "c02",
-     "title": "개정 노조법 100일, 원청 439곳에 하청노조 1,161개 교섭요구",
-     "kicker": "원청 439곳 · 하청노조 1,161개 · 16.4만명",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767571",
-     "published_at": "2026-06-22"
-    },
-    {
-     "date": "2026-06-24",
-     "card_id": "c01",
-     "title": "지방정부 30곳 중 28곳에서 113건 위반, 쪼개기 계약이 뿌리",
-     "kicker": "28곳 · 113건 · 수당 차별 66명 1억원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767714",
-     "published_at": "2026-06-23"
-    },
-    {
-     "date": "2026-06-30",
-     "card_id": "c02",
-     "title": "제조업 끼임사고 반복 사업장 1,000곳, 10일간 긴급점검",
-     "kicker": "1,000곳 · 7.1~7.10 · 정비·수리·청소 작업",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768878",
-     "published_at": "2026-06-30"
-    },
-    {
-     "date": "2026-07-02",
-     "card_id": "c01",
-     "title": "간호사 괴롭힘 사건 병원 근로감독, 병·의원 전반으로 넓힌다",
-     "kicker": "7월 1일 착수 · 전 직원 조사 · 중소 병의원 확대",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156769130",
-     "published_at": "2026-07-01"
-    },
-    {
-     "date": "2026-07-08",
-     "card_id": "c02",
-     "title": "인천 제물포구 고용위기 선제대응지역 신규 지정",
-     "kicker": "울산 남구 6개월 연장 · 철강 침체 · 석유화학 3곳 모두 지정",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156769904",
-     "published_at": "2026-07-07"
-    },
-    {
-     "date": "2026-07-22",
-     "card_id": "c01",
-     "title": "안전보건공시제 8월 시행, 500명 이상 기업은 매년 공시",
-     "kicker": "상시 500명 · 건설 1,200억 · 8월 1일 시행",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771552",
-     "published_at": "2026-07-21"
-    },
-    {
-     "date": "2026-07-23",
-     "card_id": "c01",
-     "title": "지방 노동감독 시대 — 경기도, 감독관 170명 채용 착수",
-     "kicker": "감독관 170명 · 12월 8일 시행 · 사업장 최다 지역",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771742",
-     "published_at": "2026-07-22"
-    },
-    {
-     "date": "2026-07-28",
-     "card_id": "c01",
-     "title": "폭염 취약사업장 1,000곳 점검, 체감 35도면 옥외작업 중단",
-     "kicker": "8.3~8.14 · 1,000곳 · 48개 지방관서",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772446",
-     "published_at": "2026-07-28"
-    },
-    {
-     "date": "2026-08-05",
-     "card_id": "c01",
-     "title": "상반기 산재 사망 253명 역대 최저, 임금체불은 9,248억원",
-     "kicker": "사망 -11.8% · 체불 -10.7% · 경사노위 17개 위원회",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773364",
-     "published_at": "2026-08-04"
-    },
-    {
-     "date": "2026-08-06",
-     "card_id": "c01",
-     "title": "이름을 불러 주세요 — 이주노동자 노동존중 캠페인",
-     "kicker": "150여 명 참석 · 4개 재단 · 4월 협약",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773490",
-     "published_at": "2026-08-05"
-    },
-    {
-     "date": "2026-08-06",
-     "card_id": "c02",
-     "title": "맨홀 작업 질식·추락, 안전가이드로 막는다",
-     "kicker": "작년 7월 5명 사망 · 올해 6월 부상 6명",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "한국산업안전보건공단·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773555",
-     "published_at": "2026-08-06"
-    },
-    {
-     "date": "2026-08-08",
-     "card_id": "c01",
-     "title": "활주로 50℃, 김포공항 지상조업 불시점검",
-     "kicker": "폭염 5대 수칙 · 2시간마다 20분 휴식",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773781",
-     "published_at": "2026-08-08"
-    },
-    {
-     "date": "2026-08-12",
-     "card_id": "c01",
-     "title": "주 6일 45시간을 주 5일 40시간으로 — 노동시간 단축 현장",
-     "kicker": "부산도시철도 45→40시간 · 이행점검단 8차",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774200",
-     "published_at": "2026-08-12"
-    },
-    {
-     "date": "2026-08-19",
-     "card_id": "c01",
-     "title": "일주일 새 끼임 사망 2건, HD현대중공업에 감독관 62명 투입",
-     "kicker": "감독반 62명 · 1주일 새 2건 · 재감독 예고",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774732",
-     "published_at": "2026-08-18"
-    },
-    {
-     "date": "2026-08-21",
-     "card_id": "c02",
-     "title": "고용위기 선제대응지역, 여수 1년 연장하고 당진 새로 지정",
-     "kicker": "여수 연장 · 당진 신규 · 청년 고용률 44.2%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774996",
-     "published_at": "2026-08-20"
-    },
-    {
-     "date": "2026-08-31",
-     "card_id": "c01",
-     "title": "지게차·크레인 쓰는 제조업 1,000곳, 9월 첫 주 불시점검",
-     "kicker": "1,000곳 · 9.7~9.11 · 상반기 사고사망 -11.8%",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775997",
-     "published_at": "2026-08-30"
-    },
-    {
-     "date": "2026-09-01",
-     "card_id": "c01",
-     "title": "추석 전 임금체불 청산, 점검 사업장 8,000곳으로 늘렸다",
-     "kicker": "8,000곳 · 9.1~9.23 · 2025년 6,000곳",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776209",
-     "published_at": "2026-08-31"
-    },
-    {
-     "date": "2026-09-05",
-     "card_id": "c01",
-     "title": "제주 호텔리조트 상생협약, 서비스업 첫 지역 모델",
-     "kicker": "재원 12.2억원 · 제조업 중심에서 서비스업으로",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780330",
-     "published_at": "2026-09-04"
-    },
-    {
-     "date": "2026-09-08",
-     "card_id": "c02",
-     "title": "대전 벤처기업에 물었다, 포괄임금에 실제 근로시간이 담기나",
-     "kicker": "포괄임금 기획감독 5차 · 지도지침 4.9 시행",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780531",
-     "published_at": "2026-09-07"
-    },
-    {
-     "date": "2026-09-17",
-     "card_id": "c02",
-     "title": "자격증 불법 대여부터 퇴직연금 적립까지, 9개 과제",
-     "kicker": "2차 정상화 과제안 9개 · 5월 1차에 이어",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781980",
-     "published_at": "2026-09-16"
-    },
-    {
-     "date": "2026-09-18",
-     "card_id": "c01",
-     "title": "허위근로자 57명 모집한 사업주, 구속됐다",
-     "kicker": "부정수급 5.8억원 · 7년간 5개 사업장",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782336",
-     "published_at": "2026-09-17"
-    },
-    {
-     "date": "2026-09-19",
-     "card_id": "c01",
-     "title": "공무직위원회 출범, 공공부문 비정규직 논의 창구 열렸다",
-     "kicker": "9월 18일 출범 · 국무조정실장 위원장",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782482",
-     "published_at": "2026-09-18"
-    },
-    {
-     "date": "2026-09-21",
-     "card_id": "c01",
-     "title": "반도체 27곳 점검에 338건 위반, 청주는 119건",
-     "kicker": "위반 338건 · 사법처리 28건 · 과태료 3,200만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782525",
-     "published_at": "2026-09-20"
-    },
-    {
-     "date": "2026-09-23",
-     "card_id": "c01",
-     "title": "거짓 구인광고, 게재 전에 걸러내고 게재 뒤엔 삭제 명령",
-     "kicker": "입법예고 9.22~11.2(40일) · 시행 12.10",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782832",
-     "published_at": "2026-09-22"
-    },
-    {
-     "date": "2026-10-09",
-     "card_id": "c01",
-     "title": "일자리 TF — 취업자는 늘었지만 청년·제조·건설은 그대로",
-     "kicker": "취업자 증가 6월 6.3만 → 8월 18.4만 · 9월은 기저효과",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "재정경제부·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784628",
-     "published_at": "2026-10-08"
-    },
-    {
-     "date": "2026-10-22",
-     "card_id": "c02",
-     "title": "석탄발전 폐지 지역, 노동자 전환 대책을 먼저 짠다",
-     "kicker": "특별법 2027년 9월 시행 · 특별지구 지정",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "기후에너지환경부",
-     "source_url": "https://mcee.go.kr/m/mob/board/read.do?boardId=1901100&boardMasterId=939&maxIndexPages=5&maxPageItems=10&menuId=156&orgCd=&pagerOffset=0&searchKey=&searchValue=",
-     "published_at": "2026-10-21"
-    },
-    {
-     "date": "2026-11-10",
-     "card_id": "c01",
-     "title": "고용보험은 10개월째 20만명대, 구인배수는 0.46",
-     "kicker": "가입자 +28.6만명 · 구인배수 0.46",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20216",
-     "published_at": "2026-11-09"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c01",
-     "title": "'가짜 3.3' 위장고용 140여 개소, 두 달 집중 감독",
-     "kicker": "의심 사업장 140여 개소 · 지난해 체불 6억8,500만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c07",
-     "title": "한파 대책, 취약사업장 3만 곳·웜키트 1만4300세트",
-     "kicker": "취약사업장 3만여 개소 · 집중점검 200→600개소",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
-     "published_at": "2026-11-13"
-    }
-   ]
-  },
   "th-employment-service": {
    "label": "고용서비스와 상담",
    "items": [
@@ -1054,143 +1238,6 @@
      "source_name": "고용노동부",
      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20272",
      "published_at": "2026-11-18"
-    }
-   ]
-  },
-  "th-pension-social": {
-   "label": "퇴직과 사회안전망",
-   "items": [
-    {
-     "date": "2026-06-24",
-     "card_id": "c02",
-     "title": "배우자 출산휴가 20일 쓰면 업무분담 지원금도 나온다",
-     "kicker": "7월 1일 시행 · 배우자 출산휴가 20일 · 지역고용촉진지원금 개선",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156767715",
-     "published_at": "2026-06-23"
-    },
-    {
-     "date": "2026-07-01",
-     "card_id": "c01",
-     "title": "육아휴직 인수인계 기간에도 대체인력을 쓸 수 있게 됐다",
-     "kicker": "7월 1일부터 · 휴직 전 2개월·복직 후 1개월",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768877",
-     "published_at": "2026-06-30"
-    },
-    {
-     "date": "2026-07-01",
-     "card_id": "c02",
-     "title": "두루누리 보험료 80% 지원, 7~9월 가입 촉진",
-     "kicker": "보험료 80% · 180만명·1,700억원 · 예술인 과태료 면제",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "근로복지공단·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156768879",
-     "published_at": "2026-06-30"
-    },
-    {
-     "date": "2026-07-17",
-     "card_id": "c02",
-     "title": "인구구조 변화와 일자리, 국민 공론화 시작",
-     "kicker": "특위 15명 · 6개월 · 상생·평생 일자리",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "경제사회노동위원회",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771196",
-     "published_at": "2026-07-16"
-    },
-    {
-     "date": "2026-07-24",
-     "card_id": "c01",
-     "title": "중장년내일센터 서포터즈, 20~30대까지 문을 넓혔다",
-     "kicker": "5기 20명 · 20~30대 포함 · 공개모집",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "노사발전재단·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771946",
-     "published_at": "2026-07-23"
-    },
-    {
-     "date": "2026-07-29",
-     "card_id": "c01",
-     "title": "기준 중위소득 6.70% 인상, 4인 가구 생계급여 221만7,563원",
-     "kicker": "역대 최대 인상 · 4인 221만7,563원 · 1인 87만5,533원",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "보건복지부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772464",
-     "published_at": "2026-07-28"
-    },
-    {
-     "date": "2026-08-24",
-     "card_id": "c01",
-     "title": "난임치료휴가 유급 2일→4일, 11월 27일부터",
-     "kicker": "연 6일 중 유급 4일 · 급여 상한 33만7천원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775189",
-     "published_at": "2026-08-23"
-    },
-    {
-     "date": "2026-08-27",
-     "card_id": "c01",
-     "title": "DB 퇴직연금 수익률 3.5%, DC·IRP의 절반에도 못 미쳤다",
-     "kicker": "DB 3.5% · DC 8.5% · IRP 9.4%",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775557",
-     "published_at": "2026-08-26"
-    },
-    {
-     "date": "2026-08-31",
-     "card_id": "c02",
-     "title": "의료비 본인부담 초과금 226만명에게 3조760억원 돌려준다",
-     "kicker": "226만명 · 3조760억원 · 1인당 136만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "보건복지부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775992",
-     "published_at": "2026-08-30"
-    },
-    {
-     "date": "2026-09-02",
-     "card_id": "c01",
-     "title": "고용보험 개편안, 모성보호 계정 따로 만들고 노·사·정이 나눠 낸다",
-     "kicker": "모성보호 급여 2.1조→4.3조 · 실업급여 계정 -1.8조",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776969",
-     "published_at": "2026-09-01"
-    },
-    {
-     "date": "2026-09-21",
-     "card_id": "c02",
-     "title": "노인일자리 주간, 5일간 기념식·심포지엄·국민참여관",
-     "kicker": "9.21~9.25 · 기념식·심포지엄·국민참여관 3개 행사",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "보건복지부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782522",
-     "published_at": "2026-09-20"
-    },
-    {
-     "date": "2026-11-17",
-     "card_id": "c03",
-     "title": "퇴직급여 사외적립, 2030년 전 사업장으로 넓힌다",
-     "kicker": "2028년 100인 이상 · 2030년 10인 미만",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "연합뉴스",
-     "source_url": "https://www.yna.co.kr/view/AKR20261113167000530",
-     "published_at": "2026-11-16"
     }
    ]
   },
