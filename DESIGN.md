@@ -370,5 +370,6 @@ Playwright가 실제 사용자 동선을 재현한다: 한 손 터치(엄지 반
 - 2026-11-17 포트폴리오 편집실 신설(22번): 네 칸 작업대·재생헤드 스크럽·비례 클립·두 칸 비교대·인스펙터 시트 → `nle-workspace.md`.
 - 2026-11-17 서재 색인 목차 깜빡임: 스크롤·리사이즈 프레임마다 다시 그리던 목록을 멈춘 뒤 한 번만, 스스로 다시 그리는 목록은 `data-jc-still`, 아이폰 주소창 `resize`는 폭 변화만 본다 → `ebook-reading.md` §4·§6, `touch-physics.md` §5.
 - 2026-11-19 산업 온도계 신설(16번): 두 자루 온도계(국내·글로벌)·축 4개 접이 근거표·관측대 요약 띠·KSIC↔체감 토글·근거 커버리지 표기 → `design/patterns/metric-gauge.md`, `design/studies/2026-11-19-industry-thermometer.md`
+- 2026-11-19 내담자 언어 번역기 신설(26번): 초성·부분 검색 + 목록|한 장 + 연계 칩(섹터별 주소 규칙) + 대문 프리셋 「용어」 단계 → `design/patterns/search-reference.md` §8
 - 2026-11-19 17번 데일리 브리핑 지면 개편: 제호·겹괘선·3단 칼럼, 호수 폐지, 미니 달력(2026-11~현재 달 자동 확장), 카드 사슬 단추 → 시간순/글로벌 시트, `chain.json` 파생 색인 → `card-directory.md` §8-b, `design/studies/2026-11-19-briefing-newspaper.md`.
 - 2026-11-18 대문 재설계 R2: 설명 칸 고정 높이(27.41→0.00px) · 반원 하우징 L자 레버 · 바닥 고정 동전 그림자 → `hub-landing.md` §1·§9, `DESIGN.md` §9. 3단 정보 차등 · 매치 맞물림 카드 · 무대 통일 페이드아웃 · 95% 종이 베일(전체 backdrop-filter 폐기) → `hub-landing.md` §9-b, `DESIGN.md` §2·§9·§10(PR #151·#152·#153).
