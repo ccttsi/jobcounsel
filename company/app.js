@@ -895,7 +895,20 @@
       for (var i = 0; i < ITEMS.length; i++) { BYID[ITEMS[i].id] = ITEMS[i]; prep(ITEMS[i]); }
       ENTREV = ITEMS.filter(function (x) { return x._c === 'ENT' && x._rev > 0; }).sort(function (a, b) { return b._rev - a._rev; });
       CATS.forEach(function (c) { c.n = ITEMS.filter(function (x) { return x._c === c.k; }).length; });
-      dist(); album(); main.addEventListener('change', onSelect); main.addEventListener('click', onItemClick); route();
+      dist(); album();
+      /* 다른 섹터에서 ?q=로 들어오면 그 이름으로 바로 찾는다(직무·학과·지면에서 넘어오는 길). */
+      var uq = '';
+      try { uq = (new URLSearchParams(location.search).get('q') || '').trim(); } catch (e) {}
+      if (uq) {
+        var s0 = blank(); s0.q = uq; st = fix(s0);
+        try { history.replaceState(null, '', location.pathname + location.search + listHash(st)); } catch (e) {}
+      }
+      main.addEventListener('change', onSelect); main.addEventListener('click', onItemClick); route();
+      /* 이름이 꼭 한 곳으로 걸리면 목록을 거치지 않고 그 명함을 바로 편다. */
+      if (uq) {
+        var only = filtered(st, null);
+        if (only.length === 1) { try { history.replaceState(null, '', location.pathname + location.search + '#' + only[0].id); } catch (e) {} renderItem(only[0].id); }
+      }
       window.addEventListener('hashchange', route);
     }).catch(function () {
       main.innerHTML = '<p class="empty">자료를 불러오지 못했습니다. 잠시 뒤 다시 열어 주십시오.</p>';

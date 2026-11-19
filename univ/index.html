@@ -306,7 +306,11 @@ var ready=false;
 function route(){
   if(!ready)return;
   var h=decodeURIComponent(location.hash.slice(1)),v=$('view'),html;if(alias[h]&&!R[h]){h=alias[h];try{history.replaceState(null,'','#'+h);}catch(e){}}
-  if(U[h])html=uniView(h);else if(R[h])html=deptView(h);else html=homeView();
+  if(U[h])html=uniView(h);else if(R[h])html=deptView(h);else{
+    /* 모르는 해시는 학과·대학 이름으로 본다: 다른 섹터에서 ../univ/#간호학 처럼 넘어오는 길. */
+    if(h){st.q=h;pg.u=pg.su=pg.sd=0;}
+    html=homeView();
+  }
   v.innerHTML=html;
   var title=U[h]?uName(U[h]):R[h]?uName(U[R[h].university_id])+' '+R[h].department_name:'';
   d.title=(title?title+' · ':'')+'대학학과위키';
@@ -335,7 +339,9 @@ d.addEventListener('click',function(e){
   else if(ds.dreg!=null){dq.reg=ds.dreg;pg.sim=0;rerenderKeep('sim');}
 });
 window.addEventListener('hashchange',route);
-fetch('../decalcomania/data/majors.json',{cache:'force-cache'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(M){build(M);ready=true;route();})
+/* 다른 섹터에서 ?q=로 들어오면 그 낱말로 바로 찾는다(직무·기업·대학원에서 넘어오는 길). */
+function urlQuery(){try{var q=(new URLSearchParams(location.search).get('q')||'').trim();if(q&&!location.hash)st.q=q;}catch(e){}}
+fetch('../decalcomania/data/majors.json',{cache:'force-cache'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(M){build(M);ready=true;urlQuery();route();})
   .catch(function(){$('view').innerHTML='<p class="loading">자료를 불러오지 못했습니다. 잠시 뒤 새로고침해 주세요.</p>';});
 })();
 </script>

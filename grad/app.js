@@ -47,11 +47,21 @@
       GS.forEach(function (x, i) { x.i = i; GSID[x.id] = x; });
       U.forEach(function (x, i) { x.i = i; UID[x.id] = x; });
       head();
+      urlQuery();
       window.addEventListener('hashchange', route);
       route();
     }).catch(function () {
       main.innerHTML = '<p class="loading">자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주십시오.</p>';
     });
+  }
+  /* 다른 섹터에서 ?q=로 들어오면 그 낱말로 바로 찾는다(학과·전공에서 넘어오는 길). */
+  function urlQuery() {
+    var q = '';
+    try { q = (new URLSearchParams(location.search).get('q') || '').trim(); } catch (e) {}
+    if (!q || location.hash) return;
+    var href = '#find?q=' + encodeURIComponent(q);
+    try { history.replaceState(null, '', location.pathname + location.search + href); }
+    catch (e) { location.hash = href; }
   }
   function head() {
     var c = G.meta.counts, t = c.by_type;

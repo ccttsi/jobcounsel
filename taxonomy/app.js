@@ -50,8 +50,17 @@
     j.mappings.ncs_training.forEach(function (m) { push(T.TR, m.ncs_code, m.training_name); });
     j.jobs.forEach(function (x) { x._n = nz(x.name); T.J[x.konet] = x; push(T.JK, x.keco_code, x.konet); if (x.ksco_code) push(T.JS, x.ksco_code, x.konet); });
     T.JOBS = j.jobs.slice().sort(function (a, b) { return a.name.localeCompare(b.name, 'ko'); });
-    renderTabs(); render();
+    renderTabs(); render(); urlQuery();
   }).catch(function () { $('list').innerHTML = '<p class="empty">분류 자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>'; });
+  /* 다른 섹터에서 ?q=로 들어오면 그 낱말로 바로 찾는다(직무·기업·학과에서 넘어오는 길). */
+  function urlQuery() {
+    var q = '';
+    try { q = (new URLSearchParams(location.search).get('q') || '').trim(); } catch (e) {}
+    if (!q) return;
+    UI.q = q; UI.sel = null; UI.more = 50;
+    $('q').value = q; $('qx').hidden = false;
+    renderTabs(); render();
+  }
   function push(o, k, v) { var a = o[k] = o[k] || []; if (a.indexOf(v) < 0) a.push(v); }
 
   function node(s, c) { return T.N[s][c] || null; }
