@@ -1491,7 +1491,10 @@
 
   function renderWelcome() {
     if (!el.welcome) return;
-    var show = st.welcome && !(loggedIn() && hasKey());
+    /* 찾기에서 이미 낱말을 처 올리면 첫 안내는 접는다 — 첫 결과가 화면 아래로 밀리지 않게.
+       검색창을 비우면 다시 나온다. */
+    var searching = st.tab === 'find' && !!(st.q || '').trim();
+    var show = st.welcome && !(loggedIn() && hasKey()) && !searching;
     el.welcome.hidden = !show;
     el.welcome.innerHTML = '';
     if (!show) return;
