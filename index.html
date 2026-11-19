@@ -107,6 +107,80 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .a-root .a-seg button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14)}
 :root[data-theme="dark"] .a-root .a-seg button[aria-pressed="true"]{background:#1c2434}
 
+/* ── 값의 출처와 검증 띠 (2026-11-19) ──
+   대문 한 줄. 누르면 「값을 다루는 방식」 시트가 열린다. 장식은 최소로: 소인 하나 + 키워드 칩 셋. */
+.a-vf{margin-top:2px}
+/* 덱(내 목차)은 작업 화면이다 — 검증 띠는 대문에만 두고, MAIN으로 돌아오면 다시 보인다. */
+:root[data-jc-mode] .a-vf{display:none}
+.a-root .a-vf-btn{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:7px 10px 7px 8px;
+  text-align:left;border-radius:12px;border:1px solid var(--line);background:color-mix(in srgb,var(--panel) 70%,transparent);
+  transition:border-color .16s,background-color .16s}
+.a-vf-btn:hover{border-color:color-mix(in srgb,var(--a1) 42%,var(--line));background:var(--panel)}
+.a-vf-seal{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:var(--a1);
+  border:1.5px dashed color-mix(in srgb,var(--a1) 55%,transparent);background:var(--soft1)}
+.a-vf-seal svg{width:18px;height:18px}
+.a-vf-tx{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;min-width:0;flex:1}
+.a-vf-tx b{font-size:14px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.a-vf-kw{display:flex;flex-wrap:wrap;gap:5px}
+.a-vf-kw span{font-size:11.5px;line-height:1;padding:4px 8px;border-radius:99px;border:1px solid color-mix(in srgb,var(--line-2) 80%,transparent);
+  color:var(--muted);background:var(--bg);white-space:nowrap}
+.a-vf-kw span:nth-child(2){color:var(--a2);border-color:color-mix(in srgb,var(--a2) 34%,var(--line));background:color-mix(in srgb,var(--a2) 6%,transparent)}
+.a-vf-go{flex:none;display:inline-flex;align-items:center;gap:2px;min-height:44px;padding:0 2px 0 8px;font-size:12.5px;font-weight:750;color:var(--a1);white-space:nowrap}
+.a-vf-go svg{width:16px;height:16px}
+.a-vf-go-m{display:none}
+
+/* 시트 */
+.a-vfo{position:fixed;inset:0;z-index:86;display:grid;place-items:center;padding:16px;background:var(--ov);
+  opacity:0;visibility:hidden;transition:opacity .18s,visibility .18s}
+.a-vfo.on{opacity:1;visibility:visible}
+.a-vfo[hidden]{display:none}
+.a-vfo-card{width:100%;max-width:640px;max-height:min(90dvh,760px);display:flex;flex-direction:column;
+  background:var(--panel);border:1px solid var(--line-2);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.3);
+  transform:translateY(8px);transition:transform .2s cubic-bezier(.2,.9,.3,1)}
+.a-vfo.on .a-vfo-card{transform:none}
+.a-vfo-hd{display:flex;align-items:center;gap:10px;padding:14px 12px 12px 18px;border-bottom:1px solid var(--line)}
+.a-vfo-tt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.a-vfo-tt b{font-size:17px;font-weight:850;letter-spacing:-.03em;line-height:1.3}
+.a-vfo-tt small{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.a-root .a-vfo-x{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;color:var(--muted);font-size:15px}
+.a-vfo-x:hover{color:var(--ink);background:var(--panel-soft)}
+.a-vfo-bd{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:14px 18px 8px;scrollbar-width:thin}
+.a-vfo-lead{margin:0 0 4px;padding:12px 14px;border-radius:12px;background:var(--soft1);font-size:13.5px;line-height:1.65;color:var(--muted)}
+.a-vfo-h3{margin:16px 0 8px;font-size:12px;font-weight:850;letter-spacing:.06em;color:var(--a1)}
+.a-vfo-rules{display:grid;gap:10px;counter-reset:vfr}
+.a-vfo-rules li{display:grid;gap:3px;padding-left:30px;position:relative}
+.a-vfo-rules li::before{counter-increment:vfr;content:counter(vfr);position:absolute;left:0;top:0;width:20px;height:20px;
+  border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:850;color:var(--a1);
+  background:color-mix(in srgb,var(--a1) 12%,transparent)}
+.a-vfo-rules b{font-size:14px;font-weight:800;letter-spacing:-.02em}
+.a-vfo-rules span{font-size:13px;line-height:1.62;color:var(--muted)}
+.a-vfo-checks{display:grid;gap:8px}
+.a-vfo-checks li{display:grid;grid-template-columns:86px minmax(0,1fr);gap:2px 10px;align-items:baseline}
+.a-vfo-checks b{font-size:12px;font-weight:800;color:var(--ink)}
+.a-vfo-checks span{font-size:12.5px;line-height:1.6;color:var(--muted)}
+.a-vfo-note{margin:8px 0 0;font-size:11.5px;line-height:1.5;color:var(--dim)}
+.a-vfo-facts{display:grid;gap:6px}
+.a-vfo-facts li{display:grid;grid-template-columns:auto auto;justify-content:start;gap:1px 10px;padding:7px 0;
+  border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.a-vfo-facts li:first-child{border-top:0;padding-top:0}
+.a-vfo-facts b{font-size:13px;font-weight:800;letter-spacing:-.01em}
+.a-vfo-facts span{font-size:12.5px;font-weight:800;color:var(--a1);font-variant-numeric:tabular-nums;justify-self:start}
+.a-vfo-facts em{grid-column:1/-1;font-style:normal;font-size:11.5px;line-height:1.5;color:var(--muted)}
+.a-vfo-lim{margin:0;font-size:12.5px;line-height:1.65;color:var(--muted)}
+.a-vfo-ft{display:flex;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.a-vfo-link{font-size:12.5px;font-weight:750;color:var(--a1);min-height:44px;display:inline-flex;align-items:center}
+.a-root .a-vfo-close{min-height:44px;margin-left:auto;padding:0 18px;border-radius:12px;border:1px solid var(--line-2);
+  background:var(--bg);font-size:13.5px;font-weight:750;color:var(--ink)}
+@media (max-width:520px){
+  .a-vf-btn{gap:9px;padding:6px 8px}
+  .a-vf-tx b{font-size:13px}
+  .a-vf-go{font-size:0;gap:0;padding-left:4px}
+  .a-vf-go-f{display:none}
+  .a-vf-go-m{display:inline;font-size:12px}
+  .a-vf-go svg{width:18px;height:18px}
+  .a-vfo-checks li{grid-template-columns:minmax(0,1fr)}
+}
+
 /* 이용 안내 · 개인정보와 보안: 테두리 없는 한 줄. 누르면 아래로 펼쳐진다. */
 .a-pv{margin-top:clamp(10px,1.4vw,16px)}
 .a-pv-h{font-size:inherit;font-weight:inherit;letter-spacing:inherit}
@@ -453,6 +527,19 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       </div></div>
   </section>
 
+  <section class="a-vf" id="vfSec" aria-labelledby="vfT">
+    <button type="button" class="a-vf-btn" id="vfOpen" aria-haspopup="dialog" aria-controls="vfOv">
+      <span class="a-vf-seal" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M6.4 12.5 10.3 16.4 17.8 7.8" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="a-vf-tx">
+        <b id="vfT">값의 출처와 검증</b>
+        <span class="a-vf-kw"><span>공식 출처·기준시점</span><span>지어낸 값 0건</span><span>자동 검사 통과</span></span>
+      </span>
+      <span class="a-vf-go"><span class="a-vf-go-f">검증 방식</span><span class="a-vf-go-m">방식</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5.5 15.5 12 9 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </button>
+  </section>
+
   <main class="a-stage" id="stage">
   <section class="a-nav" id="nav" aria-label="자료 고르기">
     <p class="a-eyebrow">직업상담사를 위한 학습·실무 자료 <b class="a-num" data-count></b>가지</p>
@@ -545,6 +632,11 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <button type="button" class="a-main" id="mainBtn" aria-label="자료 전체 대문으로 돌아가기">MAIN</button>
     </div>
   </div>
+  <div class="a-pre" role="group" aria-label="상담 프리셋">
+    <span class="a-pre-k" id="preK">상황 프리셋</span>
+    <div class="a-pre-scroll" id="preList"></div>
+  </div>
+  <div class="a-flow" id="preFlow" hidden></div>
   <div class="a-deck-grid">
     <div class="a-deck-pane">
       <div class="a-deck-tools"><span class="a-dt" id="deckTool"></span></div>
@@ -635,6 +727,46 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
   </div>
 </div>
 
+<div class="a-vfo" id="vfOv" hidden>
+  <div class="a-vfo-card" id="vfCard" role="dialog" aria-modal="true" aria-labelledby="vfoT" tabindex="-1">
+    <div class="a-vfo-hd">
+      <div class="a-vfo-tt"><b id="vfoT">값을 다루는 방식</b><small>검증 공개 <span class="a-num">2026-11-19</span> 기준</small></div>
+      <button type="button" class="a-vfo-x" id="vfX" aria-label="닫기">&#10005;</button>
+    </div>
+    <div class="a-vfo-bd">
+      <p class="a-vfo-lead">숫자·조문·요건은 기억이나 추측으로 쓰지 않습니다. 값마다 공식 출처와 기준시점을 붙이고, 확인되지 않은 값은 비웁니다. 아래는 그 규칙과, 저장소에서 실제로 자동 검사하는 항목입니다.</p>
+      <h3 class="a-vfo-h3">세 가지 규칙</h3>
+      <ol class="a-vfo-rules">
+        <li><b>값마다 출처와 기준시점</b><span>법령 조문·공시·공공데이터·공식 통계만 싣고, 기관과 기준일을 함께 적습니다. 예: 지방공공기관 1,315곳 — 행정안전부 2026.6.30 현황.</span></li>
+        <li><b>확인 안 되면 비웁니다</b><span>원자료에 없는 값은 지어내지 않고 줄을 만들지 않습니다. 빠진 항목은 「미표기 항목」으로 밝히고 시행기관 공식 안내로 잇습니다. 기업 명함첩의 매출·정원, 자격증 도감의 시험 일정이 그렇게 비어 있습니다.</span></li>
+        <li><b>계산은 공식 산식으로</b><span>금액·기한은 조문과 산식에 값을 넣어 계산합니다. 계산에 넣은 값과 결과를 화면에 함께 남깁니다 — 예: 국취 상담 HUD의 구직촉진수당 감액.</span></li>
+      </ol>
+      <h3 class="a-vfo-h3">자동 검사 — 통과해야 배포됩니다</h3>
+      <ul class="a-vfo-checks">
+        <li><b>정적 검사</b><span>데이터 JSON 79개의 스키마·참조 무결성, 저작권 라이선스 교차, JS 35개 문법, 상담 프리셋 10개의 카드 39자리와 섹터 장부 대조 — PR마다.</span></li>
+        <li><b>실화면 검사</b><span>대문·브리핑·신산업·산업 온도계를 Chromium으로 휴대폰 390·데스크톱 1280에서 — 콘솔 오류 0 · 같은 사이트 404 0 · 가로 넘침 0 · 44px 미달 0.</span></li>
+        <li><b>매일 라이브 검사</b><span>매일 06:30(KST)에 섹터 전 지면이 열리는지, 오늘 지면이 실렸는지 확인합니다.</span></li>
+      </ul>
+      <p class="a-vfo-note">이 대문을 올린 변경도 정적·실화면 검사를 통과한 뒤 배포되었습니다.</p>
+      <h3 class="a-vfo-h3">실제 수치</h3>
+      <ul class="a-vfo-facts">
+        <li><b>기업 명함첩</b><span class="a-num">9,137곳</span><em>공정거래위원회 공시대상기업집단 · 중견기업 확인서 · 행정안전부 지방공공기관(2026.6.30)</em></li>
+        <li><b>자격증 도감</b><span class="a-num">830건</span><em>공공데이터·법령 기준. 원자료에 없는 항목은 비우고 시행기관 안내로 안내</em></li>
+        <li><b>직업상담 법전</b><span class="a-num">법령·조례 8건 · 조문 50개</span><em>국가법령정보센터 원문(2026-11-17 확인)</em></li>
+        <li><b>산업 온도계</b><span class="a-num">24개 산업</span><em>공식 출처 16곳. 고용·생산·매출·트렌드 값마다 기준시점</em></li>
+        <li><b>취업 현위치</b><span class="a-num">착시 점검 10종</span><em>공식 통계 출처 8건, 기준시점 표기</em></li>
+        <li><b>오늘의 브리핑</b><span class="a-num">매일 새 지면</span><em>카드마다 출처·라이선스</em></li>
+      </ul>
+      <h3 class="a-vfo-h3">이 검사가 하지 않는 것</h3>
+      <p class="a-vfo-lim">숫자가 사실인지 자동으로 판정하지는 않습니다. 원문 대조는 사람이 합니다. 요약 문장 일부는 AI가 작성했으므로, 숫자·조문은 위 출처에서 다시 확인하실 수 있게 달아 두었습니다. 실제 판단은 최신 공식 원문과 기관 안내로 확인하십시오.</p>
+    </div>
+    <div class="a-vfo-ft">
+      <a class="a-vfo-link" href="https://github.com/ccttsi/jobcounsel/actions" target="_blank" rel="noopener">검사 실행 기록 보기</a>
+      <button type="button" class="a-vfo-close" id="vfClose">닫기</button>
+    </div>
+  </div>
+</div>
+
 <div class="a-ov" id="ov" hidden>
   <div class="a-pal" role="dialog" aria-modal="true" aria-label="빠른 검색">
     <div class="a-pal-top">
@@ -651,6 +783,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 <div class="a-toast" id="toast" role="status"></div>
 
 <script src="./assets/tools.js"></script>
+<script src="./assets/presets.js"></script>
 <script>
 (function(){
 'use strict';
@@ -1202,6 +1335,39 @@ function renderRes(){
 function openPal(){lastFocus=document.activeElement;$('ov').hidden=false;root.style.overflow='hidden';$('q').value='';sel=0;renderRes();setTimeout(function(){$('q').focus();},0);}
 function closePal(){if($('ov').hidden)return;$('ov').hidden=true;root.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus();}
 function go(i){var h=hits[i];if(!h)return;markVisited(h.t.id);window.location.href=h.t.path;}
+
+/* ---------- 값의 출처와 검증 시트 ---------- */
+var vfLast=null;
+function openVf(){
+  vfLast=document.activeElement;
+  $('vfOv').hidden=false;
+  $('vfOv').style.visibility='visible';   /* 전환 중에도 초점을 받을 수 있게 먼저 보인다 */
+  root.style.overflow='hidden';
+  setTimeout(function(){
+    var o=$('vfOv');if(o)o.classList.add('on');
+    try{$('vfCard').focus({preventScroll:true});}catch(e){}
+  },30);
+}
+function closeVf(){
+  var o=$('vfOv');if(!o||o.hidden)return;
+  o.classList.remove('on');root.style.overflow='';
+  setTimeout(function(){if(o&&!o.classList.contains('on')){o.hidden=true;o.style.visibility='';}},180);
+  if(vfLast&&vfLast.focus){try{vfLast.focus({preventScroll:true});}catch(e){}}
+}
+$('vfOpen').addEventListener('click',openVf);
+$('vfX').addEventListener('click',closeVf);
+$('vfClose').addEventListener('click',closeVf);
+$('vfOv').addEventListener('click',function(e){if(e.target===$('vfOv'))closeVf();});
+document.addEventListener('keydown',function(e){
+  var o=$('vfOv');if(!o||o.hidden)return;
+  if(e.key==='Escape'){e.preventDefault();closeVf();return;}
+  if(e.key!=='Tab')return;
+  var f=[$('vfX'),$('vfClose'),o.querySelector('.a-vfo-link')].filter(function(x){return x&&x.offsetParent!==null;});
+  if(!f.length)return;
+  var at=f.indexOf(document.activeElement);
+  if(e.shiftKey){if(at<=0){e.preventDefault();f[f.length-1].focus();}}
+  else if(at===f.length-1||at<0){e.preventDefault();f[0].focus();}
+});
 
 /* ---------- 알림 ---------- */
 var toastT;

@@ -38,6 +38,9 @@
 .a-deck-tools{display:flex;align-items:center;gap:8px;margin-bottom:8px;min-height:20px}
 .a-deck-tools .a-dt{font-size:12.5px;color:var(--dim)}
 .a-deck-tools .a-dt b{color:var(--acc);font-variant-numeric:tabular-nums}
+.a-root .a-dt-x{min-height:44px;margin-left:auto;padding:0 12px;border-radius:10px;border-width:1px;border-style:solid;
+  border-color:var(--line-2);font-size:11.5px;font-weight:750;color:var(--muted);background:var(--panel)}
+.a-dt-x:hover{border-color:var(--acc);color:var(--acc)}
 .a-deck-tools .a-sort{margin-left:auto;font-size:12.5px;font-weight:750;color:var(--muted);min-height:32px;padding:0 10px;border-radius:9px;border:1px solid var(--line-2)}
 .a-deck-tools .a-sort:hover{color:var(--acc);border-color:var(--acc)}
 .a-deck-scroll{flex:none;height:var(--deck-h);overflow:auto;overscroll-behavior:contain;border-radius:16px;padding:10px;
@@ -322,3 +325,94 @@
 .a-ds-mini .a-ds-where{margin-left:2px;flex:none}
 .a-ds-mini .a-ds-act{margin-top:8px}
 .a-ds-mini .a-ds-b{min-height:44px}
+
+/* ============ 상담 프리셋 (2026-11-19) ============
+ * 덱 머리 아래 한 줄: 「상황 프리셋」/「유형 프리셋」 칩. 한 번 누르면 그 프리셋의 카드가
+ * 단계 순서대로 1번 칸부터 꽂히고, 바로 아래 진행판에 단계 → 질문 → 확인이 뜬다.
+ * 새로 만드는 높이는 칩 44px와 진행판뿐이다. 칩은 가로로만 넘치고, 페이지는 넘치지 않는다. */
+.a-pre{display:flex;align-items:center;gap:10px;margin-top:10px;min-width:0}
+.a-pre-k{flex:none;font-size:11.5px;font-weight:850;letter-spacing:.06em;color:var(--acc);
+  padding:2px 0;white-space:nowrap}
+.a-pre-scroll{display:flex;align-items:center;gap:8px;min-width:0;flex:1;
+  overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-ms-overflow-style:none;
+  padding:2px 2px 2px 0;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 16px),transparent);
+  mask-image:linear-gradient(90deg,#000 calc(100% - 16px),transparent)}
+.a-pre-scroll::-webkit-scrollbar{width:0;height:0;display:none}
+.a-root .a-pre-c{display:flex;align-items:center;gap:7px;flex:none;min-height:44px;padding:0 13px;
+  border-radius:12px;border-width:1.5px;border-style:solid;border-color:var(--line-2);background:var(--panel);
+  font-size:12.5px;font-weight:750;letter-spacing:-.02em;color:var(--ink);scroll-snap-align:start;
+  transition:transform .16s cubic-bezier(.2,1.4,.4,1),border-color .16s,background-color .16s,color .16s}
+.a-pre-c:hover{border-color:color-mix(in srgb,var(--acc) 52%,var(--line-2))}
+.a-pre-c:active{transform:scale(.985)}
+.a-pre-n{flex:none;display:grid;place-items:center;min-width:20px;height:20px;border-radius:6px;
+  font-size:10.5px;font-weight:850;font-variant-numeric:tabular-nums;color:var(--dim);
+  background:color-mix(in srgb,var(--line-2) 34%,transparent);transition:background-color .16s,color .16s}
+.a-pre-t{white-space:nowrap}
+.a-pre-s{flex:none;font-size:10.5px;font-weight:750;color:var(--dim);letter-spacing:-.01em}
+.a-pre-c.a-on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 9%,var(--panel));color:var(--acc)}
+.a-pre-c.a-on .a-pre-n{background:var(--acc);color:#fffdf8}
+:root[data-theme="dark"] .a-pre-c.a-on .a-pre-n{color:#06090f}
+.a-pre-c.a-on .a-pre-s{color:color-mix(in srgb,var(--acc) 70%,var(--muted))}
+
+/* 진행판: 단계 탭 → 질문 → 확인 → 이 단계 카드 */
+.a-flow{margin-top:8px;padding:6px 8px 9px;border-radius:14px;border-width:1px;border-style:solid;
+  border-color:color-mix(in srgb,var(--acc) 26%,var(--line));background:color-mix(in srgb,var(--acc) 4%,var(--panel))}
+.a-flow[hidden]{display:none}
+.a-flow-hd{display:flex;align-items:center;gap:6px}
+.a-flow-steps{display:flex;align-items:center;gap:4px;min-width:0;overflow-x:auto;scrollbar-width:none;
+  -ms-overflow-style:none;margin:0 -2px;padding:0 2px;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 14px),transparent);
+  mask-image:linear-gradient(90deg,#000 calc(100% - 14px),transparent)}
+.a-root .a-flow-x{display:none}
+.a-flow-x:hover{border-color:var(--acc);color:var(--acc)}
+.a-flow-steps::-webkit-scrollbar{display:none}
+.a-root .a-flow-t{display:flex;align-items:center;gap:6px;flex:none;min-height:44px;padding:0 12px;
+  border-radius:10px;border-width:1px;border-style:solid;border-color:transparent;background:transparent;
+  font-size:12.5px;font-weight:750;letter-spacing:-.01em;color:var(--muted)}
+.a-flow-t:hover{background:color-mix(in srgb,var(--acc) 8%,transparent);color:var(--acc)}
+.a-flow-t.a-on{border-color:color-mix(in srgb,var(--acc) 40%,transparent);background:var(--panel);color:var(--acc);
+  box-shadow:0 1px 0 color-mix(in srgb,var(--acc) 22%,transparent)}
+.a-flow-n{display:grid;place-items:center;width:18px;height:18px;border-radius:5px;font-size:10.5px;font-weight:850;
+  font-variant-numeric:tabular-nums;background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc)}
+.a-flow-t.a-on .a-flow-n{background:var(--acc);color:#fffdf8}
+:root[data-theme="dark"] .a-flow-t.a-on .a-flow-n{color:#06090f}
+.a-flow-body{display:grid;gap:5px;margin-top:6px}
+@media (min-width:900px){
+  .a-flow-body{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-auto-rows:min-content;column-gap:18px;align-items:start}
+  .a-flow-q,.a-flow-c{grid-column:1}
+  .a-flow-w{grid-column:2;grid-row:1;padding-top:2px}
+  .a-flow-b{grid-column:2;grid-row:2}
+}
+.a-flow-q{font-size:14px;font-weight:800;line-height:1.45;letter-spacing:-.02em;color:var(--ink);
+  padding:0 2px;text-wrap:pretty}
+.a-flow-q::before{content:"“"}
+.a-flow-q::after{content:"”"}
+.a-flow-c,.a-flow-w,.a-flow-b{margin:0;padding:0 2px;font-size:12px;line-height:1.5;color:var(--muted)}
+.a-flow-c b,.a-flow-w b,.a-flow-b b{display:inline-block;margin-right:6px;font-size:10.5px;font-weight:850;letter-spacing:.05em;
+  color:var(--acc);vertical-align:1px}
+.a-flow-w,.a-flow-b{color:var(--dim)}
+.a-flow-b b{color:var(--muted)}
+
+/* 덱이 프리셋으로 짜여 있을 때는 두 창(덱·선반)을 한 단씩 낮춰, 진행판이 더해도 한 화면에 가깝게 둔다 */
+@media (max-width:767px){.a-deck.a-haspre{--deck-h:clamp(176px,calc((100dvh - 600px)/2),320px)}}
+@media (min-width:768px){.a-deck.a-haspre{--deck-h:clamp(240px,calc(100dvh - 470px),460px)}}
+
+/* 덱 아래 「왜 이 순서」 — 프리셋이 켜져 있는 동안의 근거 한 줄 */
+.a-why{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.a-why b{flex:none;font-size:10.5px;font-weight:850;letter-spacing:.05em;color:var(--acc);
+  padding:2px 7px;border-radius:6px;background:color-mix(in srgb,var(--acc) 10%,transparent)}
+.a-root .a-why-x{min-height:44px;margin-left:auto;padding:0 12px;border-radius:10px;border-width:1px;
+  border-style:solid;border-color:var(--line-2);font-size:12px;font-weight:750;color:var(--muted);background:var(--panel)}
+.a-why-x:hover{border-color:var(--acc);color:var(--acc)}
+@media (max-width:767px){
+  .a-pre{gap:8px;margin-top:8px}
+  .a-pre-k{font-size:10.5px}
+  .a-pre-c{padding:0 11px;font-size:12px}
+  .a-flow{margin-top:6px;padding:6px 8px 8px}
+  .a-flow-q{font-size:13.5px}
+  .a-root .a-flow-t{padding:0 7px;gap:4px;font-size:12px;letter-spacing:-.02em}
+  .a-flow-n{width:15px;height:15px;font-size:9.5px;border-radius:4px}
+  .a-why{font-size:12px}
+}
+.a-hint-tx{min-width:0}
