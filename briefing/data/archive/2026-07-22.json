@@ -1,0 +1,331 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-07-22T07:10:00+09:00",
+ "edition": {
+  "date": "2026-07-22",
+  "weekday": "수",
+  "title": "안전보건공시제 8월 시행, 석유화학 지역 고용 협의체도 출범",
+  "subtitle": "상시 500명 이상·건설 1,200억 이상 공시·여수·서산·울산 남구 위기지역",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "안전보건공시",
+   "value": 0,
+   "unit": "",
+   "value_text": "500명 이상",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 8월 1일 시행",
+   "delta_from": "상시근로자",
+   "source_id": "src_moel_osh_decree_20260721",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-07-22T07:10:00+09:00",
+   "run_id": "br-20260722-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "건설사업주 공시",
+   "value": 0,
+   "unit": "",
+   "value_text": "1,200억원",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 8월 1일",
+   "delta_from": "연간 공사금액",
+   "source_id": "src_moel_osh_decree_20260721",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-07-22T07:10:00+09:00",
+   "run_id": "br-20260722-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "위기지역",
+   "value": 0,
+   "unit": "",
+   "value_text": "3곳",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "여수·서산·울산 남구",
+   "source_id": "src_esl_petrochem_20260721",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-07-22T07:10:00+09:00",
+   "run_id": "br-20260722-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "안전보건공시제 8월 시행, 500명 이상 기업은 매년 공시",
+   "kicker": "상시 500명 · 건설 1,200억 · 8월 1일 시행",
+   "three_step": {
+    "what": "정부가 7월 21일 국무회의에서 「산업안전보건법 시행령」 개정안을 의결했다. 8월 1일부터 상시근로자 500명 이상 사업장과 연간 건설공사금액 1,200억원 이상 건설사업주는 안전보건 현황을 매년 공시해야 한다.",
+    "evidence": "공시 항목에는 관계수급인 근로자의 사망사고 현황과 공공 건설발주공사의 사고사망 현황이 포함된다. 개정 시행령은 명예산업안전감독관 위촉 의무화도 담았다. 2025년 9월 15일 노동안전 종합대책의 후속 조치로 2026년 2월 19일 공포된 법률을 구체화한 것이다(2026년 7월 21일, 고용노동부).",
+    "implication": "건설·제조 대기업 지원자에게 그 회사의 안전보건 공시를 확인하게 하라. 사망사고 현황이 공개되므로 면접 전에 사업장 안전 수준을 비교할 수 있다."
+   },
+   "key_numbers": [
+    {
+     "label": "공시 대상",
+     "value": "상시 500명 이상",
+     "delta": "건설 1,200억 이상",
+     "period": "2026년 8월 1일"
+    },
+    {
+     "label": "공시 주기",
+     "value": "매년",
+     "delta": "안전보건 현황",
+     "period": "2026년"
+    },
+    {
+     "label": "공시 항목",
+     "value": "수급인 사망사고 포함",
+     "delta": "공공 건설 발주",
+     "period": "2026년"
+    }
+   ],
+   "counselor_question": "지원하려는 회사의 산업재해 기록을 확인해 본 적이 있나요?",
+   "tags": [
+    "산업안전",
+    "공시",
+    "건설"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-osh-disclosure-202608",
+   "updated_at": "2026-07-22T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_osh_decree_20260721",
+    "source_name": "고용노동부",
+    "source_title": "「산업안전보건법 시행령」 개정안 국무회의 심의·의결",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771552",
+    "published_at": "2026-07-21",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「「산업안전보건법 시행령」 개정안 국무회의 심의·의결」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "석유화학 불황, 노·사·정·지자체가 한 테이블에",
+   "kicker": "중앙단위 첫 협의체 · 여수·서산·울산 남구",
+   "three_step": {
+    "what": "경제사회노동위원회가 7월 21일 「석유화학산업 불황에 따른 지역 고용·경제 지원 위원회」를 발족하고 첫 회의를 열었다. 석유화학 산업의 중앙단위 첫 사회적 대화 회의체다.",
+    "evidence": "석유화학은 글로벌 공급과잉과 수요 둔화로 구조적 어려움을 겪고 있고, 여수·서산·울산 남구 등 밀집 지역은 이미 산업위기 또는 고용위기 선제대응지역으로 지정돼 있다. 위원회는 산업 불황이 지역 일자리와 경제에 미치는 영향을 진단하고 대응 과제를 노동계·경영계·정부·지자체가 함께 논의한다(2026년 7월 21일, 경사노위).",
+    "implication": "석유화학·화학 업종 내담자에게 지역 위기 지정 여부를 확인하게 하고, 전직 훈련과 지역 고용지원 사업을 한 계획으로 묶어 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "협의체",
+     "value": "중앙단위 첫 사례",
+     "delta": "2026년 7월 21일",
+     "period": "2026년"
+    },
+    {
+     "label": "위기지역",
+     "value": "여수·서산·울산 남구",
+     "delta": "선제대응지역 지정",
+     "period": "2026년"
+    },
+    {
+     "label": "참여 주체",
+     "value": "노·사·정·지자체",
+     "delta": "4자",
+     "period": "2026년"
+    }
+   ],
+   "tags": [
+    "석유화학",
+    "지역고용",
+    "사회적대화"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "kr",
+   "issue_id": "iss-petrochem-committee-2026",
+   "updated_at": "2026-07-22T07:10:00+09:00",
+   "source": {
+    "source_id": "src_esl_petrochem_20260721",
+    "source_name": "경제사회노동위원회",
+    "source_title": "「석유화학산업 불황에 따른 지역 고용경제 지원 위원회」 발족",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771586",
+    "published_at": "2026-07-21",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 경제사회노동위원회의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 경제사회노동위원회 「「석유화학산업 불황에 따른 지역 고용경제 지원 위원회」 발족」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "거시경제와 고용"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_osh_decree_20260721",
+   "source_name": "고용노동부",
+   "source_title": "「산업안전보건법 시행령」 개정안 국무회의 심의·의결",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771552",
+   "published_at": "2026-07-21",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「「산업안전보건법 시행령」 개정안 국무회의 심의·의결」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_esl_petrochem_20260721",
+   "source_name": "경제사회노동위원회",
+   "source_title": "「석유화학산업 불황에 따른 지역 고용경제 지원 위원회」 발족",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771586",
+   "published_at": "2026-07-21",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 경제사회노동위원회의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 경제사회노동위원회 「「석유화학산업 불황에 따른 지역 고용경제 지원 위원회」 발족」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22"
+ ]
+}

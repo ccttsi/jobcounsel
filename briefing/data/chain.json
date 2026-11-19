@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T02:12:05+09:00",
+ "generated_at": "2026-11-20T02:43:09+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -60,12 +60,52 @@
   "2026-08-11",
   "2026-08-08",
   "2026-08-06",
-  "2026-08-05"
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22"
  ],
  "themes": {
   "th-labor-policy": {
    "label": "고용정책과 감독",
    "items": [
+    {
+     "date": "2026-07-22",
+     "card_id": "c01",
+     "title": "안전보건공시제 8월 시행, 500명 이상 기업은 매년 공시",
+     "kicker": "상시 500명 · 건설 1,200억 · 8월 1일 시행",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771552",
+     "published_at": "2026-07-21"
+    },
+    {
+     "date": "2026-07-23",
+     "card_id": "c01",
+     "title": "지방 노동감독 시대 — 경기도, 감독관 170명 채용 착수",
+     "kicker": "감독관 170명 · 12월 8일 시행 · 사업장 최다 지역",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771742",
+     "published_at": "2026-07-22"
+    },
+    {
+     "date": "2026-07-28",
+     "card_id": "c01",
+     "title": "폭염 취약사업장 1,000곳 점검, 체감 35도면 옥외작업 중단",
+     "kicker": "8.3~8.14 · 1,000곳 · 48개 지방관서",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772446",
+     "published_at": "2026-07-28"
+    },
     {
      "date": "2026-08-05",
      "card_id": "c01",
@@ -299,9 +339,365 @@
     }
    ]
   },
+  "th-macro-economy": {
+   "label": "거시경제와 고용",
+   "items": [
+    {
+     "date": "2026-07-22",
+     "card_id": "c02",
+     "title": "석유화학 불황, 노·사·정·지자체가 한 테이블에",
+     "kicker": "중앙단위 첫 협의체 · 여수·서산·울산 남구",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "경제사회노동위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771586",
+     "published_at": "2026-07-21"
+    },
+    {
+     "date": "2026-08-11",
+     "card_id": "c01",
+     "title": "고용보험 가입자 +27.7만, 구인배수는 0.44로 올랐다",
+     "kicker": "상시가입자 1,587.7만 · 제조업 14개월째 감소 · 구인배수 0.44",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773911",
+     "published_at": "2026-08-10"
+    },
+    {
+     "date": "2026-08-12",
+     "card_id": "c02",
+     "title": "미국 생산성 2.2% 올랐지만 노동시간은 0.2%만 늘었다",
+     "kicker": "생산성 +2.2% · 산출 +2.5% · 노동시간 +0.2%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/productivity-up-2-2-percent-from-second-quarter-2025-to-second-quarter-2026.htm",
+     "published_at": "2026-08-11"
+    },
+    {
+     "date": "2026-08-20",
+     "card_id": "c01",
+     "title": "하반기 제조업 일자리 — 반도체 +5.1%·조선 +2.7%, 섬유는 -3.5%",
+     "kicker": "반도체 +8천명 · 조선 +3천명 · 섬유 -5천명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "한국고용정보원·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774844",
+     "published_at": "2026-08-19"
+    },
+    {
+     "date": "2026-09-08",
+     "card_id": "c01",
+     "title": "고용보험 가입자 8개월째 20만명대, 제조업은 15개월 만에 늘었다",
+     "kicker": "상시가입자 +27.8만명 · 구인배수 0.46 · 구직급여 1조84억원",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780503",
+     "published_at": "2026-09-07"
+    },
+    {
+     "date": "2026-09-17",
+     "card_id": "c03",
+     "title": "미국 생산자물가 5.4%, 운송·창고는 13.0% 올랐다",
+     "kicker": "최종수요 +5.4% · 에너지 +24.4% · 운송·창고 +13.0%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/producer-price-index-up-5-4-percent-for-the-12-months-ended-august-2026.htm",
+     "published_at": "2026-09-16"
+    },
+    {
+     "date": "2026-10-15",
+     "card_id": "c01",
+     "title": "미국 9월 물가 3.7%, 휘발유가 한 달에 9.1% 올랐다",
+     "kicker": "전년비 +3.7% · 근원 2.6%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm",
+     "published_at": "2026-10-14"
+    },
+    {
+     "date": "2026-10-16",
+     "card_id": "c01",
+     "title": "미국 생산자물가 1.3%, 2022년 3월 이후 가장 큰 폭",
+     "kicker": "1년 +6.3% · 상품 +2.6%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/ppi_10152026.htm",
+     "published_at": "2026-10-15"
+    },
+    {
+     "date": "2026-10-31",
+     "card_id": "c01",
+     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
+     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-10-31",
+     "card_id": "c03",
+     "title": "승용차 판매 18.3% — 소비가 살아난 이유는 차였다",
+     "kicker": "소매판매 +3.6% · 내구재 +4.4%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c04",
+     "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
+     "kicker": "2026년 3.9% · 2027년 3.3%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국제통화기금(IMF)·재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c02",
+     "title": "KDI \"내년 성장 3.9%·취업자 20만\" — 20대는 여전히 낮다",
+     "kicker": "2026년 3.8% → 2027년 3.9% · 취업자 +12만 → +20만",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "재정경제부·한국개발연구원(KDI)",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
+     "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c07",
+     "title": "미국 신규 실업수당 20만건대 — 해고는 적고 재취업은 느리다",
+     "kicker": "신규 20만3천건 · 4주 평균 19만7,750건",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
+     "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
+     "published_at": "2026-11-19"
+    }
+   ]
+  },
+  "th-pension-social": {
+   "label": "퇴직과 사회안전망",
+   "items": [
+    {
+     "date": "2026-07-24",
+     "card_id": "c01",
+     "title": "중장년내일센터 서포터즈, 20~30대까지 문을 넓혔다",
+     "kicker": "5기 20명 · 20~30대 포함 · 공개모집",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "노사발전재단·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156771946",
+     "published_at": "2026-07-23"
+    },
+    {
+     "date": "2026-07-29",
+     "card_id": "c01",
+     "title": "기준 중위소득 6.70% 인상, 4인 가구 생계급여 221만7,563원",
+     "kicker": "역대 최대 인상 · 4인 221만7,563원 · 1인 87만5,533원",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772464",
+     "published_at": "2026-07-28"
+    },
+    {
+     "date": "2026-08-24",
+     "card_id": "c01",
+     "title": "난임치료휴가 유급 2일→4일, 11월 27일부터",
+     "kicker": "연 6일 중 유급 4일 · 급여 상한 33만7천원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775189",
+     "published_at": "2026-08-23"
+    },
+    {
+     "date": "2026-08-27",
+     "card_id": "c01",
+     "title": "DB 퇴직연금 수익률 3.5%, DC·IRP의 절반에도 못 미쳤다",
+     "kicker": "DB 3.5% · DC 8.5% · IRP 9.4%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775557",
+     "published_at": "2026-08-26"
+    },
+    {
+     "date": "2026-08-31",
+     "card_id": "c02",
+     "title": "의료비 본인부담 초과금 226만명에게 3조760억원 돌려준다",
+     "kicker": "226만명 · 3조760억원 · 1인당 136만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775992",
+     "published_at": "2026-08-30"
+    },
+    {
+     "date": "2026-09-02",
+     "card_id": "c01",
+     "title": "고용보험 개편안, 모성보호 계정 따로 만들고 노·사·정이 나눠 낸다",
+     "kicker": "모성보호 급여 2.1조→4.3조 · 실업급여 계정 -1.8조",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776969",
+     "published_at": "2026-09-01"
+    },
+    {
+     "date": "2026-09-21",
+     "card_id": "c02",
+     "title": "노인일자리 주간, 5일간 기념식·심포지엄·국민참여관",
+     "kicker": "9.21~9.25 · 기념식·심포지엄·국민참여관 3개 행사",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782522",
+     "published_at": "2026-09-20"
+    },
+    {
+     "date": "2026-11-17",
+     "card_id": "c03",
+     "title": "퇴직급여 사외적립, 2030년 전 사업장으로 넓힌다",
+     "kicker": "2028년 100인 이상 · 2030년 10인 미만",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261113167000530",
+     "published_at": "2026-11-16"
+    }
+   ]
+  },
+  "th-employment-service": {
+   "label": "고용서비스와 상담",
+   "items": [
+    {
+     "date": "2026-07-25",
+     "card_id": "c01",
+     "title": "흩어진 경력을 한곳에 — 고용24 통합경력증명 7월 29일 개시",
+     "kicker": "7월 29일 개시 · 증명서 1장 · 이력서 자동완성",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772089",
+     "published_at": "2026-07-24"
+    },
+    {
+     "date": "2026-08-21",
+     "card_id": "c01",
+     "title": "고용센터 102곳, 서류를 내려놓고 사람을 만난다",
+     "kicker": "102곳 · 상담 18분→73.8분 · 연 200만명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775003",
+     "published_at": "2026-08-20"
+    },
+    {
+     "date": "2026-08-27",
+     "card_id": "c02",
+     "title": "전공별 경력가이드 10종, 진출 직업 290개를 담았다",
+     "kicker": "전공 10종 · 직업 290개 · 2023년부터 매해",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국고용정보원·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775559",
+     "published_at": "2026-08-26"
+    },
+    {
+     "date": "2026-09-12",
+     "card_id": "c02",
+     "title": "경력 증빙 62건, 인정서 한 장으로 대체됐다",
+     "kicker": "강원랜드 신입 채용 62건 · 우수사례 10점",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781316",
+     "published_at": "2026-09-11"
+    },
+    {
+     "date": "2026-09-17",
+     "card_id": "c01",
+     "title": "한화에어로 채용지침, 노동부가 감독에 들어갔다",
+     "kicker": "9월 16일 감독 착수 · 80년대생 이하·11개 대학 제한 지침 보도",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781981",
+     "published_at": "2026-09-16"
+    },
+    {
+     "date": "2026-10-30",
+     "card_id": "c02",
+     "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
+     "kicker": "입직 107.8만명 · 이직 102.2만명",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c01",
+     "title": "고용행정 데이터로 청년·산업전환 현안을 푼다",
+     "kicker": "제2회 고용행정 개방데이터 학술대회 · 세션 3개",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788923",
+     "published_at": "2026-11-12"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c09",
+     "title": "지역 청년 노동시장 진입, 위원회가 개선과제를 냈다",
+     "kicker": "3기 청년위원회 · 지역 청년 노동시장 진입 실태 발표",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "경제사회노동위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c03",
+     "title": "AI 시대 일자리 의제, 국민이 직접 질문한다",
+     "kicker": "국민참여 3주 · 논의체 22명",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
+     "published_at": "2026-11-17"
+    }
+   ]
+  },
   "th-skills-training": {
    "label": "재취업과 직업훈련",
    "items": [
+    {
+     "date": "2026-07-28",
+     "card_id": "c02",
+     "title": "현대차 K-뉴딜 아카데미, 7개 지역에서 1,000명 키운다",
+     "kicker": "1,000명 · 7개 지역 · 임베디드 AI·제조 지능화",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772292",
+     "published_at": "2026-07-27"
+    },
     {
      "date": "2026-08-05",
      "card_id": "c02",
@@ -411,6 +807,154 @@
      "source_name": "고용노동부",
      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20272",
      "published_at": "2026-11-18"
+    }
+   ]
+  },
+  "th-ai-labor": {
+   "label": "AI와 직무 재편",
+   "items": [
+    {
+     "date": "2026-07-30",
+     "card_id": "c01",
+     "title": "AI 고용 충격을 실시간으로 보는 '카나리아 대시보드'",
+     "kicker": "국책 연구기관 4곳 · 7월 29일 점검회의",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772576",
+     "published_at": "2026-07-29"
+    },
+    {
+     "date": "2026-09-12",
+     "card_id": "c01",
+     "title": "자동화 4년, 고용은 37% 늘었다 — 울산 조일공업",
+     "kicker": "고용 +37% · 2007년부터 로봇 자동화",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781328",
+     "published_at": "2026-09-11"
+    },
+    {
+     "date": "2026-09-21",
+     "card_id": "c03",
+     "title": "미국 일자리는 2035년까지 3.5% 늘고, 의료지원직이 13.3% 는다",
+     "kicker": "전체 +3.5% · 의료지원 +13.3% · 신규 일자리 3분의 1이 의료",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/total-employment-projected-to-grow-3-5-percent-between-2025-and-2035.htm",
+     "published_at": "2026-09-21"
+    },
+    {
+     "date": "2026-11-11",
+     "card_id": "c01",
+     "title": "AI 프리랜서 공고는 일을 다시 묶는다",
+     "kicker": "AI 공고 과업 수 많음 · 재묶음(rebundling) 확인",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+     "source_url": "https://arxiv.org/abs/2611.14708",
+     "published_at": "2026-11-10"
+    },
+    {
+     "date": "2026-11-13",
+     "card_id": "c04",
+     "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가",
+     "kicker": "청년 -28.5만명 중 -26.8만명이 AI 고노출",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "조선비즈",
+     "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/",
+     "published_at": "2026-11-12"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c03",
+     "title": "AI가 줄인 일은 먼저 보이고, 새 일은 5년 뒤에 보인다",
+     "kicker": "진입기업 급여 비중 42%(1998) · 5년 뒤에도 80%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (micro1·노스이스턴대)",
+     "source_url": "https://arxiv.org/abs/2611.17530",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-16",
+     "card_id": "c01",
+     "title": "세무사 시험 AI 부정행위, 올해 국가자격시험 전부 다시 본다",
+     "kicker": "2026년 국가자격시험 전수조사 · 응시제한 5년",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20256",
+     "published_at": "2026-11-15"
+    },
+    {
+     "date": "2026-11-16",
+     "card_id": "c02",
+     "title": "2030년 AI 일자리 순증 170만, 직무 재편은 4억3,550만명",
+     "kicker": "순증 170만 vs 직무 재편 4억3,550만",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261113151600017",
+     "published_at": "2026-11-15"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c01",
+     "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
+     "kicker": "활용률 +14.7%p · 절감률 9.2%",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261117075000002",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c02",
+     "title": "부정행위 제재 10년, 수능 시험장 스마트기기 총점검",
+     "kicker": "시험장 1,312곳 · 감독 인력 8,400명 추가",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "국무총리비서실(국무총리 한성숙)",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789631",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-18",
+     "card_id": "c06",
+     "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
+     "kicker": "자연실업률 +0.2%p 추정",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "미국 샌프란시스코 연준",
+     "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
+     "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c01",
+     "title": "수능 당일, 필기구도 일괄 지급 — 부정행위 제재는 10년",
+     "kicker": "수험생 55만명 · 위급재난문자 08:30",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
+     "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-19",
+     "card_id": "c05",
+     "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
+     "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (micro1·노스이스턴대)",
+     "source_url": "https://arxiv.org/abs/2611.23354",
+     "published_at": "2026-11-17"
     }
    ]
   },
@@ -625,143 +1169,6 @@
      "source_name": "미국 노동통계국(BLS)",
      "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
      "published_at": "2026-11-18"
-    }
-   ]
-  },
-  "th-macro-economy": {
-   "label": "거시경제와 고용",
-   "items": [
-    {
-     "date": "2026-08-11",
-     "card_id": "c01",
-     "title": "고용보험 가입자 +27.7만, 구인배수는 0.44로 올랐다",
-     "kicker": "상시가입자 1,587.7만 · 제조업 14개월째 감소 · 구인배수 0.44",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156773911",
-     "published_at": "2026-08-10"
-    },
-    {
-     "date": "2026-08-12",
-     "card_id": "c02",
-     "title": "미국 생산성 2.2% 올랐지만 노동시간은 0.2%만 늘었다",
-     "kicker": "생산성 +2.2% · 산출 +2.5% · 노동시간 +0.2%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/productivity-up-2-2-percent-from-second-quarter-2025-to-second-quarter-2026.htm",
-     "published_at": "2026-08-11"
-    },
-    {
-     "date": "2026-08-20",
-     "card_id": "c01",
-     "title": "하반기 제조업 일자리 — 반도체 +5.1%·조선 +2.7%, 섬유는 -3.5%",
-     "kicker": "반도체 +8천명 · 조선 +3천명 · 섬유 -5천명",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "한국고용정보원·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774844",
-     "published_at": "2026-08-19"
-    },
-    {
-     "date": "2026-09-08",
-     "card_id": "c01",
-     "title": "고용보험 가입자 8개월째 20만명대, 제조업은 15개월 만에 늘었다",
-     "kicker": "상시가입자 +27.8만명 · 구인배수 0.46 · 구직급여 1조84억원",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780503",
-     "published_at": "2026-09-07"
-    },
-    {
-     "date": "2026-09-17",
-     "card_id": "c03",
-     "title": "미국 생산자물가 5.4%, 운송·창고는 13.0% 올랐다",
-     "kicker": "최종수요 +5.4% · 에너지 +24.4% · 운송·창고 +13.0%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/producer-price-index-up-5-4-percent-for-the-12-months-ended-august-2026.htm",
-     "published_at": "2026-09-16"
-    },
-    {
-     "date": "2026-10-15",
-     "card_id": "c01",
-     "title": "미국 9월 물가 3.7%, 휘발유가 한 달에 9.1% 올랐다",
-     "kicker": "전년비 +3.7% · 근원 2.6%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm",
-     "published_at": "2026-10-14"
-    },
-    {
-     "date": "2026-10-16",
-     "card_id": "c01",
-     "title": "미국 생산자물가 1.3%, 2022년 3월 이후 가장 큰 폭",
-     "kicker": "1년 +6.3% · 상품 +2.6%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/ppi_10152026.htm",
-     "published_at": "2026-10-15"
-    },
-    {
-     "date": "2026-10-31",
-     "card_id": "c01",
-     "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
-     "kicker": "전산업생산 +3.0% · 반도체 +19.2%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
-     "published_at": "2026-10-30"
-    },
-    {
-     "date": "2026-10-31",
-     "card_id": "c03",
-     "title": "승용차 판매 18.3% — 소비가 살아난 이유는 차였다",
-     "kicker": "소매판매 +3.6% · 내구재 +4.4%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
-     "published_at": "2026-10-30"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c04",
-     "title": "성장률 3.9%·잠재성장률 2.5%, IMF가 주문한 세 가지",
-     "kicker": "2026년 3.9% · 2027년 3.3%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국제통화기금(IMF)·재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c02",
-     "title": "KDI \"내년 성장 3.9%·취업자 20만\" — 20대는 여전히 낮다",
-     "kicker": "2026년 3.8% → 2027년 3.9% · 취업자 +12만 → +20만",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "재정경제부·한국개발연구원(KDI)",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757",
-     "published_at": "2026-11-18"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c07",
-     "title": "미국 신규 실업수당 20만건대 — 해고는 적고 재취업은 느리다",
-     "kicker": "신규 20만3천건 · 4주 평균 19만7,750건",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
-     "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
-     "published_at": "2026-11-19"
     }
    ]
   },
@@ -1058,307 +1465,6 @@
      "source_name": "한국개발연구원(KDI)·재정경제부",
      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396",
      "published_at": "2026-11-16"
-    }
-   ]
-  },
-  "th-employment-service": {
-   "label": "고용서비스와 상담",
-   "items": [
-    {
-     "date": "2026-08-21",
-     "card_id": "c01",
-     "title": "고용센터 102곳, 서류를 내려놓고 사람을 만난다",
-     "kicker": "102곳 · 상담 18분→73.8분 · 연 200만명",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775003",
-     "published_at": "2026-08-20"
-    },
-    {
-     "date": "2026-08-27",
-     "card_id": "c02",
-     "title": "전공별 경력가이드 10종, 진출 직업 290개를 담았다",
-     "kicker": "전공 10종 · 직업 290개 · 2023년부터 매해",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "한국고용정보원·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775559",
-     "published_at": "2026-08-26"
-    },
-    {
-     "date": "2026-09-12",
-     "card_id": "c02",
-     "title": "경력 증빙 62건, 인정서 한 장으로 대체됐다",
-     "kicker": "강원랜드 신입 채용 62건 · 우수사례 10점",
-     "category": "채용시장",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781316",
-     "published_at": "2026-09-11"
-    },
-    {
-     "date": "2026-09-17",
-     "card_id": "c01",
-     "title": "한화에어로 채용지침, 노동부가 감독에 들어갔다",
-     "kicker": "9월 16일 감독 착수 · 80년대생 이하·11개 대학 제한 지침 보도",
-     "category": "채용시장",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781981",
-     "published_at": "2026-09-16"
-    },
-    {
-     "date": "2026-10-30",
-     "card_id": "c02",
-     "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
-     "kicker": "입직 107.8만명 · 이직 102.2만명",
-     "category": "채용시장",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
-     "published_at": "2026-10-29"
-    },
-    {
-     "date": "2026-11-13",
-     "card_id": "c01",
-     "title": "고용행정 데이터로 청년·산업전환 현안을 푼다",
-     "kicker": "제2회 고용행정 개방데이터 학술대회 · 세션 3개",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·한국고용정보원",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788923",
-     "published_at": "2026-11-12"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c09",
-     "title": "지역 청년 노동시장 진입, 위원회가 개선과제를 냈다",
-     "kicker": "3기 청년위원회 · 지역 청년 노동시장 진입 실태 발표",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "경제사회노동위원회",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c03",
-     "title": "AI 시대 일자리 의제, 국민이 직접 질문한다",
-     "kicker": "국민참여 3주 · 논의체 22명",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
-     "published_at": "2026-11-17"
-    }
-   ]
-  },
-  "th-pension-social": {
-   "label": "퇴직과 사회안전망",
-   "items": [
-    {
-     "date": "2026-08-24",
-     "card_id": "c01",
-     "title": "난임치료휴가 유급 2일→4일, 11월 27일부터",
-     "kicker": "연 6일 중 유급 4일 · 급여 상한 33만7천원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775189",
-     "published_at": "2026-08-23"
-    },
-    {
-     "date": "2026-08-27",
-     "card_id": "c01",
-     "title": "DB 퇴직연금 수익률 3.5%, DC·IRP의 절반에도 못 미쳤다",
-     "kicker": "DB 3.5% · DC 8.5% · IRP 9.4%",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775557",
-     "published_at": "2026-08-26"
-    },
-    {
-     "date": "2026-08-31",
-     "card_id": "c02",
-     "title": "의료비 본인부담 초과금 226만명에게 3조760억원 돌려준다",
-     "kicker": "226만명 · 3조760억원 · 1인당 136만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "보건복지부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775992",
-     "published_at": "2026-08-30"
-    },
-    {
-     "date": "2026-09-02",
-     "card_id": "c01",
-     "title": "고용보험 개편안, 모성보호 계정 따로 만들고 노·사·정이 나눠 낸다",
-     "kicker": "모성보호 급여 2.1조→4.3조 · 실업급여 계정 -1.8조",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156776969",
-     "published_at": "2026-09-01"
-    },
-    {
-     "date": "2026-09-21",
-     "card_id": "c02",
-     "title": "노인일자리 주간, 5일간 기념식·심포지엄·국민참여관",
-     "kicker": "9.21~9.25 · 기념식·심포지엄·국민참여관 3개 행사",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "보건복지부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782522",
-     "published_at": "2026-09-20"
-    },
-    {
-     "date": "2026-11-17",
-     "card_id": "c03",
-     "title": "퇴직급여 사외적립, 2030년 전 사업장으로 넓힌다",
-     "kicker": "2028년 100인 이상 · 2030년 10인 미만",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "연합뉴스",
-     "source_url": "https://www.yna.co.kr/view/AKR20261113167000530",
-     "published_at": "2026-11-16"
-    }
-   ]
-  },
-  "th-ai-labor": {
-   "label": "AI와 직무 재편",
-   "items": [
-    {
-     "date": "2026-09-12",
-     "card_id": "c01",
-     "title": "자동화 4년, 고용은 37% 늘었다 — 울산 조일공업",
-     "kicker": "고용 +37% · 2007년부터 로봇 자동화",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781328",
-     "published_at": "2026-09-11"
-    },
-    {
-     "date": "2026-09-21",
-     "card_id": "c03",
-     "title": "미국 일자리는 2035년까지 3.5% 늘고, 의료지원직이 13.3% 는다",
-     "kicker": "전체 +3.5% · 의료지원 +13.3% · 신규 일자리 3분의 1이 의료",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/total-employment-projected-to-grow-3-5-percent-between-2025-and-2035.htm",
-     "published_at": "2026-09-21"
-    },
-    {
-     "date": "2026-11-11",
-     "card_id": "c01",
-     "title": "AI 프리랜서 공고는 일을 다시 묶는다",
-     "kicker": "AI 공고 과업 수 많음 · 재묶음(rebundling) 확인",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "arXiv (OpenAI 경제연구·Upwork)",
-     "source_url": "https://arxiv.org/abs/2611.14708",
-     "published_at": "2026-11-10"
-    },
-    {
-     "date": "2026-11-13",
-     "card_id": "c04",
-     "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가",
-     "kicker": "청년 -28.5만명 중 -26.8만명이 AI 고노출",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "조선비즈",
-     "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/",
-     "published_at": "2026-11-12"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c03",
-     "title": "AI가 줄인 일은 먼저 보이고, 새 일은 5년 뒤에 보인다",
-     "kicker": "진입기업 급여 비중 42%(1998) · 5년 뒤에도 80%",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "arXiv (micro1·노스이스턴대)",
-     "source_url": "https://arxiv.org/abs/2611.17530",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-16",
-     "card_id": "c01",
-     "title": "세무사 시험 AI 부정행위, 올해 국가자격시험 전부 다시 본다",
-     "kicker": "2026년 국가자격시험 전수조사 · 응시제한 5년",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20256",
-     "published_at": "2026-11-15"
-    },
-    {
-     "date": "2026-11-16",
-     "card_id": "c02",
-     "title": "2030년 AI 일자리 순증 170만, 직무 재편은 4억3,550만명",
-     "kicker": "순증 170만 vs 직무 재편 4억3,550만",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "연합뉴스",
-     "source_url": "https://www.yna.co.kr/view/AKR20261113151600017",
-     "published_at": "2026-11-15"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c01",
-     "title": "AI 쓰는 사람 66.5%, 아낀 3.7시간 중 63%는 다시 일로",
-     "kicker": "활용률 +14.7%p · 절감률 9.2%",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "연합뉴스",
-     "source_url": "https://www.yna.co.kr/view/AKR20261117075000002",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c02",
-     "title": "부정행위 제재 10년, 수능 시험장 스마트기기 총점검",
-     "kicker": "시험장 1,312곳 · 감독 인력 8,400명 추가",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "국무총리비서실(국무총리 한성숙)",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789631",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-18",
-     "card_id": "c06",
-     "title": "AI 노출 큰 직장, 일자리 찾기·옮기기가 더 느려졌다",
-     "kicker": "자연실업률 +0.2%p 추정",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "미국 샌프란시스코 연준",
-     "source_url": "https://www.frbsf.org/research-and-insights/publications/board-of-governors/2026/11/artificial-intelligence-labor-market-reallocation/",
-     "published_at": "2026-11-17"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c01",
-     "title": "수능 당일, 필기구도 일괄 지급 — 부정행위 제재는 10년",
-     "kicker": "수험생 55만명 · 위급재난문자 08:30",
-     "category": "AI·직무",
-     "region": "kr",
-     "source_name": "국무조정실",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789826",
-     "published_at": "2026-11-18"
-    },
-    {
-     "date": "2026-11-19",
-     "card_id": "c05",
-     "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
-     "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
-     "category": "AI·직무",
-     "region": "global",
-     "source_name": "arXiv (micro1·노스이스턴대)",
-     "source_url": "https://arxiv.org/abs/2611.23354",
-     "published_at": "2026-11-17"
     }
    ]
   }
