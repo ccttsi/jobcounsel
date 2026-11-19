@@ -4,6 +4,8 @@
  *   1) 키워드(또는 직접 적은 말)로 첫 자료를 고르고, 그 자료가 **무엇이며 무엇을 설명하는지** 먼저 보여 준다.
  *   2) 고른 자료마다 다음 가지(후보)를 자료실의 실제 연결로 뻗는다. 후보마다
  *      「앞 자료와의 근거(자료실 연결 짝·겹치는 말)」와 「지금 흐름 + 이 자료가 함께 덮는 것」을 적는다.
+ *      추천 가지 밖의 자료도 매 단계 검색창(이름·분류·키워드·설명)에서 직접 찾아 이을 수 있고,
+ *      근거가 없는 조합은 「직접 엮은 흐름 — 시드/매치 자유 조합」으로 따로 표시한다.
  *   3) 2·3·4개 어디서든 「이대로 만들어볼래요」로 덱을 완성한다(리허설·실행 미리보기 포함).
  *   4) 6개를 넘기려 하면 부드럽게 제지하고, 그래도 원하면 한 개씩 더 받되 8개에서 멈춘다.
  *   5) 완성한 덱은 마이덱(로그인 = 내 계정 / 로그아웃 = 이 브라우저)에 저장하고, 시드·매치 덱으로 넘길 수 있다.
@@ -20,6 +22,7 @@
   var MAX = 6, HARD = 8;
   var G = null, SEC = {}, PAIR = {}, CHAIN = [], KW = '', OVERRIDE = false, PENDING = null;
   var DECK_NAME = '', SHEET = '', REH = 0, SHOWALL = false;
+  var SIDX = {}, PQ = '', PRAF = 0;   /* PQ — 단계마다 다른 자료를 직접 찾는 검색어 */
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -53,6 +56,24 @@
     G.pairs.forEach(function (p) {
       var k = [p.a, p.b].sort().join('|');
       PAIR[k] = p;
+    });
+    /* 검색용 색인 — graph.json의 이름·분류(딱지)·키워드(영문 포함)·설명만 쓴다.
+       키워드는 자료별 목록에 더해, 시작 키워드 사전(G.kw — 경단녀·국취 같은 현장 말)도 함께 담는다. */
+    G.sectors.forEach(function (s) {
+      if (s.id === G.self) return;
+      SIDX[s.id] = {
+        name: norm(s.title + ' ' + (s.short || '')),
+        badge: norm(s.badge || ''),
+        kw: (s.kw || []).map(norm),
+        body: norm((s.desc || '') + ' ' + (s.meta || []).join(' ') + ' ' + (s.gi || ''))
+      };
+    });
+    Object.keys(G.kw || {}).forEach(function (word) {
+      var w = norm(word);
+      if (!w) return;
+      (G.kw[word] || []).forEach(function (id) {
+        if (SIDX[id] && SIDX[id].kw.indexOf(w) < 0) SIDX[id].kw.push(w);
+      });
     });
   }
   function pairOf(a, b) { return PAIR[[a, b].sort().join('|')] || null; }
@@ -169,6 +190,7 @@
     OVERRIDE = false;
     PENDING = null;
     SHOWALL = false;
+    setQuery('');
     $('treeSec').hidden = false;
     cutStart(true);
     render();
@@ -197,7 +219,7 @@
     clear($('starts'));
   }
 
-  function addTo(id) {
+  function addTo(id, fromSearch) {
     if (CHAIN.indexOf(id) >= 0) return;
     if (CHAIN.length >= MAX && !OVERRIDE) {
       PENDING = id;
@@ -211,6 +233,7 @@
     CHAIN.push(id);
     PENDING = null;
     hideNote();
+    if (fromSearch) setQuery('');   /* 엮은 뒤에는 검색을 접고 추천 가지로 돌아간다 */
     render();
   }
 
@@ -306,6 +329,8 @@
             why1 += (why1 ? ' · ' : '') + '겹치는 말 ' + p.shared.length + '개(' + sharedText(p, 3) + ')';
           }
           bits.push('근거 — ' + (why1 || '자료실 연결 짝'));
+        } else {
+          bits.push('근거 — 직접 엮은 흐름 · 시드/매치 자유 조합(자료실이 잇는 짝 없음)');
         }
         bits.push('이어서 할 일 — ' + s.gi);
         if (i >= 2) {
@@ -379,22 +404,118 @@
         var p = pairOf(ids[j - 1], ids[j]);
         if (p && p.link) linked++;
       }
+      var manual = 0;
+      for (var m = 1; m < ids.length; m++) if (!pairOf(ids[m - 1], ids[m])) manual++;
       var why = el('p', 'why');
       why.appendChild(el('b', null, ids.length + '개를 잇는 근거 ' + (ids.length - 1) + '쌍'));
       why.appendChild(document.createTextNode(
         ' — 자료실 연결 짝 ' + linked + '쌍' +
+        (manual ? ' · 직접 엮은 흐름 ' + manual + '쌍' : '') +
         (words.length ? ' · 여러 자료에서 되풀이되는 말: ' + words.slice(0, 4).join(', ') : ' · 되풀이되는 말은 아직 없음') + '.'));
       host.appendChild(why);
     }
   }
 
+  /* ---------- 단계마다: 다른 자료 직접 찾기 ---------- */
+  /* 검색어 한 마디로 나머지 자료 전부를 훑는다 — 이름·분류(딱지)·키워드(영문 포함)·설명 순으로 무게를 준다 */
+  function searchMaterials(q) {
+    var n = norm(q), used = {}, out = [];
+    CHAIN.forEach(function (id) { used[id] = 1; });
+    Object.keys(SIDX).forEach(function (id) {
+      var x = SIDX[id], sc = 0, why = [];
+      var kwHit = x.kw.some(function (k) { return k && k.indexOf(n) >= 0; });
+      if (kwHit) { sc += 100; why.push('키워드'); }
+      if (x.name === n) { sc += 90; if (why.indexOf('이름') < 0) why.push('이름'); }
+      else if (x.name.indexOf(n) >= 0) { sc += 60; if (why.indexOf('이름') < 0) why.push('이름'); }
+      if (x.badge.indexOf(n) >= 0) { sc += 45; why.push('분류'); }
+      if (x.body.indexOf(n) >= 0) { sc += 20; why.push('설명'); }
+      if (!sc) return;
+      out.push({ id: id, sc: sc, why: why, used: !!used[id] });
+    });
+    out.sort(function (a, b) { return (b.sc - a.sc) || (noOf(a.id) - noOf(b.id)); });
+    return out;
+  }
+  /* 찾은 자료를 지금 흐름 끝에 잇는다 — 그래프에 짝이 있으면 그 근거를, 없으면 '직접 엮음'으로 */
+  function searchHit(id) {
+    var last = CHAIN[CHAIN.length - 1], p = pairOf(last, id), via = last;
+    if (!p) {
+      for (var i = CHAIN.length - 1; i >= 0; i--) {
+        var pp = pairOf(CHAIN[i], id);
+        if (pp) { p = pp; via = CHAIN[i]; break; }
+      }
+    }
+    return { id: id, p: p, direct: via === last, via: via, manual: !p, search: true };
+  }
+
+  function renderPicks() {
+    var host = $('picks');
+    clear(host);
+    var q = PQ.trim();
+    var all = searchMaterials(q);
+    var show = all.filter(function (r) { return !r.used; });
+    var usedN = all.length - show.length;
+    var stat = $('pqStat');
+    clear(stat);
+    stat.hidden = false;
+    stat.appendChild(el('b', null, '「' + q + '」 ' + show.length + '곳 찾음'));
+    if (usedN) stat.appendChild(document.createTextNode(' · 이미 흐름에 담긴 ' + usedN + '곳은 뺐습니다'));
+    if (!show.length) {
+      var box = el('div', 'pick-empty');
+      box.appendChild(el('p', null, all.length
+        ? '「' + q + '」는 이미 흐름에 담겨 있습니다. 다른 말로 찾거나 검색어를 지워 추천 가지로 돌아가세요.'
+        : '그 말로 이어지는 자료를 찾지 못했습니다. 자료 이름이나 분류(예: 법전, 번역기, 기업)로 다시 적어 보세요.'));
+      var row = el('div', 'row');
+      var cl = el('button', null, '검색어 지우기');
+      cl.type = 'button';
+      cl.addEventListener('click', clearQuery);
+      row.appendChild(cl);
+      box.appendChild(row);
+      host.appendChild(box);
+      return;
+    }
+    show.slice(0, 12).forEach(function (r, i) {
+      host.appendChild(candCard(searchHit(r.id), i + 1, r.why));
+    });
+    if (show.length > 12) {
+      host.appendChild(el('p', 'pstat', '나머지 ' + (show.length - 12) + '곳은 검색어를 더 적어 좁혀 보세요.'));
+    }
+  }
+
+  function setQuery(v) {
+    PQ = v == null ? '' : v;
+    var inp = $('pq'), cl = $('pqClear');
+    if (inp && inp.value !== PQ) inp.value = PQ;
+    if (cl) cl.hidden = !PQ;
+    if (CHAIN.length) renderCands();
+  }
+  function clearQuery() {
+    setQuery('');
+    var inp = $('pq');
+    if (inp) inp.focus();
+  }
+
   function renderCands() {
     var host = $('cands');
+    var picks = $('picks');
     clear(host);
+    if (norm(PQ)) {
+      host.hidden = true;
+      $('moreBtn').hidden = true;
+      picks.hidden = false;
+      $('forkT').textContent = '찾은 자료';
+      renderPicks();
+      $('forkN').textContent = '지우면 추천 가지로 돌아갑니다';
+      return;
+    }
+    host.hidden = false;
+    picks.hidden = true;
+    clear(picks);
+    $('pqStat').hidden = true;
+    $('forkT').textContent = '다음 가지';
     var list = candidates();
     $('forkN').textContent = list.length ? list.length + '곳 — 근거가 있는 다음 자료' : '';
     if (!list.length) {
-      var p = el('p', 'ok-msg', '이 자료와 근거로 이어지는 다음 자료가 더 없습니다. 여기서 덱을 만들어도 됩니다.');
+      var p = el('p', 'ok-msg', '이 자료와 근거로 이어지는 다음 자료가 더 없습니다. 위에서 다른 자료를 직접 찾아 이어도 됩니다.');
       host.appendChild(p);
       return;
     }
@@ -419,34 +540,45 @@
     }
   }
 
-  function candCard(c, ord) {
+  function candCard(c, ord, why) {
     var s = SEC[c.id], p = c.p;
     var card = el('article', 'cand');
     var top = el('div', 'c-top');
     top.appendChild(el('span', 'tag', s.badge));
     top.appendChild(el('span', 'tag num', s.no + '번'));
-    top.appendChild(el('span', 'c-no', '후보'));
+    top.appendChild(el('span', 'c-no', why && why.length ? why.join(' · ') + '에서 찾음'
+      : (c.manual ? '직접 엮기' : '후보')));
     card.appendChild(top);
     card.appendChild(el('h3', null, s.title));
     card.appendChild(el('p', 'c-desc', s.desc));
 
     var syn = el('div', 'syn');
     var sh = el('p', 'syn-h');
-    sh.appendChild(el('em', null, '시너지'));
-    sh.appendChild(el('span', null, '지금 흐름 + 이 자료'));
+    if (c.manual) {
+      sh.appendChild(el('em', null, '직접 엮은 흐름'));
+      sh.appendChild(el('span', null, '시드/매치 자유 조합'));
+    } else {
+      sh.appendChild(el('em', null, '시너지'));
+      sh.appendChild(el('span', null, '지금 흐름 + 이 자료'));
+    }
     syn.appendChild(sh);
     var ul = el('ul', 'syn-l');
 
-    var why = '';
-    if (p.link) why = '자료실 연결 짝';
-    if (p.shared && p.shared.length) {
-      why += (why ? ' · ' : '') + '겹치는 말 ' + p.shared.length + '개(' + sharedText(p, 4) + ')';
+    var why1 = '';
+    if (p && p.link) why1 = '자료실 연결 짝';
+    if (p && p.shared && p.shared.length) {
+      why1 += (why1 ? ' · ' : '') + '겹치는 말 ' + p.shared.length + '개(' + sharedText(p, 4) + ')';
     }
-    if (!c.direct) why += (why ? ' · ' : '') + '흐름의 「' + (SEC[c.via] || {}).short + '」와 이어짐';
+    if (!c.direct) why1 += (why1 ? ' · ' : '') + '흐름의 「' + (SEC[c.via] || {}).short + '」와 이어짐';
 
     var li1 = el('li');
-    li1.appendChild(el('b', null, '근거 '));
-    li1.appendChild(document.createTextNode('— ' + (why || '자료실 자료로만 확인')));
+    if (p) {
+      li1.appendChild(el('b', null, '근거 '));
+      li1.appendChild(document.createTextNode('— ' + (why1 || '자료실 자료로만 확인')));
+    } else {
+      li1.appendChild(el('b', null, '근거 '));
+      li1.appendChild(document.createTextNode('— 자료실이 잇는 짝이 없어 내가 골라 엮는 조합입니다.'));
+    }
     ul.appendChild(li1);
 
     var prev = CHAIN[CHAIN.length - 1];
@@ -461,7 +593,12 @@
     li3.appendChild(document.createTextNode('— ' + s.gi));
     ul.appendChild(li3);
 
-    if (CHAIN.length >= 2) {
+    if (c.manual) {
+      var li5 = el('li');
+      li5.appendChild(el('b', null, '덱에는 '));
+      li5.appendChild(document.createTextNode('— 내가 엮은 순서 그대로 담깁니다(근거 문장은 붙지 않습니다)'));
+      ul.appendChild(li5);
+    } else if (CHAIN.length >= 2) {
       var words = sharedOften(CHAIN.concat([c.id]));
       var li4 = el('li');
       li4.appendChild(el('b', null, '흐름 전체 '));
@@ -473,10 +610,11 @@
     syn.appendChild(ul);
     card.appendChild(syn);
 
-    var add = el('button', 'c-add', CHAIN.length >= MAX ? '＋ 그래도 잇기' : '＋ 이 자료 잇기');
+    var add = el('button', 'c-add', c.manual ? '＋ 직접 엮어 잇기'
+      : (CHAIN.length >= MAX ? '＋ 그래도 잇기' : '＋ 이 자료 잇기'));
     add.type = 'button';
     if (CHAIN.length >= MAX) add.setAttribute('data-over', '');
-    add.addEventListener('click', function () { addTo(c.id); });
+    add.addEventListener('click', function () { addTo(c.id, !!c.search); });
     card.appendChild(add);
     return card;
   }
@@ -696,6 +834,7 @@
       CHAIN = [];
       OVERRIDE = false;
       PENDING = null;
+      setQuery('');
       hideNote();
       $('treeSec').hidden = true;
       uncutStart();
@@ -706,6 +845,17 @@
       SHOWALL = !SHOWALL;
       renderCands();
     });
+    /* 단계마다 다른 자료를 직접 찾는 칸 — 입력 즉시 한 프레임에 한 번만 다시 그린다 */
+    if ($('pq')) {
+      $('pq').addEventListener('input', function () {
+        if (PRAF) return;
+        PRAF = requestAnimationFrame(function () { PRAF = 0; setQuery($('pq').value); });
+      });
+      $('pq').addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { e.preventDefault(); clearQuery(); }
+      });
+    }
+    if ($('pqClear')) $('pqClear').addEventListener('click', clearQuery);
     window.addEventListener('resize', function () { if (CHAIN.length) renderCands(); }, { passive: true });
     $('undoBtn').addEventListener('click', function () {
       if (CHAIN.length <= 1) { toast('첫 자료입니다. 「처음부터」로 다시 고를 수 있어요.'); return; }
@@ -717,6 +867,7 @@
     });
     $('resetBtn').addEventListener('click', function () {
       CHAIN = []; OVERRIDE = false; PENDING = null; DECK_NAME = ''; SHOWALL = false;
+      setQuery('');
       hideNote();
       $('treeSec').hidden = true;
       uncutStart();
