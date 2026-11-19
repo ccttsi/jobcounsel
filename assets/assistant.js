@@ -603,6 +603,10 @@
         st.sug = buildSuggestion();
         if (st.q) runSearch();
         render();
+        /* 기업 명함첩 색인은 첫 검색 때 따로 받는다 — 늦게 도착하면 찾기 목록을 다시 그린다. */
+        if (window.JCAssistSearch.onUpdate) {
+          window.JCAssistSearch.onUpdate(function () { if (st.q) { runSearch(); render(); } });
+        }
       }).catch(function () {
         if (el.empty) el.empty.textContent = '자료실 색인을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.';
       });
