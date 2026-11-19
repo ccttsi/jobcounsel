@@ -5,6 +5,10 @@
  *   data/companies.json    company-wiki v1.3.0 · 7,822곳(대기업 3,521 · 중견기업 3,946 · 중앙 공공기관 355)
  *   data/public-2026.json  공공기관 2026년 지정(342)과 알리오 부설기관(13) 대조 — 유형 칩·부설 표시의 근거
  *   data/local-public.json company-local-public v1.0.0 · 1,315곳(지방직영기업 256 · 지방공사·공단 167 · 출자기관 103 · 출연기관 789)
+ *   data/groups.json       기업집단(2026-11-19) — 공정위 2026-05-01 지정 공시대상기업집단 102곳과 그 계열사 연결.
+ *     집단명·동일인·계열회사 수·공정자산총액·순위는 공시 그대로이고, members 는 companies.json 의 group 값과
+ *     대조해 이 명함첩에 실린 계열사 id 만 이었다. 집단의 매출·직원수는 공시에 없어 만들지 않았다.
+ *     SPC그룹은 2026년 공시대상기업집단이 아니어서(자산 5조 원 미만) undesignated 에 따로 담았다.
  *   data/enrich.json       보강 레이어(2026-11-19) — 실제 법인명으로 대조한 별칭(검색용)과 회사 요약·주요 제품/서비스·주요 고객층(표시용).
  *     원자료는 고치지 않는다. 별칭은 .aliases, 설명은 .profiles 이고, 없는 법인은 만들지 않았다.
  *     행정안전부 「지방공기업(2026.6.30. 기준) 현황」·「지방자치단체 출자출연기관 현황(2026.6.30. 기준)」의
@@ -17,7 +21,7 @@
  * 주소
  *   #list?c=ENT&g=삼성&k=C&ct=일반회사&ls=1&t=…&mi=…&sd=…&ve=…&rv=1&em=2&in=…&o=emp&q=하이닉스&p=2   찾기(조건은 고를 때만)
  *   지방공공기관은 t(세부 유형)·tt(업무 유형)·sd(시·도)·rg(수도권/비수도권)·sc(광역/기초)·fd(설립 지자체)로 더 좁힌다.
- *   #ENT-1301110006246 · #MID-1058639463 · #PUB-C0247 · #LPI-G0001   한 곳            #about   출처와 한계
+ *   #ENT-1301110006246 · #MID-1058639463 · #PUB-C0247 · #LPI-G0001 · #GRP-001 · #GRP-U01   한 곳            #about   출처와 한계
  *
  * 규칙
  *   - 레코드에 없는 항목(키 생략)은 줄을 만들지 않는다. 매출·직원수·자산이 0이면 "원자료에 값이 없거나 0"이라 싣지 않는다.
@@ -39,6 +43,10 @@
       def: '행정안전부 2026-06-30 기준 1,315곳입니다. 원자료에 매출·정원이 없어 숫자로 줄 세우지 않습니다.' }
   ];
   var CK = {}, CN = {}; CATS.forEach(function (c, i) { c.i = i; CK[c.k] = c; CN[c.key] = c; });
+  /* 「대기업 그룹」 꼭지 — 법인이 아니라 기업집단이라 분류(CATS)에 넣지 않고 따로 다룬다.
+     정렬·쪽 나누기·찾기는 같은 틀을 쓰고, 목록·상세만 집단용으로 그린다. */
+  var GCAT = { k: 'GRP', key: '대기업 그룹', name: '대기업 그룹', full: '대기업 그룹', unit: '곳', src: 'FTC · 기업집단', n: 0,
+    def: '공정거래위원회가 2026-05-01 지정한 공시대상기업집단 102곳입니다. 집단마다 동일인·공정자산총액·계열회사 수·자산 순위를 싣고, 이 명함첩에 실린 계열사를 이어 붙였습니다. 공정자산 12조 원 이상인 47곳은 상호출자제한기업집단입니다.' };
   /* 한국표준산업분류(KSIC) 대분류 */
   var KSIC = {
     A: ['농림어업', '농업, 임업 및 어업'], B: ['광업', '광업'], C: ['제조', '제조업'], D: ['전기·가스', '전기, 가스, 증기 및 공기 조절 공급업'],
@@ -86,9 +94,11 @@
     turn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg>',
     filt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>'
   };
-  var KEYS = ['c', 'g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'tt', 'mi', 'sd', 'rg', 'sc', 'fd', 've', 'rv', 'em', 'in', 'o', 'q'];
-  var FKEYS = ['g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'tt', 'mi', 'sd', 'rg', 'sc', 'fd', 've', 'rv', 'em', 'in'];
+  var KEYS = ['c', 'g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'tt', 'mi', 'sd', 'rg', 'sc', 'fd', 've', 'rv', 'em', 'in', 'mu', 'nw', 'o', 'q'];
+  var FKEYS = ['g', 'k', 'k2', 'bt', 'ct', 'ls', 't', 'tt', 'mi', 'sd', 'rg', 'sc', 'fd', 've', 'rv', 'em', 'in', 'mu', 'nw'];
   var META, LMETA = null, ITEMS = [], BYID = {}, BYN = {}, GRP = {}, SAME = {}, DIST = {}, SRC = {}, ENTREV = [], TAGV = {}, TAGS = {};
+  /* 기업집단(data/groups.json): GROUPS(공시 102곳) · GUNDES(비공시 SPC) · GBYID(집단 id → 집단) · GMAP(집단명 → id) */
+  var GROUPS = [], GUNDES = [], GBYID = {}, GMAP = {}, GMETA = null, GMUTUAL = 0, GNEW = 0;
   /* 보강 레이어(data/enrich.json): id → 별칭[], id → {d 요약, p 제품·서비스[], c 고객층, b 대표 브랜드} */
   var ALI = {}, PROF = {}, ENRICH = null;
   /* 고용노동부 허가·등록 태그(business_tags, 피클 v1.3.0)를 찾을 때 함께 걸리는 말. 태그 자체는 원자료 그대로 */
@@ -207,6 +217,7 @@
     var h = location.hash.replace(/^#/, '');
     try { h = decodeURIComponent(h); } catch (e) {}
     if (/^(ENT|MID|PUB|LPI)-/.test(h) && BYID[h]) return { v: 'item', id: h };
+    if (/^GRP-/.test(h) && GBYID[h]) return { v: 'item', id: h };
     if (h === 'about') return { v: 'about' };
     var s = blank(), q = h.indexOf('?');
     if (/^list/.test(h) && q > -1) {
@@ -220,8 +231,9 @@
   }
   // 분류에 맞지 않는 조건은 버린다
   function fix(s) {
-    if (s.c && !CK[s.c]) s.c = '';
+    if (s.c && s.c !== 'GRP' && !CK[s.c]) s.c = '';
     if (s.c !== 'ENT') { s.g = ''; s.ct = ''; s.ls = ''; s.k2 = ''; }
+    if (s.c !== 'GRP') { s.mu = ''; s.nw = ''; }
     if (s.o && !sortOpts(s).some(function (o) { return o[0] === s.o; })) s.o = '';   // 이 분류에서 쓸 수 없는 정렬은 기본으로
     if (s.c !== 'ENT' && s.c !== 'MID') { s.k = ''; s.in = ''; }
     if (s.c !== 'PUB' && s.c !== 'MID' && s.c !== 'LPI') { s.t = ''; s.sd = ''; }
@@ -295,6 +307,111 @@
     if (skip !== 'em' && s.em && x._eb !== s.em) return false;
     return true;
   }
+  /* ---------- 기업집단(대기업 그룹) ---------- */
+  // 집단명에서 '舊 …' 주석을 뗀 이름 — 원자료의 group 표기와 공시 집단명을 맞출 때 쓴다
+  function gnorm(s) { var t = String(s || ''); var i = t.indexOf('(舊'); return norm(i > 0 ? t.slice(0, i) : t); }
+  function gprep(g) {
+    g._n = norm(g.name); g._cho = cho(g._n);
+    g._members = (g.members || []).map(function (id) { return BYID[id]; }).filter(Boolean);
+    g._rev = 0; g._emp = 0;
+    g._members.forEach(function (x) { if (x._rev > 0) g._rev += x._rev; if (x._emp > 0) g._emp += x._emp; });
+    g._top = g._members.slice().sort(byRev).slice(0, 3);
+    g._f = [{ k: 'name', t: g.name, s: g._n, w: 200 }];
+    (g.aliases || []).forEach(function (a) { var s = norm(a); if (s && s !== g._n) g._f.push({ k: 'alias', t: a, s: s, w: 175 }); });
+    var gs = norm(g.name + '그룹'); if (gs !== g._n) g._f.push({ k: 'alias', t: g.name + '그룹', s: gs, w: 175 });
+    if (g.owner) g._f.push({ k: 'owner', t: g.owner, s: norm(g.owner), w: 60 });
+    g._members.forEach(function (x) { g._f.push({ k: 'member', t: x.name, s: x._n, w: 40 }); });
+    g._dkey = '';
+    g._members.forEach(function (x) {
+      if (g._dkey) return;
+      (x._grp || []).forEach(function (k) { if (!g._dkey && gnorm(k) === gnorm(g.name)) g._dkey = k; });
+    });
+    if (g._dkey) GMAP[gnorm(g._dkey)] = g.id;
+    GMAP[gnorm(g.name)] = g.id;
+    GBYID[g.id] = g;
+    g._members.forEach(function (x) { (x._gids = x._gids || []).push(g.id); });
+  }
+  function gscore(g, ts) {
+    if (!ts.length) return { sc: 1 };
+    var total = 0, hit = null;
+    for (var i = 0; i < ts.length; i++) {
+      var t = ts[i], best = 0, bf = null;
+      if (isCho(t.n)) { var ci = g._cho.indexOf(t.n); if (ci > -1) { best = ci === 0 ? 60 : 40; bf = { k: 'name' }; } }
+      else {
+        [t.n, t.h].forEach(function (w, wi) {
+          if (!w || (wi && w === t.n)) return;
+          for (var j = 0; j < g._f.length; j++) {
+            var f = g._f[j], fa = f.s.indexOf(w); if (fa < 0) continue;
+            var fw = f.k === 'name' ? (f.s === w ? 200 : fa === 0 ? 150 : 110) : f.k === 'alias' ? (f.s === w ? 175 : 150) : f.w;
+            if (fw > best) { best = fw; bf = f; }
+          }
+        });
+      }
+      if (!best) return null;
+      total += best; if (!hit || bf.w > hit.w) hit = bf;
+    }
+    return { sc: total, hit: hit };
+  }
+  function gpass(g, s) {
+    if (s.mu && g.undesignated) return false;   // 지정 구분을 고르면 공시대상 집단만
+    if (s.mu === '1' && !g.mutual) return false;
+    if (s.mu === '2' && g.mutual) return false;
+    if (s.nw === '1' && !g._new) return false;
+    return true;
+  }
+  function gfiltered(s) {
+    var ts = toks(s.q), out = [], all = GROUPS.concat(GUNDES);
+    for (var i = 0; i < all.length; i++) {
+      var g = all[i];
+      if (!gpass(g, s)) continue;
+      if (ts.length && !gscore(g, ts)) continue;
+      out.push(g);
+    }
+    return out;
+  }
+  function gsorted(arr, s) {
+    var f;
+    if (s.o === 'name') f = function (a, b) { return ko(a._n, b._n); };
+    else if (s.o === 'aff') f = function (a, b) { return ((b.affiliates || 0) - (a.affiliates || 0)) || ((b.assets || 0) - (a.assets || 0)); };
+    else if (s.o === 'rank') f = function (a, b) { return (a.rank || 999) - (b.rank || 999); };
+    else f = function (a, b) { return (b.assets || 0) - (a.assets || 0) || (a.rank || 999) - (b.rank || 999); };   // 비공시 집단은 뒤로
+    var ts = toks(s.q), m = null;
+    if (ts.length && !s.o) { m = {}; arr.forEach(function (g) { m[g.id] = gscore(g, ts); }); }
+    return arr.slice().sort(function (a, b) {
+      if (m) { var d1 = m[b.id].sc - m[a.id].sc; if (d1) return d1; }
+      return f(a, b) || ko(a._n, b._n);
+    });
+  }
+  // 목록 한 줄: 순위 · 이름 · 공시 구분 · 계열회사 수 · 공정자산 · 대표 계열사
+  function growHTML(g, q) {
+    var sub = '<span class="ty">' + (g.undesignated ? '공시대상 아님' : g.mutual ? '상호출자제한' : '공시대상') + '</span>' +
+      (g.owner ? '<span class="tg">동일인 ' + esc(g.owner) + '</span>' : '') +
+      (g.affiliates ? '<span>계열회사 ' + fmt(g.affiliates) + '곳</span>' : '') +
+      '<span>수록 ' + fmt(g._members.length) + '곳</span>';
+    var top = g._top.map(function (x) { return esc(x.name); }).join(' · ');
+    return '<a class="row k-GRP" href="#' + g.id + '">' +
+      '<span class="r-n"><b class="rk">' + (g.rank || '–') + '</b>' + hl(g.name, q) + (g._new ? '<span class="nw">신규</span>' : '') + '</span>' +
+      '<span class="r-s">' + sub + '</span>' +
+      (top ? '<p class="r-x r-a">' + top + '</p>' : '') +
+      '<span class="r-m"><span class="mv"><small>공정자산</small><em>' + wonShort(g.assets) + '</em></span>' +
+      (g._rev > 0 ? '<span class="mv"><small>수록 매출 합</small><em>' + wonShort(g._rev) + '</em></span>' : g._emp > 0 ? '<span class="mv"><small>수록 가입자 합</small><em>' + fmt(g._emp) + '명</em></span>' : '') + '</span></a>';
+  }
+  // 찾기 결과 위에 붙는 기업집단 띠 — 'SPC'로 찾으면 SPC그룹이 먼저 보이게
+  function groupBand(q, cur) {
+    var ts = toks(q); if (!ts.length) return '';
+    var hits = GROUPS.concat(GUNDES).map(function (g) { var r = gscore(g, ts); return r ? { g: g, s: r.sc, k: r.hit && r.hit.k } : null; })
+      .filter(Boolean).sort(function (a, b) { return b.s - a.s; });
+    // 이름·별칭으로 걸린 집단을 먼저 보이고, 그것이 없을 때만(예: 「파리크라상」) 계열사 이름으로 걸린 집단을 보인다
+    var named = hits.filter(function (h) { return h.k === 'name' || h.k === 'alias'; });
+    hits = (named.length ? named : hits).slice(0, 3);
+    if (!hits.length) return '';
+    return '<section class="gband"><h2>기업집단 <small>공시대상기업집단 102곳 · 누르면 계열사까지</small></h2><ul>' + hits.map(function (h) {
+      var g = h.g, t = g._top.map(function (x) { return x.name; }).slice(0, 2).join(' · ');
+      return '<li><a href="#' + g.id + '"><b>' + hl(g.name, q) + '</b><span>' +
+        (g.undesignated ? '공시대상 아님 · 그룹이 밝힌 계열사 ' + fmt(g._members.length) + '곳' : '공정자산 순위 ' + g.rank + '위 · 계열회사 ' + fmt(g.affiliates) + '곳') +
+        (t ? ' · ' + esc(t) : '') + '</span></a></li>';
+    }).join('') + '</ul>' + (cur === 'ENT' ? '<p class="fnote">대기업 목록은 법인 단위입니다. 집단 단위로 보려면 위 집단을 누르십시오.</p>' : '') + '</section>';
+  }
   var qCache = { q: null, map: null };
   function qmap(q) {
     if (qCache.q === q) return qCache.map;
@@ -316,6 +433,7 @@
   }
   /* 분류마다 실제로 값이 있는 정렬만 보여 준다(중견기업은 매출·자산·설립연도가 원자료에 없다) */
   function sortOpts(s) {
+    if (s.c === 'GRP') return [['', '공정자산 큰 순'], ['aff', '계열회사 많은 순'], ['rank', '순위순'], ['name', '이름순']];
     if (s.c === 'MID') return [['', '가입자 많은 순'], ['name', '이름순'], ['sido', '소재지순'], ['ve', '확인서 만료 이른 순']];
     if (s.c === 'PUB') return [['', '매출 큰 순'], ['emp', '정원 많은 순'], ['old', '설립 오래된 순'], ['new', '설립 최근 순'], ['name', '이름순']];
     if (s.c === 'LPI') return [['', '이름순'], ['sido', '시·도순'], ['fd', '설립 지자체순'], ['tt', '업무 유형순']];
@@ -401,7 +519,10 @@
   /* ---------- 탭·첫머리 ---------- */
   function tabs(cur) {
     var h = '<a href="#list" ' + (cur === 'all' ? 'aria-current="page"' : '') + '>전체 <small>' + fmt(ITEMS.length) + '</small></a>';
-    CATS.forEach(function (c) { h += '<a class="k-' + c.k + '" href="#list?c=' + c.k + '" aria-label="' + esc(c.full || c.name) + ' ' + fmt(c.n) + '곳" ' + (cur === c.k ? 'aria-current="page"' : '') + '><i aria-hidden="true"></i>' + esc(c.name) + ' <small>' + fmt(c.n) + '</small></a>'; });
+    CATS.forEach(function (c) {
+      h += '<a class="k-' + c.k + '" href="#list?c=' + c.k + '" aria-label="' + esc(c.full || c.name) + ' ' + fmt(c.n) + '곳" ' + (cur === c.k ? 'aria-current="page"' : '') + '><i aria-hidden="true"></i>' + esc(c.name) + ' <small>' + fmt(c.n) + '</small></a>';
+      if (c.k === 'ENT' && GROUPS.length) h += '<a class="k-GRP" href="#list?c=GRP" aria-label="대기업 그룹 기업집단 ' + fmt(GCAT.n) + '곳" ' + (cur === 'GRP' ? 'aria-current="page"' : '') + '><i aria-hidden="true"></i>' + esc(GCAT.name) + ' <small>' + fmt(GCAT.n) + '</small></a>';
+    });
     h += '<a class="sm" href="#about" ' + (cur === 'about' ? 'aria-current="page"' : '') + '>출처와 한계</a>';
     var box = d.getElementById('tabsIn'); box.innerHTML = h;
     var a = box.querySelector('[aria-current]'); if (a && a.offsetLeft) box.scrollLeft = Math.max(0, a.offsetLeft - 16);
@@ -560,6 +681,14 @@
   function emLab(v) { var r = EM.filter(function (x) { return x[0] === v; })[0]; return r ? r[1] : ''; }
   function filters() {
     var h = '', c = st.c;
+    if (c === 'GRP') {
+      var rest = GROUPS.length - GMUTUAL;
+      h += fg('mu', '지정 구분', st.mu === '1' ? '상호출자제한' : st.mu === '2' ? '공시대상만' : '', '<div class="opts">' + chip('mu', '1', '상호출자제한(자산 12조 이상)', GMUTUAL) + chip('mu', '2', '공시대상(12조 미만)', rest) + '</div>' +
+        '<p class="nt">공정거래법상 상호출자·순환출자·채무보증 금지가 함께 적용되는 집단입니다. 2026년 기준 공정자산 12조 원 이상이 47곳입니다.</p>');
+      h += fg('nw', '2026년 신규 지정', st.nw ? '신규 지정' : '', '<div class="opts">' + chip('nw', '1', '2026년 신규 지정', GNEW) + '</div>' +
+        '<p class="nt">라인·한국교직원공제회·웅진·쉴더스·대명화학·토스·한국콜마·희성·오리온·QCP그룹·일진글로벌 11곳입니다. 2025년까지 지정됐던 영원은 자산 5조 원 미만으로 올해 빠졌습니다.</p>');
+      return h;
+    }
     if (c === 'ENT') {
       h += fg('g', '기업집단', st.g, select('g', '기업집단', counts(st, 'g', function (x) { return x._grp; }), '모든 기업집단 (102곳)'));
       var kc = counts(st, 'k', function (x) { return x._k; });
@@ -606,6 +735,7 @@
   function actives() {
     var a = [];
     if (st.g) a.push(['g', st.g]); if (st.k) a.push(['k', KSIC[st.k] ? KSIC[st.k][0] : st.k]); if (st.in) a.push(['in', st.in]); if (st.k2) a.push(['k2', '산업 갈래 KSIC ' + st.k2]); if (st.bt) a.push(['bt', (TAGV[st.bt] || {}).label || st.bt]);
+    if (st.mu) a.push(['mu', st.mu === '1' ? '상호출자제한' : '공시대상(12조 미만)']); if (st.nw) a.push(['nw', '2026년 신규 지정']);
     if (st.ct) a.push(['ct', st.ct]); if (st.ls) a.push(['ls', '기업공개 법인']);
     if (st.t) a.push(['t', (st.c === 'PUB' ? (PUBNAME[st.t] || st.t) : (LPINAME[st.t] || st.t))]); if (st.tt) a.push(['tt', '업무 ' + st.tt]); if (st.mi) a.push(['mi', st.mi]); if (st.sd) a.push(['sd', st.sd]);
     if (st.rg) a.push(['rg', st.rg]); if (st.sc) a.push(['sc', st.sc + ' 설립']); if (st.fd) a.push(['fd', '설립 ' + st.fd]);
@@ -663,12 +793,35 @@
     }
     return h + '</div>';
   }
+  // 「대기업 그룹」 목록 — 집단을 자산·계열회사 수·순위로 줄 세우고, 누르면 집단 명함이 열린다
+  function renderGroupList(act) {
+    var qel = d.getElementById('q');
+    if (qel) { qel.placeholder = '집단·계열사 이름으로 찾기 (예: SPC, 삼성)'; qel.setAttribute('aria-label', '기업집단·계열사 찾기'); }
+    var egel = d.getElementById('eg');
+    if (egel) egel.innerHTML = '<span class="eg-l">이렇게도 찾습니다</span>' + ['SPC', '삼성', 'SK', 'LG', '파리크라상'].map(function (e) { return '<button type="button">' + esc(e) + '</button>'; }).join('');
+    var arr = gsorted(gfiltered(st), st), pages = Math.max(1, Math.ceil(arr.length / PER));
+    if (st.p > pages) st.p = pages;
+    var cur = arr.slice((st.p - 1) * PER, st.p * PER);
+    var sdef = sortOpts(st);
+    if (st.q) sdef = [['', '찾는 말과 가까운 순']].concat(sdef.slice(1));
+    var so = '<label class="so"><span>정렬</span><select name="o" aria-label="정렬">' + sdef.map(function (s) { return '<option value="' + s[0] + '"' + (st.o === s[0] ? ' selected' : '') + '>' + s[1] + '</option>'; }).join('') + '</select></label>';
+    var per = '<span class="per" role="group" aria-label="한 쪽에 보일 개수"><span>보기</span>' + PERS.map(function (n) { return '<button type="button" data-per="' + n + '" aria-pressed="' + (n === PER) + '" aria-label="' + n + '개씩 보기">' + n + '</button>'; }).join('') + '</span>';
+    var r = '<div class="vw"><button type="button" class="fl-t" id="flOpen">' + IC.filt + '조건' + (act.length ? '<i>' + act.length + '</i>' : '') + '</button>' +
+      '<p class="cnt"><b>' + fmt(arr.length) + '</b>곳' + (st.q ? ' · 「' + esc(st.q) + '」' : '') + ' <small class="fnote">· 집단' + (arr.some(function (g) { return g.undesignated; }) ? ' · 공시대상 아님 포함' : '') + '</small></p>' + so + per + '</div>' +
+      (act.length ? '<div class="act">' + act.map(function (a) { return '<button type="button" data-un="' + a[0] + '" aria-label="' + esc(a[1]) + ' 조건 풀기">' + esc(a[1]) + '</button>'; }).join('') + '</div>' : '');
+    if (!arr.length) {
+      r += '<p class="empty">조건에 맞는 집단이 없습니다. 검색어를 줄이거나 <a href="#list?c=GRP">조건을 풀어</a> 보십시오.</p>';
+    } else {
+      r += '<div class="rows' + (PER > 5 ? ' two' : '') + '" data-jc-still>' + cur.map(function (g) { return growHTML(g, st.q); }).join('') + '</div>' + pager(st.p, pages);
+    }
+    d.getElementById('res').innerHTML = r;
+  }
   function updateList() {
     if (view !== 'list') return;
     var home = !st.c && !st.q && !FKEYS.some(function (k) { return st[k]; });
     d.body.toggleAttribute('data-home', home);
     tabs(st.c || 'all');
-    var c = st.c ? CK[st.c] : null, cdef = d.getElementById('cdef'), clf = d.getElementById('clf');
+    var c = st.c === 'GRP' ? GCAT : (st.c ? CK[st.c] : null), cdef = d.getElementById('cdef'), clf = d.getElementById('clf');
     if (cdef) {
       if (c && c.k !== 'PUB' && c.k !== 'LPI') { cdef.className = 'cdef k-' + c.k; cdef.innerHTML = '<b>' + esc(c.full || c.name) + '</b><span>' + esc(c.def) + '</span>'; cdef.hidden = false; }
       else { cdef.className = 'cdef'; cdef.innerHTML = ''; cdef.hidden = true; }
@@ -681,6 +834,15 @@
     d.getElementById('flB').innerHTML = filters();
     var act = actives();
     d.getElementById('flR').hidden = !act.length;
+    if (st.c === 'GRP') { renderGroupList(act); return; }
+    /* 집단 화면에서 바뀐 찾기 안내를 되돌린다 */
+    var qb = d.getElementById('q');
+    if (qb && qb.placeholder.indexOf('집단') > -1) {
+      qb.placeholder = '이름·브랜드·줄임말로 찾기 (예: 삼전, 해커스)';
+      qb.setAttribute('aria-label', '기업·기관 찾기');
+      var eg0 = d.getElementById('eg');
+      if (eg0) eg0.innerHTML = '<span class="eg-l">이렇게도 찾습니다</span>' + EG.map(function (e) { return '<button type="button">' + esc(e) + '</button>'; }).join('');
+    }
     var arr = sorted(filtered(st), st), pages = Math.max(1, Math.ceil(arr.length / PER));
     if (st.p > pages) st.p = pages;
     var cur = arr.slice((st.p - 1) * PER, st.p * PER), m = qmap(st.q) || {};
@@ -693,7 +855,7 @@
       '<p class="cnt"><b>' + fmt(arr.length) + '</b>곳' + (st.q ? ' · 「' + esc(st.q) + '」' : '') + (miss && !st.q ? ' <small class="fnote">· 정렬 값이 없는 ' + fmt(miss) + '곳은 뒤에</small>' : '') + '</p>' +
       '<button type="button" class="gl-t" id="glBtn" aria-expanded="' + glance + '">' + IC.pie + '한눈에</button>' + so + per + '</div>' +
       (act.length ? '<div class="act">' + act.map(function (a) { return '<button type="button" data-un="' + a[0] + '" aria-label="' + esc(a[1]) + ' 조건 풀기">' + esc(a[1]) + '</button>'; }).join('') + '</div>' : '') +
-      (glance && arr.length ? glancePanel() : '');
+      (glance && arr.length ? glancePanel() : '') + (st.q ? groupBand(st.q, st.c) : '');
     if (!arr.length) r += '<p class="empty">조건에 맞는 곳이 없습니다. 검색어를 줄이거나 <a href="#list' + (st.c ? '?c=' + st.c : '') + '">조건을 풀어</a> 보십시오.' + (st.c && st.q ? ' 다른 분류에 있을 수도 있습니다: <a href="' + q1({ q: st.q }) + '">전체에서 찾기</a>' : '') +
       (st.q ? ' <span class="fnote">이 명함첩은 공정위 공시대상기업집단 소속 법인·중견기업 확인서 발급기업·중앙·지방 공공기관만 담습니다. 금융지주회사나 창업·벤처기업처럼 이 명단에 없는 곳은 나오지 않습니다.</span>' : '') + '</p>';
     else {
@@ -808,6 +970,88 @@
     var r = p.getBoundingClientRect(); if (r.bottom > window.innerHeight) window.scrollBy({ top: Math.min(r.bottom - window.innerHeight + 24, r.top - 140), behavior: 'smooth' });
   }
   function byRev(a, b) { return cmpNum('_rev', 1)(a, b) || cmpNum('_emp', 1)(a, b) || ko(a._n, b._n); }
+  /* ---------- 기업집단 명함 ---------- */
+  function renderGroup(id) {
+    var g = GBYID[id]; if (!g) return;
+    view = 'item'; curId = id;
+    var und = !!g.undesignated, back = lastList || '#list?c=GRP';
+    d.body.removeAttribute('data-home'); tabs('GRP');
+    var fr = '', bk = '';
+    function row(side, label, v) { var s = '<dt>' + label + '</dt><dd>' + v + '</dd>'; if (side) fr += s; else bk += s; }
+    if (g.owner) row(1, '동일인', esc(g.owner));
+    if (!und) {
+      row(1, '자산 순위', '<b>' + g.rank + '위</b>' + (g.rank_2025 ? ' <span class="code">2025년 ' + g.rank_2025 + '위</span>' : ' <span class="code">2026년 신규</span>'));
+      row(1, '공정자산', wonShort(g.assets) + ' 원');
+      row(0, '계열회사', '공시 ' + fmt(g.affiliates) + '곳 · 이 명함첩 ' + fmt(g._members.length) + '곳');
+      row(0, '지정', '2026-05-01 공시대상기업집단' + (g.mutual ? ' · <b>상호출자제한</b>' : ''));
+    } else {
+      row(1, '지정', '<b>공시대상기업집단 아님</b>');
+      row(1, '계열회사', '이 명함첩 ' + fmt(g._members.length) + '곳');
+    }
+    if (g._rev > 0) row(0, '수록 매출 합', wonShort(g._rev) + ' 원 <span class="code">2025 결산 · 단순 합</span>');
+    else if (g._emp > 0) row(0, '수록 가입자 합', fmt(g._emp) + '명 <span class="code">국민연금 2026-09 · 단순 합</span>');
+    var seal = '<span class="seal' + (und ? ' round' : '') + '" aria-hidden="true">' + (und ? '비공시' : '공시<br>대상') + '</span>';
+    var card = '<article class="card k-GRP"><p class="card-top"><b>기업집단</b><span>' + (und ? 'SPC그룹 공개 자료' : '공정거래위원회') + '</span><span class="code">' + esc(g.id) + '</span></p>' + seal +
+      '<div class="card-id"><span class="mono" aria-hidden="true">' + esc(String(g.name).replace(/^SPC그룹/, 'S').charAt(0)) + '</span><div><h1>' + esc(g.name) + '</h1><p class="sub">' +
+      (und ? '공시대상기업집단이 아닌 기업집단 · 그룹이 밝힌 계열사' : '공시대상기업집단 · 자산 순위 ' + g.rank + '위 · 계열회사 ' + fmt(g.affiliates) + '곳') + '</p></div></div>' +
+      '<dl>' + fr + bk + '</dl></article>';
+
+    /* 본문 */
+    var b = '';
+    if (und) {
+      b += sec('무슨 집단인가', '<p class="t">' + esc(g.basis) + '</p>' + (g.note ? '<p class="t">' + esc(g.note) + '</p>' : '') +
+        '<p class="t fnote">그래서 이 화면에서는 SPC그룹을 「공시대상기업집단」 목록에 넣지 않고, 이름으로 찾을 때만 보이는 자리에 따로 두었습니다. 계열사 이름은 SPC그룹이 공개한 소개와 이 명함첩의 중견기업 명단에서 확인된 곳만 이었습니다.</p>', '', '공정위 지정 결과 · SPC그룹 공개 자료');
+    } else {
+      var p = '공정거래위원회가 <b>2026-05-01</b> 지정한 공시대상기업집단입니다. 동일인은 <b>' + esc(g.owner) + '</b>이고, 공정자산총액은 <b>' + wonShort(g.assets) + ' 원</b>으로 전체 102곳 가운데 <b>' + g.rank + '위</b>' +
+        (g.rank_2025 ? '(2025년 ' + g.rank_2025 + '위)' : '(2026년 신규 지정)') + '입니다. 공시된 계열회사는 <b>' + fmt(g.affiliates) + '곳</b>이고, 이 명함첩에는 그 가운데 <b>' + fmt(g._members.length) + '곳</b>이 실려 있습니다. ' +
+        (g.mutual ? '공정자산 12조 원 이상이라 <b>상호출자제한기업집단</b>으로도 지정되어, 상호출자·순환출자·채무보증 금지가 함께 적용됩니다.' : '공정자산이 12조 원 미만이라 상호출자제한기업집단은 아닙니다.') + '</p>';
+      b += sec('무슨 집단인가', p + '<p class="t fnote">집단의 매출·직원수는 공시에 없어 만들지 않았습니다. 아래 「수록 계열사」의 합계는 이 명함첩에 실린 법인들의 값을 단순히 더한 참고값입니다.</p>', '', '공정거래위원회 2026년 지정 결과');
+    }
+    var L = g._members.slice().sort(byRev);
+    if (L.length) {
+      var show = L.slice(0, 24);
+      b += sec('수록 계열사', '<ul class="mates gl-m">' + show.map(function (x) {
+        var m = x._rev ? wonShort(x._rev) + ' 원' : x._emp ? fmt(x._emp) + '명' : '';
+        return '<li><a href="#' + x.id + '"><span>' + esc(x.name) + '</span><i>' + esc([CK[x._c] ? CK[x._c].name : '', x.industry || ''].filter(Boolean).join(' · ')) + (m ? ' · ' + esc(m) : '') + '</i></a></li>';
+      }).join('') + '</ul>' +
+        (L.length > show.length ? '<a class="more" href="' + (g._dkey ? q1({ c: 'ENT', g: g._dkey }) : '#list?c=GRP') + '">' + fmt(L.length) + '곳 모두 보기 ›</a>' : '') +
+        '<p class="fnote">명함첩에 실린 계열사만 보입니다. 공시 계열회사 전체 목록은 공정거래위원회 기업집단포털에서 확인하십시오.</p>', '', '공정위 group 값 대조');
+    }
+
+    /* 옆 칸: 자산 순위 */
+    var s2 = '';
+    if (!und) {
+      var top = GROUPS.slice().sort(function (a, b) { return b.assets - a.assets; }).slice(0, 6);
+      if (top.indexOf(g) < 0) top = top.slice(0, 5).concat([g]);
+      var max = top[0].assets || 1;
+      s2 += '<section class="box s2 k-GRP" data-run><h2>공정자산 순위<small>2026 · 십억 원 공시값</small></h2><ol class="hb">' + top.map(function (y, i) {
+        return '<li><a href="#' + y.id + '"' + (y.id === g.id ? ' aria-current="page"' : '') + '><span class="hb-n">' + esc(y.name) + '</span><em>' + y.rank + '위</em><s style="--w:' + Math.max(.02, y.assets / max).toFixed(3) + ';--i:' + i + '"></s></a></li>';
+      }).join('') + '</ol><a class="more" href="#list?c=GRP">102곳 모두 보기 ›</a></section>';
+    }
+    s2 += '<section class="box s2 k-GRP"><h2>읽는 법</h2><ul class="lim">' +
+      '<li><b>계열회사 수는 공시 기준</b>입니다. 이 명함첩은 그중 이름·번호가 확인된 법인만 이어서 「수록」으로 따로 적습니다.</li>' +
+      '<li><b>두 집단에 함께 올라 있는 법인</b>은 양쪽 집단 모두에 보입니다. 그래서 집단별 「수록」을 다 더하면 법인 수보다 많습니다.</li>' +
+      '<li><b>공정자산총액</b>은 공정거래위원회가 산정한 집단 단위 자산입니다. 계열사 자산을 단순히 더한 값과 다릅니다.</li>' +
+      (und ? '<li><b>공시대상기업집단이 아닙니다.</b> 공정위 지정 여부와 그룹이 밝힌 계열사는 서로 다른 자료입니다.</li>' : '<li><b>자산 12조 원 이상</b>이면 상호출자제한기업집단이 되어 상호출자·순환출자·채무보증 금지가 함께 적용됩니다.</li>') +
+      '</ul></section>';
+
+    var ids = und ? ['SPC_GROUP'] : ['FTC_GROUP_2026'], links = '', names = [];
+    ids.forEach(function (sid) {
+      (GMETA && GMETA.sources || []).forEach(function (S) {
+        if (S.id !== sid) return;
+        var su = safeUrl(S.url);
+        if (su) links += '<a class="go" href="' + esc(su) + '" target="_blank" rel="noopener noreferrer">' + IC.out + '<span>원자료 · ' + esc(S.name) + '</span></a>';
+        names.push(S.name + (S.as_of ? ' (' + S.as_of + ')' : ''));
+      });
+    });
+    var mt = '<section class="miss"><p><b>이 집단 명함은 공정거래위원회 공표 자료와 이 명함첩의 계열사 연결만으로 만들었습니다.</b> 집단의 매출·직원수·재무제표는 싣지 않았습니다.</p>' + links +
+      '<p class="src"><b>이 항목의 출처</b> — ' + esc(names.join(' / ') || '공정거래위원회') + '. 최신 계열사 변동은 공정위 기업집단포털에서 확인하십시오.</p></section>';
+
+    main.innerHTML = '<nav class="crumbs" aria-label="위치"><a href="' + back + '">' + IC.back + '목록으로</a><span>/</span><a href="#list?c=GRP">대기업 그룹</a><span>/</span>' + esc(g.name) + '</nav>' +
+      '<div class="dt"><div class="lead">' + card + (b ? '<div class="body">' + b + '</div>' : '') + '</div>' + (s2 ? '<div class="side">' + s2 + '</div>' : '') + mt + '</div>';
+    arm(main); fitSide(); window.scrollTo(0, 0);
+    try { d.title = g.name + ' · 기업집단 · 기업 명함첩'; } catch (e) {}
+  }
   var curId = '';
   function renderItem(id) {
     view = 'item'; curId = id;
@@ -818,7 +1062,7 @@
     var fr = '', bk = '';
     function row(side, label, v) { var s = '<dt>' + label + '</dt><dd>' + v + '</dd>'; if (side) fr += s; else bk += s; }
     if (x._c === 'ENT') {
-      if (x._grp.length) row(1, '기업집단', x._grp.map(function (g) { return lk(q1({ c: 'ENT', g: g }), g); }).join(' · '));
+      if (x._grp.length) row(1, '기업집단', x._grp.map(function (g) { var gid = GMAP[gnorm(g)]; return gid ? lk('#' + gid, g) : lk(q1({ c: 'ENT', g: g }), g); }).join(' · '));
       if (has(x.industry)) row(1, '업종', lk(q1({ c: 'ENT', in: x.industry }), x.industry));
       if (has(x.ceo)) row(0, '대표자', esc(x.ceo));
       if (has(x.established_year)) row(0, '설립', x.established_year + '년');
@@ -846,6 +1090,8 @@
       if (has(x.note)) row(0, '원자료 비고', esc(x.note));
       if (has(x.source_no)) row(0, '원자료 연번', '<span class="code">' + esc(x.source) + ' ' + esc(x.source_no) + '</span>');
     } else {
+      var gids = (x._gids || []).filter(function (gid) { return !!GBYID[gid]; });
+      if (gids.length) row(1, '기업집단', gids.map(function (gid) { var g = GBYID[gid]; return lk('#' + gid, g.name) + (g.undesignated ? ' <span class="code">공시대상 아님</span>' : ''); }).join(' · '));
       if (has(x.industry)) row(1, '업종', lk(q1({ c: 'MID', in: x.industry }), x.industry));
       if (has(x.main_products)) row(1, '주요 사업', esc(x.main_products));
       if (has(x.location_sido)) row(1, '소재지', lk(q1({ c: 'MID', sd: x.location_sido }), x.location_sido) + (has(x.headquarters) ? ' ' + esc(String(x.headquarters).replace(String(x.location_sido || '\u0000'), '').trim()) : ''));
@@ -1063,13 +1309,22 @@
       '<li><b>기관별 유형은 대조한 값</b>입니다. 알리오 기관 정보와 2026년도 공공기관 지정 고시(재정경제부고시 제2026-58호)를 기준으로 342곳의 유형을 맞춰 보아 다른 곳이 없었고(0건), 지정 기관에 없는 13곳만 부설기관으로 표시했습니다. 대조되지 않은 기관을 추측으로 채운 곳은 없습니다.</li>' +
       '<li><b>지방 공공기관</b>은 행정안전부가 2026-06-30 기준으로 공개한 지방공기업·출자출연기관 현황의 구분 그대로입니다. 「지방공기업법」이 적용되는 직영기업·공사·공단과 「지방자치단체 출자·출연기관의 운영에 관한 법률」에 따라 지정·고시된 출자·출연기관을 한 화면에 모았습니다.</li></ul>';
     var en = ENRICH && ENRICH.meta && ENRICH.meta.counts ? ENRICH.meta.counts : null;
+    if (GROUPS.length) {
+      h += '<h2>대기업 그룹(기업집단) — 다섯 번째 꼭지</h2><p class="lead">법인 단위 목록만으로는 「SPC」처럼 그룹 이름으로 찾을 때 그룹이 보이지 않았습니다. 그래서 공정거래위원회가 2026-05-01 지정한 <b>공시대상기업집단 ' + fmt(GROUPS.length) + '곳</b>을 따로 모아, 집단마다 동일인·공정자산총액·계열회사 수·자산 순위를 싣고 이 명함첩에 있는 계열사를 이어 붙였습니다.</p>' +
+        '<ul class="lim">' +
+        '<li><b>집단 이름·동일인·계열회사 수·공정자산총액·순위</b>는 공정거래위원회 「2026년도 공시대상기업집단 등 지정 결과 발표」(2026-04-29)와 같은 날 공개한 지정 현황 표를 그대로 옮겼습니다. 102개 집단 · 공시 계열회사 ' + fmt((GMETA.totals || {}).affiliates || 0) + '곳 · 공정자산 12조 원 이상 상호출자제한 ' + fmt(GMUTUAL) + '곳입니다.</li>' +
+        '<li><b>집단의 매출·직원수는 만들지 않았습니다.</b> 공시에 없는 값입니다. 화면의 「수록 계열사 매출 합」은 이 명함첩에 실린 법인들의 2025년 결산 매출을 단순히 더한 참고값입니다.</li>' +
+        '<li><b>계열사 수와 수록 곳 수가 다릅니다.</b> 공시 계열회사 가운데 이 명함첩(대기업·중견기업·공공기관 명단)에 없는 법인은 이름을 지어내지 않고 빼두었습니다. 두 집단에 함께 올라 있는 법인은 양쪽 모두에 보입니다.</li>' +
+        '<li><b>SPC그룹은 공시대상기업집단이 아닙니다.</b> 2026년 명단(102곳)에 없고, 지정 기준인 공정자산 5조 원에 못 미쳤습니다(2025년 10월 보도 4조 8,995억 원). 이름으로 찾는 사람이 많아 「공시대상 아님」을 적어 따로 두었습니다.</li>' +
+        '</ul>';
+    }
     h += '<h2>브랜드·줄임말로 찾기와 「무슨 회사인가」</h2><p class="lead">법인명과 다르게 부르는 이름으로도 찾을 수 있게 별칭을 따로 모았습니다. 예를 들어 「삼전」은 삼성전자, 「해커스」는 (주)챔프스터디, 「파바」는 (주)파리크라상, 「건보」는 국민건강보험공단으로 이어집니다.</p>' +
       '<ul class="lim">' +
       '<li><b>별칭은 지어내지 않았습니다.</b> 이름을 하나하나 원자료에서 조회해 그 법인이 실제로 있는지 확인한 뒤 얶었습니다. 원자료에 없는 법인·기관은 별칭을 만들지 않았습니다' + (en ? ' (별칭 ' + fmt(en.aliases) + '개 · 설명 ' + fmt(en.profiles) + '곳)' : '') + '.</li>' +
       '<li><b>설명·주요 제품·주요 고객은 보강한 값</b>입니다. 공개된 회사·기관 소개(브랜드·제품·사업)와 원자료의 업종·기업집단·설립목적 공시를 바탕으로 적었고, 확인되지 않은 사업은 쓰지 않았습니다. 설명이 없는 기업은 원자료의 업종·소재지·가입자수만으로 문장을 만듭니다.</li>' +
       '<li><b>원자료는 고치지 않았습니다.</b> 별칭과 설명은 <span class="code">data/enrich.json</span> 한 파일에만 있고, 숫자·업종·주소·분류는 모두 원자료 그대로입니다.</li>' +
       '</ul>';
-    h += '<h2>원자료</h2><table class="tbl"><thead><tr><th>출처</th><th>무엇을 가져왔나</th><th>기준일 · 이용 조건</th></tr></thead><tbody>' + (m.sources || []).concat((LMETA && LMETA.sources) || []).concat((PMETA && PMETA.sources) || []).map(function (s) {
+    h += '<h2>원자료</h2><table class="tbl"><thead><tr><th>출처</th><th>무엇을 가져왔나</th><th>기준일 · 이용 조건</th></tr></thead><tbody>' + (m.sources || []).concat((LMETA && LMETA.sources) || []).concat((PMETA && PMETA.sources) || []).concat((GMETA && GMETA.sources) || []).map(function (s) {
       var u = safeUrl(s.url);
       return '<tr><td>' + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + esc(s.name) + '</a>' : esc(s.name)) + ' <span class="code">' + esc(s.id) + '</span></td><td>' + esc(s.used_for || '') + '</td><td>' + esc(s.as_of || '') + ' · ' + esc(s.license || '') + '</td></tr>';
     }).join('') + '</tbody></table>';
@@ -1098,8 +1353,8 @@
   function route() {
     var r = readHash();
     if (view === 'list' && r.v !== 'list') { listY = window.pageYOffset; lastList = listHash(st); }
-    if (r.v === 'item') { renderItem(r.id); return; }
-    try { d.title = '기업 명함첩 · 대기업·중견기업·중앙·지방 공공기관 기업 위키'; } catch (e) {}
+    if (r.v === 'item') { if (GBYID[r.id]) renderGroup(r.id); else renderItem(r.id); return; }
+    try { d.title = '기업 명함첩 · 대기업·대기업 그룹·중견기업·중앙·지방 공공기관 기업 위키'; } catch (e) {}
     if (r.v === 'about') { renderAbout(); return; }
     var wasList = view === 'list', from = view;
     st = r.s;
@@ -1108,7 +1363,7 @@
   }
 
   /* ---------- 불러오기: 두 파일 6.4MB를 받는 동안 진행 막대(transform만) ---------- */
-  var EST = 6400000;
+  var EST = 6600000;
   function fetchJson(url, onBytes) {
     return fetch(url).then(function (r) {
       if (!r.ok) throw new Error(r.status);
@@ -1134,9 +1389,10 @@
       fetchJson('./data/companies.json', function (n) { done += n - (gotL.main || 0); gotL.main = n; prog(done); }),
       fetchJson('./data/local-public.json', function (n) { done += n - (gotL.lpi || 0); gotL.lpi = n; prog(done); }).catch(function () { return null; }),
       fetchJson('./data/public-2026.json').catch(function () { return null; }),
-      fetchJson('./data/enrich.json').catch(function () { return null; })
+      fetchJson('./data/enrich.json').catch(function () { return null; }),
+      fetchJson('./data/groups.json').catch(function () { return null; })
     ]).then(function (R) {
-      var D = R[0], L = R[1], P = R[2], E = R[3];
+      var D = R[0], L = R[1], P = R[2], E = R[3], G = R[4];
       META = D.meta || {}; ITEMS = (D.companies || []).slice();
       /* 보강 레이어: 없거나 깨져도 원자료만으로 화면이 열린다(실패는 조용히 넘긴다) */
       if (E && E.aliases && E.profiles) {
@@ -1158,6 +1414,16 @@
       if (SRC.ALIO_STATUS) SRC.ALIO_STATUS.short = '알리오 지정현황'; if (SRC.MOFE_NOTICE) SRC.MOFE_NOTICE.short = '재정경제부 고시'; if (SRC.ALIO_LIST) SRC.ALIO_LIST.short = '공공기관 일반현황';
       if (!L) { CATS = CATS.filter(function (c) { return c.k !== 'LPI'; }); delete CK.LPI; }
       for (var i = 0; i < ITEMS.length; i++) { BYID[ITEMS[i].id] = ITEMS[i]; prep(ITEMS[i]); }
+      /* 기업집단: 없거나 깨져도 나머지 분류는 그대로 연다(탭에서 뺀다) */
+      if (G && G.groups && G.groups.length) {
+        GMETA = G.meta || {};
+        GROUPS = G.groups.map(function (g) { g._new = !g.rank_2025; return g; });
+        GUNDES = (G.undesignated || []).map(function (g) { g.undesignated = true; return g; });
+        GROUPS.concat(GUNDES).forEach(gprep);
+        GMUTUAL = GROUPS.filter(function (g) { return g.mutual; }).length;
+        GNEW = GROUPS.filter(function (g) { return g._new; }).length;
+        GCAT.n = GROUPS.length;
+      } else { GCAT.n = 0; }
       ENTREV = ITEMS.filter(function (x) { return x._c === 'ENT' && x._rev > 0; }).sort(function (a, b) { return b._rev - a._rev; });
       CATS.forEach(function (c) { c.n = ITEMS.filter(function (x) { return x._c === c.k; }).length; });
       dist(); album();

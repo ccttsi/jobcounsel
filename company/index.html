@@ -11,8 +11,8 @@ document.documentElement.setAttribute('data-theme',t);})();
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
-<meta name="description" content="공시대상기업집단 소속회사·중견기업 확인서 발급기업·중앙 공공기관·지방 공공기관 9,137곳을 공정거래위원회·알리오·중견기업정보마당·국민연금공단·행정안전부의 공식 공개 사실 정보로만 찾아보는 참고용 기업 위키">
-<title>기업 명함첩 · 대기업·중견기업·중앙·지방 공공기관 기업 위키</title>
+<meta name="description" content="공시대상기업집단 소속회사·중견기업 확인서 발급기업·중앙 공공기관·지방 공공기관 9,137곳과 공시대상기업집단 102곳을 공정거래위원회·알리오·중견기업정보마당·국민연금공단·행정안전부의 공식 공개 사실 정보로만 찾아보는 참고용 기업 위키">
+<title>기업 명함첩 · 대기업·대기업 그룹·중견기업·중앙·지방 공공기관 기업 위키</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preload" href="./data/companies.json" as="fetch" type="application/json" crossorigin>
@@ -22,8 +22,8 @@ document.documentElement.setAttribute('data-theme',t);})();
   --bg:#faf6ef;--panel:#fffdf8;--soft:#f3ede2;--line:#e9e0d2;--line-2:#d8ccb9;
   --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
   --acc:#8f4413;--acc-soft:rgba(143,68,19,.08);--on-acc:#fff;
-  --ce:#2f4f9f;--cm:#16725c;--cp:#a3392a;--cl:#4d6b2c;
-  --ce-s:rgba(47,79,159,.09);--cm-s:rgba(22,114,92,.09);--cp-s:rgba(163,57,42,.085);--cl-s:rgba(77,107,44,.10);
+  --ce:#2f4f9f;--cm:#16725c;--cp:#a3392a;--cl:#4d6b2c;--cg:#6d4aa0;
+  --ce-s:rgba(47,79,159,.09);--cm-s:rgba(22,114,92,.09);--cp-s:rgba(163,57,42,.085);--cl-s:rgba(77,107,44,.10);--cg-s:rgba(109,74,160,.10);
   --p1:#2f4f9f;--p2:#16725c;--p3:#c0702a;--p4:#7b55a8;--p5:#a3392a;--p6:#3d8aa3;--p0:#d9cfbf;
   --card:#fffefa;--stamp:#b3392f;--sleeve:rgba(255,255,255,.2);
   --shadow:0 1px 2px rgba(70,50,25,.05),0 14px 34px -22px rgba(70,50,25,.30);
@@ -36,8 +36,8 @@ document.documentElement.setAttribute('data-theme',t);})();
   --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
   --ink:#e6e9ef;--muted:#9aa2b4;--dim:#7d8699;
   --acc:#f2b27c;--acc-soft:rgba(242,178,124,.10);--on-acc:#2a1405;
-  --ce:#9fb5ff;--cm:#7fd6bd;--cp:#ff9f8a;--cl:#bcd98b;
-  --ce-s:rgba(159,181,255,.12);--cm-s:rgba(127,214,189,.11);--cp-s:rgba(255,159,138,.11);--cl-s:rgba(188,217,139,.12);
+  --ce:#9fb5ff;--cm:#7fd6bd;--cp:#ff9f8a;--cl:#bcd98b;--cg:#c6a6f2;
+  --ce-s:rgba(159,181,255,.12);--cm-s:rgba(127,214,189,.11);--cp-s:rgba(255,159,138,.11);--cl-s:rgba(188,217,139,.12);--cg-s:rgba(198,166,242,.13);
   --p1:#9fb5ff;--p2:#7fd6bd;--p3:#f2b27c;--p4:#c6a6f2;--p5:#ff9f8a;--p6:#86cde3;--p0:#2c3445;
   --card:#121823;--stamp:#ff8a80;--sleeve:rgba(160,180,220,.07);
   --shadow:none;color-scheme:dark;
@@ -55,8 +55,8 @@ ul,ol{padding:0;list-style:none}
 @media (min-width:900px){.wrap{padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right))}}
 .code{font-family:var(--mono)}
 
-/* 분류 색: 대기업 남색 · 중견기업 청록 · 중앙 공공기관 인주색 · 지방공공기관 올리브색 */
-.k-ENT{--c:var(--ce);--cs:var(--ce-s)}.k-MID{--c:var(--cm);--cs:var(--cm-s)}.k-PUB{--c:var(--cp);--cs:var(--cp-s)}.k-LPI{--c:var(--cl);--cs:var(--cl-s)}
+/* 분류 색: 대기업 남색 · 중견기업 청록 · 중앙 공공기관 인주색 · 지방공공기관 올리브색 · 기업집단 보라색 */
+.k-ENT{--c:var(--ce);--cs:var(--ce-s)}.k-MID{--c:var(--cm);--cs:var(--cm-s)}.k-PUB{--c:var(--cp);--cs:var(--cp-s)}.k-LPI{--c:var(--cl);--cs:var(--cl-s)}.k-GRP{--c:var(--cg);--cs:var(--cg-s)}
 
 /* 머리말 */
 .hd{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;min-height:68px;padding:12px 0;padding-top:max(8px,env(safe-area-inset-top));background:var(--bg)}
@@ -346,6 +346,20 @@ main{display:block;min-height:50vh;padding-top:20px}
 @media (min-width:1320px){
   .rows.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px;border-top:0;background:linear-gradient(var(--ink),var(--ink)) 0 0/100% 2px no-repeat}
 }
+/* 기업집단(대기업 그룹) — 목록 순위 배지·신규 표시·찾기 띠 (2026-11-19) */
+.rk{display:inline-grid;place-items:center;min-width:1.8em;height:1.45em;margin-right:8px;padding:0 5px;border-radius:6px;background:var(--cs);font-family:var(--mono);font-size:12.5px;font-weight:800;color:var(--c);vertical-align:2px}
+.nw{margin-left:7px;padding:1px 7px;border-radius:5px;background:var(--acc);color:var(--on-acc);font-size:11.5px;font-weight:800;vertical-align:3px}
+.gband{margin:0 0 16px;padding:12px 14px;border:1px solid var(--line-2);border-left:5px solid var(--cg);border-radius:6px 16px 16px 6px;background:var(--panel)}
+.gband h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;font-size:15.5px;font-weight:800;color:var(--cg)}
+.gband h2 small{font-size:12.5px;font-weight:600;color:var(--dim)}
+.gband ul{display:grid;gap:0;margin-top:4px}
+.gband li+li{border-top:1px dashed var(--line)}
+.gband a{display:grid;gap:1px;min-height:48px;padding:8px 0;text-decoration:none}
+.gband a b{font-size:16.5px;font-weight:800;color:var(--cg)}
+.gband a span{font-size:13.5px;line-height:1.5;color:var(--muted)}
+.gband a:hover b{text-decoration:underline;text-underline-offset:3px}
+.gl-m a i{margin-left:auto;max-width:62%;text-align:right;white-space:normal}
+
 .empty{padding:36px 0;font-size:16px;color:var(--muted)}
 .empty a{color:var(--acc);font-weight:700}
 .pg{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px;margin-top:18px}
@@ -545,6 +559,7 @@ html[data-jc-imm] .gl-t{display:none}
     <div class="pv-b" id="pvB" inert><div><ul>
       <li><b>공정거래위원회·알리오(ALIO)·중견기업정보마당·국민연금공단·행정안전부가 스스로 공개한 사실 정보와, 중견기업에 한해 더한 위키백과·위키데이터·상장 종목 공개 정보로 정리했습니다</b>(2026-11-19 정리). 어느 기관이나 기업의 공식 안내도, 채용 정보도 아닙니다. 민간 채용 플랫폼의 글과 기업 홍보 문구는 쓰지 않았습니다.</li>
       <li><b>공개 자료에 없는 항목은 화면에 칸을 만들지 않았습니다.</b> 매출·직원수가 0으로 적힌 값도 "값이 없거나 0"이라 숫자를 싣지 않았습니다.</li>
+      <li><b>「대기업 그룹」 꼭지는 공정거래위원회 공시대상기업집단</b>(2026-05-01 지정 102곳)입니다. 집단의 동일인·공정자산총액·계열회사 수·순위는 공시 그대로이고, 집단의 매출·직원수는 공시에 없어 만들지 않았습니다. <b>SPC그룹은 2026년 공시대상기업집단이 아니어서</b>(공정자산 5조 원 미만) 「공시대상 아님」으로 따로 표시합니다.</li>
       <li><b>대기업은 2026-05-01 공시대상기업집단 지정 기준</b>이고 매출·직원수·자산은 2025년 결산입니다. <b>공공기관 직원수는 정원</b>(임직원 총계)이라 현원과 다를 수 있습니다.</li>
       <li><b>중견기업은 확인서를 발급받은 기업만 공개됩니다.</b> 법적으로 중견기업이어도 확인서를 받지 않았으면 목록에 없습니다. 업종·국민연금 가입자수·사업장 소재지는 국민연금 가입 사업장 내역(2026-09)을 사업자번호 앞 6자리와 법인명으로 대조해 붙였고(3,946곳 중 3,725곳), 가입자수는 상시근로자수와 다릅니다. 공식 홈페이지는 실제로 접속해 회사명이 확인된 곳만, 주요 사업은 위키백과·상장사 기업개요에서 확인된 곳만 실었습니다.</li>
       <li><b>지방 공공기관은 행정안전부의 2026-06-30 기준 현황</b>입니다. 지방공기업 423곳(직영 256 · 공사·공단 167)과 지방자치단체 출자·출연기관 892곳(출자 103 · 출연 789)을 합쳤고, 원자료가 명칭·구분·지역·설립 지자체·유형만 공개하므로 매출·정원·홈페이지는 싣지 않았습니다.</li>
@@ -556,7 +571,7 @@ html[data-jc-imm] .gl-t{display:none}
   <section class="hero">
     <div>
       <h1>기업·기관 <span id="heroN">9,137</span>곳의 공개된 사실을<br><em>명함 한 장씩</em> 꺼내 봅니다.</h1>
-      <p>공시대상기업집단 소속회사, 중견기업 확인서 발급기업, 중앙·지방 공공기관을 이름·기관 유형·업무 유형·지역으로 찾고 매출·직원 규모로 줄 세워 봅니다. 중앙 공공기관은 법이 정한 유형(시장형·준시장형·기금관리형·위탁집행형·기타)으로, 지방 공공기관은 직영기업·공사·공단·출자·출연기관으로 나눠 봅니다.</p>
+      <p>공시대상기업집단 소속회사, 중견기업 확인서 발급기업, 중앙·지방 공공기관을 이름·기관 유형·업무 유형·지역으로 찾고 매출·직원 규모로 줄 세워 봅니다. 「대기업 그룹」 꼭지에서는 공정위가 지정한 기업집단 102곳을 자산 순위로 보고, 그룹 이름(SPC·삼성·SK…)으로 찾아 계열사까지 이어 볼 수 있습니다. 중앙 공공기관은 법이 정한 유형(시장형·준시장형·기금관리형·위탁집행형·기타)으로, 지방 공공기관은 직영기업·공사·공단·출자·출연기관으로 나눠 봅니다.</p>
     </div>
     <div class="album" id="album" aria-label="4대 분류">
     </div>
