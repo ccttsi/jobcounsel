@@ -853,3 +853,15 @@
   }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', start); else start();
 })();
+
+/* 자료실 비서 — 모든 지면 공통 위젯(assets/assistant.js).
+   대문(index.html)은 직접 <script> 로 넣으므로, 이미 있으면 두 번 넣지 않는다. */
+(function () {
+  if (window.JCAssistant || document.querySelector('script[src*="assistant.js"]')) return;
+  var s = document.currentScript || document.querySelector('script[src*="marker.js"]');
+  if (!s || !s.src) return;
+  var t = document.createElement('script');
+  t.src = s.src.replace(/marker\.js.*$/, 'assistant.js');
+  t.defer = true;
+  document.head.appendChild(t);
+})();
