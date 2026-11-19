@@ -583,14 +583,22 @@ def run_js_checks():
         fail("js", "검사할 .js 파일을 찾지 못했다")
         return
     bad = 0
+    missing_node = False
     for name in files:
-        result = subprocess.run(["node", "--check", name], cwd=ROOT, capture_output=True, text=True)
+        try:
+            result = subprocess.run(["node", "--check", name], cwd=ROOT, capture_output=True, text=True)
+        except FileNotFoundError:
+            missing_node = True
+            break
         if result.returncode != 0:
             first = (result.stderr or "").strip().splitlines()
             detail = next((line for line in first if "Error" in line), first[0] if first else "")
             fail("js", f"{name}: 문법 오류 — {detail.strip()[:160]}")
             bad += 1
-    note(f"JS {len(files)}개를 node --check로 검사했다" + (f" (오류 {bad})" if bad else ""))
+    if missing_node:
+        note(f"이 환경에는 node가 없어 JS 문법 검사를 건너뛰었다({len(files)}개) — CI(ubuntu)에서는 node가 있어 그대로 돈다")
+    else:
+        note(f"JS {len(files)}개를 node --check로 검사했다" + (f" (오류 {bad})" if bad else ""))
 
 
 # ---------------------------------------------------------------- 3-1) 상담 프리셋 장부
@@ -830,6 +838,171 @@ def run_ecg_checks():
          f" · 한 시간 등장 {min(counts.values())}~{max(counts.values())}회")
 
 
+# ---------------------------------------------------------------- 3-4) 섹터 장부·27번 플로우·마이덱 (2026-11-20)
+#   27번 상담 플로우와 마이덱을 붙이면서, 장부(tools.js)와 색(brand.css)·폴더·프리셋이 어긋나면
+#   그 섹터가 조용히 죽는다(색이 없으면 제목이 검게, 폴더가 없으면 404). 그래서 배포 전에 장부를 통째로 본다.
+TOOL_FIELDS = {"id": r"id:'([^']*)'", "gi": r"gi:'([^']*)'", "mode": r"mode:'([^']*)'",
+               "no": r"no:'([^']*)'", "badge": r"badge:'([^']*)'", "short": r"short:'([^']*)'",
+               "color": r"color:'([^']*)'", "title": r"title:'([^']*)'", "path": r"path:'([^']*)'",
+               "desc": r"desc:'([^']*)'"}
+
+
+def read_tools():
+    """tools.js의 섹터 장부를 글자 그대로 읽는다(한 칸 = 한 섹터)."""
+    raw = open(os.path.join(ROOT, "assets", "tools.js"), encoding="utf-8").read()
+    body = raw[raw.find("window.JC_TOOLS"):raw.find("window.JC_LINKS")]
+    blocks = re.split(r"\n\s*\{(?=id:')", body)[1:]
+    tools = []
+    for block in blocks:
+        item = {}
+        for key, pattern in TOOL_FIELDS.items():
+            m = re.search(pattern, block)
+            if not m:
+                fail("sectors", f"섹터 한 칸에 '{key}'가 없다(장부 모양이 깨졌다)")
+                item[key] = ""
+            else:
+                item[key] = m.group(1)
+        m = re.search(r"meta:\[([^\]]*)\]", block)
+        item["meta"] = re.findall(r"'([^']*)'", m.group(1)) if m else []
+        m = re.search(r"tags:\[([^\]]*)\]", block)
+        item["tags"] = re.findall(r"'([^']*)'", m.group(1)) if m else []
+        if item.get("id"):
+            tools.append(item)
+    links_raw = raw[raw.find("window.JC_LINKS"):]
+    links = re.findall(r"\['([^']+)','([^']+)'\]", links_raw)
+    return tools, links
+
+
+def run_sector_checks():
+    tools, links = read_tools()
+    if not tools:
+        fail("sectors", "assets/tools.js에서 섹터를 하나도 읽지 못했다")
+        return
+    brand = open(os.path.join(ROOT, "assets", "brand.css"), encoding="utf-8").read()
+    ids, nos = {}, {}
+    for t in tools:
+        tid, no, color = t["id"], t["no"], t["color"]
+        if tid in ids:
+            fail("sectors", f"섹터 id가 중복된다: {tid}")
+        ids[tid] = 1
+        if no in nos:
+            fail("sectors", f"섹터 번호가 중복된다: {no}({nos[no]}·{tid})")
+        nos[no] = tid
+        if not re.fullmatch(r"\d{2}", no):
+            fail("sectors", f"섹터 {tid}의 번호 '{no}'가 두 자리 숫자가 아니다")
+        if t["mode"] not in ("seed", "match"):
+            fail("sectors", f"섹터 {tid}의 mode '{t['mode']}'가 seed·match가 아니다")
+        folder = t["path"].replace("./", "").rstrip("/")
+        if not folder or not os.path.exists(os.path.join(ROOT, folder, "index.html")):
+            fail("sectors", f"섹터 {tid}의 폴더에 index.html이 없다: {t['path']}")
+        # 밝게 · 세피아 · 어둡게 세 테마 모두에 그 색이 있어야 한다(하나가 빠지면 그 테마에서만 색이 죽는다)
+        found = len(re.findall(r"--tc-" + re.escape(color) + r"\s*:", brand))
+        if found < 3:
+            fail("sectors", f"브랜드 색 --tc-{color}가 {found}곳뿐이다(밝게·세피아·어둡게 3곳이 필요) — 섹터 {tid}")
+        if f'body[data-jc-tool="{tid}"]' not in brand:
+            fail("sectors", f"brand.css에 body[data-jc-tool=\"{tid}\"] 규칙이 없다")
+    for a, b in links:
+        if a not in ids or b not in ids:
+            fail("sectors", f"JC_LINKS의 짝 '{a}'·'{b}' 가운데 장부에 없는 섹터가 있다")
+        if a == b:
+            fail("sectors", f"JC_LINKS에 자기 자신을 잇는 짝이 있다: {a}")
+    pairs = [tuple(sorted(x)) for x in links]
+    if len(pairs) != len(set(pairs)):
+        fail("sectors", "JC_LINKS에 같은 짝이 두 번 나온다")
+    seeds = sum(1 for t in tools if t["mode"] == "seed")
+    note(f"섹터 장부 {len(tools)}개(시드 {seeds} · 매치 {len(tools) - seeds}) · 연결 짝 {len(links)}쌍 · "
+         f"색 {len({t['color'] for t in tools})}종을 brand.css 3테마와 대조했다")
+
+
+def run_flow_checks():
+    """27번 상담 플로우의 시너지 지도와 마이덱 화면·DIY 여섯 요소를 배포 전에 센다."""
+    tools, _links = read_tools()
+    ids = {t["id"] for t in tools}
+    graph_path = os.path.join(ROOT, "flow", "data", "graph.json")
+    document, error = load_json(graph_path)
+    if error:
+        fail("flow", f"flow/data/graph.json: {error}")
+        return
+    for key in ("schema_version", "sources", "self", "sectors", "pairs", "kw", "starts"):
+        if key not in document:
+            fail("flow", f"graph.json에 '{key}'가 없다")
+    graph_ids = {s.get("id") for s in document.get("sectors") or []}
+    if ids - graph_ids:
+        fail("flow", f"장부에는 있는데 시너지 지도에 없는 섹터: {sorted(ids - graph_ids)[:5]}")
+    if graph_ids - ids:
+        fail("flow", f"시너지 지도에만 있는 섹터(장부에 없다): {sorted(graph_ids - ids)[:5]}")
+    if document.get("self") != "flow":
+        fail("flow", f"graph.json의 self가 flow가 아니다({document.get('self')})")
+    seen = set()
+    for p in document.get("pairs") or []:
+        a, b = p.get("a"), p.get("b")
+        if a not in ids or b not in ids or a == b:
+            fail("flow", f"시너지 짝이 장부 밖을 가리킨다: {a}·{b}")
+            continue
+        key = tuple(sorted((a, b)))
+        if key in seen:
+            fail("flow", f"같은 짝이 두 번 들어 있다: {a}·{b}")
+        seen.add(key)
+        if not isinstance(p.get("w"), int) or p["w"] <= 0:
+            fail("flow", f"짝 {a}·{b}의 무게(w)가 0 이하다 — 근거 없는 짝은 싣지 않는다")
+        if not p.get("link") and not (p.get("shared") or []):
+            fail("flow", f"짝 {a}·{b}에 근거(연결 짝·겹치는 말)가 하나도 없다")
+        if p.get("basis") not in ("자료실 연결 짝", "겹치는 말만"):
+            fail("flow", f"짝 {a}·{b}의 근거 종류 '{p.get('basis')}'가 알 수 없는 값이다")
+    for s in document.get("starts") or []:
+        if not s.get("to"):
+            fail("flow", f"시작 키워드 '{s.get('k')}'에 이어지는 자료가 없다")
+        for tid in s.get("to") or []:
+            if tid not in ids:
+                fail("flow", f"시작 키워드 '{s.get('k')}'가 장부 밖 섹터 '{tid}'를 가리킨다")
+        if "flow" in (s.get("to") or []):
+            fail("flow", f"시작 키워드 '{s.get('k')}'가 자기 자신(flow)을 첫 자료로 준다")
+    if document.get("kw"):
+        for word, targets in list(document["kw"].items())[:4000]:
+            for tid in targets:
+                if tid not in ids:
+                    fail("flow", f"키워드 '{word}'가 장부 밖 섹터 '{tid}'를 가리킨다")
+                    break
+
+    # 화면 두 곳이 있어야 한다 — 27번 섹터와 마이덱
+    flow_html = os.path.join(ROOT, "flow", "index.html")
+    if not os.path.exists(flow_html):
+        fail("flow", "flow/index.html이 없다")
+    else:
+        raw = open(flow_html, encoding="utf-8").read()
+        for need in ('data-jc-tool="flow"', 'id="chain"', 'id="cands"', 'id="makeBtn"', 'id="note"'):
+            if need not in raw:
+                fail("flow", f"flow/index.html에 {need}가 없다")
+    deck_html = os.path.join(ROOT, "mydeck", "index.html")
+    if not os.path.exists(deck_html):
+        fail("flow", "mydeck/index.html이 없다")
+    else:
+        raw = open(deck_html, encoding="utf-8").read()
+        for need in ('id="space"', 'id="decks"', 'id="diy"', 'id="diyTabs"', 'mydeck-diy.js', 'mydeck-store.js'):
+            if need not in raw:
+                fail("flow", f"mydeck/index.html에 {need}가 없다")
+
+    # DIY — 여섯 요소 × 요소마다 여섯 조건
+    diy_path = os.path.join(ROOT, "assets", "mydeck-diy.js")
+    if not os.path.exists(diy_path):
+        fail("flow", "assets/mydeck-diy.js가 없다")
+    else:
+        raw = open(diy_path, encoding="utf-8").read()
+        blocks = re.split(r"\n\s*\{\s*\n\s*id: '", raw)
+        groups = [b.split("'")[0] for b in blocks[1:]]
+        groups = [g for g in groups if g in ("bg", "ink", "card", "font", "layout", "deco")]
+        if len(groups) != 6:
+            fail("flow", f"DIY 요소가 6가지가 아니라 {len(groups)}가지다: {groups}")
+        for name, block in zip(groups, blocks[1:]):
+            options = re.findall(r"\{ id: '([a-z0-9_]+)'", block)
+            if len(options) != 6:
+                fail("flow", f"DIY '{name}'의 조건이 6가지가 아니라 {len(options)}가지다: {options}")
+        if "input" in raw and "color" not in raw:
+            fail("flow", "DIY에 자유 색상표(color) 안내가 없다")
+    note(f"시너지 지도 — 섹터 {len(graph_ids)}개 · 짝 {len(seen)}쌍 · 키워드 {len(document.get('kw') or {})}개 · "
+         f"시작 키워드 {len(document.get('starts') or [])}개")
+
+
 # ---------------------------------------------------------------- 4) 역할 분리 가드레일
 def classify(path):
     if path.startswith(".github/") or path.startswith("ops/"):
@@ -895,6 +1068,10 @@ def main():
         run_js_checks()
         run_css_checks()      # CSS 문법도 같은 단계에서 돈다(CI 워크플로를 고치지 않아도 되게)
         run_ecg_checks()      # 심전도 60분 표의 약속(이웃한 분 중복 금지)도 함께 센다
+    if "json" in selected or "sectors" in selected:
+        run_sector_checks()   # 섹터 장부·색·폴더·연결 짝이 한 몸으로 맞는지
+    if "json" in selected or "flow" in selected:
+        run_flow_checks()     # 27번 플로우의 시너지 지도와 마이덱·DIY 여섯 요소
     if "role" in selected:
         if args.pr_json:
             run_role_checks(args.pr_json)
@@ -910,8 +1087,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "role": "역할 가드레일"}
-        for check in ("json", "license", "js", "css", "ecg", "presets", "role"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "role": "역할 가드레일"}
+        for check in ("json", "license", "js", "css", "ecg", "presets", "sectors", "flow", "role"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
@@ -925,7 +1102,7 @@ def main():
         print("✓ 모든 정적 검사 통과")
 
     if args.summary_file:
-        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·역할)", ""]
+        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·섹터·플로우·역할)", ""]
         lines += [f"- {line}" for line in notes]
         if problems:
             lines += ["", f"**실패 {len(problems)}건**", ""]

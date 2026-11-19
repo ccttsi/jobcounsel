@@ -169,6 +169,7 @@
     '.go{min-height:48px;border-radius:12px;background:var(--acc);color:var(--acc-ink);font-size:15.5px;font-weight:700}',
     '.go[disabled]{opacity:.6;cursor:wait}',
     '.btn{min-height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--line);font-size:14px;font-weight:650}',
+    'a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:inherit}',
     '.btn:hover{border-color:var(--acc)}',
     '.btn.bad{color:var(--bad)}',
     '.msg{font-size:13.5px;line-height:1.5;color:var(--bad);min-height:0}',
@@ -203,6 +204,8 @@
     var s = d.querySelector('script[src*="assets/marker.js"]'); var src = s ? s.src : location.href;
     return src.replace(/assets\/marker\.js.*$/, '');
   }
+  /* 마이덱 — 내가 짠 상담 덱을 모아 두는 별도 화면(27번 상담 플로우에서 만든 덱) */
+  function myDeckURL() { return hubURL() + 'mydeck/'; }
   function ago(t) { if (!t) return '아직 연동 전'; var s = Math.round((Date.now() - t) / 1000); if (s < 60) return '방금 연동됨'; if (s < 3600) return Math.floor(s / 60) + '분 전 연동'; return new Date(t).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' 연동'; }
   function render() {
     if (!sr) return;
@@ -211,7 +214,7 @@
       body = '<h2>내 계정</h2><p class="sub">이 기기의 학습 기록과 메모가 계정과 연동되고 있어요.</p>' +
         '<div class="who"><span class="av" aria-hidden="true">' + esc(sess.username.charAt(0).toUpperCase()) + '</span><div><b>' + esc(sess.username) + '</b><span>' + (status.err ? esc(status.err) : ago(status.at || sess.last)) + '</span></div></div>' +
         (sess.admin ? adminCard() : '') +
-        '<div class="row"><button class="btn" data-act="now">지금 연동하기</button><button class="btn keys" data-act="keys">API 키 관리</button><button class="btn" data-act="logout">로그아웃</button></div>' +
+        '<div class="row"><button class="btn" data-act="now">지금 연동하기</button><button class="btn keys" data-act="keys">API 키 관리</button><a class="btn deck" href="' + esc(myDeckURL()) + '">마이덱</a><button class="btn" data-act="logout">로그아웃</button></div>' +
         '<p class="msg' + (msg && msg.ok ? ' ok' : '') + '" role="status">' + esc(msg ? msg.t : '') + '</p>' +
         '<details><summary>비밀번호 바꾸기</summary><form data-form="pw"><label class="f">지금 비밀번호' + pwInput('name="old" autocomplete="current-password" required') + '</label>' +
         '<label class="f">새 비밀번호 <small>8자 이상</small>' + pwInput('name="pw" autocomplete="new-password" minlength="8" maxlength="72" required') + '</label><button class="go" type="submit">바꾸기</button></form></details>' +
