@@ -137,9 +137,9 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   display:grid;place-items:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
   background:var(--ov);overscroll-behavior:contain;opacity:0;visibility:hidden;transition:opacity .18s,visibility .18s}
 .a-vfo::after{content:"";position:absolute;left:0;right:0;top:100%;height:320px;background:var(--ov);pointer-events:none}
-/* 시트가 열린 동안 뜨는 형광펜·포스트잇 단추는 막보다 위에 그려져 막을 뚫고 밝게 남는다(도구함 z-index가 가장 높다).
-   시트를 덮을 때만 감추고, 닫으면 그대로 돌아온다. */
-html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes{opacity:0!important;pointer-events:none!important}
+/* 시트가 열린 동안 뜨는 물건(형광펜·포스트잇 도구함, 자료실 비서 단추)은 막보다 위에 그려져 막을 뚫고 밝게 남는다.
+   z-index가 가장 높은 층들만 시트가 열린 동안 감추고, 닫으면 그대로 돌아온다. */
+html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-launch,html[data-vf] .jca-backdrop,html[data-vf] .jca-panel{opacity:0!important;pointer-events:none!important}
 .a-vfo.on{opacity:1;visibility:visible}
 .a-vfo[hidden]{display:none}
 .a-vfo-card{width:100%;max-width:640px;max-height:min(90dvh,760px,calc(var(--vfo-h,100dvh) - 32px));display:flex;flex-direction:column;
