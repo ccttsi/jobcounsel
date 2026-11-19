@@ -1,0 +1,345 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-08-12T07:10:00+09:00",
+ "edition": {
+  "date": "2026-08-12",
+  "weekday": "수",
+  "title": "주 6일 45시간을 주 5일 40시간으로 — 노동시간 단축 현장",
+  "subtitle": "실노동시간 단축 이행점검단 8차 회의·미국 생산성 +2.2%를 한 장으로",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "부산도시철도 근로시간",
+   "value": 0,
+   "unit": "",
+   "value_text": "45→40시간",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "주 6일→주 5일",
+   "source_id": "src_moel_worktime_20260812",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-12T07:10:00+09:00",
+   "run_id": "br-20260812-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "미국 생산성",
+   "value": 0,
+   "unit": "",
+   "value_text": "+2.2%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 2분기",
+   "delta_from": "전년동기",
+   "source_id": "src_bls_ted_prod_20260811",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-12T07:10:00+09:00",
+   "run_id": "br-20260812-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "미국 단위노동비용",
+   "value": 0,
+   "unit": "",
+   "value_text": "+1.4%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 2분기",
+   "delta_from": "전년동기",
+   "source_id": "src_bls_ted_prod_20260811",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-12T07:10:00+09:00",
+   "run_id": "br-20260812-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "주 6일 45시간을 주 5일 40시간으로 — 노동시간 단축 현장",
+   "kicker": "부산도시철도 45→40시간 · 이행점검단 8차",
+   "three_step": {
+    "what": "실노동시간 단축 로드맵 이행점검단이 8월 12일 8차 회의를 열고 주 4.5일제 등 노동시간 단축 우수사례를 공유했다. 정부는 워라밸+4.5 프로젝트를 확대한다.",
+    "evidence": "부산도시철도운영서비스는 중·고령 청소 노동자의 장시간·야간 노동으로 산재 발생률이 높아, 야간 기동반을 없애고 주 6일 45시간을 주 5일 40시간으로 줄이는 교대제 개편을 했다. 이행점검단은 2025년 12월 30일 발표한 로드맵의 현장 안착을 점검하는 노·사·정·전문가 기구다(2026년 8월 12일, 고용노동부).",
+    "implication": "장시간·야간 노동으로 건강 문제를 겪는 내담자에게 교대제 개편 사례를 보여 주고, 근로계약서상 소정근로시간과 실제 노동시간을 나눠 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "부산도시철도",
+     "value": "주 6일 45시간 → 주 5일 40시간",
+     "delta": "교대제 개편",
+     "period": "2026년 8월"
+    },
+    {
+     "label": "이행점검단",
+     "value": "8차 회의",
+     "delta": "노·사·정·전문가",
+     "period": "2026년 8월 12일"
+    },
+    {
+     "label": "로드맵",
+     "value": "2025년 12월 30일",
+     "delta": "발표",
+     "period": "2026년 8월"
+    }
+   ],
+   "counselor_question": "지금 일하는 시간이 실제로 계약서와 같나요?",
+   "tags": [
+    "노동시간",
+    "교대제",
+    "산재"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "issue_id": "iss-working-time-2026",
+   "updated_at": "2026-08-12T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_worktime_20260812",
+    "source_name": "고용노동부",
+    "source_title": "실노동시간 단축, 이제는 '지속·확산' 현장의 경험을 통해 안착 방안 모색",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774200",
+    "published_at": "2026-08-12",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「실노동시간 단축, 이제는 '지속·확산' 현장의 경험을 통해 안착 방안 모색」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 생산성 2.2% 올랐지만 노동시간은 0.2%만 늘었다",
+   "kicker": "생산성 +2.2% · 산출 +2.5% · 노동시간 +0.2%",
+   "three_step": {
+    "what": "미국 비농업 부문 노동생산성이 2026년 2분기 전년동기보다 2.2% 올랐다. 산출이 2.5% 늘 때 노동시간은 0.2%만 늘어, 성장의 대부분을 시간 투입이 아닌 생산성에서 만들어냈다.",
+    "evidence": "단위노동비용은 1.4% 올랐고 시간당 보상은 3.7% 늘었다. 제조업 생산성은 0.9%로 낮았고, 내구재 2.2%·비내구재 -0.3%로 갈렸다. 제조업 단위노동비용은 3.5%로 전체의 두 배를 웃돌았다(2026년 8월 11일, BLS).",
+    "implication": "생산성은 오르는데 노동시간이 늘지 않는 흐름은, 같은 사람으로 더 많이 만드는 구조가 굳어졌다는 뜻이다. 제조업 구직자에게는 직무 전환과 다기능 훈련을 함께 권하라."
+   },
+   "key_numbers": [
+    {
+     "label": "노동생산성",
+     "value": "+2.2%",
+     "delta": "전년동기",
+     "period": "2026년 2분기"
+    },
+    {
+     "label": "산출 / 노동시간",
+     "value": "+2.5% / +0.2%",
+     "delta": "전년동기",
+     "period": "2026년 2분기"
+    },
+    {
+     "label": "단위노동비용",
+     "value": "+1.4%",
+     "delta": "제조업 +3.5%",
+     "period": "2026년 2분기"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "생산성",
+     "산출",
+     "노동시간",
+     "단위노동비용",
+     "시간당 보상"
+    ],
+    "series": [
+     {
+      "name": "전년동기 대비",
+      "values": [
+       2.2,
+       2.5,
+       0.2,
+       1.4,
+       3.7
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "비농업 부문, 2026년 2분기. BLS Productivity and Costs, 2026.8.11.",
+    "source_id": "src_bls_ted_prod_20260811"
+   },
+   "tags": [
+    "생산성",
+    "노동시간",
+    "미국"
+   ],
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "global",
+   "issue_id": "iss-us-productivity-2026q2",
+   "updated_at": "2026-08-12T07:10:00+09:00",
+   "source": {
+    "source_id": "src_bls_ted_prod_20260811",
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_title": "Productivity up 2.2 percent from second quarter 2025 to second quarter 2026",
+    "source_url": "https://www.bls.gov/opub/ted/2026/productivity-up-2-2-percent-from-second-quarter-2025-to-second-quarter-2026.htm",
+    "published_at": "2026-08-11",
+    "license": {
+     "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "텍스트·표",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "BLS Copyright Information(2026-11-20 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+     "attribution_text": "출처: 미국 노동통계국(BLS) The Economics Daily 「Productivity up 2.2 percent from second quarter 2025 to second quarter 2026」(미국 연방정부 저작물·퍼블릭 도메인)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "거시경제와 고용"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_worktime_20260812",
+   "source_name": "고용노동부",
+   "source_title": "실노동시간 단축, 이제는 '지속·확산' 현장의 경험을 통해 안착 방안 모색",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774200",
+   "published_at": "2026-08-12",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「실노동시간 단축, 이제는 '지속·확산' 현장의 경험을 통해 안착 방안 모색」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  },
+  {
+   "source_id": "src_bls_ted_prod_20260811",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Productivity up 2.2 percent from second quarter 2025 to second quarter 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/productivity-up-2-2-percent-from-second-quarter-2025-to-second-quarter-2026.htm",
+   "published_at": "2026-08-11",
+   "license": {
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "텍스트·표",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "BLS Copyright Information(2026-11-20 확인): 'everything that we publish, both in hard copy and electronically, is in the public domain... we do ask that you cite the Bureau of Labor Statistics as the source.'",
+    "attribution_text": "출처: 미국 노동통계국(BLS) The Economics Daily 「Productivity up 2.2 percent from second quarter 2025 to second quarter 2026」(미국 연방정부 저작물·퍼블릭 도메인)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11"
+ ]
+}
