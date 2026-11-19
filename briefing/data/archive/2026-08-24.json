@@ -1,0 +1,255 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-08-24T07:10:00+09:00",
+ "edition": {
+  "date": "2026-08-24",
+  "weekday": "월",
+  "title": "난임치료휴가 유급 2일→4일, 11월 27일부터",
+  "subtitle": "연 6일 중 유급 4일·급여 상한 33만7천원·불리한 처우 금지 벌칙도 시행",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "유급 일수",
+   "value": 0,
+   "unit": "",
+   "value_text": "4일",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 11월 27일부터",
+   "delta_from": "2일에서",
+   "source_id": "src_moel_fertility_leave_20260823",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-24T07:10:00+09:00",
+   "run_id": "br-20260824-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "급여 상한",
+   "value": 0,
+   "unit": "",
+   "value_text": "33만7천원",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 11월 27일부터",
+   "delta_from": "16만8천원에서",
+   "source_id": "src_moel_fertility_leave_20260823",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-24T07:10:00+09:00",
+   "run_id": "br-20260824-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "연간 휴가",
+   "value": 0,
+   "unit": "",
+   "value_text": "6일",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "법정휴가",
+   "source_id": "src_moel_fertility_leave_20260823",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-08-24T07:10:00+09:00",
+   "run_id": "br-20260824-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "난임치료휴가 유급 2일→4일, 11월 27일부터",
+   "kicker": "연 6일 중 유급 4일 · 급여 상한 33만7천원",
+   "three_step": {
+    "what": "고용노동부가 난임치료휴가 활용 가이드를 발간했다. 11월 27일부터 연간 6일의 휴가 가운데 유급 기간이 2일에서 4일로 늘고, 급여 상한도 16만8천원에서 33만7천원으로 오른다.",
+    "evidence": "난임치료휴가는 연 최대 6일을 쓸 수 있는 법정휴가다. 2025년 8월부터 난임검사·배란유도 등 시술 전 준비 단계까지 범위가 넓어졌고, 2026년 5월부터는 진단서 대신 '난임부부 시술비 지원 결정통지서'로 신청할 수 있게 서류가 간소화됐다. 11월 27일부터는 휴가 사용을 이유로 한 불리한 처우 금지 벌칙도 시행된다(2026년 8월 23일, 고용노동부).",
+    "implication": "난임 치료와 일을 병행하는 내담자에게 유급 일수와 신청 서류가 달라진 점을 알려 주고, 회사에 요청할 때 쓸 수 있는 활용 가이드를 함께 보여 주라."
+   },
+   "key_numbers": [
+    {
+     "label": "유급 기간",
+     "value": "2일 → 4일",
+     "delta": "연 6일 중",
+     "period": "2026년 11월 27일"
+    },
+    {
+     "label": "급여 상한",
+     "value": "16만8천원 → 33만7천원",
+     "delta": "—",
+     "period": "2026년 11월 27일"
+    },
+    {
+     "label": "서류 간소화",
+     "value": "2026년 5월",
+     "delta": "시술비 지원 결정통지서",
+     "period": "2026년"
+    },
+    {
+     "label": "불리한 처우 금지",
+     "value": "2026년 11월 27일",
+     "delta": "벌칙 규정 시행",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "일",
+    "labels": [
+     "현행 유급",
+     "11월 27일부터"
+    ],
+    "series": [
+     {
+      "name": "유급 일수",
+      "values": [
+       2,
+       4
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "난임치료휴가 연 6일 중 유급 일수. 고용노동부 2026.8.23.",
+    "source_id": "src_moel_fertility_leave_20260823"
+   },
+   "counselor_question": "치료를 받으면서 일을 계속하려면 회사에 무엇이 가장 필요한가요?",
+   "tags": [
+    "난임",
+    "모성보호",
+    "휴가"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-pension-social",
+   "theme_label": "퇴직과 사회안전망",
+   "region": "kr",
+   "issue_id": "iss-fertility-leave-2026",
+   "updated_at": "2026-08-24T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_fertility_leave_20260823",
+    "source_name": "고용노동부",
+    "source_title": "난임치료휴가, 11월부터 '유급기간 4일로 확대'",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775189",
+    "published_at": "2026-08-23",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「난임치료휴가, 11월부터 '유급기간 4일로 확대'」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "퇴직·사회안전망"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_fertility_leave_20260823",
+   "source_name": "고용노동부",
+   "source_title": "난임치료휴가, 11월부터 '유급기간 4일로 확대'",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775189",
+   "published_at": "2026-08-23",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「난임치료휴가, 11월부터 '유급기간 4일로 확대'」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19"
+ ]
+}
