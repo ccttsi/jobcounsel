@@ -1,0 +1,498 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-19T11:30:00+09:00",
+ "edition": {
+  "no": 9,
+  "date": "2025-10-14",
+  "weekday": "화",
+  "title": "핵융합 160기, 40개국이 짓는다",
+  "reading_minutes": 3,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20251014-1",
+   "date": "2025-10-14",
+   "order": 1,
+   "sector": "s4",
+   "cat": "energy",
+   "lead": true,
+   "title": "핵융합 장치 160기, 투자 100억 달러",
+   "kicker": "IAEA World Fusion Outlook 2025",
+   "summary": "세계에서 가동·건설·계획 중인 핵융합 장치는 160기를 넘고, 약 40개국이 프로그램을 운영한다. 민간·공공 투자는 100억 달러를 넘어섰다.",
+   "key_numbers": [
+    {
+     "label": "융합 장치",
+     "value": "160기 이상",
+     "note": "가동·건설·계획"
+    },
+    {
+     "label": "참여국",
+     "value": "약 40개국",
+     "note": "IAEA"
+    },
+    {
+     "label": "투자",
+     "value": "100억 달러 초과",
+     "note": "민간·공공 합계"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "한국핵융합에너지연구원(KSTAR)",
+     "서울대",
+     "KAIST"
+    ],
+    "glob": [
+     "ITER",
+     "Commonwealth Fusion Systems",
+     "Tokamak Energy",
+     "TAE Technologies"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec",
+     "j-proc"
+    ],
+    "new": [
+     "j-fusion"
+    ]
+   },
+   "source_id": "src_iaea_fusion2025",
+   "question": "핵융합은 아직 전력이 아니라 실험이다. 그런데 실험을 돌리는 직업은 이미 생겼고, 그 경험은 다른 산업에서도 값이 있다.",
+   "subtitle": "가동·건설·계획 160기, 40개국이 프로그램을 돌리고 투자는 100억 달러를 넘었다"
+  },
+  {
+   "id": "ei-20251014-2",
+   "date": "2025-10-14",
+   "order": 2,
+   "sector": "s4",
+   "cat": "energy",
+   "lead": false,
+   "title": "핵융합 160기, 40개국이 동시에 짓는다",
+   "kicker": "IAEA World Fusion Outlook 2025",
+   "summary": "가동·건설·계획 중인 핵융합 장치는 160기를 넘고 약 40개국이 프로그램을 운영한다. 장치가 늘면 플라스마 진단·초전도 자석·진공 부품의 수요가 함께 늘어난다.",
+   "key_numbers": [
+    {
+     "label": "융합 장치",
+     "value": "160기 이상",
+     "note": "가동·건설·계획"
+    },
+    {
+     "label": "참여국",
+     "value": "약 40개국",
+     "note": "IAEA"
+    },
+    {
+     "label": "민간·공공 투자",
+     "value": "100억 달러 초과",
+     "note": "2025년"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "한국핵융합에너지연구원",
+     "서울대",
+     "KAIST",
+     "피코사이언스"
+    ],
+    "glob": [
+     "ITER",
+     "Commonwealth Fusion Systems",
+     "Tokamak Energy",
+     "General Fusion"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec",
+     "j-mech"
+    ],
+    "new": [
+     "j-fusion"
+    ]
+   },
+   "source_id": "src_iaea_fusion2025",
+   "question": "핵융합의 일자리는 발전소가 아니라 부품·진단 장비에서 먼저 생긴다. 초전도·진공 기술자는 다른 산업에서도 귀하다.",
+   "subtitle": "160기 넘는 장치, 40개국 — 플라스마 진단·초전도 자석·진공 부품이 필요하다"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-elec",
+   "name": "전기·전자 엔지니어",
+   "en": "Electrical / Electronics Engineer",
+   "sector": "s2",
+   "role": "전력·제어·회로 시스템을 설계하고 시험한다. 배터리·로봇·충전설비처럼 전기를 다루는 모든 신산업의 아래쪽에서 작동한다.",
+   "ksa": {
+    "k": [
+     "회로이론·전력계통",
+     "전자부품 특성",
+     "전기 안전 규정"
+    ],
+    "s": [
+     "회로 설계·PCB",
+     "계측·디버깅",
+     "인증 시험 대응"
+    ],
+    "a": [
+     "감전·화재 위험을 먼저 보는 습관",
+     "측정값을 믿고 확인하는 태도"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "전자공학",
+    "제어계측공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전자기사",
+    "전기안전기사"
+   ],
+   "insight": "신산업의 화려한 부분은 아니지만, 전원이 꺼지면 모든 것이 멈춘다. 로봇·배터리·수소 설비 모두 이 직무 위에 서 있다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "LG전자",
+     "현대모비스",
+     "효성중공업",
+     "LS일렉트릭"
+    ],
+    "global": [
+     "Texas Instruments",
+     "Infineon",
+     "ABB",
+     "Siemens"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
+  },
+  {
+   "id": "j-proc",
+   "name": "화학·공정 엔지니어",
+   "en": "Chemical / Process Engineer",
+   "sector": "s2",
+   "role": "원료가 제품이 되는 공정의 흐름·온도·압력·촉매를 설계하고 운전 조건을 최적화한다. 수율과 에너지 사용량, 안전을 동시에 맞춘다.",
+   "ksa": {
+    "k": [
+     "반응공학·열역학",
+     "단위조작",
+     "공정 안전"
+    ],
+    "s": [
+     "공정 시뮬레이션",
+     "시운전·트러블슈팅",
+     "환경·안전 규제 대응"
+    ],
+    "a": [
+     "위험을 최악 기준으로 보는 태도",
+     "현장 데이터를 신뢰하는 실증 정신"
+    ]
+   },
+   "study": [
+    "화학공학",
+    "환경공학",
+    "에너지공학"
+   ],
+   "certs": [
+    "화공기사",
+    "가스기사",
+    "산업안전기사"
+   ],
+   "insight": "수소·CCUS·배터리 재활용은 모두 화학공정 위에 세워진 신산업이다. 공정 엔지니어에게 새로운 산업은 새로운 반응과 새로운 규제의 조합이다.",
+   "companies": {
+    "domestic": [
+     "SK이노베이션",
+     "GS칼텍스",
+     "롯데케미칼",
+     "한화솔루션",
+     "포스코"
+    ],
+    "global": [
+     "BASF",
+     "Dow",
+     "ExxonMobil",
+     "Air Liquide"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "공정 탈탄소 진단역",
+     "w": "공정별 배출원을 찾아 감축안을 제시"
+    }
+   ]
+  },
+  {
+   "id": "j-fusion",
+   "name": "핵융합 진단·제어 엔지니어",
+   "en": "Fusion Diagnostics & Control Engineer",
+   "sector": "s4",
+   "role": "플라스마의 온도·밀도·자기장을 실시간으로 측정하고, 그 신호로 코일과 가열 장치를 제어한다. 수천만 도의 상태를 수 밀리초 단위로 유지하는 일이다.",
+   "ksa": {
+    "k": [
+     "플라스마 물리",
+     "계측·신호처리",
+     "실시간 제어"
+    ],
+    "s": [
+     "진단 장비 설계·보정",
+     "제어 알고리즘 구현",
+     "데이터 분석"
+    ],
+    "a": [
+     "한 번의 실험을 아끼는 신중함",
+     "긴 주기 프로젝트를 견디는 집중력"
+    ]
+   },
+   "study": [
+    "물리학",
+    "전기공학",
+    "원자력공학",
+    "기계공학"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "원자력 관련 교육·연구 경력",
+    "전기기사"
+   ],
+   "insight": "핵융합은 아직 산업이 아니라 국가 프로젝트다. 하지만 160기 이상의 장치가 돌아가고 투자 100억 달러를 넘어서며 ‘장비를 만들고 운전하는 직업’이 생겼다.",
+   "companies": {
+    "domestic": [
+     "한국핵융합에너지연구원(KSTAR)",
+     "서울대·KAIST 융합연구팀"
+    ],
+    "global": [
+     "ITER",
+     "Commonwealth Fusion Systems",
+     "Tokamak Energy",
+     "ITER 한국사업단"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "초전도 자석 정비 기술자",
+     "w": "융합 장치의 자석·진공 부품을 유지보수"
+    }
+   ]
+  },
+  {
+   "id": "j-mech",
+   "name": "기계설계 엔지니어",
+   "en": "Mechanical Design Engineer",
+   "sector": "s2",
+   "role": "제품·설비의 구조와 운동을 설계하고 도면·사양서로 확정한다. 강도·진동·열을 계산해 안전 여유를 두고, 제작·조립 과정의 문제를 다시 설계로 되돌린다.",
+   "ksa": {
+    "k": [
+     "재료역학·기구학",
+     "공차·치수 설계",
+     "제작 공정 이해"
+    ],
+    "s": [
+     "CAD·CAE",
+     "시제작·시험",
+     "부품사 협의"
+    ],
+    "a": [
+     "도면 한 장의 책임을 아는 꼼꼼함",
+     "현장 의견을 설계에 반영하는 유연함"
+    ]
+   },
+   "study": [
+    "기계공학",
+    "자동차공학",
+    "항공우주공학"
+   ],
+   "certs": [
+    "일반기계기사",
+    "기계설계기사",
+    "건설기계설비기사"
+   ],
+   "insight": "새 산업이 등장해도 설계 도면을 그리고 안전 여유를 계산하는 사람은 필요하다. 달라지는 것은 도구와 협업 상대다.",
+   "companies": {
+    "domestic": [
+     "현대자동차",
+     "삼성전자",
+     "두산에너빌리티",
+     "한화에어로스페이스"
+    ],
+    "global": [
+     "Bosch",
+     "Siemens",
+     "Caterpillar",
+     "ASML"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "부품 국산화 매칭 코디네이터",
+     "w": "수요기업과 부품사를 잇는 기술 중개"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_iaea_fusion2025",
+   "name": "국제원자력기구(IAEA)",
+   "title": "World Fusion Outlook 2025",
+   "url": "https://www.iaea.org/publications/15935/iaea-world-fusion-outlook-2025",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "사실·수치만 재작성 인용(원문 문장 복제·전재 없음)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "published": "2025-10-14",
+   "track": "B",
+   "usage": "핵융합 장치 160기 이상, 약 40개국 프로그램, 민간·공공 투자 100억 달러 초과"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
