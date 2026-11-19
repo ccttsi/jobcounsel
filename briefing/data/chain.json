@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T03:46:46+09:00",
+ "generated_at": "2026-11-20T03:51:52+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -97,12 +97,25 @@
   "2026-05-07",
   "2026-05-04",
   "2026-04-30",
-  "2026-04-27"
+  "2026-04-27",
+  "2026-04-22",
+  "2026-04-20"
  ],
  "themes": {
   "th-labor-policy": {
    "label": "고용정책과 감독",
    "items": [
+    {
+     "date": "2026-04-20",
+     "card_id": "c01",
+     "title": "소규모 사업장 4,500곳 점검 — 컨설팅과 감독을 나눠서",
+     "kicker": "4,500곳 · 17개 시·도 · 12월 지방 위임",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156756644",
+     "published_at": "2026-04-20"
+    },
     {
      "date": "2026-04-27",
      "card_id": "c01",
@@ -556,9 +569,245 @@
     }
    ]
   },
+  "th-wage-income": {
+   "label": "임금과 소득",
+   "items": [
+    {
+     "date": "2026-04-20",
+     "card_id": "c02",
+     "title": "철거업 노동자 13명 임금 8,700만원 체불한 사업주 구속",
+     "kicker": "13명 · 8,700만원 · 1년간 체불 후 잠적",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156756689",
+     "published_at": "2026-04-20"
+    },
+    {
+     "date": "2026-04-22",
+     "card_id": "c01",
+     "title": "익명제보 감독 774곳, 제보 10건 중 8건이 임금 체불",
+     "kicker": "774곳 · 정기일 미지급 64.5% · 수당 15.5%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156756925",
+     "published_at": "2026-04-21"
+    },
+    {
+     "date": "2026-05-30",
+     "card_id": "c01",
+     "title": "대지급금 3,868억 안 갚은 사업주 2,057명, 첫 신용제재",
+     "kicker": "2,057명 · 3,868억원 · 임금채권보장법 개정 후 첫 제재",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·근로복지공단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764491",
+     "published_at": "2026-05-29"
+    },
+    {
+     "date": "2026-07-10",
+     "card_id": "c01",
+     "title": "임금체불 법정형 5년·5천만원으로, 양형기준도 손본다",
+     "kicker": "3년→5년 · 3천만→5천만원 · 10월 8일 시행",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770236",
+     "published_at": "2026-07-09"
+    },
+    {
+     "date": "2026-07-15",
+     "card_id": "c01",
+     "title": "2027년 최저임금 시간급 10,700원 — 3.7% 올랐다",
+     "kicker": "시간급 10,700원 · 월 2,236,300원 · +3.7%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "최저임금위원회·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770830",
+     "published_at": "2026-07-14"
+    },
+    {
+     "date": "2026-08-20",
+     "card_id": "c02",
+     "title": "도급금액에서 임금부터 떼어 보내는 '임금구분지급제', 내년 시행",
+     "kicker": "건설·조선 30일 초과 도급 · 조선 500억부터 3년 단계",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774814",
+     "published_at": "2026-08-19"
+    },
+    {
+     "date": "2026-09-12",
+     "card_id": "c03",
+     "title": "미국 8월 물가 3.4%, 실질임금은 1년 새 -0.3%",
+     "kicker": "CPI +3.4% · 에너지 +16.3% · 실질 시간당 임금 -0.3%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/cpi_09112026.htm",
+     "published_at": "2026-09-11"
+    },
+    {
+     "date": "2026-09-15",
+     "card_id": "c01",
+     "title": "미국 노동소득분배율 52.8%, 1947년 이후 가장 낮다",
+     "kicker": "2분기 52.8% · 1947년 1분기 65.5%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/labor-share-at-its-lowest-level-52-8-percent-in-second-quarter-2026.htm",
+     "published_at": "2026-09-15"
+    },
+    {
+     "date": "2026-09-18",
+     "card_id": "c02",
+     "title": "미국 민간 고용비용 시간당 46.89달러, 30%는 복리후생",
+     "kicker": "임금 32.82달러 · 복리후생 14.07달러 · 상용직 54.00달러",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-for-private-industry-workers-averaged-46-89-per-hour-worked-in-june-2026.htm",
+     "published_at": "2026-09-17"
+    },
+    {
+     "date": "2026-09-23",
+     "card_id": "c02",
+     "title": "추석 전 7,079개 사업장 점검, 임금체불 105.4억 원 적발",
+     "kicker": "9.1~9.21 · 기관장 현장 방문 59곳",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782951",
+     "published_at": "2026-09-22"
+    },
+    {
+     "date": "2026-09-26",
+     "card_id": "c01",
+     "title": "미국 민간 노동자 71% 의료보험 문은 있는데, 가입은 46%뿐",
+     "kicker": "퇴직연금 접근 72%·가입 52% · 유급병가 81%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/ebs2_09252026.htm",
+     "published_at": "2026-09-25"
+    },
+    {
+     "date": "2026-10-15",
+     "card_id": "c02",
+     "title": "실질임금 1년에 -0.7%, 한 달 새 -0.5%",
+     "kicker": "명목 +0.1% · 물가 +0.6%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/realer_10142026.htm",
+     "published_at": "2026-10-14"
+    },
+    {
+     "date": "2026-10-22",
+     "card_id": "c01",
+     "title": "주간임금 +1.5%, 물가 +3.5% — 실질임금은 1.9% 뒤졌다",
+     "kicker": "중위 주간임금 1,232달러 · 여성 83.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/wkyeng_10212026.htm",
+     "published_at": "2026-10-21"
+    },
+    {
+     "date": "2026-10-30",
+     "card_id": "c01",
+     "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
+     "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-10-31",
+     "card_id": "c02",
+     "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
+     "kicker": "복리후생 3.9% · 의료비 6.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
+     "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-03",
+     "card_id": "c01",
+     "title": "임금을 누르는 건 고용주의 교섭력, 10개국에서 확인",
+     "kicker": "마크업 2010→2023 +0.150 · 도시 거주 -0.065",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "국제노동기구(ILO)",
+     "source_url": "https://www.ilo.org/publications/monopsonic-power-and-wage-dynamics-insights-cross-country-labour-market",
+     "published_at": "2026-11-02"
+    },
+    {
+     "date": "2026-11-04",
+     "card_id": "c01",
+     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
+     "kicker": "근원 2.8% · 생활물가 2.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "국가데이터처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
+     "published_at": "2026-11-03"
+    },
+    {
+     "date": "2026-11-06",
+     "card_id": "c01",
+     "title": "미국 노동비용 3.4%, 봉급 3.1%·복리후생 3.9%",
+     "kicker": "민간 노동비용 +3.4% · 지역 격차 2.0%p",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-up-2-3-percent-in-new-england-4-3-percent-in-pacific-region-over-year-ended-september-2026.htm",
+     "published_at": "2026-11-05"
+    },
+    {
+     "date": "2026-11-14",
+     "card_id": "c04",
+     "title": "'월급방위대 TF' — 월세 공제 1,200만원·근로장려금 360만원",
+     "kicker": "월세 세액공제 한도 1,000→1,200만원 · EITC 최대 360만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "재정경제부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789089",
+     "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-17",
+     "card_id": "c01",
+     "title": "실질임금 0.3%, 반도체 밖 생산성이 멈춰서다",
+     "kicker": "2026년 상반기 실질임금 +0.3% · 비반도체 생산성 연 +1.0%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "한국개발연구원(KDI)·재정경제부",
+     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396",
+     "published_at": "2026-11-16"
+    }
+   ]
+  },
   "th-youth-employment": {
    "label": "청년 고용",
    "items": [
+    {
+     "date": "2026-04-22",
+     "card_id": "c02",
+     "title": "K-뉴딜 아카데미 시동, 운영기관과 참여기업 모집",
+     "kicker": "4.22~5.22 모집 · 대기업 주도 · 추경 신설",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156756931",
+     "published_at": "2026-04-21"
+    },
     {
      "date": "2026-04-30",
      "card_id": "c01",
@@ -1447,209 +1696,6 @@
      "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
      "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
      "published_at": "2026-11-19"
-    }
-   ]
-  },
-  "th-wage-income": {
-   "label": "임금과 소득",
-   "items": [
-    {
-     "date": "2026-05-30",
-     "card_id": "c01",
-     "title": "대지급금 3,868억 안 갚은 사업주 2,057명, 첫 신용제재",
-     "kicker": "2,057명 · 3,868억원 · 임금채권보장법 개정 후 첫 제재",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부·근로복지공단",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156764491",
-     "published_at": "2026-05-29"
-    },
-    {
-     "date": "2026-07-10",
-     "card_id": "c01",
-     "title": "임금체불 법정형 5년·5천만원으로, 양형기준도 손본다",
-     "kicker": "3년→5년 · 3천만→5천만원 · 10월 8일 시행",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770236",
-     "published_at": "2026-07-09"
-    },
-    {
-     "date": "2026-07-15",
-     "card_id": "c01",
-     "title": "2027년 최저임금 시간급 10,700원 — 3.7% 올랐다",
-     "kicker": "시간급 10,700원 · 월 2,236,300원 · +3.7%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "최저임금위원회·고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156770830",
-     "published_at": "2026-07-14"
-    },
-    {
-     "date": "2026-08-20",
-     "card_id": "c02",
-     "title": "도급금액에서 임금부터 떼어 보내는 '임금구분지급제', 내년 시행",
-     "kicker": "건설·조선 30일 초과 도급 · 조선 500억부터 3년 단계",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156774814",
-     "published_at": "2026-08-19"
-    },
-    {
-     "date": "2026-09-12",
-     "card_id": "c03",
-     "title": "미국 8월 물가 3.4%, 실질임금은 1년 새 -0.3%",
-     "kicker": "CPI +3.4% · 에너지 +16.3% · 실질 시간당 임금 -0.3%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/cpi_09112026.htm",
-     "published_at": "2026-09-11"
-    },
-    {
-     "date": "2026-09-15",
-     "card_id": "c01",
-     "title": "미국 노동소득분배율 52.8%, 1947년 이후 가장 낮다",
-     "kicker": "2분기 52.8% · 1947년 1분기 65.5%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/labor-share-at-its-lowest-level-52-8-percent-in-second-quarter-2026.htm",
-     "published_at": "2026-09-15"
-    },
-    {
-     "date": "2026-09-18",
-     "card_id": "c02",
-     "title": "미국 민간 고용비용 시간당 46.89달러, 30%는 복리후생",
-     "kicker": "임금 32.82달러 · 복리후생 14.07달러 · 상용직 54.00달러",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-for-private-industry-workers-averaged-46-89-per-hour-worked-in-june-2026.htm",
-     "published_at": "2026-09-17"
-    },
-    {
-     "date": "2026-09-23",
-     "card_id": "c02",
-     "title": "추석 전 7,079개 사업장 점검, 임금체불 105.4억 원 적발",
-     "kicker": "9.1~9.21 · 기관장 현장 방문 59곳",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782951",
-     "published_at": "2026-09-22"
-    },
-    {
-     "date": "2026-09-26",
-     "card_id": "c01",
-     "title": "미국 민간 노동자 71% 의료보험 문은 있는데, 가입은 46%뿐",
-     "kicker": "퇴직연금 접근 72%·가입 52% · 유급병가 81%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/ebs2_09252026.htm",
-     "published_at": "2026-09-25"
-    },
-    {
-     "date": "2026-10-15",
-     "card_id": "c02",
-     "title": "실질임금 1년에 -0.7%, 한 달 새 -0.5%",
-     "kicker": "명목 +0.1% · 물가 +0.6%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/realer_10142026.htm",
-     "published_at": "2026-10-14"
-    },
-    {
-     "date": "2026-10-22",
-     "card_id": "c01",
-     "title": "주간임금 +1.5%, 물가 +3.5% — 실질임금은 1.9% 뒤졌다",
-     "kicker": "중위 주간임금 1,232달러 · 여성 83.4%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/wkyeng_10212026.htm",
-     "published_at": "2026-10-21"
-    },
-    {
-     "date": "2026-10-30",
-     "card_id": "c01",
-     "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
-     "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "고용노동부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
-     "published_at": "2026-10-29"
-    },
-    {
-     "date": "2026-10-31",
-     "card_id": "c02",
-     "title": "미국 임금 3.1%, 물가 반영하면 -0.6%로 줄었다",
-     "kicker": "복리후생 3.9% · 의료비 6.4%",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS)",
-     "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
-     "published_at": "2026-10-30"
-    },
-    {
-     "date": "2026-11-03",
-     "card_id": "c01",
-     "title": "임금을 누르는 건 고용주의 교섭력, 10개국에서 확인",
-     "kicker": "마크업 2010→2023 +0.150 · 도시 거주 -0.065",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "국제노동기구(ILO)",
-     "source_url": "https://www.ilo.org/publications/monopsonic-power-and-wage-dynamics-insights-cross-country-labour-market",
-     "published_at": "2026-11-02"
-    },
-    {
-     "date": "2026-11-04",
-     "card_id": "c01",
-     "title": "물가 2.8%, 반년째 3% 안팎 — 석유류가 14.9% 올랐다",
-     "kicker": "근원 2.8% · 생활물가 2.6%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "국가데이터처",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787662",
-     "published_at": "2026-11-03"
-    },
-    {
-     "date": "2026-11-06",
-     "card_id": "c01",
-     "title": "미국 노동비용 3.4%, 봉급 3.1%·복리후생 3.9%",
-     "kicker": "민간 노동비용 +3.4% · 지역 격차 2.0%p",
-     "category": "해외 노동시장",
-     "region": "global",
-     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-     "source_url": "https://www.bls.gov/opub/ted/2026/compensation-costs-up-2-3-percent-in-new-england-4-3-percent-in-pacific-region-over-year-ended-september-2026.htm",
-     "published_at": "2026-11-05"
-    },
-    {
-     "date": "2026-11-14",
-     "card_id": "c04",
-     "title": "'월급방위대 TF' — 월세 공제 1,200만원·근로장려금 360만원",
-     "kicker": "월세 세액공제 한도 1,000→1,200만원 · EITC 최대 360만원",
-     "category": "국내 고용행정",
-     "region": "kr",
-     "source_name": "재정경제부",
-     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789089",
-     "published_at": "2026-11-13"
-    },
-    {
-     "date": "2026-11-17",
-     "card_id": "c01",
-     "title": "실질임금 0.3%, 반도체 밖 생산성이 멈춰서다",
-     "kicker": "2026년 상반기 실질임금 +0.3% · 비반도체 생산성 연 +1.0%",
-     "category": "국내 고용지표",
-     "region": "kr",
-     "source_name": "한국개발연구원(KDI)·재정경제부",
-     "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396",
-     "published_at": "2026-11-16"
     }
    ]
   },
