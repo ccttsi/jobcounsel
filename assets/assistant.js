@@ -422,6 +422,11 @@
     el.read.hidden = true;
     find.appendChild(el.read);
 
+    /* 선참조 지도가 집은 「먼저 볼 곳」— 색인 전체를 뒤지기 전에 섹터부터 좁힌다. */
+    el.route = t('div', 'jca-read jca-route');
+    el.route.hidden = true;
+    find.appendChild(el.route);
+
     el.secTitle = t('div', 'jca-sec');
     find.appendChild(el.secTitle);
     el.list = t('ul', 'jca-list');
@@ -808,11 +813,29 @@
         el.read.appendChild(t('span', 'jca-read-k', w));
       });
       info.added.slice(0, 6).forEach(function (a) {
-        el.read.appendChild(t('span', 'jca-read-k jca-read-add', a.word));
+        var chip = t('span', 'jca-read-k jca-read-add', a.word);
+        if (a.why) chip.title = a.why;
+        el.read.appendChild(chip);
       });
       if (info.situation) el.read.appendChild(t('span', 'jca-read-k jca-read-sit', '상담 상황으로 읽음'));
     } else {
       el.read.hidden = true;
+    }
+
+    /* 선참조 — 작은 지도가 고른 섹터 2곳을 먼저 보여 준다(누르면 그 섹터로). */
+    el.route.innerHTML = '';
+    var rt = q && search && search.route ? search.route(q, { limit: 2 }) : [];
+    if (q && rt.length) {
+      el.route.hidden = false;
+      el.route.appendChild(t('span', 'jca-read-l', '먼저 볼 곳'));
+      rt.forEach(function (r) {
+        var a = t('a', 'jca-read-k jca-read-go', (r.no ? r.no + ' ' : '') + r.title);
+        a.href = href(r.url);
+        if (r.why && r.why.length) a.title = r.why.join(' · ');
+        el.route.appendChild(a);
+      });
+    } else {
+      el.route.hidden = true;
     }
 
     el.secTitle.textContent = q ? (st.results.length ? '자료실에서 찾은 것 · ' + st.results.length + '건' : '') : '';
@@ -1075,6 +1098,15 @@
     var body = { question: q, evidence: evidence(q), provider: st.provider, stream: true };
     if (st.mode) body.mode = st.mode;
     if (st.webOn) body.websearch = true;
+    /* 선참조 지도 — 비서 지침이 「먼저 보는」 섹터 지도와, 지도가 집은 후보 섹터를 함께 받는다. */
+    var S = window.JCAssistSearch;
+    if (S && S.map && S.preface && S.preface()) {
+      body.map = S.map(30);
+      var rt0 = S.route ? S.route(q, { limit: 3 }) : [];
+      if (rt0.length) {
+        body.route = rt0.map(function (r) { return { no: r.no || '', title: r.title, url: r.url, why: r.why || [] }; });
+      }
+    }
 
     /* 첫 글자가 오는 대로 말풍선에 붙인다(마커 [[REFS:…]] 부분은 가린다). */
     function paintLive() {

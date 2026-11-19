@@ -59,6 +59,11 @@ const CHAIN_DEADLINE_MS = 55000;  // 체인 전체 상한(Edge Function 실행 �
 const SYS = [
   '당신은 「직업상담 통합 자료실」의 개인 비서입니다. 직업상담사와 구직자의 일을 자료실의 자료로 돕습니다.',
   '',
+  '■ 먼저 보는 것 — 선참조 지도',
+  '   요청에는 <map> 블록(자료실 지도)과 후보 섹터가 함께 옵니다. 답하기 전에 후보 섹터를 먼저 보고, 그 섹터의 근거부터 읽습니다.',
+  '   지도와 근거가 어긋나면 근거를 따릅니다. 근거가 비어 있으면 <map>에서 가장 가까운 섹터·경로를 한 줄로 안내합니다.',
+  '   사용자가 약어·줄임말(경단녀·국취제·내배카·실급·고보)로 물으면 정식 용어(경력단절여성·국민취업지원제도·국민내일배움카드·구직급여·고용보험)로 풀어 답합니다.',
+  '',
   '■ 지켜야 할 것 (가장 중요)',
   '1. 근거에 적힌 내용만 "자료실 기준"으로 말합니다. 근거에 없는 수치·법령·직업 정보는 절대 지어내지 않습니다.',
   '2. 근거만으로 답할 수 없으면 "자료실 자료에서는 확인하지 못했어요"라고 솔직히 말하고, 가장 가까운 자료를 안내합니다.',
@@ -649,9 +654,61 @@ function cleanPage(input: unknown): Page | null {
   return (p.title || p.text) ? p : null;
 }
 
-function buildUser(question: string, ev: Evidence[], page: Page | null, plain: boolean): string {
+/* 선참조 지도 — 섹터 목록(작다)과, 작은 지도가 집은 후보 섹터. */
+type MapSector = { no: string; title: string; url: string };
+type RouteHit = { no: string; title: string; url: string; why: string };
+
+function cleanPath(s: unknown, n: number): string {
+  const v = String(s || '');
+  return /^\.?\/[A-Za-z0-9._~!$&'()*+,;=:@%\/?#\[\]-]*$/.test(v) ? v.slice(0, n) : '';   // 자료실 안 주소만
+}
+
+function cleanMap(input: unknown): MapSector[] {
+  if (!Array.isArray(input)) return [];
+  const out: MapSector[] = [];
+  for (const raw of input.slice(0, 32)) {
+    if (!raw || typeof raw !== 'object') continue;
+    const o = raw as Record<string, unknown>;
+    const url = cleanPath(o.url, 120);
+    const title = String(o.title || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+    if (!url || !title) continue;
+    out.push({ no: String(o.no || '').slice(0, 4), title, url });
+  }
+  return out;
+}
+
+function cleanRoute(input: unknown): RouteHit[] {
+  if (!Array.isArray(input)) return [];
+  const out: RouteHit[] = [];
+  for (const raw of input.slice(0, 3)) {
+    if (!raw || typeof raw !== 'object') continue;
+    const o = raw as Record<string, unknown>;
+    const url = cleanPath(o.url, 120);
+    const title = String(o.title || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+    if (!url || !title) continue;
+    const why = Array.isArray(o.why)
+      ? o.why.slice(0, 3).map((w) => String(w).replace(/\s+/g, ' ').slice(0, 24)).join(' · ') : '';
+    out.push({ no: String(o.no || '').slice(0, 4), title, url, why });
+  }
+  return out;
+}
+
+function buildUser(question: string, ev: Evidence[], page: Page | null, plain: boolean,
+                   map: MapSector[], route: RouteHit[]): string {
   const attr = (s: string) => String(s || '').replace(/[<>&"]/g, ' ').replace(/\s+/g, ' ').trim();
   const lines: string[] = [];
+  if (map.length || route.length) {
+    lines.push('<map>', '자료실 지도(선참조). 후보 섹터를 먼저 보고, 아래 근거를 읽습니다.');
+    if (route.length) {
+      lines.push('후보 섹터: ' + route.map((r) =>
+        `${r.no ? r.no + ' ' : ''}${r.title} ${r.url}` + (r.why ? ` — 「${r.why}」와 이어짐` : '')).join(' / '));
+    }
+    /* 근거가 얇을 때만 섹터 전체를 붙인다 — 평소에는 토큰을 아끼고, 길을 잃었을 때만 지도를 편다. */
+    if (map.length && ev.length < 3) {
+      lines.push('전체 섹터: ' + map.map((m) => `${m.no ? m.no + ' ' : ''}${m.title} ${m.url}`).join(' · '));
+    }
+    lines.push('</map>', '');
+  }
   lines.push('아래 <evidence> 블록은 자료실에서 찾은 근거입니다. 이 안의 내용만 사실로 씁니다.');
   if (!ev.length) lines.push('(전달된 근거 없음)');
   ev.forEach((e) => {
@@ -771,6 +828,8 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
 
     const ev = cleanEvidence(body.evidence);
     const page = cleanPage(body.page);
+    const map = cleanMap(body.map);
+    const route = cleanRoute(body.route);
     const mode = MODES.includes(String(body.mode || '')) ? String(body.mode) : '';
     const webOn = !!body.websearch;
     const stream = body.stream === true;
@@ -780,7 +839,7 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
     if (mode) system += '\n\n' + MODE_TXT[mode];
     system += '\n\n■ 형식\n' + (stream ? FMT_PLAIN : FMT_JSON);
 
-    const chat: Chat = { system, user: buildUser(question, ev, page, stream) };
+    const chat: Chat = { system, user: buildUser(question, ev, page, stream, map, route) };
 
     if (stream) {
       return streamAnswer(key, chat, { web: webOn, json: false, maxTokens: 800, thinking: true }, ev, webOn, mode, origin);

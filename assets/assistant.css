@@ -223,6 +223,9 @@
 }
 .jca-read-add { border-style: dashed; color: var(--_acc); border-color: color-mix(in srgb, var(--_acc) 40%, var(--_line)); }
 .jca-read-sit { background: color-mix(in srgb, var(--_acc) 10%, transparent); color: var(--_acc); border-color: transparent; }
+.jca-read-go { text-decoration: none; color: var(--_acc); border-color: color-mix(in srgb, var(--_acc) 34%, var(--_line)); }
+.jca-read-go:hover { background: color-mix(in srgb, var(--_acc) 9%, var(--_panel)); }
+.jca-route { margin-top: 6px; }
 
 .jca-sec { margin: 12px 2px 8px; font-size: 11.5px; font-weight: 700; letter-spacing: .03em; color: var(--_dim); }
 .jca-sec:empty { display: none; }

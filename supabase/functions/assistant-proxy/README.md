@@ -120,6 +120,7 @@ curl -s -X POST 'https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant
 - 암호문은 `AAD = user_id:gemini` 로 묶여 있어 다른 행에 복사해도 풀리지 않습니다.
 - 질문은 1,200자, 근거는 6개·각 400자, 지금 열린 자료는 700자로 자릅니다.
 - 근거 주소는 자료실 안 상대 경로만 받습니다(`/`, `./` 로 시작).
+- 선참조 지도(`map`: 섹터 32개까지)와 후보 섹터(`route`: 3개까지)도 같은 주소 규칙으로 검사한 뒤 프롬프트에 넣습니다.
 - 한 사용자 분당 12회. 401/403이면 「키가 거부되었습니다」, 무료 모델 한도를 모두 쓰면 「한도」로 알려 줍니다.
 - 질의는 `stream: true` 면 **SSE** 로 글자를 바로 흘려보냅니다(첫 글자 전 `429·404·5xx` 면 다음 무료 모델로 갈아탐). 스트리밍 답은 평문이고 마지막 줄 `[[REFS:e1,e2]]` 만 근거 번호로 떼어 봅니다. `stream` 이 없으면 기존 JSON 응답 그대로입니다.
 - 속도: `thinkingConfig.thinkingLevel='low'`, 웹 교차 확인이 꺼져 있으면 `google_search` 를 붙이지 않습니다(미지원 모델이 400 을 주면 그 설정만 빼고 재시도).
@@ -133,10 +134,30 @@ curl -s -X POST 'https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant
 자료실 데이터가 바뀌면 색인도 다시 만듭니다.
 
 ```bash
-python3 assistant/build_index.py          # assistant/data/index.json + index-dirs.json
+python3 assistant/build_index.py          # index.json + index-dirs.json + rag-preface.json
 python3 assistant/build_index.py --check  # 쓰지 않고 크기만 확인
 ```
 
 - 원본 데이터는 읽기만 하고 바꾸지 않습니다.
 - 섹터 목록은 `assets/tools.js` 에서 읽으므로 섹터가 늘면 자동으로 따라갑니다.
-- 지금 크기: `index.json` 약 460KB · `index-dirs.json` 약 320KB (gzip 전송 시 각각 약 95KB).
+- 지금 크기: `index.json` 약 540KB · `index-dirs.json` 약 313KB · 선참조 지도 `rag-preface.json` 약 30KB (gzip 전송 시 114KB · 89KB · 9KB).
+
+### 선참조 지도(`assistant/data/rag-preface.json`)
+
+비서가 **맨 먼저** 받는 작은 지도입니다. 색인(540KB)을 받기 전에 이걸로 ① 현장 약어를 정식 용어로
+펼치고 ② 어느 섹터부터 볼지 좁힙니다. 서버 프롬프트에도 이 지도와 후보 섹터가 함께 가서,
+답을 쓰기 전에 섹터를 먼저 확인하게 합니다(근거가 3건 미만일 때만 섹터 전체 목록도 붙입니다).
+
+| 칸 | 내용 |
+|---|---|
+| `dict` | 약어 사전 — 원본은 `assistant/aliases.json`(정식 용어 · 현장말/쓰다 만 앞부분 · 먼저 볼 섹터 · 한 줄 설명) |
+| `sectors` | 섹터마다 번호·제목·주소·배지·한 줄 설명·핵심 낱말·문서 수 |
+| `terms` | 낱말 하나로 섹터를 바로 집는 길잡이(낱말 → 섹터) |
+
+**약어를 더하거나 고칠 때는 `assistant/aliases.json` 만 손대고** `python3 assistant/build_index.py` 를 다시 돌립니다.
+사전의 섹터 이름이 `assets/tools.js` 와 어긋나면 빌드가 실패하므로, 섹터를 지우거나 이름을 바꿀 때는
+`aliases.json` 의 `s` 도 함께 고칩니다.
+
+```bash
+python3 ops/scripts/assistant_search_test.py   # 약어·선참조 검색 회귀(실제 Chromium)
+```

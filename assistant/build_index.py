@@ -24,6 +24,14 @@ index.json
 index-dirs.json
     {"v":1,"built":"…","company":[[이름,업종,직원수,분류],…],"taxonomy":[[이름,KECO,KSCO],…]}
     분류: 0=대기업 1=중견기업 2=공공기관
+
+rag-preface.json — 비서가 **맨 먼저** 보는 선참조 지도(작다)
+    {"v":1,"built":"…","dict":[…],"sectors":[…],"terms":{…}}
+    dict    = [{c:정식 용어, a:[현장말·쓰다 만 앞부분], s:[먼저 볼 섹터], x:한 줄 설명}] —
+              원본은 `assistant/aliases.json`. 여기서는 그대로 옮겨 담기만 한다.
+    sectors = [{id,no,title,url,b:배지,d:한 줄,c? 없음,k:핵심 낱말(쉼표),n:문서 수}]
+    terms   = {낱말: [섹터 id…]} — 낱말 하나로 섹터를 바로 좁히는 길잡이.
+    이 파일은 섹터 목록(assets/tools.js)에서 매번 다시 만들어진다. 섹터가 늘면 저절로 따라온다.
 """
 import json
 import os
@@ -35,9 +43,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 OUT = os.path.join(HERE, 'data', 'index.json')
 OUT_DIRS = os.path.join(HERE, 'data', 'index-dirs.json')
+OUT_PREFACE = os.path.join(HERE, 'data', 'rag-preface.json')
 
 COMPANY_KEEP = 1200          # 기업: 직원 수 큰 순으로 이만큼(공공기관은 전부)
 COMPANY_MIN = 30             # 직원 수가 이보다 적은 법인은 넣지 않는다
+KEY_CAP = 240                 # 문서 낱말(k) 상한 — 약어 펼친 형태까지 들어가게 210에서 올렸다
 
 _ws = re.compile(r'\s+')
 
@@ -121,6 +131,51 @@ def read_text(*parts):
             return f.read()
     except Exception:
         return ''
+
+
+# ---------------------------------------------------------------- 현장 약어 사전
+
+ALIAS_ENTRIES = []   # [{'c','a','s','x'}]
+ALIAS_PAIRS = []     # [(현장말, 정식 용어)] — 색인 낱말에 펼친 형태를 붙일 때 씀
+
+
+def load_aliases():
+    """`assistant/aliases.json` — 직업상담 현장 약어·줄임말 사전(원본)."""
+    global ALIAS_ENTRIES, ALIAS_PAIRS
+    d = read_json('assistant', 'aliases.json')
+    if not isinstance(d, dict):
+        print('  · 약어 사전(assistant/aliases.json)을 읽지 못했습니다.', file=sys.stderr)
+        return False
+    seen_c, pairs, entries = set(), [], []
+    for e in d.get('entries') or []:
+        c = _ws.sub(' ', str(e.get('c') or '')).strip()
+        if not c or c in seen_c:
+            continue
+        seen_c.add(c)
+        forms = []
+        for a in e.get('a') or []:
+            a = _ws.sub(' ', str(a)).strip()
+            if a and a != c and a not in forms:
+                forms.append(a)
+        entries.append({'c': c, 'a': forms,
+                        's': [str(x) for x in (e.get('s') or [])],
+                        'x': str(e.get('x') or '')})
+        pairs.append((c, c))
+        for f in forms:
+            pairs.append((f, c))
+    ALIAS_ENTRIES, ALIAS_PAIRS = entries, pairs
+    return True
+
+
+def alias_forms(text):
+    """문서 본문에 정식 용어가 있으면, 그 문서에 현장말(경단녀·경단·경력단절)을 같이 붙인다.
+    「경단」처럼 색인에 없는 말로도 문서를 찾게 하는 첫 번째 장치(두 번째는 search.js 의 확장기)."""
+    ct = _ws.sub('', str(text or ''))
+    out = []
+    for form, canon in ALIAS_PAIRS:
+        if canon in ct:
+            out.append(form)
+    return out
 
 
 # ---------------------------------------------------------------- 섹터 장부
@@ -417,6 +472,25 @@ def docs_library(add):
             clip((pick('sub') + ' ' + pick('blurb')).replace('<br>', ' '), 155), './library/')
 
 
+TR_CAT = {'job': '직무·업무', 'industry': '산업·현장', 'edu': '학력·자격', 'policy': '고용제도'}
+
+
+def docs_translator(add):
+    """내담자 언어 번역기(translator/data/terms.json) — 현장 용어·약어 한 줄 풀이."""
+    d = read_json('translator', 'data', 'terms.json')
+    if not d:
+        return
+    cats = {c.get('id'): c.get('name', '') for c in d.get('categories') or []}
+    for t in d.get('terms') or []:
+        term = str(t.get('term') or '').strip()
+        if not term:
+            continue
+        add('translator:' + str(t.get('id') or term), 'translator', term,
+            keys(t.get('full'), t.get('ko'), t.get('aka'), TR_CAT.get(t.get('cat'), cats.get(t.get('cat'), ''))),
+            clip(t.get('easy'), 150),
+            './translator/?q=' + _q(term))
+
+
 def docs_preset(add):
     """상담 프리셋(assets/presets.js) — 상황·유형에 맞는 상담 진행 코스."""
     src = read_text('assets', 'presets.js')
@@ -547,9 +621,78 @@ def c_rev(c):
         return 0.0
 
 
+# ---------------------------------------------------------------- 선참조 지도
+
+def sector_keywords(s):
+    """섹터 한 장을 가리키는 핵심 낱말 — 색인 낱말·배지·태그·약어 사전 정식어. 앞에 오는 것부터 중요하다."""
+    out, seen = [], set()
+
+    def put(w):
+        w = _ws.sub(' ', str(w or '')).strip().strip(',')
+        if not w or len(w) < 2 or len(w) > 14 or w in seen:
+            return
+        seen.add(w)
+        out.append(w)
+
+    for t in SECTOR_KW.get(s['id'], '').split(','):
+        put(t)
+    put(s['badge'])
+    for t in s['tags'][:8]:
+        put(t)
+    # 이 섹터를 먼저 보라고 적힌 약어 사전 항목 — 「경단」→ 번역기·포털·환승노선…
+    for e in ALIAS_ENTRIES:
+        if s['id'] in e['s']:
+            put(e['c'])
+            for f in e['a'][:2]:
+                put(f)
+    keep, n = [], 0
+    for w in out:
+        if len(keep) >= 20 or n + len(w) > 200:
+            break
+        keep.append(w)
+        n += len(w) + 1
+    return keep
+
+
+def build_preface(sectors, counts):
+    rows, terms = [], {}
+    for s in sectors:
+        ks = sector_keywords(s)
+        rows.append({
+            'id': s['id'], 'no': s['no'], 'title': s['title'], 'url': s['path'],
+            'b': s['badge'], 'd': clip(s['desc'], 90), 'k': ','.join(ks), 'n': counts.get(s['id'], 0),
+        })
+        for kw in ks:
+            ids = terms.setdefault(kw, [])
+            if s['id'] not in ids:
+                ids.append(s['id'])
+    return {
+        'v': 1,
+        'built': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
+        'dict': ALIAS_ENTRIES,
+        'sectors': rows,
+        'terms': terms,
+    }
+
+
+def check_aliases(by_id):
+    """약어 사전이 섹터 장부(assets/tools.js)와 어긋나지 않는지 본다. 어긋나면 실패로 돌린다."""
+    bad = 0
+    for e in ALIAS_ENTRIES:
+        if not e['s']:
+            print('  · 약어 「%s」에 먼저 볼 섹터가 없습니다.' % e['c'], file=sys.stderr)
+            bad += 1
+        for sid in e['s']:
+            if sid not in by_id:
+                print('  · 약어 「%s」의 섹터 「%s」가 섹터 장부에 없습니다.' % (e['c'], sid), file=sys.stderr)
+                bad += 1
+    return bad
+
+
 # ---------------------------------------------------------------- 조립
 
 def build():
+    load_aliases()
     sectors = read_tools()
     # 비서 전용 «섹터» — 상담 프리셋(자료실 섹터 장부와는 별개. 검색에만 쓴다)
     sectors = sectors + [{'id': 'preset', 'no': '', 'title': '상담 프리셋', 'desc': '상황·유형에 맞는 상담 진행 순서(단계·질문·체크포인트)',
@@ -567,7 +710,12 @@ def build():
         # 분류 이름 한 줄짜리(신산업 분류 등)는 섹터 낱말을 붙이지 않는다 — 얕은 문서가 위로 올라온다.
         shallow = ':cat:' in i or i.startswith('sector:')
         kk = (kws if shallow else (SECTOR_KW.get(sid, '') + ',' + kws)).strip(',')
-        docs.append({'i': i, 's': sid, 't': clip(title, 100), 'k': kk[:210],
+        # 약어 사전: 이 문서가 정식 용어를 다루면 현장말(경단녀·경단·국취제…)도 함께 적는다.
+        have = _ws.sub('', kk)
+        extra = [f for f in alias_forms(title + ' ' + kk + ' ' + fact) if f not in have]
+        if extra:
+            kk = (kk + ',' + ','.join(extra)).strip(',')
+        docs.append({'i': i, 's': sid, 't': clip(title, 100), 'k': kk[:KEY_CAP],
                      'x': fact[:175], 'u': url or s['path']})
         counts[sid] = counts.get(sid, 0) + 1
 
@@ -578,7 +726,7 @@ def build():
     for fn in (docs_theory, docs_cert, docs_law, docs_thermometer, docs_emerging, docs_briefing,
                docs_interview, docs_surgery, docs_reality, docs_transit, docs_portals, docs_labor,
                docs_grad, docs_decal, docs_parsons, docs_library, docs_manual, docs_dacum,
-               docs_hud, docs_vpi, docs_preset):
+               docs_hud, docs_vpi, docs_translator, docs_preset):
         try:
             fn(add)
         except Exception as e:
@@ -592,21 +740,31 @@ def build():
                     for s in sectors],
         'docs': docs,
     }
+    payload['_preface'] = build_preface(sectors, counts)
+    payload['_alias_bad'] = check_aliases(by_id)
     return payload, counts, sectors
 
 
 def main():
     payload, counts, sectors = build()
+    preface = payload.pop('_preface')
+    alias_bad = payload.pop('_alias_bad')
     dirs = build_dirs()
     blob = json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
     blob2 = json.dumps(dirs, ensure_ascii=False, separators=(',', ':'))
-    a, b = len(blob.encode()), len(blob2.encode())
+    blob3 = json.dumps(preface, ensure_ascii=False, separators=(',', ':'))
+    a, b, c = len(blob.encode()), len(blob2.encode()), len(blob3.encode())
     print('섹터 %d개 · 문서 %d개 · %.0f KB' % (len(sectors), len(payload['docs']), a / 1024))
     ntax = len(dirs['taxonomy'].split('\n')) if dirs['taxonomy'] else 0
     print('디렉터리 · 기업 %d · 직업분류 %d · %.0f KB' % (len(dirs['company']), ntax, b / 1024))
-    print('합계 %.0f KB (gzip 전)' % ((a + b) / 1024))
+    print('선참조 · 약어 %d개 · 섹터 %d개 · 낱말 %d개 · %.1f KB'
+          % (len(preface['dict']), len(preface['sectors']), len(preface['terms']), c / 1024))
+    print('합계 %.0f KB (gzip 전)' % ((a + b + c) / 1024))
     for k, v in sorted(counts.items(), key=lambda kv: -kv[1]):
         print('  %-14s %5d' % (k, v))
+    if alias_bad:
+        print('✗ 약어 사전에 섹터 장부와 어긋난 항목 %d개' % alias_bad)
+        return 1
     if '--check' in sys.argv:
         return 0
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
@@ -614,8 +772,11 @@ def main():
         f.write(blob)
     with open(OUT_DIRS, 'w', encoding='utf-8') as f:
         f.write(blob2)
+    with open(OUT_PREFACE, 'w', encoding='utf-8') as f:
+        f.write(blob3)
     print('→ %s' % os.path.relpath(OUT, ROOT))
     print('→ %s' % os.path.relpath(OUT_DIRS, ROOT))
+    print('→ %s' % os.path.relpath(OUT_PREFACE, ROOT))
     return 0
 
 
