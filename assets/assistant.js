@@ -100,7 +100,7 @@
     busy: false, keys: [], keysLoaded: false,
     provider: 'gemini', msg: '', msgKind: '',
     thread: [], waitTurn: '',
-    ctxOn: true, autoOpen: false, webOn: false, suggestOn: true, welcome: true, mode: '', step: 0, guideOpen: true,
+    ktest: null, autoOpen: false, webOn: false, suggestOn: true, welcome: true, mode: '', step: 0, guideOpen: true,
     recent: [], sug: null
   };
   var el = {};
@@ -132,7 +132,6 @@
     } catch (e) {}
     try {
       var p = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
-      if (typeof p.ctxOn === 'boolean') st.ctxOn = p.ctxOn;
       if (typeof p.autoOpen === 'boolean') st.autoOpen = p.autoOpen;
       if (typeof p.webOn === 'boolean') st.webOn = p.webOn;
       if (typeof p.suggestOn === 'boolean') st.suggestOn = p.suggestOn;
@@ -157,7 +156,7 @@
   function savePref() {
     try {
       localStorage.setItem(PREF_KEY, JSON.stringify({
-        ctxOn: st.ctxOn, autoOpen: st.autoOpen, webOn: st.webOn,
+        autoOpen: st.autoOpen, webOn: st.webOn,
         suggestOn: st.suggestOn, welcome: st.welcome, provider: st.provider, mode: st.mode,
         lastQ: st.lastQ
       }));
@@ -170,31 +169,6 @@
     st.recent.push({ path: path, title: title, ts: Date.now() });
     st.recent = st.recent.slice(-8);
     try { localStorage.setItem(RECENT_KEY, JSON.stringify(st.recent)); } catch (e) {}
-  }
-
-  /* ---------- 지금 열려 있는 자료 ---------- */
-  function isHubPage() {
-    var p = location.pathname;
-    return /\/(index\.html)?$/.test(p) && !/\/[a-z0-9_-]+\/index\.html$/i.test(p) && p.split('/').filter(Boolean).length === 0;
-  }
-  function pageCtx() {
-    var main = document.querySelector('main') || document.querySelector('[data-jc-content]') || document.body;
-    var h = main ? main.querySelector('h1, h2') : null;
-    var meta = document.querySelector('meta[name="description"]');
-    var text = main ? String(main.innerText || '') : '';
-    text = text.replace(/\s+/g, ' ').trim();
-    return {
-      path: location.pathname + location.search + location.hash,
-      title: (document.title || '').slice(0, 120),
-      heading: h ? String(h.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 120) : '',
-      desc: meta ? String(meta.content || '').slice(0, 240) : '',
-      text: isHubPage() ? '' : text.slice(0, 700)
-    };
-  }
-  function ctxLabel() {
-    var p = pageCtx();
-    var nm = (isHubPage() ? p.title : (p.heading || p.title)) || p.path;
-    return nm.length > 34 ? nm.slice(0, 33) + '…' : nm;
   }
 
   /* ---------- 서버 호출 ---------- */
@@ -313,19 +287,6 @@
     el.chatSug = t('div', 'jca-sug');
     el.chatSug.hidden = true;
     chat.appendChild(el.chatSug);
-
-    el.ctxRow = t('div', 'jca-ctx');
-    el.ctxText = t('span', 'jca-ctx-t', '');
-    el.ctxRow.appendChild(el.ctxText);
-    var ctxToggle = t('label', 'jca-tog');
-    el.ctxBox = t('input');
-    el.ctxBox.type = 'checkbox';
-    el.ctxBox.checked = st.ctxOn;
-    el.ctxBox.addEventListener('change', function () { st.ctxOn = el.ctxBox.checked; savePref(); render(); });
-    ctxToggle.appendChild(el.ctxBox);
-    ctxToggle.appendChild(t('span', null, '함께 보내기'));
-    el.ctxRow.appendChild(ctxToggle);
-    chat.appendChild(el.ctxRow);
 
     el.thread = t('div', 'jca-thread');
     el.thread.setAttribute('aria-live', 'polite');
@@ -527,6 +488,23 @@
     el.keyList = t('ul', 'jca-keys');
     keys.appendChild(el.keyList);
 
+    /* 연결 테스트 — 키가 실제로 도는지 한 번 불러 보고 답·걸린 시간·모델 이름을 보여 준다.
+       저절로 부르지 않는다(무료 일일 횟수를 아끼려면 이 단추를 눌렀을 때만). */
+    var kt = t('div', 'jca-ktest');
+    el.ktest = kt;
+    var kth = t('div', 'jca-ktest-hd');
+    kth.appendChild(t('b', null, '키 연결 확인'));
+    kth.appendChild(t('span', null, '「안녕하세요」 · 무료 1회'));
+    kt.appendChild(kth);
+    el.ktestBtn = t('button', 'jca-btn jca-ktest-btn', '연결 테스트');
+    el.ktestBtn.type = 'button';
+    el.ktestBtn.addEventListener('click', runKeyTest);
+    kt.appendChild(el.ktestBtn);
+    el.ktestOut = t('div', 'jca-ktest-out');
+    el.ktestOut.setAttribute('aria-live', 'polite');
+    kt.appendChild(el.ktestOut);
+    keys.appendChild(kt);
+
     el.privacy = t('p', 'jca-note');
     el.privacy.innerHTML = '<b>질문과 대화 내용은 서버에 저장·로깅하지 않습니다.</b><br>' +
       '대화 기록은 이 브라우저에만 남고, 직접 고치거나 지울 수 있어요.<br>' +
@@ -564,7 +542,7 @@
       render();
     });
     window.addEventListener('storage', function (e) {
-      if (e.key === 'jc-sync-session') { st.keysLoaded = false; st.keys = []; if (st.open) refreshKeys(); render(); }
+      if (e.key === 'jc-sync-session') { st.keysLoaded = false; st.keys = []; st.ktest = null; if (st.open) refreshKeys(); render(); }
       if (e.key === CHAT_KEY) { st.thread = []; loadLocal(); render(); }
     });
   }
@@ -905,13 +883,6 @@
     el.chatSug.hidden = !ready;
     if (ready) renderSuggestion(el.chatSug);
 
-    el.ctxRow.hidden = !ready;
-    if (ready) {
-      el.ctxText.textContent = '지금 연 자료 · ' + ctxLabel();
-      el.ctxBox.checked = st.ctxOn;
-      el.ctxRow.classList.toggle('jca-ctx-off', !st.ctxOn);
-    }
-
     /* 웹 교차 확인 — Gemini 의 google_search 그라운딩 */
     el.webBox.checked = st.webOn;
     el.webNote.hidden = !ready;
@@ -1019,6 +990,7 @@
         if (tag.length) ab.appendChild(t('span', 'jca-a-tag', tag.join(' · ')));
       }
       var body = t('div', 'jca-a-b');
+      body.setAttribute('data-tid', turn.id);
       body.textContent = turn.a || '';
       ab.appendChild(body);
       if (turn.err) ab.classList.add('jca-a-err');
@@ -1060,10 +1032,6 @@
         });
         ab.appendChild(wl);
       }
-
-      if (turn.ctx && turn.ctx.title) {
-        ab.appendChild(t('span', 'jca-ctx-used', '함께 본 자료 · ' + turn.ctx.title.slice(0, 40)));
-      }
     }
     wrap.appendChild(ab);
     return wrap;
@@ -1099,31 +1067,132 @@
   function ask(q, clearInput) {
     var turn = { id: newId(), ts: Date.now(), q: q, a: '', refs: [], web: [], wait: true,
                  mode: st.mode || '', websearch: st.webOn };
-    if (st.ctxOn) turn.ctx = { title: ctxLabel(), path: pageCtx().path };
     st.thread.push(turn);
     st.busy = true;
     if (clearInput && el.chatInput) el.chatInput.value = '';
     render(); saveChat();
 
-    var body = { question: q, evidence: evidence(q), provider: st.provider };
+    var body = { question: q, evidence: evidence(q), provider: st.provider, stream: true };
     if (st.mode) body.mode = st.mode;
     if (st.webOn) body.websearch = true;
-    if (st.ctxOn) body.page = pageCtx();
 
-    call('ask', body).then(function (j) {
-      turn.wait = false;
-      turn.a = j.answer || '';
+    /* 첫 글자가 오는 대로 말풍선에 붙인다(마커 [[REFS:…]] 부분은 가린다). */
+    function paintLive() {
+      if (turn.wait || !turn.live) { turn.live = true; turn.wait = false; render(); }
+      var node = el.thread ? el.thread.querySelector('.jca-a-b[data-tid="' + turn.id + '"]') : null;
+      if (!node) return;
+      node.textContent = visibleStream(turn.a);
+      node.classList.add('jca-a-live');
+      scrollThread();
+    }
+
+    function applyDone(j) {
+      turn.a = j.answer || turn.a || '';
       turn.refs = j.references || [];
       turn.web = j.web || [];
       turn.websearch = !!j.websearch;
-    }).catch(function (e) {
-      turn.wait = false; turn.err = true; turn.a = errText(e); turn.refs = []; turn.web = [];
+      if (j.model) turn.model = j.model;
+      delete turn.live;
+    }
+
+    streamAsk(body, turn, paintLive, applyDone).then(function () {
+      turn.wait = false;
+    })['catch'](function (e) {
+      turn.wait = false; turn.err = true;
+      var msg = errText(e);
+      turn.a = turn.a ? turn.a + '\n\n' + msg : msg;
+      turn.refs = []; turn.web = [];
     }).then(function () {
       st.busy = false;
       render(); saveChat();
       if (st.autoOpen && turn.refs && turn.refs.length && !turn.err) {
         setTimeout(function () { openRef(turn.refs[0].url); }, 1400);
       }
+    });
+  }
+
+  /* 스트리밍 마커([[REFS:…]])가 보이지 않게 자른다. */
+  function visibleStream(s) {
+    var v = String(s == null ? '' : s);
+    var i = v.indexOf('[[');
+    return i < 0 ? v : v.replace(/\s+$/, '').slice(0, i).replace(/\s+$/, '');
+  }
+
+  /* SSE 로 답을 받아 글자마다 onDelta 로 넘긴다. SSE 가 아니면 일반 JSON 응답으로 처리한다. */
+  function streamAsk(body, turn, onDelta, onDone) {
+    var s = sess();
+    if (!s) return Promise.reject({ error: 'session' });
+    var payload = { action: 'ask', session_token: s.token };
+    Object.keys(body || {}).forEach(function (k) { payload[k] = body[k]; });
+    /* 스트리밍이 막하는 중간 서버(프록시 등)가 응답을 모아 버릴 때를 대비해, 첫 글자가 늦어도 연결은 살린다. */
+    return fetch(API, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'text/event-stream' },
+      cache: 'no-store',
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      var ct = r.headers.get('content-type') || '';
+      if (!r.ok || ct.indexOf('text/event-stream') < 0 || !r.body || !r.body.getReader) {
+        /* SSE 가 아닌 응답(오류 JSON 또는 예전 서버) — 그대로 읽는다. */
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (!r.ok || j.ok === false) throw (j && j.error ? j : { error: 'server' });
+          onDone(j);
+        });
+      }
+
+      var reader = r.body.getReader();
+      var dec = new TextDecoder();
+      var buf = '';
+      var stopped = false;
+
+      return new Promise(function (resolve, reject) {
+        function pump() {
+          if (stopped) return;
+          reader.read().then(function (step) {
+            if (stopped) return;
+            if (step.done) { stopped = true; resolve(null); return; }
+            buf += dec.decode(step.value, { stream: true });
+            var nl = buf.indexOf('\n\n');
+            while (nl >= 0) {
+              var block = buf.slice(0, nl);
+              buf = buf.slice(nl + 2);
+              var ev = '';
+              var data = '';
+              block.split('\n').forEach(function (line) {
+                if (line.indexOf('event:') === 0) ev = line.slice(6).trim();
+                else if (line.indexOf('data:') === 0) data += line.slice(5).trim();
+              });
+              if (data) {
+                var j = null;
+                try { j = JSON.parse(data); } catch (x) { j = null; }
+                if (j) {
+                  if (ev === 'delta') {
+                    turn.a += (j.t || '');
+                    onDelta();
+                  } else if (ev === 'done') {
+                    onDone(j);
+                    stopped = true;
+                    try { reader.cancel(); } catch (x) { /* 이미 끝났다 */ }
+                    resolve(null);
+                    return;
+                  } else if (ev === 'error') {
+                    stopped = true;
+                    reject(j);
+                    return;
+                  }
+                }
+              }
+              nl = buf.indexOf('\n\n');
+            }
+            pump();
+          })['catch'](function (e) {
+            if (stopped) return;
+            stopped = true;
+            reject(e || { error: 'upstream' });
+          });
+        }
+        pump();
+      });
     });
   }
 
@@ -1180,7 +1249,8 @@
     call('set_key', extra).then(function () {
       st.busy = false; el.save.disabled = false;
       el.key.value = '';
-      setMsg('키를 등록했어요. 이제 「대화」에서 AI 설명을 쓸 수 있습니다.', 'ok');
+      st.ktest = null;                 // 키를 바꿨으면 지난 테스트 결과는 지운다(저절로 부르지는 않는다)
+      setMsg('키를 등록했어요. 아래 「연결 테스트」를 누르면 바로 확인해 볼 수 있어요.', 'ok');
       st.keysLoaded = false;
       refreshKeys();
     }).catch(function (e) {
@@ -1189,11 +1259,39 @@
     });
   }
 
+  /* 연결 테스트 — 누를 때만 「안녕하세요」를 한 번 보내고 답·걸린 시간·모델 이름을 보여 준다. */
+  function nowMs() {
+    try { return window.performance.now(); } catch (e) { return Date.now(); }
+  }
+
+  function runKeyTest() {
+    if (!loggedIn()) { setMsg('먼저 로그인해 주세요.', 'err'); return; }
+    if (!hasKey()) { setMsg('먼저 키를 등록해 주세요.', 'err'); return; }
+    if (st.ktest && st.ktest.state === 'run') return;
+    st.ktest = { state: 'run' };
+    renderKeys();
+    var t0 = nowMs();
+    call('ping').then(function (j) {
+      var ms = typeof j.ms === 'number' ? j.ms : (nowMs() - t0);
+      st.ktest = {
+        state: 'ok',
+        text: String(j.reply || '').slice(0, 120),
+        model: String(j.model || ''),
+        secs: (Math.max(0, ms) / 1000).toFixed(1)
+      };
+      renderKeys();
+    }).catch(function (e) {
+      st.ktest = { state: 'err', text: errText(e) };
+      renderKeys();
+    });
+  }
+
   function delKey(provider) {
     if (st.busy) return;
     st.busy = true;
     call('delete_key', { provider: provider }).then(function () {
       st.busy = false;
+      st.ktest = null;
       setMsg('키를 지웠어요.', 'ok');
       refreshKeys();
     }).catch(function (e) {
@@ -1329,6 +1427,32 @@
 
     el.save.disabled = !loggedIn() || st.busy;
     el.key.disabled = !loggedIn();
+    renderKeyTest();
+  }
+
+  function renderKeyTest() {
+    if (!el.ktestBtn || !el.ktestOut) return;
+    var res = st.ktest;
+    var running = !!(res && res.state === 'run');
+    el.ktestBtn.disabled = !loggedIn() || !hasKey() || running;
+    el.ktestBtn.textContent = running ? '테스트 중…' : '연결 테스트';
+    el.ktestOut.className = 'jca-ktest-out' + (res && res.state === 'err' ? ' err' : '');
+    el.ktestOut.innerHTML = '';
+    if (!res) { el.ktestOut.hidden = true; return; }
+    el.ktestOut.hidden = false;
+    if (res.state === 'run') {
+      el.ktestOut.appendChild(t('p', null, '「안녕하세요」라고 보내는 중…'));
+      return;
+    }
+    if (res.state === 'err') {
+      el.ktestOut.appendChild(t('p', null, res.text || '테스트에 실패했어요.'));
+      return;
+    }
+    el.ktestOut.appendChild(t('p', 'jca-ktest-say', '“' + (res.text || '인사말을 받았습니다.') + '”'));
+    var meta = t('p', 'jca-ktest-meta');
+    meta.appendChild(t('b', null, '연결됨 · ' + res.secs + '초'));
+    if (res.model) meta.appendChild(t('span', null, res.model));
+    el.ktestOut.appendChild(meta);
   }
 
   /* ---------- 그리기 ---------- */
