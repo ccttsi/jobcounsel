@@ -51,6 +51,7 @@
   --tc-interview:#2f698f;
   --tc-portfolio:#6f568a;
   --tc-transit:#4e6e3b;
+  --tc-flow:#3d3a72;
 }
 :root[data-jc-tone="sepia"]{
   --tc-theory:#006c59;
@@ -79,6 +80,7 @@
   --tc-interview:#22628a;
   --tc-portfolio:#684e85;
   --tc-transit:#456731;
+  --tc-flow:#3a3770;
 }
 :root[data-theme="dark"]{
   --tc-theory:#36d3b2;
@@ -107,6 +109,7 @@
   --tc-interview:#5bc2ff;
   --tc-portfolio:#cba0fc;
   --tc-transit:#91cb70;
+  --tc-flow:#a5a8ff;
 }
 
 /* 페이지가 자기 자료 id를 적으면 그 색이 --jc-acc로 붙는다 */
@@ -136,6 +139,7 @@ body[data-jc-tool="surgery"]{--jc-acc:var(--tc-surgery)}
 body[data-jc-tool="interview"]{--jc-acc:var(--tc-interview)}
 body[data-jc-tool="portfolio"]{--jc-acc:var(--tc-portfolio)}
 body[data-jc-tool="transit"]{--jc-acc:var(--tc-transit)}
+body[data-jc-tool="flow"]{--jc-acc:var(--tc-flow)}
 
 /* ---------- 로고: Career Consultant Tutorial ----------
    네 이니셜(C · C · T · t)만 빛과 명도를 아주 조금 달리한다. 나머지 글자는 본문 톤. */

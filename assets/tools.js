@@ -9,6 +9,11 @@
  * 2026-11-19 통합 개편: 배열 순서를 「시드(지식·원리·기준) 12 → 매치(현장·실무) 14」의 유기적 연관순으로 다시 놓고
  * 01~26을 다시 매겼다(폴더 경로는 그대로). 색은 color:'c1|c2|c3' 대신 **자료 id**로 적는다 —
  * 대문·머리말·덱이 모두 assets/brand.css의 --tc-<id> 테마색을 읽는다.
+ *
+ * 2026-11-20: 매치(실무) 끝에 27번 상담 플로우 아키텍트(flow)를 더했다. 이 자료는 다른 자료를 재료로
+ * 상담 순서를 짜는 화면이라, 마이덱(./mydeck/)에 저장된 내 덱으로 이어진다. 시너지 짝의 근거는
+ * ops/scripts/build_flow_graph.py 가 이 장부·assistant/data/rag-preface.json·translator 용어에서 만든
+ * ./flow/data/graph.json 이다(손으로 적은 시너지 문장은 없다).
  */
 window.JC_TOOLS=[
  {id:'theory',gi:'직업상담 이론 보기',mode:'seed',mo:1,no:'01',badge:'이론',short:'이론',color:'theory',icon:'book-open',
@@ -140,7 +145,12 @@ window.JC_TOOLS=[
   title:'환승노선도',path:'./transit/',
   desc:'첫 진입·휴식 후 재진입·비자발적 전환·2막 설계 가운데 출발역을 고르고, 지원제도·훈련·자격 22개 환승역을 넘기며 탑승해 나만의 커리어 노선도를 완성합니다.',
   meta:['출발 유형 4가지','환승역 22곳','역량 번역 21가지'],
-  tags:['환승노선도','노선도','전직','전직지원','이직','재취업','재취업지원서비스','커리어 전환','경력 전환','2막','인생 2막','재진입','경력보유여성','새일센터','여성새로일하기센터','중장년내일센터','생애경력설계','실업급여','구직급여','소정급여일수','조기재취업수당','내일배움카드','K-디지털 트레이닝','KDT','폴리텍','중장년특화','일경험','미래내일 일경험','새일여성인턴','중장년 경력지원제','브리지 직무','포트폴리오','역량 번역','첫 취업','transit']}
+  tags:['환승노선도','노선도','전직','전직지원','이직','재취업','재취업지원서비스','커리어 전환','경력 전환','2막','인생 2막','재진입','경력보유여성','새일센터','여성새로일하기센터','중장년내일센터','생애경력설계','실업급여','구직급여','소정급여일수','조기재취업수당','내일배움카드','K-디지털 트레이닝','KDT','폴리텍','중장년특화','일경험','미래내일 일경험','새일여성인턴','중장년 경력지원제','브리지 직무','포트폴리오','역량 번역','첫 취업','transit']},
+ {id:'flow',gi:'상담 흐름 짜기',mode:'match',mo:13,no:'27',badge:'상담 플로우',short:'플로우',color:'flow',icon:'git-branch',
+  title:'상담 플로우 아키텍트',path:'./flow/',
+  desc:'키워드나 첫 자료를 고르면, 자료실 26개 자료가 실제로 이어지는 순서대로 다음 가지를 카드로 뻗어 보여 줍니다. 후보마다 지금 흐름과 겹치는 말·자료실이 잇는 짝으로 시너지를 확인하고, 2개든 3개든 4개든 어디서든 「이대로 만들어볼래요」를 눌러 내 상담 덱을 완성합니다. 만든 덱은 로그인하면 내 계정의 마이덱에 저장되어 다른 기기에서도 이어집니다.',
+  meta:['키워드로 시작','가지치기 시너지','내 덱으로 저장'],
+  tags:['상담 플로우','플로우','흐름','상담 흐름','플로우 아키텍트','결정 트리','트리','가지치기','시너지','알고리즘','덱','커스텀 덱','마이덱','My Deck','내 덱','순서','상담 순서','상담 설계','코스','커리큘럼','적정선','과다 정보','flow','mydeck']}
 ];
 window.JC_LINKS=[
  ['theory','talk'],['theory','vpi'],['theory','parsons'],
@@ -155,5 +165,6 @@ window.JC_LINKS=[
  ['company','portals'],['thermometer','company'],['thermometer','emerging'],['thermometer','taxonomy'],['thermometer','briefing'],['company','interview'],['portals','surgery'],['surgery','interview'],['interview','talk'],
  ['law','manual'],['law','hud'],['law','interview'],
  ['portfolio','interview'],['portfolio','surgery'],['portfolio','law'],['portfolio','cert'],
- ['translator','talk'],['translator','taxonomy'],['translator','cert'],['translator','law']
+ ['translator','talk'],['translator','taxonomy'],['translator','cert'],['translator','law'],
+ ['flow','transit'],['flow','talk'],['flow','interview']
 ];

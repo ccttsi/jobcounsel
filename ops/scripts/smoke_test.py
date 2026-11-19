@@ -26,7 +26,7 @@ import threading
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
-         "/portals/#p=work24"]
+         "/portals/#p=work24", "/flow/", "/mydeck/"]
 VIEWPORTS = [(390, 844, "휴대폰"), (1280, 800, "데스크톱")]
 
 # 페이지마다 「이게 없으면 화면이 안 그려진 것」을 하나씩 정한다.
@@ -85,6 +85,20 @@ PROBES = {
         const ok = !!card && !card.hidden && card.getAttribute('aria-current') === 'true' &&
                    card.classList.contains('dl') && q === '' && names.length > 10 && gap >= -2 && gap <= 24;
         return {ok, detail: `카드 ${names.length} · 도착 ${gap}px · 강조 ${card ? card.classList.contains('dl') : '없음'}`};
+    }""",
+    "/flow/": """() => {
+        // 27번 상담 플로우 — 키워드 칩과 첫 자료 카드, 시너지 지도가 그려졌는가.
+        const kws = document.querySelectorAll('#kws .kw').length;
+        const ready = document.documentElement.getAttribute('data-jc-flow') === 'ready';
+        const broken = /불러오지 못했습니다/.test(document.body.innerText);
+        return {ok: kws >= 6 && ready && !broken, detail: `키워드 ${kws} · 지도 ${ready ? '준비' : '없음'}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/mydeck/": """() => {
+        // 마이덱 — 덱 공간과 공간 꾸미기 여섯 요소 × 여섯 조건이 그려졌는가.
+        const space = !!document.getElementById('space');
+        const groups = document.querySelectorAll('#diyBody .diy-grp').length;
+        const opts = document.querySelectorAll('#diyBody .opt').length;
+        return {ok: space && groups === 6 && opts === 36, detail: `공간 ${space ? '있음' : '없음'} · 요소 ${groups} · 조건 ${opts}`};
     }""",
     "/emerging/": """() => {
         const art = (document.querySelector('#art') || {innerText: ''}).innerText.trim().length;
@@ -299,6 +313,70 @@ TAB_JS = r"""
 """
 
 
+def check_flow(page):
+    """27번 — 첫 자료를 고르고 가지를 두 번 이어, 흐름·후보·제한 안내가 실제로 도는지 잰다."""
+    issues = []
+    try:
+        page.locator("#kws .kw").first.click(timeout=4000)
+        page.wait_for_timeout(200)
+        if page.locator("#starts .pick").count() < 1:
+            issues.append("27번 — 키워드를 골랐는데 첫 자료 카드가 없다")
+            return issues
+        page.locator("#starts .pick-go").first.click(timeout=4000)
+        page.wait_for_timeout(300)
+        if page.locator("#chain .node").count() != 1:
+            issues.append("27번 — 첫 자료를 골랐는데 흐름이 시작되지 않았다")
+        for _ in range(2):
+            page.locator("#cands .cand .c-add").first.click(timeout=4000)
+            page.wait_for_timeout(220)
+        nodes = page.locator("#chain .node").count()
+        if nodes != 3:
+            issues.append(f"27번 — 가지를 두 번 이었는데 흐름이 {nodes}개다(3개여야 한다)")
+        if page.locator("#cands .cand").count() < 1:
+            issues.append("27번 — 다음 가지(후보)가 하나도 없다")
+        if not page.locator("#cover").inner_text().strip():
+            issues.append("27번 — 흐름 요약(덮는 범위)이 비어 있다")
+        page.locator("#makeBtn").click(timeout=4000)
+        page.wait_for_timeout(260)
+        if not page.locator("#sheet").is_visible():
+            issues.append("27번 — 「이대로 만들어볼래요」를 눌렀는데 덱 시트가 열리지 않았다")
+        else:
+            page.locator("#sheetX").click()
+            page.wait_for_timeout(180)
+    except Exception as exc:                        # noqa: BLE001 — 실패 사유를 그대로 보여 준다
+        issues.append(f"27번 조작 검수 실패: {str(exc).splitlines()[0][:110]}")
+    return issues
+
+
+def check_mydeck(page):
+    """마이덱 — 공간 꾸미기를 열어 6요소×6조건을 세고, 배경을 바꿔 즉시 반영되는지 잰다."""
+    issues = []
+    try:
+        page.locator("#diyBtn").click(timeout=4000)
+        page.wait_for_timeout(260)
+        if not page.locator("#diy").is_visible():
+            issues.append("마이덱 — 「공간 꾸미기」가 열리지 않았다")
+            return issues
+        groups = page.locator("#diyBody .diy-grp")
+        if groups.count() != 6:
+            issues.append(f"마이덱 — 꾸밀 요소가 6가지가 아니다({groups.count()})")
+        for i in range(min(6, groups.count())):
+            n = groups.nth(i).locator(".opt").count()
+            if n != 6:
+                issues.append(f"마이덱 — {i + 1}번째 요소의 조건이 6가지가 아니다({n})")
+        before = page.evaluate("() => document.getElementById('space').getAttribute('data-diy-bg')")
+        groups.nth(0).locator(".opt").nth(4).click(timeout=4000)
+        page.wait_for_timeout(220)
+        after = page.evaluate("() => document.getElementById('space').getAttribute('data-diy-bg')")
+        if before == after:
+            issues.append(f"마이덱 — 배경을 골랐는데 공간이 바뀌지 않았다({before})")
+        if page.locator("#diyTabs button").count() != 3:
+            issues.append("마이덱 — 테마 탭이 3개(밝게·세피아·어둡게)가 아니다")
+    except Exception as exc:                        # noqa: BLE001
+        issues.append(f"마이덱 조작 검수 실패: {str(exc).splitlines()[0][:110]}")
+    return issues
+
+
 def check_panels(page):
     """⑤ 시트 잘림 · ⑦ 비서 3탭 실제 클릭 검수.
 
@@ -441,6 +519,10 @@ def run(args):
                     # ---- ⑤ 시트 잘림 · ⑦ 비서 3탭 클릭 검수 (비서가 있는 대문에서) ----
                     if page_path == "/":
                         issues.extend(check_panels(page))
+                    if page_path == "/flow/":
+                        issues.extend(check_flow(page))
+                    if page_path == "/mydeck/":
+                        issues.extend(check_mydeck(page))
 
                     # ---- ④ 3테마 대비: 테마는 저장값으로 바꿔 **다시 열어** 잰다 ----
                     #   요소의 data-theme만 바꾸면 페이지 쪽 코드가 곧 되돌려 실제 화면과 다르게 잰다.

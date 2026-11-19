@@ -680,3 +680,18 @@
 - **검수**(로컬 Chromium · 121장 · `downloads/unified-2026-11-19/measure.json`): 콘솔·페이지 오류 0 · 가로 넘침 0(390/768/1280) · 머리말 위 여백 0 · 태블릿에서 접기 단추 없음 · 시계 `Nov. 19 (Thu) HH:MM:SS` · 쪽 번호 6쪽 모두 `aria-current` 일치·등장 모션 0 · `?mode=match` → MAIN → 뒤로 가기 복원 · 대학 412곳 = 유형 합(전국·17개 시도 100% 일치).
 - **남은 것**: 아이폰·아이패드 사파리 실기기에서 로고 빛(황금/실버)의 체감과 태블릿 머리말 밀착.
 - **다음 시작 파일**: `assets/brand.css` → `index.html` 머리말 CSS/`applyMode` → `assets/deck.css`.
+
+## 2026-11-20 27번 「상담 플로우 아키텍트」 + 「마이덱」 + 공간 꾸미기 (PR 대기)
+
+- **지시**: 27번 독립 섹터(알고리즘 트리형 시드·매치 덱 빌더) · 로그인 전용 마이덱 별도 페이지 · DIY 6요소 × 6조건 + 팔레트/컬러피커 · Supabase 저장 설계(SQL·Edge Function)까지.
+- **바뀐 파일**: `assets/tools.js`(27번 `flow` + 짝 3쌍) · `assets/brand.css`(`--tc-flow` 3테마 + `body[data-jc-tool="flow"]`) · `index.html`(NAV 한 줄) · `assets/sync.js`(계정 팝업에 「마이덱」) · `flow/index.html` · `flow/app.js` · `flow/data/graph.json` · `mydeck/index.html` · `mydeck/app.js` · `assets/mydeck-store.js` · `assets/mydeck-diy.js` · `assets/supabase-update-05-my-decks.sql` · `supabase/functions/my-decks-proxy/` · `ops/scripts/build_flow_graph.py` · `ops/scripts/validate_repo.py`(섹터·플로우 검사) · `ops/scripts/smoke_test.py`(두 화면 + 조작 검수) · `README.md`.
+- **핵심 판단**
+  - 시너지는 **지어내지 않는다**. `ops/scripts/build_flow_graph.py`가 장부(`tools.js`)·자료실 지도(`rag-preface.json`)·번역기 용어(`terms.json`)만으로 짝 164쌍을 만들고, 근거는 「자료실 연결 짝」과 「두 자료가 함께 쓰는 말」뿐이다. 화면은 그 칸(제목·딱지·설명·meta·겹치는 말)을 늘어놓을 뿐 문장을 새로 쓰지 않는다.
+  - 「겹치는 말」은 **드문 말 → 근거 종류(지도 키워드 > 용어표 > 번역기 > 섹터 검색어) → 한글** 순으로 골라, 「AI」 같은 흔한 말이 근거처럼 보이지 않게 했다.
+  - 적정선은 6개(넘기면 부드러운 제지 + 「그래도 넣기」), 상한 8개. 제지는 토스트 + 인라인 안내 둘 다.
+  - 마이덱 저장은 **함수가 없어도 멈추지 않는다**: 첫 실패(404·5xx·네트워크)에서 이번 화면의 서버 사용을 끄고 「이 기기에만」으로 내려간다. 배포되면 프론트 수정 없이 계정 저장으로 바뀐다.
+  - DIY는 공간 요소의 `data-diy-*` 속성 + `--d-bg`/`--d-ink` 두 변수만 바꾼다(화면 코드를 다시 그리지 않는다). 파생 색(패널·선·보조 글자)은 `color-mix`로 계산해 18조합을 18벌 CSS로 쓰지 않는다. 대비는 WCAG 식으로 재서 4.5:1 아래면 경고만 한다.
+- **검수**(로컬 Chromium · `downloads/flow-mydeck-2026-11-20/`): 390×844·1280×800 × 밝게·세피아·어둡게 — 콘솔·페이지 오류 0 · 404 0 · 가로 넘침 0 · 44px 미달 0 · `smoke_test.py`(두 화면 + 흐름 1→3·제지·덱 시트·DIY 6×6·배경 변경) 통과 · `validate_repo.py`(섹터 27·색 27종 3테마·지도 164쌍) 통과 · 키보드 없이 1탭 동선 확인.
+- **화면 분량**(문서 높이 ÷ 화면 높이): 마이덱 1.0(꾸미기 펼침 1.8) · 플로우 큰 화면 1.77(두 칸이 각자 돌아 늘지 않는다) · 플로우 휴대폰 2.75(1개) → 3.35(3개) → 4.2(6개). **휴대폰 2.5 기준을 조금 넘는다** — 흐름이 자라는 화면이라 후보를 둘만 보이고 「남은 후보 보기」로 펼치게 했지만, 노드가 늘면 그만큼 길어진다(대안: 흐름을 접는 손잡이). 두 칸 배치 덕에 큰 화면은 상태와 무관하게 고정.
+- **남은 것**: ①Supabase `supabase-update-05-my-decks.sql` 실행 + `my-decks-proxy` 배포(메인 에이전트 몫) ②아이폰 사파리 실기기에서 두 칸 패널 안쪽 스크롤 감 ③로그인 계정으로 덱을 옮겼을 때 이 기기 사본 정리 정책.
+- **다음 시작 파일**: `flow/app.js` → `flow/data/graph.json`(재생성은 `build_flow_graph.py`) → `mydeck/app.js` → `assets/mydeck-diy.js`.
