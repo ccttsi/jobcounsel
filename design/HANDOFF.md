@@ -615,3 +615,15 @@
 - **검사**: `assistant/test/search-cases.json`(25질문) + `ops/scripts/assistant_search_test.py`. `ops/scripts/smoke_test.py`가 끝에서 함께 돌린다(워크플로 파일은 GitHub App `workflows` 권한이 없어 푸시할 수 없어, 기존 smoke-tests 잡에 얹었다). 지도 60KB 초과·사전 섹터 불일치도 실패로 잡는다.
 - **실측**(로컬 Chromium 390×844 · 1280×800): 25질문 전부 통과 — 경단녀·경단여·경단·경력단 → 경력단절여성(번역기 1위), 국취제·국취 → manual·hud, 내배카·내배 → 번역기·환승노선도, 실급·육휴·고보·중장·4050·특성화고·직업계고·공기업·중견 정상, 콘솔 오류 0 · 가로 넘침 0 · 기존 회귀(ㅂㄷㅊ·수습 짤림·면접) 유지.
 - **남은 것**: ① Edge Function 재배포 ② `자립준비청년`은 자료실에 직접 자료가 아직 없어 지도가 「대학일자리플러스·청년센터」로 안내한다(자료가 생기면 별칭 보강이 자동으로 잇는다) ③ 아이폰 사파리 실기기에서 「먼저 볼 곳」 링크 손맛.
+
+## 2026-11-19 대문 빠른 검색 고도화·정밀화 — 하위 항목·별칭·초성·딥링크 (PR #227)
+
+- **지시**: 「메인 화면 검색은 큰제목, 카테고리 네임 같이 위계가 높은 거만 나와. 해커스를 쳐도 안 나와. 검색엔진을 고도화·정밀화해줘」.
+- **원인**: 대문 `search(q)`가 `window.JC_TOOLS`(섹터 26장)만 훑었다. 비서 색인(`index.json`)에도 기업이 없었고(`index-dirs.json`은 직원 30인 이상 1,200곳만), `company/data/`(9,137곳)·`enrich.json`(별칭·요약)은 어느 색인에도 들어가지 않았다.
+- **바뀐 파일**: `assistant/build_index.py`(기업 색인 생성 `build_companies`, 대학·학과 `docs_univ`, 대화 갈래 `docs_talk`, 파슨스 장 이름, 자격증 빈 요약 채우기) · `assistant/data/index-companies.json`(신설) · `assistant/data/index.json`·`index-dirs.json`(재생성) · `assistant/search.js`(기업 채점·근거 반환·초성 별칭·섹터 3줄 상한·지연 로드 API) · `index.html`(팔레트 결과 줄·근거 칩·섹터 번호·지연 로드·`더 찾기`) · `assets/assistant.js`(기업 색인 늦게 도착하면 찾기 목록 다시 그리기) · `README.md` · 회귀 `assistant/test/search-cases.json`·`ops/scripts/assistant_search_test.py`.
+- **값**: 기업 9,137줄(별칭 356곳) 688KB/gzip 183KB — **검색할 때만** 받는다. `index.json` 781KB/gzip 158KB, `index-dirs.json` 226KB/gzip 68KB, 선참조 28.5KB. 첫 화면 요청에 `assistant/data/*` 0건(팔레트를 열 때 index·dirs·preface, 첫 글자에 companies).
+- **순위**: 이름 일치 26점 > 이름 앞부분 16 > 별칭 일치 24 > 별칭 앞부분 15 > 이름 포함 9 > 브랜드·제품 5 > 업종 4. 결과마다 `why`(예: `별칭 “해커스”`)를 돌려주고 화면이 그대로 적는다. 한 섹터 3줄 상한(「국취」에 실무 가이드 장이 일곱 줄 깔리던 것).
+- **딥링크**: 기업 `company/#MID-1208709984`(그 법인 카드), 그 밖은 기존 색인의 `?q=`·앵커. 기업 결과가 있으면 목록 끝에 `company/#list?q=…`.
+- **실측**(로컬 Chromium, 390×844·1280×800 × 밝게·어둡게): `해커스` 1위 (주)챔프스터디(별칭) → 클릭 → `#MID-1208709984` 카드에 `(주)챔프스터디`·`해커스(HACKERS)`, `삼전` → Enter → `삼성전자(주)`, `파바` → (주)파리크라상, `건보` → 국민건강보험공단, `ㅎㅋㅅ` 상위 3건에 해커스. 가로 넘침 0 · 44px 미달 0 · 콘솔 오류 0. 회귀 30건·실화면 스모크 통과.
+- **남은 것**: ① 아이폰 사파리 실기기에서 팔레트 입력 손맛·키보드가 올라올 때 목록 높이 ② 기업 색인 첫 글자 지연(모바일 4G에서 183KB) 체감 ③ 24,528개 학과(개설 학과)는 아직 색인에 없고 대학 412·학과 501(커리어넷 학과정보)만 — 필요해지면 `univ` 섹터 `?q=`로 넘긴다.
+- **다음 시작 파일**: `assistant/build_index.py` `build_companies` → `assistant/search.js` `parseCompanies`·`scoreCompany` → `index.html` 빠른 검색 절.
