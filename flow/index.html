@@ -177,6 +177,8 @@ a{color:inherit}
 .psfind input::placeholder{color:var(--muted);opacity:1}
 .psx{position:absolute;right:1px;top:1px;width:44px;height:44px;display:grid;place-items:center;border-radius:11px;font-size:18px;line-height:1;color:var(--muted)}
 .psx:hover{color:var(--ink)}
+.plab{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;font-size:12.5px;line-height:1.45;color:var(--muted)}
+.plab b{font-size:14px;font-weight:750;letter-spacing:-.02em;color:var(--ink)}
 .pstat{margin:0;font-size:12.5px;line-height:1.5;color:var(--muted)}
 .pstat b{color:var(--ink);font-weight:750}
 .picks{display:grid;gap:12px;margin-top:2px}
@@ -344,9 +346,9 @@ a{color:inherit}
           <div class="note" id="note" hidden></div>
           <div class="fork" id="fork">
             <div class="psearch" id="psearch">
+              <label class="plab" for="pq"><b>다른 자료 직접 찾아 엮기</b><span>예: 법전, 번역기, 기업</span></label>
               <div class="psfind">
-                <label class="sr" for="pq">다른 자료 직접 찾아 엮기</label>
-                <input id="pq" type="search" placeholder="다른 자료 직접 찾아 엮기 (예: 법전, 번역기, 기업)" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-controls="picks">
+                <input id="pq" type="search" placeholder="자료 이름 · 분류 · 키워드" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-controls="picks">
                 <button type="button" class="psx" id="pqClear" aria-label="검색어 지우기" hidden>×</button>
               </div>
               <p class="pstat" id="pqStat" aria-live="polite" hidden></p>

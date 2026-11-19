@@ -57,7 +57,8 @@
       var k = [p.a, p.b].sort().join('|');
       PAIR[k] = p;
     });
-    /* 검색용 색인 — graph.json의 이름·분류(딱지)·키워드(영문 포함)·설명만 쓴다 */
+    /* 검색용 색인 — graph.json의 이름·분류(딱지)·키워드(영문 포함)·설명만 쓴다.
+       키워드는 자료별 목록에 더해, 시작 키워드 사전(G.kw — 경단녀·국취 같은 현장 말)도 함께 담는다. */
     G.sectors.forEach(function (s) {
       if (s.id === G.self) return;
       SIDX[s.id] = {
@@ -66,6 +67,13 @@
         kw: (s.kw || []).map(norm),
         body: norm((s.desc || '') + ' ' + (s.meta || []).join(' ') + ' ' + (s.gi || ''))
       };
+    });
+    Object.keys(G.kw || {}).forEach(function (word) {
+      var w = norm(word);
+      if (!w) return;
+      (G.kw[word] || []).forEach(function (id) {
+        if (SIDX[id] && SIDX[id].kw.indexOf(w) < 0) SIDX[id].kw.push(w);
+      });
     });
   }
   function pairOf(a, b) { return PAIR[[a, b].sort().join('|')] || null; }
@@ -211,7 +219,7 @@
     clear($('starts'));
   }
 
-  function addTo(id) {
+  function addTo(id, fromSearch) {
     if (CHAIN.indexOf(id) >= 0) return;
     if (CHAIN.length >= MAX && !OVERRIDE) {
       PENDING = id;
@@ -225,6 +233,7 @@
     CHAIN.push(id);
     PENDING = null;
     hideNote();
+    if (fromSearch) setQuery('');   /* 엮은 뒤에는 검색을 접고 추천 가지로 돌아간다 */
     render();
   }
 
@@ -435,7 +444,7 @@
         if (pp) { p = pp; via = CHAIN[i]; break; }
       }
     }
-    return { id: id, p: p, direct: via === last, via: via, manual: !p };
+    return { id: id, p: p, direct: via === last, via: via, manual: !p, search: true };
   }
 
   function renderPicks() {
@@ -448,7 +457,7 @@
     var stat = $('pqStat');
     clear(stat);
     stat.hidden = false;
-    stat.appendChild(el('b', null, '「' + q + '」로 ' + show.length + '곳'));
+    stat.appendChild(el('b', null, '「' + q + '」 ' + show.length + '곳 찾음'));
     if (usedN) stat.appendChild(document.createTextNode(' · 이미 흐름에 담긴 ' + usedN + '곳은 뺐습니다'));
     if (!show.length) {
       var box = el('div', 'pick-empty');
@@ -493,9 +502,9 @@
       host.hidden = true;
       $('moreBtn').hidden = true;
       picks.hidden = false;
-      $('forkT').textContent = '직접 찾은 자료';
+      $('forkT').textContent = '찾은 자료';
       renderPicks();
-      $('forkN').textContent = '— 지우면 추천 가지로 돌아갑니다';
+      $('forkN').textContent = '지우면 추천 가지로 돌아갑니다';
       return;
     }
     host.hidden = false;
@@ -568,7 +577,7 @@
       li1.appendChild(document.createTextNode('— ' + (why1 || '자료실 자료로만 확인')));
     } else {
       li1.appendChild(el('b', null, '근거 '));
-      li1.appendChild(document.createTextNode('— 자료실이 잇는 짝이 없는 자료입니다. 시드와 매치를 내가 골라 엮는 조합으로 표시합니다.'));
+      li1.appendChild(document.createTextNode('— 자료실이 잇는 짝이 없어 내가 골라 엮는 조합입니다.'));
     }
     ul.appendChild(li1);
 
@@ -586,8 +595,8 @@
 
     if (c.manual) {
       var li5 = el('li');
-      li5.appendChild(el('b', null, '표기 '));
-      li5.appendChild(document.createTextNode('— 직접 엮은 흐름 · 시드/매치 자유 조합'));
+      li5.appendChild(el('b', null, '덱에는 '));
+      li5.appendChild(document.createTextNode('— 내가 엮은 순서 그대로 담깁니다(근거 문장은 붙지 않습니다)'));
       ul.appendChild(li5);
     } else if (CHAIN.length >= 2) {
       var words = sharedOften(CHAIN.concat([c.id]));
@@ -605,7 +614,7 @@
       : (CHAIN.length >= MAX ? '＋ 그래도 잇기' : '＋ 이 자료 잇기'));
     add.type = 'button';
     if (CHAIN.length >= MAX) add.setAttribute('data-over', '');
-    add.addEventListener('click', function () { addTo(c.id); });
+    add.addEventListener('click', function () { addTo(c.id, !!c.search); });
     card.appendChild(add);
     return card;
   }
