@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0.0",
+  "policy": "원문을 옮기지 않는다. 수치와 사실만 인용하고 출처·기준시점을 함께 표시한다. 재가공이 허락된 자료(Track A)만 원문 표기를 붙이고, 그 밖의 자료(Track B)는 사실·수치 요약만 쓴다.",
+  "sources": [
+    {
+      "source_id": "src_kostat_ia_2609",
+      "name": "국가데이터처(구 통계청)",
+      "title": "2026년 9월 산업활동동향",
+      "url": "https://mods.go.kr/board.es?act=view&bid=216&list_no=447747&mid=a10301050100",
+      "published": "2026-10-30",
+      "license": {"type": "KOGL-2", "name": "공공누리 제2유형(출처표시+상업적 이용금지)", "verified": true, "verified_at": "2026-11-19"},
+      "track": "A",
+      "usage": "광공업 업종별 생산지수 전년동월비, 서비스업 생산지수 업종별 전년동월비, 건설기성·건설수주·소매판매 증감률. 원문 표·그림은 옮기지 않고 수치만 인용."
+    },
+    {
+      "source_id": "src_moel_lfs_2609",
+      "name": "고용노동부",
+      "title": "2026년 9월 사업체노동력조사 및 2026년 4월 산업소분류별 고용통계 결과",
+      "url": "https://moel.go.kr/news/enews/report/enewsView.do?news_seq=20162",
+      "published": "2026-10-29",
+      "license": {"type": "FACTS-ONLY", "name": "공공누리 표시 미확인 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "산업 대분류별 종사자 수 전년동월비(2026-09), 산업 소분류별 종사자 수(2026-04). 보도자료 문장은 옮기지 않고 수치만 쓴다."
+    },
+    {
+      "source_id": "src_bok_biz_2025",
+      "name": "한국은행",
+      "title": "2025년 연간 기업경영분석 결과",
+      "url": "https://www.bok.or.kr/portal/bbs/B0000249/view.do?nttId=10093874&menuNo=200761",
+      "published": "2026-10-21",
+      "license": {"type": "FACTS-ONLY", "name": "공공누리 표시 미확인 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "업종별 매출액증가율·매출액영업이익률(2025년, 비금융 영리법인기업). 표는 옮기지 않고 업종별 수치만 인용."
+    },
+    {
+      "source_id": "src_motie_export_2610",
+      "name": "산업통상부",
+      "title": "2026년 10월 수출입 동향",
+      "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787411",
+      "published": "2026-11-01",
+      "license": {"type": "KOGL-1", "name": "공공누리 제1유형(출처표시)", "verified": true, "verified_at": "2026-11-19"},
+      "track": "A",
+      "usage": "20대 주요 품목별 수출액과 전년동월비(2026-10). 품목 표는 수치만 인용."
+    },
+    {
+      "source_id": "src_motie_auto_2610",
+      "name": "산업통상부",
+      "title": "2026년 10월 자동차산업 동향",
+      "url": "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c/172411/view",
+      "published": "2026-11-16",
+      "license": {"type": "KOGL-1", "name": "공공누리 제1유형(출처표시)", "verified": true, "verified_at": "2026-11-19"},
+      "track": "A",
+      "usage": "자동차 생산·내수·수출 증감률(2026-10)."
+    },
+    {
+      "source_id": "src_sia_2609",
+      "name": "미국반도체산업협회(SIA)·세계반도체무역통계기구(WSTS)",
+      "title": "Global Semiconductor Sales Increase 24.1% from Q2 2026 to Q3 2026",
+      "url": "https://www.semiconductors.org/global-semiconductor-sales-increase-24-1-from-q2-2026-to-q3-2026/",
+      "published": "2026-11-03",
+      "license": {"type": "FACTS-ONLY", "name": "보도자료 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "2026년 9월 세계 반도체 판매액과 전년동월비. 문장은 인용하지 않는다."
+    },
+    {
+      "source_id": "src_wsts_2609",
+      "name": "세계반도체무역통계기구(WSTS)",
+      "title": "Global Semiconductor Market records exceptional growth in Q2 2026",
+      "url": "https://www.wsts.org/76/Global-Semiconductor-Market-records-exceptional-growth-in-Q2-2026",
+      "published": "2026-09-01",
+      "license": {"type": "FACTS-ONLY", "name": "보도자료 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "2026년 세계 반도체 시장 성장률 전망과 제품군별(메모리·로직) 성장률."
+    },
+    {
+      "source_id": "src_worldsteel_2609",
+      "name": "세계철강협회(worldsteel)",
+      "title": "September 2026 crude steel production",
+      "url": "https://worldsteel.org/media/press-releases/2026/september-2026-crude-steel-production/",
+      "published": "2026-10-23",
+      "license": {"type": "FACTS-ONLY", "name": "보도자료 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "세계 70개국 조강 생산량과 전년동월비(2026-09)."
+    },
+    {
+      "source_id": "src_clarksons_2610",
+      "name": "클락슨리서치(Clarksons Research)",
+      "title": "2026년 10월 세계 선박 발주·수주잔량·신조선가지수 (언론 보도로 확인)",
+      "url": "https://www.ebn.co.kr/news/articleView.html?idxno=1730387",
+      "published": "2026-11-04",
+      "license": {"type": "FACTS-ONLY", "name": "민간 조사기관 집계 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "세계 선박 발주량(1~10월 누계 전년동기비), 신조선가지수(2026-10 말). 기사 문장은 인용하지 않는다."
+    },
+    {
+      "source_id": "src_iea_ev_2607",
+      "name": "국제에너지기구(IEA)",
+      "title": "Global EV Outlook 2026 후속 집계(2026년 2분기 세계 전기차 판매)",
+      "url": "https://www.g-enews.com/article/Global-Biz/2026/07/2026073020335398429a1f309431_1",
+      "published": "2026-07-30",
+      "license": {"type": "FACTS-ONLY", "name": "IEA 집계 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "2026년 상반기 세계 신차 판매 증감률, 2분기 전기차 판매 증감률, 2026년 전기차 판매 전망. 기사 문장은 인용하지 않는다."
+    },
+    {
+      "source_id": "src_oica_2025",
+      "name": "세계자동차제작자협회(OICA)",
+      "title": "Auto industry growth shifted east in 2025 amid global repositioning",
+      "url": "https://oica.net/auto-industry-growth-shifted-east-in-2025-amid-global-repositioning/",
+      "published": "2026-04-23",
+      "license": {"type": "FACTS-ONLY", "name": "보도자료 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "2025년 세계 자동차 생산·판매 대수와 증감률."
+    },
+    {
+      "source_id": "src_fao_fpi_2610",
+      "name": "유엔 식량농업기구(FAO)",
+      "title": "FAO Food Price Index, October 2026",
+      "url": "https://www.fao.org/newsroom/detail/fao-food-price-index-edges-down-in-october-amid-subdued-demand/en",
+      "published": "2026-11-06",
+      "license": {"type": "FACTS-ONLY", "name": "보도자료 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "세계식량가격지수와 전년동월비(2026-10)."
+    },
+    {
+      "source_id": "src_unwto_2609",
+      "name": "유엔 세계관광기구(UN Tourism)",
+      "title": "World Tourism Barometer, September 2026",
+      "url": "https://www.e-unwto.org/doi/abs/10.18111/wtobarometereng.2026.24.1.3",
+      "published": "2026-10-08",
+      "license": {"type": "FACTS-ONLY", "name": "보고서 요약 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "2026년 상반기 세계 국제관광객 증가율과 2026년 전망."
+    },
+    {
+      "source_id": "src_sipri_2025",
+      "name": "스톡홀름국제평화연구소(SIPRI)",
+      "title": "Trends in World Military Expenditure, 2025",
+      "url": "https://www.sipri.org/sites/default/files/2026-04/2604_milex_2025.pdf",
+      "published": "2026-04-27",
+      "license": {"type": "FACTS-ONLY", "name": "보고서 — 사실·수치만 인용", "verified": true, "verified_at": "2026-11-19"},
+      "track": "B",
+      "usage": "2025년 세계 군사비 지출 실질 증감률."
+    },
+    {
+      "source_id": "src_eia_steo_2611",
+      "name": "미국 에너지정보청(EIA)",
+      "title": "Short-Term Energy Outlook, November 2026",
+      "url": "https://www.eia.gov/outlooks/steo/report/global_oil.php",
+      "published": "2026-11-10",
+      "license": {"type": "PD", "name": "미국 연방정부 저작물(퍼블릭 도메인)", "verified": true, "verified_at": "2026-11-19"},
+      "track": "A",
+      "usage": "브렌트유 연평균 가격(2024~2027), 세계 액체연료 생산·소비, 세계 GDP 성장률 전망."
+    },
+    {
+      "source_id": "src_bls_ces_2610",
+      "name": "미국 노동통계국(BLS)",
+      "title": "Current Employment Statistics — 산업별 고용(2026년 10월)",
+      "url": "https://www.bls.gov/ces/",
+      "published": "2026-11-06",
+      "license": {"type": "PD", "name": "미국 연방정부 저작물(퍼블릭 도메인)", "verified": true, "verified_at": "2026-11-19"},
+      "track": "A",
+      "usage": "BLS 공개 API(api.bls.gov)로 받은 산업별 고용 계열의 전년동월비. 계열 코드를 데이터에 함께 남긴다."
+    }
+  ]
+}

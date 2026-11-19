@@ -1,0 +1,4177 @@
+{
+ "schema_version": "1.0.0",
+ "generated_at": "2026-11-19T11:52:19+09:00",
+ "industry_count": 24,
+ "method": {
+  "baseline": {
+   "emp": 3.0,
+   "prod": 5.0,
+   "rev": 5.0,
+   "trend": 15.0
+  },
+  "weights": {
+   "emp": 0.3,
+   "prod": 0.3,
+   "rev": 0.2,
+   "trend": 0.2
+  },
+  "axis_names": {
+   "emp": "고용",
+   "prod": "산업규모·생산",
+   "rev": "매출·수익",
+   "trend": "트렌드·수요"
+  },
+  "range": [
+   -20,
+   40
+  ],
+  "note": "축 눈금(전년비 %)으로 나눠 tanh로 ±1에 눌러 담고, 가중 평균한 뒤 근거 커버리지의 제곱근을 곱한다. 0 이상은 40을, 0 미만은 20을 곱해 -20~+40℃로 편다."
+ },
+ "classifications": {
+  "ksic": {
+   "name": "표준산업분류(KSIC) 정석",
+   "note": "제11차 한국표준산업분류의 대분류 → 세분류 순서. 이 자료실이 다루는 산업만 싣는다(전 분류를 옮겨 적지 않는다)."
+  },
+  "feel": {
+   "name": "구직자 체감 산업군",
+   "note": "구인공고·상담 현장에서 쓰는 이름으로 묶은 갈래. 같은 산업을 두 이름으로 본다."
+  }
+ },
+ "feel_groups": [
+  {
+   "id": "fg-chip",
+   "name": "첨단·정밀 제조",
+   "sub": "반도체 · 디스플레이 · 이차전지 · 바이오 · 방산"
+  },
+  {
+   "id": "fg-material",
+   "name": "소재·장치",
+   "sub": "철강 · 석유화학 · 일반기계"
+  },
+  {
+   "id": "fg-mobility",
+   "name": "모빌리티",
+   "sub": "자동차 · 조선"
+  },
+  {
+   "id": "fg-life",
+   "name": "생활·소비",
+   "sub": "식품 · 뷰티 · 유통 · 관광"
+  },
+  {
+   "id": "fg-digital",
+   "name": "디지털",
+   "sub": "AI·SW · 콘텐츠 · 통신"
+  },
+  {
+   "id": "fg-money",
+   "name": "금융·부동산",
+   "sub": "금융·보험 · 부동산"
+  },
+  {
+   "id": "fg-social",
+   "name": "사회 기반",
+   "sub": "건설 · 물류 · 보건 · 교육"
+  },
+  {
+   "id": "fg-energy",
+   "name": "에너지",
+   "sub": "전기·가스"
+  }
+ ],
+ "context": [
+  {
+   "label": "브렌트유 평균",
+   "value": "배럴당 124달러",
+   "period": "2026-10",
+   "source_id": "src_eia_steo_2611",
+   "note": "2022년 7월 이후 최고. 2026년 연평균 전망 97달러."
+  },
+  {
+   "label": "세계 GDP 성장률",
+   "value": "3.1%",
+   "period": "2026 전망",
+   "source_id": "src_eia_steo_2611",
+   "note": "2025년 3.5%에서 둔화."
+  },
+  {
+   "label": "세계 자동차 판매",
+   "value": "9,980만대",
+   "period": "2025",
+   "source_id": "src_oica_2025",
+   "note": "전년 대비 4.7% 증가."
+  },
+  {
+   "label": "클락슨 신조선가지수",
+   "value": "187.20",
+   "period": "2026-10 말",
+   "source_id": "src_clarksons_2610",
+   "note": "전월 말 186.59에서 0.61포인트 상승."
+  }
+ ],
+ "sources": [
+  {
+   "source_id": "src_kostat_ia_2609",
+   "name": "국가데이터처(구 통계청)",
+   "title": "2026년 9월 산업활동동향",
+   "url": "https://mods.go.kr/board.es?act=view&bid=216&list_no=447747&mid=a10301050100",
+   "published": "2026-10-30",
+   "license": {
+    "type": "KOGL-2",
+    "name": "공공누리 제2유형(출처표시+상업적 이용금지)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "A",
+   "usage": "광공업 업종별 생산지수 전년동월비, 서비스업 생산지수 업종별 전년동월비, 건설기성·건설수주·소매판매 증감률. 원문 표·그림은 옮기지 않고 수치만 인용."
+  },
+  {
+   "source_id": "src_moel_lfs_2609",
+   "name": "고용노동부",
+   "title": "2026년 9월 사업체노동력조사 및 2026년 4월 산업소분류별 고용통계 결과",
+   "url": "https://moel.go.kr/news/enews/report/enewsView.do?news_seq=20162",
+   "published": "2026-10-29",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "공공누리 표시 미확인 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "산업 대분류별 종사자 수 전년동월비(2026-09), 산업 소분류별 종사자 수(2026-04). 보도자료 문장은 옮기지 않고 수치만 쓴다."
+  },
+  {
+   "source_id": "src_bok_biz_2025",
+   "name": "한국은행",
+   "title": "2025년 연간 기업경영분석 결과",
+   "url": "https://www.bok.or.kr/portal/bbs/B0000249/view.do?nttId=10093874&menuNo=200761",
+   "published": "2026-10-21",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "공공누리 표시 미확인 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "업종별 매출액증가율·매출액영업이익률(2025년, 비금융 영리법인기업). 표는 옮기지 않고 업종별 수치만 인용."
+  },
+  {
+   "source_id": "src_motie_export_2610",
+   "name": "산업통상부",
+   "title": "2026년 10월 수출입 동향",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787411",
+   "published": "2026-11-01",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "A",
+   "usage": "20대 주요 품목별 수출액과 전년동월비(2026-10). 품목 표는 수치만 인용."
+  },
+  {
+   "source_id": "src_motie_auto_2610",
+   "name": "산업통상부",
+   "title": "2026년 10월 자동차산업 동향",
+   "url": "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c/172411/view",
+   "published": "2026-11-16",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "A",
+   "usage": "자동차 생산·내수·수출 증감률(2026-10)."
+  },
+  {
+   "source_id": "src_sia_2609",
+   "name": "미국반도체산업협회(SIA)·세계반도체무역통계기구(WSTS)",
+   "title": "Global Semiconductor Sales Increase 24.1% from Q2 2026 to Q3 2026",
+   "url": "https://www.semiconductors.org/global-semiconductor-sales-increase-24-1-from-q2-2026-to-q3-2026/",
+   "published": "2026-11-03",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "보도자료 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "2026년 9월 세계 반도체 판매액과 전년동월비. 문장은 인용하지 않는다."
+  },
+  {
+   "source_id": "src_wsts_2609",
+   "name": "세계반도체무역통계기구(WSTS)",
+   "title": "Global Semiconductor Market records exceptional growth in Q2 2026",
+   "url": "https://www.wsts.org/76/Global-Semiconductor-Market-records-exceptional-growth-in-Q2-2026",
+   "published": "2026-09-01",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "보도자료 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "2026년 세계 반도체 시장 성장률 전망과 제품군별(메모리·로직) 성장률."
+  },
+  {
+   "source_id": "src_worldsteel_2609",
+   "name": "세계철강협회(worldsteel)",
+   "title": "September 2026 crude steel production",
+   "url": "https://worldsteel.org/media/press-releases/2026/september-2026-crude-steel-production/",
+   "published": "2026-10-23",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "보도자료 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "세계 70개국 조강 생산량과 전년동월비(2026-09)."
+  },
+  {
+   "source_id": "src_clarksons_2610",
+   "name": "클락슨리서치(Clarksons Research)",
+   "title": "2026년 10월 세계 선박 발주·수주잔량·신조선가지수 (언론 보도로 확인)",
+   "url": "https://www.ebn.co.kr/news/articleView.html?idxno=1730387",
+   "published": "2026-11-04",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "민간 조사기관 집계 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "세계 선박 발주량(1~10월 누계 전년동기비), 신조선가지수(2026-10 말). 기사 문장은 인용하지 않는다."
+  },
+  {
+   "source_id": "src_iea_ev_2607",
+   "name": "국제에너지기구(IEA)",
+   "title": "Global EV Outlook 2026 후속 집계(2026년 2분기 세계 전기차 판매)",
+   "url": "https://www.g-enews.com/article/Global-Biz/2026/07/2026073020335398429a1f309431_1",
+   "published": "2026-07-30",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "IEA 집계 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "2026년 상반기 세계 신차 판매 증감률, 2분기 전기차 판매 증감률, 2026년 전기차 판매 전망. 기사 문장은 인용하지 않는다."
+  },
+  {
+   "source_id": "src_oica_2025",
+   "name": "세계자동차제작자협회(OICA)",
+   "title": "Auto industry growth shifted east in 2025 amid global repositioning",
+   "url": "https://oica.net/auto-industry-growth-shifted-east-in-2025-amid-global-repositioning/",
+   "published": "2026-04-23",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "보도자료 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "2025년 세계 자동차 생산·판매 대수와 증감률."
+  },
+  {
+   "source_id": "src_fao_fpi_2610",
+   "name": "유엔 식량농업기구(FAO)",
+   "title": "FAO Food Price Index, October 2026",
+   "url": "https://www.fao.org/newsroom/detail/fao-food-price-index-edges-down-in-october-amid-subdued-demand/en",
+   "published": "2026-11-06",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "보도자료 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "세계식량가격지수와 전년동월비(2026-10)."
+  },
+  {
+   "source_id": "src_unwto_2609",
+   "name": "유엔 세계관광기구(UN Tourism)",
+   "title": "World Tourism Barometer, September 2026",
+   "url": "https://www.e-unwto.org/doi/abs/10.18111/wtobarometereng.2026.24.1.3",
+   "published": "2026-10-08",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "보고서 요약 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "2026년 상반기 세계 국제관광객 증가율과 2026년 전망."
+  },
+  {
+   "source_id": "src_sipri_2025",
+   "name": "스톡홀름국제평화연구소(SIPRI)",
+   "title": "Trends in World Military Expenditure, 2025",
+   "url": "https://www.sipri.org/sites/default/files/2026-04/2604_milex_2025.pdf",
+   "published": "2026-04-27",
+   "license": {
+    "type": "FACTS-ONLY",
+    "name": "보고서 — 사실·수치만 인용",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "B",
+   "usage": "2025년 세계 군사비 지출 실질 증감률."
+  },
+  {
+   "source_id": "src_eia_steo_2611",
+   "name": "미국 에너지정보청(EIA)",
+   "title": "Short-Term Energy Outlook, November 2026",
+   "url": "https://www.eia.gov/outlooks/steo/report/global_oil.php",
+   "published": "2026-11-10",
+   "license": {
+    "type": "PD",
+    "name": "미국 연방정부 저작물(퍼블릭 도메인)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "A",
+   "usage": "브렌트유 연평균 가격(2024~2027), 세계 액체연료 생산·소비, 세계 GDP 성장률 전망."
+  },
+  {
+   "source_id": "src_bls_ces_2610",
+   "name": "미국 노동통계국(BLS)",
+   "title": "Current Employment Statistics — 산업별 고용(2026년 10월)",
+   "url": "https://www.bls.gov/ces/",
+   "published": "2026-11-06",
+   "license": {
+    "type": "PD",
+    "name": "미국 연방정부 저작물(퍼블릭 도메인)",
+    "verified": true,
+    "verified_at": "2026-11-19"
+   },
+   "track": "A",
+   "usage": "BLS 공개 API(api.bls.gov)로 받은 산업별 고용 계열의 전년동월비. 계열 코드를 데이터에 함께 남긴다."
+  }
+ ],
+ "industries": [
+  {
+   "id": "semicon",
+   "name": "반도체",
+   "en": "Semiconductor",
+   "one_line": "메모리 고정가와 AI 서버 수요가 만든 우리 수출의 절반.",
+   "tags": [
+    "반도체",
+    "메모리",
+    "D램",
+    "HBM",
+    "파운드리",
+    "시스템반도체",
+    "소부장",
+    "AI서버",
+    "semiconductor",
+    "chip"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C261",
+    "mid": "261 반도체 제조업"
+   },
+   "feel": {
+    "group_id": "fg-chip",
+    "group": "첨단·정밀 제조",
+    "group_sub": "반도체 · 디스플레이 · 이차전지 · 바이오 · 방산",
+    "name": "반도체"
+   },
+   "size": {
+    "value": 169450,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "반도체 제조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.583,
+      "items": [
+       {
+        "label": "반도체 제조업 종사자",
+        "yoy": 2.0,
+        "value": "169,450명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "2025년 4월 166,140명 대비",
+        "dir": 1,
+        "ratio": 0.67,
+        "score": 0.583
+       }
+      ]
+     },
+     "prod": {
+      "score": 0.968,
+      "items": [
+       {
+        "label": "반도체 생산지수",
+        "yoy": 10.3,
+        "value": "240.2 (2020=100)",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비. 광공업 업종별 생산",
+        "dir": 1,
+        "ratio": 2.06,
+        "score": 0.968
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.993,
+      "items": [
+       {
+        "label": "전자·영상·통신장비 매출액증가율",
+        "yoy": 14.2,
+        "value": "14.2%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "업종 합산(반도체만 따로 공표되지 않음)",
+        "dir": 1,
+        "ratio": 2.84,
+        "score": 0.993
+       }
+      ]
+     },
+     "trend": {
+      "score": 1.0,
+      "items": [
+       {
+        "label": "반도체 수출",
+        "yoy": 259.4,
+        "value": "564.4억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "전체 수출 1,152.8억 달러의 49%",
+        "dir": 1,
+        "ratio": 17.29,
+        "score": 1.0
+       }
+      ]
+     }
+    },
+    "composite": 0.864,
+    "temperature": 34.6,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 1
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.532,
+      "items": [
+       {
+        "label": "미국 컴퓨터·전자부품 제조업 고용",
+        "yoy": 1.78,
+        "value": "1,008.3천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3133400001",
+        "dir": 1,
+        "ratio": 0.59,
+        "score": 0.532
+       }
+      ]
+     },
+     "prod": {
+      "score": 1.0,
+      "items": [
+       {
+        "label": "세계 반도체 판매액",
+        "yoy": 146.8,
+        "value": "1,726억 달러",
+        "period": "2026-09",
+        "source_id": "src_sia_2609",
+        "note": "3개월 이동평균",
+        "dir": 1,
+        "ratio": 29.36,
+        "score": 1.0
+       }
+      ]
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": 1.0,
+      "items": [
+       {
+        "label": "세계 반도체 시장 성장률 전망",
+        "yoy": 108.0,
+        "value": "1조 6,550억 달러",
+        "period": "2026 전망",
+        "source_id": "src_wsts_2609",
+        "note": "2분기 실적 반영 재계산",
+        "dir": 1,
+        "ratio": 7.2,
+        "score": 1.0
+       }
+      ]
+     }
+    },
+    "composite": 0.737,
+    "temperature": 29.5,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 3,
+    "axes_total": 4,
+    "weight_covered": 0.8
+   },
+   "gap": 5.1,
+   "info": [
+    {
+     "label": "메모리 시장",
+     "value": "2026년 302% 성장 전망",
+     "period": "2026 전망",
+     "source_id": "src_wsts_2609"
+    },
+    {
+     "label": "DDR5 16Gb 고정가",
+     "value": "50.0달러",
+     "period": "2026-10",
+     "source_id": "src_motie_export_2610",
+     "note": "6월 40.0달러 → 10월 50.0달러"
+    }
+   ]
+  },
+  {
+   "id": "display",
+   "name": "디스플레이",
+   "en": "Display",
+   "one_line": "OLED 전환과 중국 물량이 맞붙는 화면 산업.",
+   "tags": [
+    "디스플레이",
+    "OLED",
+    "LCD",
+    "패널",
+    "표시장치",
+    "display",
+    "panel"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C262",
+    "mid": "262 전자부품 제조업(표시장치)"
+   },
+   "feel": {
+    "group_id": "fg-chip",
+    "group": "첨단·정밀 제조",
+    "group_sub": "반도체 · 디스플레이 · 이차전지 · 바이오 · 방산",
+    "name": "디스플레이"
+   },
+   "size": {
+    "value": 147267,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "전자부품 제조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.408,
+      "items": [
+       {
+        "label": "전자부품 제조업 종사자",
+        "yoy": 1.3,
+        "value": "147,267명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "2025년 4월 145,344명 대비",
+        "dir": 1,
+        "ratio": 0.43,
+        "score": 0.408
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.753,
+      "items": [
+       {
+        "label": "전자부품 생산지수",
+        "yoy": -4.9,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": -0.98,
+        "score": -0.753
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.993,
+      "items": [
+       {
+        "label": "전자·영상·통신장비 매출액증가율",
+        "yoy": 14.2,
+        "value": "14.2%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "업종 합산",
+        "dir": 1,
+        "ratio": 2.84,
+        "score": 0.993
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.959,
+      "items": [
+       {
+        "label": "디스플레이 수출",
+        "yoy": 29.0,
+        "value": "19억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.93,
+        "score": 0.959
+       }
+      ]
+     }
+    },
+    "composite": 0.287,
+    "temperature": 11.5,
+    "band": "더움",
+    "band_raw": "더움",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 13
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.532,
+      "items": [
+       {
+        "label": "미국 컴퓨터·전자부품 제조업 고용",
+        "yoy": 1.78,
+        "value": "1,008.3천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3133400001",
+        "dir": 1,
+        "ratio": 0.59,
+        "score": 0.532
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.291,
+    "temperature": 11.7,
+    "band": "근거 1축",
+    "band_raw": "더움",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": -0.2,
+   "info": []
+  },
+  {
+   "id": "battery",
+   "name": "이차전지",
+   "en": "Battery",
+   "one_line": "전기차 판매 속도에 생산이 따라붙는 산업.",
+   "tags": [
+    "이차전지",
+    "배터리",
+    "양극재",
+    "음극재",
+    "분리막",
+    "전해액",
+    "LFP",
+    "NCM",
+    "battery"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C282",
+    "mid": "282 일차전지 및 이차전지 제조업"
+   },
+   "feel": {
+    "group_id": "fg-chip",
+    "group": "첨단·정밀 제조",
+    "group_sub": "반도체 · 디스플레이 · 이차전지 · 바이오 · 방산",
+    "name": "이차전지"
+   },
+   "size": {
+    "value": 38621,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "일차전지·이차전지 제조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.984,
+      "items": [
+       {
+        "label": "일차전지·이차전지 제조업 종사자",
+        "yoy": 7.2,
+        "value": "38,621명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "2025년 4월 36,023명 대비",
+        "dir": 1,
+        "ratio": 2.4,
+        "score": 0.984
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.159,
+      "items": [
+       {
+        "label": "전기장비 생산지수",
+        "yoy": -0.8,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비. 이차전지는 전기장비에 포함",
+        "dir": 1,
+        "ratio": -0.16,
+        "score": -0.159
+       }
+      ]
+     },
+     "rev": {
+      "score": -0.726,
+      "items": [
+       {
+        "label": "전기장비 매출액증가율",
+        "yoy": -4.6,
+        "value": "-4.6%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.92,
+        "score": -0.726
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.987,
+      "items": [
+       {
+        "label": "이차전지 수출",
+        "yoy": 38.0,
+        "value": "7억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "",
+        "dir": 1,
+        "ratio": 2.53,
+        "score": 0.987
+       }
+      ]
+     }
+    },
+    "composite": 0.3,
+    "temperature": 12.0,
+    "band": "더움",
+    "band_raw": "더움",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 11
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.204,
+      "items": [
+       {
+        "label": "미국 제조업 고용",
+        "yoy": 0.62,
+        "value": "12,681천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3000000001",
+        "dir": 1,
+        "ratio": 0.21,
+        "score": 0.204
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": 0.583,
+      "items": [
+       {
+        "label": "세계 전기차 판매 전망",
+        "yoy": 10.0,
+        "value": "신차 29%가 전기차",
+        "period": "2026 전망",
+        "source_id": "src_iea_ev_2607",
+        "note": "IEA 집계를 보도로 확인",
+        "dir": 1,
+        "ratio": 0.67,
+        "score": 0.583
+       }
+      ]
+     }
+    },
+    "composite": 0.251,
+    "temperature": 10.1,
+    "band": "더움",
+    "band_raw": "더움",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.5
+   },
+   "gap": 1.9,
+   "info": [
+    {
+     "label": "세계 전기차 판매",
+     "value": "2분기 전년 대비 4% 증가",
+     "period": "2026 2분기",
+     "source_id": "src_iea_ev_2607"
+    }
+   ]
+  },
+  {
+   "id": "auto",
+   "name": "자동차",
+   "en": "Automobile",
+   "one_line": "하이브리드 수출이 끌고 내연기관이 버티는 구조.",
+   "tags": [
+    "자동차",
+    "완성차",
+    "부품",
+    "전기차",
+    "하이브리드",
+    "EV",
+    "자동차부품",
+    "automobile",
+    "auto"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C30",
+    "mid": "30 자동차 및 트레일러 제조업"
+   },
+   "feel": {
+    "group_id": "fg-mobility",
+    "group": "모빌리티",
+    "group_sub": "자동차 · 조선",
+    "name": "자동차·부품"
+   },
+   "size": {
+    "value": 80856,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "자동차용 엔진·자동차 제조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": -0.775,
+      "items": [
+       {
+        "label": "자동차용 엔진·자동차 제조업 종사자",
+        "yoy": -3.1,
+        "value": "80,856명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "2025년 4월 83,472명 대비",
+        "dir": 1,
+        "ratio": -1.03,
+        "score": -0.775
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.04,
+      "items": [
+       {
+        "label": "자동차 생산지수",
+        "yoy": -0.2,
+        "value": "127.6 (2020=100)",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비(원계열)",
+        "dir": 1,
+        "ratio": -0.04,
+        "score": -0.04
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.327,
+      "items": [
+       {
+        "label": "자동차 매출액증가율",
+        "yoy": 1.7,
+        "value": "1.7%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.34,
+        "score": 0.327
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.836,
+      "items": [
+       {
+        "label": "자동차 수출",
+        "yoy": 18.1,
+        "value": "65.5억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_auto_2610",
+        "note": "역대 10월 최대",
+        "dir": 1,
+        "ratio": 1.21,
+        "score": 0.836
+       }
+      ]
+     }
+    },
+    "composite": -0.012,
+    "temperature": -0.2,
+    "band": "평년",
+    "band_raw": "평년",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 18
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.629,
+      "items": [
+       {
+        "label": "미국 운송장비 제조업 고용",
+        "yoy": 2.22,
+        "value": "1,769.5천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3133600001",
+        "dir": 1,
+        "ratio": 0.74,
+        "score": 0.629
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.762,
+      "items": [
+       {
+        "label": "세계 신차 판매",
+        "yoy": -5.0,
+        "value": "상반기 감소",
+        "period": "2026 상반기",
+        "source_id": "src_iea_ev_2607",
+        "note": "중국·미국 수요 감소",
+        "dir": 1,
+        "ratio": -1.0,
+        "score": -0.762
+       }
+      ]
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": 0.583,
+      "items": [
+       {
+        "label": "세계 전기차 판매 전망",
+        "yoy": 10.0,
+        "value": "신차 29%가 전기차",
+        "period": "2026 전망",
+        "source_id": "src_iea_ev_2607",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.67,
+        "score": 0.583
+       }
+      ]
+     }
+    },
+    "composite": 0.086,
+    "temperature": 3.4,
+    "band": "따뜻함",
+    "band_raw": "따뜻함",
+    "axes_used": 3,
+    "axes_total": 4,
+    "weight_covered": 0.8
+   },
+   "gap": -3.6,
+   "info": [
+    {
+     "label": "세계 자동차 판매",
+     "value": "9,980만대",
+     "period": "2025",
+     "source_id": "src_oica_2025",
+     "note": "전년 대비 4.7% 증가"
+    },
+    {
+     "label": "친환경차 수출",
+     "value": "31억 달러",
+     "period": "2026-10",
+     "source_id": "src_motie_auto_2610",
+     "note": "전년동월비 49% 증가"
+    }
+   ]
+  },
+  {
+   "id": "shipbuilding",
+   "name": "조선",
+   "en": "Shipbuilding",
+   "one_line": "수주잔량과 신조선가가 실적을 미리 말해 주는 산업.",
+   "tags": [
+    "조선",
+    "선박",
+    "LNG선",
+    "수주잔량",
+    "신조선가",
+    "해양플랜트",
+    "shipbuilding"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C311",
+    "mid": "311 선박 및 보트 건조업"
+   },
+   "feel": {
+    "group_id": "fg-mobility",
+    "group": "모빌리티",
+    "group_sub": "자동차 · 조선",
+    "name": "조선"
+   },
+   "size": {
+    "value": 112382,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "선박 및 보트 건조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.87,
+      "items": [
+       {
+        "label": "선박 및 보트 건조업 종사자",
+        "yoy": 4.0,
+        "value": "112,382명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "2025년 4월 108,042명 대비",
+        "dir": 1,
+        "ratio": 1.33,
+        "score": 0.87
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.876,
+      "items": [
+       {
+        "label": "기타운송장비 생산지수",
+        "yoy": -6.8,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비. 조선은 기타운송장비에 포함",
+        "dir": 1,
+        "ratio": -1.36,
+        "score": -0.876
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.989,
+      "items": [
+       {
+        "label": "조선·기타운수 매출액증가율",
+        "yoy": 13.1,
+        "value": "13.1%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": 2.62,
+        "score": 0.989
+       }
+      ]
+     },
+     "trend": {
+      "score": -0.994,
+      "items": [
+       {
+        "label": "선박 수출",
+        "yoy": -43.6,
+        "value": "26.4억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "지난해 해양플랜트 수출 기저효과",
+        "dir": 1,
+        "ratio": -2.91,
+        "score": -0.994
+       }
+      ]
+     }
+    },
+    "composite": -0.003,
+    "temperature": -0.1,
+    "band": "평년",
+    "band_raw": "평년",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 17
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.629,
+      "items": [
+       {
+        "label": "미국 운송장비 제조업 고용",
+        "yoy": 2.22,
+        "value": "1,769.5천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3133600001",
+        "dir": 1,
+        "ratio": 0.74,
+        "score": 0.629
+       }
+      ]
+     },
+     "prod": {
+      "score": 1.0,
+      "items": [
+       {
+        "label": "세계 선박 발주량",
+        "yoy": 61.0,
+        "value": "7,969만 CGT",
+        "period": "2026-10 누계",
+        "source_id": "src_clarksons_2610",
+        "note": "1~10월 누계, 전년동기 대비. 한국 점유율 15%",
+        "dir": 1,
+        "ratio": 12.2,
+        "score": 1.0
+       }
+      ]
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.631,
+    "temperature": 25.2,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.6
+   },
+   "gap": -25.3,
+   "info": [
+    {
+     "label": "클락슨 신조선가지수",
+     "value": "187.20",
+     "period": "2026-10 말",
+     "source_id": "src_clarksons_2610",
+     "note": "전월 말 대비 0.61포인트 상승"
+    },
+    {
+     "label": "세계 수주잔량",
+     "value": "2억 2,950만 CGT",
+     "period": "2026-10 말",
+     "source_id": "src_clarksons_2610"
+    }
+   ]
+  },
+  {
+   "id": "steel",
+   "name": "철강",
+   "en": "Steel",
+   "one_line": "건설이 줄면 가장 먼저 식는 기초 소재.",
+   "tags": [
+    "철강",
+    "조강",
+    "고로",
+    "전기로",
+    "후판",
+    "봉형강",
+    "steel"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C241",
+    "mid": "241 1차 철강 제조업"
+   },
+   "feel": {
+    "group_id": "fg-material",
+    "group": "소재·장치",
+    "group_sub": "철강 · 석유화학 · 일반기계",
+    "name": "철강·금속"
+   },
+   "size": {
+    "value": 108791,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "1차 철강 제조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": -0.067,
+      "items": [
+       {
+        "label": "1차 철강 제조업 종사자",
+        "yoy": -0.2,
+        "value": "108,791명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "2025년 4월 109,033명 대비",
+        "dir": 1,
+        "ratio": -0.07,
+        "score": -0.067
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.716,
+      "items": [
+       {
+        "label": "1차금속 생산지수",
+        "yoy": -4.5,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": -0.9,
+        "score": -0.716
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.345,
+      "items": [
+       {
+        "label": "1차금속 매출액증가율",
+        "yoy": 1.8,
+        "value": "1.8%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.36,
+        "score": 0.345
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.899,
+      "items": [
+       {
+        "label": "철강 수출",
+        "yoy": 22.0,
+        "value": "23억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.47,
+        "score": 0.899
+       }
+      ]
+     }
+    },
+    "composite": 0.014,
+    "temperature": 0.6,
+    "band": "평년",
+    "band_raw": "평년",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 16
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.204,
+      "items": [
+       {
+        "label": "미국 제조업 고용",
+        "yoy": 0.62,
+        "value": "12,681천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3000000001",
+        "dir": 1,
+        "ratio": 0.21,
+        "score": 0.204
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.04,
+      "items": [
+       {
+        "label": "세계 조강 생산",
+        "yoy": -0.2,
+        "value": "1억 4,240만 톤",
+        "period": "2026-09",
+        "source_id": "src_worldsteel_2609",
+        "note": "70개국 기준. 1~9월 누계 -0.7%",
+        "dir": 1,
+        "ratio": -0.04,
+        "score": -0.04
+       }
+      ]
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.064,
+    "temperature": 2.5,
+    "band": "따뜻함",
+    "band_raw": "따뜻함",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.6
+   },
+   "gap": -1.9,
+   "info": []
+  },
+  {
+   "id": "petrochem",
+   "name": "석유화학",
+   "en": "Petrochemical",
+   "one_line": "유가와 중국 증설 사이에서 마진이 결정되는 산업.",
+   "tags": [
+    "석유화학",
+    "정유",
+    "나프타",
+    "에틸렌",
+    "합성수지",
+    "화학",
+    "petrochemical",
+    "refinery"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C19·C20",
+    "mid": "19 코크스·석유정제품 / 20 화학물질·화학제품"
+   },
+   "feel": {
+    "group_id": "fg-material",
+    "group": "소재·장치",
+    "group_sub": "철강 · 석유화학 · 일반기계",
+    "name": "석유화학·정유"
+   },
+   "size": {
+    "value": 40734,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "기초 화학물질 제조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.348,
+      "items": [
+       {
+        "label": "석유 정제품 제조업 종사자",
+        "yoy": -0.9,
+        "value": "12,988명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.3,
+        "score": -0.291
+       },
+       {
+        "label": "기초 화학물질 제조업 종사자",
+        "yoy": 7.7,
+        "value": "40,734명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 2.57,
+        "score": 0.988
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.235,
+      "items": [
+       {
+        "label": "석유정제 생산지수",
+        "yoy": -1.4,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": -0.28,
+        "score": -0.273
+       },
+       {
+        "label": "화학제품 생산지수",
+        "yoy": -1.0,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": -0.2,
+        "score": -0.197
+       }
+      ]
+     },
+     "rev": {
+      "score": -0.685,
+      "items": [
+       {
+        "label": "코크스·석유정제품 매출액증가율",
+        "yoy": -7.6,
+        "value": "-7.6%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": -1.52,
+        "score": -0.909
+       },
+       {
+        "label": "화학물질·제품 매출액증가율",
+        "yoy": -2.5,
+        "value": "-2.5%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.5,
+        "score": -0.462
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.977,
+      "items": [
+       {
+        "label": "석유화학 수출",
+        "yoy": 28.0,
+        "value": "40억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.87,
+        "score": 0.953
+       },
+       {
+        "label": "석유제품 수출",
+        "yoy": 80.0,
+        "value": "69억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "",
+        "dir": 1,
+        "ratio": 5.33,
+        "score": 1.0
+       }
+      ]
+     }
+    },
+    "composite": 0.092,
+    "temperature": 3.7,
+    "band": "따뜻함",
+    "band_raw": "따뜻함",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 15
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.204,
+      "items": [
+       {
+        "label": "미국 제조업 고용",
+        "yoy": 0.62,
+        "value": "12,681천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3000000001",
+        "dir": 1,
+        "ratio": 0.21,
+        "score": 0.204
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": -1.0,
+      "items": [
+       {
+        "label": "브렌트유 연평균 가격",
+        "yoy": 40.6,
+        "value": "2026년 97달러 / 2025년 69달러",
+        "period": "2026 전망",
+        "source_id": "src_eia_steo_2611",
+        "note": "원료(나프타) 부담 요인 — 방향을 반대로 본다",
+        "dir": -1,
+        "ratio": 8.12,
+        "score": -1.0
+       }
+      ]
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": -0.196,
+    "temperature": -3.9,
+    "band": "서늘",
+    "band_raw": "서늘",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.5
+   },
+   "gap": 7.6,
+   "info": [
+    {
+     "label": "브렌트유",
+     "value": "배럴당 124달러",
+     "period": "2026-10",
+     "source_id": "src_eia_steo_2611",
+     "note": "2022년 7월 이후 최고"
+    }
+   ]
+  },
+  {
+   "id": "bio",
+   "name": "바이오·의약품",
+   "en": "Bio & Pharma",
+   "one_line": "위탁생산(CDMO)과 신약 수출이 만드는 새 수출 품목.",
+   "tags": [
+    "바이오",
+    "제약",
+    "의약품",
+    "CDMO",
+    "바이오의약품",
+    "임상",
+    "bio",
+    "pharma"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C21",
+    "mid": "21 의료용 물질 및 의약품 제조업"
+   },
+   "feel": {
+    "group_id": "fg-chip",
+    "group": "첨단·정밀 제조",
+    "group_sub": "반도체 · 디스플레이 · 이차전지 · 바이오 · 방산",
+    "name": "바이오·제약"
+   },
+   "size": {
+    "value": 52323,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "의약품 제조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.566,
+      "items": [
+       {
+        "label": "의약품 제조업 종사자",
+        "yoy": 0.4,
+        "value": "52,323명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.13,
+        "score": 0.133
+       },
+       {
+        "label": "기초 의약 물질 제조업 종사자",
+        "yoy": 21.3,
+        "value": "14,590명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 7.1,
+        "score": 1.0
+       }
+      ]
+     },
+     "prod": {
+      "score": 0.999,
+      "items": [
+       {
+        "label": "의약품 생산지수",
+        "yoy": 18.3,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": 3.66,
+        "score": 0.999
+       }
+      ]
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": 0.964,
+      "items": [
+       {
+        "label": "바이오헬스 수출",
+        "yoy": 30.0,
+        "value": "15억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "",
+        "dir": 1,
+        "ratio": 2.0,
+        "score": 0.964
+       }
+      ]
+     }
+    },
+    "composite": 0.74,
+    "temperature": 29.6,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 3,
+    "axes_total": 4,
+    "weight_covered": 0.8,
+    "rank": 3
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.204,
+      "items": [
+       {
+        "label": "미국 제조업 고용",
+        "yoy": 0.62,
+        "value": "12,681천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3000000001",
+        "dir": 1,
+        "ratio": 0.21,
+        "score": 0.204
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.112,
+    "temperature": 4.5,
+    "band": "근거 1축",
+    "band_raw": "따뜻함",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": 25.1,
+   "info": []
+  },
+  {
+   "id": "machinery",
+   "name": "일반기계",
+   "en": "Machinery",
+   "one_line": "설비투자가 늘면 가장 먼저 주문이 들어오는 산업.",
+   "tags": [
+    "기계",
+    "장비",
+    "공작기계",
+    "설비",
+    "자동화",
+    "machinery"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C29",
+    "mid": "29 기타 기계 및 장비 제조업"
+   },
+   "feel": {
+    "group_id": "fg-material",
+    "group": "소재·장치",
+    "group_sub": "철강 · 석유화학 · 일반기계",
+    "name": "기계·장비"
+   },
+   "size": {
+    "value": 231240,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "특수 목적용 기계 제조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.481,
+      "items": [
+       {
+        "label": "특수 목적용 기계 제조업 종사자",
+        "yoy": -0.1,
+        "value": "231,240명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.03,
+        "score": -0.033
+       },
+       {
+        "label": "산업용 기계·장비 수리업 종사자",
+        "yoy": 8.8,
+        "value": "54,421명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 2.93,
+        "score": 0.994
+       }
+      ]
+     },
+     "prod": {
+      "score": 0.998,
+      "items": [
+       {
+        "label": "기계장비 생산지수",
+        "yoy": 17.9,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": 3.58,
+        "score": 0.998
+       }
+      ]
+     },
+     "rev": {
+      "score": -0.1,
+      "items": [
+       {
+        "label": "기타기계·장비 매출액증가율",
+        "yoy": -0.5,
+        "value": "-0.5%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.1,
+        "score": -0.1
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.922,
+      "items": [
+       {
+        "label": "일반기계 수출",
+        "yoy": 24.0,
+        "value": "41억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.6,
+        "score": 0.922
+       }
+      ]
+     }
+    },
+    "composite": 0.608,
+    "temperature": 24.3,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 7
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.204,
+      "items": [
+       {
+        "label": "미국 제조업 고용",
+        "yoy": 0.62,
+        "value": "12,681천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3000000001",
+        "dir": 1,
+        "ratio": 0.21,
+        "score": 0.204
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.112,
+    "temperature": 4.5,
+    "band": "근거 1축",
+    "band_raw": "따뜻함",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": 19.8,
+   "info": []
+  },
+  {
+   "id": "defense",
+   "name": "방산",
+   "en": "Defense",
+   "one_line": "유럽·중동의 증액이 우리 수출 계약으로 이어지는 산업.",
+   "tags": [
+    "방산",
+    "방위산업",
+    "무기",
+    "K방산",
+    "수출계약",
+    "defense"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C252",
+    "mid": "252 무기 및 총포탄 제조업"
+   },
+   "feel": {
+    "group_id": "fg-chip",
+    "group": "첨단·정밀 제조",
+    "group_sub": "반도체 · 디스플레이 · 이차전지 · 바이오 · 방산",
+    "name": "방산"
+   },
+   "size": {
+    "value": 13409,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "무기 및 총포탄 제조업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.997,
+      "items": [
+       {
+        "label": "무기 및 총포탄 제조업 종사자",
+        "yoy": 10.0,
+        "value": "13,409명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "2025년 4월 12,192명 대비",
+        "dir": 1,
+        "ratio": 3.33,
+        "score": 0.997
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.546,
+    "temperature": 21.8,
+    "band": "근거 1축",
+    "band_raw": "폭염",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3,
+    "rank": 8
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.204,
+      "items": [
+       {
+        "label": "미국 제조업 고용",
+        "yoy": 0.62,
+        "value": "12,681천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3000000001",
+        "dir": 1,
+        "ratio": 0.21,
+        "score": 0.204
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": 0.191,
+      "items": [
+       {
+        "label": "세계 군사비 지출",
+        "yoy": 2.9,
+        "value": "2조 8,870억 달러",
+        "period": "2025",
+        "source_id": "src_sipri_2025",
+        "note": "실질 기준. 유럽 +14%",
+        "dir": 1,
+        "ratio": 0.19,
+        "score": 0.191
+       }
+      ]
+     }
+    },
+    "composite": 0.141,
+    "temperature": 5.6,
+    "band": "따뜻함",
+    "band_raw": "따뜻함",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.5
+   },
+   "gap": 16.2,
+   "info": [
+    {
+     "label": "세계 군사비 지출",
+     "value": "세계 GDP의 2.5%",
+     "period": "2025",
+     "source_id": "src_sipri_2025"
+    },
+    {
+     "label": "유럽 군사비 지출",
+     "value": "8,640억 달러",
+     "period": "2025",
+     "source_id": "src_sipri_2025",
+     "note": "전년 대비 14% 증가"
+    }
+   ]
+  },
+  {
+   "id": "food",
+   "name": "식품",
+   "en": "Food",
+   "one_line": "K-푸드 수출과 내수 소비가 따로 움직이는 산업.",
+   "tags": [
+    "식품",
+    "식료품",
+    "K푸드",
+    "가공식품",
+    "라면",
+    "food"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C10",
+    "mid": "10 식료품 제조업"
+   },
+   "feel": {
+    "group_id": "fg-life",
+    "group": "생활·소비",
+    "group_sub": "식품 · 뷰티 · 유통 · 관광",
+    "name": "식품"
+   },
+   "size": {
+    "value": 58177,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "도축·육류 가공업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.924,
+      "items": [
+       {
+        "label": "도축·육류 가공업 종사자",
+        "yoy": 4.5,
+        "value": "58,177명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.5,
+        "score": 0.905
+       },
+       {
+        "label": "기타 식품 제조업 종사자",
+        "yoy": 5.3,
+        "value": "68,332명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.77,
+        "score": 0.943
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.845,
+      "items": [
+       {
+        "label": "식료품 생산지수",
+        "yoy": -6.2,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": -1.24,
+        "score": -0.845
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.664,
+      "items": [
+       {
+        "label": "식료품 매출액증가율",
+        "yoy": 4.0,
+        "value": "4.0%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.8,
+        "score": 0.664
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.664,
+      "items": [
+       {
+        "label": "농수산식품 수출",
+        "yoy": 12.0,
+        "value": "11억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.8,
+        "score": 0.664
+       }
+      ]
+     }
+    },
+    "composite": 0.289,
+    "temperature": 11.6,
+    "band": "더움",
+    "band_raw": "더움",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 12
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.204,
+      "items": [
+       {
+        "label": "미국 제조업 고용",
+        "yoy": 0.62,
+        "value": "12,681천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3000000001",
+        "dir": 1,
+        "ratio": 0.21,
+        "score": 0.204
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": 0.827,
+      "items": [
+       {
+        "label": "세계식량가격지수",
+        "yoy": 5.9,
+        "value": "133.9",
+        "period": "2026-10",
+        "source_id": "src_fao_fpi_2610",
+        "note": "2022년 3월 고점보다 16.4% 낮음",
+        "dir": 1,
+        "ratio": 1.18,
+        "score": 0.827
+       }
+      ]
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.32,
+    "temperature": 12.8,
+    "band": "더움",
+    "band_raw": "더움",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.5
+   },
+   "gap": -1.2,
+   "info": []
+  },
+  {
+   "id": "beauty",
+   "name": "화장품·뷰티",
+   "en": "Beauty",
+   "one_line": "수출이 두 자릿수로 늘어도 국내 생산은 화학 업종 평균에 묶여 있다.",
+   "tags": [
+    "화장품",
+    "뷰티",
+    "코스메틱",
+    "K뷰티",
+    "beauty",
+    "cosmetic"
+   ],
+   "ksic": {
+    "major": "C",
+    "major_name": "제조업",
+    "code": "C20",
+    "mid": "20 화학물질·화학제품(기타 화학제품 중 화장품)"
+   },
+   "feel": {
+    "group_id": "fg-life",
+    "group": "생활·소비",
+    "group_sub": "식품 · 뷰티 · 유통 · 관광",
+    "name": "뷰티·화장품"
+   },
+   "size": {
+    "value": 101806,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "기타 화학제품 제조업 종사자(화장품 포함)",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.682,
+      "items": [
+       {
+        "label": "기타 화학제품 제조업 종사자",
+        "yoy": 2.5,
+        "value": "101,806명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "화장품이 이 분류에 포함된다",
+        "dir": 1,
+        "ratio": 0.83,
+        "score": 0.682
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.197,
+      "items": [
+       {
+        "label": "화학제품 생산지수",
+        "yoy": -1.0,
+        "value": "99.4 (2020=100)",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": -0.2,
+        "score": -0.197
+       }
+      ]
+     },
+     "rev": {
+      "score": -0.462,
+      "items": [
+       {
+        "label": "화학물질·제품 매출액증가율",
+        "yoy": -2.5,
+        "value": "-2.5%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "화장품만 따로 공표되지 않음",
+        "dir": 1,
+        "ratio": -0.5,
+        "score": -0.462
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.999,
+      "items": [
+       {
+        "label": "화장품 수출",
+        "yoy": 58.0,
+        "value": "14억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "",
+        "dir": 1,
+        "ratio": 3.87,
+        "score": 0.999
+       }
+      ]
+     }
+    },
+    "composite": 0.253,
+    "temperature": 10.1,
+    "band": "더움",
+    "band_raw": "더움",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 14
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.204,
+      "items": [
+       {
+        "label": "미국 제조업 고용",
+        "yoy": 0.62,
+        "value": "12,681천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES3000000001",
+        "dir": 1,
+        "ratio": 0.21,
+        "score": 0.204
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.112,
+    "temperature": 4.5,
+    "band": "근거 1축",
+    "band_raw": "따뜻함",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": 5.6,
+   "info": []
+  },
+  {
+   "id": "ai",
+   "name": "AI·소프트웨어",
+   "en": "AI & Software",
+   "one_line": "전 산업의 설비투자를 데이터센터로 끌어오는 산업.",
+   "tags": [
+    "AI",
+    "인공지능",
+    "소프트웨어",
+    "SW",
+    "개발자",
+    "클라우드",
+    "데이터",
+    "IT",
+    "software"
+   ],
+   "ksic": {
+    "major": "J",
+    "major_name": "정보통신업",
+    "code": "J62",
+    "mid": "62 컴퓨터 프로그래밍·시스템 통합·관리업"
+   },
+   "feel": {
+    "group_id": "fg-digital",
+    "group": "디지털",
+    "group_sub": "AI·SW · 콘텐츠 · 통신",
+    "name": "AI·SW"
+   },
+   "size": {
+    "value": 334181,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "소프트웨어 개발·공급업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.788,
+      "items": [
+       {
+        "label": "소프트웨어 개발·공급업 종사자",
+        "yoy": 3.2,
+        "value": "334,181명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "2025년 4월 323,925명 대비",
+        "dir": 1,
+        "ratio": 1.07,
+        "score": 0.788
+       }
+      ]
+     },
+     "prod": {
+      "score": 0.537,
+      "items": [
+       {
+        "label": "정보통신업 생산지수",
+        "yoy": 3.0,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": 0.6,
+        "score": 0.537
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.808,
+      "items": [
+       {
+        "label": "정보통신업 매출액증가율",
+        "yoy": 5.6,
+        "value": "5.6%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.12,
+        "score": 0.808
+       }
+      ]
+     },
+     "trend": {
+      "score": 1.0,
+      "items": [
+       {
+        "label": "컴퓨터 수출(AI 서버·SSD)",
+        "yoy": 496.6,
+        "value": "58.5억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "AI 서비스 확산에 따른 서버 인프라 투자",
+        "dir": 1,
+        "ratio": 33.11,
+        "score": 1.0
+       }
+      ]
+     }
+    },
+    "composite": 0.759,
+    "temperature": 30.4,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 2
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": -0.883,
+      "items": [
+       {
+        "label": "미국 정보업 고용",
+        "yoy": -4.17,
+        "value": "2,734천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES5000000001",
+        "dir": 1,
+        "ratio": -1.39,
+        "score": -0.883
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": 0.995,
+      "items": [
+       {
+        "label": "세계 로직 반도체 시장",
+        "yoy": 45.0,
+        "value": "상반기 성장",
+        "period": "2026 상반기",
+        "source_id": "src_wsts_2609",
+        "note": "AI 인프라·HPC 투자가 견인",
+        "dir": 1,
+        "ratio": 3.0,
+        "score": 0.995
+       }
+      ]
+     }
+    },
+    "composite": -0.093,
+    "temperature": -1.9,
+    "band": "평년",
+    "band_raw": "평년",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.5
+   },
+   "gap": 32.3,
+   "info": []
+  },
+  {
+   "id": "content",
+   "name": "콘텐츠·미디어",
+   "en": "Content & Media",
+   "one_line": "제작 인력은 늘고 광고는 방송으로 몰리는 산업.",
+   "tags": [
+    "콘텐츠",
+    "미디어",
+    "방송",
+    "영상",
+    "OTT",
+    "K콘텐츠",
+    "content",
+    "media"
+   ],
+   "ksic": {
+    "major": "J",
+    "major_name": "정보통신업",
+    "code": "J59·J60",
+    "mid": "59 영상·오디오물 제작·배급 / 60 방송업"
+   },
+   "feel": {
+    "group_id": "fg-digital",
+    "group": "디지털",
+    "group_sub": "AI·SW · 콘텐츠 · 통신",
+    "name": "콘텐츠·미디어"
+   },
+   "size": {
+    "value": 53188,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "영화·비디오물·방송프로그램 제작·배급업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.871,
+      "items": [
+       {
+        "label": "영화·비디오물·방송프로그램 제작·배급업 종사자",
+        "yoy": 3.1,
+        "value": "53,188명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.03,
+        "score": 0.775
+       },
+       {
+        "label": "텔레비전 방송업 종사자",
+        "yoy": 6.1,
+        "value": "29,668명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 2.03,
+        "score": 0.966
+       }
+      ]
+     },
+     "prod": {
+      "score": 0.537,
+      "items": [
+       {
+        "label": "정보통신업 생산지수",
+        "yoy": 3.0,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": 0.6,
+        "score": 0.537
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.808,
+      "items": [
+       {
+        "label": "정보통신업 매출액증가율",
+        "yoy": 5.6,
+        "value": "5.6%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.12,
+        "score": 0.808
+       }
+      ]
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.653,
+    "temperature": 26.1,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 3,
+    "axes_total": 4,
+    "weight_covered": 0.8,
+    "rank": 4
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": -0.883,
+      "items": [
+       {
+        "label": "미국 정보업 고용",
+        "yoy": -4.17,
+        "value": "2,734천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES5000000001",
+        "dir": 1,
+        "ratio": -1.39,
+        "score": -0.883
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": -0.484,
+    "temperature": -9.7,
+    "band": "근거 1축",
+    "band_raw": "추움",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": 35.8,
+   "info": []
+  },
+  {
+   "id": "telecom",
+   "name": "통신",
+   "en": "Telecom",
+   "one_line": "가입자는 그대로인데 설비투자 주기가 실적을 흔드는 산업.",
+   "tags": [
+    "통신",
+    "통신사",
+    "이동통신",
+    "5G",
+    "6G",
+    "통신장비",
+    "telecom"
+   ],
+   "ksic": {
+    "major": "J",
+    "major_name": "정보통신업",
+    "code": "J61",
+    "mid": "61 전기 통신업"
+   },
+   "feel": {
+    "group_id": "fg-digital",
+    "group": "디지털",
+    "group_sub": "AI·SW · 콘텐츠 · 통신",
+    "name": "통신"
+   },
+   "size": {
+    "value": 33934,
+    "unit": "명",
+    "period": "2026-04",
+    "label": "전기 통신업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.386,
+      "items": [
+       {
+        "label": "전기 통신업 종사자",
+        "yoy": -0.4,
+        "value": "33,934명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.13,
+        "score": -0.133
+       },
+       {
+        "label": "통신 및 방송장비 제조업 종사자",
+        "yoy": 4.5,
+        "value": "51,212명",
+        "period": "2026-04",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.5,
+        "score": 0.905
+       }
+      ]
+     },
+     "prod": {
+      "score": 0.537,
+      "items": [
+       {
+        "label": "정보통신업 생산지수",
+        "yoy": 3.0,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": 0.6,
+        "score": 0.537
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.808,
+      "items": [
+       {
+        "label": "정보통신업 매출액증가율",
+        "yoy": 5.6,
+        "value": "5.6%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.12,
+        "score": 0.808
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.419,
+      "items": [
+       {
+        "label": "무선통신기기 수출",
+        "yoy": 6.7,
+        "value": "19.5억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "12개월 연속 증가",
+        "dir": 1,
+        "ratio": 0.45,
+        "score": 0.419
+       }
+      ]
+     }
+    },
+    "composite": 0.522,
+    "temperature": 20.9,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 9
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": -0.883,
+      "items": [
+       {
+        "label": "미국 정보업 고용",
+        "yoy": -4.17,
+        "value": "2,734천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES5000000001",
+        "dir": 1,
+        "ratio": -1.39,
+        "score": -0.883
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": -0.484,
+    "temperature": -9.7,
+    "band": "근거 1축",
+    "band_raw": "추움",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": 30.6,
+   "info": []
+  },
+  {
+   "id": "finance",
+   "name": "금융·보험",
+   "en": "Finance",
+   "one_line": "금리와 예대마진이 온도를 거의 다 결정하는 산업.",
+   "tags": [
+    "금융",
+    "은행",
+    "보험",
+    "증권",
+    "핀테크",
+    "금리",
+    "finance",
+    "bank"
+   ],
+   "ksic": {
+    "major": "K",
+    "major_name": "금융 및 보험업",
+    "code": "K",
+    "mid": "64 금융업 / 65 보험 및 연금업"
+   },
+   "feel": {
+    "group_id": "fg-money",
+    "group": "금융·부동산",
+    "group_sub": "금융·보험 · 부동산",
+    "name": "금융·보험"
+   },
+   "size": {
+    "value": 898000,
+    "unit": "명",
+    "period": "2026-09",
+    "label": "금융 및 보험업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.788,
+      "items": [
+       {
+        "label": "금융 및 보험업 종사자",
+        "yoy": 3.2,
+        "value": "898천명",
+        "period": "2026-09",
+        "source_id": "src_moel_lfs_2609",
+        "note": "보험업 +21천명이 절반 이상",
+        "dir": 1,
+        "ratio": 1.07,
+        "score": 0.788
+       }
+      ]
+     },
+     "prod": {
+      "score": 0.856,
+      "items": [
+       {
+        "label": "금융·보험업 생산지수",
+        "yoy": 6.4,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": 1.28,
+        "score": 0.856
+       }
+      ]
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.637,
+    "temperature": 25.5,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.6,
+    "rank": 5
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": -0.345,
+      "items": [
+       {
+        "label": "미국 금융활동업 고용",
+        "yoy": -1.08,
+        "value": "9,085천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES5500000001",
+        "dir": 1,
+        "ratio": -0.36,
+        "score": -0.345
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": -0.189,
+    "temperature": -3.8,
+    "band": "근거 1축",
+    "band_raw": "서늘",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": 29.3,
+   "info": [
+    {
+     "label": "한국은행 기업경영분석",
+     "value": "금융·보험업은 조사 대상에서 제외",
+     "period": "2025",
+     "source_id": "src_bok_biz_2025",
+     "note": "업종 매출·수익 지표가 공표되지 않는다"
+    }
+   ]
+  },
+  {
+   "id": "retail",
+   "name": "유통·소매",
+   "en": "Retail",
+   "one_line": "온라인으로 무게중심이 옮겨가는 동안 매출은 늘고 생산은 줄었다.",
+   "tags": [
+    "유통",
+    "소매",
+    "도매",
+    "판매",
+    "이커머스",
+    "마트",
+    "retail"
+   ],
+   "ksic": {
+    "major": "G",
+    "major_name": "도매 및 소매업",
+    "code": "G",
+    "mid": "45 자동차 판매 / 47 소매업"
+   },
+   "feel": {
+    "group_id": "fg-life",
+    "group": "생활·소비",
+    "group_sub": "식품 · 뷰티 · 유통 · 관광",
+    "name": "유통·판매"
+   },
+   "size": {
+    "value": 2216000,
+    "unit": "명",
+    "period": "2026-09",
+    "label": "도매 및 소매업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": -0.322,
+      "items": [
+       {
+        "label": "도매 및 소매업 종사자",
+        "yoy": -1.0,
+        "value": "2,216천명",
+        "period": "2026-09",
+        "source_id": "src_moel_lfs_2609",
+        "note": "소매업 -31천명",
+        "dir": 1,
+        "ratio": -0.33,
+        "score": -0.322
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.493,
+      "items": [
+       {
+        "label": "도소매업 생산지수",
+        "yoy": -2.7,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": -0.54,
+        "score": -0.493
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.793,
+      "items": [
+       {
+        "label": "도매·소매 매출액증가율",
+        "yoy": 5.4,
+        "value": "5.4%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.08,
+        "score": 0.793
+       }
+      ]
+     },
+     "trend": {
+      "score": -0.027,
+      "items": [
+       {
+        "label": "소매판매액지수",
+        "yoy": -0.4,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "승용차 등 내구재 판매 감소",
+        "dir": 1,
+        "ratio": -0.03,
+        "score": -0.027
+       }
+      ]
+     }
+    },
+    "composite": -0.091,
+    "temperature": -1.8,
+    "band": "평년",
+    "band_raw": "평년",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 21
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.136,
+      "items": [
+       {
+        "label": "미국 소매업 고용",
+        "yoy": 0.41,
+        "value": "15,501.3천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES4200000001",
+        "dir": 1,
+        "ratio": 0.14,
+        "score": 0.136
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.074,
+    "temperature": 3.0,
+    "band": "근거 1축",
+    "band_raw": "따뜻함",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": -4.8,
+   "info": []
+  },
+  {
+   "id": "logistics",
+   "name": "물류·운송",
+   "en": "Logistics",
+   "one_line": "수출 물량이 늘면 창고와 배가 먼저 바빠진다.",
+   "tags": [
+    "물류",
+    "운송",
+    "택배",
+    "창고",
+    "해운",
+    "항공화물",
+    "logistics"
+   ],
+   "ksic": {
+    "major": "H",
+    "major_name": "운수 및 창고업",
+    "code": "H",
+    "mid": "49 육상 / 50 수상 / 51 항공 / 52 창고·운송관련"
+   },
+   "feel": {
+    "group_id": "fg-social",
+    "group": "사회 기반",
+    "group_sub": "건설 · 물류 · 보건 · 교육",
+    "name": "물류·운송"
+   },
+   "size": {
+    "value": 807000,
+    "unit": "명",
+    "period": "2026-09",
+    "label": "운수 및 창고업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.322,
+      "items": [
+       {
+        "label": "운수 및 창고업 종사자",
+        "yoy": 1.0,
+        "value": "807천명",
+        "period": "2026-09",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.33,
+        "score": 0.322
+       }
+      ]
+     },
+     "prod": {
+      "score": 0.744,
+      "items": [
+       {
+        "label": "운수·창고업 생산지수",
+        "yoy": 4.8,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "전년동월비",
+        "dir": 1,
+        "ratio": 0.96,
+        "score": 0.744
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.478,
+      "items": [
+       {
+        "label": "운수·창고 매출액증가율",
+        "yoy": 2.6,
+        "value": "2.6%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "2024년 11.6%에서 둔화",
+        "dir": 1,
+        "ratio": 0.52,
+        "score": 0.478
+       }
+      ]
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.464,
+    "temperature": 18.6,
+    "band": "더움",
+    "band_raw": "더움",
+    "axes_used": 3,
+    "axes_total": 4,
+    "weight_covered": 0.8,
+    "rank": 10
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.086,
+      "items": [
+       {
+        "label": "미국 운수·창고업 고용",
+        "yoy": 0.26,
+        "value": "6,636.1천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES4300000001",
+        "dir": 1,
+        "ratio": 0.09,
+        "score": 0.086
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.047,
+    "temperature": 1.9,
+    "band": "근거 1축",
+    "band_raw": "평년",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": 16.7,
+   "info": []
+  },
+  {
+   "id": "construction",
+   "name": "건설",
+   "en": "Construction",
+   "one_line": "수주는 살아났지만 기성과 매출은 아직 바닥을 긁는다.",
+   "tags": [
+    "건설",
+    "시공",
+    "토목",
+    "건축",
+    "현장",
+    "건설사",
+    "construction"
+   ],
+   "ksic": {
+    "major": "F",
+    "major_name": "건설업",
+    "code": "F",
+    "mid": "41 종합건설 / 42 전문건설"
+   },
+   "feel": {
+    "group_id": "fg-social",
+    "group": "사회 기반",
+    "group_sub": "건설 · 물류 · 보건 · 교육",
+    "name": "건설"
+   },
+   "size": {
+    "value": 1384000,
+    "unit": "명",
+    "period": "2026-09",
+    "label": "건설업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": -0.322,
+      "items": [
+       {
+        "label": "건설업 종사자",
+        "yoy": -1.0,
+        "value": "1,384천명",
+        "period": "2026-09",
+        "source_id": "src_moel_lfs_2609",
+        "note": "종합 건설업 -25천명",
+        "dir": 1,
+        "ratio": -0.33,
+        "score": -0.322
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.31,
+      "items": [
+       {
+        "label": "건설업 생산지수(건설기성)",
+        "yoy": -1.6,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "원계열 기준",
+        "dir": 1,
+        "ratio": -0.32,
+        "score": -0.31
+       }
+      ]
+     },
+     "rev": {
+      "score": -0.909,
+      "items": [
+       {
+        "label": "건설업 매출액증가율",
+        "yoy": -7.6,
+        "value": "-7.6%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "2024년 -2.8%에서 감소폭 확대",
+        "dir": 1,
+        "ratio": -1.52,
+        "score": -0.909
+       }
+      ]
+     },
+     "trend": {
+      "score": 0.997,
+      "items": [
+       {
+        "label": "건설수주(경상)",
+        "yoy": 49.8,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "건축 +41.4%, 토목 +84.5%",
+        "dir": 1,
+        "ratio": 3.32,
+        "score": 0.997
+       }
+      ]
+     }
+    },
+    "composite": -0.172,
+    "temperature": -3.4,
+    "band": "서늘",
+    "band_raw": "서늘",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 23
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.462,
+      "items": [
+       {
+        "label": "미국 건설업 고용",
+        "yoy": 1.5,
+        "value": "8,367천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES2000000001",
+        "dir": 1,
+        "ratio": 0.5,
+        "score": 0.462
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.253,
+    "temperature": 10.1,
+    "band": "근거 1축",
+    "band_raw": "더움",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": -13.5,
+   "info": []
+  },
+  {
+   "id": "realestate",
+   "name": "부동산",
+   "en": "Real Estate",
+   "one_line": "거래량은 줄고 중개 인력은 늘어나는 엇갈림.",
+   "tags": [
+    "부동산",
+    "중개",
+    "공인중개사",
+    "임대",
+    "realestate"
+   ],
+   "ksic": {
+    "major": "L",
+    "major_name": "부동산업",
+    "code": "L68",
+    "mid": "68 부동산업"
+   },
+   "feel": {
+    "group_id": "fg-money",
+    "group": "금융·부동산",
+    "group_sub": "금융·보험 · 부동산",
+    "name": "부동산"
+   },
+   "size": {
+    "value": 477000,
+    "unit": "명",
+    "period": "2026-09",
+    "label": "부동산업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.853,
+      "items": [
+       {
+        "label": "부동산업 종사자",
+        "yoy": 3.8,
+        "value": "477천명",
+        "period": "2026-09",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 1.27,
+        "score": 0.853
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.653,
+      "items": [
+       {
+        "label": "부동산업 생산지수",
+        "yoy": -3.9,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.78,
+        "score": -0.653
+       }
+      ]
+     },
+     "rev": {
+      "score": -0.478,
+      "items": [
+       {
+        "label": "부동산업 매출액증가율",
+        "yoy": -2.6,
+        "value": "-2.6%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.52,
+        "score": -0.478
+       }
+      ]
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": -0.04,
+    "temperature": -0.8,
+    "band": "평년",
+    "band_raw": "평년",
+    "axes_used": 3,
+    "axes_total": 4,
+    "weight_covered": 0.8,
+    "rank": 20
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": -0.345,
+      "items": [
+       {
+        "label": "미국 금융활동업 고용(부동산 포함)",
+        "yoy": -1.08,
+        "value": "9,085천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES5500000001",
+        "dir": 1,
+        "ratio": -0.36,
+        "score": -0.345
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": -0.189,
+    "temperature": -3.8,
+    "band": "근거 1축",
+    "band_raw": "서늘",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": 3.0,
+   "info": []
+  },
+  {
+   "id": "health",
+   "name": "보건·의료",
+   "en": "Health",
+   "one_line": "고용이 가장 꾸준히 늘어나는 산업.",
+   "tags": [
+    "보건",
+    "의료",
+    "병원",
+    "간호",
+    "요양",
+    "사회복지",
+    "healthcare",
+    "health"
+   ],
+   "ksic": {
+    "major": "Q",
+    "major_name": "보건업 및 사회복지 서비스업",
+    "code": "Q86·Q87",
+    "mid": "86 보건업 / 87 사회복지 서비스업"
+   },
+   "feel": {
+    "group_id": "fg-social",
+    "group": "사회 기반",
+    "group_sub": "건설 · 물류 · 보건 · 교육",
+    "name": "보건·복지"
+   },
+   "size": {
+    "value": 2748000,
+    "unit": "명",
+    "period": "2026-09",
+    "label": "보건업 및 사회복지 서비스업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.892,
+      "items": [
+       {
+        "label": "보건업 및 사회복지 서비스업 종사자",
+        "yoy": 4.3,
+        "value": "2,748천명",
+        "period": "2026-09",
+        "source_id": "src_moel_lfs_2609",
+        "note": "사회복지 +79천명, 보건업 +34천명",
+        "dir": 1,
+        "ratio": 1.43,
+        "score": 0.892
+       }
+      ]
+     },
+     "prod": {
+      "score": 0.726,
+      "items": [
+       {
+        "label": "보건·사회복지 서비스업 생산지수",
+        "yoy": 4.6,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.92,
+        "score": 0.726
+       }
+      ]
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.627,
+    "temperature": 25.1,
+    "band": "폭염",
+    "band_raw": "폭염",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.6,
+    "rank": 6
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.563,
+      "items": [
+       {
+        "label": "미국 교육·보건 서비스업 고용",
+        "yoy": 1.91,
+        "value": "28,058천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES6500000001",
+        "dir": 1,
+        "ratio": 0.64,
+        "score": 0.563
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.308,
+    "temperature": 12.3,
+    "band": "근거 1축",
+    "band_raw": "더움",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": 12.8,
+   "info": [
+    {
+     "label": "한국은행 기업경영분석",
+     "value": "보건·사회복지 서비스업은 조사 대상에서 제외",
+     "period": "2025",
+     "source_id": "src_bok_biz_2025"
+    }
+   ]
+  },
+  {
+   "id": "education",
+   "name": "교육",
+   "en": "Education",
+   "one_line": "학령인구가 줄어도 사교육 인력은 늘어난 산업.",
+   "tags": [
+    "교육",
+    "학원",
+    "강사",
+    "교사",
+    "평생교육",
+    "education"
+   ],
+   "ksic": {
+    "major": "P",
+    "major_name": "교육 서비스업",
+    "code": "P85",
+    "mid": "85 교육 서비스업"
+   },
+   "feel": {
+    "group_id": "fg-social",
+    "group": "사회 기반",
+    "group_sub": "건설 · 물류 · 보건 · 교육",
+    "name": "교육"
+   },
+   "size": {
+    "value": 1639000,
+    "unit": "명",
+    "period": "2026-09",
+    "label": "교육서비스업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.197,
+      "items": [
+       {
+        "label": "교육서비스업 종사자",
+        "yoy": 0.6,
+        "value": "1,639천명",
+        "period": "2026-09",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.2,
+        "score": 0.197
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.254,
+      "items": [
+       {
+        "label": "교육 서비스업 생산지수",
+        "yoy": -1.3,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.26,
+        "score": -0.254
+       }
+      ]
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": -0.022,
+    "temperature": -0.4,
+    "band": "평년",
+    "band_raw": "평년",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.6,
+    "rank": 19
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.563,
+      "items": [
+       {
+        "label": "미국 교육·보건 서비스업 고용",
+        "yoy": 1.91,
+        "value": "28,058천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES6500000001",
+        "dir": 1,
+        "ratio": 0.64,
+        "score": 0.563
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.308,
+    "temperature": 12.3,
+    "band": "근거 1축",
+    "band_raw": "더움",
+    "axes_used": 1,
+    "axes_total": 4,
+    "weight_covered": 0.3
+   },
+   "gap": -12.7,
+   "info": [
+    {
+     "label": "한국은행 기업경영분석",
+     "value": "초·중·고등교육기관은 조사 대상에서 제외",
+     "period": "2025",
+     "source_id": "src_bok_biz_2025"
+    }
+   ]
+  },
+  {
+   "id": "tourism",
+   "name": "관광·숙박",
+   "en": "Tourism",
+   "one_line": "외국인은 돌아오는데 내수 외식은 줄어드는 산업.",
+   "tags": [
+    "관광",
+    "숙박",
+    "호텔",
+    "외식",
+    "음식점",
+    "여행",
+    "tourism",
+    "hotel"
+   ],
+   "ksic": {
+    "major": "I",
+    "major_name": "숙박 및 음식점업",
+    "code": "I55·I56",
+    "mid": "55 숙박업 / 56 음식점 및 주점업"
+   },
+   "feel": {
+    "group_id": "fg-life",
+    "group": "생활·소비",
+    "group_sub": "식품 · 뷰티 · 유통 · 관광",
+    "name": "관광·외식"
+   },
+   "size": {
+    "value": 1251000,
+    "unit": "명",
+    "period": "2026-09",
+    "label": "숙박 및 음식점업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.291,
+      "items": [
+       {
+        "label": "숙박 및 음식점업 종사자",
+        "yoy": 0.9,
+        "value": "1,251천명",
+        "period": "2026-09",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.3,
+        "score": 0.291
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.523,
+      "items": [
+       {
+        "label": "숙박·음식점업 생산지수",
+        "yoy": -2.9,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.58,
+        "score": -0.523
+       }
+      ]
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": -0.09,
+    "temperature": -1.8,
+    "band": "평년",
+    "band_raw": "평년",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.6,
+    "rank": 22
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.03,
+      "items": [
+       {
+        "label": "미국 여가·숙박업 고용",
+        "yoy": 0.09,
+        "value": "16,964천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES7000000001",
+        "dir": 1,
+        "ratio": 0.03,
+        "score": 0.03
+       }
+      ]
+     },
+     "prod": {
+      "score": null,
+      "items": []
+     },
+     "rev": {
+      "score": null,
+      "items": []
+     },
+     "trend": {
+      "score": 0.027,
+      "items": [
+       {
+        "label": "세계 국제관광객",
+        "yoy": 0.4,
+        "value": "6억 9,000만명",
+        "period": "2026 상반기",
+        "source_id": "src_unwto_2609",
+        "note": "2026년 전망 1~2% 증가로 하향",
+        "dir": 1,
+        "ratio": 0.03,
+        "score": 0.027
+       }
+      ]
+     }
+    },
+    "composite": 0.02,
+    "temperature": 0.8,
+    "band": "평년",
+    "band_raw": "평년",
+    "axes_used": 2,
+    "axes_total": 4,
+    "weight_covered": 0.5
+   },
+   "gap": -2.6,
+   "info": []
+  },
+  {
+   "id": "energy",
+   "name": "에너지",
+   "en": "Energy",
+   "one_line": "유가가 뛰면 원가가 오르고 요금은 늦게 따라오는 산업.",
+   "tags": [
+    "에너지",
+    "전력",
+    "발전",
+    "한전",
+    "가스",
+    "전기요금",
+    "energy",
+    "power"
+   ],
+   "ksic": {
+    "major": "D",
+    "major_name": "전기·가스·증기 및 공기조절 공급업",
+    "code": "D35",
+    "mid": "35 전기·가스·증기 및 공기조절 공급업"
+   },
+   "feel": {
+    "group_id": "fg-energy",
+    "group": "에너지",
+    "group_sub": "전기·가스",
+    "name": "에너지·전력"
+   },
+   "size": {
+    "value": 68000,
+    "unit": "명",
+    "period": "2026-09",
+    "label": "전기·가스·증기 및 공기조절 공급업 종사자",
+    "source_id": "src_moel_lfs_2609"
+   },
+   "domestic": {
+    "axes": {
+     "emp": {
+      "score": 0.513,
+      "items": [
+       {
+        "label": "전기·가스·증기 공급업 종사자",
+        "yoy": 1.7,
+        "value": "68천명",
+        "period": "2026-09",
+        "source_id": "src_moel_lfs_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.57,
+        "score": 0.513
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.706,
+      "items": [
+       {
+        "label": "전기·가스업 생산지수",
+        "yoy": -4.4,
+        "value": "전년동월비",
+        "period": "2026-09",
+        "source_id": "src_kostat_ia_2609",
+        "note": "",
+        "dir": 1,
+        "ratio": -0.88,
+        "score": -0.706
+       }
+      ]
+     },
+     "rev": {
+      "score": 0.1,
+      "items": [
+       {
+        "label": "전기가스업 매출액증가율",
+        "yoy": 0.5,
+        "value": "0.5%",
+        "period": "2025",
+        "source_id": "src_bok_biz_2025",
+        "note": "",
+        "dir": 1,
+        "ratio": 0.1,
+        "score": 0.1
+       }
+      ]
+     },
+     "trend": {
+      "score": -1.0,
+      "items": [
+       {
+        "label": "에너지 수입액",
+        "yoy": 63.1,
+        "value": "164.9억 달러",
+        "period": "2026-10",
+        "source_id": "src_motie_export_2610",
+        "note": "원유 단가 상승 — 원가 부담 요인이라 방향을 반대로 본다",
+        "dir": -1,
+        "ratio": 4.21,
+        "score": -1.0
+       }
+      ]
+     }
+    },
+    "composite": -0.238,
+    "temperature": -4.8,
+    "band": "서늘",
+    "band_raw": "서늘",
+    "axes_used": 4,
+    "axes_total": 4,
+    "weight_covered": 1.0,
+    "rank": 24
+   },
+   "global": {
+    "axes": {
+     "emp": {
+      "score": 0.485,
+      "items": [
+       {
+        "label": "미국 전기·가스업 고용",
+        "yoy": 1.59,
+        "value": "611.5천명",
+        "period": "2026-10",
+        "source_id": "src_bls_ces_2610",
+        "note": "BLS 계열 CES4422000001",
+        "dir": 1,
+        "ratio": 0.53,
+        "score": 0.485
+       }
+      ]
+     },
+     "prod": {
+      "score": -0.696,
+      "items": [
+       {
+        "label": "세계 액체연료 생산",
+        "yoy": -4.3,
+        "value": "일 1억 170만 배럴",
+        "period": "2026 전망",
+        "source_id": "src_eia_steo_2611",
+        "note": "2025년 일 1억 630만 배럴",
+        "dir": 1,
+        "ratio": -0.86,
+        "score": -0.696
+       }
+      ]
+     },
+     "rev": {
+      "score": 1.0,
+      "items": [
+       {
+        "label": "브렌트유 연평균 가격",
+        "yoy": 40.6,
+        "value": "2026년 97달러 / 2025년 69달러",
+        "period": "2026 전망",
+        "source_id": "src_eia_steo_2611",
+        "note": "",
+        "dir": 1,
+        "ratio": 8.12,
+        "score": 1.0
+       }
+      ]
+     },
+     "trend": {
+      "score": null,
+      "items": []
+     }
+    },
+    "composite": 0.153,
+    "temperature": 6.1,
+    "band": "따뜻함",
+    "band_raw": "따뜻함",
+    "axes_used": 3,
+    "axes_total": 4,
+    "weight_covered": 0.8
+   },
+   "gap": -10.9,
+   "info": [
+    {
+     "label": "브렌트유",
+     "value": "배럴당 124달러",
+     "period": "2026-10",
+     "source_id": "src_eia_steo_2611"
+    }
+   ]
+  }
+ ]
+}
