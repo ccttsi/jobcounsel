@@ -1,0 +1,292 @@
+{
+ "schema_version": "1.3.0",
+ "updated_at": "2026-11-01T07:10:00+09:00",
+ "edition": {
+  "date": "2026-10-30",
+  "weekday": "금",
+  "title": "늘어난 일자리는 임시·일용, 빈 일자리는 16만개",
+  "subtitle": "사업체노동력조사 — 임시·일용 +20만9천·상용 +7만3천, 빈 일자리 16만개",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "사업체 종사자",
+   "value": 0,
+   "unit": "",
+   "value_text": "2,074.8만명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "+20.9만명",
+   "source_id": "src_moel_biz_202609",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-02T07:10:00+09:00",
+   "run_id": "br-20261102-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "상용근로자",
+   "value": 0,
+   "unit": "",
+   "value_text": "+7.3만명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "0.4%",
+   "source_id": "src_moel_biz_202609",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-02T07:10:00+09:00",
+   "run_id": "br-20261102-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_3",
+   "label": "임시·일용",
+   "value": 0,
+   "unit": "",
+   "value_text": "+12.3만명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "6.3%",
+   "source_id": "src_moel_biz_202609",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-02T07:10:00+09:00",
+   "run_id": "br-20261102-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용지표",
+   "title": "임시·일용이 늘린 20만9천명, 상용은 7만3천명",
+   "kicker": "종사자 2,074.8만명 · 임시일용 +12.3만명",
+   "three_step": {
+    "what": "9월 말 사업체 종사자가 2,074만8천명으로 1년 전보다 20만9천명 늘었다. 늘어난 인원의 약 59%가 임시·일용근로자였다.",
+    "evidence": "상용근로자 +7만3천명(0.4%), 임시·일용 +12만3천명(6.3%). 8월 실질임금 340만9천원(+0.8%)으로 5개월 만에 상승 전환했고, 빈 일자리는 16만개(+8.6%)였다(2026년 9월 말 기준).",
+    "implication": "고용이 늘었다는 말만 전하지 말고 고용 형태를 함께 확인하게 하라. 상용직 증가가 둔한 업종은 계약 기간·임금 조건을 먼저 점검하게 한다."
+   },
+   "key_numbers": [
+    {
+     "label": "사업체 종사자",
+     "value": "2,074.8만명",
+     "delta": "+20.9만명",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "상용근로자",
+     "value": "+7.3만명",
+     "delta": "0.4%",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "임시·일용",
+     "value": "+12.3만명",
+     "delta": "6.3%",
+     "period": "2026년 9월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "만명",
+    "labels": [
+     "상용",
+     "임시·일용"
+    ],
+    "series": [
+     {
+      "name": "전년동월비 증감",
+      "values": [
+       7.3,
+       12.3
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "2026년 9월 말 사업체노동력조사. 국가데이터처 가구조사와 모집단이 다르다.",
+    "source_id": "src_moel_biz_202609"
+   },
+   "tags": [
+    "고용형태",
+    "사업체조사"
+   ],
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "kr",
+   "updated_at": "2026-11-01T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_biz_202609",
+    "source_name": "고용노동부",
+    "source_title": "2026년 9월 사업체노동력조사 및 2026년 4월 산업소분류별 고용통계",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+    "published_at": "2026-10-29",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 확인"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화."
+   },
+   "issue_id": "iss-biz-survey-202609",
+   "counselor_question": "지금 하는 일은 계약 기간이 정해져 있나요, 정해지지 않았나요?"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "채용시장",
+   "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
+   "kicker": "입직 107.8만명 · 이직 102.2만명",
+   "three_step": {
+    "what": "9월 한 달 입직자가 107만8천명으로 1년 전보다 12만3천명 늘고, 이직자도 102만2천명으로 16만명 늘었다. 사람이 오가는 폭이 넓어진 달이었다.",
+    "evidence": "입직률 5.6%(+0.6%p), 이직률 5.3%(+0.8%p). 이직 가운데 자발적 이직 29만1천명(+13.4%), 비자발적 이직 65만3천명(+19.8%). 빈 일자리는 16만개로 8.6% 늘었다(2026년 9월).",
+    "implication": "이직이 늘었다는 사실은 기회이자 위험이다. 내담자가 '옮길 만한 곳'을 확인하려면 빈 일자리 수와 함께 그 업종의 채용·이직 흐름을 보게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "입직자",
+     "value": "107.8만명",
+     "delta": "+12.3만명",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "이직자",
+     "value": "102.2만명",
+     "delta": "+16만명",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "빈 일자리",
+     "value": "16만개",
+     "delta": "+8.6%",
+     "period": "2026년 9월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "만명",
+    "labels": [
+     "입직",
+     "이직",
+     "빈 일자리"
+    ],
+    "series": [
+     {
+      "name": "2026년 9월",
+      "values": [
+       107.8,
+       102.2,
+       16.0
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "사업체노동력조사. 입·이직은 한 달 동안, 빈 일자리는 월말 기준.",
+    "source_id": "src_moel_biz_202609"
+   },
+   "tags": [
+    "이직",
+    "빈일자리"
+   ],
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "updated_at": "2026-11-01T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_biz_202609",
+    "source_name": "고용노동부",
+    "source_title": "2026년 9월 사업체노동력조사 및 2026년 4월 산업소분류별 고용통계",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+    "published_at": "2026-10-29",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-19",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 확인"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화."
+   },
+   "issue_id": "iss-biz-survey-202609",
+   "counselor_question": "최근 1년 안에 스스로 그만둔 일이 있나요, 그만두게 된 일이 있나요?"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_biz_202609",
+   "source_name": "고용노동부",
+   "source_title": "2026년 9월 사업체노동력조사 및 2026년 4월 산업소분류별 고용통계",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787014",
+   "published_at": "2026-10-29",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-19",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 확인"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화.",
+   "id": "src_moel_biz_202609"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30"
+ ]
+}

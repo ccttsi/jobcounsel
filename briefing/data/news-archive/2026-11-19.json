@@ -1,23 +1,10 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-19T07:06:00+09:00",
+ "updated_at": "2026-11-19T07:10:00+09:00",
  "date": "2026-11-19",
  "data_status": "ok",
  "data_status_note": null,
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-19T07:06:00+09:00",
-   "last_ok": "2026-11-19",
-   "run_id": "br-20261119-0706"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-18T23:12:00+09:00",
-   "last_ok": "2026-11-18",
-   "run_id": "br-20261118-2312"
-  }
- },
+ "runs": {},
  "main_themes": [
   {
    "theme_id": "th-ai-job-restructuring",
@@ -447,30 +434,6 @@
   {
    "word": "경제전망",
    "count": 1
-  },
-  {
-   "word": "미국 고용",
-   "count": 1
-  },
-  {
-   "word": "실업률",
-   "count": 1
-  },
-  {
-   "word": "구인",
-   "count": 1
-  },
-  {
-   "word": "퇴사",
-   "count": 1
-  },
-  {
-   "word": "임금",
-   "count": 1
-  },
-  {
-   "word": "복리후생",
-   "count": 1
   }
  ],
  "items": [
@@ -514,162 +477,6 @@
     "full_text_allowed": true,
     "ai_translation_allowed": true
    }
-  },
-  {
-   "id": "n-us-empsit-202610-20261119",
-   "issue_id": "iss-us-empsit-202610",
-   "theme_id": "th-ai-job-restructuring",
-   "edition": "global-2300",
-   "updated_at": "2026-11-19T23:12:00+09:00",
-   "run_id": "br-20261119-2312",
-   "headline": true,
-   "published_at": "2026-11-06T08:30:00-05:00",
-   "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
-    }
-   },
-   "title_original": "THE EMPLOYMENT SITUATION — OCTOBER 2026",
-   "title_ko": "미국 10월 고용동향 — 비농업 +16만5천, 실업률 4.1%",
-   "body_original": "Total nonfarm payroll employment rose by 165,000 in October, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in professional and business services, in health care, and in transportation and warehousing.\n\nBoth the unemployment rate, at 4.1 percent, and the number of unemployed people, at 7.1 million, changed little in October. The unemployment rate has remained in a narrow range of 4.1 percent to 4.3 percent since March.\n\nThe number of long-term unemployed (those jobless for 27 weeks or more), at 2.0 million, changed little over the month. The long-term unemployed accounted for 27.6 percent of all unemployed people.\n\nThe number of people employed part time for economic reasons increased by 339,000 to 4.8 million in October. These individuals would have preferred full-time employment but were working part time because their hours had been reduced or they were unable to find full-time jobs.",
-   "body_ko_ai": "미국 노동통계국은 오늘 10월 비농업 고용이 16만5천 명 늘었고 실업률은 4.1%로 큰 변화가 없었다고 밝혔다. 고용은 전문·사업서비스, 보건, 운수·창고업에서 늘었다.\n\n10월 실업률 4.1%와 실업자 710만 명은 큰 변화가 없었다. 실업률은 3월 이후 4.1~4.3%의 좁은 범위에 머물고 있다.\n\n27주 이상 일자리를 찾지 못한 장기 실업자는 196만 명으로 한 달 사이 큰 변화가 없었다. 장기 실업자는 전체 실업자의 27.6%를 차지했다.\n\n경제적 이유로 시간제로 일하는 사람은 33만9천 명 늘어 480만 명이 됐다. 이들은 전일제 일을 원했지만 근로시간이 줄었거나 전일제 일자리를 찾지 못해 시간제로 일하고 있다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-19T23:05:00+09:00"
-   },
-   "topics": [
-    "고용·정책",
-    "글로벌"
-   ],
-   "keywords": [
-    "미국 고용",
-    "실업률"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
-  },
-  {
-   "id": "n-us-jolts-202609-20261119",
-   "issue_id": "iss-us-jolts-202609",
-   "theme_id": "th-ai-job-restructuring",
-   "edition": "global-2300",
-   "updated_at": "2026-11-19T23:12:00+09:00",
-   "run_id": "br-20261119-2312",
-   "headline": false,
-   "published_at": "2026-11-03T10:00:00-05:00",
-   "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
-    }
-   },
-   "title_original": "JOB OPENINGS AND LABOR TURNOVER — SEPTEMBER 2026",
-   "title_ko": "미국 9월 구인·이직 — 구인 750만, 퇴사 340만",
-   "body_original": "The number of job openings was little changed at 7.5 million in September, the U.S. Bureau of Labor Statistics reported today. Hires and total separations changed little at 5.4 million and 5.3 million, respectively. Within separations, quits (3.4 million) increased, while layoffs and discharges (1.6 million) were little changed.\n\nThe number and rate of job openings were little changed at 7.5 million and 4.5 percent, respectively, in September. Job openings increased in state and local government, excluding education (+104,000).\n\nIn September, the number of total separations was little changed at 5.3 million, while the rate was unchanged at 3.3 percent. Total separations increased in accommodation and food services (+195,000).\n\nThe number of quits increased to 3.4 million, while the rate was little changed at 2.1 percent in September. Quits increased in accommodation and food services (+197,000) but decreased in arts, entertainment, and recreation (-19,000). Over the year, total nonfarm quits increased by 375,000.",
-   "body_ko_ai": "미국 노동통계국은 9월 구인 건수가 750만 건으로 큰 변화가 없었다고 밝혔다. 채용은 540만 건, 총 이직은 530만 건으로 큰 변화가 없었다. 이직 가운데 자발적 퇴사(340만 건)는 늘었고 해고(160만 건)는 큰 변화가 없었다.\n\n9월 구인 건수와 구인율은 각각 750만 건, 4.5%로 큰 변화가 없었다. 구인은 교육을 제외한 주·지방정부에서 10만4천 건 늘었다.\n\n9월 총 이직은 530만 건으로 큰 변화가 없었고 이직률은 3.3%로 같았다. 총 이직은 숙박·음식서비스업에서 19만5천 건 늘었다.\n\n9월 자발적 퇴사는 340만 건으로 늘었고 퇴사율은 2.1%로 큰 변화가 없었다. 퇴사는 숙박·음식서비스업에서 19만7천 건 늘었고 예술·오락·여가업에서는 1만9천 건 줄었다. 1년 사이 전체 퇴사는 37만5천 건 늘었다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-19T23:05:00+09:00"
-   },
-   "topics": [
-    "글로벌",
-    "취업시장"
-   ],
-   "keywords": [
-    "구인",
-    "퇴사"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
-  },
-  {
-   "id": "n-us-eci-2026q3-20261119",
-   "issue_id": "iss-us-eci-2026q3",
-   "theme_id": "th-ai-job-restructuring",
-   "edition": "global-2300",
-   "updated_at": "2026-11-19T23:12:00+09:00",
-   "run_id": "br-20261119-2312",
-   "headline": false,
-   "published_at": "2026-10-30T08:30:00-04:00",
-   "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
-    }
-   },
-   "title_original": "EMPLOYMENT COST INDEX — SEPTEMBER 2026",
-   "title_ko": "미국 3분기 고용비용지수 — 임금 3.1%, 복리후생 3.9%",
-   "body_original": "Compensation costs for civilian workers increased 0.8 percent, seasonally adjusted, for the 3-month period ending in September 2026, the U.S. Bureau of Labor Statistics reported today. Wages and salaries increased 0.7 percent, and benefit costs increased 0.9 percent from June 2026.\n\nCompensation costs for civilian workers increased 3.4 percent, not seasonally adjusted, for the 12-month period ending in September 2026. Wages and salaries increased 3.1 percent, and benefit costs increased 3.9 percent over the year.\n\nCompensation costs for private industry workers increased 3.4 percent, not seasonally adjusted, for the 12-month period ending in September 2026. Wages and salaries increased 3.1 percent, and benefit costs increased 3.9 percent over the year. Inflation-adjusted (constant dollar) wages and salaries decreased 0.6 percent over the year.",
-   "body_ko_ai": "미국 노동통계국은 2026년 9월까지 3개월 동안 민간·공공 민간 근로자의 보상 비용이 계절조정 기준 0.8% 늘었다고 밝혔다. 임금·급여는 0.7%, 복리후생 비용은 0.9% 늘었다(2026년 6월 대비).\n\n2026년 9월까지 12개월 동안 근로자 보상 비용은 계절조정하지 않은 기준 3.4% 늘었다. 임금·급여는 3.1%, 복리후생 비용은 3.9% 늘었다.\n\n민간 산업 근로자의 보상 비용은 같은 12개월 동안 3.4% 늘었다. 임금·급여 3.1%, 복리후생 3.9%였다. 물가를 반영한 실질 임금·급여는 같은 기간 0.6% 줄었다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-19T23:05:00+09:00"
-   },
-   "topics": [
-    "글로벌",
-    "고용·정책"
-   ],
-   "keywords": [
-    "임금",
-    "복리후생"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
   }
  ],
  "excluded": {
@@ -685,29 +492,25 @@
    }
   ]
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }

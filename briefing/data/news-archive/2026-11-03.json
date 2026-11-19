@@ -1,21 +1,10 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-03T23:12:00+09:00",
+ "updated_at": "2026-11-16T23:09:00+09:00",
  "date": "2026-11-03",
  "data_status": "ok",
  "data_status_note": null,
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-03T07:10:00+09:00",
-   "last_ok": "2026-11-03"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-03T23:12:00+09:00",
-   "last_ok": "2026-11-03"
-  }
- },
+ "runs": {},
  "main_themes": [
   {
    "theme_id": "th-ai-job-restructuring",
@@ -419,15 +408,11 @@
  ],
  "keywords": [
   {
+   "word": "재취업",
+   "count": 1
+  },
+  {
    "word": "미국 고용",
-   "count": 1
-  },
-  {
-   "word": "실업률",
-   "count": 1
-  },
-  {
-   "word": "구인",
    "count": 1
   },
   {
@@ -435,57 +420,54 @@
    "count": 1
   },
   {
-   "word": "복리후생",
-   "count": 1
-  },
-  {
-   "word": "장기실업",
+   "word": "구직활동",
    "count": 1
   }
  ],
  "items": [
   {
-   "id": "n-us-jolts-202609-20261103",
-   "issue_id": "iss-us-jolts-202609",
-   "theme_id": "th-ai-job-restructuring",
+   "id": "n20261114-02",
+   "issue_id": "iss-us-displaced",
+   "theme_id": null,
    "edition": "global-2300",
-   "updated_at": "2026-11-03T23:12:00+09:00",
-   "run_id": "br-20261103-2312",
+   "updated_at": "2026-11-14T23:07:00+09:00",
+   "run_id": "br-20261114-2307",
    "headline": true,
-   "published_at": "2026-11-03T10:00:00-05:00",
+   "published_at": "2026-11-02",
    "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/jolts_11032026.htm",
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_url": "https://www.bls.gov/opub/ted/2026/three-fourths-of-long-tenured-workers-displaced-from-jobs-in-health-care-and-social-assistance-reemployed-in-january-2026.htm",
     "country": "US",
     "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
      "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
-     "attribution_required": true,
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "연방정부 발간물 전체",
+     "attribution_required": false,
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
+     "verified_at": "2026-11-17",
+     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-02)"
     }
    },
-   "title_original": "JOB OPENINGS AND LABOR TURNOVER — SEPTEMBER 2026",
-   "title_ko": "미국 9월 구인·이직 — 구인 750만, 퇴사 340만",
-   "body_original": "The number of job openings was little changed at 7.5 million in September, the U.S. Bureau of Labor Statistics reported today. Hires and total separations changed little at 5.4 million and 5.3 million, respectively. Within separations, quits (3.4 million) increased, while layoffs and discharges (1.6 million) were little changed.\n\nThe number and rate of job openings were little changed at 7.5 million and 4.5 percent, respectively, in September. Job openings increased in state and local government, excluding education (+104,000).\n\nIn September, the number of total separations was little changed at 5.3 million, while the rate was unchanged at 3.3 percent. Total separations increased in accommodation and food services (+195,000).\n\nThe number of quits increased to 3.4 million, while the rate was little changed at 2.1 percent in September. Quits increased in accommodation and food services (+197,000) but decreased in arts, entertainment, and recreation (-19,000). Over the year, total nonfarm quits increased by 375,000.",
-   "body_ko_ai": "미국 노동통계국은 9월 구인 건수가 750만 건으로 큰 변화가 없었다고 밝혔다. 채용은 540만 건, 총 이직은 530만 건으로 큰 변화가 없었다. 이직 가운데 자발적 퇴사(340만 건)는 늘었고 해고(160만 건)는 큰 변화가 없었다.\n\n9월 구인 건수와 구인율은 각각 750만 건, 4.5%로 큰 변화가 없었다. 구인은 교육을 제외한 주·지방정부에서 10만4천 건 늘었다.\n\n9월 총 이직은 530만 건으로 큰 변화가 없었고 이직률은 3.3%로 같았다. 총 이직은 숙박·음식서비스업에서 19만5천 건 늘었다.\n\n9월 자발적 퇴사는 340만 건으로 늘었고 퇴사율은 2.1%로 큰 변화가 없었다. 퇴사는 숙박·음식서비스업에서 19만7천 건 늘었고 예술·오락·여가업에서는 1만9천 건 줄었다. 1년 사이 전체 퇴사는 37만5천 건 늘었다.",
+   "title_original": "Three-fourths of long-tenured workers displaced from jobs in health care and social assistance reemployed in January 2026",
+   "title_ko": "3년 이상 근속 실직자의 66.1%가 재취업…보건·복지 77.1%",
+   "body_original": "Three-fourths of long-tenured workers displaced from jobs in health care and social assistance reemployed in January 2026\n\nFrom January 2023 through December 2025, there were 3.3 million workers displaced from jobs they had held for at least 3 years. In January 2026, 66.1 percent of these long-tenured workers were reemployed. Among long-tenured workers displaced from jobs in health care and social assistance, 77.1 percent were reemployed. For those displaced from jobs in information, 76.8 percent were reemployed. Reemployment rates were also above 70.0 percent for those workers displaced from jobs in wholesale and retail trade (72.2 percent) and construction (71.3 percent).",
+   "body_ko_ai": "2023년 1월부터 2025년 12월 사이 3년 이상 근속한 일자리에서 잘린 미국 노동자는 3백30만명이다. 2026년 1월 기준 이들 가운데 66.1%가 재취업했다. 업종별로는 보건·사회복지업에서 잘린 사람의 77.1%, 정보통신업 76.8%, 도소매업 72.2%, 건설업 71.3%가 재취업해 70%를 넘는 업종이 많았다.",
    "translation": {
     "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-03T23:05:00+09:00"
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-14T23:07:00+09:00"
    },
    "topics": [
     "글로벌",
     "취업시장"
    ],
    "keywords": [
-    "구인",
-    "퇴사"
+    "재취업",
+    "미국 고용"
    ],
    "related_jobs": [
     "직업상담사"
@@ -494,36 +476,140 @@
    "rights": {
     "full_text_allowed": true,
     "ai_translation_allowed": true
-   }
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
+  },
+  {
+   "id": "n20261116-16",
+   "issue_id": "iss-ilo-monopsony-wages",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-16T23:09:00+09:00",
+   "run_id": "br-20261116-2309",
+   "headline": false,
+   "published_at": "2026-11-02",
+   "source": {
+    "source_name": "국제노동기구(ILO)",
+    "source_url": "https://www.ilo.org/publications/monopsonic-power-and-wage-dynamics-insights-cross-country-labour-market",
+    "country": "CH",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "텍스트 한정(ILO 엠블럼·이름·로고 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-16",
+     "evidence": "ILO 웹 PDF 2쪽 저작권 고지 'Attribution 4.0 International (CC BY 4.0)'와 번역 시 고지 문구 요구 확인(2026-11-16).",
+     "attribution_text": "출처: ILO Working Paper 183, Davalos·Ernst·Torres (2026), CC BY 4.0. 이 한국어 번역·요약은 ILO가 작성·검토·승인한 공식 번역이 아니며 ILO는 그 내용에 책임지지 않습니다."
+    }
+   },
+   "title_original": "Monopsonistic Power and Wage Dynamics: Insights from Cross-Country Labour Market Analysis (ILO Working Paper 183)",
+   "title_ko": "고용주 교섭력과 임금 동학: 10개국 노동시장 비교 분석(ILO 작업보고서 183)",
+   "body_original": "Monopsonistic Power and Wage Dynamics: Insights from Cross-Country Labour Market Analysis\n\nJorge Davalos, Ekkehard Ernst, Diana Torres. ILO Working Paper 183. Geneva: International Labour Office, November 2026. DOI: 10.54394/00035060\n\nAbstract\n\nThis paper investigates the prevalence, drivers, and implications of monopsonistic power across ten countries using harmonized labour force survey data and a structural estimation framework. We construct a structural index of monopsony that builds on readily available microdata, enabling consistent cross-country comparisons of labour market frictions. Our results reveal that monopsonistic power is systematically higher among women, younger workers, rural populations, and those employed in agriculture or informal sectors. Education and urban location consistently reduce monopsonistic exposure, suggesting that labour mobility and human capital are key buffers. Sectoral analysis confirms that monopsonistic distortions are most acute in agriculture and least severe in diversified, formalized industries. We also explore how monopsony conditions mediate the wage effects of automation, finding that productivity gains are less likely to translate into wage growth in settings with higher employer power. These findings offer new insights into the structural determinants of wage inequality and call for targeted policies to reduce labour market frictions and improve worker bargaining conditions.",
+   "body_ko_ai": "고용주 교섭력과 임금 동학: 10개국 노동시장 비교 분석(ILO 작업보고서 183)\n\n호르헤 다발로스, 에케하르트 에른스트, 디아나 토레스. 국제노동기구(ILO) 작업보고서 183. 제네바: 국제노동사무국, 2026년 11월. DOI: 10.54394/00035060\n\n초록\n\n이 논문은 10개국의 조화된 노동력조사 자료와 구조적 추정 틀을 사용해 고용주 교섭력(모노프소니)의 확산, 결정 요인, 함의를 분석한다. 우리는 손쉽게 구할 수 있는 미시자료에 기반해 노동시장 마찰을 국가 간에 일관되게 비교할 수 있는 구조적 모노프소니 지수를 만든다. 결과는 고용주 교섭력이 여성, 청년, 농촌 인구, 농업·비공식 부문 종사자에게 체계적으로 더 높다는 것을 보여 준다. 교육과 도시 거주는 모노프소니 노출을 일관되게 낮춰, 노동 이동성과 인적자본이 핵심 완충 장치임을 시사한다. 부문별 분석은 모노프소니 왜곡이 농업에서 가장 심하고, 다양화되고 공식화된 산업에서 가장 약하다는 것을 확인한다. 우리는 또한 모노프소니 조건이 자동화의 임금 효과를 매개하는 방식을 살펴보는데, 고용주 교섭력이 높은 환경에서는 생산성 이득이 임금 인상으로 이어질 가능성이 더 낮다. 이 결과는 임금 불평등의 구조적 결정 요인에 대한 새로운 통찰을 주고, 노동시장 마찰을 줄이고 근로자의 교섭 조건을 개선하기 위한 표적화된 정책을 요구한다.\n\n[번역 고지] 이 문서는 국제노동기구(ILO)의 저작물을 번역한 것입니다. 이 번역은 ILO가 작성·검토·승인한 공식 번역이 아니며 ILO의 공식 번역으로 간주되어서는 안 됩니다. ILO는 그 내용과 정확성에 대해 어떠한 책임도 지지 않습니다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-16T23:09:00+09:00"
+   },
+   "topics": [
+    "고용·정책",
+    "글로벌"
+   ],
+   "keywords": [
+    "임금"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "노동경제 연구자"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": [
+    "CC BY 4.0"
+   ]
+  },
+  {
+   "id": "n20261116-04",
+   "issue_id": "iss-public-employment-service",
+   "theme_id": null,
+   "edition": "kr-0700",
+   "updated_at": "2026-11-16T13:04:00+09:00",
+   "run_id": "br-20261116-1304",
+   "headline": false,
+   "published_at": "2026-11-02",
+   "source": {
+    "source_name": "고용노동부(노사발전재단)",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787529",
+    "country": "KR",
+    "license": {
+     "type": "KOGL-1",
+     "name": "공공누리 제1유형(출처표시)",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "attribution_text": "출처: 고용노동부(노사발전재단) 「노사발전재단, 남아시아 3개국과 청년고용 지원을 위한 공공고용서비스 협력 확대」 보도자료(2026.11.2), 공공누리 제1유형.",
+     "verified": true,
+     "verified_at": "2026-11-16",
+     "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '텍스트에 한하여 공공누리 제1유형(출처표시)' 고지 확인(2026-11-16). 첨부 PDF 본문과 페이지 본문 대조."
+    }
+   },
+   "title_original": "노사발전재단, 남아시아 3개국과 청년고용 지원을 위한 공공고용서비스 협력 확대",
+   "body_original": "노사발전재단(사무총장 박종필)은 11월 2일(월)부터 6일(금)까지 서울 엠갤러리에서 방글라데시·부탄·몰디브 정부 관계자 21명을 초청해 한국의 공공고용서비스(Public Employment Services, PES) 정책과 현장 운영 경험을 공유하는 역량강화 연수를 실시한다.\n\n이번 연수는 아시아개발은행(ADB)이 추진하는 남아시아 5개국 공공고용서비스 역량강화 사업의 일환으로, 청년들이 교육과 직업훈련을 마친 후 노동시장에 원활하게 진입할 수 있도록 각국의 고용서비스 정책과 현장 실행역량을 강화하는 데 목적이 있다.\n\n남아시아 5개국은 스리랑카·방글라데시·부탄·몰디브·네팔이다.\n\n재단은 지난 9월 14일부터 18일까지 스리랑카 노동부 인력·고용국(DoME) 공무원 10명을 대상으로 1차 초청연수를 실시하고, 한국의 고용서비스 정책과 현장 운영 사례를 공유했다. 이를 바탕으로 스리랑카의 노동시장 정보 분절, 담당 인력의 전문성 부족, 교육·직업훈련과 노동시장 수요 간 불일치, 진로지도 서비스의 접근 제한 및 분산, 취업성과 추적 미흡 등 5가지 우선 정책과제를 구체화한 바 있다.\n\n이번 2차 연수는 방글라데시·부탄·몰디브 3개국이 함께 참여하는 공동 연수로, 각국의 고용서비스 운영 현황과 정책과제를 공유하고 국가 간 경험을 비교·논의하는 데 중점을 둔다. 특히 한국의 공공고용서비스 정책과 현장 운영 사례를 각국의 여건에 비추어 살펴보고, 자국에 적용 가능한 정책개선 방향을 모색할 예정이다.\n\n연수 프로그램은 한국의 공공고용서비스 발전 과정과 중앙·지역 간 서비스 전달체계, 노동시장정보시스템(LMIS), 디지털 고용서비스 플랫폼 '고용24'의 구축·운영 사례 등을 중심으로 구성됐다. 아울러 인공지능(AI) 기반 고용서비스와 고용행정통계 활용, 직업교육훈련(TVET)과 고용서비스의 연계, 청년 진로개발 및 학교-노동시장 이행 지원 정책 등을 폭넓게 다룬다.\n\n특히 이번 연수에서는 정책과 제도가 실제 현장에서 어떻게 작동하는지 확인할 수 있도록 대학과 지역 고용서비스 기관을 직접 방문한다.\n\n참가자들은 한국외국어대학교 진로취업지원센터에서 대학생의 진로설계와 취업 준비를 지원하는 서비스 운영 사례를 살펴본다. 이어 서울북부고용복지플러스센터를 방문해 구직상담, 취업알선, 직업훈련 연계 등 지역 기반 고용서비스가 구직자에게 전달되는 과정을 확인할 예정이다.\n\n이를 통해 청년의 진로탐색부터 취업 준비와 구직활동에 이르기까지 교육기관과 공공고용서비스 기관이 수행하는 역할을 이해하고, 각국의 서비스 전달체계와 현장 지원역량을 개선하기 위한 시사점을 모색한다.\n\n3개국 대표단은 국가별 발표와 토론을 통해 자국의 노동시장정보시스템(LMIS) 운영 현황과 활용 가능한 고용통계, 정보 격차 및 개선 수요를 공유한다. 이를 바탕으로 국가별 공통 과제와 차이점을 살펴보고, 한국의 디지털 고용서비스 및 청년고용지원 경험을 자국의 정책에 적용할 수 있는 방안을 논의할 계획이다.\n\n연수 마지막 날인 11월 6일(금)에는 정책 강의와 현장 방문, 국가별 토론 결과를 종합하여 각국의 우선 정책과제와 추진 방향을 담은 실행계획(Action Plan)을 수립할 예정이다. 이를 통해 연수에서 습득한 한국의 정책 경험을 각국의 여건에 맞는 구체적인 개선 과제로 발전시키고, 향후 현지 정책협력의 기반을 마련한다.\n\n이번 연수의 성과는 한국에서의 정책학습에 그치지 않고, 각국 현지에서의 정책 논의와 실행계획 구체화로 이어진다.\n\n재단은 내년 남아시아 각국에서 개최되는 이해관계자 워크숍에도 참여할 예정이다. 현지 워크숍에서는 국가별 고용서비스 진단 결과와 초청연수에서 논의된 정책과제를 바탕으로 정부, 고용서비스 기관, 교육훈련기관 등 관계자들이 정책의 필요성과 실행 가능성을 검토하고, 국가별 정책 로드맵을 구체화할 계획이다.\n\n박종필 노사발전재단 사무총장은 \"공공고용서비스의 성과는 좋은 제도를 갖추는 데 그치지 않고, 청년과 구직자들이 현장에서 필요한 지원을 실제로 받을 수 있도록 하는 데 있다\"며, \"이번 연수가 한국의 정책과 현장 경험을 바탕으로 남아시아 각국의 고용서비스 개선 방향을 구체화하는 계기가 되기를 기대한다\"라고 밝혔다.",
+   "topics": [
+    "글로벌",
+    "고용·정책"
+   ],
+   "keywords": [
+    "구직활동"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "고용서비스 운영자"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": "공공고용서비스",
+   "badges": [
+    "공공누리 제1유형"
+   ]
   }
  ],
  "excluded": {
   "count": 0,
   "reasons": []
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }

@@ -1,21 +1,10 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-12T23:12:00+09:00",
+ "updated_at": "2026-11-16T23:09:00+09:00",
  "date": "2026-11-12",
  "data_status": "ok",
  "data_status_note": null,
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-12T07:10:00+09:00",
-   "last_ok": "2026-11-12"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-12T23:12:00+09:00",
-   "last_ok": "2026-11-12"
-  }
- },
+ "runs": {},
  "main_themes": [
   {
    "theme_id": "th-ai-job-restructuring",
@@ -419,125 +408,50 @@
  ],
  "keywords": [
   {
-   "word": "미국 고용",
+   "word": "청년 고용",
    "count": 1
   },
   {
-   "word": "실업률",
+   "word": "고용률",
    "count": 1
   },
   {
-   "word": "구인",
-   "count": 1
-  },
-  {
-   "word": "임금",
-   "count": 1
-  },
-  {
-   "word": "복리후생",
-   "count": 1
-  },
-  {
-   "word": "장기실업",
+   "word": "AI 직무전망",
    "count": 1
   }
  ],
  "items": [
   {
-   "id": "n-us-empsit-202610-20261112",
-   "issue_id": "iss-us-empsit-202610",
-   "theme_id": "th-ai-job-restructuring",
-   "edition": "global-2300",
-   "updated_at": "2026-11-12T23:12:00+09:00",
-   "run_id": "br-20261112-2312",
+   "id": "n20261116-01",
+   "issue_id": "iss-kr-employment-oct",
+   "theme_id": "th-youth-employment-gap",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-16T13:04:00+09:00",
+   "run_id": "br-20261116-1304",
    "headline": true,
-   "published_at": "2026-11-06T08:30:00-05:00",
+   "published_at": "2026-11-11",
    "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
-    "country": "US",
+    "source_name": "국가데이터처",
+    "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156788701",
+    "country": "KR",
     "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
+     "type": "KOGL-1",
+     "name": "공공누리 제1유형(출처표시)",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "attribution_text": "출처: 국가데이터처 「2026년 10월 고용동향」(브리핑룸 부처 브리핑, 2026.11.11), 공공누리 제1유형. 텍스트 일부(질의응답)는 옮기지 않았습니다.",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
+     "verified_at": "2026-11-16",
+     "evidence": "정책브리핑 해당 페이지 하단 고지: '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.' (2026-11-16 확인)"
     }
    },
-   "title_original": "THE EMPLOYMENT SITUATION — OCTOBER 2026",
-   "title_ko": "미국 10월 고용동향 — 비농업 +16만5천, 실업률 4.1%",
-   "body_original": "Total nonfarm payroll employment rose by 165,000 in October, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in professional and business services, in health care, and in transportation and warehousing.\n\nBoth the unemployment rate, at 4.1 percent, and the number of unemployed people, at 7.1 million, changed little in October. The unemployment rate has remained in a narrow range of 4.1 percent to 4.3 percent since March.\n\nThe number of long-term unemployed (those jobless for 27 weeks or more), at 2.0 million, changed little over the month. The long-term unemployed accounted for 27.6 percent of all unemployed people.\n\nThe number of people employed part time for economic reasons increased by 339,000 to 4.8 million in October. These individuals would have preferred full-time employment but were working part time because their hours had been reduced or they were unable to find full-time jobs.",
-   "body_ko_ai": "미국 노동통계국은 오늘 10월 비농업 고용이 16만5천 명 늘었고 실업률은 4.1%로 큰 변화가 없었다고 밝혔다. 고용은 전문·사업서비스, 보건, 운수·창고업에서 늘었다.\n\n10월 실업률 4.1%와 실업자 710만 명은 큰 변화가 없었다. 실업률은 3월 이후 4.1~4.3%의 좁은 범위에 머물고 있다.\n\n27주 이상 일자리를 찾지 못한 장기 실업자는 196만 명으로 한 달 사이 큰 변화가 없었다. 장기 실업자는 전체 실업자의 27.6%를 차지했다.\n\n경제적 이유로 시간제로 일하는 사람은 33만9천 명 늘어 480만 명이 됐다. 이들은 전일제 일을 원했지만 근로시간이 줄었거나 전일제 일자리를 찾지 못해 시간제로 일하고 있다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-12T23:05:00+09:00"
-   },
+   "title_original": "2026년 10월 고용동향",
+   "body_original": "안녕하십니까? 국가데이터처 사회통계국장입니다.\n\n지금부터 2026년 10월 고용동향에 대해 설명드리겠습니다.\n\n먼저, 15~64세 고용률은 70.4%로 전년동월대비 0.3%p 상승했으나, 청년층 고용률은 42.9%로 1.7%p 하락했습니다.\n\n실업률은 2.0%로 전년동월대비 0.2%p 하락했고, 청년층 실업률은 5.2%로 0.1%p 하락했습니다.\n\n취업자는 2,917만 9,000명으로 전년동월대비 13만 9,000명 증가했습니다.\n\n15~64세 고용률은 50대와 30대 등에서 상승해 전년동월대비 0.3%p 상승했습니다.\n\n실업률은 30대와 50대 등에서 하락해 전년동월대비 0.2%p 하락했습니다.\n\n취업자의 경우 산업별로는 보건업 및 사회복지서비스업 24만 9,000명, 운수 및 창고업 4만 8,000명, 사업시설관리·사업지원 및 임대서비스업 3만 7,000명 등에서 증가했으나, 숙박 및 음식점업 -13만 7,000명, 농림어업 -10만 1,000명, 건설업 -4만 2,000명 등에서 감소했습니다.\n\n임금근로자 중 상용근로자는 28만 7,000명 증가했으나, 임시근로자는 10만 7,000명, 일용근로자는 5만 3,000명 각각 감소했습니다.\n\n비임금근로자 중 고용원 있는 자영업자는 1만 5,000명, 고용원 없는 자영업자는 4만 2,000명 각각 증가했으나, 무급가족종사자는 4만 5,000명 감소했습니다.\n\n실업자는 50대와 30대 등에서 감소해 전년동월대비 5만 6,000명 감소했습니다.\n\n비경제활동인구는 쉬었음 -6만 9,000명 등에서 감소했으나, 재학·수강 13만 1,000명, 연로 6만 8,000명 등에서 증가해 전년동월대비 17만 9,000명 증가했습니다.\n\n구직단념자는 34만 명으로 전년동월대비 2만 7,000명 감소했습니다.\n\n다음은 7쪽, 본문입니다.\n\n2026년 10월 15세 이상 인구는 4,608만 명으로 전년동월대비 26만 1,000명 증가했습니다.\n\n경제활동인구는 2,978만 1,000명으로 전년동월대비 8만 3,000명 증가했습니다.\n\n경제활동참가율은 64.6%로 전년동월대비 0.2%p 하락했습니다.\n\n다음은 취업자 동향입니다.\n\n2026년 10월 15세 이상 취업자는 2,917만 9,000명으로 전년동월대비 13만 9,000명 증가했고, 고용률은 63.3%로 0.1%p 하락했습니다.\n\n성별로 보면 남자는 1,615만 4,000명으로 전년동월대비 14만 9,000명 증가했으나, 여자는 1,302만 5,000명으로 1만 명 감소했습니다.\n\n연령계층별 취업자의 전년동월대비 증감을 살펴보면 20대에서 20만 3,000명, 40대에서 3만 2,000명 각각 감소했으나, 60세 이상에서 19만 6,000명, 30대에서 12만 8,000명, 50대에서 4만 2,000명 각각 증가했습니다.\n\n고용률은 20대와 60세 이상에서 하락했습니다.\n\n직업별 취업자의 전년동월대비 증감을 살펴보면 사무종사자 20만 7,000명, 전문가 및 관련종사자 19만 4,000명, 단순노무종사자 6만 3,000명에서 증가했으나, 판매종사자 -9만 5,000명, 농림어업숙련종사자 -9만 3,000명, 장치·기계조작 및 조립종사자 -9만 3,000명 등에서 감소했습니다.\n\n취업시간대별 취업자의 전년동월대비 증감을 살펴보면 36시간 미만 취업자는 669만 1,000명으로 2만 8,000명 증가했고, 36시간 이상 취업자는 2,207만 3,000명으로 12만 4,000명 증가했습니다.\n\n주당 평균 취업시간은 38.4시간으로 전년동월대비 0.1시간 감소했습니다.\n\n다음은 실업자 동향입니다.\n\n2026년 10월 실업자는 60만 2,000명으로 전년동월대비 5만 6,000명 감소했습니다.\n\n실업률은 2.0%로 전년동월대비 0.2%p 하락했습니다.\n\n연령계층별 실업자 및 실업률의 전년동월대비 증감을 살펴보면 실업자는 50대 -2만 4,000명, 30대 -2만 2,000명 등에서 감소했습니다.\n\n실업률은 30대와 50대 등에서 하락했습니다.\n\n과거 취업경험 유무별 실업자의 전년동월대비 증감을 살펴보면 취업 무경험 실업자는 2만 1,000명으로 1만 8,000명 감소했고, 취업 유경험 실업자는 58만 2,000명으로 3만 8,000명 감소했습니다.\n\n다음은 비경제활동인구입니다.\n\n2026년 10월 비경제활동인구는 1,629만 9,000명으로 전년동월대비 17만 9,000명 증가했습니다.\n\n취업준비자는 61만 9,000명으로 전년동월대비 2만 1,000명 증가했습니다.\n\n비경제활동인구 중 연령계층별 쉬었음 인구는 전년동월대비 20대 -4만 9,000명, 50대 -4만 8,000명 등에서 감소했습니다.\n\n다음은 고용보조지표입니다.\n\n2026년 10월 전체 고용보조지표3은 7.3%로 전년동월대비 0.5%p 하락했습니다. 청년층 고용보조지표3은 15.1%로 0.4%p 상승했습니다.\n\n이상으로 설명을 마치겠습니다.\n\n[질의응답은 원문 참조]\n\n2026년 10월 고용동향 총평입니다. 취업자 증가세가 지속되면서 취업자 증가 폭은 지난달에 비해 확대됐고, 실업자는 감소했으며, 비경제활동인구는 증가했습니다.\n\n취업자는 전년동월대비 13만 9,000명 증가했는데 산업별로는 보건복지업, 운수·창고업, 사업시설업 등에서, 지위별로는 상용직, 고용원 없는 자영업자, 고용원 있는 자영업자에서, 연령별로는 60세 이상, 30대와 50대에서 증가했습니다. 계절조정취업자는 전월대비 5만 명 감소했습니다.\n\n실업자는 50대와 30대, 청년층과 40대에서 감소해 전년동월대비 5만 6,000명 감소했고, 비경제활동인구는 60세 이상과 청년층에서 증가해 전년동월대비 17만 9,000명 증가했습니다.",
    "topics": [
-    "고용·정책",
-    "글로벌"
-   ],
-   "keywords": [
-    "미국 고용",
-    "실업률"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
-  },
-  {
-   "id": "n-us-eci-2026q3-20261112",
-   "issue_id": "iss-us-eci-2026q3",
-   "theme_id": "th-ai-job-restructuring",
-   "edition": "global-2300",
-   "updated_at": "2026-11-12T23:12:00+09:00",
-   "run_id": "br-20261112-2312",
-   "headline": false,
-   "published_at": "2026-10-30T08:30:00-04:00",
-   "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_url": "https://www.bls.gov/news.release/archives/eci_10302026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 · 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": null,
-     "scope": "텍스트",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "17 U.S.C. §105 연방정부 저작물"
-    }
-   },
-   "title_original": "EMPLOYMENT COST INDEX — SEPTEMBER 2026",
-   "title_ko": "미국 3분기 고용비용지수 — 임금 3.1%, 복리후생 3.9%",
-   "body_original": "Compensation costs for civilian workers increased 0.8 percent, seasonally adjusted, for the 3-month period ending in September 2026, the U.S. Bureau of Labor Statistics reported today. Wages and salaries increased 0.7 percent, and benefit costs increased 0.9 percent from June 2026.\n\nCompensation costs for civilian workers increased 3.4 percent, not seasonally adjusted, for the 12-month period ending in September 2026. Wages and salaries increased 3.1 percent, and benefit costs increased 3.9 percent over the year.\n\nCompensation costs for private industry workers increased 3.4 percent, not seasonally adjusted, for the 12-month period ending in September 2026. Wages and salaries increased 3.1 percent, and benefit costs increased 3.9 percent over the year. Inflation-adjusted (constant dollar) wages and salaries decreased 0.6 percent over the year.",
-   "body_ko_ai": "미국 노동통계국은 2026년 9월까지 3개월 동안 민간·공공 민간 근로자의 보상 비용이 계절조정 기준 0.8% 늘었다고 밝혔다. 임금·급여는 0.7%, 복리후생 비용은 0.9% 늘었다(2026년 6월 대비).\n\n2026년 9월까지 12개월 동안 근로자 보상 비용은 계절조정하지 않은 기준 3.4% 늘었다. 임금·급여는 3.1%, 복리후생 비용은 3.9% 늘었다.\n\n민간 산업 근로자의 보상 비용은 같은 12개월 동안 3.4% 늘었다. 임금·급여 3.1%, 복리후생 3.9%였다. 물가를 반영한 실질 임금·급여는 같은 기간 0.6% 줄었다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle 번역",
-    "translated_at": "2026-11-12T23:05:00+09:00"
-   },
-   "topics": [
-    "글로벌",
     "고용·정책"
    ],
    "keywords": [
-    "임금",
-    "복리후생"
+    "청년 고용",
+    "고용률"
    ],
    "related_jobs": [
     "직업상담사"
@@ -546,36 +460,95 @@
    "rights": {
     "full_text_allowed": true,
     "ai_translation_allowed": true
-   }
+   },
+   "is_main_theme": true,
+   "theme": "청년 고용 사각지대",
+   "badges": [
+    "메인테마 · 청년 고용",
+    "공공누리 제1유형"
+   ]
+  },
+  {
+   "id": "n20261116-14",
+   "issue_id": "iss-ai-use-typology",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-16T23:09:00+09:00",
+   "run_id": "br-20261116-2309",
+   "headline": false,
+   "published_at": "2026-11-11T20:50:00+09:00",
+   "source": {
+    "source_name": "arXiv (오슬로대 TIK센터)",
+    "source_url": "https://arxiv.org/abs/2611.15371",
+    "country": "US",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "텍스트 한정(초록·본문)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-16",
+     "evidence": "arXiv 초록 페이지의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 연결됨을 직접 확인(2026-11-16).",
+     "attribution_text": "Castellacci, F. (2026), From the firm- to the application-level: A new typology of AI use in organisations, arXiv:2611.15371, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록 부분)."
+    }
+   },
+   "title_original": "From the firm- to the application-level: A new typology of AI use in organisations (arXiv:2611.15371)",
+   "title_ko": "기업 단위에서 적용 단위로: 조직 내 AI 활용의 새 유형론(arXiv:2611.15371)",
+   "body_original": "From the firm- to the application-level: A new typology of AI use in organisations\n\nFulvio Castellacci. Submitted 11 November 2026. arXiv:2611.15371.\n\nAbstract\n\nArtificial intelligence is applied in organisations in many different ways. However, the firm-level literature on AI lacks a conceptual framework able to describe that variety. Empirical studies typically examine one dimension of AI use at a time. This paper argues that the difficulty follows from the unit of analysis: a firm may hold many AI applications at once, each with its own novelty, sourcing mode, objective and technology type. These dimensions are defined at the level of the application rather than of the firm. We therefore propose shifting the unit of analysis from the firm to the individual AI application, and develop a typology combining these four conceptual dimensions. The new framework locates any application in a common space, and it points out in particular two types that the prevailing adoption-innovation distinction neglects: co-invention, novel uses of technology the firm did not develop, and internalisation, in-house building of AI that could have been bought instead. Documented use cases illustrate the framework, which is then used to discuss implications for firms strategies and the diffusion of AI in economic systems.",
+   "body_ko_ai": "기업 단위에서 적용 단위로: 조직 내 AI 활용의 새 유형론\n\n풀비오 카스텔라치. 2026년 11월 11일 제출. arXiv:2611.15371.\n\n초록\n\n인공지능은 조직에서 매우 다양한 방식으로 적용된다. 그러나 AI에 대한 기업 단위 연구에는 그 다양성을 서술할 개념 틀이 없다. 실증 연구들은 대개 한 번에 한 차원의 AI 활용만 검토한다. 이 논문은 그 어려움이 분석 단위에서 비롯된다고 주장한다. 한 기업은 각기 다른 새로움, 조달 방식, 목적, 기술 유형을 지닌 여러 AI 적용을 동시에 보유할 수 있고, 이 차원들은 기업이 아니라 적용 수준에서 정의된다. 따라서 우리는 분석 단위를 기업에서 개별 AI 적용으로 옮기고, 이 네 가지 개념 차원을 결합한 유형론을 제안한다. 새 틀은 어떤 적용이든 하나의 공통 공간에 위치시키며, 특히 기존의 도입-혁신 구분이 놓치는 두 유형을 지적한다. 기업이 개발하지 않은 기술을 새롭게 쓰는 '공동발명(co-invention)'과, 사들일 수도 있었던 AI를 사내에서 직접 구축하는 '내부화(internalisation)'다. 문서화된 사례들이 이 틀을 예시하며, 이 틀은 기업 전략과 경제 시스템에서 AI 확산에 대한 함의를 논의하는 데 쓰인다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-16T23:09:00+09:00"
+   },
+   "topics": [
+    "AI·직무"
+   ],
+   "keywords": [
+    "AI 직무전망"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "기업 HR 담당자"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": [
+    "CC BY 4.0"
+   ]
   }
  ],
  "excluded": {
   "count": 0,
   "reasons": []
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }

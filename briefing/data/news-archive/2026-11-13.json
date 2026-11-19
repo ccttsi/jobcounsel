@@ -1,108 +1,46 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-13T23:06:00+09:00",
+ "updated_at": "2026-11-16T13:04:00+09:00",
  "date": "2026-11-13",
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-13T07:04:00+09:00",
-   "last_ok": "2026-11-13"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-13T23:06:00+09:00",
-   "last_ok": "2026-11-13"
-  }
- },
  "data_status": "ok",
  "data_status_note": null,
+ "runs": {},
+ "main_themes": [],
  "keywords": [
   {
    "word": "미국 고용",
-   "count": 1
+   "count": 2
   },
   {
    "word": "AI 직무전망",
-   "count": 2
+   "count": 1
+  },
+  {
+   "word": "시니어산업",
+   "count": 1
   },
   {
    "word": "청년 고용",
-   "count": 3
+   "count": 1
   },
   {
-   "word": "임금",
-   "count": 2
+   "word": "구인율",
+   "count": 1
   },
   {
-   "word": "파트타임",
+   "word": "실업급여",
    "count": 1
   }
  ],
  "items": [
   {
-   "id": "n20261113-01",
-   "issue_id": "iss-us-involuntary-pt",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-13T23:06:00+09:00",
-   "run_id": "br-20261113-2306",
-   "headline": true,
-   "published_at": "2026-11-16",
-   "source": {
-    "source_name": "미국 노동통계국(BLS) The Economics Daily",
-    "source_url": "https://www.bls.gov/opub/ted/2026/involuntary-part-time-employment-rose-by-339000-to-4.8-million-in-october-2026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.bls.gov/opub/copyright-information.htm",
-     "scope": "연방정부 발간물 전체",
-     "attribution_required": false,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-16)"
-    }
-   },
-   "title_original": "Involuntary part-time employment rose by 339,000 to 4.8 million in October 2026",
-   "title_ko": "미국 비자발적 파트타임 33만9천명 증가해 484만명",
-   "body_original": "Involuntary part-time employment rose by 339,000 to 4.8 million in October 2026\n\nIn October 2026, the number of people employed part time for economic reasons, or involuntary part-time workers, totaled 4.8 million. This was an increase of 339,000 people from the previous month. These individuals, who would have preferred full-time employment, were working part time because their hours had been reduced or they were unable to find full-time jobs.\n\nEmployed people by part-time status, October 2026, seasonally adjusted:\nPart time for economic reasons: 4,501,000 (Sep 2026) / 4,840,000 (Oct 2026)\nSlack work or business conditions: 2,896,000 / 3,252,000\nCould only find part-time work: 1,267,000 / 1,265,000\nPart time for noneconomic reasons: 22,813,000 / 22,664,000",
-   "body_ko_ai": "2026년 10월 미국의 경제적 사유 파트타임 근로자(비자발적 파트타임)는 4백84만명으로 전월보다 33만9천명 늘었다. 풀타임을 원하지만 근무시간이 줄었거나 풀타임 일자리를 찾지 못한 사람들이다.\n\n파트타임 상태별 취업자 수(계절조정, 9월→10월): 경제적 사유 파트타임 4백50만1천→4백84만명, 일이나 사업이 줄어서 2백89만6천→3백25만2천명, 풀타임 일자리를 찾지 못해 1백26만7천→1백26만5천명. 경제적 사유가 아닌 파트타임은 2천2백81만3천→2천2백66만4천명.",
-   "translation": {
-    "mode": "ai",
-    "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-13T23:06:00+09:00"
-   },
-   "topics": [
-    "글로벌",
-    "취업시장"
-   ],
-   "keywords": [
-    "파트타임",
-    "미국 고용"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   },
-   "is_main_theme": false,
-   "theme": null,
-   "badges": []
-  },
-  {
-   "id": "n20261113-02",
+   "id": "n20261114-07",
    "issue_id": "iss-ai-two-margins",
    "theme_id": null,
    "edition": "global-2300",
-   "updated_at": "2026-11-13T23:06:00+09:00",
-   "run_id": "br-20261113-2306",
-   "headline": true,
+   "updated_at": "2026-11-14T23:07:00+09:00",
+   "run_id": "br-20261114-2307",
+   "headline": false,
    "published_at": "2026-11-12",
    "source": {
     "source_name": "arXiv (micro1·노스이스턴대)",
@@ -129,7 +67,7 @@
    "translation": {
     "mode": "ai",
     "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-13T23:06:00+09:00"
+    "translated_at": "2026-11-14T23:07:00+09:00"
    },
    "topics": [
     "AI·직무",
@@ -151,98 +89,147 @@
    "badges": []
   },
   {
-   "id": "n20261113-03",
-   "issue_id": "iss-ai-use-typology",
+   "id": "n20261114-08",
+   "issue_id": "iss-senior-industry",
    "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-13T23:06:00+09:00",
-   "run_id": "br-20261113-2306",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-14T07:05:00+09:00",
+   "run_id": "br-20261114-0705",
    "headline": false,
-   "published_at": "2026-11-11",
+   "published_at": "2026-11-12",
    "source": {
-    "source_name": "arXiv (오슬로대 TIK센터)",
-    "source_url": "https://arxiv.org/abs/2611.15371",
-    "country": "NO",
+    "source_name": "인구전략위원회",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788872",
+    "country": "KR",
     "license": {
-     "name": "CC BY 4.0 (저작자표시)",
-     "type": "CC-BY-4.0",
-     "url": "https://creativecommons.org/licenses/by/4.0/",
-     "scope": "텍스트(초록·본문) 한정, 사진·도표 이미지 제외",
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
      "attribution_required": true,
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
      "verified_at": "2026-11-17",
-     "evidence": "arXiv PDF 라이선스 표기 creativecommons.org/licenses/by/4.0 확인(2026-11-17).",
-     "attribution_text": "Castellacci, F. (2026), arXiv:2611.15371, CC BY 4.0"
+     "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+     "attribution_text": "출처: 인구전략위원회 「김진오 인구전략위 부위원장, \"시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로\"」(2026.11.12, 정책브리핑), 공공누리 제1유형"
     }
    },
-   "title_original": "From the firm- to the application-level: A new typology of AI use in organisations",
-   "title_ko": "기업 단위에서 적용 단위로: 조직 내 AI 활용의 새 유형론(arXiv:2611.15371)",
-   "body_original": "From the firm- to the application-level: A new typology of AI use in organisations\n\nFulvio Castellacci. November 2026.\n\nAbstract: Artificial intelligence is applied in organisations in many different ways. However, the firm-level literature on AI lacks a conceptual framework able to describe that variety. Empirical studies typically examine one dimension of AI use at a time. This paper argues that the difficulty follows from the unit of analysis: a firm may hold many AI applications at once, each with its own novelty, sourcing mode, objective and technology type. These dimensions are defined at the level of the application rather than of the firm. We therefore propose shifting the unit of analysis from the firm to the individual AI application, and develop a typology combining these four conceptual dimensions. The new framework locates any application in a common space, and it points out in particular two types that the prevailing adoption-innovation distinction neglects: co-invention, novel uses of technology the firm did not develop, and internalisation, in-house building of AI that could have been bought instead. Documented use cases illustrate the framework, which is then used to discuss implications for firms strategies and the diffusion of AI in economic systems.",
-   "body_ko_ai": "인공지능은 조직에서 매우 다양한 방식으로 쓰인다. 그러나 기업 수준 연구에는 그 다양성을 설명할 개념 틀이 없다. 실증 연구는 대개 AI 활용의 한 차원만 본다. 이 논문은 그 어려움이 분석 단위에서 온다고 본다. 한 기업이 여러 AI 응용을 동시에 갖고 있고, 응용마다 참신성·조달 방식·목적·기술 유형이 다르기 때문이다. 저자는 분석 단위를 기업에서 개별 AI 응용으로 옮기고 네 차원을 결합한 유형론을 제안한다. 새 틀은 기존의 도입·혁신 구분이 놓친 두 유형, 곧 기업이 만들지 않은 기술을 새롭게 쓰는 공동발명(co-invention)과 살 수 있었던 AI를 직접 만드는 내부화(internalisation)를 짚는다. 사례를 통해 틀을 설명하고 기업 전략과 AI 확산에 대한 함의를 논한다.",
+   "title_original": "김진오 인구전략위 부위원장, \"시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로\"",
+   "title_ko": "시니어산업, 초고령사회 대응 넘어 새로운 성장의 기회로(인구전략위)",
+   "body_original": "대통령직속 인구전략위원회 김진오 부위원장은 11월 12일 서울 명동 은행회관에서 열린 「2026 fn 시니어산업 컨퍼런스」에 참석해, 초고령사회의 부담을 새로운 성장의 기회로 바꾸기 위한 '생산적 국가 성장산업으로 시니어산업 육성'을 강조했다.\n\n김 부위원장은 \"지금 대한민국은 고령화사회 진입 후 단 25년 만에 초고령사회에 들어섰고, 베이비붐 세대의 은퇴와 75세 이상 후기 고령층의 급증으로 의료·돌봄 수요가 더욱 확대될 것\"이라며 \"고용과 소득, 주거와 여가는 물론 AI와 돌봄로봇 등 에이지테크에 이르기까지 사회 전반의 정책과 산업 생태계를 근본적으로 재설계해야 한다\"고 밝혔다.\n\n또한 시니어산업을 '고령층만을 위한 보조적 복지 서비스'나 '단순 재정 지출'로 보아서는 안 되며 ①고령자의 안정적 노후소득 보장 기반 강화 ②의료·돌봄과 에이지테크의 융합 ③일자리 창출로 이어지는 전 세대 선순환 구조를 만들어야 한다고 제언했다.\n\n인구전략위원회는 지난 9월 출범했으며 '제1차 국가인구전략 기본계획'을 바탕으로 연금·고용·주거·돌봄·기술 과제의 현장 추진을 지원하겠다고 밝혔다.",
+   "body_ko_ai": null,
+   "translation": null,
+   "topics": [
+    "고용·정책"
+   ],
+   "keywords": [
+    "시니어산업"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
+  },
+  {
+   "id": "n20261114-09",
+   "issue_id": "iss-youth-field-check",
+   "theme_id": null,
+   "edition": "kr-0700",
+   "updated_at": "2026-11-14T07:05:00+09:00",
+   "run_id": "br-20261114-0705",
+   "headline": false,
+   "published_at": "2026-11-12",
+   "source": {
+    "source_name": "재정경제부",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788969",
+    "country": "KR",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-17",
+     "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
+     "attribution_text": "출처: 재정경제부 「범부처 민생안정지원단, 청년 취업지원 현장 점검」(2026.11.12, 정책브리핑), 공공누리 제1유형"
+    }
+   },
+   "title_original": "범부처 민생안정지원단, 청년 취업지원 현장 점검",
+   "title_ko": "범부처 민생안정지원단, 청년 취업지원 현장 점검",
+   "body_original": "재정경제부는 11월 12일 범부처 민생안정지원단과 함께 청년 취업지원 현장을 점검했다. 지원 제도가 청년에게 실제로 닿는지를 확인하는 자리였다.\n\n같은 주 보건복지부는 양극화 대응 TF 총괄반 1차 회의를 열고 '모두의 성장'으로의 대전환을 위해 전 부처 역량 결집을 확인했다.",
+   "body_ko_ai": null,
+   "translation": null,
+   "topics": [
+    "고용·정책"
+   ],
+   "keywords": [
+    "청년 고용"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
+  },
+  {
+   "id": "n20261115-03",
+   "issue_id": "iss-us-jolts-sep",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-15T23:08:00+09:00",
+   "run_id": "br-20261115-2308",
+   "headline": false,
+   "published_at": "2026-11-12",
+   "source": {
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_url": "https://www.bls.gov/opub/ted/2026/job-openings-rate-little-changed-at-4-5-percent-in-september-2026.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "연방정부 발간물 전체",
+     "attribution_required": false,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-17",
+     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-12)"
+    }
+   },
+   "title_original": "Job openings rate little changed at 4.5 percent in September 2026",
+   "title_ko": "미국 9월 구인율 4.5%…보건·사회복지 5.8%, 주·지방 교육 2.3%",
+   "body_original": "Job openings rate little changed at 4.5 percent in September 2026\n\nIn September 2026, the job openings rate was 4.5 percent, little changed from the previous month.\n\nThe job openings rate in government overall was 3.6 percent and at the federal level was 3.7 percent. The job openings rate was 5.0 percent in state and local government, excluding education, and the rate for state and local education was 2.3 percent.\n\nIn private industry, the job openings rate in September 2026 was 4.7 percent. The rate for the healthcare and social assistance industry was 5.8 percent, and for professional and business services was 5.5 percent.\n\nThese data are from the Job Openings and Labor Turnover Survey and are seasonally adjusted. Data for the most recent month are preliminary.",
+   "body_ko_ai": "2026년 9월 구인율은 4.5%로 전월과 큰 차이가 없었다.\n\n정부 부문 구인율은 3.6%, 연방정부는 3.7%였다. 교육을 제외한 주·지방정부는 5.0%, 주·지방 교육은 2.3%였다.\n\n민간 부문 구인율은 4.7%였다. 보건·사회복지업은 5.8%, 전문·사업서비스업은 5.5%였다.\n\n이 수치는 구인·이직조사(JOLTS)에서 나온 계절조정 값이며, 가장 최근 달 수치는 잠정치다.",
    "translation": {
     "mode": "ai",
     "engine": "Pickle AI 번역",
-    "translated_at": "2026-11-13T23:06:00+09:00"
+    "translated_at": "2026-11-15T23:08:00+09:00"
    },
    "topics": [
-    "AI·직무"
-   ],
-   "keywords": [
-    "AI 직무전망"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   },
-   "is_main_theme": false,
-   "theme": null,
-   "badges": []
-  },
-  {
-   "id": "n20261113-04",
-   "issue_id": "iss-kr-greenbook-nov",
-   "theme_id": null,
-   "edition": "kr-0700",
-   "updated_at": "2026-11-13T07:04:00+09:00",
-   "run_id": "br-20261113-0704",
-   "headline": false,
-   "published_at": "2026-11-13",
-   "source": {
-    "source_name": "재정경제부",
-    "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
-    "country": "KR",
-    "license": {
-     "name": "공공누리 제1유형(출처표시)",
-     "type": "KOGL-1",
-     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
-     "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
-     "attribution_text": "출처: 재정경제부 「2026년 11월 최근 경제동향」(2026.11.13, 정책브리핑), 공공누리 제1유형"
-    }
-   },
-   "title_original": "2026년 11월 최근 경제동향",
-   "title_ko": "2026년 11월 최근 경제동향(재정경제부)",
-   "body_original": "9월 전산업생산은 전월 대비 3.0% 증가하고 소매판매는 3.6%, 설비투자는 5.3% 증가했다. 10월 수출은 전년 동월 대비 93.7% 증가했다(일평균 수출액 52억 4천만 달러, +76.1%).\n\n고용은 10월 취업자 수가 전년 동월보다 13만 9천명 늘면서 9월(11만 3천명)보다 증가폭이 확대됐다. 실업률은 2.0%로 지난해 같은 달보다 0.2%포인트 하락했다. 다만 10월 청년층(15~29세) 취업자 수는 전년 동월보다 19만 6천명 감소했다. 제조업 취업자 수는 7천명 줄어든 반면 서비스업은 27만 2천명 증가했다.\n\n10월 소비자물가는 전년 동월보다 2.8% 올라 9월(2.9%)보다 상승폭이 축소됐다. 식료품·에너지 제외 지수와 농산물·석유류 제외 지수는 각각 2.8%, 생활물가지수는 2.6% 상승했다. 석유류 물가는 전년 동월 대비 14.9% 올랐다.\n\n10월 소비자심리지수(CSI)는 105.4로 전월보다 1.2포인트 하락했다. 전산업 기업심리지수(CBSI)는 10월 실적이 104.2로 5.1포인트 올랐고 11월 전망도 101.8로 2.2포인트 상승했다.\n\n정부는 3대 메가프로젝트, 7대 SEED, 한국형 녹색대전환(K-GX), 서비스산업 육성 등으로 성장 저변을 확대하는 한편 민생안정과 양극화 완화 정책을 강화할 계획이다.",
-   "body_ko_ai": null,
-   "translation": null,
-   "topics": [
-    "고용·정책",
+    "글로벌",
     "취업시장"
    ],
    "keywords": [
-    "청년 고용",
-    "임금"
+    "구인율"
    ],
    "related_jobs": [
     "직업상담사"
@@ -257,43 +244,43 @@
    "badges": []
   },
   {
-   "id": "n20261113-05",
-   "issue_id": "iss-pay-shield-tf",
-   "theme_id": null,
-   "edition": "kr-0700",
-   "updated_at": "2026-11-13T07:04:00+09:00",
-   "run_id": "br-20261113-0704",
+   "id": "n20261116-07",
+   "issue_id": "iss-us-job-openings-sep",
+   "theme_id": "th-employment-indicators-ui",
+   "edition": "global-2300",
+   "updated_at": "2026-11-16T13:04:00+09:00",
+   "run_id": "br-20261116-1304",
    "headline": false,
-   "published_at": "2026-11-13",
+   "published_at": "2026-11-12",
    "source": {
-    "source_name": "재정경제부",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789089",
-    "country": "KR",
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_url": "https://www.bls.gov/opub/ted/2026/job-openings-rate-little-changed-at-4-5-percent-in-september-2026.htm",
+    "country": "US",
     "license": {
-     "name": "공공누리 제1유형(출처표시)",
-     "type": "KOGL-1",
-     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
-     "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
+     "type": "PUBLIC-DOMAIN",
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Job openings rate little changed at 4.5 percent in September 2026” (November 12, 2026)",
      "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
-     "attribution_text": "출처: 재정경제부 「권대영 1차관, 「월급방위대 TF」 킥오프 회의 개최」(2026.11.13, 정책브리핑), 공공누리 제1유형"
+     "verified_at": "2026-11-16",
+     "evidence": "BLS 저작권 안내(2026-11-16 확인): BLS 발행물은 퍼블릭 도메인. 도표는 글자 표로만 옮기고 그림은 싣지 않음."
     }
    },
-   "title_original": "권대영 1차관, 「월급방위대 TF」 킥오프 회의 개최",
-   "title_ko": "'월급방위대 TF' 가동 — 월세 공제 1,200만원·근로장려금 360만원",
-   "body_original": "정부가 직장인의 생활비 부담을 줄이고 실질적인 가처분소득을 늘리기 위해 범부처 '월급방위대 TF'를 가동한다.\n\n생계비 부담 경감과 자녀·부모 돌봄, 자산형성, 일자리 안정, 건강관리 등 5대 분야를 중심으로 세제·재정·금융 전반에서 체감도 높은 신규 지원과제를 발굴하고, 내년부터 달라지는 월세 세액공제와 근로장려세제, 교통비·등록금 지원 등 기존 대책의 이행도 점검한다.\n\n재정경제부는 권대영 제1차관이 13일 관계부처와 함께 '월급방위대 TF' 킥오프 회의를 개최하고 직장인 생활비 절감과 실질 가처분소득 증대를 위한 정책과제를 논의했다고 밝혔다.\n\n세법개정안에는 종합소득 기본공제 대상자인 배우자와 부양가족의 소득요건을 연간 100만 원 이하에서 300만 원 이하로 완화하고, 월세 세액공제 대상 월세한도를 연간 1000만 원에서 1200만 원으로 확대하는 방안이 담겼다.\n\n저소득 가구를 위한 근로장려세제(EITC)도 확대한다. 맞벌이 가구 기준 소득요건을 4400만 원에서 5200만 원으로 완화하고, 최대 지급액은 330만 원에서 360만 원으로 인상한다. 최대 지급액이 적용되는 소득구간도 800만~1700만 원에서 800만~1800만 원으로 확대한다.\n\n2027년 예산안에는 대중교통 이용 부담을 줄이기 위한 '모두의 카드' 환급 확대 방안이 포함됐다. 출퇴근 시차시간대 환급률을 30%포인트 높여 일반 국민의 경우 기존 20%에서 50%로 확대하는 내용이다.\n\n권대영 차관은 \"우선 11~12월 두 달간 범부처 TF를 집중 운영해 직장인들이 현장에서 체감할 수 있는 정책과제를 적극 발굴·추진하겠다\"고 밝혔다.",
-   "body_ko_ai": null,
-   "translation": null,
+   "title_original": "Job openings rate little changed at 4.5 percent in September 2026",
+   "title_ko": "2026년 9월 구인율 4.5%, 큰 변화 없음(미국 노동통계국)",
+   "body_original": "Job openings rate little changed at 4.5 percent in September 2026\n\nIn September 2026, the job openings rate was 4.5 percent, little changed from the previous month.\n\n[Table: Job openings rate by industry, September 2026, seasonally adjusted. Total 4.5; total private 4.7; mining and logging 4.1; construction 3.4; manufacturing 4.4; wholesale trade 3.6; retail trade 4.3; transportation, warehousing, and utilities 4.8; information 4.1; finance and insurance 4.2; real estate and rental and leasing 3.0; professional and business services 5.5; private educational services 3.2; health care and social assistance 5.8; arts, entertainment, and recreation 4.3; accommodation and food services 4.4; other services 4.3; government 3.6; federal 3.7; state and local education 2.3; state and local, excluding education 5.0.]\n\nThe job openings rate in government overall was 3.6 percent and at the federal level was 3.7 percent. The job openings rate was 5.0 percent in state and local government, excluding education, and the rate for state and local education was 2.3 percent.\n\nIn private industry, the job openings rate in September 2026 was 4.7 percent. The rate for the healthcare and social assistance industry was 5.8 percent, and for professional and business services was 5.5 percent.\n\nThese data are from the Job Openings and Labor Turnover Survey and are seasonally adjusted. Data for the most recent month are preliminary. Job openings include all positions that are open on the last business day of the month. The job openings rate is computed by dividing the number of job openings by the sum of employment and job openings and multiplying that quotient by 100.",
+   "body_ko_ai": "2026년 9월 구인율은 4.5%로 전월과 거의 같았다\n\n2026년 9월 구인율(구인 건수를 일자리 수와 구인 건수의 합으로 나눈 비율)은 4.5%로 전월과 큰 차이가 없었다.\n\n[표: 2026년 9월 산업별 구인율(계절조정). 전체 4.5, 민간 전체 4.7, 광업·임업 4.1, 건설 3.4, 제조업 4.4, 도매 3.6, 소매 4.3, 운수·창고·유틸리티 4.8, 정보 4.1, 금융·보험 4.2, 부동산·임대 3.0, 전문·사업서비스 5.5, 민간 교육서비스 3.2, 보건·사회복지 5.8, 예술·여가 4.3, 숙박·음식점 4.4, 기타 서비스 4.3, 정부 3.6, 연방 3.7, 주·지방 교육 2.3, 교육 제외 주·지방 5.0]\n\n정부 부문 구인율은 3.6%, 연방 정부는 3.7%였다. 교육을 제외한 주·지방 정부는 5.0%였고, 주·지방 교육은 2.3%였다.\n\n민간 부문 구인율은 2026년 9월 4.7%였다. 보건·사회복지 산업은 5.8%, 전문·사업서비스는 5.5%였다.\n\n이 자료는 구인·이직조사(JOLTS) 결과로 계절조정치다. 가장 최근 월 자료는 잠정치다. 구인은 그 달 마지막 영업일 기준으로 채워지지 않은 모든 일자리를 말한다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-16T13:04:00+09:00"
+   },
    "topics": [
-    "고용·정책"
+    "취업시장",
+    "글로벌"
    ],
    "keywords": [
-    "임금",
-    "청년 고용"
+    "미국 고용"
    ],
    "related_jobs": [
     "직업상담사"
@@ -303,47 +290,52 @@
     "full_text_allowed": true,
     "ai_translation_allowed": true
    },
-   "is_main_theme": false,
-   "theme": null,
-   "badges": []
+   "is_main_theme": true,
+   "theme": "미국 노동시장",
+   "badges": [
+    "퍼블릭 도메인",
+    "구인·이직조사"
+   ]
   },
   {
-   "id": "n20261113-06",
-   "issue_id": "iss-youth-council-region",
-   "theme_id": null,
-   "edition": "kr-0700",
-   "updated_at": "2026-11-13T07:04:00+09:00",
-   "run_id": "br-20261113-0704",
+   "id": "n20261116-09",
+   "issue_id": "iss-us-ui-claims",
+   "theme_id": "th-employment-indicators-ui",
+   "edition": "global-2300",
+   "updated_at": "2026-11-16T13:04:00+09:00",
+   "run_id": "br-20261116-1304",
    "headline": false,
-   "published_at": "2026-11-13",
+   "published_at": "2026-11-12T08:30:00-05:00",
    "source": {
-    "source_name": "경제사회노동위원회",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789126",
-    "country": "KR",
+    "source_name": "미국 노동부 고용훈련청(ETA)",
+    "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261112",
+    "country": "US",
     "license": {
-     "name": "공공누리 제1유형(출처표시)",
-     "type": "KOGL-1",
-     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
-     "scope": "텍스트 한정(사진·이미지·일러스트 제외)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
+     "type": "PUBLIC-DOMAIN",
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "url": null,
+     "attribution_text": "Source: U.S. Department of Labor, Employment and Training Administration, Unemployment Insurance Weekly Claims Report, week ending November 7, 2026",
      "verified": true,
-     "verified_at": "2026-11-17",
-     "evidence": "정책브리핑 해당 페이지 하단 고지: 텍스트에 한하여 공공누리 제1유형(출처표시) 조건 이용 가능(2026-11-17 확인).",
-     "attribution_text": "출처: 경제사회노동위원회 「[보도자료]「청년위원회」·「청년일자리 희망 위원회」연석회의 개최」(2026.11.13, 정책브리핑), 공공누리 제1유형"
+     "verified_at": "2026-11-16",
+     "evidence": "미국 노동부(연방 행정부) 주간 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 자료(2026-11-16 확인)."
     }
    },
-   "title_original": "[보도자료]「청년위원회」·「청년일자리 희망 위원회」연석회의 개최 - 3기 청년위원회, 지역 청년 노동시장 진입 실태 및 개선과제 발표",
-   "title_ko": "청년위원회·청년일자리 희망 위원회 연석회의 — 지역 청년 노동시장 진입 실태 발표",
-   "body_original": "경제사회노동위원회의 청년위원회와 청년일자리 희망 위원회가 연석회의를 개최하고, 3기 청년위원회가 지역 청년 노동시장 진입 실태와 개선과제를 발표했다.\n\n「일자리 공론화 특별위원회」는 11월 14일(토) '30인 시민회의'를 개최해 청년 일자리 의제의 국민 논의를 이어갔다.",
-   "body_ko_ai": null,
-   "translation": null,
+   "title_original": "Unemployment Insurance Weekly Claims Report (week ending November 7, 2026)",
+   "title_ko": "미국 실업보험 주간 청구(2026년 11월 7일 주)",
+   "body_original": "UNEMPLOYMENT INSURANCE WEEKLY CLAIMS\n\nSEASONALLY ADJUSTED DATA\n\nIn the week ending November 7, the advance figure for seasonally adjusted initial claims was 200,000, an increase of 9,000 from the previous week's revised level. The previous week's level was revised up by 2,000 from 189,000 to 191,000. The 4-week moving average was 195,250, unchanged from the previous week's revised average. The previous week's average was revised up by 500 from 194,750 to 195,250.\n\nThe advance seasonally adjusted insured unemployment rate was 1.1 percent for the week ending October 31, unchanged from the previous week's unrevised rate. The advance number for seasonally adjusted insured unemployment during the week ending October 31 was 1,697,000, a decrease of 20,000 from the previous week's revised level. The previous week's level was revised down by 1,000 from 1,718,000 to 1,717,000. The 4-week moving average was 1,707,750, a decrease of 1,500 from the previous week's revised average.\n\nUNADJUSTED DATA\n\nThe advance number of actual initial claims under state programs, unadjusted, totaled 206,982 in the week ending November 7, an increase of 28,870 (or 16.2 percent) from the previous week. The seasonal factors had expected an increase of 19,663 (or 11.0 percent) from the previous week. There were 238,729 initial claims in the comparable week in 2025.\n\nThe advance unadjusted insured unemployment rate was 1.0 percent during the week ending October 31, unchanged from the prior week. The advance unadjusted level of insured unemployment in state programs totaled 1,503,556, an increase of 10,117 (or 0.7 percent) from the preceding week. A year earlier the rate was 1.1 percent and the volume was 1,720,202.\n\nThe total number of continued weeks claimed for benefits in all programs for the week ending October 24 was 1,517,924, an increase of 10,207 from the previous week. There were 1,768,408 weekly claims filed for benefits in all programs in the comparable week in 2025.\n\nNo state was triggered \"on\" the Extended Benefits program during the week ending October 24.\n\nThe highest insured unemployment rates in the week ending October 24 were in New Jersey (2.0), Washington (1.9), Massachusetts (1.8), California (1.7), Puerto Rico (1.6), Nevada (1.5), Oregon (1.5), Rhode Island (1.5), New York (1.4), Illinois (1.3), and the Virgin Islands (1.3).\n\nThe largest increases in initial claims for the week ending October 31 were in Illinois (+728), Indiana (+655), Washington (+647), Missouri (+394), and Oregon (+365), while the largest decreases were in New York (-1,524), Texas (-1,481), Kentucky (-805), Florida (-722), and Michigan (-378).\n\n[Tables: weekly claims data for regular state programs and federal programs, and advance state claims by state — see the original release.]",
+   "body_ko_ai": "실업보험 주간 청구\n\n계절조정 자료\n\n11월 7일로 끝난 주의 계절조정 신규 청구 잠정치는 20만 건으로 전주 개정치보다 9천 건 늘었다. 전주치는 18만9천 건에서 19만1천 건으로 2천 건 상향 개정됐다. 4주 이동평균은 19만5,250건으로 전주 개정 평균과 같았다. 전주 평균은 19만4,750건에서 19만5,250건으로 500건 상향됐다.\n\n10월 31일로 끝난 주의 계절조정 수급 실업률 잠정치는 1.1%로 전주(개정 전)와 같았다. 같은 주 계절조정 수급자 수 잠정치는 169만7천 명으로 전주 개정치보다 2만 명 줄었다. 전주치는 171만8천 명에서 171만7천 명으로 1천 명 하향 개정됐다. 4주 이동평균은 170만7,750명으로 전주 개정 평균보다 1,500명 줄었다.\n\n계절조정 전 자료\n\n11월 7일로 끝난 주의 주(州) 프로그램 실제 신규 청구 잠정치는 계절조정 전 기준 20만6,982건으로 전주보다 2만8,870건(16.2%) 늘었다. 계절 요인은 전주 대비 1만9,663건(11.0%) 증가를 예상했었다. 2025년 같은 주에는 23만8,729건이었다.\n\n10월 31일로 끝난 주의 계절조정 전 수급 실업률 잠정치는 1.0%로 전주와 같았다. 주 프로그램의 계절조정 전 수급자 수는 150만3,556명으로 전주보다 1만117명(0.7%) 늘었다. 1년 전에는 1.1%, 172만202명이었다.\n\n10월 24일로 끝난 주에 모든 프로그램에서 청구된 연속 수급 주 수는 151만7,924건으로 전주보다 1만207건 늘었다. 2025년 같은 주에는 176만8,408건이었다.\n\n10월 24일로 끝난 주에 연장급여(EB) 프로그램이 발동된 주는 없었다.\n\n10월 24일로 끝난 주 수급 실업률이 가장 높은 곳은 뉴저지(2.0), 워싱턴(1.9), 매사추세츠(1.8), 캘리포니아(1.7), 푸에르토리코(1.6), 네바다(1.5), 오리건(1.5), 로드아일랜드(1.5), 뉴욕(1.4), 일리노이(1.3), 버진아일랜드(1.3)였다.\n\n10월 31일로 끝난 주 신규 청구가 가장 많이 늘어난 곳은 일리노이(+728), 인디애나(+655), 워싱턴(+647), 미주리(+394), 오리건(+365)이었고, 가장 많이 줄어든 곳은 뉴욕(-1,524), 텍사스(-1,481), 켄터키(-805), 플로리다(-722), 미시간(-378)이었다.\n\n[표: 주(州) 프로그램·연방 프로그램 주간 청구와 주별 잠정 청구 자료 — 원문 참조]",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-16T13:04:00+09:00"
+   },
    "topics": [
-    "고용·정책"
+    "취업시장",
+    "글로벌"
    ],
    "keywords": [
-    "청년 고용"
+    "실업급여",
+    "미국 고용"
    ],
    "related_jobs": [
     "직업상담사"
@@ -353,9 +345,12 @@
     "full_text_allowed": true,
     "ai_translation_allowed": true
    },
-   "is_main_theme": false,
-   "theme": null,
-   "badges": []
+   "is_main_theme": true,
+   "theme": "실업급여",
+   "badges": [
+    "퍼블릭 도메인",
+    "주간 지표"
+   ]
   }
  ],
  "excluded": {
@@ -367,29 +362,25 @@
    }
   ]
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }

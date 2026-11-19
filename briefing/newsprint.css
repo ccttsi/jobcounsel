@@ -56,6 +56,22 @@
 .cal.open{opacity:1;transform:none;visibility:visible;pointer-events:auto;transition:opacity .18s,transform .2s cubic-bezier(.2,.9,.3,1),visibility 0s}
 .cal-hd{display:flex;align-items:center;justify-content:space-between;gap:4px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
 .cal-hd b{font-family:var(--serif);font-size:16px;font-weight:700;letter-spacing:.02em}
+/* 달 이름 단추 — 누르면 1~12월 행렬이 열린다 */
+.cal-title{display:inline-flex;align-items:center;justify-content:center;gap:3px;min-height:44px;padding:0 8px;border-radius:8px;border:1px solid transparent}
+.cal-title:hover{border-color:var(--line-2);background:var(--soft)}
+.cal-title svg{width:13px;height:13px;color:var(--dim);flex:none}
+/* 1~12월 n×n — 좁은 화면 3×4, 420px 이상 4×3 (칸 높이 48px로 손가락에 맞춘다) */
+.cal-mg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:6px 0 2px}
+@media (min-width:420px){.cal-mg{grid-template-columns:repeat(4,1fr)}}
+.cal-m{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;min-height:48px;min-width:44px;padding:3px 2px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--acc);line-height:1.2}
+.cal-m b{font-size:14px;font-weight:850;color:inherit}
+.cal-m span{font-size:10.5px;font-weight:700;color:var(--acc);opacity:.8}
+.cal-m:not([disabled]):hover{background:var(--soft);border-color:var(--acc)}
+.cal-m[disabled]{color:var(--dim);opacity:.45;border-color:transparent;background:transparent}
+.cal-m[disabled] b{font-weight:650}
+.cal-m[disabled] span{opacity:.35}
+.cal-m[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.cal-m[aria-pressed="true"] span{color:var(--bg);opacity:.85}
 .cal-mv{width:44px;height:44px;border-radius:8px;display:grid;place-items:center;font-size:20px;color:var(--ink);border:1px solid transparent}
 .cal-mv:hover{border-color:var(--line-2)}
 .cal-mv[disabled]{opacity:.28;cursor:default}
@@ -72,6 +88,8 @@
 .cal-d .dot{position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--news-acc)}
 .cal-d[aria-current="true"] .dot{background:var(--bg)}
 .cal-ft{margin-top:6px;padding-top:6px;border-top:1px solid var(--rule-soft);font-size:11.5px;color:var(--dim);line-height:1.45}
+.cal-ft span{display:block}
+.cal-since{color:var(--dim);opacity:.85;font-size:11px}
 .cal-ft i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--news-acc);vertical-align:.1em;margin-right:4px}
 
 /* ── 지면 머리글(제호 아래) ───────────────────────────────── */
@@ -144,6 +162,12 @@ ol.st li:last-child{font-weight:500}
 .chain svg{width:17px;height:17px;color:var(--news-acc)}
 .chain .n{font-variant-numeric:tabular-nums;color:var(--dim);font-weight:750}
 .chain[aria-expanded="true"]{border-color:var(--ink);color:var(--ink)}
+/* ── 신산업 연결(카드 하단 텍스트 링크) ──────────────────── */
+.emg{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 8px;margin-right:2px;order:1;flex:0 0 auto;border-radius:8px;font-size:12.5px;font-weight:750;color:var(--muted);text-decoration:none;white-space:nowrap}
+.emg span{font-size:11px;letter-spacing:.05em;color:var(--dim)}
+.emg b{color:var(--acc);font-weight:850}
+.emg i{font-style:normal;font-size:11px;color:var(--acc)}
+.emg:hover{background:var(--soft);color:var(--ink)}
 
 /* ── 체인 시트 ────────────────────────────────────────────── */
 .cn-sheet{position:fixed;inset:0;z-index:82;display:flex;align-items:flex-end;justify-content:center;background:rgba(22,17,12,.34);opacity:0;visibility:hidden;transition:opacity .2s,visibility 0s .24s}
@@ -274,7 +298,7 @@ html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html
   .hm li{padding:8px 10px}
   .card-f{flex-wrap:wrap;gap:4px 8px}
   .card-f .src{flex:1 1 auto;min-width:0}
-  .card-f .pn{flex:none;margin-left:auto}
+  .card-f .pn{flex:none;margin-left:0}
 }
 @media (min-width:1100px){
   .hmw .section-head{margin:0 0 5px;padding-bottom:4px}
@@ -294,8 +318,9 @@ html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html
 .mast .nameplate{display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.08}
 .mast .nameplate small{line-height:1.25}
 /* 출처 줄: 연결고리·쪽 넘김을 한 줄에 두고 출처 문장은 아래 한 줄로 */
-.card-f{display:flex;align-items:center;gap:4px 8px}
+.card-f{display:flex;align-items:center;gap:4px 8px;justify-content:flex-start}
 .card-f .pn{order:2;margin-left:0}
+.card-f .pn{margin-left:0}
 .card-f .src{order:3;flex:1 1 100%;margin-top:2px}
 .card-f .eds{order:4;flex:1 1 100%}
 @media (min-width:700px){

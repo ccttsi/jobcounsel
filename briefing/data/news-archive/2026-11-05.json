@@ -1,21 +1,10 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-05T23:12:00+09:00",
+ "updated_at": "2026-11-14T23:07:00+09:00",
  "date": "2026-11-05",
  "data_status": "ok",
  "data_status_note": null,
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-05T07:10:00+09:00",
-   "last_ok": "2026-11-05"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-05T23:12:00+09:00",
-   "last_ok": "2026-11-05"
-  }
- },
+ "runs": {},
  "main_themes": [
   {
    "theme_id": "th-ai-job-restructuring",
@@ -419,39 +408,27 @@
  ],
  "keywords": [
   {
-   "word": "미국 고용",
+   "word": "구인",
+   "count": 1
+  },
+  {
+   "word": "퇴사",
    "count": 1
   },
   {
    "word": "실업률",
    "count": 1
-  },
-  {
-   "word": "구인",
-   "count": 1
-  },
-  {
-   "word": "임금",
-   "count": 1
-  },
-  {
-   "word": "복리후생",
-   "count": 1
-  },
-  {
-   "word": "장기실업",
-   "count": 1
   }
  ],
  "items": [
   {
-   "id": "n-us-jolts-202609-20261105",
+   "id": "n-us-jolts-202609-20261110",
    "issue_id": "iss-us-jolts-202609",
    "theme_id": "th-ai-job-restructuring",
    "edition": "global-2300",
-   "updated_at": "2026-11-05T23:12:00+09:00",
-   "run_id": "br-20261105-2312",
-   "headline": true,
+   "updated_at": "2026-11-10T23:12:00+09:00",
+   "run_id": "br-20261110-2312",
+   "headline": false,
    "published_at": "2026-11-03T10:00:00-05:00",
    "source": {
     "source_name": "미국 노동통계국(BLS)",
@@ -477,7 +454,7 @@
    "translation": {
     "mode": "ai",
     "engine": "Pickle 번역",
-    "translated_at": "2026-11-05T23:05:00+09:00"
+    "translated_at": "2026-11-10T23:05:00+09:00"
    },
    "topics": [
     "글로벌",
@@ -495,35 +472,86 @@
     "full_text_allowed": true,
     "ai_translation_allowed": true
    }
+  },
+  {
+   "id": "n20261114-04",
+   "issue_id": "iss-us-metro-unemp",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-14T23:07:00+09:00",
+   "run_id": "br-20261114-2307",
+   "headline": false,
+   "published_at": "2026-11-04",
+   "source": {
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_url": "https://www.bls.gov/opub/ted/2026/unemployment-rates-lower-in-226-metro-areas-from-september-2025-to-september-2026.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "연방정부 발간물 전체",
+     "attribution_required": false,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-17",
+     "evidence": "미국 저작권법 17 U.S.C. §105에 따라 연방정부 저작물은 저작권 보호 대상이 아님(BLS Copyright Information 2026-11-17 확인).",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily (2026-11-04)"
+    }
+   },
+   "title_original": "Unemployment rates lower in 226 metro areas from September 2025 to September 2026",
+   "title_ko": "미국 도시권 실업률, 226곳에서 1년 전보다 낮아",
+   "body_original": "Unemployment rates lower in 226 metro areas from September 2025 to September 2026\n\nUnemployment rates were lower in September 2026 than a year earlier in 226 of the 387 metropolitan areas, higher in 138 areas, and unchanged in 23 areas. A total of 48 areas had jobless rates of less than 3.0 percent, and 5 areas had rates of at least 8.0 percent.",
+   "body_ko_ai": "2026년 9월 미국 도시권(389곳)의 실업률은 1년 전보다 226곳에서 낮았고 138곳에서 높았으며 23곳은 변동이 없었다. 실업률이 3% 미만인 도시권은 48곳, 8% 이상인 곳은 5곳이었다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "Pickle AI 번역",
+    "translated_at": "2026-11-14T23:07:00+09:00"
+   },
+   "topics": [
+    "글로벌",
+    "취업시장"
+   ],
+   "keywords": [
+    "실업률"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   },
+   "is_main_theme": false,
+   "theme": null,
+   "badges": []
   }
  ],
  "excluded": {
   "count": 0,
   "reasons": []
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }

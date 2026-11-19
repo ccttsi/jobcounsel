@@ -1,21 +1,10 @@
 {
  "schema_version": "1.2.0",
- "updated_at": "2026-11-02T23:12:00+09:00",
- "date": "2026-11-02",
+ "updated_at": "2026-11-12T23:12:00+09:00",
+ "date": "2026-10-31",
  "data_status": "ok",
  "data_status_note": null,
- "runs": {
-  "kr-0700": {
-   "status": "ok",
-   "updated_at": "2026-11-02T07:10:00+09:00",
-   "last_ok": "2026-11-02"
-  },
-  "global-2300": {
-   "status": "ok",
-   "updated_at": "2026-11-02T23:12:00+09:00",
-   "last_ok": "2026-11-02"
-  }
- },
+ "runs": {},
  "main_themes": [
   {
    "theme_id": "th-ai-job-restructuring",
@@ -419,39 +408,23 @@
  ],
  "keywords": [
   {
-   "word": "미국 고용",
-   "count": 1
-  },
-  {
-   "word": "실업률",
-   "count": 1
-  },
-  {
-   "word": "구인",
-   "count": 1
-  },
-  {
    "word": "임금",
    "count": 1
   },
   {
    "word": "복리후생",
    "count": 1
-  },
-  {
-   "word": "장기실업",
-   "count": 1
   }
  ],
  "items": [
   {
-   "id": "n-us-eci-2026q3-20261102",
+   "id": "n-us-eci-2026q3-20261112",
    "issue_id": "iss-us-eci-2026q3",
    "theme_id": "th-ai-job-restructuring",
    "edition": "global-2300",
-   "updated_at": "2026-11-02T23:12:00+09:00",
-   "run_id": "br-20261102-2312",
-   "headline": true,
+   "updated_at": "2026-11-12T23:12:00+09:00",
+   "run_id": "br-20261112-2312",
+   "headline": false,
    "published_at": "2026-10-30T08:30:00-04:00",
    "source": {
     "source_name": "미국 노동통계국(BLS)",
@@ -477,7 +450,7 @@
    "translation": {
     "mode": "ai",
     "engine": "Pickle 번역",
-    "translated_at": "2026-11-02T23:05:00+09:00"
+    "translated_at": "2026-11-12T23:05:00+09:00"
    },
    "topics": [
     "글로벌",
@@ -501,29 +474,25 @@
   "count": 0,
   "reasons": []
  },
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ },
  "archive_dates": [
   "2026-11-19",
   "2026-11-18",
   "2026-11-17",
-  "2026-11-16",
-  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
-  "2026-11-09",
-  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
-  "2026-11-02",
-  "2026-11-01"
- ],
- "takedown": {
-  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
-  "recent": []
- }
+  "2026-10-31",
+  "2026-10-30"
+ ]
 }
