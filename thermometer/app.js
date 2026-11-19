@@ -13,8 +13,12 @@
   var $ = function (id) { return document.getElementById(id); };
   var root = document.documentElement;
   var DATA = null, BYID = {};
-  var state = { cls: 'feel', sort: 'temp', q: '', sel: null };
+  var state = { cls: 'feel', sort: 'temp', q: '', sel: null, page: 0 };
   var indexScrollTop = 0;
+  /* 한 쪽에 놓는 산업 수 — 24개를 세로로 다 펼치면 첫 화면이 목록만 된다.
+     쪽을 넘겨도 그룹 이름표는 따라오고, 그룹은 웬만하면 쪽 사이에서 쪼개지 않는다. */
+  var PER = 9;
+  var PAGES = [];
 
   /* ---------- 작은 도구 ---------- */
   function esc(s) {
@@ -125,7 +129,7 @@
     var ticks = [-20, -10, 0, 10, 20, 30, 40].map(function (v) {
       var y = yOf(v), zero = v === 0;
       return '<line x1="62" x2="' + (zero ? 74 : 70) + '" y1="' + y + '" y2="' + y + '" stroke="var(--line-2)" stroke-width="' + (zero ? 1.4 : 1) + '"/>'
-        + '<text x="74" y="' + (y + 4.6) + '" font-size="13.5" font-weight="700" fill="var(--dim)">' + v + '</text>';
+        + '<text x="74" y="' + (y + 5.4) + '" font-size="16" font-weight="700" fill="var(--dim)">' + v + '</text>';
     }).join('');
     var dots = '';
     for (var i = 0; i < total; i++) dots += '<s class="' + (i < used ? 'on' : '') + '"></s>';
@@ -173,6 +177,55 @@
     }).join('');
   }
 
+  /* ---------- 쪽 나눔 ---------- */
+  /* 그룹은 쪽 사이에서 되도록 쪼개지 않는다. 그룹 하나가 한 쪽보다 크면(KSIC C처럼) 나눠 담고
+     이어지는 쪽의 이름표에 「계속」을 붙인다. */
+  function paginate(gs) {
+    var pages = [], cur = null;
+    function open() { cur = { groups: [], rows: 0 }; pages.push(cur); }
+    gs.forEach(function (g) {
+      var items = g.items, at = 0;
+      while (at < items.length) {
+        if (!cur || cur.rows >= PER) open();
+        var space = PER - cur.rows, left = items.length - at;
+        if (left > space && left <= PER) { open(); space = PER; }
+        var take = Math.min(space, left);
+        cur.groups.push({ key: g.key, code: g.code, name: g.name, total: items.length, cont: at > 0, items: items.slice(at, at + take) });
+        cur.rows += take; at += take;
+      }
+    });
+    return pages.length ? pages : [{ groups: [], rows: 0 }];
+  }
+
+  /* 어느 쪽에 이 산업이 있는가 — 요약 띠·이전/다음으로 건너뛰었을 때 목록도 따라간다. */
+  function pageOf(id) {
+    for (var p = 0; p < PAGES.length; p++) {
+      for (var i = 0; i < PAGES[p].groups.length; i++) {
+        var its = PAGES[p].groups[i].items;
+        for (var k = 0; k < its.length; k++) if (its[k].id === id) return p;
+      }
+    }
+    return -1;
+  }
+
+  function flatIds() {
+    var out = [];
+    PAGES.forEach(function (p) { p.groups.forEach(function (g) { g.items.forEach(function (r) { out.push(r.id); }); }); });
+    return out;
+  }
+
+  function renderPager(total) {
+    var n = PAGES.length, at = state.page, h;
+    if (n <= 1) { $('pager').hidden = true; $('pager').innerHTML = ''; return; }
+    h = '';
+    for (var p = 0; p < n; p++) {
+      h += '<button type="button" class="pg" data-page="' + p + '" aria-label="' + (p + 1) + '쪽' + (p === at ? ' (지금 쪽)' : '') + '"' + (p === at ? ' aria-current="page"' : '') + '>' + (p + 1) + '</button>';
+    }
+    h += '<span class="sr">모두 ' + total + '개, ' + n + '쪽 중 ' + (at + 1) + '쪽</span>';
+    $('pager').innerHTML = h;
+    $('pager').hidden = false;
+  }
+
   /* ---------- 색인 ---------- */
   function renderIndex() {
     var rows = DATA.industries.filter(match);
@@ -181,11 +234,21 @@
     $('idxCount').textContent = rows.length + '개';
     if (!rows.length) {
       $('idxScroll').innerHTML = '<div class="empty"><b>찾은 산업이 없습니다</b>이름이나 분류 코드를 다르게 적어 보세요. 예: 반도체, C261, 물류</div>';
+      PAGES = []; state.page = 0;
+      renderPager(0);
       return;
     }
+    PAGES = paginate(gs);
+    if (state.followSel) {
+      var fp = pageOf(state.sel);
+      if (fp >= 0) state.page = fp;
+      state.followSel = false;
+    }
+    if (state.page > PAGES.length - 1) state.page = PAGES.length - 1;
+    if (state.page < 0) state.page = 0;
     var h = '';
-    gs.forEach(function (g) {
-      h += '<h3 class="grp-h"><em>' + esc(g.code) + '</em>' + esc(g.name) + '<span class="c">' + g.items.length + '</span></h3>';
+    PAGES[state.page].groups.forEach(function (g) {
+      h += '<h3 class="grp-h"><em>' + esc(g.code) + '</em>' + esc(g.name) + (g.cont ? ' <span class="ct">계속</span>' : '') + '<span class="c">' + g.total + '</span></h3>';
       h += '<div role="list">';
       g.items.forEach(function (r) {
         var d = r.domestic.temperature, gl = r.global.temperature;
@@ -202,8 +265,12 @@
     var sc = $('idxScroll'), top = sc.scrollTop;
     sc.innerHTML = h;
     sc.scrollTop = top;
+    renderPager(rows.length);
     var cur = sc.querySelector('[aria-current="true"]');
-    if (cur && state.justSelected) { cur.scrollIntoView({ block: 'nearest' }); state.justSelected = false; }
+    if (cur && state.justSelected) {
+      if (sc.scrollHeight > sc.clientHeight + 2) cur.scrollIntoView({ block: 'nearest' });
+      state.justSelected = false;
+    }
   }
 
   /* ---------- 상세 ---------- */
@@ -309,12 +376,13 @@
       + '<a class="lk" href="../company/?q=' + q + '">기업 명함첩<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>'
       + '<a class="lk" href="../emerging/?q=' + q + '">신산업 브리핑<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>'
       + '<a class="lk" href="../taxonomy/?q=' + q + '">직업분류 사전<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>'
-      + '</div></div></div>'
+      + '</div>'
       + '<details class="sub"><summary>이 산업에 쓴 출처 ' + srcs.length + '곳 · 기준시점 <svg class="ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>'
       + '<ul class="srcs">' + srcs.map(function (s) {
         return '<li><span class="tk">' + (s.track === 'A' ? 'A' : 'B') + '</span>'
           + '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.name) + '</a> — ' + esc(s.title) + ' (' + esc(s.published) + ')</li>';
       }).join('') + '</ul></details>'
+      + '</div></div>'
       + '</div>';
 
     var body = $('det');
@@ -387,6 +455,7 @@
     if (!BYID[id]) return;
     state.sel = id;
     state.justSelected = true;
+    state.followSel = true;
     renderIndex();
     renderDetail();
     if (opts && opts.mobile && window.innerWidth < 900) showDetail();
@@ -432,6 +501,8 @@
       first = top ? top.id : (DATA.industries[0] || {}).id;
     }
     state.sel = first;
+    /* 주소로 특정 산업을 열고 들어왔으면 목록도 그 산업이 있는 쪽을 펼친다 */
+    state.followSel = !!(i && BYID[i]);
     renderMore();
     renderAll();
     if (i && BYID[i] && window.innerWidth < 900) showDetail();
@@ -445,13 +516,25 @@
       var b = e.target.closest('button[data-class]');
       if (!b) return;
       state.cls = b.getAttribute('data-class');
+      state.followSel = true;
       renderAll();
     });
     $('sortSeg').addEventListener('click', function (e) {
       var b = e.target.closest('button[data-sort]');
       if (!b) return;
       state.sort = b.getAttribute('data-sort');
+      state.followSel = true;
       renderAll();
+    });
+    $('pager').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-page]');
+      if (!b) return;
+      var to = parseInt(b.getAttribute('data-page'), 10);
+      if (isNaN(to) || to === state.page) return;
+      state.page = to;
+      renderIndex();
+      var sc = $('idxScroll');
+      if (sc.scrollHeight > sc.clientHeight + 2) sc.scrollTop = 0;
     });
 
     var qi = $('q'), timer = 0;
@@ -459,6 +542,8 @@
       clearTimeout(timer);
       timer = setTimeout(function () {
         state.q = qi.value.trim();
+        state.page = 0;
+        state.followSel = false;
         $('qx').hidden = !state.q;
         renderIndex();
         var firstMatch = DATA.industries.filter(match)[0];
@@ -469,7 +554,7 @@
       if (e.key === 'Enter') { e.preventDefault(); var r = DATA.industries.filter(match)[0]; if (r) select(r.id, { mobile: true }); }
     });
     $('qx').addEventListener('click', function () {
-      qi.value = ''; state.q = ''; $('qx').hidden = true; renderIndex(); qi.focus();
+      qi.value = ''; state.q = ''; state.page = 0; $('qx').hidden = true; renderIndex(); qi.focus();
     });
 
     $('idxScroll').addEventListener('click', function (e) {
@@ -482,13 +567,14 @@
     });
     $('idxScroll').addEventListener('keydown', function (e) {
       if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-      var list = Array.prototype.slice.call($('idxScroll').querySelectorAll('[data-id]'));
-      var at = list.findIndex(function (el) { return el.getAttribute('data-id') === state.sel; });
+      var ids = flatIds();
+      var at = ids.indexOf(state.sel);
       var to = e.key === 'ArrowDown' ? at + 1 : at - 1;
-      if (to < 0 || to >= list.length) return;
+      if (at < 0 || to < 0 || to >= ids.length) return;
       e.preventDefault();
-      select(list[to].getAttribute('data-id'));
-      list[to].focus();
+      select(ids[to]);
+      var el = $('idxScroll').querySelector('[data-id="' + ids[to] + '"]');
+      if (el) el.focus();
     });
   }
 
