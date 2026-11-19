@@ -82,6 +82,8 @@
  *   · 속도·진폭·톤을 목표값으로 **lerp**해 몇 박동에 걸쳐 부드럽게 변한다.
  *   · 평상시 2.75초에 1회·잔잔한 진폭(R 7px) → 1차 장전 1.05초·진폭 1.16배 → 2차 격발 0.42초·진폭 1.85배+거칠기.
  * 2분 방치 유도에서는 이 캔버스가 opacity만 잃고(위상은 계속 흐른다) 기호 모핑이 그 위를 차지한다.
+ * 2026-11-19: 창 양 끝이 뚝 잘리던 것을 없앴다 — 그린 픽셀의 알파만 좌우 20%에서 0 → .08 → .25 → .55 → .85 → 1로
+ *   깎아(색은 그대로) 파형이 가장자리에서 배경으로 스며든다. 캔버스는 `destination-in` 한 번, 바닥선은 정적 마스크.
  * 화면이 가려지거나 오버레이가 열리면 루프를 세운다(프레임 0). 감속 모드에서는 한 장만 정적으로 그린다.
  */
 /* 파형 3단계의 색 — 평상 청록 · 장전 황토 · 격발 벽돌. 어두운 테마에서는 바탕에 묻히지 않게 밝게 띄운다.
@@ -92,9 +94,12 @@
 .a-root .a-ecg-btn{position:relative;display:block;width:188px;height:44px;border-radius:12px;-webkit-tap-highlight-color:transparent}
 .a-ecg-btn:focus-visible{outline:2px solid var(--a1);outline-offset:2px}
 .a-ecg{position:absolute;left:50%;top:50%;width:168px;height:34px;margin:-17px 0 0 -84px;pointer-events:none;overflow:hidden}
-/* 바닥선 — 파동이 없는 구간을 받쳐 주는 1px 헤어라인 */
+/* 바닥선 — 파동이 없는 구간을 받쳐 주는 1px 헤어라인.
+   2026-11-19: 파형과 같이 양 끝에서 스며들며 사라진다(캔버스와 같은 스톱의 알파 마스크 — 정적이라 프레임 비용 0). */
 .a-ecg-base{position:absolute;left:0;right:0;top:20px;height:1px;background:color-mix(in srgb,var(--line-2) 76%,transparent);
-  opacity:1;transition:opacity .22s linear}
+  opacity:1;transition:opacity .22s linear;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.08) 3.2%,rgba(0,0,0,.25) 7.2%,rgba(0,0,0,.55) 11.8%,rgba(0,0,0,.85) 16.4%,#000 20%,#000 80%,rgba(0,0,0,.85) 83.6%,rgba(0,0,0,.55) 88.2%,rgba(0,0,0,.25) 92.8%,rgba(0,0,0,.08) 96.8%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.08) 3.2%,rgba(0,0,0,.25) 7.2%,rgba(0,0,0,.55) 11.8%,rgba(0,0,0,.85) 16.4%,#000 20%,#000 80%,rgba(0,0,0,.85) 83.6%,rgba(0,0,0,.55) 88.2%,rgba(0,0,0,.25) 92.8%,rgba(0,0,0,.08) 96.8%,transparent 100%)}
 .a-ecg-bob{position:absolute;inset:0;will-change:transform}
 .a-ecg-cv{position:absolute;left:0;top:0;width:168px;height:34px;display:block;
   opacity:1;transition:opacity .22s linear}
