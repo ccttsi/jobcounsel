@@ -1,0 +1,203 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-09-14T07:10:00+09:00",
+ "edition": {
+  "date": "2026-09-14",
+  "weekday": "월",
+  "title": "전역예정군인 직업훈련, 한국기술교육대로 모은다",
+  "subtitle": "국방전직교육원 통합 추진·연 2만9천명·고용복지+센터 102곳 연계",
+  "reading_minutes": 2,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_1",
+   "label": "연간 전직지원",
+   "value": 0,
+   "unit": "",
+   "value_text": "2만9천명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2025년",
+   "delta_from": "국방전직교육원",
+   "source_id": "src_moel_ndae_20260913",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-14T07:10:00+09:00",
+   "run_id": "br-20260914-0710",
+   "spark": null
+  },
+  {
+   "id": "hm_2",
+   "label": "연계 상담 창구",
+   "value": 0,
+   "unit": "",
+   "value_text": "102곳",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년",
+   "delta_from": "고용복지+센터",
+   "source_id": "src_moel_ndae_20260913",
+   "track": "A",
+   "edition": "kr-0700",
+   "updated_at": "2026-09-14T07:10:00+09:00",
+   "run_id": "br-20260914-0710",
+   "spark": null
+  }
+ ],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "전역예정군인 직업훈련, 한국기술교육대로 모은다",
+   "kicker": "연 2만9천명 · 3~4일 단기과정 → 3만 개 훈련과정",
+   "three_step": {
+    "what": "국방부 국방전직교육원이 고용노동부 한국기술교육대학교로 통합을 추진한다. 전역을 앞둔 군인의 직업훈련과 취업지원을 한 창구에서 받게 하는 취지다.",
+    "evidence": "국방전직교육원은 2025년 기준 연 2만9천여 명에게 3~4일짜리 단기 전직교육을 제공해 왔다. 통합되면 이들이 한국기술교육대의 온라인 훈련(STEP)과 국민내일배움카드로 열리는 약 3만 개 훈련과정, 전국 102개 고용복지+센터의 진로·취업 상담까지 함께 쓸 수 있게 된다. 9월에 통합추진단을 꾸리고 연내 세부안을 마련한다(2026년 9월 13일, 고용노동부).",
+    "implication": "전역을 앞둔 내담자에게는 단기 전직교육 하나로 끝내지 말고, 국민내일배움카드 훈련과정과 고용복지+센터 상담을 같은 계획에 넣어 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "연간 전직지원",
+     "value": "2만9천명",
+     "delta": "2025년 기준",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "기존 교육기간",
+     "value": "3~4일",
+     "delta": "단기과정",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "열리는 훈련과정",
+     "value": "약 3만 개",
+     "delta": "국민내일배움카드",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "연계 상담 창구",
+     "value": "102곳",
+     "delta": "고용복지+센터",
+     "period": "2026년 9월"
+    }
+   ],
+   "counselor_question": "군에서 한 일 가운데 민간 직무로 옮길 수 있는 경험은 무엇이라고 생각하시나요?",
+   "tags": [
+    "전직지원",
+    "직업훈련",
+    "군인"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "issue_id": "iss-ndae-merger-2026",
+   "updated_at": "2026-09-14T07:10:00+09:00",
+   "source": {
+    "source_id": "src_moel_ndae_20260913",
+    "source_name": "고용노동부",
+    "source_title": "국방전직교육원(국방부), 한국기술교육대(고용노동부)로 통합 추진",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781430",
+    "published_at": "2026-09-13",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+     "attribution_text": "출처: 고용노동부 「국방전직교육원(국방부), 한국기술교육대(고용노동부)로 통합 추진」(공공누리 제1유형)"
+    },
+    "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
+  }
+ ],
+ "radar": null,
+ "runs": null,
+ "sources": [
+  {
+   "source_id": "src_moel_ndae_20260913",
+   "source_name": "고용노동부",
+   "source_title": "국방전직교육원(국방부), 한국기술교육대(고용노동부)로 통합 추진",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781430",
+   "published_at": "2026-09-13",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): 「이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.」 + 「이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.」",
+    "attribution_text": "출처: 고용노동부 「국방전직교육원(국방부), 한국기술교육대(고용노동부)로 통합 추진」(공공누리 제1유형)"
+   },
+   "usage": "라이선스가 허락한 범위에서 수치를 도표화·재서술."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+  "track_a_note": "출처·라이선스를 카드마다 표시합니다.",
+  "track_b_note": "원문 링크만 제공하며 본문·번역문을 싣지 않습니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "상담 준비를 돕는 요약이며 예측·투자·법률 조언이 아닙니다. 정확한 내용은 원문이 기준입니다.",
+ "archive_dates": [
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-09",
+  "2026-10-06",
+  "2026-10-03",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12"
+ ]
+}
