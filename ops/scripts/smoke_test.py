@@ -5,13 +5,16 @@
   python3 ops/scripts/smoke_test.py --base https://ccttsi.github.io/jobcounsel/
   python3 ops/scripts/smoke_test.py --summary-file "$GITHUB_STEP_SUMMARY"
 
-재는 화면: 대문(/), 브리핑(/briefing/), 신산업(/emerging/), 산업 온도계(/thermometer/), 내담자 언어 번역기(/translator/), 채용 사이트 안내판(/portals/ · ?q= 검색 · #p= 딥링크), 재무제표 해석 시뮬레이터(/fin-lab/ · 3표 3개년) — 휴대폰 390·데스크톱 1280
+재는 화면: 개별 지시가 있는 화면(PAGES — 대문·브리핑·신산업·온도계·번역기·포털·플로우·마이덱·현실 필터·국비계산·트리아지·재무 시뮬레이터)은 전부,
+           나머지 섹터는 기초 배치 4종만 — 모두 휴대폰 390·데스크톱 1280
 재는 것
   · 콘솔·페이지 오류 0 (외부 CDN에서 온 오류는 제외 — 그쪽 사정으로 게이트가 흔들리지 않게)
   · 같은 사이트 안의 404 응답 0 (깨진 상대경로를 잡는다)
   · 문서 가로 넘침 0px
   · 44px 터치 미달 0개 (글 안의 인라인 링크는 제외)
   · 화면이 실제로 그려졌는가(섹터 장부·카드·기사) — JS가 죽으면 0이 되어 잡힌다
+  · 기초 배치 4종 — ① 카드 밖으로 밀린 컨트롤·글 ② 표 칸 아래끝 단차 ③ 짧은 뱃지 줄바꿈 ④ 카드 안 좌우 쏠림
+  · 어느 섹터도 «재지 않는 화면»으로 남지 않았는가(장부·폴더와 견준다)
 
 종료 코드 0 = 통과, 1 = 실패. 실패하면 화면 그림을 --shot-dir에 남긴다.
 """
@@ -25,9 +28,20 @@ import threading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# 재는 화면 — 두 단계다(섹터를 손으로 세지 않는다).
+#   ① PAGES — 콘솔·404·44px·대비·겹침까지 **전부** 잰다(대문 + 개별 지시가 있는 화면 + 동선).
+#   ② 전 섹터 기초 배치 스위프 — 위 목록에 없어도 기초 배치 4종(카드 이탈·표 단차·뱃지 줄바꿈·좌우 쏠림)은
+#      모든 섹터에서 잰다. 목록은 `sector_pages()`가 assets/tools.js(JC_TOOLS) 장부에서 만든다.
+# 어느 쪽에도 없는 섹터가 있으면 check_page_coverage()가 실패한다 — 새 섹터를 만들고 게이트에 안 넣는 일을 막는다.
+# /mydeck/은 저장한 덱, /portals/?q=·#p=는 검색·딥링크 동선이라 섹터 밖에서 따로 잰다.
 PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
          "/portals/#p=work24", "/flow/", "/mydeck/",
          "/work-filter/", "/kdt-calc/", "/triage/", "/fin-lab/"]
+
+# 화면이 아닌 폴더(섹터 목록 점검에서 뺀다) — 이유를 함께 적는다.
+NON_SCREEN = {
+    "admin": "운영용 내부 화면 — 대문·섹터 장부에서 이어지지 않는다",
+}
 VIEWPORTS = [(390, 844, "휴대폰"), (1280, 800, "데스크톱")]
 
 # 페이지마다 「이게 없으면 화면이 안 그려진 것」을 하나씩 정한다.
@@ -141,6 +155,14 @@ PROBES = {
     }""",
 }
 
+# 섹터마다 화면이 «실제로 그려졌는가»를 재는 개별 지시가 없을 때 쓰는 공통 지시.
+#   빈 화면·자료 불러오기 실패를 잡고, 지면마다 다른 내용은 보지 않는다.
+GENERIC_PROBE = """() => {
+    const text = (document.body.innerText || '').replace(/\\s+/g, ' ').trim();
+    const broken = /불러오지 못했습니다/.test(text);
+    return {ok: text.length >= 120 && !broken, detail: `본문 ${text.length}자${broken ? ' · 불러오기 실패' : ''}`};
+}"""
+
 MEASURE = """() => {
     const small = [];
     document.querySelectorAll('a,button,select,input,summary,[role=button],[role=tab]').forEach(el => {
@@ -229,6 +251,188 @@ UI_JS = r"""
         const framed = sa.borderTopWidth!=='0px'||sb.borderTopWidth!=='0px'||sa.boxShadow!=='none'||sb.boxShadow!=='none';
         if (framed) out.overlap.push({kind:'밀착', parent:(par.id||par.className||par.tagName).toString().slice(0,36), a:(kids[i].k.id||kids[i].k.className||kids[i].k.tagName).toString().slice(0,24), b:(kids[j].k.id||kids[j].k.className||kids[j].k.tagName).toString().slice(0,24), gap:+gap.toFixed(1)});
       }
+    }
+  });
+  return out;
+}
+"""
+
+# ---------------------------------------------------------------- 기초 배치 4종 게이트 (2026-11-20)
+#   `overflow-x: clip`이 잘라 먹어서 눈에 안 보이던 결함까지 잡는다. 좌표를 직접 재므로
+#   CSS만 읽어서는 알 수 없는 «카드 밖으로 밀림·표 단차·뱃지 줄바꿈·좌우 쏠림»을 배포 전에 막는다.
+#   오탐 0건을 확인하며 기준을 좁힌 이유를 검사마다 적어 둔다.
+LAYOUT_JS = r"""
+() => {
+  const out = {contain: [], table: [], badge: [], skew: []};
+  const IGN = '#jc-marker-ui, #jc-imm-dock, .jca-panel';   /* 화면이 아니라 도구 상자·비서 시트 */
+  const vis = el => {
+    const s = getComputedStyle(el);
+    if (s.display === 'none' || s.visibility === 'hidden' || parseFloat(s.opacity) < .05) return false;
+    const r = el.getBoundingClientRect();
+    return r.width > 1 && r.height > 1;
+  };
+  const tag = el => {
+    const cn = typeof el.className === 'string' ? el.className.trim().split(/\s+/).slice(0, 3).join('.') : '';
+    return el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (cn ? '.' + cn : '');
+  };
+  const px = v => parseFloat(v) || 0;
+
+  /* ── ① 카드·섹션 안쪽에서 밀려난 입력칸·단추·글 — 컨테이너 경계 검사 ──────────────
+     카드(배경·테두리 + 둥근 모서리 또는 card/panel/sheet/modal/box/tile 이름)를 찾아
+     그 테두리 상자 밖으로 나간 것을 잡는다. 가로 스크롤 상자(overflow-x: auto|scroll)는
+     설계상 밖으로 넘칠 수 있으므로 뺀다 — clip·hidden은 «가려서 안 보이는» 결함이라 반드시 잡는다. */
+  const frameOf = el => {
+    let n = el.parentElement, hop = 0;
+    while (n && hop++ < 8) {
+      if (n === document.body || n === document.documentElement) return null;
+      const s = getComputedStyle(n);
+      const hasBg = s.backgroundColor && s.backgroundColor !== 'rgba(0, 0, 0, 0)' && s.backgroundColor !== 'transparent';
+      const hasBorder = px(s.borderTopWidth) > 0 || px(s.borderLeftWidth) > 0 || px(s.borderRightWidth) > 0;
+      const radius = px(s.borderTopLeftRadius) > 0;
+      const named = /(^|[-_])(card|panel|sheet|modal|dialog|tile|box)([-_]|$)/i.test((n.className || '') + ' ' + (n.id || ''));
+      if ((hasBg || hasBorder) && (radius || named)) return n;
+      n = n.parentElement;
+    }
+    return null;
+  };
+  const scrolled = (el, stop) => {
+    let n = el.parentElement;
+    while (n && n !== stop) {
+      if (/(auto|scroll)/.test(getComputedStyle(n).overflowX)) return true;
+      n = n.parentElement;
+    }
+    return false;
+  };
+  const CTRL = 'input:not([type=hidden]), select, textarea, button, .inp, .sel, [role=button]';
+  const TEXT = 'p, h1, h2, h3, h4, li, dd, blockquote, .lead, .desc';
+  document.querySelectorAll(CTRL + ',' + TEXT).forEach(el => {
+    if (el.closest(IGN) || !vis(el)) return;
+    const s = getComputedStyle(el);
+    if (s.position === 'absolute' || s.position === 'fixed') return;
+    const frame = frameOf(el);
+    if (!frame) return;
+    if (scrolled(el, frame)) return;
+    if (/(auto|scroll)/.test(getComputedStyle(frame).overflowX)) return;
+    const fr = frame.getBoundingClientRect(), r = el.getBoundingClientRect();
+    const over = Math.max(r.right - fr.right, fr.left - r.left);
+    if (over > 1.5) {
+      out.contain.push({el: tag(el), frame: tag(frame), over: +over.toFixed(1),
+                        text: (el.value || el.textContent || '').trim().slice(0, 20)});
+    }
+  });
+
+  /* ── ② 표의 수평선·헤더 단차 ───────────────────────────────────────────────
+     (가) 칸에 테두리를 그리는데 border-collapse가 collapse가 아니면 선이 두 겹이 되어 1px 단차가 난다.
+     (나) 같은 줄(th/td)의 아래 끝이 1px 넘게 어긋나면 잡는다(rowspan이 섞인 줄은 높이가 다른 게 정상).
+     (다) 나란히 놓인 표(3표)의 같은 번째 줄 수평선이 1px 넘게 어긋나면 잡는다 — 줄 수가 같을 때만.
+     div로 만든 표(role=table)도 (다)로 함께 본다(fin-lab 3표처럼 <table>을 쓰지 않는 표). */
+  document.querySelectorAll('table').forEach(t => {
+    if (!vis(t) || t.closest(IGN)) return;
+    const cs = getComputedStyle(t);
+    const bordered = [...t.querySelectorAll('th,td')].some(c => {
+      const s = getComputedStyle(c);
+      return px(s.borderTopWidth) > 0 || px(s.borderBottomWidth) > 0;
+    });
+    if (bordered && cs.borderCollapse !== 'collapse') {
+      out.table.push({kind: 'collapse 아님', table: tag(t)});
+    }
+    [...t.rows].forEach((row, ri) => {
+      const cells = [...row.cells].filter(c => vis(c) && c.rowSpan === 1);
+      if (cells.length < 2) return;
+      if ([...row.cells].some(c => c.rowSpan > 1)) return;
+      const bots = cells.map(c => c.getBoundingClientRect().bottom);
+      const gap = Math.max(...bots) - Math.min(...bots);
+      if (gap > 1) {
+        out.table.push({kind: '칸 아래끝 단차', table: tag(t), row: ri, gap: +gap.toFixed(1),
+                        cells: cells.map(c => c.textContent.trim().slice(0, 8)).slice(0, 5)});
+      }
+    });
+  });
+
+  /* (다) 나란한 표 — 같은 부모 아래 나란히 놓인 표끼리 같은 번째 줄의 아래끝을 견준다. */
+  const rowLines = tb => (tb.tagName === 'TABLE'
+    ? [...tb.rows].map(r => r.getBoundingClientRect().bottom)
+    : [...tb.querySelectorAll('[role=row]')].map(r => r.getBoundingClientRect().bottom));
+  const isTable = el => el.tagName === 'TABLE' || el.getAttribute('role') === 'table';
+  document.querySelectorAll('table, [role=table]').forEach(t => {
+    if (!vis(t) || t.closest(IGN)) return;
+    const sibs = [...(t.parentElement ? t.parentElement.children : [])].filter(k => isTable(k) && vis(k));
+    if (sibs.length < 2 || sibs[0] !== t) return;
+    const base = rowLines(sibs[0]).map(y => Math.round(y));
+    sibs.slice(1).forEach(other => {
+      const rs = rowLines(other).map(y => Math.round(y));
+      if (!base.length || rs.length !== base.length) return;
+      const gap = Math.max(...rs.map((y, i) => Math.abs(y - base[i])));
+      if (gap > 1) out.table.push({kind: '나란한 표의 줄 어긋남', table: tag(other), gap});
+    });
+  });
+
+  /* ── ③ 짧은 뱃지·단계 번호 강제 줄바꿈 ────────────────────────────────────
+     `1 / 4`·`2 / 4` 같은 짧은 표시가 두 줄로 쪼개지는 것을 잡는다. 요소의 높이가 아니라
+     «이어진 글 한 덩어리»가 몇 줄로 그려졌는지로 잰다 — 44px 칩처럼 여백이 큰 상자도
+     오탐이 없고, 단계 번호 <b>1</b>과 이름표가 위아래로 놓인 설계도 줄바꿈으로 보지 않는다. */
+  document.querySelectorAll('.badge, .chip, .tag, .pill, .cnt, .step, .stage, [class*=badge], [class*=chip], [class*=tag], [class*=pill]').forEach(el => {
+    if (el.closest(IGN) || !vis(el)) return;
+    const text = (el.textContent || '').trim();
+    if (!text || text.length > 8) return;
+    const lh = parseFloat(getComputedStyle(el).lineHeight) || parseFloat(getComputedStyle(el).fontSize) * 1.3;
+    let wrapped = 0;
+    const walk = node => {
+      node.childNodes.forEach(n => {
+        if (n.nodeType === 3) {
+          if (!n.textContent.trim()) return;
+          const r = document.createRange(); r.selectNodeContents(n);
+          const tops = [...r.getClientRects()].filter(q => q.width > 1 && q.height > 1).map(q => q.top).sort((a, b) => a - b);
+          const lines = [];
+          tops.forEach(t => { if (!lines.length || t - lines[lines.length - 1] > Math.max(4, lh * .6)) lines.push(t); });
+          if (lines.length > wrapped) wrapped = lines.length;
+        } else if (n.nodeType === 1 && !/^(block|flex|grid|table|list-item)/.test(getComputedStyle(n).display)) {
+          walk(n);                              /* 인라인 자식만 따라 들어간다(블록 자식은 줄이 갈리는 게 정상) */
+        }
+      });
+    };
+    walk(el);
+    if (wrapped > 1) out.badge.push({el: tag(el), text, lines: wrapped, h: Math.round(el.getBoundingClientRect().height)});
+  });
+
+  /* ── ④ 카드·모달 안 블록의 좌우 쏠림 ──────────────────────────────────────
+     한 카드 안에서 **세로로 쌓인** 형제 블록의 좌·우 끝이 8px 넘게 어긋나면 잡는다.
+     뺀 것(기준을 분명히):
+       · 나란히 놓인 형제(위가 겹치는 줄)  · 가운데/오른쪽 정렬  · ul·ol(목록 들여쓰기는 정상)
+       · 가로 스크롤 상자  · 음수 여백으로 일부러 내민 조각(전폭 띠)  · 카드 폭의 85% 미만인 좁은 조각
+     */
+  document.querySelectorAll('section, div, article, form, aside').forEach(frame => {
+    if (frame.closest(IGN) || !vis(frame)) return;
+    const fs = getComputedStyle(frame);
+    const hasBg = fs.backgroundColor && fs.backgroundColor !== 'rgba(0, 0, 0, 0)' && fs.backgroundColor !== 'transparent';
+    const hasBorder = px(fs.borderTopWidth) > 0 || px(fs.borderLeftWidth) > 0;
+    const named = /(^|[-_])(card|panel|sheet|modal|tile|box)([-_]|$)/i.test((frame.className || '') + ' ' + (frame.id || ''));
+    if (!(named || ((hasBg || hasBorder) && px(fs.borderTopLeftRadius) > 0))) return;
+    if (/(auto|scroll)/.test(fs.overflowX)) return;
+    const fr = frame.getBoundingClientRect();
+    const rows = [];
+    let prevBottom = -1e9;
+    [...frame.children].forEach(k => {
+      if (!vis(k)) return;
+      const s = getComputedStyle(k);
+      if (s.position === 'absolute' || s.position === 'fixed' || s.position === 'sticky') return;
+      if (/(center|right|end)/.test(s.textAlign) || /(center|end|space-)/.test(s.justifyContent || '')) return;
+      if (/^(UL|OL|TABLE|SVG|CANVAS|IMG|HR|BR|BUTTON|INPUT|SELECT|TEXTAREA|LABEL)$/.test(k.tagName)) return;
+      if (/(auto|scroll)/.test(s.overflowX)) return;
+      if (px(s.marginLeft) < 0 || px(s.marginRight) < 0) return;
+      if (!(k.textContent || '').trim() && !k.querySelector('input,select,button')) return;
+      const r = k.getBoundingClientRect();
+      if (r.top < prevBottom - 2) return;
+      prevBottom = r.bottom;
+      if (r.width < fr.width * .85) return;
+      rows.push({k, left: r.left, right: r.right});
+    });
+    if (rows.length < 2) return;
+    const L = rows.map(x => x.left), R = rows.map(x => x.right);
+    const dl = Math.max(...L) - Math.min(...L), dr = Math.max(...R) - Math.min(...R);
+    if (dl > 8 || dr > 8) {
+      out.skew.push({frame: tag(frame), dl: +dl.toFixed(1), dr: +dr.toFixed(1),
+                     kids: rows.map(x => tag(x.k) + '@' + Math.round(x.left) + '/' + Math.round(x.right)).slice(0, 6)});
     }
   });
   return out;
@@ -484,6 +688,112 @@ def check_panels(page):
     return issues
 
 
+def sector_pages():
+    """`assets/tools.js`(JC_TOOLS) 장부 + `폴더/index.html`에서 섹터 화면 목록을 만든다.
+
+    섹터를 손으로 세지 않는다 — 새 섹터를 장부에 올리면 다음 실행부터 자동으로 재진다.
+    화면이 아닌 폴더(NON_SCREEN)는 이유와 함께 빼고, 장부에 있는데 폴더가 없으면 그건 결함이다.
+    """
+    import re
+    ledger = os.path.join(ROOT, "assets", "tools.js")
+    listed = []
+    if os.path.exists(ledger):
+        with open(ledger, encoding="utf-8") as fh:
+            listed = sorted(set(re.findall(r"path:'\./([a-z0-9-]+)/'", fh.read())))
+    founded = sorted(name for name in os.listdir(ROOT)
+                     if not name.startswith(".") and name not in NON_SCREEN
+                     and os.path.isdir(os.path.join(ROOT, name))
+                     and os.path.exists(os.path.join(ROOT, name, "index.html")))
+    return listed, founded
+
+
+def check_page_coverage(pages, sweep):
+    """어느 섹터도 «재지 않는 화면»으로 남지 않았는가.
+
+    화면마다 두 단계가 있다.
+      · PAGES — 콘솔·404·44px·대비·겹침까지 전부 잰다
+      · 기초 배치 스위프(SWEEP) — 기초 배치 4종(카드 이탈·표 단차·뱃지 줄바꿈·좌우 쏠림)만 잰다
+    둘 중 어디에도 없는 섹터가 있으면 실패한다(새 섹터를 만들고 게이트에 안 넣는 일을 막는다).
+    장부에 있는 섹터의 폴더·index.html이 없으면 그것도 실패다(대문에서 눌러도 열리지 않는 화면).
+    """
+    issues = []
+    covered = set()
+    for path in list(pages) + list(sweep):
+        covered.add(path.split("?")[0].split("#")[0].rstrip("/") + "/")
+    listed, founded = sector_pages()
+    if not listed:
+        issues.append("assets/tools.js에서 섹터 장부를 읽지 못했다 — 목록 점검을 조용히 건너뛰지 않는다")
+    for name in listed:
+        if name not in founded:
+            issues.append(f"섹터 «{name}»가 장부에 있는데 화면(/{name}/index.html)이 없다")
+        if f"/{name}/" not in covered:
+            issues.append(f"섹터 «{name}»를 재는 목록(PAGES·스위프)에 넣지 않았다")
+    for name in founded:
+        if f"/{name}/" not in covered:
+            issues.append(f"화면 «/{name}/»가 어느 목록에도 없다 — 재지 않는 화면이 생기지 않게 넣는다")
+    return issues
+
+
+def layout_issues(lay):
+    """LAYOUT_JS가 돌려준 네 가지 결함을 사람이 읽을 문장으로 바꾼다."""
+    issues = []
+    for item in lay["contain"][:3]:
+        issues.append(f"카드 밖으로 밀림 {item['over']}px: {item['el']} (카드 {item['frame']}, «{item['text']}»)")
+    if len(lay["contain"]) > 3:
+        issues.append(f"카드 밖으로 밀린 요소 {len(lay['contain'])}곳")
+    for item in lay["table"][:3]:
+        if item.get("kind") == "collapse 아님":
+            issues.append(f"표 테두리 겹침 — border-collapse: collapse가 아니다: {item['table']}")
+        elif item.get("kind") == "나란한 표의 줄 어긋남":
+            issues.append(f"나란히 놓인 표의 같은 줄이 {item['gap']}px 어긋남: {item['table']}")
+        else:
+            issues.append(f"표 칸 아래끝 단차 {item['gap']}px({item['row'] + 1}번째 줄): {item['table']} — {' / '.join(item['cells'])}")
+    if len(lay["table"]) > 3:
+        issues.append(f"표 단차 {len(lay['table'])}곳")
+    for item in lay["badge"][:3]:
+        issues.append(f"짧은 뱃지가 {item['lines']}줄로 쪼개짐(«{item['text']}», {item['h']}px): {item['el']}")
+    if len(lay["badge"]) > 3:
+        issues.append(f"뱃지 줄바꿈 {len(lay['badge'])}곳")
+    for item in lay["skew"][:3]:
+        issues.append(f"카드 안 좌우 쏠림 {item['dl']}px/{item['dr']}px: {item['frame']} — {' | '.join(item['kids'])}")
+    if len(lay["skew"]) > 3:
+        issues.append(f"좌우 쏠림 {len(lay['skew'])}곳")
+    return issues
+
+
+def run_sweep(browser, base, pages, args, results):
+    """전 섹터 기초 배치 스위프 — 이번에 새로 넣은 기초 배치 4종만 전 섹터에 건다.
+
+    PAGES의 화면은 본 검사에서 이미 네 가지를 다 쟀으므로 뺀다. 오래된 섹터에는 44px 미달·대비
+    같은 «이번 변경과 무관한» 결함이 남아 있어(2026-11-20 실측) 그것까지 한꺼번에 켜면 CI가
+    이유 없이 서므로, 새 게이트만 넓게 걸어 숨은 기초 결함을 찾는다. 넷 다 전 섹터 오탐 0건을
+    확인하고 켰다(카드 밖 밀림·표 단차·뱃지 줄바꿈·좌우 쏠림).
+    """
+    caught = 0
+    for page_path in pages:
+        for width, height, _kind in VIEWPORTS:
+            context = browser.new_context(viewport={"width": width, "height": height})
+            page = context.new_page()
+            try:
+                page.goto(base + page_path.lstrip("/"), wait_until="domcontentloaded", timeout=45000)
+                page.wait_for_timeout(args.sweep_settle)
+                issues = layout_issues(page.evaluate(LAYOUT_JS))
+            except Exception as exc:                      # noqa: BLE001 — 실패 사유를 그대로 보여 준다
+                issues = [f"화면 열기 실패: {str(exc).splitlines()[0][:120]}"]
+            if issues:
+                caught += 1
+                if args.shot_dir:
+                    os.makedirs(args.shot_dir, exist_ok=True)
+                    name = page_path.strip("/").replace("/", "-") or "home"
+                    try:
+                        page.screenshot(path=os.path.join(args.shot_dir, f"{name}-{width}-layout.png"))
+                    except Exception:                     # noqa: BLE001
+                        pass
+            results.append((page_path, f"{width}×{height} · 배치", issues, "기초 배치 스위프"))
+            context.close()
+    return caught
+
+
 def run(args):
     from playwright.sync_api import sync_playwright  # 게이트에서만 쓰는 의존성
 
@@ -493,7 +803,14 @@ def run(args):
     else:
         httpd, base = serve()
 
+    listed, founded = sector_pages()
+    sweep = [] if args.sweep is False else [f"/{name}/" for name in sorted(set(listed) | set(founded))]
+    sweep = [p for p in sweep if p not in set(args.pages)]
+
     results = []   # (page, viewport, 문제 목록, 참고 상세)
+    if args.coverage:
+        missing = check_page_coverage(args.pages, sweep)
+        results.append(("(섹터 목록)", "-", missing, "" if not missing else f"{len(missing)}개 빠짐"))
     try:
         with sync_playwright() as pw:
             browser = pw.chromium.launch()
@@ -535,7 +852,7 @@ def run(args):
 
                     page.wait_for_timeout(args.settle)
                     measured = page.evaluate(MEASURE)
-                    probe = page.evaluate(PROBES.get(page_path, "() => ({ok: true, detail: ''})"))
+                    probe = page.evaluate(PROBES.get(page_path, GENERIC_PROBE))
 
                     if console_errors:
                         issues.extend(console_errors[:4])
@@ -562,6 +879,9 @@ def run(args):
                         issues.append(f"요소 {item['kind']}({item.get('ox', item.get('gap'))}px): {item['a']} ↔ {item['b']}")
                     if len(ui["overlap"]) > 3:
                         issues.append(f"겹침·밀착 {len(ui['overlap'])}곳")
+
+                    # ---- 기초 배치 4종 (카드 이탈 · 표 단차 · 뱃지 줄바꿈 · 좌우 쏠림) ----
+                    issues.extend(layout_issues(page.evaluate(LAYOUT_JS)))
 
                     # ---- ⑤ 시트 잘림 · ⑦ 비서 3탭 클릭 검수 (비서가 있는 대문에서) ----
                     if page_path == "/":
@@ -603,6 +923,8 @@ def run(args):
 
                     results.append((page_path, f"{width}×{height}", issues, probe["detail"]))
                     context.close()
+            if sweep:
+                run_sweep(browser, base, sweep, args, results)
             browser.close()
     finally:
         if httpd:
@@ -610,22 +932,42 @@ def run(args):
 
     print("=" * 72)
     failed = 0
+    swept = []
     for page_path, viewport, issues, detail in results:
+        if viewport.endswith("· 배치"):
+            swept.append((page_path, viewport, issues))
+            if issues:
+                failed += 1
+            continue
         state = "✗" if issues else "✓"
         if issues:
             failed += 1
         print(f"{state} {page_path} {viewport}  {detail}")
         for issue in issues:
             print(f"    - {issue}")
+    if swept:
+        bad = [row for row in swept if row[2]]
+        print(f"{'✗' if bad else '✓'} 기초 배치 스위프(전 섹터) — {len(swept)}회(화면×폭) · 걸린 곳 {len(bad)}")
+        for page_path, viewport, issues in bad[:12]:
+            print(f"  ✗ {page_path} {viewport}")
+            for issue in issues[:4]:
+                print(f"      - {issue}")
     print("-" * 72)
     print("✓ 실화면 스모크 통과" if not failed else f"✗ 기준을 넘은 조합 {failed}곳 — 위 항목을 고친 뒤 다시 잰다")
 
     if args.summary_file:
         lines = ["## 실화면 스모크 (대문·브리핑·신산업)", "",
                  "| 화면 | 화면 폭 | 결과 | 잰 것 |", "|---|---|---|---|"]
+        swept = [(p, v, i) for p, v, i, _d in results if v.endswith("· 배치")]
         for page_path, viewport, issues, detail in results:
+            if viewport.endswith("· 배치"):
+                continue
             verdict = "✗ " + issues[0] if issues else "✓ 통과"
             lines.append(f"| `{page_path}` | {viewport} | {verdict} | {detail} |")
+        if swept:
+            bad = [row for row in swept if row[2]]
+            lines.append(f"| (전 섹터 기초 배치 스위프) | {len(swept)}회 | "
+                         f"{'✗ 걸린 곳 ' + str(len(bad)) if bad else '✓ 통과'} | 카드 이탈·표 단차·뱃지 줄바꿈·좌우 쏠림 |")
         lines.append("")
         lines.append("**모두 통과**" if not failed else f"**기준 초과 {failed}곳**")
         with open(args.summary_file, "a", encoding="utf-8") as fh:
@@ -679,6 +1021,12 @@ def main():
                         help="비서 검색 회귀도 함께 잰다(기본 켜짐)")
     parser.add_argument("--no-assistant", dest="assistant", action="store_false",
                         help="비서 검색 회귀를 건너뛴다")
+    parser.add_argument("--no-coverage", dest="coverage", action="store_false", default=True,
+                        help="섹터 목록 점검(재지 않는 화면이 남았는지)을 건너뛴다")
+    parser.add_argument("--no-sweep", dest="sweep", action="store_false", default=True,
+                        help="전 섹터 기초 배치 스위프를 건너뛴다(빠른 확인용)")
+    parser.add_argument("--sweep-settle", type=int, default=2200,
+                        help="스위프에서 화면이 그려질 때까지 기다리는 ms")
     args = parser.parse_args()
     args.pages = [p.strip() for p in args.pages.split(",") if p.strip()]
     return run(args)
