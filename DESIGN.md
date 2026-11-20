@@ -379,6 +379,8 @@ Playwright가 실제 사용자 동선을 재현한다: 한 손 터치(엄지 반
 
 ## 11. 패턴 기록 인덱스 (날짜 → 어디로 갔는지)
 
+- 2026-11-21 대문 목록 쪽 넘김 — 넘길 때 스크롤 고정(`alignList`의 scrollTo 제거) · 하단 번호판을 **5칸 미닫이 창**(1-5→2-6→3-7, 창 고정 + 트랙 `transform .3s`)으로 · 번호판 위 드래그·스와이프가 트랙을 따라 밈 → `hub-landing.md` §23, `index.html`.
+
 - 2026-11-20 상담 플로우 아키텍트를 자료 목록에서 분리(매치 18 → 앱): 왼쪽 아래 **카드덱 단추**(비서 단추의 거울 자리·같은 모양, `assets/deckfab.js`)로 `/flow/` 진입, 자료 31개(01~31)·목차 7쪽, 덱 미니 스위처(한 줄 슬림 바 + 단계 목록) → `hub-landing.md` §22, `assets/deckfab.js`·`.css`, `assistant/build_index.py`(JC_APPS를 비서 색인에).
 
 - 2026-11-20 산업별 공정 지도(valuechain) 신설(매치 18): 산업 색인 + 가로 단계 눈금(선 위의 번호 원) + 한 장 상세(하는 일·상담 팁·NCS 직무·명함첩 기업) · 무대 높이 고정·상세만 안쪽 스크롤 · 검증된 연계 주소만 → `design/patterns/process-map.md`, `design/studies/2026-11-20-valuechain.md`.

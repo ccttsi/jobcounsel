@@ -450,9 +450,16 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-list small{grid-column:2;grid-row:2;align-self:start;min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   min-height:calc(2 * 1.5em);font-size:14px;color:var(--muted);line-height:1.5}
 .a-pg{display:flex;justify-content:center;align-items:center;gap:2px;margin-top:10px;min-height:44px}
-.a-root .a-pg button{min-width:44px;height:44px;padding:0 6px;border-radius:12px;font-size:15px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
+/* 2026-11-21(태화님 지시) — 쪽 번호판은 한 번에 다섯 칸만 보이는 «미닫이 창»이다.
+   7쪽이면 1쪽 「1 2 3 4 5」 → 6쪽 「2 3 4 5 6」 → 7쪽 「3 4 5 6 7」처럼 한 칸씩 밀린다(1-5·6-7 블록 점프 없음).
+   창(--slots)은 고정이고 안쪽 트랙만 transform으로 움직인다 — 창 크기·높이가 그대로라 아래 요소 Y변동 0.00px.
+   창에 4px 여백을 둔 것은 창 밖으로 잘린 첫·끝 칸의 초점 고리를 보이게 하기 위해서다. */
+.a-pg-vp{overflow:hidden;height:52px;margin:-4px 0;padding:4px;width:calc(var(--slots,5) * 46px + 6px);touch-action:pan-y}
+.a-pg-track{display:flex;gap:2px;height:44px;transform:translate3d(0,0,0);transition:transform .3s cubic-bezier(.22,.9,.28,1)}
+.a-root .a-pg button{width:44px;min-width:44px;height:44px;padding:0 6px;border-radius:12px;font-size:15px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
 .a-root .a-pg button[aria-current="true"]{color:var(--a1);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
 .a-root .a-pg button:disabled{opacity:.3}
+html[data-jc-imm] .a-pg-track{transition:none}
 /* 2026-11-20(태화님 지시) — 목록과 쪽 번호판 **둘 다** 좌우로 밀거나 끌면 쪽이 넘어간다.
    세로 스크롤은 브라우저 몫으로 남기고(pan-y) 가로 손짓만 받는다. 움직이는 값은 transform 하나뿐이고,
    끄는 동안에만 will-change를 붙였다가 놓으면 뗀다(모션 가드레일 §2). */
@@ -1244,41 +1251,76 @@ var items=[],dotEls=[];
 function mod(a,n){return ((a%n)+n)%n;}
 function reduce(){return !!reduceMQ.matches;}
 /* 자료 전체 목록: 롤링 자리를 대신해 5개씩 보여 준다 */
-var LIST_PER=5,listPage=0,listOpen=false,rowH=0;
+var LIST_PER=5,listPage=0,listOpen=false,rowH=0,pagerBase=0;
 /* 5개로 끊는 자리는 이 상수 하나다 — 휴대폰·데스크톱 할 것 없이 같은 5개(2026-11-20 태화님 지시로 재확인). */
 function listPages(){return Math.max(1,Math.ceil(TOOLS.length/LIST_PER));}
 function rowHTML(t){return '<li data-m="'+t.mode+'"><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></a></li>';}
+/* 쪽 번호판 — 2026-11-21(태화님 지시): 한 번에 다섯 칸만 보이는 «미닫이 창»이다.
+   7쪽이면 1쪽 「1 2 3 4 5」, 6쪽 「2 3 4 5 6」, 7쪽 「3 4 5 6 7」 — 블록(1-5·6-7)으로 튀지 않고
+   쪽이 갈 때마다 한 칸씩 밀린다. 창의 시작은 「지금 쪽이 창의 마지막 칸이 되는 자리」를 기준으로
+   계산하되 0과 (n-5) 사이로 당긴다(1쪽 앞·마지막 쪽 뒤로는 밀리지 않는다). */
+var PAGER_WIN=5;
+function pagerStart(n){var w=Math.min(n,PAGER_WIN);return Math.max(0,Math.min(n-w,listPage-(w-1)));}
+function pagerTrack(){return document.querySelector('#allPg .a-pg-track');}
+function buildPager(pg,n){
+  var h='';
+  if(n>1){
+    h+='<button type="button" class="a-pg-ar" data-lp="-1" aria-label="이전 쪽">‹</button>';
+    h+='<div class="a-pg-vp"><div class="a-pg-track">';
+    for(var i=0;i<n;i++)h+='<button type="button" data-lp="'+i+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>';
+    h+='</div></div>';
+    h+='<button type="button" class="a-pg-ar" data-lp="'+n+'" aria-label="다음 쪽">›</button>';
+  }
+  pg.innerHTML=h;pg.setAttribute('data-n',String(n));
+  pg.style.setProperty('--slots',String(Math.min(n,PAGER_WIN)));
+  /* 처음 그릴 때는 미끄러지지 않는다 — 트랙을 제자리에 둔 다음 두 프레임 뒤에 전이를 켠다. */
+  var tr=pg.querySelector('.a-pg-track');
+  if(tr){tr.style.transition='none';requestAnimationFrame(function(){requestAnimationFrame(function(){tr.style.transition='';});});}
+}
+function paintPager(n){
+  var pg=$('allPg'),tr=pg.querySelector('.a-pg-track'),vp=pg.querySelector('.a-pg-vp');
+  var w=Math.min(n,PAGER_WIN),start=pagerStart(n);
+  /* 2026-11-19: 쪽 번호를 누를 때마다 단추를 통째로 다시 그리면, 새로 들어온 단추에만
+     공용 등장 모션(assets/prefs.js)이 붙어 앞쪽 번호만 물결처럼 깜빡였다(뒤쪽은 10개 제한 밖).
+     번호판은 한 번만 만들고, 쪽이 바뀌면 상태만 제자리에서 고친다 — 모든 번호가 똑같이 움직인다. */
+  var bs=pg.querySelectorAll('[data-lp]');
+  for(var j=0;j<bs.length;j++){
+    var b=bs[j],lp=+b.getAttribute('data-lp');
+    if(lp<0){b.disabled=(listPage===0);b.removeAttribute('aria-current');}
+    else if(lp>=n){b.disabled=(listPage===n-1);b.removeAttribute('aria-current');}
+    else{
+      b.disabled=false;
+      b.setAttribute('aria-current',String(lp===listPage));
+      /* 창 밖으로 밀려난 번호는 탭 순서와 낭독 대상에서 뺀다(보이지 않는 것을 읽지 않게). */
+      if(lp>=start&&lp<start+w){b.tabIndex=0;b.removeAttribute('aria-hidden');}
+      else{b.tabIndex=-1;b.setAttribute('aria-hidden','true');}
+    }
+  }
+  if(tr){
+    /* 창의 첫 칸이 트랙 첫 칸에서 얼마나 떨어져 있는지 실제 좌표로 잰다 — 간격(gap)까지 맞아 오차 0. */
+    var a=tr.children[0],b2=tr.children[start];
+    var off=(a&&b2)?(b2.offsetLeft-a.offsetLeft):0;
+    pagerBase=-off;
+    tr.style.transform='translate3d('+(-off)+'px,0,0)';
+    if(vp)vp.scrollLeft=0;
+  }
+  pg.setAttribute('aria-label','목록 쪽 넘기기 — '+(listPage+1)+'/'+n+'쪽');
+}
 function renderList(){
   /* 쪽 번호가 범위를 벗어나면(자료 수가 줄거나 쪽 번호를 지금 넘어서 계산한 경우) 반드시 안쪽으로 당긴다 —
      빈 쪽이 생기지 않게 하는 유일한 자리다. 마지막 쪽은 1~5개 중 남은 만큼만 들어간다. */
   var n=listPages();listPage=Math.max(0,Math.min(n-1,listPage));
   $('allList').innerHTML=TOOLS.slice(listPage*LIST_PER,(listPage+1)*LIST_PER).map(rowHTML).join('');
   var pg=$('allPg');
-  /* 2026-11-19: 쪽 번호를 누를 때마다 단추를 통째로 다시 그리면, 새로 들어온 단추에만
-     공용 등장 모션(assets/prefs.js)이 붙어 앞쪽 번호만 물결처럼 깜빡였다(뒤쪽은 10개 제한 밖).
-     번호판은 한 번만 만들고, 쪽이 바뀌면 상태만 제자리에서 고친다 — 모든 번호가 똑같이 움직인다. */
-  if(pg.getAttribute('data-n')!==String(n)){
-    var h='';
-    if(n>1){
-      h+='<button type="button" data-lp="-1" aria-label="이전 쪽">‹</button>';
-      for(var i=0;i<n;i++)h+='<button type="button" data-lp="'+i+'" aria-label="'+(i+1)+'쪽">'+(i+1)+'</button>';
-      h+='<button type="button" data-lp="'+n+'" aria-label="다음 쪽">›</button>';
-    }
-    pg.innerHTML=h;pg.setAttribute('data-n',String(n));
-  }
-  var bs=pg.children;
-  for(var j=0;j<bs.length;j++){
-    var b=bs[j],lp=+b.getAttribute('data-lp');
-    if(lp<0){b.disabled=(listPage===0);b.removeAttribute('aria-current');}
-    else if(lp>=n){b.disabled=(listPage===n-1);b.removeAttribute('aria-current');}
-    else{b.disabled=false;b.setAttribute('aria-current',String(lp===listPage));}
-  }
-  pg.setAttribute('aria-label','목록 쪽 넘기기 — '+(listPage+1)+'/'+n+'쪽');
+  if(pg.getAttribute('data-n')!==String(n))buildPager(pg,n);
+  paintPager(n);
 }
-/* ---------- 쪽 넘김 (2026-11-20) ----------
-   쪽을 넘길 때마다 목록의 첫 줄이 머리말에 가린 자리에 남아 있으면, «비어 있는 쪽»처럼 보였다
-   (태화님 IMG_7802: 7쪽이 통째로 빈 화면). 넘기거나 목록을 열면 목록 첫머리가 머리말 아래로 오도록
-   자리를 바로 맞춘다. 화면 안에 이미 들어와 있으면 건드리지 않는다(읽던 자리를 빼앗지 않는다). */
+/* ---------- 쪽 넘김 (2026-11-20 · 2026-11-21 수정) ----------
+   2026-11-21(태화님 지시) — 쪽을 넘길 때 화면 스크롤을 **건드리지 않는다**. 전에는 넘길 때마다
+   alignList()가 목록 첫머리를 머리말 아래로 맞추느라 scrollTo를 걸었고, 그것이 «넘길 때마다
+   페이지 위로 올라감»의 원인이었다. 목록 상자는 줄 높이가 고정(--row-h)이고 5줄 높이를 늘 지키므로
+   쪽이 바뀌어도 문서 높이는 그대로다 — 스크롤을 맞추지 않아도 «빈 쪽»이 생기지 않는다.
+   alignList()는 목록을 처음 열 때(setList)만 쓴다. */
 function alignList(){
   var lv=$('listView');if(!lv||lv.hidden)return;
   var head=document.querySelector('.a-top'),hb=head?head.getBoundingClientRect().bottom:0;
@@ -1287,18 +1329,23 @@ function alignList(){
   var y=(window.pageYOffset||0)+top-hb-12;
   window.scrollTo(0,Math.max(0,Math.round(y)));
 }
-function listTurn(d){
-  var n=listPages(),p=Math.max(0,Math.min(n-1,listPage+d));
-  if(p===listPage)return false;
-  listPage=p;renderList();alignList();
+function listAnim(d){
   var ol=$('allList');
-  if(ol){
-    ol.style.transform='';
-    ol.style.setProperty('--sw',(d>0?-22:22)+'px');
-    ol.classList.remove('a-sw-in');void ol.offsetWidth;ol.classList.add('a-sw-in');
-  }
+  if(!ol)return;
+  ol.style.transform='';
+  ol.style.setProperty('--sw',(d>0?-22:22)+'px');
+  ol.classList.remove('a-sw-in');void ol.offsetWidth;ol.classList.add('a-sw-in');
+}
+/* 쪽을 어디서 넘기든(손짓·화살표·번호) 같은 길을 지난다 — 목록은 넘긴 방향으로 미끄러지고
+   번호판은 미닫이 창이 한 칸 밀린다. 어느 쪽도 scrollTo를 부르지 않는다(스크롤 고정). */
+function gotoListPage(lp){
+  var n=listPages(),p=Math.max(0,Math.min(n-1,lp));
+  if(p===listPage)return false;
+  var d=p>listPage?1:-1;
+  listPage=p;renderList();listAnim(d);
   return true;
 }
+function listTurn(d){return gotoListPage(listPage+d);}
 /* 목록 높이 고정(2026-11-18 R4): 쪽마다 설명 줄 수가 달라 생기던 아래 요소의 흔들림을 없앤다.
    전체 목록을 같은 폭의 화면 밖 상자에 한 번 그려 **가장 긴 줄**을 재고, 모든 줄 높이를 그 값으로
    못 박는다(--row-h). 목록 상자도 5줄 높이라 마지막 쪽(3개)에서도 쪽수·심전도가 움직이지 않는다. */
@@ -1513,6 +1560,9 @@ function bindListSwipe(){
   var g=null,swallow=false,snapT=0;
   function snapBack(anim){
     ol.classList.remove('a-sw-drag');
+    /* 번호판도 같이 제자리로 — 끄는 동안 인라인으로 꺼 두었던 전이를 되살린다(놓으면 부드럽게 돌아온다). */
+    var tr=pagerTrack();
+    if(tr){tr.style.transition='';tr.style.transform='translate3d('+pagerBase+'px,0,0)';}
     if(!ol.style.transform)return;
     if(anim){
       ol.classList.add('a-sw-snap');ol.style.transform='translate3d(0,0,0)';
@@ -1545,6 +1595,11 @@ function bindListSwipe(){
     if(e.cancelable)e.preventDefault();
     g.ax=dx;
     ol.style.transform='translate3d('+(dx*.42).toFixed(1)+'px,0,0)';
+    /* 2026-11-21(태화님 지시) — 「여기도 드래그·스와이프」. 번호판 위에서 끌어도 손가락을 따라
+       같은 비율로 밀린다(창 안의 트랙만 움직이므로 레이아웃·스크롤은 건드리지 않는다).
+       손짓 자체는 목록과 마찬가지로 #listView의 포인터 사건 하나가 받는다 — 제스처가 둘로 갈리지 않는다. */
+    var ptr=pagerTrack();
+    if(ptr){ptr.style.transition='none';ptr.style.transform='translate3d('+(pagerBase+dx*.42).toFixed(1)+'px,0,0)';}
   },{passive:false});
   function finish(cancel){
     if(!g)return;
@@ -1615,8 +1670,7 @@ function bindNav(){
     var b=e.target.closest&&e.target.closest('[data-lp]');if(!b||b.disabled)return;
     var lp=+b.getAttribute('data-lp'),n=listPages();
     if(lp<0||lp>=n){listTurn(lp<0?-1:1);return;}
-    if(lp===listPage)return;
-    listPage=lp;renderList();alignList();
+    gotoListPage(lp);
   });
   bindListSwipe();
   $('dots').addEventListener('click',function(e){
