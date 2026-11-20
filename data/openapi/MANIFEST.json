@@ -1,0 +1,58 @@
+{
+ "schema": "jobcounsel.openapi.v1",
+ "kind": "manifest",
+ "generated_at": "2026-11-21T01:25:28+09:00",
+ "tiers": {
+  "daily": [
+   "alio_recruitment",
+   "qual_exam_schedule"
+  ],
+  "weekly": [
+   "ncs_training"
+  ],
+  "monthly": []
+ },
+ "total_bytes": 11333367,
+ "sources": [
+  {
+   "key": "alio_recruitment",
+   "name": "재정경제부_공공기관 채용정보 조회서비스",
+   "service_id": "15125273",
+   "tier": "daily",
+   "path": "data/openapi/alio/recruitment.json",
+   "count": 517,
+   "fetched_at": "2026-11-21T01:21:29+09:00",
+   "bytes": 2374032,
+   "sha256": "33f8df7284c654a253d4dce0cd197447aeca52ac910fe1cc668ae0ee8c881c4f",
+   "license": "이용허락범위 제한 없음",
+   "official_url": "https://www.data.go.kr/data/15125273/openapi.do"
+  },
+  {
+   "key": "qual_exam_schedule",
+   "name": "한국산업인력공단_국가자격 시험일정 조회 서비스",
+   "service_id": "15074408",
+   "tier": "daily",
+   "path": "data/openapi/qnet/exam-schedule.json",
+   "count": 158,
+   "fetched_at": "2026-11-21T01:21:37+09:00",
+   "bytes": 72786,
+   "sha256": "1af07ffe56eaff1be7c9588a15c621f5e4551691afaf0a44a8476ab9dbd1bc15",
+   "license": "이용허락범위 제한 없음",
+   "official_url": "https://www.data.go.kr/data/15074408/openapi.do"
+  },
+  {
+   "key": "ncs_training",
+   "name": "한국산업인력공단_NCS 훈련과정 정보",
+   "service_id": "15086447",
+   "tier": "weekly",
+   "path": "data/openapi/ncs/training-courses.json",
+   "count": 13024,
+   "fetched_at": "2026-11-21T01:23:42+09:00",
+   "bytes": 8886549,
+   "sha256": "cbdb0dcd8e99b811f319ecec576bf98ee53cafc1c31d7d551886b9d37a7350a7",
+   "license": "이용허락범위 제한 없음",
+   "official_url": "https://www.data.go.kr/data/15086447/openapi.do"
+  }
+ ],
+ "note": "값은 공식 Open API 응답 그대로다. 확인되지 않은 값은 지어내지 않고 빈 문자열/null로 둔다."
+}
