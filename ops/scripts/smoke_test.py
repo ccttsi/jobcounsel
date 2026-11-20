@@ -25,12 +25,9 @@ import threading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# 회원 전용 게이트(assets/core.js)를 검사에서만 건너뛰는 표시.
-#   주소 파라미터가 아니라 브라우저 문맥에 심는 값이라, 실제 방문 주소로는 열리지 않는다.
-QA_INIT = "window.__JC_QA__ = 1;"
-
 PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
-         "/portals/#p=work24", "/flow/", "/mydeck/"]
+         "/portals/#p=work24", "/flow/", "/mydeck/",
+         "/work-filter/", "/kdt-calc/", "/triage/"]
 VIEWPORTS = [(390, 844, "휴대폰"), (1280, 800, "데스크톱")]
 
 # 페이지마다 「이게 없으면 화면이 안 그려진 것」을 하나씩 정한다.
@@ -61,6 +58,28 @@ PROBES = {
         const total = Number((document.getElementById('lstN') || {}).textContent || 0);
         const broken = /불러오지 못했습니다/.test(document.body.innerText);
         return {ok: rows >= 1 && total >= 100 && !broken, detail: `목록 ${rows} · 용어 ${total}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/work-filter/": """() => {
+        // 조건 칩과 직무 카드가 실제로 그려졌는가(JS가 죽으면 0).
+        const chips = document.querySelectorAll('#filters [data-ax], #filters button').length;
+        const cards = document.querySelectorAll('#list button[role=option]').length;
+        const broken = /불러오지 못했습니다/.test(document.body.innerText);
+        return {ok: chips >= 3 && cards >= 5 && !broken, detail: `조건 ${chips} · 직무 ${cards}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/kdt-calc/": """() => {
+        // 계산서(자부담·지원액)가 그려졌는가 — 값이 아니라 «자리가 있는지»만 본다.
+        const rows = document.querySelectorAll('[data-num], .cnum').length;
+        const presets = document.querySelectorAll('#presets button, .pchip').length;
+        const broken = /불러오지 못했습니다/.test(document.body.innerText);
+        return {ok: rows >= 3 && presets >= 2 && !broken, detail: `계산 줄 ${rows} · 빠른 시나리오 ${presets}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/triage/": """() => {
+        // 다섯 축 체크와 등급 표시가 그려졌는가.
+        const boxes = document.querySelectorAll('#axes input, #axes button').length;
+        const ladder = document.querySelectorAll('#ladder i').length;
+        const lv = (document.getElementById('lvName') || {}).textContent || '';
+        const broken = /불러오지 못했습니다/.test(document.body.innerText);
+        return {ok: boxes >= 5 && ladder === 5 && !broken, detail: `축 ${boxes} · 사다리 ${ladder} · 등급 ${lv.trim().slice(0, 12)}${broken ? ' · 불러오기 실패' : ''}`};
     }""",
     "/portals/": """() => {
         // 카드·「가서 볼 수 있는 것」 칩이 그려지고, 자료를 불러오지 못한 문구가 없는가.
@@ -471,7 +490,6 @@ def run(args):
             for page_path in args.pages:
                 for width, height, kind in VIEWPORTS:
                     context = browser.new_context(viewport={"width": width, "height": height})
-                    context.add_init_script(QA_INIT)
                     page = context.new_page()
                     issues, console_errors, broken_assets = [], [], []
 

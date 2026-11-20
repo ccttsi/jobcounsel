@@ -40,7 +40,6 @@ function serve() {
   for (const pg of PAGES) {
     for (const [w, h, kind] of SIZES) for (const theme of ['light', 'dark']) {
       const c = await b.newContext({ viewport: { width: w, height: h } });
-      await c.addInitScript(() => { window.__JC_QA__ = 1; });   // 회원 전용 게이트 건너뛰기(검사용)
       await c.addInitScript(t => { try { localStorage.setItem('jc-theme', t); } catch (e) {} }, theme);
       await c.route(/cdn\.jsdelivr|unpkg\.com|fonts\.g(oogleapis|static)\.com/, r => r.abort());
       const p = await c.newPage(); const errs = [];

@@ -8,6 +8,7 @@ var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'d
 document.documentElement.setAttribute('data-theme',t);})();
 </script>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
@@ -166,6 +167,14 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:10px}
 @media (max-width:1023px){
   .ax{grid-template-columns:minmax(0,1fr);gap:4px;padding:5px 9px 6px}
   .ax-h{min-height:18px}
+}
+/* 휴대폰에서는 화면 높이에 가둘 수 없다 — 여섯 축이 자리를 다 먹어 목록이 한 줄만 남던 것을
+   페이지 흐름으로 풀어 목록이 제 높이를 갖게 한다(2026-11-20 통합 마감). */
+@media (max-width:1023px){
+  .wrap{height:auto;min-height:100dvh}
+  .pane,.board{min-height:0}
+  .list{overflow:visible;max-height:none}
+  .listwrap{overflow:visible}
 }
 
 /* ---------- 목록 ---------- */
