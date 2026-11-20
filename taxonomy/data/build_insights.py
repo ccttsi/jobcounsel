@@ -428,6 +428,14 @@ def q_node(node, stat, acts, kw, elems):
 
 
 # ────────────────────────── 문장 틀 ──────────────────────────
+def fit_acts(acts, max_chars):
+    """한 줄 정의가 길어지지 않게 — 뒤에서부터 덜어 낸다(문구는 원문 그대로)."""
+    acts = list(acts)
+    while len(acts) > 1 and len(", ".join(acts)) > max_chars:
+        acts.pop()
+    return acts
+
+
 def line_for(node, acts, field):
     a = ", ".join(acts)
     tail = "등을 수행하는" if len(acts) >= 2 else "을 수행하는"
@@ -518,7 +526,7 @@ def build():
             acts = [acts_all[int(round(i * step))] for i in range(4)]
         else:
             acts = acts_all
-        acts = list(dict.fromkeys(acts))
+        acts = fit_acts(list(dict.fromkeys(acts)), 88)
         tot = st["k"] + st["s"] + st["a"]
         ent = {
             "acts": acts,
@@ -536,7 +544,7 @@ def build():
     for c in sorted(nodes):
         n = nodes[c]
         st = stat[c]
-        acts = pick_acts(st, 4, spread=n["lv"] in ("major", "middle"))
+        acts = fit_acts(pick_acts(st, 4, spread=n["lv"] in ("major", "middle")), 100)
         kw = pick_kw(st, 5)
         tot = st["k"] + st["s"] + st["a"]
         counts = Counter()

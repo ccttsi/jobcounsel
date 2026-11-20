@@ -237,17 +237,23 @@
     function nmOf(sy, code) { var x = code && node(sy, code); return x ? '「' + x.name + '」' : ''; }
     if (s === 'job') {
       nm = T.KN[t.keco_code] || [];
-      situ = '고용24 직업 「' + t.name + '」은 고용직업분류 ' + (nmOf('keco', t.keco_code) || '자료 없음') +
-        ' · 표준직업분류 ' + (nmOf('ksco', t.ksco_code) || '자료 없음') + '에 속한 직업입니다.';
+      var kp = nmOf('keco', t.keco_code), sp2 = nmOf('ksco', t.ksco_code), parts = [];
+      if (kp) parts.push('고용직업분류 ' + kp);
+      if (sp2) parts.push('표준직업분류 ' + sp2);
+      situ = '고용24 직업 「' + t.name + '」은 ' + (parts.join(' · ') || '분류 자료 없음') + '에 속한 직업입니다.' +
+        (sp2 ? '' : ' 표준직업분류 연결은 원자료에 없습니다.');
     } else if (s === 'keco') {
       if (t.lv !== 'sub') return '';
       nm = T.KN[c] || [];
-      situ = 'KECO 세분류 「' + t.name + '」은 표준직업분류 ' + (nmOf('ksco', T.KK[c]) || '연결 자료 없음') + '에 대응합니다.';
+      var kx = nmOf('ksco', T.KK[c]);
+      situ = kx ? 'KECO 세분류 「' + t.name + '」은 표준직업분류 ' + kx + '에 대응합니다.'
+                : 'KECO 세분류 「' + t.name + '」은 표준직업분류 연결이 원자료에 없습니다.';
     } else if (s === 'ksco') {
       if (t.lv !== 'sub') return '';
       (T.SK[c] || []).forEach(function (k) { (T.KN[k] || []).forEach(function (m) { if (nm.indexOf(m) < 0) nm.push(m); }); });
       var ke = (T.SK[c] || []).map(function (k) { return nmOf('keco', k); }).filter(Boolean);
-      situ = 'KSCO 세분류 「' + t.name + '」은 고용직업분류 ' + (ke.join(' · ') || '연결 자료 없음') + '에 대응합니다.';
+      situ = ke.length ? 'KSCO 세분류 「' + t.name + '」은 고용직업분류 ' + ke.join(' · ') + '에 대응합니다.'
+                       : 'KSCO 세분류 「' + t.name + '」은 고용직업분류 연결이 원자료에 없습니다.';
     } else return '';
     var h = '<section class="ins" aria-label="한눈에 보기"><div class="insHd"><span class="insKick">한눈에 · 원자료 범위</span><h3 class="insT">이 ' + (s === 'job' ? '직업이' : '세분류가') + ' 뭐 하는 거예요?</h3></div>';
     h += '<p class="insLine">' + esc(situ) + '</p>';
