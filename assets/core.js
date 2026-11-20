@@ -13,6 +13,8 @@
  * 4) 미리 받기: 자료실 안의 다른 화면으로 가는 링크에 손이 닿으면 그 화면 문서를 미리 받아 둔다(데이터 절약 모드에서는 쉼).
  *
  * 5) 이어 보기: 섹터 장부(tools.js)와 「이어 보기」 줄(next.js)을 불러온다.
+ * 5-b) 카드덱 단추: 대문까지 **모든 지면**에 왼쪽 아래 카드덱 단추와 덱 미니 스위처(deckfab.js)를 붙인다.
+ *    상담 플로우 아키텍트는 자료 목록에서 빠졌으므로, 이 단추가 어느 화면에서든 가는 길이다.
  * 6) 오류 수집: 운영 도메인(ccttsi.github.io)에서만 Sentry 로더를 한 번 불러온다. 로컬·검사 화면에서는 부르지 않는다.
  *
  * 6) 딥링크: 대문 검색이 넘긴 ?q= 를 이 화면의 검색창에 채우고 바로 찾는다(data-jc-deep="off"면 섹터가 직접 받는다).
@@ -226,11 +228,15 @@
   ready(function () { deepLinkTick(); setTimeout(deepLinkTick, 0); setTimeout(deepLinkTick, 300); });
   window.addEventListener('load', function () { setTimeout(deepLinkTick, 0); });
 
-  /* ---------- 5) 이어 보기: 섹터 장부(tools.js)와 이어 보기 줄(next.js)을 대문이 아닌 화면에서 불러온다 ---------- */
+  /* ---------- 5) 이어 보기: 섹터 장부(tools.js)와 이어 보기 줄(next.js) · 카드덱 단추(deckfab.js) ---------- */
   function load(src, then) { var s = d.createElement('script'); s.src = src; s.async = true; if (then) s.onload = then; (d.head || root).appendChild(s); }
   ready(function () {
-    if (!BASE || location.href.split(/[?#]/)[0] === BASE) return;
-    if (window.JC_TOOLS) load(BASE + 'assets/next.js'); else load(BASE + 'assets/tools.js', function () { load(BASE + 'assets/next.js'); });
+    if (!BASE) return;
+    if (location.href.split(/[?#]/)[0] !== BASE) {   // 「이어 보기」는 대문이 아닌 화면에만
+      if (window.JC_TOOLS) load(BASE + 'assets/next.js'); else load(BASE + 'assets/tools.js', function () { load(BASE + 'assets/next.js'); });
+    }
+    /* 카드덱 단추는 대문에도 있다 — 자료 목록(01~31)에서 빠진 상담 플로우로 가는 유일한 상시 동선이다. */
+    load(BASE + 'assets/deckfab.js');
   });
 
   /* ---------- 7) 뒤로가기 = 세부 팝업 닫기 ----------

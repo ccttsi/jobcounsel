@@ -622,8 +622,10 @@ def run_preset_checks():
         fail("presets", f"프리셋 JSON을 읽지 못했다 — {exc}")
         return
     tools_raw = open(tools_path, encoding="utf-8").read()
-    ids = set(re.findall(r"\{id:'([^']+)'", tools_raw))
-    modes = dict(re.findall(r"\{id:'([^']+)'[^}]*?mode:'(seed|match)'", tools_raw))
+    # 카드는 자료(JC_TOOLS)의 id만 가리킨다 — 앱(JC_APPS — 상담 플로우)은 덱의 칸을 쓰지 않는다.
+    tools_body = tools_raw[tools_raw.find("window.JC_TOOLS"):tools_raw.find("window.JC_LINKS")]
+    ids = set(re.findall(r"\{id:'([^']+)'", tools_body))
+    modes = dict(re.findall(r"\{id:'([^']+)'[^}]*?mode:'(seed|match)'", tools_body))
     slots = {m: sum(1 for v in modes.values() if v == m) for m in ("seed", "match")}
 
     seen, total, placed = set(), 0, 0
@@ -848,9 +850,24 @@ TOOL_FIELDS = {"id": r"id:'([^']*)'", "gi": r"gi:'([^']*)'", "mode": r"mode:'([^
 
 
 def read_tools():
-    """tools.js의 섹터 장부를 글자 그대로 읽는다(한 칸 = 한 섹터)."""
+    """tools.js의 섹터 장부를 글자 그대로 읽는다(한 칸 = 한 섹터).
+
+    돌려주는 것 — 자료(JC_TOOLS) · 앱(JC_APPS) · 연결 짝(JC_LINKS).
+      · 자료 = 대문 목록 01~31. 번호·색·폴더·프리셋 칸이 여기에만 달려 있다.
+      · 앱   = 자료가 아닌 화면(상담 플로우). 목록·덱 칸은 쓰지 않지만 폴더·색은 필요하고,
+              JC_LINKS의 짝으로도 나온다(그래서 짝 검사는 두 장부의 id를 함께 본다).
+    """
     raw = open(os.path.join(ROOT, "assets", "tools.js"), encoding="utf-8").read()
     body = raw[raw.find("window.JC_TOOLS"):raw.find("window.JC_LINKS")]
+    apps_body = raw[raw.find("window.JC_APPS"):]
+    tools = _read_blocks(body)
+    apps = _read_blocks(apps_body)
+    links_raw = raw[raw.find("window.JC_LINKS"):raw.find("window.JC_APPS")]
+    links = re.findall(r"\['([^']+)','([^']+)'\]", links_raw)
+    return tools, links, apps
+
+
+def _read_blocks(body):
     blocks = re.split(r"\n\s*\{(?=id:')", body)[1:]
     tools = []
     for block in blocks:
@@ -868,13 +885,11 @@ def read_tools():
         item["tags"] = re.findall(r"'([^']*)'", m.group(1)) if m else []
         if item.get("id"):
             tools.append(item)
-    links_raw = raw[raw.find("window.JC_LINKS"):]
-    links = re.findall(r"\['([^']+)','([^']+)'\]", links_raw)
-    return tools, links
+    return tools
 
 
 def run_sector_checks():
-    tools, links = read_tools()
+    tools, links, apps = read_tools()
     if not tools:
         fail("sectors", "assets/tools.js에서 섹터를 하나도 읽지 못했다")
         return
@@ -892,31 +907,38 @@ def run_sector_checks():
             fail("sectors", f"섹터 {tid}의 번호 '{no}'가 두 자리 숫자가 아니다")
         if t["mode"] not in ("seed", "match"):
             fail("sectors", f"섹터 {tid}의 mode '{t['mode']}'가 seed·match가 아니다")
+    # 폴더·색은 앱(JC_APPS)도 가진다 — 자료와 같은 기준으로 본다(둘 다 자기 화면·자기 색을 갖는다).
+    for t in tools + apps:
+        tid, color = t["id"], t["color"]
         folder = t["path"].replace("./", "").rstrip("/")
         if not folder or not os.path.exists(os.path.join(ROOT, folder, "index.html")):
             fail("sectors", f"섹터 {tid}의 폴더에 index.html이 없다: {t['path']}")
-        # 밝게 · 세피아 · 어둡게 세 테마 모두에 그 색이 있어야 한다(하나가 빠지면 그 테마에서만 색이 죽는다)
         found = len(re.findall(r"--tc-" + re.escape(color) + r"\s*:", brand))
         if found < 3:
             fail("sectors", f"브랜드 색 --tc-{color}가 {found}곳뿐이다(밝게·세피아·어둡게 3곳이 필요) — 섹터 {tid}")
         if f'body[data-jc-tool="{tid}"]' not in brand:
             fail("sectors", f"brand.css에 body[data-jc-tool=\"{tid}\"] 규칙이 없다")
+    link_ids = dict(ids)
+    for t in apps:
+        if t["id"] in link_ids:
+            fail("sectors", f"앱 id가 자료 id와 겹친다: {t['id']}")
+        link_ids[t["id"]] = 1
     for a, b in links:
-        if a not in ids or b not in ids:
-            fail("sectors", f"JC_LINKS의 짝 '{a}'·'{b}' 가운데 장부에 없는 섹터가 있다")
+        if a not in link_ids or b not in link_ids:
+            fail("sectors", f"JC_LINKS의 짝 '{a}'·'{b}' 가운데 장부(자료·앱)에 없는 것이 있다")
         if a == b:
             fail("sectors", f"JC_LINKS에 자기 자신을 잇는 짝이 있다: {a}")
     pairs = [tuple(sorted(x)) for x in links]
     if len(pairs) != len(set(pairs)):
         fail("sectors", "JC_LINKS에 같은 짝이 두 번 나온다")
     seeds = sum(1 for t in tools if t["mode"] == "seed")
-    note(f"섹터 장부 {len(tools)}개(시드 {seeds} · 매치 {len(tools) - seeds}) · 연결 짝 {len(links)}쌍 · "
-         f"색 {len({t['color'] for t in tools})}종을 brand.css 3테마와 대조했다")
+    note(f"섹터 장부 {len(tools)}개(시드 {seeds} · 매치 {len(tools) - seeds}) + 앱 {len(apps)}개 · 연결 짝 {len(links)}쌍 · "
+         f"색 {len({t['color'] for t in tools + apps})}종을 brand.css 3테마와 대조했다")
 
 
 def run_flow_checks():
-    """27번 상담 플로우의 시너지 지도와 마이덱 화면·DIY 여섯 요소를 배포 전에 센다."""
-    tools, _links = read_tools()
+    """상담 플로우의 시너지 지도와 마이덱 화면·DIY 여섯 요소를 배포 전에 센다."""
+    tools, _links, _apps = read_tools()
     ids = {t["id"] for t in tools}
     graph_path = os.path.join(ROOT, "flow", "data", "graph.json")
     document, error = load_json(graph_path)

@@ -21,7 +21,7 @@
 | `/grad/` | 대학원 탐구생활 (석·박사 전공 위키 ↔ 전국 대학원 찾기. 데이터 `grad/data/*.json`, 화면 `grad/app.js`) |
 | `/talk/` | 상담 대화 연습장 (데이터 `talk/data.js`, 찾기 엔진 `talk/finder.js`, 화면 `talk/app.js`) |
 | `/transit/` | 환승노선도 (첫 진입·재진입·전직·2막 커리어 노선도, 순행 ↔ 역행(목표 역산) 모드) |
-| `/flow/` | **상담 플로우 아키텍트** (27번) — 키워드나 첫 자료에서 시작해, 자료실이 실제로 잇는 순서대로 다음 가지를 카드로 뻗는다. 후보마다 「앞 자료와의 근거(자료실 연결 짝 · 겹치는 말)」와 「지금 흐름 + 이 자료가 함께 덮는 것」을 적고, 2·3·4개 어디서든 「이대로 만들어볼래요」로 덱을 완성(리허설·실행 미리보기). 6개를 넘기면 부드럽게 제지하고 8개에서 멈춘다. 시너지 지도 `flow/data/graph.json`은 `ops/scripts/build_flow_graph.py`가 `assets/tools.js`·`assistant/data/rag-preface.json`·`translator/data/terms.json`만으로 만든다(손으로 쓴 시너지 문장 0). 화면 `flow/app.js` |
+| `/flow/` | **상담 플로우 아키텍트** — 자료 목록의 번호 섹터가 아니라 **앱**이다(`assets/tools.js`의 `JC_APPS`). 대문 왼쪽 아래 **카드덱 단추**(모든 지면 공통, `assets/deckfab.js`)로 들어간다. 키워드나 첫 자료에서 시작해, 자료실이 실제로 잇는 순서대로 다음 가지를 카드로 뻗는다. 후보마다 「앞 자료와의 근거(자료실 연결 짝 · 겹치는 말)」와 「지금 흐름 + 이 자료가 함께 덮는 것」을 적고, 2·3·4개 어디서든 「이대로 만들어볼래요」로 덱을 완성(리허설·실행 미리보기). 6개를 넘기면 부드럽게 제지하고 8개에서 멈춘다. 시너지 지도 `flow/data/graph.json`은 `ops/scripts/build_flow_graph.py`가 `assets/tools.js`·`assistant/data/rag-preface.json`·`translator/data/terms.json`만으로 만든다(손으로 쓴 시너지 문장 0). 화면 `flow/app.js` |
 | `/mydeck/` | **마이덱** — 상담 플로우에서 만든 내 덱 목록(순서대로 열기·리허설·이름 바꾸기·삭제)과 「공간 꾸미기」. 꾸미기는 **여섯 요소 × 요소마다 여섯 조건**(배경 색·톤 / 글자 색 / 덱 카드 스타일 / 서체 / 배치·밀도 / 장식)에 배경·글자는 팔레트 6 + 자유 색상표(컬러피커·HEX·대비 경고), 테마(밝게·세피아·어둡게)마다 따로 저장한다. 로그인 = 내 계정(`jc_my_decks`·`jc_my_deck_prefs`, Edge Function `my-decks-proxy`), 로그아웃 = 이 브라우저. 함수가 없어도 화면은 그대로 돌고 「이 기기에만」으로 내려간다. 화면 `mydeck/app.js`, 꾸미기 정의 `assets/mydeck-diy.js`, 저장 `assets/mydeck-store.js` |
 | `/taxonomy/` | 분류 교차 사전 (NCS 직무 · KECO · KSCO 직업 계층 탐색, 통합 검색, 역추적, 능력단위 KSA) |
 | `/portals/` | 채용 사이트 안내판 (3초 진단, 대분류 × 직무 × 대상 교차 필터, 카드마다 「가서 볼 수 있는 것」·상담 활용 팁·검증일, 공식 주소 이동. 공공·공무원·공기업 채용과 공시·기업정보(DART·KIND·ALIO·NPAS 등)를 한 안내판에서 구분해 찾고, `gosi`·`dart` 같은 도메인·영문 약어와 `?q=`로도 검색) |
@@ -44,6 +44,7 @@
 | `/assets/sync.js` | 로그인·기기 간 연동 (선택 기능) |
 | `/assets/prefs.js` | 공용 화면 설정: 테마(밝게·세피아·어둡게·자동), 글자 크기, 집중 보기(몰입형 풀화면), 공통 디자인 층 |
 | `/assets/assistant.js`·`.css` | 자료실 비서 — 모든 지면 공통 위젯. 아래 「자료실 비서」 |
+| `/assets/deckfab.js`·`.css` | 왼쪽 아래 **카드덱 단추**(비서 단추와 마주 보는 자리·같은 모양)와 덱 미니 스위처 — 누르면 `/flow/`로 간다. 마이덱에서 자료를 열고 들어오면 「덱 이름 · 지금 자리 · 이전/다음」 한 줄 띠가 함께 선다(`sessionStorage`의 `jc_active_deck`) |
 | `/assistant/` | 비서의 검색 엔진(`search.js`)·색인 생성기(`build_index.py`)·색인 데이터(`data/index.json`·`data/index-dirs.json`·`data/index-companies.json`)·선참조 지도(`data/rag-preface.json`)·약어 사전(`aliases.json`)·키 발급 4단계 도해 |
 
 각 페이지는 폴더 안의 `index.html` 한 파일로 되어 있고, 빌드 과정 없이 그대로 게시됩니다(`/talk/`, `/parsons/`는 데이터와 화면 파일을 나눴습니다).
