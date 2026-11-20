@@ -8,6 +8,7 @@ var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'d
 document.documentElement.setAttribute('data-theme',t);})();
 </script>
 <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출 -->
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
@@ -19,7 +20,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 :root{
   --bg:#faf6ef;--surface:#fffdf8;--surface-2:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
   --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
-  --acc:#174f63;--acc-ink:#ffffff;--acc-soft:#dfecef;--acc-line:#9dbcc6;
+  --acc:var(--tc-fin-lab,#174f63);--acc-ink:#ffffff;--acc-soft:#dfecef;--acc-line:#9dbcc6;
   --good:#2c7a4b;--warn:#8a5300;--crit:#ac362c;--info:#3c5f8a;
   --good-soft:#e3f2e8;--warn-soft:#fbefd8;--crit-soft:#f9e3e0;--info-soft:#e4ecf5;
   --zone-1:rgba(23,79,99,.05);--zone-2:rgba(23,79,99,.10);--zone-bad:rgba(172,54,44,.07);
@@ -30,13 +31,12 @@ document.documentElement.setAttribute('data-theme',t);})();
 :root[data-theme="dark"]{
   --bg:#08090c;--surface:#10141a;--surface-2:#151b22;--line:#1f2730;--line-2:#2d3742;
   --ink:#e6e9ef;--muted:#9aa2b0;--dim:#7f8896;
-  --acc:#5fb6ca;--acc-ink:#04222a;--acc-soft:#122a31;--acc-line:#2f5866;
+  --acc:var(--tc-fin-lab,#5fb6ca);--acc-ink:#04222a;--acc-soft:#122a31;--acc-line:#2f5866;
   --good:#6fcf93;--warn:#e9b25a;--crit:#f08a80;--info:#8fb4e6;
   --good-soft:#13291c;--warn-soft:#32260f;--crit-soft:#331b18;--info-soft:#182536;
   --zone-1:rgba(95,182,202,.05);--zone-2:rgba(95,182,202,.11);--zone-bad:rgba(240,138,128,.08);
   --shadow:none;color-scheme:dark;
 }
-body[data-jc-tool="finlab"]{--jc-acc:var(--acc)}
 *{box-sizing:border-box}
 html,body{margin:0;overflow-x:clip;max-width:100%}
 @supports not (overflow-x:clip){body{overflow-x:hidden}}
@@ -77,7 +77,7 @@ html[data-jc-imm] .imm-scale{display:grid}
 @media (max-width:699px){.scale-note{display:none}}
 
 /* ── 프리셋·탭 ── */
-.strip{display:flex;flex-direction:column;gap:8px;padding-top:9px;padding-bottom:2px}
+.strip{display:flex;flex-direction:column;gap:7px;padding-top:6px;padding-bottom:2px}
 .strip-label{font-size:12px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .presets{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
 .presets::-webkit-scrollbar{height:4px}
@@ -88,26 +88,27 @@ html[data-jc-imm] .imm-scale{display:grid}
 .chip:hover{border-color:var(--acc-line)}
 .chip[aria-pressed="true"]{background:var(--acc-soft);border-color:var(--acc);color:var(--acc);font-weight:800}
 .chip.reset{border-style:dashed;color:var(--muted);font-weight:600}
-.tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;background:var(--surface);border:1px solid var(--line);
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;background:var(--surface);border:1px solid var(--line);
   border-radius:12px;padding:3px}
-@media (min-width:900px){.tabs{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .tab{min-height:44px;padding:5px 8px;border-radius:9px;font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.25}
 .tab .tn{font-size:10.5px;font-weight:800;color:var(--dim);margin-right:4px}
 .tab .ts{display:none}
+@media (max-width:700px){.tab .tl{display:none}.tab .ts{display:inline}.tab{font-size:11.5px;padding:4px 2px}
+  .tab .tn{font-size:10px;margin-right:3px}}
 .tab[aria-selected="true"]{background:var(--acc);color:var(--acc-ink)}
 .tab[aria-selected="true"] .tn{color:var(--acc-ink);opacity:.72}
 
 /* ── 패널 ── */
-main{padding-top:8px;padding-bottom:14px}
+main{padding-top:5px;padding-bottom:14px}
 .panel{display:none}
 .panel.on{display:block}
 .panel-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font-size:clamp(16px,1vw+12.5px,20px);
-  font-weight:800;margin-bottom:7px;letter-spacing:-.02em}
+  font-weight:800;margin-bottom:5px;letter-spacing:-.02em}
 .panel-title .pt-sub{font-size:12px;font-weight:500;color:var(--muted)}
-.bento{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.bento{display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}
 @media (min-width:960px){.bento{grid-template-columns:minmax(0,1.02fr) minmax(0,1fr)}.bento .span2{grid-column:1/-1}}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0;display:flex;
-  flex-direction:column;gap:9px;box-shadow:var(--shadow)}
+  flex-direction:column;gap:8px;box-shadow:var(--shadow)}
 @media (min-width:960px){.card{padding:15px 16px}}
 .card-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:3px 9px;font-size:14.5px;font-weight:800}
 .card-h .hint{font-weight:500}
@@ -259,14 +260,75 @@ details.bnd[open] summary::after{content:"닫기"}
 .bndRow .bv{text-align:center;font-variant-numeric:tabular-nums}
 .scroll-x{overflow-x:auto}
 
+/* ── 3표 · 3개년 ── */
+.stt{display:grid;grid-template-columns:minmax(0,1.34fr) repeat(3,minmax(0,1fr));gap:0 6px;font-size:12.5px;line-height:1.4;align-items:center}
+.stt .sh{font-size:10px;font-weight:800;color:var(--muted);text-align:right;padding-bottom:3px;border-bottom:1px solid var(--line-2);line-height:1.2}
+.stt .sh.l{text-align:left}
+.stt .sh .yhx{display:block;font-size:9.5px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums}
+.stt .sl{font-weight:600;color:var(--muted);padding:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.6em}
+.stt .sv{text-align:right;font-variant-numeric:tabular-nums;padding:2px 0;font-weight:650;white-space:nowrap}
+.stt .sv.neg{color:var(--crit)}
+.stt .row-t .sl,.stt .row-t .sv{font-weight:800;color:var(--ink);border-top:1px solid var(--line);padding-top:4px}
+.stt .sl.row-t,.stt .sv.row-t{font-weight:800;color:var(--ink);border-top:1px solid var(--line);padding-top:3px}
+.stt .sv.row-t.neg{color:var(--crit)}
+.dl{display:flex;flex-wrap:wrap;gap:3px 9px;font-size:11.5px;color:var(--muted);line-height:1.45}
+.dl span{white-space:nowrap}
+.dl b{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.dl b.up{color:var(--good)}.dl b.dn{color:var(--crit)}
+.trd{display:flex;flex-direction:column;gap:10px}
+.trdRow{display:grid;grid-template-columns:86px minmax(0,1fr);gap:8px;align-items:stretch}
+.trdName{font-size:11px;font-weight:700;color:var(--muted);line-height:1.25;padding-top:1px}
+.trdName b{display:block;font-size:11px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.trdName i{display:block;font-size:10px;font-style:normal;font-weight:700;color:var(--dim);font-variant-numeric:tabular-nums}
+.trdPlot{position:relative;height:42px;border-bottom:1px solid var(--line-2)}
+.trdZero{position:absolute;left:0;right:0;height:1px;background:var(--line-2)}
+.trdCols{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.trdCol{position:relative;min-width:0}
+.trdCol i{position:absolute;left:24%;right:24%;background:var(--acc-line);border-radius:3px 3px 0 0;min-height:2px}
+.trdCol i.dn{background:var(--crit);opacity:.7;border-radius:0 0 3px 3px}
+.trdCol.on i{background:var(--acc)}
+.trdCol.on i.dn{background:var(--crit)}
+.trdLeg{display:grid;grid-template-columns:86px minmax(0,1fr);gap:8px;margin-top:1px}
+.trdLeg div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;font-size:10px;font-weight:700;color:var(--dim);text-align:center}
+
+/* 3표 탭: 태블릿은 두 칸, 큰 화면은 세 칸으로 놓아 세로를 줄인다 */
+@media (min-width:760px){
+  #p-st .bento{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  #p-st .span2{grid-column:1/-1}
+}
+@media (min-width:1100px){
+  #p-st .bento{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #p-st .span2{grid-column:span 2}
+  #p-st .adj{grid-column:1/-1}
+  #p-st .adj #stInputs{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+#p-st .bnd summary{padding-top:0;padding-left:0;padding-right:0;gap:0 8px}
+#p-st .bnd summary .hint{display:none}
+@media (min-width:760px){#p-st .bnd summary .hint{display:inline}}
+#p-st .bento{gap:8px}
+#p-st .card{gap:8px}
+#p-st .panel-title{margin-bottom:5px}
+#p-st .stt .sh.y0{color:var(--acc)}
+#p-st .stt .sv.y0{font-weight:750}
+#p-st .read{gap:5px}
+#p-st .read p{font-size:13px;line-height:1.56}
+#p-st .qs{gap:6px}
+#p-st .qs li{padding:7px 10px}
+@media (max-width:430px){
+  #p-st .stt{font-size:12px}
+  #p-st .stt .sl,#p-st .stt .sv{padding:1px 0}
+  #p-st .stt .sh{font-size:9.5px}
+  #p-st .read p{font-size:12.7px;line-height:1.55}
+  #p-st .qs li{padding:7px 9px;font-size:12px}
+  #p-st .card{padding:11px}
+  #p-st .bento{gap:7px}
+}
+
 /* 바닥 */
 @media (max-width:420px){
-  .tabs{grid-template-columns:repeat(4,minmax(0,1fr));gap:3px}
-  .tab{font-size:11.5px;padding:4px 3px}
-  .tab .tn{margin-right:2px;font-size:10px}
-  .tab .tl{display:none}
-  .tab .ts{display:inline}
   .qs li{padding:8px 10px;font-size:12.5px;gap:6px}
+  .panel-title .pt-sub{display:none}
+  .chart{max-width:276px}
   .finding{padding:7px 9px;gap:1px 7px}
   .finding .ft{font-size:12.5px}
   .finding .fd{font-size:12px}
@@ -306,7 +368,7 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="../assets/core.css">
 </head>
-<body data-jc-tool="finlab">
+<body data-jc-tool="fin-lab">
 <link rel="stylesheet" href="../assets/shell.css">
 
 <div id="app">
@@ -314,7 +376,7 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
     <div class="wrap hud-row">
       <a class="jc-ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
       <div class="brand">
-        <h1><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 3.5h11.2l3.8 3.8v13.2H4.5z"/><path d="M8 9.5h6.4M8 13h6.4M8 16.5h3.2"/><path d="M15.8 3.6v3.9h3.9" stroke="var(--jc-acc)"/></svg><span class="jc-tt">기업 <span>재무제표</span> <span class="vt">규모별 해석</span></span></h1>
+        <h1><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 3.5h11.2l3.8 3.8v13.2H4.5z"/><path d="M8 9.5h6.4M8 13h6.4M8 16.5h3.2"/><path d="M15.8 3.6v3.9h3.9" stroke="var(--jc-acc)"/></svg><span class="jc-tt">기업 <span class="jc-kw">재무제표</span> <span class="vt">규모별 해석</span></span></h1>
         <span class="badge">v1.0 · 해석 연습용</span>
       </div>
       <div class="hud-actions">
@@ -343,9 +405,10 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
     <div class="presets" id="presets" role="group" aria-label="연습 패턴"></div>
     <div class="tabs" role="tablist" aria-label="해석 도구">
       <button class="tab" role="tab" type="button" id="tab-fit" data-tab="fit" aria-controls="p-fit" aria-selected="true"><span class="tn">1</span><span class="tl">5축 재무 체력</span><span class="ts">체력</span></button>
-      <button class="tab" role="tab" type="button" id="tab-cf" data-tab="cf" aria-controls="p-cf" aria-selected="false"><span class="tn">2</span><span class="tl">현금흐름 8패턴</span><span class="ts">현금흐름</span></button>
-      <button class="tab" role="tab" type="button" id="tab-pl" data-tab="pl" aria-controls="p-pl" aria-selected="false"><span class="tn">3</span><span class="tl">손익·재무구조</span><span class="ts">손익구조</span></button>
-      <button class="tab" role="tab" type="button" id="tab-sum" data-tab="sum" aria-controls="p-sum" aria-selected="false"><span class="tn">4</span><span class="tl">4규모 종합 판독</span><span class="ts">종합</span></button>
+      <button class="tab" role="tab" type="button" id="tab-st" data-tab="st" aria-controls="p-st" aria-selected="false"><span class="tn">2</span><span class="tl">3표 · 3개년</span><span class="ts">3표</span></button>
+      <button class="tab" role="tab" type="button" id="tab-cf" data-tab="cf" aria-controls="p-cf" aria-selected="false"><span class="tn">3</span><span class="tl">현금흐름 8패턴</span><span class="ts">현금</span></button>
+      <button class="tab" role="tab" type="button" id="tab-pl" data-tab="pl" aria-controls="p-pl" aria-selected="false"><span class="tn">4</span><span class="tl">손익·재무구조</span><span class="ts">손익</span></button>
+      <button class="tab" role="tab" type="button" id="tab-sum" data-tab="sum" aria-controls="p-sum" aria-selected="false"><span class="tn">5</span><span class="tl">4규모 종합 판독</span><span class="ts">종합</span></button>
     </div>
   </div>
 
@@ -373,6 +436,50 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
       </div>
     </section>
 
+    <section class="panel" id="p-st" role="tabpanel" aria-labelledby="tab-st" hidden>
+      <h2 class="panel-title">3표 · 3개년 <span class="pt-sub">Y-2 → Y-1 → Y0, 같은 회사의 세 해를 나란히 읽습니다</span></h2>
+      <div class="bento">
+        <div class="card">
+          <div class="card-h"><h3>재무상태표</h3><span class="hint">억 원 · 자산 = 부채 + 자본</span></div>
+          <div class="stt" id="stBS" role="table" aria-label="재무상태표 3개년"></div>
+          <div class="dl" id="stBSd"></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>손익계산서</h3><span class="hint">억 원 · 매출 100 기준 구조</span></div>
+          <div class="stt" id="stIS" role="table" aria-label="손익계산서 3개년"></div>
+          <div class="dl" id="stISd"></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>현금흐름표</h3><span class="hint" id="stCFh">억 원</span></div>
+          <div class="stt" id="stCF" role="table" aria-label="현금흐름표 3개년"></div>
+          <div class="dl" id="stCFd"></div>
+        </div>
+        <div class="card">
+          <details class="bnd" id="stTrendBox" open>
+            <summary>3개년 추이 <span class="hint" style="font-weight:500">— 막대는 그 지표의 세 해 범위 안에서 견줍니다</span></summary>
+            <div class="bndBody">
+              <div class="trd" id="stTrend"></div>
+              <div class="trdLeg"><span></span><div><span>Y-2</span><span>Y-1</span><span>Y0</span></div></div>
+            </div>
+          </details>
+        </div>
+        <div class="card span2">
+          <div class="card-h"><h3>3년 추이 판독</h3><span class="hint" id="stReadNote">직전 연도 대비 변화가 그대로 문장이 됩니다</span></div>
+          <div class="read" id="stRead"></div>
+          <ol class="qs" id="stQs"></ol>
+        </div>
+        <div class="card span2 adj">
+          <details class="bnd" id="stAdj" open>
+            <summary>규모·기울기 조정 <span class="hint" style="font-weight:500">— 매출 규모와 3년 기울기를 바꾸면 세 표가 함께 다시 계산됩니다</span></summary>
+            <div class="bndBody">
+              <div class="rngGrid" id="stInputs"></div>
+              <p class="hint" id="stAssum"></p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <section class="panel" id="p-cf" role="tabpanel" aria-labelledby="tab-cf" hidden>
       <h2 class="panel-title">현금흐름 8패턴 <span class="pt-sub">막대를 누르면 부호가 바뀌고, 위아래로 끌면 크기가 바뀝니다</span></h2>
       <div class="bento">
@@ -381,7 +488,7 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
           <div class="cfBars" id="cfBars"></div>
           <div class="rng" style="padding-top:0;max-width:460px">
             <div class="rl"><span class="rn">기말 현금성자산</span><span class="rv" id="cvCash">60억</span></div>
-            <input type="range" id="ciCash" min="0" max="400" step="5" value="60" aria-label="기말 현금성자산(억 원)">
+            <input type="range" id="ciCash" min="0" max="1200" step="10" value="600" aria-label="기말 현금성자산(억 원)">
           </div>
           <div class="tiles" id="cfTiles"></div>
         </div>
@@ -706,42 +813,52 @@ var NUANCE={
 var DEF={};
 MET.forEach(function(m){DEF[m.k]=m.def;});
 var state={scale:'group',met:JSON.parse(JSON.stringify(DEF)),preset:null,
-  cf:{o:-1,i:-1,f:1},mag:{o:30,i:20,f:40},cash:60,
-  pl:{vc:62,fc:30,it:3,tax:22},tab:'fit'};
+  cf:{o:1,i:-1,f:1},mag:{o:30,i:20,f:40},cash:600,
+  pl:{vc:62,fc:34,it:1.6,tax:22},tab:'fit',
+  st:{rev:5000,mult:1.3,inv:6,fin:3,opm:.5,ocfm:.5}};
+
+/* 규모별 전형값 — 3표(재무상태표·손익계산서·현금흐름표)의 크기를 정하는 교육용 가정.
+   rev=매출(억 원) · mult=자산/매출 배수 · inv=투자 규모(매출 대비 %) · fin=조달·상환 규모(매출 대비 %) */
+var STB={
+ group:{rev:5000,mult:1.3,inv:6,fin:3,cash:.12},
+ mid:{rev:800,mult:1.4,inv:6,fin:2,cash:.12},
+ startup:{rev:60,mult:1.8,inv:8,fin:20,cash:.55},
+ pub:{rev:1500,mult:3.2,inv:7,fin:2,cash:.12}
+};
 
 /* ══════════ 5. 연습 패턴 ══════════ */
 var PRESETS=[
- {id:'p1',label:'\u2460 우량 현금부자',
+ {id:'p1',label:'\u2460 우량 현금부자',cpct:12,st:{opm:.8,ocfm:.8,inv:5,fin:2},
   met:{debt:45,curr:185,opm:12,roe:14,grev:6,gast:5,inv:9,ar:11,icr:18,ocfm:12},
   cf:{o:1,i:-1,f:-1},mag:{o:45,i:12,f:8},pl:{vc:55,fc:33,it:1,tax:22},
   note:'빚은 적고 현금은 두껍습니다. 규모를 바꿔도 판정이 크게 흔들리지 않는 기준점입니다.'},
- {id:'p2',label:'\u2461 흑자도산',
+ {id:'p2',label:'\u2461 흑자도산',cpct:8,st:{opm:-.5,ocfm:-4,inv:8,fin:6},
   met:{debt:190,curr:104,opm:6,roe:7,grev:14,gast:16,inv:4.5,ar:3.6,icr:1.2,ocfm:-6},
-  cf:{o:-1,i:-1,f:1},mag:{o:35,i:18,f:20},pl:{vc:66,fc:28,it:3,tax:22},
+  cf:{o:-1,i:-1,f:1},mag:{o:35,i:18,f:20},pl:{vc:66,fc:28,it:5,tax:22},
   note:'이익은 나는데 현금은 줄어드는 조합입니다. 매출채권·재고가 늘었는지 먼저 봅니다.'},
- {id:'p3',label:'\u2462 J커브 스타트업',
+ {id:'p3',label:'\u2462 J커브 스타트업',cpct:50,st:{opm:4,ocfm:3,inv:12,fin:20},
   met:{debt:140,curr:150,opm:-28,roe:-35,grev:85,gast:70,inv:3,ar:4.5,icr:0.6,ocfm:-32},
-  cf:{o:-1,i:-1,f:1},mag:{o:42,i:26,f:60},pl:{vc:58,fc:70,it:1,tax:22},
+  cf:{o:-1,i:-1,f:1},mag:{o:42,i:26,f:60},pl:{vc:58,fc:70,it:15,tax:22},
   note:'적자와 투자가 겹치는 전형적인 J커브입니다. 규모를 바꿔 같은 숫자를 읽어 보십시오.'},
- {id:'p4',label:'\u2463 설비투자 확장',
+ {id:'p4',label:'\u2463 설비투자 확장',cpct:8,st:{opm:.3,ocfm:.5,inv:14,fin:8},
   met:{debt:155,curr:110,opm:7,roe:9,grev:32,gast:28,inv:5.5,ar:6,icr:4,ocfm:6},
-  cf:{o:1,i:-1,f:1},mag:{o:38,i:52,f:30},pl:{vc:64,fc:29,it:2.5,tax:22},
+  cf:{o:1,i:-1,f:1},mag:{o:38,i:52,f:30},pl:{vc:64,fc:29,it:1.8,tax:22},
   note:'본업 현금에 차입을 더해 설비를 늘립니다. 회수 시점과 차입 만기를 함께 봅니다.'},
- {id:'p5',label:'\u2464 고부채 한계기업',
+ {id:'p5',label:'\u2464 고부채 한계기업',cpct:4,st:{opm:-1,ocfm:-2,inv:6,fin:5},
   met:{debt:420,curr:72,opm:2,roe:0.5,grev:-4,gast:-2,inv:3.5,ar:4,icr:0.6,ocfm:3},
-  cf:{o:1,i:1,f:-1},mag:{o:14,i:22,f:10},pl:{vc:72,fc:26,it:7,tax:22},
+  cf:{o:1,i:1,f:-1},mag:{o:14,i:22,f:10},pl:{vc:72,fc:26,it:3.3,tax:22},
   note:'이자보상배율 1배 미만입니다. 3년 연속이면 한계기업 기준에 들어갑니다.'},
- {id:'p6',label:'\u2465 자산매각 연명',
+ {id:'p6',label:'\u2465 자산매각 연명',cpct:5,st:{opm:-1.5,ocfm:-1.5,inv:6,fin:4},
   met:{debt:310,curr:78,opm:-4,roe:-12,grev:-12,gast:-8,inv:2,ar:2.5,icr:0.7,ocfm:-5},
-  cf:{o:-1,i:1,f:-1},mag:{o:16,i:34,f:12},pl:{vc:74,fc:30,it:4,tax:22},
+  cf:{o:-1,i:1,f:-1},mag:{o:16,i:34,f:12},pl:{vc:74,fc:30,it:5.7,tax:22},
   note:'적자를 자산 매각으로 메우고 빚을 갚습니다. 몇 년째 이어지는지가 핵심입니다.'},
- {id:'p7',label:'\u2466 정책성 공기업',
+ {id:'p7',label:'\u2466 정책성 공기업',cpct:8,st:{opm:0,ocfm:.2,inv:8,fin:2},
   met:{debt:255,curr:88,opm:1.5,roe:1.2,grev:2,gast:4,inv:4,ar:6,icr:1.8,ocfm:4},
-  cf:{o:1,i:-1,f:1},mag:{o:40,i:46,f:35},pl:{vc:70,fc:27,it:3,tax:0},
+  cf:{o:1,i:-1,f:1},mag:{o:40,i:46,f:35},pl:{vc:70,fc:28.5,it:.8,tax:0},
   note:'부채비율 200%를 넘지만 공기업 평균과 비교해야 합니다. 보전·출자 약정을 봅니다.'},
- {id:'p8',label:'\u2467 선수금 착시',
+ {id:'p8',label:'\u2467 선수금 착시',cpct:6,st:{opm:-.2,ocfm:-1,inv:4,fin:6},
   met:{debt:285,curr:175,opm:3,roe:4,grev:10,gast:12,inv:6,ar:2.8,icr:1.4,ocfm:-3},
-  cf:{o:-1,i:1,f:1},mag:{o:26,i:20,f:48},pl:{vc:76,fc:21,it:2.5,tax:22},
+  cf:{o:-1,i:1,f:1},mag:{o:26,i:20,f:48},pl:{vc:76,fc:21,it:2.1,tax:22},
   note:'유동비율이 좋아 보이지만 선수금(받은 돈)이 섞여 있습니다. 매출채권 회전이 낮습니다.'}
 ];
 function applyPreset(p){
@@ -750,14 +867,18 @@ function applyPreset(p){
   state.cf={o:p.cf.o,i:p.cf.i,f:p.cf.f};
   state.mag={o:p.mag.o,i:p.mag.i,f:p.mag.f};
   state.pl={vc:p.pl.vc,fc:p.pl.fc,it:p.pl.it,tax:p.pl.tax};
-  state.cash=p.id==='p3'?60:(p.id==='p5'?25:80);
+  state.cash=Math.max(1,Math.round((p.cpct||10)*state.st.rev/100));
+  if(p.st){state.st.opm=p.st.opm;state.st.ocfm=p.st.ocfm;state.st.inv=p.st.inv;state.st.fin=p.st.fin;}
   state.preset=p.id;
   renderAll();
 }
 function resetAll(){
   state.met=JSON.parse(JSON.stringify(DEF));
-  state.cf={o:-1,i:-1,f:1};state.mag={o:30,i:20,f:40};state.cash=60;
-  state.pl={vc:62,fc:30,it:3,tax:22};state.preset=null;renderAll();
+  state.cf={o:1,i:-1,f:1};state.mag={o:30,i:20,f:40};
+  var B=STB[state.scale];
+  state.st={rev:B.rev,mult:B.mult,inv:B.inv,fin:B.fin,opm:.5,ocfm:.5};
+  state.cash=Math.round(B.rev*(B.cash||.12));
+  state.pl={vc:62,fc:34,it:1.6,tax:22};state.preset=null;renderAll();
 }
 
 /* ══════════ 6. 계산 ══════════ */
@@ -1073,8 +1194,8 @@ function drawCF(){
   $('cfs-run').textContent=rw==null?'현금 순유입':'현금+조달 \u00f7 월 소진';
   $('cfv-burn').textContent=burn>0?fmt(burn,1)+'억': '\u2014';
   $('cfs-burn').textContent='월 기준';
-  $('cfv-cash').textContent=fmt(state.cash,0)+'억';
-  $('cvCash').textContent=fmt(state.cash,0)+'억';
+  $('cfv-cash').textContent=nf(state.cash,0)+'억';
+  $('cvCash').textContent=nf(state.cash,0)+'억';
   var cinp=$('ciCash');
   if(document.activeElement!==cinp)cinp.value=state.cash;
   $('cfs-cash').textContent='기말 현금성자산';
@@ -1290,6 +1411,256 @@ function drawSum(){
   });
 }
 
+/* ══════════ 12-b. 3표 · 3개년 ══════════ */
+function nf(v,d){
+  var s=Math.abs(v).toFixed(d==null?0:d),p=s.split('.');
+  p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  return (v<0?'\u2212':'')+p.join('.');
+}
+function amt(v){return nf(v,Math.abs(v)<10?1:0);}
+function sPct(v){return (v>0?'+':v<0?'\u2212':'')+fmt(Math.abs(v),1)+'%p';}
+
+/* 세 해를 Y0(지금)에서 뒤로 만든다.
+   · 매출은 매출증가율로, 자산은 총자산증가율로 되돌린다.
+   · 영업이익률·영업CF 비율은 ‘기울기’만큼씩 과거가 낮거나 높다.
+   · 부채는 재무활동 현금흐름만큼 되돌리고(조달하면 과거가 작다), 자본은 자산−부채다. */
+function stCalc(){
+  var sc=state.scale;
+  var rev0=state.st.rev, mult=state.st.mult;
+  var g=state.met.grev/100, ga=state.met.gast/100;
+  var vc=state.pl.vc, it=state.pl.it, tax=state.pl.tax/100;
+  var A0=rev0*mult;
+  var D0=A0*state.met.debt/(100+state.met.debt);
+  var inv=(state.cf.i>0?1:-1)*state.st.inv/100, fin=(state.cf.f>0?1:-1)*state.st.fin/100;
+  var yrs=[],n,i;
+  for(n=0;n<=2;n++){
+    var rev=rev0/Math.pow(1+g,n), A=A0/Math.pow(1+ga,n);
+    var opm=clamp(state.met.opm-n*state.st.opm,10-vc,100-vc);
+    var ocfm=clamp(state.met.ocfm-n*state.st.ocfm,-60,70);
+    var fcR=100-vc-opm;
+    var vcost=rev*vc/100, fcost=rev*fcR/100, op=rev-vcost-fcost;
+    var intc=rev*it/100, pre=op-intc, tx=Math.max(0,pre)*tax, ni=pre-tx;
+    var ocf=rev*ocfm/100, icf=rev*inv, fcf=rev*fin;
+    yrs.push({n:n,rev:rev,A:A,opm:opm,ocfm:ocfm,fcR:fcR,vc:vcost,fc:fcost,op:op,
+      int:intc,pre:pre,tx:tx,ni:ni,ocf:ocf,icf:icf,fcf:fcf,net:ocf+icf+fcf});
+  }
+  yrs[0].D=Math.max(0,D0);
+  for(n=1;n<=2;n++)yrs[n].D=Math.max(0,yrs[n-1].D-yrs[n-1].fcf);
+  var cash0=state.cash;
+  var cash=[cash0,cash0-yrs[0].net,cash0-yrs[0].net-yrs[1].net];
+  for(i=0;i<=2;i++){
+    var y=yrs[i],A=y.A,D=y.D;
+    y.E=A-D; y.ratio=y.E>0?D/y.E*100:null;
+    y.CL=D*0.6; y.NCL=D-y.CL;
+    y.CA=Math.min(y.CL*state.met.curr/100,A*0.94); y.NCA=A-y.CA;
+    y.end=cash[i]; y.beg=(i<2?cash[i+1]:cash[2]-yrs[2].net);
+    y.cvr=y.int>0?y.op/y.int:null;
+  }
+  return {y:[yrs[2],yrs[1],yrs[0]],rev0:rev0,mult:mult};
+}
+
+function stTable(host,d,rows){
+  host.textContent='';
+  host.appendChild(h('div','sh l','항목'));
+  d.y.forEach(function(y){
+    var c=h('div','sh'+(y.n===0?' y0':''),['Y\u22122','Y\u22121','Y0'][y.n===2?0:(y.n===1?1:2)]);
+    c.appendChild(h('span','yhx','매출 '+nf(y.rev,0)));
+    host.appendChild(c);
+  });
+  rows.forEach(function(r){
+    host.appendChild(h('div','sl'+(r.t?' row-t':''),r.l));
+    d.y.forEach(function(y){
+      var v=r.get(y);
+      if(v==null)v=0;
+      var s=r.pct?(fmt(v,1)+'%'):amt(v);
+      host.appendChild(h('div','sv'+(r.t?' row-t':'')+(y.n===0?' y0':'')+(v<0?' neg':''),s));
+    });
+  });
+}
+function stDelta(host,parts){
+  host.textContent='';
+  parts.forEach(function(p){
+    var s=document.createElement('span');
+    s.appendChild(document.createTextNode(p.k+' '));
+    s.appendChild(h('b',p.tone||'',p.v));
+    host.appendChild(s);
+  });
+}
+function drawST(){
+  var d=stCalc(),z=d.y[0],o=d.y[1],t=d.y[2];
+
+  stTable($('stBS'),d,[
+    {l:'유동자산',get:function(y){return y.CA;}},
+    {l:'비유동자산',get:function(y){return y.NCA;}},
+    {l:'자산총계',t:true,get:function(y){return y.A;}},
+    {l:'유동부채',get:function(y){return y.CL;}},
+    {l:'비유동부채',get:function(y){return y.NCL;}},
+    {l:'부채총계',t:true,get:function(y){return y.D;}},
+    {l:'자본총계',t:true,get:function(y){return y.E;}},
+    {l:'부채비율',pct:true,get:function(y){return y.ratio;}}
+  ]);
+  stDelta($('stBSd'),[
+    {k:'부채',v:(t.D-o.D>0?'+':'')+amt(t.D-o.D),tone:t.D-o.D>0?'dn':'up'},
+    {k:'부채비율',v:fmt(o.ratio,1)+'% \u2192 '+fmt(t.ratio,1)+'%',tone:t.ratio-o.ratio>0?'dn':'up'},
+    {k:'자본',v:(t.E-o.E>0?'+':'')+amt(t.E-o.E)}
+  ]);
+
+  stTable($('stIS'),d,[
+    {l:'매출액',get:function(y){return y.rev;}},
+    {l:'변동비',get:function(y){return -y.vc;}},
+    {l:'판관비',get:function(y){return -y.fc;}},
+    {l:'영업이익',t:true,get:function(y){return y.op;}},
+    {l:'이자비용',get:function(y){return -y.int;}},
+    {l:'법인세',get:function(y){return -y.tx;}},
+    {l:'당기순이익',t:true,get:function(y){return y.ni;}},
+    {l:'영업이익률',pct:true,get:function(y){return y.opm;}}
+  ]);
+  stDelta($('stISd'),[
+    {k:'매출',v:(o.rev?(t.rev-o.rev)/o.rev*100>=0?'+':'' :'')+fmt(o.rev?(t.rev-o.rev)/o.rev*100:0,1)+'%',tone:t.rev>=o.rev?'up':'dn'},
+    {k:'영업이익',v:(t.op-o.op>0?'+':'')+amt(t.op-o.op),tone:t.op>=o.op?'up':'dn'},
+    {k:'순이익',v:(t.ni-o.ni>0?'+':'')+amt(t.ni-o.ni),tone:t.ni>=o.ni?'up':'dn'}
+  ]);
+
+  stTable($('stCF'),d,[
+    {l:'기초 현금',get:function(y){return y.beg;}},
+    {l:'영업활동',get:function(y){return y.ocf;}},
+    {l:'투자활동',get:function(y){return y.icf;}},
+    {l:'재무활동',get:function(y){return y.fcf;}},
+    {l:'순현금 변화',t:true,get:function(y){return y.net;}},
+    {l:'기말 현금',t:true,get:function(y){return y.end;}}
+  ]);
+  stDelta($('stCFd'),[
+    {k:'영업',v:(t.ocf>0?'+':'')+amt(t.ocf),tone:t.ocf>=0?'up':'dn'},
+    {k:'투자',v:(t.icf>0?'+':'')+amt(t.icf),tone:t.icf>=0?'up':'dn'},
+    {k:'재무',v:(t.fcf>0?'+':'')+amt(t.fcf),tone:t.fcf>=0?'up':'dn'},
+    {k:'기말 현금',v:amt(t.end),tone:t.end<0?'dn':''}
+  ]);
+  $('stCFh').textContent='억 원 \u00b7 부호는 3번 탭 조합을 따릅니다';
+
+  drawTrend(d);
+  drawRead(d);
+  drawSTInputs();
+}
+
+/* 3개년 추이 — 막대는 그 지표의 세 해 범위 안에서 잰다(값은 막대 위 숫자) */
+function drawTrend(d){
+  var host=$('stTrend');host.textContent='';
+  var rows=[
+    {n:'매출',s:'연 '+fmt(state.met.grev,1)+'%',v:d.y.map(function(y){return y.rev;}),f:function(v){return nf(v,0);}},
+    {n:'영업이익',s:'이익률 '+fmt(d.y[2].opm,1)+'%',v:d.y.map(function(y){return y.op;}),f:function(v){return nf(v,0);}},
+    {n:'영업CF',s:'매출의 '+fmt(d.y[2].ocfm,1)+'%',v:d.y.map(function(y){return y.ocf;}),f:function(v){return nf(v,0);}},
+    {n:'부채비율',s:'부채 \u00f7 자본',v:d.y.map(function(y){return y.ratio||0;}),f:function(v){return fmt(v,0)+'%';}}
+  ];
+  rows.forEach(function(r){
+    var lo=Math.min.apply(null,r.v),mx=Math.max.apply(null,r.v);
+    var allPos=lo>0;
+    var mn=allPos?lo*0.9:Math.min(0,lo);
+    var span=((mx-mn)||1)*1.35;
+    var base=allPos?mn:0;
+    var row=h('div','trdRow');
+    var nm=h('div','trdName',r.n);
+    nm.appendChild(h('b',null,r.f(r.v[2])));
+    var dv=r.v[2]-r.v[1];
+    nm.appendChild(h('i',dv>=0?'up':'dn',(dv>0?'+':dv<0?'\u2212':'')+r.f(Math.abs(dv)).replace('%','')+(r.n==='부채비율'?'%p':'')));
+    row.appendChild(nm);
+    var plot=h('div','trdPlot');
+    if(!allPos){
+      var zl=h('span','trdZero');
+      zl.style.bottom=((0-mn)/span*100).toFixed(1)+'%';
+      plot.appendChild(zl);
+    }
+    var cols=h('div','trdCols');
+    r.v.forEach(function(v,ix){
+      var col=h('div','trdCol'+(ix===2?' on':''));
+      var a=Math.min(base,v),bb=Math.abs(v-base);
+      var b=(a-mn)/span*100, ht=bb/span*100;
+      var bar=h('i',v<0?'dn':'');
+      bar.style.bottom=Math.max(b,0).toFixed(1)+'%';
+      bar.style.height=Math.max(ht,1.6).toFixed(1)+'%';
+      bar.title=r.n+' '+r.f(v);
+      col.appendChild(bar);
+      cols.appendChild(col);
+    });
+    plot.appendChild(cols);row.appendChild(plot);
+    host.appendChild(row);
+  });
+}
+
+/* 3년 추이 판독 — 직전 연도 대비 변화를 그대로 문장으로 쓴다 */
+var STQ={
+ group:'계열 지원·보증을 빼고 이 세 표만으로도 차환을 감당하나요?',
+ mid:'신용등급과 회사채 만기가 이 3년 추이와 함께 움직였나요?',
+ startup:'지금 소진 속도라면 다음 라운드 없이 몇 개월을 버틸 수 있나요?',
+ pub:'보전·출자가 끊기면 어느 해부터 적자가 드러나는 구조인가요?'
+};
+function drawRead(d){
+  var z=d.y[0],o=d.y[1],t=d.y[2],sc=state.scale,out=[];
+  var g=state.met.grev;
+  var fc0=100-state.pl.vc-state.met.opm, fc2=z.fcR;
+  out.push('매출은 연 '+fmt(g,1)+'% 성장을 세 해에 그대로 적용해 Y\u22122 '+amt(z.rev)+'억 \u2192 Y0 '+amt(t.rev)+'억이고, 영업이익은 '+amt(z.op)+'억 \u2192 '+amt(t.op)+'억으로 '
+    +(t.op-z.op>=0?'늘었습니다':'줄었습니다')+'. 판관비율은 '+fmt(fc2,1)+'% \u2192 '+fmt(fc0,1)+'%로 매년 '+fmt(Math.abs(fc0-fc2)/2,1)+'%p '
+    +(fc0>fc2?'두꺼워져 매출이 늘어도 그만큼 이익이 남지 않는 구조입니다.':'얇아져 같은 매출에서 이익이 더 남는 방향입니다.'));
+  var dDp=t.D-o.D;
+  var nD=t.D+t.fcf, nA=t.A*(1+state.met.gast/100), nE=nA-nD;
+  out.push('부채는 재무활동 '+((t.fcf>=0?'+':'')+amt(t.fcf))+'억을 반영해 '+nf(o.D,0)+'억 \u2192 '+nf(t.D,0)+'억, 부채비율은 '+fmt(o.ratio,1)+'% \u2192 '+fmt(t.ratio,1)+'%입니다.'
+    +(dDp>0?' 이 속도가 이어지면 Y+1은 ':' 줄고 있어 같은 속도면 Y+1은 ')+(nE>0?('부채비율 '+fmt(nD/nE*100,1)+'%'):'자본잠식')+'가 됩니다.');
+  out.push('현금은 영업 '+((t.ocf>=0?'+':'')+nf(t.ocf,0))+' · 투자 '+((t.icf>=0?'+':'')+nf(t.icf,0))+' · 재무 '+((t.fcf>=0?'+':'')+nf(t.fcf,0))+', 순변화 '+((t.net>=0?'+':'')+nf(t.net,0))+'억입니다. 기말 현금은 '+nf(o.end,0)+'억 \u2192 '+nf(t.end,0)+'억입니다.');
+  var flags=[];
+  if(t.ni<0&&t.op<0)flags.push('Y0는 영업적자 '+amt(Math.abs(t.op))+'억입니다. 이익이 없으면 세금은 0으로 잡혔습니다.');
+  if(t.cvr!=null&&t.cvr<1)flags.push('영업이익이 이자를 덮지 못합니다(이자보상배율 1배 미만). 세 해 모두 1배 미만이면 한계기업 정의에 해당합니다.');
+  else if(z.cvr!=null&&o.cvr!=null&&z.cvr<1&&o.cvr<1)flags.push('Y\u22122·Y\u22121은 이자보상배율이 1배 미만이었고 Y0에서 겨우 넘겼습니다.');
+  if(t.E<0)flags.push('자본총계가 마이너스(자본잠식)입니다. 부채비율보다 자본금과 상환 조건이 먼저입니다.');
+  if(t.end<0||o.end<0||z.end<0)flags.push('기말 현금이 계산상 음수인 해가 있습니다 \u2014 같은 구조를 3년 유지했다면 그해에 추가 조달이 필요했습니다. 3번 탭에서 보유 현금을 올리면 사라집니다.');
+  if(t.D<=0)flags.push('부채가 0으로 잡혔습니다 \u2014 재무활동 상환이 부채잔액보다 큽니다. 조달·상환 규모를 줄여 보십시오.');
+  if(flags.length)out=out.concat(flags);
+  var host=$('stRead');host.textContent='';
+  out.forEach(function(s){host.appendChild(h('p',null,s));});
+  var qs=$('stQs');qs.textContent='';
+  var q=[STQ[sc],'매출은 늘었는데 영업현금은 왜 덜 늘었나요?'];
+  q.forEach(function(s,ix){if(q.indexOf(s)===ix)qs.appendChild(h('li',null,s));});
+  $('stReadNote').textContent=SC[sc].name+' \u00b7 Y\u22121 \u2192 Y0';
+}
+
+/* 규모·기울기 조정 */
+function buildSTInputs(){
+  var box=$('stInputs');box.textContent='';
+  var B=STB[state.scale];
+  var rmin=Math.max(10,Math.round(B.rev*.3/10)*10),rmax=Math.round(B.rev*4/10)*10,rstep=B.rev>=1000?100:(B.rev>=200?10:2);
+  var defs=[
+    {k:'rev',name:'매출 규모',unit:'억',min:rmin,max:rmax,step:rstep,d:0},
+    {k:'mult',name:'자산/매출',unit:'배',min:.6,max:4,step:.1,d:1},
+    {k:'inv',name:'투자 규모',unit:'%',min:0,max:25,step:.5,d:1},
+    {k:'fin',name:'조달·상환',unit:'%',min:0,max:25,step:.5,d:1},
+    {k:'opm',name:'영업이익률 기울기',unit:'%p',min:-3,max:3,step:.1,d:1},
+    {k:'ocfm',name:'영업CF 기울기',unit:'%p',min:-3,max:3,step:.1,d:1}
+  ];
+  defs.forEach(function(f){
+    var row=h('div','rng');
+    var rl=h('div','rl');
+    rl.appendChild(h('span','rn',f.name));
+    var val=h('span','rv');val.id='sv-'+f.k;rl.appendChild(val);
+    row.appendChild(rl);
+    var inp=document.createElement('input');
+    inp.type='range';inp.id='si-'+f.k;inp.min=f.min;inp.max=f.max;inp.step=f.step;inp.value=state.st[f.k];
+    inp.setAttribute('aria-label',f.name+'('+f.unit+')');
+    inp.addEventListener('input',function(){state.st[f.k]=Number(inp.value);state.preset=null;renderAll();});
+    row.appendChild(inp);
+    box.appendChild(row);
+  });
+  $('stAssum').textContent='매출 규모·자산배수는 규모별 전형값(교육용 가정)입니다. 과거 해는 영업이익률·영업CF를 기울기만큼, 매출·자산을 증가율만큼 되돌려 만들고, 유동부채는 부채의 60%, 자본은 자산−부채로 둡니다. 실존 기업 수치가 아닙니다.';
+  drawSTInputs();
+}
+function drawSTInputs(){
+  var iv=state.st.inv,fv=state.st.fin;
+  var txt={rev:nf(state.st.rev,0)+'억',mult:fmt(state.st.mult,1)+'배',
+    inv:(state.cf.i>0?'+':'\u2212')+fmt(iv,1)+'%',fin:(state.cf.f>0?'+':'\u2212')+fmt(fv,1)+'%',
+    opm:sPct(state.st.opm),ocfm:sPct(state.st.ocfm)};
+  for(var k in txt){
+    var e=$('sv-'+k);if(e)e.textContent=txt[k];
+    var inp=$('si-'+k);if(inp&&document.activeElement!==inp)inp.value=state.st[k];
+  }
+}
+
 /* ══════════ 13. 입력 조정 ══════════ */
 function buildInputs(){
   var box=$('fitInputs');box.textContent='';
@@ -1376,14 +1747,20 @@ function buildPresets(){
   box.appendChild(r);
 }
 function setScale(k){
+  var prev=SC[state.scale]?state.scale:'group';
+  if(k===state.scale)return;
+  var B=STB[k];
+  state.cash=Math.max(1,Math.round(B.rev*(B.cash||.12)));
   state.scale=k;
+  state.st.rev=B.rev;state.st.mult=B.mult;state.st.inv=B.inv;state.st.fin=B.fin;
   $('scaleNote').textContent=SC[k].name+' 기준으로 읽는 중 \u2014 '+SC[k].tag;
   state.preset=null;
+  buildSTInputs();
   renderAll();
 }
 function setTab(k){
   state.tab=k;
-  ['fit','cf','pl','sum'].forEach(function(t){
+  ['fit','st','cf','pl','sum'].forEach(function(t){
     var p=$('p-'+t),b=$('tab-'+t),on=(t===k);
     p.classList.toggle('on',on);p.hidden=!on;
     b.setAttribute('aria-selected',on?'true':'false');
@@ -1430,23 +1807,29 @@ function draw(){
   drawInputs();
   drawCF();
   drawPL();
+  drawST();
   drawSum();
 }
 function init(){
-  buildRadar();buildCF();buildPatterns();buildWF();buildInputs();buildPLInputs();buildPresets();
+  buildRadar();buildCF();buildPatterns();buildWF();buildInputs();buildPLInputs();buildPresets();buildSTInputs();
   document.querySelectorAll('.scale button').forEach(function(b){
     b.addEventListener('click',function(){setScale(b.getAttribute('data-scale'));});
   });
   document.querySelectorAll('.tab').forEach(function(b){
     b.addEventListener('click',function(){setTab(b.getAttribute('data-tab'));});
     b.addEventListener('keydown',function(ev){
-      var order=['fit','cf','pl','sum'],i=order.indexOf(b.getAttribute('data-tab')),n=null;
-      if(ev.key==='ArrowRight')n=(i+1)%4;else if(ev.key==='ArrowLeft')n=(i+3)%4;
+      var order=['fit','st','cf','pl','sum'],i=order.indexOf(b.getAttribute('data-tab')),n=null;
+      if(ev.key==='ArrowRight')n=(i+1)%5;else if(ev.key==='ArrowLeft')n=(i+4)%5;
       if(n!=null){ev.preventDefault();setTab(order[n]);$('tab-'+order[n]).focus();}
     });
   });
   var cinp=$('ciCash');
   if(cinp)cinp.addEventListener('input',function(){state.cash=Number(cinp.value);state.preset=null;renderAll();});
+  var vw=Math.min(window.innerWidth,document.documentElement.clientWidth);
+  var adj=$('stAdj');
+  if(adj&&vw<1100)adj.removeAttribute('open');
+  var trb=$('stTrendBox');
+  if(trb&&vw<760)trb.removeAttribute('open');
   $('scaleNote').textContent=SC[state.scale].name+' 기준으로 읽는 중 \u2014 '+SC[state.scale].tag;
   setTab('fit');
   draw();

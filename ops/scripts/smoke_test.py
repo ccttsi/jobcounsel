@@ -5,7 +5,7 @@
   python3 ops/scripts/smoke_test.py --base https://ccttsi.github.io/jobcounsel/
   python3 ops/scripts/smoke_test.py --summary-file "$GITHUB_STEP_SUMMARY"
 
-재는 화면: 대문(/), 브리핑(/briefing/), 신산업(/emerging/), 산업 온도계(/thermometer/), 내담자 언어 번역기(/translator/), 채용 사이트 안내판(/portals/ · ?q= 검색 · #p= 딥링크), 재무제표 해석 시뮬레이터(/fin-lab/) — 휴대폰 390·데스크톱 1280
+재는 화면: 대문(/), 브리핑(/briefing/), 신산업(/emerging/), 산업 온도계(/thermometer/), 내담자 언어 번역기(/translator/), 채용 사이트 안내판(/portals/ · ?q= 검색 · #p= 딥링크), 재무제표 해석 시뮬레이터(/fin-lab/ · 3표 3개년) — 휴대폰 390·데스크톱 1280
 재는 것
   · 콘솔·페이지 오류 0 (외부 CDN에서 온 오류는 제외 — 그쪽 사정으로 게이트가 흔들리지 않게)
   · 같은 사이트 안의 404 응답 0 (깨진 상대경로를 잡는다)
@@ -124,13 +124,14 @@ PROBES = {
         return {ok: space && groups === 6 && opts === 36, detail: `공간 ${space ? '있음' : '없음'} · 요소 ${groups} · 조건 ${opts}`};
     }""",
     "/fin-lab/": """() => {
-        // 28번 재무제표 해석 시뮬레이터 — 오각형·4규모 카드·현금흐름 막대가 그려졌는가.
+        // 24번 재무제표 해석 시뮬레이터 — 오각형·3표(3개년)·4규모 카드가 그려졌는가.
         const poly = (document.getElementById('rPoly') || {getAttribute: () => ''}).getAttribute('d') || '';
         const bars = document.querySelectorAll('#cfBars .cfTrack').length;
         const scales = document.querySelectorAll('#mtx .mc').length;
-        const cards = document.querySelectorAll('.card').length;
-        return {ok: poly.length > 10 && bars === 3 && scales === 4 && cards >= 6,
-                detail: `오각형 ${poly ? '그림' : '없음'} · 막대 ${bars} · 규모 카드 ${scales} · 카드 ${cards}`};
+        const stRows = ['stBS', 'stIS', 'stCF'].map(id => (document.getElementById(id) || {querySelectorAll: () => []}).querySelectorAll('.sv').length);
+        const trend = document.querySelectorAll('#stTrend .trdRow').length;
+        return {ok: poly.length > 10 && bars === 3 && scales === 4 && stRows[0] === 24 && stRows[1] === 24 && stRows[2] === 18 && trend === 4,
+                detail: `오각형 ${poly ? '그림' : '없음'} · 막대 ${bars} · 규모 카드 ${scales} · 3표 ${stRows.join('/')} · 추이 ${trend}`};
     }""",
     "/emerging/": """() => {
         const art = (document.querySelector('#art') || {innerText: ''}).innerText.trim().length;
