@@ -40,9 +40,20 @@
  *   · descAccount·metaAccount — 로그인한 사람에게 보이는 글. 계정의 마이덱에 저장·활용한다는 안내를 함께 둔다.
  *   고르는 곳은 대문 빠른 검색(index.html) 하나 — JC_SECTOR_DESC·JC_SECTOR_META.
  *   비서 색인(assistant/build_index.py)은 desc만 읽으므로 색인·비회원 화면에는 비로그인 문구만 실린다.
+ *
+ * 2026-11-21 (같은 지시) — 검색 낱말(tags)도 같은 기준을 따른다. 마이덱은 로그인한 사람만 쓰는 화면이라,
+ *   비로그인자가 「덱」 같은 낱말로 찾았을 때 결과의 「관련 주제: …」 줄에 「마이덱」이 새어 나오지 않는다.
+ *   낱말 자체는 남겨 둔다(로그인한 사람은 「마이덱」으로도 찾을 수 있다) — 고르는 곳은 JC_SECTOR_TAGS.
  */
+var LOGIN_ONLY_TAGS = ['마이덱', 'My Deck', 'mydeck'];
 window.JC_SECTOR_DESC = function (t, signedIn) { if (!t) return ''; return (signedIn && t.descAccount) ? t.descAccount : (t.desc || ''); };
 window.JC_SECTOR_META = function (t, signedIn) { if (!t) return []; return (signedIn && t.metaAccount) ? t.metaAccount : (t.meta || []); };
+window.JC_SECTOR_TAGS = function (t, signedIn) {
+  if (!t) return [];
+  var tags = t.tags || [];
+  if (signedIn) return tags;
+  return tags.filter(function (w) { return LOGIN_ONLY_TAGS.indexOf(w) < 0; });
+};
 
 window.JC_TOOLS=[
  {id:'theory',gi:'직업상담 이론 보기',mode:'seed',mo:1,no:'01',badge:'이론',short:'이론',color:'theory',icon:'book-open',
