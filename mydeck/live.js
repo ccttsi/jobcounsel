@@ -861,8 +861,13 @@
     box.appendChild(hd);
     state.pins.forEach(function (p) {
       var row = el('div', 'lv-pin');
-      row.appendChild(el('span', 'lv-pin-t', p.title));
-      row.appendChild(el('span', 'lv-pin-s', (p.sectorTitle || '').slice(0, 12)));
+      var tx = el('span', 'lv-pin-tx');
+      tx.appendChild(el('span', 'lv-pin-t', p.title));
+      var pb = String(secOf(p.sector).badge || '').trim();
+      if (pb && pb !== String(p.title || '').trim() && pb !== (p.sectorTitle || '')) {
+        tx.appendChild(el('span', 'lv-pin-s', pb.slice(0, 12)));
+      }
+      row.appendChild(tx);
       var a = el('a', null, '열기');
       a.href = hrefOf(p.url, qShort());
       a.setAttribute('aria-label', p.title + ' 열기');
