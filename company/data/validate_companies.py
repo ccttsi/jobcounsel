@@ -11,7 +11,7 @@
      (어휘 3종, detail의 tag 집합 = business_tags, source·as_of·match 필수)
 오류가 있으면 목록을 찍고 종료코드 1로 끝난다.
 """
-import json, sys, collections
+import json, re, sys, collections
 
 PATH = sys.argv[1] if len(sys.argv) > 1 else 'companies.json'
 TAGS = {'근로자파견', '유료직업소개', '직업정보제공'}
@@ -100,6 +100,31 @@ for i, c in enumerate(companies):
                 errors.append(f'{where}: {f} 는 중견기업에만 붙인다')
     if ('kw' in c or 'alias' in c) and not c.get('kw_source'):
         errors.append(f'{where}: kw·alias 가 있는데 kw_source(근거)가 없다')
+    # v1.5.0 금융감독원 DART 전자공시 보강 — 법인 연결고리와 값의 출처를 함께 본다
+    if 'dart' in c:
+        d = c['dart']
+        if not isinstance(d, dict):
+            errors.append(f'{where}: dart 는 객체여야 함')
+        else:
+            for f in ('corp_code', 'checked_at', 'biz_no_verified'):
+                if f not in d:
+                    errors.append(f'{where}: dart.{f} 누락')
+            if not re.fullmatch(r'\d{8}', str(d.get('corp_code') or '')):
+                errors.append(f'{where}: dart.corp_code 형식 이상')
+            if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', str(d.get('checked_at') or '')):
+                errors.append(f'{where}: dart.checked_at 은 YYYY-MM-DD')
+            if d.get('biz_no_verified') is not True:
+                errors.append(f'{where}: dart.biz_no_verified 는 true 만 (사업자등록번호 대조를 통과한 법인만 붙인다)')
+            r = d.get('report')
+            if r is not None:
+                if not isinstance(r, dict) or not re.fullmatch(r'\d{14}', str(r.get('rcept_no') or '')):
+                    errors.append(f'{where}: dart.report.rcept_no 형식 이상')
+        if c.get('category') != '중견기업':
+            errors.append(f'{where}: dart 는 중견기업에만 붙인다')
+    for f, ok in (('official_url_checked', {'site', 'sources', 'DART'}),
+                  ('main_products_source', {'WIKI', 'DAUM', 'DART'})):
+        if f in c and c[f] not in ok:
+            errors.append(f'{where}: {f} 값 이상 {c[f]!r}')
     if ('business_tags' in c) != ('business_tags_detail' in c):
         errors.append(f'{where}: business_tags와 business_tags_detail 한쪽만 있음')
         continue
