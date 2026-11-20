@@ -289,7 +289,10 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-pv-lead{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 @media (min-width:900px){.a-pv-lead{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .a-pv-lead p{padding:12px 14px;border-radius:12px;background:var(--soft1);font-size:15px;line-height:1.65;color:var(--muted)}
-.a-pv-lead b{display:block;color:var(--ink);font-weight:750;margin-bottom:2px}
+/* 이용 안내 리드 문단: **문단을 여는 첫 굵은 문장만** 한 줄로 놓고, 문장 속에서 강조하는 <b>는 글결대로 흔러가게 한다.
+   (2026-11-20 제보: `시드`·`매치`·`상황 프리셋`마다 줄이 바뀌여 문단이 토막 났다 — 모든 b를 block으로 두던 규칙 때문) */
+.a-pv-lead b,.a-pv-lead strong{display:inline;color:var(--ink);font-weight:750}
+.a-pv-lead p>b:first-child,.a-pv-lead p>strong:first-child{display:block;margin-bottom:2px}
 .a-pv-list{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:8px 22px;margin-top:12px}
 @media (min-width:900px){.a-pv-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .a-pv-list li{position:relative;padding-left:18px;font-size:14.5px;line-height:1.65;color:var(--muted)}
