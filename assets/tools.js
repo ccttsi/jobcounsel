@@ -34,7 +34,16 @@
  *     assistant/build_index.py(비서 색인)뿐이고, 목록을 세는 곳은 JC_TOOLS만 센다.
  * 상담 플로우의 시너지 짝 근거는 ops/scripts/build_flow_graph.py 가 이 장부·assistant/data/rag-preface.json·
  * translator 용어에서 만든 ./flow/data/graph.json 이다(손으로 적은 시너지 문장은 없다).
+ *
+ * 2026-11-21 (지시) — 설명문을 **로그인 상태에 따라** 나누었다.
+ *   · desc·meta               — 비로그인자에게 보이는 글. 마이덱(내 계정 저장) 이야기를 넣지 않는다.
+ *   · descAccount·metaAccount — 로그인한 사람에게 보이는 글. 계정의 마이덱에 저장·활용한다는 안내를 함께 둔다.
+ *   고르는 곳은 대문 빠른 검색(index.html) 하나 — JC_SECTOR_DESC·JC_SECTOR_META.
+ *   비서 색인(assistant/build_index.py)은 desc만 읽으므로 색인·비회원 화면에는 비로그인 문구만 실린다.
  */
+window.JC_SECTOR_DESC = function (t, signedIn) { if (!t) return ''; return (signedIn && t.descAccount) ? t.descAccount : (t.desc || ''); };
+window.JC_SECTOR_META = function (t, signedIn) { if (!t) return []; return (signedIn && t.metaAccount) ? t.metaAccount : (t.meta || []); };
+
 window.JC_TOOLS=[
  {id:'theory',gi:'직업상담 이론 보기',mode:'seed',mo:1,no:'01',badge:'이론',short:'이론',color:'theory',icon:'book-open',
   title:'직업상담 이론 위키',path:'./theory/',
@@ -223,7 +232,9 @@ window.JC_LINKS=[
 window.JC_APPS=[
  {id:'flow',app:1,gi:'상담 흐름 짜기',mode:'match',mo:17,no:'',badge:'상담 플로우',short:'플로우',color:'flow',icon:'git-branch',
   title:'상담 플로우 아키텍트',path:'./flow/',
-  desc:'키워드나 첫 자료를 고르면, 자료실 자료가 실제로 이어지는 순서대로 다음 가지를 카드로 뻗어 보여 줍니다. 후보마다 지금 흐름과 겹치는 말·자료실이 잇는 짝으로 시너지를 확인하고, 2개든 3개든 4개든 어디서든 「이대로 만들어볼래요」를 눌러 내 상담 덱을 완성합니다. 만든 덱은 로그인하면 내 계정의 마이덱에 저장되어 다른 기기에서도 이어집니다.',
-  meta:['키워드로 시작','가지치기 시너지','내 덱으로 저장'],
+  desc:'키워드나 첫 자료를 고르면, 자료실 자료가 실제로 이어지는 순서대로 다음 가지를 카드로 뻗어 보여 줍니다. 후보마다 지금 흐름과 겹치는 말·자료실이 잇는 짝으로 시너지를 확인하고, 2개든 3개든 4개든 어디서든 「이대로 만들어볼래요」를 눌러 내 상담 덱을 완성합니다.',
+  descAccount:'만든 덱은 로그인한 내 계정의 마이덱에 저장되어 다른 기기에서도 이어집니다. 키워드나 첫 자료를 고르면, 자료실 자료가 실제로 이어지는 순서대로 다음 가지를 카드로 뻗어 보여 줍니다. 후보마다 지금 흐름과 겹치는 말·자료실이 잇는 짝으로 시너지를 확인하고, 2개든 3개든 4개든 어디서든 「이대로 만들어볼래요」를 눌러 내 상담 덱을 완성합니다.',
+  meta:['키워드로 시작','가지치기 시너지','어디서든 완성'],
+  metaAccount:['키워드로 시작','가지치기 시너지','내 덱으로 저장'],
   tags:['상담 플로우','플로우','흐름','상담 흐름','플로우 아키텍트','결정 트리','트리','가지치기','시너지','알고리즘','덱','커스텀 덱','마이덱','My Deck','내 덱','순서','상담 순서','상담 설계','코스','커리큘럼','적정선','과다 정보','flow','mydeck']},
 ];

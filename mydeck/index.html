@@ -7,6 +7,12 @@
 var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
 document.documentElement.setAttribute('data-theme',t);})();
 </script>
+<script>
+/* 로그인 게이트 — 이 기기의 세션 열쇠(jc-sync-session)만 먼저 읽어, 비로그인자에게 마이덱 본문이
+   잠깐이라도 보이지 않게 첫 그림부터 잠근다(서버를 부르지 않는다). 로그인·로그아웃 때는 app.js가 다시 맞춘다. */
+(function(){var inn=false;try{var s=JSON.parse(localStorage.getItem('jc-sync-session')||'null');inn=!!(s&&s.token);}catch(e){}
+document.documentElement.setAttribute('data-jc-auth',inn?'in':'out');})();
+</script>
 <meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
 <script src="../assets/core.js"></script>
@@ -54,6 +60,24 @@ a{color:inherit}
 .ib svg{width:20px;height:20px}
 .brand{flex:1;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap}
 .brand span.add{color:var(--acc)}
+
+/* ---------- 로그인 게이트 ----------
+   비로그인 상태에서는 마이덱 본문(#deckMain)을 아예 그리지 않고 이 카드만 보여 준다.
+   판단은 <html data-jc-auth> 하나 — 첫 그림 전에 head 스크립트가 정하고, app.js가 상태가 바뀔 때 다시 맞춘다. */
+html[data-jc-auth="out"] #deckMain{display:none!important}
+html[data-jc-auth="in"] #deckGate{display:none!important}
+.gate{margin-top:12px;padding:24px 18px;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:var(--shadow)}
+@media (min-width:700px){.gate{padding:34px 30px}}
+.gate h1{margin:10px 0 0;font-size:clamp(24px,1.5vw + 18px,34px);line-height:1.28;font-weight:850;letter-spacing:-.045em}
+.gate h1 em{font-style:normal;color:var(--acc)}
+.gate .lede{margin:12px 0 0;max-width:44em;font-size:15.5px;color:var(--muted)}
+.gate .lede b{color:var(--ink);font-weight:750}
+.gate-list{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+.gate-list li{position:relative;padding-left:32px;font-size:14.5px;line-height:1.6;color:var(--muted)}
+.gate-list li b{color:var(--ink);font-weight:750}
+.gate-list .gi{position:absolute;left:0;top:2px;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--acc-soft);color:var(--acc);font-size:11.5px;font-weight:800}
+.gate-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.gate-note{margin:14px 0 0;font-size:13px;line-height:1.62;color:var(--dim)}
 
 /* ---------- 첫머리 ---------- */
 .hero{padding:10px 0 4px}
@@ -260,6 +284,23 @@ a{color:inherit}
   </header>
 
   <main>
+    <section class="gate" id="deckGate" aria-labelledby="gateT">
+      <p class="kick"><span class="no">내 덱</span><span>로그인한 사람만 여는 화면</span></p>
+      <h1 id="gateT">내 덱은 <em>로그인</em>한 뒤에 열립니다</h1>
+      <p class="lede">상담 플로우에서 만든 덱을 모아 두고, 리허설로 다시 걸어 보고, 공간을 꾸미는 곳입니다. 덱이 <b>내 계정에 저장되는 화면</b>이라 로그인한 사람에게만 엽니다.</p>
+      <ul class="gate-list">
+        <li><span class="gi" aria-hidden="true">1</span><b>모아 두기</b> — 상담 플로우에서 완성한 덱을 한곳에서 봅니다.</li>
+        <li><span class="gi" aria-hidden="true">2</span><b>이어 보기</b> — 계정에 저장되어 다른 기기에서도 같은 덱이 열립니다.</li>
+        <li><span class="gi" aria-hidden="true">3</span><b>꾸미기</b> — 공간 꾸미기로 내 덱의 겉모양을 바꿉니다.</li>
+      </ul>
+      <div class="gate-acts">
+        <button type="button" class="primary" data-jc-login><span data-jc-login-label>로그인</span></button>
+        <a class="ghost" href="../">홈으로 돌아가기</a>
+      </div>
+      <p class="gate-note">계정이 없다면 로그인 창에서 만들 수 있습니다. 로그인하면 이 화면이 곧바로 열립니다.</p>
+    </section>
+
+    <div id="deckMain">
     <div id="lvModeHost"></div>
 
     <section class="hero" id="deckHero">
@@ -331,6 +372,7 @@ a{color:inherit}
       <div class="lv-courses" id="lvCourses" hidden></div>
       <div class="lv-board" id="lvBoard" hidden role="region" aria-label="상담 OS 보드"></div>
     </section>
+    </div>
   </main>
 </div>
 

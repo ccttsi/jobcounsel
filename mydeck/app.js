@@ -2,8 +2,8 @@
  *
  * 하는 일
  *   1) 내 덱 목록 — 저장한 덱을 이름·단계·저장 위치와 함께 보여 주고, 순서대로 열기·리허설·이름 바꾸기·삭제.
- *   2) 로그인 상태 — 로그인하면 내 계정(jc_my_decks), 로그인하지 않으면 **이 창(sessionStorage)**.
- *      비로그인 상태의 덱·꾸미기 설정은 창을 닫으면 초기화된다(store.js가 그릇을 바꿔 준다).
+ *   2) 로그인 상태 — 마이덱은 **로그인한 사람에게만** 연다(index.html 게이트). 로그인하면 내 계정(jc_my_decks),
+ *      로그아웃 상태에서는 본문을 감추고 로그인 안내 카드만 보여 준다(store.js는 그때 창(sessionStorage) 그릇을 쓴다).
  *   3) 공간 꾸미기 — 여섯 요소 × 여섯 조건, 테마(밝게·세피아·어둡게)마다 따로 저장. 바꾸는 즉시 덱 공간에 적용.
  *   4) 리허설 — 덱의 단계를 한 줄 레일로 늘어놓고, 눌러서 어느 단계로든 건너뛰며 본다(deck-nav.js).
  *
@@ -42,10 +42,28 @@
   }
   var EMOJI = ['🗂', '🧭', '📎', '🌿', '🔖', '🧩', '📐', '🪄'];
 
-  function pageTheme() {
-    var t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  function pageTheme() {    var t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     if (t === 'light' && document.documentElement.getAttribute('data-jc-tone') === 'sepia') return 'sepia';
     return t;
+  }
+
+  /* ---------- 로그인 게이트 ----------
+   * 마이덱은 계정에 저장되는 화면이라 **로그인한 사람에게만** 연다.
+   * 첫 그림은 index.html 머리의 인라인 스크립트가 <html data-jc-auth>로 잠그고,
+   * 이 함수가 로그인·로그아웃(다른 탭 포함) 때 그 표시와 #deckGate만 맞춘다.
+   * 본문은 CSS가 #deckMain을 display:none으로 감추므로 화면낭독기·탭 이동에도 잡히지 않는다. */
+  function authIn() { return !!(D && D.loggedIn()); }
+
+  function syncGate() {
+    var inn = authIn();
+    document.documentElement.setAttribute('data-jc-auth', inn ? 'in' : 'out');
+    var gate = $('deckGate');
+    if (gate) gate.hidden = inn;
+    if (!inn) {
+      closeSheet();                            /* 열려 있던 설명·리허설 시트도 함께 닿는다 */
+      var live = $('live'); if (live) live.hidden = true;
+      var host = $('lvModeHost'); if (host) host.hidden = true;
+    }
   }
 
   /* ---------- 상태 줄 (계정 정보) ---------- */
@@ -216,6 +234,7 @@
 
   /* ---------- 시트 ---------- */
   function openSheet() {
+    if (!authIn()) { syncGate(); return; }   /* 비로그인자에게는 설명·리허설 시트를 열지 않는다 */
     $('sheet').hidden = false;
     document.documentElement.style.overflow = 'hidden';
     renderSheet();
@@ -623,32 +642,50 @@
         function () { if (PICK && REH < PICK.steps.length - 1) { REH++; renderSheet(); } });
     }
     window.addEventListener('jc-sync-change', function () {
-      if (!D.loggedIn() && window.JCDeckLive) window.JCDeckLive.setMode('decks');
+      var before = document.documentElement.getAttribute('data-jc-auth');
+      var flipped = before !== (authIn() ? 'in' : 'out');
+      syncGate();
       load();
+      /* 로그인·로그아웃이 실제로 바뀌었을 때만 화면을 다시 세운다(같은 상태의 알림은 조용히 지나간다) */
+      if (flipped) {
+        if (window.JCDeckLive) window.JCDeckLive.setMode('decks');
+        loadPrefs();                        /* 로그인하면 계정의 꾸미기 설정으로, 로그아웃하면 이 창의 설정으로 */
+        if (authIn()) toast(D.user() + ' 님의 마이덱을 열었어요.');
+        else toast('로그아웃되어 마이덱을 잠갔어요.');
+      }
     });
     var mo = new MutationObserver(function () { applyPreview(); });
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-jc-tone'] });
     window.addEventListener('storage', function (e) {
-      if (e && e.key === 'jc-sync-session') load();
+      if (!e || e.key !== 'jc-sync-session') return;
+      /* 다른 탭에서 로그인·로그아웃해도 이 창이 같은 상태로 따라간다 */
+      syncGate();
+      load();
+      loadPrefs();
     });
   }
 
-  function boot() {
-    if (!D) return;
-    THEMES.forEach(function (t) { ensureTheme(t[0]); });
-    edit = pageTheme();
-    bind();
-    applyPreview();
-    renderTabs();
-    renderDiy();
-    D.prefs().then(function (r) {
+  function loadPrefs() {
+    return D.prefs().then(function (r) {
       var got = r.prefs || {};
       THEMES.forEach(function (t) {
         if (got[t[0]]) prefs[t[0]] = window.JCDiy.toSaved(got[t[0]]);
       });
       applyPreview();
       renderDiy();
-    });
+    }, function () {});
+  }
+
+  function boot() {
+    if (!D) return;
+    syncGate();
+    THEMES.forEach(function (t) { ensureTheme(t[0]); });
+    edit = pageTheme();
+    bind();
+    applyPreview();
+    renderTabs();
+    renderDiy();
+    loadPrefs();
     load();
   }
 
