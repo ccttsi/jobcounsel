@@ -140,6 +140,13 @@
     var b1 = el('button', 'd-b go', '리허설');
     b1.type = 'button';
     b1.addEventListener('click', function () { openRehearsal(dk); });
+    var b0 = el('button', 'd-b live', '라이브 실행');
+    b0.type = 'button';
+    b0.setAttribute('aria-label', dk.name + ' 덱으로 실전 상담 OS 만들기');
+    b0.addEventListener('click', function () {
+      if (window.JCDeckLive) window.JCDeckLive.open(dk.id);
+      else toast('라이브 화면을 불러오지 못했어요. 화면을 새로 열어 주세요.');
+    });
     var b2 = el('button', 'd-b', '이름 바꾸기');
     b2.type = 'button';
     b2.addEventListener('click', function () { openRename(dk); });
@@ -147,6 +154,7 @@
     b3.type = 'button';
     b3.addEventListener('click', function () { askDelete(dk); });
     act.appendChild(b1);
+    act.appendChild(b0);
     act.appendChild(b2);
     act.appendChild(b3);
     if (dk.where !== 'server' && D.loggedIn() && !D.serverOff()) {
