@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따르고, 자동이면 오전 7시~오후 7시는 밝게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="utf-8">
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef">
+<meta name="description" content="국비지원 훈련의 자부담금·국비지원액·월 훈련장려금·특별훈련수당과 기간 총 수령액, 체감비용을 과정 유형·훈련비·수강자 유형·지역별로 비교 계산합니다. 고용노동부고시 제2026-101호(현행 제2026-39호)와 고용24 안내 기준.">
+<title>국비지원 자부담 계산기 · CCTT</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* =========================================================================
+   국비지원 자부담 계산기 — 정산표(계산서) 결의 화면
+   · 바탕·글자·보조색은 자료실 공용 토큰, 강조색만 이 자료의 남색(#1f3a68)
+   · 자부담=벽돌, 국비·수령=청록, 특별수당=황토 — 의미가 색으로 고정된다
+   ========================================================================= */
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#1f3a68;--acc-soft:rgba(31,58,104,.075);--acc-line:rgba(31,58,104,.28);
+  --cost:#a63a24;--cost-soft:rgba(166,58,36,.08);
+  --ben:#0f6b57;--ben-soft:rgba(15,107,87,.09);
+  --gold:#8a5a05;--gold-soft:rgba(138,90,5,.10);
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 10px 28px -18px rgba(70,50,25,.26);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#7c859a;
+  --acc:#8fbcff;--acc-soft:rgba(143,188,255,.12);--acc-line:rgba(143,188,255,.34);
+  --cost:#ff9d80;--cost-soft:rgba(255,157,128,.12);
+  --ben:#57d6ae;--ben-soft:rgba(87,214,174,.12);
+  --gold:#f3c258;--gold-soft:rgba(243,194,88,.12);
+  --shadow:none;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;
+  letter-spacing:-.01em;word-break:keep-all;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,ol,dl,dd{margin:0;padding:0}
+ul,ol{list-style:none}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit;letter-spacing:inherit;margin:0}
+button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- 겉틀 ---------- */
+body[data-jc-tool="kdtcalc"] .wrap{max-width:1280px!important}
+.wrap{position:relative;margin:0 auto;padding:0 clamp(14px,3vw,28px) 52px}
+body[data-jc-tool="kdtcalc"]{--jc-acc:var(--acc)}
+:root[data-theme="dark"] body[data-jc-tool="kdtcalc"]{--jc-acc:var(--acc)}
+
+/* 머리말: 홈 단추 ↔ [개념 아이콘 + 제목] 수직 중앙 (10px 간격, 아이콘 20px) */
+.hd{display:flex;align-items:center;gap:10px;min-height:64px}
+.jc-ib{width:44px;height:44px;flex:none;display:grid;place-items:center;box-sizing:border-box;border-radius:12px;
+  color:inherit;border:1px solid color-mix(in srgb,currentColor 16%,transparent);
+  background:color-mix(in srgb,currentColor 3%,transparent);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.jc-ib svg{width:20px;height:20px;opacity:.78}
+.jc-ib:active{transform:scale(.96)}
+.jc-title{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;
+  font-style:normal;font-size:clamp(16.5px,1vw + 11px,20px);letter-spacing:-.02em;line-height:1.25;color:var(--ink)}
+.jc-hic{flex:none;width:20px;height:20px;overflow:visible;color:var(--acc)}
+.jc-tt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.jc-tt .hl{color:var(--acc)}
+.jc-tt .en{font-weight:600;color:var(--dim);font-size:.8em;margin-left:5px}
+[data-jc-prefs]{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex:none}
+
+/* ---------- 머리말 아래 한 줄 ---------- */
+.mast{padding:2px 0 10px;border-bottom:1px solid var(--line)}
+.lead{font-size:15px;color:var(--muted);max-width:80ch}
+.lead b{color:var(--ink);font-weight:650}
+.srcbar{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.src{display:inline-flex;align-items:center;gap:5px;min-height:26px;padding:3px 9px;border-radius:99px;
+  background:var(--soft);border:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.src b{font-weight:650;color:var(--ink)}
+.src svg{width:13px;height:13px;flex:none;opacity:.7}
+
+/* ---------- 빠른 시나리오 ---------- */
+.presets{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 0 0}
+.plabel{font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--dim);flex:none}
+.pchips{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.pchip{min-height:44px;display:inline-flex;align-items:center;gap:6px;padding:0 13px;border-radius:99px;
+  border:1px solid var(--line2);background:var(--panel);font-size:13.5px;font-weight:600;color:var(--muted)}
+.pchip svg{width:14px;height:14px;flex:none;opacity:.65}
+.pchip[aria-pressed="true"]{border-color:var(--acc-line);background:var(--acc-soft);color:var(--acc);font-weight:750}
+.pchip[aria-pressed="true"] svg{opacity:1}
+
+/* ---------- 탭(휴대폰) ---------- */
+.tabs{display:none;gap:6px;padding:12px 0 0}
+.tab{flex:1 1 0;min-height:44px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 6px;
+  border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:13.5px;font-weight:650;color:var(--muted)}
+.tab[aria-selected="true"]{border-color:var(--acc-line);background:var(--acc-soft);color:var(--acc);font-weight:800}
+.tab .n{font-size:11.5px;opacity:.7}
+
+/* ---------- 작업대 ---------- */
+.grid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:clamp(12px,1.6vw,22px);
+  align-items:start;padding-top:12px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 14px 10px;box-shadow:var(--shadow)}
+.grp{margin-bottom:12px}
+.gl{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:12.5px;font-weight:750;letter-spacing:.01em;
+  color:var(--muted);margin-bottom:6px}
+.gh{font-size:11.5px;font-weight:500;color:var(--dim);letter-spacing:0}
+.fee-man{margin-left:auto;font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums}
+.chips{display:grid;gap:6px}
+.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.chip{min-height:44px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 8px;
+  border:1px solid var(--line2);border-radius:11px;background:var(--panel);font-size:13px;font-weight:600;
+  color:var(--muted);text-align:center;line-height:1.25;letter-spacing:-.02em}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0;flex:none}
+.chip[aria-pressed="true"]{border-color:var(--acc-line);background:var(--acc-soft);color:var(--acc);font-weight:800}
+.chip[aria-pressed="true"] .dot{opacity:1}
+.chip[disabled]{opacity:.4;cursor:not-allowed}
+.chip em{font-style:normal;font-size:11px;font-weight:600;opacity:.75;display:block}
+
+.feerow{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:10px;align-items:center}
+input[type="text"],input[type="number"],select{width:100%;min-height:44px;border:1px solid var(--line2);border-radius:11px;
+  background:var(--panel);padding:9px 10px;font-size:15px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--ink)}
+select{padding-right:30px;font-weight:600;font-size:13.5px}
+input[type="range"]{width:100%;height:44px;margin:0;accent-color:var(--acc);background:transparent}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.two .gl{margin-bottom:5px}
+
+/* 세부 조건 */
+.adv{border-top:1px dashed var(--line2);margin:2px 0 0;padding-top:2px}
+.adv>summary{min-height:44px;display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--muted);
+  cursor:pointer;list-style:none;padding:0 2px}
+.advsum{font-size:11.5px;font-weight:600;color:var(--dim);margin-left:auto;margin-right:2px}
+.adv>summary::-webkit-details-marker{display:none}
+.adv>summary svg{width:14px;height:14px;flex:none;transition:transform .24s cubic-bezier(.2,.9,.3,1);opacity:.7}
+.adv[open]>summary svg{transform:rotate(180deg)}
+.advin{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:2px 0 10px}
+.fld{display:grid;grid-template-columns:1fr auto;gap:4px 6px;align-items:center}
+.fld>span{grid-column:1/-1;font-size:11.5px;font-weight:650;color:var(--dim)}
+.fld input{padding-right:6px}
+.fld em{font-style:normal;font-size:11.5px;color:var(--dim);font-weight:600}
+.togs{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.tog{display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 9px;border:1px solid var(--line);
+  border-radius:10px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;background:var(--soft);text-align:left}
+.sw{position:relative;width:32px;height:18px;border-radius:99px;background:var(--line2);flex:none;transition:background-color .16s}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--panel);transition:transform .16s cubic-bezier(.2,.9,.3,1)}
+.tog[aria-checked="true"]{border-color:var(--acc-line);background:var(--acc-soft);color:var(--acc)}
+.tog[aria-checked="true"] .sw{background:var(--acc)}
+.tog[aria-checked="true"] .sw::after{transform:translateX(14px)}
+.go,.back{display:none}
+
+/* ---------- 결과 ---------- */
+#res{min-height:200px}
+.rc{position:relative;background:var(--panel);border:1px solid var(--line2);border-radius:18px;
+  padding:14px 15px 13px;box-shadow:var(--shadow);overflow:hidden}
+/* 10%: 계산서의 오프셋 테두리와 재단 점선 */
+.rc::after{content:"";position:absolute;inset:5px;border:1px solid var(--line);border-radius:13px;pointer-events:none}
+html:not([data-jc-imm]) .rc{box-shadow:4px 5px 0 var(--acc-soft),0 1px 2px rgba(70,50,25,.05)}
+.rc-h{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.rc-k{font-size:12px;font-weight:750;letter-spacing:.06em;color:var(--dim)}
+.rc-big{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:2px}
+.rc-big b{font-size:clamp(28px,3.4vw,40px);font-weight:850;letter-spacing:-.045em;line-height:1.1;
+  font-variant-numeric:tabular-nums}
+.rc-big.neg b{color:var(--ben)}
+.rc-big.pos b{color:var(--cost)}
+.rc-big span{font-size:12.5px;color:var(--muted)}
+.rc-sub{margin-top:4px;font-size:12.5px;color:var(--dim)}
+.seal{flex:none;width:56px;height:56px;border:1.5px solid var(--acc-line);border-radius:50%;display:grid;place-items:center;
+  transform:rotate(-8deg);color:var(--acc);font-size:9.5px;font-weight:800;letter-spacing:.02em;text-align:center;line-height:1.15;
+  opacity:.7}
+html[data-jc-imm] .seal{display:none}
+.rule{height:1px;background:var(--line);margin:10px 0 8px}
+.bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--soft);margin:2px 0 6px}
+.bar i{display:block;height:100%}
+.bar .bs{background:var(--ben)}
+.bar .bc{background:var(--cost)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--dim)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend .dim{color:var(--dim)}
+.legend i{width:8px;height:8px;border-radius:2px;display:block}
+.rows{display:grid;gap:0;margin-top:4px}
+.row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border-bottom:0}
+.row dt{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;min-width:0}
+.row dt em{font-style:normal;font-size:11px;color:var(--dim);font-weight:600}
+.row dd{font-size:15px;font-weight:750;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row dd.cost{color:var(--cost)}
+.row dd.ben{color:var(--ben)}
+.row dd.gold{color:var(--gold)}
+.row.sum{border-top:1px solid var(--line2);border-bottom:0;padding-top:9px;margin-top:2px}
+.row.sum dt{font-weight:750;color:var(--ink)}
+.row.sum dd{font-size:17px;font-weight:850}
+.notes{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.note{display:inline-flex;align-items:flex-start;gap:5px;padding:4px 9px;border-radius:8px;font-size:11.5px;
+  line-height:1.45;background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+.note::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.55;margin-top:5px;flex:none}
+.note.warn{background:var(--cost-soft);border-color:color-mix(in srgb,var(--cost) 22%,transparent);color:var(--cost)}
+.note.ok{background:var(--ben-soft);border-color:color-mix(in srgb,var(--ben) 22%,transparent);color:var(--ben)}
+.why{margin-top:8px;padding:8px 11px;border-radius:10px;background:var(--acc-soft);border:1px solid var(--acc-line);
+  font-size:12.5px;color:var(--acc);font-weight:600;line-height:1.5}
+.why b{font-weight:800}
+
+/* ---------- 한눈 비교 ---------- */
+.cmpwrap{margin-top:clamp(14px,2vw,22px)}
+.cmphd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.cmphd h2{font-size:17px;font-weight:800;letter-spacing:-.03em}
+.cmphd p{font-size:12.5px;color:var(--dim)}
+.cmpcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.cmphead,.crow{display:grid;grid-template-columns:minmax(0,1.7fr) repeat(4,minmax(0,1fr));gap:8px;align-items:center}
+.cmphead{padding:8px 14px;background:var(--soft);border-bottom:1px solid var(--line);
+  font-size:11.5px;font-weight:750;color:var(--dim);letter-spacing:.01em}
+.cmphead span:not(:first-child){text-align:right}
+.crow{width:100%;min-height:44px;padding:6px 14px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--ink)}
+.crow:last-child{border-bottom:0}
+.crow .cname{display:flex;align-items:center;gap:6px;font-weight:700;min-width:0}
+.crow .cname i{width:6px;height:6px;border-radius:50%;background:var(--acc);flex:none;opacity:0}
+.crow[data-cur="1"]{background:var(--acc-soft)}
+.crow[data-cur="1"] .cname i{opacity:1}
+.crow[data-cur="1"] .cname{color:var(--acc)}
+.cnum{text-align:right;font-variant-numeric:tabular-nums;font-weight:650;white-space:nowrap}
+.cnum.neg{color:var(--ben)}
+.cnum.pos{color:var(--cost)}
+.crow .cnum::before{content:attr(data-l);display:none}
+.tip{margin-top:7px;font-size:11.5px;color:var(--dim)}
+
+/* ---------- 근거 ---------- */
+.more{margin-top:clamp(16px,2vw,24px);border-top:1px solid var(--line)}
+.more>summary{min-height:44px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--muted);
+  cursor:pointer;list-style:none}
+.more>summary::-webkit-details-marker{display:none}
+.more>summary svg{width:15px;height:15px;transition:transform .24s cubic-bezier(.2,.9,.3,1);opacity:.7}
+.more[open]>summary svg{transform:rotate(180deg)}
+.morein{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;padding:4px 0 14px}
+.mb{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 13px}
+.mb h3{font-size:12.5px;font-weight:800;color:var(--muted);letter-spacing:.02em;margin-bottom:6px}
+.mb p,.mb li{font-size:12.5px;line-height:1.62;color:var(--dim)}
+.mb b{color:var(--ink);font-weight:700}
+.mb ul{display:grid;gap:3px}
+.mb li{padding-left:10px;position:relative}
+.mb li::before{content:"·";position:absolute;left:2px;opacity:.6}
+.mb a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.mb .f{font-size:11.5px;color:var(--dim);margin-top:6px;padding-top:6px;border-top:1px dashed var(--line)}
+.ft{padding-top:18px;font-size:11.5px;color:var(--dim);line-height:1.9}
+.ft a{text-decoration:underline;text-underline-offset:2px}
+.ft .sep{opacity:.5;margin:0 4px}
+
+/* ---------- 좁은 화면 ---------- */
+@media (min-width:900px) and (max-width:1023px){
+  .grid{grid-template-columns:minmax(0,360px) minmax(0,1fr)}
+}
+@media (max-width:899px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .rc{position:static}
+  .tabs{display:flex}
+  .stage.is-off{display:none}
+  .grid{padding-top:12px}
+  .panel{padding:13px 12px 8px}
+  .go{display:flex;width:100%;min-height:46px;align-items:center;justify-content:center;margin:2px 0 2px;
+    border:1px solid var(--acc-line);background:var(--acc-soft);color:var(--acc);border-radius:12px;font-weight:800;font-size:14px}
+  .back{display:flex;width:100%;min-height:44px;align-items:center;justify-content:center;margin-top:10px;
+    border:1px solid var(--line2);border-radius:12px;color:var(--muted);font-weight:700;font-size:13.5px}
+  .cmpwrap{margin-top:14px}
+  .cmphead{display:none}
+  .crow{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;padding:11px 13px;min-height:0}
+  .crow .cname{grid-column:1/-1;font-size:14px}
+  .crow .cname small{font-size:11.5px;color:var(--dim);font-weight:600;margin-left:2px}
+  .cnum{text-align:left;font-size:13px;display:flex;align-items:baseline;justify-content:space-between;gap:6px}
+  .cnum::before{display:block!important;font-size:11px;font-weight:600;color:var(--dim);white-space:nowrap}
+  .cmpcard{border-radius:14px}
+}
+@media (max-width:430px){
+  .jc-title{font-size:15px!important;letter-spacing:-.02em}
+  .jc-title .en{display:none}
+  .hd{gap:6px}
+  [data-jc-prefs]{gap:2px}
+  .presets{display:block}
+  .plabel{display:block;margin-bottom:6px}
+  .pchips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .pchip{justify-content:center;padding:0 8px}
+  .lead{font-size:14px}
+  .pchip{padding:0 11px;font-size:13px}
+  .pchip svg{display:none}
+  .chip{font-size:12.5px;padding:0 6px}
+  .feerow{grid-template-columns:minmax(0,132px) minmax(0,1fr)}
+  .two{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body data-jc-tool="kdtcalc">
+<link rel="stylesheet" href="../assets/brand.css">
+<div class="wrap">
+
+  <header class="hd">
+    <a class="jc-ib" href="../" aria-label="자료실 첫 화면">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+    </a>
+    <h1 class="jc-title"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.2" y="2.8" width="15.6" height="18.4" rx="2.6"/><path d="M7.9 7.1h8.2" stroke="var(--acc)"/><path d="M8.1 11.5h.01M12 11.5h.01M15.9 11.5h.01M8.1 15.2h.01M12 15.2h.01M15.9 15.2h.01M8.1 18.9h.01M12 18.9h.01M15.9 18.9h.01"/></svg><span class="jc-tt">국비지원 <span class="hl">자부담</span> 계산기<span class="en">· KDT</span></span></h1>
+    <span data-jc-prefs></span>
+  </header>
+
+  <div class="mast">
+    <p class="lead">과정 유형·훈련비·수강자 유형만 고르면 <b>수강 전 자부담</b>과 <b>훈련 중 받는 돈</b>, 기간 총액과 체감비용을 함께 계산합니다. 상담에서 두세 과정을 나란히 견줄 때 쓰는 정산 도구입니다.</p>
+    <div class="srcbar">
+      <span class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>근거 <b>고용노동부고시 제2026-101호</b> (현행 제2026-39호)</span>
+      <span class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>실제 금액은 고용24 과정 화면·고용센터 확인</span>
+    </div>
+  </div>
+
+  <div class="presets">
+    <span class="plabel" id="plabel">빠른 시나리오</span>
+    <div class="pchips" id="presets" role="group" aria-labelledby="plabel"></div>
+  </div>
+
+  <nav class="tabs" id="tabs" role="tablist" aria-label="계산 단계">
+    <button class="tab" type="button" role="tab" data-tab="in" aria-selected="true" aria-controls="stage-in">① 조건</button>
+    <button class="tab" type="button" role="tab" data-tab="out" aria-selected="false" aria-controls="stage-out">② 결과</button>
+    <button class="tab" type="button" role="tab" data-tab="cmp" aria-selected="false" aria-controls="stage-cmp">③ 비교</button>
+  </nav>
+
+  <main id="main" data-jc-content>
+    <div class="grid">
+      <section class="panel stage" id="stage-in" data-stage="in" aria-label="계산 조건">
+        <div class="grp">
+          <h2 class="gl">과정 유형 <span class="gh">고용24 훈련유형 표시와 같습니다</span></h2>
+          <div class="chips c3" id="proc" role="group" aria-label="과정 유형"></div>
+        </div>
+
+        <div class="grp">
+          <h2 class="gl">훈련비 <span class="gh">정부승인 훈련비 기준</span><span class="gh fee-man" id="feeMan"></span></h2>
+          <div class="feerow">
+            <input type="text" id="fee" maxlength="11" inputmode="numeric" autocomplete="off" aria-label="훈련비(원)">
+            <input type="range" id="feeRange" min="0" max="20000000" step="100000" aria-label="훈련비 조절">
+          </div>
+        </div>
+
+        <div class="grp two">
+          <div>
+            <h2 class="gl">수강자 유형 <span class="gh">자부담</span></h2>
+            <select id="user" aria-label="수강자 유형(자부담)"></select>
+          </div>
+          <div>
+            <h2 class="gl">장려금 대상 <span class="gh">지급 자격</span></h2>
+            <select id="pay" aria-label="훈련장려금 대상"></select>
+          </div>
+        </div>
+
+        <div class="grp">
+          <h2 class="gl">훈련 장소 <span class="gh">특별훈련수당은 장소로 갈립니다</span></h2>
+          <div class="chips c3" id="region" role="group" aria-label="훈련 장소 지역"></div>
+        </div>
+
+        <div class="grp" id="bandGrp" hidden>
+          <h2 class="gl">직종 3년 평균 취업률 <span class="gh">일반 과정 자부담률을 가릅니다</span></h2>
+          <select id="band" aria-label="직종 평균 취업률 구간"></select>
+        </div>
+
+        <details class="adv" id="adv">
+          <summary>기간·출석·계좌 조건 <span class="advsum" id="advsum"></span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="advin">
+            <label class="fld"><span>총 훈련시간</span><input type="text" id="hours" maxlength="4" inputmode="numeric" autocomplete="off"><em>시간</em></label>
+            <label class="fld"><span>월 소정훈련일수</span><input type="text" id="days" maxlength="2" inputmode="numeric" autocomplete="off"><em>일</em></label>
+            <label class="fld"><span>훈련 기간</span><input type="text" id="months" maxlength="2" inputmode="numeric" autocomplete="off"><em>개월</em></label>
+            <label class="fld"><span>계좌 남은 한도</span><input type="text" id="balance" maxlength="9" inputmode="numeric" autocomplete="off"><em>원</em></label>
+            <div class="togs" id="togs">
+              <button class="tog" type="button" id="day5" role="switch" aria-checked="true"><span class="sw" aria-hidden="true"></span><span>1일 5시간 이상</span></button>
+              <button class="tog" type="button" id="attend" role="switch" aria-checked="true"><span class="sw" aria-hidden="true"></span><span>출석률 80% 이상</span></button>
+              <button class="tog" type="button" id="boost" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span>AI캠퍼스 등 상향 과정</span></button>
+              <button class="tog" type="button" id="remote" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span>원격훈련</span></button>
+            </div>
+          </div>
+        </details>
+
+        <button class="go" id="go" type="button">결과 보기</button>
+      </section>
+
+      <section class="stage is-off" id="stage-out" data-stage="out" aria-label="계산 결과">
+        <div id="res" data-jc-still></div>
+        <button class="back" id="back" type="button">← 조건 고치기</button>
+      </section>
+    </div>
+
+    <section class="stage cmpwrap is-off" id="stage-cmp" data-stage="cmp" aria-label="한눈 비교">
+      <div class="cmphd">
+        <h2>한눈 비교</h2>
+        <p>같은 기준으로 계산한 다섯 시나리오입니다. 줄을 누르면 그 조건이 왼쪽에 그대로 들어갑니다.</p>
+      </div>
+      <div class="cmpcard">
+        <div class="cmphead" aria-hidden="true">
+          <span>시나리오</span><span>자부담</span><span>월 수령</span><span>기간 순수령</span><span>기간 체감비용</span>
+        </div>
+        <div id="cmp" data-jc-still></div>
+      </div>
+      <p class="tip">체감비용 = 자부담 − 기간 중 받는 돈. 0보다 작으면(초록) 받는 돈이 더 큽니다. 모든 금액은 원 단위, 10원 미만은 버립니다.</p>
+    </section>
+
+    <details class="more" id="more">
+      <summary>계산식과 근거, 이 계산에 넣지 않은 것 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+      <div class="morein" id="morein">
+        <div class="mb">
+          <h3>① 특화훈련 자부담</h3>
+          <p>계좌 유효기간(5년) 중 <b>1회</b>에 한해 훈련비의 90% 이상을 지원하고, 훈련생 부담은 최대 60만원입니다. 구간별 부담금은 300만원 이하 10%, 300~600만원 30만원, 600~1,200만원 40만원, 1,200~1,800만원 50만원, 1,800만원 초과 60만원입니다.</p>
+          <p class="f">근거: 국민내일배움카드 운영규정 제46조② (고용노동부고시 제2026-101호, 2026-01-01 시행) · 2026년 특화훈련 운영지침 · 고용24</p>
+        </div>
+        <div class="mb">
+          <h3>② 일반 과정 자부담</h3>
+          <p>직종 3년 평균 취업률과 수강자 유형으로 지원율이 정해집니다. 일반 훈련생은 취업률 70% 이상 15%, 60~70% 25%, 50~60% 35%, 40~50% 45%, 40% 미만 55%를 냅니다. 지원액이 계좌 한도를 넘으면 초과분도 본인 몫입니다.</p>
+          <p class="f">근거: 같은 규정 제46조①·별표 4 (2026-01-01 개정)</p>
+        </div>
+        <div class="mb">
+          <h3>③ 훈련장려금</h3>
+          <p>총 140시간 이상, 단위기간 출석률 80% 이상, 실업·월 60시간 미만 근로 등 요건을 채운 사람에게 출석일수만큼 지급합니다. 특화훈련은 일 1만원(월 20만원), 일반 과정은 일 5,800원(월 11만 6,000원), 자영업자인 피보험자는 일 1만 8,000원(월 36만원)입니다. 실업급여 수급 중이거나 원격훈련이면 지급되지 않습니다.</p>
+          <p class="f">근거: 같은 규정 제49조·제50조, 고용24 국민내일배움카드·KDT 안내</p>
+        </div>
+        <div class="mb">
+          <h3>④ 특별훈련수당</h3>
+          <p>국기훈련·KDT·산대특 중 총 350시간 이상 과정에서 출석률 80% 이상이면 지역별로 더 지급합니다. 수도권 일 5천원(월 10만원), 비수도권 일 1만원(월 20만원), 인구감소지역 일 1만 5천원(월 30만원)입니다. 일부 KDT(AI캠퍼스 등)는 20·40·60만원으로 안내됩니다.</p>
+          <p class="f">근거: 같은 규정 제49조의2 · 고용24 KDT 안내</p>
+        </div>
+        <div class="mb">
+          <h3>이 계산에 넣지 않은 것</h3>
+          <ul>
+            <li>돌봄서비스·외국어·법정직무·K-디지털 크레딧은 별도 지원율(90%·50%·90%)을 씁니다.</li>
+            <li>훈련공급 상위직종 10%p 감액, 훈련성과 우수기관 한 단계 특례는 반영하지 않습니다.</li>
+            <li>두 번째 특화훈련(1회 한정 이후)은 이 계산과 다릅니다(최대 55% 자부담).</li>
+            <li>지자체·훈련기관 자체 지원, 중도포기 감액(20·50·100만원), 부정수급은 넣지 않습니다.</li>
+            <li>근로·자녀장려금 수급자의 특화훈련 50% 경감은 고용24 훈련생 유의사항 안내를 금액에 적용한 값입니다.</li>
+          </ul>
+        </div>
+        <div class="mb" id="mb-src">
+          <h3>출처 (2026-11-20 확인)</h3>
+          <ul id="srclist"></ul>
+          <p class="f">법령(행정규칙)·공공기관 안내에서 확인한 값만 실었습니다. 기준이 바뀌면 수강 신청 전 고용24에서 다시 확인합니다.</p>
+        </div>
+        <div class="mb">
+          <h3>상담에서 확인할 것</h3>
+          <ul>
+            <li>고용24 과정 화면의 <b>훈련유형</b>과 <b>자비부담액</b>을 먼저 봅니다.</li>
+            <li>계좌 유효기간·남은 한도·이전 특화훈련 이력으로 1회 지원 여부가 갈립니다.</li>
+            <li>장려금·특별훈련수당 지급 대상 과정인지 과정 정보에서 확인합니다.</li>
+            <li>최종 금액은 수강 신청 화면과 고용센터(1350)에서 확인합니다.</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+  </main>
+
+  <footer class="ft">
+    <span>국비지원 자부담 계산기</span><span class="sep">·</span><a href="../hud/">실무 상담 HUD</a><span class="sep">·</span><a href="../transit/">환승노선도</a><span class="sep">·</span><span>로그인 없이 사용 · 참고용 계산 · 화면 밖으로 내보내지 않습니다</span>
+  </footer>
+</div>
+<script src="./app.js" defer></script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
