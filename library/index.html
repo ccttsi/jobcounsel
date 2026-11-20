@@ -664,8 +664,11 @@ document.documentElement.setAttribute('data-theme',t);})();
   @media (min-width: 1280px) { .jc-room { max-width: 1280px; padding-left: 82px; padding-right: 82px; } }
   .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; transition: transform .35s ease, opacity .35s ease; z-index: 90; pointer-events: none; background: var(--toast-bg); color: var(--toast-ink); }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
+/* 390: 영어 부제는 접고 제목에 폭을 준다 */
+@media (max-width:639px){.jc-room .mono.truncate{display:none}}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
 </head>
 <body data-jc-tool="library">
 <link rel="stylesheet" href="../assets/shell.css">
@@ -676,7 +679,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   <div class="jc-room py-2 flex items-center gap-2 sm:gap-4">
     <a class="jc-ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
     <div class="min-w-0 flex-1 leading-tight">
-      <div class="jc-title truncate font-bold" style="font-size:var(--fs-sm)">국회 미래고용 <span>디지털 서재</span></div>
+      <div class="jc-title truncate font-bold" style="font-size:var(--fs-sm)"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.2" y="8.4" width="4.2" height="11.8" rx="1"/><rect x="8.8" y="5.6" width="4.2" height="14.6" rx="1"/><path d="M15.2 7.8l3.7 1 2.6 11.4-3.7.9z"/><path d="M2.4 20.2h19.2"/></svg><span class="jc-tt"><span class="ph-drop">국회 미래고용 </span><span>디지털 서재</span></span></div>
       <div class="mono truncate text-[10px] sm:text-[11px] t-faint">// FUTURE EMPLOYMENT READING ROOM</div>
     </div>
     <div class="flex items-center gap-1.5 sm:gap-2">

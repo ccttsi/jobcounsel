@@ -67,7 +67,9 @@ a{color:inherit}
 .mode button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.07)}
 .mode .sm{display:none}
 @media (max-width:560px){.mode .lg{display:none}.mode .sm{display:inline}.mode button{padding:0 12px}}
-@media (max-width:560px){.brand{font-size:16px;max-width:36vw}.brand span{display:none}.brand svg{display:none}.mode button{padding:0 10px;font-size:13px}.hd{gap:8px}}
+@media (max-width:560px){.brand{font-size:16px;max-width:36vw}.brand .jc-tt>span{display:none}.mode button{padding:0 10px;font-size:13px}.hd{gap:8px}}
+/* 아주 좁은 화면: 제목에 폭을 주고 보기 방식 탭은 아래 한 줄로 내린다 */
+@media (max-width:470px){.hd{flex-wrap:wrap;row-gap:6px}.hd .grow{display:none}.brand{max-width:none}.mode{order:3;flex:1 1 100%;margin-top:2px}.mode button{flex:1 1 0;padding:0 8px}}
 @media (max-width:430px){.hd{gap:6px}.mode{padding:2px}.mode button{padding:0 9px;font-size:13px}}
 
 /* 이용 안내 — 한 줄 요약, 펼치면 전문 */
@@ -516,12 +518,13 @@ html[data-jc-imm] .wk{height:auto}
 @media (prefers-reduced-motion:reduce){.notice .cv,.acc-h .cv,.meter .bar i,.fs,.cmpfs,.insp{transition:none!important}}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
 </head>
 <body data-jc-tool="portfolio">
 <div class="wrap">
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
-    <a class="brand" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.75" y="5" width="18.5" height="14" rx="2.4"/><path d="M2.75 9.5h18.5M6.6 12.4v3.4M10.2 12.4v3.4M13.8 12.4v3.4M17.4 12.4v3.4"/></svg>포트폴리오 <span>편집실</span></a>
+    <a class="brand" href="./"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.75" y="5" width="18.5" height="14" rx="2.4"/><path d="M2.75 9.5h18.5M6.6 12.4v3.4M10.2 12.4v3.4M13.8 12.4v3.4M17.4 12.4v3.4"/></svg><span class="jc-tt">포트폴리오 <span>편집실</span></span></a>
     <span class="grow"></span>
     <div class="mode" role="tablist" aria-label="보기 방식">
       <button type="button" role="tab" id="modeCreator" aria-selected="true"><span class="lg">만드는 사람</span><span class="sm">만들기</span></button>

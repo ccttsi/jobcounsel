@@ -229,6 +229,8 @@ a{color:inherit}
 /* ── 넓은 화면(720px 이상, 가로로 눕힌 휴대폰 포함): 좌우 1:1 데칼코마니 ── */
 .wide-only{display:none}
 @media (min-width:600px){.brand{display:block}.wide-only{display:inline}}
+/* 좁은 화면: 제목·검색·설정을 한 줄에 밀어 넣어 검색칸이 22px로 찌그러지던 것 — 검색은 아래 한 줄로 내린다 */
+@media (max-width:599px){.bar{height:auto;flex-wrap:wrap;row-gap:8px;padding:8px 16px 10px}.bar .search{order:3;flex:1 0 100%}}
 @media (min-width:900px){.bar{padding-left:28px;padding-right:28px}.note{padding-left:28px;padding-right:28px}.scroll{padding-left:28px;padding-right:28px}}
 @media (min-width:720px){
   .app{max-width:1440px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
@@ -247,13 +249,14 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
 </head>
 <body data-jc-tool="decalcomania">
 <div class="app" id="app">
   <header class="hd">
     <div class="bar">
       <a class="ib" href="../" aria-label="자료실 첫 화면으로" title="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg></a>
-      <span class="brand">커리어<em>데칼코마니</em></span>
+      <span class="brand"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.6v18.8" stroke="var(--jc-acc)" stroke-dasharray="2.6 2.8"/><path d="M8.9 6.4 3.4 12l5.5 5.6Z"/><path d="M15.1 6.4 20.6 12l-5.5 5.6Z"/></svg><span class="jc-tt">커리어<em>데칼코마니</em></span></span>
       <div class="search">
         <input id="q" type="search" placeholder="학과·대학 학과명·직업 검색" autocomplete="off" enterkeyhint="search" aria-label="학과·대학 학과명·직업 검색" disabled>
         <div id="results" hidden></div>

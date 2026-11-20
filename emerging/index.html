@@ -57,6 +57,7 @@ html.is-locked .fab{opacity:0;pointer-events:none}   /* 시트·팝업이 열리
 
 /* ── 머리말 ── */
 .hd{display:flex;align-items:center;gap:8px;min-height:68px;padding:12px 0}
+.brand span{color:var(--acc)}
 .ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
 .ib svg{width:20px;height:20px}
 .hd .ed{margin-left:0}
@@ -481,12 +482,13 @@ html[data-jc-imm] .art,html[data-jc-imm] .card,html[data-jc-imm] .fig,html[data-
 .sheet .note{margin:0 0 2px}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
 </head>
 <body data-jc-tool="emerging">
 <div class="wrap">
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></a>
-    <a class="brand" href="./"><span>Emerging</span> Industry</a>
+    <a class="brand" href="./"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.4 3.6h9.2l3.8 5.2L12 20.4 3.6 8.8Z"/><path d="M3.6 8.8h16.8"/><path d="M8.8 8.8 12 20.4l3.2-11.6"/></svg><span class="jc-tt"><span>Emerging</span> Industry</span></a>
     <span data-jc-prefs></span>
   </header>
 
