@@ -95,13 +95,30 @@
 .a-root .a-ecg-btn{position:relative;display:block;width:188px;height:44px;border-radius:12px;-webkit-tap-highlight-color:transparent}
 .a-ecg-btn:focus-visible{outline:2px solid var(--a1);outline-offset:2px}
 .a-ecg{position:absolute;left:50%;top:50%;width:168px;height:34px;margin:-17px 0 0 -84px;pointer-events:none;overflow:hidden}
+/* 2026-11-21(태화님 지시) — 심전도 **뒤에** 병원 모니터 숫자(000%)가 겹쳐 있다.
+   · 장전하면 000%가 페이드인하고, 격발하면 001→100까지 차오르며 파형이 그 뒤로 빠져나간다.
+   · 숫자는 심전도 선보다 아래(z=0)에 깔려, 선이 얇게 지나가도 읽힌다(글자는 배경이 아니라 «뒤»).
+   · 폰트는 고정폭 모노 스택 + tabular-nums + 0(슬래시 0) — 자간이 흔들리지 않는 계기판 숫자다. */
+.a-ecg-num{position:absolute;z-index:0;left:0;right:0;top:1px;height:18px;display:flex;align-items:center;justify-content:center;
+  font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono","Courier New",monospace;
+  font-size:13px;font-weight:700;line-height:18px;letter-spacing:.09em;
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"zero" 1;
+  color:var(--ecg-b);opacity:0;transform:scale(.96);
+  transition:opacity .30s linear,transform .38s cubic-bezier(.2,.9,.3,1);
+  text-shadow:0 0 7px color-mix(in srgb,currentColor 34%,transparent),0 0 2px color-mix(in srgb,var(--bg) 55%,transparent)}
+.a-ecg-num i{font-style:normal;display:block}
+.a-ecg-num em{font-style:normal;display:block;font-size:10.5px;opacity:.85;margin-left:.25em;transform:translateY(.5px)}
+.a-ecgrow[data-st="armed"] .a-ecg-num{opacity:.55;transform:none}
+.a-ecgrow[data-st="pulled"] .a-ecg-num{opacity:.96;transform:none}
 /* 바닥선 — 파동이 없는 구간을 받쳐 주는 1px 헤어라인.
    2026-11-19: 파형과 같이 양 끝에서 스며들며 사라진다(캔버스와 같은 스톱의 알파 마스크 — 정적이라 프레임 비용 0). */
-.a-ecg-base{position:absolute;left:0;right:0;top:20px;height:1px;background:color-mix(in srgb,var(--line-2) 76%,transparent);
+.a-ecg-base{position:absolute;z-index:0;left:0;right:0;top:20px;height:1px;background:color-mix(in srgb,var(--line-2) 76%,transparent);
   opacity:1;transition:opacity .22s linear;
   -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.08) 3.2%,rgba(0,0,0,.25) 7.2%,rgba(0,0,0,.55) 11.8%,rgba(0,0,0,.85) 16.4%,#000 20%,#000 80%,rgba(0,0,0,.85) 83.6%,rgba(0,0,0,.55) 88.2%,rgba(0,0,0,.25) 92.8%,rgba(0,0,0,.08) 96.8%,transparent 100%);
   mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.08) 3.2%,rgba(0,0,0,.25) 7.2%,rgba(0,0,0,.55) 11.8%,rgba(0,0,0,.85) 16.4%,#000 20%,#000 80%,rgba(0,0,0,.85) 83.6%,rgba(0,0,0,.55) 88.2%,rgba(0,0,0,.25) 92.8%,rgba(0,0,0,.08) 96.8%,transparent 100%)}
-.a-ecg-bob{position:absolute;inset:0;will-change:transform}
+.a-ecg-bob{position:absolute;z-index:1;inset:0;will-change:transform}
+/* 격발 — 파형이 좌우로 더 길게 뻗어 나가도록 창 밖으로도 그린다(캔버스 scaleX). */
+.a-ecgrow[data-st="pulled"] .a-ecg{overflow:visible}
 .a-ecg-cv{position:absolute;left:0;top:0;width:168px;height:34px;display:block;
   opacity:1;transition:opacity .22s linear}
 /* 방치 유도(매 분 00초, 5.0초) — 파동과 한붓그리기 모양은 **캔버스 한 장**이 그린다.
