@@ -1534,7 +1534,10 @@ function bindListSwipe(){
       if(Math.abs(dx)<START)return;
       if(Math.abs(dx)<=Math.abs(dy)*RATIO)return;   /* 세로 스크롤로 보낸다 */
       g.on=true;ol.classList.add('a-sw-drag');
-      try{lv.setPointerCapture(e.pointerId);}catch(x){}
+      /* 손가락은 누른 대상이 이미 스스로 잠그므로(암묵적 잠금) 잠금을 옮길 필요가 없다 —
+         iOS Safari에서 잠금을 옮기면 뒤따르는 pointerup·click이 사라지는 사례가 있어 끄는 손가락에는 잡지 않는다.
+         마우스만 목록 상자 밖으로 나가도 이어 받게 잠근다. */
+      if(e.pointerType==='mouse'){try{lv.setPointerCapture(e.pointerId);}catch(x){}}
     }
     if(e.cancelable)e.preventDefault();
     g.ax=dx;
