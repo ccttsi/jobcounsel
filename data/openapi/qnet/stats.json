@@ -1,0 +1,45 @@
+{
+ "schema": "jobcounsel.openapi.v1",
+ "source": {
+  "key": "qnet_stats",
+  "name": "한국산업인력공단_산업인력 국가기술자격 통계 정보",
+  "provider": "한국산업인력공단",
+  "service_id": "15025329",
+  "endpoint": "http://openapi.q-net.or.kr/api/service/rest/InquiryStatSVC/getTotExamList",
+  "license": "이용허락범위 제한 없음",
+  "license_note": "공공데이터포털 이용허락범위 제한 없음 / 공공누리 제1유형 / OpenDART 공식 OpenAPI",
+  "official_url": "https://www.data.go.kr/data/15025329/openapi.do",
+  "update_cycle": "연 1회(통계 발표)"
+ },
+ "fetched_at": "2026-11-21T01:32:55+09:00",
+ "count": 1,
+ "items": [
+  {
+   "pilpscnt1": "805470",
+   "pilpscnt2": "801219",
+   "pilpscnt3": "844908",
+   "pilpscnt4": "751881",
+   "pilpscnt5": "857339",
+   "pilpscnt6": "19654024",
+   "pilrccnt1": "1787281",
+   "pilrccnt2": "1771520",
+   "pilrccnt3": "1795721",
+   "pilrccnt4": "1604609",
+   "pilrccnt5": "1765798",
+   "pilrccnt6": "51046432",
+   "silpacnt1": "576705",
+   "silpacnt2": "591028",
+   "silpacnt3": "603219",
+   "silpacnt4": "576148",
+   "silpacnt5": "630689",
+   "silpacnt6": "15798899",
+   "silrccnt1": "1258528",
+   "silrccnt2": "1267065",
+   "silrccnt3": "1279249",
+   "silrccnt4": "1244344",
+   "silrccnt5": "1331461",
+   "silrccnt6": "32695942",
+   "baseYY": "2025"
+  }
+ ]
+}

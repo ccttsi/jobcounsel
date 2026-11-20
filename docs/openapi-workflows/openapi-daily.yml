@@ -1,0 +1,72 @@
+# Open API 일일 동기화 (06:00 KST)
+#   15125273 알리오 공공기관 채용정보 + 15074408 국가자격 시험일정
+#   바뀐 것이 있을 때만 data/openapi/에 커밋한다(변경 없으면 조용히 끝난다).
+#   수동: Actions → openapi-daily → Run workflow
+name: openapi-daily
+
+on:
+  schedule:
+    - cron: '0 21 * * *'   # 21:00 UTC = 06:00 KST
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '호출만 하고 저장·커밋하지 않는다'
+        type: boolean
+        default: false
+      only:
+        description: '특정 소스만 (예: alio_recruitment)'
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: openapi-daily-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 수집
+        env:
+          DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ inputs.only }}" ]; then ARGS="$ARGS --only ${{ inputs.only }}"; fi
+          python3 ops/scripts/sync_openapi_daily.py $ARGS --summary-file "$GITHUB_STEP_SUMMARY"
+
+      # 저장 전에 저장소 규칙(JSON·저작권·JS)을 한 번 더 통과시킨다.
+      - name: 저장소 검사
+        if: ${{ inputs.dry_run != true }}
+        run: python3 ops/scripts/validate_repo.py --only json,license,js
+
+      - name: 바뀐 자료 커밋
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name "jobcounsel-openapi[bot]"
+          git config user.email "openapi-sync@users.noreply.github.com"
+          git add data/openapi
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 오늘은 새 자료가 없다." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "### 바뀐 파일" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          git diff --cached --stat >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          git commit -m "🔄 Open API 일일 갱신 — 알리오 채용·국가자격 시험일정 $(TZ=Asia/Seoul date +%Y-%m-%d)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

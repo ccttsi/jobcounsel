@@ -13,7 +13,7 @@
 | 매월 1일 04:00 KST | OpenDART 공시·기업 고유번호 · 금융위 기업기본(`15043184`)·재무(`15043459`) · Q-net 합격률(`15089380`)·통계(`15025329`) · 법제처 법령(`15000115`) · 국세청 사업자 상태(`15081808`) | `dart/*.json` · `fsc/*.json` · `qnet/pass-rate.json` · `qnet/stats.json` · `law/revisions.json` · `nts/status.json` |
 
 워크플로: `.github/workflows/openapi-daily.yml` · `openapi-weekly.yml` · `openapi-monthly.yml`
-(셋 다 `workflow_dispatch`가 있어 Actions 화면에서 바로 수동 실행할 수 있다).
+(셋 다 `workflow_dispatch`가 있어 Actions 화면에서 바로 수동 실행할 수 있다). 저장소에 아직 이 세 파일이 없으면 `docs/openapi-workflows/`에 같은 내용이 있으니 그 경로로 옮겨 두면 된다.
 
 ## 저작권·지재권
 

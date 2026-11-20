@@ -34,7 +34,7 @@ from sync_openapi_common import (  # noqa: E402
     write_source,
 )
 
-def _candidates(dart_key: str, limit: int = 0) -> list[dict]:
+def _candidates(dart_key: str, limit: int = 0, offset: int = 0) -> list[dict]:
     raw = request_raw(
         SOURCES["dart_corp_map"]["endpoint"],
         {"crtfc_key": dart_key},
@@ -76,13 +76,32 @@ def _candidates(dart_key: str, limit: int = 0) -> list[dict]:
                 picked.setdefault(candidate["corp_code"], candidate)
     rows = sorted(picked.values(), key=lambda c: c["corp_code"])
     print(f"  · corpCode.xml {sum(len(v) for v in by_name.values()):,}곳 · 이름 후보 {len(rows):,}곳")
+    rows = rows[offset:]
     return rows[:limit] if limit else rows
 
 
-def dart_corp_map(dart_key: str, *, dry_run: bool = False, limit: int = 0, workers: int = 8) -> int:
-    candidates = _candidates(dart_key, limit)
+def dart_corp_map(dart_key: str, *, dry_run: bool = False, limit: int = 0, offset: int = 0, workers: int = 4, budget: int = 2000) -> int:
+    candidates = _candidates(dart_key, limit, offset)
+
+    # 이미 검증해 둔 고유번호는 다시 부르지 않는다(매달 같은 7천 건을 두드리면 이용이 막힌다).
+    path = DATA_DIR / SOURCES["dart_corp_map"]["path"]
+    cached = {}
+    if path.exists():
+        for row in json.loads(path.read_text(encoding="utf-8")).get("items", []):
+            cached[row["corp_code"]] = row
+    cached_hits = [c for c in candidates if c["corp_code"] in cached]
+    pending = [c for c in candidates if c["corp_code"] not in cached]
+    if budget and len(pending) > budget:
+        print(f"  · 이번 달 새 검증 {budget:,}곳만 — 남은 {len(pending) - budget:,}곳은 다음 달로 넘긴다")
+        pending = pending[:budget]
+    print(f"  · 이미 검증 {len(cached_hits):,}곳 · 새로 검증 {len(pending):,}곳")
+    candidates = pending
     by_crno = {str(c["corp_reg_no"]): c for c in companies() if c.get("corp_reg_no")}
-    by_biz = {str(c["biz_no"]): c for c in companies() if c.get("biz_no")}
+    by_biz = {}
+    for company in companies():
+        digits = "".join(ch for ch in str(company.get("biz_no") or "") if ch.isdigit())
+        if len(digits) == 10:
+            by_biz[digits] = company
 
     def verify(candidate):
         payload = get_json(
@@ -124,7 +143,14 @@ def dart_corp_map(dart_key: str, *, dry_run: bool = False, limit: int = 0, worke
 
     verified = parallel_map(verify, candidates, workers, "OpenDART 기업 검증")
     verified.sort(key=lambda r: r["corp_code"])
-    print(f"  · 후보 {len(candidates):,}곳 중 번호 일치 {len(verified):,}곳")
+    new_verified = len(verified)
+    if cached_hits or offset:
+        # 나눠 돌릴 때 앞 조각의 결과를 이어 붙인다(같은 corp_code는 새 결과 우선).
+        kept = dict(cached)
+        for row in verified:
+            kept[row["corp_code"]] = row
+        verified = [kept[key] for key in sorted(kept)]
+    print(f"  · 새 후보 {len(candidates):,}곳 중 번호 일치 {new_verified:,}곳 · 대조표 {len(verified):,}곳")
     write_source(
         "dart_corp_map",
         verified,
@@ -144,7 +170,7 @@ def main() -> int:
     key = load_key("OPENDART_API_KEY", "opendart_api_key")
     return run_sources(
         selected("dart_corp_map", "monthly"),
-        {"dart_corp_map": lambda: dart_corp_map(key, dry_run=args.dry_run, limit=args.limit, workers=args.workers)},
+        {"dart_corp_map": lambda: dart_corp_map(key, dry_run=args.dry_run, limit=args.limit, offset=args.offset, workers=args.workers, budget=args.dart_budget)},
         "OpenDART 기업 고유번호 대조",
         args.summary_file,
     )

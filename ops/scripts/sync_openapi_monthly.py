@@ -226,7 +226,7 @@ def dart_corp_map() -> int:
     """이름이 아니라 법인등록번호·사업자번호로 검증한 대조표(sync_opendart_map.py)."""
     from sync_opendart_map import dart_corp_map as verified_map
 
-    return verified_map(DART_KEY, dry_run=DRY_RUN, limit=LIMIT, workers=WORKERS)
+    return verified_map(DART_KEY, dry_run=DRY_RUN, limit=LIMIT, offset=OFFSET, workers=WORKERS)
 
 
 def _load_corp_map() -> dict:
@@ -302,7 +302,7 @@ def dart_disclosures() -> int:
 def law_revision() -> int:
     source = ROOT / "law" / "data" / "laws.json"
     names = [law.get("name") for law in json.loads(source.read_text(encoding="utf-8")).get("laws", []) if law.get("name")]
-    items = []
+    items, skipped = [], []
     for name in names:
         raw = request_raw(
             SOURCES["law_revision"]["endpoint"],
@@ -316,6 +316,7 @@ def law_revision() -> int:
         exact = [law for law in laws if (law.get("법령명한글") or "").strip() == name]
         pool = exact or laws
         if not pool:
+            skipped.append(name)
             print(f"  ! {name}: 응답에 법령이 없어 건너뜀")
             continue
         law = max(pool, key=lambda l: str(l.get("공포일자") or ""))
@@ -339,13 +340,27 @@ def law_revision() -> int:
         )
         print(f"  · {name}: 공포 {law.get('공포일자')} · 시행 {law.get('시행일자')}")
     items.sort(key=lambda r: r["query"])
-    write_source("law_revision", items, dry_run=DRY_RUN)
+    write_source("law_revision", items, dry_run=DRY_RUN,
+                 extra={"skipped": skipped, "note": "target=law 응답에 없는 자치법규 등은 지어내지 않고 건너뛴다."})
     return len(items)
 
 
 # ------------------------------------------------------------------ 국세청
+def _clean_biz_no(value) -> str:
+    """사업자번호 표기(하이픈·가림 문자)를 10자리 숫자로만 받는다. 가림(****)은 건너뛴다."""
+    text = str(value or "").strip()
+    if "*" in text:
+        return ""
+    digits = "".join(ch for ch in text if ch.isdigit())
+    return digits if len(digits) == 10 else ""
+
+
 def nts_business_status() -> int:
-    rows = [c for c in companies() if str(c.get("biz_no") or "").isdigit()]
+    rows = []
+    for company in companies():
+        cleaned = _clean_biz_no(company.get("biz_no"))
+        if cleaned:
+            rows.append({**company, "biz_no": cleaned})
     rows.sort(key=lambda c: str(c["biz_no"]))
     if LIMIT:
         rows = rows[:LIMIT]
@@ -391,10 +406,10 @@ def nts_business_status() -> int:
 
 
 def main() -> int:
-    global DATA_KEY, DART_KEY, LIMIT, DRY_RUN, WORKERS, MAX_AGE_DAYS
+    global DATA_KEY, DART_KEY, LIMIT, OFFSET, DRY_RUN, WORKERS, MAX_AGE_DAYS
     parser = make_parser(__doc__ or "", "monthly")
     args = parser.parse_args()
-    DRY_RUN, LIMIT, WORKERS, MAX_AGE_DAYS = args.dry_run, args.limit, args.workers, args.max_age_days
+    DRY_RUN, LIMIT, OFFSET, WORKERS, MAX_AGE_DAYS = args.dry_run, args.limit, args.offset, args.workers, args.max_age_days
     keys = selected(args.only, "monthly")
     DATA_KEY = load_key("DATA_GO_KR_API_KEY", "data_go_kr_key")
     DART_KEY = load_key("OPENDART_API_KEY", "opendart_api_key")
@@ -415,6 +430,7 @@ def main() -> int:
 
 
 MAX_AGE_DAYS = 0
+OFFSET = 0
 
 if __name__ == "__main__":
     raise SystemExit(main())

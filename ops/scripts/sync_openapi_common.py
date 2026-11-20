@@ -483,6 +483,8 @@ def make_parser(description: str, tier: str) -> argparse.ArgumentParser:
     parser.add_argument("--only", default="", help="쉼표로 고른 소스 키만 실행")
     parser.add_argument("--workers", type=int, default=6, help="동시 호출 수(기본 6)")
     parser.add_argument("--limit", type=int, default=0, help="소스별 최대 건수(시험용, 0=전체)")
+    parser.add_argument("--offset", type=int, default=0, help="앞에서 몇 건을 건너뛸지(긴 작업을 나눠 돌릴 때)")
+    parser.add_argument("--dart-budget", type=int, default=2000, help="OpenDART에서 한 번에 새로 검증할 최대 기업 수(기본 2,000)")
     parser.add_argument("--summary-file", default="", help="GitHub Step Summary 경로")
     parser.add_argument("--max-age-days", type=int, default=0, help="주기 갱신 창(일)")
     return parser
