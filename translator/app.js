@@ -2,7 +2,7 @@
  * 내담자 언어 번역기 · 화면 엔진
  *
  * 데이터(고치지 않고 읽기만 한다)
- *   data/terms.json  client-language-translator v2.1.0 — 용어 1,813
+ *   data/terms.json  client-language-translator v2.2.0 — 용어 2,628
  *
  * 주소
  *   ?q=MES          다른 섹터·개인비서에서 낱말로 바로 들어온다(정확히 맞으면 그 용어를 연다)
