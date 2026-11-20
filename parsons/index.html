@@ -8,6 +8,7 @@ var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'d
 document.documentElement.setAttribute('data-theme',t);})();
 </script>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
@@ -370,7 +371,7 @@ body.bar-off[data-mode="scroll"] .dock{transform:translate(-50%,0);opacity:1;poi
   <section class="pv" id="pv" aria-label="이용 안내">
     <button type="button" class="pv-t" id="pvToggle" aria-expanded="false" aria-controls="pvBody">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor"/></svg>
-      <span class="pv-tt"><b>이용 안내</b><small>로그인 없이 사용 <span aria-hidden="true">·</span> <span style="white-space:nowrap">참고·실습용 자료</span></small></span>
+      <span class="pv-tt"><b>이용 안내</b><small>회원 전용 · 로그인 후 이용 <span aria-hidden="true">·</span> <span style="white-space:nowrap">참고·실습용 자료</span></small></span>
       <span class="pv-c"><span id="pvLabel">펼치기</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </button>
     <div class="pv-b" id="pvBody" inert><div><ul>

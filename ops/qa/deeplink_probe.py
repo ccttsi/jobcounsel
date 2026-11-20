@@ -23,6 +23,9 @@ LIVE = '--live' in sys.argv
 BASE = os.environ.get('JC_BASE_URL') or ('https://ccttsi.github.io/jobcounsel/' if LIVE else 'http://127.0.0.1:8787/')
 CASES = json.load(open(os.path.join(ROOT, 'ops', 'qa', 'deeplink_cases.json'), encoding='utf-8'))
 
+# 회원 전용 게이트(assets/core.js)를 검사에서만 건너뛰는 표시 — 주소 파라미터로는 열리지 않는다.
+QA_INIT = "window.__JC_QA__ = 1;"
+
 READ = """() => {
   const box = document.querySelector('main') || document.getElementById('main') ||
               document.getElementById('view') || document.querySelector('.wrap') || document.body;
@@ -59,6 +62,7 @@ def main():
             b = pw.chromium.launch()
             ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True,
                                 has_touch=True, device_scale_factor=2, locale='ko-KR')
+            ctx.add_init_script(QA_INIT)          # 회원 전용 게이트를 건너뛰는 검사용 표시
             page = ctx.new_page()
             for c in CASES:
                 sec, url, want = c['sector'], c['url'], c['want']

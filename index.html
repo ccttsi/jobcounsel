@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
 <script src="./assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Career Consultant Tutorial · CCTT</title>
@@ -254,6 +255,26 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
   .a-vf-go svg{width:18px;height:18px}
   .a-vfo-checks li{grid-template-columns:minmax(0,1fr)}
 }
+
+/* 회원 전용 안내 띠: 대문은 공개, 자료 열람은 로그인 후 — 한 줄로 분명하게 */
+.a-mem{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:clamp(10px,1.4vw,14px);
+  padding:10px 14px;border-radius:14px;border:1px solid color-mix(in srgb,var(--a1) 30%,var(--line));
+  background:color-mix(in srgb,var(--a1) 7%,var(--panel))}
+.a-mem-ico{flex:none;display:grid;place-items:center;color:var(--a1)}
+.a-mem-ico svg{width:18px;height:18px}
+.a-mem-tx{flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.a-mem-tx b{font-size:14px;font-weight:750;letter-spacing:-.01em;color:var(--ink);line-height:1.45}
+.a-mem-tx span{font-size:12.5px;line-height:1.5;color:var(--muted)}
+.a-mem-acts{display:flex;gap:6px;flex:none;margin-left:auto}
+.a-root .a-mem-b{min-height:44px;padding:0 14px;border-radius:10px;font-size:13.5px;font-weight:750;
+  background:var(--a1);color:#fffdf8;border:1px solid transparent}
+[data-theme="dark"] .a-root .a-mem-b{color:#08090c}   /* 어둡게 테마에서는 강조색이 밝아 어두운 글자 */
+.a-root .a-mem-b.sub{background:var(--panel);color:var(--a1);border-color:color-mix(in srgb,var(--a1) 40%,var(--line))}
+.a-root .a-mem-b:active{transform:scale(.98)}
+.a-mem[data-in="1"]{border-color:var(--line);background:var(--panel)}
+.a-mem[data-in="1"] .a-mem-ico{color:var(--muted)}
+@media (max-width:520px){.a-mem{padding:9px 12px}.a-mem-tx b{font-size:13.5px}.a-mem-tx span{font-size:12px}
+  .a-mem-acts{margin-left:0;width:100%}.a-root .a-mem-b{flex:1 1 0}}
 
 /* 이용 안내 · 개인정보와 보안: 테두리 없는 한 줄. 누르면 아래로 펼쳐진다. */
 .a-pv{margin-top:clamp(10px,1.4vw,16px)}
@@ -601,22 +622,36 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
     <span data-jc-prefs class="jc-prefs-slot"></span>
   </header>
 
+  <section class="a-mem" id="memStrip" aria-labelledby="memTitle">
+    <span class="a-mem-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/></svg></span>
+    <span class="a-mem-tx">
+      <b id="memTitle">대문 목차와 애니메이션은 공개, 자료 열람은 회원 전용입니다.</b>
+      <span id="memSub">로그인 없이 둘러보고, 자료를 열 때 회원가입·로그인을 합니다. 아이디와 비밀번호만 받습니다.</span>
+    </span>
+    <span class="a-mem-acts" id="memActs">
+      <button type="button" class="a-mem-b" id="memSignup">회원가입</button>
+      <button type="button" class="a-mem-b sub" id="memLogin">로그인</button>
+    </span>
+  </section>
+
   <section class="a-pv" id="privacy" aria-labelledby="privacyTitle">
       <h2 class="a-pv-h">
         <button class="a-pv-toggle a-gauge" id="pvToggle" aria-expanded="false" aria-controls="pvBody">
           <span class="a-pv-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor"/></svg></span>
-          <span class="a-pv-tt"><b id="privacyTitle">이용 안내 · 개인정보와 보안</b><span class="a-pv-kw"><span>로그인 없이 모두 사용</span><span>참고·실습용 자료</span><span>아이디·비밀번호만 받음</span></span></span>
+          <span class="a-pv-tt"><b id="privacyTitle">이용 안내 · 개인정보와 보안</b><span class="a-pv-kw"><span>대문 공개 · 자료는 로그인 후</span><span>참고·실습용 자료</span><span>아이디·비밀번호만 받음</span></span></span>
           <span class="a-pv-cta"><span id="pvLabel">펼치기</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </button>
       </h2>
       <div class="a-pv-body" id="pvBody" inert><div class="a-pv-in">
     <div class="a-pv-lead">
-      <p><b>로그인하지 않아도 자료실의 모든 기능을 제한 없이 사용할 수 있습니다.</b> 로그인은 내가 본 내용과 학습 기록(탐색 진도·형광펜·포스트잇 메모 등)을 저장하고 다른 기기와 동기화하기 위한 선택 기능입니다.</p>
+      <p><b>대문의 목차와 애니메이션은 누구나 볼 수 있고, 자료 열람은 회원가입·로그인 후에 이용할 수 있습니다.</b> 로그인하면 각 자료가 열리고, 내가 본 내용과 학습 기록(탐색 진도·형광펜·포스트잇 메모 등)이 계정에 저장되어 다른 기기에서도 이어집니다.</p>
       <p><b>자료실의 정보는 정답이 아닌 참고·실습용 도구입니다.</b> 직업상담 실무 연습과 탐색을 돕기 위한 자료이므로, 실제 판단은 최신 공식 자료와 기관 안내로 확인해 주세요.</p>
       <p><b>「시드 · 매치」는 나만의 목차를 직접 꽂아 쓰는 화면입니다.</b> 대문의 심전도 단추를 한 번 누르고 한 번 더 누르면 <b>시드</b>(지식·원리·기준)와 <b>매치</b>(현장·실무) 중 하나를 고를 수 있습니다. 자료 선반에서 카드를 골라 번호 칸에 꽂으면 그 순서가 내 목차가 되고, <b>상황 프리셋</b>(매치는 <b>유형 프리셋</b>)을 고르면 상담 순서대로 카드가 한 번에 꽂히며 단계별 질문·확인 진행판이 함께 열립니다. 꽂은 순서는 지금 쓰는 기기의 브라우저에 저장되고, 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
     </div>
     <ul class="a-pv-list">
-      <li><b>아이디와 비밀번호만 받습니다.</b> 이름·이메일·전화번호 같은 개인정보는 받지 않습니다. 로그인하지 않으면 모든 기록은 지금 쓰는 기기의 브라우저에만 남습니다.</li>
+      <li><b>본 자료실은 공식 공공데이터와 법령을 바탕으로 개인이 직접 기획·제작한 학습 도구이며, 특정 교육기관·협회의 공식 자료나 교안이 아닙니다.</b> 20기 학습 공유용으로 제작되었으므로 링크 외부 공유는 삼가 주세요.</li>
+      <li><b>원천 공공데이터·법령을 제외한 편집 구조·해석 콘텐츠·시각화·자체 데이터셋의 저작권은 제작자에게 있으며, AI 학습·교안 재가공·무단 복제 및 상업적 재배포를 금합니다.</b> 화면 전체가 검색엔진·AI 수집기(robots.txt·noindex)에 실리지 않도록 막혀 있습니다.</li>
+      <li><b>아이디와 비밀번호만 받습니다.</b> 이름·이메일·전화번호 같은 개인정보는 받지 않습니다. 로그인하지 않으면 대문 밖의 자료는 열리지 않습니다.</li>
       <li><b>비밀번호는 되돌릴 수 없는 방식(bcrypt)으로 암호화해 저장합니다.</b> 운영자도 원래 비밀번호를 볼 수 없습니다. 그래서 <b>비밀번호를 잊으면 찾을 수 없습니다.</b></li>
       <li><b>메모에 내담자의 이름·연락처·주민등록번호 등 개인정보를 적지 마세요.</b> 이 사이트는 학습과 업무 정리를 돕는 도구입니다.</li>
       <li><b>언제든 로그아웃하고, 계정과 서버의 기록을 완전히 지울 수 있습니다.</b> 로그인 → 내 계정 → 계정과 기록 완전히 삭제.</li>
@@ -631,7 +666,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
         <dt>접근 범위</dt><dd>각 계정은 자기 기록만 읽고 쓸 수 있도록 데이터베이스에서 막아 두었습니다. 로그인 상태는 무작위 열쇠로 유지되며 180일 뒤 만료됩니다.</dd>
         <dt>운영자가 볼 수 있는 것</dt><dd>사이트 화면에서는 관리자도 가입된 아이디의 개수와 위 이용 통계의 합계만 볼 수 있습니다. 다만 데이터베이스를 관리하는 운영자는 기술적으로 아이디와 저장된 기록(메모 내용 포함)을 볼 수 있는 권한이 있으니, 민감한 내용은 적지 마세요. 비밀번호는 운영자도 볼 수 없습니다.</dd>
         <dt>무단 로그인 방지</dt><dd>같은 아이디로 비밀번호를 10번 틀리면 15분 동안 잠깁니다. 비밀번호는 다른 사이트와 다르게 정해 주세요.</dd>
-        <dt>비공식 서비스</dt><dd>개인이 운영하는 비공식 학습 사이트입니다. 고용노동부, 한국고용정보원 등 어떤 기관과도 관계가 없습니다.</dd>
+        <dt>비공식 서비스</dt><dd>개인이 운영하는 비공식 학습 사이트입니다. 고용노동부, 한국고용정보원 등 어떤 기관과도 관계가 없으며, 특정 교육기관·협회의 공식 자료나 교안이 아닙니다. 20기 학습 공유용이므로 링크 외부 공유는 삼가 주세요.</dd>
       </dl>
     </details>
       </div></div>
@@ -1252,7 +1287,7 @@ function step(k,auto){
   if(auto){restartFill();schedule();}
 }
 function goTo(i){hold();var c=Math.round(target),d=mod(i-c,N);if(d>N/2)d-=N;target=c+d;if(reduce()){pos=target;layout();}else kick();}
-function openCurrent(){var t=TOOLS[shown];if(!t)return;markVisited(t.id);location.href=t.path;}
+function openCurrent(){var t=TOOLS[shown];if(!t)return;if(!memberGo(t.path))return;markVisited(t.id);location.href=t.path;}
 function setPaused(p){
   paused=p;remain=INTERVAL;autoStart=0;var b=$('navPause'),lb=p?'자동 넘김 다시 시작':'자동 넘김 멈추기';
   b.setAttribute('aria-pressed',String(p));b.setAttribute('aria-label',lb);b.setAttribute('title',lb);
@@ -1609,7 +1644,7 @@ function renderRes(){
 }
 function openPal(){lastFocus=document.activeElement;$('ov').hidden=false;root.style.overflow='hidden';$('q').value='';sel=0;renderRes();ssBoot();setTimeout(function(){$('q').focus();},0);}
 function closePal(){if($('ov').hidden)return;$('ov').hidden=true;root.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus();}
-function go(i){var h=hits[i];if(!h)return;markVisited(h.id);window.location.href=h.path;}
+function go(i){var h=hits[i];if(!h)return;if(!memberGo(h.path))return;markVisited(h.id);window.location.href=h.path;}
 
 /* ---------- 값의 출처와 검증 시트 ---------- */
 var vfLast=null;
@@ -1747,6 +1782,51 @@ if(mode!=='all'){root.setAttribute('data-jc-mode',mode);$('stage').hidden=true;
   var bootMode=function(){if(!window.JCDECK){setTimeout(bootMode,20);return;}applyMode(mode,{url:false});};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootMode);else bootMode();}
 setInterval(function(){tick();applyTheme();},1000);
+
+/* ---------- 회원 전용 안내와 로그인 ----------
+ * 대문의 목차·애니메이션은 공개, 자료 열람은 로그인 후. 링크 가로채기는 assets/core.js 가 하고,
+ * 여기서는 안내 띠의 단추와 상태 표시만 맡는다. */
+function jcSyncReady(cb,n){
+  n=n||0;
+  if(window.JCSync&&typeof window.JCSync.open==='function'&&window.JCSync.configured!==false) return cb(window.JCSync);
+  if(n>40) return;
+  setTimeout(function(){jcSyncReady(cb,n+1);},120);
+}
+function jcLogin(v){jcSyncReady(function(S){S.open(v==='signup'?'signup':'login');});}
+/* 자료로 넘어가도 되는가 — 로그인하지 않았으면 core.js 가 로그인 창을 열고 false를 준다 */
+function memberGo(href){
+  try{ if(window.JCCore&&typeof window.JCCore.member==='function') return window.JCCore.member(href); }catch(e){}
+  return true;
+}
+function memPaint(user){
+  var strip=$('memStrip'),acts=$('memActs'),tt=$('memTitle'),sub=$('memSub');
+  if(!strip||!tt)return;
+  if(user){
+    strip.setAttribute('data-in','1');
+    tt.textContent='로그인됨 — '+user+' 님은 모든 자료를 열람할 수 있습니다.';
+    sub.textContent='탐색 진도·형광펜·포스트잇 메모가 계정에 저장되어 다른 기기에서도 이어집니다.';
+    if(acts)acts.hidden=true;
+  }else{
+    strip.removeAttribute('data-in');
+    tt.textContent='대문 목차와 애니메이션은 공개, 자료 열람은 회원 전용입니다.';
+    sub.textContent='로그인 없이 둘러보고, 자료를 열 때 회원가입·로그인을 합니다. 아이디와 비밀번호만 받습니다.';
+    if(acts)acts.hidden=false;
+  }
+}
+(function(){
+  var su=$('memSignup'),li=$('memLogin');
+  if(su)su.addEventListener('click',function(){jcLogin('signup');});
+  if(li)li.addEventListener('click',function(){jcLogin('login');});
+  /* 머리말의 「로그인」 단추(계정 단추) — 로그인 전에는 로그인 창, 로그인 뒤에는 내 계정 창 */
+  document.addEventListener('click',function(e){
+    var b=e.target&&e.target.closest?e.target.closest('[data-jc-login]'):null;
+    if(!b)return;
+    e.preventDefault();
+    jcSyncReady(function(S){S.open();});
+  });
+  window.addEventListener('jc-sync-change',function(e){memPaint(e&&e.detail?e.detail.user:null);});
+  jcSyncReady(function(S){memPaint(S.user?S.user():null);});
+})();
 icons();window.addEventListener('load',icons);
 })();
 </script>

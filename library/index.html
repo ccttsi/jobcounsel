@@ -8,6 +8,7 @@ var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'d
 document.documentElement.setAttribute('data-theme',t);})();
 </script>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
@@ -676,11 +677,10 @@ document.documentElement.setAttribute('data-theme',t);})();
 
 <!-- ================= HEADER HUD ================= -->
 <header class="hud sticky top-0 z-40 border-b hairline">
-  <div class="jc-room py-2 flex items-center gap-2 sm:gap-4">
+  <div class="jc-room py-2 flex items-center gap-2 sm:gap-4" style="min-height:64px">
     <a class="jc-ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
     <div class="min-w-0 flex-1 leading-tight">
       <div class="jc-title truncate font-bold" style="font-size:var(--fs-sm)"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.2" y="8.4" width="4.2" height="11.8" rx="1"/><rect x="8.8" y="5.6" width="4.2" height="14.6" rx="1"/><path d="M15.2 7.8l3.7 1 2.6 11.4-3.7.9z"/><path d="M2.4 20.2h19.2"/></svg><span class="jc-tt"><span class="ph-drop">국회 미래고용 </span><span>디지털 서재</span></span></div>
-      <div class="mono truncate text-[10px] sm:text-[11px] t-faint">// FUTURE EMPLOYMENT READING ROOM</div>
     </div>
     <div class="flex items-center gap-1.5 sm:gap-2">
       <div class="seg" role="group" aria-label="화면 테마" style="display:none" hidden>

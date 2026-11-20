@@ -222,7 +222,7 @@
         '<label class="f">비밀번호 확인' + pwInput('name="pw" autocomplete="current-password" required') + '</label><button class="btn bad" type="submit">삭제하기</button></form></details>';
     } else {
       var su = view === 'signup';
-      body = '<h2>' + (su ? '새 계정 만들기' : '로그인') + '</h2><p class="sub"><b>로그인하지 않아도 모든 기능을 그대로 쓸 수 있어요.</b> 로그인은 선택이며, 하면 탐색 진도, 형광펜, 포스트잇 메모가 저장되어 다른 기기에서도 이어져요.</p>' +
+      body = '<h2>' + (su ? '새 계정 만들기' : '로그인') + '</h2><p class="sub"><b>대문의 목차와 애니메이션은 로그인 없이 볼 수 있고, 자료 열람은 로그인 후에 열립니다.</b> 로그인하면 탐색 진도, 형광펜, 포스트잇 메모가 계정에 저장되어 다른 기기에서도 이어져요.</p>' +
         '<div class="tabs" role="tablist"><button role="tab" data-act="tab" data-v="login" aria-selected="' + !su + '">로그인</button><button role="tab" data-act="tab" data-v="signup" aria-selected="' + su + '">새로 만들기</button></div>' +
         '<form data-form="' + (su ? 'signup' : 'login') + '" novalidate>' +
         '<label class="f">아이디 ' + (su ? '<small>영문 소문자·숫자·밑줄(_) 4~20자</small>' : '') + '<input type="text" name="id" autocomplete="username" autocapitalize="off" spellcheck="false" inputmode="text" maxlength="20" required></label>' +

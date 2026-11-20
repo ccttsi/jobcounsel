@@ -54,15 +54,30 @@ body[data-jc-tool] .jc-hic {
   overflow: visible;
 }
 
-/* ---------- 4) 좁은 화면(≤430): 제목이 도구 단추에 눌리지 않게 한 값만 줄인다 ---------- */
+/* ---------- 4) 좁은 화면(≤430): 제목이 도구 단추에 눌리지 않게 한 값만 줄인다 ----------
+   2026-11-20: 360px에서 제목이 2~27px 잘려 「…」이 뜨던 7곳(hud·taxonomy·thermometer·parsons·
+   univ·interview·triage)을 없앴다. 글자 크기·사이 간격만 조금 줄이고, 줄임표가 남는 곳은
+   그 자료의 머리말 여백만 더 좁혔다(구조·글자는 그대로). */
 @media (max-width: 430px) {
   body[data-jc-tool] :is(header:not(.hero), .top, .top-in, .hd, .hdr, .bar) :is(.brand, h1, .jc-title, .kick) {
-    font-size: 15px !important;
-    letter-spacing: -.02em;
+    font-size: 14px !important;
+    letter-spacing: -.025em;
+    gap: 6px;
   }
-  body[data-jc-tool] :is(.hd, .hdr) { gap: 6px }
+  body[data-jc-tool] :is(.hd, .hdr) { gap: 5px }
   /* 영어 제호는 폭이 넓다 */
-  body[data-jc-tool="thermometer"] .hd .kick[class] { font-size: 13px !important }
+  body[data-jc-tool="thermometer"] .hd .kick[class] { font-size: 12px !important; letter-spacing: -.02em }
+  /* triage: 개념 아이콘을 24 → 20px로 (다른 자료와 같은 크기) */
+  body[data-jc-tool="triage"] .brand .jc-hic { width: 20px; height: 20px }
+  /* hud: 「용어」 단추 좌우 여백과 머리말 칸 사이를 좁혀 제목 자리를 만든다 */
+  body[data-jc-tool="hud"] #btnGloss { padding-left: 9px; padding-right: 9px }
+  body[data-jc-tool="hud"] header .max-w-6xl { gap: 6px }
   /* 이름이 긴 자료는 폰에서 앞머리(어느 기관·분야인지)를 접고 자료 이름만 남긴다 */
   body[data-jc-tool] :is(.brand, .jc-title, h1, .kick) .ph-drop { display: none }
+}
+@media (max-width: 380px) {
+  body[data-jc-tool] :is(header:not(.hero), .top, .top-in, .hd, .hdr, .bar) :is(.brand, h1, .jc-title, .kick) {
+    font-size: 13.5px !important;
+    letter-spacing: -.03em;
+  }
 }

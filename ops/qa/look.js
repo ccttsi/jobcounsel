@@ -18,6 +18,7 @@ const serve = () => new Promise(res => { const s = http.createServer((q, r) => {
     const notes = [];
     for (const [w, h] of [[390, 844], [1280, 800]]) {
       const c = await b.newContext({ viewport: { width: w, height: h } });
+      await c.addInitScript(() => { window.__JC_QA__ = 1; });   // 회원 전용 게이트 건너뛰기(검사용)
       await c.addInitScript(() => { try { localStorage.setItem('jc-theme', 'light'); } catch (e) {} });
       const p = await c.newPage(); await p.goto(base + pg, { waitUntil: 'load' }).catch(() => {}); await p.waitForTimeout(1200);
       const r = await p.evaluate(() => {

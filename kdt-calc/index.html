@@ -8,6 +8,7 @@ var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'d
 document.documentElement.setAttribute('data-theme',t);})();
 </script>
 <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef">
@@ -58,10 +59,10 @@ button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- 겉틀 ---------- */
-body[data-jc-tool="kdtcalc"] .wrap{max-width:1280px!important}
+body[data-jc-tool="kdt-calc"] .wrap{max-width:1280px!important}
 .wrap{position:relative;margin:0 auto;padding:0 clamp(14px,3vw,28px) 52px}
-body[data-jc-tool="kdtcalc"]{--jc-acc:var(--acc)}
-:root[data-theme="dark"] body[data-jc-tool="kdtcalc"]{--jc-acc:var(--acc)}
+body[data-jc-tool="kdt-calc"]{--jc-acc:var(--acc)}
+:root[data-theme="dark"] body[data-jc-tool="kdt-calc"]{--jc-acc:var(--acc)}
 
 /* 머리말: 홈 단추 ↔ [개념 아이콘 + 제목] 수직 중앙 (10px 간격, 아이콘 20px) */
 .hd{display:flex;align-items:center;gap:10px;min-height:64px}
@@ -278,7 +279,7 @@ html[data-jc-imm] .seal{display:none}
   .cmpcard{border-radius:14px}
 }
 @media (max-width:430px){
-  body[data-jc-tool="kdtcalc"] .hd .jc-title{font-size:15px!important;letter-spacing:-.02em}
+  body[data-jc-tool="kdt-calc"] .hd .jc-title{font-size:15px!important;letter-spacing:-.02em}
   .jc-title .en{display:none}
   .jc-tt .tt-full{display:none}
   .jc-tt .tt-mini{display:inline}
@@ -296,14 +297,14 @@ html[data-jc-imm] .seal{display:none}
   .two{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:380px){
-  body[data-jc-tool="kdtcalc"] .hd .jc-title{font-size:14.5px!important}
+  body[data-jc-tool="kdt-calc"] .hd .jc-title{font-size:14.5px!important}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
 </style>
 </head>
-<body data-jc-tool="kdtcalc">
+<body data-jc-tool="kdt-calc">
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="../assets/core.css">
 <div class="wrap">
@@ -464,7 +465,7 @@ html[data-jc-imm] .seal{display:none}
   </main>
 
   <footer class="ft">
-    <span>국비지원 자부담 계산기</span><span class="sep">·</span><a href="../hud/">실무 상담 HUD</a><span class="sep">·</span><a href="../transit/">환승노선도</a><span class="sep">·</span><span>로그인 없이 사용 · 참고용 계산 · 화면 밖으로 내보내지 않습니다</span>
+    <span>국비지원 자부담 계산기</span><span class="sep">·</span><a href="../hud/">실무 상담 HUD</a><span class="sep">·</span><a href="../transit/">환승노선도</a><span class="sep">·</span><span>회원 전용 · 로그인 후 이용 · 참고용 계산 · 화면 밖으로 내보내지 않습니다</span>
   </footer>
 </div>
 <script src="./app.js" defer></script>

@@ -31,6 +31,18 @@
   var st = { failed: false, offline: false, pending: 0 };
   var RETRY = [400, 1200];                                         // 다시 받기 전 쉬는 시간(ms)
 
+  /* ---------- 0-0) 검색엔진 비노출(noindex) ----------
+   * 대문 밖의 자료는 회원 전용이라 검색엔진에 싣지 않는다. 각 페이지 <head>에 같은 meta가 이미 있고,
+   * 이 줄은 그 줄을 빠뜨린 새 화면까지 덮는 안전망이다. 공개로 전환하면 이 두 줄(여기·각 페이지)과
+   * robots.txt의 Disallow: / 를 함께 지운다. */
+  (function () {
+    if (d.querySelector('meta[name="robots"]')) return;
+    var m = d.createElement('meta');
+    m.setAttribute('name', 'robots');
+    m.setAttribute('content', 'noindex, nofollow, noarchive, nosnippet, noai, noimageai');
+    (d.head || root).appendChild(m);
+  })();
+
   /* ---------- 0) 오류 수집(Sentry) ----------
    * Sentry 프로젝트 jobcounsel의 Browser JavaScript Loader Script.
    * 운영 도메인에서만, 한 번만 붙인다. 로컬 서버·Playwright 검사(127.0.0.1·localhost)에서는 요청이 나가지 않는다.
@@ -216,6 +228,193 @@
     if (window.JC_TOOLS) load(BASE + 'assets/next.js'); else load(BASE + 'assets/tools.js', function () { load(BASE + 'assets/next.js'); });
   });
 
+  /* ---------- 7) 회원 전용 게이트 (2026-11-20) ----------
+   * 대문(자료실 뿌리)은 누구나 본다 — 로고·심전도·목차·시드/매치·이용 안내까지.
+   * 그 밖의 자료 화면은 로그인한 사람에게만 연다. 세션은 assets/sync.js 가 localStorage
+   * 'jc-sync-session' 에 두는 토큰 하나로 보고(서버 검증·만료는 sync.js 의 jc_pull 이 한다),
+   * 로그인·로그아웃 때 sync.js 가 쏘는 'jc-sync-change' 신호로 열고 닫는다.
+   *
+   * 검사(CI 스모크·딥링크 실측)는 add_init_script 로 window.__JC_QA__ 를 심어 이 게이트를 건너뛴다.
+   * 주소 파라미터로는 열 수 없다 — 화면을 여는 길이 하나뿐이어야 검사와 실제가 같다.
+   */
+  var LOCK = (function () {
+    var SESS = 'jc-sync-session';
+    var host = null, sr = null, locked = false, pending = null, CSS = null;
+    var QA = function () { try { return !!window.__JC_QA__; } catch (e) { return false; } };
+    function hubPath() { return String(BASE || '/').replace(/[?#].*$/, ''); }
+    function here() { return location.href.split(/[?#]/)[0]; }
+    function isHub() { return here() === hubPath(); }
+    function isOwnPage() {                       /* 관리 화면은 자기 안에서 로그인을 받는다 */
+      var rel = here().slice(String(BASE || '').length);
+      return /^admin(\/|$)/.test(rel);
+    }
+    function guarded() { return !!BASE && !isHub() && !isOwnPage(); }
+    function session() {
+      try {
+        var raw = localStorage.getItem(SESS);
+        if (!raw) return null;
+        var s = JSON.parse(raw);
+        return s && s.token ? (s.username || '회원') : null;
+      } catch (e) { return null; }
+    }
+    function theme() {
+      if (!host) return;
+      var dark = root.getAttribute('data-theme') === 'dark';
+      var sepia = !dark && root.getAttribute('data-jc-tone') === 'sepia';
+      if (dark) host.setAttribute('data-dark', ''); else host.removeAttribute('data-dark');
+      if (sepia) host.setAttribute('data-sepia', ''); else host.removeAttribute('data-sepia');
+    }
+    CSS = [
+      ':host{all:initial;position:fixed;inset:0;z-index:2147483400;display:block;' +
+      '--bg:#faf6ef;--panel:#fffdf8;--line:#e9e0d2;--ink:#2a2521;--muted:#655c53;--acc:#0f766e;' +
+      '--on:#fffdf8;--soft:#f5efe4;font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,' +
+      '"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;color:var(--ink);' +
+      '-webkit-font-smoothing:antialiased}',
+      ':host([data-dark]){--bg:#08090c;--panel:#10141d;--line:#232a38;--ink:#e6e9ef;--muted:#9aa2b4;--acc:#2dd4bf;--on:#06201d;--soft:#141a26}',
+      ':host([data-sepia]){--bg:#f3e7cf;--panel:#fbf3e3;--line:#e0d0b4;--ink:#241d14;--muted:#6b5b45;--acc:#0d6b56;--on:#fbf3e3;--soft:#efe1c9}',
+      '*{box-sizing:border-box;margin:0;font:inherit;color:inherit}',
+      '.veil{position:absolute;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;' +
+      'padding:max(20px,6vh) max(16px,4vw);overflow:auto}',
+      '.card{width:min(460px,100%);background:var(--panel);border:1px solid var(--line);border-radius:20px;' +
+      'padding:28px 24px 22px;box-shadow:0 30px 80px -28px rgba(40,30,20,.42);text-align:left}',
+      ':host([data-dark]) .card{box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}',
+      '.seal{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;letter-spacing:.14em;' +
+      'color:var(--acc);border:1px solid currentColor;border-radius:999px;padding:5px 11px}',
+      'h2{font-family:"Cormorant Garamond","Noto Serif KR",Georgia,serif;font-size:23px;font-weight:600;' +
+      'letter-spacing:-.01em;margin-top:14px;line-height:1.3}',
+      'p.lead{font-size:14.5px;line-height:1.65;color:var(--muted);margin-top:10px;word-break:keep-all}',
+      'p.lead b{color:var(--ink);font-weight:700}',
+      '.row{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}',
+      'button{all:unset;box-sizing:border-box;cursor:pointer;min-height:48px;padding:0 18px;border-radius:12px;' +
+      'font-size:15px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;' +
+      '-webkit-tap-highlight-color:transparent}',
+      'button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}',
+      '.go{background:var(--acc);color:var(--on);flex:1 1 140px}',
+      '.go:active{opacity:.85}',
+      '.sub{flex:1 1 110px;border:1px solid var(--line);color:var(--ink);background:var(--soft)}',
+      'a.home{display:inline-flex;align-items:center;min-height:44px;margin-top:6px;font-size:13.5px;' +
+      'font-weight:600;color:var(--muted);text-decoration:underline;text-underline-offset:3px}',
+      '.fine{font-size:12.5px;line-height:1.6;color:var(--muted);margin-top:12px;' +
+      'border-top:1px dashed var(--line);padding-top:12px}',
+      '.fine b{color:var(--ink);font-weight:700}',
+      '@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}'
+    ].join('\n');
+    function openLogin(view) {
+      var want = view === 'signup' ? 'signup' : 'login';
+      function call() {
+        var S = window.JCSync;
+        if (S && typeof S.open === 'function' && S.configured !== false) { S.open(want); return true; }
+        return false;
+      }
+      if (call()) return true;
+      var s = d.createElement('script');                 /* marker.js 가 없거나 늦은 화면(검사 내역 등) */
+      s.src = String(BASE || './') + 'assets/sync.js'; s.async = true;
+      s.onload = function () { setTimeout(call, 20); setTimeout(call, 400); };
+      s.onerror = function () { call(); };
+      (d.head || root).appendChild(s);
+      return false;
+    }
+    function build() {
+      if (host || !d.body) return !!host;
+      host = d.createElement('div');
+      host.id = 'jc-gate';
+      host.setAttribute('data-jc-ignore', '');
+      sr = host.attachShadow ? host.attachShadow({ mode: 'open' }) : host;
+      sr.innerHTML = '<style>' + CSS + '</style>' +
+        '<div class="veil" role="dialog" aria-modal="true" aria-labelledby="gt">' +
+          '<div class="card">' +
+            '<span class="seal">CCTT · MEMBERS</span>' +
+            '<h2 id="gt">회원 전용 자료입니다</h2>' +
+            '<p class="lead">대문의 <b>목차와 애니메이션</b>은 누구나 볼 수 있습니다. ' +
+              '자료실의 각 자료는 <b>회원가입·로그인 후</b>에 열립니다.</p>' +
+            '<div class="row">' +
+              '<button type="button" class="go" data-act="signup">회원가입</button>' +
+              '<button type="button" class="sub" data-act="login">로그인</button>' +
+            '</div>' +
+            '<a class="home" href="' + String(BASE || './') + '">← 대문으로 돌아가기</a>' +
+            '<p class="fine">아이디와 비밀번호만 받습니다. 이메일·이름·연락처는 받지 않으며, ' +
+              '비밀번호는 되돌릴 수 없는 방식으로 암호화해 저장합니다. 편집 구조·해석 콘텐츠·시각화·자체 데이터셋의 ' +
+              '저작권은 제작자에게 있고, AI 학습·교안 재가공·무단 복제·상업적 재배포를 금합니다.</p>' +
+          '</div>' +
+        '</div>';
+      sr.addEventListener('click', function (e) {
+        var b = e.target && e.target.closest ? e.target.closest('[data-act]') : null;
+        if (!b) return;
+        openLogin(b.getAttribute('data-act'));
+      });
+      (d.body || root).appendChild(host);
+      theme();
+      try { new MutationObserver(theme).observe(root, { attributes: true, attributeFilter: ['data-theme', 'data-jc-tone'] }); } catch (e) {}
+      return true;
+    }
+    function lock() {
+      if (!guarded() || locked) return;
+      locked = true;
+      /* 내용이 잠깐이라도 보이지 않게 — 게이트가 그려지는 같은 틱에 풀린다 */
+      if (!d.body) { d.addEventListener('DOMContentLoaded', lock, { once: true }); locked = false; return; }
+      build();
+      try { if ('inert' in HTMLElement.prototype) d.body.inert = true; } catch (e) {}
+      root.setAttribute('data-jc-locked', '');
+      var f = sr && sr.querySelector('.go'); try { if (f) f.focus({ preventScroll: true }); } catch (e) {}
+    }
+    function unlock() {
+      if (!locked && !host) return;
+      locked = false;
+      try { if ('inert' in HTMLElement.prototype) d.body.inert = false; } catch (e) {}
+      if (root.hasAttribute('data-jc-locked')) root.removeAttribute('data-jc-locked');
+      if (host && host.parentNode) host.parentNode.removeChild(host);
+      host = null; sr = null;
+    }
+    function refresh() { if (!guarded()) return; if (session()) unlock(); else lock(); }
+    /* 대문: 비로그인으로 자료 링크를 누르면 그 자리에서 멈추고 로그인 창을 연다 */
+    function intercept(e) {
+      if (!isHub() || QA() || session()) return;
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a || a.target === '_blank' || a.hasAttribute('download') || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
+      var href = '';
+      try { href = new URL(a.href, location.href).href; } catch (err) { return; }
+      var base = hubPath();
+      if (href.indexOf(base) !== 0) return;                        /* 바깥 링크는 그대로 */
+      var rel = href.slice(base.length);
+      if (!rel || /^($|#|index\.html)/.test(rel)) return;           /* 대문 안 이동(해시·목차)은 그대로 */
+      if (/^admin(\/|$)/.test(rel)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      pending = href;
+      openLogin('signup');
+    }
+    function afterLogin(user) {
+      if (!user) { pending = null; return; }
+      if (isHub() && pending) {
+        var go = pending; pending = null;
+        try { location.assign(go); } catch (e) {}
+      }
+    }
+    if (guarded() && !QA()) {
+      root.setAttribute('data-jc-locked', '');       /* head 단계 — 본문이 그려지기 전에 잠근다 */
+      if (session()) root.removeAttribute('data-jc-locked'); else { locked = true; }
+      if (d.body) { locked = false; refresh(); }     /* 늦게 불린 경우 */
+      else d.addEventListener('DOMContentLoaded', function () { locked = false; refresh(); }, { once: true });
+    }
+    if (isHub() && !QA()) {
+      ready(function () { d.addEventListener('click', intercept, true); });
+    }
+    d.addEventListener('jc-sync-change', function (e) {
+      var u = e && e.detail && e.detail.user;
+      if (guarded() && !QA()) { if (u) unlock(); else lock(); }
+      if (isHub()) afterLogin(u);
+    });
+    /* 대문이 자료로 넘어가기 전에 묻는 문 — 허락되면 true, 아니면 로그인 창을 열고 false */
+    function allow(href) {
+      if (QA()) return true;
+      if (session()) return true;
+      if (href) pending = href;
+      openLogin('signup');
+      return false;
+    }
+    return { refresh: refresh, guarded: guarded, locked: function () { return locked; }, open: openLogin, allow: allow };
+  })();
+
   window.JCCore = {
     base: BASE,
     /* 대문 검색이 넘긴 낱말 — 섹터가 직접 쓸 때 */
@@ -224,6 +423,10 @@
     state: function () { return { failed: st.failed, offline: st.offline, pending: st.pending }; },
     warm: function (href) { try { var u = new URL(href, location.href); if (u.origin === location.origin) warm(u.origin + u.pathname); } catch (e) {} },
     notice: function (text, label, fn) { show(String(text || ''), label || null, fn); },
-    clear: hide
+    clear: hide,
+    /* 회원 전용 게이트: 화면은 core.js 가 스스로 잠근다. 섹터가 직접 열고 닫을 때만 쓴다 */
+    gate: function () { return { locked: LOCK.locked(), open: LOCK.open, refresh: LOCK.refresh }; },
+    /* 대문·검색이 자료를 열기 전에 부르는 문. true면 열어도 된다(로그인했거나 검사 모드) */
+    member: function (href) { return LOCK.allow(href); }
   };
 })();

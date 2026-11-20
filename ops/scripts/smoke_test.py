@@ -25,6 +25,10 @@ import threading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# 회원 전용 게이트(assets/core.js)를 검사에서만 건너뛰는 표시.
+#   주소 파라미터가 아니라 브라우저 문맥에 심는 값이라, 실제 방문 주소로는 열리지 않는다.
+QA_INIT = "window.__JC_QA__ = 1;"
+
 PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
          "/portals/#p=work24", "/flow/", "/mydeck/"]
 VIEWPORTS = [(390, 844, "휴대폰"), (1280, 800, "데스크톱")]
@@ -467,6 +471,7 @@ def run(args):
             for page_path in args.pages:
                 for width, height, kind in VIEWPORTS:
                     context = browser.new_context(viewport={"width": width, "height": height})
+                    context.add_init_script(QA_INIT)
                     page = context.new_page()
                     issues, console_errors, broken_assets = [], [], []
 
