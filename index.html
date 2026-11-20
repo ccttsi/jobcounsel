@@ -560,6 +560,9 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-tour-ring.soft{border-style:dashed;border-color:color-mix(in srgb,var(--a1) 45%,transparent);box-shadow:none}
 .a-tour-card{position:fixed;z-index:1;display:flex;flex-direction:column;overflow:hidden;background:var(--panel);
   border:1px solid var(--line-2);border-radius:18px;box-shadow:var(--shadow-up)}
+/* 어두운 테마의 --panel은 반투명 유리(60%)라, 그대로 쓰면 카드 뒤 글자가 비쳐 읽힌다.
+   안내 카드는 읽는 물건이므로 **불투명**으로 잡는다(밝은 테마의 #fffdf8과 같은 결). */
+:root[data-theme="dark"] .a-tour-card{background:#0f1521}
 .a-tour-hd{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;border-bottom:1px solid var(--line)}
 .a-tour-hd b{font-size:13.5px;font-weight:800;letter-spacing:-.02em;color:var(--muted)}
 .a-tour-step{font-size:12.5px;font-weight:800;color:var(--a1);background:var(--soft1);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums}
