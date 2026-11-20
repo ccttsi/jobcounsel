@@ -1,0 +1,94 @@
+# Open API 월간 동기화 (매월 1일 04:00 KST)
+#   OpenDART 공시·기업정보 / 금융위 기업기본·재무 / Q-net 합격률·통계 / 법제처 법령 / 국세청 사업자 상태
+#   크론은 28~31일 19:00 UTC(= 다음 날 04:00 KST)에 깨어나고, 가드가 **KST 날짜가 1일일 때만** 본 작업을 돌린다.
+#   '0 19 1 * *'로 두면 2일 04:00 KST가 되어 하루 늦으므로 이렇게 잡았다.
+#   수동: Actions → openapi-monthly → Run workflow
+name: openapi-monthly
+
+on:
+  schedule:
+    - cron: '0 19 28-31 * *'   # 19:00 UTC = 다음 날 04:00 KST
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '호출만 하고 저장·커밋하지 않는다'
+        type: boolean
+        default: false
+      only:
+        description: '특정 소스만 (예: qnet_stats,law_revision)'
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: openapi-monthly-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    name: guard
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - id: check
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif [ "$(TZ=Asia/Seoul date +%d)" = "01" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "오늘은 1일이 아니다 — 건너뛴다." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  sync:
+    name: sync
+    needs: guard
+    if: needs.guard.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 수집
+        env:
+          DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
+          OPENDART_API_KEY: ${{ secrets.OPENDART_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          ONLY: ${{ inputs.only }}
+        run: |
+          ARGS=""
+          if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "$ONLY" ]; then ARGS="$ARGS --only $ONLY"; fi
+          python3 ops/scripts/sync_openapi_monthly.py $ARGS --summary-file "$GITHUB_STEP_SUMMARY"
+
+      - name: 저장소 검사
+        if: ${{ inputs.dry_run != true }}
+        run: python3 ops/scripts/validate_repo.py --only json,license,js
+
+      - name: 바뀐 자료 커밋
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name "jobcounsel-openapi[bot]"
+          git config user.email "openapi-sync@users.noreply.github.com"
+          git add data/openapi
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 이번 달은 새 자료가 없다." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "### 바뀐 파일" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          git diff --cached --stat >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          git commit -m "🔄 Open API 월간 갱신 — 기업·자격·법령 $(TZ=Asia/Seoul date +%Y-%m-%d)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

@@ -1,0 +1,73 @@
+# Open API 주간 동기화 (월요일 05:00 KST)
+#   15086447 NCS 훈련과정 정보 — 대분류 01~24 전부
+#   바뀐 것이 있을 때만 data/openapi/에 커밋한다.
+#   수동: Actions → openapi-weekly → Run workflow
+name: openapi-weekly
+
+on:
+  schedule:
+    - cron: '0 20 * * 0'   # 일 20:00 UTC = 월 05:00 KST
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '호출만 하고 저장·커밋하지 않는다'
+        type: boolean
+        default: false
+      only:
+        description: '특정 소스만 (예: ncs_training)'
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: openapi-weekly-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 수집
+        env:
+          DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          ONLY: ${{ inputs.only }}
+        run: |
+          ARGS=""
+          if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "$ONLY" ]; then ARGS="$ARGS --only $ONLY"; fi
+          python3 ops/scripts/sync_openapi_weekly.py $ARGS --summary-file "$GITHUB_STEP_SUMMARY"
+
+      - name: 저장소 검사
+        if: ${{ inputs.dry_run != true }}
+        run: python3 ops/scripts/validate_repo.py --only json,license,js
+
+      - name: 바뀐 자료 커밋
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name "jobcounsel-openapi[bot]"
+          git config user.email "openapi-sync@users.noreply.github.com"
+          git add data/openapi
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 이번 주는 새 자료가 없다." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "### 바뀐 파일" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          git diff --cached --stat >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          git commit -m "🔄 Open API 주간 갱신 — NCS 훈련과정 $(TZ=Asia/Seoul date +%Y-%m-%d)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
