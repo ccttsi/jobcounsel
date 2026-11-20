@@ -782,7 +782,8 @@ def build_companies():
         for x in (c.get('kw') or [])[:5]:
             if str(x).strip():
                 kw.append(str(x).strip())
-        if c.get('main_products'):
+        # main_products 는 kw 가 비어 있는 기업(대부분 위키 유래)에서만 낱말로 쓴다 — DART 로 채운 기업은 같은 값이 kw 에 이미 있다
+        if c.get('main_products') and not c.get('kw'):
             kw.append(str(c['main_products']))
         # ② 보강 레이어(enrich.json)의 대표 브랜드·주요 제품
         if p.get('b'):

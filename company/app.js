@@ -1172,14 +1172,16 @@
         (has(x.industry) ? '<p class="t fnote">국민연금 신고 업종은 사업장 하나의 업종이어서, 아웃소싱·고용서비스처럼 여러 사업을 하는 회사는 실제 사업과 다를 수 있습니다.</p>' : '');
       var midSum = has(x.business_summary) ? '<p class="t">' + esc(x.business_summary) + '</p>' : '';
       b += profSec(x) + (x._px ? sec('원자료에 적힌 것', midPar, '', '국민연금 가입 사업장 · 상장 종목 정보 기준') :
-        sec('무슨 회사인가', midSum + midPar, '', midSum ? '공식 홈페이지·공개 자료에서 확인' : '국민연금 가입 사업장 · 상장 종목 정보 기준'));
+        sec('무슨 회사인가', midSum + midPar, '', midSum
+          ? (x.dart && x.dart.report ? '금융감독원 DART 사업보고서 「주요 제품 및 서비스」' : '공식 홈페이지·공개 자료에서 확인')
+          : '국민연금 가입 사업장 · 상장 종목 정보 기준'));
     }
     if (x.business_tags_detail && x.business_tags_detail.length) b += sec('고용서비스 허가·등록', '<ul class="btl">' + x.business_tags_detail.map(function (t) {
       var v = TAGV[t.tag] || {}, S = SRC[t.source] || {};
       return '<li><b>' + esc(v.label || t.tag) + '</b><span>' + esc(v.basis || '') + '</span><span>' + [t.license_no ? '허가번호 ' + t.license_no : '', t.office ? t.office + ' 관할' : '', '기준 ' + t.as_of].filter(Boolean).map(esc).join(' · ') + '</span><span class="nt">' + esc(S.name || t.source) + (t.match === 'district' ? ' · 이름과 시·군·구까지 일치' : ' · 이름과 주소 일치') + '</span></li>';
     }).join('') + '</ul>', '', '고용노동부 공개 명단 대조');
-    if (x._c === 'MID' && has(x.main_products)) b += sec('주요 사업', '<p class="t">' + esc(x.main_products) + '</p>', '', x.main_products_source === 'WIKI' ? '위키백과 첫 문장에서 확인' : '상장사 기업개요에서 확인');
-    if (x._c === 'MID' && has(x.official_url)) b += sec('공식 홈페이지', '<p class="t"><a href="' + esc(safeUrl(x.official_url)) + '" target="_blank" rel="noopener noreferrer">' + esc(safeUrl(x.official_url)) + '</a></p>', '', x.official_url_checked === 'sources' ? '출처 2곳 일치(사이트 직접 접속은 확인 못함)' : '접속해 회사명·사업자번호 대조');
+    if (x._c === 'MID' && has(x.main_products)) b += sec('주요 사업', '<p class="t">' + esc(x.main_products) + '</p>', '', (x.main_products_source === 'WIKI' ? '위키백과 첫 문장에서 확인' : x.main_products_source === 'DART' ? '금융감독원 DART 사업보고서에서 확인' : '상장사 기업개요에서 확인'));
+    if (x._c === 'MID' && has(x.official_url)) b += sec('공식 홈페이지', '<p class="t"><a href="' + esc(safeUrl(x.official_url)) + '" target="_blank" rel="noopener noreferrer">' + esc(safeUrl(x.official_url)) + '</a></p>', '', (x.official_url_checked === 'sources' ? '출처 2곳 일치(사이트 직접 접속은 확인 못함)' : x.official_url_checked === 'DART' ? '기업이 금융감독원 DART에 신고한 주소(접속 대조는 하지 않음)' : '접속해 회사명·사업자번호 대조'));
     if (x._c === 'MID') b += sec('목록에 대해', '<p class="t">정부는 중견기업 전체 명단을 공개하지 않습니다. 이 목록은 확인서를 받은 기업만 담은 하한 집합이어서, 법적으로 중견기업이어도 확인서를 받지 않았으면 빠집니다. 업종·가입자수·소재지는 이름과 사업자등록번호 앞 6자리가 같은 국민연금 사업장을 찾아 붙인 값이고, 주요 사업은 위키백과·상장사 기업개요에서 확인된 것만, 홈페이지는 실제로 접속해 회사명이 확인된 것만 실었습니다.</p>');
     /* 옆 칸: 함께 보기 */
     var s2 = '';
@@ -1335,6 +1337,7 @@
       '<li><b>별칭은 지어내지 않았습니다.</b> 이름을 하나하나 원자료에서 조회해 그 법인이 실제로 있는지 확인한 뒤 얶었습니다. 원자료에 없는 법인·기관은 별칭을 만들지 않았습니다' + (en ? ' (별칭 ' + fmt(en.aliases) + '개 · 설명 ' + fmt(en.profiles) + '곳)' : '') + '.</li>' +
       '<li><b>설명·주요 제품·주요 고객은 보강한 값</b>입니다. 공개된 회사·기관 소개(브랜드·제품·사업)와 원자료의 업종·기업집단·설립목적 공시를 바탕으로 적었고, 확인되지 않은 사업은 쓰지 않았습니다. 설명이 없는 기업은 원자료의 업종·소재지·가입자수만으로 문장을 만듭니다.</li>' +
       '<li><b>숫자·업종·주소·분류는 원자료 그대로</b>입니다. 중견기업의 검색 낱말(<span class="code">kw</span>)·약칭(<span class="code">alias</span>)·사업 설명(<span class="code">business_summary</span>)은 공식 홈페이지·공시에서 확인해 <span class="code">data/companies.json</span>에 함께 적었고, 근거는 각 기업의 <span class="code">kw_source</span>에 남겼습니다. 확인되지 않은 기업은 업종 낱말만 있습니다.</li>' +
+      '<li><b>금융감독원 DART 전자공시로 확인한 중견기업은 2,897곳</b>입니다(2026-11-21 조회). 이름만 같은 다른 법인을 피하려고 <b>DART 기업개황의 사업자등록번호가 이 명단과 같은 법인만</b> 붙였습니다(<span class="code">dart.biz_no_verified</span>). 그중 사업보고서를 내는 583곳의 「II. 사업의 내용 — 주요 제품 및 서비스」 표에서 제품·서비스 이름을 그대로 뽑아 456곳의 검색 낱말과 한 줄 설명을 채웠고, 나머지는 공시에 제품 표가 없어(서비스업·지주회사·건설공사 현황만 있는 경우) 억지로 만들지 않았습니다. 비상장 외감법인은 사업보고서를 내지 않아 DART에 사업 내용이 없고, 홈페이지 주소·업종코드만 확인해 넣었습니다.</li>' +
       '</ul>';
     h += '<h2>원자료</h2><table class="tbl"><thead><tr><th>출처</th><th>무엇을 가져왔나</th><th>기준일 · 이용 조건</th></tr></thead><tbody>' + (m.sources || []).concat((LMETA && LMETA.sources) || []).concat((PMETA && PMETA.sources) || []).concat((GMETA && GMETA.sources) || []).map(function (s) {
       var u = safeUrl(s.url);
