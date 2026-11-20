@@ -186,6 +186,9 @@ def main():
     # KSA 샤드
     check_ksa(doc)
 
+    # 인사이트 인덱스(한눈에·면접 예상 질문)
+    check_insights(doc)
+
     report()
 
 
@@ -292,6 +295,112 @@ def check_ksa(doc):
         err("ksa.coverage.units_in_notice_with_ksa 불일치")
     if len(notice & set(seen)) < len(notice):
         warn("고시 별표 능력단위 중 KSA 없는 것 %d건" % (len(notice) - len(notice & set(seen))))
+
+
+def check_insights(doc):
+    """insights/ — 원자료에서 파생한 요약이 원자료와 어긋나지 않는가.
+
+    값의 «내용»은 사람이 보는 것이고, 여기서는 **구조와 합계**만 본다:
+    모든 NCS 노드·능력단위가 있는가, KSA 항목 수 합계가 원본과 같은가,
+    한 줄 정의·질문이 빈 채로 남은 곳은 KSA가 없는 곳뿐인가.
+    """
+    INS = os.path.join(HERE, "insights")
+    idx_path = os.path.join(INS, "index.json")
+    if not os.path.exists(idx_path):
+        warn("insights/index.json 없음 — build_insights.py를 실행하지 않았다")
+        return
+    try:
+        with open(idx_path, encoding="utf-8") as f:
+            idx = json.load(f)
+    except json.JSONDecodeError as e:
+        err("insights/index.json 파싱 실패: %s" % e)
+        return
+
+    nodes = {}
+    unit_entries = {}
+    for major, rel in (idx.get("nodes") or {}).items():
+        path = os.path.join(INS, rel)
+        if not os.path.exists(path):
+            err("insights 노드 샤드 없음: %s" % rel)
+            continue
+        with open(path, encoding="utf-8") as f:
+            shard = json.load(f)
+        if shard.get("major") != major:
+            err("insights/%s: major 불일치" % rel)
+        nodes.update(shard.get("nodes") or {})
+    for major, rel in (idx.get("units") or {}).items():
+        path = os.path.join(INS, rel)
+        if not os.path.exists(path):
+            err("insights 능력단위 샤드 없음: %s" % rel)
+            continue
+        with open(path, encoding="utf-8") as f:
+            shard = json.load(f)
+        if shard.get("major") != major:
+            err("insights/%s: major 불일치" % rel)
+        unit_entries.update(shard.get("units") or {})
+
+    # ① NCS 노드 빠짐
+    want_nodes = set()
+    for lv in ("major", "middle", "minor", "sub"):
+        want_nodes |= {n["code"] for n in doc["ncs"]["levels"][lv]}
+    want_nodes |= {x["code"] for x in doc["ncs"].get("legacy", [])}
+    missing = sorted(want_nodes - set(nodes))
+    if missing:
+        err("insights에 없는 NCS 노드 %d개: %s" % (len(missing), missing[:5]))
+    extra = sorted(set(nodes) - want_nodes)
+    if extra:
+        err("taxonomy.json에 없는 NCS 노드가 insights에 있음: %s" % extra[:5])
+
+    # ② 능력단위 빠짐
+    unit_codes = {u["code"] for u in doc["ncs"]["units"]}
+    mu = sorted(unit_codes - set(unit_entries))
+    if mu:
+        err("insights에 없는 능력단위 %d개: %s" % (len(mu), mu[:5]))
+
+    # ③ KSA 항목 수 합계 — 원본과 같아야 한다(집계가 빠짐없이 올라갔는가)
+    tot = {"k": 0, "s": 0, "a": 0}
+    for code, e in unit_entries.items():
+        for g in tot:
+            tot[g] += (e.get("ksa") or {}).get(g, 0)
+    major_codes = [n["code"] for n in doc["ncs"]["levels"]["major"]]
+    top = {"k": 0, "s": 0, "a": 0}
+    for c in major_codes:
+        e = nodes.get(c) or {}
+        for g in top:
+            top[g] += (e.get("ksa") or {}).get(g, 0)
+    for g, name in (("k", "지식"), ("s", "기술"), ("a", "태도")):
+        if tot[g] != top[g]:
+            err("insights %s 합계 불일치: 능력단위 %d, 대분류 롤업 %d" % (name, tot[g], top[g]))
+
+    # ④ 한 줄 정의·질문이 빈 곳은 KSA가 없는 곳뿐인가
+    no_line = [c for c, e in nodes.items() if not e.get("line")]
+    no_q = [c for c, e in nodes.items() if not e.get("qs")]
+    if set(no_line) != set(no_q):
+        err("한 줄 정의는 없는데 질문만 있는(또는 반대) 노드가 있다")
+    for c in no_line:
+        if (nodes[c].get("ksa") or {}).get("k", 0) or (nodes[c].get("ksa") or {}).get("s", 0):
+            err("KSA가 있는데 한 줄 정의가 없는 노드: %s" % c)
+    u_no = [c for c, e in unit_entries.items() if e.get("hasKsa") and not e.get("line")]
+    if u_no:
+        err("KSA가 있는데 한 줄 정의가 없는 능력단위 %d개: %s" % (len(u_no), u_no[:5]))
+
+    # ⑤ 비율·라벨
+    for c, e in list(nodes.items())[:2000]:
+        k = e.get("ksa") or {}
+        if not (k.get("k") or k.get("s") or k.get("a")):
+            continue
+        if abs(k.get("kp", 0) + k.get("sp", 0) + k.get("ap", 0) - 100) > 1:
+            err("insights %s: KSA 비율 합이 100이 아님(%s+%s+%s)" % (c, k.get("kp"), k.get("sp"), k.get("ap")))
+            break
+        if not k.get("b"):
+            err("insights %s: 역량 성향 라벨 없음" % c)
+            break
+
+    declared = idx.get("meta", {}).get("counts", {})
+    if declared.get("nodes") != len(nodes):
+        err("insights.meta.counts.nodes: 선언 %s, 실제 %s" % (declared.get("nodes"), len(nodes)))
+    if declared.get("units") != len(unit_entries):
+        err("insights.meta.counts.units: 선언 %s, 실제 %s" % (declared.get("units"), len(unit_entries)))
 
 
 def report():
