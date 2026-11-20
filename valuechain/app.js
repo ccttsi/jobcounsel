@@ -31,7 +31,7 @@
     $('inds').innerHTML = D.industries.map(function (it) {
       var on = it.id === ST.ind;
       return '<button type="button" class="ind" data-ind="' + esc(it.id) + '" aria-pressed="' + (on ? 'true' : 'false') + '">' +
-        '<span class="n">' + esc(it.no) + '</span><span class="nm">' + esc(it.short) + '</span>' +
+        '<span class="n">' + esc(it.no) + '</span><span class="nm">' + esc(it.name) + '</span>' +
         '<span class="ct">' + it.steps.length + '단계</span></button>';
     }).join('');
   }

@@ -162,7 +162,8 @@ PROBES = {
         const name = (document.getElementById('iName') || {}).textContent || '';
         const head = (document.querySelector('#det h3') || {}).textContent || '';
         const pos = (document.querySelector('#det .pos') || {}).textContent || '';
-        return {ok: name.trim() === '이차전지' && head.trim() === '음극재·분리막·전해액' && /^3\s*\/\s*6$/.test(pos.trim()),
+        const tight = pos.split(' ').join('');
+        return {ok: name.trim() === '이차전지' && head.trim() === '음극재·분리막·전해액' && tight === '3/6',
                 detail: `산업 ${name.trim()} · 단계 ${head.trim()} · ${pos.trim()}`};
     }""",
     "/emerging/": """() => {
