@@ -5,6 +5,7 @@
 - 원본 데이터는 건드리지 않는다. 읽기만 한다.
 - 섹터 목록은 `assets/tools.js`(JC_TOOLS) 한 곳에서만 가져온다(개수 하드코딩 없음).
 - 값이 확인되지 않은 필드는 지어내지 않고 항목째 생략한다(자료실 저작권·표기 원칙).
+- 색인은 **비로그인 기준**이다 — 로그인해야 쓰는 화면(마이덱)의 낱말은 싣지 않는다(2026-11-21 지시).
 - 결과는 수백 KB 안쪽으로 유지한다. 큰 디렉터리(기업·직업분류)는 `index-dirs.json`으로 나눠
   비서를 처음 열 때만 함께 받는다.
 
@@ -61,6 +62,11 @@ COMPANY_KEEP = 1200          # 기업: 직원 수 큰 순으로 이만큼(공공
 COMPANY_MIN = 30             # 직원 수가 이보다 적은 법인은 넣지 않는다
 KEY_CAP = 240                 # 문서 낱말(k) 상한 — 약어 펼친 형태까지 들어가게 210에서 올렸다
 
+# 로그인 전용 화면(마이덱)의 낱말 — 색인은 비로그인 기준이라 싣지 않는다(2026-11-21 지시).
+#   낱말의 출처는 assets/tools.js의 tags인데, 비로그인자에게 마이덱 이야기가 새지 않게 대문 화면이
+#   JC_SECTOR_TAGS로 걸러 쓰고, 색인(비서·빠른 검색)도 같은 기준으로 만든다.
+LOGIN_ONLY = ('마이덱', 'My Deck', 'mydeck')
+
 _ws = re.compile(r'\s+')
 
 
@@ -96,7 +102,7 @@ SECTOR_KW = {
     'interview': '면접,질문',
     'portfolio': '포트폴리오,작업물',
     'valuechain': '산업,공정,밸류체인,가치사슬,산업구조',
-    'flow': '상담플로우,플로우,상담순서,덱,마이덱',
+    'flow': '상담플로우,플로우,상담순서,덱',
 }
 
 
@@ -126,7 +132,7 @@ def keys(*vals, cap=200):
         items = v if isinstance(v, (list, tuple)) else str(v).split(',')
         for it in items:
             it = _ws.sub(' ', str(it)).strip().strip(',')
-            if not it or it in seen:
+            if not it or it in seen or it in LOGIN_ONLY:
                 continue
             seen.add(it)
             out.append(it)
@@ -958,7 +964,8 @@ def build():
         'v': 1,
         'built': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
         'sectors': [{'id': s['id'], 'no': s['no'], 'title': s['title'],
-                     'desc': clip(s['desc'], 190), 'url': s['path'], 'tags': s['tags'][:12]}
+                     'desc': clip(s['desc'], 190), 'url': s['path'],
+                     'tags': [t for t in s['tags'] if t not in LOGIN_ONLY][:12]}
                     for s in sectors],
         'docs': docs,
     }

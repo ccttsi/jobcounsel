@@ -18,6 +18,11 @@ document.documentElement.setAttribute('data-theme',t);})();
 <script>/* 머리말을 접어 두었으면 첫 그림 전에 정한다(펼친 머리말이 번쩍였다 접히지 않게). */
 try{if(localStorage.getItem('jc-hf')==='off')document.documentElement.setAttribute('data-jc-hf','off');}catch(e){}
 </script>
+<script>/* 로그인 상태 — 이 기기의 세션 열쇠(jc-sync-session)만 먼저 읽어, 비로그인자에게 마이덱 안내가
+   잠깐이라도 보이지 않게 첫 그림부터 정한다(서버를 부르지 않는다). 로그인·로그아웃 때는 아래 스크립트가 다시 맞춘다. */
+(function(){var inn=false;try{var s=JSON.parse(localStorage.getItem('jc-sync-session')||'null');inn=!!(s&&s.token);}catch(e){}
+document.documentElement.setAttribute('data-jc-auth',inn?'in':'out');})();
+</script>
 <script>/* 시드·매치로 재구성된 화면이면 첫 그림부터 트리거(레버·심전도)를 감춘다. */
 try{var ju=new URLSearchParams(location.search).get('mode'),jcM=(ju==='seed'||ju==='match')?ju:localStorage.getItem('jc-mode');if(jcM==='seed'||jcM==='match')document.documentElement.setAttribute('data-jc-mode',jcM);}catch(e){}
 </script>
@@ -310,6 +315,12 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-pv-list li{position:relative;padding-left:18px;font-size:14.5px;line-height:1.65;color:var(--muted)}
 .a-pv-list li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--a1);transform:rotate(45deg)}
 .a-pv-list b{color:var(--ink);font-weight:650}
+/* ---------- 로그인 상태에 따라 나뉘는 문구 ----------
+   마이덱은 로그인한 사람만 쓰는 화면이라, 그 이야기는 비로그인자에게 한 줄도 그리지 않는다.
+   판단은 <html data-jc-auth> 하나 — 머리 스크립트가 첫 그림 전에 정하고, 로그인·로그아웃 때 다시 맞춘다.
+   data-auth="in" 은 hidden으로 시작해 로그인했을 때만 연다(자바스크립트가 멈춰도 새지 않는다). */
+html[data-jc-auth="out"] [data-auth="in"]{display:none!important}
+html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 .a-pv-more{margin-top:10px}
 .a-pv-note{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;line-height:1.7;color:var(--dim)}
 .a-pv-more summary{cursor:pointer;min-height:44px;display:inline-flex;align-items:center;font-size:14px;font-weight:650;color:var(--a1)}
@@ -789,20 +800,21 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <p><b>로그인하지 않아도 모든 기능을 제한 없이 쓸 수 있습니다.</b> 로그인은 내가 본 기록(탐색 진도·형광펜과 포스트잇 메모·나만의 덱)을 계정에 저장해 다른 기기와 잇는 선택 기능입니다.</p>
       <p><b>지금은 31가지 학습·실무 자료가 있습니다.</b> 이론·심리검사·직무분석·법령·국취 실무부터 기업 명함첩·채용 안내판·자격증·재무 해석까지 한 대문에서 열립니다. 화면 아래 <b>자료실 비서</b>는 검색과 질문을, <b>도구함</b>은 형광펜과 포스트잇을, <b>왼쪽 아래 카드덱 단추</b>는 상담 플로우 아키텍트로 이어집니다. 처음 오셨다면 오른쪽 위 <b>대문 둘러보기</b>로 다섯 단계 안내를 보세요.</p>
       <p><b>「시드 · 매치」는 나만의 목차를 직접 꽂아 쓰는 화면입니다.</b> 심전도 단추(목록 화면에서는 가운데 레버)를 한 번 누르고 한 번 더 누르면 <b>시드</b>(지식·원리·기준)와 <b>매치</b>(현장·실무)를 고를 수 있습니다. 자료 선반에서 카드를 골라 번호 칸에 꽂으면 그 순서가 내 목차가 되고, <b>상황 프리셋</b>(매치는 <b>유형 프리셋</b>)을 고르면 상담 순서대로 카드가 한 번에 꽂히며 단계별 질문·확인 진행판이 함께 열립니다.</p>
-      <p><b>내가 짠 순서는 마이덱에 저장합니다.</b> <b>상담 플로우 아키텍트</b>(화면 왼쪽 아래 카드덱 단추)에서 키워드로 자료를 이어 덱을 만들고, <b>마이덱</b>에서 이름·순서·꾸미기를 바꿉니다. 꽂은 순서는 이 기기의 브라우저에 저장되고, 로그인하면 계정에 이어져 다른 기기에서도 같은 덱이 열립니다. 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
+      <p data-auth="out"><b>상담 플로우 아키텍트</b>(화면 왼쪽 아래 카드덱 단추)에서 키워드로 자료를 이어 상담 순서대로 덱을 짜 봅니다. 시드·매치에서 꽂은 순서는 이 기기의 브라우저에 저장되고, 로그인하면 계정에 이어져 다른 기기에서도 같은 목차가 열립니다. 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
+      <p data-auth="in" hidden><b>내가 짠 순서는 마이덱에 저장합니다.</b> <b>상담 플로우 아키텍트</b>(화면 왼쪽 아래 카드덱 단추)에서 키워드로 자료를 이어 덱을 만들고, <b>마이덱</b>에서 이름·순서·꾸미기를 바꿉니다. 꽂은 순서는 이 기기의 브라우저에 저장되고, 로그인하면 계정에 이어져 다른 기기에서도 같은 덱이 열립니다. 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
     </div>
     <ul class="a-pv-list">
       <li><b>개인 학습·훈련용 참고 도구입니다. 공식 공공데이터와 법령을 바탕으로 정리했으며, 특정 기관의 공식 자료나 교안·상담 기준을 대신하지 않습니다. (20기 학습 공유용)</b></li>
       <li><b>아이디와 비밀번호만 받습니다.</b> 이름·이메일·전화번호 같은 개인정보는 받지 않습니다. 로그인하지 않으면 모든 기록은 지금 쓰는 기기의 브라우저에만 남습니다.</li>
       <li><b>비밀번호는 되돌릴 수 없는 방식(bcrypt)으로 암호화해 저장합니다.</b> 운영자도 원래 비밀번호를 볼 수 없습니다. 그래서 <b>비밀번호를 잊으면 찾을 수 없습니다.</b></li>
-      <li><b>메모와 마이덱에는 개인정보를 적지 마세요.</b> 내담자의 이름·연락처·주민등록번호 같은 내용은 어디에도 적지 않습니다. 마이덱에는 자료 번호·제목·딱지와 덱 이름만 담깁니다.</li>
+      <li><b>메모<span data-auth="in">와 마이덱</span>에는 개인정보를 적지 마세요.</b> 내담자의 이름·연락처·주민등록번호 같은 내용은 어디에도 적지 않습니다.<span data-auth="in"> 마이덱에는 자료 번호·제목·딱지와 덱 이름만 담깁니다.</span></li>
       <li><b>언제든 로그아웃하고, 계정과 서버의 기록을 완전히 지울 수 있습니다.</b> 로그인 → 내 계정 → 계정과 기록 완전히 삭제.</li>
     </ul>
     <p class="a-pv-note">사이트의 구성·편집과 자체 제작 도구·해설의 저작권은 제작자에게 있습니다. 인용된 공공데이터·법령의 권리는 각 원출처에 따릅니다. Cloudflare Pages 기반 HTTPS 암호화 및 보안 환경에서 운영됩니다.</p>
     <details class="a-pv-more">
       <summary>무엇을, 어디에, 어떻게 저장하나요?</summary>
       <dl>
-        <dt>연동하는 기록</dt><dd>탐색 진도, 형광펜과 포스트잇 메모, 도구함 색 설정, 화면 설정(테마·종이 색·글자 크기), 이론 위키 학습 기록, 대학학과위키에서 고른 보기 설정, 실무 가이드에서 마지막으로 본 단계, <b>나만의 덱(마이덱)과 마이덱 꾸미기 설정</b></dd>
+        <dt>연동하는 기록</dt><dd>탐색 진도, 형광펜과 포스트잇 메모, 도구함 색 설정, 화면 설정(테마·종이 색·글자 크기), 이론 위키 학습 기록, 대학학과위키에서 고른 보기 설정, 실무 가이드에서 마지막으로 본 단계, <b>나만의 덱</b><span data-auth="in">(마이덱)과 마이덱 꾸미기 설정</span></dd>
         <dt>연동하지 않는 것</dt><dd>상담 HUD에 입력하는 상담일지와 계산 내용(어디에도 저장되지 않습니다), 환승노선도에 입력한 내 케이스(이 기기에만 저장), 검색어, 내가 본 페이지 목록</dd>
         <dt>이용 통계</dt><dd>사이트를 고쳐 나가기 위해 페이지를 열 때마다 익명 한 줄만 남깁니다: 어느 꼭지인지, 로그인 상태였는지(예/아니오), 기기 종류(휴대폰·태블릿·PC), 이 브라우저에서 오늘 처음인지, 처음 들어온 곳의 도메인 이름(예: google.com), 자료실 안에서 옮겨 왔다면 바로 앞 꼭지, 화면을 보고 있던 시간(5분 넘게 손대지 않으면 멈춤). IP 주소·아이디·쿠키·기기 고유번호·검색어·입력한 내용은 남기지 않으며, 어떤 줄도 특정 사람이나 계정과 이어지지 않습니다. 브라우저의 '추적 안 함'·GPC 설정을 켜 두면 남기지 않습니다. 400일이 지나면 지웁니다.</dd>
         <dt>저장 위치</dt><dd>Supabase 데이터베이스(서울 지역). 오가는 내용은 모두 HTTPS로 암호화됩니다.</dd>
@@ -1122,6 +1134,18 @@ var ALL=TOOLS.concat(APPS);       /* 찾기·주소 대조용 전체 목록. 목
    상태는 이 기기의 세션 열쇠(jc-sync-session) 하나로만 판단하며 서버를 부르지 않는다. */
 var SESS_KEY='jc-sync-session';
 function signedIn(){try{var s=JSON.parse(localStorage.getItem(SESS_KEY)||'null');return !!(s&&s.token);}catch(e){return false;}}
+/* ---------- 로그인한 사람에게만 보이는 문구 ----------
+   이용 안내 속 마이덱 이야기(data-auth="in")는 비로그인자에게 한 줄도 그리지 않는다.
+   마크업에는 hidden으로 시작해 두고(자바스크립트가 늦거나 멈춰도 새지 않게), 상태가 정해지면 연다.
+   비로그인 전용 문구(data-auth="out")는 <html data-jc-auth>에 따라 CSS가 가린다. */
+function authWords(){
+  var on=signedIn();
+  document.documentElement.setAttribute('data-jc-auth',on?'in':'out');
+  var n=document.querySelectorAll('[data-auth="in"]');
+  for(var i=0;i<n.length;i++){if(on)n[i].removeAttribute('hidden');else n[i].setAttribute('hidden','');}
+}
+authWords();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',authWords);
 function secDesc(t){return window.JC_SECTOR_DESC?window.JC_SECTOR_DESC(t,signedIn()):((t&&t.desc)||'');}
 function secMeta(t){return window.JC_SECTOR_META?window.JC_SECTOR_META(t,signedIn()):((t&&t.meta)||[]);}
 function secSub(t){return (t&&t.app?secMeta(t):((t&&t.meta)||[])).join(' · ');}
@@ -1935,7 +1959,9 @@ function sectorHits(q){
     var score=0,why='';
     if(t.title.toLowerCase().indexOf(ql)>=0)score+=5;
     if(t.badge.toLowerCase().indexOf(ql)>=0)score+=3;
-    var tg=t.tags.filter(function(x){return x.toLowerCase().indexOf(ql)>=0;});
+    /* 낱말 찾기 — 비로그인자에게는 로그인 전용 화면(마이덱)의 낱말을 빼고 견준다 */
+    var tags=window.JC_SECTOR_TAGS?window.JC_SECTOR_TAGS(t,signedIn()):(t.tags||[]);
+    var tg=tags.filter(function(x){return x.toLowerCase().indexOf(ql)>=0;});
     if(tg.length){score+=3;why='관련 주제: '+tg.slice(0,3).join(', ');}
     if(secDesc(t).toLowerCase().indexOf(ql)>=0)score+=1;
     /* 색인을 아직 못 받았을 때도 «찾던 낱말»을 들고 섹터로 간다 — 도착한 화면이 검색창을 채우고 바로 거른다 */
@@ -2151,6 +2177,7 @@ function jcSyncReady(cb,n){
  * 상담 플로우(앱)의 한 줄 설명은 로그인·로그아웃에 따라 다르다(assets/tools.js desc·descAccount).
  * 빠른 검색을 열어 둔 채 로그인해도 옛 문구가 남지 않도록 그 자리에서 다시 그린다. */
 window.addEventListener('jc-sync-change',function(){
+  authWords();                              /* 머리말·이용 안내의 마이덱 문구를 지금 상태로 다시 맞춘다 */
   var ov=$('ov');
   if(ov&&!ov.hidden)renderRes();
 });
@@ -2397,6 +2424,10 @@ var card=document.getElementById('tourCard'),bd=document.getElementById('tourBd'
     pn=[].slice.call(box.querySelectorAll('[data-p]'));
 var mq=window.matchMedia?window.matchMedia('(prefers-reduced-motion: reduce)'):null;
 bd.setAttribute('aria-live','polite');   /* 단계를 넘기면 새 제목·설명을 읽어 준다 */
+/* 로그인 상태 — 이 기기의 세션 열쇠(jc-sync-session) 하나로만 판단한다(서버를 부르지 않는다).
+   마지막 단계의 설명만 로그인했을 때 마이덱 이야기를 더한다(p·pAccount). */
+var SESS_KEY='jc-sync-session';
+function signedIn(){try{var s=JSON.parse(localStorage.getItem(SESS_KEY)||'null');return !!(s&&s.token);}catch(e){return false;}}
 var PAD=8,open=false,step=0,lastFocus=null,plT=0,reT=0;
 var gapB=10,bdH=0,lockY=0,snap=false,lastW=0,lastH=0;
 
@@ -2454,7 +2485,8 @@ var STEPS=[
    kw:['매일 새 통찰','상담 발문','공공데이터 출처','자동 검사 통과'],
    sels:['#insight'],also:['#vfSec']},
   {t:'도구함과 자료실 비서, 카드덱',
-   p:'오른쪽 아래 <b>도구함</b>은 형광펜과 포스트잇, <b>자료실 비서</b>는 자료 검색과 질문을 맡습니다. <b>왼쪽 아래 카드덱 단추</b>는 상담 플로우 아키텍트로 바로 갑니다 — 키워드로 시작해 상담 순서대로 덱을 짜고 마이덱에 저장합니다.',
+   p:'오른쪽 아래 <b>도구함</b>은 형광펜과 포스트잇, <b>자료실 비서</b>는 자료 검색과 질문을 맡습니다. <b>왼쪽 아래 카드덱 단추</b>는 상담 플로우 아키텍트로 바로 갑니다 — 키워드로 시작해 상담 순서대로 덱을 짜 봅니다.',
+   pAccount:'오른쪽 아래 <b>도구함</b>은 형광펜과 포스트잇, <b>자료실 비서</b>는 자료 검색과 질문을 맡습니다. <b>왼쪽 아래 카드덱 단추</b>는 상담 플로우 아키텍트로 바로 갑니다 — 키워드로 시작해 상담 순서대로 덱을 짜고 <b>마이덱</b>에 저장합니다.',
    kw:['형광펜·포스트잇','비서 검색·질문','카드덱 단추 · 상담 플로우'],
    sels:null,get:function(){return find('.jcf-launch')||fabOf();},
    also:function(){return find('.jca-launch');}}
@@ -2465,7 +2497,7 @@ function alsoOf(s){return typeof s.also==='function'?s.also():find(s.also);}
 function maxOf(){var t=window.JC_TOOLS;return (t&&t.length)?t.length:0;}
 
 function bodyHTML(i){
-  var s=STEPS[i],p=String(s.p).replace(/%N%/g,maxOf());
+  var s=STEPS[i],p=String(signedIn()&&s.pAccount?s.pAccount:s.p).replace(/%N%/g,maxOf());
   return '<h3 class="a-tour-t">'+s.t+'</h3><p class="a-tour-p" id="tourP">'+p+'</p><div class="a-tour-kw">'
     +s.kw.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>';
 }
@@ -2719,6 +2751,11 @@ window.addEventListener('scroll',function(){
 window.addEventListener('resize',reflow);
 window.addEventListener('scroll',function(){if(open&&!snap)reflow();},{passive:true});
 if(mq&&mq.addEventListener)mq.addEventListener('change',function(){if(open)go(step);});
+/* 둘러보기를 열어 둔 채 로그인·로그아웃해도 옛 문구가 남지 않는다(마지막 단계의 마이덱 이야기) */
+window.addEventListener('jc-sync-change',function(){
+  if(!open)return;
+  fixBodyH();paint(step);place();
+});
 
 /* 첫 방문 — 화면을 가리지 않고, 단추에 작은 점 하나와 아래 띠 한 번만 */
 try{
