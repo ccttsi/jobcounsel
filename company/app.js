@@ -496,7 +496,10 @@
   function firstSentence(s) { var t = String(s || ''), i = t.indexOf('. '); return i > 20 ? t.slice(0, i + 1) : t; }
   function descLine(x, hit, q) {
     var a = hit && hit.k === 'alias' && hit.t ? '<b>별칭</b>' + hl(hit.t, q) : '';
-    var d = x._px && x._px.d ? '<span class="rq">' + esc(firstSentence(x._px.d)) + '</span>' : '';
+    /* 보강 설명이 없어도 확인된 사업 설명(data/companies.json 의 business_summary)이 있으면 한 줄 보인다 —
+       「주거용 건물 개발 및 공급업」만 보여 본업이 가려지는 일을 줄인다. */
+    var d = x._px && x._px.d ? '<span class="rq">' + esc(firstSentence(x._px.d)) + '</span>'
+      : (x._c === 'MID' && has(x.business_summary) ? '<span class="rq">' + esc(firstSentence(x.business_summary)) + '</span>' : '');
     if (!a && !d) return '';
     return '<p class="r-x r-a">' + a + (a && d ? '<i class="sep" aria-hidden="true">·</i>' : '') + d + '</p>';
   }
