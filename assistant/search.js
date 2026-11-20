@@ -298,6 +298,9 @@
   function load() {
     if (S.ready) return Promise.resolve(S);
     if (S.loading) return S.loading;
+    /* 기업 색인(중견기업 포함 9,137곳)은 index.json 보다 늦게 도착해 왔다. 검색창을 열 때 같이 받아 두어
+       첫 검색에서도 기업 카드가 문서와 같은 차례로 줄을 서게 한다(실패해도 본 색인은 그대로 쓴다). */
+    try { loadCompanies().catch(function () {}); } catch (e) {}
     S.loading = Promise.all([
       fetch(INDEX_URL, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error('index ' + r.status); return r.json(); }),
       fetch(DIRS_URL, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
@@ -628,6 +631,9 @@
     var limit = opt.limit || 14, seen = {}, res = [], rest = [];
     /* 한 섹터가 목록을 다 차지하지 않게 — 「국취」에 실무 가이드 장만 일곱 줄 깔리면 다른 곳을 못 본다. */
     var cap = opt.perSector || 3, per = {};
+    /* 기업은 모두 같은 sector('company')로 묶여 있어 섹터 상한 3에 걸린다. 중견기업·공공기관까지
+       대기업과 같은 몫으로 보이도록 기업 몫만 넉넉히 둔다(문서·직업분류 상한은 그대로). */
+    var capCompany = Math.max(cap, 6);
     for (var k = 0; k < out.length && (res.length < limit || rest.length < limit * 2); k++) {
       var it = out[k].d;
       /* 같은 이름이라도 가는 곳이 다르면 둘 다 남긴다 — 「고용24」 포털 문서가
@@ -638,7 +644,8 @@
       var rr = toResult(it, out[k].s, out[k].why, out[k].mw);
       rr.situation = a.situation;
       per[it.sector] = per[it.sector] || 0;
-      if (per[it.sector] < cap && res.length < limit) { per[it.sector]++; res.push(rr); }
+      var capNow = it.sector === 'company' ? capCompany : cap;
+      if (per[it.sector] < capNow && res.length < limit) { per[it.sector]++; res.push(rr); }
       else rest.push(rr);
     }
     /* 자리가 남으면 막아 둔 것부터 채운다(결과가 모자라지 않게). */
