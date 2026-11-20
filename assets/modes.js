@@ -295,6 +295,7 @@
     if (hintOn || open || armed || picking || reduce() || cur() !== 'all' || document.hidden) return false;
     if (listOpen()) {
       if (!ecgRow || !ecgRow.offsetParent) return false;
+      if (!ecgVis) return false;                     /* 파형이 화면 밖이면 방치 유도를 걸지 않는다 */
       var pat = ecgPattern(forceMinute === undefined ? new Date().getMinutes() : forceMinute);
       HINT.on = true; HINT.t = 0; HINT.pat = pat; HINT.min = pat.min;
       hintOn = true;
@@ -302,6 +303,7 @@
       ecgSync();
     } else {
       if (!slot || !slot.offsetParent) return false;
+      if (nav && nav.rollVisible && !nav.rollVisible()) return false; /* 롤링 무대가 화면 밖이면 건너뛴다 */
       hintOn = true;
       slot.setAttribute('data-st', 'hint');
       if (!lvHint()) { cancelHint(); return false; }
@@ -406,12 +408,17 @@
     } catch (e) { }
   }
   var ECG_KC = [];
+  /* 파형이 화면 안에 있는가 — 화면 밖으로 스크롤된 동안은 루프를 세운다(2026-11-20 60fps).
+     목록(전체 목록)이 닫히면 이미 ecgWanted의 cur()==='all' 조건에서 멎고, 이 값은 그 위에 한 겹 더 얹는다. */
+  var ecgVis = true;
   function ecgState() {
     var st = ecgRow ? ecgRow.getAttribute('data-st') : '';
     return ECG_T[st === 'pulled' ? 'pulled' : (st === 'armed' ? 'armed' : 'idle')];
   }
   function ecgFit() {
-    var dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    /* 3배 화면(iPhone)에서도 캔버스는 2배까지만 그린다 — 34px 높이의 가는 선이라 눈에 띄는 차이는 없고,
+       프레임마다 칠하는 픽셀은 44% 줄어든다(iPhone XS 실측 대상, 2026-11-20 60fps). */
+    var dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
     if (dpr !== ECG.dpr || ECG.cv.width !== Math.round(ECG_W * dpr)) {
       ECG.dpr = dpr;
       ECG.cv.width = Math.round(ECG_W * dpr);
@@ -824,7 +831,7 @@
   function ecgWanted() {
     /* 이탈(exit) 중에는 무대가 열렸어도(open=true) 파형을 계속 그린다 — 글래스가 불투명해지기 전까지.
        고조(surge)도 마찬가지다: openOv는 미리 open을 세우고 연출 뒤에 무대를 열기 때문이다. */
-    return !!(ECG.cx && ecgRow && ecgRow.offsetParent && !document.hidden && !reduce() && cur() === 'all'
+    return !!(ECG.cx && ecgRow && ecgRow.offsetParent && !document.hidden && ecgVis && !reduce() && cur() === 'all'
       && (!open || ECG.exit >= 0 || ECG.surge >= 0));
   }
   /* 감속 모드·가려진 화면: 루프 없이 지금 자세의 한 장만 그려 둔다 */
@@ -1036,6 +1043,19 @@
       else scheduleHint();                 /* 돌아오면 다음 매 분 정각을 다시 잡는다 */
     }
     document.addEventListener('visibilitychange', ecgPause); ecgPause();
+
+    /* 화면 밖으로 스크롤된 동안은 파형 루프를 세운다(2026-11-20 60fps). 보이는 자리로 돌아오면 그때 다시 흐른다.
+       스크롤 이벤트로 매번 재지 않고 관찰자에게 맡긴다(목록 화면에서 위아래로 오갈 때 비용 0). */
+    if (ecgRow && window.IntersectionObserver) {
+      try {
+        new IntersectionObserver(function (es) {
+          var v = !!(es.length && es[es.length - 1].isIntersecting);
+          if (v === ecgVis) return;
+          ecgVis = v;
+          ecgSync();
+        }, { rootMargin: '120px 0px' }).observe(ecgRow);
+      } catch (e) { }
+    }
 
     /* 목록이 열리고 닫힐 때(index.html setList) 파형을 켜고 끈다 */
     document.addEventListener('jc-list', ecgSync);

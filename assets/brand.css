@@ -160,34 +160,9 @@ body[data-jc-tool="portfolio"]{--jc-acc:var(--tc-portfolio)}
 body[data-jc-tool="transit"]{--jc-acc:var(--tc-transit)}
 body[data-jc-tool="flow"]{--jc-acc:var(--tc-flow)}
 
-/* ---------- 로고: Career Consultant Tutorial ----------
-   네 이니셜(C · C · T · t)만 빛과 명도를 아주 조금 달리한다. 나머지 글자는 본문 톤. */
-.cctt-logo{
-  display:inline-block;white-space:nowrap;
-  font-family:"Cormorant Garamond",Georgia,"Noto Serif KR",serif;
-  font-style:italic;font-weight:600;
-  font-size:clamp(15.5px,1.15vw + 10px,21.5px);
-  letter-spacing:-.012em;line-height:1.15;
-  color:#221c15;
-  text-shadow:0 0 12px rgba(178,132,52,.16);
-  -webkit-font-smoothing:antialiased;
-}
-.cctt-logo .lgi{font-style:italic;font-weight:600}
-.cctt-logo .lg1{color:#2b241b;text-shadow:0 0 7px rgba(196,148,62,.34)}
-.cctt-logo .lg2{color:#2f271d;text-shadow:0 0 8px rgba(188,142,58,.26)}
-.cctt-logo .lg3{color:#3a3020;text-shadow:0 0 9px rgba(205,160,74,.22)}
-.cctt-logo .lg4{color:#40351f;text-shadow:0 0 6px rgba(214,170,86,.4)}
-:root[data-jc-tone="sepia"] .cctt-logo{color:#241d14;text-shadow:0 0 12px rgba(150,104,32,.2)}
-:root[data-theme="dark"] .cctt-logo{
-  color:#cfd6e2;
-  text-shadow:0 0 14px rgba(190,208,235,.28),0 0 2px rgba(226,234,246,.35);
-}
-:root[data-theme="dark"] .cctt-logo .lg1{color:#e8eef8;text-shadow:0 0 9px rgba(214,228,246,.55)}
-:root[data-theme="dark"] .cctt-logo .lg2{color:#dde4ef;text-shadow:0 0 8px rgba(190,208,235,.42)}
-:root[data-theme="dark"] .cctt-logo .lg3{color:#eef2f9;text-shadow:0 0 10px rgba(224,234,248,.5)}
-:root[data-theme="dark"] .cctt-logo .lg4{color:#f2f5fa;text-shadow:0 0 7px rgba(236,243,252,.6)}
-@media (max-width:430px){.cctt-logo{font-size:15px}}
-
+/* ---------- 로고 ----------
+   2026-11-20: 글자 로고는 대문의 테마별 투명 PNG(.cctt-lockup/.cctt-wordmark, index.html)로 옮겼다.
+   예전 Cormorant 글자 로고 규칙(.cctt-logo·.lg1~.lg4 + 빛 번짐 text-shadow)은 어느 화면도 쓰지 않아 걷어냈다. */
 /* ---------- 공통 겉틀: 좌우 여백·최대 폭 = 대문 규격 ---------- */
 body[data-jc-tool] .wrap{
   max-width:var(--jc-shell)!important;

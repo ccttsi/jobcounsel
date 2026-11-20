@@ -141,8 +141,10 @@
 }
 
 /* ============ 튜토리얼: 고정 높이, 사이드 스크롤바 없음 ============ */
+/* 화면 전체를 덮는 유리 흐림은 매 프레임 비용이다 — 거의 불투명한 베일로 대신한다(DESIGN §2-5). */
 .a-tuts{--acc:var(--a1);position:fixed;inset:0;z-index:74;display:grid;place-items:center;padding:16px;background:var(--ov);
-  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .18s,visibility .18s}
+  opacity:0;visibility:hidden;transition:opacity .18s,visibility .18s}
+@media (min-width:768px){.a-tuts{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}}
 .a-tuts.on{opacity:1;visibility:visible}
 .a-tuts-card{width:100%;max-width:560px;height:min(92dvh,560px);display:flex;flex-direction:column;
   background:var(--panel);border:1px solid var(--line-2);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.32);
