@@ -587,6 +587,12 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-tour-btn[data-new]::after{content:"";position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;
   background:var(--a2);box-shadow:0 0 0 2px var(--panel)}
 :root[data-jc-mode] .a-tour-btn{display:none}   /* 내 목차·시드·매치 화면에서는 대문 안내를 감춘다 */
+/* 둘러보기 동안에는 떠 있는 도구(형광펜 도구함·비서 탭)를 잠시 내린다 — 카드 위에 걸려 보이지 않게.
+   마지막 단계(도구함·비서 안내)에서만 다시 올린다. */
+:root[data-jc-tour]:not([data-jc-tour="tools"]) #jc-marker-ui,
+:root[data-jc-tour]:not([data-jc-tour="tools"]) .jca-launch{opacity:0!important;pointer-events:none!important}
+:root[data-jc-tour="tools"] #jc-marker-ui,
+:root[data-jc-tour="tools"] .jca-launch{opacity:1!important;pointer-events:none!important}   /* 보이기만 하고, 누름은 둘러보기가 받는다 */
 
 .a-toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translate(-50%,12px);z-index:70;max-width:calc(100% - 28px);
   background:var(--toast-bg);color:var(--toast-ink);font-size:14px;font-weight:600;padding:11px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
@@ -2184,6 +2190,7 @@ function reflow(){
 function go(i){
   step=Math.max(0,Math.min(STEPS.length-1,i));
   var s=STEPS[step];
+  document.documentElement.setAttribute('data-jc-tour',step===STEPS.length-1?'tools':'');
   stepNo.textContent=(step+1)+' / '+STEPS.length;
   var p=String(s.p).replace(/%N%/g,maxOf());
   bd.innerHTML='<h3 class="a-tour-t">'+s.t+'</h3><p class="a-tour-p" id="tourP">'+p+'</p><div class="a-tour-kw">'
@@ -2212,6 +2219,7 @@ function closeTour(){
   clearTimeout(plT);clearTimeout(reT);
   open=false;
   box.classList.remove('on');box.setAttribute('aria-hidden','true');
+  document.documentElement.removeAttribute('data-jc-tour');
   hideRings();
   try{(lastFocus&&lastFocus.focus?lastFocus:btn).focus({preventScroll:true});}catch(e){}
 }
