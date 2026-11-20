@@ -263,12 +263,27 @@
     return true;
   }
 
+  /* 좌표가 유한하지 않거나(undefined·NaN·Infinity) 뷰포트 밖이면 브라우저의 글자 찾기에 넘기지 않는다.
+     Chrome은 그런 값에 TypeError('non-finite')를 던지고, 어떤 브라우저는 엉뚱한 자리를 돌려준다(Sentry JOBCOUNSEL-1).
+     손가락 이벤트처럼 clientX·clientY가 비어 있는 손짓이 섞여 들어와도 여기서 조용히 걸러진다. */
+  function inView(x, y) {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return false;
+    var vv = window.visualViewport, w = innerWidth, h = innerHeight;
+    // 확대·축소해 보는 중에는 clientX가 시각 뷰포트 기준이라, 둘 중 넓은 쪽을 경계로 삼는다
+    if (vv) { w = Math.max(w, vv.width + vv.offsetLeft); h = Math.max(h, vv.height + vv.offsetTop); }
+    return x >= 0 && y >= 0 && x <= w && y <= h;
+  }
   function caretAt(x, y) {
-    if (d.caretPositionFromPoint) { var p = d.caretPositionFromPoint(x, y); if (p) return { node: p.offsetNode, offset: p.offset }; }
-    if (d.caretRangeFromPoint) { var r = d.caretRangeFromPoint(x, y); if (r) return { node: r.startContainer, offset: r.startOffset }; }
+    if (!inView(x, y)) return null;
+    var p = null, r = null;
+    try { if (d.caretPositionFromPoint) p = d.caretPositionFromPoint(x, y); } catch (e) { p = null; }
+    if (p && p.offsetNode && Number.isFinite(p.offset)) return { node: p.offsetNode, offset: p.offset };
+    try { if (d.caretRangeFromPoint) r = d.caretRangeFromPoint(x, y); } catch (e) { r = null; }
+    if (r && r.startContainer && Number.isFinite(r.startOffset)) return { node: r.startContainer, offset: r.startOffset };
     return null;
   }
   function addNoteAt(x, y) {
+    if (!inView(x, y)) { toast('글이 있는 곳을 눌러 붙여 주세요.'); return; }
     buildIndex();
     var c = caretAt(x, y), off = -1;
     if (c && c.node && c.node.nodeType === 3 && idx.map.has(c.node)) off = pointToOffset(c.node, c.offset);
