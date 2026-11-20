@@ -1,0 +1,376 @@
+{
+  "meta": {
+    "title": "국비지원 자부담 계산기",
+    "basis": "국민내일배움카드 운영규정 — 고용노동부고시 제2026-101호(2025-12-31 고시, 2026-01-01 시행), 현행 제2026-39호(2026-05-11 일부개정)",
+    "appliesFrom": "2026-01-01",
+    "checkedOn": "2026-11-20",
+    "sourceNote": "수치는 법령(행정규칙) 본문·별표와 고용24 제도안내에서 확인한 값만 싣고, 확인되지 않은 세목은 넣지 않았다.",
+    "sources": [
+      {
+        "name": "국민내일배움카드 운영규정 (국가법령정보센터, 현행 2026-05-11)",
+        "url": "https://www.law.go.kr/LSW/admRulLsInfoR.do?admRulSeq=2100000279150",
+        "used": "제14조 계좌한도, 제46조 훈련비 지원·자부담 상한, 제49조 훈련장려금, 제49조의2 특별훈련수당, 별표 4 지원율"
+      },
+      {
+        "name": "고용24 — K-디지털 트레이닝(국민내일배움카드) 제도안내",
+        "url": "https://www.work24.go.kr/cm/c/f/1100/selecSystInfo.do?systClId=SC00000197&systId=SI00000423",
+        "used": "90% 이상 지원·자기부담 최대 60만원, 계좌 300만원 차감, 훈련장려금 월 20만원, 특별훈련수당 10~60만원"
+      },
+      {
+        "name": "고용24 — 국민내일배움카드 제도안내",
+        "url": "https://www.work24.go.kr/cm/c/f/1100/selecSystInfo.do?systId=SI00000351",
+        "used": "계좌 300만원+200만원, 일반 과정 자부담 15~55%, 장려금 일 5,800원·2,500원, 자영업자 피보험자 월 36만원"
+      },
+      {
+        "name": "고용노동부 — 국민내일배움카드 운영규정 개정 고시(제2026-101호) 원문",
+        "url": "https://www.moel.go.kr/info/lawinfo/instruction/view.do?bbs_seq=20251201795",
+        "used": "개정 고시 번호·시행일·부칙 적용례"
+      },
+      {
+        "name": "2026년 「산업구조변화대응 등 특화훈련」 사업 운영 지침",
+        "url": "https://www.cepa.or.kr/common/downloadBoardFile.do?seq=8853",
+        "used": "자기부담금 구간(10%·30·40·50·60만원), 계좌 차감액(200·100만원), 훈련장려금 20만원, 특별훈련수당 지역 구분"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "kdt",
+      "label": "KDT",
+      "name": "K-디지털 트레이닝",
+      "kind": "special",
+      "cardCap": 3000000,
+      "specialAllowance": true,
+      "note": "계좌에서 최대 300만원 차감"
+    },
+    {
+      "id": "national",
+      "label": "국기훈련",
+      "name": "국가기간·전략산업직종훈련",
+      "kind": "special",
+      "cardCap": 2000000,
+      "specialAllowance": true,
+      "note": "계좌에서 최대 200만원 차감"
+    },
+    {
+      "id": "sandae",
+      "label": "산대특",
+      "name": "산업구조변화대응 등 특화훈련",
+      "kind": "special",
+      "cardCap": 2000000,
+      "specialAllowance": true,
+      "note": "계좌에서 최대 200만원 차감"
+    },
+    {
+      "id": "kdtShort",
+      "label": "KDT 단기",
+      "name": "K-디지털 트레이닝 단기 과정",
+      "kind": "special",
+      "cardCap": 1500000,
+      "specialAllowance": false,
+      "note": "단기 과정은 특별훈련수당 제외"
+    },
+    {
+      "id": "sandaeShort",
+      "label": "산대특 단기",
+      "name": "산업구조변화대응 등 특화훈련 단기 과정",
+      "kind": "special",
+      "cardCap": 1000000,
+      "specialAllowance": false,
+      "note": "단기 과정은 특별훈련수당 제외"
+    },
+    {
+      "id": "general",
+      "label": "일반 과정",
+      "name": "일반계좌제·과정평가형 등 일반직종 훈련",
+      "kind": "general",
+      "cardCap": 3000000,
+      "specialAllowance": false,
+      "note": "직종 취업률로 자부담률이 갈림"
+    }
+  ],
+  "special": {
+    "minSupportRate": 0.9,
+    "selfPayMax": 600000,
+    "tiers": [
+      {
+        "max": 3000000,
+        "rate": 0.1,
+        "amount": null
+      },
+      {
+        "max": 6000000,
+        "rate": null,
+        "amount": 300000
+      },
+      {
+        "max": 12000000,
+        "rate": null,
+        "amount": 400000
+      },
+      {
+        "max": 18000000,
+        "rate": null,
+        "amount": 500000
+      },
+      {
+        "max": null,
+        "rate": null,
+        "amount": 600000
+      }
+    ]
+  },
+  "general": {
+    "cardLimit": 3000000,
+    "cardLimitExtra": 2000000,
+    "bands": [
+      {
+        "id": "b70",
+        "label": "70% 이상",
+        "min": 70,
+        "rates": {
+          "general": 0.85,
+          "ii": 0.85,
+          "wage": 0.925,
+          "exempt": 1.0
+        }
+      },
+      {
+        "id": "b60",
+        "label": "60~70%",
+        "min": 60,
+        "rates": {
+          "general": 0.75,
+          "ii": 0.75,
+          "wage": 0.875,
+          "exempt": 1.0
+        }
+      },
+      {
+        "id": "b50",
+        "label": "50~60%",
+        "min": 50,
+        "rates": {
+          "general": 0.65,
+          "ii": 0.7,
+          "wage": 0.825,
+          "exempt": 1.0
+        }
+      },
+      {
+        "id": "b40",
+        "label": "40~50%",
+        "min": 40,
+        "rates": {
+          "general": 0.55,
+          "ii": 0.6,
+          "wage": 0.775,
+          "exempt": 1.0
+        }
+      },
+      {
+        "id": "b0",
+        "label": "40% 미만",
+        "min": 0,
+        "rates": {
+          "general": 0.45,
+          "ii": 0.5,
+          "wage": 0.725,
+          "exempt": 0.8
+        }
+      }
+    ]
+  },
+  "userTypes": [
+    {
+      "id": "general",
+      "label": "일반 (해당 없음)"
+    },
+    {
+      "id": "ii",
+      "label": "국취 Ⅱ유형 청년·중장년"
+    },
+    {
+      "id": "wage",
+      "label": "근로·자녀장려금 수급자"
+    },
+    {
+      "id": "exempt",
+      "label": "국취 Ⅰ유형·Ⅱ 특정계층 등 우대"
+    },
+    {
+      "id": "ai",
+      "label": "KDT AI 캠퍼스 과정"
+    }
+  ],
+  "payTypes": [
+    {
+      "id": "jobless",
+      "label": "실업·주 15시간 미만 근로"
+    },
+    {
+      "id": "self",
+      "label": "자영업자(고용보험 피보험자)"
+    },
+    {
+      "id": "ui",
+      "label": "실업급여 수급 중"
+    }
+  ],
+  "regions": [
+    {
+      "id": "metro",
+      "label": "수도권"
+    },
+    {
+      "id": "nonmetro",
+      "label": "비수도권"
+    },
+    {
+      "id": "declining",
+      "label": "인구감소지역"
+    }
+  ],
+  "allowance": {
+    "minHours": 140,
+    "attendance": 0.8,
+    "special": {
+      "day5": 10000,
+      "dayShort": 4300,
+      "cap5": 200000,
+      "capShort": 86000
+    },
+    "general": {
+      "day5": 5800,
+      "dayShort": 2500,
+      "cap5": 116000,
+      "capShort": 50000
+    },
+    "selfEmployed": {
+      "day5": 18000,
+      "dayShort": 9000,
+      "cap5": 360000,
+      "capShort": 180000
+    }
+  },
+  "specialAllowance": {
+    "minHours": 350,
+    "boostedProcesses": [
+      "kdt"
+    ],
+    "base": {
+      "metro": {
+        "day": 5000,
+        "cap": 100000
+      },
+      "nonmetro": {
+        "day": 10000,
+        "cap": 200000
+      },
+      "declining": {
+        "day": 15000,
+        "cap": 300000
+      }
+    },
+    "boosted": {
+      "metro": {
+        "day": 10000,
+        "cap": 200000
+      },
+      "nonmetro": {
+        "day": 20000,
+        "cap": 400000
+      },
+      "declining": {
+        "day": 30000,
+        "cap": 600000
+      }
+    }
+  },
+  "presets": [
+    {
+      "id": "kdt-youth",
+      "label": "비전공 청년 KDT",
+      "short": "청년 KDT",
+      "state": {
+        "proc": "kdt",
+        "fee": 9000000,
+        "user": "general",
+        "pay": "jobless",
+        "region": "metro",
+        "band": "b50",
+        "hours": 960,
+        "days": 20,
+        "months": 6,
+        "day5": true,
+        "attend": true,
+        "remote": false,
+        "boost": false,
+        "balance": 3000000
+      }
+    },
+    {
+      "id": "general-accounting",
+      "label": "일반 회계과정",
+      "short": "일반 회계",
+      "state": {
+        "proc": "general",
+        "fee": 426000,
+        "user": "general",
+        "pay": "jobless",
+        "region": "metro",
+        "band": "b50",
+        "hours": 240,
+        "days": 20,
+        "months": 3,
+        "day5": true,
+        "attend": true,
+        "remote": false,
+        "boost": false,
+        "balance": 3000000
+      }
+    },
+    {
+      "id": "kdt-exempt",
+      "label": "국취 Ⅰ유형 KDT",
+      "short": "국취Ⅰ KDT",
+      "state": {
+        "proc": "kdt",
+        "fee": 12000000,
+        "user": "exempt",
+        "pay": "jobless",
+        "region": "metro",
+        "band": "b50",
+        "hours": 960,
+        "days": 20,
+        "months": 6,
+        "day5": true,
+        "attend": true,
+        "remote": false,
+        "boost": false,
+        "balance": 3000000
+      }
+    },
+    {
+      "id": "kdt-local-ai",
+      "label": "지방 KDT · AI캠퍼스",
+      "short": "지방 AI캠퍼스",
+      "state": {
+        "proc": "kdt",
+        "fee": 15000000,
+        "user": "ai",
+        "pay": "jobless",
+        "region": "declining",
+        "band": "b50",
+        "hours": 1200,
+        "days": 20,
+        "months": 6,
+        "day5": true,
+        "attend": true,
+        "remote": false,
+        "boost": true,
+        "balance": 3000000
+      }
+    }
+  ]
+}
