@@ -4,7 +4,7 @@
 데이터는 피클(수집·검증)이 만들고, 화면 코드는 클로드가 쓴다(`ops/ROLES.md`).
 
 - 파일: `portals/data/portals.json` (UTF-8, JSON, 약 62KB)
-- 배포 주소: `https://ccttsi.github.io/jobcounsel/portals/data/portals.json`
+- 배포 주소: `https://witw.pages.dev/portals/data/portals.json`
 - 스키마 버전: `meta.version = "1.1.0"` (2026-11-19)
 - 검증: `python3 portals/data/validate.py` → **오류 0건** 통과본만 배포한다.
 - 실측: **76곳** · 공공 8 / 공시·기업정보 11 / 민간종합·대기업 15 / IT·테크 12 / 경력·헤드헌팅 5 / 산업별 8 / 대상·근무형태 17

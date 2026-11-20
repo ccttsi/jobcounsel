@@ -4,7 +4,7 @@
 쓰는 법
     LD_LIBRARY_PATH=/workspace/pwlibs/root/usr/lib/x86_64-linux-gnu \
       python3 ops/qa/deeplink_probe.py            # 로컬(127.0.0.1:8787)에서 서버를 띄워 잰다
-      JC_BASE_URL=https://ccttsi.github.io/jobcounsel/ python3 ops/qa/deeplink_probe.py --live
+      JC_BASE_URL=https://witw.pages.dev/ python3 ops/qa/deeplink_probe.py --live
 
 판정
     OK   — 본문(main) 안에 그 항목의 글자가 보이고, 검색창이 있으면 그 낱말이 채워져 있다
@@ -20,7 +20,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 LIVE = '--live' in sys.argv
-BASE = os.environ.get('JC_BASE_URL') or ('https://ccttsi.github.io/jobcounsel/' if LIVE else 'http://127.0.0.1:8787/')
+BASE = os.environ.get('JC_BASE_URL') or ('https://witw.pages.dev/' if LIVE else 'http://127.0.0.1:8787/')
 CASES = json.load(open(os.path.join(ROOT, 'ops', 'qa', 'deeplink_cases.json'), encoding='utf-8'))
 
 READ = """() => {

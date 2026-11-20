@@ -4,7 +4,7 @@
 데이터는 피클(설계·검증)이 만들고, 화면 코드는 클로드가 쓴다(`ops/ROLES.md`).
 
 - 파일: `interview/data/deck.json` (단일 파일)
-- 배포 주소: `https://ccttsi.github.io/jobcounsel/interview/data/deck.json`
+- 배포 주소: `https://witw.pages.dev/interview/data/deck.json`
 - 스키마 버전: `meta.version = "1.0.0"` (2026-11-16)
 - 검증: `python3 interview/data/validate.py` → **오류 0건, 경고 0건** 통과본만 배포한다.
 - 실측: 질문 카드 **38장**(일반 대면전 21 · 특수 전형 17) · 핸드 카드 **120장** · 마지막 역질문 **16종** · 약점 프리셋 **8종** · 2026 트렌드 **11종** · 출처 **16건**

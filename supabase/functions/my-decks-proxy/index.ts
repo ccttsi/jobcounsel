@@ -20,14 +20,14 @@
 //
 // 환경변수
 //   SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY  Supabase 가 자동 주입.
-//   JC_ALLOW_ORIGINS  선택. 쉼표로 구분한 허용 출처. 기본 https://ccttsi.github.io
+//   JC_ALLOW_ORIGINS  선택. 쉼표로 구분한 허용 출처. 기본 https://witw.pages.dev,https://ccttsi.github.io,https://ccttsi.pages.dev
 //
 // 배포: supabase functions deploy my-decks-proxy --no-verify-jwt
 //   (사이트는 세션 토큰으로 직접 확인하므로 Supabase JWT 검사는 끈다 — assistant-proxy 와 같은 방식)
 
 const SUPABASE_URL = (Deno.env.get('SUPABASE_URL') || '').replace(/\/+$/, '');
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
-const ALLOW = (Deno.env.get('JC_ALLOW_ORIGINS') || 'https://ccttsi.github.io')
+const ALLOW = (Deno.env.get('JC_ALLOW_ORIGINS') || 'https://witw.pages.dev,https://ccttsi.github.io,https://ccttsi.pages.dev')
   .split(',').map((s) => s.trim()).filter(Boolean);
 
 const MAX_BODY = 64000;      // 요청 본문 상한(바이트) — 덱 한 장(12단계)은 넉넉히 들어간다

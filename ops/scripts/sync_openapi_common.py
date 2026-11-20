@@ -40,7 +40,7 @@ SECRETS_DIR = ROOT.parent / ".secrets"
 KST = timezone(timedelta(hours=9))
 
 SCHEMA = "jobcounsel.openapi.v1"
-USER_AGENT = "jobcounsel-openapi-sync/1.0 (+https://ccttsi.pages.dev)"
+USER_AGENT = "jobcounsel-openapi-sync/1.0 (+https://witw.pages.dev)"
 
 # 공공데이터포털 서비스 메타데이터(공식 페이지 기준). 이용허락범위는 신청 화면과 같은 값이다.
 SOURCES = {

@@ -15,7 +15,7 @@
  * 5) 이어 보기: 섹터 장부(tools.js)와 「이어 보기」 줄(next.js)을 불러온다.
  * 5-b) 카드덱 단추: 대문까지 **모든 지면**에 왼쪽 아래 카드덱 단추와 덱 미니 스위처(deckfab.js)를 붙인다.
  *    상담 플로우 아키텍트는 자료 목록에서 빠졌으므로, 이 단추가 어느 화면에서든 가는 길이다.
- * 6) 오류 수집: 운영 도메인(ccttsi.github.io)에서만 Sentry 로더를 한 번 불러온다. 로컬·검사 화면에서는 부르지 않는다.
+ * 6) 오류 수집: 운영 도메인(witw.pages.dev · 옛 자리 ccttsi.github.io·ccttsi.pages.dev)에서만 Sentry 로더를 한 번 불러온다. 로컬·검사 화면에서는 부르지 않는다.
  *
  * 6) 딥링크: 대문 검색이 넘긴 ?q= 를 이 화면의 검색창에 채우고 바로 찾는다(data-jc-deep="off"면 섹터가 직접 받는다).
  *
@@ -51,10 +51,10 @@
 
   /* ---------- 0) 오류 수집(Sentry) ----------
    * Sentry 프로젝트 jobcounsel의 Browser JavaScript Loader Script.
-   * 운영 도메인(ccttsi.github.io · ccttsi.pages.dev)에서만, 한 번만 붙인다. 로컬 서버·Playwright 검사(127.0.0.1·localhost)에서는 요청이 나가지 않는다.
+   * 운영 도메인(witw.pages.dev · 옛 자리 ccttsi.github.io · ccttsi.pages.dev)에서만, 한 번만 붙인다. 로컬 서버·Playwright 검사(127.0.0.1·localhost)에서는 요청이 나가지 않는다.
    * 로더 주소를 바꿀 때는 Sentry 프로젝트 설정의 Loader Script에서 받은 주소로만 바꾼다. */
   var SENTRY_LOADER = 'https://js.sentry-cdn.com/a4dd71f88a40c92db04ab84f35b062c0.min.js';
-  var PROD = location.hostname === 'ccttsi.github.io' || location.hostname === 'ccttsi.pages.dev';
+  var PROD = location.hostname === 'witw.pages.dev' || location.hostname === 'ccttsi.github.io' || location.hostname === 'ccttsi.pages.dev';
   if (PROD && !d.querySelector('script[data-jc-sentry]')) {
     var sentryScript = d.createElement('script');
     sentryScript.src = SENTRY_LOADER;
