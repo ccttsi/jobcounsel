@@ -1,6 +1,6 @@
 {
  "schema_version": "1.4.0",
- "updated_at": "2026-11-20T07:05:00+09:00",
+ "updated_at": "2026-11-20T23:04:00+09:00",
  "edition": {
   "date": "2026-11-20",
   "weekday": "금",
@@ -360,8 +360,32 @@
    "theme_id": "th-employment-indicators-ui",
    "title": "고용 지표·실업급여 변화",
    "summary": "구인·실업·고용보험·임금 지표와 실업급여 수급 조건이 함께 움직인다. 수치 하나가 아니라 지표 간 방향이 어긋나는 지점을 읽어야 상담에서 \"지금 지원해도 되는가\"를 판단할 수 있다.",
-   "updated_at": "2026-11-18T07:10:24+09:00",
+   "updated_at": "2026-11-20T23:04:00+09:00",
    "items": [
+    {
+     "issue_id": "iss-us-ic-final-rule-2026",
+     "title": "미국 근로자·독립계약자 구분 최종규칙 — 핵심 2요소·사례 14개(미 노동부)",
+     "source": {
+      "source_name": "미국 노동부 임금시간국(DOL WHD)",
+      "source_url": "https://www.dol.gov/newsroom/releases/whd/whd20261119"
+     },
+     "license": {
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "type": "PUBLIC-DOMAIN",
+      "url": "https://www.dol.gov/general/aboutdol/copyright",
+      "scope": "본문 텍스트(제3자 저작물·이미지 제외)",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-20",
+      "evidence": "미국 노동부 저작권 안내(https://www.dol.gov/general/aboutdol/copyright, 2026-11-20 직접 확인): '연방정부가 만든 자료는 원칙적으로 퍼블릭 도메인이며 허락 없이 사용·복제·배포할 수 있다'(DOL의 사전 허가 불필요, 제3자 저작물·이미지 제외). 미국 저작권법 17 U.S.C. §105.",
+      "attribution_text": "Source: U.S. Department of Labor, Wage and Hour Division, “US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws” (November 19, 2026)"
+     },
+     "first_seen": "2026-11-20",
+     "last_updated": "2026-11-20",
+     "track": "A"
+    },
     {
      "issue_id": "iss-imf-article4-2026",
      "title": "2026년 IMF 연례협의 — 잠재성장률 2.5%·경활참가율·임금격차·사회안전망 권고",
@@ -481,30 +505,6 @@
      "first_seen": "2026-11-16",
      "last_updated": "2026-11-16",
      "track": "A"
-    },
-    {
-     "issue_id": null,
-     "title": "고용보험 10개월째 20만명대, 구인배수 0.46 — 고용행정 통계",
-     "source": {
-      "source_name": "고용노동부",
-      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20216"
-     },
-     "license": {
-      "name": "공공누리 미부착(사전 협의 필요)",
-      "type": "KOGL-NONE",
-      "url": null,
-      "scope": "보도자료 본문·첨부파일 재가공 불가",
-      "attribution_required": true,
-      "commercial_use": "unknown",
-      "modification": "unknown",
-      "verified": true,
-      "verified_at": "2026-11-16",
-      "evidence": "정책브리핑 전재본 고지에 '공공누리가 부착되지 않은 자료는 담당자와 협의 후 사용' 확인",
-      "attribution_text": "자료: 고용노동부 「2026년 10월 고용행정 통계로 본 노동시장 동향」"
-     },
-     "first_seen": "2026-11-16",
-     "last_updated": "2026-11-16",
-     "track": "B"
     }
    ]
   }
@@ -824,88 +824,192 @@
    "order": 4,
    "track": "A",
    "category": "해외 노동시장",
-   "title": "미국 1년 새 일자리 88만5천개, 정보·금융은 마이너스",
-   "kicker": "전년비 +88만5천개(월 7.4만) · 정보업 -11만9천",
+   "title": "미국, 근로자·독립계약자 구분 최종규칙 — 사례 14개",
+   "kicker": "핵심요소 2개로 판단 · 연방관보 뒤 60일 발효",
    "three_step": {
-    "what": "미국 노동통계국이 2026년 10월까지 1년 동안의 업종별 일자리 증감을 내놨다. 늘어난 자리는 의료·교육과 전문·사업서비스에 몰렸고, 정보와 금융은 줄었다.",
-    "evidence": "비농업 일자리는 1년 새 88만5,000개 늘어 월평균 약 7만4,000개 수준이다. 의료·교육 +52만5,000개, 전문·사업서비스 +26만9,000개, 건설 +12만4,000개, 제조 +7만8,000개인 반면 정보 -11만9,000개, 금융·보험 -9만9,000개, 정부 -5만8,000개였다(2026년 10월 기준·계절조정).",
-    "implication": "구직 상담에서 지원 업종의 1년 증감부터 함께 확인하고, 정보·금융 출신은 같은 기술을 쓰는 의료·전문서비스·제조의 인접 직무로 지원 범위를 넓히게 하라."
+    "what": "미국 노동부 임금시간국(WHD)이 2026년 11월 19일, 공정노동기준법(FLSA)상 근로자인지 독립계약자인지 가르는 판단기준을 바꾸는 최종규칙을 발표했다. 2024년 규정을 폐지하고 2021년 프레임워크와 비슷한 '경제적 실질' 판단으로 돌아가며, 가족·의료휴가법(FMLA)과 이주·계절농업노동자보호법(MSPA)에도 같은 분석을 적용한다.",
+    "evidence": "판단은 두 가지 핵심요소 — ①업무에 대한 통제의 성격과 정도 ②자기 주도·투자에 따른 이익·손실 기회 — 를 먼저 보고, 기술 수준·관계의 지속성·생산 단위의 일부인지를 보조요소로 본다. 최종규칙에는 실제 상황을 적용한 사례 14개가 실렸고, 의견 수렴에서 요청이 많았던 농업 노무업체·디지털 플랫폼 종사자·트럭 운전자 사례가 새로 들어갔다. 2026년 2월 27일 제안규정에 60일간 공개 의견 1만6,500건이 접수됐고, 연방관보 게재 60일 뒤 발효된다. 내국세법 등 다른 연방법과 주·지역법의 판단은 바뀌지 않는다.",
+    "implication": "플랫폼·프리랜서 경력자를 상담할 때 계약서상 명칭이 아니라 실제 통제와 손익 구조를 확인해 최저임금·초과근로·실업보험 적용 여부를 함께 짚어 주게 하라."
    },
    "key_numbers": [
     {
-     "label": "비농업 일자리(전년비)",
-     "value": "+88만5천개",
-     "delta": "월평균 약 7만4천",
-     "period": "2025.10~2026.10"
-    },
-    {
-     "label": "의료·교육",
-     "value": "+52만5천개",
+     "label": "공개 의견(60일)",
+     "value": "1만6,500건",
      "delta": "",
-     "period": "2026년 10월 기준"
+     "period": "2026년 2~4월"
     },
     {
-     "label": "전문·사업서비스",
-     "value": "+26만9천개",
+     "label": "판단 사례",
+     "value": "14개",
+     "delta": "플랫폼·농업노무·트럭 신규",
+     "period": "최종규칙"
+    },
+    {
+     "label": "핵심 판단요소",
+     "value": "2개",
      "delta": "",
-     "period": "2026년 10월 기준"
+     "period": "통제·손익 기회"
     },
     {
-     "label": "정보업",
-     "value": "-11만9천개",
-     "delta": "12개월",
-     "period": "2026년 10월 기준"
+     "label": "발효 시점",
+     "value": "연방관보+60일",
+     "delta": "",
+     "period": "2026년 11월 19일 발표"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "개",
+    "labels": [
+     "핵심 요소",
+     "보조 요소"
+    ],
+    "series": [
+     {
+      "name": "최종규칙이 제시한 판단 요소",
+      "values": [
+       2,
+       3
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "미 노동부 임금시간국 최종규칙의 판단 요소 수. 보조 요소는 기술 수준·관계의 지속성·생산 단위의 일부인지 등 3가지를 제시(2026.11.19 보도자료).",
+    "source_id": "src_dol_whd_ic_20261119"
+   },
+   "counselor_question": "계약서에 '프리랜서'로 적혀 있어도, 업무 시간과 방식을 누가 정하는지 말씀해 주시겠어요?",
+   "tags": [
+    "미국 노동부",
+    "독립계약자",
+    "플랫폼 노동"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "global",
+   "issue_id": "iss-us-ic-final-rule-2026",
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독",
+   "source": {
+    "source_id": "src_dol_whd_ic_20261119",
+    "source_name": "미국 노동부 임금시간국(DOL WHD)",
+    "source_title": "US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws",
+    "source_url": "https://www.dol.gov/newsroom/releases/whd/whd20261119",
+    "published_at": "2026-11-19",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.dol.gov/general/aboutdol/copyright",
+     "scope": "본문 텍스트(제3자 저작물·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "미국 노동부 저작권 안내(https://www.dol.gov/general/aboutdol/copyright, 2026-11-20 직접 확인): '연방정부가 만든 자료는 원칙적으로 퍼블릭 도메인이며 허락 없이 사용·복제·배포할 수 있다'(DOL의 사전 허가 불필요, 제3자 저작물·이미지 제외). 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Department of Labor, Wage and Hour Division, “US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws” (November 19, 2026)"
+    },
+    "usage": "보도자료 본문 전체와 수치를 한국어로 옮겨 싣고, 카드는 판단 구조·의견 수렴·발효 시점만 요약. 이미지는 싣지 않음."
+   },
+   "updated_at": "2026-11-20T23:04:00+09:00",
+   "run_id": "br-20261120-2304",
+   "edition": "global-2300"
+  },
+  {
+   "id": "c05",
+   "order": 5,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 물가 5년 새 22.0% — 스마트폰만 51% 내렸다",
+   "kicker": "주거 +26.8% · 에너지 +33.2% · 스마트폰 -51.2%",
+   "three_step": {
+    "what": "미국 노동통계국이 2026년 10월까지 5년(2021년 10월~2026년 10월) 동안의 소비자물가 변화를 항목별로 정리했다. 전체 물가는 22.0% 올랐고, 살림에 자주 나가는 항목이 평균보다 더 올랐다.",
+    "evidence": "소비자물가지수(CPI-U)는 5년 새 22.0% 상승(계절조정 안 함)했다. 에너지 +33.2%, 주거 +26.8%, 외식 +27.8%, 식료품 +24.0%, 교통 +22.9%인 반면 의료 +12.9%, 의류 +11.4%, 통신 -3.7%, 스마트폰 -51.2%였다. 대중교통은 +39.9%, 휘발유는 +31.9% 올랐다(2026년 10월 기준).",
+    "implication": "임금 협상·이직 상담에서 명목 임금 인상률만 제시하지 말고 5년 누적 물가 22.0%로 나눈 실질 구매력을 함께 계산해 보여 주게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "소비자물가(5년)",
+     "value": "+22.0%",
+     "delta": "",
+     "period": "2021.10~2026.10"
+    },
+    {
+     "label": "주거",
+     "value": "+26.8%",
+     "delta": "",
+     "period": "5년"
+    },
+    {
+     "label": "에너지",
+     "value": "+33.2%",
+     "delta": "",
+     "period": "5년"
+    },
+    {
+     "label": "스마트폰",
+     "value": "-51.2%",
+     "delta": "",
+     "period": "5년"
     }
    ],
    "chart_data": {
     "type": "diverging_bar",
-    "unit": "만명",
+    "unit": "%",
     "labels": [
-     "정보",
-     "금융·보험",
-     "정부",
-     "제조",
-     "전문·사업서비스",
-     "의료·교육"
+     "스마트폰",
+     "통신",
+     "의료",
+     "의류",
+     "전체",
+     "주거",
+     "에너지",
+     "대중교통"
     ],
     "series": [
      {
-      "name": "12개월 순증감",
+      "name": "5년 누적 물가 변화",
       "values": [
-       -11.9,
-       -9.9,
-       -5.8,
-       7.8,
-       26.9,
-       52.5
+       -51.2,
+       -3.7,
+       12.9,
+       11.4,
+       22.0,
+       26.8,
+       33.2,
+       39.9
       ],
       "emphasis": true
      }
     ],
     "reference_value": 0,
-    "note": "미국 비농업 일자리 12개월 순증감(2026년 10월 기준, 계절조정). BLS The Economics Daily 2026.11.18.",
-    "source_id": "src_bls_ted_payroll_20261118"
+    "note": "미국 CPI-U 항목별 5년(2021.10~2026.10) 변화율, 계절조정 안 함. BLS The Economics Daily 2026.11.19.",
+    "source_id": "src_bls_ted_cpi5y_20261119"
    },
-   "counselor_question": "지원하려는 업종은 지난 1년 사이 일자리가 늘었나요, 줄었나요? 줄었다면 그 안에서 늘고 있는 직무는 무엇일까요?",
+   "counselor_question": "5년 전과 같은 생활을 유지하려면 지금 월급이 얼마여야 할까요? 함께 계산해 볼까요?",
    "tags": [
-    "미국 고용",
-    "업종별 일자리",
-    "정보업"
+    "미국 물가",
+    "실질임금",
+    "생활비"
    ],
    "ncs": [
     "직업상담서비스"
    ],
-   "theme_key": "th-global-labor",
-   "theme_label": "해외 노동시장",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
    "region": "global",
-   "issue_id": "iss-us-payroll-12m-oct2026",
+   "issue_id": "iss-us-cpi-5y-oct2026",
    "labor_walk": true,
+   "labor_walk_topic": "임금·물가",
    "source": {
-    "source_id": "src_bls_ted_payroll_20261118",
+    "source_id": "src_bls_ted_cpi5y_20261119",
     "source_name": "미국 노동통계국(BLS) The Economics Daily",
-    "source_title": "Payroll employment increased by 885,000 from October 2025 to October 2026",
-    "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
-    "published_at": "2026-11-18",
+    "source_title": "Consumer prices up 22.0 percent over 5 years ending October 2026",
+    "source_url": "https://www.bls.gov/opub/ted/2026/consumer-prices-up-22-0-percent-over-5-years-ending-october-2026.htm",
+    "published_at": "2026-11-19",
     "license": {
      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
      "type": "PUBLIC-DOMAIN",
@@ -915,178 +1019,80 @@
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Payroll employment increased by 885,000 from October 2025 to October 2026” (November 18, 2026)"
+     "verified_at": "2026-11-20",
+     "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-20 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Consumer prices up 22.0 percent over 5 years ending October 2026” (November 19, 2026)"
     },
-    "usage": "본문·도표(12개월 업종별 증감)를 한국어로 옮겨 싣고, 카드는 업종별 증감만 요약. 그림은 싣지 않고 글자 표로 옮김."
+    "usage": "본문·항목별 통계표를 한국어로 옮겨 싣고, 카드는 대표 항목만 도표화. 그림은 싣지 않고 글자 표로 옮김."
    },
-   "updated_at": "2026-11-19T23:06:00+09:00",
-   "run_id": "br-20261119-2306",
-   "edition": "global-2300",
-   "labor_walk_topic": "해외 노동시장"
-  },
-  {
-   "id": "c05",
-   "order": 5,
-   "track": "A",
-   "category": "AI·직무",
-   "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
-   "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
-   "three_step": {
-    "what": "micro1과 노스이스턴대 연구진이 미국 법률서비스 시장에서 AI가 전문지식 일을 어떻게 다시 나누는지 분석했다. AI로 값싼 대안이 좋아지면 의뢰인은 일을 사내로 가져오기보다 다른 공급자 쪽으로 옮긴다.",
-    "evidence": "89개 연방지구 분석에서 비수감자 민사소송의 자기대리 비중이 2025회계연도 16.8%로, 20년 가까이 9.5~12.1%에 머물던 범위를 넘어 이중차분 기준 6.6%p 올랐다(기존 추세 조정 후 5.7%p). 로펌 변호사의 사내 이동은 뚜렷하지 않고(민간 고용 변호사 중 법률서비스업 밖 비중 2024년 29.0%, 2019년 28.7%), 대형 로펌은 청구시간이 거의 늘지 않았는데 2025년 매출이 13% 늘었다.",
-    "implication": "전문직 내담자에게 'AI가 없앨 직무'가 아니라 'AI가 값싸게 만든 업무 단계'를 먼저 적게 하고, 남는 판단·관계·책임 업무로 경력 서사를 다시 쓰게 하라."
-   },
-   "key_numbers": [
-    {
-     "label": "연방 민사 자기대리 비중",
-     "value": "16.8%",
-     "delta": "+6.6%p",
-     "period": "2025회계연도"
-    },
-    {
-     "label": "대형 로펌 매출",
-     "value": "+13%",
-     "delta": "청구시간 거의 정체",
-     "period": "2025년"
-    },
-    {
-     "label": "민간 변호사 사내 비중",
-     "value": "29.0%",
-     "delta": "2019년 28.7%",
-     "period": "2024년"
-    }
-   ],
-   "chart_data": {
-    "type": "bar",
-    "unit": "%",
-    "labels": [
-     "20년간 최고(2019년 이전)",
-     "2025회계연도"
-    ],
-    "series": [
-     {
-      "name": "연방 민사소송 자기대리 비중",
-      "values": [
-       12.1,
-       16.8
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "미국 연방지구 민사소송 자기대리 비중(%). 20년간 9.5~12.1% 범위의 최고치와 2025회계연도 비교. arXiv:2611.23354(2026.11.17).",
-    "source_id": "src_arxiv_2611_23354"
-   },
-   "counselor_question": "지금 하는 일 가운데 초안·검토처럼 AI가 값싸게 만들 수 있는 단계는 어디까지이고, 끝까지 남는 판단은 무엇인가요?",
-   "tags": [
-    "전문직",
-    "법률서비스",
-    "AI 재배치"
-   ],
-   "ncs": [
-    "직업상담서비스"
-   ],
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
-   "region": "global",
-   "issue_id": "iss-legal-ai-specialization",
-   "labor_walk": true,
-   "source": {
-    "source_id": "src_arxiv_2611_23354",
-    "source_name": "arXiv (micro1·노스이스턴대)",
-    "source_title": "AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services (arXiv:2611.23354)",
-    "source_url": "https://arxiv.org/abs/2611.23354",
-    "published_at": "2026-11-17",
-    "license": {
-     "name": "CC BY 4.0 (Attribution 4.0 International)",
-     "type": "CC-BY-4.0",
-     "url": "https://creativecommons.org/licenses/by/4.0/",
-     "scope": "논문 본문(초록·본문 텍스트)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
-     "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
-    },
-    "usage": "초록·주요 결과 문단을 그대로 싣고 한국어로 번역. 카드는 자기대리·변호사 고용·로펌 매출 수치만 요약."
-   },
-   "updated_at": "2026-11-19T23:06:00+09:00",
-   "run_id": "br-20261119-2306",
-   "edition": "global-2300",
-   "labor_walk_topic": "AI와 직무"
+   "updated_at": "2026-11-20T23:04:00+09:00",
+   "run_id": "br-20261120-2304",
+   "edition": "global-2300"
   },
   {
    "id": "c06",
    "order": 6,
    "track": "A",
    "category": "해외 노동시장",
-   "title": "배달·특송 부상 47.5% 급증, 전체 산재는 3% 줄었다",
-   "kicker": "특송 7만5,200건(+11.4%) · 업무전환·제한 +47.5%",
+   "title": "EU 성별 고용격차 9.7%p — 244개 지역 중 65곳만 목표",
+   "kicker": "남 80.9% vs 여 71.2% · 2030년 목표 5.7%p",
    "three_step": {
-    "what": "미국 노동통계국이 2025년 사업장 산재·질병 통계를 발표했다. 민간 부문 전체는 줄었는데 특송·메신저 업종만 늘었고, 늘어난 몫은 업무 전환·제한 사례에 몰렸다.",
-    "evidence": "민간 부문 비치명 산재·질병은 240만건으로 1년 새 3.0% 줄어 2003년 이후 가장 적었고 발생률은 2.3건/100 FTE였다. 반면 특송·메신저는 7만5,200건으로 11.4% 늘었고, 그중 업무 전환·제한(DJTR) 사례가 2만건에서 2만9,500건으로 47.5% 증가했다. 창고·보관은 7만2,800건(-5.5%), 보건·사회복지는 53만5,500건(-3.3%)이었다(2025년 기준).",
-    "implication": "배달·물류로 진입하려는 내담자에게 실제 업무가 운전뿐 아니라 상·하차와 반복 운반을 포함한다는 점을 확인시키고, 지원 전에 사업장의 안전보건 교육·보호구·업무복귀 지원 여부를 묻게 하라."
+    "what": "유로스타트가 2025년 유럽연합(EU) 지역별 성별 고용격차를 공개했다. 남성과 여성의 20~64세 고용률 차이는 9.7%포인트로 전년(10.0%p)보다 조금 줄었지만, 2030년 목표에는 4%포인트 넘게 남아 있다.",
+    "evidence": "2025년 20~64세 고용률은 남성 80.9%, 여성 71.2%로 격차가 9.7%p였다(2024년 10.0%p). EU는 유럽사회권 기둥 행동계획으로 2030년까지 격차를 절반인 5.7%p로 줄이겠다고 잡았고, 이를 위해 2019년부터 연평균 0.5%p씩 줄여야 한다. 244개 NUTS2 지역 중 65곳이 이미 목표를 달성했고(프랑스 14·독일 12·스웨덴 8곳 중 7곳), 26개 지역은 격차가 18.0%p 이상이었다(그리스 13곳 중 10곳, 이탈리아 21곳 중 8곳, 루마니아 8곳 중 5곳).",
+    "implication": "경력단절 여성 상담에서는 '일자리가 없다'와 '돌봄·시간 조건이 맞지 않는다'를 나눠 진단하고, 유연근무·시간제 일자리가 있는 업종을 먼저 찾아 제시하게 하라."
    },
    "key_numbers": [
     {
-     "label": "민간 부문 산재·질병",
-     "value": "240만건",
-     "delta": "-3.0%",
-     "period": "2025년"
-    },
-    {
-     "label": "특송·메신저 전체",
-     "value": "7만5,200건",
-     "delta": "+11.4%",
-     "period": "2025년"
-    },
-    {
-     "label": "특송 업무 전환·제한",
-     "value": "2만9,500건",
-     "delta": "+47.5%",
-     "period": "2025년"
-    },
-    {
-     "label": "민간 전체 발생률",
-     "value": "2.3건/100 FTE",
+     "label": "남성 고용률(20~64세)",
+     "value": "80.9%",
      "delta": "",
-     "period": "2025년"
+     "period": "2025년 EU"
+    },
+    {
+     "label": "여성 고용률(20~64세)",
+     "value": "71.2%",
+     "delta": "",
+     "period": "2025년 EU"
+    },
+    {
+     "label": "성별 고용격차",
+     "value": "9.7%p",
+     "delta": "-0.3%p",
+     "period": "2024년 10.0%p"
+    },
+    {
+     "label": "2030년 목표",
+     "value": "5.7%p",
+     "delta": "연 0.5%p 감축 필요",
+     "period": "2019년 기준"
     }
    ],
    "chart_data": {
-    "type": "diverging_bar",
+    "type": "bar",
     "unit": "%",
     "labels": [
-     "특송·메신저",
-     "민간 전체",
-     "보건·사회복지",
-     "창고·보관"
+     "남성(20~64세)",
+     "여성(20~64세)"
     ],
     "series": [
      {
-      "name": "산재·질병 건수 증감률",
+      "name": "고용률",
       "values": [
-       11.4,
-       -3.0,
-       -3.3,
-       -5.5
+       80.9,
+       71.2
       ],
       "emphasis": true
      }
     ],
-    "reference_value": 0,
-    "note": "미국 민간 부문 산재·질병 건수 전년비 증감률(2025년). BLS 2026.11.18.",
-    "source_id": "src_bls_soii_2025"
+    "reference_value": null,
+    "note": "EU 20~64세 고용률(2025년). 두 값의 차이 9.7%p가 성별 고용격차다. Eurostat 2026.11.19.",
+    "source_id": "src_eurostat_gender_gap_20261119"
    },
-   "counselor_question": "이 일을 할 때 하루에 몇 번, 얼마나 무거운 것을 직접 들고 옮기게 되는지 알고 지원하나요?",
+   "counselor_question": "일을 구하지 못한 이유가 일자리 부족인가요, 돌봄·시간 조건인가요? 어느 쪽이면 지원할 곳이 달라집니다.",
    "tags": [
-    "산업안전",
-    "배달·물류",
-    "플랫폼 노동"
+    "유럽 고용",
+    "성별 고용격차",
+    "경력단절"
    ],
    "ncs": [
     "직업상담서비스"
@@ -1094,134 +1100,136 @@
    "theme_key": "th-global-labor",
    "theme_label": "해외 노동시장",
    "region": "global",
-   "issue_id": "iss-us-soii-2025",
+   "issue_id": "iss-eu-gender-gap-2025",
    "labor_walk": true,
+   "labor_walk_topic": "해외 노동시장",
    "source": {
-    "source_id": "src_bls_soii_2025",
-    "source_name": "미국 노동통계국(BLS)",
-    "source_title": "Employer-Reported Workplace Injuries and Illnesses — 2025 (USDL-26-1712)",
-    "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
-    "published_at": "2026-11-18",
+    "source_id": "src_eurostat_gender_gap_20261119",
+    "source_name": "유로스타트(Eurostat)",
+    "source_title": "Average gender employment gap in EU regions at 9.7 pp",
+    "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20261119-1",
+    "published_at": "2026-11-19",
     "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.bls.gov/opub/copyright-information.htm",
-     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+     "name": "CC BY 4.0 (Eurostat 편집 콘텐츠)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "Eurostat 웹사이트 편집 콘텐츠(제3자 사진·삽화 제외)",
      "attribution_required": true,
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, “Employer-Reported Workplace Injuries and Illnesses — 2025” (USDL-26-1712, November 18, 2026)"
+     "verified_at": "2026-11-20",
+     "evidence": "Eurostat 저작권·무료 재이용 안내(https://ec.europa.eu/eurostat/web/main/help/copyright-notice, 2026-11-20 직접 확인): '이 웹사이트 편집 콘텐츠의 저작권은 EU에 있으며 Creative Commons Attribution 4.0 International 라이선스로 제공된다. 출처를 밝히고 변경 여부를 표시하면 재이용할 수 있다.' 번역 시 Eurostat이 요구하는 저작권 표시·면책 문구를 함께 넣었다.",
+     "attribution_text": "First published in English as “Average gender employment gap in EU regions at 9.7 pp” by Eurostat on the European Union's official website 'Europa' © European Union, 2026. 한국어 번역: ccttsi jobcounsel 자료실(2026), CC BY 4.0. 이 번역은 번역자 단독 책임이며, 원문과 번역이 다를 경우 원문이 유효합니다. Eurostat은 이 번역에 대해 책임지지 않습니다."
     },
-    "usage": "보도자료 본문을 한국어로 옮겨 싣고, 카드는 전체·업종별 증감률만 요약. 표·그림은 글자로만 옮김."
+    "usage": "편집 콘텐츠 본문을 한국어로 옮겨 실음(CC BY 4.0). 카드는 고용률·격차·지역 분포만 요약하고 도표는 원문 수치로 새로 그림."
    },
-   "updated_at": "2026-11-19T23:06:00+09:00",
-   "run_id": "br-20261119-2306",
-   "edition": "global-2300",
-   "labor_walk_topic": "해외 노동시장"
+   "updated_at": "2026-11-20T23:04:00+09:00",
+   "run_id": "br-20261120-2304",
+   "edition": "global-2300"
   },
   {
    "id": "c07",
    "order": 7,
-   "track": "A",
-   "category": "해외 노동시장",
-   "title": "미국 신규 실업수당 20만건대 — 해고는 적고 재취업은 느리다",
-   "kicker": "신규 20만3천건 · 4주 평균 19만7,750건",
+   "track": "B",
+   "category": "채용시장",
+   "title": "미국 고용주 90%, AI 지원서에 진짜 지원자를 놓쳤다",
+   "kicker": "채용절차 바꿨다 86% · 사람 면접 추가 57%",
    "three_step": {
-    "what": "미국 노동부가 주간 실업보험 신규 청구를 발표했다. 신규 청구는 20만건대로 낮게 유지됐지만, 수급을 이어가는 사람은 늘어 재취업이 느린 흐름을 보였다.",
-    "evidence": "11월 8~14일 주 계절조정 신규 청구는 20만3,000건으로 전주(20만2,000건, 2,000건 상향 수정)보다 1,000건 늘었고 1년 전 같은 주(22만2,000건)보다는 낮다. 반면 계속 수급(피보험 실업)은 176만3,000건으로 전주보다 7만건 늘었고, 4주 이동평균은 19만7,750건이다(2026년 11월 19일 발표).",
-    "implication": "해외 취업·이직을 준비하는 내담자에게 '공고 수'가 아니라 '채용을 끝내는 속도'를 기준으로 준비 기간을 잡게 하라."
+    "what": "채용 플랫폼 그린하우스가 2026년 11월 19일, 미국·영국·아일랜드·독일·호주 채용담당자 1,347명을 설문한 「2026 채용 담당자 보고서」를 발표했다. AI로 다듬은 지원서가 늘면서 지원자의 진위를 가리기 어려워졌다는 답이 나왔다.",
+    "evidence": "응답자 90%가 AI로 만들었거나 가짜로 보이는 지원서 때문에 실제 지원자를 놓친 적이 있다고 답했고, 86%는 채용절차를 바꿨다(가장 흔한 변경은 사람 면접 추가 57%). 미국 채용은 평균 62일 걸리고 서류의 97%는 면접 대화까지 가지 못하며, 단축 명단에 오른 지원자도 첫 면접까지 평균 19일을 기다린다. AI 면접은 52%가 이미 쓰고 73%가 1년 안에 쓰거나 도입할 계획이다(2026년 9~10월 설문).",
+    "implication": "내담자에게 지원서에 AI를 어디까지 썼는지 밝히고 본인 경험으로 검증 가능한 문장을 남기게 하며, 음성 AI 면접 예상질문으로 짧게 답하는 연습을 상담에 넣어라."
    },
    "key_numbers": [
     {
-     "label": "신규 청구(계절조정)",
-     "value": "20만3천건",
-     "delta": "전주 +1천건",
-     "period": "2026.11.8~14"
+     "label": "AI 지원서로 지원자 놓침",
+     "value": "90%",
+     "delta": "",
+     "period": "2026년 설문"
     },
     {
-     "label": "4주 이동평균",
-     "value": "19만7,750건",
-     "delta": "+2,000건",
-     "period": "2026년 11월"
+     "label": "채용절차 변경",
+     "value": "86%",
+     "delta": "사람 면접 추가 57%",
+     "period": "2026년 설문"
     },
     {
-     "label": "계속 수급(피보험 실업)",
-     "value": "176만3천건",
-     "delta": "전주 +7만건",
-     "period": "2026.11.1~7"
+     "label": "미국 채용 평균 소요",
+     "value": "62일",
+     "delta": "서류 97%는 면접 미도달",
+     "period": "2026년 하반기 보고서"
     },
     {
-     "label": "피보험 실업률",
-     "value": "1.1%",
-     "delta": "1년 전 1.3%",
-     "period": "2026.11.1~7"
+     "label": "AI 면접 사용·도입 계획",
+     "value": "73%",
+     "delta": "이미 사용 52%",
+     "period": "1년 내"
     }
    ],
    "chart_data": {
-    "type": "line",
-    "unit": "천건",
+    "type": "bar",
+    "unit": "%",
     "labels": [
-     "10/31",
-     "11/7",
-     "11/14"
+     "지원자 놓침 경험",
+     "채용절차 변경",
+     "사람 면접 추가",
+     "AI 면접 사용 중"
     ],
     "series": [
      {
-      "name": "신규 실업보험 청구(계절조정)",
+      "name": "미국 채용담당자 응답",
       "values": [
-       191,
-       202,
-       203
+       90,
+       86,
+       57,
+       52
       ],
       "emphasis": true
      }
     ],
     "reference_value": null,
-    "note": "미국 계절조정 주간 신규 실업보험 청구(천건). 미 노동부 2026.11.19 발표.",
-    "source_id": "src_dol_ui_claims_20261119"
+    "note": "미국 채용담당자 응답 비율(그린하우스 2026 채용 담당자 보고서, 2026.11.19 발표).",
+    "source_id": "src_greenhouse_ai_hiring_20261119"
    },
-   "counselor_question": null,
+   "counselor_question": "지원서를 다듬을 때 AI를 어디까지 썼나요? 면접에서 그 내용을 스스로 설명할 수 있나요?",
    "tags": [
-    "미국 실업보험",
-    "해고",
-    "노동시장 지표"
+    "AI 지원서",
+    "채용절차",
+    "AI 면접"
    ],
    "ncs": [
     "직업상담서비스"
    ],
-   "theme_key": "th-macro-economy",
-   "theme_label": "거시경제와 고용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
    "region": "global",
-   "issue_id": "iss-us-ui-claims-20261119",
+   "issue_id": "iss-gh-ai-applications-2026",
    "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용",
    "source": {
-    "source_id": "src_dol_ui_claims_20261119",
-    "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
-    "source_title": "Unemployment Insurance Weekly Claims Report (2026년 11월 19일)",
-    "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
+    "source_id": "src_greenhouse_ai_hiring_20261119",
+    "source_name": "Greenhouse(채용 플랫폼) 뉴스룸",
+    "source_title": "Nine in Ten Employers Believe They've Turned Away Real Candidates as AI Floods Job Applications",
+    "source_url": "https://www.greenhouse.com/newsroom/nine-in-ten-employers-believe-theyve-turned-away-real-candidates-as-ai-floods-job-applications",
     "published_at": "2026-11-19",
     "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
+     "name": "기업 보도자료 — 본문 복제·번역 금지",
+     "type": "PRESS",
      "url": null,
-     "scope": "보도자료 본문·통계표",
+     "scope": "보도자료 본문·제목·인용문·이미지",
      "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
      "verified": true,
-     "verified_at": "2026-11-19",
-     "evidence": "미국 노동부(연방 행정부) 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 원문 직접 확인(2026-11-19).",
-     "attribution_text": "Source: U.S. Department of Labor, Employment and Training Administration, “Unemployment Insurance Weekly Claims Report” (November 19, 2026)"
+     "verified_at": "2026-11-20",
+     "evidence": "Greenhouse 뉴스룸 보도자료(2026-11-19). 기업이 발표한 보도자료로 재가공·번역 허락 없음. 본문을 옮기지 않고 수치·사실만 새로 서술했다.",
+     "attribution_text": "수치 출처: Greenhouse, 「2026 Future of Hiring Employer Report」 보도자료(2026.11.19) — 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
     },
-    "usage": "본문을 한국어로 옮겨 싣고, 카드는 신규 청구·계속 수급·피보험 실업률만 요약."
+    "usage": "본문·제목·인용문을 옮기지 않고 응답 비율·기간 등 사실과 수치만 새로 서술. 직접인용 없음."
    },
-   "updated_at": "2026-11-19T23:06:00+09:00",
-   "run_id": "br-20261119-2306",
-   "edition": "global-2300",
-   "labor_walk_topic": "거시경제와 고용"
+   "updated_at": "2026-11-20T23:04:00+09:00",
+   "run_id": "br-20261120-2304",
+   "edition": "global-2300"
   }
  ],
  "radar": null,
@@ -1234,100 +1242,12 @@
   },
   "global-2300": {
    "status": "ok",
-   "updated_at": "2026-11-19T23:06:00+09:00",
-   "last_ok": "2026-11-19",
-   "run_id": "br-20261119-2306"
+   "updated_at": "2026-11-20T23:04:00+09:00",
+   "last_ok": "2026-11-20",
+   "run_id": "br-20261120-2304"
   }
  },
  "sources": [
-  {
-   "source_id": "src_arxiv_2611_23354",
-   "source_name": "arXiv (micro1·노스이스턴대)",
-   "source_title": "AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services (arXiv:2611.23354)",
-   "source_url": "https://arxiv.org/abs/2611.23354",
-   "published_at": "2026-11-17",
-   "license": {
-    "name": "CC BY 4.0 (Attribution 4.0 International)",
-    "type": "CC-BY-4.0",
-    "url": "https://creativecommons.org/licenses/by/4.0/",
-    "scope": "논문 본문(초록·본문 텍스트)",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-19",
-    "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
-    "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
-   },
-   "usage": "초록·주요 결과 문단을 그대로 싣고 한국어로 번역. 카드는 자기대리·변호사 고용·로펌 매출 수치만 요약.",
-   "id": "src_arxiv_2611_23354"
-  },
-  {
-   "source_id": "src_bls_soii_2025",
-   "source_name": "미국 노동통계국(BLS)",
-   "source_title": "Employer-Reported Workplace Injuries and Illnesses — 2025 (USDL-26-1712)",
-   "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
-   "published_at": "2026-11-18",
-   "license": {
-    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-    "type": "PUBLIC-DOMAIN",
-    "url": "https://www.bls.gov/opub/copyright-information.htm",
-    "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-19",
-    "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-    "attribution_text": "Source: U.S. Bureau of Labor Statistics, “Employer-Reported Workplace Injuries and Illnesses — 2025” (USDL-26-1712, November 18, 2026)"
-   },
-   "usage": "보도자료 본문을 한국어로 옮겨 싣고, 카드는 전체·업종별 증감률만 요약. 표·그림은 글자로만 옮김.",
-   "id": "src_bls_soii_2025"
-  },
-  {
-   "source_id": "src_bls_ted_payroll_20261118",
-   "source_name": "미국 노동통계국(BLS) The Economics Daily",
-   "source_title": "Payroll employment increased by 885,000 from October 2025 to October 2026",
-   "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
-   "published_at": "2026-11-18",
-   "license": {
-    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-    "type": "PUBLIC-DOMAIN",
-    "url": "https://www.bls.gov/opub/copyright-information.htm",
-    "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-19",
-    "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-19 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-    "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Payroll employment increased by 885,000 from October 2025 to October 2026” (November 18, 2026)"
-   },
-   "usage": "본문·도표(12개월 업종별 증감)를 한국어로 옮겨 싣고, 카드는 업종별 증감만 요약. 그림은 싣지 않고 글자 표로 옮김.",
-   "id": "src_bls_ted_payroll_20261118"
-  },
-  {
-   "source_id": "src_dol_ui_claims_20261119",
-   "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
-   "source_title": "Unemployment Insurance Weekly Claims Report (2026년 11월 19일)",
-   "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
-   "published_at": "2026-11-19",
-   "license": {
-    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-    "type": "PUBLIC-DOMAIN",
-    "url": null,
-    "scope": "보도자료 본문·통계표",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-19",
-    "evidence": "미국 노동부(연방 행정부) 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 원문 직접 확인(2026-11-19).",
-    "attribution_text": "Source: U.S. Department of Labor, Employment and Training Administration, “Unemployment Insurance Weekly Claims Report” (November 19, 2026)"
-   },
-   "usage": "본문을 한국어로 옮겨 싣고, 카드는 신규 청구·계속 수급·피보험 실업률만 요약.",
-   "id": "src_dol_ui_claims_20261119"
-  },
   {
    "source_id": "src_kostat_women_2026h1",
    "source_name": "국가데이터처",
@@ -1392,6 +1312,90 @@
    },
    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
    "id": "src_nosa_worktekh_20261119"
+  },
+  {
+   "source_name": "미국 노동부 임금시간국(DOL WHD)",
+   "source_title": "US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws",
+   "source_url": "https://www.dol.gov/newsroom/releases/whd/whd20261119",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.dol.gov/general/aboutdol/copyright",
+    "scope": "본문 텍스트(제3자 저작물·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "미국 노동부 저작권 안내(https://www.dol.gov/general/aboutdol/copyright, 2026-11-20 직접 확인): '연방정부가 만든 자료는 원칙적으로 퍼블릭 도메인이며 허락 없이 사용·복제·배포할 수 있다'(DOL의 사전 허가 불필요, 제3자 저작물·이미지 제외). 미국 저작권법 17 U.S.C. §105.",
+    "attribution_text": "Source: U.S. Department of Labor, Wage and Hour Division, “US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws” (November 19, 2026)"
+   },
+   "usage": "보도자료 본문 전체와 수치를 한국어로 옮겨 싣고, 카드는 판단 구조·의견 수렴·발효 시점만 요약. 이미지는 싣지 않음.",
+   "id": "src_dol_whd_ic_20261119"
+  },
+  {
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Consumer prices up 22.0 percent over 5 years ending October 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/consumer-prices-up-22-0-percent-over-5-years-ending-october-2026.htm",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+    "type": "PUBLIC-DOMAIN",
+    "url": "https://www.bls.gov/opub/copyright-information.htm",
+    "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-20 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+    "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Consumer prices up 22.0 percent over 5 years ending October 2026” (November 19, 2026)"
+   },
+   "usage": "본문·항목별 통계표를 한국어로 옮겨 싣고, 카드는 대표 항목만 도표화. 그림은 싣지 않고 글자 표로 옮김.",
+   "id": "src_bls_ted_cpi5y_20261119"
+  },
+  {
+   "source_name": "유로스타트(Eurostat)",
+   "source_title": "Average gender employment gap in EU regions at 9.7 pp",
+   "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20261119-1",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "CC BY 4.0 (Eurostat 편집 콘텐츠)",
+    "type": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "scope": "Eurostat 웹사이트 편집 콘텐츠(제3자 사진·삽화 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "Eurostat 저작권·무료 재이용 안내(https://ec.europa.eu/eurostat/web/main/help/copyright-notice, 2026-11-20 직접 확인): '이 웹사이트 편집 콘텐츠의 저작권은 EU에 있으며 Creative Commons Attribution 4.0 International 라이선스로 제공된다. 출처를 밝히고 변경 여부를 표시하면 재이용할 수 있다.' 번역 시 Eurostat이 요구하는 저작권 표시·면책 문구를 함께 넣었다.",
+    "attribution_text": "First published in English as “Average gender employment gap in EU regions at 9.7 pp” by Eurostat on the European Union's official website 'Europa' © European Union, 2026. 한국어 번역: ccttsi jobcounsel 자료실(2026), CC BY 4.0. 이 번역은 번역자 단독 책임이며, 원문과 번역이 다를 경우 원문이 유효합니다. Eurostat은 이 번역에 대해 책임지지 않습니다."
+   },
+   "usage": "편집 콘텐츠 본문을 한국어로 옮겨 실음(CC BY 4.0). 카드는 고용률·격차·지역 분포만 요약하고 도표는 원문 수치로 새로 그림.",
+   "id": "src_eurostat_gender_gap_20261119"
+  },
+  {
+   "source_name": "Greenhouse(채용 플랫폼) 뉴스룸",
+   "source_title": "Nine in Ten Employers Believe They've Turned Away Real Candidates as AI Floods Job Applications",
+   "source_url": "https://www.greenhouse.com/newsroom/nine-in-ten-employers-believe-theyve-turned-away-real-candidates-as-ai-floods-job-applications",
+   "published_at": "2026-11-19",
+   "license": {
+    "name": "기업 보도자료 — 본문 복제·번역 금지",
+    "type": "PRESS",
+    "url": null,
+    "scope": "보도자료 본문·제목·인용문·이미지",
+    "attribution_required": true,
+    "commercial_use": "not_allowed",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-20",
+    "evidence": "Greenhouse 뉴스룸 보도자료(2026-11-19). 기업이 발표한 보도자료로 재가공·번역 허락 없음. 본문을 옮기지 않고 수치·사실만 새로 서술했다.",
+    "attribution_text": "수치 출처: Greenhouse, 「2026 Future of Hiring Employer Report」 보도자료(2026.11.19) — 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+   },
+   "usage": "본문·제목·인용문을 옮기지 않고 응답 비율·기간 등 사실과 수치만 새로 서술. 직접인용 없음.",
+   "id": "src_greenhouse_ai_hiring_20261119"
   }
  ],
  "copyright_policy": {

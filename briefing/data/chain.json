@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T07:47:56+09:00",
+ "generated_at": "2026-11-20T23:04:58+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -1308,6 +1308,17 @@
      "source_name": "노사발전재단",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789916",
      "published_at": "2026-11-19"
+    },
+    {
+     "date": "2026-11-20",
+     "card_id": "c04",
+     "title": "미국, 근로자·독립계약자 구분 최종규칙 — 사례 14개",
+     "kicker": "핵심요소 2개로 판단 · 연방관보 뒤 60일 발효",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동부 임금시간국(DOL WHD)",
+     "source_url": "https://www.dol.gov/newsroom/releases/whd/whd20261119",
+     "published_at": "2026-11-19"
     }
    ]
   },
@@ -1775,6 +1786,17 @@
      "source_name": "한국개발연구원(KDI)·재정경제부",
      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396",
      "published_at": "2026-11-16"
+    },
+    {
+     "date": "2026-11-20",
+     "card_id": "c05",
+     "title": "미국 물가 5년 새 22.0% — 스마트폰만 51% 내렸다",
+     "kicker": "주거 +26.8% · 에너지 +33.2% · 스마트폰 -51.2%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/consumer-prices-up-22-0-percent-over-5-years-ending-october-2026.htm",
+     "published_at": "2026-11-19"
     }
    ]
   },
@@ -2011,6 +2033,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516",
      "published_at": "2026-11-17"
+    },
+    {
+     "date": "2026-11-20",
+     "card_id": "c07",
+     "title": "미국 고용주 90%, AI 지원서에 진짜 지원자를 놓쳤다",
+     "kicker": "채용절차 바꿨다 86% · 사람 면접 추가 57%",
+     "category": "채용시장",
+     "region": "global",
+     "source_name": "Greenhouse(채용 플랫폼) 뉴스룸",
+     "source_url": "https://www.greenhouse.com/newsroom/nine-in-ten-employers-believe-theyve-turned-away-real-candidates-as-ai-floods-job-applications",
+     "published_at": "2026-11-19"
     }
    ]
   },
@@ -3889,6 +3922,17 @@
      "source_name": "미국 노동통계국(BLS)",
      "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
      "published_at": "2026-11-18"
+    },
+    {
+     "date": "2026-11-20",
+     "card_id": "c06",
+     "title": "EU 성별 고용격차 9.7%p — 244개 지역 중 65곳만 목표",
+     "kicker": "남 80.9% vs 여 71.2% · 2030년 목표 5.7%p",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "유로스타트(Eurostat)",
+     "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20261119-1",
+     "published_at": "2026-11-19"
     }
    ]
   }
