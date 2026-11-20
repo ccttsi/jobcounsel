@@ -34,7 +34,11 @@ from sync_openapi_common import (  # noqa: E402
     write_source,
 )
 
+TOTAL_CANDIDATES = 0  # 이름이 맞는 전체 후보 수( --limit·--offset 으로 나눠 돌려도 이 값은 전체다)
+
+
 def _candidates(dart_key: str, limit: int = 0, offset: int = 0) -> list[dict]:
+    global TOTAL_CANDIDATES
     raw = request_raw(
         SOURCES["dart_corp_map"]["endpoint"],
         {"crtfc_key": dart_key},
@@ -75,6 +79,7 @@ def _candidates(dart_key: str, limit: int = 0, offset: int = 0) -> list[dict]:
             for candidate in by_name.get(normalize_name(value), []):
                 picked.setdefault(candidate["corp_code"], candidate)
     rows = sorted(picked.values(), key=lambda c: c["corp_code"])
+    TOTAL_CANDIDATES = len(rows)
     print(f"  · corpCode.xml {sum(len(v) for v in by_name.values()):,}곳 · 이름 후보 {len(rows):,}곳")
     rows = rows[offset:]
     return rows[:limit] if limit else rows
@@ -157,7 +162,7 @@ def dart_corp_map(dart_key: str, *, dry_run: bool = False, limit: int = 0, offse
         dry_run=dry_run,
         extra={
             "verified_by": "법인등록번호(우선)·사업자번호",
-            "candidates": len(candidates),
+            "candidates": TOTAL_CANDIDATES or len(candidates),
             "note": "이름이 같은 다른 법인을 붙이지 않도록 번호가 일치하는 기업만 담았다.",
         },
     )
