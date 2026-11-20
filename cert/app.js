@@ -251,7 +251,7 @@
       (c ? '<p class="cdef k-' + c.k + '"></p>' : '') +
       '<div class="sb" id="sb">' + IC.search + '<input id="q" data-deeplink type="search" enterkeyhint="search" autocomplete="off" placeholder="자격 이름, 과목, 관련 직업으로 찾기" aria-label="자격증 찾기"><button class="clr" id="qx" type="button" aria-label="검색어 지우기">' + IC.x + '</button></div>' +
       '<p class="eg" id="eg"><span>예</span><button type="button">직업상담사</button><button type="button">데이터베이스</button><button type="button">간호</button><button type="button">ㅈㅂㅊㄹ</button></p>' +
-      '<div class="fd"><aside class="fl" id="fl" aria-label="조건 고르기"><div class="fl-sh" id="flSh"><div class="fl-hd"><b>조건 고르기</b><button type="button" class="fl-x" id="flX" aria-label="닫기">' + IC.x + '</button></div><div class="fl-b" id="flB"></div><div class="fl-ft"><button type="button" class="reset" id="flR">모두 풀기</button><button type="button" class="fl-go" id="flGo">결과 보기</button></div></div></aside>' +
+      '<div class="fd"><aside class="fl" id="fl" data-jc-layer=".fl.open" aria-label="조건 고르기"><div class="fl-sh" id="flSh"><div class="fl-hd"><b>조건 고르기</b><button type="button" class="fl-x" id="flX" aria-label="닫기">' + IC.x + '</button></div><div class="fl-b" id="flB"></div><div class="fl-ft"><button type="button" class="reset" id="flR">모두 풀기</button><button type="button" class="fl-go" id="flGo">결과 보기</button></div></div></aside>' +
       '<section id="res" aria-live="polite"></section></div><div class="scrim" id="scrim" hidden></div>';
     var q = d.getElementById('q'); q.value = st.q;
     var tmr = 0;

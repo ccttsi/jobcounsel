@@ -22,6 +22,7 @@
 python3 ops/scripts/validate_repo.py                 # JSON·저작권·JS·프리셋·(PR이면) 역할
 python3 ops/scripts/smoke_test.py                    # 저장소를 로컬 서버로 띄워 잰다
 python3 ops/scripts/health_check.py                  # 배포본 라이브 점검
+python3 ops/qa/back_close.py                         # 세부 팝업 뒤로가기 닫기(18개 섹터)
 ```
 
 - `smoke_test.py`는 `pip install playwright && python -m playwright install chromium`이 먼저 필요하다.

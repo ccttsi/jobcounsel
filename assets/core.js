@@ -17,7 +17,11 @@
  *
  * 6) 딥링크: 대문 검색이 넘긴 ?q= 를 이 화면의 검색창에 채우고 바로 찾는다(data-jc-deep="off"면 섹터가 직접 받는다).
  *
+ * 7) 뒤로가기 = 세부 팝업 닫기: 자료 안에서 세부 자료를 열면 브라우저 뒤로가기(iOS 스와이프·안드로이드 버튼)가
+ *    이전 화면으로 나가지 않고 «열려 있던 팝업만» 닫아 상위 화면으로 돌아간다(JCBackStack).
+ *
  * 섹터가 쓸 수 있는 것: window.JCCore = { base, state(), warm(href), notice(text, label, fn), clear(), query(), applyQuery() }
+ *                     window.JCBackStack = { bind(el, closeFn), release(el), depth(), open(el, closeFn) }
  * 화면 밖으로 내보내는 것은 없다. 외부 서버를 부르지 않는다 — 예외는 6) 오류 수집 하나뿐이고,
  * 그마저도 운영 도메인에서만이다.
  */
@@ -228,6 +232,283 @@
     if (!BASE || location.href.split(/[?#]/)[0] === BASE) return;
     if (window.JC_TOOLS) load(BASE + 'assets/next.js'); else load(BASE + 'assets/tools.js', function () { load(BASE + 'assets/next.js'); });
   });
+
+  /* ---------- 7) 뒤로가기 = 세부 팝업 닫기 ----------
+   * 자리(문제): 자료 안에서 세부 자료를 열었는데, 습관적으로 X를 누르지 않고 브라우저 뒤로가기(아이폰 스와이프·안드로이드 버튼)를
+   *           누르면 팝업이 닫히기는커녕 이전 화면으로 튕겨 나간다. 팝업은 히스토리에 흔적을 남기지 않기 때문이다.
+   * 하는 일: 팝업·모달·드로어·상세 시트가 열리면 «같은 주소로» 히스토리 한 칸을 쌓는다. 뒤로가기가 오면 맨 위 팝업 하나만 닫는다.
+   *           X·배경·ESC로 먼저 닫으면 쌓아 둔 칸을 history.back()으로 거둬, 다음 뒤로가기가 두 번 눌리지 않게 한다.
+   *           ?q=·#hash는 건드리지 않는다(pushState에 지금 주소를 그대로 넘긴다).
+   * 알아보는 법: role="dialog"·aria-modal="true"·<dialog>·.sheet·.drawer·.modal, 그리고 섹터가 붙인 data-jc-layer.
+   *           화면을 덮는 크기(넓이 22% 이상 또는 높이 55% 이상)만 팝업으로 본다 — 작은 드롭다운·말풍선은 건드리지 않는다.
+   * 닫는 법: 섹터가 JCBackStack.bind(요소, closeFn)로 닫는 함수를 넘기면 그것을 부른다. 안 넘기면
+   *         팝업 안의 닫기 단추(‘닫기’·…X·…Close·data-close)를 누르고, 그래도 열려 있으면 ESC를 보내고, 마지막에는 감춘다.
+   * 중첩: 두 겹이 열리면 한 번에 한 겹씩 닫힌다.
+   */
+  var BS = (function () {
+    var SEL = '[role="dialog"],[aria-modal="true"],dialog,.sheet,.drawer,.modal,[data-jc-layer]';
+    var CLOSE = '[data-jc-layer-close],[data-close],[data-act^="close"],[aria-label*="닫기"],button[id$="X"],button[id$="Close"],button[id$="close"],.sh-x button,.det-x button';
+    var layers = [], fns = null, snaps = null, seq = 0, suppress = 0, raf = 0, lastLen = history.length, lastUrl = location.href, lastBefore = '', lastTouch = '', touchPush = 0, touchRep = 0, pushN = 0, repN = 0, fix = null, touched = false, quiet = false;
+    /* 주소를 바꾸기 직전의 주소를 기억해 둔다 — 팝업이 열릴 때 섹터가 #hash를 끼워 넣는 경우가 많다 */
+    try {
+      ['pushState', 'replaceState'].forEach(function (k) {
+        var raw = history[k]; if (typeof raw !== 'function') return;
+        history[k] = function () {
+          lastBefore = location.href;
+          if (k === 'pushState') pushN++; else repN++;
+          return raw.apply(history, arguments);
+        };
+      });
+    } catch (e) {}
+    try { fns = new WeakMap(); snaps = new WeakMap(); } catch (e) {}
+
+    function st(el) { try { return getComputedStyle(el); } catch (e) { return null; } }
+    function zi(el) { var c = st(el); var v = c ? parseInt(c.zIndex, 10) : 0; return isNaN(v) ? 0 : v; }
+
+    /* 쌓임 순서: z-index가 큰 것이 위, 같으면 문서에서 뒤에 있는 것이 위 */
+    function above(a, b) {
+      var za = zi(a), zb = zi(b); if (za !== zb) return za > zb;
+      return !!(a.compareDocumentPosition(b) & 4);            // b가 a 뒤(문서 순서)면 a가 아래
+    }
+
+    /* 화면을 덮고 있는가 — 작은 드롭다운·말풍선·머리말은 팝업이 아니다 */
+    function shown(el) {
+      if (!el || !el.isConnected || el.nodeType !== 1) return false;
+      if (el.closest('[data-jc-ignore]')) return false;
+      if (el.hasAttribute('hidden') || el.hidden) return false;
+      if (el.getAttribute('aria-hidden') === 'true') return false;
+      var c = st(el); if (!c) return false;
+      if (c.display === 'none' || c.visibility === 'hidden' || c.visibility === 'collapse') return false;
+      if (parseFloat(c.opacity) < 0.05) return false;
+      var r = el.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return false;
+      /* 화면 밖으로 밀어 둔 것(transform: translateX(100%))은 닫힌 것이다 */
+      var vw = window.innerWidth || 360, vh = window.innerHeight || 640;
+      var w = Math.min(r.right, vw) - Math.max(r.left, 0), h = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+      if (w < 2 || h < 2) return false;
+      var cond = el.getAttribute('data-jc-layer');
+      if (cond) { try { if (!d.querySelector(cond)) return false; } catch (e) {} }   // data-jc-layer="body.detail" 같은 조건
+      if (el.hasAttribute('data-jc-layer')) return true;
+      return (w * h) >= 0.22 * vw * vh || (h >= 0.55 * vh && w >= 240);
+    }
+    function scrim(el) {
+      if (el.id === 'ov' || el.id === 'scrim') return true;
+      var cn = ' ' + (el.getAttribute('class') || '') + ' ';
+      return / (scrim|ov|veil|backdrop) /.test(cn);
+    }
+    /* 한 겹으로 친다: 상자 안에 상자가 같이 열린 경우(겹쳐 쌓지 않는다) */
+    function kin(a, b) { try { return a.contains(b) || b.contains(a); } catch (e) { return false; } }
+
+    function found() {
+      var out = [], all;
+      try { all = d.querySelectorAll(SEL); } catch (e) { return out; }
+      for (var i = 0; i < all.length; i++) {
+        var el = all[i];
+        if (scrim(el) || !shown(el)) continue;
+        if (el.tagName === 'HEADER' || el.tagName === 'NAV') continue;
+        var dup = false;
+        for (var j = 0; j < out.length; j++) if (kin(out[j], el)) { dup = true; break; }
+        if (!dup) out.push(el);
+      }
+      out.sort(function (a, b) { return above(b, a) ? -1 : above(a, b) ? 1 : 0; });   // 아래 → 위
+      return out;
+    }
+
+    /* 닫힌 모습을 기억해 둔다(마지막 수단으로 되돌릴 때 쓴다) */
+    function remember() {
+      var all; try { all = d.querySelectorAll(SEL); } catch (e) { return; }
+      for (var i = 0; i < all.length; i++) {
+        var el = all[i]; if (shown(el)) continue;
+        try {
+          snaps.set(el, { cls: el.getAttribute('class'), hidden: el.hidden, aria: el.getAttribute('aria-hidden'), style: el.getAttribute('style') });
+        } catch (e) {}
+      }
+    }
+
+    function push(el, still) {
+      still = still || quiet;
+      var entry = { el: el, id: 'jc' + (++seq), ours: false, native: false, initial: still || !touched, url0: (lastTouch && sameDoc(lastTouch, location.href)) ? lastTouch : (lastBefore && sameDoc(lastBefore, location.href)) ? lastBefore : lastUrl, url: location.href };
+      /* 섹터가 스스로 히스토리를 쌓았는가 — pushState를 부탓거나, 주소만 바꾼 #hash 이동(location.hash=) */
+      if (still) { entry.close = fns ? fns.get(el) : null; layers.push(entry); lastLen = history.length; entry.len = lastLen; return entry; }
+      var viaApi = (pushN + repN) > (touchPush + touchRep);
+      var grew = touched && (pushN > touchPush || (location.href !== lastTouch && !viaApi));
+      touchPush = pushN; touchRep = repN;
+      try {
+        if (grew) entry.native = true;
+        else {
+          history.pushState({ jcLayer: entry.id }, '', location.href);
+          entry.ours = true;
+        }
+      } catch (e) { entry.ours = false; }
+      entry.close = fns ? fns.get(el) : null;
+      layers.push(entry);
+      lastLen = history.length; entry.len = lastLen;
+      return entry;
+    }
+
+    function sameDoc(a, b) { return String(a).split('#')[0] === String(b).split('#')[0]; }
+
+    /* 쌓아 둔 칸을 거둔다 — 부른 쪽이 이미 팝업을 닫았을 때 */
+    function settle(entry) {
+      if (!entry || entry.settled) return; entry.settled = true;
+      var i = layers.indexOf(entry); if (i > -1) layers.splice(i, 1);
+      /* 주소만 {…}로 바뀌었을 뿐 같은 문서라면 닫힌 팝업의 흔적을 지운다 */
+      if (!sameDoc(entry.url0, entry.url)) { entry.ours = entry.native = false; }
+      if (entry.initial) return;                                      // 첫 화면에서 이미 열려 있던 팝업 — 뒤로가기는 페이지 이탈
+      if (entry.ours && entry.live !== false && history.length === (entry.len || 0)) {
+        fix = sameDoc(location.href, entry.url0) ? entry.url0 : null;
+        entry.live = false;
+        suppress++;
+        try { history.back(); } catch (e) { suppress = Math.max(0, suppress - 1); }
+        lastLen = history.length;
+      } else if (entry.native && entry.live !== false && history.length === (entry.len || 0) && sameDoc(location.href, entry.url)) {
+        /* 섹터가 남긴 #hash 칸 하나를 함께 거둔다(주소를 이미 되돌렸어도 칸은 남아 있다) */
+        fix = sameDoc(location.href, entry.url0) ? entry.url0 : null;
+        suppress++;
+        try { history.back(); } catch (e) { suppress = Math.max(0, suppress - 1); }
+        lastLen = history.length;
+      }
+    }
+
+    function sync() {
+      if (!d.body) return;
+      remember();
+      var now = found(), i, alive = [];
+      for (i = 0; i < layers.length; i++) {
+        var e = layers[i];
+        if (!e.el.isConnected || !shown(e.el)) { settle(e); continue; }  // 섹터가 먼저 닫았다
+        alive.push(e);
+      }
+      layers = alive;
+      for (i = 0; i < now.length; i++) {
+        if (index(now[i]) < 0) push(now[i]);
+      }
+      lastLen = history.length; lastUrl = location.href;
+    }
+    function index(el) { for (var i = 0; i < layers.length; i++) if (layers[i].el === el) return i; return -1; }
+
+    var t1 = 0, t2 = 0;
+    function later() {                                             // 전환(motion)이 끝난 뒤 한 번 더
+      clearTimeout(t1); clearTimeout(t2);
+      t1 = setTimeout(sync, 70); t2 = setTimeout(sync, 280);
+    }
+    function tick() {
+      if (raf) return;
+      raf = setTimeout(function () { raf = 0; sync(); later(); }, 16);
+    }
+
+    /* ───── 닫기 ───── */
+    function esc() {
+      var ev;
+      try { ev = new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, which: 27, bubbles: true, cancelable: true }); }
+      catch (e) { ev = d.createEvent('Event'); ev.initEvent('keydown', true, true); try { ev.key = 'Escape'; } catch (e2) {} }
+      var t = d.activeElement || d.body;
+      try { t.dispatchEvent(ev); } catch (e) {}
+      if (!ev.defaultPrevented) { try { d.dispatchEvent(ev); } catch (e) {} }
+    }
+    function force(el) {
+      var s = snaps ? snaps.get(el) : null;
+      try {
+        if (el.tagName === 'DIALOG' && el.open) { el.close(); return; }
+        if (s) {
+          if (s.cls === null) el.removeAttribute('class'); else el.setAttribute('class', s.cls);
+          el.hidden = !!s.hidden;
+          if (s.aria === null) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', s.aria);
+          if (s.style === null) el.removeAttribute('style'); else el.setAttribute('style', s.style);
+        } else { el.hidden = true; el.setAttribute('aria-hidden', 'true'); }
+        root.style.overflow = ''; if (d.body) d.body.style.overflow = '';            // 잠긴 스크롤을 푼다
+      } catch (e) {}
+    }
+    function shut(el, n) {
+      n = n || 0;
+      if (!shown(el)) return;
+      if (el.tagName === 'DIALOG' && el.open && n === 0) { try { el.close(); } catch (e) {} }
+      var b = n === 0 ? (el.querySelector('[data-jc-layer-close]') || el.querySelector(CLOSE) || (el.parentElement && el.parentElement.querySelector(CLOSE))) : null;
+      if (b) { try { b.click(); } catch (e) {} }
+      else if (n < 2) esc();
+      else { force(el); return; }
+      if (n < 3) setTimeout(function () { shut(el, n + 1); }, 110);
+    }
+
+    /* ───── 뒤로가기 ───── */
+    window.addEventListener('popstate', function (ev) {
+      if (suppress > 0) {                                             // 내가 거둔 칸
+        suppress--;
+        if (fix) { try { history.replaceState(history.state, '', fix); } catch (e) {} fix = null; }
+        lastUrl = location.href; lastLen = history.length;
+        return;
+      }
+      var top = layers[layers.length - 1];
+      if (!top) return;                                              // 팝업이 없으면 섹터·브라우저에 맡긴다
+      if (ev && ev.state && ev.state.jcLayer && ev.state.jcLayer === top.id) return;   // 앞으로 가기(지금 칸으로) 
+      top.live = false;                                              // 브라우저가 이미 한 칸 물렀다
+      if (!shown(top.el)) { settle(top); return; }
+      if (typeof top.close === 'function') { try { top.close(); } catch (e) {} }
+      else shut(top.el);
+      settle(top);
+      /* 닫힌 팝업의 #hash가 주소에 남아 있으면 걷어 낸다 */
+      if (!top.initial && top.url0 && sameDoc(location.href, top.url0) && location.href !== top.url0) {
+        try { history.replaceState(history.state, '', top.url0); } catch (e) {}
+      } else if (top.initial && top.url === top.url0 && location.href === top.url && location.hash) {
+        /* 딥링크로 저절로 열린 팝업 — 닫았으니 주소의 #hash도 걷는다 */
+        try { history.replaceState(history.state, '', location.href.split('#')[0]); } catch (e) {}
+      }
+      lastUrl = location.href; lastLen = history.length;
+      setTimeout(sync, 120); setTimeout(sync, 400);
+    });
+
+    function watch() {
+      if (!window.MutationObserver || !d.body) return;
+      try {
+        new MutationObserver(function (recs) {
+          for (var i = 0; i < recs.length; i++) {
+            var r = recs[i];
+            if (r.type === 'childList') { tick(); return; }
+            var t = r.target;
+            if (!t || t.nodeType !== 1) continue;
+            if (t === d.body || t === root || (t.matches && t.matches(SEL))) { tick(); return; }
+            /* 감싸개에 hidden·class가 붙는 경우(바깥 상자를 감추면 안쪽 팝업도 사라진다) */
+            for (var k = 0; k < layers.length; k++) {
+              if (layers[k].el === t || layers[k].el.contains(t) || t.contains(layers[k].el)) { tick(); return; }
+            }
+          }
+        }).observe(d.documentElement, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'style', 'hidden', 'open', 'aria-hidden', 'role', 'data-jc-layer'] });
+      } catch (e) {}
+    }
+
+    /* 섹터가 부르는 문 */
+    var api = {
+      bind: function (el, fn) {                                     // 팝업 요소에 «닫는 함수»를 붙인다
+        if (typeof el === 'string') el = d.querySelector(el);
+        if (!el || !fns) return;
+        fns.set(el, fn);
+        var i = index(el); if (i > -1) layers[i].close = fn;
+        setTimeout(sync, 0);
+      },
+      release: function (el) {                                      // 섹터가 팝업을 닫았을 때 정리(보통은 자동)
+        if (typeof el === 'string') el = d.querySelector(el);
+        var i = el ? index(el) : layers.length - 1; if (i < 0) return;
+        settle(layers[i]);
+      },
+      depth: function () { return layers.length; },                  // 열려 있는 겹 수
+      open: function (el, fn) {                                      // 히스토리에 없는 팝업을 직접 등록
+        if (typeof el === 'string') el = d.querySelector(el);
+        if (!el) return;
+        if (fn && fns) fns.set(el, fn);
+        if (index(el) < 0) push(el);
+      }
+    };
+
+    /* 사용자가 화면을 한 번이라도 만졌는가 — 안 만졌으면 딥링크로 저절로 열린 팝업이다 */
+    ['pointerdown', 'touchstart', 'mousedown', 'click', 'keydown'].forEach(function (t) {
+      d.addEventListener(t, function () { touched = true; lastTouch = location.href; touchPush = pushN; touchRep = repN; }, { capture: true, passive: true });
+    });
+
+    ready(function () { watch(); sync(); setTimeout(sync, 200); setTimeout(sync, 700); });
+    window.addEventListener('pageshow', function (e) { if (e.persisted) { layers = []; quiet = true; sync(); quiet = false; } });
+    return api;
+  })();
+  window.JCBackStack = BS;
 
   window.JCCore = {
     base: BASE,

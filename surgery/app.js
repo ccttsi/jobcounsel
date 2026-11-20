@@ -247,7 +247,7 @@
 
   /* ───── 상세 껍데기·시트 ───── */
   var X = '<div class="det-x"><button type="button" data-close>닫기</button></div>';
-  function detShell() { return '<div class="det-wrap" id="detWrap"><section class="box pane det" id="det" tabindex="-1" aria-live="polite"><div class="empty" style="margin:0">왼쪽(휴대폰은 위) 목록에서 하나를 고르면 한 겹씩 열립니다.</div></section></div>'; }
+  function detShell() { return '<div class="det-wrap" id="detWrap" data-jc-layer><section class="box pane det" id="det" tabindex="-1" aria-live="polite"><div class="empty" style="margin:0">왼쪽(휴대폰은 위) 목록에서 하나를 고르면 한 겹씩 열립니다.</div></section></div>'; }
   var last = null;
   function openSheet() { if (mq.matches) return; var w = $('detWrap'); if (!w || w.classList.contains('on')) return; last = d.activeElement; w.classList.add('on'); d.documentElement.style.overflow = 'hidden'; setTimeout(function () { var x = w.querySelector('[data-close]'); if (x) x.focus({ preventScroll: true }); }, 40); }
   function closeSheet() { var w = $('detWrap'); if (!w || !w.classList.contains('on')) return; w.classList.remove('on'); d.documentElement.style.overflow = ''; if (last && last.focus) last.focus({ preventScroll: true }); }
