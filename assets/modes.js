@@ -74,7 +74,16 @@
   var ECG_ACC = [0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1];
   var ECG_COLORS = ['#0f766e', '#b4532a', '#8f5f00', '#8a2f45', '#3d5a80', '#5f6b2a'];
 
-  var ARM_IDLE = 9000;      /* 1차만 누른 채 두면 이만큼 뒤 조용히 풀린다 */
+  var ARM_IDLE = 9000;      /* 1차만 누른 채 두면 이만큼 뒤 조용히 풀린다(레버 — 롤링을 한 칸 감아 둔 채로 기다린다) */
+  /* 2026-11-20 R3(태화님 지시): 「심전도 장전모션 후딜레이가 지금 과도하게 길어 — 롤링이 넘어가는 시간과 같게.」
+     장전 한 호흡을 대문 롤링의 5초 격자(index.html `GRID = 5000`)와 **같은 주기 5.000초**로 맞춘다.
+       · 0.15초 후진 + 0.41초 가속 = 0.56초 예비동작·가속(LEAN_ARM)
+       · 3.50초까지 장전 자세 유지 → 여기가 후딜레이(가속 끝 0.56초 → 3.50초 = 2.94초)
+       · 3.50초부터 1.50초 복귀(CALM_MS) → 클릭에서 기본까지 정확히 5.000초
+     이전에는 후딜레이가 9.0초(클릭→기본 10.5초)라 롤링 한 칸(5초)의 두 배가 넘었다 — 리듬이 겉돌았다.
+     주기를 롤링과 같게 두면 둘이 함께 흘러도 위상이 벌어지지 않고, 격발(0.11초 후진 + 2.6초 고조 + 0.88초 이탈
+     ≈ 3.6초)은 그대로라 「느린 장전 한 호흡 ↔ 빠른 격발 한 방」의 대비도 유지된다. */
+  var ECG_CYCLE = 5000;     /* 장전 한 호흡 — 롤링 한 칸(GRID)과 같은 5.000초 */
   var HINT_MS = 5000;       /* 방치 유도 길이 — 레버·심전도 둘 다 5.0초 */
   var SURGE_MS = 2600;      /* 2차(격발) 고조 길이 — 1.9초→2.6초. 이 동안 진폭·속도가 점점 커지고 화면이 떨린다 */
   /* 2026-11-20 — 심전도 예비동작·복귀·이탈의 세 시간.
@@ -88,6 +97,7 @@
   var LEAN_FIRE = 110;      /* 격발 직전: 110ms 뒤로 당긴 뒤 고조가 시작된다(장전보다 짧고 깊게) */
   var FIRE_PULL = -3.2;     /* 격발 예비동작의 후진 배속(장전 -2.8) — 압축 뒤 폭발 */
   var CALM_MS = 1500;       /* 장전 → 기본: 한 곡선으로 속도↓·진폭↓·파장↑ */
+  var ECG_HOLD = ECG_CYCLE - CALM_MS;   /* 후딜레이 = 3.50초에 복귀를 시작해 5.00초에 기본에 닿는다 */
   var EXIT_MS = 880;        /* 격발 → 글래스: 520 → 880ms. 글래스가 완전히 덮이기 전에 알파가 눈에 보이게 빠져나간다 */
 
   var nav, ov, glass, slot, slotBtn, ecgRow, ecgBtn, cards = [], foot, back;
@@ -222,7 +232,9 @@
       lvTween(30, 260);                             /* 1차: 2시 → 1시 */
       if (nav && nav.spin) nav.spin(-1, 260);       /* 장전: 롤링을 한 칸 뒤로 감아 둔다 */
     }
-    armT = setTimeout(disarm, ARM_IDLE);
+    /* 심전도는 5.000초 한 호흡(롤링 한 칸) — 3.50초 뒤 풀려 1.50초에 걸쳐 기본으로 돌아온다.
+       레버는 롤링을 한 칸 감아 둔 채로 기다리는 자리라 종전대로 ARM_IDLE(9초)을 따른다. */
+    armT = setTimeout(disarm, which === 'ecg' ? ECG_HOLD : ARM_IDLE);
     return false;
   }
   function leverTap() {
@@ -1081,7 +1093,11 @@
       state: function () { return { on: hintOn, t: HINT.t, min: HINT.min, pat: HINT.pat }; }
     };
     /* 감독·검수용: 격발 고조의 지금 값(진폭·속도·흔들림)을 읽어 본다 */
-    window.JC_ECG = { state: function () { return { sp: ECG.sp, amp: ECG.amp, beat: ECG.beat, lw: ECG.lw, jit: ECG.jit, surge: ECG.surge, ph: ECG.ph, tone: ECG.tone, preAmp: ECG.preAmp, lean: ECG.lean, calm: ECG.calm, exit: ECG.exit, on: ECG.on, step: ECG.step || 1, vel: (ECG.sp || 0) * (ECG.step || 1) }; } };
+    window.JC_ECG = {
+      /* 감독·검수용: 장전 한 호흡의 시간표(ms) — 롤링 한 칸(GRID)과 같은 5.000초인지 실측으로 대조한다 */
+      timing: function () { return { cycle: ECG_CYCLE, hold: ECG_HOLD, calm: CALM_MS, lean: LEAN_ARM, surge: SURGE_MS, exit: EXIT_MS }; },
+      state: function () { return { sp: ECG.sp, amp: ECG.amp, beat: ECG.beat, lw: ECG.lw, jit: ECG.jit, surge: ECG.surge, ph: ECG.ph, tone: ECG.tone, preAmp: ECG.preAmp, lean: ECG.lean, calm: ECG.calm, exit: ECG.exit, on: ECG.on, step: ECG.step || 1, vel: (ECG.sp || 0) * (ECG.step || 1) }; }
+    };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
