@@ -24,7 +24,7 @@
   var state = {
     mode: 'decks', pick: 'algo', q: '', active: 0, built: null, pins: [],
     deck: null, deckId: '', fixed: false, courses: [], saving: false, busy: false, checks: {},
-    savedWhere: '', graph: null
+    savedWhere: '', graph: null, undoSteps: null, undoActive: 0, undoPins: null
   };
   var dom = {};
   var typer = null;
@@ -41,9 +41,15 @@
   function toast(m) {
     var t = $('toast');
     if (!t) return;
+    clearTimeout(toast.t);
+    /* 빈 말로 지울 때는 알약을 띄우지 않는다 — 내용 없는 점만 남지 않게 */
+    if (!String(m == null ? '' : m).trim()) {
+      t.textContent = '';
+      t.classList.remove('on');
+      return;
+    }
     t.textContent = m;
     t.classList.add('on');
-    clearTimeout(toast.t);
     toast.t = setTimeout(function () { t.classList.remove('on'); }, 3600);
   }
   function loggedIn() { return !!(window.JCDeck && window.JCDeck.loggedIn()); }
@@ -361,6 +367,8 @@
     state.built = null;
     state.active = 0;
     state.pins = [];
+    state.undoSteps = null;
+    state.undoPins = null;
     if (dom.ask) dom.ask.value = '';
     setMode('live');
     setPick('live');
@@ -543,6 +551,8 @@
       state.active = 0;
       state.checks = {};
       state.pins = [];
+      state.undoSteps = null;
+      state.undoPins = null;
       state.savedWhere = r.source === 'server' ? 'server' : 'session';
       toast(r.source === 'server' ? '내 계정의 마이덱에 저장했어요.' : '이 창에 저장했어요. 창을 닫으면 초기화됩니다.');
       renderCourses();
@@ -692,6 +702,8 @@
   function backToInput() {
     state.built = null;
     state.pins = [];
+    state.undoSteps = null;
+    state.undoPins = null;
     var host = $('lvBoard');
     if (host) { clear(host); host.hidden = true; }
     window.JCDeckNav.clear();
@@ -784,6 +796,64 @@
     setActive(state.active + d);
   }
 
+  /* 덱에서 단계 빼기 — 하나만 빼거나, 그 밑으로 이어지는 단계를 한꺼번에 뺀다.
+     저장한 덱이면 그대로 저장하고(계정/이 창) 보드를 같은 자리에서 다시 세운다.
+     바로 한 번 되돌릴 수 있게 빼기 전 모양을 들고 있는다. 최소 한 단계는 남긴다. */
+  function deckDelete(i, below) {
+    var D = store();
+    var deck = state.deck;
+    if (!D || !deck || !deck.steps || !deck.steps.length) return;
+    var steps = deck.steps.slice();
+    if (below ? i >= steps.length - 1 : steps.length <= 1) return;
+    var next = below ? steps.slice(0, i + 1) : steps.slice(0, i).concat(steps.slice(i + 1));
+    var dropped = steps.length - next.length;
+    var at = state.active;
+    var pins = state.pins.slice();
+    D.save({ id: deck.id, name: deck.name, steps: next, where: deck.where }).then(function (r) {
+      var saved = r.deck || { id: deck.id, name: deck.name, steps: next, where: deck.where };
+      state.undoSteps = steps;
+      state.undoActive = at;
+      state.undoPins = pins;
+      state.deck = saved;
+      state.deckId = saved.id || state.deckId;
+      /* 고정한 근거의 단계 번호를 새 순서에 맞춘다(빠진 단계의 고정은 함께 걷힌다) */
+      state.pins = pins.map(function (p) {
+        if (p.st === i) return null;
+        if (p.st > i) return below ? null : { k: p.k, st: p.st - 1, title: p.title, url: p.url, sector: p.sector, sectorTitle: p.sectorTitle, why: p.why };
+        return p;
+      }).filter(Boolean);
+      savePins();
+      state.active = Math.min(at, next.length - 1);
+      state.checks = {};
+      toast(dropped + '단계를 덱에서 뺐어요. ' + (r.source === 'server' ? '계정의 덱에 저장했습니다.' : '이 창의 덱에 저장했습니다.'));
+      runBoard(true);
+    }, function (e) {
+      toast(D.errText ? D.errText(e || {}) : '단계를 빼지 못했어요.');
+    });
+  }
+
+  /* 방금 뺀 단계를 되돌린다 — 빼기 전 모양 그대로 저장하고 같은 자리로 돌아간다 */
+  function deckRestore() {
+    var D = store();
+    var deck = state.deck;
+    if (!D || !deck || !state.undoSteps || !state.undoSteps.length) return;
+    var steps = state.undoSteps, at = state.undoActive, pins = state.undoPins || [];
+    D.save({ id: deck.id, name: deck.name, steps: steps, where: deck.where }).then(function (r) {
+      state.deck = r.deck || { id: deck.id, name: deck.name, steps: steps, where: deck.where };
+      state.deckId = state.deck.id || state.deckId;
+      state.undoSteps = null;
+      state.undoPins = null;
+      state.pins = pins;
+      savePins();
+      state.active = Math.min(at, steps.length - 1);
+      state.checks = {};
+      toast('단계를 되돌렸어요.');
+      runBoard(true);
+    }, function (e) {
+      toast(D.errText ? D.errText(e || {}) : '되돌리지 못했어요.');
+    });
+  }
+
   function renderPanel() {
     var host = $('lvPanel');
     if (!host || !state.built) return;
@@ -815,7 +885,7 @@
     body.appendChild(colC);
 
     colA.appendChild(sectionHead('상담 발문', st.ask.length + '개'));
-    var ask = el('ul', 'lv-ask');
+    var ask = el('ul', 'lv-ask-list');
     st.ask.forEach(function (q) { ask.appendChild(el('li', null, q)); });
     st.note.forEach(function (n) {
       var li = el('li', 'io');
@@ -895,6 +965,39 @@
     }
 
     host.appendChild(body);
+
+    /* 단계 빼기 — 지금 단계가 흐름에 맞지 않으면 덱에서 뺀다 */
+    var edit = el('div', 'lv-deck-edit');
+    if (b.stages.length <= 1) {
+      edit.appendChild(el('span', 'lv-deck-tx', '덱에 남은 단계가 하나뿐이라 더 뺄 수 없습니다.'));
+    } else {
+      edit.appendChild(el('span', 'lv-deck-tx', '지금 ' + (state.active + 1) + ' / ' + b.stages.length +
+        '단계 — 이 단계가 흐름에 맞지 않으면 덱에서 뺍니다.'));
+      var delOne = el('button', 'lv-deck-del', '이 단계 삭제');
+      delOne.type = 'button';
+      delOne.setAttribute('aria-label', (state.active + 1) + '단계 ' + st.title + ' 삭제');
+      delOne.addEventListener('click', function () { deckDelete(state.active, false); });
+      edit.appendChild(delOne);
+      if (state.active < b.stages.length - 1) {
+        var delBelow = el('button', 'lv-deck-del below', '이 밑으로 모두 삭제');
+        delBelow.type = 'button';
+        delBelow.setAttribute('aria-label', (state.active + 1) + '단계 밑으로 ' + (b.stages.length - state.active - 1) + '단계 모두 삭제');
+        delBelow.addEventListener('click', function () { deckDelete(state.active, true); });
+        edit.appendChild(delBelow);
+      }
+    }
+    host.appendChild(edit);
+
+    if (state.undoSteps && state.undoSteps.length) {
+      var undoBox = el('div', 'ac-undo');
+      undoBox.appendChild(el('span', null, '덱에서 뺀 단계는 한 번 되돌릴 수 있습니다.'));
+      var ub = el('button', null, '되돌리기');
+      ub.type = 'button';
+      ub.setAttribute('aria-label', '방금 뺀 단계 되돌리기');
+      ub.addEventListener('click', deckRestore);
+      undoBox.appendChild(ub);
+      host.appendChild(undoBox);
+    }
 
     var nav = el('div', 'lv-nav');
     var prev = el('button', null, '‹ 이전');
@@ -1069,6 +1172,7 @@
   window.JCDeckLive = {
     open: open,
     setMode: setMode,
+    pick: function (m) { setPick(m === 'algo' ? 'algo' : 'live'); },
     toDecks: function () { setMode('decks'); },
     ready: function () { return !!window.JCAssistSearch && window.JCAssistSearch.ready(); },
     state: function () { return { mode: state.mode, pick: state.pick, courses: state.courses.length, built: !!state.built, active: state.active }; }

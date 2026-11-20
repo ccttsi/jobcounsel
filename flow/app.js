@@ -112,9 +112,15 @@
   function toast(msg) {
     var t = $('toast');
     if (!t) return;
+    clearTimeout(toast.t);
+    /* 빈 말로 지울 때는 알약을 띄우지 않는다 — 내용 없는 검은/하얀 점만 남던 자리 */
+    if (!String(msg == null ? '' : msg).trim()) {
+      t.textContent = '';
+      t.classList.remove('on');
+      return;
+    }
     t.textContent = msg;
     t.classList.add('on');
-    clearTimeout(toast.t);
     toast.t = setTimeout(function () { t.classList.remove('on'); }, 3400);
   }
 
@@ -1128,31 +1134,84 @@
     renderDoneSheet(host, ft);
   }
 
-  /* 마이덱 라이브 설명 — 흐름을 짜는 화면에서도 언제든 펼쳐 본다 */
+  /* 설명 — 「마이덱 알고리즘」과 「마이덱 라이브」를 꼭지로 나눠 본다 */
+  var ABOUT = 'algo';
   function renderAbout(host, ft) {
-    $('sheetT').textContent = '마이덱 라이브';
-    var p1 = el('p', 'ok-msg');
-    p1.appendChild(el('b', null, '로그인한 사람에게만 열리는 기능입니다. '));
-    p1.appendChild(document.createTextNode('하고 싶은 일을 한 문장으로 적으면(예: 「경력단절 내담자 첫 상담 흐름 짜기」) 자료실 색인·약어 사전·시너지 지도에서 걸리는 섹터를 찾아 '));
-    p1.appendChild(el('b', null, '서로 다른 세 가지 흐름'));
-    p1.appendChild(document.createTextNode('(정석 적용형 · 실전 연습형 · 사례·법령 집중형)으로 자동으로 짜 줍니다. 고른 하나는 내 덱에 바로 저장되고 상담 OS 보드로 이어집니다.'));
-    host.appendChild(p1);
+    $('sheetT').textContent = '마이덱 설명';
 
-    var p2 = el('p', 'ok-msg');
-    p2.appendChild(el('b', null, '이 화면의 저장 규칙 — '));
-    p2.appendChild(document.createTextNode('커스터마이징 마이덱 프리셋은 로그인한 상태에서 저장하면 계정 정보에 보관됩니다. 비로그인 상태에서는 창을 닫으면 초기화되며, 로그인하면 계정에 영구 저장됩니다.'));
-    host.appendChild(p2);
+    var pick = el('div', 'lv-pick ab-tabs');
+    pick.setAttribute('role', 'tablist');
+    pick.setAttribute('aria-label', '설명 고르기');
+    var body = el('div', 'ab-body');
+    host.appendChild(pick);
+    host.appendChild(body);
 
-    var go = el('a', 'primary', '마이덱 라이브 열기');
-    go.href = window.JCDeck && window.JCDeck.loggedIn() ? '../mydeck/#live' : '../mydeck/';
-    go.style.textDecoration = 'none';
-    go.style.display = 'inline-flex';
-    go.style.alignItems = 'center';
-    ft.appendChild(go);
+    function para(bold, rest) {
+      var p = el('p', 'ok-msg');
+      if (bold) p.appendChild(el('b', null, bold));
+      if (rest) p.appendChild(document.createTextNode(rest));
+      return p;
+    }
+    function steps(items) {
+      var ol = el('ol', 'ab-steps');
+      items.forEach(function (x) {
+        var li = el('li');
+        li.appendChild(el('b', null, x[0] + ' — '));
+        li.appendChild(document.createTextNode(x[1]));
+        ol.appendChild(li);
+      });
+      return ol;
+    }
+
+    function paint() {
+      Array.prototype.forEach.call(pick.querySelectorAll('button'), function (b) {
+        var on = b.getAttribute('data-ab') === ABOUT;
+        b.setAttribute('aria-selected', String(on));
+        b.setAttribute('tabindex', on ? '0' : '-1');
+      });
+      clear(body); clear(ft);
+
+      if (ABOUT === 'algo') {
+        body.appendChild(para('마이덱 알고리즘 — 개념 하나를 누르면 세 가지 완성덱.', ' 상담에서 하려는 일에 가까운 말을 하나만 고르면, 자료실 색인과 시너지 지도에서 걸리는 섹터로 서로 다른 세 가지 흐름을 짜 줍니다.'));
+        body.appendChild(steps([
+          ['개념 하나 고르기', '「경력단절여성」「직무분석」처럼 상담에서 하려는 일에 가까운 말을 하나 누릅니다.'],
+          ['세 흐름 고르기', '정석 적용형 · 실전 연습형 · 사례·법령 집중형 — 단계와 순서가 서로 다릅니다.'],
+          ['바로 실행', '마음에 드는 흐름은 내 덱에 저장되고, 그 덱으로 상담 OS 보드(발문·체크·근거 카드)가 열립니다.']
+        ]));
+        body.appendChild(para('로그인한 사람에게만 보입니다.', ' 저장한 덱은 계정에 남아 다른 기기에서도 이어집니다.'));
+        var go = el('a', 'primary', '마이덱 열기');
+        go.href = '../mydeck/';
+        go.style.textDecoration = 'none';
+        go.style.display = 'inline-flex';
+        go.style.alignItems = 'center';
+        ft.appendChild(go);
+        return;
+      }
+
+      body.appendChild(para('로그인한 사람에게만 열리는 기능입니다.', ' 하고 싶은 일을 한 문장으로 적으면(예: 「경력단절 내담자 첫 상담 흐름 짜기」) 자료실 색인·약어 사전·시너지 지도에서 걸리는 섹터를 찾아 서로 다른 세 가지 흐름(정석 적용형 · 실전 연습형 · 사례·법령 집중형)으로 자동으로 짜 줍니다. 고른 하나는 내 덱에 바로 저장되고 상담 OS 보드로 이어집니다.'));
+      body.appendChild(para('이 화면의 저장 규칙 — ', '커스터마이징 마이덱 프리셋은 로그인한 상태에서 저장하면 계정 정보에 보관됩니다. 비로그인 상태에서는 창을 닫으면 초기화되며, 로그인하면 계정에 영구 저장됩니다.'));
+      var live = el('a', 'primary', '마이덱 라이브 열기');
+      live.href = window.JCDeck && window.JCDeck.loggedIn() ? '../mydeck/#live' : '../mydeck/';
+      live.style.textDecoration = 'none';
+      live.style.display = 'inline-flex';
+      live.style.alignItems = 'center';
+      ft.appendChild(live);
+    }
+
+    [['algo', '마이덱 알고리즘'], ['live', '마이덱 라이브']].forEach(function (m) {
+      var b = el('button', null, m[1]);
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('data-ab', m[0]);
+      b.addEventListener('click', function () { ABOUT = m[0]; paint(); });
+      pick.appendChild(b);
+    });
+    paint();
   }
 
   function renderDoneSheet(host, ft) {
-    $('sheetT').textContent = '내 덱 — ' + CHAIN.length + '개 자료';
+    var on = !!(window.JCDeck && window.JCDeck.loggedIn());
+    $('sheetT').textContent = (on ? '내 덱' : '완성한 흐름') + ' — ' + CHAIN.length + '개 자료';
     var field = el('div', 'field');
     var lab = el('label', null, '덱 이름');
     lab.setAttribute('for', 'deckName');
@@ -1192,13 +1251,18 @@
     var b1 = el('button', 'ghost', '리허설');
     b1.type = 'button';
     b1.addEventListener('click', function () { SHEET = 'rehearsal'; REH = 0; renderSheet(); });
-    var b2 = el('button', 'primary', '마이덱에 저장');
-    b2.type = 'button';
-    b2.addEventListener('click', doSave);
+    ft.appendChild(b1);
+    /* 마이덱에 저장은 로그인한 사람에게만 — 비로그인자에게는 이 길을 그리지 않는다 */
+    if (on) {
+      var b2 = el('button', 'primary', '마이덱에 저장');
+      b2.type = 'button';
+      b2.addEventListener('click', doSave);
+      ft.appendChild(b2);
+    }
     var b3 = el('button', 'ghost', '시드·매치 덱으로');
     b3.type = 'button';
     b3.addEventListener('click', sendToDeck);
-    ft.appendChild(b1); ft.appendChild(b2); ft.appendChild(b3);
+    ft.appendChild(b3);
   }
 
   function renderRehearsal(host, ft) {
@@ -1373,41 +1437,45 @@
   }
 
   /* ---------- 계정 · 저장 안내 줄 ----------
-     로그인한 사람에게는 「마이덱 라이브」 바로가기를, 아닌 사람에게는 로그인 단추와 저장 규칙을 보인다. */
+     로그인한 사람에게만 마이덱·마이덱 라이브로 가는 길을 보인다.
+     로그인하지 않았으면 이 줄 자체를 감추고, 로그인 길은 머리말 단추 하나만 둔다. */
   function renderAcct() {
     var host = $('acct');
     if (!host) return;
     clear(host);
     var D = window.JCDeck;
     var user = (D && D.user) ? D.user() : '';
+    var on = !!user;
+    var hdr = $('hdrLogin');
+    if (hdr) hdr.hidden = on;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-md-only]'), function (n) { n.hidden = !on; });
+    document.documentElement.setAttribute('data-jc-account', on ? 'user' : 'guest');
+
+    /* 비로그인 — 마이덱 관련 안내·단추·진입점을 하나도 그리지 않는다 */
+    host.hidden = !on;
+    var fb = $('flipBtn');
+    if (fb) fb.hidden = !on;
+    if (!on) {
+      if (MD.side === 'back') turn('front');
+      return;
+    }
 
     var who = el('div', 'who');
-    who.appendChild(el('b', null, user ? user + ' 님의 계정에 저장합니다.' : '로그인하지 않았습니다 — 만든 덱은 이 창에만 저장됩니다.'));
-    who.appendChild(el('span', null, user
-      ? '커스터마이징 마이덱 프리셋은 계정 정보에 저장되고, 다른 기기에서도 이어집니다.'
-      : '비로그인 상태에서는 창을 닫으면 초기화되며, 로그인하면 계정에 영구 저장됩니다.'));
+    who.appendChild(el('b', null, user + ' 님의 계정에 저장합니다.'));
+    who.appendChild(el('span', null, '커스터마이징 마이덱 프리셋은 계정 정보에 저장되고, 다른 기기에서도 이어집니다.'));
     host.appendChild(who);
 
     var btns = el('div', 'btns');
-    if (user) {
-      var live = el('a', 'live', '마이덱 라이브');
-      live.href = '../mydeck/#live';
-      live.setAttribute('aria-label', '마이덱 라이브 — 목적 문장 한 줄로 세 가지 흐름 자동 조립');
-      btns.appendChild(live);
-    } else {
-      var lg = el('button', null, '로그인');
-      lg.type = 'button';
-      lg.setAttribute('data-jc-login', '');
-      lg.addEventListener('click', function () { if (window.JCSync && window.JCSync.open) window.JCSync.open(); });
-      btns.appendChild(lg);
-    }
-    var info = el('button', null, '마이덱 라이브 설명');
-    info.type = 'button';
-    info.addEventListener('click', function () { openSheet('about'); });
-    btns.appendChild(info);
     var deck = el('a', null, '마이덱');
     deck.href = '../mydeck/';
+    deck.setAttribute('aria-label', '마이덱 — 내가 짠 상담 덱 모아 두기');
     btns.appendChild(deck);
+    var info = el('button', null, '설명');
+    info.type = 'button';
+    info.setAttribute('aria-haspopup', 'dialog');
+    info.setAttribute('aria-label', '마이덱과 마이덱 라이브 설명');
+    info.addEventListener('click', function () { openSheet('about'); });
+    btns.appendChild(info);
     host.appendChild(btns);
   }
 

@@ -55,17 +55,24 @@
 
 /* 입력창 — 회색 예시 문장이 그 위에 겹쳐 타자된다(포커스·입력 중에는 사라진다) */
 .lv-field{position:relative;min-width:0}
-.lv-ask{
-  display:block;width:100%;min-width:0;max-width:100%;height:78px;margin:0;padding:13px 14px;
+textarea.lv-ask{
+  display:block;width:100%;min-width:0;max-width:100%;margin:0;padding:14px 16px;
+  min-height:92px;height:92px;
   border:1px solid var(--line2);border-radius:14px;background:var(--bg);color:var(--ink);
-  font-family:inherit;font-size:17px;line-height:1.55;letter-spacing:-.01em;resize:none;overflow:hidden;
+  font-family:inherit;font-size:16px;line-height:1.55;letter-spacing:-.01em;resize:none;overflow-y:auto;overflow-x:hidden;
   -webkit-appearance:none;appearance:none;
+  transition:border-color .16s,box-shadow .16s,background-color .16s;
 }
-.lv-ask:focus,.lv-ask:focus-visible{outline:2px solid var(--acc);outline-offset:0;border-color:var(--acc)}
+/* 포커스는 두꺼운 단선 대신 보더 색 전환 + 은은한 소프트 링 */
+textarea.lv-ask:focus,textarea.lv-ask:focus-visible{
+  outline:none;border-color:var(--acc);background:var(--panel);
+  box-shadow:0 0 0 3px rgba(61,58,114,.16);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--acc) 22%, transparent);
+}
 .lv-ph{
-  position:absolute;left:1px;right:1px;top:1px;bottom:1px;padding:13px 14px;
+  position:absolute;left:1px;right:1px;top:1px;bottom:1px;padding:14px 16px;
   border-radius:13px;background:var(--bg);color:var(--dim);
-  font-size:17px;line-height:1.55;letter-spacing:-.01em;pointer-events:none;
+  font-size:16px;line-height:1.55;letter-spacing:-.01em;pointer-events:none;
   overflow:hidden;word-break:keep-all;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;opacity:1;
   transition:opacity .16s;
@@ -133,6 +140,59 @@
 }
 .ac-step:hover{background:var(--soft)}
 .ac-step:hover .t b{color:var(--acc)}
+
+/* 단계 지우기 — 카드마다 편집을 열면 각 단계 밑에 지우기 단추가 선다 */
+.ac-edit{
+  flex:none;min-height:44px;padding:0 11px;border:1px dashed var(--line2);border-radius:10px;
+  background:none;font-size:12px;font-weight:800;color:var(--muted);white-space:nowrap;
+  display:inline-flex;align-items:center;transition:border-color .14s,color .14s,background-color .14s;
+}
+.ac-edit:hover{border-color:var(--acc);color:var(--acc)}
+.ac-edit[aria-pressed="true"]{border-style:solid;border-color:var(--acc);background:var(--acc-soft);color:var(--acc)}
+.ac-row-act{display:flex;flex-wrap:wrap;gap:6px;padding:0 2px 6px 2px}
+.ac-mini{
+  min-height:44px;padding:0 12px;border:1px solid var(--line2);border-radius:10px;background:var(--bg);
+  font-size:12.5px;font-weight:750;color:var(--ink);display:inline-flex;align-items:center;white-space:nowrap;
+  transition:border-color .14s,color .14s;
+}
+.ac-mini:hover{border-color:var(--acc)}
+.ac-mini.del{color:var(--muted)}
+.ac-mini.below{color:var(--bad);border-color:color-mix(in srgb, var(--bad) 38%, var(--line2))}
+.ac-mini.below:hover{border-color:var(--bad)}
+.ac-row-note{margin:0;padding:10px 2px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.ac-undo{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:6px 10px;margin-top:2px;
+  border:1px dashed var(--line2);border-radius:12px;background:var(--soft);
+  font-size:12.5px;font-weight:650;color:var(--muted);
+}
+.ac-undo button{
+  min-height:44px;padding:0 12px;border:1px solid var(--line2);border-radius:10px;background:var(--panel);
+  font-size:12.5px;font-weight:800;color:var(--acc);margin-left:auto;
+}
+/* 편집 중에는 단계 줄의 「눌러서 갈라지기」를 잠시 접어 둔다 */
+.ac-row .ac-step{cursor:pointer}
+.lv-course.edit .ac-step{opacity:.92}
+
+/* 설명 시트의 꼭지(마이덱 알고리즘 ↔ 마이덱 라이브) */
+.ab-tabs{justify-self:start;margin:0 0 2px}
+.ab-steps{margin:0;padding-left:20px;display:grid;gap:8px;font-size:13.5px;line-height:1.62;color:var(--muted)}
+.ab-steps b{color:var(--ink);font-weight:800}
+
+/* 단계 빼기 — 상담 OS 보드에서 지금 단계를 덱에서 뻐다(보관된 덱까지 바로 저장) */
+.lv-deck-edit{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:2px;padding:10px 12px;
+  border:1px dashed var(--line2);border-radius:12px;background:var(--soft);min-width:0;
+}
+.lv-deck-tx{flex:1 1 100%;min-width:0;font-size:12.5px;line-height:1.5;font-weight:650;color:var(--muted)}
+@media (min-width:560px){.lv-deck-tx{flex:1 1 180px}}
+.lv-deck-del{
+  min-height:44px;padding:0 13px;border:1px solid var(--line2);border-radius:10px;background:var(--panel);
+  font-size:12.5px;font-weight:800;color:var(--ink);display:inline-flex;align-items:center;white-space:nowrap;
+  transition:border-color .14s,color .14s;
+}
+.lv-deck-del:hover{border-color:var(--acc);color:var(--acc)}
+.lv-deck-del.below{color:var(--bad);border-color:color-mix(in srgb, var(--bad) 38%, var(--line2))}
+.lv-deck-del.below:hover{border-color:var(--bad)}
 
 /* 브랜치 전개 — 알고리즘 · 문장으로 (두 방식 모두 같은 자리) */
 .ac-branch{
@@ -342,17 +402,18 @@
 .lv-sec-hd span{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
 .lv-sec-line{flex:1;min-width:12px;height:1px;background:var(--line)}
 
-.lv-ask{list-style:none;margin:0;padding:0;display:grid;gap:7px}
-.lv-ask li{
+/* 질문 목록 — 같은 이름(lv-ask)을 쓰던 입력창과 겹치지 않게 따로 둔다 */
+.lv-ask-list{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.lv-ask-list li{
   position:relative;padding:10px 12px 10px 34px;border:1px solid var(--line);border-radius:12px;
   background:var(--bg);font-size:14px;line-height:1.58;color:var(--ink)
 }
-.lv-ask li::before{
+.lv-ask-list li::before{
   content:"?";position:absolute;left:11px;top:9px;width:16px;text-align:center;
   font-size:13.5px;font-weight:850;color:var(--acc)
 }
-.lv-ask li.io{padding-left:12px;background:var(--panel);border-style:dashed;font-size:13.5px;color:var(--muted)}
-.lv-ask li.io b{color:var(--ink);font-weight:750}
+.lv-ask-list li.io{padding-left:12px;background:var(--panel);border-style:dashed;font-size:13.5px;color:var(--muted)}
+.lv-ask-list li.io b{color:var(--ink);font-weight:750}
 
 .lv-evs{display:grid;gap:9px;min-width:0}
 .lv-ev{

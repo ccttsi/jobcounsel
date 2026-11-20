@@ -56,6 +56,9 @@ a{color:inherit}
 .ib svg{width:20px;height:20px}
 .brand{flex:1;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap}
 .brand span.add{color:var(--acc)}
+.lg{width:auto;min-width:44px;padding:0 12px;gap:6px;font-size:13px;font-weight:750;color:var(--ink);white-space:nowrap}
+.lg svg{width:18px;height:18px;flex:none}
+@media (max-width:420px){.lg{padding:0 10px}.lg span{display:none}}
 
 /* ---------- 계정 · 저장 안내 ---------- */
 .acct{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin:0 0 4px;padding:10px 12px;
@@ -276,7 +279,8 @@ a{color:inherit}
 @media (min-width:760px){.sheet{place-items:center}.sheet-bd{border-radius:20px;max-height:88vh}}
 .sheet-hd{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel)}
 .sheet-hd b{flex:1;min-width:0;font-size:17px;font-weight:800;letter-spacing:-.02em}
-.x{width:44px;height:44px;flex:none;border-radius:12px;border:1px solid var(--line);font-size:20px;line-height:1;color:var(--muted)}
+.x{width:44px;height:44px;flex:none;display:inline-flex;align-items:center;justify-content:center;padding:0;border-radius:12px;border:1px solid var(--line);background:none;font-size:20px;line-height:1;color:var(--muted);text-align:center}
+.x:hover{border-color:var(--acc);color:var(--ink)}
 .sheet-main{padding:18px;display:grid;gap:14px}
 .sheet-ft{display:flex;flex-wrap:wrap;gap:8px;padding:14px 18px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--panel)}
 .field{display:grid;gap:6px}
@@ -349,6 +353,7 @@ a{color:inherit}
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></a>
     <a class="brand" href="#" id="brand"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7.8" y="2.6" width="8.4" height="4.6" rx="1.4"/><path d="M12 7.2v2"/><path d="M12 9.2l3.2 3.2L12 15.6l-3.2-3.2Z"/><path d="M12 15.6v2"/><rect x="7.8" y="17.6" width="8.4" height="4.6" rx="1.4"/></svg><span class="jc-tt"><span>상담</span><span class="add">플로우</span></span></a>
+    <button type="button" class="ib lg" id="hdrLogin" data-jc-login hidden aria-label="로그인해서 다른 기기와 연동하기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="9" r="3.4"/><path d="M5.2 20a6.8 6.8 0 0 1 13.6 0"/></svg><span data-jc-login-label>로그인</span></button>
     <span data-jc-prefs></span>
   </header>
 
@@ -365,8 +370,8 @@ a{color:inherit}
         <li><b>후보와 시너지는 자료실 자료로만 셉니다.</b> 「자료실 연결 짝」은 <code>assets/tools.js</code>의 짝이고, 「겹치는 말」은 자료실 지도·번역기 용어에서 두 자료가 함께 쓰는 말입니다. 근거가 없는 조합은 후보로 올리지 않습니다.</li>
         <li><b>추천 가지 밖의 자료도 직접 엮을 수 있습니다.</b> 매 단계 위의 검색창에서 자료 이름·분류·키워드로 찾아 이으면, 근거가 없는 조합은 「직접 엮은 흐름 — 시드/매치 자유 조합」으로 따로 표시합니다.</li>
         <li><b>여러 말을 함께 찾습니다.</b> 시작 화면·매 단계 검색창에 쉼표(,)로 「청년, 기업」처럼 적거나 개념 칩을 여럿 누르면, <b>모든 말에 걸리는 자료만</b> 남깁니다. 기업·대학 이름과 약어도 자료실 색인에서 그대로 찾습니다.</li>
-        <li><b>만든 덱은 내 계정에만 보관됩니다.</b> 로그인한 상태에서 저장하면 계정 정보에 영구 보관되어 다른 기기에서도 이어집니다. 로그인하지 않으면 <b>이 창에만</b> 저장되고 <b>창을 닫으면 초기화</b>됩니다. 다른 사람은 볼 수 없습니다.</li>
-        <li><b>로그인하면 「마이덱 라이브」도 쓸 수 있습니다.</b> 하고 싶은 일을 한 문장으로 적으면 자료실 색인에서 걸리는 섹터로 <b>세 가지 흐름</b>을 자동으로 짜 주고, 고른 하나를 내 덱에 바로 저장합니다.</li>
+        <li data-md-only hidden><b>만든 덱은 내 계정에만 보관됩니다.</b> 로그인한 상태에서 저장하면 계정 정보에 영구 보관되어 다른 기기에서도 이어집니다. 로그인하지 않으면 <b>이 창에만</b> 저장되고 <b>창을 닫으면 초기화</b>됩니다. 다른 사람은 볼 수 없습니다.</li>
+        <li data-md-only hidden><b>로그인하면 「마이덱 라이브」도 쓸 수 있습니다.</b> 하고 싶은 일을 한 문장으로 적으면 자료실 색인에서 걸리는 섹터로 <b>세 가지 흐름</b>을 자동으로 짜 주고, 고른 하나를 내 덱에 바로 저장합니다.</li>
         <li><b>내담자 이름·연락처는 적지 마세요.</b> 덱에는 자료 이름과 순서만 담깁니다.</li>
         <li><b>자료실의 정보는 정답이 아닌 참고·실습용입니다.</b> 실제 판단은 최신 공식 자료와 기관 안내로 확인해 주세요.</li>
       </ul>
@@ -377,7 +382,7 @@ a{color:inherit}
     <section class="hero">
       <p class="kick"><span>매치 · 실무</span></p>
       <h1>상담 <em>플로우</em> 아키텍트</h1>
-      <p class="lede">키워드 하나로, 또는 쉼표로 여럿을 적어 시작해, 자료실 자료가 실제로 이어지는 순서를 한 칸씩 따라갑니다. 후보마다 <b>왜 그 다음인지</b> 근거를 함께 보여 주고, 2개든 3개든 4개든 어디서든 <b>「이대로 만들어볼래요」</b>로 내 덱을 완성합니다.</p>
+      <p class="lede">키워드 하나로, 또는 쉼표로 여럿을 적어 시작해, 자료실 자료가 실제로 이어지는 순서를 한 칸씩 따라갑니다. 후보마다 <b>왜 그 다음인지</b> 근거를 함께 보여 주고, 2개든 3개든 4개든 어디서든 <b>「이대로 만들어볼래요」</b>로 흐름을 완성합니다.</p>
     </section>
 
     <section class="step" id="startSec" aria-labelledby="startT">
@@ -452,7 +457,7 @@ a{color:inherit}
         <p id="doneTxt"></p>
         <div class="done-btns">
           <button type="button" class="primary" id="makeBtn">이대로 만들어볼래요</button>
-          <button type="button" class="ghost" id="saveBtn">마이덱에 저장</button>
+          <button type="button" class="ghost" id="saveBtn" data-md-only hidden>마이덱에 저장</button>
         </div>
       </div>
       <div class="tree-grid">
