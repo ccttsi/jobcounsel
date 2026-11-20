@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="내담자가 원하는 근무 조건(내근·외근, 사람 대면, 팀 협업, 컴퓨터·이메일, 이동·차량, 교대·불규칙)을 고르면 조건에 맞는 직무가 바로 걸러지는 현실 필터. 직무마다 O*NET 31.0 근무환경 프로필과 기업 명함첩 실데이터로 센 지역·산업 클러스터를 함께 봅니다.">
+<title>직업 현실 리얼 필터 · 근무환경으로 직무 찾기</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#2f5d52;--acc-soft:rgba(47,93,82,.09);--on-acc:#fffdf8;
+  --bar:#4d7f70;--bar-bg:#e7ddcc;
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 12px 30px -20px rgba(70,50,25,.32);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  --tc-work-filter:#2f5d52;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#8fc7b4;--acc-soft:rgba(143,199,180,.12);--on-acc:#0a0d14;
+  --bar:#6fae99;--bar-bg:#212a38;
+  --shadow:none;
+  --tc-work-filter:#8fc7b4;
+  color-scheme:dark;
+}
+:root[data-jc-tone="sepia"]{
+  --acc:#284f47;--acc-soft:rgba(40,79,71,.1);--bar:#3f6f61;--bar-bg:#e2d5bd;
+  --tc-work-filter:#284f47;
+}
+body[data-jc-tool="work-filter"]{--jc-acc:var(--tc-work-filter)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:left;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+
+.wrap{max-width:1400px;margin:0 auto;padding:0 16px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));display:flex;flex-direction:column;height:100vh;height:100dvh}
+@media (min-width:900px){.wrap{padding:0 28px}}
+
+/* ---------- 머리말: 홈 단추 ↔ [개념 아이콘 + 제목] 수직 정중앙 (assets/core.css 규격) ---------- */
+.hd{display:flex;align-items:center;gap:10px;min-height:64px;padding:10px 0;position:relative;z-index:20;flex:none}
+.jc-ib{width:44px;height:44px;flex:none;display:grid;place-items:center;box-sizing:border-box;border-radius:12px;
+  color:inherit;border:1px solid color-mix(in srgb,currentColor 16%,transparent);
+  background:color-mix(in srgb,currentColor 3%,transparent);-webkit-tap-highlight-color:transparent;touch-action:manipulation;text-decoration:none}
+.jc-ib svg{width:20px;height:20px;opacity:.78}
+.jc-ib:active{transform:scale(.96)}
+.jc-title{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;margin:0;font-style:normal;font-weight:700;
+  font-size:clamp(16.5px,1vw + 11px,20px);letter-spacing:-.03em;line-height:1.25;color:var(--ink)}
+.jc-hic{flex:none;width:20px;height:20px;overflow:visible;color:var(--acc)}
+.jc-tt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.jc-tt .hl{color:var(--acc)}
+.jc-tt .tt-mini{display:none}
+@media (max-width:430px){.jc-tt .tt-full{display:none}.jc-tt .tt-mini{display:inline}}
+.hd>[data-jc-prefs]{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex:none}
+
+/* ---------- 이용 안내 ---------- */
+.pv{border-bottom:1px solid var(--line);flex:none}
+.pv-t{display:flex;align-items:center;gap:9px;width:100%;min-height:44px;padding:6px 0;font-size:14px;color:var(--muted)}
+.pv-t svg{width:17px;height:17px;flex:none;color:var(--acc)}
+.pv-tt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-tt b{margin-right:6px;font-weight:750;color:var(--ink)}
+.pv-c{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--acc)}
+.pv-c::after{content:"";width:7px;height:7px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-1px)}
+.pv-t[aria-expanded="true"] .pv-c::after{transform:rotate(-135deg)}
+.pv-b{padding:2px 0 12px}
+.pv-b ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13px;line-height:1.55;color:var(--muted)}
+.pv-b b{color:var(--ink)}
+
+/* ---------- 첫 줄·사례 ---------- */
+.lead{display:grid;gap:5px;padding:6px 0 0;flex:none}
+.lead-line{margin:0;font-size:14px;line-height:1.45;color:var(--muted)}
+.lead-line b{color:var(--ink);font-weight:750}
+.presets{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.presets::-webkit-scrollbar{display:none}
+.ps{display:inline-flex;align-items:center;min-height:44px;padding:4px 13px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;flex:none}
+.ps[aria-pressed="true"]{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
+.ps:active{transform:scale(.985)}
+@media (hover:hover){.ps:hover:not([aria-pressed="true"]){border-color:var(--acc)}}
+
+/* ---------- 탭 ---------- */
+.tabs{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:5px;margin:7px 0 7px;flex:none}
+@media (min-width:600px){.tabs{max-width:440px}}
+.tabs button{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 12px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);font-size:13.5px;font-weight:750;color:var(--muted);white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+
+/* ---------- 본문 틀 ---------- */
+main{flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:10px}
+.pane{flex:1;min-height:0;display:flex;flex-direction:column}
+.board{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+@media (min-width:768px){
+  .board{grid-template-columns:minmax(212px,250px) minmax(0,1fr);gap:10px}
+}
+@media (min-width:1024px){
+  .board{grid-template-columns:minmax(236px,276px) minmax(0,1fr) minmax(316px,360px);gap:12px}
+}
+@media (min-width:1280px){
+  .board{grid-template-columns:minmax(260px,296px) minmax(0,1fr) minmax(348px,392px)}
+}
+.panelbox{border:1px solid var(--line);border-radius:14px;background:var(--panel);min-width:0;display:flex;flex-direction:column;min-height:0}
+
+/* ---------- 조건(필터) ---------- */
+.filters{overflow:auto;overscroll-behavior:contain;padding:8px;gap:5px;display:none}
+@media (min-width:768px){body:not([data-sheet="filters"]) .filters{display:flex}}
+.filters.show{display:flex}
+.f-head{display:flex;align-items:center;gap:7px;padding:0 2px;min-height:44px}
+.f-head h2{margin:0;flex:none;white-space:nowrap;font-size:14px;font-weight:800;letter-spacing:-.02em}
+.f-hint{flex:1 1 auto;font-size:10.5px;color:var(--dim);min-width:0;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:1279px){.f-hint{display:none}}
+.f-reset{margin-left:auto;white-space:nowrap;min-height:44px;padding:0 10px;font-size:12.5px;font-weight:750;color:var(--muted);border:1px dashed var(--line-2);border-radius:10px}
+.f-reset:active{transform:scale(.985)}
+.ax{display:grid;grid-template-columns:minmax(0,86px) minmax(0,1fr);gap:7px;align-items:center;padding:4px 8px 4px 9px;border:1px solid var(--line);border-radius:11px;background:var(--panel);min-width:0;border-left:3px solid var(--line-2)}
+.ax[data-on="1"]{border-left-color:var(--acc);background:var(--acc-soft)}
+.f-sel{display:grid;gap:4px;padding:6px 2px 2px}
+.f-sel-k{font-size:10.5px;font-weight:800;letter-spacing:.02em;color:var(--dim)}
+.f-sel ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px}
+.f-sel li{display:flex;align-items:center;gap:4px;min-height:32px;padding:0 4px 0 9px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:11.5px;font-weight:700;color:var(--ink)}
+.f-sel li button{display:grid;place-items:center;width:26px;height:26px;border-radius:99px;color:var(--muted);font-size:13px;line-height:1}
+.f-sel li button:active{transform:scale(.94)}
+.f-sel p{margin:0;font-size:11px;line-height:1.45;color:var(--dim)}
+.ax-h{min-width:0;display:grid;gap:0;align-content:center}
+.ax-h b{font-size:12.5px;font-weight:800;letter-spacing:-.02em;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ax-q{display:none}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px}
+.seg button{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 4px;border:1px solid var(--line-2);border-radius:9px;background:var(--panel);font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;letter-spacing:-.03em}
+.seg button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.seg button:active{transform:scale(.985)}
+
+/* ---------- 주로 만나는 사람 띠 ---------- */
+.who-strip{display:flex;align-items:center;gap:5px;padding:7px 12px 0;overflow-x:auto;scrollbar-width:none;flex:none;border-bottom:0}
+.who-strip::-webkit-scrollbar{display:none}
+.who-strip>span.lb{flex:none;font-size:11px;font-weight:800;letter-spacing:.01em;color:var(--dim);margin-right:1px;white-space:nowrap}
+.who-chip{flex:none;min-height:44px;padding:0 12px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;letter-spacing:-.02em}
+.who-chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.who-chip:active{transform:scale(.985)}
+.who-badge{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 10px;border-radius:99px;background:var(--acc-soft);border:1px solid var(--acc);font-size:12.5px;font-weight:800;color:var(--acc);letter-spacing:-.02em}
+.who-badge b{font-variant-numeric:tabular-nums;font-size:11.5px;font-weight:700;color:var(--muted)}
+.who-tag{display:inline-flex;align-items:center;min-height:32px;padding:3px 10px;border-radius:99px;border:1px dashed var(--line-2);font-size:11.5px;font-weight:750;color:var(--muted)}
+.who-row{display:grid;grid-template-columns:64px minmax(0,1fr) 34px;gap:6px;align-items:center;font-size:11.5px}
+.who-row b{font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who-row .track{height:7px;border-radius:5px;background:var(--bar-bg);overflow:hidden}
+.who-row .track i{display:block;height:100%;background:var(--bar);border-radius:5px}
+.who-row .track i.soft{background:color-mix(in srgb,var(--bar) 55%,var(--bar-bg))}
+.who-row span.v{text-align:right;font-weight:750;font-variant-numeric:tabular-nums;color:var(--muted)}
+
+@media (max-width:1023px){
+  .ax{grid-template-columns:minmax(0,1fr);gap:4px;padding:5px 9px 6px}
+  .ax-h{min-height:18px}
+}
+
+/* ---------- 목록 ---------- */
+.listwrap{gap:0;overflow:hidden}
+.listhead{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap;flex:none}
+.search{display:flex;align-items:center;gap:6px;flex:1 1 160px;min-width:0;min-height:44px;padding:0 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--bg)}
+.search svg{width:16px;height:16px;flex:none;color:var(--dim)}
+.search input{flex:1;min-width:0;min-height:44px;border:0;background:none;font-size:14px;outline:none}
+.search input::placeholder{color:var(--dim)}
+.count{font-size:12.5px;color:var(--muted);white-space:nowrap}
+.count b{color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums}
+.list{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:8px;display:grid;gap:6px;align-content:start}
+.jc{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;align-items:center;width:100%;min-height:56px;padding:8px 11px;border:1px solid var(--line);border-radius:11px;background:var(--panel)}
+.jc[aria-current="true"]{border-color:var(--acc);background:var(--acc-soft)}
+.jc:active{transform:scale(.995)}
+.jc-n{min-width:0;font-size:14.5px;font-weight:750;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jc-m{grid-column:1;min-width:0;font-size:11.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jc-bars{grid-column:2;grid-row:1/3;display:grid;grid-template-columns:repeat(6,9px);gap:3px;align-items:end;height:24px}
+.jc-bars i{display:block;width:9px;border-radius:2px;background:var(--bar-bg);position:relative;overflow:hidden;height:24px}
+.jc-bars i::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--v,0%);background:var(--bar);border-radius:2px}
+.pager{display:flex;align-items:center;justify-content:center;gap:8px;padding:7px 10px;border-top:1px solid var(--line);flex:none}
+.pager button{min-height:44px;padding:0 14px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:13px;font-weight:700;color:var(--muted)}
+.pager button:disabled{opacity:.4}
+.pager span{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.empty{margin:0;padding:16px 12px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.empty b{color:var(--ink)}
+
+/* ---------- 상세 ---------- */
+.detail{overflow:auto;overscroll-behavior:contain;padding:12px;display:none}
+@media (min-width:1024px){.detail{display:flex}}
+.detail.show{display:flex}
+.d-head{border-bottom:1px solid var(--line);padding-bottom:9px}
+.d-k{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:var(--dim)}
+.d-k b{font-weight:750;color:var(--muted);font-variant-numeric:tabular-nums}
+.d-name{margin:3px 0 0;font-size:19px;font-weight:800;letter-spacing:-.035em;line-height:1.3}
+.d-sub{margin:3px 0 0;font-size:12.5px;color:var(--muted);line-height:1.45}
+.axr{margin-top:9px;display:grid;gap:7px}
+.axr-row{display:grid;gap:2px}
+.axr-top{display:flex;align-items:baseline;gap:6px;font-size:12px}
+.axr-top b{font-weight:750}
+.axr-v{margin-left:auto;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--acc)}
+.axr-v small{font-size:10.5px;font-weight:600;color:var(--dim);margin-left:2px}
+.bar{height:7px;border-radius:5px;background:var(--bar-bg);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--bar);border-radius:5px}
+.axr-ends{display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim)}
+.sect{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.sect-k{display:block;font-size:11px;font-weight:800;letter-spacing:.02em;color:var(--muted);margin-bottom:5px}
+.basis{margin:0;font-size:12px;line-height:1.5;color:var(--muted)}
+.basis b{color:var(--ink);font-weight:750}
+.exlist{margin:5px 0 0;padding:0;list-style:none;display:grid;gap:2px;font-size:11.5px;color:var(--dim)}
+.ck{margin-top:8px;padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:var(--soft);min-width:0}
+.ck-h{display:flex;align-items:baseline;gap:6px;min-width:0}
+.ck-h b{font-size:13px;font-weight:800;letter-spacing:-.02em}
+.ck-n{margin-left:auto;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ck-r{margin:5px 0 0;display:grid;gap:2px;font-size:11.5px;color:var(--muted)}
+.ck-r li{display:flex;gap:6px;min-width:0}
+.ck-r li span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ck-r li span:last-child{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700}
+.links{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.lk{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 12px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:12px;font-weight:700;color:var(--ink);text-decoration:none}
+.lk svg{width:13px;height:13px;color:var(--acc);flex:none}
+.lk:active{transform:scale(.985)}
+@media (hover:hover){.lk:hover{border-color:var(--acc)}}
+.src{margin:10px 0 0;font-size:11px;line-height:1.5;color:var(--dim)}
+.src b{color:var(--muted);font-weight:750}
+.nodata{margin:4px 0 0;font-size:12px;line-height:1.5;color:var(--muted);padding:8px 10px;border:1px dashed var(--line-2);border-radius:10px}
+.d-empty{display:grid;place-items:center;gap:6px;flex:1;text-align:center;padding:18px}
+.d-empty p{margin:0;font-size:13px;line-height:1.6;color:var(--muted);max-width:30ch}
+
+/* ---------- 클러스터 탭 ---------- */
+.cbar{display:flex;align-items:center;gap:6px;padding:0 0 8px;flex:none;flex-wrap:wrap}
+.cbar .seg{display:inline-flex;margin:0;gap:5px}
+.cbar .seg button{padding:0 14px}
+.chint{font-size:11.5px;color:var(--dim);margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.cboard{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:8px}
+
+@media (min-width:768px){.cboard{grid-template-columns:minmax(226px,286px) minmax(0,1fr)}}
+.clist{overflow:auto;overscroll-behavior:contain;padding:8px;display:grid;gap:5px;align-content:start}
+.crow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;align-items:center;width:100%;min-height:52px;padding:7px 11px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.crow[aria-current="true"]{border-color:var(--acc);background:var(--acc-soft)}
+.crow b{font-size:13.5px;font-weight:750;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crow small{grid-column:1;font-size:11px;color:var(--dim)}
+.crow span{margin-left:auto;font-size:12px;font-weight:750;font-variant-numeric:tabular-nums;color:var(--muted)}
+.cdetail{overflow:auto;overscroll-behavior:contain;padding:12px;display:flex}
+@media (max-width:767px){.cdetail{display:none}}
+.rb{display:grid;gap:6px;margin-top:2px}
+.rb-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 8px;align-items:center;font-size:12px}
+.rb-row b{font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rb-row span{font-variant-numeric:tabular-nums;font-weight:750;color:var(--ink)}
+.rb-bar{grid-column:1/-1;height:6px;border-radius:4px;background:var(--bar-bg);overflow:hidden}
+.rb-bar i{display:block;height:100%;background:var(--bar);border-radius:4px}
+
+/* ---------- 바닥 ---------- */
+.foot{margin:0;padding:8px 0 10px;border-top:1px solid var(--line);font-size:11px;line-height:1.5;color:var(--dim);flex:none}
+.foot b{color:var(--muted);font-weight:750}
+.foot a{color:var(--acc);font-weight:700;text-decoration:none}
+
+/* ---------- 휴대폰 시트 ---------- */
+.mbar{display:flex;gap:6px;padding:0 0 8px;flex:none}
+@media (min-width:768px){.mbar{display:none}}
+.mbar button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 12px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);font-size:13px;font-weight:750;color:var(--ink)}
+.mbar button b{color:var(--acc);font-variant-numeric:tabular-nums}
+.mbar svg{width:15px;height:15px;color:var(--acc)}
+.sheet{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);padding:0 14px max(10px,env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .26s cubic-bezier(.2,.9,.3,1)}
+.sheet.open{transform:translateY(0)}
+.sheet[hidden]{display:none!important}
+.sheet-h{display:flex;align-items:center;gap:8px;min-height:60px;flex:none}
+.sheet-h b{font-size:15px;font-weight:800;letter-spacing:-.02em}
+.sheet-h button{margin-left:6px;min-height:44px;padding:0 14px;border:1px solid var(--line-2);border-radius:10px;font-size:13px;font-weight:750;color:var(--muted);white-space:nowrap}
+.sheet-h #sheetReset{margin-left:auto}
+.sheet-b{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding-bottom:8px}
+
+@media (prefers-reduced-motion:reduce){
+  .sheet{transition:none}
+  .ps:active,.jc:active,.lk:active,.seg button:active,.f-reset:active{transform:none}
+}
+html[data-jc-imm] .tabs{display:none}
+</style>
+<link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
+</head>
+<body data-jc-tool="work-filter">
+<div class="wrap">
+  <header class="hd">
+    <a class="jc-ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <h1 class="jc-title"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16l-6.4 7.6V19l-3.2 1.6v-8L4 5Z"/><path d="M4 5h16" stroke="var(--acc)"/></svg><span class="jc-tt"><span class="tt-full">직업 <span class="hl">현실 리얼 필터</span></span><span class="tt-mini">직업 <span class="hl">리얼 필터</span></span></span></h1>
+    <span data-jc-prefs></span>
+  </header>
+
+  <section class="pv">
+    <button type="button" class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 사용 <span aria-hidden="true">·</span> O*NET 31.0 · 기업 명함첩 실데이터</span>
+      <span class="pv-c">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" hidden>
+      <ul>
+        <li><b>근무환경 값은 미국 노동부 O*NET 31.0의 직무 응답값입니다.</b> 화면의 「낮은 편·보통·높은 편」은 그 축에서 직무들을 값 순서로 3등분한 경계이고, 값 자체는 0~100입니다. 공식 연계표(O*NET → SOC → ISCO-08 → 한국표준직업분류 8차)로 이어진 직무만 실었고, 하나라도 근거가 없는 축은 값 대신 「지표 없음」으로 둡니다.</li>
+        <li><b>지역·산업 클러스터는 자료실 기업 명함첩 9,137곳의 실제 소재지 집계입니다.</b> 대기업·중견기업·공공기관·지방공공기관만 담겨 있어 중소기업 분포와는 다르고, 주소가 공개되지 않은 기업은 지역 집계에서 빠집니다(분야마다 주소 공개 기업 수를 적었습니다).</li>
+        <li><b>산업 분야는 자료실이 업종 이름을 묶은 편집 기준입니다.</b> 공식 산업통계 분류가 아니며, 어떤 업종이 어느 분야로 갔는지 카드에 그대로 적었습니다.</li>
+        <li><b>공식 연계표는 여러 직업을 한 칸으로 묶습니다.</b> O*NET → SOC → ISCO-08 → KSCO 연계표가 1:N·N:1이라, 한 직무 칸에는 그 칸으로 이어진 O*NET 직업들이 함께 평균됩니다(한 직업이 여러 분류로 갈리면 그 수만큼 무게를 나눕니다). 그래서 값은 「그 직무의 정확한 측정」이 아니라 「그 분류 칸의 평균」으로 읽어야 합니다.</li>
+        <li><b>「주로 만나는 사람」도 O*NET 항목으로만 가립니다.</b> 외부 고객·대중 / 돌봄·지도 대상 / 내부 팀·동료 넷을 견줘 가장 두드러지는 쪽을 대표로 세우고, 타인 접촉이 가장 낮은 편이면 「단독 집중」, 민원·갈등 점수가 높으면 그 표시를 함께 답니다.</li>
+        <li><b>판단은 상담사의 몫입니다.</b> 이 화면은 「이 직무가 어떤 하루를 보내는지」를 대화로 옮기는 재료이고, 임금·고용전망·자격 요건은 다른 자료에서 확인합니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="보기">
+    <button type="button" role="tab" id="tabJobs" aria-selected="true" aria-controls="paneJobs">직무 찾기</button>
+    <button type="button" role="tab" id="tabCluster" aria-selected="false" aria-controls="paneCluster" tabindex="-1">지역·산업 클러스터</button>
+  </div>
+
+  <main>
+    <section class="pane" id="paneJobs" role="tabpanel" aria-labelledby="tabJobs">
+      <section class="lead">
+    <p class="lead-line">여섯 축을 고르면 <b>조건에 맞는 직무</b>가 바로 걸러집니다. 직무를 누르면 근무환경 프로필과 지역 클러스터가 열립니다.</p>
+    <div class="presets" id="presets" role="group" aria-label="빠른 조건"></div>
+  </section>
+      <div class="mbar">
+        <button type="button" id="openFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>조건 고르기 <b id="mCond">0</b></button>
+      </div>
+      <div class="board">
+        <aside class="panelbox filters" id="filters" aria-label="근무 조건">
+          <div class="f-head"><h2>근무 조건</h2><span class="f-hint">같은 칸을 다시 누르면 풀립니다</span><button type="button" class="f-reset" id="reset">조건 풀기</button></div>
+          <div id="axList"></div>
+          <div class="f-sel" id="selBox" aria-live="polite"></div>
+        </aside>
+        <section class="panelbox listwrap" aria-label="직무 목록">
+          <div class="who-strip" id="whoStrip" role="group" aria-label="주로 만나는 사람"></div>
+          <div class="listhead">
+            <label class="search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+              <input type="search" id="q" placeholder="직무 이름으로 찾기" aria-label="직무 이름 검색" autocomplete="off">
+            </label>
+            <span class="count" id="count">–</span>
+          </div>
+          <div class="list" id="list" role="listbox" aria-label="조건에 맞는 직무"></div>
+          <div class="pager" id="pager">
+            <button type="button" id="prev" aria-label="이전 쪽">이전</button>
+            <span id="pageN">1 / 1</span>
+            <button type="button" id="next" aria-label="다음 쪽">다음</button>
+          </div>
+        </section>
+        <aside class="panelbox detail" id="detail" aria-live="polite" aria-label="직무 상세"></aside>
+      </div>
+    </section>
+
+    <section class="pane" id="paneCluster" role="tabpanel" aria-labelledby="tabCluster" hidden>
+      <div class="cbar">
+        <div class="seg" role="group" aria-label="클러스터 보기 방식">
+          <button type="button" id="cIndustry" aria-pressed="true">산업으로</button>
+          <button type="button" id="cRegion" aria-pressed="false">지역으로</button>
+        </div>
+        <span class="chint" id="cHint"></span>
+      </div>
+      <div class="cboard">
+        <div class="panelbox">
+          <div class="who-strip" id="whoStrip" role="group" aria-label="주로 만나는 사람"></div>
+          <div class="listhead"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" id="cq" placeholder="분야·지역 이름으로 찾기" aria-label="분야·지역 이름 검색" autocomplete="off"></label></div>
+          <div class="clist" id="clist" role="listbox" aria-label="산업 분야·지역"></div>
+        </div>
+        <aside class="panelbox cdetail" id="cdetail" aria-live="polite" aria-label="클러스터 상세"></aside>
+      </div>
+    </section>
+  </main>
+
+  <p class="foot">
+    <b>출처</b> O*NET® 31.0 Database(USDOL/ETA, CC BY 4.0) · ISCO-08↔SOC 연계표(BLS) · KSCO 8차↔ ISCO-08 연계표(국가데이터처) · KECO 2025(한국고용정보원) · 기업 명함첩(공정위·알리오·중견기업정보마당·행안부). <b>가공</b> 근무환경 축 환산·직무↔분류 연계·지역 집계는 자료실이 계산했습니다.
+  </p>
+</div>
+
+<div class="sheet" id="sheet" hidden aria-label="조건 고르기">
+  <div class="sheet-h"><b id="sheetTitle">근무 조건</b><button type="button" id="sheetReset" hidden>조건 풀기</button><button type="button" id="sheetClose">닫기</button></div>
+  <div class="sheet-b" id="sheetBody"></div>
+</div>
+
+<script src="./app.js" defer></script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
