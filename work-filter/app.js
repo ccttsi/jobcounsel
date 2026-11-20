@@ -147,7 +147,7 @@
     var html = '<span class="lb">만나는 사람</span>';
     WHO_CHOICES.forEach(function (choice) {
       html += '<button type="button" class="who-chip" data-who="' + choice.id + '" aria-pressed="false" title="' +
-        choice.full + '">' + choice.name + '</button>';
+        choice.full + ' · 다시 누르면 풀립니다">' + choice.name + '</button>';
     });
     box.innerHTML = html;
     box.addEventListener('click', function (event) {
