@@ -75,6 +75,7 @@ body[data-jc-tool="kdtcalc"]{--jc-acc:var(--acc)}
 .jc-hic{flex:none;width:20px;height:20px;overflow:visible;color:var(--acc)}
 .jc-tt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .jc-tt .hl{color:var(--acc)}
+.jc-tt .tt-mini{display:none}
 .jc-tt .en{font-weight:600;color:var(--dim);font-size:.8em;margin-left:5px}
 [data-jc-prefs]{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex:none}
 
@@ -277,8 +278,10 @@ html[data-jc-imm] .seal{display:none}
   .cmpcard{border-radius:14px}
 }
 @media (max-width:430px){
-  .jc-title{font-size:15px!important;letter-spacing:-.02em}
+  body[data-jc-tool="kdtcalc"] .hd .jc-title{font-size:15px!important;letter-spacing:-.02em}
   .jc-title .en{display:none}
+  .jc-tt .tt-full{display:none}
+  .jc-tt .tt-mini{display:inline}
   .hd{gap:6px}
   [data-jc-prefs]{gap:2px}
   .presets{display:block}
@@ -291,6 +294,9 @@ html[data-jc-imm] .seal{display:none}
   .chip{font-size:12.5px;padding:0 6px}
   .feerow{grid-template-columns:minmax(0,132px) minmax(0,1fr)}
   .two{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:380px){
+  body[data-jc-tool="kdtcalc"] .hd .jc-title{font-size:14.5px!important}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
@@ -305,7 +311,7 @@ html[data-jc-imm] .seal{display:none}
     <a class="jc-ib" href="../" aria-label="자료실 첫 화면">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
     </a>
-    <h1 class="jc-title"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.2" y="2.8" width="15.6" height="18.4" rx="2.6"/><path d="M7.9 7.1h8.2" stroke="var(--acc)"/><path d="M8.1 11.5h.01M12 11.5h.01M15.9 11.5h.01M8.1 15.2h.01M12 15.2h.01M15.9 15.2h.01M8.1 18.9h.01M12 18.9h.01M15.9 18.9h.01"/></svg><span class="jc-tt">국비지원 <span class="hl">자부담</span> 계산기<span class="en">· KDT</span></span></h1>
+    <h1 class="jc-title"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.2" y="2.8" width="15.6" height="18.4" rx="2.6"/><path d="M7.9 7.1h8.2" stroke="var(--acc)"/><path d="M8.1 11.5h.01M12 11.5h.01M15.9 11.5h.01M8.1 15.2h.01M12 15.2h.01M15.9 15.2h.01M8.1 18.9h.01M12 18.9h.01M15.9 18.9h.01"/></svg><span class="jc-tt"><span class="tt-full">국비지원 <span class="hl">자부담</span> 계산기</span><span class="tt-mini"><span class="hl">자부담</span> 계산기</span><span class="en">· KDT</span></span></h1>
     <span data-jc-prefs></span>
   </header>
 
