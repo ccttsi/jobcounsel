@@ -316,9 +316,12 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-stage>.a-card{align-self:start}
 .a-nav{--acc:var(--a1);--glow:color-mix(in srgb,var(--acc) 13%,transparent);
   position:relative;text-align:center;padding:clamp(28px,5.5vw,72px) 0 clamp(18px,3vw,32px)}
-/* 문구 색을 따라 번지는 은은한 빛 */
+/* 문구 색을 따라 번지는 은은한 빛.
+   2026-11-20: 큰 판(min(120%,760px)×1.6)에 `filter:blur(20px)`를 얹으면, 롤링이 한 칸 넘을 때마다(색이 바뀔 때마다)
+   그 넓은 흐림을 GPU가 다시 그린다. 이미 가장자리가 투명으로 떨어지는 방사형 그라데이션이라 흐림을 걷어도
+   보이는 결은 같고, 대신 그라데이션의 투명 정지점을 조금 더 안쪽으로 당겨 같은 부드러움을 낸다. */
 .a-nav::before{content:"";position:absolute;z-index:-1;left:50%;top:46%;width:min(120%,760px);aspect-ratio:1.6;transform:translate(-50%,-50%);pointer-events:none;
-  background:radial-gradient(closest-side,var(--glow),transparent);filter:blur(20px)}
+  background:radial-gradient(closest-side,var(--glow),transparent 74%)}
 :root[data-theme="dark"] .a-nav{--glow:color-mix(in srgb,var(--acc) 16%,transparent)}
 .a-nav .a-eyebrow{font-size:14px;color:var(--muted);font-weight:600}
 .a-nav .a-eyebrow b{color:var(--a1)}
@@ -340,7 +343,10 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-it.a-cur .a-tx{background-image:linear-gradient(color-mix(in srgb,var(--acc) 18%,transparent),color-mix(in srgb,var(--acc) 18%,transparent));background-size:100% .07em}
 .a-it .a-tx::after{content:"";position:absolute;left:0;right:0;bottom:0;height:.07em;background:var(--acc);transform-origin:0 50%;transform:scaleX(0);opacity:0}
 @keyframes a-fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.a-run .a-it.a-cur .a-tx::after{opacity:1;animation:a-fill var(--dur,5.2s) linear forwards}
+/* 남은 시간을 보여 주는 밑줄(scaleX). 움직이는 레이어에는 will-change:transform을 준다(DESIGN §2-2) —
+   이 한 겹만 합성 레이어로 올라가 5초 내내 도는 애니메이션이 매 프레임 메인 스레드를 깨우지 않는다.
+   한 번에 한 칸(a-cur)만 해당하므로 레이어도 한 겹뿐이다(2026-11-20 60fps). */
+.a-run .a-it.a-cur .a-tx::after{opacity:1;animation:a-fill var(--dur,5.2s) linear forwards;will-change:transform}
 .a-run.a-hold .a-it.a-cur .a-tx::after{animation-play-state:paused}
 /* 설명 칸은 **4줄(제목 1줄 + 설명 3줄) 높이로 고정**한다(2026-11-18).
    예전 min-height:4.8em은 짧은 문구에서 3줄, 긴 문구에서 4줄이 되어 아래 「이 자료 열기」·반원 다이얼·레버가
@@ -516,8 +522,12 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-foot-more[open] p{margin-top:4px}
 
 /* 빠른 검색 */
+/* 검색 팔레트 뒤판. 화면 전체를 덮는 유리 흐림은 매 프레임 배경을 다시 흐리게 만든다 —
+   휴대폰(iPhone XS 실측 대상)에서는 거의 불투명한 베일로 대신하고(DESIGN §2-5), 큰 화면에서만 흐림을 남긴다. */
 .a-ov{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-start;justify-content:center;padding:max(12px,8vh) 12px 12px;
-  background:var(--ov);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  background:color-mix(in srgb,var(--bg) 46%,#3c2d1e)}
+@media (max-width:767px){:root[data-theme="dark"] .a-ov{background:color-mix(in srgb,#08090c 30%,#030407)}}
+@media (min-width:768px){.a-ov{background:var(--ov);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}}
 .a-pal{width:min(640px,100%);max-height:min(560px,84vh);display:flex;flex-direction:column;background:var(--pal);border-width:1px;border-color:var(--line-2);
   border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.35);overflow:hidden;animation:a-pop .16s ease-out}
 @keyframes a-pop{from{transform:translateY(8px) scale(.985);opacity:0}to{transform:none;opacity:1}}
@@ -614,15 +624,15 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 :root[data-jc-tour="tools"] #jc-marker-ui,
 :root[data-jc-tour="tools"] .jca-launch{opacity:1!important}   /* 보이기만 하고, 누름은 둘러보기가 받는다 */
 
-/* 안내 띠(2026-11-20 2차) — 「검은 블럭에 흰 글자」 결은 살리고, 진한 검정 대신 **은은한 반투명 유리**로.
+/* 안내 띠(2026-11-20 2차 → 3차) — 「검은 블럭에 흰 글자」 결은 살리되 진한 검정은 피한다.
    글자는 한 줄·두 줄 모두 가운데 정렬, 나타나고 사라지는 것은 opacity·transform만(모션 가드레일 §2).
-   유리 흐림(backdrop-filter)은 **정지 상태의 값**이라 전이하지 않는다 — 애니메이션 금지 속성. */
+   3차(같은 날 60fps): 유리 흐림(backdrop-filter)을 걷고 불투명도를 92%로 올렸다 — 띠가 떠 있는 동안
+   뒤 화면을 매 프레임 다시 흐리게 만들던 비용이 사라지고, 글자는 오히려 더 또렷하다. */
 .a-toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translate3d(-50%,10px,0);z-index:70;
   width:max-content;max-width:calc(100% - 32px);text-align:center;text-wrap:balance;
-  background:color-mix(in srgb,var(--toast-bg) 66%,transparent);color:var(--toast-ink);
+  background:color-mix(in srgb,var(--toast-bg) 92%,transparent);color:var(--toast-ink);
   font-size:14px;font-weight:600;line-height:1.5;letter-spacing:-.01em;padding:12px 18px;border-radius:14px;
   border:1px solid color-mix(in srgb,var(--toast-ink) 16%,transparent);
-  -webkit-backdrop-filter:blur(12px) saturate(1.06);backdrop-filter:blur(12px) saturate(1.06);
   box-shadow:0 12px 30px -20px rgba(0,0,0,.55);
   opacity:0;pointer-events:none;
   transition:opacity .46s cubic-bezier(.2,.9,.3,1),transform .46s cubic-bezier(.2,.9,.3,1)}
@@ -652,8 +662,6 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 <link rel="stylesheet" href="./assets/modes.css">
 <link rel="stylesheet" href="./assets/deck.css">
 <link rel="stylesheet" href="./assets/brand.css">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
 <body class="a-root">
 <div class="a-backdrop" aria-hidden="true"></div>
@@ -671,10 +679,10 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
     <div class="a-right">
       <div class="a-actions">
         <button class="a-btn a-login" data-jc-login hidden>
-          <i class="a-ico" data-lucide="user-round" aria-hidden="true"></i><span data-jc-login-label>로그인</span>
+          <i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.1" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6.6 19.1a5.9 5.9 0 0 1 10.8 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></i><span data-jc-login-label>로그인</span>
         </button>
         <button class="a-btn" id="btnSearch" aria-label="빠른 검색" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
-          <i class="a-ico" data-lucide="search" aria-hidden="true"></i><span>빠른 검색</span><span class="a-kbd" id="kbdHint">Ctrl K</span>
+          <i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.6" cy="10.6" r="6.1" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M15.2 15.2 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></i><span>빠른 검색</span><span class="a-kbd" id="kbdHint">Ctrl K</span>
         </button>
         <button class="a-btn a-tour-btn" id="tourBtn" aria-label="대문 둘러보기" aria-haspopup="dialog" aria-controls="tour" title="대문 둘러보기 — 이 화면 쓰는 법 다섯 단계">
           <i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15.4 8.6 13.5 13.5 8.6 15.4 10.5 10.5Z" fill="currentColor"/></svg></i><span class="a-tour-lb">둘러보기</span>
@@ -817,8 +825,8 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
           </div>
         </div>
         <div class="a-row">
-          <button class="a-btn a-pri" id="btnShuffle"><i class="a-ico" data-lucide="dices" aria-hidden="true"></i><span>다른 통찰 보기</span></button>
-          <a class="a-btn" id="insightLink" href="./theory/" data-visit="theory"><span id="insightLinkText">관련 자료 열기</span><i class="a-ico" data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+          <button class="a-btn a-pri" id="btnShuffle"><i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.4" y="3.4" width="10.2" height="10.2" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="10.4" y="10.4" width="10.2" height="10.2" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="6.7" cy="6.7" r="1.05" fill="currentColor"/><circle cx="10.3" cy="10.3" r="1.05" fill="currentColor"/><circle cx="13.7" cy="13.7" r="1.05" fill="currentColor"/><circle cx="17.3" cy="17.3" r="1.05" fill="currentColor"/></svg></i><span>다른 통찰 보기</span></button>
+          <a class="a-btn" id="insightLink" href="./theory/" data-visit="theory"><span id="insightLinkText">관련 자료 열기</span><i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.2 16.8 16.8 7.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M9.4 7.2h7.4v7.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
           <span class="a-count a-num" id="insightCount"></span>
         </div>
       </section>
@@ -1001,7 +1009,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 <div class="a-ov" id="ov" hidden>
   <div class="a-pal" role="dialog" aria-modal="true" aria-label="빠른 검색">
     <div class="a-pal-top">
-      <i class="a-ico" data-lucide="search" aria-hidden="true"></i>
+      <i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.6" cy="10.6" r="6.1" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M15.2 15.2 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></i>
       <label class="a-sr" for="q">자료와 주제 검색</label>
       <input class="a-input" id="q" type="text" inputmode="search" enterkeyhint="go" autocomplete="off" autocapitalize="off" spellcheck="false"
         placeholder="자료·회사·브랜드 (예: 해커스, 삼전, 국취)" role="combobox" aria-expanded="true" aria-controls="res" aria-autocomplete="list">
@@ -1110,8 +1118,6 @@ function applyTheme(){
   Array.prototype.forEach.call(document.querySelectorAll('[data-theme-mode]'),function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-mode')===m));});
 }
 
-/* ---------- 아이콘 ---------- */
-function icons(){try{if(window.lucide&&window.lucide.createIcons)window.lucide.createIcons();}catch(e){}}
 
 /* ---------- 문장 내비게이션 ---------- */
 /* 문구는 "오늘은 ○○ 보고 싶어요."에 들어가도록 '목적어 + 동사' 두 낱말로 맞춘다(3~10자).
@@ -1302,7 +1308,23 @@ function paintSeen(){
   if(shown>=0)$('sayStamp').hidden=v.indexOf(TOOLS[shown].id)<0;
   dotEls.forEach(function(b,k){b.classList.toggle('a-seen',v.indexOf(TOOLS[k].id)>=0);});
 }
-function canRun(){return !deckOn&&!reduce()&&!paused&&!hover&&!drag&&!listOpen&&!document.hidden&&hintBase===null;}
+/* 가려진 화면·화면 밖(스크롤로 롤링이 안 보임)·백그라운드 탭에서는 시계를 세우지 않는다(2026-11-20 60fps).
+   rollVis는 IntersectionObserver가 정한다 — 보이지 않는 동안은 자동 넘김·진행 밑줄(scaleX)이 함께 선다. */
+var rollVis=true;
+function canRun(){return !deckOn&&!reduce()&&!paused&&!hover&&!drag&&!listOpen&&!document.hidden&&rollVis&&hintBase===null;}
+function watchRoll(){
+  var rv=$('rollView');
+  if(!rv||!window.IntersectionObserver)return;
+  try{
+    new IntersectionObserver(function(es){
+      var v=!!(es.length&&es[es.length-1].isIntersecting);
+      if(v===rollVis)return;
+      rollVis=v;
+      if(!v&&raf){cancelAnimationFrame(raf);raf=0;lastT=0;pos=target;layout();}   /* 멈춘 자리에 그대로 선다 */
+      schedule();
+    },{rootMargin:'100px 0px'}).observe(rv);
+  }catch(e){}
+}
 /* ---------- 방치 유도 롤링 (2026-11-19) ----------
    심전도·레버의 5초 방치 유도를 그리며 롤링도 같은 박자로 딱딱 걸어 갔다가 되감는다.
    · 시작: 지금 보고 있던 자리(hintBase)를 기억하고 자동 넘김 시계만 멈춘다(hold 없음).
@@ -1328,7 +1350,7 @@ function hintRollEnd(){
   shown=-1;layout();                     /* 제자리로 돌아온 뒤 강조색·낭독기·방문 표시를 한 번에 맞춘다 */
   restartFill();schedule();
 }
-function restartFill(){var n=$('nav');n.classList.remove('a-run');void n.offsetWidth;if(!reduce()&&!paused)n.classList.add('a-run');}
+function restartFill(){var n=$('nav');if(!n)return;n.classList.remove('a-run');void n.offsetWidth;if(!reduce()&&!paused&&rollVis)n.classList.add('a-run');}
 /* 자동 넘김 시계 — 시계의 5초 눈금(00·05·10…초)에 맞춰 넘긴다.
    멈췄다 풀리든(resume), 달리던 중이든 다음 눈금까지 기다렸다가 **그 눈금에서** 넘긴다.
    다음 눈금을 매번 Date.now()로 새로 재므로 타이머 오차가 쌓이지 않는다.
@@ -1337,7 +1359,8 @@ function restartFill(){var n=$('nav');n.classList.remove('a-run');void n.offsetW
    한 칸의 체류 시간은 **5.0초 정각 기준 ~5.0초**다. 눈금까지 0.3초도 남지 않았으면(조기 발화·step 직후·다른 타이머와
    겹친 경우) 다음다음 눈금까지 기다린다 — 5ms짜리 칸이 생기지 않고, 넘어가는 순간은 늘 00·05·10…초에 선다. */
 function schedule(){
-  clearTimeout(autoT);autoT=0;var n=$('nav'),now=performance.now();
+  clearTimeout(autoT);autoT=0;var n=$('nav');if(!n)return;      /* 머리말·무대가 없는 화면에서도 안전하게(2026-11-20 Sentry) */
+  var now=performance.now();
   if(autoStart){remain=Math.max(0,remain-(now-autoStart));autoStart=0;}
   if(!canRun()){n.classList.add('a-hold');if(paused||reduce())n.classList.remove('a-run');return;}
   if(now<holdUntil){n.classList.add('a-hold');autoT=setTimeout(schedule,holdUntil-now+20);return;}
@@ -1459,7 +1482,7 @@ function bindNav(){
   var stage=$('nav');
   stage.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){hover=true;schedule();}});
   stage.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hover=false;schedule();}});
-  document.addEventListener('visibilitychange',schedule);
+  document.addEventListener('visibilitychange',function(){try{schedule();}catch(e){}});
   if(reduceMQ.addEventListener)reduceMQ.addEventListener('change',function(){restartFill();schedule();});
   window.addEventListener('resize',function(){measureOrbit();layout();if(listOpen)measureListRows();});
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measureOrbit();layout();if(listOpen)measureListRows();});
@@ -1470,7 +1493,7 @@ function startNav(){
   /* 처음 열 때 두 칸 앞에서 굴러 들어와, 돌릴 수 있다는 것을 보여 준다 */
   $('nav').style.setProperty('--dur',INTERVAL+'ms');
   if(reduce()){pos=target=start;}else{pos=start-2;target=start;}
-  measureOrbit();layout();kick();restartFill();schedule();
+  measureOrbit();layout();kick();restartFill();schedule();watchRoll();
 }
 
 /* ---------- 보기 방식: 전체 대문 / 시드·매치(내 목차 덱) ---------- */
@@ -1546,7 +1569,8 @@ window.JC_NAV={
   count:function(){return N;},
   position:function(){return pos;},
   atRest:function(){return hintBase===null&&!spinT&&!raf;},
-  holdClass:function(){return $('nav').classList.contains('a-hold');},
+  holdClass:function(){var n=$('nav');return !!(n&&n.classList.contains('a-hold'));},
+  rollVisible:function(){return rollVis;},          /* 롤링 무대가 화면 안에 있는가(방치 유도·자동 넘김 판단) */
   counts:function(){
     function n(m){return ALL.filter(function(t){return t.mode===m;}).length;}
     return {all:ALL.length,seed:n('seed'),match:n('match')};
@@ -1566,11 +1590,9 @@ var memVisited=[];
 function readVisited(){try{var v=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(v)?v.filter(function(x){return byId[x];}):[];}catch(e){return memVisited;}}
 function writeVisited(v){memVisited=v;try{localStorage.setItem(KEY,JSON.stringify(v));}catch(e){}}
 function markVisited(id){if(!byId[id])return;var v=readVisited();if(v.indexOf(id)<0){v.push(id);writeVisited(v);}paintSeen();}
-var KO_NUM=['','한','두','세','네','다섯','여섯','일곱','여덟','아홉','열'];
 function renderCounts(){
   var n=TOOLS.length;
   Array.prototype.forEach.call(document.querySelectorAll('[data-count]'),function(el){el.textContent=n;});
-  Array.prototype.forEach.call(document.querySelectorAll('[data-count-word]'),function(el){el.textContent=KO_NUM[n]||String(n);});
 }
 
 /* ---------- 통찰 ---------- */
@@ -1730,7 +1752,10 @@ function vfFit(){
   o.style.setProperty('--vfo-t',Math.round(v.offsetTop)+'px');
   o.style.setProperty('--vfo-h',Math.ceil(v.height)+'px');
 }
-if(window.visualViewport){window.visualViewport.addEventListener('resize',vfFit);window.visualViewport.addEventListener('scroll',vfFit);}
+/* iOS는 시트를 연 채 손가락을 대면 visualViewport scroll이 프레임마다 온다 — 한 프레임에 한 번만 잰다. */
+var vfQ=0;
+function vfQueue(){if(vfQ)return;vfQ=requestAnimationFrame(function(){vfQ=0;vfFit();});}
+if(window.visualViewport){window.visualViewport.addEventListener('resize',vfQueue,{passive:true});window.visualViewport.addEventListener('scroll',vfQueue,{passive:true});}
 function openVf(){
   vfLast=document.activeElement;
   $('vfOv').hidden=false;
@@ -1856,7 +1881,13 @@ if(mode!=='all'){root.setAttribute('data-jc-mode',mode);$('stage').hidden=true;
   try{history.replaceState({jcMode:mode},'',modeURL(mode));}catch(e){}
   var bootMode=function(){if(!window.JCDECK){setTimeout(bootMode,20);return;}applyMode(mode,{url:false});};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootMode);else bootMode();}
-setInterval(function(){tick();applyTheme();},1000);
+/* 1초마다 시계만 다시 쓴다. 테마(자동=시간 연동)는 1초마다 다시 볼 필요가 없다 — localStorage 읽기와
+   화면 설정 단추들의 aria 상태를 매초 다시 쓰던 것을 1분에 한 번, 그리고 시(hour) 경계가 지날 때만 하도록 줄였다. */
+var themeTick=0;
+setInterval(function(){
+  tick();
+  if(++themeTick>=60){themeTick=0;applyTheme();}
+},1000);
 
 /* ---------- 로그인 단추 ----------
  * 2026-11-20: 머리말의 「로그인」 단추(data-jc-login)에 누르는 처리가 아예 없어 아무 일도 일어나지 않던 것을 고쳤다.
@@ -1875,7 +1906,6 @@ function jcSyncReady(cb,n){
     jcSyncReady(function(S){S.open();});     /* 로그인 전에는 로그인 창, 로그인 뒤에는 내 계정 창 */
   });
 })();
-icons();window.addEventListener('load',icons);
 })();
 </script>
 <script src="./assets/marker.js" defer></script>
@@ -2035,9 +2065,20 @@ icons();window.addEventListener('load',icons);
     if(reset){try{reset();}catch(e){}reset=null;}
     lock.classList.remove('cctt-leap');
   }
+  /* 보이는가 — 머리말을 접으면(.a-brand가 display:none) 상자 폭·높이가 0이라 그릴 자리가 없고,
+     화면 밖으로 스크롤했거나 탭이 가려졌으면 사람이 볼 수 없다. 그때는 모션을 걸지 않는다(2026-11-20 60fps).
+     걸어 두면 보이지도 않는 두 겹의 SVG를 매 프레임 합성하며 배터리만 쓴다. */
+  function seeable(){
+    if(document.hidden)return false;
+    if(!lock.getClientRects().length)return false;
+    var r=lock.getBoundingClientRect();
+    if(!r.width||!r.height)return false;
+    return r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth;
+  }
   function play(i){
     if(reduce())return false;
     if(busy)return false;
+    if(!seeable())return false;
     i=((i|0)%10+10)%10;
     var plan=PAT[i](),defs=plan.defs||plan,max=0,n=defs.length,k,t;
     for(k=0;k<n;k++){t=defs[k][2];max=Math.max(max,(t.duration||0)+(t.delay||0));}
@@ -2063,6 +2104,13 @@ icons();window.addEventListener('load',icons);
   }
   watch(document.getElementById('ecgRow'));
   watch(document.getElementById('slot'));
+  /* 화면 밖·접힘으로 가려지는 순간 바로 선다(스크롤마다 재지 않고 관찰자에게 맡긴다) */
+  try{
+    if(window.IntersectionObserver)new IntersectionObserver(function(es){
+      if(!(es.length&&es[es.length-1].isIntersecting)&&busy)settle();
+    },{rootMargin:'0px'}).observe(lock);
+  }catch(e){}
+  document.addEventListener('visibilitychange',function(){if(document.hidden&&busy)settle();});
   window.JC_LOGO={play:play,stop:function(){settle();},names:function(){return NAMES.slice();},
     state:function(){return{busy:busy,pattern:idx,name:NAMES[idx]||'',minute:minute,startedAt:startedAt};}};
 })();
