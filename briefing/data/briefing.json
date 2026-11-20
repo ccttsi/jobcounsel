@@ -1,86 +1,86 @@
 {
  "schema_version": "1.4.0",
- "updated_at": "2026-11-20T23:04:00+09:00",
+ "updated_at": "2026-11-21T07:06:00+09:00",
  "edition": {
-  "date": "2026-11-20",
-  "weekday": "금",
-  "title": "경력 멈춘 96만명, 절반 가까이 10년 넘게",
-  "subtitle": "기혼여성 고용률 66.2%·중소기업 AI 2조원·실근로 36.2시간을 한 장으로",
+  "date": "2026-11-21",
+  "weekday": "토",
+  "title": "청년 첫 취업에 월 65만원, AI 직종 신입은 17.1%",
+  "subtitle": "2027 청년일자리 예산 3.3조·K-유스개런티 신설, AI 직종 1,804건 중 신입 308건, 기업 인력계획 반영 11%를 한 장으로",
   "reading_minutes": 3,
   "data_status": "ok",
   "data_status_note": null
  },
  "headline_metrics": [
   {
-   "id": "hm_women_rate",
-   "label": "기혼여성 고용률",
-   "value": 66.2,
-   "unit": "%",
-   "value_text": "66.2%",
-   "base_value": null,
-   "base_unit": null,
+   "id": "hm_youth_budget",
+   "label": "청년일자리 예산",
+   "value": 3.3,
+   "unit": "조원",
+   "value_text": "3.3조원",
+   "base_value": 2.6,
+   "base_unit": "조원",
    "direction": "up",
-   "period": "2026년 상반기",
-   "delta_from": "전년대비 +1.9%p",
-   "source_id": "src_kostat_women_2026h1",
+   "period": "2027년 정부안",
+   "delta_from": "2026년 2.6조원",
+   "source_id": "src_moel_youthjob_20261120",
    "track": "B",
    "edition": "kr-0700",
-   "updated_at": "2026-11-20T07:05:00+09:00",
-   "run_id": "br-20261120-0705",
+   "updated_at": "2026-11-21T07:06:00+09:00",
+   "run_id": "br-20261121-0706",
    "spark": null
   },
   {
-   "id": "hm_career_break",
-   "label": "경력보유여성",
-   "value": 96,
-   "unit": "만명",
-   "value_text": "96만명",
-   "base_value": 715,
-   "base_unit": "만명(15~54세 기혼여성)",
-   "direction": "down",
-   "period": "2026년 상반기",
-   "delta_from": "전년대비 -14만5천명",
-   "source_id": "src_kostat_women_2026h1",
+   "id": "hm_job_seeker_allowance",
+   "label": "구직촉진수당(월)",
+   "value": 65,
+   "unit": "만원",
+   "value_text": "65만원",
+   "base_value": 60,
+   "base_unit": "만원",
+   "direction": "up",
+   "period": "2027년(K-유스개런티)",
+   "delta_from": "월 60만원",
+   "source_id": "src_moel_youthjob_20261120",
    "track": "B",
    "edition": "kr-0700",
-   "updated_at": "2026-11-20T07:05:00+09:00",
-   "run_id": "br-20261120-0705",
+   "updated_at": "2026-11-21T07:06:00+09:00",
+   "run_id": "br-20261121-0706",
    "spark": null
   },
   {
-   "id": "hm_break_10y",
-   "label": "10년 이상 경력 공백",
-   "value": 43.1,
+   "id": "hm_ai_newhire_share",
+   "label": "AI 직종 신입 지원 공고",
+   "value": 17.1,
    "unit": "%",
-   "value_text": "43.1%",
-   "base_value": null,
-   "base_unit": null,
+   "value_text": "17.1%",
+   "base_value": 1804,
+   "base_unit": "건",
    "direction": "flat",
-   "period": "2026년 상반기",
-   "delta_from": "경력보유여성 중",
-   "source_id": "src_kostat_women_2026h1",
+   "period": "2026년 11월 10일",
+   "delta_from": "공고 1,804건 중 308건",
+   "source_id": "src_mk_ai_entry_20261120",
    "track": "B",
    "edition": "kr-0700",
-   "updated_at": "2026-11-20T07:05:00+09:00",
-   "run_id": "br-20261120-0705",
+   "updated_at": "2026-11-21T07:06:00+09:00",
+   "run_id": "br-20261121-0706",
    "spark": null
   },
   {
-   "id": "hm_sme_smart_factory",
-   "label": "중소 스마트공장 5년 목표",
-   "value": 2000,
-   "unit": "개",
-   "value_text": "2,000개",
-   "base_value": 20000,
-   "base_unit": "억원(5년 조성)",
-   "direction": "up",
-   "period": "2027~2031년",
-   "delta_from": "중기부 상생협약",
-   "source_id": "src_mss_ai_alliance_20261119",
-   "track": "A",
+   "id": "hm_ai_qa_share",
+   "label": "QA 엔지니어 신입 비율",
+   "value": 29.1,
+   "unit": "%",
+   "value_text": "29.1%",
+   "base_value": 189,
+   "base_unit": "건",
+   "direction": "flat",
+   "period": "2026년 11월 10일",
+   "delta_from": "7개 직종 중 가장 높음",
+   "source_id": "src_mk_ai_entry_20261120",
+   "track": "B",
    "edition": "kr-0700",
-   "updated_at": "2026-11-20T07:05:00+09:00",
-   "run_id": "br-20261120-0705",
+   "updated_at": "2026-11-21T07:06:00+09:00",
+   "run_id": "br-20261121-0706",
    "spark": null
   }
  ],
@@ -244,8 +244,32 @@
    "theme_id": "th-youth-employment-gap",
    "title": "청년 고용 사각지대",
    "summary": "취업자 총수는 늘어도 청년층만 빠지는 구조가 이어진다. 청년 고용률·구직단념·첫 일자리 정책을 한 묶음으로 보고, 상담에서는 \"몇 살이라서\"가 아니라 \"어느 업종·직무에서 빠졌는지\"를 먼저 확인한다.",
-   "updated_at": "2026-11-19T07:06:00+09:00",
+   "updated_at": "2026-11-21T07:06:00+09:00",
    "items": [
+    {
+     "issue_id": "iss-youth-first-job-2027",
+     "title": "2027 청년일자리 예산 3.3조 — K-유스개런티 신설(구직촉진수당 월 65만원·16만명)",
+     "source": {
+      "source_name": "고용노동부(정책브리핑)",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790054"
+     },
+     "license": {
+      "name": "공공누리 미부착(사전 협의 필요)",
+      "type": "KOGL-NONE",
+      "url": null,
+      "scope": "보도자료 본문·첨부파일",
+      "attribution_required": true,
+      "commercial_use": "unknown",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-21",
+      "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-21): '이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 본문을 옮기지 않고 사실·수치만 사용.",
+      "attribution_text": "출처: 고용노동부 「딱딱한 정책은 이제 그만, 친근하게 만나는 청년고용정책」 보도자료(2026.11.20, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     },
+     "first_seen": "2026-11-21",
+     "last_updated": "2026-11-21",
+     "track": "B"
+    },
     {
      "issue_id": "iss-kdi-outlook-2026h2",
      "title": "KDI 2026년 하반기 경제전망 — 2027년 취업자 +20만, 20대 고용률은 여전히 낮다",
@@ -514,290 +538,87 @@
    "id": "c01",
    "order": 1,
    "track": "B",
-   "category": "국내 고용지표",
-   "title": "경력보유여성 96만명 — 43%는 10년 넘게 비었다",
-   "kicker": "기혼여성 고용률 66.2%(+1.9%p) · 육아로 그만둔 51.1%",
-   "three_step": {
-    "what": "국가데이터처가 2026년 상반기 지역별고용조사로 18세 미만 자녀와 함께 사는 15~54세 기혼여성의 고용 현황을 내놨다. 일을 그만둔 경력보유여성은 96만명으로 1년 전보다 14만5천명 줄었고, 이들의 고용률은 66.2%로 1.9%p 올랐다.",
-    "evidence": "자녀수별 고용률은 1명 66.1%·2명 66.8%·3명 이상 62.5%였다. 경력보유여성 96만명은 15~54세 기혼여성의 13.4%(-1.5%p)이고, 직장을 그만둔 사유는 육아 51.1%·결혼 21.6%·임신·출산 18.2% 순이다. 공백이 10년 이상인 경우가 43.1%, 18세 미만 자녀를 둔 경력보유여성은 77만2천명이다(2026년 11월 19일, 국가데이터처).",
-    "implication": "공백이 길수록 경력을 없던 일로 지우기 쉬우니, 마지막 직무와 그 뒤 배움·돌봄·봉사로 맡았던 일을 한 줄씩 적어 이력서 경력란 옆에 붙이게 하라."
-   },
-   "key_numbers": [
-    {
-     "label": "경력보유여성",
-     "value": "96만명",
-     "delta": "-14만5천명",
-     "period": "2026년 상반기"
-    },
-    {
-     "label": "18세 미만 자녀 동거 기혼여성 고용률",
-     "value": "66.2%",
-     "delta": "+1.9%p",
-     "period": "2026년 상반기"
-    },
-    {
-     "label": "육아로 그만둔 비율",
-     "value": "51.1%",
-     "delta": "",
-     "period": "2026년 상반기"
-    },
-    {
-     "label": "10년 이상 경력 공백",
-     "value": "43.1%",
-     "delta": "",
-     "period": "2026년 상반기"
-    }
-   ],
-   "chart_data": {
-    "type": "grouped_bar",
-    "unit": "%",
-    "labels": [
-     "자녀 1명",
-     "자녀 2명",
-     "자녀 3명 이상"
-    ],
-    "series": [
-     {
-      "name": "2025년 상반기",
-      "values": [
-       64.6,
-       64.6,
-       60.6
-      ],
-      "emphasis": false
-     },
-     {
-      "name": "2026년 상반기",
-      "values": [
-       66.1,
-       66.8,
-       62.5
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "18세 미만 자녀와 함께 사는 15~54세 기혼여성의 자녀수별 고용률(%). 국가데이터처 지역별고용조사, 2026.11.19.",
-    "source_id": "src_kostat_women_2026h1"
-   },
-   "counselor_question": "일을 그만둔 뒤 10년 동안 맡아서 했거나 배운 일을 세 가지만 꼽으면 무엇인가요?",
-   "tags": [
-    "경력보유여성",
-    "기혼여성",
-    "고용률"
-   ],
-   "ncs": [
-    "직업상담서비스"
-   ],
-   "theme_key": "th-skills-training",
-   "theme_label": "재취업과 직업훈련",
+   "category": "국내 고용행정",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
    "region": "kr",
-   "issue_id": "iss-women-employment-2026h1",
-   "source": {
-    "source_id": "src_kostat_women_2026h1",
-    "source_name": "국가데이터처",
-    "source_title": "2026년 상반기 지역별고용조사 기혼여성의 고용 현황",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789895",
-    "published_at": "2026-11-19",
-    "license": {
-     "name": "공공누리 제2유형(출처표시+상업적 이용금지) — 사실·수치만",
-     "type": "KOGL-NONE",
-     "url": "https://www.kogl.or.kr/info/license.do",
-     "scope": "원문 재게시 불가 · 사실·수치 인용",
-     "attribution_required": true,
-     "commercial_use": "not_allowed",
-     "modification": "not_allowed",
-     "verified": true,
-     "verified_at": "2026-11-20",
-     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제2유형(출처표시+상업적 이용금지)의 조건에 따라 이용할 수 있습니다.' — 제1유형이 아니어서 트랙 B로 내리고 사실·수치만 사용."
-    },
-    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
-   },
-   "updated_at": "2026-11-20T07:05:00+09:00",
-   "run_id": "br-20261120-0705",
+   "issue_id": "iss-youth-first-job-2027",
    "edition": "kr-0700",
-   "labor_walk": true,
-   "labor_walk_topic": "훈련·재취업"
-  },
-  {
-   "id": "c02",
-   "order": 2,
-   "track": "A",
-   "category": "AI·직무",
-   "title": "중소기업 AI 전환, 5년 2조원 — 스마트공장 2,000개",
-   "kicker": "대기업 11곳·유관기관 5곳 협약 · '27년 피지컬 AI 300억원",
+   "updated_at": "2026-11-21T07:06:00+09:00",
+   "run_id": "br-20261121-0706",
+   "title": "청년 첫 취업에 월 65만원 — 청년일자리 예산 3.3조",
+   "kicker": "2027 정부안 +7천억 · K-유스개런티 16만명",
    "three_step": {
-    "what": "중소벤처기업부가 삼성전자·현대자동차·LG전자·포스코 등 대기업 11곳, 유관기관 5곳과 'AI 대전환 상생협약'을 맺고 중소 제조 현장의 AI 확산을 지원하기로 했다. 개방형혁신·상생형 스마트공장·동반사업전환 세 갈래로 나눠 기업의 성장단계별로 지원한다.",
-    "evidence": "2027~2031년 5년간 민간기업과 함께 2조원을 조성해 2,000개 이상 중소기업의 스마트공장 구축을 지원하고, 2031년까지 주관기관 참여 규모를 100개사로 늘린다. 2027년에는 피지컬 AI 동반사업전환에 신규 예산 300억원을 넣어 100개 기업을 지원한다. 협약식에는 대기업·유관기관·중소기업 관계자 100여 명이 참석했다(2026년 11월 19일, 중소벤처기업부).",
-    "implication": "중소 제조 구직자에게는 'AI 설비·스마트공장을 다뤄 본 경험'을 직무기술서 한 줄로 적게 하고, 지원 기업이 어떤 지원사업에 참여했는지 먼저 확인하라."
+    "what": "고용노동부는 2026년 11월 20일 2027년 청년일자리 예산을 3조3,000억원으로 늘리고, 취업 경험이 없는 청년에게 구직촉진수당과 취업지원 서비스를 주는 '청년 첫 취업지원제도(K-유스개런티)'를 새로 만들겠다고 밝혔다. 같은 날 청주에서 청년고용정책을 직접 안내하는 팝업스토어도 열었다.",
+    "evidence": "청년일자리 예산은 2026년 2조6,000억원에서 2027년 정부안 3조3,000억원으로 약 7,000억원 늘어난다. K-유스개런티는 3,793억원·16만명 규모로 구직촉진수당이 월 60만원에서 65만원으로 오르고, K-뉴딜 아카데미는 4,985억원·5만명(2026년 1만명)으로 확대된다. AI 훈련을 수료한 청년을 채용한 기업을 지원하는 '청년 AI 첫 일자리 경력 지원'은 145억원·750명으로 신설되고, 청년일자리도약장려금 지원 인원은 10만5,000명에서 13만명으로 늘어난다.",
+    "implication": "첫 취업 상담에서는 내담자의 정식 취업 경험 기간을 먼저 확인해 내년 K-유스개런티 대상이 되는지 짚고, 올해 안에 쓸 수 있는 기존 청년 지원사업과 시기가 어떻게 갈리는지 함께 안내한다."
    },
    "key_numbers": [
     {
-     "label": "5년간 조성",
-     "value": "2조원",
-     "delta": "",
-     "period": "2027~2031년"
+     "label": "청년일자리 예산",
+     "value": "3.3조원",
+     "delta": "+0.7조원",
+     "period": "2027년 정부안"
     },
     {
-     "label": "스마트공장 지원 목표",
-     "value": "2,000개 이상",
-     "delta": "",
-     "period": "2027~2031년"
+     "label": "K-유스개런티",
+     "value": "3,793억원",
+     "delta": "신설",
+     "period": "2027년 정부안"
     },
     {
-     "label": "피지컬 AI 동반전환 예산",
-     "value": "300억원",
-     "delta": "신규",
+     "label": "구직촉진수당",
+     "value": "월 65만원",
+     "delta": "+5만원",
      "period": "2027년"
     },
     {
-     "label": "주관기관 참여 규모",
-     "value": "100개사",
-     "delta": "",
-     "period": "2031년까지"
+     "label": "청년일자리도약장려금",
+     "value": "13만명",
+     "delta": "+2.5만명",
+     "period": "2027년 정부안"
     }
    ],
    "chart_data": {
     "type": "bar",
-    "unit": "개",
+    "unit": "억원",
     "labels": [
-     "오픈이노베이션 주관기관(2031)",
-     "스마트공장 지원(2027~2031)",
-     "동반전환 지원(2027)"
+     "K-유스개런티",
+     "K-뉴딜 아카데미",
+     "청년 플레이그라운드",
+     "청년 AI 첫 일자리"
     ],
     "series": [
      {
-      "name": "지원·참여 목표 기업 수",
+      "name": "2027년 정부안 사업별 예산",
       "values": [
-       100,
-       2000,
-       100
+       3793,
+       4985,
+       201,
+       145
       ],
       "emphasis": true
      }
     ],
     "reference_value": null,
-    "note": "중소벤처기업부 'AI 대전환 상생협약' 목표 기업 수(개), 2026.11.19.",
-    "source_id": "src_mss_ai_alliance_20261119"
+    "note": "2027년 정부안 사업별 예산(억원). 고용노동부 2026.11.20 보도자료.",
+    "source_id": "src_moel_youthjob_20261120"
    },
-   "counselor_question": "스마트공장이나 자동화 설비를 도입한 회사에서 일해 본 적이 있나요? 그때 어떤 설비를 다뤘나요?",
+   "counselor_question": "지금까지 정식 취업 경험이 거의 없으신가요? 그렇다면 내년 신설되는 K-유스개런티 대상인지 함께 확인해 봅시다.",
    "tags": [
-    "중소기업",
-    "AI 전환",
-    "스마트공장"
+    "청년",
+    "취업지원",
+    "구직촉진수당",
+    "예산"
    ],
    "ncs": [
     "직업상담서비스"
    ],
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
-   "region": "kr",
-   "issue_id": "iss-sme-ai-alliance",
    "source": {
-    "source_id": "src_mss_ai_alliance_20261119",
-    "source_name": "중소벤처기업부",
-    "source_title": "대·중소기업, AI로 연결하고 상생으로 도약한다 — AI 대전환 상생협약",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789845",
-    "published_at": "2026-11-19",
-    "license": {
-     "name": "공공누리 제1유형(출처표시)",
-     "type": "KOGL-1",
-     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
-     "scope": "텍스트 한정(사진·이미지·일러스트·동영상 제외)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-20",
-     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.'",
-     "attribution_text": "출처: 중소벤처기업부 「대·중소기업, AI로 연결하고 상생으로 도약한다」 보도자료(2026.11.19, 정책브리핑 게재), 공공누리 제1유형. 텍스트만 이용했습니다."
-    },
-    "usage": "보도자료 본문(텍스트)을 17-1 원문에 게재하고, 17번 카드는 협약 분야·지원 규모·예산을 요약."
-   },
-   "updated_at": "2026-11-20T07:05:00+09:00",
-   "run_id": "br-20261120-0705",
-   "edition": "kr-0700",
-   "labor_walk": true,
-   "labor_walk_topic": "AI와 직무"
-  },
-  {
-   "id": "c03",
-   "order": 3,
-   "track": "B",
-   "category": "국내 고용행정",
-   "title": "노동시간 줄였더니 이직률 44%→16% — 일터혁신 사례",
-   "kicker": "주 평균 실근로 38.3→36.2시간 · 사무직 주 35시간",
-   "three_step": {
-    "what": "노사발전재단이 19일 제8차 일터혁신 사례공유 포럼에서 노동시간을 줄여 인력 이탈을 막은 두 기업 사례를 공개했다. 근로자와 함께 직무를 다시 설계해 단축 효과를 낸 사례다.",
-    "evidence": "LED 전광판 업체 디스플레이허브는 2021년 8명에서 2026년 37명으로 늘면서 2024년 이직률이 44%까지 올랐으나, 사무·영업직은 주 40시간을 35시간으로 줄이고 기술직은 40시간을 유지하는 직군별 단축으로 이직률을 16%로 낮췄다. 전체 근로자 주 평균 실근로시간은 38.3시간에서 36.2시간으로 줄었다. 의료기기 업체 바이오프로테크는 주 4.5일제를 도입하면서 사무직 AI 활용 교육과 신규 인력 10명 채용을 함께 진행했다(2026년 11월 19일, 노사발전재단).",
-    "implication": "임금이 조금 낮아도 오래 다닐 수 있는 회사를 비교 기준으로 세우려면, 공고에 적힌 주 4.5일제·유연근무가 근로계약서에도 있는지 확인하게 하라."
-   },
-   "key_numbers": [
-    {
-     "label": "이직률",
-     "value": "16%",
-     "delta": "44%에서",
-     "period": "디스플레이허브"
-    },
-    {
-     "label": "주 평균 실근로시간",
-     "value": "36.2시간",
-     "delta": "-2.1시간",
-     "period": "단축 후"
-    },
-    {
-     "label": "사무·영업직 근로시간",
-     "value": "주 35시간",
-     "delta": "-5시간",
-     "period": "단축 후"
-    },
-    {
-     "label": "신규 채용",
-     "value": "10명",
-     "delta": "",
-     "period": "바이오프로테크"
-    }
-   ],
-   "chart_data": {
-    "type": "slope",
-    "unit": "시간",
-    "labels": [
-     "단축 전",
-     "단축 후"
-    ],
-    "series": [
-     {
-      "name": "주 평균 실근로시간",
-      "values": [
-       38.3,
-       36.2
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "디스플레이허브 전체 근로자 주 평균 실근로시간(시간). 노사발전재단 제8차 일터혁신 사례공유 포럼, 2026.11.19.",
-    "source_id": "src_nosa_worktekh_20261119"
-   },
-   "counselor_question": "지금 회사에서 가장 줄이고 싶은 근무 조건은 무엇인가요? 그게 줄면 더 오래 다닐 수 있나요?",
-   "tags": [
-    "노동시간",
-    "일터혁신",
-    "이직률"
-   ],
-   "ncs": [
-    "직업상담서비스"
-   ],
-   "theme_key": "th-labor-policy",
-   "theme_label": "고용정책과 감독",
-   "region": "kr",
-   "issue_id": "iss-workplace-innovation",
-   "source": {
-    "source_id": "src_nosa_worktekh_20261119",
-    "source_name": "노사발전재단",
-    "source_title": "노동시간 변화로 그리는 일터혁신 — 2026년 제8차 일터혁신 사례공유 포럼",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789916",
-    "published_at": "2026-11-19",
+    "source_name": "고용노동부",
+    "source_title": "딱딱한 정책은 이제 그만, 친근하게 만나는 청년고용정책",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790054",
+    "published_at": "2026-11-20",
     "license": {
      "name": "공공누리 미부착(사전 협의 필요)",
      "type": "KOGL-NONE",
@@ -807,17 +628,224 @@
      "commercial_use": "unknown",
      "modification": "not_allowed",
      "verified": true,
-     "verified_at": "2026-11-20",
-     "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-20): '이 자료는 노사발전재단의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 사실·수치만 사용.",
-     "attribution_text": "출처: 노사발전재단 「노동시간 변화로 그리는 일터혁신」 보도자료(2026.11.19, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     "verified_at": "2026-11-21",
+     "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-21): '이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 본문을 옮기지 않고 사실·수치만 사용.",
+     "attribution_text": "출처: 고용노동부 「딱딱한 정책은 이제 그만, 친근하게 만나는 청년고용정책」 보도자료(2026.11.20, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
     },
-    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
+    "usage": "본문 복제 없이 예산·사업 규모 등 수치와 사실만 우리 말로 재구성.",
+    "source_id": "src_moel_youthjob_20261120",
+    "id": "src_moel_youthjob_20261120"
    },
-   "updated_at": "2026-11-20T07:05:00+09:00",
-   "run_id": "br-20261120-0705",
-   "edition": "kr-0700",
    "labor_walk": true,
-   "labor_walk_topic": "고용정책·감독"
+   "labor_walk_topic": "청년·중장년 고용"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "B",
+   "category": "채용시장",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "issue_id": "iss-ai-entry-level-2026",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-21T07:06:00+09:00",
+   "run_id": "br-20261121-0706",
+   "title": "AI 직종 공고 1,804건 중 신입 지원은 17.1%",
+   "kicker": "클라우드 15.8% · QA 29.1% — 가장 넓은 문도 30% 아래",
+   "three_step": {
+    "what": "채용 플랫폼 잡플래닛이 2026년 11월 10일 기준으로 올라온 AI 관련 7개 직종 채용공고를 분석한 결과, 신입이 지원할 수 있는 공고는 전체의 17.1%에 그쳤다. AI 인력 수요가 늘어도 첫 경력의 문은 좁다는 뜻이다.",
+    "evidence": "7개 직종 공고 1,804건 가운데 신입 지원이 가능한 공고는 308건(17.1%)이었다. 클라우드 엔지니어는 348건 중 55건(15.8%), 정보보안 엔지니어 269건 중 48건(17.8%), 데이터 분석가 135건 중 28건(20.7%), QA 엔지니어 189건 중 55건(29.1%)이었다. 한때 유망 직업으로 꼽힌 프롬프트 엔지니어 공고는 3건, 데이터 라벨러는 17건이었다.",
+    "implication": "AI 직무로 가려는 신입 내담자에게는 직업명보다 신입 문이 상대적으로 열린 직종(QA·데이터 분석)을 먼저 보게 하고, 지원하려는 직무 공고를 모아 신입 지원 가능 건수를 직접 세어 보게 한다."
+   },
+   "key_numbers": [
+    {
+     "label": "AI 직종 공고",
+     "value": "1,804건",
+     "delta": "",
+     "period": "2026년 11월 10일"
+    },
+    {
+     "label": "신입 지원 가능",
+     "value": "308건",
+     "delta": "17.1%",
+     "period": "2026년 11월 10일"
+    },
+    {
+     "label": "QA 엔지니어 신입",
+     "value": "29.1%",
+     "delta": "7개 직종 중 최고",
+     "period": "2026년 11월 10일"
+    },
+    {
+     "label": "프롬프트 엔지니어",
+     "value": "3건",
+     "delta": "",
+     "period": "2026년 11월 10일"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "클라우드",
+     "정보보안",
+     "데이터 분석",
+     "QA"
+    ],
+    "series": [
+     {
+      "name": "신입 지원 가능 공고 비율",
+      "values": [
+       15.8,
+       17.8,
+       20.7,
+       29.1
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "직종별 신입 지원 가능 공고 비율(%·2026년 11월 10일 기준). 잡플래닛 분석, 매경ECONOMY 2026.11.20 보도.",
+    "source_id": "src_mk_ai_entry_20261120"
+   },
+   "counselor_question": "가려는 직무 공고를 20건만 모아 보시겠어요? 그중 신입 지원이 되는 공고가 몇 건인지 함께 세어 봅시다.",
+   "tags": [
+    "AI 직무",
+    "신입",
+    "채용공고"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "source": {
+    "source_name": "매경ECONOMY",
+    "source_title": "AI 인력 수요 늘어도…신입 채용 문턱 높았다 [데이터로 보는 세상]",
+    "source_url": "https://www.mk.co.kr/news/business/12214725",
+    "published_at": "2026-11-20",
+    "license": {
+     "name": "언론사 저작권 — 본문 복제·번역 금지",
+     "type": "PRESS",
+     "url": null,
+     "scope": "기사 본문·제목·이미지",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-21",
+     "evidence": "언론사 기사(매경ECONOMY, 2026.11.20 보도)로 재가공·번역 허락 없음. 본문을 옮기지 않고 객관적 사실·수치만 새로 서술(직접인용 15단어 이내).",
+     "attribution_text": "수치 출처: 매경ECONOMY 「AI 인력 수요 늘어도…신입 채용 문턱 높았다」(2026.11.20) — 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    },
+    "usage": "잡플래닛 집계 수치만 인용하고 기사 문장은 옮기지 않음.",
+    "source_id": "src_mk_ai_entry_20261120",
+    "id": "src_mk_ai_entry_20261120"
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
+  },
+  {
+   "id": "c03",
+   "order": 3,
+   "track": "B",
+   "category": "AI·직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "issue_id": "iss-ai-workforce-planning-2026",
+   "edition": "kr-0700",
+   "updated_at": "2026-11-21T07:06:00+09:00",
+   "run_id": "br-20261121-0706",
+   "title": "AI 영향 인력계획 반영 11%뿐 — 감원보다 업무 재설계 70%",
+   "kicker": "국제 리더 775명 조사 · 정규직 감소 전망 47%",
+   "three_step": {
+    "what": "콘퍼런스보드가 국제 리더 775명을 설문하고 35건을 인터뷰해 낸 'AI와 인력계획' 보고서에서, AI가 인력·재무에 미칠 영향을 전사 계획에 완전히 반영한 기업은 11%에 그쳤다. 대신 향후 2년의 주요 조치로는 업무 재설계와 재교육이 인력 감축보다 앞섰다.",
+    "evidence": "전사 계획에 반영 11%, 일부 영역만 반영 35%, 논의만 하고 계획에는 반영하지 않음 34%, 아직 평가하지 않음 13%였다. 향후 2년 조치로는 직무·업무 절차 재설계 70%, 재교육 68%, 추가 채용 대신 AI 역량 투자 37%, 정규직 감축 17%였다. 전체 정규직은 소폭 감소 39%·변화 없음 32%·상당 감소 8%로 감소 전망이 합계 47%, 증가 전망은 5%였다.",
+    "implication": "기업 채용 계획을 확인할 때 '몇 명 뽑는가'보다 '어떤 업무를 재설계하고 무엇을 재교육하는가'를 물어, 채용 축소와 직무 전환이 한 회사 안에서 같이 일어나는 자리를 내담자에게 짚어 준다."
+   },
+   "key_numbers": [
+    {
+     "label": "전사 계획 반영",
+     "value": "11%",
+     "delta": "",
+     "period": "2026년 보고서"
+    },
+    {
+     "label": "업무 재설계 예상",
+     "value": "70%",
+     "delta": "향후 2년 조치",
+     "period": "2026년"
+    },
+    {
+     "label": "정규직 감소 전망",
+     "value": "47%",
+     "delta": "상당 감소 8%",
+     "period": "향후 2년"
+    },
+    {
+     "label": "인력 증가 전망",
+     "value": "5%",
+     "delta": "",
+     "period": "향후 2년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "업무 재설계",
+     "재교육",
+     "AI 역량 투자",
+     "정규직 감축"
+    ],
+    "series": [
+     {
+      "name": "향후 2년 주요 인력 운영 조치",
+      "values": [
+       70,
+       68,
+       37,
+       17
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "AI 관련 인력 운영 조치 응답 비율(%). 콘퍼런스보드 2026년 보고서, 지티티코리아 2026.11.20 보도.",
+    "source_id": "src_gttk_cb_workforce_20261120"
+   },
+   "counselor_question": "지원하는 회사가 AI 때문에 없앤 업무와 새로 만든 업무를 알고 계신가요? 모른다면 면접에서 물어볼 첫 질문으로 삼아 봅시다.",
+   "tags": [
+    "AI 도입",
+    "인력계획",
+    "업무 재설계"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "source": {
+    "source_name": "지티티코리아",
+    "source_title": "AI 도입 기업 89%, 전사 인력계획 반영 못해…업무 재설계·성과 검증 시급",
+    "source_url": "https://www.gttkorea.com/news/articleView.html?idxno=27747",
+    "published_at": "2026-11-20",
+    "license": {
+     "name": "언론사 저작권 — 본문 복제·번역 금지",
+     "type": "PRESS",
+     "url": null,
+     "scope": "기사 본문·제목·이미지",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-21",
+     "evidence": "언론사 기사(지티티코리아, 2026.11.20 보도)로 재가공·번역 허락 없음. 본문을 옮기지 않고 객관적 사실·수치만 새로 서술(직접인용 15단어 이내).",
+     "attribution_text": "수치 출처: 지티티코리아 「AI 도입 기업 89%, 전사 인력계획 반영 못해」(2026.11.20) — 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    },
+    "usage": "콘퍼런스보드 보고서의 응답 비율만 인용하고 기사 문장은 옮기지 않음.",
+    "source_id": "src_gttk_cb_workforce_20261120",
+    "id": "src_gttk_cb_workforce_20261120"
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
   },
   {
    "id": "c04",
@@ -1236,9 +1264,9 @@
  "runs": {
   "kr-0700": {
    "status": "ok",
-   "updated_at": "2026-11-20T07:05:00+09:00",
-   "last_ok": "2026-11-20",
-   "run_id": "br-20261120-0705"
+   "updated_at": "2026-11-21T07:06:00+09:00",
+   "last_ok": "2026-11-21",
+   "run_id": "br-20261121-0706"
   },
   "global-2300": {
    "status": "ok",
@@ -1249,54 +1277,10 @@
  },
  "sources": [
   {
-   "source_id": "src_kostat_women_2026h1",
-   "source_name": "국가데이터처",
-   "source_title": "2026년 상반기 지역별고용조사 기혼여성의 고용 현황",
-   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789895",
-   "published_at": "2026-11-19",
-   "license": {
-    "name": "공공누리 제2유형(출처표시+상업적 이용금지) — 사실·수치만",
-    "type": "KOGL-NONE",
-    "url": "https://www.kogl.or.kr/info/license.do",
-    "scope": "원문 재게시 불가 · 사실·수치 인용",
-    "attribution_required": true,
-    "commercial_use": "not_allowed",
-    "modification": "not_allowed",
-    "verified": true,
-    "verified_at": "2026-11-20",
-    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제2유형(출처표시+상업적 이용금지)의 조건에 따라 이용할 수 있습니다.' — 제1유형이 아니어서 트랙 B로 내리고 사실·수치만 사용."
-   },
-   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
-   "id": "src_kostat_women_2026h1"
-  },
-  {
-   "source_id": "src_mss_ai_alliance_20261119",
-   "source_name": "중소벤처기업부",
-   "source_title": "대·중소기업, AI로 연결하고 상생으로 도약한다 — AI 대전환 상생협약",
-   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789845",
-   "published_at": "2026-11-19",
-   "license": {
-    "name": "공공누리 제1유형(출처표시)",
-    "type": "KOGL-1",
-    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
-    "scope": "텍스트 한정(사진·이미지·일러스트·동영상 제외)",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-20",
-    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.'",
-    "attribution_text": "출처: 중소벤처기업부 「대·중소기업, AI로 연결하고 상생으로 도약한다」 보도자료(2026.11.19, 정책브리핑 게재), 공공누리 제1유형. 텍스트만 이용했습니다."
-   },
-   "usage": "보도자료 본문(텍스트)을 17-1 원문에 게재하고, 17번 카드는 협약 분야·지원 규모·예산을 요약.",
-   "id": "src_mss_ai_alliance_20261119"
-  },
-  {
-   "source_id": "src_nosa_worktekh_20261119",
-   "source_name": "노사발전재단",
-   "source_title": "노동시간 변화로 그리는 일터혁신 — 2026년 제8차 일터혁신 사례공유 포럼",
-   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789916",
-   "published_at": "2026-11-19",
+   "source_name": "고용노동부",
+   "source_title": "딱딱한 정책은 이제 그만, 친근하게 만나는 청년고용정책",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790054",
+   "published_at": "2026-11-20",
    "license": {
     "name": "공공누리 미부착(사전 협의 필요)",
     "type": "KOGL-NONE",
@@ -1306,12 +1290,57 @@
     "commercial_use": "unknown",
     "modification": "not_allowed",
     "verified": true,
-    "verified_at": "2026-11-20",
-    "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-20): '이 자료는 노사발전재단의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 사실·수치만 사용.",
-    "attribution_text": "출처: 노사발전재단 「노동시간 변화로 그리는 일터혁신」 보도자료(2026.11.19, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    "verified_at": "2026-11-21",
+    "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-21): '이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 본문을 옮기지 않고 사실·수치만 사용.",
+    "attribution_text": "출처: 고용노동부 「딱딱한 정책은 이제 그만, 친근하게 만나는 청년고용정책」 보도자료(2026.11.20, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
    },
-   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
-   "id": "src_nosa_worktekh_20261119"
+   "usage": "본문 복제 없이 예산·사업 규모 등 수치와 사실만 우리 말로 재구성.",
+   "source_id": "src_moel_youthjob_20261120",
+   "id": "src_moel_youthjob_20261120"
+  },
+  {
+   "source_name": "매경ECONOMY",
+   "source_title": "AI 인력 수요 늘어도…신입 채용 문턱 높았다 [데이터로 보는 세상]",
+   "source_url": "https://www.mk.co.kr/news/business/12214725",
+   "published_at": "2026-11-20",
+   "license": {
+    "name": "언론사 저작권 — 본문 복제·번역 금지",
+    "type": "PRESS",
+    "url": null,
+    "scope": "기사 본문·제목·이미지",
+    "attribution_required": true,
+    "commercial_use": "not_allowed",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-21",
+    "evidence": "언론사 기사(매경ECONOMY, 2026.11.20 보도)로 재가공·번역 허락 없음. 본문을 옮기지 않고 객관적 사실·수치만 새로 서술(직접인용 15단어 이내).",
+    "attribution_text": "수치 출처: 매경ECONOMY 「AI 인력 수요 늘어도…신입 채용 문턱 높았다」(2026.11.20) — 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+   },
+   "usage": "잡플래닛 집계 수치만 인용하고 기사 문장은 옮기지 않음.",
+   "source_id": "src_mk_ai_entry_20261120",
+   "id": "src_mk_ai_entry_20261120"
+  },
+  {
+   "source_name": "지티티코리아",
+   "source_title": "AI 도입 기업 89%, 전사 인력계획 반영 못해…업무 재설계·성과 검증 시급",
+   "source_url": "https://www.gttkorea.com/news/articleView.html?idxno=27747",
+   "published_at": "2026-11-20",
+   "license": {
+    "name": "언론사 저작권 — 본문 복제·번역 금지",
+    "type": "PRESS",
+    "url": null,
+    "scope": "기사 본문·제목·이미지",
+    "attribution_required": true,
+    "commercial_use": "not_allowed",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-21",
+    "evidence": "언론사 기사(지티티코리아, 2026.11.20 보도)로 재가공·번역 허락 없음. 본문을 옮기지 않고 객관적 사실·수치만 새로 서술(직접인용 15단어 이내).",
+    "attribution_text": "수치 출처: 지티티코리아 「AI 도입 기업 89%, 전사 인력계획 반영 못해」(2026.11.20) — 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+   },
+   "usage": "콘퍼런스보드 보고서의 응답 비율만 인용하고 기사 문장은 옮기지 않음.",
+   "source_id": "src_gttk_cb_workforce_20261120",
+   "id": "src_gttk_cb_workforce_20261120"
   },
   {
    "source_name": "미국 노동부 임금시간국(DOL WHD)",
@@ -1407,6 +1436,7 @@
  },
  "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다.",
  "archive_dates": [
+  "2026-11-21",
   "2026-11-20",
   "2026-11-19",
   "2026-11-18",
