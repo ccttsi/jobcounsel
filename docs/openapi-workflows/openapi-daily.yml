@@ -42,10 +42,12 @@ jobs:
       - name: 수집
         env:
           DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          ONLY: ${{ inputs.only }}
         run: |
           ARGS=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          if [ -n "${{ inputs.only }}" ]; then ARGS="$ARGS --only ${{ inputs.only }}"; fi
+          if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "$ONLY" ]; then ARGS="$ARGS --only $ONLY"; fi
           python3 ops/scripts/sync_openapi_daily.py $ARGS --summary-file "$GITHUB_STEP_SUMMARY"
 
       # 저장 전에 저장소 규칙(JSON·저작권·JS)을 한 번 더 통과시킨다.
