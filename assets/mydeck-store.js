@@ -1,6 +1,6 @@
 /* mydeck-store.js — 마이덱(내가 짠 상담 덱) 저장소 (2026-11-20)
  *
- * 쓰는 곳: 27번 상담 플로우(flow/)의 「마이덱에 저장」과 마이덱 화면(mydeck/).
+ * 쓰는 곳: 상담 플로우(flow/ — 왼쪽 아래 카드덱 단추로 연다)의 「마이덱에 저장」과 마이덱 화면(mydeck/).
  *
  * 저장이 가는 두 곳
  *   1) 로그인했으면 **내 계정**(Supabase Edge Function my-decks-proxy → jc_my_decks · jc_my_deck_prefs).

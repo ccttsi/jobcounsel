@@ -204,7 +204,7 @@
     var s = d.querySelector('script[src*="assets/marker.js"]'); var src = s ? s.src : location.href;
     return src.replace(/assets\/marker\.js.*$/, '');
   }
-  /* 마이덱 — 내가 짠 상담 덱을 모아 두는 별도 화면(27번 상담 플로우에서 만든 덱) */
+  /* 마이덱 — 내가 짠 상담 덱을 모아 두는 별도 화면(왼쪽 아래 카드덱 단추로 여는 상담 플로우에서 만든 덱) */
   function myDeckURL() { return hubURL() + 'mydeck/'; }
   function ago(t) { if (!t) return '아직 연동 전'; var s = Math.round((Date.now() - t) / 1000); if (s < 60) return '방금 연동됨'; if (s < 3600) return Math.floor(s / 60) + '분 전 연동'; return new Date(t).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' 연동'; }
   function render() {
