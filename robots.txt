@@ -1,7 +1,7 @@
 # 자료실 검색엔진·AI 크롤러 비노출 (2026-11-20)
-#   대문 밖의 자료는 회원 전용이라 검색엔진·AI 학습 수집에 싣지 않는다.
+#   개인 학습·공유용으로 만든 화면이라 검색엔진과 AI 수집기에 싣지 않는다.
 #   공개로 전환할 때: 이 파일을 지우고, 각 페이지 <head>의 <meta name="robots"> 한 줄과
-#   assets/core.js의 noindex 안전망(0-0)을 함께 지운다.
+#   assets/core.js의 noindex 안전망(0-0), 루트 _headers의 X-Robots-Tag를 함께 지운다.
 
 User-agent: *
 Disallow: /
