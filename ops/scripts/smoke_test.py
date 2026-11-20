@@ -131,11 +131,22 @@ PROBES = {
         return {ok: kws >= 6 && ready && !broken, detail: `키워드 ${kws} · 지도 ${ready ? '준비' : '없음'}${broken ? ' · 불러오기 실패' : ''}`};
     }""",
     "/mydeck/": """() => {
-        // 마이덱 — 덱 공간과 공간 꾸미기 여섯 요소 × 여섯 조건이 그려졌는가.
-        const space = !!document.getElementById('space');
+        // 마이덱 — 지금 로그인 상태에 맞는 한 면만 보이는가.
+        //   비로그인: 로그인 안내 카드(로그인 단추·홈 단추)만, 마이덱 본문·덱 짜기·라이브·설명은 감춤
+        //   로그인:   본문(덱 공간 + 공간 꾸미기 6요소 × 6조건)만, 게이트는 감춤
+        const gate = document.getElementById('deckGate');
+        const main = document.getElementById('deckMain');
+        const auth = document.documentElement.getAttribute('data-jc-auth');
+        const shown = el => !!el && !el.hidden && getComputedStyle(el).display !== 'none';
+        const gateOn = shown(gate), mainOn = shown(main);
         const groups = document.querySelectorAll('#diyBody .diy-grp').length;
         const opts = document.querySelectorAll('#diyBody .opt').length;
-        return {ok: space && groups === 6 && opts === 36, detail: `공간 ${space ? '있음' : '없음'} · 요소 ${groups} · 조건 ${opts}`};
+        const hasLogin = !!gate && !!gate.querySelector('[data-jc-login]');
+        const hasHome = !!gate && !!gate.querySelector('a[href="../"]');
+        const ok = auth === 'in'
+            ? (mainOn && !gateOn && groups === 6 && opts === 36)
+            : (gateOn && !mainOn && hasLogin && hasHome);
+        return {ok, detail: `상태 ${auth || '없음'} · 게이트 ${gateOn ? '보임' : '숨김'} · 본문 ${mainOn ? '보임' : '숨김'} · 요소 ${groups} · 조건 ${opts}`};
     }""",
     "/fin-lab/": """() => {
         // 24번 재무제표 해석 시뮬레이터 — 오각형·3표(3개년)·4규모 카드가 그려졌는가.
@@ -619,9 +630,30 @@ def check_flow(page):
 
 
 def check_mydeck(page):
-    """마이덱 — 공간 꾸미기를 열어 6요소×6조건을 세고, 배경을 바꿔 즉시 반영되는지 잰다."""
+    """마이덱 — 비로그인은 로그인 게이트만, 로그인은 공간 꾸미기 6요소×6조건과 즉시 반영을 잰다."""
     issues = []
     try:
+        auth = page.evaluate("() => document.documentElement.getAttribute('data-jc-auth')")
+        gate_on = page.evaluate("() => { const g = document.getElementById('deckGate');"
+                                " return !!g && !g.hidden && getComputedStyle(g).display !== 'none'; }")
+        if auth != 'in' or gate_on:
+            # 비로그인 — 마이덱 기능이 하나도 닿지 않아야 하고, 게이트의 두 단추는 실제로 눌려야 한다.
+            if not gate_on:
+                issues.append("마이덱 — 비로그인인데 로그인 게이트가 보이지 않는다")
+                return issues
+            for sel, what in (("#deckGate [data-jc-login]", "로그인"), ("#deckGate a[href='../']", "홈으로 돌아가기")):
+                box = page.locator(sel).first.bounding_box()
+                if not box or box["height"] < 43.5 or box["width"] < 43.5:
+                    issues.append(f"마이덱 — 게이트의 「{what}」 단추가 44px보다 작다({box})")
+            for sel, what in (("#deckMain", "마이덱 본문"), ("#diy", "공간 꾸미기"), ("#live", "마이덱 라이브")):
+                if page.locator(sel).first.is_visible():
+                    issues.append(f"마이덱 — 비로그인인데 「{what}」가 보인다")
+            if page.locator("#diyBtn").is_visible():
+                issues.append("마이덱 — 비로그인인데 「공간 꾸미기」 단추가 보인다")
+            if page.locator("#sheet").is_visible():
+                issues.append("마이덱 — 비로그인인데 설명 시트가 열려 있다")
+            return issues
+
         page.locator("#diyBtn").click(timeout=4000)
         page.wait_for_timeout(260)
         if not page.locator("#diy").is_visible():

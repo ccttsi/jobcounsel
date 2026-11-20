@@ -1113,6 +1113,18 @@ var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':
 var TOOLS=window.JC_TOOLS||[];   /* 자료 장부는 assets/tools.js 한곳에서 관리한다(01~31) */
 var APPS=window.JC_APPS||[];     /* 자료가 아닌 «앱»(상담 플로우) — 목록·롤링에서는 빼고 찾기·「이어 보기」에만 쓴다 */
 var ALL=TOOLS.concat(APPS);       /* 찾기·주소 대조용 전체 목록. 목록을 세는 곳은 늘 TOOLS만 센다 */
+
+/* ---------- 로그인 상태에 따른 설명 ----------
+   상담 플로우(앱)의 한 줄 설명은 로그인했는지에 따라 다르게 보여 준다.
+   · 비로그인 — 상담 흐름 탐색·조립 기능만 안내한다(마이덱·내 계정 저장 이야기 없음)
+   · 로그인   — 계정의 마이덱에 저장되어 다른 기기에서도 이어진다는 안내까지
+   글은 assets/tools.js 한곳(desc·meta / descAccount·metaAccount)에 있고, 여기서는 상태만 골라 읽는다.
+   상태는 이 기기의 세션 열쇠(jc-sync-session) 하나로만 판단하며 서버를 부르지 않는다. */
+var SESS_KEY='jc-sync-session';
+function signedIn(){try{var s=JSON.parse(localStorage.getItem(SESS_KEY)||'null');return !!(s&&s.token);}catch(e){return false;}}
+function secDesc(t){return window.JC_SECTOR_DESC?window.JC_SECTOR_DESC(t,signedIn()):((t&&t.desc)||'');}
+function secMeta(t){return window.JC_SECTOR_META?window.JC_SECTOR_META(t,signedIn()):((t&&t.meta)||[]);}
+function secSub(t){return (t&&t.app?secMeta(t):((t&&t.meta)||[])).join(' · ');}
 var INSIGHTS=[
  {tag:'제도 · 대학원',to:'grad',t:'대학원은 세 종류입니다',dk:'./grad/#guide',
   b:'고등교육법은 대학원을 일반대학원(학술 연구), 전문대학원(전문 직업 인력 양성), 특수대학원(직업인·성인의 계속교육)으로 나눕니다. 특수대학원은 석사 과정만 두고, 같은 전공 이름이라도 종류에 따라 수업 시간과 졸업 요건, 받을 수 있는 지원이 달라집니다.',
@@ -1911,12 +1923,13 @@ function ssCompanyBoot(){   /* 9,137곳 색인은 첫 글자를 칠 때 받는�
 }
 
 function byPath(p){var out=null;ALL.forEach(function(t){if(t.path===p)out=t;});return out;}
+function sectorById(id){var out=null;ALL.forEach(function(t){if(t.id===id)out=t;});return out;}
 
 /* 엔진이 없거나 아직 색인을 받는 중이면, 섹터 장부만으로 먼저 답한다 — 빈 화면을 보여 주지 않는다.
    앱(JC_APPS — 상담 플로우)도 «갈 곳»이므로 함께 찾히고, 대신 이름표(kind='app')로 구분한다. */
 function sectorHits(q){
   var ql=q.toLowerCase();
-  if(!q)return ALL.map(function(t){return {path:t.path,id:t.id,title:t.title,no:t.no,kind:t.app?'app':'sector',badge:t.badge,why:'',sub:t.meta.join(' · ')};});
+  if(!q)return ALL.map(function(t){return {path:t.path,id:t.id,title:t.title,no:t.no,kind:t.app?'app':'sector',badge:t.badge,why:'',sub:secSub(t)};});
   var out=[];
   ALL.forEach(function(t){
     var score=0,why='';
@@ -1924,9 +1937,9 @@ function sectorHits(q){
     if(t.badge.toLowerCase().indexOf(ql)>=0)score+=3;
     var tg=t.tags.filter(function(x){return x.toLowerCase().indexOf(ql)>=0;});
     if(tg.length){score+=3;why='관련 주제: '+tg.slice(0,3).join(', ');}
-    if(t.desc.toLowerCase().indexOf(ql)>=0)score+=1;
+    if(secDesc(t).toLowerCase().indexOf(ql)>=0)score+=1;
     /* 색인을 아직 못 받았을 때도 «찾던 낱말»을 들고 섹터로 간다 — 도착한 화면이 검색창을 채우고 바로 거른다 */
-    if(score)out.push({path:t.path+(q?(t.path.indexOf('?')<0?'?q='+encodeURIComponent(q):''):''),id:t.id,title:t.title,no:t.no,kind:t.app?'app':'sector',badge:t.badge,why:why,s:score,sub:t.meta.join(' · ')});
+    if(score)out.push({path:t.path+(q?(t.path.indexOf('?')<0?'?q='+encodeURIComponent(q):''):''),id:t.id,title:t.title,no:t.no,kind:t.app?'app':'sector',badge:t.badge,why:why,s:score,sub:secSub(t)});
   });
   out.sort(function(a,b){return b.s-a.s;});return out;
 }
@@ -1939,10 +1952,12 @@ function search(q){
   if(!res.length)return local;
   var out=res.map(function(r){
     var kind=r.kind==='company'?'company':r.kind==='job'?'job':(r.type==='sector'?'sector':'doc');
-    var t=kind==='sector'?byPath(r.url):null;
+    var t=kind==='sector'?(byPath(r.url)||sectorById(r.sector)):null;
     if(t&&t.app)kind='app';        /* 앱(상담 플로우)은 자료 목록에 없으므로 이름표로만 구분해 보여 준다 */
+    /* 앱의 한 줄 설명은 색인에 실린 비로그인 문구 대신 지금 상태의 문구로 바꿔 끼운다(앱은 하나라 전문을 보인다) */
+    var sub=(t&&t.app)?secDesc(t):(r.snippet||'');
     return {path:r.url,id:r.kind==='job'?'taxonomy':r.sector,title:r.title,no:(t&&t.no)||'',kind:kind,
-            why:r.why||'',sub:r.snippet||'',badge:(t&&t.app)?t.badge:(r.sectorTitle||'')};
+            why:r.why||'',sub:sub,badge:(t&&t.app)?t.badge:(r.sectorTitle||'')};
   });
   /* 기업은 9,137곳이라 목록이 잘린다 — 「명함첩에서 더 찾기」로 이어 준다. */
   if(out.some(function(h){return h.kind==='company';})){
@@ -2132,6 +2147,14 @@ function jcSyncReady(cb,n){
   if(n>40) return;
   setTimeout(function(){jcSyncReady(cb,n+1);},120);
 }
+/* ---------- 로그인 상태가 바뀌면 설명문을 다시 그린다 ----------
+ * 상담 플로우(앱)의 한 줄 설명은 로그인·로그아웃에 따라 다르다(assets/tools.js desc·descAccount).
+ * 빠른 검색을 열어 둔 채 로그인해도 옛 문구가 남지 않도록 그 자리에서 다시 그린다. */
+window.addEventListener('jc-sync-change',function(){
+  var ov=$('ov');
+  if(ov&&!ov.hidden)renderRes();
+});
+
 (function(){
   document.addEventListener('click',function(e){
     var b=e.target&&e.target.closest?e.target.closest('[data-jc-login]'):null;
