@@ -1142,15 +1142,19 @@
     var line = (s.badge ? s.badge : '');
     if (s.why && s.why.length) line += (line ? ' · ' : '') + '내담자 말 「' + s.why.slice(0, 2).join(' · ') + '」에서 걸림';
     txt.appendChild(el('span', null, line));
-    row.appendChild(txt);
-    var b = el('button', null, '덱에 추가');
-    b.type = 'button';
     var full = state.built.deck.steps.length >= MAX_STEPS;
     var sample = state.built.deck.where === 'sample';
-    if (full || sample) {
+    if (sample) {
+      txt.appendChild(el('span', 'lv-sug-note', '예시 덱에는 더할 수 없습니다 — 내 덱을 고르면 단계로 더합니다.'));
+    }
+    row.appendChild(txt);
+    if (sample) return row;
+    var b = el('button', null, '덱에 추가');
+    b.type = 'button';
+    if (full) {
       b.disabled = true;
-      b.textContent = sample ? '내 덱에서' : '가득 참';
-      b.setAttribute('aria-label', sample ? '예시 덱에는 더할 수 없습니다 — 내 덱을 고르세요' : '덱은 ' + MAX_STEPS + '단계까지입니다');
+      b.textContent = '가득 참';
+      b.setAttribute('aria-label', '덱은 ' + MAX_STEPS + '단계까지입니다');
     } else {
       b.addEventListener('click', function () { addSector(s, b); });
     }

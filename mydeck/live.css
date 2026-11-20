@@ -328,6 +328,7 @@
 .lv-sug-i .lv-sug-txt{flex:1;min-width:140px;display:grid;gap:1px}
 .lv-sug-i .lv-sug-txt b{font-size:13.5px;font-weight:800}
 .lv-sug-i .lv-sug-txt span{font-size:12px;line-height:1.5;color:var(--muted)}
+.lv-sug-i .lv-sug-txt .lv-sug-note{font-size:11.5px;font-weight:700;color:var(--dim)}
 .lv-sug-i button{
   flex:none;min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--acc);
   background:var(--acc-soft);color:var(--acc);font-size:13px;font-weight:800
