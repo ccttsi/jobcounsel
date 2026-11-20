@@ -720,8 +720,9 @@
 - [x] 게이트: `ops/scripts/smoke_test.py` PAGES에 `/valuechain/`·`/valuechain/?i=battery&s=3` + PROBES 2개.
 - [x] 규칙 기록: `design/patterns/process-map.md`(새 유형), `design/studies/2026-11-20-valuechain.md`(시안 A·B·C 비교), `DESIGN.md` §7·§11 한 줄.
 
+- [x] CI(`static-checks` + `smoke-tests` + Cloudflare Pages) 초록 → **squash 머지(PR #361 · main `534fab9`)** → 라이브 `https://ccttsi.pages.dev/valuechain/` 확인(페이지 200 · `data/industries.json` 70,316 bytes · `assets/tools.js`에 등재 · `assistant/data/rag-preface.json`에 포함) → 노션 개발일지·섹터 보드(배포완료) 기록.
+
 ### 남은 작업
-- CI(`static-checks` + `smoke-tests`) 초록 확인 → squash 머지 → 라이브 `https://ccttsi.pages.dev/valuechain/` 확인 → 노션 개발일지·섹터 보드 기록.
 - **이 샌드박스에는 브라우저가 없다**(Playwright Chromium이 libatk 등 시스템 라이브러리 부재로 실행 불가, root 아님 → 설치 불가). 손맛·기하 실측은 CI(ubuntu)의 `smoke_test.py`와 라이브 확인으로 대신한다. 실기기 아이폰 사파리 확인은 태화님 몫.
 
 ### 다음 시작 파일
