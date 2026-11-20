@@ -1548,7 +1548,8 @@ function sectorHits(q){
     var tg=t.tags.filter(function(x){return x.toLowerCase().indexOf(ql)>=0;});
     if(tg.length){score+=3;why='관련 주제: '+tg.slice(0,3).join(', ');}
     if(t.desc.toLowerCase().indexOf(ql)>=0)score+=1;
-    if(score)out.push({path:t.path,id:t.id,title:t.title,no:t.no,kind:'sector',why:why,s:score,sub:t.meta.join(' · ')});
+    /* 색인을 아직 못 받았을 때도 «찾던 낱말»을 들고 섹터로 간다 — 도착한 화면이 검색창을 채우고 바로 거른다 */
+    if(score)out.push({path:t.path+(q?(t.path.indexOf('?')<0?'?q='+encodeURIComponent(q):''):''),id:t.id,title:t.title,no:t.no,kind:'sector',why:why,s:score,sub:t.meta.join(' · ')});
   });
   out.sort(function(a,b){return b.s-a.s;});return out;
 }
@@ -1709,6 +1710,19 @@ window.addEventListener('storage',function(e){if(e.key===KEY)paintSeen();if(e.ke
 document.addEventListener('visibilitychange',function(){if(!document.hidden)applyTheme();});
 
 /* ---------- 시작 ---------- */
+/* 「?preset=<id>」로 들어오면 그 상담 코스를 덱에 바로 펼친다(대문 빠른 검색 → 프리셋 딥링크). */
+function bootPreset(){
+  var id='';try{id=(new URLSearchParams(location.search).get('preset')||'').trim();}catch(e){return;}
+  if(!id)return;
+  var P=window.JC_PRESETS||{},g='';
+  ['seed','match'].forEach(function(m){(P[m]||[]).forEach(function(p){if(p&&p.id===id)g=m;});});
+  if(!g)return;
+  if(!window.JCDECK){setTimeout(bootPreset,20);return;}
+  if(mode!==g){mode=g;try{localStorage.setItem('jc-mode',g);}catch(e){}}
+  applyMode(g,{url:false});
+  window.JCDECK.preset(id);
+}
+bootPreset();
 var isMac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'');
 $('kbdHint').textContent=isMac?'⌘K':'Ctrl K';
 if(!/^https?:/.test(location.protocol))$('statusText').textContent='저장본';

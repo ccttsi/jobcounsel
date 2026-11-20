@@ -400,6 +400,18 @@
     var q = new URLSearchParams(location.search), any = false;
     ['age', 'edu', 'school', 'field', 'size', 'brk'].forEach(function (k) { var v = q.get(k); if (v) { if (!any) { S.seg = {}; any = true; } S.seg[k] = v; } });
     if (any) S.stage = 2;
+    /* 대문 검색이 넘긴 ?stat=아이디 — 그 착시 점검 카드를 첫 화면으로 연다 */
+    var sid = q.get('stat') || '';
+    if (sid) { var it = item(sid); if (it) { S.i = D.illusion_checks.indexOf(it); S.stage = 1; } }
+    /* 대문 검색에서 ?q= 로 들어오면 갈래·문장에 그 낱말이 있는 점검 카드를 연다 */
+    var gq = (q.get('q') || q.get('term') || q.get('search') || '').replace(/\s/g, '').toLowerCase();
+    if (gq && !sid) {
+      for (var k = 0; k < D.illusion_checks.length; k++) {
+        var c = D.illusion_checks[k];
+        var hay = ((c.category || '') + ' ' + (c.myth_statement || '')).replace(/\s/g, '').toLowerCase();
+        if (hay.indexOf(gq) >= 0) { S.i = k; S.stage = 1; break; }
+      }
+    }
     setUrl(); render();
   }
   fetch('./data/reality_stats.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })

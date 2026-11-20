@@ -467,7 +467,7 @@ function row(x){const b=x.now?'<span class="bd">요즘</span>':'';
 const list=ids=>{const a=ids.map(i=>typeof i==='string'?T[i]:i).filter(Boolean);return a.length?`<div class="list">${a.map(row).join('')}</div>`:''};
 const mini=ids=>`<div class="mini">${ids.filter(i=>T[i]).map(i=>`<button class="fam" style="--h:${hue(T[i])}" data-act="open" data-id="${i}">${esc(T[i].title)}</button>`).join('')}</div>`;
 const seg=(name,opts)=>`<div class="seg" role="group">${opts.map(([v,l])=>`<button data-act="seg" data-name="${name}" data-v="${v}" aria-pressed="${st.seg[name]===v}">${l}</button>`).join('')}</div>`;
-const searchBox=(ph)=>`<div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" autocomplete="off" placeholder="${ph}" value="${esc(st.q)}" aria-label="검색"></div>`;
+const searchBox=(ph)=>`<div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" data-deeplink type="search" autocomplete="off" placeholder="${ph}" value="${esc(st.q)}" aria-label="검색"></div>`;
 
 function find(q){q=q.trim().toLowerCase();if(!q)return[];const out=[];
   for(const x of ALL){let s=0;const has=v=>String(v||'').toLowerCase().includes(q);

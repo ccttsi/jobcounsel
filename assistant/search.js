@@ -558,9 +558,11 @@
     return out.slice(0, opt.limit || 3);
   }
 
+  var CURQ = '';      // 지금 검색어 — 결과 주소에 실어 보낼 때 쓴다(toResult)
   function search(q, opt) {
     opt = opt || {};
     if (!S.ready) return [];
+    CURQ = String(q || '');
     var a = analyze(q);
     var all = a.all;
     var phrase = compact(q);
@@ -664,6 +666,13 @@
     var url = it.url;
     if (url && url.indexOf('./') !== 0) url = './' + url;
     var door = it.id && it.id.indexOf('sector:') === 0;
+    /* 주소에 이미 ?q=나 #…(색인이 만든 정확한 자리)가 있으면 그대로 둔다.
+       없으면 «찾은 낱말»을 실어 보낸다 — 섹터 첫 화면으로만 떨어져 다시 찾게 되는 일을 막는다.
+       섹터 문(door)에서 들어갈 때도 찾던 낱말을 들고 간다(그 섹터가 검색창을 채우고 바로 거른다). */
+    if (url && url.indexOf('?') < 0 && url.indexOf('#') < 0) {
+      var w = door ? CURQ : ((mw && compact(it.title).indexOf(compact(mw)) >= 0) ? mw : (it.title || mw));
+      if (w) url += '?q=' + encodeQ(w);
+    }
     return { kind: 'doc', type: door ? 'sector' : 'doc', title: it.title, sector: it.sector, sectorTitle: sec.title,
       snippet: it.snippet, url: url, why: reason, reason: why || '', score: score };
   }

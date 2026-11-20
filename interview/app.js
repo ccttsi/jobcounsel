@@ -31,6 +31,16 @@
   }
   function writeHash() { var h = UI.tab === 'duel' ? (UI.enc || 'duel') : UI.tab === 'wp' && UI.wp ? UI.wp : UI.tab; try { history.replaceState(null, '', '#' + h); } catch (e) {} }
   function encById(id) { for (var i = 0; i < K.encounters.length; i++) if (K.encounters[i].id === id) return K.encounters[i]; return null; }
+  /* 대문 검색이 넘긴 ?q= — 그 질문이 들어 있는 면접 대결을 연다 */
+  window.JCDeepLink = function (term) {
+    var n = String(term || '').replace(/\s/g, '').toLowerCase();
+    if (!n) return true;
+    for (var i = 0; i < K.encounters.length; i++) {
+      var e = K.encounters[i], hay = ((e.question || '') + ' ' + (e.sub_mode || '')).replace(/\s/g, '').toLowerCase();
+      if (hay.indexOf(n) >= 0) { UI.tab = 'duel'; UI.enc = e.id; UI.arena = e.arena; UI.mode = e.sub_mode; renderTop(); render(); return true; }
+    }
+    return true;
+  };
 
   function renderTop() {
     $('tabs').innerHTML = TABS.map(function (t) { return '<button type="button" role="tab" data-tab="' + t[0] + '" aria-selected="' + (UI.tab === t[0]) + '">' + t[1] + '</button>'; }).join('');

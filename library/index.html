@@ -781,7 +781,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   <div class="palette">
     <div class="flex items-center gap-2 px-4 border-b hairline">
       <i data-lucide="search" class="w-4 h-4 t-acc shrink-0"></i>
-      <input id="q" type="search" autocomplete="off" placeholder="예: 도덕적 해이, 서초구, 농림어업, 두루누리" class="flex-1 bg-transparent outline-none py-4 " style="font-size:16px">
+      <input id="q" data-deeplink type="search" autocomplete="off" placeholder="예: 도덕적 해이, 서초구, 농림어업, 두루누리" class="flex-1 bg-transparent outline-none py-4 " style="font-size:16px">
       <button id="btnPalClose" type="button" class="tap inline-flex items-center justify-center rounded-lg hover-soft" aria-label="검색 닫기"><kbd>Esc</kbd></button>
     </div>
     <div id="suggest" class="px-4 py-3 flex flex-wrap gap-1.5"></div>
@@ -3754,6 +3754,13 @@ q.addEventListener('keydown', e => {
   else if (e.key === 'Enter') { e.preventDefault(); pick(active); }
 });
 function openPalette() { palette.classList.add('open'); document.body.classList.add('locked'); runSearch(); setTimeout(() => q.focus(), 30); }
+/* 대문 검색이 넘긴 ?q= — 팔레트를 열어 두고 그 낱말로 바로 찾는다(초점은 주지 않는다: 휴대폰 자판이 올라오지 않게). */
+window.JCDeepLink = function (term) {
+  if (!term) return true;
+  palette.classList.add('open'); document.body.classList.add('locked');
+  q.value = term; runSearch();
+  return true;
+};
 function closePalette() { palette.classList.remove('open'); if (!drawer.classList.contains('open')) document.body.classList.remove('locked'); }
 $('#btnSearch').addEventListener('click', openPalette);
 $('#btnPalClose').addEventListener('click', closePalette);
