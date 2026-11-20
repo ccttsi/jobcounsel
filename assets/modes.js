@@ -237,7 +237,7 @@
     return (1 - q) * (1 - q);
   }
   /* 로딩 100% — 파형은 이미 빠져나갔고 숫자만 100%로 남긴 채 루프를 세운다.
-     곢바로 이어서 openOv가 불리므로 글래스가 같은 프레임에 오르기 시작한다. */
+     곧바로 이어서 openOv가 불리므로 글래스가 같은 프레임에 오르기 시작한다. */
   function ecgLoaded() {
     if (ECG.done) return;
     ECG.done = 1; ECG.surge = -1; ECG.exit = -1;
@@ -846,7 +846,7 @@
       if (ECG.surge >= 0) ECG.cv.style.opacity = loadFade(ECG.pct).toFixed(3);
     }
     if (ECG.base && ECG.surge >= 0) ECG.base.style.opacity = loadFade(ECG.pct).toFixed(3);
-    /* 숫자 색은 파형과 같이 간다(장전 주황 → 격발 진홍) — 톤이 눈에 띄게 바뀰 때만 다시 쓴다. */
+    /* 숫자 색은 파형과 같이 간다(장전 주황 → 격발 진홍) — 톤이 눈에 띄게 바뀔 때만 다시 쓴다. */
     if (numEl) {
       var nk = Math.round(ECG.tone * 6);
       if (nk !== ECG.numK) { ECG.numK = nk; numEl.style.color = ecgTone(ECG.tone); }
@@ -962,7 +962,7 @@
   }
   function revealOv() {
     if (!open || !ov) return;
-    /* 2026-11-21: 로딩 100%가 찍힌 순간(ECG.done)에는 파형이 이미 빠져나갔다 — 글래스가 곳바로 차오른다.
+    /* 2026-11-21: 로딩 100%가 찍힌 순간(ECG.done)에는 파형이 이미 빠져나갔다 — 글래스가 곧바로 차오른다.
        예전에는 글래스가 오르기 시작한 뒤에야 파형 알파가 빠져나가, 화면이 겹쳐 불투명해지는 동안 파형이 묻혔다. */
     if (ECG.done) {
       if (glass) glass.style.transition = 'opacity .62s cubic-bezier(.36,.02,.34,1)';
