@@ -289,13 +289,17 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-pv-lead{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 @media (min-width:900px){.a-pv-lead{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .a-pv-lead p{padding:12px 14px;border-radius:12px;background:var(--soft1);font-size:15px;line-height:1.65;color:var(--muted)}
-.a-pv-lead b{display:block;color:var(--ink);font-weight:750;margin-bottom:2px}
+/* 이용 안내 리드 문단: **문단을 여는 첫 굵은 문장만** 한 줄로 놓고, 문장 속에서 강조하는 <b>는 글결대로 흔러가게 한다.
+   (2026-11-20 제보: `시드`·`매치`·`상황 프리셋`마다 줄이 바뀌여 문단이 토막 났다 — 모든 b를 block으로 두던 규칙 때문) */
+.a-pv-lead b,.a-pv-lead strong{display:inline;color:var(--ink);font-weight:750}
+.a-pv-lead p>b:first-child,.a-pv-lead p>strong:first-child{display:block;margin-bottom:2px}
 .a-pv-list{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:8px 22px;margin-top:12px}
 @media (min-width:900px){.a-pv-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .a-pv-list li{position:relative;padding-left:18px;font-size:14.5px;line-height:1.65;color:var(--muted)}
 .a-pv-list li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--a1);transform:rotate(45deg)}
 .a-pv-list b{color:var(--ink);font-weight:650}
 .a-pv-more{margin-top:10px}
+.a-pv-note{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;line-height:1.7;color:var(--dim)}
 .a-pv-more summary{cursor:pointer;min-height:44px;display:inline-flex;align-items:center;font-size:14px;font-weight:650;color:var(--a1)}
 .a-pv-more dl{display:grid;grid-template-columns:minmax(0,1fr);gap:4px 16px;margin:4px 0 0;font-size:14px;line-height:1.6}
 @media (min-width:700px){.a-pv-more dl{grid-template-columns:150px minmax(0,1fr)}}
@@ -540,6 +544,64 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 .a-pal-foot .a-stat{margin-left:auto;color:var(--muted);font-weight:600}
 .a-pal-foot .a-stat[hidden]{display:none}
 
+/* ── 대문 둘러보기 (2026-11-20 신설) ────────────────────────────────────────────────
+   처음 온 사람이 **대문 자체의 사용법**을 다섯 단계로 익히는 안내. 개인비서·마이덱의 「나만의 목차 꽂는 법」
+   튜토리얼과 같은 결(단계 뱃지 · 같은 크기의 이전/다음 · ESC 닫기)을 쓰되, 무대는 대문 그 자체다.
+   · 진입: 머리말 오른쪽 「대문 둘러보기」 단추(44px). 첫 방문에는 작은 점 하나만 붙이고,
+     화면을 가리는 팝업 대신 아래쪽 띠(toast)로 한 번만 알려 준다.
+   · 무대: 페이지를 어둡게 덮되 지금 단계의 요소만 사각 구멍으로 비운다(위·아래·왼·오른 네 장의 판).
+     구멍은 즉시 옮기고(레이아웃 값 전이 없음), 테두리 링만 opacity로 떠오른다 — 모션 가드레일 §2.
+   · 카드: 좁은 화면은 아래에서 붙는 띠, 넓은 화면은 구멍 옆(아래→위)에 붙는다. 화면 밖으로 밀리지 않게 자리는 JS가 잡는다.
+   · 닫기: ESC · × · 바깥 누름. 이전/다음은 같은 크기(104×44)로 가운데 정렬. */
+.a-tour{position:fixed;inset:0;z-index:78;display:none}
+.a-tour.on{display:block}
+.a-tour i{position:fixed;display:block;left:0;top:0;width:0;height:0;background:var(--ov)}
+.a-tour i::before{content:"";position:absolute;inset:0;background:rgba(26,18,10,.14)}  /* 어둡기를 한 단계 더 — 비추는 자리와 배경이 또렷이 갈린다 */
+.a-tour-ring{position:fixed;display:block;left:0;top:0;width:0;height:0;border-radius:16px;
+  border:2px solid color-mix(in srgb,var(--a1) 80%,transparent);box-shadow:0 0 0 5px color-mix(in srgb,var(--a1) 14%,transparent);
+  pointer-events:none;opacity:0;transition:opacity .2s}
+.a-tour-ring.on{opacity:1}
+.a-tour-ring.soft{border-style:dashed;border-color:color-mix(in srgb,var(--a1) 45%,transparent);box-shadow:none}
+.a-tour-card{position:fixed;z-index:1;display:flex;flex-direction:column;overflow:hidden;background:var(--panel);
+  border:1px solid var(--line-2);border-radius:18px;box-shadow:var(--shadow-up)}
+/* 어두운 테마의 --panel은 반투명 유리(60%)라, 그대로 쓰면 카드 뒤 글자가 비쳐 읽힌다.
+   안내 카드는 읽는 물건이므로 **불투명**으로 잡는다(밝은 테마의 #fffdf8과 같은 결). */
+:root[data-theme="dark"] .a-tour-card{background:#0f1521}
+.a-tour-hd{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;border-bottom:1px solid var(--line)}
+.a-tour-hd b{font-size:13.5px;font-weight:800;letter-spacing:-.02em;color:var(--muted)}
+.a-tour-step{font-size:12.5px;font-weight:800;color:var(--a1);background:var(--soft1);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums}
+.a-tour-x{margin-left:auto;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;color:var(--muted);font-size:15px;line-height:1}
+.a-tour-x:hover{background:var(--panel-soft);color:var(--ink)}
+.a-tour-bd{padding:2px 16px 4px;overflow:auto;overscroll-behavior:contain}
+.a-tour-t{margin:8px 0 0;font-size:17px;font-weight:850;letter-spacing:-.03em;line-height:1.34}
+.a-tour-p{margin:6px 0 0;font-size:14px;line-height:1.62;color:var(--muted)}
+.a-tour-p b{color:var(--ink);font-weight:750}
+.a-tour-kw{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0 8px}
+.a-tour-kw span{font-size:11.5px;line-height:1;padding:5px 8px;border-radius:99px;border:1px solid var(--line-2);color:var(--muted);background:var(--bg);white-space:nowrap}
+.a-tour-ft{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.a-root .a-tour-b{width:104px;height:44px;min-height:44px;padding:0;border-width:1px;border-color:var(--line-2);border-radius:12px;
+  background:var(--panel-soft);font-size:14px;font-weight:750;display:inline-flex;align-items:center;justify-content:center}
+.a-root .a-tour-b:hover{border-color:var(--a1);color:var(--a1)}
+.a-root .a-tour-b[disabled]{opacity:.42;cursor:default}
+.a-root .a-tour-b.pri{background:var(--a1);border-color:var(--a1);color:#fff}
+.a-root .a-tour-b.pri:hover{filter:brightness(1.07);color:#fff}
+:root[data-theme="dark"] .a-root .a-tour-b.pri{color:#06120f}
+@media (max-width:767px){.a-tour-card{left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));max-height:56vh}}
+@media (min-width:768px){.a-tour-card{width:380px;max-height:min(66vh,440px)}}
+/* 머리말의 진입 단추 — 좁은 화면에서는 글자를 접고 아이콘만(44px) 남겨 360px에서도 한 줄이 유지된다. */
+.a-root .a-actions .a-tour-btn{position:relative;flex:0 0 auto}
+@media (min-width:768px) and (max-width:1023px){.a-tour-btn .a-tour-lb{display:none}}   /* 이 폭에서는 머리말 한 줄을 지킨다 */
+@media (max-width:430px){.a-tour-btn .a-tour-lb{display:none}}   /* 360px대에서는 세 단추와 접기 단추가 한 줄에 들어가게 */
+.a-tour-btn[data-new]::after{content:"";position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;
+  background:var(--a2);box-shadow:0 0 0 2px var(--panel)}
+:root[data-jc-mode] .a-tour-btn{display:none}   /* 내 목차·시드·매치 화면에서는 대문 안내를 감춘다 */
+/* 둘러보기 동안에는 떠 있는 도구(형광펜 도구함·비서 탭)를 잠시 내린다 — 카드 위에 걸려 보이지 않게.
+   마지막 단계(도구함·비서 안내)에서만 다시 올린다. */
+:root[data-jc-tour]:not([data-jc-tour="tools"]) #jc-marker-ui,
+:root[data-jc-tour]:not([data-jc-tour="tools"]) .jca-launch{opacity:0!important;pointer-events:none!important}
+:root[data-jc-tour="tools"] #jc-marker-ui,
+:root[data-jc-tour="tools"] .jca-launch{opacity:1!important;pointer-events:none!important}   /* 보이기만 하고, 누름은 둘러보기가 받는다 */
+
 .a-toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translate(-50%,12px);z-index:70;max-width:calc(100% - 28px);
   background:var(--toast-bg);color:var(--toast-ink);font-size:14px;font-weight:600;padding:11px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
 .a-toast.a-on{opacity:1;transform:translate(-50%,0)}
@@ -592,6 +654,9 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
         <button class="a-btn" id="btnSearch" aria-label="빠른 검색" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
           <i class="a-ico" data-lucide="search" aria-hidden="true"></i><span>빠른 검색</span><span class="a-kbd" id="kbdHint">Ctrl K</span>
         </button>
+        <button class="a-btn a-tour-btn" id="tourBtn" aria-label="대문 둘러보기" aria-haspopup="dialog" aria-controls="tour" title="대문 둘러보기 — 이 화면 쓰는 법 다섯 단계">
+          <i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15.4 8.6 13.5 13.5 8.6 15.4 10.5 10.5Z" fill="currentColor"/></svg></i><span class="a-tour-lb">둘러보기</span>
+        </button>
       </div>
       <div class="a-status" role="status" aria-label="사이트 상태와 한국 시간">
         <span class="a-dot" aria-hidden="true"></span>
@@ -612,21 +677,23 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       </h2>
       <div class="a-pv-body" id="pvBody" inert><div class="a-pv-in">
     <div class="a-pv-lead">
-      <p><b>로그인하지 않아도 자료실의 모든 기능을 제한 없이 사용할 수 있습니다.</b> 로그인은 내가 본 내용과 학습 기록(탐색 진도·형광펜·포스트잇 메모 등)을 저장하고 다른 기기와 동기화하기 위한 선택 기능입니다.</p>
-      <p><b>자료실의 정보는 정답이 아닌 참고·실습용 도구입니다.</b> 직업상담 실무 연습과 탐색을 돕기 위한 자료이므로, 실제 판단은 최신 공식 자료와 기관 안내로 확인해 주세요.</p>
-      <p><b>「시드 · 매치」는 나만의 목차를 직접 꽂아 쓰는 화면입니다.</b> 대문의 심전도 단추를 한 번 누르고 한 번 더 누르면 <b>시드</b>(지식·원리·기준)와 <b>매치</b>(현장·실무) 중 하나를 고를 수 있습니다. 자료 선반에서 카드를 골라 번호 칸에 꽂으면 그 순서가 내 목차가 되고, <b>상황 프리셋</b>(매치는 <b>유형 프리셋</b>)을 고르면 상담 순서대로 카드가 한 번에 꽂히며 단계별 질문·확인 진행판이 함께 열립니다. 꽂은 순서는 지금 쓰는 기기의 브라우저에 저장되고, 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
+      <p><b>로그인하지 않아도 모든 기능을 제한 없이 쓸 수 있습니다.</b> 로그인은 내가 본 기록(탐색 진도·형광펜과 포스트잇 메모·나만의 덱)을 계정에 저장해 다른 기기와 잇는 선택 기능입니다.</p>
+      <p><b>지금은 31가지 도구가 있습니다.</b> 이론·심리검사·직무분석·법령·국취 실무부터 기업 명함첩·채용 안내판·자격증·재무 해석까지 한 대문에서 열립니다. 화면 아래 <b>자료실 비서</b>는 검색과 질문을, 오른쪽 아래 <b>도구함</b>은 형광펜과 포스트잇을 맡습니다. 처음 오셨다면 오른쪽 위 <b>대문 둘러보기</b>로 다섯 단계 안내를 보세요.</p>
+      <p><b>「시드 · 매치」는 나만의 목차를 직접 꽂아 쓰는 화면입니다.</b> 심전도 단추(목록 화면에서는 가운데 레버)를 한 번 누르고 한 번 더 누르면 <b>시드</b>(지식·원리·기준)와 <b>매치</b>(현장·실무)를 고를 수 있습니다. 자료 선반에서 카드를 골라 번호 칸에 꽂으면 그 순서가 내 목차가 되고, <b>상황 프리셋</b>(매치는 <b>유형 프리셋</b>)을 고르면 상담 순서대로 카드가 한 번에 꽂히며 단계별 질문·확인 진행판이 함께 열립니다.</p>
+      <p><b>내가 짠 순서는 마이덱에 저장합니다.</b> 27번 <b>상담 플로우</b>에서 키워드로 자료를 이어 덱을 만들고, <b>마이덱</b>에서 이름·순서·꾸미기를 바꿉니다. 꽂은 순서는 이 기기의 브라우저에 저장되고, 로그인하면 계정에 이어져 다른 기기에서도 같은 덱이 열립니다. 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
     </div>
     <ul class="a-pv-list">
       <li><b>개인 학습·훈련용 참고 도구입니다. 공식 공공데이터와 법령을 바탕으로 정리했으며, 특정 기관의 공식 자료나 교안·상담 기준을 대신하지 않습니다. (20기 학습 공유용)</b></li>
       <li><b>아이디와 비밀번호만 받습니다.</b> 이름·이메일·전화번호 같은 개인정보는 받지 않습니다. 로그인하지 않으면 모든 기록은 지금 쓰는 기기의 브라우저에만 남습니다.</li>
       <li><b>비밀번호는 되돌릴 수 없는 방식(bcrypt)으로 암호화해 저장합니다.</b> 운영자도 원래 비밀번호를 볼 수 없습니다. 그래서 <b>비밀번호를 잊으면 찾을 수 없습니다.</b></li>
-      <li><b>메모에 내담자의 이름·연락처·주민등록번호 등 개인정보를 적지 마세요.</b> 이 사이트는 학습과 업무 정리를 돕는 도구입니다.</li>
+      <li><b>메모와 마이덱에는 개인정보를 적지 마세요.</b> 내담자의 이름·연락처·주민등록번호 같은 내용은 어디에도 적지 않습니다. 마이덱에는 자료 번호·제목·딱지와 덱 이름만 담깁니다.</li>
       <li><b>언제든 로그아웃하고, 계정과 서버의 기록을 완전히 지울 수 있습니다.</b> 로그인 → 내 계정 → 계정과 기록 완전히 삭제.</li>
     </ul>
+    <p class="a-pv-note">사이트의 구성·편집과 자체 제작 도구·해설의 저작권은 제작자에게 있습니다. 인용된 공공데이터·법령의 권리는 각 원출처에 따릅니다. Cloudflare Pages 기반 HTTPS 암호화 및 보안 환경에서 운영됩니다.</p>
     <details class="a-pv-more">
       <summary>무엇을, 어디에, 어떻게 저장하나요?</summary>
       <dl>
-        <dt>연동하는 기록</dt><dd>탐색 진도, 형광펜과 포스트잇 메모, 도구함 색 설정, 화면 테마, 이론 위키 학습 기록, 실무 가이드에서 마지막으로 본 단계</dd>
+        <dt>연동하는 기록</dt><dd>탐색 진도, 형광펜과 포스트잇 메모, 도구함 색 설정, 화면 설정(테마·종이 색·글자 크기), 이론 위키 학습 기록, 대학학과위키에서 고른 보기 설정, 실무 가이드에서 마지막으로 본 단계, <b>나만의 덱(마이덱)과 마이덱 꾸미기 설정</b></dd>
         <dt>연동하지 않는 것</dt><dd>상담 HUD에 입력하는 상담일지와 계산 내용(어디에도 저장되지 않습니다), 환승노선도에 입력한 내 케이스(이 기기에만 저장), 검색어, 내가 본 페이지 목록</dd>
         <dt>이용 통계</dt><dd>사이트를 고쳐 나가기 위해 페이지를 열 때마다 익명 한 줄만 남깁니다: 어느 꼭지인지, 로그인 상태였는지(예/아니오), 기기 종류(휴대폰·태블릿·PC), 이 브라우저에서 오늘 처음인지, 처음 들어온 곳의 도메인 이름(예: google.com), 자료실 안에서 옮겨 왔다면 바로 앞 꼭지, 화면을 보고 있던 시간(5분 넘게 손대지 않으면 멈춤). IP 주소·아이디·쿠키·기기 고유번호·검색어·입력한 내용은 남기지 않으며, 어떤 줄도 특정 사람이나 계정과 이어지지 않습니다. 브라우저의 '추적 안 함'·GPC 설정을 켜 두면 남기지 않습니다. 400일이 지나면 지웁니다.</dd>
         <dt>저장 위치</dt><dd>Supabase 데이터베이스(서울 지역). 오가는 내용은 모두 HTTPS로 암호화됩니다.</dd>
@@ -773,6 +840,24 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
   </div>
   <div class="a-dsheet" id="deckSheet" hidden></div>
 </section>
+
+<div class="a-tour" id="tour" role="dialog" aria-modal="true" aria-labelledby="tourT" aria-hidden="true">
+  <i data-p="t" aria-hidden="true"></i><i data-p="b" aria-hidden="true"></i><i data-p="l" aria-hidden="true"></i><i data-p="r" aria-hidden="true"></i>
+  <span class="a-tour-ring" id="tourRing" aria-hidden="true"></span>
+  <span class="a-tour-ring soft" id="tourRing2" aria-hidden="true"></span>
+  <div class="a-tour-card" id="tourCard" tabindex="-1">
+    <div class="a-tour-hd">
+      <b id="tourT">대문 둘러보기</b>
+      <span class="a-tour-step" id="tourStepNo">1 / 5</span>
+      <button type="button" class="a-tour-x" id="tourX" aria-label="둘러보기 닫기">&#10005;</button>
+    </div>
+    <div class="a-tour-bd" id="tourBd"></div>
+    <div class="a-tour-ft">
+      <button type="button" class="a-tour-b" id="tourPrev">이전</button>
+      <button type="button" class="a-tour-b pri" id="tourNext">다음</button>
+    </div>
+  </div>
+</div>
 
 <div class="a-tuts" id="tuts" role="dialog" aria-modal="true" aria-labelledby="tutsT" aria-hidden="true">
   <div class="a-tuts-card">
@@ -1659,6 +1744,7 @@ document.addEventListener('keydown',function(e){
 /* ---------- 알림 ---------- */
 var toastT;
 function toast(m){var t=$('toast');t.textContent=m;t.classList.add('a-on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('a-on');},3200);}
+window.JC_TOAST=toast;   /* 대문 둘러보기(아래 별도 스크립트)가 첫 방문 안내를 같은 띠로 띄운다 */
 
 /* ---------- 이벤트 ---------- */
 document.addEventListener('click',function(e){
@@ -1957,6 +2043,230 @@ icons();window.addEventListener('load',icons);
   watch(document.getElementById('slot'));
   window.JC_LOGO={play:play,stop:function(){settle();},names:function(){return NAMES.slice();},
     state:function(){return{busy:busy,pattern:idx,name:NAMES[idx]||'',minute:minute,startedAt:startedAt};}};
+})();
+</script>
+<script>
+/* ---------- 대문 둘러보기 (2026-11-20 신설) ----------
+   처음 온 사람이 이 화면 자체의 사용법을 다섯 단계로 익힌다. 단계마다 실제 요소를 비추고(어둠 판 네 장으로
+   사각 구멍을 낸다), 카드는 구멍 옆으로 피해 앉는다 — 요소를 가리지 않고, 좌우로 밀리지도 않는다.
+   · 움직이는 값은 opacity뿐이다(링이 떠오르는 정도). 구멍과 카드 자리는 값이 바뀌면 **즉시** 놓는다(전이 없음).
+   · prefers-reduced-motion: reduce면 부드러운 스크롤과 링의 페이드를 끄고 바로 놓는다.
+   · 닫기: ESC·×·바깥 누름. 열 때 포커스를 카드로, 닫을 때는 누르기 전 자리로 돌린다. */
+(function(){
+'use strict';
+var box=document.getElementById('tour'),btn=document.getElementById('tourBtn');
+if(!box||!btn)return;
+var card=document.getElementById('tourCard'),bd=document.getElementById('tourBd'),
+    ring=document.getElementById('tourRing'),ring2=document.getElementById('tourRing2'),
+    stepNo=document.getElementById('tourStepNo'),prevB=document.getElementById('tourPrev'),
+    nextB=document.getElementById('tourNext'),xBtn=document.getElementById('tourX'),
+    pn=[].slice.call(box.querySelectorAll('[data-p]'));
+var mq=window.matchMedia?window.matchMedia('(prefers-reduced-motion: reduce)'):null;
+function reduce(){return !!(mq&&mq.matches);}
+bd.setAttribute('aria-live','polite');   /* 단계를 넘기면 새 제목·설명을 읽어 준다 */
+var PAD=8,open=false,step=0,lastFocus=null,plT=0,reT=0;
+
+/* 대상이 지금 화면에 실제로 그려져 있는가 — 없으면 그 단계는 막만 덮고 링을 감춘다 */
+function vis(el){
+  if(!el||!el.getBoundingClientRect)return null;
+  var r=el.getBoundingClientRect();
+  if(r.width<2||r.height<2)return null;
+  if(r.bottom<=8||r.top>=window.innerHeight-8)return null;      /* 화면 밖으로 거의 나가 있으면 비추지 않는다 */
+  var cs=window.getComputedStyle(el);
+  if(cs.visibility==='hidden'||cs.display==='none'||+cs.opacity===0)return null;
+  return r;
+}
+function sel(s){try{return vis(document.querySelector(s));}catch(e){return null;}}
+/* 도구함 단추는 형광펜·포스트잇 도구가 만드는 shadow root 안에 있다(문서 선택자로는 닿지 않는다) */
+function fab(){
+  var h=document.getElementById('jc-marker-ui');
+  return vis(h&&h.shadowRoot&&h.shadowRoot.getElementById('fab'));
+}
+
+var STEPS=[
+  {t:'상단 도구 한 줄',
+   p:'<b>빠른 검색</b>은 <b>Ctrl+K</b>(맥 Cmd+K)로도 열립니다. 초성(ㄱㅊ)이나 상황 낱말로도 찾습니다. 옆의 <b>화면 설정</b>에서 테마(밝게·세피아·어둡게)·글자 크기·<b>집중 보기</b>를 바꿉니다. <b>로그인</b>은 선택이고, 하면 형광펜·포스트잇·진도가 기기 사이에 이어집니다.',
+   kw:['Ctrl K','초성 검색','테마·글자 크기','집중 보기','선택 로그인'],
+   el:'.a-top',get:function(){return sel('.a-actions');},join:true,inHead:true,
+   also:function(){return sel('.jc-prefs-slot');}},
+  {t:'5초마다 바뀌는 오늘의 추천',
+   p:'가운데 문구가 <b>5초마다</b> 다음 자료로 넘어갑니다. 좌우로 밀거나(휠) 끌면 직접 돌릴 수 있고, 아래 점을 누르면 그 자료로 바로 갑니다. 아래 <b>자료 전체 목록</b>을 누르면 %N%가지를 쉬지 않고 훑어볼 수 있습니다.',
+   kw:['5초 자동 넘김','자료 전체 목록','밀어서 돌리기','일시정지'],
+   el:'#rollView',get:function(){return sel('#rollView')||sel('#allBtn');},
+   also:function(){return sel('#rollView')?sel('#allBtn'):null;}},
+  {t:'레버와 심전도 — 시드 · 매치',
+   p:'가운데 <b>레버</b>를 한 번 누르면 장전되고, 한 번 더 누르면 <b>시드</b>(지식·원리·기준)와 <b>매치</b>(현장·실무)를 고릅니다. 고른 화면에서 자료를 꽂으면 <b>나만의 목차</b>가 됩니다. 목록 화면에서는 <b>심전도 물결</b> 단추가 같은 일을 합니다.',
+   kw:['1번 → 장전','2번 → 시드·매치','나만의 목차','심전도 단추'],
+   el:'#slot',get:function(){return sel('#slot')||sel('#ecgRow');},
+   also:function(){return sel('#ecgRow');}},
+  {t:'오늘의 통찰과 값의 출처',
+   p:'<b>오늘의 직업상담 통찰</b> 카드는 매일 바뀝니다. 상담에서 그대로 물어볼 문장과 풀이가 함께 있고, 카드를 누르면 관련 자료로 갑니다. 위의 <b>값의 출처와 검증</b>을 누르면 공공데이터 출처·기준시점과 자동 검사 항목을 볼 수 있습니다.',
+   kw:['매일 새 통찰','상담 발문','공공데이터 출처','자동 검사 통과'],
+   el:'#insight',also:function(){return sel('#vfSec');}},
+  {t:'도구함과 자료실 비서',
+   p:'오른쪽 아래 <b>도구함</b>은 형광펜과 포스트잇, 아래 가운데 <b>자료실 비서</b>는 자료 검색과 질문을 맡습니다. 시드·매치 시트 아래 <b>나만의 덱 만들기</b>를 누르면 <b>27번 상담 플로우</b>에서 상담 순서대로 덱을 짭니다.',
+   kw:['형광펜·포스트잇','비서 검색·질문','27번 상담 플로우'],
+   el:null,get:function(){return fab()||sel('.jca-launch');},
+   also:function(){return fab()?sel('.jca-launch'):null;}}
+];
+
+function maxOf(){var t=window.JC_TOOLS;return (t&&t.length)?t.length:0;}
+function setBox(el,x,y,w,h){el.style.left=x+'px';el.style.top=y+'px';el.style.width=Math.max(0,w)+'px';el.style.height=Math.max(0,h)+'px';}
+function hideRings(){ring.classList.remove('on');ring2.classList.remove('on');}
+
+/* 대상이 화면 밖이면 그 요소가 화면 위 1/3(넓은 화면은 42%)에 오도록 스크롤한다 — 아래 띠 카드와 겹치지 않게.
+   화면보다 긴 덩어리는 머리말 바로 아래에 붙인다(구멍이 머리말을 반쯤 물고 올라가면 머리말 위쪽만 밝아 보인다). */
+function scrollTo(el){
+  if(!el)return false;
+  var cs=window.getComputedStyle(el);
+  if(cs.position==='fixed'||cs.position==='sticky')return false;
+  var r=el.getBoundingClientRect(),vh=window.innerHeight,vw=window.innerWidth;
+  var head=document.querySelector('.a-top');
+  var hh=head?Math.max(0,head.getBoundingClientRect().bottom):0;
+  if(r.top>=hh+4&&r.bottom<=vh-4)return false;      /* 머리말 밑으로 숨어 있으면 다시 내려 준다 */
+  var anchor=r.height>vh*0.6?(hh+16+r.height/2):Math.max(vh*(vw<768?0.34:0.42),hh+r.height/2+12);
+  var y=window.pageYOffset+r.top+r.height/2-anchor;
+  var maxY=Math.max(0,document.documentElement.scrollHeight-vh);
+  y=Math.max(0,Math.min(maxY,Math.round(y)));
+  if(Math.abs(y-window.pageYOffset)<2)return false;
+  if(reduce()){window.scrollTo(0,y);return false;}
+  window.scrollTo({top:y,behavior:'smooth'});
+  return true;
+}
+
+function placeCard(H){
+  var vw=window.innerWidth,vh=window.innerHeight;
+  if(vw<768){
+    card.style.left='';card.style.right='';card.style.bottom='';card.style.top='';
+    /* 좁은 화면: 기본은 아래에서 붙는 띠. 비추는 자리가 화면 아래쪽이면(레버·도구함) 띠를 위로 올린다. */
+    if(H&&(H.top+H.bottom)/2>vh*0.55){card.style.top='10px';card.style.bottom='auto';}
+    return;
+  }
+  var cw=380,m=14,ch=card.offsetHeight||300,left,top;
+  if(!H){left=(vw-cw)/2;top=(vh-ch)/2;}
+  else{
+    var x0=Math.max(0,H.left-PAD),y0=Math.max(0,H.top-PAD),x1=Math.min(vw,H.right+PAD),y1=Math.min(vh,H.bottom+PAD);
+    left=Math.min(Math.max(x0+((x1-x0)-cw)/2,m),vw-cw-m);
+    var below=y1+12,above=y0-12-ch;
+    if(vh-below-14>=ch)top=below;
+    else if(above>=m)top=above;
+    else{                                    /* 위아래 둘 다 좁으면(큰 구멍) 비운 쪽 아래 모서리로 — 비추는 자리를 가리지 않게 */
+      left=(x0+((x1-x0)/2)<vw/2)?vw-cw-m:m;
+      top=Math.max(m,vh-ch-14);
+    }
+  }
+  card.style.left=Math.round(left)+'px';card.style.top=Math.round(top)+'px';
+  card.style.right='auto';card.style.bottom='auto';
+}
+
+function place(){
+  if(!open)return;
+  var s=STEPS[step],a=s.get?s.get():sel(s.el),b=s.also?s.also():null;
+  var vw=window.innerWidth,vh=window.innerHeight;
+  if(!a){
+    setBox(pn[0],0,0,0,0);setBox(pn[1],0,0,vw,vh);setBox(pn[2],0,0,0,0);setBox(pn[3],0,0,0,0);
+    hideRings();placeCard(null);return;
+  }
+  var x0=Math.max(0,a.left-PAD),y0=Math.max(0,a.top-PAD),
+      x1=Math.min(vw,a.right+PAD),y1=Math.min(vh,a.bottom+PAD);
+  if(!s.inHead){                      /* 비추는 자리가 머리말 밑으로 들어가면 구멍도 거기서 멈춘다 */
+    var head=document.querySelector('.a-top');
+    var hb=head?head.getBoundingClientRect().bottom:0;
+    if(hb>0&&y0<hb)y0=Math.min(hb,y1);
+  }
+  var solo=!!s.join&&!!b;              /* 두 대상을 하나의 구멍·테두리로 묶는다(머리말 도구 한 줄) */
+  if(solo){x0=Math.min(x0,Math.max(0,b.left-PAD));y0=Math.min(y0,Math.max(0,b.top-PAD));x1=Math.max(x1,Math.min(vw,b.right+PAD));y1=Math.max(y1,Math.min(vh,b.bottom+PAD));}
+  setBox(pn[0],0,0,vw,y0);
+  setBox(pn[1],0,y1,vw,vh-y1);
+  setBox(pn[2],0,y0,x0,y1-y0);
+  setBox(pn[3],x1,y0,vw-x1,y1-y0);
+  setBox(ring,x0,y0,x1-x0,y1-y0);ring.classList.add('on');
+  if(b&&!solo&&!(b.top>=a.top-2&&b.bottom<=a.bottom+2&&b.left>=a.left-2&&b.right<=a.right+2)){
+    var bt=Math.max(0,b.top-PAD),bb=Math.min(vh,b.bottom+PAD);
+    if((bb-bt)/(b.height+PAD*2)>=0.6){                   /* 화면 밖으로 반 넘게 걸친 것은 두 번째 테두리를 그리지 않는다 */
+      setBox(ring2,Math.max(0,b.left-PAD),bt,b.width+PAD*2,bb-bt);
+      ring2.classList.add('on');
+    }else ring2.classList.remove('on');
+  }else ring2.classList.remove('on');
+  placeCard(solo?{left:x0,top:y0,right:x1,bottom:y1}:a);
+}
+function reflow(){
+  if(!open)return;
+  clearTimeout(reT);
+  hideRings();
+  reT=setTimeout(place,140);
+}
+
+function go(i){
+  step=Math.max(0,Math.min(STEPS.length-1,i));
+  var s=STEPS[step];
+  document.documentElement.setAttribute('data-jc-tour',step===STEPS.length-1?'tools':'');
+  stepNo.textContent=(step+1)+' / '+STEPS.length;
+  var p=String(s.p).replace(/%N%/g,maxOf());
+  bd.innerHTML='<h3 class="a-tour-t">'+s.t+'</h3><p class="a-tour-p" id="tourP">'+p+'</p><div class="a-tour-kw">'
+    +s.kw.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>';
+  bd.scrollTop=0;
+  prevB.disabled=(step===0);
+  nextB.textContent=(step===STEPS.length-1)?'마치기':'다음';
+  hideRings();
+  clearTimeout(plT);
+  var el=s.el?document.querySelector(s.el):null;
+  var moving=scrollTo(el);
+  plT=setTimeout(place,moving?(reduce()?90:480):30);
+}
+
+function openTour(){
+  if(open)return;
+  open=true;lastFocus=document.activeElement;
+  box.classList.add('on');box.removeAttribute('aria-hidden');
+  btn.removeAttribute('data-new');
+  try{localStorage.setItem('jc-tour','1');}catch(e){}
+  go(0);
+  try{card.focus({preventScroll:true});}catch(e){}
+}
+function closeTour(){
+  if(!open)return;
+  clearTimeout(plT);clearTimeout(reT);
+  open=false;
+  box.classList.remove('on');box.setAttribute('aria-hidden','true');
+  document.documentElement.removeAttribute('data-jc-tour');
+  hideRings();
+  try{(lastFocus&&lastFocus.focus?lastFocus:btn).focus({preventScroll:true});}catch(e){}
+}
+
+btn.addEventListener('click',openTour);
+xBtn.addEventListener('click',closeTour);
+prevB.addEventListener('click',function(){if(step>0)go(step-1);});
+nextB.addEventListener('click',function(){if(step<STEPS.length-1)go(step+1);else closeTour();});
+box.addEventListener('click',function(e){if(e.target&&e.target.hasAttribute&&e.target.hasAttribute('data-p'))closeTour();});
+document.addEventListener('keydown',function(e){
+  if(!open)return;
+  var k=e.key;
+  if(k==='Escape'){e.preventDefault();closeTour();return;}
+  if(k==='ArrowRight'||k==='PageDown'){e.preventDefault();if(step<STEPS.length-1)go(step+1);return;}
+  if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();if(step>0)go(step-1);return;}
+  if(k==='Tab'){            /* 포커스가 카드 밖(뒤의 화면)으로 새지 않게 */
+    var f=[xBtn,prevB,nextB].filter(function(b){return !b.disabled;}),at=f.indexOf(document.activeElement);
+    e.preventDefault();
+    var d=e.shiftKey?-1:1;
+    f[(at<0?0:(at+d+f.length)%f.length)].focus();
+  }
+});
+window.addEventListener('resize',reflow);
+window.addEventListener('scroll',reflow,{passive:true});
+if(mq&&mq.addEventListener)mq.addEventListener('change',function(){if(open)go(step);});
+
+/* 첫 방문 — 화면을 가리지 않고, 단추에 작은 점 하나와 아래 띠 한 번만 */
+try{
+  if(!localStorage.getItem('jc-tour')){
+    btn.setAttribute('data-new','');
+    if(!localStorage.getItem('jc-tour-hint'))setTimeout(function(){
+      if(open||document.hidden)return;
+      try{localStorage.setItem('jc-tour-hint','1');}catch(e){}
+      if(window.JC_TOAST)window.JC_TOAST('처음이시면 「대문 둘러보기」로 이 화면 쓰는 법을 다섯 단계로 볼 수 있어요.');
+    },1800);
+  }
+}catch(e){}
 })();
 </script>
 </body>
