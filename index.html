@@ -584,6 +584,7 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
 /* 머리말의 진입 단추 — 좁은 화면에서는 글자를 접고 아이콘만(44px) 남겨 360px에서도 한 줄이 유지된다. */
 .a-root .a-actions .a-tour-btn{position:relative;flex:0 0 auto}
 @media (min-width:768px) and (max-width:1023px){.a-tour-btn .a-tour-lb{display:none}}   /* 이 폭에서는 머리말 한 줄을 지킨다 */
+@media (max-width:430px){.a-tour-btn .a-tour-lb{display:none}}   /* 360px대에서는 세 단추와 접기 단추가 한 줄에 들어가게 */
 .a-tour-btn[data-new]::after{content:"";position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;
   background:var(--a2);box-shadow:0 0 0 2px var(--panel)}
 :root[data-jc-mode] .a-tour-btn{display:none}   /* 내 목차·시드·매치 화면에서는 대문 안내를 감춘다 */
