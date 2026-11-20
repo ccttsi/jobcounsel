@@ -53,9 +53,6 @@ a{color:inherit}
 .ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
 .ib svg{width:20px;height:20px}
 .brand{flex:1;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;overflow:hidden}
-.brand i{display:inline-flex;gap:3px}
-.brand i b{width:9px;height:9px;border-radius:2px}
-.brand i b:nth-child(1){background:var(--c-ncs)}.brand i b:nth-child(2){background:var(--c-keco)}.brand i b:nth-child(3){background:var(--c-ksco)}
 .brand span{color:var(--acc)}
 .brand{flex:0 1 auto}
 .hd>[data-jc-prefs]{margin-left:auto}
@@ -222,12 +219,13 @@ html[data-jc-imm] .tabs{display:none}
 .foot button{min-height:44px;padding:0 4px;font-weight:700;color:var(--acc);text-decoration:underline;text-underline-offset:3px}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
 </head>
 <body data-jc-tool="taxonomy">
 <div class="wrap">
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
-    <a class="brand" href="./" id="brand"><i aria-hidden="true"><b></b><b></b><b></b></i>분류 <span>교차 사전</span></a>
+    <a class="brand" href="./" id="brand"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.2 4.6v14.8M12 4.6v14.8M18.8 4.6v14.8"/><path d="M5.2 9.4h13.6M5.2 14.6h13.6" stroke="var(--jc-acc)"/></svg><span class="jc-tt">분류 <span>교차 사전</span></span></a>
     <button type="button" class="rst" id="rst" aria-label="처음으로 되돌리기 — 검색·탭·위치를 모두 비웁니다"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>처음으로</span></button>
     <span data-jc-prefs></span>
   </header>
