@@ -154,6 +154,7 @@ a{color:inherit}
 .d-b{min-height:44px;padding:0 14px;border-radius:11px;border:1px solid var(--d-line);background:var(--d-bg);font-size:14px;font-weight:700;color:var(--d-ink)}
 .d-b:hover{border-color:var(--d-ink)}
 .d-b.go{background:color-mix(in srgb,var(--d-ink) 88%,var(--d-bg));color:var(--d-bg);border-color:transparent}
+.d-b.live{border-color:color-mix(in srgb,var(--d-ink) 46%,var(--d-bg));font-weight:800}
 .d-b.bad{color:color-mix(in srgb,#a53a26 78%,var(--d-ink))}
 :root[data-theme="dark"] .d-b.bad{color:#ffb3a4}
 .empty{margin:0;padding:22px 14px;text-align:center;font-size:14.5px;line-height:1.65;color:var(--d-mut)}
@@ -233,6 +234,7 @@ a{color:inherit}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="../assets/core.css">
+<link rel="stylesheet" href="./live.css">
 </head>
 <body data-jc-tool="flow">
 <div class="wrap">
@@ -243,12 +245,15 @@ a{color:inherit}
   </header>
 
   <main>
-    <section class="hero">
+    <div id="lvModeHost"></div>
+
+    <section class="hero" id="deckHero">
       <p class="kick"><span class="no">내 덱</span><span>로그인하면 계정에, 로그아웃이면 이 기기에</span></p>
       <h1>내가 짠 <em>상담 흐름</em>을 모아 두는 곳</h1>
       <p class="lede"><b>상담 플로우</b>에서 만든 덱이 여기 쌓입니다. 자료 순서대로 열어 보거나 리허설로 다시 걸어 보고, <b>공간 꾸미기</b>로 내 덱의 겉모양을 바꿉니다.</p>
     </section>
 
+    <div id="deckMode">
     <div class="bar">
       <div class="who" id="who"></div>
       <div class="bar-btns">
@@ -280,6 +285,17 @@ a{color:inherit}
         <span class="diy-msg" id="diyMsg"></span>
       </div>
     </section>
+    </div>
+
+    <section id="live" hidden aria-labelledby="lvT">
+      <div class="hero" id="lvIntro" style="padding-top:12px">
+        <p class="kick"><span class="no">마이덱 라이브</span><span>덱 × 내담자 상황 → 단계별 실전 상담 OS</span></p>
+        <h1 id="lvT">덱의 순서에 <em>근거를 채워</em> 실전 상담 OS로</h1>
+        <p class="lede">덱을 고르고 내담자 상황을 적으면, 단계마다 <b>자료실 색인에서 실제로 건진 근거</b>·발문·체크·이어지는 자료를 배치한 보드를 만듭니다. 색인에 없는 수치·조문·기업명은 세우지 않습니다.</p>
+      </div>
+      <div class="lv-setup" id="lvSetup"></div>
+      <div class="lv-board" id="lvBoard" hidden role="region" aria-labelledby="lvT"></div>
+    </section>
   </main>
 </div>
 
@@ -297,6 +313,7 @@ a{color:inherit}
 <script src="../assets/mydeck-diy.js"></script>
 <script src="../assets/marker.js" defer></script>
 <script src="../assets/prefs.js" defer></script>
+<script src="./live.js" defer></script>
 <script src="./app.js" defer></script>
 </body>
 </html>
