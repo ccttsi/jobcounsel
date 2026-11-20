@@ -432,13 +432,22 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 @keyframes a-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .a-list-h{font-size:clamp(22px,4.6vw,28px);font-weight:800;letter-spacing:-.03em;color:var(--ink);margin:0 0 10px;text-align:center}
 .a-list-h b{display:inline;color:var(--a1)}
-.a-list ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;min-height:calc(5 * var(--row-h,94px))}
+/* 2026-11-21(태화님 지시) — 쪽을 통째로 갈아 끼우던 목록을 **가로로 이어진 한 트랙(컨베이어 벨트)**으로 바꿨다.
+   7쪽이 트랙 위에 빈틈 없이 나란히 서고, 손가락을 따라 트랙이 그대로 흘러 이웃 쪽 카드가 실시간으로 따라 나온다.
+   · 창(.a-list-vp)은 5줄 높이로 고정 — 쪽이 어디로 가든 문서 높이와 아래 쪽 번호·심전도의 Y가 흔들리지 않는다.
+   · 칸 높이는 --row-h 하나로 못 박는다(제목 1줄 + 설명 2줄). 쪽마다 카드 높이·여백·줄맞춤이 0px 차이다. */
+.a-list-vp{position:relative;overflow:hidden;height:calc(5 * var(--row-h,94px));touch-action:pan-y}
+.a-list-track{display:flex;align-items:flex-start;height:100%;transform:translate3d(0,0,0)}
+.a-list-pg{flex:0 0 100%;width:100%;list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.a-list-pg li{flex:0 0 auto;height:var(--row-h,94px)}
+/* 잴 때만 칸 높이를 풀어 둔다 — 글자 크기를 키운 사람에게도 카드가 잘리지 않게, 실제 내용 높이로 --row-h를 잡는다. */
+.a-list.a-measure .a-list-pg li{height:auto}
 /* 2026-11-19 — 번호와 내용이 어긋나고 줄마다 키가 달라지던 것을 고쳤다.
    겹자(⊙)의 첫 줄(번호·제목) 안에서 둘을 같은 높이에 가운데로 놀인다 — 글자 크기를 바꿔도
    번호 중심과 제목 첫 줄 중심의 차가 0.00px이다(둘 다 같은 격자 칸에서 center).
    설명은 두 줄로 자르고(-webkit-line-clamp) 두 줄 높이를 늘 차지한다 — 글이 짧든 길든 상자 높이가 같다. */
 .a-root .a-list a{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:2px;align-items:center;
-  min-height:var(--row-h,94px);padding:12px 6px;border-top:1px dashed var(--line-2);color:inherit;text-decoration:none;overflow:hidden}
+  height:100%;padding:12px 6px;border-top:1px dashed var(--line-2);color:inherit;text-decoration:none;overflow:hidden}
 .a-list li:first-child a{border-top:0}
 .a-root .a-list a:hover b{color:var(--ink)}
 /* 2026-11-19: 전체 목록은 자료별 테마색 대신 **시드·매치 두 색**으로만 나눈다(번호는 01~26 아라비아 숫자). */
@@ -466,20 +475,17 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
    창(--slots)은 고정이고 안쪽 트랙만 transform으로 움직인다 — 창 크기·높이가 그대로라 아래 요소 Y변동 0.00px.
    창에 4px 여백을 둔 것은 창 밖으로 잘린 첫·끝 칸의 초점 고리를 보이게 하기 위해서다. */
 .a-pg-vp{overflow:hidden;height:52px;margin:-4px 0;padding:4px;width:calc(var(--slots,5) * 46px + 6px);touch-action:pan-y}
-.a-pg-track{display:flex;gap:2px;height:44px;transform:translate3d(0,0,0);transition:transform .3s cubic-bezier(.22,.9,.28,1)}
+.a-pg-track{display:flex;gap:2px;height:44px;transform:translate3d(0,0,0);transition:transform .34s cubic-bezier(.22,.9,.28,1)}
 .a-root .a-pg button{width:44px;min-width:44px;height:44px;padding:0 6px;border-radius:12px;font-size:15px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
 .a-root .a-pg button[aria-current="true"]{color:var(--a1);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
 .a-root .a-pg button:disabled{opacity:.3}
 html[data-jc-imm] .a-pg-track{transition:none}
-/* 2026-11-20(태화님 지시) — 목록과 쪽 번호판 **둘 다** 좌우로 밀거나 끌면 쪽이 넘어간다.
-   세로 스크롤은 브라우저 몫으로 남기고(pan-y) 가로 손짓만 받는다. 움직이는 값은 transform 하나뿐이고,
+/* 2026-11-21(태화님 지시) — 목록과 쪽 번호판 **둘 다** 좌우로 밀거나 끌면 트랙이 따라 흐른다.
+   세로 스크롤은 브라우저 몫으로 남기고(pan-y) 가로 손짓만 받는다. 움직이는 값은 트랙의 transform 하나뿐이고,
    끄는 동안에만 will-change를 붙였다가 놓으면 뗀다(모션 가드레일 §2). */
-.a-list,.a-pg{touch-action:pan-y}
+.a-list,.a-pg,.a-list-vp{touch-action:pan-y}
 .a-list a{-webkit-user-drag:none}
-.a-list ol.a-sw-drag{will-change:transform;-webkit-user-select:none;user-select:none}
-.a-list ol.a-sw-snap{transition:transform .2s cubic-bezier(.2,.9,.3,1)}
-.a-list ol.a-sw-in{animation:a-sw-in .19s cubic-bezier(.2,.9,.3,1)}
-@keyframes a-sw-in{from{opacity:.6;transform:translate3d(var(--sw,-22px),0,0)}to{opacity:1;transform:none}}
+.a-list-track.a-drag{will-change:transform;-webkit-user-select:none;user-select:none}
 .a-all{margin:14px auto 0;max-width:820px;text-align:left}
 .a-all summary{list-style:none;cursor:pointer;min-height:44px;display:flex;justify-content:center;align-items:center;gap:6px;font-size:14.5px;font-weight:650;color:var(--muted)}
 .a-all summary::-webkit-details-marker{display:none}
@@ -890,11 +896,14 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
     </div>
     <div id="listView" class="a-list" hidden>
       <h2 class="a-list-h" id="allListH">자료 전체 목록 <b class="a-num" data-count></b>개</h2>
-      <ol id="allList"></ol>
+      <div class="a-list-vp" id="listVp">
+        <div class="a-list-track" id="allTrack"></div>
+      </div>
       <nav class="a-pg" id="allPg" aria-label="목록 쪽 넘기기"></nav>
       <div class="a-ecgrow" id="ecgRow">
         <button type="button" class="a-ecg-btn" id="ecgBtn" aria-label="보기 방식을 시드·매치로 나누기" aria-expanded="false" aria-controls="modeOv">
           <span class="a-ecg" aria-hidden="true">
+            <span class="a-ecg-num" id="ecgNum"><i id="ecgNumV">000</i><em>%</em></span>
             <span class="a-ecg-base"></span>
             <span class="a-ecg-bob"><canvas class="a-ecg-cv" id="ecgCv" width="336" height="68"></canvas></span>
           </span>
@@ -1245,6 +1254,8 @@ var NAV={
  vpi:['검사를 해석해','흥미·성격·생활사 점수를 움직이며 해석과 상담 발문을 연습합니다.'],
  dacum:['직무를 쪼개','과업 진술문 쓰는 법과 직업상담사의 5개 책무·26개 과업을 익힙니다.'],
  manual:['법령을 찾아','구직자취업촉진법·고시를 6장 단계로 찾아, 세 줄 해설과 근거 조문을 확인합니다.'],
+ 'work-filter':['현실을 걸러','견딜 수 있는 근무 조건을 고르면 조건에 맞는 직무 489칸이 바로 걸러집니다.'],
+ 'kdt-calc':['훈련비를 계산해','과정 유형과 수강자 유형을 고르면 자부담금과 훈련장려금이 한 번에 계산됩니다.'],
  hud:['상담을 준비해','참여 유형 판정, 수당·기한 계산, 상담일지 작성을 한 화면에서 처리합니다.'],
  library:['미래를 읽어','주제별 서가에서 고용 보고서를 꺼내 핵심 수치와 상담 적용 노트로 읽습니다.'],
  decalcomania:['진로를 이어','학과 501개와 직업 552개를 마주 놓고, 서로 잇는 근거를 확인합니다.'],
@@ -1256,7 +1267,9 @@ var NAV={
  labor:['경제를 짚어','그래프를 움직이며 노동시장 원리를 익히고, 고용 뉴스 속 지표의 함정을 빨간 펜으로 짚습니다.'],
  cert:['자격증을 펼쳐','네 갈래 자격 830건의 시행처·과목·시험방식·합격기준·시행 달을 한 장씩 펼쳐 봅니다.'],
  company:['회사를 알아','대기업 계열사·중견기업·공공기관 7,822곳을 찾아, 공식 공개된 매출·직원·업종을 명함 한 장씩 넘겨 봅니다.'],
+ 'fin-lab':['재무를 읽어','세 표를 3개년으로 놓고 부채비율·현금흐름 부호를 손으로 만져 읽습니다.'],
  reality:['위치를 재어','내 예측과 공식 통계를 맞대어 착시를 확인하고, 조건별 분포 위 내 자리와 통제할 수 있는 것 하나를 찾습니다.'],
+ thermometer:['온도를 재어','같은 산업을 국내와 글로벌 두 온도로 나란히 재고, 수치마다 출처와 기준시점을 답니다.'],
  emerging:['신산업을 훑어','1차부터 4차까지 신산업 57건을 도표로 읽고, 직무분석을 눌러 펼칩니다.'],
  briefing:['브리핑을 펼쳐','국내 고용지표와 해외 노동시장·AI 변화를 핵심 수치와 3단 카드로 3분 안에 읽습니다.'],
  taxonomy:['분류를 가로질러','NCS 직무와 KECO·KSCO 직업을 공식 매핑으로 잇고, 능력단위의 지식·기술·태도를 원문으로 봅니다.'],
@@ -1265,7 +1278,9 @@ var NAV={
  interview:['면접을 연습해','질문 카드 한 장씩 숨은 의도를 보고, 함정·방어·카운터 카드와 구간 타이머로 답의 뼈대와 리듬을 잡습니다.'],
  portfolio:['포트폴리오를 엮어','90초 스캔으로 채용 담당자의 시선을 재현하고, 소재를 3~5개로 컷해 6트랙으로 엮습니다.'],
  law:['조문을 펼쳐','상담 상황 키워드로 법령·조례 8건을 찾아, 쉬운 풀이와 조문 전문을 책처럼 넘겨 읽습니다.'],
- translator:['내담자 말을 풀어','상담실에서 나온 약어·전문용어를 한 줄 뜻과 실제 맥락, 이어 물을 질문, 연계 자료로 옮깁니다.']
+ translator:['내담자 말을 풀어','상담실에서 나온 약어·전문용어를 한 줄 뜻과 실제 맥락, 이어 물을 질문, 연계 자료로 옮깁니다.'],
+ triage:['위기를 나눠','다섯 축을 체크하면 5단계 위기 등급과 먼저 붙일 제도가 판정됩니다.'],
+ valuechain:['공정을 이어','산업 12개의 밸류체인을 단계로 잇고 단계마다 직무·기업·상담 팁을 봅니다.']
 };
 TOOLS.forEach(function(t){var n=NAV[t.id]||[];t.phrase=n[0]||(t.short+' 자료를 펼쳐');t.lead=n[1]||t.desc;});
 
@@ -1287,16 +1302,18 @@ var items=[],dotEls=[];
 function mod(a,n){return ((a%n)+n)%n;}
 function reduce(){return !!reduceMQ.matches;}
 /* 자료 전체 목록: 롤링 자리를 대신해 5개씩 보여 준다 */
-var LIST_PER=5,listPage=0,listOpen=false,rowH=0,pagerBase=0;
+var LIST_PER=5,listPage=0,listOpen=false,rowH=0;
 /* 5개로 끊는 자리는 이 상수 하나다 — 휴대폰·데스크톱 할 것 없이 같은 5개(2026-11-20 태화님 지시로 재확인). */
 function listPages(){return Math.max(1,Math.ceil(TOOLS.length/LIST_PER));}
-function rowHTML(t){return '<li data-m="'+t.mode+'"><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><b>'+esc(t.title)+'</b><small>'+esc(t.phrase)+' 보고 싶을 때 · '+esc(t.lead)+'</small></a></li>';}
+/* 카드 한 장 — 설명은 tools.js의 `list` 한 줄만 쓴다(390px에서 2줄 안에 끝나는 완결 문장).
+   2026-11-21(태화님 지시): 「○○ 보고 싶을 때 · 긴 소개」를 붙이던 서두를 걷어냈다 — 어떤 카드도 …로 잘리지 않는다. */
+function rowHTML(t){return '<li data-m="'+t.mode+'"><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><b>'+esc(t.title)+'</b><small>'+esc(t.list||t.lead||t.desc)+'</small></a></li>';}
 /* 쪽 번호판 — 2026-11-21(태화님 지시): 한 번에 다섯 칸만 보이는 «미닫이 창»이다.
    7쪽이면 1쪽 「1 2 3 4 5」, 6쪽 「2 3 4 5 6」, 7쪽 「3 4 5 6 7」 — 블록(1-5·6-7)으로 튀지 않고
    쪽이 갈 때마다 한 칸씩 밀린다. 창의 시작은 「지금 쪽이 창의 마지막 칸이 되는 자리」를 기준으로
    계산하되 0과 (n-5) 사이로 당긴다(1쪽 앞·마지막 쪽 뒤로는 밀리지 않는다). */
 var PAGER_WIN=5;
-function pagerStart(n){var w=Math.min(n,PAGER_WIN);return Math.max(0,Math.min(n-w,listPage-(w-1)));}
+function pagerStart(p,n){var w=Math.min(n,PAGER_WIN);return Math.max(0,Math.min(n-w,p-(w-1)));}
 function pagerTrack(){return document.querySelector('#allPg .a-pg-track');}
 function buildPager(pg,n){
   var h='';
@@ -1314,11 +1331,12 @@ function buildPager(pg,n){
   if(tr){tr.style.transition='none';requestAnimationFrame(function(){requestAnimationFrame(function(){tr.style.transition='';});});}
 }
 function paintPager(n){
-  var pg=$('allPg'),tr=pg.querySelector('.a-pg-track'),vp=pg.querySelector('.a-pg-vp');
-  var w=Math.min(n,PAGER_WIN),start=pagerStart(n);
+  var pg=$('allPg');
+  var w=Math.min(n,PAGER_WIN),start=pagerStart(listPage,n);
   /* 2026-11-19: 쪽 번호를 누를 때마다 단추를 통째로 다시 그리면, 새로 들어온 단추에만
      공용 등장 모션(assets/prefs.js)이 붙어 앞쪽 번호만 물결처럼 깜빡였다(뒤쪽은 10개 제한 밖).
-     번호판은 한 번만 만들고, 쪽이 바뀌면 상태만 제자리에서 고친다 — 모든 번호가 똑같이 움직인다. */
+     번호판은 한 번만 만들고, 쪽이 바뀌면 상태만 제자리에서 고친다 — 모든 번호가 똑같이 움직인다.
+     2026-11-21: 트랙 위치(transform)는 컨베이어가 프레임마다 직접 잡는다(pagerFollow) — 여기서는 상태만 고친다. */
   var bs=pg.querySelectorAll('[data-lp]');
   for(var j=0;j<bs.length;j++){
     var b=bs[j],lp=+b.getAttribute('data-lp');
@@ -1332,24 +1350,83 @@ function paintPager(n){
       else{b.tabIndex=-1;b.setAttribute('aria-hidden','true');}
     }
   }
-  if(tr){
-    /* 창의 첫 칸이 트랙 첫 칸에서 얼마나 떨어져 있는지 실제 좌표로 잰다 — 간격(gap)까지 맞아 오차 0. */
-    var a=tr.children[0],b2=tr.children[start];
-    var off=(a&&b2)?(b2.offsetLeft-a.offsetLeft):0;
-    pagerBase=-off;
-    tr.style.transform='translate3d('+(-off)+'px,0,0)';
-    if(vp)vp.scrollLeft=0;
-  }
+  var vp=pg.querySelector('.a-pg-vp');if(vp)vp.scrollLeft=0;
   pg.setAttribute('aria-label','목록 쪽 넘기기 — '+(listPage+1)+'/'+n+'쪽');
+}
+/* ---------- 컨베이어 벨트 (2026-11-21 태화님 지시) ----------
+   1~7쪽이 **한 트랙에 가로로 이어져** 있다. 손가락이 움직인 만큼 트랙이 1:1로 따라와 이웃 쪽 카드가
+   빈틈 없이 실시간으로 따라 나오고, 놓으면 끌던 속도에 따라 여러 쪽을 미끄러진 뒤 감속하며 가장 가까운
+   쪽에 안착한다. 움직이는 값은 두 트랙(목록·쪽 번호판)의 transform뿐이다.
+   위치 단위는 «쪽»이다 — 0이 1쪽, 6이 7쪽. 0과 6 밖은 고무줄(0.35배)로만 늘어난다. */
+var cvPos=0,cvGoal=0,cvRaf=0,cvActive=0,cvFrom=0,cvT0=0,cvDur=300;
+function listTrack(){return $('allTrack');}
+function pageW(){var t=listTrack();return (t&&t.clientWidth)||1;}
+/* 쪽 번호판의 칸 간격(px) — 실제 좌표로 잰다(글자 크기가 달라도 오차 0). */
+function pagerStep(){var tr=pagerTrack();if(!tr||tr.children.length<2)return 48;return Math.max(1,tr.children[1].offsetLeft-tr.children[0].offsetLeft);}
+/* 미닫이 창의 시작 칸을 «소수 쪽»에서도 구한다 — 트랙이 흐르는 동안 번호판도 한 칸씩 같이 밀린다. */
+function pagerStartF(p){var n=listPages(),c=Math.max(0,Math.min(n-1,p)),i=Math.floor(c),f=c-i;var a=pagerStart(i,n),b=pagerStart(i+1,n);return a+(b-a)*f;}
+function pagerFollow(p){var tr=pagerTrack();if(!tr)return;tr.style.transition='none';tr.style.transform='translate3d('+(-pagerStep()*pagerStartF(p)).toFixed(1)+'px,0,0)';}
+function listApply(p){
+  var tr=listTrack();if(!tr)return;
+  tr.style.transform='translate3d('+(-p*pageW()).toFixed(2)+'px,0,0)';
+  pagerFollow(p);
+}
+/* 지금 보이는 쪽만 탭·낭독 대상으로 남긴다(옆 쪽 카드는 눈으로만 따라온다). */
+function setPagesActive(p){
+  var tr=listTrack();if(!tr)return;
+  if(p===cvActive&&tr.getAttribute('data-act')===String(p))return;
+  cvActive=p;tr.setAttribute('data-act',String(p));
+  var pgs=tr.children;
+  for(var i=0;i<pgs.length;i++){
+    var on=i===p;
+    pgs[i].setAttribute('aria-hidden',String(!on));
+    try{pgs[i].inert=!on;}catch(e){}
+    var as=pgs[i].querySelectorAll('a');
+    for(var k=0;k<as.length;k++){if(on)as[k].removeAttribute('tabindex');else as[k].setAttribute('tabindex','-1');}
+  }
+}
+/* 감속 안착 — 남은 거리에 따라 0.26~0.72초를 잡고, 감속 곡선(1-(1-t)^3)으로 미끄러져 정확히 그 쪽에 앉는다.
+   속도를 크게 준 쓸기는 거리가 길어 그만큼 더 오래 흘러가고, 약하게 끈 한 칸은 짧게 앉는다. */
+function cvFrame(now){
+  cvRaf=0;
+  var u=Math.min(1,(now-cvT0)/cvDur),e=1-Math.pow(1-u,3);
+  cvPos=cvFrom+(cvGoal-cvFrom)*e;
+  if(u>=1){cvPos=cvGoal;listApply(cvPos);cvSettle();return;}
+  listApply(cvPos);setPagesActive(Math.max(0,Math.min(listPages()-1,Math.round(cvPos))));
+  cvRaf=requestAnimationFrame(cvFrame);
+}
+function cvRun(){
+  if(cvRaf)cancelAnimationFrame(cvRaf);
+  cvFrom=cvPos;cvT0=performance.now();
+  cvDur=Math.max(240,Math.min(720,250+120*Math.abs(cvGoal-cvFrom)));
+  cvRaf=requestAnimationFrame(cvFrame);
+}
+function cvSettle(){
+  var n=listPages(),p=Math.round(cvPos);
+  var tr=pagerTrack();if(tr)tr.style.transition='';
+  if(p!==listPage){listPage=p;paintPager(n);}
+  setPagesActive(p);
+  var pg=$('allPg');if(pg)pg.setAttribute('data-page',String(p));
 }
 function renderList(){
   /* 쪽 번호가 범위를 벗어나면(자료 수가 줄거나 쪽 번호를 지금 넘어서 계산한 경우) 반드시 안쪽으로 당긴다 —
      빈 쪽이 생기지 않게 하는 유일한 자리다. 마지막 쪽은 1~5개 중 남은 만큼만 들어간다. */
   var n=listPages();listPage=Math.max(0,Math.min(n-1,listPage));
-  $('allList').innerHTML=TOOLS.slice(listPage*LIST_PER,(listPage+1)*LIST_PER).map(rowHTML).join('');
+  var track=listTrack();
+  if(track&&track.getAttribute('data-n')!==String(n)){
+    var h='';
+    for(var p=0;p<n;p++){
+      h+='<ol class="a-list-pg" data-pg="'+p+'" aria-label="자료 전체 목록 '+(p+1)+'/'+n+'쪽">'+TOOLS.slice(p*LIST_PER,(p+1)*LIST_PER).map(rowHTML).join('')+'</ol>';
+    }
+    track.innerHTML=h;track.setAttribute('data-n',String(n));
+    measureListRows();
+  }
   var pg=$('allPg');
   if(pg.getAttribute('data-n')!==String(n))buildPager(pg,n);
-  paintPager(n);
+  cvPos=cvGoal=listPage;
+  listApply(cvPos);
+  paintPager(n);setPagesActive(listPage);
+  var nav=$('allPg');if(nav)nav.setAttribute('data-page',String(listPage));
 }
 /* ---------- 쪽 넘김 (2026-11-20 · 2026-11-21 수정) ----------
    2026-11-21(태화님 지시) — 쪽을 넘길 때 화면 스크롤을 **건드리지 않는다**. 전에는 넘길 때마다
@@ -1365,34 +1442,28 @@ function alignList(){
   var y=(window.pageYOffset||0)+top-hb-12;
   window.scrollTo(0,Math.max(0,Math.round(y)));
 }
-function listAnim(d){
-  var ol=$('allList');
-  if(!ol)return;
-  ol.style.transform='';
-  ol.style.setProperty('--sw',(d>0?-22:22)+'px');
-  ol.classList.remove('a-sw-in');void ol.offsetWidth;ol.classList.add('a-sw-in');
-}
-/* 쪽을 어디서 넘기든(손짓·화살표·번호) 같은 길을 지난다 — 목록은 넘긴 방향으로 미끄러지고
-   번호판은 미닫이 창이 한 칸 밀린다. 어느 쪽도 scrollTo를 부르지 않는다(스크롤 고정). */
+/* 쪽을 어디서 넘기든(손짓·화살표·번호) 같은 길을 지난다 — 트랙이 그 쪽으로 흐르고 번호판이 따라 민다.
+   어느 쪽도 scrollTo를 부르지 않는다(스크롤 고정). */
 function gotoListPage(lp){
   var n=listPages(),p=Math.max(0,Math.min(n-1,lp));
-  if(p===listPage)return false;
-  var d=p>listPage?1:-1;
-  listPage=p;renderList();listAnim(d);
+  if(p===Math.round(cvPos)&&Math.abs(cvGoal-cvPos)<.02)return false;
+  cvGoal=p;cvRun();
   return true;
 }
-function listTurn(d){return gotoListPage(listPage+d);}
+function listTurn(d){return gotoListPage(Math.round(cvPos)+d);}
 /* 목록 높이 고정(2026-11-18 R4): 쪽마다 설명 줄 수가 달라 생기던 아래 요소의 흔들림을 없앤다.
-   전체 목록을 같은 폭의 화면 밖 상자에 한 번 그려 **가장 긴 줄**을 재고, 모든 줄 높이를 그 값으로
-   못 박는다(--row-h). 목록 상자도 5줄 높이라 마지막 쪽(3개)에서도 쪽수·심전도가 움직이지 않는다. */
+   트랙 위 31장을 모두 재어 **가장 높은 카드**를 모든 칸 높이로 못 박는다(--row-h).
+   쪽이 어디에 서든 카드 높이·여백·줄맞춤이 같고, 마지막 쪽(1장)에서도 쪽수·심전도가 움직이지 않는다. */
 function measureListRows(){
-  /* 줄 높이는 이제 내용과 상관없이 같다(제목 1줄 + 설명 2줄로 자름). 첫 줄만 재어
-     5줄 상자 높이(--row-h)를 맞춘다 — 마지막 쪽이 3개여도 쪽 번호·심전도가 움직이지 않게. */
-  var ol=$('allList'),host=$('listView');
-  if(!ol||host.hidden)return;
-  var rows=ol.querySelectorAll('a');if(!rows.length)return;
+  var track=listTrack(),host=$('listView');
+  if(!track||!host||host.hidden)return;
+  var rows=track.querySelectorAll('a');if(!rows.length)return;
+  /* 높이를 풀어(a-measure) 내용이 실제로 필요로 하는 키를 재고, 그 값으로 모든 칸을 못 박는다.
+     글자 크기를 키워도 카드가 잘리지 않고, 모든 칸이 같은 높이를 지킨다. */
+  host.classList.add('a-measure');
   var max=0;
   for(var i=0;i<rows.length;i++)max=Math.max(max,rows[i].getBoundingClientRect().height);
+  host.classList.remove('a-measure');
   var m=Math.ceil(max);
   if(m&&m!==rowH){rowH=m;host.style.setProperty('--row-h',m+'px');}
 }
@@ -1404,7 +1475,7 @@ function setList(on){
   $('allBtnT').innerHTML=on?'롤링으로 돌아가기':'자료 전체 목록 <b class="a-num">'+TOOLS.length+'</b>개';
   /* 2026-11-19: 목록을 열 때 첫 줄에 자동 초점을 잡아 초록 테두리(블락)가 보이던 것을 없앤다.
      초점은 여는 단추에 그대로 두고, 키보드로 쪽을 넘길 때만 그 단추로 옮긴다(:focus-visible만 그린다). */
-  if(on){measureListRows();alignList();}
+  if(on){measureListRows();renderList();alignList();listApply(cvPos);}
   else{measureOrbit();layout();}
   /* 심전도(assets/modes.js)가 목록이 열린 동안만 흐르도록 알린다 */
   try{document.dispatchEvent(new CustomEvent('jc-list',{detail:{open:on}}));}catch(e){}
@@ -1583,38 +1654,35 @@ function frame(now){
   if(Math.abs(diff)>.0004){pos+=diff*(1-Math.exp(-dt/120));if(Math.abs(target-pos)<.0004)pos=target;layout();}
   if(pos!==target)kick();else lastT=0;
 }
-/* ---------- 목록 좌우 스와이프 · 끌기로 쪽 넘기기 (2026-11-20 태화님 지시) ----------
+/* ---------- 목록 좌우 스와이프 · 끌기로 쪽 넘기기 (2026-11-20 · 2026-11-21 태화님 지시) ----------
    「목록」과 「밑의 쪽 번호·화살표 영역」 둘 다에서 같은 손짓을 받는다(캐치 영역 = #listView 하나).
-   · 손가락: |dx| > |dy| * 1.2 일 때만 가로 손짓으로 본다 — 세로 스크롤이 먼저다.
-   · 36px을 넘겨야 한 쪽 넘기고, 그보다 짧으면 제자리로 돌아간다(animation 없이 바로).
-   · 움직이는 값은 transform 하나. 끄는 동안에만 will-change를 붙이고 놓으면 뗀다.
+   · 손가락: |dx| > |dy| * 1.15 일 때만 가로 손짓으로 본다 — 세로 스크롤이 먼저다.
+   · 끄는 동안 트랙이 손가락을 1:1로 따라와 이웃 쪽 카드가 빈틈 없이 따라 나온다(양 끝은 고무줄 0.35배).
+   · 놓으면 **끌던 속도**로 미끄러질 쪽 수를 정한다 — 320ms 뒤까지의 자리를 미리 재어 반올림한다.
+     약하게 끌어도 18%를 넘겼으면 한 칸은 넘긴다. 그보다 짧으면 제자리로 돌아간다.
+   · 움직이는 값은 두 트랙의 transform뿐. 끄는 동안에만 will-change를 붙이고 놓으면 뗀다.
    · 짧은 누름(문지르지 않은 탭)은 그대로 단추·줄 열기가 되고, 끌고 난 뒤에 오는 click만 한 번 삼킨다. */
 function bindListSwipe(){
-  var lv=$('listView'),ol=$('allList');
-  if(!lv||!ol)return;
-  var MIN=36,START=8,RATIO=1.2;
-  var g=null,swallow=false,snapT=0;
-  function snapBack(anim){
-    ol.classList.remove('a-sw-drag');
-    /* 번호판도 같이 제자리로 — 끄는 동안 인라인으로 꺼 두었던 전이를 되살린다(놓으면 부드럽게 돌아온다). */
-    var tr=pagerTrack();
-    if(tr){tr.style.transition='';tr.style.transform='translate3d('+pagerBase+'px,0,0)';}
-    if(!ol.style.transform)return;
-    if(anim){
-      ol.classList.add('a-sw-snap');ol.style.transform='translate3d(0,0,0)';
-      clearTimeout(snapT);
-      snapT=setTimeout(function(){ol.classList.remove('a-sw-snap');ol.style.transform='';},240);
-    }else{
-      ol.classList.remove('a-sw-snap');ol.style.transform='';
-    }
+  var lv=$('listView'),tr=listTrack();
+  if(!lv||!tr)return;
+  var START=7,RATIO=1.15,MIN=0.18,PROJ=320;
+  var g=null,swallow=false,sv=[];
+  function velocity(){
+    /* 최근 100ms의 이동으로 속도를 잰다(px/ms, +면 오른쪽으로 끌었다 = 이전 쪽). */
+    if(sv.length<2)return 0;
+    var last=sv[sv.length-1],cut=last[0]-100,i=0;
+    while(i<sv.length-1&&sv[i][0]<cut)i++;
+    var first=sv[i],dt=last[0]-first[0];
+    if(dt<1)return 0;
+    return (last[1]-first[1])/dt;
   }
   lv.addEventListener('pointerdown',function(e){
     if(g||e.button>0)return;
     if(e.target&&e.target.closest&&e.target.closest('.a-ecgrow'))return;   /* 심전도 단추는 제 손짓을 쓴다 */
-    swallow=false;
+    swallow=false;sv=[];
     /* 손짓을 잡는 건 가로 끌기가 시작된 뒤에 한다 — 처음부터 잡으면 click의 대상이 목록 상자로
        바뀌어 쪽 번호·줄 누름이 먹지 않는다. */
-    g={id:e.pointerId,x:e.clientX,y:e.clientY,ax:0,on:false};
+    g={id:e.pointerId,x:e.clientX,y:e.clientY,ax:0,on:false,base:cvPos};
   });
   lv.addEventListener('pointermove',function(e){
     if(!g||e.pointerId!==g.id)return;
@@ -1622,7 +1690,10 @@ function bindListSwipe(){
     if(!g.on){
       if(Math.abs(dx)<START)return;
       if(Math.abs(dx)<=Math.abs(dy)*RATIO)return;   /* 세로 스크롤로 보낸다 */
-      g.on=true;ol.classList.add('a-sw-drag');
+      g.on=true;
+      /* 도는 중이던 안착을 그 자리에서 붙잡는다(손가락이 트랙을 이어받는다). */
+      if(cvRaf){cancelAnimationFrame(cvRaf);cvRaf=0;}
+      tr.classList.add('a-drag');
       /* 손가락은 누른 대상이 이미 스스로 잠그므로(암묵적 잠금) 잠금을 옮길 필요가 없다 —
          iOS Safari에서 잠금을 옮기면 뒤따르는 pointerup·click이 사라지는 사례가 있어 끄는 손가락에는 잡지 않는다.
          마우스만 목록 상자 밖으로 나가도 이어 받게 잠근다. */
@@ -1630,21 +1701,27 @@ function bindListSwipe(){
     }
     if(e.cancelable)e.preventDefault();
     g.ax=dx;
-    ol.style.transform='translate3d('+(dx*.42).toFixed(1)+'px,0,0)';
-    /* 2026-11-21(태화님 지시) — 「여기도 드래그·스와이프」. 번호판 위에서 끌어도 손가락을 따라
-       같은 비율로 밀린다(창 안의 트랙만 움직이므로 레이아웃·스크롤은 건드리지 않는다).
-       손짓 자체는 목록과 마찬가지로 #listView의 포인터 사건 하나가 받는다 — 제스처가 둘로 갈리지 않는다. */
-    var ptr=pagerTrack();
-    if(ptr){ptr.style.transition='none';ptr.style.transform='translate3d('+(pagerBase+dx*.42).toFixed(1)+'px,0,0)';}
+    var n=listPages(),raw=g.base-dx/pageW(),p=raw;
+    if(raw<0)p=raw*.35;else if(raw>n-1)p=(n-1)+(raw-(n-1))*.35;   /* 양 끝 고무줄 */
+    cvPos=p;cvGoal=p;listApply(p);
+    setPagesActive(Math.max(0,Math.min(n-1,Math.round(p))));
+    var now=performance.now();sv.push([now,dx]);while(sv.length>10)sv.shift();
   },{passive:false});
   function finish(cancel){
     if(!g)return;
-    var dx=g.ax,on=g.on;g=null;
-    if(!on){snapBack(false);return;}
-    if(cancel){snapBack(true);return;}
+    var d=g,on=g.on;g=null;
+    tr.classList.remove('a-drag');
+    if(!on)return;
     swallow=true;
-    snapBack(false);
-    if(Math.abs(dx)>=MIN)listTurn(dx<0?1:-1);
+    var n=listPages(),w=pageW();
+    if(cancel){cvGoal=Math.round(cvPos);cvRun();return;}
+    var v=-velocity()/w;                            /* 쪽/ms ( +면 다음 쪽으로) */
+    var proj=cvPos+Math.max(-3.4,Math.min(3.4,v*PROJ));
+    var t=Math.round(proj);
+    /* 약하게 끌어도 MIN(18%)을 넘겼으면 한 칸은 넘긴다 — 「살짝 밀어도 다음 쪽」 */
+    if(t===Math.round(d.base)&&Math.abs(cvPos-d.base)>MIN)t=Math.round(d.base)+(cvPos>d.base?1:-1);
+    cvGoal=Math.max(0,Math.min(n-1,t));
+    cvRun();
   }
   lv.addEventListener('pointerup',function(e){if(g&&e.pointerId===g.id)finish(false);});
   lv.addEventListener('pointercancel',function(e){if(g&&e.pointerId===g.id)finish(true);});
@@ -1751,8 +1828,15 @@ function bindNav(){
   stage.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hover=false;schedule();}});
   document.addEventListener('visibilitychange',function(){try{schedule();}catch(e){}});
   if(reduceMQ.addEventListener)reduceMQ.addEventListener('change',function(){restartFill();schedule();});
-  window.addEventListener('resize',function(){measureOrbit();layout();if(listOpen)measureListRows();});
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measureOrbit();layout();if(listOpen)measureListRows();});
+  window.addEventListener('resize',function(){measureOrbit();layout();if(listOpen){measureListRows();cvPos=cvGoal=Math.round(cvPos);listApply(cvPos);}});
+  /* 글자 크기(가/a)를 바꾸면 카드가 필요로 하는 높이가 달라진다 — 목록을 다시 재어 칸 높이를 맞춘다. */
+  try{
+    new MutationObserver(function(){
+      if(!listOpen)return;
+      measureListRows();listApply(cvPos);
+    }).observe(document.documentElement,{attributes:true,attributeFilter:['data-jc-font']});
+  }catch(e){}
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measureOrbit();layout();if(listOpen){measureListRows();listApply(cvPos);}});
 }
 function startNav(){
   buildNav();bindNav();setPaused(false);
