@@ -434,6 +434,7 @@ python3 company/data/validate_groups.py
 | `main_products` | string | 비어 있던 곳(363곳)에만 제품 목록, `main_products_source` = `DART` |
 | `official_url` | string | 비어 있던 곳에만 `hm_url`, `official_url_checked` = `DART`(접속 대조는 하지 않은 주소) |
 | `kw_source` | string | `DART 사업보고서 {보고서명} ({접수번호}) · 2026-11-21 조회` |
+| `sources` | array | 레코드에 쓴 출처 ID 배열 — DART 로 확인한 2,897곳은 `"DART"` 를 더했다(화면 「이 항목의 출처」에 그대로 보인다) |
 
 ### 채움률 변화 (중견기업 3,946곳)
 
