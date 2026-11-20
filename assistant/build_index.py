@@ -95,6 +95,7 @@ SECTOR_KW = {
     'surgery': '공고,이력서,자기소개서,서류',
     'interview': '면접,질문',
     'portfolio': '포트폴리오,작업물',
+    'valuechain': '산업,공정,밸류체인,가치사슬,산업구조',
 }
 
 
@@ -310,6 +311,32 @@ def docs_thermometer(add):
         add('thermometer:' + str(it.get('id')), 'thermometer', it.get('name', ''),
             keys(it.get('en'), it.get('tags'), (it.get('ksic') or {}).get('mid')),
             clip(fact, 150), './thermometer/?q=' + _q(it.get('name', '')))
+
+
+def docs_valuechain(add):
+    """산업별 공정 지도 — 산업 12개와 그 안의 단계 66개.
+
+    주소는 화면이 실제로 받는 `?i=`·`?s=` 딥링크를 그대로 쓴다.
+    """
+    d = read_json('valuechain', 'data', 'industries.json')
+    if not d:
+        return
+    comps = d.get('companies') or {}
+    for it in d.get('industries') or []:
+        iid = str(it.get('id') or '')
+        if not iid:
+            continue
+        names = [comps.get(c, {}).get('name', '') for st in it.get('steps') or [] for c in st.get('comps') or []]
+        add('valuechain:ind:' + iid, 'valuechain', str(it.get('name', '')) + ' 공정',
+            keys(it.get('short'), it.get('en'), [s.get('name') for s in it.get('steps') or []],
+                 names[:14], '밸류체인'),
+            clip(it.get('tagline') or it.get('structure'), 160), './valuechain/?i=' + _q(iid))
+        for st in it.get('steps') or []:
+            add('valuechain:step:%s:%s' % (iid, st.get('no')), 'valuechain',
+                '%s — %s' % (it.get('name', ''), st.get('name', '')),
+                keys(st.get('name'), [comps.get(c, {}).get('name', '') for c in st.get('comps') or []],
+                     st.get('jobs') or [], '공정'),
+                clip(st.get('what'), 150), './valuechain/?i=' + _q(iid) + '&s=' + str(st.get('no')))
 
 
 def docs_emerging(add):
@@ -896,7 +923,7 @@ def build():
     for fn in (docs_theory, docs_cert, docs_law, docs_thermometer, docs_emerging, docs_briefing,
                docs_interview, docs_surgery, docs_reality, docs_transit, docs_portals, docs_labor,
                docs_grad, docs_decal, docs_parsons, docs_library, docs_manual, docs_dacum,
-               docs_hud, docs_vpi, docs_translator, docs_preset, docs_univ, docs_talk):
+               docs_hud, docs_vpi, docs_translator, docs_preset, docs_univ, docs_talk, docs_valuechain):
         try:
             fn(add)
         except Exception as e:

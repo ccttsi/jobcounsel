@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko" data-jc-deep="off">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="산업별 공정·밸류체인 지도 — 반도체 8공정부터 금융·콘텐츠·조선·에너지까지 산업의 단계를 잇고, 단계마다 하는 일·투입 직무(NCS)·기업 명함첩을 붙였습니다. 기업은 우리 기업 명함첩에 수록된 곳만 연결합니다.">
+<title>Value Chain Map · 산업별 공정 지도</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#2f5d55;--acc-soft:rgba(47,93,85,.07);--acc-line:rgba(47,93,85,.28);
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 10px 28px -18px rgba(70,50,25,.30);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#7c859a;
+  --acc:#7fbfae;--acc-soft:rgba(127,191,174,.10);--acc-line:rgba(127,191,174,.34);
+  --shadow:none;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.62;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:10px}
+[hidden]{display:none!important}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px 56px}
+@media (min-width:900px){.wrap{padding:0 28px 22px}}
+/* 이 화면은 「이어 보기」를 공용 줄에 맡긴다 */
+.jc-next{margin-left:auto;margin-right:auto}
+
+/* ── 머리말 ── */
+.hd{display:flex;align-items:center;gap:8px;min-height:48px;padding:3px 0}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.hd .kick{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:8px;min-width:0}
+.hd .kick b{color:var(--acc);font-weight:900}
+.hd .kick .jc-tt{overflow:hidden;text-overflow:ellipsis}
+.hd [data-jc-prefs]{margin-left:auto}
+@media (max-width:599px){.hd .kick{font-size:9.5px;letter-spacing:.03em}}
+
+/* ── 제호 ── */
+.mast{border-top:2px solid var(--ink);padding:7px 0 0}
+.mast h1{position:relative;margin:0;font-size:clamp(25px,6.6vw,36px);line-height:1.08;letter-spacing:-.045em;font-weight:850}
+.mast h1 .jc-seal{display:none}
+.mast h1 small{display:inline-block;margin-left:.46em;font-size:.40em;font-weight:800;letter-spacing:.15em;color:var(--dim);vertical-align:.55em;text-transform:uppercase;white-space:nowrap}
+.mast .sub{margin:5px 0 0;font-size:12.5px;line-height:1.45;color:var(--muted)}
+.mast .sub b{color:var(--ink);font-weight:750}
+/* 공정선 — 이 문서의 유일한 장식(제호 아래 한 줄) */
+.mast .vc-rule{display:flex;align-items:center;gap:4px;margin:7px 0 0}
+.mast .vc-rule i{display:block;height:2px;flex:1;background:var(--line-2)}
+.mast .vc-rule i:nth-child(2){background:color-mix(in oklab,var(--acc) 55%,var(--line-2))}
+.mast .vc-rule i:nth-child(3){background:color-mix(in oklab,var(--acc) 30%,var(--line-2))}
+.mast .vc-rule i:nth-child(4){background:var(--line)}
+.mast .vc-note{margin:3px 0 0;font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+
+/* ── 작업대 ── */
+.ws{margin-top:10px}
+.inds{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.inds::-webkit-scrollbar{display:none}
+.inds::after{content:"";flex:0 0 8px}
+.ind{flex:none;display:flex;align-items:center;gap:7px;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--muted);white-space:nowrap;transition:color .16s,border-color .16s,background-color .16s}
+.ind .n{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--dim)}
+.ind .nm{font-size:13.5px;font-weight:750}
+.ind .ct{font-size:11px;font-variant-numeric:tabular-nums;color:var(--dim);padding-left:7px;margin-left:1px;border-left:1px solid var(--line)}
+.ind[aria-pressed="true"]{color:var(--ink);border-color:var(--acc-line);background:var(--acc-soft)}
+.ind[aria-pressed="true"] .n,.ind[aria-pressed="true"] .ct{color:var(--acc)}
+
+.stage{border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);padding:14px 14px 12px;min-width:0}
+@media (min-width:900px){
+  .ws{display:grid;grid-template-columns:206px minmax(0,1fr);gap:16px;align-items:start}
+  .inds{flex-direction:column;overflow-x:visible;overflow-y:auto;padding:0 0 4px;gap:4px;height:clamp(430px,calc(100dvh - 250px),640px);scrollbar-width:thin}
+  .inds::after{display:none}
+  .ind{width:100%;padding:0 11px}
+  .ind .ct{margin-left:auto;border-left:0;padding-left:0}
+  .stage{height:clamp(430px,calc(100dvh - 250px),640px);display:flex;flex-direction:column;padding:16px 18px 12px}
+}
+
+/* 산업 머리 */
+.ih{flex:none}
+.ih .top{display:flex;align-items:baseline;gap:8px;min-width:0}
+.ih h2{margin:0;font-size:clamp(19px,4.6vw,24px);line-height:1.2;letter-spacing:-.03em;font-weight:850;white-space:nowrap}
+.ih .en{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ih .tag{margin:3px 0 0;font-size:13px;line-height:1.45;color:var(--muted)}
+.ih .st{margin:5px 0 0;font-size:12px;line-height:1.45;color:var(--muted);display:flex;gap:6px}
+.ih .st .lb{flex:none;font-weight:800;font-size:10.5px;letter-spacing:.06em;color:var(--acc);padding-top:2px}
+.roles{margin:6px 0 0;display:block;padding:2px 0;font-size:12px;line-height:1.55;color:var(--dim);white-space:nowrap;overflow-x:auto;scrollbar-width:none}
+.roles::-webkit-scrollbar{display:none}
+@media (min-width:900px){.roles{white-space:normal;overflow-x:visible}}
+.roles .r{display:inline;margin-right:13px}
+.roles .r b{font-weight:800;color:var(--acc);font-size:11px;letter-spacing:.02em}
+.roles .r a{text-decoration:none;color:var(--muted);border-bottom:1px solid var(--line-2)}
+.roles .r a:hover{color:var(--ink)}
+.ih .lnk{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:6px;margin:8px 0 0;padding-bottom:2px}
+@media (min-width:900px){.ih .lnk{flex-wrap:wrap;overflow-x:visible}}
+.ih .lnk::-webkit-scrollbar{display:none}
+.ih .lnk a,.ih .lnk span{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 11px;border:1px solid var(--line);border-radius:12px;font-size:12.5px;font-weight:700;color:var(--muted);text-decoration:none;white-space:nowrap}
+.ih .lnk a:hover{border-color:var(--acc-line);color:var(--ink)}
+.ih .lnk .k{font-size:10px;font-weight:800;letter-spacing:.05em;color:var(--dim)}
+
+/* 단계 레일 */
+.rail{flex:none;position:relative;display:flex;gap:6px;overflow-x:auto;padding:10px 0 8px;margin:2px 0 0;scrollbar-width:none;border-bottom:1px solid var(--line)}
+.rail::-webkit-scrollbar{display:none}
+.stp+.stp::before{content:"";position:absolute;left:-6px;top:50%;width:6px;height:2px;margin-top:-1px;background:var(--line-2);z-index:0}
+.stp{position:relative;z-index:1;flex:none;display:flex;align-items:center;gap:7px;min-height:44px;padding:0 12px 0 5px;border:1px solid transparent;border-radius:12px;background:var(--panel);color:var(--muted);white-space:nowrap;transition:color .16s,border-color .16s}
+.stp .n{width:23px;height:23px;flex:none;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line-2);background:var(--panel);font-size:11px;font-weight:850;font-variant-numeric:tabular-nums;color:var(--dim);transition:color .16s,background-color .16s,border-color .16s}
+.stp .nm{font-size:13px;font-weight:750}
+.stp[aria-pressed="true"]{color:var(--ink);border-color:var(--acc-line);background:var(--acc-soft)}
+.stp[aria-pressed="true"] .n{color:#fff;background:var(--acc);border-color:var(--acc)}
+:root[data-theme="dark"] .stp[aria-pressed="true"] .n{color:#08110f}
+.stp:hover{border-color:var(--line-2)}
+
+/* 단계 상세 */
+.det{min-width:0;display:flex;flex-direction:column;gap:0;padding-top:11px}
+@media (min-width:900px){.det{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:4px}}
+.dh{display:flex;align-items:baseline;gap:8px;min-width:0}
+.dh .dn{flex:none;font-size:11px;font-weight:850;font-variant-numeric:tabular-nums;color:var(--acc);letter-spacing:.04em}
+.dh h3{margin:0;font-size:clamp(16px,4.1vw,19px);line-height:1.25;letter-spacing:-.03em;font-weight:850;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dh .dw{margin-left:auto;flex:none;font-size:11px;font-variant-numeric:tabular-nums;color:var(--dim);white-space:nowrap}
+.grid2{display:grid;gap:10px;margin-top:10px}
+@media (min-width:760px){.grid2{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:16px}}
+.blk{border:1px solid var(--line);border-radius:14px;padding:12px 13px;background:var(--panel);min-width:0}
+.blk h4{margin:0 0 5px;font-size:11px;font-weight:850;letter-spacing:.06em;color:var(--acc);display:flex;align-items:center;gap:6px}
+.blk h4 .c{font-weight:800;letter-spacing:0;color:var(--dim);font-size:10.5px;font-variant-numeric:tabular-nums}
+.blk p{margin:0;font-size:13.5px;line-height:1.62;color:var(--ink)}
+.blk.tip{background:var(--soft);border-color:var(--line)}
+.blk.tip p{font-size:13px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:1px}
+.chips a{display:inline-flex;align-items:center;min-height:44px;padding:0 11px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);font-size:12.5px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.chips a .ar{font-size:10px;color:var(--dim);margin-left:5px}
+.chips a:hover{border-color:var(--acc-line)}
+.cos{display:grid;gap:5px;margin-top:1px}
+.co{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;align-items:center;min-height:44px;padding:5px 10px;border:1px solid var(--line);border-radius:11px;text-decoration:none;background:var(--panel);min-width:0}
+.co:hover{border-color:var(--acc-line)}
+.co .nm{font-size:13px;font-weight:750;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.co .mt{grid-column:1/-1;font-size:11px;line-height:1.35;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.co .cat{flex:none;font-size:10px;font-weight:800;color:var(--muted);border:1px solid var(--line);border-radius:7px;padding:1px 5px;white-space:nowrap}
+.none{margin:0;font-size:12px;line-height:1.5;color:var(--dim)}
+.pager{display:flex;align-items:center;gap:8px;margin-top:11px}
+.pager button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 13px;border:1px solid var(--line-2);border-radius:12px;background:var(--panel);font-size:12.5px;font-weight:750;color:var(--muted);white-space:nowrap}
+.pager button:hover:not([disabled]){border-color:var(--acc-line);color:var(--ink)}
+.pager button[disabled]{opacity:.42;cursor:default}
+.pager .pos{margin-left:auto;font-size:11.5px;font-variant-numeric:tabular-nums;color:var(--dim);white-space:nowrap}
+
+/* 방법·출처 */
+.more{margin-top:12px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.more>summary{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 13px;cursor:pointer;font-size:12.5px;font-weight:750;color:var(--muted);list-style:none}
+.more>summary::-webkit-details-marker{display:none}
+.more>summary .ch{margin-left:auto;width:16px;height:16px;color:var(--dim);transition:transform .22s}
+.more[open]>summary .ch{transform:rotate(180deg)}
+.more .in{padding:0 13px 12px;font-size:12px;line-height:1.62;color:var(--muted)}
+.more .in p{margin:0 0 7px}
+.more .in b{color:var(--ink)}
+.more .in ul{margin:0;padding-left:16px}
+.more .in li{margin:0 0 3px}
+.more .in a{color:var(--acc)}
+
+/* 접근성·모션 */
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.ft{margin-top:18px;font-size:11.5px;line-height:1.6;color:var(--dim);border-top:1px solid var(--line);padding-top:10px}
+.ft a{text-decoration:none;border-bottom:1px solid var(--line-2)}
+.load{margin:0;padding:24px 4px;font-size:13px;color:var(--dim)}
+</style>
+<link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
+</head>
+<body data-jc-tool="valuechain" class="jcv">
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+    </a>
+    <span class="kick"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h5v4H4zM15 6h5v4h-5zM9.5 17h5v4h-5z"/><path d="M6.5 10v3h11v-3"/><path d="M12 13v4"/><path d="M6.5 13h11" stroke="var(--jc-acc)"/></svg><span class="jc-tt"><span class="jc-kw">Value Chain</span> Map</span></span>
+    <span data-jc-prefs></span>
+  </header>
+
+  <div class="mast">
+    <h1>산업별 공정 지도<small>Value Chain</small></h1>
+    <p class="sub"><b>산업이 값을 만드는 순서</b>를 단계로 잇고, 단계마다 무슨 일을 하는지·어떤 직무가 들어가는지·어느 기업이 그 단계에 있는지를 붙였습니다.</p>
+    <div class="vc-rule" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <p class="vc-note" id="vcNote">자료를 불러오고 있습니다…</p>
+  </div>
+
+  <main id="main">
+    <div class="ws">
+      <nav class="inds" id="inds" aria-label="산업 고르기"></nav>
+      <div class="stage">
+        <div class="ih">
+          <div class="top"><h2 id="iName">—</h2><span class="en" id="iEn"></span></div>
+          <p class="tag" id="iTag"></p>
+          <p class="st"><span class="lb">구조</span><span id="iStruct"></span></p>
+          <div class="roles" id="iRoles" hidden></div>
+          <div class="lnk" id="iLinks"></div>
+        </div>
+        <div class="rail" id="rail" role="group" aria-label="공정 단계"></div>
+        <section class="det" id="det" aria-live="polite"></section>
+      </div>
+    </div>
+
+    <details class="more" id="more">
+      <summary>단계·기업·직무는 무엇을 근거로 붙였나 <svg class="ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+      <div class="in" id="moreIn"></div>
+    </details>
+  </main>
+
+  <footer class="ft">
+    <p><span>Value Chain Map · 산업별 공정 지도</span> · <a href="../company/">기업 명함첩</a> · <a href="../thermometer/">산업 온도계</a> · <a href="../taxonomy/">분류 교차 사전</a> · 로그인 없이 사용 · 참고·실습용 자료 · 화면 밖으로 내보내지 않습니다</p>
+  </footer>
+</div>
+<script src="./app.js" defer></script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
