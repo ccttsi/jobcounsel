@@ -2,6 +2,7 @@
  *
  * 지금 보는 섹터와 주제가 이어지는 섹터를 본문(<main>) 바로 아래에 보여 준다.
  * 무엇과 무엇이 이어지는지는 assets/tools.js의 JC_LINKS(방향 없는 짝)에서 읽는다 — 여기에는 섹터 이름도 개수도 적지 않는다.
+ * 짝의 상대는 자료(JC_TOOLS)뿐 아니라 앱(JC_APPS — 상담 플로우)일 수도 있다. 두 장부를 함께 읽어 이름을 찾는다.
  * assets/core.js가 대문이 아닌 화면에서 tools.js 다음에 불러온다. 집중 보기에서는 숨는다.
  * 색은 그 화면의 글자색에서 섞어 쓴다(shell.css와 같은 방식). 움직임 없음.
  */
@@ -19,7 +20,8 @@
     '.jc-next-one{flex-wrap:nowrap;overflow-x:auto;margin:0;padding-top:8px;padding-bottom:8px;scrollbar-width:none;flex:none}.jc-next-one::-webkit-scrollbar{display:none}.jc-next-one a{flex:none;white-space:nowrap}.jc-next-one::after{content:"";flex:0 0 56px}' +
     'html[data-jc-imm] .jc-next{display:none}';
   function run() {
-    var T = window.JC_TOOLS, L = window.JC_LINKS; if (!T || !L || !base || d.querySelector('.jc-next')) return;
+    var T = (window.JC_TOOLS || []).concat(window.JC_APPS || []), L = window.JC_LINKS;
+    if (!T.length || !L || !base || d.querySelector('.jc-next')) return;
     var here = location.href.split(/[?#]/)[0]; if (here.indexOf(base) !== 0) return;
     var folder = here.slice(base.length).split('/')[0]; if (!folder) return;                      // 대문
     var me = null, i; for (i = 0; i < T.length; i++) if (String(T[i].path).replace(/^\.\/|\/$/g, '') === folder) me = T[i];

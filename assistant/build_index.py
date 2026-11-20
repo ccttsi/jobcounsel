@@ -96,6 +96,7 @@ SECTOR_KW = {
     'interview': '면접,질문',
     'portfolio': '포트폴리오,작업물',
     'valuechain': '산업,공정,밸류체인,가치사슬,산업구조',
+    'flow': '상담플로우,플로우,상담순서,덱,마이덱',
 }
 
 
@@ -199,16 +200,24 @@ def alias_forms(text):
 
 # ---------------------------------------------------------------- 섹터 장부
 
-def read_tools():
-    """assets/tools.js의 JC_TOOLS를 읽어 섹터 목록을 만든다(개수 하드코딩 없음)."""
-    src = read_text('assets', 'tools.js')
-    out = []
-    for m in re.finditer(r"\{id:'([a-z0-9_-]+)'", src):
-        sid = m.group(1)
-        seg = src[m.start():m.start() + 3000]
+def _array_body(src, name):
+    """`window.<name>=[ … ];` 의 안쪽만 — 다른 장부(JC_LINKS·JC_APPS)를 섞지 않는다."""
+    m = re.search(r'window\.' + name + r'\s*=\s*\[', src)
+    if not m:
+        return ''
+    end = src.find('\n];', m.end())
+    return src[m.end():end if end > 0 else len(src)]
 
-        def pick(name):
-            mm = re.search(r"\b%s:'((?:[^'\\]|\\.)*)'" % name, seg)
+
+def _read_book(src, name):
+    out = []
+    for m in re.finditer(r"\{id:'([a-z0-9_-]+)'", _array_body(src, name)):
+        sid = m.group(1)
+        body = _array_body(src, name)
+        seg = body[m.start():m.start() + 3000]
+
+        def pick(key):
+            mm = re.search(r"\b%s:'((?:[^'\\]|\\.)*)'" % key, seg)
             return mm.group(1).replace("\\'", "'") if mm else ''
 
         tags = re.search(r"\btags:\[((?:[^\]])*)\]", seg)
@@ -224,6 +233,17 @@ def read_tools():
             'meta': [t.strip().strip("'") for t in (meta.group(1).split(',') if meta else []) if t.strip()],
         })
     return out
+
+
+def read_tools():
+    """`assets/tools.js`의 두 장부를 읽는다(개수 하드코딩 없음).
+
+    JC_TOOLS — 학습·실무 자료(대문 목록·목차·덱 선반). 번호는 여기에만 있다.
+    JC_APPS  — 자료가 아닌 «앱»(상담 플로우). 목록에는 없지만 비서 색인·빠른 검색·「이어 보기」에는 있어야 한다.
+      그래서 색인에는 «비서 전용 섹터»로 함께 싣는다(아래 build()에서 preset과 같은 방식).
+    """
+    src = read_text('assets', 'tools.js')
+    return _read_book(src, 'JC_TOOLS'), _read_book(src, 'JC_APPS')
 
 
 # ---------------------------------------------------------------- 섹터별 뽑기
@@ -890,10 +910,14 @@ def check_aliases(by_id):
 
 def build():
     load_aliases()
-    sectors = read_tools()
-    # 비서 전용 «섹터» — 상담 프리셋(자료실 섹터 장부와는 별개. 검색에만 쓴다)
+    materials, apps = read_tools()
+    sectors = materials
+    # 비서 전용 «섹터» — 대문 목록에는 없지만 찾아 갈 수 있어야 하는 것들(검색에만 쓴다)
+    #   · 상담 프리셋 … 자료실 섹터 장부와는 별개
+    #   · 앱(JC_APPS — 상담 플로우) … 대문 자료 목록(01~31)에서 빠졌으나 왼쪽 카드덱 단추·검색으로 들어간다
     sectors = sectors + [{'id': 'preset', 'no': '', 'title': '상담 프리셋', 'desc': '상황·유형에 맞는 상담 진행 순서(단계·질문·체크포인트)',
                           'path': './', 'badge': '프리셋', 'tags': ['상담', '프리셋', '코스', '목차'], 'meta': []}]
+    sectors = sectors + apps
     by_id = {s['id']: s for s in sectors}
     docs, counts, seen = [], {}, set()
 

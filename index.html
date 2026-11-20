@@ -685,13 +685,16 @@ html[data-vf] #jc-marker-ui,html[data-vf] #jc-marker-notes,html[data-vf] .jca-la
    카드는 그 위로 비켜 앉으므로(아래 여백) 가려지지 않는다 — 마지막 단계에서 그 자리를 또렷이 세운다.
    두 도구는 z-index가 무척 높아(2147483000대) 어둡게 덮는 판보다 위에 그려지므로, 감추지 않고 투명도만 다룬다. */
 :root[data-jc-tour] #jc-marker-ui,
-:root[data-jc-tour] .jca-launch{pointer-events:none!important}
+:root[data-jc-tour] .jca-launch,
+:root[data-jc-tour] .jcf-launch{pointer-events:none!important}
 /* 도구함(marker.js)은 화면 아래 고정 막대를 만나면 단추를 그 위로 비켜 앉힌다(--lift).
    둘러보기의 어둡게 덮는 판을 막대로 잘못 읽어 단계마다 단추가 209px씩 뛰었다 — 둘러보기 동안은 0으로 잠근다. */
 :root[data-jc-tour] #jc-marker-ui{--lift:0px!important}
 :root[data-jc-tour] .jca-launch{--jca-lift:0px!important}
+:root[data-jc-tour] .jcf-launch{--jcf-lift:0px!important}
 :root[data-jc-tour="tools"] #jc-marker-ui,
-:root[data-jc-tour="tools"] .jca-launch{opacity:1!important}   /* 보이기만 하고, 누름은 둘러보기가 받는다 */
+:root[data-jc-tour="tools"] .jca-launch,
+:root[data-jc-tour="tools"] .jcf-launch{opacity:1!important}   /* 보이기만 하고, 누름은 둘러보기가 받는다 */
 
 /* 안내 띠(2026-11-20 2차 → 3차) — 「검은 블럭에 흰 글자」 결은 살리되 진한 검정은 피한다.
    글자는 한 줄·두 줄 모두 가운데 정렬, 나타나고 사라지는 것은 opacity·transform만(모션 가드레일 §2).
@@ -777,9 +780,9 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <div class="a-pv-body" id="pvBody" inert><div class="a-pv-in">
     <div class="a-pv-lead">
       <p><b>로그인하지 않아도 모든 기능을 제한 없이 쓸 수 있습니다.</b> 로그인은 내가 본 기록(탐색 진도·형광펜과 포스트잇 메모·나만의 덱)을 계정에 저장해 다른 기기와 잇는 선택 기능입니다.</p>
-      <p><b>지금은 31가지 도구가 있습니다.</b> 이론·심리검사·직무분석·법령·국취 실무부터 기업 명함첩·채용 안내판·자격증·재무 해석까지 한 대문에서 열립니다. 화면 아래 <b>자료실 비서</b>는 검색과 질문을, 오른쪽 아래 <b>도구함</b>은 형광펜과 포스트잇을 맡습니다. 처음 오셨다면 오른쪽 위 <b>대문 둘러보기</b>로 다섯 단계 안내를 보세요.</p>
+      <p><b>지금은 31가지 학습·실무 자료가 있습니다.</b> 이론·심리검사·직무분석·법령·국취 실무부터 기업 명함첩·채용 안내판·자격증·재무 해석까지 한 대문에서 열립니다. 화면 아래 <b>자료실 비서</b>는 검색과 질문을, <b>도구함</b>은 형광펜과 포스트잇을, <b>왼쪽 아래 카드덱 단추</b>는 상담 플로우 아키텍트로 이어집니다. 처음 오셨다면 오른쪽 위 <b>대문 둘러보기</b>로 다섯 단계 안내를 보세요.</p>
       <p><b>「시드 · 매치」는 나만의 목차를 직접 꽂아 쓰는 화면입니다.</b> 심전도 단추(목록 화면에서는 가운데 레버)를 한 번 누르고 한 번 더 누르면 <b>시드</b>(지식·원리·기준)와 <b>매치</b>(현장·실무)를 고를 수 있습니다. 자료 선반에서 카드를 골라 번호 칸에 꽂으면 그 순서가 내 목차가 되고, <b>상황 프리셋</b>(매치는 <b>유형 프리셋</b>)을 고르면 상담 순서대로 카드가 한 번에 꽂히며 단계별 질문·확인 진행판이 함께 열립니다.</p>
-      <p><b>내가 짠 순서는 마이덱에 저장합니다.</b> 27번 <b>상담 플로우</b>에서 키워드로 자료를 이어 덱을 만들고, <b>마이덱</b>에서 이름·순서·꾸미기를 바꿉니다. 꽂은 순서는 이 기기의 브라우저에 저장되고, 로그인하면 계정에 이어져 다른 기기에서도 같은 덱이 열립니다. 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
+      <p><b>내가 짠 순서는 마이덱에 저장합니다.</b> <b>상담 플로우 아키텍트</b>(화면 왼쪽 아래 카드덱 단추)에서 키워드로 자료를 이어 덱을 만들고, <b>마이덱</b>에서 이름·순서·꾸미기를 바꿉니다. 꽂은 순서는 이 기기의 브라우저에 저장되고, 로그인하면 계정에 이어져 다른 기기에서도 같은 덱이 열립니다. 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
     </div>
     <ul class="a-pv-list">
       <li><b>개인 학습·훈련용 참고 도구입니다. 공식 공공데이터와 법령을 바탕으로 정리했으며, 특정 기관의 공식 자료나 교안·상담 기준을 대신하지 않습니다. (20기 학습 공유용)</b></li>
@@ -1025,7 +1028,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
     <a class="a-modes-deck" id="modeDeck" href="./flow/">
       <span class="a-modes-deck-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5h9M4 12h6M4 16.5h4"/><path d="M17.5 9.5v8M13.5 13.5h8"/></svg></span>
       <b>나만의 덱 만들기</b>
-      <span class="a-modes-deck-s">27번 · 상담 플로우</span>
+      <span class="a-modes-deck-s">카드덱 단추 · 상담 플로우</span>
       <span class="a-modes-deck-a" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 6l6 6-6 6"/></svg></span>
     </a>
   </div>
@@ -1100,8 +1103,9 @@ var $=function(id){return document.getElementById(id);};
 var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
 
 /* ---------- 데이터 ---------- */
-var TOOLS=window.JC_TOOLS||[];   /* 섹터 장부는 assets/tools.js 한곳에서 관리한다 */
-var ALL=TOOLS;                    /* 전체 목록(23). TOOLS는 지금 보고 있는 모드의 목록이다 */
+var TOOLS=window.JC_TOOLS||[];   /* 자료 장부는 assets/tools.js 한곳에서 관리한다(01~31) */
+var APPS=window.JC_APPS||[];     /* 자료가 아닌 «앱»(상담 플로우) — 목록·롤링에서는 빼고 찾기·「이어 보기」에만 쓴다 */
+var ALL=TOOLS.concat(APPS);       /* 찾기·주소 대조용 전체 목록. 목록을 세는 곳은 늘 TOOLS만 센다 */
 var INSIGHTS=[
  {tag:'제도 · 대학원',to:'grad',t:'대학원은 세 종류입니다',dk:'./grad/#guide',
   b:'고등교육법은 대학원을 일반대학원(학술 연구), 전문대학원(전문 직업 인력 양성), 특수대학원(직업인·성인의 계속교육)으로 나눕니다. 특수대학원은 석사 과정만 두고, 같은 전공 이름이라도 종류에 따라 수업 시간과 졸업 요건, 받을 수 있는 지원이 달라집니다.',
@@ -1218,8 +1222,7 @@ var NAV={
  interview:['면접을 연습해','질문 카드 한 장씩 숨은 의도를 보고, 함정·방어·카운터 카드와 구간 타이머로 답의 뼈대와 리듬을 잡습니다.'],
  portfolio:['포트폴리오를 엮어','90초 스캔으로 채용 담당자의 시선을 재현하고, 소재를 3~5개로 컷해 6트랙으로 엮습니다.'],
  law:['조문을 펼쳐','상담 상황 키워드로 법령·조례 8건을 찾아, 쉬운 풀이와 조문 전문을 책처럼 넘겨 읽습니다.'],
- translator:['내담자 말을 풀어','상담실에서 나온 약어·전문용어를 한 줄 뜻과 실제 맥락, 이어 물을 질문, 연계 자료로 옮깁니다.'],
- flow:['흐름을 짜','키워드로 시작해 자료를 한 칸씩 이어 붙이며 내 상담 덱을 만들고, 마이덱에 저장합니다.']
+ translator:['내담자 말을 풀어','상담실에서 나온 약어·전문용어를 한 줄 뜻과 실제 맥락, 이어 물을 질문, 연계 자료로 옮깁니다.']
 };
 TOOLS.forEach(function(t){var n=NAV[t.id]||[];t.phrase=n[0]||(t.short+' 자료를 펼쳐');t.lead=n[1]||t.desc;});
 
@@ -1746,8 +1749,9 @@ window.JC_NAV={
   holdClass:function(){var n=$('nav');return !!(n&&n.classList.contains('a-hold'));},
   rollVisible:function(){return rollVis;},          /* 롤링 무대가 화면 안에 있는가(방치 유도·자동 넘김 판단) */
   counts:function(){
-    function n(m){return ALL.filter(function(t){return t.mode===m;}).length;}
-    return {all:ALL.length,seed:n('seed'),match:n('match')};
+    /* 칸 수는 자료(JC_TOOLS)만 센다 — 앱(JC_APPS)은 덱의 칸을 쓰지 않는다 */
+    function n(m){return TOOLS.filter(function(t){return t.mode===m;}).length;}
+    return {all:TOOLS.length,seed:n('seed'),match:n('match')};
   }
 };
 
@@ -1854,10 +1858,11 @@ function ssCompanyBoot(){   /* 9,137곳 색인은 첫 글자를 칠 때 받는�
 
 function byPath(p){var out=null;ALL.forEach(function(t){if(t.path===p)out=t;});return out;}
 
-/* 엔진이 없거나 아직 색인을 받는 중이면, 섹터(27장)만으로 먼저 답한다 — 빈 화면을 보여 주지 않는다. */
+/* 엔진이 없거나 아직 색인을 받는 중이면, 섹터 장부만으로 먼저 답한다 — 빈 화면을 보여 주지 않는다.
+   앱(JC_APPS — 상담 플로우)도 «갈 곳»이므로 함께 찾히고, 대신 이름표(kind='app')로 구분한다. */
 function sectorHits(q){
   var ql=q.toLowerCase();
-  if(!q)return ALL.map(function(t){return {path:t.path,id:t.id,title:t.title,no:t.no,kind:'sector',why:'',sub:t.meta.join(' · ')};});
+  if(!q)return ALL.map(function(t){return {path:t.path,id:t.id,title:t.title,no:t.no,kind:t.app?'app':'sector',badge:t.badge,why:'',sub:t.meta.join(' · ')};});
   var out=[];
   ALL.forEach(function(t){
     var score=0,why='';
@@ -1867,7 +1872,7 @@ function sectorHits(q){
     if(tg.length){score+=3;why='관련 주제: '+tg.slice(0,3).join(', ');}
     if(t.desc.toLowerCase().indexOf(ql)>=0)score+=1;
     /* 색인을 아직 못 받았을 때도 «찾던 낱말»을 들고 섹터로 간다 — 도착한 화면이 검색창을 채우고 바로 거른다 */
-    if(score)out.push({path:t.path+(q?(t.path.indexOf('?')<0?'?q='+encodeURIComponent(q):''):''),id:t.id,title:t.title,no:t.no,kind:'sector',why:why,s:score,sub:t.meta.join(' · ')});
+    if(score)out.push({path:t.path+(q?(t.path.indexOf('?')<0?'?q='+encodeURIComponent(q):''):''),id:t.id,title:t.title,no:t.no,kind:t.app?'app':'sector',badge:t.badge,why:why,s:score,sub:t.meta.join(' · ')});
   });
   out.sort(function(a,b){return b.s-a.s;});return out;
 }
@@ -1881,8 +1886,9 @@ function search(q){
   var out=res.map(function(r){
     var kind=r.kind==='company'?'company':r.kind==='job'?'job':(r.type==='sector'?'sector':'doc');
     var t=kind==='sector'?byPath(r.url):null;
-    return {path:r.url,id:r.kind==='job'?'taxonomy':r.sector,title:r.title,no:t?t.no:'',kind:kind,
-            why:r.why||'',sub:r.snippet||'',badge:r.sectorTitle||''};
+    if(t&&t.app)kind='app';        /* 앱(상담 플로우)은 자료 목록에 없으므로 이름표로만 구분해 보여 준다 */
+    return {path:r.url,id:r.kind==='job'?'taxonomy':r.sector,title:r.title,no:(t&&t.no)||'',kind:kind,
+            why:r.why||'',sub:r.snippet||'',badge:(t&&t.app)?t.badge:(r.sectorTitle||'')};
   });
   /* 기업은 9,137곳이라 목록이 잘린다 — 「명함첩에서 더 찾기」로 이어 준다. */
   if(out.some(function(h){return h.kind==='company';})){
@@ -2370,11 +2376,11 @@ var STEPS=[
    p:'<b>오늘의 직업상담 통찰</b> 카드는 매일 바뀝니다. 상담에서 그대로 물어볼 문장과 풀이가 함께 있고, 카드를 누르면 관련 자료로 갑니다. 위의 <b>값의 출처와 검증</b>을 누르면 공공데이터 출처·기준시점과 자동 검사 항목을 볼 수 있습니다.',
    kw:['매일 새 통찰','상담 발문','공공데이터 출처','자동 검사 통과'],
    sels:['#insight'],also:['#vfSec']},
-  {t:'도구함과 자료실 비서',
-   p:'오른쪽 아래 <b>도구함</b>은 형광펜과 포스트잇, 아래 가운데 <b>자료실 비서</b>는 자료 검색과 질문을 맡습니다. 시드·매치 시트 아래 <b>나만의 덱 만들기</b>를 누르면 <b>27번 상담 플로우</b>에서 상담 순서대로 덱을 짭니다.',
-   kw:['형광펜·포스트잇','비서 검색·질문','27번 상담 플로우'],
-   sels:null,get:function(){return fabOf()||find('.jca-launch');},
-   also:function(){return fabOf()?find('.jca-launch'):null;}}
+  {t:'도구함과 자료실 비서, 카드덱',
+   p:'오른쪽 아래 <b>도구함</b>은 형광펜과 포스트잇, <b>자료실 비서</b>는 자료 검색과 질문을 맡습니다. <b>왼쪽 아래 카드덱 단추</b>는 상담 플로우 아키텍트로 바로 갑니다 — 키워드로 시작해 상담 순서대로 덱을 짜고 마이덱에 저장합니다.',
+   kw:['형광펜·포스트잇','비서 검색·질문','카드덱 단추 · 상담 플로우'],
+   sels:null,get:function(){return find('.jcf-launch')||fabOf();},
+   also:function(){return find('.jca-launch');}}
 ];
 
 function targetOf(s){return s.get?s.get():find(s.sels);}

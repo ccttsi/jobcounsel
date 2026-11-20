@@ -1,0 +1,352 @@
+/* deckfab.css — 왼쪽 아래 카드덱 단추 + 덱 미니 스위처 (2026-11-20)
+ *
+ * 왜
+ *   상담 플로우 아키텍트는 «읽는 자료»가 아니라 다른 자료로 상담 순서를 짜는 **앱**이다.
+ *   그래서 자료 목록(01~31)에서 빼고, 오른쪽 아래 **자료실 비서**와 **마주 보는 자리**(왼쪽 아래)에
+ *   같은 모양의 단추로 세웠다 — 한 번 누르면 /flow/로 바로 간다.
+ *
+ * 모양
+ *   비서 단추(.jca-launch, assets/assistant.css)를 **거울처럼 뒤집은** 값이다:
+ *   같은 52×56, 같은 18px 위 둥글기, 같은 1px 테두리(아래는 없음), 같은 불투명 종이 바탕,
+ *   평소 화면 아래로 30px 걸쳐 있고(투명도 .26) 손이 닿으면 솟아오르며 이름표가 옆으로 펼쳐진다.
+ *   자리만 왼쪽이다 — right 대신 left를 같은 식(max(12px, safe) + 52 + 8)으로 잡아
+ *   비서 단추와 **화면 가운데를 기준으로 정확히 마주 본다**.
+ *   테마는 밝게·세피아·어둡게 셋을 비서와 같은 값으로 직접 잡는다(사이트 토큰 --panel이 어두운 테마에서 반투명이라).
+ *
+ * 덱 미니 스위처(.jcf-bar / .jcf-panel)
+ *   마이덱에서 자료를 열고 들어온 경우에만(sessionStorage 'jc_active_deck') 나타난다.
+ *   덱 밖에서 일반 진입하면 전혀 보이지 않는다. 덱 이름·지금 자리(2 / 5)·이전/다음·나가기,
+ *   가운데를 누르면 단계 전체 목록(1→5→3→4→2로 건너뛰기)이 열린다.
+ */
+
+/* ---------- 색·모양 토큰 (비서와 같은 값) ---------- */
+
+.jcf-launch,
+.jcf-bar,
+.jcf-panel {
+  --_paper: var(--panel, #fffdf8);
+  --_panel: var(--panel-soft, #f5efe4);
+  --_line: var(--line, #e9e0d2);
+  --_line2: var(--line-2, #d8ccb9);
+  --_ink: var(--ink, #2a2521);
+  --_muted: var(--muted, #655c53);
+  --_dim: var(--dim, #6e645b);
+  --_acc: var(--a1, #0f766e);
+  --_shadow: var(--shadow, 0 1px 2px rgba(70, 50, 25, .05), 0 10px 28px -18px rgba(70, 50, 25, .22));
+  --_sans: var(--sans, "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif);
+  font-family: var(--_sans);
+  color: var(--_ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 어두운 테마: 사이트 토큰(--panel)이 반투명이라 뒤 내용이 비친다 — 비서와 같이 불투명하게 따로 잡는다. */
+:root[data-theme="dark"] .jcf-launch,
+:root[data-theme="dark"] .jcf-bar,
+:root[data-theme="dark"] .jcf-panel {
+  --_paper: #0f1420;
+  --_panel: #161d2b;
+  --_line: #232b3a;
+  --_line2: #2f394c;
+  --_ink: #e6e9ef;
+  --_muted: #9aa2b4;
+  --_dim: #7c859a;
+  --_acc: #2dd4bf;
+  --_shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 18px 36px -18px rgba(0, 0, 0, .8);
+}
+
+/* 세피아(종이 색): 대문의 종이 결 겹침은 이 단추들보다 아래라, 같은 종이 색을 직접 쓴다. */
+html[data-jc-tone="sepia"][data-theme="light"] .jcf-launch,
+html[data-jc-tone="sepia"][data-theme="light"] .jcf-bar,
+html[data-jc-tone="sepia"][data-theme="light"] .jcf-panel {
+  --_paper: #f7ecd6;
+  --_panel: #f0e2c5;
+  --_line: #e2d1af;
+  --_line2: #d2bc94;
+  --_ink: #2f2820;
+  --_muted: #6a5d49;
+  --_dim: #86755a;
+  --_shadow: 0 1px 2px rgba(90, 66, 32, .06), 0 10px 28px -18px rgba(90, 66, 32, .28);
+}
+
+/* ---------- 카드덱 단추 (비서 단추의 거울) ---------- */
+
+.jcf-launch {
+  position: fixed;
+  left: calc(max(12px, env(safe-area-inset-left)) + 52px + 8px);
+  bottom: calc(max(0px, env(safe-area-inset-bottom)) + var(--jcf-lift, 0px) + var(--jca-lift, 0px));
+  z-index: 2147483100;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 52px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid var(--_line2);
+  border-bottom: 0;
+  border-radius: 18px 18px 0 0;
+  background: var(--_paper);
+  box-shadow: var(--_shadow);
+  color: var(--_ink);
+  font: 600 13.5px/1 var(--_sans);
+  letter-spacing: -.01em;
+  cursor: pointer;
+  overflow: hidden;
+  transform: translateY(30px);
+  transform-origin: 50% 100%;
+  opacity: .26;
+  transition: transform .24s cubic-bezier(.2, .9, .3, 1), opacity .18s ease,
+              width .24s cubic-bezier(.2, .9, .3, 1), gap .24s;
+}
+/* 이름표는 평소 감춰 두고, 솟아오를 때만 옆으로 펼친다(왼쪽 단추라 오른쪽으로 펼친다). */
+.jcf-launch .jcf-launch-x {
+  display: inline-block;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width .24s cubic-bezier(.2, .9, .3, 1), opacity .16s ease;
+}
+/* 마우스가 있는 화면에서만 호버로 솟는다(터치에서 호버가 눌린 뒤 남지 않게). */
+@media (hover: hover) and (pointer: fine) {
+  .jcf-launch:hover {
+    transform: translateY(0);
+    opacity: 1;
+    width: auto;
+    padding: 0 15px 0 18px;
+    gap: 8px;
+  }
+  .jcf-launch:hover .jcf-launch-x { max-width: 140px; opacity: 1; }
+}
+.jcf-launch:focus-visible,
+.jcf-launch:active {
+  transform: translateY(0);
+  opacity: 1;
+}
+.jcf-launch:focus-visible {
+  width: auto;
+  padding: 0 15px 0 18px;
+  gap: 8px;
+  outline: 2px solid var(--_acc);
+  outline-offset: 2px;
+}
+.jcf-launch:focus-visible .jcf-launch-x { max-width: 140px; opacity: 1; }
+.jcf-launch:active { transform: translateY(0) scale(.98); }
+.jcf-launch[hidden] { display: none; }
+/* 바닥에 고정 띠가 있어 단추가 그 위로 비켜 앉으면, 아래로 걸치지 않고 온전히 서서 띠를 덮지 않는다 */
+.jcf-launch.is-lifted { transform: none; }
+.jcf-launch.is-lifted svg { transform: none; }
+.jcf-launch svg {
+  width: 21px;
+  height: 21px;
+  display: block;
+  flex: none;
+  /* 걸쳐 있을 때는 보이는 26px 띠 안에 아이콘이 다 들어오게 위로 17px 올려 둔다 */
+  transform: translateY(-17px);
+  transition: transform .24s cubic-bezier(.2, .9, .3, 1);
+}
+.jcf-launch:hover svg,
+.jcf-launch:active svg,
+.jcf-launch:focus-visible svg { transform: none; }
+
+/* ---------- 덱 미니 스위처: 한 줄 슬림 바 ---------- */
+
+.jcf-bar {
+  position: fixed;
+  left: max(10px, env(safe-area-inset-left));
+  bottom: calc(max(66px, var(--jcf-lift, 0px) + 8px) + env(safe-area-inset-bottom));
+  z-index: 2147483100;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  max-width: min(94vw, 430px);
+  height: 48px;
+  padding: 2px 2px 2px 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--_line2);
+  border-radius: 14px;
+  background: var(--_paper);
+  box-shadow: var(--_shadow);
+  transform: translate3d(0, 6px, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .2s cubic-bezier(.2, .9, .3, 1);
+}
+.jcf-bar[hidden] { display: none; }
+.jcf-bar.on { transform: none; opacity: 1; pointer-events: auto; }
+.jcf-bar-ic {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  color: var(--_acc);
+}
+.jcf-bar-ic svg { width: 18px; height: 18px; display: block; }
+/* 가운데: 덱 이름 + 지금 자리 — 누르면 단계 전체 목록이 열린다 */
+.jcf-bar-mid {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 44px;
+  padding: 0 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font: 700 13px/1 var(--_sans);
+  letter-spacing: -.01em;
+  color: var(--_ink);
+}
+.jcf-bar-mid b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+.jcf-bar-mid i { flex: none; font-style: normal; font-weight: 600; font-size: 12.5px; color: var(--_muted); font-variant-numeric: tabular-nums; }
+.jcf-bar-mid:focus-visible,
+.jcf-bar-b:focus-visible { outline: 2px solid var(--_acc); outline-offset: -2px; }
+@media (hover: hover) and (pointer: fine) {
+  .jcf-bar-mid:hover, .jcf-bar-b:hover { background: color-mix(in srgb, var(--_ink) 7%, transparent); }
+}
+.jcf-bar-b {
+  all: unset;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--_ink);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .14s ease;
+}
+.jcf-bar-b svg { width: 17px; height: 17px; display: block; }
+.jcf-bar-b:active { transform: scale(.92); }
+.jcf-bar-b[disabled] { opacity: .32; pointer-events: none; }
+.jcf-bar-x { color: var(--_muted); }
+
+/* ---------- 덱 단계 목록 (건너뛰기) ---------- */
+
+.jcf-panel {
+  position: fixed;
+  left: max(10px, env(safe-area-inset-left));
+  bottom: calc(max(120px, var(--jcf-lift, 0px) + 62px) + env(safe-area-inset-bottom));
+  z-index: 2147483300;
+  display: flex;
+  flex-direction: column;
+  width: min(340px, calc(100vw - 20px));
+  max-height: min(420px, calc(100dvh - 180px));
+  padding: 0;
+  box-sizing: border-box;
+  background: var(--_paper);
+  border: 1px solid var(--_line2);
+  border-radius: 16px;
+  box-shadow: 0 2px 4px rgba(70, 50, 25, .06), 0 18px 36px -18px rgba(70, 50, 25, .3);
+  overflow: hidden;
+  transform-origin: 0% 100%;
+  opacity: 0;
+  transform: translate3d(0, 8px, 0) scale(.985);
+  transition: opacity .16s ease, transform .18s cubic-bezier(.2, .9, .3, 1);
+  contain: layout paint;
+}
+.jcf-panel[hidden] { display: none; }
+.jcf-panel.on { opacity: 1; transform: none; }
+.jcf-p-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 14px 14px 8px;
+  border-bottom: 1px solid var(--_line);
+}
+.jcf-p-head b { font: 700 14.5px/1.3 var(--_sans); letter-spacing: -.01em; }
+.jcf-p-head span { font: 600 12px/1.3 var(--_sans); color: var(--_muted); font-variant-numeric: tabular-nums; }
+.jcf-p-list { margin: 0; padding: 6px; list-style: none; overflow: auto; overscroll-behavior: contain; }
+.jcf-p-row {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font: 600 13.5px/1.35 var(--_sans);
+  letter-spacing: -.01em;
+  color: var(--_ink);
+  -webkit-tap-highlight-color: transparent;
+}
+.jcf-p-row .n {
+  flex: none;
+  width: 20px;
+  font: 700 12px/1 var(--_sans);
+  color: var(--_dim);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.jcf-p-row .t { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.jcf-p-row[aria-current="true"] { background: color-mix(in srgb, var(--_acc) 10%, transparent); }
+.jcf-p-row[aria-current="true"] .n { color: var(--_acc); }
+.jcf-p-row[aria-current="true"] .t { font-weight: 800; }
+.jcf-p-row:focus-visible { outline: 2px solid var(--_acc); outline-offset: -2px; }
+@media (hover: hover) and (pointer: fine) {
+  .jcf-p-row:hover { background: color-mix(in srgb, var(--_ink) 6%, transparent); }
+  .jcf-p-row[aria-current="true"]:hover { background: color-mix(in srgb, var(--_acc) 14%, transparent); }
+}
+.jcf-p-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px 8px 14px;
+  border-top: 1px solid var(--_line);
+}
+.jcf-p-foot a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font: 700 13px/1 var(--_sans);
+  color: var(--_acc);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.jcf-p-foot a:focus-visible { outline: 2px solid var(--_acc); outline-offset: -2px; }
+.jcf-p-foot button {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font: 600 13px/1 var(--_sans);
+  color: var(--_muted);
+}
+.jcf-p-foot button:focus-visible { outline: 2px solid var(--_acc); outline-offset: -2px; }
+@media (hover: hover) and (pointer: fine) {
+  .jcf-p-foot a:hover, .jcf-p-foot button:hover { background: color-mix(in srgb, var(--_ink) 7%, transparent); }
+}
+
+/* ---------- 집중 보기·움직임 줄이기 ---------- */
+
+html[data-jc-imm="on"] .jcf-launch,
+html[data-jc-imm="on"] .jcf-bar,
+html[data-jc-imm="on"] .jcf-panel { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .jcf-launch,
+  .jcf-launch .jcf-launch-x,
+  .jcf-launch svg,
+  .jcf-bar,
+  .jcf-panel,
+  .jcf-bar-b { transition: none !important; }
+  .jcf-launch:active, .jcf-bar-b:active { transform: none; }
+  .jcf-launch:active { transform: translateY(0); }
+}
