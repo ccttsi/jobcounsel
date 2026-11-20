@@ -192,6 +192,53 @@ a{color:inherit}
 .pick{display:grid;place-items:center;height:100%;min-height:200px;color:var(--dim);font-size:15px;text-align:center;padding:16px}
 .pick b{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
 
+/* 한눈에 인사이트 — 능력단위명·KSA 원문만 세어 만든 요약 */
+.ins{margin:10px 0 2px;padding:14px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--acc) 5%,var(--panel))}
+.insHd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.insKick{font-size:11.5px;font-weight:800;letter-spacing:.02em;color:var(--acc)}
+.insT{margin:0;font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.insLine{margin:8px 0 0;font-size:16.5px;line-height:1.58;font-weight:650;letter-spacing:-.02em;color:var(--ink)}
+.insActs{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:5px}
+.insActs li{max-width:100%;padding:2px 9px;border-radius:8px;background:color-mix(in srgb,var(--ink) 5%,var(--panel));font-size:12.5px;line-height:1.5;color:var(--muted)}
+.insNo{margin:8px 0 0;padding:9px 11px;border-radius:11px;background:var(--warn-soft);color:var(--warn);font-size:13px;line-height:1.55}
+.insNote{margin:8px 0 0;padding:9px 11px;border-radius:11px;background:var(--panel);border:1px solid var(--line);color:var(--muted);font-size:13px;line-height:1.55}
+.insBar{display:flex;gap:2px;height:8px;margin:12px 0 0;border-radius:99px;overflow:hidden;background:var(--soft)}
+.insBar i{display:block;height:100%;background:var(--c);border-radius:99px}
+.insKsa{display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;margin:7px 0 0;font-size:12.5px;color:var(--muted)}
+.insKsa span{display:inline-flex;align-items:center;gap:5px}
+.insKsa span::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--c)}
+.insKsa b{font-size:12.5px;font-weight:800;color:var(--ink)}
+.insKsa small{font-size:11.5px;color:var(--dim)}
+.insKw{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:8px 0 0;font-size:13px;color:var(--muted)}
+.insKw b{font-size:11.5px;font-weight:800;color:var(--dim)}
+.insKw span{font-size:13px;color:var(--ink)}
+.insKw span:not(:last-child)::after{content:"·";margin-left:9px;color:var(--dim)}
+.insStat{margin:6px 0 0;font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+.insLk{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.insLk a{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel);font-size:13px;font-weight:750;color:var(--ink);text-decoration:none}
+.insLk a span{color:var(--acc);font-size:12px}
+.insLk a:hover{border-color:var(--acc)}
+.insGoWrap{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0 0}
+.insGoWrap>b{font-size:11.5px;font-weight:800;color:var(--dim)}
+.insGo{min-height:44px;padding:0 12px;border-radius:11px;border:1px solid var(--line);background:var(--panel);font-size:13px;font-weight:650;color:var(--acc);text-align:left}
+.insDim{font-size:12px;color:var(--dim)}
+.insQ{margin:10px 0 0;border-top:1px solid var(--line)}
+.insQ>summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:44px;padding:2px 0;cursor:pointer;font-size:13.5px}
+.insQ>summary::-webkit-details-marker{display:none}
+.insQ>summary::after{content:"+";margin-left:auto;font-size:17px;color:var(--dim)}
+.insQ[open]>summary::after{content:"–"}
+.insQ .qk{font-weight:800;color:var(--ink)}
+.insQ>summary b{font-size:12px;font-weight:800;color:var(--acc);padding:1px 7px;border-radius:7px;background:var(--acc-soft);white-space:nowrap}
+.insQ>summary small{font-size:11.5px;color:var(--dim)}
+.insQ ol{margin:4px 0 0;padding-left:18px;display:grid;gap:8px}
+.insQ li{font-size:14px;line-height:1.6;color:var(--ink)}
+.insQ .qq{margin:0;font-weight:600}
+.insQ .qw{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;margin:3px 0 0;font-size:11.5px;color:var(--dim)}
+.insQ .qw b{font-weight:800;color:var(--warn)}
+.insQ .qw span{padding:1px 7px;border-radius:7px;background:var(--soft);color:var(--muted);font-size:12px;line-height:1.5}
+.insQ .qnote{margin:10px 0 0;font-size:11.5px;line-height:1.55;color:var(--dim)}
+@media (max-width:899px){.ins{padding:13px}.insLine{font-size:16px}}
+
 /* 출처·한계 */
 .src{display:grid;gap:16px}
 @media (min-width:900px){.src{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:20px;align-items:start}}
@@ -238,6 +285,8 @@ html[data-jc-imm] .tabs{display:none}
     </button>
     <div class="pv-b" id="pvB" hidden><ul>
       <li><b>공식 매핑 자료에 있는 연결만 보여 줍니다.</b> 없는 연결은 「공식 매핑 자료 없음」으로 표시하며, 이는 「관계 없음」이 아니라 원자료에 적힌 연결이 없다는 뜻입니다.</li>
+      <li><b>「한눈에」 카드는 능력단위명·KSA 원문만 세어 만든 요약입니다.</b> 대·중·소·세분류는 그 아래 능력단위의 KSA를 위로 합쳐 만들고, 원자료에 없는 직무 설명·전망·연봉은 넣지 않습니다.</li>
+      <li><b>면접 예상 질문은 KSA 원문을 인용해 만든 틀입니다.</b> 실제 채용 질문이 아니며, 답변의 근거 항목도 원문 그대로입니다.</li>
       <li><b>명칭·코드·KSA는 원자료 그대로입니다.</b> 새로 쓴 해설이나 추정한 값은 없습니다. 출처와 라이선스는 「출처」 탭에서 봅니다.</li>
       <li><b>NCS는 직무, KECO·KSCO는 직업 기준입니다.</b> 같은 일이라도 세 분류의 단위와 이름이 다를 수 있습니다.</li>
       <li><b>마지막으로 본 탭과 위치만 이 기기의 브라우저에 기억합니다.</b> 서버로 보내지 않습니다.</li>

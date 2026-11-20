@@ -4,6 +4,7 @@ NCS(국가직무능력표준) · KECO(한국고용직업분류) · KSCO(한국�
 화면(`/taxonomy/`)은 이 파일을 정적으로 읽어 계층 탐색·검색·역추적을 하고, 데이터는 여기서 더 늘리지 않는다.
 
 - **데이터 파일**: [`taxonomy.json`](taxonomy.json) — 3.6MB, UTF-8 / [`ksa/index.json`](ksa/index.json) + 샤드 24개 — 30MB, 대분류별 지연 로드
+- **인사이트 인덱스**: [`insights/`](insights/) — 화면 맨 위 「한눈에」 카드(한 줄 정의·KSA 성향·키워드)와 면접 예상 질문의 원천. `python3 taxonomy/data/build_insights.py`로 원자료에서 다시 만든다(계약은 SCHEMA.md §9)
 - **스키마 계약**: [`SCHEMA.md`](SCHEMA.md) — 화면 구현 전에 반드시 읽는다
 - **검증**: `python3 taxonomy/data/validate.py` → 오류 0건 (2026-11-16 기준)
 - **배포**: `https://ccttsi.github.io/jobcounsel/taxonomy/data/taxonomy.json` · `https://ccttsi.github.io/jobcounsel/taxonomy/data/ksa/index.json`
