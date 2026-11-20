@@ -1,7 +1,7 @@
 {
  "schema": "jobcounsel.openapi.v1",
  "kind": "manifest",
- "generated_at": "2026-11-21T01:33:32+09:00",
+ "generated_at": "2026-11-21T04:58:31+09:00",
  "tiers": {
   "daily": [
    "alio_recruitment",
@@ -11,6 +11,8 @@
    "ncs_training"
   ],
   "monthly": [
+   "dart_corp_map",
+   "dart_disclosures",
    "fsc_corp_basic",
    "fsc_fin_stat",
    "law_revision",
@@ -19,7 +21,7 @@
    "qnet_stats"
   ]
  },
- "total_bytes": 20331589,
+ "total_bytes": 25465102,
  "sources": [
   {
    "key": "alio_recruitment",
@@ -111,6 +113,32 @@
    "sha256": "0f00b3688049ac7e80eebecf8cbb2c9e7152fb40749a417b023a9ccc76ff36a9",
    "license": "이용허락범위 제한 없음",
    "official_url": "https://www.data.go.kr/data/15025329/openapi.do"
+  },
+  {
+   "key": "dart_corp_map",
+   "name": "OpenDART 기업 고유번호",
+   "service_id": "OpenDART corpCode.xml",
+   "tier": "monthly",
+   "path": "data/openapi/dart/corp-map.json",
+   "count": 6352,
+   "fetched_at": "2026-11-21T04:53:42+09:00",
+   "bytes": 2608433,
+   "sha256": "1a8c8ffeeedfddc534309989202d747321732067060618f4215a2e8111d51880",
+   "license": "OpenDART 공식 OpenAPI(이용약관)",
+   "official_url": "https://opendart.fss.or.kr/"
+  },
+  {
+   "key": "dart_disclosures",
+   "name": "OpenDART 공시목록",
+   "service_id": "OpenDART list.json",
+   "tier": "monthly",
+   "path": "data/openapi/dart/disclosures.json",
+   "count": 6695,
+   "fetched_at": "2026-11-21T04:57:37+09:00",
+   "bytes": 2525080,
+   "sha256": "02cd14da006238437d12f701855f171dc3dffa1070c98f92443c2029a6b11aca",
+   "license": "OpenDART 공식 OpenAPI(이용약관)",
+   "official_url": "https://opendart.fss.or.kr/"
   },
   {
    "key": "law_revision",
