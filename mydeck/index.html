@@ -39,7 +39,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
 @supports not (overflow-x:clip){body{overflow-x:hidden}}
 body{font-family:var(--sans);font-size:17px;line-height:1.62;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
-button,input{font:inherit;color:inherit;letter-spacing:inherit}
+button,input,textarea{font:inherit;color:inherit;letter-spacing:inherit}
 button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit;-webkit-tap-highlight-color:transparent}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:10px}
@@ -66,14 +66,20 @@ a{color:inherit}
 
 /* ---------- 상태 줄 ---------- */
 .bar{margin-top:16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow)}
-.who{flex:1;min-width:220px;display:grid;gap:4px}
+.who{flex:1;min-width:220px;display:grid;gap:5px}
 .who b{font-size:15px;font-weight:800}
 .who span{font-size:13.5px;line-height:1.55;color:var(--muted)}
+.who-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:3px}
 .bar-btns{display:flex;flex-wrap:wrap;gap:8px}
-.primary{min-height:48px;padding:0 20px;border-radius:13px;background:var(--acc);color:var(--panel);font-size:15.5px;font-weight:800}
+.primary{min-height:48px;padding:0 20px;border-radius:13px;background:var(--acc);color:var(--panel);font-size:15.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
 :root[data-theme="dark"] .primary{color:#0b0e15}
-.ghost{min-height:48px;padding:0 16px;border-radius:13px;border:1px solid var(--line2);background:var(--panel);font-size:15px;font-weight:700;color:var(--ink)}
+.ghost{min-height:48px;padding:0 16px;border-radius:13px;border:1px solid var(--line2);background:var(--panel);font-size:15px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
 .ghost:hover{border-color:var(--acc)}
+.ghost.sm{min-height:44px;padding:0 14px;font-size:14px;border-radius:12px}
+/* 계정 줄의 단추는 손맛 그림자를 두지 않는다 — 줄 안에서 하나만 떠 보이지 않게 */
+.who-acts .ghost{box-shadow:none}
+.linkbtn{min-height:44px;padding:0 10px;border-radius:11px;background:none;color:var(--muted);font-size:13.5px;font-weight:750;display:inline-flex;align-items:center;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line2)}
+.linkbtn:hover{color:var(--acc);text-decoration-color:var(--acc)}
 .offmsg{margin:12px 0 0;padding:12px 14px;border:1px dashed var(--line2);border-radius:12px;font-size:13.5px;line-height:1.6;color:var(--muted)}
 .offmsg b{color:var(--ink)}
 
@@ -151,11 +157,11 @@ a{color:inherit}
 .d-meta{display:flex;flex-wrap:wrap;gap:6px}
 .d-meta span{padding:2px 9px;border-radius:8px;border:1px solid var(--d-line);font-size:12px;font-weight:650;color:var(--d-mut)}
 .d-act{display:flex;flex-wrap:wrap;gap:8px}
-.d-b{min-height:44px;padding:0 14px;border-radius:11px;border:1px solid var(--d-line);background:var(--d-bg);font-size:14px;font-weight:700;color:var(--d-ink)}
-.d-b:hover{border-color:var(--d-ink)}
-.d-b.go{background:color-mix(in srgb,var(--d-ink) 88%,var(--d-bg));color:var(--d-bg);border-color:transparent}
-.d-b.live{border-color:color-mix(in srgb,var(--d-ink) 46%,var(--d-bg));font-weight:800}
-.d-b.bad{color:color-mix(in srgb,#a53a26 78%,var(--d-ink))}
+.d-b{min-height:44px;padding:0 14px;border-radius:11px;border:1px solid var(--d-line,var(--line2));background:var(--d-bg,var(--panel));font-size:14px;font-weight:700;color:var(--d-ink,var(--ink))}
+.d-b:hover{border-color:var(--d-ink,var(--acc))}
+.d-b.go{background:color-mix(in srgb,var(--d-ink,var(--ink)) 88%,var(--d-bg,var(--panel)));color:var(--d-bg,var(--panel));border-color:transparent}
+.d-b.live{border-color:color-mix(in srgb,var(--d-ink,var(--ink)) 46%,var(--d-bg,var(--panel)));font-weight:800}
+.d-b.bad{color:color-mix(in srgb,#a53a26 78%,var(--d-ink,var(--ink)))}
 :root[data-theme="dark"] .d-b.bad{color:#ffb3a4}
 .empty{margin:0;padding:22px 14px;text-align:center;font-size:14.5px;line-height:1.65;color:var(--d-mut)}
 .empty b{color:var(--d-ink)}
@@ -168,7 +174,8 @@ a{color:inherit}
 .diy-hd b{font-size:18px;font-weight:850;letter-spacing:-.03em}
 .diy-hd span{font-size:13px;color:var(--muted)}
 .tabs{display:flex;gap:6px;margin-top:14px;padding:4px;border-radius:13px;background:var(--soft);border:1px solid var(--line)}
-.tabs button{flex:1;min-height:44px;border-radius:10px;font-size:14.5px;font-weight:750;color:var(--muted)}
+/* 세그먼트 이름표는 가운데 — 글자가 왼쪽으로 쏠리던 것(IMG_7805)을 고친 규칙 */
+.tabs button{flex:1;min-width:0;min-height:44px;padding:0 12px;border-radius:10px;font-size:14.5px;font-weight:750;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap}
 .tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .diy-steps{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .diy-steps button{min-height:44px;padding:0 12px;border:1px solid var(--line2);border-radius:999px;font-size:13.5px;font-weight:700;color:var(--muted);background:var(--bg)}
@@ -213,11 +220,11 @@ a{color:inherit}
 :root[data-theme="dark"] .sheet{background:rgba(3,4,7,.7)}
 .sheet-bd{width:min(640px,100%);max-height:92vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:20px 20px 0 0;display:grid;grid-template-rows:auto 1fr auto}
 @media (min-width:760px){.sheet{place-items:center}.sheet-bd{border-radius:20px;max-height:88vh}}
-.sheet-hd{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel)}
+.sheet-hd{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}
 .sheet-hd b{flex:1;min-width:0;font-size:17px;font-weight:800}
 .x{width:44px;height:44px;flex:none;border-radius:12px;border:1px solid var(--line);font-size:20px;line-height:1;color:var(--muted)}
 .sheet-main{padding:18px;display:grid;gap:12px}
-.sheet-ft{display:flex;flex-wrap:wrap;gap:8px;padding:14px 18px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--panel)}
+.sheet-ft{display:flex;flex-wrap:wrap;gap:8px;padding:14px 18px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--panel);z-index:2}
 .reh{display:grid;gap:8px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
 .reh h4{margin:0;font-size:16px;font-weight:800}
 .reh p{margin:0;font-size:14px;line-height:1.62;color:var(--muted)}
@@ -226,6 +233,11 @@ a{color:inherit}
 .field{display:grid;gap:6px}
 .field label{font-size:13.5px;font-weight:750}
 .field input{min-height:46px;padding:0 14px;border:1px solid var(--line2);border-radius:12px;background:var(--bg);font-size:16px}
+.about{display:grid;gap:10px}
+.about p{margin:0;font-size:14px;line-height:1.68;color:var(--muted)}
+.about p b{color:var(--ink);font-weight:750}
+.about ol{margin:0;padding-left:18px;font-size:14px;line-height:1.66;color:var(--muted)}
+.about ol b{color:var(--ink);font-weight:750}
 
 /* ---------- 토스트 ---------- */
 .toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom));transform:translate(-50%,14px);z-index:80;max-width:min(520px,calc(100% - 28px));
@@ -248,16 +260,16 @@ a{color:inherit}
     <div id="lvModeHost"></div>
 
     <section class="hero" id="deckHero">
-      <p class="kick"><span class="no">내 덱</span><span>로그인하면 계정에, 로그아웃이면 이 기기에</span></p>
+      <p class="kick"><span class="no">내 덱</span><span>로그인하면 계정에, 로그인하지 않으면 이 창에만</span></p>
       <h1>내가 짠 <em>상담 흐름</em>을 모아 두는 곳</h1>
-      <p class="lede"><b>상담 플로우</b>에서 만든 덱이 여기 쌓입니다. 자료 순서대로 열어 보거나 리허설로 다시 걸어 보고, <b>공간 꾸미기</b>로 내 덱의 겉모양을 바꿉니다.</p>
+      <p class="lede"><b>상담 플로우</b>에서 만든 덱이 여기 쌓입니다. 단계를 눌러 어느 자료로든 건너뛰며 열어 보고, 리허설로 다시 걸어 보고, <b>공간 꾸미기</b>로 내 덱의 겉모양을 바꿉니다.</p>
     </section>
 
     <div id="deckMode">
     <div class="bar">
       <div class="who" id="who"></div>
       <div class="bar-btns">
-        <a class="primary" href="../flow/" id="newBtn" style="display:inline-flex;align-items:center;text-decoration:none">새 흐름 짜기</a>
+        <a class="primary" href="../flow/" id="newBtn">새 흐름 짜기</a>
         <button type="button" class="ghost" id="diyBtn" aria-expanded="false" aria-controls="diy">공간 꾸미기</button>
       </div>
     </div>
@@ -288,13 +300,33 @@ a{color:inherit}
     </div>
 
     <section id="live" hidden aria-labelledby="lvT">
-      <div class="hero" id="lvIntro" style="padding-top:12px">
-        <p class="kick"><span class="no">마이덱 라이브</span><span>덱 × 내담자 상황 → 단계별 실전 상담 OS</span></p>
-        <h1 id="lvT">덱의 순서에 <em>근거를 채워</em> 실전 상담 OS로</h1>
-        <p class="lede">덱을 고르고 내담자 상황을 적으면, 단계마다 <b>자료실 색인에서 실제로 건진 근거</b>·발문·체크·이어지는 자료를 배치한 보드를 만듭니다. 색인에 없는 수치·조문·기업명은 세우지 않습니다.</p>
+      <div class="lv-hero">
+        <p class="kick"><span class="no">마이덱 라이브</span></p>
+        <h1 id="lvT">하고 싶은 일을 <em>한 문장</em>으로 적으면, 세 가지 흐름으로</h1>
       </div>
-      <div class="lv-setup" id="lvSetup"></div>
-      <div class="lv-board" id="lvBoard" hidden role="region" aria-labelledby="lvT"></div>
+
+      <div class="lv-box" id="lvBox">
+        <div class="lv-fix" id="lvFix" hidden></div>
+        <div class="lv-pick" id="lvPick" role="tablist" aria-label="짜는 방식">
+          <button type="button" role="tab" data-m="algo" aria-selected="true">키워드 하나로</button>
+          <button type="button" role="tab" data-m="live" aria-selected="false">문장으로</button>
+        </div>
+        <div class="lv-field" id="lvField" hidden>
+          <label class="sr" for="lvAsk">하고 싶은 일 한 문장</label>
+          <textarea id="lvAsk" class="lv-ask" rows="2" maxlength="200" autocomplete="off" spellcheck="false" aria-describedby="lvHelp"></textarea>
+          <div class="lv-ph" id="lvPh" aria-hidden="true"><span id="lvType"></span><i class="lv-caret"></i></div>
+        </div>
+        <div class="lv-chips" id="lvChips" role="group" aria-label="개념 고르기"></div>
+        <p class="sr" id="lvHelp">예) 경력단절 내담자 첫 상담 흐름 짜기 — 적은 말에서 자료실 섹터를 찾아 세 가지 순서로 짜 줍니다.</p>
+        <div class="lv-acts">
+          <button type="button" class="lv-go" id="lvGo">완성덱 만들기</button>
+          <button type="button" class="lv-tut" id="lvTut" aria-haspopup="dialog">튜토리얼</button>
+        </div>
+        <p class="lv-msg" id="lvMsg" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="lv-courses" id="lvCourses" hidden></div>
+      <div class="lv-board" id="lvBoard" hidden role="region" aria-label="상담 OS 보드"></div>
     </section>
   </main>
 </div>
@@ -310,9 +342,12 @@ a{color:inherit}
 
 <script src="../assets/tools.js"></script>
 <script src="../assets/mydeck-store.js"></script>
+<script src="./store.js"></script>
 <script src="../assets/mydeck-diy.js"></script>
 <script src="../assets/marker.js" defer></script>
 <script src="../assets/prefs.js" defer></script>
+<script src="./assemble.js" defer></script>
+<script src="./deck-nav.js" defer></script>
 <script src="./live.js" defer></script>
 <script src="./app.js" defer></script>
 </body>
