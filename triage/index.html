@@ -125,14 +125,16 @@ a{color:inherit}
 .seg label:active span{transform:scale(.985)}
 .ax-note{margin:4px 0 0;font-size:11px;line-height:1.4;color:var(--dim)}
 .ax-note b{font-weight:750;color:var(--muted)}
-.fld{display:grid;gap:4px;min-width:0}
-.flds{display:grid;gap:8px;margin-top:8px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.fld{display:grid;gap:4px;min-width:0;grid-template-columns:minmax(0,1fr)}
+.flds{display:grid;gap:8px;margin-top:8px;grid-template-columns:repeat(2,minmax(0,1fr))}
 .lb{font-size:12px;font-weight:750;color:var(--muted)}
-.inp{display:flex;align-items:center;gap:5px;min-height:46px;padding:0 11px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel)}
-.inp input{flex:1;min-width:0;min-height:44px;border:0;background:none;text-align:right;font-size:15px;font-weight:750;font-variant-numeric:tabular-nums;outline:none}
+/* min-width:0 + width:100%: input의 기본 너비(max-content)가 격자 칸을 밀어내지 않게 한다 */
+.inp{display:flex;align-items:center;gap:5px;min-width:0;width:100%;max-width:100%;min-height:46px;padding:0 11px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel)}
+/* 16px: iOS Safari가 초점을 잡을 때 화면을 자동 확대하지 않는 최소 크기 */
+.inp input{flex:1 1 0;min-width:0;width:100%;min-height:44px;border:0;background:none;text-align:right;font-size:16px;font-weight:750;font-variant-numeric:tabular-nums;outline:none}
 .inp input::placeholder{font-weight:600;color:var(--dim)}
 .inp i{flex:none;font-style:normal;font-size:12.5px;font-weight:700;color:var(--muted)}
-.sel{min-height:44px;width:100%;padding:0 9px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:13.5px;font-weight:750;color:var(--ink)}
+.sel{min-width:0;min-height:44px;width:100%;max-width:100%;padding:0 9px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:16px;font-weight:750;color:var(--ink)}
 .chks{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .chk{position:relative;display:inline-flex;align-items:center;gap:6px;min-height:46px;padding:0 11px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer}
 .chk input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0}
