@@ -164,7 +164,10 @@ svg text{font-family:var(--sans);fill:var(--muted)}
 
 /* 조정 슬라이더 */
 .rngGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,132px),1fr));gap:5px 12px}
-@media (min-width:900px){.rngGrid{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px 18px}}
+@media (min-width:900px){.rngGrid{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px 18px}
+  #wfAdj{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #levAdj{grid-template-columns:minmax(0,1fr)}}
+#levAdj{grid-template-columns:minmax(0,1fr)}
 .rng{display:block;min-height:46px;padding:3px 0 0;min-width:0}
 .rng .rl{display:flex;align-items:baseline;gap:6px;font-size:12px;font-weight:700;color:var(--muted);min-width:0}
 .rng .rl .rn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -180,7 +183,7 @@ svg text{font-family:var(--sans);fill:var(--muted)}
 .cf{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
 .cf .cv{font-size:12.5px;font-weight:800;line-height:1.2;color:var(--ink);text-align:center;white-space:nowrap}
 .cf .cv.plus{color:var(--good)}.cf .cv.minus{color:var(--crit)}
-.cfTrack{position:relative;display:block;width:100%;max-width:104px;height:132px;padding:0;border:1px solid var(--line);
+.cfTrack{position:relative;display:block;width:100%;max-width:104px;height:232px;padding:0;border:1px solid var(--line);
   border-radius:10px;background:var(--surface-2);overflow:hidden;cursor:ns-resize;touch-action:none;-webkit-appearance:none;appearance:none}
 .cfTrack::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line-2)}
 .cfFill{position:absolute;left:12%;right:12%;bottom:50%;height:calc(50% - 4px);transform-origin:bottom center;
@@ -188,7 +191,12 @@ svg text{font-family:var(--sans);fill:var(--muted)}
 /* 음수만 기준선 아래로 내려간다 — 양수는 반드시 위(bottom:50%)에서 자란다 */
 .cfFill.minus{top:calc(50% + 4px);bottom:auto;transform-origin:top center;border-radius:3px 3px 5px 5px;background:var(--crit)}
 .cfSign{position:absolute;left:0;right:0;font-size:9.5px;font-weight:800;color:var(--dim);line-height:1;text-align:center;pointer-events:none}
-.cfSign.p{top:3px}.cfSign.n{bottom:3px}
+.cfSign.p{top:4px}.cfSign.n{bottom:4px}
+/* 값 자리에 붙는 손잡이 — “여기를 잡고 위아래로” */
+.cfGrip{position:absolute;left:50%;width:30px;height:8px;margin-left:-15px;margin-bottom:-4px;border-radius:99px;
+  background:var(--ink);opacity:.22;pointer-events:none;transition:opacity .12s ease}
+.cfTrack:active .cfGrip{opacity:.42}
+.cfRange{display:block;width:100%;max-width:104px;height:44px;margin:0;accent-color:var(--acc);touch-action:pan-y}
 .cf .cl{font-size:11.5px;font-weight:700;color:var(--muted);text-align:center;line-height:1.3}
 .cf .cn{font-size:10.5px;color:var(--dim);text-align:center;line-height:1.3}
 .cfTrack:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
@@ -272,12 +280,12 @@ details.bnd[open] summary::after{content:"닫기"}
 .scroll-x{overflow-x:auto}
 
 /* ── 3표 · 3개년 ── */
-.stt{display:grid;grid-template-columns:minmax(0,1.34fr) repeat(3,minmax(0,1fr));gap:0 6px;font-size:12.5px;line-height:1.4;align-items:center}
-.stt .sh{font-size:10px;font-weight:800;color:var(--muted);text-align:right;padding-bottom:3px;border-bottom:1px solid var(--line-2);line-height:1.2}
-.stt .sh.l{text-align:left}
+.stt{display:grid;grid-template-columns:minmax(0,1.34fr) repeat(3,minmax(0,1fr));gap:0;font-size:12.5px;line-height:1.4;align-items:center}
+.stt .sh{font-size:10px;font-weight:800;color:var(--muted);text-align:right;padding:0 0 3px 6px;border-bottom:1px solid var(--line-2);line-height:1.2;align-self:end}
+.stt .sh.l{text-align:left;padding:0 6px 3px 0}
 .stt .sh .yhx{display:block;font-size:9.5px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums}
-.stt .sl{font-weight:600;color:var(--muted);padding:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.6em}
-.stt .sv{text-align:right;font-variant-numeric:tabular-nums;padding:2px 0;font-weight:650;white-space:nowrap}
+.stt .sl{font-weight:600;color:var(--muted);padding:2px 6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.6em}
+.stt .sv{text-align:right;font-variant-numeric:tabular-nums;padding:2px 0 2px 6px;font-weight:650;white-space:nowrap}
 .stt .sv.neg{color:var(--crit)}
 .stt .row-t .sl,.stt .row-t .sv{font-weight:800;color:var(--ink);border-top:1px solid var(--line);padding-top:4px}
 .stt .sl.row-t,.stt .sv.row-t{font-weight:800;color:var(--ink);border-top:1px solid var(--line);padding-top:3px}
@@ -327,7 +335,8 @@ details.bnd[open] summary::after{content:"닫기"}
 #p-st .qs li{padding:7px 10px}
 @media (max-width:430px){
   #p-st .stt{font-size:12px}
-  #p-st .stt .sl,#p-st .stt .sv{padding:1px 0}
+  #p-st .stt .sl{padding:1px 6px 1px 0}
+  #p-st .stt .sv{padding:1px 0 1px 6px}
   #p-st .stt .sh{font-size:9.5px}
   #p-st .read p{font-size:12.7px;line-height:1.55}
   #p-st .qs li{padding:7px 9px;font-size:12px}
@@ -335,10 +344,12 @@ details.bnd[open] summary::after{content:"닫기"}
   #p-st .bento{gap:7px}
 }
 
-/* ── 보기 방식(이지·심화) · 초보 가이드 ── */
+/* ── 보기 방식(기초·심화) · 기초 가이드 ──
+   상단 바는 이 두 칸만 둔다. 숫자 스위치는 아래 .numRow(심화 영역)로 빠져
+   기초↔심화를 오가도 이 줄의 위치·폭이 1px도 변하지 않는다. */
 .modeBar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding-top:7px}
 .modeSeg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px;padding:3px;background:var(--surface);
-  border:1px solid var(--line);border-radius:12px;flex:1 1 148px;min-width:0;max-width:360px}
+  border:1px solid var(--line);border-radius:12px;flex:1 1 0;min-width:0;max-width:360px}
 .modeSeg button{min-height:44px;padding:3px 12px;border-radius:9px;font-size:13px;font-weight:800;color:var(--muted);
   display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.25;min-width:0}
 .modeSeg button .ms{font-size:10.5px;font-weight:600;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
@@ -348,12 +359,25 @@ details.bnd[open] summary::after{content:"닫기"}
   background:var(--surface);font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:5px;color:var(--ink)}
 .guideBtn .gi{font-size:10.5px;font-weight:800;color:var(--acc);border:1px solid var(--acc-line);border-radius:999px;padding:1px 6px}
 .guideBtn:hover{border-color:var(--acc-line)}
-.numBtn{flex:0 0 auto;min-height:44px;padding:0 10px;border-radius:11px;border:1px dashed var(--line-2);
-  background:var(--surface-2);font-size:11.5px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
-.numBtn[aria-pressed="true"]{border-style:solid;border-color:var(--acc);color:var(--acc);font-weight:800}
-html[data-view="easy"] .numBtn{display:none}
+/* 숫자 스위치 — 심화 영역 안의 고정 폭 스위치(라벨이 바뀌어도 폭이 변하지 않는다) */
+.numRow{display:none;align-items:center;justify-content:flex-end;gap:8px;padding-top:1px}
+html[data-view="deep"] .numRow{display:flex}
+.numRow .nt{font-size:11.5px;font-weight:800;color:var(--dim)}
+.numSw{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;flex:0 0 124px;width:124px;
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.numSw button{min-height:44px;padding:0 6px;font-size:11.5px;font-weight:800;color:var(--muted);white-space:nowrap}
+.numSw button+button{border-left:1px solid var(--line)}
+.numSw button[aria-pressed="true"]{background:var(--acc);color:var(--acc-ink)}
 
-/* 이지: 숫자 덩어리는 접고, 신호등 3~4줄과 그림만 */
+/* 심화에서만 되는 조절 — 기초에서는 문구와 한 번에 가는 단단추를 보여 준다 */
+.hEasy,.hDeep{display:inline}
+html[data-view="deep"] .hEasy{display:none}
+html[data-view="easy"] .hDeep{display:none}
+.levJump{display:inline-flex;align-items:center;min-height:44px;padding:0 11px;margin:-12px 0;border:1px solid var(--acc-line);
+  border-radius:999px;background:var(--surface);font-size:11.5px;font-weight:800;color:var(--acc);white-space:nowrap}
+.levJump:hover{border-color:var(--acc)}
+
+/* 기초: 숫자 덩어리는 접고, 신호등 3~4줄과 그림만 */
 html[data-view="easy"] .deepOnly{display:none!important}
 html[data-view="easy"] .easyTable{display:none!important}
 html[data-view="easy"] .numCard{display:none!important}
@@ -398,8 +422,8 @@ html[data-view="easy"] .easyOnly{display:block}
 .sheet{width:100%;max-width:540px;max-height:calc(100dvh - 24px);overflow:auto;background:var(--surface);
   border:1px solid var(--line-2);border-radius:16px;padding:14px 16px 12px;display:flex;flex-direction:column;gap:9px;
   box-shadow:0 24px 60px -34px rgba(20,14,6,.6)}
-.sheet .sh-h{display:flex;align-items:center;gap:8px;min-height:44px}
-.sheet .sh-h h2{flex:1 1 auto;min-width:0;font-size:16px;font-weight:800;letter-spacing:-.02em}
+.sheet .sh-h{display:flex;align-items:flex-start;gap:8px;min-height:44px}
+.sheet .sh-h h2{flex:1 1 auto;min-width:0;font-size:16px;font-weight:800;letter-spacing:-.02em;padding-top:2px}
 .sheet .x{flex:none;width:44px;height:44px;border-radius:11px;border:1px solid var(--line);background:var(--surface-2);
   font-size:17px;font-weight:800;line-height:1;color:var(--muted);display:flex;align-items:center;justify-content:center}
 .sheet .sh-b{font-size:13.5px;line-height:1.62;color:var(--ink)}
@@ -412,12 +436,18 @@ html[data-view="easy"] .easyOnly{display:block}
 .glRow .glD{font-size:12.5px;line-height:1.55;color:var(--ink)}
 .glRow .glE{font-size:11.5px;line-height:1.5;color:var(--muted)}
 .sheet .sh-b .ex{display:block;margin-top:6px;padding:7px 10px;border-radius:9px;background:var(--acc-soft);font-size:12.5px;color:var(--ink)}
-.tutStep{font-size:10.5px;font-weight:800;color:var(--acc);letter-spacing:.06em}
+.tutStep{font-size:10.5px;font-weight:800;color:var(--acc);letter-spacing:.06em;white-space:nowrap;flex:0 0 auto;
+  padding-top:6px;min-width:32px}
+/* 4단계 내내 모달 높이가 변하지 않도록 본문 높이는 스크립트가 가장 긴 단계에 맞춰 고정한다 */
+#tutBody{display:flex;flex-direction:column;gap:9px;overflow-y:auto;overscroll-behavior:contain;min-height:0}
+.tutLead{padding:0 11px}
 .tutTitle{font-size:17px;font-weight:800;line-height:1.35;letter-spacing:-.02em}
 .tutList{display:flex;flex-direction:column;gap:7px;margin:0;padding:0;list-style:none}
-.tutList li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;padding:8px 10px;border-radius:10px;
+.tutList li{display:grid;grid-template-columns:5.6em minmax(0,1fr);column-gap:10px;padding:8px 10px;border-radius:10px;
   background:var(--surface-2);border:1px solid var(--line);font-size:13px;line-height:1.55}
-.tutList li .tk{font-size:11px;font-weight:800;color:var(--acc);white-space:nowrap;padding-top:1px}
+.tutList li .tk{font-size:11px;font-weight:800;color:var(--acc);white-space:nowrap;padding-top:1px;overflow:hidden;text-overflow:ellipsis;align-self:start}
+.tutFoot{margin:0;padding:8px 10px;border-radius:10px;background:var(--acc-soft);border:1px solid var(--acc-line);
+  font-size:12.8px;line-height:1.6;color:var(--ink)}
 .tutNav{display:flex;align-items:center;gap:8px;margin-top:2px}
 .tutNav button{flex:1 1 0;min-height:44px;border-radius:11px;border:1px solid var(--line-2);background:var(--surface-2);
   font-size:13px;font-weight:800;color:var(--ink);display:flex;align-items:center;justify-content:center}
@@ -427,7 +457,7 @@ html[data-view="easy"] .easyOnly{display:block}
 .tutDots i{width:7px;height:7px;border-radius:50%;background:var(--line-2);display:block}
 .tutDots i.on{background:var(--acc);width:18px;border-radius:999px}
 
-/* 이지: 3표 자리에 들어가는 세 형제 카드 */
+/* 기초: 3표 자리에 들어가는 세 형제 카드 */
 .fam{display:grid;grid-template-columns:minmax(0,1fr);gap:7px}
 @media (min-width:700px){.fam{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .famCard{display:flex;flex-direction:column;gap:3px;padding:9px 11px;border-radius:11px;background:var(--surface-2);
@@ -516,11 +546,10 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
     </div>
     <div class="modeBar">
       <div class="modeSeg" role="group" aria-label="보기 방식">
-        <button type="button" data-view="easy" aria-pressed="true">이지 <span class="ms">쉽게 읽기</span></button>
+        <button type="button" data-view="easy" aria-pressed="true">기초 <span class="ms">쉽게 읽기</span></button>
         <button type="button" data-view="deep" aria-pressed="false">심화 <span class="ms">직접 조절</span></button>
       </div>
-      <button type="button" class="guideBtn" id="guideBtn" aria-haspopup="dialog"><span class="gi">?</span>초보 가이드</button>
-      <button type="button" class="numBtn" id="numBtn" aria-pressed="false" aria-label="표와 숫자 숨기기">숫자 줄이기</button>
+      <button type="button" class="guideBtn" id="guideBtn" aria-haspopup="dialog"><span class="gi">?</span>기초 가이드</button>
     </div>
     <div class="strip-label">연습 패턴 <span class="hint" style="font-weight:500">— 숫자와 현금흐름을 한 번에 채웁니다</span></div>
     <div class="presets" id="presets" role="group" aria-label="연습 패턴"></div>
@@ -530,6 +559,13 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
       <button class="tab" role="tab" type="button" id="tab-cf" data-tab="cf" aria-controls="p-cf" aria-selected="false"><span class="tn">3</span><span class="tl">현금흐름 8패턴</span><span class="ts">현금</span></button>
       <button class="tab" role="tab" type="button" id="tab-pl" data-tab="pl" aria-controls="p-pl" aria-selected="false"><span class="tn">4</span><span class="tl">손익·재무구조</span><span class="ts">손익</span></button>
       <button class="tab" role="tab" type="button" id="tab-sum" data-tab="sum" aria-controls="p-sum" aria-selected="false"><span class="tn">5</span><span class="tl">4규모 종합 판독</span><span class="ts">종합</span></button>
+    </div>
+    <div class="numRow" id="numRow">
+      <span class="nt">숫자</span>
+      <div class="numSw" role="group" aria-label="표와 숫자 표시">
+        <button type="button" data-nums="on" aria-pressed="true">전체</button>
+        <button type="button" data-nums="off" aria-pressed="false">줄이기</button>
+      </div>
     </div>
   </div>
 
@@ -611,7 +647,7 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
     </section>
 
     <section class="panel" id="p-cf" role="tabpanel" aria-labelledby="tab-cf" hidden>
-      <h2 class="panel-title">현금흐름 8패턴 <span class="pt-sub">막대를 누르면 부호가 바뀌고, 위아래로 끌면 크기가 바뀝니다</span></h2>
+      <h2 class="panel-title">현금흐름 8패턴 <span class="pt-sub">막대를 위아래로 끌거나 아래 슬라이더로 값을 맞춥니다</span></h2>
       <div class="bento">
         <div class="card">
           <div class="card-h"><h3>영업 · 투자 · 재무 현금흐름</h3><span class="hint">기준선 위가 +, 아래가 − · <button type="button" class="glMore" data-gllist="cf">용어 보기</button></span></div>
@@ -641,21 +677,19 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
       <h2 class="panel-title">손익 · 재무구조 <span class="pt-sub">매출 100 기준으로 비용 구조와 레버리지를 만져 봅니다</span></h2>
       <div class="bento">
         <div class="card">
-          <div class="card-h"><h3>매출에서 순이익까지</h3><span class="hint">매출 100 기준 · 옅은 띠는 확대 구간 · <button type="button" class="glMore" data-gllist="pl">용어 보기</button></span></div>
+          <div class="card-h"><h3>매출에서 순이익까지</h3><span class="hint"><span class="hDeep">매출 100 기준 · 아래 슬라이더로 직접 바꿉니다</span><span class="hEasy">매출 100 기준 · 옅은 띠는 확대 구간</span> · <button type="button" class="glMore" data-gllist="pl">용어 보기</button></span></div>
           <div class="wf" id="wf" role="img" aria-label="손익 워터폴"></div>
           <div class="wfLab" id="wfLab"></div>
           <p class="wfNote" id="wfNote"></p>
+          <div class="rngGrid deepOnly wfAdj" id="wfAdj"></div>
           <div class="tiles numCard" id="plTiles"></div>
         </div>
         <div class="card">
-          <div class="card-h"><h3>자산 = 부채 + 자본</h3><span class="hint">부채비율을 만지면 비중이 바뀝니다 · <button type="button" class="glMore" data-gllist="lev">용어 보기</button></span></div>
+          <div class="card-h"><h3>자산 = 부채 + 자본</h3><span class="hint"><span class="hDeep">아래 슬라이더로 비중·타일·판정이 함께 바뀝니다</span><span class="hEasy">부채비율은 심화에서 직접 바꿉니다 <button type="button" class="levJump" id="levDeepBtn">심화에서 조절</button></span> · <button type="button" class="glMore" data-gllist="lev">용어 보기</button></span></div>
           <div class="stack" id="stack" aria-hidden="true"></div>
+          <div class="rngGrid deepOnly levAdj" id="levAdj"></div>
           <div class="tiles numCard" id="levTiles"></div>
           <div class="read" id="levRead"></div>
-        </div>
-        <div class="card span2 deepOnly numCard">
-          <div class="card-h"><h3>손익·자본 구조 조정</h3><span class="hint">부채비율은 1번 탭과 같은 값입니다 · 규모를 바꾸면 그 규모의 전형 손익 구조로 다시 채워집니다</span></div>
-          <div class="rngGrid" id="plInputs"></div>
         </div>
       </div>
     </section>
@@ -709,7 +743,7 @@ html[data-jc-imm] .hud-row2 .scale-note{display:none}
   </footer>
   <div class="veil" id="tutVeil" hidden>
     <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="tutTitle">
-      <div class="sh-h"><span class="tutStep" id="tutStep">1 / 4</span><h2 id="tutTitle">재무제표 3형제</h2><button type="button" class="x" id="tutX" aria-label="초보 가이드 닫기">×</button></div>
+      <div class="sh-h"><span class="tutStep" id="tutStep">1 / 4</span><h2 id="tutTitle">재무제표 3형제</h2><button type="button" class="x" id="tutX" aria-label="기초 가이드 닫기">×</button></div>
       <div id="tutBody"></div>
       <div class="tutDots" id="tutDots" aria-hidden="true"></div>
       <div class="tutNav">
@@ -1288,21 +1322,28 @@ function verdictLine(){
 var CFM=[{k:'o',lab:'영업활동',name:'영업CF'},{k:'i',lab:'투자활동',name:'투자CF'},{k:'f',lab:'재무활동',name:'재무CF'}];
 var PAT_ORDER=['+--','+-+','++-','+++','--+','-+-','-++','---'];
 var PAT_NAME={'+--':'자체 조달','+-+':'성장 투자','++-':'자산 매각 상환','+++':'현금 축적','--+':'J커브 투자','-+-':'매각 연명','-++':'구조조정','---':'현금 고갈'};
-var MAG_MAX=150;
+var MAG_MAX=150,CF_STEP=5;
 function buildCF(){
   var box=$('cfBars');box.textContent='';
   CFM.forEach(function(c,ix){
     var col=h('div','cf');
     var val=h('div','cv');val.id='cfVal'+ix;
     var track=h('button','cfTrack');track.type='button';track.id='cfBar'+ix;
-    track.setAttribute('aria-label',c.lab+' 현금흐름. 두르면 부호가 바뀌고, 위아래로 끌면 크기가 바뀝니다.');
+    track.setAttribute('aria-label',c.lab+' 현금흐름. 막대를 누르거나 위아래로 끌어 \u2212'+MAG_MAX+'~+'+MAG_MAX+'억 사이 값을 정합니다.');
     var fill=h('div','cfFill');fill.id='cfFill'+ix;
-    track.appendChild(h('span','cfSign p','+'));
-    track.appendChild(h('span','cfSign n','\u2212'));
-    track.appendChild(fill);
+    var grip=h('div','cfGrip');grip.id='cfGrip'+ix;
+    track.appendChild(h('span','cfSign p','\u25b2 +'+MAG_MAX));
+    track.appendChild(h('span','cfSign n','\u2212'+MAG_MAX+' \u25bc'));
+    track.appendChild(fill);track.appendChild(grip);
     col.appendChild(val);col.appendChild(track);
     col.appendChild(h('div','cl',c.lab));
     var sub=h('div','cn');sub.id='cfSub'+ix;col.appendChild(sub);
+    var rg=document.createElement('input');
+    rg.type='range';rg.id='cfRng'+ix;rg.className='cfRange';
+    rg.min=-MAG_MAX;rg.max=MAG_MAX;rg.step=CF_STEP;rg.value=state.cf[c.k]*state.mag[c.k];
+    rg.setAttribute('aria-label',c.lab+' 현금흐름 값(억 원, \u2212는 유출)');
+    rg.addEventListener('input',function(){setCFSigned(c.k,Number(rg.value));});
+    col.appendChild(rg);
     box.appendChild(col);
     bindCF(ix,c.k);
   });
@@ -1314,37 +1355,46 @@ function buildCF(){
     t.appendChild(d);
   });
 }
+/* 부호+크기를 한 값으로 받는다 — 슬라이더·드래그·키보드가 모두 이 함수만 쓴다 */
+function setCFSigned(key,v){
+  v=Math.round(clamp(v,-MAG_MAX,MAG_MAX)/CF_STEP)*CF_STEP;
+  if(v===0)v=state.cf[key]>0?CF_STEP:-CF_STEP;      /* 0은 조합(+++ 등)을 읽을 수 없어 최소값으로 붙인다 */
+  state.cf[key]=v>0?1:-1;
+  state.mag[key]=Math.max(CF_STEP,Math.round(Math.abs(v)));
+  state.preset=null;renderAll();
+}
 function bindCF(ix,key){
-  var btn=$('cfBar'+ix),startY=0,startMag=0,moved=false,down=false;
+  var btn=$('cfBar'+ix),down=false;
+  /* 값은 “처음 잡은 점 기준 이동량”이 아니라 “손가락이 트랙의 어느 높이에 있는지”로 정한다.
+     예전에는 끌기 시작한 점에서의 거리로 크기를 정해, 조금만 움직여도 끝값(±150)으로 튀었다. */
+  function valFromY(clientY){
+    var r=btn.getBoundingClientRect();
+    var half=Math.max(1,r.height/2-8);              /* 손잡이가 테두리에 닿지 않게 */
+    var t=((r.top+r.height/2)-clientY)/half;        /* +1 위 끝, \u22121 아래 끝 */
+    return clamp(t,-1,1)*MAG_MAX;
+  }
   btn.addEventListener('pointerdown',function(ev){
     if(ev.button!==undefined&&ev.button>0)return;
-    ev.preventDefault();down=true;startY=ev.clientY;startMag=state.mag[key];moved=false;
+    ev.preventDefault();down=true;
     try{btn.setPointerCapture(ev.pointerId);}catch(e){}
+    setCFSigned(key,valFromY(ev.clientY));
   });
   btn.addEventListener('pointermove',function(ev){
     if(!down)return;
-    var dy=ev.clientY-startY;
-    if(Math.abs(dy)>4)moved=true;
-    if(!moved)return;
     ev.preventDefault();
-    state.mag[key]=Math.round(clamp(startMag+Math.abs(dy)*1.2,2,MAG_MAX));
-    state.cf[key]=dy>0?-1:1;
-    state.preset=null;renderAll();
+    setCFSigned(key,valFromY(ev.clientY));
   });
   function end(ev){
-    if(down&&!moved){state.cf[key]*=-1;state.preset=null;renderAll();}
     down=false;
     try{btn.releasePointerCapture(ev.pointerId);}catch(e){}
   }
   btn.addEventListener('pointerup',end);
-  btn.addEventListener('pointercancel',function(ev){down=false;try{btn.releasePointerCapture(ev.pointerId);}catch(e){}});
+  btn.addEventListener('pointercancel',end);
   btn.addEventListener('keydown',function(ev){
-    if(ev.key===' '||ev.key==='Enter'){ev.preventDefault();state.cf[key]*=-1;state.preset=null;renderAll();}
-    else if(ev.key==='ArrowUp'||ev.key==='ArrowDown'){
-      ev.preventDefault();
-      state.mag[key]=Math.round(clamp(state.mag[key]+(ev.key==='ArrowUp'?5:-5),2,MAG_MAX));
-      state.preset=null;renderAll();
-    }
+    var cur=state.cf[key]*state.mag[key];
+    if(ev.key==='ArrowUp'||ev.key==='ArrowRight'){ev.preventDefault();setCFSigned(key,cur+CF_STEP);}
+    else if(ev.key==='ArrowDown'||ev.key==='ArrowLeft'){ev.preventDefault();setCFSigned(key,cur-CF_STEP);}
+    else if(ev.key===' '||ev.key==='Enter'){ev.preventDefault();setCFSigned(key,-cur);}
   });
 }
 function drawCF(){
@@ -1356,9 +1406,15 @@ function drawCF(){
     v.className='cv '+(sign>0?'plus':'minus');
     var f=$('cfFill'+ix);
     f.className='cfFill'+(sign>0?'':' minus');
-    f.style.transform='scaleY('+(clamp(mag/60,0.18,1)).toFixed(3)+')';
-    $('cfSub'+ix).textContent=Math.round(mag)+'억 원';
+    var ratio=clamp(mag/MAG_MAX,0,1);
+    f.style.transform='scaleY('+Math.max(ratio,0.03).toFixed(3)+')';
     var b=$('cfBar'+ix);
+    var H=b.clientHeight||232;
+    var gp=$('cfGrip'+ix);
+    if(gp)gp.style.bottom=(50+sign*ratio*((H/2-4)/H*100)).toFixed(2)+'%';
+    var rg=$('cfRng'+ix);
+    if(rg&&document.activeElement!==rg)rg.value=sign*mag;
+    $('cfSub'+ix).textContent=Math.round(mag)+'억 원';
     b.setAttribute('aria-pressed',sign>0?'true':'false');
     b.setAttribute('title',c.lab+' '+(sign>0?'+':'\u2212')+Math.round(mag)+'억 원');
   });
@@ -1880,13 +1936,16 @@ function buildInputs(){
     box.appendChild(row);
   });
 }
+/* 4번 탭의 조절 손잡이는 그 값이 보이는 카드 안에 둔다.
+   예전에는 화면 맨 아래 한 카드에 몰아 두어, 카드 안의 안내문(“부채비율을 만지면…”)을 보고
+   그 카드에서 직접 만지려다 아무 반응이 없는 일이 생겼다. */
 function buildPLInputs(){
-  var box=$('plInputs');box.textContent='';
-  [{k:'vc',name:'변동비율',min:30,max:95,step:1,unit:'%'},
-   {k:'fc',name:'고정비(판관비)',min:5,max:70,step:1,unit:'%'},
-   {k:'it',name:'이자비용',min:0,max:15,step:.5,unit:'%'},
-   {k:'tax',name:'법인세율',min:0,max:35,step:1,unit:'%'}
+  [{k:'vc',name:'변동비율',min:30,max:95,step:1,unit:'%',host:'wfAdj'},
+   {k:'fc',name:'고정비(판관비)',min:5,max:70,step:1,unit:'%',host:'wfAdj'},
+   {k:'it',name:'이자비용',min:0,max:15,step:.5,unit:'%',host:'wfAdj'},
+   {k:'tax',name:'법인세율',min:0,max:35,step:1,unit:'%',host:'wfAdj'}
   ].forEach(function(f){
+    var box=$(f.host);if(!box)return;
     var row=h('div','rng');
     var rl=h('div','rl');
     rl.appendChild(h('span','rn',f.name));
@@ -1895,21 +1954,29 @@ function buildPLInputs(){
     var inp=document.createElement('input');
     inp.type='range';inp.id='pi-'+f.k;inp.min=f.min;inp.max=f.max;inp.step=f.step;inp.value=state.pl[f.k];
     inp.setAttribute('aria-label',f.name+'('+f.unit+')');
-    inp.addEventListener('input',function(){state.pl[f.k]=Number(inp.value);state.preset=null;syncMetFromPL();renderAll();});
+    inp.addEventListener('input',function(){
+      state.pl[f.k]=Number(inp.value);state.preset=null;
+      syncMetFromPL();          /* 1번 탭 영업이익률·이자보상배율과 2번 3표가 같이 움직인다 */
+      renderAll();
+    });
     row.appendChild(inp);
     box.appendChild(row);
   });
-  var row=h('div','rng');
-  var rl=h('div','rl');
-  rl.appendChild(h('span','rn','부채비율'));
-  rl.appendChild(h('span','rv')).id='pv-debt';
-  row.appendChild(rl);
-  var inp=document.createElement('input');
-  inp.type='range';inp.id='pi-debt';inp.min=20;inp.max=600;inp.step=5;inp.value=state.met.debt;
-  inp.setAttribute('aria-label','부채비율(%)');
-  inp.addEventListener('input',function(){state.met.debt=Number(inp.value);state.preset=null;renderAll();});
-  row.appendChild(inp);
-  box.appendChild(row);
+  var lbox=$('levAdj');if(!lbox)return;
+  var lrow=h('div','rng');
+  var lrl=h('div','rl');
+  lrl.appendChild(h('span','rn','부채비율'));
+  lrl.appendChild(h('span','rv')).id='pv-debt';
+  lrow.appendChild(lrl);
+  var linp=document.createElement('input');
+  linp.type='range';linp.id='pi-debt';linp.min=20;linp.max=600;linp.step=5;linp.value=state.met.debt;
+  linp.setAttribute('aria-label','부채비율(%)');
+  linp.addEventListener('input',function(){
+    state.met.debt=Number(linp.value);state.preset=null;
+    renderAll();                /* 비중 막대·타일·판독·오각형 판정이 함께 다시 계산된다 */
+  });
+  lrow.appendChild(linp);
+  lbox.appendChild(lrow);
 }
 function drawInputs(){
   MET.forEach(function(m){
@@ -1930,7 +1997,7 @@ function drawInputs(){
   if(document.activeElement!==dInp)dInp.value=state.met.debt;
 }
 
-/* ══════════ 13-b. 이지 보기 · 용어 주석 · 초보 가이드 ══════════ */
+/* ══════════ 13-b. 기초 보기 · 용어 주석 · 기초 가이드 ══════════ */
 var GLOSS={
  '영업이익률':{d:'매출 100원 중 본업에서 남은 돈의 비율입니다. 재료비·인건비·월세를 빼고 남은 몫입니다.',e:'매출 5,000억에 영업이익 200억이면 4%입니다.'},
  '부채비율':{d:'빚을 내 돈(자본)으로 나눈 값입니다. 100%면 빚과 내 돈이 같습니다.',e:'집값 3억에 내 돈 1억·빚 2억이면 부채비율 200%입니다.'},
@@ -2005,24 +2072,21 @@ var TUT=[
          ['스타트업','적자는 기본값입니다. 얼마나 버틸 수 있는지(런웨이)가 먼저입니다.'],
          ['공공기관','적자는 정부 보전·출자 약정과 함께 읽습니다.']],
   foot:'위 규모 버튼을 누를 때마다 판정이 다시 계산됩니다.'},
- {t:'이지와 심화는 한 번 누르면 바뀝니다',lead:'처음에는 이지로 읽고, 궁금한 칸이 생기면 심화로 넘어오세요.',
-  items:[['이지','신호등 3~4줄과 그림만 남습니다. 숫자 표와 슬라이더는 접혀 있습니다.'],
+ {t:'기초와 심화는 한 번 누르면 바뀝니다',lead:'처음에는 기초로 읽고, 궁금한 칸이 생기면 심화로 넘어오세요.',
+  items:[['기초','신호등 3~4줄과 그림만 남습니다. 숫자 표와 슬라이더는 접혀 있습니다.'],
          ['심화','모든 숫자·표·슬라이더를 직접 만져 봅니다.'],
          ['?','모르는 용어 옆 ? 를 누르면 두 줄 설명이 나옵니다.']],
-  foot:'화면 위 「이지 / 심화」 버튼 하나로 언제든 오갈 수 있습니다. 카드 제목 옆 「용어 ?」는 그 카드에 나오는 말을 모아 보여 줍니다.'},
+  foot:'화면 위 「기초 / 심화」 버튼 하나로 언제든 오갈 수 있습니다. 카드 제목 옆 「용어 ?」는 그 카드에 나오는 말을 모아 보여 줍니다.'},
  {t:'화면의 질문이 상담에서 쓸 말입니다',lead:'해석은 사람이 합니다. 이 화면은 숫자를 말로 바꾸는 연습장입니다.',
-  items:[['먼저 물어볼 것','숫자 하나마다 "그래서 무엇을 물을까"를 적어 두었습니다.'],
+  items:[['먼저 물을 것','숫자 하나마다 "그래서 무엇을 물을까"를 적어 두었습니다.'],
          ['발문','그대로 읽어도 되는 질문 문장입니다.'],
          ['5 종합','같은 숫자를 네 규모로 나란히 놓고 판정을 견줍니다.']],
-  foot:'막히면 이 가이드를 다시 열어 보세요. 화면 위 「초보 가이드」입니다.'}
+  foot:'막히면 이 가이드를 다시 열어 보세요. 화면 위 「기초 가이드」입니다.'}
 ];
-var tutIx=0,tutLast=null;
-function drawTut(){
-  var s=TUT[tutIx];
-  $('tutStep').textContent=(tutIx+1)+' / '+TUT.length;
-  $('tutTitle').textContent=s.t;
-  var b=$('tutBody');b.textContent='';
-  b.appendChild(h('p','sh-b',s.lead));
+var tutIx=0,tutLast=null,tutFitW=-1;
+function renderTutStep(i){
+  var s=TUT[i],b=$('tutBody');b.textContent='';
+  b.appendChild(h('p','sh-b tutLead',s.lead));
   var ul=h('ul','tutList');
   s.items.forEach(function(it){
     var li=document.createElement('li');
@@ -2031,16 +2095,31 @@ function drawTut(){
     ul.appendChild(li);
   });
   b.appendChild(ul);
-  b.appendChild(h('p','sh-b',s.foot));
+  b.appendChild(h('p','tutFoot',s.foot));
+}
+/* 본문 높이를 제일 긴 단계에 맞춰 고정 — 1/4~4/4를 오가도 모달 위·아래와 단추 자리가 움직이지 않는다 */
+function fitTutBody(){
+  var b=$('tutBody'),max=0,i;
+  b.style.height='auto';
+  for(i=0;i<TUT.length;i++){renderTutStep(i);max=Math.max(max,b.offsetHeight);}
+  b.style.height=max+'px';
+  tutFitW=b.clientWidth;
+}
+function drawTut(){
+  var s=TUT[tutIx];
+  if(tutFitW!==$('tutBody').clientWidth)fitTutBody();
+  renderTutStep(tutIx);
+  $('tutStep').textContent=(tutIx+1)+' / '+TUT.length;
+  $('tutTitle').textContent=s.t;
   var d=$('tutDots');d.textContent='';
   TUT.forEach(function(_,i){d.appendChild(h('i',i===tutIx?'on':''));});
   $('tutPrev').disabled=tutIx===0;
   $('tutNext').textContent=tutIx===TUT.length-1?'닫기':'다음';
 }
-function openTut(){tutLast=document.activeElement;tutIx=0;drawTut();$('tutVeil').hidden=false;$('tutX').focus();}
+function openTut(){tutLast=document.activeElement;tutIx=0;$('tutVeil').hidden=false;drawTut();$('tutX').focus();}
 function closeTut(){$('tutVeil').hidden=true;if(tutLast&&tutLast.focus)tutLast.focus();}
 
-/* 이지 요약 — 숫자 표 대신 신호등 3~4줄 */
+/* 기초 요약 — 숫자 표 대신 신호등 3~4줄 */
 function toneOf(s){return s>=70?'good':(s>=45?'mid':'bad');}
 var TONE_TXT={good:'괜찮음',mid:'주의',bad:'위험'};
 var AXQ_SHORT={stab:'빚 만기·차환 일정',prof:'마진이 줄어든 이유',grow:'성장이 어디서 왔는지',act:'재고·미수금',cash:'이익과 현금이 어긋난 이유'};
@@ -2125,8 +2204,9 @@ function setView(v){
 }
 function setNums(off){
   document.documentElement.setAttribute('data-nums',off?'off':'on');
-  $('numBtn').setAttribute('aria-pressed',off?'true':'false');
-  $('numBtn').textContent=off?'숫자 보기':'숫자 줄이기';
+  document.querySelectorAll('.numSw button').forEach(function(b){
+    b.setAttribute('aria-pressed',(b.getAttribute('data-nums')==='off')===off?'true':'false');
+  });
   try{localStorage.setItem('jc-finlab-nums',off?'off':'on');}catch(e){}
 }
 
@@ -2223,8 +2303,16 @@ function init(){
   document.querySelectorAll('.modeSeg button').forEach(function(b){
     b.addEventListener('click',function(){setView(b.getAttribute('data-view'));});
   });
-  $('numBtn').addEventListener('click',function(){setNums(document.documentElement.getAttribute('data-nums')!=='off');});
+  document.querySelectorAll('.numSw button').forEach(function(b){
+    b.addEventListener('click',function(){setNums(b.getAttribute('data-nums')==='off');});
+  });
   $('guideBtn').addEventListener('click',openTut);
+  var levJump=$('levDeepBtn');
+  if(levJump)levJump.addEventListener('click',function(){
+    setView('deep');
+    var s=$('pi-debt');if(s)s.focus({preventScroll:true});
+  });
+  window.addEventListener('resize',function(){if(!$('tutVeil').hidden)drawTut();});
   $('tutX').addEventListener('click',closeTut);
   $('tutPrev').addEventListener('click',function(){if(tutIx>0){tutIx--;drawTut();}});
   $('tutNext').addEventListener('click',function(){if(tutIx<TUT.length-1){tutIx++;drawTut();}else closeTut();});
