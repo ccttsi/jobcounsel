@@ -619,7 +619,7 @@
       '<div id="cdef" hidden></div><div class="clf" id="clf" hidden></div>' +
       '<div class="sb" id="sb">' + IC.search + '<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="이름·브랜드·줄임말로 찾기 (예: 삼전, 해커스)" aria-label="기업·기관 찾기"><button class="clr" id="qx" type="button" aria-label="검색어 지우기">' + IC.x + '</button></div>' +
       '<p class="eg" id="eg"><span class="eg-l">이렇게도 찾습니다</span>' + EG.map(function (e) { return '<button type="button">' + esc(e) + '</button>'; }).join('') + '</p>' +
-      '<div class="fd"><aside class="fl" id="fl" aria-label="조건 고르기"><div class="fl-sh"><div class="fl-hd"><b>조건 고르기</b><button type="button" class="fl-x" id="flX" aria-label="닫기">' + IC.x + '</button></div><div class="fl-b" id="flB"></div><div class="fl-ft"><button type="button" class="reset" id="flR">모두 풀기</button><button type="button" class="fl-go" id="flGo">결과 보기</button></div></div></aside>' +
+      '<div class="fd"><aside class="fl" id="fl" data-jc-layer=".fl.open" aria-label="조건 고르기"><div class="fl-sh"><div class="fl-hd"><b>조건 고르기</b><button type="button" class="fl-x" id="flX" aria-label="닫기">' + IC.x + '</button></div><div class="fl-b" id="flB"></div><div class="fl-ft"><button type="button" class="reset" id="flR">모두 풀기</button><button type="button" class="fl-go" id="flGo">결과 보기</button></div></div></aside>' +
       '<section id="res" aria-live="polite"></section></div><div class="scrim" id="scrim" hidden></div>';
     var q = d.getElementById('q'); q.value = st.q;
     var tmr = 0;

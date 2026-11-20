@@ -577,7 +577,9 @@ function render(){const v=st.view;$('#main').dataset.view=v;$('#main').innerHTML
 function route(){const h=(location.hash||'#home').slice(1);
   if(h.startsWith('t-')&&T[h.slice(2)]){if(!$('#main').innerHTML)render();openSheet(h.slice(2));return}
   closeSheet();const v=VIEWS.includes(h)?h:'home';const ch=v!==st.view||!$('#main').innerHTML;st.view=v;lastView=v;if(ch){if(v!=='theories'&&v!=='home')st.q='';render();window.scrollTo(0,0)}}
-const go=h=>{if(location.hash==='#'+h)route();else location.hash=h};
+const go=h=>{if(location.hash==='#'+h)route();else location.hash=h}
+/* 상세를 닫을 때는 새 칸을 쌓지 않는다 — 뒤로가기 한 번이 페이지를 떠나도록(replaceState) */
+const back=()=>{const h=lastView||'home';if(location.hash==='#'+h){route()}else{history.replaceState(null,'','#'+h);route()}};
 window.addEventListener('hashchange',route);
 
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),1600)}
@@ -591,7 +593,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act],[data
   if(b.dataset.pref){const [k,v]=b.dataset.pref.split(':');store[k]=k==='fs'?+v:k==='easy'?v==='true':v;persist();applyPrefs();if(k==='easy')render();return}
   const a=b.dataset.act,v=b.dataset.v;
   if(a==='open')go('t-'+b.dataset.id);
-  else if(a==='close')go(lastView);
+  else if(a==='close')back();
   else if(a==='fam'){st.filter=v;st.q='';st.keyOnly=false;st.view='';go('theories')}
   else if(a==='filter'){st.filter=v;render()}
   else if(a==='keyonly'){st.keyOnly=!st.keyOnly;$('#res').innerHTML=thBody()}
@@ -611,7 +613,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act],[data
 document.addEventListener('input',e=>{const t=e.target;
   if(t.id==='q'){st.q=t.value;$('#res').innerHTML=st.view==='home'?homeBody():thBody()}
   else if(t.id==='dq'){st.dictQ=t.value;$('#dres').innerHTML=dictBody()}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#ov').classList.contains('open'))go(lastView);$('#pop').classList.remove('on')}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#ov').classList.contains('open'))back();$('#pop').classList.remove('on')}});
 applyPrefs();route();
 
 </script><script src="../assets/marker.js" defer></script>
