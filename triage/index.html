@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="초기상담에서 다섯 축(생계·주거 위기, 심리·건강 위험, 구직의지, 소득·재산, 최근 2년 취업경험)을 체크해 5단계 트리아지 등급과 우선 배정 제도(긴급복지·국취 Ⅰ·Ⅱ유형·내일배움카드·실업급여)를 판별하는 직업상담 실무 보드.">
+<title>내담자 응급실 트리아지 배정 보드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#37456b;--acc-soft:rgba(55,69,107,.08);--on-acc:#fffdf8;
+  --l1:#b3261e;--l2:#a8490f;--l3:#7d5f00;--l4:#1f6b3a;--l5:#1d4fa8;
+  --on-lvl:#fffdf8;
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 12px 30px -20px rgba(70,50,25,.32);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  --tc-triage:#37456b;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#a9b8e6;--acc-soft:rgba(169,184,230,.12);--on-acc:#0a0d14;
+  --l1:#ff8177;--l2:#ffab6b;--l3:#f0cf62;--l4:#79dd97;--l5:#96baff;
+  --on-lvl:#0a0d14;
+  --shadow:none;
+  --tc-triage:#a9b8e6;
+  color-scheme:dark;
+}
+:root[data-jc-tone="sepia"]{
+  --acc:#2f3d60;--acc-soft:rgba(47,61,96,.09);
+  --l1:#a31c17;--l2:#9c440d;--l3:#725700;--l4:#1a5e34;--l5:#1a4696;
+  --tc-triage:#2f3d60;
+}
+body[data-jc-tool="triage"]{--jc-acc:var(--tc-triage)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;text-align:left;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px 12px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media (min-width:900px){.wrap{padding:0 28px 20px}}
+
+/* ---------- 머리말: 홈 단추 ↔ [개념 아이콘 + 제목] 수직 정중앙 ---------- */
+.hd{display:flex;align-items:center;gap:8px;min-height:64px;padding:10px 0;position:relative;z-index:20}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:0 1 auto;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;overflow:hidden}
+.brand svg{width:24px;height:24px;flex:none;color:var(--acc)}
+.brand span{color:var(--acc)}
+.hd>[data-jc-prefs]{margin-left:auto}
+
+/* ---------- 이용 안내 ---------- */
+.pv{border-bottom:1px solid var(--line)}
+.pv-t{display:flex;align-items:center;gap:9px;width:100%;min-height:44px;padding:6px 0;font-size:14px;color:var(--muted)}
+.pv-t svg{width:17px;height:17px;flex:none;color:var(--acc)}
+.pv-tt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-tt b{margin-right:6px;font-weight:750;color:var(--ink)}
+.pv-c{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--acc)}
+.pv-c::after{content:"";width:7px;height:7px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-1px)}
+.pv-t[aria-expanded="true"] .pv-c::after{transform:rotate(-135deg)}
+.pv-b{padding:2px 0 14px}
+.pv-b ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.pv-b b{color:var(--ink)}
+
+/* ---------- 첫 화면 ---------- */
+.lead{display:grid;gap:7px;padding:9px 0 2px}
+.lead-line{margin:0;font-size:14.5px;line-height:1.45;color:var(--muted)}
+.lead-line b{color:var(--ink);font-weight:750}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.ps{display:inline-flex;flex-direction:column;justify-content:center;min-height:44px;padding:4px 12px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.2}
+.ps small{display:block;font-size:11px;font-weight:600;color:var(--dim);letter-spacing:-.01em;margin-top:1px}
+.ps[aria-pressed="true"]{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
+.ps[aria-pressed="true"] small{color:var(--on-acc);opacity:.82}
+.ps:active{transform:scale(.985)}
+@media (hover:hover){.ps:hover:not([aria-pressed="true"]){border-color:var(--acc)}}
+.ps-reset{padding:4px 12px;font-size:13px;color:var(--muted);border-style:dashed}
+
+
+
+/* ---------- 휴대폰 판정 띠 ---------- */
+.strip{display:flex;align-items:center;gap:10px;margin:9px 0 0;padding:7px 11px;border:1px solid var(--line);border-left:4px solid var(--lvl,var(--line-2));border-radius:12px;background:var(--panel)}
+.st-n{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:15px;font-weight:800;background:var(--soft);color:var(--muted)}
+.strip[data-lv] .st-n{background:var(--lvl);color:var(--on-lvl)}
+.st-t{min-width:0;display:grid;line-height:1.25}
+.st-t b{font-size:14px;font-weight:800;letter-spacing:-.02em}
+.st-t i{font-size:12px;font-style:normal;font-weight:600;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-go{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:3px;min-height:44px;padding:0 6px;font-size:12.5px;font-weight:750;color:var(--acc);text-decoration:none;white-space:nowrap}
+.st-go svg{width:14px;height:14px}
+@media (min-width:900px){.strip{display:none}}
+
+/* ---------- 보드 ---------- */
+.board{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:10px;align-items:start}
+@media (min-width:900px){.board{grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr);gap:14px}}
+.axes{display:grid;gap:6px;min-width:0}
+.ax{margin:0;padding:8px 10px;border:1px solid var(--line);border-radius:13px;background:var(--panel);min-width:0;border-left:3px solid var(--line-2)}
+.ax:focus-within{border-left-color:var(--acc)}
+.ax-h{display:flex;align-items:center;gap:7px;min-width:0}
+.ax-n{flex:none;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:800;background:var(--soft);color:var(--muted)}
+.ax-h b{font-size:14.5px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.ax-q{min-width:0;font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:5px;margin-top:6px}
+.seg label{position:relative;display:block;min-width:0}
+.seg input{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;opacity:0}
+.seg span{display:flex;align-items:center;justify-content:center;min-height:44px;padding:3px 5px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:13px;font-weight:700;color:var(--muted);text-align:center;line-height:1.2;transition:background-color .14s,color .14s,border-color .14s}
+.seg input:checked+span{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.seg input:focus-visible+span{outline:2px solid var(--acc);outline-offset:2px}
+.seg label:active span{transform:scale(.985)}
+.ax-note{margin:4px 0 0;font-size:11px;line-height:1.4;color:var(--dim)}
+.ax-note b{font-weight:750;color:var(--muted)}
+.fld{display:grid;gap:4px;min-width:0}
+.flds{display:grid;gap:8px;margin-top:8px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.lb{font-size:12px;font-weight:750;color:var(--muted)}
+.inp{display:flex;align-items:center;gap:5px;min-height:46px;padding:0 11px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel)}
+.inp input{flex:1;min-width:0;min-height:44px;border:0;background:none;text-align:right;font-size:15px;font-weight:750;font-variant-numeric:tabular-nums;outline:none}
+.inp input::placeholder{font-weight:600;color:var(--dim)}
+.inp i{flex:none;font-style:normal;font-size:12.5px;font-weight:700;color:var(--muted)}
+.sel{min-height:44px;width:100%;padding:0 9px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:13.5px;font-weight:750;color:var(--ink)}
+.chks{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chk{position:relative;display:inline-flex;align-items:center;gap:6px;min-height:46px;padding:0 11px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer}
+.chk input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0}
+.chk .bx{flex:none;width:15px;height:15px;border:1.6px solid var(--line-2);border-radius:4px;display:grid;place-items:center;background:var(--panel)}
+.chk input:checked~.bx{background:var(--acc);border-color:var(--acc)}
+.chk input:checked~.bx::after{content:"";width:7px;height:3.5px;border-left:2px solid var(--on-acc);border-bottom:2px solid var(--on-acc);transform:rotate(-45deg) translate(0,-1px)}
+.chk input:checked~span{color:var(--ink)}
+.chk:has(input:checked){border-color:var(--acc);background:var(--acc-soft)}
+.chk input:focus-visible~.bx{outline:2px solid var(--acc);outline-offset:2px}
+.ax4-note{margin:4px 0 0;font-size:11px;line-height:1.4;color:var(--dim)}
+.ax4-note b{font-weight:750;color:var(--muted)}
+
+/* ---------- 판정 카드 ---------- */
+.res{min-width:0;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow)}
+@media (min-width:900px){.res{position:sticky;top:calc(64px + 10px);align-self:start}}
+.res{scroll-margin-top:76px}
+.lv{display:flex;align-items:center;gap:10px;min-width:0}
+.lv-n{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px;font-weight:800;background:var(--lvl,var(--soft));color:var(--on-lvl);font-variant-numeric:tabular-nums}
+.lv[data-empty="true"] .lv-n{background:var(--soft);color:var(--muted)}
+.lv-t{min-width:0;display:grid;line-height:1.28}
+.lv-t b{font-size:16px;font-weight:800;letter-spacing:-.03em}
+.lv-t i{font-size:12px;font-style:normal;font-weight:700;color:var(--lvl,var(--muted))}
+.ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;margin-top:7px}
+.ladder i{height:5px;border-radius:3px;background:var(--line-2);transition:background-color .16s}
+.ladder i.on{background:var(--lvl)}
+.res-line{margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--muted)}
+.why{margin:7px 0 0;padding:0;list-style:none;display:grid;gap:4px}
+.why li{position:relative;padding-left:12px;font-size:12px;line-height:1.42;color:var(--muted)}
+.why li::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:50%;background:var(--lvl,var(--dim))}
+.why b{color:var(--ink);font-weight:750}
+.route{margin-top:9px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--soft);min-width:0}
+.rt-k{display:block;font-size:11px;font-weight:800;letter-spacing:.02em;color:var(--lvl,var(--muted))}
+.rt-h b{display:block;margin-top:1px;font-size:14.5px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+.rt-org{margin:2px 0 0;font-size:11.5px;line-height:1.4;color:var(--dim)}
+.sup{margin:7px 0 0;padding:0;list-style:none;display:grid;gap:2px}
+.sup li{position:relative;padding-left:10px;font-size:12px;line-height:1.42;color:var(--ink)}
+.sup li::before{content:"";position:absolute;left:0;top:.6em;width:4px;height:4px;border-radius:1px;background:var(--lvl,var(--dim))}
+.req{margin-top:9px;padding-top:8px;border-top:1px solid var(--line-2)}
+.req-h{font-size:11px;font-weight:800;color:var(--muted)}
+.req ul{margin:5px 0 0;padding:0;list-style:none;display:grid;gap:3px}
+.req li{display:flex;gap:6px;align-items:flex-start;font-size:12px;line-height:1.4;color:var(--muted)}
+.ok{flex:none;width:14px;height:14px;border-radius:4px;display:grid;place-items:center;font-size:9.5px;font-weight:800;margin-top:1px}
+.ok[data-s="yes"]{background:color-mix(in srgb,var(--l4) 16%,var(--panel));color:var(--l4)}
+.ok[data-s="no"]{background:color-mix(in srgb,var(--l1) 14%,var(--panel));color:var(--l1)}
+.ok[data-s="chk"]{background:var(--panel);color:var(--muted)}
+.req li b{color:var(--ink);font-weight:750}
+.law{margin:8px 0 0;font-size:11px;line-height:1.45;color:var(--dim)}
+.along{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:9px;min-width:0}
+.al-k{flex:none;font-size:11px;font-weight:800;color:var(--muted);margin-right:2px}
+.al-c{display:flex;flex-wrap:wrap;gap:4px;min-width:0}
+.al-c span{padding:3px 8px;border-radius:99px;border:1px solid var(--line-2);background:var(--panel);font-size:11.5px;font-weight:700;color:var(--muted)}
+.todo{margin-top:9px}
+.td-k{display:block;font-size:11px;font-weight:800;color:var(--muted)}
+.todo ol{margin:4px 0 0;padding:0 0 0 16px;display:grid;gap:2px;font-size:12px;line-height:1.42;color:var(--ink)}
+.todo li::marker{color:var(--lvl,var(--muted));font-weight:800}
+.warn{margin:9px 0 0;font-size:11.5px;line-height:1.45;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line-2)}
+.warn b{color:var(--l1);font-weight:750}
+.empty{margin:0;font-size:13px;line-height:1.6;color:var(--muted)}
+.empty b{color:var(--ink)}
+
+/* ---------- 기준 보기 ---------- */
+.refs{margin-top:12px}
+.refhead{display:flex;align-items:baseline;gap:7px;margin-bottom:6px}
+.refhead h2{margin:0;font-size:13px;font-weight:800;letter-spacing:-.02em}
+.refhead span{font-size:11.5px;color:var(--dim)}
+.tabs{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:5px}
+.tabs button{display:flex;align-items:center;justify-content:center;gap:5px;min-height:44px;padding:0 6px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:750;color:var(--muted);text-align:center;line-height:1.2}
+.tabs button svg{width:12px;height:12px;flex:none;transition:transform .18s}
+.tabs button[aria-expanded="true"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.tabs button[aria-expanded="true"] svg{transform:rotate(180deg)}
+.panel{margin-top:6px;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:var(--panel);max-height:min(52vh,380px);overflow:auto;overscroll-behavior:contain}
+.panel h3{margin:0 0 7px;font-size:12px;font-weight:800;color:var(--muted)}
+.lvtab{display:grid;gap:5px;margin:0;padding:0;list-style:none}
+.lvtab li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;padding:7px 0;border-top:1px solid var(--line)}
+.lvtab li:first-child{border-top:0;padding-top:0}
+.lvt-n{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:12.5px;font-weight:800;background:var(--lvcol);color:var(--on-lvl);align-self:start}
+.lvt-b{min-width:0;display:grid;gap:1px}
+.lvt-b b{font-size:13px;font-weight:800;letter-spacing:-.02em}
+.lvt-b b em{font-style:normal;font-size:11px;font-weight:700;color:var(--dim);margin-left:4px}
+.lvt-b span{font-size:11.5px;color:var(--muted);line-height:1.4}
+.lvt-b em{font-style:normal;font-size:11px;color:var(--dim);line-height:1.4}
+.rules{margin:0;padding:0 0 0 17px;display:grid;gap:4px;font-size:12.5px;line-height:1.45;color:var(--muted)}
+.rules li::marker{color:var(--acc);font-weight:800}
+.mtab{width:100%;max-width:520px;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
+.mtab th,.mtab td{padding:3px 5px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.mtab th:first-child,.mtab td:first-child{text-align:left}
+.mtab th{font-size:11px;font-weight:750;color:var(--muted)}
+.srcs{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:7px}
+.srcs li{font-size:11.5px;line-height:1.45;color:var(--muted);border-top:1px solid var(--line);padding-top:6px}
+.srcs li:first-child{border-top:0;padding-top:0}
+.srcs a{display:inline-flex;align-items:center;min-height:24px;color:var(--acc);font-weight:750;text-decoration:underline;text-underline-offset:2px}
+.srcs b{color:var(--ink);font-weight:750}
+.srcs em{font-style:normal;color:var(--dim);font-size:11px}
+.foot{margin:14px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.55;color:var(--dim)}
+.foot b{color:var(--muted);font-weight:750}
+
+@media (max-width:599px){.presets{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}.presets::-webkit-scrollbar{display:none}.presets::after{content:"";flex:0 0 10px}.ps{flex:none}.ps small{display:none}.ps{font-size:12.5px;padding:4px 10px}.presets{gap:5px}.route{padding:11px;margin-top:7px}.sup li{font-size:11.5px}.why{gap:3px}.todo{margin-top:7px}.warn{margin-top:7px;padding-top:6px}.along{margin-top:7px}.ax-note{font-size:10.5px}.ax{padding:7px 9px}.strip{padding:5px 10px;margin-top:7px}.res{padding:11px}.lead{padding:8px 0 2px}.why li{line-height:1.38}}
+
+/* ---------- 상태·모션 ---------- */
+.lv.pulse .lv-n{animation:pop .22s cubic-bezier(.2,1.4,.4,1) 1}
+@keyframes pop{0%{transform:scale(.9)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){
+  .lv.pulse .lv-n{animation:none}
+  .seg span,.ladder i,.ps,.seg label:active span,.tabs button svg{transition:none;transform:none}
+}
+html[data-jc-imm] .strip{display:none}
+</style>
+<link rel="stylesheet" href="../assets/brand.css">
+</head>
+<body data-jc-tool="triage">
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <a class="brand" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M4 20v-3M8 20v-5M12 20v-8M16 20v-11M20 20v-14"/></svg>내담자 <span>트리아지 보드</span></a>
+    <span data-jc-prefs></span>
+  </header>
+
+  <section class="pv" id="pv">
+    <button type="button" class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 사용 <span aria-hidden="true">·</span> 실무 보조 · 입력값은 화면 안에서만</span>
+      <span class="pv-c">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" hidden>
+      <ul>
+        <li><b>등급은 법령·공식 제도 기준으로 정합니다.</b> 2026년 기준 중위소득, 국민취업지원제도 요건, 긴급복지 기준, 실업급여 요건을 그대로 대조하고, 순서(어느 쪽을 먼저 볼지)만 이 보드가 정했습니다.</li>
+        <li><b>최종 판정은 기관 심사입니다.</b> 수급자격·금액은 고용센터·지자체 심사로 정해지므로, 이 화면은 상담 중에 붙일 제도를 고르는 데 씁니다.</li>
+        <li><b>금액·기준은 2026-11-20 확인값입니다.</b> 이후 법령·고시로 바뀔 수 있으니 신청 전에 고용24·복지로에서 다시 확인하세요.</li>
+        <li><b>이름·주민등록번호는 넣지 않습니다.</b> 입력한 소득·재산은 서버로 보내지 않고 화면 안에서만 계산합니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="lead">
+    <p class="lead-line">다섯 축을 누르면 <b>등급과 붙일 제도</b>가 바로 바뀝니다. 사례 단추로 시작해도 됩니다.</p>
+    <div class="presets" id="presets" role="group" aria-label="빠른 사례"></div>
+  </section>
+
+  <div class="strip" id="strip">
+    <span class="st-n num" id="stN">–</span>
+    <span class="st-t"><b id="stName">아직 판정 전</b><i id="stTag">다섯 축을 고르면 나옵니다</i></span>
+    <a class="st-go" href="#res">경로 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  </div>
+
+  <main class="board">
+    <section class="axes" id="axes" aria-label="다섯 축 체크">
+      <fieldset class="ax">
+        <legend class="sr">1. 생계·주거 위기</legend>
+        <div class="ax-h"><span class="ax-n" aria-hidden="true">1</span><b>생계·주거</b><span class="ax-q">지금 생활이 무너졌나요?</span></div>
+        <div class="seg">
+          <label><input type="radio" name="crisis" value="none" checked><span>없음</span></label>
+          <label><input type="radio" name="crisis" value="risk"><span>위기</span></label>
+          <label><input type="radio" name="crisis" value="collapse"><span>붕괴</span></label>
+        </div>
+        <p class="ax-note"><b>위기:</b> 소득 단절·단전·단수·월세 체납 · <b>붕괴:</b> 퇴거·노숙·화재</p>
+      </fieldset>
+
+      <fieldset class="ax">
+        <legend class="sr">2. 심리·건강 위험</legend>
+        <div class="ax-h"><span class="ax-n" aria-hidden="true">2</span><b>심리·건강</b><span class="ax-q">해칠 위험이 말해졌나요?</span></div>
+        <div class="seg">
+          <label><input type="radio" name="mind" value="none" checked><span>없음</span></label>
+          <label><input type="radio" name="mind" value="worry"><span>호소</span></label>
+          <label><input type="radio" name="mind" value="urgent"><span>위험</span></label>
+        </div>
+        <p class="ax-note"><b>호소:</b> 우울·불안·수면 · <b>위험:</b> 자해·자살 생각·응급 치료</p>
+      </fieldset>
+
+      <fieldset class="ax">
+        <legend class="sr">3. 구직의지·즉시취업 가능성</legend>
+        <div class="ax-h"><span class="ax-n" aria-hidden="true">3</span><b>구직의지</b><span class="ax-q">이번 달에 지원할 수 있나요?</span></div>
+        <div class="seg">
+          <label><input type="radio" name="will" value="ready"><span>바로 가능</span></label>
+          <label><input type="radio" name="will" value="prepare" checked><span>준비 필요</span></label>
+          <label><input type="radio" name="will" value="low"><span>의지 낮음</span></label>
+        </div>
+        <p class="ax-note"><b>바로 가능:</b> 즉시 지원 · <b>준비 필요:</b> 공백·전환 · <b>의지 낮음:</b> 구직단념</p>
+      </fieldset>
+
+      <div class="ax" role="group" aria-labelledby="ax4t">
+        <div class="ax-h"><span class="ax-n" aria-hidden="true">4</span><b id="ax4t">소득·재산</b><span class="ax-q">기준선과 견줍니다</span></div>
+        <div class="seg" role="radiogroup" aria-labelledby="ageLb">
+          <label><input type="radio" name="age" value="youth"><span>청년 15~34</span></label>
+          <label><input type="radio" name="age" value="mid" checked><span>중장년 35~69</span></label>
+          <label><input type="radio" name="age" value="senior"><span>70세+</span></label>
+        </div>
+        <div class="flds">
+          <div class="fld">
+            <label class="lb" for="size">가구원 수</label>
+            <select class="sel" id="size">
+              <option value="1">1인</option>
+              <option value="2">2인</option>
+              <option value="3">3인</option>
+              <option value="4" selected>4인</option>
+              <option value="5">5인</option>
+              <option value="6">6인</option>
+              <option value="7">7인</option>
+              <option value="8">8인 이상</option>
+            </select>
+          </div>
+          <div class="fld">
+            <label class="lb" for="income">월 가구소득</label>
+            <div class="inp"><input id="income" type="text" inputmode="numeric" autocomplete="off" placeholder="예: 1800000" aria-describedby="incNote"><i>원</i></div>
+          </div>
+          <div class="fld">
+            <label class="lb" for="asset">재산</label>
+            <select class="sel" id="asset">
+              <option value="lt1">1억원 미만</option>
+              <option value="1to4" selected>1억~4억원</option>
+              <option value="4to5">4억~5억원</option>
+              <option value="gt5">5억원 초과</option>
+            </select>
+          </div>
+          <div class="fld">
+            <span class="lb">중위소득 기준</span>
+            <p class="ax4-note" id="incNote" style="margin-top:2px">4인 기준 60% 3,896,843원 · 100% 6,494,738원</p>
+          </div>
+        </div>
+        <div class="chks">
+          <label class="chk"><input type="checkbox" id="special"><span class="bx" aria-hidden="true"></span><span>특정계층</span></label>
+          <label class="chk"><input type="checkbox" id="basic" aria-label="생계급여 수급 중"><span class="bx" aria-hidden="true"></span><span>생계급여</span></label>
+          <label class="chk"><input type="checkbox" id="ui" aria-label="실업급여 수급 중"><span class="bx" aria-hidden="true"></span><span>실업급여</span></label>
+        </div>
+        <p class="ax4-note" id="ageLb"><b>특정계층:</b> 여성가구주·한부모·영세 자영업자 등 · 70세+는 국취 대상 밖</p>
+      </div>
+
+      <fieldset class="ax">
+        <legend class="sr">5. 최근 2년 취업경험</legend>
+        <div class="ax-h"><span class="ax-n" aria-hidden="true">5</span><b>최근 2년 취업경험</b><span class="ax-q">100일 또는 800시간?</span></div>
+        <div class="seg">
+          <label><input type="radio" name="exp" value="d100"><span>100일 이상</span></label>
+          <label><input type="radio" name="exp" value="h800"><span>800시간 이상</span></label>
+          <label><input type="radio" name="exp" value="none" checked><span>미달·없음</span></label>
+        </div>
+        <p class="ax-note">둘 중 하나만 채우면 Ⅰ유형(요건심사형) 경험 요건 충족 · 청년 선발형은 경험 무관</p>
+      </fieldset>
+    </section>
+
+    <aside class="res" id="res" data-jc-still aria-label="판정과 우선 배정 경로">
+      <p class="sr" id="live" role="status" aria-live="polite"></p>
+      <div class="res-top">
+        <div class="lv" id="lv" data-empty="true">
+          <span class="lv-n num" id="lvN">–</span>
+          <span class="lv-t"><b id="lvName">아직 판정 전</b><i id="lvTag">다섯 축을 고르면 나옵니다</i></span>
+        </div>
+        <div class="ladder" id="ladder" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <p class="res-line" id="resLine">위의 사례 단추를 누르거나, 1~5번 축을 하나씩 고르세요. <b>소득·재산</b>만 넣어도 초안이 나옵니다.</p>
+      <ul class="why" id="why"></ul>
+      <div class="route" id="route" hidden>
+        <span class="rt-k">우선 배정</span>
+        <div class="rt-h"><b id="rtName"></b></div>
+        <p class="rt-org" id="rtOrg"></p>
+        <ul class="sup" id="rtSup"></ul>
+        <div class="req"><div class="req-h">요건 대조</div><ul id="rtReq"></ul></div>
+        <p class="law" id="rtLaw"></p>
+      </div>
+      <div class="along" id="alongBox" hidden>
+        <span class="al-k">함께</span>
+        <div class="al-c" id="along"></div>
+      </div>
+      <div class="todo" id="todoBox" hidden>
+        <span class="td-k">오늘 할 일</span>
+        <ol id="todo"></ol>
+      </div>
+      <p class="warn" id="warn" hidden></p>
+    </aside>
+  </main>
+
+  <section class="refs">
+    <div class="refhead"><h2>기준 보기</h2><span>등급 기준표 · 판정 규칙 · 기준값과 출처</span></div>
+    <div class="tabs" id="refTabs">
+      <button type="button" data-panel="0" aria-expanded="false" aria-controls="pnl-0">등급 기준표<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button type="button" data-panel="1" aria-expanded="false" aria-controls="pnl-1">판정 규칙<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button type="button" data-panel="2" aria-expanded="false" aria-controls="pnl-2">기준값·출처<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+    </div>
+    <div class="panel" id="pnl-0" hidden><ul class="lvtab" id="lvtab"></ul></div>
+    <div class="panel" id="pnl-1" hidden><ol class="rules" id="rules"></ol></div>
+    <div class="panel" id="pnl-2" hidden>
+      <h3>2026년 기준 중위소득(월)</h3>
+      <table class="mtab" id="mtab"></table>
+      <h3 style="margin-top:11px">출처·이용 조건</h3>
+      <ul class="srcs" id="srcs"></ul>
+    </div>
+  </section>
+
+  <p class="foot">
+    <b>풀이</b> 설명·판정 순서는 자료실이 새로 쓴 글. <b>기준값·출처</b>는 위 「기준값·출처」에. <b>주의</b> 최종 판정은 기관 심사, 금액은 2026-11-20 확인값.
+  </p>
+</div>
+
+<script src="./app.js" defer></script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
