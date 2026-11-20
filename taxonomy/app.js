@@ -158,6 +158,155 @@
   }
   function select(s, c) { UI.sel = { s: s, c: c }; save(); renderDet(UI.sel); openSheet(); }
 
+  /* ───── 한눈에 인사이트(능력단위명·능력단위요소·KSA 원문만 세어 만든 요약) ─────
+     자료: data/insights/ (taxonomy/data/build_insights.py가 만든다). 화면은 읽기만 한다. */
+  var IN = { ix: null, sh: {} };
+  function insIndex() {
+    if (IN.ix) return Promise.resolve(IN.ix);
+    return fetch('./data/insights/index.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) { IN.ix = j; return j; });
+  }
+  function insShard(kind, major) {
+    var key = kind + major;
+    if (IN.sh[key]) return Promise.resolve(IN.sh[key]);
+    return insIndex().then(function (ix) {
+      var rel = (ix[kind] || {})[major]; if (!rel) throw 0;
+      return fetch('./data/insights/' + rel, { cache: 'force-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) { IN.sh[key] = j; return j; });
+    });
+  }
+  /* 조사 고르기 — 인용부호 안 낱말의 끝소리로 고른다(부호로 고르면 틀린다) */
+  function jong(w) {
+    var ch = String(w || ' ').slice(-1), c = ch.charCodeAt(0);
+    if (c >= 0xAC00 && c <= 0xD7A3) return (c - 0xAC00) % 28 !== 0;
+    if (/[0-9]/.test(ch)) return '0136780'.indexOf(ch) >= 0;
+    return false;
+  }
+  function qj(w, pair) { return '「' + w + '」' + (jong(w) ? pair.split('/')[0] : pair.split('/')[1]); }
+  function cleanItem(s) { return String(s == null ? '' : s).replace(/^\s*\d+\s*[.)]\s*/, '').trim(); }
+  function cleanAct(s) {
+    var t = cleanItem(s).replace(/\s+/g, ' ');
+    var cut = t.replace(/\s*(하기|한다|하다)$/, '').trim();
+    var last = cut.split(/[^0-9A-Za-z가-힣]+/).filter(Boolean).pop() || '';
+    return (cut && last.length >= 2) ? cut : t;
+  }
+  var INS_LV = { major: ['이 분야가 뭐 하는 거예요?', '분야 관통'], middle: ['이 분야가 뭐 하는 거예요?', '분야 관통'], minor: ['이 직무가 뭐 하는 거예요?', '직무 공통'], sub: ['이 직무가 뭐 하는 거예요?', '직무 실무'] };
+  var INS_LINKS = [
+    ['../work-filter/', '직업 현실 리얼 필터', '근무 환경·사람 대면·교대 같은 현실 조건으로 걸러 보기'],
+    ['../cert/', '자격증 도감', '이 직무와 이어지는 자격을 찾아보기'],
+    ['../interview/', '면접 전술 덱', '면접 질문 유형·답변 구조를 카드로 익히기']
+  ];
+  function ksaStrip(x) {
+    if (!x || (!x.k && !x.s && !x.a)) return '';
+    return '<div class="insBar" role="img" aria-label="KSA 항목 수 비율 — 지식 ' + x.kp + '%, 기술 ' + x.sp + '%, 태도 ' + x.ap + '%">' +
+      '<i style="--c:var(--c-ncs);flex:' + Math.max(x.kp, 1) + '"></i><i style="--c:var(--c-keco);flex:' + Math.max(x.sp, 1) + '"></i><i style="--c:var(--c-ksco);flex:' + Math.max(x.ap, 1) + '"></i></div>' +
+      '<p class="insKsa"><span style="--c:var(--c-ncs)">지식 ' + x.kp + '%</span><span style="--c:var(--c-keco)">기술 ' + x.sp + '%</span><span style="--c:var(--c-ksco)">태도 ' + x.ap + '%</span>' + (x.b ? '<b>' + esc(x.b) + '</b>' : '') + '<small>KSA 원문 항목 수</small></p>';
+  }
+  function insLinks() {
+    return '<div class="insLk">' + INS_LINKS.map(function (l) {
+      return '<a href="' + l[0] + '" title="' + esc(l[2]) + '">' + esc(l[1]) + '<span aria-hidden="true">↗</span></a>';
+    }).join('') + '</div>';
+  }
+  function insQHtml(qs, note) {
+    if (!qs || !qs.length) return '';
+    return '<details class="insQ"><summary><span class="qk">직무적합성 면접 예상 질문</span><b>' + qs.length + '개</b><small>KSA 원문 근거</small></summary><ol>' +
+      qs.map(function (q) { return '<li><p class="qq">' + esc(q.q) + '</p><p class="qw"><b>근거</b>' + (q.why || []).map(function (w) { return '<span>' + esc(w) + '</span>'; }).join('') + '</p></li>'; }).join('') +
+      '</ol><p class="qnote">' + esc(note || '질문은 이 분류의 KSA 원문 항목을 그대로 인용해 만든 틀입니다. 실제 채용 질문이 아니며, 원문에 없는 내용은 넣지 않았습니다.') + '</p></details>';
+  }
+  function insCard(e) {
+    var meta = INS_LV[e.lv] || INS_LV.sub;
+    var st = e.stats || {}, s = [];
+    if (st.units) s.push('능력단위 ' + n0(st.units) + '개');
+    if (st.subs) s.push('세분류 ' + n0(st.subs) + '개');
+    if (st.minors) s.push('소분류 ' + n0(st.minors) + '개');
+    if (st.lvMin) s.push('수준 ' + st.lvMin + (st.lvMax && st.lvMax !== st.lvMin ? '–' + st.lvMax : ''));
+    if (st.hours) s.push('표준훈련시간 ' + n0(st.hours) + '시간');
+    var h = '<section class="ins" aria-label="한눈에 보기"><div class="insHd"><span class="insKick">한눈에 · ' + meta[1] + '</span><h3 class="insT">' + meta[0] + '</h3></div>';
+    if (e.line) h += '<p class="insLine">' + esc(e.line) + '</p>';
+    if (e.acts && e.acts.length) h += '<ul class="insActs">' + e.acts.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul>';
+    if (!e.line) h += '<p class="insNo">이 분류의 능력단위에는 KSA 원천이 없어 한 줄 정의를 만들지 않았습니다. 아래 원문 목록만 있습니다.</p>';
+    h += ksaStrip(e.ksa);
+    if (e.kw && e.kw.length) h += '<p class="insKw"><b>빈출 키워드</b>' + e.kw.map(function (k) { return '<span>' + esc(k) + '</span>'; }).join('') + '</p>';
+    if (s.length) h += '<p class="insStat">' + s.join(' · ') + '</p>';
+    h += insLinks();
+    h += insQHtml(e.qs);
+    return h + '</section>';
+  }
+  /* KECO·KSCO·고용24 직업 — 이 원자료에는 직무 수행 설명이 없다. 있는 것(분류 위치·공식 매핑)만 보여 준다. */
+  function bridgeCard(s, c) {
+    var t = s === 'job' ? T.J[c] : node(s, c); if (!t) return '';
+    var nm = [], situ = '';
+    function nmOf(sy, code) { var x = code && node(sy, code); return x ? '「' + x.name + '」' : ''; }
+    if (s === 'job') {
+      nm = T.KN[t.keco_code] || [];
+      situ = '고용24 직업 「' + t.name + '」은 고용직업분류 ' + (nmOf('keco', t.keco_code) || '자료 없음') +
+        ' · 표준직업분류 ' + (nmOf('ksco', t.ksco_code) || '자료 없음') + '에 속한 직업입니다.';
+    } else if (s === 'keco') {
+      if (t.lv !== 'sub') return '';
+      nm = T.KN[c] || [];
+      situ = 'KECO 세분류 「' + t.name + '」은 표준직업분류 ' + (nmOf('ksco', T.KK[c]) || '연결 자료 없음') + '에 대응합니다.';
+    } else if (s === 'ksco') {
+      if (t.lv !== 'sub') return '';
+      (T.SK[c] || []).forEach(function (k) { (T.KN[k] || []).forEach(function (m) { if (nm.indexOf(m) < 0) nm.push(m); }); });
+      var ke = (T.SK[c] || []).map(function (k) { return nmOf('keco', k); }).filter(Boolean);
+      situ = 'KSCO 세분류 「' + t.name + '」은 고용직업분류 ' + (ke.join(' · ') || '연결 자료 없음') + '에 대응합니다.';
+    } else return '';
+    var h = '<section class="ins" aria-label="한눈에 보기"><div class="insHd"><span class="insKick">한눈에 · 원자료 범위</span><h3 class="insT">이 ' + (s === 'job' ? '직업이' : '세분류가') + ' 뭐 하는 거예요?</h3></div>';
+    h += '<p class="insLine">' + esc(situ) + '</p>';
+    if (nm.length) {
+      h += '<p class="insNote">수행 내용은 공식 매핑으로 이어진 NCS 직무(소분류)의 능력단위·KSA에 있습니다. 그 직무를 열면 그 화면 위에 한 줄 정의와 면접 예상 질문이 나옵니다.</p>';
+      h += '<div class="insGoWrap"><b>이어지는 NCS 직무</b>' + nm.slice(0, 8).map(function (m) { var x = node('ncs', m); return x ? '<button type="button" class="insGo" data-go="ncs|' + esc(m) + '">' + esc(x.name) + '</button>' : ''; }).join('') + (nm.length > 8 ? '<span class="insDim">외 ' + n0(nm.length - 8) + '개</span>' : '') + '</div>';
+    } else {
+      h += '<p class="insNo">이 분류에는 공식 매핑으로 이어진 NCS 직무가 없습니다. 원자료에 수행 설명도 없어, 여기서 직무 내용을 만들지 않습니다.</p>';
+    }
+    h += insLinks();
+    return h + '</section>';
+  }
+  function fillInsight(box) {
+    if (!box) return;
+    var s = box.getAttribute('data-ins-s'), c = box.getAttribute('data-ins-c'), key = s + c;
+    box.setAttribute('data-ins-key', key);
+    if (s === 'ncs') {
+      insShard('nodes', c.slice(0, 2)).then(function (pk) {
+        if (box.getAttribute('data-ins-key') !== key) return;
+        var e = pk.nodes[c];
+        box.innerHTML = e ? insCard(e) : '';
+        if (!e) box.remove();
+      }).catch(function () { if (box.getAttribute('data-ins-key') === key) box.innerHTML = '<section class="ins"><p class="insNo">한눈에 보기를 불러오지 못했습니다. 아래 원문 목록은 그대로 볼 수 있습니다.</p></section>'; });
+    } else {
+      box.innerHTML = bridgeCard(s, c);
+      if (!box.innerHTML) box.remove();
+    }
+  }
+  /* 능력단위 화면의 질문 — KSA 원문(rec.e)에서 바로 만든다(같은 틀, 같은 원문) */
+  function unitQs(u, rec) {
+    var have = (rec.e || []).filter(function (e) { return (e.k && e.k.length) || (e.s && e.s.length) || (e.a && e.a.length); });
+    if (!have.length) return [];
+    var at = function (i) { return have[Math.min(i, have.length - 1)]; };
+    var e1 = at(0), e2 = at(Math.floor(have.length / 2)), e3 = at(have.length - 1);
+    var k1 = (e1.k || [])[0], s1 = (e1.s || [])[0] || (e2.s || [])[0], k2 = (e2.k || []).slice(-1)[0], a1 = (e3.a || [])[0] || (e1.a || [])[0];
+    var out = [];
+    if (k1) out.push({ q: '「' + cleanAct(e1.f) + '」 업무를 실제로 해 본 경험이 있습니까? 그때 ' + qj(cleanItem(k1), '을/를') + ' 어떻게 확인하고 적용했는지 구체적으로 말씀해 주세요.', why: [cleanItem(k1)].concat(s1 ? [cleanItem(s1)] : []) });
+    if (k2) out.push({ q: '「' + cleanItem(k2) + '」에 대해 설명해 주세요. 「' + u.name + '」에서 이 내용이 왜 필요하다고 생각합니까?', why: [cleanItem(k2)].concat(k1 && k1 !== k2 ? [cleanItem(k1)] : []) });
+    if (s1) out.push({ q: '「' + cleanItem(s1) + '」 항목을 기준으로 볼 때, ' + qj(cleanAct(e2.f), '은/는') + ' 어느 수준까지 할 수 있습니까? 최근 사례를 하나 들어 말씀해 주세요.', why: [cleanItem(s1)] });
+    if (a1) out.push({ q: qj(cleanItem(a1), '이/가') + ' 필요한 상황을 하나 가정해, 본인이 어떻게 행동할지 말씀해 주세요.', why: [cleanItem(a1)].concat((e3.a || []).slice(1, 2).map(cleanItem)) });
+    return out.slice(0, 4);
+  }
+  function unitCard(u, ent, rec) {
+    var st = [];
+    if (u.level != null) st.push('수준 ' + u.level);
+    if (u.hours != null) st.push('표준 훈련시간 ' + u.hours + '시간');
+    if (u.subs && u.subs.length) st.push('세분류 ' + n0(u.subs.length) + '곳에 걸침');
+    var acts = ent && ent.acts ? ent.acts : (rec.e || []).map(function (e) { return cleanAct(e.f); }).filter(Boolean).slice(0, 4);
+    var h = '<section class="ins" aria-label="한눈에 보기"><div class="insHd"><span class="insKick">한눈에 · 능력단위 실무</span><h3 class="insT">이 업무가 뭐 하는 거예요?</h3></div>';
+    h += '<p class="insLine">' + esc((ent && ent.line) || ('「' + u.name + '」 업무로, ' + acts.join(', ') + ' 등을 수행하는 능력단위입니다.')) + '</p>';
+    if (acts.length) h += '<ul class="insActs">' + acts.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul>';
+    h += ksaStrip(ent && ent.ksa);
+    if (ent && ent.kw && ent.kw.length) h += '<p class="insKw"><b>빈출 키워드</b>' + ent.kw.map(function (k) { return '<span>' + esc(k) + '</span>'; }).join('') + '</p>';
+    if (st.length) h += '<p class="insStat">' + st.join(' · ') + '</p>';
+    h += insLinks();
+    h += insQHtml(unitQs(u, rec), '질문은 이 능력단위의 KSA 원문 항목을 그대로 인용해 만든 틀입니다. 실제 채용 질문이 아니며, 원문에 없는 내용은 넣지 않았습니다.');
+    return h + '</section>';
+  }
+
   /* ───── 상세 ───── */
   var X = '<div class="det-x"><button type="button" data-close>닫기</button></div>';
   function lk(s, c, extra) { var x = s === 'job' ? T.J[c] : node(s, c); if (!x) return ''; return '<button type="button" data-go="' + s + '|' + esc(c) + '">' + (s === 'job' ? '' : '<span class="cd">' + esc(c) + '</span>') + '<span class="nm">' + esc(x.name) + '</span>' + (x.legacy ? '<span class="bd lg">현행 고시에 없음</span>' : '') + (extra ? '<span class="ct">' + extra + '</span>' : '') + '</button>'; }
@@ -167,14 +316,15 @@
     if (s === 'job') { h += jobDet(T.J[c]); }
     else {
       var x = node(s, c); if (!x) { $('det').innerHTML = pickHtml(); return; }
-      var p = pathOf(x);
       h += '<div class="tags">' + badge(s) + '<span class="bd" style="--c:var(--dim)">' + lvName(x) + '</span>' + (x.legacy ? '<span class="bd lg">현행 고시에 없음</span>' : '') + '</div>';
-      h += '<h2>' + esc(x.name) + '</h2><p class="path num">' + esc(c) + '</p>' + upHtml(x);
+      h += '<h2>' + esc(x.name) + '</h2><p class="path num">' + esc(c) + '</p>' +
+        '<div class="insWrap" data-ins-s="' + s + '" data-ins-c="' + esc(c) + '"></div>' + upHtml(x);
       if (s === 'ncs') h += ncsDet(x); else if (s === 'keco') h += kecoDet(x); else h += kscoDet(x);
       var ks = kids(s, c); if (ks.length) h += '<h3>아래 ' + lvName(ks[0]) + ' <small>' + n0(ks.length) + '개 · 왼쪽 목록에서 고릅니다</small></h3>';
     }
     if (s !== 'job' && T.meta.corrections) T.meta.corrections.forEach(function (k) { if (k.code === c && s === 'keco') h += '<p class="path">원자료 오기 정정: 「' + esc(k.asis) + '」 → 「' + esc(k.tobe) + '」</p>'; });
     $('det').innerHTML = h; if (!quiet) $('det').scrollTop = 0;
+    fillInsight($('det').querySelector('[data-ins-s]'));
   }
   /* 올라가기: 지금 항목이 어느 소·중·대분류에서 왔는지 한 칸씩 위로 */
   function upHtml(x, title) {
@@ -228,6 +378,7 @@
   function jobDet(x) {
     if (!x) return pickHtml();
     var h = '<div class="tags">' + badge('job') + '</div><h2>' + esc(x.name) + '</h2><p class="path num">고용24 직업코드 ' + esc(x.konet) + '</p>';
+    h += '<div class="insWrap" data-ins-s="job" data-ins-c="' + esc(x.konet) + '"></div>';
     var nm = T.KN[x.keco_code] || [];
     h += '<h3>세 분류에서 이 직업은 <small>공식 매핑만</small></h3><div class="jc">';
     h += '<div class="r" style="--c:var(--c-ncs)"><b>NCS 직무</b><div class="v">' + (nm.length ? '<div class="lk">' + nm.map(function (m) { return lk('ncs', m); }).join('') + '</div>' : NONE) + '</div></div>';
@@ -245,7 +396,8 @@
     var u = T.UC[code]; if (!u) return; var back = UI.sel;
     var head = X + '<button type="button" class="back" data-back="' + back.s + '|' + esc(back.c) + '">‹ ' + esc((back.s === 'job' ? T.J[back.c] : node(back.s, back.c) || {}).name || '') + '</button>' +
       '<div class="tags">' + badge('ncs') + '<span class="bd" style="--c:var(--dim)">능력단위</span>' + (u.in_notice ? '' : '<span class="bd lg">고시 별표 밖</span>') + (u.sub_link === 'code' ? '<span class="bd lg">분류번호로 이은 연결</span>' : '') + '</div>' +
-      '<h2>' + esc(u.name) + '</h2><p class="path num">' + esc(u.code) + ' · 수준 ' + (u.level == null ? '—' : u.level) + ' · 표준 훈련시간 ' + (u.hours == null ? '—' : u.hours + '시간') + '</p><h3>KSA <small>지식 · 기술 · 태도 — 원문 그대로</small></h3>';
+      '<h2>' + esc(u.name) + '</h2><p class="path num">' + esc(u.code) + ' · 수준 ' + (u.level == null ? '—' : u.level) + ' · 표준 훈련시간 ' + (u.hours == null ? '—' : u.hours + '시간') + '</p>' +
+      '<div class="insWrap" id="uIns"></div><h3>KSA <small>지식 · 기술 · 태도 — 원문 그대로</small></h3>';
     $('det').innerHTML = head + '<p class="loading">KSA를 불러오고 있습니다…</p>'; $('det').scrollTop = 0;
     var mj = u.code10.slice(0, 2);
     (KI ? Promise.resolve(KI) : fetch('./data/ksa/index.json', { cache: 'force-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) { KI = j; return j; }))
@@ -261,7 +413,23 @@
         }).join('') + '</div>';
         h += '<p class="path" style="margin-top:12px">출처 · 한국산업인력공단 국가직무능력표준 정보_GW(공공데이터포털 15157547, 이용허락범위 제한 없음)</p>';
         $('det').innerHTML = h;
+        drawUnitInsight(u, rec);   /* 위에서 innerHTML을 새로 그리므로 «그 뒤에» 채운다 */
       }).catch(function () { if ($('det').querySelector('[data-back]')) $('det').innerHTML = head + '<p class="empty">KSA 자료를 불러오지 못했습니다.</p>'; });
+  }
+  function drawUnitInsight(u, rec) {
+    var box = $('uIns'); if (!box) return;
+    var key = u.code; box.setAttribute('data-ins-key', key);
+    var apply = function (ent) {
+      if (box.getAttribute('data-ins-key') !== key) return;
+      if (!rec || !rec.e || !rec.e.length) {
+        box.innerHTML = '<section class="ins"><div class="insHd"><span class="insKick">한눈에 · 능력단위</span><h3 class="insT">이 업무가 뭐 하는 거예요?</h3></div>' +
+          '<p class="insNo">이 능력단위에는 KSA 원천 자료가 없어 한 줄 정의와 면접 예상 질문을 만들지 않았습니다. 원자료에 없는 내용은 넣지 않습니다.</p>' + insLinks() + '</section>';
+        return;
+      }
+      box.innerHTML = unitCard(u, ent, rec);
+    };
+    insShard('units', u.code10.slice(0, 2)).then(function (pk) { apply(pk.units[u.code]); }
+    ).catch(function () { apply(null); });
   }
   $('det').addEventListener('click', function (e) { var b; if ((b = e.target.closest('[data-close]'))) { closeSheet(); e.stopPropagation(); } });
 
