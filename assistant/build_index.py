@@ -19,7 +19,13 @@ index.json
       "docs":    [{"i","s","t","k","x","u","q"?}]
     }
     i=문서 번호, s=섹터 id, t=제목, k=찾기 낱말, x=핵심 한 줄, u=이동 주소,
-    q=그 주소 뒤에 ?q=로 붙일 낱말(있을 때만). 이동 주소는 클라이언트가 인코딩한다.
+    u 는 «그 항목이 열리는 자리»를 그대로 담는다 — 섹터마다 쓰는 주소가 다르므로
+      ?q=<용어>      (theory·dacum·law 상황·manual·library·vpi·grad …)
+      #<아이디>      (cert·company·portals #p=·library #vol-·talk·interview·surgery #m=·id=·decalcomania·briefing·labor #c-·parsons #p<쪽>)
+      ?stat=·?station=·?preset= (reality·transit·상담 프리셋)
+    을 섞어 쓴다. 받는 쪽은 `assets/core.js` 6) 딥링크가 ?q=를 검색창에 채우고 바로 거른다
+    (<html data-jc-deep="off"> 는 섹터가 스스로 받는다는 표시, window.JCDeepLink(q) 는 섹터별 훅).
+    주소에 아무 표시가 없는 문서는 search.js 가 «찾은 낱말»을 ?q=로 붙여 보낸다.
 
 index-dirs.json
     {"v":1,"built":"…","company":[],"taxonomy":[[이름,KECO,KSCO],…]}
@@ -289,7 +295,7 @@ def docs_law(add):
                 names.append(str(nm) + ' ' + ', '.join(ref.get('articles') or []))
         add('law:sit:' + str(sit.get('id')), 'law', '상황 — ' + str(sit.get('label', '')),
             keys(sit.get('terms')),
-            clip(' · '.join(names), 150), './law/')
+            clip(' · '.join(names), 150), './law/?q=' + _q(sit.get('label', '')))
 
 
 def docs_thermometer(add):
@@ -332,11 +338,11 @@ def docs_briefing(add):
         nums = ' · '.join('%s %s' % (n.get('label'), n.get('value')) for n in (card.get('key_numbers') or [])[:3] if n.get('label'))
         add('briefing:' + str(card.get('id')), 'briefing', card.get('title', ''),
             keys(card.get('category'), card.get('tags'), card.get('theme_label')),
-            clip(' '.join(x for x in [three.get('what'), nums] if x), 165), './briefing/')
+            clip(' '.join(x for x in [three.get('what'), nums] if x), 165), './briefing/#' + str(card.get('id')))
     for th in d.get('main_themes') or []:
         add('briefing:theme:' + str(th.get('theme_id')), 'briefing', th.get('title', ''),
             keys([i.get('title') for i in (th.get('items') or [])][:4]),
-            clip(th.get('summary'), 165), './briefing/')
+            clip(th.get('summary'), 165), './briefing/#themes')
 
 
 def docs_interview(add):
@@ -346,11 +352,11 @@ def docs_interview(add):
     for e in d.get('encounters') or []:
         add('interview:' + str(e.get('id')), 'interview', clip(e.get('question'), 85),
             keys(e.get('sub_mode'), e.get('interviewer'), '법적 쟁점' if e.get('legal_flag') and e.get('legal_flag') != 'ok' else ''),
-            clip(e.get('answer_goal') or e.get('hidden_intent'), 140), './interview/')
+            clip(e.get('answer_goal') or e.get('hidden_intent'), 140), './interview/#' + str(e.get('id')))
     for q in d.get('reverse_questions') or []:
         if isinstance(q, dict):
             add('interview:rq:' + str(q.get('id') or clip(q.get('q'), 20)), 'interview', clip(q.get('q') or q.get('question'), 85),
-                '역질문', clip(q.get('why') or q.get('goal'), 130), './interview/')
+                '역질문', clip(q.get('why') or q.get('goal'), 130), './interview/#rq')
 
 
 def docs_surgery(add):
@@ -359,16 +365,17 @@ def docs_surgery(add):
         for j in d.get('jd_anatomy') or []:
             add('surgery:jd:' + str(j.get('id')), 'surgery', str(j.get('phrase', '')),
                 keys(j.get('cluster'), j.get('signal_type')),
-                clip(j.get('hidden_intent'), 140), './surgery/')
+                clip(j.get('hidden_intent'), 140), './surgery/#m=jd&id=' + str(j.get('id')))
         for x in d.get('xray_cases') or []:
             add('surgery:xray:' + str(x.get('id')), 'surgery', clip(x.get('title') or x.get('name'), 85),
-                '공고 해부,JD', clip(x.get('summary') or x.get('situation'), 140), './surgery/')
+                '공고 해부,JD', clip(x.get('summary') or x.get('situation'), 140), './surgery/#m=xr&id=' + str(x.get('id')))
     lex = read_json('surgery', 'data', 'lexicon.json')
     if lex:
         for e in lex.get('entries') or []:
             add('surgery:lex:' + str(e.get('id') or e.get('word')), 'surgery', str(e.get('word') or e.get('term', '')),
                 keys(e.get('category')),
-                clip(e.get('plain') or e.get('meaning') or e.get('def'), 130), './surgery/')
+                clip(e.get('plain') or e.get('meaning') or e.get('def'), 130),
+                './surgery/#m=ly&id=' + _q(str(e.get('id') or e.get('word') or '')))
 
 
 def docs_reality(add):
@@ -378,7 +385,7 @@ def docs_reality(add):
     for c in d.get('illusion_checks') or []:
         add('reality:' + str(c.get('id')), 'reality', str(c.get('category', '')) + ' — ' + clip(c.get('myth_statement'), 60),
             keys(c.get('category'), c.get('unit')),
-            clip('실제 %s' % c.get('actual_label'), 140), './reality/')
+            clip('실제 %s' % c.get('actual_label'), 140), './reality/?stat=' + str(c.get('id')))
 
 
 def docs_transit(add):
@@ -388,7 +395,7 @@ def docs_transit(add):
     for s in d.get('stations') or []:
         add('transit:' + str(s.get('id')), 'transit', s.get('name', ''),
             keys(s.get('kicker'), s.get('who'), s.get('where')),
-            clip(' '.join(s.get('core') or []) or s.get('tip'), 145), './transit/')
+            clip(' '.join(s.get('core') or []) or s.get('tip'), 145), './transit/?station=' + str(s.get('id')))
     for a in d.get('assets') or []:
         if isinstance(a, dict):
             add('transit:asset:' + str(a.get('id')), 'transit', clip(a.get('name') or a.get('title'), 75),
@@ -418,7 +425,7 @@ def docs_labor(add):
     for c in d.get('concepts') or []:
         add('labor:' + str(c.get('id')), 'labor', c.get('title', ''),
             keys(c.get('en'), c.get('group')),
-            clip(c.get('one'), 150), './labor/')
+            clip(c.get('one'), 150), './labor/#c-' + str(c.get('id')))
     for u in d.get('unempCases') or []:
         if isinstance(u, dict):
             add('labor:case:' + str(u.get('id') or clip(u.get('title'), 16)), 'labor', clip(u.get('title') or u.get('q'), 75),
@@ -432,12 +439,12 @@ def docs_grad(add):
                'A4': '예체능 계열 대학원', 'A5': '의학·치의학·한의학·수의학 대학원'}
         for k, v in (wiki.get('dae') or {}).items():
             add('grad:track:' + k, 'grad', DAE.get(k, '대학원 계열 ' + k), '대학원,계열,전공',
-                clip(v, 150), './grad/')
+                clip(v, 150), './grad/#wiki/' + k)
         for t in wiki.get('tracks') or []:
             if isinstance(t, dict):
                 nm = t.get('id') or t.get('name') or ''
                 add('grad:t:' + str(nm), 'grad', clip(nm, 75),
-                    '대학원,진학,석사,박사', clip(t.get('one') or t.get('note'), 140), './grad/')
+                    '대학원,진학,석사,박사', clip(t.get('one') or t.get('note'), 140), './grad/?q=' + _q(nm))
 
 
 def docs_univ(add):
@@ -472,21 +479,34 @@ def docs_talk(add):
     for m in re.finditer(r"\{\s*\n?\s*id: '([a-z0-9_-]+)', icon: '([^']*)', name: '([^']*)', term: '([^']*)',\s*\n?\s*when: '([^']*)',", src):
         add('talk:' + m.group(1), 'talk', m.group(3) + ' — ' + m.group(4),
             keys(m.group(5), '상담 대화,멘트,연습'),
-            clip(m.group(5), 140), './talk/')
+            clip(m.group(5), 140), './talk/#' + m.group(1))
 
 
 def docs_decal(add):
-    d = read_json('decalcomania', 'data', 'links.json')
+    """커리어데칼코마니 — 직업 552개(jobs.json)와 그 직업에 이르는 학과(links.json).
+
+    제목은 «직업 이름»이다(예전 판은 아이디 J-1 만 썼다). 누르면 그 직업 카드(#J-…)로 바로 간다.
+    """
+    d = read_json('decalcomania', 'data', 'jobs.json')
     if not d:
         return
-    jobs = d.get('jobs') or {}
-    if isinstance(jobs, dict):
-        for name, val in list(jobs.items())[:400]:
-            majors = val.get('majors') if isinstance(val, dict) else val
-            majors = majors or []
-            txt = ', '.join([m if isinstance(m, str) else (m.get('name') or '') for m in majors][:6])
-            add('decal:' + name, 'decalcomania', name, '직업,학과,전공',
-                clip('관련 학과: ' + txt, 140), './decalcomania/')
+    links = read_json('decalcomania', 'data', 'links.json') or {}
+    lj = links.get('jobs') or {}
+    for j in d.get('jobs') or []:
+        jid = str(j.get('id') or '')
+        name = str(j.get('name') or '').strip()
+        if not jid or not name:
+            continue
+        keco = j.get('keco') or {}
+        ksco = j.get('ksco') or {}
+        rel = lj.get(jid) or {}
+        majors = rel.get('majors') if isinstance(rel, dict) else []
+        txt = ', '.join([m if isinstance(m, str) else (m.get('name') or '') for m in (majors or [])][:5])
+        works = j.get('works') or []
+        add('decal:' + jid, 'decalcomania', name,
+            keys(j.get('group'), keco.get('detail_name'), ksco.get('detail_name'), txt, '직업,학과,전공'),
+            clip(works[0] if works else ('관련 학과: ' + txt), 140),
+            './decalcomania/#' + jid)
 
 
 PARSONS_CH = {'intro': '들어가며', 'ch06': '6장 직업 세계를 숫자로', 'ch07': '7장 보스턴 직업국',
@@ -494,6 +514,13 @@ PARSONS_CH = {'intro': '들어가며', 'ch06': '6장 직업 세계를 숫자로'
 
 
 def docs_parsons(add):
+    """다시 읽는 『직업의 선택』 — 장마다 그 장이 시작하는 쪽(#p<쪽번호>)으로 바로 간다."""
+    book = read_json('parsons', 'data', 'book.json') or {}
+    starts, cur = {}, 0
+    for ch in book.get('chapters') or []:
+        cd = read_json('parsons', 'data', str(ch.get('file') or ''))
+        starts[str(ch.get('id'))] = cur
+        cur += len(((cd or {}).get('cards') or []))
     for ch in ('intro', 'ch06', 'ch07', 'ch08', 'outro'):
         d = read_json('parsons', 'data', ch + '.json')
         if not d:
@@ -504,7 +531,8 @@ def docs_parsons(add):
         label = PARSONS_CH.get(ch, ch)
         add('parsons:' + ch, 'parsons', clip((label + ' · ' + first).strip(' ·'), 75),
             keys(d.get('title'), d.get('subtitle'), label, '파슨스,직업의 선택,이북,장'),
-            clip(lead or first, 150), './parsons/')
+            clip(lead or first, 150),
+            './parsons/#p%d' % (starts.get(ch, 0) + 1))
     g = read_json('parsons', 'data', 'glossary.json')
     if isinstance(g, dict):
         rows = g.get('terms') or g.get('items') or []
@@ -534,7 +562,8 @@ def docs_library(add):
             continue
         add('library:' + m.group(1), 'library', title.replace('<br>', ' '),
             keys(pick('authority'), pick('key'), pick('issue')),
-            clip((pick('sub') + ' ' + pick('blurb')).replace('<br>', ' '), 155), './library/')
+            clip((pick('sub') + ' ' + pick('blurb')).replace('<br>', ' '), 155),
+            './library/#vol-%02d' % int(m.group(1)))
 
 
 TR_CAT = {'job': '직무·업무', 'industry': '산업·현장', 'edu': '학력·자격', 'policy': '고용제도'}
@@ -613,7 +642,7 @@ def docs_manual(add):
         if isinstance(ch, list) and len(ch) >= 4:
             add('manual:c' + str(ch[0]), 'manual', '제%d장 %s' % (ch[0], ch[1]),
                 keys(ch[2], '국민취업지원제도,국취'),
-                clip(ch[3], 130), './manual/')
+                clip(ch[3], 130), './manual/?q=' + _q(ch[1]))
 
 
 def docs_dacum(add):
@@ -621,7 +650,7 @@ def docs_dacum(add):
     for m in re.finditer(r"T\('([A-E]-\d+)',\s*'((?:[^'\\]|\\.)*)'", src):
         add('dacum:' + m.group(1), 'dacum', m.group(2).replace("\\'", "'"),
             keys(m.group(1), '데이컴,과업,DACUM'),
-            'DACUM 과업 ' + m.group(1), './dacum/')
+            'DACUM 과업 ' + m.group(1), './dacum/?q=' + _q(m.group(2).replace("\\'", "'")))
 
 
 def docs_hud(add):
@@ -635,10 +664,10 @@ def docs_vpi(add):
     src = read_text('vpi', 'index.html')
     for m in re.finditer(r"\{id:'(p\d)',label:'((?:[^'\\]|\\.)*)'", src):
         add('vpi:' + m.group(1), 'vpi', m.group(2).replace("\\'", "'"), 'L형,검사,사례',
-            '직업선호도검사 L형 실습 사례', './vpi/')
+            '직업선호도검사 L형 실습 사례', './vpi/?q=' + _q(m.group(2).replace("\\'", "'")))
     for m in re.finditer(r"\['([^']{2,60})','([^']{25,400})'\]", src):
         add('vpi:alt:' + m.group(1), 'vpi', m.group(1), 'L형,해석,주의',
-            clip(m.group(2), 140), './vpi/')
+            clip(m.group(2), 140), './vpi/?q=' + _q(m.group(1)))
 
 
 # ---------------------------------------------------------------- 큰 디렉터리

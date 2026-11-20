@@ -29,6 +29,12 @@
   }).catch(function () { $('main').innerHTML = '<p class="empty">자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>'; });
   function loadLex() { if (!LEXP) { LEXP = fetch('./data/lexicon.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) { LEX = j; return j; }); LEXP.catch(function () { LEXP = null; }); } return LEXP; }
 
+  /* 대문 검색이 넘긴 ?q= — 문장 수술실을 그 낱말로 연다 */
+  window.JCDeepLink = function (term) {
+    if (!term) return true;
+    UI.m = 'op'; UI.op = String(term).slice(0, 40); render(); return true;
+  };
+
   /* 주소: #m=jd&id=jd01 (입력한 단어는 남기지 않는다) */
   function readHash() {
     var o = {}; String(location.hash).replace(/^#/, '').split('&').forEach(function (kv) { var i = kv.indexOf('='); if (i > 0) o[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); });

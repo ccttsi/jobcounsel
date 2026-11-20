@@ -569,6 +569,16 @@
 
   /* ───────── 경로 ───────── */
   var curView = null;
+  /* 대문 검색이 넘긴 ?q= — 그 갈래(되받아 주기·질문 바꾸기…)로 바로 간다 */
+  window.JCDeepLink = function (term) {
+    var n = String(term || '').replace(/\s/g, '').toLowerCase();
+    if (!n) return true;
+    for (var i = 0; i < MODS.length; i++) {
+      var hay = (MODS[i].name + ' ' + (MODS[i].term || '') + ' ' + (MODS[i].when || '')).replace(/\s/g, '').toLowerCase();
+      if (hay.indexOf(n) >= 0) { if (location.hash === '#' + MODS[i].id) route(); else location.hash = MODS[i].id; return true; }
+    }
+    return true;
+  };
   function route(keepScroll) {
     var h = decodeURIComponent(location.hash.replace(/^#/, ''));
     var html;

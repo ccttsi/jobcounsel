@@ -395,6 +395,17 @@
     else if (h && current) { current._cards.forEach(function (c, i) { if (c.id === h) { UI.tab = 'issues'; UI.card = i; } }); }
   }
   window.addEventListener('hashchange', function () { if (!current) return; fromHash(); showTab(UI.tab); if (UI.tab === 'issues') showCard(UI.card); });
+  /* 대문 검색이 넘긴 ?q= — 제목·갈래에 그 낱말이 있는 카드를 바로 펼친다 */
+  window.JCDeepLink = function (term) {
+    if (!term || !current) return false;
+    var n = String(term).replace(/\s/g, '').toLowerCase();
+    var cs = current._cards || [];
+    for (var i = 0; i < cs.length; i++) {
+      var c = cs[i], hay = ((c.title || '') + ' ' + (c.category || '') + ' ' + (c.theme_label || '')).replace(/\s/g, '').toLowerCase();
+      if (hay.indexOf(n) >= 0) { UI.tab = 'issues'; UI.card = i; showTab('issues'); showCard(i); return true; }
+    }
+    return true;
+  };
 
   /* ---------- 17-1 오늘의 원문 연결: news.json이 있을 때만 링크를 그린다 ---------- */
   var news = null;

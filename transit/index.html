@@ -528,6 +528,11 @@ fetch('./data/transit.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 
   S.boarded=S.boarded.filter(function(id){return BY[id];});S.assets=S.assets.filter(function(id){return ASSET[id];});
   go(S.step,true);
   if(typeof setMode==='function'&&MODE==='rev')setMode('rev');
+  /* 대문 검색이 넘긴 ?station=아이디 — 그 역 카드를 바로 연다 */
+  var want='';try{want=(new URLSearchParams(location.search).get('station')||'').trim();}catch(e){}
+  if(!want){var gq='';try{gq=(new URLSearchParams(location.search).get('q')||'').replace(/\s/g,'').toLowerCase();}catch(e){}
+    if(gq)D.stations.some(function(s){var hay=(s.name+' '+(s.kicker||'')).replace(/\s/g,'').toLowerCase();if(hay.indexOf(gq)>=0){want=s.id;return true;}return false;});}
+  if(want&&BY[want])setTimeout(function(){openSheet(want);},60);
 }).catch(function(){$('p1').hidden=false;$('p1').innerHTML='<p class="empty">노선 자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>';});
 
 /* ───────── 여정 레일 ───────── */

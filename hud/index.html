@@ -295,7 +295,7 @@ img,table{max-width:100%}
 <section class="view" id="v-rules">
   <div class="card mb-4">
     <label class="lbl" for="q">규정 찾기</label>
-    <input type="search" id="q" placeholder="예: 유예, 250만원, 부정수급, 80%" autocomplete="off">
+    <input type="search" id="q" data-deeplink placeholder="예: 유예, 250만원, 부정수급, 80%" autocomplete="off">
     <div class="flex flex-wrap gap-2 mt-3" id="qChips"></div>
     <p class="text-[12.5px] text-mute mb-0 mt-2" id="qCount"></p>
   </div>
@@ -588,6 +588,8 @@ function rules(){
   $('#rList').innerHTML=hit.map(r=>'<details class="rule"'+(q&&hit.length<=3?' open':'')+'><summary><span class="text-[12px] font-semibold t-acc">'+r[0]+'</span><span class="font-bold">'+r[1]+'</span><span class="text-[14px] text-mute">'+r[2]+'</span></summary><div class="body text-[14px]"><ul>'+r[3].map(x=>'<li>'+x+'</li>').join('')+'</ul><details class="basis"><summary>근거 조문</summary><p class="m-0 mt-1">'+r[4]+' '+cite(r[5])+'</p></details></div></details>').join('')||'<p class="text-mute">찾는 내용이 없습니다. 단어를 줄여 보세요.</p>';
 }
 $('#q').addEventListener('input',rules);
+/* 대문 검색이 넘긴 ?q= — 규정 카드 화면을 열고 그 낱말로 바로 찾는다 */
+window.JCDeepLink=function(term){if(!term)return true;try{show('rules');var i=$('#q');i.value=term;rules();return true;}catch(e){return false;}};
 $('#qChips').addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(b){cat=b.dataset.c;rules()}});
 rules();
 

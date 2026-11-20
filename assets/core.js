@@ -15,7 +15,9 @@
  * 5) 이어 보기: 섹터 장부(tools.js)와 「이어 보기」 줄(next.js)을 불러온다.
  * 6) 오류 수집: 운영 도메인(ccttsi.github.io)에서만 Sentry 로더를 한 번 불러온다. 로컬·검사 화면에서는 부르지 않는다.
  *
- * 섹터가 쓸 수 있는 것: window.JCCore = { base, state(), warm(href), notice(text, label, fn), clear() }
+ * 6) 딥링크: 대문 검색이 넘긴 ?q= 를 이 화면의 검색창에 채우고 바로 찾는다(data-jc-deep="off"면 섹터가 직접 받는다).
+ *
+ * 섹터가 쓸 수 있는 것: window.JCCore = { base, state(), warm(href), notice(text, label, fn), clear(), query(), applyQuery() }
  * 화면 밖으로 내보내는 것은 없다. 외부 서버를 부르지 않는다 — 예외는 6) 오류 수집 하나뿐이고,
  * 그마저도 운영 도메인에서만이다.
  */
@@ -163,6 +165,50 @@
   d.addEventListener('touchstart', function (e) { warm(target(e)); }, { passive: true, capture: true });
   d.addEventListener('mouseover', function (e) { var h = target(e); clearTimeout(hoverT); if (h) hoverT = setTimeout(function () { warm(h); }, 90); }, { passive: true, capture: true });
 
+  /* ---------- 6) 딥링크: 대문·비서 검색이 넘긴 ?q= 를 이 화면의 검색창에 채우고 바로 찾는다 ----------
+   * 대문 빠른 검색은 결과마다 «찾은 낱말이 실린 주소»(translator/?q=GMP, company/?q=해커스)를 넘긴다.
+   * 섹터는 그 낱말을 받아 ① 검색창을 채우고 ② 바로 거른 결과를 보여 줘야 한다.
+   *   - 「?q=」·「?term=」·「?search=」 가운데 있는 것을 첫 낱말로 쓴다.
+   *   - 섹터가 스스로 받는 화면은 <html data-jc-deep="off"> 로 표시해 둔다(두 번 거르지 않게).
+   *   - 검색창 말고 «화면 고르기»가 필요한 섹터는 window.JCDeepLink(q) 를 정의한다.
+   *     true(또는 없음)=처리 끝, false=아직 준비 안 됨(다음 차례에 다시 부른다).
+   *   - 검색창은 <input data-deeplink>. 없으면 첫 type=search 칸을 쓴다.
+   */
+  var DLQ = (function () {
+    try {
+      var p = new URLSearchParams(location.search);
+      return String(p.get('q') || p.get('term') || p.get('search') || '').trim();
+    } catch (e) { return ''; }
+  })();
+  var DL = { done: false, n: 0 };
+  function deepLink() {
+    if (DL.done) return true;
+    if (!DLQ) { DL.done = true; return true; }
+    if (root.getAttribute('data-jc-deep') === 'off') { DL.done = true; return true; }   // 섹터가 스스로 받는다
+    if (typeof window.JCDeepLink === 'function') {
+      var r;
+      try { r = window.JCDeepLink(DLQ); } catch (e) { r = true; }
+      if (r !== false) DL.done = true;
+      return DL.done;
+    }
+    var el = d.querySelector('[data-deeplink]') || d.querySelector('#q[type=search]') || d.querySelector('input[type=search]');
+    if (!el || el.disabled || el.offsetParent === null) return false;   // 아직 안 그려졌다 — 다음 차례에
+    if (el.value !== DLQ) {
+      el.value = DLQ;
+      try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch (e) {}
+      try { el.dispatchEvent(new Event('change', { bubbles: true })); } catch (e) {}
+    }
+    DL.done = true;
+    return true;
+  }
+  function deepLinkTick() {
+    if (DL.done || !DLQ) return;
+    if (deepLink() || ++DL.n > 40) return;          // 60ms × 40 = 약 2.4초까지 기다린다
+    setTimeout(deepLinkTick, 60);
+  }
+  ready(function () { deepLinkTick(); setTimeout(deepLinkTick, 0); setTimeout(deepLinkTick, 300); });
+  window.addEventListener('load', function () { setTimeout(deepLinkTick, 0); });
+
   /* ---------- 5) 이어 보기: 섹터 장부(tools.js)와 이어 보기 줄(next.js)을 대문이 아닌 화면에서 불러온다 ---------- */
   function load(src, then) { var s = d.createElement('script'); s.src = src; s.async = true; if (then) s.onload = then; (d.head || root).appendChild(s); }
   ready(function () {
@@ -172,6 +218,9 @@
 
   window.JCCore = {
     base: BASE,
+    /* 대문 검색이 넘긴 낱말 — 섹터가 직접 쓸 때 */
+    query: function () { return DLQ; },
+    applyQuery: deepLink,
     state: function () { return { failed: st.failed, offline: st.offline, pending: st.pending }; },
     warm: function (href) { try { var u = new URL(href, location.href); if (u.origin === location.origin) warm(u.origin + u.pathname); } catch (e) {} },
     notice: function (text, label, fn) { show(String(text || ''), label || null, fn); },

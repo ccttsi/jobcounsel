@@ -339,14 +339,17 @@
     try { q = (new URLSearchParams(location.search).get('q') || '').trim(); } catch (e) { }
     if (!q) return;
     st.q = q; st.page = 0; $('q').value = q; $('qx').hidden = false;
-    var list = hits(), exact = null;
-    for (var i = 0; i < list.length; i++) {
+    var nq = norm(q), list = hits(), exact = null, i, j;
+    /* ① 용어 이름이 정확히 같은 것을 먼저 — 「스펙충」을 치면 별칭으로 걸린 「고스펙」이 아니라 「스펙충」 항목이 열려야 한다. */
+    for (i = 0; i < list.length; i++) if (norm(list[i].term) === nq) { exact = list[i]; break; }
+    /* ② 다음은 별칭까지 같은 것 */
+    for (i = 0; i < list.length && !exact; i++) {
       var t = list[i];
       var names = [t.term, t.ko].concat(t.aka || []);
-      for (var j = 0; j < names.length; j++) if (norm(names[j]) === norm(q)) { exact = t; break; }
-      if (exact) break;
+      for (j = 0; j < names.length; j++) if (norm(names[j]) === nq) { exact = t; break; }
     }
     if (exact) select(exact.id, { hash: false });
+    else if (list.length === 1) select(list[0].id, { hash: false });   // 하나뿐이면 그 하나를 열어 준다
   }
 
   /* ---------- 사건 ---------- */

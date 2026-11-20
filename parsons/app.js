@@ -837,6 +837,17 @@
     $('cards').textContent = N;
     setMode(m, !!h);
     W.addEventListener('hashchange', function () { var x = /^#p(\d+)$/.exec(location.hash); if (x && +x[1] - 1 !== st.i) go(+x[1] - 1); });
+    /* 대문 검색이 넘긴 ?q= — 그 낱말이 나오는 첫 쪽으로 넘긴다 */
+    window.JCDeepLink = function (term) {
+      var n = String(term || '').replace(/\s/g, '').toLowerCase();
+      if (!n) return true;
+      for (var i = 0; i < CARDS.length; i++) {
+        var txt = '';
+        try { txt = JSON.stringify(CARDS[i].c); } catch (e) { }
+        if (txt.replace(/\s/g, '').toLowerCase().indexOf(n) >= 0) { go(i); return true; }
+      }
+      return true;
+    };
   }
 
   /* 이용 안내 접고 펼치기 */

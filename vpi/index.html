@@ -1200,6 +1200,34 @@ function init(){
   refresh();
 }
 init();
+
+/* 대문 검색이 넘긴 ?q= — 실습 시나리오 이름이면 그것을 바로 펼치고, 해석 유의 이름이면 상세 모드로 열어 그 자리에서 보여 준다 */
+window.JCDeepLink=function(term){
+  var t=String(term||'').replace(/[\s①-⑤]/g,'').toLowerCase();
+  if(!t)return true;
+  for(var i=0;i<PRESETS.length;i++){
+    var lab=PRESETS[i].label.replace(/[\s①-⑤]/g,'').toLowerCase();
+    if(lab.indexOf(t)>=0||t.indexOf(lab)>=0){loadPreset(PRESETS[i]);return true;}
+  }
+  /* 프리셋이 아니면 «해석할 때 다른 가능성» 낱말인지 본다 — 그 글이면 판 위에 그대로 띄운다 */
+  var hit=null;
+  ALTS.some(function(a){if(String(a[0]).replace(/\s/g,'').indexOf(t)>=0){hit=a;return true;}return false;});
+  if(hit){
+    var panel=document.getElementById('panel-int');
+    if(panel){
+      var box=document.getElementById('deepnote');
+      if(!box){box=document.createElement('div');box.id='deepnote';
+        box.style.cssText='margin:12px 0 4px;padding:12px 14px;border-left:3px solid currentColor;border-radius:10px;background:rgba(127,127,127,.12);font-size:14.5px;line-height:1.65';
+        panel.insertBefore(box,panel.firstChild);}
+      box.innerHTML='<b>'+hit[0]+'</b><br>'+hit[1];
+      if(box.scrollIntoView)box.scrollIntoView({block:'start'});
+      return true;
+    }
+  }
+  if(state.mode!=='detail'){state.mode='detail';refresh();}
+  var n=document.getElementById('tri-detail');if(n&&n.scrollIntoView)n.scrollIntoView({block:'start'});
+  return true;
+};
 })();
 </script>
 <script src="../assets/marker.js" defer></script>
