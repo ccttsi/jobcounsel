@@ -135,6 +135,7 @@
         /* 위에서 안내 */
       } else {
         sp = Math.min(round10(s.days * cfg.day), cfg.cap);
+        notes.push({ k: 'info', t: '특별훈련수당은 과정 정보에 지급 대상으로 표시된 과정만 받습니다(고시는 장관이 정하는 훈련에 한해 지급).' });
         if (boost) notes.push({ k: 'ok', t: 'AI캠퍼스 등 상향 과정 기준(수도권 20·비수도권 40·인구감소지역 60만원 안내)을 적용했습니다.' });
       }
     } else if (p.kind === 'special') {
