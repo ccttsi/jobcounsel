@@ -230,6 +230,7 @@
   function renderSheet() {
     var host = $('sheetMain'), ft = $('sheetFt');
     clear(host); clear(ft);
+    ft.hidden = false;
     if (SHEET === 'rename') return renderRename(host, ft);
     if (SHEET === 'rehearsal') return renderRehearsal(host, ft);
     if (SHEET === 'about') return renderAbout(host, ft);
@@ -369,6 +370,8 @@
       pick.appendChild(b);
     });
     paint();
+    /* 비로그인자는 아래에 둘 단추가 없다 — 빈 아래칸 띠가 남지 않게 접는다 */
+    ft.hidden = !ft.childNodes.length;
   }
 
   function renderRename(host, ft) {
