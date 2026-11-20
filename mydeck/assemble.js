@@ -312,6 +312,14 @@
     var span = ph ? ph.querySelector('span') : null;
     var t = { i: 0, j: 0, dir: 'in', timer: 0, on: false };
 
+    /* 입력이 길어지면 상자도 네 줄까지 따라 는다(그 위로는 안에서 스크롤) */
+    function grow() {
+      if (!ask) return;
+      ask.style.height = 'auto';
+      var h = ask.scrollHeight + 2;
+      ask.style.height = Math.max(92, Math.min(h, 168)) + 'px';
+    }
+
     function wanted() {
       if (!ask || !ph || !span) return false;
       if (String(ask.value || '').length) return false;
@@ -369,14 +377,16 @@
 
     if (ask) {
       ask.addEventListener('input', function () {
+        grow();
         if (onValue) onValue(ask.value);
         if (String(ask.value || '').length) { stop(); if (ph) ph.classList.add('off'); }
         else { t.i = 0; t.j = 0; t.dir = 'in'; setTimeout(start, 500); }
       });
-      ask.addEventListener('focus', function () { stop(); if (ph) ph.classList.add('off'); });
+      ask.addEventListener('focus', function () { grow(); stop(); if (ph) ph.classList.add('off'); });
       ask.addEventListener('blur', function () {
         if (!String(ask.value || '').length) { t.i = 0; t.j = 0; t.dir = 'in'; start(); }
       });
+      grow();
     }
     document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else start(); });
 
@@ -461,12 +471,31 @@
 
   function card(c, opts) {
     var box = el('article', 'lv-course');
+    var editing = false, undo = null;
+
+    /* 단계 지우기 — 하나만 지우거나, 그 밑으로 이어지는 단계를 한꺼번에 지운다.
+       지운 직후 바로 되돌릴 수 있게 마지막 한 번만 기억하고, 최소 한 단계는 남긴다. */    function take(i, below) {
+      if (!c.steps.length) return;
+      if (below) { if (i >= c.steps.length - 1) return; }
+      else if (c.steps.length <= 1) return;
+      undo = c.steps.slice();
+      c.steps = below ? c.steps.slice(0, i + 1) : c.steps.slice(0, i).concat(c.steps.slice(i + 1));
+      c.edited = true;
+      paint();
+      if (opts.onEdit) opts.onEdit(c);
+    }
 
     function paint() {
       clear(box);
       var top = el('div', 'lv-c-top');
       top.appendChild(el('span', 'lv-c-tag', c.tag));
       top.appendChild(el('span', 'lv-c-n', c.steps.length + '단계' + (c.edited ? ' · 고침' : '')));
+      var ed = el('button', 'ac-edit', editing ? '편집 끝' : '단계 삭제');
+      ed.type = 'button';
+      ed.setAttribute('aria-pressed', String(editing));
+      ed.setAttribute('aria-label', c.title + ' — 단계 삭제 ' + (editing ? '끝내기' : '열기'));
+      ed.addEventListener('click', function () { editing = !editing; undo = null; paint(); });
+      top.appendChild(ed);
       box.appendChild(top);
       box.appendChild(el('h3', null, c.title));
 
@@ -483,7 +512,7 @@
 
       var ol = el('ol', 'lv-c-steps');
       c.steps.forEach(function (s, i) {
-        var li = el('li');
+        var li = el('li', 'ac-row');
         var btn = el('button', 'ac-step');
         btn.type = 'button';
         btn.setAttribute('aria-label', (i + 1) + '단계 ' + sector(s.id).title + ' — 눌러서 갈라지는 자료 보기');
@@ -492,11 +521,48 @@
         tx.appendChild(el('b', null, sector(s.id).title));
         tx.appendChild(el('em', null, s.hit && s.why.length ? '「' + s.why[0] + '」에서 걸림' : (s.hit ? '색인에서 걸림' : '이 순서에 늘 놓는 단계')));
         btn.appendChild(tx);
-        btn.addEventListener('click', function () { toggleBranch(li, c, i, paint, opts); });
+        btn.addEventListener('click', function () { if (editing) return; toggleBranch(li, c, i, paint, opts); });
         li.appendChild(btn);
+        if (editing) {
+          var act = el('div', 'ac-row-act');
+          if (c.steps.length <= 1) {
+            act.appendChild(el('span', 'ac-row-note', '단계가 하나뿐이라 더 지울 수 없습니다.'));
+          } else {
+            var del = el('button', 'ac-mini del', '이 단계 삭제');
+            del.type = 'button';
+            del.setAttribute('aria-label', (i + 1) + '단계 ' + sector(s.id).title + ' 삭제');
+            del.addEventListener('click', function () { take(i, false); });
+            act.appendChild(del);
+            if (i < c.steps.length - 1) {
+              var below = el('button', 'ac-mini del below', '이 밑으로 모두 삭제');
+              below.type = 'button';
+              below.setAttribute('aria-label', (i + 1) + '단계 밑으로 ' + (c.steps.length - i - 1) + '단계 모두 삭제');
+              below.addEventListener('click', function () { take(i, true); });
+              act.appendChild(below);
+            }
+          }
+          li.appendChild(act);
+        }
         ol.appendChild(li);
       });
       box.appendChild(ol);
+
+      if (undo && undo.length) {
+        var u = el('div', 'ac-undo');
+        u.appendChild(el('span', null, '단계를 뺐습니다.'));
+        var ub = el('button', null, '되돌리기');
+        ub.type = 'button';
+        ub.addEventListener('click', function () {
+          c.steps = undo.slice();
+          undo = null;
+          c.edited = true;
+          paint();
+          if (opts.onEdit) opts.onEdit(c);
+        });
+        u.appendChild(ub);
+        box.appendChild(u);
+      }
+
 
       var go = el('button', 'lv-c-go', opts.label || '이 흐름으로 열기');
       go.type = 'button';

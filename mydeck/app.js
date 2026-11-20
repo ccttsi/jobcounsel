@@ -17,7 +17,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var D = window.JCDeck;
   var THEMES = [['light', '밝게'], ['sepia', '세피아'], ['dark', '어둡게']];
-  var decks = [], prefs = {}, edit = 'light', dirty = false, SHEET = '', PICK = null, REH = 0, step = 'bg';
+  var decks = [], prefs = {}, edit = 'light', dirty = false, SHEET = '', PICK = null, REH = 0, step = 'bg', ABOUT = 'algo';
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -29,9 +29,15 @@
   function toast(m) {
     var t = $('toast');
     if (!t) return;
+    clearTimeout(toast.t);
+    /* 빈 말로 지울 때는 알약을 띄우지 않는다 — 내용 없는 점만 남지 않게 */
+    if (!String(m == null ? '' : m).trim()) {
+      t.textContent = '';
+      t.classList.remove('on');
+      return;
+    }
     t.textContent = m;
     t.classList.add('on');
-    clearTimeout(toast.t);
     toast.t = setTimeout(function () { t.classList.remove('on'); }, 3600);
   }
   var EMOJI = ['🗂', '🧭', '📎', '🌿', '🔖', '🧩', '📐', '🪄'];
@@ -65,9 +71,10 @@
       b.addEventListener('click', function () { if (window.JCSync && window.JCSync.open) window.JCSync.open(); });
       acts.appendChild(b);
     }
-    var info = el('button', 'linkbtn', '마이덱 라이브 설명');
+    var info = el('button', 'linkbtn', '설명');
     info.type = 'button';
     info.setAttribute('aria-haspopup', 'dialog');
+    info.setAttribute('aria-label', '마이덱과 마이덱 라이브 설명');
     info.addEventListener('click', function () { PICK = null; SHEET = 'about'; openSheet(); });
     acts.appendChild(info);
     host.appendChild(acts);
@@ -278,30 +285,90 @@
     ft.appendChild(prevB); ft.appendChild(nextB);
   }
 
-  function renderAbout(host) {
-    $('sheetT').textContent = '마이덱 라이브';
-    var wrap = el('div', 'about');
-    var p1 = el('p');
-    p1.appendChild(el('b', null, '하고 싶은 일을 한 문장으로 적으면, 세 가지 흐름으로 짜 줍니다.'));
-    p1.appendChild(document.createTextNode(' 자료실 색인과 시너지 지도에서 걸리는 섹터를 찾아 순서를 세우고, 마음에 드는 하나를 고르면 곧바로 내 덱에 저장합니다.'));
-    wrap.appendChild(p1);
+  /* 설명 — 「마이덱 알고리즘」과 「마이덱 라이브」를 꼭지로 나눠 본다(flow/의 설명과 같은 구성) */
+  function renderAbout(host, ft) {
+    $('sheetT').textContent = '마이덱 설명';
+    var pick = el('div', 'lv-pick ab-tabs');
+    pick.setAttribute('role', 'tablist');
+    pick.setAttribute('aria-label', '설명 고르기');
+    var body = el('div', 'about');
+    host.appendChild(pick);
+    host.appendChild(body);
 
-    var ol = el('ol');
-    [['한 문장 적기', '「경력단절 내담자 첫 상담 흐름 짜기」처럼 상담에서 하려는 일을 그대로 적습니다.'],
-     ['세 흐름 고르기', '정석 적용형 · 실전 연습형 · 사례·법령 집중형 — 단계와 순서가 서로 다릅니다.'],
-     ['바로 실행', '고른 흐름은 내 덱에 저장되고, 그 덱으로 상담 OS 보드(발문·체크·근거 카드)가 열립니다.']].forEach(function (x) {
-      var li = el('li');
-      li.appendChild(el('b', null, x[0] + ' — '));
-      li.appendChild(document.createTextNode(x[1]));
-      ol.appendChild(li);
+    function para(bold, rest) {
+      var p = el('p');
+      if (bold) p.appendChild(el('b', null, bold));
+      if (rest) p.appendChild(document.createTextNode(rest));
+      return p;
+    }
+    function steps(items) {
+      var ol = el('ol');
+      items.forEach(function (x) {
+        var li = el('li');
+        li.appendChild(el('b', null, x[0] + ' — '));
+        li.appendChild(document.createTextNode(x[1]));
+        ol.appendChild(li);
+      });
+      return ol;
+    }
+    function openMode(m) {
+      closeSheet();
+      if (window.JCDeckLive) {
+        window.JCDeckLive.setMode('live');
+        if (window.JCDeckLive.pick) window.JCDeckLive.pick(m);
+      }
+    }
+
+    function paint() {
+      Array.prototype.forEach.call(pick.querySelectorAll('button'), function (b) {
+        var on = b.getAttribute('data-ab') === ABOUT;
+        b.setAttribute('aria-selected', String(on));
+        b.setAttribute('tabindex', on ? '0' : '-1');
+      });
+      clear(body);
+      clear(ft);
+
+      if (ABOUT === 'algo') {
+        body.appendChild(para('개념 하나를 누르면 세 가지 완성덱.', ' 상담에서 하려는 일에 가까운 말을 하나만 고르면, 자료실 색인과 시너지 지도에서 걸리는 섹터로 서로 다른 세 가지 흐름을 짜 줍니다.'));
+        body.appendChild(steps([
+          ['개념 하나 고르기', '「경력단절여성」「직무분석」처럼 상담에서 하려는 일에 가까운 말을 하나 누릅니다.'],
+          ['세 흐름 고르기', '정석 적용형 · 실전 연습형 · 사례·법령 집중형 — 단계와 순서가 서로 다릅니다.'],
+          ['손보고 실행', '단계를 지워 덱을 다듬고, 마음에 드는 흐름으로 상담 OS 보드(발문·체크·근거 카드)를 엽니다.']
+        ]));
+        body.appendChild(para('로그인한 사람에게만 보입니다.', ' 저장한 덱은 계정에 남아 다른 기기에서도 이어집니다.'));
+        if (D.loggedIn()) {
+          var go = el('button', 'primary', '마이덱 알고리즘 열기');
+          go.type = 'button';
+          go.addEventListener('click', function () { openMode('algo'); });
+          ft.appendChild(go);
+        }
+        return;
+      }
+
+      body.appendChild(para('하고 싶은 일을 한 문장으로 적으면, 세 가지 흐름으로 짜 줍니다.', ' 자료실 색인·약어 사전·시너지 지도에서 걸리는 섹터를 찾아 순서를 세우고, 마음에 드는 하나를 고르면 곧바로 내 덱에 저장합니다.'));
+      body.appendChild(steps([
+        ['한 문장 적기', '「경력단절 내담자 첫 상담 흐름 짜기」처럼 상담에서 하려는 일을 그대로 적습니다.'],
+        ['세 흐름 고르기', '정석 적용형 · 실전 연습형 · 사례·법령 집중형 — 단계와 순서가 서로 다릅니다.'],
+        ['바로 실행', '고른 흐름은 내 덱에 저장되고, 그 덱으로 상담 OS 보드가 열립니다.']
+      ]));
+      body.appendChild(para('로그인한 사람에게만 보입니다.', ' 저장한 덱은 계정에 남아 다른 기기에서도 이어집니다.'));
+      if (D.loggedIn()) {
+        var live = el('button', 'primary', '마이덱 라이브 열기');
+        live.type = 'button';
+        live.addEventListener('click', function () { openMode('live'); });
+        ft.appendChild(live);
+      }
+    }
+
+    [['algo', '마이덱 알고리즘'], ['live', '마이덱 라이브']].forEach(function (m) {
+      var b = el('button', null, m[1]);
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('data-ab', m[0]);
+      b.addEventListener('click', function () { ABOUT = m[0]; paint(); });
+      pick.appendChild(b);
     });
-    wrap.appendChild(ol);
-
-    var p2 = el('p');
-    p2.appendChild(el('b', null, '로그인한 사람에게만 보입니다.'));
-    p2.appendChild(document.createTextNode(' 저장한 덱은 계정에 남아 다른 기기에서도 이어지고, 비로그인 상태에서 만든 덱은 창을 닫으면 초기화됩니다.'));
-    wrap.appendChild(p2);
-    host.appendChild(wrap);
+    paint();
   }
 
   function renderRename(host, ft) {
