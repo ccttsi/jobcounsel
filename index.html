@@ -1911,7 +1911,8 @@ icons();window.addEventListener('load',icons);
     if(reduce())return false;
     if(busy)return false;
     i=((i|0)%10+10)%10;
-    var plan=PAT[i](),defs=plan.defs||plan,max=0,n=defs.length,k;
+    var plan=PAT[i](),defs=plan.defs||plan,max=0,n=defs.length,k,t;
+    for(k=0;k<n;k++){t=defs[k][2];max=Math.max(max,(t.duration||0)+(t.delay||0));}
     busy=true;idx=i;minute=new Date().getMinutes();startedAt=performance.now();
     if(plan&&plan.leap)lock.classList.add('cctt-leap');
     if(plan&&plan.reset)reset=plan.reset;
