@@ -731,13 +731,30 @@ def build_companies():
             industry = c.get('industry') or ''
         p = profiles.get(cid) or {}
         kw = []
+        # ① 원자료에 실린 검색 보강값(중견기업, companies.json v1.4.0) — 공식 홈페이지·공시에서 확인된 대표 제품·업종 낱말
+        for x in (c.get('kw') or [])[:5]:
+            if str(x).strip():
+                kw.append(str(x).strip())
+        if c.get('main_products'):
+            kw.append(str(c['main_products']))
+        # ② 보강 레이어(enrich.json)의 대표 브랜드·주요 제품
         if p.get('b'):
             kw.append(str(p['b']))
         for x in (p.get('p') or [])[:3]:
             kw.append(str(x))
+        # 업종 칸(industry)에 이미 든 말은 검색 낱말에서 덜어 낸다 — 같은 말을 두 번 싣지 않아
+        # 그만큼 대표 제품 낱말을 더 실을 수 있다(색인 크기 상한 900KB).
+        ind_low = str(industry or '').replace(' ', '')
+        kw = [k for k in dict.fromkeys(kw) if k and str(k).replace(' ', '') not in ind_low]
+        # 별칭 칸은 좁다(30자). 사람이 실제로 부르는 이름(enrich.json 의 별칭 — 「파바」·「해커스」)을 먼저 넣고,
+        # 법인 표기만 다른 이름(「(주)파리크라상」→「파리크라상」)은 뒤에 둔다. 앞에서 잘려도 부르는 이름이 살아남게.
+        plain = re.sub(r'\s+', '', re.sub(r'\(\s*주\s*\)|㈜|주식회사|유한회사|\(유\)|\(재\)', '', name)).lower()
+        own = [str(a) for a in (c.get('alias') or []) if str(a).strip()]
+        own.sort(key=lambda a: 1 if re.sub(r'\s+', '', a).lower() == plain else 0)
+        al = aliases.get(cid, []) + own
         parts = [cid.split('-', 1)[1] if '-' in cid else cid, name, _field(industry, 16), letter,
                  str(int(c.get('employees') or 0)),
-                 _field(';'.join(aliases.get(cid, [])), 46), _field(', '.join(kw), 34)]
+                 _field(';'.join(dict.fromkeys(al)), 34), _field(', '.join(dict.fromkeys(kw)), 32).strip(' ,')]
         rows.append('|'.join(parts))
 
     for c in (read_json('company', 'data', 'companies.json') or {}).get('companies') or []:

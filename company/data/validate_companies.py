@@ -82,6 +82,24 @@ for i, c in enumerate(companies):
     for s in c.get('sources') or []:
         if src_ids and s not in src_ids:
             errors.append(f'{where}: sources {s} 정의 없음')
+    # v1.4.0 검색 보강 필드 — 중견기업만, 형식과 근거(kw_source)를 함께 본다
+    for f in ('kw', 'alias'):
+        if f in c:
+            v = c[f]
+            if not isinstance(v, list) or not v:
+                errors.append(f'{where}: {f} 는 비어 있지 않은 배열이어야 함')
+            else:
+                if len(set(v)) != len(v):
+                    errors.append(f'{where}: {f} 중복')
+                for x in v:
+                    if not isinstance(x, str) or not x.strip() or '|' in x:
+                        errors.append(f'{where}: {f} 값 이상 {x!r}')
+                    elif len(x) > 40:
+                        errors.append(f'{where}: {f} 값이 너무 김({len(x)}자) {x[:20]}')
+            if c.get('category') != '중견기업':
+                errors.append(f'{where}: {f} 는 중견기업에만 붙인다')
+    if ('kw' in c or 'alias' in c) and not c.get('kw_source'):
+        errors.append(f'{where}: kw·alias 가 있는데 kw_source(근거)가 없다')
     if ('business_tags' in c) != ('business_tags_detail' in c):
         errors.append(f'{where}: business_tags와 business_tags_detail 한쪽만 있음')
         continue

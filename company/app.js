@@ -187,6 +187,9 @@
     add('ceo', x.ceo, 7); add('hq', has(x.headquarters) ? x.headquarters : (x._c === 'LPI' ? x.founder : ''), 6);
     add('sum', x._c === 'PUB' ? x.business_summary : '', 2);
     add('prod', x._c === 'MID' ? x.main_products : '', 4);
+    /* 중견기업 검색 보강(data/companies.json 의 kw·alias, 2026-11-20): 대표 제품·업종 낱말과 영문·약칭으로도 찾힌다 */
+    add('kw', x._c === 'MID' && x.kw && x.kw.length ? x.kw.join(' ') : '', 22);
+    if (x._c === 'MID') (x.alias || []).forEach(function (a) { if (a) x._f.push({ k: 'alias', t: a, s: norm(a), w: 150 }); });
     (x.business_tags || []).forEach(function (t) { x._f.push({ k: 'tag', t: (TAGV[t] || {}).label || t, s: norm(TAGSYN[t] || t), w: 30 }); (TAGS[t] = TAGS[t] || []).push(x); });   // 찾기는 비슷한 말까지, 보이는 이름은 공식 명칭
     /* 보강 레이어: 별칭은 이름 다음으로 세게 걸리고, 사업 설명은 낱말 하나로도 걸리게 둔다 */
     (x._al || []).forEach(function (a) { if (a && a.a) x._f.push({ k: 'alias', t: a.a, s: a.n || norm(a.a), w: 150 }); });
@@ -493,7 +496,10 @@
   function firstSentence(s) { var t = String(s || ''), i = t.indexOf('. '); return i > 20 ? t.slice(0, i + 1) : t; }
   function descLine(x, hit, q) {
     var a = hit && hit.k === 'alias' && hit.t ? '<b>별칭</b>' + hl(hit.t, q) : '';
-    var d = x._px && x._px.d ? '<span class="rq">' + esc(firstSentence(x._px.d)) + '</span>' : '';
+    /* 보강 설명이 없어도 확인된 사업 설명(data/companies.json 의 business_summary)이 있으면 한 줄 보인다 —
+       「주거용 건물 개발 및 공급업」만 보여 본업이 가려지는 일을 줄인다. */
+    var d = x._px && x._px.d ? '<span class="rq">' + esc(firstSentence(x._px.d)) + '</span>'
+      : (x._c === 'MID' && has(x.business_summary) ? '<span class="rq">' + esc(firstSentence(x.business_summary)) + '</span>' : '');
     if (!a && !d) return '';
     return '<p class="r-x r-a">' + a + (a && d ? '<i class="sep" aria-hidden="true">·</i>' : '') + d + '</p>';
   }
@@ -1164,7 +1170,9 @@
         (has(x.stock_code) ? ' ' + esc(x.market || '') + '에 상장된 법인입니다(<span class="code">' + esc(x.stock_code) + '</span>' + (has(x.listed_at) ? ', ' + esc(String(x.listed_at).slice(0, 4)) + '년 상장' : '') + ').' : '') +
         (has(x.market_sector) ? ' 증권업종 분류는 ' + esc(x.market_sector) + '입니다.' : '') + '</p>' +
         (has(x.industry) ? '<p class="t fnote">국민연금 신고 업종은 사업장 하나의 업종이어서, 아웃소싱·고용서비스처럼 여러 사업을 하는 회사는 실제 사업과 다를 수 있습니다.</p>' : '');
-      b += profSec(x) + (x._px ? sec('원자료에 적힌 것', midPar, '', '국민연금 가입 사업장 · 상장 종목 정보 기준') : sec('무슨 회사인가', midPar, '', '국민연금 가입 사업장 · 상장 종목 정보 기준'));
+      var midSum = has(x.business_summary) ? '<p class="t">' + esc(x.business_summary) + '</p>' : '';
+      b += profSec(x) + (x._px ? sec('원자료에 적힌 것', midPar, '', '국민연금 가입 사업장 · 상장 종목 정보 기준') :
+        sec('무슨 회사인가', midSum + midPar, '', midSum ? '공식 홈페이지·공개 자료에서 확인' : '국민연금 가입 사업장 · 상장 종목 정보 기준'));
     }
     if (x.business_tags_detail && x.business_tags_detail.length) b += sec('고용서비스 허가·등록', '<ul class="btl">' + x.business_tags_detail.map(function (t) {
       var v = TAGV[t.tag] || {}, S = SRC[t.source] || {};
@@ -1326,7 +1334,7 @@
       '<ul class="lim">' +
       '<li><b>별칭은 지어내지 않았습니다.</b> 이름을 하나하나 원자료에서 조회해 그 법인이 실제로 있는지 확인한 뒤 얶었습니다. 원자료에 없는 법인·기관은 별칭을 만들지 않았습니다' + (en ? ' (별칭 ' + fmt(en.aliases) + '개 · 설명 ' + fmt(en.profiles) + '곳)' : '') + '.</li>' +
       '<li><b>설명·주요 제품·주요 고객은 보강한 값</b>입니다. 공개된 회사·기관 소개(브랜드·제품·사업)와 원자료의 업종·기업집단·설립목적 공시를 바탕으로 적었고, 확인되지 않은 사업은 쓰지 않았습니다. 설명이 없는 기업은 원자료의 업종·소재지·가입자수만으로 문장을 만듭니다.</li>' +
-      '<li><b>원자료는 고치지 않았습니다.</b> 별칭과 설명은 <span class="code">data/enrich.json</span> 한 파일에만 있고, 숫자·업종·주소·분류는 모두 원자료 그대로입니다.</li>' +
+      '<li><b>숫자·업종·주소·분류는 원자료 그대로</b>입니다. 중견기업의 검색 낱말(<span class="code">kw</span>)·약칭(<span class="code">alias</span>)·사업 설명(<span class="code">business_summary</span>)은 공식 홈페이지·공시에서 확인해 <span class="code">data/companies.json</span>에 함께 적었고, 근거는 각 기업의 <span class="code">kw_source</span>에 남겼습니다. 확인되지 않은 기업은 업종 낱말만 있습니다.</li>' +
       '</ul>';
     h += '<h2>원자료</h2><table class="tbl"><thead><tr><th>출처</th><th>무엇을 가져왔나</th><th>기준일 · 이용 조건</th></tr></thead><tbody>' + (m.sources || []).concat((LMETA && LMETA.sources) || []).concat((PMETA && PMETA.sources) || []).concat((GMETA && GMETA.sources) || []).map(function (s) {
       var u = safeUrl(s.url);
