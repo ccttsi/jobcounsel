@@ -1271,7 +1271,9 @@
     }
    ],
    "src": "s-ncs",
-   "aka": [],
+   "aka": [
+    "UI/UX"
+   ],
    "grp": "job-it"
   },
   {
@@ -7679,7 +7681,8 @@
    "aka": [
     "FOB",
     "CIF",
-    "인코텀즈"
+    "인코텀즈",
+    "Incoterms"
    ]
   },
   {
@@ -8510,7 +8513,8 @@
    "src": null,
    "aka": [
     "식각",
-    "에치"
+    "에치",
+    "Etch"
    ]
   },
   {
@@ -9331,8 +9335,7 @@
    ],
    "src": null,
    "aka": [
-    "애자일",
-    "스크럼"
+    "애자일"
    ]
   },
   {
@@ -55221,7 +55224,8 @@
    "src": "s-customs",
    "aka": [
     "HS부호",
-    "품목번호"
+    "품목번호",
+    "HS Code"
    ]
   },
   {
@@ -72370,6 +72374,441 @@
    "aka": [
     "복직",
     "직장복귀"
+   ]
+  },
+  {
+   "id": "iq_oq_pq",
+   "term": "IQ/OQ/PQ",
+   "full": "Installation Operational Performance Qualification",
+   "ko": "설치·운전·성능 적격성 평가",
+   "cat": "industry",
+   "grp": "ind-bio",
+   "easy": "설비를 들여와 설치가 맞는지(IQ), 운전이 되는지(OQ), 실제 성능이 기준대로인지(PQ)를 순서대로 증명하는 절차.",
+   "ctx": "“IQ/OQ/PQ 했어요”는 제약·식품 설비 밸리데이션 경험의 핵심입니다. 어느 단계까지 했는지 확인하세요.",
+   "qs": [
+    "세 단계 중 어디까지 하셨나요?",
+    "보고서를 직접 썼나요?"
+   ],
+   "links": [
+    {
+     "to": "thermometer",
+     "q": "바이오"
+    },
+    {
+     "to": "taxonomy",
+     "q": "품질관리"
+    }
+   ],
+   "src": "s-ich",
+   "aka": [
+    "적격성평가",
+    "IQOQPQ"
+   ]
+  },
+  {
+   "id": "pkg",
+   "term": "PKG",
+   "full": "Package",
+   "ko": "패키지",
+   "cat": "industry",
+   "grp": "ind-semi",
+   "easy": "칩을 외부 환경에서 보호하고 기판에 연결할 수 있게 포장하는 후공정.",
+   "ctx": "“PKG 쪽이었어요”는 반도체 후공정 경험입니다. 어떤 공정을 맡았는지 확인하세요.",
+   "qs": [
+    "어떤 패키지였나요?",
+    "수율 관리를 했나요?"
+   ],
+   "links": [
+    {
+     "to": "thermometer",
+     "q": "반도체"
+    },
+    {
+     "to": "taxonomy",
+     "q": "반도체"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "패키징",
+    "PKG"
+   ]
+  },
+  {
+   "id": "litho",
+   "term": "Litho",
+   "full": "Lithography",
+   "ko": "리소그래피",
+   "cat": "industry",
+   "grp": "ind-semi",
+   "easy": "빛으로 회로 무늬를 웨이퍼에 새기는 노광 공정을 통칭하는 말.",
+   "ctx": "“리소 쪽이었어요”는 노광 공정 경험입니다. 설비와 레시피를 확인하세요.",
+   "qs": [
+    "어떤 노광 장비였나요?",
+    "레시피를 다뤘나요?"
+   ],
+   "links": [
+    {
+     "to": "thermometer",
+     "q": "반도체"
+    },
+    {
+     "to": "taxonomy",
+     "q": "반도체"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "리소",
+    "노광공정"
+   ]
+  },
+  {
+   "id": "cae",
+   "term": "CAE",
+   "full": "Computer-Aided Engineering",
+   "ko": "컴퓨터 지원 해석",
+   "cat": "job",
+   "grp": "job-mfg",
+   "easy": "컴퓨터로 힘·열·유동을 계산해 설계가 버티는지 미리 확인하는 일.",
+   "ctx": "“CAE 해석했어요”는 설계 해석 경험입니다. 어떤 소프트웨어를 썼는지 확인하세요.",
+   "qs": [
+    "어떤 해석을 했나요?",
+    "결과를 설계에 반영했나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "기계"
+    },
+    {
+     "to": "cert",
+     "q": "자동화설비"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "해석",
+    "CAE"
+   ]
+  },
+  {
+   "id": "cnc",
+   "term": "CNC",
+   "full": "Computer Numerical Control",
+   "ko": "수치 제어 공작기계",
+   "cat": "job",
+   "grp": "job-mfg",
+   "easy": "컴퓨터 프로그램으로 공구 움직임을 제어해 정밀하게 깎는 기계.",
+   "ctx": "“CNC 했어요”는 기계 가공 경험입니다. 프로그램을 직접 짰는지 확인하세요.",
+   "qs": [
+    "프로그램을 직접 짰나요?",
+    "어떤 부품을 가공했나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "기계"
+    },
+    {
+     "to": "cert",
+     "q": "자동화설비"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "수치제어",
+    "CNC"
+   ]
+  },
+  {
+   "id": "smt",
+   "term": "SMT",
+   "full": "Surface Mount Technology",
+   "ko": "표면실장기술",
+   "cat": "job",
+   "grp": "job-mfg",
+   "easy": "부품을 기판 표면에 바로 붙여 납땜하는 전자 조립 방식.",
+   "ctx": "“SMT 라인에서 일했어요”는 전자 제조 경험입니다. 어떤 공정이었는지 확인하세요.",
+   "qs": [
+    "어떤 설비를 다뤘나요?",
+    "불량 유형은 무엇이 많았나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "전자"
+    },
+    {
+     "to": "cert",
+     "q": "전자기사"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "표면실장",
+    "SMT"
+   ]
+  },
+  {
+   "id": "aoi",
+   "term": "AOI",
+   "full": "Automated Optical Inspection",
+   "ko": "자동 광학 검사",
+   "cat": "job",
+   "grp": "job-mfg",
+   "easy": "카메라로 기판·제품을 찍어 불량을 자동으로 찾아내는 검사.",
+   "ctx": "“AOI 봤어요”는 품질 검사 경험입니다. 판정 기준을 아는지 확인하세요.",
+   "qs": [
+    "불량 판정 기준을 아시나요?",
+    "오검출을 어떻게 처리했나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "품질관리"
+    },
+    {
+     "to": "cert",
+     "q": "품질경영기사"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "광학검사",
+    "AOI"
+   ]
+  },
+  {
+   "id": "reflow",
+   "term": "리플로우",
+   "full": "Reflow Soldering",
+   "ko": "리플로우 납땜",
+   "cat": "job",
+   "grp": "job-mfg",
+   "easy": "열을 가해 붙여 둔 부품의 납을 녹여 고정하는 공정.",
+   "ctx": "“리플로우 온도 프로파일 봤어요”는 SMT 공정 경험입니다. 조건을 확인하세요.",
+   "qs": [
+    "프로파일은 어떻게 잡았나요?",
+    "불량이 났을 때 무엇을 바꿨나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "전자"
+    },
+    {
+     "to": "cert",
+     "q": "전자기사"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "리플로우",
+    "납땜"
+   ]
+  },
+  {
+   "id": "spi",
+   "term": "SPI",
+   "full": "Solder Paste Inspection",
+   "ko": "납 도포 검사",
+   "cat": "job",
+   "grp": "job-mfg",
+   "easy": "부품을 붙이기 전에 납이 제대로 발라졌는지 확인하는 검사.",
+   "ctx": "“SPI 봤어요”는 SMT 공정 경험입니다. 기준과 조치를 확인하세요.",
+   "qs": [
+    "기준을 벗어나면 어떻게 했나요?",
+    "설비 세팅도 하셨나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "전자"
+    },
+    {
+     "to": "taxonomy",
+     "q": "품질관리"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "납검사",
+    "SPI"
+   ]
+  },
+  {
+   "id": "mounter",
+   "term": "마운터",
+   "full": "Chip Mounter",
+   "ko": "칩 마운터",
+   "cat": "job",
+   "grp": "job-mfg",
+   "easy": "부품을 기판 위 정해진 위치에 빠르게 올려놓는 설비.",
+   "ctx": "“마운터 다뤘어요”는 SMT 설비 경험입니다. 프로그램을 다뤘는지 확인하세요.",
+   "qs": [
+    "프로그램을 직접 짰나요?",
+    "부품 교체를 하셨나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "전자"
+    },
+    {
+     "to": "cert",
+     "q": "자동화설비"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "마운터",
+    "칩실장기"
+   ]
+  },
+  {
+   "id": "atl",
+   "term": "ATL",
+   "full": "Above The Line",
+   "ko": "대중 매체 광고",
+   "cat": "job",
+   "grp": "job-sales",
+   "easy": "TV·신문·라디오처럼 불특정 다수에게 하는 광고.",
+   "ctx": "“ATL 쪽이었어요”는 광고 대행 경험입니다. 어떤 매체를 다뤘는지 확인하세요.",
+   "qs": [
+    "어떤 매체였나요?",
+    "예산 규모는 얼마였나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "마케팅"
+    },
+    {
+     "to": "thermometer",
+     "q": "콘텐츠"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "에이티엘",
+    "대중광고"
+   ]
+  },
+  {
+   "id": "btl",
+   "term": "BTL",
+   "full": "Below The Line",
+   "ko": "타깃 광고",
+   "cat": "job",
+   "grp": "job-sales",
+   "easy": "행사·판촉·체험처럼 특정 고객에게 직접 닿는 마케팅.",
+   "ctx": "“BTL 했어요”는 판촉·체험 마케팅 경험입니다. 직접 기획했는지 확인하세요.",
+   "qs": [
+    "어떤 행사였나요?",
+    "성과를 어떻게 쟀나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "마케팅"
+    },
+    {
+     "to": "thermometer",
+     "q": "유통"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "비티엘",
+    "판촉"
+   ]
+  },
+  {
+   "id": "b2b_sales",
+   "term": "B2B 영업",
+   "full": "Business to Business Sales",
+   "ko": "기업 간 영업",
+   "cat": "job",
+   "grp": "job-sales",
+   "easy": "회사를 고객으로 물건·서비스를 파는 영업.",
+   "ctx": "“B2B 영업했어요”는 기업 영업 경험입니다. 고객 규모와 계약 방식을 확인하세요.",
+   "qs": [
+    "어떤 고객사를 맡았나요?",
+    "계약 규모는 얼마였나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "영업"
+    },
+    {
+     "to": "company",
+     "q": ""
+    }
+   ],
+   "src": null,
+   "aka": [
+    "B2B",
+    "기업영업"
+   ]
+  },
+  {
+   "id": "b2c_sales",
+   "term": "B2C 영업",
+   "full": "Business to Consumer Sales",
+   "ko": "소비자 대상 판매",
+   "cat": "job",
+   "grp": "job-sales",
+   "easy": "일반 소비자를 대상으로 파는 일.",
+   "ctx": "“B2C 쪽이었어요”는 소비자 판매 경험입니다. 채널을 확인하세요.",
+   "qs": [
+    "온라인인가요, 오프라인인가요?",
+    "목표는 어떻게 받았나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "영업"
+    },
+    {
+     "to": "taxonomy",
+     "q": "마케팅"
+    }
+   ],
+   "src": null,
+   "aka": [
+    "B2C",
+    "소비자판매"
+   ]
+  },
+  {
+   "id": "scrum_framework",
+   "term": "Scrum",
+   "full": "Scrum",
+   "ko": "스크럼",
+   "cat": "job",
+   "grp": "job-it",
+   "easy": "짧은 주기로 나눠 일하고 매번 돌아보는 애자일 개발 방식.",
+   "ctx": "“스크럼 했어요”는 애자일 개발 경험입니다. 어떤 역할이었는지 확인하세요.",
+   "qs": [
+    "스크럼 마스터였나요?",
+    "회고는 어떻게 했나요?"
+   ],
+   "links": [
+    {
+     "to": "taxonomy",
+     "q": "정보기술"
+    },
+    {
+     "to": "portfolio",
+     "q": ""
+    }
+   ],
+   "src": null,
+   "aka": [
+    "Scrum",
+    "스크럼"
    ]
   }
  ],

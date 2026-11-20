@@ -4,7 +4,7 @@
 용어를 더하거나 고칠 때는 이 파일만 바꾸면 목록·검색·쪽 나눔·연계 칩·묶음 필터의 숫자가 따라옵니다(개수는 화면이 셉니다).
 
 ```
-translator/data/terms.json     client-language-translator v2.2.0 · 용어 2,628 · 묶음 53
+translator/data/terms.json     client-language-translator v2.2.0 · 용어 2,643 · 묶음 53
 ```
 
 ## 1. 최상위
