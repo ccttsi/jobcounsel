@@ -148,6 +148,9 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:10px}
 .who-strip::-webkit-scrollbar{display:none}
 .who-strip>span.lb{flex:none;font-size:11px;font-weight:800;letter-spacing:.01em;color:var(--dim);margin-right:1px;white-space:nowrap}
 .who-chip{flex:none;min-height:44px;padding:0 12px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;letter-spacing:-.02em}
+@media (max-width:599px){.who-chip{padding:0 10px;font-size:11.5px}.who-strip>span.lb{font-size:10.5px}
+  .who-strip{mask-image:linear-gradient(90deg,#000 calc(100% - 22px),rgba(0,0,0,.15))}
+}
 .who-chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
 .who-chip:active{transform:scale(.985)}
 .who-badge{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 10px;border-radius:99px;background:var(--acc-soft);border:1px solid var(--acc);font-size:12.5px;font-weight:800;color:var(--acc);letter-spacing:-.02em}
@@ -256,7 +259,8 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:10px}
 .rb-bar i{display:block;height:100%;background:var(--bar);border-radius:4px}
 
 /* ---------- 바닥 ---------- */
-.foot{margin:0;padding:8px 0 10px;border-top:1px solid var(--line);font-size:11px;line-height:1.5;color:var(--dim);flex:none}
+.foot{margin:0;padding:8px 58px 10px 0;border-top:1px solid var(--line);font-size:11px;line-height:1.5;color:var(--dim);flex:none}
+@media (max-width:599px){.foot{font-size:10.5px;line-height:1.45;padding-bottom:8px}}
 .foot b{color:var(--muted);font-weight:750}
 .foot a{color:var(--acc);font-weight:700;text-decoration:none}
 
@@ -370,7 +374,7 @@ html[data-jc-imm] .tabs{display:none}
   </main>
 
   <p class="foot">
-    <b>출처</b> O*NET® 31.0 Database(USDOL/ETA, CC BY 4.0) · ISCO-08↔SOC 연계표(BLS) · KSCO 8차↔ ISCO-08 연계표(국가데이터처) · KECO 2025(한국고용정보원) · 기업 명함첩(공정위·알리오·중견기업정보마당·행안부). <b>가공</b> 근무환경 축 환산·직무↔분류 연계·지역 집계는 자료실이 계산했습니다.
+    <b>출처</b> O*NET® 31.0(USDOL/ETA, CC BY 4.0) · ISCO-08↔SOC 연계표(BLS) · KSCO 8차 연계표(국가데이터처) · KECO 2025(한국고용정보원) · 기업 명함첩(공정위·알리오·중견기업정보마당·행안부). <b>가공</b> 축 환산·직무↔분류 연계·지역 집계는 자료실이 계산.
   </p>
 </div>
 
