@@ -1,101 +1,266 @@
-/* live.css — 마이덱 라이브 (2026-11-20)
+/* live.css — 마이덱 라이브 · 덱 이동 (2026-11-20)
  *
- * 상담 OS 보드의 겉모양만 담는다. 색·여백은 마이덱 화면의 토큰(:root)을 그대로 쓰므로
- * 밝게·세피아·어둡게 어디서든 같은 톤으로 선다.
+ * 마이덱 화면의 「마이덱 라이브」(목적 문장 → 세 흐름 → 상담 OS 보드)와
+ * 덱을 쓰는 모든 자리(보드·리허설 시트)의 **단계 이동 막대** 겉모양만 담는다.
+ * 색·여백은 마이덱 화면의 토큰(:root)을 그대로 쓰므로 밝게·세피아·어둡게 어디서든 같은 톤으로 선다.
  * 규칙(DESIGN.md §2): 움직이는 값은 transform·opacity 뿐. 상자 크기를 애니메이션하지 않는다.
  */
 
 /* ---------- 모드 전환 꼭지 ---------- */
 .lv-mode{display:flex;gap:6px;margin-top:14px;padding:4px;max-width:440px;border:1px solid var(--line);border-radius:14px;background:var(--soft)}
 .lv-mode button{
-  flex:1;min-width:0;min-height:46px;padding:0 10px;border-radius:11px;
+  flex:1;min-width:0;min-height:46px;padding:0 12px;border-radius:11px;
   display:flex;align-items:center;justify-content:center;gap:7px;
   font-size:14.5px;font-weight:800;color:var(--muted);white-space:nowrap;
   transition:background-color .14s,color .14s;
 }
-.lv-mode button .lv-mode-n{
-  display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:8px;
-  background:var(--panel);font-size:12px;font-weight:800;color:var(--acc);letter-spacing:0
-}
 .lv-mode button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.lv-mode button[aria-selected="true"] .lv-mode-n{background:var(--acc-soft)}
 
-/* ---------- 준비 칸 ---------- */
-.lv-setup{
-  margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:18px;
-  background:var(--panel);box-shadow:var(--shadow);display:grid;gap:14px;min-width:0;
+/* ---------- 첫머리 ---------- */
+.lv-hero{padding:12px 0 0}
+.lv-hero h1{margin:8px 0 0;font-size:clamp(25px,1.8vw + 17px,38px);line-height:1.22;font-weight:850;letter-spacing:-.045em}
+.lv-hero h1 em{font-style:normal;color:var(--acc)}
+
+/* ---------- 입력 한 칸 ---------- */
+.lv-box{
+  margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:18px;
+  background:var(--panel);box-shadow:var(--shadow);display:grid;gap:10px;min-width:0;
 }
-@media (min-width:700px){.lv-setup{padding:20px}}
-.lv-setup-col{display:grid;gap:14px;align-content:start;min-width:0}
-@media (min-width:900px){
-  .lv-setup{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);align-items:start;column-gap:20px}
+@media (min-width:700px){.lv-box{padding:18px}}
+
+/* 어떤 덱으로 여는지 고정했을 때(내 덱 카드의 「라이브 실행」) */
+.lv-fix{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--soft);min-width:0}
+.lv-fix b{font-size:13px;font-weight:800}
+.lv-fix span{flex:1;min-width:0;font-size:12.5px;font-weight:650;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lv-fix button{flex:none;min-height:44px;padding:0 12px;border:1px solid var(--line2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:750;color:var(--ink)}
+
+/* algorithm ↔ live 고르기 */
+.lv-pick{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:12px;background:var(--soft);justify-self:start}
+.lv-pick button{
+  min-height:36px;padding:0 14px;border-radius:9px;font-size:13px;font-weight:800;color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;
 }
-.lv-what{display:grid;gap:7px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);min-width:0}
-.lv-what b{font-size:13px;font-weight:850}
-.lv-what ul{list-style:none;margin:0;padding:0;display:grid;gap:5px}
-.lv-what li{position:relative;padding-left:12px;font-size:12.5px;line-height:1.5;color:var(--muted)}
-.lv-what li::before{content:"·";position:absolute;left:3px;top:-1px;font-weight:800;color:var(--acc)}
-.lv-blk{display:grid;gap:8px;min-width:0}
-.lv-lab{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;font-weight:800;color:var(--ink)}
-.lv-lab .lv-no{
-  display:inline-grid;place-items:center;width:22px;height:22px;flex:none;border-radius:7px;
-  background:var(--acc-soft);color:var(--acc);font-size:12px;font-weight:800;letter-spacing:0
-}
-.lv-lab .lv-hint{font-size:12.5px;font-weight:650;color:var(--muted)}
-.lv-sel,.lv-inp{
-  width:100%;min-width:0;max-width:100%;min-height:48px;padding:0 12px;
-  border:1px solid var(--line2);border-radius:12px;background:var(--bg);color:var(--ink);
-  font-family:inherit;font-size:16px;line-height:1.5;letter-spacing:-.01em;
-}
-.lv-sel{appearance:none;-webkit-appearance:none;padding-right:34px;
-  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
-  background-position:calc(100% - 18px) 21px,calc(100% - 13px) 21px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
-.lv-inp{min-height:96px;padding:11px 12px;resize:vertical}
-.lv-inp::placeholder{color:var(--dim)}
-.lv-sel:focus-visible,.lv-inp:focus-visible{border-color:var(--acc)}
+.lv-pick button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
 
 .lv-chips{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
-.lv-seg{display:flex;gap:6px;padding:4px;border:1px solid var(--line);border-radius:13px;background:var(--soft);min-width:0}
-.lv-seg button{
-  flex:1;min-width:0;min-height:44px;padding:0 10px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13.5px;font-weight:750;color:var(--muted);white-space:nowrap;
-  transition:background-color .14s,color .14s
-}
-.lv-seg button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
-
-/* 생성 뒤에는 조건을 한 줄로 접어 보드를 넓게 본다 */
-.lv-brief{
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px 14px;border:1px solid var(--line);
-  border-radius:14px;background:var(--panel);box-shadow:var(--shadow);min-width:0
-}
-.lv-brief .lv-brief-txt{flex:1;min-width:160px;display:grid;gap:1px}
-.lv-brief .lv-brief-txt b{font-size:13.5px;font-weight:800;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lv-brief .lv-brief-txt span{font-size:12px;font-weight:650;color:var(--muted);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lv-brief button{
-  flex:none;min-height:44px;padding:0 14px;border:1px solid var(--line2);border-radius:11px;background:var(--bg);
-  font-size:13px;font-weight:750;color:var(--ink)
-}.lv-chip{
+.lv-chip{
   min-height:44px;padding:0 13px;border:1px solid var(--line2);border-radius:999px;
   background:var(--bg);color:var(--ink);font-size:13.5px;font-weight:700;white-space:nowrap;
-  display:inline-flex;align-items:center;transition:transform .12s,background-color .14s,border-color .14s;
+  display:inline-flex;align-items:center;transition:transform .12s,border-color .14s,background-color .14s;
 }
 .lv-chip:hover{border-color:var(--acc)}
 .lv-chip:active{transform:scale(.97)}
 .lv-chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--panel)}
 :root[data-theme="dark"] .lv-chip[aria-pressed="true"]{color:#0b0e15}
 
-.lv-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+/* 입력창 — 회색 예시 문장이 그 위에 겹쳐 타자된다(포커스·입력 중에는 사라진다) */
+.lv-field{position:relative;min-width:0}
+.lv-ask{
+  display:block;width:100%;min-width:0;max-width:100%;height:78px;margin:0;padding:13px 14px;
+  border:1px solid var(--line2);border-radius:14px;background:var(--bg);color:var(--ink);
+  font-family:inherit;font-size:17px;line-height:1.55;letter-spacing:-.01em;resize:none;overflow:hidden;
+  -webkit-appearance:none;appearance:none;
+}
+.lv-ask:focus,.lv-ask:focus-visible{outline:2px solid var(--acc);outline-offset:0;border-color:var(--acc)}
+.lv-ph{
+  position:absolute;left:1px;right:1px;top:1px;bottom:1px;padding:13px 14px;
+  border-radius:13px;background:var(--bg);color:var(--dim);
+  font-size:17px;line-height:1.55;letter-spacing:-.01em;pointer-events:none;
+  overflow:hidden;word-break:keep-all;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;opacity:1;
+  transition:opacity .16s;
+}
+.lv-ph.off{opacity:0}
+.lv-caret{display:inline-block;width:2px;height:1.05em;margin-left:1px;vertical-align:-.14em;background:var(--acc);opacity:.7}
+
+.lv-acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .lv-go{
-  min-height:50px;padding:0 22px;border-radius:13px;background:var(--acc);color:var(--panel);
-  font-size:15.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;
+  flex:1 1 auto;min-width:150px;min-height:52px;padding:0 22px;border-radius:14px;background:var(--acc);color:var(--panel);
+  font-size:16px;font-weight:850;display:inline-flex;align-items:center;justify-content:center;
   transition:transform .12s,opacity .14s;
 }
 :root[data-theme="dark"] .lv-go{color:#0b0e15}
-.lv-go:active{transform:scale(.98)}
+.lv-go:active{transform:scale(.985)}
 .lv-go[disabled]{opacity:.55}
-.lv-msg{font-size:13px;line-height:1.55;font-weight:650;color:var(--muted);flex:1;min-width:0}
+.lv-tut{
+  flex:none;min-height:52px;padding:0 16px;border:1px solid var(--line2);border-radius:14px;background:var(--bg);
+  color:var(--ink);font-size:14px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  transition:border-color .14s;
+}
+.lv-tut:hover{border-color:var(--acc)}
+.lv-tut::before{
+  content:"?";display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;
+  border:1.5px solid var(--muted);font-size:11.5px;font-weight:850;color:var(--muted);line-height:1
+}
+.lv-msg{margin:0;font-size:13px;line-height:1.55;font-weight:650;color:var(--muted);min-height:0}
 .lv-msg.bad{color:var(--bad)}
+
+/* ---------- 세 가지 흐름 ---------- */
+.lv-courses{margin-top:16px;display:grid;gap:12px;min-width:0}
+.lv-c-hd{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.lv-c-hd b{font-size:16px;font-weight:850;letter-spacing:-.02em}
+.lv-c-hd span{font-size:13px;font-weight:650;color:var(--muted)}
+.lv-cards{display:grid;gap:12px;min-width:0}
+@media (min-width:1020px){.lv-cards{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}}
+
+.lv-course{
+  display:grid;gap:10px;padding:16px;border:1px solid var(--line);border-radius:18px;
+  background:var(--panel);box-shadow:var(--shadow);min-width:0;align-content:start;
+}
+.lv-c-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lv-c-tag{
+  display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:8px;
+  background:var(--acc-soft);color:var(--acc);font-size:12.5px;font-weight:850;letter-spacing:0;
+}
+.lv-c-n{margin-left:auto;font-size:12px;font-weight:750;color:var(--muted);white-space:nowrap}
+.lv-course h3{margin:0;font-size:16.5px;font-weight:850;letter-spacing:-.03em;line-height:1.35}
+.lv-c-why{margin:0;font-size:12.5px;line-height:1.6;color:var(--muted)}
+.lv-c-why b{color:var(--ink);font-weight:750}
+.lv-c-steps{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.lv-c-steps li{display:block;min-width:0}
+.lv-c-steps .n{
+  flex:none;display:inline-grid;place-items:center;width:21px;height:21px;margin-top:2px;border-radius:7px;
+  background:var(--soft);color:var(--muted);font-size:11.5px;font-weight:850;letter-spacing:0;
+}
+.lv-c-steps .t{min-width:0;display:grid;gap:1px;text-align:left}
+.lv-c-steps .t b{font-size:13.5px;font-weight:750;line-height:1.4;letter-spacing:-.01em}
+.lv-c-steps .t em{font-style:normal;font-size:11.5px;font-weight:650;line-height:1.45;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 단계 줄 — 누르면 그 자리에서 갈라지는 자료가 열린다 */
+.ac-step{
+  display:flex;align-items:flex-start;gap:8px;width:100%;min-height:44px;padding:5px 6px 5px 2px;
+  border-radius:10px;background:none;text-align:left;transition:background-color .14s;
+}
+.ac-step:hover{background:var(--soft)}
+.ac-step:hover .t b{color:var(--acc)}
+
+/* 브랜치 전개 — 알고리즘 · 문장으로 (두 방식 모두 같은 자리) */
+.ac-branch{
+  margin:2px 0 8px 29px;padding:10px 12px;border-left:2px solid var(--acc-soft);
+  background:var(--soft);border-radius:0 12px 12px 0;display:grid;gap:8px;min-width:0;
+}
+.ac-b-hd{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.ac-b-hd b{font-size:12.5px;font-weight:850}
+.ac-b-hd span{font-size:11.5px;font-weight:650;color:var(--muted)}
+.ac-b-tabs{display:inline-flex;gap:2px;padding:2px;border-radius:9px;background:var(--panel);border:1px solid var(--line);justify-self:start}
+.ac-b-tabs button{
+  min-height:32px;padding:0 11px;border-radius:7px;font-size:12px;font-weight:800;color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;
+}
+.ac-b-tabs button[aria-selected="true"]{background:var(--acc-soft);color:var(--acc)}
+.ac-b-body{display:grid;gap:5px;min-width:0}
+.ac-b{
+  display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:6px 8px 6px 10px;
+  border:1px solid var(--line);border-radius:10px;background:var(--panel);text-align:left;
+  transition:border-color .14s;
+}
+.ac-b:hover{border-color:var(--acc)}
+.ac-b .ac-b-t{flex:1;min-width:0;display:grid;gap:0}
+.ac-b .ac-b-t b{font-size:12.5px;font-weight:750;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ac-b .ac-b-t em{font-style:normal;font-size:11px;font-weight:650;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ac-b .ac-b-add{flex:none;font-size:11.5px;font-weight:800;color:var(--acc);white-space:nowrap}
+.ac-b.alt{border-style:dashed}
+.ac-b-live{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ac-b-in{
+  flex:1 1 160px;min-width:0;min-height:44px;padding:0 11px;border:1px solid var(--line2);border-radius:10px;
+  background:var(--panel);color:var(--ink);font-size:15px;
+}
+.ac-b-in:focus{outline:2px solid var(--acc);outline-offset:0;border-color:var(--acc)}
+.ac-b-go{
+  flex:none;min-height:44px;padding:0 14px;border-radius:10px;background:var(--acc);color:var(--panel);
+  font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;
+}
+:root[data-theme="dark"] .ac-b-go{color:#0b0e15}
+.ac-b-note{margin:0;font-size:11.5px;line-height:1.5;color:var(--muted)}
+.lv-c-go{
+  margin-top:2px;min-height:48px;padding:0 18px;border-radius:12px;background:var(--acc);color:var(--panel);
+  font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;
+  transition:transform .12s,opacity .14s;
+}
+:root[data-theme="dark"] .lv-c-go{color:#0b0e15}
+.lv-c-go:active{transform:scale(.985)}
+.lv-c-go[disabled]{opacity:.55}
+
+/* ---------- 튜토리얼 — 어두운 베일 + 입력칸만 밝게 ---------- */
+.tu{position:fixed;inset:0;z-index:90;opacity:0;transition:opacity .18s}
+.tu.on{opacity:1}
+.tu-spot{
+  position:fixed;border-radius:16px;border:2px solid rgba(255,255,255,.92);
+  box-shadow:0 0 0 9999px rgba(14,11,8,.88);pointer-events:none;
+}
+:root[data-theme="dark"] .tu-spot{border-color:#7ff3e4;box-shadow:0 0 0 9999px rgba(2,3,6,.9),0 0 22px -2px rgba(127,243,228,.45)}
+.tu-cap{
+  position:fixed;left:50%;transform:translateX(-50%);width:min(520px,calc(100% - 32px));
+  color:#fdfaf4;display:grid;gap:10px;padding:18px 18px 15px;border-radius:18px;
+  background:rgba(12,9,6,.94);border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 24px 50px -24px rgba(0,0,0,.85);
+}
+.tu-cap p{margin:0;font-size:14.5px;line-height:1.65;color:#fdfaf4}
+.tu-cap p b{color:#fff;font-weight:800}
+.tu-cap .tu-step{font-size:12px;font-weight:800;letter-spacing:.04em;color:#ffd9a8}
+.tu-cap button{
+  justify-self:start;min-height:46px;padding:0 18px;border-radius:12px;border:1px solid rgba(255,255,255,.5);
+  background:rgba(255,255,255,.12);color:#fff;font-size:14.5px;font-weight:800;
+}
+.tu-cap button:hover{background:rgba(255,255,255,.2)}
+
+/* ---------- 덱 이동 막대 (보드·리허설 공통) ----------
+   단계를 한 줄에 늘어놓고 한 번 눌러 어디로든 건너뛴다(1→5→3→4→2).
+   상자·테두리 없이 **활자와 1px 헤어라인만** 쓴다 — 지금 단계만 액센트 밑줄로 살짝 서고,
+   나머지는 옅은 숫자 + 제목. 터치 영역은 44px 그대로 두되 보이는 크롬은 최소로 둔다. */
+.dk{
+  position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;min-width:0;
+  margin:0 calc(-1 * clamp(0px,2vw,10px));padding:0 clamp(0px,2vw,10px);
+  background:color-mix(in srgb,var(--bg) 97%,var(--panel));
+  border-bottom:1px solid var(--line);
+}
+.dk.sheet-dk{margin:0;padding:0 0 6px;position:static;background:none;border-bottom:1px solid var(--line)}
+.dk-rail{
+  flex:1;min-width:0;display:flex;align-items:stretch;gap:16px;height:46px;overflow-x:auto;overflow-y:hidden;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 20px,#000 calc(100% - 20px),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 20px,#000 calc(100% - 20px),transparent 100%);
+}
+@media (min-width:900px){
+  .dk-rail{gap:22px;flex-wrap:wrap;overflow:visible;-webkit-mask-image:none;mask-image:none}
+}
+.dk-step{
+  position:relative;flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;min-height:46px;
+  padding:0 1px;background:none;border:0;color:var(--muted);white-space:nowrap;
+  scroll-snap-align:center;transition:color .14s;
+}
+.dk-step + .dk-step::before{
+  content:"";position:absolute;left:-9px;top:50%;width:1px;height:11px;margin-top:-5.5px;background:var(--line);
+}
+@media (min-width:900px){.dk-step + .dk-step::before{left:-12px}}
+.dk-step .n{
+  font-size:11px;font-weight:850;letter-spacing:.02em;color:var(--dim);
+  font-variant-numeric:tabular-nums;line-height:1;
+}
+.dk-step .t{
+  min-width:0;font-size:13.5px;font-weight:700;line-height:1.25;color:var(--muted);
+  letter-spacing:-.015em;
+}
+.dk-step:hover .t{color:var(--ink)}
+.dk-step[aria-selected="true"] .n{color:var(--acc)}
+.dk-step[aria-selected="true"] .t{color:var(--acc);font-weight:850}
+.dk-step[aria-selected="true"]::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px;background:var(--acc);
+}
+.dk-mv{flex:none;display:flex;align-items:center;gap:0}
+.dk-mv button{
+  width:44px;height:44px;display:inline-grid;place-items:center;border:0;border-radius:10px;
+  background:none;color:var(--muted);line-height:1;
+  transition:color .14s,transform .12s,opacity .14s;
+}
+.dk-mv button svg{width:17px;height:17px;display:block}
+.dk-mv button:hover{color:var(--acc)}
+.dk-mv button:active{transform:scale(.92)}
+.dk-mv button[disabled]{opacity:.28}
+.dk-pos{
+  min-width:38px;text-align:center;font-size:12px;font-weight:750;color:var(--dim);
+  white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:.02em;
+}
 
 /* ---------- 보드 ---------- */
 .lv-board{margin-top:16px;display:grid;gap:12px;min-width:0}
@@ -118,9 +283,10 @@
   color:var(--ink);font-size:13.5px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;gap:6px
 }
 .lv-tool:hover{border-color:var(--acc)}
-.lv-tool.strong{background:color-mix(in srgb,var(--ink) 88%,var(--bg));color:var(--bg);border-color:transparent}
 .lv-keys{margin:0;font-size:13px;line-height:1.6;color:var(--muted);min-width:0}
 .lv-keys b{color:var(--ink);font-weight:750}
+.lv-saved{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0;font-size:13px;font-weight:700;color:var(--muted)}
+.lv-saved a{display:inline-flex;align-items:center;min-height:44px;font-size:13px;font-weight:800;color:var(--acc);text-decoration:underline;text-underline-offset:3px}
 
 /* 고정한 근거 */
 .lv-pins{
@@ -146,46 +312,7 @@
   border:1px solid var(--line2);border-radius:10px;font-size:15px;font-weight:750;background:var(--bg);color:var(--muted)
 }
 
-/* 단계 레일 + 한 장 */
-.lv-cols{display:grid;gap:12px;min-width:0}
-@media (min-width:900px){.lv-cols{grid-template-columns:minmax(0,282px) minmax(0,1fr);align-items:start}}
-.lv-rail{display:grid;gap:10px;min-width:0}
-.lv-rail-hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.lv-rail-hd b{font-size:14px;font-weight:850}
-.lv-rail-hd span{font-size:12.5px;font-weight:700;color:var(--muted)}
-.lv-steps{
-  display:flex;gap:6px;overflow-x:auto;padding:2px 1px 6px;min-width:0;
-  scrollbar-width:thin;-webkit-overflow-scrolling:touch;
-}
-@media (min-width:900px){
-  .lv-steps{display:grid;gap:6px;overflow:visible;padding:0}
-  .lv-rail{position:sticky;top:12px;max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain}
-  .lv-steps-w{min-width:0}
-}
-.lv-step{
-  flex:none;max-width:min(74vw,300px);min-height:52px;display:flex;align-items:center;gap:8px;padding:6px 12px 6px 9px;
-  border:1px solid var(--line);border-radius:12px;background:var(--panel);min-width:0;text-align:left;
-  transition:transform .12s,background-color .14s,border-color .14s;
-}
-@media (min-width:900px){.lv-step{width:100%}}
-.lv-step:active{transform:scale(.99)}
-.lv-step .lv-step-n{
-  flex:none;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;
-  background:var(--soft);color:var(--muted);font-size:12.5px;font-weight:850;letter-spacing:0
-}
-.lv-step .lv-step-t{
-  min-width:0;font-size:13.5px;font-weight:750;line-height:1.32;color:var(--ink);
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
-}
-.lv-step .lv-step-c{
-  flex:none;font-size:11.5px;font-weight:800;color:var(--muted);white-space:nowrap;
-  padding:2px 7px;border-radius:7px;border:1px solid var(--line);background:var(--bg)
-}
-.lv-step[aria-current="true"]{border-color:var(--acc);background:var(--acc-soft)}
-.lv-step[aria-current="true"] .lv-step-n{background:var(--acc);color:var(--panel)}
-:root[data-theme="dark"] .lv-step[aria-current="true"] .lv-step-n{color:#0b0e15}
-.lv-step[aria-current="true"] .lv-step-c{border-color:var(--acc);color:var(--acc)}
-
+/* 한 장 */
 .lv-panel{
   padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--panel);
   box-shadow:var(--shadow);display:grid;gap:14px;min-width:0
@@ -297,17 +424,17 @@
   border-right:2px solid var(--panel);border-bottom:2px solid var(--panel);transform:rotate(40deg)
 }
 
-.lv-nav{display:flex;gap:8px;align-items:center;padding-top:2px}
+.lv-nav{display:flex;gap:8px;align-items:center;padding-top:2px;flex-wrap:wrap}
 .lv-nav button{min-height:46px;padding:0 16px;border-radius:11px;border:1px solid var(--line2);background:var(--bg);font-size:13.5px;font-weight:750}
 .lv-nav button[disabled]{opacity:.45}
 .lv-nav .lv-pos{margin-left:auto;font-size:12.5px;font-weight:750;color:var(--muted);white-space:nowrap}
+.lv-hintkey{margin:0;font-size:12px;line-height:1.5;color:var(--dim);flex:1;min-width:140px}
 
 /* 보완 섹터 */
 .lv-sug{
   padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:var(--panel);
   box-shadow:var(--shadow);display:grid;gap:10px;min-width:0
 }
-.lv-sug-hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .lv-sug-toggle{
   display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%;min-height:44px;padding:0;
   text-align:left
@@ -319,8 +446,6 @@
   padding:3px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--bg)
 }
 .lv-sug-body{display:grid;gap:8px;min-width:0}
-.lv-sug-hd b{font-size:14px;font-weight:850}
-.lv-sug-hd span{font-size:12.5px;font-weight:700;color:var(--muted)}
 .lv-sug-i{
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 11px;
   border:1px solid var(--line);border-radius:12px;background:var(--bg);min-width:0
@@ -335,7 +460,16 @@
 }
 .lv-sug-i button[disabled]{opacity:.5}
 
+/* 로그인 안내 (비로그인 시 라이브 자리) */
+.lv-gate{
+  margin-top:16px;padding:20px 18px;border:1px solid var(--line);border-radius:18px;background:var(--panel);
+  box-shadow:var(--shadow);display:grid;gap:10px;
+}
+.lv-gate b{font-size:16px;font-weight:850;letter-spacing:-.02em}
+.lv-gate p{margin:0;font-size:14px;line-height:1.65;color:var(--muted)}
+.lv-gate .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+
 @media (prefers-reduced-motion:reduce){
-  .lv-chip,.lv-go,.lv-step,.lv-mode button,.lv-ev{transition:none}
-  .lv-chip:active,.lv-go:active,.lv-step:active{transform:none}
+  .lv-go,.lv-tut,.lv-c-go,.dk-step,.dk-mv button,.lv-mode button,.lv-ev,.lv-ph{transition:none}
+  .lv-go:active,.lv-c-go:active,.dk-step:active,.dk-mv button:active{transform:none}
 }

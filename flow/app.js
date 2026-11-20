@@ -290,7 +290,7 @@
     var out = [];
     order.forEach(function (h) {
       var s = SEC[h.id] || {};
-      var title = (s.title || h.id) + (s.no ? ' ' + s.no + '번' : '');
+      var title = (s.title || h.id);
       var label = cleanLabel(h.best || '');
       var extra = h.labels.length - 1;
       if (!label) return;
@@ -507,8 +507,7 @@
     var card = el('div', 'pick');
     var hd = el('div', 'pick-hd');
     var b = el('span', 'tag', s.badge);
-    var n = el('span', 'tag num', s.no + '번');
-    hd.appendChild(b); hd.appendChild(n);
+    hd.appendChild(b);
     if (ext && !(terms && terms.length > 1)) hd.appendChild(el('span', 'tag src', ext.tag));
     var many = !!(terms && terms.length > 1);
     if (many) hd.appendChild(el('span', 'tag src', '공통 매칭'));
@@ -989,7 +988,6 @@
     var card = el('article', 'cand');
     var top = el('div', 'c-top');
     top.appendChild(el('span', 'tag', s.badge));
-    top.appendChild(el('span', 'tag num', s.no + '번'));
     var many = !!(terms && terms.length > 1);
     top.appendChild(el('span', 'c-no', many ? condLabel(terms) + ' 공통 매칭' : (ext ? ext.tag
       : (why && why.length ? why.join(' · ') + '에서 찾음' : (c.manual ? '직접 엮기' : '후보')))));
@@ -1124,7 +1122,31 @@
     var host = $('sheetMain'), ft = $('sheetFt');
     clear(host); clear(ft);
     if (SHEET === 'rehearsal') return renderRehearsal(host, ft);
+    if (SHEET === 'about') return renderAbout(host, ft);
     renderDoneSheet(host, ft);
+  }
+
+  /* 마이덱 라이브 설명 — 흐름을 짜는 화면에서도 언제든 펼쳐 본다 */
+  function renderAbout(host, ft) {
+    $('sheetT').textContent = '마이덱 라이브';
+    var p1 = el('p', 'ok-msg');
+    p1.appendChild(el('b', null, '로그인한 사람에게만 열리는 기능입니다. '));
+    p1.appendChild(document.createTextNode('하고 싶은 일을 한 문장으로 적으면(예: 「경력단절 내담자 첫 상담 흐름 짜기」) 자료실 색인·약어 사전·시너지 지도에서 걸리는 섹터를 찾아 '));
+    p1.appendChild(el('b', null, '서로 다른 세 가지 흐름'));
+    p1.appendChild(document.createTextNode('(정석 적용형 · 실전 연습형 · 사례·법령 집중형)으로 자동으로 짜 줍니다. 고른 하나는 내 덱에 바로 저장되고 상담 OS 보드로 이어집니다.'));
+    host.appendChild(p1);
+
+    var p2 = el('p', 'ok-msg');
+    p2.appendChild(el('b', null, '이 화면의 저장 규칙 — '));
+    p2.appendChild(document.createTextNode('커스터마이징 마이덱 프리셋은 로그인한 상태에서 저장하면 계정 정보에 보관됩니다. 비로그인 상태에서는 창을 닫으면 초기화되며, 로그인하면 계정에 영구 저장됩니다.'));
+    host.appendChild(p2);
+
+    var go = el('a', 'primary', '마이덱 라이브 열기');
+    go.href = window.JCDeck && window.JCDeck.loggedIn() ? '../mydeck/#live' : '../mydeck/';
+    go.style.textDecoration = 'none';
+    go.style.display = 'inline-flex';
+    go.style.alignItems = 'center';
+    ft.appendChild(go);
   }
 
   function renderDoneSheet(host, ft) {
@@ -1149,7 +1171,7 @@
       var a = el('a', null, s.title || id);
       a.href = '../' + String(s.path || '').replace(/^\.\//, '');
       li.appendChild(a);
-      li.appendChild(el('span', 'sb', (s.no || '') + '번 · ' + (s.badge || '')));
+      li.appendChild(el('span', 'sb', s.badge || ''));
       list.appendChild(li);
     });
     host.appendChild(list);
@@ -1184,7 +1206,6 @@
     var hd = el('div', 'reh-hd');
     hd.appendChild(el('span', 'si', String(REH + 1)));
     hd.appendChild(el('span', 'tag', s.badge || ''));
-    hd.appendChild(el('span', 'tag num', (s.no || '') + '번'));
     box.appendChild(hd);
     var h4 = el('h4', null, s.title || id);
     box.appendChild(h4);
@@ -1229,7 +1250,7 @@
     if (!deck) { if (msg) { msg.className = 'ok-msg bad'; msg.textContent = '덱 모양이 맞지 않아 저장하지 못했어요.'; } return; }
     if (msg) { msg.className = 'ok-msg'; msg.textContent = '저장하는 중…'; }
     window.JCDeck.save(deck).then(function (r) {
-      var where = r.source === 'server' ? '내 계정의 마이덱' : '이 브라우저(이 기기에만)';
+      var where = r.source === 'server' ? '내 계정의 마이덱' : '이 창(닫으면 초기화)';
       if (msg) {
         msg.className = 'ok-msg';
         clear(msg);
@@ -1245,12 +1266,12 @@
         if (r.source !== 'server') {
           msg.appendChild(el('span', null, window.JCDeck && window.JCDeck.loggedIn()
             ? ' — 계정 저장소가 배포되면 계정에도 보관됩니다.'
-            : ' — 로그인하면 다른 기기에서도 이어집니다.'));
+            : ' — 비로그인 상태에서는 창을 닫으면 초기화되며, 로그인하면 계정에 영구 저장됩니다.'));
         }
       }
       toast(r.source === 'server' ? '마이덱에 저장했어요.'
-        : (window.JCDeck && window.JCDeck.loggedIn() ? '이 기기에 저장했어요. 계정 저장소가 배포되면 계정에 보관됩니다.'
-                                                    : '이 기기에 저장했어요. 로그인하면 계정에 보관됩니다.'));
+        : (window.JCDeck && window.JCDeck.loggedIn() ? '이 창에 저장했어요. 계정 저장소가 배포되면 계정에 보관됩니다.'
+                                                    : '이 창에 저장했어요. 창을 닫으면 초기화됩니다.'));
     }, function (e) {
       if (msg) { msg.className = 'ok-msg bad'; msg.textContent = window.JCDeck.errText(e || {}) || '저장하지 못했어요.'; }
     });
@@ -1345,11 +1366,232 @@
     });
     var brand = $('brand');
     if (brand) brand.addEventListener('click', function (e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    window.addEventListener('jc-sync-change', function () { renderAcct(); if (MD.side === 'back') renderMd(); });
+    bindFlip();
+  }
+
+  /* ---------- 계정 · 저장 안내 줄 ----------
+     로그인한 사람에게는 「마이덱 라이브」 바로가기를, 아닌 사람에게는 로그인 단추와 저장 규칙을 보인다. */
+  function renderAcct() {
+    var host = $('acct');
+    if (!host) return;
+    clear(host);
+    var D = window.JCDeck;
+    var user = (D && D.user) ? D.user() : '';
+
+    var who = el('div', 'who');
+    who.appendChild(el('b', null, user ? user + ' 님의 계정에 저장합니다.' : '로그인하지 않았습니다 — 만든 덱은 이 창에만 저장됩니다.'));
+    who.appendChild(el('span', null, user
+      ? '커스터마이징 마이덱 프리셋은 계정 정보에 저장되고, 다른 기기에서도 이어집니다.'
+      : '비로그인 상태에서는 창을 닫으면 초기화되며, 로그인하면 계정에 영구 저장됩니다.'));
+    host.appendChild(who);
+
+    var btns = el('div', 'btns');
+    if (user) {
+      var live = el('a', 'live', '마이덱 라이브');
+      live.href = '../mydeck/#live';
+      live.setAttribute('aria-label', '마이덱 라이브 — 목적 문장 한 줄로 세 가지 흐름 자동 조립');
+      btns.appendChild(live);
+    } else {
+      var lg = el('button', null, '로그인');
+      lg.type = 'button';
+      lg.setAttribute('data-jc-login', '');
+      lg.addEventListener('click', function () { if (window.JCSync && window.JCSync.open) window.JCSync.open(); });
+      btns.appendChild(lg);
+    }
+    var info = el('button', null, '마이덱 라이브 설명');
+    info.type = 'button';
+    info.addEventListener('click', function () { openSheet('about'); });
+    btns.appendChild(info);
+    var deck = el('a', null, '마이덱');
+    deck.href = '../mydeck/';
+    btns.appendChild(deck);
+    host.appendChild(btns);
+  }
+
+  /* ---------- ① 카드 뒤집기 — 뒷면 「마이덱」(알고리즘 · 라이브) ----------
+     짜는 일은 mydeck/assemble.js가 맡는다(둘 다 같은 엔진). 이 파일은 화면·저장만 맡는다. */
+  var MD = { side: 'front', mode: 'algo', typer: null, busy: false, done: false };
+  function mdOn() { return !!(window.JCDeck && window.JCDeck.loggedIn()); }
+
+  function bindFlip() {
+    var btn = $('flipBtn');
+    if (btn) btn.addEventListener('click', function () { turn(MD.side === 'front' ? 'back' : 'front'); });
+
+    Array.prototype.forEach.call(($('mdTabs') || { querySelectorAll: function () { return []; } }).querySelectorAll('button'), function (b) {
+      b.addEventListener('click', function () { setMd(b.getAttribute('data-md')); });
+    });
+    var login = $('mdLogin');
+    if (login) login.addEventListener('click', function () { if (window.JCSync && window.JCSync.open) window.JCSync.open(); });
+
+    var go = $('mdGo');
+    if (go) go.addEventListener('click', function () { mdGenerate(String(($('mdAsk') || {}).value || '').trim()); });
+    var ask = $('mdAsk');
+    if (ask) ask.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); mdGenerate(String(ask.value || '').trim()); }
+    });
+    var tut = $('mdTut');
+    if (tut) tut.addEventListener('click', function () {
+      var target = MD.mode === 'live' ? $('mdField') : $('mdChips');
+      if (target && window.JCAssemble) window.JCAssemble.tutorial(target);
+    });
+    if (window.JCAssemble) MD.typer = window.JCAssemble.typing($('mdField'));
+  }
+
+  /* 뒤집을 때 첫머리도 뒷면에 맞춰 바꿔 준다(앞면 문구는 처음 것을 그대로 되돌린다) */
+  var HERO = null;
+  function heroSwap(back) {
+    var hero = document.querySelector('main .hero');
+    if (!hero) return;
+    var h1 = hero.querySelector('h1'), lede = hero.querySelector('.lede'), kick = hero.querySelector('.kick');
+    if (!h1 || !lede) return;
+    if (!HERO) HERO = { h1: h1.innerHTML, lede: lede.innerHTML, kick: kick ? kick.innerHTML : '' };
+    if (back) {
+      if (kick) kick.innerHTML = '<span>마이덱 · 실무</span>';
+      h1.innerHTML = '상담 덱을 <em>세 가지</em>로 짜기';
+      lede.innerHTML = '<b>개념 하나</b>를 누르거나 <b>목적 문장</b>을 한 줄 적으면, 자료실 색인에서 걸리는 섹터로 완성덱 세 개를 짓습니다. 덱의 중간 단계를 눌러 거기서 갈라지는 다음 자료를 <b>알고리즘·문장</b> 두 방식으로 이어 붙일 수 있습니다.';
+    } else {
+      if (kick) kick.innerHTML = HERO.kick;
+      h1.innerHTML = HERO.h1;
+      lede.innerHTML = HERO.lede;
+    }
+  }
+
+  function turn(side) {
+    if (MD.side === side) return;
+    var flip = $('flip'), front = $('mdFront'), back = $('mdBack');
+    var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    function swap() {
+      var showFront = side === 'front';
+      if (front) front.hidden = !showFront;
+      if (back) back.hidden = showFront;
+      MD.side = side;
+      heroSwap(!showFront);
+      var fb = $('flipBtn');
+      if (fb) fb.setAttribute('aria-pressed', String(!showFront));
+      if (!showFront) renderMd();
+      if (MD.typer) { if (showFront || MD.mode !== 'live') MD.typer.stop(); else MD.typer.start(); }
+    }
+    if (reduce || !flip) { swap(); return; }
+    flip.classList.add('out');
+    setTimeout(function () {
+      swap();
+      flip.classList.remove('out');
+      flip.classList.add('in');
+      requestAnimationFrame(function () { requestAnimationFrame(function () { flip.classList.remove('in'); }); });
+    }, 170);
+  }
+
+  function setMd(m) {
+    MD.mode = m;
+    Array.prototype.forEach.call(($('mdTabs') || { querySelectorAll: function () { return []; } }).querySelectorAll('button'), function (b) {
+      b.setAttribute('aria-selected', String(b.getAttribute('data-md') === m));
+    });
+    if ($('mdAlgo')) $('mdAlgo').hidden = m !== 'algo';
+    if ($('mdLive')) $('mdLive').hidden = m !== 'live';
+    if (MD.typer) { if (m === 'live') MD.typer.start(); else MD.typer.stop(); }
+  }
+
+  function renderMd() {
+    var on = mdOn();
+    if ($('mdGate')) $('mdGate').hidden = on;
+    if ($('mdBody')) $('mdBody').hidden = !on;
+    if (!on) {
+      if ($('mdCourses')) $('mdCourses').hidden = true;
+      if ($('mdStat')) { clear($('mdStat')); }
+      return;
+    }
+    if (!MD.done && $('mdChips')) renderMdChips();
+    setMd(MD.mode);
+  }
+
+  function renderMdChips() {
+    var host = $('mdChips');
+    if (!host || !window.JCAssemble) return;
+    MD.done = true;
+    clear(host);
+    (window.JCAssemble.CHIPS || []).forEach(function (k) {
+      var b = el('button', 'lv-chip kw', k);
+      b.type = 'button';
+      b.addEventListener('click', function () {
+        Array.prototype.forEach.call(host.children, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        mdGenerate(k);
+      });
+      host.appendChild(b);
+    });
+  }
+
+  function mdMsg(t, bad) {
+    var box = $('mdMsg');
+    if (!box) return;
+    box.textContent = t || '';
+    box.className = 'lv-msg' + (bad ? ' bad' : '');
+  }
+
+  /* 알고리즘이든 라이브든 같은 엔진 — 말만 다르다 */
+  function mdGenerate(q) {
+    if (!mdOn()) { toast('로그인하면 마이덱을 쓸 수 있어요.'); return; }
+    q = String(q || '').replace(/\s+/g, ' ').trim();
+    if (!q) { mdMsg('개념을 하나 누르거나, 하고 싶은 일을 한 문장으로 적어 주세요.', true); return; }
+    if (MD.busy) return;
+    MD.busy = true;
+    mdMsg('자료실 색인에서 걸리는 섹터를 찾는 중…');
+    window.JCAssemble.load().then(function () {
+      MD.busy = false;
+      var list = window.JCAssemble.courses(q);
+      if (!list.length) {
+        mdMsg('이 말에서 걸리는 자료실 섹터를 찾지 못했어요. 다른 개념이나 문장으로 적어 보세요.', true);
+        if ($('mdCourses')) $('mdCourses').hidden = true;
+        return;
+      }
+      mdMsg('');
+      var host = $('mdCourses');
+      host.hidden = false;
+      clear(host);
+      var wrap = el('div', 'lv-cards');
+      window.JCAssemble.cards(wrap, list, { label: '내 덱에 저장', onPick: mdSave });
+      host.appendChild(wrap);
+      if ($('mdStat')) clear($('mdStat'));
+    }, function () {
+      MD.busy = false;
+      mdMsg('자료실 색인을 불러오지 못했어요. 잠시 뒤 다시 눌러 주세요.', true);
+    });
+  }
+
+  function mdSave(c, btn) {
+    var D = window.JCDeck;
+    if (!D) return;
+    var steps = c.steps.map(function (s) {
+      var sec = window.JCAssemble.sector(s.id);
+      return { id: s.id, no: sec.no, title: sec.title, badge: sec.badge };
+    });
+    var was = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '저장하는 중…';
+    D.save({ name: c.name, steps: steps }).then(function (r) {
+      btn.disabled = false;
+      btn.textContent = '저장했어요';
+      toast(r.source === 'server' ? '내 계정의 마이덱에 저장했어요.' : '이 창에 저장했어요. 창을 닫으면 초기화됩니다.');
+      var box = $('mdStat');
+      if (box) {
+        clear(box);
+        box.className = 'lv-saved';
+        box.appendChild(el('b', null, '「' + c.name + '」을(를) ' + (r.source === 'server' ? '내 계정' : '이 창') + '의 마이덱에 저장했어요. '));
+        var a = el('a', null, '마이덱에서 실행하기');
+        a.href = '../mydeck/';
+        box.appendChild(a);
+      }
+    }, function (e) {
+      btn.disabled = false;
+      btn.textContent = was;
+      mdMsg(D.errText(e || {}) || '저장하지 못했어요.', true);
+    });
   }
 
   function init() {
     renderKws(false);
     bind();
+    renderAcct();
     /* 점검용 — 자료실 색인을 몇 줄 받았는지 밖에서 잴 수 있게 (화면에는 쓰지 않는다) */
     window.JCFlowExt = function () { return { ready: EXT.ready, rows: EXT.rows.length, dict: EXT.dict.length, err: EXT.err }; };
     document.documentElement.setAttribute('data-jc-flow', 'ready');

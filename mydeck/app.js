@@ -2,9 +2,10 @@
  *
  * 하는 일
  *   1) 내 덱 목록 — 저장한 덱을 이름·단계·저장 위치와 함께 보여 주고, 순서대로 열기·리허설·이름 바꾸기·삭제.
- *   2) 로그인 상태 — 로그인하면 내 계정(jc_my_decks), 로그아웃이면 이 브라우저. 서버 함수가 아직 없으면
- *      이 기기에만 저장하고 그 사실을 화면에 적는다(오류로 멈추지 않는다).
+ *   2) 로그인 상태 — 로그인하면 내 계정(jc_my_decks), 로그인하지 않으면 **이 창(sessionStorage)**.
+ *      비로그인 상태의 덱·꾸미기 설정은 창을 닫으면 초기화된다(store.js가 그릇을 바꿔 준다).
  *   3) 공간 꾸미기 — 여섯 요소 × 여섯 조건, 테마(밝게·세피아·어둡게)마다 따로 저장. 바꾸는 즉시 덱 공간에 적용.
+ *   4) 리허설 — 덱의 단계를 한 줄 레일로 늘어놓고, 눌러서 어느 단계로든 건너뛰며 본다(deck-nav.js).
  *
  * 저장·대비 계산은 assets/mydeck-store.js · assets/mydeck-diy.js 가 맡는다. 이 파일은 화면만 그린다.
  */
@@ -31,7 +32,7 @@
     t.textContent = m;
     t.classList.add('on');
     clearTimeout(toast.t);
-    toast.t = setTimeout(function () { t.classList.remove('on'); }, 3400);
+    toast.t = setTimeout(function () { t.classList.remove('on'); }, 3600);
   }
   var EMOJI = ['🗂', '🧭', '📎', '🌿', '🔖', '🧩', '📐', '🪄'];
 
@@ -41,36 +42,45 @@
     return t;
   }
 
-  /* ---------- 상태 줄 ---------- */
+  /* ---------- 상태 줄 (계정 정보) ---------- */
   function renderWho() {
     var host = $('who');
+    if (!host) return;
     clear(host);
     var user = D.user();
     if (user) {
       host.appendChild(el('b', null, user + ' 님의 계정에 저장합니다.'));
       host.appendChild(el('span', null, D.serverOff()
-        ? '계정 저장소가 아직 준비되지 않아 지금은 이 기기에만 저장됩니다.'
+        ? '계정 저장소가 아직 준비되지 않아 지금은 이 창에만 저장됩니다.'
         : '다른 기기에서 같은 아이디로 로그인해도 이 덱들이 보입니다.'));
-      return;
+    } else {
+      host.appendChild(el('b', null, '로그인하지 않았습니다 — 이 창에만 저장합니다.'));
+      host.appendChild(el('span', null, '비로그인 상태에서는 창을 닫으면 초기화되며, 로그인하면 계정에 영구 저장됩니다.'));
     }
-    host.appendChild(el('b', null, '로그인하지 않았습니다 — 지금은 이 기기에만 저장됩니다.'));
-    host.appendChild(el('span', null, '로그인하면 덱이 내 계정에 보관되어 다른 기기에서도 이어집니다.'));
-    var b = el('button', 'd-b', '로그인');
-    b.type = 'button';
-    b.setAttribute('data-jc-login', '');
-    b.style.marginTop = '6px';
-    b.style.maxWidth = '140px';
-    b.addEventListener('click', function () { if (window.JCSync && window.JCSync.open) window.JCSync.open(); });
-    host.appendChild(b);
+    var acts = el('div', 'who-acts');
+    if (!user) {
+      var b = el('button', 'ghost sm', '로그인');
+      b.type = 'button';
+      b.setAttribute('data-jc-login', '');
+      b.addEventListener('click', function () { if (window.JCSync && window.JCSync.open) window.JCSync.open(); });
+      acts.appendChild(b);
+    }
+    var info = el('button', 'linkbtn', '마이덱 라이브 설명');
+    info.type = 'button';
+    info.setAttribute('aria-haspopup', 'dialog');
+    info.addEventListener('click', function () { PICK = null; SHEET = 'about'; openSheet(); });
+    acts.appendChild(info);
+    host.appendChild(acts);
   }
 
   function renderOffMsg() {
     var off = $('offmsg');
+    if (!off) return;
     if (D.loggedIn() && D.serverOff()) {
       off.hidden = false;
       clear(off);
       off.appendChild(el('b', null, '계정 저장소가 아직 준비되지 않았습니다. '));
-      off.appendChild(document.createTextNode('지금 저장한 덱은 이 브라우저에 남고, 서버 함수(my-decks-proxy)가 배포되면 그때부터 계정에 저장됩니다. 로그인이 풀리지 않았다면 화면을 새로 열어 보세요.'));
+      off.appendChild(document.createTextNode('지금 저장한 덱은 이 창에 남고, 서버 함수(my-decks-proxy)가 배포되면 그때부터 계정에 저장됩니다. 로그인이 풀리지 않았다면 화면을 새로 열어 보세요.'));
     } else {
       off.hidden = true;
     }
@@ -102,9 +112,17 @@
     clear(host);
     $('spaceN').textContent = decks.length ? decks.length + '개' : '';
     $('empty').hidden = decks.length > 0;
-    decks.forEach(function (dk, i) {
-      host.appendChild(deckCard(dk, i));
-    });
+    decks.forEach(function (dk, i) { host.appendChild(deckCard(dk, i)); });
+  }
+
+  function toolOf(id) {
+    var t = null;
+    (window.JC_TOOLS || []).forEach(function (x) { if (x.id === id) t = x; });
+    return t;
+  }
+
+  function markDeck(deck, index) {
+    if (window.JCDeckNav) window.JCDeckNav.context(deck, index);
   }
 
   function deckCard(dk, i) {
@@ -120,12 +138,12 @@
     dk.steps.forEach(function (st, j) {
       var li = el('li');
       li.appendChild(el('span', 'd-si', String(j + 1)));
+      var tool = toolOf(st.id);
       var a = el('a', null, st.title || st.id);
-      var tool = null;
-      (window.JC_TOOLS || []).forEach(function (t) { if (t.id === st.id) tool = t; });
       a.href = tool ? '../' + String(tool.path || '').replace(/^\.\//, '') : '../flow/';
+      a.addEventListener('click', function () { markDeck(dk, j); });
       li.appendChild(a);
-      li.appendChild(el('span', 'd-sb', (st.no || '') + '번'));
+      if (st.badge) li.appendChild(el('span', 'd-sb', st.badge));
       ol.appendChild(li);
     });
     card.appendChild(ol);
@@ -133,28 +151,33 @@
     var meta = el('div', 'd-meta');
     meta.appendChild(el('span', null, dk.steps.length + '단계'));
     if (fmt(dk.updated_at || dk.created_at)) meta.appendChild(el('span', null, fmt(dk.updated_at || dk.created_at) + ' 저장'));
-    meta.appendChild(el('span', null, dk.where === 'server' ? '내 계정' : '이 기기에만'));
+    meta.appendChild(el('span', null, dk.where === 'server' ? '내 계정' : '이 창에만'));
     card.appendChild(meta);
 
     var act = el('div', 'd-act');
     var b1 = el('button', 'd-b go', '리허설');
     b1.type = 'button';
     b1.addEventListener('click', function () { openRehearsal(dk); });
-    var b0 = el('button', 'd-b live', '라이브 실행');
-    b0.type = 'button';
-    b0.setAttribute('aria-label', dk.name + ' 덱으로 실전 상담 OS 만들기');
-    b0.addEventListener('click', function () {
-      if (window.JCDeckLive) window.JCDeckLive.open(dk.id);
-      else toast('라이브 화면을 불러오지 못했어요. 화면을 새로 열어 주세요.');
-    });
+    act.appendChild(b1);
+
+    /* 마이덱 라이브 — 로그인한 사람에게만 */
+    if (D.loggedIn()) {
+      var b0 = el('button', 'd-b live', '라이브 실행');
+      b0.type = 'button';
+      b0.setAttribute('aria-label', dk.name + ' 덱으로 실전 상담 OS 만들기');
+      b0.addEventListener('click', function () {
+        if (window.JCDeckLive) window.JCDeckLive.open(dk.id, dk);
+        else toast('라이브 화면을 불러오지 못했어요. 화면을 새로 열어 주세요.');
+      });
+      act.appendChild(b0);
+    }
+
     var b2 = el('button', 'd-b', '이름 바꾸기');
     b2.type = 'button';
     b2.addEventListener('click', function () { openRename(dk); });
     var b3 = el('button', 'd-b bad', '삭제');
     b3.type = 'button';
     b3.addEventListener('click', function () { askDelete(dk); });
-    act.appendChild(b1);
-    act.appendChild(b0);
     act.appendChild(b2);
     act.appendChild(b3);
     if (dk.where !== 'server' && D.loggedIn() && !D.serverOff()) {
@@ -202,20 +225,21 @@
     clear(host); clear(ft);
     if (SHEET === 'rename') return renderRename(host, ft);
     if (SHEET === 'rehearsal') return renderRehearsal(host, ft);
+    if (SHEET === 'about') return renderAbout(host, ft);
   }
 
   function openRehearsal(dk) { PICK = dk; REH = 0; SHEET = 'rehearsal'; openSheet(); }
   function openRename(dk) { PICK = dk; SHEET = 'rename'; openSheet(); }
 
-  function toolOf(id) {
-    var t = null;
-    (window.JC_TOOLS || []).forEach(function (x) { if (x.id === id) t = x; });
-    return t;
-  }
-
   function renderRehearsal(host, ft) {
     var dk = PICK;
-    $('sheetT').textContent = '리허설 — ' + dk.name + ' (' + (REH + 1) + '/' + dk.steps.length + ')';
+    $('sheetT').textContent = '리허설 — ' + dk.name;
+
+    /* 단계 이동 — 한 줄 레일에서 어느 단계로든 건너뛴다 */
+    if (window.JCDeckNav) {
+      host.appendChild(window.JCDeckNav.make(dk, REH, function (i) { REH = i; renderSheet(); }, true));
+    }
+
     var st = dk.steps[REH] || {};
     var tool = toolOf(st.id) || {};
     var box = el('div', 'reh');
@@ -229,26 +253,55 @@
     if (mets.childNodes.length) box.appendChild(mets);
     if (REH > 0) {
       var prev = toolOf((dk.steps[REH - 1] || {}).id) || {};
-      box.appendChild(el('p', null, '앞 자료 — ' + (prev.title || '') + ' (' + (prev.badge || '') + ')'));
+      box.appendChild(el('p', null, '앞 자료 — ' + (prev.title || '')));
     }
     host.appendChild(box);
+
     var a = el('a', 'd-b go', '이 자료 열기');
     a.href = tool.path ? '../' + String(tool.path).replace(/^\.\//, '') : '../flow/';
     a.style.display = 'inline-flex';
     a.style.alignItems = 'center';
+    a.style.justifySelf = 'start';
+    a.addEventListener('click', function () { markDeck(dk, REH); });
     host.appendChild(a);
 
-    var prevB = el('button', 'ghost', '이전');
+    var prevB = el('button', 'ghost', '‹ 이전');
     prevB.type = 'button';
     prevB.disabled = REH === 0;
     prevB.addEventListener('click', function () { if (REH > 0) { REH--; renderSheet(); } });
-    var nextB = el('button', 'primary', REH === dk.steps.length - 1 ? '리허설 마치기' : '다음 자료');
+    var nextB = el('button', 'primary', REH === dk.steps.length - 1 ? '리허설 마치기' : '다음 ›');
     nextB.type = 'button';
     nextB.addEventListener('click', function () {
       if (REH < dk.steps.length - 1) { REH++; renderSheet(); }
       else { toast('리허설을 마쳤어요.'); closeSheet(); }
     });
     ft.appendChild(prevB); ft.appendChild(nextB);
+  }
+
+  function renderAbout(host) {
+    $('sheetT').textContent = '마이덱 라이브';
+    var wrap = el('div', 'about');
+    var p1 = el('p');
+    p1.appendChild(el('b', null, '하고 싶은 일을 한 문장으로 적으면, 세 가지 흐름으로 짜 줍니다.'));
+    p1.appendChild(document.createTextNode(' 자료실 색인과 시너지 지도에서 걸리는 섹터를 찾아 순서를 세우고, 마음에 드는 하나를 고르면 곧바로 내 덱에 저장합니다.'));
+    wrap.appendChild(p1);
+
+    var ol = el('ol');
+    [['한 문장 적기', '「경력단절 내담자 첫 상담 흐름 짜기」처럼 상담에서 하려는 일을 그대로 적습니다.'],
+     ['세 흐름 고르기', '정석 적용형 · 실전 연습형 · 사례·법령 집중형 — 단계와 순서가 서로 다릅니다.'],
+     ['바로 실행', '고른 흐름은 내 덱에 저장되고, 그 덱으로 상담 OS 보드(발문·체크·근거 카드)가 열립니다.']].forEach(function (x) {
+      var li = el('li');
+      li.appendChild(el('b', null, x[0] + ' — '));
+      li.appendChild(document.createTextNode(x[1]));
+      ol.appendChild(li);
+    });
+    wrap.appendChild(ol);
+
+    var p2 = el('p');
+    p2.appendChild(el('b', null, '로그인한 사람에게만 보입니다.'));
+    p2.appendChild(document.createTextNode(' 저장한 덱은 계정에 남아 다른 기기에서도 이어지고, 비로그인 상태에서 만든 덱은 창을 닫으면 초기화됩니다.'));
+    wrap.appendChild(p2);
+    host.appendChild(wrap);
   }
 
   function renderRename(host, ft) {
@@ -433,8 +486,8 @@
     msg.className = 'diy-msg';
     msg.textContent = '저장하는 중…';
     var list = THEMES.map(function (t) { return t[0]; });
-    var chain = Promise.resolve({ source: 'local' });
-    var last = 'local';
+    var chain = Promise.resolve({ source: 'session' });
+    var last = 'session';
     list.forEach(function (t) {
       chain = chain.then(function () {
         return D.savePrefs(t, ensureTheme(t)).then(function (r) { last = r.source; return r; });
@@ -443,8 +496,8 @@
     chain.then(function () {
       dirty = false;
       msg.textContent = last === 'server' ? '내 계정에 저장했어요.'
-        : (D.loggedIn() ? '이 기기에 저장했어요. 계정 저장소(my-decks-proxy)가 배포되면 계정에도 보관됩니다.'
-                        : '이 기기에 저장했어요. 로그인하면 계정에도 보관됩니다.');
+        : (D.loggedIn() ? '이 창에 저장했어요. 계정 저장소가 배포되면 계정에도 보관됩니다.'
+                        : '이 창에 저장했어요. 창을 닫으면 초기화되며, 로그인하면 계정에 영구 저장됩니다.');
       toast(msg.textContent);
     }, function () {
       msg.className = 'diy-msg bad';
@@ -486,8 +539,23 @@
     $('diyAllReset').addEventListener('click', resetAll);
     $('sheetX').addEventListener('click', closeSheet);
     $('sheet').addEventListener('click', function (e) { if (e.target === $('sheet')) closeSheet(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('sheet').hidden) closeSheet(); });
-    window.addEventListener('jc-sync-change', function () { load(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !$('sheet').hidden) { closeSheet(); return; }
+      if ($('sheet').hidden || SHEET !== 'rehearsal' || !PICK) return;
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+      if (e.key === 'ArrowLeft' && REH > 0) { REH--; renderSheet(); }
+      else if (e.key === 'ArrowRight' && REH < PICK.steps.length - 1) { REH++; renderSheet(); }
+    });
+    var main = $('sheetMain');
+    if (main && window.JCDeckNav) {
+      window.JCDeckNav.swipe(main,
+        function () { if (PICK && REH > 0) { REH--; renderSheet(); } },
+        function () { if (PICK && REH < PICK.steps.length - 1) { REH++; renderSheet(); } });
+    }
+    window.addEventListener('jc-sync-change', function () {
+      if (!D.loggedIn() && window.JCDeckLive) window.JCDeckLive.setMode('decks');
+      load();
+    });
     var mo = new MutationObserver(function () { applyPreview(); });
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-jc-tone'] });
     window.addEventListener('storage', function (e) {
