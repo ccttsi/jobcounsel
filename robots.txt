@@ -1,0 +1,41 @@
+# 자료실 검색엔진·AI 크롤러 비노출 (2026-11-20)
+#   개인 학습·공유용으로 만든 화면이라 검색엔진과 AI 수집기에 싣지 않는다.
+#   공개로 전환할 때: 이 파일을 지우고, 각 페이지 <head>의 <meta name="robots"> 한 줄과
+#   assets/core.js의 noindex 안전망(0-0), 루트 _headers의 X-Robots-Tag를 함께 지운다.
+
+User-agent: *
+Disallow: /
+
+# 생성형 AI 학습·검색 수집기 (2026-11 기준 주요 목록)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /

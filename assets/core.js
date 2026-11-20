@@ -31,12 +31,25 @@
   var st = { failed: false, offline: false, pending: 0 };
   var RETRY = [400, 1200];                                         // 다시 받기 전 쉬는 시간(ms)
 
+  /* ---------- 0-0) 검색엔진 비노출(noindex) ----------
+   * 개인 학습·공유용으로 만든 화면이라 검색엔진·AI 수집기에 싣지 않는다. 각 페이지 <head>에 같은 meta가 이미 있고,
+   * 이 줄은 그 줄을 빠뜨린 새 화면까지 덮는 안전망이다. 공개로 전환하면 이 두 줄(여기·각 페이지)과
+   * robots.txt의 Disallow: / 를 함께 지운다. */
+  (function () {
+    if (d.querySelector('meta[name="robots"]')) return;
+    var m = d.createElement('meta');
+    m.setAttribute('name', 'robots');
+    m.setAttribute('content', 'noindex, nofollow, noarchive, nosnippet, noai, noimageai');
+    (d.head || root).appendChild(m);
+  })();
+
   /* ---------- 0) 오류 수집(Sentry) ----------
    * Sentry 프로젝트 jobcounsel의 Browser JavaScript Loader Script.
-   * 운영 도메인에서만, 한 번만 붙인다. 로컬 서버·Playwright 검사(127.0.0.1·localhost)에서는 요청이 나가지 않는다.
+   * 운영 도메인(ccttsi.github.io · ccttsi.pages.dev)에서만, 한 번만 붙인다. 로컬 서버·Playwright 검사(127.0.0.1·localhost)에서는 요청이 나가지 않는다.
    * 로더 주소를 바꿀 때는 Sentry 프로젝트 설정의 Loader Script에서 받은 주소로만 바꾼다. */
   var SENTRY_LOADER = 'https://js.sentry-cdn.com/a4dd71f88a40c92db04ab84f35b062c0.min.js';
-  if (location.hostname === 'ccttsi.github.io' && !d.querySelector('script[data-jc-sentry]')) {
+  var PROD = location.hostname === 'ccttsi.github.io' || location.hostname === 'ccttsi.pages.dev';
+  if (PROD && !d.querySelector('script[data-jc-sentry]')) {
     var sentryScript = d.createElement('script');
     sentryScript.src = SENTRY_LOADER;
     sentryScript.crossOrigin = 'anonymous';

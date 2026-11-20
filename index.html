@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
 <script src="./assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Career Consultant Tutorial · CCTT</title>
@@ -616,6 +617,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <p><b>「시드 · 매치」는 나만의 목차를 직접 꽂아 쓰는 화면입니다.</b> 대문의 심전도 단추를 한 번 누르고 한 번 더 누르면 <b>시드</b>(지식·원리·기준)와 <b>매치</b>(현장·실무) 중 하나를 고를 수 있습니다. 자료 선반에서 카드를 골라 번호 칸에 꽂으면 그 순서가 내 목차가 되고, <b>상황 프리셋</b>(매치는 <b>유형 프리셋</b>)을 고르면 상담 순서대로 카드가 한 번에 꽂히며 단계별 질문·확인 진행판이 함께 열립니다. 꽂은 순서는 지금 쓰는 기기의 브라우저에 저장되고, 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
     </div>
     <ul class="a-pv-list">
+      <li><b>개인 학습·훈련용 참고 도구입니다. 공식 공공데이터와 법령을 바탕으로 정리했으며, 특정 기관의 공식 자료나 교안·상담 기준을 대신하지 않습니다. (20기 학습 공유용)</b></li>
       <li><b>아이디와 비밀번호만 받습니다.</b> 이름·이메일·전화번호 같은 개인정보는 받지 않습니다. 로그인하지 않으면 모든 기록은 지금 쓰는 기기의 브라우저에만 남습니다.</li>
       <li><b>비밀번호는 되돌릴 수 없는 방식(bcrypt)으로 암호화해 저장합니다.</b> 운영자도 원래 비밀번호를 볼 수 없습니다. 그래서 <b>비밀번호를 잊으면 찾을 수 없습니다.</b></li>
       <li><b>메모에 내담자의 이름·연락처·주민등록번호 등 개인정보를 적지 마세요.</b> 이 사이트는 학습과 업무 정리를 돕는 도구입니다.</li>
@@ -631,7 +633,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
         <dt>접근 범위</dt><dd>각 계정은 자기 기록만 읽고 쓸 수 있도록 데이터베이스에서 막아 두었습니다. 로그인 상태는 무작위 열쇠로 유지되며 180일 뒤 만료됩니다.</dd>
         <dt>운영자가 볼 수 있는 것</dt><dd>사이트 화면에서는 관리자도 가입된 아이디의 개수와 위 이용 통계의 합계만 볼 수 있습니다. 다만 데이터베이스를 관리하는 운영자는 기술적으로 아이디와 저장된 기록(메모 내용 포함)을 볼 수 있는 권한이 있으니, 민감한 내용은 적지 마세요. 비밀번호는 운영자도 볼 수 없습니다.</dd>
         <dt>무단 로그인 방지</dt><dd>같은 아이디로 비밀번호를 10번 틀리면 15분 동안 잠깁니다. 비밀번호는 다른 사이트와 다르게 정해 주세요.</dd>
-        <dt>비공식 서비스</dt><dd>개인이 운영하는 비공식 학습 사이트입니다. 고용노동부, 한국고용정보원 등 어떤 기관과도 관계가 없습니다.</dd>
+        <dt>비공식 서비스</dt><dd>개인이 운영하는 비공식 학습 사이트입니다. 고용노동부, 한국고용정보원 등 어떤 기관과도 관계가 없는 개인 학습 도구입니다.</dd>
       </dl>
     </details>
       </div></div>
@@ -1747,6 +1749,24 @@ if(mode!=='all'){root.setAttribute('data-jc-mode',mode);$('stage').hidden=true;
   var bootMode=function(){if(!window.JCDECK){setTimeout(bootMode,20);return;}applyMode(mode,{url:false});};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootMode);else bootMode();}
 setInterval(function(){tick();applyTheme();},1000);
+
+/* ---------- 로그인 단추 ----------
+ * 2026-11-20: 머리말의 「로그인」 단추(data-jc-login)에 누르는 처리가 아예 없어 아무 일도 일어나지 않던 것을 고쳤다.
+ * 자료 열람은 로그인 없이 그대로이고, 로그인은 기록 연동(탐색 진도·형광펜·포스트잇)을 위한 선택 기능이다. */
+function jcSyncReady(cb,n){
+  n=n||0;
+  if(window.JCSync&&typeof window.JCSync.open==='function'&&window.JCSync.configured!==false) return cb(window.JCSync);
+  if(n>40) return;
+  setTimeout(function(){jcSyncReady(cb,n+1);},120);
+}
+(function(){
+  document.addEventListener('click',function(e){
+    var b=e.target&&e.target.closest?e.target.closest('[data-jc-login]'):null;
+    if(!b)return;
+    e.preventDefault();
+    jcSyncReady(function(S){S.open();});     /* 로그인 전에는 로그인 창, 로그인 뒤에는 내 계정 창 */
+  });
+})();
 icons();window.addEventListener('load',icons);
 })();
 </script>
