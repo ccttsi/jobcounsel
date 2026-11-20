@@ -106,7 +106,7 @@ a{color:inherit}
 .roles::-webkit-scrollbar{display:none}
 @media (min-width:900px){.roles{white-space:normal;overflow-x:visible}}
 .roles .r{display:inline;margin-right:13px}
-.roles .r b{font-weight:800;color:var(--acc);font-size:11px;letter-spacing:.02em}
+.roles .r b{font-weight:800;color:var(--acc);font-size:11px;letter-spacing:.02em;margin-right:5px}
 .roles .r a{text-decoration:none;color:var(--muted);border-bottom:1px solid var(--line-2)}
 .roles .r a:hover{color:var(--ink)}
 .ih .lnk{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:6px;margin:8px 0 0;padding-bottom:2px}
@@ -129,8 +129,10 @@ a{color:inherit}
 .stp:hover{border-color:var(--line-2)}
 
 /* 단계 상세 */
-.det{min-width:0;display:flex;flex-direction:column;gap:0;padding-top:11px}
-@media (min-width:900px){.det{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:4px}}
+.det{min-width:0;display:flex;flex-direction:column;min-height:0;padding-top:11px}
+@media (min-width:900px){.det{flex:1;min-height:0}}
+.dbody{min-width:0}
+@media (min-width:900px){.dbody{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:4px}}
 .dh{display:flex;align-items:baseline;gap:8px;min-width:0}
 .dh .dn{flex:none;font-size:11px;font-weight:850;font-variant-numeric:tabular-nums;color:var(--acc);letter-spacing:.04em}
 .dh h3{margin:0;font-size:clamp(16px,4.1vw,19px);line-height:1.25;letter-spacing:-.03em;font-weight:850;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -154,7 +156,7 @@ a{color:inherit}
 .co .mt{grid-column:1/-1;font-size:11px;line-height:1.35;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .co .cat{flex:none;font-size:10px;font-weight:800;color:var(--muted);border:1px solid var(--line);border-radius:7px;padding:1px 5px;white-space:nowrap}
 .none{margin:0;font-size:12px;line-height:1.5;color:var(--dim)}
-.pager{display:flex;align-items:center;gap:8px;margin-top:11px}
+.pager{display:flex;align-items:center;gap:8px;margin-top:10px;flex:none;border-top:1px solid var(--line);padding-top:9px}
 .pager button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 13px;border:1px solid var(--line-2);border-radius:12px;background:var(--panel);font-size:12.5px;font-weight:750;color:var(--muted);white-space:nowrap}
 .pager button:hover:not([disabled]){border-color:var(--acc-line);color:var(--ink)}
 .pager button[disabled]{opacity:.42;cursor:default}

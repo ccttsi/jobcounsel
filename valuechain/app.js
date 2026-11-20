@@ -107,6 +107,7 @@
     }).filter(Boolean).join('');
 
     $('det').innerHTML =
+      '<div class="dbody">' +
       '<div class="dh"><span class="dn">단계 ' + s.no + ' / ' + last + '</span><h3>' + esc(s.name) + '</h3>' +
       '<span class="dw">직무 ' + (s.jobs || []).length + ' · 기업 ' + (s.comps || []).length + '</span></div>' +
       '<div class="grid2">' +
@@ -123,6 +124,7 @@
                  : '<p class="none">명함첩에 수록된 기업이 없는 단계입니다 — 위 설명과 용어로만 다룹니다.</p>') +
           '</div>' +
         '</div>' +
+      '</div>' +
       '</div>' +
       '<div class="pager">' +
         '<button type="button" data-move="-1"' + (ST.step <= 1 ? ' disabled' : '') + '>← 이전 단계</button>' +
