@@ -115,10 +115,13 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .cctt-dg{transform-box:fill-box;transform-origin:center}
 .cctt-wordmark{display:none;flex:none;height:52.55%;width:auto;aspect-ratio:1166/144;margin-left:2.44%;
   -webkit-user-select:none;user-select:none;-webkit-user-drag:none}
-/* 테마별 투명 PNG 한 장만 보인다. 그림은 여백 없이 잘라 낸 것이라 그림 상자 = 잉크 상자다. */
-:root:not([data-theme="dark"]):not([data-jc-tone="sepia"]) .cctt-wordmark-light,
-:root[data-theme="light"] .cctt-wordmark-light{display:block}
-:root[data-jc-tone="sepia"]:not([data-theme="dark"]) .cctt-wordmark-sepia{display:block}
+/* 테마별 투명 PNG 한 장만 보인다. 그림은 여백 없이 잘라 낸 것이라 그림 상자 = 잉크 상자다.
+   세피아는 라이트 위에 덮이는 톤(data-jc-tone)이라, 테마와 톤을 함께 본다. 뒤에 오는 규칙이 이긴다. */
+.cctt-wordmark-light{display:block}
+:root[data-jc-tone="sepia"] .cctt-wordmark-light{display:none}
+:root[data-jc-tone="sepia"] .cctt-wordmark-sepia{display:block}
+:root[data-theme="dark"] .cctt-wordmark-light,
+:root[data-theme="dark"] .cctt-wordmark-sepia{display:none}
 :root[data-theme="dark"] .cctt-wordmark-dark{display:block}
 .a-right{display:flex;align-items:center;gap:8px;flex:none;margin-left:auto}
 .a-status{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);white-space:nowrap}
