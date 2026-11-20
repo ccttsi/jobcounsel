@@ -1,15 +1,15 @@
 {
  "schema_version": "1.1.0",
- "updated_at": "2026-11-20T23:04:00+09:00",
- "date": "2026-11-20",
+ "updated_at": "2026-11-21T07:06:00+09:00",
+ "date": "2026-11-21",
  "data_status": "ok",
  "data_status_note": null,
  "runs": {
   "kr-0700": {
    "status": "ok",
-   "updated_at": "2026-11-20T07:05:00+09:00",
-   "last_ok": "2026-11-20",
-   "run_id": "br-20261120-0705"
+   "updated_at": "2026-11-21T07:06:00+09:00",
+   "last_ok": "2026-11-21",
+   "run_id": "br-20261121-0706"
   },
   "global-2300": {
    "status": "ok",
@@ -178,8 +178,32 @@
    "theme_id": "th-youth-employment-gap",
    "title": "청년 고용 사각지대",
    "summary": "취업자 총수는 늘어도 청년층만 빠지는 구조가 이어진다. 청년 고용률·구직단념·첫 일자리 정책을 한 묶음으로 보고, 상담에서는 \"몇 살이라서\"가 아니라 \"어느 업종·직무에서 빠졌는지\"를 먼저 확인한다.",
-   "updated_at": "2026-11-19T07:06:00+09:00",
+   "updated_at": "2026-11-21T07:06:00+09:00",
    "items": [
+    {
+     "issue_id": "iss-youth-first-job-2027",
+     "title": "2027 청년일자리 예산 3.3조 — K-유스개런티 신설(구직촉진수당 월 65만원·16만명)",
+     "source": {
+      "source_name": "고용노동부(정책브리핑)",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790054"
+     },
+     "license": {
+      "name": "공공누리 미부착(사전 협의 필요)",
+      "type": "KOGL-NONE",
+      "url": null,
+      "scope": "보도자료 본문·첨부파일",
+      "attribution_required": true,
+      "commercial_use": "unknown",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-21",
+      "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-21): '이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 본문을 옮기지 않고 사실·수치만 사용.",
+      "attribution_text": "출처: 고용노동부 「딱딱한 정책은 이제 그만, 친근하게 만나는 청년고용정책」 보도자료(2026.11.20, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     },
+     "first_seen": "2026-11-21",
+     "last_updated": "2026-11-21",
+     "track": "B"
+    },
     {
      "issue_id": "iss-kdi-outlook-2026h2",
      "title": "KDI 2026년 하반기 경제전망 — 2027년 취업자 +20만, 20대 고용률은 여전히 낮다",
@@ -680,23 +704,20 @@
   }
  ],
  "excluded": {
-  "count": 5,
+  "count": 4,
   "reasons": [
    {
-    "reason": "공공누리 제2유형(상업적 이용금지) — 본문 재게시 불가, 사실·수치만",
-    "count": 1
+    "reason": "공공누리 미부착 보도자료(KOGL-NONE) — 본문 재게시 불가, 사실·수치만",
+    "count": 2
    },
    {
-    "reason": "공공누리 미부착 보도자료(KOGL-NONE) — 본문 재게시 불가",
-    "count": 3
-   },
-   {
-    "reason": "arXiv 기본(비독점 배포) 라이선스 논문 — 원문 재게시·번역 불가",
-    "count": 1
+    "reason": "언론 기사(PRESS) — 본문 복제·번역 불가, 사실·수치만",
+    "count": 2
    }
   ]
  },
  "archive_dates": [
+  "2026-11-21",
   "2026-11-20",
   "2026-11-19",
   "2026-11-18",

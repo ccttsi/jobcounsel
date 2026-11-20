@@ -1,8 +1,9 @@
 {
  "schema_version": "1.4.0",
- "generated_at": "2026-11-20T23:04:58+09:00",
+ "generated_at": "2026-11-21T07:06:42+09:00",
  "note": "briefing.json·archive/*.json의 카드 중 labor_walk:true(고용·임금·직무·정책 등)를 모은 실기사 색인. 본문은 카드의 「무슨 일·수치·근거」를 그대로 옮긴 우리 말 요약이며 원문 문장이 아니다.",
  "dates": [
+  "2026-11-21",
   "2026-11-20",
   "2026-11-19",
   "2026-11-18",
@@ -228,6 +229,7 @@
   "2025-05-15"
  ],
  "counts": {
+  "2026-11-21": 7,
   "2026-11-20": 7,
   "2026-11-19": 6,
   "2026-11-18": 5,
@@ -454,6 +456,321 @@
  },
  "articles": [
   {
+   "date": "2026-11-21",
+   "card_id": "c01",
+   "order": 1,
+   "title": "청년 첫 취업에 월 65만원 — 청년일자리 예산 3.3조",
+   "kicker": "2027 정부안 +7천억 · K-유스개런티 16만명",
+   "category": "국내 고용행정",
+   "topic": "청년·중장년 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부",
+   "source_title": "딱딱한 정책은 이제 그만, 친근하게 만나는 청년고용정책",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790054",
+   "published_at": "2026-11-20",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "청년일자리 예산",
+     "value": "3.3조원",
+     "delta": "+0.7조원",
+     "period": "2027년 정부안"
+    },
+    {
+     "label": "K-유스개런티",
+     "value": "3,793억원",
+     "delta": "신설",
+     "period": "2027년 정부안"
+    },
+    {
+     "label": "구직촉진수당",
+     "value": "월 65만원",
+     "delta": "+5만원",
+     "period": "2027년"
+    },
+    {
+     "label": "청년일자리도약장려금",
+     "value": "13만명",
+     "delta": "+2.5만명",
+     "period": "2027년 정부안"
+    }
+   ],
+   "text": "고용노동부는 2026년 11월 20일 2027년 청년일자리 예산을 3조3,000억원으로 늘리고, 취업 경험이 없는 청년에게 구직촉진수당과 취업지원 서비스를 주는 '청년 첫 취업지원제도(K-유스개런티)'를 새로 만들겠다고 밝혔다. 같은 날 청주에서 청년고용정책을 직접 안내하는 팝업스토어도 열었다.\n\n청년일자리 예산은 2026년 2조6,000억원에서 2027년 정부안 3조3,000억원으로 약 7,000억원 늘어난다. K-유스개런티는 3,793억원·16만명 규모로 구직촉진수당이 월 60만원에서 65만원으로 오르고, K-뉴딜 아카데미는 4,985억원·5만명(2026년 1만명)으로 확대된다. AI 훈련을 수료한 청년을 채용한 기업을 지원하는 '청년 AI 첫 일자리 경력 지원'은 145억원·750명으로 신설되고, 청년일자리도약장려금 지원 인원은 10만5,000명에서 13만명으로 늘어난다."
+  },
+  {
+   "date": "2026-11-21",
+   "card_id": "c02",
+   "order": 2,
+   "title": "AI 직종 공고 1,804건 중 신입 지원은 17.1%",
+   "kicker": "클라우드 15.8% · QA 29.1% — 가장 넓은 문도 30% 아래",
+   "category": "채용시장",
+   "topic": "고용서비스·채용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "track": "B",
+   "source_name": "매경ECONOMY",
+   "source_title": "AI 인력 수요 늘어도…신입 채용 문턱 높았다 [데이터로 보는 세상]",
+   "source_url": "https://www.mk.co.kr/news/business/12214725",
+   "published_at": "2026-11-20",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "AI 직종 공고",
+     "value": "1,804건",
+     "delta": "",
+     "period": "2026년 11월 10일"
+    },
+    {
+     "label": "신입 지원 가능",
+     "value": "308건",
+     "delta": "17.1%",
+     "period": "2026년 11월 10일"
+    },
+    {
+     "label": "QA 엔지니어 신입",
+     "value": "29.1%",
+     "delta": "7개 직종 중 최고",
+     "period": "2026년 11월 10일"
+    },
+    {
+     "label": "프롬프트 엔지니어",
+     "value": "3건",
+     "delta": "",
+     "period": "2026년 11월 10일"
+    }
+   ],
+   "text": "채용 플랫폼 잡플래닛이 2026년 11월 10일 기준으로 올라온 AI 관련 7개 직종 채용공고를 분석한 결과, 신입이 지원할 수 있는 공고는 전체의 17.1%에 그쳤다. AI 인력 수요가 늘어도 첫 경력의 문은 좁다는 뜻이다.\n\n7개 직종 공고 1,804건 가운데 신입 지원이 가능한 공고는 308건(17.1%)이었다. 클라우드 엔지니어는 348건 중 55건(15.8%), 정보보안 엔지니어 269건 중 48건(17.8%), 데이터 분석가 135건 중 28건(20.7%), QA 엔지니어 189건 중 55건(29.1%)이었다. 한때 유망 직업으로 꼽힌 프롬프트 엔지니어 공고는 3건, 데이터 라벨러는 17건이었다."
+  },
+  {
+   "date": "2026-11-21",
+   "card_id": "c03",
+   "order": 3,
+   "title": "AI 영향 인력계획 반영 11%뿐 — 감원보다 업무 재설계 70%",
+   "kicker": "국제 리더 775명 조사 · 정규직 감소 전망 47%",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "track": "B",
+   "source_name": "지티티코리아",
+   "source_title": "AI 도입 기업 89%, 전사 인력계획 반영 못해…업무 재설계·성과 검증 시급",
+   "source_url": "https://www.gttkorea.com/news/articleView.html?idxno=27747",
+   "published_at": "2026-11-20",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "전사 계획 반영",
+     "value": "11%",
+     "delta": "",
+     "period": "2026년 보고서"
+    },
+    {
+     "label": "업무 재설계 예상",
+     "value": "70%",
+     "delta": "향후 2년 조치",
+     "period": "2026년"
+    },
+    {
+     "label": "정규직 감소 전망",
+     "value": "47%",
+     "delta": "상당 감소 8%",
+     "period": "향후 2년"
+    },
+    {
+     "label": "인력 증가 전망",
+     "value": "5%",
+     "delta": "",
+     "period": "향후 2년"
+    }
+   ],
+   "text": "콘퍼런스보드가 국제 리더 775명을 설문하고 35건을 인터뷰해 낸 'AI와 인력계획' 보고서에서, AI가 인력·재무에 미칠 영향을 전사 계획에 완전히 반영한 기업은 11%에 그쳤다. 대신 향후 2년의 주요 조치로는 업무 재설계와 재교육이 인력 감축보다 앞섰다.\n\n전사 계획에 반영 11%, 일부 영역만 반영 35%, 논의만 하고 계획에는 반영하지 않음 34%, 아직 평가하지 않음 13%였다. 향후 2년 조치로는 직무·업무 절차 재설계 70%, 재교육 68%, 추가 채용 대신 AI 역량 투자 37%, 정규직 감축 17%였다. 전체 정규직은 소폭 감소 39%·변화 없음 32%·상당 감소 8%로 감소 전망이 합계 47%, 증가 전망은 5%였다."
+  },
+  {
+   "date": "2026-11-21",
+   "card_id": "c04",
+   "order": 4,
+   "title": "미국, 근로자·독립계약자 구분 최종규칙 — 사례 14개",
+   "kicker": "핵심요소 2개로 판단 · 연방관보 뒤 60일 발효",
+   "category": "해외 노동시장",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동부 임금시간국(DOL WHD)",
+   "source_title": "US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws",
+   "source_url": "https://www.dol.gov/newsroom/releases/whd/whd20261119",
+   "published_at": "2026-11-19",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "공개 의견(60일)",
+     "value": "1만6,500건",
+     "delta": "",
+     "period": "2026년 2~4월"
+    },
+    {
+     "label": "판단 사례",
+     "value": "14개",
+     "delta": "플랫폼·농업노무·트럭 신규",
+     "period": "최종규칙"
+    },
+    {
+     "label": "핵심 판단요소",
+     "value": "2개",
+     "delta": "",
+     "period": "통제·손익 기회"
+    },
+    {
+     "label": "발효 시점",
+     "value": "연방관보+60일",
+     "delta": "",
+     "period": "2026년 11월 19일 발표"
+    }
+   ],
+   "text": "미국 노동부 임금시간국(WHD)이 2026년 11월 19일, 공정노동기준법(FLSA)상 근로자인지 독립계약자인지 가르는 판단기준을 바꾸는 최종규칙을 발표했다. 2024년 규정을 폐지하고 2021년 프레임워크와 비슷한 '경제적 실질' 판단으로 돌아가며, 가족·의료휴가법(FMLA)과 이주·계절농업노동자보호법(MSPA)에도 같은 분석을 적용한다.\n\n판단은 두 가지 핵심요소 — ①업무에 대한 통제의 성격과 정도 ②자기 주도·투자에 따른 이익·손실 기회 — 를 먼저 보고, 기술 수준·관계의 지속성·생산 단위의 일부인지를 보조요소로 본다. 최종규칙에는 실제 상황을 적용한 사례 14개가 실렸고, 의견 수렴에서 요청이 많았던 농업 노무업체·디지털 플랫폼 종사자·트럭 운전자 사례가 새로 들어갔다. 2026년 2월 27일 제안규정에 60일간 공개 의견 1만6,500건이 접수됐고, 연방관보 게재 60일 뒤 발효된다. 내국세법 등 다른 연방법과 주·지역법의 판단은 바뀌지 않는다."
+  },
+  {
+   "date": "2026-11-21",
+   "card_id": "c05",
+   "order": 5,
+   "title": "미국 물가 5년 새 22.0% — 스마트폰만 51% 내렸다",
+   "kicker": "주거 +26.8% · 에너지 +33.2% · 스마트폰 -51.2%",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Consumer prices up 22.0 percent over 5 years ending October 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/consumer-prices-up-22-0-percent-over-5-years-ending-october-2026.htm",
+   "published_at": "2026-11-19",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "소비자물가(5년)",
+     "value": "+22.0%",
+     "delta": "",
+     "period": "2021.10~2026.10"
+    },
+    {
+     "label": "주거",
+     "value": "+26.8%",
+     "delta": "",
+     "period": "5년"
+    },
+    {
+     "label": "에너지",
+     "value": "+33.2%",
+     "delta": "",
+     "period": "5년"
+    },
+    {
+     "label": "스마트폰",
+     "value": "-51.2%",
+     "delta": "",
+     "period": "5년"
+    }
+   ],
+   "text": "미국 노동통계국이 2026년 10월까지 5년(2021년 10월~2026년 10월) 동안의 소비자물가 변화를 항목별로 정리했다. 전체 물가는 22.0% 올랐고, 살림에 자주 나가는 항목이 평균보다 더 올랐다.\n\n소비자물가지수(CPI-U)는 5년 새 22.0% 상승(계절조정 안 함)했다. 에너지 +33.2%, 주거 +26.8%, 외식 +27.8%, 식료품 +24.0%, 교통 +22.9%인 반면 의료 +12.9%, 의류 +11.4%, 통신 -3.7%, 스마트폰 -51.2%였다. 대중교통은 +39.9%, 휘발유는 +31.9% 올랐다(2026년 10월 기준)."
+  },
+  {
+   "date": "2026-11-21",
+   "card_id": "c06",
+   "order": 6,
+   "title": "EU 성별 고용격차 9.7%p — 244개 지역 중 65곳만 목표",
+   "kicker": "남 80.9% vs 여 71.2% · 2030년 목표 5.7%p",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "유로스타트(Eurostat)",
+   "source_title": "Average gender employment gap in EU regions at 9.7 pp",
+   "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20261119-1",
+   "published_at": "2026-11-19",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "남성 고용률(20~64세)",
+     "value": "80.9%",
+     "delta": "",
+     "period": "2025년 EU"
+    },
+    {
+     "label": "여성 고용률(20~64세)",
+     "value": "71.2%",
+     "delta": "",
+     "period": "2025년 EU"
+    },
+    {
+     "label": "성별 고용격차",
+     "value": "9.7%p",
+     "delta": "-0.3%p",
+     "period": "2024년 10.0%p"
+    },
+    {
+     "label": "2030년 목표",
+     "value": "5.7%p",
+     "delta": "연 0.5%p 감축 필요",
+     "period": "2019년 기준"
+    }
+   ],
+   "text": "유로스타트가 2025년 유럽연합(EU) 지역별 성별 고용격차를 공개했다. 남성과 여성의 20~64세 고용률 차이는 9.7%포인트로 전년(10.0%p)보다 조금 줄었지만, 2030년 목표에는 4%포인트 넘게 남아 있다.\n\n2025년 20~64세 고용률은 남성 80.9%, 여성 71.2%로 격차가 9.7%p였다(2024년 10.0%p). EU는 유럽사회권 기둥 행동계획으로 2030년까지 격차를 절반인 5.7%p로 줄이겠다고 잡았고, 이를 위해 2019년부터 연평균 0.5%p씩 줄여야 한다. 244개 NUTS2 지역 중 65곳이 이미 목표를 달성했고(프랑스 14·독일 12·스웨덴 8곳 중 7곳), 26개 지역은 격차가 18.0%p 이상이었다(그리스 13곳 중 10곳, 이탈리아 21곳 중 8곳, 루마니아 8곳 중 5곳)."
+  },
+  {
+   "date": "2026-11-21",
+   "card_id": "c07",
+   "order": 7,
+   "title": "미국 고용주 90%, AI 지원서에 진짜 지원자를 놓쳤다",
+   "kicker": "채용절차 바꿨다 86% · 사람 면접 추가 57%",
+   "category": "채용시장",
+   "topic": "고용서비스·채용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "global",
+   "track": "B",
+   "source_name": "Greenhouse(채용 플랫폼) 뉴스룸",
+   "source_title": "Nine in Ten Employers Believe They've Turned Away Real Candidates as AI Floods Job Applications",
+   "source_url": "https://www.greenhouse.com/newsroom/nine-in-ten-employers-believe-theyve-turned-away-real-candidates-as-ai-floods-job-applications",
+   "published_at": "2026-11-19",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "AI 지원서로 지원자 놓침",
+     "value": "90%",
+     "delta": "",
+     "period": "2026년 설문"
+    },
+    {
+     "label": "채용절차 변경",
+     "value": "86%",
+     "delta": "사람 면접 추가 57%",
+     "period": "2026년 설문"
+    },
+    {
+     "label": "미국 채용 평균 소요",
+     "value": "62일",
+     "delta": "서류 97%는 면접 미도달",
+     "period": "2026년 하반기 보고서"
+    },
+    {
+     "label": "AI 면접 사용·도입 계획",
+     "value": "73%",
+     "delta": "이미 사용 52%",
+     "period": "1년 내"
+    }
+   ],
+   "text": "채용 플랫폼 그린하우스가 2026년 11월 19일, 미국·영국·아일랜드·독일·호주 채용담당자 1,347명을 설문한 「2026 채용 담당자 보고서」를 발표했다. AI로 다듬은 지원서가 늘면서 지원자의 진위를 가리기 어려워졌다는 답이 나왔다.\n\n응답자 90%가 AI로 만들었거나 가짜로 보이는 지원서 때문에 실제 지원자를 놓친 적이 있다고 답했고, 86%는 채용절차를 바꿨다(가장 흔한 변경은 사람 면접 추가 57%). 미국 채용은 평균 62일 걸리고 서류의 97%는 면접 대화까지 가지 못하며, 단축 명단에 오른 지원자도 첫 면접까지 평균 19일을 기다린다. AI 면접은 52%가 이미 쓰고 73%가 1년 안에 쓰거나 도입할 계획이다(2026년 9~10월 설문)."
+  },
+  {
    "date": "2026-11-20",
    "card_id": "c01",
    "order": 1,
@@ -592,175 +909,181 @@
    "date": "2026-11-20",
    "card_id": "c04",
    "order": 4,
-   "title": "미국 1년 새 일자리 88만5천개, 정보·금융은 마이너스",
-   "kicker": "전년비 +88만5천개(월 7.4만) · 정보업 -11만9천",
+   "title": "미국, 근로자·독립계약자 구분 최종규칙 — 사례 14개",
+   "kicker": "핵심요소 2개로 판단 · 연방관보 뒤 60일 발효",
    "category": "해외 노동시장",
-   "topic": "해외 노동시장",
-   "theme_key": "th-global-labor",
-   "theme_label": "해외 노동시장",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
    "region": "global",
    "track": "A",
-   "source_name": "미국 노동통계국(BLS) The Economics Daily",
-   "source_title": "Payroll employment increased by 885,000 from October 2025 to October 2026",
-   "source_url": "https://www.bls.gov/opub/ted/2026/payroll-employment-increased-by-885000-from-october-2025-to-october-2026.htm",
-   "published_at": "2026-11-18",
+   "source_name": "미국 노동부 임금시간국(DOL WHD)",
+   "source_title": "US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws",
+   "source_url": "https://www.dol.gov/newsroom/releases/whd/whd20261119",
+   "published_at": "2026-11-19",
    "license_type": "PUBLIC-DOMAIN",
    "key_numbers": [
     {
-     "label": "비농업 일자리(전년비)",
-     "value": "+88만5천개",
-     "delta": "월평균 약 7만4천",
-     "period": "2025.10~2026.10"
-    },
-    {
-     "label": "의료·교육",
-     "value": "+52만5천개",
+     "label": "공개 의견(60일)",
+     "value": "1만6,500건",
      "delta": "",
-     "period": "2026년 10월 기준"
+     "period": "2026년 2~4월"
     },
     {
-     "label": "전문·사업서비스",
-     "value": "+26만9천개",
+     "label": "판단 사례",
+     "value": "14개",
+     "delta": "플랫폼·농업노무·트럭 신규",
+     "period": "최종규칙"
+    },
+    {
+     "label": "핵심 판단요소",
+     "value": "2개",
      "delta": "",
-     "period": "2026년 10월 기준"
+     "period": "통제·손익 기회"
     },
     {
-     "label": "정보업",
-     "value": "-11만9천개",
-     "delta": "12개월",
-     "period": "2026년 10월 기준"
+     "label": "발효 시점",
+     "value": "연방관보+60일",
+     "delta": "",
+     "period": "2026년 11월 19일 발표"
     }
    ],
-   "text": "미국 노동통계국이 2026년 10월까지 1년 동안의 업종별 일자리 증감을 내놨다. 늘어난 자리는 의료·교육과 전문·사업서비스에 몰렸고, 정보와 금융은 줄었다.\n\n비농업 일자리는 1년 새 88만5,000개 늘어 월평균 약 7만4,000개 수준이다. 의료·교육 +52만5,000개, 전문·사업서비스 +26만9,000개, 건설 +12만4,000개, 제조 +7만8,000개인 반면 정보 -11만9,000개, 금융·보험 -9만9,000개, 정부 -5만8,000개였다(2026년 10월 기준·계절조정)."
+   "text": "미국 노동부 임금시간국(WHD)이 2026년 11월 19일, 공정노동기준법(FLSA)상 근로자인지 독립계약자인지 가르는 판단기준을 바꾸는 최종규칙을 발표했다. 2024년 규정을 폐지하고 2021년 프레임워크와 비슷한 '경제적 실질' 판단으로 돌아가며, 가족·의료휴가법(FMLA)과 이주·계절농업노동자보호법(MSPA)에도 같은 분석을 적용한다.\n\n판단은 두 가지 핵심요소 — ①업무에 대한 통제의 성격과 정도 ②자기 주도·투자에 따른 이익·손실 기회 — 를 먼저 보고, 기술 수준·관계의 지속성·생산 단위의 일부인지를 보조요소로 본다. 최종규칙에는 실제 상황을 적용한 사례 14개가 실렸고, 의견 수렴에서 요청이 많았던 농업 노무업체·디지털 플랫폼 종사자·트럭 운전자 사례가 새로 들어갔다. 2026년 2월 27일 제안규정에 60일간 공개 의견 1만6,500건이 접수됐고, 연방관보 게재 60일 뒤 발효된다. 내국세법 등 다른 연방법과 주·지역법의 판단은 바뀌지 않는다."
   },
   {
    "date": "2026-11-20",
    "card_id": "c05",
    "order": 5,
-   "title": "법률서비스, AI로 일이 다시 나뉜다 — 로펌 매출은 13% 늘었다",
-   "kicker": "연방 민사 자기대리 16.8%(+6.6%p) · 대형 로펌 매출 +13%",
-   "category": "AI·직무",
-   "topic": "AI와 직무",
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
+   "title": "미국 물가 5년 새 22.0% — 스마트폰만 51% 내렸다",
+   "kicker": "주거 +26.8% · 에너지 +33.2% · 스마트폰 -51.2%",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
    "region": "global",
    "track": "A",
-   "source_name": "arXiv (micro1·노스이스턴대)",
-   "source_title": "AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services (arXiv:2611.23354)",
-   "source_url": "https://arxiv.org/abs/2611.23354",
-   "published_at": "2026-11-17",
-   "license_type": "CC-BY-4.0",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Consumer prices up 22.0 percent over 5 years ending October 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/consumer-prices-up-22-0-percent-over-5-years-ending-october-2026.htm",
+   "published_at": "2026-11-19",
+   "license_type": "PUBLIC-DOMAIN",
    "key_numbers": [
     {
-     "label": "연방 민사 자기대리 비중",
-     "value": "16.8%",
-     "delta": "+6.6%p",
-     "period": "2025회계연도"
+     "label": "소비자물가(5년)",
+     "value": "+22.0%",
+     "delta": "",
+     "period": "2021.10~2026.10"
     },
     {
-     "label": "대형 로펌 매출",
-     "value": "+13%",
-     "delta": "청구시간 거의 정체",
-     "period": "2025년"
+     "label": "주거",
+     "value": "+26.8%",
+     "delta": "",
+     "period": "5년"
     },
     {
-     "label": "민간 변호사 사내 비중",
-     "value": "29.0%",
-     "delta": "2019년 28.7%",
-     "period": "2024년"
+     "label": "에너지",
+     "value": "+33.2%",
+     "delta": "",
+     "period": "5년"
+    },
+    {
+     "label": "스마트폰",
+     "value": "-51.2%",
+     "delta": "",
+     "period": "5년"
     }
    ],
-   "text": "micro1과 노스이스턴대 연구진이 미국 법률서비스 시장에서 AI가 전문지식 일을 어떻게 다시 나누는지 분석했다. AI로 값싼 대안이 좋아지면 의뢰인은 일을 사내로 가져오기보다 다른 공급자 쪽으로 옮긴다.\n\n89개 연방지구 분석에서 비수감자 민사소송의 자기대리 비중이 2025회계연도 16.8%로, 20년 가까이 9.5~12.1%에 머물던 범위를 넘어 이중차분 기준 6.6%p 올랐다(기존 추세 조정 후 5.7%p). 로펌 변호사의 사내 이동은 뚜렷하지 않고(민간 고용 변호사 중 법률서비스업 밖 비중 2024년 29.0%, 2019년 28.7%), 대형 로펌은 청구시간이 거의 늘지 않았는데 2025년 매출이 13% 늘었다."
+   "text": "미국 노동통계국이 2026년 10월까지 5년(2021년 10월~2026년 10월) 동안의 소비자물가 변화를 항목별로 정리했다. 전체 물가는 22.0% 올랐고, 살림에 자주 나가는 항목이 평균보다 더 올랐다.\n\n소비자물가지수(CPI-U)는 5년 새 22.0% 상승(계절조정 안 함)했다. 에너지 +33.2%, 주거 +26.8%, 외식 +27.8%, 식료품 +24.0%, 교통 +22.9%인 반면 의료 +12.9%, 의류 +11.4%, 통신 -3.7%, 스마트폰 -51.2%였다. 대중교통은 +39.9%, 휘발유는 +31.9% 올랐다(2026년 10월 기준)."
   },
   {
    "date": "2026-11-20",
    "card_id": "c06",
    "order": 6,
-   "title": "배달·특송 부상 47.5% 급증, 전체 산재는 3% 줄었다",
-   "kicker": "특송 7만5,200건(+11.4%) · 업무전환·제한 +47.5%",
+   "title": "EU 성별 고용격차 9.7%p — 244개 지역 중 65곳만 목표",
+   "kicker": "남 80.9% vs 여 71.2% · 2030년 목표 5.7%p",
    "category": "해외 노동시장",
    "topic": "해외 노동시장",
    "theme_key": "th-global-labor",
    "theme_label": "해외 노동시장",
    "region": "global",
    "track": "A",
-   "source_name": "미국 노동통계국(BLS)",
-   "source_title": "Employer-Reported Workplace Injuries and Illnesses — 2025 (USDL-26-1712)",
-   "source_url": "https://www.bls.gov/news.release/osh.nr0.htm",
-   "published_at": "2026-11-18",
-   "license_type": "PUBLIC-DOMAIN",
+   "source_name": "유로스타트(Eurostat)",
+   "source_title": "Average gender employment gap in EU regions at 9.7 pp",
+   "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20261119-1",
+   "published_at": "2026-11-19",
+   "license_type": "CC-BY-4.0",
    "key_numbers": [
     {
-     "label": "민간 부문 산재·질병",
-     "value": "240만건",
-     "delta": "-3.0%",
-     "period": "2025년"
-    },
-    {
-     "label": "특송·메신저 전체",
-     "value": "7만5,200건",
-     "delta": "+11.4%",
-     "period": "2025년"
-    },
-    {
-     "label": "특송 업무 전환·제한",
-     "value": "2만9,500건",
-     "delta": "+47.5%",
-     "period": "2025년"
-    },
-    {
-     "label": "민간 전체 발생률",
-     "value": "2.3건/100 FTE",
+     "label": "남성 고용률(20~64세)",
+     "value": "80.9%",
      "delta": "",
-     "period": "2025년"
+     "period": "2025년 EU"
+    },
+    {
+     "label": "여성 고용률(20~64세)",
+     "value": "71.2%",
+     "delta": "",
+     "period": "2025년 EU"
+    },
+    {
+     "label": "성별 고용격차",
+     "value": "9.7%p",
+     "delta": "-0.3%p",
+     "period": "2024년 10.0%p"
+    },
+    {
+     "label": "2030년 목표",
+     "value": "5.7%p",
+     "delta": "연 0.5%p 감축 필요",
+     "period": "2019년 기준"
     }
    ],
-   "text": "미국 노동통계국이 2025년 사업장 산재·질병 통계를 발표했다. 민간 부문 전체는 줄었는데 특송·메신저 업종만 늘었고, 늘어난 몫은 업무 전환·제한 사례에 몰렸다.\n\n민간 부문 비치명 산재·질병은 240만건으로 1년 새 3.0% 줄어 2003년 이후 가장 적었고 발생률은 2.3건/100 FTE였다. 반면 특송·메신저는 7만5,200건으로 11.4% 늘었고, 그중 업무 전환·제한(DJTR) 사례가 2만건에서 2만9,500건으로 47.5% 증가했다. 창고·보관은 7만2,800건(-5.5%), 보건·사회복지는 53만5,500건(-3.3%)이었다(2025년 기준)."
+   "text": "유로스타트가 2025년 유럽연합(EU) 지역별 성별 고용격차를 공개했다. 남성과 여성의 20~64세 고용률 차이는 9.7%포인트로 전년(10.0%p)보다 조금 줄었지만, 2030년 목표에는 4%포인트 넘게 남아 있다.\n\n2025년 20~64세 고용률은 남성 80.9%, 여성 71.2%로 격차가 9.7%p였다(2024년 10.0%p). EU는 유럽사회권 기둥 행동계획으로 2030년까지 격차를 절반인 5.7%p로 줄이겠다고 잡았고, 이를 위해 2019년부터 연평균 0.5%p씩 줄여야 한다. 244개 NUTS2 지역 중 65곳이 이미 목표를 달성했고(프랑스 14·독일 12·스웨덴 8곳 중 7곳), 26개 지역은 격차가 18.0%p 이상이었다(그리스 13곳 중 10곳, 이탈리아 21곳 중 8곳, 루마니아 8곳 중 5곳)."
   },
   {
    "date": "2026-11-20",
    "card_id": "c07",
    "order": 7,
-   "title": "미국 신규 실업수당 20만건대 — 해고는 적고 재취업은 느리다",
-   "kicker": "신규 20만3천건 · 4주 평균 19만7,750건",
-   "category": "해외 노동시장",
-   "topic": "거시경제와 고용",
-   "theme_key": "th-macro-economy",
-   "theme_label": "거시경제와 고용",
+   "title": "미국 고용주 90%, AI 지원서에 진짜 지원자를 놓쳤다",
+   "kicker": "채용절차 바꿨다 86% · 사람 면접 추가 57%",
+   "category": "채용시장",
+   "topic": "고용서비스·채용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
    "region": "global",
-   "track": "A",
-   "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
-   "source_title": "Unemployment Insurance Weekly Claims Report (2026년 11월 19일)",
-   "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
+   "track": "B",
+   "source_name": "Greenhouse(채용 플랫폼) 뉴스룸",
+   "source_title": "Nine in Ten Employers Believe They've Turned Away Real Candidates as AI Floods Job Applications",
+   "source_url": "https://www.greenhouse.com/newsroom/nine-in-ten-employers-believe-theyve-turned-away-real-candidates-as-ai-floods-job-applications",
    "published_at": "2026-11-19",
-   "license_type": "PUBLIC-DOMAIN",
+   "license_type": "PRESS",
    "key_numbers": [
     {
-     "label": "신규 청구(계절조정)",
-     "value": "20만3천건",
-     "delta": "전주 +1천건",
-     "period": "2026.11.8~14"
+     "label": "AI 지원서로 지원자 놓침",
+     "value": "90%",
+     "delta": "",
+     "period": "2026년 설문"
     },
     {
-     "label": "4주 이동평균",
-     "value": "19만7,750건",
-     "delta": "+2,000건",
-     "period": "2026년 11월"
+     "label": "채용절차 변경",
+     "value": "86%",
+     "delta": "사람 면접 추가 57%",
+     "period": "2026년 설문"
     },
     {
-     "label": "계속 수급(피보험 실업)",
-     "value": "176만3천건",
-     "delta": "전주 +7만건",
-     "period": "2026.11.1~7"
+     "label": "미국 채용 평균 소요",
+     "value": "62일",
+     "delta": "서류 97%는 면접 미도달",
+     "period": "2026년 하반기 보고서"
     },
     {
-     "label": "피보험 실업률",
-     "value": "1.1%",
-     "delta": "1년 전 1.3%",
-     "period": "2026.11.1~7"
+     "label": "AI 면접 사용·도입 계획",
+     "value": "73%",
+     "delta": "이미 사용 52%",
+     "period": "1년 내"
     }
    ],
-   "text": "미국 노동부가 주간 실업보험 신규 청구를 발표했다. 신규 청구는 20만건대로 낮게 유지됐지만, 수급을 이어가는 사람은 늘어 재취업이 느린 흐름을 보였다.\n\n11월 8~14일 주 계절조정 신규 청구는 20만3,000건으로 전주(20만2,000건, 2,000건 상향 수정)보다 1,000건 늘었고 1년 전 같은 주(22만2,000건)보다는 낮다. 반면 계속 수급(피보험 실업)은 176만3,000건으로 전주보다 7만건 늘었고, 4주 이동평균은 19만7,750건이다(2026년 11월 19일 발표)."
+   "text": "채용 플랫폼 그린하우스가 2026년 11월 19일, 미국·영국·아일랜드·독일·호주 채용담당자 1,347명을 설문한 「2026 채용 담당자 보고서」를 발표했다. AI로 다듬은 지원서가 늘면서 지원자의 진위를 가리기 어려워졌다는 답이 나왔다.\n\n응답자 90%가 AI로 만들었거나 가짜로 보이는 지원서 때문에 실제 지원자를 놓친 적이 있다고 답했고, 86%는 채용절차를 바꿨다(가장 흔한 변경은 사람 면접 추가 57%). 미국 채용은 평균 62일 걸리고 서류의 97%는 면접 대화까지 가지 못하며, 단축 명단에 오른 지원자도 첫 면접까지 평균 19일을 기다린다. AI 면접은 52%가 이미 쓰고 73%가 1년 안에 쓰거나 도입할 계획이다(2026년 9~10월 설문)."
   },
   {
    "date": "2026-11-19",

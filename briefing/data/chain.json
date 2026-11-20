@@ -1,8 +1,9 @@
 {
- "generated_at": "2026-11-20T23:04:58+09:00",
+ "generated_at": "2026-11-21T07:06:42+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
+  "2026-11-21",
   "2026-11-20",
   "2026-11-19",
   "2026-11-18",
@@ -2044,6 +2045,17 @@
      "source_name": "Greenhouse(채용 플랫폼) 뉴스룸",
      "source_url": "https://www.greenhouse.com/newsroom/nine-in-ten-employers-believe-theyve-turned-away-real-candidates-as-ai-floods-job-applications",
      "published_at": "2026-11-19"
+    },
+    {
+     "date": "2026-11-21",
+     "card_id": "c02",
+     "title": "AI 직종 공고 1,804건 중 신입 지원은 17.1%",
+     "kicker": "클라우드 15.8% · QA 29.1% — 가장 넓은 문도 30% 아래",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "매경ECONOMY",
+     "source_url": "https://www.mk.co.kr/news/business/12214725",
+     "published_at": "2026-11-20"
     }
    ]
   },
@@ -3505,6 +3517,17 @@
      "source_name": "재정경제부",
      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789136",
      "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-21",
+     "card_id": "c01",
+     "title": "청년 첫 취업에 월 65만원 — 청년일자리 예산 3.3조",
+     "kicker": "2027 정부안 +7천억 · K-유스개런티 16만명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790054",
+     "published_at": "2026-11-20"
     }
    ]
   },
@@ -3708,6 +3731,17 @@
      "source_name": "중소벤처기업부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789845",
      "published_at": "2026-11-19"
+    },
+    {
+     "date": "2026-11-21",
+     "card_id": "c03",
+     "title": "AI 영향 인력계획 반영 11%뿐 — 감원보다 업무 재설계 70%",
+     "kicker": "국제 리더 775명 조사 · 정규직 감소 전망 47%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "지티티코리아",
+     "source_url": "https://www.gttkorea.com/news/articleView.html?idxno=27747",
+     "published_at": "2026-11-20"
     }
    ]
   },
