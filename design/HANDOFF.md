@@ -703,3 +703,25 @@
 - **실측**(로컬 Chromium · `downloads/sector-header-icons-2026-11-20/`): 27개 섹터 + 브리핑 원문, 390·430·1280 × 밝게·어둡게 — 홈 단추 중심과 제목 중심 오차 **0.2~0.9px**, 아이콘 중심 오차 0.0px, 아이콘 20×20, 가로 넘침 0, 콘솔 오류 0.
 - **폰(390)에서 자리를 지키려고**: 서재·이론은 이름 앞머리(`.ph-drop`)를 접고, 포트폴리오는 보기 방식 탭을 아래 한 줄로 내리고, 데칼코마니는 검색칸을 아래 한 줄로 내렸다(검색칸이 22px로 찌그러지던 것), 실무 가이드는 제목이 다음 줄로 내려가던 것을 한 줄로 되돌렸다.
 - **남은 것**(후속): ①360px에서 긴 제목 6곳이 2~27px 줄임표(hud·taxonomy·thermometer·parsons·univ·interview) ②서재 큰 화면은 제목+영어 부제 두 줄 묶음이라 제목 줄만 보면 중심에서 7px 위(묶음 중심은 0px) — 한 줄로 바꿀지 결정 필요 ③`flow/`는 다른 작업과 겹칠 수 있어 합칠 때 `flow/index.html` 머리말을 다시 확인.
+
+---
+
+## 2026-11-20 산업별 공정·밸류체인 지도 신설 (`/valuechain/`)
+
+브랜치 `feat/valuechain-map`. **완료된 단계 / 남은 작업 / 다음 시작 파일** 순으로 적는다.
+
+### 완료된 단계
+- [x] 데이터: `valuechain/data/build_industries.py` → `valuechain/data/industries.json` (산업 12 · 단계 66 · 명함첩 기업 208 · 직무 연결 174).
+      기업은 `company/data/companies.json`, 직무는 `taxonomy/data/taxonomy.json`(NCS 세분류), 연계 주소는 `thermometer`·`work-filter`·`translator` 자료와 **이름이 정확히 맞는 것만** 쓴다 — 하나라도 없으면 생성이 멈춘다.
+- [x] 화면: `valuechain/index.html` + `valuechain/app.js` — 산업 색인 | 가로 단계 눈금 | 한 장 상세(하는 일·상담 팁·직무 칩·기업 칩). 무대 높이 `clamp(430px, 100dvh-250px, 640px)`, 상세만 안쪽 스크롤. `?i=<산업>&s=<단계>` 딥링크.
+- [x] 장부·색: `assets/tools.js`에 매치 18(no 32), `assets/brand.css`에 `--tc-valuechain`(3테마) + `body[data-jc-tool="valuechain"]`.
+- [x] 통합: `flow/data/graph.json` 재생성(섹터 32), `assistant/build_index.py`에 `docs_valuechain`(산업 12 + 단계 66 문서), `assistant/data/*` 재생성.
+- [x] 게이트: `ops/scripts/smoke_test.py` PAGES에 `/valuechain/`·`/valuechain/?i=battery&s=3` + PROBES 2개.
+- [x] 규칙 기록: `design/patterns/process-map.md`(새 유형), `design/studies/2026-11-20-valuechain.md`(시안 A·B·C 비교), `DESIGN.md` §7·§11 한 줄.
+
+### 남은 작업
+- CI(`static-checks` + `smoke-tests`) 초록 확인 → squash 머지 → 라이브 `https://ccttsi.pages.dev/valuechain/` 확인 → 노션 개발일지·섹터 보드 기록.
+- **이 샌드박스에는 브라우저가 없다**(Playwright Chromium이 libatk 등 시스템 라이브러리 부재로 실행 불가, root 아님 → 설치 불가). 손맛·기하 실측은 CI(ubuntu)의 `smoke_test.py`와 라이브 확인으로 대신한다. 실기기 아이폰 사파리 확인은 태화님 몫.
+
+### 다음 시작 파일
+`valuechain/data/build_industries.py`(내용·매칭) → `valuechain/app.js`(화면) → 이 HANDOFF.

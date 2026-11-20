@@ -36,7 +36,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 # /mydeck/은 저장한 덱, /portals/?q=·#p=는 검색·딥링크 동선이라 섹터 밖에서 따로 잰다.
 PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
          "/portals/#p=work24", "/flow/", "/mydeck/",
-         "/work-filter/", "/kdt-calc/", "/triage/", "/fin-lab/"]
+         "/work-filter/", "/kdt-calc/", "/triage/", "/fin-lab/", "/valuechain/", "/valuechain/?i=battery&s=3"]
 
 # 화면이 아닌 폴더(섹터 목록 점검에서 뺀다) — 이유를 함께 적는다.
 NON_SCREEN = {
@@ -146,6 +146,24 @@ PROBES = {
         const trend = document.querySelectorAll('#stTrend .trdRow').length;
         return {ok: poly.length > 10 && bars === 3 && scales === 4 && stRows[0] === 24 && stRows[1] === 24 && stRows[2] === 18 && trend === 4,
                 detail: `오각형 ${poly ? '그림' : '없음'} · 막대 ${bars} · 규모 카드 ${scales} · 3표 ${stRows.join('/')} · 추이 ${trend}`};
+    }""",
+    "/valuechain/": """() => {
+        // 산업 색인·단계 레일·상세가 그려지고, 기업·직무 딥링크가 실제로 붙었는가.
+        const inds = document.querySelectorAll('#inds [data-ind]').length;
+        const steps = document.querySelectorAll('#rail [data-step]').length;
+        const cos = document.querySelectorAll('#det a[href*="../company/#"]').length;
+        const jobs = document.querySelectorAll('#det a[href*="../taxonomy/?q="]').length;
+        const broken = /불러오지 못했습니다/.test(document.body.innerText);
+        return {ok: inds >= 10 && steps >= 4 && cos >= 1 && jobs >= 1 && !broken,
+                detail: `산업 ${inds} · 단계 ${steps} · 기업링크 ${cos} · 직무링크 ${jobs}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/valuechain/?i=battery&s=3": """() => {
+        // ?i=&s= 로 들어온 딥링크가 그 산업·그 단계를 실제로 열었는가.
+        const name = (document.getElementById('iName') || {}).textContent || '';
+        const head = (document.querySelector('#det h3') || {}).textContent || '';
+        const pos = (document.querySelector('#det .pos') || {}).textContent || '';
+        return {ok: name.trim() === '이차전지' && head.trim() === '음극재·분리막·전해액' && /^3\s*\/\s*6$/.test(pos.trim()),
+                detail: `산업 ${name.trim()} · 단계 ${head.trim()} · ${pos.trim()}`};
     }""",
     "/emerging/": """() => {
         const art = (document.querySelector('#art') || {innerText: ''}).innerText.trim().length;

@@ -232,6 +232,7 @@
 | 지표 · 게이지 · 관측대 | `/thermometer/` | [`design/patterns/metric-gauge.md`](design/patterns/metric-gauge.md) |
 | 계산기 · 시뮬레이터 · 실무 HUD | `/hud/` `/vpi/` `/dacum/` `/talk/` | [`design/patterns/sim-hud.md`](design/patterns/sim-hud.md) |
 | 편집대 · 작업공간(소스·모니터·인스펙터·타임라인) | `/portfolio/` | [`design/patterns/nle-workspace.md`](design/patterns/nle-workspace.md) |
+| 공정·밸류체인 지도(산업 색인 + 가로 단계 눈금 + 한 장) | `/valuechain/` | [`design/patterns/process-map.md`](design/patterns/process-map.md) |
 | 모바일 · 태블릿 손맛 (공통) | 모든 섹터 | [`design/patterns/touch-physics.md`](design/patterns/touch-physics.md) |
 | 대문 · 허브 | `/` | [`design/patterns/hub-landing.md`](design/patterns/hub-landing.md) |
 
@@ -377,6 +378,8 @@ Playwright가 실제 사용자 동선을 재현한다: 한 손 터치(엄지 반
 - 2026-11-17 글 위에 겹치는 전후 커튼(clip-path로 절반 가리기) — 두 문장이 섞여 어느 쪽도 읽히지 않음 → `nle-workspace.md` §4 두 칸 경계 손잡이.
 
 ## 11. 패턴 기록 인덱스 (날짜 → 어디로 갔는지)
+
+- 2026-11-20 산업별 공정 지도(valuechain) 신설(매치 18): 산업 색인 + 가로 단계 눈금(선 위의 번호 원) + 한 장 상세(하는 일·상담 팁·NCS 직무·명함첩 기업) · 무대 높이 고정·상세만 안쪽 스크롤 · 검증된 연계 주소만 → `design/patterns/process-map.md`, `design/studies/2026-11-20-valuechain.md`.
 
 - 2026-11-20 재무제표 해석 시뮬레이터(fin-lab) 신설(매치 10): 규모별 기준선 전환·오각형↔슬라이더 역함수·8패턴 부호 막대 → `design/studies/2026-11-20-fin-lab.md`, 규칙은 `sim-hud.md`(2026-11-20). 같은 날 2차로 3표·3개년 탭(금액·되돌림 규칙·열 격자·좁은 화면 접기)을 더했다. 3차(같은 날): 부호 막대 기준선 방향 수정 · 워터폴 브로큰 스케일(이익 구간 14배) · 규모별 손익 구조 연동 · 「이지 ↔ 심화」 한 벌 DOM 전환(`data-view`/`.deepOnly`/`.numCard`/`.easyOnly`) · 4단계 튜토리얼 시트 · `?` 용어 주석(44px 상자) → `sim-hud.md` 2026-11-20(3차).
 - 2026-11-19 신산업 브리핑 신설(18번): 세리프 이탤릭 제호 + 3단 지면(색인·기사·지표) · 기사 옆 도표(막대 0 기준) · 기존/최근 직무 2단 칸 + 5칸 팝업 · 달력 월 자동 확장 → `design/studies/2026-11-19-emerging-industry.md`
