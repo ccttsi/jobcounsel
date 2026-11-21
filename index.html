@@ -489,7 +489,16 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
    2026-11-18 R4(태화님 지시): 쪽마다 설명 줄 수가 달라 목록 높이가 바뀌며 아래 쪽수·심전도가 들썩이던 것을 없앴다.
    모든 줄 높이를 가장 긴 카드(설명 3줄)에 맞춰 못 박고(--row-h, JS가 잰다), 목록 상자도 5줄 높이로 고정한다.
    1~5쪽 어느 쪽을 열어도 페이지네이션·심전도의 Y좌표 변동은 0.00px이다(마지막 쪽 3개도 5줄 자리를 지킨다). */
-.a-list{margin:clamp(12px,1.8vw,20px) auto 0;max-width:640px;text-align:left;animation:a-in .25s ease}
+/* 2026-11-21(태화님 지시 · IMG_7837) — 카드 좌우를 조금 좁히고 이웃 쪽과 띄운다.
+   목록 카드 그림자는 오른쪽·아래로 3px 단단하게 떨어지고(blur 없음), 카드 배경은 6% 반투명이다.
+   쪽과 쪽이 빈틈없이 맞닿아 있으면 **앞 쪽 카드의 3px 그림자가 지금 쪽 카드의 왼쪽 가장자리 위로** 그대로 비친다
+   (실측: 390px에서 이웃 쪽 카드의 그림자만 꺼 보고 비교하면 지금 쪽 카드에서 4,841px(최대 Δ30)가 달라졌고,
+   이 여백을 준 뒤에는 0px다 · 1280px도 0px)
+   그래서 쪽마다 좌우로 --list-gut만큼 안여백을 주어 카드 폭을 그 두 배만큼 좁히고,
+   이웃 쪽 카드는 화면 밖 --list-gut 지점에서 시작하게 한다(그림자 3px보다 넉넉하다).
+   · 쪽 폭(flex-basis 100%)과 트랙 스텝은 그대로라 원형 루프·필름릴 계산(pageW)은 한 줄도 바뀌지 않는다.
+   · 줄 높이(--row-h)도 그대로 — 390px에서 34개 설명이 모두 2줄 안에 끝나는 것을 전수 실측했다. */
+.a-list{--list-gut:clamp(10px,1.1vw,16px);margin:clamp(12px,1.8vw,20px) auto 0;max-width:640px;text-align:left;animation:a-in .25s ease}
 @keyframes a-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .a-list-h{font-size:clamp(22px,4.6vw,28px);font-weight:800;letter-spacing:-.03em;color:var(--ink);margin:0 0 10px;text-align:center}
 .a-list-h b{display:inline;color:var(--a1)}
@@ -499,7 +508,7 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
    · 칸 높이는 --row-h 하나로 못 박는다(제목 1줄 + 설명 2줄). 쪽마다 카드 높이·여백·줄맞춤이 0px 차이다. */
 .a-list-vp{position:relative;overflow:hidden;height:calc(5 * var(--row-h,94px));touch-action:pan-y}
 .a-list-track{display:flex;align-items:flex-start;height:100%;transform:translate3d(0,0,0)}
-.a-list-pg{flex:0 0 100%;width:100%;list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.a-list-pg{flex:0 0 100%;width:100%;list-style:none;margin:0;padding:0 var(--list-gut);display:flex;flex-direction:column}
 .a-list-pg li{flex:0 0 auto;height:var(--row-h,94px)}
 /* 잴 때만 칸 높이를 풀어 둔다 — 글자 크기를 키운 사람에게도 카드가 잘리지 않게, 실제 내용 높이로 --row-h를 잡는다. */
 .a-list.a-measure .a-list-pg li{height:auto}
@@ -1451,7 +1460,14 @@ function paintPager(n){
    한 벌(n쪽)을 건너뛰는 보정은 그림이 같아 화면에서 보이지 않는다 — 끝에 다다라도 넘김·끌기가 막히지 않는다. */
 var cvPos=0,cvGoal=0,cvRaf=0,cvFrom=0,cvT0=0,cvDur=300;
 function listTrack(){return $('allTrack');}
-function pageW(){var t=listTrack();return (t&&t.clientWidth)||1;}
+/* 쪽 폭(트랙 스텝) — 2026-11-21(태화님 지시 · IMG_7837): 전에는 track.clientWidth를 썼는데 그 값은
+   **정수로 반올림**된다. 목록 폭이 소수점을 가지면(예: 1280px 화면에서 617.75px → clientWidth 618)
+   7쪽을 곱할 때마다 1.75px씩 어긋나, 지금 쪽이 화면 안에서 옆으로 밀리고 이웃 쪽 카드가
+   화면 가장자리 **안으로** 1.75px 들어와 그 그림자가 비쳤다(768·1024·1280에서 실측).
+   이제 쪽 하나의 실제 폭을 소수 그대로 재어 캐시한다 — 프레임마다 레이아웃을 읽지 않는다. */
+var listPW=0;
+function measurePageW(){var t=listTrack(),p=t&&t.children[0];listPW=(p?p.getBoundingClientRect().width:0)||(t?t.clientWidth:0)||0;}
+function pageW(){if(!listPW)measurePageW();return listPW||1;}
 /* 원판(릴)의 기울기 — 중앙 칸은 제자리·선연하고, 멀어질수록 조금 작아지고 아래로 늘어진다(원판 곡률).
    위치만 매 프레임 잡고, 값이 눈에 보이게 달라질 때만 쓴다. */
 function pagerFollow(p){
@@ -1593,6 +1609,7 @@ function listTurn(d){cvGoal=Math.round(cvPos)+d;cvRun();return true;}
    쪽이 어디에 서든 카드 높이·여백·줄맞춤이 같고, 마지막 쪽(1장)에서도 쪽수·심전도가 움직이지 않는다. */
 function measureListRows(){
   var track=listTrack(),host=$('listView');
+  measurePageW();   /* 쪽 폭이 바뀔 수 있는 자리(처음 열기·화면 회전·글꼴 준비)마다 다시 잰다 */
   if(!track||!host||host.hidden)return;
   var rows=track.querySelectorAll('a');if(!rows.length)return;
   /* 높이를 풀어(a-measure) 내용이 실제로 필요로 하는 키를 재고, 그 값으로 모든 칸을 못 박는다.
