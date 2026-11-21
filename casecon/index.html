@@ -328,8 +328,15 @@ html[data-jc-imm] .crail,html[data-jc-imm] .frail{display:none}
     var q=el('button','fb quiz');q.type='button';q.setAttribute('role','tab');q.id='fr-q';
     q.setAttribute('aria-controls','panel');q.setAttribute('aria-selected',String(QUIZ==='q'));
     q.appendChild(el('span',null,'확인 문제'));
-    q.addEventListener('click',function(){QUIZ='q';paintFw();render()});
+    q.addEventListener('click',function(){QUIZ='q';paintFw();render();reveal('fr-q','.frail')});
     r.appendChild(q);
+  }
+  function reveal(elId,railSel){
+    var el=document.getElementById(elId), rail=document.querySelector(railSel);
+    if(!el||!rail)return;
+    var r=el.getBoundingClientRect(), rr=rail.getBoundingClientRect();
+    if(r.left<rr.left) rail.scrollLeft-=(rr.left-r.left)+10;
+    else if(r.right>rr.right) rail.scrollLeft+=(r.right-rr.right)+10;
   }
   function arrow(e,i,n,go){
     var k=e.key;
@@ -342,10 +349,12 @@ html[data-jc-imm] .crail,html[data-jc-imm] .frail{display:none}
     if(i===curC){return;}
     curC=i;QUIZ=curF;cmpOn=false;paintCase();paintFw();render();
     $('#casebar').setAttribute('aria-labelledby','cs-'+i);
+    reveal('cs-'+i,'.crail');
     try{history.replaceState(null,'','?case='+D.cases[i].id+'&fw='+D.frameworks[curF].id)}catch(e){}
   }
   function selectFw(i){
     curF=i;QUIZ=i;cmpOn=false;paintFw();render();
+    reveal('fr-'+i,'.frail');
     var k=D.cases[curC].id+'|'+D.frameworks[i].id;seen[k]=1;paintSeen();
     try{history.replaceState(null,'','?case='+D.cases[curC].id+'&fw='+D.frameworks[i].id)}catch(e){}
   }
