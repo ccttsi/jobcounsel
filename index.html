@@ -480,10 +480,21 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 @media (max-width:599px){.a-pv-kw span:nth-child(n+3){display:none}.a-pv-kw span{font-size:12.5px;padding:5px 8px}}
 .a-for-mouse{display:none}
 @media (hover:hover) and (pointer:fine){.a-for-touch{display:none}.a-for-mouse{display:inline}}
-.a-all-btn{display:flex;margin:14px auto 0;min-height:44px;justify-content:center;align-items:center;gap:6px;font-size:14.5px;font-weight:650;color:var(--muted);padding:0 10px;border-radius:12px}
-.a-all-btn:hover{color:var(--ink)}
-.a-all-btn svg{width:16px;height:16px;transition:transform .25s}
-.a-all-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+/* 2026-11-21(태화님 지시 · IMG_7843) — 「자료 전체 목록 35개」와 「롤링으로 돌아가기」는 같은 단추의 두 얼굴인데
+   위아래 화살표(∨/∧)가 붙어 «서로 다른 두 단추»처럼 보였다. 화살표를 걷어 내고, 카드·번호판과 같은 12px 반경의
+   **옅은 테두리 단추**로 정중앙에 앉힌다(틀·바탕을 은은하게만 주어 배경에 어우러지게).
+   · 좌우 안여백 12px 이상(§1-5), 높이 44px(터치). 바탕은 panel을 52%만 섞어 종이 결이 비치게 한다.
+   · min-width 12em — 두 이름표의 폭이 4~5px 달라 이름이 바뀔 때 단추가 들썩이지 않게 같은 폭으로 둔다.
+   · 글자 잉크의 세로 중심은 줄 상자 중심보다 1.4px 위에 앉는다(한글 활자 실측 390·1280 × 3테마: 20.62px 대 22px)
+     — 위 안여백 2.5px로 그만큼 내린다(0.117em 로고와 같은 잉크 맞춤, 내용 상자는 44px 그대로).
+   · 움직이는 값은 색뿐 — 크기·그림자를 애니메이션하지 않는다(모션 가드레일 §2). */
+.a-all-btn{display:flex;margin:14px auto 0;min-height:44px;min-width:12em;justify-content:center;align-items:center;
+  font-size:14px;font-weight:650;letter-spacing:0;color:var(--muted);padding:2.5px 20px 0;border:1px solid var(--line-2);border-radius:12px;
+  background:color-mix(in srgb,var(--panel) 52%,transparent);
+  transition:color .16s ease,border-color .16s ease,background-color .16s ease}
+@media (hover:hover){.a-all-btn:hover{color:var(--ink);border-color:color-mix(in srgb,var(--a1) 30%,var(--line-2));background:color-mix(in srgb,var(--panel) 78%,transparent)}}
+.a-all-btn:active{color:var(--a1);border-color:color-mix(in srgb,var(--a1) 42%,var(--line-2));background:color-mix(in srgb,var(--panel) 86%,transparent)}
+.a-all-btn[aria-expanded="true"]{color:color-mix(in srgb,var(--ink) 86%,var(--muted))}
 .a-all-btn b{color:var(--a1)}
 /* 전체 목록: 롤링 자리를 대신한다.
    2026-11-18 R4(태화님 지시): 쪽마다 설명 줄 수가 달라 목록 높이가 바뀌며 아래 쪽수·심전도가 들썩이던 것을 없앴다.
@@ -563,9 +574,16 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 /* 창 한 칸이 곧 한 쪽이다 — 칸 폭을 창 폭과 같게 두어, 넘어갈 때 두 숫자가 정확히 반씩 걸친다. */
 .a-root .a-pg-track button{width:var(--cell);min-width:var(--cell);height:48px;border-radius:10px}
 /* 숫자는 «알맹이»에만 건다 — 단추 자체를 키우거나 줄이면 누를 수 있는 넓이가 달라진다.
-   will-change는 창이 움직이는 동안에만(움직임이 끝나면 뗀다 — 모션 가드레일 §2-2). */
-.a-pg-n{display:block;font-style:normal;line-height:1;font-size:23px;font-weight:800;letter-spacing:-.02em;
-  font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ink) 78%,var(--muted))}
+   will-change는 창이 움직이는 동안에만(움직임이 끝나면 뗀다 — 모션 가드레일 §2-2).
+   2026-11-21(태화님 지시 · IMG_7844) — 「창 안 숫자가 가운데가 아닌 것 같다」의 실측 원인 둘:
+   · 가로: 글자 하나에 letter-spacing −.02em을 주면 글자 상자만 오른쪽에서 0.46px 줄어, 가운데에 앉힌 글자가
+     실제로는 +0.23px 오른쪽으로 밀렸다(색 마스크 실측: 1~7 모두 +0.17~+0.35px). 한 글자짜리라 자간은
+     의미가 없다 — 0으로 두어 상자와 글자를 같은 자리에 둔다.
+   · 세로: 줄 상자를 가운데에 두면 글자 잉크는 «상승(ascent) − 대문 높이»의 반만큼 위에 앉는다
+     (Pretendard 800·23px: 잉크 15.0~30.7px, 창 0~48px → 중심이 1.15px 위). 0.05em(=1.15px)만큼 내려 앉힌다.
+     옮기는 값은 transform 하나뿐이고 누를 수 있는 넓이는 그대로다. */
+.a-pg-n{display:block;font-style:normal;line-height:1;font-size:23px;font-weight:800;letter-spacing:0;
+  font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ink) 78%,var(--muted));transform:translateY(.05em)}
 .a-pg-reel.a-move .a-pg-n{will-change:transform}
 /* 지금 쪽 숫자만 강조색 — 창 전체를 칠하지 않는다(층수 표시창은 늘 같은 바탕이다). */
 .a-root .a-pg button[aria-current="true"]{color:var(--a1)}
@@ -607,7 +625,6 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
   .a-nav-go,.a-ctrl{justify-content:flex-start}
   .a-ctrl{margin-left:-10px}
   .a-all{margin-left:0}
-  .a-all-btn{margin-left:-10px}
   .a-list{margin-left:0}
   .a-list-h{text-align:left}
   .a-all summary{justify-content:flex-start}
@@ -1010,7 +1027,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
         </button>
       </div>
     </div>
-    <button type="button" class="a-all-btn" id="allBtn" aria-expanded="false" aria-controls="listView"><span id="allBtnT">자료 전체 목록 <b class="a-num" data-count></b>개</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button type="button" class="a-all-btn" id="allBtn" aria-expanded="false" aria-controls="listView"><span id="allBtnT">자료 전체 목록 <b class="a-num" data-count></b>개</span></button>
   </section>
       <section class="a-card a-insight a-c1 a-live" id="insight" aria-labelledby="insightLabel">
         <div class="a-sec"><b id="insightLabel">오늘의 직업상담 통찰</b><span id="insightTag"></span></div>
@@ -1568,18 +1585,10 @@ function renderList(){
 }
 /* ---------- 쪽 넘김 (2026-11-20 · 2026-11-21 수정) ----------
    2026-11-21(태화님 지시) — 쪽을 넘길 때 화면 스크롤을 **건드리지 않는다**. 전에는 넘길 때마다
-   alignList()가 목록 첫머리를 머리말 아래로 맞추느라 scrollTo를 걸었고, 그것이 «넘길 때마다
-   페이지 위로 올라감»의 원인이었다. 목록 상자는 줄 높이가 고정(--row-h)이고 5줄 높이를 늘 지키므로
-   쪽이 바뀌어도 문서 높이는 그대로다 — 스크롤을 맞추지 않아도 «빈 쪽»이 생기지 않는다.
-   alignList()는 목록을 처음 열 때(setList)만 쓴다. */
-function alignList(){
-  var lv=$('listView');if(!lv||lv.hidden)return;
-  var head=document.querySelector('.a-top'),hb=head?head.getBoundingClientRect().bottom:0;
-  var top=lv.getBoundingClientRect().top;
-  if(top>=hb+2)return;
-  var y=(window.pageYOffset||0)+top-hb-12;
-  window.scrollTo(0,Math.max(0,Math.round(y)));
-}
+   목록 첫머리를 머리말 아래로 맞추느라 scrollTo를 걸었고, 그것이 «넘길 때마다 페이지 위로 올라감»의
+   원인이었다. 목록 상자는 줄 높이가 고정(--row-h)이고 5줄 높이를 늘 지키므로 쪽이 바뀌어도 문서 높이는
+   그대로다 — 스크롤을 맞추지 않아도 «빈 쪽»이 생기지 않는다. 보기를 바꾸는 손짓(아래 setList)만
+   페이지를 맨 위로 올린다. */
 /* 쪽을 어디서 넘기든(손짓·화살표·번호) 같은 길을 지난다 — 트랙이 그 쪽으로 흐르고 번호판이 따라 민다.
    어느 쪽도 scrollTo를 부르지 않는다(스크롤 고정). */
 /* 번호를 눌렀을 때는 원판에서 **가장 가까운 쪽으로** 돌린다 — 1쪽에서 7쪽을 누르면 한 칸 뒤로 도는 것이
@@ -1621,8 +1630,15 @@ function setList(on){
   $('allBtnT').innerHTML=on?'롤링으로 돌아가기':'자료 전체 목록 <b class="a-num">'+TOOLS.length+'</b>개';
   /* 2026-11-19: 목록을 열 때 첫 줄에 자동 초점을 잡아 초록 테두리(블락)가 보이던 것을 없앤다.
      초점은 여는 단추에 그대로 두고, 키보드로 쪽을 넘길 때만 그 단추로 옮긴다(:focus-visible만 그린다). */
-  if(on){measureListRows();renderList();alignList();listApply(cvPos);}
+  if(on){measureListRows();renderList();listApply(cvPos);}
   else{measureOrbit();layout();}
+  /* 2026-11-21(태화님 지시 · IMG_7843) — 두 이름표는 **같은 손짓**이어야 한다: 어느 쪽을 눌러도 보기가 바뀌고
+     페이지는 맨 위에서 다시 시작한다. 전에는 목록을 열 때만 목록 첫머리를 머리말 아래로 당겨 올리고
+     (alignList), 롤링으로 돌아올 때는 보던 자리에 그대로 두어 — 같은 단추인데 두 번의 상호작용이
+     달라 보였다(390px 실측: 열기 782 → 247px, 닫기 782 → 782px). 이제 둘 다 0px로 같은 자리에 선다.
+     · 보기 전환은 «제자리에서 갈아 끼우는» 일이라 부드러운 스크롤 없이 곧바로 올린다(왕복 시 두 번 흐르지 않게).
+     · 목록 안에서 쪽을 넘길 때는 여전히 스크롤을 건드리지 않는다(위 gotoListPage 주석). */
+  window.scrollTo(0,0);
   /* 심전도(assets/modes.js)가 목록이 열린 동안만 흐르도록 알린다 */
   try{document.dispatchEvent(new CustomEvent('jc-list',{detail:{open:on}}));}catch(e){}
 }
