@@ -1,5 +1,7 @@
 # 자동 검사 (CI 게이트 · 라이브 헬스체크)
 
+> **최상위 규범: [`CONSTITUTION.md`](../CONSTITUTION.md)** — 아래 검사는 헌법 §7 자가검증 체크리스트를 **자동으로 재는 부분**이다(저작권·시행일·문구·개수·프리셋·역할). 미적 판정·6대 과제·한 톤 같은 항목은 CI가 재지 않는다 — 헌법 제5조·제6조 6-4에 따라 **사람(클로드·태화님)이 직접 판정**하고 §7에 적는다. CI 초록불은 머지 조건의 한 칸일 뿐, 헌법 전체를 통과했다는 뜻이 아니다.
+>
 > PR을 올리면 GitHub Actions가 저장소를 검사한다. 초록이 아니면 머지하지 않는다.
 > 워크플로: `.github/workflows/ci-gate.yml`(PR·main push) · `.github/workflows/health-check.yml`(매일 06:30 KST·수동)
 > 브랜치 보호에서 켤 검사 이름: **`static-checks`**, **`smoke-tests`** (워크플로 이름 `ci-gate`)

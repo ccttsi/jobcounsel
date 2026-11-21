@@ -1,6 +1,8 @@
 # CLAUDE.md — 이 저장소에서 일하는 Claude를 위한 지침
 
-> **먼저: 역할 분리 헌장 [`ops/ROLES.md`](ops/ROLES.md)** — 누가(태화님·클로드·피클·Make·예약 작업) 무엇을 하고, 연결 툴(Notion·Make·Drive/Sheets·Supabase·Playwright·GitHub)을 어떻게 쓰는지의 원본이다. ID·링크는 [`ops/CONNECTORS.md`](ops/CONNECTORS.md). 세션 시작 훅(`.claude/hooks/session-start.sh`)이 요약을 자동으로 보여 준다.
+> **최상위 규범: [`CONSTITUTION.md`](CONSTITUTION.md)** — 여섯 조항(저작권·지재권 / 사실·시행일 / 유출·개인정보 / 유기적 연결 / 심미성·성능 / 기록·자기검증)과 §7 자가검증 체크리스트. **이 문서와 어긋나면 헌법이 이긴다.** 착수 전에 헌법을 먼저 읽고, PR 전에 §7을 O/X로 채운다(X가 하나라도 있으면 머지 금지).
+>
+> **다음: 역할 분리 헌장 [`ops/ROLES.md`](ops/ROLES.md)** — 누가(태화님·클로드·피클·Make·예약 작업) 무엇을 하고, 연결 툴(Notion·Make·Drive/Sheets·Supabase·Playwright·GitHub)을 어떻게 쓰는지의 원본이다. ID·링크는 [`ops/CONNECTORS.md`](ops/CONNECTORS.md). 세션 시작 훅(`.claude/hooks/session-start.sh`)이 요약을 자동으로 보여 준다.
 
 직업상담 통합 자료실(정적 사이트, 빌드 없음, GitHub Pages). 각 섹터는 `폴더/index.html` 한 파일(일부는 `app.js`·`data/` 분리)이고, 공용 층은 `assets/prefs.js`(테마·글자 크기·집중 보기·디자인 층·접기), `assets/marker.js`(형광펜·포스트잇), `assets/sync.js`(선택 로그인·연동), `assets/assistant.js`(자료실 비서 — 모든 지면 공통. marker.js가 자동으로 넣는다)다.
 
