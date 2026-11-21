@@ -1,18 +1,24 @@
-/* assemble.js — 문장·키워드 하나로 완성덱 세 개를 짜는 엔진 (2026-11-20)
+/* assemble.js — 질문 하나로 「필요한 만큼만」 상담 덱을 짜는 엔진 (2026-11-21)
  *
  * 쓰는 곳
- *   mydeck/  — 「마이덱 라이브」(목적 문장) · 「마이덱 알고리즘」(개념 하나 딸깍)
- *   flow/    — ① 어디서 시작할까요 카드의 뒷면(마이덱 · 알고리즘 / 라이브)
+ *   mydeck/ — 마이덱: 질문 한 칸 + 추천어 → 추천 덱 → 편집(순서·삽입·교체·삭제)
+ *   flow/   — ① 어디서 시작할까요 카드의 뒷면(마이덱)
  *
  * 무엇을 하나
- *   자료실 색인과 시너지 지도에서 걸리는 섹터를 모아(pool) → 상담의 자리(갈래)별로 하나씩 골라
- *   서로 다른 세 가지 완성덱을 짠다(courses). 덱의 중간 노드에서 갈라지는 다음 자료를 만들고(branches),
- *   아래를 새로 이어 붙인다(extend).
+ *   ① 질문을 읽는다 — 낱말·약어 사전·시작 키워드·시너지 지도(flow/data/graph.json).
+ *   ② 실용성 티어로 거른다 — 현장 1티어(계산·진단·법령·서류·면접 …)가 늘 앞선다.
+ *      데이컴·파슨스·이론 위키·보고서 서재·대학원 같은 학습·연구용(3티어)은
+ *      사용자가 그 말을 직접 꺼냈을 때만 후보에 넣는다.
+ *   ③ 필요한 만큼만 짠다 — 한 자료로 끝나는 질문이면 **1칸 덱**, 여러 단계가 필요하면
+ *      실제로 이어지는 2~5칸만. 여섯 갈래를 억지로 채우던 옛 방식(CATS[cat][0] 강제 삽입)은 버렸다.
+ *   ④ 의미 있는 차이가 있을 때만 두 번째 덱(상황 보강형)을 낸다 — 같은 덱을 세 벌 복제하지 않는다.
  *
  * 지키는 선
- *   · 색인에 없는 섹터·수치·조문은 세우지 않는다.
- *   · 저장은 JCDeck이 맡는다 — 이 파일은 짜기만 한다.
+ *   · 색인에 없는 섹터·수치·조문은 세우지 않는다. 없는 자료는 후보에 올리지 않는다.
+ *   · 저장은 JCDeck이 맡는다 — 이 파일은 짜기·편집 화면만 맡는다.
  *   · 움직이는 값은 transform·opacity 뿐. 글자 타자는 한 글자마다 textContent만 바꾼다.
+ *   · ./data/mydeck-weights.json(가중치)은 있으면 반영하고, 없거나 비어 있으면 내장 기본값으로 돈다.
+ *     fetch 실패는 조용히 삼킨다(콘솔 오류·404를 만들지 않는다).
  */
 (function () {
   'use strict';
@@ -29,18 +35,112 @@
   }
   function sector(id) {
     var t = toolOf(id);
-    if (t) return { id: id, no: t.no || '', title: t.title || id, badge: t.badge || '', desc: t.desc || '', meta: t.meta || [], path: t.path || './' + id + '/', gi: t.gi || '' };
+    if (t) return { id: id, no: t.no || '', title: t.title || id, badge: t.badge || '', desc: t.desc || '', meta: t.meta || [], path: t.path || './' + id + '/', gi: t.gi || '', tags: t.tags || [] };
     var gs = ((st.graph && st.graph.sectors) || []);
     for (var i = 0; i < gs.length; i++) {
-      if (gs[i].id === id) return { id: id, no: gs[i].no || '', title: gs[i].title || id, badge: gs[i].badge || '', desc: gs[i].desc || '', meta: gs[i].meta || [], path: gs[i].path || './' + id + '/', gi: gs[i].gi || '' };
+      if (gs[i].id === id) return { id: id, no: gs[i].no || '', title: gs[i].title || id, badge: gs[i].badge || '', desc: gs[i].desc || '', meta: gs[i].meta || [], path: gs[i].path || './' + id + '/', gi: gs[i].gi || '', tags: gs[i].tags || [] };
     }
-    return { id: id, no: '', title: id, badge: '', desc: '', meta: [], path: './' + id + '/', gi: '' };
+    return { id: id, no: '', title: id, badge: '', desc: '', meta: [], path: './' + id + '/', gi: '', tags: [] };
+  }
+
+  /* ================================================================ 실용성 티어
+     1티어 — 상담 현장에서 바로 쓰는 자료. 추천 덱의 뼈대는 언제나 여기서 나온다.
+     3티어 — 학습·연구용(데이컴·파슨스·이론·보고서·대학원). 질문이 그 말을 직접 꺼낼 때만.
+     나머지 — 보조(분류·산업·동향). 질문에 걸릴 때만 한 칸 들어간다. */
+  var TIER1 = ['triage', 'intake', 'policy-match', 'pay-calc', 'hud', 'kdt-calc', 'talk', 'translator',
+    'work-filter', 'manual', 'law', 'company', 'portals', 'surgery', 'interview', 'portfolio', 'transit',
+    'reality', 'vpi', 'cert'];
+  var STUDY = ['dacum', 'parsons', 'theory', 'library', 'grad'];
+  function tierOf(id) {
+    if (TIER1.indexOf(id) >= 0) return 1;
+    if (STUDY.indexOf(id) >= 0) return 3;
+    return 2;
+  }
+  function tierName(id) {
+    var t = tierOf(id);
+    return t === 1 ? '현장' : (t === 3 ? '학습·연구' : '보조');
+  }
+
+  /* 학습·연구용 자료를 부르는 말 — 사용자가 직접 꺼냈을 때만 허용한다 */
+  var STUDY_SAY = {
+    dacum: /(데이컴|데컴|dacum|직무\s*분석|과업\s*분석)/i,
+    parsons: /(파슨스|parsons|원전|직업의\s*선택)/i,
+    theory: /(이론|위키|상담\s*이론|직업상담\s*이론)/,
+    library: /(보고서|서재|연구\s*보고|정책\s*연구)/,
+    grad: /(대학원|석사|박사|진학)/
+  };
+  function studyAsked(q) {
+    var s = String(q || ''), out = {};
+    Object.keys(STUDY_SAY).forEach(function (id) { if (STUDY_SAY[id].test(s)) out[id] = 1; });
+    return out;
+  }
+
+  /* ================================================================ 갈래·차례
+     GROUPS — 편집 화면의 「자료 고르기」 분류. 없는 섹터는 그냥 빠진다.
+     STAGE  — 상담이 실제로 흐르는 차례. 유동 덱은 이 차례로 줄을 세운다(억지로 채우지 않는다). */
+  var GROUPS = [
+    { id: 'intake', name: '접수·진단', ids: ['triage', 'intake', 'talk', 'translator', 'vpi', 'reality', 'hud', 'policy-match', 'pay-calc', 'work-filter'] },
+    { id: 'policy', name: '제도·훈련', ids: ['manual', 'law', 'kdt-calc', 'cert'] },
+    { id: 'corp', name: '기업·직무', ids: ['company', 'fin-lab', 'taxonomy', 'valuechain', 'univ'] },
+    { id: 'trend', name: '산업·동향', ids: ['thermometer', 'labor', 'briefing', 'emerging'] },
+    { id: 'field', name: '실전', ids: ['portals', 'surgery', 'interview', 'portfolio', 'transit'] },
+    { id: 'study', name: '학습·연구', ids: ['theory', 'parsons', 'dacum', 'library', 'grad', 'decalcomania'] }
+  ];
+  var CAT_OF = {}, CATS = {}, GROUP_NAME = { all: '전체' };
+  GROUPS.forEach(function (g) {
+    GROUP_NAME[g.id] = g.name;
+    CATS[g.name] = g.ids.slice();
+    g.ids.forEach(function (id) { if (!CAT_OF[id]) CAT_OF[id] = g.name; });
+  });
+  function groupOf(id) {
+    var out = '';
+    GROUPS.forEach(function (g) { if (g.ids.indexOf(id) >= 0) out = g.id; });
+    return out || 'etc';
+  }
+
+  var STAGE = {
+    triage: 10, intake: 11, talk: 12, translator: 13,
+    vpi: 20, reality: 21, theory: 22, parsons: 23,
+    'work-filter': 30, 'pay-calc': 31, 'policy-match': 32,
+    manual: 40, law: 41, hud: 44, 'kdt-calc': 45, cert: 46,
+    company: 50, labor: 51, taxonomy: 52, valuechain: 53, 'fin-lab': 54,
+    thermometer: 55, briefing: 56, emerging: 57, univ: 58,
+    portals: 60, surgery: 61, interview: 62, portfolio: 63, transit: 64,
+    dacum: 65, library: 66, grad: 67, decalcomania: 68
+  };
+  function stageOf(id) { return STAGE[id] || 99; }
+  var ORDER = Object.keys(STAGE).sort(function (a, b) { return STAGE[a] - STAGE[b]; });
+
+  /* 아직 자료실에 없는 섹터를 부르는 질문 — 합쳐지는 순간 그대로 그 자료가 쓰인다.
+     지금은 아래 대체 자료로 안내하고, 대체가 없으면 유동 덱(검색 결과)으로 넘긴다. */
+  var FALLBACK = { intake: 'triage', 'policy-match': 'manual' };
+  function resolveId(id) {
+    if (toolOf(id)) return id;
+    var f = FALLBACK[id];
+    return (f && toolOf(f)) ? f : '';
   }
 
   /* ================================================================ 읽기 */
-  var st = { engine: 'idle', engP: null, graph: null, wait: null };
+  var st = { engine: 'idle', engP: null, graph: null, wait: null, weights: null };
   function norm(s) { return String(s == null ? '' : s).toLowerCase().replace(/[^0-9a-z가-힣ㄱ-ㅎ]+/g, ' ').replace(/\s+/g, ' ').trim(); }
-
+  function weights() { return st.weights || {}; }
+  function sectorW(id) {
+    var w = weights().sectors || {};
+    var v = Number(w[id]);
+    return (isFinite(v) && v > 0) ? Math.max(0.4, Math.min(2.2, v)) : 1;
+  }
+  function pairW(a, b) {
+    var p = weights().pairs || {};
+    var v = Number(p[a + '|' + b] || p[b + '|' + a]);
+    return (isFinite(v) && v > 0) ? Math.max(0.4, Math.min(2.2, v)) : 1;
+  }
+  function loadWeights() {
+    if (st.weights) return Promise.resolve(st.weights);
+    return fetch(BASE + 'mydeck/data/mydeck-weights.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { st.weights = (j && typeof j === 'object') ? j : {}; return st.weights; })
+      .catch(function () { st.weights = {}; return st.weights; });
+  }
   function loadGraph() {
     if (st.graph) return Promise.resolve(st.graph);
     return fetch(BASE + 'flow/data/graph.json', { cache: 'no-cache' })
@@ -73,41 +173,172 @@
   }
   function load() {
     if (st.wait) return st.wait;
-    st.wait = Promise.all([loadEngine(), loadGraph()]).then(function () { return true; }, function (e) {
+    st.wait = Promise.all([loadEngine(), loadGraph(), loadWeights()]).then(function () { return true; }, function (e) {
       st.wait = null;
       throw e;
     });
     return st.wait;
   }
 
-  /* ================================================================ 갈래·코스 */
-  /* 배열 차례가 곧 그 갈래에서 먼저 꺼내는 기본 차례다. */
-  var CATS = {
-    '진단': ['triage', 'hud', 'reality', 'work-filter', 'vpi'],
-    '이론': ['theory', 'talk', 'parsons', 'translator'],
-    '직무': ['dacum', 'taxonomy', 'valuechain', 'decalcomania'],
-    '기업': ['company', 'fin-lab', 'thermometer', 'labor', 'briefing', 'library', 'emerging'],
-    '훈련': ['kdt-calc', 'cert', 'univ', 'grad'],
-    '제도': ['manual', 'law'],
-    '실전': ['interview', 'surgery', 'portfolio', 'portals', 'transit']
-  };
-  var CAT_OF = {};
-  Object.keys(CATS).forEach(function (c) { CATS[c].forEach(function (id) { if (!CAT_OF[id]) CAT_OF[id] = c; }); });
-  var HIT = 2.6;   /* 갈래의 기본 단계를 밀어내려면 그만큼 뚜렷이 걸려야 한다 */
+  /* ================================================================ 질문 읽기 — 현장 의도
+     「국비훈련 자부담 계산」처럼 한 자료로 끝나는 질문을 잡는다. 두 조건(무엇 + 무엇을 하려는지)이
+     함께 있어야만 1칸으로 판정한다 — 낱말 하나만 걸려서 억지로 1칸이 되지 않게. */
+  var RULES = [
+    { id: 'pay-calc', dom: /(퇴직금|연봉|실수령|주휴수당|최저임금|월급|급여|수당)/, act: /(계산|얼마|실수령|알려|조회|공제|떼)/, not: /(실업급여|구직급여|국취|취업성공수당|수급|훈련|내일배움)/, why: '급여·퇴직금 숫자를 바로 계산하는 도구' },
+    { id: 'hud', dom: /(실업급여|구직급여|국취\s*수당|취업성공수당|수급)/, act: /(얼마|계산|금액|지급|받|기간|언제|모의)/, why: '지급액·기간을 숫자로 계산하는 도구' },
+    { id: 'kdt-calc', dom: /(국비|내일배움카드|국민내일배움|kdt|훈련비|자부담|훈련장려금)/, act: /(계산|얼마|자부담|비용|지원|한도|부담)/, why: '훈련비 자부담과 지원액을 계산하는 도구' },
+    { id: 'interview', dom: /면접/, act: /(압박|질문|답변|대비|전술|꼬리|돌발|준비)/, why: '면접 질문의 의도와 답변을 준비하는 덱' },
+    { id: 'company', dom: /(회사|기업|업체|공기업|중견기업|대기업)/, act: /(매출|직원\s*수|규모|정보|재무|소재|확인|어떤|괜찮)/, why: '기업의 규모·매출·최근 소식을 확인하는 명함첩' },
+    { id: 'intake', dom: /(초기\s*상담|첫\s*상담|접수\s*상담|인테이크)/, act: /(질문지|질문|체크|양식|무엇을\s*물|어떤\s*것)/, why: '접수에서 무엇을 물을지 정하는 질문지' },
+    { id: 'surgery', dom: /(자기소개서|이력서|지원서|서류|입사지원)/, act: /(탈락|이유|첨삭|고치|해부|문장|문제|안\s*쓰|왜)/, why: '서류 문장을 뜯어 보고 고치는 해부실' },
+    { id: 'portfolio', dom: /포트폴리오/, act: /(구조|정리|만들|편집|채용|어떻게)/, why: '채용 담당자가 보는 순서로 정리하는 편집실' },
+    { id: 'vpi', dom: /(심리검사|직업선호도|흥미검사|적성검사|vpi|l형|검사)/, act: /(해석|결과|읽|보고|진로|어떻게|풀)/, why: '검사 결과를 내담자와 함께 읽는 해석 도구' },
+    { id: 'work-filter', dom: /(근무\s*환경|교대|야간|출장|근무\s*조건)/, act: /(견딜|버틸|힘들|확인|걸러|맞)/, why: '견딜 수 있는 근무 조건을 걸러 보는 필터' },
+    { id: 'talk', dom: /(대화|발문|경청|공감)/, act: /(연습|피드백|어떻게|훈련|배우)/, why: '발문·경청을 직접 연습하는 대화 도구' },
+    { id: 'translator', dom: /(용어|은어|줄임말|무슨\s*말|쉬운\s*말|번역)/, act: /(알아|풀|바꿔|뜻|모르)/, why: '내담자 말을 정식 용어로 풀어 주는 번역기' },
+    { id: 'cert', dom: /(자격증|자격)/, act: /(뭐|무엇|따면|종류|필요|찾|취업)/, why: '목표 직무에 필요한 자격을 찾는 도구' },
+    { id: 'portals', dom: /(채용\s*사이트|구인\s*사이트|어디서\s*지원|채용\s*공고|공채)/, act: /(어디|골라|찾|지원|좋)/, why: '어느 채용 경로로 지원할지 고르는 안내판' },
+    { id: 'law', dom: /(임금체불|해고|근로계약|근로시간|산재|부당|최저임금)/, act: /(법|조문|근거|기준|신고|어떻게)/, why: '상황에 맞는 법령·조문을 찾는 법전' },
+    { id: 'manual', dom: /(국민취업지원|국취|구직자취업촉진|고용보험법|직업안정법)/, act: /(요건|대상|조문|법|신청|자격)/, why: '제도 요건과 조문을 확인하는 법령 가이드' },
+    { id: 'reality', dom: /(현위치|객관|실제\s*취업|통계)/, act: /(재|확인|알아|비교)/, why: '내담자의 예측과 공식 통계를 맞대는 도구' },
+    { id: 'transit', dom: /(전직|이직|커리어\s*전환|환승)/, act: /(순서|경로|어디|막힘|노선)/, why: '경력 전환의 환승역과 노선을 그리는 지도' },
+    { id: 'policy-match', dom: /(지원금|지원\s*제도|정책|받을\s*수\s*있는)/, act: /(무엇|뭐|대상|매칭|확인|골라)/, not: /(국민취업지원|국취|구직자취업촉진|고용보험|내일배움|실업급여|구직급여)/, why: '내담자 조건에 맞는 지원 제도를 맞추는 도구' },
+    { id: 'triage', dom: /(위기|긴급|응급|생계|노숙|쉼터)/, act: /(등급|분류|먼저|어떻게|확인)/, why: '위기 신호를 먼저 나누는 트리아지 보드' }
+  ];
+  function matchRules(q) {
+    var s = String(q || ''), out = [];
+    RULES.forEach(function (r) {
+      if (!r.dom.test(s) || !r.act.test(s)) return;
+      if (r.not && r.not.test(s)) return;
+      if (!resolveId(r.id)) return;
+      out.push({ id: r.id, why: r.why });
+    });
+    return out;
+  }
 
-  var COURSE_DEF = [
-    { id: 'std', tag: '정석 적용형', title: '접수 진단에서 마무리까지, 차례로',
-      seq: ['진단', '이론', '직무', '기업', '제도', '실전'],
-      why: '내담자를 만나는 순서 그대로 — 진단으로 열고, 이론 틀과 직무·기업 자료를 거쳐 제도 조건을 확인한 뒤 실전으로 닫습니다.' },
-    { id: 'drill', tag: '실전 연습형', title: '발문과 리허설로 먼저 익히기',
-      seq: ['이론', '진단', '실전', '제도'],
-      why: '대화·발문 연습을 맨 앞에 두고, 진단 뒤에 서류·면접을 바로 붙여 손으로 익힌 다음 제도로 근거를 채웁니다.' },
-    { id: 'case', tag: '사례·법령 집중형', title: '제도와 법령 근거를 먼저 세우기',
-      seq: ['제도', '진단', '훈련', '기업', '실전'],
-      why: '법령·제도 요건을 먼저 확인하고, 자격·훈련과 기업 정보로 근거를 채운 뒤 실전 서류로 마무리합니다.' }
+  /* 여러 갈래가 함께 나오면 1칸이 아니라 흐름이다 */
+  var BUCKETS = [
+    ['제도', /(제도|요건|신청|대상자|자격\s*요건)/],
+    ['훈련', /(훈련|국비|내일배움|교육\s*과정|직업교육)/],
+    ['서류', /(서류|자기소개서|이력서|지원서|포트폴리오)/],
+    ['기업', /(기업|회사|업체|공기업)/],
+    ['검사', /(심리검사|진로\s*검사|적성|흥미)/],
+    ['면접', /(면접)/],
+    ['정책', /(지원금|정책|지원\s*바우처)/],
+    ['대학', /(학과|전공|대학원|진학)/],
+    ['산업', /(산업|업종|전망|노동시장)/]
+  ];
+  function bucketsOf(q) {
+    var s = String(q || ''), out = [];
+    BUCKETS.forEach(function (b) { if (b[1].test(s)) out.push(b[0]); });
+    return out;
+  }
+
+  /* 질문의 상황 낱말 → 함께 볼 현장 자료 (유동 덱의 씨앗) */
+  var SEEDS = [
+    { re: /(제도|요건|신청)/, ids: ['manual', 'policy-match'], why: '제도' },
+    { re: /(훈련|국비|내일배움|교육\s*과정)/, ids: ['kdt-calc', 'cert'], why: '훈련' },
+    { re: /(서류|자기소개서|이력서|지원서)/, ids: ['surgery', 'portals'], why: '서류' },
+    { re: /(기업|회사|업체)/, ids: ['company', 'fin-lab'], why: '기업' },
+    { re: /(산업|업종|전망)/, ids: ['thermometer', 'emerging'], why: '산업' },
+    { re: /(진로|적성|미정|탐색|무엇을\s*할지|뭘\s*할지)/, ids: ['vpi', 'reality', 'portals'], why: '진로 탐색' },
+    { re: /(위기|긴급|생계|노숙)/, ids: ['triage'], why: '위기' },
+    { re: /(경력\s*단절|경단|재취업|복귀)/, ids: ['triage', 'manual', 'kdt-calc'], why: '경력단절' },
+    { re: /(청년|2030|mz)/i, ids: ['portals', 'hud', 'policy-match'], why: '청년' },
+    { re: /(중장년|신중년|4050|50대)/, ids: ['transit', 'labor', 'company'], why: '중장년' }
   ];
 
-  function pool(q) {
+
+  /* ================================================================ WITW MLC 연결
+     WITW MLC(`witw-synergy-graph/1.0.0`)와 **같은 모양**으로 자료실 지도를 세운다.
+       · sector_tier — 실용성 3티어(1 상담 현장 직결 · 2 상황 보강 · 3 학습·연구용)
+       · pairs       — 두 자료가 왜 이어지는지(weight 1~8 · link · shared_keywords · practicality)
+       · adjacency   — 자료별 이웃(티어 → practicality 순)
+       · starts      — 사용자가 던진 말에서 시작 자료를 고르는 표
+     런타임 지도는 flow/data/graph.json 하나이고 이 층이 그 지도를 MLC 규격으로 투영한다.
+     학습 가중치(mydeck/data/mydeck-weights.json)는 weight·practicality에 곱해 반영된다.
+     질문 분석(plan)도 이 층을 지나므로, 추천 순서·덱 구성·이어 붙이기가 MLC와 같은 기준을 쓴다. */
+  var MLC_SCHEMA = 'witw-synergy-graph/1.0.0';
+  var MLC_FEEDBACK = 'witw-mlc-feedback/1.0.0';
+  function tierFactor(id) { var t = tierOf(id); return t === 1 ? 1 : (t === 2 ? 0.6 : 0.3); }
+  function tierPairName(a, b) { var x = tierOf(a), y = tierOf(b); return Math.min(x, y) + '-' + Math.max(x, y); }
+  function mlcDoc() {
+    if (st.mlc) return st.mlc;
+    var g = st.graph || {};
+    var live = {};
+    tools().forEach(function (t) { if (t && t.id) live[t.id] = 1; });
+    var sectorTier = {};
+    tools().forEach(function (t) { if (t && t.id) sectorTier[t.id] = tierOf(t.id); });
+    var pairs = (g.pairs || []).filter(function (p) { return p && live[p.a] && live[p.b]; }).map(function (p) {
+      var w = Number(p.w) || 0;
+      return {
+        id: p.a + '~' + p.b, a: p.a, b: p.b, weight: w, link: !!p.link,
+        shared_count: (p.shared || []).length,
+        shared_keywords: (p.shared || []).slice(0, 6),
+        basis: p.basis || (p.link ? '자료실 연결 짝' : '겹치는 말'),
+        tier_pair: tierPairName(p.a, p.b),
+        practicality: Math.round(w * Math.min(tierFactor(p.a), tierFactor(p.b)) * pairW(p.a, p.b) * 100) / 100
+      };
+    });
+    var adjMap = {};
+    pairs.forEach(function (p) {
+      adjMap[p.a] = adjMap[p.a] || [];
+      adjMap[p.b] = adjMap[p.b] || [];
+      adjMap[p.a].push({ to: p.b, title: sector(p.b).title, tier: tierOf(p.b), weight: p.weight, practicality: p.practicality, shared_keywords: p.shared_keywords, linked_in_tools: p.link });
+      adjMap[p.b].push({ to: p.a, title: sector(p.a).title, tier: tierOf(p.a), weight: p.weight, practicality: p.practicality, shared_keywords: p.shared_keywords, linked_in_tools: p.link });
+    });
+    var adjacency = {};
+    Object.keys(adjMap).forEach(function (id) {
+      adjMap[id].sort(function (x, y) { return (x.tier - y.tier) || (y.practicality - x.practicality); });
+      adjacency[id] = adjMap[id].slice(0, 8);
+    });
+    st.mlc = {
+      schema: MLC_SCHEMA,
+      built: new Date().toISOString(),
+      counts: {
+        sectors: tools().length,
+        live_sectors: tools().length,
+        apps: ((window.JC_APPS || []).length),
+        pairs: pairs.length,
+        linked_pairs: pairs.filter(function (p) { return p.link; }).length
+      },
+      tier_rules: {
+        1: { label: '상담 현장 직결', use: '자동 추천 1순위', ids: TIER1.filter(function (id) { return live[id]; }) },
+        2: { label: '상황 보강', use: '맥락이 맞을 때만', ids: Object.keys(sectorTier).filter(function (id) { return sectorTier[id] === 2; }) },
+        3: { label: '학습·연구용', use: '직접 찾거나 끼워 넣을 때만', ids: STUDY.filter(function (id) { return live[id]; }) }
+      },
+      sector_tier: sectorTier,
+      apps: {},
+      example_flow: {
+        basis: '상담이 흐르는 차례(손으로 정한 기본값)',
+        order: ORDER.filter(function (id) { return live[id] && tierOf(id) === 1; }),
+        why: '접수·진단 → 제도 → 기업·동향 → 실전'
+      },
+      pairs: pairs,
+      adjacency: adjacency,
+      starts: (g.starts || []).filter(function (x) { return x && x.k && (x.to || []).length; })
+    };
+    return st.mlc;
+  }
+  function mlcNeighbors(id) {
+    var a = mlcDoc().adjacency[id];
+    return a ? a.slice() : [];
+  }
+  function mlcPairOf(a, b) {
+    var out = null;
+    mlcDoc().pairs.forEach(function (p) { if (!out && ((p.a === a && p.b === b) || (p.a === b && p.b === a))) out = p; });
+    return out;
+  }
+
+  /* ================================================================ 후보 모으기 */
+  var HIT = 2.6;   /* 이만큼 뚜렷이 걸려야 「질문이 부른 자료」로 본다 */
+  function practical(id, allow) {
+    var t = tierOf(id);
+    if (t === 1) return 1.18;
+    if (t === 3) return allow && allow[id] ? 1.16 : 0.45;
+    return 1.0;
+  }
+  function pool(q, allow) {
     var S = window.JCAssistSearch;
     if (!S) return [];
     var out = {}, nq = norm(q);
@@ -123,12 +354,12 @@
       var alias = String(d.q || '').replace(/\s+/g, '') !== String(d.c || '').replace(/\s+/g, '');
       (d.s || []).forEach(function (id, i) { bump(id, (alias ? 2.2 : 1.3) - i * 0.12, d.c); });
     });
+    mlcDoc().starts.forEach(function (s) {
+      if (!s.k || nq.indexOf(norm(s.k)) < 0) return;
+      (s.to || []).forEach(function (id) { bump(id, 2.4, s.k); });
+    });
     var g = st.graph;
     if (g) {
-      (g.starts || []).forEach(function (s) {
-        if (!s.k || nq.indexOf(norm(s.k)) < 0) return;
-        (s.to || []).forEach(function (id) { bump(id, 2.4, s.k); });
-      });
       Object.keys(g.kw || {}).forEach(function (k) {
         if (k.length < 2 || nq.indexOf(norm(k)) < 0) return;
         (g.kw[k] || []).forEach(function (id) { bump(id, 0.3, k); });
@@ -138,124 +369,269 @@
       if ((r.score || 0) < 8) return;
       bump(r.sector, 0.15 + Math.min(0.6, (r.score || 0) / 60), '');
     });
+    SEEDS.forEach(function (s) {
+      if (!s.re.test(String(q || ''))) return;
+      s.ids.forEach(function (id, i) { if (i < 2) bump(id, 2.3 - i * 0.35, s.why); });
+    });
     return Object.keys(out).map(function (k) { return out[k]; })
       .filter(function (x) { return x.score >= 1.2; })
-      .sort(function (a, b) { return b.score - a.score; });
+      .map(function (x) {
+        x.tier = tierOf(x.id);
+        x.rank = x.score * practical(x.id, allow) * sectorW(x.id);
+        return x;
+      })
+      .sort(function (a, b) { return b.rank - a.rank; });
+  }
+
+  /* 학습·연구용 자료를 «직접» 꼬집은 짧은 질문 — 그 자료 한 칸으로 답한다("직무분석" → 데이컴) */
+  function studySingle(q, allow) {
+    var ids = Object.keys(allow || {});
+    if (ids.length !== 1) return '';
+    var s = norm(q);
+    if (!s || s.split(' ').length > 4) return '';
+    if (/(적용|실무|연습|활용|이어|함께|사례|흐름)/.test(String(q))) return '';
+    return resolveId(ids[0]);
   }
 
   function deckName(q, tag) {
     var s = String(q || '').replace(/\s+/g, ' ').trim();
-    if (s.length > 34) s = s.slice(0, 33) + '…';
+    if (s.length > 30) s = s.slice(0, 29) + '…';
     return (s || '내 상담 흐름') + ' · ' + tag;
   }
+  function hasId(list, id) {
+    var hit = false;
+    (list || []).forEach(function (x) { if (x.id === id) hit = true; });
+    return hit;
+  }
+  function sortSteps(list) {
+    list.sort(function (a, b) { return stageOf(a.id) - stageOf(b.id); });
+    return list;
+  }
+  function stepOf(id, why) {
+    return { id: id, hit: true, why: (why || []).slice(0, 2), tier: tierOf(id) };
+  }
 
-  function courses(q) {
-    if (!window.JCAssistSearch) return [];
-    var list = pool(q);
-    if (!list.length) return [];
-    var best = {};
-    list.forEach(function (p) {
-      var c = CAT_OF[p.id];
-      if (!c || p.score < HIT) return;
-      if (!best[c] || best[c].score < p.score) best[c] = p;
-    });
-    var out = [];
-    COURSE_DEF.forEach(function (def) {
-      var steps = [], used = {}, hitCount = 0;
-      def.seq.forEach(function (cat) {
-        var pick = best[cat];
-        if (pick && !used[pick.id]) {
-          used[pick.id] = 1; hitCount++;
-          steps.push({ id: pick.id, hit: true, why: pick.why || [] });
-          return;
-        }
-        var arr = CATS[cat] || [], d = null;
-        for (var i = 0; i < arr.length && !d; i++) if (!used[arr[i]]) d = arr[i];
-        if (!d) return;
-        used[d] = 1;
-        steps.push({ id: d, hit: false, why: [] });
-      });
-      if (steps.length < 3) return;
-      var hits = [];
-      steps.forEach(function (s) {
-        if (!s.hit) return;
-        (s.why || []).forEach(function (w) { if (w && hits.indexOf(w) < 0 && hits.length < 3) hits.push(w); });
-      });
-      out.push({
-        id: def.id, seq: def.seq, tag: def.tag, title: def.title, why: def.why,
-        steps: steps, hits: hits, hitCount: hitCount, name: deckName(q, def.tag), edited: false
+  /* 이어 붙일 한 칸 — MLC 시너지 지도에서 practicality이 가장 높은 현장 자료 */
+  function adjacent(list, allow) {
+    var out = [], used = {}, seen = {};
+    (list || []).forEach(function (s) { used[s.id] = 1; });
+    var cand = [];
+    (list || []).forEach(function (s) {
+      mlcNeighbors(s.id).forEach(function (n) {
+        if (!n || !n.to || used[n.to] || seen[n.to] || !toolOf(n.to)) return;
+        if (tierOf(n.to) === 3 && !(allow && allow[n.to])) return;
+        seen[n.to] = 1;
+        cand.push({ id: n.to, score: n.practicality * sectorW(n.to) });
       });
     });
+    cand.sort(function (x, y) { return y.score - x.score; });
+    cand.forEach(function (c) { if (out.length < 2) out.push(c.id); });
     return out;
   }
 
-  /* 중간 노드에서 갈라지는 다음 자료 */
+  /* ================================================================ 유동 덱 짜기 */
+  function plan(q) {
+    q = String(q == null ? '' : q).replace(/\s+/g, ' ').trim();
+    var an = null;
+    try { an = window.JCAssistSearch ? window.JCAssistSearch.analyze(q) : null; } catch (e) { an = null; }
+    var allow = studyAsked(q);
+    var rules = matchRules(q);
+    var buckets = bucketsOf(q);
+    var list = pool(q, allow);
+    var decks = [];
+    var single = rules.length === 1 && buckets.length <= 1;
+    var core = [];
+    var seedWhy = [];
+
+    /* 이 질문을 어떻게 읽었고, 어느 시너지 짝으로 줄을 세웠는지 — WITW MLC 규격 그대로 남긴다 */
+    function mlcMeta(mode, steps) {
+      var edges = [];
+      for (var i = 1; i < steps.length; i++) {
+        var p = mlcPairOf(steps[i - 1].id, steps[i].id);
+        edges.push(p
+          ? { a: p.a, b: p.b, weight: p.weight, practicality: p.practicality, link: p.link }
+          : { a: steps[i - 1].id, b: steps[i].id, weight: 0, practicality: 0, link: false });
+      }
+      return {
+        schema: MLC_SCHEMA,
+        mode: mode,
+        tier_limit: 1,
+        intent: { domains: buckets, tools: rules.map(function (r) { return r.id; }), seeds: seedWhy },
+        tiers: steps.map(function (x) { return { id: x.id, tier: tierOf(x.id) }; }),
+        edges: edges
+      };
+    }
+
+    if (single) {
+      var rid = resolveId(rules[0].id);
+      if (rid) core = [stepOf(rid, [rules[0].why])];
+    }
+    if (!core.length) {
+      var sid = studySingle(q, allow);
+      if (sid) { single = true; core = [stepOf(sid, ['「' + sector(sid).title + '」 — 질문에서 직접 꼬집은 학습·연구 자료'])]; }
+    }
+    if (!core.length) {
+      /* 1차 — 질문이 실제로 부른 자료(의도 규칙 + 상황 씨앗). 2차 — 색인이 걸어 준 자료.
+         한 덱은 5칸을 넘지 않고, 1차가 두 칸 이상이면 2차는 한 칸만 붙인다(억지로 채우지 않는다). */
+      var wave1 = [], wave2 = [];
+      function w1(id, why) {
+        if (!id || !toolOf(id) || hasId(wave1, id) || hasId(wave2, id)) return;
+        wave1.push(stepOf(id, why));
+      }
+      function w2(id, why) {
+        if (!id || !toolOf(id) || hasId(wave1, id) || hasId(wave2, id)) return;
+        if (tierOf(id) === 3 && !allow[id]) return;
+        wave2.push(stepOf(id, why));
+      }
+      rules.forEach(function (r) { w1(resolveId(r.id), [r.why]); });
+      SEEDS.forEach(function (s) {
+        if (!s.re.test(String(q || ''))) return;
+        if (seedWhy.indexOf(s.why) < 0 && seedWhy.length < 4) seedWhy.push(s.why);
+        s.ids.forEach(function (id, i) { if (i === 0) w1(resolveId(id), [s.why]); else w2(resolveId(id), [s.why]); });
+      });
+      list.forEach(function (x) { if (x.rank >= HIT) w2(x.id, x.why); });
+
+      core = wave1.slice();
+      sortSteps(core);
+      var room = core.length >= 4 ? 0 : (core.length === 3 ? 1 : (core.length === 2 ? 2 : 3));
+      var cap = Math.min(5, core.length + room);
+      wave2.forEach(function (s) {
+        if (core.length >= cap || hasId(core, s.id)) return;
+        core.push(s);
+      });
+      sortSteps(core);
+      if (core.length > 5) core.length = 5;
+      if (core.length < 2) {
+        var add = adjacent(core, allow).concat(list.filter(function (x) {
+          return !hasId(core, x.id) && x.tier <= 2 && x.rank >= HIT * 0.55;
+        }).map(function (x) { return x.id; }));
+        add.forEach(function (id) {
+          if (core.length >= 2 || hasId(core, id) || !toolOf(id)) return;
+          core.push(stepOf(id, []));
+        });
+        sortSteps(core);
+      }
+    }
+
+    if (!core.length) return { q: q, keys: an, single: false, decks: [], reason: '', mlc: mlcMeta('none', []) };
+
+    if (single) {
+      var only = core[0];
+      var whyOne = (only.why && only.why[0]) ? only.why[0] : '질문에 맞는 자료가 하나입니다';
+      decks.push({
+        id: 'single', kind: 'single', tag: '한 칸', title: '「' + sector(only.id).title + '」 하나로',
+        why: whyOne + '.',
+        reason: '질문에서 「' + (an && (an.tokens || []).slice(0, 3).join(' ')) + '」를 읽고, 한 자료로 답이 나오는 질문으로 판정했습니다.',
+        steps: [only], hits: only.why.slice(0, 2), hitCount: 1,
+        name: deckName(q, '한 칸'), edited: false
+      });
+      return { q: q, keys: an, single: true, decks: decks, reason: decks[0].why, mlc: mlcMeta('single', core) };
+    }
+
+    var hitWhy = [];
+    core.forEach(function (s) { (s.why || []).forEach(function (w) { if (w && hitWhy.indexOf(w) < 0 && hitWhy.length < 3) hitWhy.push(w); }); });
+    var reasonA;
+    if (buckets.length >= 2) reasonA = '질문에 「' + buckets.join('」 「') + '」가 함께 나와, 실제로 이어지는 ' + core.length + '단계만 골랐습니다.';
+    else if (hitWhy.length) reasonA = '「' + hitWhy.join('」 「') + '」에 걸리는 현장 자료 ' + core.length + '개로 짰습니다.';
+    else reasonA = '질문에 걸리는 현장 자료 ' + core.length + '개로 짰습니다.';
+    decks.push({
+      id: 'core', kind: 'flow', tag: '핵심', title: '질문에 바로 닿는 단계만',
+      why: reasonA, reason: '현장에서 바로 쓰는 자료만 골랐습니다. 데이컴·이론 위키 같은 학습·연구용은 넣지 않았습니다.',
+      steps: core.slice(), hits: hitWhy, hitCount: core.length,
+      name: deckName(q, '핵심'), edited: false
+    });
+
+    /* 상황 보강형 — 핵심에 한두 칸을 더 붙였을 때 «실제로 달라질 때만» 낸다 */
+    if (core.length <= 4) {
+      var extra = [];
+      list.forEach(function (x) {
+        if (extra.length >= 2) return;
+        if (hasId(core, x.id)) return;
+        if (x.tier === 3 && !allow[x.id]) return;
+        if (x.rank < HIT * 0.55) return;
+        extra.push(x.id);
+      });
+      adjacent(core, allow).forEach(function (id) {
+        if (extra.length >= 2 || hasId(core, id) || extra.indexOf(id) >= 0) return;
+        extra.push(id);
+      });
+      var wide = core.slice();
+      extra.forEach(function (id) { if (wide.length < 5) wide.push(stepOf(id, [])); });
+      sortSteps(wide);
+      if (wide.length > core.length) {
+        var addWhy = wide.filter(function (s) { return !hasId(core, s.id); }).map(function (s) { return sector(s.id).title; });
+        decks.push({
+          id: 'wide', kind: 'flow', tag: '보강', title: '한 칸씩 보강한 흐름',
+          why: '핵심 ' + core.length + '단계에 「' + addWhy.join('」 「') + '」 단계를 더해 ' + wide.length + '단계로 넓혔습니다.',
+          reason: '같은 질문을 조금 더 넓게 보는 덱입니다. 핵심 덱과 단계가 실제로 다를 때만 보여 줍니다.',
+          steps: wide, hits: hitWhy, hitCount: wide.length,
+          name: deckName(q, '보강'), edited: false
+        });
+      }
+    }
+
+    return { q: q, keys: an, single: false, decks: decks, reason: decks[0].why, mlc: mlcMeta('flow', core) };
+  }
+
+  function courses(q) { return plan(q).decks; }
+
+  /* 중간 노드에서 갈라지는 다음 자료 — 사용자가 직접 고르는 자리라 학습·연구용도 후보에 둘 수 있다 */
   function branches(steps, i) {
     var ids = {}, seen = {}, out = [];
     steps.forEach(function (s) { ids[s.id] = 1; });
     var node = (steps[i] || {}).id;
     if (!node) return out;
-    var g = st.graph;
-    if (g && g.pairs) {
-      g.pairs.filter(function (p) { return p.a === node || p.b === node; })
-        .sort(function (a, b) { return (b.w || 0) - (a.w || 0); })
-        .forEach(function (p) {
-          var other = p.a === node ? p.b : p.a;
-          if (!other || other === 'flow' || ids[other] || seen[other] || !toolOf(other)) return;
-          seen[other] = 1;
-          var why = (p.link ? '자료실 연결 짝' : '겹치는 말');
-          if (p.shared && p.shared.length) why += ' · ' + p.shared.slice(0, 2).join(' · ');
-          out.push({ id: other, why: why, kind: 'pair' });
-        });
-    }
-    var cat = CAT_OF[node] || '';
-    (CATS[cat] || []).forEach(function (id) {
-      if (ids[id] || seen[id]) return;
-      seen[id] = 1;
-      out.push({ id: id, why: '같은 갈래의 다음 자리', kind: 'cat' });
+    mlcNeighbors(node).forEach(function (n) {
+      if (!n || !n.to || n.to === 'flow' || ids[n.to] || seen[n.to] || !toolOf(n.to)) return;
+      seen[n.to] = 1;
+      var why = (n.linked_in_tools ? '자료실 연결 짝' : '겹치는 말');
+      if (n.shared_keywords && n.shared_keywords.length) why += ' · ' + n.shared_keywords.slice(0, 2).join(' · ');
+      out.push({ id: n.to, why: why, kind: 'pair' });
     });
-    return out.slice(0, 3);
+    ORDER.forEach(function (id) {
+      if (ids[id] || seen[id] || !toolOf(id)) return;
+      if (stageOf(id) <= stageOf(node)) return;
+      seen[id] = 1;
+      out.push({ id: id, why: '이 뒤에 오는 현장 자료', kind: 'stage' });
+    });
+    return out.sort(function (a, b) { return tierOf(a.id) - tierOf(b.id); }).slice(0, 3);
   }
 
-  /* 그 아래를 새로 이어 붙인다 — 갈래 차례를 따라 두 칸 */
+  /* 그 아래를 새로 이어 붙인다 — 상담 차례를 따라 현장 자료 두 칸 */
   function extend(steps, i, seq) {
-    var ids = {}, used = {};
-    steps.forEach(function (s) { ids[s.id] = 1; });
-    var node = (steps[i] || {}).id;
-    var order = (seq && seq.length ? seq : ['진단', '이론', '직무', '기업', '제도', '실전']);
-    var at = order.indexOf(CAT_OF[node]);
-    if (at < 0) at = 0;
-    var out = [];
-    for (var k = at + 1; k < order.length && out.length < 2; k++) {
-      var arr = CATS[order[k]] || [], pick = null;
-      for (var j = 0; j < arr.length && !pick; j++) if (!ids[arr[j]] && !used[arr[j]]) pick = arr[j];
-      if (!pick) continue;
-      used[pick] = 1;
-      out.push({ id: pick, hit: false, why: [] });
-    }
-    return out;
-  }
-
-  /* 문장으로 이어 붙이기 — 라이브 방식. 노드 뒤에 오는 갈래를 우선해 두 칸을 고른다.
-     알고리즘으로 짠 덱이든 라이브로 짠 덱이든 같은 자리에서 부를 수 있다. */
-  function branchLive(steps, i, q, seq) {
-    if (!window.JCAssistSearch || !String(q || '').trim()) return [];
     var ids = {}, out = [];
     steps.forEach(function (s) { ids[s.id] = 1; });
     var node = (steps[i] || {}).id;
-    var order = (seq && seq.length ? seq : ['진단', '이론', '직무', '기업', '제도', '실전']);
-    var at = Math.max(0, order.indexOf(CAT_OF[node]));
-    var list = pool(q);
+    var at = stageOf(node);
+    var order = ORDER.slice();
+    order.forEach(function (id) {
+      if (out.length >= 2 || ids[id] || !toolOf(id)) return;
+      if (tierOf(id) > 1) return;
+      if (stageOf(id) <= at) return;
+      out.push({ id: id, hit: false, why: [] });
+    });
+    return out;
+  }
+
+  /* 문장으로 이어 붙이기 — 노드 뒤에 오는 갈래를 우선해 두 칸을 고른다 */
+  function branchLive(steps, i, q) {
+    if (!window.JCAssistSearch || !String(q || '').trim()) return [];
+    var ids = {}, out = [];
+    steps.forEach(function (s) { ids[s.id] = 1; });
+    var at = stageOf((steps[i] || {}).id);
+    var list = pool(q, studyAsked(q));
     list.forEach(function (x) {
       if (out.length >= 2 || ids[x.id]) return;
-      var ci = order.indexOf(CAT_OF[x.id]);
-      if (ci >= at) { ids[x.id] = 1; out.push({ id: x.id, hit: true, why: [x.why[0] || q] }); }
+      if (x.tier === 3) return;
+      if (stageOf(x.id) >= at) { ids[x.id] = 1; out.push({ id: x.id, hit: true, why: [x.why[0] || q] }); }
     });
     if (!out.length) {
-      for (var k = at + 1; k < order.length && !out.length; k++) {
-        var arr = CATS[order[k]] || [];
-        for (var j = 0; j < arr.length; j++) if (!ids[arr[j]]) { ids[arr[j]] = 1; out.push({ id: arr[j], hit: false, why: [] }); break; }
-      }
+      ORDER.forEach(function (id) {
+        if (out.length >= 2 || ids[id] || !toolOf(id) || tierOf(id) > 1) return;
+        if (stageOf(id) < at) return;
+        ids[id] = 1;
+        out.push({ id: id, hit: false, why: [] });
+      });
     }
     return out;
   }
@@ -268,36 +644,18 @@
 
   /* ================================================================ 회색 타자 로테이션 */
   var SENT = [
-    '이론공부 실무에 적용하기',
-    '경력단절 내담자 첫 상담 흐름 짜기',
-    '반도체 공정 직무랑 기업 연결하기',
-    '국비지원 자부담 계산하고 훈련 추천하기',
-    '실업급여 수급 자격 확인하기',
-    '임금체불 내담자 법령 근거 찾기',
+    '실업급여 얼마 받는지 계산',
+    '경력단절 내담자 첫 상담부터 제도·훈련·서류까지',
+    '면접 압박 질문 대비',
+    '국비훈련 자부담 계산',
     '중장년 전직 상담 순서 잡기',
-    '청년 구직자 진로 검사 해석하기',
-    '면접 답변 코칭 준비하기',
-    '자격증 따면 취업되는지 확인하기',
-    '신산업 직무 변화 설명하기',
-    '기업 재무제표 읽고 상담하기',
-    '근무환경 견딜 수 있는지 확인하기',
-    '학과와 직업 연결해서 안내하기',
-    '취업 현위치 객관적으로 재기',
-    '내담자 말을 정식 용어로 바꾸기',
-    '고용지표로 노동시장 설명하기',
+    '청년 진로 미정 내담자 탐색',
+    '임금체불 내담자 법령 근거 찾기',
+    '이 회사 매출·직원 확인',
     '서류 탈락 이유 짚어 주기',
-    '커리어 전환 환승역 찾기',
-    '산업 온도로 전망 말해 주기',
-    '채용 사이트 골라 안내하기',
-    '직무분석으로 과업 정리하기',
-    '경력단절 여성 훈련 과정 고르기',
-    '상담 대화 연습하고 피드백 받기',
-    '포트폴리오 구조 잡아 주기',
-    '대학원 진학 상담 이어 가기',
-    '국민취업지원제도 먼저 붙이기',
-    '사례 하나로 상담 전체 훑기',
-    '직업분류 코드로 직무 맞대기',
-    '상담 기록 남길 순서 정하기'
+    '심리검사 결과 해석',
+    '초기상담 질문지',
+    '채용 사이트 골라 안내하기'
   ];
 
   function reduceMotion() {
@@ -393,68 +751,7 @@
     return { start: start, stop: stop, paint: paint };
   }
 
-  /* ================================================================ 튜토리얼 — 어두운 베일 + 입력칸만 밝게 */
-  function tutorial(field) {
-    if (!field) return;
-    var old = document.querySelector('.tu');
-    if (old && old.parentNode) old.parentNode.removeChild(old);
-    var r = field.getBoundingClientRect();
-    var pad = 8;
-    var ov = document.createElement('div');
-    ov.className = 'tu on';
-    ov.setAttribute('role', 'dialog');
-    ov.setAttribute('aria-modal', 'true');
-    ov.setAttribute('aria-label', '입력창 사용법');
-    var spot = document.createElement('div');
-    spot.className = 'tu-spot';
-    spot.style.left = Math.round(r.left - pad) + 'px';
-    spot.style.top = Math.round(r.top - pad) + 'px';
-    spot.style.width = Math.round(r.width + pad * 2) + 'px';
-    spot.style.height = Math.round(r.height + pad * 2) + 'px';
-    ov.appendChild(spot);
-
-    var cap = document.createElement('div');
-    cap.className = 'tu-cap';
-    var k = document.createElement('span');
-    k.className = 'tu-step';
-    k.textContent = '한 문장이면 충분합니다';
-    cap.appendChild(k);
-    var p = document.createElement('p');
-    var b1 = document.createElement('b');
-    b1.textContent = '하고 싶은 일을 그대로 적으세요.';
-    p.appendChild(b1);
-    p.appendChild(document.createTextNode(' 「경력단절 내담자 첫 상담 흐름 짜기」처럼 적고 「완성덱 만들기」를 누르면, 자료실 색인에서 걸리는 섹터로 '));
-    var b2 = document.createElement('b');
-    b2.textContent = '세 가지 완성덱';
-    p.appendChild(b2);
-    p.appendChild(document.createTextNode('을 짜 줍니다. 마음에 드는 하나를 고르면 내 덱에 저장되고 상담 OS 보드가 열립니다.'));
-    cap.appendChild(p);
-    var ok = document.createElement('button');
-    ok.type = 'button';
-    ok.textContent = '알겠어요';
-    cap.appendChild(ok);
-    ov.appendChild(cap);
-
-    var space = window.innerHeight - r.bottom;
-    if (space > 200) cap.style.top = Math.round(r.bottom + 20) + 'px';
-    else cap.style.bottom = Math.round(window.innerHeight - r.top + 20) + 'px';
-
-    function close() {
-      ov.classList.remove('on');
-      setTimeout(function () { if (ov.parentNode) ov.parentNode.removeChild(ov); }, 180);
-      document.documentElement.style.overflow = '';
-      document.removeEventListener('keydown', esc, true);
-    }
-    function esc(e) { if (e.key === 'Escape') close(); }
-    ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
-    ok.addEventListener('click', close);
-    document.addEventListener('keydown', esc, true);
-    document.body.appendChild(ov);
-    requestAnimationFrame(function () { ov.classList.add('on'); });
-    setTimeout(function () { try { ok.focus({ preventScroll: true }); } catch (e) {} }, 60);
-  }
-
-  /* ================================================================ 완성덱 카드 (수정 가능) */
+  /* ================================================================ 작은 도우미 */
   function el(tag, cls, text) {
     var n = document.createElement(tag);
     if (cls) n.className = cls;
@@ -462,257 +759,498 @@
     return n;
   }
   function clear(n) { while (n && n.firstChild) n.removeChild(n.firstChild); }
+  var ICO_UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>';
+  var ICO_DOWN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg>';
+  var ICO_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  var ICO_PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
 
-  function cards(host, list, opts) {
-    opts = opts || {};
-    clear(host);
-    list.forEach(function (c) { host.appendChild(card(c, opts)); });
+  /* ================================================================ 튜토리얼 — 어두운 베일 + 한 곳만 밝게
+     한 곳(요소)만 넘기면 그 자리 한 장, 배열로 넘기면 차례대로 짚는 안내가 된다. */
+  function tutorial(target) {
+    var list = Array.isArray(target) ? target.slice() : (target ? [{ el: target, title: '사용법', body: '' }] : []);
+    if (!list.length) return;
+    var old = document.querySelector('.tu');
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+
+    var at = 0;
+    var ov = el('div', 'tu on');
+    ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-modal', 'true');
+    ov.setAttribute('aria-label', '마이덱 사용법');
+    var spot = el('div', 'tu-spot');
+    var cap = el('div', 'tu-cap');
+    var kick = el('span', 'tu-step');
+    var p = el('p');
+    var acts = el('div', 'tu-acts');
+    var prev = el('button', null, '이전');
+    prev.type = 'button';
+    var next = el('button', 'tu-go', '다음');
+    next.type = 'button';
+    var skip = el('button', 'tu-skip', '건너뛰기');
+    skip.type = 'button';
+    acts.appendChild(prev);
+    acts.appendChild(next);
+    acts.appendChild(skip);
+    cap.appendChild(kick);
+    cap.appendChild(p);
+    cap.appendChild(acts);
+    ov.appendChild(spot);
+    ov.appendChild(cap);
+
+    function nodeOf(s) {
+      var n = s && s.el;
+      if (typeof n === 'string') { try { n = document.querySelector(n); } catch (e) { n = null; } }
+      return n || null;
+    }
+    function place() {
+      var s = list[at] || {};
+      var n = nodeOf(s);
+      var r = null;
+      if (n && (n.offsetParent || n.getClientRects().length)) r = n.getBoundingClientRect();
+      if (!r || (r.width < 2 && r.height < 2)) {
+        spot.style.opacity = '0';
+        spot.style.width = '0px';
+        spot.style.height = '0px';
+        cap.style.top = '50%';
+        cap.style.bottom = 'auto';
+        cap.style.transform = 'translate(-50%,-50%)';
+        return;
+      }
+      spot.style.opacity = '1';
+      var pad = 8;
+      var left = Math.max(6, Math.round(r.left - pad));
+      var top = Math.max(6, Math.round(r.top - pad));
+      var w = Math.min(window.innerWidth - left - 6, Math.round(r.width + pad * 2));
+      var h = Math.min(window.innerHeight - top - 6, Math.round(r.height + pad * 2));
+      spot.style.left = left + 'px';
+      spot.style.top = top + 'px';
+      spot.style.width = w + 'px';
+      spot.style.height = h + 'px';
+      var space = window.innerHeight - (top + h);
+      cap.style.transform = 'translateX(-50%)';
+      if (space > 210) { cap.style.top = (top + h + 16) + 'px'; cap.style.bottom = 'auto'; }
+      else { cap.style.top = 'auto'; cap.style.bottom = Math.max(16, window.innerHeight - top + 16) + 'px'; }
+    }
+    function paint() {
+      var s = list[at] || {};
+      kick.textContent = '마이덱 사용법 ' + (at + 1) + ' / ' + list.length;
+      clear(p);
+      if (s.title) p.appendChild(el('b', null, s.title));
+      if (s.body) p.appendChild(document.createTextNode((s.title ? ' ' : '') + s.body));
+      prev.disabled = at === 0;
+      next.textContent = at === list.length - 1 ? '알겠어요' : '다음';
+      place();
+      if (at === list.length - 1) { try { next.focus({ preventScroll: true }); } catch (e) {} }
+    }
+    function close() {
+      ov.classList.remove('on');
+      setTimeout(function () { if (ov.parentNode) ov.parentNode.removeChild(ov); }, 180);
+      document.documentElement.style.overflow = '';
+      document.removeEventListener('keydown', esc, true);
+      window.removeEventListener('resize', place);
+    }
+    function esc(e) {
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight' && at < list.length - 1) { at++; paint(); }
+      if (e.key === 'ArrowLeft' && at > 0) { at--; paint(); }
+    }
+    prev.addEventListener('click', function () { if (at > 0) { at--; paint(); } });
+    next.addEventListener('click', function () { if (at < list.length - 1) { at++; paint(); } else close(); });
+    skip.addEventListener('click', close);
+    ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+    document.addEventListener('keydown', esc, true);
+    window.addEventListener('resize', place);
+    document.body.appendChild(ov);
+    document.documentElement.style.overflow = 'hidden';
+    paint();
+    requestAnimationFrame(function () { ov.classList.add('on'); });
   }
 
-  function card(c, opts) {
+  /* ================================================================ 덱 편집기
+     추천 덱과 내 덱에 저장된 덱이 **같은 편집기**를 쓴다.
+       · 단계 위로/아래로 — 44px 아이콘 단추, 양 끝에서는 잠긴다
+       · 단계 사이 「+ 여기에 자료 넣기」 — 모든 자료를 분류·검색으로 골라 그 자리에 끼운다
+       · 「교체」 — 그 자리만 다른 자료로 바꾼다
+       · 「×」 — 그 단계를 뺀다(한 번 되돌릴 수 있다. 최소 한 단계는 남긴다)
+     지키는 선: 저장은 부르는 쪽(opts.onSave)이 한다. 이 편집기는 모양과 순서만 다룬다. */
+  function editor(host, deck, opts) {
+    opts = opts || {};
+    deck = deck || {};
+    var MAX = ((window.JCDeck && window.JCDeck.MAX_STEPS) || 12);
+    var S = {
+      editing: opts.editing !== false && !!opts.editable,
+      undo: null,
+      pick: -1,
+      pickMode: 'insert',
+      pickCat: 'all',
+      steps: (deck.steps || []).map(function (s) {
+        return { id: String(s.id || ''), hit: !!s.hit, why: (s.why || []).slice(0, 3) };
+      })
+    };
+    var meta = {
+      id: String(deck.id || ''), name: String(deck.name || ''), where: String(deck.where || ''),
+      tag: String(deck.tag || ''), title: String(deck.title || deck.name || ''),
+      why: String(deck.why || ''), kind: String(deck.kind || '')
+    };
     var box = el('article', 'lv-course');
-    var editing = false, undo = null;
+    var api = {
+      el: box,
+      deck: function () {
+        return {
+          id: meta.id, name: meta.name, where: meta.where, tag: meta.tag,
+          title: meta.title, why: meta.why, kind: meta.kind, steps: payload()
+        };
+      },
+      steps: payload,
+      setEditing: function (v) { S.editing = !!v; S.pick = -1; paint(); }
+    };
 
-    /* 단계 지우기 — 하나만 지우거나, 그 밑으로 이어지는 단계를 한꺼번에 지운다.
-       지운 직후 바로 되돌릴 수 있게 마지막 한 번만 기억하고, 최소 한 단계는 남긴다. */    function take(i, below) {
-      if (!c.steps.length) return;
-      if (below) { if (i >= c.steps.length - 1) return; }
-      else if (c.steps.length <= 1) return;
-      undo = c.steps.slice();
-      c.steps = below ? c.steps.slice(0, i + 1) : c.steps.slice(0, i).concat(c.steps.slice(i + 1));
-      c.edited = true;
+    function payload() {
+      return S.steps.map(function (s) {
+        var sec = sector(s.id);
+        return { id: s.id, no: sec.no, title: sec.title, badge: sec.badge, hit: s.hit, why: (s.why || []).slice(0, 2) };
+      });
+    }
+    function changed() { if (opts.onChange) opts.onChange(api.deck()); }
+
+    function move(i, d) {
+      var j = i + d;
+      if (j < 0 || j >= S.steps.length) return;
+      var a = S.steps[i];
+      S.steps[i] = S.steps[j];
+      S.steps[j] = a;
+      changed();
       paint();
-      if (opts.onEdit) opts.onEdit(c);
+    }
+    function del(i) {
+      if (S.steps.length <= 1) return;
+      S.undo = S.steps.slice();
+      S.steps = S.steps.slice(0, i).concat(S.steps.slice(i + 1));
+      changed();
+      paint();
+    }
+    function insertAt(after, id) {
+      if (!toolOf(id) || hasId(S.steps, id)) return;
+      if (S.steps.length >= MAX) return;
+      var stp = { id: id, hit: true, why: ['직접 고름'] };
+      var at = after + 1;
+      S.steps = S.steps.slice(0, at).concat([stp]).concat(S.steps.slice(at));
+      S.pick = -1;
+      changed();
+      paint();
+    }
+    function replaceAt(i, id) {
+      if (!toolOf(id)) return;
+      var dup = false;
+      S.steps.forEach(function (s, k) { if (k !== i && s.id === id) dup = true; });
+      if (dup) return;
+      S.undo = S.steps.slice();
+      S.steps[i] = { id: id, hit: true, why: ['직접 바꿈'] };
+      S.pick = -1;
+      changed();
+      paint();
     }
 
+    /* ---------- 자료 고르기 ---------- */
+    function picker(after) {
+      var isReplace = S.pickMode === 'replace';
+      var box2 = el('div', 'ac-pick');
+      var hd = el('div', 'ac-pick-hd');
+      hd.appendChild(el('b', null, isReplace ? '이 단계를 다른 자료로' : '여기에 자료 넣기'));
+      hd.appendChild(el('span', null, '자료 ' + tools().length + '가지 · 분류로 골라도 됩니다'));
+      var x = el('button', 'ac-pick-x');
+      x.type = 'button';
+      x.setAttribute('aria-label', '자료 고르기 닫기');
+      x.innerHTML = ICO_X;
+      x.addEventListener('click', function () { S.pick = -1; paint(); });
+      hd.appendChild(x);
+      box2.appendChild(hd);
+
+      var inp = document.createElement('input');
+      inp.type = 'search';
+      inp.className = 'ac-pick-q';
+      inp.placeholder = '자료 이름·주제로 찾기';
+      inp.setAttribute('aria-label', '자료 이름으로 찾기');
+      box2.appendChild(inp);
+
+      var cats = el('div', 'ac-pick-cats');
+      cats.setAttribute('role', 'group');
+      cats.setAttribute('aria-label', '자료 분류');
+      [['all', '전체']].concat(GROUPS.map(function (g) { return [g.id, g.name]; })).forEach(function (c) {
+        var b = el('button', null, c[1]);
+        b.type = 'button';
+        b.setAttribute('aria-pressed', String(S.pickCat === c[0]));
+        b.addEventListener('click', function () {
+          S.pickCat = c[0];
+          Array.prototype.forEach.call(cats.children, function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+          paintList();
+        });
+        cats.appendChild(b);
+      });
+      box2.appendChild(cats);
+
+      var note = el('p', 'ac-pick-note');
+      box2.appendChild(note);
+      var list = el('div', 'ac-pick-list');
+      box2.appendChild(list);
+
+      /* 이름에 걸린 자료를 먼저 — 설명글에 스친 자료가 위로 올라오지 않게 */
+      function scoreRow(t, q) {
+        if (!q) return 1;
+        var ti = norm(t.title), ba = norm(t.badge), sh = norm(t.short), gi = norm(t.gi);
+        var tg = norm((t.tags || []).join(' ')), de = norm(t.desc);
+        if (ti === q) return 100;
+        if (ti.indexOf(q) === 0) return 90;
+        if (ti.indexOf(q) >= 0) return 80;
+        if (ba.indexOf(q) >= 0 || sh.indexOf(q) >= 0) return 60;
+        if (tg.indexOf(q) >= 0) return 40;
+        if (gi.indexOf(q) >= 0) return 30;
+        if (de.indexOf(q) >= 0) return 10;
+        return 0;
+      }
+      function paintList() {
+        clear(list);
+        var q = norm(inp.value);
+        var rows = tools().map(function (t) {
+          if (!t || !t.id || t.id === 'flow') return null;
+          if (S.pickCat !== 'all' && groupOf(t.id) !== S.pickCat) return null;
+          var sc = scoreRow(t, q);
+          if (!sc) return null;
+          return { t: t, sc: sc };
+        }).filter(Boolean).sort(function (a, b) {
+          return b.sc - a.sc || tierOf(a.t.id) - tierOf(b.t.id) || String(a.t.no || '').localeCompare(String(b.t.no || ''));
+        }).map(function (x) { return x.t; });
+        var study = S.pickCat === 'study' || rows.some(function (t) { return tierOf(t.id) === 3; });
+        note.textContent = study ? '학습·연구용 자료입니다 — 현장 추천에는 넣지 않지만 직접 고를 수 있습니다.' : '';
+        note.hidden = !study;
+        if (!rows.length) {
+          list.appendChild(el('p', 'ac-pick-empty', '이 말에 맞는 자료가 없습니다. 다른 말로 찾아보세요.'));
+          return;
+        }
+        rows.forEach(function (t) {
+          var already = hasId(S.steps, t.id) && !(isReplace && S.steps[after] && S.steps[after].id === t.id);
+          var b = el('button', 'ac-pick-b');
+          b.type = 'button';
+          b.setAttribute('aria-label', t.title + (already ? ' — 이미 덱에 있음' : (isReplace ? ' 으로 바꾸기' : ' 넣기')));
+          var tx = el('span', 'ac-pick-t');
+          tx.appendChild(el('b', null, t.title || t.id));
+          var sub = [];
+          if (t.badge) sub.push(t.badge);
+          sub.push(tierName(t.id));
+          tx.appendChild(el('em', null, sub.join(' · ')));
+          b.appendChild(tx);
+          b.appendChild(el('span', 'ac-pick-add', already ? '이미 있음' : (isReplace ? '바꾸기' : '넣기')));
+          if (already) b.disabled = true;
+          else b.addEventListener('click', function () {
+            if (isReplace) replaceAt(after, t.id);
+            else insertAt(after, t.id);
+          });
+          list.appendChild(b);
+        });
+      }
+      inp.addEventListener('input', paintList);
+      paintList();
+      return box2;
+    }
+
+    /* ---------- 그리기 ---------- */
     function paint() {
       clear(box);
-      var top = el('div', 'lv-c-top');
-      top.appendChild(el('span', 'lv-c-tag', c.tag));
-      top.appendChild(el('span', 'lv-c-n', c.steps.length + '단계' + (c.edited ? ' · 고침' : '')));
-      var ed = el('button', 'ac-edit', editing ? '편집 끝' : '단계 삭제');
-      ed.type = 'button';
-      ed.setAttribute('aria-pressed', String(editing));
-      ed.setAttribute('aria-label', c.title + ' — 단계 삭제 ' + (editing ? '끝내기' : '열기'));
-      ed.addEventListener('click', function () { editing = !editing; undo = null; paint(); });
-      top.appendChild(ed);
-      box.appendChild(top);
-      box.appendChild(el('h3', null, c.title));
+      box.classList.toggle('edit', S.editing);
 
-      var why = el('p', 'lv-c-why');
-      if (c.hits.length) {
-        var b = el('b', null, c.hits.map(function (w) { return '「' + w + '」'; }).join(' '));
-        why.appendChild(b);
-        why.appendChild(document.createTextNode(' 에서 걸린 섹터 ' + c.hitCount + '곳으로 짰습니다. '));
-      } else {
-        why.appendChild(document.createTextNode('걸린 섹터가 적어 기본 순서로 채웠습니다. '));
+      var top = el('div', 'lv-c-top');
+      if (meta.tag) top.appendChild(el('span', 'lv-c-tag', meta.tag));
+      if (opts.editable !== false) {
+        var ed = el('button', 'ac-edit', S.editing ? '편집 끝' : '단계 편집');
+        ed.type = 'button';
+        ed.setAttribute('aria-pressed', String(S.editing));
+        ed.addEventListener('click', function () { S.editing = !S.editing; S.pick = -1; paint(); });
+        top.appendChild(ed);
       }
-      why.appendChild(document.createTextNode(c.why));
-      box.appendChild(why);
+      top.appendChild(el('span', 'lv-c-n', S.steps.length + '단계'));
+      box.appendChild(top);
+
+      if (meta.title && !opts.hideTitle) box.appendChild(el('h3', null, meta.title));
+      if (meta.why) box.appendChild(el('p', 'lv-c-why', meta.why));
 
       var ol = el('ol', 'lv-c-steps');
-      c.steps.forEach(function (s, i) {
+      S.steps.forEach(function (s, i) {
+        var sec = sector(s.id);
         var li = el('li', 'ac-row');
-        var btn = el('button', 'ac-step');
-        btn.type = 'button';
-        btn.setAttribute('aria-label', (i + 1) + '단계 ' + sector(s.id).title + ' — 눌러서 갈라지는 자료 보기');
-        btn.appendChild(el('span', 'n', String(i + 1)));
-        var tx = el('span', 't');
-        tx.appendChild(el('b', null, sector(s.id).title));
-        tx.appendChild(el('em', null, s.hit && s.why.length ? '「' + s.why[0] + '」에서 걸림' : (s.hit ? '색인에서 걸림' : '이 순서에 늘 놓는 단계')));
-        btn.appendChild(tx);
-        btn.addEventListener('click', function () { if (editing) return; toggleBranch(li, c, i, paint, opts); });
-        li.appendChild(btn);
-        if (editing) {
+        var main = el('div', 'ac-main');
+        main.appendChild(el('span', 'ac-n', String(i + 1)));
+        var tx = el('span', 'ac-t');
+        tx.appendChild(el('b', null, sec.title));
+        var sub = '';
+        if (s.why && s.why.length) sub = '「' + s.why[0] + '」에서 걸림';
+        else if (s.hit) sub = '질문에서 걸림';
+        if (sub) tx.appendChild(el('em', null, sub));
+        main.appendChild(tx);
+        li.appendChild(main);
+
+        if (S.editing) {
           var act = el('div', 'ac-row-act');
-          if (c.steps.length <= 1) {
-            act.appendChild(el('span', 'ac-row-note', '단계가 하나뿐이라 더 지울 수 없습니다.'));
-          } else {
-            var del = el('button', 'ac-mini del', '이 단계 삭제');
-            del.type = 'button';
-            del.setAttribute('aria-label', (i + 1) + '단계 ' + sector(s.id).title + ' 삭제');
-            del.addEventListener('click', function () { take(i, false); });
-            act.appendChild(del);
-            if (i < c.steps.length - 1) {
-              var below = el('button', 'ac-mini del below', '이 밑으로 모두 삭제');
-              below.type = 'button';
-              below.setAttribute('aria-label', (i + 1) + '단계 밑으로 ' + (c.steps.length - i - 1) + '단계 모두 삭제');
-              below.addEventListener('click', function () { take(i, true); });
-              act.appendChild(below);
-            }
-          }
+          var up = el('button', 'ac-ico');
+          up.type = 'button'; up.innerHTML = ICO_UP;
+          up.setAttribute('aria-label', (i + 1) + '단계 ' + sec.title + ' 위로 옮기기');
+          up.disabled = i === 0;
+          up.addEventListener('click', function () { move(i, -1); });
+          var down = el('button', 'ac-ico');
+          down.type = 'button'; down.innerHTML = ICO_DOWN;
+          down.setAttribute('aria-label', (i + 1) + '단계 ' + sec.title + ' 아래로 옮기기');
+          down.disabled = i === S.steps.length - 1;
+          down.addEventListener('click', function () { move(i, 1); });
+          var rep = el('button', 'ac-mini', '교체');
+          rep.type = 'button';
+          rep.setAttribute('aria-label', (i + 1) + '단계 ' + sec.title + ' 을(를) 다른 자료로 바꾸기');
+          rep.setAttribute('aria-pressed', String(S.pick === i && S.pickMode === 'replace'));
+          rep.addEventListener('click', function () {
+            if (S.pick === i && S.pickMode === 'replace') { S.pick = -1; paint(); return; }
+            S.pick = i; S.pickMode = 'replace'; paint();
+          });
+          var delb = el('button', 'ac-ico del');
+          delb.type = 'button'; delb.innerHTML = ICO_X;
+          delb.setAttribute('aria-label', (i + 1) + '단계 ' + sec.title + ' 빼기');
+          if (S.steps.length <= 1) delb.disabled = true;
+          delb.addEventListener('click', function () { del(i); });
+          act.appendChild(up); act.appendChild(down); act.appendChild(rep); act.appendChild(delb);
           li.appendChild(act);
         }
         ol.appendChild(li);
+
+        if (S.editing && S.pick === i && S.pickMode === 'replace') {
+          var wrapR = el('li', 'ac-pick-row');
+          wrapR.appendChild(picker(i));
+          ol.appendChild(wrapR);
+        }
+        if (S.editing) {
+          var ins = el('li', 'ac-ins');
+          var ib = el('button', 'ac-ins-b');
+          ib.type = 'button';
+          ib.setAttribute('aria-label', (i + 1) + '단계 뒤에 자료 넣기');
+          ib.innerHTML = ICO_PLUS + '<span>여기에 자료 넣기</span>';
+          var full = S.steps.length >= MAX;
+          if (full) {
+            ib.disabled = true;
+            ib.setAttribute('aria-label', '덱은 ' + MAX + '단계까지입니다');
+            clear(ib);
+            ib.appendChild(el('span', null, MAX + '단계까지 — 더 넣으려면 하나를 빼세요'));
+          } else {
+            ib.addEventListener('click', function () {
+              if (S.pick === i && S.pickMode === 'insert') { S.pick = -1; paint(); return; }
+              S.pick = i; S.pickMode = 'insert'; paint();
+            });
+          }
+          ins.appendChild(ib);
+          ol.appendChild(ins);
+          if (S.pick === i && S.pickMode === 'insert') {
+            var wrapI = el('li', 'ac-pick-row');
+            wrapI.appendChild(picker(i));
+            ol.appendChild(wrapI);
+          }
+        }
       });
       box.appendChild(ol);
 
-      if (undo && undo.length) {
+      if (S.steps.length === 1) {
+        box.appendChild(el('p', 'ac-hint', S.editing
+          ? '지금은 한 단계입니다. 「+ 여기에 자료 넣기」로 다른 자료를 이어 붙이세요.'
+          : '자료 1개로 끝나는 질문입니다. 「단계 편집」으로 다른 자료를 이어 붙일 수 있어요.'));
+      }
+
+      if (S.undo && S.undo.length) {
         var u = el('div', 'ac-undo');
-        u.appendChild(el('span', null, '단계를 뺐습니다.'));
+        u.appendChild(el('span', null, '단계를 바꿨습니다.'));
         var ub = el('button', null, '되돌리기');
         ub.type = 'button';
         ub.addEventListener('click', function () {
-          c.steps = undo.slice();
-          undo = null;
-          c.edited = true;
+          S.steps = S.undo.slice();
+          S.undo = null;
+          changed();
           paint();
-          if (opts.onEdit) opts.onEdit(c);
         });
         u.appendChild(ub);
         box.appendChild(u);
       }
 
-
-      var go = el('button', 'lv-c-go', opts.label || '이 흐름으로 열기');
-      go.type = 'button';
-      go.addEventListener('click', function () { if (opts.onPick) opts.onPick(c, go); });
-      box.appendChild(go);
+      var foot = el('div', 'lv-c-foot');
+      if (opts.saveLabel) {
+        var sv = el('button', 'lv-c-go', opts.saveLabel);
+        sv.type = 'button';
+        sv.addEventListener('click', function () {
+          if (opts.onSave) opts.onSave(api.deck(), sv);
+        });
+        foot.appendChild(sv);
+      }
+      if (opts.runLabel) {
+        var run = el('button', 'ac-run', opts.runLabel);
+        run.type = 'button';
+        run.addEventListener('click', function () { if (opts.onRun) opts.onRun(api.deck(), run); });
+        foot.appendChild(run);
+      }
+      if (foot.childNodes.length) box.appendChild(foot);
     }
 
     paint();
-    return box;
+    if (host) { clear(host); host.appendChild(box); }
+    return api;
   }
 
-  /* 노드에서 갈라지기 — 알고리즘(후보 추천)과 라이브(문장) 두 방식 모두 이 자리에서 */
-  function toggleBranch(li, c, i, paint, opts) {
-    var next = li.nextSibling;
-    if (next && next.classList && next.classList.contains('ac-branch')) { li.parentNode.removeChild(next); return; }
-    Array.prototype.forEach.call(li.parentNode.parentNode.querySelectorAll('.ac-branch'), function (n) { n.parentNode.removeChild(n); });
-
-    var box = el('div', 'ac-branch');
-    var hd = el('p', 'ac-b-hd');
-    hd.appendChild(el('b', null, (i + 1) + '단계 뒤에 이어 붙이기'));
-    hd.appendChild(el('span', null, '자료를 고르거나, 할 일을 한 문장으로 적으세요'));
-    box.appendChild(hd);
-
-    var tabs = el('div', 'ac-b-tabs');
-    tabs.setAttribute('role', 'tablist');
-    tabs.setAttribute('aria-label', '브랜치 전개 방식');
-    var body = el('div', 'ac-b-body');
-    var mode = 'algo';
-
-    function insert(step, limit) {
-      var at = i + 1;
-      var tail = limit ? [] : c.steps.slice(at);
-      c.steps = c.steps.slice(0, at).concat([step]).concat(tail.filter(function (s) { return s.id !== step.id; }));
-      c.edited = true;
-      paint();
-      if (opts.onEdit) opts.onEdit(c);
-    }
-    function insertMany(list) {
-      if (!list.length) return;
-      var at = i + 1;
-      var tail = c.steps.slice(at).filter(function (s) {
-        return !list.some(function (x) { return x.id === s.id; });
+  /* 추천 덱 묶음 — 부르는 쪽은 {label, onPick, onRun}만 넘긴다 */
+  function cards(host, list, opts) {
+    opts = opts || {};
+    clear(host);
+    (list || []).forEach(function (c) {
+      var e = editor(null, c, {
+        editable: true, editing: false,
+        saveLabel: opts.label || '내 덱에 저장',
+        onSave: function (d, btn) { if (opts.onPick) opts.onPick(d, btn); },
+        runLabel: opts.runLabel,
+        onRun: function (d, btn) { if (opts.onRun) opts.onRun(d, btn); }
       });
-      c.steps = c.steps.slice(0, at).concat(list).concat(tail);
-      c.edited = true;
-      paint();
-      if (opts.onEdit) opts.onEdit(c);
-    }
-
-    function paintBody() {
-      clear(body);
-      Array.prototype.forEach.call(tabs.children, function (b) {
-        var on = b.getAttribute('data-m') === mode;
-        b.setAttribute('aria-selected', String(on));
-        b.setAttribute('tabindex', on ? '0' : '-1');
-      });
-      if (mode === 'algo') {
-        var list = branches(c.steps, i);
-        list.forEach(function (b) {
-          var btn = el('button', 'ac-b');
-          btn.type = 'button';
-          var t = el('span', 'ac-b-t');
-          t.appendChild(el('b', null, sector(b.id).title));
-          t.appendChild(el('em', null, b.why));
-          btn.appendChild(t);
-          btn.appendChild(el('span', 'ac-b-add', '넣기'));
-          btn.addEventListener('click', function () { insert({ id: b.id, hit: true, why: [String(b.why).split(' · ')[0]] }); });
-          body.appendChild(btn);
-        });
-        if (!list.length) body.appendChild(el('p', 'ac-b-note', '이 노드에서 갈라지는 자료를 찾지 못했습니다. 「문장으로」에서 할 일을 적어 보세요.'));
-
-        var more = el('button', 'ac-b alt');
-        more.type = 'button';
-        var mt = el('span', 'ac-b-t');
-        mt.appendChild(el('b', null, '이 아래를 새로 짜기'));
-        mt.appendChild(el('em', null, '여기서부터 갈래 차례대로'));
-        more.appendChild(mt);
-        more.appendChild(el('span', 'ac-b-add', '다시 짜기'));
-        more.addEventListener('click', function () {
-          var tail = extend(c.steps, i, c.seq);
-          if (!tail.length) return;
-          c.steps = c.steps.slice(0, i + 1).concat(tail);
-          c.edited = true;
-          paint();
-          if (opts.onEdit) opts.onEdit(c);
-        });
-        body.appendChild(more);
-        return;
-      }
-
-      /* 라이브 — 할 일을 한 문장으로 적으면 그 말에 걸리는 섹터로 이어 붙인다 */
-      var live = el('div', 'ac-b-live');
-      var lab = el('label', 'sr', '이어 붙일 일 한 문장');
-      lab.setAttribute('for', 'acIn' + i + '-' + c.id);
-      var inp = document.createElement('input');
-      inp.type = 'text';
-      inp.className = 'ac-b-in';
-      inp.id = 'acIn' + i + '-' + c.id;
-      inp.maxLength = 120;
-      inp.autocomplete = 'off';
-      inp.placeholder = '예) 이 내담자에게 맞는 훈련 과정 찾기';
-      var go = el('button', 'ac-b-go', '이어 붙이기');
-      go.type = 'button';
-      var msg = el('p', 'ac-b-note');
-      go.addEventListener('click', function () {
-        var q = String(inp.value || '').trim();
-        if (!q) { msg.textContent = '이어 붙일 일을 한 문장으로 적어 주세요.'; inp.focus(); return; }
-        msg.textContent = '자료실 색인에서 찾는 중…';
-        load().then(function () {
-          var add = branchLive(c.steps, i, q, c.seq);
-          if (!add.length) { msg.textContent = '이 말에서 걸리는 자료를 찾지 못했습니다. 다른 말로 적어 보세요.'; return; }
-          insertMany(add);
-        }, function () { msg.textContent = '자료실 색인을 불러오지 못했어요. 잠시 뒤 다시 눌러 주세요.'; });
-      });
-      inp.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); go.click(); } });
-      live.appendChild(lab);
-      live.appendChild(inp);
-      live.appendChild(go);
-      body.appendChild(live);
-      body.appendChild(msg);
-      setTimeout(function () { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 40);
-    }
-
-    [['algo', '알고리즘'], ['live', '문장으로']].forEach(function (m) {
-      var b = el('button', null, m[1]);
-      b.type = 'button';
-      b.setAttribute('role', 'tab');
-      b.setAttribute('data-m', m[0]);
-      b.addEventListener('click', function () { mode = m[0]; paintBody(); });
-      tabs.appendChild(b);
+      host.appendChild(e.el);
     });
-    box.appendChild(tabs);
-    box.appendChild(body);
-    paintBody();
-    li.parentNode.insertBefore(box, li.nextSibling);
   }
 
   window.JCAssemble = {
     load: load,
     graph: function () { return st.graph; },
+    weights: weights,
+    mlc: mlcDoc,
+    MLC_SCHEMA: MLC_SCHEMA,
+    MLC_FEEDBACK: MLC_FEEDBACK,
     sector: sector,
+    toolOf: toolOf,
+    plan: plan,
     courses: courses,
     branches: branches,
     branchLive: branchLive,
     extend: extend,
     cards: cards,
+    editor: editor,
     typing: typing,
     tutorial: tutorial,
     shortQ: shortQ,
+    tierOf: tierOf,
+    tierName: tierName,
+    groupOf: groupOf,
+    groups: GROUPS,
+    stageOf: stageOf,
     SENT: SENT,
+    SUGGEST: [
+      '실업급여 얼마 받는지 계산',
+      '면접 압박 질문 대비',
+      '국비훈련 자부담 계산',
+      '초기상담 질문지',
+      '경력단절 내담자 첫 상담부터 제도·훈련·서류까지',
+      '청년 진로 미정 내담자 탐색',
+      '임금체불 내담자 법령 근거 찾기',
+      '이 회사 매출·직원 확인',
+      '중장년 전직 상담 순서 잡기',
+      '서류 탈락 이유 짚어 주기',
+      '심리검사 결과 해석',
+      '채용 사이트 골라 안내하기'
+    ],
     CHIPS: ['경력단절여성', '국민취업지원제도', '실업급여', '직무분석', '자격증', '훈련', '면접', '기업', '청년', '중장년', '상담', '이직', '신산업', '직업상담사'],
     CAT_OF: CAT_OF,
     CATS: CATS

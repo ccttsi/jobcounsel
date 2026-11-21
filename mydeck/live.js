@@ -1,17 +1,17 @@
-/* live.js — 마이덱 라이브 · 마이덱 알고리즘 (2026-11-20)
+/* live.js — 마이덱의 짜기·실행 화면 (2026-11-21)
  *
- * 두 꼭지
- *   · 마이덱 라이브   — 「하고 싶은 일」을 한 문장으로 적으면 핵심 키워드를 뽑아 완성덱 세 개.
- *   · 마이덱 알고리즘 — 개념·키워드를 하나만 눌러도 같은 세 갈래로 완성덱 세 개.
- *   짜는 일은 assemble.js가 맡고, 이 파일은 화면과 저장·실행(상담 OS 보드)을 맡는다.
+ * 하나의 화면
+ *   위에서 아래로 한 줄기다. ① 질문 한 칸(또는 아래 추천어) → ② 필요한 만큼만 짠 추천 덱(1~5칸)
+ *   → ③ 단계 편집(순서·삽입·교체·삭제) → ④ 저장·실행(상담 OS 보드) → ⑤ 내 덱 보관함·공간 꾸미기.
+ *   「마이덱 라이브」·「마이덱 알고리즘」으로 갈라 두던 모드 탭은 없앴다 — 입력은 한 칸뿐이다.
  *
- * 보드
- *   고른 덱의 단계마다 발문·체크·근거 카드를 세운다. 단계 이동은 한 줄 레일(deck-nav.js)로
- *   어느 단계로든 한 번에 건너뛴다(1→5→3→4→2). ←/→와 좌우로 밀기도 함께 듣는다.
+ * 짜는 일은 assemble.js(plan)가 맡고, 이 파일은 화면·저장·실행을 맡는다.
+ * 보드는 단계마다 발문·체크·근거 카드를 세우고, 한 줄 레일(deck-nav.js)로 어느 단계로든 건너뛴다.
  *
  * 지키는 선
  *   · 색인에 있는 것만 근거로 세운다. 수치·조문·기업명을 지어내지 않는다.
  *   · 화면·문서 밖으로 내보내는 단추(요약 복사)는 두지 않는다.
+ *   · 행동 기록(recordFeedbackSignal)은 이 기기 안에서만 쌓는다 — 네트워크로 보내지 않는다(1단계 준비).
  *   · 움직이는 값은 transform·opacity 뿐(DESIGN.md §2).
  */
 (function () {
@@ -22,9 +22,10 @@
   var MAX_STEPS = 12;
 
   var state = {
-    mode: 'decks', pick: 'algo', q: '', active: 0, built: null, pins: [],
-    deck: null, deckId: '', fixed: false, courses: [], saving: false, busy: false, checks: {},
-    savedWhere: '', graph: null, undoSteps: null, undoActive: 0, undoPins: null
+    q: '', plan: null, decks: [], active: 0, built: null, pins: [],
+    deck: null, deckId: '', fixed: false, builtFrom: '',
+    saving: false, busy: false, checks: {}, savedWhere: '', graph: null,
+    undoSteps: null, undoActive: 0, undoPins: null, editing: false
   };
   var dom = {};
   var typer = null;
@@ -69,6 +70,90 @@
     if (p.indexOf('../') === 0) return p;
     return '../' + p.replace(/^\//, '');
   }
+  function tierOf(id) { return A() ? A().tierOf(id) : 2; }
+
+  /* ================================================================ 입력이 뜻이 있는가
+     1글자·같은 글자 반복·낱말이 아닌 것은 짜지 않는다(추천도 기록도 남기지 않는다). */
+  function meaningfulQ(q) {
+    var s = String(q == null ? '' : q).replace(/\s+/g, ' ').trim();
+    if (s.length < 2) return false;
+    if (!/[가-힣a-zA-Z0-9]{2}/.test(s)) return false;
+    var flat = s.replace(/\s/g, '');
+    if (flat.length >= 1 && new RegExp('^(.)\\1+$').test(flat)) return false;
+    return true;
+  }
+
+  /* ================================================================ 행동 기록 (1단계 학습 대비)
+     · 유효한 행동만 — 2글자 이상의 실제 검색 의도가 있고, 저장·실행·편집이 실제로 끝났을 때.
+     · 세션마다 같은 사건은 한 번만.
+     · 지금은 메모리 + 이 기기(localStorage 고리 50개)에만 쌓는다. 네트워크 요청을 만들지 않는다. */
+  var FB_KEY = 'jc-mydeck-feedback-v1';
+  var FB_MAX = 50;
+  var fbSeen = {}, fbMem = [];
+  function fbSid() {
+    try {
+      var s = window.sessionStorage.getItem('jc-mydeck-sid');
+      if (!s) {
+        s = 's-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+        window.sessionStorage.setItem('jc-mydeck-sid', s);
+      }
+      return s;
+    } catch (e) { return 'mem'; }
+  }
+  function fbWrite(list) {
+    try { window.localStorage.setItem(FB_KEY, JSON.stringify(list.slice(-FB_MAX))); } catch (e) {}
+  }
+  function recordFeedbackSignal(ev) {
+    ev = ev || {};
+    var q = String(ev.q || '').replace(/\s+/g, ' ').trim();
+    if (!meaningfulQ(q)) return null;
+    var kind = ev.kind === 'open' ? 'open' : (ev.kind === 'edit' ? 'edit' : 'save');
+    var rec = ev.recommend || null;
+    var deck = ev.deck || null;
+    var ids = (deck && deck.ids) ? deck.ids : [];
+    var kept = ev.kept || [], added = ev.added || [], removed = ev.removed || [];
+    var key = [kind, q, ids.join(','), kept.join(','), added.join(','), removed.join(','), ev.opened || ''].join('|');
+    if (fbSeen[key]) return null;
+    fbSeen[key] = 1;
+    /* WITW MLC 행동 로그 — 의도(intent) · 유지(kept) · 삽입(inserted) · 삭제(removed) · 유효 저장(saved) */
+    var it = ev.intent || {};
+    var o = {
+      schema: (A() && A().MLC_FEEDBACK) || 'witw-mlc-feedback/1.0.0',
+      at: new Date().toISOString(),
+      sid: fbSid(),
+      action: kind,
+      saved: !!ev.saved,
+      intent: {
+        q: q.slice(0, 120),
+        keys: norm(q).split(' ').filter(Boolean).slice(0, 8),
+        mode: String((rec && rec.mode) || it.mode || 'flow'),
+        domains: (it.domains || []).slice(0, 5),
+        tools: (it.tools || []).slice(0, 6),
+        seeds: (it.seeds || []).slice(0, 4),
+        recommend: rec ? { mode: String(rec.mode || ''), ids: (rec.ids || []).slice(0, 12) } : null
+      },
+      deck: deck ? { name: String(deck.name || '').slice(0, 60), ids: ids.slice(0, 12) } : null,
+      opened: ev.opened ? String(ev.opened) : '',
+      kept: kept.slice(0, 12),
+      inserted: added.slice(0, 12),
+      removed: removed.slice(0, 12)
+    };
+    fbMem.push(o);
+    if (fbMem.length > FB_MAX) fbMem = fbMem.slice(-FB_MAX);
+    fbWrite(fbMem);
+    return o;
+  }
+  function fbList() {
+    if (fbMem.length) return fbMem.slice();
+    try {
+      var j = JSON.parse(window.localStorage.getItem(FB_KEY) || '[]');
+      return Array.isArray(j) ? j : [];
+    } catch (e) { return []; }
+  }
+  function fbClear() {
+    fbMem = []; fbSeen = {};
+    try { window.localStorage.removeItem(FB_KEY); } catch (e) {}
+  }
 
   /* ================================================================ 발문 (질문 틀) */
   var ASK = {
@@ -106,6 +191,12 @@
           '지급액·기한 계산 결과를 내담자에게 숫자로 보여 줬나요?'],
     triage: ['생계·주거, 심리·건강, 구직의지, 소득·재산, 최근 2년 취업경험 다섯 축을 확인했나요?',
              '위기 신호가 있으면 오늘 먼저 붙일 제도를 정했나요?'],
+    intake: ['접수 15분 안에 물어야 할 것을 정했나요?',
+             '유형(청년·중장년·경력보유여성 등)을 먼저 가늠했나요?'],
+    'policy-match': ['내담자 조건(나이·가구·소득·취업 상태)을 확인했나요?',
+                     '해당되는 지원 제도를 하나 이상 짚었나요?'],
+    'pay-calc': ['급여·퇴직금 계산에 필요한 값을 다 넣었나요?',
+                 '계산 결과를 내담자에게 숫자로 보여 줬나요?'],
     talk: ['내담자 말을 되받아 주기(재진술·감정 반영)로 먼저 확인했나요?',
            '막히는 지점(저항·침묵)에서 질문을 바꿔 봤나요?'],
     translator: ['내담자가 쓴 말을 정식 용어로 바꿔 한 번 되짚어 줬나요?',
@@ -198,13 +289,15 @@
       if (!other || other === 'flow') return;
       out.push({ id: other, w: p.w || 0, link: !!p.link, shared: (p.shared || []).slice(0, 3), basis: p.basis || '' });
     });
-    out.sort(function (x, y) { return y.w - x.w || (y.link ? 1 : 0) - (x.link ? 1 : 0); });
+    out.sort(function (x, y) {
+      return (tierOf(x.id) - tierOf(y.id)) || (y.w - x.w) || ((y.link ? 1 : 0) - (x.link ? 1 : 0));
+    });
     return out.slice(0, 2);
   }
 
   function notesFor(an, id) {
     var out = [];
-    (an.dict || []).forEach(function (d) {
+    ((an && an.dict) || []).forEach(function (d) {
       if (!d || (d.s || []).indexOf(id) < 0) return;
       var q = String(d.q || '').replace(/\s+/g, ''), c = String(d.c || '').replace(/\s+/g, '');
       if (q === c) return;
@@ -249,12 +342,13 @@
     deck.steps.forEach(function (s) { inDeck[s.id] = 1; });
     function bump(id, w, label) {
       if (!id || inDeck[id] || id === 'flow' || !toolOf(id)) return;
+      if (tierOf(id) === 3) return;                 /* 학습·연구용은 기본 추천에 넣지 않는다 */
       sc[id] = (sc[id] || 0) + w;
       if (label) { why[id] = why[id] || []; if (why[id].indexOf(label) < 0 && why[id].length < 3) why[id].push(label); }
     }
     var S = window.JCAssistSearch;
     (S.route(q, { limit: 8 }) || []).forEach(function (r) { bump(r.id, 2 + (r.score || 0) * 0.4, (r.why || [])[0] || ''); });
-    (an.dict || []).forEach(function (d) {
+    ((an && an.dict) || []).forEach(function (d) {
       var isAlias = String(d.q || '').replace(/\s+/g, '') !== String(d.c || '').replace(/\s+/g, '');
       (d.s || []).forEach(function (id, i) { bump(id, (isAlias ? 2.4 : 1.4) - i * 0.15, d.c); });
     });
@@ -318,66 +412,6 @@
     renderStats();
   }
 
-  /* ================================================================ 화면 — 모드 */
-  function mountMode() {
-    var host = $('lvModeHost');
-    if (!host) return;
-    clear(host);
-    if (!loggedIn()) { host.hidden = true; return; }
-    host.hidden = false;
-    var bar = el('div', 'lv-mode');
-    bar.setAttribute('role', 'tablist');
-    bar.setAttribute('aria-label', '마이덱 화면 고르기');
-    [['decks', '내 덱'], ['live', '덱 짜기']].forEach(function (m) {
-      var b = el('button', null, m[1]);
-      b.type = 'button';
-      b.setAttribute('role', 'tab');
-      b.setAttribute('aria-selected', String(state.mode === m[0]));
-      b.addEventListener('click', function () { setMode(m[0]); });
-      bar.appendChild(b);
-    });
-    host.appendChild(bar);
-  }
-
-  function setMode(m) {
-    if (m === 'live' && !loggedIn()) m = 'decks';
-    state.mode = m;
-    var deck = $('deckMode'), live = $('live'), hero = $('deckHero');
-    if (deck) deck.hidden = m !== 'decks';
-    if (hero) hero.hidden = m !== 'decks';
-    if (live) live.hidden = m !== 'live';
-    mountMode();
-    if (m === 'live') {
-      if (typer && state.pick === 'live') typer.start();
-      try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (e) {}
-    } else {
-      if (typer) typer.stop();
-    }
-  }
-
-  /* 내 덱 카드의 「라이브 실행」 — 그 덱을 고정해 두고 연다. */
-  function open(deckId, deckObj) {
-    if (!loggedIn()) { toast('덱 짜기는 로그인하면 쓸 수 있어요.'); return false; }
-    var d = deckObj || null;
-    state.deck = d || null;
-    state.deckId = deckId || '';
-    state.fixed = !!d;
-    state.q = '';
-    state.courses = [];
-    state.built = null;
-    state.active = 0;
-    state.pins = [];
-    state.undoSteps = null;
-    state.undoPins = null;
-    if (dom.ask) dom.ask.value = '';
-    setMode('live');
-    setPick('live');
-    mountFix();
-    showCourses(true);
-    setTimeout(focusAsk, 140);
-    return true;
-  }
-
   /* ================================================================ 화면 — 입력 */
   function mountFix() {
     var box = $('lvFix');
@@ -392,6 +426,8 @@
     b.addEventListener('click', function () {
       state.fixed = false; state.deck = null; state.deckId = '';
       mountFix();
+      setMsg('');
+      focusAsk();
     });
     box.appendChild(b);
   }
@@ -406,62 +442,17 @@
     try { dom.ask.focus({ preventScroll: true }); } catch (e) { try { dom.ask.focus(); } catch (e2) {} }
   }
 
-  function showCourses(on) {
-    var box = $('lvBox'), courses = $('lvCourses');
-    if (box) box.hidden = !on && !state.built;
-    if (!on && courses) courses.hidden = true;
-  }
-
-  /* 알고리즘(키워드 하나) ↔ 라이브(문장) */
-  function setPick(m) {
-    state.pick = m;
-    var field = $('lvField'), chips = $('lvChips'), go = $('lvGo'), tut = $('lvTut'), pick = $('lvPick');
-    var algo = m === 'algo';
-    if (field) field.hidden = algo;
-    if (chips) chips.hidden = !algo;
-    if (go) go.hidden = algo;
-    if (tut) tut.hidden = algo;
-    if (pick) Array.prototype.forEach.call(pick.querySelectorAll('button'), function (b) {
-      b.setAttribute('aria-selected', String(b.getAttribute('data-m') === m));
-    });
-    if (typer) { if (algo) typer.stop(); else typer.start(); }
-    setHero();
-    setMsg('');
-  }
-
-  /* 첫머리 — 지금 꼭지에 맞는 문장으로. 보드가 열리면 자리를 비킨다. */
-  function setHero() {
-    var hero = document.querySelector('.lv-hero');
-    if (!hero) return;
-    var kick = hero.querySelector('.kick .no');
-    var h1 = hero.querySelector('h1');
-    var algo = state.pick === 'algo';
-    if (kick) kick.textContent = algo ? '마이덱 알고리즘' : '마이덱 라이브';
-    if (h1) {
-      clear(h1);
-      if (algo) {
-        h1.appendChild(el('em', null, '개념 하나'));
-        h1.appendChild(document.createTextNode('만 눌러도 — 세 가지 완성덱'));
-      } else {
-        h1.appendChild(document.createTextNode('하고 싶은 일을 '));
-        h1.appendChild(el('em', null, '한 문장'));
-        h1.appendChild(document.createTextNode('으로 — 세 가지 완성덱'));
-      }
-    }
-    hero.hidden = !!state.built;
-  }
-
-  function renderChips() {
+  function renderSuggest() {
     var host = $('lvChips');
-    if (!host) return;
+    if (!host || !A()) return;
     clear(host);
-    (A().CHIPS || []).forEach(function (k) {
+    (A().SUGGEST || []).forEach(function (k) {
       var b = el('button', 'lv-chip', k);
       b.type = 'button';
       b.setAttribute('aria-pressed', String(state.q === k));
       b.addEventListener('click', function () {
+        if (dom.ask) dom.ask.value = k;
         state.q = k;
-        if (dom.ask) dom.ask.value = '';
         Array.prototype.forEach.call(host.children, function (x) { x.setAttribute('aria-pressed', String(x.textContent === k)); });
         generate(k);
       });
@@ -469,25 +460,29 @@
     });
   }
 
-  /* ================================================================ 세 가지 완성덱 */
+  /* ================================================================ 추천 덱 */
   function generate(q) {
     q = String(q == null ? state.q : q).replace(/\s+/g, ' ').trim();
     state.q = q;
+    var chips = $('lvChips');
+    if (chips) Array.prototype.forEach.call(chips.children, function (x) { x.setAttribute('aria-pressed', String(x.textContent === q)); });
     if (!q) { setMsg('하고 싶은 일을 한 문장으로 적어 주세요.', true); focusAsk(); return; }
+    if (!meaningfulQ(q)) { setMsg('한 글자보다는, 상담에서 하려는 일을 한 문장으로 적어 주세요.', true); focusAsk(); return; }
     if (state.busy) return;
+    if (state.fixed && state.deck) { runBoard(); return; }
     state.busy = true;
     if (dom.go) dom.go.disabled = true;
-    setMsg(state.fixed ? '자료실 색인에서 근거를 찾는 중…' : '문장에서 걸리는 자료실 섹터를 찾는 중…');
+    setMsg('자료실 색인에서 걸리는 자료를 찾는 중…');
     document.documentElement.setAttribute('data-jc-live', 'loading');
     A().load().then(function () {
       state.graph = A().graph();
       state.busy = false;
       if (dom.go) dom.go.disabled = false;
-      if (state.fixed && state.deck) { setMsg(''); runBoard(); return; }
-      var list = A().courses(q);
-      state.courses = list;
-      if (!list.length) {
-        setMsg('이 말에서 걸리는 자료실 섹터를 찾지 못했어요. 「경력단절 내담자 첫 상담」처럼 상담 상황을 적거나, 다른 개념을 눌러 보세요.', true);
+      var p = A().plan(q);
+      state.plan = p;
+      state.decks = p.decks || [];
+      if (!state.decks.length) {
+        setMsg('이 말에서 걸리는 자료실 자료를 찾지 못했어요. 「경력단절 내담자 첫 상담」처럼 상담 상황을 적거나, 아래 예시를 눌러 보세요.', true);
         renderCourses();
         document.documentElement.setAttribute('data-jc-live', 'idle');
         return;
@@ -496,7 +491,7 @@
       renderCourses();
       document.documentElement.setAttribute('data-jc-live', 'ready');
       var host = $('lvCourses');
-      if (host && host.getBoundingClientRect().top > window.innerHeight * 0.72) {
+      if (host && host.getBoundingClientRect().top > window.innerHeight * 0.78) {
         try { host.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
       }
     }).catch(function () {
@@ -511,39 +506,60 @@
     var host = $('lvCourses');
     if (!host) return;
     clear(host);
-    if (state.fixed || !state.courses.length) { host.hidden = true; return; }
+    if (!state.decks.length) {
+      host.hidden = true;
+      var hero0 = document.querySelector('.lv-hero') || $('deckHero');
+      if (hero0) hero0.hidden = false;
+      return;
+    }
     host.hidden = false;
 
+    var single = !!(state.plan && state.plan.single);
+    var heroEl = document.querySelector('.lv-hero') || $('deckHero');
+    if (heroEl) heroEl.hidden = true;      /* 결과가 나오면 첫머리는 비킨다 — 입력과 결과가 한 화면에 */
+
     var hd = el('p', 'lv-c-hd');
-    hd.appendChild(el('b', null, '이렇게 세 가지로 짰어요'));
-    hd.appendChild(el('span', null, '단계를 누르면 갈라지는 자료가 열립니다 · 하나를 고르면 내 덱에 저장하고 상담 OS로 엽니다'));
+    hd.appendChild(el('b', null, single ? '이 질문은 자료 하나로 끝납니다' : '질문에 맞춰 ' + state.decks[0].steps.length + '단계로 짰어요'));
+    hd.appendChild(el('span', null, single
+      ? '한 칸으로 충분한 질문입니다 · 필요하면 「단계 편집」으로 이어 붙이세요'
+      : '현장에서 바로 쓰는 자료만 골랐습니다 · 단계를 고치고 내 덱에 저장하세요'));
     host.appendChild(hd);
 
     var wrap = el('div', 'lv-cards');
-    A().cards(wrap, state.courses, { label: '이 덱으로 열기', onPick: pickCourse });
+    state.decks.forEach(function (c) {
+      var orig = c.steps.map(function (s) { return s.id; });
+      var ed = A().editor(null, c, {
+        editable: true, editing: false,
+        saveLabel: '이 덱으로 열기',
+        onSave: function (d, btn) { pickCourse(d, btn, c, orig); }
+      });
+      wrap.appendChild(ed.el);
+    });
     host.appendChild(wrap);
 
     var foot = el('p', 'lv-c-why');
-    foot.appendChild(document.createTextNode('근거는 자료실 색인과 시너지 지도에서만 가져왔습니다. 단계를 눌러 다른 자료로 바꾸거나 아래를 다시 짤 수 있습니다.'));
+    foot.appendChild(document.createTextNode('실용성 기준 — 계산·진단·법령·서류·면접처럼 상담 현장에서 바로 쓰는 자료가 먼저입니다. 데이컴·파슨스·이론 위키·보고서 서재·대학원 같은 학습·연구용은 질문에서 직접 꺼낼 때만 넣습니다. 근거는 자료실 색인과 시너지 지도에서만 가져왔습니다.'));
     host.appendChild(foot);
   }
 
   /* 고른 덱 → 내 덱에 저장 → 상담 OS 보드 */
-  function pickCourse(c, btn) {
+  function pickCourse(d, btn, course, origIds) {
     if (state.saving) return;
     var D = store();
     if (!D) { setMsg('저장 도구를 불러오지 못했어요. 화면을 새로 열어 주세요.', true); return; }
-    var steps = c.steps.map(function (s) {
+    var steps = (d.steps || []).map(function (s) {
       var sec = secOf(s.id);
       return { id: s.id, no: sec.no, title: sec.title, badge: sec.badge };
     });
+    if (!steps.length) { setMsg('덱에 단계가 없습니다.', true); return; }
+    var name = d.name || course.name || '내 상담 흐름';
     state.saving = true;
     var was = btn ? btn.textContent : '';
     if (btn) { btn.disabled = true; btn.textContent = '저장하는 중…'; }
-    D.save({ name: c.name, steps: steps }).then(function (r) {
+    D.save({ name: name, steps: steps }).then(function (r) {
       state.saving = false;
       if (btn) { btn.disabled = false; btn.textContent = was; }
-      var deck = r.deck || { id: '', name: c.name, steps: steps, where: 'local' };
+      var deck = r.deck || { id: '', name: name, steps: steps, where: 'local' };
       state.deck = deck;
       state.deckId = deck.id;
       state.fixed = false;
@@ -551,10 +567,20 @@
       state.active = 0;
       state.checks = {};
       state.pins = [];
-      state.undoSteps = null;
-      state.undoPins = null;
+      state.editing = false;
       state.savedWhere = r.source === 'server' ? 'server' : 'session';
+      var ids = steps.map(function (s) { return s.id; });
+      recordFeedbackSignal({
+        kind: 'save', saved: true, q: state.q,
+        intent: state.plan ? state.plan.mlc.intent : null,
+        recommend: { mode: (course && course.kind) || 'flow', ids: origIds || ids },
+        deck: { name: name, ids: ids },
+        kept: ids.filter(function (id) { return (origIds || ids).indexOf(id) >= 0; }),
+        added: ids.filter(function (id) { return (origIds || ids).indexOf(id) < 0; }),
+        removed: (origIds || []).filter(function (id) { return ids.indexOf(id) < 0; })
+      });
       toast(r.source === 'server' ? '내 계정의 마이덱에 저장했어요.' : '이 창에 저장했어요. 창을 닫으면 초기화됩니다.');
+      decksChanged();
       renderCourses();
       runBoard();
     }, function (e) {
@@ -584,7 +610,9 @@
       state.active = Math.min(state.active, state.built.stages.length - 1);
       loadPins();
       var box = $('lvBox'); if (box) box.hidden = true;
+      var sug = $('lvSug'); if (sug) sug.hidden = true;
       var courses = $('lvCourses'); if (courses) courses.hidden = true;
+      var modeBox = $('deckMode'); if (modeBox) modeBox.hidden = true;
       renderBoard();
       setMsg('');
       document.documentElement.setAttribute('data-jc-live', 'ready');
@@ -611,7 +639,7 @@
     var b = state.built;
 
     /* 보드가 열리면 첫머리는 비킨다 — 보드가 화면을 다 쓰게 */
-    var heroEl = document.querySelector('.lv-hero');
+    var heroEl = document.querySelector('.lv-hero') || $('deckHero');
     if (heroEl) heroEl.hidden = true;
 
     var top = el('div', 'lv-top');
@@ -623,14 +651,32 @@
     top.appendChild(hd);
 
     var toolsRow = el('div', 'lv-tools');
+    var editB = el('button', 'lv-tool', state.editing ? '편집 닫기' : '덱 편집');
+    editB.type = 'button';
+    editB.setAttribute('aria-expanded', String(state.editing));
+    editB.setAttribute('aria-controls', 'lvEdit');
+    editB.addEventListener('click', function () {
+      state.editing = !state.editing;
+      editB.textContent = state.editing ? '편집 닫기' : '덱 편집';
+      editB.setAttribute('aria-expanded', String(state.editing));
+      renderEditor();
+    });
+    toolsRow.appendChild(editB);
+
     var again = el('button', 'lv-tool', '근거 다시 찾기');
     again.type = 'button';
     again.addEventListener('click', function () { runBoard(); });
     toolsRow.appendChild(again);
-    var back = el('button', 'lv-tool', '다른 덱 짜기');
+
+    var back = el('button', 'lv-tool', '다른 질문으로');
     back.type = 'button';
     back.addEventListener('click', backToInput);
     toolsRow.appendChild(back);
+
+    var toDecks = el('button', 'lv-tool', '내 덱에서 보기');
+    toDecks.type = 'button';
+    toDecks.addEventListener('click', function () { setMode('decks'); });
+    toolsRow.appendChild(toDecks);
     top.appendChild(toolsRow);
 
     var keys = el('p', 'lv-keys');
@@ -658,6 +704,12 @@
     top.appendChild(saved);
     host.appendChild(top);
 
+    var edit = el('div', 'lv-edit');
+    edit.id = 'lvEdit';
+    edit.hidden = !state.editing;
+    host.appendChild(edit);
+    renderEditor();
+
     host.appendChild(window.JCDeckNav.make(b.deck, state.active, setActive));
 
     var pins = el('div', 'lv-pins');
@@ -676,6 +728,54 @@
     window.JCDeckNav.context(b.deck, state.active);
   }
 
+  /* 보드 안의 덱 편집기 — 저장하면 그 덱을 덮어쓰고 보드를 같은 자리에서 다시 세운다 */
+  function renderEditor() {
+    var host = $('lvEdit');
+    if (!host || !A()) return;
+    clear(host);
+    if (!state.editing || !state.deck) { host.hidden = true; return; }
+    host.hidden = false;
+    var deck = state.deck;
+    var orig = deck.steps.map(function (s) { return s.id; });
+    A().editor(host, deck, {
+      editable: true, editing: true, hideTitle: true,
+      saveLabel: '이 순서로 덮어쓰기',
+      onSave: function (d, btn) {
+        if (!store()) return;
+        var steps = (d.steps || []).map(function (s) {
+          var sec = secOf(s.id);
+          return { id: s.id, no: sec.no, title: sec.title, badge: sec.badge };
+        });
+        if (!steps.length) { toast('덱에 단계가 없습니다.'); return; }
+        btn.disabled = true;
+        btn.textContent = '저장하는 중…';
+        store().save({ id: deck.id, name: deck.name, steps: steps, where: deck.where }).then(function (r) {
+          var saved = r.deck || { id: deck.id, name: deck.name, steps: steps, where: deck.where };
+          state.deck = saved;
+          state.deckId = saved.id || state.deckId;
+          state.editing = false;
+          var ids = steps.map(function (s) { return s.id; });
+          recordFeedbackSignal({
+            kind: 'edit', saved: true, q: state.q,
+            intent: state.plan ? state.plan.mlc.intent : null,
+            recommend: { mode: 'mydeck', ids: orig },
+            deck: { name: saved.name, ids: ids },
+            kept: ids.filter(function (id) { return orig.indexOf(id) >= 0; }),
+            added: ids.filter(function (id) { return orig.indexOf(id) < 0; }),
+            removed: orig.filter(function (id) { return ids.indexOf(id) < 0; })
+          });
+          toast(r.source === 'server' ? '계정의 덱에 이 순서로 저장했어요.' : '이 창의 덱에 이 순서로 저장했어요.');
+          decksChanged();
+          runBoard(true);
+        }, function (e) {
+          btn.disabled = false;
+          btn.textContent = '이 순서로 덮어쓰기';
+          toast(store().errText ? store().errText(e) : '덱을 저장하지 못했어요.');
+        });
+      }
+    });
+  }
+
   function suggestBlock(list) {
     var sug = el('div', 'lv-sug');
     var open = false;
@@ -683,7 +783,7 @@
     shd.type = 'button';
     shd.setAttribute('aria-expanded', String(open));
     shd.appendChild(el('b', null, '덱에 없지만 걸리는 자료 ' + list.length + '곳'));
-    shd.appendChild(el('span', null, '누르면 이 덱의 단계로 더합니다'));
+    shd.appendChild(el('span', null, '누르면 이 덱의 마지막 단계로 더합니다'));
     shd.appendChild(el('i', 'lv-sug-ar', open ? '접기' : '보기'));
     sug.appendChild(shd);
     var body = el('div', 'lv-sug-body');
@@ -704,16 +804,19 @@
     state.pins = [];
     state.undoSteps = null;
     state.undoPins = null;
+    state.editing = false;
     var host = $('lvBoard');
     if (host) { clear(host); host.hidden = true; }
     window.JCDeckNav.clear();
     var box = $('lvBox'); if (box) box.hidden = false;
+    var sug = $('lvSug'); if (sug) sug.hidden = false;
     mountFix();
     if (state.q && dom.ask) dom.ask.value = state.fixed ? '' : state.q;
-    showCourses(true);
     renderCourses();
     if (typer) typer.paint();
-    setHero();
+    var heroEl = document.querySelector('.lv-hero') || $('deckHero');
+    if (heroEl) heroEl.hidden = false;
+    var modeBox = $('deckMode'); if (modeBox) modeBox.hidden = false;
     try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
   }
 
@@ -755,7 +858,7 @@
       var a = el('a', null, '열기');
       a.href = hrefOf(p.url, qShort());
       a.setAttribute('aria-label', p.title + ' 열기');
-      a.addEventListener('click', function () { window.JCDeckNav.context(state.built.deck, state.active); });
+      a.addEventListener('click', function () { opened(p.sector); window.JCDeckNav.context(state.built.deck, state.active); });
       row.appendChild(a);
       var x = el('button', null, '×');
       x.type = 'button';
@@ -769,6 +872,18 @@
       });
       row.appendChild(x);
       box.appendChild(row);
+    });
+  }
+
+  /* 자료를 실제로 열 때 — 어떤 검색 의도에서 어떤 자료를 열었는지 한 줄 남긴다(1단계 준비) */
+  function opened(id) {
+    if (!state.deck) return;
+    recordFeedbackSignal({
+      kind: 'open', saved: false, q: state.q, opened: id,
+      intent: state.plan ? state.plan.mlc.intent : null,
+      recommend: state.plan ? { mode: state.plan.single ? 'single' : 'flow', ids: (state.deck.steps || []).map(function (s) { return s.id; }) } : null,
+      deck: { name: state.deck.name, ids: (state.deck.steps || []).map(function (s) { return s.id; }) },
+      kept: (state.deck.steps || []).map(function (s) { return s.id; })
     });
   }
 
@@ -796,64 +911,6 @@
     setActive(state.active + d);
   }
 
-  /* 덱에서 단계 빼기 — 하나만 빼거나, 그 밑으로 이어지는 단계를 한꺼번에 뺀다.
-     저장한 덱이면 그대로 저장하고(계정/이 창) 보드를 같은 자리에서 다시 세운다.
-     바로 한 번 되돌릴 수 있게 빼기 전 모양을 들고 있는다. 최소 한 단계는 남긴다. */
-  function deckDelete(i, below) {
-    var D = store();
-    var deck = state.deck;
-    if (!D || !deck || !deck.steps || !deck.steps.length) return;
-    var steps = deck.steps.slice();
-    if (below ? i >= steps.length - 1 : steps.length <= 1) return;
-    var next = below ? steps.slice(0, i + 1) : steps.slice(0, i).concat(steps.slice(i + 1));
-    var dropped = steps.length - next.length;
-    var at = state.active;
-    var pins = state.pins.slice();
-    D.save({ id: deck.id, name: deck.name, steps: next, where: deck.where }).then(function (r) {
-      var saved = r.deck || { id: deck.id, name: deck.name, steps: next, where: deck.where };
-      state.undoSteps = steps;
-      state.undoActive = at;
-      state.undoPins = pins;
-      state.deck = saved;
-      state.deckId = saved.id || state.deckId;
-      /* 고정한 근거의 단계 번호를 새 순서에 맞춘다(빠진 단계의 고정은 함께 걷힌다) */
-      state.pins = pins.map(function (p) {
-        if (p.st === i) return null;
-        if (p.st > i) return below ? null : { k: p.k, st: p.st - 1, title: p.title, url: p.url, sector: p.sector, sectorTitle: p.sectorTitle, why: p.why };
-        return p;
-      }).filter(Boolean);
-      savePins();
-      state.active = Math.min(at, next.length - 1);
-      state.checks = {};
-      toast(dropped + '단계를 덱에서 뺐어요. ' + (r.source === 'server' ? '계정의 덱에 저장했습니다.' : '이 창의 덱에 저장했습니다.'));
-      runBoard(true);
-    }, function (e) {
-      toast(D.errText ? D.errText(e || {}) : '단계를 빼지 못했어요.');
-    });
-  }
-
-  /* 방금 뺀 단계를 되돌린다 — 빼기 전 모양 그대로 저장하고 같은 자리로 돌아간다 */
-  function deckRestore() {
-    var D = store();
-    var deck = state.deck;
-    if (!D || !deck || !state.undoSteps || !state.undoSteps.length) return;
-    var steps = state.undoSteps, at = state.undoActive, pins = state.undoPins || [];
-    D.save({ id: deck.id, name: deck.name, steps: steps, where: deck.where }).then(function (r) {
-      state.deck = r.deck || { id: deck.id, name: deck.name, steps: steps, where: deck.where };
-      state.deckId = state.deck.id || state.deckId;
-      state.undoSteps = null;
-      state.undoPins = null;
-      state.pins = pins;
-      savePins();
-      state.active = Math.min(at, steps.length - 1);
-      state.checks = {};
-      toast('단계를 되돌렸어요.');
-      runBoard(true);
-    }, function (e) {
-      toast(D.errText ? D.errText(e || {}) : '되돌리지 못했어요.');
-    });
-  }
-
   function renderPanel() {
     var host = $('lvPanel');
     if (!host || !state.built) return;
@@ -871,7 +928,7 @@
     var open = el('a', 'lv-open-sec', '섹터 열기');
     open.href = pathHref(st.sec.path) + '?q=' + encodeURIComponent(qShort());
     open.setAttribute('aria-label', st.title + ' 섹터를 「' + qShort() + '」로 열기');
-    open.addEventListener('click', function () { window.JCDeckNav.context(state.built.deck, state.active); });
+    open.addEventListener('click', function () { opened(st.id); window.JCDeckNav.context(state.built.deck, state.active); });
     sub.appendChild(document.createTextNode(' — '));
     sub.appendChild(open);
     host.appendChild(sub);
@@ -923,7 +980,7 @@
       var act = el('div', 'lv-ev-act');
       var sa = el('a', null, '이 섹터에서 「' + qShort() + '」 찾기');
       sa.href = pathHref(st.sec.path) + '?q=' + encodeURIComponent(qShort());
-      sa.addEventListener('click', function () { window.JCDeckNav.context(state.built.deck, state.active); });
+      sa.addEventListener('click', function () { opened(st.id); window.JCDeckNav.context(state.built.deck, state.active); });
       act.appendChild(sa);
       evs.appendChild(act);
     } else {
@@ -965,39 +1022,6 @@
     }
 
     host.appendChild(body);
-
-    /* 단계 빼기 — 지금 단계가 흐름에 맞지 않으면 덱에서 뺀다 */
-    var edit = el('div', 'lv-deck-edit');
-    if (b.stages.length <= 1) {
-      edit.appendChild(el('span', 'lv-deck-tx', '덱에 남은 단계가 하나뿐이라 더 뺄 수 없습니다.'));
-    } else {
-      edit.appendChild(el('span', 'lv-deck-tx', '지금 ' + (state.active + 1) + ' / ' + b.stages.length +
-        '단계 — 이 단계가 흐름에 맞지 않으면 덱에서 뺍니다.'));
-      var delOne = el('button', 'lv-deck-del', '이 단계 삭제');
-      delOne.type = 'button';
-      delOne.setAttribute('aria-label', (state.active + 1) + '단계 ' + st.title + ' 삭제');
-      delOne.addEventListener('click', function () { deckDelete(state.active, false); });
-      edit.appendChild(delOne);
-      if (state.active < b.stages.length - 1) {
-        var delBelow = el('button', 'lv-deck-del below', '이 밑으로 모두 삭제');
-        delBelow.type = 'button';
-        delBelow.setAttribute('aria-label', (state.active + 1) + '단계 밑으로 ' + (b.stages.length - state.active - 1) + '단계 모두 삭제');
-        delBelow.addEventListener('click', function () { deckDelete(state.active, true); });
-        edit.appendChild(delBelow);
-      }
-    }
-    host.appendChild(edit);
-
-    if (state.undoSteps && state.undoSteps.length) {
-      var undoBox = el('div', 'ac-undo');
-      undoBox.appendChild(el('span', null, '덱에서 뺀 단계는 한 번 되돌릴 수 있습니다.'));
-      var ub = el('button', null, '되돌리기');
-      ub.type = 'button';
-      ub.setAttribute('aria-label', '방금 뺀 단계 되돌리기');
-      ub.addEventListener('click', deckRestore);
-      undoBox.appendChild(ub);
-      host.appendChild(undoBox);
-    }
 
     var nav = el('div', 'lv-nav');
     var prev = el('button', null, '‹ 이전');
@@ -1064,7 +1088,7 @@
     var a = el('a', null, '근거 열기');
     a.href = hrefOf(c.url, qShort());
     a.setAttribute('aria-label', c.title + ' 근거 열기');
-    a.addEventListener('click', function () { window.JCDeckNav.context(state.built.deck, state.active); });
+    a.addEventListener('click', function () { opened(c.sector); window.JCDeckNav.context(state.built.deck, state.active); });
     act.appendChild(a);
     var pin = el('button', null, isPinned(c) ? '고정됨' : '고정');
     pin.type = 'button';
@@ -1119,12 +1143,70 @@
       state.deck = saved;
       state.deckId = saved.id;
       toast('「' + s.title + '」을(를) ' + (r.source === 'server' ? '내 계정의 덱' : '이 창의 덱') + '에 ' + steps.length + '단계로 더했어요.');
+      decksChanged();
       runBoard(true);
     }, function (e) {
       btn.disabled = false;
       btn.textContent = '덱에 추가';
       toast(store().errText ? store().errText(e) : '덱에 더하지 못했어요.');
     });
+  }
+
+  /* ================================================================ 밖에서 부르는 자리 */
+  /* 내 덱 카드의 「실행」 — 그 덱을 고정해 두고, 근거를 찾을 문장을 받는다 */
+  function open(deckId, deckObj) {
+    if (!loggedIn()) { toast('마이덱은 로그인하면 쓸 수 있어요.'); return false; }
+    state.deck = deckObj || null;
+    state.deckId = deckId || '';
+    state.fixed = !!deckObj;
+    state.q = '';
+    state.plan = null;
+    state.decks = [];
+    state.built = null;
+    state.active = 0;
+    state.pins = [];
+    state.editing = false;
+    state.undoSteps = null;
+    state.undoPins = null;
+    if (dom.ask) dom.ask.value = '';
+    var host = $('lvBoard'); if (host) { clear(host); host.hidden = true; }
+    var box = $('lvBox'); if (box) box.hidden = false;
+    var sug = $('lvSug'); if (sug) sug.hidden = false;
+    var courses = $('lvCourses'); if (courses) courses.hidden = true;
+    var heroEl = document.querySelector('.lv-hero') || $('deckHero');
+    if (heroEl) heroEl.hidden = false;
+    var modeBox = $('deckMode'); if (modeBox) modeBox.hidden = false;
+    mountFix();
+    renderCourses();
+    if (typer) typer.paint();
+    setMsg('「' + (deckObj && deckObj.name ? deckObj.name : '이 덱') + '」의 근거를 찾을 문장을 적어 주세요.');
+    try { $('live').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    setTimeout(focusAsk, 160);
+    return true;
+  }
+
+  function decksChanged() {
+    try { window.dispatchEvent(new Event('jc-decks-changed')); } catch (e) {}
+  }
+
+  function setMode(m) {
+    var modeBox = $('deckMode');
+    if (modeBox) modeBox.hidden = false;
+    var target = m === 'decks' ? $('space') : $('live');
+    if (!target) return;
+    try { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    if (m !== 'decks') setTimeout(focusAsk, 200);
+  }
+
+  /* ================================================================ 튜토리얼 */
+  function startTutorial() {
+    if (!A()) return;
+    A().tutorial([
+      { el: $('lvField'), title: '① 할 일을 한 문장으로', body: '상담에서 하려는 일을 그대로 적으세요. 한 자료로 끝나는 질문이면 1칸, 여러 단계가 필요하면 2~5칸으로 짭니다.' },
+      { el: $('lvSug'), title: '② 뭘 물을지 모르겠으면', body: '아래 예시를 누르면 그 말이 입력되고 곧바로 덱을 짭니다. 예시는 실제 상담 장면에서 자주 나오는 질문입니다.' },
+      { el: $('space'), title: '③ 내 덱', body: '추천받은 덱은 「이 덱으로 열기」로 내 덱에 저장됩니다. 저장한 덱은 리허설·실행·편집·이름 바꾸기를 할 수 있습니다.' },
+      { el: $('diyBtn'), title: '④ 공간 꾸미기', body: '내 덱의 겉모양을 바꿉니다. 여섯 요소를 테마(밝게·세피아·어둡게)마다 따로 저장합니다.' }
+    ]);
   }
 
   /* ================================================================ 시작 */
@@ -1143,14 +1225,13 @@
     if (dom.go) dom.go.addEventListener('click', function () { generate(); });
 
     var tut = $('lvTut');
-    if (tut) tut.addEventListener('click', function () {
-      var target = state.pick === 'algo' ? $('lvChips') : $('lvField');
-      if (target) A().tutorial(target);
-    });
+    if (tut) tut.addEventListener('click', startTutorial);
 
-    var pick = $('lvPick');
-    if (pick) Array.prototype.forEach.call(pick.querySelectorAll('button'), function (b) {
-      b.addEventListener('click', function () { setPick(b.getAttribute('data-m')); });
+    var nb = $('newBtn');
+    if (nb) nb.addEventListener('click', function () {
+      backToInput();
+      try { $('live').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+      setTimeout(focusAsk, 220);
     });
 
     window.JCDeckNav.key(document, 9999, function () { return state.active; }, function (i) { setActive(i); });
@@ -1160,22 +1241,29 @@
 
   function boot() {
     bind();
-    renderChips();
-    setPick(state.pick);
-    mountMode();
+    renderSuggest();
+    mountFix();
+    if (typer) typer.start();
     var live = $('live');
-    if (live) live.hidden = true;
-    if (state.mode === 'live' && !loggedIn()) setMode('decks');
-    if (location.hash === '#live' && loggedIn()) setMode('live');
+    if (live) live.hidden = false;
+    var board = $('lvBoard');
+    if (board) board.hidden = true;
   }
 
   window.JCDeckLive = {
     open: open,
     setMode: setMode,
-    pick: function (m) { setPick(m === 'algo' ? 'algo' : 'live'); },
+    pick: function () {},
     toDecks: function () { setMode('decks'); },
     ready: function () { return !!window.JCAssistSearch && window.JCAssistSearch.ready(); },
-    state: function () { return { mode: state.mode, pick: state.pick, courses: state.courses.length, built: !!state.built, active: state.active }; }
+    generate: generate,
+    tutorial: startTutorial,
+    feedback: recordFeedbackSignal,
+    feedbackList: fbList,
+    feedbackClear: fbClear,
+    state: function () {
+      return { q: state.q, single: !!(state.plan && state.plan.single), courses: state.decks.length, built: !!state.built, active: state.active, editing: state.editing };
+    }
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

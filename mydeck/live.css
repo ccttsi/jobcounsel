@@ -535,3 +535,150 @@ textarea.lv-ask:focus,textarea.lv-ask:focus-visible{
   .lv-go,.lv-tut,.lv-c-go,.dk-step,.dk-mv button,.lv-mode button,.lv-ev,.lv-ph{transition:none}
   .lv-go:active,.lv-c-go:active,.dk-step:active,.dk-mv button:active{transform:none}
 }
+/* ================================================================ 마이덱 빌더·편집기 (2026-11-21)
+   질문 한 칸 → 추천어 → 유동 덱 → 편집(순서·삽입·교체·삭제) → 저장·실행.
+   편집 단추는 44px, 상자 안 글자는 테두리에 붙지 않게 좌우 10~14px의 호흡을 둔다(DESIGN.md §1-5). */
+
+/* 입력칸 아래 안내 한 줄 */
+.lv-help{margin:0;font-size:13px;line-height:1.6;color:var(--muted);font-weight:650}
+.lv-help b{color:var(--ink);font-weight:750}
+
+/* 하단 추천어 — 뭘 물을지 모르는 사람을 위한 한 줄 */
+.lv-sugwrap{margin-top:12px}
+.lv-sug-hd{margin:0 0 8px;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px}
+.lv-sug-hd b{font-size:13.5px;font-weight:850;letter-spacing:-.01em}
+.lv-sug-hd span{font-size:12.5px;font-weight:650;color:var(--muted)}
+.lv-sugwrap .lv-chips{
+  display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;
+  padding:2px 2px 10px;scroll-snap-type:x proximity;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 18px),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 18px),transparent 100%);
+}
+.lv-sugwrap .lv-chips::-webkit-scrollbar{display:none}
+.lv-sugwrap .lv-chip{flex:0 0 auto;scroll-snap-align:start;max-width:86vw;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:900px){
+  .lv-sugwrap .lv-chips{flex-wrap:wrap;overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .lv-sugwrap .lv-chip{max-width:none}
+}
+
+/* 추천 덱 카드 — 머리(딱지·편집·단계 수) · 단계 줄 · 발 */
+.lv-course .lv-c-n{order:3}
+.lv-course .ac-edit{order:2}
+.lv-c-foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.ac-run{
+  min-height:48px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);background:var(--bg);
+  font-size:14.5px;font-weight:800;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;
+  transition:border-color .14s,transform .12s;
+}
+.ac-run:hover{border-color:var(--acc)}
+.ac-run:active{transform:scale(.985)}
+.ac-hint{
+  margin:4px 0 0;padding:10px 12px;border:1px dashed var(--line2);border-radius:10px;background:var(--soft);
+  font-size:12.5px;line-height:1.55;font-weight:650;color:var(--muted);
+}
+
+/* 단계 줄 — 번호 + 자료 이름 + 걸린 말 */
+.ac-row{display:block;min-width:0}
+.ac-main{display:flex;align-items:flex-start;gap:9px;min-height:44px;padding:7px 2px 3px}
+.ac-n{
+  flex:none;display:inline-grid;place-items:center;width:22px;height:22px;margin-top:1px;border-radius:7px;
+  background:var(--soft);color:var(--muted);font-size:11.5px;font-weight:850;letter-spacing:0;
+}
+.ac-t{flex:1;min-width:0;display:grid;gap:1px}
+.ac-t b{font-size:14.5px;font-weight:750;line-height:1.4;letter-spacing:-.015em;color:var(--ink);overflow-wrap:anywhere}
+.ac-t em{font-style:normal;font-size:11.5px;font-weight:650;line-height:1.45;color:var(--muted)}
+
+/* 편집 단추 — 위로·아래로·교체·빼기 (모두 44px) */
+.ac-row-act{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-end;padding:0 0 6px 31px}
+.ac-ico{
+  flex:none;width:44px;height:44px;display:inline-grid;place-items:center;padding:0;
+  border:1px solid var(--line2);border-radius:10px;background:var(--bg);color:var(--ink);
+  transition:border-color .14s,color .14s,transform .12s;
+}
+.ac-ico svg{width:18px;height:18px;display:block}
+.ac-ico:hover{border-color:var(--acc);color:var(--acc)}
+.ac-ico:active{transform:scale(.94)}
+.ac-ico[disabled]{opacity:.3;border-color:var(--line)}
+.ac-ico.del:hover{border-color:var(--bad);color:var(--bad)}
+.ac-row-act .ac-mini{min-height:44px;padding:0 13px}
+
+/* 단계 사이 「+ 여기에 자료 넣기」 */
+.ac-ins{list-style:none;padding:0 0 2px 31px}
+.ac-ins-b{
+  display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:44px;padding:0 12px;
+  border:1px dashed var(--line2);border-radius:10px;background:none;color:var(--muted);
+  font-size:12.5px;font-weight:800;transition:border-color .14s,color .14s,background-color .14s;
+}
+.ac-ins-b svg{width:15px;height:15px}
+.ac-ins-b:hover{border-color:var(--acc);color:var(--acc);background:var(--acc-soft)}
+.ac-ins-b[aria-expanded="true"]{border-style:solid;border-color:var(--acc);color:var(--acc);background:var(--acc-soft)}
+
+/* 자료 고르기 — 모든 자료를 분류·검색으로 */
+.ac-pick-row{list-style:none;padding:0 0 4px 0}
+.ac-pick{
+  display:grid;gap:8px;margin:2px 0 10px;padding:12px;
+  border:1px solid var(--line);border-radius:12px;background:var(--bg);
+}
+.ac-pick-hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ac-pick-hd b{flex:1;min-width:0;font-size:13.5px;font-weight:850}
+.ac-pick-hd span{font-size:11.5px;font-weight:650;color:var(--muted)}
+.ac-pick-x{
+  flex:none;width:44px;height:44px;display:inline-grid;place-items:center;padding:0;
+  border:1px solid var(--line2);border-radius:10px;background:var(--panel);color:var(--muted);
+}
+.ac-pick-x svg{width:17px;height:17px}
+.ac-pick-x:hover{border-color:var(--acc);color:var(--ink)}
+.ac-pick-q{
+  width:100%;min-width:0;min-height:44px;padding:0 12px;border:1px solid var(--line2);border-radius:10px;
+  background:var(--panel);color:var(--ink);font-size:15px;
+  -webkit-appearance:none;appearance:none;
+}
+.ac-pick-q:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 20%,transparent)}
+.ac-pick-cats{display:flex;flex-wrap:wrap;gap:6px}
+.ac-pick-cats button{
+  min-height:44px;padding:0 11px;border:1px solid var(--line2);border-radius:999px;background:var(--panel);
+  font-size:12.5px;font-weight:750;color:var(--muted);white-space:nowrap;
+}
+.ac-pick-cats button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--panel)}
+:root[data-theme="dark"] .ac-pick-cats button[aria-pressed="true"]{color:#0b0e15}
+.ac-pick-note{margin:0;font-size:11.5px;line-height:1.5;font-weight:650;color:var(--dim)}
+.ac-pick-list{display:grid;gap:5px;max-height:300px;overflow-y:auto;overscroll-behavior:contain;padding-right:2px}
+.ac-pick-b{
+  display:flex;align-items:center;gap:8px;width:100%;min-height:48px;padding:6px 10px;
+  border:1px solid var(--line);border-radius:10px;background:var(--panel);text-align:left;
+  transition:border-color .14s;
+}
+.ac-pick-b:hover{border-color:var(--acc)}
+.ac-pick-b[disabled]{opacity:.5}
+.ac-pick-t{flex:1;min-width:0;display:grid;gap:1px}
+.ac-pick-t b{font-size:13.5px;font-weight:750;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ac-pick-t em{font-style:normal;font-size:11px;font-weight:650;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ac-pick-add{flex:none;font-size:11.5px;font-weight:800;color:var(--acc);white-space:nowrap}
+.ac-pick-empty{margin:0;padding:10px;font-size:12.5px;line-height:1.55;color:var(--muted)}
+
+/* 보드 안의 편집기 — 보드 머리 아래에 펼쳐진다 */
+.lv-edit{display:block;min-width:0}
+.lv-edit .lv-course{margin:0}
+
+@media (max-width:420px){
+  .ac-row-act{padding-left:0;gap:5px}
+  .ac-row-act .ac-mini{padding:0 11px}
+  .ac-ins{padding-left:0}
+  .ac-pick{padding:10px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ac-ico,.ac-ins-b,.ac-pick-b,.ac-run,.ac-pick-cats button{transition:none}
+  .ac-ico:active,.ac-run:active{transform:none}
+}
+
+/* 넓은 화면에서 「추천 덱 짜기」가 화면을 가로지르지 않게 — 손이 닿는 폭만 쓴다 */
+@media (min-width:700px){
+  .lv-acts .lv-go{flex:0 1 300px}
+}
+
+/* 보드 머리의 도구 — 좁은 화면에서는 2×2로 앉혀 줄바꿈이 어긋나지 않게 */
+@media (max-width:560px){
+  .lv-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .lv-tools .lv-tool{width:100%}
+}

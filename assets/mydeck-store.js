@@ -45,7 +45,7 @@
   function cleanStep(x) {
     if (!x || typeof x !== 'object') return null;
     var id = String(x.id || '');
-    if (!/^[a-z0-9_]{2,20}$/.test(id)) return null;
+    if (!/^[a-z0-9][a-z0-9_-]{1,23}$/.test(id)) return null;
     return {
       id: id,
       no: String(x.no || '').slice(0, 4),

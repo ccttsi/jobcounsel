@@ -59,10 +59,11 @@
     document.documentElement.setAttribute('data-jc-auth', inn ? 'in' : 'out');
     var gate = $('deckGate');
     if (gate) gate.hidden = inn;
+    var live = $('live');
+    if (inn && live) live.hidden = false;
     if (!inn) {
-      closeSheet();                            /* 열려 있던 설명·리허설 시트도 함께 닿는다 */
-      var live = $('live'); if (live) live.hidden = true;
-      var host = $('lvModeHost'); if (host) host.hidden = true;
+      closeSheet();                            /* 열려 있던 설명·리허설·편집 시트도 함께 닫는다 */
+      var liveEl = $('live'); if (liveEl) liveEl.hidden = true;
     }
   }
 
@@ -91,11 +92,18 @@
     }
     var info = el('button', 'linkbtn', '설명');
     info.type = 'button';
+    info.setAttribute('data-info', '');
     info.setAttribute('aria-haspopup', 'dialog');
-    info.setAttribute('aria-label', '마이덱과 마이덱 라이브 설명');
+    info.setAttribute('aria-label', '마이덱 설명');
     info.addEventListener('click', function () { PICK = null; SHEET = 'about'; openSheet(); });
     acts.appendChild(info);
-    host.appendChild(acts);
+    var barBtns = $('barBtns');
+    if (barBtns) {
+      /* 다시 그릴 때마다 단추가 쌓이지 않게 — 이미 있으면 걷고 새로 붙인다 */
+      var old = barBtns.querySelector('[data-info]');
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+      barBtns.appendChild(info);
+    } else host.appendChild(acts);
   }
 
   function renderOffMsg() {
@@ -180,33 +188,39 @@
     card.appendChild(meta);
 
     var act = el('div', 'd-act');
-    var b1 = el('button', 'd-b go', '리허설');
+    /* 실행 — 이 덱으로 상담 OS 보드를 연다(로그인한 사람에게만) */
+    if (D.loggedIn()) {
+      var b0 = el('button', 'd-b go', '실행');
+      b0.type = 'button';
+      b0.setAttribute('aria-label', dk.name + ' 덱으로 실전 상담 OS 열기');
+      b0.addEventListener('click', function () {
+        if (window.JCDeckLive) window.JCDeckLive.open(dk.id, dk);
+        else toast('화면을 불러오지 못했어요. 화면을 새로 열어 주세요.');
+      });
+      act.appendChild(b0);
+    }
+    var b1 = el('button', 'd-b', '리허설');
     b1.type = 'button';
     b1.addEventListener('click', function () { openRehearsal(dk); });
     act.appendChild(b1);
 
-    /* 마이덱 라이브 — 로그인한 사람에게만 */
-    if (D.loggedIn()) {
-      var b0 = el('button', 'd-b live', '라이브 실행');
-      b0.type = 'button';
-      b0.setAttribute('aria-label', dk.name + ' 덱으로 실전 상담 OS 만들기');
-      b0.addEventListener('click', function () {
-        if (window.JCDeckLive) window.JCDeckLive.open(dk.id, dk);
-        else toast('라이브 화면을 불러오지 못했어요. 화면을 새로 열어 주세요.');
-      });
-      act.appendChild(b0);
-    }
+    /* 편집 — 순서 옮기기·자료 끼워 넣기·교체·빼기(추천 덱과 같은 편집기) */
+    var be = el('button', 'd-b', '편집');
+    be.type = 'button';
+    be.setAttribute('aria-label', dk.name + ' 덱의 순서와 자료 고치기');
+    be.addEventListener('click', function () { openEdit(dk); });
+    act.appendChild(be);
 
-    var b2 = el('button', 'd-b', '이름 바꾸기');
+    var b2 = el('button', 'd-b minor', '이름 바꾸기');
     b2.type = 'button';
     b2.addEventListener('click', function () { openRename(dk); });
-    var b3 = el('button', 'd-b bad', '삭제');
+    var b3 = el('button', 'd-b bad minor', '삭제');
     b3.type = 'button';
     b3.addEventListener('click', function () { askDelete(dk); });
     act.appendChild(b2);
     act.appendChild(b3);
     if (dk.where !== 'server' && D.loggedIn() && !D.serverOff()) {
-      var b4 = el('button', 'd-b', '계정으로 옮기기');
+      var b4 = el('button', 'd-b minor', '계정으로 옮기기');
       b4.type = 'button';
       b4.addEventListener('click', function () { adopt(dk); });
       act.appendChild(b4);
@@ -252,11 +266,45 @@
     ft.hidden = false;
     if (SHEET === 'rename') return renderRename(host, ft);
     if (SHEET === 'rehearsal') return renderRehearsal(host, ft);
+    if (SHEET === 'edit') return renderEdit(host, ft);
     if (SHEET === 'about') return renderAbout(host, ft);
   }
 
   function openRehearsal(dk) { PICK = dk; REH = 0; SHEET = 'rehearsal'; openSheet(); }
   function openRename(dk) { PICK = dk; SHEET = 'rename'; openSheet(); }
+  function openEdit(dk) { PICK = dk; SHEET = 'edit'; openSheet(); }
+
+  /* 덱 편집 — 추천 덱과 같은 편집기(순서·삽입·교체·삭제). 저장하면 그 덱을 덮어쓴다. */
+  function renderEdit(host, ft) {
+    $('sheetT').textContent = '덱 편집 — ' + PICK.name;
+    ft.hidden = true;
+    if (!window.JCAssemble) {
+      host.appendChild(el('p', 'diy-msg bad', '편집 도구를 불러오지 못했어요. 화면을 새로 열어 주세요.'));
+      return;
+    }
+    window.JCAssemble.editor(host, PICK, {
+      editable: true, editing: true, hideTitle: true,
+      saveLabel: '이 순서로 덮어쓰기',
+      onSave: function (d, btn) {
+        var steps = (d.steps || []).map(function (s) {
+          var sec = window.JCAssemble.sector(s.id);
+          return { id: s.id, no: sec.no, title: sec.title, badge: sec.badge };
+        });
+        if (!steps.length) { toast('덱에 단계가 없습니다.'); return; }
+        btn.disabled = true;
+        btn.textContent = '저장하는 중…';
+        D.save({ id: PICK.id, name: PICK.name, steps: steps, where: PICK.where }).then(function (r) {
+          toast(r.source === 'server' ? '계정의 덱에 이 순서로 저장했어요.' : '이 창의 덱에 이 순서로 저장했어요.');
+          closeSheet();
+          load();
+        }, function (e) {
+          btn.disabled = false;
+          btn.textContent = '이 순서로 덮어쓰기';
+          toast(D.errText(e || {}) || '덱을 저장하지 못했어요.');
+        });
+      }
+    });
+  }
 
   function renderRehearsal(host, ft) {
     var dk = PICK;
@@ -305,14 +353,10 @@
     ft.appendChild(prevB); ft.appendChild(nextB);
   }
 
-  /* 설명 — 「마이덱 알고리즘」과 「마이덱 라이브」를 꼭지로 나눠 본다(flow/의 설명과 같은 구성) */
+  /* 설명 — 마이덱의 한 줄기(질문 → 추천 → 편집 → 저장·실행)를 네 걸음으로 적는다 */
   function renderAbout(host, ft) {
     $('sheetT').textContent = '마이덱 설명';
-    var pick = el('div', 'lv-pick ab-tabs');
-    pick.setAttribute('role', 'tablist');
-    pick.setAttribute('aria-label', '설명 고르기');
     var body = el('div', 'about');
-    host.appendChild(pick);
     host.appendChild(body);
 
     function para(bold, rest) {
@@ -331,65 +375,28 @@
       });
       return ol;
     }
-    function openMode(m) {
-      closeSheet();
-      if (window.JCDeckLive) {
-        window.JCDeckLive.setMode('live');
-        if (window.JCDeckLive.pick) window.JCDeckLive.pick(m);
-      }
-    }
 
-    function paint() {
-      Array.prototype.forEach.call(pick.querySelectorAll('button'), function (b) {
-        var on = b.getAttribute('data-ab') === ABOUT;
-        b.setAttribute('aria-selected', String(on));
-        b.setAttribute('tabindex', on ? '0' : '-1');
+    body.appendChild(para('하고 싶은 일을 한 문장으로 적으면, 필요한 만큼만 덱으로 짭니다.', ' 상담에서 하려는 일을 그대로 적거나 아래 예시를 누르세요. 한 자료로 끝나는 질문인지, 여러 단계가 필요한 질문인지 먼저 판단합니다.'));
+    body.appendChild(steps([
+      ['질문 한 줄 또는 예시', '「실업급여 얼마 받는지 계산」처럼 적으면 1칸, 「경력단절 내담자 첫 상담부터 제도·훈련·서류까지」처럼 적으면 2~5칸으로 짭니다.'],
+      ['필요한 만큼만', '상담 현장에서 바로 쓰는 자료(계산·진단·법령·서류·면접 등)만 골라 실제로 이어지는 단계로 세웁니다. 데이컴·파슨스·이론 위키·보고서 서재·대학원 같은 학습·연구용은 질문에서 직접 꺼낼 때만 넣습니다.'],
+      ['단계 편집', '「단계 편집」에서 위로·아래로 옮기고, 단계 사이 「+ 여기에 자료 넣기」로 모든 자료를 골라 끼우고, 「교체」·「×」로 바꾸거나 뺍니다.'],
+      ['저장하고 실행', '「이 덱으로 열기」를 누르면 내 덱에 저장되고 상담 OS 보드(발문·체크·근거 카드)가 열립니다. 저장한 덱은 실행·리허설·편집·이름 바꾸기를 할 수 있고, 공간 꾸미기로 겉모양을 바꿉니다.']
+    ]));
+    var note = el('p', 'note');
+    note.appendChild(el('b', null, '덱에는 자료 이름과 순서만 담깁니다. '));
+    note.appendChild(document.createTextNode('내담자 이름·연락처는 적지 마세요. 근거는 자료실 색인과 시너지 지도에서만 가져오고, 수치·조문을 지어내지 않습니다.'));
+    body.appendChild(note);
+    body.appendChild(para('로그인한 사람에게만 보입니다.', ' 저장한 덱은 계정에 남아 다른 기기에서도 이어집니다.'));
+    if (D.loggedIn()) {
+      var go = el('button', 'primary', '덱 짜러 가기');
+      go.type = 'button';
+      go.addEventListener('click', function () {
+        closeSheet();
+        if (window.JCDeckLive) window.JCDeckLive.setMode('live');
       });
-      clear(body);
-      clear(ft);
-
-      if (ABOUT === 'algo') {
-        body.appendChild(para('개념 하나를 누르면 세 가지 완성덱.', ' 상담에서 하려는 일에 가까운 말을 하나만 고르면, 자료실 색인과 시너지 지도에서 걸리는 섹터로 서로 다른 세 가지 흐름을 짜 줍니다.'));
-        body.appendChild(steps([
-          ['개념 하나 고르기', '「경력단절여성」「직무분석」처럼 상담에서 하려는 일에 가까운 말을 하나 누릅니다.'],
-          ['세 흐름 고르기', '정석 적용형 · 실전 연습형 · 사례·법령 집중형 — 단계와 순서가 서로 다릅니다.'],
-          ['손보고 실행', '단계를 지워 덱을 다듬고, 마음에 드는 흐름으로 상담 OS 보드(발문·체크·근거 카드)를 엽니다.']
-        ]));
-        body.appendChild(para('로그인한 사람에게만 보입니다.', ' 저장한 덱은 계정에 남아 다른 기기에서도 이어집니다.'));
-        if (D.loggedIn()) {
-          var go = el('button', 'primary', '마이덱 알고리즘 열기');
-          go.type = 'button';
-          go.addEventListener('click', function () { openMode('algo'); });
-          ft.appendChild(go);
-        }
-        return;
-      }
-
-      body.appendChild(para('하고 싶은 일을 한 문장으로 적으면, 세 가지 흐름으로 짜 줍니다.', ' 자료실 색인·약어 사전·시너지 지도에서 걸리는 섹터를 찾아 순서를 세우고, 마음에 드는 하나를 고르면 곧바로 내 덱에 저장합니다.'));
-      body.appendChild(steps([
-        ['한 문장 적기', '「경력단절 내담자 첫 상담 흐름 짜기」처럼 상담에서 하려는 일을 그대로 적습니다.'],
-        ['세 흐름 고르기', '정석 적용형 · 실전 연습형 · 사례·법령 집중형 — 단계와 순서가 서로 다릅니다.'],
-        ['바로 실행', '고른 흐름은 내 덱에 저장되고, 그 덱으로 상담 OS 보드가 열립니다.']
-      ]));
-      body.appendChild(para('로그인한 사람에게만 보입니다.', ' 저장한 덱은 계정에 남아 다른 기기에서도 이어집니다.'));
-      if (D.loggedIn()) {
-        var live = el('button', 'primary', '마이덱 라이브 열기');
-        live.type = 'button';
-        live.addEventListener('click', function () { openMode('live'); });
-        ft.appendChild(live);
-      }
+      ft.appendChild(go);
     }
-
-    [['algo', '마이덱 알고리즘'], ['live', '마이덱 라이브']].forEach(function (m) {
-      var b = el('button', null, m[1]);
-      b.type = 'button';
-      b.setAttribute('role', 'tab');
-      b.setAttribute('data-ab', m[0]);
-      b.addEventListener('click', function () { ABOUT = m[0]; paint(); });
-      pick.appendChild(b);
-    });
-    paint();
-    /* 비로그인자는 아래에 둘 단추가 없다 — 빈 아래칸 띠가 남지 않게 접는다 */
     ft.hidden = !ft.childNodes.length;
   }
 
@@ -641,6 +648,8 @@
         function () { if (PICK && REH > 0) { REH--; renderSheet(); } },
         function () { if (PICK && REH < PICK.steps.length - 1) { REH++; renderSheet(); } });
     }
+    /* 화면 안에서 덱이 저장·수정·삭제되면 목록을 그 자리에서 다시 그린다 */
+    window.addEventListener('jc-decks-changed', function () { load(); });
     window.addEventListener('jc-sync-change', function () {
       var before = document.documentElement.getAttribute('data-jc-auth');
       var flipped = before !== (authIn() ? 'in' : 'out');
