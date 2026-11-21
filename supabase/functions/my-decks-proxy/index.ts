@@ -103,7 +103,7 @@ function cleanStep(x: unknown): Step | null {
   if (!x || typeof x !== 'object') return null;
   const o = x as Record<string, unknown>;
   const id = String(o.id || '');
-  if (!/^[a-z0-9_]{2,20}$/.test(id)) return null;
+  if (!/^[a-z0-9][a-z0-9_-]{1,23}$/.test(id)) return null;
   return {
     id,
     no: String(o.no || '').replace(/[^0-9]/g, '').slice(0, 4),
@@ -132,7 +132,7 @@ function cleanPrefs(v: unknown): Record<string, string> {
   const out: Record<string, string> = {};
   for (const k of STR_KEYS) {
     const val = String(o[k] || '');
-    if (/^[a-z0-9_]{2,20}$/.test(val)) out[k] = val;
+    if (/^[a-z0-9][a-z0-9_-]{1,23}$/.test(val)) out[k] = val;
   }
   for (const k of HEX_KEYS) {
     const val = String(o[k] || '').toUpperCase();

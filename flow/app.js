@@ -1134,16 +1134,10 @@
     renderDoneSheet(host, ft);
   }
 
-  /* 설명 — 「마이덱 알고리즘」과 「마이덱 라이브」를 꼭지로 나눠 본다 */
-  var ABOUT = 'algo';
+  /* 설명 — 마이덱(질문 한 줄 → 필요한 만큼 → 편집 → 저장·실행) 한 벌로 적는다 */
   function renderAbout(host, ft) {
     $('sheetT').textContent = '마이덱 설명';
-
-    var pick = el('div', 'lv-pick ab-tabs');
-    pick.setAttribute('role', 'tablist');
-    pick.setAttribute('aria-label', '설명 고르기');
     var body = el('div', 'ab-body');
-    host.appendChild(pick);
     host.appendChild(body);
 
     function para(bold, rest) {
@@ -1163,50 +1157,19 @@
       return ol;
     }
 
-    function paint() {
-      Array.prototype.forEach.call(pick.querySelectorAll('button'), function (b) {
-        var on = b.getAttribute('data-ab') === ABOUT;
-        b.setAttribute('aria-selected', String(on));
-        b.setAttribute('tabindex', on ? '0' : '-1');
-      });
-      clear(body); clear(ft);
-
-      if (ABOUT === 'algo') {
-        body.appendChild(para('마이덱 알고리즘 — 개념 하나를 누르면 세 가지 완성덱.', ' 상담에서 하려는 일에 가까운 말을 하나만 고르면, 자료실 색인과 시너지 지도에서 걸리는 섹터로 서로 다른 세 가지 흐름을 짜 줍니다.'));
-        body.appendChild(steps([
-          ['개념 하나 고르기', '「경력단절여성」「직무분석」처럼 상담에서 하려는 일에 가까운 말을 하나 누릅니다.'],
-          ['세 흐름 고르기', '정석 적용형 · 실전 연습형 · 사례·법령 집중형 — 단계와 순서가 서로 다릅니다.'],
-          ['바로 실행', '마음에 드는 흐름은 내 덱에 저장되고, 그 덱으로 상담 OS 보드(발문·체크·근거 카드)가 열립니다.']
-        ]));
-        body.appendChild(para('로그인한 사람에게만 보입니다.', ' 저장한 덱은 계정에 남아 다른 기기에서도 이어집니다.'));
-        var go = el('a', 'primary', '마이덱 열기');
-        go.href = '../mydeck/';
-        go.style.textDecoration = 'none';
-        go.style.display = 'inline-flex';
-        go.style.alignItems = 'center';
-        ft.appendChild(go);
-        return;
-      }
-
-      body.appendChild(para('로그인한 사람에게만 열리는 기능입니다.', ' 하고 싶은 일을 한 문장으로 적으면(예: 「경력단절 내담자 첫 상담 흐름 짜기」) 자료실 색인·약어 사전·시너지 지도에서 걸리는 섹터를 찾아 서로 다른 세 가지 흐름(정석 적용형 · 실전 연습형 · 사례·법령 집중형)으로 자동으로 짜 줍니다. 고른 하나는 내 덱에 바로 저장되고 상담 OS 보드로 이어집니다.'));
-      body.appendChild(para('이 화면의 저장 규칙 — ', '커스터마이징 마이덱 프리셋은 로그인한 상태에서 저장하면 계정 정보에 보관됩니다. 비로그인 상태에서는 창을 닫으면 초기화되며, 로그인하면 계정에 영구 저장됩니다.'));
-      var live = el('a', 'primary', '마이덱 라이브 열기');
-      live.href = window.JCDeck && window.JCDeck.loggedIn() ? '../mydeck/#live' : '../mydeck/';
-      live.style.textDecoration = 'none';
-      live.style.display = 'inline-flex';
-      live.style.alignItems = 'center';
-      ft.appendChild(live);
-    }
-
-    [['algo', '마이덱 알고리즘'], ['live', '마이덱 라이브']].forEach(function (m) {
-      var b = el('button', null, m[1]);
-      b.type = 'button';
-      b.setAttribute('role', 'tab');
-      b.setAttribute('data-ab', m[0]);
-      b.addEventListener('click', function () { ABOUT = m[0]; paint(); });
-      pick.appendChild(b);
-    });
-    paint();
+    body.appendChild(para('개념 하나 또는 목적 문장 하나로, 필요한 만큼만 덱을 짭니다.', ' 상담에서 하려는 일에 가까운 말을 누르거나 문장으로 적으면, 자료실 색인·약어 사전·시너지 지도에서 걸리는 자료를 찾아 1~5단계로 세웁니다.'));
+    body.appendChild(steps([
+      ['개념 하나 또는 문장', '「경력단절여성」「직무분석」처럼 말을 하나 누르거나, 「경력단절 내담자 첫 상담부터 제도·훈련·서류까지」처럼 적습니다.'],
+      ['필요한 만큼만', '한 자료로 끝나는 질문이면 1칸, 여러 단계가 필요하면 2~5칸으로 짭니다. 상담 현장에서 바로 쓰는 자료가 먼저이고, 데이컴·이론 위키 같은 학습·연구용은 질문에서 직접 꺼낼 때만 넣습니다.'],
+      ['손보고 실행', '단계의 순서를 옮기고, 자료를 끼워 넣고, 교체·삭제할 수 있습니다. 마음에 드는 덱은 내 덱에 저장되고 상담 OS 보드(발문·체크·근거 카드)로 이어집니다.']
+    ]));
+    body.appendChild(para('로그인한 사람에게만 보입니다.', ' 저장한 덱은 계정에 남아 다른 기기에서도 이어집니다.'));
+    var go = el('a', 'primary', '마이덱 열기');
+    go.href = '../mydeck/';
+    go.style.textDecoration = 'none';
+    go.style.display = 'inline-flex';
+    go.style.alignItems = 'center';
+    ft.appendChild(go);
   }
 
   function renderDoneSheet(host, ft) {
@@ -1473,7 +1436,7 @@
     var info = el('button', null, '설명');
     info.type = 'button';
     info.setAttribute('aria-haspopup', 'dialog');
-    info.setAttribute('aria-label', '마이덱과 마이덱 라이브 설명');
+    info.setAttribute('aria-label', '마이덱 설명');
     info.addEventListener('click', function () { openSheet('about'); });
     btns.appendChild(info);
     host.appendChild(btns);
@@ -1518,8 +1481,8 @@
     if (!HERO) HERO = { h1: h1.innerHTML, lede: lede.innerHTML, kick: kick ? kick.innerHTML : '' };
     if (back) {
       if (kick) kick.innerHTML = '<span>마이덱 · 실무</span>';
-      h1.innerHTML = '상담 덱을 <em>세 가지</em>로 짜기';
-      lede.innerHTML = '<b>개념 하나</b>를 누르거나 <b>목적 문장</b>을 한 줄 적으면, 자료실 색인에서 걸리는 섹터로 완성덱 세 개를 짓습니다. 덱의 중간 단계를 눌러 거기서 갈라지는 다음 자료를 <b>알고리즘·문장</b> 두 방식으로 이어 붙일 수 있습니다.';
+      h1.innerHTML = '상담 덱을 <em>필요한 만큼</em> 짜기';
+      lede.innerHTML = '<b>개념 하나</b>를 누르거나 <b>목적 문장</b>을 한 줄 적으면, 자료실 색인에서 걸리는 자료로 <b>1~5단계</b> 덱을 짓습니다. 한 자료로 끝나는 질문이면 한 칸으로 끝내고, 필요하면 단계를 직접 이어 붙입니다.';
     } else {
       if (kick) kick.innerHTML = HERO.kick;
       h1.innerHTML = HERO.h1;

@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "schema": "witw-mlc-weights/1.0.0",
+  "updatedAt": "",
+  "note": "마이덱 추천 가중치 — WITW MLC(mydk 시너지 지도)의 weight·practicality에 곱해 반영한다. 1단계 행동 로그 학습이 이 파일을 채우고, 비어 있으면 내장 기본값으로 돈다. sectors: {자료 id: 곱하는 값(0.4~2.2)}, pairs: {'a|b': 곱하는 값}. 없거나 비어 있어도 화면은 그대로 돈다.",
+  "sectors": {},
+  "pairs": {}
+}

@@ -18,8 +18,8 @@ document.documentElement.setAttribute('data-jc-auth',inn?'in':'out');})();
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
-<meta name="description" content="상담 플로우에서 만든 내 덱을 모아 두고, 순서대로 열어 보거나 리허설하고, 공간 꾸미기로 겉모양을 바꾸는 마이덱">
-<title>마이덱 · 내가 짠 상담 흐름</title>
+<meta name="description" content="상담에서 하려는 일을 한 문장으로 적으면 필요한 만큼만(1~5단계) 골라 주고, 순서·자료를 직접 고쳐 내 덱에 저장·실행·리허설하는 마이덱">
+<title>마이덱 · 질문 하나로 상담 덱</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -186,6 +186,7 @@ html[data-jc-auth="in"] #deckGate{display:none!important}
 .d-b.go{background:color-mix(in srgb,var(--d-ink,var(--ink)) 88%,var(--d-bg,var(--panel)));color:var(--d-bg,var(--panel));border-color:transparent}
 .d-b.live{border-color:color-mix(in srgb,var(--d-ink,var(--ink)) 46%,var(--d-bg,var(--panel)));font-weight:800}
 .d-b.bad{color:color-mix(in srgb,#a53a26 78%,var(--d-ink,var(--ink)))}
+.d-b.minor{font-size:13px;font-weight:650;border-style:dashed;color:var(--d-mut,var(--muted))}
 :root[data-theme="dark"] .d-b.bad{color:#ffb3a4}
 .empty{margin:0;padding:22px 14px;text-align:center;font-size:14.5px;line-height:1.65;color:var(--d-mut)}
 .empty b{color:var(--d-ink)}
@@ -263,8 +264,8 @@ html[data-jc-auth="in"] #deckGate{display:none!important}
 .about p b{color:var(--ink);font-weight:750}
 .about ol{margin:0;padding-left:18px;font-size:14px;line-height:1.66;color:var(--muted)}
 .about ol b{color:var(--ink);font-weight:750}
-/* 설명 시트의 꼭지 — 「마이덱 알고리즘」과 「마이덱 라이브」를 번갈아 본다(flow/와 같은 생김새) */
-.about .ab-tabs{justify-self:start;margin:0 0 2px}
+.about .note{margin:2px 0 0;padding:10px 12px;border:1px dashed var(--line2);border-radius:12px;background:var(--soft);font-size:13px;line-height:1.62;color:var(--muted)}
+.about .note b{color:var(--ink)}
 
 /* ---------- 토스트 ---------- */
 .toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom));transform:translate(-50%,14px);z-index:80;max-width:min(520px,calc(100% - 28px));
@@ -285,13 +286,13 @@ html[data-jc-auth="in"] #deckGate{display:none!important}
 
   <main>
     <section class="gate" id="deckGate" aria-labelledby="gateT">
-      <p class="kick"><span class="no">내 덱</span><span>로그인한 사람만 여는 화면</span></p>
-      <h1 id="gateT">내 덱은 <em>로그인</em>한 뒤에 열립니다</h1>
-      <p class="lede">상담 플로우에서 만든 덱을 모아 두고, 리허설로 다시 걸어 보고, 공간을 꾸미는 곳입니다. 덱이 <b>내 계정에 저장되는 화면</b>이라 로그인한 사람에게만 엽니다.</p>
+      <p class="kick"><span class="no">마이덱</span><span>로그인한 사람만 여는 화면</span></p>
+      <h1 id="gateT">마이덱은 <em>로그인</em>한 뒤에 열립니다</h1>
+      <p class="lede">질문 하나를 적으면 상담에 필요한 만큼만 자료를 골라 덱으로 짜 주고, 순서와 자료를 직접 고쳐 <b>내 계정에 저장·실행</b>하는 화면입니다. 덱이 계정에 저장되는 화면이라 로그인한 사람에게만 엽니다.</p>
       <ul class="gate-list">
-        <li><span class="gi" aria-hidden="true">1</span><b>모아 두기</b> — 상담 플로우에서 완성한 덱을 한곳에서 봅니다.</li>
-        <li><span class="gi" aria-hidden="true">2</span><b>이어 보기</b> — 계정에 저장되어 다른 기기에서도 같은 덱이 열립니다.</li>
-        <li><span class="gi" aria-hidden="true">3</span><b>꾸미기</b> — 공간 꾸미기로 내 덱의 겉모양을 바꿉니다.</li>
+        <li><span class="gi" aria-hidden="true">1</span><b>질문 한 줄</b> — 하고 싶은 일을 그대로 적으면 1칸이면 끝나는 질문인지, 여러 단계가 필요한지 판단합니다.</li>
+        <li><span class="gi" aria-hidden="true">2</span><b>필요한 만큼만</b> — 상담 현장에서 바로 쓰는 자료만 골라 1~5단계로 짭니다.</li>
+        <li><span class="gi" aria-hidden="true">3</span><b>손보고 실행</b> — 순서를 옮기고, 자료를 끼워 넣고, 내 덱에 저장해 리허설·실행합니다.</li>
       </ul>
       <div class="gate-acts">
         <button type="button" class="primary" data-jc-login><span data-jc-login-label>로그인</span></button>
@@ -301,77 +302,72 @@ html[data-jc-auth="in"] #deckGate{display:none!important}
     </section>
 
     <div id="deckMain">
-    <div id="lvModeHost"></div>
+      <section class="hero" id="deckHero">
+        <p class="kick"><span class="no">마이덱</span><span>질문 하나 → 필요한 만큼만 → 바로 상담에</span></p>
+        <h1>하고 싶은 일을 <em>한 문장</em>으로 — <em>필요한 만큼만</em> 덱으로</h1>
+        <p class="lede">한 자료로 끝나는 질문이면 <b>1칸 덱</b>, 여러 단계가 필요하면 <b>2~5칸</b>으로 짭니다. 상담 현장에서 바로 쓰는 자료만 고르고, 순서와 자료는 직접 고칠 수 있습니다.</p>
+      </section>
 
-    <section class="hero" id="deckHero">
-      <p class="kick"><span class="no">내 덱</span><span>로그인하면 계정에, 로그인하지 않으면 이 창에만</span></p>
-      <h1>내가 짠 <em>상담 흐름</em>을 모아 두는 곳</h1>
-      <p class="lede"><b>상담 플로우</b>에서 만든 덱이 여기 쌓입니다. 단계를 눌러 어느 자료로든 건너뛰며 열어 보고, 리허설로 다시 걸어 보고, <b>공간 꾸미기</b>로 내 덱의 겉모양을 바꿉니다.</p>
-    </section>
+      <section id="live" aria-labelledby="lvT">
+        <h2 class="sr" id="lvT">덱 짜기</h2>
 
-    <div id="deckMode">
-    <div class="bar">
-      <div class="who" id="who"></div>
-      <div class="bar-btns">
-        <a class="primary" href="../flow/" id="newBtn">새 흐름 짜기</a>
-        <button type="button" class="ghost" id="diyBtn" aria-expanded="false" aria-controls="diy">공간 꾸미기</button>
-      </div>
-    </div>
-    <p class="offmsg" id="offmsg" hidden></p>
-
-    <section class="space" id="space" aria-labelledby="spaceT">
-      <div class="space-hd">
-        <b id="spaceT">내 덱</b>
-        <span class="pv-tag" id="pvTag" hidden></span>
-        <span class="cnt" id="spaceN"></span>
-      </div>
-      <div class="decks" id="decks" aria-live="polite"></div>
-      <p class="empty" id="empty" hidden><b>아직 덱이 없습니다.</b> 상담 플로우에서 흐름을 짜고 「이대로 만들어볼래요」를 누르면 여기에 쌓입니다. <a href="../flow/">상담 플로우 열기</a></p>
-    </section>
-
-    <section class="diy" id="diy" hidden aria-labelledby="diyT">
-      <div class="diy-hd"><b id="diyT">공간 꾸미기</b><span>여섯 가지 요소 · 요소마다 여섯 가지 조건 · 테마마다 따로 저장</span></div>
-      <div class="tabs" role="tablist" id="diyTabs" aria-label="꾸밀 테마"></div>
-      <div class="diy-steps" role="group" id="diySteps" aria-label="꾸밀 요소 고르기"></div>
-      <div id="diyBody"></div>
-      <div class="diy-ft">
-        <button type="button" class="primary" id="diySave">저장</button>
-        <button type="button" class="ghost" id="diyReset">이 테마 되돌리기</button>
-        <button type="button" class="ghost" id="diyAllReset">세 테마 모두 초기화</button>
-        <span class="diy-msg" id="diyMsg"></span>
-      </div>
-    </section>
-    </div>
-
-    <section id="live" hidden aria-labelledby="lvT">
-      <div class="lv-hero">
-        <p class="kick"><span class="no">마이덱 라이브</span></p>
-        <h1 id="lvT">하고 싶은 일을 <em>한 문장</em>으로 적으면, 세 가지 흐름으로</h1>
-      </div>
-
-      <div class="lv-box" id="lvBox">
-        <div class="lv-fix" id="lvFix" hidden></div>
-        <div class="lv-pick" id="lvPick" role="tablist" aria-label="짜는 방식">
-          <button type="button" role="tab" data-m="algo" aria-selected="true">키워드 하나로</button>
-          <button type="button" role="tab" data-m="live" aria-selected="false">문장으로</button>
+        <div class="lv-box" id="lvBox">
+          <div class="lv-fix" id="lvFix" hidden></div>
+          <div class="lv-field" id="lvField">
+            <label class="sr" for="lvAsk">하고 싶은 일 한 문장</label>
+            <textarea id="lvAsk" class="lv-ask" rows="2" maxlength="200" autocomplete="off" spellcheck="false" aria-describedby="lvHelp"></textarea>
+            <div class="lv-ph" id="lvPh" aria-hidden="true"><span id="lvType"></span><i class="lv-caret"></i></div>
+          </div>
+          <p class="lv-help" id="lvHelp">상담에서 하려는 일을 그대로 적으세요. 예) 「경력단절 내담자 첫 상담부터 제도·훈련·서류까지」</p>
+          <div class="lv-acts">
+            <button type="button" class="lv-go" id="lvGo">추천 덱 짜기</button>
+            <button type="button" class="lv-tut" id="lvTut" aria-haspopup="dialog">튜토리얼</button>
+          </div>
+          <p class="lv-msg" id="lvMsg" role="status" aria-live="polite"></p>
         </div>
-        <div class="lv-field" id="lvField" hidden>
-          <label class="sr" for="lvAsk">하고 싶은 일 한 문장</label>
-          <textarea id="lvAsk" class="lv-ask" rows="2" maxlength="200" autocomplete="off" spellcheck="false" aria-describedby="lvHelp"></textarea>
-          <div class="lv-ph" id="lvPh" aria-hidden="true"><span id="lvType"></span><i class="lv-caret"></i></div>
-        </div>
-        <div class="lv-chips" id="lvChips" role="group" aria-label="개념 고르기"></div>
-        <p class="sr" id="lvHelp">예) 경력단절 내담자 첫 상담 흐름 짜기 — 적은 말에서 자료실 섹터를 찾아 세 가지 순서로 짜 줍니다.</p>
-        <div class="lv-acts">
-          <button type="button" class="lv-go" id="lvGo">완성덱 만들기</button>
-          <button type="button" class="lv-tut" id="lvTut" aria-haspopup="dialog">튜토리얼</button>
-        </div>
-        <p class="lv-msg" id="lvMsg" role="status" aria-live="polite"></p>
-      </div>
 
-      <div class="lv-courses" id="lvCourses" hidden></div>
-      <div class="lv-board" id="lvBoard" hidden role="region" aria-label="상담 OS 보드"></div>
-    </section>
+        <div class="lv-sugwrap" id="lvSug">
+          <p class="lv-sug-hd"><b>이런 걸 물어보세요</b><span>누르면 바로 짜 줍니다</span></p>
+          <div class="lv-chips" id="lvChips" role="group" aria-label="추천 질문"></div>
+        </div>
+
+        <div class="lv-courses" id="lvCourses" hidden></div>
+        <div class="lv-board" id="lvBoard" hidden role="region" aria-label="상담 OS 보드"></div>
+      </section>
+
+      <div id="deckMode">
+        <div class="bar">
+          <div class="who" id="who"></div>
+          <div class="bar-btns" id="barBtns">
+            <button type="button" class="primary" id="newBtn">새 덱 짜기</button>
+            <button type="button" class="ghost" id="diyBtn" aria-expanded="false" aria-controls="diy">공간 꾸미기</button>
+          </div>
+        </div>
+        <p class="offmsg" id="offmsg" hidden></p>
+
+        <section class="space" id="space" aria-labelledby="spaceT">
+          <div class="space-hd">
+            <b id="spaceT">내 덱</b>
+            <span class="pv-tag" id="pvTag" hidden></span>
+            <span class="cnt" id="spaceN"></span>
+          </div>
+          <div class="decks" id="decks" aria-live="polite"></div>
+          <p class="empty" id="empty" hidden><b>아직 덱이 없습니다.</b> 위에 하고 싶은 일을 한 문장으로 적고 「추천 덱 짜기」를 누르면 여기에 쌓입니다. <a href="../flow/">상담 플로우에서 짜기</a></p>
+        </section>
+
+        <section class="diy" id="diy" hidden aria-labelledby="diyT">
+          <div class="diy-hd"><b id="diyT">공간 꾸미기</b><span>여섯 가지 요소 · 요소마다 여섯 가지 조건 · 테마마다 따로 저장</span></div>
+          <div class="tabs" role="tablist" id="diyTabs" aria-label="꾸밀 테마"></div>
+          <div class="diy-steps" role="group" id="diySteps" aria-label="꾸밀 요소 고르기"></div>
+          <div id="diyBody"></div>
+          <div class="diy-ft">
+            <button type="button" class="primary" id="diySave">저장</button>
+            <button type="button" class="ghost" id="diyReset">이 테마 되돌리기</button>
+            <button type="button" class="ghost" id="diyAllReset">세 테마 모두 초기화</button>
+            <span class="diy-msg" id="diyMsg"></span>
+          </div>
+        </section>
+      </div>
     </div>
   </main>
 </div>
