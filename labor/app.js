@@ -7,6 +7,9 @@
 (function(){
 'use strict';
 var d=document,$=function(id){return d.getElementById(id);};
+/* 여러 섹터가 함께 쓰는 법정 수치 — 공용 단일 원천(data/legal-constants.json → assets/legal-constants.js).
+   원천을 못 받으면 그 줄을 빼고 숫자를 지어내지 않는다. */
+var LEGAL=window.JC_LEGAL||{};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function fx(n,k){return (Math.round(n*Math.pow(10,k))/Math.pow(10,k)).toFixed(k);}
 function sgn(n,k,u){var v=fx(n,k);if(Number(v)===0)return '±0'+u;return (n>0?'+':'')+v+u;}
@@ -631,7 +634,7 @@ function renderAbout(){
     '<p>뉴스 읽기 도우미는 외부 AI나 서버를 쓰지 않습니다. 이 화면에 들어 있는 지표 사전과 표현 규칙만으로 붙여 넣은 문장을 바로 살펴보며, 문장은 저장하거나 보내지 않습니다. 규칙으로 찾는 방식이라 문맥을 완전히 이해하지는 못하므로, 짚어 준 점은 스스로 확인할 출발점으로 써 주세요.</p>'+
     '<p>연습에 쓰는 기사는 <a href="../briefing/">데일리 브리핑</a>이 매일 쓰는 카드 중 고용·임금·직무·정책을 다룬 것('+((LW&&LW.articles)?LW.articles.length:0)+'건)입니다. 카드의 「무슨 일·수치·근거」를 그대로 가져오며, 원문 문장을 옮기지 않고 사실·수치만 새로 쓴 글입니다. 기사마다 「그날 지면」과 원문 링크를 붙였습니다. 브리핑에 새 지면이 쌓이면 이 목록도 함께 늘어납니다.</p></div>'+
     '<h3 class="st">숫자의 출처</h3><ul>'+Object.keys(N.srcs).map(function(k){return '<li><a href="'+esc(N.srcs[k].url)+'" target="_blank" rel="noopener">'+esc(N.srcs[k].name)+'</a></li>';}).join('')+
-      '<li>2026년 최저임금 시간당 10,320원: 최저임금위원회 결정, 고용노동부 고시</li></ul>'+
+      (LEGAL.minimumWage&&LEGAL.minimumWage.hourly?'<li>'+LEGAL.baseYear.year+'년 최저임금 시간당 '+Number(LEGAL.minimumWage.hourly).toLocaleString('ko-KR')+'원: 최저임금위원회 결정, 고용노동부 고시</li>':'')+'</ul>'+
     '<p class="muted" style="font-size:15px">최근 수치는 '+esc(N.checked)+'에 확인했습니다. 통계청은 2025년 10월부터 국가데이터처로 이름이 바뀌었습니다. 수치는 사실만 옮겨 적었고 보도자료 문장은 싣지 않았습니다.</p>'+
     '<h3 class="st">바탕 이론</h3><ul>'+C.sources.map(function(s){return '<li>'+esc(s.name)+' <span class="muted">— '+esc(s.use)+'</span></li>';}).join('')+'</ul>'+
     '<p class="muted" style="font-size:15px">이론은 이름과 요지만 소개했고, 설명·예시는 모두 이 자료실에서 새로 쓴 문장입니다. 그래프는 원리를 보이기 위해 단순한 식으로 새로 그렸으며 실제 추정치가 아닙니다.</p>'+
