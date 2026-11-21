@@ -95,6 +95,14 @@ a{color:inherit}
 .fld label{font-size:12.5px;font-weight:700;color:var(--muted)}
 .inp{width:100%;min-width:0;max-width:100%;min-height:46px;padding:9px 12px;border:1px solid var(--line-2);border-radius:12px;background:var(--soft);color:var(--ink);font-size:16px}
 .inp:focus{border-color:var(--acc)}
+.dfield{position:relative;display:block;min-width:0}
+.dfield .inp{padding-right:54px}
+.dcal{position:absolute;top:0;right:0;width:46px;height:100%;min-height:46px;display:grid;place-items:center;border-left:1px solid var(--line);border-radius:0 12px 12px 0;background:transparent;color:var(--muted);pointer-events:none}
+.dcal svg{width:19px;height:19px}
+.dpick{position:absolute;top:0;right:0;width:46px;height:100%;min-height:46px;margin:0;padding:0;border:0;border-radius:0 12px 12px 0;background:transparent;color:transparent;font-size:16px;opacity:0;-webkit-appearance:none;appearance:none;cursor:pointer}
+.dpick::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;opacity:0;cursor:pointer}
+.hint{margin:1px 0 0;font-size:11.5px;line-height:1.4;color:var(--dim)}
+.hint.bad{color:var(--warn);font-weight:750}
 .now{margin:10px 0 0;padding:11px 13px;border-radius:12px;background:var(--acc-soft);font-size:13.5px;line-height:1.6;color:var(--ink)}
 .now b{font-weight:800;color:var(--acc)}
 .now .dim{color:var(--muted)}
@@ -201,6 +209,7 @@ html[data-jc-imm] .rail{display:none}
         <li><b>근거는 조문 원문입니다.</b> 근로기준법·최저임금법·기간제법·퇴직급여법·남녀고용평등법·고용보험법·산재보험법 조문을 국가법령정보센터 시행본 그대로 싣고, 「조문 보기」로 원문을 폅니다.</li>
         <li><b>입사일은 서버로 보내지 않습니다.</b> 이 브라우저 탭 안에서만 계산하고 저장하지 않습니다. 이름·주민등록번호는 넣지 않습니다.</li>
         <li><b>최종 판단은 기관의 몫입니다.</b> 수급자격·부당해고·체불 진정은 고용센터·노동위원회·노동청의 판단입니다. 이 화면은 확인할 것과 근거를 정리해 줄 뿐입니다.</li>
+        <li><b>상시 5명 미만 사업장은 근로기준법이 일부만 적용됩니다.</b> 이 화면의 «법이 정한 선»은 5명 이상 사업장을 기준으로 읽고, 5명 미만이면 고용센터에 적용 여부를 확인하세요.</li>
       </ul>
     </div>
   </section>
@@ -221,7 +230,12 @@ html[data-jc-imm] .rail{display:none}
         <div class="c-h"><h2>내 날짜</h2><span class="tag">이 탭에만</span></div>
         <div class="fld">
           <label for="hire">입사일</label>
-          <input class="inp" type="date" id="hire" autocomplete="off">
+          <div class="dfield">
+            <input class="inp" type="text" id="hire" inputmode="numeric" autocomplete="off" placeholder="yyyy/mm/dd" maxlength="10" aria-describedby="hireHint">
+            <span class="dcal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2.5"/><path d="M3.5 10.5h17M8 3.5v4M16 3.5v4"/></svg></span>
+            <input class="dpick" type="date" id="hirePick" tabindex="-1" aria-hidden="true">
+          </div>
+          <p class="hint" id="hireHint">예: 2026/06/01</p>
         </div>
         <p class="now" id="now">입사일을 넣으면 <b>오늘 며칠째</b>인지, <b>수습 종료일</b>과 <b>1년 도달일</b>을 계산합니다.</p>
         <ul class="dates" id="dates" hidden></ul>
@@ -260,9 +274,17 @@ html[data-jc-imm] .rail{display:none}
 
   function el(tag,cls,txt){var e=d.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
   function pad(n){return (n<10?'0':'')+n;}
-  function fmt(dt){return dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate());}
+  function fmt(dt){return dt.getFullYear()+'/'+pad(dt.getMonth()+1)+'/'+pad(dt.getDate());}
+  function iso(dt){return dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate());}
+  function ymd(v){v=String(v||'');return v.length===8? v.slice(0,4)+'/'+v.slice(4,6)+'/'+v.slice(6,8) : v;}
   function addMonths(dt,m){var x=new Date(dt.getTime());var day=x.getDate();x.setMonth(x.getMonth()+m);if(x.getDate()<day)x.setDate(0);return x;}
-  function dateFromInput(v){ if(!v) return null; var p=v.split('-'); if(p.length!==3) return null; var dt=new Date(+p[0],+p[1]-1,+p[2]); return isNaN(dt.getTime())?null:dt; }
+  function dateFromInput(v){ /* yyyy/mm/dd·yyyy-mm-dd·yyyymmdd 모두 받는다 */
+    var s=String(v||'').replace(/[^0-9]/g,''); if(s.length!==8) return null;
+    var y=+s.slice(0,4), m=+s.slice(4,6), d=+s.slice(6,8);
+    if(y<1900||y>2100||m<1||m>12||d<1||d>31) return null;
+    var dt=new Date(y,m-1,d);
+    if(dt.getFullYear()!==y||dt.getMonth()!==m-1||dt.getDate()!==d) return null;
+    return dt; }
   function days(a,b){ return Math.round((b-a)/86400000); }
   function lawLabel(key){ var L=LAWS[key]; return L? L.law+' '+L.no : key; }
 
@@ -282,7 +304,7 @@ html[data-jc-imm] .rail{display:none}
     L.text.split('\n').forEach(function(line){
       if(line.trim()) shBody.appendChild(el('p',null,line.trim()));
     });
-    var ef=el('span','ef','시행일 '+L.efYd.slice(0,4)+'-'+L.efYd.slice(4,6)+'-'+L.efYd.slice(6,8)+' · 국가법령정보센터 시행본');
+    var ef=el('span','ef','국가법령정보센터 시행본 · '+L.law+' 시행 '+ymd(L.efYd));
     shBody.appendChild(ef);
     sheet.hidden=false; d.body.style.overflow='hidden';
     if(window.JCBackStack) JCBackStack.open(sheet,closeLaw);
@@ -473,8 +495,38 @@ html[data-jc-imm] .rail{display:none}
     else markHere();
   }
 
-  $('#hire').addEventListener('change',paintDates);
-  $('#hire').addEventListener('input',paintDates);
+  /* 입사일 — 화면에는 yyyy/mm/dd로 보이고, 직접 타이핑과 달력 선택을 모두 받는다. */
+  var hireEl=$('#hire'), pickEl=$('#hirePick'), hintEl=$('#hireHint');
+  var HIRE_HINT='예: 2026/06/01';
+  function paintHireInput(){
+    var raw=hireEl.value;
+    var focused=d.activeElement===hireEl;
+    var caret=focused&&hireEl.selectionStart!=null?hireEl.selectionStart:raw.length;
+    var before=raw.slice(0,caret).replace(/[^0-9]/g,'').length;
+    var s=raw.replace(/[^0-9]/g,'').slice(0,8);
+    var out=s.slice(0,4);
+    if(s.length>4) out+='/'+s.slice(4,6);
+    if(s.length>6) out+='/'+s.slice(6,8);
+    if(raw!==out) hireEl.value=out;
+    if(focused&&hireEl.setSelectionRange){
+      var i=0,seen=0;
+      while(i<out.length&&seen<before){ if(out[i]>='0'&&out[i]<='9') seen++; i++; }
+      hireEl.setSelectionRange(i,i);
+    }
+    var dt=dateFromInput(s);
+    pickEl.value=dt?iso(dt):'';
+    var bad=s.length===8&&!dt;
+    hintEl.textContent=bad?'날짜를 확인해 주세요 (예: 2026/06/01)':HIRE_HINT;
+    hintEl.classList.toggle('bad',bad);
+    hireEl.setAttribute('aria-invalid',bad?'true':'false');
+  }
+  hireEl.addEventListener('input',function(){ paintHireInput(); paintDates(); });
+  hireEl.addEventListener('blur',paintHireInput);
+  pickEl.addEventListener('change',function(){
+    if(!pickEl.value) return;
+    hireEl.value=pickEl.value.replace(/-/g,'/');
+    paintHireInput(); paintDates();
+  });
 
   /* ---------- 이용 안내 ---------- */
   var pvT=$('#pvT'), pvB=$('#pvB');
