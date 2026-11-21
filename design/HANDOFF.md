@@ -11,6 +11,19 @@
      질문 한 마디로 나와야 하는 자료는 `RULES`(직행 패턴)에 `dom`·`act`·`not`을 넣는다.
    - 재생성: `python3 assistant/build_index.py` · `python3 ops/scripts/build_flow_graph.py` → `validate_repo.py`.
 
+## 2026-11-22 (새벽) — 산업 온도계 국가데이터처 출처를 Track B로 내림 (공공누리 제2유형, PR #425)
+- **지시**(태화님): 「응 고쳐줘」 — MLC 보완 4순위 수집 게이트를 만들다 발견한 것. `thermometer/data/sources.json`의
+  `src_kostat_ia_2609`(국가데이터처 「2026년 9월 산업활동동향」)가 **공공누리 제2유형(KOGL-2)** 인데 `track: "A"`(재가공 허락)로 적혀 있었다.
+- **왜 문제였나**: 제2유형은 출처표시+**상업적 이용 금지**라 표·그림·문장을 우리 화면용으로 다시 만드는 재가공이 안 된다.
+  화면은 이 출처를 「Track A 재가공 허락」으로 표시하고 있었고, `thermometer/data/SCHEMA.md` §6-2는 아예
+  「Track A = 공공누리 1·2유형」이라고 적어 두어 같은 실수가 반복될 자리였다. 그런데 `validate_repo.py`의 라이선스 검사는
+  `PRESS`·`KOGL-NONE`·`FACTS-ONLY`만 막고 있어 **공공누리 2~4유형은 잡지 못했다**(그래서 CI가 초록인 채로 통과했다).
+- [x] `sources.json`·`thermometer.json`의 `src_kostat_ia_2609` `track` **A→B**, `usage`에 「사실·수치만 인용하고 원문 표·그림·문장은 옮기지 않는다」 명시. 온도·수치는 그대로 — 이 출처를 쓰는 26개 근거가 전부 지수·증감률·금액이라 문장·표를 옮긴 곳은 0건이었고, 인용 방식은 이미 Track B였다.
+- [x] `thermometer/data/SCHEMA.md` §6-2 기준 정정 — Track A = 공공누리 1유형·퍼블릭 도메인·미국 연방정부 저작물, Track B = 공공누리 2~4유형·보도자료·민간 조사기관·라이선스 미부착(헌법 제1조 1-1·수집 게이트 A/B 표와 같은 기준).
+- [x] `validate_repo.py` `RESTRICTED_LICENSE_TYPES`에 `KOGL-2`·`KOGL-3`·`KOGL-4` 추가 — 이제 공공누리 2~4유형을 Track A로 적으면 **CI가 실패**한다(일부러 A로 되돌려 실패 문구 확인, 저장소 전체에서 새로 걸리는 곳 0건). `ops/CI.md` 검사표·`CONSTITUTION.md` 제1조 1-1의 검사 설명을 같은 PR에서 맞췄다.
+- **실측**: `build_thermometer.py --check` 통과 · `collect_gate.py thermometer/data/thermometer.json` 통과(출처 16곳 **A 4·B 12**) · `validate_repo.py` 전 항목 통과(Track 1,920 교차 확인·문구 문제 0) · CI 3종 초록 · 라이브 https://witw.pages.dev/thermometer/ 실측(국가데이터처 배지 B·콘솔 오류 0).
+- **남긴 것**: `generated_at`(화면의 「측정」 날짜)은 `2026-11-21T09:05:04+09:00` 그대로 두었다 — 수치를 다시 잰 것이 아니라 분류만 고쳤기 때문이고, 다음 주간 갱신이 새 시각으로 덮는다. 두 파일이 `build_thermometer.py` 산출물과 같은지는 `generated_at`만 빼고 대조해 확인했다.
+
 ## 2026-11-22 (새벽) — 최상위 규범 헌법전 `CONSTITUTION.md` 제정 + 작업 규범 네 곳 강제 연결 (PR #423)
 - **지시**(태화님): 「클로드가 헌법적 RLAIF 만든 것처럼 우리도 시스템 구축에 있어서 **헌법전을 만들어놔 무조건 지키도록**」 · 「추가로 **촘촘한 연결로 완결된 섹터들간 유기성과 완결성**, 그리고 **디자인적 심미적 완성과 통일성**」 · 「또 **내가 지금까지 대화하면서 중시한 것 찾아서**」.
 - **왜**: 규칙이 `CLAUDE.md`·`DESIGN.md`·`ops/ROLES.md`·`ops/CI.md`에 흩어져 있어 한두 개씩 빠졌다(11-22 새벽 「새 섹터를 맨 뒤에 붙였다」가 그 예). 문서를 하나 더 늘리는 게 아니라 **«어겨서는 안 되는 것»만 모아 최상위로 세우고**, «어떻게 하는가»는 각 문서에 그대로 둔다.

@@ -9,7 +9,7 @@
 검사 항목
   json     — briefing/·emerging/ 의 모든 .json 파싱·중복 키·스키마 필수 필드·참조 무결성
              + 대문 상담 프리셋(assets/presets.js)이 섹터 장부(assets/tools.js)와 맞는지
-  license  — 저작권 Track A/B 교차 가드레일 (PRESS·KOGL-NONE·FACTS-ONLY·미확인 라이선스가 Track A면 실패)
+  license  — 저작권 Track A/B 교차 가드레일 (PRESS·KOGL-NONE·FACTS-ONLY·공공누리 2~4유형·미확인 라이선스가 Track A면 실패)
   js       — 저장소에 든 .js 전부 `node --check` 문법 검사
   css      — .css 파일과 .html 안 <style>의 중괄호 짝·고아 닫는 괄호·일찍 닫힌 블록 검사
   text     — 화면 문구의 맞춤법·이웃한 중복 어구 (원문 자리·고유명사는 ops/text-lint-allow.tsv로 뺀다)
@@ -36,7 +36,8 @@ DATA_DIRS = ("briefing/data", "emerging/data", "thermometer/data", "translator/d
 KST = timezone(timedelta(hours=9))
 
 # 재가공이 허락되지 않는 라이선스 — 이 라이선스를 단 자료는 절대 Track A가 될 수 없다.
-RESTRICTED_LICENSE_TYPES = {"PRESS", "KOGL-NONE", "FACTS-ONLY"}
+# 공공누리 제2~4유형(상업적 이용 금지·변경 금지·제2+3유형)은 CONSTITUTION.md 제1조 1-1에 따라 Track B다.
+RESTRICTED_LICENSE_TYPES = {"PRESS", "KOGL-NONE", "FACTS-ONLY", "KOGL-2", "KOGL-3", "KOGL-4"}
 UNKNOWN_LICENSE_TYPES = {"", "UNKNOWN", "UNVERIFIED", "NONE", "N/A", "NULL"}
 ALLOWED_TRACKS = {"A", "B"}
 
