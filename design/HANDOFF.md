@@ -1,5 +1,46 @@
 # HANDOFF — 자율 디자인 시스템 구축 + 첫 실행 ✅ 완료
 
+## 신규 섹터 추가 기본 체크리스트 (2026-11-22 태화님 지시 — 상시 적용)
+
+새 섹터를 만들면 **맨 뒤에 붙이지 않는다**. 아래 둘은 같은 커밋에서 끝낸다.
+
+1. **`assets/tools.js` — `seed`/`match` 트랙 안의 연관 섹터 바로 옆에 삽입하고 `no`·`mo` 순번을 유기적으로 재정렬한다.**
+   - 가장 큰 `no` 뒤에 덧붙이지 않는다. 성격이 이어지는 섹터 옆에 넣고 `seed`(01~)·`match`(16~)의 `no`와
+     트랙 안 차례 `mo`를 다시 매긴다(`JC_TOOLS` 배열 순서 = 대문 목록 순서). 번호를 낱말로 적어 둔 주석·문서도 함께 고친다.
+   - 폴더 주소·`--tc-<id>`·`JC_LINKS`는 번호와 무관하니 그대로 둔다.
+2. **`mydeck/assemble.js`의 실용성 티어(`TIER1`/`TIER2`)·추천 순서(`ORDER`)·그룹(`GROUPS`)에도 함께 반영한다.**
+   - 현장 직결 = `TIER1`, 학습·연구 = `STUDY`(3티어), 상황 보강 = 기본 2티어. `STAGE`(→`ORDER`)·`GROUPS`에 id를 넣고,
+     질문 한 마디로 나와야 하는 자료는 `RULES`(직행 패턴)에 `dom`·`act`·`not`을 넣는다.
+   - 재생성: `python3 assistant/build_index.py` · `python3 ops/scripts/build_flow_graph.py` → `validate_repo.py`.
+
+## 2026-11-22 (새벽) — 섹터 01~37 번호 재배치 + 마이덱 티어 반영
+- **지시**(태화님): 「새 섹터를 만들 때마다 **무조건 맨 뒤에 붙이지 말고** 연관 섹터 옆에 끼워 넣고(`seed`/`match` 순번 재정렬),
+  마이덱 티어/추천 순서도 같이 챙겨라」 — 그 규칙을 `CLAUDE.md`·`ops/CI.md`·이 문서 세 곳의 체크리스트에 명문화하고,
+  이미 어긋나 있던 장부를 한 번에 다시 매겼다.
+- **진단**: intake(매치 18)·pay-calc(20)·posting(21)·first-year(22)가 끝에 붙은 데 이어 casecon이 **시드인데 번호 37**로
+  매치(15~36) 뒤에 섮여 있었다. 원인은 규칙이 아니라 «번호를 밀지 않는다»는 관행이었다.
+- [x] **시드 01~15** (학습·이해·제도기초): theory 01 → **casecon 02** → parsons 03 → dacum 04 → taxonomy 05 →
+  decalcomania 06 → library 07 → briefing 08 → emerging 09 → labor 10 → reality 11 → work-filter 12 → manual 13 →
+  kdt-calc 14 → law 15. (casecon은 「이론을 읽은 다음 사례에 대어 보기」라 theory 바로 뒤, 파슨스 원전 앞이다.)
+- [x] **매치 16~37** (상담이 흐르는 차례): **intake 16 · triage 17 · talk 18 · translator 19 · vpi 20** →
+  **policy-match 21 · hud 22 · pay-calc 23 · posting 24 · first-year 25** →
+  **cert 26 · univ 27 · grad 28 · company 29 · fin-lab 30 · portals 31 · thermometer 32 · valuechain 33** →
+  **surgery 34 · interview 35 · portfolio 36 · transit 37**.
+- [x] `JC_TOOLS` **배열도 같은 순서로** 옮겼다(대문 목록·쪽 나눔이 배열 순서를 따라간다). `mo`는 시드 1~15 · 매치 1~22.
+- [x] `mydeck/assemble.js`: `TIER1`에 **posting·first-year**(현장 직결), casecon은 2티어(상황 보강) · `STAGE`에 casecon 24·
+  posting 33·first-year 42(→ `ORDER` 반영) · `GROUPS`에 posting·first-year(제도·훈련)·casecon(학습·연구) ·
+  `RULES`에 공고문 점검·재직 첫해·사례개념화 직행 패턴 3개.
+- [x] 재생성: `assistant/build_index.py`(index·rag-preface) · `ops/scripts/build_flow_graph.py`(graph.json, 섹터 37·짝 308).
+- [x] `validate_repo.py` 전 항목 통과(장부 37개 = 시드 15·매치 22, 프리셋 54자리 대조, 개수·문구·시행일 0건).
+- **번호가 바뀐 것**(이전 no → 새 no): casecon 37→02 · parsons 02→03 · dacum 03→04 · taxonomy 04→05 · decalcomania 05→06 ·
+  library 06→07 · briefing 07→08 · emerging 08→09 · labor 09→10 · reality 10→11 · work-filter 11→12 · manual 12→13 ·
+  kdt-calc 13→14 · law 14→15 · intake 32→16 · vpi 15→20 · policy-match 33→21 · hud 16→22 · pay-calc 34→23 ·
+  posting 35→24 · first-year 36→25 · cert 20→26 · univ 21→27 · grad 22→28 · company 23→29 · fin-lab 24→30 ·
+  portals 25→31 · thermometer 26→32 · valuechain 31→33 · surgery 27→34 · interview 28→35 · portfolio 29→36 · transit 30→37.
+  그대로인 것: theory 01 · triage 17 · talk 18 · translator 19. 지난 날짜의 기록(`ops/TODO.md`·`DESIGN.md` §9·
+  `design/studies/`)은 그날의 번호를 그대로 두고, 지금 번호는 이 표를 따른다.
+  그대로 두고, 지금 번호는 이 표를 따른다.
+
 ## 2026-11-22 (새벽) — MLC 보완 2순위: 상담 은어·동의어 매핑 사전(`assistant/data/synonym-map.json`)
 - **지시**(태화님, MLC 보완 5요소 중 2순위): 「상담 은어·동의어 매핑 사전」을 만들어 마이덱 검색/추천·자료실 비서 선참조·MLC 자가질문 파이프라인이 함께 쓰게 하고, 사연 168건으로 전후 적중률을 재서 보고.
 - [x] **사전 121항목 · 8묶음**(제도 22 · 임금 24 · 서류 9 · 검사 17 · 직무 35 · 채용 7 · 전직 4 · 자료 3). 한 항목 = 표준어(c)·현장 말(a)·먼저 볼 섹터(s)·검색에 더할 낱말(t)·미는 세기(p)·한 줄 설명(x). 확인되지 않은 제도 수치·조문은 적지 않았다.

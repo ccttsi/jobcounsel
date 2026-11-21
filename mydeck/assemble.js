@@ -46,10 +46,14 @@
   /* ================================================================ 실용성 티어
      1티어 — 상담 현장에서 바로 쓰는 자료. 추천 덱의 뼈대는 언제나 여기서 나온다.
      3티어 — 학습·연구용(데이컴·파슨스·이론·보고서·대학원). 질문이 그 말을 직접 꺼낼 때만.
-     나머지 — 보조(분류·산업·동향). 질문에 걸릴 때만 한 칸 들어간다. */
+     나머지 — 보조(분류·산업·동향). 질문에 걸릴 때만 한 칸 들어간다.
+     2026-11-22: 공고문 점검(posting)·재직 첫해(first-year)는 내담자 서류를 그 자리에서 보는
+     현장 직결이라 1티어에 넣었다. 사례개념화(casecon)는 이론을 사례에 대는 «적용» 도구지만
+     상담 장면의 상시 계산·판단 도구는 아니므로 2티어(상황 보강)에 두었다 — 질문이 사례·사정·
+     상담목표를 꺼내면 후보에 들어온다. 새 섹터를 넣을 때도 이 두 줄(티어·차례·그룹)을 함께 본다. */
   var TIER1 = ['triage', 'intake', 'policy-match', 'pay-calc', 'hud', 'kdt-calc', 'talk', 'translator',
     'work-filter', 'manual', 'law', 'company', 'portals', 'surgery', 'interview', 'portfolio', 'transit',
-    'reality', 'vpi', 'cert'];
+    'reality', 'vpi', 'cert', 'posting', 'first-year'];
   var STUDY = ['dacum', 'parsons', 'theory', 'library', 'grad'];
   function tierOf(id) {
     if (TIER1.indexOf(id) >= 0) return 1;
@@ -80,11 +84,11 @@
      STAGE  — 상담이 실제로 흐르는 차례. 유동 덱은 이 차례로 줄을 세운다(억지로 채우지 않는다). */
   var GROUPS = [
     { id: 'intake', name: '접수·진단', ids: ['triage', 'intake', 'talk', 'translator', 'vpi', 'reality', 'hud', 'policy-match', 'pay-calc', 'work-filter'] },
-    { id: 'policy', name: '제도·훈련', ids: ['manual', 'law', 'kdt-calc', 'cert'] },
+    { id: 'policy', name: '제도·훈련', ids: ['manual', 'law', 'kdt-calc', 'cert', 'posting', 'first-year'] },
     { id: 'corp', name: '기업·직무', ids: ['company', 'fin-lab', 'taxonomy', 'valuechain', 'univ'] },
     { id: 'trend', name: '산업·동향', ids: ['thermometer', 'labor', 'briefing', 'emerging'] },
     { id: 'field', name: '실전', ids: ['portals', 'surgery', 'interview', 'portfolio', 'transit'] },
-    { id: 'study', name: '학습·연구', ids: ['theory', 'parsons', 'dacum', 'library', 'grad', 'decalcomania'] }
+    { id: 'study', name: '학습·연구', ids: ['theory', 'casecon', 'parsons', 'dacum', 'library', 'grad', 'decalcomania'] }
   ];
   var CAT_OF = {}, CATS = {}, GROUP_NAME = { all: '전체' };
   GROUPS.forEach(function (g) {
@@ -100,9 +104,9 @@
 
   var STAGE = {
     triage: 10, intake: 11, talk: 12, translator: 13,
-    vpi: 20, reality: 21, theory: 22, parsons: 23,
-    'work-filter': 30, 'pay-calc': 31, 'policy-match': 32,
-    manual: 40, law: 41, hud: 44, 'kdt-calc': 45, cert: 46,
+    vpi: 20, reality: 21, theory: 22, parsons: 23, casecon: 24,
+    'work-filter': 30, 'pay-calc': 31, 'policy-match': 32, posting: 33,
+    manual: 40, law: 41, 'first-year': 42, hud: 44, 'kdt-calc': 45, cert: 46,
     company: 50, labor: 51, taxonomy: 52, valuechain: 53, 'fin-lab': 54,
     thermometer: 55, briefing: 56, emerging: 57, univ: 58,
     portals: 60, surgery: 61, interview: 62, portfolio: 63, transit: 64,
@@ -203,7 +207,10 @@
     { id: 'reality', dom: /(현위치|객관|실제\s*취업|통계)/, act: /(재|확인|알아|비교)/, why: '내담자의 예측과 공식 통계를 맞대는 도구' },
     { id: 'transit', dom: /(전직|이직|커리어\s*전환|환승)/, act: /(순서|경로|어디|막힘|노선)/, why: '경력 전환의 환승역과 노선을 그리는 지도' },
     { id: 'policy-match', dom: /(지원금|지원\s*제도|정책|받을\s*수\s*있는)/, act: /(무엇|뭐|대상|매칭|확인|골라)/, not: /(국민취업지원|국취|구직자취업촉진|고용보험|내일배움|실업급여|구직급여)/, why: '내담자 조건에 맞는 지원 제도를 맞추는 도구' },
-    { id: 'triage', dom: /(위기|긴급|응급|생계|노숙|쉼터)/, act: /(등급|분류|먼저|어떻게|확인)/, why: '위기 신호를 먼저 나누는 트리아지 보드' }
+    { id: 'triage', dom: /(위기|긴급|응급|생계|노숙|쉼터)/, act: /(등급|분류|먼저|어떻게|확인)/, why: '위기 신호를 먼저 나누는 트리아지 보드' },
+    { id: 'posting', dom: /(공고문|채용\s*공고|구인\s*공고|모집\s*요강|공고\s*문구)/, act: /(법령|위반|점검|문구|표현|검토|자격\s*요건|주휴|이상한|따져)/, not: /(어디|사이트|지원할)/, why: '공고문 문장에서 법령 위반 소지와 근거 조문을 찾는 점검대' },
+    { id: 'first-year', dom: /(입사\s*후|입사일|수습|연차|해고|육아휴직|재직|근로계약서|금품청산|퇴사)/, act: /(언제|시점|확인|권리|의무|기한|며칠|기간|가능|물어)/, not: /(계산|실수령|공제|떼)/, why: '입사일을 기준으로 수습·연차·퇴직급여 시점을 짚는 시간축' },
+    { id: 'casecon', dom: /(사례\s*개념화|사례개념화|개념화|사례|케이스|사정|상담\s*목표|상담\s*계획)/, act: /(어떻게|세우|정리|이론|읽|적용|목표|틀|접근)/, not: /(이론\s*위키|파슨스)/, why: '한 사례를 이론 틀에 대어 사정·상담목표를 세우는 실습실' }
   ];
   function matchRules(q) {
     var s = String(q || ''), out = [];

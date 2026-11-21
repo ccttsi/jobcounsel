@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""산업 온도계 — 온도 산출·검증 스크립트 (16번 `thermometer/`)
+"""산업 온도계 — 온도 산출·검증 스크립트 (32번 `thermometer/`)
 
   python3 thermometer/data/build_thermometer.py            # 산출 + 검증
   python3 thermometer/data/build_thermometer.py --check    # 계산 없이 검증만

@@ -1,4 +1,4 @@
-/* app.js — 16번 산업 온도계
+/* app.js — 32번 산업 온도계
  *
  * 자료는 ./data/thermometer.json 하나만 읽는다(계약: ./data/SCHEMA.md).
  * 계산은 이미 build_thermometer.py가 끝냈고, 여기서는 다시 계산하지 않는다

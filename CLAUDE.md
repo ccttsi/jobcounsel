@@ -59,6 +59,26 @@
 - 가독성: 보조 글자색 대비 4.5:1 이상(`--dim` 밝게 `#6e645b`), 글자 11px 이상, 터치 대상 44px 이상.
 - 새 섹터: `<head>`의 `<meta charset>` 바로 아래에 `<script src="../assets/core.js"></script>`(defer 없이 — 언더시스템, [`ops/UNDERSYSTEM.md`](ops/UNDERSYSTEM.md)), 본문을 `<main>`에, 머리말에 `<span data-jc-prefs></span>`, `</body>` 앞에 `marker.js`·`prefs.js`. 자료 실패 때 「다시 시도」 단추는 섹터마다 만들지 않는다(공통 띠가 맡는다). 화면을 다시 그리는 고정 차례는 `html[data-jc-imm] .x{display:none}`로 숨긴다. 휴대폰 상세는 `window.JC_FOLD`로 접는다.
 
+## 신규 섹터 추가 — 기본 체크리스트 (2026-11-22 태화님 지시)
+
+**새 섹터를 만들었으면 맨 뒤에 붙이지 않는다.** 만든 순서는 자리 순서가 아니다. 아래 둘은 같은 커밋에서 끝낸다.
+
+1. **`assets/tools.js` — 연관 섹터 바로 옆에 끼워 넣고 번호를 다시 매긴다.**
+   - `no`가 가장 큰 값 뒤(맨 끝)에 덧붙이는 것은 금지다. 성격이 이어지는 섹터 **바로 옆**에 넣고,
+     `seed` 트랙(01~)과 `match` 트랙(16~)의 `no`·`mo`를 그 자리에서 끊김 없이 다시 매긴다.
+   - `JC_TOOLS`의 **배열 순서가 곧 대문 목록 순서**(쪽 나눔·롤링)다 — 배열도 함께 옮긴다.
+   - `no`는 전체 차례, `mo`는 트랙 안의 차례(시드 1..n · 매치 1..m). 둘이 어긋나면 목록·선반이 틀어진다.
+   - 「번호를 밀지 않는다」는 옛 관행(intake·pay-calc·posting·first-year·casecon을 끝에 붙인 이유)은 2026-11-22에 폐기했다.
+     번호로 서로를 가리키는 주석·문서가 있으면 같은 커밋에서 함께 고친다(폴더 주소 `/casecon/`·색 `--tc-<id>`·`JC_LINKS`는 그대로).
+2. **`mydeck/assemble.js` — 실용성 티어·추천 순서·그룹에 함께 반영한다.**
+   - 티어: 현장에서 바로 쓰면 `TIER1`, 학습·연구용은 `STUDY`(3티어), 그 밖은 기본 2티어(상황 보강).
+     (`TIER2`는 따로 적는 배열이 아니라 `tierOf()`가 2를 돌려주는 기본값이다.)
+   - `STAGE`(추천 `ORDER`가 여기서 나온다)와 `GROUPS`(편집 화면 「자료 고르기」 분류)에 id를 넣는다.
+     빠지면 `stageOf`가 99로 밀려 추천 덱 맨 뒤에 서고, 편집 화면에서는 아예 보이지 않는다.
+   - 질문 한 마디로 그 자료가 나와야 하면 `RULES`(직행 패턴)에 `dom`·`act`·(필요하면)`not`을 넣는다.
+3. 그다음: `python3 assistant/build_index.py` · `python3 ops/scripts/build_flow_graph.py` 재생성 → `validate_repo.py` →
+   `design/HANDOFF.md`·`DESIGN.md` §11·`ops/TODO.md`·README 기록(위 §「작업 끝 — 반드시 남긴다」).
+
 ## 운영 — 시작·마무리·기록의 기준
 
 - **시작은 `/start`, 마무리는 `/finish` 스킬**로 한다(노션 보드·개발일지·핸드오프 읽기/갱신이 들어 있다).

@@ -168,7 +168,7 @@ PROBES = {
         return {ok, detail: `상태 ${auth || '없음'} · 게이트 ${gateOn ? '보임' : '숨김'} · 본문 ${mainOn ? '보임' : '숨김'} · 요소 ${groups} · 조건 ${opts}`};
     }""",
     "/fin-lab/": """() => {
-        // 24번 재무제표 해석 시뮬레이터 — 오각형·3표(3개년)·4규모 카드가 그려졌는가.
+        // 30번 재무제표 해석 시뮬레이터 — 오각형·3표(3개년)·4규모 카드가 그려졌는가.
         const poly = (document.getElementById('rPoly') || {getAttribute: () => ''}).getAttribute('d') || '';
         const bars = document.querySelectorAll('#cfBars .cfTrack').length;
         const scales = document.querySelectorAll('#mtx .mc').length;
@@ -197,7 +197,7 @@ PROBES = {
                 detail: `산업 ${name.trim()} · 단계 ${head.trim()} · ${pos.trim()}`};
     }""",
     "/intake/": """() => {
-        // 32번 초기상담 접수·구조화 시트 — 네 유형 탭·네 단계 탭이 서고, 첫 단계(오프닝)가 그려졌는가.
+        // 16번 초기상담 접수·구조화 시트 — 네 유형 탭·네 단계 탭이 서고, 첫 단계(오프닝)가 그려졌는가.
         // 질문 단계로 바꿔 7~8개 질문과 답변 신호가 실제로 만들어지는지까지 본다(탭이 죽어 있으면 잡힌다).
         const types = document.querySelectorAll('#types .type').length;
         const steps = document.querySelectorAll('#steps .step').length;
