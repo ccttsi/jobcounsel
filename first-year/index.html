@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="입사 뒤 첫해에 물어보는 것(수습 감액·계약서 서면·연차·해고·퇴직금·육아휴직)을 시점별로 묶고, 근로기준법·최저임금법·기간제법·퇴직급여법 조문으로 확인하는 상담 실무 화면입니다.">
+<title>재직 첫해 근로조건 시간축</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#6a4a2f;--acc-soft:rgba(106,74,47,.09);--on-acc:#fffdf8;
+  --warn:#8a3a1e;--ok:#3d6b46;
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 12px 30px -20px rgba(70,50,25,.32);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#d9a86c;--acc-soft:rgba(217,168,108,.14);--on-acc:#17110a;
+  --warn:#ffa07a;--ok:#86c79a;
+  --shadow:none;
+  color-scheme:dark;
+}
+:root[data-jc-tone="sepia"]{
+  --acc:#5e3f26;--acc-soft:rgba(94,63,38,.1);
+  --warn:#7c331a;--ok:#365f3e;
+}
+body[data-jc-tool="first-year"]{--jc-acc:var(--acc)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,textarea,input,select{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;text-align:left;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px 18px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media (min-width:900px){.wrap{padding:0 28px 26px}}
+
+/* ---------- 머리말 ---------- */
+.hd{display:flex;align-items:center;gap:8px;min-height:64px;padding:10px 0;position:relative;z-index:20}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:0 1 auto;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;overflow:hidden}
+.brand svg{width:24px;height:24px;flex:none;color:var(--acc)}
+.brand span{color:var(--acc)}
+.hd>[data-jc-prefs]{margin-left:auto}
+
+/* ---------- 이용 안내 ---------- */
+.pv{border-bottom:1px solid var(--line)}
+.pv-t{display:flex;align-items:center;gap:9px;width:100%;min-height:44px;padding:6px 0;font-size:14px;color:var(--muted)}
+.pv-t svg{width:17px;height:17px;flex:none;color:var(--acc)}
+.pv-tt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-tt b{margin-right:6px;font-weight:750;color:var(--ink)}
+.pv-c{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--acc)}
+.pv-c::after{content:"";width:7px;height:7px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-1px)}
+.pv-t[aria-expanded="true"] .pv-c::after{transform:rotate(-135deg)}
+.pv-b{padding:2px 0 14px}
+.pv-b ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.pv-b b{color:var(--ink)}
+
+/* ---------- 첫 줄 ---------- */
+.lead{margin:11px 0 0;font-size:14px;line-height:1.55;color:var(--muted)}
+.lead b{color:var(--ink);font-weight:750}
+
+/* ---------- 판 ---------- */
+.board{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:11px;align-items:start}
+@media (min-width:900px){.board{grid-template-columns:minmax(0,1.46fr) minmax(304px,.54fr);gap:14px}}
+.side{order:-1}
+@media (min-width:900px){.side{order:2}}
+.main{min-width:0}
+
+/* 날짜 카드 */
+.card{border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);padding:13px;min-width:0}
+.c-h{display:flex;align-items:center;gap:8px;min-width:0}
+.c-h h2{margin:0;font-size:14px;font-weight:800;letter-spacing:-.03em}
+.tag{flex:none;margin-left:auto;padding:3px 9px;border:1px solid var(--line-2);border-radius:99px;font-size:11px;font-weight:750;color:var(--muted);white-space:nowrap}
+.fld{display:grid;gap:5px;margin-top:10px}
+.fld label{font-size:12.5px;font-weight:700;color:var(--muted)}
+.inp{width:100%;min-width:0;max-width:100%;min-height:46px;padding:9px 12px;border:1px solid var(--line-2);border-radius:12px;background:var(--soft);color:var(--ink);font-size:16px}
+.inp:focus{border-color:var(--acc)}
+.dfield{position:relative;display:block;min-width:0}
+.dfield .inp{padding-right:54px}
+.dcal{position:absolute;top:0;right:0;width:46px;height:100%;min-height:46px;display:grid;place-items:center;border-left:1px solid var(--line);border-radius:0 12px 12px 0;background:transparent;color:var(--muted);pointer-events:none}
+.dcal svg{width:19px;height:19px}
+.dpick{position:absolute;top:0;right:0;width:46px;height:100%;min-height:46px;margin:0;padding:0;border:0;border-radius:0 12px 12px 0;background:transparent;color:transparent;font-size:16px;opacity:0;-webkit-appearance:none;appearance:none;cursor:pointer}
+.dpick::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;opacity:0;cursor:pointer}
+.hint{margin:1px 0 0;font-size:11.5px;line-height:1.4;color:var(--dim)}
+.hint.bad{color:var(--warn);font-weight:750}
+.now{margin:10px 0 0;padding:11px 13px;border-radius:12px;background:var(--acc-soft);font-size:13.5px;line-height:1.6;color:var(--ink)}
+.now b{font-weight:800;color:var(--acc)}
+.now .dim{color:var(--muted)}
+.dates{margin:9px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.dates li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:baseline;gap:8px;font-size:13px;color:var(--muted)}
+.dates .d-n{font-weight:750;color:var(--ink)}
+.dates .d-v{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink);white-space:nowrap}
+.side-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 13px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;white-space:nowrap}
+.chip:hover{border-color:var(--acc);color:var(--acc)}
+.chip:active{transform:scale(.985)}
+
+/* 단계 눈금 */
+.rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+@media (min-width:720px){.rail{grid-template-columns:repeat(8,minmax(0,1fr))}}
+.step{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;min-height:52px;padding:5px 3px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);color:var(--muted);text-align:center;line-height:1.25;position:relative}
+.step .s-n{font-size:11px;font-weight:800;color:var(--dim);font-variant-numeric:tabular-nums}
+.step .s-t{font-size:12.5px;font-weight:750;letter-spacing:-.02em;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.step[aria-selected="true"]{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
+.step[aria-selected="true"] .s-n,.step[aria-selected="true"] .s-t{color:var(--on-acc)}
+.step[data-here="1"]::after{content:"";position:absolute;top:4px;right:5px;width:6px;height:6px;border-radius:99px;background:var(--warn)}
+.step[aria-selected="true"][data-here="1"]::after{background:var(--on-acc)}
+.step:active{transform:scale(.99)}
+
+/* 한 장 */
+.panel{margin-top:8px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);min-width:0}
+.p-head{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.p-head>div{min-width:0}
+.p-head h2{margin:0;font-size:16px;font-weight:800;letter-spacing:-.03em}
+.p-head p{margin:3px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.p-when{flex:none;margin-left:auto;padding:4px 10px;border:1px solid var(--line-2);border-radius:99px;font-size:11px;font-weight:750;color:var(--muted);white-space:nowrap}
+.p-body{margin-top:11px;min-width:0;transition:opacity .24s cubic-bezier(.2,.9,.3,1),transform .24s cubic-bezier(.2,.9,.3,1)}
+.p-body.swap{opacity:0;transform:translateY(6px)}
+.say{margin:0;padding:12px 14px;border-left:3px solid var(--acc);border-radius:0 12px 12px 0;background:var(--soft);font-size:14.5px;line-height:1.62;color:var(--ink)}
+.say b{font-weight:800;color:var(--acc)}
+.rules{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:7px}
+@media (min-width:900px){.rules{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}
+@media (min-width:900px){.rules .rule{grid-template-columns:minmax(0,1fr);gap:2px}}
+@media (min-width:900px){.rules .rule:last-child:nth-child(odd){grid-column:1/-1}}
+@media (min-width:900px){.side{position:sticky;top:12px}}
+.rule{display:grid;grid-template-columns:66px minmax(0,1fr);gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);min-width:0}
+@media (max-width:449px){.rule{grid-template-columns:minmax(0,1fr);gap:3px}}
+.rule .r-k{font-size:15px;font-weight:800;color:var(--acc);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.rule .r-b{min-width:0}
+.rule .r-t{display:block;font-size:13.5px;font-weight:750;color:var(--ink);line-height:1.45}
+.rule .r-d{margin:2px 0 0;font-size:12.5px;line-height:1.55;color:var(--muted)}
+.rule .r-f{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.ref{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 11px;border:1px solid var(--line-2);border-radius:99px;background:var(--soft);font-size:12px;font-weight:700;color:var(--acc);white-space:nowrap}
+.ref:active{transform:scale(.985)}
+.sec{margin:14px 0 0;font-size:12.5px;font-weight:800;letter-spacing:-.01em;color:var(--muted)}
+.qs{margin:7px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.q{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+.q-b{display:flex;align-items:center;gap:9px;width:100%;min-height:48px;padding:8px 12px;font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.45}
+.q-b .q-c{margin-left:auto;flex:none;width:8px;height:8px;border-right:1.7px solid var(--acc);border-bottom:1.7px solid var(--acc);transform:rotate(45deg) translateY(-2px);transition:transform .22s cubic-bezier(.2,.9,.3,1)}
+.q-b[aria-expanded="true"] .q-c{transform:rotate(-135deg) translateY(-1px)}
+.q-a{padding:0 12px 12px;font-size:13.5px;line-height:1.65;color:var(--muted)}
+.q-a p{margin:0 0 7px}
+.q-a p:last-child{margin-bottom:0}
+.q-a .r-f{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.checks{margin:7px 0 0;padding:0;list-style:none;display:grid;gap:5px}
+.checks li{position:relative;padding:0 0 0 22px;font-size:13px;line-height:1.55;color:var(--muted)}
+.checks li::before{content:"";position:absolute;left:2px;top:6px;width:11px;height:6px;border-left:2px solid var(--ok);border-bottom:2px solid var(--ok);transform:rotate(-45deg)}
+.p-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
+
+/* 조문 시트 */
+.sheet{position:fixed;inset:0;z-index:120;display:flex;align-items:flex-end;justify-content:center;background:var(--bg);background:color-mix(in srgb,var(--bg) 95%,transparent)}
+@media (min-width:900px){.sheet{align-items:center}}
+.sh-panel{width:100%;max-width:760px;max-height:82dvh;display:flex;flex-direction:column;border:1px solid var(--line-2);border-radius:18px 18px 0 0;background:var(--panel);box-shadow:0 -8px 40px -24px rgba(0,0,0,.4)}
+@media (min-width:900px){.sh-panel{border-radius:18px;max-height:76dvh}}
+.sh-h{display:flex;align-items:center;gap:10px;padding:13px 14px 11px;border-bottom:1px solid var(--line);flex:none}
+.sh-h h2{margin:0;font-size:14.5px;font-weight:800;letter-spacing:-.02em;line-height:1.4;min-width:0}
+.sh-x{flex:none;margin-left:auto;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line-2);border-radius:12px;background:var(--soft);color:var(--muted)}
+.sh-x svg{width:17px;height:17px}
+.sh-b{overflow-y:auto;overscroll-behavior:contain;padding:13px 14px 18px;font-size:14px;line-height:1.72;color:var(--ink);-webkit-overflow-scrolling:touch}
+.sh-b p{margin:0 0 9px}
+.sh-b .ef{display:block;margin-top:10px;font-size:12px;color:var(--muted)}
+
+/* 바닥글 */
+.foot{margin:16px 0 0;font-size:12px;line-height:1.65;color:var(--muted)}
+.foot b{color:var(--ink)}
+.foot a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--line-2)}
+html[data-jc-imm] .rail{display:none}
+</style>
+</head>
+<body data-jc-tool="first-year">
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <a class="brand" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg>재직 <span>첫해 근로조건</span></a>
+    <span data-jc-prefs></span>
+  </header>
+
+  <h1 class="sr">재직 첫해 근로조건 시간축</h1>
+
+  <section class="pv" id="pv">
+    <button type="button" class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 사용 <span aria-hidden="true">·</span> 입사일은 이 탭 안에서만</span>
+      <span class="pv-c">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" hidden>
+      <ul>
+        <li><b>입사한 날을 넣으면 지금이 어느 시점인지 짚어 줍니다.</b> 시점을 누르면 그때 물어보는 것과 «법이 정한 선»이 한 장으로 나옵니다.</li>
+        <li><b>근거는 조문 원문입니다.</b> 근로기준법·최저임금법·기간제법·퇴직급여법·남녀고용평등법·고용보험법·산재보험법 조문을 국가법령정보센터 시행본 그대로 싣고, 「조문 보기」로 원문을 폅니다.</li>
+        <li><b>입사일은 서버로 보내지 않습니다.</b> 이 브라우저 탭 안에서만 계산하고 저장하지 않습니다. 이름·주민등록번호는 넣지 않습니다.</li>
+        <li><b>최종 판단은 기관의 몫입니다.</b> 수급자격·부당해고·체불 진정은 고용센터·노동위원회·노동청의 판단입니다. 이 화면은 확인할 것과 근거를 정리해 줄 뿐입니다.</li>
+        <li><b>상시 5명 미만 사업장은 근로기준법이 일부만 적용됩니다.</b> 이 화면의 «법이 정한 선»은 5명 이상 사업장을 기준으로 읽고, 5명 미만이면 고용센터에 적용 여부를 확인하세요.</li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="lead">입사일을 넣으면 <b>지금 시점</b>이 켜집니다. 시점을 눌러 <b>물어보는 것 · 법이 정한 선 · 확인할 것</b>을 한 장씩 보세요.</p>
+
+  <div class="board">
+    <div class="main">
+      <div class="rail" id="rail" role="tablist" aria-label="재직 시점"></div>
+      <section class="panel" id="panel" role="tabpanel" aria-live="polite" aria-labelledby="st-0">
+        <div class="p-head"><div><h2 id="pTitle">시점</h2><p id="pSub"></p></div><span class="p-when" id="pWhen"></span></div>
+        <div class="p-body" id="pBody"></div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="card">
+        <div class="c-h"><h2>내 날짜</h2><span class="tag">이 탭에만</span></div>
+        <div class="fld">
+          <label for="hire">입사일</label>
+          <div class="dfield">
+            <input class="inp" type="text" id="hire" inputmode="numeric" autocomplete="off" placeholder="yyyy/mm/dd" maxlength="10" aria-describedby="hireHint">
+            <span class="dcal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2.5"/><path d="M3.5 10.5h17M8 3.5v4M16 3.5v4"/></svg></span>
+            <input class="dpick" type="date" id="hirePick" tabindex="-1" aria-hidden="true">
+          </div>
+          <p class="hint" id="hireHint">예: 2026/06/01</p>
+        </div>
+        <p class="now" id="now">입사일을 넣으면 <b>오늘 며칠째</b>인지, <b>수습 종료일</b>과 <b>1년 도달일</b>을 계산합니다.</p>
+        <ul class="dates" id="dates" hidden></ul>
+        <div class="side-links">
+          <a class="chip" href="../pay-calc/">실수령액·퇴직금 계산</a>
+          <a class="chip" href="../law/">법령 원문 찾기</a>
+          <a class="chip" href="../manual/">구직급여 가이드</a>
+        </div>
+      </section>
+      <section class="card" style="margin-top:10px">
+        <div class="c-h"><h2>이 화면의 기준</h2><span class="tag" id="wageTag">2026</span></div>
+        <p class="now" id="wageNote" style="background:transparent;padding:0;margin-top:8px"></p>
+      </section>
+    </aside>
+  </div>
+
+  <p class="foot">
+    <b>근거</b> 국가법령정보센터 시행본(조문마다 시행일 표시) · 최저임금 <b id="wageFoot">시간급 10,320원</b>, 고용노동부고시 제2025-47호(2026.1.1.~12.31.) · 2026-11-21 확인.
+    <b>주의</b> 이 화면은 참고·실습용이며 법률 자문이 아닙니다. 사안의 최종 판단은 고용센터·노동위원회·노동청 등 기관의 몫입니다.
+  </p>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sh-panel" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+    <div class="sh-h"><h2 id="shTitle">조문</h2><button type="button" class="sh-x" id="shX" aria-label="조문 닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sh-b" id="shBody"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var d=document, $=function(s){return d.querySelector(s)};
+  var DOC=null, LAWS={};
+  var cur=0, openQ=-1;
+
+  function el(tag,cls,txt){var e=d.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+  function pad(n){return (n<10?'0':'')+n;}
+  function fmt(dt){return dt.getFullYear()+'/'+pad(dt.getMonth()+1)+'/'+pad(dt.getDate());}
+  function iso(dt){return dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate());}
+  function ymd(v){v=String(v||'');return v.length===8? v.slice(0,4)+'/'+v.slice(4,6)+'/'+v.slice(6,8) : v;}
+  function addMonths(dt,m){var x=new Date(dt.getTime());var day=x.getDate();x.setMonth(x.getMonth()+m);if(x.getDate()<day)x.setDate(0);return x;}
+  function dateFromInput(v){ /* yyyy/mm/dd·yyyy-mm-dd·yyyymmdd 모두 받는다 */
+    var s=String(v||'').replace(/[^0-9]/g,''); if(s.length!==8) return null;
+    var y=+s.slice(0,4), m=+s.slice(4,6), d=+s.slice(6,8);
+    if(y<1900||y>2100||m<1||m>12||d<1||d>31) return null;
+    var dt=new Date(y,m-1,d);
+    if(dt.getFullYear()!==y||dt.getMonth()!==m-1||dt.getDate()!==d) return null;
+    return dt; }
+  function days(a,b){ return Math.round((b-a)/86400000); }
+  function lawLabel(key){ var L=LAWS[key]; return L? L.law+' '+L.no : key; }
+
+  /* ---------- 조문 시트 ---------- */
+  var sheet=$('#sheet'), shBody=$('#shBody'), shTitle=$('#shTitle'), lastFocus=null;
+  function closeLaw(){
+    if(sheet.hidden) return;
+    sheet.hidden=true; d.body.style.overflow='';
+    if(window.JCBackStack) JCBackStack.release(sheet);
+    if(lastFocus&&lastFocus.focus) lastFocus.focus();
+  }
+  function openLaw(key){
+    var L=LAWS[key]; if(!L) return;
+    lastFocus=d.activeElement;
+    shTitle.textContent=L.law+' '+L.no+'('+L.title+')';
+    shBody.innerHTML='';
+    L.text.split('\n').forEach(function(line){
+      if(line.trim()) shBody.appendChild(el('p',null,line.trim()));
+    });
+    var ef=el('span','ef','국가법령정보센터 시행본 · '+L.law+' 시행 '+ymd(L.efYd));
+    shBody.appendChild(ef);
+    sheet.hidden=false; d.body.style.overflow='hidden';
+    if(window.JCBackStack) JCBackStack.open(sheet,closeLaw);
+    $('#shX').focus();
+  }
+  $('#shX').addEventListener('click',closeLaw);
+  sheet.addEventListener('click',function(e){ if(e.target===sheet) closeLaw(); });
+  d.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!sheet.hidden) closeLaw(); });
+
+  function refChips(box,refs){
+    if(!refs||!refs.length) return;
+    var wrap_=el('div','r-f');
+    refs.forEach(function(k){
+      var b=el('button','ref',lawLabel(k)+' 보기');
+      b.type='button'; b.setAttribute('aria-label',lawLabel(k)+' 조문 원문 보기');
+      b.addEventListener('click',function(){openLaw(k)});
+      wrap_.appendChild(b);
+    });
+    box.appendChild(wrap_);
+  }
+
+  /* ---------- 단계 ---------- */
+  function stageOfDay(n){
+    if(n==null) return -1;
+    if(n<0) return 0;
+    if(n<30) return 1;
+    if(n<90) return 2;
+    if(n<180) return 3;
+    if(n<365) return 4;
+    return 5;
+  }
+
+  function paintRail(){
+    var rail=$('#rail'); rail.innerHTML='';
+    DOC.stages.forEach(function(s,i){
+      var b=el('button','step');
+      b.type='button'; b.setAttribute('role','tab');
+      b.setAttribute('aria-selected', String(i===cur));
+      b.setAttribute('aria-controls','pBody');
+      b.id='st-'+i;
+      b.appendChild(el('span','s-n',s.no));
+      b.appendChild(el('span','s-t',s.short));
+      b.setAttribute('aria-label',s.no+' '+s.label+' — '+s.short);
+      b.addEventListener('click',function(){ select(i); });
+      rail.appendChild(b);
+    });
+    markHere();
+  }
+
+  function markHere(){
+    var n=currentDay(); var auto=stageOfDay(n);
+    Array.prototype.forEach.call(d.querySelectorAll('.step'),function(b,i){
+      b.setAttribute('data-here', i===auto?'1':'0');
+    });
+  }
+
+  function currentDay(){
+    var hire=dateFromInput($('#hire').value);
+    if(!hire) return null;
+    var today=new Date(); today.setHours(0,0,0,0);
+    return days(hire,today);
+  }
+
+  function renderStage(){
+    var s=DOC.stages[cur];
+    $('#pTitle').textContent=s.label+' — '+s.head;
+    $('#pSub').textContent=s.say2||'';
+    $('#pWhen').textContent=s.when;
+    var body=$('#pBody');
+    body.classList.add('swap');
+    setTimeout(function(){
+      body.innerHTML='';
+      var say=el('p','say'); say.innerHTML='<b>먼저 이 한 마디</b> '+s.say; body.appendChild(say);
+
+      var ul=el('ul','rules');
+      s.rules.forEach(function(r){
+        var li=el('li','rule');
+        li.appendChild(el('span','r-k',r.k));
+        var b=el('div','r-b');
+        b.appendChild(el('span','r-t',r.t));
+        b.appendChild(el('p','r-d',r.d));
+        refChips(b,r.refs);
+        li.appendChild(b); ul.appendChild(li);
+      });
+      body.appendChild(ul);
+
+      body.appendChild(el('p','sec','그때 물어보는 것'));
+      var qs=el('ul','qs');
+      s.qs.forEach(function(q,qi){
+        var li=el('li','q');
+        var btn=el('button','q-b'); btn.type='button';
+        btn.setAttribute('aria-expanded', String(qi===openQ));
+        btn.setAttribute('aria-controls','qa-'+cur+'-'+qi);
+        btn.appendChild(el('span','q-x',q.q));
+        btn.appendChild(el('span','q-c'));
+        var ans=el('div','q-a'); ans.id='qa-'+cur+'-'+qi;
+        ans.hidden = qi!==openQ;
+        (q.a||[]).forEach(function(p){ ans.appendChild(el('p',null,p)); });
+        refChips(ans,q.refs);
+        if(q.links&&q.links.length){
+          var lk=el('div','p-links');
+          q.links.forEach(function(id){
+            var a=el('a','chip',LINK_LABEL[id]||id); a.href='../'+id+'/'; a.style.minHeight='38px';
+            lk.appendChild(a);
+          });
+          ans.appendChild(lk);
+        }
+        btn.addEventListener('click',function(){
+          var open=btn.getAttribute('aria-expanded')==='true';
+          btn.setAttribute('aria-expanded',String(!open));
+          ans.hidden=open;
+          openQ=open?-1:qi;
+        });
+        li.appendChild(btn); li.appendChild(ans); qs.appendChild(li);
+      });
+      body.appendChild(qs);
+
+      body.appendChild(el('p','sec','상담에서 확인할 것'));
+      var ck=el('ul','checks');
+      s.checks.forEach(function(c){ ck.appendChild(el('li',null,c)); });
+      body.appendChild(ck);
+
+      if(s.links&&s.links.length){
+        var lw=el('div','p-links');
+        s.links.forEach(function(id){
+          var a=el('a','chip',LINK_LABEL[id]||id); a.href='../'+id+'/';
+          lw.appendChild(a);
+        });
+        body.appendChild(lw);
+      }
+      body.classList.remove('swap');
+    },110);
+  }
+
+  var LINK_LABEL={
+    law:'직업상담 법전', 'pay-calc':'실업급여·근로조건 계산기', posting:'공고문 법령 점검대',
+    manual:'구직자취업촉진법 가이드', hud:'실무 상담 HUD', 'policy-match':'지원제도 매칭기',
+    transit:'환승노선도', intake:'초기상담 시트'
+  };
+
+  function select(i){
+    if(i<0||i>=DOC.stages.length) return;
+    cur=i; openQ=-1;
+    Array.prototype.forEach.call(d.querySelectorAll('.step'),function(b,j){
+      b.setAttribute('aria-selected',String(j===i));
+    });
+    $('#panel').setAttribute('aria-labelledby','st-'+i);
+    markHere();
+    renderStage();
+  }
+
+  /* ---------- 내 날짜 ---------- */
+  function paintDates(){
+    var hire=dateFromInput($('#hire').value);
+    var now=$('#now'), list=$('#dates');
+    if(!hire){
+      now.innerHTML='입사일을 넣으면 <b>오늘 며칠째</b>인지, <b>수습 종료일</b>과 <b>1년 도달일</b>을 계산합니다.';
+      list.hidden=true; list.innerHTML=''; markHere(); return;
+    }
+    var today=new Date(); today.setHours(0,0,0,0);
+    var n=days(hire,today);
+    var probation=addMonths(hire,3), firstYear=new Date(hire.getFullYear()+1,hire.getMonth(),hire.getDate());
+    var txt;
+    if(n<0) txt='입사까지 <b>D'+n+'</b> · 입사일 '+fmt(hire);
+    else if(n<365){
+      var rest=days(today,probation);
+      txt='오늘은 입사 <b>D+'+n+'</b> · '+(rest>0?'수습 종료(3개월)까지 <b>'+rest+'일</b>':'수습 기간은 끝났습니다');
+    }
+    else txt='오늘은 입사 <b>D+'+n+'</b> · 1년을 넘겨 <b>'+(n-365)+'일</b>째 재직 중';
+    if(n>=0&&n<90) txt+=' <span class="dim">· 수습 기간</span>';
+    now.innerHTML=txt;
+
+    list.innerHTML=''; list.hidden=false;
+    var rows=[
+      ['수습 종료', fmt(probation), n>=90?'지남':''],
+      ['1년 도달', fmt(firstYear), n>=365?'지남':''],
+      ['지금', n<0?'입사 전':'D+'+n, '']
+    ];
+    rows.forEach(function(r){
+      var li=el('li');
+      li.appendChild(el('span','d-n',r[0]));
+      li.appendChild(el('span','d-v',r[1]));
+      li.appendChild(el('span',null,r[2]));
+      list.appendChild(li);
+    });
+    var auto=stageOfDay(n);
+    if(auto>=0&&auto!==cur) select(auto);
+    else markHere();
+  }
+
+  /* 입사일 — 화면에는 yyyy/mm/dd로 보이고, 직접 타이핑과 달력 선택을 모두 받는다. */
+  var hireEl=$('#hire'), pickEl=$('#hirePick'), hintEl=$('#hireHint');
+  var HIRE_HINT='예: 2026/06/01';
+  function paintHireInput(){
+    var raw=hireEl.value;
+    var focused=d.activeElement===hireEl;
+    var caret=focused&&hireEl.selectionStart!=null?hireEl.selectionStart:raw.length;
+    var before=raw.slice(0,caret).replace(/[^0-9]/g,'').length;
+    var s=raw.replace(/[^0-9]/g,'').slice(0,8);
+    var out=s.slice(0,4);
+    if(s.length>4) out+='/'+s.slice(4,6);
+    if(s.length>6) out+='/'+s.slice(6,8);
+    if(raw!==out) hireEl.value=out;
+    if(focused&&hireEl.setSelectionRange){
+      var i=0,seen=0;
+      while(i<out.length&&seen<before){ if(out[i]>='0'&&out[i]<='9') seen++; i++; }
+      hireEl.setSelectionRange(i,i);
+    }
+    var dt=dateFromInput(s);
+    pickEl.value=dt?iso(dt):'';
+    var bad=s.length===8&&!dt;
+    hintEl.textContent=bad?'날짜를 확인해 주세요 (예: 2026/06/01)':HIRE_HINT;
+    hintEl.classList.toggle('bad',bad);
+    hireEl.setAttribute('aria-invalid',bad?'true':'false');
+  }
+  hireEl.addEventListener('input',function(){ paintHireInput(); paintDates(); });
+  hireEl.addEventListener('blur',paintHireInput);
+  pickEl.addEventListener('change',function(){
+    if(!pickEl.value) return;
+    hireEl.value=pickEl.value.replace(/-/g,'/');
+    paintHireInput(); paintDates();
+  });
+
+  /* ---------- 이용 안내 ---------- */
+  var pvT=$('#pvT'), pvB=$('#pvB');
+  pvT.addEventListener('click',function(){
+    var open=pvT.getAttribute('aria-expanded')==='true';
+    pvT.setAttribute('aria-expanded',String(!open));
+    pvB.hidden=open;
+    pvT.querySelector('.pv-c').textContent=open?'펼치기':'접기';
+  });
+
+  /* ---------- 자료 ---------- */
+  function boot(){
+    $('#wageTag').textContent=DOC.wage.year;
+    $('#wageNote').innerHTML='최저임금 <b>시간급 '+DOC.wage.hourly.toLocaleString('ko-KR')+'원</b> · 월 환산 '+DOC.wage.monthly.toLocaleString('ko-KR')+'원<br><span class="dim">'+DOC.wage.source+' · '+DOC.wage.note+'</span>';
+    $('#wageFoot').textContent='시간급 '+DOC.wage.hourly.toLocaleString('ko-KR')+'원';
+    paintRail(); select(0); paintDates();
+  }
+
+  var ready=0;
+  function tryBoot(){ if(ready===2) boot(); }
+  fetch('data/first-year.json').then(function(r){return r.json()}).then(function(j){DOC=j;ready++;tryBoot();}).catch(function(){
+    $('#pBody').innerHTML='<p class="say">자료를 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.</p>';
+  });
+  fetch('data/laws.json').then(function(r){return r.json()}).then(function(j){LAWS=j;ready++;tryBoot();}).catch(function(){});
+})();
+</script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
