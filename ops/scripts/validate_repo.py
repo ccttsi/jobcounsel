@@ -158,7 +158,7 @@ def resolve_license(node, index):
 
 
 def check_briefing(document, path):
-    """briefing.json — 17번 지면의 계약(briefing/data/SCHEMA.md v1.3)."""
+    """briefing.json — 08번 지면의 계약(briefing/data/SCHEMA.md v1.3)."""
     label = rel(path)
     required = ["schema_version", "updated_at", "edition", "headline_metrics",
                 "cards", "radar", "sources", "archive_dates", "copyright_policy", "disclaimer"]
@@ -323,7 +323,7 @@ def check_emerging(document, path):
 
 
 def check_thermometer(document, path):
-    """thermometer.json — 16번 산업 온도계의 계약(thermometer/data/SCHEMA.md v1.0.0)."""
+    """thermometer.json — 32번 산업 온도계의 계약(thermometer/data/SCHEMA.md v1.0.0)."""
     label = rel(path)
     for key in ("schema_version", "generated_at", "industry_count", "method",
                 "classifications", "feel_groups", "sources", "industries"):
@@ -377,7 +377,7 @@ def check_thermometer(document, path):
 
 
 def check_terms(document, path):
-    """terms.json — 26번 내담자 언어 번역기의 계약(translator/data/SCHEMA.md v1.0.0).
+    """terms.json — 19번 내담자 언어 번역기의 계약(translator/data/SCHEMA.md v1.0.0).
 
     용어 한 건이 화면 한 장이므로, 필수 칸·길이·연계 섹터 id를 배포 전에 본다.
     특히 links[].to 가 섹터 장부에 없으면 그 칩이 조용히 죽으므로 여기서 잡는다.
