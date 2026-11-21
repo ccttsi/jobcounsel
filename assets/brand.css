@@ -65,6 +65,7 @@
   --tc-policy-match:#5a4470;
   --tc-posting:#2d4a63;
   --tc-first-year:#6a4a2f;
+  --tc-casecon:#3f5240;
 }
 :root[data-jc-tone="sepia"]{
   --tc-theory:#006c59;
@@ -104,6 +105,7 @@
   --tc-policy-match:#4f3c63;
   --tc-posting:#28425a;
   --tc-first-year:#5e3f26;
+  --tc-casecon:#39493a;
 }
 :root[data-theme="dark"]{
   --tc-theory:#36d3b2;
@@ -143,6 +145,7 @@
   --tc-policy-match:#c9b0ec;
   --tc-posting:#9dc4e8;
   --tc-first-year:#e0b184;
+  --tc-casecon:#b3d3a7;
 }
 
 /* 페이지가 자기 자료 id를 적으면 그 색이 --jc-acc로 붙는다 */
@@ -183,6 +186,7 @@ body[data-jc-tool="pay-calc"]{--jc-acc:var(--tc-pay-calc)}
 body[data-jc-tool="policy-match"]{--jc-acc:var(--tc-policy-match)}
 body[data-jc-tool="posting"]{--jc-acc:var(--tc-posting)}
 body[data-jc-tool="first-year"]{--jc-acc:var(--tc-first-year)}
+body[data-jc-tool="casecon"]{--jc-acc:var(--tc-casecon)}
 
 /* ---------- 로고 ----------
    2026-11-20: 글자 로고는 대문의 테마별 투명 PNG(.cctt-lockup/.cctt-wordmark, index.html)로 옮겼다.
