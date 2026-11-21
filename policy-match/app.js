@@ -240,9 +240,17 @@
       });
 
       head = ({
+        saeil: '새일센터 상담·인턴으로 시작해 훈련 카드로 직무를 보강합니다.',
+        mid: '훈련·자격을 먼저, 그 뒤 경력지원제 일경험으로 잇습니다.',
+        youth: '청년도전으로 의욕부터, 그 뒤 국취·훈련으로 잇습니다.',
+        exp: '일경험으로 경력을 먼저 채웁니다.',
+        kuk1: '현금 수당(국취 Ⅰ)을 먼저, 훈련 카드로 재취업활동을 채웁니다.',
+        kuk2: '국취 Ⅱ로 지원을 받으며 훈련·일자리를 찾습니다.',
+        card: '훈련 카드로 직무를 먼저 바꿉니다.'
+      })[picked[0]] || ({
         living: '현금 수당을 앞에, 훈련 카드로 재취업활동을 채웁니다.',
         train: '훈련 카드를 먼저, 수당이 붙는 국취를 다음에.',
-        exp: '일경험을 먼저, 연령에 맞는 문으로 골랐습니다.',
+        exp: '일경험·인턴을 먼저, 대상에 맞는 문으로 골랐습니다.',
         job: '바로 지원할 자리와 취업알선부터.'
       })[g];
 
@@ -326,8 +334,7 @@
         var s = STATE[p.state];
         return '<button type="button" class="cross-b" data-pair="' + esc([p.a, p.b].sort().join('|')) + '" aria-label="' + esc(nameOf(p.a) + ' × ' + nameOf(p.b) + ' — ' + s.label + ' 근거 열기') + '">' +
           '<i style="color:var(--m-' + (p.state === 'adjust' ? 'adj' : p.state === 'no' ? 'no' : p.state === 'check' ? 'chk' : 'na') + ')">' + s.sym + ' ' + esc(s.word) + '</i>' +
-          '<span>' + esc(nameOf(p.a)) + ' × ' + esc(nameOf(p.b)) + '</span>' +
-          '<em>근거 보기</em></button>';
+          '<span>' + esc(shortOf(p.a)) + ' × ' + esc(shortOf(p.b)) + '</span></button>';
       }).join('');
     } else {
       cross.hidden = true;
@@ -345,11 +352,16 @@
     var first = SYS[r.steps[0].sid];
     $('stN').textContent = '1';
     $('stName').textContent = first ? first.name : '–';
-    $('stTag').textContent = first && first.give ? first.give[0] : '';
+    $('stTag').textContent = first ? (first.one || (first.give && first.give[0]) || '') : '';
     if (head.textContent !== lastHead) {
       lastHead = head.textContent;
-      $('live').textContent = '1순위 ' + (first ? first.name : '') + '. ' + (first && first.give ? first.give[0] : '');
+      $('live').textContent = '1순위 ' + (first ? first.name : '') + '. ' + (first ? (first.one || '') : '');
     }
+  }
+
+  function shortOf(id) {
+    for (var i = 0; i < COLS.length; i++) if (COLS[i].id === id) return COLS[i].label;
+    return id;
   }
 
   function nameOf(id) {

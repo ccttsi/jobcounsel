@@ -184,12 +184,12 @@ a{color:inherit}
 @media (min-width:900px){.stp{display:none}}
 
 /* 겹침 줄 · 대상 아님 */
-.cross{margin-top:7px;display:grid;gap:3px;padding:8px 10px;border:1px solid var(--line-2);border-radius:12px;background:var(--soft);min-width:0}
+.cross{margin-top:7px;display:grid;gap:4px;padding:8px 10px;border:1px solid var(--line-2);border-radius:12px;background:var(--soft);min-width:0}
 .cross-k{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.02em}
-.cross-list{display:grid;gap:4px}
-.cross-b{display:flex;align-items:center;gap:7px;min-height:44px;width:100%;padding:4px 2px;border:0;background:none;font-size:12px;line-height:1.35;color:var(--ink);text-align:left}
-.cross-b i{flex:none;font-style:normal;padding:2px 7px;border-radius:99px;border:1px solid currentColor;font-size:11px;font-weight:800;white-space:nowrap}
-.cross-b em{font-style:normal;color:var(--dim);margin-left:auto;flex:none;font-size:11px;font-weight:700;white-space:nowrap}
+.cross-list{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
+.cross-b{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 11px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:12px;line-height:1.3;color:var(--ink);text-align:left;white-space:nowrap}
+.cross-b i{flex:none;font-style:normal;font-size:11px;font-weight:800;white-space:nowrap}
+@media (hover:hover){.cross-b:hover{border-color:var(--acc)}}
 .blk{margin:9px 0 0;padding-top:8px;border-top:1px dashed var(--line-2);font-size:11.5px;line-height:1.5;color:var(--muted)}
 .blk b{color:var(--ink);font-weight:750}
 .empty{margin:0;font-size:13px;line-height:1.6;color:var(--muted)}
