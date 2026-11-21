@@ -10,12 +10,15 @@
  *   - 어순이 다른 말                          「자격증 시험 일정」 = 「시험 일정 자격증」
  *   - 현장 약어·쓰다 만 줄임말                「경단녀」「경단」 → 경력단절여성,
  *                                             「국취제」「국취」 → 국민취업지원제도, 「내배」 → 국민내일배움카드
+ *   - 상담 은어·동의어(2순위 보완)            「3.3%」 → 프리랜서·위장도급, 「MES」 → 생산관리시스템,
+ *                                             「상담일지」 → 실무 상담 HUD, 「긴급복지」 → 트리아지·제도 매칭
+ *     ※ 원본은 `assistant/data/synonym-map.json` → build_index.py → rag-preface.json 의 dict(p·t)
+ *     ※ 그 파일을 못 읽어 dict 에 p·t 가 없으면 예전과 똑같이 돈다(폴백).
  *
- * 먼저 보는 것 — 선참조 지도(assistant/data/rag-preface.json, 약 30KB)
- *   섹터 27장의 핵심 낱말·약어 사전만 담은 작은 지도다. index.json(500KB)보다 먼저 받아
+ * 먼저 보는 것 — 선참조 지도(assistant/data/rag-preface.json, 약 73KB)
+ *   섹터 37장의 핵심 낱말·약어·은어 사전만 담은 작은 지도다. index.json(1.7MB)보다 먼저 받아
  *   ① 약어를 정식 용어로 펼치고 ② 어느 섹터부터 볼지 좁힌 뒤(route) ③ 색인 전체에서 순위를 매긴다.
  *   약어 때문에 점수를 올리는 섹터는 근거가 보이게 하는 것이 아니라 순위만 살짝 민다.
- *
  * 원칙: 색인에 있는 말만 근거로 삼는다. 없는 내용을 만들어 내지 않는다.
  */
 (function () {
@@ -57,6 +60,7 @@
     return String(s == null ? '' : s)
       .toLowerCase()
       .replace(/[\u2018\u2019\u201c\u201d]/g, '')
+      .replace(/(\d)[.,](\d)/g, '$1$2')     /* 3.3%·10,320원 — 숫자 사이 구두점은 붙여 둔다 */
       .replace(/[^0-9a-z가-힣ㄱ-ㅎ]+/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
@@ -203,16 +207,45 @@
         var w = norm(forms[j]).replace(/ /g, '');
         if (!w) continue;
         if (w === t) { kind = 'same'; break; }
-        if (w.indexOf(t) === 0) kind = kind || 'prefix';
+        /* 쓰다 만 앞부분은 «한 글자 모자란» 정도만 받는다(경단→경단녀, 경력단→경력단절).
+           두 글자 이상 모자라면 다른 낱말일 가능성이 커서 받지 않는다(경력≠경력단절, 산업≠산업 공정).
+           동의어 사전 항목은 세 글자 이상일 때만 — 「보고」(보다)가 「보고서」로 새는 것을 막는다. */
+        if (e.m && t.length < 3) continue;
+        if (w.indexOf(t) === 0 && w.length - t.length <= 1) kind = kind || 'prefix';
       }
-      if (!kind) {
+      if (!kind && !e.m) {        /* 쓰다 만 줄임말(글자를 건너뛰는 것)은 약어 사전에만 — 동의어 사전은 문장 대조를 쓴다 */
         for (var g = 0; g < forms.length; g++) {
           var w2 = norm(forms[g]).replace(/ /g, '');
-          if (w2.length > t.length && isSubseq(t, w2)) { kind = 'part'; break; }
+          /* 쓰다 만 줄임말(국취→국민취업지원제도)만 받는다. 낱말 속에 그대로 들어 있는 것은
+             다른 낱말이다 — 「임금」이 「포괄임금」에, 「신고」가 「실업 신고」에 이어지면 안 된다. */
+          if (w2.length > t.length && w2.indexOf(t) < 0 && isSubseq(t, w2)) { kind = 'part'; break; }
         }
       }
-      if (kind) out.push({ c: e.c, a: e.a || [], s: e.s || [], x: e.x || '', kind: kind, q: tok });
+      if (kind) out.push({ c: e.c, a: e.a || [], s: e.s || [], ps: e.ps || [], x: e.x || '', p: e.p || 0, t: e.t || [], m: e.m || 0, kind: kind, q: tok });
       if (out.length >= 3) break;      // 한 낱말이 너무 많은 곳으로 펼쳐지지 않게
+    }
+    return out;
+  }
+
+  /* 동의어 사전 항목을 «문장 전체»와 대조한다 — 「수당이 깎」·「죽고 싶」처럼 두 낱말이 붙어야 뜻이 서는 말,
+     조사·어미가 붙은 말(「상담일지까지」)을 받기 위해서다. 한 번 걸리면 같은 항목은 다시 담지 않는다. */
+  function synPhrase(nq, seen) {
+    var list = dictEntries(), out = [];
+    if (!nq) return out;
+    var flat = nq.replace(/ /g, '');
+    for (var i = 0; i < list.length && out.length < 6; i++) {
+      var e = list[i];
+      if (!e.m || seen[e.c]) continue;
+      var forms = [String(e.c || '')].concat(e.a || []);
+      for (var j = 0; j < forms.length; j++) {
+        var w = norm(forms[j]).replace(/ /g, '');
+        if (w.length < 2) continue;
+        if (flat.indexOf(w) >= 0) {
+          seen[e.c] = 1;
+          out.push({ c: e.c, a: e.a || [], s: e.s || [], ps: e.ps || [], x: e.x || '', p: e.p || 0, t: e.t || [], m: 1, kind: 'same', q: forms[j] });
+          break;
+        }
+      }
     }
     return out;
   }
@@ -474,14 +507,20 @@
     });
     /* 현장 약어·쓰다 만 줄임말 → 정식 용어 (선참조 지도 dict) */
     var dh = dictAll(toks);
+    /* 동의어 사전 — 문장 전체와 대조해 걸린 항목을 보탠다(낱말 대조로 이미 걸린 것은 빼고). */
+    var seenC = {};
+    dh.forEach(function (d) { seenC[d.c] = 1; });
+    dh = dh.concat(synPhrase(nq, seenC));
     dh.forEach(function (d) {
       var q = String(d.q || '').replace(/ /g, '');
       var canon = norm(d.c).replace(/ /g, '');
       var isAliasQuery = q !== canon;      // 사용자가 별칭(경단녀·니트)을 쳤다
       var canonAdded = !isAliasQuery;     // 정식 용어를 직접 쳤으면 있는 셈
       var forms = [d.c].concat(d.a || []);
-      var n = 0;
-      for (var i = 0; i < forms.length && n < 3; i++) {
+      /* 쓰다 만 앞부분·줄임말(kind≠same)은 정식 용어 하나만 더한다 — 「경력」이 「경력단절여성」을
+         끌어오는 것은 받아 주되, 그 낱말로 섹터를 세게 밀지는 않는다(아래 syn 은 same 만). */
+      var n = 0, maxForms = d.kind === 'same' ? 3 : 1;
+      for (var i = 0; i < forms.length && n < maxForms; i++) {
         var f = norm(forms[i]).replace(/ /g, '');
         if (!f || f === q) continue;
         /* 별칭을 쳤고 정식 용어가 색인에 있으면 그것만 더한다(철자만 다른 별칭은 뺀다).
@@ -494,6 +533,14 @@
       }
     });
     var situation = SITU.test(nq) && (toks.length >= 2 || added.length > 0);
+    /* 동의어 사전(2순위) — 정식 용어만으로는 색인에 닿지 않는 말을 표준 낱말로 잇는다.
+       예: 「3.3%」 → 프리랜서·위장도급, 「MES」 → 생산관리시스템. p 는 그 섹터를 미는 세기다. */
+    var syn = [];
+    dh.forEach(function (d) {
+      var p = Number(d.p) || 0;
+      (d.t || []).forEach(function (w) { add(w, '동의어'); });
+      if (p > 1 && d.kind === 'same' && (d.s || []).length) syn.push({ c: d.c, s: d.s.slice(0, 3), ps: (d.ps || []).slice(0, 3), p: p, q: d.q || '' });
+    });
     /* 초성 별칭이 있으면 초성 자체는 점수에서 뺀다(ㄱㅊㅈ → 공기업·공공기관).
        짧은 현장말(경단·니트·실급)도 같은 이유로 뺀다 — 그 글자만으로는 엉뚱한 이름에 걸린다
        (예: 니트 → 코오롱베니트). 펼친 말이 있을 때만 뺴고, 없으면 그대로 쓴다. */
@@ -508,7 +555,7 @@
       if (CHO_ALIAS[t] && /^[ㄱ-ㅎ]+$/.test(t)) return false;
       return !drop[t];
     });
-    return { tokens: toks, added: added, dict: dh, situation: situation, dropped: Object.keys(drop),
+    return { tokens: toks, added: added, dict: dh, syn: syn, situation: situation, dropped: Object.keys(drop),
              all: strong.concat(added.map(function (a) { return a.word; })) };
   }
 
@@ -531,9 +578,15 @@
     }
     dictAll(toks).forEach(function (d) {
       var base = d.kind === 'part' ? 2 : 3;
-      /* 사전에 적힌 차례가 곧 우선순위 — 첫 자리에 적힌 섹터부터 앞으로. */
+      var pin = Number(d.p) || 0;
+      /* 사전에 적힌 차례가 곧 우선순위 — 첫 자리에 적힌 섹터부터 앞으로(종전 그대로). */
       (d.s || []).forEach(function (id, i) {
         bump(id, Math.max(1.6, base - i * 0.45), d.c);
+      });
+      /* 동의어 사전은 «미는 세기»만 보탠다 — 차례(ps)는 검색의 섹터 핀에만 쓴다.
+         이렇게 해야 약어 사전이 이미 정해 둔 선참조 순위를 흔들지 않는다. */
+      if (pin > 1) (d.ps || []).slice(0, 2).forEach(function (id, i) {
+        bump(id, Math.max(0.6, (pin - 1) * (i === 0 ? 1.4 : 0.8)), d.c);
       });
     });
     var terms = PREF.terms || {};
@@ -574,6 +627,16 @@
     SYN.forEach(function (g) {
       if (!g.k.some(function (w) { return nq.indexOf(norm(w)) >= 0; })) return;
       Object.keys(g.s || {}).forEach(function (k) { boost[k] = Math.max(boost[k] || 1, g.s[k]); });
+    });
+    /* 동의어 사전의 «미는 세기» — 그 말이 질문에 있으면 적힌 섹터를 세게 민다.
+       첫 섹터는 p, 다음은 조금씩 약하게. 1.9 를 넘기지 않는다(한 낱말이 판을 다 덮지 않게).
+       차례는 사전의 ps(없으면 s)를 따른다 — 약어 사전의 기존 차례는 건드리지 않는다. */
+    (a.syn || []).forEach(function (g) {
+      var order = (g.ps && g.ps.length) ? g.ps : (g.s || []);
+      order.forEach(function (id, i) {
+        var pw = Math.min(1.9, (Number(g.p) || 1) - i * 0.3);
+        if (pw > 1) boost[id] = Math.max(boost[id] || 1, pw);
+      });
     });
     /* 선참조 지도가 집은 섹터를 살짝 앞으로 — 섹터를 꿰뚫지 않고 순위만 민다. */
     var rt = route(q, { limit: 4 });

@@ -24,7 +24,9 @@ CASES = os.path.join(ROOT, 'assistant', 'test', 'search-cases.json')
 PREFACE = os.path.join(ROOT, 'assistant', 'data', 'rag-preface.json')
 INDEX = os.path.join(ROOT, 'assistant', 'data', 'index.json')
 COMPANIES = os.path.join(ROOT, 'assistant', 'data', 'index-companies.json')
-PREFACE_MAX = 60 * 1024        # 선참조 지도는 가벼워야 한다(원문 60KB 이하)
+PREFACE_MAX = 96 * 1024        # 선참조 지도 상한 — 색인(1.6MB)보다 먼저 받는 작은 지도다.
+                               #   2순위 동의어 사전(assistant/data/synonym-map.json)을 dict 에 합치면서
+                               #   60KB → 73KB 가 되었다. 낱말을 더 넣어도 96KB 아래로 둔다.
 COMPANIES_MAX = 900 * 1024     # 기업 색인은 검색할 때만 받는다 — 900KB(gzip 약 190KB)를 넘으면 첫 검색이 무거워진다
 
 

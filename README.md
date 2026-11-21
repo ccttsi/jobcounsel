@@ -51,7 +51,7 @@
 | `/assets/prefs.js` | 공용 화면 설정: 테마(밝게·세피아·어둡게·자동), 글자 크기, 집중 보기(몰입형 풀화면), 공통 디자인 층 |
 | `/assets/assistant.js`·`.css` | 자료실 비서 — 모든 지면 공통 위젯. 아래 「자료실 비서」 |
 | `/assets/deckfab.js`·`.css` | 왼쪽 아래 **카드덱 단추**(비서 단추와 마주 보는 자리·같은 모양)와 덱 미니 스위처 — 누르면 `/flow/`로 간다. 마이덱에서 자료를 열고 들어오면 「덱 이름 · 지금 자리 · 이전/다음」 한 줄 띠가 함께 선다(`sessionStorage`의 `jc_active_deck`) |
-| `/assistant/` | 비서의 검색 엔진(`search.js`)·색인 생성기(`build_index.py`)·색인 데이터(`data/index.json`·`data/index-dirs.json`·`data/index-companies.json`)·선참조 지도(`data/rag-preface.json`)·약어 사전(`aliases.json`)·키 발급 4단계 도해 |
+| `/assistant/` | 비서의 검색 엔진(`search.js`)·색인 생성기(`build_index.py`)·색인 데이터(`data/index.json`·`data/index-dirs.json`·`data/index-companies.json`)·선참조 지도(`data/rag-preface.json`)·약어 사전(`aliases.json`)·상담 은어·동의어 사전(`data/synonym-map.json`)·채점 도구(`../ops/scripts/synonym_eval.py`)·키 발급 4단계 도해 |
 
 각 페이지는 폴더 안의 `index.html` 한 파일로 되어 있고, 빌드 과정 없이 그대로 게시됩니다(`/talk/`, `/parsons/`는 데이터와 화면 파일을 나눴습니다).
 
@@ -83,10 +83,14 @@
   불완전한 입력에서도 상관성 높은 순으로 자료를 찾아 줍니다. 초성(`ㅂㄷㅊ` → 반도체), 구어체·동의어(`짤림` → 해고·근로기준법),
   **현장 약어·쓰다 만 줄임말**(`경단`·`경단녀` → 경력단절여성, `국취` → 국민취업지원제도, `내배` → 국민내일배움카드,
   `실급` → 구직급여, `고보` → 고용보험), 조사·어순이 어긋난 문장, 조사·어미 제거를 처리합니다(`assistant/search.js`).
+  **상담 은어·동의어 사전**(`assistant/data/synonym-map.json` 121항목)은 한 걸음 더 나아가, `3.3%`·`프리`·`특고` → 프리랜서·특수고용,
+  `MES`·`캐파`·`피킹` → 내담자 언어 번역기, `상담일지`·`수당 깎` → 실무 상담 HUD, `긴급복지`·`월세 밀` → 트리아지·제도 매칭처럼
+  **어느 섹터부터 볼지**까지 잇습니다. 사연 학습셋 168건으로 재면 1순위 적중률 47.6% → **67.3%**, 3순위 안 69.0% → **86.3%**
+  (`python3 ops/scripts/synonym_eval.py`).
   검색창 아래 「이렇게 읽었어요」 칩으로 어떻게 펼쳤는지 보이고, 「먼저 볼 곳」에 선참조 지도가 집은 섹터 2곳을 먼저 보여 줍니다.
-- **선참조 지도 — `assistant/data/rag-preface.json`(약 30KB).** 비서가 맨 먼저 받는 작은 지도로,
-  색인(540KB)을 뒤지기 전에 섹터를 좁히고 약어를 펼칩니다. 섹터·낱말·약어 사전은 `assets/tools.js`·`assistant/aliases.json`
-  에서 매번 다시 만들어집니다(`assistant/build_index.py`). 대화에서는 이 지도가 Gemini 지침에도 함께 가서,
+- **선참조 지도 — `assistant/data/rag-preface.json`(약 74KB).** 비서가 맨 먼저 받는 작은 지도로,
+  색인(1.7MB)을 뒤지기 전에 섹터를 좁히고 약어·은어를 펼칩니다. 섹터·낱말·약어 사전은 `assets/tools.js`·`assistant/aliases.json`·
+  `assistant/data/synonym-map.json`에서 매번 다시 만들어집니다(`assistant/build_index.py`). 대화에서는 이 지도가 Gemini 지침에도 함께 가서,
   답을 쓰기 전에 후보 섹터부터 확인하게 합니다.
 - **대화 — 로그인 + 내 Google Gemini 키.** 찾은 자료와 「지금 열려 있는 자료」를 근거로 친절한 상담사 말투로 설명합니다.
   실무 모드 4종(쉬운 3줄 · 모의면접·서류 · 교차 비교 · 오프닝 질문), 웹 교차 확인(`google_search` 그라운딩)이 있습니다.

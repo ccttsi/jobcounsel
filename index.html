@@ -1248,7 +1248,7 @@ var $=function(id){return document.getElementById(id);};
 var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
 
 /* ---------- 데이터 ---------- */
-var TOOLS=window.JC_TOOLS||[];   /* 자료 장부는 assets/tools.js 한곳에서 관리한다(01~36) */
+var TOOLS=window.JC_TOOLS||[];   /* 자료 장부는 assets/tools.js 한곳에서 관리한다(01~37) */
 var APPS=window.JC_APPS||[];     /* 자료가 아닌 «앱»(상담 플로우) — 목록·롤링에서는 빼고 찾기·「이어 보기」에만 쓴다 */
 var ALL=TOOLS.concat(APPS);       /* 찾기·주소 대조용 전체 목록. 목록을 세는 곳은 늘 TOOLS만 센다 */
 
