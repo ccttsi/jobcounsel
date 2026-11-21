@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="합성 사례 6건을 여덟 이론 틀(특성-요인·흥미 유형·생애 발달·이야기·학습 우연·자기효능·결정 정보처리·제한과 타협)로 바꿔 읽으며 사정·상담목표·물어볼 질문을 세우는 연습 화면입니다. 사례·문장·확인 문제는 자료실이 새로 쓴 것이고, 이론 이름과 개념만 사실로 인용합니다.">
+<title>사례개념화 실습실</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#4a5a3c;--acc-soft:rgba(74,90,60,.10);--on-acc:#fffdf8;
+  --warn:#8a3a1e;--ok:#3d6b46;--bad:#8a2f22;
+  --shadow:0 1px 2px rgba(60,55,25,.05),0 12px 30px -20px rgba(60,55,25,.32);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#b7cf95;--acc-soft:rgba(183,207,149,.14);--on-acc:#12160c;
+  --warn:#ffa07a;--ok:#86c79a;--bad:#f0917f;
+  --shadow:none;
+  color-scheme:dark;
+}
+:root[data-jc-tone="sepia"]{
+  --acc:#3f4f31;--acc-soft:rgba(63,79,49,.11);
+  --warn:#7c331a;--ok:#365f3e;--bad:#77281d;
+}
+body[data-jc-tool="casecon"]{--jc-acc:var(--acc)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,textarea,input,select{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;text-align:left;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px 18px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media (min-width:900px){.wrap{padding:0 28px 26px}}
+
+/* ---------- 머리말 ---------- */
+.hd{display:flex;align-items:center;gap:8px;min-height:64px;padding:10px 0;position:relative;z-index:20}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:0 1 auto;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;overflow:hidden}
+.brand svg{width:24px;height:24px;flex:none;color:var(--acc)}
+.brand span{color:var(--acc)}
+.hd>[data-jc-prefs]{margin-left:auto}
+
+/* ---------- 이용 안내 ---------- */
+.pv{border-bottom:1px solid var(--line)}
+.pv-t{display:flex;align-items:center;gap:9px;width:100%;min-height:44px;padding:6px 0;font-size:14px;color:var(--muted)}
+.pv-t svg{width:17px;height:17px;flex:none;color:var(--acc)}
+.pv-tt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-tt b{margin-right:6px;font-weight:750;color:var(--ink)}
+.pv-c{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--acc)}
+.pv-c::after{content:"";width:7px;height:7px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-1px)}
+.pv-t[aria-expanded="true"] .pv-c::after{transform:rotate(-135deg)}
+.pv-b{padding:2px 0 14px}
+.pv-b ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.pv-b b{color:var(--ink)}
+
+.lead{margin:11px 0 0;font-size:14px;line-height:1.55;color:var(--muted)}
+.lead b{color:var(--ink);font-weight:750}
+
+/* ---------- 판 ---------- */
+.board{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:11px;align-items:start}
+@media (min-width:900px){.board{grid-template-columns:minmax(0,1.42fr) minmax(300px,.58fr);gap:16px}}
+.main{min-width:0}
+.side{min-width:0}
+.card{border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);padding:13px;min-width:0}
+
+/* 사례 고르기 */
+.crail{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 8px;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 26px),transparent 100%);
+  mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 26px),transparent 100%)}
+.crail::-webkit-scrollbar{display:none}
+.cb{flex:none;min-height:44px;display:flex;align-items:center;gap:7px;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--muted);font-size:13.5px;font-weight:650;white-space:nowrap;transition:transform .12s ease,background-color .12s}
+.cb:active{transform:scale(.97)}
+.cb[aria-selected="true"]{color:var(--on-acc);background:var(--acc);border-color:var(--acc)}
+.cb .n{font-variant-numeric:tabular-nums;font-size:12px;opacity:.75}
+
+/* 사례 머리 */
+.casebar{border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);padding:12px 13px;min-width:0}
+.cb-top{display:flex;align-items:baseline;gap:8px;min-width:0}
+.cb-who{font-size:12.5px;font-weight:700;color:var(--acc);letter-spacing:0}
+.cb-h{font-size:16.5px;font-weight:780;letter-spacing:-.02em;margin:2px 0 0}
+.say{margin:6px 0 0;font-size:14px;color:var(--ink);line-height:1.55}
+.say::before{content:"“";color:var(--acc);font-weight:800;margin-right:1px}
+.say::after{content:"”";color:var(--acc);font-weight:800;margin-left:1px}
+.facts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px 10px;margin:9px 0 0;padding:9px 0 0;border-top:1px dashed var(--line-2)}
+.facts div{min-width:0;font-size:12.5px;line-height:1.45;color:var(--muted)}
+.facts b{display:block;font-size:11.5px;font-weight:750;color:var(--dim);letter-spacing:.01em}
+.firstqs{margin:8px 0 0;padding:8px 0 0;border-top:1px dashed var(--line-2);font-size:12.5px;line-height:1.5;color:var(--muted)}
+.firstqs b{display:block;font-size:11.5px;font-weight:800;letter-spacing:.03em;color:var(--dim);margin-bottom:2px}
+.firstqs ol{margin:0;padding-left:17px;display:grid;gap:1px}
+.firstqs li{padding-left:2px}
+@media (min-width:900px){
+  .facts{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 12px}
+  .firstqs ol{grid-template-columns:repeat(3,minmax(0,1fr));padding-left:0;counter-reset:fq;gap:2px 12px}
+  .firstqs li{list-style:none;display:flex;gap:5px;align-items:flex-start}
+  .firstqs li::before{counter-increment:fq;content:counter(fq) '.';color:var(--acc);font-weight:800;flex:none}
+}
+
+/* 틀 고르기 */
+.frail{display:flex;gap:6px;overflow-x:auto;margin-top:10px;padding:2px 1px 8px;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 26px),transparent 100%);
+  mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 26px),transparent 100%)}
+.frail::-webkit-scrollbar{display:none}
+.fb{flex:none;min-height:44px;display:flex;align-items:center;gap:6px;padding:0 11px;border:1px solid var(--line);border-radius:11px;background:var(--soft);color:var(--muted);font-size:13px;font-weight:650;white-space:nowrap;transition:transform .12s ease,background-color .12s}
+.fb:active{transform:scale(.97)}
+.fb .n{font-size:11px;font-variant-numeric:tabular-nums;opacity:.7}
+.fb[aria-selected="true"]{background:var(--acc-soft);border-color:var(--acc);color:var(--ink)}
+.fb.quiz[aria-selected="true"]{background:var(--soft)}
+.fb.seen::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--acc);opacity:.65}
+
+/* 한 장 */
+.panel{border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);padding:14px;min-width:0}
+.p-head{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.p-head h2{margin:0;font-size:16.5px;font-weight:780;letter-spacing:-.02em}
+.p-head p{margin:2px 0 0;font-size:12.5px;color:var(--dim)}
+.p-head .p-who{margin-left:auto;flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 11px;margin:-8px -6px -8px 0;border:1px solid var(--acc);border-radius:10px;background:var(--acc-soft);font-size:12px;font-weight:750;color:var(--acc);text-decoration:none;white-space:nowrap}
+.blk{margin-top:12px;min-width:0}
+.blk h3{margin:0 0 4px;font-size:11.5px;font-weight:800;letter-spacing:.06em;color:var(--dim)}
+.blk p{margin:0;font-size:14px;line-height:1.62}
+.blk.hi{border:1px solid var(--line-2);border-radius:12px;padding:10px 11px;background:var(--soft)}
+.blk.hi h3{color:var(--acc)}
+.goal{display:flex;gap:8px;align-items:flex-start}
+.goal .arw{flex:none;color:var(--acc);font-weight:800;line-height:1.5}
+.asks{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.asks li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;font-size:13.5px;line-height:1.55}
+.asks .q-no{width:20px;height:20px;margin-top:2px;border-radius:50%;background:var(--acc-soft);color:var(--acc);font-size:11px;font-weight:800;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.caution{margin:0;font-size:12.5px;line-height:1.55;color:var(--muted);padding-left:9px;border-left:2px solid var(--line-2)}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--ink);font-size:12.5px;font-weight:650;text-decoration:none}
+.chip:active{transform:scale(.98)}
+.chip.t{color:var(--acc);border-color:var(--acc)}
+.p-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px;padding-top:10px;border-top:1px dashed var(--line-2)}
+.tbtn{min-height:44px;display:inline-flex;align-items:center;gap:6px;padding:0 12px;border:1px solid var(--line-2);border-radius:11px;font-size:12.5px;font-weight:700;color:var(--muted);background:var(--panel)}
+.tbtn[aria-pressed="true"]{color:var(--ink);border-color:var(--acc);background:var(--acc-soft)}
+
+/* 맞대기 */
+.cmp{margin-top:12px;border-top:1px dashed var(--line-2);padding-top:11px}
+.cmp-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cmp-h h3{margin:0;font-size:12px;font-weight:800;letter-spacing:.05em;color:var(--dim)}
+.sel{min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--soft);font-size:13px;padding:0 8px;max-width:100%}
+.cmp-g{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:8px}
+@media (min-width:620px){.cmp-g{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}}
+.cmp-c{border:1px solid var(--line);border-radius:12px;padding:9px 10px;min-width:0;background:var(--soft)}
+.cmp-c b{display:block;font-size:12.5px;color:var(--acc);margin-bottom:2px}
+.cmp-c p{margin:0 0 5px;font-size:12.5px;line-height:1.5}
+.cmp-c p:last-child{margin-bottom:0}
+.cmp-c i{font-style:normal;color:var(--dim);font-weight:750;margin-right:3px}
+
+/* 확인 문제 */
+.quiz-h{display:flex;align-items:baseline;gap:8px}
+.quiz-h h2{margin:0;font-size:16.5px;font-weight:780}
+.score{margin-left:auto;font-size:12.5px;font-weight:750;color:var(--acc);font-variant-numeric:tabular-nums}
+.qz{margin-top:12px;border-top:1px dashed var(--line-2);padding-top:11px}
+.qz:first-of-type{border-top:0;padding-top:0;margin-top:10px}
+.qz-q{margin:0 0 7px;font-size:14px;font-weight:700;line-height:1.5}
+.qz-q .n{color:var(--acc);margin-right:5px;font-variant-numeric:tabular-nums}
+.opts{display:grid;gap:6px}
+.opt{min-height:44px;display:flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid var(--line);border-radius:11px;background:var(--soft);font-size:13.5px;line-height:1.45;transition:transform .12s,background-color .12s}
+.opt:active{transform:scale(.985)}
+.opt .k{flex:none;width:20px;height:20px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;font-size:11px;font-weight:800;color:var(--dim)}
+.opt[data-state="ok"]{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--panel))}
+.opt[data-state="ok"] .k{border-color:var(--ok);color:var(--ok)}
+.opt[data-state="no"]{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--panel))}
+.opt[data-state="no"] .k{border-color:var(--bad);color:var(--bad)}
+.why{margin:7px 0 0;font-size:12.5px;line-height:1.55;color:var(--muted);padding:8px 10px;border-left:2px solid var(--acc);background:var(--soft);border-radius:0 10px 10px 0}
+.why b{color:var(--ok)}
+.why.miss b{color:var(--bad)}
+
+/* 곁칸 */
+.c-h{display:flex;align-items:center;gap:8px}
+.c-h h2{margin:0;font-size:13px;font-weight:800;letter-spacing:.02em}
+.tag{margin-left:auto;font-size:11px;font-weight:750;color:var(--acc);background:var(--acc-soft);border-radius:999px;padding:2px 8px}
+.now{margin:7px 0 0;font-size:12.5px;line-height:1.6;color:var(--muted)}
+.now b{color:var(--ink)}
+.bar{height:6px;border-radius:3px;background:var(--soft);margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);transform-origin:left;transition:transform .25s ease}
+.bar-n{margin:4px 0 0;font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.side .links{margin-top:7px}
+.side .chip{min-height:44px;font-size:12.5px}
+.foot{margin:12px 0 0;font-size:11.5px;line-height:1.6;color:var(--dim)}
+.foot b{color:var(--ink)}
+html[data-jc-imm] .crail,html[data-jc-imm] .frail{display:none}
+@media (prefers-reduced-motion:reduce){.cb,.fb,.opt,.bar i{transition:none}}
+</style>
+</head>
+<body data-jc-tool="casecon">
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <a class="brand" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h4v4H4zM16 13h4v4h-4z"/><path d="M8 9h4a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2"/></svg>사례<span>개념화 실습실</span></a>
+    <span data-jc-prefs></span>
+  </header>
+
+  <h1 class="sr">사례개념화 실습실 — 한 사례를 여덟 이론으로 바꿔 읽기</h1>
+
+  <section class="pv" id="pv">
+    <button type="button" class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 8h.01M11 12h1v4h1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 사용 <span aria-hidden="true">·</span> 사례는 합성, 입력 없음</span>
+      <span class="pv-c">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" hidden>
+      <ul>
+        <li><b>사례 6건은 자료실이 새로 쓴 합성 사례입니다.</b> 실존 인물·실제 내담자가 아니며, 이름·연락처 같은 개인정보는 넣지 않았습니다.</li>
+        <li><b>이론은 여덟 틀만 씁니다.</b> 특성-요인·흥미 유형·생애 발달·이야기와 적응성·학습과 우연·자기효능과 장벽·결정 정보처리·제한과 타협입니다. 각 틀의 요약·활용·한계는 자료실 「직업상담 이론 위키」의 자체 정리에서 이 화면 문장으로 다시 썼고, 원문을 옮기지 않았습니다.</li>
+        <li><b>한 사례를 여러 틀로 읽는 것이 목적입니다.</b> 같은 사람이 틀에 따라 다른 «문제»로 보인다는 것을 직접 확인하세요. 두 틀 맞대기로 나란히 볼 수 있습니다.</li>
+        <li><b>확인 문제는 정답을 외우는 시험이 아닙니다.</b> 이 사례에서 그 틀이 무엇을 먼저 보는지 되짚는 장치이고, 틀린 답에는 해설이 붙습니다.</li>
+        <li><b>이 화면은 연습용입니다.</b> 실제 상담의 진단·판정은 상담자와 기관의 몫이고, 사례의 사실관계는 상담에서 확인해야 합니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="lead">사례를 고르고, <b>틀을 바꿔 가며</b> 같은 사람이 어떻게 다르게 읽히는지 보세요. 틀마다 <b>사정 · 상담목표 · 물어볼 질문</b>이 달라집니다.</p>
+
+  <div class="board">
+    <div class="main">
+      <div class="crail" id="crail" role="tablist" aria-label="사례 고르기"></div>
+
+      <section class="casebar" id="casebar" role="tabpanel" aria-live="polite" aria-labelledby="cs-0">
+        <div class="cb-top">
+          <span class="cb-who" id="cbWho"></span>
+        </div>
+        <h2 class="cb-h" id="cbH"></h2>
+        <p class="say" id="cbSay"></p>
+        <div class="facts" id="cbFacts"></div>
+        <div class="firstqs" id="cbFirst"></div>
+      </section>
+
+      <div class="frail" id="frail" role="tablist" aria-label="이론 틀 고르기"></div>
+
+      <section class="panel" id="panel" role="tabpanel" aria-live="polite" aria-labelledby="fr-0"></section>
+    </div>
+
+    <aside class="side">
+      <section class="card">
+        <div class="c-h"><h2>이 사례에서 본 틀</h2><span class="tag" id="seenTag">0 / 8</span></div>
+        <div class="bar" aria-hidden="true"><i id="seenBar" style="transform:scaleX(0)"></i></div>
+        <p class="bar-n" id="seenN">틀을 넘길 때마다 채워집니다.</p>
+        <p class="now" id="hint"><b>먼저 물을 것</b>은 사례 카드에 있습니다. 틀을 고르면 그 틀이 «이 사례에서» 무엇을 짚는지 나옵니다.</p>
+      </section>
+      <section class="card" style="margin-top:10px">
+        <div class="c-h"><h2>이어서 볼 자료</h2></div>
+        <div class="links">
+          <a class="chip t" href="../theory/">직업상담 이론 위키</a>
+          <a class="chip" href="../vpi/">검사 해석 시뮬레이터</a>
+          <a class="chip" href="../talk/">상담 대화 연습장</a>
+          <a class="chip" href="../intake/">초기상담 시트</a>
+          <a class="chip" href="../triage/">내담자 트리아지</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <p class="foot">
+    <b>사례·문장·확인 문제</b> 자료실이 새로 쓴 합성 자료입니다(실존 인물 아님). <b>이론 이름과 개념</b>은 사실로 인용하고, 요약·활용·한계는 자료실 「직업상담 이론 위키」의 자체 정리에서 다시 썼습니다. 옮겨 온 원문은 없습니다.
+    <b>주의</b> 이 화면은 공부·연습용이며 진단·판정 도구가 아닙니다. 2026-11-22 작성.
+  </p>
+</div>
+
+<script>
+(function(){
+  var D=null, curC=0, curF=0, QUIZ=0, cmpOn=false, cmpPick=1;   /* QUIZ: 숫자=그 틀, 'q'=확인 문제 */
+  var seen={};   /* 사례별로 «본 틀» 표시 — 이 탭 안에서만 기억한다(저장하지 않음) */
+  var $=function(s){return document.querySelector(s)};
+  function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n}
+  function esc(s){return String(s==null?'':s)}
+
+  var LINK_LABEL={theory:'직업상담 이론 위키',vpi:'검사 해석 시뮬레이터',talk:'상담 대화 연습장',
+    intake:'초기상담 시트',triage:'내담자 트리아지','first-year':'재직 첫해 시간축',
+    'work-filter':'직업 현실 리얼 필터',reality:'취업 현위치',transit:'환승노선도','policy-match':'지원제도 매칭기'};
+
+  /* ---------- 이용 안내 접기 ---------- */
+  var pvT=$('#pvT'),pvB=$('#pvB');
+  pvT.addEventListener('click',function(){
+    var open=pvT.getAttribute('aria-expanded')==='true';
+    pvT.setAttribute('aria-expanded',String(!open));pvB.hidden=open;
+    pvT.querySelector('.pv-c').textContent=open?'펼치기':'접기';
+  });
+
+  /* ---------- 사례·틀 고르기 ---------- */
+  function railCases(){
+    var r=$('#crail');r.innerHTML='';
+    D.cases.forEach(function(c,i){
+      var b=el('button','cb');b.type='button';b.setAttribute('role','tab');
+      b.id='cs-'+i;b.setAttribute('aria-controls','casebar');
+      b.setAttribute('aria-selected',String(i===curC));
+      b.appendChild(el('span','n',c.no));
+      b.appendChild(el('span',null,c.label));
+      b.addEventListener('click',function(){selectCase(i)});
+      b.addEventListener('keydown',function(e){arrow(e,i,D.cases.length,function(n){selectCase(n);document.getElementById('cs-'+n).focus()})});
+      r.appendChild(b);
+    });
+  }
+  function railFw(){
+    var r=$('#frail');r.innerHTML='';
+    D.frameworks.forEach(function(f,i){
+      var b=el('button','fb');b.type='button';b.setAttribute('role','tab');
+      b.id='fr-'+i;b.setAttribute('aria-controls','panel');
+      b.setAttribute('aria-selected',String(QUIZ!=='q'&&i===curF));
+      b.appendChild(el('span','n',f.no));
+      b.appendChild(el('span',null,f.name));
+      b.addEventListener('click',function(){selectFw(i)});
+      b.addEventListener('keydown',function(e){arrow(e,i,D.frameworks.length,function(n){selectFw(n);document.getElementById('fr-'+n).focus()})});
+      r.appendChild(b);
+    });
+    var q=el('button','fb quiz');q.type='button';q.setAttribute('role','tab');q.id='fr-q';
+    q.setAttribute('aria-controls','panel');q.setAttribute('aria-selected',String(QUIZ==='q'));
+    q.appendChild(el('span',null,'확인 문제'));
+    q.addEventListener('click',function(){QUIZ='q';paintFw();render()});
+    r.appendChild(q);
+  }
+  function arrow(e,i,n,go){
+    var k=e.key;
+    if(k!=='ArrowRight'&&k!=='ArrowLeft'&&k!=='Home'&&k!=='End')return;
+    e.preventDefault();
+    var t=k==='Home'?0:k==='End'?n-1:(k==='ArrowRight'?(i+1)%n:(i-1+n)%n);
+    go(t);
+  }
+  function selectCase(i){
+    if(i===curC){return;}
+    curC=i;QUIZ=curF;cmpOn=false;paintCase();paintFw();render();
+    $('#casebar').setAttribute('aria-labelledby','cs-'+i);
+    try{history.replaceState(null,'','?case='+D.cases[i].id+'&fw='+D.frameworks[curF].id)}catch(e){}
+  }
+  function selectFw(i){
+    curF=i;QUIZ=i;cmpOn=false;paintFw();render();
+    var k=D.cases[curC].id+'|'+D.frameworks[i].id;seen[k]=1;paintSeen();
+    try{history.replaceState(null,'','?case='+D.cases[curC].id+'&fw='+D.frameworks[i].id)}catch(e){}
+  }
+  function paintCase(){
+    var c=D.cases[curC];
+    Array.prototype.forEach.call(document.querySelectorAll('.cb'),function(b,j){b.setAttribute('aria-selected',String(j===curC))});
+    $('#cbWho').textContent=c.who;
+    $('#cbH').textContent=c.label;
+    $('#cbSay').textContent=c.say;
+    var f=$('#cbFacts');f.innerHTML='';
+    c.facts.forEach(function(p){
+      var d=el('div');d.appendChild(el('b',null,p[0]));d.appendChild(document.createTextNode(p[1]));f.appendChild(d);
+    });
+    var first=c.first||[];
+    var fb=$('#cbFirst');
+    fb.innerHTML='<b>먼저 물을 것</b>';
+    var ol=document.createElement('ol');
+    first.forEach(function(x){var li=document.createElement('li');li.textContent=x;ol.appendChild(li)});
+    fb.appendChild(ol);
+    $('#hint').innerHTML='틀을 바꿔 읽으면 같은 사람이 다른 «문제»로 보입니다. 본 틀은 이 자리에 쌓입니다.';
+    paintSeen();
+  }
+  function paintFw(){
+    Array.prototype.forEach.call(document.querySelectorAll('.fb'),function(b,j){
+      if(b.classList.contains('quiz'))b.setAttribute('aria-selected',String(QUIZ==='q'));
+      else b.setAttribute('aria-selected',String(QUIZ!=='q'&&j===curF));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.fb:not(.quiz)'),function(b,j){
+      var on=seen[D.cases[curC].id+'|'+D.frameworks[j].id];b.classList.toggle('seen',!!on);
+    });
+    $('#panel').setAttribute('aria-labelledby',QUIZ==='q'?'fr-q':'fr-'+curF);
+  }
+  function paintSeen(){
+    var n=0;D.frameworks.forEach(function(f){if(seen[D.cases[curC].id+'|'+f.id])n++});
+    $('#seenTag').textContent=n+' / '+D.frameworks.length;
+    $('#seenBar').style.transform='scaleX('+(n/D.frameworks.length)+')';
+    $('#seenN').textContent=n?'이 사례에서 '+n+'개 틀을 읽었습니다.':'틀을 넘길 때마다 채워집니다.';
+  }
+
+  /* ---------- 한 장 그리기 ---------- */
+  function render(){
+    var p=$('#panel');p.innerHTML='';
+    if(QUIZ==='q'){renderQuiz(p);return;}
+    var c=D.cases[curC], f=D.frameworks[curF], v=c.fw[f.id]||{r:'',g:''};
+    var head=el('div','p-head');
+    var hh=el('div');
+    hh.appendChild(el('h2',null,f.name));
+    hh.appendChild(el('p',null,f.no+' · '+f.who+' · 「'+D.cases[curC].label+'」'));
+    head.appendChild(hh);
+    var go=el('a','p-who','이론 위키');
+    go.href='../theory/#t-'+f.theory;go.style.color='var(--acc)';go.style.textDecoration='none';
+    head.appendChild(go);
+    p.appendChild(head);
+
+    var b1=el('div','blk');b1.appendChild(el('h3',null,'이 틀로 보는 초점'));b1.appendChild(el('p',null,f.focus));p.appendChild(b1);
+
+    var b2=el('div','blk hi');b2.appendChild(el('h3',null,'이 사례에서'));b2.appendChild(el('p',null,v.r));p.appendChild(b2);
+
+    var b3=el('div','blk');b3.appendChild(el('h3',null,'상담목표'));b3.appendChild(el('p',null,v.g));p.appendChild(b3);
+
+    var b4=el('div','blk');b4.appendChild(el('h3',null,'물어볼 질문'));
+    var ul=el('ul','asks');
+    f.asks.forEach(function(q,i){
+      var li=el('li');li.appendChild(el('span','q-no',String(i+1)));li.appendChild(el('span',null,q));ul.appendChild(li);
+    });
+    b4.appendChild(ul);p.appendChild(b4);
+
+    var b5=el('div','blk');b5.appendChild(el('h3',null,'이 틀로만 보면 놓치는 것'));
+    b5.appendChild(el('p','caution',f.caution));p.appendChild(b5);
+
+    if((f.links||[]).length){
+      var b6=el('div','blk');b6.appendChild(el('h3',null,'이어질 자료'));
+      var lw=el('div','links');
+      f.links.forEach(function(id){
+        var a=el('a','chip'+(id==='theory'?' t':''),LINK_LABEL[id]||id);
+        a.href=id==='theory'?'../theory/#t-'+f.theory:'../'+id+'/';lw.appendChild(a);
+      });
+      b6.appendChild(lw);p.appendChild(b6);
+    }
+
+    var tools=el('div','p-tools');
+    var tb=el('button','tbtn');tb.type='button';tb.setAttribute('aria-pressed',String(cmpOn));
+    tb.textContent=cmpOn?'맞대기 접기':'두 틀 맞대기';
+    tb.addEventListener('click',function(){cmpOn=!cmpOn;render()});
+    tools.appendChild(tb);
+    var nx=el('button','tbtn');nx.type='button';nx.textContent='다음 틀 ›';
+    nx.addEventListener('click',function(){selectFw((curF+1)%D.frameworks.length)});
+    tools.appendChild(nx);
+    var qz=el('button','tbtn');qz.type='button';qz.textContent='확인 문제';
+    qz.addEventListener('click',function(){QUIZ='q';paintFw();render()});
+    tools.appendChild(qz);
+    p.appendChild(tools);
+
+    if(cmpOn)p.appendChild(compareBlock(c,f));
+  }
+
+  function compareBlock(c,f){
+    if(cmpPick===curF)cmpPick=(curF+1)%D.frameworks.length;
+    var g=el('div','cmp');
+    var h=el('div','cmp-h');h.appendChild(el('h3',null,'같은 사례 · 두 틀 맞대기'));
+    var sel=el('select','sel');
+    sel.setAttribute('aria-label','맞댈 두 번째 틀');
+    D.frameworks.forEach(function(x,i){
+      if(i===curF)return;
+      var o=el('option',null,x.no+' '+x.name);o.value=String(i);o.selected=i===cmpPick;sel.appendChild(o);
+    });
+    cmpPick=parseInt(sel.value||String(cmpPick),10);
+    sel.addEventListener('change',function(){cmpPick=parseInt(sel.value,10);render()});
+    h.appendChild(sel);
+    g.appendChild(h);
+    var grid=el('div','cmp-g');
+    [f,D.frameworks[cmpPick]].forEach(function(x){
+      var v=c.fw[x.id]||{r:'',g:''};
+      var box=el('div','cmp-c');
+      box.appendChild(el('b',null,x.no+' '+x.name));
+      box.appendChild(el('p',null,'초점 · '+x.focus));
+      box.appendChild(el('p',null,'사정 · '+v.r));
+      box.appendChild(el('p',null,'목표 · '+v.g));
+      grid.appendChild(box);
+    });
+    g.appendChild(grid);
+    return g;
+  }
+
+  /* ---------- 확인 문제 ---------- */
+  var qState={};
+  function renderQuiz(p){
+    var c=D.cases[curC];
+    var head=el('div','quiz-h');
+    head.appendChild(el('h2',null,'확인 문제'));
+    var sc=el('span','score');
+    var total=c.quiz.length, right=0;
+    c.quiz.forEach(function(_,i){var s=qState[c.id+'|'+i];if(s!=null&&s===c.quiz[i].a)right++});
+    sc.textContent=right+' / '+total;
+    head.appendChild(sc);
+    p.appendChild(head);
+    c.quiz.forEach(function(item,qi){
+      var box=el('div','qz');
+      var q=el('p','qz-q');q.appendChild(el('span','n',String(qi+1)));q.appendChild(document.createTextNode(item.q));
+      box.appendChild(q);
+      var picked=qState[c.id+'|'+qi];
+      var opts=el('div','opts');
+      item.opts.forEach(function(txt,oi){
+        var o=el('button','opt');o.type='button';
+        o.appendChild(el('span','k',String.fromCharCode(65+oi)));
+        o.appendChild(el('span',null,txt));
+        if(picked!=null){
+          if(oi===item.a)o.setAttribute('data-state','ok');
+          else if(oi===picked)o.setAttribute('data-state','no');
+        }
+        if(picked==null){o.addEventListener('click',function(){qState[c.id+'|'+qi]=oi;render()})}
+        else{o.disabled=true}
+        opts.appendChild(o);
+      });
+      box.appendChild(opts);
+      if(picked!=null){
+        var w=el('p','why'+(picked===item.a?'':' miss'));
+        w.appendChild(el('b',null,picked===item.a?'맞았습니다. ':'다시 보기. '));
+        w.appendChild(document.createTextNode('정답 '+(String.fromCharCode(65+item.a))+'. '+item.why));
+        box.appendChild(w);
+      }
+      p.appendChild(box);
+    });
+    var tools=el('div','p-tools');
+    var rb=el('button','tbtn');rb.type='button';rb.textContent='문제 다시 풀기';
+    rb.addEventListener('click',function(){c.quiz.forEach(function(_,i){delete qState[c.id+'|'+i]});render()});
+    tools.appendChild(rb);
+    var bk=el('button','tbtn');bk.type='button';bk.textContent='‹ 틀로 돌아가기';
+    bk.addEventListener('click',function(){QUIZ=curF;paintFw();render()});
+    tools.appendChild(bk);
+    p.appendChild(tools);
+  }
+
+  /* ---------- 자료 읽기 ---------- */
+  function boot(){
+    fetch('data/casecon.json',{cache:'no-cache'}).then(function(r){
+      if(!r.ok)throw new Error('http '+r.status);return r.json();
+    }).then(function(d){
+      D=d;bindFwLinks();
+      var sp=new URLSearchParams(location.search);
+      var cid=(sp.get('case')||'').toLowerCase(), fid=(sp.get('fw')||'').toLowerCase();
+      var ci=D.cases.map(function(x){return x.id}).indexOf(cid);
+      if(ci>=0)curC=ci;
+      var fi=D.frameworks.map(function(x){return x.id}).indexOf(fid);
+      if(fi>=0){curF=fi;QUIZ=fi;seen[D.cases[curC].id+'|'+D.frameworks[fi].id]=1;}
+      else{QUIZ=0;}
+      railCases();railFw();paintCase();paintFw();render();
+      if(fi>=0){try{history.replaceState(null,'','?case='+D.cases[curC].id+'&fw='+D.frameworks[fi].id)}catch(e){}}
+    }).catch(function(){
+      var p=$('#panel');p.innerHTML='';
+      var b=el('div','blk');b.appendChild(el('h3',null,'자료를 받지 못했습니다'));
+      b.appendChild(el('p',null,'사례 자료(data/casecon.json)를 불러오지 못했습니다. 잠시 뒤 새로 고치면 화면 위의 안내 띠가 자료를 다시 받습니다.'));
+      p.appendChild(b);
+    });
+  }
+  /* 이론 위키 링크는 틀마다 다르므로 렌더에서 만든다 — 여기서는 아무것도 하지 않는다 */
+  function bindFwLinks(){}
+
+  boot();
+})();
+</script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
