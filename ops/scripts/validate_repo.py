@@ -12,6 +12,9 @@
   license  — 저작권 Track A/B 교차 가드레일 (PRESS·KOGL-NONE·FACTS-ONLY·공공누리 2~4유형·미확인 라이선스가 Track A면 실패)
   js       — 저장소에 든 .js 전부 `node --check` 문법 검사
   css      — .css 파일과 .html 안 <style>의 중괄호 짝·고아 닫는 괄호·일찍 닫힌 블록 검사
+  shell    — 모든 지면이 공통 셸(core.js·prefs.js·[data-jc-prefs]·marker.js)을 빠짐없이 실었는지 (제5조 5-8)
+  motion   — 전환·애니메이션이 레이아웃 속성(width·height·top·left·max-height 등)을 움직이지 않는지 (제5조 5-3)
+  anchor   — margin-left:auto 같은 자동 정렬을 뒤쪽 margin 단축 선언이 0으로 덮어쓰지 않는지 (제5조 5-7)
   text     — 화면 문구의 맞춤법·이웃한 중복 어구 (원문 자리·고유명사는 ops/text-lint-allow.tsv로 뺀다)
   count    — 대문의 「N가지 자료」가 섹터 장부(JC_TOOLS) 길이와 맞는지, 손으로 적은 수가 남았는지
   dates    — 법령 데이터의 시행일(efYd)이 잘못된 모양이거나 오늘(KST)보다 뒤(미시행 개정본)인지
@@ -20,6 +23,7 @@
   role     — PR 제목/라벨 기반 역할 분리 가드레일 ([data-only] PR이 화면 코드를 건드리면 실패)
 
   text·count·dates·legal은 --only 에 넣지 않아도 json과 함께 돈다(CI 워크플로를 고치지 않아도 되게).
+  shell·motion·anchor는 js와 함께 돈다(같은 이유). 예외는 ops/css-allow.tsv에 한 줄씩 남긴다.
 
 종료 코드 0 = 통과, 1 = 실패. 실패 항목은 전부 모아서 한 번에 보여 준다(첫 오류에서 멈추지 않는다).
 """
@@ -795,6 +799,212 @@ def run_css_checks():
             fail("css", f"{name}:{line}: {why}")
             bad += 1
     note(f"CSS {count}곳(.css 파일 + .html 안 <style>)의 괄호 짝·고아 선언을 검사했다" + (f" (문제 {bad})" if bad else ""))
+
+
+# ---------------------------------------------------------------- 3-2-b) 공통 셸·모션·정렬 기준점 (2026-11-22 태화님 지시)
+#   "이런걸 헌법에서 거를 수 있게 하란말이야" — 연달아 나온 두 결함이 같은 뿌리였다.
+#     (1) 공통 로고 방치 모션이 대문의 한 보기에서만 돌고 시드·매치에서 빠졌다 → 공통 요소를 «한 지면/한 보기»에서만 확인했다.
+#     (2) 카드 머리의 「이론 위키」 단추가 제목 길이에 따라 좌우로 흔들렸다 → 자동 정렬(auto)을 뒤쪽 단축 선언이 0으로 덮었다.
+#   둘 다 배포 전에 글자로 잴 수 있는 부분이 있으므로 사후에 눈으로 찾지 않고 검사로 막는다.
+#     shell  — 모든 지면이 공통 언더시스템·화면 설정·도구함·설정 자리를 싣고 있는가(제5조 5-8)
+#     motion — 전환·애니메이션이 레이아웃 속성을 움직이는가(제5조 5-3의 금지 목록)
+#     anchor — 한 선언 블록 안에서 auto 정렬이 뒤쪽 단축 선언에 먹히는가(제5조 5-7의 흔한 원인)
+#   예외는 ops/css-allow.tsv에 한 줄씩 적고 이유를 함께 남긴다(text-lint-allow.tsv와 같은 방식).
+#   예외 한 줄은 위반 «한 건»만 덮으므로, 같은 파일에 같은 위반이 하나 더 생기면 그대로 실패한다.
+def css_allow():
+    """ops/css-allow.tsv — (검사, 파일, 무엇) → 덮을 수 있는 건수. 같은 줄을 두 번 적으면 두 건까지 덮는다."""
+    allow = {}
+    path = os.path.join(ROOT, "ops", "css-allow.tsv")
+    if not os.path.exists(path):
+        return allow
+    with open(path, encoding="utf-8") as fh:
+        for number, line in enumerate(fh, 1):
+            line = line.rstrip("\n")
+            if not line.strip() or line.lstrip().startswith("#"):
+                continue
+            parts = line.split("\t")
+            if len(parts) < 3:
+                fail("shell", f"ops/css-allow.tsv {number}행: 검사·파일·무엇 세 칸이 필요하다")
+                continue
+            key = (parts[0], parts[1], parts[2])
+            allow[key] = allow.get(key, 0) + 1
+    return allow
+
+
+def allow_take(allow, key):
+    """예외 한 줄은 위반 «한 건»만 덮는다 — 같은 자리에 결함이 하나 더 생기면 그대로 실패해야 한다."""
+    if allow.get(key, 0) > 0:
+        allow[key] -= 1
+        return True
+    return False
+
+
+SCRIPT_SRC = re.compile(r'<script\b([^>]*?)\bsrc=["\']([^"\']+)["\']', re.I)
+
+
+def shell_problems(text):
+    """한 지면이 공통 셸을 빠짐없이 실었는가 — (규칙, 사유) 목록. 순수 함수라 단위 시험으로도 쓴다.
+
+    스크립트는 «실제로 실린 src»로 본다 — 주석에 적힌 파일 이름(「assets/prefs.js가 맡는다」)을
+    실었다고 읽으면, 지면에서 한 줄을 지워도 검사가 조용히 통과해 버린다.
+    """
+    out = []
+    head = text.split("</head>")[0] if "</head>" in text else text
+    tags = [(m.group(1), m.group(2)) for m in SCRIPT_SRC.finditer(head)]   # (앞 속성, src)
+    head_srcs = [src for _attr, src in tags]
+    all_srcs = [m.group(2) for m in SCRIPT_SRC.finditer(text)]
+    cores = [i for i, src in enumerate(head_srcs) if src.endswith("assets/core.js")]
+    if not cores:
+        out.append(("core.js", "공통 언더시스템 assets/core.js를 싣지 않았다"))
+    elif cores[0] != 0:
+        # core.js는 다른 스크립트보다 먼저 실행돼야 자료 요청·뒤로가기·딥링크가 빠지지 않는다.
+        out.append(("core.js", f"core.js가 머리의 첫 스크립트가 아니다(첫 스크립트: {head_srcs[0]})"))
+    elif re.search(r"\b(defer|async)\b", tags[0][0], re.I):
+        out.append(("core.js", "core.js를 defer·async로 미뤘다 — 다른 스크립트보다 먼저 실행돼야 한다"))
+    if not any(src.endswith("assets/prefs.js") for src in all_srcs):
+        out.append(("prefs.js", "화면 설정(테마·글자 크기·집중 보기) assets/prefs.js를 싣지 않았다"))
+    if "data-jc-prefs" not in text:
+        out.append(("prefs 슬롯", "화면 설정을 앉힐 [data-jc-prefs] 자리가 없다 — 테마를 바꿀 길이 화면에 없다"))
+    if not any(src.endswith("assets/marker.js") for src in all_srcs):
+        out.append(("marker.js", "도구함(형광펜·포스트잇) assets/marker.js를 싣지 않았다"))
+    return out
+
+
+# 레이아웃을 다시 짜는 속성 — 전환·애니메이션으로 움직이면 매 프레임 배치를 다시 계산해 60fps가 깨진다(제5조 5-3).
+LAYOUT_MOTION_PROPS = (
+    "width", "height", "min-width", "max-width", "min-height", "max-height",
+    "top", "right", "bottom", "left", "inset",
+    "margin", "margin-top", "margin-right", "margin-bottom", "margin-left",
+    "padding", "padding-top", "padding-right", "padding-bottom", "padding-left",
+    "gap", "row-gap", "column-gap", "grid-template-rows", "grid-template-columns",
+    "flex-basis", "font-size", "line-height",
+)
+MOTION_DECL = re.compile(r"(?:^|[;{])\s*(transition|transition-property)\s*:\s*([^;}]+)", re.I | re.M)
+
+
+def layout_motion_problems(text):
+    """전환·애니메이션 선언에 레이아웃 속성이 들어 있는가 — (줄, 속성, 선언) 목록."""
+    out = []
+    for match in MOTION_DECL.finditer(text):
+        value = match.group(2)
+        for prop in LAYOUT_MOTION_PROPS:
+            if re.search(r"(?<![\w-])" + re.escape(prop) + r"(?![\w-])", value):
+                line = text.count("\n", 0, match.start()) + 1
+                out.append((line, prop, " ".join(match.group(0).split())[:110]))
+    return out
+
+
+CSS_BLOCK = re.compile(r"\{([^{}]*)\}")
+AUTO_SIDE = re.compile(r"(margin-left|margin-right|margin-top|margin-bottom)\s*:\s*auto", re.I)
+SHORTHAND = re.compile(r"^(margin|padding|inset)\s*:\s*(.+)$", re.I)
+SIDE_INDEX = {"margin-top": 0, "margin-right": 1, "margin-bottom": 2, "margin-left": 3}
+
+
+def _shorthand_value(side, values):
+    """margin 단축 값에서 그 변이 실제로 받는 값."""
+    if len(values) == 1:
+        return values[0]
+    if len(values) == 2:
+        return values[1] if side in ("margin-left", "margin-right") else values[0]
+    if len(values) == 3:
+        if side == "margin-top":
+            return values[0]
+        return values[1] if side in ("margin-left", "margin-right") else values[2]
+    return values[SIDE_INDEX[side]]
+
+
+def auto_anchor_problems(text):
+    """한 선언 블록 안에서 `margin-left:auto`(자동 정렬)를 뒤쪽 단축 선언이 0으로 덮는가 — (줄, 변, 사유).
+
+    카드 머리의 보조 단추를 오른쪽 끝에 붙이려고 `margin-left:auto`를 썼는데 같은 블록의
+    `margin:-8px -6px -8px 0`이 그 값을 지우면, 단추는 제목 뒤에 흘러 제목 길이만큼 좌우로 흔든다.
+    (2026-11-22 casecon 「이론 위키」 단추가 실제로 이 모양이었다.)
+    """
+    out = []
+    for block in CSS_BLOCK.finditer(text):
+        body = block.group(1)
+        spans, pos = [], 0
+        for raw in body.split(";"):
+            start = pos
+            pos += len(raw) + 1
+            piece = raw.strip()
+            if piece:
+                spans.append((piece, start))
+        autos = [(i, m.group(1).lower()) for i, (d, _s) in enumerate(spans)
+                 for m in [AUTO_SIDE.match(d)] if m]
+        for i, side in autos:
+            for later, later_start in spans[i + 1:]:
+                short = SHORTHAND.match(later)
+                if not short or short.group(1).lower() != "margin":
+                    continue                      # padding·inset은 margin을 건드리지 않는다
+                value = _shorthand_value(side, short.group(2).split())
+                if "auto" not in value:
+                    line = text.count("\n", 0, block.start() + 1 + later_start) + 1
+                    out.append((line, side, f"{side}:auto를 뒤의 `{short.group(0)[:60]}`가 {value}(으)로 덮었다"))
+    return out
+
+
+def where(name, line):
+    """화면 안 <style> 블록은 파일 줄 번호가 아니라 블록 안 줄 번호다 — 그대로 읽히게 적는다."""
+    return f"{name} 블록 안 {line}번째 줄" if " <style" in name else f"{name}:{line}"
+
+
+def run_shell_checks():
+    """모든 지면이 공통 셸을 실었는가 — 한 지면에서만 빠져도 그 화면의 테마·도구함이 조용히 죽는다."""
+    allow = css_allow()
+    pages = [name for name in repo_files((".html",))
+             if name == "index.html" or name.endswith("/index.html")]
+    if not pages:
+        fail("shell", "검사할 지면(index.html)을 찾지 못했다 — git ls-files 또는 저장소 폴더를 확인한다")
+        return
+    bad = 0
+    for name in sorted(pages):
+        try:
+            text = open(os.path.join(ROOT, name), encoding="utf-8").read()
+        except OSError as exc:
+            fail("shell", f"{name}: 읽지 못했다 — {exc}")
+            continue
+        for rule, why in shell_problems(text):
+            if allow_take(allow, ("shell", name, rule)):
+                continue
+            fail("shell", f"{name}: {why}")
+            bad += 1
+    note(f"지면 {len(pages)}곳이 공통 셸(core.js 첫 실행·prefs.js·[data-jc-prefs]·marker.js)을 실었는지 보았다"
+         + (f" (문제 {bad})" if bad else ""))
+
+
+def run_motion_checks():
+    """금지 모션 속성 — 전환·애니메이션에 레이아웃 속성이 섞였는가(제5조 5-3)."""
+    allow = css_allow()
+    count = 0
+    bad = 0
+    for name, text in css_sources():
+        count += 1
+        key = name.split(" <style")[0]
+        for line, prop, decl in layout_motion_problems(text):
+            if allow_take(allow, ("motion", key, prop)):
+                continue
+            fail("motion", f"{where(name, line)}: 전환에 레이아웃 속성 `{prop}` — transform·opacity로 바꾼다 ({decl})")
+            bad += 1
+    note(f"모션 {count}곳의 전환·애니메이션 선언이 레이아웃 속성을 건드리지 않는지 보았다"
+         + (f" (문제 {bad})" if bad else ""))
+
+
+def run_anchor_checks():
+    """자동 정렬이 뒤쪽 단축 선언에 먹히는가 — 보조 액션이 제목 길이를 따라 흔들리는 흔한 원인(제5조 5-7)."""
+    allow = css_allow()
+    count = 0
+    bad = 0
+    for name, text in css_sources():
+        count += 1
+        key = name.split(" <style")[0]
+        for line, side, why in auto_anchor_problems(text):
+            if allow_take(allow, ("anchor", key, side)):
+                continue
+            fail("anchor", f"{where(name, line)}: {why} — 자동 정렬을 살리거나 단축 값을 auto로 적는다")
+            bad += 1
+    note(f"정렬 기준점 {count}곳에서 auto 정렬이 단축 선언에 덮이는지 보았다"
+         + (f" (문제 {bad})" if bad else ""))
 
 
 # ---------------------------------------------------------------- 3-3) 심전도 방치 모션 표
@@ -1731,6 +1941,12 @@ def main():
         run_js_checks()
         run_css_checks()      # CSS 문법도 같은 단계에서 돈다(CI 워크플로를 고치지 않아도 되게)
         run_ecg_checks()      # 심전도 60분 표의 약속(이웃한 분 중복 금지)도 함께 센다
+    if "js" in selected or "shell" in selected:
+        run_shell_checks()    # 공통 셸(core.js·prefs.js·marker.js·설정 자리)이 전 지면에 있는가
+    if "js" in selected or "motion" in selected:
+        run_motion_checks()   # 금지 모션 속성(레이아웃을 움직이는 전환)
+    if "js" in selected or "anchor" in selected:
+        run_anchor_checks()   # 자동 정렬이 단축 선언에 덮이는 곳(보조 액션이 좌우로 흔들리는 원인)
     if "json" in selected or "sectors" in selected:
         run_sector_checks()   # 섹터 장부·색·폴더·연결 짝이 한 몸으로 맞는지
     if "json" in selected or "flow" in selected:
@@ -1750,8 +1966,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "role": "역할 가드레일"}
-        for check in ("json", "license", "js", "css", "ecg", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "role"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "role": "역할 가드레일"}
+        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "role"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
@@ -1765,7 +1981,7 @@ def main():
         print("✓ 모든 정적 검사 통과")
 
     if args.summary_file:
-        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·수집 게이트·섹터·플로우·문구·수치·시행일·법정 수치·역할)", ""]
+        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·공통 셸·모션·정렬 기준점·프리셋·수집 게이트·섹터·플로우·문구·수치·시행일·법정 수치·역할)", ""]
         lines += [f"- {line}" for line in notes]
         if problems:
             lines += ["", f"**실패 {len(problems)}건**", ""]

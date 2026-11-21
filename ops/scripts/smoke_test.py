@@ -1063,7 +1063,35 @@ def run(args):
         failed += run_assistant_checks(args)
         print("✓ 비서 검색 회귀 통과" if not failed else "✗ 비서 검색 회귀 실패 — 위 항목을 고친 뒤 다시 잰다")
 
+    # 공통 UI·모션 실증(제5조 5-7·5-8) — 로고 방치 모션·대표 섹터의 공통 셸·보조 액션 좌표.
+    if args.shared_ui:
+        failed += run_shared_ui_checks(args)
+
     return 1 if failed else 0
+
+
+def run_shared_ui_checks(args):
+    """공통 UI·모션 실증 — ops/qa/shared_ui_probe.py를 같은 게이트에서 돌린다(제5조 5-7·5-8).
+
+    사례 장부(ops/qa/shared_ui_cases.json)의 gate가 선 항목이 어그러지면 스모크가 실패한다.
+    아직 «고치는 중»인 사례(known_gap)는 숫자만 보고하고 게이트를 세우지 않는다 — 그 목록을
+    CI가 조용히 지나치지 않도록 매번 표에 남긴다.
+    """
+    sys.path.insert(0, os.path.join(ROOT, "ops", "qa"))
+    try:
+        import shared_ui_probe
+        probe_args = argparse.Namespace(cases=shared_ui_probe.CASES_PATH, only=None, base=args.base,
+                                        strict=False, settle=2200, step_settle=260,
+                                        summary_file=args.summary_file)
+        code = shared_ui_probe.run(probe_args)
+    except Exception as exc:            # noqa: BLE001 — 브라우저·모듈을 못 띄우면 실패로 남긴다(조용히 건너뛰지 않는다)
+        print("✗ 공통 UI·모션 실증을 돌리지 못했습니다: " + str(exc).splitlines()[0][:160])
+        return 1
+    if code:
+        print("✗ 공통 UI·모션 실증 — 게이트가 선 항목이 있다")
+    else:
+        print("✓ 공통 UI·모션 실증 통과(아직 고치는 중인 사례는 표에 숫자로만 남긴다)")
+    return code
 
 
 def run_assistant_checks(args):
@@ -1105,6 +1133,8 @@ def main():
                         help="비서 검색 회귀도 함께 잰다(기본 켜짐)")
     parser.add_argument("--no-assistant", dest="assistant", action="store_false",
                         help="비서 검색 회귀를 건너뛴다")
+    parser.add_argument("--no-shared-ui", dest="shared_ui", action="store_false", default=True,
+                        help="공통 UI·모션 실증(로고 방치 모션·대표 섹터·보조 액션 좌표)을 건너뛴다")
     parser.add_argument("--no-coverage", dest="coverage", action="store_false", default=True,
                         help="섹터 목록 점검(재지 않는 화면이 남았는지)을 건너뛴다")
     parser.add_argument("--no-sweep", dest="sweep", action="store_false", default=True,
