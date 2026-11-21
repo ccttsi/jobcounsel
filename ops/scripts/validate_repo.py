@@ -1394,6 +1394,13 @@ def legal_pointer(document, pointer):
     return node, True
 
 
+def legal_display(number):
+    """검사 메시지에 쓸 숫자 표기 — 금액은 쉼표로, 요율은 있는 그대로."""
+    if isinstance(number, int) or (isinstance(number, float) and abs(number) >= 1000 and abs(number - round(number)) < 1e-9):
+        return f"{number:,.0f}"
+    return f"{number:.6g}"
+
+
 def legal_derived_value(expression, group_key, index):
     """'hourly*monthlyHours'·'minimumWage.hourly*8*floorRate' 같은 식을 값으로 계산한다."""
     def swap(match):
@@ -1500,7 +1507,7 @@ def run_legal_checks():
                 fail("legal", f"{group.get('label')}.{value_key}: 파생식 '{expression}'을 계산하지 못했다")
                 continue
             if abs(computed - value) > max(1e-6, abs(value) * 1e-9):
-                fail("legal", f"{group.get('label')}.{value_key}: 값 {value}이 파생식 {expression} = {computed:.6g}와 다르다")
+                fail("legal", f"{group.get('label')}.{value_key}: 값 {legal_display(value)}이 파생식 {expression} = {legal_display(computed)}와 다르다")
 
     # ③ 화면에 실리는 사본 — 생성 파일이 원천과 같은가
     if not os.path.exists(os.path.join(ROOT, LEGAL_JS)):
@@ -1518,6 +1525,7 @@ def run_legal_checks():
 
     # ④ 섹터가 그 값을 읽는가 / 박힌 금액이 같은가
     declared = set()          # ("group.value", 파일) — 이 수치를 적어도 된다고 밝힌 자리
+    ordered_sectors = set()   # 스크립트 차례를 이미 본 섹터
     read_files = 0
     for group_key, group in groups.items():
         label = group.get("label") or group_key
@@ -1544,6 +1552,9 @@ def run_legal_checks():
                         declared.add((path, name))
                 if name.endswith(".js") and not name.startswith("assets/"):
                     sector = name.split("/")[0]
+                    if sector in ordered_sectors:
+                        continue
+                    ordered_sectors.add(sector)
                     html_path = os.path.join(ROOT, sector, "index.html")
                     if not os.path.exists(html_path):
                         continue
@@ -1574,7 +1585,7 @@ def run_legal_checks():
                 elif not isinstance(got, (int, float)) or isinstance(got, bool):
                     fail("legal", f"{label}: {name} '{pointer}'가 숫자가 아니다({got!r})")
                 elif abs(got - expected) > max(1e-9, abs(expected) * 1e-9):
-                    fail("legal", f"{label}: {name} '{pointer}'가 {got}인데 원천은 {expected}다")
+                    fail("legal", f"{label}: {name} '{pointer}'가 {legal_display(got)}인데 원천 값은 {legal_display(expected)}이다")
                 continue
             raw = open(os.path.join(ROOT, name), encoding="utf-8").read()
             if kind == "mention":
@@ -1601,7 +1612,7 @@ def run_legal_checks():
                     number = number / 100
                 number = number * float(consumer.get("scale") or 1)
                 if abs(number - expected) > max(1e-9, abs(expected) * 1e-9):
-                    fail("legal", f"{label}: {name}에 「{match.group(0)}」이라 적혀 있는데 원천은 {expected}다")
+                    fail("legal", f"{label}: {name}에 「{match.group(0)}」이라 적혀 있는데 원천 값은 {legal_display(expected)}이다")
 
     # ⑤ 원천에 없는 자리에 박힌 금액 — 새 섹터가 숫자를 손으로 적으면 여기서 걸린다
     scan = document.get("scan") or {}
@@ -1637,7 +1648,7 @@ def run_legal_checks():
                     if (value_path, name) in declared:
                         continue
                     orphan += 1
-                    fail("legal", f"{name}: {value:,}이 단일 원천 밖에 박혀 있다 — JC_LEGAL에서 읽거나 {LEGAL_SOURCE}의 consumers에 이 자리를 적는다")
+                    fail("legal", f"{name}: {value:,}원이 단일 원천 밖에 박혀 있다 — JC_LEGAL에서 읽거나 {LEGAL_SOURCE}의 consumers에 이 자리를 적는다")
                     break
 
     note(f"공용 법정 수치 — group {len(groups)}개 · 값 {checked_values}개 · 출처 {len(sources)}곳 · "
