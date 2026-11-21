@@ -1,13 +1,24 @@
 /* 공고문 법령 점검대 — app.js
  * 1) signals.json(규칙) + articles.json(조문 원문) + samples.json + meta.json + model.json(보조 분류기)
  * 2) 문장을 나누고, 유형별 패턴으로 신호를 잡는다. 규칙이 잡은 문장만 모델에 넣어 유형을 확인한다.
- * 3) 붙여넣은 글은 어디에도 저장하지 않는다(브라우저 메모리에서만 계산).
+ * 3) 최저임금은 2026년 고용노동부 고시(시급 10,320원)를 화면이 직접 들고 자동 비교한다.
+ * 4) 붙여넣은 글은 어디에도 저장하지 않는다(브라우저 메모리에서만 계산).
  */
 (function () {
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var DATA = {}, TYPES = [], ART = {}, MODEL = null, MODEL_STATE = 0;
+
+  /* ---------- 최저임금 기준값 (2026년 고용노동부 고시) ----------
+   * 고시 제2025-47호: 2026.1.1~12.31 적용, 시급 10,320원 / 일급 82,560원(1일 8시간)
+   * 월 환산 2,156,880원(주 40시간·유급주휴 8시간 포함 209시간). 해가 바뀌면 이 값과 meta.json만 고친다.
+   */
+  var MIN_WAGE = {
+    year: 2026, hourly: 10320, daily: 82560, monthly: 2156880,
+    notice: '고용노동부고시 제2025-47호', title: '2026년 적용 최저임금 고시',
+    period: '2026. 1. 1. ~ 2026. 12. 31.', source: '고용노동부'
+  };
 
   function fetchJSON(path) {
     return fetch(path, { cache: 'no-cache' }).then(function (r) {
@@ -70,19 +81,29 @@
     return t._inc.some(function (r) { return r.test(sentence); });
   }
 
-  /* ---------- 최저임금 (확인된 기준 시급이 있을 때만) ---------- */
+  /* ---------- 최저임금 (내장한 2026년 고시 시급과 맞대기) ---------- */
+  function mwBasis() { return MIN_WAGE.year + '년 고시 시급 ' + num(MIN_WAGE.hourly) + '원'; }
+
   function wagesIn(sentence) {
     var res = [], m;
-    var re = /(시급|일급|월급|연봉)\s*([0-9][0-9,]{2,})\s*원/g;
+    var re = /(시급|일급|월급|연봉)\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*(만)?\s*원/g;
     while ((m = re.exec(sentence))) {
-      var v = parseInt(m[2].replace(/,/g, ''), 10);
+      var v = parseFloat(m[2].replace(/,/g, ''), 10);
       if (!isFinite(v) || v <= 0) continue;
-      if (m[1] === '시급') res.push({ kind: '시급', value: v, hourly: v });
-      else if (m[1] === '일급') res.push({ kind: '일급', value: v, hourly: Math.round(v / 8) });
-      else if (m[1] === '월급') res.push({ kind: '월급', value: v, hourly: Math.round(v / 209) });
-      else if (m[1] === '연봉') res.push({ kind: '연봉', value: v, hourly: Math.round(v / 12 / 209) });
+      if (m[3]) v = Math.round(v * 10000);
+      v = Math.round(v);
+      if (m[1] === '시급') res.push({ kind: '시급', value: v, hourly: v, basis: '' });
+      else if (m[1] === '일급') res.push({ kind: '일급', value: v, hourly: Math.round(v / 8), basis: '1일 8시간' });
+      else if (m[1] === '월급') res.push({ kind: '월급', value: v, hourly: Math.round(v / 209), basis: '월 209시간' });
+      else if (m[1] === '연봉') res.push({ kind: '연봉', value: v, hourly: Math.round(v / 12 / 209), basis: '연 12개월 × 월 209시간' });
     }
     return res;
+  }
+
+  function wageNote(w) {
+    var head = w.kind + ' ' + num(w.value) + '원';
+    if (w.kind !== '시급') head += ' → 시급 환산 ' + num(w.hourly) + '원(' + w.basis + ')';
+    return head + ', ' + mwBasis() + '보다 ' + num(MIN_WAGE.hourly - w.hourly) + '원 낮음';
   }
 
   /* ---------- 학습 분류기 (보조) ---------- */
@@ -128,7 +149,6 @@
   /* ---------- 점검 ---------- */
   function runCheck() {
     var ta = $('#posting'), text = (ta.value || '').trim();
-    var base = parseInt(($('#minwage').value || '').replace(/[^0-9]/g, ''), 10);
     var sentences = splitSentences(text);
     var hits = {};                 // typeId -> [{sentence, extra}]
     var scanned = 0;
@@ -138,26 +158,21 @@
       TYPES.forEach(function (t) {
         if (matchType(t, s)) matched.push(t.id);
       });
-      if (base && matched.indexOf('mw-below') < 0) {
-        var ws = wagesIn(s);
-        ws.forEach(function (w) {
-          if (w.hourly < base) {
-            matched.push('mw-below');
-            var box = (hits['mw-below'] = hits['mw-below'] || []);
-            box.push({ sentence: s, extra: w.kind + ' ' + num(w.value) + '원 → 시급 환산 ' + num(w.hourly) + '원, 기준 ' + num(base) + '원보다 ' + num(base - w.hourly) + '원 낮음' });
-          }
-        });
-      }
+      var short = wagesIn(s).filter(function (w) { return w.hourly < MIN_WAGE.hourly; });
+      if (short.length && matched.indexOf('mw-below') < 0) matched.push('mw-below');
       if (matched.length) {
         scanned++;
         matched.forEach(function (id) {
           var box = (hits[id] = hits[id] || []);
-          if (!box.some(function (x) { return x.sentence === s; })) box.push({ sentence: s, extra: '' });
+          var row = null;
+          for (var i = 0; i < box.length; i++) if (box[i].sentence === s) row = box[i];
+          if (!row) { row = { sentence: s, extra: '' }; box.push(row); }
+          if (id === 'mw-below' && short.length && !row.extra) row.extra = short.map(wageNote).join(' · ');
         });
       }
     });
 
-    render(text, sentences.length, hits, scanned, base);
+    render(text, sentences.length, hits, scanned);
     return Promise.resolve();
   }
 
@@ -169,12 +184,12 @@
     return 'ok';
   }
 
-  function render(text, total, hits, scanned, base) {
+  function render(text, total, hits, scanned) {
     var empty = $('#empty'), verdict = $('#verdict'), cards = $('#cards');
     if (!total) {
       empty.hidden = false; verdict.hidden = true; cards.innerHTML = '';
       $('.em-t', empty).textContent = '공고문을 먼저 넣어 주세요';
-      $('.em-s', empty).textContent = '모집요강·근무조건·처우 부분을 붙여넣으면 문장마다 점검합니다. 왼쪽 예시 공고로 시작해도 됩니다.';
+      $('.em-s', empty).textContent = '모집요강·근무조건·처우 부분을 붙여넣으면 문장마다 점검합니다. 최저임금은 ' + mwBasis() + '과 자동으로 맞대어 보고, 왼쪽 예시 공고로 시작해도 됩니다.';
       $('#srLive').textContent = '공고문이 비어 있습니다.';
       return;
     }
@@ -206,7 +221,7 @@
 
     verdict.hidden = false;
     $('#vTitle').textContent = titles[lvl];
-    $('#vSub').textContent = subs[lvl] + (base ? ' · 기준 시급 ' + num(base) + '원' : '');
+    $('#vSub').textContent = subs[lvl] + ' · ' + mwBasis() + ' 기준';
     var st = $('#vStamp'); st.className = 'stamp ' + lvl; st.textContent = stamps[lvl];
     var bar = $('#vBar'); bar.className = 'ruler-bar ' + lvl;
     $('#vFill').style.setProperty('--v', (score / 100).toFixed(3));
@@ -331,22 +346,30 @@
     }).join('');
   }
 
-  /* ---------- 모델·데이터 패널 ---------- */
-  function renderMeta() {
+  /* ---------- 모델·근거 패널 ---------- */
+  function renderSources() {
     var m = DATA.meta || {};
     if (m.collected_at) $('#srcDate').textContent = m.collected_at;
     if (m.laws) $('#srcLaws').textContent = '법령 ' + m.laws + '편';
     if (m.chunks) $('#srcChunks').textContent = num(m.chunks);
     var kv = $('#kvSource');
-    kv.innerHTML = [
-      ['원천', '국가법령정보센터(law.go.kr)'],
-      ['수집', 'Make 시나리오 ' + ((m.scenario && m.scenario.id) || '—') + ' · 매주 목 08:40'],
+    if (kv) kv.innerHTML = [
+      ['원천', m.source || '국가법령정보센터(law.go.kr)'],
       ['법령', (m.laws || '—') + '편 (법률·시행령)'],
       ['조문', num(m.chunks || 0) + '개'],
-      ['원천 대조', (m.verified || 0) + ' / ' + (m.chunks || 0) + ' 통과'],
+      ['기준일', m.collected_at || '—'],
+      ['원문 대조', (m.verified || 0) + ' / ' + (m.chunks || 0) + ' 통과'],
+      ['최저임금', mwBasis() + ' (' + MIN_WAGE.notice + ')'],
       ['라이선스', '저작권법 제7조']
     ].map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('');
-    $('#pipelineNote').textContent = '원천 폴더: ' + (m.drive_folder || 'Google Drive WITW-ML-Center/원천/법령');
+    var mw = $('#kvMinWage');
+    if (mw) mw.innerHTML = [
+      ['시급', num(MIN_WAGE.hourly) + '원'],
+      ['일급', num(MIN_WAGE.daily) + '원 (1일 8시간)'],
+      ['월 환산', num(MIN_WAGE.monthly) + '원 (주 40시간·유급주휴 8시간 포함 209시간)'],
+      ['적용 기간', MIN_WAGE.period],
+      ['고시', MIN_WAGE.title + ' · ' + MIN_WAGE.notice]
+    ].map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('');
   }
 
   function renderModelPanel() {
@@ -395,13 +418,16 @@
       fetchJSON('data/meta.json').catch(function () { return null; })
     ]).then(function (res) {
       DATA.signals = res[0]; DATA.meta = res[3];
+      if (DATA.meta && DATA.meta.minimum_wage) {
+        for (var k in DATA.meta.minimum_wage) if (DATA.meta.minimum_wage[k] != null) MIN_WAGE[k] = DATA.meta.minimum_wage[k];
+      }
       ART = res[1] || {};
       TYPES = (res[0] && res[0].types) || [];
       compile(TYPES);
       DATA.samples = res[2];
       renderSamples();
       renderLaws();
-      renderMeta();
+      renderSources();
       renderModelPanel();
       var btn = $('#runBtn');
       btn.disabled = false;

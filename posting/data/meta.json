@@ -6,12 +6,18 @@
  "chars": 500581,
  "license": "저작권법 제7조(법령·고시는 저작권 보호 대상 아님)",
  "source": "국가법령정보센터(law.go.kr)",
- "pipeline": "Make 시나리오 8713391(매주 목 08:40) → Google Drive WITW-ML-Center/원천/법령 (원천 데이터) → 조문 단위 파싱·정제 (데이터셋)",
- "scenario": {
-  "id": "8713391",
-  "name": "🧠 MLC 원천 수집 · 직업상담 법령 (매주 목 08:40)"
+ "minimum_wage": {
+  "year": 2026,
+  "hourly": 10320,
+  "daily": 82560,
+  "monthly": 2156880,
+  "notice": "고용노동부고시 제2025-47호",
+  "title": "2026년 적용 최저임금 고시",
+  "period": "2026. 1. 1. ~ 2026. 12. 31.",
+  "source": "고용노동부",
+  "checked_at": "2026-11-21",
+  "url": "https://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/2026%EB%85%84%EC%A0%81%EC%9A%A9%EC%B5%9C%EC%A0%80%EC%9E%84%EA%B8%88%EA%B3%A0%EC%8B%9C"
  },
- "drive_folder": "https://drive.google.com/drive/folders/1M1pz866XUhRlUtUu-8mUU2M0PWCSbCXd",
  "law_list": [
   {
    "key": "labor-standards",
