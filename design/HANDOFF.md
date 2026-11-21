@@ -805,5 +805,6 @@
   - 칸을 `scale`하면 누를 넓이가 44px 밑으로 준다(실측 37px) → **알맹이(`.a-pg-n`)에만** scale·opacity·translateY.
   - 세 벌 중 가운데 벌만 살아 있는 문서(`aria-hidden`·`inert`)로 남겨 탭 순서·낭독이 세 번 겹치지 않는다.
 - **검수**(로컬 Chromium, 세션 폴더 스크립트): 빠른 쓸기 1쪽→7쪽·천천히 1칸·8px 흔들림 무반응, 화살표 1↔7 왕복, 목록·번호판 끌기 연동, 탭(7쪽에서 1쪽 한 칸), 320~1600 가로 넘침 0·44px 미만 0, 3테마 캡처, 콘솔 오류 0, 굴리는 동안 rAF p95 16.8ms·20ms 초과 0. `validate_repo.py`(json·license·js)·`smoke_test.py /` 통과.
-- **남은 것**: 아이폰 사파리 실기기에서 번호판 쓸기 손맛(12px 임계·34% 한 칸·관성 320ms 투영) 확인.
+- **머지·라이브**: PR #403 squash 머지 `6787010` → https://witw.pages.dev/ (HTTP 200)에서 7쪽×세 벌 21덩이·번호판 21칸·창 `6 7 [1] 2 3`·1쪽 `‹`→7쪽·원판 쓸기→7쪽·가로 넘침 0·콘솔 오류 0 확인.
+- **남은 것**: 아이폰 사파리 실기기에서 번호판 쓸기 손맛(12px 임계·34% 한 칸·관성 320ms 투영) 확인. 이 샌드박스의 WebKit은 `libgtk-4` 등이 없어 띄우지 못했다(크로미움은 `LD_LIBRARY_PATH=/workspace/browserlibs/root/usr/lib/x86_64-linux-gnu`로 실행).
 - **다음 시작 파일**: `index.html`(`pagerFollow`·`cvRun`/`cvSettle`·`bindListSwipe`).
