@@ -175,7 +175,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 /* 방치 모션의 조연 — 커서(①) · 빛줄기(②) · 취소선(⑩). 자리는 em으로 못박아 둔다(글자 크기를 따라간다). */
 .cctt-care,.cctt-beam,.cctt-str{position:absolute;left:0;top:0;opacity:0;pointer-events:none}
 .cctt-care{width:max(1.5px,.05em);height:.76em;top:.13em;background:currentColor;border-radius:1px}
-.cctt-beam{width:.85em;height:1.4em;top:-.18em;background:linear-gradient(90deg,transparent,var(--logo-hi) 50%,transparent)}
+.cctt-beam{width:.42em;height:1.06em;top:-.03em;background:linear-gradient(90deg,transparent,var(--logo-hi) 50%,transparent)}
 .cctt-str{height:max(1px,.035em);top:.56em;background:currentColor;transform-origin:0 50%}
 .cctt-s1{left:1.50967em;width:.76769em}
 .cctt-s2{left:2.59519em;width:.25984em}
@@ -2605,9 +2605,11 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
     fade.W=wHide(1000,1100);
     fade.w=wShow(1100,1200);
     var bf=[{offset:0,transform:'translateX('+wPx(-.9,fs)+'px)',opacity:0},
-      {offset:+(160/W_T).toFixed(5),opacity:.7},
-      {offset:+(1440/W_T).toFixed(5),transform:'translateX('+wPx(W_W,fs)+'px)',opacity:.7},
-      {offset:+(1600/W_T).toFixed(5),transform:'translateX('+wPx(W_W+.4,fs)+'px)',opacity:0},
+      {offset:+(160/W_T).toFixed(5),opacity:.5},
+      {offset:+(820/W_T).toFixed(5),opacity:.5},
+      {offset:+(1060/W_T).toFixed(5),opacity:.26},
+      {offset:+(1210/W_T).toFixed(5),transform:'translateX('+wPx(W_W,fs)+'px)',opacity:0},
+      {offset:1,transform:'translateX('+wPx(W_W,fs)+'px)',opacity:0},
       {offset:1,transform:'translateX('+wPx(W_W,fs)+'px)',opacity:0}];
     return {g:g,fade:fade,ov:{beam:bf},org:wOrg(2,3,4,7)};
   },
