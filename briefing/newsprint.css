@@ -77,7 +77,7 @@
 .cal-mv[disabled]{opacity:.28;cursor:default}
 .cal-wd{display:grid;grid-template-columns:repeat(7,1fr);margin:4px 0 2px;text-align:center;font-size:11px;font-weight:800;color:var(--dim)}
 .cal-wd span:first-child{color:var(--acc)}
-.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;grid-auto-rows:42px}
 .cal-d{
   position:relative;display:flex;align-items:center;justify-content:center;
   width:100%;height:42px;border-radius:6px;font-size:13px;font-weight:750;font-variant-numeric:tabular-nums;color:var(--ink);

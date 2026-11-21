@@ -110,11 +110,15 @@ html[data-jc-imm] .lead-line .dek-tx.swap{animation:none}
 .cal-h button:disabled{opacity:.28;cursor:default}
 .cal-h button svg{width:16px;height:16px}
 .cal-w,.cal-g{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-g{grid-auto-rows:44px}
 .cal-w span{height:22px;display:grid;place-items:center;font-size:10.5px;font-weight:800;color:var(--dim)}
 .cal-d{position:relative;min-height:44px;display:grid;place-items:center;font-size:12.5px;font-weight:700;border-radius:8px;color:var(--dim);font-variant-numeric:tabular-nums}
 .cal-d.on{color:var(--ink);font-weight:850}
 .cal-d.on:hover{background:var(--soft)}
-.cal-d[aria-current="true"]{background:var(--ink);color:var(--bg)}
+.cal-d[aria-current="true"],.cal-d[aria-current="true"]:hover{background:var(--ink);color:var(--bg)}
+/* 오늘 — 보고 있는 날짜와 다를 때만 은은한 테두리로 구분(검은 선택 박스는 보고 있는 날짜의 것) */
+.cal-d.cal-today:not([aria-current="true"]){box-shadow:inset 0 0 0 1.5px var(--acc);color:var(--ink);font-weight:850}
+.cal-d.cal-today:not([aria-current="true"]):hover{background:var(--soft)}
 .cal-d i{position:absolute;bottom:3px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--acc)}
 .cal-d[aria-current="true"] i{background:var(--bg)}
 .cal-d:disabled{color:var(--c-sub);opacity:.5}
@@ -132,6 +136,8 @@ html[data-jc-imm] .lead-line .dek-tx.swap{animation:none}
 .cal-m.on{color:var(--ink);border-color:var(--line-2);background:var(--soft)}
 .cal-m.on .num{color:var(--acc)}
 .cal-m.on:hover{border-color:var(--acc)}
+.cal-m[aria-pressed="true"],.cal-m[aria-pressed="true"]:hover{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.cal-m[aria-pressed="true"] .num{color:var(--bg)}
 .cal-m:disabled{opacity:.55;cursor:default}
 @media (min-width:600px){.cal-mg{grid-template-columns:repeat(4,1fr)}}
 

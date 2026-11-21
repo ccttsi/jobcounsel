@@ -107,10 +107,12 @@
     var y = UI.calYear, ds = arr(DATA && DATA.archive_dates), cnt = {}, inYear = 0;
     ds.forEach(function (d) { if (+d.slice(0, 4) === y) { var m = +d.slice(5, 7); cnt[m] = (cnt[m] || 0) + 1; inYear++; } });
     var minY = Math.floor(minYm() / 12), maxY = Math.floor(maxYm() / 12);
+    var curY = +String(UI.date).slice(0, 4), curM = +String(UI.date).slice(5, 7);   /* 지금 보고 있는 지면의 달 */
     var g = '';
     for (var m = 1; m <= 12; m++) {
       var n = cnt[m] || 0;
       g += '<button type="button" class="cal-m' + (n ? ' on' : '') + '" data-mi="' + m + '"' + (n ? '' : ' disabled') +
+        ' aria-pressed="' + (y === curY && m === curM) + '"' +
         ' aria-label="' + y + '년 ' + m + '월' + (n ? ' · 지면 ' + n + '일' : ' · 지면 없음') + '">' +
         '<b>' + m + '월</b><span class="num">' + (n ? n + '일' : '–') + '</span></button>';
     }
@@ -129,13 +131,16 @@
     var dates = {}; arr(DATA && DATA.archive_dates).forEach(function (d) { dates[d] = 1; });
     var inMonth = 0; Object.keys(dates).forEach(function (d) { if (ymOf(d) === ym) inMonth++; });
     var g = '', i, d, key;
-    for (i = 0; i < start; i++) g += '<span></span>';
+    /* 6주(42칸) 고정 — 달마다 줄 수가 달라도 시트 높이와 머리 화살표가 위아래로 흔들리지 않게 뒤를 빈 칸으로 채운다. */
+    for (i = 0; i < start; i++) g += '<span aria-hidden="true"></span>';
     for (d = 1; d <= last; d++) {
       key = y + '-' + pad(mo + 1) + '-' + pad(d);
-      var has = !!dates[key];
-      g += '<button type="button" class="cal-d' + (has ? ' on' : '') + '"' + (has ? ' data-day="' + key + '"' : ' disabled') +
-        (key === tKey ? ' aria-current="true"' : '') + ' aria-label="' + key + (has ? ' 지면 열기' : ' 지면 없음') + '">' + d + (has ? '<i aria-hidden="true"></i>' : '') + '</button>';
+      var has = !!dates[key], sel = key === UI.date, today = key === tKey;
+      g += '<button type="button" class="cal-d' + (has ? ' on' : '') + (today && !sel ? ' cal-today' : '') + '"' + (has ? ' data-day="' + key + '"' : ' disabled') +
+        (sel ? ' aria-current="true"' : '') + ' aria-label="' + key + (today ? ' · 오늘' : '') + (has ? ' 지면 열기' : ' 지면 없음') + '">' +
+        d + (has ? '<i aria-hidden="true"></i>' : '') + '</button>';
     }
+    for (i = start + last; i < 42; i++) g += '<span aria-hidden="true"></span>';
     return '<div class="cal"><div class="cal-h">' +
       '<button type="button" data-ym="-1" aria-label="이전 달"' + (ym <= minYm() ? ' disabled' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
       '<button type="button" class="m cal-t num" data-mode="m" aria-expanded="' + (UI.calMode === 'm') + '" aria-label="' + ymLabel(ym) + ' · 연도와 월 고르기">' + ymLabel(ym) + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' +
@@ -143,7 +148,7 @@
       '<button type="button" class="cal-now" data-today aria-label="오늘 지면 또는 오늘달로 가기">오늘</button></div>' +
       '<div class="cal-w" aria-hidden="true"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>' +
       '<div class="cal-g" role="group" aria-label="' + ymLabel(ym) + ' 지면 달력">' + g + '</div>' +
-      '<p class="cal-f num">' + (inMonth ? '이 달의 지면 ' + inMonth + '일' : (ym > latestYm() ? '이 달의 지면은 아직 없습니다' : '이 달의 지면 없음')) + '</p></div>';
+      '<p class="cal-f">' + (inMonth ? '이 달의 지면 <b class="num">' + inMonth + '</b>일' : (ym > latestYm() ? '이 달의 지면은 아직 없습니다' : '이 달의 지면 없음')) + ' · 테두리는 오늘</p></div>';
   }
 
   /* 레일용 미니 달력: 월 이동 + 달력 열기(날짜 칸은 시트에서 44px) */
@@ -546,20 +551,27 @@
   function openCalendar() {
     UI.calMode = 'd';
     UI.calYear = Math.floor(UI.ym / 12);
+    /* 달을 옮길 때 달력 칸만 다시 그린다. 시트를 통째로 다시 그리면 누른 단추가 DOM에서
+       떨어져 문서 단추 처리기가 같은 누름을 한 번 더 받아 달이 두 칸씩 건너뛴다. */
     function draw() {
+      var sh = $('sheet'), wrap = sh && !sh.hidden && sh.querySelector('.calwrap');
+      if (wrap) { wrap.innerHTML = calendar(); return; }
       var t = todayKey(), ds = arr(DATA.archive_dates), has = ds.indexOf(t) >= 0;
       var last = ds.length ? ds[ds.length - 1] : '';
       var tip = has ? '오늘(' + esc(t.slice(5).replace('-', '.')) + ') 지면이 있습니다'
         : '오늘(' + esc(t.slice(5).replace('-', '.')) + ')은 아직 지면이 없습니다' + (last ? ' · 가장 최근 ' + esc(last.slice(5).replace('-', '.')) : '');
-      openSheet('<p class="note">지면은 <b>' + esc(minLabel()) + '</b>부터 볼 수 있습니다. ' + tip + '.</p><div class="calwrap">' + calendar() + '</div>', '지면 달력',
+      openSheet('<p class="note">지면은 <b>' + esc(minLabel()) + '</b>부터 볼 수 있습니다. ' + tip + '.</p><div class="calwrap" data-jc-still>' + calendar() + '</div>', '지면 달력',
         function (e) {
           var b, m;
+          /* 달력 안의 누름은 여기서 끝낸다 — 다시 그리면 누른 단추가 DOM에서 떨어져
+             문서 처리기가 같은 누름을 한 번 더 받고 달이 두 칸씩 움직이는 것을 막는다. */
+          if (e.target.closest('[data-today],[data-ym],[data-y],[data-mode],[data-mi]')) e.stopPropagation();
           /* 오늘 — 오늘 지면이 있으면 그 지면을 바로 열고, 없으면 오늘이 있는 달로만 옮긴다. */
           if ((b = e.target.closest('[data-today]'))) {
             var tk = todayKey();
             UI.ym = nowYm(); UI.calMode = 'd';
             if (arr(DATA.archive_dates).indexOf(tk) >= 0) { closeSheet(); loadDay(tk); }
-            else { draw(); focusCal('.cal-d[aria-current="true"]:not([disabled]), [data-mode]'); }
+            else { draw(); focusCal('.cal-d.cal-today:not([disabled]), [data-mode]'); }
             return;
           }
           if ((b = e.target.closest('[data-ym]'))) { UI.ym += +b.getAttribute('data-ym'); draw(); focusCal('[data-mode]'); return; }

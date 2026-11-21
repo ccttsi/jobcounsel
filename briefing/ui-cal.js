@@ -31,6 +31,8 @@
     }
     var cal = document.createElement('div');
     cal.className = 'cal'; cal.hidden = true;
+    /* 달을 옮길 때마다 칸을 다시 그리므로, 공용 등장 모션(.jc-in)이 겹치지 않게 정적인 곳으로 둔다. */
+    cal.setAttribute('data-jc-still', '');
     cal.setAttribute('role', 'dialog');
     cal.setAttribute('aria-label', '날짜 선택');
     wrap.appendChild(cal);
@@ -76,9 +78,11 @@
       for (var d = 1; d <= last; d++) {
         var k = key(y, m, d), on = !!have[k];
         cells += '<button type="button" class="cal-d' + (k === tk ? ' cal-today' : '') + '" data-d="' + k + '"' + (on ? '' : ' disabled') +
-          ' aria-current="' + (k === current) + '" aria-label="' + y + '년 ' + (m + 1) + '월 ' + d + '일' + (on ? ' · 브리핑 있음' : ' · 브리핑 없음') + '">' +
+          ' aria-current="' + (k === current) + '" aria-label="' + y + '년 ' + (m + 1) + '월 ' + d + '일' + (k === tk ? ' · 오늘' : '') + (on ? ' · 브리핑 있음' : ' · 브리핑 없음') + '">' +
           d + (on ? '<i class="dot" aria-hidden="true"></i>' : '') + '</button>';
       }
+      /* 6주(42칸) 고정 — 달마다 줄 수가 달라도 팝오버 높이와 화살표가 위아래로 흔들리지 않게 뒤를 빈 칸으로 채운다. */
+      for (var e = first + last; e < 42; e++) cells += '<span aria-hidden="true"></span>';
       cal.innerHTML = '<div class="cal-hd">' +
         '<button type="button" class="cal-mv" data-m="-1" aria-label="이전 달"' + (atMin ? ' disabled' : '') + '>‹</button>' +
         '<button type="button" class="cal-title" data-mode="m" aria-expanded="false" aria-label="' + y + '년 ' + (m + 1) + '월 · 연도와 월 고르기"><b class="num">' + y + '년 ' + (m + 1) + '월</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' +
