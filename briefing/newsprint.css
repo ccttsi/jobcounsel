@@ -97,7 +97,7 @@
 /* 아주 좁은 화면(≈320px)에서도 월 이름과 오늘이 한 줄에 앉게 */
 @media (max-width:360px){.cal-mv{width:40px}.cal-title{padding:0 4px;gap:2px}.cal-now{min-width:46px;padding:0 6px;font-size:11.5px}}
 .cal-d.cal-today:not([aria-current="true"]){box-shadow:inset 0 0 0 1.5px var(--news-acc)}
-.cal-d.cal-today:not([disabled]){color:var(--news-acc);font-weight:850}
+.cal-d.cal-today:not([disabled]):not([aria-current="true"]){color:var(--news-acc);font-weight:850}
 .cal-since{color:var(--dim);opacity:.85;font-size:11px}
 .cal-ft i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--news-acc);vertical-align:.1em;margin-right:4px}
 
