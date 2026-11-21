@@ -223,7 +223,7 @@ html[data-jc-imm] .rail{display:none}
           <label for="hire">입사일</label>
           <input class="inp" type="date" id="hire" autocomplete="off">
         </div>
-        <p class="now" id="now">입사일을 넣으면 <b>오늘 몇 일째</b>인지, <b>수습 종료일</b>과 <b>1년 도달일</b>을 계산합니다.</p>
+        <p class="now" id="now">입사일을 넣으면 <b>오늘 며칠째</b>인지, <b>수습 종료일</b>과 <b>1년 도달일</b>을 계산합니다.</p>
         <ul class="dates" id="dates" hidden></ul>
         <div class="side-links">
           <a class="chip" href="../pay-calc/">실수령액·퇴직금 계산</a>
@@ -439,7 +439,7 @@ html[data-jc-imm] .rail{display:none}
     var hire=dateFromInput($('#hire').value);
     var now=$('#now'), list=$('#dates');
     if(!hire){
-      now.innerHTML='입사일을 넣으면 <b>오늘 몇 일째</b>인지, <b>수습 종료일</b>과 <b>1년 도달일</b>을 계산합니다.';
+      now.innerHTML='입사일을 넣으면 <b>오늘 며칠째</b>인지, <b>수습 종료일</b>과 <b>1년 도달일</b>을 계산합니다.';
       list.hidden=true; list.innerHTML=''; markHere(); return;
     }
     var today=new Date(); today.setHours(0,0,0,0);
