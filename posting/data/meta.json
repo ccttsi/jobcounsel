@@ -1,0 +1,101 @@
+{
+ "collected_at": "2026-11-21",
+ "laws": 14,
+ "chunks": 1095,
+ "verified": 1094,
+ "chars": 500581,
+ "license": "저작권법 제7조(법령·고시는 저작권 보호 대상 아님)",
+ "source": "국가법령정보센터(law.go.kr)",
+ "pipeline": "Make 시나리오 8713391(매주 목 08:40) → Google Drive WITW-ML-Center/원천/법령 (원천 데이터) → 조문 단위 파싱·정제 (데이터셋)",
+ "scenario": {
+  "id": "8713391",
+  "name": "🧠 MLC 원천 수집 · 직업상담 법령 (매주 목 08:40)"
+ },
+ "drive_folder": "https://drive.google.com/drive/folders/1M1pz866XUhRlUtUu-8mUU2M0PWCSbCXd",
+ "law_list": [
+  {
+   "key": "labor-standards",
+   "name": "근로기준법",
+   "effective": "20261008",
+   "articles": 129
+  },
+  {
+   "key": "labor-standards-decree",
+   "name": "근로기준법 시행령",
+   "effective": "20251023",
+   "articles": 67
+  },
+  {
+   "key": "minimum-wage",
+   "name": "최저임금법",
+   "effective": "20200526",
+   "articles": 33
+  },
+  {
+   "key": "minimum-wage-decree",
+   "name": "최저임금법 시행령",
+   "effective": "20190101",
+   "articles": 26
+  },
+  {
+   "key": "fair-hiring",
+   "name": "채용절차의 공정화에 관한 법률",
+   "effective": "20200526",
+   "articles": 19
+  },
+  {
+   "key": "fair-hiring-decree",
+   "name": "채용절차의 공정화에 관한 법률 시행령",
+   "effective": "20190717",
+   "articles": 7
+  },
+  {
+   "key": "gender-equality",
+   "name": "남녀고용평등과 일·가정 양립 지원에 관한 법률",
+   "effective": "20260918",
+   "articles": 72
+  },
+  {
+   "key": "fixed-term",
+   "name": "기간제 및 단시간근로자 보호 등에 관한 법률",
+   "effective": "20210518",
+   "articles": 26
+  },
+  {
+   "key": "dispatch",
+   "name": "파견근로자 보호 등에 관한 법률",
+   "effective": "20260526",
+   "articles": 50
+  },
+  {
+   "key": "retirement",
+   "name": "근로자퇴직급여 보장법",
+   "effective": "20260918",
+   "articles": 60
+  },
+  {
+   "key": "employment-insurance",
+   "name": "고용보험법",
+   "effective": "20260918",
+   "articles": 143
+  },
+  {
+   "key": "industrial-accident",
+   "name": "산업재해보상보험법",
+   "effective": "20260701",
+   "articles": 159
+  },
+  {
+   "key": "national-pension",
+   "name": "국민연금법",
+   "effective": "20261020",
+   "articles": 160
+  },
+  {
+   "key": "health-insurance",
+   "name": "국민건강보험법",
+   "effective": "20261008",
+   "articles": 144
+  }
+ ]
+}

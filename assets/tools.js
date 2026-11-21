@@ -266,7 +266,13 @@ window.JC_TOOLS=[
   desc:'2026년 기준으로 구직급여(실업급여) 1일 지급액과 소정급여일수·총 수령액, 세전 월급에서 빠지는 4대보험·소득세와 실수령액, 주휴수당, 퇴직금과 미사용 연차수당을 한 화면에서 계산합니다. 값마다 근거 조문(고용보험법·근로기준법·퇴직급여법·소득세법 시행령 별표 2)과 기준연도를 적었고, 입력한 금액은 브라우저 안에서만 계산합니다.',
   list:'실업급여·실수령액·퇴직금·연차수당을 2026년 기준으로 계산합니다.',
   meta:['구직급여 68,100·66,048원','4대보험·간이세액 2026','퇴직금·연차 산식'],
-  tags:['실업급여','구직급여','구직급여일액','소정급여일수','상한액','하한액','68,100원','66,048원','최저임금','10,320원','수급자격','피보험단위기간','180일','비자발적 이직','실수령액','4대보험','국민연금','건강보험','장기요양','고용보험','소득세','간이세액표','지방소득세','주휴수당','최저임금 위반','퇴직금','평균임금','통상임금','연차수당','연차휴가','근로조건','임금 계산기','급여 계산기','pay-calc']}
+  tags:['실업급여','구직급여','구직급여일액','소정급여일수','상한액','하한액','68,100원','66,048원','최저임금','10,320원','수급자격','피보험단위기간','180일','비자발적 이직','실수령액','4대보험','국민연금','건강보험','장기요양','고용보험','소득세','간이세액표','지방소득세','주휴수당','최저임금 위반','퇴직금','평균임금','통상임금','연차수당','연차휴가','근로조건','임금 계산기','급여 계산기','pay-calc']},
+ {id:'posting',gi:'공고문 법령 점검하기',mode:'match',mo:21,no:'35',badge:'공고 점검',short:'공고',color:'posting',icon:'scan-line',
+  title:'공고문 법령 점검대',path:'./posting/',
+  desc:'내담자가 가져온 채용공고를 붙여넣으면 문장마다 법령 위반 소지 신호를 잡고, 근거 조문 원문과 상담에서 물어볼 것을 함께 보여 줍니다. 근거는 국가법령정보센터 조문이고, 붙여넣은 글은 브라우저 안에서만 처리합니다.',
+  list:'공고문 문장에서 법령 위반 소지와 근거 조문을 찾습니다.',
+  meta:['신호 12유형','근거 조문 37개','학습 분류기 보조'],
+  tags:['채용공고','공고문','구인공고','법령 점검','위법','최저임금','수습','감액','주휴수당','휴일','가산수당','포괄임금','연장근로','근로계약서','서면','4대보험','3.3%','프리랜서','퇴직금','퇴직연금','차별','개인정보','용모','키','몸무게','미혼','출신지역','재산','채용비용','보증금','교육비','기간제','2년','갱신','근로시간','휴게','파견','도급','위장도급','채용절차법','근로기준법','최저임금법','남녀고용평등법','기간제법','퇴직급여법','고용보험법','산재보험법','공고 점검','posting']}
 ];
 window.JC_LINKS=[
  ['theory','talk'],['theory','vpi'],['theory','parsons'],
@@ -278,7 +284,7 @@ window.JC_LINKS=[
  ['decalcomania','univ'],['decalcomania','grad'],['univ','grad'],['univ','cert'],
  ['transit','taxonomy'],['transit','cert'],['taxonomy','cert'],['taxonomy','company'],
  ['labor','briefing'],['labor','reality'],['reality','briefing'],['reality','portals'],
- ['company','portals'],['company','fin-lab'],['fin-lab','interview'],['fin-lab','thermometer'],['thermometer','company'],['thermometer','emerging'],['thermometer','taxonomy'],['thermometer','briefing'],['company','interview'],['portals','surgery'],['surgery','interview'],['interview','talk'],
+ ['company','portals'],['company','fin-lab'],['posting','surgery'],['posting','law'],['posting','pay-calc'],['posting','hud'],['fin-lab','interview'],['fin-lab','thermometer'],['thermometer','company'],['thermometer','emerging'],['thermometer','taxonomy'],['thermometer','briefing'],['company','interview'],['portals','surgery'],['surgery','interview'],['interview','talk'],
  ['law','manual'],['law','hud'],['law','interview'],
  ['portfolio','interview'],['portfolio','surgery'],['portfolio','law'],['portfolio','cert'],
  ['translator','talk'],['translator','taxonomy'],['translator','cert'],['translator','law'],
