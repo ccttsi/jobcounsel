@@ -15,9 +15,11 @@
   text     — 화면 문구의 맞춤법·이웃한 중복 어구 (원문 자리·고유명사는 ops/text-lint-allow.tsv로 뺀다)
   count    — 대문의 「N가지 자료」가 섹터 장부(JC_TOOLS) 길이와 맞는지, 손으로 적은 수가 남았는지
   dates    — 법령 데이터의 시행일(efYd)이 잘못된 모양이거나 오늘(KST)보다 뒤(미시행 개정본)인지
+  legal    — 공용 법정 수치(최저임금·구직급여 상한·4대보험 요율)의 단일 원천(data/legal-constants.json)과
+             생성 사본(assets/legal-constants.js)·섹터의 참조·화면에 박힌 금액이 모두 같은지
   role     — PR 제목/라벨 기반 역할 분리 가드레일 ([data-only] PR이 화면 코드를 건드리면 실패)
 
-  text·count·dates는 --only 에 넣지 않아도 json과 함께 돈다(CI 워크플로를 고치지 않아도 되게).
+  text·count·dates·legal은 --only 에 넣지 않아도 json과 함께 돈다(CI 워크플로를 고치지 않아도 되게).
 
 종료 코드 0 = 통과, 1 = 실패. 실패 항목은 전부 모아서 한 번에 보여 준다(첫 오류에서 멈추지 않는다).
 """
@@ -1340,6 +1342,317 @@ def run_gate_checks():
         fail("gate", f"{case.id().rsplit('.', 1)[-1]} — {last[:160]}")
     note(f"수집 게이트 단위 검사 — {result.testsRun}건 중 실패 {len(result.failures)}·오류 {len(result.errors)}"
          " (라이선스·미래 시행일·필수값 차단 + 저장소 자료 오탐 0)")
+# ---------------------------------------------------------------- 3-9) 공용 법정 수치 단일 원천 (2026-11-22)
+#   최저임금·구직급여 상한·4대보험 요율처럼 여러 섹터가 함께 쓰는 수치가 섹터마다 따로 박혀 있으면,
+#   해가 바뀔 때 한 곳만 고치고 나머지가 옛 숫자로 남는다 — 상담에서 그대로 잘못 안내된다.
+#   그래서 값은 data/legal-constants.json 한 곳에만 두고, 이 검사가 배포 전에 네 가지를 본다.
+#     ① 원천의 모양 — 값마다 출처·적용기간·확인일이 있고, 적용기간이 오늘을 품는가
+#     ② 파생값 — 월 환산(시급×209)·구직급여 상한(기초일액×60%) 같은 식이 실제 값과 맞는가
+#     ③ 화면에 실리는 사본 — assets/legal-constants.js가 원천과 같은가(생성기 --check)
+#     ④ 섹터가 그 값을 실제로 읽는가 + 화면 글·데이터에 박힌 금액이 원천과 같은가
+LEGAL_SOURCE = "data/legal-constants.json"
+LEGAL_JS = "assets/legal-constants.js"
+LEGAL_BUILDER = "ops/scripts/build_legal_constants.py"
+LEGAL_SCAN_EXT = (".html", ".js", ".json")
+LEGAL_EXPR = re.compile(r"[A-Za-z][A-Za-z0-9_.]*")
+
+
+def legal_number_forms(value):
+    """금액이 화면에 적힐 수 있는 모양 — 「10,320」과 「10320」. 금액이 아니면 빈 목록."""
+    if not isinstance(value, int):
+        return []
+    return [f"{value:,}", str(value)]
+
+
+def legal_hits(text, value):
+    """글 안에서 그 금액이 낱말 경계로 나온 자리. 2,156,880 속의 156 같은 오탐을 막는다."""
+    hits = []
+    for form in legal_number_forms(value):
+        start = 0
+        while True:
+            at = text.find(form, start)
+            if at < 0:
+                break
+            before = text[at - 1] if at else ""
+            after = text[at + len(form)] if at + len(form) < len(text) else ""
+            if before not in "0123456789," and after not in "0123456789,":
+                hits.append(at)
+            start = at + 1
+    return hits
+
+
+def legal_pointer(document, pointer):
+    """'wage.hourly' 같은 자리를 따라간다. 없으면 (None, False)."""
+    node = document
+    for part in pointer.split("."):
+        if isinstance(node, dict) and part in node:
+            node = node[part]
+        elif isinstance(node, list) and part.isdigit() and int(part) < len(node):
+            node = node[int(part)]
+        else:
+            return None, False
+    return node, True
+
+
+def legal_display(number):
+    """검사 메시지에 쓸 숫자 표기 — 금액은 쉼표로, 요율은 있는 그대로."""
+    if isinstance(number, int) or (isinstance(number, float) and abs(number) >= 1000 and abs(number - round(number)) < 1e-9):
+        return f"{number:,.0f}"
+    return f"{number:.6g}"
+
+
+def legal_derived_value(expression, group_key, index):
+    """'hourly*monthlyHours'·'minimumWage.hourly*8*floorRate' 같은 식을 값으로 계산한다."""
+    def swap(match):
+        name = match.group(0)
+        key = name if "." in name else f"{group_key}.{name}"
+        if key not in index:
+            raise KeyError(name)
+        return repr(index[key])
+    body = LEGAL_EXPR.sub(swap, expression)
+    return eval(body, {"__builtins__": {}}, {})   # 숫자와 사칙연산만 남긴 식이다
+
+
+def run_legal_checks():
+    document, error = load_json(os.path.join(ROOT, LEGAL_SOURCE))
+    if error:
+        fail("legal", f"{LEGAL_SOURCE}: {error}")
+        return
+    for key in ("schema_version", "updated_at", "title", "notice", "sources", "groups"):
+        if key not in document:
+            fail("legal", f"{LEGAL_SOURCE}: 필수 키 '{key}'가 없다")
+    if not re.fullmatch(r"\d+\.\d+\.\d+", str(document.get("schema_version", ""))):
+        fail("legal", f"{LEGAL_SOURCE}: schema_version이 'MAJOR.MINOR.PATCH' 형식이 아니다")
+    if not is_date(document.get("updated_at")):
+        fail("legal", f"{LEGAL_SOURCE}: updated_at이 YYYY-MM-DD가 아니다")
+
+    today = datetime.now(KST).date()
+    sources = document.get("sources") or {}
+    if not isinstance(sources, dict) or not sources:
+        fail("legal", f"{LEGAL_SOURCE}: sources가 비어 있다")
+        sources = {}
+    for sid, source in sources.items():
+        for key in ("name", "url", "checked_at", "rights"):
+            if not str((source or {}).get(key) or "").strip():
+                fail("legal", f"{LEGAL_SOURCE}: 출처 {sid}에 '{key}'가 없다")
+        if not str(source.get("url") or "").startswith("https://"):
+            fail("legal", f"{LEGAL_SOURCE}: 출처 {sid}의 url이 https가 아니다")
+        if not is_date(source.get("checked_at")):
+            fail("legal", f"{LEGAL_SOURCE}: 출처 {sid}의 확인일(checked_at)이 YYYY-MM-DD가 아니다")
+
+    groups = document.get("groups") or {}
+    if not isinstance(groups, dict) or not groups:
+        fail("legal", f"{LEGAL_SOURCE}: groups가 비어 있다")
+        return
+
+    index, scanned = {}, []
+    checked_values = 0
+    for group_key, group in groups.items():
+        label = group.get("label") or group_key
+        applies = group.get("applies") or {}
+        for key in ("from", "to"):
+            if not is_date(applies.get(key)):
+                fail("legal", f"{label}: 적용기간(applies.{key})이 YYYY-MM-DD가 아니다")
+        if is_date(applies.get("from")) and is_date(applies.get("to")):
+            start = datetime.fromisoformat(applies["from"]).date()
+            end = datetime.fromisoformat(applies["to"]).date()
+            if start > end:
+                fail("legal", f"{label}: 적용기간의 시작({applies.get('from')})이 끝({applies.get('to')})보다 뒤다")
+            elif start > today:
+                fail("legal", f"{label}: 적용기간이 아직 시작하지 않았다({applies.get('from')}) — 배포하면 아직 아닌 값을 현행으로 안내한다")
+            elif end < today:
+                fail("legal", f"{label}: 적용기간이 {applies.get('to')}에 끝났다 — 새 고시·요율로 갱신해야 한다")
+        source_id = group.get("source")
+        if source_id is not None and source_id not in sources:
+            fail("legal", f"{label}: 출처 '{source_id}'가 sources에 없다")
+        values = group.get("values") or {}
+        if not values:
+            fail("legal", f"{label}: values가 비어 있다")
+        for value_key, spec in values.items():
+            checked_values += 1
+            value = (spec or {}).get("value")
+            if not isinstance(value, (int, float)) or isinstance(value, bool):
+                fail("legal", f"{label}.{value_key}: 값이 숫자가 아니다")
+                continue
+            if not str((spec or {}).get("unit") or "").strip():
+                fail("legal", f"{label}.{value_key}: 단위(unit)가 없다")
+            if spec.get("source") is not None and spec["source"] not in sources:
+                fail("legal", f"{label}.{value_key}: 출처 '{spec['source']}'가 sources에 없다")
+            index[f"{group_key}.{value_key}"] = value
+            own = spec.get("applies") or {}
+            for key in ("from", "to"):
+                if own and not is_date(own.get(key)):
+                    fail("legal", f"{label}.{value_key}: 적용기간(applies.{key})이 YYYY-MM-DD가 아니다")
+            if own and is_date(own.get("from")) and is_date(own.get("to")):
+                start = datetime.fromisoformat(own["from"]).date()
+                end = datetime.fromisoformat(own["to"]).date()
+                if not start <= today <= end:
+                    fail("legal", f"{label}.{value_key}: 적용기간({own.get('from')}~{own.get('to')})이 오늘(KST {today}) 밖이다")
+
+    # ② 파생값 — 사람이 셈한 값이 식과 어긋나는지(월 환산 209시간·상한 60% 같은 것)
+    for group_key, group in groups.items():
+        for value_key, spec in (group.get("values") or {}).items():
+            expression = (spec or {}).get("derived")
+            if not expression:
+                continue
+            value = index.get(f"{group_key}.{value_key}")
+            if not isinstance(value, (int, float)):
+                continue
+            try:
+                computed = legal_derived_value(expression, group_key, index)
+            except KeyError as exc:
+                fail("legal", f"{group.get('label')}.{value_key}: 파생식 '{expression}'이 가리키는 '{exc.args[0]}'가 없다")
+                continue
+            except (SyntaxError, ZeroDivisionError, TypeError):
+                fail("legal", f"{group.get('label')}.{value_key}: 파생식 '{expression}'을 계산하지 못했다")
+                continue
+            if abs(computed - value) > max(1e-6, abs(value) * 1e-9):
+                fail("legal", f"{group.get('label')}.{value_key}: 값 {legal_display(value)}이 파생식 {expression} = {legal_display(computed)}와 다르다")
+
+    # ③ 화면에 실리는 사본 — 생성 파일이 원천과 같은가
+    if not os.path.exists(os.path.join(ROOT, LEGAL_JS)):
+        fail("legal", f"{LEGAL_JS}가 없다 — python3 {LEGAL_BUILDER} 로 만든다")
+    else:
+        try:
+            result = subprocess.run([sys.executable, LEGAL_BUILDER, "--check"], cwd=ROOT,
+                                    capture_output=True, text=True)
+        except OSError as exc:
+            fail("legal", f"{LEGAL_BUILDER}를 실행하지 못했다 — {exc}")
+        else:
+            if result.returncode != 0:
+                detail = (result.stderr or result.stdout or "").strip().splitlines()
+                fail("legal", f"{LEGAL_JS}: 원천과 다르다 — {detail[0] if detail else '생성기 --check 실패'}")
+
+    # ④ 섹터가 그 값을 읽는가 / 박힌 금액이 같은가
+    declared = set()          # ("group.value", 파일) — 이 수치를 적어도 된다고 밝힌 자리
+    ordered_sectors = set()   # 스크립트 차례를 이미 본 섹터
+    read_files = 0
+    for group_key, group in groups.items():
+        label = group.get("label") or group_key
+        for consumer in group.get("consumers") or []:
+            kind = consumer.get("kind")
+            name = consumer.get("file")
+            qualified = f"{label} {consumer.get('value') or ''}".strip()
+            if kind not in ("js-read", "json", "text", "mention"):
+                fail("legal", f"{label}: 소비 방법 '{kind}'를 알 수 없다(js-read·json·text·mention 중 하나)")
+                continue
+            if not name or not os.path.exists(os.path.join(ROOT, name)):
+                fail("legal", f"{label}: 소비하는 파일 '{name}'가 없다")
+                continue
+            if kind == "js-read":
+                raw = open(os.path.join(ROOT, name), encoding="utf-8").read()
+                read_files += 1
+                paths = consumer.get("paths") or []
+                if not paths:
+                    fail("legal", f"{label}: js-read '{name}'에 paths가 없다")
+                for path in paths:
+                    if path not in raw:
+                        fail("legal", f"{label}: {name}이 '{path}'를 읽지 않는다 — 값을 JC_LEGAL에서 가져와야 한다")
+                    else:
+                        declared.add((path, name))
+                if name.endswith(".js") and not name.startswith("assets/"):
+                    sector = name.split("/")[0]
+                    if sector in ordered_sectors:
+                        continue
+                    ordered_sectors.add(sector)
+                    html_path = os.path.join(ROOT, sector, "index.html")
+                    if not os.path.exists(html_path):
+                        continue
+                    raw_html = open(html_path, encoding="utf-8").read()
+                    at_legal = raw_html.find("legal-constants.js")
+                    if at_legal < 0:
+                        fail("legal", f"{sector}/index.html이 assets/legal-constants.js를 불러오지 않는다 — {name}이 읽을 값이 없다")
+                        continue
+                    at_self = raw_html.find(os.path.basename(name))
+                    if 0 <= at_self < at_legal:
+                        fail("legal", f"{sector}/index.html에서 {os.path.basename(name)}가 legal-constants.js보다 먼저 불린다 — 값을 읽기 전에 돈다")
+                continue
+            value_path = consumer.get("value") or ""
+            if value_path not in index:
+                fail("legal", f"{label}: 소비 항목의 값 '{value_path}'가 groups에 없다")
+                continue
+            declared.add((value_path, name))
+            expected = index[value_path]
+            if kind == "json":
+                pointer = consumer.get("pointer") or ""
+                data, data_error = load_json(os.path.join(ROOT, name))
+                if data_error:
+                    fail("legal", f"{label}: {name}을 읽지 못했다 — {data_error}")
+                    continue
+                got, found = legal_pointer(data, pointer)
+                if not found:
+                    fail("legal", f"{label}: {name}에 '{pointer}' 자리가 없다")
+                elif not isinstance(got, (int, float)) or isinstance(got, bool):
+                    fail("legal", f"{label}: {name} '{pointer}'가 숫자가 아니다({got!r})")
+                elif abs(got - expected) > max(1e-9, abs(expected) * 1e-9):
+                    fail("legal", f"{label}: {name} '{pointer}'가 {legal_display(got)}인데 원천 값은 {legal_display(expected)}이다")
+                continue
+            raw = open(os.path.join(ROOT, name), encoding="utf-8").read()
+            if kind == "mention":
+                if not legal_hits(raw, expected):
+                    fail("legal", f"{label}: {name}에 {expected:,}원이 없다 — 원천이 바뀌었으면 이 글도 함께 고친다")
+                continue
+            pattern = consumer.get("pattern") or ""
+            try:
+                compiled = re.compile(pattern)
+            except re.error as exc:
+                fail("legal", f"{label}: {name}의 찾기 모양이 잘못됐다 — {exc}")
+                continue
+            matches = list(compiled.finditer(raw))
+            if not matches:
+                fail("legal", f"{label}: {name}에서 「{pattern}」을 찾지 못했다 — 글이 바뀌었으면 이 자리도 함께 고친다")
+            for match in matches:
+                digits = (match.group(1) if match.groups() else match.group(0)).replace(",", "").strip()
+                try:
+                    number = float(digits)
+                except ValueError:
+                    fail("legal", f"{label}: {name}에서 「{match.group(0)}」의 숫자를 읽지 못했다")
+                    continue
+                if consumer.get("percent"):
+                    number = number / 100
+                number = number * float(consumer.get("scale") or 1)
+                if abs(number - expected) > max(1e-9, abs(expected) * 1e-9):
+                    fail("legal", f"{label}: {name}에 「{match.group(0)}」이라 적혀 있는데 원천 값은 {legal_display(expected)}이다")
+
+    # ⑤ 원천에 없는 자리에 박힌 금액 — 새 섹터가 숫자를 손으로 적으면 여기서 걸린다
+    scan = document.get("scan") or {}
+    dirs = scan.get("dirs") or []
+    orphan = 0
+    scanned_files = 0
+    for dirname in dirs:
+        base = os.path.join(ROOT, dirname)
+        if not os.path.isdir(base):
+            fail("legal", f"{LEGAL_SOURCE}: scan.dirs의 '{dirname}' 폴더가 없다")
+            continue
+        for dirpath, _dirnames, filenames in os.walk(base):
+            for filename in sorted(filenames):
+                if not filename.endswith(LEGAL_SCAN_EXT):
+                    continue
+                full = os.path.join(dirpath, filename)
+                name = rel(full)
+                if name == LEGAL_JS:
+                    continue                      # 생성된 사본은 원천에서 나온다
+                try:
+                    raw = open(full, encoding="utf-8").read()
+                except OSError:
+                    continue
+                scanned_files += 1
+                for value_path in index:
+                    value = index[value_path]
+                    spec_group, spec_key = value_path.split(".", 1)
+                    spec = ((groups[spec_group].get("values") or {}).get(spec_key) or {})
+                    if not spec.get("scan"):
+                        continue                  # 요율·기준시간·연도는 오탐이 많아 글자로 찾지 않는다
+                    if not legal_hits(raw, value):
+                        continue
+                    if (value_path, name) in declared:
+                        continue
+                    orphan += 1
+                    fail("legal", f"{name}: {value:,}원이 단일 원천 밖에 박혀 있다 — JC_LEGAL에서 읽거나 {LEGAL_SOURCE}의 consumers에 이 자리를 적는다")
+                    break
+
+    note(f"공용 법정 수치 — group {len(groups)}개 · 값 {checked_values}개 · 출처 {len(sources)}곳 · "
+         f"섹터가 읽는 자리 {read_files}곳 · 스캔 {scanned_files}개 파일에서 원천 밖 금액 {orphan}건")
 
 
 # ---------------------------------------------------------------- 4) 역할 분리 가드레일
@@ -1405,6 +1718,8 @@ def main():
         run_count_checks()         # 「N가지 자료」가 장부 길이와 맞는지
     if "json" in selected or "dates" in selected:
         run_effective_date_checks()  # 미시행 개정본(미래 시행일) 유입
+    if "json" in selected or "legal" in selected:
+        run_legal_checks()         # 공용 법정 수치 단일 원천·교차 검증
     if "json" in selected or "presets" in selected:
         run_preset_checks()   # 프리셋 장부도 데이터다 — json 검사에 함께 돌려 CI 워크플로를 고치지 않아도 되게 한다
     if "json" in selected or "gate" in selected:
@@ -1434,8 +1749,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "role": "역할 가드레일"}
-        for check in ("json", "license", "js", "css", "ecg", "presets", "gate", "sectors", "flow", "text", "count", "dates", "role"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "role": "역할 가드레일"}
+        for check in ("json", "license", "js", "css", "ecg", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "role"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
@@ -1449,7 +1764,7 @@ def main():
         print("✓ 모든 정적 검사 통과")
 
     if args.summary_file:
-        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·수집 게이트·섹터·플로우·문구·수치·시행일·역할)", ""]
+        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·수집 게이트·섹터·플로우·문구·수치·시행일·법정 수치·역할)", ""]
         lines += [f"- {line}" for line in notes]
         if problems:
             lines += ["", f"**실패 {len(problems)}건**", ""]

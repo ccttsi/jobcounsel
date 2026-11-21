@@ -1,0 +1,255 @@
+{
+ "schema_version": "1.0.0",
+ "updated_at": "2026-11-22",
+ "title": "공용 법정 수치 — 자료실 단일 원천",
+ "purpose": "최저임금·구직급여 상·하한·4대보험 요율처럼 여러 섹터가 함께 쓰는 법정 수치를 이 파일 하나에 모은다. 섹터는 값을 새로 적지 않고 assets/legal-constants.js(이 파일에서 생성)를 읽는다. 화면 글·데이터에 어쩔 수 없이 숫자를 적는 자리는 아래 consumers에 적어 두고, ops/scripts/validate_repo.py가 그 숫자가 이 파일과 같은지 배포 전에 대조한다.",
+ "howto": [
+  "값을 바꿀 때는 이 파일만 고치고 python3 ops/scripts/build_legal_constants.py 로 assets/legal-constants.js를 다시 만든다.",
+  "python3 ops/scripts/validate_repo.py 가 ① 생성 파일이 원천과 같은지 ② 섹터가 그 값을 실제로 읽는지 ③ 화면·데이터에 박힌 금액이 원천과 같은지 를 함께 본다.",
+  "값을 확인하지 못했으면 지어내지도, 빈 칸으로 남기지도 않고 그 값을 뺀다. 적용기간(applies)이 지나면 검사가 실패하므로 새 고시로 갱신한다."
+ ],
+ "notice": "값은 고시·법령 원문과 4대사회보험 정보연계센터 안내에 적힌 그대로 옮겼다. 제도 해석과 최종 판단은 고용센터·노동위원회 등 기관의 몫이다.",
+ "rights": "법령·고시·공공기관 안내의 수치는 저작권법 제7조에 따라 옮겨 적었고, 문장은 그대로 싣지 않고 사실만 새로 썼다.",
+ "sources": {
+  "moel-minimum-wage-2026": {
+   "name": "2026년 적용 최저임금 고시(고용노동부고시 제2025-47호)",
+   "url": "https://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/2026%EB%85%84%EC%A0%81%EC%9A%A9%EC%B5%9C%EC%A0%80%EC%9E%84%EA%B8%88%EA%B3%A0%EC%8B%9C",
+   "published": "2025-08-05",
+   "checked_at": "2026-11-21",
+   "rights": "저작권법 제7조(법령·고시는 보호 대상 아님)"
+  },
+  "moel-ei-law": {
+   "name": "고용보험법 제45조·제46조(급여기초임금일액·구직급여일액)",
+   "url": "https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EA%B3%A0%EC%9A%A9%EB%B3%B4%ED%97%98%EB%B2%95",
+   "checked_at": "2026-11-21",
+   "rights": "저작권법 제7조(법령은 보호 대상 아님)"
+  },
+  "moel-ei-decree-68": {
+   "name": "고용보험법 시행령 제68조(구직급여의 기초일액 상한)",
+   "url": "https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EA%B3%A0%EC%9A%A9%EB%B3%B4%ED%97%98%EB%B2%95%EC%8B%9C%ED%96%89%EB%A0%B9",
+   "checked_at": "2026-11-21",
+   "rights": "저작권법 제7조(법령은 보호 대상 아님)"
+  },
+  "4insure-2026": {
+   "name": "4대사회보험 정보연계센터 — 2026년 보험료율 안내",
+   "url": "https://www.4insure.or.kr/",
+   "checked_at": "2026-11-21",
+   "rights": "공공기관 공개 안내의 사실 수치(문장은 옮기지 않음)"
+  }
+ },
+ "scan": {
+  "dirs": ["pay-calc", "first-year", "posting", "kdt-calc", "labor", "assets"],
+  "note": "이 폴더 안의 .html·.js·.json에서 scan=true인 금액이 원천과 다른 파일에 박혀 있으면 배포 전 검사가 실패한다."
+ },
+ "groups": {
+  "baseYear": {
+   "label": "자료실 기준년도",
+   "applies": { "from": "2026-01-01", "to": "2026-12-31" },
+   "law": "—",
+   "note": "최저임금·구직급여 상한·4대보험 요율이 모두 이 해 기준이다. 해가 바뀌면 이 값과 아래 group들의 applies를 함께 옮긴다.",
+   "values": {
+    "year": {
+     "value": 2026,
+     "unit": "년",
+     "note": "화면에 「2026년 기준」으로 적히는 수"
+    }
+   },
+   "consumers": [
+    { "kind": "js-read", "file": "pay-calc/app.js", "paths": ["baseYear.year"] },
+    { "kind": "js-read", "file": "posting/app.js", "paths": ["baseYear.year"] },
+    { "kind": "json", "file": "first-year/data/first-year.json", "pointer": "wage.year", "value": "baseYear.year" },
+    { "kind": "json", "file": "posting/data/meta.json", "pointer": "minimum_wage.year", "value": "baseYear.year" }
+   ]
+  },
+  "minimumWage": {
+   "label": "2026년 최저임금",
+   "applies": { "from": "2026-01-01", "to": "2026-12-31" },
+   "source": "moel-minimum-wage-2026",
+   "law": "최저임금법 제5조·제10조, 최저임금법 시행령 제3조(수습 10% 감액)",
+   "notice": "고용노동부고시 제2025-47호",
+   "title": "2026년 적용 최저임금 고시",
+   "period": "2026. 1. 1. ~ 2026. 12. 31.",
+   "sourceName": "고용노동부",
+   "values": {
+    "hourly": {
+     "value": 10320,
+     "unit": "원/시간",
+     "scan": true,
+     "note": "시간급 최저임금"
+    },
+    "daily8h": {
+     "value": 82560,
+     "unit": "원/일(8시간)",
+     "derived": "hourly*8",
+     "scan": true,
+     "note": "1일 8시간 기준 일급"
+    },
+    "monthly": {
+     "value": 2156880,
+     "unit": "원/월",
+     "derived": "hourly*monthlyHours",
+     "scan": true,
+     "note": "주 40시간·유급주휴 8시간을 포함한 209시간 환산"
+    },
+    "monthlyHours": {
+     "value": 209,
+     "unit": "시간/월",
+     "note": "주 40시간 + 유급주휴 8시간의 월 기준시간(고시의 월 환산 기준)"
+    },
+    "probationHourly": {
+     "value": 9288,
+     "unit": "원/시간",
+     "derived": "hourly*0.9",
+     "scan": true,
+     "note": "수습 시작 3개월 이내·1년 이상 계약일 때의 하한(10% 감액)"
+    }
+   },
+   "consumers": [
+    { "kind": "js-read", "file": "pay-calc/app.js", "paths": ["minimumWage.hourly", "minimumWage.monthly"] },
+    { "kind": "js-read", "file": "posting/app.js", "paths": ["minimumWage.hourly", "minimumWage.daily8h", "minimumWage.monthly", "minimumWage.meta.notice", "minimumWage.meta.title", "minimumWage.meta.period", "minimumWage.meta.sourceName"] },
+    { "kind": "js-read", "file": "labor/app.js", "paths": ["minimumWage.hourly"] },
+    { "kind": "json", "file": "first-year/data/first-year.json", "pointer": "wage.hourly", "value": "minimumWage.hourly" },
+    { "kind": "json", "file": "first-year/data/first-year.json", "pointer": "wage.monthly", "value": "minimumWage.monthly" },
+    { "kind": "json", "file": "posting/data/meta.json", "pointer": "minimum_wage.hourly", "value": "minimumWage.hourly" },
+    { "kind": "json", "file": "posting/data/meta.json", "pointer": "minimum_wage.daily", "value": "minimumWage.daily8h" },
+    { "kind": "json", "file": "posting/data/meta.json", "pointer": "minimum_wage.monthly", "value": "minimumWage.monthly" },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "시간급 ([0-9,]+)원", "value": "minimumWage.hourly" },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "월 환산 ([0-9,]+)원", "value": "minimumWage.monthly" },
+    { "kind": "text", "file": "posting/index.html", "pattern": "시급 ([0-9,]+)원", "value": "minimumWage.hourly" },
+    { "kind": "text", "file": "first-year/index.html", "pattern": "시간급 ([0-9,]+)원", "value": "minimumWage.hourly" },
+    { "kind": "mention", "file": "first-year/data/first-year.json", "value": "minimumWage.hourly" },
+    { "kind": "mention", "file": "first-year/data/first-year.json", "value": "minimumWage.probationHourly" },
+    { "kind": "mention", "file": "posting/data/signals.json", "value": "minimumWage.hourly" },
+    { "kind": "mention", "file": "labor/data/concepts.json", "value": "minimumWage.hourly" },
+    { "kind": "mention", "file": "assets/tools.js", "value": "minimumWage.hourly" }
+   ]
+  },
+  "jobSeeking": {
+   "label": "구직급여(실업급여) 일액 상한·하한",
+   "applies": { "from": "2026-01-01", "to": "2026-12-31" },
+   "source": "moel-ei-decree-68",
+   "law": "고용보험법 제45조·제46조, 고용보험법 시행령 제68조",
+   "notice": "고용보험법 시행령 제68조",
+   "title": "구직급여 기초일액 상한(2026년 상한액)",
+   "period": "2026. 1. 1. 이후 이직자",
+   "sourceName": "고용노동부",
+   "note": "상한액은 해마다 1월 1일 기준으로 바뀐다. 2025.12.31. 이전 이직자는 상한 66,000원·기초일액 110,000원이라 이 값과 다르다.",
+   "values": {
+    "baseDailyCap": {
+     "value": 113500,
+     "unit": "원/일",
+     "scan": true,
+     "note": "급여기초임금일액 상한(고용보험법 시행령 제68조)"
+    },
+    "dailyCap": {
+     "value": 68100,
+     "unit": "원/일",
+     "derived": "baseDailyCap*rate",
+     "scan": true,
+     "note": "구직급여일액 상한 = 기초일액 상한의 60%"
+    },
+    "rate": {
+     "value": 0.6,
+     "unit": "비율",
+     "source": "moel-ei-law",
+     "note": "구직급여일액 = 기초일액의 60%"
+    },
+    "floorRate": {
+     "value": 0.8,
+     "unit": "비율",
+     "source": "moel-ei-law",
+     "note": "최저구직급여일액 = 최저임금×1일 소정근로시간×80%"
+    },
+    "floorDaily8h": {
+     "value": 66048,
+     "unit": "원/일(8시간)",
+     "derived": "minimumWage.hourly*8*floorRate",
+     "scan": true,
+     "note": "최저임금 10,320원·1일 8시간 기준 하한액"
+    }
+   },
+   "consumers": [
+    { "kind": "js-read", "file": "pay-calc/app.js", "paths": ["jobSeeking.dailyCap", "jobSeeking.baseDailyCap", "jobSeeking.rate", "jobSeeking.floorRate"] },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "상한 <b>1일 ([0-9,]+)원", "value": "jobSeeking.dailyCap" },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "기초일액 상한 ([0-9,]+)원", "value": "jobSeeking.baseDailyCap" },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "하한 <b>1일 ([0-9,]+)원", "value": "jobSeeking.floorDaily8h" },
+    { "kind": "mention", "file": "assets/tools.js", "value": "jobSeeking.dailyCap" },
+    { "kind": "mention", "file": "assets/tools.js", "value": "jobSeeking.floorDaily8h" }
+   ]
+  },
+  "socialInsurance": {
+   "label": "4대보험 요율(2026년)",
+   "applies": { "from": "2026-01-01", "to": "2026-12-31" },
+   "source": "4insure-2026",
+   "law": "국민연금법, 국민건강보험법 시행령, 노인장기요양보험법 시행령, 고용보험법 시행령(요율 조문 번호는 고시 원문에서 확인하지 못해 법령 이름까지만 적었다)",
+   "notice": "4대사회보험 정보연계센터 2026년 보험료율",
+   "period": "2026. 1. 1. ~ 2026. 12. 31.",
+   "sourceName": "4대사회보험 정보연계센터",
+   "note": "산재보험은 사업주 전액 부담이라 근로자 공제에 넣지 않는다. 국민연금 기준소득월액 상·하한만 적용기간이 7월~다음 해 6월이다.",
+   "values": {
+    "pensionRateWorker": {
+     "value": 0.0475,
+     "unit": "비율",
+     "note": "국민연금 근로자 부담(사업주와 같은 몫)"
+    },
+    "pensionBaseMin": {
+     "value": 410000,
+     "unit": "원/월",
+     "applies": { "from": "2026-07-01", "to": "2027-06-30" },
+     "note": "기준소득월액 하한(2026.7.~2027.6.)"
+    },
+    "pensionBaseMax": {
+     "value": 6590000,
+     "unit": "원/월",
+     "applies": { "from": "2026-07-01", "to": "2027-06-30" },
+     "note": "기준소득월액 상한(2026.7.~2027.6.)"
+    },
+    "healthRateTotal": {
+     "value": 0.0719,
+     "unit": "비율",
+     "note": "건강보험료율(노사 합산)"
+    },
+    "healthRateWorker": {
+     "value": 0.03595,
+     "unit": "비율",
+     "derived": "healthRateTotal/2",
+     "note": "건강보험료 근로자 부담 = 합산 요율의 절반"
+    },
+    "healthPremiumMin": {
+     "value": 20160,
+     "unit": "원/월",
+     "scan": true,
+     "note": "월 보험료 하한(합산)"
+    },
+    "healthPremiumMax": {
+     "value": 9183480,
+     "unit": "원/월",
+     "scan": true,
+     "note": "월 보험료 상한(합산)"
+    },
+    "ltcRateOnHealth": {
+     "value": 0.1314,
+     "unit": "비율",
+     "note": "장기요양보험료 = 건강보험료의 13.14%"
+    },
+    "employmentRateWorker": {
+     "value": 0.009,
+     "unit": "비율",
+     "note": "고용보험(실업급여분) 근로자 부담"
+    }
+   },
+   "consumers": [
+    { "kind": "js-read", "file": "pay-calc/app.js", "paths": ["socialInsurance.pensionRateWorker", "socialInsurance.pensionBaseMin", "socialInsurance.pensionBaseMax", "socialInsurance.healthRateTotal", "socialInsurance.healthPremiumMin", "socialInsurance.healthPremiumMax", "socialInsurance.ltcRateOnHealth", "socialInsurance.employmentRateWorker"] },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "국민연금 ([0-9.]+)%", "value": "socialInsurance.pensionRateWorker", "percent": true },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "건강보험 ([0-9.]+)%", "value": "socialInsurance.healthRateWorker", "percent": true },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "노사 합산 ([0-9.]+)%", "value": "socialInsurance.healthRateTotal", "percent": true },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "건강보험료×([0-9.]+)%", "value": "socialInsurance.ltcRateOnHealth", "percent": true },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "보수월액×([0-9.]+)%", "value": "socialInsurance.employmentRateWorker", "percent": true },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "하한 ([0-9]+)만원", "value": "socialInsurance.pensionBaseMin", "scale": 10000 },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "상한 ([0-9]+)만원", "value": "socialInsurance.pensionBaseMax", "scale": 10000 },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "월 보험료 하한 ([0-9,]+)원", "value": "socialInsurance.healthPremiumMin" },
+    { "kind": "text", "file": "pay-calc/index.html", "pattern": "상한 ([0-9,]+)원\\(합산\\)", "value": "socialInsurance.healthPremiumMax" }
+   ]
+  }
+ }
+}

@@ -4,7 +4,7 @@
  *  ① 구직급여  ② 실수령액·주휴수당  ③ 퇴직금·미수령 연차수당
  *
  * 지키는 것
- *  · 값은 모두 2026년 공식 자료에서 온다 — 상수는 아래 F 하나에 모았고, 화면 「계산 근거」와 함께 고친다.
+ *  · 법정 수치는 공용 단일 원천(data/legal-constants.json → assets/legal-constants.js)에서 읽는다. 여기에 숫자를 다시 적지 않는다.
  *  · 확인되지 않은 값을 지어내지 않는다. 표에 없는 구간(월 1,000만원 초과 소득세)은 빼지 않고 그 사실을 적는다.
  *  · 계산은 이 브라우저 안에서만 한다(서버·외부 요청 0). 입력값을 저장하지 않는다.
  *  · 소득세는 「소득세법 시행령 별표 2」 근로소득 간이세액표(data/taxtable.js)를 그대로 찾아 쓴다.
@@ -19,23 +19,35 @@
     return el ? el.getAttribute(sel.replace('[', '').replace(']', '')) : null;
   }
 
-  /* ── 2026년 기준 값 ───────────────────────────────────────────────────
-     최저임금: 고용노동부고시 제2025-47호(2025.8.5.) — 2026.1.1.~12.31.
-     구직급여 상한: 고용보험법 시행령 제68조(기초일액 113,500원) · 60% = 68,100원
-     하한: 법 제46조①2호·제45조④ — 최저임금×1일 소정근로시간×80%
-     4대보험: 4대사회보험 정보연계센터 2026년 기준 */
+  /* ── 값의 원천 ────────────────────────────────────────────────────────
+     최저임금·구직급여 상·하한·4대보험 요율은 여러 섹터가 함께 쓰는 법정 수치다.
+     그래서 숫자를 이 파일에 다시 적지 않고, 단일 원천 data/legal-constants.json에서 만든
+     assets/legal-constants.js(window.JC_LEGAL)를 읽는다 — 출처·적용기간·확인일도 그 파일에 있다.
+     해가 바뀌면 원천만 고치고 python3 ops/scripts/build_legal_constants.py 로 사본을 다시 만든다. */
+  var L = window.JC_LEGAL;
+  if (!L || !L.baseYear || !L.minimumWage || !L.jobSeeking || !L.socialInsurance) {
+    // 원천을 못 받았으면 숫자를 지어내지 않고 멈춘다(옛 값으로 계산해 주는 것이 더 나쁘다).
+    ['#benSheet', '#netSheet', '#lvSheet'].forEach(function (sel) {
+      var el = $(sel);
+      if (el) el.innerHTML = '<div class="empty">법정 수치 원천(<b>assets/legal-constants.js</b>)을 불러오지 못해 계산을 멈췄습니다. 화면을 새로 고치면 다시 됩니다.</div>';
+    });
+    return;
+  }
   var F = {
-    mw: 10320,              // 최저임금 시간급
-    mwMonth: 2156880,       // 월 환산(209시간)
-    benBaseMax: 113500,     // 급여기초임금일액 상한
-    benMax: 68100,          // 구직급여일액 상한
-    pnRate: 0.0475, pnMin: 410000, pnMax: 6590000,      // 국민연금 기준소득월액 2026.7~2027.6
-    hiRate: 0.0719, hiPremMin: 20160, hiPremMax: 9183480,  // 건강보험료율 7.19%(노사 합산) — 근로자는 그 절반(3.595%)
-    ltRate: 0.1314,          // 장기요양 = 건강보험료×13.14%
-    eiRate: 0.009,           // 고용보험 실업급여분 근로자
-    days3: 91.25,            // 3개월 총일수(365÷12×3)
-    monthHoursAt40: 209,     // 주 40시간+주휴 8시간의 월 기준시간
-    childCut: [0, 20830, 45830, 33330]  // 8~20세 자녀 1·2명, 3명째부터 1명당
+    year: L.baseYear.year,                   // 기준년도
+    mw: L.minimumWage.hourly,                // 최저임금 시간급
+    mwMonth: L.minimumWage.monthly,          // 월 환산(209시간)
+    monthHoursAt40: L.minimumWage.monthlyHours,  // 주 40시간+주휴 8시간의 월 기준시간
+    benBaseMax: L.jobSeeking.baseDailyCap,   // 급여기초임금일액 상한(고용보험법 시행령 제68조)
+    benMax: L.jobSeeking.dailyCap,           // 구직급여일액 상한
+    benRate: L.jobSeeking.rate,              // 구직급여일액 = 기초일액의 60%
+    benFloorRate: L.jobSeeking.floorRate,    // 하한 = 최저임금×1일 소정근로시간×80%
+    pnRate: L.socialInsurance.pensionRateWorker, pnMin: L.socialInsurance.pensionBaseMin, pnMax: L.socialInsurance.pensionBaseMax,
+    hiRate: L.socialInsurance.healthRateTotal, hiPremMin: L.socialInsurance.healthPremiumMin, hiPremMax: L.socialInsurance.healthPremiumMax,
+    ltRate: L.socialInsurance.ltcRateOnHealth,       // 장기요양 = 건강보험료×13.14%
+    eiRate: L.socialInsurance.employmentRateWorker,  // 고용보험 실업급여분 근로자
+    days3: 91.25,            // 3개월 총일수(365÷12×3) — 법이 정한 값이 아니라 어림셈 상수
+    childCut: [0, 20830, 45830, 33330]  // 8~20세 자녀 1·2명, 3명째부터 1명당(소득세법 시행령 별표 2)
   };
   var WEEKS = 365 / 12 / 7;  // 한 달 평균 주 수(4.3452…)
 
@@ -96,7 +108,7 @@
     var span = digits($('#benDays').value);
     if (!span || span < 30 || span > 120) span = 91;
     var manual = digits($('#benBase').value);
-    var floorDay = Math.floor(F.mw * h * 0.8);      // 최저구직급여일액
+    var floorDay = Math.floor(F.mw * h * F.benFloorRate);   // 최저구직급여일액
     var lowest = F.mw * h;                          // 최저기초일액
     var avg = manual != null ? manual : (pay != null ? pay * 3 / span : null);
     if (!avg || avg <= 0) {
@@ -106,7 +118,7 @@
     var floored = avg < lowest;
     var capped = base > F.benBaseMax;
     if (capped) base = F.benBaseMax;
-    var rate = floored ? 0.8 : 0.6;
+    var rate = floored ? F.benFloorRate : F.benRate;
     var daily = Math.floor(base * rate);
     var byFloor = daily < floorDay;
     if (byFloor) daily = floorDay;
@@ -116,7 +128,7 @@
     var days = BEN_DAYS[age][idx];
     var total = daily * days;
 
-    var rule = byCap ? '상한액 <b>68,100원</b> 적용 — 평균임금이 높습니다.'
+    var rule = byCap ? '상한액 <b>' + comma(F.benMax) + '원</b> 적용 — 평균임금이 높습니다.'
       : byFloor ? '하한액 <b>' + comma(floorDay) + '원</b> 적용 — 최저임금의 80%가 더 큽니다.'
       : floored ? '최저기초일액의 <b>80%</b>를 주었습니다(최저임금×' + h + '시간).'
       : '평균임금의 <b>60%</b> 그대로(상·하한 안).';
@@ -132,7 +144,7 @@
       + row('예상 총 수령액', won(total), '1일액×' + days + '일', 'sum');
 
     return ''
-      + '<div class="slip-h"><div class="slip-k">구직급여 모의계산 · 2026년 기준</div><div class="stamp">2026 기준</div></div>'
+      + '<div class="slip-h"><div class="slip-k">구직급여 모의계산 · ' + F.year + '년 기준</div><div class="stamp">' + F.year + ' 기준</div></div>'
       + '<div class="tear"></div>'
       + '<div class="big"><b>' + comma(daily) + '원</b><span>1일</span></div>'
       + '<p class="sub">소정급여일수 <b>' + days + '일</b> · 예상 총 수령액 <b>' + won(total) + '</b></p>'
@@ -215,7 +227,7 @@
     else warn = '<div class="ruleline">소득세는 <b>매달 떼는 간이세액</b> — 연말정산에서 확정됩니다.</div>';
 
     var mwTag = mwGap < -0.5
-      ? '<span class="tagline bad">최저임금 미달 — 시급 환산 ' + comma(Math.floor(hourly)) + '원(2026년 10,320원)</span>'
+      ? '<span class="tagline bad">최저임금 미달 — 시급 환산 ' + comma(Math.floor(hourly)) + '원(' + F.year + '년 ' + comma(F.mw) + '원)</span>'
       : '<span class="tagline ok">최저임금 이상 — 시급 환산 ' + comma(Math.floor(hourly)) + '원</span>';
 
     var holTag = holH > 0
@@ -225,7 +237,7 @@
       : '<span class="tagline warn">주 15시간 미만 — 주휴수당 없음</span>';
 
     return ''
-      + '<div class="slip-h"><div class="slip-k">2026년 요율 · ' + (mode === 'month' ? '월급' : '시급') + ' 기준</div><div class="stamp">2026 기준</div></div>'
+      + '<div class="slip-h"><div class="slip-k">' + F.year + '년 요율 · ' + (mode === 'month' ? '월급' : '시급') + ' 기준</div><div class="stamp">' + F.year + ' 기준</div></div>'
       + '<div class="tear"></div>'
       + '<div class="big"><b>' + comma(net) + '원</b><span>예상 실수령액</span></div>'
       + '<p class="sub">세전 <b>' + won(monthly) + '</b> · 공제 <b>' + won(deduct) + '</b>' + (mode === 'hour' ? ' · 월 소정 ' + comma(Math.round(monthH)) + '시간' : '') + '</p>'
@@ -282,7 +294,7 @@
     else warn = '<div class="ruleline">퇴직금은 <b>1일 평균임금</b>으로 계산합니다 — 상여·연차수당이 3개월 임금총액에 들어가는지에 따라 달라집니다.</div>';
 
     return ''
-      + '<div class="slip-h"><div class="slip-k">퇴직 정산 모의계산 · 2026년 기준</div><div class="stamp">2026 기준</div></div>'
+      + '<div class="slip-h"><div class="slip-k">퇴직 정산 모의계산 · ' + F.year + '년 기준</div><div class="stamp">' + F.year + ' 기준</div></div>'
       + '<div class="tear"></div>'
       + '<div class="big"><b>' + comma(sev) + '원</b><span>예상 퇴직금</span></div>'
       + '<p class="sub">근속 <b>' + yrs + '</b>(' + comma(days) + '일) · 연차수당 <b>' + won(leave) + '</b> 포함 정산 <b>' + won(total) + '</b></p>'
@@ -335,7 +347,7 @@
         $('#netPayHint').textContent = mode === 'hour'
           ? '시급×월 소정근로시간(주휴 포함)으로 월급을 환산해 계산합니다.'
           : '비과세 식대 등이 있으면 그만큼 뺀 금액을 넣습니다(간이세액표 기준).';
-        payEl.value = mode === 'hour' ? '10,320' : '3,000,000';
+        payEl.value = mode === 'hour' ? comma(F.mw) : '3,000,000';
       }
       qa();
     });

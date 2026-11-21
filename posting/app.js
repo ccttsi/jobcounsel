@@ -1,7 +1,7 @@
 /* 공고문 법령 점검대 — app.js
  * 1) signals.json(규칙) + articles.json(조문 원문) + samples.json + meta.json + model.json(보조 분류기)
  * 2) 문장을 나누고, 유형별 패턴으로 신호를 잡는다. 규칙이 잡은 문장만 모델에 넣어 유형을 확인한다.
- * 3) 최저임금은 2026년 고용노동부 고시(시급 10,320원)를 화면이 직접 들고 자동 비교한다.
+ * 3) 최저임금은 공용 단일 원천(assets/legal-constants.js)에서 읽어 자동 비교한다.
  * 4) 붙여넣은 글은 어디에도 저장하지 않는다(브라우저 메모리에서만 계산).
  */
 (function () {
@@ -10,14 +10,17 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var DATA = {}, TYPES = [], ART = {}, MODEL = null, MODEL_STATE = 0;
 
-  /* ---------- 최저임금 기준값 (2026년 고용노동부 고시) ----------
-   * 고시 제2025-47호: 2026.1.1~12.31 적용, 시급 10,320원 / 일급 82,560원(1일 8시간)
-   * 월 환산 2,156,880원(주 40시간·유급주휴 8시간 포함 209시간). 해가 바뀌면 이 값과 meta.json만 고친다.
+  /* ---------- 최저임금 기준값 ----------
+   * 최저임금은 여러 섹터가 함께 쓰는 법정 수치라 공용 단일 원천
+   * (data/legal-constants.json → assets/legal-constants.js)에서 읽는다. 여기에 숫자를 다시 적지 않는다.
+   * data/meta.json의 minimum_wage는 수집 데이터 기록이고, 원천과 같은 값인지 CI가 대조한다.
    */
+  var LEGAL = window.JC_LEGAL || { baseYear: {}, minimumWage: { meta: {} } };
   var MIN_WAGE = {
-    year: 2026, hourly: 10320, daily: 82560, monthly: 2156880,
-    notice: '고용노동부고시 제2025-47호', title: '2026년 적용 최저임금 고시',
-    period: '2026. 1. 1. ~ 2026. 12. 31.', source: '고용노동부'
+    year: LEGAL.baseYear.year,
+    hourly: LEGAL.minimumWage.hourly, daily: LEGAL.minimumWage.daily8h, monthly: LEGAL.minimumWage.monthly,
+    notice: LEGAL.minimumWage.meta.notice, title: LEGAL.minimumWage.meta.title,
+    period: LEGAL.minimumWage.meta.period, source: LEGAL.minimumWage.meta.sourceName
   };
 
   function fetchJSON(path) {
@@ -82,7 +85,10 @@
   }
 
   /* ---------- 최저임금 (내장한 2026년 고시 시급과 맞대기) ---------- */
-  function mwBasis() { return MIN_WAGE.year + '년 고시 시급 ' + num(MIN_WAGE.hourly) + '원'; }
+  function mwBasis() {
+    if (!MIN_WAGE.hourly) return '법정 수치 원천을 불러오지 못해 비교하지 않음';
+    return MIN_WAGE.year + '년 고시 시급 ' + num(MIN_WAGE.hourly) + '원';
+  }
 
   function wagesIn(sentence) {
     var res = [], m;
@@ -430,6 +436,13 @@
       renderSources();
       renderModelPanel();
       var btn = $('#runBtn');
+      if (!MIN_WAGE.hourly) {
+        // 원천을 못 받았으면 옛 값으로 판정하지 않고 멈춘다.
+        var box = $('#result');
+        if (box) box.innerHTML = '<div class="empty"><div class="em-t">법정 수치 원천을 불러오지 못했습니다</div>'
+          + '<div class="em-s">assets/legal-constants.js를 받지 못해 최저임금과 비교할 수 없습니다. 화면을 새로 고치면 다시 됩니다.</div></div>';
+        return;
+      }
       btn.disabled = false;
       btn.addEventListener('click', function () {
         runCheck();
