@@ -12,7 +12,12 @@
   license  — 저작권 Track A/B 교차 가드레일 (PRESS·KOGL-NONE·FACTS-ONLY·미확인 라이선스가 Track A면 실패)
   js       — 저장소에 든 .js 전부 `node --check` 문법 검사
   css      — .css 파일과 .html 안 <style>의 중괄호 짝·고아 닫는 괄호·일찍 닫힌 블록 검사
+  text     — 화면 문구의 맞춤법·이웃한 중복 어구 (원문 자리·고유명사는 ops/text-lint-allow.tsv로 뺀다)
+  count    — 대문의 「N가지 자료」가 섹터 장부(JC_TOOLS) 길이와 맞는지, 손으로 적은 수가 남았는지
+  dates    — 법령 데이터의 시행일(efYd)이 잘못된 모양이거나 오늘(KST)보다 뒤(미시행 개정본)인지
   role     — PR 제목/라벨 기반 역할 분리 가드레일 ([data-only] PR이 화면 코드를 건드리면 실패)
+
+  text·count·dates는 --only 에 넣지 않아도 json과 함께 돈다(CI 워크플로를 고치지 않아도 되게).
 
 종료 코드 0 = 통과, 1 = 실패. 실패 항목은 전부 모아서 한 번에 보여 준다(첫 오류에서 멈추지 않는다).
 """
@@ -22,10 +27,11 @@ import os
 import re
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_DIRS = ("briefing/data", "emerging/data", "thermometer/data", "translator/data")
+KST = timezone(timedelta(hours=9))
 
 # 재가공이 허락되지 않는 라이선스 — 이 라이선스를 단 자료는 절대 Track A가 될 수 없다.
 RESTRICTED_LICENSE_TYPES = {"PRESS", "KOGL-NONE", "FACTS-ONLY"}
@@ -1025,6 +1031,291 @@ def run_flow_checks():
          f"시작 키워드 {len(document.get('starts') or [])}개")
 
 
+# ---------------------------------------------------------------- 3-5) 문구·수치·시행일 린터 (2026-11-22)
+#   MLC 보완 1순위 — 화면에 나가는 한국어 문구의 맞춤법·중복 어구, 손으로 적은 자료 개수,
+#   아직 시행되지 않은 법령(개정본)이 배포되는 것을 배포 전에 막는다. 셋 다 사람이 눈으로 보기
+#   전에는 조용히 지나가는 종류의 사고라, 규칙을 글로만 두지 않고 CI에서 센다.
+#
+#   오탐을 막는 두 가지 약속
+#     1) 원문 자리(국가법령정보센터 조문·공공데이터·기관 공개문)는 검사에서 뺀다. 원문 표기를 우리
+#        맞춤법으로 고치면 그 순간 원문이 아니게 되고, 자료실의 저작권 원칙(원문 그대로)과도 어긋난다.
+#     2) 그래도 남는 정당한 예외(고유명사·제품명 등)는 ops/text-lint-allow.tsv에 근거와 함께 적는다.
+#        검사를 통과시키려고 규칙을 느슨하게 만드는 대신, 예외를 눈에 보이게 남긴다.
+TEXT_QUOTED_PREFIXES = (
+    "law/",              # 국가법령정보센터 조문·조례 원문
+    "data/openapi/",     # 공공데이터포털에서 받은 원문
+    "taxonomy/data/",    # NCS 능력단위 원문
+    "company/data/",     # DART 사업보고서·공공기관 공개문에서 뽑은 원문
+    "assistant/data/",   # 비서 검색 색인(원문 발췌)
+    "briefing/data/",    # 브리핑 기사 제목·출처 원문
+    "emerging/data/",
+    "thermometer/data/",
+    "reality/data/",
+    "transit/data/",
+    "valuechain/data/",
+    "decalcomania/data/",  # 채용공고 원문
+    "cert/data/",          # 한국산업인력공단 종목 설명 원문
+)
+# 값 자체가 인용문인 칸 — 어느 파일에 있든 표기를 고치지 않는다.
+TEXT_QUOTED_KEYS = {"text", "title_original", "source_name", "quote", "excerpt",
+                    "raw", "kw_source", "trainGoal", "name_original"}
+
+TEXT_RULES = (
+    # (규칙 이름, 찾을 모양, 고칠 말, 왜 그런가)
+    ("몇일", r"몇\s?일", "며칠", "「몇 일」은 「며칠」로 적는다"),
+    ("안되요", r"안되요", "안 돼요", "부사 '안'과 '되다'는 띄어 「안 돼요」로 적는다"),
+    ("안됬", r"안됬", "안 됐", "「됐」은 「되었」의 줄임이다"),
+    ("안되서", r"안되서", "안 돼서", "「안 돼서」로 적는다"),
+    ("되요", r"되요", "돼요", "「되어요」의 줄임은 「돼요」다"),
+    ("웬지", r"웬지", "왠지", "「왠지」는 「왜인지」의 줄임이다"),
+    ("오랫만", r"오랫만", "오랜만", "「오랜만」이 맞다"),
+    ("금새", r"금새", "금세", "「금세」는 「금시에」의 줄임이다"),
+    ("역활", r"(?<![지구])역활(?!성화|동)", "역할", "「역할(役割)」이 맞다 — 지역활성화·구역활동은 뺀다"),
+    ("어의없", r"어의없", "어이없", "「어이없다」가 맞다"),
+    ("어떻해", r"어떻해", "어떡해", "「어떡해」가 맞다"),
+    ("어떻게해", r"어떻게해", "어떡해", "붙여 쓴 「어떻게해」는 「어떡해」로 적는다"),
+    ("됬", r"됬", "됐", "「됬」은 쓰지 않는다 — 「됐」으로 적는다"),
+    ("할께", r"(할|갈|올|볼|줄|드릴|마실)께", r"\1게", "「~할게」로 적는다(소리대로 적는 예외)"),
+    ("뵈요", r"뵈요", "봬요", "「뵈어요」의 줄임은 「봬요」다"),
+    ("갯수", r"갯수", "개수", "「개수」가 맞다"),
+    ("곰곰히", r"곰곰히", "곰곰이", "부사 뒤의 「-이」는 「곰곰이」로 적는다"),
+    ("가르키", r"가르키", "가리키", "「가리키다」가 맞다(가르치다와 다르다)"),
+    ("설겆", r"설겆", "설거지", "「설거지」가 맞다"),
+    ("통채", r"통채", "통째", "「통째」가 맞다"),
+    ("뒤쳐", r"뒤쳐", "뒤처", "「뒤처지다」가 맞다"),
+    ("희안", r"희안", "희한", "「희한하다」가 맞다"),
+)
+# 같은 말이 붙어 나오는 자리(「같은 같은」). 낱말 왼쪽·오른쪽이 한글이면 다른 낱말의 꼬리
+# (「대학과 학과」·「근로자파견 파견」)이므로 잡지 않는다.
+TEXT_DUPLICATE = re.compile(r"(?<![가-힣])([가-힣]{2,})\s+\1(?![가-힣])")
+
+
+def text_lint_allow():
+    """ops/text-lint-allow.tsv — (파일, 규칙, 잘못 쓴 말) → 이유. 예외는 여기 남기고 검사는 그대로 둔다."""
+    path = os.path.join(ROOT, "ops", "text-lint-allow.tsv")
+    allow = {}
+    if not os.path.exists(path):
+        return allow
+    with open(path, encoding="utf-8") as fh:
+        for number, line in enumerate(fh, 1):
+            line = line.rstrip("\n")
+            if not line.strip() or line.lstrip().startswith("#"):
+                continue
+            parts = line.split("\t")
+            if len(parts) < 3:
+                fail("text", f"ops/text-lint-allow.tsv {number}행: 파일·규칙·말 세 칸이 필요하다")
+                continue
+            allow[(parts[0], parts[1], parts[2])] = parts[3] if len(parts) > 3 else ""
+    return allow
+
+
+def text_hits(text):
+    """(규칙, 잘못 쓴 말, 고칠 말, 위치) — 두 규칙이 같은 자리를 잡으면 앞의 규칙만 남긴다."""
+    hits, spans = [], []
+    for name, pattern, fix, _why in TEXT_RULES:
+        for match in re.finditer(pattern, text):
+            if any(start < match.end() and match.start() < end for start, end in spans):
+                continue
+            spans.append((match.start(), match.end()))
+            hits.append((name, match.group(0), match.expand(fix), match.start()))
+    for match in TEXT_DUPLICATE.finditer(text):
+        hits.append(("중복어구", match.group(0), match.group(1), match.start()))
+    return hits
+
+
+def run_text_checks():
+    """맞춤법·중복 어구 — 화면에 나가는 .html·.css·.js 문자열과 .json 값."""
+    allow = text_lint_allow()
+    files = strings = found = 0
+
+    def scan(text, name, where):
+        nonlocal strings, found
+        strings += 1
+        for rule, wrong, right, _position in text_hits(text):
+            if (name, rule, wrong) in allow:
+                continue
+            found += 1
+            fail("text", f"{name} {where}: 「{wrong}」 → 「{right}」 ({rule})")
+
+    for name in repo_files((".html", ".css", ".js", ".json")):
+        if any(name.startswith(prefix) for prefix in TEXT_QUOTED_PREFIXES):
+            continue
+        full = os.path.join(ROOT, name)
+        files += 1
+        if name.endswith(".json"):
+            document, error = load_json(full)
+            if error:
+                continue          # 깨진 JSON은 json 검사가 이미 잡는다
+            stack = [("", document)]
+            while stack:
+                where, node = stack.pop()
+                if isinstance(node, dict):
+                    for key, value in node.items():
+                        stack.append((f"{where}.{key}" if where else key, value))
+                elif isinstance(node, list):
+                    for value in node:
+                        stack.append((where + "[]", value))
+                elif isinstance(node, str):
+                    if where.rsplit(".", 1)[-1].replace("[]", "") in TEXT_QUOTED_KEYS:
+                        continue
+                    scan(node, name, where or "(값)")
+            continue
+        try:
+            with open(full, encoding="utf-8") as fh:
+                text = fh.read()
+        except OSError:
+            continue
+        if name.endswith(".js"):
+            # 문자열 안쪽만 본다 — 식별자·주석의 낱말은 문구가 아니다.
+            # 쉼표·세로줄이 많은 문자열은 키워드·동의어 목록이라 이웃 중복이 정상이다.
+            for match in re.finditer(r"'((?:[^'\\\n]|\\.)*)'|\"((?:[^\"\\\n]|\\.)*)\"", text, re.S):
+                body = match.group(1) or match.group(2) or ""
+                if "|" in body or body.count(",") >= 2:
+                    continue
+                scan(body, name, f"{text.count(chr(10), 0, match.start()) + 1}행")
+        else:
+            for line, body in enumerate(text.split("\n"), 1):
+                scan(body, name, f"{line}행")
+
+    note(f"맞춤법·중복 어구 — 줄·문자열 {strings:,}개(파일 {files}개)를 규칙 {len(TEXT_RULES) + 1}종으로 봤다"
+         + (f" · 문제 {found}건" if found else " · 문제 0건"))
+
+
+# ---------------------------------------------------------------- 3-6) 손으로 적은 자료 개수 (2026-11-22)
+#   대문의 「지금은 N가지 학습·실무 자료」가 장부(JC_TOOLS)와 어긋난 채 오래 남았던 일이 있었다
+#   (31가지 ↔ 35개). 숫자를 손으로 적지 않고 장부 길이를 따르게 해 두고, 그래도 손으로 적힌 수가
+#   있으면 여기서 잡는다.
+COUNT_CLAIM = re.compile(r"(\d+)\s*가지")
+DATA_COUNT_SPAN = re.compile(r"<([a-zA-Z][^>]*\bdata-count\b[^>]*)>\s*(\d*)\s*</")
+RANGE_CLAIM = re.compile(r"01\s*[~～]\s*(\d+)")
+
+
+def run_count_checks():
+    tools, _links, _apps = read_tools()
+    total = len(tools)
+    if not total:
+        fail("count", "섹터 장부(assets/tools.js)에서 자료를 하나도 읽지 못해 개수를 셀 수 없다")
+        return
+    path = os.path.join(ROOT, "index.html")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            raw = fh.read()
+    except OSError as exc:
+        fail("count", f"index.html을 읽지 못했다 — {exc}")
+        return
+
+    # 1) 동적 치환 칸에 처음 그려 둔 숫자가 장부와 같은가.
+    stale = 0
+    for match in DATA_COUNT_SPAN.finditer(raw):
+        drawn = match.group(2)
+        if drawn and int(drawn) != total:
+            stale += 1
+            line = raw.count("\n", 0, match.start()) + 1
+            fail("count", f"index.html {line}행: data-count 칸에 「{drawn}」이 그려져 있는데 장부는 {total}개다"
+                          f" — 처음 그리는 숫자도 장부와 맞춘다(비JS·검색 미리보기에서 읽히는 값)")
+    # 2) 동적 치환 밖에 손으로 적은 「N가지 … 자료」가 남아 있는가.
+    stripped = DATA_COUNT_SPAN.sub("<span></span>", raw)
+    for line, body in enumerate(stripped.split("\n"), 1):
+        for match in COUNT_CLAIM.finditer(body):
+            around = body[max(0, match.start() - 30):match.end() + 30]
+            if "자료" not in around:
+                continue
+            good = int(match.group(1)) == total
+            if not good:
+                fail("count", f"index.html {line}행: 「{match.group(1)}가지 … 자료」가 장부({total}개)와 다르다"
+                              f" — <span data-count>로 두고 장부 길이를 따르게 한다")
+    # 3) 개수를 장부에서 세는 동선이 살아 있는가(치환을 지우면 숫자는 다시 굳는다).
+    if "[data-count]" not in raw or not re.search(r"function\s+renderCounts\s*\(", raw):
+        fail("count", "index.html에 자료 개수를 장부에서 세는 치환([data-count]·function renderCounts)이 없다"
+                      " — 숫자를 손으로 적게 되돌아간다")
+
+    # 4) 주석의 번호 범위(01~N) — 화면 글자는 아니지만 같은 어긋남이 여기서도 자란다. 경고로만 남긴다.
+    drifted = []
+    for name in repo_files((".html", ".js")):
+        if any(name.startswith(prefix) for prefix in TEXT_QUOTED_PREFIXES):
+            continue
+        try:
+            with open(os.path.join(ROOT, name), encoding="utf-8") as fh:
+                text = fh.read()
+        except OSError:
+            continue
+        for match in RANGE_CLAIM.finditer(text):
+            line = text[text.rfind("\n", 0, match.start()) + 1:text.find("\n", match.end())]
+            if not any(word in line for word in ("목록", "번호", "장부")):
+                continue                        # 역사 기록·다른 문맥의 01~N은 이 장부와 상관없다
+            if re.search(r"\d{4}-\d{2}-\d{2}", line):
+                continue                        # 날짜가 붙은 줄은 그날의 기록이다(과거는 고치지 않는다)
+            if int(match.group(1)) != total:
+                drifted.append(f"{name}:{text.count(chr(10), 0, match.start()) + 1}")
+    if drifted:
+        note(f"번호 범위 표기가 장부({total}개)와 다르다 — {', '.join(sorted(set(drifted))[:6])}")
+    note(f"자료 개수 — 장부 {total}개 · 대문 동적 치환 {len(DATA_COUNT_SPAN.findall(raw))}칸"
+         + (f" · 처음 그린 숫자 어긋남 {stale}칸" if stale else ""))
+
+
+# ---------------------------------------------------------------- 3-7) 법령 시행일(미시행 개정본) (2026-11-22)
+#   조문을 옮겨 적을 때 국가법령정보센터의 «시행일»을 함께 적는다. 그 날짜가 오늘보다 뒤면 아직
+#   시행되지 않은 개정본을 현행으로 실었다는 뜻이고, 상담에서 그대로 잘못 안내된다
+#   (고용보험법 제40조 2028-01-01, 근로기준법 제54조 2026-12-10 단서 같은 일이 실제로 있었다).
+EFFECTIVE_KEYS = {"efYd", "effective", "effective_date", "enforced_at", "시행일자"}
+EFFECTIVE_FORMATS = (
+    re.compile(r"^(\d{4})(\d{2})(\d{2})$"),
+    re.compile(r"^(\d{4})-(\d{2})-(\d{2})$"),
+    re.compile(r"^(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.$"),
+)
+
+
+def parse_effective(value):
+    """'20261008'·'2026-10-08'·'2026. 10. 8.' → date. 그 밖의 모양은 None(형식 오류)."""
+    for pattern in EFFECTIVE_FORMATS:
+        match = pattern.match(value.strip())
+        if match:
+            try:
+                return datetime(int(match.group(1)), int(match.group(2)), int(match.group(3))).date()
+            except ValueError:
+                return None
+    return None
+
+
+def run_effective_date_checks():
+    today = datetime.now(KST).date()   # 오늘(KST)
+    checked = 0
+    for name in repo_files((".json",)):
+        if name.startswith("ops/"):
+            continue
+        document, error = load_json(os.path.join(ROOT, name))
+        if error:
+            continue
+        collected = any(name.startswith(prefix) for prefix in TEXT_QUOTED_PREFIXES)
+        stack = [("", document)]
+        while stack:
+            where, node = stack.pop()
+            if isinstance(node, dict):
+                for key, value in node.items():
+                    stack.append((f"{where}.{key}" if where else key, value))
+            elif isinstance(node, list):
+                for value in node:
+                    stack.append((where + "[]", value))
+            elif isinstance(node, str):
+                key = where.rsplit(".", 1)[-1].replace("[]", "")
+                if key not in EFFECTIVE_KEYS:
+                    continue
+                checked += 1
+                day = parse_effective(node)
+                if day is None:
+                    fail("dates", f"{name} {where}: 시행일 「{node[:20]}」이 날짜 모양(YYYYMMDD·YYYY-MM-DD·YYYY. M. D.)이 아니다")
+                    continue
+                if day > today:
+                    message = (f"{name} {where}: 시행일 {day.isoformat()}이 오늘(KST {today.isoformat()})보다 "
+                               f"{(day - today).days}일 뒤다 — 아직 시행되지 않은 개정본이다."
+                               f" 현행 시행본으로 바꾸거나 그 조문을 빼야 한다")
+                    if collected:
+                        note(f"경고 — {message}")
+                    else:
+                        fail("dates", message)
+    note(f"법령 시행일 — 날짜 {checked}개를 오늘(KST {today.isoformat()})과 대조했다")
+
+
 # ---------------------------------------------------------------- 4) 역할 분리 가드레일
 def classify(path):
     if path.startswith(".github/") or path.startswith("ops/"):
@@ -1082,6 +1373,12 @@ def main():
 
     if "json" in selected:
         run_json_checks()
+    if "json" in selected or "text" in selected:
+        run_text_checks()          # 맞춤법·중복 어구 — 화면에 나가는 문구 전체
+    if "json" in selected or "count" in selected:
+        run_count_checks()         # 「N가지 자료」가 장부 길이와 맞는지
+    if "json" in selected or "dates" in selected:
+        run_effective_date_checks()  # 미시행 개정본(미래 시행일) 유입
     if "json" in selected or "presets" in selected:
         run_preset_checks()   # 프리셋 장부도 데이터다 — json 검사에 함께 돌려 CI 워크플로를 고치지 않아도 되게 한다
     if "license" in selected:
@@ -1109,8 +1406,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "role": "역할 가드레일"}
-        for check in ("json", "license", "js", "css", "ecg", "presets", "sectors", "flow", "role"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "role": "역할 가드레일"}
+        for check in ("json", "license", "js", "css", "ecg", "presets", "sectors", "flow", "text", "count", "dates", "role"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
@@ -1124,7 +1421,7 @@ def main():
         print("✓ 모든 정적 검사 통과")
 
     if args.summary_file:
-        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·섹터·플로우·역할)", ""]
+        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·섹터·플로우·문구·수치·시행일·역할)", ""]
         lines += [f"- {line}" for line in notes]
         if problems:
             lines += ["", f"**실패 {len(problems)}건**", ""]
