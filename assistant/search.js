@@ -20,6 +20,11 @@
  *   ① 약어를 정식 용어로 펼치고 ② 어느 섹터부터 볼지 좁힌 뒤(route) ③ 색인 전체에서 순위를 매긴다.
  *   약어 때문에 점수를 올리는 섹터는 근거가 보이게 하는 것이 아니라 순위만 살짝 민다.
  * 원칙: 색인에 있는 말만 근거로 삼는다. 없는 내용을 만들어 내지 않는다.
+ *
+ * 미매칭 의심 질의 (2026-11-22)
+ *   찾았는데 결과가 비었거나 약했던 질의를 익명으로 **이 기기에만** 남긴다(네트워크 요청 0).
+ *   `ops/scripts/mlc_gap_feed.py` 가 이 기록을 빈틈 후보 질문으로 바꿔 MLC 자가질문에 급식한다.
+ *   개인정보로 보이는 입력은 담지 않고, 눌러서 들어간 질의는 빈틈으로 남기지 않는다.
  */
 (function () {
   'use strict';
@@ -615,6 +620,200 @@
   }
 
   var CURQ = '';      // 지금 검색어 — 결과 주소에 실어 보낼 때 쓴다(toResult)
+
+  /* ---------- 미매칭 의심 질의 — 이 기기 안 기록 (MLC 급식, 2026-11-22) ----------
+     찾았는데 결과가 비었거나 약했던 질의를 **익명으로 이 기기에만** 남긴다. 목적은 하나다 —
+     사람이 무엇을 찾다가 돌아섰는지 모아, MLC 자가질문 파이프라인이 다음 빈틈을 스스로 묻게 하는 것
+     (`ops/scripts/mlc_gap_feed.py` 가 이 기록을 읽어 빈틈 후보 질문으로 바꾼다).
+
+     · 네트워크로 보내지 않는다 — 이 절에는 fetch 가 없다. 기기 밖으로 나가는 요청 0.
+     · 개인정보로 보이는 입력은 애초에 담지 않는다(전화·주민등록·메일·네 자리 이상 숫자·「김씨」).
+       걸러진 질의는 내용 없이 버린다.
+     · 정크 필터 규칙은 ops/scripts/mlc_gap_feed.py 와 짝이다 — ops/tests 가 둘을 맞대어 본다.
+     · 마이덱 행동 기록(live.js)과 같은 방식: sessionStorage 의 세션 이름 + localStorage 고리 40개, 7일.
+     · 신호 셋: zero(결과 0건) · weak(첫 결과 점수가 약함) · dim(애매 — «누르지 않고 떠났을 때»만 남긴다).
+     · 끄고 싶으면 localStorage 에 jc-mlc-unmatched-off=1 을 두거나 브라우저 데이터를 지우면 된다. */
+  var GAP = {
+    key: 'jc-mlc-unmatched-v1', schema: 'witw-mlc-unmatched/1.0.0',
+    max: 40, ttl: 7 * 24 * 3600 * 1000, weak: 8, unsure: 14, wait: 900,
+    timer: 0, pending: null, held: null, watch: null, armed: false
+  };
+  var GAP_JUNK = /^(asdf|qwer|zxcv|test|qwerty|asdfasdf|1234|12345|abcd+|ㅁㄴㅇㄹ|ㅂㅈㄷㄱ|ㅋㅋ+|ㅎㅎ+|ㅇㅇ+|ㄱㄱ+)$/i;
+  var GAP_BAD = /(씨발|시발|ㅅㅂ|개새끼|병신|좆|야동|카지노|바카라|도박|대출광고)/;
+  var GAP_PII = [
+    /\d{6}\s?-?\s?\d{7}/,                                        /* 주민등록번호 */
+    /\b0\d{1,2}\s?-?\s?\d{3,4}\s?-?\s?\d{4}\b/,                  /* 전화번호 */
+    /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,             /* 메일 */
+    /\d{5,}/,                                                     /* 다섯 자리 이상 숫자(계좌·사번) */
+    /\b(?!(?:19|20)\d{2}\b)\d{4}\b/,                              /* 생년이 아닌 네 자리 숫자 */
+    /(계좌|카드번호|비밀번호|주민등록|여권번호|인적사항)/,
+    /[가-힣](?:씨|님)(?![가-힣])/                                   /* 「김씨」처럼 이름을 붙여 부른 말 */
+  ];
+
+  /* 통과 여부와 이유 — 화면 어디에도 보이지 않는다(기록 판단에만 쓴다).
+     개인정보를 도배 검사보다 먼저 본다 — 숫자만 늘어놓은 전화번호도 «도배»가 아니라 «개인정보»다
+     (ops/scripts/mlc_gap_feed.py 의 guard 와 같은 차례). */
+  function gapCheck(q) {
+    var s = String(q == null ? '' : q).replace(/\s+/g, ' ').trim();
+    if (s.length < 2) return { ok: false, why: 'short' };
+    if (s.length > 120) return { ok: false, why: 'long' };
+    for (var i = 0; i < GAP_PII.length; i++) if (GAP_PII[i].test(s)) return { ok: false, why: 'pii' };
+    if (!/[가-힣a-zA-Z0-9]{2}/.test(s)) return { ok: false, why: 'junk' };
+    var flat = compact(s);
+    if (!flat) return { ok: false, why: 'blank' };
+    if (/^(.)\1+$/.test(flat)) return { ok: false, why: 'repeat' };
+    if (GAP_JUNK.test(flat)) return { ok: false, why: 'junk' };
+    if (/^[\d\s\-+().]+$/.test(s)) return { ok: false, why: 'digits' };
+    if (/^(https?:|www\.)/i.test(s)) return { ok: false, why: 'url' };
+    var words = norm(s).split(' ');
+    if (words.length >= 3 && new RegExp('^(.)\\1*$').test(words.join(''))) return { ok: false, why: 'repeat' };
+    if (GAP_BAD.test(norm(s))) return { ok: false, why: 'spam' };
+    return { ok: true, why: '', q: s.slice(0, 80) };
+  }
+
+  function gapOff() {
+    try { if (navigator && navigator.doNotTrack === '1') return true; } catch (e) {}
+    try { if (window.localStorage.getItem('jc-mlc-unmatched-off') === '1') return true; } catch (e) {}
+    return false;
+  }
+  function gapSid() {
+    try {
+      var s = window.sessionStorage.getItem('jc-mlc-sid');
+      if (!s) { s = 's-' + Math.random().toString(36).slice(2, 8); window.sessionStorage.setItem('jc-mlc-sid', s); }
+      return s;
+    } catch (e) { return 'mem'; }
+  }
+  function gapPath() {
+    try { return String(location.pathname || '/').slice(0, 40); } catch (e) { return ''; }
+  }
+  function gapRead() {
+    try { var j = JSON.parse(window.localStorage.getItem(GAP.key) || '[]'); return Array.isArray(j) ? j : []; } catch (e) { return []; }
+  }
+  function gapPrune(list) {
+    var cut = Date.now() - GAP.ttl;
+    return (list || []).filter(function (e) {
+      var t = Date.parse(e && e.at);
+      return !isNaN(t) && t >= cut;
+    }).slice(-GAP.max);
+  }
+  function gapWrite(list) {
+    try { window.localStorage.setItem(GAP.key, JSON.stringify(gapPrune(list))); } catch (e) {}
+  }
+  /* 같은 질의가 12시간 안에 또 나오면 새 줄을 만들지 않고 횟수를 올린다. */
+  function gapStore(rec, left) {
+    if (!rec) return null;
+    delete rec.urls;
+    var list = gapRead(), now = Date.parse(rec.at) || Date.now();
+    for (var i = list.length - 1; i >= 0; i--) {
+      var e = list[i];
+      if (!e || compact(e.q) !== compact(rec.q) || e.signal !== rec.signal) continue;
+      if (Math.abs((Date.parse(e.at) || 0) - now) > 12 * 3600 * 1000) continue;
+      e.count = (Number(e.count) || 1) + 1;
+      e.at = rec.at; e.top = rec.top; e.n = rec.n;
+      if (left) e.left = true;
+      gapWrite(list);
+      return e;
+    }
+    rec.count = 1;
+    rec.left = !!left;
+    list.push(rec);
+    gapWrite(list);
+    return rec;
+  }
+  function gapWatchUrl(rec) {
+    return compact(rec.q) + '|' + rec.signal;
+  }
+  /* 지금 결과가 «빈틈일 만한가» — 결과가 없거나 첫 점수가 문턱 아래일 때만 후보로 삼는다. */
+  function gapCandidate(q, res) {
+    var chk = gapCheck(q);
+    if (!chk.ok) return null;
+    var list = res || [], top = list.length ? (Number(list[0].score) || 0) : 0;
+    var signal = list.length ? (top < GAP.weak ? 'weak' : (top < GAP.unsure ? 'dim' : '')) : 'zero';
+    if (!signal) return null;
+    var toks = tokens(chk.q), unknown = 0;
+    for (var i = 0; i < toks.length; i++) if (!dfOf(toks[i])) unknown++;
+    var sectors = [];
+    list.slice(0, 3).forEach(function (r) { if (r && r.sector && sectors.indexOf(r.sector) < 0) sectors.push(r.sector); });
+    return {
+      schema: GAP.schema, at: new Date().toISOString(), sid: gapSid(), src: gapPath(),
+      q: chk.q, signal: signal, n: list.length, top: Math.round(top * 10) / 10, unk: unknown,
+      sectors: sectors, picked: false,
+      urls: list.slice(0, 5).map(function (r) { return r.url; }).filter(function (u) { return !!u; })
+    };
+  }
+  /* 검색이 잠잠해진 뒤(900ms) 한 번만 판단한다 — 타자 중간의 글자마다 줄이 쌓이지 않게. */
+  function gapWatch(q, res) {
+    if (gapOff()) return;
+    gapArm();
+    if (GAP.held) { gapStore(GAP.held, true); GAP.held = null; }   /* 앞 질의를 두고 다시 쳤다 */
+    var rec = null;
+    try { rec = gapCandidate(q, res); } catch (e) { rec = null; }
+    clearTimeout(GAP.timer);
+    GAP.pending = rec;
+    if (!rec) return;
+    GAP.timer = setTimeout(function () {
+      var held = GAP.pending;
+      GAP.pending = null;
+      if (!held) return;
+      if (held.signal === 'dim') { GAP.held = held; return; }   /* 약한 정도는 «떠난 뒤»에만 남긴다 */
+      var urls = held.urls;
+      var stored = gapStore(held, false);
+      GAP.watch = { key: gapWatchUrl(stored || held), urls: urls || [], picked: false };
+    }, GAP.wait);
+  }
+  /* 떠났는가 — 화면이 가려지거나 닫힐 때, 아직 안 담긴 질의를 «이탈»로 남긴다. */
+  function gapLeave() {
+    if (GAP.pending) {
+      var pending = GAP.pending;
+      GAP.pending = null;
+      clearTimeout(GAP.timer);
+      if (pending.signal === 'dim') { GAP.held = pending; }
+      else {
+        var urls = pending.urls;
+        var stored = gapStore(pending, true);
+        GAP.watch = { key: gapWatchUrl(stored || pending), urls: urls || [], picked: false };
+      }
+    }
+    if (GAP.held) { gapStore(GAP.held, true); GAP.held = null; }
+    if (GAP.watch && !GAP.watch.picked) {
+      var list = gapRead();
+      for (var i = list.length - 1; i >= 0; i--) {
+        if (list[i] && gapWatchUrl(list[i]) === GAP.watch.key) { list[i].left = true; break; }
+      }
+      gapWrite(list);
+    }
+  }
+  /* 눌러서 들어갔는가 — 결과 주소와 화면에서 누른 링크를 견준다. 누른 질의는 빈틈이 아니다. */
+  function gapPicked(e) {
+    if (!GAP.watch || GAP.watch.picked) return;
+    var node = e && e.target;
+    while (node && node !== document && node.tagName !== 'A') node = node.parentNode;
+    if (!node || node.tagName !== 'A') return;
+    var href = String(node.getAttribute('href') || '');
+    if (!href) return;
+    var hit = GAP.watch.urls.some(function (u) {
+      u = String(u || '').replace(/^\.?\//, '');
+      var h = href.replace(/^\.?\//, '');
+      return u && h && (h.indexOf(u) >= 0 || u.indexOf(h) >= 0);
+    });
+    if (!hit) return;
+    GAP.watch.picked = true;
+    var list = gapRead();
+    for (var i = list.length - 1; i >= 0; i--) {
+      if (list[i] && gapWatchUrl(list[i]) === GAP.watch.key) { list[i].picked = true; list[i].left = false; break; }
+    }
+    gapWrite(list);
+  }
+  function gapArm() {
+    if (GAP.armed || typeof document === 'undefined' || !document.addEventListener) return;
+    GAP.armed = true;
+    document.addEventListener('click', gapPicked, true);
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') gapLeave();
+    });
+    if (window.addEventListener) window.addEventListener('pagehide', gapLeave);
+  }
+
   function search(q, opt) {
     opt = opt || {};
     if (!S.ready) return [];
@@ -622,7 +821,7 @@
     var a = analyze(q);
     var all = a.all;
     var phrase = compact(q);
-    if (!all.length) return [];
+    if (!all.length) { gapWatch(q, []); return []; }
     var boost = {}, nq = norm(q);
     SYN.forEach(function (g) {
       if (!g.k.some(function (w) { return nq.indexOf(norm(w)) >= 0; })) return;
@@ -713,6 +912,7 @@
     }
     /* 자리가 남으면 막아 둔 것부터 채운다(결과가 모자라지 않게). */
     for (var q2 = 0; q2 < rest.length && res.length < limit; q2++) res.push(rest[q2]);
+    gapWatch(q, res);
     return res;
   }
 
@@ -771,6 +971,18 @@
         return { no: s.no || '', title: s.title, url: s.url };
       });
     },
-    choseong: toChoseong
+    choseong: toChoseong,
+    /* 미매칭 의심 질의 — 무엇을 찾다가 돌아섰는지(익명·이 기기 안). 화면에 단추는 두지 않는다.
+       기록은 `ops/scripts/mlc_gap_feed.py` 가 읽는 모양 그대로이고, jsonl() 은 손으로 꺼내 볼 때
+       쓰는 접근자다(화면 내보내기 기능이 아니다). */
+    gap: {
+      schema: function () { return GAP.schema; },
+      check: gapCheck,
+      list: function () { return gapPrune(gapRead()); },
+      jsonl: function () {
+        return gapPrune(gapRead()).map(function (e) { return JSON.stringify(e); }).join('\n');
+      },
+      clear: function () { try { window.localStorage.removeItem(GAP.key); } catch (e) {} }
+    }
   };
 })();
