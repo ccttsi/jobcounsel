@@ -9,6 +9,8 @@
   - [x] 강제 연결 — `CLAUDE.md`·`ops/ROLES.md`·`ops/CI.md`·`design/HANDOFF.md` 맨 위 + `.claude/hooks/session-start.sh` 세션 시작 출력. (PR #423)
   - [ ] 앞으로 모든 PR 본문에 §7 O/X 표를 붙인다(클로드 세션·예약 작업).
 
+- **2026-11-22 (새벽) 온도계 국가데이터처 출처를 Track B로 내림** — 「응 고쳐줘」. 공공누리 제2유형(KOGL-2)인데 Track A로 적혀 있던 `src_kostat_ia_2609`를 `sources.json`·`thermometer.json`에서 B로 내리고 `usage`에 사실·수치만 인용한다고 명시, `SCHEMA.md` 기준 정정, `validate_repo.py` 라이선스 검사에 공공누리 2~4유형 추가(이제 CI가 잡는다 — A로 되돌려 실패 확인). 온도·수치 변화 0. **PR #425.**
+
 - **2026-11-22 (새벽) 신규 섹터는 «맨 뒤»가 아니라 «연관 섹터 옆» — 번호·티어를 함께 재정렬** — 「앞으로 새 섹터를 만들 때마다 무조건 맨 뒤에 붙이지 말고 연관 섹터 옆에 끼워 넣고(`seed`/`match` 순번 재정렬) 마이덱 티어/추천 순서도 같이 챙겨라」. 그 규칙을 `CLAUDE.md`·`ops/CI.md`·`design/HANDOFF.md` 세 곳의 체크리스트에 명문화하고, 이미 어긋나 있던 장부를 한 번에 다시 매겼다(아래 2026-11-22 항목).
   - [x] `assets/tools.js`: 시드 01~15 · 매치 16~37 재배치(casecon 02 — theory 바로 뒤) · 배열도 같은 순서 · `mo` 시드 1~15/매치 1~22.
   - [x] `mydeck/assemble.js`: `TIER1`에 posting·first-year, casecon 2티어 · `STAGE`/`ORDER`·`GROUPS`·`RULES` 반영.

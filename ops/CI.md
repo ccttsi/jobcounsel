@@ -11,7 +11,7 @@
 | 검사 | 보는 것 | 실패하면 |
 |---|---|---|
 | `static-checks` | briefing·emerging의 JSON 61개 파싱·중복 키·스키마 필수 항목·참조(카드→출처) | JSON을 고친다. 스키마를 바꿨으면 `*/SCHEMA.md`를 먼저 고친다 |
-| | 저작권 Track A/B — `PRESS`·`KOGL-NONE`·`FACTS-ONLY`·미확인 라이선스가 Track A면 실패 | 그 자료를 Track B로 내리거나 재가공 허용 자료로 바꾼다 |
+| | 저작권 Track A/B — `PRESS`·`KOGL-NONE`·`FACTS-ONLY`·공공누리 제2~4유형(`KOGL-2`·`KOGL-3`·`KOGL-4`)·미확인 라이선스가 Track A면 실패 | 그 자료를 Track B로 내리거나 재가공 허용 자료로 바꾼다 |
 | | JS 33개 `node --check` 문법 | 문법 오류를 고친다 |
 | | 상담 프리셋 장부 — `assets/presets.js`의 10개 프리셋·39자리 카드가 `assets/tools.js`의 섹터 id와 맞는지, 단계·확인 문장이 빠지지 않았는지(대문 덱의 진행 순서가 끊기지 않게). `json` 검사에 함께 돈다 | 오타 난 id·빠진 단계를 고친다(`python3 ops/scripts/validate_repo.py --only presets`) |
 | | 역할 가드레일 — `[data-only]` PR이 `.html`/`.css`/`.js`를 건드리면 실패, `[code-only]` PR이 수집 JSON을 건드리면 실패 | 라벨을 떼거나 PR을 나눈다 |

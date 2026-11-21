@@ -33,7 +33,7 @@
 | **B (사실·수치 요약만)** | 공공누리 제2~4유형 · CC **NC/ND** · **언론 기사**(PRESS) · 라이선스 **미부착·불명**(KOGL-NONE·UNKNOWN) | 원문·번역 금지. **사실·수치만 요약**하고 출처 URL·기준일을 적는다 |
 
 - 원문 문단을 **15단어 넘게 옮기지 않는다**. 인용은 짧게, 설명은 우리 문장으로.
-- 라이선스는 **항목마다** 기록한다(`license`·`source_url`·기준일). 확인되지 않은 라이선스를 Track A에 두지 않는다 — `ops/scripts/validate_repo.py`의 `license` 검사가 `PRESS`·`KOGL-NONE`·`FACTS-ONLY`·미확인 라이선스를 Track A에서 **실패**시킨다.
+- 라이선스는 **항목마다** 기록한다(`license`·`source_url`·기준일). 확인되지 않은 라이선스를 Track A에 두지 않는다 — `ops/scripts/validate_repo.py`의 `license` 검사가 `PRESS`·`KOGL-NONE`·`FACTS-ONLY`·공공누리 제2~4유형·미확인 라이선스를 Track A에서 **실패**시킨다.
 - 권 단위 자료(`library/`)는 끝에 「출처와 이용 조건」(서지·저작권자·원문 링크·라이선스)을 둔다. ND 조건 자료는 «번역하지 않고 요약·해설임»을 밝힌다.
 
 ### 1-2. 디자인 지재권
