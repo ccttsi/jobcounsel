@@ -36,7 +36,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 # /mydeck/은 저장한 덱, /portals/?q=·#p=는 검색·딥링크 동선이라 섹터 밖에서 따로 잰다.
 PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
          "/portals/#p=work24", "/flow/", "/mydeck/",
-         "/work-filter/", "/kdt-calc/", "/triage/", "/fin-lab/", "/valuechain/", "/valuechain/?i=battery&s=3", "/intake/"]
+         "/work-filter/", "/kdt-calc/", "/triage/", "/fin-lab/", "/valuechain/", "/valuechain/?i=battery&s=3",
+         "/intake/", "/policy-match/"]
 
 # 화면이 아닌 폴더(섹터 목록 점검에서 뺀다) — 이유를 함께 적는다.
 NON_SCREEN = {
@@ -94,6 +95,15 @@ PROBES = {
         const lv = (document.getElementById('lvName') || {}).textContent || '';
         const broken = /불러오지 못했습니다/.test(document.body.innerText);
         return {ok: boxes >= 5 && ladder === 5 && !broken, detail: `축 ${boxes} · 사다리 ${ladder} · 등급 ${lv.trim().slice(0, 12)}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/policy-match/": """() => {
+        // 네 단계 체크(4)와 일곱 제도의 관계 칸(7×6=42)이 그려졌는가 — JS가 죽으면 둘 다 0이 된다.
+        const steps = document.querySelectorAll('#steps .st').length;
+        const cells = document.querySelectorAll('#mx .mc[data-pair]').length;
+        const legend = document.querySelectorAll('#legend .lg').length;
+        const broken = /불러오지 못했습니다/.test(document.body.innerText);
+        return {ok: steps === 4 && cells === 42 && legend === 5 && !broken,
+                detail: `단계 ${steps} · 관계칸 ${cells} · 범례 ${legend}${broken ? ' · 불러오기 실패' : ''}`};
     }""",
     "/portals/": """() => {
         // 카드·「가서 볼 수 있는 것」 칩이 그려지고, 자료를 불러오지 못한 문구가 없는가.
