@@ -2,7 +2,7 @@
 """라이브 헬스체크 (3순위) — 배포된 자료실이 지금 열리는지, 오늘 자료가 실렸는지 확인한다.
 
   python3 ops/scripts/health_check.py
-  python3 ops/scripts/health_check.py --base https://ccttsi.github.io/jobcounsel/
+  python3 ops/scripts/health_check.py --base https://witw.pages.dev/
   python3 ops/scripts/health_check.py --summary-file "$GITHUB_STEP_SUMMARY"
 
 하는 일
@@ -23,7 +23,7 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 
 KST = timezone(timedelta(hours=9))
-DEFAULT_BASE = "https://ccttsi.github.io/jobcounsel/"
+DEFAULT_BASE = "https://witw.pages.dev/"
 UA = "jobcounsel-health-check/1.0 (+https://github.com/ccttsi/jobcounsel)"
 
 

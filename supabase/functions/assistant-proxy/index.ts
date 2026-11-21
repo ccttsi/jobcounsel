@@ -24,7 +24,7 @@
 // 환경변수 (README 참고)
 //   JC_KEY_MASTER_SECRET  필수. 키 암호화 열쇠(32바이트 이상 아무 문자열).
 //   SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY  Supabase 가 자동 주입.
-//   JC_ALLOW_ORIGINS      선택. 쉼표로 구분한 허용 출처. 기본 https://ccttsi.github.io
+//   JC_ALLOW_ORIGINS      선택. 쉼표로 구분한 허용 출처. 기본 https://witw.pages.dev,https://ccttsi.github.io,https://ccttsi.pages.dev
 //   JC_GEMINI_MODEL       선택. 1순위 모델 이름. 비우면 무료 폴백 체인(3.8-flash → 3.6-flash → 3.5-flash-lite → 3.1-flash-lite)을 쓴다.
 //
 // 무료 한도(429)는 **모델마다 따로** 잡혀 있어, 한도가 찬 모델은 건너뛰고 다음 무료 모델로 이어서 답한다.
@@ -36,7 +36,7 @@ const SUPABASE_URL = (Deno.env.get('SUPABASE_URL') || '').replace(/\/+$/, '');
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
 const MASTER = Deno.env.get('JC_KEY_MASTER_SECRET') || '';
 const MODEL_PREF = (Deno.env.get('JC_GEMINI_MODEL') || '').trim();
-const ALLOW = (Deno.env.get('JC_ALLOW_ORIGINS') || 'https://ccttsi.github.io')
+const ALLOW = (Deno.env.get('JC_ALLOW_ORIGINS') || 'https://witw.pages.dev,https://ccttsi.github.io,https://ccttsi.pages.dev')
   .split(',').map((s) => s.trim()).filter(Boolean);
 
 const MAX_BODY = 256000;     // 요청 본문 상한(바이트) — 대화 한 편(30턴×답 4,000자)을 저장할 수 있는 크기

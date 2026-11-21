@@ -5,7 +5,7 @@
 
 쓰는 법
     LD_LIBRARY_PATH=/workspace/pwlibs/root/usr/lib/x86_64-linux-gnu python3 ops/qa/main_search_probe.py
-    ... --live     # 운영 사이트(https://ccttsi.github.io/jobcounsel/)에 대고 잰다
+    ... --live     # 운영 사이트(https://witw.pages.dev/)에 대고 잰다
 """
 import json
 import os
@@ -17,7 +17,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 LIVE = '--live' in sys.argv
-BASE = 'https://ccttsi.github.io/jobcounsel/' if LIVE else 'http://127.0.0.1:8787/'
+BASE = 'https://witw.pages.dev/' if LIVE else 'http://127.0.0.1:8787/'
 
 # (검색어, 도착 주소에 반드시 있어야 하는 조각, 도착 화면에 보여야 하는 글자)
 CASES = [

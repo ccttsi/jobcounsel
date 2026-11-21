@@ -60,7 +60,7 @@ supabase functions deploy my-decks-proxy --no-verify-jwt
 환경변수는 **필요 없습니다**(AI 키를 쓰지 않습니다). 다른 출처를 쓰려면 `JC_ALLOW_ORIGINS` 만 선택으로 지정합니다.
 
 ```bash
-supabase secrets set JC_ALLOW_ORIGINS='https://ccttsi.github.io'
+supabase secrets set JC_ALLOW_ORIGINS='https://witw.pages.dev,https://ccttsi.github.io,https://ccttsi.pages.dev'
 ```
 
 ---

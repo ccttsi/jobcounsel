@@ -4,7 +4,7 @@
 데이터는 피클(설계·검증)이 만들고, 화면 코드는 클로드가 쓴다(`ops/ROLES.md`).
 
 - 파일: `surgery/data/anatomy.json` (공개) · `surgery/data/lexicon.json` (**비노출 내부 엔진**)
-- 배포 주소: `https://ccttsi.github.io/jobcounsel/surgery/data/anatomy.json`
+- 배포 주소: `https://witw.pages.dev/surgery/data/anatomy.json`
 - 스키마 버전: `meta.version = "1.0.0"` (2026-11-16)
 - 검증: `python3 surgery/data/validate.py` → **오류 0건** 통과본만 배포한다.
 - 실측: 공고 문구 **28종** · 탈락 문장 **22종** · 상황별 이력서 **6종** · 내부 키워드 **225개**(45묶음) · 톤 **4종** × 용도 2 × 문형 3 = **24문형**

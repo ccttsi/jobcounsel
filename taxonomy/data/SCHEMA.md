@@ -4,7 +4,7 @@
 데이터는 피클(공공데이터 수집·정규화)이 만들고, 화면 코드는 클로드가 쓴다(`ops/ROLES.md`).
 
 - 파일: `taxonomy/data/taxonomy.json` (UTF-8, JSON, 약 3.6MB)
-- 배포 주소: `https://ccttsi.github.io/jobcounsel/taxonomy/data/taxonomy.json`
+- 배포 주소: `https://witw.pages.dev/taxonomy/data/taxonomy.json`
 - 스키마 버전: `meta.schema_version = "1.0"` (2026-11-16 기준)
 - 검증: `python3 taxonomy/data/validate.py` → **오류 0건** 통과본만 배포한다.
 

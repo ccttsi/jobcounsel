@@ -7,7 +7,7 @@ NCS(국가직무능력표준) · KECO(한국고용직업분류) · KSCO(한국�
 - **인사이트 인덱스**: [`insights/`](insights/) — 화면 맨 위 「한눈에」 카드(한 줄 정의·KSA 성향·키워드)와 면접 예상 질문의 원천. `python3 taxonomy/data/build_insights.py`로 원자료에서 다시 만든다(계약은 SCHEMA.md §9)
 - **스키마 계약**: [`SCHEMA.md`](SCHEMA.md) — 화면 구현 전에 반드시 읽는다
 - **검증**: `python3 taxonomy/data/validate.py` → 오류 0건 (2026-11-16 기준)
-- **배포**: `https://ccttsi.github.io/jobcounsel/taxonomy/data/taxonomy.json` · `https://ccttsi.github.io/jobcounsel/taxonomy/data/ksa/index.json`
+- **배포**: `https://witw.pages.dev/taxonomy/data/taxonomy.json` · `https://witw.pages.dev/taxonomy/data/ksa/index.json`
 
 ## 실측 건수
 

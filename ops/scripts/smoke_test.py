@@ -2,7 +2,7 @@
 """실화면 스모크 — CI 게이트의 Playwright 검사 (1순위)
 
   python3 ops/scripts/smoke_test.py                       # 저장소를 로컬 정적 서버로 띄워 잰다
-  python3 ops/scripts/smoke_test.py --base https://ccttsi.github.io/jobcounsel/
+  python3 ops/scripts/smoke_test.py --base https://witw.pages.dev/
   python3 ops/scripts/smoke_test.py --summary-file "$GITHUB_STEP_SUMMARY"
 
 재는 화면: 개별 지시가 있는 화면(PAGES — 대문·브리핑·신산업·온도계·번역기·포털·플로우·마이덱·현실 필터·국비계산·트리아지·재무 시뮬레이터)은 전부,

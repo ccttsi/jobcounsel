@@ -69,7 +69,7 @@ where tablename in ('jc_assistant_threads','jc_assistant_messages');
 # 키 암호화 열쇠 — 32바이트 이상 아무 문자열. 한 번 정하면 바꾸지 않는다.
 # 바꾸면 이미 등록된 키는 풀리지 않으므로 사용자가 다시 등록해야 한다.
 supabase secrets set JC_KEY_MASTER_SECRET='<길고 무작위한 문자열>' \
-  JC_ALLOW_ORIGINS='https://ccttsi.github.io'
+  JC_ALLOW_ORIGINS='https://witw.pages.dev,https://ccttsi.github.io,https://ccttsi.pages.dev'
 
 # (선택) 1순위 모델 이름 — 비우면 아래 무료 폴백 체인을 그대로 쓴다
 # supabase secrets set JC_GEMINI_MODEL='gemini-3.8-flash'
@@ -156,7 +156,7 @@ curl -s -X POST 'https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant
 - 연결 테스트의 진단에는 **모델명·사유·HTTP 코드**만 담습니다. 키·질문·오류 본문은 응답에도 로그에도 남기지 않습니다. 구글 상태 확인은 공개 피드(`status.cloud.google.com/incidents.json`)에서 **끝나지 않은(end 없는)** 인시던트 중 Gemini·Vertex·AI Studio 관련이 있는지만 2초 안에 봅니다(429·정상 응답 때는 부르지 않음).
 - 질의는 `stream: true` 면 **SSE** 로 글자를 바로 흘려보냅니다(첫 글자 전 `429·404·5xx` 면 다음 무료 모델로 갈아탐). 스트리밍 답은 평문이고 마지막 줄 `[[REFS:e1,e2]]` 만 근거 번호로 떼어 봅니다. `stream` 이 없으면 기존 JSON 응답 그대로입니다.
 - 속도: `thinkingConfig.thinkingLevel='low'`, 웹 교차 확인이 꺼져 있으면 `google_search` 를 붙이지 않습니다(미지원 모델이 400 을 주면 그 설정만 빼고 재시도).
-- CORS 는 `JC_ALLOW_ORIGINS`(기본 `https://ccttsi.github.io`)만 허용합니다.
+- CORS 는 `JC_ALLOW_ORIGINS`(기본 `https://witw.pages.dev,https://ccttsi.github.io,https://ccttsi.pages.dev`)에 적은 출처만 허용합니다.
 - **질문·대화·검색어를 찍는 로그가 이 함수에 없습니다.** 오류도 내용 없이 코드로만 돌려줍니다.
 
 ---

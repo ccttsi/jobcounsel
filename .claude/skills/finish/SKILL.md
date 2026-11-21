@@ -13,7 +13,7 @@ description: 자료실 작업을 마칠 때(/finish, "마무리", "끝내자") �
 1. `CLAUDE.md` 「작업 끝」 1~6 (patterns 누적, DESIGN.md §9·§10·§11 한 줄, studies 노트, README).
 2. `design/HANDOFF.md` [완료된 단계 / 남은 작업 / 다음 시작 파일] 갱신.
 3. 커밋(실측 숫자 포함) → `git -c push.negotiate=true push -u origin <브랜치>` → PR 생성(REST: `gh api repos/ccttsi/jobcounsel/pulls -f title=... -f head=<브랜치> -f base=main -f body=...`).
-4. 다른 세션 브랜치와 겹치지 않고 검수를 통과했으면 머지: `gh api -X PUT repos/ccttsi/jobcounsel/pulls/<번호>/merge -f merge_method=merge`. 1~2분 뒤 https://ccttsi.github.io/jobcounsel/ 해당 페이지가 200인지 확인.
+4. 다른 세션 브랜치와 겹치지 않고 검수를 통과했으면 머지: `gh api -X PUT repos/ccttsi/jobcounsel/pulls/<번호>/merge -f merge_method=merge`. 1~2분 뒤 https://witw.pages.dev/ 해당 페이지가 200인지 확인.
 
 ## 3. 노션
 1. 자료실 섹터 보드 해당 항목 상태 `작업대기 → PR → 배포완료`, 경로·출처 갱신.
