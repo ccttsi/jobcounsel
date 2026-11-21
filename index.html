@@ -1531,6 +1531,12 @@ function cvSettle(){
   if(p!==ring){cvPos=cvGoal=ring;listApply(ring);}
   listPage=ring;
   paintPager(n);setPagesActive(ring);
+  /* 번호에 초점이 있을 때 원판이 굴러 번호가 창 밖으로 나가면 초점 고리가 사라진다 — 같은 번호의
+     «가운데 벌» 단추로 초점만 옴긴다(화면은 그대로, 낭독 이름도 그대로). */
+  var ae=document.activeElement;
+  if(ae&&ae.getAttribute&&ae.getAttribute('data-lp')!==null&&ae!==pgBtns[n+ring]){
+    try{pgBtns[n+ring].focus({preventScroll:true});}catch(e){}
+  }
   var pg=$('allPg');if(pg)pg.setAttribute('data-page',String(ring));
 }
 function renderList(){
