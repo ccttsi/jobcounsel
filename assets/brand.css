@@ -61,6 +61,7 @@
   --tc-flow:#3d3a72;
   --tc-valuechain:#2f5d55;
   --tc-intake:#33536e;
+  --tc-pay-calc:#7b2f47;
   --tc-policy-match:#5a4470;
 }
 :root[data-jc-tone="sepia"]{
@@ -97,6 +98,7 @@
   --tc-flow:#3a3770;
   --tc-valuechain:#2a564f;
   --tc-intake:#284a63;
+  --tc-pay-calc:#6f2740;
   --tc-policy-match:#4f3c63;
 }
 :root[data-theme="dark"]{
@@ -133,6 +135,7 @@
   --tc-flow:#a5a8ff;
   --tc-valuechain:#7fbfae;
   --tc-intake:#8fbbe0;
+  --tc-pay-calc:#ffa3b8;
   --tc-policy-match:#c9b0ec;
 }
 
@@ -170,6 +173,7 @@ body[data-jc-tool="transit"]{--jc-acc:var(--tc-transit)}
 body[data-jc-tool="flow"]{--jc-acc:var(--tc-flow)}
 body[data-jc-tool="valuechain"]{--jc-acc:var(--tc-valuechain)}
 body[data-jc-tool="intake"]{--jc-acc:var(--tc-intake)}
+body[data-jc-tool="pay-calc"]{--jc-acc:var(--tc-pay-calc)}
 body[data-jc-tool="policy-match"]{--jc-acc:var(--tc-policy-match)}
 
 /* ---------- 로고 ----------
