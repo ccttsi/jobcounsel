@@ -29,9 +29,15 @@ python3 ops/scripts/validate_repo.py --only dates    # 법령 시행일만
 python3 ops/scripts/smoke_test.py                    # 저장소를 로컬 서버로 띄워 잰다
 python3 ops/scripts/health_check.py                  # 배포본 라이브 점검
 python3 ops/qa/back_close.py                         # 세부 팝업 뒤로가기 닫기(18개 섹터)
+python3 ops/scripts/synonym_eval.py                  # 상담 은어·동의어 사전 채점(사연 168건, 1순위·3순위 적중률)
 ```
 
-- `smoke_test.py`는 `pip install playwright && python -m playwright install chromium`이 먼저 필요하다.
+- `smoke_test.py`·`synonym_eval.py`는 `pip install playwright && python -m playwright install chromium`이 먼저 필요하다.
+- `synonym_eval.py`는 사전(`assistant/data/synonym-map.json`)이나 검색 엔진(`assistant/search.js`)을 고친 뒤
+  숫자를 «보고» 판단하는 도구다. `--floor-top1 0.60 --floor-top3 0.82`처럼 하한을 주면 그 아래로 떨어질 때 실패한다.
+  상시 CI에는 넣지 않았다(2분쯤 걸린다) — 손으로 돌리고 결과를 PR 본문·HANDOFF에 적는다.
+- 선참조 지도(`rag-preface.json`)는 `assistant_search_test.py`가 **96KB 이하**로 잡는다(색인 1.7MB보다 먼저 받는 작은 지도).
+  2순위 동의어 사전을 `dict`에 합치면서 60KB → 73KB가 되었다.
 - 실패 화면을 남기려면 `--shot-dir <폴더>`.
 - PR 역할 가드레일만 따로: `python3 ops/scripts/validate_repo.py --only role --pr-json pr.json`
   (`gh pr view <번호> --json title,labels,files > pr.json`).
