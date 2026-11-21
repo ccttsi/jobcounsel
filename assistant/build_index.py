@@ -39,8 +39,10 @@ index-companies.json — 기업 명함첩 9,137곳(대문·비서가 «검색할
 
 rag-preface.json — 비서가 **맨 먼저** 보는 선참조 지도(작다)
     {"v":1,"built":"…","dict":[…],"sectors":[…],"terms":{…}}
-    dict    = [{c:정식 용어, a:[현장말·쓰다 만 앞부분], s:[먼저 볼 섹터], x:한 줄 설명}] —
-              원본은 `assistant/aliases.json`. 여기서는 그대로 옮겨 담기만 한다.
+    dict    = [{c:정식 용어, a:[현장말·쓰다 만 앞부분], s:[먼저 볼 섹터], x:한 줄 설명,
+                p:섹터를 미는 세기, t:[검색에 더할 낱말], g:묶음(있을 때만)}]
+              원본은 `assistant/aliases.json`(현장 약어) 과 `assistant/data/synonym-map.json`
+              (상담 은어·동의어 — 2순위). 두 원본을 정식 용어(c) 기준으로 합쳐 담는다.
     sectors = [{id,no,title,url,b:배지,d:한 줄,c? 없음,k:핵심 낱말(쉼표),n:문서 수}]
     terms   = {낱말: [섹터 id…]} — 낱말 하나로 섹터를 바로 좁히는 길잡이.
     이 파일은 섹터 목록(assets/tools.js)에서 매번 다시 만들어진다. 섹터가 늘면 저절로 따라온다.
@@ -162,8 +164,9 @@ def read_text(*parts):
 
 # ---------------------------------------------------------------- 현장 약어 사전
 
-ALIAS_ENTRIES = []   # [{'c','a','s','x'}]
+ALIAS_ENTRIES = []   # [{'c','a','s','x','p','t','g'}]
 ALIAS_PAIRS = []     # [(현장말, 정식 용어)] — 색인 낱말에 펼친 형태를 붙일 때 씀
+SYN_PATH = os.path.join(HERE, 'data', 'synonym-map.json')
 
 
 def load_aliases():
@@ -192,6 +195,73 @@ def load_aliases():
             pairs.append((f, c))
     ALIAS_ENTRIES, ALIAS_PAIRS = entries, pairs
     return True
+
+
+def load_synonyms():
+    """`assistant/data/synonym-map.json` — 상담 은어·동의어 매핑 사전(2순위 보완).
+
+    정식 용어(c)가 이미 약어 사전에 있으면 **그 항목에 말(a)·섹터(s)를 보태고**,
+    없으면 새 항목으로 뒤에 붙인다. 약어 사전의 차례(섹터 우선순위)는 건드리지 않는다.
+    확인되지 않은 값은 받지 않는다 — 빈 정식 용어·1글자 말·섹터 없는 항목은 건너뛴다.
+    """
+    if not os.path.exists(SYN_PATH):
+        print('  · 동의어 사전(%s)이 없습니다 — 약어 사전만으로 돕니다.' % rel(SYN_PATH), file=sys.stderr)
+        return 0
+    try:
+        with open(SYN_PATH, encoding='utf-8') as f:
+            d = json.load(f)
+    except Exception as e:
+        print('  · 동의어 사전을 읽지 못했습니다(%s).' % e, file=sys.stderr)
+        return 0
+    by_c = {e['c']: e for e in ALIAS_ENTRIES}
+    added, merged = 0, 0
+    for e in d.get('entries') or []:
+        c = _ws.sub(' ', str(e.get('c') or '')).strip()
+        if not c:
+            continue
+        forms = []
+        for a in e.get('a') or []:
+            a = _ws.sub(' ', str(a)).strip()
+            if len(a) >= 2 and a != c and a not in forms:
+                forms.append(a)
+        sectors = [str(x) for x in (e.get('s') or []) if str(x)]
+        if not sectors:
+            print('  · 동의어 「%s」에 먼저 볼 섹터가 없어 건너뜁니다.' % c, file=sys.stderr)
+            continue
+        terms = [str(x).strip() for x in (e.get('t') or []) if str(x).strip()]
+        try:
+            pin = float(e.get('p') or 0)
+        except (TypeError, ValueError):
+            pin = 0.0
+        item = {k: v for k, v in (('p', round(pin, 2) if pin > 1.0 else 0), ('t', terms),
+                                  ('g', str(e.get('g') or '')), ('m', 1), ('ps', sectors)) if v}
+        if c in by_c:                       # 약어 사전에 이미 있는 정식 용어 — 보태기만 한다
+            tgt = by_c[c]
+            for f in forms:
+                if f not in tgt['a']:
+                    tgt['a'].append(f)
+            for sid in sectors:
+                if sid not in tgt['s']:
+                    tgt['s'].append(sid)
+            for k, v in item.items():
+                tgt.setdefault(k, v)
+            merged += 1
+            continue
+        entry = {'c': c, 'a': forms, 's': sectors, 'x': str(e.get('x') or '')}
+        entry.update(item)
+        ALIAS_ENTRIES.append(entry)
+        by_c[c] = entry
+        added += 1
+    # 색인 낱말에 붙일 (말, 정식 용어) 쌍을 다시 세운다.
+    ALIAS_PAIRS[:] = [(c, c) for c in (e['c'] for e in ALIAS_ENTRIES)]
+    for e in ALIAS_ENTRIES:
+        for f in e['a']:
+            ALIAS_PAIRS.append((f, e['c']))
+    return added + merged
+
+
+def rel(path):
+    return os.path.relpath(path, ROOT).replace(os.sep, '/')
 
 
 def alias_forms(text):
@@ -864,15 +934,19 @@ def sector_keywords(s):
     put(s['badge'])
     for t in s['tags'][:8]:
         put(t)
-    # 이 섹터를 먼저 보라고 적힌 약어 사전 항목 — 「경단」→ 번역기·포털·환승노선…
-    for e in ALIAS_ENTRIES:
+    # 이 섹터를 먼저 보라고 적힌 사전 항목 — 「경단」→ 번역기·포털·환승노선…
+    #   섹터를 적게 가리키는 항목(더 또렷한 말)부터 넣는다. 20낱말 상한에 걸려도
+    #   「실급」·「3.3%」처럼 한 곳만 가리키는 말이 먼저 들어가게 하기 위해서다.
+    for e in sorted(ALIAS_ENTRIES, key=lambda e: len(e['s'])):
         if s['id'] in e['s']:
             put(e['c'])
-            for f in e['a'][:2]:
+            for f in e['a'][:3]:
                 put(f)
     keep, n = [], 0
     for w in out:
-        if len(keep) >= 20 or n + len(w) > 200:
+        # 상한을 20낱말/200자에서 조금 늘렸다 — 2순위 동의어 사전의 표면형(「상담일지」·「3.3%」)이
+        # 섹터 낱말에 함께 들어가야 MLC 자가질문 검색(이 파일의 k 를 읽는다)도 같은 말을 알아듣는다.
+        if len(keep) >= 26 or n + len(w) > 260:
             break
         keep.append(w)
         n += len(w) + 1
@@ -918,6 +992,7 @@ def check_aliases(by_id):
 
 def build():
     load_aliases()
+    load_synonyms()
     materials, apps = read_tools()
     sectors = materials
     # 비서 전용 «섹터» — 대문 목록에는 없지만 찾아 갈 수 있어야 하는 것들(검색에만 쓴다)

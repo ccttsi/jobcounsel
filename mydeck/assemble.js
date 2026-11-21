@@ -354,6 +354,13 @@
       var alias = String(d.q || '').replace(/\s+/g, '') !== String(d.c || '').replace(/\s+/g, '');
       (d.s || []).forEach(function (id, i) { bump(id, (alias ? 2.2 : 1.3) - i * 0.12, d.c); });
     });
+    /* 상담 은어·동의어 사전(2순위) — 「상담일지」·「3.3%」처럼 그 섹터를 콕 집는 말은
+       첫 자리 섹터를 더 세게 민다. 사전이 없으면 analyze().syn 도 없어 예전과 같다. */
+    (an.syn || []).forEach(function (g) {
+      (g.s || []).slice(0, 2).forEach(function (id, i) {
+        bump(id, Math.max(0.9, (Number(g.p) || 1) * 1.7 - i * 0.5), g.c);
+      });
+    });
     mlcDoc().starts.forEach(function (s) {
       if (!s.k || nq.indexOf(norm(s.k)) < 0) return;
       (s.to || []).forEach(function (id) { bump(id, 2.4, s.k); });
