@@ -15,6 +15,8 @@
 워크플로: `.github/workflows/openapi-daily.yml` · `openapi-weekly.yml` · `openapi-monthly.yml`
 (셋 다 `workflow_dispatch`가 있어 Actions 화면에서 바로 수동 실행할 수 있다). 저장소에 아직 이 세 파일이 없으면 `docs/openapi-workflows/`에 같은 내용이 있으니 그 경로로 옮겨 두면 된다.
 
+받아 둔 JSON은 라이브 `https://witw.pages.dev/data/openapi/` 아래에서 그대로 열린다(예: `alio/recruitment.json` · `MANIFEST.json` · `dart/corp-map.json`).
+
 ## 저작권·지재권
 
 - 금융위원회·한국산업인력공단·재정경제부·국세청 API는 공공데이터포털 **이용허락범위 제한 없음**으로 승인받았다.
