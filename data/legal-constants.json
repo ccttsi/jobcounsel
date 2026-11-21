@@ -151,11 +151,13 @@
     "rate": {
      "value": 0.6,
      "unit": "비율",
+     "source": "moel-ei-law",
      "note": "구직급여일액 = 기초일액의 60%"
     },
     "floorRate": {
      "value": 0.8,
      "unit": "비율",
+     "source": "moel-ei-law",
      "note": "최저구직급여일액 = 최저임금×1일 소정근로시간×80%"
     },
     "floorDaily8h": {
