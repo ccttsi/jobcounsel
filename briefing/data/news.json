@@ -1,6 +1,6 @@
 {
  "schema_version": "1.1.0",
- "updated_at": "2026-11-21T07:06:00+09:00",
+ "updated_at": "2026-11-21T23:07:00+09:00",
  "date": "2026-11-21",
  "data_status": "ok",
  "data_status_note": null,
@@ -13,9 +13,9 @@
   },
   "global-2300": {
    "status": "ok",
-   "updated_at": "2026-11-20T23:04:00+09:00",
-   "last_ok": "2026-11-20",
-   "run_id": "br-20261120-2304"
+   "updated_at": "2026-11-21T23:07:00+09:00",
+   "last_ok": "2026-11-21",
+   "run_id": "br-20261121-2307"
   }
  },
  "main_themes": [
@@ -477,7 +477,15 @@
    "count": 1
   },
   {
-   "word": "근로자 구분",
+   "word": "주별 실업률",
+   "count": 1
+  },
+  {
+   "word": "총요소생산성",
+   "count": 1
+  },
+  {
+   "word": "AI 투자",
    "count": 1
   },
   {
@@ -485,15 +493,7 @@
    "count": 1
   },
   {
-   "word": "미국 물가",
-   "count": 1
-  },
-  {
-   "word": "성별 고용격차",
-   "count": 1
-  },
-  {
-   "word": "유럽 고용",
+   "word": "과업 단위",
    "count": 1
   }
  ],
@@ -542,73 +542,20 @@
    }
   },
   {
-   "id": "n20261120-02",
-   "issue_id": "iss-us-ic-final-rule-2026",
+   "id": "n20261121-01",
+   "issue_id": "iss-us-state-unemployment-oct2026",
    "theme_id": null,
    "is_main_theme": false,
    "edition": "global-2300",
-   "updated_at": "2026-11-20T23:04:00+09:00",
-   "run_id": "br-20261120-2304",
-   "headline": true,
-   "published_at": "2026-11-19",
-   "source": {
-    "source_name": "미국 노동부 임금시간국(DOL WHD)",
-    "source_url": "https://www.dol.gov/newsroom/releases/whd/whd20261119",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.dol.gov/general/aboutdol/copyright",
-     "scope": "본문 텍스트(제3자 저작물·이미지 제외)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-20",
-     "evidence": "미국 노동부 저작권 안내(https://www.dol.gov/general/aboutdol/copyright, 2026-11-20 직접 확인): '연방정부가 만든 자료는 원칙적으로 퍼블릭 도메인이며 허락 없이 사용·복제·배포할 수 있다'(DOL의 사전 허가 불필요, 제3자 저작물·이미지 제외). 미국 저작권법 17 U.S.C. §105.",
-     "attribution_text": "Source: U.S. Department of Labor, Wage and Hour Division, “US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws” (November 19, 2026)"
-    }
-   },
-   "title_original": "US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws",
-   "title_ko": "미국 노동부, 근로자·독립계약자 구분을 명확히 하는 최종규칙 발표",
-   "body_original": "WASHINGTON – The U.S. Department of Labor's Wage and Hour Division today announced a final rule to revise its analysis for distinguishing between employees and independent contractors under the Fair Labor Standards Act and two related federal laws. The new final rule provides clarity to businesses and workers alike, as well as the division's enforcement personnel.\n\nU.S. Secretary of Labor Keith Sonderling, Wage and Hour Division Administrator Andrew Rogers, and other department officials hosted an event to formally announce the final rule at the Frances Perkins Building this morning. Employers, business associations, worker advocates, independent contractors, and other stakeholders were in attendance as Secretary Sonderling highlighted the clarity and simplicity of the new regulations.\n\nThe final rule rescinds an earlier 2024 rule addressing the classification of employees and independent contractors and replaces it with an analysis that is substantially similar to the framework adopted by the department in 2021. Consistent with the outcomes of federal appellate cases, the final rule provides further guidance on the process for differentiating between employees with protections under the FLSA and individuals who work as independent contractors.\n\n\"It's more important than ever to ensure our labor regulations keep pace with the changing ways that Americans choose to work, and businesses choose to operate,\" said Secretary Sonderling. \"The new Independent Contractor final rule establishes clear, predictable, and easy-to-understand criteria for determining who is an employee and who is an independent contractor – allowing millions of Americans to take advantage of new opportunities in President Trump's booming economy.\"\n\nThe final rule also applies the department's streamlined analysis to the Family and Medical Leave Act, and the Migrant and Seasonal Agricultural Worker Protection Act, both of which use the FLSA's statutory definition of \"employ.\" However, the rule does not change the assessment of employee or independent contractor status for the purpose of any other federal laws, including the Internal Revenue Code, and does not preempt any state or local laws.\n\n\"The Department of Labor is committed to helping employers prevent misclassification. This rule strikes the right balance by protecting employees who are entitled to the protections of federal wage and hour laws, while also respecting the entrepreneurial spirit of legitimate independent contractors,\" said Administrator Rogers. \"The department distilled longstanding judicial tests into a framework that employees and employers can reliably apply at the outset of business relationships.\"\n\nThe analysis in the department's final rule does the following:\n- Applies an \"economic reality\" test to determine whether a worker is in business for himself or herself as an independent contractor or is an employee economically dependent on an employer for work.\n- Identifies and explains two \"core factors\" to help determine if a worker is economically dependent on an employer for work or in business for himself or herself: the nature and degree of control over the work; the worker's opportunity for profit or loss based on initiative and/or investment.\n- Identifies other factors to help determine a worker's status as an employee or independent contractor, including the amount of skill required for the work, the degree of permanence of the working relationship, and whether the work is part of an integrated unit of production.\n- Advises that the actual practice of the worker and the potential employer is more relevant than what may be contractually or theoretically possible.\n- Provides 14 fact-specific examples applying the factors to real-life circumstances.\n\nThe department published a notice of proposed rulemaking on Feb. 27, 2026, and received approximately 16,500 public comments during a 60-day comment period. After reviewing this feedback, the department finalized the rule with modifications and enhancements. For example, in response to commenter requests, the final rule includes new illustrative examples involving farm labor contractors, digital platform workers, and truck drivers.\n\nWorkers and employers can contact the Wage and Hour Division with questions and requests for compliance assistance at its toll-free helpline, 866-4US-WAGE (487-9243). The agency's PAID program offers employers an opportunity to self-report and resolve potential minimum wage and overtime violations under the FLSA, as well as certain potential violations under the FMLA. Read the final rule, which takes effect 60 days after publication in the Federal Register.",
-   "body_ko_ai": "워싱턴 — 미국 노동부 임금시간국은 오늘, 공정노동기준법(FLSA)과 관련 연방법 두 개에 따라 근로자와 독립계약자를 구분하는 분석 방법을 개정하는 최종규칙을 발표했다. 새 최종규칙은 기업과 근로자, 그리고 임금시간국의 집행 인력 모두에게 명확성을 준다.\n\n키스 손덜링 노동부 장관과 앤드루 로저스 임금시간국 국장 등 노동부 관계자들은 오늘 아침 프랜시스 퍼킨스 빌딩에서 최종규칙을 공식 발표하는 행사를 열었다. 손덜링 장관이 새 규정의 명확성과 단순함을 강조하는 자리에 고용주, 기업단체, 노동자 대변단체, 독립계약자 등 이해관계자들이 참석했다.\n\n최종규칙은 근로자와 독립계약자의 분류를 다룬 2024년 규정을 폐지하고, 2021년 노동부가 채택했던 프레임워크와 실질적으로 유사한 분석으로 대체한다. 연방 항소법원 판결의 결과와 일치하게, 최종규칙은 FLSA의 보호를 받는 근로자와 독립계약자로 일하는 사람을 구분하는 절차에 대한 추가 지침을 제공한다.\n\n손덜링 장관은 \"미국인들이 일하는 방식과 기업이 운영하는 방식이 변하는 만큼 노동 규정이 그 속도를 따라가는 것이 그 어느 때보다 중요하다\"며 \"새 독립계약자 최종규칙은 누가 근로자이고 누가 독립계약자인지 판단하는 명확하고 예측 가능하며 이해하기 쉬운 기준을 세워, 수백만 미국인이 새로운 기회를 활용할 수 있게 한다\"고 말했다.\n\n최종규칙은 또 '고용(employ)'에 대한 FLSA의 법정 정의를 쓰는 가족·의료휴가법(FMLA)과 이주·계절농업노동자보호법(MSPA)에도 노동부의 간소화된 분석을 적용한다. 다만 내국세법을 비롯한 다른 연방법 목적의 근로자·독립계약자 지위 판단은 바꾸지 않으며, 주·지역법을 선점하지도 않는다.\n\n로저스 국장은 \"노동부는 고용주가 잘못된 분류를 막도록 돕는 데 전념하고 있다. 이 규칙은 연방 임금·근로시간법의 보호를 받아야 하는 근로자를 보호하면서 합법적인 독립계약자의 기업가 정신을 존중하는 균형을 이룬다\"며 \"노동부는 오래된 사법적 판단기준을 근로자와 고용주가 사업 관계를 시작할 때 신뢰하고 적용할 수 있는 프레임워크로 정리했다\"고 말했다.\n\n노동부 최종규칙의 분석 내용은 다음과 같다.\n- 근로자가 독립계약자로서 자기 사업을 하는 사람인지, 아니면 일을 위해 고용주에게 경제적으로 의존하는 근로자인지 판단하는 '경제적 실질' 테스트를 적용한다.\n- 근로자가 일을 위해 고용주에게 경제적으로 의존하는지, 자기 사업을 하는지 판단하는 두 가지 '핵심요소'를 제시하고 설명한다. 즉 업무에 대한 통제의 성격과 정도, 자기 주도 및/또는 투자에 따른 근로자의 이익·손실 기회다.\n- 업무에 필요한 기술 수준, 근로관계의 지속 정도, 업무가 하나의 생산 단위의 일부인지 등 근로자·독립계약자 지위를 판단하는 다른 요소들을 제시한다.\n- 근로자와 잠재적 고용주의 실제 관행이 계약상 또는 이론상 가능한 것보다 더 중요하다는 점을 밝힌다.\n- 요소들을 실제 상황에 적용한 사례 14개를 제공한다.\n\n노동부는 2026년 2월 27일 제안규정 공고를 냈고 60일간의 의견 수렴 기간에 약 1만6,500건의 공개 의견을 받았다. 이 의견을 검토한 뒤 노동부는 수정·보완해 규칙을 확정했다. 예를 들어 의견 제출자들의 요청에 따라 최종규칙에는 농업 노무업체, 디지털 플랫폼 종사자, 트럭 운전자와 관련한 새로운 예시가 들어갔다.\n\n근로자와 고용주는 무료 상담 전화 866-4US-WAGE(487-9243)로 임금시간국에 문의하고 준수 지원을 요청할 수 있다. 임금시간국의 PAID 프로그램은 고용주가 FLSA상 최저임금·초과근로 위반 가능성과 FMLA상 일부 위반 가능성을 스스로 신고해 해결할 기회를 준다. 최종규칙은 연방관보 게재 60일 뒤 발효된다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "pickle-ai-translation",
-    "translated_at": "2026-11-20T23:04:00+09:00"
-   },
-   "topics": [
-    "고용·정책",
-    "글로벌"
-   ],
-   "keywords": [
-    "근로자 구분",
-    "플랫폼 노동"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
-  },
-  {
-   "id": "n20261120-03",
-   "issue_id": "iss-us-cpi-5y-oct2026",
-   "theme_id": null,
-   "is_main_theme": false,
-   "edition": "global-2300",
-   "updated_at": "2026-11-20T23:04:00+09:00",
-   "run_id": "br-20261120-2304",
+   "updated_at": "2026-11-21T23:07:00+09:00",
+   "run_id": "br-20261121-2307",
    "headline": false,
-   "published_at": "2026-11-19",
+   "published_at": "2026-11-20",
    "source": {
-    "source_name": "미국 노동통계국(BLS) The Economics Daily",
-    "source_url": "https://www.bls.gov/opub/ted/2026/consumer-prices-up-22-0-percent-over-5-years-ending-october-2026.htm",
-    "country": "US",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "State Employment and Unemployment — October 2026 (USDL-26-1713)",
+    "source_url": "https://www.bls.gov/news.release/laus.nr0.htm",
+    "published_at": "2026-11-20",
     "license": {
      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
      "type": "PUBLIC-DOMAIN",
@@ -618,26 +565,27 @@
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-20",
-     "evidence": "BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-20 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Consumer prices up 22.0 percent over 5 years ending October 2026” (November 19, 2026)"
-    }
+     "verified_at": "2026-11-21",
+     "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-21 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, “State Employment and Unemployment — October 2026” (USDL-26-1713, November 20, 2026)"
+    },
+    "country": "US"
    },
-   "title_original": "Consumer prices up 22.0 percent over 5 years ending October 2026",
-   "title_ko": "소비자물가, 2026년 10월까지 5년 동안 22.0% 상승",
-   "body_original": "Over the 5 years ended October 2026, the Consumer Price Index for All Urban Consumers increased 22.0 percent. Prices for items other than food and energy rose 20.7 percent. Energy prices increased 33.2 percent, and food prices increased 24.0 percent.\n\n5-year percentage change in the Consumer Price Index for selected categories, October 2026, not seasonally adjusted\n\nCategory | Percentage change\nAll items | 22.0\nEnergy | 33.2\nFood | 24.0\nFood at home | 21.6\nFood away from home | 27.8\nAll items less food and energy | 20.7\nHousing | 26.8\nFuels and utilities | 30.9\nShelter | 27.8\nEducation | 17.5\nCommunication | -3.7\nSmartphones | -51.2\nMedical care | 12.9\nTransportation | 22.9\nGasoline (all types) | 31.9\nPublic transportation | 39.9\nApparel | 11.4\nRecreation | 15.4\nOther goods and services | 26.4\n\nConsumer prices for smartphones decreased 51.2 percent from October 2021 to October 2026.\n\nConsumer prices for transportation rose 22.9 percent. This includes prices for gasoline (all types), which increased 31.9 percent over the 5-year period. Prices for public transportation increased 39.9 percent over the 5 years ended October 2026.\n\nThese data are from the Consumer Price Index program and are not seasonally adjusted. To learn more, see Consumer Price Index — October 2026.",
-   "body_ko_ai": "2026년 10월까지 5년 동안 도시 소비자 전체의 소비자물가지수(CPI-U)는 22.0% 올랐다. 식료품과 에너지를 뺀 항목의 가격은 20.7% 올랐다. 에너지 가격은 33.2%, 식료품 가격은 24.0% 상승했다.\n\n주요 항목의 5년 소비자물가 변화율(2026년 10월, 계절조정 안 함)\n\n항목 | 변화율(%)\n전체 | 22.0\n에너지 | 33.2\n식료품 | 24.0\n집에서 먹는 식료품 | 21.6\n외식 | 27.8\n식료품·에너지 제외 전체 | 20.7\n주거 | 26.8\n연료·공과금 | 30.9\n주택(임대료 등) | 27.8\n교육 | 17.5\n통신 | -3.7\n스마트폰 | -51.2\n의료 | 12.9\n교통 | 22.9\n휘발유(전 종류) | 31.9\n대중교통 | 39.9\n의류 | 11.4\n여가 | 15.4\n기타 상품·서비스 | 26.4\n\n스마트폰 소비자물가는 2021년 10월부터 2026년 10월까지 51.2% 내렸다.\n\n교통 소비자물가는 22.9% 올랐다. 여기에는 5년 동안 31.9% 오른 휘발유(전 종류) 가격이 포함된다. 대중교통 가격은 2026년 10월까지 5년 동안 39.9% 상승했다.\n\n이 자료는 소비자물가지수 프로그램에서 나온 것이며 계절조정하지 않은 값이다. 자세한 내용은 「소비자물가지수 — 2026년 10월」을 보라.",
+   "title_original": "State Employment and Unemployment — October 2026",
+   "title_ko": "주별 고용·실업 — 2026년 10월: 46개 주 실업률 변화 없음",
+   "body_original": "Unemployment rates were lower in October in 3 states and the District of Columbia, higher in 1 state, and stable in 46 states, the U.S. Bureau of Labor Statistics reported today. The national unemployment rate, 4.1 percent, changed little over the month.\n\nIn October 2026, nonfarm payroll employment increased in 4 states and was essentially unchanged in 46 states and the District of Columbia. Over the year, nonfarm payroll employment increased in 12 states and was essentially unchanged in 38 states and the District.\n\nHousehold survey data, which provide the primary inputs to the Local Area Unemployment Statistics (LAUS) program, were not collected for October 2025 due to a lapse in appropriations and were not collected retroactively. Therefore, this release does not include the typical analysis of over-the-year unemployment rate changes from October 2025 to October 2026.\n\nSouth Dakota had the lowest jobless rate in October, 2.0 percent, followed by North Dakota, 2.2 percent. The District of Columbia had the highest unemployment rate, 5.4 percent. In total, 19 states had unemployment rates lower than the U.S. figure of 4.1 percent, 3 states and the District had higher rates, and 28 states had rates that were not appreciably different from that of the nation.\n\nIn October, three states and the District of Columbia had unemployment rate decreases: the District (-0.2 percentage point) and Florida, New Hampshire, and Pennsylvania (-0.1 point each). Colorado had the only rate increase (+0.3 percentage point). Forty-six states had jobless rates that were not notably different from those of a month earlier, though some had changes that were at least as large numerically as the significant changes.\n\nThe job gains occurred in California (+47,100, or +0.3 percent), Indiana (+15,900, or +0.5 percent), Kansas (+7,100, or +0.5 percent), and Iowa (+7,000, or +0.4 percent).\n\nOver the year, nonfarm payroll employment increased in 12 states and was essentially unchanged in 38 states and the District of Columbia. The largest job gains occurred in Texas (+203,300), California (+187,200), and Florida (+100,200). The largest percentage increase occurred in Louisiana (+2.0 percent), followed by South Carolina and Utah (+1.8 percent each).",
+   "body_ko_ai": "미국 노동통계국은 오늘, 10월에 실업률이 3개 주와 컬럼비아특별구에서 낮아지고 1개 주에서 높아졌으며 46개 주에서는 변화가 없었다고 밝혔다. 전국 실업률은 4.1%로 한 달 사이 거의 변하지 않았다.\n\n2026년 10월 비농업 부문 고용은 4개 주에서 늘었고 46개 주와 컬럼비아특별구에서는 사실상 변화가 없었다. 전년 대비로는 12개 주에서 비농업 고용이 늘었고 38개 주와 컬럼비아특별구에서는 사실상 변화가 없었다.\n\n지역노동통계(LAUS) 프로그램의 주된 입력자료인 가계조사 자료는 예산 미통과로 2025년 10월에 실시되지 않았고 소급 조사도 이뤄지지 않았다. 따라서 이번 발표에는 통상 싣던 2025년 10월 대비 2026년 10월 실업률 변화 분석이 포함되지 않았다.\n\n10월 실업률이 가장 낮은 곳은 사우스다코타(2.0%)였고 노스다코타(2.2%)가 뒤를 이었다. 컬럼비아특별구가 5.4%로 가장 높았다. 모두 19개 주가 전국 수치(4.1%)보다 실업률이 낮았고, 3개 주와 컬럼비아특별구는 더 높았으며, 28개 주는 전국 수치와 뚜렷한 차이가 없었다.\n\n10월에 실업률이 하락한 곳은 3개 주와 컬럼비아특별구였다. 컬럼비아특별구가 0.2%p 하락했고 플로리다·뉴햄프셔·펜실베이니아가 각각 0.1%p 하락했다. 실업률이 오른 곳은 콜로라도(+0.3%p) 한 곳뿐이었다. 46개 주는 한 달 전과 뚜렷한 차이가 없었으나, 일부는 수치상으로는 유의한 변화만큼 큰 변동을 보였다.\n\n고용 증가는 캘리포니아(+47,100명, +0.3%), 인디애나(+15,900명, +0.5%), 캔자스(+7,100명, +0.5%), 아이오와(+7,000명, +0.4%)에서 나왔다.\n\n전년 대비 비농업 고용은 12개 주에서 늘었고 38개 주와 컬럼비아특별구에서는 사실상 변화가 없었다. 증가 폭이 가장 큰 곳은 텍사스(+203,300명), 캘리포니아(+187,200명), 플로리다(+100,200명)였다. 증가율이 가장 높은 곳은 루이지애나(+2.0%)였고 사우스캐롤라이나와 유타(각 +1.8%)가 뒤를 이었다.",
    "translation": {
     "mode": "ai",
     "engine": "pickle-ai-translation",
-    "translated_at": "2026-11-20T23:04:00+09:00"
+    "translated_at": "2026-11-21T23:07:00+09:00"
    },
    "topics": [
-    "글로벌",
-    "고용·정책"
+    "고용·정책",
+    "글로벌"
    ],
    "keywords": [
-    "미국 물가"
+    "주별 실업률"
    ],
    "related_jobs": [
     "직업상담사"
@@ -649,49 +597,107 @@
    }
   },
   {
-   "id": "n20261120-04",
-   "issue_id": "iss-eu-gender-gap-2025",
+   "id": "n20261121-02",
+   "issue_id": "iss-us-tfp-2025",
    "theme_id": null,
    "is_main_theme": false,
    "edition": "global-2300",
-   "updated_at": "2026-11-20T23:04:00+09:00",
-   "run_id": "br-20261120-2304",
-   "headline": false,
-   "published_at": "2026-11-19",
+   "updated_at": "2026-11-21T23:07:00+09:00",
+   "run_id": "br-20261121-2307",
+   "headline": true,
+   "published_at": "2026-11-20",
    "source": {
-    "source_name": "유로스타트(Eurostat)",
-    "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20261119-1",
-    "country": "EU",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "Total Factor Productivity for Major Industries — 2025 (USDL-26-1714)",
+    "source_url": "https://www.bls.gov/news.release/prod5.nr0.htm",
+    "published_at": "2026-11-20",
     "license": {
-     "name": "CC BY 4.0 (Eurostat 편집 콘텐츠)",
-     "type": "CC-BY-4.0",
-     "url": "https://creativecommons.org/licenses/by/4.0/",
-     "scope": "Eurostat 웹사이트 편집 콘텐츠(제3자 사진·삽화 제외)",
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
      "attribution_required": true,
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-20",
-     "evidence": "Eurostat 저작권·무료 재이용 안내(https://ec.europa.eu/eurostat/web/main/help/copyright-notice, 2026-11-20 직접 확인): '이 웹사이트 편집 콘텐츠의 저작권은 EU에 있으며 Creative Commons Attribution 4.0 International 라이선스로 제공된다. 출처를 밝히고 변경 여부를 표시하면 재이용할 수 있다.' 번역 시 Eurostat이 요구하는 저작권 표시·면책 문구를 함께 넣었다.",
-     "attribution_text": "First published in English as “Average gender employment gap in EU regions at 9.7 pp” by Eurostat on the European Union's official website 'Europa' © European Union, 2026. 한국어 번역: ccttsi jobcounsel 자료실(2026), CC BY 4.0. 이 번역은 번역자 단독 책임이며, 원문과 번역이 다를 경우 원문이 유효합니다. Eurostat은 이 번역에 대해 책임지지 않습니다."
-    }
+     "verified_at": "2026-11-21",
+     "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-21 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, “Total Factor Productivity for Major Industries — 2025” (USDL-26-1714, November 20, 2026)"
+    },
+    "country": "US"
    },
-   "title_original": "Average gender employment gap in EU regions at 9.7 pp",
-   "title_ko": "EU 지역의 평균 성별 고용격차 9.7%p",
-   "body_original": "In 2025, the EU employment rate for men aged 20 to 64 was 80.9%, while the rate for women was 71.2%. This resulted in a gender employment gap of 9.7 percentage points (pp), down from 10.0 pp in 2024.\n\nAs part of its target to raise the overall employment rate to 78% by 2030, the European Pillar of Social Rights Action Plan aims at halving the gender employment gap. This requires reducing the gap to 5.7 pp by 2030, corresponding to an average annual decrease of 0.5 pp from 2019 onwards.\n\nIn 2025, 65 out of 244 of the EU regions at level 2 nomenclature of territorial units for statistics (NUTS) had already achieved the 2030 target. These 65 regions were mainly located in France (14 regions), Germany (12 regions) and Sweden (7 out of 8 regions).\n\nAt the other end of the range, in 2025, 26 regions recorded gender employment gaps of at least 18.0 pp. These regions were mainly in southern and eastern EU countries. They were 10 of the 13 regions in Greece (excluding Attiki, Ipeiros and Kriti), 8 of the 21 regions in Italy, 5 of the 8 regions in Romania (excluding Bucureşti-Ilfov, Nord-Vest and Vest), the Spanish autonomous regions of Ciudad de Melilla and Ciudad de Ceuta, and the French outermost region of Mayotte.\n\nMethodological note: This article uses data from the Eurostat regional yearbook – 2026 edition, and some figures may have been revised since publication.",
-   "body_ko_ai": "2025년 유럽연합(EU)의 20~64세 고용률은 남성이 80.9%, 여성이 71.2%였다. 이에 따라 성별 고용격차는 9.7%포인트(pp)로, 2024년 10.0%p에서 줄었다.\n\n2030년까지 전체 고용률을 78%로 끌어올리려는 목표의 일환으로, 유럽사회권 기둥 행동계획은 성별 고용격차를 절반으로 줄이는 것을 목표로 한다. 이를 위해서는 2030년까지 격차를 5.7%p로 줄여야 하며, 이는 2019년부터 연평균 0.5%p씩 줄여야 한다는 뜻이다.\n\n2025년 기준 EU의 NUTS 2 수준 지역 244곳 가운데 65곳은 이미 2030년 목표를 달성했다. 이 65곳은 주로 프랑스(14개 지역), 독일(12개 지역), 스웨덴(8곳 중 7곳)에 있었다.\n\n반대쪽 끝으로, 2025년 26개 지역은 성별 고용격차가 18.0%p 이상이었다. 이 지역들은 주로 EU 남부와 동부 국가에 있었다. 그리스 13개 지역 중 10곳(아티키·이피로스·크리티 제외), 이탈리아 21개 지역 중 8곳, 루마니아 8개 지역 중 5곳(부쿠레슈티-일포브·노르드베스트·베스트 제외), 스페인 자치지역인 멜리야와 세우타, 프랑스 해외지역 마요트가 여기에 해당했다.\n\n방법론 주석: 이 글은 「유로스타트 지역 연감 – 2026년판」의 데이터를 사용하며, 일부 수치는 발표 이후 개정되었을 수 있다.",
+   "title_original": "Total Factor Productivity for Major Industries — 2025",
+   "title_ko": "주요 산업 총요소생산성 — 2025년: 산출 증가에서 TFP 기여는 늘고 노동 기여는 줄었다",
+   "body_original": "Total factor productivity (TFP) increased in 7 out of 19 major industries in 2025, the U.S. Bureau of Labor Statistics reported today, led by the wholesale trade industry. All the industries that saw TFP growth were the result of output outpacing combined inputs of capital, labor, and the intermediate inputs of energy, materials, and services.\n\nLabor productivity increased in 13 of 19 industries in 2025. Labor productivity can be expressed as the sum of six components: TFP growth and the contributions of capital intensity, labor composition, energy intensity, materials intensity, and services intensity.\n\nProductivity growth is generally evaluated over longer periods, as changes in production processes and the adoption of new technologies can take time to affect measured productivity. Considering recent investments in technology, such as in super intelligence (also known as artificial intelligence) tools, and the full recovery in hours from the COVID-19 pandemic, examining the contributions of total factor productivity, capital, and labor during 2019-22 and 2022-25 provides additional insight into how the sources of private business output growth have changed over the 2019-25 business cycle.\n\nPrivate business output growth can be viewed as the sum of three components: total factor productivity, contribution of capital input, and contribution of labor input. The drivers of output growth for the private business sector during 2019-25 were TFP and capital, contributing 0.85 percentage point and 1.08 percentage points, respectively, with labor contributing 0.51 percentage point.\n\nThe composition of private business output growth shifted between 2019-22 and 2022-25. TFP's contribution increased from 0.72 percentage point to 0.97 percentage point, while capital's contribution increased from 1.03 percentage points to 1.13 percentage points. Labor's contribution decreased from 0.60 percentage point to 0.42 percentage point.\n\nTFP's contribution to private business output growth was positive over the full 2019-25 business cycle, with positive contributions from all sectors except goods producing. The ICT and FIRE sectors made the largest contribution to TFP (0.35 percentage point and 0.30 percentage point, respectively).\n\nTotal factor productivity made an increased contribution to private business output growth during 2022-25 compared to 2019-22, increasing by 0.25 percentage point. Most of the 0.25-percentage-point increase came from the ICT sector, with increased contributions from 0.27 percentage point during 2019-22 to 0.42 percentage point during 2022-25.",
+   "body_ko_ai": "미국 노동통계국은 오늘, 2025년에 19개 주요 산업 가운데 7개 산업에서 총요소생산성(TFP)이 상승했고 도매업이 가장 앞섰다고 밝혔다. TFP가 오른 산업은 모두 산출이 자본·노동과 에너지·원재료·서비스 등 중간투입을 합친 투입보다 빨리 늘어난 결과였다.\n\n2025년 노동생산성은 19개 산업 가운데 13개 산업에서 상승했다. 노동생산성은 TFP 증가와 자본집약도, 노동구성, 에너지집약도, 원재료집약도, 서비스집약도의 기여를 합한 것으로 표현할 수 있다.\n\n생산성 증가는 보통 더 긴 기간에 걸쳐 평가한다. 생산 공정의 변화와 신기술 도입이 측정된 생산성에 반영되기까지 시간이 걸리기 때문이다. 초지능(super intelligence, 흔히 인공지능으로 불리는) 도구 등 최근의 기술 투자와 코로나19 팬데믹 이후 노동시간의 완전한 회복을 고려해, 2019~22년과 2022~25년의 총요소생산성·자본·노동 기여를 살펴보면 2019~25년 경기순환에서 민간기업 산출 증가의 원천이 어떻게 바뀌었는지 추가로 알 수 있다.\n\n민간기업 산출 증가는 총요소생산성, 자본투입 기여, 노동투입 기여 세 가지로 볼 수 있다. 2019~25년 민간기업 부문 산출 증가를 이끈 것은 TFP와 자본으로 각각 0.85%p, 1.08%p 기여했고 노동은 0.51%p 기여했다.\n\n민간기업 산출 증가의 구성은 2019~22년과 2022~25년 사이에 달라졌다. TFP 기여는 0.72%p에서 0.97%p로, 자본 기여는 1.03%p에서 1.13%p로 늘었다. 노동 기여는 0.60%p에서 0.42%p로 줄었다.\n\n2019~25년 경기순환 전체에서 TFP가 민간기업 산출 증가에 기여한 것은 플러스였고, 재화생산 부문을 뺀 모든 부문이 플러스로 기여했다. 정보통신(ICT)과 금융·보험·부동산(FIRE) 부문이 TFP에 가장 크게 기여했다(각각 0.35%p, 0.30%p).\n\nTFP가 민간기업 산출 증가에 기여한 정도는 2019~22년보다 2022~25년에 0.25%p 늘었다. 이 0.25%p 증가분의 대부분은 ICT 부문에서 나왔으며, ICT의 기여는 2019~22년 0.27%p에서 2022~25년 0.42%p로 커졌다.",
    "translation": {
     "mode": "ai",
     "engine": "pickle-ai-translation",
-    "translated_at": "2026-11-20T23:04:00+09:00"
+    "translated_at": "2026-11-21T23:07:00+09:00"
    },
    "topics": [
-    "글로벌",
-    "취업시장"
+    "AI·직무",
+    "글로벌"
    ],
    "keywords": [
-    "성별 고용격차",
-    "유럽 고용"
+    "총요소생산성",
+    "AI 투자"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261121-03",
+   "issue_id": "iss-ai-platform-work-kenya",
+   "theme_id": null,
+   "is_main_theme": false,
+   "edition": "global-2300",
+   "updated_at": "2026-11-21T23:07:00+09:00",
+   "run_id": "br-20261121-2307",
+   "headline": true,
+   "published_at": "2026-11-20",
+   "source": {
+    "source_name": "arXiv (Farhan Latif, UNU·워털루대)",
+    "source_title": "AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya (arXiv:2611.25585)",
+    "source_url": "https://arxiv.org/abs/2611.25585",
+    "published_at": "2026-11-20",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 본문(초록·본문 텍스트)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-21",
+     "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.25585)의 라이선스 아이콘이 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-21). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
+     "attribution_text": "Latif, F. (2026), “AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya”, arXiv:2611.25585, CC BY 4.0. 원문을 그대로 옮기고 AI로 한국어 번역했습니다(내용 변경 없음)."
+    },
+    "country": "KE"
+   },
+   "title_original": "AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya",
+   "title_ko": "AI가 바꾸는 플랫폼 노동 — 과업 단위로 재면 교란은 크고 생계 취약성은 직무별로 갈린다(케냐 프리랜서 증거)",
+   "body_original": "Assessments of AI's impact on labour often rely on conventional occupational categories or broad market indicators. This dominant trend, however, obscures how tasks within the same occupation vary in practice across work arrangements. This limitation is particularly important in online freelancing, where workers are typically remote and devote substantial time performing unpaid tasks. This article introduces a task-based framework that distinguishes AI-driven disruption, defined as the extent of change in how work is performed, from livelihood vulnerability associated with that change. The framework is subsequently applied to assess the potential for automation, substitution, and enhancement across four categories of platform work: writing, virtual assistance, transcription, and web and software development. The model estimates high disruption across all four categories, while livelihood vulnerability scores are lower and vary by occupation. Potential efficiency gains on unpaid tasks partly offset potential wage impact associated with paid work in the model. The article compares these estimates with evidence from a survey of 52 online freelancers and 20 follow-up interviews in Nairobi, Kenya. Workers report changes in how they perform tasks and intensifying competition, while their accounts show how adapting their skills and using AI strategically shape their concerns about job loss.\n\nThe field research data were collected in Kenya from January 2024 to July 2024, using a survey of 52 freelance platform workers, from which 20 participants were selected for follow-up, semi-structured interviews.\n\nThe overall disruption factor registers an exceptionally high average score of 0.913, with paid (0.906) and unpaid work (0.929) exhibiting similarly elevated means, indicating the substantial ongoing and anticipated transformation in platform work practices.\n\nNotably, vulnerability emerges as a critical factor: while the overall vulnerability measure remains relatively low (mean = 0.214), unpaid work vulnerability presents a more pronounced negative value (mean = -0.493), highlighting distinct dynamics in unpaid labour contexts.\n\nDisruption scores across occupations indicate consistently high levels of AI-driven impact, with all four freelance occupations registering values above 0.88. Web and software development (0.95) and transcription (0.91) exhibit the highest disruption scores, underscoring the substantial transformation potential of these fields. Virtual assistance (0.90) and freelance writing (0.89) follow closely.\n\nNotably, freelance writing registers a low vulnerability score (0.05), suggesting that AI's overall impact on job security in this field may be relatively marginal. In contrast, transcription (0.23) and virtual assistance (0.21) exhibit higher vulnerability scores, indicating that these occupations face more significant risks. Freelance developers exhibit the highest vulnerability score (0.37), indicating that platform workers in this field may face substantial challenges as AI-driven automation reshapes their work.\n\nPaid work exhibits a positive vulnerability score (0.48), whereas unpaid work registers a negative score (-0.49), indicating a net offset effect. Despite this mitigating factor, the lower proportion of unpaid work (28.2%) limits its ability to substantially reduce overall vulnerability.\n\nEvidence from the survey shows that a substantial majority, 78.85%, express confidence in their ability to transition to new job opportunities if AI-based tools were to replace some aspects of their current work. In contrast, 17.31% remain uncertain, and only 3.85% anticipate significant challenges to adaptability.",
+   "body_ko_ai": "AI가 노동에 미치는 영향을 평가할 때는 흔히 전통적인 직업 분류나 거친 시장 지표에 의존한다. 그러나 이런 주류의 접근은 같은 직업 안에서도 과업이 실제 업무 방식에 따라 어떻게 달라지는지를 가린다. 이 한계는 온라인 프리랜싱에서 특히 중요하다. 이곳의 노동자는 대개 원격으로 일하고 상당한 시간을 무급 과업에 쓴다. 이 논문은 AI가 일하는 방식을 바꾸는 정도로 정의되는 'AI 주도 교란(disruption)'과 그 변화에 따르는 '생계 취약성(livelihood vulnerability)'을 구분하는 과업 기반 틀을 제시한다. 이 틀은 이어서 글쓰기, 가상비서, 전사(轉寫), 웹·소프트웨어 개발 네 가지 플랫폼 노동 범주에서 자동화·대체·향상 가능성을 평가하는 데 적용된다. 모델은 네 범주 모두에서 교란이 높다고 추정한 반면, 생계 취약성 점수는 더 낮고 직업별로 달랐다. 무의 과업에서 나올 수 있는 효율 개선은 모델에서 유급 노동의 임금 영향 일부를 상쇄한다. 논문은 이 추정치를 케냐 나이로비의 온라인 프리랜서 52명 설문과 20명 후속 인터뷰 증거와 비교한다. 노동자들은 과업 수행 방식의 변화와 경쟁 심화를 이야기했고, 이들의 진술은 기술을 조정하고 AI를 전략적으로 쓰는 방식이 일자리 상실에 대한 우려를 어떻게 형성하는지 보여준다.\n\n현장 조사 자료는 2024년 1월부터 7월까지 케냐에서 수집했다. 프리랜서 플랫폼 노동자 52명을 설문했고 그중 20명을 골라 반구조화 심층 인터뷰를 진행했다.\n\n전체 교란 요인은 평균 0.913이라는 매우 높은 점수를 기록했다. 유급(0.906)과 무급(0.929) 노동이 비슷하게 높은 평균을 보여, 플랫폼 노동 관행에서 상당한 변화가 진행 중이고 앞으로도 예상된다는 점을 나타낸다.\n\n특히 취약성이 핵심 요인으로 드러난다. 전체 취약성 지표는 상대적으로 낮은 수준(평균 0.214)으로 남았지만, 무급 노동의 취약성은 더 뚜렷한 음수 값(평균 -0.493)을 보여 무급 노동 맥락의 별개 역학을 드러낸다.\n\n직업별 교란 점수는 일관되게 높은 AI 주도 영향을 보여, 네 프리랜스 직업 모두 0.88을 넘었다. 웹·소프트웨어 개발(0.95)과 전사(0.91)가 가장 높은 교란 점수를 보여 이 분야의 큰 변화 가능성을 뒷받침했다. 가상비서(0.90)와 프리랜스 글쓰기(0.89)가 뒤를 이었다.\n\n프리랜스 글쓰기는 낮은 취약성 점수(0.05)를 기록해, 이 분야에서 AI가 일자리 안정성에 미치는 전반적 영향은 상대적으로 작을 수 있음을 시사했다. 반대로 전사(0.23)와 가상비서(0.21)는 더 높은 취약성 점수를 보여 이 직업들이 더 큰 위험에 직면했음을 나타냈다. 프리랜스 개발자는 가장 높은 취약성 점수(0.37)를 보여, AI 주도 자동화가 업무를 재편하면서 이 분야 플랫폼 노동자가 상당한 어려움에 직면할 수 있음을 보여줬다.\n\n유급 노동은 플러스 취약성 점수(0.48)를, 무급 노동은 마이너스 점수(-0.49)를 기록해 순 상쇄 효과가 있음을 보여준다. 이런 완충 요인에도 무급 노동의 비중이 낮아(28.2%) 전체 취약성을 크게 낮추는 데는 한계가 있었다.\n\n설문 증거에 따르면 응답자의 상당수인 78.85%가 AI 기반 도구가 현재 업무의 일부를 대체하더라도 새 일자리 기회로 옮겨갈 수 있다는 자신감을 보였다. 반면 17.31%는 확신하지 못했고 3.85%만이 적응에 상당한 어려움을 예상했다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-21T23:07:00+09:00"
+   },
+   "topics": [
+    "AI·직무",
+    "글로벌"
+   ],
+   "keywords": [
+    "플랫폼 노동",
+    "과업 단위"
    ],
    "related_jobs": [
     "직업상담사"
@@ -704,15 +710,15 @@
   }
  ],
  "excluded": {
-  "count": 4,
+  "count": 2,
   "reasons": [
    {
-    "reason": "공공누리 미부착 보도자료(KOGL-NONE) — 본문 재게시 불가, 사실·수치만",
-    "count": 2
+    "reason": "기업 보고서(PRESS) — 본문 복제·번역 불가, 사실·수치만",
+    "count": 1
    },
    {
-    "reason": "언론 기사(PRESS) — 본문 복제·번역 불가, 사실·수치만",
-    "count": 2
+    "reason": "arXiv 기본 라이선스(재배포·번역 불가) 논문 — CC BY 4.0 아님",
+    "count": 1
    }
   ]
  },

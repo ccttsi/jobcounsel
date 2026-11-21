@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-21T07:06:42+09:00",
+ "generated_at": "2026-11-21T23:07:50+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -2056,6 +2056,17 @@
      "source_name": "매경ECONOMY",
      "source_url": "https://www.mk.co.kr/news/business/12214725",
      "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-21",
+     "card_id": "c07",
+     "title": "기술 인력은 늘린다 86% — 신입의 조건은 AI 자격으로",
+     "kicker": "신입 AI 역량 공고 5배 이상 · 임금 프리미엄 최대 79%",
+     "category": "채용시장",
+     "region": "global",
+     "source_name": "Randstad (Tech Talent in Transition 2026)",
+     "source_url": "https://www.randstad.com/tech-talent-report-2026/",
+     "published_at": "2026-11-20"
     }
    ]
   },
@@ -3742,6 +3753,28 @@
      "source_name": "지티티코리아",
      "source_url": "https://www.gttkorea.com/news/articleView.html?idxno=27747",
      "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-21",
+     "card_id": "c05",
+     "title": "생산성 기여 0.72→0.97%p, 노동 기여는 0.60→0.42%p",
+     "kicker": "TFP +0.97%p vs 노동 +0.42%p (2022~25년)",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/prod5.nr0.htm",
+     "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-21",
+     "card_id": "c06",
+     "title": "플랫폼 일의 AI 교란 0.91, 생계 취약성은 0.21",
+     "kicker": "교란 평균 0.913 · 취약성 0.214 · 무급 과업 28.2%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (Farhan Latif, UNU·워털루대)",
+     "source_url": "https://arxiv.org/abs/2611.25585",
+     "published_at": "2026-11-20"
     }
    ]
   },
@@ -3967,6 +4000,17 @@
      "source_name": "유로스타트(Eurostat)",
      "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20261119-1",
      "published_at": "2026-11-19"
+    },
+    {
+     "date": "2026-11-21",
+     "card_id": "c04",
+     "title": "미국 46개 주 실업률 그대로 — 작년 비교는 데이터 공백",
+     "kicker": "전국 4.1% · 사우스다코타 2.0% vs DC 5.4%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/laus.nr0.htm",
+     "published_at": "2026-11-20"
     }
    ]
   }
