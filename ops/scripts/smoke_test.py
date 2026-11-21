@@ -37,7 +37,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
          "/portals/#p=work24", "/flow/", "/mydeck/",
          "/work-filter/", "/kdt-calc/", "/triage/", "/fin-lab/", "/valuechain/", "/valuechain/?i=battery&s=3",
-         "/intake/", "/policy-match/", "/pay-calc/", "/posting/"]
+         "/intake/", "/policy-match/", "/pay-calc/", "/posting/", "/first-year/"]
 
 # 화면이 아닌 폴더(섹터 목록 점검에서 뺀다) — 이유를 함께 적는다.
 NON_SCREEN = {
