@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="실업급여·국민취업지원제도 Ⅰ·Ⅱ유형·국민내일배움카드·미래내일 일경험·청년도전지원사업·중장년 경력지원제·새일여성인턴 일곱 제도를, 지금 상태·나이·소득·목표 네 가지만으로 1·2·3순위 신청 순서와 중복·병행 매트릭스로 정리하는 직업상담 실무 도구.">
+<title>지원제도 중복·우선순위 매칭기</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#5a4470;--acc-soft:rgba(90,68,112,.08);--on-acc:#fffdf8;
+  --m-ok:#1f6b3a;--m-adj:#8a5a00;--m-no:#a8322b;--m-chk:#44506b;--m-na:#6e645b;
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 12px 30px -20px rgba(70,50,25,.32);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  --tc-policy-match:#5a4470;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#c9b0ec;--acc-soft:rgba(201,176,236,.12);--on-acc:#0a0d14;
+  --m-ok:#79dd97;--m-adj:#f0cf62;--m-no:#ff8177;--m-chk:#a9b8e6;--m-na:#8a93a8;
+  --shadow:none;
+  --tc-policy-match:#c9b0ec;
+  color-scheme:dark;
+}
+:root[data-jc-tone="sepia"]{
+  --acc:#4f3c63;--acc-soft:rgba(79,60,99,.09);
+  --m-ok:#1a5e34;--m-adj:#7a5000;--m-no:#8f2a24;--m-chk:#3c4760;
+  --tc-policy-match:#4f3c63;
+}
+body[data-jc-tool="policy-match"]{--jc-acc:var(--tc-policy-match)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;text-align:left;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px 12px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media (min-width:900px){.wrap{padding:0 28px 20px}}
+
+/* ---------- 머리말 ---------- */
+.hd{display:flex;align-items:center;gap:8px;min-height:64px;padding:10px 0;position:relative;z-index:20}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:0 1 auto;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;overflow:hidden}
+.brand svg{width:24px;height:24px;flex:none;color:var(--acc)}
+.brand span{color:var(--acc)}
+.hd>[data-jc-prefs]{margin-left:auto}
+
+/* ---------- 이용 안내 ---------- */
+.pv{border-bottom:1px solid var(--line)}
+.pv-t{display:flex;align-items:center;gap:9px;width:100%;min-height:44px;padding:6px 0;font-size:14px;color:var(--muted)}
+.pv-t svg{width:17px;height:17px;flex:none;color:var(--acc)}
+.pv-tt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-tt b{margin-right:6px;font-weight:750;color:var(--ink)}
+.pv-c{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--acc);white-space:nowrap}
+.pv-c::after{content:"";width:7px;height:7px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-1px)}
+.pv-t[aria-expanded="true"] .pv-c::after{transform:rotate(-135deg)}
+.pv-b{padding:2px 0 14px}
+.pv-b ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.pv-b b{color:var(--ink)}
+
+/* ---------- 첫 화면 ---------- */
+.lead{display:grid;gap:6px;padding:7px 0 0}
+.lead-line{margin:0;font-size:14.5px;line-height:1.45;color:var(--muted)}
+.lead-line b{color:var(--ink);font-weight:750}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.ps{display:inline-flex;flex-direction:column;justify-content:center;min-height:44px;padding:4px 12px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.2}
+.ps small{display:block;font-size:11px;font-weight:600;color:var(--dim);letter-spacing:-.01em;margin-top:1px}
+.ps[aria-pressed="true"]{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
+.ps[aria-pressed="true"] small{color:var(--on-acc);opacity:.84}
+.ps:active{transform:scale(.985)}
+@media (hover:hover){.ps:hover:not([aria-pressed="true"]){border-color:var(--acc)}}
+.ps-reset{border-style:dashed;color:var(--muted);font-size:13px}
+
+/* ---------- 휴대폰 순위 띠 ---------- */
+.strip{display:flex;align-items:center;gap:10px;margin:9px 0 0;padding:7px 11px;border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:12px;background:var(--panel)}
+.st-n{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:15px;font-weight:800;background:var(--acc);color:var(--on-acc);font-variant-numeric:tabular-nums}
+.st-t{min-width:0;display:grid;line-height:1.25}
+.st-t b{font-size:14px;font-weight:800;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-t i{font-size:12px;font-style:normal;font-weight:600;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-go{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:3px;min-height:44px;padding:0 6px;font-size:12.5px;font-weight:750;color:var(--acc);text-decoration:none;white-space:nowrap}
+.st-go svg{width:14px;height:14px}
+@media (min-width:900px){.strip{display:none}}
+
+/* ---------- 보드 ---------- */
+.board{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:8px;align-items:start}
+@media (min-width:900px){.board{grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);gap:14px}}
+@media (min-width:1200px){.board{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+
+/* 입력 4단계 */
+.steps{display:grid;gap:6px;min-width:0}
+.st{margin:0;padding:8px 10px;border:1px solid var(--line);border-radius:13px;background:var(--panel);min-width:0;border-left:3px solid var(--line-2)}
+.st:focus-within{border-left-color:var(--acc)}
+.st-h{display:flex;align-items:center;gap:7px;min-width:0}
+.st-n{flex:none;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:800;background:var(--soft);color:var(--muted)}
+.st-h b{font-size:14.5px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.st-q{min-width:0;font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:6px}
+.seg.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (min-width:900px){
+  .seg{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .seg.c5{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
+.seg label{position:relative;display:block;min-width:0}
+.seg input{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;opacity:0}
+.seg span{display:flex;align-items:center;justify-content:center;min-height:44px;padding:4px 8px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:700;color:var(--muted);text-align:center;line-height:1.25;letter-spacing:-.02em;transition:background-color .14s,color .14s,border-color .14s}
+.seg input:checked+span{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.seg input:focus-visible+span{outline:2px solid var(--acc);outline-offset:2px}
+.seg label:active span{transform:scale(.985)}
+.st-note{margin:5px 0 0;font-size:11px;line-height:1.45;color:var(--dim)}
+.st-note b{font-weight:750;color:var(--muted)}
+.chks{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.chk{position:relative;display:inline-flex;align-items:center;gap:6px;min-height:46px;padding:0 11px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;line-height:1.2;letter-spacing:-.02em}
+.chk input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0}
+.chk .bx{flex:none;width:15px;height:15px;border:1.6px solid var(--line-2);border-radius:4px;display:grid;place-items:center;background:var(--panel)}
+.chk input:checked~.bx{background:var(--acc);border-color:var(--acc)}
+.chk input:checked~.bx::after{content:"";width:7px;height:3.5px;border-left:2px solid var(--on-acc);border-bottom:2px solid var(--on-acc);transform:rotate(-45deg) translate(0,-1px)}
+.chk input:checked~span{color:var(--ink)}
+.chk:has(input:checked){border-color:var(--acc);background:var(--acc-soft)}
+.chk input:focus-visible~.bx{outline:2px solid var(--acc);outline-offset:2px}
+.fldrow{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;margin-top:7px}
+@media (min-width:600px){.fldrow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sel{min-width:0;min-height:44px;width:100%;max-width:100%;padding:0 9px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:16px;font-weight:750;color:var(--ink)}
+.lb{display:block;font-size:11.5px;font-weight:750;color:var(--muted);margin-bottom:3px}
+
+/* ---------- 결과 ---------- */
+.res{min-width:0;padding:11px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);scroll-margin-top:76px}
+@media (min-width:900px){.res{position:sticky;top:calc(64px + 10px);align-self:start}}
+.rtabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+.rtabs button{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:13px;font-weight:750;color:var(--muted);text-align:center;white-space:nowrap}
+.rtabs button[aria-selected="true"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.rv{margin-top:8px;min-width:0}
+.pl-top{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;min-width:0}
+.pl-k{flex:none;padding:3px 9px;border-radius:99px;background:var(--acc-soft);color:var(--acc);font-size:11px;font-weight:800;letter-spacing:.01em}
+.pl-h{min-width:0;font-size:13px;line-height:1.4;color:var(--muted)}
+.pl-h b{color:var(--ink);font-weight:800;letter-spacing:-.02em}
+
+/* 타임라인 */
+.tl{position:relative;margin:8px 0 0;padding:0 0 0 30px;list-style:none;display:grid;gap:6px}
+.tl::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:2px;border-radius:1px;background:var(--line-2)}
+.ts{position:relative;min-width:0}
+.ts-n{position:absolute;left:-30px;top:0;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:800;background:var(--soft);color:var(--muted);font-variant-numeric:tabular-nums;z-index:1}
+.ts[data-rank="1"] .ts-n{background:var(--acc);color:var(--on-acc)}
+.ts-b{display:grid;gap:2px;padding:7px 10px 9px;border:1px solid var(--line);border-radius:12px;background:var(--panel);min-width:0}
+.ts[data-rank="1"] .ts-b{border-color:var(--acc);background:var(--acc-soft)}
+.ts-k{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:11px;font-weight:800;color:var(--dim);letter-spacing:.01em;line-height:1.2}
+.ts-when{padding:1px 6px;border-radius:99px;border:1px solid var(--line-2);background:var(--panel);color:var(--muted);font-size:11px;font-weight:750;white-space:nowrap}
+.ts-when[data-w="now"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.ts-b b{font-size:14px;font-weight:800;letter-spacing:-.025em;line-height:1.25}
+.ts-w{margin:0;font-size:12px;line-height:1.4;color:var(--ink)}
+.ts-q{margin:0;font-size:11px;line-height:1.4;color:var(--dim)}
+.ts-a{margin:1px 0 0;padding:0;list-style:none;display:block;font-size:11px;line-height:1.4;color:var(--muted)}
+.ts-a li{display:inline}
+.ts-a li+li::before{content:" · ";color:var(--dim)}
+.ts-a li::before{content:"· ";color:var(--acc);font-weight:800}
+.ts-c{margin:1px 0 0;font-size:11px;line-height:1.35;color:var(--dim)}
+.ts-c b{color:var(--m-no);font-weight:750}
+.ts-more{color:var(--acc);font-weight:750;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+
+/* 휴대폰: 조건을 한 단계씩 */
+.stp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.stp button{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 4px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12px;font-weight:750;color:var(--muted);white-space:nowrap}
+.stp button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+@media (max-width:899px){.st{display:none}.st.on{display:block}}
+@media (min-width:900px){.stp{display:none}}
+
+/* 겹침 줄 · 대상 아님 */
+.cross{margin-top:7px;display:grid;gap:3px;padding:8px 10px;border:1px solid var(--line-2);border-radius:12px;background:var(--soft);min-width:0}
+.cross-k{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.02em}
+.cross-list{display:grid;gap:4px}
+.cross-b{display:flex;align-items:center;gap:7px;min-height:44px;width:100%;padding:4px 2px;border:0;background:none;font-size:12px;line-height:1.35;color:var(--ink);text-align:left}
+.cross-b i{flex:none;font-style:normal;padding:2px 7px;border-radius:99px;border:1px solid currentColor;font-size:11px;font-weight:800;white-space:nowrap}
+.cross-b em{font-style:normal;color:var(--dim);margin-left:auto;flex:none;font-size:11px;font-weight:700;white-space:nowrap}
+.blk{margin:9px 0 0;padding-top:8px;border-top:1px dashed var(--line-2);font-size:11.5px;line-height:1.5;color:var(--muted)}
+.blk b{color:var(--ink);font-weight:750}
+.empty{margin:0;font-size:13px;line-height:1.6;color:var(--muted)}
+.empty b{color:var(--ink)}
+
+/* 매트릭스 */
+.legend{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px}
+.lg{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 10px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:11px;font-weight:750;color:var(--muted);white-space:nowrap}
+.lg[aria-pressed="true"]{border-color:currentColor;background:var(--soft)}
+.lg i{font-style:normal;font-size:12px;font-weight:800;line-height:1}
+.lg[data-s="ok"] i{color:var(--m-ok)}
+.lg[data-s="adjust"] i{color:var(--m-adj)}
+.lg[data-s="no"] i{color:var(--m-no)}
+.lg[data-s="check"] i{color:var(--m-chk)}
+.lg[data-s="na"] i{color:var(--m-na)}
+.mxwrap{overflow:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+table.mx{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+table.mx th,table.mx td{padding:0;box-shadow:inset 0 -1px var(--line)}
+table.mx thead th{position:sticky;top:0;z-index:2;background:var(--panel)}
+table.mx tbody th{position:sticky;left:0;z-index:1;background:var(--panel);min-width:62px}
+table.mx thead th:first-child{left:0;z-index:3}
+.hb{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-width:46px;min-height:44px;padding:2px 4px;border:0;background:none;font-size:11px;font-weight:800;color:var(--muted);text-align:center;line-height:1.15;letter-spacing:-.02em;white-space:nowrap}
+.hb[data-dir="row"]{justify-content:flex-start;padding-left:7px}
+.hb[aria-pressed="true"]{color:var(--acc);background:var(--acc-soft)}
+.mc{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;width:100%;min-width:46px;min-height:44px;padding:3px 1px;border:0;background:none;line-height:1.1;color:var(--muted)}
+.mc b{font-size:13px;font-weight:800;line-height:1.1}
+.mc i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:-.03em;white-space:nowrap;line-height:1.15}
+.mc[data-s="ok"]{color:var(--m-ok)}
+.mc[data-s="adjust"]{color:var(--m-adj)}
+.mc[data-s="no"]{color:var(--m-no)}
+.mc[data-s="check"]{color:var(--m-chk)}
+.mc[data-s="na"]{color:var(--m-na)}
+.mc[aria-pressed="true"]{background:var(--acc-soft);box-shadow:inset 0 0 0 1.5px var(--acc)}
+.mc.dim{opacity:.24}
+.mc.diag{opacity:.3}
+.mx-hint{margin:5px 0 0;font-size:11px;line-height:1.4;color:var(--dim)}
+@media (min-width:900px){.mx-hint{display:none}}
+.mxd{margin-top:8px;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:var(--panel);min-width:0}
+.mxd-h{display:flex;align-items:center;flex-wrap:wrap;gap:6px;min-width:0}
+.mxd-h b{font-size:13px;font-weight:800;letter-spacing:-.02em}
+.mxd-s{flex:none;padding:2px 8px;border-radius:99px;border:1px solid currentColor;font-size:11px;font-weight:800;white-space:nowrap}
+.mxd-s[data-s="ok"]{color:var(--m-ok)}
+.mxd-s[data-s="adjust"]{color:var(--m-adj)}
+.mxd-s[data-s="no"]{color:var(--m-no)}
+.mxd-s[data-s="check"]{color:var(--m-chk)}
+.mxd-s[data-s="na"]{color:var(--m-na)}
+.mxd p{margin:5px 0 0;font-size:11.5px;line-height:1.5;color:var(--muted)}
+.mxd p b{color:var(--ink);font-weight:750}
+.mxd .law{margin-top:5px;font-size:11px;color:var(--dim)}
+.mxd .tip{padding:6px 9px;border-radius:9px;background:var(--soft);color:var(--ink)}
+
+/* ---------- 기준 보기 ---------- */
+.refs{margin-top:10px}
+.refhead{display:flex;align-items:baseline;gap:7px;margin-bottom:6px;flex-wrap:wrap}
+.refhead h2{margin:0;font-size:13px;font-weight:800;letter-spacing:-.02em}
+.refhead span{font-size:11.5px;color:var(--dim)}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.tabs button{display:flex;align-items:center;justify-content:center;gap:5px;min-height:44px;padding:0 8px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12px;font-weight:750;color:var(--muted);text-align:center;line-height:1.2;white-space:nowrap}
+.tabs button svg{width:12px;height:12px;flex:none;transition:transform .18s}
+.tabs button[aria-expanded="true"]{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.tabs button[aria-expanded="true"] svg{transform:rotate(180deg)}
+.panel{margin-top:6px;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:var(--panel);max-height:min(54vh,420px);overflow:auto;overscroll-behavior:contain}
+.panel h3{margin:0 0 7px;font-size:12px;font-weight:800;color:var(--muted)}
+.sys{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.sys li{padding:8px 0;border-top:1px solid var(--line);min-width:0}
+.sys li:first-child{border-top:0;padding-top:0}
+.sys b{display:block;font-size:13px;font-weight:800;letter-spacing:-.02em}
+.sys b em{font-style:normal;font-size:11px;font-weight:700;color:var(--dim);margin-left:5px}
+.sys span{display:block;font-size:11.5px;line-height:1.45;color:var(--muted)}
+.sys .give{margin-top:2px;color:var(--ink)}
+.rules{margin:0;padding:0 0 0 17px;display:grid;gap:5px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.rules li::marker{color:var(--acc);font-weight:800}
+.mtab{width:100%;max-width:520px;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
+.mtab th,.mtab td{padding:3px 5px;box-shadow:inset 0 -1px var(--line);text-align:right;white-space:nowrap}
+.mtab th:first-child,.mtab td:first-child{text-align:left}
+.mtab th{font-size:11px;font-weight:750;color:var(--muted)}
+.srcs{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:7px}
+.srcs li{font-size:11.5px;line-height:1.45;color:var(--muted);border-top:1px solid var(--line);padding-top:6px}
+.srcs li:first-child{border-top:0;padding-top:0}
+.srcs a{display:inline-flex;align-items:center;min-height:24px;color:var(--acc);font-weight:750;text-decoration:underline;text-underline-offset:2px}
+.srcs b{color:var(--ink);font-weight:750}
+.srcs em{font-style:normal;color:var(--dim);font-size:11px}
+.foot{margin:10px 0 0;padding-top:8px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.55;color:var(--dim)}
+.foot b{color:var(--muted);font-weight:750}
+
+@media (max-width:599px){
+  .presets{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .presets::-webkit-scrollbar{display:none}
+  .presets::after{content:"";flex:0 0 10px}
+  .ps{flex:none;font-size:12.5px;padding:4px 10px}
+  .ps small{display:none}
+  .presets{gap:5px}
+  .st{padding:7px 9px}
+  .steps{margin-top:6px}
+  .st-q{display:none}
+  .res{padding:11px}
+  .ts-b{padding:7px 10px}
+  .ts-w{font-size:12px}
+  .panel{padding:11px}
+  .lead{padding:8px 0 2px}
+}
+
+/* ---------- 상태·모션 ---------- */
+.ts[data-rank="1"] .ts-n{transition:transform .2s cubic-bezier(.2,1.4,.4,1)}
+@media (prefers-reduced-motion:reduce){
+  .seg span,.ps,.ts-n,.tabs button svg,.seg label:active span{transition:none;transform:none}
+}
+html[data-jc-imm] .strip{display:none}
+</style>
+<link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
+</head>
+<body data-jc-tool="policy-match">
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <a class="brand" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h6v5H4zM14 6h6v5h-6zM4 15h6v4H4zM14 15h6v4h-6z"/></svg>지원제도 <span>매칭기</span></a>
+    <span data-jc-prefs></span>
+  </header>
+
+  <section class="pv" id="pv">
+    <button type="button" class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 사용 <span aria-hidden="true">·</span> 실무 보조 · 입력값은 화면 안에서만</span>
+      <span class="pv-c">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" hidden>
+      <ul>
+        <li><b>요건·금액은 공식 문서에서 확인했습니다.</b> 고용노동부·고용24·여성새로일하기센터·국가법령정보센터의 2026년 기준을 대조했고, 출처와 기준시점을 화면에 적었습니다.</li>
+        <li><b>순서만 이 화면이 정합니다.</b> 어느 제도를 먼저 신청하면 좋은지는 제도 간 참여 제한·수당 중복 규정을 겹쳐 계산한 것이고, 실제 수급 여부는 기관 심사로 정해집니다.</li>
+        <li><b>확인되지 않은 조합은 그렇게 적었습니다.</b> 두 제도의 관계가 문서에 없으면 「고용센터 확인」으로 표시하고, 임의로 단정하지 않습니다.</li>
+        <li><b>이름·주민등록번호는 받지 않습니다.</b> 고른 조건은 서버로 보내지 않고 화면 안에서만 계산합니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="lead">
+    <p class="lead-line">네 가지만 고르면 <b>1·2·3순위</b>와 <b>겹쳐 쓸 수 있는 제도</b>가 바로 바뀝니다. 사례 단추로 시작해도 됩니다.</p>
+    <div class="presets" id="presets" role="group" aria-label="빠른 사례"></div>
+  </section>
+
+  <div class="strip" id="strip">
+    <span class="st-n num" id="stN">–</span>
+    <span class="st-t"><b id="stName">아직 판정 전</b><i id="stTag">네 단계를 고르면 나옵니다</i></span>
+    <a class="st-go" href="#res">순서 보기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  </div>
+
+  <main class="board">
+    <div class="stp" id="stp" role="group" aria-label="조건 단계">
+      <button type="button" data-step="0" aria-pressed="true" aria-controls="s0">① 상태</button>
+      <button type="button" data-step="1" aria-pressed="false" aria-controls="s1">② 대상</button>
+      <button type="button" data-step="2" aria-pressed="false" aria-controls="s2">③ 소득</button>
+      <button type="button" data-step="3" aria-pressed="false" aria-controls="s3">④ 목표</button>
+    </div>
+    <section class="steps" id="steps" aria-label="빠른 조건 체크 네 단계">
+      <fieldset class="st on" id="s0" data-i="0">
+        <legend class="sr">1. 현재 상태</legend>
+        <div class="st-h"><span class="st-n" aria-hidden="true">1</span><b>현재 상태</b><span class="st-q">지금 어느 자리에 있나요?</span></div>
+        <div class="seg c5" role="radiogroup" aria-label="현재 상태">
+          <label><input type="radio" name="status" value="ui"><span>실업급여<br>수급 중</span></label>
+          <label><input type="radio" name="status" value="uiSoon"><span>실업급여<br>수급 예정</span></label>
+          <label><input type="radio" name="status" value="none" checked><span>미취업<br>비수급</span></label>
+          <label><input type="radio" name="status" value="work"><span>재직<br>이직 준비</span></label>
+          <label><input type="radio" name="status" value="self"><span>자영업<br>특고</span></label>
+        </div>
+        <p class="st-note"><b>수급 예정:</b> 이직 직후·수급 신청 전 · <b>재직:</b> 주 30시간 이상 근무 중</p>
+      </fieldset>
+
+      <fieldset class="st" id="s1" data-i="1">
+        <legend class="sr">2. 연령과 대상</legend>
+        <div class="st-h"><span class="st-n" aria-hidden="true">2</span><b>연령·대상</b><span class="st-q">제도마다 문이 다른 곳</span></div>
+        <div class="seg" role="radiogroup" aria-label="연령">
+          <label><input type="radio" name="age" value="youth"><span>청년 15~34</span></label>
+          <label><input type="radio" name="age" value="mid" checked><span>35~49세</span></label>
+          <label><input type="radio" name="age" value="fifty"><span>50~64세</span></label>
+          <label><input type="radio" name="age" value="senior"><span>65세 이상</span></label>
+        </div>
+        <div class="chks">
+          <label class="chk"><input type="checkbox" id="women" aria-label="경력보유여성"><span class="bx" aria-hidden="true"></span><span>경력보유여성</span></label>
+          <label class="chk"><input type="checkbox" id="weak" aria-label="취약계층·특정계층"><span class="bx" aria-hidden="true"></span><span>취약계층</span></label>
+          <label class="chk"><input type="checkbox" id="jobless" aria-label="구직단념 — 최근 6개월 취업·교육 이력 없음"><span class="bx" aria-hidden="true"></span><span>구직단념 6개월</span></label>
+          <label class="chk"><input type="checkbox" id="exp" aria-label="최근 2년 취업 100일 또는 800시간 이상"><span class="bx" aria-hidden="true"></span><span>취업경험 100일·800h</span></label>
+        </div>
+        <p class="st-note"><b>취약계층:</b> 생계급여·기초연금·여성가구주·북한이탈주민 등 특정계층 · <b>취업경험:</b> 국취 Ⅰ유형 요건</p>
+      </fieldset>
+
+      <div class="st" id="s2" data-i="2" role="group" aria-labelledby="st3t">
+        <div class="st-h"><span class="st-n" aria-hidden="true">3</span><b id="st3t">소득·재산</b><span class="st-q">국취 Ⅰ·Ⅱ의 문을 가릅니다</span></div>
+        <div class="seg c5" role="radiogroup" aria-label="가구소득 수준">
+          <label><input type="radio" name="income" value="60"><span>중위 60% 이하</span></label>
+          <label><input type="radio" name="income" value="100" checked><span>100% 이하</span></label>
+          <label><input type="radio" name="income" value="120"><span>120% 이하</span></label>
+          <label><input type="radio" name="income" value="over"><span>120% 초과</span></label>
+          <label><input type="radio" name="income" value="unknown"><span>모름</span></label>
+        </div>
+        <div class="fldrow">
+          <div>
+            <label class="lb" for="size">가구원 수</label>
+            <select class="sel" id="size">
+              <option value="1">1인</option>
+              <option value="2">2인</option>
+              <option value="3">3인</option>
+              <option value="4" selected>4인</option>
+              <option value="5">5인</option>
+              <option value="6">6인 이상</option>
+            </select>
+          </div>
+          <div>
+            <label class="lb" for="asset">재산 (국취 기준)</label>
+            <select class="sel" id="asset">
+              <option value="4">4억원 이하</option>
+              <option value="5" selected>5억원 이하</option>
+              <option value="over">5억원 초과</option>
+              <option value="unknown">모름</option>
+            </select>
+          </div>
+        </div>
+        <p class="st-note" id="incNote"></p>
+      </div>
+
+      <fieldset class="st" id="s3" data-i="3">
+        <legend class="sr">4. 지금의 목표</legend>
+        <div class="st-h"><span class="st-n" aria-hidden="true">4</span><b>지금의 목표</b><span class="st-q">같은 조건도 순서를 바꿉니다</span></div>
+        <div class="seg" role="radiogroup" aria-label="현재 목표">
+          <label><input type="radio" name="goal" value="living" checked><span>생계+취업알선</span></label>
+          <label><input type="radio" name="goal" value="train"><span>직무훈련</span></label>
+          <label><input type="radio" name="goal" value="exp"><span>일경험·인턴</span></label>
+          <label><input type="radio" name="goal" value="job"><span>즉시 취업</span></label>
+        </div>
+        <p class="st-note"><b>즉시 취업:</b> 이번 달 지원·면접 가능 · <b>일경험:</b> 경력이 비어 있는 경우</p>
+      </fieldset>
+    </section>
+
+    <aside class="res" id="res" data-jc-still aria-label="추천 신청 순서와 중복 매트릭스">
+      <p class="sr" id="live" role="status" aria-live="polite"></p>
+      <div class="rtabs" role="tablist" aria-label="결과 보기">
+        <button type="button" id="tabPlan" data-v="plan" role="tab" aria-selected="true" aria-controls="vPlan">① 신청 순서</button>
+        <button type="button" id="tabMx" data-v="mx" role="tab" aria-selected="false" aria-controls="vMx">② 중복 매트릭스</button>
+      </div>
+
+      <div class="rv" id="vPlan" role="tabpanel" aria-labelledby="tabPlan">
+        <div class="pl-top"><span class="pl-k">추천 순서</span><p class="pl-h" id="plHead">네 단계를 고르면 순서가 나옵니다.</p></div>
+        <p class="empty" id="planEmpty">①~④ 가운데 하나만 골라도 초안이 나옵니다. <b>현재 상태</b>와 <b>목표</b>만 정해도 1순위는 바뀝니다.</p>
+        <ol class="tl" id="tl" hidden></ol>
+        <div class="cross" id="cross" hidden>
+          <span class="cross-k">이 조합에서 겹치는 것</span>
+          <div class="cross-list" id="crossList"></div>
+        </div>
+        <p class="blk" id="blk" hidden></p>
+      </div>
+
+      <div class="rv" id="vMx" role="tabpanel" aria-labelledby="tabMx" hidden>
+        <div class="legend" id="legend" role="group" aria-label="관계 종류로 걸러 보기"></div>
+        <div class="mxwrap" id="mxWrap">
+          <table class="mx" id="mx">
+            <caption class="sr">일곱 제도 사이의 동시 사용·중복·순차 관계. 칸을 누르면 근거와 상담 팁이 열립니다.</caption>
+            <thead id="mxHead"></thead>
+            <tbody id="mxBody"></tbody>
+          </table>
+        </div>
+        <p class="mx-hint">옆으로 밀면 나머지 제도가 보입니다. 칸을 누르면 근거가 열립니다.</p>
+        <div class="mxd" id="mxd" aria-live="polite">
+          <p class="empty">칸을 누르면 <b>법적 근거</b>와 <b>상담에서 확인할 것</b>이 여기에 나옵니다. 행·열 이름을 누르면 그 제도의 줄만 남깁니다.</p>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <section class="refs">
+    <div class="refhead"><h2>기준 보기</h2><span>제도 요약 · 순서 규칙 · 기준값과 출처</span></div>
+    <div class="tabs" id="refTabs">
+      <button type="button" data-panel="0" aria-expanded="false" aria-controls="pnl-0">제도 7<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button type="button" data-panel="1" aria-expanded="false" aria-controls="pnl-1">순서 규칙<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button type="button" data-panel="2" aria-expanded="false" aria-controls="pnl-2">기준값·출처<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+    </div>
+    <div class="panel" id="pnl-0" hidden><ul class="sys" id="sysList"></ul></div>
+    <div class="panel" id="pnl-1" hidden><ol class="rules" id="ruleList"></ol></div>
+    <div class="panel" id="pnl-2" hidden>
+      <h3>2026년 기준 중위소득(월)</h3>
+      <table class="mtab" id="mtab"></table>
+      <h3 style="margin-top:11px">출처·이용 조건</h3>
+      <ul class="srcs" id="srcs"></ul>
+    </div>
+  </section>
+
+  <p class="foot">
+    <b>풀이</b> 순서·문장은 자료실이 새로 쓴 글. <b>기준값</b>은 「기준값·출처」에 기관·기준일과 함께. <b>주의</b> 최종 수급 여부는 기관 심사, 금액은 2026-11-21 확인값.
+  </p>
+</div>
+
+<script src="./app.js" defer></script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>
