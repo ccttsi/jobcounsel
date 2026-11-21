@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="초기상담 15분을 네 단계로 구조화하는 상담사용 보드. 내담자 네 유형(청년·중장년·경력보유여성·전직 준비자)마다 오프닝 멘트, 핵심 질문 7~8개와 답변별 다음 행동, 지참·확인 서류 체크리스트, 바로 이어질 자료를 한 화면에 모읍니다.">
+<title>초기상담 접수·구조화 시트</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#33536e;--acc-soft:rgba(51,83,110,.08);--on-acc:#fffdf8;
+  --warn:#8a3a1e;
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 12px 30px -20px rgba(70,50,25,.32);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#8fbbe0;--acc-soft:rgba(143,187,224,.13);--on-acc:#081019;
+  --warn:#ffa07a;
+  --shadow:none;
+  color-scheme:dark;
+}
+:root[data-jc-tone="sepia"]{
+  --acc:#284a63;--acc-soft:rgba(40,74,99,.09);
+  --warn:#7c331a;
+}
+body[data-jc-tool="intake"]{--jc-acc:var(--acc)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,textarea,input,select{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;text-align:left;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px 14px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media (min-width:900px){.wrap{padding:0 28px 22px}}
+
+/* ---------- 머리말 ---------- */
+.hd{display:flex;align-items:center;gap:8px;min-height:64px;padding:10px 0;position:relative;z-index:20}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:0 1 auto;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;overflow:hidden}
+.brand svg{width:24px;height:24px;flex:none;color:var(--acc)}
+.brand span{color:var(--acc)}
+.hd>[data-jc-prefs]{margin-left:auto}
+
+/* ---------- 이용 안내 ---------- */
+.pv{border-bottom:1px solid var(--line)}
+.pv-t{display:flex;align-items:center;gap:9px;width:100%;min-height:44px;padding:6px 0;font-size:14px;color:var(--muted)}
+.pv-t svg{width:17px;height:17px;flex:none;color:var(--acc)}
+.pv-tt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-tt b{margin-right:6px;font-weight:750;color:var(--ink)}
+.pv-c{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--acc)}
+.pv-c::after{content:"";width:7px;height:7px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-1px)}
+.pv-t[aria-expanded="true"] .pv-c::after{transform:rotate(-135deg)}
+.pv-b{padding:2px 0 14px}
+.pv-b ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.pv-b b{color:var(--ink)}
+
+/* ---------- 첫 줄 ---------- */
+.lead{margin:10px 0 0;font-size:14px;line-height:1.5;color:var(--muted)}
+.lead b{color:var(--ink);font-weight:750}
+
+/* ---------- 유형 탭 ---------- */
+.types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:10px}
+@media (min-width:720px){.types{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.type{display:flex;flex-direction:column;justify-content:center;gap:1px;min-width:0;min-height:56px;padding:6px 8px;border:1px solid var(--line-2);border-radius:12px;background:var(--panel);color:var(--muted);text-align:center}
+.type .t-n{font-size:11px;font-weight:800;letter-spacing:.02em;color:var(--dim)}
+.type .t-t{font-size:14px;font-weight:800;letter-spacing:-.03em;color:var(--ink);white-space:nowrap}
+.type .t-s{font-size:11px;font-weight:600;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.type[aria-pressed="true"]{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
+.type[aria-pressed="true"] .t-n,.type[aria-pressed="true"] .t-t,.type[aria-pressed="true"] .t-s{color:var(--on-acc)}
+.type[aria-pressed="true"] .t-s{opacity:.86}
+.type:active{transform:scale(.99)}
+
+/* ---------- 보드 ---------- */
+.board{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:10px;align-items:start}
+@media (min-width:900px){.board{grid-template-columns:minmax(0,1.42fr) minmax(310px,.58fr);gap:14px}}
+.work{min-width:0}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.step{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;min-width:0;min-height:48px;padding:5px 4px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);color:var(--muted);text-align:center;line-height:1.25}
+.step .s-t{font-size:12.5px;font-weight:750;letter-spacing:-.02em;white-space:nowrap}
+.step .s-m{font-size:11px;font-weight:600;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.step[aria-selected="true"]{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
+.step[aria-selected="true"] .s-m{color:var(--on-acc);opacity:.82}
+.step:active{transform:scale(.99)}
+
+.panel{margin-top:6px;padding:13px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);min-width:0}
+.p-head{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.p-head>div{min-width:0}
+.p-head h2{margin:0;font-size:15px;font-weight:800;letter-spacing:-.03em}
+.p-head p{margin:3px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.p-n{flex:none;margin-left:auto;padding:3px 9px;border:1px solid var(--line-2);border-radius:99px;font-size:11px;font-weight:750;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.p-body{margin-top:11px;min-width:0}
+
+/* 오프닝 */
+.say{margin:0;padding:12px 14px;border-left:3px solid var(--acc);border-radius:0 12px 12px 0;background:var(--soft);font-size:14.5px;line-height:1.65;color:var(--ink)}
+.say b{font-weight:750}
+.bnd{margin-top:9px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.bnd b{display:block;font-size:12px;font-weight:800;color:var(--acc)}
+.bnd p{margin:3px 0 0;font-size:13px;line-height:1.55;color:var(--muted)}
+.tips{margin:9px 0 0;padding:0 0 0 2px;list-style:none;display:grid;gap:5px}
+.tips li{position:relative;padding-left:13px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.tips li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--acc);opacity:.6}
+
+/* 질문 */
+.q{border-top:1px solid var(--line)}
+.q:first-child{border-top:0}
+.q-h{display:flex;align-items:center;gap:9px;width:100%;min-height:52px;padding:8px 2px;min-width:0}
+.q-n{flex:none;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:11.5px;font-weight:800;background:var(--soft);color:var(--muted);font-variant-numeric:tabular-nums}
+.q-t{flex:1 1 0;min-width:0;font-size:13.5px;font-weight:700;line-height:1.42;color:var(--ink);letter-spacing:-.02em}
+.q-h svg{flex:none;width:15px;height:15px;color:var(--muted);transition:transform .2s}
+.q-h[aria-expanded="true"] svg{transform:rotate(180deg)}
+.q-h[aria-expanded="true"] .q-n{background:var(--acc);color:var(--on-acc)}
+.q-b{padding:0 0 10px 31px;min-width:0}
+.why{margin:0 0 8px;font-size:12px;line-height:1.55;color:var(--muted)}
+.why b{display:inline-block;margin-right:5px;font-weight:800;color:var(--acc)}
+.opts{display:grid;gap:4px}
+.opt{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:5px 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12.5px;font-weight:700;color:var(--muted);text-align:left;line-height:1.35}
+.opt .o-a{flex:1 1 0;min-width:0}
+.opt .o-c{flex:none;font-size:12px;font-weight:800;color:var(--dim)}
+.opt[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft);color:var(--ink)}
+.opt[aria-pressed="true"] .o-c{color:var(--acc)}
+.q-do{margin-top:6px;padding:10px 11px;border:1px solid var(--line);border-radius:11px;background:var(--soft);min-width:0}
+.q-do .d-k{display:block;font-size:11px;font-weight:800;color:var(--acc)}
+.q-do p{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.chip{display:inline-flex;align-items:center;gap:3px;min-height:44px;padding:0 11px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12px;font-weight:750;color:var(--acc);text-decoration:none;white-space:nowrap}
+.chip svg{width:12px;height:12px;flex:none}
+.chip:active{transform:scale(.985)}
+
+/* 서류 */
+.grp{margin:0 0 12px}
+.grp:last-child{margin-bottom:0}
+.grp h3{margin:0 0 4px;font-size:12px;font-weight:800;letter-spacing:.01em;color:var(--muted)}
+.docs{display:grid;grid-template-columns:minmax(0,1fr);gap:3px}
+@media (min-width:640px){.docs{grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 10px}}
+.ck{position:relative;display:flex;align-items:center;gap:8px;min-width:0;min-height:44px;padding:4px 8px;border:1px solid transparent;border-radius:9px;font-size:12.5px;font-weight:650;color:var(--ink);line-height:1.35}
+.ck input{position:absolute;left:-1px;top:-1px;width:calc(100% + 2px);height:calc(100% + 2px);margin:0;opacity:0}
+.ck .bx{flex:none;width:17px;height:17px;border:1.6px solid var(--line-2);border-radius:4px;display:grid;place-items:center;background:var(--panel)}
+.ck input:checked~.bx{background:var(--acc);border-color:var(--acc)}
+.ck input:checked~.bx::after{content:"";width:8px;height:4px;border-left:2px solid var(--on-acc);border-bottom:2px solid var(--on-acc);transform:rotate(-45deg) translate(0,-1px)}
+.ck input:checked~.ck-t{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line-2)}
+.ck input:focus-visible~.bx{outline:2px solid var(--acc);outline-offset:2px}
+.ck:has(input:checked){background:var(--soft)}
+.ck-t{min-width:0;flex:1 1 0}
+.ck-t em{display:inline-block;margin-left:5px;padding:0 6px;border-radius:99px;background:var(--soft);font-style:normal;font-size:10.5px;font-weight:750;color:var(--muted);white-space:nowrap;vertical-align:1px}
+.ck:has(input:checked) .ck-t em{background:var(--panel)}
+.note{margin-top:12px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.note h3{margin:0 0 5px;font-size:12px;font-weight:800;color:var(--acc)}
+.note ul{margin:0;padding:0;list-style:none;display:grid;gap:5px}
+.note li{position:relative;padding-left:11px;font-size:11.5px;line-height:1.5;color:var(--muted)}
+.note li::before{content:"";position:absolute;left:0;top:.62em;width:4px;height:4px;border-radius:1px;background:var(--acc);opacity:.55}
+.note a{display:inline-flex;align-items:center;min-height:44px;color:var(--acc);font-weight:750;text-decoration:underline;text-underline-offset:2px}
+
+/* 정리·연계 */
+.sum{padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:var(--soft);min-width:0}
+.sum h3{margin:0 0 4px;font-size:12px;font-weight:800;color:var(--acc)}
+.sum ol{margin:0;padding:0 0 0 17px;display:grid;gap:3px;font-size:12.5px;line-height:1.45;color:var(--ink)}
+.sum li::marker{color:var(--acc);font-weight:800}
+.sum .emp{margin:0;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.sum .emp b{color:var(--ink);font-weight:750}
+.goh{margin:13px 0 5px;font-size:12px;font-weight:800;color:var(--muted)}
+.go{display:grid;gap:5px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:640px){.go{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.go-i{display:flex;flex-direction:column;justify-content:center;gap:1px;min-width:0;min-height:58px;padding:8px 12px;border:1px solid var(--line-2);border-radius:11px;background:var(--panel);text-decoration:none}
+.go-i b{font-size:13px;font-weight:800;letter-spacing:-.02em;color:var(--acc)}
+.go-i span{font-size:11.5px;line-height:1.4;color:var(--muted)}
+.go-i:active{transform:scale(.99)}
+.last{margin:11px 0 0;padding-top:9px;border-top:1px dashed var(--line-2);font-size:11.5px;line-height:1.5;color:var(--dim)}
+.last b{color:var(--muted);font-weight:750}
+
+/* ---------- 오른쪽: 메모·진행 ---------- */
+.side{display:grid;gap:8px;min-width:0}
+@media (min-width:900px){.side{position:sticky;top:calc(64px + 10px);align-self:start}}
+.card{padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);min-width:0}
+.c-h{display:flex;align-items:center;gap:8px;min-width:0}
+.c-h h2{margin:0;font-size:13.5px;font-weight:800;letter-spacing:-.02em}
+.tag{flex:none;margin-left:auto;padding:2px 8px;border:1px solid var(--line-2);border-radius:99px;font-size:10.5px;font-weight:750;color:var(--muted);white-space:nowrap;background:var(--soft)}
+#memo{display:block;width:100%;min-height:150px;margin-top:8px;padding:11px 12px;border:1px solid var(--line-2);border-radius:11px;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55;resize:vertical;outline:none}
+#memo::placeholder{color:var(--dim);font-size:13.5px}
+#memo:focus{border-color:var(--acc)}
+.c-f{display:flex;align-items:center;gap:8px;margin-top:6px}
+.c-n{margin:0;font-size:11px;line-height:1.5;color:var(--dim)}
+.c-f .c-n{flex:1 1 0;min-width:0;margin:0;font-size:10.5px}
+.rst{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 13px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-size:12px;font-weight:750;color:var(--muted);text-align:center;white-space:nowrap}
+.rst[data-armed="true"]{border-color:var(--warn);color:var(--warn)}
+.cnt{flex:none;font-size:11px;font-weight:700;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.pg{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;margin-top:7px}
+.pg-l{font-size:11.5px;font-weight:750;color:var(--muted);white-space:nowrap}
+.pg-b{display:block;height:5px;border-radius:3px;background:var(--soft);overflow:hidden}
+.pg-b i{display:block;height:100%;width:100%;background:var(--acc);border-radius:3px;transform:scaleX(0);transform-origin:left center;transition:transform .22s cubic-bezier(.2,.9,.3,1)}
+.pg-n{font-size:11px;font-weight:750;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.foot{margin:14px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.55;color:var(--dim)}
+.foot b{color:var(--muted);font-weight:750}
+.foot a{display:inline-flex;align-items:center;min-height:44px;color:var(--acc);font-weight:750;text-decoration:underline;text-underline-offset:2px}
+
+/* ---------- 상태·모션 ---------- */
+@media (hover:hover){
+  .type:hover:not([aria-pressed="true"]),.step:hover:not([aria-selected="true"]),.opt:hover:not([aria-pressed="true"]),.go-i:hover,.chip:hover{border-color:var(--acc)}
+  .type:hover:not([aria-pressed="true"]) .t-t{color:var(--acc)}
+}
+.in{animation:rise .26s cubic-bezier(.2,.9,.3,1) 1}
+@keyframes rise{from{opacity:0;transform:translate3d(0,7px,0)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .in{animation:none}
+  .pg-b i,.q-h svg{transition:none}
+  .type:active,.step:active,.go-i:active,.chip:active{transform:none}
+}
+html[data-jc-imm] .types,html[data-jc-imm] .steps{display:none}
+html[data-jc-imm] .panel{box-shadow:none}
+@media (max-width:899px){html[data-jc-imm] .side{position:static}}
+</style>
+<link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
+</head>
+<body data-jc-tool="intake">
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <a class="brand" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5"/></svg>초기상담 <span>접수·구조화 시트</span></a>
+    <span data-jc-prefs></span>
+  </header>
+
+  <h1 class="sr">초기상담 접수·구조화 시트</h1>
+
+  <section class="pv" id="pv">
+    <button type="button" class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 사용 <span aria-hidden="true">·</span> 입력은 이 탭 안에서만</span>
+      <span class="pv-c">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" hidden>
+      <ul>
+        <li><b>15분을 네 단계로 씁니다.</b> 오프닝 2분 · 질문 6분 · 서류·제도 5분 · 정리 2분. 질문은 유형마다 7~8개이고, 한 번에 하나씩 펼쳐 봅니다.</li>
+        <li><b>질문마다 왜 묻는지와 다음 행동을 붙였습니다.</b> 내담자 답변 신호를 고르면 그 답에 맞는 다음 행동과 연계 자료가 나옵니다.</li>
+        <li><b>제도·서류는 고용24·고용노동부 안내를 따랐습니다.</b> 기준일은 2026-11-21이고, 최종 수급 판정은 고용센터·지자체 심사입니다.</li>
+        <li><b>메모와 체크는 서버로 보내지 않습니다.</b> 이 브라우저 탭을 닫으면 사라지고, 이름·주민등록번호는 적지 않습니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="lead">유형을 고르면 <b>질문·서류·연계 자료</b>가 함께 바뀝니다. 상담 중에는 답변 신호를 눌러 다음 행동만 확인하세요.</p>
+
+  <div class="types" id="types" role="group" aria-label="내담자 유형"></div>
+
+  <main class="board">
+    <section class="work" aria-label="15분 진행">
+      <div class="steps" id="steps" role="tablist" aria-label="상담 단계"></div>
+      <div class="panel" id="panel" role="tabpanel" aria-labelledby="st-0" tabindex="-1"></div>
+    </section>
+
+    <aside class="side" aria-label="상담 기록">
+      <section class="card">
+        <div class="c-h"><h2>상담 메모</h2><span class="tag">이 탭에만</span></div>
+        <label class="sr" for="memo">상담 메모</label>
+        <textarea id="memo" rows="6" autocomplete="off" spellcheck="false" placeholder="들은 말과 합의한 것만 적으세요. 이름·주민등록번호는 적지 않습니다."></textarea>
+        <div class="c-f">
+          <p class="c-n">서버 전송 없음 · 탭을 닫으면 지워집니다</p>
+          <span class="cnt" id="mcount">0자</span>
+          <button type="button" class="rst" id="reset" aria-label="이 유형의 메모와 체크 지우기">기록 지우기</button>
+        </div>
+        <p class="sr" id="live" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="card">
+        <div class="c-h"><h2>진행</h2><span class="tag" id="pgTag">청년</span></div>
+        <div class="pg"><span class="pg-l">답변</span><span class="pg-b" aria-hidden="true"><i id="barA"></i></span><span class="pg-n" id="pgA">0 / 7</span></div>
+        <div class="pg"><span class="pg-l">서류</span><span class="pg-b" aria-hidden="true"><i id="barD"></i></span><span class="pg-n" id="pgD">0 / 8</span></div>
+      </section>
+    </aside>
+  </main>
+
+  <p class="foot">
+    <b>제도·서류</b> 고용24(work24.go.kr) 제도안내·고용노동부 1350 상담, 여성새로일하기센터(saeil.mogef.go.kr) 안내를 2026-11-21에 확인했습니다. <b>주의</b> 수급자격·금액·선발은 기관 심사로 정해집니다.
+  </p>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var d=document;
+  var $=function(s,r){return (r||d).querySelector(s);};
+  var $$=function(s,r){return Array.prototype.slice.call((r||d).querySelectorAll(s));};
+
+  /* 자료실 섹터 주소 — 칩과 연계 단추가 쓰는 실제 화면 */
+  var SEC={
+    triage:'../triage/',hud:'../hud/',talk:'../talk/','work-filter':'../work-filter/',
+    translator:'../translator/',manual:'../manual/',law:'../law/','kdt-calc':'../kdt-calc/',
+    transit:'../transit/',reality:'../reality/',cert:'../cert/',taxonomy:'../taxonomy/',
+    company:'../company/',portals:'../portals/',interview:'../interview/',surgery:'../surgery/',
+    portfolio:'../portfolio/',valuechain:'../valuechain/',thermometer:'../thermometer/',
+    'fin-lab':'../fin-lab/',theory:'../theory/',decalcomania:'../decalcomania/'
+  };
+
+  function Q(q,why,opts){return {q:q,why:why,opts:opts};}
+  function O(a,doit,chips){return {a:a,do:doit,chips:chips||[]};}
+
+  var TYPES=[
+    {
+      id:'youth',n:'①',t:'청년',s:'첫 취업·쉬었음',aria:'① 청년 — 첫 취업·진로 미정·쉬었음',
+      who:'15~34세 · 첫 취업 · 진로 미정 · 쉬었음',
+      times:['0–2분','2–8분','8–13분','13–15분'],
+      open:{
+        say:'“오늘은 15분 정도 이야기하고, 다음에 해 볼 일 하나만 정하고 끝내겠습니다. 이름과 주민등록번호는 적지 않으니 편하게 말씀해 주세요.”',
+        bnd:'“제가 먼저 여쭙는 게 많습니다. 답하기 어려운 건 넘어가셔도 되고, 제가 정해 드리는 게 아니라 같이 고르는 자리입니다.”',
+        tips:['첫 2분은 질문보다 안내에 씁니다 — 시간·목적·기록 범위를 먼저 말합니다.','“왜 취업을 안 하느냐”로 시작하지 않습니다. 생활 리듬에서 시작합니다.']
+      },
+      qs:[
+        Q('요즘 하루는 어떻게 보내세요? 어제 하루만 말씀해 주셔도 좋습니다.','구직 활동 횟수보다 생활 리듬을 먼저 봅니다. 쉬었음 상태인지 준비 중인지에 따라 첫 과제가 달라집니다.',[
+          O('규칙적으로 움직여요','지원 횟수와 지원처를 늘리는 상담으로 갑니다. 서류보다 지원 빈도를 먼저 봅니다.',[['portals','채용 사이트'],['surgery','서류 해부실']]),
+          O('준비 중이에요','무엇을 준비 중인지 확인하고 훈련·자격 가운데 하나로 좁힙니다.',[['kdt-calc','훈련비 계산'],['cert','자격증 도감']]),
+          O('아무것도 못 하고 있어요','생활 리듬과 마음 상태를 함께 확인합니다. 첫 과제는 이번 주에 한 번 나가기처럼 작게 잡습니다.',[['talk','상담 대화'],['hud','상담 HUD']])
+        ]),
+        Q('지금까지 해 본 일 중에 가장 오래 했거나, 그나마 덜 힘들었던 일은 뭐였어요?','경력이 없어 보여도 아르바이트·가족 일 돕기·단기 근로가 경력입니다. 직함이 아니라 한 일로 적습니다.',[
+          O('아르바이트·단기 근로가 있어요','한 일을 업무 단위로 쪼개 이력서 재료로 바꿉니다.',[['translator','경력 번역'],['surgery','문장 다듬기']]),
+          O('가족 일을 도왔어요','무급 경험도 수행 업무로 적을 수 있는지 확인합니다.',[['translator','용어 확인'],['portfolio','포트폴리오']]),
+          O('거의 없어요','일경험·단기 훈련으로 첫 경력을 만드는 쪽을 봅니다.',[['kdt-calc','훈련비'],['work-filter','직무 거르기']])
+        ]),
+        Q('학교·전공·자격 중에 지금 바로 쓸 수 있는 게 있나요?','지원할 수 있는 직무와 훈련 조건을 가릅니다. 자격이 없어도 훈련으로 만드는 길이 있습니다.',[
+          O('전공을 살리고 싶어요','전공과 직업의 연결을 확인하고 지원 직무 세 개를 고릅니다.',[['decalcomania','학과·직업'],['cert','자격증']]),
+          O('자격이 하나 있어요','그 자격의 시행처·응시 요건을 확인하고 채용공고와 맞춥니다.',[['cert','자격 요건'],['portals','채용 공고']]),
+          O('아무것도 없어요','짧은 훈련으로 자격 하나를 만드는 계획을 세웁니다.',[['kdt-calc','훈련비'],['cert','자격 종류']])
+        ]),
+        Q('한 달에 최소 얼마가 있어야 생활이 되나요?','임금 하한과 근무 시간을 정합니다. 희망 임금이 아니라 버틸 수 있는 선을 먼저 듣습니다.',[
+          O('150만원 이상 필요해요','전일제·주 40시간 기준으로 직무를 좁힙니다.',[['reality','임금 분포'],['work-filter','근무 조건']]),
+          O('100만원 정도면 돼요','시간제·단시간 일자리와 훈련 병행을 함께 봅니다.',[['work-filter','시간 조건'],['hud','수당 계산']]),
+          O('당장은 가족이 도와줘요','생활비 부담이 시작되는 시점을 정하고 그 전까지 준비 기간을 잡습니다.',[['talk','가족 대화'],['kdt-calc','훈련 기간']])
+        ]),
+        Q('사람을 상대하는 일과 혼자 집중하는 일 중 어느 쪽이 덜 힘드세요?','근무환경에서 견딜 수 있는 조건을 먼저 봅니다. 적성보다 지속 가능성이 우선입니다.',[
+          O('사람 상대가 편해요','대면·응대가 많은 직무로 후보를 좁힙니다.',[['work-filter','대면 조건'],['translator','직무 용어']]),
+          O('혼자 하는 게 편해요','단독 집중·내근 위주 직무로 좁힙니다.',[['work-filter','단독 근무'],['taxonomy','직무 분류']]),
+          O('둘 다 힘들어요','교대·감정 노동 여부를 함께 보고 후보를 다시 고릅니다.',[['work-filter','환경 축'],['talk','부담 말하기']])
+        ]),
+        Q('취업에 대해 가족과 어떤 이야기를 나누셨나요?','가족의 압박과 지지가 준비 기간을 좌우합니다. 통제할 수 있는 것과 없는 것을 나눕니다.',[
+          O('지지해 주세요','준비 기간을 가족에게 말할 수 있는 한 줄로 정리합니다.',[['reality','현실 점검'],['talk','전달 연습']]),
+          O('압박이 심해요','결과가 아니라 이번 주에 할 일로 보고하는 방식을 함께 정합니다.',[['talk','경계 세우기'],['reality','기대 조정']]),
+          O('이야기하지 않았어요','말할 시점과 문장을 정하는 것부터 시작합니다.',[['talk','첫 문장']])
+        ]),
+        Q('다음 상담까지 이번 주에 해 볼 수 있는 일 하나를 고른다면 뭐가 좋을까요?','상담사가 정하지 않고 내담자가 고릅니다. 작게 정한 하나가 다음 상담의 출발점입니다.',[
+          O('공고 세 개 보기','공고 세 개를 모아 오시면 다음에 문구를 같이 뜯어 봅니다.',[['portals','채용 사이트'],['surgery','공고 읽기']]),
+          O('훈련 알아보기','고용24에서 과정 두 개를 골라 자부담을 계산해 봅니다.',[['kdt-calc','자부담 계산']]),
+          O('상담 한 번 더','다음 상담을 이번 주 안으로 잡고, 그때까지 생활 기록만 해 옵니다.',[['talk','대화 연습'],['hud','상담일지']])
+        ])
+      ],
+      docs:[
+        ['지참','신분증'],
+        ['지참','졸업·재학 증명서','해당 시'],
+        ['지참','자격증 사본','있으면'],
+        ['확인','고용보험 이력','고용24 조회'],
+        ['확인','아르바이트·단기 근로 이력','메모로 정리'],
+        ['확인','병역 이행 기간','청년 나이 산정'],
+        ['지참','통장 사본','수당 신청 시'],
+        ['지참','가족관계증명서','가족수당 해당 시']
+      ],
+      note:[
+        '국민취업지원제도 Ⅰ유형은 15~69세, 가구 중위소득 60%(청년 선발형 120%) 이하, 재산 4억원(청년 5억원) 이하, 최근 2년 100일 또는 800시간 이상 취업 경험이 요건입니다.',
+        '2026년 Ⅰ유형 구직촉진수당은 월 60만원 × 6개월이고, 가족수당은 1인당 10만원(월 최대 40만원)입니다.',
+        '신청은 고용24 또는 가까운 고용센터에서 하고, Ⅰ유형 요건을 채우지 못하면 Ⅱ유형 심사에 동의할 수 있습니다.'
+      ],
+      go:[
+        ['triage','생계·주거 위기나 건강 위험이 보이면 먼저 등급과 붙일 제도를 정합니다.'],
+        ['work-filter','견딜 수 있는 근무 조건으로 직무를 걸러 후보를 좁힙니다.'],
+        ['hud','국취 참여 유형과 구직촉진수당·기한을 계산합니다.'],
+        ['kdt-calc','훈련을 고르기 전에 자부담과 훈련장려금을 계산합니다.'],
+        ['talk','다음 상담에서 쓸 질문과 되받아 주기를 연습합니다.']
+      ]
+    },
+    {
+      id:'mid',n:'②',t:'중장년',s:'50+ · 퇴직·2막',aria:'② 중장년 — 50세 이상, 퇴직, 생계와 제2의 진로',
+      who:'50세 이상 · 퇴직 · 생계 · 제2의 진로',
+      times:['0–3분','3–8분','8–13분','13–15분'],
+      open:{
+        say:'“오늘은 지금 상황과 지금까지 하신 일을 확인하고, 다시 일할 수 있는 길을 두세 개로 좁혀 보겠습니다. 이름과 주민등록번호는 적지 않습니다.”',
+        bnd:'“경력은 제가 판단하지 않습니다. 하신 일을 그대로 듣고, 옮길 수 있는 것과 새로 배워야 하는 것만 나눠 보겠습니다.”',
+        tips:['첫 3분은 재직·퇴직과 마지막 근무일 확인에 씁니다. 제도 기한이 여기서 갈립니다.','나이는 숫자보다 남은 근무 기간과 생활비 계획으로 이야기합니다.']
+      },
+      qs:[
+        Q('지금 일하고 계신가요? 마지막으로 일한 날이 언제인가요?','재직·퇴직과 마지막 근무일에 따라 실업급여·전직지원 경로가 갈립니다. 12개월 기한이 여기서 시작됩니다.',[
+          O('재직 중이에요','전직지원과 재직자 훈련 쪽으로 봅니다.',[['kdt-calc','재직자 훈련'],['transit','2막 노선']]),
+          O('3개월 안에 그만뒀어요','이직확인서와 수급자격 신청 기한을 먼저 확인합니다.',[['manual','실업급여'],['hud','기한 계산']]),
+          O('1년 넘게 쉬고 있어요','실업급여 기한은 지났을 수 있으니 국취·훈련·긴급복지 쪽을 봅니다.',[['triage','긴급 지원'],['manual','국취 요건']])
+        ]),
+        Q('가장 오래 하신 일에서 실제로 하신 업무를 세 가지만 말씀해 주세요.','직함은 회사마다 다릅니다. 수행 업무가 전직의 재료이고, 그대로 옮길 수 있는지 판단합니다.',[
+          O('현장·기술 업무','비슷한 공정과 직무가 있는 산업을 찾아 연결합니다.',[['valuechain','산업 공정'],['taxonomy','직무 분류']]),
+          O('관리·영업·사무','업종을 바꿔도 옮길 수 있는 업무로 번역합니다.',[['translator','업무 번역'],['work-filter','근무 조건']]),
+          O('단순·반복 업무','숙련도와 책임 범위를 구체적으로 적어 강점으로 바꿉니다.',[['translator','표현 찾기'],['portfolio','경력 정리']])
+        ]),
+        Q('그 일은 왜 그만두셨나요? 스스로 정하신 건가요?','자발적 퇴직인지가 실업급여 수급의 핵심입니다. 판단은 고용센터가 하지만, 사실은 상담에서 먼저 정리합니다.',[
+          O('권고사직·정리해고','이직확인서의 상실 사유를 확인하고 수급자격을 준비합니다.',[['manual','수급 절차'],['law','근로기준법']]),
+          O('계약 만료','계약서와 이직확인서를 대조해 이직 사유를 남깁니다.',[['manual','이직확인서']]),
+          O('제가 그만뒀어요','정당한 사유에 해당하는지 조문으로 확인하고, 아니면 다른 경로를 봅니다.',[['law','정당한 사유'],['manual','국취']])
+        ]),
+        Q('건강이나 체력 때문에 피해야 하는 일이 있나요?','할 수 있는 일보다 지속할 수 있는 일이 먼저입니다. 교대·중량물·장시간 운전을 확인합니다.',[
+          O('교대·야간은 어려워요','주간·정규 시간대 직무로 후보를 좁힙니다.',[['work-filter','교대 조건']]),
+          O('무거운 것·오래 서기는 어려워요','앉아서 하는 직무와 사무·설비 쪽을 봅니다.',[['work-filter','신체 조건'],['valuechain','직무 지도']]),
+          O('특별히 없어요','현장 조건을 확인하되 후보를 넓게 둡니다.',[['work-filter','환경 축'],['company','기업 찾기']])
+        ]),
+        Q('지금 생활비는 주로 누가 책임지고 있나요?','가구 소득과 재산은 국취·긴급복지·훈련비 지원의 기준입니다. 금액보다 구조를 먼저 듣습니다.',[
+          O('제가 책임져요','소득 단절 기간과 긴급지원 가능성을 함께 봅니다.',[['triage','위기 판정'],['hud','수당 계산']]),
+          O('배우자·자녀가 벌어요','가구 소득 기준으로 국취 유형을 확인합니다.',[['hud','유형 판정'],['manual','소득 기준']]),
+          O('연금·저축으로 버텨요','버틸 수 있는 기간을 계산해 준비 기간을 정합니다.',[['triage','생계 점검'],['reality','현실 점검']])
+        ]),
+        Q('같은 일을 계속하실 생각인가요, 다른 분야로 옮기실 생각인가요?','2막의 방향에 따라 훈련 기간과 자격이 달라집니다. 둘 다 열어 두고 한쪽부터 봅니다.',[
+          O('같은 일을 계속','같은 직무의 채용 시장과 요구 자격을 확인합니다.',[['portals','채용 공고'],['company','기업 정보']]),
+          O('다른 분야로','옮길 분야의 공정과 입문 직무를 먼저 봅니다.',[['valuechain','산업 구조'],['transit','전직 노선']]),
+          O('아직 모르겠어요','견딜 수 있는 조건으로 후보를 걸러 방향을 좁힙니다.',[['work-filter','조건 거르기'],['transit','노선 그리기']])
+        ]),
+        Q('퇴직 후 지금까지 무엇을 해 보셨나요?','이미 받은 지원·훈련은 중복 제한이 있습니다. 기한과 이력을 확인해야 다음 신청이 막히지 않습니다.',[
+          O('훈련을 들었어요','수료증과 훈련 이력을 확인하고 다음 훈련 한도를 봅니다.',[['kdt-calc','훈련 한도'],['cert','자격 확인']]),
+          O('지원금을 받았어요','참여 이력과 재참여 제한 기간을 확인합니다.',[['manual','재참여 제한'],['hud','참여 이력']]),
+          O('아무것도 못 했어요','가장 짧은 절차부터 다시 시작합니다.',[['triage','우선순위'],['hud','첫 상담']])
+        ])
+      ],
+      docs:[
+        ['지참','신분증'],
+        ['지참','경력증명서·재직증명서'],
+        ['확인','이직확인서','퇴직자, 사업주 발급'],
+        ['확인','피보험자격 상실 신고','고용24·근로복지공단'],
+        ['확인','소득금액증명원','사업·프리랜서'],
+        ['확인','건강보험 자격득실확인서','가구 소득 확인'],
+        ['지참','최근 급여명세서','임금 산정 확인'],
+        ['지참','통장 사본','수당 신청 시']
+      ],
+      note:[
+        '구직급여는 이직일 다음 날부터 12개월 안에 신청해야 하고, 남은 일수가 있어도 이 기간이 지나면 지급되지 않습니다.',
+        '이직확인서는 사업주가 발급 요청을 받은 날부터 10일 안에 발급하고, 피보험자격 상실 신고는 사유가 발생한 달의 다음 달 15일까지 합니다.',
+        '중장년내일센터는 만 40세 이상 재직(퇴직 예정)자와 구직자에게 생애설계·재취업 상담을 제공합니다.'
+      ],
+      go:[
+        ['manual','실업급여·국취 요건과 기한을 근거 조문으로 확인합니다.'],
+        ['hud','수당·감액·기한을 계산하고 상담일지를 씁니다.'],
+        ['transit','2막 노선으로 전직 경로를 그려 봅니다.'],
+        ['work-filter','체력과 교대 조건으로 직무를 거릅니다.'],
+        ['triage','생계 위기가 있으면 긴급지원을 먼저 붙입니다.']
+      ]
+    },
+    {
+      id:'women',n:'③',t:'경력보유여성',s:'재진입·돌봄·시간제',aria:'③ 경력보유여성 — 재진입, 돌봄, 시간제와 직종 전환',
+      who:'재진입 · 돌봄 · 시간제 · 직종 전환',
+      times:['0–3분','3–8분','8–13분','13–15분'],
+      open:{
+        say:'“오늘은 지금 쓸 수 있는 시간과 그동안 하신 일을 먼저 확인하고, 다시 일을 시작할 길을 두세 개로 좁혀 보겠습니다. 이름과 주민등록번호는 적지 않습니다.”',
+        bnd:'“아이 돌봄이나 집안일 때문에 시간이 정해져 있으면 그 조건을 먼저 말씀해 주세요. 조건을 맞추는 게 먼저입니다.”',
+        tips:['첫 3분은 돌봄 시간표를 확인합니다. 가능한 시간이 직무 폭을 정합니다.','경력 공백을 “왜 쉬었나”로 묻지 않고 “언제까지 일했나”로 묻습니다.']
+      },
+      qs:[
+        Q('지금 돌봄이 필요한 분이 있나요? 하루 중 몇 시부터 몇 시까지 일할 수 있나요?','가능한 시간이 직무 폭을 정합니다. 의지보다 조건을 먼저 확인합니다.',[
+          O('아이 등하교 전후로 가능해요','시간제와 유연 근무가 있는 직무로 좁힙니다.',[['work-filter','시간 조건'],['hud','수당 계산']]),
+          O('종일 가능해요','전일제 재진입과 훈련을 함께 봅니다.',[['kdt-calc','훈련 기간'],['transit','재진입 노선']]),
+          O('아직 정하지 못했어요','돌봄 일정을 먼저 표로 정하고, 그다음 시간을 정합니다.',[['talk','일정 정리']])
+        ]),
+        Q('경력이 끊기기 전에 하신 일과 마지막 근무 시기를 알려 주세요.','공백이 길수록 바로 재진입보다 훈련·인턴이 효과적입니다. 마지막 근무일이 기준점입니다.',[
+          O('3년 안이에요','같은 직무 재진입을 먼저 시도합니다.',[['portals','채용 공고'],['translator','경력 번역']]),
+          O('5년 넘었어요','훈련·인턴으로 최근 경력을 새로 만드는 쪽을 봅니다.',[['transit','인턴 경로'],['kdt-calc','훈련비']]),
+          O('10년 넘었어요','자격·훈련부터 다시 세우고 단기 일경험을 먼저 붙입니다.',[['transit','재진입 노선'],['cert','자격 조건']])
+        ]),
+        Q('그 일에서 쓰신 프로그램·자격·업무 중에 지금도 쓸 수 있는 건 뭐가 있나요?','공백이 길어도 도구와 자격은 남습니다. 그대로 쓸 수 있는 것과 다시 배워야 하는 것을 나눕니다.',[
+          O('사무·회계 프로그램','실무 시험이나 자격으로 증명하는 방법을 봅니다.',[['cert','자격 시험'],['kdt-calc','훈련 과정']]),
+          O('자격증이 있어요','자격의 유효 조건과 채용공고 요구를 대조합니다.',[['cert','자격 요건'],['portals','공고 비교']]),
+          O('잘 모르겠어요','마지막 업무를 하루 단위로 적어 쓸 수 있는 것을 찾습니다.',[['translator','업무 용어'],['portfolio','경력 정리']])
+        ]),
+        Q('다시 일을 시작할 때 가장 걱정되는 건 뭔가요?','걱정마다 다른 지원이 붙습니다. 경력 공백·아이 돌봄·자신감을 구분해 듣습니다.',[
+          O('경력 공백','공백을 설명하는 문장과 대체 경험을 함께 만듭니다.',[['surgery','문장 다듬기'],['interview','면접 답변']]),
+          O('아이 돌봄','돌봄 지원과 시간제 조건을 함께 확인합니다.',[['talk','돌봄 대화'],['work-filter','시간 조건']]),
+          O('자신감','작은 성공 경험부터 쌓는 순서로 갑니다.',[['talk','자기 말하기'],['reality','현실 점검']])
+        ]),
+        Q('전일제와 시간제 중 어느 쪽이 지금 현실적일까요?','임금·수당·훈련 시간이 모두 여기서 갈립니다. 현실적인 쪽을 고르고 나중에 넓힙니다.',[
+          O('시간제','시간제 일자리와 훈련 병행 가능성을 계산합니다.',[['work-filter','시간제 직무'],['kdt-calc','훈련 병행']]),
+          O('전일제','전일제 재진입 공고와 요구 경력을 봅니다.',[['portals','전일제 공고'],['reality','임금 수준']]),
+          O('둘 다 가능해요','임금과 돌봄을 기준으로 우선순위를 정합니다.',[['reality','임금 비교'],['talk','우선순위']])
+        ]),
+        Q('아이·부모 돌봄을 대신 맡아 줄 수 있는 사람이 있나요?','돌봄 계획이 없으면 훈련·인턴을 시작해도 중간에 끊깁니다. 훈련 시간과 겹치는지 확인합니다.',[
+          O('가족이 도와줘요','훈련·인턴 시간을 그 일정에 맞춥니다.',[['transit','인턴'],['kdt-calc','훈련 시간']]),
+          O('이용할 수 있는 돌봄 서비스가 있어요','아이돌봄서비스 등 이용 시간을 확인해 훈련 시간과 맞춥니다.',[['talk','지원 정리']]),
+          O('없어요','짧은 시간제 훈련과 일경험부터 시작합니다.',[['work-filter','시간제'],['transit','단기 경로']])
+        ]),
+        Q('훈련을 받는다면 어떤 직종이 궁금하세요?','새일센터 훈련은 지역 구인 수요를 반영합니다. 바람과 실제 채용을 함께 봅니다.',[
+          O('사무·서비스','지역 채용공고와 훈련과정을 맞대어 봅니다.',[['portals','지역 공고'],['kdt-calc','과정 비교']]),
+          O('기술·자격','자격 요건과 훈련 기간을 계산합니다.',[['cert','자격'],['kdt-calc','기간 계산']]),
+          O('모르겠어요','견딜 수 있는 조건으로 직무를 걸러 후보 세 개를 만듭니다.',[['work-filter','직무 거르기'],['taxonomy','직무 분류']])
+        ])
+      ],
+      docs:[
+        ['지참','신분증'],
+        ['지참','경력증명서','마지막 사업장'],
+        ['지참','자격증·수료증','있으면'],
+        ['확인','건강보험 자격득실확인서','가구 소득 확인'],
+        ['확인','돌봄 일정표','아이·부모 돌봄 시간'],
+        ['지참','통장 사본','수당·훈련비'],
+        ['지참','한부모·차상위 증명','해당 시']
+      ],
+      note:[
+        '여성새로일하기센터(전국 159개소, 1544-1199)는 경력단절여성에게 집단상담·직업교육훈련·새일여성인턴(3개월, 주 35시간 이상)을 제공합니다.',
+        '국민취업지원제도 Ⅱ유형은 특정계층과 청년은 소득·재산과 무관하게, 중장년은 중위소득 100% 이하이면 참여할 수 있습니다.',
+        'Ⅰ유형 요건을 채우면 2026년 구직촉진수당 월 60만원 × 6개월을 받습니다.'
+      ],
+      go:[
+        ['transit','재진입과 전환 경로를 노선으로 그립니다.'],
+        ['work-filter','가능한 시간과 근무 조건으로 직무를 거릅니다.'],
+        ['kdt-calc','훈련비 자부담과 훈련장려금을 계산합니다.'],
+        ['talk','경력 공백을 설명하는 말을 연습합니다.'],
+        ['hud','국취 유형과 수당을 확인합니다.']
+      ]
+    },
+    {
+      id:'change',n:'④',t:'전직·이직',s:'재직·공백·업종 전환',aria:'④ 전직·이직 준비자 — 재직 또는 단기 공백, 업종 전환',
+      who:'재직 중 또는 단기 공백 · 업종 전환',
+      times:['0–2분','2–7분','7–12분','12–15분'],
+      open:{
+        say:'“오늘은 지금 다니는 곳을 그만두려는 이유와 옮길 수 있는 업무를 확인하고, 준비 기간과 순서를 정하겠습니다. 이름과 주민등록번호는 적지 않습니다.”',
+        bnd:'“회사 이야기는 사실만 확인하겠습니다. 사직 시점과 수급 여부는 제가 정하지 않고, 확인할 서류와 기한만 짚어 드립니다.”',
+        tips:['첫 2분은 재직 상태와 마지막 근무일을 확인합니다. 재직자 훈련과 실업급여는 동시에 쓸 수 없습니다.','“왜 옮기려는가”를 먼저 듣고, 그 이유에 맞는 해법을 고릅니다.']
+      },
+      qs:[
+        Q('지금 재직 중인가요, 쉬고 계신가요? 마지막 근무일이 언제인가요?','재직 여부에 따라 쓸 수 있는 제도가 다릅니다. 재직자 훈련과 실업급여는 같은 사람이 동시에 쓸 수 없습니다.',[
+          O('재직 중이에요','재직자 훈련과 이직 준비를 병행하는 일정을 짭니다.',[['kdt-calc','재직자 훈련'],['transit','전직 계획']]),
+          O('3개월 안에 그만뒀어요','이직확인서와 수급자격 기한을 먼저 확인합니다.',[['manual','수급 절차'],['hud','기한 계산']]),
+          O('1년 넘게 쉬고 있어요','실업급여 기한을 확인하고 훈련·국취 쪽으로 봅니다.',[['manual','국취'],['triage','생계 점검']])
+        ]),
+        Q('지금 일에서 옮기고 싶은 이유가 뭔가요? 사람·보상·성장·안정 중에 고르신다면요.','이유가 같아도 해법이 다릅니다. 사람 때문이면 조직, 보상이면 직무, 성장이면 업종입니다.',[
+          O('사람·조직','같은 직무로 조직만 바꾸는 이직을 먼저 봅니다.',[['company','기업 찾기'],['portals','공고']]),
+          O('보상·처우','같은 직무의 임금 분포와 협상 여지를 확인합니다.',[['reality','임금 분포'],['company','규모 비교']]),
+          O('성장·업종','옮길 업종의 공정과 입문 직무를 확인합니다.',[['valuechain','산업 구조'],['taxonomy','직무 분류']])
+        ]),
+        Q('지금 하는 일에서 가장 잘하는 업무 세 가지는 뭔가요?','전직에서 옮길 수 있는 것은 직함이 아니라 업무입니다. 성과 숫자와 함께 적습니다.',[
+          O('숫자로 말할 수 있어요','성과를 수치로 정리해 포트폴리오 재료로 만듭니다.',[['portfolio','성과 정리'],['surgery','문장 다듬기']]),
+          O('경험으로 말할 수 있어요','상황-행동-결과 순서로 문장을 만듭니다.',[['interview','답변 구조'],['surgery','자소서']]),
+          O('잘 모르겠어요','하루 업무를 시간순으로 적어 강점을 찾습니다.',[['translator','업무 용어'],['portfolio','경력 정리']])
+        ]),
+        Q('옮기려는 분야에서 이미 요구하는 자격·경력을 확인해 보셨나요?','확인하지 않은 전환은 준비 기간을 두 배로 만듭니다. 공고 세 건이면 시장의 요구가 보입니다.',[
+          O('확인했어요','부족한 항목을 훈련·자격으로 채우는 계획을 세웁니다.',[['kdt-calc','훈련비'],['cert','자격 요건']]),
+          O('대략만 알아요','공고 세 건을 골라 요구 조건을 표로 정리합니다.',[['portals','공고'],['surgery','공고 읽기']]),
+          O('아직이에요','오늘 공고 세 건만 보고 다음 상담에서 맞춥니다.',[['portals','채용 사이트'],['company','기업 정보']])
+        ]),
+        Q('이직까지 시간을 얼마나 쓸 수 있나요? 재직 중에 병행하시나요?','준비 기간이 훈련 길이와 지원금 수급을 정합니다.',[
+          O('재직 중 병행','퇴근 후·주말 훈련과 온라인 과정으로 좁힙니다.',[['kdt-calc','과정 비교'],['portals','공고']]),
+          O('전업으로 준비','생활비 버틸 기간을 계산하고 훈련·수당을 함께 봅니다.',[['kdt-calc','훈련비'],['hud','수당 계산']]),
+          O('3개월 안에 끝내야 해요','단기 자격과 포트폴리오 중심으로 줄입니다.',[['cert','단기 자격'],['portfolio','포트폴리오']])
+        ]),
+        Q('임금·근무지·근무시간 중에 양보할 수 없는 것은 뭔가요?','조건의 우선순위를 정하면 후보가 절반으로 줄고, 면접에서 흔들리지 않습니다.',[
+          O('임금','임금 하한을 정하고 그 아래 공고는 빼고 봅니다.',[['reality','임금 수준'],['portals','공고 비교']]),
+          O('근무지·통근','통근 시간 안의 회사와 산업 클러스터를 봅니다.',[['company','기업·지역'],['work-filter','근무 조건']]),
+          O('근무시간','시간 조건이 맞는 직무로 먼저 거릅니다.',[['work-filter','시간 조건']])
+        ]),
+        Q('사직 의사를 회사에 말씀하셨나요? 권고사직이나 계약 만료인가요?','이직 사유가 실업급여 수급을 가릅니다. 회사와 말이 다르면 이직확인서에서 문제가 됩니다.',[
+          O('권고사직·계약 만료','상실 사유 코드를 확인하고 이직확인서를 요청합니다.',[['manual','이직확인서'],['law','해고·계약']]),
+          O('자발적 사직','정당한 사유에 해당하는지 조문으로 확인합니다.',[['law','정당한 사유'],['manual','수급자격']]),
+          O('아직 회사에 말 안 했어요','말할 시점과 방식, 인수인계를 정리합니다.',[['talk','전달 연습'],['law','사직 절차']])
+        ]),
+        Q('지원하려는 회사나 직무 목록이 있나요?','목록이 있으면 공고 문구와 회사 정보를 함께 볼 수 있습니다. 없으면 오늘 세 개부터 만듭니다.',[
+          O('있어요','회사 규모·업종·재무를 확인해 지원 순서를 정합니다.',[['company','기업 명함첩'],['fin-lab','재무 읽기']]),
+          O('몇 개만 있어요','부족한 목록을 채우고 공고 문구를 뜯어 봅니다.',[['portals','채용 사이트'],['surgery','공고 읽기']]),
+          O('없어요','조건으로 회사를 거른 뒤 세 개를 고릅니다.',[['portals','채용 사이트'],['company','기업 찾기']])
+        ])
+      ],
+      docs:[
+        ['지참','신분증'],
+        ['확인','재직증명서 또는 이직확인서'],
+        ['확인','근로계약서','근무시간·임금'],
+        ['지참','최근 3개월 급여명세서'],
+        ['지참','경력기술서·포트폴리오 초안'],
+        ['확인','고용보험 이력','고용24 조회'],
+        ['지참','지원 직무 채용공고 3건'],
+        ['지참','자격·교육 이수 내역','있으면']
+      ],
+      note:[
+        '재직 중에는 국민내일배움카드로 재직자 훈련을 받을 수 있고(구직 신청 불필요), 카드는 5년 300만원 한도에 자부담 0~55%입니다.',
+        '퇴직하면 이직일 다음 날부터 12개월 안에 수급자격을 신청해야 하고, 이직확인서는 사업주가 10일 안에 발급합니다.',
+        '훈련장려금은 140시간 이상 과정에서 지급되고(월 최대 11만 6천원), 실업급여 수급 중이거나 출석률 80% 미만이면 지급되지 않습니다.'
+      ],
+      go:[
+        ['work-filter','조건으로 직무를 먼저 거릅니다.'],
+        ['company','지원할 회사의 규모·업종·지역을 확인합니다.'],
+        ['surgery','공고 문구와 자소서 문장을 뜯어 봅니다.'],
+        ['interview','면접 질문과 답의 뼈대를 연습합니다.'],
+        ['manual','퇴직 시 실업급여 요건과 기한을 확인합니다.']
+      ]
+    }
+  ];
+
+  /* ---------- 상태 ---------- */
+  var KEY='jc-intake-v1';
+  var state={t:'youth',s:0,sel:{},docs:{},memo:{}};
+  try{
+    var raw=sessionStorage.getItem(KEY);
+    if(raw){var sv=JSON.parse(raw);if(sv&&typeof sv==='object'){
+      if(TYPES.some(function(x){return x.id===sv.t;})) state.t=sv.t;
+      if(typeof sv.s==='number'&&sv.s>=0&&sv.s<4) state.s=sv.s;
+      if(sv.sel&&typeof sv.sel==='object') state.sel=sv.sel;
+      if(sv.docs&&typeof sv.docs==='object') state.docs=sv.docs;
+      if(sv.memo&&typeof sv.memo==='object') state.memo=sv.memo;
+    }}
+  }catch(e){}
+  function save(){try{sessionStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+  function typeOf(id){for(var i=0;i<TYPES.length;i++) if(TYPES[i].id===id) return TYPES[i];return TYPES[0];}
+  function selOf(id){if(!state.sel[id]||typeof state.sel[id]!=='object') state.sel[id]={};return state.sel[id];}
+  function docsOf(id){if(!state.docs[id]||typeof state.docs[id]!=='object') state.docs[id]={};return state.docs[id];}
+  function memoOf(id){return typeof state.memo[id]==='string'?state.memo[id]:'';}
+  function cur(){return typeOf(state.t);}
+
+  var live=$('#live');
+  function say(msg){if(live){live.textContent='';setTimeout(function(){live.textContent=msg;},30);}}
+
+  /* ---------- 유형 탭 ---------- */
+  var typesEl=$('#types');
+  TYPES.forEach(function(tp){
+    var b=d.createElement('button');
+    b.type='button';b.className='type';b.setAttribute('data-t',tp.id);
+    b.setAttribute('aria-pressed',String(state.t===tp.id));
+    b.setAttribute('aria-label',tp.aria);
+    b.innerHTML='<span class="t-n" aria-hidden="true">'+tp.n+'</span><span class="t-t">'+tp.t+'</span><span class="t-s">'+tp.s+'</span>';
+    b.addEventListener('click',function(){setType(tp.id);});
+    typesEl.appendChild(b);
+  });
+
+  /* ---------- 단계 탭 ---------- */
+  var STEP_NAMES=['오프닝','질문','서류','연계'];
+  var stepsEl=$('#steps');
+  STEP_NAMES.forEach(function(name,i){
+    var b=d.createElement('button');
+    b.type='button';b.className='step';b.id='st-'+i;
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-controls','panel');
+    b.setAttribute('aria-selected',String(state.s===i));
+    b.innerHTML='<span class="s-t">'+name+'</span><span class="s-m" data-m="'+i+'"></span>';
+    b.addEventListener('click',function(){setStep(i,true);});
+    b.addEventListener('keydown',function(ev){
+      var k=ev.key;
+      if(k!=='ArrowRight'&&k!=='ArrowLeft'&&k!=='Home'&&k!=='End') return;
+      ev.preventDefault();
+      var next=state.s;
+      if(k==='ArrowRight') next=(state.s+1)%4;
+      else if(k==='ArrowLeft') next=(state.s+3)%4;
+      else if(k==='Home') next=0;
+      else next=3;
+      setStep(next,true);
+      var el=$('#st-'+next); if(el) el.focus();
+    });
+    stepsEl.appendChild(b);
+  });
+
+  function paintTabs(){
+    $$('.type',typesEl).forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-t')===state.t));});
+    $$('.step',stepsEl).forEach(function(b,i){
+      b.setAttribute('aria-selected',String(i===state.s));
+      var m=b.querySelector('.s-m'); if(m) m.textContent=cur().times[i];
+    });
+    var panel=$('#panel'); if(panel) panel.setAttribute('aria-labelledby','st-'+state.s);
+  }
+
+  function setType(id){
+    if(id===state.t) return;
+    state.t=id; state.s=0; save();
+    paintTabs(); renderPanel(true); paintMemo(); paintProgress();
+    say(typeOf(id).t+' 유형으로 바뀌었습니다.');
+  }
+  function setStep(i,focus){
+    if(i===state.s){ if(focus) $('#panel').focus({preventScroll:true}); return; }
+    state.s=i; save();
+    paintTabs(); renderPanel(true);
+    say((i+1)+'단계 '+STEP_NAMES[i]+'입니다.');
+    if(focus){var p=$('#panel'); if(p) p.focus({preventScroll:true});}
+  }
+
+  /* ---------- 패널 ---------- */
+  var panel=$('#panel');
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function chip(id,label){
+    var href=SEC[id]||'../';
+    return '<a class="chip" href="'+href+'">'+esc(label)+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>';
+  }
+
+  function head(num,t,g){
+    return '<div class="p-head"><div><h2>'+esc(t)+'</h2><p>'+esc(g)+'</p></div><span class="p-n">'+(num+1)+' / 4</span></div>';
+  }
+
+  function renderPanel(move){
+    var tp=cur(), step=state.s, html='';
+    if(step===0){
+      html=head(0,'① 오프닝 — 라포와 경계',tp.who+' · 오늘 15분의 목적과 기록 범위를 먼저 말합니다.')
+        +'<div class="p-body"><blockquote class="say">'+esc(tp.open.say)+'</blockquote>'
+        +'<div class="bnd"><b>경계 설정</b><p>'+esc(tp.open.bnd)+'</p></div>'
+        +'<ul class="tips">'+tp.open.tips.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>';
+    } else if(step===1){
+      var sel=selOf(tp.id);
+      html=head(1,'② 질문 — '+tp.qs.length+'개', '한 번에 하나씩 펼칩니다. 답변 신호를 고르면 다음 행동과 자료가 나옵니다.')
+        +'<div class="p-body" id="qlist">';
+      tp.qs.forEach(function(item,qi){
+        var open=qi===0;
+        html+='<div class="q" data-i="'+qi+'"><button type="button" class="q-h" aria-expanded="'+open+'" aria-controls="qb'+qi+'">'
+          +'<span class="q-n" aria-hidden="true">'+(qi+1)+'</span><span class="q-t">'+esc(item.q)+'</span>'
+          +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>'
+          +'<div class="q-b" id="qb'+qi+'"'+(open?'':' hidden')+'>'
+          +'<p class="why"><b>왜 묻나</b> '+esc(item.why)+'</p>'
+          +'<div class="opts" role="group" aria-label="답변 신호">'
+          +item.opts.map(function(o,oi){return '<button type="button" class="opt" data-qi="'+qi+'" data-oi="'+oi+'" aria-pressed="'+(sel[qi]===oi)+'"><span class="o-a">'+esc(o.a)+'</span><span class="o-c" aria-hidden="true">'+(sel[qi]===oi?'✓':'›')+'</span></button>';}).join('')
+          +'</div>'
+          +'<div class="q-do" data-do="'+qi+'"'+(sel[qi]===undefined?' hidden':'')+'>'+(sel[qi]===undefined?'':doHTML(item.opts[sel[qi]]))+'</div>'
+          +'</div></div>';
+      });
+      html+='</div>';
+    } else if(step===2){
+      var docs=docsOf(tp.id);
+      var groups=[['지참','지참 서류'],['확인','확인할 것']];
+      html=head(2,'③ 서류 — 지참과 확인', '체크는 이 유형에만 저장됩니다. 공식 제출 서류는 기관 안내를 따릅니다.')
+        +'<div class="p-body">';
+      groups.forEach(function(g){
+        var items=tp.docs.filter(function(x){return x[0]===g[0];});
+        if(!items.length) return;
+        html+='<div class="grp"><h3>'+g[1]+'</h3><div class="docs">';
+        items.forEach(function(x){
+          var i=tp.docs.indexOf(x);
+          html+='<label class="ck"><input type="checkbox" data-di="'+i+'"'+(docs[i]?' checked':'')+'><span class="bx" aria-hidden="true"></span><span class="ck-t">'+esc(x[1])+(x[2]?'<em>'+esc(x[2])+'</em>':'')+'</span></label>';
+        });
+        html+='</div></div>';
+      });
+      html+='<div class="note"><h3>제도 기준 (2026-11-21 확인)</h3><ul>'
+        +tp.note.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')
+        +'<li><a href="https://www.work24.go.kr" target="_blank" rel="noopener">고용24 제도안내 열기</a></li>'
+        +'</ul></div></div>';
+    } else {
+      html=head(3,'④ 정리·연계', '합의할 것과 다음 상담까지 할 일을 정하고, 바로 이어질 자료로 넘깁니다.')
+        +'<div class="p-body"><div class="sum"><h3>오늘 합의할 것</h3><div id="sumBox"></div></div>'
+        +'<h3 class="goh">바로 이어서</h3><div class="go">'
+        +tp.go.map(function(g){var s=SEC[g[0]];var n=nameOf(g[0]);return '<a class="go-i" href="'+s+'"><b>'+esc(n)+'</b><span>'+esc(g[1])+'</span></a>';}).join('')
+        +'</div><p class="last"><b>마지막 2분</b> 다음 상담 날짜를 정하고, 오늘 정한 일 하나를 내담자 입으로 다시 말하게 합니다.</p></div>';
+    }
+    panel.innerHTML=html;
+    if(move){panel.classList.remove('in');void panel.offsetWidth;panel.classList.add('in');}
+    bindPanel(step);
+    if(step===3) paintSummary();
+  }
+
+  function nameOf(id){
+    var N={triage:'내담자 트리아지 보드',hud:'실무 상담 HUD',talk:'상담 대화 연습장','work-filter':'직업 현실 리얼 필터',
+      translator:'내담자 언어 번역기',manual:'구직자취업촉진법 실무 가이드',law:'직업상담 법전','kdt-calc':'국비지원 자부담 계산기',
+      transit:'환승노선도',reality:'취업 현위치',cert:'자격증 도감',taxonomy:'분류 교차 사전',company:'기업 명함첩',
+      portals:'채용 사이트 안내판',interview:'면접 전술 덱',surgery:'서류 해부실',portfolio:'포트폴리오 편집실',
+      valuechain:'산업별 공정 지도',thermometer:'산업 온도계','fin-lab':'기업 재무제표 해석',theory:'직업상담 이론 위키',
+      decalcomania:'커리어데칼코마니'};
+    return N[id]||'자료실';
+  }
+
+  function doHTML(o){
+    return '<span class="d-k">다음</span><p>'+esc(o.do)+'</p>'+(o.chips&&o.chips.length?'<div class="chips">'+o.chips.map(function(c){return chip(c[0],c[1]);}).join('')+'</div>':'');
+  }
+
+  function bindPanel(step){
+    var pvT=$('#pvT'); /* noop */
+    if(step===1){
+      $$('.q-h',panel).forEach(function(btn){
+        btn.addEventListener('click',function(){
+          var open=btn.getAttribute('aria-expanded')==='true';
+          btn.setAttribute('aria-expanded',String(!open));
+          var body=d.getElementById(btn.getAttribute('aria-controls'));
+          if(body) body.hidden=open;
+        });
+      });
+      $$('.opt',panel).forEach(function(btn){
+        btn.addEventListener('click',function(){
+          var qi=+btn.getAttribute('data-qi'), oi=+btn.getAttribute('data-oi');
+          var tp=cur(), sel=selOf(tp.id);
+          var same=sel[qi]===oi;
+          if(same) delete sel[qi]; else sel[qi]=oi;
+          save();
+          $$('.opt',btn.parentNode).forEach(function(b){
+            var on=(+b.getAttribute('data-oi'))===sel[qi]&&sel[qi]!==undefined;
+            b.setAttribute('aria-pressed',String(on));
+            var c=b.querySelector('.o-c'); if(c) c.textContent=on?'✓':'›';
+          });
+          var box=panel.querySelector('.q-do[data-do="'+qi+'"]');
+          if(box){ if(sel[qi]===undefined){box.hidden=true;box.innerHTML='';} else {box.hidden=false;box.innerHTML=doHTML(tp.qs[qi].opts[sel[qi]]);} }
+          paintProgress();
+          say(sel[qi]===undefined?'답변 표시를 지웠습니다.':tp.qs[qi].opts[sel[qi]].a+' — '+tp.qs[qi].opts[sel[qi]].do);
+        });
+      });
+    }
+    if(step===2){
+      $$('input[data-di]',panel).forEach(function(inp){
+        inp.addEventListener('change',function(){
+          var tp=cur(), docs=docsOf(tp.id), i=+inp.getAttribute('data-di');
+          if(inp.checked) docs[i]=1; else delete docs[i];
+          save(); paintProgress();
+        });
+      });
+    }
+    if(step===3){
+      paintSummary();
+    }
+  }
+
+  function paintSummary(){
+    var box=$('#sumBox'); if(!box) return;
+    var tp=cur(), sel=selOf(tp.id), lines=[];
+    tp.qs.forEach(function(item,qi){
+      if(sel[qi]===undefined) return;
+      lines.push(item.opts[sel[qi]].do);
+    });
+    if(!lines.length){
+      box.innerHTML='<p class="emp">질문 단계에서 <b>답변 신호</b>를 고르면 여기에 합의할 것이 모입니다. 아직 고른 답이 없습니다.</p>';
+      return;
+    }
+    box.innerHTML='<ol>'+lines.slice(0,8).map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>';
+  }
+
+  /* ---------- 진행 ---------- */
+  function paintProgress(){
+    var tp=cur(), sel=selOf(tp.id), docs=docsOf(tp.id);
+    var nS=Object.keys(sel).filter(function(k){return sel[k]!==undefined;}).length;
+    var nD=Object.keys(docs).filter(function(k){return docs[k];}).length;
+    var total=Math.max(1,tp.qs.length), totalD=Math.max(1,tp.docs.length);
+    var pgA=$('#pgA'), pgD=$('#pgD'), barA=$('#barA'), barD=$('#barD'), tag=$('#pgTag');
+    if(pgA) pgA.textContent=nS+' / '+tp.qs.length;
+    if(pgD) pgD.textContent=nD+' / '+tp.docs.length;
+    if(barA) barA.style.transform='scaleX('+(nS/total).toFixed(3)+')';
+    if(barD) barD.style.transform='scaleX('+(nD/totalD).toFixed(3)+')';
+    if(tag) tag.textContent=tp.t;
+  }
+
+  /* ---------- 메모 ---------- */
+  var memoEl=$('#memo'), mcount=$('#mcount'), resetBtn=$('#reset');
+  function paintMemo(){
+    var v=memoOf(state.t);
+    if(memoEl.value!==v) memoEl.value=v;
+    if(mcount) mcount.textContent=v.length+'자';
+  }
+  var mt=0;
+  memoEl.addEventListener('input',function(){
+    state.memo[state.t]=memoEl.value;
+    if(mcount) mcount.textContent=memoEl.value.length+'자';
+    clearTimeout(mt); mt=setTimeout(save,250);
+  });
+
+  var armed=false, armT=0;
+  function disarm(){
+    armed=false; clearTimeout(armT);
+    resetBtn.removeAttribute('data-armed');
+    resetBtn.textContent='기록 지우기';
+  }
+  resetBtn.addEventListener('click',function(){
+    if(!armed){
+      armed=true; resetBtn.setAttribute('data-armed','true'); resetBtn.textContent='한 번 더 누르면 지웁니다';
+      say('한 번 더 누르면 이 유형의 메모와 체크가 지워집니다.');
+      armT=setTimeout(disarm,4000);
+      return;
+    }
+    disarm();
+    delete state.memo[state.t]; delete state.docs[state.t]; delete state.sel[state.t];
+    save(); paintMemo(); paintProgress();
+    if(state.s===1||state.s===2||state.s===3) renderPanel(false);
+    say(cur().t+' 유형의 메모와 체크를 지웠습니다.');
+  });
+
+  /* ---------- 이용 안내 ---------- */
+  var pvT=$('#pvT'), pvB=$('#pvB');
+  pvT.addEventListener('click',function(){
+    var open=pvT.getAttribute('aria-expanded')==='true';
+    pvT.setAttribute('aria-expanded',String(!open));
+    pvB.hidden=open;
+    pvT.querySelector('.pv-c').textContent=open?'펼치기':'접기';
+  });
+
+  paintTabs(); renderPanel(false); paintMemo(); paintProgress();
+})();
+</script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>

@@ -36,7 +36,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 # /mydeck/은 저장한 덱, /portals/?q=·#p=는 검색·딥링크 동선이라 섹터 밖에서 따로 잰다.
 PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
          "/portals/#p=work24", "/flow/", "/mydeck/",
-         "/work-filter/", "/kdt-calc/", "/triage/", "/fin-lab/", "/valuechain/", "/valuechain/?i=battery&s=3"]
+         "/work-filter/", "/kdt-calc/", "/triage/", "/fin-lab/", "/valuechain/", "/valuechain/?i=battery&s=3", "/intake/"]
 
 # 화면이 아닌 폴더(섹터 목록 점검에서 뺀다) — 이유를 함께 적는다.
 NON_SCREEN = {
@@ -176,6 +176,20 @@ PROBES = {
         const tight = pos.split(' ').join('');
         return {ok: name.trim() === '이차전지' && head.trim() === '음극재·분리막·전해액' && tight === '3/6',
                 detail: `산업 ${name.trim()} · 단계 ${head.trim()} · ${pos.trim()}`};
+    }""",
+    "/intake/": """() => {
+        // 32번 초기상담 접수·구조화 시트 — 네 유형 탭·네 단계 탭이 서고, 첫 단계(오프닝)가 그려졌는가.
+        // 질문 단계로 바꿔 7~8개 질문과 답변 신호가 실제로 만들어지는지까지 본다(탭이 죽어 있으면 잡힌다).
+        const types = document.querySelectorAll('#types .type').length;
+        const steps = document.querySelectorAll('#steps .step').length;
+        const say = (document.querySelector('.say') || {}).innerText || '';
+        const memo = !!document.getElementById('memo');
+        document.getElementById('st-1').click();
+        const qs = document.querySelectorAll('#qlist .q').length;
+        const opts = document.querySelectorAll('#qlist .opt').length;
+        document.getElementById('st-0').click();
+        return {ok: types === 4 && steps === 4 && say.trim().length >= 30 && memo && qs >= 7 && opts >= 21,
+                detail: `유형 ${types} · 단계 ${steps} · 오프닝 ${say.trim().length}자 · 질문 ${qs} · 답변 신호 ${opts} · 메모 ${memo ? '있음' : '없음'}`};
     }""",
     "/emerging/": """() => {
         const art = (document.querySelector('#art') || {innerText: ''}).innerText.trim().length;
