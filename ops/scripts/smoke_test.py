@@ -37,7 +37,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 PAGES = ["/", "/briefing/", "/emerging/", "/thermometer/", "/translator/", "/portals/", "/portals/?q=gosi",
          "/portals/#p=work24", "/flow/", "/mydeck/",
          "/work-filter/", "/kdt-calc/", "/triage/", "/fin-lab/", "/valuechain/", "/valuechain/?i=battery&s=3",
-         "/intake/", "/policy-match/"]
+         "/intake/", "/policy-match/", "/pay-calc/"]
 
 # 화면이 아닌 폴더(섹터 목록 점검에서 뺀다) — 이유를 함께 적는다.
 NON_SCREEN = {
@@ -87,6 +87,15 @@ PROBES = {
         const presets = document.querySelectorAll('#presets button, .pchip').length;
         const broken = /불러오지 못했습니다/.test(document.body.innerText);
         return {ok: rows >= 3 && presets >= 2 && !broken, detail: `계산 줄 ${rows} · 빠른 시나리오 ${presets}${broken ? ' · 불러오기 실패' : ''}`};
+    }""",
+    "/pay-calc/": """() => {
+        // 계산 명세서가 실제로 그려졌는가 — 머리·큰 숫자·항목 줄 수만 본다(값은 입력에 따라 달라진다).
+        const big = (document.querySelector('#benSheet .big b') || {}).textContent || '';
+        const rows = document.querySelectorAll('#benSheet .row').length;
+        const rules = document.querySelectorAll('#benSheet .law').length;
+        const broken = /불러오지 못했습니다/.test(document.body.innerText);
+        return {ok: /원/.test(big) && rows >= 6 && rules >= 3 && !broken,
+                detail: `1일액 ${big.trim()} · 항목 ${rows} · 조문표 ${rules}${broken ? ' · 불러오기 실패' : ''}`};
     }""",
     "/triage/": """() => {
         // 다섯 축 체크와 등급 표시가 그려졌는가.
