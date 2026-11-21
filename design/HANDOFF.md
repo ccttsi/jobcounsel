@@ -32,6 +32,7 @@
   `RULES`에 공고문 점검·재직 첫해·사례개념화 직행 패턴 3개.
 - [x] 재생성: `assistant/build_index.py`(index·rag-preface) · `ops/scripts/build_flow_graph.py`(graph.json, 섹터 37·짝 308).
 - [x] `validate_repo.py` 전 항목 통과(장부 37개 = 시드 15·매치 22, 프리셋 54자리 대조, 개수·문구·시행일 0건).
+- **머지**: PR #421 — CI(static-checks 25s · smoke-tests · Cloudflare Pages) 전부 통과 → 스쿼시 **`4f2c73e`**. 라이브 https://witw.pages.dev/ 확인: 대문 「37가지」·목록 8쪽(1쪽 01~05, 8쪽 36~37)·시드 선반 15칸/매치 22칸 · `/casecon/`·`/first-year/`·`/posting/` 200 · `/flow/` 엔진에서 「공고문 점검」「입사 3개월 연차」「사례 상담목표」가 각각 posting·first-year·casecon 1칸 덱으로 서고 「퇴직금」은 그대로 pay-calc.
 - **번호가 바뀐 것**(이전 no → 새 no): casecon 37→02 · parsons 02→03 · dacum 03→04 · taxonomy 04→05 · decalcomania 05→06 ·
   library 06→07 · briefing 07→08 · emerging 08→09 · labor 09→10 · reality 10→11 · work-filter 11→12 · manual 12→13 ·
   kdt-calc 13→14 · law 14→15 · intake 32→16 · vpi 15→20 · policy-match 33→21 · hud 16→22 · pay-calc 34→23 ·
