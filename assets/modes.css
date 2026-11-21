@@ -132,19 +132,25 @@
  * 2026-11-18 밤: 무대 전체를 **한 래퍼(.a-modes-stage)** 로 감싸, 고를 때 그 래퍼 하나만
  * opacity + 미세 transform으로 페이드아웃한다(카드·오브제·글래스가 따로 사라지던 잔상·프레임드랍 제거). */
 .a-modes{position:fixed;inset:0;z-index:56;overflow:hidden;touch-action:manipulation}
-.a-modes-stage{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:max(16px,env(safe-area-inset-top)) 14px calc(74px + env(safe-area-inset-bottom));
+/* 2026-11-21(태화님 지시 · IMG_7841) — 무대는 이제 «굴러가는 한 장»이다.
+ * 전에는 발치(「전체 보기·닫기」)를 화면 바닥에 절대 배치하고, 내용은 가운데 정렬인 채 넘치게 두었다.
+ * 그래서 폰 높이가 짧으면 내용 끝(「나만의 덱 만들기」)이 발치 밑으로 들어가 글자를 가렸고, 닫기 단추는
+ * 배경·구획 없이 글자만 떠 보였다. 이제 발치는 내용 **안** 마지막 줄이고, 무대는 모자라면 스크롤된다.
+ * 남는 여백은 margin:auto가 나눠 가져 — 짧은 화면에서는 위에서부터, 긴 화면에서는 가운데에 앉는다. */
+.a-modes-stage{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  padding:max(14px,env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));
+  overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
   transform:translate3d(0,0,0);will-change:opacity,transform}
-.a-modes-glass{position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 95%,transparent);
+.a-modes-glass{position:absolute;inset:0;background:var(--bg);
   opacity:0;transition:opacity .3s ease}
 /* 2026-11-18 밤: `backdrop-filter:blur(20px)`를 걷어냈다. 화면 전체를 덮는 반투명 흐림은
  * 매 프레임 배경을 다시 흐리게 만들어, 1280×800 실측에서 20ms를 넘는 프레임이 11~20장 나왔다
  * (끄면 0장). 글래스 대신 **종이 베일(95%)** — 거의 불투명해서 보이는 결은 같고 비용은 0이다. */
-:root[data-theme="dark"] .a-modes-glass{background:color-mix(in srgb,#06080c 96%,transparent)}
+:root[data-theme="dark"] .a-modes-glass{background:#06080c}
 .a-modes.a-open .a-modes-glass{opacity:1}
 .a-modes-in:focus{outline:none}
-.a-modes-in{position:relative;z-index:1;width:100%;max-width:780px;display:flex;flex-direction:column;
-  gap:clamp(10px,1.8vh,18px);pointer-events:none}
+.a-modes-in{position:relative;z-index:1;width:100%;max-width:780px;margin:auto 0;display:flex;flex-direction:column;
+  gap:clamp(9px,1.5vh,16px);pointer-events:none}
 .a-modes-hd{opacity:0;transform:translateY(7px);transition:opacity .34s ease,transform .42s cubic-bezier(.2,.9,.3,1)}
 .a-modes.a-in .a-modes-hd{opacity:1;transform:none}
 .a-modes-k{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.22em;color:var(--a1)}
@@ -350,21 +356,28 @@
 .a-modes.a-pick .a-modes-foot,.a-modes.a-pick .a-modes-foot *,
 .a-modes.a-pick .a-modes-glass{transition:none!important;animation:none!important}
 
-/* 하단: 전체 보기 · 닫기 */
-.a-modes-foot{position:absolute;left:0;right:0;z-index:2;bottom:max(12px,env(safe-area-inset-bottom));
-  display:flex;justify-content:center;align-items:center;gap:6px;opacity:0;transition:opacity .3s ease;pointer-events:none}
+/* 하단: 전체 보기 · 닫기 — 2026-11-21(태화님 지시)부터 내용 안 마지막 줄이다.
+   「나만의 덱 만들기」 바와 같은 폭·같은 종이 톤의 두 단추(전체 보기 알약 + 닫기 알약)를 나란히 놓는다.
+   닫기도 테두리·배경을 가진 단추라, 배경 없이 글자만 떠 보이던 것이 없다. */
+.a-modes-foot{position:static;z-index:auto;display:flex;justify-content:center;align-items:center;gap:8px;
+  margin-top:2px;padding-top:11px;border-top:1px solid color-mix(in srgb,var(--line) 72%,transparent);
+  opacity:0;transition:opacity .3s ease;pointer-events:none}
 .a-modes.a-in .a-modes-foot{opacity:1;transition-delay:.2s}
 .a-root .a-modes-all{pointer-events:auto;min-height:44px;padding:0 16px;border-radius:99px;border-width:1px;border-style:solid;
   border-color:var(--line-2);background:var(--panel);font-size:13.5px;font-weight:700;color:var(--ink);
   display:inline-flex;align-items:center;gap:4px}
 .a-root .a-modes-all b{color:var(--a1);font-variant-numeric:tabular-nums}
 .a-modes-all:hover{border-color:var(--a1)}
-.a-root .a-modes-x{pointer-events:auto;min-height:44px;min-width:44px;padding:0 14px;border-radius:99px;font-size:13.5px;color:var(--muted)}
-.a-modes-x:hover{color:var(--ink)}
+.a-root .a-modes-x{pointer-events:auto;min-height:44px;min-width:84px;padding:0 15px 0 13px;border-radius:99px;
+  border-width:1px;border-style:solid;border-color:var(--line-2);background:color-mix(in srgb,var(--panel) 76%,transparent);
+  font-size:13.5px;font-weight:650;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;gap:5px}
+.a-modes-x svg{width:13px;height:13px;flex:none;opacity:.75}
+.a-modes-x:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 26%,var(--line-2))}
+.a-modes-x:focus-visible{outline:2px solid var(--a1);outline-offset:2px}
 
 /* ============ 6. 큰 화면: 두 카드 나란히 ============ */
 @media (min-width:768px){
-  .a-modes-stage{padding:24px 24px 84px}
+  .a-modes-stage{padding:22px 24px}
   .a-modes-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
   .a-mode{padding:15px 17px 0}
   .a-mode-art{height:120px;margin:8px 0 6px}
@@ -380,8 +393,13 @@
   .a-modes-hd{display:none}
 }
 
-/* 오버레이가 열려 있는 동안은 공용 도구함을 잠시 감춘다(전환에만 집중) */
-html[data-jc-modeov] #jc-imm-dock,html[data-jc-modeov] #jc-marker-ui{visibility:hidden!important}
+/* 오버레이가 열려 있는 동안은 공용 도구함을 잠시 감춘다(전환에만 집중).
+   2026-11-21: 나중에 붙은 두 단추(비서 .jca-launch · 흐름 .jcf-launch)는 z가 시트보다 무척 높아
+   유리 위로 올라와 있었다 — 같이 숨겨, 발치의 「전체 보기·닫기」와 겹치지 않게 한다. */
+html[data-jc-modeov] #jc-imm-dock,html[data-jc-modeov] #jc-marker-ui,
+html[data-jc-modeov] .jca-launch,html[data-jc-modeov] .jcf-launch{visibility:hidden!important}
+/* 위쪽 눈금·진행 띠(assets/prefs.js)도 시트 위로 그려져 맨 위에 색 떠가 남았다 — 시트가 종이를 덮는 동안은 감춘다. */
+html[data-jc-modeov] .jc-track{display:none}
 
 /* 트리거는 전체(all) 화면에만 있다 */
 html[data-jc-mode="seed"] .a-slot,html[data-jc-mode="seed"] .a-ecgrow,

@@ -539,35 +539,37 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
   font-size:17px;font-weight:700;line-height:1.4;color:var(--ink)}
 .a-list small{grid-column:2;grid-row:2;align-self:start;min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   min-height:calc(2 * 1.5em);font-size:14px;color:var(--muted);line-height:1.5}
-.a-pg{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:10px;min-height:56px}
-/* 2026-11-21(태화님 지시) — 쪽 번호판을 «영화필름 원판(릴)» 창으로 바꿨다.
-   원판 테두리를 따라 쪽 번호가 1…7 다음 다시 1로 이어 붙어 있고(원형), 창은 그중 다섯 칸만 내보인다.
-   창을 잡아끌면 원판이 손가락 아래에서 그대로 굴러가고(관성), 위 목록 트랙도 같은 쪽 비율로 따라 흐른다.
-   · 필름 구멍(스프록킷)은 위·아래 가장자리에만 아주 옅게, 좌우는 mask로 흐려 원판이 창 밖으로 이어지는 느낌만 남긴다.
-   · 움직이는 값은 트랙 transform과 칸의 scale·opacity·translateY(모두 GPU)뿐 — 프레임마다 레이아웃을 읽지 않는다. */
-.a-pg-vp{position:relative;overflow:hidden;height:56px;width:calc((var(--slots,5) - 1) * 46px + 44px);touch-action:pan-y;
-  border-radius:13px;background:color-mix(in srgb,var(--panel-soft) 78%,transparent);
-  box-shadow:inset 0 0 0 1px var(--line-2),inset 0 1px 0 color-mix(in srgb,var(--panel) 72%,transparent)}
-.a-pg-vp::before,.a-pg-vp::after{content:"";position:absolute;left:7px;right:7px;height:4px;pointer-events:none;
-  background:var(--line-2);opacity:.5;
-  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='4'%3E%3Crect x='3' y='.6' width='4' height='2.8' rx='1.1' fill='%23fff'/%3E%3C/svg%3E");
-  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='4'%3E%3Crect x='3' y='.6' width='4' height='2.8' rx='1.1' fill='%23fff'/%3E%3C/svg%3E");
-  -webkit-mask-size:10px 4px;mask-size:10px 4px;-webkit-mask-repeat:repeat-x;mask-repeat:repeat-x}
-.a-pg-vp::before{top:3px}
-.a-pg-vp::after{bottom:3px}
+.a-pg{--cell:72px;display:flex;justify-content:center;align-items:center;gap:8px;margin-top:10px;min-height:56px}
+/* 2026-11-21(태화님 지시) — 쪽 번호판을 «1칸 아파트 층수 표기»로 바꿨다.
+   창에는 지금 쪽 숫자 **하나만** 보이고, 쪽이 넘어가면 숫자가 좌우로 미끄러져 들어오고 나간다.
+   원판(트랙)에는 1…n 다음 다시 1이 세 벌 이어져 있어, 1에서 앞으로 가면 n이, n에서 뒤로 가면 1이
+   **방향 그대로 옆 칸에서** 미끄러져 들어온다 — 끝에서 끊기거나 튀는 느낌이 없다.
+   · 창은 엘리베이터 층수 표시창처럼 안으로 살짝 들어간 1칸짜리 상자다(두께 있는 안쪽 그림자 + 위쪽 하이라이트).
+   · 좌우는 mask로 흐려, 넘어가는 동안 두 숫자가 창 가장자리에서 스며들고 스러진다.
+   · 움직이는 값은 트랙 transform 하나뿐 — 프레임마다 레이아웃을 읽지 않는다(모션 가드레일 §2-4). */
+.a-pg-vp{position:relative;overflow:hidden;height:48px;width:var(--cell);touch-action:pan-y;cursor:grab;
+  border-radius:12px;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 54%,var(--panel-soft)) 0%,var(--panel-soft) 48%,color-mix(in srgb,var(--bg) 26%,var(--panel-soft)) 100%);
+  box-shadow:inset 0 0 0 1px var(--line-2),inset 0 2px 6px -3px color-mix(in srgb,var(--ink) 30%,transparent),inset 0 -1px 0 color-mix(in srgb,var(--bg) 55%,transparent)}
+:root[data-theme="dark"] .a-pg-vp{background:linear-gradient(180deg,color-mix(in srgb,#05070a 60%,var(--panel-soft)) 0%,var(--panel-soft) 48%,color-mix(in srgb,#05070a 30%,var(--panel-soft)) 100%);
+  box-shadow:inset 0 0 0 1px var(--line-2),inset 0 2px 7px -3px #000,inset 0 -1px 0 rgba(255,255,255,.04)}
+.a-pg-vp:active{cursor:grabbing}
 .a-pg-reel{position:relative;height:100%;overflow:hidden;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 11%,#000 89%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 11%,#000 89%,transparent)}
-.a-pg-track{display:flex;gap:2px;align-items:center;height:100%;transform:translate3d(0,0,0)}
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent)}
+.a-pg-track{display:flex;align-items:center;height:100%;transform:translate3d(0,0,0)}
 .a-root .a-pg button{width:44px;min-width:44px;height:44px;padding:0;border-radius:11px;font-size:15px;font-weight:650;
   color:var(--muted);font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;justify-content:center;
   border:0;background:transparent}
-/* 숫자는 «알맹이»에만 scale·opacity를 건다 — 단추 자체를 scale하면 누를 수 있는 넓이가 44px 밑으로 준다.
-   will-change는 원판이 움직이는 동안에만(움직임이 끝나면 뗀다 — 모션 가드레일 §2-2). */
-.a-pg-n{display:block;font-style:normal;line-height:1}
-.a-pg-reel.a-move .a-pg-n{will-change:transform,opacity}
-.a-root .a-pg button[aria-current="true"]{color:var(--a1);font-weight:750;background:color-mix(in srgb,var(--a1) 11%,transparent);
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--a1) 32%,transparent)}
+/* 창 한 칸이 곧 한 쪽이다 — 칸 폭을 창 폭과 같게 두어, 넘어갈 때 두 숫자가 정확히 반씩 걸친다. */
+.a-root .a-pg-track button{width:var(--cell);min-width:var(--cell);height:48px;border-radius:10px}
+/* 숫자는 «알맹이»에만 건다 — 단추 자체를 키우거나 줄이면 누를 수 있는 넓이가 달라진다.
+   will-change는 창이 움직이는 동안에만(움직임이 끝나면 뗀다 — 모션 가드레일 §2-2). */
+.a-pg-n{display:block;font-style:normal;line-height:1;font-size:23px;font-weight:800;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ink) 78%,var(--muted))}
+.a-pg-reel.a-move .a-pg-n{will-change:transform}
+/* 지금 쪽 숫자만 강조색 — 창 전체를 칠하지 않는다(층수 표시창은 늘 같은 바탕이다). */
+.a-root .a-pg button[aria-current="true"]{color:var(--a1)}
+.a-root .a-pg button[aria-current="true"] .a-pg-n{color:var(--a1)}
 .a-root .a-pg button.a-pg-ar{color:var(--muted);border:1px solid var(--line-2);border-radius:12px;
   background:color-mix(in srgb,var(--panel) 72%,transparent)}
 .a-root .a-pg button.a-pg-ar svg{width:18px;height:18px;display:block}
@@ -576,7 +578,8 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 .a-root .a-pg button:focus-visible{outline:2px solid var(--a1);outline-offset:-2px}
 /* 2026-11-21(태화님 지시) — 목록과 쪽 번호판 **둘 다** 좌우로 밀거나 끌면 트랙이 따라 흐른다.
    세로 스크롤은 브라우저 몫으로 남기고(pan-y) 가로 손짓만 받는다. 움직이는 값은 트랙의 transform 하나뿐이고,
-   끄는 동안에만 will-change를 붙였다가 놓으면 뗀다(모션 가드레일 §2). */
+   끄는 동안에만 will-change를 붙였다가 놓으면 뗀다(모션 가드레일 §2).
+   층수 창도 같은 손짓을 받는다 — 잡고 끌면 위 목록과 «같은 쪽 비율»로 함께 흐른다. */
 .a-list,.a-pg,.a-list-vp{touch-action:pan-y}
 .a-list a{-webkit-user-drag:none}
 .a-list-track.a-drag{will-change:transform;-webkit-user-select:none;user-select:none}
@@ -818,6 +821,9 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
    글자는 한 줄·두 줄 모두 가운데 정렬, 나타나고 사라지는 것은 opacity·transform만(모션 가드레일 §2).
    3차(같은 날 60fps): 유리 흐림(backdrop-filter)을 걷고 불투명도를 92%로 올렸다 — 띠가 떠 있는 동안
    뒤 화면을 매 프레임 다시 흐리게 만들던 비용이 사라지고, 글자는 오히려 더 또렷하다. */
+/* 모드 고르기 시트가 열려 있는 동안에는 안내 띠를 감춘다(2026-11-21) — 시트 발치의
+   「전체 보기 · 닫기」와 겹쳐 글자를 가리지 않게. */
+html[data-jc-modeov] .a-toast{visibility:hidden}
 .a-toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translate3d(-50%,10px,0);z-index:70;
   width:max-content;max-width:calc(100% - 32px);text-align:center;text-wrap:balance;
   background:color-mix(in srgb,var(--toast-bg) 92%,transparent);color:var(--toast-ink);
@@ -1153,10 +1159,10 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <span class="a-modes-deck-s">카드덱 단추 · 상담 플로우</span>
       <span class="a-modes-deck-a" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 6l6 6-6 6"/></svg></span>
     </a>
-  </div>
-  <div class="a-modes-foot" id="modeFoot">
-    <button type="button" class="a-modes-all" id="modeAll"><span>전체 <b id="modeAllN">24</b>개 보기</span></button>
-    <button type="button" class="a-modes-x" id="modeX">닫기</button>
+    <div class="a-modes-foot" id="modeFoot">
+      <button type="button" class="a-modes-all" id="modeAll"><span>전체 <b id="modeAllN">24</b>개 보기</span></button>
+      <button type="button" class="a-modes-x" id="modeX" aria-label="보기 방식 고르기 닫기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>닫기</span></button>
+    </div>
   </div>
   </div>
 </div>
@@ -1402,11 +1408,11 @@ function listPages(){return Math.max(1,Math.ceil(TOOLS.length/LIST_PER));}
 /* 카드 한 장 — 설명은 tools.js의 `list` 한 줄만 쓴다(390px에서 2줄 안에 끝나는 완결 문장).
    2026-11-21(태화님 지시): 「○○ 보고 싶을 때 · 긴 소개」를 붙이던 서두를 걷어냈다 — 어떤 카드도 …로 잘리지 않는다. */
 function rowHTML(t){return '<li data-m="'+t.mode+'"><a href="'+t.path+'" data-visit="'+t.id+'"><span class="a-no a-num">'+t.no+'</span><b>'+esc(t.title)+'</b><small>'+esc(t.list||t.lead||t.desc)+'</small></a></li>';}
-/* 쪽 번호판 = 영화필름 원판(릴) — 창은 그중 다섯 칸만 내보이고, 원판에는 쪽 번호가 1~n 다음 다시 1로
-   원형으로 이어져 있다(2026-11-21 태화님 지시). 그래서 번호를 세 벌(앞·가운데·뒤) 이어 붙여 두고,
-   위치는 «쪽» 단위의 소수 하나(cvPos)로만 다룬다. 세 벌이 같으므로 한 벌(n쪽)을 건너뛰는 보정은
-   화면에서 보이지 않는다 — 1쪽 앞에 마지막 쪽이, 마지막 쪽 뒤에 1쪽이 끊김 없이 붙어 돈다. */
-var PAGER_WIN=5,pgStep=0,pgWin=0,pgBtns=[],pgNums=[],pgStyled=[],pgMoveT=0,pgReel=null;
+/* 쪽 번호판 = 1칸 아파트 층수 표기 — 창은 쪽 번호 **한 칸**만 보여 주고, 그 한 칸 뒤에 1~n이 세 벌
+   이어져 있다(2026-11-21 태화님 지시). 그래서 1쪽이 왼쪽으로 빠지면 2쪽이 오른쪽에서, 7쪽이 오른쪽으로
+   빠지면 1쪽이 왼쪽에서 — 숫자가 «미끄러져» 들어온다. 위치는 «쪽» 단위의 소수 하나(cvPos)로만 다루고,
+   세 벌이 같으므로 한 벌(n쪽)을 건너뛰는 보정은 화면에서 보이지 않는다. */
+var pgStep=0,pgWin=0,pgBtns=[],pgNums=[],pgMoveT=0,pgReel=null;
 function pagerTrack(){return document.querySelector('#allPg .a-pg-track');}
 function pagerViewport(){return document.querySelector('#allPg .a-pg-vp');}
 /* 칸 간격·창 폭은 만들 때와 화면이 바뀔 때만 잰다 — 프레임마다 레이아웃을 읽지 않는다(모션 가드레일 §2-4). */
@@ -1414,7 +1420,7 @@ function measurePager(){
   var tr=pagerTrack(),vp=pagerViewport();
   pgWin=vp?vp.clientWidth:0;
   pgStep=(tr&&tr.children.length>1)?(tr.children[1].offsetLeft-tr.children[0].offsetLeft):0;
-  if(!pgStep)pgStep=46;
+  if(!pgStep)pgStep=pgWin||72;
 }
 function buildPager(pg,n){
   var h='';
@@ -1426,26 +1432,22 @@ function buildPager(pg,n){
     h+='<button type="button" class="a-pg-ar" data-ar="1" aria-label="다음 쪽"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.6 6.2 15.4 12l-5.8 5.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';
   }
   pg.innerHTML=h;pg.setAttribute('data-n',String(n));
-  pg.style.setProperty('--slots',String(Math.min(n,PAGER_WIN)));
   pgBtns=Array.prototype.slice.call(pg.querySelectorAll('.a-pg-track button'));
   pgNums=Array.prototype.slice.call(pg.querySelectorAll('.a-pg-track .a-pg-n'));
   pgReel=pg.querySelector('.a-pg-reel');
-  pgStyled=[];pgWin=0;pgStep=0;measurePager();
+  pgWin=0;pgStep=0;measurePager();
 }
 /* 2026-11-19: 쪽 번호를 누를 때마다 단추를 통째로 다시 그리면, 새로 들어온 단추에만 공용 등장 모션이 붙어
    앞쪽 번호만 물결처럼 깜빡였다. 번호판은 한 번만 만들고 쪽이 바뀌면 상태만 제자리에서 고친다.
-   2026-11-21: 트랙의 자리(transform)·칸의 기울기는 컨베이어/릴이 프레임마다 직접 잡는다 — 여기서는 상태만. */
+   2026-11-21: 창(1칸) 안에 선 «지금 쪽» 한 칸만 탭·낭독 대상으로 남긴다 — 나머지 두 벌은 눈으로만 스치고 간다. */
 function paintPager(n){
-  var pg=$('allPg'),ring=mod(listPage,n),w=Math.min(n,PAGER_WIN),mid=n+ring,half=Math.floor(w/2);
+  var pg=$('allPg'),ring=mod(listPage,n),mid=n+ring;
   for(var j=0;j<pgBtns.length;j++){
-    var b=pgBtns[j];
-    if(j===mid)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');
-    /* 창 안에 실제로 걸린 다섯 칸만 탭·낭독 대상으로 남긴다(같은 번호가 세 벌이므로 보이는 쪽만 연다). */
-    var on=(j>=mid-half&&j<=mid+half);
+    var b=pgBtns[j],on=(j===mid);
+    if(on)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');
     b.tabIndex=on?0:-1;
     if(on)b.removeAttribute('aria-hidden');else b.setAttribute('aria-hidden','true');
   }
-  var vp=pg.querySelector('.a-pg-vp');if(vp)vp.scrollLeft=0;
   pg.setAttribute('aria-label','목록 쪽 넘기기 — '+(ring+1)+'/'+n+'쪽');
   pg.setAttribute('data-page',String(ring));
   pagerFollow(cvPos);
@@ -1468,27 +1470,14 @@ function listTrack(){return $('allTrack');}
 var listPW=0;
 function measurePageW(){var t=listTrack(),p=t&&t.children[0];listPW=(p?p.getBoundingClientRect().width:0)||(t?t.clientWidth:0)||0;}
 function pageW(){if(!listPW)measurePageW();return listPW||1;}
-/* 원판(릴)의 기울기 — 중앙 칸은 제자리·선연하고, 멀어질수록 조금 작아지고 아래로 늘어진다(원판 곡률).
-   위치만 매 프레임 잡고, 값이 눈에 보이게 달라질 때만 쓴다. */
+/* 층수 창의 자리 — 지금 쪽(p)의 칸이 창 한가운데 오도록 원판을 민다. 쪽이 소수만큼 흐르면 두 숫자가
+   창 가장자리에서 반씩 걸쳐 스며들고 스러진다(mask). 프레임마다 쓰는 값은 transform 하나뿐이다. */
 function pagerFollow(p){
   if(!pgWin||!pgStep)measurePager();
   var tr=pagerTrack();if(!tr||!pgWin)return;
   var n=listPages(),s=pgStep,half=pgWin/2;
   var x=half-((p+n)*s+s/2);
-  tr.style.transform='translate3d('+x.toFixed(1)+'px,0,0)';
-  var ci=Math.round((half-x-s/2)/s);
-  for(var j=ci-3;j<=ci+3;j++){
-    if(j<0||j>=pgBtns.length)continue;
-    var d=(j*s+s/2+x-half)/s,ad=Math.min(Math.abs(d),3);
-    var sc=1-.075*ad,op=Math.max(.4,1-.24*ad),ty=ad*ad*.45;
-    var st=pgStyled[j];
-    if(!st||Math.abs(st[0]-sc)>.004||Math.abs(st[1]-op)>.02||Math.abs(st[2]-ty)>.12){
-      var num=pgNums[j];if(!num)continue;
-      num.style.transform='translateY('+ty.toFixed(2)+'px) scale('+sc.toFixed(3)+')';
-      num.style.opacity=op.toFixed(2);
-      pgStyled[j]=[sc,op,ty];
-    }
-  }
+  tr.style.transform='translate3d('+x.toFixed(2)+'px,0,0)';
   /* 움직이는 동안에만 will-change를 붙여 두고, 멈추면 1/5초 뒤에 뗀다. */
   if(pgReel){
     if(!pgReel.classList.contains('a-move'))pgReel.classList.add('a-move');
@@ -1594,16 +1583,19 @@ function alignList(){
 /* 쪽을 어디서 넘기든(손짓·화살표·번호) 같은 길을 지난다 — 트랙이 그 쪽으로 흐르고 번호판이 따라 민다.
    어느 쪽도 scrollTo를 부르지 않는다(스크롤 고정). */
 /* 번호를 눌렀을 때는 원판에서 **가장 가까운 쪽으로** 돌린다 — 1쪽에서 7쪽을 누르면 한 칸 뒤로 도는 것이
-   아니라 7쪽이 가장 가까우므로 그쪽으로 굴러간다(짧은 길, 긴 길 중 가까운 길). */
+   아니라 7쪽이 가장 가까우므로 그쪽으로 굴러간다(짧은 길, 긴 길 중 가까운 길).
+   2026-11-21: 굴러가는 중에 또 누르면 «도착할 쪽»을 기준으로 센다 — 전에는 지금 지나가는 자리를 기준으로
+   세어, 화살표를 빠르게 연달아 눌러도 한 쪽만 움직이고 말았다(실측: 8번 눌러도 1쪽). */
 function gotoListPage(lp){
-  var n=listPages(),to=mod(lp,n),from=Math.round(cvPos),cur=mod(from,n);
+  var n=listPages(),from=cvRaf?cvGoal:Math.round(cvPos),to=mod(lp,n),cur=mod(from,n);
   var d=mod(to-cur,n);if(d>n/2)d-=n;
   if(d===0&&Math.abs(cvGoal-cvPos)<.02)return false;
   cvGoal=from+d;cvRun();
   return true;
 }
-/* 화살표는 끝에서 막히지 않는다 — 1쪽에서 ‹ 면 마지막 쪽, 마지막 쪽에서 › 면 1쪽으로 돌아간다. */
-function listTurn(d){cvGoal=Math.round(cvPos)+d;cvRun();return true;}
+/* 화살표는 끝에서 막히지 않는다 — 1쪽에서 ‹ 면 마지막 쪽, 마지막 쪽에서 › 면 1쪽으로 돌아간다.
+   연달아 눌러도 누른 만큼 쪽이 쌓인다(굴러가는 중이면 도착할 쪽에서 한 칸 더). */
+function listTurn(d){var from=cvRaf?cvGoal:Math.round(cvPos);cvGoal=from+d;cvRun();return true;}
 /* 목록 높이 고정(2026-11-18 R4): 쪽마다 설명 줄 수가 달라 생기던 아래 요소의 흔들림을 없앤다.
    트랙 위 31장을 모두 재어 **가장 높은 카드**를 모든 칸 높이로 못 박는다(--row-h).
    쪽이 어디에 서든 카드 높이·여백·줄맞춤이 같고, 마지막 쪽(1장)에서도 쪽수·심전도가 움직이지 않는다. */
@@ -1809,19 +1801,28 @@ function frame(now){
   if(pos!==target)kick();else lastT=0;
 }
 /* ---------- 목록 좌우 스와이프 · 끌기로 쪽 넘기기 (2026-11-20 · 2026-11-21 태화님 지시) ----------
-   「목록」과 「밑의 쪽 번호·화살표 영역」 둘 다에서 같은 손짓을 받는다(캐치 영역 = #listView 하나).
-   · 손가락: |dx| > |dy| * 1.15 일 때만 가로 손짓으로 본다 — 세로 스크롤이 먼저다.
-   · 끄는 동안 트랙이 손가락을 1:1로 따라와 이웃 쪽 카드가 빈틈 없이 따라 나온다(끝이 없으니 고무줄도 없다).
-   · 번호판(릴)을 잡으면 칸 간격이 1쪽이라 필름이 손가락 아래에서 그대로 굴러간다 — 목록보다 민감하므로
-     손가락이 12px 넘게 미끄러져야 끌기로 보고, 34%(약 16px)를 넘기면 한 칸은 넘긴다(번호를 잘못 누르지 않게).
-   · 놓으면 **끌던 속도**로 미끄러질 쪽 수를 정한다 — 320ms 뒤까지의 자리를 미리 재어 반올림한다.
-     약하게 끌어도 18%(목록)를 넘겼으면 한 칸은 넘긴다. 그보다 짧으면 제자리로 돌아간다.
+   「목록」과 「밑의 층수 창」 둘 다에서 같은 손짓을 받는다(캐치 영역 = #listView 하나).
+   · 손가락: |dx| > |dy| * 1.2 일 때만 가로 손짓으로 본다 — 세로 스크롤이 먼저다.
+   · 둘 다 «한 쪽 = 목록 한 폭»이다. 끄는 동안 트랙과 층수 창이 같은 비율로 1:1로 따라온다.
+     (전에는 창만 46px에 한 쪽이라 7.8배 민감해, 한 번 끍으면 두세 쪽이 날아갔다.)
+   · 놓으면 정해진 쪽 수만큼 감속하며 앉는다 — 보통·가벼운 스와이프는 **정확히 한 쪽**,
+     의도적으로 길고 빠르게 튕겼을 때만 두~세 쪽이다(finish 참고).
    · 움직이는 값은 두 트랙의 transform뿐. 끄는 동안에만 will-change를 붙이고 놓으면 뗀다.
    · 짧은 누름(문지르지 않은 탭)은 그대로 단추·줄 열기가 되고, 끌고 난 뒤에 오는 click만 한 번 삼킨다. */
 function bindListSwipe(){
   var lv=$('listView'),tr=listTrack();
   if(!lv||!tr)return;
-  var START=7,RATIO=1.15,MIN=0.18,PROJ=320;
+  /* 2026-11-21(태화님 지시) — «너무 쉽게 두 쪽 넘어감»을 없앤다.
+     · 보통·가벼운 스와이프는 **언제나 정확히 한 쪽**만 간다(MIN 16% 또는 살짝 튕긴 속도).
+     · 두 쪽 이상은 **의도적으로 길고 빠르게** 튀겼을 때만 간다 — 손가락이 반 쪽을 넘게 지나갔고(42%)
+       동시에 빠른 튕김(2.6px/ms)일 때뿐이고, 그때도 최대 3쪽이다.
+     · 천천히 길게 끌었으면(끌다 멈춘 경우) 손가락이 지나온 만큼에 가장 가까운 쪽에 앉는다 —
+       끄는 동안 목록이 1:1로 따라와 있으므로 화면이 튀지 않는다.
+     · 층수 창을 잡아도 목록과 **같은 쪽 폭**으로 센다 — 창이 46px에 한 쪽씩 7.8배 민감하게 굴러
+       한 번 끍을 때 두세 쪽이 날아가던 것을 없앴다. */
+  /* 단위는 «쪽/ms»다 — 화면 폭이 달라도(390·1280) 같은 손짓이 같은 쪽 수를 낸다.
+     FLING 0.0072쪽/ms ≈ 390px 화면에서 2.6px/ms — 보통 스와이프(1~2px/ms)보다 확실히 빠른 튕김. */
+  var START=7,RATIO=1.2,MIN=0.16,FLING=0.0072,LIGHT=0.00088,PROJ=140,MAXP=3;
   var g=null,swallow=false,sv=[];
   function velocity(){
     /* 최근 100ms의 이동으로 속도를 잰다(px/ms, +면 오른쪽으로 끌었다 = 이전 쪽). */
@@ -1838,10 +1839,9 @@ function bindListSwipe(){
     swallow=false;sv=[];
     /* 손짓을 잡는 건 가로 끌기가 시작된 뒤에 한다 — 처음부터 잡으면 click의 대상이 목록 상자로
        바뀌어 쪽 번호·줄 누름이 먹지 않는다.
-       번호판(릴)을 잡았으면 원판 칸 간격이 1쪽 — 손가락 아래에서 필름이 1:1로 굴러가고
-       위 목록도 «같은 쪽 비율»로 함께 흐른다. 목록을 잡으면 목록 폭이 1쪽이다. */
+       어디를 잡았든(목록 줄이든 층수 창이든) «한 쪽 = 목록 한 폭»이다 — 두 트랙이 같은 비율로 흐른다. */
     var onPg=!!(e.target&&e.target.closest&&e.target.closest('.a-pg-vp'));
-    g={id:e.pointerId,x:e.clientX,y:e.clientY,ax:0,on:false,base:cvPos,u:onPg?(pgStep||46):pageW(),ring:mod(Math.round(cvPos),listPages())};
+    g={id:e.pointerId,x:e.clientX,y:e.clientY,on:false,onPg:onPg,base:cvPos,u:pageW(),ring:mod(Math.round(cvPos),listPages())};
   });
   lv.addEventListener('pointermove',function(e){
     if(!g||e.pointerId!==g.id)return;
@@ -1878,14 +1878,26 @@ function bindListSwipe(){
     tr.classList.remove('a-drag');
     if(!on)return;
     swallow=true;
-    if(cancel){cvGoal=Math.round(cvPos);cvRun();return;}
-    var v=-velocity()/d.u;                          /* 쪽/ms ( +면 다음 쪽으로) */
-    var proj=cvPos+Math.max(-3.4,Math.min(3.4,v*PROJ));
-    var t=Math.round(proj);
-    /* 약하게 끌어도 MIN(18%)을 넘겼으면 한 칸은 넘긴다 — 「살짝 밀어도 다음 쪽」 */
-    var min=d.onPg?.34:MIN;
-    if(t===Math.round(d.base)&&Math.abs(cvPos-d.base)>min)t=Math.round(d.base)+(cvPos>d.base?1:-1);
-    cvGoal=t;
+    var base=Math.round(d.base),n=listPages();
+    if(cancel){cvGoal=base;cvRun();return;}
+    var f=cvPos-base;                               /* 끈 쪽 수(소수, +면 다음 쪽) */
+    var moved=Math.abs(f);
+    var v=-velocity()/d.u;                          /* 쪽/ms ( +면 다음 쪽) */
+    var sp=Math.abs(v);
+    var dir=f>1e-4?1:(f<-1e-4?-1:(v>0?1:(v<0?-1:0)));
+    var pages=0;
+    if(sp>=FLING&&moved>=.42){
+      /* 의도적으로 길고 빠르게 튕김 — 그때만 두 쪽 이상(최대 세 쪽) */
+      pages=Math.round(moved+sp*PROJ);
+      if(pages<2)pages=2;else if(pages>MAXP)pages=MAXP;
+    }else if(moved>=.5){
+      /* 천천히 길게 끌었으나 멈췄다 — 손가락이 지나온 만큼(최대 세 쪽) */
+      pages=Math.min(MAXP,Math.max(1,Math.round(moved)));
+    }else if(moved>=MIN||sp>=LIGHT){
+      /* 보통·가벼운 스와이프 — 늘 한 쪽 */
+      pages=1;
+    }
+    cvGoal=base+dir*pages;
     cvRun();
   }
   lv.addEventListener('pointerup',function(e){if(g&&e.pointerId===g.id)finish(false);});
