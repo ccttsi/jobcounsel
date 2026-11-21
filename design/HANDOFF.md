@@ -1,5 +1,7 @@
 # HANDOFF — 자율 디자인 시스템 구축 + 첫 실행 ✅ 완료
 
+> **최상위 규범: [`CONSTITUTION.md`](../CONSTITUTION.md)** — 이 문서는 «앞 세션이 어디까지 했나»를 적는 장부이고, 그 작업이 지켜야 할 규범은 헌법이다. 이어 하는 작업도 **착수 전 헌법 → PR 전 §7 자가검증 → 머지 게이트**를 건너뛰지 않는다. 아래 상시 체크리스트·기록보다 헌법이 앞이다.
+
 ## 신규 섹터 추가 기본 체크리스트 (2026-11-22 태화님 지시 — 상시 적용)
 
 새 섹터를 만들면 **맨 뒤에 붙이지 않는다**. 아래 둘은 같은 커밋에서 끝낸다.
@@ -12,6 +14,15 @@
    - 현장 직결 = `TIER1`, 학습·연구 = `STUDY`(3티어), 상황 보강 = 기본 2티어. `STAGE`(→`ORDER`)·`GROUPS`에 id를 넣고,
      질문 한 마디로 나와야 하는 자료는 `RULES`(직행 패턴)에 `dom`·`act`·`not`을 넣는다.
    - 재생성: `python3 assistant/build_index.py` · `python3 ops/scripts/build_flow_graph.py` → `validate_repo.py`.
+
+## 2026-11-22 (새벽) — 최상위 규범 헌법전 `CONSTITUTION.md` 제정 + 작업 규범 네 곳 강제 연결 (PR #423)
+- **지시**(태화님): 「클로드가 헌법적 RLAIF 만든 것처럼 우리도 시스템 구축에 있어서 **헌법전을 만들어놔 무조건 지키도록**」 · 「추가로 **촘촘한 연결로 완결된 섹터들간 유기성과 완결성**, 그리고 **디자인적 심미적 완성과 통일성**」 · 「또 **내가 지금까지 대화하면서 중시한 것 찾아서**」.
+- **왜**: 규칙이 `CLAUDE.md`·`DESIGN.md`·`ops/ROLES.md`·`ops/CI.md`에 흩어져 있어 한두 개씩 빠졌다(11-22 새벽 「새 섹터를 맨 뒤에 붙였다」가 그 예). 문서를 하나 더 늘리는 게 아니라 **«어겨서는 안 되는 것»만 모아 최상위로 세우고**, «어떻게 하는가»는 각 문서에 그대로 둔다.
+- [x] 루트 **`CONSTITUTION.md`** — 전문 + **제1~6조**(①저작권·지재권 ②사실·시행일 무결성 ③외부 유출·내부정보·개인정보 ④유기적 통합·연결 완결성 ⑤디자인 심미성·성능·통일성 ⑥비전공자 기록·자기검증) + **§7 자가검증 체크리스트 20항(O/X)** + 「이 헌법이 걸린 곳」 + 개정 절차(번호를 밀지 않는다).
+- [x] **강제 연결**: `CLAUDE.md` 맨 위(기존 「먼저: 역할 분리 헌장」은 「다음:」으로) · `ops/ROLES.md` 맨 위(역할 표보다 앞) · `ops/CI.md` 맨 위(«CI는 §7의 자동 부분일 뿐, 미적 판정은 사람 몫») · `design/HANDOFF.md` 맨 위(이 줄) · **`.claude/hooks/session-start.sh`가 세션 시작마다 6조·게이트 요약을 대화 맨 앞에 출력**.
+- [x] **충돌 회피**: PR #421(섹터 재배치가 `CLAUDE.md`·`ops/CI.md`·`design/HANDOFF.md`를 함께 고침)이 머지(`4f2c73e`)된 뒤 그 위로 리베이스해 올렸다 — 같은 파일의 맨 위만 건드려 순서를 지켰다.
+- [x] `python3 ops/scripts/validate_repo.py` 전 항목 통과(맞춤법 274,090줄 문제 0 · 자료 개수 장부 37=대문 4칸 · 시행일 89개 · 프리셋 12개/54자리 · Track 1,920) + CI 3종(`static-checks`·`smoke-tests`·`Cloudflare Pages`) 초록.
+- **앞으로**: 모든 PR 본문에 §7 O/X 표를 붙인다. 조항을 늘리면 **제7조로 뒤에 붙이고**, 연결 문서·노션 요약을 같은 PR에서 맞춘다.
 
 ## 2026-11-22 (새벽) — 섹터 01~37 번호 재배치 + 마이덱 티어 반영
 - **지시**(태화님): 「새 섹터를 만들 때마다 **무조건 맨 뒤에 붙이지 말고** 연관 섹터 옆에 끼워 넣고(`seed`/`match` 순번 재정렬),
@@ -32,6 +43,7 @@
   `RULES`에 공고문 점검·재직 첫해·사례개념화 직행 패턴 3개.
 - [x] 재생성: `assistant/build_index.py`(index·rag-preface) · `ops/scripts/build_flow_graph.py`(graph.json, 섹터 37·짝 308).
 - [x] `validate_repo.py` 전 항목 통과(장부 37개 = 시드 15·매치 22, 프리셋 54자리 대조, 개수·문구·시행일 0건).
+- **머지**: PR #421 — CI(static-checks 25s · smoke-tests · Cloudflare Pages) 전부 통과 → 스쿼시 **`4f2c73e`**. 라이브 https://witw.pages.dev/ 확인: 대문 「37가지」·목록 8쪽(1쪽 01~05, 8쪽 36~37)·시드 선반 15칸/매치 22칸 · `/casecon/`·`/first-year/`·`/posting/` 200 · `/flow/` 엔진에서 「공고문 점검」「입사 3개월 연차」「사례 상담목표」가 각각 posting·first-year·casecon 1칸 덱으로 서고 「퇴직금」은 그대로 pay-calc.
 - **번호가 바뀐 것**(이전 no → 새 no): casecon 37→02 · parsons 02→03 · dacum 03→04 · taxonomy 04→05 · decalcomania 05→06 ·
   library 06→07 · briefing 07→08 · emerging 08→09 · labor 09→10 · reality 10→11 · work-filter 11→12 · manual 12→13 ·
   kdt-calc 13→14 · law 14→15 · intake 32→16 · vpi 15→20 · policy-match 33→21 · hud 16→22 · pay-calc 34→23 ·
