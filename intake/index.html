@@ -374,7 +374,7 @@ html[data-jc-imm] .panel{box-shadow:none}
       note:[
         '국민취업지원제도 Ⅰ유형은 15~69세, 가구 중위소득 60%(청년 선발형 120%) 이하, 재산 4억원(청년 5억원) 이하, 최근 2년 100일 또는 800시간 이상 취업 경험이 요건입니다.',
         '2026년 Ⅰ유형 구직촉진수당은 월 60만원 × 6개월이고, 가족수당은 1인당 10만원(월 최대 40만원)입니다.',
-        '신청은 고용24 또는 가까운 고용센터에서 하고, Ⅰ유형 탈락 시 Ⅱ유형 심사에 동의할 수 있습니다.'
+        '신청은 고용24 또는 가까운 고용센터에서 하고, Ⅰ유형 요건을 채우지 못하면 Ⅱ유형 심사에 동의할 수 있습니다.'
       ],
       go:[
         ['triage','생계·주거 위기나 건강 위험이 보이면 먼저 등급과 붙일 제도를 정합니다.'],
@@ -710,7 +710,7 @@ html[data-jc-imm] .panel{box-shadow:none}
           +'<span class="q-n" aria-hidden="true">'+(qi+1)+'</span><span class="q-t">'+esc(item.q)+'</span>'
           +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>'
           +'<div class="q-b" id="qb'+qi+'"'+(open?'':' hidden')+'>'
-          +'<p class="why"><b>왜</b>'+esc(item.why)+'</p>'
+          +'<p class="why"><b>왜 묻나</b> '+esc(item.why)+'</p>'
           +'<div class="opts" role="group" aria-label="답변 신호">'
           +item.opts.map(function(o,oi){return '<button type="button" class="opt" data-qi="'+qi+'" data-oi="'+oi+'" aria-pressed="'+(sel[qi]===oi)+'"><span class="o-a">'+esc(o.a)+'</span><span class="o-c" aria-hidden="true">'+(sel[qi]===oi?'✓':'›')+'</span></button>';}).join('')
           +'</div>'
