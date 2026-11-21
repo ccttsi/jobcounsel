@@ -269,10 +269,11 @@
 
     var R = d.radar, rows = R ? arr(R.rows) : [];
     UI.radar = Math.max(0, Math.min(rows.length - 1, UI.radar));
-    var tabs = [['issues', '이슈 카드', cards.length], ['radar', 'AI × 직무 레이더', rows.length], ['sources', '출처·라이선스', arr(d.sources).length]].filter(function (t) { return t[0] !== 'radar' || rows.length; });
+    /* 탭 이름 — 좁은 화면(420px 이하)은 셋째 값의 짧은 이름으로 바꿔 쓴다(탭 줄이 넘치지 않게). */
+    var tabs = [['issues', '이슈 카드', '이슈 카드', cards.length], ['radar', 'AI × 직무 레이더', 'AI 레이더', rows.length], ['sources', '출처·라이선스', '출처·라이선스', arr(d.sources).length]].filter(function (t) { return t[0] !== 'radar' || rows.length; });
     if (!tabs.some(function (t) { return t[0] === UI.tab; })) UI.tab = 'issues';
     html += '<div class="tabs" role="tablist" aria-label="오늘 호 구성">' + tabs.map(function (t) {
-      return '<button type="button" role="tab" id="tab-' + t[0] + '" class="tab" data-tab="' + t[0] + '" aria-controls="pane-' + t[0] + '" aria-selected="' + (UI.tab === t[0]) + '" tabindex="' + (UI.tab === t[0] ? 0 : -1) + '">' + esc(t[1]) + '<small>' + t[2] + '</small></button>';
+      return '<button type="button" role="tab" id="tab-' + t[0] + '" class="tab" data-tab="' + t[0] + '" aria-controls="pane-' + t[0] + '" aria-selected="' + (UI.tab === t[0]) + '" tabindex="' + (UI.tab === t[0] ? 0 : -1) + '" aria-label="' + esc(t[1]) + ' ' + t[3] + '">' + '<span class="tl">' + esc(t[1]) + '</span><span class="ts" aria-hidden="true">' + esc(t[2]) + '</span><small>' + t[3] + '</small></button>';
     }).join('') + '</div>';
 
     /* 이슈 */
