@@ -1,0 +1,767 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-22T07:06:00+09:00",
+ "date": "2026-11-22",
+ "data_status": "ok",
+ "data_status_note": null,
+ "runs": {
+  "kr-0700": {
+   "status": "ok",
+   "updated_at": "2026-11-22T07:06:00+09:00",
+   "last_ok": "2026-11-22",
+   "run_id": "br-20261122-0706"
+  },
+  "global-2300": {
+   "status": "ok",
+   "updated_at": "2026-11-21T23:07:00+09:00",
+   "last_ok": "2026-11-21",
+   "run_id": "br-20261121-2307"
+  }
+ },
+ "main_themes": [
+  {
+   "theme_id": "th-ai-job-restructuring",
+   "title": "AI 직무 재편",
+   "summary": "AI가 일을 없애는가보다 일을 다시 묶는 쪽으로 움직인다. 직무 단위가 흔들리면 상담에서 묻는 것도 직업명이 아니라 \"어떤 일 묶음을 할 수 있는가\"로 바뀐다.",
+   "updated_at": "2026-11-19T23:06:00+09:00",
+   "items": [
+    {
+     "issue_id": "iss-legal-ai-specialization",
+     "title": "AI가 법률 일을 다시 나눈다 — 자기대리 16.8%, 로펌 매출 +13%(arXiv:2611.23354)",
+     "source": {
+      "source_name": "arXiv (micro1·노스이스턴대)",
+      "source_url": "https://arxiv.org/abs/2611.23354"
+     },
+     "license": {
+      "name": "CC BY 4.0 (Attribution 4.0 International)",
+      "type": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "scope": "논문 본문(초록·본문 텍스트)",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-19",
+      "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.23354)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-19). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
+      "attribution_text": "Zhang, L., Esposito, M., & Yang, I. (2026), AI, Specialization, and the Organization of Knowledge Work: Evidence from Legal Services, arXiv:2611.23354, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분)."
+     },
+     "first_seen": "2026-11-19",
+     "last_updated": "2026-11-19",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-bok-ai-productivity",
+     "title": "한은 분석 — AI로 아낀 주간 3.7시간, 그 63%는 다시 업무로",
+     "source": {
+      "source_name": "연합뉴스",
+      "source_url": "https://www.yna.co.kr/view/AKR20261117075000002"
+     },
+     "license": {
+      "name": "언론사 저작권 — 본문 복제·번역 금지",
+      "type": "PRESS",
+      "url": null,
+      "scope": "기사 본문·제목·이미지",
+      "attribution_required": true,
+      "commercial_use": "not_allowed",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-19",
+      "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+      "attribution_text": "수치 출처: 한국은행 BOK 이슈노트(연합뉴스 2026-11-17 보도)"
+     },
+     "first_seen": "2026-11-19",
+     "last_updated": "2026-11-19",
+     "track": "B"
+    },
+    {
+     "issue_id": "iss-ai-green-paper",
+     "title": "AI시대 새로운 사회계약을 위한 녹서 — 국민참여창구 운영(2026.11.17~12.7)",
+     "source": {
+      "source_name": "고용노동부",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789516"
+     },
+     "license": {
+      "name": "공공누리 미부착(사전 협의 필요)",
+      "type": "KOGL-NONE",
+      "url": null,
+      "scope": "보도자료 본문·첨부 이미지",
+      "attribution_required": true,
+      "commercial_use": "not_allowed",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-18",
+      "evidence": "정책브리핑 해당 보도자료 페이지 하단 고지 직접 확인(2026-11-18): '이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.'",
+      "attribution_text": "출처: 고용노동부 「인공지능(AI) 시대 고용노동정책, 국민이 질문한다」(2026.11.17) — 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     },
+     "first_seen": "2026-11-18",
+     "last_updated": "2026-11-18",
+     "track": "B"
+    },
+    {
+     "issue_id": "iss-ai-exam-integrity",
+     "title": "AI 악용 시험 부정행위 대책 — 국가자격시험제도 전반 재검토 지시",
+     "source": {
+      "source_name": "국무조정실",
+      "source_url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975789"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "verified": true,
+      "verified_at": "2026-11-17"
+     },
+     "first_seen": "2026-11-17",
+     "last_updated": "2026-11-19",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-ai-two-margins",
+     "title": "AI 시대 고용의 두 문턱 — 감소가 창출보다 먼저 잡힌다(arXiv:2611.17530)",
+     "source": {
+      "source_name": "arXiv (micro1·노스이스턴대)",
+      "source_url": "https://arxiv.org/abs/2611.17530"
+     },
+     "license": {
+      "type": "CC-BY-4.0",
+      "name": "CC BY 4.0 (Attribution 4.0 International)",
+      "verified": true,
+      "verified_at": "2026-11-16"
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-ai-freelance-rebundling",
+     "title": "AI 시대 프리랜스 일의 재묶음(arXiv:2611.14708)",
+     "source": {
+      "source_name": "arXiv (OpenAI 경제연구·Upwork)",
+      "source_url": "https://arxiv.org/abs/2611.14708"
+     },
+     "license": {
+      "type": "CC-BY-4.0",
+      "name": "CC BY 4.0 (Attribution 4.0 International)",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution_text": "Chin, C., Kala, S., Kunievsky, N., Liu, T., Richmond, A. M., & Shan, C. (2026), The Rebundling of Freelance Work in the AI Age, arXiv:2611.14708, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록·주요 결과 부분).",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.14708)에 'License: CC BY 4.0'와 creativecommons.org/licenses/by/4.0/ 링크 표시 확인(2026-11-16). CC BY-NC-SA·arXiv 기본 라이선스 논문은 수록 제외."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-ai-occupations-projection",
+     "title": "인공지능·정보기술과 고용, 2024~2034년(미국 노동통계국)",
+     "source": {
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_url": "https://www.bls.gov/opub/ted/2026/artificial-intelligence-information-technology-and-employment-2024-34.htm"
+     },
+     "license": {
+      "type": "PUBLIC-DOMAIN",
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "url": "https://www.bls.gov/opub/copyright-information.htm",
+      "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Artificial intelligence, information technology, and employment, 2024–34” (July 16, 2026)",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "BLS 저작권 안내(2026-11-16 확인): BLS 발행물 전체가 퍼블릭 도메인이며 사진·삽화 등 기존 저작권 자료만 예외. 이 글은 도표를 글자로 옮겨 실었고 그림은 싣지 않음."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    }
+   ]
+  },
+  {
+   "theme_id": "th-youth-employment-gap",
+   "title": "청년 고용 사각지대",
+   "summary": "취업자 총수는 늘어도 청년층만 빠지는 구조가 이어진다. 청년 고용률·구직단념·첫 일자리 정책을 한 묶음으로 보고, 상담에서는 \"몇 살이라서\"가 아니라 \"어느 업종·직무에서 빠졌는지\"를 먼저 확인한다.",
+   "updated_at": "2026-11-22T07:06:00+09:00",
+   "items": [
+    {
+     "issue_id": "iss-youth-first-job-2027",
+     "title": "2027 청년일자리 예산 3.3조 — K-유스개런티 신설(구직촉진수당 월 65만원·16만명)",
+     "source": {
+      "source_name": "고용노동부(정책브리핑)",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790054"
+     },
+     "license": {
+      "name": "공공누리 미부착(사전 협의 필요)",
+      "type": "KOGL-NONE",
+      "url": null,
+      "scope": "보도자료 본문·첨부파일",
+      "attribution_required": true,
+      "commercial_use": "unknown",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-21",
+      "evidence": "정책브리핑 전재본 하단 고지 직접 확인(2026-11-21): '이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지·이용허락 문구 없음. 본문을 옮기지 않고 사실·수치만 사용.",
+      "attribution_text": "출처: 고용노동부 「딱딱한 정책은 이제 그만, 친근하게 만나는 청년고용정책」 보도자료(2026.11.20, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     },
+     "first_seen": "2026-11-21",
+     "last_updated": "2026-11-21",
+     "track": "B"
+    },
+    {
+     "issue_id": "iss-kdi-outlook-2026h2",
+     "title": "KDI 2026년 하반기 경제전망 — 2027년 취업자 +20만, 20대 고용률은 여전히 낮다",
+     "source": {
+      "source_name": "재정경제부·한국개발연구원(KDI)",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789757"
+     },
+     "license": {
+      "name": "공공누리 제1유형(출처표시)",
+      "type": "KOGL-1",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "scope": "텍스트 한정(사진·이미지 제외)",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-19",
+      "evidence": "정책브리핑 해당 페이지 하단 '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다' 고지 확인(2026-11-19).",
+      "attribution_text": "출처: 재정경제부·KDI 「KDI 경제전망(2026. 하반기)」(2026.11.18, 정책브리핑), 공공누리 제1유형. 속기 텍스트만 이용했습니다."
+     },
+     "first_seen": "2026-11-19",
+     "last_updated": "2026-11-19",
+     "track": "A"
+    },
+    {
+     "issue_id": null,
+     "title": "2026년 10월 고용동향",
+     "source": {
+      "source_name": "국가데이터처",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156788701"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "attribution_text": "출처: 국가데이터처 「2026년 10월 고용동향」(브리핑룸 부처 브리핑, 2026.11.11), 공공누리 제1유형. 텍스트 일부(질의응답)는 옮기지 않았습니다.",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "정책브리핑 해당 페이지 하단 고지: '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.' (2026-11-16 확인)"
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": null,
+     "title": "\"청년 첫 경력, 가장 확실한 투자\" 대담한 재정 투자와 세심한 정책 설계로 청년일자리 회복 추진 가속화",
+     "source": {
+      "source_name": "고용노동부",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783711"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "attribution_text": "출처: 고용노동부 「2026년 제2차 청년고용촉진 특별위원회 개최」 보도자료(2026.9.30), 공공누리 제1유형. 붙임(회의 계획·장관 인사말)과 담당부서 표는 옮기지 않았습니다.",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다' 고지 확인(2026-11-16). 고용노동부 보도자료 전재본."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": null,
+     "title": "청년 노동자의 장시간·공짜 노동 근절을 위한 장시간 노동 기획감독 실시",
+     "source": {
+      "source_name": "고용노동부",
+      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787696"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "attribution_text": "출처: 고용노동부 「청년 노동자의 장시간·공짜 노동 근절을 위한 장시간 노동 기획감독 실시」 보도자료(2026.11.3), 공공누리 제1유형. 담당부서 표는 옮기지 않았습니다.",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '텍스트에 한하여 공공누리 제1유형(출처표시)' 고지 확인(2026-11-16). 첨부 PDF 본문과 페이지 본문 대조."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": null,
+     "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가 채웠다(한국은행 분석 보도)",
+     "source": {
+      "source_name": "조선비즈",
+      "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/"
+     },
+     "license": {
+      "name": "언론사 저작권 — 본문 복제·번역 금지",
+      "type": "PRESS",
+      "url": null,
+      "scope": "기사 본문·제목·이미지",
+      "attribution_required": true,
+      "commercial_use": "not_allowed",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
+      "attribution_text": "수치 출처: 한국은행 조사국 분석(조선비즈 2026-11-12 보도)"
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "B"
+    },
+    {
+     "issue_id": "iss-youth-nonregular-2026",
+     "title": "청년 비정규직 46.0% — 2003년 이후 최고, 자영업자는 19.4% 늘었다",
+     "source": {
+      "source_name": "뉴시스",
+      "source_url": "https://www.newsis.com/view/NISX20261120_0003877451"
+     },
+     "license": {
+      "name": "언론사 기사(재가공 불가)",
+      "type": "PRESS",
+      "url": null,
+      "verified": true,
+      "verified_at": "2026-11-22"
+     },
+     "first_seen": "2026-11-22",
+     "last_updated": "2026-11-22",
+     "track": "B"
+    }
+   ]
+  },
+  {
+   "theme_id": "th-employment-indicators-ui",
+   "title": "고용 지표·실업급여 변화",
+   "summary": "구인·실업·고용보험·임금 지표와 실업급여 수급 조건이 함께 움직인다. 수치 하나가 아니라 지표 간 방향이 어긋나는 지점을 읽어야 상담에서 \"지금 지원해도 되는가\"를 판단할 수 있다.",
+   "updated_at": "2026-11-20T23:04:00+09:00",
+   "items": [
+    {
+     "issue_id": "iss-us-ic-final-rule-2026",
+     "title": "미국 근로자·독립계약자 구분 최종규칙 — 핵심 2요소·사례 14개(미 노동부)",
+     "source": {
+      "source_name": "미국 노동부 임금시간국(DOL WHD)",
+      "source_url": "https://www.dol.gov/newsroom/releases/whd/whd20261119"
+     },
+     "license": {
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "type": "PUBLIC-DOMAIN",
+      "url": "https://www.dol.gov/general/aboutdol/copyright",
+      "scope": "본문 텍스트(제3자 저작물·이미지 제외)",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-20",
+      "evidence": "미국 노동부 저작권 안내(https://www.dol.gov/general/aboutdol/copyright, 2026-11-20 직접 확인): '연방정부가 만든 자료는 원칙적으로 퍼블릭 도메인이며 허락 없이 사용·복제·배포할 수 있다'(DOL의 사전 허가 불필요, 제3자 저작물·이미지 제외). 미국 저작권법 17 U.S.C. §105.",
+      "attribution_text": "Source: U.S. Department of Labor, Wage and Hour Division, “US Department of Labor announces final rule clarifying employee, independent contractor status under federal wage and hour laws” (November 19, 2026)"
+     },
+     "first_seen": "2026-11-20",
+     "last_updated": "2026-11-20",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-imf-article4-2026",
+     "title": "2026년 IMF 연례협의 — 잠재성장률 2.5%·경활참가율·임금격차·사회안전망 권고",
+     "source": {
+      "source_name": "국제통화기금(IMF)·재정경제부",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789604"
+     },
+     "license": {
+      "name": "공공누리 제1유형(출처표시)",
+      "type": "KOGL-1",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "scope": "텍스트 한정(사진·이미지·일러스트·동영상 제외)",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-18",
+      "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-18): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다.'",
+      "attribution_text": "출처: 재정경제부 「2026년 IMF 연례협의 결과 주요내용 발표」(2026.11.17, 정책브리핑 게재), 공공누리 제1유형. 속기자료(텍스트)만 이용했습니다."
+     },
+     "first_seen": "2026-11-18",
+     "last_updated": "2026-11-18",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-kr-wage-stagnation",
+     "title": "KDI 「기업 생산성 분석으로 살펴본 실질임금 정체의 배경과 시사점」",
+     "source": {
+      "source_name": "재정경제부·한국개발연구원(KDI)",
+      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156789396"
+     },
+     "license": {
+      "type": "KOGL-1",
+      "name": "공공누리 제1유형(출처표시)",
+      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+      "verified": true,
+      "verified_at": "2026-11-17"
+     },
+     "first_seen": "2026-11-17",
+     "last_updated": "2026-11-17",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-fake-33",
+     "title": "가짜 3.3 위장고용·사업장 쪼개기 기획감독(140여 개소)",
+     "source": {
+      "source_name": "고용노동부",
+      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20248"
+     },
+     "license": {
+      "type": "KOGL-NONE",
+      "name": "공공누리 미부착(사전 협의 필요)",
+      "verified": true,
+      "verified_at": "2026-11-17",
+      "evidence": "공공누리 표시 없음, '© Ministry of Employment and Labor. All rights reserved.'만 표시(2026-11-17 확인). 사실·수치만 사용."
+     },
+     "first_seen": "2026-11-17",
+     "last_updated": "2026-11-17",
+     "track": "B"
+    },
+    {
+     "issue_id": "iss-us-employment-oct",
+     "title": "2026년 10월 고용상황(미국 노동통계국)",
+     "source": {
+      "source_name": "미국 노동통계국(BLS)",
+      "source_url": "https://www.bls.gov/news.release/empsit.nr0.htm"
+     },
+     "license": {
+      "type": "PUBLIC-DOMAIN",
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "url": "https://www.bls.gov/opub/copyright-information.htm",
+      "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Employment Situation — October 2026 (USDL-26-1632)",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "미국 저작권법 17 U.S.C. §105(연방정부 저작물은 저작권 보호 대상 아님)와 BLS 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-16 확인): 'BLS가 발행하는 모든 자료는 퍼블릭 도메인이며 사진·삽화 등 기존 저작권 자료만 예외'."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-us-job-openings-sep",
+     "title": "2026년 9월 구인율 4.5%, 큰 변화 없음(미국 노동통계국)",
+     "source": {
+      "source_name": "미국 노동통계국(BLS) The Economics Daily",
+      "source_url": "https://www.bls.gov/opub/ted/2026/job-openings-rate-little-changed-at-4-5-percent-in-september-2026.htm"
+     },
+     "license": {
+      "type": "PUBLIC-DOMAIN",
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "url": "https://www.bls.gov/opub/copyright-information.htm",
+      "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Job openings rate little changed at 4.5 percent in September 2026” (November 12, 2026)",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "BLS 저작권 안내(2026-11-16 확인): BLS 발행물은 퍼블릭 도메인. 도표는 글자 표로만 옮기고 그림은 싣지 않음."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    },
+    {
+     "issue_id": "iss-us-ui-work-search-rule",
+     "title": "미 실업보험 수급자에 '매주 구직활동 5건' 최소기준 제정안(미국 노동부)",
+     "source": {
+      "source_name": "미국 노동부(U.S. DOL)",
+      "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261109"
+     },
+     "license": {
+      "type": "PUBLIC-DOMAIN",
+      "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+      "url": null,
+      "attribution_text": "Source: U.S. Department of Labor, “US Department of Labor publishes proposed rule setting national minimum weekly work search requirement for unemployment insurance” (November 9, 2026)",
+      "verified": true,
+      "verified_at": "2026-11-16",
+      "evidence": "미국 노동부(연방 행정부) 보도자료로 17 U.S.C. §105에 따라 저작권 보호 대상이 아님. dol.gov 게시 보도자료(2026-11-16 확인)."
+     },
+     "first_seen": "2026-11-16",
+     "last_updated": "2026-11-16",
+     "track": "A"
+    }
+   ]
+  }
+ ],
+ "keywords": [
+  {
+   "word": "중소기업 AI",
+   "count": 1
+  },
+  {
+   "word": "스마트공장",
+   "count": 1
+  },
+  {
+   "word": "주별 실업률",
+   "count": 1
+  },
+  {
+   "word": "총요소생산성",
+   "count": 1
+  },
+  {
+   "word": "AI 투자",
+   "count": 1
+  },
+  {
+   "word": "플랫폼 노동",
+   "count": 1
+  },
+  {
+   "word": "과업 단위",
+   "count": 1
+  }
+ ],
+ "items": [
+  {
+   "id": "n20261120-01",
+   "issue_id": "iss-sme-ai-alliance",
+   "theme_id": null,
+   "edition": "kr-0700",
+   "updated_at": "2026-11-20T07:05:00+09:00",
+   "run_id": "br-20261120-0705",
+   "headline": true,
+   "published_at": "2026-11-19T06:00:00+09:00",
+   "source": {
+    "source_name": "중소벤처기업부",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789845",
+    "country": "KR",
+    "license": {
+     "type": "KOGL-1",
+     "name": "공공누리 제1유형(출처표시)",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_text": "출처: 중소벤처기업부 「대·중소기업, AI로 연결하고 상생으로 도약한다」 보도자료(2026.11.19, 정책브리핑), 공공누리 제1유형. 텍스트만 이용했습니다.",
+     "verified": true,
+     "verified_at": "2026-11-20",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-20): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.'"
+    }
+   },
+   "title_original": "대·중소기업, AI로 연결하고 상생으로 도약한다",
+   "body_original": "중소벤처기업부(이하 중기부)는 11월 18일(수) 청주 오스코(OSCO)에서 'AI 대전환 상생협약식'을 개최하고 대기업·유관기관과 함께 상생협약을 체결했다고 밝혔다.\n\n이날 협약식에는 이소영 중기부 장관을 비롯해 11개 대기업과 5개 유관기관 대표, 중소기업 관계자 등 총 100여 명이 참석했다.\n\n이번 협약은 인공지능(이하 AI) 기술이 제조업의 경쟁력을 좌우하는 핵심 요소로 부상하는 가운데, 대기업과 중소기업 간 AI 활용 역량의 격차가 제조 경쟁력의 더 큰 격차로 이어지지 않도록 대기업이 보유한 AI 기술과 제조혁신 역량을 중소제조 현장에 확산하기 위해 마련됐다.\n\n특히, 창업부터 혁신·성장, 재도약까지 중소기업의 성장단계별로 대기업과 협력할 수 있는 기반을 마련하고, 기존의 상생협력을 AI 중심의 제조혁신으로 강화한다는 데 의미가 있다.\n\n협약체결 기관들은 중소기업의 AI 전환을 적극 지원하는데 그 뜻을 같이 하고, ①개방형혁신(오픈이노베이션), ②상생형 스마트공장, ③동반 사업전환 세 가지 분야 중 하나 이상에 대해 상호 협력하기로 하였다. 세부적인 내용은 다음과 같다.\n\n첫째, 개방형혁신(오픈이노베이션)을 통해 창업기업의 혁신기술을 대기업의 사업수요와 연결한다. 대기업은 제조AI 분야 전략과제와 기술수요를 발굴하고, 스타트업과 협업에 필요한 인프라를 지원한다. 중기부는 협업과제의 사업화 촉진을 위해 정책·재정 지원으로 뒷받침하고, '31년까지 주관기관 참여 규모를 100개사로 확대하여 대기업과 스타트업 간 협업 생태계를 더욱 활성화할 계획이다.\n\n둘째, 상생형 스마트공장을 통해 중소기업의 디지털 전환을 넘어 AI를 활용한 제조혁신으로 나아간다. 대기업은 스마트공장 구축에 필요한 재원을 출연하고, 제조현장에서 축적한 AI 기술과 노하우를 중소기업에 공유한다. 중기부는 '27년부터 '31년까지 5년간 민간기업과 함께 총 2조 원을 조성하여 2,000개 이상 중소기업의 스마트공장 구축 지원을 목표로 하고, 실제 현장에서의 변화와 성과를 나타낸 우수사례를 발굴하여 중소제조기업 전반으로 확산해 나갈 계획이다.\n\n셋째, 동반사업전환을 통해 중소기업의 새로운 도약을 지원한다. 대기업은 AI 분야 과제를 발굴하고 로드맵을 제시하는 한편, 협력사에 필요한 기술과 인프라, 노하우 등을 제공한다. 중기부는 사업전환 계획 수립부터 이행, 후속 지원을 뒷받침하고, 특히 '27년에는 피지컬 AI 동반사업전환을 위한 신규 예산 300억 원을 반영하여 100개 기업을 지원할 계획이다.\n\n한편, 삼성전자와 현대자동차는 상생형 스마트공장 지원 현황과 성과를 비롯해 자사가 추진하고 있는 다양한 상생협력 활동 사례를 발표했다. 행사에 참여한 기업인 에이플라㈜는 대기업 포스코와의 개방형혁신(오픈이노베이션) 사업에 참여하여 나타낸 협업 성과를, ㈜세영테크놀러지는 대기업 LG전자와 협업을 통한 상생형 스마트공장 도입을 통해 창출한 주요 성과에 대해 각각 발표하였다.\n\n이소영 중기부 장관은 \"AI 대전환의 혜택이 일부 기업에 머무르지 않고 중소제조 현장 전반으로 확산되는 것이 중요하다\"며, \"중소기업의 경우 AI 활용 역량과 투자 여력이 충분하지 않은 만큼, 대기업의 기술과 경험을 중소기업 현장에 연결하고, 중소기업의 혁신이 대기업의 경쟁력 강화로도 이어지는 상생협력이 필요하다\"고 강조했다.\n\n또한, 이번 협약을 계기로 \"창업기업은 대기업과 함께 새로운 시장에 진입하고, 중소기업은 AI 기반 스마트공장으로 혁신·성장하며, 동반 사업전환을 통해 다시 한번 도약할 수 있도록 기업의 성장단계별 상생협력도 강화해 나가겠다\"고 밝혔다.\n\n중기부는 앞으로 AI를 중심으로 창업·제조혁신·사업전환을 서로 연결하여 현장에서 실질적인 성과가 창출될 수 있도록 대기업·유관기관 등과 긴밀히 협력해 나갈 예정이다.\n\n한편, 중기부는 협약식 외에도 11월 18일~19일 중소기업 혁신주간과 연계하여 스마트제조혁신 분야 6개 행사를 개최하여 제조AI 혁신의 성과를 공유하고 나아갈 방향을 모색하였다.",
+   "topics": [
+    "AI·직무",
+    "고용·정책"
+   ],
+   "keywords": [
+    "중소기업 AI",
+    "스마트공장"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261121-01",
+   "issue_id": "iss-us-state-unemployment-oct2026",
+   "theme_id": null,
+   "is_main_theme": false,
+   "edition": "global-2300",
+   "updated_at": "2026-11-21T23:07:00+09:00",
+   "run_id": "br-20261121-2307",
+   "headline": false,
+   "published_at": "2026-11-20",
+   "source": {
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "State Employment and Unemployment — October 2026 (USDL-26-1713)",
+    "source_url": "https://www.bls.gov/news.release/laus.nr0.htm",
+    "published_at": "2026-11-20",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-21",
+     "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-21 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, “State Employment and Unemployment — October 2026” (USDL-26-1713, November 20, 2026)"
+    },
+    "country": "US"
+   },
+   "title_original": "State Employment and Unemployment — October 2026",
+   "title_ko": "주별 고용·실업 — 2026년 10월: 46개 주 실업률 변화 없음",
+   "body_original": "Unemployment rates were lower in October in 3 states and the District of Columbia, higher in 1 state, and stable in 46 states, the U.S. Bureau of Labor Statistics reported today. The national unemployment rate, 4.1 percent, changed little over the month.\n\nIn October 2026, nonfarm payroll employment increased in 4 states and was essentially unchanged in 46 states and the District of Columbia. Over the year, nonfarm payroll employment increased in 12 states and was essentially unchanged in 38 states and the District.\n\nHousehold survey data, which provide the primary inputs to the Local Area Unemployment Statistics (LAUS) program, were not collected for October 2025 due to a lapse in appropriations and were not collected retroactively. Therefore, this release does not include the typical analysis of over-the-year unemployment rate changes from October 2025 to October 2026.\n\nSouth Dakota had the lowest jobless rate in October, 2.0 percent, followed by North Dakota, 2.2 percent. The District of Columbia had the highest unemployment rate, 5.4 percent. In total, 19 states had unemployment rates lower than the U.S. figure of 4.1 percent, 3 states and the District had higher rates, and 28 states had rates that were not appreciably different from that of the nation.\n\nIn October, three states and the District of Columbia had unemployment rate decreases: the District (-0.2 percentage point) and Florida, New Hampshire, and Pennsylvania (-0.1 point each). Colorado had the only rate increase (+0.3 percentage point). Forty-six states had jobless rates that were not notably different from those of a month earlier, though some had changes that were at least as large numerically as the significant changes.\n\nThe job gains occurred in California (+47,100, or +0.3 percent), Indiana (+15,900, or +0.5 percent), Kansas (+7,100, or +0.5 percent), and Iowa (+7,000, or +0.4 percent).\n\nOver the year, nonfarm payroll employment increased in 12 states and was essentially unchanged in 38 states and the District of Columbia. The largest job gains occurred in Texas (+203,300), California (+187,200), and Florida (+100,200). The largest percentage increase occurred in Louisiana (+2.0 percent), followed by South Carolina and Utah (+1.8 percent each).",
+   "body_ko_ai": "미국 노동통계국은 오늘, 10월에 실업률이 3개 주와 컬럼비아특별구에서 낮아지고 1개 주에서 높아졌으며 46개 주에서는 변화가 없었다고 밝혔다. 전국 실업률은 4.1%로 한 달 사이 거의 변하지 않았다.\n\n2026년 10월 비농업 부문 고용은 4개 주에서 늘었고 46개 주와 컬럼비아특별구에서는 사실상 변화가 없었다. 전년 대비로는 12개 주에서 비농업 고용이 늘었고 38개 주와 컬럼비아특별구에서는 사실상 변화가 없었다.\n\n지역노동통계(LAUS) 프로그램의 주된 입력자료인 가계조사 자료는 예산 미통과로 2025년 10월에 실시되지 않았고 소급 조사도 이뤄지지 않았다. 따라서 이번 발표에는 통상 싣던 2025년 10월 대비 2026년 10월 실업률 변화 분석이 포함되지 않았다.\n\n10월 실업률이 가장 낮은 곳은 사우스다코타(2.0%)였고 노스다코타(2.2%)가 뒤를 이었다. 컬럼비아특별구가 5.4%로 가장 높았다. 모두 19개 주가 전국 수치(4.1%)보다 실업률이 낮았고, 3개 주와 컬럼비아특별구는 더 높았으며, 28개 주는 전국 수치와 뚜렷한 차이가 없었다.\n\n10월에 실업률이 하락한 곳은 3개 주와 컬럼비아특별구였다. 컬럼비아특별구가 0.2%p 하락했고 플로리다·뉴햄프셔·펜실베이니아가 각각 0.1%p 하락했다. 실업률이 오른 곳은 콜로라도(+0.3%p) 한 곳뿐이었다. 46개 주는 한 달 전과 뚜렷한 차이가 없었으나, 일부는 수치상으로는 유의한 변화만큼 큰 변동을 보였다.\n\n고용 증가는 캘리포니아(+47,100명, +0.3%), 인디애나(+15,900명, +0.5%), 캔자스(+7,100명, +0.5%), 아이오와(+7,000명, +0.4%)에서 나왔다.\n\n전년 대비 비농업 고용은 12개 주에서 늘었고 38개 주와 컬럼비아특별구에서는 사실상 변화가 없었다. 증가 폭이 가장 큰 곳은 텍사스(+203,300명), 캘리포니아(+187,200명), 플로리다(+100,200명)였다. 증가율이 가장 높은 곳은 루이지애나(+2.0%)였고 사우스캐롤라이나와 유타(각 +1.8%)가 뒤를 이었다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-21T23:07:00+09:00"
+   },
+   "topics": [
+    "고용·정책",
+    "글로벌"
+   ],
+   "keywords": [
+    "주별 실업률"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261121-02",
+   "issue_id": "iss-us-tfp-2025",
+   "theme_id": null,
+   "is_main_theme": false,
+   "edition": "global-2300",
+   "updated_at": "2026-11-21T23:07:00+09:00",
+   "run_id": "br-20261121-2307",
+   "headline": true,
+   "published_at": "2026-11-20",
+   "source": {
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "Total Factor Productivity for Major Industries — 2025 (USDL-26-1714)",
+    "source_url": "https://www.bls.gov/news.release/prod5.nr0.htm",
+    "published_at": "2026-11-20",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-21",
+     "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-21 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, “Total Factor Productivity for Major Industries — 2025” (USDL-26-1714, November 20, 2026)"
+    },
+    "country": "US"
+   },
+   "title_original": "Total Factor Productivity for Major Industries — 2025",
+   "title_ko": "주요 산업 총요소생산성 — 2025년: 산출 증가에서 TFP 기여는 늘고 노동 기여는 줄었다",
+   "body_original": "Total factor productivity (TFP) increased in 7 out of 19 major industries in 2025, the U.S. Bureau of Labor Statistics reported today, led by the wholesale trade industry. All the industries that saw TFP growth were the result of output outpacing combined inputs of capital, labor, and the intermediate inputs of energy, materials, and services.\n\nLabor productivity increased in 13 of 19 industries in 2025. Labor productivity can be expressed as the sum of six components: TFP growth and the contributions of capital intensity, labor composition, energy intensity, materials intensity, and services intensity.\n\nProductivity growth is generally evaluated over longer periods, as changes in production processes and the adoption of new technologies can take time to affect measured productivity. Considering recent investments in technology, such as in super intelligence (also known as artificial intelligence) tools, and the full recovery in hours from the COVID-19 pandemic, examining the contributions of total factor productivity, capital, and labor during 2019-22 and 2022-25 provides additional insight into how the sources of private business output growth have changed over the 2019-25 business cycle.\n\nPrivate business output growth can be viewed as the sum of three components: total factor productivity, contribution of capital input, and contribution of labor input. The drivers of output growth for the private business sector during 2019-25 were TFP and capital, contributing 0.85 percentage point and 1.08 percentage points, respectively, with labor contributing 0.51 percentage point.\n\nThe composition of private business output growth shifted between 2019-22 and 2022-25. TFP's contribution increased from 0.72 percentage point to 0.97 percentage point, while capital's contribution increased from 1.03 percentage points to 1.13 percentage points. Labor's contribution decreased from 0.60 percentage point to 0.42 percentage point.\n\nTFP's contribution to private business output growth was positive over the full 2019-25 business cycle, with positive contributions from all sectors except goods producing. The ICT and FIRE sectors made the largest contribution to TFP (0.35 percentage point and 0.30 percentage point, respectively).\n\nTotal factor productivity made an increased contribution to private business output growth during 2022-25 compared to 2019-22, increasing by 0.25 percentage point. Most of the 0.25-percentage-point increase came from the ICT sector, with increased contributions from 0.27 percentage point during 2019-22 to 0.42 percentage point during 2022-25.",
+   "body_ko_ai": "미국 노동통계국은 오늘, 2025년에 19개 주요 산업 가운데 7개 산업에서 총요소생산성(TFP)이 상승했고 도매업이 가장 앞섰다고 밝혔다. TFP가 오른 산업은 모두 산출이 자본·노동과 에너지·원재료·서비스 등 중간투입을 합친 투입보다 빨리 늘어난 결과였다.\n\n2025년 노동생산성은 19개 산업 가운데 13개 산업에서 상승했다. 노동생산성은 TFP 증가와 자본집약도, 노동구성, 에너지집약도, 원재료집약도, 서비스집약도의 기여를 합한 것으로 표현할 수 있다.\n\n생산성 증가는 보통 더 긴 기간에 걸쳐 평가한다. 생산 공정의 변화와 신기술 도입이 측정된 생산성에 반영되기까지 시간이 걸리기 때문이다. 초지능(super intelligence, 흔히 인공지능으로 불리는) 도구 등 최근의 기술 투자와 코로나19 팬데믹 이후 노동시간의 완전한 회복을 고려해, 2019~22년과 2022~25년의 총요소생산성·자본·노동 기여를 살펴보면 2019~25년 경기순환에서 민간기업 산출 증가의 원천이 어떻게 바뀌었는지 추가로 알 수 있다.\n\n민간기업 산출 증가는 총요소생산성, 자본투입 기여, 노동투입 기여 세 가지로 볼 수 있다. 2019~25년 민간기업 부문 산출 증가를 이끈 것은 TFP와 자본으로 각각 0.85%p, 1.08%p 기여했고 노동은 0.51%p 기여했다.\n\n민간기업 산출 증가의 구성은 2019~22년과 2022~25년 사이에 달라졌다. TFP 기여는 0.72%p에서 0.97%p로, 자본 기여는 1.03%p에서 1.13%p로 늘었다. 노동 기여는 0.60%p에서 0.42%p로 줄었다.\n\n2019~25년 경기순환 전체에서 TFP가 민간기업 산출 증가에 기여한 것은 플러스였고, 재화생산 부문을 뺀 모든 부문이 플러스로 기여했다. 정보통신(ICT)과 금융·보험·부동산(FIRE) 부문이 TFP에 가장 크게 기여했다(각각 0.35%p, 0.30%p).\n\nTFP가 민간기업 산출 증가에 기여한 정도는 2019~22년보다 2022~25년에 0.25%p 늘었다. 이 0.25%p 증가분의 대부분은 ICT 부문에서 나왔으며, ICT의 기여는 2019~22년 0.27%p에서 2022~25년 0.42%p로 커졌다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-21T23:07:00+09:00"
+   },
+   "topics": [
+    "AI·직무",
+    "글로벌"
+   ],
+   "keywords": [
+    "총요소생산성",
+    "AI 투자"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261121-03",
+   "issue_id": "iss-ai-platform-work-kenya",
+   "theme_id": null,
+   "is_main_theme": false,
+   "edition": "global-2300",
+   "updated_at": "2026-11-21T23:07:00+09:00",
+   "run_id": "br-20261121-2307",
+   "headline": true,
+   "published_at": "2026-11-20",
+   "source": {
+    "source_name": "arXiv (Farhan Latif, UNU·워털루대)",
+    "source_title": "AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya (arXiv:2611.25585)",
+    "source_url": "https://arxiv.org/abs/2611.25585",
+    "published_at": "2026-11-20",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 본문(초록·본문 텍스트)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-21",
+     "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.25585)의 라이선스 아이콘이 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-21). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
+     "attribution_text": "Latif, F. (2026), “AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya”, arXiv:2611.25585, CC BY 4.0. 원문을 그대로 옮기고 AI로 한국어 번역했습니다(내용 변경 없음)."
+    },
+    "country": "KE"
+   },
+   "title_original": "AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya",
+   "title_ko": "AI가 바꾸는 플랫폼 노동 — 과업 단위로 재면 교란은 크고 생계 취약성은 직무별로 갈린다(케냐 프리랜서 증거)",
+   "body_original": "Assessments of AI's impact on labour often rely on conventional occupational categories or broad market indicators. This dominant trend, however, obscures how tasks within the same occupation vary in practice across work arrangements. This limitation is particularly important in online freelancing, where workers are typically remote and devote substantial time performing unpaid tasks. This article introduces a task-based framework that distinguishes AI-driven disruption, defined as the extent of change in how work is performed, from livelihood vulnerability associated with that change. The framework is subsequently applied to assess the potential for automation, substitution, and enhancement across four categories of platform work: writing, virtual assistance, transcription, and web and software development. The model estimates high disruption across all four categories, while livelihood vulnerability scores are lower and vary by occupation. Potential efficiency gains on unpaid tasks partly offset potential wage impact associated with paid work in the model. The article compares these estimates with evidence from a survey of 52 online freelancers and 20 follow-up interviews in Nairobi, Kenya. Workers report changes in how they perform tasks and intensifying competition, while their accounts show how adapting their skills and using AI strategically shape their concerns about job loss.\n\nThe field research data were collected in Kenya from January 2024 to July 2024, using a survey of 52 freelance platform workers, from which 20 participants were selected for follow-up, semi-structured interviews.\n\nThe overall disruption factor registers an exceptionally high average score of 0.913, with paid (0.906) and unpaid work (0.929) exhibiting similarly elevated means, indicating the substantial ongoing and anticipated transformation in platform work practices.\n\nNotably, vulnerability emerges as a critical factor: while the overall vulnerability measure remains relatively low (mean = 0.214), unpaid work vulnerability presents a more pronounced negative value (mean = -0.493), highlighting distinct dynamics in unpaid labour contexts.\n\nDisruption scores across occupations indicate consistently high levels of AI-driven impact, with all four freelance occupations registering values above 0.88. Web and software development (0.95) and transcription (0.91) exhibit the highest disruption scores, underscoring the substantial transformation potential of these fields. Virtual assistance (0.90) and freelance writing (0.89) follow closely.\n\nNotably, freelance writing registers a low vulnerability score (0.05), suggesting that AI's overall impact on job security in this field may be relatively marginal. In contrast, transcription (0.23) and virtual assistance (0.21) exhibit higher vulnerability scores, indicating that these occupations face more significant risks. Freelance developers exhibit the highest vulnerability score (0.37), indicating that platform workers in this field may face substantial challenges as AI-driven automation reshapes their work.\n\nPaid work exhibits a positive vulnerability score (0.48), whereas unpaid work registers a negative score (-0.49), indicating a net offset effect. Despite this mitigating factor, the lower proportion of unpaid work (28.2%) limits its ability to substantially reduce overall vulnerability.\n\nEvidence from the survey shows that a substantial majority, 78.85%, express confidence in their ability to transition to new job opportunities if AI-based tools were to replace some aspects of their current work. In contrast, 17.31% remain uncertain, and only 3.85% anticipate significant challenges to adaptability.",
+   "body_ko_ai": "AI가 노동에 미치는 영향을 평가할 때는 흔히 전통적인 직업 분류나 거친 시장 지표에 의존한다. 그러나 이런 주류의 접근은 같은 직업 안에서도 과업이 실제 업무 방식에 따라 어떻게 달라지는지를 가린다. 이 한계는 온라인 프리랜싱에서 특히 중요하다. 이곳의 노동자는 대개 원격으로 일하고 상당한 시간을 무급 과업에 쓴다. 이 논문은 AI가 일하는 방식을 바꾸는 정도로 정의되는 'AI 주도 교란(disruption)'과 그 변화에 따르는 '생계 취약성(livelihood vulnerability)'을 구분하는 과업 기반 틀을 제시한다. 이 틀은 이어서 글쓰기, 가상비서, 전사(轉寫), 웹·소프트웨어 개발 네 가지 플랫폼 노동 범주에서 자동화·대체·향상 가능성을 평가하는 데 적용된다. 모델은 네 범주 모두에서 교란이 높다고 추정한 반면, 생계 취약성 점수는 더 낮고 직업별로 달랐다. 무의 과업에서 나올 수 있는 효율 개선은 모델에서 유급 노동의 임금 영향 일부를 상쇄한다. 논문은 이 추정치를 케냐 나이로비의 온라인 프리랜서 52명 설문과 20명 후속 인터뷰 증거와 비교한다. 노동자들은 과업 수행 방식의 변화와 경쟁 심화를 이야기했고, 이들의 진술은 기술을 조정하고 AI를 전략적으로 쓰는 방식이 일자리 상실에 대한 우려를 어떻게 형성하는지 보여준다.\n\n현장 조사 자료는 2024년 1월부터 7월까지 케냐에서 수집했다. 프리랜서 플랫폼 노동자 52명을 설문했고 그중 20명을 골라 반구조화 심층 인터뷰를 진행했다.\n\n전체 교란 요인은 평균 0.913이라는 매우 높은 점수를 기록했다. 유급(0.906)과 무급(0.929) 노동이 비슷하게 높은 평균을 보여, 플랫폼 노동 관행에서 상당한 변화가 진행 중이고 앞으로도 예상된다는 점을 나타낸다.\n\n특히 취약성이 핵심 요인으로 드러난다. 전체 취약성 지표는 상대적으로 낮은 수준(평균 0.214)으로 남았지만, 무급 노동의 취약성은 더 뚜렷한 음수 값(평균 -0.493)을 보여 무급 노동 맥락의 별개 역학을 드러낸다.\n\n직업별 교란 점수는 일관되게 높은 AI 주도 영향을 보여, 네 프리랜스 직업 모두 0.88을 넘었다. 웹·소프트웨어 개발(0.95)과 전사(0.91)가 가장 높은 교란 점수를 보여 이 분야의 큰 변화 가능성을 뒷받침했다. 가상비서(0.90)와 프리랜스 글쓰기(0.89)가 뒤를 이었다.\n\n프리랜스 글쓰기는 낮은 취약성 점수(0.05)를 기록해, 이 분야에서 AI가 일자리 안정성에 미치는 전반적 영향은 상대적으로 작을 수 있음을 시사했다. 반대로 전사(0.23)와 가상비서(0.21)는 더 높은 취약성 점수를 보여 이 직업들이 더 큰 위험에 직면했음을 나타냈다. 프리랜스 개발자는 가장 높은 취약성 점수(0.37)를 보여, AI 주도 자동화가 업무를 재편하면서 이 분야 플랫폼 노동자가 상당한 어려움에 직면할 수 있음을 보여줬다.\n\n유급 노동은 플러스 취약성 점수(0.48)를, 무급 노동은 마이너스 점수(-0.49)를 기록해 순 상쇄 효과가 있음을 보여준다. 이런 완충 요인에도 무급 노동의 비중이 낮아(28.2%) 전체 취약성을 크게 낮추는 데는 한계가 있었다.\n\n설문 증거에 따르면 응답자의 상당수인 78.85%가 AI 기반 도구가 현재 업무의 일부를 대체하더라도 새 일자리 기회로 옮겨갈 수 있다는 자신감을 보였다. 반면 17.31%는 확신하지 못했고 3.85%만이 적응에 상당한 어려움을 예상했다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-21T23:07:00+09:00"
+   },
+   "topics": [
+    "AI·직무",
+    "글로벌"
+   ],
+   "keywords": [
+    "플랫폼 노동",
+    "과업 단위"
+   ],
+   "related_jobs": [
+    "직업상담사"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  }
+ ],
+ "excluded": {
+  "count": 3,
+  "reasons": [
+   {
+    "reason": "공공누리 미부착 보도자료(KOGL-NONE) — 본문 재게시 불가",
+    "count": 1
+   },
+   {
+    "reason": "언론사 기사(PRESS) — 본문 재게시 불가",
+    "count": 2
+   }
+  ]
+ },
+ "archive_dates": [
+  "2026-11-22",
+  "2026-11-21",
+  "2026-11-20",
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-10-31",
+  "2026-10-30"
+ ],
+ "takedown": {
+  "contact_url": "https://github.com/ccttsi/jobcounsel/issues",
+  "recent": []
+ }
+}

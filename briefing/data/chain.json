@@ -1,8 +1,9 @@
 {
- "generated_at": "2026-11-21T23:07:50+09:00",
+ "generated_at": "2026-11-22T07:06:03+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
+  "2026-11-22",
   "2026-11-21",
   "2026-11-20",
   "2026-11-19",
@@ -1320,6 +1321,17 @@
      "source_name": "미국 노동부 임금시간국(DOL WHD)",
      "source_url": "https://www.dol.gov/newsroom/releases/whd/whd20261119",
      "published_at": "2026-11-19"
+    },
+    {
+     "date": "2026-11-22",
+     "card_id": "c03",
+     "title": "임금·복지 격차, 12개 기관이 매주 회의로 손본다",
+     "kicker": "4개 분야 과제 발굴 · 부처 8곳·연구기관 4곳 참여",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20280",
+     "published_at": "2026-11-20"
     }
    ]
   },
@@ -2770,6 +2782,17 @@
      "source_name": "국가데이터처",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789895",
      "published_at": "2026-11-19"
+    },
+    {
+     "date": "2026-11-22",
+     "card_id": "c02",
+     "title": "노동부 예산 7,164억 늘었지만 AI 훈련은 95억 줄었다",
+     "kicker": "기노위 의결 · 특고 생활안정 +500억 · 자격시험 대응 +182억",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "헤럴드경제",
+     "source_url": "https://biz.heraldcorp.com/article/10943661",
+     "published_at": "2026-11-20"
     }
    ]
   },
@@ -3539,6 +3562,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790054",
      "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-22",
+     "card_id": "c01",
+     "title": "청년 비정규직 46.0%·시간제 27.4% — 2003년 이후 최고",
+     "kicker": "청년 임금근로자 322.3만명 · 비정규직 148.2만명",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "뉴시스",
+     "source_url": "https://www.newsis.com/view/NISX20261120_0003877451",
+     "published_at": "2026-11-21"
     }
    ]
   },
