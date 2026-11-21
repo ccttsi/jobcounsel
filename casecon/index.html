@@ -132,10 +132,12 @@ a{color:inherit}
 
 /* 한 장 */
 .panel{border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);padding:14px;min-width:0}
+/* 제목 길이와 무관하게 「이론 위키」 단추는 카드 오른쪽 위 모서리에 고정된다 — 제목 블록이 남는 폭을 갖고(flex:1), 단추는 auto 왼쪽 여백으로 오른쪽 끝까지 밀린다 */
 .p-head{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.p-ht{flex:1 1 auto;min-width:0}
 .p-head h2{margin:0;font-size:16.5px;font-weight:780;letter-spacing:-.02em}
 .p-head p{margin:2px 0 0;font-size:12.5px;color:var(--dim)}
-.p-head .p-who{margin-left:auto;flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 11px;margin:-8px -6px -8px 0;border:1px solid var(--acc);border-radius:10px;background:var(--acc-soft);font-size:12px;font-weight:750;color:var(--acc);text-decoration:none;white-space:nowrap}
+.p-head .p-who{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 11px;margin:-6px -6px -8px auto;border:1px solid var(--acc);border-radius:10px;background:var(--acc-soft);font-size:12px;font-weight:750;color:var(--acc);text-decoration:none;white-space:nowrap}
 .blk{margin-top:12px;min-width:0}
 .blk h3{margin:0 0 4px;font-size:11.5px;font-weight:800;letter-spacing:.06em;color:var(--dim)}
 .blk p{margin:0;font-size:14px;line-height:1.62}
@@ -348,7 +350,6 @@ html[data-jc-imm] .crail,html[data-jc-imm] .frail{display:none}
   function selectCase(i){
     if(i===curC){return;}
     curC=i;QUIZ=curF;cmpOn=false;paintCase();paintFw();render();
-    $('#casebar').setAttribute('aria-labelledby','cs-'+i);
     reveal('cs-'+i,'.crail');
     try{history.replaceState(null,'','?case='+D.cases[i].id+'&fw='+D.frameworks[curF].id)}catch(e){}
   }
@@ -375,6 +376,7 @@ html[data-jc-imm] .crail,html[data-jc-imm] .frail{display:none}
     first.forEach(function(x){var li=document.createElement('li');li.textContent=x;ol.appendChild(li)});
     fb.appendChild(ol);
     $('#hint').innerHTML='틀을 바꿔 읽으면 같은 사람이 다른 «문제»로 보입니다. 본 틀은 이 자리에 쌓입니다.';
+    $('#casebar').setAttribute('aria-labelledby','cs-'+curC);
     paintSeen();
   }
   function paintFw(){
@@ -400,7 +402,7 @@ html[data-jc-imm] .crail,html[data-jc-imm] .frail{display:none}
     if(QUIZ==='q'){renderQuiz(p);return;}
     var c=D.cases[curC], f=D.frameworks[curF], v=c.fw[f.id]||{r:'',g:''};
     var head=el('div','p-head');
-    var hh=el('div');
+    var hh=el('div','p-ht');
     hh.appendChild(el('h2',null,f.name));
     hh.appendChild(el('p',null,f.no+' · '+f.who+' · 「'+D.cases[curC].label+'」'));
     head.appendChild(hh);
