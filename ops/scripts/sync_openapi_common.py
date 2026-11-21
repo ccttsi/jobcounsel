@@ -34,6 +34,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from collect_gate import check_document, check_items  # noqa: E402  — 수집 사전 검증 게이트
+
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data" / "openapi"
 SECRETS_DIR = ROOT.parent / ".secrets"
@@ -368,6 +372,33 @@ def envelope(key: str, items: list, fetched_at: str, extra: dict | None = None) 
     return out
 
 
+def _gate(key: str, items: list) -> None:
+    """**쓰기 직전** 관문 — 라이선스 표기·미래 시행일·출처·기준일을 본다(`collect_gate.py`).
+
+    막히면 파일을 쓰지 않고 그 소스를 실패로 보고한다. 잘못된 자료가 저장소에 한 번도
+    들어오지 않게 하는 것이 목적이라, 저장된 뒤에 훑는 CI 검사(`validate_repo.py`)보다 앞선다.
+    """
+    meta = SOURCES[key]
+    report = check_items(
+        items,
+        license=meta["license"],
+        source_url=meta["official_url"],
+        fetched_at=kst_now().isoformat(),
+        source_name=meta["name"],
+    )
+    if report.ok:
+        if report.noted:
+            print(f"  · 수집 게이트 참고 {len(report.noted)}건 — {report.noted[0]}")
+        return
+    shown = " | ".join(report.blocked[:3])
+    rest = len(report.blocked) - 3
+    raise SourceError(
+        f"수집 게이트 차단 {len(report.blocked)}건 — {shown}"
+        + (f" …외 {rest}건" if rest > 0 else "")
+        + " (파일을 쓰지 않았다)"
+    )
+
+
 def write_source(key: str, items: list, *, dry_run: bool = False, extra: dict | None = None) -> bool:
     """바뀐 것이 있을 때만 쓴다. 반환값 = 파일을 새로 썼는지."""
     meta = SOURCES[key]
@@ -381,6 +412,7 @@ def write_source(key: str, items: list, *, dry_run: bool = False, extra: dict | 
     if old and _canonical(old.get("items")) == _canonical(items):
         print(f"  = {key}: 변경 없음 ({len(items):,}건)")
         return False
+    _gate(key, items)
     if dry_run:
         print(f"  * {key}: {len(items):,}건 (드라이런 — 쓰지 않음)")
         return True
@@ -408,6 +440,9 @@ def validate_outputs(secret_values: tuple[str, ...] = ()) -> None:
             continue
         if doc.get("count") != len(doc.get("items", [])):
             problems.append(f"{key}: count({doc.get('count')})와 items({len(doc.get('items', []))})가 다르다")
+        report = check_document(doc, kind="openapi")
+        if not report.ok:
+            problems.extend(f"{key}: 수집 게이트 — {line}" for line in report.blocked[:3])
         for secret in secret_values:
             if secret and len(secret) > 8 and secret in raw:
                 problems.append(f"{key}: 인증키 값이 산출물에 들어 있다")
@@ -415,7 +450,7 @@ def validate_outputs(secret_values: tuple[str, ...] = ()) -> None:
         for problem in problems:
             print(f"  ! 산출물 검사: {problem}")
         raise SystemExit(2)
-    print("산출물 검사 통과 — JSON·count·인증키 노출 없음")
+    print("산출물 검사 통과 — JSON·count·수집 게이트(라이선스·시행일·출처)·인증키 노출 없음")
 
 
 def update_manifest(tiers: list[str] | None = None) -> bool:
