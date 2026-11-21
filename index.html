@@ -14,18 +14,18 @@
 <meta property="og:site_name" content="Walk into Work">
 <meta property="og:title" content="Walk into Work">
 <meta property="og:description" content="직업상담 공부·아이디어 정리하기">
-<meta property="og:url" content="https://ccttsi.pages.dev/">
+<meta property="og:url" content="https://witw.pages.dev/">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://ccttsi.pages.dev/assets/og-card.png">
+<meta property="og:image" content="https://witw.pages.dev/assets/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Walk into Work">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Walk into Work">
 <meta name="twitter:description" content="직업상담 공부·아이디어 정리하기">
-<meta name="twitter:image" content="https://ccttsi.pages.dev/assets/og-card.png">
+<meta name="twitter:image" content="https://witw.pages.dev/assets/og-card.png">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
-<link rel="preload" href="./assets/fonts/archivo-black-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./assets/fonts/josefin-sans-latin-500.woff2" as="font" type="font/woff2" crossorigin>
 <script>
 /* 테마를 그리기 전에 정한다. 자동: 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
 (function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
@@ -123,26 +123,27 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
    R3까지는 마름모 옆에 「CAREER CONSULTANT TUTORIAL」·「Walk Into Work」 두 줄을 테마별 투명 PNG로 그렸다.
    이제 튜토리얼 병기를 걷어 내고 **`Walk into Work` 한 줄만** 남긴다 — 부제가 빠진 만큼 글자를 키워
    마름모와 한 덩어리로 읽히게 맞춘다.
-   · 글자는 그림이 아니라 **한 줄 텍스트**다(Archivo Black — 원본 로고와 같은 서체, OFL 1.1 · assets/fonts/).
+   · 글자는 그림이 아니라 **한 줄 텍스트**다(Josefin Sans 500 — OFL 1.1 · assets/fonts/, 12.3KB 로컬).
      그림이 아니므로 망막 화면에서도 번지지 않고, 글자 크기는 아래 container query로 칸 폭을 따라간다.
    · 숨은 `want work`: `Wa`·`nt`·`Work` 세 토막만 --logo-hi 색이다. 크기·굵기·자간은 나머지와 **완전히 같고
      투명도도 건드리지 않는다** — 멀리서는 한 덩어리 검은 로고, 가까이서만 톤 차이가 보인다.
-     글자 사이 커닝은 span 경계에서 끊기지 않는다(실측: plain 826px = span 826px @100px, Chromium).
-   · 색은 테마 셋에서 잉크와 포인트를 함께 바꾼다(종이 바탕 대비 잉크 13~18:1 · 포인트 9~15:1 — 크기는 그대로, 색만 아주 조금):
-     라이트 #1b1611 / #173932 · 세피아 #2b2013 / #213f34 · 다크 #f5f7fb / #cdebe9.
-   · 마름모: 같은 비율 그대로 다시 그린 SVG 두 겹(바깥·안쪽). 겹을 따로 돌려야 1분 모션이 되기 때문이다.
-     원본 실측(2000px 기준): 중심 (394,999) · 반지름 |x|+|y| = 133.5 / 120(바깥) · 85.5 / 77.5(안쪽) · 선 두께 2.6px.
-   · 크기: 마름모 1.95em · 글자 1em(Archivo Black 한 줄 ≈8.1em) · 사이 0.42em → 전체 ≈10.5em.
+     글자 사이 커닝은 span 경계에서 끊기지만, 아래에서 폰트가 잰 값으로 되돌려 둔다(멈춘 그림은 한 줄 텍스트와 같다).
+   · 색은 테마 셋에서 잉크와 포인트를 함께 바꾼다(2026-11-21 확정): 라이트 #1b1611 / #1e6b5c ·
+     세피아 #261c12 / #1d6657 · 다크 #f3efe8 / #7fc3b2. 투명도는 쓰지 않는다(색만으로 톤을 만든다).
+   · 마름모: 겹마다 네모 두 장(2026-11-21 확정) — 1·3은 0°, 2·4는 각각 −3.78°·−6.27° 돌려 꼭짓점이
+     앞 겹의 변에 닿게 맞췄다(1·2 간격 = 3·4 간격 = 8.0). 회전은 각 path의 SVG transform이라 겹(<g>)을
+     돌리는 1분 모션과 부딪히지 않는다. 겹을 따로 돌려야 1분 모션이 되기 때문이다.
+   · 크기: 마름모 1.95em · 글자 1em(Josefin Sans 한 줄 ≈6.4em) · 사이 0.26em(단어 사이 띄어쓰기만큼).
      글자 크기는 머리말 왼쪽 칸 폭의 9%(cqw, 상한 37px)라 어떤 폭에서도 넘치지 않는다(실측 넘침 0px).
      container query를 모르는 브라우저는 vw 근사값으로 떨어진다(칸 폭 = 100vw - 28px). */
-@font-face{font-family:"Archivo Black";src:url("./assets/fonts/archivo-black-latin.woff2") format("woff2");
-  font-weight:400;font-style:normal;font-display:block}
-:root{--logo-ink:#1b1611;--logo-hi:#173932}
-:root[data-jc-tone="sepia"]{--logo-ink:#2b2013;--logo-hi:#213f34}
-:root[data-theme="dark"]{--logo-ink:#f5f7fb;--logo-hi:#cdebe9}
-.cctt-lockup{display:inline-flex;align-items:center;flex:none;min-width:0;gap:.42em;overflow:hidden;border-radius:4px;
-  font-family:"Archivo Black","Apple SD Gothic Neo",-apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
-  font-size:min(9vw - 2.5px,37px);font-weight:400;font-style:normal;line-height:1;letter-spacing:0;white-space:nowrap;
+@font-face{font-family:"Josefin Sans";src:url("./assets/fonts/josefin-sans-latin-500.woff2") format("woff2");
+  font-weight:500;font-style:normal;font-display:block}
+:root{--logo-ink:#1b1611;--logo-hi:#1e6b5c}
+:root[data-jc-tone="sepia"]{--logo-ink:#261c12;--logo-hi:#1d6657}
+:root[data-theme="dark"]{--logo-ink:#f3efe8;--logo-hi:#7fc3b2}
+.cctt-lockup{display:inline-flex;align-items:center;flex:none;min-width:0;gap:.26em;overflow:hidden;border-radius:4px;
+  font-family:"Josefin Sans","Apple SD Gothic Neo",-apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
+  font-size:min(9vw - 2.5px,37px);font-weight:500;font-style:normal;line-height:1;letter-spacing:0;white-space:nowrap;
   color:var(--logo-ink);font-synthesis:none}
 @supports (font-size:1cqw){.a-brand{container-type:inline-size}
   .cctt-lockup{font-size:min(9cqw,37px)}}
@@ -150,11 +151,35 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .cctt-mark{display:block;flex:none;width:1.95em;height:1.95em;overflow:visible;color:var(--logo-ink)}
 .cctt-mark path{fill:none;stroke:var(--logo-ink);stroke-width:2.6;stroke-linejoin:miter;stroke-miterlimit:4}
 .cctt-dg{transform-box:fill-box;transform-origin:center}
-/* 한 줄 글자. 잉크 상자의 세로 중심을 마름모 중심에 맞춘다 — Archivo Black의 잉크는
-   em 상자 가운데보다 조금 위에 앉으므로(어센더 0.73em · 디센더 0.02em) 그만큼 내린다.
-   0.04em은 실측값이다 — 흰 바탕에 그려 픽셀로 재면 두 잉크 중심 차이가 0.00px다(390·1280 공통). */
-.cctt-word{display:inline-block;transform:translateY(.04em);-webkit-user-select:none;user-select:none}
+/* 한 줄 글자. 잉크 상자의 세로 중심을 마름모 중심에 맞춘다 — 서체마다 잉크가 앉은 높이가 달라
+   0.117em은 Josefin Sans 500 실측값이다(흰 바탕에 그려 픽셀로 재면 두 잉크 중심 차이가 0.5px 안쪽). */
+.cctt-word{display:inline-block;position:relative;transform:translateY(.117em);-webkit-user-select:none;user-select:none}
 .cctt-hi{color:var(--logo-hi)}
+/* ---------- 글자 한 칸 (2026-11-21 R5 — 방치 모션에서 한 글자씩 움직인다) ----------
+   글자를 span 하나씩 끊으면 자간(커닝)이 칸 경계에서 끊긴다. 폰트가 잰 커닝을 em으로 되돌려
+   두어 멈춘 그림은 한 줄 텍스트와 같다(Josefin Sans 500 1000px 실측: W|a −.093 · W|o −.093,
+   나머지 이웃 쌍은 0). 칸 폭은 글자 advance 그대로이고, 띄어쓰기는 글자 그대로다.
+   움직이는 값은 transform·opacity뿐 — left·width·margin은 애니메이션하지 않는다. */
+/* 글자 한 칸 겹 — 방치 모션 동안에만 보인다(멈춘 그림은 위의 .cctt-flow 한 줄 텍스트 그대로라
+   R4와 픽셀 단위로 같다). 겹은 글자 폭이 반올림되어 0.6px쯤 어긋날 수 있는데, 움직이는 동안이라 보이지 않는다. */
+.cctt-glyphs{position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap}
+.cctt-word[data-run] .cctt-flow{visibility:hidden}
+.cctt-word[data-run] .cctt-glyphs{visibility:visible}
+.cctt-g{display:inline-block;position:relative;transform-origin:50% 50%}
+.cctt-sp{}   /* 띄어쓰기 칸 — 글자 그대로 둔다(빈 inline-block은 줄 상자를 0.145em 키운다) */
+.cctt-k1{margin-left:-.093em}   /* W|a */
+.cctt-k9{margin-left:-.093em}   /* W|o */
+.cctt-word[data-run] .cctt-g{will-change:transform,opacity}
+.cctt-gw{position:absolute;left:0;top:0;opacity:0}   /* Work의 W 자리에 겹쳐 두는 소문자 w — Want work로 변할 때만 나타난다 */
+/* 글자 칸(transform)과 잉크(opacity)를 나눈다 — 칸이 투명해지면 그 안의 w까지 함께 사라지기 때문이다. */
+/* 방치 모션의 조연 — 커서(①) · 빛줄기(②) · 취소선(⑩). 자리는 em으로 못박아 둔다(글자 크기를 따라간다). */
+.cctt-care,.cctt-beam,.cctt-str{position:absolute;left:0;top:0;opacity:0;pointer-events:none}
+.cctt-care{width:max(1.5px,.05em);height:.76em;top:.13em;background:currentColor;border-radius:1px}
+.cctt-beam{width:.85em;height:1.4em;top:-.18em;background:linear-gradient(90deg,transparent,var(--logo-hi) 50%,transparent)}
+.cctt-str{height:max(1px,.035em);top:.56em;background:currentColor;transform-origin:0 50%}
+.cctt-s1{left:1.50967em;width:.76769em}
+.cctt-s2{left:2.59519em;width:.25984em}
+.cctt-s3{left:3.78172em;width:.54983em}
 .a-right{display:flex;align-items:center;gap:8px;flex:none;margin-left:auto}
 .a-status{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);white-space:nowrap}
 .a-status .a-live-t{font-weight:650;letter-spacing:-.01em;color:var(--muted)}
@@ -180,10 +205,11 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   /* 접기 단추는 첫 줄 오른쪽 끝(로고·화면설정과 같은 줄) */
   .a-top>.jh-fold{order:3}
 }
-/* 좁은 폰: 로고가 제 줄을 다 쓴다(2026-11-21 이전과 같은 머리말 모양). container-type으로 로고의
-   내용 크기가 0이 되면서 오른쪽 화면설정 단추와 한 줄에 끼어 로고가 작아지던 것을 막는다.
+/* 좁은 폰(2026-11-21 태화님 지시): 로고는 왼쪽에 컴팩트하게, 화면 설정 단추 셋(테마·글씨크기·몰입)은
+   **같은 한 줄** 오른쪽에. .a-brand가 container-type이라 폭 기여가 0이므로 flex:1 1 auto가 남는 폭을
+   받고, 로고 글자 크기(9cqw)가 그 폭을 따라 스스로 줄어 넘치지 않는다(320·360·390·430 실측 0px).
    위 @media (max-width:767px)의 flex 규칙보다 뒤에 와야 이긴다. */
-@media (max-width:560px){.a-brand{flex:1 0 100%}}
+@media (max-width:560px){.a-brand{flex:1 1 auto;min-width:0}}
 /* 태블릿(768~1023): 한 줄에 다 앉도록 곁글자를 줄인다 — 로고가 잘리지 않게 */
 @media (min-width:768px) and (max-width:1023px){
   .a-status{font-size:12px;gap:5px}
@@ -789,8 +815,10 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
   <header class="a-top" data-jc-headfold="Walk into Work">
     <a class="a-brand" id="brandGo" href="./" aria-label="Walk into Work — 첫 화면으로">
       <span class="cctt-lockup" aria-hidden="true">
-        <svg class="cctt-mark" viewBox="0 0 274 274" focusable="false"><g class="cctt-dg cctt-dg-o"><path d="M137 3.5L270.5 137L137 270.5L3.5 137Z"/><path d="M137 17L257 137L137 257L17 137Z"/></g><g class="cctt-dg cctt-dg-i"><path d="M137 51.5L222.5 137L137 222.5L51.5 137Z"/><path d="M137 59.5L214.5 137L137 214.5L59.5 137Z"/></g></svg>
-        <span class="cctt-word"><span class="cctt-hi">Wa</span>lk i<span class="cctt-hi">nt</span>o <span class="cctt-hi">Work</span></span>
+        <svg class="cctt-mark" viewBox="0 0 274 274" focusable="false"><g class="cctt-dg cctt-dg-o"><path d="M137 3.5L270.5 137L137 270.5L3.5 137Z"/><path d="M137 11.5L262.5 137L137 262.5L11.5 137Z" transform="rotate(-3.78 137 137)"/></g><g class="cctt-dg cctt-dg-i"><path d="M137 51.5L222.5 137L137 222.5L51.5 137Z"/><path d="M137 59.5L214.5 137L137 214.5L59.5 137Z" transform="rotate(-6.27 137 137)"/></g></svg>
+        <!-- 한 줄 로고 — 멈춘 그림은 R4 그대로의 한 줄 텍스트(.cctt-flow)이고,
+             방치 모션 동안에만 글자 한 칸짜리 겹(.cctt-glyphs)을 그 위에 세운다. -->
+        <span class="cctt-word"><span class="cctt-flow"><span class="cctt-hi">Wa</span>lk i<span class="cctt-hi">nt</span>o <span class="cctt-hi">Work</span></span><span class="cctt-glyphs"><span class="cctt-g cctt-hi" data-k="0">W</span><span class="cctt-g cctt-hi cctt-k1" data-k="1">a</span><span class="cctt-g" data-k="2">l</span><span class="cctt-g" data-k="3">k</span><span class="cctt-sp">&#160;</span><span class="cctt-g" data-k="4">i</span><span class="cctt-g cctt-hi" data-k="5">n</span><span class="cctt-g cctt-hi" data-k="6">t</span><span class="cctt-g" data-k="7">o</span><span class="cctt-sp">&#160;</span><span class="cctt-g" data-k="8"><span class="cctt-w1 cctt-hi">W</span><span class="cctt-gw cctt-hi">w</span></span><span class="cctt-g cctt-hi cctt-k9" data-k="9">o</span><span class="cctt-g cctt-hi" data-k="10">r</span><span class="cctt-g cctt-hi cctt-k11" data-k="11">k</span><span class="cctt-care"></span><span class="cctt-beam"></span><span class="cctt-str cctt-s1"></span><span class="cctt-str cctt-s2"></span><span class="cctt-str cctt-s3"></span></span></span>
       </span>
     </a>
     <div class="a-right">
@@ -2446,6 +2474,377 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
     var A=spin(1,0),B=spin(-1,80);
     return {defs:[[og,A[0],A[1]],[ig,B[0],B[1]]]};
   }
+  /* ================== 글자 모션 — `Walk into Work` ↔ `Want work` (2026-11-21 R5) ==================
+     마름모 방치 모션 열 가지와 1:1로 짝을 이룬다 — 마름모가 움직이는 그 순간, 같은 play(i)에서
+     같은 프레임에 시작해 4.6초 안에 다 돌아온다(방치 유도 data-st="hint"가 5.0초라 0.4초 여유).
+       등장 0~1.75초 · 머묾 1.75~2.95초(Want work를 읽는 시간) · 되돌아옴 2.95~4.4초.
+     · 되돌아오는 구간은 등장 구간을 **시간만 뒤집어** 만든다 — 같은 곡선을 반대로 쓰므로 손맛이 같고,
+       저절로 「원래 자리·원래 글자」로 끝난다. 끝나면 애니메이션을 지우니 잔상이 남지 않는다.
+     · 자리표는 모두 em이다(Josefin Sans 500을 DOM에서 1000px로 재어 1000으로 나눈 값). 글자 크기가 어디서든 같은 비례를
+       따르고, 대문자 W의 왼쪽은 두 글자 모두 0em이라 **절대 움직이지 않는다**.
+     · 움직이는 값은 transform·opacity뿐 — 레이아웃(left·width·margin)은 애니메이션하지 않는다. */
+  var W_RX=[0,.91783,1.50967,1.76952,2.27736,2.59519,2.85503,3.41587,3.78172,4.33155,4.64939,5.56723,6.11708,6.49991];  /* Walk into Work 글자 왼쪽(em) */
+  var W_TX=[0,.91783,1.50967,2.07052,2.43636,2.75419,3.41903,3.96887,4.35172];                                          /* Want work 글자 왼쪽(em) */
+  var W_W=7.00777,W_TW=4.85956;                            /* 두 줄 전체 폭(em) */
+  var W_IDX=[0,1,2,3,5,6,7,8,10,11,12,13];                 /* span 차례 → W_RX 자리 */
+  var W_TO=[0,1,-1,-1,-1,2,3,-1,5,6,7,8];                  /* span 차례 → W_TX 자리(음수 = 지워지는 글자) */
+  var W_DX=[0,0,0,0,0,-1.34536,-1.34535,0,-1.8952,-2.1482,-2.14821,-2.14819];  /* 옮겨 갈 거리(em) */
+  var W_E=1750,W_H=2950,W_X1=4400,W_T=4600;
+  var wWord=document.querySelector('.cctt-word'),wG={},wOv={};
+  if(wWord){
+    var wN=wWord.querySelectorAll('.cctt-g'),wi0;
+    for(wi0=0;wi0<wN.length;wi0++)wG[wN[wi0].getAttribute('data-k')]=wN[wi0];
+    wG.w=wWord.querySelector('.cctt-gw');wG.W=wWord.querySelector('.cctt-w1');
+    wOv.care=wWord.querySelector('.cctt-care');wOv.beam=wWord.querySelector('.cctt-beam');
+    wOv.s1=wWord.querySelector('.cctt-s1');wOv.s2=wWord.querySelector('.cctt-s2');wOv.s3=wWord.querySelector('.cctt-s3');
+  }
+  function wPx(em,fs){return (em*fs).toFixed(2);}
+  function wTx(em,fs){return 'translateX('+wPx(em,fs)+'px)';}
+  function wK(ms,t,op,e){var f={o:Math.max(0,Math.min(1,ms/W_E)),t:t};if(op!=null)f.op=op;if(e)f.e=e;return f;}
+  /* 등장 키프레임(뒤집을 수 있는 모양) → 4.6초짜리 한 줄. 되돌아오는 구간은 등장을 시간만 뒤집는다. */
+  function wRev(s){
+    if(!s)return null;
+    var m=/^cubic-bezier\(([-.\d]+),\s*([-.\d]+),\s*([-.\d]+),\s*([-.\d]+)\)$/.exec(s);
+    if(m)return 'cubic-bezier('+(1-m[3])+','+(1-m[4])+','+(1-m[1])+','+(1-m[2])+')';
+    if(s==='ease-in')return 'ease-out';
+    if(s==='ease-out')return 'ease-in';
+    if(s==='steps(1,end)')return 'steps(1,start)';
+    return 'linear';
+  }
+  function wBuild(list,restOp){
+    var out=[],n=list.length,i,f,last=list[n-1],prev;
+    function push(off,t,op,e){
+      off=Math.round(off*1e5)/1e5;
+      if(out.length&&out[out.length-1].offset===off){if(e)out[out.length-1].easing=e;return;}
+      var fr={offset:off,transform:t};
+      if(op!=null)fr.opacity=op;
+      if(e)fr.easing=e;
+      out.push(fr);
+    }
+    for(i=0;i<n;i++)push(list[i].o*W_E/W_T,list[i].t,list[i].op,list[i].e);
+    push(W_H/W_T,last.t,last.op,null);
+    for(i=n-1;i>=0;i--){
+      f=list[i];
+      if(f.o>=1)continue;
+      prev=list[i-1];
+      push((W_H+(1-f.o)*(W_X1-W_H))/W_T,f.t,f.op,(prev&&prev.e)?wRev(prev.e):null);
+    }
+    push(1,'none',restOp==null?null:restOp,null);
+    return out;
+  }
+  /* 되돌아오는 때 — 등장 시각 t를 머묾 끝 기준으로 뒤집은 시각 */
+  function wBack(t){return W_H+(1-t/W_E)*(W_X1-W_H);}
+  /* opacity만 따로 — Work의 W가 w로 바뀌는 자리(움직임은 글자 칸이 맡는다) */
+  function wHide(t0,t1){
+    return [{offset:0,opacity:1},{offset:+(t0/W_T).toFixed(5),opacity:1,easing:'cubic-bezier(.4,0,.7,1)'},
+      {offset:+(t1/W_T).toFixed(5),opacity:0},{offset:+(wBack(t1)/W_T).toFixed(5),opacity:0,easing:'cubic-bezier(.4,0,.7,1)'},
+      {offset:+(wBack(t0)/W_T).toFixed(5),opacity:1},{offset:1,opacity:1}];
+  }
+  function wShow(t0,t1){
+    return [{offset:0,opacity:0},{offset:+(t0/W_T).toFixed(5),opacity:0,easing:'cubic-bezier(.4,0,.7,1)'},
+      {offset:+(t1/W_T).toFixed(5),opacity:1},{offset:+(wBack(t1)/W_T).toFixed(5),opacity:1,easing:'cubic-bezier(.4,0,.7,1)'},
+      {offset:+(wBack(t0)/W_T).toFixed(5),opacity:0},{offset:1,opacity:0}];
+  }
+  /* 남는 글자 — 지워지는 글자가 사라진 뒤 목표 자리로 미끄러진다 */
+  function wMove(i,from,to,fs,e){
+    return [wK(0,'none',1),wK(from,'none',1),wK(to,wTx(W_DX[i],fs),1,e||'cubic-bezier(.5,0,.2,1)')];
+  }
+  function wOrg(){var o={},i;for(i=0;i<arguments.length;i++)o[arguments[i]]='0 50%';return o;}
+  var WPAT=[
+  /* ① 반대 회전 ↔ 커서 백스페이스 — 커서가 오른쪽부터 톡톡 지우고 Want work를 다시 쳐 넣는다 */
+  function(fs){
+    var g={},fade={},del=[11,10,9,8,7,6,5,4,3,2],dt={},i,kd,f,tg,
+        typ=[5,6,'w',9,10,11],tt={},u=1080,t=70;
+    for(i=0;i<del.length;i++){dt[del[i]]=t;t+=102;}
+    for(i=0;i<typ.length;i++){tt[typ[i]]=u;u+=96;}
+    for(i=0;i<12;i++){
+      kd=dt[i];tg=wTx(W_DX[i],fs);
+      if(kd==null){g[i]=[wK(0,'none',1)];continue;}
+      if(i===8){g[8]=[wK(0,'none',null),wK(500,'none',null),wK(640,tg,null)];continue;}
+      f=[wK(0,'none',1),wK(kd,'none',1,'cubic-bezier(.4,0,.6,1)'),wK(kd+100,'none',0)];
+      if(tt[i]!=null)f.push(wK(kd+104,tg,0),wK(tt[i],tg+' scale(.86)',0,'cubic-bezier(.2,.9,.3,1)'),wK(tt[i]+104,tg,1));
+      g[i]=f;
+    }
+    fade.W=wHide(dt[8],dt[8]+100);
+    fade.w=wShow(tt.w,tt.w+104);
+    /* 커서 — 지울 때는 오른쪽→왼쪽, 쓸 때는 왼쪽→오른쪽 (칸을 뛰어 넘는다) */
+    var cj=[[0,W_W]],px,cf=[],co;
+    for(i=0;i<del.length;i++)cj.push([dt[del[i]],W_RX[W_IDX[del[i]]]]);
+    cj.push([tt[5],W_TX[3]],[tt[6],W_TX[4]],[tt.w,W_TX[5]],[tt[9],W_TX[6]],[tt[10],W_TX[7]],[tt[11],W_TX[8]],[tt[11]+100,W_TW]);
+    for(i=0;i<cj.length;i++){
+      px=wPx(cj[i][1],fs);
+      cf.push({offset:+(cj[i][0]/W_T).toFixed(5),transform:'translateX('+px+'px)',easing:i<cj.length-1?'steps(1,end)':'linear'});
+    }
+    cf.push({offset:1,transform:'translateX('+wPx(W_TW,fs)+'px)'});
+    co=[{offset:0,opacity:0},{offset:+(80/W_T).toFixed(5),opacity:1},
+      {offset:+(1080/W_T).toFixed(5),opacity:1},{offset:+(1140/W_T).toFixed(5),opacity:0},
+      {offset:+(1200/W_T).toFixed(5),opacity:1},{offset:+(1260/W_T).toFixed(5),opacity:0},
+      {offset:+(1320/W_T).toFixed(5),opacity:1},{offset:+(1690/W_T).toFixed(5),opacity:1},
+      {offset:+(1740/W_T).toFixed(5),opacity:0},{offset:1,opacity:0}];
+    return {g:g,fade:fade,ov:{care:cf,careO:co}};
+  },
+  /* ② 비행 소멸 ↔ 스포트라이트 — 날아가는 마름모와 같은 속도로 빛줄기가 좌→우로 훑고,
+        스친 자리의 lk·i·o만 지워지며 nt·work가 W 쪽으로 당겨 붙는다 */
+  function(fs){
+    var g={},fade={},i,hx={},gone=[2,3,4,7],gi;
+    function cross(em){return 60+(em/W_W)*1400;}
+    for(i=0;i<gone.length;i++){gi=gone[i];hx[gi]=cross(W_RX[W_IDX[gi]]+(W_RX[W_IDX[gi]+1]-W_RX[W_IDX[gi]])/2);}
+    for(i=0;i<12;i++){
+      if(i===8)continue;
+      if(hx[i]!=null){
+        g[i]=[wK(0,'none',1),wK(hx[i]-150,'none',1,'cubic-bezier(.4,0,.7,1)'),wK(hx[i]+70,'scaleX(0)',0)];
+      } else if(i===5||i===6){
+        g[i]=wMove(i,Math.max(220,hx[4]+60),Math.max(220,hx[4]+60)+420,fs);
+      } else if(i>=9){
+        g[i]=wMove(i,700,1120,fs);
+      } else {
+        g[i]=[wK(0,'none',1)];
+      }
+    }
+    g[8]=[wK(0,'none',null),wK(700,'none',null),wK(1120,wTx(W_DX[8],fs),null)];
+    fade.W=wHide(1000,1100);
+    fade.w=wShow(1100,1200);
+    var bf=[{offset:0,transform:'translateX('+wPx(-.9,fs)+'px)',opacity:0},
+      {offset:+(160/W_T).toFixed(5),opacity:.7},
+      {offset:+(1440/W_T).toFixed(5),transform:'translateX('+wPx(W_W,fs)+'px)',opacity:.7},
+      {offset:+(1600/W_T).toFixed(5),transform:'translateX('+wPx(W_W+.4,fs)+'px)',opacity:0},
+      {offset:1,transform:'translateX('+wPx(W_W,fs)+'px)',opacity:0}];
+    return {g:g,fade:fade,ov:{beam:bf},org:wOrg(2,3,4,7)};
+  },
+  /* ③ 호흡 교차 ↔ 공항 플립 보드 — 박자마다 글자 칸이 찰칵찰칵 넘어가며 Want work로 바뀐다 */
+  function(fs){
+    var g={},fade={},i,s0,sw,t0,t1;
+    function flip(s0,op){
+      return [wK(s0,'translateX(0px) rotateX(0deg)',op,'cubic-bezier(.4,0,.9,.6)'),
+        wK(s0+22,'translateX(0px) rotateX(-90deg) scaleY(.62)',op==null?null:.6,'linear'),
+        wK(s0+45,'translateX(0px) rotateX(0deg) scaleY(1)',op,'cubic-bezier(.3,.9,.5,1)'),
+        wK(s0+67,'translateX(0px) rotateX(-90deg) scaleY(.62)',op==null?null:.6,'linear'),
+        wK(s0+90,'translateX(0px) rotateX(0deg) scaleY(1)',op,'cubic-bezier(.3,.9,.5,1)')];
+    }
+    for(i=0;i<12;i++){
+      s0=60+i*42;
+      if(i===8)continue;
+      if(W_TO[i]<0){
+        g[i]=[wK(0,'none',1)].concat(flip(s0,1),
+          [wK(s0+120,'translateX(0px) scaleX(0)',0,'cubic-bezier(.3,0,.4,1)')]);
+      } else {
+        t0=s0+100;t1=Math.min(1450,t0+330);
+        g[i]=[wK(0,'none',1)].concat(flip(s0,1),
+          [wK(t0,'translateX(0px) rotateX(0deg) scaleY(1)',1,'cubic-bezier(.5,0,.2,1)'),
+           wK(t1,wTx(W_DX[i],fs),1)]);
+      }
+    }
+    sw=60+8*42;
+    t0=sw+100;t1=Math.min(1450,t0+330);
+    g[8]=[wK(0,'none',null)].concat(flip(sw,null),
+      [wK(t0,'translateX(0px) rotateX(0deg) scaleY(1)',null,'cubic-bezier(.5,0,.2,1)'),wK(t1,wTx(W_DX[8],fs),null)]);
+    fade.W=wHide(sw+30,sw+80);
+    fade.w=wShow(sw+30,sw+80);
+    return {g:g,fade:fade,org:wOrg(2,3,4,7)};
+  },
+  /* ④ 엇박 반바퀴 ↔ 네온사인 오프 — lk·i·o의 불이 지직 꺼지고 Want work만 살아남는다 */
+  function(fs){
+    var g={},fade={},i,off=[2,3,4,7],ot={},t=90;
+    for(i=0;i<off.length;i++){ot[off[i]]=t;t+=55;}
+    for(i=0;i<12;i++){
+      if(i===8)continue;
+      if(ot[i]!=null){
+        t=ot[i];
+        g[i]=[wK(0,'none',1),wK(t,'none',1,'linear'),
+          wK(t+30,'none',.15,'linear'),wK(t+70,'none',1,'linear'),
+          wK(t+110,'none',.45,'linear'),wK(t+150,'none',1,'linear'),
+          wK(t+190,'none',.05,'linear'),wK(t+260,'none',0,'linear')];
+      } else if(i>1){
+        g[i]=wMove(i,i<5?380:480,i<5?900:1050,fs);
+      } else {
+        g[i]=[wK(0,'none',1)];
+      }
+    }
+    g[8]=[wK(0,'none',null),wK(480,'none',null),wK(1050,wTx(W_DX[8],fs),null)];
+    fade.W=wHide(900,1010);
+    fade.w=wShow(1010,1120);
+    return {g:g,fade:fade};
+  },
+  /* ⑤ 위아래 결합 ↔ 엘리베이터 스왑 — lk·i·o는 위로 올라가 사라지고, nt·work는 살짝 내려왔다 올라와 앉는다 */
+  function(fs){
+    var g={},fade={},i,off=[2,3,4,7],ot={},t=60,dy=(-1.05*fs).toFixed(1),up=(.42*fs).toFixed(1);
+    for(i=0;i<off.length;i++){ot[off[i]]=t;t+=48;}
+    for(i=0;i<12;i++){
+      if(i===8)continue;
+      if(ot[i]!=null){
+        t=ot[i];
+        g[i]=[wK(0,'none',1),wK(t,'none',1,'cubic-bezier(.4,0,.7,1)'),wK(t+420,'translateY('+dy+'px)',0),wK(t+560,'translateY('+dy+'px)',0)];
+      } else if(W_TO[i]>=0&&i>1){
+        var tg=wTx(W_DX[i],fs);
+        g[i]=[wK(0,'none',1),wK(120,'none',1,'cubic-bezier(.4,0,.7,1)'),
+          wK(520,'translateY('+up+'px)',1,'cubic-bezier(.5,0,.2,1)'),
+          wK(880,tg+' translateY('+wPx(-.08,fs)+'px)',1,'cubic-bezier(.2,.9,.3,1)'),wK(1040,tg,1)];
+      } else {
+        g[i]=[wK(0,'none',1)];
+      }
+    }
+    g[8]=[wK(0,'none',null),wK(520,'translateY('+up+'px)',null,'cubic-bezier(.5,0,.2,1)'),
+      wK(880,wTx(W_DX[8],fs)+' translateY('+wPx(-.08,fs)+'px)',null,'cubic-bezier(.2,.9,.3,1)'),wK(1040,wTx(W_DX[8],fs),null)];
+    fade.W=wHide(900,1010);
+    fade.w=wShow(1010,1120);
+    return {g:g,fade:fade,leap:true};
+  },
+  /* ⑥ 획 그리기 ↔ 커닝 아코디언 — lk·i·o의 가로 폭이 0으로 접히며 글자가 압축된다
+        (지워지는 글자와 남는 글자가 같은 구간에 함께 움직여야 글자가 겹치지 않는다) */
+  function(fs){
+    var g={},fade={},i,EZ='cubic-bezier(.5,0,.2,1)';
+    for(i=0;i<12;i++){
+      if(i===8)continue;
+      if(W_TO[i]<0){
+        g[i]=[wK(0,'none',1),wK(220,'none',1,EZ),wK(880,'scaleX(0)',0,EZ)];
+      } else if(i>1){
+        g[i]=wMove(i,220,880,fs,EZ);
+      } else {
+        g[i]=[wK(0,'none',1)];
+      }
+    }
+    g[8]=[wK(0,'none',null),wK(220,'none',null,EZ),wK(880,wTx(W_DX[8],fs),null,EZ)];
+    fade.W=wHide(820,900);
+    fade.w=wShow(900,1010);
+    return {g:g,fade:fade,org:wOrg(2,3,4,7)};
+  },
+  /* ⑦ 물결 ↔ 웨이브 콜랩스 — 물결이 지나간 자리의 lk·i·o는 아래로 가라앉고 나머지는 파도를 타고 합류 */
+  function(fs){
+    var g={},fade={},i,hx={},gone=[2,3,4,7],gi;
+    function cross(em){return 90+(em/W_W)*1100;}
+    for(i=0;i<gone.length;i++){gi=gone[i];hx[gi]=cross(W_RX[W_IDX[gi]]+(W_RX[W_IDX[gi]+1]-W_RX[W_IDX[gi]])/2);}
+    for(i=0;i<12;i++){
+      if(i===8)continue;
+      if(hx[i]!=null){
+        g[i]=[wK(0,'none',1),wK(hx[i]-130,'none',1,'cubic-bezier(.4,0,.6,1)'),
+          wK(hx[i]+200,'translateY('+wPx(.52,fs)+'px)',0,'cubic-bezier(.4,0,.7,1)')];
+      } else if(W_TO[i]>=0&&i>1){
+        var tg=wTx(W_DX[i],fs),s=Math.max(220,hx[4]+40);
+        g[i]=[wK(0,'none',1),wK(s,'none',1,'cubic-bezier(.4,0,.6,1)'),
+          wK(s+330,tg+' translateY('+wPx(-.2,fs)+'px)',1,'cubic-bezier(.3,.9,.4,1)'),wK(s+560,tg,1)];
+      } else {
+        g[i]=[wK(0,'none',1)];
+      }
+    }
+    var s8=Math.max(220,hx[4]+40);
+    g[8]=[wK(0,'none',null),wK(s8,'none',null,'cubic-bezier(.4,0,.6,1)'),
+      wK(s8+330,wTx(W_DX[8],fs)+' translateY('+wPx(-.2,fs)+'px)',null,'cubic-bezier(.3,.9,.4,1)'),wK(s8+560,wTx(W_DX[8],fs),null)];
+    fade.W=wHide(s8+700,s8+820);
+    fade.w=wShow(s8+820,s8+940);
+    return {g:g,fade:fade};
+  },
+  /* ⑧ 미세 진동 ↔ 털어내기 — 글자가 부르르 떨다 헐거워진 lk·i·o만 후두둑 떨어진다 */
+  function(fs){
+    var g={},fade={},i,off=[2,3,4,7],ot={},t=560;
+    for(i=0;i<off.length;i++){ot[off[i]]=t;t+=46;}
+    function shake(k){return wK(k*96,'translateX('+((k%2?1:-1)*(1+.5*k)*.9).toFixed(2)+'px)',1,'linear');}
+    for(i=0;i<12;i++){
+      if(i===8)continue;
+      var base=[wK(0,'none',1),shake(1),shake(2),shake(3),shake(4),shake(5),wK(520,'none',1,'linear')];
+      if(ot[i]!=null){
+        g[i]=base.concat([wK(ot[i],'none',1,'cubic-bezier(.5,0,.9,.4)'),
+          wK(ot[i]+330,'translateY('+wPx(1.25,fs)+'px) rotate('+(i%2?9:-9)+'deg)',0)]);
+      } else if(W_TO[i]>=0&&i>1){
+        g[i]=base.concat([wK(700,'none',1,'cubic-bezier(.5,0,.2,1)'),wK(1320,wTx(W_DX[i],fs),1)]);
+      } else {
+        g[i]=base;
+      }
+    }
+    g[8]=[wK(0,'none',null),shake(1),shake(2),shake(3),shake(4),shake(5),wK(520,'none',null,'linear'),
+      wK(700,'none',null,'cubic-bezier(.5,0,.2,1)'),wK(1320,wTx(W_DX[8],fs),null)];
+    fade.W=wHide(1180,1300);
+    fade.w=wShow(1300,1420);
+    return {g:g,fade:fade,leap:true};
+  },
+  /* ⑨ 통통 착지 ↔ 마그네틱 홉 — 빈자리를 향해 nt·work가 가볍게 튀어 올랐다 자석처럼 착지 */
+  function(fs){
+    var g={},fade={},i,seq=[5,6,8,9,10,11],st={},s=200;
+    for(i=0;i<seq.length;i++){st[seq[i]]=s;s+=64;}
+    for(i=0;i<12;i++){
+      if(i===8)continue;
+      if(W_TO[i]<0&&i>1){
+        g[i]=[wK(0,'none',1),wK(60+i*18,'none',1,'cubic-bezier(.4,0,.7,1)'),wK(300+i*18,'scale(.5)',0)];
+      } else if(st[i]!=null){
+        var t0=st[i],tg=wTx(W_DX[i],fs);
+        g[i]=[wK(0,'none',1),wK(t0,'none',1,'cubic-bezier(.3,.9,.4,1)'),
+          wK(t0+200,tg+' translateY('+wPx(-.52,fs)+'px)',1,'cubic-bezier(.4,0,.8,1)'),
+          wK(t0+380,tg+' translateY(0px) scale(1.06,.94)',1,'cubic-bezier(.2,.9,.3,1)'),
+          wK(t0+470,tg,1,'cubic-bezier(.2,.9,.3,1)'),wK(t0+520,tg,1)];
+      } else {
+        g[i]=[wK(0,'none',1)];
+      }
+    }
+    var t8=st[8];
+    g[8]=[wK(0,'none',null),wK(t8,'none',null,'cubic-bezier(.3,.9,.4,1)'),
+      wK(t8+200,wTx(W_DX[8],fs)+' translateY('+wPx(-.52,fs)+'px)',null,'cubic-bezier(.4,0,.8,1)'),
+      wK(t8+380,wTx(W_DX[8],fs)+' translateY(0px) scale(1.06,.94)',null,'cubic-bezier(.2,.9,.3,1)'),
+      wK(t8+470,wTx(W_DX[8],fs),null,'cubic-bezier(.2,.9,.3,1)')];
+    fade.W=wHide(t8+330,t8+430);
+    fade.w=wShow(t8+430,t8+540);
+    return {g:g,fade:fade,leap:true};
+  },
+  /* ⑩ 표창 회전 ↔ 취소선 스킵 — 얇은 취소선이 휙 그어지고 lk·i·o가 접혀 사라진다 */
+  function(fs){
+    var g={},fade={},i,off=[2,3,4,7],ot={},t=520;
+    for(i=0;i<off.length;i++){ot[off[i]]=t;t+=54;}
+    function line(at,dur){
+      return [{offset:0,transform:'scaleX(0)',opacity:0},
+        {offset:+(at/W_T).toFixed(5),transform:'scaleX(0)',opacity:1,easing:'cubic-bezier(.4,0,.6,1)'},
+        {offset:+((at+dur)/W_T).toFixed(5),transform:'scaleX(1)',opacity:1},
+        {offset:+((at+dur+140)/W_T).toFixed(5),transform:'scaleX(1)',opacity:0,easing:'linear'},
+        {offset:1,transform:'scaleX(0)',opacity:0}];
+    }
+    for(i=0;i<12;i++){
+      if(i===8)continue;
+      if(ot[i]!=null){
+        g[i]=[wK(0,'none',1),wK(ot[i],'none',1,'cubic-bezier(.4,0,.6,1)'),wK(ot[i]+300,'scaleX(0)',0,'cubic-bezier(.5,0,.2,1)')];
+      } else if(W_TO[i]>=0&&i>1){
+        var tg=wTx(W_DX[i],fs);
+        g[i]=[wK(0,'none',1),wK(700,'none',1,'cubic-bezier(.5,0,.2,1)'),
+          wK(1060,tg,.72,'cubic-bezier(.5,0,.2,1)'),wK(1400,tg,1)];
+      } else {
+        g[i]=[wK(0,'none',1)];
+      }
+    }
+    g[8]=[wK(0,'none',null),wK(700,'none',null,'cubic-bezier(.5,0,.2,1)'),wK(1400,wTx(W_DX[8],fs),null)];
+    fade.W=wHide(1120,1290);
+    fade.w=wShow(1290,1410);
+    return {g:g,fade:fade,ov:{s1:line(80,190),s2:line(150,150),s3:line(220,190)},org:wOrg(2,3,4,7)};
+  }];
+  /* 무늬 하나를 건다 — 마름모와 같은 프레임. 끝나면(또는 settle) wStop이 인라인 값을 지운다. */
+  function wRun(i){
+    if(!wWord||!wWord.animate)return 0;
+    var fs=parseFloat(getComputedStyle(wWord).fontSize)||0,plan,key,el;
+    if(!(fs>0)||!WPAT[i])return 0;
+    try{plan=WPAT[i](fs);}catch(e){return 0;}
+    if(!plan||!plan.g)return 0;
+    wStop();
+    for(key in plan.g){
+      el=wG[key];
+      if(el&&plan.g[key].length)runs.push(el.animate(wBuild(plan.g[key],key==='w'?null:1),{duration:W_T,easing:'linear'}));
+    }
+    if(plan.fade){
+      for(key in plan.fade){
+        el=wG[key];
+        if(el)runs.push(el.animate(plan.fade[key],{duration:W_T,easing:'linear'}));
+      }
+    }
+    if(plan.ov){
+      for(key in plan.ov){
+        el=key==='careO'?wOv.care:(wOv[key]||null);
+        if(el&&plan.ov[key].length)runs.push(el.animate(plan.ov[key],{duration:W_T,easing:'linear'}));
+      }
+    }
+    if(plan.org){for(key in plan.org){el=wG[key];if(el)el.style.transformOrigin=plan.org[key];}}
+    if(plan.leap)lock.classList.add('cctt-leap');
+    wWord.setAttribute('data-run','');
+    return W_T+140;
+  }
+  function wStop(){
+    var key;
+    if(wWord)wWord.removeAttribute('data-run');
+    for(key in wG){if(wG[key])wG[key].style.transformOrigin='';}
+  }
   var PAT=[p0,p1,p2,p3,p4,p5,p6,p7,p8,p9];
   /* 정지 상태로 되돌린다 — 애니메이션을 걷어 내고(모든 패턴이 끝 자리 = 시작 자리라 캔슬해도 튀지 않는다),
      인라인으로 만졌던 dash 값도 지워 정지 상태의 그림과 똑같이 맞춘다. */
@@ -2454,6 +2853,7 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
     for(var i=0;i<runs.length;i++){try{runs[i].cancel();}catch(e){}}
     runs=[];busy=false;
     if(reset){try{reset();}catch(e){}reset=null;}
+    wStop();
     lock.classList.remove('cctt-leap');
   }
   /* 보이는가 — 머리말을 접으면(.a-brand가 display:none) 상자 폭·높이가 0이라 그릴 자리가 없고,
@@ -2477,6 +2877,8 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
     if(plan&&plan.leap)lock.classList.add('cctt-leap');
     if(plan&&plan.reset)reset=plan.reset;
     for(k=0;k<n;k++){runs.push(defs[k][0].animate(defs[k][1],defs[k][2]));}
+    /* 글자 모션도 같은 순간에 — 마름모보다 길므로 끝 시계는 둘 중 긴 쪽에 맞춘다 */
+    max=Math.max(max,wRun(i));
     /* 끝난 뒤에는 애니메이션 객체를 스스로 버려 쉬는 동안 아무 일도 하지 않는다 */
     endT=setTimeout(function(){settle();},max+80);
     return true;
