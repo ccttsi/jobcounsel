@@ -10,6 +10,9 @@
  *   같은 문양이 이어지지 않게 짠 표), 격발은 가로 압축을 풀어 진짜 빠르게(약 7.8배)·더 길게(2.6초)·
  *   진동(셰이크)과 색 그라데이션까지 얹었다. 캔버스 위아래 여백도 4px 이상 확보했다.
  * 방치 유도는 사용자가 만진 것으로 치지 않는다 — 끝나면 롤링이 그 자리에서 이어서 흐른다. 장전·오버레이 중이면 건너뛴다.
+ * 2026-11-22: **시드·매치 화면**에서는 레버·심전도·롤링이 모두 숨으므로 깨울 트리거가 없다. 그 화면에서도 머리말의
+ *   로고(마름모·글자)는 그대로 보이므로, 같은 정각에 로고의 방치 모션 한 가지만 같은 문양 차례(분 % 10)로 돌린다
+ *   (태화님 지적: 시드·매치에서만 로고 방치 애니메이션이 멈춰 있었다).
  *
  * 모드 재구성은 index.html 안쪽 내비게이션이 맡는다(window.JC_NAV). 이 파일은 기계(트리거·오버레이·연출)만 다룬다.
  * 움직임은 `transform`·`opacity`와 **캔버스 한 장**뿐이다(2026-11-19: SVG path/SMIL 제거). 감속 모드에서는 연출 없이 바로 결과로 간다.
@@ -324,15 +327,18 @@
   /* ---------- 2. 방치 유도 — 매 분 00초에 5.0초 ----------
    * 시각(Date)으로 다음 정각을 계산해 한 번씩 깨어난다. 1초마다 세던 방식은 드리프트가 쌓여 홀수분 50초에
    * 작동했다(2026-11-19 수정). 작동 중에는 사용자가 만진 것으로 치지 않고, 다 끝나면 롤링이 원래 자리에서
-   * 이어서 흐른다. 장전·오버레이·가려진 화면·감속 모드에서는 거르고 다음 정각을 잡는다. */
+   * 이어서 흐른다. 장전·오버레이·가려진 화면·감속 모드에서는 거르고 다음 정각을 잡는다.
+   * 시드·매치 화면에는 레버·심전도가 없으므로, 그 화면에서는 로고의 방치 모션 하나만 같은 정각에 돌린다. */
   function listOpen() { var lv = $('listView'); return !!lv && !lv.hidden; }
-  var hintOn = false, hintTimer = 0, hintEndT = 0;
+  var hintOn = false, hintTimer = 0, hintEndT = 0, logoHint = false;
   function cancelHint() {
     if (!hintOn) return false;
     hintOn = false;
     clearTimeout(hintEndT); hintEndT = 0;
     if (ecgRow && ecgRow.getAttribute('data-st') === 'hint') ecgRow.removeAttribute('data-st');
     if (slot && slot.getAttribute('data-st') === 'hint') slot.removeAttribute('data-st');
+    /* 시드·매치 화면에서 이 방치 유도가 돌린 로고 모션만 내린다(대문에서는 JC_LOGO가 스스로 끝낸다) */
+    if (logoHint) { logoHint = false; if (window.JC_LOGO && window.JC_LOGO.stop) window.JC_LOGO.stop(); }
     HINT.on = false;
     if (LV.raf) { lvStop(); lvSet(60); }
     if (nav && nav.hintRollEnd) nav.hintRollEnd();
@@ -350,11 +356,21 @@
     };
   }
   function hint(forceMinute) {
-    if (hintOn || open || armed || picking || reduce() || cur() !== 'all' || document.hidden) return false;
+    if (hintOn || open || armed || picking || reduce() || document.hidden) return false;
+    var minute = forceMinute === undefined ? new Date().getMinutes() : forceMinute;
+    /* 시드·매치 화면 — 레버도 심전도도 롤링도 숨는다(깨울 트리거가 없다). 다만 로고는 머리말에 그대로 있으므로,
+       같은 정각에 로고의 방치 모션 한 가지만 대문과 **같은 문양 차례**(분 % 10)로 돌린다.
+       로고를 그릴 자리가 없으면(머리말 접힘·화면 밖·가려진 탭) 이번 정각은 건너뛴다. */
+    if (cur() !== 'all') {
+      if (!window.JC_LOGO || !window.JC_LOGO.play(minute % 10)) return false;
+      hintOn = true; logoHint = true;
+      hintEndT = setTimeout(function () { if (hintOn) cancelHint(); }, HINT_MS + 40);
+      return true;
+    }
     if (listOpen()) {
       if (!ecgRow || !ecgRow.offsetParent) return false;
       if (!ecgVis) return false;                     /* 파형이 화면 밖이면 방치 유도를 걸지 않는다 */
-      var pat = ecgPattern(forceMinute === undefined ? new Date().getMinutes() : forceMinute);
+      var pat = ecgPattern(minute);
       HINT.on = true; HINT.t = 0; HINT.pat = pat; HINT.min = pat.min;
       hintOn = true;
       ecgRow.setAttribute('data-st', 'hint');
@@ -1165,7 +1181,10 @@
     scheduleHint();
     /* 감독·검수용: 정각을 기다리지 않고 방치 유도를 한 번 돌려 본다 */
     window.JC_HINT = {
-      run: hint, cancel: cancelHint, next: function () { return nextMinute(Date.now()); }, active: function () { return hintOn; },
+      /* 감독·검수용: 정각을 기다리지 않고 방치 유도를 한 번 돌려 본다.
+         이미 돌고 있으면(정각에 자동으로 걸린 5초 안) «이 보기에서 걸린다»는 답은 같으므로 true를 돌려준다 —
+         검사가 우연히 정각과 겹쳐 «안 걸린다»로 잘못 읽던 것(2026-11-22 shared_ui_probe). */
+      run: function (forceMinute) { return hintOn ? true : hint(forceMinute); }, cancel: cancelHint, next: function () { return nextMinute(Date.now()); }, active: function () { return hintOn; },
       /* 감독·검수용: 몇 분짜리 문양인지, 60분 표가 어떤 순서인지 그대로 읽어 본다 */
       minute: function () { return new Date().getMinutes(); },
       pattern: function (m) { return ecgPattern(m === undefined ? new Date().getMinutes() : m); },
