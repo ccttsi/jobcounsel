@@ -15,11 +15,15 @@
 | | JS 33개 `node --check` 문법 | 문법 오류를 고친다 |
 | | 상담 프리셋 장부 — `assets/presets.js`의 10개 프리셋·39자리 카드가 `assets/tools.js`의 섹터 id와 맞는지, 단계·확인 문장이 빠지지 않았는지(대문 덱의 진행 순서가 끊기지 않게). `json` 검사에 함께 돈다 | 오타 난 id·빠진 단계를 고친다(`python3 ops/scripts/validate_repo.py --only presets`) |
 | | 역할 가드레일 — `[data-only]` PR이 `.html`/`.css`/`.js`를 건드리면 실패, `[code-only]` PR이 수집 JSON을 건드리면 실패 | 라벨을 떼거나 PR을 나눈다 |
+| | **공통 셸** — 모든 지면(`index.html`)이 `assets/core.js`(머리의 **첫 스크립트**, defer 없이)·`assets/prefs.js`·`[data-jc-prefs]` 자리·`assets/marker.js`를 실었는지. 주석에 적힌 파일 이름은 «실었다»로 치지 않는다(실제 `src`만 본다) | 빠진 지면에 그 한 줄을 넣는다. 도구함을 쓰지 않는 지면이면 `ops/css-allow.tsv`에 이유와 함께 `shell` 줄을 남긴다 |
+| | **금지 모션 속성** — `transition`·`transition-property`에 `width`·`height`·`top`·`left`·`max-height`·`grid-template-rows`·`gap`·`font-size` 같은 레이아웃 속성이 섞였는지(제5조 5-3) | `transform`·`opacity`로 바꾼다. 이미 있던 예외는 `ops/css-allow.tsv`에 이유와 함께 있고, 그 화면을 고칠 때 줄을 지운다 |
+| | **보조 액션 정렬 기준점** — 한 선언 블록 안에서 `margin-left:auto`(자동 정렬)를 뒤쪽 `margin` 단축 선언이 0으로 덮어쓰는지(제5조 5-7) | 단축 값을 `auto`로 적거나(`margin:-8px -6px -8px auto`) 단축을 앞으로 옮긴다. 그러면 단추가 제목 길이를 따라 흔들리지 않는다 |
 | | **화면 문구** — `.html`·`.css`·`.js` 문자열과 `.json` 값의 맞춤법·이웃 중복 어구(`몇일→며칠`, `되요→돼요`, `웬지→왠지`, `역활→역할`, `같은 같은` 등 23종). 원문 자리(국가법령정보센터 조문·공공데이터·기관 공개문)는 빼고 본다 | 고치거나, 원문이 아닌 고유명사면 `ops/text-lint-allow.tsv`에 이유와 함께 한 줄 적는다 |
 | | **자료 개수** — 대문 `index.html`의 「N가지 … 자료」와 `data-count` 칸에 그려 둔 수가 `assets/tools.js`의 `JC_TOOLS` 길이와 같은지, 개수를 장부에서 세는 치환(`renderCounts`·`[data-count]`)이 살아 있는지. 주석의 `01~N`이 어긋나면 참고로만 알린다 | 숫자를 손으로 적지 말고 `<span data-count>`로 두어 장부 길이를 따르게 한다 |
 | | **법령 시행일** — 법령 데이터(`efYd`·`effective`·`시행일자`)가 날짜 모양인지, 오늘(KST)보다 뒤(아직 시행되지 않은 개정본)는 아닌지. 수집 원문(`data/openapi/` 등)의 미래 날짜는 경고, 우리가 옮겨 적은 조문(`law/`·`posting/`·`first-year/`)의 미래 날짜는 실패 | 현행 시행본으로 바꾸거나 그 조문을 뺀다. 30일 안에 시행되는 날짜는 참고로 알린다 |
 | | **수집 게이트 단위 검사** (`json`에 함께 돈다 — `--only gate`로 따로) — 자료를 적재하기 전에 도는 관문(`ops/scripts/collect_gate.py`)이 정상 자료를 통과시키고, 일부러 만든 불량 샘플(라이선스 미표기·공공누리 제4유형을 Track A로·미래 시행일 `20280101`·출처 URL 누락)을 실제로 막는지 | 게이트 규칙을 고친다. 저장소의 실제 자료를 막기 시작하면(오탐) 규칙이 너무 좁은 것이므로 정책표부터 다시 본다 |
 | `smoke-tests` | 대문·`/briefing/`·`/emerging/` 을 Chromium으로 390·1280에서 열어 콘솔 오류 0 · 같은 사이트 404 0 · 가로 넘침 0 · 44px 미달 0 · 화면이 실제로 그려졌는지 | 실패한 화면 그림(Actions artifact `smoke-failure-shots`)을 보고 고친다 |
+| | **공통 UI·모션 실증**(`ops/qa/shared_ui_probe.py`가 같은 게이트에서 돈다) — 대문 **기본·시드·매치** 세 보기에서 방치 유도 트리거(`JC_HINT.run`)가 걸리고 로고가 **실제로 움직이는지**, 시드·매치 대표 섹터(`/theory/`·`/talk/`)에서 테마 단추를 눌러 `data-theme`이 바뀌고 카드덱 단추·도구함이 붙는지, 카드 보조 액션의 좌표가 항목 전환에서 흔들리지 않는지 | 게이트가 선 사례(`gate`)가 어긋나면 실패한다. 숫자·이유·재는 법은 아래 §1-2 |
 | `live-check` (매일) | 대문 + `assets/tools.js`의 지면 전부 200, `briefing.json`·`emerging.json`의 오늘 자 여부 | Actions 요약 표에서 실패한 지면을 본다. 2일 이상 지난 자료는 실패 |
 
 ## 1-1. 수집 게이트 — 자료를 적재하기 전에 (`collect_gate.py`)
@@ -59,10 +63,38 @@ python3 ops/scripts/collect_gate.py briefing/data/*.json emerging/data/emerging.
 - 새 라이선스 표기를 만나면 `LICENSE_PATTERNS`에 근거와 함께 한 줄 넣고, `A_TYPES`·`B_TYPES` 중 어디인지 정한다.
   판정할 수 없는 표기를 통과시키는 대신 **막고 정책표에 더하게** 만들었다(모르는 것을 허용하지 않는다).
 
+## 1-2. 공통 UI·모션 실증 — 화면에서 재는 게이트 (`ops/qa/shared_ui_probe.py`)
+
+글자만 읽어서는 알 수 없는 것 — **「공통 요소가 이 보기에서도 살아 있는가」**와 **「보조 액션이 항목을 바꿔도 같은 자리에 있는가」** — 를 Chromium으로 열어 좌표·애니메이션으로 잰다.
+(2026-11-22 태화님 지시: 로고 방치 모션이 대문 한 보기에서만 돌고 시드·매치에서 빠졌고, `/casecon/` 카드의 `이론 위키` 단추가 제목 길이에 따라 좌우로 흔들렸다. 둘 다 «대문 한 곳·한 항목»만 보고 끝내서 생겼다.)
+
+| 종류 | 재는 것 | 통과 기준 |
+|---|---|---|
+| `idle` | 대문의 세 보기(기본·시드·매치) × 폭 390·1280에서 `JC_HINT.run()`이 `true`를 돌려주고, **로고(마름모 겹)의 합성 변환 값이 프레임마다 바뀌는가** | 트리거 `true` · 움직임 관측 · 로고가 그려져 있음 |
+| `shell` | 시드·매치 **대표 섹터**(`/theory/`·`/talk/`)에서 화면 설정의 테마 단추를 세 번 눌러 테마가 실제로 바뀌는지, 카드덱 단추(`.jcf-launch`)·도구함(`#jc-marker-ui`)이 붙는지, 페이지 오류 0 | 세 가지 모두 참 |
+| `anchor` | 카드·패널 보조 액션(`/casecon/`의 `.p-head .p-who`)의 bounding box가 틀·항목을 바꿀 때 | **Δx·Δy 0.5px 이하**(목표 0.00px — 소수점 반올림만 봐준다) |
+
+**사례 장부 — `ops/qa/shared_ui_cases.json`**
+- `gate`가 `true`(또는 `["기본 보기"]`처럼 목록)이면 그 항목이 어긋날 때 `smoke-tests`가 **실패**한다.
+- `gate`가 `false`인 사례는 **아직 고치는 중**이라는 뜻이다. 숫자와 이유(`known_gap`)만 표에 남기고 게이트를 세우지 않는다 — CI가 그 결함을 «없는 것처럼» 지나가지 않도록 매번 출력에 남긴다.
+- 그 화면을 고쳤으면 **장부에서 `gate`를 올리고 `known_gap`을 지운다.** 그러지 않으면 다음에 같은 자리가 어긋나도 게이트가 서지 않는다.
+- 새 공통 요소·새 대표 섹터를 만들었으면 여기에 사례를 더한다. 사례가 없으면 아무도 재지 않는다.
+
+```bash
+python3 ops/qa/shared_ui_probe.py                    # 모든 사례(로컬 서버를 스스로 띄운다)
+python3 ops/qa/shared_ui_probe.py --only anchor      # 한 종류만(idle·shell·anchor)
+python3 ops/qa/shared_ui_probe.py --strict           # known_gap까지 실패로 본다(고친 뒤 확인용)
+python3 ops/qa/shared_ui_probe.py --base https://witw.pages.dev/   # 배포본을 잰다
+```
+
+- 종료코드 **0 통과 · 1 게이트가 선 항목이 있음**. 사례를 못 재면(화면 구조 변경) 그것도 실패다 — 조용히 건너뛰지 않는다.
+- `smoke-tests`에서는 같은 저장소를 자기 서버로 띄워 돌므로 로컬·CI 모두 추가 설정이 필요 없다.
+- **고칠 때의 순서** — ① 화면을 고친다 ② `validate_repo.py --only motion,anchor`로 글자로 잴 수 있는 원인을 지운다(예: `margin-left:auto`를 덮는 단축 선언) ③ `shared_ui_probe.py`로 숫자를 다시 잰다 ④ 0.00px이면 장부의 `gate`를 올리고 `known_gap`을 지운다 ⑤ PR 본문에 숫자를 적는다.
+
 ## 2. 로컬에서 먼저 돌리기
 
 ```bash
-python3 ops/scripts/validate_repo.py                 # JSON·저작권·JS·프리셋·문구·개수·시행일·(PR이면) 역할
+python3 ops/scripts/validate_repo.py                 # JSON·저작권·JS·CSS·공통 셸·모션·정렬 기준점·프리셋·문구·개수·시행일·(PR이면) 역할
 python3 ops/scripts/validate_repo.py --only text     # 화면 문구(맞춤법·중복 어구)만
 python3 ops/scripts/validate_repo.py --only count    # 자료 개수 수치만
 python3 ops/scripts/validate_repo.py --only dates    # 법령 시행일만
@@ -70,12 +102,17 @@ python3 ops/scripts/smoke_test.py                    # 저장소를 로컬 서�
 python3 ops/scripts/health_check.py                  # 배포본 라이브 점검
 python3 ops/scripts/collect_gate.py briefing/data/briefing.json   # 수집 게이트(적재 전 관문)를 손으로
 python3 ops/scripts/validate_repo.py --only gate                    # 수집 게이트 단위 검사(27건·1초)
+python3 ops/scripts/validate_repo.py --only shell,motion,anchor     # 공통 셸·금지 모션·정렬 기준점(2초)
+python3 ops/qa/shared_ui_probe.py                    # 공통 UI·모션 실증(방치 모션·대표 섹터·보조 액션 좌표)
+python3 -m unittest ops/tests/test_ui_checks.py -v   # 위 세 검사가 «고의 위반»을 실제로 잡는지
 python3 -m unittest discover -s ops/tests -p "test_*.py" -v      # 같은 검사를 unittest로 자세히
 python3 ops/qa/back_close.py                         # 세부 팝업 뒤로가기 닫기(18개 섹터)
 python3 ops/scripts/synonym_eval.py                  # 상담 은어·동의어 사전 채점(사연 168건, 1순위·3순위 적중률)
 ```
 
-- `smoke_test.py`·`synonym_eval.py`는 `pip install playwright && python -m playwright install chromium`이 먼저 필요하다.
+- `smoke_test.py`·`shared_ui_probe.py`·`synonym_eval.py`는 `pip install playwright && python -m playwright install chromium`이 먼저 필요하다.
+- 공통 셸·금지 모션·정렬 기준점(`--only shell,motion,anchor`)은 `js` 검사에 함께 붙여 두었다 — 워크플로를 고치지 않아도 CI에서 돈다. 예외는 `ops/css-allow.tsv`에 이유와 함께 적고, **예외 한 줄은 위반 한 건만 덮는다**(같은 자리에 하나 더 생기면 실패).
+- 위 세 검사의 판정 로직은 `ops/tests/test_ui_checks.py`가 **고의 위반 샘플**로 시험한다. 규칙을 고칠 때 그 시험도 함께 고친다.
 - `synonym_eval.py`는 사전(`assistant/data/synonym-map.json`)이나 검색 엔진(`assistant/search.js`)을 고친 뒤
   숫자를 «보고» 판단하는 도구다. `--floor-top1 0.60 --floor-top3 0.82`처럼 하한을 주면 그 아래로 떨어질 때 실패한다.
   상시 CI에는 넣지 않았다(2분쯤 걸린다) — 손으로 돌리고 결과를 PR 본문·HANDOFF에 적는다.
@@ -88,6 +125,8 @@ python3 ops/scripts/synonym_eval.py                  # 상담 은어·동의어 
 ## 3. 이 검사가 하지 않는 것
 
 - 화면 분량(1.5/2.5화면)·글꼴·정렬 편차 같은 **미적 판정**은 여전히 `node ops/qa/audit.js`, `node ops/qa/look.js`와 사람 눈의 몫이다. CI는 「깨졌다/안 깨졌다」만 본다.
+- `shared_ui_probe.py`는 **정해 둔 사례만** 잰다(장부 `shared_ui_cases.json`). 화면에 새 카드·새 보조 액션을 만들었는데 장부에 올리지 않으면 아무도 재지 않는다 — 대문 세 보기·대표 섹터 뒤에 새 공통 요소를 만들었으면 사례를 더한다.
+- 좌표의 **경우 허용값은 0.5px까지**다(브라우저 소수점 반올림). 헌법의 목표값은 `0.00px`이고, PR 본문에는 잰 숫자를 그대로 적는다.
 - 데이터의 **내용이 맞는지**(숫자가 사실인지)는 보지 않는다. 저작권 분류와 구조만 본다.
 - 문구 검사는 **목록에 적어 둔 명백한 오류만** 본다. 「안 되다/안되다」·「-데/-대」·「던지/든지」처럼
   문맥을 읽어야 갈리는 것은 일부러 넣지 않았다(오탐이 머지를 막으면 게이트를 끄게 된다).
@@ -105,6 +144,8 @@ python3 ops/scripts/synonym_eval.py                  # 상담 은어·동의어 
    **불량 샘플**을 함께 넣는다(좋은 자료만 통과시키는 시험은 게이트의 일을 확인하지 못한다).
 2. 기존 데이터·지난 보관본 때문에 **거짓 실패**가 나지 않는지 먼저 확인한다. 과거 기록은 고치지 않고 참고 건수로만 센다.
 3. 일부러 어긋난 사본을 만들어 그 검사가 실제로 잡는지 확인한 뒤 PR에 적는다.
+   글자로 잴 수 있는 규칙은 `validate_repo.py` 안의 **순수 함수**(예: `shell_problems`·`layout_motion_problems`·`auto_anchor_problems`)로 두고 `ops/tests/`에 **고의 위반 시험**을 함께 넣는다 — 저장소 파일을 건드리지 않고 판정 로직만 시험하려는 것이다.
+4. 화면에서만 잴 수 있는 규칙(좌표·애니메이션·테마 전환)은 `ops/qa/shared_ui_probe.py`에 종류를 하나 더하고, `ops/qa/shared_ui_cases.json`에 사례를 올린다. 처음에는 게이트를 세우지 않고 숫자만 보다가, 오탐 0건을 확인한 뒤 `gate`를 올린다.
 
 ## 5. 새 섹터를 더할 때 — 번호·티어 체크리스트 (2026-11-22 태화님 지시)
 
