@@ -1316,6 +1316,32 @@ def run_effective_date_checks():
     note(f"법령 시행일 — 날짜 {checked}개를 오늘(KST {today.isoformat()})과 대조했다")
 
 
+# ---------------------------------------------------------------- 3-8) 수집 게이트 자체 검사 (2026-11-22)
+#   `collect_gate.py`는 적재 전에 막는 관문이고, 그 일은 «통과시키는 것»보다 «막아야 할 것을
+#   막는 것»이다. 그래서 규칙을 고칠 때마다 불량 샘플 시험(ops/tests)이 초록이어야 하고,
+#   그 시험을 CI에서 함께 센다. 워크플로를 고치지 않아도 되게 `json` 검사에 붙인다(프리셋 장부와
+#   같은 이유) — `--only gate`로 따로 돌릴 수도 있다.
+def run_gate_checks():
+    import io
+    import unittest
+
+    tests_dir = os.path.join(ROOT, "ops", "tests")
+    if not os.path.isdir(tests_dir):
+        note("수집 게이트 단위 검사 — ops/tests/가 없어 건너뛴다")
+        return
+    scripts = os.path.join(ROOT, "ops", "scripts")
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
+    suite = unittest.TestLoader().discover(tests_dir, pattern="test_*.py", top_level_dir=tests_dir)
+    stream = io.StringIO()
+    result = unittest.TextTestRunner(stream=stream, verbosity=0).run(suite)
+    for case, trace in list(result.failures) + list(result.errors):
+        last = (trace.strip().splitlines() or [""])[-1]
+        fail("gate", f"{case.id().rsplit('.', 1)[-1]} — {last[:160]}")
+    note(f"수집 게이트 단위 검사 — {result.testsRun}건 중 실패 {len(result.failures)}·오류 {len(result.errors)}"
+         " (라이선스·미래 시행일·필수값 차단 + 저장소 자료 오탐 0)")
+
+
 # ---------------------------------------------------------------- 4) 역할 분리 가드레일
 def classify(path):
     if path.startswith(".github/") or path.startswith("ops/"):
@@ -1381,6 +1407,8 @@ def main():
         run_effective_date_checks()  # 미시행 개정본(미래 시행일) 유입
     if "json" in selected or "presets" in selected:
         run_preset_checks()   # 프리셋 장부도 데이터다 — json 검사에 함께 돌려 CI 워크플로를 고치지 않아도 되게 한다
+    if "json" in selected or "gate" in selected:
+        run_gate_checks()     # 수집 게이트의 불량 샘플 시험도 같은 이유로 json에 붙여 돈다
     if "license" in selected:
         run_license_checks()
     if "js" in selected:
@@ -1406,8 +1434,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "role": "역할 가드레일"}
-        for check in ("json", "license", "js", "css", "ecg", "presets", "sectors", "flow", "text", "count", "dates", "role"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "role": "역할 가드레일"}
+        for check in ("json", "license", "js", "css", "ecg", "presets", "gate", "sectors", "flow", "text", "count", "dates", "role"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
@@ -1421,7 +1449,7 @@ def main():
         print("✓ 모든 정적 검사 통과")
 
     if args.summary_file:
-        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·섹터·플로우·문구·수치·시행일·역할)", ""]
+        lines = ["## 정적 검증 (JSON·저작권·JS·CSS·프리셋·수집 게이트·섹터·플로우·문구·수치·시행일·역할)", ""]
         lines += [f"- {line}" for line in notes]
         if problems:
             lines += ["", f"**실패 {len(problems)}건**", ""]

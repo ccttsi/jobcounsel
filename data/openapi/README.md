@@ -23,6 +23,7 @@
 - 법제처 국가법령정보는 **공공누리 제1유형**(출처 표기)이다. 법령 조문 자체는 저작권법 제7조에 따라 보호 대상이 아니다.
 - OpenDART는 금융감독원 전자공시시스템의 **공식 OpenAPI**이며 이용약관을 따른다. 인증키는 저장소에 두지 않는다(GitHub Secrets만 사용).
 - 응답 값은 가공·요약하지 않고 그대로 저장한다. **확인되지 않은 값은 지어내지 않고 빈 문자열·null로 둔다.** 기업 연결은 이름이 아니라 법인등록번호·사업자번호가 일치하는 것만 남긴다.
+- **쓰기 직전에 수집 게이트를 지난다** (`ops/scripts/collect_gate.py`, 2026-11-22). 라이선스 표기가 없거나 재가공 불허 표기인데 Track A로 실리면, 시행일(`efYd`·`시행일자`)이 오늘(KST)보다 뒤면, 출처 URL·기준일이 없으면 **파일을 쓰지 않고 그 소스를 실패로 보고한다**. 저장된 산출물도 `validate_outputs()`가 같은 게이트로 다시 본다.
 
 ## 파일 모양
 
@@ -54,6 +55,7 @@ gh workflow run openapi-daily.yml -R ccttsi/jobcounsel
 - `--dry-run`은 호출·파싱만 하고 파일을 쓰지 않는다.
 - `--only`로 소스 하나만, `--limit`으로 시험용 일부만 받을 수 있다.
 - 값이 하나도 안 바뀌면 파일을 다시 쓰지 않는다(커밋이 생기지 않는다).
+- 저장 전 검증만 따로: `python3 ops/scripts/collect_gate.py data/openapi/law/revisions.json --kind openapi`.
 
 ## 처음 연결할 때
 

@@ -12,9 +12,12 @@
 
 쓰는 법:  python3 briefing/data/tools/build_index.py      (저장소 뿌리에서)
 """
-import json, os, re, glob, datetime
+import json, os, re, glob, datetime, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))   # briefing/data
+REPO = os.path.dirname(os.path.dirname(ROOT))                        # 저장소 뿌리
+sys.path.insert(0, os.path.join(REPO, "ops", "scripts"))
+from collect_gate import check_document  # noqa: E402  — 쓰기 직전 수집 게이트(라이선스·시행일·메타)
 NOW = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
 SCHEMA = "1.4.0"
 
@@ -113,6 +116,16 @@ def load(p):
 
 
 def save(p, d):
+    """쓰기 직전에 수집 게이트를 통과해야 쓴다 — 미허용 라이선스·미시행 개정본이 파일로 굳지 않게."""
+    gate = check_document(d)
+    if not gate.ok:
+        raise SystemExit(
+            f"수집 게이트 차단 — {os.path.basename(p)}를 쓰지 않는다: "
+            + " / ".join(gate.blocked[:3])
+            + (f" …외 {len(gate.blocked) - 3}건" if len(gate.blocked) > 3 else "")
+        )
+    # 참고(사실·수치 인용 설명이 빠진 Track B 출처 등)는 막지 않는다. 보려면 CLI로 그 파일을
+    # 직접 돌린다: python3 ops/scripts/collect_gate.py briefing/data/briefing.json
     with open(p, "w", encoding="utf-8") as f:
         json.dump(d, f, ensure_ascii=False, indent=1)
         f.write("\n")
