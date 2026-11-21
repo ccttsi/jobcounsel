@@ -166,20 +166,31 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .cctt-word[data-run] .cctt-flow{visibility:hidden}
 .cctt-word[data-run] .cctt-glyphs{visibility:visible}
 .cctt-g{display:inline-block;position:relative;transform-origin:50% 50%}
-.cctt-sp{}   /* 띄어쓰기 칸 — 글자 그대로 둔다(빈 inline-block은 줄 상자를 0.145em 키운다) */
+.cctt-sp{display:inline-block;width:.318em}   /* 띄어쓰기 칸 — 글자 그대로 둔다(빈 inline-block은 줄 상자를 0.145em 키운다) */
+/* 글자 칸 폭을 폰트 advance 그대로 못박는다(em). 폭을 글자에 맡기면 브라우저가 inline-block 폭을 정수 px로
+   반올림해 37px 로고에서 자리가 1.5px까지 밀린다 — 방치 모션이 끝난 그림이 한 줄 텍스트와 어긋나 보이는 원인.
+   W 1011 · a 592 · l 260 · k 508 · i 260 · n 561 · t 366 · o 550 · r 383 (unitsPerEm 1000). */
+.cctt-g[data-k="0"],.cctt-g[data-k="8"]{width:1.011em}
+.cctt-g[data-k="1"]{width:.592em}
+.cctt-g[data-k="2"],.cctt-g[data-k="4"]{width:.26em}
+.cctt-g[data-k="3"],.cctt-g[data-k="11"]{width:.508em}
+.cctt-g[data-k="5"]{width:.561em}
+.cctt-g[data-k="6"]{width:.366em}
+.cctt-g[data-k="7"],.cctt-g[data-k="9"]{width:.55em}
+.cctt-g[data-k="10"]{width:.383em}
 .cctt-k1{margin-left:-.093em}   /* W|a */
 .cctt-k9{margin-left:-.093em}   /* W|o */
 .cctt-word[data-run] .cctt-g{will-change:transform,opacity}
-.cctt-gw{position:absolute;left:0;top:0;opacity:0}   /* Work의 W 자리에 겹쳐 두는 소문자 w — Want work로 변할 때만 나타난다 */
-/* 글자 칸(transform)과 잉크(opacity)를 나눈다 — 칸이 투명해지면 그 안의 w까지 함께 사라지기 때문이다. */
+/* `Want Work`는 대문자 W를 그대로 쓴다 — Work의 W를 소문자 w로 갈아 끼우던 겹(.cctt-gw)은 2026-11-21에 걷어 냈다.
+   W는 처음부터 끝까지 같은 글자라, 방치 모션은 글자가 사라지고 나타나는 대신 **자리만 옮겨 간다**. */
 /* 방치 모션의 조연 — 커서(①) · 빛줄기(②) · 취소선(⑩). 자리는 em으로 못박아 둔다(글자 크기를 따라간다). */
 .cctt-care,.cctt-beam,.cctt-str{position:absolute;left:0;top:0;opacity:0;pointer-events:none}
 .cctt-care{width:max(1.5px,.05em);height:.76em;top:.13em;background:currentColor;border-radius:1px}
 .cctt-beam{width:.42em;height:1.06em;top:-.03em;background:linear-gradient(90deg,transparent,var(--logo-hi) 50%,transparent)}
 .cctt-str{height:max(1px,.035em);top:.56em;background:currentColor;transform-origin:0 50%}
-.cctt-s1{left:1.50967em;width:.76769em}
-.cctt-s2{left:2.59519em;width:.25984em}
-.cctt-s3{left:3.78172em;width:.54983em}
+.cctt-s1{left:1.51em;width:.768em}    /* l · k */
+.cctt-s2{left:2.596em;width:.26em}    /* i */
+.cctt-s3{left:3.783em;width:.55em}    /* o */
 .a-right{display:flex;align-items:center;gap:8px;flex:none;margin-left:auto}
 .a-status{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);white-space:nowrap}
 .a-status .a-live-t{font-weight:650;letter-spacing:-.01em;color:var(--muted)}
@@ -818,7 +829,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
         <svg class="cctt-mark" viewBox="0 0 274 274" focusable="false"><g class="cctt-dg cctt-dg-o"><path d="M137 3.5L270.5 137L137 270.5L3.5 137Z"/><path d="M137 11.5L262.5 137L137 262.5L11.5 137Z" transform="rotate(-3.78 137 137)"/></g><g class="cctt-dg cctt-dg-i"><path d="M137 51.5L222.5 137L137 222.5L51.5 137Z"/><path d="M137 59.5L214.5 137L137 214.5L59.5 137Z" transform="rotate(-6.27 137 137)"/></g></svg>
         <!-- 한 줄 로고 — 멈춘 그림은 R4 그대로의 한 줄 텍스트(.cctt-flow)이고,
              방치 모션 동안에만 글자 한 칸짜리 겹(.cctt-glyphs)을 그 위에 세운다. -->
-        <span class="cctt-word"><span class="cctt-flow"><span class="cctt-hi">Wa</span>lk i<span class="cctt-hi">nt</span>o <span class="cctt-hi">Work</span></span><span class="cctt-glyphs"><span class="cctt-g cctt-hi" data-k="0">W</span><span class="cctt-g cctt-hi cctt-k1" data-k="1">a</span><span class="cctt-g" data-k="2">l</span><span class="cctt-g" data-k="3">k</span><span class="cctt-sp">&#160;</span><span class="cctt-g" data-k="4">i</span><span class="cctt-g cctt-hi" data-k="5">n</span><span class="cctt-g cctt-hi" data-k="6">t</span><span class="cctt-g" data-k="7">o</span><span class="cctt-sp">&#160;</span><span class="cctt-g" data-k="8"><span class="cctt-w1 cctt-hi">W</span><span class="cctt-gw cctt-hi">w</span></span><span class="cctt-g cctt-hi cctt-k9" data-k="9">o</span><span class="cctt-g cctt-hi" data-k="10">r</span><span class="cctt-g cctt-hi cctt-k11" data-k="11">k</span><span class="cctt-care"></span><span class="cctt-beam"></span><span class="cctt-str cctt-s1"></span><span class="cctt-str cctt-s2"></span><span class="cctt-str cctt-s3"></span></span></span>
+        <span class="cctt-word"><span class="cctt-flow"><span class="cctt-hi">Wa</span>lk i<span class="cctt-hi">nt</span>o <span class="cctt-hi">Work</span></span><span class="cctt-glyphs"><span class="cctt-g cctt-hi" data-k="0">W</span><span class="cctt-g cctt-hi cctt-k1" data-k="1">a</span><span class="cctt-g" data-k="2">l</span><span class="cctt-g" data-k="3">k</span><span class="cctt-sp">&#160;</span><span class="cctt-g" data-k="4">i</span><span class="cctt-g cctt-hi" data-k="5">n</span><span class="cctt-g cctt-hi" data-k="6">t</span><span class="cctt-g" data-k="7">o</span><span class="cctt-sp">&#160;</span><span class="cctt-g cctt-hi" data-k="8">W</span><span class="cctt-g cctt-hi cctt-k9" data-k="9">o</span><span class="cctt-g cctt-hi" data-k="10">r</span><span class="cctt-g cctt-hi cctt-k11" data-k="11">k</span><span class="cctt-care"></span><span class="cctt-beam"></span><span class="cctt-str cctt-s1"></span><span class="cctt-str cctt-s2"></span><span class="cctt-str cctt-s3"></span></span></span>
       </span>
     </a>
     <div class="a-right">
@@ -2474,27 +2485,28 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
     var A=spin(1,0),B=spin(-1,80);
     return {defs:[[og,A[0],A[1]],[ig,B[0],B[1]]]};
   }
-  /* ================== 글자 모션 — `Walk into Work` ↔ `Want work` (2026-11-21 R5) ==================
+  /* ================== 글자 모션 — `Walk into Work` ↔ `Want Work` (2026-11-21 R5) ==================
      마름모 방치 모션 열 가지와 1:1로 짝을 이룬다 — 마름모가 움직이는 그 순간, 같은 play(i)에서
      같은 프레임에 시작해 4.6초 안에 다 돌아온다(방치 유도 data-st="hint"가 5.0초라 0.4초 여유).
-       등장 0~1.75초 · 머묾 1.75~2.95초(Want work를 읽는 시간) · 되돌아옴 2.95~4.4초.
+       등장 0~1.75초 · 머묾 1.75~2.95초(Want Work를 읽는 시간) · 되돌아옴 2.95~4.4초.
      · 되돌아오는 구간은 등장 구간을 **시간만 뒤집어** 만든다 — 같은 곡선을 반대로 쓰므로 손맛이 같고,
        저절로 「원래 자리·원래 글자」로 끝난다. 끝나면 애니메이션을 지우니 잔상이 남지 않는다.
-     · 자리표는 모두 em이다(Josefin Sans 500을 DOM에서 1000px로 재어 1000으로 나눈 값). 글자 크기가 어디서든 같은 비례를
-       따르고, 대문자 W의 왼쪽은 두 글자 모두 0em이라 **절대 움직이지 않는다**.
+     · 자리표는 모두 em이다(Josefin Sans 500의 폰트 단위 — unitsPerEm 1000 — 를 그대로 1000으로 나눈 값이라 반올림이 없다:
+       W 1011 · a 592 · l 260 · k 508 · i 260 · n 561 · t 366 · o 550 · r 383 · 띄어쓰기 318, 커닝 `W|a`·`W|o` −93).
+       글자 크기가 어디서든 같은 비례를 따르고, 맨 앞 대문자 W의 왼쪽은 두 줄 모두 0em이라 **절대 움직이지 않는다**.
+     · 목표 `Want Work`는 대문자 W를 그대로 둔다 — `Work`의 W·o·r·k가 한 덩어리로 −1.896em 옮겨 가고 l·k·i·o만 사라진다.
      · 움직이는 값은 transform·opacity뿐 — 레이아웃(left·width·margin)은 애니메이션하지 않는다. */
-  var W_RX=[0,.91783,1.50967,1.76952,2.27736,2.59519,2.85503,3.41587,3.78172,4.33155,4.64939,5.56723,6.11708,6.49991];  /* Walk into Work 글자 왼쪽(em) */
-  var W_TX=[0,.91783,1.50967,2.07052,2.43636,2.75419,3.41903,3.96887,4.35172];                                          /* Want work 글자 왼쪽(em) */
-  var W_W=7.00777,W_TW=4.85956;                            /* 두 줄 전체 폭(em) */
+  var W_RX=[0,.918,1.51,1.77,2.278,2.596,2.856,3.417,3.783,4.333,4.651,5.569,6.119,6.502];  /* Walk into Work 글자 왼쪽(em) */
+  var W_TX=[0,.918,1.51,2.071,2.437,2.755,3.673,4.223,4.606];                                        /* Want Work 글자 왼쪽(em) */
+  var W_W=7.01,W_TW=5.114;                                 /* 두 줄 전체 폭(em) */
   var W_IDX=[0,1,2,3,5,6,7,8,10,11,12,13];                 /* span 차례 → W_RX 자리 */
   var W_TO=[0,1,-1,-1,-1,2,3,-1,5,6,7,8];                  /* span 차례 → W_TX 자리(음수 = 지워지는 글자) */
-  var W_DX=[0,0,0,0,0,-1.34536,-1.34535,0,-1.8952,-2.1482,-2.14821,-2.14819];  /* 옮겨 갈 거리(em) */
+  var W_DX=[0,0,0,0,0,-1.346,-1.346,0,-1.896,-1.896,-1.896,-1.896];  /* 옮겨 갈 거리(em) */
   var W_E=1750,W_H=2950,W_X1=4400,W_T=4600;
   var wWord=document.querySelector('.cctt-word'),wG={},wOv={};
   if(wWord){
     var wN=wWord.querySelectorAll('.cctt-g'),wi0;
     for(wi0=0;wi0<wN.length;wi0++)wG[wN[wi0].getAttribute('data-k')]=wN[wi0];
-    wG.w=wWord.querySelector('.cctt-gw');wG.W=wWord.querySelector('.cctt-w1');
     wOv.care=wWord.querySelector('.cctt-care');wOv.beam=wWord.querySelector('.cctt-beam');
     wOv.s1=wWord.querySelector('.cctt-s1');wOv.s2=wWord.querySelector('.cctt-s2');wOv.s3=wWord.querySelector('.cctt-s3');
   }
@@ -2534,43 +2546,29 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
   }
   /* 되돌아오는 때 — 등장 시각 t를 머묾 끝 기준으로 뒤집은 시각 */
   function wBack(t){return W_H+(1-t/W_E)*(W_X1-W_H);}
-  /* opacity만 따로 — Work의 W가 w로 바뀌는 자리(움직임은 글자 칸이 맡는다) */
-  function wHide(t0,t1){
-    return [{offset:0,opacity:1},{offset:+(t0/W_T).toFixed(5),opacity:1,easing:'cubic-bezier(.4,0,.7,1)'},
-      {offset:+(t1/W_T).toFixed(5),opacity:0},{offset:+(wBack(t1)/W_T).toFixed(5),opacity:0,easing:'cubic-bezier(.4,0,.7,1)'},
-      {offset:+(wBack(t0)/W_T).toFixed(5),opacity:1},{offset:1,opacity:1}];
-  }
-  function wShow(t0,t1){
-    return [{offset:0,opacity:0},{offset:+(t0/W_T).toFixed(5),opacity:0,easing:'cubic-bezier(.4,0,.7,1)'},
-      {offset:+(t1/W_T).toFixed(5),opacity:1},{offset:+(wBack(t1)/W_T).toFixed(5),opacity:1,easing:'cubic-bezier(.4,0,.7,1)'},
-      {offset:+(wBack(t0)/W_T).toFixed(5),opacity:0},{offset:1,opacity:0}];
-  }
   /* 남는 글자 — 지워지는 글자가 사라진 뒤 목표 자리로 미끄러진다 */
   function wMove(i,from,to,fs,e){
     return [wK(0,'none',1),wK(from,'none',1),wK(to,wTx(W_DX[i],fs),1,e||'cubic-bezier(.5,0,.2,1)')];
   }
   function wOrg(){var o={},i;for(i=0;i<arguments.length;i++)o[arguments[i]]='0 50%';return o;}
   var WPAT=[
-  /* ① 반대 회전 ↔ 커서 백스페이스 — 커서가 오른쪽부터 톡톡 지우고 Want work를 다시 쳐 넣는다 */
+  /* ① 반대 회전 ↔ 커서 백스페이스 — 커서가 오른쪽부터 톡톡 지우고 Want Work를 다시 쳐 넣는다 */
   function(fs){
     var g={},fade={},del=[11,10,9,8,7,6,5,4,3,2],dt={},i,kd,f,tg,
-        typ=[5,6,'w',9,10,11],tt={},u=1080,t=70;
+        typ=[5,6,8,9,10,11],tt={},u=1080,t=70;
     for(i=0;i<del.length;i++){dt[del[i]]=t;t+=102;}
     for(i=0;i<typ.length;i++){tt[typ[i]]=u;u+=96;}
     for(i=0;i<12;i++){
       kd=dt[i];tg=wTx(W_DX[i],fs);
       if(kd==null){g[i]=[wK(0,'none',1)];continue;}
-      if(i===8){g[8]=[wK(0,'none',null),wK(500,'none',null),wK(640,tg,null)];continue;}
       f=[wK(0,'none',1),wK(kd,'none',1,'cubic-bezier(.4,0,.6,1)'),wK(kd+100,'none',0)];
       if(tt[i]!=null)f.push(wK(kd+104,tg,0),wK(tt[i],tg+' scale(.86)',0,'cubic-bezier(.2,.9,.3,1)'),wK(tt[i]+104,tg,1));
       g[i]=f;
     }
-    fade.W=wHide(dt[8],dt[8]+100);
-    fade.w=wShow(tt.w,tt.w+104);
     /* 커서 — 지울 때는 오른쪽→왼쪽, 쓸 때는 왼쪽→오른쪽 (칸을 뛰어 넘는다) */
     var cj=[[0,W_W]],px,cf=[],co;
     for(i=0;i<del.length;i++)cj.push([dt[del[i]],W_RX[W_IDX[del[i]]]]);
-    cj.push([tt[5],W_TX[3]],[tt[6],W_TX[4]],[tt.w,W_TX[5]],[tt[9],W_TX[6]],[tt[10],W_TX[7]],[tt[11],W_TX[8]],[tt[11]+100,W_TW]);
+    cj.push([tt[5],W_TX[3]],[tt[6],W_TX[4]],[tt[8],W_TX[5]],[tt[9],W_TX[6]],[tt[10],W_TX[7]],[tt[11],W_TX[8]],[tt[11]+100,W_TW]);
     for(i=0;i<cj.length;i++){
       px=wPx(cj[i][1],fs);
       cf.push({offset:+(cj[i][0]/W_T).toFixed(5),transform:'translateX('+px+'px)',easing:i<cj.length-1?'steps(1,end)':'linear'});
@@ -2602,8 +2600,6 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
       }
     }
     g[8]=[wK(0,'none',null),wK(700,'none',null),wK(1120,wTx(W_DX[8],fs),null)];
-    fade.W=wHide(1000,1100);
-    fade.w=wShow(1100,1200);
     var bf=[{offset:0,transform:'translateX('+wPx(-.9,fs)+'px)',opacity:0},
       {offset:+(160/W_T).toFixed(5),opacity:.5},
       {offset:+(820/W_T).toFixed(5),opacity:.5},
@@ -2613,9 +2609,9 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
       {offset:1,transform:'translateX('+wPx(W_W,fs)+'px)',opacity:0}];
     return {g:g,fade:fade,ov:{beam:bf},org:wOrg(2,3,4,7)};
   },
-  /* ③ 호흡 교차 ↔ 공항 플립 보드 — 박자마다 글자 칸이 찰칵찰칵 넘어가며 Want work로 바뀐다 */
+  /* ③ 호흡 교차 ↔ 공항 플립 보드 — 박자마다 글자 칸이 찰칵찰칵 넘어가며 Want Work로 바뀐다 */
   function(fs){
-    var g={},fade={},i,s0,sw,t0,t1;
+    var g={},fade={},i,s0,t0,t1;
     function flip(s0,op){
       return [wK(s0,'translateX(0px) rotateX(0deg)',op,'cubic-bezier(.4,0,.9,.6)'),
         wK(s0+22,'translateX(0px) rotateX(-90deg) scaleY(.62)',op==null?null:.6,'linear'),
@@ -2636,15 +2632,13 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
            wK(t1,wTx(W_DX[i],fs),1)]);
       }
     }
-    sw=60+8*42;
+    var sw=60+8*42;
     t0=sw+100;t1=Math.min(1450,t0+330);
     g[8]=[wK(0,'none',null)].concat(flip(sw,null),
       [wK(t0,'translateX(0px) rotateX(0deg) scaleY(1)',null,'cubic-bezier(.5,0,.2,1)'),wK(t1,wTx(W_DX[8],fs),null)]);
-    fade.W=wHide(sw+30,sw+80);
-    fade.w=wShow(sw+30,sw+80);
     return {g:g,fade:fade,org:wOrg(2,3,4,7)};
   },
-  /* ④ 엇박 반바퀴 ↔ 네온사인 오프 — lk·i·o의 불이 지직 꺼지고 Want work만 살아남는다 */
+  /* ④ 엇박 반바퀴 ↔ 네온사인 오프 — lk·i·o의 불이 지직 꺼지고 Want Work만 살아남는다 */
   function(fs){
     var g={},fade={},i,off=[2,3,4,7],ot={},t=90;
     for(i=0;i<off.length;i++){ot[off[i]]=t;t+=55;}
@@ -2663,8 +2657,6 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
       }
     }
     g[8]=[wK(0,'none',null),wK(480,'none',null),wK(1050,wTx(W_DX[8],fs),null)];
-    fade.W=wHide(900,1010);
-    fade.w=wShow(1010,1120);
     return {g:g,fade:fade};
   },
   /* ⑤ 위아래 결합 ↔ 엘리베이터 스왑 — lk·i·o는 위로 올라가 사라지고, nt·work는 살짝 내려왔다 올라와 앉는다 */
@@ -2687,8 +2679,6 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
     }
     g[8]=[wK(0,'none',null),wK(520,'translateY('+up+'px)',null,'cubic-bezier(.5,0,.2,1)'),
       wK(880,wTx(W_DX[8],fs)+' translateY('+wPx(-.08,fs)+'px)',null,'cubic-bezier(.2,.9,.3,1)'),wK(1040,wTx(W_DX[8],fs),null)];
-    fade.W=wHide(900,1010);
-    fade.w=wShow(1010,1120);
     return {g:g,fade:fade,leap:true};
   },
   /* ⑥ 획 그리기 ↔ 커닝 아코디언 — lk·i·o의 가로 폭이 0으로 접히며 글자가 압축된다
@@ -2706,8 +2696,6 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
       }
     }
     g[8]=[wK(0,'none',null),wK(220,'none',null,EZ),wK(880,wTx(W_DX[8],fs),null,EZ)];
-    fade.W=wHide(820,900);
-    fade.w=wShow(900,1010);
     return {g:g,fade:fade,org:wOrg(2,3,4,7)};
   },
   /* ⑦ 물결 ↔ 웨이브 콜랩스 — 물결이 지나간 자리의 lk·i·o는 아래로 가라앉고 나머지는 파도를 타고 합류 */
@@ -2731,8 +2719,6 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
     var s8=Math.max(220,hx[4]+40);
     g[8]=[wK(0,'none',null),wK(s8,'none',null,'cubic-bezier(.4,0,.6,1)'),
       wK(s8+330,wTx(W_DX[8],fs)+' translateY('+wPx(-.2,fs)+'px)',null,'cubic-bezier(.3,.9,.4,1)'),wK(s8+560,wTx(W_DX[8],fs),null)];
-    fade.W=wHide(s8+700,s8+820);
-    fade.w=wShow(s8+820,s8+940);
     return {g:g,fade:fade};
   },
   /* ⑧ 미세 진동 ↔ 털어내기 — 글자가 부르르 떨다 헐거워진 lk·i·o만 후두둑 떨어진다 */
@@ -2754,8 +2740,6 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
     }
     g[8]=[wK(0,'none',null),shake(1),shake(2),shake(3),shake(4),shake(5),wK(520,'none',null,'linear'),
       wK(700,'none',null,'cubic-bezier(.5,0,.2,1)'),wK(1320,wTx(W_DX[8],fs),null)];
-    fade.W=wHide(1180,1300);
-    fade.w=wShow(1300,1420);
     return {g:g,fade:fade,leap:true};
   },
   /* ⑨ 통통 착지 ↔ 마그네틱 홉 — 빈자리를 향해 nt·work가 가볍게 튀어 올랐다 자석처럼 착지 */
@@ -2781,8 +2765,6 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
       wK(t8+200,wTx(W_DX[8],fs)+' translateY('+wPx(-.52,fs)+'px)',null,'cubic-bezier(.4,0,.8,1)'),
       wK(t8+380,wTx(W_DX[8],fs)+' translateY(0px) scale(1.06,.94)',null,'cubic-bezier(.2,.9,.3,1)'),
       wK(t8+470,wTx(W_DX[8],fs),null,'cubic-bezier(.2,.9,.3,1)')];
-    fade.W=wHide(t8+330,t8+430);
-    fade.w=wShow(t8+430,t8+540);
     return {g:g,fade:fade,leap:true};
   },
   /* ⑩ 표창 회전 ↔ 취소선 스킵 — 얇은 취소선이 휙 그어지고 lk·i·o가 접혀 사라진다 */
@@ -2809,8 +2791,6 @@ window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt
       }
     }
     g[8]=[wK(0,'none',null),wK(700,'none',null,'cubic-bezier(.5,0,.2,1)'),wK(1400,wTx(W_DX[8],fs),null)];
-    fade.W=wHide(1120,1290);
-    fade.w=wShow(1290,1410);
     return {g:g,fade:fade,ov:{s1:line(80,190),s2:line(150,150),s3:line(220,190)},org:wOrg(2,3,4,7)};
   }];
   /* 무늬 하나를 건다 — 마름모와 같은 프레임. 끝나면(또는 settle) wStop이 인라인 값을 지운다. */
