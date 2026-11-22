@@ -231,6 +231,8 @@
 /* 오브제 무대 — 카드 안 고정 크기. 넘치는 것은 이 상자 밖으로 나가지 않는다. */
 .a-mode-art{position:relative;display:block;flex:1 1 auto;height:104px;min-height:0;margin:6px 0 4px;overflow:hidden}
 .a-art{position:absolute;left:50%;top:50%;width:200px;height:104px;margin:-52px 0 0 -100px;transform:scale(1);transform-origin:50% 50%}
+/* 2026-11-22 v2: 키가 넉넉한 휴대폰은 오브제를 1.2배로(카드 가운데가 비어 보이던 것) */
+@media (max-width:767px) and (min-height:741px){.a-mode-art{height:124px}.a-art{transform:scale(1.2)}}
 
 /* 행동 줄 — 장전 전에는 화살표 칩만 조용히 있고, 1차에 무엇을 더 눌러야 하는지 말해 준다. */
 .a-mode-go{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;white-space:nowrap;
@@ -250,101 +252,87 @@
 .a-mode[data-step="1"] .a-go-a{display:none}
 .a-mode[data-step="1"] .a-go-b{display:inline-block}
 
-/* ============ 4-a. 시드 오브제 — 선반 위에 카드가 차곡차곡 쌓인다 ============
- * 큰 트레이 상자를 없애고 얇은 받침 선(양 끝 황동 홈) 위에 종이 카드가 쌓이는 그림으로.
- * 카드는 중력으로 떨어져(가속) 한 장씩 안착하고(눌림·작은 튕김), 쌓인 만큼 윗면이 올라온다.
- * 2차에는 더미가 3px 내려앉고 맨 윗장에 색인 줄이 그어진다(정리되어 담김). */
-.a-art-seed .a-ledge{position:absolute;left:50%;bottom:14px;width:152px;height:2px;margin-left:-76px;border-radius:2px;
-  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--line-2) 95%,transparent) 8%,color-mix(in srgb,var(--line-2) 95%,transparent) 92%,transparent)}
-.a-art-seed .a-ledge::before,.a-art-seed .a-ledge::after{content:"";position:absolute;bottom:-3px;width:6px;height:7px;border-radius:1px 1px 2px 2px;
-  background:linear-gradient(180deg,#e2c894,#a8803c)}
-:root[data-theme="dark"] .a-art-seed .a-ledge::before,:root[data-theme="dark"] .a-art-seed .a-ledge::after{background:linear-gradient(180deg,#c6a76f,#75551f)}
-.a-art-seed .a-ledge::before{left:-1px}
-.a-art-seed .a-ledge::after{right:-1px}
-/* 쌓인 더미 */
-.a-art-seed .a-stack::before{content:"";position:absolute;left:10px;right:10px;bottom:-2px;height:5px;border-radius:50%;
-  background:radial-gradient(closest-side,rgba(70,50,25,.18),transparent)}
-:root[data-theme="dark"] .a-art-seed .a-stack::before{background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent)}
-.a-art-seed .a-stack{position:absolute;left:50%;bottom:16px;width:122px;height:0;margin-left:-61px;
-  transition:transform .34s cubic-bezier(.2,.9,.3,1)}
-.a-mode-seed[data-step="2"] .a-stack{transform:translateY(3px)}
-.a-art-seed .a-sheet{position:absolute;left:0;right:0;height:30px;border-radius:3px;
-  background:linear-gradient(180deg,#fffdf6,#f6eddc);
-  border-width:1px;border-style:solid;border-color:#dcceb4;
-  box-shadow:0 -1px 0 #fff,0 1px 2px rgba(70,50,25,.1);opacity:1;transform:none}
-:root[data-theme="dark"] .a-art-seed .a-sheet{background:linear-gradient(180deg,#22303f,#1a232f);border-color:#33405a;
-  box-shadow:0 -1px 0 rgba(255,255,255,.06),0 1px 3px rgba(0,0,0,.55)}
-.a-art-seed .a-sheet::before{content:"";position:absolute;left:9px;top:2.5px;height:4px;width:46px;border-radius:2px;
-  background:color-mix(in srgb,var(--acc) 46%,var(--line-2));opacity:.85}
-.a-art-seed .a-sheet::after{content:"";position:absolute;left:62px;right:9px;top:3px;height:1px;
-  background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--line-2) 85%,transparent) 0 9px,transparent 9px 15px);opacity:.5}
-.a-art-seed .s1{bottom:0}
-.a-art-seed .s2{bottom:8px}
-.a-art-seed .s3{bottom:16px;opacity:0}
-.a-art-seed .s4{bottom:24px;opacity:0}
-.a-art-seed .s5{bottom:32px;opacity:0}
-/* 1차: 한 장씩 떨어진다(가속 → 안착 눌림 → 작은 튕김) */
-.a-mode-seed[data-step="1"] .a-sheet{animation:a-sheet-drop .56s cubic-bezier(.42,0,.62,.42) both;animation-delay:var(--d,0ms)}
-@keyframes a-sheet-drop{
-  0%{opacity:0;transform:translateY(-104px) scaleY(1)}
-  14%{opacity:1;transform:translateY(-86px) scaleY(1)}
-  72%{opacity:1;transform:translateY(0) scaleY(.9)}
-  84%{opacity:1;transform:translateY(-3px) scaleY(1.02)}
-  100%{opacity:1;transform:translateY(0) scaleY(1)}
-}
-.a-art-seed .s1{--d:0ms}
-.a-art-seed .s2{--d:70ms}
-.a-art-seed .s3{--d:140ms}
-.a-art-seed .s4{--d:210ms}
-.a-art-seed .s5{--d:280ms}
-/* 2차: 맨 윗장에 색인 줄이 그어진다 */
-.a-art-seed .a-mark{position:absolute;left:9px;right:9px;bottom:9px;height:2px;border-radius:2px;
-  background:color-mix(in srgb,var(--acc) 75%,transparent);transform:scaleX(0);transform-origin:0 50%;
-  transition:transform .34s cubic-bezier(.2,.9,.3,1)}
-.a-mode-seed[data-step="2"] .a-mark{transform:scaleX(1)}
+/* ============ 4. 오브제(2026-11-22 v2 — 태화님 「너무 단순하고 퀄리티 낮다」) ============
+ * 평면 네모 몇 장이던 그림을 **3/4 시점의 입체 판**으로 다시 그렸다(인라인 SVG, 한 viewBox 200×104).
+ *  · 시드 — 다섯 장의 판이 **지층처럼 쌓인다**(지식·원리·기준을 한 층씩). 맨 윗판 앞머리에 색인 탭.
+ *  · 매치 — 탭과 홈이 짝인 **두 장의 카드가 맞물린다**(현장에서 바로 맞춰 쓰기). 맞물린 자리에 이음선.
+ * 세 박자(모두 유한 — 끝나면 멈춘다, 무한 반복 없음):
+ *  ① 시트가 열릴 때(.a-modes.a-in): 시드 판이 아래에서 한 장씩 70ms 간격으로 올라와 앉고, 매치 카드는 양옆에서 들어와 떨어져 선다.
+ *  ② 1차(장전, data-step=1): 시드는 층이 위로 벌어지며(윗판일수록 더) 윗면에 빛이 한 번 지나간다.
+ *     매치는 두 장이 마주 보며 미끄러져 탭이 홈에 들어가고, 이음선이 한 번 밝아졌다 가라앉는다.
+ *  ③ 2차(격발, data-step=2): 시드는 층이 다시 눌려 붙고 색인 줄이 그어지며 확인 표가 선다. 매치는 이음선이 강조색으로 굳고 확인 표.
+ * 움직이는 값은 transform·opacity뿐. 감속 모드·집중 보기에서는 애니메이션 없이 결과 자세로 바로 간다.
+ * 짝 카드 1:1 — 두 그림은 같은 상자(200×104)·같은 바닥 그림자·같은 등장 박자를 쓴다(§8-0-3, 등장에 scale 없음). */
+.a-art .art-svg{display:block;width:200px;height:104px;overflow:visible}
+.a-art{--f-top:#fbf6ec;--f-top2:#ffffff;--f-front:#e6d8bf;--f-front2:#f2e8d6;--f-side:#d9c8a9;--f-edge:#cdbb9b;--f-ln:#e4d6bf;--f-sh:rgba(70,50,25,.22);--f-on:#fff}
+:root[data-theme="dark"] .a-art{--f-top:#223047;--f-top2:#31435f;--f-front:#151e2b;--f-front2:#1e2a3b;--f-side:#101722;--f-edge:#3a4c6a;--f-ln:#3a4d69;--f-sh:rgba(0,0,0,.75);--f-on:#0b1017}
+.a-art .g-shadow{fill:var(--f-sh);filter:blur(2.5px)}
+/* 뒤쪽 빛 — 1차·2차에만 떠오른다(투명도 전환 한 번, 반복 없음) */
+.a-art .g-glow{opacity:0;transition:opacity .5s ease}
+.a-mode[data-step] .a-art .g-glow{opacity:.75}
+:root[data-theme="dark"] .a-mode[data-step] .a-art .g-glow{opacity:1}
 
-/* ============ 4-b. 매치 오브제 — 두 장의 인덱스 카드가 마주 보고 맞물린다 ============
- * 2026-11-18 밤: 점선 원 4개 + 구슬(태화님 「구림·구시대적」)을 폐기하고, 시드(선반 카드 더미)와
- * 겁이 맞는 편집 디자인의 맞물림으로 바꿨다. 왼쪽 카드의 **탭**이 오른쪽 카드의 **홈**으로 들어가고
- * 사이에 헤어라인 이음선이 그어진다. 1차에 두 장이 마주 보며 감속해 맞물리고(살짝 부딪혀 물러남),
- * 2차에 이음선이 굵어지며 잠금 표시가 선다. 움직이는 값은 transform·opacity뿐이다. */
-.a-art-match .m-shadow{position:absolute;left:50%;bottom:6px;width:136px;height:12px;margin-left:-68px;border-radius:50%;
-  background:radial-gradient(closest-side,rgba(70,50,25,.15),transparent)}
-:root[data-theme="dark"] .a-art-match .m-shadow{background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent)}
-.a-art-match .m-leaf{position:absolute;top:50%;width:56px;height:66px;margin-top:-33px;border-radius:3px;
-  border-width:1px;border-style:solid;border-color:#dcceb4;
-  background:linear-gradient(180deg,#fffdf6,#f6eddc);
-  box-shadow:0 1px 2px rgba(70,50,25,.1),inset 0 1px 0 #fff;will-change:transform}
-:root[data-theme="dark"] .a-art-match .m-leaf{border-color:#33405a;background:linear-gradient(180deg,#22303f,#1a232f);
-  box-shadow:0 1px 3px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.05)}
-.a-art-match .m-l{left:50%;margin-left:-57px;z-index:2;transform:translate3d(-26px,0,0);
-  transition:transform .62s cubic-bezier(.2,1.14,.34,1)}
-.a-art-match .m-r{left:50%;margin-left:1px;z-index:1;transform:translate3d(26px,0,0);
-  transition:transform .62s cubic-bezier(.2,1.14,.34,1)}
-/* 1차(장전): 두 장이 마주 보며 감속해 맞물린다 — 살짝 지나쳤다 돌아오는(스냅) 곡선이라 「톡」이 보인다.
-   애니메이션이 아니라 전이로 두어, 2차로 넘어갈 때 자리가 풀리지 않는다(장전 상태 유지) */
-.a-mode-match[data-step] .m-l,.a-mode-match[data-step] .m-r{transform:translate3d(0,0,0)}
-.a-art-match .m-lines{position:absolute;left:11px;right:13px;top:12px;height:31px;
-  background:repeating-linear-gradient(180deg,color-mix(in srgb,var(--line-2) 90%,transparent) 0 1.5px,transparent 1.5px 10.5px)}
-.a-art-match .m-l .m-lines{left:11px;right:17px}
-.a-art-match .m-r .m-lines{left:17px;right:11px}
-/* 맞물림을 붙잡는 집게 — 두 장이 만난 이음선을 가로질러 몸린다. 2차에 모서리가 강조색으로 물든다 */
-.a-art-match .m-clip{position:absolute;right:-7px;top:24px;width:12px;height:18px;border-radius:3px;
-  border-width:1px;border-style:solid;border-color:#d3c4a8;background:linear-gradient(180deg,#fffdf6,#f3e7d0);
-  box-shadow:0 1px 2px rgba(70,50,25,.16);
-  transition:background-color .22s ease,border-color .22s ease}
-:root[data-theme="dark"] .a-art-match .m-clip{border-color:#3c4a63;background:linear-gradient(180deg,#26333f,#1d2734);
-  box-shadow:0 1px 3px rgba(0,0,0,.6)}
-/* 이음선 — 1차에 제자리에서 위아래로 그어진다(카드 사이 2px 틈에 선다) */
-.a-art-match .m-seam{position:absolute;left:50%;top:19px;bottom:19px;width:1px;margin-left:-.5px;z-index:0;
-  background:color-mix(in srgb,var(--acc) 44%,#b9a98f);
-  transform:scaleY(0);transform-origin:50% 50%;transition:transform .26s cubic-bezier(.2,.9,.3,1)}
-/* 1차: 두 장이 마주 보고 맞물린 뒤 이음선이 제자리에서 위아래로 그어진다 */
-.a-mode-match[data-step] .m-seam{transform:scaleY(1);transition-delay:.42s}
-/* 2차(격발): 이음선이 잠금 색으로 바뀌고 집게가 강조색으로 물든다 */
-.a-mode-match[data-step="2"] .m-seam{background:var(--acc);transition-delay:0s}
-.a-mode-match[data-step="2"] .m-clip{border-color:color-mix(in srgb,var(--acc) 55%,#d3c4a8);
-  background-color:color-mix(in srgb,var(--acc) 15%,#fffdf6)}
+/* ---- 시드: 지층 판 ---- */
+.a-art-seed .f-top{fill:url(#seedTopG);stroke:var(--f-edge);stroke-width:.8;stroke-linejoin:round}
+.a-art-seed .f-front{fill:url(#seedFrontG);stroke:var(--f-edge);stroke-width:.8}
+.a-art-seed .f-side{fill:var(--f-side);stroke:var(--f-edge);stroke-width:.8;stroke-linejoin:round}
+.a-art-seed .f-edge{fill:none;stroke:color-mix(in srgb,var(--f-top) 40%,#fff);stroke-width:.9;opacity:.8}
+:root[data-theme="dark"] .a-art-seed .f-edge{stroke:color-mix(in srgb,var(--acc) 30%,var(--f-edge));opacity:.7}
+/* 아래 판일수록 조금 짙게 — 층이 깊어 보인다 */
+.a-art-seed .s1{opacity:.82}.a-art-seed .s2{opacity:.88}.a-art-seed .s3{opacity:.94}
+.a-art-seed .s5 .f-top{stroke:color-mix(in srgb,var(--acc) 38%,var(--f-edge))}
+.a-art-seed .s1{--i:0}.a-art-seed .s2{--i:1}.a-art-seed .s3{--i:2}.a-art-seed .s4{--i:3}.a-art-seed .s5,.a-art-seed .sl-top{--i:4}
+.a-art-seed .sl,.a-art-seed .sl-top{transition:transform .5s cubic-bezier(.2,1,.3,1)}
+.a-art-seed .tab{fill:var(--acc);opacity:.9}
+.a-art-seed .mark{fill:none;stroke:var(--acc);stroke-width:2;stroke-linecap:round;
+  transform-box:fill-box;transform-origin:0 50%;transform:scaleX(0);transition:transform .38s cubic-bezier(.2,.9,.3,1) .12s}
+.a-art-seed .sweep{opacity:0;transform:translateX(0)}
+.a-art .badge{opacity:0;transform-box:fill-box;transform-origin:50% 50%;transform:translateY(4px)}
+.a-art .badge circle{fill:var(--acc)}
+.a-art .badge path{fill:none;stroke:var(--f-on);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* ① 열릴 때: 아래 판부터 한 장씩 올라와 앉는다(뒤채우기만 — 끝나면 기본 자세로 돌아가 ②③ 전이가 그대로 산다) */
+.a-modes.a-in .a-art-seed .sl,.a-modes.a-in .a-art-seed .sl-top{animation:art-rise .6s cubic-bezier(.2,.9,.25,1) backwards;animation-delay:calc(.16s + var(--i) * 70ms)}
+.a-modes.a-in .a-art-seed .g-shadow{animation:art-fade .5s ease .12s backwards}
+@keyframes art-rise{0%{opacity:0;transform:translate3d(0,18px,0)}68%{opacity:1;transform:translate3d(0,-1.5px,0)}100%{transform:none}}
+@keyframes art-fade{from{opacity:0}}
+/* ② 1차: 층이 벌어진다(윗판일수록 더) + 윗면에 빛 한 번 */
+.a-mode-seed[data-step="1"] .sl,.a-mode-seed[data-step="1"] .sl-top{transform:translate3d(0,calc(var(--i) * -2.2px),0)}
+.a-mode-seed[data-step="1"] .sweep{animation:art-sweep 1.05s cubic-bezier(.3,.6,.3,1) .22s both}
+@keyframes art-sweep{0%{opacity:0;transform:translateX(0)}18%{opacity:1}100%{opacity:0;transform:translateX(150px)}}
+/* ③ 2차: 층이 다시 눌려 붙고(1px 내려앉음) 색인 줄 · 확인 표 */
+.a-mode-seed[data-step="2"] .sl,.a-mode-seed[data-step="2"] .sl-top{transform:translate3d(0,1px,0);transition-duration:.28s}
+.a-mode-seed[data-step="2"] .mark{transform:scaleX(1)}
+.a-mode[data-step="2"] .a-art .badge{opacity:1;transform:none;transition:opacity .2s ease .18s,transform .42s cubic-bezier(.2,1.5,.35,1) .18s}
+
+/* ---- 매치: 탭과 홈이 맞물리는 두 장 ---- */
+.a-art-match .c-face{fill:url(#matchFaceG);stroke:var(--f-edge);stroke-width:1;stroke-linejoin:round}
+.a-art-match .c-back{fill:var(--f-side);stroke:var(--f-edge);stroke-width:.8}
+.a-art-match .c-ln{fill:none;stroke:var(--f-ln);stroke-width:2.2;stroke-linecap:round}
+.a-art-match .c-chip{fill:color-mix(in srgb,var(--acc) 22%,var(--f-top));stroke:color-mix(in srgb,var(--acc) 40%,var(--f-edge));stroke-width:.8}
+.a-art-match .card{transform-box:view-box;transform-origin:98px 96px}
+.a-art-match .c-l{transform:translate3d(-13px,0,0) rotate(-3.5deg)}
+.a-art-match .c-r{transform:translate3d(13px,0,0) rotate(3.5deg)}
+.a-art-match .card{transition:transform .64s cubic-bezier(.22,1.12,.36,1)}
+.a-art-match .seam{fill:none;stroke:var(--acc);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .2s ease}
+/* ① 열릴 때: 양옆에서 들어와 떨어져 선다 */
+.a-modes.a-in .a-art-match .c-l{animation:art-in-l .62s cubic-bezier(.2,.9,.25,1) .2s backwards}
+.a-modes.a-in .a-art-match .c-r{animation:art-in-r .62s cubic-bezier(.2,.9,.25,1) .27s backwards}
+.a-modes.a-in .a-art-match .g-shadow{animation:art-fade .5s ease .12s backwards}
+@keyframes art-in-l{from{opacity:0;transform:translate3d(-34px,0,0) rotate(-6deg)}}
+@keyframes art-in-r{from{opacity:0;transform:translate3d(34px,0,0) rotate(6deg)}}
+/* ② 1차: 맞물림 — 살짝 지나쳤다 돌아오는 곡선, 맞물린 뒤 이음선이 한 번 밝아졌다 가라앉는다 */
+.a-mode-match[data-step] .c-l,.a-mode-match[data-step] .c-r{transform:none}
+.a-mode-match[data-step="1"] .seam{animation:art-seam 1.1s ease .5s both}
+@keyframes art-seam{0%{opacity:0}30%{opacity:1}100%{opacity:.45}}
+/* ③ 2차: 이음선이 굳고 확인 표 */
+.a-mode-match[data-step="2"] .seam{opacity:1;animation:none}
+.a-mode-match[data-step="2"] .c-chip{fill:color-mix(in srgb,var(--acc) 42%,var(--f-top))}
+
+/* 감속 모드·집중 보기: 꾸밈 애니메이션 없이 결과 자세 */
+@media (prefers-reduced-motion:reduce){
+  .a-art *{animation:none!important;transition:none!important}
+}
+html[data-jc-imm] .a-art *{animation:none!important;transition:none!important}
 
 /* ============ 5. 전환(고름) — 무대 전체가 **한 번에** 페이드아웃한다 ============
  * 예전에는 머리말·바닥·반대 카드·글래스가 각자 다른 시간에 사라져 잔상이 남고 프레임도 끊겼다.
