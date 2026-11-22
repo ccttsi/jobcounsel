@@ -358,7 +358,7 @@ html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html
 @media (max-width:599px){
   .hd{padding:8px 0}
   .mast-meta .l .num.dateonly{display:none}
-  .tabs{margin:6px 0 6px}
+  .tabs{margin:10px 0 8px}
   .iss{gap:6px}
   .card{padding:9px 0 8px}
   .card h3{font-size:21px}
