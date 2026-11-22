@@ -220,7 +220,7 @@
       + '</button></div>';
     box.className = 'a-dsheet a-ds-view';
     box.innerHTML = '<div class="a-ds-veil" data-act="cancel"></div>'
-      + '<div class="a-ds-card" role="dialog" aria-modal="true" aria-label="' + esc(t.title) + ' 미리보기">'
+      + '<div class="a-ds-card" role="dialog" aria-modal="true" data-jc-layer aria-label="' + esc(t.title) + ' 미리보기">'
       + '<div class="a-ds-top">'
       + '<span class="a-ds-no a-num">' + esc(t.no) + '</span>'
       + '<span class="a-ds-badge">' + esc(t.badge) + '</span>'
@@ -569,7 +569,9 @@
     $('tutPrev').disabled = tutStep === 0;
     $('tutNext').textContent = tutStep === TUT.length - 1 ? '알겠습니다' : '다음';
   }
-  function openTut() {
+  var tutRet = null;   /* 닫으면 초점을 돌려줄 단추 — 머리말 「튜토리얼」에서 열었으면 그 단추로(C1-09 ③·C1-36) */
+  function openTut(ret) {
+    tutRet = (ret && ret.nodeType === 1) ? ret : null;
     tutOpen = true;
     $('tuts').classList.add('on');
     $('tuts').removeAttribute('aria-hidden');
@@ -582,7 +584,8 @@
     $('tuts').classList.remove('on');
     $('tuts').setAttribute('aria-hidden', 'true');
     document.documentElement.style.overflow = '';
-    try { $('tutBtn').focus({ preventScroll: true }); } catch (e) { }
+    try { (tutRet && tutRet.offsetParent !== null ? tutRet : $('tutBtn')).focus({ preventScroll: true }); } catch (e) { }
+    tutRet = null;
   }
 
   /* 머리 옆 핵심 키워드 3개 — 고른 프리셋의 단계 이름, 없으면 모드의 기본 셋 */
@@ -626,6 +629,7 @@
     preset: function (id) { return applyPreset(id); },
     unpreset: function () { clearPreset(); },
     presetNow: function () { return pre[mode] || ''; },
+    tutorial: function (ret) { openTut(ret); },
     count: function (m) { return (m === 'seed' || m === 'match') ? maxOf(m) : 0; },
     placed: function (m) {
       if (m !== 'seed' && m !== 'match') return 0;

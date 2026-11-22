@@ -31,6 +31,7 @@
 
 - `role="dialog"`·`aria-modal="true"`·`<dialog>`·`.sheet`·`.drawer`·`.modal` 가운데 하나면 그대로 알아본다(대부분의 섹터가 이미 그렇다).
 - 그 밖의 상자(예: `#detWrap`)는 열리는 요소에 **`data-jc-layer`** 를 붙인다. 데스크톱에서는 늘 보이는 두 쪽 배치처럼 «열렸을 때만 팝업»인 경우는 조건까지 적는다 — `data-jc-layer="body.detail"`, `data-jc-layer=".fl.open"`(그 선택자가 화면에 있을 때만 팝업으로 본다).
+- **팝업이 아닌 상자에는 `.sheet`·`.drawer`·`.modal` 이름을 쓰지 않는다.** 결과 카드·계산 시트처럼 본문에 늘 놓인 상자가 이 이름을 달면 «열린 팝업»으로 읽혀, 첫 뒤로가기가 아무것도 닫지 않고 먹힌다(2026-11-21 pay-calc가 겪은 함정 · 2026-11-22 taxonomy `#detWrap`이 1280에서 조건 없는 `data-jc-layer`로 같은 일을 겪어 `data-jc-layer="#detWrap.on"`으로 고침). 검사: 지면을 열자마자 `JCBackStack.depth()`가 0이어야 한다.
 - 닫는 방법을 정확히 넘기고 싶으면 연는 함수에서 `JCBackStack.bind(요소, closeFn)` 한 줄. 안 넘기면 팝업 안의 닫기 단추(닫기·…X·…Close·data-close) → ESC → 감추기 순서로 스스로 닫는다.
 
 **공통 장치가 하는 일**
