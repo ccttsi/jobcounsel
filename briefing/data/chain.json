@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-22T23:09:32+09:00",
+ "generated_at": "2026-11-23T02:17:54+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -57,21 +57,31 @@
   "2026-10-02",
   "2026-10-01",
   "2026-09-30",
+  "2026-09-29",
+  "2026-09-28",
+  "2026-09-27",
   "2026-09-26",
   "2026-09-25",
   "2026-09-23",
   "2026-09-22",
   "2026-09-21",
+  "2026-09-20",
   "2026-09-19",
   "2026-09-18",
   "2026-09-17",
   "2026-09-16",
   "2026-09-15",
   "2026-09-14",
+  "2026-09-13",
   "2026-09-12",
+  "2026-09-11",
+  "2026-09-10",
+  "2026-09-09",
   "2026-09-08",
+  "2026-09-07",
   "2026-09-05",
   "2026-09-04",
+  "2026-09-03",
   "2026-09-02",
   "2026-09-01",
   "2026-08-31",
@@ -1193,6 +1203,28 @@
      "published_at": "2026-08-31"
     },
     {
+     "date": "2026-09-03",
+     "card_id": "c01",
+     "title": "기업이익 연동 성과급은 쟁의 대상 아니다 — 노동부 지침 나왔다",
+     "kicker": "매출·영업이익·순이익 연동 3유형 제외 · 9.3 시달",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780072",
+     "published_at": "2026-09-03"
+    },
+    {
+     "date": "2026-09-03",
+     "card_id": "c02",
+     "title": "외국인력 1만2,357명 4회차 접수, 제조업에 9,020명",
+     "kicker": "9.14~9.29 접수 · 탄력배정 1만명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780065",
+     "published_at": "2026-09-03"
+    },
+    {
      "date": "2026-09-05",
      "card_id": "c01",
      "title": "제주 호텔리조트 상생협약, 서비스업 첫 지역 모델",
@@ -1213,6 +1245,39 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780531",
      "published_at": "2026-09-07"
+    },
+    {
+     "date": "2026-09-10",
+     "card_id": "c02",
+     "title": "일자리 으뜸기업 100개사, 고용증가율 10.0%에 이직률 0.8%",
+     "kicker": "20인 이상 전체는 2.3%·3.3% · 유공자 118명 포상",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781119",
+     "published_at": "2026-09-10"
+    },
+    {
+     "date": "2026-09-10",
+     "card_id": "c03",
+     "title": "전국노동감독협의회 첫 회의, 12월 8일 지방 감독 시대 연다",
+     "kicker": "16개 시·도 부단체장 참석 · 노동감독관 직무집행법 12.8 시행",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781016",
+     "published_at": "2026-09-10"
+    },
+    {
+     "date": "2026-09-13",
+     "card_id": "c01",
+     "title": "대기업 19개 사업장 노사 담당자, 갈등 예방교육 2박3일",
+     "kicker": "9.9~11 1기 · 6개 모듈 · 삼성·LG·포스코 참여",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국고용노동교육원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781431",
+     "published_at": "2026-09-13"
     },
     {
      "date": "2026-09-17",
@@ -1268,6 +1333,28 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782832",
      "published_at": "2026-09-22"
+    },
+    {
+     "date": "2026-09-29",
+     "card_id": "c01",
+     "title": "300인 이상 기업 노동자 592만명, 소속 외는 1만6천명 줄어",
+     "kicker": "공시기업 4,205개(99.9%) · 소속 노동자 비중 84.2%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783477",
+     "published_at": "2026-09-29"
+    },
+    {
+     "date": "2026-09-29",
+     "card_id": "c03",
+     "title": "이주노동자 이름 부르기 캠페인, 올해 다섯 번째로 안산",
+     "kicker": "4월 울산 시작 · 안산 100여 명 참석 · 이름 적힌 안전모",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783484",
+     "published_at": "2026-09-29"
     },
     {
      "date": "2026-10-02",
@@ -1957,6 +2044,17 @@
      "published_at": "2026-08-19"
     },
     {
+     "date": "2026-09-07",
+     "card_id": "c01",
+     "title": "공시대상회사 성별 임금 격차 29.3%, 공공기관은 처음 10%대로",
+     "kicker": "남성 1억203만 vs 여성 7,216만 · 공공기관 19.0%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "성평등가족부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780421",
+     "published_at": "2026-09-07"
+    },
+    {
      "date": "2026-09-12",
      "card_id": "c03",
      "title": "미국 8월 물가 3.4%, 실질임금은 1년 새 -0.3%",
@@ -2290,6 +2388,28 @@
      "source_name": "한국고용정보원·고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775559",
      "published_at": "2026-08-26"
+    },
+    {
+     "date": "2026-09-09",
+     "card_id": "c03",
+     "title": "고용24·잡케어, 지방 박람회 부스로 직접 찾아간다",
+     "kicker": "부산 항공산업 엑스포 · 대구 직업교육박람회",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국고용정보원·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780833",
+     "published_at": "2026-09-09"
+    },
+    {
+     "date": "2026-09-10",
+     "card_id": "c01",
+     "title": "통합경력증명서 한 달 1만4,514건, 이용자 89.6%가 '한 번에' 꼽았다",
+     "kicker": "7.29~8.28 발급 · 구직신청서 10만4,109건의 44.3%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781148",
+     "published_at": "2026-09-10"
     },
     {
      "date": "2026-09-12",
@@ -2869,6 +2989,17 @@
      "published_at": "2026-09-20"
     },
     {
+     "date": "2026-09-28",
+     "card_id": "c03",
+     "title": "중장년내일센터가 생명안전망 거점 된다",
+     "kicker": "노사발전재단-생명존중희망재단 MOU · 위기 양방향 연계",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "노사발전재단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783335",
+     "published_at": "2026-09-28"
+    },
+    {
      "date": "2026-10-04",
      "card_id": "c02",
      "title": "계약직 대신 실업급여 — 내년 지급방식 바뀐다",
@@ -3193,6 +3324,28 @@
      "published_at": "2026-08-04"
     },
     {
+     "date": "2026-09-03",
+     "card_id": "c03",
+     "title": "340개 공동훈련센터가 4만 개 중소기업 26만 명을 가르친다",
+     "kicker": "협단체 141 · 대기업 111 · 대학 88",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국산업인력공단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780078",
+     "published_at": "2026-09-03"
+    },
+    {
+     "date": "2026-09-11",
+     "card_id": "c01",
+     "title": "기업자격 7곳 선정, 전기 굴착기·생성형 AI가 시험 과목이 됐다",
+     "kicker": "참여 77개 기업 · 대상 HD건설기계",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국산업인력공단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781329",
+     "published_at": "2026-09-11"
+    },
+    {
      "date": "2026-09-14",
      "card_id": "c01",
      "title": "전역예정군인 직업훈련, 한국기술교육대로 모은다",
@@ -3202,6 +3355,39 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781430",
      "published_at": "2026-09-13"
+    },
+    {
+     "date": "2026-09-27",
+     "card_id": "c01",
+     "title": "중장년고용 강조주간 시작, 지역에서 경력설계·직업훈련 연다",
+     "kicker": "9.28~10.2 · 제21회 · 중장년내일센터 중심",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783202",
+     "published_at": "2026-09-27"
+    },
+    {
+     "date": "2026-09-28",
+     "card_id": "c01",
+     "title": "중장년 재취업 교육 7종 신설, 10월 19일까지 화상교육 10회",
+     "kicker": "사이버진로교육센터 무료 · 재취업 서류·면접 과정",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국고용정보원·고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783275",
+     "published_at": "2026-09-28"
+    },
+    {
+     "date": "2026-09-28",
+     "card_id": "c02",
+     "title": "일학습병행 졸업생, 일하면서 4년제 학위까지 한 줄로",
+     "kicker": "2027년 운영대학 4곳 선정 · 4년제 통합 신설",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국산업인력공단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783324",
+     "published_at": "2026-09-28"
     },
     {
      "date": "2026-10-02",
@@ -3702,6 +3888,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780503",
      "published_at": "2026-09-07"
+    },
+    {
+     "date": "2026-09-09",
+     "card_id": "c01",
+     "title": "8월 취업자 +18.4만, 청년 고용률은 1.0%p 내려갔다",
+     "kicker": "고용률 63.3% · 15~64세 70.4% 역대 1위",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780788",
+     "published_at": "2026-09-09"
     },
     {
      "date": "2026-09-17",
@@ -4226,6 +4423,17 @@
      "published_at": "2026-09-03"
     },
     {
+     "date": "2026-09-11",
+     "card_id": "c02",
+     "title": "청년마을 61곳에 KB국민카드 2억원, 지역 청년 사업화 자금",
+     "kicker": "익산 지구장이마을 협약 · 판로·브랜드·자금 지원",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "행정안전부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781324",
+     "published_at": "2026-09-11"
+    },
+    {
      "date": "2026-09-16",
      "card_id": "c01",
      "title": "청년 70여 명이 장관 앞에서 말한 것",
@@ -4246,6 +4454,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782925",
      "published_at": "2026-09-22"
+    },
+    {
+     "date": "2026-09-29",
+     "card_id": "c02",
+     "title": "청년내일저축계좌 24,145명 선정, 3년 뒤 1,440만원",
+     "kicker": "월 10만원 저축+정부 30만원 · 납입정지 12개월로 확대",
+     "category": "청년 고용",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783452",
+     "published_at": "2026-09-29"
     },
     {
      "date": "2026-10-05",
@@ -4440,6 +4659,28 @@
      "published_at": "2026-07-29"
     },
     {
+     "date": "2026-09-07",
+     "card_id": "c02",
+     "title": "AI노출지수·카나리아 대시보드, 국민이 이름을 짓는다",
+     "kicker": "9.7~9.27 공모 · 2027년 완성 목표",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부·한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780453",
+     "published_at": "2026-09-07"
+    },
+    {
+     "date": "2026-09-09",
+     "card_id": "c02",
+     "title": "AI 시대 새 사회계약, 노·사·청년이 '질문'부터 모은다",
+     "kicker": "9.9 발족 · 약 3개월 논의 · 질문 중심 녹서",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780786",
+     "published_at": "2026-09-09"
+    },
+    {
      "date": "2026-09-12",
      "card_id": "c01",
      "title": "자동화 4년, 고용은 37% 늘었다 — 울산 조일공업",
@@ -4449,6 +4690,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156781328",
      "published_at": "2026-09-11"
+    },
+    {
+     "date": "2026-09-20",
+     "card_id": "c01",
+     "title": "AI 시대 기본사회, 청년 절반 넘는 국민숙의단이 이틀 토론했다",
+     "kicker": "9.19~20 1박2일 · 숙의단 200여 명 · 사전숙의 10일",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "대통령직속 기본사회위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782506",
+     "published_at": "2026-09-19"
     },
     {
      "date": "2026-09-21",
