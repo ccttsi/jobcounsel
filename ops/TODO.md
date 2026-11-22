@@ -4,6 +4,12 @@
 
 ## 1. 태화님 지시사항 (앞으로의 기준)
 
+- **2026-11-22 (낮) 공고 점검대 예시 공고 — 「윗줄 두개 아랫줄 두개 디자인 통일성 깨짐 그림자문제, 윗줄은 상호작용도 없음」** — 사진 `IMG_7856`. 같은 2×2 가운데 **한 줄만** 그림자·눌림이 붙었다. 원인은 posting CSS가 아니라 공용 손맛 스캔(`assets/prefs.js` `scanPop()`)이 «등장 모션 중»인 단추를 보자마자 «아니다»로 영구 확정한 것 — 단추가 차례로 등장(`--jc-i` 34ms)하기 때문에 스캔이 계단 사이에 끼면 뒤쪽만 빠졌고, 어느 줄이 빠질지는 기기·타이밍에 따라 달랐다(라이브 4/4·2/4·1/4 관측).
+  - [x] `assets/prefs.js` — 등장 모션·누름 반동·마우스가 얹힌 순간은 판정을 미루고, 등장이 끝난 뒤(900ms) 한 번 더 본다.
+  - [x] `posting/index.html` — 두 줄 높이 `grid-auto-rows:1fr` · 눌림을 `.jc-pop` 없이도 보이게(`translateY(1px) scale(.985)`).
+  - [x] 실측 320·360·390·430·1280 × 3테마 — 네 개 그림자·높이·폭·선택 상태 **Δ0.00px**, 네 개 탭 모두 글자·판정·카드 갱신, 빠른 연속 탭 7회 동작, 콘솔 오류 0. **PR #447 · 머지 `f8505fd`** · CI 3종 초록 · 라이브 8회 연속 4/4.
+  - [ ] (남은 일) `/briefing/news/` 출처 칩 3개는 **폭 120px 기준** 때문에 가운데·왼쪽만 그림자가 없다 — 무리 단위로 기준을 맞출지 결정 필요(37개 섹터 손맛이 함께 바뀜).
+
 - **2026-11-22 (낮) Make ↔ 무료 팀원 분업 지침 명문화 — Make 크레딧 보호, 무료 자원 최대화** — 「Make 크레딧 절약 + 무료 자원 최대화」를 저장소 원본에 박아 둔다. ① `ops/ROLES.md` 「Make ↔ 무료 팀원 분업」 절 — 단계별 담당(Make 1~2스텝 감지·전표 → Jina Reader 1차 본문 → Firecrawl 2차 폴백(월 1,000 중 200 비축·하루 25) → Crawl4AI 대량 → Groq 3줄 초안(하루 1,000) → 클로드·피클·`collect_gate.py` 검수 → GitHub Actions 검증·배포 → Kaggle(주 30시간 중 6 비축)·Colab 학습 → Cloudflare Turnstile·Workers AI 앞단 → Upstash·Neon 캐시·아카이브), ② Make가 하지 않는 것(파싱·루프·장문 AI 가공·배치 학습·라이선스 판정), ③ 한도·비축 표, ④ 신규 10팀과 기존 팀원(클로드·피클·Actions·Supabase·Notion·Playwright·Drive) 경계, ⑤ 연결은 GitHub 한 곳·앞단만 Cloudflare 직통, ⑥ 키는 GitHub Secrets·Cloudflare Secrets·로컬 `/workspace/.secrets/` 세 곳에만. `CLAUDE.md`에 클로드용 같은 규칙 한 문단, `ops/CONNECTORS.md`에 무료 팀원 10팀 콘솔·한도·키 자리 표, `ops/CI.md`에 「무거운 검사는 Actions에서」 한 줄. 노션 「📋 자료실 운영 팀원·역할·자동화 안내」에도 요약 반영. **PR #443**
 - **2026-11-22 (오전) 라이브 내부 문서 차단 — `/ops/*`·`/CONSTITUTION.md`가 URL만 알면 열리던 것** — 저장소는 Public(Actions 무료 한도), 배포는 저장소 루트를 그대로 올리는 Cloudflare Pages라 연결 ID가 든 `ops/CONNECTORS.md`·역할 헌장·설계 핸드오프가 200으로 열렸다(헌법 3-2).
   - [x] `functions/_middleware.js` — 내부 폴더 8곳·확장자 10종·루트 점·밑줄 파일(`.nojekyll`·`_headers`·`_routes.json`)을 **404**로. `//ops`·`/./ops`·`/%6Fps` 같은 표기도 같은 자리로 본다.
