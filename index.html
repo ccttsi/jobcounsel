@@ -535,7 +535,9 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
    7쪽이 트랙 위에 빈틈 없이 나란히 서고, 손가락을 따라 트랙이 그대로 흘러 이웃 쪽 카드가 실시간으로 따라 나온다.
    · 창(.a-list-vp)은 5줄 높이로 고정 — 쪽이 어디로 가든 문서 높이와 아래 쪽 번호·심전도의 Y가 흔들리지 않는다.
    · 칸 높이는 --row-h 하나로 못 박는다(제목 1줄 + 설명 2줄). 쪽마다 카드 높이·여백·줄맞춤이 0px 차이다. */
-.a-list-vp{position:relative;overflow:hidden;height:calc(5 * var(--row-h,94px));touch-action:pan-y}
+/* 2026-11-23(태화님 IMG_7861): 창 높이가 5줄과 똑같아 쪽마다 5번째 카드(5·10·15…)의 그림자(3px 3px)가 잘렸다 —
+   위 3px(올림 손맛 -3px)·아래 7px 여유를 두고, 그만큼 아래 쪽 번호·심전도가 10px 내려간다. */
+.a-list-vp{position:relative;overflow:hidden;box-sizing:border-box;height:calc(5 * var(--row-h,94px) + 10px);padding:3px 0 7px;touch-action:pan-y}
 .a-list-track{display:flex;align-items:flex-start;height:100%;transform:translate3d(0,0,0)}
 .a-list-pg{flex:0 0 100%;width:100%;list-style:none;margin:0;padding:0 var(--list-gut);display:flex;flex-direction:column}
 .a-list-pg li{flex:0 0 auto;height:var(--row-h,94px)}
