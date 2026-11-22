@@ -712,6 +712,63 @@ def check_mydeck(page):
     return issues
 
 
+def check_onboarding(page):
+    """첫 화면 안내(온보딩) — 비로그인 첫 접속에 뜨고, 「건너뛰기」로 닫히고, 그 탭에서는 다시 뜨지 않는가.
+
+    대문은 이제 처음 온 사람에게 세 장짜리 안내를 먼저 보여 준다(2026-11-22 태화님 지시).
+    안내가 떠 있는 채로 다른 검사를 하면 비서 시트·이용 안내를 누를 수 없으므로,
+    여기서 안내를 실제로 확인하고 닫은 뒤 본 검사로 넘긴다. 닫은 뒤에도 390·1280 검사는 그대로 돈다.
+    """
+    issues = []
+    state = page.evaluate("""() => {
+        const box = document.getElementById('onb');
+        if (!box) return {found: false};
+        const cs = getComputedStyle(box);
+        const open = cs.visibility !== 'hidden' && +cs.opacity > .5;
+        const s = document.getElementById('onbSkip');
+        const b = s ? s.getBoundingClientRect() : {width: 0, height: 0};
+        return {found: true, open, slides: box.querySelectorAll('.a-onb-s').length,
+                skip: [Math.round(b.width), Math.round(b.height)]};
+    }""")
+    if not state.get("found"):
+        issues.append("첫 화면 안내(#onb)가 없다")
+        return issues
+    if not state["open"]:
+        issues.append("첫 방문(비로그인)인데 첫 화면 안내가 뜨지 않았다")
+        return issues
+    if state["slides"] < 3:
+        issues.append(f"첫 화면 안내의 장이 {state['slides']}장뿐이다(3장 이상이어야 한다)")
+    if state["skip"][0] < 43.5 or state["skip"][1] < 43.5:
+        issues.append(f"첫 화면 안내의 「건너뛰기」가 44px보다 작다({state['skip'][0]}x{state['skip'][1]})")
+    # 장을 넘겨도 건너뛰기 좌표가 같은가(제5조 5-7)
+    first = page.evaluate("() => { const r = document.getElementById('onbSkip').getBoundingClientRect(); return [r.x, r.y]; }")
+    for _ in range(state["slides"] - 1):
+        page.click("#onbNext")
+        page.wait_for_timeout(220)
+        here = page.evaluate("() => { const r = document.getElementById('onbSkip').getBoundingClientRect(); return [r.x, r.y]; }")
+        if abs(here[0] - first[0]) > .5 or abs(here[1] - first[1]) > .5:
+            issues.append(f"장을 넘기면 「건너뛰기」가 움직인다(Δx {here[0] - first[0]:.2f} · Δy {here[1] - first[1]:.2f})")
+            break
+    # 떠 있는 동안의 글자 대비(가림막 때문에 뒤 화면 글자는 재지 않고, 안내 글자만 잰다)
+    bad = page.evaluate(CONTRAST_JS)
+    for item in bad[:2]:
+        issues.append(f"첫 화면 안내 대비 {item['ratio']}:1 (기준 {item['need']}:1, {item['size']}px) — {item['text']}")
+    if len(bad) > 2:
+        issues.append(f"첫 화면 안내 대비 미달 {len(bad)}곳")
+    # 건너뛰기 → 닫히고, 같은 탭에서 새로 열어도 다시 뜨지 않는다
+    page.click("#onbSkip")
+    page.wait_for_timeout(320)
+    if page.evaluate("() => { const b = document.getElementById('onb'); const c = getComputedStyle(b);"
+                             " return c.visibility !== 'hidden' && +c.opacity > .5; }"):
+        issues.append("「건너뛰기」를 눌러도 첫 화면 안내가 닫히지 않는다")
+    page.reload(wait_until="domcontentloaded")
+    page.wait_for_timeout(900)
+    if page.evaluate("() => { const b = document.getElementById('onb'); const c = getComputedStyle(b);"
+                          " return c.visibility !== 'hidden' && +c.opacity > .5; }"):
+        issues.append("같은 탭에서 「건너뛰기」한 뒤 새로 열었는데 첫 화면 안내가 또 떴다")
+    return issues
+
+
 def check_panels(page):
     """⑤ 시트 잘림 · ⑦ 비서 3탭 실제 클릭 검수.
 
@@ -968,7 +1025,9 @@ def run(args):
                     issues.extend(layout_issues(page.evaluate(LAYOUT_JS)))
 
                     # ---- ⑤ 시트 잘림 · ⑦ 비서 3탭 클릭 검수 (비서가 있는 대문에서) ----
+                    #   첫 화면 안내를 먼저 확인하고 닫은 뒤에 잰다(안내가 떠 있으면 시트를 누를 수 없다).
                     if page_path == "/":
+                        issues.extend(check_onboarding(page))
                         issues.extend(check_panels(page))
                     if page_path == "/flow/":
                         issues.extend(check_flow(page))
