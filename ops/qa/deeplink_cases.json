@@ -261,5 +261,20 @@
   "sector": "33 valuechain",
   "url": "./valuechain/?i=battery",
   "want": "이차전지"
+ },
+ {
+  "sector": "12 work-filter",
+  "url": "./work-filter/?q=간호조무사",
+  "want": "간호조무사",
+  "not": [
+   "고위 공무원"
+  ],
+  "note": "?q=가 결과를 걸러 낸 채 도착(C3-21 ②) — 기본 목록 첫 직무가 사라져야 한다"
+ },
+ {
+  "sector": "33 valuechain",
+  "url": "./valuechain/?i=battery&s=3",
+  "want": "음극재·분리막·전해액",
+  "note": "산업+단계 딥링크(C3-21 ①)"
  }
 ]

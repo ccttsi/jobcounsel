@@ -9,6 +9,12 @@
 판정
     OK   — 본문(main) 안에 그 항목의 글자가 보이고, 검색창이 있으면 그 낱말이 채워져 있다
     FAIL — 둘 중 하나가 어긋난다
+
+사례 장부의 선택 항목
+    want — 도착한 화면에 보여야 하는 글자(그 항목)
+    q    — 검색창에 채워져 있어야 하는 낱말
+    not  — 보이면 안 되는 글자 목록. «?q=가 결과를 걸러 낸 채 도착»(C3-21 ②)처럼,
+           걸러지지 않은 기본 목록이 그대로 남았는지 가리는 데 쓴다.
 """
 import json
 import os
@@ -75,13 +81,14 @@ def main():
                 qok = True
                 if qv:
                     qok = any(qv in (v or '') for _, v in info['inputs'])
-                good = hit and qok
+                left = [x for x in (c.get('not') or []) if x in info['body']]
+                good = hit and qok and not left
                 ok += 1 if good else 0
                 first = info['main'].strip().replace('\n', ' ')[:70]
                 print(f"{'OK  ' if good else 'FAIL'} {sec:14s} {url:46s} q={qv or '-':8s} "
                       f"inputs={info['inputs']} :: {first}")
                 if not good:
-                    print(f"      want={want!r} hit={hit} qok={qok}")
+                    print(f"      want={want!r} hit={hit} qok={qok} not_left={left}")
             b.close()
     finally:
         if proc:
