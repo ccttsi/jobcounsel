@@ -57,8 +57,14 @@ class BlockedTests(unittest.TestCase):
                 self.assertEqual(decide(path), f"ext:{ext}")
 
     def test_root_dotfiles(self):
-        self.assertEqual(decide("/.nojekyll"), "root-dotfile:.nojekyll")
-        self.assertEqual(decide("/.gitignore"), "root-dotfile:.gitignore")
+        self.assertEqual(decide("/.nojekyll"), "root-file:.nojekyll")
+        self.assertEqual(decide("/.gitignore"), "root-file:.gitignore")
+
+    def test_pages_config_files(self):
+        # Cloudflare Pages 설정 파일은 배포 뒤에도 /_headers·/_routes.json으로 200이었다
+        for path in ("/_headers", "/_routes.json", "/_redirects"):
+            with self.subTest(path=path):
+                self.assertIsNotNone(decide(path))
 
     def test_lookalike_paths_are_normalized(self):
         # URL 표기를 바꿔 피해 가려는 경우 — 같은 자리로 본다

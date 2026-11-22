@@ -14,7 +14,8 @@
 //     나중에 정적 파일로 섞여 나가더라도 차단 목록이 새지 않게 같이 막아 둔다)
 //   INTERNAL_EXTS — 어느 폴더에 있든 내부인 확장자(문서·스크립트·스키마·워크플로)
 //   ALWAYS_PUBLIC — 위 규칙보다 먼저 봐주는 공개 파일(검색엔진 안내문)
-//   + 저장소 루트의 점으로 시작하는 파일(`.nojekyll`·`.gitignore`)
+//   + 저장소 루트의 점·밑줄로 시작하는 파일(`.nojekyll`·`.gitignore`·`_headers`·`_routes.json` —
+//     Pages 설정 파일은 배포 뒤에도 `/_headers`·`/_routes.json`으로 200이 되어 그대로 읽혔다)
 // 막지 않는 것 — 화면(`.html`·`.css`·`.js`)과 화면이 읽는 공개 데이터(`.json`·이미지·글꼴),
 //   `robots.txt`. 37개 섹터·대문·비서·마이덱은 이 함수를 지나 `context.next()`로 그대로 나간다.
 export const INTERNAL_DIRS = ["ops", "design", "docs", "drafts", ".claude", ".github", "supabase", "functions"];
@@ -45,7 +46,7 @@ export function internalPath(rawPath) {
   if (INTERNAL_DIRS.includes(first)) return "dir:" + first;
 
   const last = segs.length ? segs[segs.length - 1] : "";
-  if (segs.length === 1 && first.startsWith(".")) return "root-dotfile:" + first;
+  if (segs.length === 1 && (first.startsWith(".") || first.startsWith("_"))) return "root-file:" + first;
 
   const found = /\.([A-Za-z0-9]+)$/.exec(last);
   const ext = found ? found[1].toLowerCase() : "";

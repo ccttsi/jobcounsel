@@ -100,7 +100,7 @@ python3 ops/qa/shared_ui_probe.py --base https://witw.pages.dev/   # 배포본�
 
 | 무엇 | 어디 |
 |---|---|
-| 차단 규칙 | `functions/_middleware.js` — `INTERNAL_DIRS`(폴더째) · `INTERNAL_EXTS`(어느 폴더든 .md·.py·.sql·.tsv·.yml·.yaml·.sh·.toml) · 루트의 점 파일 |
+| 차단 규칙 | `functions/_middleware.js` — `INTERNAL_DIRS`(폴더째) · `INTERNAL_EXTS`(어느 폴더든 .md·.py·.sql·.tsv·.yml·.yaml·.sh·.toml) · 루트의 점·밑줄 파일(`.nojekyll`·`_headers`·`_routes.json` — Pages 설정 파일도 배포 뒤 `/_headers`로 200이었다) |
 | 함수 호출 범위 | `_routes.json` — `include: ["/*"]`. 깊은 폴더의 `.md`까지 잡히게 모든 요청을 함수로 보낸다 |
 | 라이브 확인 | `python3 ops/qa/internal_exposure_probe.py --base <주소>` — 막혀야 할 40여 곳이 **404가 아니면 실패**, 열려야 할 50여 곳이 **200이 아니면 실패** |
 | 저장소 안 확인 | `python3 ops/scripts/validate_repo.py --only expose` (CI에서는 `js`에 함께 돈다) |

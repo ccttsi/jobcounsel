@@ -52,6 +52,8 @@ FIXED_INTERNAL = [
     "taxonomy/data/SCHEMA.md",
     "company/[company 파일]",  # build_internal_targets가 실제 .py 하나로 바꾼다
     ".nojekyll",
+    "_headers",
+    "_routes.json",
 ]
 
 # 열려 있어야 하는 자리 — 화면이 실제로 읽는 자산. 섹터 경로는 tools.js에서 읽어 더한다.

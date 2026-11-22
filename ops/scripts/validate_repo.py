@@ -1944,7 +1944,8 @@ EXPOSE_PROBE_PATHS = [
     "/ops", "/ops/", "/ops/ROLES.md", "/ops/scripts/validate_repo.py", "/OPS/ROLES.md",
     "/taxonomy/data/SCHEMA.md", "/assets/supabase-setup.sql", "/.nojekyll", "/CLAUDE.md",
     "/docs/기록", "/supabase/functions/assistant-proxy/README.md", "/drafts/pr-body.md",
-    "/robots.txt", "/", "/index.html", "/assets/core.js", "/flow/data/graph.json",
+    "/_headers", "/_routes.json", "/index.html", "/robots.txt", "/",
+    "/assets/core.js", "/flow/data/graph.json",
     "/briefing/", "/first-year/data/laws.json", "/admin/", "/verify/", "/nonexistent-xyz/",
 ]
 
@@ -1977,8 +1978,8 @@ def internal_decision(path, dirs, exts, always_public):
     if first in dirs:
         return f"dir:{first}"
     last = segments[-1] if segments else ""
-    if len(segments) == 1 and first.startswith("."):
-        return f"root-dotfile:{first}"
+    if len(segments) == 1 and (first.startswith(".") or first.startswith("_")):
+        return f"root-file:{first}"
     ext = last.rsplit(".", 1)[1].lower() if "." in last else ""
     if ext and ext in exts:
         return f"ext:{ext}"
@@ -2060,7 +2061,7 @@ def run_exposure_checks():
                 fail("expose", f"대문·검색엔진 안내문('{name}')이 차단 규칙에 걸린다 — 사이트가 통째로 막힌다")
             continue
         if not blocked and name not in EXPOSE_RESERVED:
-            fail("expose", f"배포 루트의 '{name}'이 공개로 나간다 — 화면이 아니면 확장자 규칙(INTERNAL_EXTS)이나 점 파일 규칙에 넣는다")
+            fail("expose", f"배포 루트의 '{name}'이 공개로 나간다 — 화면이 아니면 확장자 규칙(INTERNAL_EXTS)이나 루트 점·밑줄 파일 규칙에 넣는다")
 
     internal_paths, public_paths = [], []
     for folder in dirs:
