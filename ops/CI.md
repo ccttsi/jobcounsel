@@ -5,6 +5,7 @@
 > PR을 올리면 GitHub Actions가 저장소를 검사한다. 초록이 아니면 머지하지 않는다.
 > 워크플로: `.github/workflows/ci-gate.yml`(PR·main push) · `.github/workflows/health-check.yml`(매일 06:30 KST·수동)
 > 브랜치 보호에서 켤 검사 이름: **`static-checks`**, **`smoke-tests`** (워크플로 이름 `ci-gate`)
+> **무거운 검사·빌드는 모두 GitHub Actions에서 돈다** — 공개 저장소라 무제한이다. Make(월 1,000 오퍼레이션)에 검사·반복 루프·장문 가공을 싣지 않는다. 수집·가공의 단계별 담당은 [`ROLES.md`](ROLES.md) 「Make ↔ 무료 팀원 분업」.
 
 ## 1. 무엇을 보나
 

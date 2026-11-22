@@ -4,6 +4,7 @@
 
 ## 1. 태화님 지시사항 (앞으로의 기준)
 
+- **2026-11-22 (낮) Make ↔ 무료 팀원 분업 지침 명문화 — Make 크레딧 보호, 무료 자원 최대화** — 「Make 크레딧 절약 + 무료 자원 최대화」를 저장소 원본에 박아 둔다. ① `ops/ROLES.md` 「Make ↔ 무료 팀원 분업」 절 — 단계별 담당(Make 1~2스텝 감지·전표 → Jina Reader 1차 본문 → Firecrawl 2차 폴백(월 1,000 중 200 비축·하루 25) → Crawl4AI 대량 → Groq 3줄 초안(하루 1,000) → 클로드·피클·`collect_gate.py` 검수 → GitHub Actions 검증·배포 → Kaggle(주 30시간 중 6 비축)·Colab 학습 → Cloudflare Turnstile·Workers AI 앞단 → Upstash·Neon 캐시·아카이브), ② Make가 하지 않는 것(파싱·루프·장문 AI 가공·배치 학습·라이선스 판정), ③ 한도·비축 표, ④ 신규 10팀과 기존 팀원(클로드·피클·Actions·Supabase·Notion·Playwright·Drive) 경계, ⑤ 연결은 GitHub 한 곳·앞단만 Cloudflare 직통, ⑥ 키는 GitHub Secrets·Cloudflare Secrets·로컬 `/workspace/.secrets/` 세 곳에만. `CLAUDE.md`에 클로드용 같은 규칙 한 문단, `ops/CONNECTORS.md`에 무료 팀원 10팀 콘솔·한도·키 자리 표, `ops/CI.md`에 「무거운 검사는 Actions에서」 한 줄. 노션 「📋 자료실 운영 팀원·역할·자동화 안내」에도 요약 반영. **PR #443**
 - **2026-11-22 (오전) 라이브 내부 문서 차단 — `/ops/*`·`/CONSTITUTION.md`가 URL만 알면 열리던 것** — 저장소는 Public(Actions 무료 한도), 배포는 저장소 루트를 그대로 올리는 Cloudflare Pages라 연결 ID가 든 `ops/CONNECTORS.md`·역할 헌장·설계 핸드오프가 200으로 열렸다(헌법 3-2).
   - [x] `functions/_middleware.js` — 내부 폴더 8곳·확장자 10종·루트 점 파일을 **404**로. `//ops`·`/./ops`·`/%6Fps` 같은 표기도 같은 자리로 본다.
   - [x] `_routes.json` `include:["/*"]` — 깊은 폴더 `.md`까지 함수가 본다. 대문·37개 섹터·비서·마이덱·공개 JSON은 `context.next()`로 그대로.
@@ -16,7 +17,7 @@
   - [x] 뜨는 조건 — 로그인 세션(`jc-sync-session`)이 살아 있으면 미표시 · 이 탭에서 닫았으면 그 탭에서는 미표시(sessionStorage) · 비로그인은 들어올 때마다 표시.
   - [x] 머리 「튜토리얼」 단추가 이 안내를 다시 연다(5단계 둘러보기는 안내 마지막 장에서).
   - [x] 실측 390·1280 × 3테마 — 건너뛰기·카드 경계 **Δ0.00px**, 44px·가로 넘침·대비·콘솔 오류 0, 재방문/로그인 미표시·단추 재열기·바로가기 7곳 200.
-  - [x] `smoke_test.py` `check_onboarding()`으로 CI에 올림.
+  - [x] `smoke_test.py` `check_onboarding()`으로 CI에 올림. **PR #439 · 머지 `ee1887a`** — CI 3종(static-checks·smoke-tests 9m6s·Cloudflare Pages) 초록, 라이브 `https://witw.pages.dev/`에서도 건너뛰기 좌표 Δ0.00px(390 289.63, 373 · 1280 764.63, 179.5) 확인.
 - **2026-11-22 (오전) Jina Reader 무료 본문 추출기 연동** — 계정·API 키 없이 JS로 그려지는 지면·보도자료 본문을 Markdown으로 받아 오는 도구를 `ops/`에 안전하게 붙이고 PR·머지까지. 기존 수집 스크립트의 동작은 건드리지 않는다.
   - [x] `ops/scripts/jina_fetch.py` — 표준 라이브러리만(`urllib`·`argparse`·`json`·`ipaddress`). `fetch_markdown()`·`parse_reader_response()`·CLI(`--json`·`--timeout`), 종료 코드 0(받음)·1(못 받음)·2(쓸 수 없는 주소). docstring에 «받은 글은 수집·초안 참고용이고 `collect_gate.py`를 우회하지 않는다»를 명시. `r.jina.ai`가 남의 서비스라 넘긴 주소가 그쪽으로 가므로 localhost·사설 IP·내부 이름은 요청 전에 거절. 200인데 본문 0자면 실패. 429·503은 `Retry-After`를 10초까지만 지켜 1회 재시도(무료 한도 분당 20회).
   - [x] `ops/tests/test_jina_fetch.py` 28건(네트워크 없이) — 요청 모양·한글 경로 인코딩·내부 호스트 거절·403/429/시간 초과·본문 0자·CLI 종료 코드. `validate_repo.py`의 단위 검사(`json`)에 함께 돈다.
