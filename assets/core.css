@@ -43,6 +43,11 @@ body[data-jc-tool] :is(.brand, h1) > a:only-child > .jc-tt {
   color: inherit;
 }
 
+/* 2026-11-22(C1-51): .hd 머리말에서 글자 덩어리(.jc-tt)로 감싸도 «앞말은 먹색 · 핵심 낱말만 테마색»이 유지되게.
+   brand.css의 `.hd .brand>span{테마색}`이 .jc-tt 자체에 걸려 제목 전체가 테마색이 되던 것을 막는다. */
+body[data-jc-tool] :is(.hd,.hud,.hdr) .brand > .jc-tt { color: inherit }
+body[data-jc-tool] :is(.hd,.hud,.hdr) .brand > .jc-tt > span { color: var(--jc-acc) }
+
 /* 폰에서 접는 이름 앞머리 — 접히지 않는 폭에서는 본문 색 그대로 */
 body[data-jc-tool] :is(.brand, .jc-title, h1, .kick) .ph-drop { color: inherit }
 

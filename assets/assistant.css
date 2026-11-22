@@ -104,6 +104,8 @@
 .jca-launch[aria-expanded="true"] .jca-launch-x { max-width: 120px; opacity: 1; }
 .jca-launch:active { transform: translateY(0) scale(.98); }
 .jca-launch[hidden] { display: none; }
+/* 바닥 고정 띠 위로 비켜 앉으면(deckfab.js lift — 카드덱 단추와 같은 값) 아래로 걸치지 않고 온전히 선다(C1-58) */
+.jca-launch.is-lifted { transform: none; }
 .jca-launch svg {
   width: 21px; height: 21px; display: block; flex: none;
   /* 걸쳐 있을 때는 보이는 26px 띠 안에 아이콘이 다 들어오게 위로 17px 올려 둔다 */
