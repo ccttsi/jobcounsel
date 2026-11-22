@@ -235,6 +235,8 @@ html[data-jc-imm] .seal{display:none}
 
 /* ---------- 근거 ---------- */
 .more{margin-top:clamp(16px,2vw,24px);border-top:1px solid var(--line)}
+/* 큰 화면: 끝자락 여백을 줄여 첫 화면 + 한눈 비교가 1.5화면 안에(C2-06, 1280 1.61 → 1.5 이하) */
+@media (min-width:900px){.wrap{padding-bottom:16px}.more{margin-top:10px}.cmpwrap{margin-top:12px!important}}
 .more>summary{min-height:44px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--muted);
   cursor:pointer;list-style:none}
 .more>summary::-webkit-details-marker{display:none}
