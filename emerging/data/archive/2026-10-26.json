@@ -1,0 +1,311 @@
+{
+ "schema_version": "1.1.0",
+ "updated_at": "2026-10-26T23:40:00+09:00",
+ "edition": {
+  "no": 102,
+  "date": "2026-10-26",
+  "weekday": "월",
+  "title": "우주쓰레기 잡는 위성, 조립 전 마지막 점검",
+  "reading_minutes": 3,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20261026-1",
+   "date": "2026-10-26",
+   "order": 1,
+   "lead": true,
+   "sector": "s4",
+   "cat": "space",
+   "title": "위성으로 위성을 잡는다 — ADR 위성 최종 점검",
+   "subtitle": "추적·포획해 대기권으로 끌어내리는 임무, 세계 최초 도전 과제",
+   "kicker": "우주항공청 · 2026.10.26 KAIST",
+   "summary": "우주항공청이 KAIST 인공위성연구소에서 우주물체 능동제어위성의 시스템통합준비검토회의를 열었다. 임무가 끝난 위성을 추적해 포획한 뒤 대기권으로 진입시켜 소멸시키는 위성으로, 이런 방식의 임무는 세계 최초 도전이다.",
+   "key_numbers": [
+    {
+     "label": "검토회의",
+     "value": "2026.10.26",
+     "note": "KAIST 인공위성연구소"
+    },
+    {
+     "label": "임무",
+     "value": "추적·포획·소멸",
+     "note": "임무종료 위성 대상"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "우주항공청",
+     "KAIST 인공위성연구소"
+    ],
+    "glob": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-physics"
+    ],
+    "new": [
+     "j-satcom"
+    ]
+   },
+   "source_id": "src_kasa_adr_sat_20261026",
+   "question": "위성을 잡는 위성을 운영하려면 어떤 관제 인력이 필요한가."
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-physics",
+   "kind": "old",
+   "sector": "s4",
+   "name": "물리학 연구원",
+   "en": "Physicist / Research Scientist",
+   "role": "현상을 측정하고 이론으로 설명하는 일을 한다. 실험 설계와 장비 구성, 오차 분석, 논문으로 정리하는 과정까지 직접 맡는다.",
+   "ksa": {
+    "k": [
+     "양자역학·통계물리",
+     "실험·계측 원리",
+     "수리·계산 물리"
+    ],
+    "s": [
+     "실험 장비 구성·측정",
+     "데이터·오차 분석",
+     "논문·연구비 제안서 작성"
+    ],
+    "a": [
+     "결과가 예상과 다를 때 원인을 좇는 태도",
+     "오랜 실패를 견디는 끈기"
+    ]
+   },
+   "study": [
+    "물리학",
+    "응용물리학",
+    "광학·전자물리"
+   ],
+   "certs": [
+    "국가자격 없음(박사·연구 경력이 기준)",
+    "정보처리기사(선택)"
+   ],
+   "companies": {
+    "domestic": [
+     "한국표준과학연구원",
+     "KAIST",
+     "서울대 물리천문학부",
+     "삼성종합기술원"
+    ],
+    "global": [
+     "Google Quantum AI",
+     "IBM Research",
+     "MIT",
+     "Max Planck Institute"
+    ]
+   },
+   "insight": "하드웨어 회사가 양자 실험을 논문으로 내는 시대에는, 대학·연구소의 물리학 훈련이 산업 벤치마크로 바로 이어진다.",
+   "next_roles": [
+    {
+     "n": "양자 계측 시스템 엔지니어",
+     "w": "큐비트 오류를 측정·분류하는 계측 체계를 만드는 일"
+    }
+   ]
+  },
+  {
+   "id": "j-satcom",
+   "kind": "new",
+   "name": "위성 통신·항법 시스템 엔지니어",
+   "en": "Satellite Communication & Navigation Engineer",
+   "sector": "s4",
+   "role": "지구와 달 사이처럼 먼 거리에서도 끊기지 않는 통신 링크를 설계한다. 안테나·광통신 단말과 지상국을 맞추고, 궤도 운용 중 생기는 지연과 음영 구간을 계산해 임무 일정에 반영한다.",
+   "ksa": {
+    "k": [
+     "위성통신 링크 설계",
+     "궤도역학",
+     "광통신·RF"
+    ],
+    "s": [
+     "링크 버짓 계산",
+     "지상국 연동 시험",
+     "국제 주파수 조정"
+    ],
+    "a": [
+     "한 번의 통신 두절도 임무 실패로 보는 기준"
+    ]
+   },
+   "study": [
+    "전자공학",
+    "항공우주공학",
+    "정보통신공학"
+   ],
+   "certs": [
+    "정보통신기사",
+    "전파전자기사"
+   ],
+   "insight": "달 탐사가 본격화되면 위성 본체보다 통신·항법 인력이 먼저 부족해진다. 국내 7개 기업이 이미 이 시장을 보고 있다.",
+   "companies": {
+    "domestic": [
+     "레오스페이스",
+     "AP위성",
+     "LIG D&A",
+     "한국항공우주산업",
+     "한화시스템"
+    ],
+    "global": [
+     "SpaceX",
+     "Intuitive Machines"
+    ]
+   }
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_kasa_adr_sat_20261026",
+   "name": "우주항공청",
+   "title": "우주쓰레기 청소선 '승리호'가 현실로 — 우주물체 능동제어 위성 조립 전 최종상태 점검",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786544",
+   "license": {
+    "type": "KOGL-4",
+    "name": "공공누리 제4유형(상업적 이용금지·변경금지)",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "원문 고지 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제4유형(출처표시+상업적 이용금지+변경금지)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지"
+   },
+   "published": "2026-10-26",
+   "track": "B",
+   "usage": "우주물체 능동제어위성(ADR-SAT) 시스템통합준비검토회의(2026.10.26 KAIST 인공위성연구소), 임무종료 위성을 추적·포획해 대기권 소멸, 세계 최초 도전"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
