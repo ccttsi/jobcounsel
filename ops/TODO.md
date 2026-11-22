@@ -9,7 +9,7 @@
   - [x] 뜨는 조건 — 로그인 세션(`jc-sync-session`)이 살아 있으면 미표시 · 이 탭에서 닫았으면 그 탭에서는 미표시(sessionStorage) · 비로그인은 들어올 때마다 표시.
   - [x] 머리 「튜토리얼」 단추가 이 안내를 다시 연다(5단계 둘러보기는 안내 마지막 장에서).
   - [x] 실측 390·1280 × 3테마 — 건너뛰기·카드 경계 **Δ0.00px**, 44px·가로 넘침·대비·콘솔 오류 0, 재방문/로그인 미표시·단추 재열기·바로가기 7곳 200.
-  - [x] `smoke_test.py` `check_onboarding()`으로 CI에 올림.
+  - [x] `smoke_test.py` `check_onboarding()`으로 CI에 올림. **PR #439 · 머지 `ee1887a`** — CI 3종(static-checks·smoke-tests 9m6s·Cloudflare Pages) 초록, 라이브 `https://witw.pages.dev/`에서도 건너뛰기 좌표 Δ0.00px(390 289.63, 373 · 1280 764.63, 179.5) 확인.
 - **2026-11-22 (오전) Jina Reader 무료 본문 추출기 연동** — 계정·API 키 없이 JS로 그려지는 지면·보도자료 본문을 Markdown으로 받아 오는 도구를 `ops/`에 안전하게 붙이고 PR·머지까지. 기존 수집 스크립트의 동작은 건드리지 않는다.
   - [x] `ops/scripts/jina_fetch.py` — 표준 라이브러리만(`urllib`·`argparse`·`json`·`ipaddress`). `fetch_markdown()`·`parse_reader_response()`·CLI(`--json`·`--timeout`), 종료 코드 0(받음)·1(못 받음)·2(쓸 수 없는 주소). docstring에 «받은 글은 수집·초안 참고용이고 `collect_gate.py`를 우회하지 않는다»를 명시. `r.jina.ai`가 남의 서비스라 넘긴 주소가 그쪽으로 가므로 localhost·사설 IP·내부 이름은 요청 전에 거절. 200인데 본문 0자면 실패. 429·503은 `Retry-After`를 10초까지만 지켜 1회 재시도(무료 한도 분당 20회).
   - [x] `ops/tests/test_jina_fetch.py` 28건(네트워크 없이) — 요청 모양·한글 경로 인코딩·내부 호스트 거절·403/429/시간 초과·본문 0자·CLI 종료 코드. `validate_repo.py`의 단위 검사(`json`)에 함께 돈다.
