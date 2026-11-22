@@ -4,6 +4,8 @@
 
 ## 1. 태화님 지시사항 (앞으로의 기준)
 
+- **2026-11-22 (낮) Make ↔ 무료 팀원 분업 지침 명문화 — Make 크레딧 보호, 무료 자원 최대화** — 「Make 크레딧 절약 + 무료 자원 최대화」를 저장소 원본에 박아 둔다. ① `ops/ROLES.md` 「Make ↔ 무료 팀원 분업」 절 — 단계별 담당(Make 1~2스텝 감지·전표 → Jina Reader 1차 본문 → Firecrawl 2차 폴백(월 1,000 중 200 비축·하루 25) → Crawl4AI 대량 → Groq 3줄 초안(하루 1,000) → 클로드·피클·`collect_gate.py` 검수 → GitHub Actions 검증·배포 → Kaggle(주 30시간 중 6 비축)·Colab 학습 → Cloudflare Turnstile·Workers AI 앞단 → Upstash·Neon 캐시·아카이브), ② Make가 하지 않는 것(파싱·루프·장문 AI 가공·배치 학습·라이선스 판정), ③ 한도·비축 표, ④ 신규 10팀과 기존 팀원(클로드·피클·Actions·Supabase·Notion·Playwright·Drive) 경계, ⑤ 연결은 GitHub 한 곳·앞단만 Cloudflare 직통, ⑥ 키는 GitHub Secrets·Cloudflare Secrets·로컬 `/workspace/.secrets/` 세 곳에만. `CLAUDE.md`에 클로드용 같은 규칙 한 문단, `ops/CONNECTORS.md`에 무료 팀원 10팀 콘솔·한도·키 자리 표, `ops/CI.md`에 「무거운 검사는 Actions에서」 한 줄. 노션 「📋 자료실 운영 팀원·역할·자동화 안내」에도 요약 반영. **PR #443**
+
 - **2026-11-22 (오전) 첫 화면 안내(온보딩) — 자료실 들어가기 전 세 장, 건너뛰기는 늘 같은 자리, 로그인한 사람에겐 안 뜸** — 「튜토리얼 보강하고 지금 메인에 있는 버튼은 튜토리얼 페이지를 띄우는 걸로 하자. 처음 접속하면 뜨는 튜토페이지를 대문으로 만드는거지. 자료실 들어가기 전에 별도로다가 컴팩트하게」 · 「재방문한사람한테도 뜨는데 스킵할 수 있게 페이지마다 스킵 버튼이 같은 위치에. 로그인한 사람은 안뜨게, 이거 연동되지?」.
   - [x] `assets/onboard.css`·`assets/onboard.js` + `index.html` `#onb` — 세 장(뭘 할 수 있나 / 목적별 바로가기 7곳 / 화면 쓰는 법 세 가지), 이전·다음·점·밀기·←→·ESC·건너뛰기.
   - [x] 뜨는 조건 — 로그인 세션(`jc-sync-session`)이 살아 있으면 미표시 · 이 탭에서 닫았으면 그 탭에서는 미표시(sessionStorage) · 비로그인은 들어올 때마다 표시.
