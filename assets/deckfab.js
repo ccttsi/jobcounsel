@@ -324,6 +324,11 @@
       el.fab.classList.toggle('is-lifted', l > 0);
     }
     if (el.bar) el.bar.style.setProperty('--jcf-lift', l + 'px');
+    /* 2026-11-22(C1-58): 거울 자리의 비서 단추도 같은 띠 위로 함께 비켜 앉힌다. 전에는 카드덱 단추만 올라가고
+       비서 단추는 이론 위키 바닥 메뉴(390px)의 「실전·복습」 칸 위에 반쯤 걸쳐 그 칸을 가렸다.
+       섹터가 뿌리에 --jca-lift를 직접 쓰는 화면(면접 답변 판)은 그 값이 이기도록 단추 자체에만 쓴다. */
+    var al = d.querySelector('.jca-launch');
+    if (al) { al.style.setProperty('--jca-lift', l ? l + 'px' : ''); al.classList.toggle('is-lifted', l > 0); }
     if (el.panel) el.panel.style.setProperty('--jcf-lift', l + 'px');
   }
   function later() { clearTimeout(liftT); liftT = setTimeout(function () { lift(); }, 120); }
