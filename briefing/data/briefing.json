@@ -1,6 +1,6 @@
 {
  "schema_version": "1.4.0",
- "updated_at": "2026-11-22T07:06:00+09:00",
+ "updated_at": "2026-11-22T23:09:00+09:00",
  "edition": {
   "date": "2026-11-22",
   "weekday": "일",
@@ -850,427 +850,500 @@
   {
    "id": "c04",
    "order": 4,
-   "track": "A",
+   "track": "B",
    "category": "해외 노동시장",
-   "theme_key": "th-global-labor",
-   "theme_label": "해외 노동시장",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
    "region": "global",
-   "issue_id": "iss-us-state-unemployment-oct2026",
-   "title": "미국 46개 주 실업률 그대로 — 작년 비교는 데이터 공백",
-   "kicker": "전국 4.1% · 사우스다코타 2.0% vs DC 5.4%",
+   "issue_id": "iss-cn-ai-postings-2026",
+   "title": "중국 구인공고 1,000만 건 — AI 노출 높은 직무가 10%p 더 빨리 줄었다",
+   "kicker": "전체 공고 3년 만에 절반 · AI 노출 격차 약 10%p",
    "three_step": {
-    "what": "미국 노동통계국이 11월 20일(현지) 2026년 10월 주별 고용·실업 통계를 발표했다. 46개 주에서 실업률이 전월과 유의하게 다르지 않았고, 비농업 고용도 46개 주와 컬럼비아특별구에서 사실상 변화가 없었다.",
-    "evidence": "전국 실업률은 4.1%로 전월과 비슷했다. 사우스다코타 2.0%로 가장 낮고 노스다코타 2.2%, 컬럼비아특별구(DC) 5.4%로 가장 높아 19개 주가 전국보다 낮았다. 10월 비농업 고용은 캘리포니아(+47,100명)·인디애나(+15,900명)·캔자스(+7,100명)·아이오와(+7,000명) 4개 주에서만 늘었고, 전년 동월 대비로는 텍사스 +203,300명 등 12개 주에서 늘었다. 다만 2025년 10월 가계조사가 예산 미통과로 실시되지 않아 전년 대비 실업률 변화 분석은 이번 발표에서 빠졌다.",
-    "implication": "지역 고용을 전국 평균 하나로 단정하지 말고, 내담자가 있는 주·권역의 격차(2.0~5.4%)를 함께 보여 주고, 전년 동월 비교가 빠진 발표라는 점을 먼저 밝혀라."
+    "what": "블룸버그가 온라인 구인공고 약 1,000만 건을 2021년 7월~2025년 6월 기간으로 분석해 AI 노출도가 높은 직무의 공고가 더 가파르게 줄었다고 보도했다. 국내 매체가 11월 21일 이를 전했다.",
+    "evidence": "AI 노출도가 높은 직무의 공고는 낮은 직무보다 약 10%포인트 더 빠르게 줄었고, 거의 모든 업종에서 같은 방향의 격차가 나타났다. 전체 온라인 공고는 2022년 6월(챗GPT 출시 직전) 이후 3년 사이 절반으로 감소했다. 블룸버그가 함께 인용한 중국 내 연구로는, 상하이과기대 천친이 공고 1억1,600만 건을 분석해 2023년~2026년 초 신규 채용이 5.2% 순감했다고 추정했고, 중국사회과학원이 참여한 연구는 공고 21% 감소와 평균임금 4% 하락을 보고했다. 다만 블룸버그는 경기 침체와 AI 효과를 분리할 수 없고, 공고 감소가 곧 해고를 뜻하지는 않는다고 밝혔다.",
+    "implication": "신입·청년 내담자에게 'AI가 일자리를 없앤다'는 결론을 먼저 주지 말고, 지원 직무의 최근 1년 공고 추이를 함께 확인한 뒤 번역·단순 조사·기본 분석처럼 대체되기 쉬운 과업을 덜어낸 경험으로 이력서를 다시 쓰게 하라."
    },
    "key_numbers": [
     {
-     "label": "미국 전국 실업률",
-     "value": "4.1%",
-     "delta": "전월과 비슷",
-     "period": "2026년 10월"
+     "label": "분석한 공고",
+     "value": "약 1,000만건",
+     "delta": "2021.7~2025.6",
+     "period": "2026년 11월 보도"
     },
     {
-     "label": "사우스다코타(최저)",
-     "value": "2.0%",
-     "delta": "전국 -2.1%p",
-     "period": "2026년 10월"
+     "label": "AI 노출 격차",
+     "value": "약 10%p",
+     "delta": "노출 낮은 직무 대비",
+     "period": "2021.7~2025.6"
     },
     {
-     "label": "컬럼비아특별구(최고)",
-     "value": "5.4%",
-     "delta": "전국 +1.3%p",
-     "period": "2026년 10월"
+     "label": "전체 공고 감소",
+     "value": "절반",
+     "delta": "2022.6 이후 3년",
+     "period": "2025년 6월"
     },
     {
-     "label": "캘리포니아 비농업 고용",
-     "value": "+47,100명",
-     "delta": "전월비",
-     "period": "2026년 10월"
+     "label": "신규 채용 순감",
+     "value": "-5.2%",
+     "delta": "공고 1억1,600만건 분석",
+     "period": "2023~2026년 초"
     }
    ],
    "chart_data": {
-    "type": "bar",
+    "type": "diverging_bar",
     "unit": "%",
     "labels": [
-     "사우스다코타",
-     "노스다코타",
-     "뉴햄프셔",
-     "전국",
-     "캘리포니아",
-     "미시간",
-     "코네티컷",
-     "DC"
+     "신규 채용(상하이과기대, 2023~2026초)",
+     "온라인 공고(중국사회과학원)",
+     "평균임금(중국사회과학원)"
     ],
     "series": [
      {
-      "name": "실업률",
+      "name": "블룸버그가 인용한 별개 연구의 감소율 추정",
       "values": [
-       2.0,
-       2.2,
-       2.5,
-       4.1,
-       5.0,
-       5.0,
-       5.1,
-       5.4
+       -5.2,
+       -21.0,
+       -4.0
       ],
       "emphasis": true
      }
     ],
-    "reference_value": null,
-    "note": "계절조정 실업률, 2026년 10월. 미국 노동통계국(BLS) State Employment and Unemployment.",
-    "source_id": "src_bls_laus_20261020"
+    "reference_value": 0,
+    "note": "서로 다른 데이터·방법으로 낸 별개 추정치라 직접 비교할 수 없다(블룸버그 보도, 2026.11.21).",
+    "source_id": "src_aiincontext_bloomberg_cn_postings_20261121"
    },
-   "counselor_question": "지금 일자리를 찾는 지역의 실업률이 전국(4.1%)보다 높은지 낮은지 함께 확인해 보셨나요?",
+   "counselor_question": "지원하려는 직무의 공고가 최근 1년 사이 늘었는지 줄었는지 확인해 보셨나요? 줄었다면 어떤 과업이 사라진 건지 함께 짚어 볼까요.",
    "tags": [
-    "미국 고용",
-    "지역 격차",
-    "실업률"
-   ],
-   "ncs": [
-    "직업상담서비스"
-   ],
-   "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_title": "State Employment and Unemployment — October 2026 (USDL-26-1713)",
-    "source_url": "https://www.bls.gov/news.release/laus.nr0.htm",
-    "published_at": "2026-11-20",
-    "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.bls.gov/opub/copyright-information.htm",
-     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-21",
-     "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-21 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, “State Employment and Unemployment — October 2026” (USDL-26-1713, November 20, 2026)"
-    },
-    "usage": "보도자료 본문·통계표를 한국어로 옮겨 싣고, 카드는 주별 수치만 도표화. 사진·도표 그림은 싣지 않음.",
-    "source_id": "src_bls_laus_20261020",
-    "id": "src_bls_laus_20261020"
-   },
-   "edition": "global-2300",
-   "updated_at": "2026-11-21T23:07:00+09:00",
-   "run_id": "br-20261121-2307",
-   "labor_walk": true,
-   "labor_walk_topic": "해외 노동시장"
-  },
-  {
-   "id": "c05",
-   "order": 5,
-   "track": "A",
-   "category": "해외 노동시장",
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
-   "region": "global",
-   "issue_id": "iss-us-tfp-2025",
-   "title": "생산성 기여 0.72→0.97%p, 노동 기여는 0.60→0.42%p",
-   "kicker": "TFP +0.97%p vs 노동 +0.42%p (2022~25년)",
-   "three_step": {
-    "what": "미국 노동통계국이 11월 20일(현지) 19개 주요 산업의 2025년 총요소생산성(TFP) 통계를 발표하면서, 민간기업 산출 증가가 어디서 왔는지를 2019~22년과 2022~25년으로 나눠 비교했다. AI 도구 투자가 본격화한 뒤 생산성과 자본의 몫이 커지고 노동의 몫이 줄어든 흐름이 수치로 드러났다.",
-    "evidence": "민간기업 산출 증가 기여도는 2022~25년 TFP +0.97%p·자본 +1.13%p·노동 +0.42%p였다. 2019~22년(TFP +0.72%p·자본 +1.03%p·노동 +0.60%p)보다 TFP 기여가 0.25%p 늘었고, 그 증가분의 대부분은 정보통신(ICT) 부문에서 나왔다(0.27→0.42%p). 2025년 한 해 TFP가 오른 주요 산업은 19개 중 7개(도매업 선두)였고, 노동생산성은 19개 중 13개 산업에서 올랐다.",
-    "implication": "생산성 통계를 곧바로 '일자리 소멸'로 번역하지 말고, 같은 산출에 필요한 인력 구성이 자본·기술 쪽으로 옮겨가는 신호로 읽어 내담자에게 '직무 재설계' 언어로 전달하라."
-   },
-   "key_numbers": [
-    {
-     "label": "TFP 기여(민간 산출)",
-     "value": "+0.97%p",
-     "delta": "2019~22년 +0.72%p",
-     "period": "2022~25년"
-    },
-    {
-     "label": "노동 기여",
-     "value": "+0.42%p",
-     "delta": "2019~22년 +0.60%p",
-     "period": "2022~25년"
-    },
-    {
-     "label": "ICT 부문 TFP 기여",
-     "value": "+0.42%p",
-     "delta": "2019~22년 +0.27%p",
-     "period": "2022~25년"
-    },
-    {
-     "label": "TFP가 오른 주요 산업",
-     "value": "19개 중 7개",
-     "delta": "",
-     "period": "2025년"
-    }
-   ],
-   "chart_data": {
-    "type": "slope",
-    "unit": "%p",
-    "labels": [
-     "2019~22년",
-     "2022~25년"
-    ],
-    "series": [
-     {
-      "name": "총요소생산성(TFP)",
-      "values": [
-       0.72,
-       0.97
-      ],
-      "emphasis": true
-     },
-     {
-      "name": "노동",
-      "values": [
-       0.6,
-       0.42
-      ],
-      "emphasis": false
-     }
-    ],
-    "reference_value": null,
-    "note": "민간기업 산출 증가에 대한 기여도(%p). 미국 노동통계국(BLS) Total Factor Productivity for Major Industries — 2025.",
-    "source_id": "src_bls_tfp_2025"
-   },
-   "counselor_question": "요즘 하는 일에서 사람 손이 줄고 도구가 늘어난 부분이 있다면, 구체적으로 어느 과업인가요?",
-   "tags": [
-    "생산성",
-    "AI 투자",
-    "노동 구성"
-   ],
-   "ncs": [
-    "직업상담서비스"
-   ],
-   "source": {
-    "source_name": "미국 노동통계국(BLS)",
-    "source_title": "Total Factor Productivity for Major Industries — 2025 (USDL-26-1714)",
-    "source_url": "https://www.bls.gov/news.release/prod5.nr0.htm",
-    "published_at": "2026-11-20",
-    "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.bls.gov/opub/copyright-information.htm",
-     "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-21",
-     "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-21 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, “Total Factor Productivity for Major Industries — 2025” (USDL-26-1714, November 20, 2026)"
-    },
-    "usage": "보도자료 본문을 한국어로 옮겨 싣고, 카드는 산출 증가 기여도만 도표화.",
-    "source_id": "src_bls_tfp_2025",
-    "id": "src_bls_tfp_2025"
-   },
-   "edition": "global-2300",
-   "updated_at": "2026-11-21T23:07:00+09:00",
-   "run_id": "br-20261121-2307",
-   "labor_walk": true,
-   "labor_walk_topic": "AI와 직무"
-  },
-  {
-   "id": "c06",
-   "order": 6,
-   "track": "A",
-   "category": "AI·직무",
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
-   "region": "global",
-   "issue_id": "iss-ai-platform-work-kenya",
-   "title": "플랫폼 일의 AI 교란 0.91, 생계 취약성은 0.21",
-   "kicker": "교란 평균 0.913 · 취약성 0.214 · 무급 과업 28.2%",
-   "three_step": {
-    "what": "유엔대학·워털루대 연구자가 케냐 나이로비 온라인 프리랜서 52명 설문(2024년 1~7월)과 20명 심층 인터뷰를 과업 기반 모델과 대조해, AI가 일하는 방식을 바꾸는 정도(교란)와 생계가 위협받는 정도(취약성)를 분리해 측정한 논문을 11월 20일 arXiv에 공개했다.",
-    "evidence": "교란 지수는 평균 0.913(0~1)으로 네 직무 모두 0.88을 넘었다(웹·소프트웨어 0.95, 전사 0.91, 가상비서 0.90, 글쓰기 0.89). 반면 생계 취약성은 평균 0.214로 낮았고 직무별로 갈렸다 — 글쓰기 0.05, 가상비서 0.21, 전사 0.23, 웹·소프트웨어 개발 0.37. 유급 과업 취약성 0.482에 대해 무급 과업은 −0.493으로 완충했지만, 무급 과업이 전체의 28.2%뿐이라 상쇄는 제한적이었다. 응답자 78.85%는 AI가 일부를 대체해도 새 일자리로 옮겨갈 수 있다고 봤다.",
-    "implication": "'AI가 내 일을 없앤다'는 질문을 과업 단위로 쪼개 물어라 — 유급 과업의 대체 위험과 무급 과업의 완충을 나눠 보면 어떤 과업에 AI를 붙일지가 상담 결론으로 나온다."
-   },
-   "key_numbers": [
-    {
-     "label": "AI 교란 지수(평균)",
-     "value": "0.913",
-     "delta": "0~1 척도",
-     "period": "4개 플랫폼 직무"
-    },
-    {
-     "label": "생계 취약성(평균)",
-     "value": "0.214",
-     "delta": "유급 0.482 / 무급 -0.493",
-     "period": "4개 플랫폼 직무"
-    },
-    {
-     "label": "웹·SW 개발 취약성",
-     "value": "0.37",
-     "delta": "직무 중 최고",
-     "period": "4개 플랫폼 직무"
-    },
-    {
-     "label": "무급 과업 비중",
-     "value": "28.2%",
-     "delta": "",
-     "period": "케냐 프리랜서 조사"
-    }
-   ],
-   "chart_data": {
-    "type": "bar",
-    "unit": "지수(0~1)",
-    "labels": [
-     "글쓰기",
-     "가상비서",
-     "전사",
-     "웹·SW 개발"
-    ],
-    "series": [
-     {
-      "name": "생계 취약성",
-      "values": [
-       0.05,
-       0.21,
-       0.23,
-       0.37
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "직무별 생계 취약성 지수(0~1, 높을수록 취약). Latif (2026), arXiv:2611.25585.",
-    "source_id": "src_arxiv_platform_261125585"
-   },
-   "counselor_question": "지금 하는 과업을 돈이 되는 일과 안 되는 일로 나눠 보면, AI로 줄일 수 있는 쪽은 어느 쪽인가요?",
-   "tags": [
-    "플랫폼 노동",
-    "과업 단위",
-    "프리랜서"
-   ],
-   "ncs": [
-    "직업상담서비스"
-   ],
-   "source": {
-    "source_name": "arXiv (Farhan Latif, UNU·워털루대)",
-    "source_title": "AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya (arXiv:2611.25585)",
-    "source_url": "https://arxiv.org/abs/2611.25585",
-    "published_at": "2026-11-20",
-    "license": {
-     "name": "CC BY 4.0 (Attribution 4.0 International)",
-     "type": "CC-BY-4.0",
-     "url": "https://creativecommons.org/licenses/by/4.0/",
-     "scope": "논문 본문(초록·본문 텍스트)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-21",
-     "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.25585)의 라이선스 아이콘이 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-21). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
-     "attribution_text": "Latif, F. (2026), “AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya”, arXiv:2611.25585, CC BY 4.0. 원문을 그대로 옮기고 AI로 한국어 번역했습니다(내용 변경 없음)."
-    },
-    "usage": "초록·본문 일부를 원문 그대로 싣고 AI 한국어 번역을 함께 올림. 카드는 직무별 수치만 도표화.",
-    "source_id": "src_arxiv_platform_261125585",
-    "id": "src_arxiv_platform_261125585"
-   },
-   "edition": "global-2300",
-   "updated_at": "2026-11-21T23:07:00+09:00",
-   "run_id": "br-20261121-2307",
-   "labor_walk": true,
-   "labor_walk_topic": "AI와 직무"
-  },
-  {
-   "id": "c07",
-   "order": 7,
-   "track": "B",
-   "category": "채용시장",
-   "theme_key": "th-employment-service",
-   "theme_label": "고용서비스와 상담",
-   "region": "global",
-   "issue_id": null,
-   "title": "기술 인력은 늘린다 86% — 신입의 조건은 AI 자격으로",
-   "kicker": "신입 AI 역량 공고 5배 이상 · 임금 프리미엄 최대 79%",
-   "three_step": {
-    "what": "글로벌 인력 기업 란스타드가 11월 보고서 「Tech Talent in Transition」에서 11개국 기술 의사결정자 1,100명 설문과 채용공고 2,000만 건 분석 결과를 공개했고, 국내외 매체가 11월 20일 이를 보도했다. 기술 인력 총계는 늘리면서도 신입 채용의 기준을 AI 역량으로 옮기고 있다는 내용이다.",
-    "evidence": "응답 기업 86%가 AI를 이유로 전체 기술 인력을 늘린다고 답했다(미국 93%, 인도 90%). 생성AI 역량을 요구하는 개발자 공고는 2025년 135% 늘었고 2026년 상반기에도 전년 동기 대비 119% 늘었다. 신입 대상 AI 역량 요구 공고는 2025년 초 이후 5배 이상으로 늘었고, AI 역량을 갖춘 신입 개발자는 전통적 역량 지원자보다 최대 79% 높은 임금을 받을 수 있었다(영국·인도는 2배 이상). 같은 기간 레거시 IT 직무 공고는 10% 늘어난 데 그친 반면 AI 오케스트레이션·거버넌스 공고는 121% 늘었다. 반대로 응답 기업 54%는 AI 때문에 주니어 개발자 채용이 줄지 않았다고 답해, 신입 시장이 일괄적으로 닫힌 것은 아니었다.",
-    "implication": "신입·주니어 내담자에게 '경력 연수'보다 'AI 도구로 끝낸 일의 증거'를 먼저 만들게 하라 — 공고 증가율이 그쪽으로 쏠려 있다."
-   },
-   "key_numbers": [
-    {
-     "label": "기술 인력 확대 기업",
-     "value": "86%",
-     "delta": "미국 93%·인도 90%",
-     "period": "2026년 8월 조사"
-    },
-    {
-     "label": "신입 AI 역량 공고",
-     "value": "5배 이상",
-     "delta": "2025년 초 대비",
-     "period": "2026년 상반기"
-    },
-    {
-     "label": "AI 역량 임금 프리미엄",
-     "value": "최대 79%",
-     "delta": "영국·인도 2배 이상",
-     "period": "2026년"
-    },
-    {
-     "label": "AI 오케스트레이션 공고",
-     "value": "+121%",
-     "delta": "레거시 IT +10%",
-     "period": "2025년"
-    }
-   ],
-   "chart_data": {
-    "type": "bar",
-    "unit": "% (전년 대비)",
-    "labels": [
-     "레거시 IT 직무",
-     "AI 오케스트레이션·거버넌스",
-     "생성AI 역량 개발자"
-    ],
-    "series": [
-     {
-      "name": "2025년 공고 증가율",
-      "values": [
-       10,
-       121,
-       135
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "2025년 전년 대비 채용공고 증가율. Randstad Market Intelligence(공고 2,000만 건 분석).",
-    "source_id": "src_randstad_tech_talent_2026"
-   },
-   "counselor_question": "지원하려는 직무의 공고가 늘고 있는 쪽인지, 줄고 있는 쪽인지 최근 1년 공고 추이를 확인해 보셨나요?",
-   "tags": [
-    "신입 채용",
-    "AI 역량",
-    "임금 프리미엄"
+    "채용공고",
+    "AI 노출",
+    "중국"
    ],
    "ncs": [
     "직업상담서비스",
     "취업지원"
    ],
    "source": {
-    "source_name": "Randstad (Tech Talent in Transition 2026)",
-    "source_title": "Tech Talent in Transition: Building the AI-Ready Workforce (2026)",
-    "source_url": "https://www.randstad.com/tech-talent-report-2026/",
-    "published_at": "2026-11-20",
+    "source_id": "src_aiincontext_bloomberg_cn_postings_20261121",
+    "source_name": "AI In Context (블룸버그 분석 보도)",
+    "source_title": "AI-Exposed Jobs in China Fell 10 Points Faster — Bloomberg Finds",
+    "source_url": "https://aiincontext.com/articles/ai-exposed-jobs-in-china-fell-10-points-faster-bloomberg-finds",
+    "published_at": "2026-11-21",
     "license": {
-     "name": "기업 발간 보고서·언론 보도(원문 재게시 불가)",
+     "name": "언론사 보도(원문 재게시 불가)",
      "type": "PRESS",
      "url": null,
-     "scope": "보고서 본문·도표",
+     "scope": "보도 본문·도표 전부",
      "attribution_required": true,
      "commercial_use": "not_allowed",
      "modification": "not_allowed",
      "verified": true,
-     "verified_at": "2026-11-21",
-     "evidence": "Randstad가 공개한 보고서 PDF(randstad.com.au, 2026-11)에서 수치를 직접 확인(2026-11-21). 보고서·보도 본문은 복제·번역하지 않고 사실·수치만 새로 씀.",
-     "attribution_text": "출처: Randstad, “Tech Talent in Transition: Building the AI-Ready Workforce” (2026). 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     "verified_at": "2026-11-22",
+     "evidence": "보도 원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-22). 사실·수치만 사용.",
+     "attribution_text": "출처: AI In Context, 「AI-Exposed Jobs in China Fell 10 Points Faster — Bloomberg Finds」(2026.11.21, 블룸버그 분석 보도). 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
     },
-    "usage": "본문 복제·번역 없이 설문·공고 분석 수치만 우리 말로 재구성.",
-    "source_id": "src_randstad_tech_talent_2026",
-    "id": "src_randstad_tech_talent_2026"
+    "usage": "본문 복제·번역 없이 분석 수치만 우리 말로 재구성."
    },
    "edition": "global-2300",
-   "updated_at": "2026-11-21T23:07:00+09:00",
-   "run_id": "br-20261121-2307",
+   "updated_at": "2026-11-22T23:09:00+09:00",
+   "run_id": "br-20261122-2309",
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
+  },
+  {
+   "id": "c05",
+   "order": 5,
+   "track": "B",
+   "category": "채용시장",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "global",
+   "issue_id": "iss-marsh-ai-training-gap-2026",
+   "title": "AI 훈련, 임원 78% vs 시간제 20% — 6,700명 10개국 조사",
+   "kicker": "정기 사용 임원 64% vs 신입 20% · 전체 37%",
+   "three_step": {
+    "what": "컨설팅사 마시(Marsh)가 11월 18일 공개한 조사에서 지난 1년간 고용주가 제공한 AI 훈련 경험이 직급에 따라 크게 갈렸다. 10개국 직장인 6,700명을 대상으로 했고, HR 매체 HR다이브가 11월 20일 보도했다.",
+    "evidence": "AI 훈련을 제공받았다는 응답은 임원 78%, 경력직 44%, 신입 32%, 시간제 20%였다. AI를 정기적으로 쓴다는 응답은 임원 64%·신입 20%였고, 전체로는 37%가 정기 사용, 71%가 한 번이라도 사용했다고 답했다. AI를 쓰면서 업무를 잘할 자신이 있다는 응답은 임원 10명 중 9명이었지만 시간제는 절반 수준이었다. 마시는 이 격차가 기업 내 '멈춘 전환'의 원인일 수 있다고 봤다.",
+    "implication": "내담자가 지원할 회사에서 AI 훈련을 제공하는지 면접에서 직접 확인하게 하고, 훈련이 없는 자리라면 스스로 'AI로 끝낸 일의 기록'을 남겨 다음 이직의 근거로 쓰게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "AI 훈련 제공(임원)",
+     "value": "78%",
+     "delta": "경력직 44%",
+     "period": "2026년 11월 조사"
+    },
+    {
+     "label": "AI 훈련 제공(시간제)",
+     "value": "20%",
+     "delta": "신입 32%",
+     "period": "2026년 11월 조사"
+    },
+    {
+     "label": "AI 정기 사용(전체)",
+     "value": "37%",
+     "delta": "한 번이라도 71%",
+     "period": "2026년 11월 조사"
+    },
+    {
+     "label": "조사 규모",
+     "value": "6,700명",
+     "delta": "10개국",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "임원",
+     "경력직",
+     "신입",
+     "시간제"
+    ],
+    "series": [
+     {
+      "name": "지난 1년간 고용주가 AI 훈련을 제공했다는 비율",
+      "values": [
+       78,
+       44,
+       32,
+       20
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "10개국 직장인 6,700명 조사(마시, 2026년 11월 발표 / HR Dive 2026.11.20 보도).",
+    "source_id": "src_hrdive_marsh_aitraining_20261120"
+   },
+   "counselor_question": "지금 다니는 곳에서 AI 교육을 받아 본 적 있나요? 없다면 무엇을 어떻게 배우고 싶은지 먼저 정해 볼까요.",
+   "tags": [
+    "AI 훈련",
+    "직급 격차",
+    "기업 조사"
+   ],
+   "ncs": [
+    "직업상담서비스",
+    "직업훈련"
+   ],
+   "source": {
+    "source_id": "src_hrdive_marsh_aitraining_20261120",
+    "source_name": "HR Dive (마시 조사 보도)",
+    "source_title": "Executives get more AI training than other workers, hurting adoption, report finds",
+    "source_url": "https://www.hrdive.com/news/executives-get-more-ai-training-than-other-workers-hurting-adoption/875395/",
+    "published_at": "2026-11-20",
+    "license": {
+     "name": "언론사 보도(원문 재게시 불가)",
+     "type": "PRESS",
+     "url": null,
+     "scope": "보도 본문·사진 전부",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-22",
+     "evidence": "보도 원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-22). 자동 요청은 403이지만 브라우저로 열람 확인. 사실·수치만 사용.",
+     "attribution_text": "출처: HR Dive, 「Executives get more AI training than other workers, hurting adoption, report finds」(2026.11.20, 마시 조사 보도). 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    },
+    "usage": "본문 복제·번역 없이 조사 수치만 우리 말로 재구성."
+   },
+   "edition": "global-2300",
+   "updated_at": "2026-11-22T23:09:00+09:00",
+   "run_id": "br-20261122-2309",
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
+  },
+  {
+   "id": "c06",
+   "order": 6,
+   "track": "B",
+   "category": "해외 노동시장",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "global",
+   "issue_id": "iss-gr-ai-work-bill-2026",
+   "title": "그리스, 노동시장 AI 규칙 첫 법안 — 알고리즘에 사람 감독",
+   "kicker": "플랫폼 고용등록부 신설 · EU 지침 2024/2831 전환",
+   "three_step": {
+    "what": "그리스 노동사회보장부가 11월 21일 노동시장의 인공지능·알고리즘 사용에 규칙을 두고 플랫폼 노동자 보호를 강화하는 법안을 의회에 제출했다고 밝혔다. EU 플랫폼 노동 지침(2024/2831)을 국내법으로 옮기는 법안으로, 알고리즘 관리와 플랫폼 노동 두 축으로 구성된다.",
+    "evidence": "알고리즘 관리 축은 노동시장의 AI·알고리즘 사용에 처음으로 규칙을 두고, 근로 지위에 중대한 영향을 주는 결정에 대한 정보 제공과 인간의 감독을 의무화하며 개인정보를 보호한다. 플랫폼 축은 플랫폼을 통해 일하는 사람의 고용 지위를 정확히 판정하고 서비스 투명성·감독·사법 구제를 강화하며, 플랫폼 종사자를 기록하는 '고용등록부'를 만들어 이민부 등록부와 연계한다. 법안은 11월 5~19일 공개협의를 거쳤고 표결 일정은 아직 공지되지 않았다.",
+    "implication": "플랫폼·프리랜서 내담자에게는 계약서상 지위와 실제 통제 구조를 함께 대조하게 하고, 배차·평가·해지 같은 알고리즘 결정에 이의를 제기할 통로가 어디인지 같이 찾아 두게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "법안 구성",
+     "value": "2개 축",
+     "delta": "알고리즘 관리·플랫폼 노동",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "공개협의 기간",
+     "value": "15일",
+     "delta": "11.5~11.19",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "전환하는 EU 지침",
+     "value": "2024/2831",
+     "delta": "2024.10.23 채택",
+     "period": "플랫폼 노동 지침"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "개",
+    "labels": [
+     "법안의 두 축",
+     "플랫폼 고용등록부",
+     "EU 지침 전환"
+    ],
+    "series": [
+     {
+      "name": "법안 구성 요소",
+      "values": [
+       2,
+       1,
+       1
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "그리스 노동사회보장부 발표문이 밝힌 구성(2026.11.21). 축별 세부 조항 수는 발표문에 없다.",
+    "source_id": "src_gr_ministry_ai_law_20261121"
+   },
+   "counselor_question": "플랫폼에서 일해 본 적이 있다면, 배차나 평가가 어떻게 정해지는지 설명을 받아 본 적 있나요?",
+   "tags": [
+    "플랫폼 노동",
+    "알고리즘 관리",
+    "그리스"
+   ],
+   "ncs": [
+    "직업상담서비스",
+    "노동법규"
+   ],
+   "source": {
+    "source_id": "src_gr_ministry_ai_law_20261121",
+    "source_name": "그리스 노동사회보장부",
+    "source_title": "Ανθρώπινη εποπτεία στους αλγορίθμους και Μητρώο Απασχόλησης σε πλατφόρμες φέρνει το νέο νομοσχέδιο (알고리즘 인간 감독과 플랫폼 고용등록부를 담은 새 법안)",
+    "source_url": "https://ypergasias.gov.gr/ypeka-anthropini-epopteia-stous-algorithmous-kai-mitroo-apascholisis-se-platformes-fernei-to-neo-nomoschedio/",
+    "published_at": "2026-11-21",
+    "license": {
+     "name": "그리스 정부 보도자료(재이용 허락 표시 미확인)",
+     "type": "KOGL-NONE",
+     "url": null,
+     "scope": "보도자료 본문",
+     "attribution_required": true,
+     "commercial_use": "unknown",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-22",
+     "evidence": "그리스 노동사회보장부 보도자료 페이지에서 재이용 허락(CC·OGL 등) 표시를 확인하지 못함(2026-11-22). 사실만 사용.",
+     "attribution_text": "출처: 그리스 노동사회보장부 보도자료(2026.11.21). 본문을 옮기지 않고 사실만 새로 썼습니다."
+    },
+    "usage": "보도자료 본문 복제·번역 없이 사실만 우리 말로 재구성."
+   },
+   "edition": "global-2300",
+   "updated_at": "2026-11-22T23:09:00+09:00",
+   "run_id": "br-20261122-2309",
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c07",
+   "order": 7,
+   "track": "A",
+   "category": "해외 노동시장",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "global",
+   "issue_id": "iss-ghana-tvet-2026",
+   "title": "가나 청년 실업 32.5% — 훈련·자격·노동시장 정보가 따로 논다",
+   "kicker": "15~24세 실업 32.5% · 검토 자료 57건",
+   "three_step": {
+    "what": "가나의 직업기술교육훈련(TVET)과 청년 노동시장을 잇는 정보 구조를 설계한 개념 논문이 11월 21일 Discover Education(CC BY 4.0)에 실렸다. 노동시장 정보 시스템, 훈련기관 정보 시스템, 자격 체계가 각각 존재하지만 서로 연결되지 않아 기술 공급이 수요를 따라가지 못한다는 진단이다.",
+    "evidence": "2021년 인구주택총조사 기준 15~35세 실업률은 19.7%, 15~24세는 32.8%였고, 2025년 2·3분기 분기 노동력조사에서는 15~24세 32.5%, 15~35세 21.9%로 나타났다. 저자들은 동료심사·정책·법령 자료 57건을 검토해 4개 기능(수요 감지, 교육과정·자격으로 전환, 디지털 실습, 역량 기록·인정)과 상호운용 핵심, 검증 가능한 명제 7개로 프레임워크를 구성했다. 가나는 노동시장정보시스템(GLMIS), 준비 중인 TVET 정보시스템, 국가 TVET 자격체계, 국가 신분증을 이미 갖추고 있지만 서로 다른 기관이 따로 관리한다. TVET 바우처 사업으로 숙련공·견습생 1만8,087명이 훈련·인증을 받았고, TVET 등록생 중 여성은 약 4분의 1이다.",
+    "implication": "내담자 상담에서 '훈련을 더 받을지'만 묻지 말고, 훈련–자격–구인정보가 한 줄로 이어지는 경로를 확인해 주고, 자격·경력이 고용주에게 보이는 형태(수료증·포트폴리오·검증 가능한 기록)로 정리하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "15~24세 실업률",
+     "value": "32.5%",
+     "delta": "15~35세 21.9%",
+     "period": "2025년 2·3분기"
+    },
+    {
+     "label": "15~24세 실업률(센서스)",
+     "value": "32.8%",
+     "delta": "15~35세 19.7%",
+     "period": "2021년"
+    },
+    {
+     "label": "검토한 자료",
+     "value": "57건",
+     "delta": "동료심사·정책·법령",
+     "period": "2026년"
+    },
+    {
+     "label": "TVET 바우처 인증",
+     "value": "1만8,087명",
+     "delta": "숙련공·견습생",
+     "period": "2023년 보고서"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "15~24세 (2025 2·3분기)",
+     "15~35세 (2025 2·3분기)",
+     "15~24세 (2021 센서스)",
+     "15~35세 (2021 센서스)"
+    ],
+    "series": [
+     {
+      "name": "가나 청년 실업률",
+      "values": [
+       32.5,
+       21.9,
+       32.8,
+       19.7
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "가나 통계청 분기 노동력조사(2025)·인구주택총조사(2021)를 논문이 인용한 값. 2025년 수치는 구직활동 기준을 완화한 광의 실업률.",
+    "source_id": "src_discedu_ghana_tvet_20261121"
+   },
+   "counselor_question": "지금 받으려는 훈련이 끝나면 어떤 자격으로 남고, 그 자격을 고용주가 어떻게 확인할 수 있을까요?",
+   "tags": [
+    "TVET",
+    "청년 고용",
+    "노동시장 정보"
+   ],
+   "ncs": [
+    "직업상담서비스",
+    "직업훈련"
+   ],
+   "source": {
+    "source_id": "src_discedu_ghana_tvet_20261121",
+    "source_name": "Discover Education (Springer Nature)",
+    "source_title": "Digital TVET transformation and youth workforce readiness in Ghana: a conceptual framework for an integrated skills information architecture",
+    "source_url": "https://link.springer.com/article/10.1007/s44217-026-02455-0",
+    "published_at": "2026-11-21",
+    "license": {
+     "name": "CC BY 4.0(저작자 표시)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 텍스트(사진·도표 이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-22",
+     "evidence": "Crossref 메타데이터(DOI 10.1007/s44217-026-02455-0)의 라이선스가 CC BY 4.0(vor)임을 확인했고, 출판사 페이지에서 'Open access'·발행일 2026-11-21을 직접 확인(2026-11-22).",
+     "attribution_text": "출처: Ahatsi, E., Nkansah, J.O. & Olanrewaju, O., 「Digital TVET transformation and youth workforce readiness in Ghana」, Discover Education 5:1370 (2026), CC BY 4.0. AI 한국어 번역, 내용 변경 없음."
+    },
+    "usage": "초록 전문을 AI로 한국어 번역(내용 변경 없음). 도표·사진은 쓰지 않음."
+   },
+   "edition": "global-2300",
+   "updated_at": "2026-11-22T23:09:00+09:00",
+   "run_id": "br-20261122-2309",
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
+  },
+  {
+   "id": "c08",
+   "order": 8,
+   "track": "A",
+   "category": "채용시장",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "global",
+   "issue_id": "iss-wfh-disclosure-2026",
+   "title": "공고에 '재택 가능' 적으면 충원율 3.5%p 높아졌다",
+   "kicker": "평균 충원율의 15.6% · 다만 이직도 늘어",
+   "three_step": {
+    "what": "미국 기업의 구인공고 2017~2024년 자료로 재택근무 유연성을 공고에 밝히는 것이 채용 결과와 어떤 관련이 있는지 분석한 논문이 11월 21일 Review of Accounting Studies(CC BY 4.0)에 실렸다.",
+    "evidence": "재택 유연성을 밝힌 공고는 채워질 확률이 3.5%포인트 높았고, 이는 표본 평균 충원율의 15.6%에 해당한다. 재택 정보가 눈에 잘 띄는 방식으로 제시될수록 효과가 컸다. 기업은 노동시장 경쟁이 심할수록 재택 유연성을 더 자주 공시했다. 다만 재택 공시는 이후 이직률 상승과도 정(+)의 관련을 보여, 채용은 빨라지지만 정착은 약해질 수 있다는 해석이 가능하다. 저자들은 공시 효과와 실제 제도의 효과를 완전히 분리하지 못한다고 밝혔다.",
+    "implication": "구직자에게는 재택·유연근무 표시가 있는 공고를 우선 살피되, '재택 명시'가 정착까지 보장하지는 않는다는 점을 알려 주고 면접에서 실제 운영 방식(주당 재택일수·출근 기준)을 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "충원율 상승",
+     "value": "+3.5%p",
+     "delta": "평균의 15.6%",
+     "period": "2017~2024년 공고"
+    },
+    {
+     "label": "분석 기간",
+     "value": "8년",
+     "delta": "2017~2024",
+     "period": "미국 구인공고"
+    },
+    {
+     "label": "이직과의 관계",
+     "value": "정(+)",
+     "delta": "정착은 약해질 수 있음",
+     "period": "2017~2024년"
+    }
+   ],
+   "chart_data": {
+    "type": "index_bar",
+    "unit": "지수(재택 미명시=100)",
+    "labels": [
+     "재택 유연성 미명시",
+     "재택 유연성 명시"
+    ],
+    "series": [
+     {
+      "name": "공석 충원율(지수)",
+      "values": [
+       100.0,
+       115.6
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 100,
+    "note": "평균 충원율 대비 +15.6%를 지수로 옮긴 값(논문의 +3.5%p 추정에서 계산). 2017~2024년 미국 구인공고.",
+    "source_id": "src_rast_wfh_postings_20261121"
+   },
+   "counselor_question": "재택·유연근무 조건이 공고에 적혀 있다면, 실제로 주 몇 일인지 면접에서 확인해 보시겠어요?",
+   "tags": [
+    "재택근무",
+    "구인공고",
+    "채용"
+   ],
+   "ncs": [
+    "직업상담서비스",
+    "취업지원"
+   ],
+   "source": {
+    "source_id": "src_rast_wfh_postings_20261121",
+    "source_name": "Review of Accounting Studies (Springer Nature)",
+    "source_title": "Disclosing work-from-home flexibility to compete for talent? Evidence from job postings",
+    "source_url": "https://link.springer.com/article/10.1007/s11142-026-10001-4",
+    "published_at": "2026-11-21",
+    "license": {
+     "name": "CC BY 4.0(저작자 표시)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 텍스트(사진·도표 이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-22",
+     "evidence": "Crossref 메타데이터(DOI 10.1007/s11142-026-10001-4)의 라이선스가 CC BY 4.0(vor)임을 확인했고, 출판사 페이지에서 'Open access'·발행일 2026-11-21을 직접 확인(2026-11-22).",
+     "attribution_text": "출처: Ham, C., Hann, R.N., Wang, W. & Yang, J., 「Disclosing work-from-home flexibility to compete for talent? Evidence from job postings」, Review of Accounting Studies (2026), CC BY 4.0. AI 한국어 번역, 내용 변경 없음."
+    },
+    "usage": "초록 전문을 AI로 한국어 번역(내용 변경 없음). 도표·사진은 쓰지 않음."
+   },
+   "edition": "global-2300",
+   "updated_at": "2026-11-22T23:09:00+09:00",
+   "run_id": "br-20261122-2309",
    "labor_walk": true,
    "labor_walk_topic": "고용서비스·채용"
   }
@@ -1285,9 +1358,9 @@
   },
   "global-2300": {
    "status": "ok",
-   "updated_at": "2026-11-21T23:07:00+09:00",
-   "last_ok": "2026-11-21",
-   "run_id": "br-20261121-2307"
+   "updated_at": "2026-11-22T23:09:00+09:00",
+   "last_ok": "2026-11-22",
+   "run_id": "br-20261122-2309"
   }
  },
  "sources": [
@@ -1358,92 +1431,114 @@
    "id": "src_moel_dualstructure_20261120"
   },
   {
-   "source_name": "미국 노동통계국(BLS)",
-   "source_title": "State Employment and Unemployment — October 2026 (USDL-26-1713)",
-   "source_url": "https://www.bls.gov/news.release/laus.nr0.htm",
-   "published_at": "2026-11-20",
+   "source_id": "src_aiincontext_bloomberg_cn_postings_20261121",
+   "source_name": "AI In Context (블룸버그 분석 보도)",
+   "source_title": "AI-Exposed Jobs in China Fell 10 Points Faster — Bloomberg Finds",
+   "source_url": "https://aiincontext.com/articles/ai-exposed-jobs-in-china-fell-10-points-faster-bloomberg-finds",
+   "published_at": "2026-11-21",
    "license": {
-    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-    "type": "PUBLIC-DOMAIN",
-    "url": "https://www.bls.gov/opub/copyright-information.htm",
-    "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-21",
-    "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-21 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-    "attribution_text": "Source: U.S. Bureau of Labor Statistics, “State Employment and Unemployment — October 2026” (USDL-26-1713, November 20, 2026)"
-   },
-   "usage": "보도자료 본문·통계표를 한국어로 옮겨 싣고, 카드는 주별 수치만 도표화. 사진·도표 그림은 싣지 않음.",
-   "source_id": "src_bls_laus_20261020",
-   "id": "src_bls_laus_20261020"
-  },
-  {
-   "source_name": "미국 노동통계국(BLS)",
-   "source_title": "Total Factor Productivity for Major Industries — 2025 (USDL-26-1714)",
-   "source_url": "https://www.bls.gov/news.release/prod5.nr0.htm",
-   "published_at": "2026-11-20",
-   "license": {
-    "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-    "type": "PUBLIC-DOMAIN",
-    "url": "https://www.bls.gov/opub/copyright-information.htm",
-    "scope": "본문 텍스트·통계표(사진·삽화 등 기존 저작권 자료 제외)",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-21",
-    "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm, 2026-11-21 직접 확인): 'BLS가 발행하는 모든 자료는 하드카피·전자 모두 퍼블릭 도메인이며, 기존에 저작권이 있는 사진·삽화만 예외'. 미국 저작권법 17 U.S.C. §105.",
-    "attribution_text": "Source: U.S. Bureau of Labor Statistics, “Total Factor Productivity for Major Industries — 2025” (USDL-26-1714, November 20, 2026)"
-   },
-   "usage": "보도자료 본문을 한국어로 옮겨 싣고, 카드는 산출 증가 기여도만 도표화.",
-   "source_id": "src_bls_tfp_2025",
-   "id": "src_bls_tfp_2025"
-  },
-  {
-   "source_name": "arXiv (Farhan Latif, UNU·워털루대)",
-   "source_title": "AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya (arXiv:2611.25585)",
-   "source_url": "https://arxiv.org/abs/2611.25585",
-   "published_at": "2026-11-20",
-   "license": {
-    "name": "CC BY 4.0 (Attribution 4.0 International)",
-    "type": "CC-BY-4.0",
-    "url": "https://creativecommons.org/licenses/by/4.0/",
-    "scope": "논문 본문(초록·본문 텍스트)",
-    "attribution_required": true,
-    "commercial_use": "allowed",
-    "modification": "allowed",
-    "verified": true,
-    "verified_at": "2026-11-21",
-    "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.25585)의 라이선스 아이콘이 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-21). arXiv 기본 라이선스(재배포 제한) 논문은 수록 제외.",
-    "attribution_text": "Latif, F. (2026), “AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya”, arXiv:2611.25585, CC BY 4.0. 원문을 그대로 옮기고 AI로 한국어 번역했습니다(내용 변경 없음)."
-   },
-   "usage": "초록·본문 일부를 원문 그대로 싣고 AI 한국어 번역을 함께 올림. 카드는 직무별 수치만 도표화.",
-   "source_id": "src_arxiv_platform_261125585",
-   "id": "src_arxiv_platform_261125585"
-  },
-  {
-   "source_name": "Randstad (Tech Talent in Transition 2026)",
-   "source_title": "Tech Talent in Transition: Building the AI-Ready Workforce (2026)",
-   "source_url": "https://www.randstad.com/tech-talent-report-2026/",
-   "published_at": "2026-11-20",
-   "license": {
-    "name": "기업 발간 보고서·언론 보도(원문 재게시 불가)",
+    "name": "언론사 보도(원문 재게시 불가)",
     "type": "PRESS",
     "url": null,
-    "scope": "보고서 본문·도표",
+    "scope": "보도 본문·도표 전부",
     "attribution_required": true,
     "commercial_use": "not_allowed",
     "modification": "not_allowed",
     "verified": true,
-    "verified_at": "2026-11-21",
-    "evidence": "Randstad가 공개한 보고서 PDF(randstad.com.au, 2026-11)에서 수치를 직접 확인(2026-11-21). 보고서·보도 본문은 복제·번역하지 않고 사실·수치만 새로 씀.",
-    "attribution_text": "출처: Randstad, “Tech Talent in Transition: Building the AI-Ready Workforce” (2026). 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    "verified_at": "2026-11-22",
+    "evidence": "보도 원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-22). 사실·수치만 사용.",
+    "attribution_text": "출처: AI In Context, 「AI-Exposed Jobs in China Fell 10 Points Faster — Bloomberg Finds」(2026.11.21, 블룸버그 분석 보도). 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
    },
-   "usage": "본문 복제·번역 없이 설문·공고 분석 수치만 우리 말로 재구성.",
-   "source_id": "src_randstad_tech_talent_2026",
-   "id": "src_randstad_tech_talent_2026"
+   "usage": "본문 복제·번역 없이 분석 수치만 우리 말로 재구성.",
+   "id": "src_aiincontext_bloomberg_cn_postings_20261121"
+  },
+  {
+   "source_id": "src_hrdive_marsh_aitraining_20261120",
+   "source_name": "HR Dive (마시 조사 보도)",
+   "source_title": "Executives get more AI training than other workers, hurting adoption, report finds",
+   "source_url": "https://www.hrdive.com/news/executives-get-more-ai-training-than-other-workers-hurting-adoption/875395/",
+   "published_at": "2026-11-20",
+   "license": {
+    "name": "언론사 보도(원문 재게시 불가)",
+    "type": "PRESS",
+    "url": null,
+    "scope": "보도 본문·사진 전부",
+    "attribution_required": true,
+    "commercial_use": "not_allowed",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "보도 원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-22). 자동 요청은 403이지만 브라우저로 열람 확인. 사실·수치만 사용.",
+    "attribution_text": "출처: HR Dive, 「Executives get more AI training than other workers, hurting adoption, report finds」(2026.11.20, 마시 조사 보도). 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+   },
+   "usage": "본문 복제·번역 없이 조사 수치만 우리 말로 재구성.",
+   "id": "src_hrdive_marsh_aitraining_20261120"
+  },
+  {
+   "source_id": "src_gr_ministry_ai_law_20261121",
+   "source_name": "그리스 노동사회보장부",
+   "source_title": "Ανθρώπινη εποπτεία στους αλγορίθμους και Μητρώο Απασχόλησης σε πλατφόρμες φέρνει το νέο νομοσχέδιο (알고리즘 인간 감독과 플랫폼 고용등록부를 담은 새 법안)",
+   "source_url": "https://ypergasias.gov.gr/ypeka-anthropini-epopteia-stous-algorithmous-kai-mitroo-apascholisis-se-platformes-fernei-to-neo-nomoschedio/",
+   "published_at": "2026-11-21",
+   "license": {
+    "name": "그리스 정부 보도자료(재이용 허락 표시 미확인)",
+    "type": "KOGL-NONE",
+    "url": null,
+    "scope": "보도자료 본문",
+    "attribution_required": true,
+    "commercial_use": "unknown",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "그리스 노동사회보장부 보도자료 페이지에서 재이용 허락(CC·OGL 등) 표시를 확인하지 못함(2026-11-22). 사실만 사용.",
+    "attribution_text": "출처: 그리스 노동사회보장부 보도자료(2026.11.21). 본문을 옮기지 않고 사실만 새로 썼습니다."
+   },
+   "usage": "보도자료 본문 복제·번역 없이 사실만 우리 말로 재구성.",
+   "id": "src_gr_ministry_ai_law_20261121"
+  },
+  {
+   "source_id": "src_discedu_ghana_tvet_20261121",
+   "source_name": "Discover Education (Springer Nature)",
+   "source_title": "Digital TVET transformation and youth workforce readiness in Ghana: a conceptual framework for an integrated skills information architecture",
+   "source_url": "https://link.springer.com/article/10.1007/s44217-026-02455-0",
+   "published_at": "2026-11-21",
+   "license": {
+    "name": "CC BY 4.0(저작자 표시)",
+    "type": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "scope": "논문 텍스트(사진·도표 이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "Crossref 메타데이터(DOI 10.1007/s44217-026-02455-0)의 라이선스가 CC BY 4.0(vor)임을 확인했고, 출판사 페이지에서 'Open access'·발행일 2026-11-21을 직접 확인(2026-11-22).",
+    "attribution_text": "출처: Ahatsi, E., Nkansah, J.O. & Olanrewaju, O., 「Digital TVET transformation and youth workforce readiness in Ghana」, Discover Education 5:1370 (2026), CC BY 4.0. AI 한국어 번역, 내용 변경 없음."
+   },
+   "usage": "초록 전문을 AI로 한국어 번역(내용 변경 없음). 도표·사진은 쓰지 않음.",
+   "id": "src_discedu_ghana_tvet_20261121"
+  },
+  {
+   "source_id": "src_rast_wfh_postings_20261121",
+   "source_name": "Review of Accounting Studies (Springer Nature)",
+   "source_title": "Disclosing work-from-home flexibility to compete for talent? Evidence from job postings",
+   "source_url": "https://link.springer.com/article/10.1007/s11142-026-10001-4",
+   "published_at": "2026-11-21",
+   "license": {
+    "name": "CC BY 4.0(저작자 표시)",
+    "type": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "scope": "논문 텍스트(사진·도표 이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "Crossref 메타데이터(DOI 10.1007/s11142-026-10001-4)의 라이선스가 CC BY 4.0(vor)임을 확인했고, 출판사 페이지에서 'Open access'·발행일 2026-11-21을 직접 확인(2026-11-22).",
+    "attribution_text": "출처: Ham, C., Hann, R.N., Wang, W. & Yang, J., 「Disclosing work-from-home flexibility to compete for talent? Evidence from job postings」, Review of Accounting Studies (2026), CC BY 4.0. AI 한국어 번역, 내용 변경 없음."
+   },
+   "usage": "초록 전문을 AI로 한국어 번역(내용 변경 없음). 도표·사진은 쓰지 않음.",
+   "id": "src_rast_wfh_postings_20261121"
   }
  ],
  "copyright_policy": {
