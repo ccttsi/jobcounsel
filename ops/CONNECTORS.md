@@ -71,7 +71,7 @@
 | **Upstash** | https://console.upstash.com | Redis `witw-cache` — Tokyo(`asia-northeast1`) · 250MB | `UPSTASH_REDIS_REST_URL`·`UPSTASH_REDIS_REST_TOKEN` — Cloudflare Secrets · 로컬 `/workspace/.secrets/` |
 | **Neon** | https://console.neon.tech | 프로젝트마다 1GB(프로젝트 100개) | DSN(`DATABASE_URL`) — Cloudflare Secrets · 로컬 `/workspace/.secrets/` |
 | **Cloudflare** (Turnstile·Workers AI·Vectorize) | https://dash.cloudflare.com | Turnstile 무료 · Workers AI 일 10,000 Neurons · Vectorize 무료 인덱스 | Turnstile site/secret key·Workers binding — Cloudflare 대시보드 환경변수 |
-| **Hugging Face** | https://huggingface.co | 가입 30일 뒤 ZeroGPU(공유 GPU) | 토큰 — Vault · 로컬 `/workspace/.secrets/` |
+| **Hugging Face** | https://huggingface.co | 가입 30일 뒤 ZeroGPU(공유 GPU, 조건은 HF 정책을 따른다) | 토큰 — Vault · 로컬 `/workspace/.secrets/` |
 
 - **연결은 GitHub 한 곳**: 수집·학습·보관은 서로 직접 잇지 않고 `ccttsi/jobcounsel`과 GitHub Actions를 거친다. 실시간 앞단(매장)만 Cloudflare 환경변수에 키를 꽂는다.
 - **Bot Fight Mode(전역 봇 차단)는 끄고 Turnstile만 쓴다** — 피클·GitHub Actions·수집기가 봇으로 막히지 않게.
