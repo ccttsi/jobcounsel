@@ -238,5 +238,25 @@
   "sector": "27 preset",
   "url": "./?preset=theorytalk",
   "want": "이론·검사"
+ },
+ {
+  "sector": "02 casecon",
+  "url": "./casecon/?case=c5&fw=cip",
+  "want": "전공과 진로의 불일치"
+ },
+ {
+  "sector": "02 casecon",
+  "url": "./casecon/?case=c3&fw=super",
+  "want": "45세의 전직"
+ },
+ {
+  "sector": "02 casecon",
+  "url": "./casecon/?case=c1",
+  "want": "5년 공백 뒤 재출발"
+ },
+ {
+  "sector": "33 valuechain",
+  "url": "./valuechain/?i=battery",
+  "want": "이차전지"
  }
 ]

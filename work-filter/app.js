@@ -24,7 +24,8 @@
     preset: null
   };
   var DATA = { axes: [], jobs: [], fields: [], regions: [], links: {}, meta: null };
-  var PAGE_SIZE = 24;
+  /* 휴대폰은 한 쪽에 20줄 — 24줄이면 화면 2.6장으로 기준(2.5)을 넘었다(C2-05). 쪽 넘김으로 나머지를 본다. */
+  var PAGE_SIZE = (window.matchMedia && window.matchMedia('(max-width:599px)').matches) ? 20 : 24;
   // 「낮은 편·보통·높은 편」의 경계는 자료(axis.cuts)에서 온다 — 축마다 직무들을 값 순서로 3등분한 값.
   var LEVELS = [
     { id: 'lo', name: '낮은 편' },

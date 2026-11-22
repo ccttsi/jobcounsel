@@ -110,6 +110,8 @@ a{color:inherit}
 .board{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:10px;align-items:start}
 @media (min-width:900px){.board{grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr);gap:14px}}
 .axes{display:grid;gap:6px;min-width:0}
+/* 큰 화면(≥1100): 다섯 축을 두 줄로 — 왼쪽만 788px 길게 내려가고 오른쪽 판정 아래가 비던 것(C2-12, 1280 화면 1.60 → 1.5 이하) */
+@media (min-width:1100px){.axes{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
 .ax{margin:0;padding:8px 10px;border:1px solid var(--line);border-radius:13px;background:var(--panel);min-width:0;border-left:3px solid var(--line-2)}
 .ax:focus-within{border-left-color:var(--acc)}
 .ax-h{display:flex;align-items:center;gap:7px;min-width:0}
@@ -176,7 +178,7 @@ a{color:inherit}
 .req-h{font-size:11px;font-weight:800;color:var(--muted)}
 .req ul{margin:5px 0 0;padding:0;list-style:none;display:grid;gap:3px}
 .req li{display:flex;gap:6px;align-items:flex-start;font-size:12px;line-height:1.4;color:var(--muted)}
-.ok{flex:none;width:14px;height:14px;border-radius:4px;display:grid;place-items:center;font-size:9.5px;font-weight:800;margin-top:1px}
+.ok{flex:none;width:14px;height:14px;border-radius:4px;display:grid;place-items:center;font-size:11px;font-weight:800;margin-top:1px}
 .ok[data-s="yes"]{background:color-mix(in srgb,var(--l4) 16%,var(--panel));color:var(--l4)}
 .ok[data-s="no"]{background:color-mix(in srgb,var(--l1) 14%,var(--panel));color:var(--l1)}
 .ok[data-s="chk"]{background:var(--panel);color:var(--muted)}
@@ -231,7 +233,7 @@ a{color:inherit}
 .foot{margin:14px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.55;color:var(--dim)}
 .foot b{color:var(--muted);font-weight:750}
 
-@media (max-width:599px){.presets{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}.presets::-webkit-scrollbar{display:none}.presets::after{content:"";flex:0 0 10px}.ps{flex:none}.ps small{display:none}.ps{font-size:12.5px;padding:4px 10px}.presets{gap:5px}.route{padding:11px;margin-top:7px}.sup li{font-size:11.5px}.why{gap:3px}.todo{margin-top:7px}.warn{margin-top:7px;padding-top:6px}.along{margin-top:7px}.ax-note{font-size:10.5px}.ax{padding:7px 9px}.strip{padding:5px 10px;margin-top:7px}.res{padding:11px}.lead{padding:8px 0 2px}.why li{line-height:1.38}}
+@media (max-width:599px){.presets{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}.presets::-webkit-scrollbar{display:none}.presets::after{content:"";flex:0 0 10px}.ps{flex:none}.ps small{display:none}.ps{font-size:12.5px;padding:4px 10px}.presets{gap:5px}.route{padding:11px;margin-top:7px}.sup li{font-size:11.5px}.why{gap:3px}.todo{margin-top:7px}.warn{margin-top:7px;padding-top:6px}.along{margin-top:7px}.ax-note{font-size:11px}.ax{padding:7px 9px}.strip{padding:5px 10px;margin-top:7px}.res{padding:11px}.lead{padding:8px 0 2px}.why li{line-height:1.38}}
 
 /* ---------- 상태·모션 ---------- */
 .lv.pulse .lv-n{animation:pop .22s cubic-bezier(.2,1.4,.4,1) 1}

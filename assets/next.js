@@ -5,18 +5,22 @@
  * 짝의 상대는 자료(JC_TOOLS)뿐 아니라 앱(JC_APPS — 상담 플로우)일 수도 있다. 두 장부를 함께 읽어 이름을 찾는다.
  * assets/core.js가 대문이 아닌 화면에서 tools.js 다음에 불러온다. 집중 보기에서는 숨는다.
  * 색은 그 화면의 글자색에서 섞어 쓴다(shell.css와 같은 방식). 움직임 없음.
+ * 2026-11-22(CP2): 위아래 여백 28/20·안쪽 14px → 16/8·10px — 이 줄이 섹터마다 화면 분량을 0.04~0.13화면씩 늘리던 것을 줄였다.
  */
 (function () {
   'use strict';
   if (window.__jcNext) return; window.__jcNext = true;
   var d = document, base = (window.JCCore && window.JCCore.base) || '';
-  var CSS = '.jc-next{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:28px auto 20px;padding-top:14px;box-sizing:border-box;' +
+  var CSS = '.jc-next{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:16px auto 8px;padding-top:10px;box-sizing:border-box;' +
     'border-top:1px solid rgba(127,127,127,.22);border-top-color:color-mix(in srgb,currentColor 12%,transparent);letter-spacing:-.02em;line-height:1.3}' +
     '.jc-next-k{flex:none;margin-right:4px;font-size:12.5px;font-weight:700;opacity:.66}' +
     '.jc-next a{display:inline-flex;align-items:center;min-height:44px;box-sizing:border-box;padding:0 14px;border-radius:12px;color:inherit;text-decoration:none;font-size:14px;font-weight:700;' +
     'border:1px solid rgba(127,127,127,.28);border-color:color-mix(in srgb,currentColor 16%,transparent);background:color-mix(in srgb,currentColor 3%,transparent);-webkit-tap-highlight-color:transparent}' +
     '.jc-next a:focus-visible{outline:2px solid currentColor;outline-offset:2px}' +
     '@media (hover:hover){.jc-next a:hover{background:color-mix(in srgb,currentColor 7%,transparent)}}' +
+    /* 휴대폰(≤599px): 짝이 많은 섹터에서 칩이 3~4줄(최대 205px)로 쌓이던 것 → 한 줄로 두고 옆으로 민다(CP2).
+       세로 손짓은 그대로 화면을 넘기도록 pan-x pan-y를 둘 다 허용하고, 끝 칩이 화면 끝에 붙지 않게 꼬리 여백을 둔다. */
+    '@media (max-width:599px){.jc-next{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}.jc-next::-webkit-scrollbar{display:none}.jc-next a{flex:none;white-space:nowrap}.jc-next::after{content:"";flex:0 0 8px}}' +
     '.jc-next-one{flex-wrap:nowrap;overflow-x:auto;margin:0;padding-top:8px;padding-bottom:8px;scrollbar-width:none;flex:none}.jc-next-one::-webkit-scrollbar{display:none}.jc-next-one a{flex:none;white-space:nowrap}.jc-next-one::after{content:"";flex:0 0 56px}' +
     'html[data-jc-imm] .jc-next{display:none}';
   function run() {
