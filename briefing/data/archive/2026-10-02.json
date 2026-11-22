@@ -1,0 +1,925 @@
+{
+ "schema_version": "1.4.0",
+ "updated_at": "2026-10-02T23:04:00+09:00",
+ "edition": {
+  "date": "2026-10-02",
+  "weekday": "금",
+  "title": "미국 고용은 제자리, 한국은 훈련과 규제를 연다",
+  "subtitle": "미국 9월 취업자 +2만9천명·실업률 4.2%, STEP 4,500개 콘텐츠 모집, 신산업 규제 3건 개선",
+  "reading_minutes": 3,
+  "data_status": "ok",
+  "data_status_note": null
+ },
+ "headline_metrics": [
+  {
+   "id": "hm_us_payroll",
+   "label": "미국 비농업 취업자",
+   "value": 2.9,
+   "unit": "만명",
+   "value_text": "+2만9천명",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 9월",
+   "delta_from": "전월",
+   "source_id": "src_bls_empsit_202609",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_us_unemp",
+   "label": "미국 실업률",
+   "value": 4.2,
+   "unit": "%",
+   "value_text": "4.2%",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "flat",
+   "period": "2026년 9월",
+   "delta_from": "전월",
+   "source_id": "src_bls_empsit_202609",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_step_contents",
+   "label": "STEP 오픈마켓 콘텐츠",
+   "value": 4500,
+   "unit": "개",
+   "value_text": "4,500여 개",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "flat",
+   "period": "2026년 10월",
+   "delta_from": "AI 콘텐츠 162개",
+   "source_id": "src_moel_step_20261002",
+   "track": "A",
+   "spark": null
+  },
+  {
+   "id": "hm_caio_orgs",
+   "label": "AI 책임관 협의회 기관",
+   "value": 42,
+   "unit": "개",
+   "value_text": "42개",
+   "base_value": null,
+   "base_unit": null,
+   "direction": "up",
+   "period": "2026년 10월",
+   "delta_from": "기존 28개",
+   "source_id": "src_pipc_caio_20261002",
+   "track": "A",
+   "spark": null
+  }
+ ],
+ "main_themes": [],
+ "cards": [
+  {
+   "id": "c01",
+   "order": 1,
+   "track": "A",
+   "category": "해외 노동시장",
+   "title": "미국 9월 취업자 +2만9천 — 실업률 4.2% 제자리",
+   "kicker": "비농업 취업자 +2만9천명 · 실업률 4.2% · 장기실업 190만명",
+   "three_step": {
+    "what": "미국 노동통계국이 2026년 9월 고용상황을 발표했다. 비농업 취업자는 2만9천명 늘어난 데 그쳤고 실업률은 4.2%로 거의 변하지 않았다.",
+    "evidence": "실업자는 710만명이고 실업률은 3월 이후 4.1~4.3%의 좁은 범위에 머물렀다. 27주 이상 장기실업자는 190만명으로 전체 실업자의 27.1%이며, 경제적 이유로 파트타임을 하는 사람은 450만명이다. 노동참가율 61.8%, 고용인구비율 59.2%(2026년 10월 2일 발표, 9월 기준).",
+    "implication": "구직자에게 '뽑지도 자르지도 않는 시장'이라고 설명하고, 지원 건수를 늘리기보다 직무 적합도를 좁히는 쪽으로 상담을 돌려라."
+   },
+   "key_numbers": [
+    {
+     "label": "비농업 취업자",
+     "value": "+2만9천명",
+     "delta": "전월",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "실업률",
+     "value": "4.2%",
+     "delta": "변동 없음",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "장기실업자",
+     "value": "190만명",
+     "delta": "27.1%",
+     "period": "2026년 9월"
+    },
+    {
+     "label": "경제적 파트타임",
+     "value": "450만명",
+     "delta": "",
+     "period": "2026년 9월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "%",
+    "labels": [
+     "성인남",
+     "성인여",
+     "10대",
+     "백인",
+     "흑인",
+     "아시아",
+     "히스패닉"
+    ],
+    "series": [
+     {
+      "name": "실업률",
+      "values": [
+       3.9,
+       3.6,
+       14.5,
+       3.6,
+       7.0,
+       2.9,
+       4.7
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "2026년 9월 집단별 실업률(%). 미국 노동통계국 고용상황, 2026.10.02.",
+    "source_id": "src_bls_empsit_202609"
+   },
+   "tags": [
+    "미국",
+    "실업률",
+    "장기실업"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "source": {
+    "source_id": "src_bls_empsit_202609",
+    "source_name": "미국 노동통계국(BLS)",
+    "source_title": "The Employment Situation — September 2026",
+    "source_url": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+    "published_at": "2026-10-02",
+    "license": {
+     "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+     "type": "PUBLIC-DOMAIN",
+     "url": null,
+     "scope": null,
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-22",
+     "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): BLS Copyright Information: 'The Bureau of Labor Statistics (BLS) is a Federal government agency and everything that we publish ... is in the public domain' (사진·일러스트 제외)",
+     "attribution_text": "출처: 미국 노동통계국(BLS) 「The Employment Situation — September 2026」(퍼블릭 도메인)"
+    },
+    "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+   },
+   "counselor_question": "실직 기간이 6개월을 넘었다면, 그동안 하지 않은 일과 새로 배운 것을 각각 하나씩 말해 보시겠어요?",
+   "labor_walk": true,
+   "labor_walk_topic": "해외 노동시장"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "훈련기관 4,500개 콘텐츠로 과정 짠다 — STEP 참여기관 모집",
+   "kicker": "오픈마켓 콘텐츠 4,500여 개 · AI 콘텐츠 162개 · 접수 10.23까지",
+   "three_step": {
+    "what": "한국기술교육대 온라인평생교육원이 고용노동부와 함께 STEP 학습관리시스템에 함께할 훈련기관·기업·공공기관을 10월 2일부터 23일까지 모집한다.",
+    "evidence": "STEP은 AI 기초·AI+X 등 162개를 포함한 4,500여 개 오픈마켓 콘텐츠로 훈련과정을 구성할 수 있고, 기관 자체 콘텐츠로 수익사업도 운영할 수 있다. 경북기계공업고의 STEP 활용 인원은 2025년 1,047명에서 2026년 7월 1,540명으로 늘었고, 하나마이크론은 베트남어 콘텐츠 20개로 2,300여 명 교육·수료율 86%를 냈다(2026년 10월 2일).",
+    "implication": "훈련기관 담당자에게는 콘텐츠를 새로 만들기 전에 STEP 카탈로그에서 같은 직무 과정을 먼저 찾아보게 하고, 기관 자체 콘텐츠는 수익사업까지 염두에 두고 등록을 검토하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "오픈마켓 콘텐츠",
+     "value": "4,500여 개",
+     "delta": "",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "AI 관련 콘텐츠",
+     "value": "162개",
+     "delta": "",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "경북기계공업고 활용",
+     "value": "1,540명",
+     "delta": "+493명",
+     "period": "2026년 7월"
+    },
+    {
+     "label": "베트남 현지 수료율",
+     "value": "86%",
+     "delta": "",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "명",
+    "labels": [
+     "2025년",
+     "2026년 7월"
+    ],
+    "series": [
+     {
+      "name": "경북기계공업고 STEP 활용 인원",
+      "values": [
+       1047,
+       1540
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "STEP 활용 인원(명). 고용노동부·한국기술교육대, 2026.10.02.",
+    "source_id": "src_moel_step_20261002"
+   },
+   "tags": [
+    "직업훈련",
+    "STEP",
+    "AI훈련"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "source": {
+    "source_id": "src_moel_step_20261002",
+    "source_name": "고용노동부",
+    "source_title": "인공지능(AI)·디지털 기반 직업훈련 지원 한국기술교육대 STEP, 학습관리시스템(LMS) 신규 참여기관 모집",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784168",
+    "published_at": "2026-10-02",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-22",
+     "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료",
+     "attribution_text": "출처: 고용노동부 「인공지능(AI)·디지털 기반 직업훈련 지원 한국기술교육대 STEP, 학습관리시스템(LMS) 신규 참여기관 모집」(공공누리 제1유형)"
+    },
+    "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+   },
+   "counselor_question": "지금 다니는 과정을 이 플랫폼의 어떤 콘텐츠로 대체할 수 있을까요?",
+   "labor_walk": true,
+   "labor_walk_topic": "훈련·재취업"
+  },
+  {
+   "id": "c03",
+   "order": 3,
+   "track": "A",
+   "category": "AI·직무",
+   "title": "AI 책임관 협의회 42개 기관으로 — '모두의 AI' 12월 출시",
+   "kicker": "참석 28→42개 기관 · 안건 4건 · 모두의 AI 12월 정식 출시",
+   "three_step": {
+    "what": "국가인공지능전략위원회가 제5차 인공지능책임관 협의회를 열어 인공지능 입법 프레임워크(안)와 '모두의 AI' 출시 준비 등 4개 안건을 논의했다.",
+    "evidence": "참석 범위를 기존 28개 장관급 기관에서 차관급 14개를 더한 42개 중앙행정기관으로 넓혔다. 안건은 입법 프레임워크(안)·'모두의 AI' 서비스 준비·범정부 데이터 파이프라인·공공부문 개인정보보호 관리체계 4건이고, 인공지능행동계획 1~2분기 이행점검은 서면 보고됐다(2026년 10월 2일).",
+    "implication": "공공 AI 서비스가 열리기 전에, 내담자가 AI로 해 본 일을 '도구명'이 아니라 '무엇을 시켜 어떤 결과를 냈는지'로 적도록 이력서 문장을 고쳐 주게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "협의회 참석 기관",
+     "value": "42개",
+     "delta": "+14개",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "논의 안건",
+     "value": "4건",
+     "delta": "",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "'모두의 AI' 정식 출시",
+     "value": "12월",
+     "delta": "",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "개 기관",
+    "labels": [
+     "기존",
+     "확대"
+    ],
+    "series": [
+     {
+      "name": "참석 기관",
+      "values": [
+       28,
+       42
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "인공지능책임관 협의회 참석 기관 수. 2026.10.02.",
+    "source_id": "src_pipc_caio_20261002"
+   },
+   "tags": [
+    "AI거버넌스",
+    "모두의AI",
+    "입법"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "kr",
+   "source": {
+    "source_id": "src_pipc_caio_20261002",
+    "source_name": "개인정보보호위원회",
+    "source_title": "제5차 인공지능책임관(CAIO) 협의회 개최",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784206",
+    "published_at": "2026-10-02",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-22",
+     "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료",
+     "attribution_text": "출처: 개인정보보호위원회 「제5차 인공지능책임관(CAIO) 협의회 개최」(공공누리 제1유형)"
+    },
+    "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
+  },
+  {
+   "id": "c04",
+   "order": 4,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "신산업 규제 3건 풀린다 — 소액송금·무인자율주행·R&D",
+   "kicker": "협회 5곳 참석 · 정부 개선 3건 · 추가 건의 2건",
+   "three_step": {
+    "what": "국무조정실이 신산업 분야 협회 5곳과 간담회를 열고, 8월 총리 주재 간담회에서 나온 건의에 대한 정부의 추진 상황을 공유했다.",
+    "evidence": "소액해외송금업체 이행보증금 산정기간을 직전월에서 직전 3개월 일평균으로 넓히는 제도개선을 연내 마련하고, 무인 자율주행차 임시운행 허가 절차를 완화하는 고시를 개정하며, 국가 R&D 목표의 유연한 변경을 추진한다. 협회는 영상·위치정보 비식별 기준과 휴머노이드 안전기준을 추가로 건의했다(2026년 10월 2일).",
+    "implication": "자율주행·로봇·핀테크로 진입하려는 내담자에게는 규제 완화 일정과 함께 그 직무의 안전·개인정보 자격 요건을 같이 확인하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "참석 협회",
+     "value": "5곳",
+     "delta": "",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "정부 개선 추진",
+     "value": "3건",
+     "delta": "",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "협회 추가 건의",
+     "value": "2건",
+     "delta": "",
+     "period": "2026년 10월"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "건",
+    "labels": [
+     "정부 개선 추진",
+     "협회 추가 건의"
+    ],
+    "series": [
+     {
+      "name": "과제 수",
+      "values": [
+       3,
+       2
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "신산업 규제 간담회에서 다뤄진 과제 수. 국무조정실, 2026.10.02.",
+    "source_id": "src_ops_regu_20261002"
+   },
+   "tags": [
+    "신산업",
+    "규제혁신",
+    "자율주행"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "source": {
+    "source_id": "src_ops_regu_20261002",
+    "source_name": "국무조정실",
+    "source_title": "[보도자료] 신산업 협·단체 오찬 간담회",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784178",
+    "published_at": "2026-10-02",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-22",
+     "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료",
+     "attribution_text": "출처: 국무조정실 「[보도자료] 신산업 협·단체 오찬 간담회」(공공누리 제1유형)"
+    },
+    "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  },
+  {
+   "id": "c05",
+   "order": 5,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "메가특구 특별법, 노·사·정 2차 협의 — 10월 8일 다시 만난다",
+   "kicker": "실무협의체 2차 · 노동계 2·경영계 2·정부 4 · 3차 10.8 16:00",
+   "three_step": {
+    "what": "고용노동부가 메가특구 특별법(가칭) 관련 원포인트 사회적 대화 실무협의체 2차 회의를 열고 정부가 특구의 개념과 방향성을 설명했다.",
+    "evidence": "노동계는 한국노총·민주노총, 경영계는 경총·대한상의, 정부는 고용노동부·국무조정실·재정경제부·산업통상부가 참석하고 경제사회노동위원회가 운영을 맡았다. 3차 회의는 10월 8일 16시로 예고됐다(2026년 10월 2일, 고용노동부).",
+    "implication": "특구 입지와 업종이 정해지면 그 지역 인력수요가 먼저 움직이므로, 관할 지역 상담사는 3차 회의 결과를 확인해 지역 훈련과정과 연결해 두어라."
+   },
+   "key_numbers": [
+    {
+     "label": "실무협의체",
+     "value": "2차",
+     "delta": "",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "참석 기관",
+     "value": "9곳",
+     "delta": "",
+     "period": "2026년 10월"
+    },
+    {
+     "label": "3차 회의",
+     "value": "10월 8일",
+     "delta": "",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "곳",
+    "labels": [
+     "노동계",
+     "경영계",
+     "정부"
+    ],
+    "series": [
+     {
+      "name": "참석 기관",
+      "values": [
+       2,
+       2,
+       4
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "실무협의체 2차 회의 참석 기관 수(경제사회노동위원회 운영 별도). 고용노동부, 2026.10.02.",
+    "source_id": "src_moel_mega_20261002"
+   },
+   "tags": [
+    "메가특구",
+    "사회적 대화",
+    "노사정"
+   ],
+   "ncs": [
+    "직업상담서비스"
+   ],
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "kr",
+   "source": {
+    "source_id": "src_moel_mega_20261002",
+    "source_name": "고용노동부",
+    "source_title": "(참고) 「(가칭) 메가특구특별법 관련 원포인트 사회적 대화」 제2차 실무협의체 개최",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784243",
+    "published_at": "2026-10-02",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-22",
+     "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료",
+     "attribution_text": "출처: 고용노동부 「(참고) 「(가칭) 메가특구특별법 관련 원포인트 사회적 대화」 제2차 실무협의체 개최」(공공누리 제1유형)"
+    },
+    "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+   },
+   "labor_walk": true,
+   "labor_walk_topic": "고용정책·감독"
+  }
+ ],
+ "radar": null,
+ "runs": {
+  "kr-0700": {
+   "status": "ok",
+   "updated_at": "2026-10-02T07:05:00+09:00",
+   "last_ok": "2026-10-02",
+   "run_id": "br-20261002-0705"
+  },
+  "global-2300": {
+   "status": "ok",
+   "updated_at": "2026-10-02T23:04:00+09:00",
+   "last_ok": "2026-10-02",
+   "run_id": "br-20261002-2304"
+  }
+ },
+ "sources": [
+  {
+   "source_id": "src_bls_empsit_202609",
+   "source_name": "미국 노동통계국(BLS)",
+   "source_title": "The Employment Situation — September 2026",
+   "source_url": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+   "published_at": "2026-10-02",
+   "license": {
+    "name": "퍼블릭 도메인(미국 연방정부 저작물)",
+    "type": "PUBLIC-DOMAIN",
+    "url": null,
+    "scope": null,
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): BLS Copyright Information: 'The Bureau of Labor Statistics (BLS) is a Federal government agency and everything that we publish ... is in the public domain' (사진·일러스트 제외)",
+    "attribution_text": "출처: 미국 노동통계국(BLS) 「The Employment Situation — September 2026」(퍼블릭 도메인)"
+   },
+   "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+  },
+  {
+   "source_id": "src_moel_step_20261002",
+   "source_name": "고용노동부",
+   "source_title": "인공지능(AI)·디지털 기반 직업훈련 지원 한국기술교육대 STEP, 학습관리시스템(LMS) 신규 참여기관 모집",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784168",
+   "published_at": "2026-10-02",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료",
+    "attribution_text": "출처: 고용노동부 「인공지능(AI)·디지털 기반 직업훈련 지원 한국기술교육대 STEP, 학습관리시스템(LMS) 신규 참여기관 모집」(공공누리 제1유형)"
+   },
+   "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+  },
+  {
+   "source_id": "src_pipc_caio_20261002",
+   "source_name": "개인정보보호위원회",
+   "source_title": "제5차 인공지능책임관(CAIO) 협의회 개최",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784206",
+   "published_at": "2026-10-02",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료",
+    "attribution_text": "출처: 개인정보보호위원회 「제5차 인공지능책임관(CAIO) 협의회 개최」(공공누리 제1유형)"
+   },
+   "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+  },
+  {
+   "source_id": "src_ops_regu_20261002",
+   "source_name": "국무조정실",
+   "source_title": "[보도자료] 신산업 협·단체 오찬 간담회",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784178",
+   "published_at": "2026-10-02",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료",
+    "attribution_text": "출처: 국무조정실 「[보도자료] 신산업 협·단체 오찬 간담회」(공공누리 제1유형)"
+   },
+   "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+  },
+  {
+   "source_id": "src_moel_mega_20261002",
+   "source_name": "고용노동부",
+   "source_title": "(참고) 「(가칭) 메가특구특별법 관련 원포인트 사회적 대화」 제2차 실무협의체 개최",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784243",
+   "published_at": "2026-10-02",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "원문 페이지 하단 고지 직접 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료",
+    "attribution_text": "출처: 고용노동부 「(참고) 「(가칭) 메가특구특별법 관련 원포인트 사회적 대화」 제2차 실무협의체 개최」(공공누리 제1유형)"
+   },
+   "usage": "원문 내용을 우리 말로 요약·재구성하고 수치를 도표화(출처 표시)."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "트랙 A는 라이선스가 허락한 범위에서 번역·도표화했고, 트랙 B는 본문을 옮기지 않고 사실·수치만 우리 말로 새로 썼습니다.",
+  "track_a_note": "공공누리 제1유형(출처표시)·퍼블릭 도메인·CC BY 4.0 자료를 카드마다 출처와 라이선스로 표시합니다.",
+  "track_b_note": "언론사 기사와 공공누리 미부착 자료는 본문·번역문을 싣지 않고 수치 사실과 원문 링크만 제공합니다.",
+  "quote_limit_words": 15,
+  "contact": "원문 권리자의 요청이 있으면 해당 카드를 즉시 내립니다."
+ },
+ "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다.",
+ "archive_dates": [
+  "2026-11-22",
+  "2026-11-21",
+  "2026-11-20",
+  "2026-11-19",
+  "2026-11-18",
+  "2026-11-17",
+  "2026-11-16",
+  "2026-11-15",
+  "2026-11-14",
+  "2026-11-13",
+  "2026-11-12",
+  "2026-11-11",
+  "2026-11-10",
+  "2026-11-09",
+  "2026-11-08",
+  "2026-11-07",
+  "2026-11-06",
+  "2026-11-05",
+  "2026-11-04",
+  "2026-11-03",
+  "2026-11-02",
+  "2026-11-01",
+  "2026-10-31",
+  "2026-10-30",
+  "2026-10-29",
+  "2026-10-28",
+  "2026-10-27",
+  "2026-10-26",
+  "2026-10-25",
+  "2026-10-24",
+  "2026-10-23",
+  "2026-10-22",
+  "2026-10-21",
+  "2026-10-20",
+  "2026-10-19",
+  "2026-10-18",
+  "2026-10-17",
+  "2026-10-16",
+  "2026-10-15",
+  "2026-10-14",
+  "2026-10-13",
+  "2026-10-12",
+  "2026-10-11",
+  "2026-10-10",
+  "2026-10-09",
+  "2026-10-08",
+  "2026-10-07",
+  "2026-10-06",
+  "2026-10-05",
+  "2026-10-04",
+  "2026-10-03",
+  "2026-10-02",
+  "2026-10-01",
+  "2026-09-30",
+  "2026-09-26",
+  "2026-09-25",
+  "2026-09-23",
+  "2026-09-22",
+  "2026-09-21",
+  "2026-09-19",
+  "2026-09-18",
+  "2026-09-17",
+  "2026-09-16",
+  "2026-09-15",
+  "2026-09-14",
+  "2026-09-12",
+  "2026-09-08",
+  "2026-09-05",
+  "2026-09-04",
+  "2026-09-02",
+  "2026-09-01",
+  "2026-08-31",
+  "2026-08-29",
+  "2026-08-27",
+  "2026-08-25",
+  "2026-08-24",
+  "2026-08-21",
+  "2026-08-20",
+  "2026-08-19",
+  "2026-08-14",
+  "2026-08-12",
+  "2026-08-11",
+  "2026-08-08",
+  "2026-08-06",
+  "2026-08-05",
+  "2026-07-30",
+  "2026-07-29",
+  "2026-07-28",
+  "2026-07-25",
+  "2026-07-24",
+  "2026-07-23",
+  "2026-07-22",
+  "2026-07-17",
+  "2026-07-15",
+  "2026-07-14",
+  "2026-07-10",
+  "2026-07-09",
+  "2026-07-08",
+  "2026-07-02",
+  "2026-07-01",
+  "2026-06-30",
+  "2026-06-24",
+  "2026-06-22",
+  "2026-06-18",
+  "2026-06-16",
+  "2026-06-11",
+  "2026-06-10",
+  "2026-06-09",
+  "2026-06-08",
+  "2026-06-05",
+  "2026-06-02",
+  "2026-05-30",
+  "2026-05-27",
+  "2026-05-22",
+  "2026-05-20",
+  "2026-05-19",
+  "2026-05-13",
+  "2026-05-12",
+  "2026-05-07",
+  "2026-05-04",
+  "2026-04-30",
+  "2026-04-27",
+  "2026-04-22",
+  "2026-04-20",
+  "2026-04-14",
+  "2026-04-11",
+  "2026-04-10",
+  "2026-04-08",
+  "2026-04-03",
+  "2026-04-02",
+  "2026-03-31",
+  "2026-03-27",
+  "2026-03-26",
+  "2026-03-23",
+  "2026-03-20",
+  "2026-03-19",
+  "2026-03-17",
+  "2026-03-16",
+  "2026-03-13",
+  "2026-03-11",
+  "2026-03-10",
+  "2026-03-06",
+  "2026-03-05",
+  "2026-03-03",
+  "2026-02-27",
+  "2026-02-25",
+  "2026-02-24",
+  "2026-02-23",
+  "2026-02-20",
+  "2026-02-16",
+  "2026-02-13",
+  "2026-02-11",
+  "2026-02-09",
+  "2026-02-06",
+  "2026-02-03",
+  "2026-02-02",
+  "2026-01-30",
+  "2026-01-29",
+  "2026-01-28",
+  "2026-01-27",
+  "2026-01-22",
+  "2026-01-21",
+  "2026-01-20",
+  "2026-01-16",
+  "2026-01-15",
+  "2026-01-12",
+  "2026-01-08",
+  "2026-01-07",
+  "2026-01-06",
+  "2026-01-02",
+  "2025-12-30",
+  "2025-12-26",
+  "2025-12-24",
+  "2025-12-23",
+  "2025-12-22",
+  "2025-12-19",
+  "2025-12-18",
+  "2025-12-17",
+  "2025-12-16",
+  "2025-12-12",
+  "2025-12-10",
+  "2025-12-09",
+  "2025-12-08",
+  "2025-12-05",
+  "2025-12-03",
+  "2025-12-01",
+  "2025-11-29",
+  "2025-11-27",
+  "2025-11-25",
+  "2025-11-21",
+  "2025-11-18",
+  "2025-11-17",
+  "2025-11-15",
+  "2025-11-12",
+  "2025-11-11",
+  "2025-11-10",
+  "2025-11-07",
+  "2025-11-05",
+  "2025-11-03",
+  "2025-10-30",
+  "2025-10-29",
+  "2025-10-27",
+  "2025-10-22",
+  "2025-10-21",
+  "2025-10-19",
+  "2025-10-17",
+  "2025-10-16",
+  "2025-10-02",
+  "2025-10-01",
+  "2025-09-30",
+  "2025-09-25",
+  "2025-09-24",
+  "2025-09-23",
+  "2025-09-18",
+  "2025-09-17",
+  "2025-09-16",
+  "2025-09-15",
+  "2025-09-11",
+  "2025-09-10",
+  "2025-09-03",
+  "2025-09-02",
+  "2025-09-01",
+  "2025-08-28",
+  "2025-08-27",
+  "2025-08-21",
+  "2025-08-20",
+  "2025-08-19",
+  "2025-08-14",
+  "2025-08-11",
+  "2025-08-08",
+  "2025-08-05",
+  "2025-07-31",
+  "2025-07-30",
+  "2025-07-22",
+  "2025-07-15",
+  "2025-07-14",
+  "2025-07-10",
+  "2025-07-09",
+  "2025-07-04",
+  "2025-06-27",
+  "2025-06-26",
+  "2025-06-18",
+  "2025-06-16",
+  "2025-06-15",
+  "2025-06-02",
+  "2025-05-28",
+  "2025-05-22",
+  "2025-05-19",
+  "2025-05-15"
+ ]
+}

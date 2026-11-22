@@ -1,0 +1,355 @@
+{
+ "schema_version": "1.1.0",
+ "updated_at": "2026-11-10T23:40:00+09:00",
+ "edition": {
+  "no": 107,
+  "date": "2026-11-10",
+  "weekday": "화",
+  "title": "지역방송 콘텐츠, 5개국 7개 방송사와 만났다",
+  "reading_minutes": 3,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20261110-1",
+   "date": "2026-11-10",
+   "order": 1,
+   "lead": true,
+   "sector": "s3",
+   "cat": "content",
+   "title": "지역방송 20곳, 해외 7개 방송사와 공동제작 모색",
+   "subtitle": "중국·일본·대만·베트남·인도네시아 5개국 방송사가 서울에 모였다",
+   "kicker": "방송미디어통신위원회 · 2026.11.10",
+   "summary": "방송미디어통신위원회가 지역방송 콘텐츠의 해외 진출을 돕는 교류협력 행사를 열었다. 국내 20개 지역방송사와 5개국 7개 해외 방송 관계사가 참여해 유통과 공동제작 협력을 논의했다.",
+   "key_numbers": [
+    {
+     "label": "국내 지역방송사",
+     "value": "20곳",
+     "note": ""
+    },
+    {
+     "label": "해외 방송사",
+     "value": "7곳",
+     "note": "5개국"
+    },
+    {
+     "label": "행사",
+     "value": "2026.11.10",
+     "note": "서울"
+    }
+   ],
+   "market": {
+    "label": "참여 방송사",
+    "unit": "곳",
+    "basis": "2026년 11월",
+    "chart": "bar",
+    "labels": [
+     "국내 지역방송",
+     "해외 방송사"
+    ],
+    "series": [
+     {
+      "name": "참여",
+      "values": [
+       20,
+       7
+      ],
+      "emphasis": true
+     }
+    ],
+    "cagr": null,
+    "note": "지역방송 콘텐츠 교류 행사 참여 방송사(곳). 방송미디어통신위원회, 2026.11.10.",
+    "source_id": "src_kmcc_local_broadcast_20261110"
+   },
+   "players": {
+    "domestic": [
+     "방송미디어통신위원회",
+     "지역방송사"
+    ],
+    "glob": [
+     "Mango TV(중국)",
+     "Tokyo DOCS(일본)",
+     "AVJET(대만)",
+     "SCTV·VTV(베트남)"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-pd"
+    ],
+    "new": [
+     "j-content-ai"
+    ]
+   },
+   "source_id": "src_kmcc_local_broadcast_20261110",
+   "question": "지역 콘텐츠를 해외에 팔려면 기획 단계에서 무엇을 바꿔야 하나."
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-pd",
+   "name": "콘텐츠 PD",
+   "en": "Content Producer / Director",
+   "sector": "s3",
+   "role": "기획부터 제작·편집·공개까지 콘텐츠의 전체 흐름을 책임진다. 예산과 일정, 제작진의 역할을 조정하며 최종 결과물의 기준을 지킨다.",
+   "ksa": {
+    "k": [
+     "서사·연출",
+     "제작 공정·예산",
+     "저작권·계약"
+    ],
+    "s": [
+     "기획서·구성안",
+     "촬영·편집 지휘",
+     "플랫폼 유통"
+    ],
+    "a": [
+     "끝까지 기준을 놓지 않는 고집",
+     "제작진을 이끄는 리더십"
+    ]
+   },
+   "study": [
+    "미디어커뮤니케이션",
+    "영상학",
+    "연출"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "방송영상 제작 민간 교육·공모전"
+   ],
+   "insight": "생성AI가 제작 공정을 바꾸고 있지만 ‘무엇을 만들 것인가’를 정하는 일은 여전히 사람의 몫이다. 다만 도구를 이해하는 PD와 그렇지 않은 PD의 격차가 벌어지고 있다.",
+   "companies": {
+    "domestic": [
+     "CJ ENM",
+     "스튜디오드래곤",
+     "넷플릭스 코리아",
+     "웨이브",
+     "방송사"
+    ],
+    "global": [
+     "Netflix",
+     "Disney+",
+     "Amazon MGM Studios",
+     "YouTube"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "콘텐츠 IP 라이선싱 매니저",
+     "w": "캐릭터·세계관을 다른 산업에 파는 일"
+    }
+   ]
+  },
+  {
+   "id": "j-content-ai",
+   "name": "생성AI 콘텐츠 워크플로 설계자",
+   "en": "Generative AI Content Workflow Designer",
+   "sector": "s3",
+   "role": "기획·제작·검수 단계에 생성AI를 끼워 넣어 제작 시간과 비용을 줄이는 공정을 설계한다. 어떤 단계는 자동화하고 어떤 단계는 사람이 최종 판단하도록 경계를 정한다.",
+   "ksa": {
+    "k": [
+     "콘텐츠 제작 공정",
+     "생성모델 한계와 저작권",
+     "품질 기준 설정"
+    ],
+    "s": [
+     "프롬프트·템플릿 설계",
+     "자동화 도구 연결(API·노코드)",
+     "검수 체크리스트 운영"
+    ],
+    "a": [
+     "‘빠름’과 ‘믿을 수 있음’을 함께 보는 감각",
+     "창작자와 협상하는 소통"
+    ]
+   },
+   "study": [
+    "미디어커뮤니케이션",
+    "콘텐츠학",
+    "디자인",
+    "경영학"
+   ],
+   "certs": [
+    "국가자격 없음",
+    "멀티미디어콘텐츠제작 전문가(민간)",
+    "Adobe 공인 자격"
+   ],
+   "insight": "콘텐츠 산업에서 생성AI 활용률은 이미 3곳 중 1곳이다. 이 직무의 값은 도구 사용이 아니라 ‘사람이 볼 곳을 남기는 설계’에 있다.",
+   "companies": {
+    "domestic": [
+     "CJ ENM",
+     "스튜디오드래곤",
+     "네이버웹툰",
+     "카카오엔터테인먼트",
+     "하이브"
+    ],
+    "global": [
+     "Adobe",
+     "Netflix",
+     "Disney",
+     "Runway"
+    ]
+   },
+   "kind": "new",
+   "next_roles": [
+    {
+     "n": "AI 콘텐츠 검수 편집자",
+     "w": "생성물의 저작권·사실 오류를 걸러내는 전문 교정"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_kmcc_local_broadcast_20261110",
+   "name": "방송미디어통신위원회",
+   "title": "지역방송 콘텐츠, 해외 진출 지원 나서",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788573",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-22",
+    "evidence": "원문 고지 확인(2026-11-22): us=no, location=no'); } //]]> 이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건 에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료"
+   },
+   "published": "2026-11-10",
+   "track": "A",
+   "usage": "지역방송 콘텐츠 교류협력 행사(2026.11.10 서울), 국내 지역방송사 20곳·5개국 7개 해외 방송사, 유통·공동제작 협력"
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}

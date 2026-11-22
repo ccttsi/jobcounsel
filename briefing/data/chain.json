@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-22T07:06:03+09:00",
+ "generated_at": "2026-11-22T09:27:04+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -10,27 +10,51 @@
   "2026-11-18",
   "2026-11-17",
   "2026-11-16",
+  "2026-11-15",
   "2026-11-14",
   "2026-11-13",
   "2026-11-12",
   "2026-11-11",
   "2026-11-10",
+  "2026-11-09",
+  "2026-11-08",
   "2026-11-07",
   "2026-11-06",
   "2026-11-05",
   "2026-11-04",
   "2026-11-03",
+  "2026-11-02",
+  "2026-11-01",
   "2026-10-31",
   "2026-10-30",
+  "2026-10-29",
+  "2026-10-28",
+  "2026-10-27",
+  "2026-10-26",
+  "2026-10-25",
+  "2026-10-24",
+  "2026-10-23",
   "2026-10-22",
   "2026-10-21",
   "2026-10-20",
+  "2026-10-19",
+  "2026-10-18",
   "2026-10-17",
   "2026-10-16",
   "2026-10-15",
+  "2026-10-14",
+  "2026-10-13",
+  "2026-10-12",
+  "2026-10-11",
+  "2026-10-10",
   "2026-10-09",
+  "2026-10-08",
+  "2026-10-07",
   "2026-10-06",
+  "2026-10-05",
+  "2026-10-04",
   "2026-10-03",
+  "2026-10-02",
   "2026-10-01",
   "2026-09-30",
   "2026-09-26",
@@ -1246,6 +1270,72 @@
      "published_at": "2026-09-22"
     },
     {
+     "date": "2026-10-02",
+     "card_id": "c04",
+     "title": "신산업 규제 3건 풀린다 — 소액송금·무인자율주행·R&D",
+     "kicker": "협회 5곳 참석 · 정부 개선 3건 · 추가 건의 2건",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784178",
+     "published_at": "2026-10-02"
+    },
+    {
+     "date": "2026-10-02",
+     "card_id": "c05",
+     "title": "메가특구 특별법, 노·사·정 2차 협의 — 10월 8일 다시 만난다",
+     "kicker": "실무협의체 2차 · 노동계 2·경영계 2·정부 4 · 3차 10.8 16:00",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784243",
+     "published_at": "2026-10-02"
+    },
+    {
+     "date": "2026-10-04",
+     "card_id": "c01",
+     "title": "기간제 141만2천명 — 정년 뒤 다시 고용하는 대기업",
+     "kicker": "기간제 +6만7천명(141만2천명) · 재고용 제도 83.5% · 신규채용 -15.3%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "YTN",
+     "source_url": "https://www.ytn.co.kr/_ln/0103_202610042332558288",
+     "published_at": "2026-10-04"
+    },
+    {
+     "date": "2026-10-07",
+     "card_id": "c02",
+     "title": "인구가 역삼각형이 된다 — 일자리 체계를 국민이 직접 의제로",
+     "kicker": "공론화 특위 7.16 발족 · 1단계 결과 공개 · 의제 2개",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "경제사회노동위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784477",
+     "published_at": "2026-10-07"
+    },
+    {
+     "date": "2026-10-07",
+     "card_id": "c03",
+     "title": "외국인 유학생 40만명 — 비자정책 '유치'에서 '성장'으로",
+     "kicker": "유학생 40만명 · 협의회 4.20~10월 · 논의 5개월",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "법무부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784597",
+     "published_at": "2026-10-07"
+    },
+    {
+     "date": "2026-10-08",
+     "card_id": "c03",
+     "title": "장애인 근로자 학대, 고용공단이 먼저 발견한다",
+     "kicker": "업무협약 1건 · 장애인복지법 59조의11 · 장애인고용법 43조",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784664",
+     "published_at": "2026-10-08"
+    },
+    {
      "date": "2026-10-09",
      "card_id": "c01",
      "title": "일자리 TF — 취업자는 늘었지만 청년·제조·건설은 그대로",
@@ -1257,6 +1347,83 @@
      "published_at": "2026-10-08"
     },
     {
+     "date": "2026-10-11",
+     "card_id": "c01",
+     "title": "4대보험 가입신고, 세무 프로그램에서 바로 보낸다 — 연 7만 건",
+     "kicker": "10월 12일 시작 · 연간 약 7만 건 · 팩스 수동접수 없앤다",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784756",
+     "published_at": "2026-10-11"
+    },
+    {
+     "date": "2026-10-13",
+     "card_id": "c04",
+     "title": "인구전략위원회 10월 14일 출범 — 국민참여단 100명이 설계에 들어간다",
+     "kicker": "비전선포식 10.14 · 참석 120여 명 · 국민참여단 100명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785007",
+     "published_at": "2026-10-13"
+    },
+    {
+     "date": "2026-10-14",
+     "card_id": "c01",
+     "title": "메가특구 노동정책, 노동계가 먼저 제안서를 냈다",
+     "kicker": "실무협의체 4차 · 한국노총 발제 · 5차 10.20 10:00",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785222",
+     "published_at": "2026-10-14"
+    },
+    {
+     "date": "2026-10-14",
+     "card_id": "c03",
+     "title": "숲해설가·녹지관리원에 SOS 비상벨 — 혼자 일하는 현장",
+     "kicker": "휴대용 SOS 비상벨 · 복수근무자 배치 · 안전교육·비상연락망 정비",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "산림청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785189",
+     "published_at": "2026-10-14"
+    },
+    {
+     "date": "2026-10-18",
+     "card_id": "c01",
+     "title": "화재·폭발 사고사망자 16→32명 — 11월 집중점검 들어간다",
+     "kicker": "사고사망 32명(전년 16명) · 제조업 9명(+125%) · 점검 11.2~11.13",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785585",
+     "published_at": "2026-10-18"
+    },
+    {
+     "date": "2026-10-18",
+     "card_id": "c02",
+     "title": "수탁·위탁거래 1만5천 개사 조사 — 납품대금 연동제 본다",
+     "kicker": "대상 1만5,000개사(위탁 3,000·수탁 1만2,000) · 조사 기간 6개월→1년",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "중소벤처기업부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785559",
+     "published_at": "2026-10-18"
+    },
+    {
+     "date": "2026-10-19",
+     "card_id": "c03",
+     "title": "경제단체 7곳 규제 간담회 — 8월 총리 간담회의 후속",
+     "kicker": "협단체 7곳 참석 · 8.28 간담회 후속 · 정례 소통",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785692",
+     "published_at": "2026-10-19"
+    },
+    {
      "date": "2026-10-22",
      "card_id": "c02",
      "title": "석탄발전 폐지 지역, 노동자 전환 대책을 먼저 짠다",
@@ -1266,6 +1433,127 @@
      "source_name": "기후에너지환경부",
      "source_url": "https://mcee.go.kr/m/mob/board/read.do?boardId=1901100&boardMasterId=939&maxIndexPages=5&maxPageItems=10&menuId=156&orgCd=&pagerOffset=0&searchKey=&searchValue=",
      "published_at": "2026-10-21"
+    },
+    {
+     "date": "2026-10-25",
+     "card_id": "c01",
+     "title": "12월 8일 지방노동감독 시행 — 36개 항목 표준 매뉴얼",
+     "kicker": "점검 항목 36개 · 9개 업종 실습 · 5개 지방정부 점검",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786381",
+     "published_at": "2026-10-25"
+    },
+    {
+     "date": "2026-10-25",
+     "card_id": "c02",
+     "title": "항만운영협약 3년으로 — 업체 63→77개사",
+     "kicker": "협약기간 1~2년→3년 · 업체 77개사 · 도선사 78명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "해양수산부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786346",
+     "published_at": "2026-10-25"
+    },
+    {
+     "date": "2026-10-26",
+     "card_id": "c02",
+     "title": "산림사업장 아차사고 6건이 표준이 된다",
+     "kicker": "선정 6점(최우수 1·우수 2·장려 3) · 현장 종사자 공모 · 전 사업장 공유",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "산림청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786548",
+     "published_at": "2026-10-26"
+    },
+    {
+     "date": "2026-10-27",
+     "card_id": "c02",
+     "title": "고리 3·4호기 계속운전 허가 — 설계수명 40년 지났다",
+     "kicker": "전기출력 1,025MWe · 설계수명 40년 만료 · 2022년 평가서 제출",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "원자력안전위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786688",
+     "published_at": "2026-10-27"
+    },
+    {
+     "date": "2026-10-28",
+     "card_id": "c03",
+     "title": "초광역특구 사회적 대화 6차 — 노사정 논의 계속",
+     "kicker": "실무협의체 6차 · 초광역특구법(약칭) · 노사정 참여",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786937",
+     "published_at": "2026-10-28"
+    },
+    {
+     "date": "2026-11-01",
+     "card_id": "c02",
+     "title": "연근해어업법 시행령 입법예고 — 내년 6월 17일 시행",
+     "kicker": "입법예고 11.2~12.14 · 시행 2027.6.17 · 어획증명제 도입",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "해양수산부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787413",
+     "published_at": "2026-11-01"
+    },
+    {
+     "date": "2026-11-01",
+     "card_id": "c03",
+     "title": "수급사업자 기술정보 빼내 특허 낸 대기업, 과징금 4.2억",
+     "kicker": "과징금 4억2천만 원 · 시정명령 · 무형 정보 첫 인정",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "공정거래위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787415",
+     "published_at": "2026-11-01"
+    },
+    {
+     "date": "2026-11-02",
+     "card_id": "c02",
+     "title": "라이브클럽 규제, 마포구청에서 현장 해법 찾는다",
+     "kicker": "11.2 15:00~17:00 · 규합위원 3명 · 문체부·식약처·마포구청",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787616",
+     "published_at": "2026-11-02"
+    },
+    {
+     "date": "2026-11-08",
+     "card_id": "c01",
+     "title": "고용보험 부정수급 자진신고 — 추가징수 면제",
+     "kicker": "11.9~12.31 · 실업급여·육아휴직급여·고용장려금 · 지급제한 최대 1/3 감경",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788331",
+     "published_at": "2026-11-08"
+    },
+    {
+     "date": "2026-11-08",
+     "card_id": "c02",
+     "title": "외국인 계절노동자 160곳 인권 점검 — 5개 시군은 합동",
+     "kicker": "점검 11.9~27 · 약 160곳 · 합동 5개·자체 22개 시군",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "해양수산부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788324",
+     "published_at": "2026-11-08"
+    },
+    {
+     "date": "2026-11-09",
+     "card_id": "c02",
+     "title": "순직 소방공무원 275위, 이름표로 남았다",
+     "kicker": "추모 명패 275위 · 소방의 날 64주년 · 10.17 순직자 추모",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "소방청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788478",
+     "published_at": "2026-11-09"
     },
     {
      "date": "2026-11-10",
@@ -1299,6 +1587,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20249",
      "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-15",
+     "card_id": "c02",
+     "title": "이주노동자에게 겨울옷·작업복 — 4개 재단이 함께",
+     "kicker": "11.15 울산 · 노동권익재단 4곳 · 4월 업무협약 후속",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789260",
+     "published_at": "2026-11-15"
     },
     {
      "date": "2026-11-20",
@@ -2004,6 +2303,149 @@
      "published_at": "2026-09-16"
     },
     {
+     "date": "2026-10-04",
+     "card_id": "c03",
+     "title": "익산 취업박람회 — 41개사 81명 뽑는다",
+     "kicker": "부스 60개 · 도내 41개사 · 9개 기업 81명 채용 · 3천여 명 참여",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "연합뉴스",
+     "source_url": "https://www.yna.co.kr/view/AKR20261002101400055",
+     "published_at": "2026-10-04"
+    },
+    {
+     "date": "2026-10-05",
+     "card_id": "c03",
+     "title": "교제폭력 위험 신호 10가지 — 상담 창구는 1366",
+     "kicker": "레드플래그 10 · 여성긴급전화 1366(24시간·365일) · 대학 현장 간담회",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "성평등가족부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784322",
+     "published_at": "2026-10-05"
+    },
+    {
+     "date": "2026-10-08",
+     "card_id": "c02",
+     "title": "9급 공채 저소득층 모집 넓어진다 — 자격 유지 2년→1년",
+     "kicker": "자립준비청년 추가 · 자격 유지기간 2년→1년 · 2027년 시행",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "인사혁신처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784638",
+     "published_at": "2026-10-08"
+    },
+    {
+     "date": "2026-10-10",
+     "card_id": "c01",
+     "title": "반도체 대기업 경력직 공고 157% — 신입의 세 배",
+     "kicker": "반도체·디스플레이 공고 +102% · 경력직 +157% · 신입 +55%",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "서울경제",
+     "source_url": "https://www.sedaily.com/article/20099899",
+     "published_at": "2026-10-10"
+    },
+    {
+     "date": "2026-10-10",
+     "card_id": "c03",
+     "title": "고양시, 청년·장애인·중장년 3계층 취업지원 한 달",
+     "kicker": "10월 프로그램 3종 · 중장년 박람회 10.29 · AI 모의면접·노동법 상담",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "고양신문",
+     "source_url": "https://www.mygoyang.com/news/articleView.html?idxno=90665",
+     "published_at": "2026-10-10"
+    },
+    {
+     "date": "2026-10-11",
+     "card_id": "c02",
+     "title": "학교 밖 청소년 150명, 노동상식 O/X로 권리를 익혔다",
+     "kicker": "참여 150명 · 체험 4종 · 1:1 노동권 상담",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784755",
+     "published_at": "2026-10-11"
+    },
+    {
+     "date": "2026-10-12",
+     "card_id": "c03",
+     "title": "제6차 자살예방기본계획 확정 — 상담 현장의 위기 대응 틀",
+     "kicker": "9대 분야 통합 · 민간위원 8개 분야 · 제11차 위원회",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784886",
+     "published_at": "2026-10-12"
+    },
+    {
+     "date": "2026-10-23",
+     "card_id": "c02",
+     "title": "창업 규제 10개 푼다 — 기업환경 세계 32위를 올린다",
+     "kicker": "과제 10개 · 창업 생태계 20위권 · 기업환경 32위",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "중소벤처기업부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786326",
+     "published_at": "2026-10-23"
+    },
+    {
+     "date": "2026-10-24",
+     "card_id": "c01",
+     "title": "7대 종단이 자살예방 캠페인에 나섰다",
+     "kicker": "7대 종단 평신도 · 7.15 협력회의 후속 · 종교문화예술 한마당",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786341",
+     "published_at": "2026-10-24"
+    },
+    {
+     "date": "2026-10-24",
+     "card_id": "c02",
+     "title": "한식의 날 첫 법정기념일 — 3일 축제에 기업 홍보관까지",
+     "kicker": "10.23~25(3일) · 법정기념일 첫해 · 한식기업·팝업스토어",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "농림축산식품부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786392",
+     "published_at": "2026-10-24"
+    },
+    {
+     "date": "2026-10-24",
+     "card_id": "c03",
+     "title": "치안관계자 8명 초청 — 재외국민 보호 네트워크",
+     "kicker": "7개국 8명 · 10.19~24 · 2015년부터 연 2회",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "외교부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786330",
+     "published_at": "2026-10-24"
+    },
+    {
+     "date": "2026-10-29",
+     "card_id": "c01",
+     "title": "5급 공채·외교관 400명 합격 — 평균 27.8세",
+     "kicker": "합격 400명(5급 360·외교관 40) · 여성 33.1% · 최연소 2006년생",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "인사혁신처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787154",
+     "published_at": "2026-10-29"
+    },
+    {
+     "date": "2026-10-29",
+     "card_id": "c02",
+     "title": "임산물 수출 유망업체 4개사 — 더덕농축액이 금상",
+     "kicker": "선정 4개사 · 금상 횡성인삼영농조합 · 내년 해외개척 지원",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "산림청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787141",
+     "published_at": "2026-10-29"
+    },
+    {
      "date": "2026-10-30",
      "card_id": "c02",
      "title": "빈 일자리 16만개, 입직도 이직도 10% 넘게 늘었다",
@@ -2405,6 +2847,61 @@
      "published_at": "2026-09-20"
     },
     {
+     "date": "2026-10-04",
+     "card_id": "c02",
+     "title": "계약직 대신 실업급여 — 내년 지급방식 바뀐다",
+     "kicker": "주 7일분→6일분 지급 · 총 지급일수 120~270일 유지 · 월 환산액 감소",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "더팩트",
+     "source_url": "https://news.tf.co.kr/read/life/2372826.htm",
+     "published_at": "2026-10-04"
+    },
+    {
+     "date": "2026-10-11",
+     "card_id": "c04",
+     "title": "농지 전수조사 상담센터 열린다 — 대표전화 1811-8852",
+     "kicker": "10월 12일 개소 · 투기 유형 3가지 · 농지은행 연계",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "농림축산식품부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784940",
+     "published_at": "2026-10-11"
+    },
+    {
+     "date": "2026-10-13",
+     "card_id": "c03",
+     "title": "장애인 개인예산제 3차 시범 — 바우처 4종을 본인이 고른다",
+     "kicker": "시범 3차 · 바우처 4종 · 2024년 1차 시작",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784997",
+     "published_at": "2026-10-13"
+    },
+    {
+     "date": "2026-10-18",
+     "card_id": "c03",
+     "title": "복지위기가구 19만 명 발굴 — 금융·장애인 가구 먼저 본다",
+     "kicker": "전체 19만 명 · 금융 위기 1만7천 명 · 장애인 가구 1만3천 명",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785555",
+     "published_at": "2026-10-18"
+    },
+    {
+     "date": "2026-10-26",
+     "card_id": "c01",
+     "title": "장애인 일자리 연구·교육, 두 기관이 함께한다",
+     "kicker": "업무협약 10.26 · 연구·교육·현장 확산 5개 분야",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786532",
+     "published_at": "2026-10-26"
+    },
+    {
      "date": "2026-11-17",
      "card_id": "c03",
      "title": "퇴직급여 사외적립, 2030년 전 사업장으로 넓힌다",
@@ -2685,6 +3182,17 @@
      "published_at": "2026-09-13"
     },
     {
+     "date": "2026-10-02",
+     "card_id": "c02",
+     "title": "훈련기관 4,500개 콘텐츠로 과정 짠다 — STEP 참여기관 모집",
+     "kicker": "오픈마켓 콘텐츠 4,500여 개 · AI 콘텐츠 162개 · 접수 10.23까지",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784168",
+     "published_at": "2026-10-02"
+    },
+    {
      "date": "2026-10-06",
      "card_id": "c01",
      "title": "온라인 직업훈련 4,500개 콘텐츠, 참여기관 문 연다",
@@ -2696,6 +3204,28 @@
      "published_at": "2026-10-05"
     },
     {
+     "date": "2026-10-11",
+     "card_id": "c03",
+     "title": "개 사육농가 87% 폐업 — 남은 198농가가 다음 과제",
+     "kicker": "1,537→1,339농가 폐업 · 남은 개체 7,600마리 · 종식 2027.2.7",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "농림축산식품부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784943",
+     "published_at": "2026-10-11"
+    },
+    {
+     "date": "2026-10-12",
+     "card_id": "c04",
+     "title": "AI가 들어와도 기능은 남는다 — 청평고 건설기능 훈련",
+     "kicker": "특성화고 연계 훈련 · 현직 기능장·도편수 지도 · 미래인재 조기양성",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784865",
+     "published_at": "2026-10-12"
+    },
+    {
      "date": "2026-10-20",
      "card_id": "c01",
      "title": "청년 일자리·창업 예산 5.1조, 직업훈련은 두 배로",
@@ -2705,6 +3235,28 @@
      "source_name": "뉴스핌",
      "source_url": "https://www.newspim.com/news/view/20261019001141",
      "published_at": "2026-10-19"
+    },
+    {
+     "date": "2026-10-26",
+     "card_id": "c03",
+     "title": "인도네시아 산불 공무원 15명, 한국 체계 배운다",
+     "kicker": "초청 15명 · 1979년부터 산림협력 · 남수마트라 센터 2022~2026",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "산림청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786537",
+     "published_at": "2026-10-26"
+    },
+    {
+     "date": "2026-11-02",
+     "card_id": "c03",
+     "title": "수사경찰관 연수 — 수사 환경 변화에 맞춘다",
+     "kicker": "10.29~ 전국 수사경찰관 · 해양 국제범죄 대응",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "해양경찰청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787618",
+     "published_at": "2026-11-02"
     },
     {
      "date": "2026-11-13",
@@ -3119,6 +3671,50 @@
      "published_at": "2026-09-16"
     },
     {
+     "date": "2026-10-05",
+     "card_id": "c01",
+     "title": "에너지절약 융자금리 2.5%→2.0% — 중소기업 이자 연 50억 준다",
+     "kicker": "정책융자 2,765억원 · 금리 0.5%p 인하 · 이자부담 연 50억원 감소",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "기후에너지환경부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784263",
+     "published_at": "2026-10-05"
+    },
+    {
+     "date": "2026-10-07",
+     "card_id": "c01",
+     "title": "외국인투자 3분기 229억 달러 — 기계·의료정밀은 145% 늘었다",
+     "kicker": "신고 229.0억 달러(+10.8%) · 도착 148.7억(+30.6%) · M&A +53.1%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784491",
+     "published_at": "2026-10-07"
+    },
+    {
+     "date": "2026-10-08",
+     "card_id": "c04",
+     "title": "어획량은 데이터로, 어구 규제는 절반으로 — 1,500개 손본다",
+     "kicker": "TAC 19개 어종→전체(2031) · 규제 1,500여 개 절반 · 근해어선 36% 감척",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "해양수산부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784636",
+     "published_at": "2026-10-08"
+    },
+    {
+     "date": "2026-10-13",
+     "card_id": "c02",
+     "title": "북극항로 왕복 50일 — 부산~유럽 첫 컨테이너선 다녀왔다",
+     "kicker": "편도 20일 5시간 · 왕복 50일 · 로테르담·그단스크 기항",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "해양수산부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784993",
+     "published_at": "2026-10-13"
+    },
+    {
      "date": "2026-10-15",
      "card_id": "c01",
      "title": "미국 9월 물가 3.7%, 휘발유가 한 달에 9.1% 올랐다",
@@ -3141,6 +3737,72 @@
      "published_at": "2026-10-15"
     },
     {
+     "date": "2026-10-19",
+     "card_id": "c01",
+     "title": "반도체 소부장에 2조원 보증 — 단일기업 협약 최대",
+     "kicker": "무역금융 2조원 · 트리니티팹 8,746억원 · 4개 은행 출연",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785695",
+     "published_at": "2026-10-19"
+    },
+    {
+     "date": "2026-10-19",
+     "card_id": "c02",
+     "title": "경제자유구역 사업 9년·4년 연장 — 망상과 청라",
+     "kicker": "경자구역위 149차 · 망상 2035년(9년) · 청라 2031년(4년)",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785702",
+     "published_at": "2026-10-19"
+    },
+    {
+     "date": "2026-10-23",
+     "card_id": "c01",
+     "title": "반도체 규제 13개 손본다 — 팹 착공이 먼저다",
+     "kicker": "개선과제 13개 · 규제합리화위 2차 전체회의 · 10.23 14시",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786328",
+     "published_at": "2026-10-23"
+    },
+    {
+     "date": "2026-10-27",
+     "card_id": "c01",
+     "title": "코리아 그랜드 페스티벌 18일 — 최대 50% 할인",
+     "kicker": "10.29~11.15(18일) · 최대 50% 할인 · 자동차·가전·한우·수산물",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "중소벤처기업부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786694",
+     "published_at": "2026-10-27"
+    },
+    {
+     "date": "2026-10-27",
+     "card_id": "c03",
+     "title": "농어촌 기본소득, 보은 대추로 지역 상권을 살렸다",
+     "kicker": "보은군 현장 간담회 · 대추 음료 레시피 개발 · 지역상권 소비",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "농림축산식품부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786698",
+     "published_at": "2026-10-27"
+    },
+    {
+     "date": "2026-10-28",
+     "card_id": "c01",
+     "title": "새만금 2050→2035 — 15년 당겨 첨단산업으로",
+     "kicker": "목표 15년 단축 · 현대차 9조원 · 재생에너지 10GW",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786941",
+     "published_at": "2026-10-28"
+    },
+    {
      "date": "2026-10-31",
      "card_id": "c01",
      "title": "생산 3.0%·소비 3.6%·투자 5.3%, 석 달 만에 함께 올랐다",
@@ -3161,6 +3823,50 @@
      "source_name": "국가데이터처",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787190",
      "published_at": "2026-10-30"
+    },
+    {
+     "date": "2026-11-01",
+     "card_id": "c01",
+     "title": "10월 수출 1,153억 달러 — 20개 품목 중 18개 늘었다",
+     "kicker": "수출 1,152.8억 달러(+93.7%) · 흑자 425.0억 달러 · 누적 9,300억 달러",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787411",
+     "published_at": "2026-11-01"
+    },
+    {
+     "date": "2026-11-02",
+     "card_id": "c01",
+     "title": "해경 2027년 예산 2조 2,291억 — 6.7% 늘었다",
+     "kicker": "2조 2,291억원(+1,406억) · 해양주권 5,344억 · 구조·안전 1,192억",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "해양경찰청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156787620",
+     "published_at": "2026-11-02"
+    },
+    {
+     "date": "2026-11-08",
+     "card_id": "c03",
+     "title": "기후총회 COP31 개막 — 파리협정 10년",
+     "kicker": "10주년 · 31차 총회 · 11.9~20 안탈리아",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "기후에너지환경부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788330",
+     "published_at": "2026-11-08"
+    },
+    {
+     "date": "2026-11-09",
+     "card_id": "c01",
+     "title": "헝가리 진출 배터리 기업, 정부가 현지 애로를 챙긴다",
+     "kicker": "부총리·장관 면담 3건 · ESG 경영 선언 · 배터리 기업 간담회",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788475",
+     "published_at": "2026-11-09"
     },
     {
      "date": "2026-11-18",
@@ -3498,6 +4204,39 @@
      "published_at": "2026-09-22"
     },
     {
+     "date": "2026-10-05",
+     "card_id": "c02",
+     "title": "청년 임업 창업 교실 4회 — AI로 정책사업까지 찾는다",
+     "kicker": "교육 4회(10.6~11.3) · 2기 · 1박2일 실습",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "농림축산식품부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784339",
+     "published_at": "2026-10-05"
+    },
+    {
+     "date": "2026-10-10",
+     "card_id": "c02",
+     "title": "20대 취업자 19만3천명 줄었다 — 외환위기 이후 최대",
+     "kicker": "20대 취업자 -19.3만명(1~8월) · 2009년 -14.2만·2020년 -11.1만 · 첫 취업 1.3개월 지연",
+     "category": "청년 고용",
+     "region": "kr",
+     "source_name": "SBS",
+     "source_url": "https://news.sbs.co.kr/news/endPage.do?news_id=N1008789119",
+     "published_at": "2026-10-10"
+    },
+    {
+     "date": "2026-10-12",
+     "card_id": "c01",
+     "title": "유엔자원봉사단 설명회에 300명 — 국제기구 진출의 첫 문",
+     "kicker": "UNV 봉사단원 1만7,169명(182개국 출신) · 설명회 300여 명 · 전략대화 6차",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "외교부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784918",
+     "published_at": "2026-10-12"
+    },
+    {
      "date": "2026-10-17",
      "card_id": "c01",
      "title": "9월 취업자 +11.3만, 청년은 47개월째 줄었다",
@@ -3507,6 +4246,28 @@
      "source_name": "국가데이터처",
      "source_url": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156785404",
      "published_at": "2026-10-16"
+    },
+    {
+     "date": "2026-10-18",
+     "card_id": "c04",
+     "title": "재외동포 청년, 제주서 배우고 지역 기업에 취업한다",
+     "kicker": "업무협약 10.17 · 제주한라대 · 현장실습·인턴십",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "재외동포청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785552",
+     "published_at": "2026-10-18"
+    },
+    {
+     "date": "2026-10-23",
+     "card_id": "c03",
+     "title": "특성화고 13개 팀, K-소비재 수출전략을 세웠다",
+     "kicker": "예선 25개 팀 · 본선 8개 학교 13개 팀 · 참석 96명",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786325",
+     "published_at": "2026-10-23"
     },
     {
      "date": "2026-11-05",
@@ -3657,6 +4418,94 @@
      "published_at": "2026-09-21"
     },
     {
+     "date": "2026-10-02",
+     "card_id": "c03",
+     "title": "AI 책임관 협의회 42개 기관으로 — '모두의 AI' 12월 출시",
+     "kicker": "참석 28→42개 기관 · 안건 4건 · 모두의 AI 12월 정식 출시",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "개인정보보호위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784206",
+     "published_at": "2026-10-02"
+    },
+    {
+     "date": "2026-10-07",
+     "card_id": "c04",
+     "title": "청년 50명이 공공서비스 불편을 AI로 고친다",
+     "kicker": "청년 50명 · 10개 팀 · 12월 검증 후 1월 시상",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "행정안전부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784543",
+     "published_at": "2026-10-07"
+    },
+    {
+     "date": "2026-10-08",
+     "card_id": "c01",
+     "title": "AI의 위로는 상담을 대신하지 못한다 — 정부가 가이드라인",
+     "kicker": "설문 1,019명 · 정부 역할 필요 86.9% · 제도 정비 필요 68.7%",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784650",
+     "published_at": "2026-10-08"
+    },
+    {
+     "date": "2026-10-12",
+     "card_id": "c02",
+     "title": "국방 피지컬 AI 거점 5곳 — 판교에 첫 문을 열었다",
+     "kicker": "거점 5곳(1곳 개소) · 참석 150여 명 · 휴머노이드·다족 로봇 실증",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "국방부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784873",
+     "published_at": "2026-10-12"
+    },
+    {
+     "date": "2026-10-13",
+     "card_id": "c01",
+     "title": "4족보행 순찰로봇, 천안 하천변 누빈다 — 첫 실증특례",
+     "kicker": "규제특례위 6차 · 4족보행 로봇 · 천안시 실증",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "산업통상부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784996",
+     "published_at": "2026-10-13"
+    },
+    {
+     "date": "2026-10-14",
+     "card_id": "c02",
+     "title": "농업로봇 내년부터 현장 보급 — 고령화·노동력 부족이 먼저다",
+     "kicker": "수확·예찰 로봇 시연 · 내년 보급 지원 · 성주참외과채류연구소",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "농림축산식품부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785187",
+     "published_at": "2026-10-14"
+    },
+    {
+     "date": "2026-10-25",
+     "card_id": "c03",
+     "title": "해양모빌리티 엑스포 9회 — 자율운항·AI 재난대응관",
+     "kicker": "10.26~28 BPEX · 9회째 · AI 재난 대응관",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "해양수산부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786344",
+     "published_at": "2026-10-25"
+    },
+    {
+     "date": "2026-10-28",
+     "card_id": "c02",
+     "title": "재난대응 훈련 시뮬레이터 소스코드, 전 부처에 공개",
+     "kicker": "참여 16개 기관 · 도상훈련→시뮬레이터 · AI 개발안내서 공개",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156786936",
+     "published_at": "2026-10-28"
+    },
+    {
      "date": "2026-11-11",
      "card_id": "c01",
      "title": "AI 프리랜서 공고는 일을 다시 묶는다",
@@ -3688,6 +4537,17 @@
      "source_name": "arXiv (micro1·노스이스턴대)",
      "source_url": "https://arxiv.org/abs/2611.17530",
      "published_at": "2026-11-13"
+    },
+    {
+     "date": "2026-11-15",
+     "card_id": "c01",
+     "title": "AI로 세무사 시험 부정행위 — 5년 응시제한·합격 취소",
+     "kicker": "비상대책회의 11.15 16:30 · 5년 응시제한 · 공동 후속대책",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156789271",
+     "published_at": "2026-11-15"
     },
     {
      "date": "2026-11-16",
@@ -3891,6 +4751,17 @@
      "source_name": "미국 노동통계국(BLS)",
      "source_url": "https://www.bls.gov/news.release/archives/metro_09302026.htm",
      "published_at": "2026-09-30"
+    },
+    {
+     "date": "2026-10-02",
+     "card_id": "c01",
+     "title": "미국 9월 취업자 +2만9천 — 실업률 4.2% 제자리",
+     "kicker": "비농업 취업자 +2만9천명 · 실업률 4.2% · 장기실업 190만명",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS)",
+     "source_url": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+     "published_at": "2026-10-02"
     },
     {
      "date": "2026-10-03",
