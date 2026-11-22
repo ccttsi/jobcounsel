@@ -41,6 +41,18 @@ try{if(localStorage.getItem('jc-hf')==='off')document.documentElement.setAttribu
 (function(){var inn=false;try{var s=JSON.parse(localStorage.getItem('jc-sync-session')||'null');inn=!!(s&&s.token);}catch(e){}
 document.documentElement.setAttribute('data-jc-auth',inn?'in':'out');})();
 </script>
+<script>/* 첫 화면 안내(온보딩) — 뜰지 말지를 첫 그림 전에 정한다(2026-11-22 태화님 지시).
+   ① 로그인 상태(이 기기의 세션 열쇠가 살아 있음)면 뜨지 않는다.
+   ② 이 탭에서 한 번 닫았으면(건너뛰기·완료·자료 열기) 그 탭에서는 다시 뜨지 않는다.
+   ③ 그 밖에는 대문에 들어올 때마다 뜬다 — 어느 장에서든 「건너뛰기」로 닫는다.
+   안내 스크립트(assets/onboard.js)가 못 실리면 5초 뒤 스스로 걷어 화면을 가로막지 않는다. */
+(function(){try{
+  if(document.documentElement.getAttribute('data-jc-auth')==='in')return;
+  if(sessionStorage.getItem('jc-onb-session')==='1')return;
+  document.documentElement.setAttribute('data-jc-onb','');
+  setTimeout(function(){if(!window.__onbReady)document.documentElement.removeAttribute('data-jc-onb');},5000);
+}catch(e){}})();
+</script>
 <script>/* 시드·매치로 재구성된 화면이면 첫 그림부터 트리거(레버·심전도)를 감춘다. */
 try{var ju=new URLSearchParams(location.search).get('mode'),jcM=(ju==='seed'||ju==='match')?ju:localStorage.getItem('jc-mode');if(jcM==='seed'||jcM==='match')document.documentElement.setAttribute('data-jc-mode',jcM);}catch(e){}
 </script>
@@ -816,8 +828,6 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 .a-root .a-actions .a-tour-btn{position:relative;flex:0 0 auto}
 @media (min-width:768px) and (max-width:1023px){.a-tour-btn .a-tour-lb{display:none}}   /* 이 폭에서는 머리말 한 줄을 지킨다 */
 @media (max-width:380px){.a-tour-btn .a-tour-lb{display:none}}   /* 360px대에서만 글자를 접어 세 단추와 접기 단추가 한 줄에 들어가게 */
-.a-tour-btn[data-new]::after{content:"";position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;
-  background:var(--a2);box-shadow:0 0 0 2px var(--panel)}
 :root[data-jc-mode] .a-tour-btn{display:none}   /* 내 목차·시드·매치 화면에서는 대문 안내를 감춘다 */
 /* 둘러보기 동안 떠 있는 도구(형광펜 도구함·비서 탭)는 제자리에 그대로 두고 **누름만** 막는다.
    카드는 그 위로 비켜 앉으므로(아래 여백) 가려지지 않는다 — 마지막 단계에서 그 자리를 또렷이 세운다.
@@ -875,6 +885,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
 <link rel="stylesheet" href="./assets/modes.css">
 <link rel="stylesheet" href="./assets/deck.css">
 <link rel="stylesheet" href="./assets/brand.css">
+<link rel="stylesheet" href="./assets/onboard.css">
 </head>
 <body class="a-root">
 <div class="a-backdrop" aria-hidden="true"></div>
@@ -897,8 +908,8 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
         <button class="a-btn" id="btnSearch" aria-label="빠른 검색" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
           <i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.6" cy="10.6" r="6.1" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M15.2 15.2 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></i><span>빠른 검색</span><span class="a-kbd" id="kbdHint">Ctrl K</span>
         </button>
-        <button class="a-btn a-tour-btn" id="tourBtn" aria-label="대문 둘러보기" aria-haspopup="dialog" aria-controls="tour" title="대문 둘러보기 — 이 화면 쓰는 법 다섯 단계">
-          <i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15.4 8.6 13.5 13.5 8.6 15.4 10.5 10.5Z" fill="currentColor"/></svg></i><span class="a-tour-lb">둘러보기</span>
+        <button class="a-btn a-tour-btn" id="tourBtn" aria-label="자료실 안내 보기" aria-haspopup="dialog" aria-controls="onb" title="자료실 안내 — 이 화면 쓰는 법 세 장">
+          <i class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15.4 8.6 13.5 13.5 8.6 15.4 10.5 10.5Z" fill="currentColor"/></svg></i><span class="a-tour-lb">튜토리얼</span>
         </button>
       </div>
       <div class="a-status" role="status" aria-label="사이트 상태와 한국 시간">
@@ -921,7 +932,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       <div class="a-pv-body" id="pvBody" inert><div class="a-pv-in">
     <div class="a-pv-lead">
       <p><b>로그인하지 않아도 모든 기능을 제한 없이 쓸 수 있습니다.</b> 로그인은 내가 본 기록(탐색 진도·형광펜과 포스트잇 메모·나만의 덱)을 계정에 저장해 다른 기기와 잇는 선택 기능입니다.</p>
-      <p><b>지금은 <span class="a-num" data-count>37</span>가지 학습·실무 자료가 있습니다.</b> 이론·심리검사·직무분석·법령·국취 실무부터 기업 명함첩·채용 안내판·자격증·재무 해석까지 한 대문에서 열립니다. 화면 아래 <b>자료실 비서</b>는 검색과 질문을, <b>도구함</b>은 형광펜과 포스트잇을, <b>왼쪽 아래 카드덱 단추</b>는 상담 플로우 아키텍트로 이어집니다. 처음 오셨다면 오른쪽 위 <b>대문 둘러보기</b>로 다섯 단계 안내를 보세요.</p>
+      <p><b>지금은 <span class="a-num" data-count>37</span>가지 학습·실무 자료가 있습니다.</b> 이론·심리검사·직무분석·법령·국취 실무부터 기업 명함첩·채용 안내판·자격증·재무 해석까지 한 대문에서 열립니다. 화면 아래 <b>자료실 비서</b>는 검색과 질문을, <b>도구함</b>은 형광펜과 포스트잇을, <b>왼쪽 아래 카드덱 단추</b>는 상담 플로우 아키텍트로 이어집니다. 처음 오셨다면 오른쪽 위 <b>튜토리얼</b>로 자료실 안내 세 장을 다시 볼 수 있습니다.</p>
       <p><b>「시드 · 매치」는 나만의 목차를 직접 꽂아 쓰는 화면입니다.</b> 심전도 단추(목록 화면에서는 가운데 레버)를 한 번 누르고 한 번 더 누르면 <b>시드</b>(지식·원리·기준)와 <b>매치</b>(현장·실무)를 고를 수 있습니다. 자료 선반에서 카드를 골라 번호 칸에 꽂으면 그 순서가 내 목차가 되고, <b>상황 프리셋</b>(매치는 <b>유형 프리셋</b>)을 고르면 상담 순서대로 카드가 한 번에 꽂히며 단계별 질문·확인 진행판이 함께 열립니다.</p>
       <p data-auth="out"><b>상담 플로우 아키텍트</b>(화면 왼쪽 아래 카드덱 단추)에서 키워드로 자료를 이어 상담 순서대로 덱을 짜 봅니다. 시드·매치에서 꽂은 순서는 이 기기의 브라우저에 저장되고, 로그인하면 계정에 이어져 다른 기기에서도 같은 목차가 열립니다. 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
       <p data-auth="in" hidden><b>내가 짠 순서는 마이덱에 저장합니다.</b> <b>상담 플로우 아키텍트</b>(화면 왼쪽 아래 카드덱 단추)에서 키워드로 자료를 이어 덱을 만들고, <b>마이덱</b>에서 이름·순서·꾸미기를 바꿉니다. 꽂은 순서는 이 기기의 브라우저에 저장되고, 로그인하면 계정에 이어져 다른 기기에서도 같은 덱이 열립니다. 언제든 <b>프리셋 풀기</b>로 되돌리거나 <b>MAIN</b>으로 대문에 돌아올 수 있습니다.</p>
@@ -1087,6 +1098,74 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
   </div>
   <div class="a-dsheet" id="deckSheet" hidden></div>
 </section>
+
+<!-- 첫 화면 안내(온보딩) · 2026-11-22 태화님 지시
+     「자료실 들어가기 전에 별도로, 컴팩트하게」 — 처음 온 사람이 세 장을 넘겨 보면 무엇을 할 수 있고
+     무엇을 누르면 되는지 알게 된다. 자료실(37개 섹터)은 줄이지 않고 안내 한 겹만 앞에 세운다.
+       · 뜨는 조건은 <head>의 스크립트가 정한다(로그인 상태면 뜨지 않고, 이 탭에서 닫았으면 다시 뜨지 않는다).
+       · 「건너뛰기」는 카드 머리 오른쪽 끝 한 곳에 고정 — 어느 장에서든 같은 자리다.
+       · 대문의 「튜토리얼」 단추(#tourBtn)가 이 안내를 다시 연다(assets/onboard.js). -->
+<div class="a-onb" id="onb" role="dialog" aria-modal="true" aria-labelledby="onbT" aria-hidden="true">
+  <div class="a-onb-card" id="onbCard" tabindex="-1">
+    <div class="a-onb-hd">
+      <b id="onbT">자료실 안내</b>
+      <span class="a-onb-step" id="onbStepNo">1 / 3</span>
+      <button type="button" class="a-onb-skip" id="onbSkip">건너뛰기</button>
+    </div>
+    <div class="a-onb-bd" id="onbBd">
+      <section class="a-onb-s" aria-labelledby="onbT1">
+        <h2 class="a-onb-t" id="onbT1">여기서 뭘 할 수 있나요?</h2>
+        <p class="a-onb-p">직업상담 이론, 심리검사 해석, 상담실 서식, 최신 고용동향까지 — 학습·실무 자료 <b class="a-num" data-count></b>가지를 한곳에 모았습니다. <b>로그인 없이 무료로</b> 참고하고 실습할 수 있습니다.</p>
+        <div class="a-onb-kw"><span>이론 위키</span><span>심리검사 해석</span><span>상담 서식</span><span>법령·제도</span><span>고용동향</span><span>기업·채용</span></div>
+        <p class="a-onb-note">값마다 공식 출처와 기준일을 적었고, 확인되지 않은 값은 비워 두었습니다.</p>
+      </section>
+      <section class="a-onb-s" aria-labelledby="onbT2" hidden>
+        <h2 class="a-onb-t" id="onbT2">처음 오셨다면, 여기부터</h2>
+        <p class="a-onb-p">목적을 하나 고르면 그 자료가 바로 열립니다.</p>
+        <div class="a-onb-g">
+          <span class="a-onb-gh">시험·이론 공부</span>
+          <div class="a-onb-ln">
+            <a class="a-onb-l" href="./theory/" data-visit="theory">이론 위키</a>
+            <a class="a-onb-l" href="./casecon/" data-visit="casecon">사례개념화</a>
+          </div>
+        </div>
+        <div class="a-onb-g">
+          <span class="a-onb-gh">상담·실무에 바로 쓰기</span>
+          <div class="a-onb-ln">
+            <a class="a-onb-l" href="./intake/" data-visit="intake">초기상담</a>
+            <a class="a-onb-l" href="./policy-match/" data-visit="policy-match">지원제도</a>
+            <a class="a-onb-l" href="./pay-calc/" data-visit="pay-calc">실업급여 계산</a>
+          </div>
+        </div>
+        <div class="a-onb-g">
+          <span class="a-onb-gh">오늘 고용뉴스·신산업</span>
+          <div class="a-onb-ln">
+            <a class="a-onb-l" href="./briefing/" data-visit="briefing">데일리 브리핑</a>
+            <a class="a-onb-l" href="./emerging/" data-visit="emerging">신산업 브리핑</a>
+          </div>
+        </div>
+      </section>
+      <section class="a-onb-s" aria-labelledby="onbT3" hidden>
+        <h2 class="a-onb-t" id="onbT3">화면 쓰는 법 세 가지</h2>
+        <ol class="a-onb-steps">
+          <li><span class="a-onb-no" aria-hidden="true">1</span><b>자료 전체 목록</b><span class="a-onb-tx">화면 아래 「자료 전체 목록」을 누르면 모든 자료가 한 번에 펼쳐집니다. 가운데 문구는 좌우로 밀어 넘깁니다.</span></li>
+          <li><span class="a-onb-no" aria-hidden="true">2</span><b>자료실 비서</b><span class="a-onb-tx">오른쪽 아래 단추로 자료를 찾고, 궁금한 것을 물어봅니다.</span></li>
+          <li><span class="a-onb-no" aria-hidden="true">3</span><b>나만의 덱</b><span class="a-onb-tx">왼쪽 아래 「상담 플로우」 단추에서 상담 순서대로 자료를 묶어 봅니다. 꽂은 순서는 이 기기에 저장됩니다.</span></li>
+        </ol>
+        <button type="button" class="a-onb-more" id="onbTour">화면에서 한 곳씩 짚어 보기</button>
+      </section>
+    </div>
+    <div class="a-onb-ft">
+      <div class="a-onb-dots" id="onbDots" aria-label="안내 장 고르기">
+        <button type="button" class="on" aria-current="step" aria-label="1장 보기"><i></i></button>
+        <button type="button" aria-current="false" aria-label="2장 보기" tabindex="-1"><i></i></button>
+        <button type="button" aria-current="false" aria-label="3장 보기" tabindex="-1"><i></i></button>
+      </div>
+      <button type="button" class="a-onb-b" id="onbPrev">이전</button>
+      <button type="button" class="a-onb-b" id="onbNext">다음</button>
+    </div>
+  </div>
+</div>
 
 <div class="a-tour" id="tour" role="dialog" aria-modal="true" aria-labelledby="tourT" aria-hidden="true">
   <i data-p="t" aria-hidden="true"></i><i data-p="b" aria-hidden="true"></i><i data-p="l" aria-hidden="true"></i><i data-p="r" aria-hidden="true"></i>
@@ -2483,6 +2562,7 @@ window.addEventListener('jc-sync-change',function(){
 window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt-lockup');</script>
 <script src="./assets/prefs.js" defer></script>
 <script src="./assets/headfold.js" defer></script>
+<script src="./assets/onboard.js" defer></script>
 <script src="./assets/assistant.js" defer></script>
 <script>
 /* ---------- 마름모 1분 모션 (2026-11-20 R3 — 열 가지 한 세트) ----------
@@ -3356,7 +3436,8 @@ function closeTour(){
   try{(lastFocus&&lastFocus.focus?lastFocus:btn).focus({preventScroll:true});}catch(e){}
 }
 
-btn.addEventListener('click',openTour);
+/* 머리말 단추(#tourBtn)는 이제 첫 화면 안내(assets/onboard.js)가 맡는다. 둘러보기는 안내 마지막 장에서 연다. */
+window.JCTour=openTour;
 xBtn.addEventListener('click',closeTour);
 prevB.addEventListener('click',function(){if(step>0)go(step-1);});
 nextB.addEventListener('click',function(){if(step<STEPS.length-1)go(step+1);else closeTour();});
@@ -3393,17 +3474,7 @@ window.addEventListener('jc-sync-change',function(){
   fixBodyH();paint(step);place();
 });
 
-/* 첫 방문 — 화면을 가리지 않고, 단추에 작은 점 하나와 아래 띠 한 번만 */
-try{
-  if(!localStorage.getItem('jc-tour')){
-    btn.setAttribute('data-new','');
-    if(!localStorage.getItem('jc-tour-hint'))setTimeout(function(){
-      if(open||document.hidden)return;
-      try{localStorage.setItem('jc-tour-hint','1');}catch(e){}
-      if(window.JC_TOAST)window.JC_TOAST('처음이시면 「대문 둘러보기」로 이 화면 쓰는 법을 다섯 단계로 볼 수 있어요.');
-    },1800);
-  }
-}catch(e){}
+/* 첫 방문 안내는 첫 화면 온보딩(assets/onboard.js)이 맡는다 — 여기서는 단추에 점을 찍지 않는다. */
 })();
 </script>
 </body>

@@ -1,0 +1,112 @@
+/* onboard.css — 대문 첫 화면 안내(온보딩) · 2026-11-22
+ *
+ * 자료실에 처음 들어온 사람에게 «뭘 할 수 있고, 무엇을 누르면 되는지»를 세 장으로 보여 준다.
+ * 자료실(37개 섹터) 자체는 줄이지 않고, 들어가기 전에 컴팩트한 안내 한 겹만 세운다.
+ *
+ * · 뜨는 조건은 index.html <head>의 스크립트가 첫 그림 전에 정한다(html[data-jc-onb]).
+ *   로그인 상태(세션 유지 중)면 뜨지 않고, 이 탭에서 한 번 닫았으면 그 탭에서는 다시 뜨지 않는다.
+ *   그 밖에는 대문에 들어올 때마다 뜬다 — 「건너뛰기」로 언제든 닫는다.
+ * · 건너뛰기 단추는 카드 머리 오른쪽 끝 한 곳에 고정한다. 카드 높이는 가장 긴 장에 맞춰 못 박으므로
+ *   어느 장에서든 카드·머리·바닥·건너뛰기 단추의 좌표가 1px도 움직이지 않는다(제5조 5-4·5-7).
+ * · 움직이는 값은 opacity·transform뿐이다(제5조 5-3). 장을 넘길 때 본문은 즉시 갈아 끼운다.
+ * · 단추는 모두 44px 이상이고, 글자는 상자 한가운데에 앉힌다(제5조 5-4).
+ */
+
+.a-onb{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:14px;
+  background:rgba(44,33,21,.5);opacity:0;visibility:hidden;pointer-events:none;touch-action:none;
+  transition:opacity .2s ease,visibility .2s}
+:root[data-theme="dark"] .a-onb{background:rgba(3,4,7,.82)}
+html[data-jc-onb] .a-onb{opacity:1;visibility:visible;pointer-events:auto}
+/* 안내가 떠 있는 동안 화면을 흔드는 요소는 잠근다 — 뒤 화면 스크롤과 바닥 도구 단추 */
+html[data-jc-onblock],html[data-jc-onblock] body{overscroll-behavior:none}
+html[data-jc-onb] #jc-marker-ui,
+html[data-jc-onb] .jca-launch,
+html[data-jc-onb] .jcf-launch{opacity:0!important;pointer-events:none!important}
+
+.a-onb-card{width:100%;max-width:430px;display:flex;flex-direction:column;overflow:hidden;
+  background:var(--panel);border:1px solid var(--line-2);border-radius:18px;box-shadow:var(--shadow-up);
+  max-height:min(82vh,600px);max-height:min(82dvh,600px);
+  transform:translateY(10px);transition:transform .24s cubic-bezier(.2,.9,.3,1)}
+/* 카드는 글을 담는 상자라 포커스 테두리를 그리지 않는다(포커스는 화면낭독기 안내용으로만 받는다) */
+.a-onb-card:focus,.a-onb-card:focus-visible{outline:none}
+html[data-jc-onb] .a-onb-card{transform:none}
+/* rgba(--panel)은 뒤 판이 비쳐 글자 대비를 잴 수 없다 — 어두운 테마는 종이색을 못 박는다 */
+:root[data-theme="dark"] .a-onb-card{background:#0f1521}
+
+/* 머리 — 제목 · 장 번호 · 건너뛰기(오른쪽 끝 고정) */
+.a-onb-hd{display:flex;align-items:center;gap:8px;min-height:60px;padding:8px 10px 8px 18px;border-bottom:1px solid var(--line)}
+.a-onb-hd b{flex:1 1 auto;min-width:0;font-size:14px;font-weight:800;letter-spacing:-.02em;color:var(--muted);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-onb-step{flex:0 0 auto;padding:4px 9px;border-radius:99px;background:var(--soft1);
+  font-size:12px;font-weight:800;color:var(--a1);font-variant-numeric:tabular-nums}
+.a-root .a-onb-skip{flex:0 0 auto;margin:0 0 0 auto;height:44px;min-height:44px;padding:0 14px;border-radius:12px;
+  display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--muted)}
+.a-root .a-onb-skip:hover{background:var(--panel-soft);color:var(--ink)}
+
+/* 본문 — 높이는 스크립트가 가장 긴 장에 맞춰 못 박는다. 넘치면 안에서만 스크롤.
+   짧은 장은 남는 자리를 위·아래로 나눠 가운데에 앉힌다(카드 아래에 빈 띠가 남지 않게).
+   높이가 화면에 걸려 잘리는 장(fit 없음)은 가운데 정렬을 끄고 위에서부터 읽게 한다. */
+.a-onb-bd{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;
+  padding:16px 18px 14px}
+.a-onb-bd.fit .a-onb-s{display:flex;flex-direction:column;justify-content:center;min-height:100%}
+.a-onb-s{margin:0}
+.a-onb-t{margin:0;font-size:19px;font-weight:850;letter-spacing:-.03em;line-height:1.34}
+.a-onb-p{margin:7px 0 0;font-size:14.5px;line-height:1.62;color:var(--muted)}
+.a-onb-p b{color:var(--ink);font-weight:750}
+.a-onb-note{margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--dim)}
+
+/* 1장 — 무엇이 들어 있나(낱말 띠) */
+.a-onb-kw{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+.a-onb-kw span{padding:5px 9px;border-radius:99px;border:1px solid var(--line-2);
+  font-size:12px;line-height:1.3;color:var(--muted);background:var(--panel-soft);white-space:nowrap}
+
+/* 2장 — 목적별 바로가기. 누르면 그 자료가 바로 열린다. */
+.a-onb-g{margin:12px 0 0}
+.a-onb-gh{display:block;font-size:12px;font-weight:800;letter-spacing:.01em;color:var(--dim)}
+.a-onb-ln{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+.a-root .a-onb-l{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;
+  border-radius:12px;border:1px solid var(--line-2);background:var(--panel-soft);
+  font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap}
+.a-root .a-onb-l:hover{border-color:var(--a1);color:var(--a1)}
+
+/* 3장 — 화면 쓰는 법 세 가지 */
+.a-onb-steps{margin:10px 0 0;display:grid;gap:10px}
+.a-onb-steps li{display:grid;grid-template-columns:24px 1fr;gap:2px 8px;align-items:start}
+.a-onb-no{grid-row:1 / span 2;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;
+  background:var(--soft1);color:var(--a1);font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
+.a-onb-steps b{grid-column:2;font-size:14px;font-weight:800;letter-spacing:-.02em}
+.a-onb-steps span.a-onb-tx{grid-column:2;font-size:13.5px;line-height:1.55;color:var(--muted)}
+.a-root .a-onb-more{margin:12px 0 0;min-height:44px;padding:0 12px;border-radius:12px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--a1);text-decoration:underline;text-underline-offset:3px}
+.a-root .a-onb-more:hover{background:var(--soft1)}
+
+/* 바닥 — 점 인디케이터(장 고르기) · 이전 · 다음(마지막 장은 「자료실 열기」) */
+.a-onb-ft{display:flex;align-items:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line)}
+.a-onb-dots{display:flex;gap:2px;margin-right:auto}
+.a-root .a-onb-dots button{width:44px;height:44px;padding:0;display:grid;place-items:center;border-radius:10px}
+.a-onb-dots i{display:block;width:7px;height:7px;border-radius:99px;background:var(--line-2)}
+.a-onb-dots button.on i{width:18px;background:var(--a1)}
+.a-onb-dots button:hover i{background:var(--muted)}
+.a-onb-dots button.on:hover i{background:var(--a1)}
+.a-root .a-onb-b{flex:0 0 auto;height:44px;min-height:44px;padding:0;border-radius:12px;border:1px solid var(--line-2);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:var(--muted)}
+.a-root .a-onb-b:hover{border-color:var(--a1);color:var(--a1)}
+.a-root .a-onb-b[disabled]{opacity:.42;cursor:default;border-color:var(--line)}
+.a-root .a-onb-b[disabled]:hover{color:var(--muted)}
+.a-root #onbPrev{width:64px}
+.a-root #onbNext{width:108px;border-color:var(--a1);background:var(--a1);color:#fff}
+.a-root #onbNext:hover{background:var(--a1);color:#fff;filter:brightness(1.07)}
+:root[data-theme="dark"] .a-root #onbNext{color:#06120f}
+
+/* 휴대폰 — 카드 아래 띠로 앉힌다(한 손으로 닿는 자리). 높이는 데스크톱과 같은 규칙으로 못 박는다. */
+@media (max-width:767px){
+  .a-onb{align-items:end;padding:10px 10px calc(10px + env(safe-area-inset-bottom))}
+  .a-onb-card{max-width:none;max-height:min(84vh,600px);max-height:min(84dvh,600px)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .a-onb,.a-onb-card{transition:none!important}
+}
