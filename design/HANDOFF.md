@@ -11,6 +11,16 @@
      질문 한 마디로 나와야 하는 자료는 `RULES`(직행 패턴)에 `dom`·`act`·`not`을 넣는다.
    - 재생성: `python3 assistant/build_index.py` · `python3 ops/scripts/build_flow_graph.py` → `validate_repo.py`.
 
+## 2026-11-22 (오전) — 라이브 내부 문서 차단: URL만 알면 열리던 `/ops/*`·`/CONSTITUTION.md`를 404로
+- **배경**: 저장소는 Actions 무료 한도 때문에 Public이고 배포는 저장소 루트를 그대로 올리는 Cloudflare Pages다. 그래서 `/ops/CONNECTORS.md`(연결 ID)·`/CONSTITUTION.md`·`/design/HANDOFF.md`·`/drafts/*`가 **URL만 알면 200 + text/markdown**으로 열렸다. 헌법 제3조 3-2(내부 운영 정보 노출 금지)에 어긋난다.
+- **왜 `_redirects`가 아닌가**: Cloudflare Pages의 `_redirects`는 301·302 넘김만 되고 404·403 «되돌림»은 지원하지 않는다(공식 Advanced redirects 표). `functions/_middleware.js`는 정적 파일보다 **먼저** 돌아 상태 코드를 그대로 정할 수 있다.
+- [x] **`functions/_middleware.js` 신설** — 규칙 세 상수가 유일한 기준이다: `INTERNAL_DIRS`(`ops`·`design`·`docs`·`drafts`·`.claude`·`.github`·`supabase`·`functions`) · `INTERNAL_EXTS`(`md`·`py`·`sql`·`tsv`·`yml`·`yaml`·`sh`·`toml`·`cfg`·`ini`) · 루트의 점 파일(`.nojekyll`·`.gitignore`). 표기가 바뀌어도(`//ops`·`/./ops`·`/%6Fps`) 같은 자리로 보고, 막을 때는 **404 + `Not Found`**만 돌려준다(403·200은 «있다»는 신호가 된다).
+- [x] **`_routes.json` `include: ["/*"]`** — 깊은 폴더의 `.md`(`taxonomy/data/SCHEMA.md`)까지 잡히게 모든 요청을 함수로 보낸다. 대문·37개 섹터·비서·마이덱·공개 JSON은 `context.next()`로 그대로 나간다.
+- [x] **검사 두 겹** — ① `validate_repo.py --only expose`(CI는 `js`에 함께): 배포 루트의 모든 폴더·파일이 «공개 화면»인지 «내부»인지 정해졌는지, middleware가 내부 80곳을 빠짐없이 막고 공개 187곳을 막지 않는지. 판정은 **middleware를 node로 실제로 불러** 받고 검사 쪽 사본과 어긋나면 실패한다 ② `ops/qa/internal_exposure_probe.py --base <주소>`: 배포본에서 막혀야 할 44곳이 **404가 아니면 실패**, 열려야 할 50곳이 **200이 아니면 실패**.
+- **막지 않는 것**: 화면(`.html`·`.css`·`.js`)과 화면이 읽는 공개 데이터(`.json`·이미지·글꼴), `robots.txt`(이미 `Disallow: /`).
+- **한계**: Functions 무료 한도(하루 10만 요청)가 다하면 프로젝트 설정 «Fail open/closed»에 따라 정적 파일이 그대로 나갈 수 있다(설정은 대시보드 소유라 이 저장소에서는 확인할 수 없다).
+- **다음 시작 파일**: `functions/_middleware.js`의 `internalPath()`, `ops/scripts/validate_repo.py`의 `run_exposure_checks()`.
+
 ## 2026-11-22 (오전) — 첫 화면 안내(온보딩): 자료실 들어가기 전에 세 장 · 건너뛰기 · 로그인 연동
 - **지시**(태화님): 「튜토리얼 보강하고 지금 메인에 있는 버튼은 튜토리얼 페이지를 띄우는 걸로 하자. 처음 접속하면 뜨는 튜토페이지를 대문으로 만드는거지. 자료실 들어가기 전에 별도로다가 컴팩트하게.」 · 「재방문한사람한테도 뜨는데 스킵할 수 있게 페이지마다 스킵 버튼이 같은 위치에. 로그인한 사람은 안뜨게(쿠키 삭제하지 않는이상 로그인 유지잖아), 이거 연동되지?」
 - **왜**: 같이 공부하는 선생님들이 「너무 과정보라 뭐 해야 할지 모르겠다」고 한 것. 섹터는 줄이지 않고 **들어가기 전 안내 한 겹**로 진입장벽만 낮춘다.
