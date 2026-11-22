@@ -73,8 +73,8 @@
     [15,11,9,0], [16,1,9,7], [6,16,15,11], [6,17,1,9], [8,18,15,9],
     [0,2,3,18], [1,7,10,9], [0,15,4,6], [12,18,10,8], [16,15,7,3],
   ];
-  /* 분마다 곁들이는 작은 보조 요소 — 0 전구 · 1 반짝이 · 2 점 셋 · 3 빛살 · 4 없음 */
-  var ECG_ACC = [0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1,2,0,4,0,4,3,1];
+  /* 2026-11-23(태화님 IMG_7861): 분마다 오른쪽 위에 곁들이던 작은 보조 요소(전구·반짝이·점 셋·빛살)를 걷었다 —
+     파형 끝 구석에 낯선 글자(「小」 같은 획)로 읽혔다. 방치 유도는 가운데 문양 네 개만 그린다. */
   var ECG_COLORS = ['#0f766e', '#b4532a', '#8f5f00', '#8a2f45', '#3d5a80', '#5f6b2a'];
 
   var ARM_IDLE = 9000;      /* 1차만 누른 채 두면 이만큼 뒤 조용히 풀린다(레버 — 롤링을 한 칸 감아 둔 채로 기다린다) */
@@ -351,8 +351,7 @@
     return {
       min: m,
       s: [ECG_NAMES[row[0]], ECG_NAMES[row[1]], ECG_NAMES[row[2]], ECG_NAMES[row[3]]],
-      c: [row[0] % 6, row[1] % 6, row[2] % 6, row[3] % 6],
-      a: (ECG_ACC[m] === undefined ? 4 : ECG_ACC[m])
+      c: [row[0] % 6, row[1] % 6, row[2] % 6, row[3] % 6]
     };
   }
   function hint(forceMinute) {
@@ -721,48 +720,7 @@
       }
       cx.closePath(); cx.stroke();
       cx.globalAlpha = 1;
-      /* 곁들이는 작은 보조 요소 — 문양 오른쪽 위에 전구·반짝이·점·빛살을 옅게 */
-      if (pat.a !== 4) ecgAccent(cx, pat.a, sa, mixColor(ca, cb, mp));
     }
-  }
-  /* 보조 요소는 캔버스 168×34 안쪽(오른쪽 위)에서만 그린다 — 문양과 겹치지도, 밖으로 새지도 않는다. */
-  function ecgAccent(cx, kind, alpha, color) {
-    var a = Math.min(1, alpha) * .58;
-    if (a <= .02) return;
-    var X = 141, Y = 9;
-    cx.save();
-    cx.globalAlpha = a; cx.strokeStyle = color; cx.fillStyle = color;
-    cx.lineWidth = 1.1; cx.lineCap = 'round'; cx.lineJoin = 'round';
-    if (kind === 0) {                                /* 전구: 유리 + 나사 + 빛살 */
-      cx.beginPath(); cx.arc(X, Y, 2.5, 0, 6.2832); cx.stroke();
-      cx.beginPath();
-      cx.moveTo(X - 1.5, Y + 2.8); cx.lineTo(X - 1.5, Y + 4.1);
-      cx.moveTo(X + 1.5, Y + 2.8); cx.lineTo(X + 1.5, Y + 4.1);
-      cx.stroke();
-      cx.beginPath();
-      cx.moveTo(X - 3.3, Y - 4.2); cx.lineTo(X - 2.2, Y - 3.5);
-      cx.moveTo(X, Y - 5.2); cx.lineTo(X, Y - 4.0);
-      cx.moveTo(X + 3.3, Y - 4.2); cx.lineTo(X + 2.2, Y - 3.5);
-      cx.stroke();
-    } else if (kind === 1) {                         /* 반짝이 */
-      cx.beginPath();
-      cx.moveTo(X, Y - 4.4); cx.lineTo(X, Y + 4.4);
-      cx.moveTo(X - 4.4, Y); cx.lineTo(X + 4.4, Y);
-      cx.moveTo(X - 2.4, Y - 2.4); cx.lineTo(X + 2.4, Y + 2.4);
-      cx.moveTo(X - 2.4, Y + 2.4); cx.lineTo(X + 2.4, Y - 2.4);
-      cx.stroke();
-    } else if (kind === 2) {                         /* 점 셋 */
-      cx.beginPath(); cx.arc(X - 3.6, Y + 1.2, 1.0, 0, 6.2832); cx.fill();
-      cx.beginPath(); cx.arc(X, Y - 1.8, 1.25, 0, 6.2832); cx.fill();
-      cx.beginPath(); cx.arc(X + 3.6, Y + 1.2, 0.95, 0, 6.2832); cx.fill();
-    } else {                                         /* 빛살 */
-      cx.beginPath();
-      cx.moveTo(X - 4.0, Y + 3.0); cx.lineTo(X - 2.0, Y - 2.0);
-      cx.moveTo(X, Y + 3.4); cx.lineTo(X, Y - 3.6);
-      cx.moveTo(X + 4.0, Y + 3.0); cx.lineTo(X + 2.0, Y - 2.0);
-      cx.stroke();
-    }
-    cx.restore();
   }
   function ecgFrame(now) {
     if (!ECG.on) return;
@@ -1190,7 +1148,7 @@
       /* 감독·검수용: 몇 분짜리 문양인지, 60분 표가 어떤 순서인지 그대로 읽어 본다 */
       minute: function () { return new Date().getMinutes(); },
       pattern: function (m) { return ecgPattern(m === undefined ? new Date().getMinutes() : m); },
-      seq: function () { return ECG_SEQ.map(function (row, i) { return { minute: i, shapes: row.map(function (k) { return ECG_NAMES[k]; }), accent: ECG_ACC[i] }; }); },
+      seq: function () { return ECG_SEQ.map(function (row, i) { return { minute: i, shapes: row.map(function (k) { return ECG_NAMES[k]; })}; }); },
       state: function () { return { on: hintOn, t: HINT.t, min: HINT.min, pat: HINT.pat }; }
     };
     /* 감독·검수용: 격발 고조의 지금 값(진폭·속도·흔들림·로딩 숫자·파형 알파)을 읽어 본다 */
