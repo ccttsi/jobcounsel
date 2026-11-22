@@ -23,6 +23,7 @@
 | | **자료 개수** — 대문 `index.html`의 「N가지 … 자료」와 `data-count` 칸에 그려 둔 수가 `assets/tools.js`의 `JC_TOOLS` 길이와 같은지, 개수를 장부에서 세는 치환(`renderCounts`·`[data-count]`)이 살아 있는지. 주석의 `01~N`이 어긋나면 참고로만 알린다 | 숫자를 손으로 적지 말고 `<span data-count>`로 두어 장부 길이를 따르게 한다 |
 | | **법령 시행일** — 법령 데이터(`efYd`·`effective`·`시행일자`)가 날짜 모양인지, 오늘(KST)보다 뒤(아직 시행되지 않은 개정본)는 아닌지. 수집 원문(`data/openapi/` 등)의 미래 날짜는 경고, 우리가 옮겨 적은 조문(`law/`·`posting/`·`first-year/`)의 미래 날짜는 실패 | 현행 시행본으로 바꾸거나 그 조문을 뺀다. 30일 안에 시행되는 날짜는 참고로 알린다 |
 | | **수집 게이트 단위 검사** (`json`에 함께 돈다 — `--only gate`로 따로) — 자료를 적재하기 전에 도는 관문(`ops/scripts/collect_gate.py`)이 정상 자료를 통과시키고, 일부러 만든 불량 샘플(라이선스 미표기·공공누리 제4유형을 Track A로·미래 시행일 `20280101`·출처 URL 누락)을 실제로 막는지 | 게이트 규칙을 고친다. 저장소의 실제 자료를 막기 시작하면(오탐) 규칙이 너무 좁은 것이므로 정책표부터 다시 본다 |
+| | **내부 문서 노출 차단** (`js`에 함께 돈다 — `--only expose`로 따로) — 배포 루트에 있는 것이 «공개 화면»인지 «내부 문서»인지 정해져 있는지, `functions/_middleware.js`의 규칙(`INTERNAL_DIRS`·`INTERNAL_EXTS`)이 내부 파일 **80곳**을 빠짐없이 막고 화면이 받는 공개 파일 **187곳**은 막지 않는지, `_routes.json`이 모든 요청을 함수로 보내는지. 판정은 middleware를 **node로 실제로 불러** 받고, 검사 쪽 사본과 어긋나면 실패한다 | 규칙을 고치거나 새 폴더를 `INTERNAL_DIRS`에 넣는다(화면이면 `assets/tools.js` 장부에). §1-3 |
 | `smoke-tests` | 대문·`/briefing/`·`/emerging/` 을 Chromium으로 390·1280에서 열어 콘솔 오류 0 · 같은 사이트 404 0 · 가로 넘침 0 · 44px 미달 0 · 화면이 실제로 그려졌는지 | 실패한 화면 그림(Actions artifact `smoke-failure-shots`)을 보고 고친다 |
 | | **공통 UI·모션 실증**(`ops/qa/shared_ui_probe.py`가 같은 게이트에서 돈다) — 대문 **기본·시드·매치** 세 보기에서 방치 유도 트리거(`JC_HINT.run`)가 걸리고 로고가 **실제로 움직이는지**, 시드·매치 대표 섹터(`/theory/`·`/talk/`)에서 테마 단추를 눌러 `data-theme`이 바뀌고 카드덱 단추·도구함이 붙는지, 카드 보조 액션의 좌표가 항목 전환에서 흔들리지 않는지 | 게이트가 선 사례(`gate`)가 어긋나면 실패한다. 숫자·이유·재는 법은 아래 §1-2 |
 | `live-check` (매일) | 대문 + `assets/tools.js`의 지면 전부 200, `briefing.json`·`emerging.json`의 오늘 자 여부 | Actions 요약 표에서 실패한 지면을 본다. 2일 이상 지난 자료는 실패 |
@@ -92,6 +93,30 @@ python3 ops/qa/shared_ui_probe.py --base https://witw.pages.dev/   # 배포본�
 - `smoke-tests`에서는 같은 저장소를 자기 서버로 띄워 돌므로 로컬·CI 모두 추가 설정이 필요 없다.
 - **고칠 때의 순서** — ① 화면을 고친다 ② `validate_repo.py --only motion,anchor`로 글자로 잴 수 있는 원인을 지운다(예: `margin-left:auto`를 덮는 단축 선언) ③ `shared_ui_probe.py`로 숫자를 다시 잰다 ④ 0.00px이면 장부의 `gate`를 올리고 `known_gap`을 지운다 ⑤ PR 본문에 숫자를 적는다.
 
+## 1-3. 내부 문서 노출 차단 — 배포본에서 404인가 (`functions/_middleware.js`)
+
+저장소는 Actions 무료 한도 때문에 Public이고, 배포는 **저장소 루트를 빌드 없이 그대로 올리는** Cloudflare Pages다.
+그래서 `/ops/CONNECTORS.md`·`/CONSTITUTION.md`·`/design/HANDOFF.md`가 **URL만 알면 200 + text/markdown으로 열렸다**
+(2026-11-22 실측 — 연결 ID·역할 헌장·설계 핸드오프까지 그대로). 헌법 제3조 3-2에 따라 배포본에서 막는다.
+
+| 무엇 | 어디 |
+|---|---|
+| 차단 규칙 | `functions/_middleware.js` — `INTERNAL_DIRS`(폴더째) · `INTERNAL_EXTS`(어느 폴더든 .md·.py·.sql·.tsv·.yml·.yaml·.sh·.toml) · 루트의 점·밑줄 파일(`.nojekyll`·`_headers`·`_routes.json` — Pages 설정 파일도 배포 뒤 `/_headers`로 200이었다) |
+| 함수 호출 범위 | `_routes.json` — `include: ["/*"]`. 깊은 폴더의 `.md`까지 잡히게 모든 요청을 함수로 보낸다 |
+| 라이브 확인 | `python3 ops/qa/internal_exposure_probe.py --base <주소>` — 막혀야 할 40여 곳이 **404가 아니면 실패**, 열려야 할 50여 곳이 **200이 아니면 실패** |
+| 저장소 안 확인 | `python3 ops/scripts/validate_repo.py --only expose` (CI에서는 `js`에 함께 돈다) |
+
+- **`_redirects`로는 안 된다** — Cloudflare Pages의 `_redirects`는 301·302 같은 넘김만 되고
+  404·403 같은 «되돌림»은 지원하지 않는다(공식 문서 Advanced redirects 표). Functions는 정적 파일보다 먼저 돌아
+  상태 코드를 그대로 정할 수 있다.
+- **200도 403도 차단이 아니다** — 이 프로젝트는 없는 경로에 대문을 200으로 돌려주는 SPA 폴백 설정이라,
+  "200이 왔다"를 «열렸다»로 읽지 않으면 안 된다. 그래서 확인은 **404**로만 한다.
+- **막지 않는 것** — 화면(`.html`·`.css`·`.js`)과 화면이 읽는 공개 데이터(`.json`·이미지·글꼴), `robots.txt`.
+- **새 폴더·새 문서를 만들 때** — 내부면 `INTERNAL_DIRS`, 화면이면 `assets/tools.js` 장부에 넣는다.
+  어느 쪽도 아니면 `validate_repo.py --only expose`가 «어느 쪽인지 정해지지 않았다»로 실패한다.
+- **한계** — Functions 무료 한도(하루 10만 요청)가 다하면 프로젝트 설정(§ Runtime > Fail open/closed)에 따라
+  정적 파일이 그대로 나갈 수 있다. 설정이 «fail open»이면 그날만 차단이 풀린다.
+
 ## 2. 로컬에서 먼저 돌리기
 
 ```bash
@@ -103,6 +128,8 @@ python3 ops/scripts/smoke_test.py                    # 저장소를 로컬 서�
 python3 ops/scripts/health_check.py                  # 배포본 라이브 점검
 python3 ops/scripts/collect_gate.py briefing/data/briefing.json   # 수집 게이트(적재 전 관문)를 손으로
 python3 ops/scripts/validate_repo.py --only gate                    # 수집 게이트 단위 검사(27건·1초)
+python3 ops/scripts/validate_repo.py --only expose                   # 내부 문서 차단 규칙·공개 파일 대조(2초)
+python3 ops/qa/internal_exposure_probe.py --base https://witw.pages.dev/   # 배포본에서 막혀야 할 곳 404·열려야 할 곳 200
 python3 ops/scripts/validate_repo.py --only shell,motion,anchor     # 공통 셸·금지 모션·정렬 기준점(2초)
 python3 ops/qa/shared_ui_probe.py                    # 공통 UI·모션 실증(방치 모션·대표 섹터·보조 액션 좌표)
 python3 -m unittest ops/tests/test_ui_checks.py -v   # 위 세 검사가 «고의 위반»을 실제로 잡는지

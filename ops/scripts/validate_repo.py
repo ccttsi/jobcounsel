@@ -21,9 +21,10 @@
   legal    — 공용 법정 수치(최저임금·구직급여 상한·4대보험 요율)의 단일 원천(data/legal-constants.json)과
              생성 사본(assets/legal-constants.js)·섹터의 참조·화면에 박힌 금액이 모두 같은지
   role     — PR 제목/라벨 기반 역할 분리 가드레일 ([data-only] PR이 화면 코드를 건드리면 실패)
+  expose   — 내부 운영·설계 문서가 배포본에서 열리지 않는지(functions/_middleware.js·_routes.json). js와 함께 돈다
 
   text·count·dates·legal은 --only 에 넣지 않아도 json과 함께 돈다(CI 워크플로를 고치지 않아도 되게).
-  shell·motion·anchor는 js와 함께 돈다(같은 이유). 예외는 ops/css-allow.tsv에 한 줄씩 남긴다.
+  shell·motion·anchor·expose는 js와 함께 돈다(같은 이유). 예외는 ops/css-allow.tsv에 한 줄씩 남긴다.
 
 종료 코드 0 = 통과, 1 = 실패. 실패 항목은 전부 모아서 한 번에 보여 준다(첫 오류에서 멈추지 않는다).
 """
@@ -34,6 +35,7 @@ import re
 import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
+from urllib.parse import unquote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_DIRS = ("briefing/data", "emerging/data", "thermometer/data", "translator/data")
@@ -596,10 +598,24 @@ def run_js_checks():
         fail("js", "검사할 .js 파일을 찾지 못했다")
         return
     bad = 0
+    modules = 0
     missing_node = False
     for name in files:
         try:
-            result = subprocess.run(["node", "--check", name], cwd=ROOT, capture_output=True, text=True)
+            text = open(os.path.join(ROOT, name), encoding="utf-8", errors="replace").read()
+        except OSError:
+            text = ""
+        # `export`/`import`가 있는 파일은 ES 모듈이다 — `node --check 파일`은 CommonJS로 읽어
+        # «Unexpected token 'export'»로 틀린 실패를 낸다. 그런 파일은 --input-type=module로 본다
+        # (Cloudflare Pages Functions의 functions/*.js가 그렇다).
+        is_module = re.search(r"^\s*(export|import)\s", text, re.M) is not None
+        try:
+            if is_module:
+                modules += 1
+                result = subprocess.run(["node", "--input-type=module", "--check"], input=text,
+                                        cwd=ROOT, capture_output=True, text=True)
+            else:
+                result = subprocess.run(["node", "--check", name], cwd=ROOT, capture_output=True, text=True)
         except FileNotFoundError:
             missing_node = True
             break
@@ -611,7 +627,8 @@ def run_js_checks():
     if missing_node:
         note(f"이 환경에는 node가 없어 JS 문법 검사를 건너뛰었다({len(files)}개) — CI(ubuntu)에서는 node가 있어 그대로 돈다")
     else:
-        note(f"JS {len(files)}개를 node --check로 검사했다" + (f" (오류 {bad})" if bad else ""))
+        note(f"JS {len(files)}개를 node --check로 검사했다" + (f" (ES 모듈 {modules}개는 --input-type=module)" if modules else "")
+             + (f" (오류 {bad})" if bad else ""))
 
 
 # ---------------------------------------------------------------- 3-1) 상담 프리셋 장부
@@ -1911,6 +1928,200 @@ def run_role_checks(pr_json_path):
         note("변경 파일 목록이 없어 역할 가드레일은 건너뛴다(로컬 실행이면 정상)")
 
 
+# ---------------------------------------------------------------- 3-9) 내부 문서 노출 차단
+#   저장소 루트를 그대로 올리는 Cloudflare Pages라 `/ops/CONNECTORS.md`·`/CONSTITUTION.md`·
+#   `/design/HANDOFF.md`가 URL만 알면 200 + text/markdown으로 열렸다(2026-11-22 실측).
+#   `functions/_middleware.js`가 그 자리를 404로 막고, 이 검사는 «차단 규칙이 새 문서·새 폴더를
+#   놓치지 않는지»를 저장소 안에서 센다 — 라이브에서 확인하는 것은 ops/qa/internal_exposure_probe.py.
+EXPOSE_RESERVED = {"_headers", "_redirects", "_routes.json", "_worker.js"}
+EXPOSE_PUBLIC_DIRS = {"assets", "data", "admin", "assistant", "mydeck", "verify"}
+# 화면이 실제로 받는 확장자 — 공개 폴더에 있으면 규칙과 상관없이 «열려야 한다».
+# 이 목록이 없으면 INTERNAL_EXTS에 실수로 js를 넣었을 때 검사도 같이 속아 넘어간다(자기 규칙으로 자기 판정).
+EXPOSE_PUBLIC_EXTS = {"html", "css", "js", "mjs", "json", "txt", "xml", "svg", "png", "jpg", "jpeg",
+                     "webp", "avif", "gif", "ico", "woff", "woff2", "ttf", "webmanifest"}
+# 규칙 사본(아래 internal_decision)이 middleware의 internalPath()와 같은 판정을 하는지 보는 자리
+EXPOSE_PROBE_PATHS = [
+    "/ops", "/ops/", "/ops/ROLES.md", "/ops/scripts/validate_repo.py", "/OPS/ROLES.md",
+    "/taxonomy/data/SCHEMA.md", "/assets/supabase-setup.sql", "/.nojekyll", "/CLAUDE.md",
+    "/docs/기록", "/supabase/functions/assistant-proxy/README.md", "/drafts/pr-body.md",
+    "/_headers", "/_routes.json", "/index.html", "/robots.txt", "/",
+    "/assets/core.js", "/flow/data/graph.json",
+    "/briefing/", "/first-year/data/laws.json", "/admin/", "/verify/", "/nonexistent-xyz/",
+]
+
+
+def _js_string_array(source, name):
+    """`export const NAME = ["a", "b"]`의 값을 그대로 읽는다(규칙의 유일한 원본은 middleware다)."""
+    match = re.search(r"export const " + re.escape(name) + r"\s*=\s*\[(.*?)\]", source, re.S)
+    if not match:
+        return None
+    return re.findall(r'"([^"]*)"', match.group(1))
+
+
+def internal_decision(path, dirs, exts, always_public):
+    """middleware의 internalPath()를 파이썬으로 옮긴 사본 — 저장소 전체를 훑는 데 쓴다.
+
+    두 사본이 어긋나면 EXPOSE_PROBE_PATHS로 대조해 실패시킨다(node가 있을 때).
+    """
+    segments = []
+    for part in unquote(path).replace("\\", "/").split("/"):
+        if not part or part == ".":
+            continue
+        if part == "..":
+            if segments:
+                segments.pop()
+            continue
+        segments.append(part)
+    if ("/" + "/".join(segments)).lower() in {p.lower() for p in always_public}:
+        return None
+    first = (segments[0] if segments else "").lower()
+    if first in dirs:
+        return f"dir:{first}"
+    last = segments[-1] if segments else ""
+    if len(segments) == 1 and (first.startswith(".") or first.startswith("_")):
+        return f"root-file:{first}"
+    ext = last.rsplit(".", 1)[1].lower() if "." in last else ""
+    if ext and ext in exts:
+        return f"ext:{ext}"
+    return None
+
+
+def _routes_covers(pattern, path):
+    """_routes.json의 include 한 줄(`/ops/*`처럼 `*`가 폴더를 넘어도 잡는다)이 경로를 덮는가."""
+    regex = "^" + pattern.replace("*", ".*") + "$"
+    return re.fullmatch(regex, path) is not None
+
+
+def _middleware_verdicts(paths):
+    """middleware의 internalPath()를 node로 실제로 불러 [경로, 판정]을 돌려준다(없으면 None)."""
+    script = (
+        'import fs from "node:fs";\n'
+        'const src = fs.readFileSync(process.env.JC_MIDDLEWARE, "utf8");\n'
+        'const mod = await import("data:text/javascript;base64," + Buffer.from(src).toString("base64"));\n'
+        'const paths = JSON.parse(fs.readFileSync(0, "utf8"));\n'
+        'process.stdout.write(JSON.stringify(paths.map(p => mod.internalPath(p))));\n'
+    )
+    env = dict(os.environ, JC_MIDDLEWARE=os.path.join(ROOT, "functions", "_middleware.js"))
+    try:
+        result = subprocess.run(["node", "--input-type=module", "-e", script], input=json.dumps(paths),
+                                capture_output=True, text=True, cwd=ROOT, env=env, timeout=120)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if result.returncode != 0:
+        return []
+    try:
+        return json.loads(result.stdout)
+    except ValueError:
+        return []
+
+
+def run_exposure_checks():
+    middleware = os.path.join(ROOT, "functions", "_middleware.js")
+    if not os.path.exists(middleware):
+        fail("expose", "functions/_middleware.js가 없다 — 차단막이 사라지면 라이브에서 /ops/* 가 다시 200으로 열린다")
+        return
+    source = open(middleware, encoding="utf-8").read()
+    dirs = _js_string_array(source, "INTERNAL_DIRS")
+    exts = _js_string_array(source, "INTERNAL_EXTS")
+    always_public = _js_string_array(source, "ALWAYS_PUBLIC") or []
+    if dirs is None or exts is None:
+        fail("expose", "functions/_middleware.js에서 INTERNAL_DIRS·INTERNAL_EXTS를 읽지 못했다 — 검사가 규칙을 대조할 수 없다")
+        return
+    dirs = [item.lower() for item in dirs]
+    exts = [item.lower() for item in exts]
+
+    routes_path = os.path.join(ROOT, "_routes.json")
+    routes, routes_error = load_json(routes_path)
+    include = (routes or {}).get("include") if isinstance(routes, dict) else None
+    if routes_error:
+        fail("expose", f"_routes.json을 읽지 못했다: {routes_error} — Cloudflare Pages가 함수를 어디서 부를지 정하지 못한다")
+    elif not isinstance(include, list) or not include:
+        fail("expose", "_routes.json에 include가 비어 있다 — 함수가 한 번도 불리지 않아 차단이 서지 않는다")
+
+    tools, _links, apps = read_tools()
+    public_dirs = {t["path"].replace("./", "").strip("/").split("/")[0] for t in tools + apps} | EXPOSE_PUBLIC_DIRS
+    if not tools:
+        fail("expose", "섹터 장부를 읽지 못해 공개 폴더를 가릴 수 없다")
+        return
+
+    root_dirs, root_files = [], []
+    for name in sorted(os.listdir(ROOT)):
+        if name in (".git", "node_modules"):
+            continue
+        (root_dirs if os.path.isdir(os.path.join(ROOT, name)) else root_files).append(name)
+    for name in root_dirs:
+        if name in dirs and name in public_dirs:
+            fail("expose", f"'{name}/'가 내부 폴더이면서 섹터 장부의 공개 폴더다 — 화면이 통째로 막히거나 문서가 통째로 열린다")
+        elif name not in dirs and name not in public_dirs:
+            fail("expose", f"배포 루트의 '{name}/'가 어느 쪽인지 정해지지 않았다 — 화면이면 섹터 장부(assets/tools.js)에, 내부면 _middleware.js의 INTERNAL_DIRS에 넣는다")
+    for name in root_files:
+        blocked = internal_decision("/" + name, dirs, exts, always_public)
+        if name in ("index.html", "robots.txt"):
+            if blocked:
+                fail("expose", f"대문·검색엔진 안내문('{name}')이 차단 규칙에 걸린다 — 사이트가 통째로 막힌다")
+            continue
+        if not blocked and name not in EXPOSE_RESERVED:
+            fail("expose", f"배포 루트의 '{name}'이 공개로 나간다 — 화면이 아니면 확장자 규칙(INTERNAL_EXTS)이나 루트 점·밑줄 파일 규칙에 넣는다")
+
+    internal_paths, public_paths = [], []
+    for folder in dirs:
+        base = os.path.join(ROOT, folder)
+        if not os.path.isdir(base):
+            note(f"_middleware.js의 INTERNAL_DIRS에만 있는 폴더: {folder}/")
+            continue
+        files = [rel(os.path.join(dp, name)) for dp, _dn, names in os.walk(base) for name in names]
+        files = [f for f in files if "__pycache__" not in f]
+        picks = sorted(files)[:3] + [f for f in files if f.endswith(".md")][:2]
+        internal_paths += ["/" + f for f in dict.fromkeys(picks)]
+    for folder in sorted(public_dirs):
+        base = os.path.join(ROOT, folder)
+        if not os.path.isdir(base):
+            continue
+        for dirpath, dirnames, names in os.walk(base):
+            dirnames[:] = [d for d in dirnames if d != "__pycache__"]
+            for name in sorted(names):
+                path = rel(os.path.join(dirpath, name))
+                url = "/" + path
+                ext = name.rsplit(".", 1)[1].lower() if "." in name else ""
+                if ext in EXPOSE_PUBLIC_EXTS and path.count("/") <= 2:
+                    public_paths.append(url)  # 화면이 받는 파일 — 막히면 실패
+                elif ext in EXPOSE_PUBLIC_EXTS:
+                    continue  # 깊은 폴더의 공개 파일은 대조에서 뺀다(수가 너무 많다)
+                elif internal_decision(url, dirs, exts, always_public):
+                    internal_paths.append(url)
+    internal_paths = sorted(dict.fromkeys(internal_paths))
+    public_paths = sorted(dict.fromkeys(public_paths))
+
+    if not internal_paths:
+        fail("expose", "막아야 할 내부 문서를 하나도 찾지 못했다 — 규칙이 헛돌고 있다")
+    verdicts = _middleware_verdicts(internal_paths + public_paths + EXPOSE_PROBE_PATHS)
+    if verdicts is None:
+        note("이 환경에는 node가 없어 middleware 판정 대조를 건너뛰었다 — 배포 전에는 ops/qa/internal_exposure_probe.py로 확인한다")
+        for path in internal_paths:
+            if not internal_decision(path, dirs, exts, always_public):
+                fail("expose", f"내부 문서인데 규칙이 놓친다: {path}")
+        return
+    if len(verdicts) != len(internal_paths + public_paths + EXPOSE_PROBE_PATHS):
+        fail("expose", "middleware(_middleware.js)를 node로 불러 판정을 받지 못했다 — 문법 오류나 규칙 이름 변경을 본다")
+        return
+    counts = len(internal_paths)
+    for path, verdict in zip(internal_paths, verdicts[:counts]):
+        if not verdict:
+            fail("expose", f"내부 문서인데 middleware가 통과시킨다: {path}")
+    for path, verdict in zip(public_paths, verdicts[counts:counts + len(public_paths)]):
+        if verdict:
+            fail("expose", f"화면이 쓰는 공개 파일인데 middleware가 막는다({verdict}): {path}")
+    for path, verdict in zip(EXPOSE_PROBE_PATHS, verdicts[counts + len(public_paths):]):
+        mirror = internal_decision(path, dirs, exts, always_public)
+        if bool(mirror) != bool(verdict) or (mirror or "") != (verdict or ""):
+            fail("expose", f"차단 규칙 사본이 middleware와 어긋난다: {path} — 검사 {mirror or '통과'} · middleware {verdict or '통과'}")
+    if isinstance(include, list) and include != ["/*"]:
+        for path in internal_paths:
+            if not any(_routes_covers(pattern, path) for pattern in include):
+                fail("expose", f"_routes.json의 include가 이 경로를 덮지 않아 함수가 불리지 않는다: {path}")
+    note(f"내부 문서 차단 — 막는 자리 {counts}곳(폴더 {len(dirs)}·확장자 {len(exts)}) · 공개 {len(public_paths)}곳을 대조했다")
+
+
 # ---------------------------------------------------------------- 실행
 def main():
     parser = argparse.ArgumentParser(description="자료실 통합 검증(CI 게이트)")
@@ -1941,6 +2152,8 @@ def main():
         run_js_checks()
         run_css_checks()      # CSS 문법도 같은 단계에서 돈다(CI 워크플로를 고치지 않아도 되게)
         run_ecg_checks()      # 심전도 60분 표의 약속(이웃한 분 중복 금지)도 함께 센다
+    if "js" in selected or "expose" in selected:
+        run_exposure_checks()  # 내부 문서가 라이브에서 열리지 않는가(functions/_middleware.js·_routes.json)
     if "js" in selected or "shell" in selected:
         run_shell_checks()    # 공통 셸(core.js·prefs.js·marker.js·설정 자리)이 전 지면에 있는가
     if "js" in selected or "motion" in selected:
@@ -1966,8 +2179,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "role": "역할 가드레일"}
-        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "role"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
+        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "role", "expose"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
