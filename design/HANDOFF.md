@@ -19,6 +19,7 @@
 - [x] **검사 두 겹** — ① `validate_repo.py --only expose`(CI는 `js`에 함께): 배포 루트의 모든 폴더·파일이 «공개 화면»인지 «내부»인지 정해졌는지, middleware가 내부 80곳을 빠짐없이 막고 공개 187곳을 막지 않는지. 판정은 **middleware를 node로 실제로 불러** 받고 검사 쪽 사본과 어긋나면 실패한다 ② `ops/qa/internal_exposure_probe.py --base <주소>`: 배포본에서 막혀야 할 44곳이 **404가 아니면 실패**, 열려야 할 50곳이 **200이 아니면 실패**.
 - **막지 않는 것**: 화면(`.html`·`.css`·`.js`)과 화면이 읽는 공개 데이터(`.json`·이미지·글꼴), `robots.txt`(이미 `Disallow: /`).
 - **한계**: Functions 무료 한도(하루 10만 요청)가 다하면 프로젝트 설정 «Fail open/closed»에 따라 정적 파일이 그대로 나갈 수 있다(설정은 대시보드 소유라 이 저장소에서는 확인할 수 없다).
+- **머지·라이브**: **PR #445 · 머지 `2251437`** · CI 3종(static-checks·smoke-tests 9m23s·Cloudflare Pages) 초록. 프리뷰 `https://chore-internal-docs-guard.witw.pages.dev/` 에서 **막힘 46/46 · 열림 50/50**, 라이브 `https://witw.pages.dev/` 에서 **막힘 45/45 · 열림 50/50 · 실패 0**. Chromium으로 라이브 지면 44곳(대문+`/admin/`·`/mydeck/`·`/flow/`·`/verify/`·`/briefing/news/`+37개 섹터)을 열어 콘솔 오류·같은 사이트 404 **0**. 배포 뒤 `/_headers`·`/_routes.json`이 200으로 읽히던 것도 확인해 함께 404로 막았다(헤더 규칙은 빌드 때 적용되므로 `X-Robots-Tag`는 그대로 붙는다).
 - **다음 시작 파일**: `functions/_middleware.js`의 `internalPath()`, `ops/scripts/validate_repo.py`의 `run_exposure_checks()`.
 
 ## 2026-11-22 (오전) — 첫 화면 안내(온보딩): 자료실 들어가기 전에 세 장 · 건너뛰기 · 로그인 연동
