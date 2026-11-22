@@ -968,3 +968,20 @@
 - **머지·라이브**: PR #403 squash 머지 `6787010` → https://witw.pages.dev/ (HTTP 200)에서 7쪽×세 벌 21덩이·번호판 21칸·창 `6 7 [1] 2 3`·1쪽 `‹`→7쪽·원판 쓸기→7쪽·가로 넘침 0·콘솔 오류 0 확인.
 - **남은 것**: 아이폰 사파리 실기기에서 번호판 쓸기 손맛(12px 임계·34% 한 칸·관성 320ms 투영) 확인. 이 샌드박스의 WebKit은 `libgtk-4` 등이 없어 띄우지 못했다(크로미움은 `LD_LIBRARY_PATH=/workspace/browserlibs/root/usr/lib/x86_64-linux-gnu`로 실행).
 - **다음 시작 파일**: `index.html`(`pagerFollow`·`cvRun`/`cvSettle`·`bindListSwipe`).
+
+## 2026-11-22 (오전) — Jina Reader 무료 본문 추출기 연동 (`ops/scripts/jina_fetch.py`)
+- **지시**(태화님): 계정도 API 키도 없이, JS로 그려지는 지면·보도자료의 본문을 깨끗한 Markdown으로 받아 오는 도구를 저장소 `ops/`에 안전하게 붙이고 PR·머지까지 끝낸다. 기존 수집 스크립트(`collect_gate.py`·`sync_openapi_*`)의 동작은 건드리지 않는다.
+- **바뀐 파일**: `ops/scripts/jina_fetch.py`(새) · `ops/tests/test_jina_fetch.py`(새, 28건) · `ops/CONNECTORS.md` · `ops/TODO.md` · 이 파일.
+- **핵심 판단**
+  - **표준 라이브러리만** 쓴다(`urllib.request`·`argparse`·`json`·`ipaddress`). 수집 스크립트가 도는 환경에 설치할 것이 늘면 그 스크립트가 먼저 깨진다.
+  - 받아 온 글은 **수집·초안의 참고 자료**다. 원문 게시의 근거가 아니라는 것, `collect_gate.py`의 라이선스·시행일 관문을 **우회하지 않는다**는 것, 항목마다 `license`·`source_url`·기준일을 적는 일은 부르는 쪽 몫이라는 것을 docstring 맨 위에 적었다(헌법 제1조).
+  - **`r.jina.ai`는 남의 서비스**다 — 넘긴 주소를 그쪽 서버가 열어 본다. 그래서 `localhost`·사설 IP(10·172.16·192.168·127·169.254)·`::1`·도트 없는 내부 이름(`intranet`·`nas.local`·`*.internal`)은 요청을 보내기 **전에** 거절하고 종료 코드 2로 끝낸다(제3조 3-2). 헌법의 «화면 밖으로 내보내지 않는다»를 수집 도구에도 같은 선으로 적용한 것이다.
+  - **200인데 본문이 0자인 응답이 실제로 있다** — 고용노동부 대문(`https://www.moel.go.kr/`)이 제목·주소만 돌려줬다. 그대로 두면 수집이 «성공»으로 보이면서 빈 글이 저장되므로, 본문이 비면 실패(종료 코드 1)로 처리하고 브라우저로 직접 열어 보라는 안내를 붙였다.
+  - 무료 한도가 **분당 20회(20 RPM, IP 기준)** 라 429가 온다. `Retry-After`를 최대 10초까지만 지켜 **한 번** 다시 시도하고, 그보다 길면 기다리지 않고 실패로 끝낸다(수집 작업이 한 건 때문에 멈춰 서지 않게).
+  - 한글 문서 경로는 **비ASCII 글자만** 퍼센트로 바꾼다(`urllib`이 비ASCII 주소를 보내지 못한다). 쿼리·프래그먼트는 그대로 살린다.
+- **검수**
+  - 단위 28건 통과(`python3 -m unittest ops/tests/test_jina_fetch.py`) — 요청 주소·User-Agent·`X-Return-Format`, 한글 경로 인코딩, 내부 호스트 10종 거절(요청 0건), 403/429/시간 초과/연결 거부/본문 0자, 429 재시도 1회·`Retry-After` 상한, CLI 종료 코드 0·1·2.
+  - `python3 ops/scripts/validate_repo.py` 전 항목 통과(단위 검사 93건 중 실패 0 — 이 28건이 함께 돈다).
+  - 실제 호출(2026-11-22 09:33 KST): `https://example.com` 200·본문 156자 · `https://www.gov.kr/portal/main` 200·본문 26,466자 · `https://www.moel.go.kr/` 200이지만 본문 0자 → 종료 코드 1(위 판단대로 실패 처리) · `https://www.data.go.kr/data/15125273/openapi.do` 422(Reader의 15초 대기 초과) → 종료 코드 1과 이유 표시.
+- **남은 것**: 수집 스크립트가 이 도구를 **실제로 부르는 자리**는 아직 없다. 브리핑·신산업 원문 수집에서 "본문이 비는 지면"의 목록을 먼저 뽑아, 그 목록에만 골라 쓰는 편이 안전하다(모든 호출을 Reader로 보내면 분당 20회 한도에 걸린다).
+- **다음 시작 파일**: `ops/scripts/jina_fetch.py`(`fetch_markdown`) → 부를 자리 `briefing/data/tools/build_index.py` · `ops/scripts/sync_openapi_common.py`.
