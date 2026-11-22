@@ -1,0 +1,484 @@
+{
+ "schema_version": "1.2.0",
+ "updated_at": "2026-11-06T07:30:00+09:00",
+ "edition": {
+  "no": 111,
+  "date": "2026-11-06",
+  "weekday": "금",
+  "title": "이차전지 특허, AI·로봇까지 번진다",
+  "reading_minutes": 3,
+  "data_status": "ok"
+ },
+ "sectors": [
+  {
+   "id": "s1",
+   "no": "1",
+   "name": "1차 산업",
+   "sub": "스마트농업 · 자원 · 식량",
+   "short": "1차"
+  },
+  {
+   "id": "s2",
+   "no": "2",
+   "name": "2차 산업",
+   "sub": "첨단제조 · 로보틱스 · 이차전지 · 반도체",
+   "short": "2차"
+  },
+  {
+   "id": "s3",
+   "no": "3",
+   "name": "3차 산업",
+   "sub": "핀테크 · 디지털헬스 · 물류 · 콘텐츠",
+   "short": "3차"
+  },
+  {
+   "id": "s4",
+   "no": "4",
+   "name": "4차 산업",
+   "sub": "AI · 양자 · 우주 · 클린테크",
+   "short": "4차"
+  }
+ ],
+ "categories": [
+  {
+   "id": "smartfarm",
+   "sector": "s1",
+   "name": "스마트팜"
+  },
+  {
+   "id": "agri-robot",
+   "sector": "s1",
+   "name": "농업 로봇"
+  },
+  {
+   "id": "resource",
+   "sector": "s1",
+   "name": "자원·식량"
+  },
+  {
+   "id": "robotics",
+   "sector": "s2",
+   "name": "로보틱스"
+  },
+  {
+   "id": "battery",
+   "sector": "s2",
+   "name": "이차전지"
+  },
+  {
+   "id": "semicon",
+   "sector": "s2",
+   "name": "반도체·패키징"
+  },
+  {
+   "id": "material",
+   "sector": "s2",
+   "name": "첨단소재"
+  },
+  {
+   "id": "bio-mfg",
+   "sector": "s2",
+   "name": "바이오 제조"
+  },
+  {
+   "id": "fintech",
+   "sector": "s3",
+   "name": "핀테크"
+  },
+  {
+   "id": "health",
+   "sector": "s3",
+   "name": "디지털헬스"
+  },
+  {
+   "id": "logistics",
+   "sector": "s3",
+   "name": "물류·모빌리티"
+  },
+  {
+   "id": "content",
+   "sector": "s3",
+   "name": "콘텐츠"
+  },
+  {
+   "id": "edu",
+   "sector": "s3",
+   "name": "교육·재교육"
+  },
+  {
+   "id": "ai",
+   "sector": "s4",
+   "name": "AI"
+  },
+  {
+   "id": "quantum",
+   "sector": "s4",
+   "name": "양자"
+  },
+  {
+   "id": "space",
+   "sector": "s4",
+   "name": "우주"
+  },
+  {
+   "id": "climate",
+   "sector": "s4",
+   "name": "클린테크"
+  },
+  {
+   "id": "energy",
+   "sector": "s4",
+   "name": "에너지"
+  },
+  {
+   "id": "security",
+   "sector": "s4",
+   "name": "보안"
+  }
+ ],
+ "items": [
+  {
+   "id": "ei-20261106-1",
+   "date": "2026-11-06",
+   "order": 1,
+   "lead": true,
+   "sector": "s2",
+   "cat": "battery",
+   "title": "이차전지 지식재산, AI·로봇까지 넓어진다",
+   "subtitle": "한국전지학회 특별분과, 셀 안전·전고체·수소공급 특허동향 공개",
+   "kicker": "지식재산처 이차전지 지식재산 심포지엄 (2026-11-06)",
+   "summary": "지식재산처가 11월 6일 충남대에서 이차전지 지식재산 심포지엄을 열고 배터리 셀 안전기술·전고체 전지·연료전지차 수소공급 시스템의 주요국 특허 출원·등록 동향을 공개했다. 이차전지가 전기차를 넘어 AI·로봇으로 쓰임이 넓어지는 데 맞춘 대응이다.",
+   "key_numbers": [
+    {
+     "label": "학술대회",
+     "value": "3일",
+     "note": "2026.11.4~11.6"
+    },
+    {
+     "label": "특허 동향 분야",
+     "value": "3개",
+     "note": "셀 안전·전고체·수소공급"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "지식재산처",
+     "한국전지학회",
+     "충남대학교"
+    ],
+    "global": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-elec"
+    ],
+    "new": [
+     "j-battery-ip"
+    ]
+   },
+   "source_id": "src_kipo_battery2026",
+   "question": "내가 다루는 기술이 어느 특허 지형 안에 있는지, 한 번이라도 확인해 봤는가."
+  },
+  {
+   "id": "ei-20261106-2",
+   "date": "2026-11-06",
+   "order": 2,
+   "lead": false,
+   "sector": "s1",
+   "cat": "smartfarm",
+   "title": "식품 스마트팩토리, AI·로봇 표준화 논의 본격화",
+   "subtitle": "국내외 전문가 400여 명, 푸드테크 기술 표준화 심포지엄",
+   "kicker": "농림축산식품부 2026 글로벌 푸드테크 기술 표준화 심포지엄 (2026-11-06)",
+   "summary": "농림축산식품부가 11월 6일 서울 코엑스에서 글로벌 푸드테크 기술 표준화 심포지엄을 열었다. 국내외 전문가와 업계 관계자 400여 명이 AI·로봇 기반 식품 스마트팩토리 구축 현황과 표준화 정책을 논의했다.",
+   "key_numbers": [
+    {
+     "label": "참석",
+     "value": "400여 명",
+     "note": "국내외 전문가·업계"
+    },
+    {
+     "label": "논의 주제",
+     "value": "2개",
+     "note": "AI·로봇 제조혁신, 표준화"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "농림축산식품부",
+     "코엑스"
+    ],
+    "global": [
+     "국외 푸드테크 표준화 기관"
+    ]
+   },
+   "jobs": {
+    "legacy": [
+     "j-agri"
+    ],
+    "new": []
+   },
+   "source_id": "src_mafra_foodtech2026",
+   "question": "식품 공장이 자동화될 때, 기존 생산직은 어떤 표준을 새로 배워야 하는가."
+  },
+  {
+   "id": "ei-20261106-3",
+   "date": "2026-11-06",
+   "order": 3,
+   "lead": false,
+   "sector": "s1",
+   "cat": "smartfarm",
+   "title": "노지 스마트 농업 기술 5건, 민간으로 넘어간다",
+   "subtitle": "지중점적관개·AI 디지털 트랩, 풀무원·새팜과 다자간 업무합의",
+   "kicker": "농촌진흥청 다자간 업무합의·기술이전 (보도 2026-11-05)",
+   "summary": "농촌진흥청 국립식량과학원이 11월 5일 제주 서귀포에서 ㈜풀무원·㈜새팜·국산콩생산자연합회와 노지 스마트 농업 업무합의를 맺고 핵심 기술 5건을 민간에 이전했다. 지중점적관개와 AI 디지털 트랩 등이 포함됐다.",
+   "key_numbers": [
+    {
+     "label": "이전 기술",
+     "value": "5건",
+     "note": "지중점적관개·AI 디지털 트랩 등"
+    },
+    {
+     "label": "참여 기관",
+     "value": "4곳",
+     "note": "식량과학원·풀무원·새팜·국산콩연합"
+    }
+   ],
+   "market": null,
+   "players": {
+    "domestic": [
+     "국립식량과학원",
+     "풀무원",
+     "새팜",
+     "국산콩생산자연합회"
+    ],
+    "global": []
+   },
+   "jobs": {
+    "legacy": [
+     "j-agri"
+    ],
+    "new": []
+   },
+   "source_id": "src_rda_upland2026",
+   "question": "기술이 농가에 들어올 때, 누가 기계를 세팅하고 데이터를 읽는가."
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j-battery-ip",
+   "name": "배터리 지식재산 분석가",
+   "en": "Battery IP Analyst",
+   "sector": "s2",
+   "kind": "new",
+   "role": "셀 안전·전고체·수소공급 같은 기술 분야의 주요국 특허 출원·등록 동향을 수집·분석해, 연구개발 과제가 이미 선점된 영역을 피하도록 근거를 제공한다.",
+   "ksa": {
+    "k": [
+     "특허 분류 체계(CPC·IPC)",
+     "이차전지 소재·셀 구조",
+     "주요국 출원 절차"
+    ],
+    "s": [
+     "특허 검색식 설계",
+     "출원 추이·피인용 분석",
+     "기술 지형도 작성"
+    ],
+    "a": [
+     "숫자 뒤의 권리관계를 읽는 꼼꼼함",
+     "연구자에게 분석을 쉽게 옮기는 설명력"
+    ]
+   },
+   "companies": {
+    "domestic": [
+     "삼성SDI",
+     "LG에너지솔루션",
+     "SK온",
+     "포스코퓨처엠"
+    ],
+    "global": [
+     "CATL",
+     "Panasonic Energy",
+     "Northvolt"
+    ]
+   },
+   "study": [
+    "재료공학",
+    "화학공학",
+    "지식재산학(특허정보)"
+   ],
+   "certs": [
+    "변리사(특허)",
+    "지식재산능력시험(IPAT)",
+    "전기기사"
+   ],
+   "insight": "배터리 기술은 특허가 곧 사업권이다. 소재를 아는 사람이 특허를 읽으면, 어느 방향이 비어 있는지 먼저 보인다."
+  },
+  {
+   "id": "j-elec",
+   "name": "전기·전자 엔지니어",
+   "en": "Electrical / Electronics Engineer",
+   "sector": "s2",
+   "role": "전력·제어·회로 시스템을 설계하고 시험한다. 배터리·로봇·충전설비처럼 전기를 다루는 모든 신산업의 아래쪽에서 작동한다.",
+   "ksa": {
+    "k": [
+     "회로이론·전력계통",
+     "전자부품 특성",
+     "전기 안전 규정"
+    ],
+    "s": [
+     "회로 설계·PCB",
+     "계측·디버깅",
+     "인증 시험 대응"
+    ],
+    "a": [
+     "감전·화재 위험을 먼저 보는 습관",
+     "측정값을 믿고 확인하는 태도"
+    ]
+   },
+   "study": [
+    "전기공학",
+    "전자공학",
+    "제어계측공학"
+   ],
+   "certs": [
+    "전기기사",
+    "전자기사",
+    "전기안전기사"
+   ],
+   "insight": "신산업의 화려한 부분은 아니지만, 전원이 꺼지면 모든 것이 멈춘다. 로봇·배터리·수소 설비 모두 이 직무 위에 서 있다.",
+   "companies": {
+    "domestic": [
+     "삼성전자",
+     "LG전자",
+     "현대모비스",
+     "효성중공업",
+     "LS일렉트릭"
+    ],
+    "global": [
+     "Texas Instruments",
+     "Infineon",
+     "ABB",
+     "Siemens"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "전력 데이터 계측 기사",
+     "w": "공장·건물의 전력 사용을 계측·진단"
+    }
+   ]
+  },
+  {
+   "id": "j-agri",
+   "name": "농업기술자·농촌지도사",
+   "en": "Agricultural Extension Specialist",
+   "sector": "s1",
+   "role": "농가를 찾아가 재배 기술과 병해충 대응을 지도하고, 새 기술이 현장에 맞는지 시험한다. 정책 사업과 농가 사이를 잇는 통역자 역할도 한다.",
+   "ksa": {
+    "k": [
+     "작물 재배·병리",
+     "농업 정책·보조사업",
+     "농가 경영"
+    ],
+    "s": [
+     "현장 진단·처방",
+     "시범포 운영",
+     "교육·컨설팅"
+    ],
+    "a": [
+     "농가의 말을 끝까지 듣는 태도",
+     "현장에서 통하는 언어로 바꾸는 힘"
+    ]
+   },
+   "study": [
+    "농학",
+    "원예학",
+    "식물병리학",
+    "농업경제학"
+   ],
+   "certs": [
+    "농업기술자(관련 학과·경력)",
+    "식물보호기사",
+    "종자기사"
+   ],
+   "insight": "스마트팜이 늘수록 ‘기술을 농가에 맞추는 사람’의 값이 올라간다. 새 장비의 실패는 대개 기술이 아니라 적용 방식에서 나온다.",
+   "companies": {
+    "domestic": [
+     "농촌진흥청",
+     "도 농업기술원",
+     "시군 농업기술센터",
+     "농협"
+    ],
+    "global": [
+     "USDA Extension",
+     "Wageningen University",
+     "FAO"
+    ]
+   },
+   "kind": "old",
+   "next_roles": [
+    {
+     "n": "스마트농업 교육 강사",
+     "w": "농가 대상 장비·데이터 교육"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_kipo_battery2026",
+   "name": "지식재산처",
+   "title": "전기차 넘어 인공지능(AI)·로봇까지, 지식재산처가 학계와 이차전지 산업의 해법 찾는다",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788267",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-23"
+   },
+   "published": "2026-11-06",
+   "track": "A",
+   "usage": "공표된 사실·수치를 우리 문장으로 요약(재가공 허용 라이선스 확인)."
+  },
+  {
+   "id": "src_mafra_foodtech2026",
+   "name": "농림축산식품부",
+   "title": "식품 스마트팩토리 기술 혁신과 표준화의 미래를 그리다",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788300",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-23"
+   },
+   "published": "2026-11-06",
+   "track": "A",
+   "usage": "공표된 사실·수치를 우리 문장으로 요약(재가공 허용 라이선스 확인)."
+  },
+  {
+   "id": "src_rda_upland2026",
+   "name": "농촌진흥청",
+   "title": "농촌진흥청, 다자간 '업무합의'로 '노지 스마트 농업' 현장 확산",
+   "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788279",
+   "license": {
+    "type": "KOGL-1",
+    "name": "공공누리 제1유형(출처표시)",
+    "verified": true,
+    "verified_at": "2026-11-23"
+   },
+   "published": "2026-11-05",
+   "track": "A",
+   "usage": "공표된 사실·수치를 우리 문장으로 요약(재가공 허용 라이선스 확인)."
+  }
+ ],
+ "copyright_policy": {
+  "summary": "공공누리·퍼블릭 도메인·CC BY 등 재가공이 허락된 공식 자료만 인용하고, 그 밖은 사실·수치만 새로 써서 원문 링크를 답니다.",
+  "track_a_note": "재가공 허용(A): 공공누리·퍼블릭 도메인·CC BY 4.0 자료(IEA·BLS·KISTEP·부처 보도자료)의 수치를 표·도표로 다시 그렸습니다.",
+  "track_b_note": "사실·수치만 인용(B): OECD·WEF·IAEA는 원문 문장을 옮기지 않고 수치와 사실만 새로 써서 원문 링크를 답니다. 확인되지 않은 추정 시장규모는 싣지 않았습니다.",
+  "quote_limit_words": 15,
+  "contact": "자료 오류는 저장소 이슈로 알려 주세요."
+ },
+ "disclaimer": "투자·법률 조언이 아닙니다. 상담 준비를 돕는 산업 요약이며, 정확한 내용은 원문이 기준입니다."
+}
