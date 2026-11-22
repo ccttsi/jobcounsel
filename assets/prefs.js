@@ -319,9 +319,14 @@
     for (i = 0; i < list.length && n < 300; i++) {
       el = list[i]; if (popSeen.has(el)) continue;
       r = el.getBoundingClientRect(); if (!r.width) continue; // 아직 안 보이면 다음에 다시 본다
-      popSeen.add(el); n++;
-      if (r.width < 120 || r.height < 44 || r.height > vh * .8 || el.closest('[data-jc-still],[data-jc-ignore]')) continue;
+      // 모습이 «잠깐» 다른 순간에는 심사하지 않고 다음 바퀴로 미뤄 둔다 — 등장 모션(.jc-in)·누름 반동(.jc-boing)·
+      // 마우스가 얹힌 상태. 이때 «아니다»로 확정해 버리면 같은 무리의 단추 일부만 그림자·눌림이 빠져
+      // 통일성이 깨진다(2026-11-22, 공고 점검대 예시 공고 2×2 — 한 줄만 그림자가 없던 결함).
+      if (el.classList.contains('jc-in') || el.classList.contains('jc-boing')) continue;
+      if (r.width < 120 || r.height < 44 || r.height > vh * .8 || el.closest('[data-jc-still],[data-jc-ignore]')) { popSeen.add(el); n++; continue; }
       cs = getComputedStyle(el);
+      if (cs.transform !== 'none' && el.matches(':hover,:active')) continue; // 마우스가 얹힌 순간 — 다음 바퀴
+      popSeen.add(el); n++; // 여기서부터는 확정 — 다시 보지 않는다
       if (parseFloat(cs.borderTopLeftRadius) < 8 || cs.transform !== 'none' || /fixed|sticky|absolute/.test(cs.position) || /inline$/.test(cs.display)) continue;
       bg = cs.backgroundColor; hasBg = bg && bg !== 'transparent' && !/rgba\(\s*0,\s*0,\s*0,\s*0\s*\)/.test(bg);
       if (!hasBg && !(parseFloat(cs.borderTopWidth) >= 1 && cs.borderTopStyle !== 'none')) continue;
@@ -393,7 +398,10 @@
       if (!r.width || r.bottom < 0 || r.top > vh) continue; // 화면 밖은 움직이지 않는다
       var cs = getComputedStyle(el); if (cs.animationName !== 'none' || /fixed|absolute|sticky/.test(cs.position) || cs.transform !== 'none') continue;
       el.style.setProperty('--jc-i', k++); el.classList.add('jc-in');
-      (function (el) { setTimeout(function () { el.classList.remove('jc-in'); el.style.removeProperty('--jc-i'); }, 900); })(el);
+      (function (el) { setTimeout(function () {
+        el.classList.remove('jc-in'); el.style.removeProperty('--jc-i');
+        queuePop(); // 등장 모션이 끝난 뒤 한 번 더 본다(.jc-in 동안 미뤄 둔 단추가 여기서 확정된다)
+      }, 900); })(el);
     }
   }
   function pop() {
