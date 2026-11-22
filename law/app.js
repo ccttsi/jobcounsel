@@ -540,8 +540,10 @@
     }, { passive: true });
   }
 
+  var sheetRet = null;   // 닫으면 초점을 돌려줄 자리(목차 단추) — 뒤로가기·X·바깥 누름 모두(C1-54 ③)
   function openSheet() {
     var sh = $('sheet');
+    sheetRet = d.activeElement && d.activeElement !== d.body ? d.activeElement : $('bkToc');
     $('sheetBody').innerHTML = '<nav class="bk-toc">' + tocHTML() + '</nav>';
     $('sheetBody').addEventListener('click', onTocClick);
     sh.hidden = false;
@@ -556,6 +558,8 @@
     sh.classList.remove('on');
     sh.setAttribute('aria-hidden', 'true');
     setTimeout(function () { if (!sh.classList.contains('on')) sh.hidden = true; }, 300);
+    var r = sheetRet; sheetRet = null;
+    if (r && r.isConnected && r.offsetParent !== null) { try { r.focus({ preventScroll: true }); } catch (e) { } }
   }
 
   /* ---------- 화면 전환·주소 ---------- */

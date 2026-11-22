@@ -563,7 +563,9 @@
       }
     } else {
       // 본문을 못 찾으면 뼈대 요소만 숨긴다
-      var list = d.querySelectorAll('body > header, body > nav, body > footer, body > aside:not([role="dialog"])');
+      // 2026-11-22 후속(C1-53 ①): casecon·first-year처럼 <main> 없이 감싸개 안에 공용 머리말(header.hd)을 둔 화면은
+      // body 바로 아래 규칙에 걸리지 않아 머리말이 남았다 — 공용 머리말은 깊이와 상관없이 숨긴다.
+      var list = d.querySelectorAll('body > header, body > nav, body > footer, body > aside:not([role="dialog"]), header.hd');
       for (i = 0; i < list.length; i++) list[i].setAttribute('data-jc-imm', 'hide');
     }
     if (extra) { try { var more = d.querySelectorAll(extra); for (i = 0; i < more.length; i++) more[i].setAttribute('data-jc-imm', 'hide'); } catch (e) {} }

@@ -487,10 +487,15 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 .a-root .a-orbit button:focus-visible{outline:2px solid var(--a1);outline-offset:0;border-radius:50%}
 .a-orbit-n{position:absolute;left:0;right:24px;bottom:0;text-align:center;font-size:11.5px;line-height:16px;font-weight:650;
   letter-spacing:.1em;color:var(--dim);font-variant-numeric:tabular-nums}
-.a-orbit-n b{color:var(--acc);font-size:13px;transition:color .14s ease}
+.a-orbit-n b{color:var(--acc);font-size:13px;transition:color .14s ease;display:inline-block;width:2.6ch;text-align:right;font-variant-numeric:tabular-nums} /* 1→37 자릿수가 늘어도 「/ 37」이 흔들리지 않는다(C1-25) */
 .a-roll-hint{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;color:var(--dim);margin-top:2px;text-align:left}
 .a-roll-ico{width:15px;height:15px;flex:none;display:block;color:var(--muted);opacity:.9}
 @media (max-width:599px){.a-pv-kw span:nth-child(n+3){display:none}.a-pv-kw span{font-size:12.5px;padding:5px 8px}}
+/* 휴대폰(≤479px): 접힘 띠의 「펼치기」 글자를 접고 꺾쇠만 둔다 — 키워드 두 개가 한 줄에 서서 띠가 94 → 66px(C1-17).
+   열림·닫힘은 꺾쇠 방향과 aria-expanded가 말한다. 머리말 「접기」도 꺾쇠만 남겨 네 단추가 390px 안에 선다(C1-16 ①). */
+@media (max-width:479px){.a-pv-cta #pvLabel{display:none}}
+@media (max-width:420px){.a-actions .jh-fold .jh-l{display:none}}
+@media (max-width:359px){.a-root .a-actions .a-btn{min-width:44px}.a-actions #btnSearch>span:not(.a-kbd){display:none}}
 .a-for-mouse{display:none}
 @media (hover:hover) and (pointer:fine){.a-for-touch{display:none}.a-for-mouse{display:inline}}
 /* 2026-11-21(태화님 지시 · IMG_7843) — 「자료 전체 목록 35개」와 「롤링으로 돌아가기」는 같은 단추의 두 얼굴인데
@@ -831,7 +836,8 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 .a-root .a-actions .a-tour-btn{position:relative;flex:0 0 auto}
 @media (min-width:768px) and (max-width:1023px){.a-tour-btn .a-tour-lb{display:none}}   /* 이 폭에서는 머리말 한 줄을 지킨다 */
 @media (max-width:380px){.a-tour-btn .a-tour-lb{display:none}}   /* 360px대에서만 글자를 접어 세 단추와 접기 단추가 한 줄에 들어가게 */
-:root[data-jc-mode] .a-tour-btn{display:none}   /* 내 목차·시드·매치 화면에서는 대문 안내를 감춘다 */
+/* 시드·매치 화면에서도 「튜토리얼」 단추를 그대로 둔다 — 누르면 대문 안내 대신 덱 안내(나만의 목차 꽂는 법)가 열린다.
+   예전에는 감춰서 로고 칸이 넓어지고 로고가 커져, 보기를 바꿀 때 머리말이 4.69px(1280) 자랐다(C1-09 ③). */
 /* 둘러보기 동안 떠 있는 도구(형광펜 도구함·비서 탭)는 제자리에 그대로 두고 **누름만** 막는다.
    카드는 그 위로 비켜 앉으므로(아래 여백) 가려지지 않는다 — 마지막 단계에서 그 자리를 또렷이 세운다.
    두 도구는 z-index가 무척 높아(2147483000대) 어둡게 덮는 판보다 위에 그려지므로, 감추지 않고 투명도만 다룬다. */
@@ -1230,7 +1236,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
           <span class="a-mode-sub">지식·원리·기준 쌓는 칸</span>
           <span class="a-mode-flow">이론 · 직무분석 · 법령 · 지표</span>
         </span>
-        <span class="a-mode-art" aria-hidden="true"><span class="a-art a-art-seed"><svg class="art-svg" viewBox="0 0 200 104" focusable="false" aria-hidden="true"><defs><clipPath id="seedTop"><path d="M60 44 H118 L138 31 H80 Z"/></clipPath><linearGradient id="seedTopG" x1="0" y1="1" x2="1" y2="0"><stop offset="0" style="stop-color:var(--f-top)"/><stop offset="1" style="stop-color:var(--f-top2)"/></linearGradient><linearGradient id="seedFrontG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--f-front2)"/><stop offset="1" style="stop-color:var(--f-front)"/></linearGradient><linearGradient id="seedSweep" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><radialGradient id="seedGlow"><stop offset="0" style="stop-color:var(--acc);stop-opacity:.32"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/></radialGradient></defs><ellipse class="g-glow" cx="104" cy="40" rx="62" ry="22" fill="url(#seedGlow)"/><ellipse class="g-shadow" cx="100" cy="97" rx="70" ry="4.5"/><g class="stack"><g class="sl s1"><path class="f-top" d="M44 88 H134 L154 75 H64 Z"/><path class="f-front" d="M44 88 H134 V95 H44 Z"/><path class="f-side" d="M134 88 L154 75 V82 L134 95 Z"/><path class="f-edge" d="M44 88 H134 L154 75"/></g><g class="sl s2"><path class="f-top" d="M48 77 H130 L150 64 H68 Z"/><path class="f-front" d="M48 77 H130 V84 H48 Z"/><path class="f-side" d="M130 77 L150 64 V71 L130 84 Z"/><path class="f-edge" d="M48 77 H130 L150 64"/></g><g class="sl s3"><path class="f-top" d="M52 66 H126 L146 53 H72 Z"/><path class="f-front" d="M52 66 H126 V73 H52 Z"/><path class="f-side" d="M126 66 L146 53 V60 L126 73 Z"/><path class="f-edge" d="M52 66 H126 L146 53"/></g><g class="sl s4"><path class="f-top" d="M56 55 H122 L142 42 H76 Z"/><path class="f-front" d="M56 55 H122 V62 H56 Z"/><path class="f-side" d="M122 55 L142 42 V49 L122 62 Z"/><path class="f-edge" d="M56 55 H122 L142 42"/></g><g class="sl s5"><path class="f-top" d="M60 44 H118 L138 31 H80 Z"/><path class="f-front" d="M60 44 H118 V51 H60 Z"/><path class="f-side" d="M118 44 L138 31 V38 L118 51 Z"/><path class="f-edge" d="M60 44 H118 L138 31"/></g><g class="sl-top"><path class="tab" d="M68 41.4 H88 L91.4 39.2 H71.4 Z"/><path class="mark" d="M64 43.5 H114"/><g clip-path="url(#seedTop)"><rect class="sweep" x="20" y="28" width="38" height="20" fill="url(#seedSweep)"/></g></g></g><g class="badge"><circle cx="144" cy="23" r="8.5"/><path d="M140.2 23.2 l2.6 2.6 l5-5.2"/></g></svg></span></span>
+        <span class="a-mode-art" aria-hidden="true"><span class="a-art a-art-seed"><svg class="art-svg" viewBox="0 0 200 104" focusable="false" aria-hidden="true"><defs><clipPath id="seedTop"><path d="M60 44 H118 L138 31 H80 Z"/></clipPath><linearGradient id="seedTopG" x1="0" y1="1" x2="1" y2="0"><stop offset="0" style="stop-color:var(--f-top)"/><stop offset="1" style="stop-color:var(--f-top2)"/></linearGradient><linearGradient id="seedFrontG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--f-front2)"/><stop offset="1" style="stop-color:var(--f-front)"/></linearGradient><linearGradient id="seedSweep" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><radialGradient id="seedGlow"><stop offset="0" style="stop-color:var(--acc);stop-opacity:.32"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/></radialGradient></defs><ellipse class="g-glow" cx="104" cy="40" rx="62" ry="22" fill="url(#seedGlow)"/><ellipse class="g-shadow" cx="100" cy="97" rx="70" ry="4.5"/><g transform="translate(1.1 0)"><g class="stack"><g class="sl s1"><path class="f-top" d="M44 88 H134 L154 75 H64 Z"/><path class="f-front" d="M44 88 H134 V95 H44 Z"/><path class="f-side" d="M134 88 L154 75 V82 L134 95 Z"/><path class="f-edge" d="M44 88 H134 L154 75"/></g><g class="sl s2"><path class="f-top" d="M48 77 H130 L150 64 H68 Z"/><path class="f-front" d="M48 77 H130 V84 H48 Z"/><path class="f-side" d="M130 77 L150 64 V71 L130 84 Z"/><path class="f-edge" d="M48 77 H130 L150 64"/></g><g class="sl s3"><path class="f-top" d="M52 66 H126 L146 53 H72 Z"/><path class="f-front" d="M52 66 H126 V73 H52 Z"/><path class="f-side" d="M126 66 L146 53 V60 L126 73 Z"/><path class="f-edge" d="M52 66 H126 L146 53"/></g><g class="sl s4"><path class="f-top" d="M56 55 H122 L142 42 H76 Z"/><path class="f-front" d="M56 55 H122 V62 H56 Z"/><path class="f-side" d="M122 55 L142 42 V49 L122 62 Z"/><path class="f-edge" d="M56 55 H122 L142 42"/></g><g class="sl s5"><path class="f-top" d="M60 44 H118 L138 31 H80 Z"/><path class="f-front" d="M60 44 H118 V51 H60 Z"/><path class="f-side" d="M118 44 L138 31 V38 L118 51 Z"/><path class="f-edge" d="M60 44 H118 L138 31"/></g><g class="sl-top"><path class="tab" d="M68 41.4 H88 L91.4 39.2 H71.4 Z"/><path class="mark" d="M64 43.5 H114"/><g clip-path="url(#seedTop)"><rect class="sweep" x="20" y="28" width="38" height="20" fill="url(#seedSweep)"/></g></g></g><g class="badge"><circle cx="144" cy="23" r="8.5"/><path d="M140.2 23.2 l2.6 2.6 l5-5.2"/></g></g></svg></span></span>
         <span class="a-mode-go"><span class="a-go-a">시드로 담기</span><span class="a-go-b">한 번 더 눌러 담기</span><em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 6l6 6-6 6"/></svg></em></span>
       </button>
       <button type="button" class="a-mode a-mode-match" data-mode="match" id="modeMatch" aria-label="매치, 현장·실무 쓰기. 눌러서 고르기">
@@ -1240,7 +1246,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
           <span class="a-mode-sub">현장·실무에 바로 쓰는 칸</span>
           <span class="a-mode-flow">검사 · 국취 · 서류 · 면접</span>
         </span>
-        <span class="a-mode-art" aria-hidden="true"><span class="a-art a-art-match"><svg class="art-svg" viewBox="0 0 200 104" focusable="false" aria-hidden="true"><defs><linearGradient id="matchFaceG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--f-top2)"/><stop offset="1" style="stop-color:var(--f-top)"/></linearGradient><radialGradient id="matchGlow"><stop offset="0" style="stop-color:var(--acc);stop-opacity:.34"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/></radialGradient></defs><ellipse class="g-glow" cx="98" cy="52" rx="34" ry="40" fill="url(#matchGlow)"/><ellipse class="g-shadow" cx="99" cy="97" rx="70" ry="4.5"/><g class="card c-l"><path class="c-back" d="M40 17 H90 Q94 17 94 21 V41 H96 Q102 41 102 47 V55 Q102 61 96 61 H94 V83 Q94 87 90 87 H40 Q36 87 36 83 V21 Q36 17 40 17 Z" transform="translate(2.5 3)"/><path class="c-face" d="M40 17 H90 Q94 17 94 21 V41 H96 Q102 41 102 47 V55 Q102 61 96 61 H94 V83 Q94 87 90 87 H40 Q36 87 36 83 V21 Q36 17 40 17 Z"/><path class="c-ln" d="M45 33 H84 M45 41 H78 M45 49 H82 M45 57 H70"/><rect class="c-chip" x="45" y="69" width="18" height="8" rx="2"/></g><g class="card c-r"><path class="c-back" d="M98 17 H148 Q152 17 152 21 V83 Q152 87 148 87 H98 Q94 87 94 83 V61 H96 Q102 61 102 55 V47 Q102 41 96 41 H94 V21 Q94 17 98 17 Z" transform="translate(2.5 3)"/><path class="c-face" d="M98 17 H148 Q152 17 152 21 V83 Q152 87 148 87 H98 Q94 87 94 83 V61 H96 Q102 61 102 55 V47 Q102 41 96 41 H94 V21 Q94 17 98 17 Z"/><path class="c-ln" d="M110 33 H143 M110 41 H137 M110 49 H141 M110 57 H129"/><rect class="c-chip" x="126" y="69" width="18" height="8" rx="2"/></g><path class="seam" d="M94 21 V41 H96 Q102 41 102 47 V55 Q102 61 96 61 H94 V83"/><g class="badge"><circle cx="98" cy="9.5" r="8"/><path d="M94.4 9.7 l2.5 2.5 l4.8-5"/></g></svg></span></span>
+        <span class="a-mode-art" aria-hidden="true"><span class="a-art a-art-match"><svg class="art-svg" viewBox="0 0 200 104" focusable="false" aria-hidden="true"><defs><linearGradient id="matchFaceG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--f-top2)"/><stop offset="1" style="stop-color:var(--f-top)"/></linearGradient><radialGradient id="matchGlow"><stop offset="0" style="stop-color:var(--acc);stop-opacity:.34"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/></radialGradient></defs><ellipse class="g-glow" cx="100" cy="52" rx="34" ry="40" fill="url(#matchGlow)"/><ellipse class="g-shadow" cx="100" cy="97" rx="70" ry="4.5"/><g transform="translate(4.8 0)"><g class="card c-l"><path class="c-back" d="M40 17 H90 Q94 17 94 21 V41 H96 Q102 41 102 47 V55 Q102 61 96 61 H94 V83 Q94 87 90 87 H40 Q36 87 36 83 V21 Q36 17 40 17 Z" transform="translate(2.5 3)"/><path class="c-face" d="M40 17 H90 Q94 17 94 21 V41 H96 Q102 41 102 47 V55 Q102 61 96 61 H94 V83 Q94 87 90 87 H40 Q36 87 36 83 V21 Q36 17 40 17 Z"/><path class="c-ln" d="M45 33 H84 M45 41 H78 M45 49 H82 M45 57 H70"/><rect class="c-chip" x="45" y="69" width="18" height="8" rx="2"/></g><g class="card c-r"><path class="c-back" d="M98 17 H148 Q152 17 152 21 V83 Q152 87 148 87 H98 Q94 87 94 83 V61 H96 Q102 61 102 55 V47 Q102 41 96 41 H94 V21 Q94 17 98 17 Z" transform="translate(2.5 3)"/><path class="c-face" d="M98 17 H148 Q152 17 152 21 V83 Q152 87 148 87 H98 Q94 87 94 83 V61 H96 Q102 61 102 55 V47 Q102 41 96 41 H94 V21 Q94 17 98 17 Z"/><path class="c-ln" d="M110 33 H143 M110 41 H137 M110 49 H141 M110 57 H129"/><rect class="c-chip" x="126" y="69" width="18" height="8" rx="2"/></g><path class="seam" d="M94 21 V41 H96 Q102 41 102 47 V55 Q102 61 96 61 H94 V83"/><g class="badge"><circle cx="98" cy="9.5" r="8"/><path d="M94.4 9.7 l2.5 2.5 l4.8-5"/></g></g></svg></span></span>
         <span class="a-mode-go"><span class="a-go-a">매치로 담기</span><span class="a-go-b">한 번 더 눌러 담기</span><em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12.5 6l6 6-6 6"/></svg></em></span>
       </button>
     </div>
@@ -1471,7 +1477,13 @@ var NAV={
  law:['조문을 펼쳐','상담 상황 키워드로 법령·조례 8건을 찾아, 쉬운 풀이와 조문 전문을 책처럼 넘겨 읽습니다.'],
  translator:['내담자 말을 풀어','상담실에서 나온 약어·전문용어를 한 줄 뜻과 실제 맥락, 이어 물을 질문, 연계 자료로 옮깁니다.'],
  triage:['위기를 나눠','다섯 축을 체크하면 5단계 위기 등급과 먼저 붙일 제도가 판정됩니다.'],
- valuechain:['공정을 이어','산업 12개의 밸류체인을 단계로 잇고 단계마다 직무·기업·상담 팁을 봅니다.']
+ valuechain:['공정을 이어','산업 12개의 밸류체인을 단계로 잇고 단계마다 직무·기업·상담 팁을 봅니다.'],
+ casecon:['사례를 읽어','합성 사례 6건을 여덟 이론 틀로 바꿔 읽으며 사정·목표·질문을 세웁니다.'],
+ intake:['접수를 짜','초기상담 15분을 네 단계로 나눠, 유형별 질문·서류·이어질 자료를 모읍니다.'],
+ 'policy-match':['제도를 맞춰','상태·나이·소득·목표를 고르면 일곱 제도의 신청 순서와 시기가 정리됩니다.'],
+ 'pay-calc':['급여를 계산해','구직급여·실수령액·주휴수당·퇴직금을 2026년 기준과 근거 조문으로 계산합니다.'],
+ posting:['공고를 점검해','채용공고를 붙여넣으면 문장마다 법령 위반 소지와 근거 조문을 짚어 줍니다.'],
+ 'first-year':['첫해를 짚어','입사일을 넣으면 계약부터 퇴직 뒤 구직급여까지 여덟 시점의 법정 선을 봅니다.']
 };
 TOOLS.forEach(function(t){var n=NAV[t.id]||[];t.phrase=n[0]||(t.short+' 자료를 펼쳐');t.lead=n[1]||t.desc;});
 
@@ -1803,7 +1815,9 @@ function paintSeen(){
 /* 가려진 화면·화면 밖(스크롤로 롤링이 안 보임)·백그라운드 탭에서는 시계를 세우지 않는다(2026-11-20 60fps).
    rollVis는 IntersectionObserver가 정한다 — 보이지 않는 동안은 자동 넘김·진행 밑줄(scaleX)이 함께 선다. */
 var rollVis=true;
-function canRun(){return !deckOn&&!reduce()&&!paused&&!hover&&!drag&&!listOpen&&!document.hidden&&rollVis&&hintBase===null;}
+function canRun(){return !deckOn&&!reduce()&&!paused&&!hover&&!drag&&!listOpen&&!document.hidden&&rollVis&&hintBase===null&&!root.hasAttribute('data-jc-modeov')&&!root.hasAttribute('data-jc-imm');}
+/* 모드 시트(data-jc-modeov)가 덮고 있거나 집중 보기(data-jc-imm, C1-53)인 동안은 롤링을 넘기지 않는다 — 시트를 닫으면 다음 5초 눈금에서 다시 흐른다(C1-06 ①). */
+try{new MutationObserver(function(){schedule();}).observe(root,{attributes:true,attributeFilter:['data-jc-modeov','data-jc-imm']});}catch(e){}
 function watchRoll(){
   var rv=$('rollView');
   if(!rv||!window.IntersectionObserver)return;
@@ -2240,8 +2254,37 @@ function paintInsight(i){
 }
 function setIns(on){var m=$('insMore'),b=$('insTg');if(on)m.setAttribute('data-open','');else m.removeAttribute('data-open');
   b.setAttribute('aria-expanded',String(on));$('insTgT').textContent=on?'풀이 접기':'풀이 보기';}
+/* 「다른 통찰 보기」는 한 바퀴(전체 장 수)를 다 보기 전에는 같은 장을 다시 꺼내지 않는다 — 섞은 주머니에서 한 장씩(C1-19).
+   주머니가 비면 다시 섞되, 방금 본 장이 새 바퀴 첫 장이 되지 않게 한 칸 민다. */
+var insBag=[];
+function insNext(){
+  if(!insBag.length){for(var k=0;k<INSIGHTS.length;k++)if(k!==cur)insBag.push(k);
+    for(var j=insBag.length-1;j>0;j--){var r=Math.floor(Math.random()*(j+1)),tmp=insBag[j];insBag[j]=insBag[r];insBag[r]=tmp;}}
+  return insBag.length?insBag.shift():cur;
+}
+/* 통찰 카드 높이 못 박기(C1-19) — 장마다 제목 1~2줄·질문 1~4줄이라 「다른 통찰 보기」를 누를 때마다 카드가 최대 77px
+   오르내리며 아래 화면을 밀었다. 같은 폭의 보이지 않는 복제본에 모든 장을 한 번씩 넣어 가장 긴 장의 높이를 재고,
+   제목·질문·풀이 단추 묶음(#flip)의 최소 높이로 깐다. 질문은 자르지 않는다(말줄임 0). 폭이 바뀔 때만 다시 잰다. */
+var insFitW=-1;
+function fitInsight(){
+  var sec=$('insight'),go=$('insightGo'),row=sec&&sec.querySelector('.a-row');if(!sec||!go||!row)return;
+  var w=Math.round(sec.getBoundingClientRect().width);if(!w||w===insFitW)return;insFitW=w;
+  var k=sec.cloneNode(true);k.setAttribute('aria-hidden','true');k.removeAttribute('id');
+  [].forEach.call(k.querySelectorAll('[id]'),function(e){e.setAttribute('data-k',e.id);e.removeAttribute('id');});
+  k.style.cssText='position:absolute;visibility:hidden;pointer-events:none;left:0;top:0;width:'+w+'px';
+  /* 남는 자리는 질문 바로 아래가 아니라 「풀이 보기」 아래(단추 줄 위)에 두어야 짧은 장에서 질문과 풀이 단추가 떨어지지 않는다 → 묶음은 #flip */
+  var kg=k.querySelector('[data-k="flip"]'),kr=k.querySelector('.a-row');kg.style.minHeight='0';kr.style.minHeight='0';
+  var km=k.querySelector('[data-k="insMore"]');if(km)km.removeAttribute('data-open');
+  sec.parentNode.appendChild(k);
+  var h2=k.querySelector('[data-k="insightTitle"]'),q=k.querySelector('[data-k="insightQ"]'),lk=k.querySelector('[data-k="insightLinkText"]'),mg=0,mr=0;
+  for(var i=0;i<INSIGHTS.length;i++){var x=INSIGHTS[i],t=byId[x.to];h2.textContent=x.t;q.textContent=x.q;if(lk&&t)lk.textContent=t.title+' 열기';
+    mg=Math.max(mg,kg.getBoundingClientRect().height);mr=Math.max(mr,kr.getBoundingClientRect().height);}
+  k.parentNode.removeChild(k);
+  $('flip').style.minHeight=Math.ceil(mg)+'px';row.style.minHeight=Math.ceil(mr)+'px';
+}
+window.addEventListener('resize',function(){clearTimeout(fitInsight.t);fitInsight.t=setTimeout(fitInsight,120);});
 function shuffle(){
-  if(flipping)return;var n;do{n=Math.floor(Math.random()*INSIGHTS.length);}while(n===cur&&INSIGHTS.length>1);
+  if(flipping)return;var n=insNext();
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce){paintInsight(n);return;}
   flipping=true;var f=$('flip');f.classList.add('a-out');
@@ -2457,6 +2500,10 @@ $('res').addEventListener('pointermove',function(e){var o=e.target.closest&&e.ta
 $('btnSearch').addEventListener('click',openPal);
 $('btnClose').addEventListener('click',closePal);
 /* 로고(CCTT)를 누르면 대문 첫 화면으로 — 다른 보기(목록·시드·매치)에 있어도 새로고침 없이 제자리로 돌아온다. */
+/* 머리말 「튜토리얼」: 시드·매치 화면에서는 덱 안내를 연다(대문 안내 onboard.js보다 먼저 받는다) */
+(function(){var tb=$('tourBtn');if(!tb)return;tb.addEventListener('click',function(e){
+  if(!root.hasAttribute('data-jc-mode')||!window.JCDECK||!window.JCDECK.tutorial)return;
+  e.preventDefault();e.stopImmediatePropagation();window.JCDECK.tutorial(tb);},true);})();
 var deckHome=$('deckHome');if(deckHome)deckHome.addEventListener('click',function(e){e.preventDefault();applyMode('all');});
 $('brandGo').addEventListener('click',function(e){
   var deckShown=$('deckView')?!!$('deckView').offsetParent:false;
@@ -2507,7 +2554,7 @@ bootPreset();
 var isMac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'');
 $('kbdHint').textContent=isMac?'⌘K':'Ctrl K';
 if(!/^https?:/.test(location.protocol))$('statusText').textContent='저장본';
-applyTheme();renderCounts();startNav();paintInsight(kstDayIndex()%INSIGHTS.length);tick();
+applyTheme();renderCounts();startNav();paintInsight(kstDayIndex()%INSIGHTS.length);tick();fitInsight();
 /* 저장된 모드가 있으면 첫 그림부터 덱 화면. deck.js는 defer라 준비된 뒤에 붙인다. */
 mode=readMode();
 if(mode!=='all'){root.setAttribute('data-jc-mode',mode);$('stage').hidden=true;
@@ -2534,6 +2581,8 @@ function jcSyncReady(cb,n){
 /* ---------- 로그인 상태가 바뀌면 설명문을 다시 그린다 ----------
  * 상담 플로우(앱)의 한 줄 설명은 로그인·로그아웃에 따라 다르다(assets/tools.js desc·descAccount).
  * 빠른 검색을 열어 둔 채 로그인해도 옛 문구가 남지 않도록 그 자리에서 다시 그린다. */
+/* 다른 탭에서 로그인·로그아웃해도 이 탭의 문구가 곧바로 맞춰지게 — 세션 열쇠가 바뀌면 같은 신호로 다시 그린다(C1-47 ③) */
+window.addEventListener('storage',function(e){if(e.key==='jc-sync-session'){try{window.dispatchEvent(new Event('jc-sync-change'));}catch(x){}}});
 window.addEventListener('jc-sync-change',function(){
   authWords();                              /* 머리말·이용 안내의 마이덱 문구를 지금 상태로 다시 맞춘다 */
   var ov=$('ov');
@@ -3223,7 +3272,12 @@ function fixBodyH(){
   var keep=bd.style.height,i,max=0;
   var vw=window.innerWidth,vh=window.innerHeight;
   /* 좁은 화면은 글자가 곷 무대 위에 그대로 놓이므로(카드 상자 없음) 본문을 짜르지 않는다 — 다 보이게. */
-  if(vw<768){bd.style.height='';bdH=0;bd.scrollTop=0;return;}
+  /* 다만 단계마다 글 길이가 달라 제목 줄이 52px씩 오르내렸다(390 실측, C1-37 ①) — 가장 긴 단계의 높이를
+     최소 높이로 깔아 다섯 단계의 제목·본문 첫 줄이 같은 자리에 선다. 자르지 않으므로 글은 다 보인다. */
+  if(vw<768){bd.style.height='';bdH=0;bd.style.minHeight='';
+    for(i=0;i<STEPS.length;i++){bd.innerHTML=bodyHTML(i);if(bd.offsetHeight>max)max=bd.offsetHeight;}
+    bd.innerHTML=bodyHTML(step);bd.style.minHeight=Math.ceil(max)+'px';bd.scrollTop=0;return;}
+  bd.style.minHeight='';
   bd.style.height='auto';
   for(i=0;i<STEPS.length;i++){bd.innerHTML=bodyHTML(i);if(bd.scrollHeight>max)max=bd.scrollHeight;}
   bd.innerHTML=bodyHTML(step);bd.style.height=keep;
