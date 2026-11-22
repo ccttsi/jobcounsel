@@ -180,6 +180,22 @@ main>section.mod:not(.cur){display:none}
 
 /* 2026-11-22(C3-25): 누르는 칸 44px — 이 화면에서 44px에 못 미치던 단추·칩·쪽 번호·입력칸 */
 #q.inp{min-height:44px!important}#mnav .navl,#snav .navl,#srcseg button{min-height:44px!important}dd .xref{min-height:44px;display:inline-flex;align-items:center}
+
+/* 검색칸 — 휴대폰(≤639px)에서는 홈·로고·화면 설정 사이에 끼어 17~87px로 쪼그라들고 안내 글 첫 글자(「용」)만 보였다
+   (2026-11-23 태화님 IMG_7860). 평소엔 44px 돋보기 단추로 접고, 누르면(초점) 머리말 줄 전체로 펼친다. 결과 목록(#sres)은 그 아래. */
+.dq .inp{padding-left:38px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23786a5e' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m16 16 4.5 4.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px 50%;background-size:18px 18px}
+@media (max-width:639px){
+  .hdr-in{position:relative}
+  .dq{flex:0 0 44px!important;width:44px;max-width:44px!important;margin-left:auto}
+  .dq .inp{width:44px;padding:0!important;background-position:50% 50%;color:transparent;cursor:pointer}
+  .dq .inp::placeholder{color:transparent}
+  .dq .inp::-webkit-search-cancel-button{display:none}
+  .hdr-in>.jc-prefs-slot,.hdr-in>[data-jc-prefs]{margin-left:0!important}   /* 바깥 여백(auto)을 둘이 나눠 가져 돋보기 옆만 33px 벌어지던 것 */
+  .dq:focus-within{position:absolute;left:12px;right:12px;top:50%;transform:translateY(-50%);width:auto;max-width:none!important;z-index:50}
+  .dq:focus-within .inp{width:100%;padding:9px 44px 9px 38px!important;background-position:12px 50%;color:var(--ink);cursor:text;box-shadow:0 6px 18px -10px rgba(40,30,20,.35)}
+  .dq:focus-within .inp::placeholder{color:var(--muted)}
+}
+@media (max-width:359px){.hdr-in{gap:5px!important}.hdr-in .brand .mono{font-size:15px!important}}   /* 320: 공용 좌우 여백 14px 안에 네 칸이 들어가게 */
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="../assets/core.css">
@@ -190,14 +206,14 @@ main>section.mod:not(.cur){display:none}
 <link rel="stylesheet" href="../assets/shell.css">
 
 <header class="hdr">
-  <div class="max-w-[1280px] mx-auto px-4 lg:px-7 h-14 flex items-center gap-3">
+  <div class="hdr-in max-w-[1280px] mx-auto px-4 lg:px-7 h-14 flex items-center gap-3">
     <a class="jc-ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
     <button class="brand flex items-baseline gap-2 flex-none" style="min-height:44px;align-items:center" data-act="go" data-to="sec:m1" aria-label="처음으로">
       <svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M9 4v16M15 9.5V20"/></svg>
       <span class="mono font-bold text-[17px]" style="color:var(--accent)">DACUM</span>
       <span class="font-bold hidden sm:inline">마스터 아키텍처</span>
     </button>
-    <div class="relative flex-1 min-w-0 max-w-[520px] ml-auto">
+    <div class="dq relative flex-1 min-w-0 max-w-[520px] ml-auto">
       <label for="q" class="sr-only">용어, 책무, 과업, 동사 검색</label>
       <input id="q" data-deeplink class="inp" style="min-height:40px;padding-right:44px" type="search" autocomplete="off" placeholder="용어·책무·과업·동사 검색">
       <span class="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:block"><kbd>/</kbd></span>
