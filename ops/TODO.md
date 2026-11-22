@@ -6,11 +6,11 @@
 
 - **2026-11-22 (낮) Make ↔ 무료 팀원 분업 지침 명문화 — Make 크레딧 보호, 무료 자원 최대화** — 「Make 크레딧 절약 + 무료 자원 최대화」를 저장소 원본에 박아 둔다. ① `ops/ROLES.md` 「Make ↔ 무료 팀원 분업」 절 — 단계별 담당(Make 1~2스텝 감지·전표 → Jina Reader 1차 본문 → Firecrawl 2차 폴백(월 1,000 중 200 비축·하루 25) → Crawl4AI 대량 → Groq 3줄 초안(하루 1,000) → 클로드·피클·`collect_gate.py` 검수 → GitHub Actions 검증·배포 → Kaggle(주 30시간 중 6 비축)·Colab 학습 → Cloudflare Turnstile·Workers AI 앞단 → Upstash·Neon 캐시·아카이브), ② Make가 하지 않는 것(파싱·루프·장문 AI 가공·배치 학습·라이선스 판정), ③ 한도·비축 표, ④ 신규 10팀과 기존 팀원(클로드·피클·Actions·Supabase·Notion·Playwright·Drive) 경계, ⑤ 연결은 GitHub 한 곳·앞단만 Cloudflare 직통, ⑥ 키는 GitHub Secrets·Cloudflare Secrets·로컬 `/workspace/.secrets/` 세 곳에만. `CLAUDE.md`에 클로드용 같은 규칙 한 문단, `ops/CONNECTORS.md`에 무료 팀원 10팀 콘솔·한도·키 자리 표, `ops/CI.md`에 「무거운 검사는 Actions에서」 한 줄. 노션 「📋 자료실 운영 팀원·역할·자동화 안내」에도 요약 반영. **PR #443**
 - **2026-11-22 (오전) 라이브 내부 문서 차단 — `/ops/*`·`/CONSTITUTION.md`가 URL만 알면 열리던 것** — 저장소는 Public(Actions 무료 한도), 배포는 저장소 루트를 그대로 올리는 Cloudflare Pages라 연결 ID가 든 `ops/CONNECTORS.md`·역할 헌장·설계 핸드오프가 200으로 열렸다(헌법 3-2).
-  - [x] `functions/_middleware.js` — 내부 폴더 8곳·확장자 10종·루트 점 파일을 **404**로. `//ops`·`/./ops`·`/%6Fps` 같은 표기도 같은 자리로 본다.
+  - [x] `functions/_middleware.js` — 내부 폴더 8곳·확장자 10종·루트 점·밑줄 파일(`.nojekyll`·`_headers`·`_routes.json`)을 **404**로. `//ops`·`/./ops`·`/%6Fps` 같은 표기도 같은 자리로 본다.
   - [x] `_routes.json` `include:["/*"]` — 깊은 폴더 `.md`까지 함수가 본다. 대문·37개 섹터·비서·마이덱·공개 JSON은 `context.next()`로 그대로.
   - [x] `validate_repo.py --only expose`(CI는 `js`에 함께) + `ops/tests/test_exposure_rules.py` 10건 + `ops/qa/internal_exposure_probe.py`(배포본 404/200 실측).
   - [x] `_redirects`는 404를 지원하지 않아 쓰지 않았다 — 근거와 한계는 `ops/CI.md` §1-3.
-  - [ ] 머지·라이브 확인 — 막혀야 할 44곳 404 · 열려야 할 50곳 200.
+  - [x] 머지·라이브 확인 — **PR #445 · 머지 `2251437`** · CI 3종(static-checks·smoke-tests 9m23s·Cloudflare Pages) 초록. 라이브 `https://witw.pages.dev/` 실측 **막힘 45/45 · 열림 50/50 · 실패 0**(`/ops/CONNECTORS.md`·`/CONSTITUTION.md`·`/assets/supabase-*.sql`·`*/data/SCHEMA.md` 404), Chromium으로 지면 44곳을 열어 콘솔 오류·같은 사이트 404 **0**.
 
 - **2026-11-22 (오전) 첫 화면 안내(온보딩) — 자료실 들어가기 전 세 장, 건너뛰기는 늘 같은 자리, 로그인한 사람에겐 안 뜸** — 「튜토리얼 보강하고 지금 메인에 있는 버튼은 튜토리얼 페이지를 띄우는 걸로 하자. 처음 접속하면 뜨는 튜토페이지를 대문으로 만드는거지. 자료실 들어가기 전에 별도로다가 컴팩트하게」 · 「재방문한사람한테도 뜨는데 스킵할 수 있게 페이지마다 스킵 버튼이 같은 위치에. 로그인한 사람은 안뜨게, 이거 연동되지?」.
   - [x] `assets/onboard.css`·`assets/onboard.js` + `index.html` `#onb` — 세 장(뭘 할 수 있나 / 목적별 바로가기 7곳 / 화면 쓰는 법 세 가지), 이전·다음·점·밀기·←→·ESC·건너뛰기.
