@@ -185,6 +185,9 @@ a{color:inherit}
 .foot b{color:var(--ink)}
 .foot a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--line-2)}
 html[data-jc-imm] .rail{display:none}
+/* 접기 손잡이(제목)도 누르는 칸 44px — 접기가 꺼지는 큰 화면에서도 같은 높이(C2-17) */
+.rules .r-t.jc-fold-h{min-height:44px;display:flex;align-items:center}
+@media (min-width:900px){.rules .r-t.jc-fold-h{margin:-9.5px 0}}   /* 큰 화면은 접기가 꺼져 있다 — 누르는 칸만 44px로 두고 글줄 자리는 그대로(화면 분량 1.47 유지) */
 </style>
 <!-- 2026-11-22(C1-59): 공통 브랜드·머리말 층이 빠져 있던 것 — 다른 섹터와 같은 겉틀(여백·테마색·개념 아이콘 20px·제목 한 덩어리) -->
 <link rel="stylesheet" href="../assets/brand.css">
@@ -557,8 +560,8 @@ html[data-jc-imm] .rail{display:none}
 })();
 </script>
 <script src="../assets/marker.js" defer></script>
-<script>/* 휴대폰(≤899px): 「법이 정한 선」 카드마다 이름만 보이고 누르면 펼친다 — 세 장이 621px를 차지해 화면 2.61장이던 것(C2-17) */
-window.JC_FOLD = [{ box: '.rules > .rule', head: '.r-k' }];</script>
+<script>/* 휴대폰(≤899px): 「법이 정한 선」 카드마다 핵심 숫자(r-k)와 제목(r-t)만 보이고, 제목을 누르면 설명·근거 조문이 펼쳐진다 — 세 장이 621px를 차지해 화면 2.61장이던 것(C2-17) */
+window.JC_FOLD = [{ box: '.rules > .rule > .r-b', head: '.r-t' }];</script>
 <script src="../assets/prefs.js" defer></script>
 </body>
 </html>
