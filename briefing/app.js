@@ -40,8 +40,9 @@
     if (!seen) return '';
     return '<span class="edband">' + Object.keys(ED).map(function (e) {
       var r = runs[e] || {}, failed = r.status === 'failed';
-      return '<span class="bd ed ' + ED[e][0] + '">' + ED[e][1] + '</span> ' + (last[e] || r.updated_at ? '<span class="num">최근 갱신 ' + esc(kst(last[e] || r.updated_at)) + '</span>' : '<span>아직 없음</span>') +
-        (failed ? ' <span class="bd chk">갱신 실패' + (r.last_ok ? '(직전 ' + esc(String(r.last_ok).slice(5, 10)) + ' 자)' : '') + '</span>' : '');
+      /* 권역 하나 = 한 줄(.edr) — 휴대폰에서는 한국판·해외판이 위아래 두 줄로 같은 칸에 선다(2026-11-23 IMG_7862) */
+      return '<span class="edr"><span class="bd ed ' + ED[e][0] + '">' + ED[e][1] + '</span>' + (last[e] || r.updated_at ? '<span class="num edt">최근 갱신 ' + esc(kst(last[e] || r.updated_at)) + '</span>' : '<span class="edt">아직 없음</span>') +
+        (failed ? '<span class="bd chk">갱신 실패' + (r.last_ok ? '(직전 ' + esc(String(r.last_ok).slice(5, 10)) + ' 자)' : '') + '</span>' : '') + '</span>';
     }).join('<span class="sep" aria-hidden="true">·</span>') + '</span>';
   }
 
