@@ -239,13 +239,15 @@ body[data-jc-tool="library"] .jc-room{
 .jc-ib:focus-visible,.ib:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 
 /* 제목: 로고와 같은 세리프 패밀리의 정자체(이탤릭·필기체·빛 효과 없음) */
-body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1){
+/* 2026-11-22(C3-31): `header`에 :not(.hero) — 이론 위키의 첫 화면 큰 제목(<header class="hero"><h1>)까지 머리말 제목 규칙(16.5~20px)이 걸려
+   큰 제목이 16.5px로 줄어 있던 것. core.css의 같은 목록과 맞춘다. */
+body[data-jc-tool] :is(.hd,.hud,.hdr,header:not(.hero),.top) :is(.brand,h1){
   text-decoration:none;
   font-family:var(--jc-serif);font-style:normal;font-weight:600;
   letter-spacing:-.015em;line-height:1.25;
 }
-body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1) :is(span,em,i.kw){font-style:normal}
-body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1) :is(span,em,kw){
+body[data-jc-tool] :is(.hd,.hud,.hdr,header:not(.hero),.top) :is(.brand,h1) :is(span,em,i.kw){font-style:normal}
+body[data-jc-tool] :is(.hd,.hud,.hdr,header:not(.hero),.top) :is(.brand,h1) :is(span,em,kw){
   font-weight:600;
 }
 /* 핵심 낱말만 그 자료의 테마색 */
@@ -258,8 +260,8 @@ body[data-jc-tool] .jc-kw,
 body[data-jc-tool] .brand .jc-kw{color:var(--jc-acc)}
 
 /* 제목 크기: 자료마다 제각각이던 17~19px를 한 값으로 */
-body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1){font-size:clamp(16.5px,1vw + 11px,20px)!important}
-body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1) svg{flex:none}
+body[data-jc-tool] :is(.hd,.hud,.hdr,header:not(.hero),.top) :is(.brand,h1){font-size:clamp(16.5px,1vw + 11px,20px)!important}
+body[data-jc-tool] :is(.hd,.hud,.hdr,header:not(.hero),.top) :is(.brand,h1) svg{flex:none}
 
 /* 머리말 줄 높이·정렬 통일(단추 44px 기준) */
 body[data-jc-tool] :is(.hd,.hud,.hdr,.top){border-color:var(--line)}
@@ -267,7 +269,7 @@ body[data-jc-tool] :is(.hd,.hud,.hdr) .brand{min-width:0;min-height:44px;align-i
 body[data-jc-tool] :is(.hd,.hud,.hdr) [data-jc-prefs]{margin-left:auto;display:inline-flex;align-items:center;gap:6px}
 
 /* ---------- 상단 제목 색이 배경에 묻히지 않게 ---------- */
-body[data-jc-tool] :is(.hd,.hud,.hdr,header,.top) :is(.brand,h1){color:var(--ink,#2a2521)}
+body[data-jc-tool] :is(.hd,.hud,.hdr,header:not(.hero),.top) :is(.brand,h1){color:var(--ink,#2a2521)}
 
 /* 제목을 .brand·h1 대신 div로 쓰는 자료(서재)도 같은 서체 */
 body[data-jc-tool] .jc-title,body[data-jc-tool] .jc-title span{

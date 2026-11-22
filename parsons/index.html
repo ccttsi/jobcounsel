@@ -103,7 +103,7 @@ body:not([data-mode="scroll"]) #prog{display:none}
 
 /* ---------- 카드 ---------- */
 .cd{
-  --a:hsl(var(--h) 62% 34%);--a-soft:hsl(var(--h) 70% 48% / .1);--a-soft2:hsl(var(--h) 60% 55% / .34);--on:#fff;
+  --a:hsl(var(--h) 62% 24%);   /* 2026-11-22(C3): 명도 34→24% — 장 색 글자(CH.02·원문 제Ⅲ장·표 머리)가 옅은 장 색 바탕 위에서 3.7~3.95:1이던 것을 4.5:1 이상으로 */--a-soft:hsl(var(--h) 70% 48% / .1);--a-soft2:hsl(var(--h) 60% 55% / .34);--on:#fff;
   --c1:hsl(var(--h) 72% 97%);--c2:hsl(var(--h) 62% 91%);
   position:relative;border-radius:28px;color:var(--ink);box-shadow:var(--shadow);display:flex;flex-direction:column;
   background:radial-gradient(110% 70% at 100% 0%,var(--c2),transparent 62%),radial-gradient(90% 60% at 0% 100%,hsl(var(--h) 60% 93% / .7),transparent 60%),var(--c1);
@@ -112,7 +112,7 @@ body:not([data-mode="scroll"]) #prog{display:none}
 :root[data-theme="dark"] .cd{background:radial-gradient(110% 70% at 100% 0%,var(--c2),transparent 62%),var(--c1)}
 .cd-top{display:flex;justify-content:space-between;gap:12px;padding:18px 22px 0;font-size:12.5px;font-weight:750;color:var(--a);letter-spacing:.01em}
 .cd-ch{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cd-pg{flex:none;color:var(--dim);font-variant-numeric:tabular-nums}
+.cd-pg{flex:none;color:var(--ink);opacity:.8;font-variant-numeric:tabular-nums}   /* 쪽 번호: 장 바탕 위 --dim이 4.36~4.46:1 → 먹색 80% */
 .cd-in{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-start;gap:14px;padding:4px 26px 18px}
 .cd-in::before,.cd-in::after{content:"";flex:1 1 0;min-height:0}
 .t-cover .cd-in::after{display:none}
@@ -198,7 +198,7 @@ body:not([data-mode="scroll"]) #prog{display:none}
 /* 2026 관점: 뒤집힌 카드 */
 .t-now{--ink:#f4efe6;--muted:#cfc6b8;--dim:#a69c8e;background:radial-gradient(100% 70% at 100% 0%,hsl(var(--h) 45% 24%),transparent 62%),hsl(var(--h) 28% 13%)!important;color:var(--ink)}
 .t-now{--a:hsl(var(--h) 85% 74%);--a-soft:hsl(var(--h) 80% 70% / .14);--a-soft2:hsl(var(--h) 70% 65% / .35);--on:hsl(var(--h) 40% 10%)}
-:root[data-theme="dark"] .t-now{--ink:#16120e;--muted:#4c443c;--dim:#6e6459;--a:hsl(var(--h) 65% 30%);--a-soft:hsl(var(--h) 70% 40% / .12);--a-soft2:hsl(var(--h) 60% 45% / .3);--on:#fff;background:radial-gradient(100% 70% at 100% 0%,hsl(var(--h) 60% 80%),transparent 62%),hsl(var(--h) 35% 90%)!important}
+:root[data-theme="dark"] .t-now{--ink:#16120e;--muted:#4c443c;--dim:#6e6459;--a:hsl(var(--h) 65% 25%);--a-soft:hsl(var(--h) 70% 40% / .12);--a-soft2:hsl(var(--h) 60% 45% / .3);--on:#fff;background:radial-gradient(100% 70% at 100% 0%,hsl(var(--h) 60% 80%),transparent 62%),hsl(var(--h) 35% 90%)!important}
 .badge{align-self:flex-start;margin:0;font-size:12.5px;font-weight:800;letter-spacing:.06em;padding:5px 12px;border-radius:99px;background:var(--a);color:var(--on)}
 
 /* 나에게 물어보기: 줄 공책 */
@@ -355,6 +355,9 @@ body.bar-off[data-mode="scroll"] .dock{transform:translate(-50%,0);opacity:1;poi
 
 @media (orientation:landscape) and (max-height:500px){.intro{margin:4px 0 8px}.intro h2{font-size:24px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* 2026-11-22(C3-25): 누르는 칸 44px — 머리 제목 링크·보기 전환·아래 도구 줄. 본문 속 용어 단추(.gl)는 글줄 안의 낱말이라 예외(줄 높이를 바꾸지 않는다) */
+h1.brand>a{min-height:44px;display:inline-flex;align-items:center}.seg button{min-height:44px}#dock button{min-height:44px}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="../assets/core.css">

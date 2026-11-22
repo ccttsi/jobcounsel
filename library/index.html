@@ -19,21 +19,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  if (window.tailwind) tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: {
-          sans: ['"Pretendard Variable"', 'Pretendard', 'system-ui', 'sans-serif'],
-          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
-        },
-        colors: { obsidian: '#08090c', hair: '#1e232f' }
-      }
-    }
-  };
-</script>
 <style>
   /* 기본: 밝고 따뜻한 종이 톤 (사이트 첫 화면과 같은 팔레트) */
   :root {
@@ -670,6 +656,8 @@ document.documentElement.setAttribute('data-theme',t);})();
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="../assets/core.css">
+<!-- Tailwind 유틸: 실행형 CDN 대신 이 화면이 쓰는 것만 뽑은 정적 CSS(C3-26) — 예전 CDN처럼 머리 맨 끝에 둔다 -->
+<link rel="stylesheet" href="./tw.css">
 </head>
 <body data-jc-tool="library">
 <link rel="stylesheet" href="../assets/shell.css">

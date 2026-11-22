@@ -237,6 +237,10 @@ ol.st li:last-child b{color:var(--acc)}
 .themes h2{margin:0;font-size:16px;font-weight:850;letter-spacing:-.04em}
 .themes small{font-size:12px;color:var(--dim)}
 @media (max-width:599px){.themes small{display:none}}
+/* 큰 화면(≥1100): 「메인테마」 띠를 탭 줄 오른쪽 같은 줄에 앉힌다 — 탭 아래 한 줄을 따로 먹어 1280 화면 1.64장이던 것(C3-07) */
+@media (min-width:1100px){#main{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:center}#main>*{grid-column:1/-1}#main>.tabs{grid-column:1;grid-row:2}#main>.themes{grid-column:2;grid-row:2;margin-top:0;align-self:center}}
+@media (min-width:1100px) and (max-width:1399px){.themes small{display:none}}
+@media (min-width:1100px){body .wrap{padding-bottom:8px}}
 .th-list{display:flex;flex-wrap:wrap;gap:6px}
 .th-b{display:inline-flex;align-items:baseline;gap:6px;min-height:44px;padding:8px 12px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel);font-size:14px}
 .th-b b{font-weight:850}

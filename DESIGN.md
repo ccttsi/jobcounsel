@@ -229,9 +229,9 @@
 |---|---|---|
 | 이북 · 긴글 · 책 넘김 | `/parsons/` `/library/` `/theory/` `/manual/` | [`design/patterns/ebook-reading.md`](design/patterns/ebook-reading.md) |
 | 명함첩 · 도감 · 위키 · 목록 | `/company/` `/cert/` `/univ/` `/grad/` `/decalcomania/` `/transit/` | [`design/patterns/card-directory.md`](design/patterns/card-directory.md) |
-| 검색 · 찾아보기 · 법령 리더 | `/law/` | [`design/patterns/search-reference.md`](design/patterns/search-reference.md) |
+| 검색 · 찾아보기 · 법령 리더 | `/law/` `/translator/` `/work-filter/` | [`design/patterns/search-reference.md`](design/patterns/search-reference.md) |
 | 지표 · 게이지 · 관측대 | `/thermometer/` | [`design/patterns/metric-gauge.md`](design/patterns/metric-gauge.md) |
-| 계산기 · 시뮬레이터 · 실무 HUD | `/hud/` `/vpi/` `/dacum/` `/talk/` | [`design/patterns/sim-hud.md`](design/patterns/sim-hud.md) |
+| 계산기 · 시뮬레이터 · 실무 HUD | `/hud/` `/vpi/` `/dacum/` `/talk/` `/kdt-calc/` `/pay-calc/` `/fin-lab/` `/triage/` `/policy-match/` `/intake/` `/first-year/` | [`design/patterns/sim-hud.md`](design/patterns/sim-hud.md) |
 | 편집대 · 작업공간(소스·모니터·인스펙터·타임라인) | `/portfolio/` | [`design/patterns/nle-workspace.md`](design/patterns/nle-workspace.md) |
 | 공정·밸류체인 지도(산업 색인 + 가로 단계 눈금 + 한 장) | `/valuechain/` | [`design/patterns/process-map.md`](design/patterns/process-map.md) |
 | 모바일 · 태블릿 손맛 (공통) | 모든 섹터 | [`design/patterns/touch-physics.md`](design/patterns/touch-physics.md) |
@@ -383,6 +383,7 @@ Playwright가 실제 사용자 동선을 재현한다: 한 손 터치(엄지 반
 
 ## 11. 패턴 기록 인덱스 (날짜 → 어디로 갔는지)
 
+- 2026-11-22 디자인 전수 고급화 CP1~3: 큰 화면 분량(한쪽만 긴 2단 → 안쪽 2열·두 줄 걸치기), 글자 11px 하한 → `sim-hud.md` 끝 절 · 44px «누르는 칸» 판정(라벨이 감싼 체크박스·본문 용어 단추 예외) → `touch-physics.md` 끝 절 · 팝업이 열린 동안 섹터가 바꾼 주소를 지키기(`core.js` BackStack) → `HANDOFF.md` CP3.
 - 2026-11-21 실업급여·근로조건 계산기(pay-calc) 신설(매치 19): 세 탭(구직급여·실수령액·퇴직금) + 명세서 카드(.slip)·붙박이 색인 탭·휴대폰 중간 줄 접기 → `sim-hud.md`(2026-11-21), `design/studies/2026-11-21-pay-calc.md`. 공용 `core.js`가 `.sheet`를 팝업으로 보는 함정도 함께 기록.
 - 2026-11-21 초기상담 접수·구조화 시트(intake) 신설(매치 18): 4유형 × 15분 4단계(오프닝·질문·서류·연계) · 단계 탭 부제가 시간 눈금 · 답변 신호 → 다음 행동·연계 칩 · 유형별 서류 체크와 진행 막대 · 두 번 눌러 지우기 → `sim-hud.md` 2026-11-21, `design/studies/2026-11-21-intake-sheet.md`.
 - 2026-11-21 공고문 법령 점검대(posting) 신설(매치 21): 규칙 신호(문장 패턴+부정 예외) + 학습 분류기(나이브 베이즈, 5겹 71.2%)를 겹친 판정 · 위험도 자(ruler)의 40·70% 눈금 절대 배치 · 판정 소인(기울어진 스탬프) · 카드는 기본 접힘(휴대폰 분량 1.94) · 조문 37개를 법령별 아코디언으로 → `sim-hud.md`(2026-11-21 공고 점검), `design/studies/2026-11-21-posting-legal-check.md`.
