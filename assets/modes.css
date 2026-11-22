@@ -328,11 +328,37 @@
 .a-mode-match[data-step="2"] .seam{opacity:1;animation:none}
 .a-mode-match[data-step="2"] .c-chip{fill:color-mix(in srgb,var(--acc) 42%,var(--f-top))}
 
+/* ④ 2차 확정 연출(2026-11-22 태화님 지시 — 「재클릭 애니메이션이 부족하고 바로 넘어간다」)
+ *   0~0.3s  카드가 한 번 눌렸다(.985) 떠오른다 · 고르지 않은 카드는 옅어지며 물러난다
+ *   0.18s~  확인 표가 튀어나오고 고리 두 겹이 퍼진다(transform·opacity)
+ *   0.25s~  도안 전체가 한 번 떠올랐다 앉는다 · 빛이 한 번 더 밝아진다
+ *   0~1.15s 카드 바닥의 진행 띠가 왼쪽에서 차오른다(scaleX) — 다 차면 다음 화면
+ * 움직이는 값은 transform·opacity뿐이고, 끝나면 무대 전체가 한 번에 걷힌다(⑤). */
+.a-mode::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);
+  transform:scaleX(0);transform-origin:0 50%;opacity:0;pointer-events:none}
+.a-modes.a-in .a-mode[data-step="2"]{will-change:transform;animation:mode-commit .62s cubic-bezier(.3,1.25,.4,1) both}
+@keyframes mode-commit{0%{transform:translateY(-2px)}22%{transform:translateY(0) scale(.985)}62%{transform:translateY(-6px) scale(1.012)}100%{transform:translateY(-2px)}}   /* 끝 자세 = 1차 자세(-2px) — 걷힐 때 애니메이션이 꺼져도 튀지 않는다 */
+.a-mode[data-step="2"]::after{opacity:1;animation:mode-fill 1.15s cubic-bezier(.45,.05,.3,1) both}
+@keyframes mode-fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.a-modes:has(.a-mode[data-step="2"]) .a-mode:not([data-step="2"]){opacity:.38;transform:translateY(4px) scale(.985);
+  transition:opacity .4s ease,transform .5s cubic-bezier(.2,.9,.3,1)}
+.a-art .ring{fill:none;stroke:var(--acc);stroke-width:1.4;opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.a-mode[data-step="2"] .a-art .ring{animation:art-ring .9s cubic-bezier(.2,.7,.3,1) .26s both}
+.a-mode[data-step="2"] .a-art .ring.r2{animation-delay:.5s}
+@keyframes art-ring{0%{opacity:.75;transform:scale(1)}100%{opacity:0;transform:scale(2.6)}}
+.a-mode[data-step="2"] .a-art .art-svg{will-change:transform;transform-origin:50% 90%;animation:art-lift .8s cubic-bezier(.3,1.3,.4,1) .24s both}
+@keyframes art-lift{0%{transform:none}45%{transform:translate3d(0,-5px,0) scale(1.035)}100%{transform:none}}
+.a-mode[data-step="2"] .a-art .g-glow{animation:art-glow 1.1s ease .2s both}
+@keyframes art-glow{40%{opacity:1}}
+.a-mode-seed[data-step="2"] .sweep{animation:art-sweep .9s cubic-bezier(.3,.6,.3,1) .34s both}
+
 /* 감속 모드·집중 보기: 꾸밈 애니메이션 없이 결과 자세 */
 @media (prefers-reduced-motion:reduce){
   .a-art *{animation:none!important;transition:none!important}
 }
 html[data-jc-imm] .a-art *{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){.a-mode,.a-mode::after{animation:none!important}}
+html[data-jc-imm] .a-mode,html[data-jc-imm] .a-mode::after{animation:none!important}
 
 /* ============ 5. 전환(고름) — 무대 전체가 **한 번에** 페이드아웃한다 ============
  * 예전에는 머리말·바닥·반대 카드·글래스가 각자 다른 시간에 사라져 잔상이 남고 프레임도 끊겼다.

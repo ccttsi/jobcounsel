@@ -1037,14 +1037,16 @@
      카드·오브제·글래스·바닥이 따로 사라지던 잔상과 프레임드랍을 없앴다(2026-11-18 밤).
      덱 화면은 **무대가 투명해진 뒤**【0.45s】에 세운다 — 덱을 만드는 한 프레임(33~50ms)이
      화면 변화가 없는 순간에 묻혀, 누를 때의 반응과 페이드가 끊기지 않는다. */
+  var COMMIT_MS = 1180;   /* 2차를 누른 뒤 다음 화면까지 — 진행 띠(1.15s)가 다 찬 순간 */
   function pick(m) {
     if (!open || picking) return;
     picking = true;
     var c = byMode(m); if (c) setStep(c, 2);       /* 시드: 색인 줄 · 매치: 잠금 표시 */
     if (reduce()) { apply(m); closeOv(false); return; }
-    later(function () { ov.classList.add('a-pick'); }, 120);
-    later(function () { apply(m); }, 450);            /* 무대가 투명해진 뒤에 덱을 세운다 — 덱 생성 프레임이 보이지 않는다 */
-    later(function () { closeOv(false); }, 520);
+    /* 2026-11-22: 2차 확정 연출(눌림·고리·도안 떠오름·진행 띠 1.15s)을 다 보여 준 뒤 무대를 걷는다(예전 120ms → 1180ms). */
+    later(function () { ov.classList.add('a-pick'); }, COMMIT_MS);
+    later(function () { apply(m); }, COMMIT_MS + 330);   /* 무대가 투명해진 뒤에 덱을 세운다 — 덱 생성 프레임이 보이지 않는다 */
+    later(function () { closeOv(false); }, COMMIT_MS + 400);
   }
   function pickAll() {
     if (!open || picking) return;
