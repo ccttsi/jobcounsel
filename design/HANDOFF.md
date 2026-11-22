@@ -981,7 +981,7 @@
   - 한글 문서 경로는 **비ASCII 글자만** 퍼센트로 바꾼다(`urllib`이 비ASCII 주소를 보내지 못한다). 쿼리·프래그먼트는 그대로 살린다.
 - **검수**
   - 단위 28건 통과(`python3 -m unittest ops/tests/test_jina_fetch.py`) — 요청 주소·User-Agent·`X-Return-Format`, 한글 경로 인코딩, 내부 호스트 10종 거절(요청 0건), 403/429/시간 초과/연결 거부/본문 0자, 429 재시도 1회·`Retry-After` 상한, CLI 종료 코드 0·1·2.
-  - `python3 ops/scripts/validate_repo.py` 전 항목 통과(단위 검사 93건 중 실패 0 — 이 28건이 함께 돈다).
+  - `python3 ops/scripts/validate_repo.py` 전 항목 통과(단위 검사 93건 중 실패 0 — 이 28건이 함께 돈다). **PR #438.**
   - 실제 호출(2026-11-22 09:33 KST): `https://example.com` 200·본문 156자 · `https://www.gov.kr/portal/main` 200·본문 26,466자 · `https://www.moel.go.kr/` 200이지만 본문 0자 → 종료 코드 1(위 판단대로 실패 처리) · `https://www.data.go.kr/data/15125273/openapi.do` 422(Reader의 15초 대기 초과) → 종료 코드 1과 이유 표시.
 - **남은 것**: 수집 스크립트가 이 도구를 **실제로 부르는 자리**는 아직 없다. 브리핑·신산업 원문 수집에서 "본문이 비는 지면"의 목록을 먼저 뽑아, 그 목록에만 골라 쓰는 편이 안전하다(모든 호출을 Reader로 보내면 분당 20회 한도에 걸린다).
 - **다음 시작 파일**: `ops/scripts/jina_fetch.py`(`fetch_markdown`) → 부를 자리 `briefing/data/tools/build_index.py` · `ops/scripts/sync_openapi_common.py`.
