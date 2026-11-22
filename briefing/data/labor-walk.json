@@ -1,6 +1,6 @@
 {
  "schema_version": "1.4.0",
- "generated_at": "2026-11-22T09:40:12+09:00",
+ "generated_at": "2026-11-22T23:09:32+09:00",
  "note": "briefing.json·archive/*.json의 카드 중 labor_walk:true(고용·임금·직무·정책 등)를 모은 실기사 색인. 본문은 카드의 「무슨 일·수치·근거」를 그대로 옮긴 우리 말 요약이며 원문 문장이 아니다.",
  "dates": [
   "2026-11-22",
@@ -254,7 +254,7 @@
   "2025-05-15"
  ],
  "counts": {
-  "2026-11-22": 7,
+  "2026-11-22": 8,
   "2026-11-21": 7,
   "2026-11-20": 7,
   "2026-11-19": 6,
@@ -638,181 +638,214 @@
    "date": "2026-11-22",
    "card_id": "c04",
    "order": 4,
-   "title": "미국 46개 주 실업률 그대로 — 작년 비교는 데이터 공백",
-   "kicker": "전국 4.1% · 사우스다코타 2.0% vs DC 5.4%",
+   "title": "중국 구인공고 1,000만 건 — AI 노출 높은 직무가 10%p 더 빨리 줄었다",
+   "kicker": "전체 공고 3년 만에 절반 · AI 노출 격차 약 10%p",
    "category": "해외 노동시장",
-   "topic": "해외 노동시장",
-   "theme_key": "th-global-labor",
-   "theme_label": "해외 노동시장",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
    "region": "global",
-   "track": "A",
-   "source_name": "미국 노동통계국(BLS)",
-   "source_title": "State Employment and Unemployment — October 2026 (USDL-26-1713)",
-   "source_url": "https://www.bls.gov/news.release/laus.nr0.htm",
-   "published_at": "2026-11-20",
-   "license_type": "PUBLIC-DOMAIN",
+   "track": "B",
+   "source_name": "AI In Context (블룸버그 분석 보도)",
+   "source_title": "AI-Exposed Jobs in China Fell 10 Points Faster — Bloomberg Finds",
+   "source_url": "https://aiincontext.com/articles/ai-exposed-jobs-in-china-fell-10-points-faster-bloomberg-finds",
+   "published_at": "2026-11-21",
+   "license_type": "PRESS",
    "key_numbers": [
     {
-     "label": "미국 전국 실업률",
-     "value": "4.1%",
-     "delta": "전월과 비슷",
-     "period": "2026년 10월"
+     "label": "분석한 공고",
+     "value": "약 1,000만건",
+     "delta": "2021.7~2025.6",
+     "period": "2026년 11월 보도"
     },
     {
-     "label": "사우스다코타(최저)",
-     "value": "2.0%",
-     "delta": "전국 -2.1%p",
-     "period": "2026년 10월"
+     "label": "AI 노출 격차",
+     "value": "약 10%p",
+     "delta": "노출 낮은 직무 대비",
+     "period": "2021.7~2025.6"
     },
     {
-     "label": "컬럼비아특별구(최고)",
-     "value": "5.4%",
-     "delta": "전국 +1.3%p",
-     "period": "2026년 10월"
+     "label": "전체 공고 감소",
+     "value": "절반",
+     "delta": "2022.6 이후 3년",
+     "period": "2025년 6월"
     },
     {
-     "label": "캘리포니아 비농업 고용",
-     "value": "+47,100명",
-     "delta": "전월비",
-     "period": "2026년 10월"
+     "label": "신규 채용 순감",
+     "value": "-5.2%",
+     "delta": "공고 1억1,600만건 분석",
+     "period": "2023~2026년 초"
     }
    ],
-   "text": "미국 노동통계국이 11월 20일(현지) 2026년 10월 주별 고용·실업 통계를 발표했다. 46개 주에서 실업률이 전월과 유의하게 다르지 않았고, 비농업 고용도 46개 주와 컬럼비아특별구에서 사실상 변화가 없었다.\n\n전국 실업률은 4.1%로 전월과 비슷했다. 사우스다코타 2.0%로 가장 낮고 노스다코타 2.2%, 컬럼비아특별구(DC) 5.4%로 가장 높아 19개 주가 전국보다 낮았다. 10월 비농업 고용은 캘리포니아(+47,100명)·인디애나(+15,900명)·캔자스(+7,100명)·아이오와(+7,000명) 4개 주에서만 늘었고, 전년 동월 대비로는 텍사스 +203,300명 등 12개 주에서 늘었다. 다만 2025년 10월 가계조사가 예산 미통과로 실시되지 않아 전년 대비 실업률 변화 분석은 이번 발표에서 빠졌다."
+   "text": "블룸버그가 온라인 구인공고 약 1,000만 건을 2021년 7월~2025년 6월 기간으로 분석해 AI 노출도가 높은 직무의 공고가 더 가파르게 줄었다고 보도했다. 국내 매체가 11월 21일 이를 전했다.\n\nAI 노출도가 높은 직무의 공고는 낮은 직무보다 약 10%포인트 더 빠르게 줄었고, 거의 모든 업종에서 같은 방향의 격차가 나타났다. 전체 온라인 공고는 2022년 6월(챗GPT 출시 직전) 이후 3년 사이 절반으로 감소했다. 블룸버그가 함께 인용한 중국 내 연구로는, 상하이과기대 천친이 공고 1억1,600만 건을 분석해 2023년~2026년 초 신규 채용이 5.2% 순감했다고 추정했고, 중국사회과학원이 참여한 연구는 공고 21% 감소와 평균임금 4% 하락을 보고했다. 다만 블룸버그는 경기 침체와 AI 효과를 분리할 수 없고, 공고 감소가 곧 해고를 뜻하지는 않는다고 밝혔다."
   },
   {
    "date": "2026-11-22",
    "card_id": "c05",
    "order": 5,
-   "title": "생산성 기여 0.72→0.97%p, 노동 기여는 0.60→0.42%p",
-   "kicker": "TFP +0.97%p vs 노동 +0.42%p (2022~25년)",
-   "category": "해외 노동시장",
-   "topic": "AI와 직무",
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
+   "title": "AI 훈련, 임원 78% vs 시간제 20% — 6,700명 10개국 조사",
+   "kicker": "정기 사용 임원 64% vs 신입 20% · 전체 37%",
+   "category": "채용시장",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
    "region": "global",
-   "track": "A",
-   "source_name": "미국 노동통계국(BLS)",
-   "source_title": "Total Factor Productivity for Major Industries — 2025 (USDL-26-1714)",
-   "source_url": "https://www.bls.gov/news.release/prod5.nr0.htm",
+   "track": "B",
+   "source_name": "HR Dive (마시 조사 보도)",
+   "source_title": "Executives get more AI training than other workers, hurting adoption, report finds",
+   "source_url": "https://www.hrdive.com/news/executives-get-more-ai-training-than-other-workers-hurting-adoption/875395/",
    "published_at": "2026-11-20",
-   "license_type": "PUBLIC-DOMAIN",
+   "license_type": "PRESS",
    "key_numbers": [
     {
-     "label": "TFP 기여(민간 산출)",
-     "value": "+0.97%p",
-     "delta": "2019~22년 +0.72%p",
-     "period": "2022~25년"
+     "label": "AI 훈련 제공(임원)",
+     "value": "78%",
+     "delta": "경력직 44%",
+     "period": "2026년 11월 조사"
     },
     {
-     "label": "노동 기여",
-     "value": "+0.42%p",
-     "delta": "2019~22년 +0.60%p",
-     "period": "2022~25년"
+     "label": "AI 훈련 제공(시간제)",
+     "value": "20%",
+     "delta": "신입 32%",
+     "period": "2026년 11월 조사"
     },
     {
-     "label": "ICT 부문 TFP 기여",
-     "value": "+0.42%p",
-     "delta": "2019~22년 +0.27%p",
-     "period": "2022~25년"
+     "label": "AI 정기 사용(전체)",
+     "value": "37%",
+     "delta": "한 번이라도 71%",
+     "period": "2026년 11월 조사"
     },
     {
-     "label": "TFP가 오른 주요 산업",
-     "value": "19개 중 7개",
-     "delta": "",
-     "period": "2025년"
+     "label": "조사 규모",
+     "value": "6,700명",
+     "delta": "10개국",
+     "period": "2026년"
     }
    ],
-   "text": "미국 노동통계국이 11월 20일(현지) 19개 주요 산업의 2025년 총요소생산성(TFP) 통계를 발표하면서, 민간기업 산출 증가가 어디서 왔는지를 2019~22년과 2022~25년으로 나눠 비교했다. AI 도구 투자가 본격화한 뒤 생산성과 자본의 몫이 커지고 노동의 몫이 줄어든 흐름이 수치로 드러났다.\n\n민간기업 산출 증가 기여도는 2022~25년 TFP +0.97%p·자본 +1.13%p·노동 +0.42%p였다. 2019~22년(TFP +0.72%p·자본 +1.03%p·노동 +0.60%p)보다 TFP 기여가 0.25%p 늘었고, 그 증가분의 대부분은 정보통신(ICT) 부문에서 나왔다(0.27→0.42%p). 2025년 한 해 TFP가 오른 주요 산업은 19개 중 7개(도매업 선두)였고, 노동생산성은 19개 중 13개 산업에서 올랐다."
+   "text": "컨설팅사 마시(Marsh)가 11월 18일 공개한 조사에서 지난 1년간 고용주가 제공한 AI 훈련 경험이 직급에 따라 크게 갈렸다. 10개국 직장인 6,700명을 대상으로 했고, HR 매체 HR다이브가 11월 20일 보도했다.\n\nAI 훈련을 제공받았다는 응답은 임원 78%, 경력직 44%, 신입 32%, 시간제 20%였다. AI를 정기적으로 쓴다는 응답은 임원 64%·신입 20%였고, 전체로는 37%가 정기 사용, 71%가 한 번이라도 사용했다고 답했다. AI를 쓰면서 업무를 잘할 자신이 있다는 응답은 임원 10명 중 9명이었지만 시간제는 절반 수준이었다. 마시는 이 격차가 기업 내 '멈춘 전환'의 원인일 수 있다고 봤다."
   },
   {
    "date": "2026-11-22",
    "card_id": "c06",
    "order": 6,
-   "title": "플랫폼 일의 AI 교란 0.91, 생계 취약성은 0.21",
-   "kicker": "교란 평균 0.913 · 취약성 0.214 · 무급 과업 28.2%",
-   "category": "AI·직무",
-   "topic": "AI와 직무",
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
+   "title": "그리스, 노동시장 AI 규칙 첫 법안 — 알고리즘에 사람 감독",
+   "kicker": "플랫폼 고용등록부 신설 · EU 지침 2024/2831 전환",
+   "category": "해외 노동시장",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
    "region": "global",
-   "track": "A",
-   "source_name": "arXiv (Farhan Latif, UNU·워털루대)",
-   "source_title": "AI-Driven Transformation of Platform Work: A Task-Based Model for Measuring Labour Disruption and Vulnerability, with Early Evidence from Online Freelancing in Kenya (arXiv:2611.25585)",
-   "source_url": "https://arxiv.org/abs/2611.25585",
-   "published_at": "2026-11-20",
-   "license_type": "CC-BY-4.0",
+   "track": "B",
+   "source_name": "그리스 노동사회보장부",
+   "source_title": "Ανθρώπινη εποπτεία στους αλγορίθμους και Μητρώο Απασχόλησης σε πλατφόρμες φέρνει το νέο νομοσχέδιο (알고리즘 인간 감독과 플랫폼 고용등록부를 담은 새 법안)",
+   "source_url": "https://ypergasias.gov.gr/ypeka-anthropini-epopteia-stous-algorithmous-kai-mitroo-apascholisis-se-platformes-fernei-to-neo-nomoschedio/",
+   "published_at": "2026-11-21",
+   "license_type": "KOGL-NONE",
    "key_numbers": [
     {
-     "label": "AI 교란 지수(평균)",
-     "value": "0.913",
-     "delta": "0~1 척도",
-     "period": "4개 플랫폼 직무"
+     "label": "법안 구성",
+     "value": "2개 축",
+     "delta": "알고리즘 관리·플랫폼 노동",
+     "period": "2026년 11월"
     },
     {
-     "label": "생계 취약성(평균)",
-     "value": "0.214",
-     "delta": "유급 0.482 / 무급 -0.493",
-     "period": "4개 플랫폼 직무"
+     "label": "공개협의 기간",
+     "value": "15일",
+     "delta": "11.5~11.19",
+     "period": "2026년 11월"
     },
     {
-     "label": "웹·SW 개발 취약성",
-     "value": "0.37",
-     "delta": "직무 중 최고",
-     "period": "4개 플랫폼 직무"
-    },
-    {
-     "label": "무급 과업 비중",
-     "value": "28.2%",
-     "delta": "",
-     "period": "케냐 프리랜서 조사"
+     "label": "전환하는 EU 지침",
+     "value": "2024/2831",
+     "delta": "2024.10.23 채택",
+     "period": "플랫폼 노동 지침"
     }
    ],
-   "text": "유엔대학·워털루대 연구자가 케냐 나이로비 온라인 프리랜서 52명 설문(2024년 1~7월)과 20명 심층 인터뷰를 과업 기반 모델과 대조해, AI가 일하는 방식을 바꾸는 정도(교란)와 생계가 위협받는 정도(취약성)를 분리해 측정한 논문을 11월 20일 arXiv에 공개했다.\n\n교란 지수는 평균 0.913(0~1)으로 네 직무 모두 0.88을 넘었다(웹·소프트웨어 0.95, 전사 0.91, 가상비서 0.90, 글쓰기 0.89). 반면 생계 취약성은 평균 0.214로 낮았고 직무별로 갈렸다 — 글쓰기 0.05, 가상비서 0.21, 전사 0.23, 웹·소프트웨어 개발 0.37. 유급 과업 취약성 0.482에 대해 무급 과업은 −0.493으로 완충했지만, 무급 과업이 전체의 28.2%뿐이라 상쇄는 제한적이었다. 응답자 78.85%는 AI가 일부를 대체해도 새 일자리로 옮겨갈 수 있다고 봤다."
+   "text": "그리스 노동사회보장부가 11월 21일 노동시장의 인공지능·알고리즘 사용에 규칙을 두고 플랫폼 노동자 보호를 강화하는 법안을 의회에 제출했다고 밝혔다. EU 플랫폼 노동 지침(2024/2831)을 국내법으로 옮기는 법안으로, 알고리즘 관리와 플랫폼 노동 두 축으로 구성된다.\n\n알고리즘 관리 축은 노동시장의 AI·알고리즘 사용에 처음으로 규칙을 두고, 근로 지위에 중대한 영향을 주는 결정에 대한 정보 제공과 인간의 감독을 의무화하며 개인정보를 보호한다. 플랫폼 축은 플랫폼을 통해 일하는 사람의 고용 지위를 정확히 판정하고 서비스 투명성·감독·사법 구제를 강화하며, 플랫폼 종사자를 기록하는 '고용등록부'를 만들어 이민부 등록부와 연계한다. 법안은 11월 5~19일 공개협의를 거쳤고 표결 일정은 아직 공지되지 않았다."
   },
   {
    "date": "2026-11-22",
    "card_id": "c07",
    "order": 7,
-   "title": "기술 인력은 늘린다 86% — 신입의 조건은 AI 자격으로",
-   "kicker": "신입 AI 역량 공고 5배 이상 · 임금 프리미엄 최대 79%",
+   "title": "가나 청년 실업 32.5% — 훈련·자격·노동시장 정보가 따로 논다",
+   "kicker": "15~24세 실업 32.5% · 검토 자료 57건",
+   "category": "해외 노동시장",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "global",
+   "track": "A",
+   "source_name": "Discover Education (Springer Nature)",
+   "source_title": "Digital TVET transformation and youth workforce readiness in Ghana: a conceptual framework for an integrated skills information architecture",
+   "source_url": "https://link.springer.com/article/10.1007/s44217-026-02455-0",
+   "published_at": "2026-11-21",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "15~24세 실업률",
+     "value": "32.5%",
+     "delta": "15~35세 21.9%",
+     "period": "2025년 2·3분기"
+    },
+    {
+     "label": "15~24세 실업률(센서스)",
+     "value": "32.8%",
+     "delta": "15~35세 19.7%",
+     "period": "2021년"
+    },
+    {
+     "label": "검토한 자료",
+     "value": "57건",
+     "delta": "동료심사·정책·법령",
+     "period": "2026년"
+    },
+    {
+     "label": "TVET 바우처 인증",
+     "value": "1만8,087명",
+     "delta": "숙련공·견습생",
+     "period": "2023년 보고서"
+    }
+   ],
+   "text": "가나의 직업기술교육훈련(TVET)과 청년 노동시장을 잇는 정보 구조를 설계한 개념 논문이 11월 21일 Discover Education(CC BY 4.0)에 실렸다. 노동시장 정보 시스템, 훈련기관 정보 시스템, 자격 체계가 각각 존재하지만 서로 연결되지 않아 기술 공급이 수요를 따라가지 못한다는 진단이다.\n\n2021년 인구주택총조사 기준 15~35세 실업률은 19.7%, 15~24세는 32.8%였고, 2025년 2·3분기 분기 노동력조사에서는 15~24세 32.5%, 15~35세 21.9%로 나타났다. 저자들은 동료심사·정책·법령 자료 57건을 검토해 4개 기능(수요 감지, 교육과정·자격으로 전환, 디지털 실습, 역량 기록·인정)과 상호운용 핵심, 검증 가능한 명제 7개로 프레임워크를 구성했다. 가나는 노동시장정보시스템(GLMIS), 준비 중인 TVET 정보시스템, 국가 TVET 자격체계, 국가 신분증을 이미 갖추고 있지만 서로 다른 기관이 따로 관리한다. TVET 바우처 사업으로 숙련공·견습생 1만8,087명이 훈련·인증을 받았고, TVET 등록생 중 여성은 약 4분의 1이다."
+  },
+  {
+   "date": "2026-11-22",
+   "card_id": "c08",
+   "order": 8,
+   "title": "공고에 '재택 가능' 적으면 충원율 3.5%p 높아졌다",
+   "kicker": "평균 충원율의 15.6% · 다만 이직도 늘어",
    "category": "채용시장",
    "topic": "고용서비스·채용",
    "theme_key": "th-employment-service",
    "theme_label": "고용서비스와 상담",
    "region": "global",
-   "track": "B",
-   "source_name": "Randstad (Tech Talent in Transition 2026)",
-   "source_title": "Tech Talent in Transition: Building the AI-Ready Workforce (2026)",
-   "source_url": "https://www.randstad.com/tech-talent-report-2026/",
-   "published_at": "2026-11-20",
-   "license_type": "PRESS",
+   "track": "A",
+   "source_name": "Review of Accounting Studies (Springer Nature)",
+   "source_title": "Disclosing work-from-home flexibility to compete for talent? Evidence from job postings",
+   "source_url": "https://link.springer.com/article/10.1007/s11142-026-10001-4",
+   "published_at": "2026-11-21",
+   "license_type": "CC-BY-4.0",
    "key_numbers": [
     {
-     "label": "기술 인력 확대 기업",
-     "value": "86%",
-     "delta": "미국 93%·인도 90%",
-     "period": "2026년 8월 조사"
+     "label": "충원율 상승",
+     "value": "+3.5%p",
+     "delta": "평균의 15.6%",
+     "period": "2017~2024년 공고"
     },
     {
-     "label": "신입 AI 역량 공고",
-     "value": "5배 이상",
-     "delta": "2025년 초 대비",
-     "period": "2026년 상반기"
+     "label": "분석 기간",
+     "value": "8년",
+     "delta": "2017~2024",
+     "period": "미국 구인공고"
     },
     {
-     "label": "AI 역량 임금 프리미엄",
-     "value": "최대 79%",
-     "delta": "영국·인도 2배 이상",
-     "period": "2026년"
-    },
-    {
-     "label": "AI 오케스트레이션 공고",
-     "value": "+121%",
-     "delta": "레거시 IT +10%",
-     "period": "2025년"
+     "label": "이직과의 관계",
+     "value": "정(+)",
+     "delta": "정착은 약해질 수 있음",
+     "period": "2017~2024년"
     }
    ],
-   "text": "글로벌 인력 기업 란스타드가 11월 보고서 「Tech Talent in Transition」에서 11개국 기술 의사결정자 1,100명 설문과 채용공고 2,000만 건 분석 결과를 공개했고, 국내외 매체가 11월 20일 이를 보도했다. 기술 인력 총계는 늘리면서도 신입 채용의 기준을 AI 역량으로 옮기고 있다는 내용이다.\n\n응답 기업 86%가 AI를 이유로 전체 기술 인력을 늘린다고 답했다(미국 93%, 인도 90%). 생성AI 역량을 요구하는 개발자 공고는 2025년 135% 늘었고 2026년 상반기에도 전년 동기 대비 119% 늘었다. 신입 대상 AI 역량 요구 공고는 2025년 초 이후 5배 이상으로 늘었고, AI 역량을 갖춘 신입 개발자는 전통적 역량 지원자보다 최대 79% 높은 임금을 받을 수 있었다(영국·인도는 2배 이상). 같은 기간 레거시 IT 직무 공고는 10% 늘어난 데 그친 반면 AI 오케스트레이션·거버넌스 공고는 121% 늘었다. 반대로 응답 기업 54%는 AI 때문에 주니어 개발자 채용이 줄지 않았다고 답해, 신입 시장이 일괄적으로 닫힌 것은 아니었다."
+   "text": "미국 기업의 구인공고 2017~2024년 자료로 재택근무 유연성을 공고에 밝히는 것이 채용 결과와 어떤 관련이 있는지 분석한 논문이 11월 21일 Review of Accounting Studies(CC BY 4.0)에 실렸다.\n\n재택 유연성을 밝힌 공고는 채워질 확률이 3.5%포인트 높았고, 이는 표본 평균 충원율의 15.6%에 해당한다. 재택 정보가 눈에 잘 띄는 방식으로 제시될수록 효과가 컸다. 기업은 노동시장 경쟁이 심할수록 재택 유연성을 더 자주 공시했다. 다만 재택 공시는 이후 이직률 상승과도 정(+)의 관련을 보여, 채용은 빨라지지만 정착은 약해질 수 있다는 해석이 가능하다. 저자들은 공시 효과와 실제 제도의 효과를 완전히 분리하지 못한다고 밝혔다."
   },
   {
    "date": "2026-11-21",

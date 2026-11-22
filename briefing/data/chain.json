@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-22T09:40:12+09:00",
+ "generated_at": "2026-11-22T23:09:32+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -1631,6 +1631,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20280",
      "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-22",
+     "card_id": "c06",
+     "title": "그리스, 노동시장 AI 규칙 첫 법안 — 알고리즘에 사람 감독",
+     "kicker": "플랫폼 고용등록부 신설 · EU 지침 2024/2831 전환",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "그리스 노동사회보장부",
+     "source_url": "https://ypergasias.gov.gr/ypeka-anthropini-epopteia-stous-algorithmous-kai-mitroo-apascholisis-se-platformes-fernei-to-neo-nomoschedio/",
+     "published_at": "2026-11-21"
     }
    ]
   },
@@ -2521,6 +2532,17 @@
      "source_name": "Randstad (Tech Talent in Transition 2026)",
      "source_url": "https://www.randstad.com/tech-talent-report-2026/",
      "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-22",
+     "card_id": "c08",
+     "title": "공고에 '재택 가능' 적으면 충원율 3.5%p 높아졌다",
+     "kicker": "평균 충원율의 15.6% · 다만 이직도 늘어",
+     "category": "채용시장",
+     "region": "global",
+     "source_name": "Review of Accounting Studies (Springer Nature)",
+     "source_url": "https://link.springer.com/article/10.1007/s11142-026-10001-4",
+     "published_at": "2026-11-21"
     }
    ]
   },
@@ -3345,6 +3367,28 @@
      "source_name": "헤럴드경제",
      "source_url": "https://biz.heraldcorp.com/article/10943661",
      "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-22",
+     "card_id": "c05",
+     "title": "AI 훈련, 임원 78% vs 시간제 20% — 6,700명 10개국 조사",
+     "kicker": "정기 사용 임원 64% vs 신입 20% · 전체 37%",
+     "category": "채용시장",
+     "region": "global",
+     "source_name": "HR Dive (마시 조사 보도)",
+     "source_url": "https://www.hrdive.com/news/executives-get-more-ai-training-than-other-workers-hurting-adoption/875395/",
+     "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-22",
+     "card_id": "c07",
+     "title": "가나 청년 실업 32.5% — 훈련·자격·노동시장 정보가 따로 논다",
+     "kicker": "15~24세 실업 32.5% · 검토 자료 57건",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "Discover Education (Springer Nature)",
+     "source_url": "https://link.springer.com/article/10.1007/s44217-026-02455-0",
+     "published_at": "2026-11-21"
     }
    ]
   },
@@ -4669,6 +4713,17 @@
      "source_name": "arXiv (Farhan Latif, UNU·워털루대)",
      "source_url": "https://arxiv.org/abs/2611.25585",
      "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-22",
+     "card_id": "c04",
+     "title": "중국 구인공고 1,000만 건 — AI 노출 높은 직무가 10%p 더 빨리 줄었다",
+     "kicker": "전체 공고 3년 만에 절반 · AI 노출 격차 약 10%p",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "AI In Context (블룸버그 분석 보도)",
+     "source_url": "https://aiincontext.com/articles/ai-exposed-jobs-in-china-fell-10-points-faster-bloomberg-finds",
+     "published_at": "2026-11-21"
     }
    ]
   },
