@@ -11,6 +11,17 @@
      질문 한 마디로 나와야 하는 자료는 `RULES`(직행 패턴)에 `dom`·`act`·`not`을 넣는다.
    - 재생성: `python3 assistant/build_index.py` · `python3 ops/scripts/build_flow_graph.py` → `validate_repo.py`.
 
+## 2026-11-22 (점심) — 공고 점검대 예시 공고: 같은 2×2인데 한 줄만 그림자·눌림이 붙던 것 (PR #447)
+- **지시**(태화님, 사진 `IMG_7856`): 「공고 점검대 섹터 예시 윗줄 두개 아랫줄 두개 디자인 통일성 깨짐 그림자문제, 윗줄은 상호작용도 없음」.
+- **원인**: 그림자는 posting CSS가 아니라 공용 손맛 층 `assets/prefs.js`의 `scanPop()`이 `.jc-pop`으로 붙인다. 이 스캔은 한 번 본 단추를 `popSeen`에 넣어 다시 보지 않는데, 판정 순간 `transform !== 'none'`이면 «아니다»로 영구 확정했다. 예시 공고 4개는 `data/samples.json`을 받은 뒤 그려지고 등장 모션 `.jc-in`이 `--jc-i`(34ms) 간격으로 **한 개씩** 걸려서, 스캔이 그 계단 사이에 끼면 **아직 모션이 도는 단추만** 빠졌다. 그래서 한 줄만 그림자·눌림이 없었고, 어느 줄이 빠질지는 기기·타이밍에 따라 달라졌다(라이브에서 4/4·2/4·1/4 모두 관측). 클릭 자체는 원래도 동작했고(글자·판정 갱신), 그림자·손맛이 빠진 줄이 «눌러도 반응 없음»으로 보인 것이 제보의 「상호작용 없음」이다.
+- [x] **`assets/prefs.js` `scanPop()`** — 등장 모션(`.jc-in`)·누름 반동(`.jc-boing`)·마우스가 얹힌(`:hover`/`:active`) 순간은 판정을 **미루고**, 등장 모션이 끝난 뒤(900ms) `queuePop()`으로 **한 번 더 본다**. 폭·높이 조건을 먼저 걸러 스타일 재계산은 늘리지 않았다.
+- [x] **`posting/index.html`** — `.chips`에 `grid-auto-rows:1fr`(한 칸이 두 줄로 접혀도 두 줄 높이가 같다 · 360px에서 44/45.19px로 1.19px 어긋나던 것) · 눌림을 `.jc-pop` 없이도 보이게 `:active{transform:translateY(1px) scale(.985)}`(기존 `scale(.99)`는 1.6px이라 보이지 않았다).
+- **실측**(로컬 Chromium · 320·360·390·430·1280 × 밝게·세피아·어둡게): 고치기 전 2/4만 그림자 → 고친 뒤 **4개 완전 동일** — 그림자 `rgba(42,37,33,.14) 3px 3px 0`(어둡게는 흰색 11%) · 높이·폭·반경 Δ0.00px · 칸 간격 6/6px · 선택 상태 동일 · 누름 반동 네 개 모두. 네 개 각각 **탭 → 글자 198·170·174·225자 · 선택 표시 이동 · 판정 갱신 · 근거 카드 5·6·6·1장**, 빠른 연속 탭 7회 모두 동작. 콘솔 오류 0 · 가로 넘침 0 · 화면 분량 390px 1.41 / 1280px 1.06(고치기 전과 동일).
+- **다른 섹터**: 같은 원인으로 `/casecon/`이 4개만 붙던 것이 **7개**로 정상화. `/law/`·`/reality/`·`/talk/`·`/labor/`·`/surgery/`·`/mydeck/`·`/intake/`·`/first-year/`·`/theory/` 390px에서 무리 안에서 갈린 곳 0.
+- **남은 일**: `/briefing/news/` 출처 칩 3개(112.9·152.9·249.2px)는 **폭 120px 기준** 때문에 가운데·왼쪽만 그림자가 없다(원인이 다름 — 경합이 아니라 기준). 무리 단위로 기준을 맞추는 것은 37개 섹터 손맛을 한꺼번에 바꾸는 설계 결정이라 손대지 않고 `design/patterns/touch-physics.md` §12에 적어 두었다.
+- **머지·라이브**: **PR #447 · 머지 `f8505fd`** · CI 3종(static-checks 25s·smoke-tests 8m59s·Cloudflare Pages) 초록. 라이브 `https://witw.pages.dev/posting/` 390·1280 × 3테마에서 **네 개 모두 같은 그림자·높이·눌림**, 네 개 탭 모두 글자·판정·카드 갱신, 콘솔 오류 0 — 8회 연속 열어(등장 간격 420ms로 벌린 조건 3회 포함) 매번 4/4. 캡처 `downloads/posting-example-fix-2026-11-22/evidence/`.
+- **다음 시작 파일**: `assets/prefs.js` `scanPop()`·`enter()`, `posting/index.html`의 `.chips`/`.chip` 규칙.
+
 ## 2026-11-22 (오전) — 라이브 내부 문서 차단: URL만 알면 열리던 `/ops/*`·`/CONSTITUTION.md`를 404로
 - **배경**: 저장소는 Actions 무료 한도 때문에 Public이고 배포는 저장소 루트를 그대로 올리는 Cloudflare Pages다. 그래서 `/ops/CONNECTORS.md`(연결 ID)·`/CONSTITUTION.md`·`/design/HANDOFF.md`·`/drafts/*`가 **URL만 알면 200 + text/markdown**으로 열렸다. 헌법 제3조 3-2(내부 운영 정보 노출 금지)에 어긋난다.
 - **왜 `_redirects`가 아닌가**: Cloudflare Pages의 `_redirects`는 301·302 넘김만 되고 404·403 «되돌림»은 지원하지 않는다(공식 Advanced redirects 표). `functions/_middleware.js`는 정적 파일보다 **먼저** 돌아 상태 코드를 그대로 정할 수 있다.
