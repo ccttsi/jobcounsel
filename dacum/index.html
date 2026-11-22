@@ -32,8 +32,7 @@ setInterval(apply,30000);})();
 <title>DACUM 마스터 아키텍처</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 /* layout idea: a DACUM wall chart. Cards on a quiet wall; verb / object / qualifier each keep one colour everywhere. */
 :root{
@@ -178,9 +177,14 @@ main>section.mod:not(.cur){display:none}
 .modnext{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;margin-top:8px}
 .modnext button{min-height:48px;padding:8px 16px;border:1px solid var(--line);border-radius:12px;background:transparent;font-size:15px;font-weight:650;text-align:left}
 .modnext button span{display:block;font-size:12.5px;font-weight:500;opacity:.65}
+
+/* 2026-11-22(C3-25): 누르는 칸 44px — 이 화면에서 44px에 못 미치던 단추·칩·쪽 번호·입력칸 */
+#q.inp{min-height:44px!important}#mnav .navl,#snav .navl,#srcseg button{min-height:44px!important}dd .xref{min-height:44px;display:inline-flex;align-items:center}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="../assets/core.css">
+<!-- Tailwind 유틸: 실행형 CDN 대신 이 화면이 쓰는 것만 뽑은 정적 CSS(C3-26) -->
+<link rel="stylesheet" href="./tw.css">
 </head>
 <body data-jc-tool="dacum">
 <link rel="stylesheet" href="../assets/shell.css">

@@ -133,3 +133,10 @@
 ## 도태 2026-11-16 · 스크롤 상자 안의 3D 카드 뒤집기 (`/interview/`)
 - `transform-style:preserve-3d` + `backface-visibility:hidden` + 뒷면 `rotateY(180deg)` 조합은 iOS 사파리에서 `overflow:auto` 조상 안에 있으면 납작해져 **뒷면이 통째로 사라진다**(실기기 빈 카드). 다시 쓰지 않는다.
 - 대신: 한 번에 한 면만 그리고(display 전환), 새로 나온 면만 `perspective(900px) rotateY(-80deg) → none`으로 0.28초 돌아 들어오게. transform·opacity만.
+
+## 44px — 무엇을 «누르는 칸»으로 재나 (2026-11-22, 디자인 고급화 CP3)
+
+- 체크박스·라디오를 `<label>`이 감싸고 그 라벨이 44×44 이상이면 **라벨 전체가 누르는 칸**이다(상담 HUD 조건 칸). `ops/qa/audit.js`도 이 경우는 세지 않는다.
+- **본문 글줄 안의 용어 단추**(파슨스 `.gl`)는 글줄 높이를 바꾸면 읽기가 깨지므로 44px 예외로 둔다 — 대신 줄 간격·밑줄로 누를 수 있음을 보인다.
+- 그 밖의 칩·쪽 번호·입력칸·접이 손잡이는 `min-height:44px`(정사각 단추는 `min-width`도). `height`를 고정한 곳도 `min-height`가 이긴다.
+- 2026-11-22 정리: theory 15 · dacum 13 · cert 19 · univ 32 · talk 9 · parsons 6(용어 단추 제외) · labor 14(1280) · decalcomania 4 · grad 2 → 0.

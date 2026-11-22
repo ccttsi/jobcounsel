@@ -32,7 +32,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 }
 :root[data-theme="dark"]{
   --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
-  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#7c859a;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8f98ac;
   --acc:#7fd6bd;--acc-soft:rgba(127,214,189,.10);--on-acc:#06231b;
   --kt:#8fb4f5;--kp:#f2a2b4;--kn:#c6d06a;--ka:#f4b860;
   --kt-s:rgba(143,180,245,.12);--kp-s:rgba(242,162,180,.12);--kn-s:rgba(198,208,106,.12);--ka-s:rgba(244,184,96,.12);
@@ -453,6 +453,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 /* 집중 보기(assets/prefs.js): 본문만 남길 때 붙어 있는 칸을 풀어 둔다 */
 html[data-jc-imm] .fl{max-height:none}
 @media (min-width:980px){html[data-jc-imm] .fl{position:static}}
+
+/* 2026-11-22(C3-25): 누르는 칸 44px — 이 화면에서 44px에 못 미치던 단추·칩·쪽 번호·입력칸 */
+#eg button,.opts button,.per button,nav.pg button,#flOpen,#pvT.pv-t{min-height:44px}#flX,.per button,nav.pg button{min-width:44px}#flX{min-height:44px}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="../assets/core.css">

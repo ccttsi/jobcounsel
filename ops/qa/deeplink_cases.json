@@ -56,18 +56,21 @@
  },
  {
   "sector": "07 briefing",
-  "url": "./briefing/#c02",
-  "want": "스마트공장"
+  "url": "./briefing/?date=2026-11-20#c02",
+  "want": "스마트공장",
+  "note": "날짜 고정 — 오늘 지면이 바뀌어도 같은 카드로 잰다(C3-21)"
  },
  {
   "sector": "07 briefing",
-  "url": "./briefing/?q=경력보유여성",
-  "want": "경력보유여성"
+  "url": "./briefing/?date=2026-11-20&q=경력보유여성",
+  "want": "경력보유여성",
+  "note": "날짜 고정(C3-21)"
  },
  {
   "sector": "08 emerging",
-  "url": "./emerging/?q=전기·전자 엔지니어",
-  "want": "전기·전자 엔지니어"
+  "url": "./emerging/?date=2026-11-19&q=전기·전자 엔지니어",
+  "want": "전기·전자 엔지니어",
+  "note": "날짜 고정(C3-21)"
  },
  {
   "sector": "09 labor",

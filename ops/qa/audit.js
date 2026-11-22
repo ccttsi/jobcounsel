@@ -51,6 +51,8 @@ function serve() {
         document.querySelectorAll('a,button,select,input,summary,[role=button],[role=tab]').forEach(el => {
           if (el.closest('#jc-marker-ui,#jc-imm-dock')) return; const q = el.getBoundingClientRect(); if (!q.width || !q.height) return;
           const inline = el.tagName === 'A' && getComputedStyle(el).display === 'inline';
+          /* 체크박스·라디오를 감싼 <label>이 44px 이상이면 그 라벨 전체가 누르는 칸이다(2026-11-22, C3-25 — 상담 HUD 조건 칸) */
+          const lab = el.tagName === 'INPUT' && /^(checkbox|radio)$/.test(el.type) && el.closest('label'); if (lab) { const lq = lab.getBoundingClientRect(); if (lq.width >= 43.5 && lq.height >= 43.5) return; }
           if (!inline && (q.width < 43.5 || q.height < 43.5)) small.push((el.id || String(el.className).split(' ')[0] || el.tagName) + ' ' + Math.round(q.width) + 'x' + Math.round(q.height));
         });
         return { screens: +(document.documentElement.scrollHeight / innerHeight).toFixed(1), overflow: document.documentElement.scrollWidth - innerWidth, small: small.slice(0, 6), smallCount: small.length };

@@ -254,6 +254,7 @@
   var BS = (function () {
     var SEL = '[role="dialog"],[aria-modal="true"],dialog,.sheet,.drawer,.modal,[data-jc-layer]';
     var CLOSE = '[data-jc-layer-close],[data-close],[data-act^="close"],[aria-label*="닫기"],button[id$="X"],button[id$="Close"],button[id$="close"],.sh-x button,.det-x button';
+    var late = null;   // 칸을 거두는 동안 섹터가 바꾼 주소(아래 replaceState 감싸기)
     var layers = [], fns = null, snaps = null, seq = 0, suppress = 0, raf = 0, lastLen = history.length, lastUrl = location.href, lastBefore = '', lastTouch = '', touchPush = 0, touchRep = 0, pushN = 0, repN = 0, fix = null, touched = false, quiet = false;
     /* 주소를 바꾸기 직전의 주소를 기억해 둔다 — 팝업이 열릴 때 섹터가 #hash를 끼워 넣는 경우가 많다 */
     try {
@@ -262,6 +263,11 @@
         history[k] = function () {
           lastBefore = location.href;
           if (k === 'pushState') pushN++; else repN++;
+          /* 우리가 칸을 거두는 중(history.back() 대기)에 섹터가 주소를 바꾸면, 그 주소는 곧 사라질 칸에 쓰인다.
+             되돌아온 뒤 다시 써 주려고 기억해 둔다 — 브리핑 달력에서 날짜를 골라도 ?date=가 남지 않던 원인(C3-06). */
+          if (suppress > 0 && k === 'replaceState' && arguments.length > 2 && arguments[2] != null) {
+            try { late = new URL(String(arguments[2]), location.href).href; } catch (e) { late = null; }
+          }
           return raw.apply(history, arguments);
         };
       });
@@ -363,6 +369,8 @@
       if (entry.initial) return;                                      // 첫 화면에서 이미 열려 있던 팝업 — 뒤로가기는 페이지 이탈
       if (entry.ours && entry.live !== false && history.length === (entry.len || 0)) {
         fix = sameDoc(location.href, entry.url0) ? entry.url0 : null;
+        /* 팝업이 열린 동안 섹터가 ?쿼리를 바꿨다면(예: 달력에서 날짜 선택 → ?date=) 거둔 뒤에도 그 주소를 지킨다(C3-06) */
+        if (!fix && entry.url && !sameDoc(location.href, entry.url)) late = location.href;
         entry.live = false;
         suppress++;
         try { history.back(); } catch (e) { suppress = Math.max(0, suppress - 1); }
@@ -440,7 +448,8 @@
     window.addEventListener('popstate', function (ev) {
       if (suppress > 0) {                                             // 내가 거둔 칸
         suppress--;
-        if (fix) { try { history.replaceState(history.state, '', fix); } catch (e) {} fix = null; }
+        if (late) { try { history.replaceState(history.state, '', late); } catch (e) {} late = null; fix = null; }
+        else if (fix) { try { history.replaceState(history.state, '', fix); } catch (e) {} fix = null; }
         lastUrl = location.href; lastLen = history.length;
         return;
       }
