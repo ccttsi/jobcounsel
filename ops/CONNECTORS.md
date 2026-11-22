@@ -41,6 +41,15 @@
 | 프로젝트 | `vzxwdfswlolhcluljkgi` (화면은 `assets/sync.js`로만 접근) |
 | 테이블 | `jc_users`(계정) · `jc_sessions`(연동) · `jc_hits`(익명 통계) — 각 테이블 설명(comment)에 역할을 적어 둠 |
 
+## Jina Reader (r.jina.ai) — 웹문서 본문 추출
+| 무엇 | 값 |
+|---|---|
+| 리더 주소 | `https://r.jina.ai/{문서 주소}` — 주소 앞에 붙이면 그 지면을 Markdown으로 돌려준다 |
+| 키 | **필요 없음**(무료). 이 저장소는 키를 두지 않는다(제3조 3-2) |
+| 한도 | **분당 20회(20 RPM)** · IP 기준 · 평균 응답 7.9초 — 2026-11-22 `jina.ai/reader`에서 확인 |
+| 쓰는 곳 | `ops/scripts/jina_fetch.py` — 수집·초안 참고용 CLI. **화면 코드에서는 부르지 않는다**(ROLES.md) |
+| 시험 | `ops/tests/test_jina_fetch.py` — 네트워크 없이 28건, `validate_repo.py`의 단위 검사(`json`)에 함께 돈다 |
+
 ## Playwright
 | 무엇 | 값 |
 |---|---|
