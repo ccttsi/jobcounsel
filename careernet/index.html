@@ -13,7 +13,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
 <meta name="description" content="커리어넷(한국직업능력연구원) Open API로 받은 직업사전 454건과 대학·고등학교 학과 정보를 한 화면에서 찾는 원천 확인 도구. 직업명·분류·연봉구간·전망 같은 사실만 보여 주고, 항목마다 커리어넷 공식 페이지로 넘깁니다.">
-<title>커리어넷 원천 사전 · 직업 454 · 학과 557</title>
+<title>커리어넷 원천 사전 · 직업 454 · 학과 557 · 개편 비교</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -93,6 +93,26 @@ a{color:inherit}
 .chips button .n{font-size:11.5px;color:var(--dim);margin-left:3px}
 .cnt{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;font-size:14px;color:var(--muted);min-height:28px}
 
+/* 개편 비교 요약 · 상태 딱지 · 나란히 비교 */
+.dsum{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin:0 0 4px;padding:8px 12px;border-radius:12px;background:var(--soft);font-size:13.5px;color:var(--muted)}
+.dsum b{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.dsum .ar{color:var(--dim)}
+.st{display:inline-block;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:750;white-space:nowrap}
+span.st{background:var(--soft);color:var(--muted)}
+span.st-new{background:var(--acc-soft);color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}
+span.st-old{background:var(--soft);color:var(--muted);box-shadow:inset 0 0 0 1px var(--line-2)}
+span.st-chg{background:var(--soft);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
+.cmp{display:grid;gap:8px;grid-template-columns:minmax(0,1fr);margin:12px 0 0}
+@media (min-width:760px){.cmp{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cmp-b{min-width:0;border:1px solid var(--line);border-radius:14px;background:var(--soft);padding:10px 12px 12px}
+.cmp-b h4{margin:0 0 6px;font-size:12.5px;font-weight:800;color:var(--acc);letter-spacing:-.01em}
+.cmp-b dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 10px;font-size:14px}
+.cmp-b dt{color:var(--dim);font-weight:700;white-space:nowrap}
+.cmp-b dd{margin:0;min-width:0}
+.chg{margin:12px 0 0;padding:10px 12px;border-radius:14px;border:1px dashed var(--line-2);background:var(--panel)}
+.chg h4{margin:0 0 6px;font-size:12.5px;font-weight:800;color:var(--acc)}
+.chg p{margin:0 0 4px;font-size:14px}
+
 /* 목록 */
 .scroller{height:calc(100vh - 372px);height:calc(100dvh - 372px);min-height:300px;overflow:auto;overscroll-behavior:contain;margin:0 -6px;padding:4px 6px 12px;border-radius:14px}
 @media (min-width:900px){.scroller{height:calc(100vh - 340px);height:calc(100dvh - 340px)}}
@@ -159,6 +179,7 @@ a{color:inherit}
       <li><b>여기 있는 값은 한국직업능력연구원 커리어넷 Open API가 준 사실 그대로입니다.</b> 직업명·분류·연봉구간·전망·관련학과명만 싣고, 해석은 붙이지 않았습니다.</li>
       <li><b>「하는 일」 같은 설명문은 이 화면에 싣지 않습니다.</b> 커리어넷 이용약관이 서비스로 얻은 정보의 복사·전송을 사전 승낙 없이 제한하고 있어, 서술문은 저장하지 않고 공식 페이지로 넘깁니다.</li>
       <li><b>직업정보 API는 2023년 8월 개편 뒤 제공 중단이 예고된 서비스입니다.</b> 지금 응답하는 개편 전 직업사전 454건을 그대로 싣고, 사이트의 새 직업백과와 항목 수가 다를 수 있음을 밝힙니다.</li>
+      <li><b>「개편 비교」 탭은 구버전 API와 신버전 직업백과 데이터셋을 이름으로 맞대어 봅니다.</b> 공통 · 신설 · 미수록과 분류·유사직업 변화 같은 사실만 나란히 보여 주고, 서술문은 두 데이터셋 모두 싣지 않습니다.</li>
       <li><b>진로를 정해 주는 화면이 아닙니다.</b> 학과와 직업을 잇는 해석은 「커리어데칼코마니」에서, 최종 확인은 커리어넷 원문과 상담으로 하세요.</li>
     </ul></div>
   </section>
@@ -167,10 +188,12 @@ a{color:inherit}
     <div class="bar">
       <div class="tabs" id="tabs" role="group" aria-label="자료 고르기">
         <button type="button" data-tab="job" aria-pressed="true">직업 사전 <b id="nJob">—</b></button>
+        <button type="button" data-tab="diff" aria-pressed="false">개편 비교 <b id="nDiff">—</b></button>
         <button type="button" data-tab="major" aria-pressed="false">대학 학과 <b id="nMajor">—</b></button>
         <button type="button" data-tab="high" aria-pressed="false">고교 학과 <b id="nHigh">—</b></button>
       </div>
       <label class="q"><span class="sr" id="qLabel">직업명·분류로 찾기</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="직업명·분류 (예: 사회복지사)" autocomplete="off" enterkeyhint="search" aria-labelledby="qLabel"></label>
+      <div class="dsum" id="diffSum" hidden></div>
       <div class="chips" id="chips" role="group" aria-label="분류로 거르기"></div>
       <div class="cnt" aria-live="polite"><b class="num" id="cnt">0</b><span id="cntL">건</span><span id="basis"></span></div>
     </div>
@@ -185,7 +208,7 @@ a{color:inherit}
   </div>
 
   <div class="foot" id="foot">
-    <p><b>출처</b> 한국직업능력연구원 커리어넷(교육부 지원) Open API — 직업정보·직업분류·학과정보. 공공데이터포털 「교육부_커리어넷 직업정보」(<span class="num">15056641</span>) 이용허락범위: 제3자 권리 포함(저작권 표시)·공공저작물 출처표시(제1유형).</p>
+    <p><b>출처</b> 한국직업능력연구원 커리어넷(교육부 지원) Open API — 직업정보·직업분류·학과정보. 공공데이터포털 「교육부_커리어넷 직업정보」(<span class="num">15056641</span>) 이용허락범위: 제3자 권리 포함(저작권 표시)·공공저작물 출처표시(제1유형). 「개편 비교」의 신버전 자료는 커리어넷 직업백과(한국고용정보원) 기반 사이트 데이터셋 — 역시 공공저작물 출처표시(제1유형) 준용입니다.</p>
     <p><b>갱신</b> <span id="footAt">—</span> · 이 화면은 참고·실습용이며 실제 확인은 커리어넷 원문과 상담으로 합니다.</p>
   </div>
 </div>
