@@ -444,6 +444,98 @@ html[data-mode="rev"] .hero h1{font-size:clamp(21px,3vw,26px)}html[data-mode="re
 .ksa .src{margin:10px 0 0;font-size:12px;color:var(--dim)}
 @media (prefers-reduced-motion:reduce){.sh,.sh-b,.meter .bar i{transition:none}#pr .panel-in{animation:none}}
 html[data-jc-imm] #pr .panel-in{animation:none}
+
+/* ───────── 12-2 AI 시대 인접 직무 환승 — 섹터 안의 세 번째 보기 ───────── */
+html[data-mode="ai"] .rail,html[data-mode="ai"] #p1,html[data-mode="ai"] #p2,html[data-mode="ai"] #p3,html[data-mode="ai"] #p4,html[data-mode="ai"] #pr{display:none!important}
+html:not([data-mode="ai"]) #pai{display:none!important}
+#pai .panel-in{animation:fade .3s ease both}
+@media (prefers-reduced-motion:reduce){#pai .panel-in{animation:none}}
+html[data-jc-imm] #pai .panel-in{animation:none}
+html[data-mode="ai"] .hero{padding:6px 0 2px}
+html[data-mode="ai"] .hero p{display:none}
+html[data-mode="ai"] .hero h1{font-size:clamp(21px,3vw,26px)}
+html[data-mode="ai"] .hero h1 br{display:none}
+@media (min-width:900px){.ai2{grid-template-columns:minmax(0,1fr) minmax(0,1.32fr)}}
+.ai-map .vn{padding-bottom:10px}
+.ai-today{display:grid;gap:2px;margin:14px 0 0;padding:12px 16px 13px 18px;border-radius:16px;background:var(--soft);border-left:4px solid var(--acc);text-decoration:none}
+.ai-today .k{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:12.5px;font-weight:800;color:var(--acc)}
+.ai-today .k span{color:var(--acc);font-weight:700;white-space:nowrap}
+.ai-today .v{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ai-today .v b{font-size:clamp(24px,5.4vw,30px);letter-spacing:-.04em;color:var(--ink)}
+.ai-today .v span{font-size:14px;color:var(--muted);font-weight:650}
+.ai-today .go2{margin-top:2px;font-size:13.5px;font-weight:700;color:var(--acc)}
+.ai-fams{display:grid;gap:6px}
+.ai-fams button{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 10px;width:100%;min-height:54px;padding:7px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--line);text-align:left;transition:border-color .2s}
+.ai-fams .tx{min-width:0}
+.ai-fams .tx span{display:block;font-size:12px;font-weight:700;color:var(--dim)}
+.ai-fams .tx b{display:block;font-size:16.5px;letter-spacing:-.025em;line-height:1.35}
+.ai-fams .mt{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.ai-fams .mt .v{font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ai-fams .mt .n{font-size:12px;font-weight:700;color:var(--acc);white-space:nowrap}
+.ai-fams button[aria-checked="true"]{border-color:var(--acc);box-shadow:var(--glow);background:var(--panel)}
+.sig .k{font-size:12.5px;font-weight:800;color:var(--dim)}
+.sig-desc{margin:2px 0 0;font-size:14px;line-height:1.6;color:var(--muted)}
+.sig-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:2px 0 0}
+.sig-h b{font-size:clamp(24px,5.4vw,30px);letter-spacing:-.04em;color:var(--acc)}
+.sig-h span{font-size:13.5px;color:var(--muted)}
+.sig-list{list-style:none;margin:9px 0 0;padding:0;display:grid;gap:7px}
+.sig-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start}
+.sig-list .kd{padding:2px 8px;border-radius:8px;font-size:11.5px;font-weight:800;white-space:nowrap;background:var(--soft);color:var(--muted)}
+.sig-list li.fact .kd{background:var(--acc-soft);color:var(--acc)}
+.sig-list p{margin:0;font-size:14px;line-height:1.62;color:var(--muted)}
+.sig-list a{color:var(--acc);font-weight:700;text-decoration:none;font-size:12.5px;margin-left:4px;white-space:nowrap}
+.sig-list a:hover{text-decoration:underline}
+.sig-by{margin:10px 0 0;padding:9px 12px;border-radius:12px;background:var(--panel);font-size:14.5px;line-height:1.6}
+.sig-more{margin-top:6px}
+.sig-more summary{min-height:44px;display:flex;align-items:center;font-size:13.5px;font-weight:700;color:var(--acc);cursor:pointer}
+.sig-more .sig-list{margin-top:0}
+.sig-by b{display:block;font-size:12.5px;color:var(--acc);margin-bottom:2px}
+.ai-map{margin:8px 0 0}
+.ai-map .vn{grid-template-columns:34px minmax(0,1fr);gap:8px;padding-bottom:14px}
+.ai-map .vn::before{left:14px;top:20px;width:6px}
+.ai-map .vn .vd{width:22px;height:22px;border-width:5px}
+.ai-map .vn.big .vd{width:28px;height:28px;border-width:6px}
+.ai-map .vn .vt b{font-size:16px}
+.ai-map .vn .vt small{font-size:13px}
+.ai-map .k2{display:block;font-size:11.5px;font-weight:800;color:var(--c)}
+.hline{display:none;margin:14px 0 0;padding:0;list-style:none}
+@media (min-width:900px){
+  .hline{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
+  .ai-map{display:none}
+}
+.hline li{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 8px}
+.hline li::before{content:"";position:absolute;left:0;right:0;top:8px;height:6px;background:var(--c);opacity:.3}
+.hline li:first-child::before{left:50%;border-radius:3px 0 0 3px}
+.hline li:last-child::before{right:50%;border-radius:0 3px 3px 0}
+.hline .dot{position:relative;width:22px;height:22px;border-radius:50%;background:var(--node);border:5px solid var(--c)}
+.hline .lb{margin-top:9px;min-width:0}
+.hline .k2{display:block;font-size:11.5px;font-weight:800;color:var(--c)}
+.hline b{display:block;font-size:14.5px;line-height:1.4;letter-spacing:-.02em;word-break:keep-all}
+.hline small{display:block;margin-top:2px;font-size:12px;color:var(--dim);line-height:1.45}
+.ai-mini{min-height:44px;margin-top:6px;padding:0 12px;border-radius:12px;background:var(--soft);font-size:14px;font-weight:700;flex:0 0 auto}
+.ai-acts{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.ai-acts .btn{flex:0 1 auto;min-width:0;min-height:44px;padding:0 16px;font-size:15px}
+.ai-acts .ai-mini{margin-top:0}
+.ai-routes .nm small{display:block;margin-top:1px;font-size:12px;font-weight:600;color:var(--dim)}
+.ai-mini[aria-pressed="true"]{background:var(--acc);color:#fff}
+:root[data-theme="dark"] .ai-mini[aria-pressed="true"]{color:#08090c}
+.ai-routes button[aria-checked="true"]{background:var(--acc-soft);box-shadow:inset 0 0 0 1.5px var(--acc)}
+.ai-tr{margin:12px 0 0;padding:11px 14px;border-radius:12px;background:var(--soft);font-size:14.5px;line-height:1.65}
+.ai-tr b{display:block;font-size:12.5px;color:var(--acc);margin-bottom:2px}
+.ai-guide{margin:0 0 12px;font-size:15px;line-height:1.7}
+.ai-guide b{color:var(--ink)}
+.ai-q{margin:0 0 4px;padding:11px 14px;border-radius:12px;background:color-mix(in srgb,var(--acc) 8%,transparent);font-size:15px;line-height:1.65}
+.ai-q b{display:block;font-size:12.5px;color:var(--acc);margin-bottom:2px}
+.ai-badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;background:var(--soft);color:var(--muted);white-space:nowrap}
+.ai-badge.off{background:color-mix(in srgb,var(--stamp) 10%,transparent);color:var(--stamp)}
+.ai-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 0}
+.ai-src{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:3px;font-size:12.5px;line-height:1.6;color:var(--dim)}
+.ai-src a{color:var(--muted);font-weight:650;text-decoration:none}
+.ai-src a:hover{text-decoration:underline}
+.ai-src-wrap summary{list-style:none;min-height:44px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;cursor:pointer}
+.ai-src-wrap summary::-webkit-details-marker{display:none}
+.ai-src-wrap summary::after{content:"+";margin-left:auto;font-size:18px;color:var(--dim)}
+.ai-src-wrap[open] summary::after{content:"–"}
 </style>
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="../assets/core.css">
@@ -467,15 +559,16 @@ html[data-jc-imm] #pr .panel-in{animation:none}
       <li><b>이 노선도는 정답이 아닙니다.</b> 상담 실무 연습과 진로 설계를 돕는 참고 도구이며, 같은 출발역에서도 사람마다 맞는 노선은 다릅니다.</li>
       <li><b>제도 수치와 요건은 2026년 11월 14일 확인 기준입니다.</b> 실제 대상 여부와 금액은 고용센터(국번 없이 1350)와 각 기관 공고로 확인해 주세요.</li>
       <li><b>내담자 실습에 쓸 때는 실명·연락처 같은 개인정보를 적지 마세요.</b> 메모 칸에는 상황과 경력만 짧게 적습니다.</li>
+      <li><b>AI 환승의 진입장벽 신호는 2026년 11월 24일 브리핑과 공개 보도에서 확인한 수치입니다.</b> 직업명·능력단위는 고용24 직업정보와 국가직무능력표준(NCS) 공식 자료를 쓰고, 공식 매핑이 없는 연결은 「상담 설계」로 표시했습니다.</li>
     </ul></div></div>
   </section>
 
   <section class="hero">
     <h1>내 일로 갈아타는 길,<br><em>노선도로 직접 그립니다.</em></h1>
-    <p>출발역에서 지금 상황을 고르고, 환승역을 하나씩 넘기며 쓸모 있는 역에만 탑승하세요. 마지막 칸에 나만의 커리어 노선도가 완성됩니다.</p>
+    <p>출발역에서 지금 상황을 고르고, 환승역을 하나씩 넘기며 쓸모 있는 역에만 탑승하세요. 직선 진입이 막힌 직무는 <b>AI 환승</b>에서 인접 직무로 우회하는 노선을 봅니다.</p>
   </section>
 
-  <div class="mode" id="mode" role="group" aria-label="노선 보기 방식"><button type="button" data-mode="fwd" aria-pressed="true">순행<small>출발 → 목표</small></button><button type="button" data-mode="rev" aria-pressed="false">역행<small>목표 → 역산</small></button></div>
+  <div class="mode" id="mode" role="group" aria-label="노선 보기 방식"><button type="button" data-mode="fwd" aria-pressed="true">순행<small>출발 → 목표</small></button><button type="button" data-mode="rev" aria-pressed="false">역행<small>목표 → 역산</small></button><button type="button" data-mode="ai" aria-pressed="false">AI 환승<small>인접 직무</small></button></div>
 
   <nav class="rail" id="rail" aria-label="여정 단계"><span class="fill" id="railFill"></span></nav>
 
@@ -485,9 +578,10 @@ html[data-jc-imm] #pr .panel-in{animation:none}
     <section class="panel" id="p3" aria-labelledby="h3t" hidden></section>
     <section class="panel" id="p4" aria-labelledby="h4t" hidden></section>
     <section class="panel" id="pr" aria-labelledby="hrt"></section>
+    <section class="panel" id="pai" aria-labelledby="hait"></section>
   </main>
 
-  <p class="foot">제도 정보는 고용노동부·고용24·여성새로일하기센터·한국폴리텍대학·한국산업인력공단 등의 공개 안내와 보도자료(2026년 11월 14일 확인)를 바탕으로 요약했습니다. 원문을 옮겨 싣지 않았으며, 기관명은 안내를 위해서만 씁니다. 이 화면은 어떤 기관의 공식 자료도 아닌 참고·실습용 도구입니다. <span>국민취업지원제도 세부 내용은 <a href="../manual/">구직자취업촉진법 실무 가이드</a>, 검사 해석 연습은 <a href="../vpi/">직업선호도검사 시뮬레이터</a>, 학과·직업 연결은 <a href="../decalcomania/">커리어데칼코마니</a>에서 이어집니다.</span></p>
+  <p class="foot">제도 정보는 고용노동부·고용24·여성새로일하기센터·한국폴리텍대학·한국산업인력공단 등의 공개 안내와 보도자료(2026년 11월 14일 확인)를 바탕으로 요약했습니다. 원문을 옮겨 싣지 않았으며, 기관명은 안내를 위해서만 씁니다. 이 화면은 어떤 기관의 공식 자료도 아닌 참고·실습용 도구입니다. <span>AI 환승의 진입장벽 수치는 2026년 11월 24일 브리핑과 공개 보도에서 사실만 요약했고, 직업·능력단위는 고용24 직업정보와 국가직무능력표준(NCS) 공식 자료입니다.</span> <span>국민취업지원제도 세부 내용은 <a href="../manual/">구직자취업촉진법 실무 가이드</a>, 검사 해석 연습은 <a href="../vpi/">직업선호도검사 시뮬레이터</a>, 학과·직업 연결은 <a href="../decalcomania/">커리어데칼코마니</a>에서 이어집니다.</span></p>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="sh" id="sh" hidden role="dialog" aria-modal="true" aria-label="환승역 자세히"><div class="sh-b" id="shB"></div></div>
@@ -528,7 +622,7 @@ fetch('./data/transit.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 
   D.dests.forEach(function(t){DEST[t.id]=t;});D.assets.forEach(function(t){ASSET[t.id]=t;});D.periods.forEach(function(t){PER[t.id]=t;});
   S.boarded=S.boarded.filter(function(id){return BY[id];});S.assets=S.assets.filter(function(id){return ASSET[id];});
   go(S.step,true);
-  if(typeof setMode==='function'&&MODE==='rev')setMode('rev');
+  if(typeof setMode==='function'&&(MODE==='rev'||MODE==='ai'))setMode(MODE);
   /* 대문 검색이 넘긴 ?station=아이디 — 그 역 카드를 바로 연다 */
   var want='';try{want=(new URLSearchParams(location.search).get('station')||'').trim();}catch(e){}
   if(!want){var gq='';try{gq=(new URLSearchParams(location.search).get('q')||'').replace(/\s/g,'').toLowerCase();}catch(e){}
@@ -546,7 +640,7 @@ function renderRail(){
   $('railFill').style.transform='scaleX('+((S.step-1)/3).toFixed(4)+')';
 }
 $('rail').addEventListener('click',function(e){var b=e.target.closest('[data-go]');if(b)go(+b.getAttribute('data-go'));});
-$('brand').addEventListener('click',function(e){e.preventDefault();go(1);});
+$('brand').addEventListener('click',function(e){e.preventDefault();if(MODE==='fwd'){go(1);}else{setMode('fwd');go(1);}});
 
 function go(n,first){
   S.step=n;save();renderRail();
@@ -894,12 +988,12 @@ $('p4').addEventListener('click',function(e){
    → ③ 내 경험과 하나씩 대조 → ④ 모자란 것을 메울 환승역.
    직업·직무 자료는 20번 교차 사전(../taxonomy/data/)을 읽기만 한다. 공식 매핑에 없는 연결은 「공식 매핑 자료 없음」으로 끊고 지어내지 않는다. */
 var MODE='fwd',R={step:1,job:'',sub:'',own:false,chk:{}};
-try{MODE=localStorage.getItem('jc-transit-mode')==='rev'?'rev':'fwd';var rs=JSON.parse(localStorage.getItem('jc-transit-rev')||'null');if(rs&&typeof rs==='object')for(var rk in R)if(rk in rs)R[rk]=rs[rk];}catch(e){}
+try{var mm=localStorage.getItem('jc-transit-mode');MODE=(mm==='rev'||mm==='ai')?mm:'fwd';var rs=JSON.parse(localStorage.getItem('jc-transit-rev')||'null');if(rs&&typeof rs==='object')for(var rk in R)if(rk in rs)R[rk]=rs[rk];}catch(e){}
 function saveR(){try{localStorage.setItem('jc-transit-rev',JSON.stringify(R));}catch(e){}}
 function setMode(m){MODE=m;try{localStorage.setItem('jc-transit-mode',m);}catch(e){}
   d.documentElement.setAttribute('data-mode',m);
   $('mode').querySelectorAll('[data-mode]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-mode')===m));});
-  if(m==='rev')renderRev();else go(S.step,true);}
+  if(m==='rev')renderRev();else if(m==='ai')aiOpen();else go(S.step,true);}
 $('mode').addEventListener('click',function(e){var b=e.target.closest('[data-mode]');if(b&&b.getAttribute('data-mode')!==MODE)setMode(b.getAttribute('data-mode'));});
 
 /* 교차 사전 자료(읽기 전용) */
@@ -1062,6 +1156,118 @@ $('pr').addEventListener('click',function(e){var b;
   if((b=e.target.closest('[data-ksa]'))){openKsa(b.getAttribute('data-ksa'));return;}
   if((b=e.target.closest('[data-rst]'))){openSheet(b.getAttribute('data-rst'));return;}
   if((b=e.target.closest('[data-fwd]'))){var n=+b.getAttribute('data-fwd');S.step=n;save();setMode('fwd');return;}
+});
+
+/* ───────── 12-2 AI 시대 인접 직무 환승 — 출발 직무 → 진입장벽 신호 → 경유지(보강 KSA·훈련/증거) → 인접 직무
+   진입장벽 신호는 오늘 브리핑과 공개 보도에서 확인한 수치, 직업명·능력단위는 고용24 직업정보·NCS 공식 자료다.
+   공식 매핑이 없는 연결은 「상담 설계」로 표시하고, 없는 매핑을 지어내지 않는다. */
+var A={step:1,from:'',route:''};
+try{var av=JSON.parse(localStorage.getItem('jc-transit-ai')||'null');if(av&&typeof av==='object')for(var ak in A)if(ak in av)A[ak]=av[ak];}catch(e){}
+function saveA(){try{localStorage.setItem('jc-transit-ai',JSON.stringify(A));}catch(e){}}
+var AI=null,AIP=null;
+function aFam(id){if(!AI)return null;for(var i=0;i<AI.families.length;i++)if(AI.families[i].id===id)return AI.families[i];return null;}
+function aRoute(id){if(!AI)return null;for(var i=0;i<AI.routes.length;i++)if(AI.routes[i].id===id)return AI.routes[i];return null;}
+function aRoutes(f){var o=[];if(!AI)return o;AI.routes.forEach(function(r){if(r.from===f)o.push(r);});return o;}
+function aSrc(id){if(!AI)return null;for(var i=0;i<AI.sources.length;i++)if(AI.sources[i].id===id)return AI.sources[i];return null;}
+function aLink(id){var s=aSrc(id);if(!s)return '';var dd=(s.published||'').slice(5).replace('-','.');
+  return ' <a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+(dd?' '+dd:'')+' ↗</a>';}
+function loadAI(){if(AIP)return AIP;
+  AIP=fetch('./data/ai-adjacent.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(j){
+    AI=j;if(A.from&&!aFam(A.from))A.from='';
+    var rt=aRoute(A.route);if(A.route&&(!rt||rt.from!==A.from))A.route='';return j;});
+  AIP.catch(function(){AIP=null;});return AIP;}
+function aiOpen(){
+  if(!$('pai').innerHTML)$('pai').innerHTML='<ol class="rr" aria-label="AI 환승 단계"><li><button type="button" aria-current="step">1 출발 직무<small>어디서 갈아타나</small></button></li><li><button type="button" disabled>2 인접 노선<small>경유지와 도착</small></button></li><li><button type="button" disabled>3 상담 가이드<small>건넬 말과 첫 스텝</small></button></li></ol><div class="panel-in"><p class="loading">AI 환승 자료를 불러오고 있습니다…</p></div>';
+  loadAI().then(function(){renderAir();}).catch(function(){
+    $('pai').innerHTML='<p class="empty">AI 환승 자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>';});}
+var AIST=[['출발 직무','어디서 갈아타나'],['인접 노선','경유지와 도착'],['상담 가이드','건넬 말과 첫 스텝']];
+function aiGo(n){if(n>=2&&!A.from)return;if(n>=3&&!A.route)return;
+  A.step=n;saveA();renderAir();
+  var r=$('pai').getBoundingClientRect();if(r.top<0)window.scrollTo({top:scrollY+r.top-8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+function renderAir(){
+  if(!AI)return;
+  var h='<ol class="rr" aria-label="AI 환승 단계">';
+  AIST.forEach(function(s,i){var n=i+1,dis=(n>=2&&!A.from)||(n>=3&&!A.route);
+    h+='<li><button type="button" data-aistep="'+n+'"'+(n===A.step?' aria-current="step"':'')+(dis?' disabled':'')+'>'+n+' '+s[0]+'<small>'+s[1]+'</small></button></li>';});
+  h+='</ol><div class="panel-in" id="aiBody">'+(A.step===1?ai1():A.step===2?ai2():ai3())+'</div>';
+  $('pai').innerHTML=h;
+}
+function aiToday(){var t=AI.headline;
+  return '<a class="ai-today" data-jc-ignore href="'+esc(t.briefing)+'" title="'+esc(t.title)+'"><span class="k">오늘의 신호 · '+esc(t.date.replace(/-/g,'.'))+' <span>브리핑 1면 →</span></span><span class="v"><b class="num">'+esc(t.value)+'</b><span>'+esc(t.label)+' · '+esc(t.period)+' · '+esc(t.delta)+'</span></span></a>';}
+function aiSignal(f){
+  var h='<div class="sig-h"><b class="num">'+esc(f.headline.value)+'</b><span>'+esc(f.headline.label)+' · '+esc(f.headline.period)+(f.headline.delta?' · '+esc(f.headline.delta):'')+'</span></div><ul class="sig-list">';
+  var rest=[];
+  f.why.forEach(function(w,i){var row='<li class="'+(w.kind==='fact'?'fact':'read')+'"><span class="kd">'+(w.kind==='fact'?'수치':'해석')+'</span><p>'+esc(w.text)+(w.src?aLink(w.src):'')+'</p></li>';
+    if(i<1||w.kind==='read')h+=row;else rest.push(row);});
+  h+='</ul>';
+  if(rest.length)h+='<details class="sig-more"><summary>근거 더 보기 · '+rest.length+'건</summary><ul class="sig-list">'+rest.join('')+'</ul></details>';
+  return h+'<p class="sig-by"><b>우회 원리</b>'+esc(f.bypass)+'</p>';}
+function aiSigBox(f){return f?'<div class="box sig" id="aiSig"><span class="k">왜 직선 진입이 막혔나</span><p class="sig-desc">'+esc(f.desc)+'</p>'+aiSignal(f)+'</div>':'<div class="box" id="aiSig"><h3>이어서 볼 것</h3><p class="hint">직무를 고르면 이 자리에 진입장벽 신호와 우회 원리가 나옵니다.</p></div>';}
+function ai1(){var f=aFam(A.from),h=aiToday();
+  h+='<h2 class="rv-h" id="hait">어느 직무에서 갈아타나요?</h2><p class="rv-l">직무를 고르면 <b>왜 직선 진입이 막혔는지</b>의 신호와, 그 옆자리로 가는 노선을 보여 줍니다.</p>';
+  h+='<div class="rv2 ai2"><div class="box"><h3>출발 직무</h3><div class="ai-fams" role="radiogroup" aria-label="출발 직무">';
+  AI.families.forEach(function(x){h+='<button type="button" role="radio" data-afam="'+x.id+'" aria-checked="'+(A.from===x.id)+'"><span class="tx"><span>'+esc(x.tag)+'</span><b>'+esc(x.name)+'</b></span><span class="mt"><span class="v">'+esc(x.headline.value)+'</span><span class="n">노선 '+aRoutes(x.id).length+'</span></span></button>';});
+  h+='</div></div>'+aiSigBox(f);
+  h+='</div><div class="rnav"><button type="button" class="btn btn-p" data-aistep="2"'+(A.from?'':' disabled')+'>인접 노선 보기 →</button></div>';
+  return h;}
+function aiNode(kind,c,k,t,sm){return '<li class="vn'+(kind!=='st'?' big':'')+(kind==='start'?' start':'')+'" style="--c:'+c+';--cn:'+c+'"><span class="vd"></span><span class="vt"><span class="k2">'+esc(k)+'</span><b>'+esc(t)+'</b>'+(sm?'<small>'+esc(sm)+'</small>':'')+'</span></li>';}
+function tierName(id){return TIER[id]?TIER[id].name:'';}
+function lvTxt(ksa){var a=ksa.map(function(k){return k.level;}).filter(function(v){return v!=null;});if(!a.length)return '—';var lo=Math.min.apply(null,a),hi=Math.max.apply(null,a);return lo===hi?String(lo):lo+'~'+hi;}
+function aiDetail(r){if(!r)return '<h3>노선 상세</h3><p class="hint">왼쪽(휴대폰은 위)에서 노선을 고르면 경유지·전환 포인트·근거가 나옵니다.</p>';
+  var to=r.to,f=aFam(r.from),ksa=r.ksa,hrs=0;ksa.forEach(function(k){hrs+=(k.hours||0);});
+  var st=BY[r.station],on=st&&S.boarded.indexOf(r.station)>=0;
+  var h='<h3>'+esc(r.name)+'</h3><p class="ai-guide" style="margin-bottom:0">'+esc(r.summary)+'</p>';
+  h+='<div class="ai-meta"><span class="ai-badge'+(r.map==='official'?'':' off')+'">'+(r.map==='official'?'공식 매핑':'상담 설계')+'</span><span class="ai-badge">난이도 '+r.diff+'/3</span><span class="ai-badge">'+wk(r.weeks[0])+'~'+wk(r.weeks[1])+'</span><span class="ai-badge">KSA '+ksa.length+'개 · 표준 '+hrs+'시간</span></div>';
+  var stops=[{kind:'start',c:'var(--ink)',k:'출발',t:f?f.name:'출발 직무',sm:'지금 서 있는 자리'}];
+  if(ksa.length){var k0=ksa[0];
+    stops.push({kind:'st',c:'var(--t1)',k:'경유 1 · 보강 KSA · NCS '+k0.sub,t:ksa.map(function(k){return k.name;}).join(' · '),sm:'수준 '+lvTxt(ksa)+' · 표준 '+hrs+'시간'});}
+  if(st)stops.push({kind:'st',c:'var(--t2)',k:'경유 '+(ksa.length?2:1)+' · 훈련·증거',t:st.name,sm:'순행 환승 구간의 역 · '+tierName(st.tier)});
+  stops.push({kind:'end',c:'var(--d-pivot)',k:'도착 · 인접 직무',t:to.name,sm:'KECO '+to.keco+' · '+to.keco_name});
+  h+='<ol class="hline" aria-label="노선 경유지">'+stops.map(function(n){return '<li style="--c:'+n.c+'"><span class="dot"></span><span class="lb"><span class="k2">'+esc(n.k)+'</span><b>'+esc(n.t)+'</b><small>'+esc(n.sm)+'</small></span></li>';}).join('')+'</ol>';
+  h+='<ol class="vmap ai-map" aria-label="노선 경유지">'+stops.map(function(n){return aiNode(n.kind,n.c,n.k,n.t,n.sm);}).join('')+'</ol>';
+  h+='<p class="ai-tr"><b>전환 포인트</b>'+esc(r.transition)+'</p>';
+  if(st)h+='<div class="ai-acts"><button type="button" class="btn btn-g" data-station="'+r.station+'">역 요건 보기</button><button type="button" class="ai-mini" data-aiboard="'+r.station+'" aria-pressed="'+on+'">'+(on?'탑승함 · 내리기':'이 역 탑승')+'</button></div>';
+  h+='<p class="basis" style="margin-top:10px">'+esc(r.basis)+'</p>';
+  return h;}
+function ai2(){var f=aFam(A.from);if(!f)return ai1();
+  var rs=aRoutes(f.id),rt=aRoute(A.route),r=(rt&&rt.from===f.id)?rt:null;
+  var h='<h2 class="rv-h" id="hait">'+esc(f.name)+'에서 갈아탈 수 있는 노선 '+rs.length+'개</h2><p class="rv-l">도착 직무는 고용24 직업정보, 경유지 능력단위는 NCS에서 이름 그대로 가져왔습니다.</p>';
+  h+='<div class="rv2 ai2"><div class="box"><h3>노선 고르기</h3><div class="sts ai-routes" role="radiogroup" aria-label="인접 직무 노선">';
+  rs.forEach(function(x){h+='<button type="button" role="radio" data-aroute="'+x.id+'" aria-checked="'+(A.route===x.id)+'" style="--c:var(--acc)"><i aria-hidden="true"></i><span class="nm">'+esc(x.name)+'<small>'+esc(x.to.name)+' · '+wk(x.weeks[0])+'~'+wk(x.weeks[1])+' · 난이도 '+x.diff+'/3</small></span></button>';});
+  h+='</div><p class="hint">'+esc(AI.station_note)+'</p></div><div class="box" id="aiDetail">'+aiDetail(r)+'</div></div>';
+  h+='<div class="rnav"><button type="button" class="btn btn-g" data-aistep="1">← 출발 직무</button><button type="button" class="btn btn-p" data-aistep="3"'+(r?'':' disabled')+'>상담 가이드 보기 →</button></div>';
+  return h;}
+function ai3(){var r=aRoute(A.route);if(!r)return ai2();
+  var f=aFam(r.from),to=r.to,st=BY[r.station],on=st&&S.boarded.indexOf(r.station)>=0;
+  var h='<h2 class="rv-h" id="hait">상담에서 이렇게 건넵니다</h2><p class="rv-l">'+esc(f?f.name:'출발 직무')+' → <b>'+esc(to.name)+'</b> 노선의 코칭 포인트와 근거입니다.</p>';
+  h+='<div class="rv2 ai2"><div class="box"><h3>① 핵심 보완 역량</h3><p class="ai-guide">'+esc(r.coach.strength)+'</p>';
+  h+='<h3>② 첫 진입 스텝</h3><p class="ai-guide">'+esc(r.coach.first)+'</p>';
+  h+='<h3>③ 상담 질문</h3><p class="ai-q"><b>이렇게 물어보세요</b>'+esc(r.coach.ask)+'</p>';
+  if(st)h+='<div class="ai-acts"><button type="button" class="btn btn-g" data-station="'+r.station+'">역 요건 보기</button><button type="button" class="ai-mini" data-aiboard="'+r.station+'" aria-pressed="'+on+'">'+(on?'탑승함 · 내리기':'이 역 탑승')+'</button></div>';
+  h+='</div><div class="box"><h3>탑승한 역은 노선도에</h3><p class="hint">함께 태운 역은 순행 ④ 나의 노선도에 그대로 그려집니다. 「순행 노선도로 옮기기」를 누르면 완성된 노선도로 갑니다.</p>';
+  h+='<h3 style="margin-top:12px">근거</h3><p class="basis">'+esc(r.basis)+'</p>';
+  h+='<details class="ai-src-wrap" style="margin-top:6px"><summary>자료 출처와 기준일</summary><p class="hint">'+esc(AI.notice)+'</p><ul class="ai-src">';
+  AI.sources.forEach(function(s){h+='<li><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a> · '+esc(s.license.name)+(s.published?' · '+esc(s.published):'')+'</li>';});
+  h+='</ul></details></div></div>';
+  h+='<div class="rnav"><button type="button" class="btn btn-g" data-aistep="2">← 노선 다시</button><button type="button" class="btn btn-p" data-aifwd>노선도로 옮기기 →</button></div>';
+  h+='<div class="ai-acts" style="justify-content:flex-end"><button type="button" class="ai-mini" data-aireset>AI 환승 처음부터</button></div>';
+  return h;}
+$('pai').addEventListener('click',function(e){var b;
+  if((b=e.target.closest('[data-aistep]'))){aiGo(+b.getAttribute('data-aistep'));return;}
+  if((b=e.target.closest('[data-afam]'))){var id=b.getAttribute('data-afam'),prev=A.from;A.from=(prev===id?'':id);if(A.from!==prev)A.route='';saveA();
+    $('pai').querySelectorAll('[data-afam]').forEach(function(x){x.setAttribute('aria-checked',String(x.getAttribute('data-afam')===A.from));});
+    var sb=$('aiSig');if(sb)sb.outerHTML=aiSigBox(aFam(A.from));
+    var nb=$('pai').querySelector('[data-aistep="2"]');if(nb)nb.disabled=!A.from;return;}
+  if((b=e.target.closest('[data-aroute]'))){var rid=b.getAttribute('data-aroute');A.route=(A.route===rid?'':rid);saveA();
+    $('pai').querySelectorAll('[data-aroute]').forEach(function(x){x.setAttribute('aria-checked',String(x.getAttribute('data-aroute')===A.route));});
+    var rtd=$('aiDetail');if(rtd)rtd.outerHTML='<div class="box" id="aiDetail">'+aiDetail(aRoute(A.route))+'</div>';
+    var n3=$('pai').querySelector('[data-aistep="3"]');if(n3)n3.disabled=!A.route;return;}
+  if((b=e.target.closest('[data-station]'))){openSheet(b.getAttribute('data-station'));return;}
+  if((b=e.target.closest('[data-aiboard]'))){var sid=b.getAttribute('data-aiboard');toggleIn(S.boarded,sid);save();var on2=S.boarded.indexOf(sid)>=0;
+    b.setAttribute('aria-pressed',String(on2));b.textContent=on2?'탑승함 · 내리기':'이 역 탑승';
+    if(on2&&BY[sid])toast(BY[sid].name+'에 탑승했습니다.');return;}
+  if((b=e.target.closest('[data-aifwd]'))){setMode('fwd');go(4);return;}
+  if((b=e.target.closest('[data-aireset]'))){if(!confirmReset())return;A={step:1,from:'',route:''};saveA();renderAir();toast('AI 환승을 처음부터 시작합니다.');return;}
 });
 
 /* 시트: 역 카드 · KSA */
