@@ -656,6 +656,48 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 }
 @media (min-width:1280px){.a-stage{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:56px}}
 
+/* 데일리 브리핑 소식 띠(2026-11-24, 태화님 지시) — 브리핑 카드 제목을 첫 마디로 줄여 한 건씩 왼쪽으로 넘긴다.
+   상자·그림자 없이 신문 띠처럼 위 굵은 선 + 아래 가는 선. 넘김은 setTimeout 한 번 + transform 전이(상시 루프 0),
+   정해진 바퀴(3)를 돌면 멈춘다. 휴대폰 한 단: 문장 다이얼 아래·통찰 위 / 768px 이상: 오른쪽 단 맨 위, 통찰은 그 아래. */
+.a-tk{min-width:0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line);position:relative;margin:0 0 clamp(6px,1vw,10px)}
+.a-tk[hidden]{display:none}
+.a-tk-top{display:flex;align-items:center;gap:8px;min-height:44px}
+.a-tk-h{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-right:auto;color:var(--ink);text-decoration:none;min-width:0}
+.a-tk-h b{font-size:14px;font-weight:800;letter-spacing:-.01em}
+.a-tk-h:hover b{color:var(--a1)}
+.a-tk-d{font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+.a-tk-n{font-size:12.5px;color:var(--dim);white-space:nowrap}
+.a-tk-n b{display:inline-block;width:2ch;text-align:right;color:var(--ink);font-weight:700}
+.a-root .a-tk-pz{width:44px;height:44px;margin-right:-10px}
+.a-tk-pz svg{width:20px;height:20px}
+.a-tk-pz .tk-pl{display:none}
+.a-tk-pz[aria-pressed="true"] .tk-pl{display:inline}
+.a-tk-pz[aria-pressed="true"] .tk-ps{display:none}
+.a-tk-vp{position:relative;overflow:hidden;height:44px;touch-action:pan-y;
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 36px),transparent)}
+.a-tk-track{display:flex;margin:0;padding:0;list-style:none;will-change:transform;transition:transform .82s cubic-bezier(.22,.8,.24,1)}
+.a-tk-track.is-jump{transition:none}
+.a-tk-track li{flex:none;display:flex;align-items:center}
+.a-tk-track li+li::before{content:"";flex:none;width:5px;height:5px;margin:0 14px 0 4px;transform:rotate(45deg);border:1.2px solid var(--muted);opacity:.7}
+.a-tk-i{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 10px 0 0;color:var(--ink);text-decoration:none;max-width:var(--tk-max,320px)}
+.a-tk-i i{flex:none;font-style:normal;font-size:11.5px;font-weight:750;color:var(--a1);letter-spacing:.02em}
+.a-tk-i span{min-width:0;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;font-size:14.5px;line-height:1.3;font-weight:600;letter-spacing:-.01em;word-break:keep-all}
+@media (max-width:479px){.a-tk-i span{font-size:14px}}
+.a-tk-i:hover span{text-decoration:underline;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--a1) 60%,transparent)}
+.a-tk-i:focus-visible{outline:2px solid var(--a1);outline-offset:-2px;border-radius:6px}
+.a-tk::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--a1);transform:scaleX(0);transform-origin:0 50%;pointer-events:none}
+.a-tk.is-run::after{animation:tk-hold var(--tk-hold,4600ms) linear forwards}
+@keyframes tk-hold{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.a-tk-track{transition:none}.a-tk::after{display:none}}
+html[data-jc-imm] .a-tk::after{display:none}
+@media (min-width:768px){
+  .a-stage{grid-template-rows:auto 1fr;row-gap:clamp(14px,1.6vw,22px)}
+  .a-stage>.a-nav{grid-row:1 / span 2}
+  /* 띠의 머리 줄을 왼쪽 단 첫 줄(「직업상담사를 위한 …」)과 같은 높이에 앉힌다 — 위 검증 띠에 붙지 않는다 */
+  .a-stage>.a-tk{grid-column:2;grid-row:1;margin:calc(clamp(28px,4vw,56px) - 12.5px) 0 0}
+  .a-stage>.a-insight{grid-column:2;grid-row:2}
+}
+
 /* 카드 공통 */
 .a-card{--acc:var(--a1);position:relative;display:flex;flex-direction:column;min-width:0;border-width:1px;border-radius:18px;
   background:var(--panel);box-shadow:var(--shadow);padding:clamp(18px,1.4vw,24px);overflow:hidden;
@@ -1054,6 +1096,14 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       </div>
     </div>
     <button type="button" class="a-all-btn" id="allBtn" aria-expanded="false" aria-controls="listView"><span id="allBtnT">자료 전체 목록 <b class="a-num" data-count></b>개</span></button>
+  </section>
+  <section class="a-tk" id="tick" aria-labelledby="tkH">
+    <div class="a-tk-top">
+      <a class="a-tk-h" href="./briefing/" data-visit="briefing"><b id="tkH">데일리 브리핑</b><span class="a-tk-d" id="tkDate"></span></a>
+      <span class="a-tk-n a-num" aria-hidden="true"><b id="tkN">1</b><span> / </span><span id="tkT"></span></span>
+      <button type="button" class="a-ib a-tk-pz" id="tkPause" aria-pressed="false" aria-label="소식 넘김 멈추기" title="소식 넘김 멈추기"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g class="tk-ps"><rect x="7.4" y="6.5" width="3" height="11" rx="1.1" fill="currentColor"/><rect x="13.6" y="6.5" width="3" height="11" rx="1.1" fill="currentColor"/></g><path class="tk-pl" d="M8.6 6.6v10.8a.7.7 0 0 0 1.05.6l8.7-5.4a.7.7 0 0 0 0-1.2l-8.7-5.4a.7.7 0 0 0-1.05.6z" fill="currentColor"/></svg></button>
+    </div>
+    <div class="a-tk-vp" id="tkVp"><ul class="a-tk-track" id="tkTrack"></ul></div>
   </section>
       <section class="a-card a-insight a-c1 a-live" id="insight" aria-labelledby="insightLabel">
         <div class="a-sec"><b id="insightLabel">오늘의 직업상담 통찰</b><span id="insightTag"></span></div>
@@ -2626,6 +2676,7 @@ window.addEventListener('jc-sync-change',function(){
 <script>window.JC_DESIGN = { seal: false }; /* 대문 제목은 돌아가는 문장이라 소인을 붙이지 않는다 */</script>
 <script src="./assets/deck.js" defer></script>
 <script src="./assets/modes.js" defer></script>
+<script src="./assets/brieftick.js" defer></script>
 <script>/* 화면 설정의 「글자 크기」가 로고까지 키우면 머리말이 터진다 — 로고는 자기 크기 규칙(container query)만 따른다. */
 window.JC_FS_SKIP = ((window.JC_FS_SKIP ? window.JC_FS_SKIP + ',' : '') + '.cctt-lockup');</script>
 <script src="./assets/prefs.js" defer></script>
