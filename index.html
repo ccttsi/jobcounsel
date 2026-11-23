@@ -121,7 +121,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 
 /* 머리말. 스크롤하는 동안 매 프레임 다시 흐리게 만들던 backdrop-filter는 뺀다(휴대폰 GPU 부담).
    색은 그대로 두고 불투명도만 97%로 올린다. 뒤에 지나가는 글이 비치지 않을 만큼만 바꾼다. */
-/* 머리말(2026-11-19 통일): 왼쪽 로고 · 오른쪽은 [로그인 · 빠른검색 · 리얼타임 운영중] 다음에 [배경테마 · 글씨크기 · 몰입화면].
+/* 머리말(2026-11-19 통일): 왼쪽 로고 · 오른쪽은 [로그인 · 빠른검색 · 운영중] 다음에 [배경테마 · 글씨크기 · 몰입화면].
    접기는 모바일·폴더블(~767px)에서만 — 태블릿부터는 접기 자체가 없다(assets/headfold.css). */
 .a-top{position:sticky;top:0;z-index:30;margin:0 calc(clamp(14px,3vw,40px) * -1);padding:9px clamp(14px,3vw,40px);
   /* 2026-11-20(태화님 IMG_7804): 97% 종이 베일이면 스크롤했을 때 뒤로 지나가는 글이 흐릿하게 비쳤다.
@@ -159,7 +159,7 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
   font-size:min(9vw - 2.5px,37px);font-weight:500;font-style:normal;line-height:1;letter-spacing:0;white-space:nowrap;
   color:var(--logo-ink);font-synthesis:none}
 @supports (font-size:1cqw){.a-brand{container-type:inline-size}
-  .cctt-lockup{font-size:min(9cqw,37px)}}
+  .cctt-lockup{font-size:min(9cqw,40px)}}
 .cctt-lockup.cctt-leap{overflow:visible}   /* ⑤⑨처럼 위·아래로 뛰는 모션 동안만 상자를 열어 둔다 */
 .cctt-mark{display:block;flex:none;width:1.95em;height:1.95em;overflow:visible;color:var(--logo-ink)}
 .cctt-mark path{fill:none;stroke:var(--logo-ink);stroke-width:2.6;stroke-linejoin:miter;stroke-miterlimit:4}
@@ -204,42 +204,46 @@ body.a-root{background:var(--bg);color:var(--ink);font-family:var(--sans);font-s
 .cctt-s1{left:1.51em;width:.768em}    /* l · k */
 .cctt-s2{left:2.596em;width:.26em}    /* i */
 .cctt-s3{left:3.783em;width:.55em}    /* o */
-.a-right{display:flex;align-items:center;gap:8px;flex:none;margin-left:auto}
-.a-status{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);white-space:nowrap}
+.a-right{display:flex;align-items:center;gap:6px;flex:none;margin-left:auto}
+.a-status{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted);white-space:nowrap}
 .a-status .a-live-t{font-weight:650;letter-spacing:-.01em;color:var(--muted)}
 .a-status time{font-variant-numeric:tabular-nums;letter-spacing:.005em}
 #clock{contain:layout paint}   /* 1초마다 바뀌는 글자가 머리말 줄 전체를 다시 그리지 않게(C1-16) */
 .a-dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--a1);flex:none}
 .a-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--a1);opacity:0;animation:a-ring 2.4s cubic-bezier(.2,.7,.3,1) .6s 3}
 @keyframes a-ring{0%{opacity:.5;transform:scale(1)}80%,100%{opacity:0;transform:scale(3)}}
-.a-actions{display:flex;gap:8px;flex-wrap:nowrap}
+.a-actions{display:flex;gap:6px;flex-wrap:nowrap}
+/* 2026-11-23 C1-60(태화님 지시): 오른쪽 묶음을 줄여 로고에 폭을 돌려준다 — 빠른 검색은 모든 폭에서 돋보기 하나(이름은 aria-label),
+   상태는 「운영중」, 요일은 한자 한 글자, 화면 설정 세 단추는 칸 36px·사이 0(공용 prefs.js의 --jc-pf-* 변수). */
+.a-root .a-actions #btnSearch{width:44px;flex:0 0 44px;padding:0}
+.a-actions #btnSearch>span{display:none}
+.a-top .jc-prefs-slot{--jc-pf-w:36px;--jc-pf-wn:34px;--jc-pf-gap:0px;min-width:108px}
 /* 화면 설정 단추가 붙기 전에도 들어갈 자리를 미리 비워 둔다 — 붙은 뒤와 폭·높이가 같아야
    첫 그림과 정착한 그림의 머리말 키가 같다(40px 차이가 스크롤을 밀어 머리말이 본문을 덮었다).
    390px 이하에서 단추가 36px로 줄어드므로 그때는 112px(36*3+2*2), 그 위는 124px(40*3+2*2). */
 .jc-prefs-slot{min-width:124px;min-height:40px}
 @media (max-width:420px){.jc-prefs-slot{min-width:112px}}
+/* 휴대폰·폴더블(≤767px) — 두 단 구성(2026-11-23 C1-60):
+   윗단 = 왼쪽 [로고 / 그 아래 ● 운영중 · 시각] · 오른쪽 [테마 · 글씨 · 몰입](두 줄 높이 가운데)
+   아랫단 = [로그인][돋보기][튜토리얼][접기] 한 줄. 예전 세 단(로고 / 단추 / 상태)에서 상태 줄을 로고 밑에 붙여 한 단을 줄였다.
+   .a-right는 칸을 만들지 않고(display:contents) 단추 묶음·상태가 머리말 격자의 칸에 바로 앉는다. */
 @media (max-width:767px){
-  .a-top{flex-wrap:wrap;gap:8px;padding-top:7px;padding-bottom:9px}
-  .a-brand{order:1;flex:1 1 auto}
-  .jc-prefs-slot{order:2;margin-left:auto}
-  .a-right{order:3;flex:1 1 100%;margin-left:0;flex-wrap:wrap;gap:8px}
-  .a-actions{flex:1 1 100%;order:1}
+  .a-top{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand prefs" "status prefs" "acts acts";
+    column-gap:10px;row-gap:0;padding-top:8px;padding-bottom:10px}
+  .a-right{display:contents}
+  .a-brand{grid-area:brand;min-height:44px;align-self:end}
+  .a-status{grid-area:status;align-self:start;gap:5px;font-size:12px;margin:3px 0 0 2px}
+  .a-actions{grid-area:acts;margin-top:10px}
+  .jc-prefs-slot{grid-area:prefs;align-self:center;margin-left:0}
+  .a-top>.jh-rail{grid-column:1/-1}
   .a-root .a-actions .a-btn{flex:1 1 0;padding:0 10px}
-  .a-status{order:2;flex:1 1 100%;gap:6px}
+  .a-root .a-actions #btnSearch{flex:0 0 44px}
   .a-kbd{display:none}
-  /* 접기 단추는 첫 줄 오른쪽 끝(로고·화면설정과 같은 줄) */
-  .a-top>.jh-fold{order:3}
+  @supports (font-size:1cqw){.cctt-lockup{font-size:min(10cqw,32px)}}
 }
-/* 좁은 폰(2026-11-21 태화님 지시): 로고는 왼쪽에 컴팩트하게, 화면 설정 단추 셋(테마·글씨크기·몰입)은
-   **같은 한 줄** 오른쪽에. .a-brand가 container-type이라 폭 기여가 0이므로 flex:1 1 auto가 남는 폭을
-   받고, 로고 글자 크기(9cqw)가 그 폭을 따라 스스로 줄어 넘치지 않는다(320·360·390·430 실측 0px).
-   위 @media (max-width:767px)의 flex 규칙보다 뒤에 와야 이긴다. */
-@media (max-width:560px){.a-brand{flex:1 1 auto;min-width:0}}
 /* 태블릿(768~1023): 한 줄에 다 앉도록 곁글자를 줄인다 — 로고가 잘리지 않게 */
 @media (min-width:768px) and (max-width:1023px){
   .a-status{font-size:12px;gap:5px}
-  .a-actions #btnSearch>span:not(.a-kbd){display:none}
-  .a-actions #btnSearch{padding:0 12px}
   .a-kbd{display:none}
 }
 .a-root .a-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;min-width:44px;padding:0 14px;
@@ -925,7 +929,7 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
       </div>
       <div class="a-status" role="status" aria-label="사이트 상태와 한국 시간">
         <span class="a-dot" aria-hidden="true"></span>
-        <span id="statusText" class="a-live-t">리얼타임 운영중</span>
+        <span id="statusText" class="a-live-t">운영중</span>
         <time class="a-num" id="clock" aria-live="off" data-jc-ignore></time>
       </div>
     </div>
@@ -2297,16 +2301,17 @@ function shuffle(){
    2026-11-19: 표기를 「Nov. 19 (Thu) HH:MM:SS」로 통일한다(24시간제 · 영문 월 약자·요일 약자).
    기기 언어 설정과 무관하게 같은 모양이 나오도록 en-US 형식 조각을 그대로 쓴다. */
 var KSTF=null;try{KSTF=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',month:'short',day:'numeric',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});}catch(e){}
-var MONN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WDD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var MONN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WDD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    WDH={Sun:'日',Mon:'月',Tue:'火',Wed:'水',Thu:'木',Fri:'金',Sat:'土'};   /* 요일은 한자 한 글자(2026-11-23 C1-60) */
 function tick(){
   var s='';
   try{
     var p={};KSTF.formatToParts(new Date()).forEach(function(x){p[x.type]=x.value;});
-    s=(p.month||MONN[new Date().getMonth()])+'. '+(p.day||new Date().getDate())+' ('+(p.weekday||WDD[new Date().getDay()])+') '+(p.hour||'00')+':'+(p.minute||'00')+':'+(p.second||'00');
+    s=(p.month||MONN[new Date().getMonth()])+'. '+(p.day||new Date().getDate())+' ('+WDH[p.weekday||WDD[new Date().getDay()]]+') '+(p.hour||'00')+':'+(p.minute||'00')+':'+(p.second||'00');
   }catch(e){
     var d=new Date(Date.now()+9*3600*1000);
     d=new Date(d.getTime()+d.getTimezoneOffset()*60000);
-    s=MONN[d.getMonth()]+'. '+d.getDate()+' ('+WDD[d.getDay()]+') '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2);
+    s=MONN[d.getMonth()]+'. '+d.getDate()+' ('+WDH[WDD[d.getDay()]]+') '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2);
   }
   /* 같은 글자면 쓰지 않는다 · 화면이 가려졌으면 쓰지 않는다(돌아오면 다음 1초에 맞춘다) — 1초마다의 리페인트를 시계 칸 하나로 가둔다(C1-16) */
   var ck=$('clock'),t=' · '+s;if(document.hidden||!ck||ck.textContent===t)return;ck.textContent=t;

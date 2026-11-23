@@ -155,20 +155,20 @@
     off: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9.2V4.5h4.7M19.5 9.2V4.5h-4.7M4.5 14.8v4.7h4.7M19.5 14.8v4.7h-4.7"/></svg>',
     on: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 4.5v4.7H4.5M14.8 4.5v4.7h4.7M9.2 19.5v-4.7H4.5M14.8 19.5v-4.7h4.7"/></svg>'
   };
-  var CSS = ':host{display:inline-flex;align-items:center;gap:2px;flex:none;vertical-align:middle;color:inherit}' +
-    'button{all:unset;box-sizing:border-box;width:40px;height:40px;border-radius:12px;display:inline-grid;place-items:center;cursor:pointer;color:inherit;-webkit-tap-highlight-color:transparent}' +
+  var CSS = ':host{display:inline-flex;align-items:center;gap:var(--jc-pf-gap,2px);flex:none;vertical-align:middle;color:inherit}' +
+    'button{all:unset;box-sizing:border-box;width:var(--jc-pf-w,40px);height:40px;border-radius:12px;display:inline-grid;place-items:center;cursor:pointer;color:inherit;-webkit-tap-highlight-color:transparent}' +
     'button:hover{background:color-mix(in srgb,currentColor 9%,transparent)}' +
     'button:focus-visible{outline:2px solid currentColor;outline-offset:2px}' +
     'svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}' +
     '.t[data-m="dark"] svg path{fill:currentColor;stroke-width:1.2}' +
     '.t[data-m="auto"] svg .sl{stroke-width:1.4;opacity:.7}' +
-    '.f{width:auto;min-width:40px;padding:0 6px;font:700 13px/1 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;letter-spacing:-.02em;white-space:nowrap}' +
+    '.f{width:auto;min-width:var(--jc-pf-w,40px);padding:0 6px;font:700 13px/1 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;letter-spacing:-.02em;white-space:nowrap}' +
     '.f[data-l="1"]{font-size:15px}.f[data-l="2"]{font-size:17.5px}' +
     '.f small{font-size:.8em;font-weight:600;opacity:.75}' +
     'button{transition:transform .14s ease}button:active{transform:scale(.92)}' +
     '@keyframes sw{from{opacity:0;transform:rotate(-45deg) scale(.7)}}' +
     '.t.sw svg{animation:sw .26s cubic-bezier(.2,.9,.3,1.2)}' +
-    '@media (max-width:420px){button{width:36px}.f{min-width:36px;padding:0 3px}}' +
+    '@media (max-width:420px){button{width:var(--jc-pf-wn,36px)}.f{min-width:var(--jc-pf-wn,36px);padding:0 3px}}' +
     '@media (prefers-reduced-motion:reduce){.t.sw svg{animation:none}button{transition:none}button:active{transform:none}}';
   var hosts = [];
   function mount(host) {
