@@ -1,87 +1,103 @@
 {
  "schema_version": "1.4.0",
- "updated_at": "2026-11-23T07:04:00+09:00",
+ "updated_at": "2026-11-24T07:05:00+09:00",
  "edition": {
-  "date": "2026-11-23",
-  "weekday": "월",
-  "title": "정년 65세 시한 27일, 대학생 45%는 '더 어렵다'",
-  "subtitle": "정년연장 특위 10개월 답보와 정부안 시사, 한경협 2,489명 취업인식 조사, 자격증 불법 대여 합동단속을 한 장으로",
+  "date": "2026-11-24",
+  "weekday": "화",
+  "title": "AI 코딩이 신입 문턱을 높였다 — ICT 전공 20대 33.2%",
+  "subtitle": "ICT 전공 20대 취업 비중 급락과 30대 증가, 올해 취업자 목표 미달·60대 쏠림, 스마트공장 2,696억 공고를 한 장으로",
   "reading_minutes": 3,
   "data_status": "ok",
   "data_status_note": null
  },
  "headline_metrics": [
   {
-   "id": "hm_college_harder",
-   "label": "대졸 채용시장 '더 어렵다'",
-   "value": 45.1,
+   "id": "hm_ict_entry_share",
+   "label": "ICT 전공 20대 취업 비중",
+   "value": 33.2,
    "unit": "%",
-   "value_text": "45.1%",
+   "value_text": "33.2%",
    "base_value": null,
    "base_unit": null,
-   "direction": "up",
-   "period": "2026년 11월 조사",
-   "delta_from": "지난해(37.1%)",
-   "source_id": "src_yna_college_20261122",
+   "direction": "down",
+   "period": "2026년 1~10월",
+   "delta_from": "2025년 47.6%",
+   "source_id": "src_mk_ict_20261123",
    "track": "B",
-   "spark": null,
+   "spark": {
+    "labels": [
+     "2022",
+     "2023",
+     "2024",
+     "2025",
+     "2026"
+    ],
+    "values": [
+     36.1,
+     36.5,
+     38.0,
+     47.6,
+     33.2
+    ],
+    "unit": "%"
+   },
    "edition": "kr-0700",
-   "updated_at": "2026-11-23T07:04:00+09:00",
-   "run_id": "br-20261123-0704"
+   "updated_at": "2026-11-24T07:05:00+09:00",
+   "run_id": "br-20261124-0705"
   },
   {
-   "id": "hm_resume_pass_rate",
-   "label": "서류전형 합격률",
+   "id": "hm_ict_20s_workers",
+   "label": "20대 정보통신업 취업자",
    "value": 18.6,
-   "unit": "%",
-   "value_text": "18.6%",
+   "unit": "만명",
+   "value_text": "18.6만명",
    "base_value": null,
    "base_unit": null,
    "direction": "down",
-   "period": "2026년 11월 조사",
-   "delta_from": "지난해(19.4%)",
-   "source_id": "src_yna_college_20261122",
+   "period": "2026년 1~10월 월평균",
+   "delta_from": "전년 동기 24.4만명",
+   "source_id": "src_mk_ict_20261123",
    "track": "B",
    "spark": null,
    "edition": "kr-0700",
-   "updated_at": "2026-11-23T07:04:00+09:00",
-   "run_id": "br-20261123-0704"
+   "updated_at": "2026-11-24T07:05:00+09:00",
+   "run_id": "br-20261124-0705"
   },
   {
-   "id": "hm_retire65_youth_hiring",
-   "label": "정년 65세 청년채용 감소 전망",
-   "value": 61.9,
-   "unit": "%",
-   "value_text": "61.9%",
+   "id": "hm_employed_2026",
+   "label": "올해 취업자 증가(KDI)",
+   "value": 12,
+   "unit": "만명",
+   "value_text": "+12만명",
    "base_value": null,
    "base_unit": null,
    "direction": "up",
-   "period": "2026년 11월 조사",
-   "delta_from": "확대 전망 14.4%",
-   "source_id": "src_yna_college_20261122",
+   "period": "2026년 연간",
+   "delta_from": "정부 목표 15만명",
+   "source_id": "src_hani_employment_20261123",
    "track": "B",
    "spark": null,
    "edition": "kr-0700",
-   "updated_at": "2026-11-23T07:04:00+09:00",
-   "run_id": "br-20261123-0704"
+   "updated_at": "2026-11-24T07:05:00+09:00",
+   "run_id": "br-20261124-0705"
   },
   {
-   "id": "hm_cert_lending_disposal",
-   "label": "자격증 불법대여 행정처분",
-   "value": 23,
-   "unit": "건",
-   "value_text": "23건",
+   "id": "hm_senior_monthly",
+   "label": "60세 이상 월평균 취업자",
+   "value": 20.3,
+   "unit": "만명",
+   "value_text": "+20.3만명",
    "base_value": null,
    "base_unit": null,
-   "direction": "down",
-   "period": "2026년 10월까지",
-   "delta_from": "2022년 63건",
-   "source_id": "src_moel_cert_lending_20261122",
+   "direction": "up",
+   "period": "2026년 1~10월",
+   "delta_from": "전년 동기",
+   "source_id": "src_hani_employment_20261123",
    "track": "B",
    "spark": null,
    "edition": "kr-0700",
-   "updated_at": "2026-11-23T07:04:00+09:00",
-   "run_id": "br-20261123-0704"
+   "updated_at": "2026-11-24T07:05:00+09:00",
+   "run_id": "br-20261124-0705"
   }
  ],
  "main_themes": [
@@ -244,8 +260,32 @@
    "theme_id": "th-youth-employment-gap",
    "title": "청년 고용 사각지대",
    "summary": "취업자 총수는 늘어도 청년층만 빠지는 구조가 이어진다. 청년 고용률·구직단념·첫 일자리 정책을 한 묶음으로 보고, 상담에서는 \"몇 살이라서\"가 아니라 \"어느 업종·직무에서 빠졌는지\"를 먼저 확인한다.",
-   "updated_at": "2026-11-22T07:06:00+09:00",
+   "updated_at": "2026-11-24T07:05:00+09:00",
    "items": [
+    {
+     "issue_id": "iss-ict-youth-entry-2026",
+     "title": "AI 코딩 확산 — ICT 전공 20대 정보통신업 취업 비중 47.6%→33.2%, 30대는 +6.6%",
+     "source": {
+      "source_name": "매일경제",
+      "source_url": "https://www.mk.co.kr/news/economy/12216276"
+     },
+     "license": {
+      "name": "언론사 기사(재가공 불가)",
+      "type": "PRESS",
+      "url": null,
+      "scope": "기사 본문·사진 전부(원문 재게시·번역 불가)",
+      "attribution_required": true,
+      "commercial_use": "not_allowed",
+      "modification": "not_allowed",
+      "verified": true,
+      "verified_at": "2026-11-24",
+      "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-24). 사실·수치만 사용.",
+      "attribution_text": "출처: 매일경제 「코딩 열풍 막차 탄 30대…20대는 AI 취업 한파」(2026.11.23). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     },
+     "first_seen": "2026-11-24",
+     "last_updated": "2026-11-24",
+     "track": "B"
+    },
     {
      "issue_id": "iss-youth-first-job-2027",
      "title": "2027 청년일자리 예산 3.3조 — K-유스개런티 신설(구직촉진수당 월 65만원·16만명)",
@@ -309,26 +349,6 @@
       "verified": true,
       "verified_at": "2026-11-16",
       "evidence": "정책브리핑 해당 페이지 하단 고지: '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다. 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등은 정책브리핑이 저작권을 보유하고 있지 않으므로 이용 전 저작권자 허락 필요.' (2026-11-16 확인)"
-     },
-     "first_seen": "2026-11-16",
-     "last_updated": "2026-11-16",
-     "track": "A"
-    },
-    {
-     "issue_id": null,
-     "title": "\"청년 첫 경력, 가장 확실한 투자\" 대담한 재정 투자와 세심한 정책 설계로 청년일자리 회복 추진 가속화",
-     "source": {
-      "source_name": "고용노동부",
-      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783711"
-     },
-     "license": {
-      "type": "KOGL-1",
-      "name": "공공누리 제1유형(출처표시)",
-      "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
-      "attribution_text": "출처: 고용노동부 「2026년 제2차 청년고용촉진 특별위원회 개최」 보도자료(2026.9.30), 공공누리 제1유형. 붙임(회의 계획·장관 인사말)과 담당부서 표는 옮기지 않았습니다.",
-      "verified": true,
-      "verified_at": "2026-11-16",
-      "evidence": "정책브리핑 보도자료 페이지 하단 공공누리 1유형 배지와 '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다' 고지 확인(2026-11-16). 고용노동부 보도자료 전재본."
      },
      "first_seen": "2026-11-16",
      "last_updated": "2026-11-16",
@@ -556,299 +576,312 @@
    "id": "c01",
    "order": 1,
    "track": "B",
-   "category": "국내 고용행정",
-   "title": "정년 65세, 27일이 시한 — 정부안 먼저 낼 수도",
-   "kicker": "특위 10개월째 답보 · 여당 특위 회의 11월 27일",
+   "category": "AI·직무",
+   "title": "AI 코딩 확산, ICT 전공 20대 취업 비중 33%로",
+   "kicker": "25~29세 ICT 전공 정보통신업 취업 33.2% · 30대는 +6.6%",
    "three_step": {
-    "what": "고용노동부 장관이 법정 정년을 60세에서 65세로 늘리는 논의가 여당 특별위원회에서 더 진전되지 않으면 정부가 자체 안을 먼저 내겠다고 밝혔다. 여당 특위는 지난해 입법을 목표로 출발했지만 10개월째 결론을 내지 못하고 있다.",
-    "evidence": "김영훈 장관은 2026년 11월 22일 방송 인터뷰에서 27일 특위 회의를 전후해 정부 입장을 발표할 시점이 다가왔다고 말했고, 합의가 없으면 정부가 책임 있게 행동할 수 있느냐는 질문에는 '그렇다'고 답했다. 고용노동부는 같은 날 보도참고자료로 노사 합의를 최대한 지원하고 특위 결과를 감안해 책임 있는 역할을 하겠다고 밝혔다. 쟁점은 60세에서 65세로 올리는 방식과 시기로, 노동계는 국민연금 수급 전 소득 공백을, 경영계는 인건비 부담과 청년 신규 채용 위축을 근거로 서로 다른 속도를 주장한다. 장관은 호봉제가 임금 체계의 14% 정도에 그친다며 직무·성과 중심 전환과 지원이 함께 가야 한다고 말했다.",
-    "implication": "중장년 내담자와 상담할 때 65세까지 같은 일을 이어가는 계획과 60세 이후 재고용·전직 계획을 종이에 나눠 적게 하라."
+    "what": "국가데이터처 마이크로데이터를 분석한 결과, 올해 1~10월 25~29세 정보통신기술(ICT) 전공 졸업자 가운데 정보통신업에서 일하는 비중이 33.2%로 떨어졌다. 같은 기간 30대 정보통신업 취업자는 늘어 두 연령대의 방향이 갈렸다.",
+    "evidence": "2026년 1~10월 25~29세 ICT 전공 졸업자의 정보통신업 취업 비중은 33.2%로 2025년 47.6%보다 14.4%p 낮다(2022년 36.1%→2024년 38.0%로 오르던 흐름이 꺾였다). 같은 기간 월평균 30대 정보통신업 취업자는 41만9,000명으로 전년 동기 39만4,000명보다 6.6% 늘었고, 20대는 24만4,000명에서 18만6,000명으로 24.1% 줄었다. 기사가 함께 인용한 미국 보안기업 옥타 사례에서는 AI 코딩 도구 도입 뒤 개발자 1인당 월 코드 작성량이 90% 늘고 작업 시간은 16% 줄었다(2025년 11월~2026년 1월과 2026년 4~6월 비교).",
+    "implication": "AI 코딩 도구로 직접 만들어 본 결과물을 이력서 한 줄로 만들게 하고, 신입 공채만 기다리지 말고 인턴·프로젝트로 경력 요건을 채우는 계획을 함께 세워라."
    },
    "key_numbers": [
     {
-     "label": "법정 정년(현행)",
-     "value": "60세",
-     "delta": "",
-     "period": "2026년 11월"
+     "label": "25~29세 ICT 전공 취업 비중",
+     "value": "33.2%",
+     "delta": "-14.4%p",
+     "period": "2026년 1~10월"
     },
     {
-     "label": "연장 논의안",
-     "value": "65세",
-     "delta": "+5년",
-     "period": "특위 논의 중"
+     "label": "20대 정보통신업 취업자",
+     "value": "18만6,000명",
+     "delta": "-24.1%",
+     "period": "2026년 1~10월 월평균"
     },
     {
-     "label": "특위 논의 기간",
-     "value": "10개월",
-     "delta": "결론 미도출",
-     "period": "2026년 1월 이후"
+     "label": "30대 정보통신업 취업자",
+     "value": "41만9,000명",
+     "delta": "+6.6%",
+     "period": "2026년 1~10월 월평균"
+    },
+    {
+     "label": "AI 코딩 도구 도입 후 코드 작성량",
+     "value": "+90%",
+     "delta": "작업 시간 -16%",
+     "period": "2026년 4~6월"
     }
    ],
    "chart_data": {
-    "type": "bar",
-    "unit": "세",
-    "labels": [
-     "현행 법정 정년",
-     "논의 중 연장안"
-    ],
-    "series": [
-     {
-      "name": "법정 정년",
-      "values": [
-       60,
-       65
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "현행 60세와 특위에서 논의 중인 65세 연장안(연합뉴스 2026.11.22 보도). 확정된 개정안은 아니다.",
-    "source_id": "src_yna_retirement_20261122"
-   },
-   "counselor_question": "지금 회사에서 65세까지 일하는 계획과 60세 이후 다른 일로 옮기는 계획 중 어느 쪽을 먼저 세워 보고 싶으세요?",
-   "tags": [
-    "정년연장",
-    "중장년",
-    "계속고용"
-   ],
-   "ncs": [
-    "직업상담서비스",
-    "노동법규"
-   ],
-   "theme_key": "th-pension-social",
-   "theme_label": "퇴직과 사회안전망",
-   "region": "kr",
-   "issue_id": "iss-retirement-65-2026",
-   "source": {
-    "source_id": "src_yna_retirement_20261122",
-    "source_name": "연합뉴스",
-    "source_title": "노동장관 \"정년연장, 27일 與특위 합의 안 되면 정부 나설 것\"(종합)",
-    "source_url": "https://www.yna.co.kr/view/AKR20261122019051530",
-    "published_at": "2026-11-22",
-    "license": {
-     "name": "언론사 기사(재가공 불가)",
-     "type": "PRESS",
-     "url": null,
-     "scope": "기사 본문·사진 전부(원문 재게시·번역 불가)",
-     "attribution_required": true,
-     "commercial_use": "not_allowed",
-     "modification": "not_allowed",
-     "verified": true,
-     "verified_at": "2026-11-23",
-     "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-23). 사실·수치만 사용.",
-     "attribution_text": "출처: 연합뉴스 「노동장관 \"정년연장, 27일 與특위 합의 안 되면 정부 나설 것\"」(2026.11.22). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
-    },
-    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
-   },
-   "edition": "kr-0700",
-   "updated_at": "2026-11-23T07:04:00+09:00",
-   "run_id": "br-20261123-0704",
-   "labor_walk": true,
-   "labor_walk_topic": "퇴직·사회안전망"
-  },
-  {
-   "id": "c02",
-   "order": 2,
-   "track": "B",
-   "category": "채용시장",
-   "title": "대학생 45.1% '작년보다 어렵다' — 서류합격률 18.6%",
-   "kicker": "2,489명 조사 · 지원 10.2회에 서류합격 1.9회",
-   "three_step": {
-    "what": "한국경제인협회가 대학생을 대상으로 해마다 하는 취업인식 조사에서 올해 채용시장이 지난해보다 어렵다는 응답이 크게 늘었다. 구직은 더 적극적으로 하는데 서류 관문은 오히려 좁아졌다.",
-    "evidence": "2026년 11월 22일 발표된 '2026년 대학생 취업인식도 조사'(4년제 재학생·졸업자 2,489명)에서 '지난해보다 어렵다'는 응답은 45.1%로 지난해 37.1%보다 8.0%포인트 늘었고 '좋아졌다'는 4.8%에 그쳤다. 적극적으로 구직한다는 응답은 35.4%로 7.0%포인트 늘었지만, 적극 구직자의 평균 입사지원은 10.2회, 서류합격은 1.9회로 합격률이 18.6%(지난해 19.4%)였다. 취업 준비가 1년 이상 걸릴 것으로 본 응답은 40.6%였고, 정년이 65세로 늘면 청년 신규채용이 줄 것이라는 응답은 61.9%였다.",
-    "implication": "청년 내담자와는 지원 횟수를 늘리기보다 지난 서류 탈락 지원서 2~3건을 함께 열어 직무와 연결된 문장을 한 줄씩 고쳐 쓰게 하라."
-   },
-   "key_numbers": [
-    {
-     "label": "'지난해보다 어렵다'",
-     "value": "45.1%",
-     "delta": "+8.0%p",
-     "period": "2026년 11월 조사"
-    },
-    {
-     "label": "서류전형 합격률",
-     "value": "18.6%",
-     "delta": "-0.8%p",
-     "period": "2026년 11월 조사"
-    },
-    {
-     "label": "평균 입사지원·서류합격",
-     "value": "10.2회·1.9회",
-     "delta": "",
-     "period": "2026년 11월 조사"
-    },
-    {
-     "label": "정년연장 시 청년채용 감소 전망",
-     "value": "61.9%",
-     "delta": "확대 14.4%",
-     "period": "2026년 11월 조사"
-    }
-   ],
-   "chart_data": {
-    "type": "bar",
-    "unit": "회",
-    "labels": [
-     "평균 입사지원",
-     "평균 서류합격"
-    ],
-    "series": [
-     {
-      "name": "적극적 구직자의 올해 평균",
-      "values": [
-       10.2,
-       1.9
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "한국경제인협회 '2026년 대학생 취업인식도 조사'(2,489명), 적극적 구직자 기준. 2026.11.22 발표.",
-    "source_id": "src_yna_college_20261122"
-   },
-   "counselor_question": "올해 몇 군데에 지원했고 그중 몇 번 서류에서 통과했나요? 떨어진 지원서 한두 개를 같이 펴 볼까요.",
-   "tags": [
-    "대학생",
-    "구직",
-    "서류전형"
-   ],
-   "ncs": [
-    "직업상담서비스",
-    "취업지원"
-   ],
-   "theme_key": "th-youth-employment",
-   "theme_label": "청년 고용",
-   "region": "kr",
-   "issue_id": "iss-college-job-perception-2026",
-   "source": {
-    "source_id": "src_yna_college_20261122",
-    "source_name": "연합뉴스",
-    "source_title": "대학생 45% \"취업 작년보다 어렵다\"…5명 중 1명만 서류합격",
-    "source_url": "https://www.yna.co.kr/view/AKR20261122018700003",
-    "published_at": "2026-11-22",
-    "license": {
-     "name": "언론사 기사(재가공 불가)",
-     "type": "PRESS",
-     "url": null,
-     "scope": "기사 본문·사진 전부(원문 재게시·번역 불가)",
-     "attribution_required": true,
-     "commercial_use": "not_allowed",
-     "modification": "not_allowed",
-     "verified": true,
-     "verified_at": "2026-11-23",
-     "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-23). 사실·수치만 사용.",
-     "attribution_text": "출처: 연합뉴스 「대학생 45% \"취업 작년보다 어렵다\"」(2026.11.22, 한국경제인협회 조사 보도). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
-    },
-    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
-   },
-   "edition": "kr-0700",
-   "updated_at": "2026-11-23T07:04:00+09:00",
-   "run_id": "br-20261123-0704",
-   "labor_walk": true,
-   "labor_walk_topic": "청년·중장년 고용"
-  },
-  {
-   "id": "c03",
-   "order": 3,
-   "track": "B",
-   "category": "국내 고용행정",
-   "title": "자격증 불법 대여, 12월부터 6개 부처 합동단속",
-   "kicker": "자진신고 11월 30일까지 · 5년 처분 63→23건",
-   "three_step": {
-    "what": "정부가 국가기술자격증을 빌려주거나 빌리는 행위를 겨냥해 12월 1일부터 6개 부처 합동단속에 들어간다. 단속에 앞서 자진신고 기간이 11월 30일까지 열려 있다.",
-    "evidence": "고용노동부는 2026년 11월 22일 12월 1일부터 2027년 1월 31일까지 두 달간 국토교통부·산업통상부·과학기술정보통신부·기후에너지환경부·소방청과 함께 단속한다고 밝혔다. 불법 대여 행정처분은 2022년 63건, 2023년 36건, 2024년 57건, 2025년 49건, 2026년 10월까지 23건이었다. 빌려준 사람·빌린 사람·알선한 사람은 1년 이하 징역 또는 1천만 원 이하 벌금에 처해질 수 있고 빌려준 사람은 자격이 취소된다. 자진신고는 11월 16일부터 30일까지 받지만, 신고해도 자격취소 처분은 감경되지 않는다.",
-    "implication": "자격증을 빌려준 적이 있는 내담자에게는 11월 30일까지 자진신고를 마치고, 이후에는 자격을 직접 쓰는 일자리로 경력을 다시 세우는 계획을 함께 짜게 하라."
-   },
-   "key_numbers": [
-    {
-     "label": "합동단속 기간",
-     "value": "2026.12.1~2027.1.31",
-     "delta": "2개월",
-     "period": "2026년 11월 22일 발표"
-    },
-    {
-     "label": "참여 부처",
-     "value": "6개",
-     "delta": "",
-     "period": "2026년 11월 22일"
-    },
-    {
-     "label": "자진신고 마감",
-     "value": "11월 30일",
-     "delta": "11.16~11.30",
-     "period": "2026년 11월"
-    },
-    {
-     "label": "불법 대여 행정처분",
-     "value": "23건",
-     "delta": "2022년 63건→2026년 10월",
-     "period": "2026년 10월까지"
-    }
-   ],
-   "chart_data": {
-    "type": "bar",
-    "unit": "건",
+    "type": "line",
+    "unit": "%",
     "labels": [
      "2022",
      "2023",
      "2024",
      "2025",
-     "2026.10월"
+     "2026 1~10월"
     ],
     "series": [
      {
-      "name": "국가기술자격증 불법 대여 행정처분",
+      "name": "25~29세 ICT 전공 정보통신업 취업 비중",
       "values": [
-       63,
-       36,
-       57,
-       49,
-       23
+       36.1,
+       36.5,
+       38.0,
+       47.6,
+       33.2
       ],
       "emphasis": true
      }
     ],
     "reference_value": null,
-    "note": "국가기술자격증 불법 대여 행정처분 건수(고용노동부, 2026.11.22). 2026년은 10월까지 집계.",
-    "source_id": "src_moel_cert_lending_20261122"
+    "note": "국가데이터처 마이크로데이터 분석(매일경제 2026.11.23 보도). 2026년은 1~10월 값.",
+    "source_id": "src_mk_ict_20261123"
    },
-   "counselor_question": "자격증을 다른 사람에게 빌려주거나, 빌려서 등록한 경험이 있나요? 있다면 이번 달 안에 정리할 방법을 같이 찾아볼까요.",
+   "counselor_question": "전공과 다른 직무까지 넓혀 볼 생각이 있으세요, 아니면 같은 직무에서 AI를 다루는 쪽으로 준비하고 싶으세요?",
    "tags": [
-    "국가기술자격",
-    "불법대여",
-    "단속"
+    "AI",
+    "정보통신",
+    "청년",
+    "신입채용"
    ],
    "ncs": [
     "직업상담서비스",
-    "노동법규"
+    "직무분석"
+   ],
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "kr",
+   "issue_id": "iss-ict-youth-entry-2026",
+   "source": {
+    "source_id": "src_mk_ict_20261123",
+    "source_name": "매일경제",
+    "source_title": "코딩 열풍 막차 탄 30대…20대는 AI 취업 한파",
+    "source_url": "https://www.mk.co.kr/news/economy/12216276",
+    "published_at": "2026-11-23",
+    "license": {
+     "name": "언론사 기사(재가공 불가)",
+     "type": "PRESS",
+     "url": null,
+     "scope": "기사 본문·사진 전부(원문 재게시·번역 불가)",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-24",
+     "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-24). 사실·수치만 사용.",
+     "attribution_text": "출처: 매일경제 「코딩 열풍 막차 탄 30대…20대는 AI 취업 한파」(2026.11.23). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    },
+    "usage": "국가데이터처 마이크로데이터 분석 수치와 옥타 사례 수치만 우리 말로 재구성(원문 문장 복제 없음)."
+   },
+   "edition": "kr-0700",
+   "updated_at": "2026-11-24T07:05:00+09:00",
+   "run_id": "br-20261124-0705",
+   "labor_walk": true,
+   "labor_walk_topic": "AI와 직무"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "B",
+   "category": "국내 고용지표",
+   "title": "올해 취업자 12만, 목표 3만명 못 미친다 — 60대가 이끌었다",
+   "kicker": "60세 이상 월평균 +20만3천 · 청년 -17만9천 (1~10월)",
+   "three_step": {
+    "what": "한국개발연구원(KDI)이 올해 취업자 증가 폭을 12만명으로 전망해 정부 목표(15만명)에 못 미칠 것으로 봤다. 늘어난 취업자는 60세 이상에 몰렸고, 청년층 취업자는 월평균 17만9,000명 줄었다.",
+    "evidence": "2026년 1~10월 월평균 취업자 증가는 11만9,000명이고, 60세 이상은 월평균 20만3,000명 늘며 증가분을 이끌었다. 업종별로는 보건·사회복지가 22만7,000명 늘어 압도적이었고, 청년(15~29세) 취업자는 17만9,000명 줄었다. 청년이 많이 종사하는 숙박·음식점업과 청년이 선호하는 제조업·전문과학기술업 취업자도 올해 월평균 각각 3만4,000명, 4만7,000명, 5만5,000명 감소했고, 청년 고용률은 2024년 5월부터 30개월 연속 내렸다. 이형일 부총리는 11월 23일 기자간담회에서 고용이 성장 기조에 비해 활발하지 않다며 서비스산업 대책을 강구하겠다고 밝혔다.",
+    "implication": "내담자가 준비하는 업종이 올해 늘어난 쪽(보건·복지)인지 줄어든 쪽(제조·숙박음식)인지 먼저 확인하고, 같은 직무라도 업종을 바꾸는 선택지를 함께 계산하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "올해 취업자 증가 전망(KDI)",
+     "value": "+12만명",
+     "delta": "정부 목표 15만명",
+     "period": "2026년 연간"
+    },
+    {
+     "label": "60세 이상 취업자",
+     "value": "+20만3,000명",
+     "delta": "월평균",
+     "period": "2026년 1~10월"
+    },
+    {
+     "label": "청년(15~29세) 취업자",
+     "value": "-17만9,000명",
+     "delta": "월평균",
+     "period": "2026년 1~10월"
+    },
+    {
+     "label": "보건·사회복지 취업자",
+     "value": "+22만7,000명",
+     "delta": "월평균",
+     "period": "2026년 1~10월"
+    }
+   ],
+   "chart_data": {
+    "type": "diverging_bar",
+    "unit": "만명",
+    "labels": [
+     "60세 이상",
+     "보건·사회복지",
+     "청년(15~29세)",
+     "제조업"
+    ],
+    "series": [
+     {
+      "name": "전년 동기 대비 월평균 증감",
+      "values": [
+       20.3,
+       22.7,
+       -17.9,
+       -4.7
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": 0,
+    "note": "국가데이터처 고용동향 월평균 증감(한겨레 2026.11.23 보도). 2026년 1~10월.",
+    "source_id": "src_hani_employment_20261123"
+   },
+   "counselor_question": "지금 준비하는 업종이 올해 늘어난 쪽인지 줄어든 쪽인지 같이 확인해 볼까요?",
+   "tags": [
+    "고용동향",
+    "고령화",
+    "청년",
+    "업종"
+   ],
+   "ncs": [
+    "직업상담서비스",
+    "노동시장분석"
+   ],
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "kr",
+   "issue_id": "iss-2026-employment-target-miss",
+   "source": {
+    "source_id": "src_hani_employment_20261123",
+    "source_name": "한겨레",
+    "source_title": "올해 취업자, 정부 목표치보다 3만명 밑돌 듯…고령층 늘고 청년층 줄어",
+    "source_url": "https://www.hani.co.kr/arti/economy/economy_general/1288677.html",
+    "published_at": "2026-11-23",
+    "license": {
+     "name": "언론사 기사(재가공 불가)",
+     "type": "PRESS",
+     "url": null,
+     "scope": "기사 본문·사진 전부(원문 재게시·번역 불가)",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-24",
+     "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-24). 사실·수치만 사용.",
+     "attribution_text": "출처: 한겨레 「올해 취업자, 정부 목표치보다 3만명 밑돌 듯…고령층 늘고 청년층 줄어」(2026.11.23). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    },
+    "usage": "KDI 전망치·고용동향 월평균 수치·부총리 발언 사실만 우리 말로 재구성(원문 문장 복제 없음)."
+   },
+   "edition": "kr-0700",
+   "updated_at": "2026-11-24T07:05:00+09:00",
+   "run_id": "br-20261124-0705",
+   "labor_walk": true,
+   "labor_walk_topic": "거시경제와 고용"
+  },
+  {
+   "id": "c03",
+   "order": 3,
+   "track": "A",
+   "category": "채용시장",
+   "title": "스마트공장 2,696억 — 내년 1,021개사, 채용 실습까지",
+   "kicker": "신청 12월 7일~1월 6일 · AI 적용 수준별 최대 12억원",
+   "three_step": {
+    "what": "중소벤처기업부가 2027년 스마트공장 구축지원사업 참여기업을 모집한다. 사업별로 나뉘어 있던 공고를 하나로 합쳐 예산 2,696억원으로 1,021개사를 지원한다.",
+    "evidence": "지원 사업은 정부일반형·제조AI특화·자율형공장·상생형 인공지능전환(AX) 선도모델 4개이고, 디지털·AI 적용 수준에 따라 사업별로 최대 2억원에서 12억원까지 지원한다(2027년 예산 기준). 신청은 2026년 12월 7일부터 2027년 1월 6일까지이며, 상생형 AX에는 대기업 19개사가 참여한다. 선정기업은 스마트제조 전문인력 양성사업과 연계해 신규 채용인력 현장실습을 지원받고, 구축 후 점검 기간이 기존 3년에서 5년으로 늘어난다.",
+    "implication": "제조업 취업을 준비하는 내담자에게 구축기업의 신규 채용 실습과 스마트제조 전문인력 양성 과정을 한 묶음으로 안내하라."
+   },
+   "key_numbers": [
+    {
+     "label": "구축지원 예산",
+     "value": "2,696억원",
+     "delta": "",
+     "period": "2027년 사업"
+    },
+    {
+     "label": "지원 규모",
+     "value": "1,021개사",
+     "delta": "",
+     "period": "2027년 사업"
+    },
+    {
+     "label": "사업별 지원 상한",
+     "value": "2억~12억원",
+     "delta": "AI 적용 수준별",
+     "period": "2027년 사업"
+    },
+    {
+     "label": "신청 기간",
+     "value": "12월 7일~1월 6일",
+     "delta": "",
+     "period": "2026~2027년"
+    }
+   ],
+   "chart_data": {
+    "type": "bar",
+    "unit": "억원",
+    "labels": [
+     "사업별 하한",
+     "사업별 상한"
+    ],
+    "series": [
+     {
+      "name": "기업당 지원 상한",
+      "values": [
+       2,
+       12
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "중소벤처기업부 2027년 스마트공장 구축지원사업 공고(2026.11.23). AI 적용 수준에 따른 사업별 상한.",
+    "source_id": "src_mss_smartfactory_20261123"
+   },
+   "counselor_question": "제조업으로 간다면 AI·자동화를 다루는 훈련을 먼저 받아 볼 생각이 있으세요?",
+   "tags": [
+    "스마트공장",
+    "중소기업",
+    "직업훈련",
+    "AI전환"
+   ],
+   "ncs": [
+    "직업상담서비스",
+    "직업훈련"
    ],
    "theme_key": "th-skills-training",
    "theme_label": "재취업과 직업훈련",
    "region": "kr",
-   "issue_id": "iss-cert-license-lending-2026",
+   "issue_id": "iss-smartfactory-2027",
    "source": {
-    "source_id": "src_moel_cert_lending_20261122",
-    "source_name": "고용노동부(정책브리핑 전재)",
-    "source_title": "국가기술자격증 불법 대여, 정부 합동단속으로 뿌리 뽑는다",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790230",
-    "published_at": "2026-11-22",
+    "source_id": "src_mss_smartfactory_20261123",
+    "source_name": "중소벤처기업부",
+    "source_title": "'27년 스마트공장 구축지원사업 참여기업 모집",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790407",
+    "published_at": "2026-11-23",
     "license": {
-     "name": "공공누리 미부착(사전 협의 필요)",
-     "type": "KOGL-NONE",
-     "url": null,
-     "scope": "보도자료 본문·첨부파일",
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지 제외)",
      "attribution_required": true,
-     "commercial_use": "unknown",
-     "modification": "not_allowed",
+     "commercial_use": "allowed",
+     "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-23",
-     "evidence": "정책브리핑 해당 보도자료 페이지 하단 고지 직접 확인(2026-11-23): '이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지 없음. 본문을 옮기지 않고 사실·수치만 사용.",
-     "attribution_text": "출처: 고용노동부 「국가기술자격증 불법 대여, 정부 합동단속으로 뿌리 뽑는다」 보도자료(2026.11.22, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+     "verified_at": "2026-11-24",
+     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-24): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.'",
+     "attribution_text": "출처: 중소벤처기업부 「'27년 스마트공장 구축지원사업 참여기업 모집」 보도자료(2026.11.23, 정책브리핑), 공공누리 제1유형. 텍스트만 이용했습니다."
     },
-    "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음)."
+    "usage": "보도자료 텍스트를 원문대로 게시(17-1)하고, 17번 카드는 사업 규모·지원 조건·신청 기간을 요약."
    },
    "edition": "kr-0700",
-   "updated_at": "2026-11-23T07:04:00+09:00",
-   "run_id": "br-20261123-0704",
+   "updated_at": "2026-11-24T07:05:00+09:00",
+   "run_id": "br-20261124-0705",
    "labor_walk": true,
    "labor_walk_topic": "훈련·재취업"
   },
@@ -1357,9 +1390,9 @@
  "runs": {
   "kr-0700": {
    "status": "ok",
-   "updated_at": "2026-11-23T07:04:00+09:00",
-   "last_ok": "2026-11-23",
-   "run_id": "br-20261123-0704"
+   "updated_at": "2026-11-24T07:05:00+09:00",
+   "last_ok": "2026-11-24",
+   "run_id": "br-20261124-0705"
   },
   "global-2300": {
    "status": "ok",
@@ -1370,11 +1403,11 @@
  },
  "sources": [
   {
-   "source_id": "src_yna_retirement_20261122",
-   "source_name": "연합뉴스",
-   "source_title": "노동장관 \"정년연장, 27일 與특위 합의 안 되면 정부 나설 것\"(종합)",
-   "source_url": "https://www.yna.co.kr/view/AKR20261122019051530",
-   "published_at": "2026-11-22",
+   "source_id": "src_mk_ict_20261123",
+   "source_name": "매일경제",
+   "source_title": "코딩 열풍 막차 탄 30대…20대는 AI 취업 한파",
+   "source_url": "https://www.mk.co.kr/news/economy/12216276",
+   "published_at": "2026-11-23",
    "license": {
     "name": "언론사 기사(재가공 불가)",
     "type": "PRESS",
@@ -1384,19 +1417,18 @@
     "commercial_use": "not_allowed",
     "modification": "not_allowed",
     "verified": true,
-    "verified_at": "2026-11-23",
-    "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-23). 사실·수치만 사용.",
-    "attribution_text": "출처: 연합뉴스 「노동장관 \"정년연장, 27일 與특위 합의 안 되면 정부 나설 것\"」(2026.11.22). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    "verified_at": "2026-11-24",
+    "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-24). 사실·수치만 사용.",
+    "attribution_text": "출처: 매일경제 「코딩 열풍 막차 탄 30대…20대는 AI 취업 한파」(2026.11.23). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
    },
-   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
-   "id": "src_yna_retirement_20261122"
+   "usage": "국가데이터처 마이크로데이터 분석 수치와 옥타 사례 수치만 우리 말로 재구성(원문 문장 복제 없음)."
   },
   {
-   "source_id": "src_yna_college_20261122",
-   "source_name": "연합뉴스",
-   "source_title": "대학생 45% \"취업 작년보다 어렵다\"…5명 중 1명만 서류합격",
-   "source_url": "https://www.yna.co.kr/view/AKR20261122018700003",
-   "published_at": "2026-11-22",
+   "source_id": "src_hani_employment_20261123",
+   "source_name": "한겨레",
+   "source_title": "올해 취업자, 정부 목표치보다 3만명 밑돌 듯…고령층 늘고 청년층 줄어",
+   "source_url": "https://www.hani.co.kr/arti/economy/economy_general/1288677.html",
+   "published_at": "2026-11-23",
    "license": {
     "name": "언론사 기사(재가공 불가)",
     "type": "PRESS",
@@ -1406,34 +1438,32 @@
     "commercial_use": "not_allowed",
     "modification": "not_allowed",
     "verified": true,
-    "verified_at": "2026-11-23",
-    "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-23). 사실·수치만 사용.",
-    "attribution_text": "출처: 연합뉴스 「대학생 45% \"취업 작년보다 어렵다\"」(2026.11.22, 한국경제인협회 조사 보도). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    "verified_at": "2026-11-24",
+    "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-24). 사실·수치만 사용.",
+    "attribution_text": "출처: 한겨레 「올해 취업자, 정부 목표치보다 3만명 밑돌 듯…고령층 늘고 청년층 줄어」(2026.11.23). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
    },
-   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
-   "id": "src_yna_college_20261122"
+   "usage": "KDI 전망치·고용동향 월평균 수치·부총리 발언 사실만 우리 말로 재구성(원문 문장 복제 없음)."
   },
   {
-   "source_id": "src_moel_cert_lending_20261122",
-   "source_name": "고용노동부(정책브리핑 전재)",
-   "source_title": "국가기술자격증 불법 대여, 정부 합동단속으로 뿌리 뽑는다",
-   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790230",
-   "published_at": "2026-11-22",
+   "source_id": "src_mss_smartfactory_20261123",
+   "source_name": "중소벤처기업부",
+   "source_title": "'27년 스마트공장 구축지원사업 참여기업 모집",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790407",
+   "published_at": "2026-11-23",
    "license": {
-    "name": "공공누리 미부착(사전 협의 필요)",
-    "type": "KOGL-NONE",
-    "url": null,
-    "scope": "보도자료 본문·첨부파일",
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지 제외)",
     "attribution_required": true,
-    "commercial_use": "unknown",
-    "modification": "not_allowed",
+    "commercial_use": "allowed",
+    "modification": "allowed",
     "verified": true,
-    "verified_at": "2026-11-23",
-    "evidence": "정책브리핑 해당 보도자료 페이지 하단 고지 직접 확인(2026-11-23): '이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다. 공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용하여 주시기 바랍니다.' — 공공누리 배지 없음. 본문을 옮기지 않고 사실·수치만 사용.",
-    "attribution_text": "출처: 고용노동부 「국가기술자격증 불법 대여, 정부 합동단속으로 뿌리 뽑는다」 보도자료(2026.11.22, 정책브리핑 게재). 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    "verified_at": "2026-11-24",
+    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-24): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.'",
+    "attribution_text": "출처: 중소벤처기업부 「'27년 스마트공장 구축지원사업 참여기업 모집」 보도자료(2026.11.23, 정책브리핑), 공공누리 제1유형. 텍스트만 이용했습니다."
    },
-   "usage": "수치·사실만 우리 말로 재구성(원문 문장 복제 없음).",
-   "id": "src_moel_cert_lending_20261122"
+   "usage": "보도자료 텍스트를 원문대로 게시(17-1)하고, 17번 카드는 사업 규모·지원 조건·신청 기간을 요약."
   },
   {
    "source_id": "src_aiincontext_bloomberg_cn_postings_20261121",
@@ -1555,6 +1585,7 @@
  },
  "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다.",
  "archive_dates": [
+  "2026-11-24",
   "2026-11-23",
   "2026-11-22",
   "2026-11-21",

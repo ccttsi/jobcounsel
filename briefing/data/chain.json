@@ -1,8 +1,9 @@
 {
- "generated_at": "2026-11-23T07:04:13+09:00",
+ "generated_at": "2026-11-24T07:05:13+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
+  "2026-11-24",
   "2026-11-23",
   "2026-11-22",
   "2026-11-21",
@@ -3598,6 +3599,17 @@
      "source_name": "고용노동부(정책브리핑 전재)",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790230",
      "published_at": "2026-11-22"
+    },
+    {
+     "date": "2026-11-24",
+     "card_id": "c03",
+     "title": "스마트공장 2,696억 — 내년 1,021개사, 채용 실습까지",
+     "kicker": "신청 12월 7일~1월 6일 · AI 적용 수준별 최대 12억원",
+     "category": "채용시장",
+     "region": "kr",
+     "source_name": "중소벤처기업부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790407",
+     "published_at": "2026-11-23"
     }
    ]
   },
@@ -4164,6 +4176,17 @@
      "source_name": "미국 노동부(U.S. DOL) 고용훈련청(ETA)",
      "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261119",
      "published_at": "2026-11-19"
+    },
+    {
+     "date": "2026-11-24",
+     "card_id": "c02",
+     "title": "올해 취업자 12만, 목표 3만명 못 미친다 — 60대가 이끌었다",
+     "kicker": "60세 이상 월평균 +20만3천 · 청년 -17만9천 (1~10월)",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "한겨레",
+     "source_url": "https://www.hani.co.kr/arti/economy/economy_general/1288677.html",
+     "published_at": "2026-11-23"
     }
    ]
   },
@@ -5010,6 +5033,17 @@
      "source_name": "AI In Context (블룸버그 분석 보도)",
      "source_url": "https://aiincontext.com/articles/ai-exposed-jobs-in-china-fell-10-points-faster-bloomberg-finds",
      "published_at": "2026-11-21"
+    },
+    {
+     "date": "2026-11-24",
+     "card_id": "c01",
+     "title": "AI 코딩 확산, ICT 전공 20대 취업 비중 33%로",
+     "kicker": "25~29세 ICT 전공 정보통신업 취업 33.2% · 30대는 +6.6%",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "매일경제",
+     "source_url": "https://www.mk.co.kr/news/economy/12216276",
+     "published_at": "2026-11-23"
     }
    ]
   },

@@ -1,8 +1,9 @@
 {
  "schema_version": "1.4.0",
- "generated_at": "2026-11-23T07:04:13+09:00",
+ "generated_at": "2026-11-24T07:05:13+09:00",
  "note": "briefing.json·archive/*.json의 카드 중 labor_walk:true(고용·임금·직무·정책 등)를 모은 실기사 색인. 본문은 카드의 「무슨 일·수치·근거」를 그대로 옮긴 우리 말 요약이며 원문 문장이 아니다.",
  "dates": [
+  "2026-11-24",
   "2026-11-23",
   "2026-11-22",
   "2026-11-21",
@@ -265,6 +266,7 @@
   "2025-05-15"
  ],
  "counts": {
+  "2026-11-24": 8,
   "2026-11-23": 8,
   "2026-11-22": 8,
   "2026-11-21": 7,
@@ -527,6 +529,354 @@
   "2025-05-15": 1
  },
  "articles": [
+  {
+   "date": "2026-11-24",
+   "card_id": "c01",
+   "order": 1,
+   "title": "AI 코딩 확산, ICT 전공 20대 취업 비중 33%로",
+   "kicker": "25~29세 ICT 전공 정보통신업 취업 33.2% · 30대는 +6.6%",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "kr",
+   "track": "B",
+   "source_name": "매일경제",
+   "source_title": "코딩 열풍 막차 탄 30대…20대는 AI 취업 한파",
+   "source_url": "https://www.mk.co.kr/news/economy/12216276",
+   "published_at": "2026-11-23",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "25~29세 ICT 전공 취업 비중",
+     "value": "33.2%",
+     "delta": "-14.4%p",
+     "period": "2026년 1~10월"
+    },
+    {
+     "label": "20대 정보통신업 취업자",
+     "value": "18만6,000명",
+     "delta": "-24.1%",
+     "period": "2026년 1~10월 월평균"
+    },
+    {
+     "label": "30대 정보통신업 취업자",
+     "value": "41만9,000명",
+     "delta": "+6.6%",
+     "period": "2026년 1~10월 월평균"
+    },
+    {
+     "label": "AI 코딩 도구 도입 후 코드 작성량",
+     "value": "+90%",
+     "delta": "작업 시간 -16%",
+     "period": "2026년 4~6월"
+    }
+   ],
+   "text": "국가데이터처 마이크로데이터를 분석한 결과, 올해 1~10월 25~29세 정보통신기술(ICT) 전공 졸업자 가운데 정보통신업에서 일하는 비중이 33.2%로 떨어졌다. 같은 기간 30대 정보통신업 취업자는 늘어 두 연령대의 방향이 갈렸다.\n\n2026년 1~10월 25~29세 ICT 전공 졸업자의 정보통신업 취업 비중은 33.2%로 2025년 47.6%보다 14.4%p 낮다(2022년 36.1%→2024년 38.0%로 오르던 흐름이 꺾였다). 같은 기간 월평균 30대 정보통신업 취업자는 41만9,000명으로 전년 동기 39만4,000명보다 6.6% 늘었고, 20대는 24만4,000명에서 18만6,000명으로 24.1% 줄었다. 기사가 함께 인용한 미국 보안기업 옥타 사례에서는 AI 코딩 도구 도입 뒤 개발자 1인당 월 코드 작성량이 90% 늘고 작업 시간은 16% 줄었다(2025년 11월~2026년 1월과 2026년 4~6월 비교)."
+  },
+  {
+   "date": "2026-11-24",
+   "card_id": "c02",
+   "order": 2,
+   "title": "올해 취업자 12만, 목표 3만명 못 미친다 — 60대가 이끌었다",
+   "kicker": "60세 이상 월평균 +20만3천 · 청년 -17만9천 (1~10월)",
+   "category": "국내 고용지표",
+   "topic": "거시경제와 고용",
+   "theme_key": "th-macro-economy",
+   "theme_label": "거시경제와 고용",
+   "region": "kr",
+   "track": "B",
+   "source_name": "한겨레",
+   "source_title": "올해 취업자, 정부 목표치보다 3만명 밑돌 듯…고령층 늘고 청년층 줄어",
+   "source_url": "https://www.hani.co.kr/arti/economy/economy_general/1288677.html",
+   "published_at": "2026-11-23",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "올해 취업자 증가 전망(KDI)",
+     "value": "+12만명",
+     "delta": "정부 목표 15만명",
+     "period": "2026년 연간"
+    },
+    {
+     "label": "60세 이상 취업자",
+     "value": "+20만3,000명",
+     "delta": "월평균",
+     "period": "2026년 1~10월"
+    },
+    {
+     "label": "청년(15~29세) 취업자",
+     "value": "-17만9,000명",
+     "delta": "월평균",
+     "period": "2026년 1~10월"
+    },
+    {
+     "label": "보건·사회복지 취업자",
+     "value": "+22만7,000명",
+     "delta": "월평균",
+     "period": "2026년 1~10월"
+    }
+   ],
+   "text": "한국개발연구원(KDI)이 올해 취업자 증가 폭을 12만명으로 전망해 정부 목표(15만명)에 못 미칠 것으로 봤다. 늘어난 취업자는 60세 이상에 몰렸고, 청년층 취업자는 월평균 17만9,000명 줄었다.\n\n2026년 1~10월 월평균 취업자 증가는 11만9,000명이고, 60세 이상은 월평균 20만3,000명 늘며 증가분을 이끌었다. 업종별로는 보건·사회복지가 22만7,000명 늘어 압도적이었고, 청년(15~29세) 취업자는 17만9,000명 줄었다. 청년이 많이 종사하는 숙박·음식점업과 청년이 선호하는 제조업·전문과학기술업 취업자도 올해 월평균 각각 3만4,000명, 4만7,000명, 5만5,000명 감소했고, 청년 고용률은 2024년 5월부터 30개월 연속 내렸다. 이형일 부총리는 11월 23일 기자간담회에서 고용이 성장 기조에 비해 활발하지 않다며 서비스산업 대책을 강구하겠다고 밝혔다."
+  },
+  {
+   "date": "2026-11-24",
+   "card_id": "c03",
+   "order": 3,
+   "title": "스마트공장 2,696억 — 내년 1,021개사, 채용 실습까지",
+   "kicker": "신청 12월 7일~1월 6일 · AI 적용 수준별 최대 12억원",
+   "category": "채용시장",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "A",
+   "source_name": "중소벤처기업부",
+   "source_title": "'27년 스마트공장 구축지원사업 참여기업 모집",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790407",
+   "published_at": "2026-11-23",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "구축지원 예산",
+     "value": "2,696억원",
+     "delta": "",
+     "period": "2027년 사업"
+    },
+    {
+     "label": "지원 규모",
+     "value": "1,021개사",
+     "delta": "",
+     "period": "2027년 사업"
+    },
+    {
+     "label": "사업별 지원 상한",
+     "value": "2억~12억원",
+     "delta": "AI 적용 수준별",
+     "period": "2027년 사업"
+    },
+    {
+     "label": "신청 기간",
+     "value": "12월 7일~1월 6일",
+     "delta": "",
+     "period": "2026~2027년"
+    }
+   ],
+   "text": "중소벤처기업부가 2027년 스마트공장 구축지원사업 참여기업을 모집한다. 사업별로 나뉘어 있던 공고를 하나로 합쳐 예산 2,696억원으로 1,021개사를 지원한다.\n\n지원 사업은 정부일반형·제조AI특화·자율형공장·상생형 인공지능전환(AX) 선도모델 4개이고, 디지털·AI 적용 수준에 따라 사업별로 최대 2억원에서 12억원까지 지원한다(2027년 예산 기준). 신청은 2026년 12월 7일부터 2027년 1월 6일까지이며, 상생형 AX에는 대기업 19개사가 참여한다. 선정기업은 스마트제조 전문인력 양성사업과 연계해 신규 채용인력 현장실습을 지원받고, 구축 후 점검 기간이 기존 3년에서 5년으로 늘어난다."
+  },
+  {
+   "date": "2026-11-24",
+   "card_id": "c04",
+   "order": 4,
+   "title": "중국 구인공고 1,000만 건 — AI 노출 높은 직무가 10%p 더 빨리 줄었다",
+   "kicker": "전체 공고 3년 만에 절반 · AI 노출 격차 약 10%p",
+   "category": "해외 노동시장",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "track": "B",
+   "source_name": "AI In Context (블룸버그 분석 보도)",
+   "source_title": "AI-Exposed Jobs in China Fell 10 Points Faster — Bloomberg Finds",
+   "source_url": "https://aiincontext.com/articles/ai-exposed-jobs-in-china-fell-10-points-faster-bloomberg-finds",
+   "published_at": "2026-11-21",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "분석한 공고",
+     "value": "약 1,000만건",
+     "delta": "2021.7~2025.6",
+     "period": "2026년 11월 보도"
+    },
+    {
+     "label": "AI 노출 격차",
+     "value": "약 10%p",
+     "delta": "노출 낮은 직무 대비",
+     "period": "2021.7~2025.6"
+    },
+    {
+     "label": "전체 공고 감소",
+     "value": "절반",
+     "delta": "2022.6 이후 3년",
+     "period": "2025년 6월"
+    },
+    {
+     "label": "신규 채용 순감",
+     "value": "-5.2%",
+     "delta": "공고 1억1,600만건 분석",
+     "period": "2023~2026년 초"
+    }
+   ],
+   "text": "블룸버그가 온라인 구인공고 약 1,000만 건을 2021년 7월~2025년 6월 기간으로 분석해 AI 노출도가 높은 직무의 공고가 더 가파르게 줄었다고 보도했다. 국내 매체가 11월 21일 이를 전했다.\n\nAI 노출도가 높은 직무의 공고는 낮은 직무보다 약 10%포인트 더 빠르게 줄었고, 거의 모든 업종에서 같은 방향의 격차가 나타났다. 전체 온라인 공고는 2022년 6월(챗GPT 출시 직전) 이후 3년 사이 절반으로 감소했다. 블룸버그가 함께 인용한 중국 내 연구로는, 상하이과기대 천친이 공고 1억1,600만 건을 분석해 2023년~2026년 초 신규 채용이 5.2% 순감했다고 추정했고, 중국사회과학원이 참여한 연구는 공고 21% 감소와 평균임금 4% 하락을 보고했다. 다만 블룸버그는 경기 침체와 AI 효과를 분리할 수 없고, 공고 감소가 곧 해고를 뜻하지는 않는다고 밝혔다."
+  },
+  {
+   "date": "2026-11-24",
+   "card_id": "c05",
+   "order": 5,
+   "title": "AI 훈련, 임원 78% vs 시간제 20% — 6,700명 10개국 조사",
+   "kicker": "정기 사용 임원 64% vs 신입 20% · 전체 37%",
+   "category": "채용시장",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "global",
+   "track": "B",
+   "source_name": "HR Dive (마시 조사 보도)",
+   "source_title": "Executives get more AI training than other workers, hurting adoption, report finds",
+   "source_url": "https://www.hrdive.com/news/executives-get-more-ai-training-than-other-workers-hurting-adoption/875395/",
+   "published_at": "2026-11-20",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "AI 훈련 제공(임원)",
+     "value": "78%",
+     "delta": "경력직 44%",
+     "period": "2026년 11월 조사"
+    },
+    {
+     "label": "AI 훈련 제공(시간제)",
+     "value": "20%",
+     "delta": "신입 32%",
+     "period": "2026년 11월 조사"
+    },
+    {
+     "label": "AI 정기 사용(전체)",
+     "value": "37%",
+     "delta": "한 번이라도 71%",
+     "period": "2026년 11월 조사"
+    },
+    {
+     "label": "조사 규모",
+     "value": "6,700명",
+     "delta": "10개국",
+     "period": "2026년"
+    }
+   ],
+   "text": "컨설팅사 마시(Marsh)가 11월 18일 공개한 조사에서 지난 1년간 고용주가 제공한 AI 훈련 경험이 직급에 따라 크게 갈렸다. 10개국 직장인 6,700명을 대상으로 했고, HR 매체 HR다이브가 11월 20일 보도했다.\n\nAI 훈련을 제공받았다는 응답은 임원 78%, 경력직 44%, 신입 32%, 시간제 20%였다. AI를 정기적으로 쓴다는 응답은 임원 64%·신입 20%였고, 전체로는 37%가 정기 사용, 71%가 한 번이라도 사용했다고 답했다. AI를 쓰면서 업무를 잘할 자신이 있다는 응답은 임원 10명 중 9명이었지만 시간제는 절반 수준이었다. 마시는 이 격차가 기업 내 '멈춘 전환'의 원인일 수 있다고 봤다."
+  },
+  {
+   "date": "2026-11-24",
+   "card_id": "c06",
+   "order": 6,
+   "title": "그리스, 노동시장 AI 규칙 첫 법안 — 알고리즘에 사람 감독",
+   "kicker": "플랫폼 고용등록부 신설 · EU 지침 2024/2831 전환",
+   "category": "해외 노동시장",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "global",
+   "track": "B",
+   "source_name": "그리스 노동사회보장부",
+   "source_title": "Ανθρώπινη εποπτεία στους αλγορίθμους και Μητρώο Απασχόλησης σε πλατφόρμες φέρνει το νέο νομοσχέδιο (알고리즘 인간 감독과 플랫폼 고용등록부를 담은 새 법안)",
+   "source_url": "https://ypergasias.gov.gr/ypeka-anthropini-epopteia-stous-algorithmous-kai-mitroo-apascholisis-se-platformes-fernei-to-neo-nomoschedio/",
+   "published_at": "2026-11-21",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "법안 구성",
+     "value": "2개 축",
+     "delta": "알고리즘 관리·플랫폼 노동",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "공개협의 기간",
+     "value": "15일",
+     "delta": "11.5~11.19",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "전환하는 EU 지침",
+     "value": "2024/2831",
+     "delta": "2024.10.23 채택",
+     "period": "플랫폼 노동 지침"
+    }
+   ],
+   "text": "그리스 노동사회보장부가 11월 21일 노동시장의 인공지능·알고리즘 사용에 규칙을 두고 플랫폼 노동자 보호를 강화하는 법안을 의회에 제출했다고 밝혔다. EU 플랫폼 노동 지침(2024/2831)을 국내법으로 옮기는 법안으로, 알고리즘 관리와 플랫폼 노동 두 축으로 구성된다.\n\n알고리즘 관리 축은 노동시장의 AI·알고리즘 사용에 처음으로 규칙을 두고, 근로 지위에 중대한 영향을 주는 결정에 대한 정보 제공과 인간의 감독을 의무화하며 개인정보를 보호한다. 플랫폼 축은 플랫폼을 통해 일하는 사람의 고용 지위를 정확히 판정하고 서비스 투명성·감독·사법 구제를 강화하며, 플랫폼 종사자를 기록하는 '고용등록부'를 만들어 이민부 등록부와 연계한다. 법안은 11월 5~19일 공개협의를 거쳤고 표결 일정은 아직 공지되지 않았다."
+  },
+  {
+   "date": "2026-11-24",
+   "card_id": "c07",
+   "order": 7,
+   "title": "가나 청년 실업 32.5% — 훈련·자격·노동시장 정보가 따로 논다",
+   "kicker": "15~24세 실업 32.5% · 검토 자료 57건",
+   "category": "해외 노동시장",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "global",
+   "track": "A",
+   "source_name": "Discover Education (Springer Nature)",
+   "source_title": "Digital TVET transformation and youth workforce readiness in Ghana: a conceptual framework for an integrated skills information architecture",
+   "source_url": "https://link.springer.com/article/10.1007/s44217-026-02455-0",
+   "published_at": "2026-11-21",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "15~24세 실업률",
+     "value": "32.5%",
+     "delta": "15~35세 21.9%",
+     "period": "2025년 2·3분기"
+    },
+    {
+     "label": "15~24세 실업률(센서스)",
+     "value": "32.8%",
+     "delta": "15~35세 19.7%",
+     "period": "2021년"
+    },
+    {
+     "label": "검토한 자료",
+     "value": "57건",
+     "delta": "동료심사·정책·법령",
+     "period": "2026년"
+    },
+    {
+     "label": "TVET 바우처 인증",
+     "value": "1만8,087명",
+     "delta": "숙련공·견습생",
+     "period": "2023년 보고서"
+    }
+   ],
+   "text": "가나의 직업기술교육훈련(TVET)과 청년 노동시장을 잇는 정보 구조를 설계한 개념 논문이 11월 21일 Discover Education(CC BY 4.0)에 실렸다. 노동시장 정보 시스템, 훈련기관 정보 시스템, 자격 체계가 각각 존재하지만 서로 연결되지 않아 기술 공급이 수요를 따라가지 못한다는 진단이다.\n\n2021년 인구주택총조사 기준 15~35세 실업률은 19.7%, 15~24세는 32.8%였고, 2025년 2·3분기 분기 노동력조사에서는 15~24세 32.5%, 15~35세 21.9%로 나타났다. 저자들은 동료심사·정책·법령 자료 57건을 검토해 4개 기능(수요 감지, 교육과정·자격으로 전환, 디지털 실습, 역량 기록·인정)과 상호운용 핵심, 검증 가능한 명제 7개로 프레임워크를 구성했다. 가나는 노동시장정보시스템(GLMIS), 준비 중인 TVET 정보시스템, 국가 TVET 자격체계, 국가 신분증을 이미 갖추고 있지만 서로 다른 기관이 따로 관리한다. TVET 바우처 사업으로 숙련공·견습생 1만8,087명이 훈련·인증을 받았고, TVET 등록생 중 여성은 약 4분의 1이다."
+  },
+  {
+   "date": "2026-11-24",
+   "card_id": "c08",
+   "order": 8,
+   "title": "공고에 '재택 가능' 적으면 충원율 3.5%p 높아졌다",
+   "kicker": "평균 충원율의 15.6% · 다만 이직도 늘어",
+   "category": "채용시장",
+   "topic": "고용서비스·채용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "global",
+   "track": "A",
+   "source_name": "Review of Accounting Studies (Springer Nature)",
+   "source_title": "Disclosing work-from-home flexibility to compete for talent? Evidence from job postings",
+   "source_url": "https://link.springer.com/article/10.1007/s11142-026-10001-4",
+   "published_at": "2026-11-21",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "충원율 상승",
+     "value": "+3.5%p",
+     "delta": "평균의 15.6%",
+     "period": "2017~2024년 공고"
+    },
+    {
+     "label": "분석 기간",
+     "value": "8년",
+     "delta": "2017~2024",
+     "period": "미국 구인공고"
+    },
+    {
+     "label": "이직과의 관계",
+     "value": "정(+)",
+     "delta": "정착은 약해질 수 있음",
+     "period": "2017~2024년"
+    }
+   ],
+   "text": "미국 기업의 구인공고 2017~2024년 자료로 재택근무 유연성을 공고에 밝히는 것이 채용 결과와 어떤 관련이 있는지 분석한 논문이 11월 21일 Review of Accounting Studies(CC BY 4.0)에 실렸다.\n\n재택 유연성을 밝힌 공고는 채워질 확률이 3.5%포인트 높았고, 이는 표본 평균 충원율의 15.6%에 해당한다. 재택 정보가 눈에 잘 띄는 방식으로 제시될수록 효과가 컸다. 기업은 노동시장 경쟁이 심할수록 재택 유연성을 더 자주 공시했다. 다만 재택 공시는 이후 이직률 상승과도 정(+)의 관련을 보여, 채용은 빨라지지만 정착은 약해질 수 있다는 해석이 가능하다. 저자들은 공시 효과와 실제 제도의 효과를 완전히 분리하지 못한다고 밝혔다."
+  },
   {
    "date": "2026-11-23",
    "card_id": "c01",
