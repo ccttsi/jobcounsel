@@ -11,6 +11,9 @@
   15025329 산업인력 국가기술자격 통계 정보    → data/openapi/qnet/stats.json
   15000115 법제처 국가법령정보 공유서비스     → data/openapi/law/revisions.json
   15081808 국세청 사업자등록 상태조회         → data/openapi/nts/status.json
+  커리어넷(한국직업능력연구원) OpenAPI        → data/openapi/careernet/*.json
+      직업정보 svcCode=JOB · 직업분류 JOB_TYPE · 대학교 학과 MAJOR(gubun=univ_list) · 고등학교 학과 MAJOR(gubun=high_list)
+      → 직업명·분류·연봉구간·전망 같은 사실 필드와 공식 원문 주소만 저장한다(서술문은 저장하지 않는다).
 
 기업 대상은 `company/data/companies.json`을 **읽기만** 한다(덮어쓰지 않는다 — 다른 작업과 충돌 방지).
 금융위·국세청은 법인등록번호·사업자번호가 있는 기업만 부르고, 없으면 그 기업은 건너뛴다(값을 지어내지 않는다).
@@ -18,6 +21,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -31,6 +35,7 @@ from sync_openapi_common import (  # noqa: E402
     SourceError,
     as_list,
     body_items,
+    careernet_all,
     companies,
     ensure_ok,
     get_json,
@@ -51,6 +56,7 @@ from sync_openapi_common import (  # noqa: E402
 
 DATA_KEY = None
 DART_KEY = None
+CAREERNET_KEY = None
 LIMIT = 0
 DRY_RUN = False
 WORKERS = 6
@@ -405,14 +411,120 @@ def nts_business_status() -> int:
     return len(items)
 
 
+# ------------------------------------------------------------------ 커리어넷(한국직업능력연구원·교육부)
+# 응답은 `dataSearch.content` 배열이고, 원천이 표기를 흐트러뜨린 자리(예: 연봉 태그 이름 `salery`)가 있어
+# 필드 이름만 그대로 받고 값은 고치지 않는다. 서술문(summary·하는 일·적성)은 이용약관 제22조 4항에 따라 저장하지 않는다.
+CAREERNET_JOB_LIST_URL = "https://www.career.go.kr/cloud/w/job/list"
+CAREERNET_MAJOR_LIST_URL = "https://www.career.go.kr/cloud/w/major/uList"
+CAREERNET_HIGH_MAJOR_LIST_URL = "https://www.career.go.kr/cloud/w/major/hList"
+
+
+def _plain(value) -> str:
+    """원문 표기를 살리되 앞뒤 공백·비분리공백·줄바꿈만 정리한다."""
+    return " ".join(str(value or "").replace("\xa0", " ").split())
+
+
+def _names(value) -> list[str]:
+    """「가, 나\n다」처럼 쉼표·줄바꿈으로 이어진 이름 목록을 나눈다(값은 고치지 않는다)."""
+    parts = re.split(r"[,、]|\n", str(value or ""))
+    return [_plain(part) for part in parts if _plain(part)]
+
+
+def careernet_jobs() -> int:
+    rows = careernet_all(CAREERNET_KEY, "JOB", gubun="job_dic_list", limit=LIMIT)
+    print(f"  · 커리어넷 직업사전 응답 {len(rows):,}건")
+    items = []
+    for row in rows:
+        name = _plain(row.get("job"))
+        if not name:
+            continue
+        seq = _plain(row.get("jobdicSeq"))
+        items.append(
+            {
+                "name": name,
+                "jobdic_seq": seq,
+                "job_code": _plain(row.get("job_code")),
+                "field": _plain(row.get("profession")),
+                "cnet_class_code": _plain(row.get("job_ctg_code")),
+                "aptitude_code": _plain(row.get("aptd_type_code")),
+                "salary_band": _plain(row.get("salery")),
+                "prospect": _plain(row.get("prospect")),
+                "growth": _plain(row.get("possibility")),
+                "equal_employment": _plain(row.get("equalemployment")),
+                "similar_jobs": _names(row.get("similarJob")),
+                "official_url": (
+                    f"https://www.career.go.kr/cloud/w/job/view?seq={seq}" if seq else CAREERNET_JOB_LIST_URL
+                ),
+            }
+        )
+    items.sort(key=lambda r: (r["field"], r["name"], r["jobdic_seq"]))
+    write_source("careernet_jobs", items, dry_run=DRY_RUN)
+    return len(items)
+
+
+def careernet_job_types() -> int:
+    rows = careernet_all(CAREERNET_KEY, "JOB_TYPE", gubun="job_dic_list", limit=LIMIT)
+    items = []
+    for row in rows:
+        name = _plain(row.get("jbgp_code_nm"))
+        if not name:
+            continue
+        items.append(
+            {
+                "code": _plain(row.get("jbgp_code")),
+                "name": name,
+                "official_url": SOURCES["careernet_job_types"]["official_url"],
+            }
+        )
+    items.sort(key=lambda r: (r["code"], r["name"]))
+    write_source("careernet_job_types", items, dry_run=DRY_RUN)
+    return len(items)
+
+
+def _careernet_majors(key: str, gubun: str, list_url: str, view_path: str) -> int:
+    rows = careernet_all(CAREERNET_KEY, "MAJOR", gubun=gubun, limit=LIMIT)
+    print(f"  · 커리어넷 학과({gubun}) 응답 {len(rows):,}건")
+    items = []
+    for row in rows:
+        name = _plain(row.get("mClass"))
+        if not name:
+            continue
+        seq = _plain(row.get("majorSeq"))
+        departments = _names(row.get("facilName"))
+        items.append(
+            {
+                "name": name,
+                "major_seq": seq,
+                "category": _plain(row.get("lClass")),
+                "related_departments": departments,
+                "related_department_count": len(departments),
+                "official_url": (
+                    f"https://www.career.go.kr/cloud/w/major/{view_path}?seq={seq}" if seq else list_url
+                ),
+            }
+        )
+    items.sort(key=lambda r: (r["category"], r["name"], r["major_seq"]))
+    write_source(key, items, dry_run=DRY_RUN)
+    return len(items)
+
+
+def careernet_majors() -> int:
+    return _careernet_majors("careernet_majors", "univ_list", CAREERNET_MAJOR_LIST_URL, "uView")
+
+
+def careernet_high_majors() -> int:
+    return _careernet_majors("careernet_high_majors", "high_list", CAREERNET_HIGH_MAJOR_LIST_URL, "hView")
+
+
 def main() -> int:
-    global DATA_KEY, DART_KEY, LIMIT, OFFSET, DRY_RUN, WORKERS, MAX_AGE_DAYS
+    global DATA_KEY, DART_KEY, CAREERNET_KEY, LIMIT, OFFSET, DRY_RUN, WORKERS, MAX_AGE_DAYS
     parser = make_parser(__doc__ or "", "monthly")
     args = parser.parse_args()
     DRY_RUN, LIMIT, OFFSET, WORKERS, MAX_AGE_DAYS = args.dry_run, args.limit, args.offset, args.workers, args.max_age_days
     keys = selected(args.only, "monthly")
     DATA_KEY = load_key("DATA_GO_KR_API_KEY", "data_go_kr_key")
     DART_KEY = load_key("OPENDART_API_KEY", "opendart_api_key")
+    CAREERNET_KEY = load_key("CAREERNET_API_KEY", "careernet_api_key")
     funcs = {
         "fsc_corp_basic": fsc_corp_basic,
         "fsc_fin_stat": fsc_fin_stat,
@@ -422,9 +534,13 @@ def main() -> int:
         "dart_disclosures": dart_disclosures,
         "law_revision": law_revision,
         "nts_business_status": nts_business_status,
+        "careernet_jobs": careernet_jobs,
+        "careernet_job_types": careernet_job_types,
+        "careernet_majors": careernet_majors,
+        "careernet_high_majors": careernet_high_majors,
     }
     code = run_sources(keys, funcs, "Open API 월간 동기화 (1일 04:00 KST)", args.summary_file)
-    validate_outputs((DATA_KEY, DART_KEY))
+    validate_outputs((DATA_KEY, DART_KEY, CAREERNET_KEY))
     update_manifest()
     return code
 
