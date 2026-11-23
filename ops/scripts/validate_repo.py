@@ -2056,7 +2056,7 @@ def run_exposure_checks():
             fail("expose", f"배포 루트의 '{name}/'가 어느 쪽인지 정해지지 않았다 — 화면이면 섹터 장부(assets/tools.js)에, 내부면 _middleware.js의 INTERNAL_DIRS에 넣는다")
     for name in root_files:
         blocked = internal_decision("/" + name, dirs, exts, always_public)
-        if name in ("index.html", "robots.txt"):
+        if name in ("index.html", "robots.txt", "404.html"):   # 404.html — 없는 주소용 공개 화면(2026-11-23)
             if blocked:
                 fail("expose", f"대문·검색엔진 안내문('{name}')이 차단 규칙에 걸린다 — 사이트가 통째로 막힌다")
             continue
