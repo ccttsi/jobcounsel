@@ -4,9 +4,9 @@
 사용:  python3 portals/data/validate.py
 종료 코드 0 = 오류 0건(경고는 있어도 무관), 1 = 오류 있음.
 
-네트워크를 쓰지 않는다(오프라인 검증). 실제 접속 검증은 2026-11-16에 끝냈고,
-그 결과가 각 항목의 http_status·verified_at 에 들어 있다. 사이트가 폐쇄되면
-verified_at 을 올릴 때 해당 항목을 빼거나 주소를 고친다.
+네트워크를 쓰지 않는다(오프라인 검증). 실제 접속 검증 결과가 각 항목의
+http_status·verified_at 에 들어 있다. 마지막 전수 재확인은 2026-11-23(주간 점검)이다.
+사이트가 폐쇄되면 verified_at 을 올릴 때 해당 항목을 빼거나 주소를 고친다.
 """
 import json
 import os
@@ -24,8 +24,8 @@ EXPECTED = {
 }
 # 항목마다 실제로 접속을 확인한 날을 적는다. 한 날짜로 통일하지 않는다 —
 # 자동 접속 차단(403) 사이트는 마지막으로 확인한 날짜를 그대로 둔다.
-ALLOWED_DATES = {"2026-11-16", "2026-11-19", "2026-11-20"}
-VERIFIED_AT = "2026-11-19"
+ALLOWED_DATES = {"2026-11-16", "2026-11-19", "2026-11-20", "2026-11-23"}
+VERIFIED_AT = "2026-11-23"
 METHODS = {"curl", "curl-mobile", "browser", "official"}
 REQUIRED = ["id", "name", "url", "sector", "operator", "roles", "eligibility",
             "strengths", "tips", "shows", "verified_at", "final_url", "verify_method"]
