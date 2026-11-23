@@ -99,6 +99,9 @@
       var send = Object.keys(out).length ? rpc('jc_push', { p_token: sess.token, p_keys: out }) : Promise.resolve({ ok: true });
       return send.then(function (p) {
         if (p && p.error === 'session') { expire(); return; }
+        /* 계정당 동기화 상한(항목 200KB · 300개 · 전체 1MB — assets/supabase-update-06-limits.sql)에 걸리면
+           이 기기의 내용은 그대로 두고 한 번만 알린다(같은 덩어리를 계속 다시 올리지 않게 dirty는 비운다). */
+        if (p && p.error === 'too_big') { dirty = {}; status = { at: Date.now(), err: ERR.too_big }; paint(); toast(ERR.too_big); return; }
         dirty = {}; status = { at: Date.now(), err: '' }; sess.last = status.at; writeJ(SESS, sess);
         if (changed.length) {
           if (reason === 'login') { location.reload(); return; }
@@ -129,6 +132,8 @@
     session: '로그인이 만료됐어요. 다시 로그인해 주세요.',
     mismatch: '두 비밀번호가 서로 달라요.',
     agree: '안내를 읽고 동의에 표시해 주세요.',
+    busy: '지금 가입이 몰려 잠시 받지 않고 있어요. 한 시간쯤 뒤에 다시 시도해 주세요.',
+    too_big: '저장한 내용이 너무 많아 일부를 계정에 올리지 못했어요. 이 기기에는 그대로 남아 있어요.',
     net: '서버에 연결하지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.'
   };
   var CSS = [
@@ -337,7 +342,7 @@
   api.open = open;
   api.user = function () { return sess ? sess.username : null; };
   api.state = function () { return { user: sess ? sess.username : null, at: status.at || (sess && sess.last) || 0, err: status.err }; };
-  api.label = function () { return sess ? (status.err ? '연결 대기 중' : ago(status.at || sess.last)) : ''; };
+  api.label = function () { return sess ? (status.err ? (status.err === ERR.too_big ? '저장 용량 초과' : '연결 대기 중') : ago(status.at || sess.last)) : ''; };
   api.setToast = function (fn) { toastFn = fn; };
   api.admin = function () { return !!(sess && sess.admin); };
   /* 관리 페이지 전용: 관리자 함수(jc_admin_*)만 부를 수 있다. 서버에서도 관리자 여부를 다시 확인한다. */
