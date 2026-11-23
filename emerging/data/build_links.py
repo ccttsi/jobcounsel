@@ -208,8 +208,16 @@ def tax_link(job_names):
 
 def main():
     E = load('emerging/data/emerging.json')
+    # 직무는 오늘 지면 + 날짜별 지면(archive/*.json)을 모두 모은다(같은 id는 처음 것) — 지난 지면의 직무 칩도 링크가 된다.
+    ALLJOBS, seen_j = [], set()
+    adir0 = os.path.join(ROOT, 'emerging', 'data', 'archive')
+    srcs = [E] + [load(os.path.join('emerging', 'data', 'archive', fn)) for fn in sorted(os.listdir(adir0)) if fn.endswith('.json')] if os.path.isdir(adir0) else [E]
+    for src in srcs:
+        for j in src.get('jobs') or []:
+            if j.get('id') and j['id'] not in seen_j:
+                seen_j.add(j['id']); ALLJOBS.append(j)
     studies = {}
-    for j in E['jobs']:
+    for j in ALLJOBS:
         for s in j.get('study') or []:
             if s not in studies:
                 link = study_link(s)
@@ -217,13 +225,27 @@ def main():
                     studies[s] = link
     companies = {}
     labels = set()
-    for j in E['jobs']:
+    for j in ALLJOBS:
         co = j.get('companies') or {}
         labels.update((co.get('domestic') or []) + (co.get('global') or []) + (co.get('dom') or []) + (co.get('glob') or []))
-    for d in E['archive_index']:
-        for it in d.get('items') or []:
-            p = it.get('players') or {}
-            labels.update((p.get('domestic') or []) + (p.get('glob') or []))
+    # 주요 플레이어는 오늘 지면(items)과 날짜별 지면(archive/*.json)에 들어 있다 — archive_index(목차)에는 없다.
+    # 2026-11-23: 목차만 읽어 새 지면의 기업(삼성생명·국민연금공단 …)이 링크가 되지 않던 것을 고쳤다(태화님 IMG_7863).
+    def walk_players(node):
+        if isinstance(node, dict):
+            p = node.get('players')
+            if isinstance(p, dict):
+                labels.update((p.get('domestic') or []) + (p.get('glob') or []))
+            for v in node.values():
+                walk_players(v)
+        elif isinstance(node, list):
+            for v in node:
+                walk_players(v)
+    walk_players(E.get('items') or [])
+    walk_players(E.get('archive_index') or [])
+    adir = os.path.join(ROOT, 'emerging', 'data', 'archive')
+    for fn in sorted(os.listdir(adir)) if os.path.isdir(adir) else []:
+        if fn.endswith('.json'):
+            walk_players(load(os.path.join('emerging', 'data', 'archive', fn)).get('items') or [])
     for label in labels:
         link = company_link(label)
         if link:
@@ -232,7 +254,7 @@ def main():
             if plain and plain != label and plain not in companies:
                 companies[plain] = link      # 같은 곳을 가리키는 다른 표기(한국지능정보사회진흥원 ↔ …(NIA))
     jobs = {}
-    for j in E['jobs']:
+    for j in ALLJOBS:
         hint = TAX_HINT.get(j['id'])
         hint_link = tax_link([hint]) if hint else None
         jobs[j['id']] = {

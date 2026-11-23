@@ -423,7 +423,11 @@ html[data-jc-imm] .lead-line .dek-tx.swap{animation:none}
 .pl2 .ph b{font-size:13px;font-weight:850;letter-spacing:-.02em}
 .pl2 .ph span{font-size:11px;color:var(--dim)}
 .pl2 .row{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;align-items:start;margin-top:4px}
-.pl2 .row>b{font-size:11px;font-weight:800;color:var(--dim);letter-spacing:.03em;padding-top:15px}
+.pl2 .row>b{font-size:11px;font-weight:800;color:var(--dim);letter-spacing:.03em;min-height:44px;display:flex;align-items:center}
+/* 2026-11-23(태화님 IMG_7863): 링크 칩(44px)과 글자 칩(24px)이 섞여 줄마다 높낮이가 달랐고, 「국내·해외」 이름표가 첫 줄 가운데에
+   앉지 않았다 — 칩을 모두 44px 한 높이로, 이름표는 첫 줄과 같은 44px 칸 가운데에. */
+.pl2 .tags{gap:6px}
+.pl2 .tags span{min-height:44px;display:inline-flex;align-items:center;padding:0 13px;border:1px solid transparent}
 .path{display:grid;gap:6px}
 .path .step{display:grid;grid-template-columns:74px minmax(0,1fr);gap:8px;align-items:start;padding:8px 11px;border-left:2px solid var(--line-2);background:var(--soft);border-radius:0 8px 8px 0}
 .path .step b{font-size:11px;font-weight:850;color:var(--acc);letter-spacing:.02em;padding-top:2px}
