@@ -3,3 +3,6 @@ __pycache__/
 
 # MLC 급식 보고서는 실행 산출물이다 — 실제 검색 질의가 들어가므로 저장소에 담지 않는다
 ops/reports/
+
+# 세션 작업용 node_modules(실제 의존성은 CI·배포에서 받는다)
+node_modules/

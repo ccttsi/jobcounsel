@@ -29,6 +29,12 @@
       chips: ['4천만원 ↑', '3천만원 ↑', '2천만원 ↑', '2천만원 ↓'],
       chipLabel: '연봉구간'
     },
+    diff: {
+      base: './data/', file: 'job-diff.json', unit: '직업',
+      qLabel: '직업명·분류·유사직업으로 찾기',
+      ph: '직업명·분류 (예: 사회복지사)',
+      chips: null, chipLabel: '개편 상태'
+    },
     major: {
       file: 'majors.json', unit: '학과',
       qLabel: '학과명·세부관련학과로 찾기',
@@ -44,7 +50,8 @@
   };
 
   function load(name) {
-    return fetch(BASE + TABS[name].file, { cache: 'force-cache' })
+    var base = TABS[name].base || BASE;
+    return fetch(base + TABS[name].file, { cache: 'force-cache' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (doc) { data[name] = doc; return doc; });
   }
@@ -56,6 +63,14 @@
 
   function searchText(item) {
     var parts = [item.name, item.field || '', item.category || '', item.salary_band || '', item.growth || ''];
+    if (tab === 'diff') {
+      var o = item.old || {}, n = item.new || {};
+      parts.push(o.field || '', n.group || '', o.salary_band || '', o.growth || '');
+      (o.similar_jobs || []).forEach(function (s) { parts.push(s); });
+      (n.related_job_names || []).forEach(function (s) { parts.push(s); });
+      (n.related_major_names || []).forEach(function (s) { parts.push(s); });
+      (n.required_licenses || []).forEach(function (s) { parts.push(s); });
+    }
     (item.similar_jobs || []).forEach(function (s) { parts.push(s); });
     (item.related_departments || []).forEach(function (s) { parts.push(s); });
     return parts.join(' ').toLowerCase();
@@ -66,7 +81,9 @@
     var q = query.trim().toLowerCase();
     if (pick) {
       list = list.filter(function (it) {
-        return tab === 'job' ? it.salary_band === pick : it.category === pick;
+        if (tab === 'job') return it.salary_band === pick;
+        if (tab === 'diff') return it.k === pick;
+        return it.category === pick;
       });
     }
     if (q) {
@@ -80,6 +97,16 @@
     var conf = TABS[tab];
     var list = itemsOf(tab);
     var values = conf.chips;
+    if (tab === 'diff') {
+      var sts = [['', '전체'], ['common', '공통'], ['new', '신설'], ['old', '구버전 전용']];
+      box.hidden = false;
+      box.innerHTML = '<span class="sr">' + esc(conf.chipLabel) + '</span>' + sts.map(function (p) {
+        var n = p[0] ? list.filter(function (it) { return it.k === p[0]; }).length : list.length;
+        return '<button type="button" data-pick="' + esc(p[0]) + '" aria-pressed="' + (pick === p[0] ? 'true' : 'false') + '">'
+          + esc(p[1]) + '<span class="n num">' + n + '</span></button>';
+      }).join('');
+      return;
+    }
     if (!values) {
       var seen = {};
       values = [];
@@ -99,7 +126,41 @@
     }).join('');
   }
 
+  function diffStatus(it) {
+    if (it.k === 'new') return '<span class="st st-new">2023.08 개편 신설</span>';
+    if (it.k === 'old') return '<span class="st st-old">개편 후 미수록</span>';
+    return it.chg && it.chg.cls ? '<span class="st st-chg">분류 이동</span>' : '';
+  }
+
   function rowHtml(it) {
+    if (tab === 'diff') {
+      var o = it.old || {}, n = it.new || {};
+      var meta = [];
+      if (it.k !== 'new' && o.field) meta.push('<span class="k">' + esc(o.field) + '</span>');
+      if (it.k === 'new' && n.group) meta.push('<span class="k">' + esc(n.group) + '</span>');
+      if (o.salary_band) meta.push('<span>연봉 ' + esc(o.salary_band) + '</span>');
+      if (n.salary_10k_krw != null) meta.push('<span>신버전 ' + n.salary_10k_krw.toLocaleString('ko-KR') + '만원</span>');
+      if (it.k !== 'new' && o.growth) meta.push('<span>발전 ' + esc(o.growth) + '</span>');
+      var sub = '';
+      if (it.k === 'common') {
+        var bits = [];
+        if (it.chg && (it.chg.add.length || it.chg.rm.length)) {
+          if (it.chg.add.length) bits.push('유사직업 추가 ' + it.chg.add.length);
+          if (it.chg.rm.length) bits.push('제외 ' + it.chg.rm.length);
+        } else if ((n.related_job_names || []).length) {
+          bits.push('유사직업 ' + n.related_job_names.length + '개');
+        }
+        if (n.related_major_names && n.related_major_names.length) bits.push('관련학과 ' + n.related_major_names.length);
+        if (bits.length) sub = '<span class="sub">신버전 — ' + bits.join(' · ') + '</span>';
+      } else if (it.k === 'new') {
+        var names = (n.related_job_names || []).slice(0, 3);
+        if (names.length) sub = '<span class="sub">유사직업 ' + esc(names.join(' · ')) + '</span>';
+      }
+      return '<button type="button" class="row" data-i="' + esc(it.idx) + '">'
+        + '<span class="nm">' + esc(it.name) + '</span>'
+        + '<span class="meta">' + diffStatus(it) + meta.join('') + '</span>'
+        + sub + '</button>';
+    }
     var meta = [];
     if (tab === 'job') {
       if (it.field) meta.push('<span class="k">' + esc(it.field) + '</span>');
@@ -136,12 +197,99 @@
     $('cnt').textContent = rows.length.toLocaleString('ko-KR');
     $('cntL').textContent = TABS[tab].unit;
     var doc = data[tab];
-    $('basis').textContent = doc && doc.fetched_at ? '커리어넷 원천 ' + doc.fetched_at.slice(0, 10) + ' 기준' : '';
+    var dsum = $('diffSum');
+    if (tab === 'diff' && doc && doc.counts) {
+      dsum.hidden = false;
+      dsum.innerHTML = '<span>구버전 API <b class="num">' + doc.counts.old.toLocaleString('ko-KR') + '</b>건</span>'
+        + '<span class="ar" aria-hidden="true">↔</span><span>신버전 직업백과 <b class="num">' + doc.counts.new.toLocaleString('ko-KR') + '</b>건</span>'
+        + '<span>공통 <b class="num">' + doc.counts.common.toLocaleString('ko-KR') + '</b></span>'
+        + '<span>신설 <b class="num">' + doc.counts.new_only.toLocaleString('ko-KR') + '</b></span>'
+        + '<span>미수록 <b class="num">' + doc.counts.old_only.toLocaleString('ko-KR') + '</b></span>';
+    } else { dsum.hidden = true; dsum.innerHTML = ''; }
+    if (tab === 'diff' && doc && doc.basis) {
+      $('basis').textContent = '구버전 ' + (doc.basis.old.fetched_at || '') + ' 수집분(2023.08 개편 전) · 신버전 ' + (doc.basis.new.generated_at || '') + ' 정리분';
+    } else {
+      $('basis').textContent = doc && doc.fetched_at ? '커리어넷 원천 ' + doc.fetched_at.slice(0, 10) + ' 기준' : '';
+    }
     chipRow();
     $('scroller').scrollTop = 0;
   }
 
+  function diffTags(label, names) {
+    return '<h4>' + esc(label) + '</h4><div class="tags">' + names.map(function (s) {
+      return '<span>' + esc(s) + '</span>';
+    }).join('') + '</div>';
+  }
+
+  function diffDetail(it) {
+    var o = it.old || {}, n = it.new || {};
+    var meta = [];
+    if (it.k === 'new') meta.push('<span class="st st-new">2023.08 개편 신설</span>');
+    if (it.k === 'old') meta.push('<span class="st st-old">개편 후 미수록</span>');
+    if (it.k === 'common' && it.chg && it.chg.cls && o.field && n.group)
+      meta.push('<span class="st st-chg">분류 이동 · ' + esc(o.field) + ' → ' + esc(n.group) + '</span>');
+
+    var body = '';
+    if (it.k !== 'new') {
+      var od = [];
+      if (o.field) od.push(['분류', o.field]);
+      if (o.salary_band) od.push(['연봉구간', o.salary_band]);
+      if (o.growth) od.push(['발전가능성', o.growth]);
+      if (o.equal_employment) od.push(['고용 평등', o.equal_employment]);
+      if (o.jobdic_seq) od.push(['사전 번호', o.jobdic_seq]);
+      if (o.job_code) od.push(['직업 코드', o.job_code]);
+      if (o.cnet_class_code) od.push(['분류 코드', o.cnet_class_code]);
+      body += '<section class="cmp-b"><h4>구버전 · 2023.08 개편 전 API</h4><dl>'
+        + od.map(function (p) { return '<dt>' + esc(p[0]) + '</dt><dd>' + esc(p[1]) + '</dd>'; }).join('')
+        + '</dl>' + ((o.similar_jobs || []).length ? diffTags('유사직업', o.similar_jobs) : '') + '</section>';
+    }
+    if (it.k !== 'old') {
+      var nd = [];
+      if (n.group) nd.push(['분류', n.group]);
+      if (n.salary_10k_krw != null) nd.push(['평균연봉(중앙값)', n.salary_10k_krw.toLocaleString('ko-KR') + '만원']);
+      if (n.keco_detail) nd.push(['고용직업분류 세분류', n.keco_detail]);
+      if (n.ksco_detail) nd.push(['표준직업분류 세분류', n.ksco_detail]);
+      if (n.job_code) nd.push(['직업 코드', n.job_code]);
+      if (n.required_licenses && n.required_licenses.length) nd.push(['필수 면허', n.required_licenses.join(', ')]);
+      if (n.updated) nd.push(['정리 기준', n.updated]);
+      body += '<section class="cmp-b"><h4>신버전 · 커리어넷 직업백과(2025 갱신분 기반)</h4><dl>'
+        + nd.map(function (p) { return '<dt>' + esc(p[0]) + '</dt><dd>' + esc(p[1]) + '</dd>'; }).join('')
+        + '</dl>'
+        + ((n.related_job_names || []).length ? diffTags('유사직업', n.related_job_names) : '')
+        + ((n.related_major_names || []).length ? diffTags('관련학과', n.related_major_names) : '')
+        + '</section>';
+    }
+
+    var chg = '';
+    if (it.k === 'common' && it.chg) {
+      var rows = [];
+      if (it.chg.cls && o.field && n.group) rows.push('<p><b>분류</b> ' + esc(o.field) + ' → ' + esc(n.group) + '</p>');
+      if (it.chg.add.length) rows.push(diffTags('유사직업 추가', it.chg.add));
+      if (it.chg.rm.length) rows.push(diffTags('유사직업 제외', it.chg.rm));
+      if (rows.length) chg = '<section class="chg"><h4>개편 전후 변화</h4>' + rows.join('') + '</section>';
+    }
+
+    var url = (it.k !== 'old' && n.source_url) || o.official_url || '';
+    var links = url
+      ? '<a class="go" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">커리어넷 공식 페이지<small>새 창</small></a>'
+      : '';
+    if (it.k !== 'old') {
+      links += '<a class="go" href="../decalcomania/?q=' + encodeURIComponent(it.name) + '">커리어데칼코마니에서 이어보기<small>학과·직업 연결</small></a>';
+    }
+    var oldNote = it.k === 'old'
+      ? '<p class="note">신버전 직업백과 데이터셋(552건)에 같은 이름의 직업이 없습니다. 통합·명칭 변경 여부는 커리어넷 원문에서 확인하세요.</p>'
+      : '';
+    $('detK').textContent = '개편 비교 상세';
+    $('detBody').innerHTML = '<h2>' + esc(it.name) + '</h2>'
+      + (meta.length ? '<p class="op">' + meta.join(' ') + '</p>' : '')
+      + '<div class="cmp">' + body + '</div>'
+      + chg + oldNote
+      + '<p class="note">값은 각 데이터셋이 준 사실 그대로입니다. 「하는 일」 같은 설명문은 두 데이터셋 모두 이용약관상 싣지 않으며, 구버전과 신버전의 연봉은 조사 시점·방법이 다르므로 수치를 나란히 볼 때 그 차이를 함께 봐야 합니다.</p>'
+      + links;
+  }
+
   function detail(it) {
+    if (tab === 'diff') { diffDetail(it); return; }
     var conf = TABS[tab];
     var body = [];
     var meta = [];
@@ -231,7 +379,7 @@
   }
 
   function counts() {
-    ['job', 'major', 'high'].forEach(function (k) {
+    ['job', 'diff', 'major', 'high'].forEach(function (k) {
       var n = itemsOf(k).length;
       var el = $('n' + k.charAt(0).toUpperCase() + k.slice(1));
       if (el) el.textContent = n ? n.toLocaleString('ko-KR') : '—';
@@ -283,7 +431,7 @@
   function start() {
     wire();
     setTab('job', true);
-    Promise.all([load('job'), load('major'), load('high')]).then(function () {
+    Promise.all([load('job'), load('diff'), load('major'), load('high')]).then(function () {
       counts();
       var q = new URLSearchParams(location.search).get('q');
       if (q) { query = q; $('q').value = q; }
