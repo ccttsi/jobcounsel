@@ -81,6 +81,13 @@ html[data-jc-onb] .a-onb-card{transform:none}
   font-size:13px;font-weight:700;color:var(--a1);text-decoration:underline;text-underline-offset:3px}
 .a-root .a-onb-more:hover{background:var(--soft1)}
 
+/* 4장 — 로그인하면(2026-11-23). 마이덱은 테두리 상자 하나로 따로 세워 «이 기능이 무엇인지»가 먼저 읽히게 한다 */
+.a-onb-deck{margin:12px 0 0;padding:12px 14px;border:1px solid color-mix(in srgb,var(--a1) 34%,var(--line));border-radius:14px;background:var(--soft1)}
+.a-onb-deck-t{display:block;font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--a1);margin:0 0 4px}
+.a-onb-deck p{margin:4px 0 0;font-size:13.5px;line-height:1.6;color:var(--ink)}
+.a-onb-deck p b{color:var(--a1);font-weight:800}
+:root[data-jc-auth="in"] #onbLogin{display:none}   /* 이미 로그인했으면 단추를 거둔다 */
+
 /* 바닥 — 점 인디케이터(장 고르기) · 이전 · 다음(마지막 장은 「자료실 열기」) */
 .a-onb-ft{display:flex;align-items:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));
   border-top:1px solid var(--line)}
@@ -98,7 +105,8 @@ html[data-jc-onb] .a-onb-card{transform:none}
 .a-root .a-onb-b[disabled]:hover{color:var(--muted)}
 /* 2026-11-22(C1-34): 320px에서 바닥 줄(점 3개 132px + 이전 + 다음)이 카드보다 38px 넓어, 「다음」에 초점이 가면 카드가 옆으로
    38px 밀려 건너뛰기·다음 단추가 장마다 다른 자리에 섰다. 340px 이하에서는 점을 접고(장 번호는 머리 줄에 있다) 이전·다음만 둔다. */
-@media (max-width:340px){.a-onb-dots{display:none}.a-root .a-onb-ft #onbPrev{margin-right:auto}}
+/* 2026-11-23: 안내가 네 장이 되어 점 넷(184px)이 휴대폰 바닥 줄을 넘쳤다 — 420px 이하에서는 점을 접는다(장 번호는 머리 줄 「n / 4」) */
+@media (max-width:420px){.a-onb-dots{display:none}.a-root .a-onb-ft #onbPrev{margin-right:auto}}
 .a-root #onbPrev{width:64px}
 .a-root #onbNext{width:108px;border-color:var(--a1);background:var(--a1);color:#fff}
 .a-root #onbNext:hover{background:var(--a1);color:#fff;filter:brightness(1.07)}

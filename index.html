@@ -1169,12 +1169,27 @@ html:not([data-jc-imm]) .a-seen-stamp:not([hidden]){animation:a-thunk .42s cubic
         </ol>
         <button type="button" class="a-onb-more" id="onbTour">화면에서 한 곳씩 짚어 보기</button>
       </section>
+      <!-- 4장 — 로그인하면 달라지는 것(2026-11-23 태화님 지시). 마이덱은 «무엇을 해 주는 도구인지»를 한 번에 보이게 —
+           마이덱 안에서 읽는 사용법 튜토리얼과는 다른, 기능 소개다. 비로그인에게도 이 장에서만 마이덱을 소개한다. -->
+      <section class="a-onb-s" aria-labelledby="onbT4" hidden>
+        <h2 class="a-onb-t" id="onbT4">로그인하면 이어서 씁니다</h2>
+        <ol class="a-onb-steps">
+          <li><span class="a-onb-no" aria-hidden="true">1</span><b>어느 기기에서나 그대로</b><span class="a-onb-tx">형광펜·포스트잇·이론 위키 스크랩·화면 설정이 계정에 저장됩니다.</span></li>
+          <li><span class="a-onb-no" aria-hidden="true">2</span><b>비서 대화 보관</b><span class="a-onb-tx">비서와 나눈 대화를 내 계정에만 남기고, 지우면 바로 사라집니다.</span></li>
+        </ol>
+        <div class="a-onb-deck">
+          <b class="a-onb-deck-t">마이덱 — 오늘 상담에 필요한 자료만, 순서대로</b>
+          <p>「경력단절 내담자 첫 상담」처럼 할 일을 한 문장으로 적으면, 필요한 자료만 골라 <b>1~5단계</b> 순서로 덱을 짜 줍니다. 순서와 자료를 내 방식으로 고쳐 저장해 두고, 상담 때 한 단계씩 넘기며 씁니다.</p>
+        </div>
+        <button type="button" class="a-onb-more" id="onbLogin">로그인하고 시작하기</button>
+      </section>
     </div>
     <div class="a-onb-ft">
       <div class="a-onb-dots" id="onbDots" aria-label="안내 장 고르기">
         <button type="button" class="on" aria-current="step" aria-label="1장 보기"><i></i></button>
         <button type="button" aria-current="false" aria-label="2장 보기" tabindex="-1"><i></i></button>
         <button type="button" aria-current="false" aria-label="3장 보기" tabindex="-1"><i></i></button>
+        <button type="button" aria-current="false" aria-label="4장 보기" tabindex="-1"><i></i></button>
       </div>
       <button type="button" class="a-onb-b" id="onbPrev">이전</button>
       <button type="button" class="a-onb-b" id="onbNext">다음</button>
