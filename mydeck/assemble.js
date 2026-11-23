@@ -928,6 +928,16 @@
     }
     function changed() { if (opts.onChange) opts.onChange(api.deck()); }
 
+    /* 옮기기·빼기로 줄을 다시 그리면 누른 단추가 사라져 초점이 문서 처음(BODY)으로 떨어졌다 — 같은 단계를 연달아
+       두세 칸 옮기려면 매번 새 단추를 찾아야 했다(2026-11-23 C2-21 ② 손맛). 다시 그린 뒤 그 단계의 같은 단추로 초점을 잇는다.
+       끝에 닿아 그 단추가 꺼졌으면 반대 방향 단추로. 스크롤은 건드리지 않는다(preventScroll). */
+    function refocus(row, k) {
+      var acts = document.querySelectorAll('.ac-row-act'), a = acts[row];
+      if (!a) return;
+      var bs = a.querySelectorAll('button'), b = bs[k];
+      if (b && b.disabled) b = bs[k === 0 ? 1 : k === 1 ? 0 : k];
+      if (b && !b.disabled) { try { b.focus({ preventScroll: true }); } catch (e) { } }
+    }
     function move(i, d) {
       var j = i + d;
       if (j < 0 || j >= S.steps.length) return;
@@ -936,6 +946,7 @@
       S.steps[j] = a;
       changed();
       paint();
+      refocus(j, d < 0 ? 0 : 1);
     }
     function del(i) {
       if (S.steps.length <= 1) return;
@@ -943,6 +954,7 @@
       S.steps = S.steps.slice(0, i).concat(S.steps.slice(i + 1));
       changed();
       paint();
+      refocus(Math.min(i, S.steps.length - 1), 3);   /* 뺀 자리로 올라온 단계의 「빼기」 — 연달아 정리할 수 있게 */
     }
     function insertAt(after, id) {
       if (!toolOf(id) || hasId(S.steps, id)) return;
