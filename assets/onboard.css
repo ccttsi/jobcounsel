@@ -86,7 +86,10 @@ html[data-jc-onb] .a-onb-card{transform:none}
 .a-onb-deck-t{display:block;font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--a1);margin:0 0 4px}
 .a-onb-deck p{margin:4px 0 0;font-size:13.5px;line-height:1.6;color:var(--ink)}
 .a-onb-deck p b{color:var(--a1);font-weight:800}
-:root[data-jc-auth="in"] #onbLogin{display:none}   /* 이미 로그인했으면 단추를 거둔다 */
+:root[data-jc-auth="in"] #onbLogin{display:none}
+.a-onb-again{display:flex;align-items:center;justify-content:flex-start;gap:6px;margin:12px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted);text-align:left}
+.a-onb-again svg{flex:none;width:16px;height:16px;color:var(--a1)}
+.a-onb-again b{color:var(--ink);font-weight:750}   /* 이미 로그인했으면 단추를 거둔다 */
 
 /* 바닥 — 점 인디케이터(장 고르기) · 이전 · 다음(마지막 장은 「자료실 열기」) */
 .a-onb-ft{display:flex;align-items:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));

@@ -134,7 +134,11 @@
 
   /* ---------- 단추·점·키 ---------- */
   if (headBtn) headBtn.addEventListener('click', openGate);
-  skipB.addEventListener('click', closeGate);
+  /* 2026-11-23(태화님 지시): 안내를 닫으면 «언제든 위쪽 나침반 단추로 다시 볼 수 있다»를 한 번 알린다 —
+     중간에 건너뛴 사람도 다시 찾는 길을 알게. 로그인 창·둘러보기로 넘어갈 때는 알리지 않는다(겹치지 않게). */
+  var NOTE = '이 안내는 언제든 화면 위쪽 나침반 단추로 다시 볼 수 있습니다.';
+  function closeNote() { closeGate(); setTimeout(function () { if (window.JC_TOAST) window.JC_TOAST(NOTE); }, 120); }
+  skipB.addEventListener('click', closeNote);
   /* 4장 「로그인하고 시작하기」 — 안내를 걷은 뒤 로그인 창을 연다(안내 막 위로 창이 겹치지 않게 한 박자 뒤) */
   var loginB = document.getElementById('onbLogin');
   if (loginB) loginB.addEventListener('click', function () {
@@ -144,7 +148,7 @@
   prevB.addEventListener('click', function () { go(step - 1); });
   nextB.addEventListener('click', function () {
     if (step < N - 1) go(step + 1);
-    else closeGate();
+    else closeNote();
   });
   dots.forEach(function (d, k) {
     d.addEventListener('click', function () { go(k); });
@@ -162,7 +166,7 @@
   document.addEventListener('keydown', function (e) {
     if (!open) return;
     var k = e.key;
-    if (k === 'Escape') { e.preventDefault(); closeGate(); return; }
+    if (k === 'Escape') { e.preventDefault(); closeNote(); return; }
     if (k === 'ArrowRight') { e.preventDefault(); if (step < N - 1) go(step + 1); return; }
     if (k === 'ArrowLeft') { e.preventDefault(); if (step > 0) go(step - 1); return; }
     if (k === 'Tab') {                                   /* 포커스가 뒤 화면으로 새지 않게 */
