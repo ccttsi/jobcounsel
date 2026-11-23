@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko" data-jc-deep="off">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="커리어넷(한국직업능력연구원) Open API로 받은 직업사전 454건과 대학·고등학교 학과 정보를 한 화면에서 찾는 원천 확인 도구. 직업명·분류·연봉구간·전망 같은 사실만 보여 주고, 항목마다 커리어넷 공식 페이지로 넘깁니다.">
+<title>커리어넷 원천 사전 · 직업 454 · 학과 557</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f3ede2;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#2a5d7c;--acc-soft:rgba(42,93,124,.08);--stamp:#be123c;
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 10px 28px -18px rgba(70,50,25,.30);
+  --edge:rgba(42,37,33,.14);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  --tc-careernet:#2a5d7c;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#8ec5e6;--acc-soft:rgba(142,197,230,.10);--stamp:#fb7185;
+  --shadow:none;--edge:rgba(230,233,239,.10);--tc-careernet:#8ec5e6;color-scheme:dark;
+}
+:root[data-jc-tone="sepia"]{
+  --acc:#27506b;--acc-soft:rgba(39,80,107,.1);--tc-careernet:#27506b;
+}
+body[data-jc-tool="careernet"]{--jc-acc:var(--tc-careernet)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 20px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media (min-width:900px){.wrap{max-width:1180px;padding:0 28px 24px}}
+
+/* 머리말 */
+.hd{display:flex;align-items:center;gap:8px;min-height:68px;padding:12px 0}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:0 1 auto;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;overflow:hidden}
+.brand svg{width:24px;height:24px;flex:none;color:var(--acc)}
+.brand span{color:var(--acc)}
+.hd>[data-jc-prefs]{margin-left:auto}
+@media (max-width:430px){.brand span{display:none}}
+
+/* 이용 안내 */
+.pv{margin:0 0 4px}
+.pv-t{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:4px 2px;border-radius:12px}
+.pv-t svg{flex:none;width:20px;height:20px;color:var(--acc)}
+.pv-tt{flex:1;min-width:0;font-size:14px;line-height:1.5;color:var(--muted)}
+.pv-tt b{color:var(--ink);font-weight:750;margin-right:8px;white-space:nowrap}
+.pv-c{flex:none;font-size:14px;font-weight:700;color:var(--acc)}
+.pv-b ul{margin:4px 0 12px;padding:0 0 0 2px;list-style:none;display:grid;gap:6px}
+@media (min-width:900px){.pv-b ul{grid-template-columns:1fr 1fr;column-gap:24px}}
+.pv-b li{position:relative;padding-left:16px;font-size:14px;line-height:1.65;color:var(--muted)}
+.pv-b li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.pv-b li b{color:var(--ink)}
+
+/* 탭 · 검색 */
+.bar{display:flex;flex-direction:column;gap:8px;margin:0 0 6px}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;min-height:44px;padding:4px 13px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-size:14.5px;font-weight:750;white-space:nowrap;transition:border-color .15s,background .15s,transform .12s}
+.tabs button:active{transform:scale(.97)}
+.tabs button b{font-weight:800;margin-left:4px;color:var(--dim);font-variant-numeric:tabular-nums}
+.tabs button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft);box-shadow:inset 0 0 0 1px var(--acc)}
+.tabs button[aria-pressed="true"] b{color:var(--acc)}
+.q{position:relative;display:block}
+.q input{width:100%;height:48px;padding:0 14px 0 40px;border-radius:14px;border:1px solid var(--line-2);background:var(--panel);font-size:16px;outline:none}
+.q input:focus{border-color:var(--acc)}
+.q svg{position:absolute;left:13px;top:14px;width:20px;height:20px;color:var(--dim);pointer-events:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{position:relative;min-height:44px;padding:4px 11px;border-radius:12px;background:var(--soft);font-size:13.5px;font-weight:650;color:var(--muted);transition:background .15s,color .15s}
+.chips button[aria-pressed="true"]{background:var(--acc-soft);color:var(--ink);box-shadow:inset 0 0 0 1px var(--acc)}
+.chips button .n{font-size:11.5px;color:var(--dim);margin-left:3px}
+.cnt{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;font-size:14px;color:var(--muted);min-height:28px}
+
+/* 목록 */
+.scroller{height:calc(100vh - 372px);height:calc(100dvh - 372px);min-height:300px;overflow:auto;overscroll-behavior:contain;margin:0 -6px;padding:4px 6px 12px;border-radius:14px}
+@media (min-width:900px){.scroller{height:calc(100vh - 340px);height:calc(100dvh - 340px)}}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+@media (min-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1400px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.row{position:relative;display:flex;flex-direction:column;gap:4px;width:100%;min-height:84px;padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:var(--panel);text-align:left;box-shadow:3px 3px 0 var(--edge);transition:border-color .15s}
+.row:hover{border-color:var(--line-2)}
+.row[aria-current="true"]{border-color:var(--acc);box-shadow:3px 3px 0 var(--acc-soft),inset 0 0 0 1px var(--acc)}
+.row .nm{font-size:16px;font-weight:800;letter-spacing:-.02em;line-height:1.35}
+.row .meta{display:flex;flex-wrap:wrap;gap:4px}
+.row .meta span{white-space:nowrap;padding:2px 8px;border-radius:7px;background:var(--soft);font-size:12px;font-weight:650;color:var(--muted)}
+.row .meta span.k{background:var(--acc-soft);color:var(--acc)}
+.row .sub{font-size:12.5px;color:var(--dim);line-height:1.45}
+.empty{padding:16px;border-radius:14px;background:var(--soft);color:var(--muted);font-size:14.5px}
+.empty button{min-height:44px;margin-top:6px;padding:0 14px;border-radius:12px;background:var(--panel);border:1px solid var(--line-2);font-weight:700}
+
+/* 상세 시트 */
+.sheet{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,16,12,.42);opacity:0;pointer-events:none;transition:opacity .22s ease}
+.sheet.on{opacity:1;pointer-events:auto}
+.sheet>.box{width:min(720px,100%);max-height:88vh;max-height:88dvh;overflow:auto;overscroll-behavior:contain;border-radius:22px 22px 0 0;border-bottom:0;transform:translateY(28px);transition:transform .3s cubic-bezier(.2,.9,.3,1);padding-bottom:max(18px,env(safe-area-inset-bottom))}
+.sheet.on>.box{transform:none}
+.box{border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow)}
+.sh-x{position:sticky;top:-14px;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px -14px 8px;padding:10px 14px 6px;background:var(--panel)}
+.sh-x b{font-size:15px}
+.sh-x button{min-width:44px;min-height:44px;padding:0 14px;border-radius:12px;background:var(--soft);font-size:14.5px;font-weight:700}
+.det{padding:14px}
+.det h2{margin:4px 0 2px;font-size:23px;line-height:1.25;letter-spacing:-.04em}
+.det .op{margin:0 0 12px;font-size:13.5px;color:var(--dim)}
+.det dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 12px;margin:10px 0 0;font-size:14.5px}
+.det dt{color:var(--dim);font-weight:700;white-space:nowrap}
+.det dd{margin:0}
+.det h3{margin:16px 0 6px;font-size:13px;font-weight:800;color:var(--acc)}
+.det .tags{display:flex;flex-wrap:wrap;gap:4px}
+.det .tags span{padding:2px 8px;border-radius:8px;background:var(--soft);font-size:12.5px;color:var(--muted)}
+.det .note{margin:10px 0 0;font-size:12.5px;color:var(--dim);line-height:1.55}
+.go{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;margin-top:16px;border-radius:14px;background:var(--acc);color:#fff;font-size:16px;font-weight:800;text-decoration:none;transition:transform .12s}
+:root[data-theme="dark"] .go{background:var(--acc-soft);color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}
+.go:active{transform:scale(.98)}
+.go small{font-size:12.5px;font-weight:600;opacity:.85}
+
+.foot{margin:10px 0 0;font-size:12.5px;color:var(--dim);line-height:1.6}
+.foot b{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
+</head>
+<body data-jc-tool="careernet">
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <a class="brand" href="./" id="brand"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h7a2 2 0 0 1 2 2V20a2.5 2.5 0 0 0-2.5-2.5H4z"/><path d="M20 5.5h-7a2 2 0 0 0-2 2V20a2.5 2.5 0 0 1 2.5-2.5H20z"/></svg>커리어넷 <span>원천 사전</span></a>
+    <span data-jc-prefs></span>
+  </header>
+
+  <section class="pv" id="pv">
+    <button type="button" class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>원천은 커리어넷 <span aria-hidden="true">·</span> <span style="white-space:nowrap">고지와 함께 봅니다</span></span>
+      <span class="pv-c" id="pvL">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" hidden><ul>
+      <li><b>여기 있는 값은 한국직업능력연구원 커리어넷 Open API가 준 사실 그대로입니다.</b> 직업명·분류·연봉구간·전망·관련학과명만 싣고, 해석은 붙이지 않았습니다.</li>
+      <li><b>「하는 일」 같은 설명문은 이 화면에 싣지 않습니다.</b> 커리어넷 이용약관이 서비스로 얻은 정보의 복사·전송을 사전 승낙 없이 제한하고 있어, 서술문은 저장하지 않고 공식 페이지로 넘깁니다.</li>
+      <li><b>직업정보 API는 2023년 8월 개편 뒤 제공 중단이 예고된 서비스입니다.</b> 지금 응답하는 개편 전 직업사전 454건을 그대로 싣고, 사이트의 새 직업백과와 항목 수가 다를 수 있음을 밝힙니다.</li>
+      <li><b>진로를 정해 주는 화면이 아닙니다.</b> 학과와 직업을 잇는 해석은 「커리어데칼코마니」에서, 최종 확인은 커리어넷 원문과 상담으로 하세요.</li>
+    </ul></div>
+  </section>
+
+  <main id="main" data-jc-still>
+    <div class="bar">
+      <div class="tabs" id="tabs" role="group" aria-label="자료 고르기">
+        <button type="button" data-tab="job" aria-pressed="true">직업 사전 <b id="nJob">—</b></button>
+        <button type="button" data-tab="major" aria-pressed="false">대학 학과 <b id="nMajor">—</b></button>
+        <button type="button" data-tab="high" aria-pressed="false">고교 학과 <b id="nHigh">—</b></button>
+      </div>
+      <label class="q"><span class="sr" id="qLabel">직업명·분류로 찾기</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="직업명·분류 (예: 사회복지사)" autocomplete="off" enterkeyhint="search" aria-labelledby="qLabel"></label>
+      <div class="chips" id="chips" role="group" aria-label="분류로 거르기"></div>
+      <div class="cnt" aria-live="polite"><b class="num" id="cnt">0</b><span id="cntL">건</span><span id="basis"></span></div>
+    </div>
+    <div class="scroller" id="scroller" data-jc-still><div class="grid" id="grid"><p class="empty">자료를 불러오고 있습니다…</p></div></div>
+  </main>
+
+  <div class="sheet" id="sheet" aria-hidden="true">
+    <section class="box det" id="det" aria-live="polite" tabindex="-1">
+      <div class="sh-x"><b id="detK">자세히</b><button type="button" id="detX">닫기</button></div>
+      <div id="detBody"></div>
+    </section>
+  </div>
+
+  <div class="foot" id="foot">
+    <p><b>출처</b> 한국직업능력연구원 커리어넷(교육부 지원) Open API — 직업정보·직업분류·학과정보. 공공데이터포털 「교육부_커리어넷 직업정보」(<span class="num">15056641</span>) 이용허락범위: 제3자 권리 포함(저작권 표시)·공공저작물 출처표시(제1유형).</p>
+    <p><b>갱신</b> <span id="footAt">—</span> · 이 화면은 참고·실습용이며 실제 확인은 커리어넷 원문과 상담으로 합니다.</p>
+  </div>
+</div>
+<script src="./app.js" defer></script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>

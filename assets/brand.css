@@ -67,6 +67,7 @@
   --tc-posting:#2d4a63;
   --tc-first-year:#6a4a2f;
   --tc-casecon:#3f5240;
+  --tc-careernet:#2a5d7c;
 }
 :root[data-jc-tone="sepia"]{
   --tc-theory:#006c59;
@@ -107,6 +108,7 @@
   --tc-posting:#28425a;
   --tc-first-year:#5e3f26;
   --tc-casecon:#39493a;
+  --tc-careernet:#27506b;
 }
 :root[data-theme="dark"]{
   --tc-theory:#36d3b2;
@@ -147,6 +149,7 @@
   --tc-posting:#9dc4e8;
   --tc-first-year:#e0b184;
   --tc-casecon:#b3d3a7;
+  --tc-careernet:#8ec5e6;
 }
 
 /* 페이지가 자기 자료 id를 적으면 그 색이 --jc-acc로 붙는다 */
@@ -188,6 +191,7 @@ body[data-jc-tool="policy-match"]{--jc-acc:var(--tc-policy-match)}
 body[data-jc-tool="posting"]{--jc-acc:var(--tc-posting)}
 body[data-jc-tool="first-year"]{--jc-acc:var(--tc-first-year)}
 body[data-jc-tool="casecon"]{--jc-acc:var(--tc-casecon)}
+body[data-jc-tool="careernet"]{--jc-acc:var(--tc-careernet)}
 
 /* ---------- 로고 ----------
    로고는 대문 index.html의 인라인 SVG(.cctt-lockup = .cctt-mark 마름모 + .cctt-word 글자)다.
