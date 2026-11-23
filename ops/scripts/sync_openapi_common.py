@@ -8,14 +8,19 @@
 -----------
 대상 API는 모두 공공데이터포털에서 **이용허락범위 제한 없음**으로 승인받았거나
 (금융위원회·한국산업인력공단·재정경제부·국세청·한국산업인력공단 Q-net),
-**공공누리 제1유형**(법제처 국가법령정보) / **OpenDART 공식 OpenAPI**다.
+**공공누리 제1유형**(법제처 국가법령정보·커리어넷) / **OpenDART 공식 OpenAPI**다.
+커리어넷은 공공데이터포털 「교육부_커리어넷 직업정보」(`15056641`)의 이용허락범위가
+**제3자 권리 포함(저작권 표시)·공공저작물 출처표시(제1유형)**이고, 커리어넷 이용약관 제22조 4항이
+서비스로 얻은 정보의 복사·변경·전송을 사전 승낙 없이 금지하므로, 서술문(하는 일·적성 등)은
+저장하지 않고 **직업명·분류·연봉구간·전망 같은 사실 필드와 공식 원문 주소만** 저장한다.
 응답 값은 가공하지 않고 API가 준 그대로 저장하며, 값이 없으면 빈 문자열·null로 두고
 지어내지 않는다. 각 산출물의 `source`에 서비스 ID·공식 URL·이용허락범위를 함께 남긴다.
 
 비밀키
 ------
-`DATA_GO_KR_API_KEY`·`OPENDART_API_KEY` 환경변수를 먼저 읽고, 없으면 저장소 밖
-`.secrets/` 파일을 읽는다(로컬 드라이런용). 키는 어떤 산출물·로그에도 쓰지 않는다.
+`DATA_GO_KR_API_KEY`·`OPENDART_API_KEY`·`CAREERNET_API_KEY` 환경변수를 먼저 읽고, 없으면
+저장소 밖 `.secrets/` 파일을 읽는다(로컬 드라이런용). 키는 어떤 산출물·로그에도 쓰지 않는다
+(저장하는 값은 응답 내용뿐이고, 요청 주소에 붙은 키는 남기지 않는다).
 """
 from __future__ import annotations
 
@@ -45,6 +50,16 @@ KST = timezone(timedelta(hours=9))
 
 SCHEMA = "jobcounsel.openapi.v1"
 USER_AGENT = "jobcounsel-openapi-sync/1.0 (+https://witw.pages.dev)"
+
+# 커리어넷(진로정보망) Open API — 한 주소에 svcCode·gubun으로 서비스를 고른다(2026-11-23 연결).
+# 공식 안내: https://www.career.go.kr/cnet/front/openapi/openApiMainCenter.do
+CAREERNET_URL = "https://www.career.go.kr/cnet/openapi/getOpenApi"
+CAREERNET_NOTE = (
+    "공공데이터포털 15056641 「교육부_커리어넷 직업정보」 이용허락범위 = 제3자 권리 포함(저작권 표시)·"
+    "공공저작물 출처표시(제1유형). 커리어넷 사이트 하단은 ⓒ KRIVET ALL RIGHTS RESERVED이고 "
+    "이용약관 제22조 4항은 서비스로 얻은 정보의 복사·변경·전송을 사전 승낙 없이 금지한다 — "
+    "그래서 서술문(하는 일·적성·취업현황 등)은 저장하지 않고 사실·수치 필드와 공식 원문 주소만 저장한다."
+)
 
 # 공공데이터포털 서비스 메타데이터(공식 페이지 기준). 이용허락범위는 신청 화면과 같은 값이다.
 SOURCES = {
@@ -169,11 +184,78 @@ SOURCES = {
         "tier": "monthly",
         "path": "nts/status.json",
     },
+    # ---------------------------------------------------------------- 커리어넷(한국직업능력연구원·교육부)
+    # 직업정보(JOB)는 커리어넷 공지에 따라 2023년 8월 개편 이후 제공 중단이 예고된 서비스다.
+    # 그래도 2026-11-23 현재 응답하며, 개편 전 직업사전 454건을 준다(개편 뒤 직업백과와 항목 수가 다르다).
+    "careernet_jobs": {
+        "name": "커리어넷 직업정보(직업사전)",
+        "provider": "한국직업능력연구원(교육부 지원) 커리어넷",
+        "service_id": "커리어넷 OpenAPI · svcCode=JOB",
+        "endpoint": CAREERNET_URL,
+        "license": "공공누리 제1유형(출처 표시)",
+        "license_note": CAREERNET_NOTE,
+        "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do",
+        "update_cycle": "수시(2023년 8월 개편 이후 제공 중단 예고)",
+        "tier": "monthly",
+        "path": "careernet/jobs.json",
+    },
+    "careernet_job_types": {
+        "name": "커리어넷 직업분류(37개 직군)",
+        "provider": "한국직업능력연구원(교육부 지원) 커리어넷",
+        "service_id": "커리어넷 OpenAPI · svcCode=JOB_TYPE",
+        "endpoint": CAREERNET_URL,
+        "license": "공공누리 제1유형(출처 표시)",
+        "license_note": CAREERNET_NOTE,
+        "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do",
+        "update_cycle": "수시",
+        "tier": "monthly",
+        "path": "careernet/job-types.json",
+    },
+    "careernet_majors": {
+        "name": "커리어넷 학과정보(대학교)",
+        "provider": "한국직업능력연구원(교육부 지원) 커리어넷",
+        "service_id": "커리어넷 OpenAPI · svcCode=MAJOR",
+        "endpoint": CAREERNET_URL,
+        "license": "공공누리 제1유형(출처 표시)",
+        "license_note": CAREERNET_NOTE,
+        "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiMajorCenter.do",
+        "update_cycle": "수시",
+        "tier": "monthly",
+        "path": "careernet/majors.json",
+    },
+    "careernet_high_majors": {
+        "name": "커리어넷 학과정보(고등학교)",
+        "provider": "한국직업능력연구원(교육부 지원) 커리어넷",
+        "service_id": "커리어넷 OpenAPI · svcCode=MAJOR",
+        "endpoint": CAREERNET_URL,
+        "license": "공공누리 제1유형(출처 표시)",
+        "license_note": CAREERNET_NOTE,
+        "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiMajorCenter.do",
+        "update_cycle": "수시",
+        "tier": "monthly",
+        "path": "careernet/high-majors.json",
+    },
 }
 
 
+# 커리어넷 산출물의 쓰임 범위·확인 근거·알림 — 네 소스가 같은 문장을 쓴다(파일에 함께 남긴다).
+for _careernet_key in ("careernet_jobs", "careernet_job_types", "careernet_majors", "careernet_high_majors"):
+    SOURCES[_careernet_key]["usage_scope"] = (
+        "사실·수치 필드(이름·분류·연봉구간·전망·관련학과명 등)와 공식 원문 주소만 저장한다. "
+        "하는 일·적성 및 흥미 같은 서술문은 저장하지 않고 원문 페이지로 넘긴다."
+    )
+    SOURCES[_careernet_key]["check_basis"] = (
+        "공공데이터포털 15056641 이용허락범위(제3자 권리 포함·공공저작물 출처표시 제1유형, "
+        "2025-05-27 수정본)를 2026-11-23 직접 확인"
+    )
+SOURCES["careernet_jobs"]["notice"] = (
+    "커리어넷 직업정보 API는 개편에 따라 2023년 8월까지만 제공이 예고된 서비스다. "
+    "2026-11-23 현재 응답하며 개편 전 직업사전 454건을 준다 — 커리어넷 새 직업백과의 전체 항목과 수가 다를 수 있다."
+)
+
+
 class AuthPending(RuntimeError):
-    """인증 반영 대기(401/403·등록되지 않은 키). 실패로 몰지 않고 '대기'로 보고한다."""
+    """인증 반영 대기(401/403·등록되지 않은 키·인증키 실패). 실패로 몰지 않고 '대기'로 보고한다."""
 
 
 class SourceError(RuntimeError):
@@ -359,7 +441,9 @@ def envelope(key: str, items: list, fetched_at: str, extra: dict | None = None) 
             "service_id": meta["service_id"],
             "endpoint": meta["endpoint"],
             "license": meta["license"],
-            "license_note": "공공데이터포털 이용허락범위 제한 없음 / 공공누리 제1유형 / OpenDART 공식 OpenAPI",
+            "license_note": meta.get("license_note")
+            or "공공데이터포털 이용허락범위 제한 없음 / 공공누리 제1유형 / OpenDART 공식 OpenAPI",
+            "checked_at": fetched_at,
             "official_url": meta["official_url"],
             "update_cycle": meta["update_cycle"],
         },
@@ -367,6 +451,10 @@ def envelope(key: str, items: list, fetched_at: str, extra: dict | None = None) 
         "count": len(items),
         "items": items,
     }
+    for extra_key in ("usage_scope", "check_basis", "notice"):
+        value = meta.get(extra_key)
+        if value:
+            out["source"][extra_key] = value
     if extra:
         out.update(extra)
     return out
@@ -423,6 +511,68 @@ def write_source(key: str, items: list, *, dry_run: bool = False, extra: dict | 
     )
     print(f"  + {key}: {len(items):,}건 → {path.relative_to(ROOT)}")
     return True
+
+
+def careernet_page(
+    key: str,
+    svc_code: str,
+    *,
+    gubun: str = "",
+    this_page: int = 1,
+    per_page: int = 100,
+    extra: dict | None = None,
+) -> tuple[list, int | None]:
+    """커리어넷 Open API 한 쪽. (행 목록, 전체 건수)를 준다.
+
+    실패는 HTTP 오류가 아니라 **200 + `result.content[0].code` 음수**로 온다
+    (`-1` 인증키 실패 · `-2` 인증키 없음). 인증 문제는 `AuthPending`, 그 밖은 `SourceError`로 올린다.
+    """
+    params = {"apiKey": key, "svcType": "api", "contentType": "json", "svcCode": svc_code}
+    if gubun:
+        params["gubun"] = gubun
+    params["thisPage"] = this_page
+    params["perPage"] = per_page
+    if extra:
+        params.update(extra)
+    payload = get_json(CAREERNET_URL, params, timeout=90)
+    if not isinstance(payload, dict):
+        raise SourceError(f"커리어넷 응답이 객체가 아니다: {str(payload)[:200]}")
+    error_node = payload.get("result")
+    if isinstance(error_node, dict):
+        rows = as_list(error_node.get("content"))
+        head = rows[0] if rows else {}
+        code = str(head.get("code") or "")
+        message = str(head.get("message") or "")
+        if code.startswith("-") or "인증키" in message:
+            raise AuthPending(f"커리어넷 결과코드 {code}: {message}")
+        raise SourceError(f"커리어넷 결과코드 {code}: {message}")
+    content = (payload.get("dataSearch") or {}).get("content")
+    rows = as_list(content)
+    total = None
+    for row in rows:
+        if isinstance(row, dict) and str(row.get("totalCount") or "").isdigit():
+            total = int(row["totalCount"])
+            break
+    return rows, total
+
+
+def careernet_all(key: str, svc_code: str, *, gubun: str = "", page_size: int = 100, limit: int = 0) -> list:
+    """커리어넷 목록을 끝까지 받는다 — `totalCount`가 응답마다 들어 있어 그 수에 닿을 때까지 넘긴다."""
+    rows, total = careernet_page(key, svc_code, gubun=gubun, this_page=1, per_page=page_size)
+    if not total or len(rows) >= total:
+        return rows[:limit] if limit else rows
+    page = 2
+    while page <= 60 and len(rows) < total:
+        more, _ = careernet_page(key, svc_code, gubun=gubun, this_page=page, per_page=page_size)
+        if not more:
+            break
+        rows.extend(more)
+        page += 1
+    if limit:
+        return rows[:limit]
+    if total and len(rows) < total:
+        print(f"  ! 커리어넷 {svc_code}{('/' + gubun) if gubun else ''}: {len(rows):,}/{total:,}건만 받았다")
+    return rows
 
 
 def validate_outputs(secret_values: tuple[str, ...] = ()) -> None:

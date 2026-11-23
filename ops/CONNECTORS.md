@@ -50,6 +50,18 @@
 | 쓰는 곳 | `ops/scripts/jina_fetch.py` — 수집·초안 참고용 CLI. **화면 코드에서는 부르지 않는다**(ROLES.md) |
 | 시험 | `ops/tests/test_jina_fetch.py` — 네트워크 없이 28건, `validate_repo.py`의 단위 검사(`json`)에 함께 돈다 |
 
+## 커리어넷 Open API (한국직업능력연구원·교육부)
+| 무엇 | 값 |
+|---|---|
+| 오픈 API 센터 | https://www.career.go.kr/cnet/front/openapi/openApiMainCenter.do |
+| 호출 주소 | `https://www.career.go.kr/cnet/openapi/getOpenApi` — `apiKey`·`svcType=api`·`svcCode`·`gubun`·`thisPage`·`perPage` |
+| 서비스 코드 | `JOB`(직업사전) · `JOB_TYPE`(직업분류 37) · `MAJOR`(학과: `gubun=univ_list` 대학교 501 · `high_list` 고등학교 56) |
+| 키 이름 | `CAREERNET_API_KEY` — GitHub Secrets(`ccttsi/jobcounsel`) · 로컬 `.secrets/careernet_api_key` |
+| 키 발급 | 커리어넷 회원가입 → 오픈API 신청 → 담당자 승인 (이용자당 1개) |
+| 수집 | `ops/scripts/sync_openapi_monthly.py --only careernet_jobs,careernet_job_types,careernet_majors,careernet_high_majors` → `data/openapi/careernet/` |
+| 저작권 근거 | 공공데이터포털 `15056641` 이용허락범위 = 제3자 권리 포함(저작권 표시)·공공저작물 출처표시(제1유형) · **서술문은 저장하지 않고 사실 필드·공식 원문 주소만** |
+| 주의 | 직업정보 API는 2023년 8월 개편 이후 제공 중단 예고(2026-11-23 현재 응답·454건) |
+
 ## Playwright
 | 무엇 | 값 |
 |---|---|
