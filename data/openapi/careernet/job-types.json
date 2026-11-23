@@ -1,0 +1,206 @@
+{
+ "schema": "jobcounsel.openapi.v1",
+ "source": {
+  "key": "careernet_job_types",
+  "name": "커리어넷 직업분류(37개 직군)",
+  "provider": "한국직업능력연구원(교육부 지원) 커리어넷",
+  "service_id": "커리어넷 OpenAPI · svcCode=JOB_TYPE",
+  "endpoint": "https://www.career.go.kr/cnet/openapi/getOpenApi",
+  "license": "공공누리 제1유형(출처 표시)",
+  "license_note": "공공데이터포털 15056641 「교육부_커리어넷 직업정보」 이용허락범위 = 제3자 권리 포함(저작권 표시)·공공저작물 출처표시(제1유형). 커리어넷 사이트 하단은 ⓒ KRIVET ALL RIGHTS RESERVED이고 이용약관 제22조 4항은 서비스로 얻은 정보의 복사·변경·전송을 사전 승낙 없이 금지한다 — 그래서 서술문(하는 일·적성·취업현황 등)은 저장하지 않고 사실·수치 필드와 공식 원문 주소만 저장한다.",
+  "checked_at": "2026-11-23T10:43:11+09:00",
+  "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do",
+  "update_cycle": "수시",
+  "usage_scope": "사실·수치 필드(이름·분류·연봉구간·전망·관련학과명 등)와 공식 원문 주소만 저장한다. 하는 일·적성 및 흥미 같은 서술문은 저장하지 않고 원문 페이지로 넘긴다.",
+  "check_basis": "공공데이터포털 15056641 이용허락범위(제3자 권리 포함·공공저작물 출처표시 제1유형, 2025-05-27 수정본)를 2026-11-23 직접 확인"
+ },
+ "fetched_at": "2026-11-23T10:43:11+09:00",
+ "count": 37,
+ "items": [
+  {
+   "code": "104168",
+   "name": "농림어업 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104169",
+   "name": "IT관련 공학 전문직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104170",
+   "name": "시각디자인 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104171",
+   "name": "일반 서비스직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104172",
+   "name": "일반운전 및 정비 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104173",
+   "name": "이학 및 공학 전문직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104174",
+   "name": "악기 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104175",
+   "name": "운동 및 안전 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104176",
+   "name": "이미용 관련 서비스직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104177",
+   "name": "기획 서비스직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104178",
+   "name": "예술기획 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104179",
+   "name": "의복제조 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104180",
+   "name": "기술직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104181",
+   "name": "영업 관련 서비스직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104182",
+   "name": "법률 및 사회활동 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104183",
+   "name": "고급 운전 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104184",
+   "name": "특수(소프트) 스포츠 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104185",
+   "name": "환경관련 전문직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104186",
+   "name": "인문 및 사회과학전문직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104187",
+   "name": "영상 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104188",
+   "name": "연기 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104189",
+   "name": "무용 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104190",
+   "name": "금융 및 경영 관련 전문직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104191",
+   "name": "음악 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104192",
+   "name": "교육 관련 서비스직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104193",
+   "name": "기능직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104194",
+   "name": "회계 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104195",
+   "name": "작가 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104196",
+   "name": "이공계 교육 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104197",
+   "name": "조리 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104198",
+   "name": "매니지먼트 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104199",
+   "name": "언어 관련 전문직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104200",
+   "name": "인문계 교육 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104201",
+   "name": "의료 관련 전문직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104202",
+   "name": "사회서비스직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104203",
+   "name": "보건의료 관련 서비스직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "code": "104204",
+   "name": "자연친화 관련직",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  }
+ ]
+}

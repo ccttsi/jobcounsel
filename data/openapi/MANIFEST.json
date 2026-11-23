@@ -1,7 +1,7 @@
 {
  "schema": "jobcounsel.openapi.v1",
  "kind": "manifest",
- "generated_at": "2026-11-23T06:29:32+09:00",
+ "generated_at": "2026-11-23T10:43:22+09:00",
  "tiers": {
   "daily": [
    "alio_recruitment",
@@ -11,6 +11,10 @@
    "ncs_training"
   ],
   "monthly": [
+   "careernet_high_majors",
+   "careernet_job_types",
+   "careernet_jobs",
+   "careernet_majors",
    "dart_corp_map",
    "dart_disclosures",
    "fsc_corp_basic",
@@ -21,7 +25,7 @@
    "qnet_stats"
   ]
  },
- "total_bytes": 25487239,
+ "total_bytes": 26259236,
  "sources": [
   {
    "key": "alio_recruitment",
@@ -165,6 +169,58 @@
    "sha256": "cf2990291b83e21241dad94b57923a7f1920e0f086395104476c432e4a442ede",
    "license": "이용허락범위 제한 없음",
    "official_url": "https://www.data.go.kr/data/15081808/openapi.do"
+  },
+  {
+   "key": "careernet_jobs",
+   "name": "커리어넷 직업정보(직업사전)",
+   "service_id": "커리어넷 OpenAPI · svcCode=JOB",
+   "tier": "monthly",
+   "path": "data/openapi/careernet/jobs.json",
+   "count": 454,
+   "fetched_at": "2026-11-23T10:43:09+09:00",
+   "bytes": 218030,
+   "sha256": "7f910c9de80f45708c826d7c3a1591e26e32cee34985fed0414ce6333b5124c3",
+   "license": "공공누리 제1유형(출처 표시)",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "key": "careernet_job_types",
+   "name": "커리어넷 직업분류(37개 직군)",
+   "service_id": "커리어넷 OpenAPI · svcCode=JOB_TYPE",
+   "tier": "monthly",
+   "path": "data/openapi/careernet/job-types.json",
+   "count": 37,
+   "fetched_at": "2026-11-23T10:43:11+09:00",
+   "bytes": 7245,
+   "sha256": "d259e8c48bebd792f10ac7911c2b9df8ee9bc6cbc3aa83448bab91c43c0f4c0c",
+   "license": "공공누리 제1유형(출처 표시)",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiJobCenter.do"
+  },
+  {
+   "key": "careernet_majors",
+   "name": "커리어넷 학과정보(대학교)",
+   "service_id": "커리어넷 OpenAPI · svcCode=MAJOR",
+   "tier": "monthly",
+   "path": "data/openapi/careernet/majors.json",
+   "count": 501,
+   "fetched_at": "2026-11-23T10:43:19+09:00",
+   "bytes": 499335,
+   "sha256": "6fc4a710c29696af22e6cbbc9fa5e12b060b1637dec03bc55b1644c5665499f6",
+   "license": "공공누리 제1유형(출처 표시)",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiMajorCenter.do"
+  },
+  {
+   "key": "careernet_high_majors",
+   "name": "커리어넷 학과정보(고등학교)",
+   "service_id": "커리어넷 OpenAPI · svcCode=MAJOR",
+   "tier": "monthly",
+   "path": "data/openapi/careernet/high-majors.json",
+   "count": 56,
+   "fetched_at": "2026-11-23T10:43:21+09:00",
+   "bytes": 47387,
+   "sha256": "e9bec19287f34531c96160de6220fca29e1004ef3bab6a3f4849922313bb89bf",
+   "license": "공공누리 제1유형(출처 표시)",
+   "official_url": "https://www.career.go.kr/cnet/front/openapi/openApiMajorCenter.do"
   }
  ],
  "note": "값은 공식 Open API 응답 그대로다. 확인되지 않은 값은 지어내지 않고 빈 문자열/null로 둔다."
