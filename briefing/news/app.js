@@ -111,7 +111,7 @@
       h += '<div class="sh"><h2>피드</h2><small class="num">' + list.length + '건' + (nOn ? ' · 조건 ' + nOn + '개' : '') + '</small></div>' +
         '<div class="fbar"><button type="button" class="fbtn" id="fOpen" aria-controls="flt" aria-expanded="false">주제·출처로 좁히기' + (nOn ? ' (' + nOn + ')' : '') + '</button>' +
         (nOn ? '<button type="button" class="fbtn" data-reset style="display:inline-flex">조건 풀기</button>' : '') + '</div>' +
-        '<div class="flt" id="flt" role="group" aria-label="주제·출처로 좁히기">' + chips('주제', 'topic', topics) + chips('출처', 'src', srcs) +
+        '<div class="flt" id="flt" role="group" aria-label="주제·출처로 좁히기" data-jc-still>'   /* C3-08: 거름 칩은 켜고 끄는 단추 — 폭(120px)에 따라 일부만 떠오르던 손맛을 무리째 뺀다 */ + chips('주제', 'topic', topics) + chips('출처', 'src', srcs) +
         '<button type="button" class="pbtn done" id="fDone">결과 ' + list.length + '건 보기</button></div>';
       var pages = Math.max(1, Math.ceil(list.length / PER)); S.page = Math.min(S.page, pages - 1);
       h += list.length ? '<ol class="feed">' + list.slice(S.page * PER, (S.page + 1) * PER).map(function (it) {
