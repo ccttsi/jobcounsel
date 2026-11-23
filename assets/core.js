@@ -49,6 +49,17 @@
     (d.head || root).appendChild(m);
   })();
 
+  /* ---------- 0-1) 탭 아이콘(favicon) ----------
+   * 지면마다 <link rel="icon">을 적지 않아도, 이 공용 첫 스크립트가 assets/favicon.svg(로고 마름모)를 단다(2026-11-23 공개 전 점검).
+   * 지면이 따로 적어 두었으면 건드리지 않는다. 주소는 이 스크립트 자리에서 계산한다(어느 깊이의 지면이든 같은 파일). */
+  (function () {
+    if (d.querySelector('link[rel~="icon"]')) return;
+    var cs = d.currentScript, base = cs && cs.src ? cs.src.replace(/core\.js(\?.*)?$/, '') : '';
+    if (!base) return;
+    var l = d.createElement('link'); l.rel = 'icon'; l.type = 'image/svg+xml'; l.href = base + 'favicon.svg';
+    (d.head || root).appendChild(l);
+  })();
+
   /* ---------- 0) 오류 수집(Sentry) ----------
    * Sentry 프로젝트 jobcounsel의 Browser JavaScript Loader Script.
    * 운영 도메인(witw.pages.dev · 옛 자리 ccttsi.github.io · ccttsi.pages.dev)에서만, 한 번만 붙인다. 로컬 서버·Playwright 검사(127.0.0.1·localhost)에서는 요청이 나가지 않는다.
