@@ -135,6 +135,12 @@
   /* ---------- 단추·점·키 ---------- */
   if (headBtn) headBtn.addEventListener('click', openGate);
   skipB.addEventListener('click', closeGate);
+  /* 4장 「로그인하고 시작하기」 — 안내를 걷은 뒤 로그인 창을 연다(안내 막 위로 창이 겹치지 않게 한 박자 뒤) */
+  var loginB = document.getElementById('onbLogin');
+  if (loginB) loginB.addEventListener('click', function () {
+    closeGate();
+    setTimeout(function () { if (window.JCSync && window.JCSync.open) window.JCSync.open(); }, 60);
+  });
   prevB.addEventListener('click', function () { go(step - 1); });
   nextB.addEventListener('click', function () {
     if (step < N - 1) go(step + 1);
