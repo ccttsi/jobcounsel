@@ -433,6 +433,13 @@
     var d = g.slice(0, 10);
     el.setAttribute('datetime', d);
     el.textContent = d.replace(/-/g, '.');
+    /* 2026-11-23 C2-08 ⑤: 「매주 토요일 갱신」인데 자료가 9일 넘게 묵었으면 화면이 스스로 알린다(갱신이 한 번 빠졌다는 뜻). */
+    var age = (Date.now() - Date.parse(d + 'T00:00:00+09:00')) / 86400000, obs = el.parentElement;
+    if (obs && age > 9 && !obs.querySelector('.late')) {
+      var late = document.createElement('span'); late.className = 'late';
+      late.textContent = ' · 갱신 지연 ' + Math.floor(age) + '일';
+      obs.appendChild(late);
+    }
   }
 
   function renderMore() {
