@@ -85,7 +85,7 @@
   var GROUPS = [
     { id: 'intake', name: '접수·진단', ids: ['triage', 'intake', 'talk', 'translator', 'vpi', 'reality', 'hud', 'policy-match', 'pay-calc', 'work-filter'] },
     { id: 'policy', name: '제도·훈련', ids: ['manual', 'law', 'kdt-calc', 'cert', 'posting', 'first-year'] },
-    { id: 'corp', name: '기업·직무', ids: ['company', 'fin-lab', 'taxonomy', 'valuechain', 'univ'] },
+    { id: 'corp', name: '기업·직무', ids: ['company', 'fin-lab', 'taxonomy', 'careernet', 'valuechain', 'univ'] },
     { id: 'trend', name: '산업·동향', ids: ['thermometer', 'labor', 'briefing', 'emerging'] },
     { id: 'field', name: '실전', ids: ['portals', 'surgery', 'interview', 'portfolio', 'transit'] },
     { id: 'study', name: '학습·연구', ids: ['theory', 'casecon', 'parsons', 'dacum', 'library', 'grad', 'decalcomania'] }
@@ -107,8 +107,8 @@
     vpi: 20, reality: 21, theory: 22, parsons: 23, casecon: 24,
     'work-filter': 30, 'pay-calc': 31, 'policy-match': 32, posting: 33,
     manual: 40, law: 41, 'first-year': 42, hud: 44, 'kdt-calc': 45, cert: 46,
-    company: 50, labor: 51, taxonomy: 52, valuechain: 53, 'fin-lab': 54,
-    thermometer: 55, briefing: 56, emerging: 57, univ: 58,
+    company: 50, labor: 51, taxonomy: 52, careernet: 53, valuechain: 54, 'fin-lab': 55,
+    thermometer: 56, briefing: 57, emerging: 58, univ: 59,
     portals: 60, surgery: 61, interview: 62, portfolio: 63, transit: 64,
     dacum: 65, library: 66, grad: 67, decalcomania: 68
   };
@@ -210,6 +210,7 @@
     { id: 'triage', dom: /(위기|긴급|응급|생계|노숙|쉼터)/, act: /(등급|분류|먼저|어떻게|확인)/, why: '위기 신호를 먼저 나누는 트리아지 보드' },
     { id: 'posting', dom: /(공고문|채용\s*공고|구인\s*공고|모집\s*요강|공고\s*문구)/, act: /(법령|위반|점검|문구|표현|검토|자격\s*요건|주휴|이상한|따져)/, not: /(어디|사이트|지원할)/, why: '공고문 문장에서 법령 위반 소지와 근거 조문을 찾는 점검대' },
     { id: 'first-year', dom: /(입사\s*후|입사일|수습|연차|해고|육아휴직|재직|근로계약서|금품청산|퇴사)/, act: /(언제|시점|확인|권리|의무|기한|며칠|기간|가능|물어)/, not: /(계산|실수령|공제|떼)/, why: '입사일을 기준으로 수습·연차·퇴직급여 시점을 짚는 시간축' },
+    { id: 'careernet', dom: /(커리어넷|careernet|직업사전|직업백과|학과정보)/, act: /(공식|원문|확인|찾|어때|분류|연봉|전망|보여)/, why: '커리어넷 공식 원천에서 직업·학과를 바로 확인하는 사전' },
     { id: 'casecon', dom: /(사례\s*개념화|사례개념화|개념화|사례|케이스|사정|상담\s*목표|상담\s*계획)/, act: /(어떻게|세우|정리|이론|읽|적용|목표|틀|접근)/, not: /(이론\s*위키|파슨스)/, why: '한 사례를 이론 틀에 대어 사정·상담목표를 세우는 실습실' }
   ];
   function matchRules(q) {

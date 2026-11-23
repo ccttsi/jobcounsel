@@ -52,13 +52,16 @@ Promise.all([load('./data/concepts.json'),load('./data/news.json'),load('../brie
   N.indicators.forEach(function(x){x.rx=new RegExp(x.re);});
   N.patterns.forEach(function(x){x.rx=new RegExp(x.re);});
   $('nC').textContent=ORDER.length;$('nN').textContent=N.indicators.length;
-  route();window.addEventListener('hashchange',route);
+  route();
+  d.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(a)navFwd=true;},true);
+  window.addEventListener('hashchange',function(){if(lastView)seenY[lastView]=window.pageYOffset;navBack=!navFwd;navFwd=false;route();});
 }).catch(function(e){
   $('main').innerHTML='<p class="loading">자료 파일을 불러오지 못했습니다. 인터넷 연결을 확인하고 새로 고침해 주세요.<br><small>('+esc(e.message)+')</small></p>';
 });
 
 /* ───────── 주소에 따라 화면 고르기 ───────── */
 var lastView='';
+var navFwd=false,navBack=false,seenY={};
 function route(){
   var h=decodeURIComponent((location.hash||'').slice(1)),view,arg='';
   if(h.indexOf('c-')===0&&BYC[h.slice(2)]){view='concept';arg=h.slice(2);}
@@ -74,10 +77,17 @@ function route(){
   else if(view==='news')renderNews(arg);
   else if(view==='about')renderAbout();
   else renderOverview();
-  if(key!==lastView){
-    var tabs=d.querySelector('.tabs'),top=tabs.getBoundingClientRect().top+window.pageYOffset-4;
-    if(lastView&&!(view==='news'&&arg))window.scrollTo(0,Math.min(window.pageYOffset,top));
+  /* 다른 개념·화면으로 넘어가면 새 내용의 첫 줄부터 — 본문(#main) 첫 줄을 위에 붙어 다니는 탭 줄 바로 아래로 올린다.
+     예전에는 붙어 다니는 .tabs의 «지금 화면 위치»로 재서 늘 올리지 않았고, 개념 글이 중간에서 열렸다(2026-11-23, grad와 같은 결함).
+     뒤로·앞으로 가기로 돌아온 화면은 떠날 때 보던 자리로 돌려 준다. */
+  if(key!==lastView&&lastView){
+    if(navBack&&seenY[key]!=null){var y=seenY[key];requestAnimationFrame(function(){window.scrollTo(0,y);});}
+    else if(!(view==='news'&&arg)){
+      var bar=d.querySelector('.tabs').getBoundingClientRect().bottom,mt=$('main').getBoundingClientRect().top;
+      if(mt<bar+4||mt>window.innerHeight*.6)window.scrollTo(0,Math.max(0,window.pageYOffset+mt-bar-4));
+    }
   }
+  navBack=false;
   lastView=key;
   d.title=(view==='concept'?BYC[arg].title+' · ':view==='news'?'뉴스 읽기 · ':view==='about'?'안내·출처 · ':'')+'노동시장 산책';
 }

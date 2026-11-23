@@ -48,7 +48,12 @@
       U.forEach(function (x, i) { x.i = i; UID[x.id] = x; });
       head();
       urlQuery();
-      window.addEventListener('hashchange', route);
+      /* 뒤로·앞으로 가기로 돌아온 화면은 떠날 때 보던 자리로 — 앞으로 넘어가는 이동(링크·단추)만 새 내용의 첫 줄부터 연다. */
+      d.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href^="#"]'); if (a) fwd = true; }, true);
+      window.addEventListener('hashchange', function (e) {
+        try { var oh = new URL(e.oldURL).hash || '#'; seen[oh] = window.scrollY; } catch (x) {}
+        back = !fwd && seen[location.hash || '#'] != null; fwd = false; route();
+      });
       route();
     }).catch(function () {
       main.innerHTML = '<p class="loading">자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주십시오.</p>';
@@ -138,15 +143,20 @@
     if (r.view === 'wiki' && !SO[r.id] && !JG[r.id]) d.body.setAttribute('data-home', ''); else d.body.removeAttribute('data-home');
     syncSwap(r.view);
     d.title = (main.getAttribute('data-title') ? main.getAttribute('data-title') + ' · ' : '') + '대학원 탐구생활';
-    if (!first && !keepScroll) {
-      var top = d.getElementById('swap').getBoundingClientRect().top + window.scrollY - 60;
-      if (window.scrollY > top) window.scrollTo(0, top);
+    /* 다른 글·화면으로 넘어가면 새 내용의 첫 줄부터 읽게 — 본문(main) 첫 줄을 위에 붙어 다니는 탭 줄 바로 아래로 올린다.
+       (예전에는 붙어 다니는 #swap의 «지금 화면 위치»로 재서, 늘 올릴 필요가 없다고 판단해 글 중간에서 열렸다 — 2026-11-23 IMG_7864·7865)
+       거름·쪽 넘김처럼 같은 화면 안에서 조건만 바꾸는 이동은 go(href, true)로 보던 자리를 그대로 둔다. */
+    if (!first && back) { var y = seen[location.hash || '#']; requestAnimationFrame(function () { window.scrollTo(0, y); }); }
+    else if (!first && !keepScroll) {
+      var sw = d.getElementById('swap'), bar = sw ? sw.getBoundingClientRect().bottom : 0;
+      var mt = main.getBoundingClientRect().top;
+      if (mt < bar + 8 || mt > window.innerHeight * .6) window.scrollTo(0, Math.max(0, window.scrollY + mt - bar - 8));
     }
-    first = false; keepScroll = false;
+    first = false; keepScroll = false; back = false;
     if (window.JCPrefs && JCPrefs.rescale) JCPrefs.rescale();
   }
-  var keepScroll = false;
-  function go(href, keep) { keepScroll = !!keep; if (location.hash === href) route(); else location.hash = href; }
+  var keepScroll = false, fwd = false, back = false, seen = {};
+  function go(href, keep) { keepScroll = !!keep; fwd = true; if (location.hash === href) route(); else location.hash = href; }
   function page(title, html) { main.setAttribute('data-title', title || ''); main.innerHTML = html; }
 
   /* ---------- 공통 조각 ---------- */
