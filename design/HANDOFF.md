@@ -11,6 +11,14 @@
      질문 한 마디로 나와야 하는 자료는 `RULES`(직행 패턴)에 `dom`·`act`·`not`을 넣는다.
    - 재생성: `python3 assistant/build_index.py` · `python3 ops/scripts/build_flow_graph.py` → `validate_repo.py`.
 
+## 2026-11-23 (낮) — 후속작업 CP3 1차: 기존 섹터·공통 마감 실측 · PR 대기(머지는 피클)
+- 브랜치 `design/followup-cp3-legacy`(base `design/followup-cp2-new` — 쌓기 규칙). 실측 틀 `fu/cp3a.js`.
+- **닫은 항목**: **C3-24** 기초 배치 4종 — `smoke_test.py` LAYOUT_JS가 전 섹터(신규 포함) 390·1280에서 0건, 오탐 0(오늘 스모크 통과).
+- **고친 것**: **C3-08 ①** 원문 지면 출처·주제 거름 칩이 폭(120px 기준)에 따라 일부만 그림자가 생기던 것 → 거름 칩 무리는 떠오름 손맛을 빼는 기준을 정하고(`touch-physics.md` 새 절) `#flt`에 `data-jc-still`. 390·1280 칩 6~7개 한 모양.
+- **잰 값(체크는 하위 점검이 다 끝나야)**: C3-01 브리핑 — 1024·1280 실제 3단 · 탭 바꿔도 제호·탭 Δ0 · 겹괘선 3px/1px(테마 무관) · 390 한 줄 약 28자(기준 30~40 — 글자를 줄이면 읽기가 나빠져 보류) / C3-04 출처 글자 11~12px(하한 지킴) / C3-08 ② 권리 줄 줄바꿈 정상 / C3-13 portals 외부 링크 noopener · 44px 미달 0 · shows 3줄 초과 0 · `#p=job_alio` → 그 상세 열림 / C3-15 서재 44px 미달 0(책등 예외) / C3-20 ① 개념 아이콘(C1-51)·③ 주석(C3-30) 완료, ② verify·admin `data-jc-tool` 없음은 내부 지면이라 브랜드 층 밖(CP1 판단).
+- **남은 일**: C3-01 ③ · C3-04 ①③ · C3-05 · C3-08 ③ · C3-10~12(company — 화면 분량 390 3.47 / 1280 2.71 구조 개편과 함께) · C3-13 ③ 새 창 표시 · C3-14 · C3-15 ②~④ · C3-16 · C3-17~19 · C3-20 ④ · C3-22 · C3-23 · C3-27 ②③(외부 글꼴이 이 환경에서 막혀 FOUT 실측 불가) · C3-29 · 2-e 구조 개편 지면(manual·labor·company·theory·hud·dacum·reality·library·briefing/news).
+- **다음 시작 파일**: `company/index.html`(조건 시트·분량) · `briefing/news/app.js`(리더 모드 스크롤) · `portfolio/index.html`(C3-17·18).
+
 ## 2026-11-23 (낮) — 후속작업 CP2: 신규 섹터 잔여 (16/17 닫음) · PR 대기(머지는 피클)
 - **지시**(태화님 「Cp2, cp3 진행」 → 노션 실행 지시문 CP2). 브랜치 `design/followup-cp2-new`(base `main`). 실측 틀은 세션 작업 폴더 `fu/cp2a.js`·`cp2b.js`(저장소에 넣지 않음).
 - **닫은 항목(16)**:
