@@ -425,8 +425,12 @@ def _plain(value) -> str:
 
 
 def _names(value) -> list[str]:
-    """「가, 나\n다」처럼 쉼표·줄바꿈으로 이어진 이름 목록을 나눈다(값은 고치지 않는다)."""
-    parts = re.split(r"[,、]|\n", str(value or ""))
+    """쉼표로 이어진 이름 목록을 나눈다.
+
+    원천에는 이름 **안에** 줄바꿈이 섞인 자리가 있다(`목제통 및\n상자 제조원`). 그것을 이름 경계로
+    보면 한 직업이 둘로 갈라지므로, **쉼표만 경계로 보고** 줄바꿈은 공백으로 접는다(`_plain`).
+    """
+    parts = re.split(r"[,、]", str(value or ""))
     return [_plain(part) for part in parts if _plain(part)]
 
 
