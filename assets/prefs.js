@@ -448,7 +448,7 @@
     var st2 = d.createElement('style'); st2.id = 'jc-chipline';
     st2.textContent =
       '.th-b,.fb,.fb-s,.pchip,.pill,.badge,.pg button,.navl,.chain,.guideBtn{line-height:1}' +
-      '.chip,.chk,.tab{line-height:1.05}.tag{line-height:1.1}';
+      '.chip,.tab{line-height:1.05}.tag{line-height:1.1}';
     d.head.appendChild(st2);
     // 진행 띠: 스크롤을 rAF로 묶어 scaleX만 바꾼다(아이폰 사파리 포함 전 기종)
     if (opt.progress !== false) {
