@@ -659,28 +659,31 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 /* 데일리 브리핑 소식 띠(2026-11-24, 태화님 지시) — 브리핑 카드 제목을 첫 마디로 줄여 방송 하단 자막처럼 왼쪽으로 흘린다.
    방송 하단 띠의 일반 문법(어두운 띠 + 왼쪽 강조색 표지 + 위 가는 강조선)을 자료실 색으로. 흐름은 CSS transform 애니메이션 한 줄(JS 루프 0),
    정해진 바퀴(3)를 돌면 멈춘다(DESIGN §2-9 「3회 이내」). 휴대폰 한 단: 문장 다이얼 아래·통찰 위 / 768px 이상: 오른쪽 단 맨 위, 통찰은 그 아래. */
-.a-tk{--tk-bg:#1f1b18;--tk-fg:#fbf7f0;--tk-dim:rgba(251,247,240,.6);--tk-acc:#0f766e;--tk-on:#ffffff;--tk-tag:#7fd6c8;--tk-rule:#2dd4bf;
-  position:relative;min-width:0;display:flex;align-items:stretch;height:48px;margin:0 0 clamp(8px,1.2vw,12px);
-  background:var(--tk-bg);color:var(--tk-fg);border-radius:10px;overflow:hidden;isolation:isolate}
-:root[data-theme="dark"] .a-tk{--tk-bg:#111827;--tk-fg:#e6e9ef;--tk-dim:rgba(230,233,239,.58);--tk-acc:#2dd4bf;--tk-on:#06201c;--tk-tag:#5eead4;--tk-rule:#2dd4bf;box-shadow:inset 0 0 0 1px var(--line-2)}
+/* 크기는 모두 em — 화면 설정 「글자 크기」가 .a-tk의 px 글자 크기를 키우면 띠 높이·표지·꼬리표·단추가 함께 커진다 */
+.a-tk{--tk-bg:#12302c;--tk-fg:#f7fbfa;--tk-dim:rgba(247,251,250,.62);--tk-acc:#b4532a;--tk-on:#ffffff;--tk-tag:#f0b429;--tk-rule:#f0b429;--tk-sep:rgba(255,255,255,.14);
+  position:relative;min-width:0;display:flex;align-items:stretch;font-size:15px;height:3.2em;margin:0 0 clamp(8px,1.2vw,12px);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--tk-bg) 86%,#fff) 0,var(--tk-bg) 58%);color:var(--tk-fg);border-radius:10px;overflow:hidden;isolation:isolate}
+/* 테마마다 띠 색을 따로 — 밝게: 짙은 청록 띠 + 녹슨 주황 표지 + 호박색 선 / 세피아: 에스프레소 띠 + 짙은 청록 표지 + 금빛 선 / 어둡게: 남색 띠 + 밝은 청록 표지 + 시안 선 */
+:root[data-jc-tone="sepia"]:not([data-theme="dark"]) .a-tk{--tk-bg:#2a1c12;--tk-fg:#f8ecd8;--tk-dim:rgba(248,236,216,.62);--tk-acc:#1d6657;--tk-on:#fdf6ea;--tk-tag:#e0b25a;--tk-rule:#d4a24c;--tk-sep:rgba(248,236,216,.16)}
+:root[data-theme="dark"] .a-tk{--tk-bg:#0b1324;--tk-fg:#e6e9ef;--tk-dim:rgba(230,233,239,.58);--tk-acc:#2dd4bf;--tk-on:#06201c;--tk-tag:#5eead4;--tk-rule:#22d3ee;--tk-sep:rgba(230,233,239,.12);box-shadow:inset 0 0 0 1px var(--line-2)}
 .a-tk[hidden]{display:none}
-/* 위 가는 강조선 — 방송 하단 띠의 일반 문법(색은 자료실 강조색) */
-.a-tk::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--tk-rule);opacity:.85;z-index:2;pointer-events:none}
+/* 위 강조선 — 방송 하단 띠의 일반 문법(색은 테마마다 자료실 색) */
+.a-tk::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--tk-rule);z-index:2;pointer-events:none}
 /* 왼쪽 표지 — 강조색 덩어리 + 신문 아이콘, 오른쪽 끝을 비스듬히 잘라 띠로 이어지게 */
-.a-tk-bug{flex:none;width:58px;display:grid;place-items:center;padding-right:8px;background:var(--tk-acc);color:var(--tk-on);
-  clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%);text-decoration:none;position:relative;z-index:1}
-.a-tk-bug svg{width:22px;height:22px}
+.a-tk-bug{flex:none;width:3.9em;display:grid;place-items:center;padding:3px .55em 0 0;background:var(--tk-acc);color:var(--tk-on);
+  clip-path:polygon(0 0,100% 0,calc(100% - .8em) 100%,0 100%);text-decoration:none;position:relative;z-index:1}
+.a-tk-bug svg{width:1.45em;height:1.45em}
 .a-tk-bug:hover{filter:brightness(1.08)}
 .a-tk-bug:focus-visible{outline:2px solid var(--tk-fg);outline-offset:-4px}
-.a-root .a-tk-pz{flex:none;width:44px;height:48px;border-radius:0;color:var(--tk-dim);border-left:1px solid rgba(255,255,255,.12);background:transparent}
+.a-root .a-tk-pz{flex:none;width:max(44px,2.95em);height:auto;min-height:44px;padding-top:3px;border-radius:0;color:var(--tk-dim);border-left:1px solid var(--tk-sep);background:transparent}
 .a-root .a-tk-pz:hover{color:var(--tk-fg);background:rgba(255,255,255,.06)}
 .a-tk-pz:focus-visible{outline:2px solid var(--tk-rule);outline-offset:-3px}
-.a-tk-pz svg{width:18px;height:18px}
+.a-tk-pz svg{width:1.2em;height:1.2em}
 .a-tk-pz .tk-pl{display:none}
 .a-tk-pz[aria-pressed="true"] .tk-pl{display:inline}
 .a-tk-pz[aria-pressed="true"] .tk-ps{display:none}
 /* 창은 가로 스크롤 상자로 둔다 — 흐르는 중에도 손으로 옆으로 밀어 지나간 소식을 다시 볼 수 있다(스크롤 막대는 숨김) */
-.a-tk-vp{flex:1;min-width:0;position:relative;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;padding-left:8px;
+.a-tk-vp{flex:1;min-width:0;position:relative;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;padding:3px 0 0 .55em;
   -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 28px),transparent)}
 .a-tk-vp::-webkit-scrollbar{display:none}
 /* 흐름: 같은 묶음 두 벌을 잇대어 놓고 한 벌 폭(-50%)만큼 일정한 속도로 민다 → 끝과 처음이 이음매 없이 맞물린다.
@@ -690,12 +693,11 @@ html[data-jc-auth="in"] [data-auth="out"]{display:none!important}
 .a-tk.is-hold .a-tk-track,.a-tk.is-flow .a-tk-vp:hover .a-tk-track,.a-tk.is-flow .a-tk-vp:focus-within .a-tk-track{animation-play-state:paused}
 @keyframes tk-crawl{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 .a-tk-track li{flex:none;display:flex;align-items:center}
-.a-tk-track li::after{content:"";flex:none;width:6px;height:6px;margin:0 20px 0 18px;background:var(--tk-rule);transform:rotate(45deg);opacity:.9}
-.a-tk-i{display:flex;align-items:center;gap:9px;height:100%;min-height:44px;color:var(--tk-fg);text-decoration:none;white-space:nowrap}
-.a-tk-i i{flex:none;font-style:normal;font-size:11px;font-weight:800;line-height:1;letter-spacing:.04em;color:var(--tk-tag);
-  padding:4px 6px 3px;border:1px solid color-mix(in srgb,var(--tk-tag) 55%,transparent);border-radius:4px}
-.a-tk-i span{font-size:15px;font-weight:650;letter-spacing:-.015em}
-@media (max-width:479px){.a-tk-i span{font-size:14.5px}}
+.a-tk-track li::after{content:"";flex:none;width:.4em;height:.4em;margin:0 1.35em 0 1.2em;background:var(--tk-rule);transform:rotate(45deg)}
+.a-tk-i{display:flex;align-items:center;gap:.6em;height:100%;min-height:44px;color:var(--tk-fg);text-decoration:none;white-space:nowrap}
+.a-tk-i i{flex:none;font-style:normal;font-size:.74em;font-weight:800;line-height:1;letter-spacing:.04em;color:var(--tk-bg);background:var(--tk-tag);
+  padding:.36em .5em .3em;border-radius:.3em}
+.a-tk-i span{font-weight:700;letter-spacing:-.015em}
 .a-tk-i:hover span{text-decoration:underline;text-underline-offset:4px;text-decoration-color:color-mix(in srgb,var(--tk-rule) 70%,transparent)}
 .a-tk-i:focus-visible{outline:2px solid var(--tk-rule);outline-offset:-4px;border-radius:6px}
 /* 감속 모드: 흐르지 않고 손으로 옆으로 밀어 본다(복제 묶음은 감춘다) */
