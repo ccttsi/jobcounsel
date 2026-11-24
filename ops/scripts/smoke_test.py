@@ -87,6 +87,127 @@ CHART_NUMBERS_JS = """function chartNumbers() {
 }
 """
 
+# 도표 값 라벨 점검 — ① 빼기 부호가 글자(-5.2)로 남아 벌어지는가 ② 부호 막대와 숫자 사이가 떠 있는가
+#   ③ 값 라벨이 꺾은선·점에 걸리는가 (2026-11-24 태화님 실기기 사진: 「- 5.2」·c01 「33.2」가 선에 걸림).
+CHART_LABELS_JS = """function chartLabels() {
+    const bad = [];
+    const segHit = (b, s, m) => {
+        const l = b[0] - m, t = b[1] - m, r = b[2] + m, bt = b[3] + m;
+        const x1 = s[0], y1 = s[1], x2 = s[2], y2 = s[3];
+        if ((x1 >= l && x1 <= r && y1 >= t && y1 <= bt) || (x2 >= l && x2 <= r && y2 >= t && y2 <= bt)) return true;
+        const cut = (ax, ay, bx, by, px, py, qx, qy) => {
+            const d1 = (qx - px) * (ay - py) - (qy - py) * (ax - px), d2 = (qx - px) * (by - py) - (qy - py) * (bx - px);
+            const d3 = (bx - ax) * (py - ay) - (by - ay) * (px - ax), d4 = (bx - ax) * (qy - ay) - (by - ay) * (qx - ax);
+            return ((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) && ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0));
+        };
+        return cut(x1, y1, x2, y2, l, t, r, t) || cut(x1, y1, x2, y2, r, t, r, bt) ||
+               cut(x1, y1, x2, y2, r, bt, l, bt) || cut(x1, y1, x2, y2, l, bt, l, t);
+    };
+    document.querySelectorAll('figure.ch, figure.fig').forEach(fig => {
+        const svg = fig.querySelector('svg.chs');
+        if (!svg || svg.getBoundingClientRect().width < 80) return;
+        const name = (fig.getAttribute('data-cv') || (fig.querySelector('.fig-h b') || {}).textContent || '도표').slice(0, 10);
+        const bb = (el) => { const b = el.getBBox(); return [b.x, b.y, b.x + b.width, b.y + b.height]; };
+        const labs = [];
+        svg.querySelectorAll('text').forEach(t => {
+            const st2 = getComputedStyle(t);
+            if (parseFloat(st2.fontWeight) < 700 || Math.abs(parseFloat(st2.fontSize) - 10.5) > 0.6) return;
+            labs.push({t: t.textContent || '', box: bb(t)});
+        });
+        const segs = [], dots = [];
+        svg.querySelectorAll('polyline').forEach(p => {
+            const v = p.getAttribute('points').trim().split(/\\s+/).map(q => q.split(',').map(Number));
+            for (let i = 1; i < v.length; i++) segs.push([v[i - 1][0], v[i - 1][1], v[i][0], v[i][1]]);
+        });
+        svg.querySelectorAll('circle').forEach(c => {
+            if (!c.closest('.axi')) dots.push([+c.getAttribute('cx'), +c.getAttribute('cy'), +c.getAttribute('r')]);
+        });
+        labs.forEach(L => {
+            if (/^[-\u2212]/.test(L.t)) bad.push(name + ' 「' + L.t + '」 빼기 부호가 글자로 남음');
+            segs.forEach(s => { if (seghit_safe(L, s)) bad.push(name + ' 「' + L.t + '」이 꺾은선에 걸림'); });
+            dots.forEach(d => {
+                const nx = Math.max(L.box[0], Math.min(d[0], L.box[2])), ny = Math.max(L.box[1], Math.min(d[1], L.box[3]));
+                if ((d[0] - nx) ** 2 + (d[1] - ny) ** 2 < (d[2] + 0.4) ** 2) bad.push(name + ' 「' + L.t + '」이 점에 닿음');
+            });
+        });
+        svg.querySelectorAll('rect').forEach(r => {
+            const w = +r.getAttribute('width'), h = +r.getAttribute('height');
+            if (!(w > 1.5 && w < 4 && h > 0.8 && h < 2)) return;   /* 값 라벨의 빼기 부호 막대 */
+            const x = +r.getAttribute('x'), y = +r.getAttribute('y');
+            let best = null, bd = 1e9;
+            labs.forEach(L => {
+                const d = Math.abs(L.box[1] + 2 - (y + h / 2)) + Math.abs(L.box[0] - (x + w));
+                if (d < bd) { bd = d; best = L; }
+            });
+            if (!best) return;
+            const gap = best.box[0] - (x + w);
+            if (gap < 0.15 || gap > 1.6) bad.push(name + ' 빼기 부호 간격 ' + gap.toFixed(2) + 'px — 「' + best.t + '」');
+        });
+    });
+    function seghit_safe(L, s) { return segHit(L.box, s, 0.6); }
+    return bad;
+}
+if (typeof window !== 'undefined') window.__jcChartLabels = chartLabels;   /* 카드를 넘기는 검사(CHART_TIPS_JS)가 다시 부른다 */
+"""
+
+# ⓘ 말풍선이 그 칸의 값 라벨을 가리는가 + 카드를 넘기며 도표라벨 점검 — 누를 칸을 차례로 열어 띄운 자리와 값 라벨 자리를 견준다.
+#   지면의 카드(브리핑)·기사(신산업)를 하나씩 넘기며 본다 — 첫 장에만 도표가 있는 게 아니기 때문이다.
+CHART_TIPS_JS = """async () => {
+    const bad = [];
+    const wait = (ms) => new Promise(r => setTimeout(r, ms));
+    const tips = () => {
+        const out = [];
+        document.querySelectorAll('figure.ch, figure.fig').forEach(fig => {
+            const svg = fig.querySelector('svg.chs');
+            if (!svg || svg.getBoundingClientRect().width < 80) return;
+            const cells = [...fig.querySelectorAll('[data-ax]')];
+            if (!cells.length) return;
+            const name = (fig.getAttribute('data-cv') || (fig.querySelector('.fig-h b') || {}).textContent || '도표').slice(0, 10);
+            const sr = svg.getBoundingClientRect();
+            const k = svg.viewBox.baseVal.width ? sr.width / svg.viewBox.baseVal.width : 1;
+            const labs = [];
+            svg.querySelectorAll('text').forEach(t => {
+                const st2 = getComputedStyle(t);
+                if (parseFloat(st2.fontWeight) < 700 || Math.abs(parseFloat(st2.fontSize) - 10.5) > 0.6) return;
+                const b = t.getBBox();
+                labs.push({t: t.textContent || '', box: [sr.left + b.x * k, sr.top + b.y * k, sr.left + (b.x + b.width) * k, sr.top + (b.y + b.height) * k]});
+            });
+            cells.forEach(el => {
+                const b = el.getBoundingClientRect();
+                el.dispatchEvent(new MouseEvent('click', {bubbles: true, clientX: b.left + b.width / 2, clientY: b.top + 30}));
+                const p = document.querySelector('.axp');
+                if (p && !p.hidden) {
+                    const r = p.getBoundingClientRect();
+                    labs.forEach(L => {
+                        if (!(r.right <= L.box[0] + 1 || r.left >= L.box[2] - 1 || r.bottom <= L.box[1] + 1 || r.top >= L.box[3] - 1))
+                            out.push(name + ' 말풍선이 「' + L.t + '」을 가림');
+                    });
+                }
+                document.body.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+            });
+        });
+        return out;
+    };
+    const step = async (sel, i) => {
+        const b = document.querySelector(sel + i + '\\"]');
+        if (!b) return;
+        b.click();
+        await wait(200);
+        if (window.__jcChartLabels) bad.push(...window.__jcChartLabels());
+        bad.push(...tips());
+    };
+    const idx = [...document.querySelectorAll('.idx button[data-card]')].map(b => +b.getAttribute('data-card'));
+    const pgs = [...document.querySelectorAll('.pgs button[data-item]')].map(b => +b.getAttribute('data-item'));
+    const steps = idx.length ? idx.map(i => ['.idx button[data-card=\\"', i]) : pgs.map(i => ['.pgs button[data-item=\\"', i]);
+    if (!steps.length) {
+        if (window.__jcChartLabels) bad.push(...window.__jcChartLabels());
+        bad.push(...tips());
+    }
+    for (const [sel, i] of steps) await step(sel, i);
+    return bad;
+}
+"""
+
 # 페이지마다 「이게 없으면 화면이 안 그려진 것」을 하나씩 정한다.
 PROBES = {
     "/": """() => {
@@ -101,8 +222,9 @@ PROBES = {
         const tabs = document.querySelectorAll('[data-tab]').length;
         const broken = /불러오지 못했습니다/.test(document.body.innerText);
         const num = chartNumbers();
-        return {ok: cards >= 1 && tabs >= 2 && !broken && !num.length,
-                detail: `카드 ${cards} · 탭 ${tabs} · 도표숫자 ${num.length}${num.length ? ' — ' + num.slice(0, 3).join(' / ') : ''}${broken ? ' · 불러오기 실패' : ''}`};
+        const lab = chartLabels();
+        return {ok: cards >= 1 && tabs >= 2 && !broken && !num.length && !lab.length,
+                detail: `카드 ${cards} · 탭 ${tabs} · 도표숫자 ${num.length} · 도표라벨 ${lab.length}${(num.length || lab.length) ? ' — ' + num.concat(lab).slice(0, 3).join(' / ') : ''}${broken ? ' · 불러오기 실패' : ''}`};
     }""",
     "/thermometer/": """() => {
         // 산업 목록과 두 온도계가 그려졌는가. 온도는 자료에 따라 달라지므로 게이트로 삼지 않는다.
@@ -259,14 +381,15 @@ PROBES = {
         const chips = document.querySelectorAll('[data-sector]').length;
         const broken = /불러오지 못했습니다|이 날의 지면이 없습니다/.test(document.body.innerText);
         const num = chartNumbers();
-        return {ok: art >= 100 && chips >= 1 && !broken && !num.length,
-                detail: `기사 본문 ${art}자 · 분류 칩 ${chips} · 도표숫자 ${num.length}${num.length ? ' — ' + num.slice(0, 3).join(' / ') : ''}${broken ? ' · 지면 없음' : ''}`};
+        const lab = chartLabels();
+        return {ok: art >= 100 && chips >= 1 && !broken && !num.length && !lab.length,
+                detail: `기사 본문 ${art}자 · 분류 칩 ${chips} · 도표숫자 ${num.length} · 도표라벨 ${lab.length}${(num.length || lab.length) ? ' — ' + num.concat(lab).slice(0, 3).join(' / ') : ''}${broken ? ' · 지면 없음' : ''}`};
     }""",
 }
 
-# 도표가 있는 두 지면은 probe 안에 도표 숫자 점검(chartNumbers)을 심어 함께 잰다.
+# 도표가 있는 두 지면은 probe 안에 도표 숫자·라벨 점검을 심어 함께 잰다.
 for _p in ("/briefing/", "/emerging/"):
-    PROBES[_p] = PROBES[_p].replace("() => {", "() => {" + CHART_NUMBERS_JS, 1)
+    PROBES[_p] = PROBES[_p].replace("() => {", "() => {" + CHART_NUMBERS_JS + CHART_LABELS_JS, 1)
 
 # 섹터마다 화면이 «실제로 그려졌는가»를 재는 개별 지시가 없을 때 쓰는 공통 지시.
 #   빈 화면·자료 불러오기 실패를 잡고, 지면마다 다른 내용은 보지 않는다.
@@ -1076,6 +1199,13 @@ def run(args):
                     page.wait_for_timeout(args.settle)
                     measured = page.evaluate(MEASURE)
                     probe = page.evaluate(PROBES.get(page_path, GENERIC_PROBE))
+                    if page_path in ("/briefing/", "/emerging/"):
+                        # 도표 ⓘ 말풍선이 값 라벨을 가리는가 — 누를 칸을 실제로 열어 잰다
+                        tip_bad = page.evaluate(CHART_TIPS_JS)
+                        if tip_bad:
+                            issues.extend(tip_bad[:4])
+                            if len(tip_bad) > 4:
+                                issues.append(f"도표 말풍선 가림 {len(tip_bad)}곳")
 
                     if console_errors:
                         issues.extend(console_errors[:4])

@@ -51,33 +51,64 @@
     var ax = JC_AXL.plan(labels, { width: iw, font: 11, gap: 9 });
     var fold = ax.fold, PB = fold ? 34 : 24, H = pt + CW.H + PB;
     var y = function (v) { return pt + (hi - v) / (hi - lo || 1) * CW.H; };
-    var g = '', lowLab = 0;
+    var g = '', lowLab = 0, vboxes = [];
     /* 글자 폭만큼 도표 밖으로 나가지 않게 가운데를 당긴다(선그래프의 양끝 이름표) */
     var midX = function (x, t, fs, wt) {
       var hw = JC_AXL.measure(t, fs, wt) / 2;
       if (x - hw < 1) x = 1 + hw; if (x + hw > w - 1) x = w - 1 - hw;
       return x;
     };
+    /* 값 라벨 — 빼기 부호는 공용 규칙(짧은 선)으로 그리고, 앉힌 자리를 기억해 둔다(말풍선·기준선이 피해 가도록) */
+    var label = function (x, yy, v, anchor) {
+      var t = String(fmt(v, 2)), an = anchor || 'middle';
+      var wv = JC_AXL.numW(t, 10.5, 700);
+      if (an === 'end') { if (x - wv < 1) x = 1 + wv; }
+      else if (an === 'middle') { if (x - wv / 2 < 1) x = 1 + wv / 2; else if (x + wv / 2 > w - 1) x = w - 1 - wv / 2; }
+      else { if (x + wv > w - 1) x = w - 1 - wv; }
+      var left = an === 'end' ? x - wv : an === 'middle' ? x - wv / 2 : x;
+      vboxes.push([left, yy - 9, left + wv, yy + 2]);
+      return JC_AXL.num(t, { x: x, y: yy, anchor: an, fs: 10.5, weight: 700, fill: 'var(--ink)' }).html;
+    };
 
     tk.forEach(function (t) {
       g += '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + y(t).toFixed(1) + '" y2="' + y(t).toFixed(1) + '" stroke="var(--line)" stroke-width="1"/>' +
-        '<text x="' + (pl - 6) + '" y="' + (y(t) + 3.4).toFixed(1) + '" text-anchor="end" font-size="10.5" fill="var(--dim)">' + esc(fmt(t, 2)) + '</text>';
+        JC_AXL.num(fmt(t, 2), { x: pl - 6, y: y(t) + 3.4, anchor: 'end', fs: 10.5, fill: 'var(--dim)' }).html;
     });
 
     var xOf;
     if (m.chart === 'line') {
       xOf = function (i) { return n === 1 ? pl + iw / 2 : pl + (iw / (n - 1)) * i; };
-      S.forEach(function (s, si) {
+      /* 선·점을 먼저 다 그리고, 값 라벨은 «선·점에서 비킨 자리»를 골라 앉힌다(briefing과 같은 규칙). */
+      var PL = S.map(function (s) {
         var pts = []; arr(s.values).forEach(function (v, i) { if (v != null && !isNaN(v)) pts.push([xOf(i), y(v), v]); });
         if (pts.length > 1) g += '<polyline fill="none" stroke="' + (s.emphasis ? 'var(--acc)' : 'var(--c-sub)') + '" stroke-width="' + (s.emphasis ? 2.2 : 1.5) + '" stroke-linejoin="round" points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '"/>';
         pts.forEach(function (p) {
           g += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (s.emphasis ? 3 : 2.4) + '" fill="' + (s.emphasis ? 'var(--acc)' : 'var(--c-sub)') + '"/>';
-          if (si === 0) {
-            var ltxt = fmt(p[2], 2), lw = JC_AXL.measure(String(ltxt), 10.5, 700), lx = p[0];
-            if (lx - lw / 2 < 1) lx = 1 + lw / 2; else if (lx + lw / 2 > w - 1) lx = w - 1 - lw / 2;
-            g += '<text x="' + lx.toFixed(1) + '" y="' + (p[1] - 7).toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(ltxt) + '</text>';
-          }
         });
+        return pts;
+      });
+      var segs = [], dots = [];
+      PL.forEach(function (pts, si) {
+        pts.forEach(function (p) { dots.push([p[0], p[1], S[si].emphasis ? 3 : 2.4]); });
+        for (var i = 1; i < pts.length; i++) segs.push([pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]]);
+      });
+      var pts0 = PL[0], plotB = pt + CW.H;
+      pts0.forEach(function (p) {
+        var cands = [[0, -7, 'middle'], [0, 15, 'middle'], [-7, -4, 'end'], [7, -4, 'start'], [-7, 11, 'end'], [7, 11, 'start']];
+        var t = String(fmt(p[2], 2)), wv = JC_AXL.numW(t, 10.5, 700), pick = null;
+        for (var k = 0; k < cands.length && !pick; k++) {
+          var c = cands[k], ax2 = p[0] + c[0], ay2 = p[1] + c[1], an2 = c[2];
+          var lf = an2 === 'end' ? ax2 - wv : an2 === 'middle' ? ax2 - wv / 2 : ax2;
+          var box = [lf, ay2 - 9, lf + wv, ay2 + 2];
+          if (box[0] < 1 || box[2] > w - 1 || box[1] < 1 || box[3] > plotB + 3) continue;
+          var bad = false, q;
+          for (q = 0; q < segs.length && !bad; q++) if (JC_AXL.hitSeg(box, segs[q])) bad = true;
+          for (q = 0; q < dots.length && !bad; q++) if (JC_AXL.hitDot(box, dots[q])) bad = true;
+          for (q = 0; q < vboxes.length && !bad; q++) if (JC_AXL.hitBox(box, vboxes[q])) bad = true;
+          if (!bad) pick = [ax2, ay2, an2];
+        }
+        if (!pick) pick = [p[0], p[1] - 7, 'middle'];
+        g += label(pick[0], pick[1], p[2], pick[2]);
       });
     } else {
       xOf = function (i) { return pl + slot * i + slot / 2; };
@@ -91,11 +122,8 @@
           var yv = y(v), top = Math.min(yv, base), h = Math.max(1.5, Math.abs(yv - base));
           g += '<rect x="' + x.toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="1.5" fill="' + (s.emphasis ? 'var(--acc)' : 'var(--c-sub)') + '"/>';
           var ly = v >= 0 ? top - 4 : top + h + 10;
-          if (v < 0) lowLab = Math.max(lowLab, ly);   /* 0 아래로 내려간 값 라벨 — 축 이름표 줄을 밀아낸다 */
-          /* 도표 오른쪽·왼쪽 밖으로 값 라벨이 넘치지 않게 가운데를 당긴다 */
-          var vtxt = fmt(v, 2), vw2 = JC_AXL.measure(String(vtxt), 10.5, 700), vcx = x + bw / 2;
-          if (vcx - vw2 / 2 < 1) vcx = 1 + vw2 / 2; else if (vcx + vw2 / 2 > w - 1) vcx = w - 1 - vw2 / 2;
-          g += '<text x="' + vcx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(vtxt) + '</text>';
+          if (v < 0) lowLab = Math.max(lowLab, ly);   /* 0 아래로 내려간 값 라벨 — 축 이름표 줄을 밀어낸다 */
+          g += label(x + bw / 2, ly, v);
         });
       });
       g += '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + base.toFixed(1) + '" y2="' + base.toFixed(1) + '" stroke="var(--line-2)" stroke-width="1"/>';
@@ -138,6 +166,7 @@
     }
 
     var aria = S.map(function (s) { return s.name + ': ' + labels.map(function (lb, i) { var v = arr(s.values)[i]; return lb + ' ' + (v == null ? '값 없음' : fmt(v, 2)); }).join(', '); }).join(' / ');
+    chartInner.boxes = vboxes;   /* ⓘ 말풍선이 값 라벨을 가리지 않게 공용 모듈에 넘긴다 */
     var legend = S.length > 1 ? '<span>' + S.map(function (s) { return esc(s.name); }).join(' · ') + '</span>' : '';
     return '<div class="fig-h"><b>' + esc(m.label) + '</b><span>' + esc(m.unit || '') + (m.cagr != null ? ' · 연평균 ' + esc(fmt(m.cagr, 1)) + '%' : '') + '</span></div>' +
       '<svg class="chs" viewBox="0 0 ' + Math.round(w) + ' ' + H + '" width="' + Math.round(w) + '" height="' + H + '" role="img" aria-label="' + esc(aria + ' (단위 ' + (m.unit || '') + ')') + '">' + axs + g + '</svg>' +
@@ -154,12 +183,19 @@
     JC_AXL.close();
     JC_AXL.font(st.fontFamily);
     fig.innerHTML = chartInner(fig._m, w);
+    fig._vlab = chartInner.boxes || [];
     fig._w = w;
     if (fig.firstChild) JC_AXL.bind(fig);
   }
   var figRO = window.ResizeObserver ? new ResizeObserver(function (list) {
     for (var i = 0; i < list.length; i++) paintFig(list[i].target);
   }) : null;
+  /* 글꼴이 늦게 오면 첫 그리기가 대체 글꼴 폭으로 이름표를 접지 못한다 — 준비되면 한 번 다시 그린다. */
+  function repaintFigs() {
+    Array.prototype.forEach.call(document.querySelectorAll('figure.fig[data-cvm]'), function (fig) { fig._w = 0; });
+    Array.prototype.forEach.call(document.querySelectorAll('figure.fig[data-cvm]'), paintFig);
+  }
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(repaintFigs);
   function paintCharts(root, it) {
     var fig = root.querySelector('figure.fig[data-cvm]');
     if (!fig) return;
