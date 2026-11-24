@@ -2,7 +2,7 @@
  * 내담자 언어 번역기 · 화면 엔진
  *
  * 데이터(고치지 않고 읽기만 한다)
- *   data/terms.json  client-language-translator v2.2.0 — 용어 2,643
+ *   data/terms.json  client-language-translator v2.3.0 — 용어 5,020
  *
  * 주소
  *   ?q=MES          다른 섹터·개인비서에서 낱말로 바로 들어온다(정확히 맞으면 그 용어를 연다)
@@ -31,7 +31,10 @@
     talk: '상담 대화', transit: '환승노선도', parsons: '파슨스 원전', labor: '노동시장 산책', cert: '자격증 도감',
     company: '기업 명함첩', thermometer: '산업 온도계', reality: '취업 현위치', briefing: 'Today’s Briefing',
     emerging: '신산업 브리핑', taxonomy: '직무분류', portals: '채용 사이트', surgery: '서류 해부실',
-    interview: '면접 전술 덱', portfolio: '포트폴리오 편집실', law: '직업상담 법전'
+    interview: '면접 전술 덱', portfolio: '포트폴리오 편집실', law: '직업상담 법전',
+    'fin-lab': '재무제표 해석', 'kdt-calc': '국비 자부담 계산', 'pay-calc': '급여·근로 계산',
+    'policy-match': '지원제도 매칭', posting: '공고 점검대', valuechain: '산업 공정 지도',
+    'work-filter': '직업 현실 필터'
   };
   var QPATTERN = { taxonomy: 1, company: 1, thermometer: 1, emerging: 1, decalcomania: 1, univ: 1, grad: 1 };
   var HPATTERN = { cert: '#list?q=' };
