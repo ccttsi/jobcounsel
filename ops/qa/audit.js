@@ -2,8 +2,8 @@
 /* 공용 실화면 검수 (ops/ROLES.md — Playwright 역할)
    사용: node ops/qa/audit.js [경로…]    예) node ops/qa/audit.js reality/ briefing/
    경로를 주지 않으면 대문만 잰다. 저장소 루트를 정적 서버로 띄워 폭·테마별로 잰다.
-   잰 것: 콘솔·페이지 오류(외부 글꼴 CDN 차단 제외), 가로 넘침, 44px 미달, 화면 분량(문서 높이 ÷ 화면 높이), 대기 rAF.
-   기준: 오류 0 · 넘침 0 · 44px 미달 0 · 화면 분량 큰 화면 ≤ 1.5, 휴대폰 ≤ 2.5(긴글 읽기 화면은 예외로 기록).
+   잰 것: 콘솔·페이지 오류(외부 글꼴 CDN 차단 제외), 가로 넘침, 44px 미달, 도표 숫자(폰트·tabular-nums·자간), 화면 분량(문서 높이 ÷ 화면 높이), 대기 rAF.
+   기준: 오류 0 · 넘침 0 · 44px 미달 0 · 도표숫자 0 · 화면 분량 큰 화면 ≤ 1.5, 휴대폰 ≤ 2.5(긴글 읽기 화면은 예외로 기록).
    일회성 시험·가짜 데이터는 이 폴더에 넣지 않는다(세션 작업 폴더에서 브라우저 안으로만 주입). */
 'use strict';
 const path = require('path');
@@ -92,6 +92,27 @@ function serve() {
           else if (Math.abs(pd[1] - pd[3]) < .6 && !leftish && Math.abs(lf - rt) > 1.5) chipBad.push('가로 ' + Math.round(Math.abs(lf - rt) * 10) / 10 + 'px ' + name + ' 「' + (el.textContent || '').trim().slice(0, 10) + '」');
         });
         Object.keys(_rows).forEach(k => { const a = _rows[k]; if (a.length > 1 && a.some(Boolean) && a.some(x => !x)) chipBad.push('그림자 불일치 ' + k.split('|')[1] + ' ' + a.filter(x => !x).length + '/' + a.length); });
+        /* 도표 숫자 — 폰트·고정폭·자간 (DESIGN.md §8-2, 2026-11-24).
+           상속에 맡기면 body의 letter-spacing(-.16px)이 10.5px 숫자까지 내려가고,
+           Pretendard의 비례 숫자는 커닝으로 「00」이 2px쯤 좁아져 Y축 500이 「5 00」으로 벌어진다. */
+        const nums = [];
+        document.querySelectorAll('svg.chs text').forEach(el => {
+          const s = getComputedStyle(el), txt = (el.textContent || '').trim();
+          if (!/\d/.test(txt)) return;
+          const who = '도표숫자「' + txt.slice(0, 12) + '」';
+          if (!/Pretendard/.test(s.fontFamily)) nums.push(who + ' 폰트 ' + s.fontFamily.slice(0, 18));
+          if (!/tabular-nums/.test(s.fontVariantNumeric)) nums.push(who + ' tabular-nums 없음');
+          if (!/^(normal|0px|0)$/.test(s.letterSpacing)) nums.push(who + ' 자간 ' + s.letterSpacing);
+          /* 숫자만 있는 이름표는 글자 사이 간격이 모두 같아야 한다(다른 글자·쉼표는 뺀다) */
+          if (!/^\d{2,}$/.test(txt)) return;
+          const adv = [];
+          for (let i = 1; i < txt.length; i++) {
+            try { adv.push(+(el.getStartPositionOfChar(i).x - el.getStartPositionOfChar(i - 1).x).toFixed(2)); } catch (e) {}
+          }
+          /* 1px 안쪽 차이는 글자 위치의 소수점 반올림이라 문제가 아니다(7.33px 자리를 7·8로 그린다).
+             커닝으로 한 글자가 좁아지면 2px 안팎으로 벌어지므로 1.2px를 넘을 때만 실패로 본다. */
+          if (adv.length > 1 && Math.max(...adv) - Math.min(...adv) > 1.2) nums.push(who + ' 자간 불균일 ' + adv.join('/'));
+        });
         document.querySelectorAll('a,button,select,input,summary,[role=button],[role=tab]').forEach(el => {
           if (el.closest('#jc-marker-ui,#jc-imm-dock')) return; const q = el.getBoundingClientRect(); if (!q.width || !q.height) return;
           const inline = el.tagName === 'A' && getComputedStyle(el).display === 'inline';
@@ -99,13 +120,13 @@ function serve() {
           const lab = el.tagName === 'INPUT' && /^(checkbox|radio)$/.test(el.type) && el.closest('label'); if (lab) { const lq = lab.getBoundingClientRect(); if (lq.width >= 43.5 && lq.height >= 43.5) return; }
           if (!inline && (q.width < 43.5 || q.height < 43.5)) small.push((el.id || String(el.className).split(' ')[0] || el.tagName) + ' ' + Math.round(q.width) + 'x' + Math.round(q.height));
         });
-        return { screens: +(document.documentElement.scrollHeight / innerHeight).toFixed(1), overflow: document.documentElement.scrollWidth - innerWidth, small: small.slice(0, 6), smallCount: small.length, chip: chipBad.slice(0, 6), chipCount: chipBad.length };
+        return { screens: +(document.documentElement.scrollHeight / innerHeight).toFixed(1), overflow: document.documentElement.scrollWidth - innerWidth, small: small.slice(0, 6), smallCount: small.length, chip: chipBad.slice(0, 6), chipCount: chipBad.length, nums };
       });
       const idle = await p.evaluate(() => new Promise(res => { let n = 0; const o = requestAnimationFrame; window.requestAnimationFrame = f => { n++; return o(f); }; setTimeout(() => { window.requestAnimationFrame = o; res(n); }, 3000); }));
-      const bad = errs.length || r.overflow > 0 || r.smallCount || r.chipCount || r.screens > LIMIT[kind] || idle > 10;
+      const bad = errs.length || r.overflow > 0 || r.smallCount || r.chipCount || r.nums.length || r.screens > LIMIT[kind] || idle > 10;
       if (bad) fail++;
-      console.log(`${bad ? '✗' : '✓'} /${pg} ${w}x${h} ${theme}  오류 ${errs.length} · 넘침 ${r.overflow} · 44px 미달 ${r.smallCount} · 칩 정렬 ${r.chipCount} · 화면 ${r.screens}(기준 ${LIMIT[kind]}) · 대기 rAF ${idle}` +
-        (errs.length ? '\n    ' + errs.join('\n    ') : '') + (r.smallCount ? '\n    ' + r.small.join(' | ') : '') + (r.chipCount ? '\n    ' + r.chip.join(' | ') : ''));
+      console.log(`${bad ? '✗' : '✓'} /${pg} ${w}x${h} ${theme}  오류 ${errs.length} · 넘침 ${r.overflow} · 44px 미달 ${r.smallCount} · 칩 정렬 ${r.chipCount} · 도표숫자 ${r.nums.length} · 화면 ${r.screens}(기준 ${LIMIT[kind]}) · 대기 rAF ${idle}` +
+        (errs.length ? '\n    ' + errs.join('\n    ') : '') + (r.smallCount ? '\n    ' + r.small.join(' | ') : '') + (r.chipCount ? '\n    ' + r.chip.join(' | ') : '') + (r.nums.length ? '\n    ' + r.nums.slice(0, 6).join(' | ') : ''));
       await c.close();
     }
   }
