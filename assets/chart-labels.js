@@ -1,6 +1,8 @@
 /* 도표 X축 라벨 — 긴 이름은 짧게 접고, 막대·라벨을 누르면 전체 이름을 말풍선으로 띄운다.
    브리핑(briefing/app.js)·신산업(emerging/app.js) 도표가 함께 쓴다.
-   규칙: 라벨이 제 칸에 다 들어가면 도표는 지금 모습 그대로 두고, 하나라도 넘칠 때만 접는다. */
+   규칙: 라벨이 제 칸에 다 들어가면 도표는 지금 모습 그대로 두고, 하나라도 넘칠 때만 접는다.
+   접을 때 막대 아래에는 짧은 핵심 이름 1줄 + ⓘ만 남긴다. 괄호 안 기간·출처 같은 부가설명은
+   아래에 다시 쓰지 않고 말풍선에서만 보여 준다(같은 이름이 둘이어도 1줄 유지, 말풍선으로 구분). */
 (function () {
   'use strict';
   if (window.JC_AXL) return;
@@ -57,20 +59,15 @@
     var items = labels.map(function (lb) {
       var u = unwrap(lb);
       return { full: String(lb == null ? '' : lb), core: u.core, note: u.note,
-        fw: measure(String(lb == null ? '' : lb), fs, 400), cw: measure(u.core, fs, 600),
-        nw: measure(u.note, fs - 0.5, 500), coreText: u.core, noteText: '', showNote: false };
+        fw: measure(String(lb == null ? '' : lb), fs, 400),
+        coreText: u.core };
     });
     var fold = false;
     for (var i = 0; i < n; i++) if (items[i].fw > slot - gap) fold = true;
     if (!fold) return { fold: false, slot: slot, font: fs, items: items };
-    /* 접을 때: 이름이 겹치는 항목은 괄호 안 설명을 두 번째 줄에 남겨 서로 구분되게 한다. */
-    var seen = {}, dup = {};
-    items.forEach(function (it) { if (seen[it.core]) dup[it.core] = 1; seen[it.core] = 1; });
+    /* 접을 때: 핵심 이름 한 줄만 남긴다. 괄호 안 설명은 아래에 쓰지 않고 말풍선(it.full)에서만. */
     items.forEach(function (it) {
-      var maxW = Math.max(16, slot - 6);
-      it.coreText = fit(it.core, maxW, fs, 600);
-      it.showNote = !!it.note && (!!dup[it.core] || it.nw <= maxW);
-      it.noteText = it.showNote ? fit(it.note, maxW, fs - 0.5, 500) : '';
+      it.coreText = fit(it.core, Math.max(16, slot - 6), fs, 600);
     });
     return { fold: true, slot: slot, font: fs, items: items };
   }

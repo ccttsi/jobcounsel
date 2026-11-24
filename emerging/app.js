@@ -49,10 +49,15 @@
     var pl = CW.PL, pr = CW.PR, pt = CW.PT;
     var iw = Math.max(60, w - pl - pr), slot = iw / n;
     var ax = JC_AXL.plan(labels, { width: iw, font: 11, gap: 9 });
-    var fold = ax.fold, noteLine = fold && ax.items.some(function (x) { return x.showNote; });
-    var PB = fold ? (noteLine ? 46 : 34) : 24, H = pt + CW.H + PB;
+    var fold = ax.fold, PB = fold ? 34 : 24, H = pt + CW.H + PB;
     var y = function (v) { return pt + (hi - v) / (hi - lo || 1) * CW.H; };
-    var g = '';
+    var g = '', lowLab = 0;
+    /* 글자 폭만큼 도표 밖으로 나가지 않게 가운데를 당긴다(선그래프의 양끝 이름표) */
+    var midX = function (x, t, fs, wt) {
+      var hw = JC_AXL.measure(t, fs, wt) / 2;
+      if (x - hw < 1) x = 1 + hw; if (x + hw > w - 1) x = w - 1 - hw;
+      return x;
+    };
 
     tk.forEach(function (t) {
       g += '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + y(t).toFixed(1) + '" y2="' + y(t).toFixed(1) + '" stroke="var(--line)" stroke-width="1"/>' +
@@ -67,7 +72,11 @@
         if (pts.length > 1) g += '<polyline fill="none" stroke="' + (s.emphasis ? 'var(--acc)' : 'var(--c-sub)') + '" stroke-width="' + (s.emphasis ? 2.2 : 1.5) + '" stroke-linejoin="round" points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '"/>';
         pts.forEach(function (p) {
           g += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (s.emphasis ? 3 : 2.4) + '" fill="' + (s.emphasis ? 'var(--acc)' : 'var(--c-sub)') + '"/>';
-          if (si === 0) g += '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] - 7).toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(fmt(p[2], 2)) + '</text>';
+          if (si === 0) {
+            var ltxt = fmt(p[2], 2), lw = JC_AXL.measure(String(ltxt), 10.5, 700), lx = p[0];
+            if (lx - lw / 2 < 1) lx = 1 + lw / 2; else if (lx + lw / 2 > w - 1) lx = w - 1 - lw / 2;
+            g += '<text x="' + lx.toFixed(1) + '" y="' + (p[1] - 7).toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(ltxt) + '</text>';
+          }
         });
       });
     } else {
@@ -81,23 +90,33 @@
           var x = cx - (bw * k + (k - 1) * 4) / 2 + (bw + 4) * j;
           var yv = y(v), top = Math.min(yv, base), h = Math.max(1.5, Math.abs(yv - base));
           g += '<rect x="' + x.toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="1.5" fill="' + (s.emphasis ? 'var(--acc)' : 'var(--c-sub)') + '"/>';
-          g += '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (v >= 0 ? top - 4 : top + h + 10).toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(fmt(v, 2)) + '</text>';
+          var ly = v >= 0 ? top - 4 : top + h + 10;
+          if (v < 0) lowLab = Math.max(lowLab, ly);   /* 0 아래로 내려간 값 라벨 — 축 이름표 줄을 밀아낸다 */
+          /* 도표 오른쪽·왼쪽 밖으로 값 라벨이 넘치지 않게 가운데를 당긴다 */
+          var vtxt = fmt(v, 2), vw2 = JC_AXL.measure(String(vtxt), 10.5, 700), vcx = x + bw / 2;
+          if (vcx - vw2 / 2 < 1) vcx = 1 + vw2 / 2; else if (vcx + vw2 / 2 > w - 1) vcx = w - 1 - vw2 / 2;
+          g += '<text x="' + vcx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(vtxt) + '</text>';
         });
       });
       g += '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + base.toFixed(1) + '" y2="' + base.toFixed(1) + '" stroke="var(--line-2)" stroke-width="1"/>';
     }
 
-    /* X축 이름표 — 다 들어가면 그대로, 넘치면 짧은 이름 + ⓘ */
+    /* 0 아래 값 라벨이 축 이름표 줄을 침범하면 도표 아래를 그만큼 늘린다(라벨을 지우지 않는다). */
+    if (lowLab > pt + CW.H) {
+      PB = Math.max(PB, Math.ceil(lowLab + 25 - pt - CW.H));
+      H = pt + CW.H + PB;
+    }
+
+    /* X축 이름표 — 다 들어가면 그대로, 넘치면 짧은 이름 1줄 + ⓘ(부가설명은 말풍선에서만) */
     var axs = '';
     if (!fold) {
       labels.forEach(function (lb, i) {
-        axs += '<text x="' + xOf(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11" fill="var(--muted)">' + esc(lb) + '</text>';
+        axs += '<text x="' + midX(xOf(i), lb, 11, 400).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11" fill="var(--muted)">' + esc(lb) + '</text>';
       });
     } else {
       ax.items.forEach(function (it, i) {
-        var cx = xOf(i).toFixed(1), y1 = it.showNote ? H - 32 : H - 22;
-        axs += '<text x="' + cx + '" y="' + y1 + '" text-anchor="middle" font-size="11" font-weight="600" fill="var(--muted)">' + esc(it.coreText) + '</text>';
-        if (it.showNote) axs += '<text x="' + cx + '" y="' + (H - 20) + '" text-anchor="middle" font-size="10.5" fill="var(--dim)">' + esc(it.noteText) + '</text>';
+        var cx = midX(xOf(i), it.coreText, 11, 600).toFixed(1);
+        axs += '<text x="' + cx + '" y="' + (H - 22) + '" text-anchor="middle" font-size="11" font-weight="600" fill="var(--muted)">' + esc(it.coreText) + '</text>';
         axs += JC_AXL.icon(+cx, H - 9, i);
       });
       ax.items.forEach(function (it, i) {
