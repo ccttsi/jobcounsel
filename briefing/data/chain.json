@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-25T07:09:46+09:00",
+ "generated_at": "2026-11-25T07:49:10+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -2221,6 +2221,17 @@
      "source_name": "미국 노동통계국(BLS) The Economics Daily",
      "source_url": "https://www.bls.gov/opub/ted/2026/consumer-prices-up-22-0-percent-over-5-years-ending-october-2026.htm",
      "published_at": "2026-11-19"
+    },
+    {
+     "date": "2026-11-25",
+     "card_id": "c07",
+     "title": "AI 노출 10%p 높은 전공, 첫해 소득 10% 적었다",
+     "kicker": "텍사스 공립대 졸업생 전체 · 대학원 진학은 늘었지만 소득 회복은 못 봐",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 댈러스 연방준비은행(Federal Reserve Bank of Dallas)",
+     "source_url": "https://www.dallasfed.org/research/papers/2026/wp2642",
+     "published_at": "2026-11-24"
     }
    ]
   },
@@ -4688,6 +4699,17 @@
      "source_name": "국가데이터처",
      "source_url": "https://mods.go.kr/board.es?act=view&bid=11113&list_no=448038&mid=a10301030500",
      "published_at": "2026-11-24"
+    },
+    {
+     "date": "2026-11-25",
+     "card_id": "c06",
+     "title": "AI 코딩 도구 도입 1년, 기술직 분기 채용 29% 줄었다",
+     "kicker": "다국적기업 5,414곳 · 신입·코딩 비중 높은 직무에 집중",
+     "category": "채용시장",
+     "region": "global",
+     "source_name": "arXiv (MIT·마이크로소프트 리서치)",
+     "source_url": "https://arxiv.org/abs/2611.31083",
+     "published_at": "2026-11-23"
     }
    ]
   },
@@ -5078,6 +5100,28 @@
      "source_name": "매일경제",
      "source_url": "https://www.mk.co.kr/news/economy/12216276",
      "published_at": "2026-11-23"
+    },
+    {
+     "date": "2026-11-25",
+     "card_id": "c04",
+     "title": "AI 에이전트에 많이 노출된 기업, 구인공고 2.11% 덜 늘었다",
+     "kicker": "구인공고 3,480만건 · 6개월 -2.11% / 9개월 -3.20%",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (LUISS대·댈러스 연준·로체스터대·예일대)",
+     "source_url": "https://arxiv.org/abs/2611.27210",
+     "published_at": "2026-11-23"
+    },
+    {
+     "date": "2026-11-25",
+     "card_id": "c08",
+     "title": "프랑스 AI 노출 최상위 5분위, 62.7%가 여성",
+     "kicker": "사무·회계 직무가 최상위 · AI 교육 지원은 31%, 미국은 56%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "HEC Paris (LIFT·INSEAD·프랑스 중앙은행 공동 연구)",
+     "source_url": "https://www.hec.edu/en/dare/economics-finance/63-france-s-most-ai-exposed-workers-are-women",
+     "published_at": "2026-11-23"
     }
    ]
   },
@@ -5325,6 +5369,17 @@
      "source_name": "미국 노동통계국(BLS)",
      "source_url": "https://www.bls.gov/news.release/laus.nr0.htm",
      "published_at": "2026-11-20"
+    },
+    {
+     "date": "2026-11-25",
+     "card_id": "c05",
+     "title": "미국 근로자 근속 중앙값 4.1년 — 숙박·음식점은 2.4년",
+     "kicker": "공공 5.6년 vs 민간 3.9년 · 연방정부 7.0년",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동통계국(BLS) The Economics Daily",
+     "source_url": "https://www.bls.gov/opub/ted/2026/median-tenure-with-current-employer-was-4-1-years-in-january-2026.htm",
+     "published_at": "2026-11-23"
     }
    ]
   }
