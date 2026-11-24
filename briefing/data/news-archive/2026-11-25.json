@@ -1,6 +1,6 @@
 {
- "schema_version": "1.2.0",
- "updated_at": "2026-11-25T07:09:43+09:00",
+ "schema_version": "1.1.0",
+ "updated_at": "2026-11-25T07:34:00+09:00",
  "date": "2026-11-25",
  "data_status": "ok",
  "data_status_note": null,
@@ -13,9 +13,9 @@
   },
   "global-2300": {
    "status": "ok",
-   "updated_at": "2026-11-22T23:09:00+09:00",
-   "last_ok": "2026-11-22",
-   "run_id": "br-20261122-2309"
+   "updated_at": "2026-11-25T07:34:00+09:00",
+   "last_ok": "2026-11-25",
+   "run_id": "br-20261125-0734"
   }
  },
  "main_themes": [
@@ -491,31 +491,31 @@
  ],
  "keywords": [
   {
+   "word": "청년 고용",
+   "count": 1
+  },
+  {
+   "word": "여성 고용",
+   "count": 1
+  },
+  {
    "word": "스마트공장",
    "count": 2
   },
   {
-   "word": "청년 고용",
-   "count": 2
-  },
-  {
    "word": "직업훈련",
-   "count": 2
+   "count": 1
   },
   {
    "word": "중소기업 AI",
    "count": 1
   },
   {
-   "word": "재택근무",
-   "count": 1
+   "word": "구인공고",
+   "count": 2
   },
   {
-   "word": "채용공고",
-   "count": 1
-  },
-  {
-   "word": "여성 고용",
+   "word": "근속연수",
    "count": 1
   }
  ],
@@ -655,6 +655,165 @@
    }
   },
   {
+   "id": "n20261125-05",
+   "issue_id": "iss-us-tenure-2026",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-25T07:34:00+09:00",
+   "run_id": "br-20261125-0734",
+   "headline": true,
+   "published_at": "2026-11-23",
+   "source": {
+    "source_name": "미국 노동통계국(BLS) The Economics Daily",
+    "source_url": "https://www.bls.gov/opub/ted/2026/median-tenure-with-current-employer-was-4-1-years-in-january-2026.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.bls.gov/opub/copyright-information.htm",
+     "scope": "본문 텍스트·도표 수치(기존 저작권 사진·삽화 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-25",
+     "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm)를 직접 확인(2026-11-25): 'BLS가 발행하는 모든 자료(인쇄·전자)는 기존 저작권이 있는 사진·삽화를 제외하고 퍼블릭 도메인이며, 별도 허가 없이 사용할 수 있다'. 도표는 글자 표로만 옮기고 그림은 싣지 않았습니다.",
+     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Median tenure with current employer was 4.1 years in January 2026” (November 23, 2026). AI 한국어 번역, 내용 변경 없음."
+    }
+   },
+   "title_original": "Median tenure with current employer was 4.1 years in January 2026",
+   "title_ko": "현 직장 근속연수 중앙값 4.1년(2026년 1월) — 미국 노동통계국",
+   "body_original": "The median number of years that wage and salary workers had been with their current employer was 4.1 years in January 2026. This means that half of all wage and salary workers had more than 4.1 years of tenure and half had less. Workers in the public sector had a median tenure of 5.6 years, considerably higher than the median for private-sector employees (3.9 years). One factor behind this difference is age, as government workers tend to be older on average than those in the private sector.\n\nWithin the private sector, workers in financial activities (5.0 years); mining, quarrying, and oil and gas extraction (4.9 years); manufacturing (4.9 years); and information (4.9 years) had the highest tenure among major industries. By contrast, workers in leisure and hospitality had the lowest median tenure (2.4 years). These differences in tenure reflect many factors, one of which is varying age distributions across the industries; workers in the major industries with the highest tenure tend to be older than those in leisure and hospitality.\n\nWithin the public sector, federal government employees had a higher median tenure (7.0 years) than state and local government employees (5.4 years each).\n\nThese data are from the Current Population Survey. To learn more, see Employee Tenure in 2026.\n\n[표: 업종별 현 직장 근속연수 중앙값(2026년 1월)] 전체 4.1 / 민간 3.9 / 농림어업 4.8 / 광업·채석·석유가스 4.9 / 건설 3.9 / 제조 4.9 / 도소매 3.4 / 운수·유틸리티 4.4 / 정보 4.9 / 금융 5.0 / 전문·사업서비스 3.8 / 교육·보건 3.9 / 숙박·음식점 2.4 / 기타서비스 4.2 / 공공 5.6 / 연방정부 7.0 / 주정부 5.4 / 지방정부 5.4 (단위: 년)",
+   "body_ko_ai": "2026년 1월 기준, 임금·급여 근로자가 현 직장에서 일한 기간의 중앙값은 4.1년이었다. 이는 임금·급여 근로자의 절반은 근속 4.1년을 넘고 절반은 그보다 짧다는 뜻이다. 공공부문 근로자의 근속 중앙값은 5.6년으로 민간부문 근로자(3.9년)의 중앙값보다 상당히 높았다. 이 차이의 한 요인은 연령이다. 정부 부문 근로자가 평균적으로 민간부문 근로자보다 나이가 많기 때문이다.\n\n민간부문 안에서는 금융업(5.0년), 광업·채석·석유 및 가스 추출(4.9년), 제조업(4.9년), 정보업(4.9년) 근로자의 근속이 주요 업종 가운데 가장 길었다. 반대로 숙박·음식점업 근로자의 근속 중앙값(2.4년)이 가장 짧았다. 근속의 이런 차이는 여러 요인을 반영하는데, 그중 하나는 업종별 연령 분포의 차이다. 근속이 가장 긴 주요 업종의 근로자는 숙박·음식점업 근로자보다 나이가 많은 편이다.\n\n공공부문 안에서는 연방정부 근로자의 근속 중앙값(7.0년)이 주정부·지방정부 근로자(각 5.4년)보다 높았다.\n\n이 자료는 현재인구조사(Current Population Survey)에서 나왔다. 자세한 내용은 「Employee Tenure in 2026」을 참고하라.\n\n[표: 업종별 현 직장 근속연수 중앙값(2026년 1월)] 전체 4.1 / 민간 3.9 / 농림어업 4.8 / 광업·채석·석유가스 4.9 / 건설 3.9 / 제조 4.9 / 도소매 3.4 / 운수·유틸리티 4.4 / 정보 4.9 / 금융 5.0 / 전문·사업서비스 3.8 / 교육·보건 3.9 / 숙박·음식점 2.4 / 기타서비스 4.2 / 공공 5.6 / 연방정부 7.0 / 주정부 5.4 / 지방정부 5.4 (단위: 년)",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-25T07:34:00+09:00"
+   },
+   "topics": [
+    "고용·정책",
+    "글로벌"
+   ],
+   "keywords": [
+    "근속연수"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "노동시장 분석"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261125-04",
+   "issue_id": "iss-agents-labor-2026",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-25T07:34:00+09:00",
+   "run_id": "br-20261125-0734",
+   "headline": true,
+   "published_at": "2026-11-23T21:23:41+09:00",
+   "source": {
+    "source_name": "arXiv (LUISS대·댈러스 연준·로체스터대·예일대)",
+    "source_url": "https://arxiv.org/abs/2611.27210",
+    "country": "US",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 본문(초록·본문 텍스트)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-25",
+     "evidence": "arXiv 초록 페이지의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-25). arXiv 기본 라이선스(재배포 제한)·CC BY-NC 계열 논문은 수록에서 뺐습니다.",
+     "attribution_text": "Borri, N., Cheremukhin, A., Liu, Y., & Tsyvinski, A. (2026), The Rise of Agents and the Labor Market, arXiv:2611.27210v2, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록)."
+    }
+   },
+   "title_original": "The Rise of Agents and the Labor Market",
+   "title_ko": "에이전트의 부상과 노동시장",
+   "body_original": "We provide the first economy-wide and cross-AI model evidence on the effects of agentic AI on labor demand. We combine proprietary OpenRouter data covering about two quadrillion tokens of realized AI consumption (2 percent of global AI token consumption) across more than 400 AI models, including 1.1 quadrillion agentic tokens, with the full text of 34.8 million U.S. job postings for public firms from Lightcast. We compute our measure of firm-level exposure to aggregate agentic AI consumption (agentic beta) using the comovement of U.S. public firms' stock returns with realized weekly aggregate agentic AI token consumption. We find that a one-standard-deviation increase in a firm's exposure to agentic AI predicts 2.11 percent lower growth in job postings over the next six months and 3.20 percent over nine months. We then conduct an event study based on the release of Claude Code 2.0, which significantly expanded the capabilities of AI agents, and show that a one-standard-deviation higher pre-release exposure to agentic AI predicts 4.73 percent lower posting growth over six months post the release. Furthermore, we show that the decrease in job postings is concentrated among non-senior jobs and is statistically insignificant for senior jobs. In contrast, we find no statistically significant relation between broad AI realized consumption exposure and subsequent job posting growth once agentic exposure is controlled for. Finally, we validate our market-implied agentic exposure measure using independent evidence from firms' mentions of AI deployment in securities filings and earnings calls.",
+   "body_ko_ai": "우리는 에이전트형 AI가 노동수요에 미치는 영향에 관한 첫 경제 전체·AI 모델 횡단 증거를 제시한다. 우리는 400개가 넘는 AI 모델에 걸친 약 2,000조 개(2 quadrillion) 토큰의 실제 AI 사용량(전 세계 AI 토큰 사용량의 2%) 중 1,100조 개의 에이전트 토큰을 포함한 OpenRouter 독점 데이터를, Lightcast의 미국 상장기업 구인공고 3,480만 건 전문과 결합했다. 우리는 미국 상장기업 주가수익률이 주간 집계 에이전트형 AI 토큰 사용량과 함께 움직이는 정도를 이용해, 기업의 집계 에이전트형 AI 사용량에 대한 노출도(에이전트 베타)를 계산한다. 기업의 에이전트형 AI 노출도가 1표준편차 높아지면 이후 6개월 동안 구인공고 증가율이 2.11% 낮아지고 9개월 동안은 3.20% 낮아진다는 것을 확인했다. 이어 AI 에이전트의 역량을 크게 확장한 Claude Code 2.0 출시를 사건연구로 삼아, 출시 전 에이전트형 AI 노출도가 1표준편차 높았던 기업은 출시 후 6개월 동안 공고 증가율이 4.73% 낮았다. 또한 구인공고 감소는 비(非)시니어 일자리에 집중되며 시니어 일자리에서는 통계적으로 유의하지 않다. 반대로 에이전트 노출도를 통제하면, 폭넓은 AI 실사용 노출도와 이후 구인공고 증가 사이에는 통계적으로 유의한 관계가 없다. 마지막으로 우리는 시장이 함의한 에이전트 노출도 지표를, 기업이 증권 신고서와 실적발표에서 AI 도입을 언급한 독립적 증거로 검증한다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-25T07:34:00+09:00"
+   },
+   "topics": [
+    "AI·직무",
+    "글로벌"
+   ],
+   "keywords": [
+    "구인공고"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "노동시장 분석"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261125-03",
+   "issue_id": "iss-copilot-hiring-2026",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-25T07:34:00+09:00",
+   "run_id": "br-20261125-0734",
+   "headline": true,
+   "published_at": "2026-11-24T02:33:22+09:00",
+   "source": {
+    "source_name": "arXiv (MIT·마이크로소프트 리서치)",
+    "source_url": "https://arxiv.org/abs/2611.31083",
+    "country": "US",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 본문(초록·본문 텍스트)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-25",
+     "evidence": "arXiv 초록 페이지의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-25). arXiv 기본 라이선스(재배포 제한)·CC BY-NC 계열 논문은 수록에서 뺐습니다.",
+     "attribution_text": "Raymond, L. & Dillon, E. (2026), AI-Assisted Programming and Labor Demand, arXiv:2611.31083, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록)."
+    }
+   },
+   "title_original": "AI-Assisted Programming and Labor Demand",
+   "title_ko": "AI 코딩 보조와 노동수요",
+   "body_original": "Generative AI has demonstrated human-level performance on technical work tasks, yet evidence on how these task-level capabilities are changing labor demand remains scarce. We study the firm-level adoption of GitHub Copilot, an AI coding assistant, across 5,414 multinational firms accounting for 38% of the U.S. programming workforce. To identify causal effects, we exploit a natural experiment generated by firms' predetermined software procurement cycles. Early AI-adopting firms hired more workers before the launch of GitHub Copilot and had larger, more technical, and older workforces. After one year, GitHub Copilot adoption reduces quarterly technical hiring by 29% among review-induced adopters, with no effect on separations, overall technical headcount, or vacancy duration. The hiring slowdown is concentrated in the subset of junior technical roles that involve the highest share of coding work. Overall, AI coding assistance causes firms to shift demand towards more experienced workers and roles that pair some coding with broader design responsibilities.",
+   "body_ko_ai": "생성형 AI는 기술적 업무 과업에서 인간 수준의 성과를 보여 왔지만, 이런 과업 수준 역량이 노동수요를 어떻게 바꾸는지에 대한 증거는 아직 드물다. 우리는 미국 프로그래밍 인력의 38%를 차지하는 다국적기업 5,414곳에서 AI 코딩 보조 도구인 GitHub Copilot의 기업 단위 도입을 연구한다. 인과 효과를 확인하기 위해 우리는 기업이 미리 정해 둔 소프트웨어 조달 주기가 만든 자연실험을 이용한다. AI를 먼저 도입한 기업은 GitHub Copilot 출시 전에 근로자를 더 많이 채용했고, 규모가 크고 기술 인력 비중이 높으며 연령대가 높은 인력 구조를 갖고 있었다. 1년 뒤 조달 주기에 따라 도입이 이뤄진 기업에서는 GitHub Copilot 도입으로 분기 기술직 채용이 29% 줄었으며, 이직(퇴사)·전체 기술직 인원·공석 채움 기간에는 영향이 없었다. 채용 둔화는 코딩 업무 비중이 가장 높은 신입 기술직 일부에 집중됐다. 종합하면 AI 코딩 보조는 기업의 수요를 더 경력이 많은 근로자와, 코딩과 더 넓은 설계 책임을 함께 맡는 직무 쪽으로 옮기게 한다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-25T07:34:00+09:00"
+   },
+   "topics": [
+    "AI·직무",
+    "취업시장"
+   ],
+   "keywords": [
+    "구인공고"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "취업지원"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
    "id": "n20261120-01",
    "issue_id": "iss-sme-ai-alliance",
    "theme_id": null,
@@ -696,114 +855,18 @@
     "full_text_allowed": true,
     "ai_translation_allowed": true
    }
-  },
-  {
-   "id": "n20261122-01",
-   "issue_id": "iss-ghana-tvet-2026",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-22T23:09:00+09:00",
-   "run_id": "br-20261122-2309",
-   "headline": true,
-   "published_at": "2026-11-21",
-   "source": {
-    "source_name": "Discover Education (Springer Nature)",
-    "source_url": "https://link.springer.com/article/10.1007/s44217-026-02455-0",
-    "country": "GH",
-    "license": {
-     "type": "CC-BY-4.0",
-     "name": "CC BY 4.0(저작자 표시)",
-     "url": "https://creativecommons.org/licenses/by/4.0/",
-     "attribution_text": "출처: Ahatsi, E., Nkansah, J.O. & Olanrewaju, O., 「Digital TVET transformation and youth workforce readiness in Ghana」, Discover Education 5:1370 (2026), CC BY 4.0. AI 한국어 번역, 내용 변경 없음.",
-     "verified": true,
-     "verified_at": "2026-11-22",
-     "evidence": "Crossref 메타데이터(DOI 10.1007/s44217-026-02455-0)의 라이선스 CC BY 4.0(vor) 확인 + 출판사 페이지 'Open access'·발행일 2026-11-21 직접 확인(2026-11-22)."
-    }
-   },
-   "title_original": "Digital TVET transformation and youth workforce readiness in Ghana: a conceptual framework for an integrated skills information architecture",
-   "title_ko": "가나의 디지털 TVET 전환과 청년 노동시장 준비도 — 통합 기술정보 구조를 위한 개념적 프레임워크",
-   "body_original": "Ghana’s youth labour market shows a persistent gap between the competencies produced by education and training and those employers demand. Technical and Vocational Education and Training (TVET) should narrow this gap but is constrained by fragmented information systems, an incompletely harmonised qualifications landscape, uneven digital capacity and weak incentives to act on labour-market intelligence. This conceptual paper aims to develop a framework for digitally transforming Ghana’s TVET system to strengthen alignment between skills provision and youth workforce readiness. An integrative review of 57 peer-reviewed, policy, institutional and statutory sources was undertaken, with grey literature appraised using the AACODS checklist and findings synthesised thematically through an evidence-to-framework matrix. Human capital, signalling, public-sector dynamic capabilities and socio-technical systems perspectives informed the analysis. Findings indicate that Ghana already has key building blocks (a Labour Market Information System, a planned TVET Management Information System, a National TVET Qualifications Framework and the Ghana Card), but these are unlinked and separately governed. The synthesis also suggests that better information is necessary but not sufficient: alignment is likely only where interoperability, decision rights and accountability incentives coexist. The framework connects four functions (sensing demand, translating it into curricula and qualifications, delivering technology-enabled practical learning, and recording and recognising competencies) through an interoperability core, with enabling conditions and seven testable propositions. The paper recommends a phased roadmap beginning with a national baseline audit, establishing data governance, interoperability standards and CTVET–GTEC qualification alignment before piloting, and conditioning scale-up on evaluative evidence and sustainable recurrent funding, aligned with SDG 4.",
-   "body_ko_ai": "가나의 청년 노동시장에는 교육과 훈련이 길러내는 역량과 고용주가 요구하는 역량 사이의 격차가 꾸준히 남아 있다. 직업기술교육훈련(TVET)이 이 격차를 좁혀야 하지만, 분절된 정보 시스템, 충분히 정합화되지 않은 자격 체계, 고르지 않은 디지털 역량, 노동시장 정보를 활용할 유인이 약하다는 점이 발목을 잡고 있다. 이 개념적 논문은 가나의 TVET 체계를 디지털로 전환해 기술 공급과 청년의 노동시장 준비도 사이의 정합성을 높이는 프레임워크를 개발하는 것을 목표로 한다. 동료심사·정책·제도·법령 자료 57건을 통합적으로 검토했고, 회색문헌은 AACODS 점검표로 평가했으며, 결과는 증거-프레임워크 행렬을 통해 주제별로 종합했다. 인적자본, 신호, 공공부문 동적 역량, 사회기술시스템 관점이 분석의 바탕이 되었다. 분석 결과 가나는 이미 핵심 구성요소(노동시장정보시스템, 계획 중인 TVET 경영정보시스템, 국가 TVET 자격체계, 가나카드)를 갖추고 있지만 이들은 서로 연결되지 않고 따로 관리되고 있었다. 또한 더 나은 정보는 필요조건일 뿐 충분조건은 아니며, 상호운용성·의사결정 권한·책임 유인이 함께 있을 때만 정합성이 높아질 수 있다고 본다. 프레임워크는 네 가지 기능(수요 감지, 교육과정·자격으로의 전환, 기술 기반 실습 제공, 역량 기록·인정)을 상호운용 핵심을 통해 연결하고, 여기에 여건과 검증 가능한 명제 7개를 붙였다. 논문은 국가 기준선 진단으로 시작해 데이터 거버넌스와 상호운용 표준, CTVET–GTEC 자격 정합을 먼저 세운 뒤 시범 적용하고, 평가 증거와 지속 가능한 경상재원을 조건으로 확대하라는 단계적 로드맵을 제안하며 SDG 4와 연결한다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "pickle-ai-translation",
-    "translated_at": "2026-11-22T23:09:00+09:00"
-   },
-   "topics": [
-    "고용·정책"
-   ],
-   "keywords": [
-    "청년 고용",
-    "직업훈련"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
-  },
-  {
-   "id": "n20261122-02",
-   "issue_id": "iss-wfh-disclosure-2026",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-22T23:09:00+09:00",
-   "run_id": "br-20261122-2309",
-   "headline": false,
-   "published_at": "2026-11-21",
-   "source": {
-    "source_name": "Review of Accounting Studies (Springer Nature)",
-    "source_url": "https://link.springer.com/article/10.1007/s11142-026-10001-4",
-    "country": "US",
-    "license": {
-     "type": "CC-BY-4.0",
-     "name": "CC BY 4.0(저작자 표시)",
-     "url": "https://creativecommons.org/licenses/by/4.0/",
-     "attribution_text": "출처: Ham, C., Hann, R.N., Wang, W. & Yang, J., 「Disclosing work-from-home flexibility to compete for talent? Evidence from job postings」, Review of Accounting Studies (2026), CC BY 4.0. AI 한국어 번역, 내용 변경 없음.",
-     "verified": true,
-     "verified_at": "2026-11-22",
-     "evidence": "Crossref 메타데이터(DOI 10.1007/s11142-026-10001-4)의 라이선스 CC BY 4.0(vor) 확인 + 출판사 페이지 'Open access'·발행일 2026-11-21 직접 확인(2026-11-22)."
-    }
-   },
-   "title_original": "Disclosing work-from-home flexibility to compete for talent? Evidence from job postings",
-   "title_ko": "인재를 끌기 위해 재택 유연성을 밝히는가? 구인공고에 나타난 증거",
-   "body_original": "Job postings serve as one of the primary means to communicate with prospective employees, enabling employers to highlight the benefits of the position and attract qualified applicants. As work-from-home flexibility has become increasingly prevalent, this study examines whether employers strategically disclose work-from-home flexibility in their job postings and how this disclosure is associated with hiring outcomes. Using a comprehensive sample of job postings from US employers between 2017 and 2024, we find that employers are more likely to disclose work-from-home flexibility when facing greater labor market competition and that disclosing this flexibility is associated with a higher job vacancy filling rate, especially when work-from-home information is disclosed in a more salient manner. However, we document a positive association between work-from-home disclosures and subsequent employee turnover, suggesting potential costs associated with these disclosures. These findings add to the growing literature on firms’ strategic disclosure targeted towards labor markets.",
-   "body_ko_ai": "구인공고는 잠재적 지원자와 소통하는 대표적인 수단으로, 고용주가 직무의 장점을 알리고 적합한 지원자를 끌어들이는 통로다. 재택근무 유연성이 갈수록 흔해지면서, 이 연구는 고용주가 구인공고에 재택 유연성을 전략적으로 밝히는지, 그리고 그 공시가 채용 결과와 어떻게 관련되는지를 살펴본다. 2017~2024년 미국 고용주의 구인공고를 폭넓게 표본으로 삼아 분석한 결과, 고용주는 노동시장 경쟁이 더 심할 때 재택 유연성을 밝힐 가능성이 더 높았고, 이 유연성을 밝히는 것은 공석 충원율이 더 높은 것과 관련이 있었으며 특히 재택 정보가 더 눈에 띄는 방식으로 제시될 때 그러했다. 다만 재택 공시와 이후 직원 이직 사이의 정(+)의 관련도 확인되어, 이런 공시에 따르는 비용이 있을 수 있음을 시사한다. 이 결과는 노동시장을 겨냥한 기업의 전략적 공시 연구에 더해진다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "pickle-ai-translation",
-    "translated_at": "2026-11-22T23:09:00+09:00"
-   },
-   "topics": [
-    "취업시장"
-   ],
-   "keywords": [
-    "재택근무",
-    "채용공고"
-   ],
-   "related_jobs": [
-    "직업상담사"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
   }
  ],
  "excluded": {
-  "count": 4,
+  "count": 2,
   "reasons": [
    {
-    "reason": "언론사 보도(PRESS) — 본문 재게시·번역 불가",
-    "count": 2
+    "reason": "기관 발표·보도자료(PRESS) — 본문 재게시·번역 불가",
+    "count": 1
    },
    {
-    "reason": "공공누리 미부착 공공 보도자료(KOGL-NONE) — 사실만 사용",
-    "count": 2
+    "reason": "표준 오픈 라이선스 미부착 공공·기관 연구자료(KOGL-NONE) — 사실만 사용",
+    "count": 1
    }
   ]
  },
