@@ -1,6 +1,33 @@
 /* 도표 X축 라벨 — 접힌 이름(.axi 트리거 아이콘)과 말풍선(.axp).
    briefing·emerging 공용. 색은 각 지면의 토큰을 그대로 쓴다. */
 
+/* ── 도표의 숫자 글자 ─────────────────────────────────────────────────
+   도표 안 숫자(Y축 눈금·값 라벨·범례)는 상속에 기대지 않고 여기서 못 박는다.
+   상속에 맡기면 두 가지가 어긋난다(2026-11-24 태화님 「250과 500도 숫자간 간격이
+   이상하다」): ① body의 `letter-spacing:-.01em`은 16px 기준 -.16px로 계산돼
+   그대로 글자 크기 10.5px 숫자에 물려 내려간다 ② Pretendard의 비례 숫자는 커닝이
+   켜진 엔진에서 「00」처럼 같은 숫자가 이어지면 한 글자 폭(약 2px)만큼 좁아진다 —
+   눈금 500이 「5 00」으로 벌어져 보인 원인이다. 그래서 도표 숫자는
+   고정폭(tabular-nums)·커닝 없음·자간 0으로 그린다(엔진·기기와 무관하게 같은 폭). */
+svg.chs text{
+  font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:"kern" 0,"tnum" 1;
+  font-kerning:none;
+  letter-spacing:0;
+  word-spacing:0;
+  /* 글자 자리를 소수점 그대로 앉힌다 — 픽셀에 맞춰 반올림하면 7.33px짜리 자리가
+     7·8·7로 흔들려 「2022」가 「2 022」처럼 보인다(390px 실측). */
+  text-rendering:geometricPrecision;
+}
+/* 도표 머리·범례·각주에 섞인 숫자(단위·연평균·기간)도 같은 규칙 */
+.fig-h,.fig figcaption,figure.ch figcaption,.lg{
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:"kern" 0,"tnum" 1;
+  font-kerning:none;
+  text-rendering:geometricPrecision;
+}
+
 /* 도표 안의 누를 수 있는 칸: 보이지 않는 사각형이 넓은 손가락 자리를 만든다 */
 .axh{fill:none;stroke:none;cursor:pointer}
 .axh:focus{outline:0}
