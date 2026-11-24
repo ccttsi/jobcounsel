@@ -194,6 +194,9 @@
     }
 
     /* X축 이름표 — 제 칸에 다 들어가면 그대로, 하나라도 넘치면 짧은 이름 1줄 + ⓘ로 접는다(부가설명은 말풍선에서만) */
+    /* 접었을 때 ⓘ는 «보이는 이름에서 빠진 것이 있는 칸»에만 — 숨긴 게 없는 칸(예: 2022)은 눌러도 같은 글자만 떠서 중복이었다
+       (2026-11-24 태화님 「말풍선 내용과 아래 이름표가 중복」). */
+    var hid = function (it) { var f = function (t) { return String(t || '').replace(/\s+/g, ' ').trim(); }; return f(it.full) !== f(it.coreText); };
     var axs = '';
     if (!fold) {
       labels.forEach(function (lb, i) {
@@ -203,10 +206,11 @@
       ax.items.forEach(function (it, i) {
         var cx = midX(xOf(i), it.coreText, 11, 600).toFixed(1);
         axs += '<text x="' + cx + '" y="' + (H - 22) + '" text-anchor="middle" font-size="11" font-weight="600" fill="var(--muted)">' + esc(it.coreText) + '</text>';
-        axs += JC_AXL.icon(+cx, H - 9, i);
+        if (hid(it)) axs += JC_AXL.icon(+cx, H - 9, i);
       });
       /* 막대·이름표를 함께 덮는 누름 자리 — 손가락이 닿는 넓이(칸 전체) */
       ax.items.forEach(function (it, i) {
+        if (!hid(it)) return;   /* 숨긴 내용이 없는 칸은 누를 거리가 없다 */
         var hw = type === 'slope' ? Math.min(iw / 2, 140) : slot;
         var x = Math.max(0, xOf(i) - hw / 2), wd = Math.min(w - x, hw);
         g += '<rect class="axh" x="' + x.toFixed(1) + '" y="0" width="' + wd.toFixed(1) + '" height="' + H + '" pointer-events="all" data-ax="' + i + '" data-axl="' + esc(it.full) + '" role="button" tabindex="0" aria-expanded="false" aria-label="' + esc(it.full) + ' 전체 이름 보기"/>';
