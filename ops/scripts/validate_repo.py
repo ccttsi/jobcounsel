@@ -217,6 +217,13 @@ def check_briefing(document, path):
         source_ids.add(sid)
         if not sid:
             fail("json", f"{label}: 출처에 source_id가 없다({str(src.get('source_name'))[:20]})")
+        # 화면 엔진(`briefing/app.js`)은 `sources[].id`로만 카드·지표를 잇는다. `source_id`만 적힌
+        # 출처는 엔진이 없는 것으로 보고, 그 출처를 쓰는 카드를 통째로 감춘다
+        # (2026-11-24 한국판: id 없는 출처 3곳 때문에 8장 중 3장이 화면에서 사라졌다).
+        if not src.get("id"):
+            fail("json", f"{label}: 출처 {sid}에 id가 없다 — 화면은 sources[].id로 카드를 잇는다(SCHEMA §8)")
+        elif sid and src.get("source_id") and src["source_id"] != src["id"]:
+            fail("json", f"{label}: 출처 id '{src['id']}'와 source_id '{src['source_id']}'가 다르다")
         if not str(src.get("source_name") or "").strip():
             fail("json", f"{label}: 출처 {sid}에 source_name이 없다")
         url = str(src.get("source_url") or "")
@@ -228,6 +235,21 @@ def check_briefing(document, path):
         ref = metric.get("source_id")
         if ref and ref not in source_ids:
             fail("json", f"{label}: 지표 {metric.get('id')}의 source_id '{ref}'가 sources에 없다")
+    for card in cards if isinstance(cards, list) else []:
+        cid = card.get("id", "?")
+        ref = (card.get("source") or {}).get("source_id")
+        if not ref:
+            fail("json", f"{label}: 카드 {cid}의 source.source_id가 없다 — 화면이 이 카드를 그리지 않는다")
+        elif ref not in source_ids:
+            fail("json", f"{label}: 카드 {cid}의 source_id '{ref}'가 sources[].id에 없다 — 화면이 이 카드를 그리지 않는다")
+        cref = (card.get("chart_data") or {}).get("source_id")
+        if cref and cref not in source_ids:
+            fail("json", f"{label}: 카드 {cid}의 chart_data.source_id '{cref}'가 sources[].id에 없다")
+    radar = document.get("radar") if isinstance(document.get("radar"), dict) else {}
+    for row in radar.get("rows") if isinstance(radar.get("rows"), list) else []:
+        for ref in (row or {}).get("source_ids") or []:
+            if ref not in source_ids:
+                fail("json", f"{label}: 레이더 {row.get('id')}의 source_ids '{ref}'가 sources[].id에 없다")
 
     dates = document.get("archive_dates")
     if not isinstance(dates, list) or not dates:
