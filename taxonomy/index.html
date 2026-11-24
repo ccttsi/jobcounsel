@@ -62,7 +62,15 @@ a{color:inherit}
 .rst:hover{border-color:var(--acc)}
 .rst:active{transform:scale(.97)}
 .rst.spin svg{transform:rotate(-360deg)}
-@media (max-width:420px){.rst span{display:none}.rst{width:44px;padding:0;justify-content:center}}
+/* 휴대폰(글자 없는 아이콘 단추): 누르는 칸은 44px 그대로 두고, 보이는 상자만 34px로 줄여 홈 단추(44px)보다 한 단계 작게 —
+   제목 글자(약 20px)보다는 조금 크고 홈보다는 작은 비율(2026-11-24 태화님 IMG_7874) */
+@media (max-width:420px){
+  .rst span{display:none}
+  .rst{position:relative;width:44px;padding:0;justify-content:center;border-color:transparent;background:transparent}
+  .rst::before{content:"";position:absolute;inset:5px;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);transition:border-color .15s}
+  .rst:hover{border-color:transparent}.rst:hover::before{border-color:var(--acc)}
+  .rst svg{position:relative;width:16px;height:16px}
+}
 @media (prefers-reduced-motion:reduce){.rst svg{transition:none}}
 
 /* 이용 안내(접힘) — 다른 섹터와 같은 두루마리 */
