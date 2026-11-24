@@ -1,103 +1,113 @@
 {
  "schema_version": "1.4.0",
- "updated_at": "2026-11-24T07:05:00+09:00",
+ "updated_at": "2026-11-25T07:09:43+09:00",
  "edition": {
-  "date": "2026-11-24",
-  "weekday": "화",
-  "title": "AI 코딩이 신입 문턱을 높였다 — ICT 전공 20대 33.2%",
-  "subtitle": "ICT 전공 20대 취업 비중 급락과 30대 증가, 올해 취업자 목표 미달·60대 쏠림, 스마트공장 2,696억 공고를 한 장으로",
+  "date": "2026-11-25",
+  "weekday": "수",
+  "title": "일자리는 40.6만개 늘었는데, 20대 자리는 15분기째 줄었다",
+  "subtitle": "2분기 임금근로 일자리동향, 새일센터→여성경력온센터 개편, 국가자격시험 AI 대책을 한 장으로",
   "reading_minutes": 3,
   "data_status": "ok",
   "data_status_note": null
  },
  "headline_metrics": [
   {
-   "id": "hm_ict_entry_share",
-   "label": "ICT 전공 20대 취업 비중",
-   "value": 33.2,
-   "unit": "%",
-   "value_text": "33.2%",
-   "base_value": null,
-   "base_unit": null,
-   "direction": "down",
-   "period": "2026년 1~10월",
-   "delta_from": "2025년 47.6%",
-   "source_id": "src_mk_ict_20261123",
-   "track": "B",
+   "id": "hm_kr_jobcount_2026q2",
+   "label": "2분기 임금근로 일자리",
+   "value": 40.6,
+   "unit": "만개",
+   "value_text": "+40.6만개",
+   "base_value": 2135.6,
+   "base_unit": "만개",
+   "direction": "up",
+   "period": "2026년 2분기(5월 기준)",
+   "delta_from": "전년동기",
+   "source_id": "src_mods_jobcount_20261124",
+   "track": "A",
    "spark": {
     "labels": [
-     "2022",
-     "2023",
-     "2024",
-     "2025",
-     "2026"
+     "25.2/4",
+     "25.3/4",
+     "25.4/4",
+     "26.1/4",
+     "26.2/4"
     ],
     "values": [
-     36.1,
-     36.5,
-     38.0,
-     47.6,
-     33.2
+     11.1,
+     13.9,
+     22.1,
+     29.2,
+     40.6
     ],
-    "unit": "%"
+    "unit": "만개"
    },
    "edition": "kr-0700",
-   "updated_at": "2026-11-24T07:05:00+09:00",
-   "run_id": "br-20261124-0705"
+   "updated_at": "2026-11-25T07:09:43+09:00",
+   "run_id": "br-20261125-0709"
   },
   {
-   "id": "hm_ict_20s_workers",
-   "label": "20대 정보통신업 취업자",
-   "value": 18.6,
-   "unit": "만명",
-   "value_text": "18.6만명",
-   "base_value": null,
-   "base_unit": null,
+   "id": "hm_youth_jobcount_2026q2",
+   "label": "20대 이하 일자리",
+   "value": -5.6,
+   "unit": "만개",
+   "value_text": "-5.6만개",
+   "base_value": 286.8,
+   "base_unit": "만개",
    "direction": "down",
-   "period": "2026년 1~10월 월평균",
-   "delta_from": "전년 동기 24.4만명",
-   "source_id": "src_mk_ict_20261123",
-   "track": "B",
+   "period": "2026년 2분기",
+   "delta_from": "전년동기(15분기 연속 감소)",
+   "source_id": "src_mods_jobcount_20261124",
+   "track": "A",
    "spark": null,
    "edition": "kr-0700",
-   "updated_at": "2026-11-24T07:05:00+09:00",
-   "run_id": "br-20261124-0705"
+   "updated_at": "2026-11-25T07:09:43+09:00",
+   "run_id": "br-20261125-0709"
   },
   {
-   "id": "hm_employed_2026",
-   "label": "올해 취업자 증가(KDI)",
-   "value": 12,
-   "unit": "만명",
-   "value_text": "+12만명",
+   "id": "hm_senior_jobcount_2026q2",
+   "label": "60대 이상 일자리",
+   "value": 27.7,
+   "unit": "만개",
+   "value_text": "+27.7만개",
    "base_value": null,
    "base_unit": null,
    "direction": "up",
-   "period": "2026년 연간",
-   "delta_from": "정부 목표 15만명",
-   "source_id": "src_hani_employment_20261123",
-   "track": "B",
+   "period": "2026년 2분기",
+   "delta_from": "전년동기(전체 증가분의 68%)",
+   "source_id": "src_mods_jobcount_20261124",
+   "track": "A",
    "spark": null,
    "edition": "kr-0700",
-   "updated_at": "2026-11-24T07:05:00+09:00",
-   "run_id": "br-20261124-0705"
+   "updated_at": "2026-11-25T07:09:43+09:00",
+   "run_id": "br-20261125-0709"
   },
   {
-   "id": "hm_senior_monthly",
-   "label": "60세 이상 월평균 취업자",
-   "value": 20.3,
+   "id": "hm_wcenter_hires_2025",
+   "label": "여성경력온센터 취업",
+   "value": 17.1,
    "unit": "만명",
-   "value_text": "+20.3만명",
+   "value_text": "17.1만명",
    "base_value": null,
    "base_unit": null,
    "direction": "up",
-   "period": "2026년 1~10월",
-   "delta_from": "전년 동기",
-   "source_id": "src_hani_employment_20261123",
-   "track": "B",
-   "spark": null,
+   "period": "2025년",
+   "delta_from": "2010년 10.2만명",
+   "source_id": "src_mogef_wcenter_20261124",
+   "track": "A",
+   "spark": {
+    "labels": [
+     "2010",
+     "2025"
+    ],
+    "values": [
+     10.2,
+     17.1
+    ],
+    "unit": "만명"
+   },
    "edition": "kr-0700",
-   "updated_at": "2026-11-24T07:05:00+09:00",
-   "run_id": "br-20261124-0705"
+   "updated_at": "2026-11-25T07:09:43+09:00",
+   "run_id": "br-20261125-0709"
   }
  ],
  "main_themes": [
@@ -105,7 +115,7 @@
    "theme_id": "th-ai-job-restructuring",
    "title": "AI 직무 재편",
    "summary": "AI가 일을 없애는가보다 일을 다시 묶는 쪽으로 움직인다. 직무 단위가 흔들리면 상담에서 묻는 것도 직업명이 아니라 \"어떤 일 묶음을 할 수 있는가\"로 바뀐다.",
-   "updated_at": "2026-11-19T23:06:00+09:00",
+   "updated_at": "2026-11-25T07:09:43+09:00",
    "items": [
     {
      "issue_id": "iss-legal-ai-specialization",
@@ -194,7 +204,7 @@
       "verified_at": "2026-11-17"
      },
      "first_seen": "2026-11-17",
-     "last_updated": "2026-11-19",
+     "last_updated": "2026-11-25",
      "track": "A"
     },
     {
@@ -575,295 +585,89 @@
   {
    "id": "c01",
    "order": 1,
-   "track": "B",
-   "category": "AI·직무",
-   "title": "AI 코딩 확산, ICT 전공 20대 취업 비중 33%로",
-   "kicker": "25~29세 ICT 전공 정보통신업 취업 33.2% · 30대는 +6.6%",
-   "three_step": {
-    "what": "국가데이터처 마이크로데이터를 분석한 결과, 올해 1~10월 25~29세 정보통신기술(ICT) 전공 졸업자 가운데 정보통신업에서 일하는 비중이 33.2%로 떨어졌다. 같은 기간 30대 정보통신업 취업자는 늘어 두 연령대의 방향이 갈렸다.",
-    "evidence": "2026년 1~10월 25~29세 ICT 전공 졸업자의 정보통신업 취업 비중은 33.2%로 2025년 47.6%보다 14.4%p 낮다(2022년 36.1%→2024년 38.0%로 오르던 흐름이 꺾였다). 같은 기간 월평균 30대 정보통신업 취업자는 41만9,000명으로 전년 동기 39만4,000명보다 6.6% 늘었고, 20대는 24만4,000명에서 18만6,000명으로 24.1% 줄었다. 기사가 함께 인용한 미국 보안기업 옥타 사례에서는 AI 코딩 도구 도입 뒤 개발자 1인당 월 코드 작성량이 90% 늘고 작업 시간은 16% 줄었다(2025년 11월~2026년 1월과 2026년 4~6월 비교).",
-    "implication": "AI 코딩 도구로 직접 만들어 본 결과물을 이력서 한 줄로 만들게 하고, 신입 공채만 기다리지 말고 인턴·프로젝트로 경력 요건을 채우는 계획을 함께 세워라."
-   },
-   "key_numbers": [
-    {
-     "label": "25~29세 ICT 전공 취업 비중",
-     "value": "33.2%",
-     "delta": "-14.4%p",
-     "period": "2026년 1~10월"
-    },
-    {
-     "label": "20대 정보통신업 취업자",
-     "value": "18만6,000명",
-     "delta": "-24.1%",
-     "period": "2026년 1~10월 월평균"
-    },
-    {
-     "label": "30대 정보통신업 취업자",
-     "value": "41만9,000명",
-     "delta": "+6.6%",
-     "period": "2026년 1~10월 월평균"
-    },
-    {
-     "label": "AI 코딩 도구 도입 후 코드 작성량",
-     "value": "+90%",
-     "delta": "작업 시간 -16%",
-     "period": "2026년 4~6월"
-    }
-   ],
-   "chart_data": {
-    "type": "line",
-    "unit": "%",
-    "labels": [
-     "2022",
-     "2023",
-     "2024",
-     "2025",
-     "2026 1~10월"
-    ],
-    "series": [
-     {
-      "name": "25~29세 ICT 전공 정보통신업 취업 비중",
-      "values": [
-       36.1,
-       36.5,
-       38.0,
-       47.6,
-       33.2
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "국가데이터처 마이크로데이터 분석(매일경제 2026.11.23 보도). 2026년은 1~10월 값.",
-    "source_id": "src_mk_ict_20261123"
-   },
-   "counselor_question": "전공과 다른 직무까지 넓혀 볼 생각이 있으세요, 아니면 같은 직무에서 AI를 다루는 쪽으로 준비하고 싶으세요?",
-   "tags": [
-    "AI",
-    "정보통신",
-    "청년",
-    "신입채용"
-   ],
-   "ncs": [
-    "직업상담서비스",
-    "직무분석"
-   ],
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
-   "region": "kr",
-   "issue_id": "iss-ict-youth-entry-2026",
-   "source": {
-    "source_id": "src_mk_ict_20261123",
-    "source_name": "매일경제",
-    "source_title": "코딩 열풍 막차 탄 30대…20대는 AI 취업 한파",
-    "source_url": "https://www.mk.co.kr/news/economy/12216276",
-    "published_at": "2026-11-23",
-    "license": {
-     "name": "언론사 기사(재가공 불가)",
-     "type": "PRESS",
-     "url": null,
-     "scope": "기사 본문·사진 전부(원문 재게시·번역 불가)",
-     "attribution_required": true,
-     "commercial_use": "not_allowed",
-     "modification": "not_allowed",
-     "verified": true,
-     "verified_at": "2026-11-24",
-     "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-24). 사실·수치만 사용.",
-     "attribution_text": "출처: 매일경제 「코딩 열풍 막차 탄 30대…20대는 AI 취업 한파」(2026.11.23). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
-    },
-    "usage": "국가데이터처 마이크로데이터 분석 수치와 옥타 사례 수치만 우리 말로 재구성(원문 문장 복제 없음)."
-   },
-   "edition": "kr-0700",
-   "updated_at": "2026-11-24T07:05:00+09:00",
-   "run_id": "br-20261124-0705",
-   "labor_walk": true,
-   "labor_walk_topic": "AI와 직무"
-  },
-  {
-   "id": "c02",
-   "order": 2,
-   "track": "B",
+   "track": "A",
    "category": "국내 고용지표",
-   "title": "올해 취업자 12만, 목표 3만명 못 미친다 — 60대가 이끌었다",
-   "kicker": "60세 이상 월평균 +20만3천 · 청년 -17만9천 (1~10월)",
+   "title": "일자리 40.6만개 늘었지만 20대는 15분기째 줄었다",
+   "kicker": "2분기 임금근로 일자리 2,135.6만개 · 20대 이하 -5.6만개, 60대 이상 +27.7만개",
    "three_step": {
-    "what": "한국개발연구원(KDI)이 올해 취업자 증가 폭을 12만명으로 전망해 정부 목표(15만명)에 못 미칠 것으로 봤다. 늘어난 취업자는 60세 이상에 몰렸고, 청년층 취업자는 월평균 17만9,000명 줄었다.",
-    "evidence": "2026년 1~10월 월평균 취업자 증가는 11만9,000명이고, 60세 이상은 월평균 20만3,000명 늘며 증가분을 이끌었다. 업종별로는 보건·사회복지가 22만7,000명 늘어 압도적이었고, 청년(15~29세) 취업자는 17만9,000명 줄었다. 청년이 많이 종사하는 숙박·음식점업과 청년이 선호하는 제조업·전문과학기술업 취업자도 올해 월평균 각각 3만4,000명, 4만7,000명, 5만5,000명 감소했고, 청년 고용률은 2024년 5월부터 30개월 연속 내렸다. 이형일 부총리는 11월 23일 기자간담회에서 고용이 성장 기조에 비해 활발하지 않다며 서비스산업 대책을 강구하겠다고 밝혔다.",
-    "implication": "내담자가 준비하는 업종이 올해 늘어난 쪽(보건·복지)인지 줄어든 쪽(제조·숙박음식)인지 먼저 확인하고, 같은 직무라도 업종을 바꾸는 선택지를 함께 계산하게 하라."
+    "what": "국가데이터처가 2026년 2분기(5월 기준) 임금근로 일자리동향을 발표했다. 전체 일자리는 1년 전보다 늘었지만 20대 이하만 줄어, 청년이 처음 들어갈 자리가 15분기 연속 좁아졌다.",
+    "evidence": "2026년 5월 기준 임금근로 일자리는 2,135만6,000개로 전년 동기보다 40만6,000개(1.9%) 늘었다(증가 폭: 2025년 2분기 11만1,000개 → 3분기 13만9,000개 → 4분기 22만1,000개 → 2026년 1분기 29만2,000개 → 2분기 40만6,000개). 60대 이상 27만7,000개, 30대 12만3,000개, 50대 5만9,000개, 40대 4,000개가 늘었고 20대 이하는 5만6,000개 줄었다. 산업별로는 보건·사회복지 16만1,000개, 숙박·음식 6만7,000개, 전문·과학·기술 4만3,000개가 늘고 건설 1만6,000개, 제조업 4,000개가 줄었다. 20대 이하 감소는 제조업 2만8,000개, 정보통신 1만5,000개, 보건·사회복지 1만1,000개에서 컸다. 전년과 같은 근로자가 지킨 지속일자리는 1,564만3,000개로 73.2%였다.",
+    "implication": "청년 내담자에게는 총량이 아니라 20대에서 줄어든 제조업·정보통신 자리와 60대·돌봄에서 늘어난 자리를 나눠 보여주고, 옮겨갈 수 있는 인접 직무 하나를 이번 상담에서 정하게 하라."
    },
    "key_numbers": [
     {
-     "label": "올해 취업자 증가 전망(KDI)",
-     "value": "+12만명",
-     "delta": "정부 목표 15만명",
-     "period": "2026년 연간"
+     "label": "2분기 임금근로 일자리",
+     "value": "2,135만6,000개",
+     "delta": "+40만6,000개",
+     "period": "2026년 2분기(5월 기준)"
     },
     {
-     "label": "60세 이상 취업자",
-     "value": "+20만3,000명",
-     "delta": "월평균",
-     "period": "2026년 1~10월"
+     "label": "20대 이하 일자리",
+     "value": "286만8,000개",
+     "delta": "-5만6,000개",
+     "period": "2026년 2분기"
     },
     {
-     "label": "청년(15~29세) 취업자",
-     "value": "-17만9,000명",
-     "delta": "월평균",
-     "period": "2026년 1~10월"
+     "label": "60대 이상 일자리",
+     "value": "+27만7,000개",
+     "delta": "전체 증가분의 68%",
+     "period": "2026년 2분기"
     },
     {
-     "label": "보건·사회복지 취업자",
-     "value": "+22만7,000명",
-     "delta": "월평균",
-     "period": "2026년 1~10월"
+     "label": "보건·사회복지 일자리",
+     "value": "+16만1,000개",
+     "delta": "산업 중 최대",
+     "period": "2026년 2분기"
     }
    ],
    "chart_data": {
     "type": "diverging_bar",
-    "unit": "만명",
+    "unit": "만개",
     "labels": [
-     "60세 이상",
-     "보건·사회복지",
-     "청년(15~29세)",
-     "제조업"
+     "20대 이하",
+     "40대",
+     "50대",
+     "30대",
+     "60대 이상"
     ],
     "series": [
      {
-      "name": "전년 동기 대비 월평균 증감",
+      "name": "연령대별 일자리 증감",
       "values": [
-       20.3,
-       22.7,
-       -17.9,
-       -4.7
+       -5.6,
+       0.4,
+       5.9,
+       12.3,
+       27.7
       ],
       "emphasis": true
      }
     ],
     "reference_value": 0,
-    "note": "국가데이터처 고용동향 월평균 증감(한겨레 2026.11.23 보도). 2026년 1~10월.",
-    "source_id": "src_hani_employment_20261123"
+    "note": "전년 동기 대비 증감. 국가데이터처 「2026년 2분기(5월 기준) 임금근로 일자리동향」.",
+    "source_id": "src_mods_jobcount_20261124"
    },
-   "counselor_question": "지금 준비하는 업종이 올해 늘어난 쪽인지 줄어든 쪽인지 같이 확인해 볼까요?",
+   "counselor_question": "준비하는 직무가 20대에서 줄어든 자리인지, 60대·돌봄처럼 늘어난 자리인지 같이 확인해 볼까요?",
    "tags": [
-    "고용동향",
-    "고령화",
     "청년",
-    "업종"
+    "일자리",
+    "고용지표",
+    "돌봄"
    ],
    "ncs": [
     "직업상담서비스",
-    "노동시장분석"
+    "직무분석"
    ],
-   "theme_key": "th-macro-economy",
-   "theme_label": "거시경제와 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
    "region": "kr",
-   "issue_id": "iss-2026-employment-target-miss",
+   "issue_id": "iss-jobcount-2026q2",
    "source": {
-    "source_id": "src_hani_employment_20261123",
-    "source_name": "한겨레",
-    "source_title": "올해 취업자, 정부 목표치보다 3만명 밑돌 듯…고령층 늘고 청년층 줄어",
-    "source_url": "https://www.hani.co.kr/arti/economy/economy_general/1288677.html",
-    "published_at": "2026-11-23",
-    "license": {
-     "name": "언론사 기사(재가공 불가)",
-     "type": "PRESS",
-     "url": null,
-     "scope": "기사 본문·사진 전부(원문 재게시·번역 불가)",
-     "attribution_required": true,
-     "commercial_use": "not_allowed",
-     "modification": "not_allowed",
-     "verified": true,
-     "verified_at": "2026-11-24",
-     "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-24). 사실·수치만 사용.",
-     "attribution_text": "출처: 한겨레 「올해 취업자, 정부 목표치보다 3만명 밑돌 듯…고령층 늘고 청년층 줄어」(2026.11.23). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
-    },
-    "usage": "KDI 전망치·고용동향 월평균 수치·부총리 발언 사실만 우리 말로 재구성(원문 문장 복제 없음)."
-   },
-   "edition": "kr-0700",
-   "updated_at": "2026-11-24T07:05:00+09:00",
-   "run_id": "br-20261124-0705",
-   "labor_walk": true,
-   "labor_walk_topic": "거시경제와 고용"
-  },
-  {
-   "id": "c03",
-   "order": 3,
-   "track": "A",
-   "category": "채용시장",
-   "title": "스마트공장 2,696억 — 내년 1,021개사, 채용 실습까지",
-   "kicker": "신청 12월 7일~1월 6일 · AI 적용 수준별 최대 12억원",
-   "three_step": {
-    "what": "중소벤처기업부가 2027년 스마트공장 구축지원사업 참여기업을 모집한다. 사업별로 나뉘어 있던 공고를 하나로 합쳐 예산 2,696억원으로 1,021개사를 지원한다.",
-    "evidence": "지원 사업은 정부일반형·제조AI특화·자율형공장·상생형 인공지능전환(AX) 선도모델 4개이고, 디지털·AI 적용 수준에 따라 사업별로 최대 2억원에서 12억원까지 지원한다(2027년 예산 기준). 신청은 2026년 12월 7일부터 2027년 1월 6일까지이며, 상생형 AX에는 대기업 19개사가 참여한다. 선정기업은 스마트제조 전문인력 양성사업과 연계해 신규 채용인력 현장실습을 지원받고, 구축 후 점검 기간이 기존 3년에서 5년으로 늘어난다.",
-    "implication": "제조업 취업을 준비하는 내담자에게 구축기업의 신규 채용 실습과 스마트제조 전문인력 양성 과정을 한 묶음으로 안내하라."
-   },
-   "key_numbers": [
-    {
-     "label": "구축지원 예산",
-     "value": "2,696억원",
-     "delta": "",
-     "period": "2027년 사업"
-    },
-    {
-     "label": "지원 규모",
-     "value": "1,021개사",
-     "delta": "",
-     "period": "2027년 사업"
-    },
-    {
-     "label": "사업별 지원 상한",
-     "value": "2억~12억원",
-     "delta": "AI 적용 수준별",
-     "period": "2027년 사업"
-    },
-    {
-     "label": "신청 기간",
-     "value": "12월 7일~1월 6일",
-     "delta": "",
-     "period": "2026~2027년"
-    }
-   ],
-   "chart_data": {
-    "type": "bar",
-    "unit": "억원",
-    "labels": [
-     "사업별 하한",
-     "사업별 상한"
-    ],
-    "series": [
-     {
-      "name": "기업당 지원 상한",
-      "values": [
-       2,
-       12
-      ],
-      "emphasis": true
-     }
-    ],
-    "reference_value": null,
-    "note": "중소벤처기업부 2027년 스마트공장 구축지원사업 공고(2026.11.23). AI 적용 수준에 따른 사업별 상한.",
-    "source_id": "src_mss_smartfactory_20261123"
-   },
-   "counselor_question": "제조업으로 간다면 AI·자동화를 다루는 훈련을 먼저 받아 볼 생각이 있으세요?",
-   "tags": [
-    "스마트공장",
-    "중소기업",
-    "직업훈련",
-    "AI전환"
-   ],
-   "ncs": [
-    "직업상담서비스",
-    "직업훈련"
-   ],
-   "theme_key": "th-skills-training",
-   "theme_label": "재취업과 직업훈련",
-   "region": "kr",
-   "issue_id": "iss-smartfactory-2027",
-   "source": {
-    "source_id": "src_mss_smartfactory_20261123",
-    "source_name": "중소벤처기업부",
-    "source_title": "'27년 스마트공장 구축지원사업 참여기업 모집",
-    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790407",
-    "published_at": "2026-11-23",
+    "source_id": "src_mods_jobcount_20261124",
+    "source_name": "국가데이터처",
+    "source_title": "2026년 2분기(5월기준) 임금근로 일자리동향",
+    "source_url": "https://mods.go.kr/board.es?act=view&bid=11113&list_no=448038&mid=a10301030500",
+    "published_at": "2026-11-24",
     "license": {
      "name": "공공누리 제1유형(출처표시)",
      "type": "KOGL-1",
@@ -873,15 +677,213 @@
      "commercial_use": "allowed",
      "modification": "allowed",
      "verified": true,
-     "verified_at": "2026-11-24",
-     "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-24): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.'",
-     "attribution_text": "출처: 중소벤처기업부 「'27년 스마트공장 구축지원사업 참여기업 모집」 보도자료(2026.11.23, 정책브리핑), 공공누리 제1유형. 텍스트만 이용했습니다."
+     "verified_at": "2026-11-25",
+     "evidence": "국가데이터처 보도자료 페이지(mods.go.kr, list_no=448038) 하단 고지 직접 확인(2026-11-25): '국가데이터처 「2026년 2분기(5월기준) 임금근로 일자리동향」 저작물은 공공누리 1유형(출처표시) 공공저작물 자유이용허락 조건에 따라 이용할 수 있습니다.'",
+     "attribution_text": "출처: 국가데이터처 「2026년 2분기(5월기준) 임금근로 일자리동향」(2026.11.24, 공공누리 제1유형)"
     },
-    "usage": "보도자료 텍스트를 원문대로 게시(17-1)하고, 17번 카드는 사업 규모·지원 조건·신청 기간을 요약."
+    "usage": "보도자료 수치만으로 카드를 새로 쓰고, 원문 요약문은 17-1 원문에 그대로 실었습니다(공공누리 제1유형)."
    },
    "edition": "kr-0700",
-   "updated_at": "2026-11-24T07:05:00+09:00",
-   "run_id": "br-20261124-0705",
+   "updated_at": "2026-11-25T07:09:43+09:00",
+   "run_id": "br-20261125-0709",
+   "labor_walk": true,
+   "labor_walk_topic": "청년·중장년 고용"
+  },
+  {
+   "id": "c02",
+   "order": 2,
+   "track": "A",
+   "category": "국내 고용행정",
+   "title": "새일센터가 '여성경력온센터'로 — 12월 1일부터",
+   "kicker": "센터 통해 2025년 17.1만명 취업 · 고부가 직업훈련 25개→103개",
+   "three_step": {
+    "what": "성평등가족부가 12월 1일부터 여성새로일하기센터(새일센터)의 명칭을 '여성경력온센터'로 바꾼다. 경력단절 뒤 재취업 지원을 넘어 청년 첫 취업부터 재직·이직·직무전환까지 맡는 기관으로 역할을 넓힌다.",
+    "evidence": "새일센터를 통한 취업은 2010년 10만2,000명에서 2025년 17만1,000명으로 늘었다. IT·바이오 등 고부가가치 직업훈련 과정은 2016년 25개 → 2021년 59개 → 2026년 103개로, 경력단절 예방 서비스 센터는 2017년 15곳 → 2026년 91곳으로 늘었다. 올해는 지역산업 인력수요를 반영한 훈련과정 52개를 새로 열었다. 기존 명칭은 이용자 혼란을 줄이려 2027년 말까지 함께 쓴다.",
+    "implication": "여성 내담자에게는 12월 1일부터 기관 이름이 바뀐 점을 먼저 알리고, 첫 상담에서 진로진단·경력설계 상담과 재직자 역량강화 서비스가 새로 강화된 부분을 함께 짚어라."
+   },
+   "key_numbers": [
+    {
+     "label": "센터를 통한 취업",
+     "value": "17만1,000명",
+     "delta": "2010년 10만2,000명",
+     "period": "2025년"
+    },
+    {
+     "label": "고부가 직업훈련 과정",
+     "value": "103개",
+     "delta": "2016년 25개",
+     "period": "2026년"
+    },
+    {
+     "label": "경력단절 예방 센터",
+     "value": "91곳",
+     "delta": "2017년 15곳",
+     "period": "2026년"
+    },
+    {
+     "label": "지역산업 훈련과정",
+     "value": "52개",
+     "delta": "2026년 신설",
+     "period": "2026년"
+    }
+   ],
+   "chart_data": {
+    "type": "line",
+    "unit": "개",
+    "labels": [
+     "2016",
+     "2021",
+     "2026"
+    ],
+    "series": [
+     {
+      "name": "IT·바이오 등 고부가 직업훈련 과정",
+      "values": [
+       25,
+       59,
+       103
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "성평등가족부 보도자료(2026.11.24)의 고부가직종 훈련과정 수.",
+    "source_id": "src_mogef_wcenter_20261124"
+   },
+   "counselor_question": "재취업뿐 아니라 지금 다니는 일을 이어가거나 다른 직무로 옮기는 것도 함께 상담해 볼까요?",
+   "tags": [
+    "여성",
+    "고용서비스",
+    "경력개발",
+    "기관개편"
+   ],
+   "ncs": [
+    "직업상담서비스",
+    "취업지원"
+   ],
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "issue_id": "iss-wcenter-2026",
+   "source": {
+    "source_id": "src_mogef_wcenter_20261124",
+    "source_name": "성평등가족부(정책브리핑)",
+    "source_title": "여성새로일하기센터, 12월부터 '여성경력온센터'로 새 출발",
+    "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790521",
+    "published_at": "2026-11-24",
+    "license": {
+     "name": "공공누리 제1유형(출처표시)",
+     "type": "KOGL-1",
+     "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+     "scope": "텍스트 한정(사진·이미지·CI 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-25",
+     "evidence": "정책브리핑 보도자료 페이지(newsId=156790521) 하단 고지 직접 확인(2026-11-25): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.' 본문은 첨부 hwpx(최종배포본)와 대조해 옮겼습니다.",
+     "attribution_text": "출처: 성평등가족부 「여성새로일하기센터, 12월부터 '여성경력온센터'로 새 출발」 보도자료(2026.11.24, 정책브리핑), 공공누리 제1유형. 텍스트만 이용했습니다."
+    },
+    "usage": "보도자료 텍스트를 카드로 재구성하고 원문 본문을 17-1에 실었습니다(공공누리 제1유형, 텍스트 한정)."
+   },
+   "edition": "kr-0700",
+   "updated_at": "2026-11-25T07:09:43+09:00",
+   "run_id": "br-20261125-0709",
+   "labor_walk": true,
+   "labor_walk_topic": "고용서비스·채용"
+  },
+  {
+   "id": "c03",
+   "order": 3,
+   "track": "B",
+   "category": "국내 고용행정",
+   "title": "국가자격 AI 부정행위 6건 — 응시 제한 3년→10년",
+   "kicker": "경비지도사 응시자 1만1,554명 중 6건 적발 · 형사처벌 2년→5년",
+   "three_step": {
+    "what": "고용노동부와 한국산업인력공단이 스마트안경·초소형 카메라 같은 첨단기기를 쓰는 국가자격시험 부정행위 대책을 내놨다. 11월 21일 경비지도사 시험부터 바로 적용해 6건을 적발했고, 제재와 적발 수단을 함께 강화한다.",
+    "evidence": "11월 21일 경비지도사 시험(응시자 1만1,554명)에서 태블릿PC·스마트워치 소지, 휴대전화 전원 미차단 등 6건이 적발됐다. 기술자격 응시 제한 기간은 3년에서 10년으로, 형사처벌은 2년 이하에서 5년 이하 징역으로 올린다. 2026년 시행 국가자격시험 전 종목 전수조사와 부정행위 제보센터를 운영하고, 내년 상반기까지 전담 감독관·전파탐지기·보디캠 등 보완 대책을 마련한다. 같은 발표에서 AI 시대에 맞춰 실기형·면접형 시험을 늘리고 불필요한 자격을 정비하는 자격제도 개편 방침도 밝혔다.",
+    "implication": "자격증을 준비하는 내담자에게 시험 당일 반입 금지 물품과 응시 제한 10년·징역 5년 제재를 구체적으로 안내하고, 실기·면접형 확대에 대비해 실무 사례 한 가지를 미리 준비하게 하라."
+   },
+   "key_numbers": [
+    {
+     "label": "경비지도사 시험 적발",
+     "value": "6건",
+     "delta": "응시자 1만1,554명",
+     "period": "2026년 11월 21일"
+    },
+    {
+     "label": "기술자격 응시 제한",
+     "value": "10년",
+     "delta": "현행 3년",
+     "period": "개정 추진"
+    },
+    {
+     "label": "부정행위 형사처벌",
+     "value": "5년 이하",
+     "delta": "현행 2년 이하",
+     "period": "개정 추진"
+    }
+   ],
+   "chart_data": {
+    "type": "slope",
+    "unit": "년",
+    "labels": [
+     "현행",
+     "개정 후"
+    ],
+    "series": [
+     {
+      "name": "기술자격 부정행위 응시 제한 기간",
+      "values": [
+       3,
+       10
+      ],
+      "emphasis": true
+     }
+    ],
+    "reference_value": null,
+    "note": "고용노동부 「국가자격시험 공정성 확보 방안」(2026.11.24)의 제재 수준.",
+    "source_id": "src_moel_qualexam_20261124"
+   },
+   "counselor_question": "이 자격을 딴 뒤 어떤 일에 쓰실지까지 함께 정해 둘까요?",
+   "tags": [
+    "자격",
+    "시험",
+    "AI",
+    "제재"
+   ],
+   "ncs": [
+    "직업상담서비스",
+    "자격관리"
+   ],
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "issue_id": "iss-ai-exam-integrity",
+   "source": {
+    "source_id": "src_moel_qualexam_20261124",
+    "source_name": "고용노동부",
+    "source_title": "국가자격시험, 인공지능(AI) 활용 부정행위를 철저히 대비하고 범죄는 끝까지 추적한다",
+    "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20295",
+    "published_at": "2026-11-24",
+    "license": {
+     "name": "공공누리 미부착(담당자 협의 필요)",
+     "type": "KOGL-NONE",
+     "url": null,
+     "scope": "보도자료 본문·첨부물",
+     "attribution_required": true,
+     "commercial_use": "not_allowed",
+     "modification": "not_allowed",
+     "verified": true,
+     "verified_at": "2026-11-25",
+     "evidence": "고용노동부 보도자료 페이지 본문·하단에 공공누리 표시가 없음을 직접 확인(2026-11-25). 정책브리핑 전재본에도 '공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용' 고지만 있습니다. 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+     "attribution_text": "출처: 고용노동부 「국가자격시험, 인공지능(AI) 활용 부정행위를 철저히 대비하고 범죄는 끝까지 추적한다」(2026.11.24) — 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+    },
+    "usage": "응시자 수·적발 건수·제재 수준 등 수치와 시행 시점만 우리 말로 재구성했습니다."
+   },
+   "edition": "kr-0700",
+   "updated_at": "2026-11-25T07:09:43+09:00",
+   "run_id": "br-20261125-0709",
    "labor_walk": true,
    "labor_walk_topic": "훈련·재취업"
   },
@@ -1390,9 +1392,9 @@
  "runs": {
   "kr-0700": {
    "status": "ok",
-   "updated_at": "2026-11-24T07:05:00+09:00",
-   "last_ok": "2026-11-24",
-   "run_id": "br-20261124-0705"
+   "updated_at": "2026-11-25T07:09:43+09:00",
+   "last_ok": "2026-11-25",
+   "run_id": "br-20261125-0709"
   },
   "global-2300": {
    "status": "ok",
@@ -1403,55 +1405,12 @@
  },
  "sources": [
   {
-   "source_id": "src_mk_ict_20261123",
-   "source_name": "매일경제",
-   "source_title": "코딩 열풍 막차 탄 30대…20대는 AI 취업 한파",
-   "source_url": "https://www.mk.co.kr/news/economy/12216276",
-   "published_at": "2026-11-23",
-   "license": {
-    "name": "언론사 기사(재가공 불가)",
-    "type": "PRESS",
-    "url": null,
-    "scope": "기사 본문·사진 전부(원문 재게시·번역 불가)",
-    "attribution_required": true,
-    "commercial_use": "not_allowed",
-    "modification": "not_allowed",
-    "verified": true,
-    "verified_at": "2026-11-24",
-    "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-24). 사실·수치만 사용.",
-    "attribution_text": "출처: 매일경제 「코딩 열풍 막차 탄 30대…20대는 AI 취업 한파」(2026.11.23). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
-   },
-   "usage": "국가데이터처 마이크로데이터 분석 수치와 옥타 사례 수치만 우리 말로 재구성(원문 문장 복제 없음).",
-   "id": "src_mk_ict_20261123"
-  },
-  {
-   "source_id": "src_hani_employment_20261123",
-   "source_name": "한겨레",
-   "source_title": "올해 취업자, 정부 목표치보다 3만명 밑돌 듯…고령층 늘고 청년층 줄어",
-   "source_url": "https://www.hani.co.kr/arti/economy/economy_general/1288677.html",
-   "published_at": "2026-11-23",
-   "license": {
-    "name": "언론사 기사(재가공 불가)",
-    "type": "PRESS",
-    "url": null,
-    "scope": "기사 본문·사진 전부(원문 재게시·번역 불가)",
-    "attribution_required": true,
-    "commercial_use": "not_allowed",
-    "modification": "not_allowed",
-    "verified": true,
-    "verified_at": "2026-11-24",
-    "evidence": "원문 페이지에서 언론사 저작물임을 확인(공공누리·CC 표시 없음, 2026-11-24). 사실·수치만 사용.",
-    "attribution_text": "출처: 한겨레 「올해 취업자, 정부 목표치보다 3만명 밑돌 듯…고령층 늘고 청년층 줄어」(2026.11.23). 언론사 기사로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
-   },
-   "usage": "KDI 전망치·고용동향 월평균 수치·부총리 발언 사실만 우리 말로 재구성(원문 문장 복제 없음).",
-   "id": "src_hani_employment_20261123"
-  },
-  {
-   "source_id": "src_mss_smartfactory_20261123",
-   "source_name": "중소벤처기업부",
-   "source_title": "'27년 스마트공장 구축지원사업 참여기업 모집",
-   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790407",
-   "published_at": "2026-11-23",
+   "id": "src_mods_jobcount_20261124",
+   "source_id": "src_mods_jobcount_20261124",
+   "source_name": "국가데이터처",
+   "source_title": "2026년 2분기(5월기준) 임금근로 일자리동향",
+   "source_url": "https://mods.go.kr/board.es?act=view&bid=11113&list_no=448038&mid=a10301030500",
+   "published_at": "2026-11-24",
    "license": {
     "name": "공공누리 제1유형(출처표시)",
     "type": "KOGL-1",
@@ -1461,12 +1420,55 @@
     "commercial_use": "allowed",
     "modification": "allowed",
     "verified": true,
-    "verified_at": "2026-11-24",
-    "evidence": "정책브리핑 해당 페이지 하단 고지 직접 확인(2026-11-24): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.'",
-    "attribution_text": "출처: 중소벤처기업부 「'27년 스마트공장 구축지원사업 참여기업 모집」 보도자료(2026.11.23, 정책브리핑), 공공누리 제1유형. 텍스트만 이용했습니다."
+    "verified_at": "2026-11-25",
+    "evidence": "국가데이터처 보도자료 페이지(mods.go.kr, list_no=448038) 하단 고지 직접 확인(2026-11-25): '국가데이터처 「2026년 2분기(5월기준) 임금근로 일자리동향」 저작물은 공공누리 1유형(출처표시) 공공저작물 자유이용허락 조건에 따라 이용할 수 있습니다.'",
+    "attribution_text": "출처: 국가데이터처 「2026년 2분기(5월기준) 임금근로 일자리동향」(2026.11.24, 공공누리 제1유형)"
    },
-   "usage": "보도자료 텍스트를 원문대로 게시(17-1)하고, 17번 카드는 사업 규모·지원 조건·신청 기간을 요약.",
-   "id": "src_mss_smartfactory_20261123"
+   "usage": "보도자료 수치만으로 카드를 새로 쓰고, 원문 요약문은 17-1 원문에 그대로 실었습니다(공공누리 제1유형)."
+  },
+  {
+   "id": "src_mogef_wcenter_20261124",
+   "source_id": "src_mogef_wcenter_20261124",
+   "source_name": "성평등가족부(정책브리핑)",
+   "source_title": "여성새로일하기센터, 12월부터 '여성경력온센터'로 새 출발",
+   "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790521",
+   "published_at": "2026-11-24",
+   "license": {
+    "name": "공공누리 제1유형(출처표시)",
+    "type": "KOGL-1",
+    "url": "https://www.kogl.or.kr/info/license.do?lCode=1",
+    "scope": "텍스트 한정(사진·이미지·CI 제외)",
+    "attribution_required": true,
+    "commercial_use": "allowed",
+    "modification": "allowed",
+    "verified": true,
+    "verified_at": "2026-11-25",
+    "evidence": "정책브리핑 보도자료 페이지(newsId=156790521) 하단 고지 직접 확인(2026-11-25): '이 자료는 텍스트에 한하여 공공누리 제1유형(출처표시)의 조건에 따라 이용할 수 있습니다.' 본문은 첨부 hwpx(최종배포본)와 대조해 옮겼습니다.",
+    "attribution_text": "출처: 성평등가족부 「여성새로일하기센터, 12월부터 '여성경력온센터'로 새 출발」 보도자료(2026.11.24, 정책브리핑), 공공누리 제1유형. 텍스트만 이용했습니다."
+   },
+   "usage": "보도자료 텍스트를 카드로 재구성하고 원문 본문을 17-1에 실었습니다(공공누리 제1유형, 텍스트 한정)."
+  },
+  {
+   "id": "src_moel_qualexam_20261124",
+   "source_id": "src_moel_qualexam_20261124",
+   "source_name": "고용노동부",
+   "source_title": "국가자격시험, 인공지능(AI) 활용 부정행위를 철저히 대비하고 범죄는 끝까지 추적한다",
+   "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20295",
+   "published_at": "2026-11-24",
+   "license": {
+    "name": "공공누리 미부착(담당자 협의 필요)",
+    "type": "KOGL-NONE",
+    "url": null,
+    "scope": "보도자료 본문·첨부물",
+    "attribution_required": true,
+    "commercial_use": "not_allowed",
+    "modification": "not_allowed",
+    "verified": true,
+    "verified_at": "2026-11-25",
+    "evidence": "고용노동부 보도자료 페이지 본문·하단에 공공누리 표시가 없음을 직접 확인(2026-11-25). 정책브리핑 전재본에도 '공공누리가 부착되지 않은 자료는 담당자와 협의한 후에 사용' 고지만 있습니다. 본문을 옮기지 않고 사실·수치만 새로 썼습니다.",
+    "attribution_text": "출처: 고용노동부 「국가자격시험, 인공지능(AI) 활용 부정행위를 철저히 대비하고 범죄는 끝까지 추적한다」(2026.11.24) — 공공누리 미부착 자료로 본문을 옮기지 않고 사실·수치만 새로 썼습니다."
+   },
+   "usage": "응시자 수·적발 건수·제재 수준 등 수치와 시행 시점만 우리 말로 재구성했습니다."
   },
   {
    "source_id": "src_aiincontext_bloomberg_cn_postings_20261121",
@@ -1588,6 +1590,7 @@
  },
  "disclaimer": "이 브리핑은 직업상담과 구직 준비를 돕기 위한 사실·수치 요약이며 투자·법률 조언이 아닙니다. 수치는 발표 기관의 기준 시점 값이고 이후 개정될 수 있습니다.",
  "archive_dates": [
+  "2026-11-25",
   "2026-11-24",
   "2026-11-23",
   "2026-11-22",
