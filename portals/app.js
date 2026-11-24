@@ -1,4 +1,4 @@
-/* 19. 채용 사이트 안내판 — 화면 코드만(자료는 portals/data/portals.json, 피클 담당 · 읽기 전용).
+/* 고용 사이트 안내판(옛 채용 사이트 안내판) — 화면 코드만(자료는 portals/data/portals.json, 피클 담당 · 읽기 전용).
    계약: portals/data/SCHEMA.md. 공고·로고·슬로건·바뀌는 값(공고 수·평점)은 만들지 않는다. 내보내기 기능 없음.
    모션: 카드는 한 번만 만들고 필터가 바뀌면 자리만 옮긴다(FLIP, transform·opacity만 · WAAPI). 상시 rAF 루프 없음. */
 (function () {

@@ -18,14 +18,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, "portals.json")
 
 EXPECTED = {
-    "total": 76,
-    "by_sector": {"pub": 8, "disclosure": 11, "general": 15, "tech": 12, "expert": 5,
-                  "industry": 8, "target": 17},
+    "total": 91,
+    "by_sector": {"pub": 8, "disclosure": 13, "general": 15, "tech": 12, "expert": 5,
+                  "industry": 8, "target": 17, "train": 5, "service": 5, "info": 3},
 }
 # 항목마다 실제로 접속을 확인한 날을 적는다. 한 날짜로 통일하지 않는다 —
 # 자동 접속 차단(403) 사이트는 마지막으로 확인한 날짜를 그대로 둔다.
-ALLOWED_DATES = {"2026-11-16", "2026-11-19", "2026-11-20", "2026-11-23"}
-VERIFIED_AT = "2026-11-23"
+ALLOWED_DATES = {"2026-11-16", "2026-11-19", "2026-11-20", "2026-11-23", "2026-11-24"}
+VERIFIED_AT = "2026-11-24"
 METHODS = {"curl", "curl-mobile", "browser", "official"}
 REQUIRED = ["id", "name", "url", "sector", "operator", "roles", "eligibility",
             "strengths", "tips", "shows", "verified_at", "final_url", "verify_method"]
@@ -72,8 +72,8 @@ def main():
             err("meta.%s 누락" % k)
     if meta.get("built_at") != VERIFIED_AT:
         warn("meta.built_at=%r (기대 %s)" % (meta.get("built_at"), VERIFIED_AT))
-    if meta.get("version") != "1.1.0":
-        warn("meta.version=%r (기대 1.1.0)" % (meta.get("version"),))
+    if meta.get("version") != "1.2.0":
+        warn("meta.version=%r (기대 1.2.0)" % (meta.get("version"),))
 
     # ---- sectors / vocabulary ----
     codes = [s.get("code") for s in sectors]
