@@ -29,7 +29,7 @@
     theory: '이론 위키', vpi: '검사 해석', dacum: 'DACUM', manual: '국취 실무 가이드', hud: '국취 HUD',
     library: '미래고용 서재', decalcomania: '커리어데칼코마니', univ: '대학·학과', grad: '대학원',
     talk: '상담 대화', transit: '환승노선도', parsons: '파슨스 원전', labor: '노동시장 산책', cert: '자격증 도감',
-    company: '기업 명함첩', thermometer: '산업 온도계', reality: '취업 현위치', briefing: '오늘의 브리핑',
+    company: '기업 명함첩', thermometer: '산업 온도계', reality: '취업 현위치', briefing: 'Today’s Briefing',
     emerging: '신산업 브리핑', taxonomy: '직무분류', portals: '채용 사이트', surgery: '서류 해부실',
     interview: '면접 전술 덱', portfolio: '포트폴리오 편집실', law: '직업상담 법전'
   };

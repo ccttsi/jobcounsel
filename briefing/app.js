@@ -1,4 +1,4 @@
-/* 오늘의 브리핑 — briefing/data/briefing.json(스키마 v1.x, briefing/data/SCHEMA.md)을 읽기만 해서 그린다.
+/* Today’s Briefing(오늘의 브리핑) — briefing/data/briefing.json(스키마 v1.x, briefing/data/SCHEMA.md)을 읽기만 해서 그린다.
    수집·번역·외부 API 호출은 이 파일에 넣지 않는다(역할 분리). 모르는 필드는 무시한다(전방 호환). */
 (function () {
   'use strict';
@@ -316,7 +316,7 @@
     var dTxt = fmtDate(E.date), wdTxt = E.weekday || WEEKDAY[weekdayNum(E.date)];
     var html = '<div class="top"><header class="mast">' +
       '<div class="mast-rule"></div>' +
-      '<div class="mast-toprow"><h1 class="nameplate">고용·AI 인포 브리핑<small>직업상담 자료실</small></h1>' +
+      '<div class="mast-toprow"><h1 class="nameplate bl"><span lang="en">Today’s Briefing</span><small>오늘의 브리핑 · 고용과 AI</small></h1>' +
       '<div class="mast-meta"><span class="l"><span class="num">' + esc(E.reading_minutes || 3) + '분 읽기</span></span>' +
       '<span class="datewrap"><button type="button" class="datebtn" id="dateBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3.5v4M16 3.5v4"/></svg><span data-cal-label>' + esc(calLabel(E.date)) + '</span><svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></span></div></div>' +
       '<div class="mast-double"></div>' +

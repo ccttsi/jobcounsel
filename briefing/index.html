@@ -12,8 +12,9 @@ document.documentElement.setAttribute('data-theme',t);})();
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
-<meta name="description" content="국내 고용지표와 해외 노동시장·AI 변화를 3분 안에 읽는 데일리 브리핑. 핵심 수치, 이슈별 3단 카드, AI × 직무 변화 레이더, 출처·라이선스 표시.">
-<title>오늘의 브리핑 · 고용과 AI를 3분에</title>
+<meta name="description" content="Today’s Briefing(오늘의 브리핑) — 국내 고용지표와 해외 노동시장·AI 변화를 3분 안에 읽는 데일리 브리핑. 핵심 수치, 이슈별 3단 카드, AI × 직무 변화 레이더, 출처·라이선스 표시.">
+<title>Today’s Briefing · 오늘의 브리핑</title>
+<link rel="preload" href="../assets/fonts/unifraktur-maguntia-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -50,6 +51,10 @@ a{color:inherit}
 .wrap{max-width:880px;margin:0 auto;padding:0 16px 64px}
 @media (min-width:900px){.wrap{max-width:1280px;padding:0 28px 72px}}
 
+/* 제호 글꼴 — 옛 신문 제호의 블랙레터(UnifrakturMaguntia, SIL OFL 1.1, assets/fonts/OFL-UnifrakturMaguntia.txt).
+   라틴 글자만 담은 26KB 한 벌을 자료실 안에 두고 쓴다(외부 글꼴 호출 0). 2026-11-24 태화님 「Today's Briefing 리브랜딩」. */
+@font-face{font-family:"UnifrakturMaguntia";src:url("../assets/fonts/unifraktur-maguntia-latin-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+:root{--blackletter:"UnifrakturMaguntia","Old English Text MT",Georgia,serif}
 /* 머리말 */
 .hd{display:flex;align-items:center;gap:8px;padding:12px 0}
 .ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
@@ -57,6 +62,7 @@ a{color:inherit}
 .brand{flex:1;min-width:0;display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;min-height:44px}
 .brand svg{width:26px;height:26px;flex:none}
 .brand span{color:var(--acc)}
+.brand .bl{font-family:var(--blackletter);font-weight:400;font-size:23px;letter-spacing:0;line-height:1}
 
 /* 이용 안내 */
 .pv{margin:0 0 4px}
@@ -286,7 +292,7 @@ html[data-jc-imm] .card,html[data-jc-imm] .rr,html[data-jc-imm] .tab::after{tran
 <div class="wrap">
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></a>
-    <a class="brand" href="./"><svg class="jc-hic" viewBox="0 0 26 26" aria-hidden="true"><rect x="3" y="4" width="20" height="18" rx="2" fill="none" stroke="var(--ink)" stroke-width="1.8"/><path d="M6.5 8.5h13" stroke="var(--acc)" stroke-width="2.2"/><path d="M6.5 12.5h6M6.5 15.5h6M6.5 18.5h6" stroke="var(--dim)" stroke-width="1.4"/><path d="M15 18.5l2-3.5 2 1.5 1.5-3.5" fill="none" stroke="var(--ta)" stroke-width="1.6" stroke-linejoin="round"/></svg>오늘의 <span>브리핑</span></a>
+    <a class="brand" href="./"><svg class="jc-hic" viewBox="0 0 26 26" aria-hidden="true"><rect x="3" y="4" width="20" height="18" rx="2" fill="none" stroke="var(--ink)" stroke-width="1.8"/><path d="M6.5 8.5h13" stroke="var(--acc)" stroke-width="2.2"/><path d="M6.5 12.5h6M6.5 15.5h6M6.5 18.5h6" stroke="var(--dim)" stroke-width="1.4"/><path d="M15 18.5l2-3.5 2 1.5 1.5-3.5" fill="none" stroke="var(--ta)" stroke-width="1.6" stroke-linejoin="round"/></svg><span class="jc-tt bl" lang="en"><span>Today’s</span> Briefing</span></a>
     <span data-jc-prefs></span>
   </header>
 
