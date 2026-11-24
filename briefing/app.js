@@ -222,7 +222,7 @@
   /* ---------- 화면 ----------
      긴 세로 나열을 하지 않는다: 제호·핵심 수치 아래를 「이슈 카드 / 레이더 / 출처」 탭으로 나누고,
      이슈는 색인 + 카드 한 장, 카드 안 3단은 넓으면 가로 3열·좁으면 ①②③ 탭(순서 그대로). */
-  var current = null, UI = { tab: 'issues', card: 0, step: {}, radar: 0, theme: '' };
+  var current = null, UI = { tab: 'issues', card: 0, want: '', step: {}, radar: 0, theme: '' };
   /* 지난 호 목록 — archive/<날짜>.json 은 자기 날짜만 archive_dates 에 담고 있어서, 그 파일만 보고 그리면
      지난 호를 연 순간 「지난 호 고르기」가 사라져 최신 호로 돌아올 길이 없다. 한 번이라도 본 날짜를 모아 두고,
      「최신」 표시는 실제 최신 호(오늘)에만 붙인다. */
@@ -304,6 +304,8 @@
       if (lt && TRACK_OF[lt] && TRACK_OF[lt] !== c.track) console.warn('[briefing] 트랙·라이선스 짝 어긋남:', c.id, c.track, lt);
       return true;
     });
+    /* 주소(#c04)로 들어온 카드는 «걸러진 뒤의 순서»에서 id로 찾는다 — 번호로 미리 정하면 빠진 카드 수만큼 밀린다 */
+    if (UI.want) { cards.forEach(function (c, i) { if (c.id === UI.want) { UI.tab = 'issues'; UI.card = i; } }); UI.want = ''; }
     UI.card = Math.max(0, Math.min(cards.length - 1, UI.card));
 
     var status = '';
@@ -511,7 +513,9 @@
   get(BASE + 'briefing.json').then(function (d) {
     latest = d; latestDate = (d.edition || {}).date || ''; archiveList(d);   // 지난 호 직접 링크(?date=)로 들어와도 목록이 남게
     var want = new URLSearchParams(location.search).get('date');
-    current = { _cards: arr(d.cards).slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); }) }; fromHash();
+    /* 처음 열 때의 주소 해시: 탭(#radar·#sources·#themes)은 바로, 카드 id는 그리면서(render) 걸러진 목록에서 찾는다 */
+    var h0 = decodeURIComponent(location.hash.slice(1));
+    if (h0 === 'radar' || h0 === 'sources') UI.tab = h0; else if (h0 && h0 !== 'themes') UI.want = h0;
     if (want && /^\d{4}-\d{2}-\d{2}$/.test(want) && want !== (d.edition || {}).date) go(want); else render(d);
   }).catch(function () {
     main.innerHTML = '<p class="status" role="status"><b>브리핑을 불러오지 못했습니다.</b> 잠시 뒤 다시 열어 주세요.</p>';
