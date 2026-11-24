@@ -1,35 +1,35 @@
 {
  "meta": {
   "dataset": "job-portals-directory",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "sector": "고용 사이트 안내판 — 채용·직업훈련·자격·기업정보·고용 행정·진로 정보 총망라",
   "built_at": "2026-11-24",
   "repository": "ccttsi/jobcounsel",
-  "notice": "채용·직업훈련·자격·공시·기업정보·고용 행정·진로 정보 사이트의 이름·공식 주소·객관적 특징 요약만 담았습니다. 공고 본문·공시 자료·로고·슬로건을 복제해 싣지 않았고, 화면은 공식 페이지로 보내는 안내판입니다. 수록 76곳 전부를 2026-11-23에 실제로 다시 접속해 확인했습니다. 자동 접속을 막는 곳(캐치·인디드·잡플래닛·로켓펀치·넥슨·KIND)과 해외망에서 막히던 국내 정부 포털(클린아이·클린아이 잡플러스·지방자치단체 인터넷원서접수센터)은 실제 브라우저로 화면이 뜨는 것을 확인했습니다. 접속되지 않는 곳은 제외 목록에 남겼습니다. 2026-11-24에 직업훈련·자격, 고용·노동 행정·지원, 직업·진로 정보·통계 15곳을 더하며 실제로 접속해 메뉴를 원문에서 확인했고, 열리지 않거나 메뉴를 확인하지 못한 20곳은 제외 목록에 사유와 함께 남겼습니다.",
+  "notice": "채용·직업훈련·자격·공시·기업정보·고용 행정·진로 정보 사이트의 이름·공식 주소·객관적 특징 요약만 담았습니다. 공고 본문·공시 자료·로고·슬로건을 복제해 싣지 않았고, 화면은 공식 페이지로 보내는 안내판입니다. 수록 107곳 가운데 91곳은 2026-11-23에, 나머지 16곳은 2026-11-24에 실제로 접속해 첫 화면 메뉴와 운영 기관을 확인했습니다. 스크립트로만 그려지거나 자동 접속을 막는 곳은 실제 브라우저로 화면이 뜨는 것을 확인했고, 접속되지 않거나 메뉴를 확인하지 못한 곳은 제외 목록에 사유와 함께 남겼습니다.",
   "counts": {
-   "total": 91,
+   "total": 107,
    "by_sector": {
     "pub": 8,
+    "disclosure": 13,
     "general": 15,
     "tech": 12,
     "expert": 5,
     "industry": 8,
     "target": 17,
-    "disclosure": 13,
-    "train": 5,
-    "service": 5,
-    "info": 3
+    "train": 12,
+    "service": 13,
+    "info": 4
    },
    "by_method": {
-    "curl": 80,
-    "browser": 9,
+    "curl": 83,
+    "browser": 22,
     "curl-mobile": 2
    }
   },
   "verification": {
-   "checked_at": "2026-11-23",
-   "method": "curl GET(리다이렉트 추적, 데스크톱·모바일 UA)로 최종 200 확인 + 자동 접속 차단 사이트는 실제 브라우저로 화면 확인(6곳) + 해외망에서 막히던 국내 정부 포털 3곳도 2026-11-23에는 브라우저로 직접 확인",
-   "passed": 91,
+   "checked_at": "2026-11-24",
+   "method": "curl GET(리다이렉트 추적, 데스크톱·모바일 UA)로 최종 200 확인 + 스크립트로만 그려지는 사이트·자동 접속 차단 사이트는 실제 브라우저에서 첫 화면 메뉴와 운영 기관 확인(2026-11-24: 제외 20곳 중 16곳 추가)",
+   "passed": 107,
    "excluded": [
     {
      "name": "메디잡(www.medijob.co.kr)",
@@ -92,104 +92,34 @@
      "reason": "2026-11-19 접속 시간 초과(응답 없음) — 고용노동부 보도자료가 안내하는 주소이나 직접 확인 실패"
     },
     {
-     "name": "Q-Net",
-     "url": "https://www.q-net.or.kr/",
-     "reason": "첫 화면이 스크립트로 그려져 메뉴를 원문에서 확인하지 못함(응답 200) — 다음 주간 재확인 때 브라우저로 확인 (2026-11-24)"
-    },
-    {
-     "name": "NCS 국가직무능력표준",
-     "url": "https://www.ncs.go.kr/",
-     "reason": "첫 화면이 이동 스크립트뿐이고 브라우저에서 502 — 다음 재확인 (2026-11-24)"
-    },
-    {
-     "name": "고용노동부",
-     "url": "https://www.moel.go.kr/",
-     "reason": "해외·클라우드망에서 데스크톱 응답 없음, 모바일 응답에 메뉴 없음 — 다음 재확인 (2026-11-24)"
-    },
-    {
      "name": "고용노동부 민원마당",
      "url": "https://minwon.moel.go.kr/",
-     "reason": "연결 재설정(해외망 차단 추정) (2026-11-24)"
-    },
-    {
-     "name": "근로복지공단",
-     "url": "https://www.comwel.or.kr/",
-     "reason": "400 Bad Request (2026-11-24)"
+     "reason": "연결 시간 초과 — 데스크톱·모바일 UA와 실제 브라우저 모두 30초 무응답 (2026-11-24)"
     },
     {
      "name": "고용보험",
      "url": "https://www.ei.go.kr/",
-     "reason": "고용24(m.work24.go.kr)로 이동 — 고용24 항목으로 갈음 (2026-11-24)"
+     "reason": "고용24(m.work24.go.kr)로 이동 — 고용24 항목의 검색 별칭으로 갈음 (2026-11-24)"
     },
     {
      "name": "HRD-Net",
      "url": "https://www.hrd.go.kr/",
-     "reason": "고용24로 통합되어 이동 — 고용24 항목으로 갈음 (2026-11-24)"
-    },
-    {
-     "name": "4대사회보험 정보연계센터",
-     "url": "https://www.4insure.or.kr/",
-     "reason": "응답 없음(시간 초과) (2026-11-24)"
-    },
-    {
-     "name": "중앙노동위원회",
-     "url": "https://www.nlrc.go.kr/",
-     "reason": "연결 재설정(해외망 차단 추정) (2026-11-24)"
-    },
-    {
-     "name": "최저임금위원회",
-     "url": "https://www.minimumwage.go.kr/",
-     "reason": "응답 없음(시간 초과) (2026-11-24)"
-    },
-    {
-     "name": "대한법률구조공단",
-     "url": "https://www.klac.or.kr/",
-     "reason": "연결 재설정(해외망 차단 추정) (2026-11-24)"
-    },
-    {
-     "name": "복지로",
-     "url": "https://www.bokjiro.go.kr/",
-     "reason": "200이지만 첫 화면 메뉴를 원문에서 확인하지 못함 — 다음 재확인 (2026-11-24)"
-    },
-    {
-     "name": "정부24",
-     "url": "https://www.gov.kr/",
-     "reason": "본 화면(/portal/main) 응답 없음 (2026-11-24)"
-    },
-    {
-     "name": "한국고용정보원",
-     "url": "https://www.keis.or.kr/",
-     "reason": "http 주소로 이동 후 응답 없음 (2026-11-24)"
-    },
-    {
-     "name": "경기도일자리재단",
-     "url": "https://www.gjf.or.kr/",
-     "reason": "소개 화면만 200, 본 화면 응답 없음 (2026-11-24)"
-    },
-    {
-     "name": "STEP 스마트직업훈련플랫폼",
-     "url": "https://step.or.kr/",
-     "reason": "www.step.or.kr로 이동하나 검증 환경 허용 범위 밖 — 다음 재확인 (2026-11-24)"
+     "reason": "고용24(work24.go.kr)로 이동 — 고용24 항목의 검색 별칭으로 갈음 (2026-11-24)"
     },
     {
      "name": "국가평생교육진흥원 늘배움",
      "url": "https://www.lifelongedu.go.kr/",
-     "reason": "TLS 인증서 검증 실패 (2026-11-24)"
+     "reason": "TLS 인증서가 *.all.go.kr 로 발급돼 주소 불일치(ERR_CERT_COMMON_NAME_INVALID) — 브라우저에서도 열리지 않음 (2026-11-24)"
     },
     {
      "name": "대한상공회의소 인력개발사업단",
      "url": "https://hrd.korcham.net/",
-     "reason": "502 응답 (2026-11-24)"
-    },
-    {
-     "name": "한국데이터산업진흥원",
-     "url": "https://www.kdata.or.kr/",
-     "reason": "TLS 인증서 검증 실패 (2026-11-24)"
+     "reason": "hrd.korcham.net 주소가 사라짐(DNS 없음) — 인력개발사업단 HRD포털(korchamhrd.net)으로 대체 (2026-11-24)"
     },
     {
      "name": "한국기술교육대학교",
      "url": "https://www.koreatech.ac.kr/",
-     "reason": "로그인 서버로 이동해 본 화면 확인 불가 (2026-11-24)"
+     "reason": "대학 본진은 입학·학사 중심이라 직업훈련에 맞지 않아 능력개발교육원(hrdi.koreatech.ac.kr)으로 대체 (2026-11-24)"
     }
    ]
   },
@@ -347,7 +277,11 @@
     "실업급여",
     "내일배움카드",
     "고용장려금",
-    "구직신청"
+    "구직신청",
+    "고용보험",
+    "HRD-Net",
+    "hrd.go.kr",
+    "ei.go.kr"
    ]
   },
   {
@@ -2971,6 +2905,231 @@
    ]
   },
   {
+   "id": "qnet",
+   "name": "Q-Net",
+   "url": "https://www.q-net.or.kr/",
+   "sector": "train",
+   "operator": "한국산업인력공단",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관",
+    "자격증"
+   ],
+   "strengths": "국가기술자격과 국가전문자격의 원서접수, 시험일정, 합격자 발표, 자격증 발급을 한곳에서 처리하는 공단의 공식 창구다.",
+   "tips": "구직자가 어떤 자격을 딸지 정할 때 여기서 시험일정과 응시자격을 먼저 확인하게 하면 상담이 구체해진다. 자격증 발급과 재발급도 이 경로로 안내한다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.q-net.or.kr/man001.do?gSite=Q&gIntro=Y",
+   "verify_method": "browser",
+   "shows": [
+    "국가기술자격 원서접수",
+    "시험일정·합격자 발표",
+    "자격증 신청·재발급",
+    "국가전문자격 안내"
+   ],
+   "aliases": [
+    "큐넷",
+    "q-net",
+    "국가기술자격",
+    "국가전문자격"
+   ]
+  },
+  {
+   "id": "ncs",
+   "name": "NCS 국가직무능력표준",
+   "url": "https://www.ncs.go.kr/",
+   "sector": "train",
+   "operator": "한국산업인력공단",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "직무를 능력단위로 나눈 국가 표준과 학습모듈, 직무기술서를 공개해 채용·훈련·자격이 함께 쓰는 기준을 제공한다.",
+   "tips": "구직 희망 직무의 직무기술서를 보면 실제 수행 과제와 필요한 능력이 드러나 자소서·면접 준비에 바로 쓸 수 있다. 기업이 쓰는 채용 직무기술서도 이 기준을 따른다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.ncs.go.kr/index.do",
+   "verify_method": "browser",
+   "shows": [
+    "NCS 능력단위·학습모듈",
+    "직무기술서·직무설계",
+    "경력개발경로·직무진단",
+    "산업별역량체계 SQF"
+   ],
+   "aliases": [
+    "엔씨에스",
+    "국가직무능력표준",
+    "직무기술서",
+    "학습모듈",
+    "SQF"
+   ]
+  },
+  {
+   "id": "step",
+   "name": "국민평생직업능력개발 STEP",
+   "url": "https://step.or.kr/",
+   "sector": "train",
+   "operator": "한국기술교육대학교 온라인평생교육원",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "직업훈련기관의 온라인 과정을 모아 무료로 수강하게 하는 국가 평생직업능력개발 플랫폼이다. 이러닝과 K-디지털 과정을 분야별로 찾는다.",
+   "tips": "내일배움카드로 학원을 다니기 어려운 구직자에게 온라인 과정부터 시작하게 권하기 좋다. 수료 이력이 남아 구직활동 증빙으로도 쓸 수 있다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.step.or.kr/portal/",
+   "verify_method": "curl",
+   "shows": [
+    "이러닝 무료 과정",
+    "K-디지털·추천테마",
+    "에듀테크·가상훈련",
+    "위키·커뮤니티"
+   ],
+   "aliases": [
+    "스텝",
+    "스마트직업훈련플랫폼",
+    "국민평생직업능력개발",
+    "온라인평생교육원"
+   ]
+  },
+  {
+   "id": "gjf",
+   "name": "경기도일자리재단",
+   "url": "https://www.gjf.or.kr/",
+   "sector": "train",
+   "operator": "경기도일자리재단",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관",
+    "청년",
+    "중장년",
+    "경력단절여성"
+   ],
+   "strengths": "경기도가 출연한 일자리 전담 기관으로 취업지원·직업훈련·근로자지원·기업지원 사업을 운영한다. 사업별 신청 창구와 일자리 정보를 함께 안내한다.",
+   "tips": "경기도 거주 구직자에게 지역 사업을 붙여 줄 때 쓴다. 청년·중장년·경력단절여성 대상 과정이 따로 있으니 대상별로 찾아보게 하면 좋다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.gjf.or.kr/main/main.do",
+   "verify_method": "browser",
+   "shows": [
+    "취업지원 사업",
+    "직업훈련 과정",
+    "근로자·기업 지원",
+    "일자리 소식·공고"
+   ],
+   "aliases": [
+    "경기도일자리재단",
+    "잡아드림",
+    "gjf"
+   ]
+  },
+  {
+   "id": "kdata",
+   "name": "한국데이터산업진흥원",
+   "url": "https://www.kdata.or.kr/",
+   "sector": "train",
+   "operator": "한국데이터산업진흥원",
+   "roles": [
+    "IT·개발"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "데이터산업 육성과 인재양성을 맡는 진흥원으로, 데이터 온에어 강좌와 데이터바우처·데이터안심구역 사업을 안내한다. 산업 백서와 현황조사도 공개한다.",
+   "tips": "데이터 직무로 옮기려는 구직자에게 무료 강좌와 산업 전망 자료를 함께 보여 주기 좋다. 데이터산업 백서로 직무 종류와 수요를 설명할 수 있다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.kdata.or.kr/",
+   "verify_method": "browser",
+   "shows": [
+    "데이터 온에어 강좌",
+    "데이터바우처 지원사업",
+    "데이터안심구역",
+    "데이터산업 백서·현황조사"
+   ],
+   "aliases": [
+    "k-data",
+    "데이터산업진흥원",
+    "데이터 온에어",
+    "데이터바우처"
+   ]
+  },
+  {
+   "id": "korcham_hrd",
+   "name": "대한상공회의소 인력개발사업단 HRD포털",
+   "url": "https://www.korchamhrd.net/",
+   "sector": "train",
+   "operator": "대한상공회의소 인력개발사업단",
+   "roles": [
+    "IT·개발",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "청년",
+    "무관",
+    "경력"
+   ],
+   "strengths": "반도체·로봇·스마트팩토리·인공지능 같은 신기술 분야의 국비 취업연계 교육과 재직자 직무향상 과정을 운영하는 상의 인력개발 창구다.",
+   "tips": "비전공 청년을 반도체·AI 분야로 보낼 때 국비 과정과 훈련수당, 취업연계를 함께 안내한다. 산재근로자 전용과정과 구인·구직 인재 추천도 있다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.korchamhrd.net/",
+   "verify_method": "browser",
+   "shows": [
+    "취업연계 교육과정",
+    "직무향상·재직자 교육",
+    "산재근로자 전용과정",
+    "구인·구직 인재 추천"
+   ],
+   "aliases": [
+    "대한상공회의소",
+    "상의 인력개발",
+    "korchamhrd",
+    "K-디지털 트레이닝"
+   ]
+  },
+  {
+   "id": "koreatech_hrdi",
+   "name": "한국기술교육대학교 능력개발교육원",
+   "url": "https://hrdi.koreatech.ac.kr/",
+   "sector": "train",
+   "operator": "한국기술교육대학교",
+   "roles": [
+    "교육"
+   ],
+   "eligibility": [
+    "무관",
+    "자격증"
+   ],
+   "strengths": "직업능력개발훈련교사 자격교육과 보수교육, 고용서비스 종사자 교육을 맡는 한국기술교육대학교 부설 연수기관이다. K-디지털·AI 강사 과정도 운영한다.",
+   "tips": "직업훈련교사 자격을 준비하거나 고용서비스 종사자 보수교육을 들어야 할 때 안내한다. 직업상담사가 받는 고용서비스 교육 일정도 여기서 확인한다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://hrdi.koreatech.ac.kr/",
+   "verify_method": "browser",
+   "shows": [
+    "훈련교사 자격교육",
+    "훈련교·강사 보수교육",
+    "고용서비스 종사자 교육",
+    "AI·K-디지털 강사 과정"
+   ],
+   "aliases": [
+    "능력개발교육원",
+    "hrdi",
+    "직업능력개발훈련교사",
+    "고용서비스 교육"
+   ]
+  },
+  {
    "id": "innobiz",
    "name": "이노비즈(기술혁신형 중소기업)",
    "url": "https://www.innobiz.net/",
@@ -3188,6 +3347,258 @@
    ]
   },
   {
+   "id": "moel",
+   "name": "고용노동부",
+   "url": "https://www.moel.go.kr/",
+   "sector": "service",
+   "operator": "고용노동부",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "고용·노동 정책과 사업, 법령, 보도자료·공고, 민원 창구를 한곳에 모은 부처 대표 누리집이다. 최저임금·근로기준 같은 제도 원문을 확인할 수 있다.",
+   "tips": "상담에서 제도 근거가 필요할 때 정책·법령 원문을 여기서 확인한다. 민원은 민원마당, 통계는 고용행정통계(EIS)로 이어지므로 함께 안내하면 좋다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.moel.go.kr/index.do",
+   "verify_method": "browser",
+   "shows": [
+    "정책·사업 안내",
+    "보도자료·공고",
+    "법령·제도 자료",
+    "민원신청·노동포털"
+   ],
+   "aliases": [
+    "고용부",
+    "moel",
+    "노동정책",
+    "고용정책"
+   ]
+  },
+  {
+   "id": "bokjiro",
+   "name": "복지로",
+   "url": "https://www.bokjiro.go.kr/",
+   "sector": "service",
+   "operator": "보건복지부·한국사회보장정보원",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관",
+    "청년",
+    "중장년",
+    "노인",
+    "장애인"
+   ],
+   "strengths": "중앙·지자체 복지서비스를 한곳에 모아 서비스 검색과 신청, 맞춤형급여안내(복지멤버십)까지 제공하는 복지 대표 포털이다.",
+   "tips": "취업이 어려운 구직자에게 생계·주거·의료 지원을 함께 안내할 때 쓴다. 맞춤형급여안내로 받을 수 있는 서비스를 먼저 확인하게 하면 상담이 빨라진다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.bokjiro.go.kr/ssis-tbu/index.do",
+   "verify_method": "browser",
+   "shows": [
+    "복지서비스 검색",
+    "서비스 신청",
+    "맞춤형급여안내(복지멤버십)",
+    "복지위기알림·복지지도"
+   ],
+   "aliases": [
+    "복지멤버십",
+    "맞춤형급여안내",
+    "복지서비스",
+    "bokjiro"
+   ]
+  },
+  {
+   "id": "nlrc",
+   "name": "중앙노동위원회",
+   "url": "https://www.nlrc.go.kr/",
+   "sector": "service",
+   "operator": "중앙노동위원회",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "부당해고·부당노동행위·차별시정 구제신청과 노동쟁의 조정을 맡는 준사법기관의 공식 창구다. 주요 판정·조정 사례를 공개한다.",
+   "tips": "해고나 불이익 처분을 당한 구직자·근로자에게 구제신청 절차와 기한을 안내할 때 쓴다. 신청 전에 주요 판정사례에서 비슷한 사건의 결론을 먼저 보게 한다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://nlrc.go.kr/nlrc/main/main.do",
+   "verify_method": "curl",
+   "shows": [
+    "부당해고 구제신청",
+    "조정·심판 절차 안내",
+    "주요 판정·조정사례",
+    "법령자료·노동법 용어"
+   ],
+   "aliases": [
+    "노동위원회",
+    "부당해고",
+    "구제신청",
+    "nlrc"
+   ]
+  },
+  {
+   "id": "klac",
+   "name": "대한법률구조공단",
+   "url": "https://www.klac.or.kr/",
+   "sector": "service",
+   "operator": "대한법률구조공단",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관",
+    "외국인"
+   ],
+   "strengths": "경제적으로 어려운 사람에게 무료 법률상담과 소송구조를 지원하는 법무부 산하 공단이다. 사이버상담과 방문·화상 상담 예약을 제공한다.",
+   "tips": "임금 체불·산업재해·부당해고처럼 다툴 일이 생긴 구직자에게 무료 법률구조 대상인지 먼저 확인하게 한다. 개인회생·파산 지원도 함께 안내한다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.klac.or.kr/",
+   "verify_method": "curl",
+   "shows": [
+    "무료 법률상담 예약",
+    "사이버상담 신청",
+    "법률서식·상담사례",
+    "개인회생·파산 지원"
+   ],
+   "aliases": [
+    "법률구조공단",
+    "무료법률상담",
+    "법률구조",
+    "klac"
+   ]
+  },
+  {
+   "id": "insure4",
+   "name": "4대사회보험 정보연계센터",
+   "url": "https://www.4insure.or.kr/",
+   "sector": "service",
+   "operator": "국민연금공단·근로복지공단·국민건강보험공단",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "국민연금·건강보험·고용보험·산재보험 신고와 가입내역 조회, 증명서 발급을 한 창구에서 처리하는 공동 민원 포털이다.",
+   "tips": "취업 뒤 4대보험 가입 여부를 확인하려는 구직자에게 가입내역 조회와 증명서 발급을 안내한다. 사업장은 자격취득·상실 신고를 여기서 한 번에 낸다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.4insure.or.kr/pbiz/main/main.do",
+   "verify_method": "browser",
+   "shows": [
+    "자격취득·상실 신고",
+    "가입내역 조회",
+    "증명서 신청·발급",
+    "4대보험료 모의계산"
+   ],
+   "aliases": [
+    "4대보험",
+    "사대보험",
+    "4insure",
+    "증명서 발급"
+   ]
+  },
+  {
+   "id": "minwage",
+   "name": "최저임금위원회",
+   "url": "https://www.minimumwage.go.kr/",
+   "sector": "service",
+   "operator": "최저임금위원회",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "최저임금의 결정 과정과 연도별 고시 금액, 제도 설명을 공개하는 위원회 공식 누리집이다. 실태조사와 연구보고서도 함께 볼 수 있다.",
+   "tips": "최저임금 미달이나 주휴수당 문의가 나올 때 연도별 고시 금액과 적용 기준을 여기서 확인한다. 다음 연도 고시가 나면 이 화면에서 가장 먼저 확인한다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.minimumwage.go.kr/main.do",
+   "verify_method": "browser",
+   "shows": [
+    "연도별 최저임금 고시",
+    "최저임금제도 안내",
+    "실태조사·연구보고서",
+    "보도·해명자료"
+   ],
+   "aliases": [
+    "최저임금",
+    "minimumwage",
+    "최임위"
+   ]
+  },
+  {
+   "id": "gov24",
+   "name": "정부24",
+   "url": "https://www.gov.kr/",
+   "sector": "service",
+   "operator": "행정안전부",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "주민등록등본·가족관계증명서 같은 정부 민원서류를 온라인으로 발급·신청하는 전자정부 대표 창구다. 여러 부처 서비스를 한 번에 처리한다.",
+   "tips": "취업 준비에 필요한 등본·건강보험 자격득실 확인서·졸업증명을 떼러 갈 곳을 알려 줄 때 쓴다. 전입신고+처럼 여러 민원을 묶는 원스톱 서비스도 있다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://plus.gov.kr/",
+   "verify_method": "browser",
+   "shows": [
+    "주민등록등본·가족관계증명",
+    "건강보험 자격득실 확인",
+    "원스톱 민원서비스",
+    "정부 혜택알리미"
+   ],
+   "aliases": [
+    "gov.kr",
+    "민원24",
+    "plus.gov.kr",
+    "전자민원"
+   ]
+  },
+  {
+   "id": "comwel",
+   "name": "근로복지공단",
+   "url": "https://www.comwel.or.kr/comwel/main.jsp",
+   "sector": "service",
+   "operator": "근로복지공단",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "산재보상과 고용·산재보험 가입, 근로자 복지(생활안정자금·임금채권), 퇴직연금을 맡는 준정부기관의 대표 누리집이다.",
+   "tips": "산재를 당했거나 임금을 못 받은 구직자·근로자에게 신청 창구를 안내할 때 쓴다. 고용·산재보험 가입 확인과 보험료 모의계산도 이 사이트에서 한다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.comwel.or.kr/comwel/main.jsp",
+   "verify_method": "browser",
+   "shows": [
+    "산재보상·재활 안내",
+    "산재·고용보험 가입",
+    "근로자복지·융자사업",
+    "퇴직연금·임금채권"
+   ],
+   "aliases": [
+    "근로복지공단",
+    "근로복지넷",
+    "산재보험",
+    "임금채권"
+   ]
+  },
+  {
    "id": "careernet",
    "name": "커리어넷",
    "url": "https://www.career.go.kr/",
@@ -3280,6 +3691,36 @@
     "KOSIS",
     "국가통계",
     "통계청"
+   ]
+  },
+  {
+   "id": "keis",
+   "name": "한국고용정보원",
+   "url": "https://www.keis.or.kr/",
+   "sector": "info",
+   "operator": "한국고용정보원",
+   "roles": [
+    "전 직종"
+   ],
+   "eligibility": [
+    "무관"
+   ],
+   "strengths": "고용·직업·진로 분야 국책 연구기관으로, 연구보고서와 직업진로정보서, 고용동향브리프를 공개한다. 고용24·커리어넷의 기반 데이터를 만든다.",
+   "tips": "상담에서 직업 세계나 전망을 설명할 근거가 필요할 때 직업진로정보서와 고용동향브리프를 인용한다. 지역·산업별 일자리 전환 자료도 여기서 찾는다.",
+   "verified_at": "2026-11-24",
+   "http_status": 200,
+   "final_url": "https://www.keis.or.kr/keis/ko/index.do",
+   "verify_method": "browser",
+   "shows": [
+    "연구보고서·발간자료",
+    "직업진로정보서",
+    "고용동향브리프·이슈",
+    "산업별 일자리 전환"
+   ],
+   "aliases": [
+    "고용정보원",
+    "keis",
+    "직업진로정보서"
    ]
   }
  ]
