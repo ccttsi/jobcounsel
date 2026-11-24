@@ -69,6 +69,146 @@
   function kids(s, c) { return T.K[s][c || ''] || []; }
   function badge(s) { if (s === 'job') return '<span class="bd" style="--c:var(--c-job)">직업 · 고용24</span>'; return '<span class="bd" style="--c:' + SYS[s].c + '">' + SYS[s].name + ' · ' + SYS[s].kind + '</span>'; }
 
+  /* ───── 색인 띠(직업명 목록 오른쪽) ─────
+     · 누르거나 끌면(손가락·마우스 모두) 그 머리글자 묶음으로 곧장 옮긴다. 끄는 동안은 띠 왼쪽에 큰 글자 말풍선이 따라온다.
+     · 띠는 하나의 조정 막대(role=slider)라 Tab 한 번에 들어오고 ↑↓·Home·End로 옮긴다(41개 단추를 탭 순서에 늘어놓지 않는다).
+     · 띠 높이가 모자라면(휴대폰) 사이사이를 «•»로 줄여 보이되, 끄는 위치는 전체 색인을 그대로 나눠 모든 글자에 닿는다.
+     · 없는 글자(예: G)는 그다음 있는 묶음으로 간다. 움직임은 transform·opacity만, 상시 루프 0(목록을 굴리는 동안만 rAF 한 번씩). */
+  var IDX = (function () {
+    var rail = null, bub = null, list = null, cur = '', drag = null, hideT = 0, raf = 0, shown = false, layoutRaf = 0, skip = false;
+    function build() {
+      if (rail) return;
+      list = $('list');
+      var pane = list.parentNode; pane.classList.add('has-rail');
+      rail = d.createElement('div'); rail.className = 'azr'; rail.id = 'azr'; rail.tabIndex = 0;
+      rail.setAttribute('role', 'slider'); rail.setAttribute('aria-orientation', 'vertical'); rail.setAttribute('aria-label', '머리글자 색인');
+      rail.setAttribute('aria-valuemin', '1'); rail.setAttribute('aria-valuemax', String(IDX_KEYS.length));
+      bub = d.createElement('div'); bub.className = 'azb'; bub.setAttribute('aria-hidden', 'true');
+      pane.appendChild(rail); pane.appendChild(bub);
+      rail.addEventListener('pointerdown', down);
+      rail.addEventListener('pointermove', move);
+      rail.addEventListener('pointerup', up); rail.addEventListener('pointercancel', up); rail.addEventListener('lostpointercapture', up);
+      rail.addEventListener('keydown', key);
+      list.addEventListener('scroll', onScroll, { passive: true });
+      if (window.ResizeObserver) new ResizeObserver(function () { if (shown) lay(); }).observe(list);
+    }
+    /* 보이는 칸 수에 맞춰 띠 글자를 고른다 — # · ㄱ~ㅎ(15칸)은 늘 다 보이고, 모자라면 영문(26칸)만 «A • E • …»로 줄인다.
+       칸마다 맡는 색인 범위(r0~r1)를 적어 두어, 줄인 «•» 위를 끌어도 그 사이 글자에 모두 닿는다. */
+    var items = [];
+    function lay() {
+      cancelAnimationFrame(layoutRaf);
+      layoutRaf = requestAnimationFrame(function () {
+        var top = list.offsetTop, h = list.clientHeight;
+        rail.style.top = top + 'px'; rail.style.height = h + 'px';
+        var max = Math.max(19, Math.floor((h - 16) / 13)), fixed = 15, lat = IDX_KEYS.length - fixed;
+        items = [];
+        for (var i = 0; i < fixed; i++) items.push({ k: IDX_KEYS[i], r0: i, r1: i });
+        var L = max - fixed;
+        if (L >= lat) for (i = fixed; i < IDX_KEYS.length; i++) items.push({ k: IDX_KEYS[i], r0: i, r1: i });
+        else {
+          var S = Math.max(3, L % 2 ? L : L - 1), prev = -1;
+          for (var j = 0; j < S; j += 2) {
+            var at = fixed + Math.round(j / (S - 1) * (lat - 1));
+            if (prev >= 0 && at - prev > 1) items.push({ k: '•', r0: prev + 1, r1: at - 1 });
+            items.push({ k: IDX_KEYS[at], r0: at, r1: at }); prev = at;
+          }
+        }
+        rail.innerHTML = '<span class="azr-in">' + items.map(function (it) {
+          if (it.k === '•') return '<i class="dot">•</i>';
+          return '<i data-k="' + it.k + '"' + (T.JG[it.k] ? '' : ' class="no"') + '>' + it.k + '</i>';
+        }).join('') + '</span>';
+        mark(cur, true);
+      });
+    }
+    function show() { build(); shown = true; rail.hidden = false; lay(); cur = ''; onScroll(); }
+    function hide() { shown = false; if (rail) { rail.hidden = true; bub.classList.remove('on'); } if (list) list.classList.remove('has-idx'); }
+    /* 띠 위의 높이 → 어느 칸 → 그 칸이 맡은 범위 안의 몇 번째 글자인가 */
+    function keyAt(y) {
+      var is = rail.firstChild.children; if (!is.length) return IDX_KEYS[0];
+      var t0 = is[0].getBoundingClientRect().top, t1 = is[is.length - 1].getBoundingClientRect().bottom;
+      var f = Math.max(0, Math.min(0.99999, (y - t0) / (t1 - t0))) * items.length, it = items[Math.floor(f)];
+      if (!it) return IDX_KEYS[0];
+      return IDX_KEYS[it.r0 + Math.min(it.r1 - it.r0, Math.floor((f % 1) * (it.r1 - it.r0 + 1)))];
+    }
+    /* 없는 글자면 그다음 있는 묶음(끝이면 바로 앞 묶음) */
+    function target(k) {
+      var i = IDX_KEYS.indexOf(k);
+      for (var j = i; j < IDX_KEYS.length; j++) if (T.JG[IDX_KEYS[j]]) return IDX_KEYS[j];
+      for (j = i - 1; j >= 0; j--) if (T.JG[IDX_KEYS[j]]) return IDX_KEYS[j];
+      return null;
+    }
+    function jump(k, y) {
+      var t = target(k); if (!t) return;
+      var sec = list.querySelector('.jg[data-k="' + t + '"]'); if (!sec) return;
+      var bs = sec.querySelectorAll('.jb'); fillBlock(bs[0]); fillBlock(bs[1]);
+      skip = list.scrollTop !== Math.round(sec.offsetTop - list.firstElementChild.offsetTop);   /* 이 옮김이 부르는 굴림 표시 한 번은 건너뛴다(반올림으로 앞 묶음이 잡히는 것 방지) */
+      list.scrollTop = sec.offsetTop - list.firstElementChild.offsetTop;
+      mark(t);
+      if (y != null) {
+        var pr = rail.parentNode.getBoundingClientRect(), lr = list.getBoundingClientRect();
+        var yy = Math.max(lr.top + 28, Math.min(lr.bottom - 28, y)) - pr.top;
+        bub.textContent = k === '#' ? '#' : k;
+        bub.classList.toggle('miss', t !== k);
+        bub.style.transform = 'translate3d(0,' + (yy - 28).toFixed(1) + 'px,0)';
+        bub.classList.add('on');
+      }
+    }
+    function mark(k, force) {
+      if (!rail || (!force && k === cur)) return;
+      cur = k;
+      var on = rail.querySelector('i.on'); if (on) on.classList.remove('on');
+      var el = rail.querySelector('i[data-k="' + k + '"]'); if (el) el.classList.add('on');
+      var i = IDX_KEYS.indexOf(k);
+      rail.setAttribute('aria-valuenow', String(i + 1)); rail.setAttribute('aria-valuetext', k === '#' ? '숫자' : k);
+    }
+    function down(e) {
+      if (e.button) return;
+      e.preventDefault(); clearTimeout(hideT);
+      try { rail.setPointerCapture(e.pointerId); } catch (er) {}
+      drag = { k: '', touch: e.pointerType !== 'mouse' };
+      rail.classList.add('drag');
+      move(e);
+    }
+    function move(e) {
+      if (!drag) return;
+      var k = keyAt(e.clientY);
+      if (k === drag.k) return;
+      drag.k = k; jump(k, e.clientY);
+      if (drag.touch && navigator.vibrate) { try { navigator.vibrate(6); } catch (er) {} }
+    }
+    function up() {
+      if (!drag) return; drag = null;
+      rail.classList.remove('drag');
+      clearTimeout(hideT); hideT = setTimeout(function () { bub.classList.remove('on'); }, 420);
+    }
+    function key(e) {
+      var i = Math.max(0, IDX_KEYS.indexOf(cur)), n = -1;
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') n = i + 1;
+      else if (e.key === 'ArrowUp' || e.key === 'PageUp') n = i - 1;
+      else if (e.key === 'Home') n = 0; else if (e.key === 'End') n = IDX_KEYS.length - 1;
+      if (n < 0) return;
+      e.preventDefault();
+      n = Math.max(0, Math.min(IDX_KEYS.length - 1, n));
+      /* 없는 글자는 건너뛴다 — 같은 방향으로 다음 있는 글자, 그 방향에 없으면 반대쪽(End → 마지막 있는 글자) */
+      var step = (e.key === 'End' || n > i) ? 1 : -1, m = n;
+      while (m >= 0 && m < IDX_KEYS.length && !T.JG[IDX_KEYS[m]]) m += step;
+      if (m < 0 || m >= IDX_KEYS.length) { m = n; while (m >= 0 && m < IDX_KEYS.length && !T.JG[IDX_KEYS[m]]) m -= step; }
+      if (m >= 0 && m < IDX_KEYS.length) jump(IDX_KEYS[m]);
+    }
+    /* 목록을 굴리면 지금 보는 묶음의 글자를 띠에 표시 — 굴리는 동안만 한 프레임에 한 번 */
+    function onScroll() {
+      if (skip) { skip = false; return; }
+      if (!shown || raf || drag) return;
+      raf = requestAnimationFrame(function () {
+        raf = 0;
+        var top = list.getBoundingClientRect().top + 8, secs = list.querySelectorAll('.jg'), k = '';
+        for (var i = 0; i < secs.length; i++) { if (secs[i].getBoundingClientRect().top <= top) k = secs[i].getAttribute('data-k'); else break; }
+        mark(k || (secs[0] && secs[0].getAttribute('data-k')) || '');
+      });
+    }
+    return { show: show, hide: hide };
+  })();
+
   /* ───── 탭 ───── */
   function renderTabs() {
     $('tabs').innerHTML = TABS.map(function (t) { var c = SYS[t[0]] ? SYS[t[0]].c : 'var(--c-job)'; return '<button type="button" role="tab" data-tab="' + t[0] + '" aria-selected="' + (UI.tab === t[0] && !UI.q) + '" style="--c:' + c + '">' + t[1] + '<small>' + t[2] + '</small></button>'; }).join('');
@@ -80,7 +220,8 @@
   function render() {
     var src = UI.tab === 'src' && !UI.q;
     $('split').hidden = src; $('src').hidden = !src; $('foot').hidden = src;
-    if (src) { renderSrc(); return; }
+    if (src) { IDX.hide(); renderSrc(); return; }
+    if (!(UI.tab === 'job' && !UI.q)) { $('list').classList.remove('has-idx'); IDX.hide(); }
     if (UI.q) renderSearch(); else if (UI.tab === 'job') renderJobs(); else renderTree();
     if (UI.sel) renderDet(UI.sel, true); else $('det').innerHTML = pickHtml();
   }
@@ -105,11 +246,55 @@
     $('list').innerHTML = list.length ? list.map(function (x) { return rowHtml(x); }).join('') : '<p class="empty">아래 단계가 없습니다.</p>';
     $('list').scrollTop = 0;
   }
+  /* ───── 고용24 직업명 — 머리글자 묶음 + 오른쪽 색인 띠(2026-11-24 태화님 지시) ─────
+     6,713개를 「100개 더 보기」로 늘리던 목록을 머리글자(# · ㄱ~ㅎ · A~Z) 묶음으로 한 번에 그리고,
+     묶음마다 content-visibility:auto로 화면 밖 묶음은 배치·그리기를 건너뛴다. 묶음 머리는 목록 안에서 붙박이(sticky).
+     색인 띠는 목록 순서(숫자 → 한글 → 영문)와 같은 차례로 선다. 겹자음(ㄲ·ㄸ·ㅃ·ㅆ·ㅉ)은 홑자음 묶음에 넣는다(사전 관행). */
+  var CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ', CHO1 = { 'ㄲ': 'ㄱ', 'ㄸ': 'ㄷ', 'ㅃ': 'ㅂ', 'ㅆ': 'ㅅ', 'ㅉ': 'ㅈ' };
+  var IDX_KEYS = ['#'].concat('ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ'.split(''), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
+  function keyOf(name) {
+    var ch = String(name || '').charAt(0), c = ch.charCodeAt(0);
+    if (c >= 0xAC00 && c <= 0xD7A3) { var k = CHO.charAt(Math.floor((c - 0xAC00) / 588)); return CHO1[k] || k; }
+    if (/[a-z]/i.test(ch)) return ch.toUpperCase();
+    return '#';
+  }
+  /* 6,713줄을 한꺼번에 만들면 휴대폰(4배 느린 CPU)에서 2.1초 걸렸다 → 묶음 안을 100줄 단위 칸(.jb)으로 나누고,
+     화면 가까이 온 칸만 채운다. 칸 높이는 «줄 수 × 한 줄 높이(--row, em)»로 미리 정확히 잡아 두어
+     채워져도 목록 높이가 변하지 않는다(스크롤 위치 보정이 없는 iPhone Safari에서도 튀지 않는다). */
+  var JB = 100, jbIO = null;
+  function fillBlock(el) {
+    if (!el || el.getAttribute('data-f')) return;
+    var g = T.JG[el.parentNode.getAttribute('data-k')], i = +el.getAttribute('data-i');
+    el.innerHTML = g.slice(i, i + JB).map(jobRow).join('');
+    el.setAttribute('data-f', '1');
+    if (jbIO) jbIO.unobserve(el);
+  }
   function renderJobs() {
     $('crumb').innerHTML = '<div class="cr-s"><button type="button">고용24 직업 전체</button></div>';
     $('lh').innerHTML = '<b>직업명 가나다순</b><span>' + n0(T.JOBS.length) + '개 · 직업 기준</span>';
-    var a = T.JOBS.slice(0, UI.jobMore);
-    $('list').innerHTML = a.map(jobRow).join('') + (UI.jobMore < T.JOBS.length ? '<button type="button" class="morebtn" data-jmore>100개 더 보기</button>' : '');
+    if (!T.JG) {   /* 묶음은 한 번만 나눈다 */
+      T.JG = {}; T.JOBS.forEach(function (x) { var k = keyOf(x.name); (T.JG[k] = T.JG[k] || []).push(x); });
+    }
+    var h = '';
+    IDX_KEYS.forEach(function (k) {
+      var g = T.JG[k]; if (!g) return;
+      h += '<section class="jg" data-k="' + k + '" aria-label="' + (k === '#' ? '숫자' : k) + ' ' + g.length + '개">' +
+        '<h3 class="jg-h" aria-hidden="true">' + (k === '#' ? '0–9' : k) + '<small>' + n0(g.length) + '</small></h3>';
+      for (var i = 0; i < g.length; i += JB) h += '<div class="jb" data-i="' + i + '" style="--n:' + Math.min(JB, g.length - i) + '"></div>';
+      h += '</section>';
+    });
+    var L = $('list');
+    L.innerHTML = h; L.classList.add('has-idx'); L.scrollTop = 0;
+    if (jbIO) jbIO.disconnect();
+    var blocks = L.querySelectorAll('.jb');
+    if (window.IntersectionObserver) {
+      jbIO = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) fillBlock(e.target); }); }, { root: L, rootMargin: '900px 0px' });
+      blocks.forEach(function (el) { jbIO.observe(el); });
+    } else blocks.forEach(fillBlock);
+    fillBlock(blocks[0]);
+    /* 골라 둔 직업이 있으면 그 칸을 채워 표시가 보이게 */
+    if (UI.sel && UI.sel.s === 'job') { var x = T.J[UI.sel.c]; if (x) { var k = keyOf(x.name), gi = T.JG[k].indexOf(x); fillBlock(L.querySelector('.jg[data-k="' + k + '"] .jb[data-i="' + (gi - gi % JB) + '"]')); } }
+    IDX.show();
   }
   function jobRow(x) { var cur = UI.sel && UI.sel.s === 'job' && UI.sel.c === x.konet; return '<button type="button" class="row" data-s="job" data-c="' + x.konet + '"' + (cur ? ' aria-current="true"' : '') + '><span class="nm">' + esc(x.name) + '<small>' + esc((node('keco', x.keco_code) || {}).name || '') + '</small></span>' + (UI.q ? badge('job') : '') + '</button>'; }
 
@@ -133,7 +318,6 @@
     var b;
     if ((b = e.target.closest('[data-crumb]'))) { var i = +b.getAttribute('data-crumb'); UI.path[UI.tab] = UI.path[UI.tab].slice(0, i + 1); save(); renderTree(); return; }
     if ((b = e.target.closest('[data-more]'))) { UI.more += 50; var st = $('list').scrollTop; renderSearch(); $('list').scrollTop = st; return; }
-    if ((b = e.target.closest('[data-jmore]'))) { UI.jobMore += 100; var st2 = $('list').scrollTop; renderJobs(); $('list').scrollTop = st2; return; }
     if ((b = e.target.closest('[data-open]'))) { var p = b.getAttribute('data-open').split('|'); select(p[0], p[1]); return; }
     if ((b = e.target.closest('[data-close]'))) { closeSheet(); return; }
     if ((b = e.target.closest('.row[data-s]'))) {

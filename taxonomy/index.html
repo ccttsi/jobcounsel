@@ -135,6 +135,40 @@ a{color:inherit}
 .row .ar{flex:none;color:var(--line-2);font-size:15px}
 .bd{display:inline-flex;align-items:center;flex:none;padding:1px 7px;border-radius:7px;font-size:11.5px;font-weight:750;line-height:1.6;color:var(--c);background:color-mix(in srgb,var(--c) 11%,transparent);white-space:nowrap}
 .bd.lg{--c:var(--warn)}
+/* 고용24 직업명: 머리글자 묶음 + 오른쪽 색인 띠(2026-11-24) — 화면 밖 묶음은 배치·그리기를 건너뛴다 */
+.jg{--row:3.5em}
+/* 100줄 칸: 채우기 전에도 «줄 수 × 한 줄 높이»로 정확한 자리를 잡는다 — 한 줄 높이는 em이라 글자 크기 설정을 따라간다 */
+.jb{height:calc(var(--n) * var(--row));contain:layout paint}
+.jg .row{height:var(--row);min-height:0;box-sizing:border-box;padding-top:0;padding-bottom:0;border-radius:10px}
+.jg .row .nm{overflow:hidden}
+.jg .row .nm,.jg .row .nm small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jg-h{position:sticky;top:-2px;z-index:1;display:flex;align-items:baseline;gap:8px;margin:0 -6px;padding:9px 14px 5px;
+  background:var(--panel);border-bottom:1px solid var(--line);font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--acc)}
+.jg-h small{font-size:11.5px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums}
+.jg+.jg .jg-h{margin-top:6px}
+.list.has-idx{padding-right:34px}
+.list.has-idx .jg-h{margin-right:-34px;padding-right:48px}
+.pane.has-rail{position:relative}
+/* 색인 띠: 누르는 폭 44px · 글자 칸은 오른쪽 22px. 평소엔 글자만, 손이 닿으면 옅은 기둥이 깔린다 */
+.azr{position:absolute;right:0;width:44px;z-index:3;display:flex;justify-content:flex-end;touch-action:none;user-select:none;-webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent;cursor:pointer;outline:none}
+.azr[hidden]{display:none}
+.azr-in{position:relative;display:flex;flex-direction:column;justify-content:center;width:24px;height:100%;margin-right:5px;padding:8px 0;box-sizing:border-box;border-radius:12px}
+.azr-in::before{content:"";position:absolute;inset:4px 0;border-radius:12px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);opacity:0;transition:opacity .18s}
+.azr:hover .azr-in::before,.azr.drag .azr-in::before,.azr:focus-visible .azr-in::before{opacity:1}
+.azr:focus-visible .azr-in::before{box-shadow:inset 0 0 0 2px var(--acc)}
+.azr i{position:relative;flex:1 1 0;max-height:16px;min-height:0;display:grid;place-items:center;font-style:normal;font-size:11px;line-height:1;font-weight:700;
+  color:var(--muted);font-variant-numeric:tabular-nums;transition:transform .14s cubic-bezier(.2,.8,.2,1),color .14s}
+.azr i.no{color:var(--dim);opacity:.5}
+.azr i.dot{font-size:11px;color:var(--line-2)}
+.azr i.on{color:var(--acc);font-weight:850;transform:scale(1.22)}
+/* 끄는 동안 띠 왼쪽에 따라오는 큰 글자 */
+.azb{position:absolute;top:0;right:56px;z-index:4;width:56px;height:56px;display:grid;place-items:center;border-radius:16px;
+  background:var(--panel);border:1px solid var(--line-2);box-shadow:0 10px 28px -12px rgba(30,20,10,.38);
+  font-size:26px;font-weight:800;color:var(--acc);pointer-events:none;opacity:0;transition:opacity .16s}
+.azb.on{opacity:1}
+.azb.miss{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.azr i,.azr-in::before,.azb{transition:none}}
 .morebtn{display:block;width:100%;min-height:44px;margin:6px 0 0;border-radius:12px;background:var(--soft);font-size:14px;font-weight:700;color:var(--ink);text-align:center}
 .empty{margin:12px 8px;padding:14px;border-radius:14px;background:var(--soft);color:var(--muted);font-size:14.5px}
 .loading{padding:24px 14px;color:var(--muted);font-size:15px}
