@@ -56,6 +56,7 @@
   --tc-portals:#2a7257;
   --tc-thermometer:#8c4e5d;
   --tc-surgery:#7e517a;
+  --tc-trait-flip:#8a3b63;
   --tc-interview:#2f698f;
   --tc-portfolio:#6f568a;
   --tc-transit:#4e6e3b;
@@ -97,6 +98,7 @@
   --tc-portals:#1a6c4f;
   --tc-thermometer:#864555;
   --tc-surgery:#784874;
+  --tc-trait-flip:#7d3558;
   --tc-interview:#22628a;
   --tc-portfolio:#684e85;
   --tc-transit:#456731;
@@ -138,6 +140,7 @@
   --tc-portals:#50d2a2;
   --tc-thermometer:#ff91ac;
   --tc-surgery:#e897e0;
+  --tc-trait-flip:#eda3c2;
   --tc-interview:#5bc2ff;
   --tc-portfolio:#cba0fc;
   --tc-transit:#91cb70;
@@ -180,6 +183,7 @@ body[data-jc-tool="fin-lab"]{--jc-acc:var(--tc-fin-lab)}
 body[data-jc-tool="portals"]{--jc-acc:var(--tc-portals)}
 body[data-jc-tool="thermometer"]{--jc-acc:var(--tc-thermometer)}
 body[data-jc-tool="surgery"]{--jc-acc:var(--tc-surgery)}
+body[data-jc-tool="trait-flip"]{--jc-acc:var(--tc-trait-flip)}
 body[data-jc-tool="interview"]{--jc-acc:var(--tc-interview)}
 body[data-jc-tool="portfolio"]{--jc-acc:var(--tc-portfolio)}
 body[data-jc-tool="transit"]{--jc-acc:var(--tc-transit)}

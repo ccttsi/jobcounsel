@@ -276,5 +276,15 @@
   "url": "./valuechain/?i=battery&s=3",
   "want": "음극재·분리막·전해액",
   "note": "산업+단계 딥링크(C3-21 ①)"
+ },
+ {
+  "sector": "36 trait-flip",
+  "url": "./trait-flip/?q=조급하다",
+  "want": "「조급하다」에서 펼친 장점"
+ },
+ {
+  "sector": "36 trait-flip",
+  "url": "./trait-flip/?q=완벽주의",
+  "want": "완벽주의다"
  }
 ]
