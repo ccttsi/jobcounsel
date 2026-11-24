@@ -12,6 +12,7 @@ import sys
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+STEM_ADNOM = json.load(open(os.path.join(HERE, 'stems.json'), encoding='utf-8'))
 ROOT = os.environ.get('TFROOT', '/workspace/tf500')
 DATA = os.path.join(ROOT, 'trait-flip', 'data', 'traits.json')
 BASE = os.path.join(HERE, 'base', 'traits.json')
@@ -64,7 +65,7 @@ def parse():
                 weak.append(dict(
                     id=nid, side='weak', label=label, brief=brief, scene=scene, cost=cost,
                     fix=fix, gain=gain,
-                    stems=[x for x in stems.split(';') if x],
+                    stems=[STEM_ADNOM.get(x, x) for x in stems.split(';') if x],
                     axes=[norm_axis(x) for x in re.sub(r'[^a-z,]', '', _clean_axes(axes)).split(',') if x],
                     hot=int(hot), aliases=[x for x in aliases.split(';') if x], where=where,
                 ))
@@ -179,32 +180,37 @@ def make_pairs(weak, strong):
     return pairs, deg_w, deg_s
 
 
+def _dot(x):
+    return str(x).rstrip().rstrip('.')
+
+
 def make_text(w, s, idx):
     sl, wl = s['label'], w['label']
     h = idx
+    cost, over, gain = _dot(w['cost']), _dot(s['over']), w['gain']
     st = w['stems']
-    wk = (st[idx % len(st)] + ' 사람') if idx < len(st) else (st[idx % len(st)] + ' 쪽으로 읽히는 사람')
+    wk = (st[idx % len(st)] + ' 사람') if idx < len(st) else ('「' + wl + '」는 소리를 듣지만 ' + st[idx % len(st)] + ' 사람')
     logic = [
         f'「{wl}」라는 말은 약점처럼 들리지만, 실제로는 {s["core"]} 그 점이 「{sl}」라는 강점으로 읽힙니다.',
-        f'{w["cost"]} 다만 {s["how"]} 습관이 붙으면 「{sl}」라는 강점으로 바뀝니다.',
-        f'겉으로는 「{wl}」 쪽으로 보입니다. 실제로는 {s["core"]} 그래서 {w["scene"]} 자리에서 「{sl}」라는 강점이 드러납니다.',
-        f'「{wl}」은 그냥 약점입니다. 그런데 {s["how"]} 방식으로 쓰이면 「{sl}」라는 강점이 됩니다. {s["core"]}',
-        f'{w["cost"]} 이 습관이 「{sl}」라는 강점으로 읽히는 이유는 {s["how"]} 방식으로 쓰이기 때문입니다.',
+        f'{cost}. 다만 {s["how"]} 습관이 붙으면 「{sl}」라는 강점으로 바뀝니다.',
+        f'겉으로는 「{wl}」 쪽으로 보입니다. 실제로는 {s["core"]} 그래서 {w["scene"]}에서 「{sl}」라는 강점이 드러납니다.',
+        f'「{wl}」라는 말은 그냥 약점입니다. 그런데 {s["how"]} 방식으로 쓰이면 「{sl}」라는 강점이 됩니다. {s["core"]}',
+        f'{cost}. 이 습관이 「{sl}」라는 강점으로 읽히는 이유는 {s["how"]} 방식으로 쓰이기 때문입니다.',
     ][h]
     ex = [
-        f'{w["scene"]} 자리에서 {s["how"]} 방식으로 일해 {w["gain"]}',
-        f'{w["scene"]} 자리에서 {w["fix"]} 습관을 들인 뒤 {w["gain"]}',
-        f'{w["scene"]} 자리에서 {s["how"]} 순서를 지켜 {w["gain"]}',
+        f'{w["scene"]}에서 {s["how"]} 방식으로 일해 {gain}',
+        f'{w["scene"]}에서 {w["fix"]} 습관을 들인 뒤 {gain}',
+        f'{w["scene"]}에서 {s["how"]} 순서를 지켜 {gain}',
     ][h % 3]
     warn = [
-        f'다만 {s["over"]}. 그래서 「{sl}」라는 강점을 말할 때는 확인한 근거를 한 줄 붙여야 합니다.',
-        f'{s["over"]}. 상대가 그렇게 느끼지 않도록 「{wl}」라는 말 뒤에 이유를 한 줄 붙이면 안전합니다.',
-        f'{s["over"]}. 강점을 내세울 때는 «얼마나 줄였는지»를 숫자로 붙이는 편이 좋습니다.',
+        f'다만 {over}. 그래서 「{sl}」라는 강점을 말할 때는 확인한 근거를 한 줄 붙여야 합니다.',
+        f'{over}. 상대가 그렇게 느끼지 않도록 「{wl}」라는 말 뒤에 이유를 한 줄 붙이면 안전합니다.',
+        f'{over}. 강점을 내세울 때는 «얼마나 줄였는지»를 숫자로 붙이는 편이 좋습니다.',
     ][h % 3]
     guard = [
-        f'「{w["cost"]}」는 지적을 받은 적이 있습니다.',
+        f'{cost}. 그런 지적을 받은 적이 있습니다.',
         f'지금은 {w["fix"]} 방식으로 바꿔 두었습니다.',
-        f'그 결과 {w["gain"]}',
+        f'그 결과 {gain}',
     ]
     return dict(w=w['id'], s=s['id'], wk=wk, logic=logic, ex=ex, warn=warn,
                 risk=w['cost'], q=f'「{w["label"]}」라는 말을 들어 본 적이 있습니까?', guard=guard)
