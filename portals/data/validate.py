@@ -5,7 +5,7 @@
 종료 코드 0 = 오류 0건(경고는 있어도 무관), 1 = 오류 있음.
 
 네트워크를 쓰지 않는다(오프라인 검증). 실제 접속 검증 결과가 각 항목의
-http_status·verified_at 에 들어 있다. 마지막 전수 재확인은 2026-11-23(주간 점검)이다.
+http_status·verified_at 에 들어 있다. 마지막 전수 재확인은 2026-11-23(주간 점검)이고, 2026-11-24에 제외 20곳을 다시 확인해 16곳을 더했다.
 사이트가 폐쇄되면 verified_at 을 올릴 때 해당 항목을 빼거나 주소를 고친다.
 """
 import json
@@ -18,9 +18,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, "portals.json")
 
 EXPECTED = {
-    "total": 91,
+    "total": 107,
     "by_sector": {"pub": 8, "disclosure": 13, "general": 15, "tech": 12, "expert": 5,
-                  "industry": 8, "target": 17, "train": 5, "service": 5, "info": 3},
+                  "industry": 8, "target": 17, "train": 12, "service": 13, "info": 4},
 }
 # 항목마다 실제로 접속을 확인한 날을 적는다. 한 날짜로 통일하지 않는다 —
 # 자동 접속 차단(403) 사이트는 마지막으로 확인한 날짜를 그대로 둔다.
@@ -72,8 +72,8 @@ def main():
             err("meta.%s 누락" % k)
     if meta.get("built_at") != VERIFIED_AT:
         warn("meta.built_at=%r (기대 %s)" % (meta.get("built_at"), VERIFIED_AT))
-    if meta.get("version") != "1.2.0":
-        warn("meta.version=%r (기대 1.2.0)" % (meta.get("version"),))
+    if meta.get("version") != "1.3.0":
+        warn("meta.version=%r (기대 1.3.0)" % (meta.get("version"),))
 
     # ---- sectors / vocabulary ----
     codes = [s.get("code") for s in sectors]
