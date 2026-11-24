@@ -11,6 +11,13 @@
      질문 한 마디로 나와야 하는 자료는 `RULES`(직행 패턴)에 `dom`·`act`·`not`을 넣는다.
    - 재생성: `python3 assistant/build_index.py` · `python3 ops/scripts/build_flow_graph.py` → `validate_repo.py`.
 
+## 2026-11-24 — 장점 ↔ 단점 뒤집기 섹터 신설(`/trait-flip/`, 매치 20 · no 36) (태화님)
+- **무엇**: 성격·업무 태도 낱말 하나 → 반대쪽 3~5갈래 카드. 「단점 → 장점」은 강점 키워드·핵심 논리·자소서 한 줄·주의, 「장점 → 단점」은 우려 지점·예상 압박 질문·방어 3단(인정·보완 기준·균형 잡힌 결과). 결과 카드의 키워드를 누르면 그 낱말에서 **방향까지 바뀌며** 이어지는 핑퐁. 낱말 98(단점 45·장점 53) · 전환 짝 184 · 카드 368 · 비슷한 말 400여 개.
+- **자리**: 서류 해부실(35) 다음, 면접 전술 덱(37) 앞 — 서류를 고친 뒤 성격 낱말을 뒤집고 면접으로 들어가는 차례. 뒤 번호를 그 자리에서 다시 매겼다(interview 매치 21·37 · portfolio 22·38 · transit 23·39). 폴더 주소·색은 그대로.
+- **공용에 함께 넣은 것**: `assets/tools.js`(칸·`JC_LINKS` 5쌍 — surgery·interview·portfolio·translator·talk), `assets/brand.css`(`--tc-trait-flip` 3테마), `mydeck/assemble.js`(TIER1 · STAGE 62 · GROUPS `field` · RULES 직행), `assistant/data/synonym-map.json` 3항목, 재생성 `assistant/build_index.py`·`ops/scripts/build_flow_graph.py`, 검사 `validate_repo.py`(`check_trait_flip` — 낱말마다 3~5갈래·칸 빔·중복 짝) · `ops/qa/audit.js`(「뒤집기」: 방향 전환 뒤 상태를 다시 잰다 — 기본 상태만 재면 반대 방향의 분량·넘침을 놓친다), `ops/qa/deeplink_cases.json` 2건.
+- **실측**(390·360·820·1024·1280·1600 × 밝게·어둡게): 오류 0 · 넘침 0 · 44px 미달 0 · 칩 정렬 0 · 화면 분량 2.0/2.3/1.3/1.3/1.2/1.0. `audit.js` 뒤집기 상태 390 **2.4** · 1280 **1.49**(5갈래 낱말 최대). `getAnimations()`에 `transform`·`opacity` 외 0, 대기 rAF 0.
+- **남은 일**: 없음. 성향–직무 성과의 상관 수치는 넣지 않았다(확인된 자료 없음 — 화면에도 «보장하지 않는 재료»로 적음). 낱말을 더 늘리려면 갈래(3~5)를 함께 채워야 한다(`check_trait_flip`).
+
 ## 2026-11-24 — 「채용 사이트 안내판」 → 「고용 사이트 안내판」 확대 (태화님 「직업훈련·기업정보·고용 관련 사이트 총망라, 이름·설명 변경」)
 - **데이터**(`portals/data/portals.json` 1.2.0): 대분류 3개 신설(직업훈련·자격·평생학습 / 고용·노동 행정·지원 / 직업·진로 정보·통계) + 공시·기업정보 2곳 → 76 → 91곳. 후보 35곳을 실제로 접속(검증 환경 허용 주소 추가, 태화님 승인)해 **최종 200 + 원문에서 메뉴·운영 기관 확인한 15곳만** 수록. 20곳은 `excluded`에 사유(해외망 차단·응답 없음·스크립트 화면으로 메뉴 미확인·TLS·고용24 통합)와 함께. `validate.py` 오류 0. SCHEMA §5-5에 다음 재확인 할 일(Q-Net·NCS·고용노동부·복지로·STEP 브라우저 확인).
 - **이름·설명**: `assets/tools.js`(제목·배지·설명·목록 문구·꼬리표), 대문 롤링 문구, `portals/index.html` 제목·설명·이용 안내, 새 분류 색(3테마), fin-lab·intake 연결 표기, `mydeck/assemble.js` 직행 패턴(훈련 사이트·국비 교육·기업 정보 사이트), README. 비서 색인·시너지 지도 재생성.

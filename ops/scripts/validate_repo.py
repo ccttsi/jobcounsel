@@ -38,7 +38,7 @@ from datetime import datetime, timedelta, timezone
 from urllib.parse import unquote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DATA_DIRS = ("briefing/data", "emerging/data", "thermometer/data", "translator/data")
+DATA_DIRS = ("briefing/data", "emerging/data", "thermometer/data", "translator/data", "trait-flip/data")
 KST = timezone(timedelta(hours=9))
 
 # 재가공이 허락되지 않는 라이선스 — 이 라이선스를 단 자료는 절대 Track A가 될 수 없다.
@@ -527,6 +527,81 @@ def check_terms(document, path):
          + f" · 금지 표시 {sum(1 for t in terms if t.get('ban'))}개")
 
 
+
+def check_trait_flip(document, path):
+    """traits.json — 장점 ↔ 단점 뒤집기(trait-flip)의 계약.
+
+    낱말 하나가 출발점이고 결과 카드가 3~5장 펼쳐져야 «1:N»이 성립한다. 카드 한 장이 빠지거나
+    한쪽으로 몰리면 화면은 그대로 뜨지만 뒤집기 동선이 끊기므로 배포 전에 여기서 센다.
+    전환 카드의 문장 칸(논리·예시·주의 / 우려·질문·방어 3단)이 비면 카드가 빈 채로 나간다.
+    """
+    label = rel(path)
+    for key in ("v", "built", "title", "note", "groups", "nodes", "pairs"):
+        if key not in document:
+            fail("json", f"{label}: 필수 키 '{key}'가 없다")
+    groups = [g.get("id") for g in document.get("groups") or []]
+    if not groups:
+        fail("json", f"{label}: groups가 비어 있다")
+    nodes = document.get("nodes") or {}
+    if not isinstance(nodes, dict) or not nodes:
+        fail("json", f"{label}: nodes가 비어 있다")
+        return
+    weak, strong, labels = set(), set(), set()
+    for nid, node in nodes.items():
+        for key in ("id", "side", "g", "label", "brief", "aliases"):
+            if key not in (node or {}):
+                fail("json", f"{label}: 낱말 {nid}에 '{key}'가 없다")
+                continue
+        if node.get("id") != nid:
+            fail("json", f"{label}: 낱말 {nid}의 id가 열쇠와 다르다({node.get('id')})")
+        if node.get("side") not in ("weak", "strong"):
+            fail("json", f"{label}: 낱말 {nid}의 side '{node.get('side')}'가 weak·strong이 아니다")
+        elif node["side"] == "weak":
+            weak.add(nid)
+        else:
+            strong.add(nid)
+        if node.get("g") not in groups:
+            fail("json", f"{label}: 낱말 {nid}의 묶음 '{node.get('g')}'가 groups에 없다")
+        if not str(node.get("brief") or "").strip():
+            fail("json", f"{label}: 낱말 {nid}에 한 줄 설명(brief)이 없다")
+        if not (node.get("aliases") or []):
+            fail("json", f"{label}: 낱말 {nid}에 비슷한 말(aliases)이 없다 — 자유 입력이 걸리지 않는다")
+        name = str(node.get("label") or "")
+        if name in labels:
+            fail("json", f"{label}: 낱말 이름이 중복된다: {name}")
+        labels.add(name)
+    if len(weak) < 40 or len(strong) < 40:
+        fail("json", f"{label}: 단점 {len(weak)}개·장점 {len(strong)}개 — 한쪽이 40개보다 적다")
+    seen, deg = set(), {}
+    for i, pair in enumerate(document.get("pairs") or []):
+        where = f"{label} pairs[{i}]"
+        for key in ("w", "s", "wk", "logic", "ex", "warn", "risk", "q", "guard"):
+            if key not in (pair or {}):
+                fail("json", f"{where}: '{key}'가 없다")
+        w, s = pair.get("w"), pair.get("s")
+        if w not in weak or s not in strong:
+            fail("json", f"{where}: 짝 {w}·{s}가 단점·장점 낱말이 아니다")
+            continue
+        if (w, s) in seen:
+            fail("json", f"{where}: 같은 짝이 두 번 있다: {w}·{s}")
+        seen.add((w, s))
+        deg[w] = deg.get(w, 0) + 1
+        deg[s] = deg.get(s, 0) + 1
+        for key in ("wk", "logic", "ex", "warn", "risk", "q"):
+            if not str(pair.get(key) or "").strip():
+                fail("json", f"{where} ({w}↔{s}): '{key}'가 비어 있다")
+        guard = pair.get("guard") or []
+        if not isinstance(guard, list) or len(guard) != 3 or not all(str(x).strip() for x in guard):
+            fail("json", f"{where} ({w}↔{s}): 방어 3단(guard)이 세 칸이 아니다")
+    stray = [k for k in list(deg) if not (3 <= deg[k] <= 5)]
+    if stray:
+        fail("json", f"{label}: 전환 카드가 3~5장이 아닌 낱말 {len(stray)}개 — {stray[:6]}")
+    lonely = [k for k in list(weak) + list(strong) if deg.get(k, 0) < 3]
+    if lonely:
+        fail("json", f"{label}: 전환 카드가 모자란 낱말 — {lonely[:6]}")
+    note(f"장점↔단점 뒤집기 — 단점 {len(weak)} · 장점 {len(strong)}개 낱말 · 전환 짝 {len(seen)} · 카드 {len(seen) * 2}장")
+
+
 CURRENT_CHECKERS = {
     "briefing/data/briefing.json": check_briefing,
     "briefing/data/news.json": check_news,
@@ -534,6 +609,7 @@ CURRENT_CHECKERS = {
     "emerging/data/emerging.json": check_emerging,
     "thermometer/data/thermometer.json": check_thermometer,
     "translator/data/terms.json": check_terms,
+    "trait-flip/data/traits.json": check_trait_flip,
 }
 
 

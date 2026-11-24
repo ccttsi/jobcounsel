@@ -130,6 +130,45 @@ function serve() {
       await c.close();
     }
   }
+  /* ── 뒤집기 화면(trait-flip) — 기본 상태만 재면 «장점 → 단점» 상태의 분량·넘침을 놓친다.
+     방향을 바꾸고 결과 카드의 키워드를 눌러 핑퐁까지 간 뒤 같은 기준으로 다시 잰다(2026-11-24). */
+  for (const pg of PAGES.filter(x => /trait-flip/.test(x))) {
+    for (const [w, h, kind] of [[390, 844, 'phone'], [1280, 800, 'desktop']]) for (const theme of ['light', 'dark']) {
+      const c = await b.newContext({ viewport: { width: w, height: h } });
+      await c.addInitScript(t => { try { localStorage.setItem('jc-theme', t); } catch (e) {} }, theme);
+      await c.route(/cdn\.jsdelivr|unpkg\.com|fonts\.g(oogleapis|static)\.com/, r => r.abort());
+      const p = await c.newPage(); const errs = [];
+      p.on('pageerror', e => errs.push(String(e).slice(0, 120)));
+      p.on('console', m => { if (m.type() === 'error' && !/jsdelivr|unpkg|fonts\.g/.test((m.location() || {}).url || '')) errs.push(m.text().slice(0, 120)); });
+      await p.goto(base + pg, { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(1500);
+      const measure = () => p.evaluate(() => {
+        const small = [];
+        document.querySelectorAll('a,button,select,input,summary,[role=button],[role=tab]').forEach(el => {
+          if (el.closest('#jc-marker-ui,#jc-imm-dock')) return; const q = el.getBoundingClientRect(); if (!q.width || !q.height) return;
+          const inline = el.tagName === 'A' && getComputedStyle(el).display === 'inline';
+          if (!inline && (q.width < 43.5 || q.height < 43.5)) small.push((el.id || String(el.className).split(' ')[0] || el.tagName) + ' ' + Math.round(q.width) + 'x' + Math.round(q.height));
+        });
+        const tab = sel => { const b = document.querySelector(sel); return b ? b.getAttribute('aria-selected') : ''; };
+        return { screens: +(document.documentElement.scrollHeight / innerHeight).toFixed(1), overflow: document.documentElement.scrollWidth - innerWidth,
+                 cards: document.querySelectorAll('.rc').length, w2s: tab('#mW'), s2w: tab('#mS'),
+                 small: small.slice(0, 6), smallCount: small.length };
+      });
+      const rev = await p.$('#mS'); if (rev) { await rev.click(); await p.waitForTimeout(500); }
+      const a = await measure();
+      const kw = await p.$('.rc .kw'); if (kw) { await kw.click(); await p.waitForTimeout(700); }
+      const r = await measure();
+      /* 처음(단점→장점)과 방향을 바꾼 상태, 핑퐁으로 다시 돌아온 상태 셋 다 기준 안이어야 한다 */
+      const worst = [a, r].reduce((m, x) => (x.screens > m.screens ? x : m), a);
+      const bad = errs.length || a.overflow > 0 || r.overflow > 0 || a.smallCount || r.smallCount
+        || a.screens > LIMIT[kind] || r.screens > LIMIT[kind] || a.cards < 3 || r.cards < 3
+        || a.s2w !== 'true' || r.w2s !== 'true';
+      if (bad) fail++;
+      console.log(`${bad ? '✗' : '✓'} /${pg} ${w}x${h} ${theme} 뒤집기(방향 전환+핑퐁)  오류 ${errs.length} · 넘침 ${Math.max(a.overflow, r.overflow)} · 44px 미달 ${a.smallCount + r.smallCount} · 화면 ${worst.screens}(기준 ${LIMIT[kind]}) · 카드 ${a.cards}→${r.cards} · 방향 ${a.s2w}/${r.w2s}` +
+        (errs.length ? '\n    ' + errs.join('\n    ') : '') + ((a.smallCount || r.smallCount) ? '\n    ' + a.small.concat(r.small).join(' | ') : ''));
+      await c.close();
+    }
+  }
+
   await b.close(); srv.close();
   console.log(fail ? `\n기준을 넘은 조합 ${fail}개 — 고친 뒤 다시 재고, 예외(긴글 읽기 등)는 HANDOFF에 사유를 남긴다.` : '\n모든 조합 통과.');
   process.exit(fail ? 1 : 0);
