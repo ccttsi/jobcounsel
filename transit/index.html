@@ -347,13 +347,17 @@ html[data-mode="rev"] .hero p{display:none}
 html[data-mode="rev"] .hero{padding-bottom:0}
 html[data-mode="rev"] .hero h1{font-size:clamp(21px,3vw,26px)}html[data-mode="rev"] .hero h1 br{display:none}
 /* 역행 단계: 목표 ← 필요 ← 대조 ← 메울 길 (오른쪽에서 왼쪽으로 거슬러 읽는 레일) */
-.rr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:14px 0 4px;padding:0;list-style:none}
-.rr button{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:0;width:100%;min-height:52px;padding:6px 10px;border-radius:12px;background:var(--soft);font-size:14px;font-weight:750;line-height:1.3;color:var(--muted);text-align:left}
-.rr button small{font-size:11.5px;font-weight:600;color:var(--dim)}
+/* 단계 띠: 단추 수만큼 같은 폭(순행 4 · 역행 4 · AI 3) · 글자는 상하좌우 정중앙 (DESIGN §1-5) */
+.rr{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;margin:14px 0 4px;padding:0;list-style:none}
+.rr li{display:flex;min-width:0}
+.rr button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:100%;height:100%;min-height:56px;padding:8px 10px;border-radius:14px;background:var(--soft);font-size:14px;font-weight:750;line-height:1.35;color:var(--muted);text-align:center;transition:background .2s,color .2s}
+.rr button small{font-size:11.5px;font-weight:600;line-height:1.3;color:var(--dim)}
 .rr button[aria-current="step"]{background:var(--ink);color:var(--bg)}
 .rr button[aria-current="step"] small{color:inherit;opacity:.75}
 .rr button:disabled{opacity:.45;cursor:default}
-@media (max-width:520px){.rr button{padding:6px 7px;font-size:13px}.rr button small{display:none}}
+@media (max-width:520px){.rr button{min-height:48px;padding:8px 6px;font-size:13.5px}.rr button small{display:none}.rr .full{display:none}.rr .ar{display:none}}
+.rr .short{display:none}
+@media (max-width:520px){.rr .short{display:inline}}
 .rv-h{margin:16px 0 4px;font-size:clamp(21px,3.6vw,26px);line-height:1.3;letter-spacing:-.035em}
 .rv-l{margin:0 0 12px;color:var(--muted);font-size:15px}
 .rv-l b{color:var(--ink)}
@@ -457,12 +461,25 @@ html[data-mode="ai"] .hero h1{font-size:clamp(21px,3vw,26px)}
 html[data-mode="ai"] .hero h1 br{display:none}
 @media (min-width:900px){.ai2{grid-template-columns:minmax(0,1fr) minmax(0,1.32fr)}}
 .ai-map .vn{padding-bottom:10px}
-.ai-today{display:grid;gap:2px;margin:14px 0 0;padding:12px 16px 13px 18px;border-radius:16px;background:var(--soft);border-left:4px solid var(--acc);text-decoration:none}
-.ai-today .k{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:12.5px;font-weight:800;color:var(--acc)}
-.ai-today .k span{color:var(--acc);font-weight:700;white-space:nowrap}
-.ai-today .v{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+/* 오늘의 신호 — 날짜별 AI 소식 띠(좌우로 넘겨 본다) */
+.ai-today{display:grid;gap:2px;margin:14px 0 0;padding:6px 10px 12px 14px;border-radius:16px;background:var(--soft);border-left:4px solid var(--acc);text-decoration:none;overflow:hidden}
+.ai-today .k{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;font-size:12.5px;font-weight:800;color:var(--acc)}
+.ai-today .k .d{font-variant-numeric:tabular-nums;white-space:nowrap}
+.ai-today .sgn{display:flex;align-items:center;gap:4px;flex:none}
+.ai-today .sgn button{display:grid;place-items:center;width:44px;min-width:44px;height:44px;padding:0;border-radius:12px;background:var(--panel);border:1px solid var(--line);color:var(--ink);font-size:20px;line-height:1;font-weight:700}
+.ai-today .sgn button:disabled{opacity:.3;cursor:default}
+.ai-today .trk{display:flex;flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;-ms-overflow-style:none;margin:0;padding:0}
+.ai-today .trk::-webkit-scrollbar{display:none}
+.ai-today .sl{flex:0 0 100%;min-width:0;scroll-snap-align:start;display:block;padding-right:8px;text-decoration:none}
+.ai-today .a{display:grid;gap:1px;min-width:0}
+.ai-today .b{display:grid;gap:3px;min-width:0;align-content:center}
+@media (min-width:900px){.ai-today .sl{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);gap:0 32px;align-items:center;padding-right:0}.ai-today .v b{font-size:34px}}
+.ai-today .v{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px}
 .ai-today .v b{font-size:clamp(24px,5.4vw,30px);letter-spacing:-.04em;color:var(--ink)}
-.ai-today .v span{font-size:14px;color:var(--muted);font-weight:650}
+.ai-today .v span{flex:1 1 auto;min-width:0;font-size:15px;line-height:1.45;color:var(--ink);font-weight:700;overflow-wrap:anywhere}
+.ai-today .mt{display:block;margin-top:1px;font-size:12.5px;line-height:1.45;color:var(--muted);font-weight:650;overflow-wrap:anywhere}
+.ai-today .sm{margin-top:3px;font-size:13px;line-height:1.45;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ai-today .rd{display:block;margin-top:4px;font-size:12.5px;font-weight:700;color:var(--acc)}
 .ai-fams{display:grid;gap:6px}
 .ai-fams button{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 10px;width:100%;min-height:54px;padding:7px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--line);text-align:left;transition:border-color .2s}
 .ai-fams .tx{min-width:0}
@@ -511,10 +528,13 @@ html[data-mode="ai"] .hero h1 br{display:none}
 .hline .k2{display:block;font-size:11.5px;font-weight:800;color:var(--c)}
 .hline b{display:block;font-size:14.5px;line-height:1.4;letter-spacing:-.02em;word-break:keep-all}
 .hline small{display:block;margin-top:2px;font-size:12px;color:var(--dim);line-height:1.45}
-.ai-mini{min-height:44px;margin-top:6px;padding:0 12px;border-radius:12px;background:var(--soft);font-size:14px;font-weight:700;flex:0 0 auto}
-.ai-acts{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
-.ai-acts .btn{flex:0 1 auto;min-width:0;min-height:44px;padding:0 16px;font-size:15px}
-.ai-acts .ai-mini{margin-top:0}
+/* 나란한 두 단추는 한 값으로 — 글자·굵기·높이·여백·모서리를 같게 (DESIGN §1-5) */
+.ai-mini{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:6px;padding:0 16px;border-radius:14px;background:var(--soft);font-size:15px;font-weight:750;line-height:1.25;text-align:center;transition:transform .15s,background .2s}
+.ai-mini:active{transform:scale(.98)}
+.ai-acts{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin-top:10px}
+.ai-acts .btn,.ai-acts .ai-mini{flex:1 1 0;min-width:0;min-height:48px;margin:0;padding:0 14px;border-radius:14px;font-size:15px;font-weight:750;line-height:1.25;text-align:center}
+.ai-acts .btn{justify-content:center}
+.ai-acts .ai-mini[data-aireset]{flex:0 0 auto}
 .ai-routes .nm small{display:block;margin-top:1px;font-size:12px;font-weight:600;color:var(--dim)}
 .ai-mini[aria-pressed="true"]{background:var(--acc);color:#fff}
 :root[data-theme="dark"] .ai-mini[aria-pressed="true"]{color:#08090c}
@@ -580,7 +600,7 @@ html[data-mode="ai"] .hero h1 br{display:none}
     <section class="panel" id="pai" aria-labelledby="hait"></section>
   </main>
 
-  <p class="foot">제도 정보는 고용노동부·고용24·여성새로일하기센터·한국폴리텍대학·한국산업인력공단 등의 공개 안내와 보도자료(2026년 11월 14일 확인)를 바탕으로 요약했습니다. 원문을 옮겨 싣지 않았으며, 기관명은 안내를 위해서만 씁니다. 이 화면은 어떤 기관의 공식 자료도 아닌 참고·실습용 도구입니다. <span>AI 환승의 진입장벽 수치는 2026년 11월 24일 브리핑과 공개 보도에서 사실만 요약했고, 직업·능력단위는 고용24 직업정보와 국가직무능력표준(NCS) 공식 자료입니다.</span> <span>국민취업지원제도 세부 내용은 <a href="../manual/">구직자취업촉진법 실무 가이드</a>, 검사 해석 연습은 <a href="../vpi/">직업선호도검사 시뮬레이터</a>, 학과·직업 연결은 <a href="../decalcomania/">커리어데칼코마니</a>에서 이어집니다.</span></p>
+  <p class="foot">제도 정보는 고용노동부·고용24·여성새로일하기센터·한국폴리텍대학·한국산업인력공단 등의 공개 안내와 보도자료(2026년 11월 14일 확인)를 바탕으로 요약했습니다. 원문을 옮겨 싣지 않았으며, 기관명은 안내를 위해서만 씁니다. 이 화면은 어떤 기관의 공식 자료도 아닌 참고·실습용 도구입니다. <span>AI 환승의 진입장벽과 날짜별 신호는 브리핑(briefing)의 AI 관련 카드에 적힌 수치·문장만 사실 그대로 옮겼고, 직업·능력단위는 고용24 직업정보와 국가직무능력표준(NCS) 공식 자료입니다.</span> <span>국민취업지원제도 세부 내용은 <a href="../manual/">구직자취업촉진법 실무 가이드</a>, 검사 해석 연습은 <a href="../vpi/">직업선호도검사 시뮬레이터</a>, 학과·직업 연결은 <a href="../decalcomania/">커리어데칼코마니</a>에서 이어집니다.</span></p>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="sh" id="sh" hidden role="dialog" aria-modal="true" aria-label="환승역 자세히"><div class="sh-b" id="shB"></div></div>
@@ -613,6 +633,35 @@ var S={step:1,type:'',age:'',period:'',dirs:[],assets:[],memo:'',filter:'fit',id
 try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&typeof sv==='object')for(var k in S)if(k in sv)S[k]=sv[k];}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 
+/* ───────── 뒤로가기 = 한 단계 전으로 ─────────
+   단계·보기(순행·역행·AI)를 옮길 때마다 히스토리에 한 칸씩 쌓고, 뒤로가기가 오면 그 칸의 상태로 되돌린다.
+   처음 들어온 칸에서 뒤로가기만 페이지를 떠난다. 주소는 건드리지 않고 같은 주소로 칸만 쌓는다
+   (팝업을 닫는 core.js 뒤로가기 장치와 서로 밟지 않게, 그 장치의 계산을 건너뛰는 native pushState를 쓴다). */
+var HS={busy:false};
+function hsState(){return {m:MODE,fwd:S.step,rev:R.step,ai:A.step};}
+function hsSame(a,b){return !!(a&&b&&a.m===b.m&&a.fwd===b.fwd&&a.rev===b.rev&&a.ai===b.ai);}
+function hsPush(){if(HS.busy||!D)return;var st=hsState();
+  if(hsSame(st,history.state&&history.state.jcTransit))return;
+  try{History.prototype.pushState.call(history,{jcTransit:st},'',location.href);}catch(e){}}
+function hsBase(){try{history.replaceState({jcTransit:hsState()},'',location.href);}catch(e){}}
+function hsApply(h){if(!h)return;HS.busy=true;
+  S.step=h.fwd||1;R.step=h.rev||1;A.step=h.ai||1;save();saveR();saveA();
+  if(h.m!==MODE){MODE=h.m;try{localStorage.setItem('jc-transit-mode',MODE);}catch(e){}
+    d.documentElement.setAttribute('data-mode',MODE);
+    $('mode').querySelectorAll('[data-mode]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-mode')===MODE));});}
+  if(MODE==='rev'){if(D)renderRev();}
+  else if(MODE==='ai'){if(AI)renderAir();else aiOpen();}
+  else{go(S.step,true);}
+  HS.busy=false;}
+window.addEventListener('popstate',function(e){
+  var h=e.state&&e.state.jcTransit;
+  if(!h)return;                                  /* 팝업이 쌓은 칸(core.js)·처음 칸이면 그대로 둔다 */
+  if(!$('sh').hidden){                           /* 팝업이 열린 채 단계 칸이 물러나면, 화면 상태를 그 칸에 다시 맞춘다 */
+    try{History.prototype.replaceState.call(history,{jcTransit:hsState()},'',location.href);}catch(err){}
+    return;}
+  hsApply(h);
+});
+
 var D=null,BY={},TIER={},TYPE={},DEST={},ASSET={},PER={},TIERS_ORDER={t1:0,t2:1,t3:2};
 var TC={t1:'var(--t1)',t2:'var(--t2)',t3:'var(--t3)'},DC={lateral:'var(--d-lateral)',longevity:'var(--d-longevity)',pivot:'var(--d-pivot)'};
 
@@ -622,6 +671,7 @@ fetch('./data/transit.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 
   S.boarded=S.boarded.filter(function(id){return BY[id];});S.assets=S.assets.filter(function(id){return ASSET[id];});
   go(S.step,true);
   if(typeof setMode==='function'&&(MODE==='rev'||MODE==='ai'))setMode(MODE);
+  hsBase();
   /* 대문 검색이 넘긴 ?station=아이디 — 그 역 카드를 바로 연다 */
   var want='';try{want=(new URLSearchParams(location.search).get('station')||'').trim();}catch(e){}
   if(!want){var gq='';try{gq=(new URLSearchParams(location.search).get('q')||'').replace(/\s/g,'').toLowerCase();}catch(e){}
@@ -645,7 +695,7 @@ function go(n,first){
   S.step=n;save();renderRail();
   for(var i=1;i<=4;i++)$('p'+i).hidden=i!==n;
   if(n===1)renderStart();else if(n===2)renderDeck();else if(n===3)renderDest();else renderMap();
-  if(!first){var r=$('rail').getBoundingClientRect();if(r.top<0||r.top>innerHeight*.5)window.scrollTo({top:scrollY+r.top-8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+  if(!first){hsPush();var r=$('rail').getBoundingClientRect();if(r.top<0||r.top>innerHeight*.5)window.scrollTo({top:scrollY+r.top-8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
 }
 
 /* ───────── 맞춤 판정 ───────── */
@@ -993,7 +1043,7 @@ function setMode(m){MODE=m;try{localStorage.setItem('jc-transit-mode',m);}catch(
   d.documentElement.setAttribute('data-mode',m);
   $('mode').querySelectorAll('[data-mode]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-mode')===m));});
   if(m==='rev')renderRev();else if(m==='ai')aiOpen();else go(S.step,true);}
-$('mode').addEventListener('click',function(e){var b=e.target.closest('[data-mode]');if(b&&b.getAttribute('data-mode')!==MODE)setMode(b.getAttribute('data-mode'));});
+$('mode').addEventListener('click',function(e){var b=e.target.closest('[data-mode]');if(b&&b.getAttribute('data-mode')!==MODE){setMode(b.getAttribute('data-mode'));hsPush();}});
 
 /* 교차 사전 자료(읽기 전용) */
 var TX=null,TXP=null;
@@ -1013,17 +1063,18 @@ function loadTX(){if(TXP)return TXP;
     TX=t;return t;});
   TXP.catch(function(){TXP=null;});return TXP;}
 
-var RSTEPS=[['목표 직업','도착역'],['필요한 것','거꾸로 짚기'],['내 경험 대조','맞는지 확인'],['메울 길','첫 환승역']];
+var RSTEPS=[['목표 직업','도착역','목표 직업'],['필요한 것','거꾸로 짚기','필요한 것'],['내 경험 대조','맞는지 확인','내 경험'],['메울 길','첫 환승역','메울 길']];
 function renderRev(){
   if(!D)return;
   var h='<ol class="rr" aria-label="역행 단계">';
   RSTEPS.forEach(function(s,i){var n=i+1,dis=(n>=2&&!R.job)||(n>=3&&!R.sub);
-    h+='<li><button type="button" data-rstep="'+n+'"'+(n===R.step?' aria-current="step"':'')+(dis?' disabled':'')+'>'+(n===1?'':'← ')+s[0]+'<small>'+s[1]+'</small></button></li>';});
+    h+='<li><button type="button" data-rstep="'+n+'"'+(n===R.step?' aria-current="step"':'')+(dis?' disabled':'')+' aria-label="'+n+'단계 '+esc(s[0])+'">'
+      +'<span class="full">'+(n===1?'':'<span class="ar" aria-hidden="true">← </span>')+esc(s[0])+'</span><span class="short" aria-hidden="true">'+esc(s[2])+'</span><small>'+esc(s[1])+'</small></button></li>';});
   h+='</ol><div class="panel-in" id="rvBody" data-jc-still><p class="loading">직업·직무 자료를 불러오고 있습니다…</p></div>';
   $('pr').innerHTML=h;
   loadTX().then(function(){rvBody();}).catch(function(){$('rvBody').innerHTML='<p class="empty">직업·직무 자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>';});
 }
-function rgo(n){if((n>=2&&!R.job)||(n>=3&&!R.sub))return;R.step=n;saveR();renderRev();
+function rgo(n){if((n>=2&&!R.job)||(n>=3&&!R.sub))return;R.step=n;saveR();renderRev();hsPush();
   var r=$('pr').getBoundingClientRect();if(r.top<0)window.scrollTo({top:scrollY+r.top-8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
 function rvBody(){var b=$('rvBody');if(!b||!TX)return;
   if(R.job&&!TX.JOB[R.job]){R.job='';R.sub='';R.step=1;}
@@ -1154,7 +1205,7 @@ $('pr').addEventListener('click',function(e){var b;
     var sc=score(TX.UNITS[R.sub]||[]);$('pct').textContent=sc.pct+'%';$('pbar').style.transform='scaleX('+(sc.pct/100)+')';$('pdone').textContent=sc.done+'/'+(TX.UNITS[R.sub]||[]).length;return;}
   if((b=e.target.closest('[data-ksa]'))){openKsa(b.getAttribute('data-ksa'));return;}
   if((b=e.target.closest('[data-rst]'))){openSheet(b.getAttribute('data-rst'));return;}
-  if((b=e.target.closest('[data-fwd]'))){var n=+b.getAttribute('data-fwd');S.step=n;save();setMode('fwd');return;}
+  if((b=e.target.closest('[data-fwd]'))){var n=+b.getAttribute('data-fwd');S.step=n;save();setMode('fwd');hsPush();return;}
 });
 
 /* ───────── 12-2 AI 시대 인접 직무 환승 — 출발 직무 → 진입장벽 신호 → 경유지(보강 KSA·훈련/증거) → 인접 직무
@@ -1177,11 +1228,11 @@ function loadAI(){if(AIP)return AIP;
   AIP.catch(function(){AIP=null;});return AIP;}
 function aiOpen(){
   if(!$('pai').innerHTML)$('pai').innerHTML='<ol class="rr" aria-label="AI 환승 단계"><li><button type="button" aria-current="step">1 출발 직무<small>어디서 갈아타나</small></button></li><li><button type="button" disabled>2 인접 노선<small>경유지와 도착</small></button></li><li><button type="button" disabled>3 상담 가이드<small>건넬 말과 첫 스텝</small></button></li></ol><div class="panel-in"><p class="loading">AI 환승 자료를 불러오고 있습니다…</p></div>';
-  loadAI().then(function(){renderAir();}).catch(function(){
+  loadSIG().then(function(){return loadAI();}).then(function(){renderAir();}).catch(function(){
     $('pai').innerHTML='<p class="empty">AI 환승 자료를 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>';});}
 var AIST=[['출발 직무','어디서 갈아타나'],['인접 노선','경유지와 도착'],['상담 가이드','건넬 말과 첫 스텝']];
 function aiGo(n){if(n>=2&&!A.from)return;if(n>=3&&!A.route)return;
-  A.step=n;saveA();renderAir();
+  A.step=n;saveA();renderAir();hsPush();
   var r=$('pai').getBoundingClientRect();if(r.top<0)window.scrollTo({top:scrollY+r.top-8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
 function renderAir(){
   if(!AI)return;
@@ -1190,9 +1241,47 @@ function renderAir(){
     h+='<li><button type="button" data-aistep="'+n+'"'+(n===A.step?' aria-current="step"':'')+(dis?' disabled':'')+'>'+n+' '+s[0]+'<small>'+s[1]+'</small></button></li>';});
   h+='</ol><div class="panel-in" id="aiBody">'+(A.step===1?ai1():A.step===2?ai2():ai3())+'</div>';
   $('pai').innerHTML=h;
+  if(A.step===1)sigBind();
 }
-function aiToday(){var t=AI.headline;
-  return '<a class="ai-today" data-jc-ignore href="'+esc(t.briefing)+'" title="'+esc(t.title)+'"><span class="k">오늘의 신호 · '+esc(t.date.replace(/-/g,'.'))+' <span>브리핑 1면 →</span></span><span class="v"><b class="num">'+esc(t.value)+'</b><span>'+esc(t.label)+' · '+esc(t.period)+' · '+esc(t.delta)+'</span></span></a>';}
+/* 오늘의 신호 — 브리핑에 실린 AI 카드를 날짜별로 한 장씩 넘겨 본다(자료는 data/ai-signals.json).
+   수치·문장은 브리핑 카드에 적힌 것만 옮겼고, 새 값을 지어내지 않는다. */
+var SIG=null,SIGP=null;
+function loadSIG(){if(SIGP)return SIGP;
+  SIGP=fetch('./data/ai-signals.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+    .then(function(j){SIG=(j&&j.items&&j.items.length)?j:null;return SIG;}).catch(function(){SIG=null;return null;});
+  return SIGP;}
+function sigDate(d){return String(d||'').replace(/-/g,'.');}
+function sigCount(){return SIG&&SIG.items?SIG.items.length:0;}
+function sigSlide(t){
+  return '<a class="sl" data-jc-ignore href="'+esc(t.href)+'" title="'+esc(t.title)+'">'
+    +'<span class="a"><span class="v"><b class="num">'+esc(t.value)+'</b><span>'+esc(t.label)+'</span></span>'
+    +((t.period||t.delta)?'<span class="mt">'+esc([t.period,t.delta].filter(Boolean).join(' · '))+'</span>':'')+'</span>'
+    +'<span class="b">'+(t.summary?'<span class="sm">'+esc(t.summary)+'</span>':'')
+    +'<span class="rd">'+esc(sigDate(t.date))+' 브리핑에서 보기 →</span></span></a>';}
+function aiToday(){
+  var list=(SIG&&SIG.items)||[];
+  if(!list.length){var t=AI.headline;
+    return '<a class="ai-today" data-jc-ignore href="'+esc(t.briefing)+'" title="'+esc(t.title)+'"><span class="k">오늘의 신호 · '+esc(sigDate(t.date))+' <span>브리핑 1면 →</span></span><span class="v"><b class="num">'+esc(t.value)+'</b><span>'+esc(t.label)+' · '+esc(t.period)+' · '+esc(t.delta)+'</span></span></a>';}
+  var h='<div class="ai-today" data-jc-still><div class="k"><span>오늘의 신호 <b class="num" id="sigPos">1 / '+list.length+'</b> · <span class="d" id="sigDate">'+esc(sigDate(list[0].date))+'</span></span>'
+    +'<span class="sgn"><button type="button" data-sig="prev" aria-controls="sigTrk" aria-label="이전 날짜 AI 소식" disabled>‹</button><button type="button" data-sig="next" aria-controls="sigTrk" aria-label="다음 날짜 AI 소식">›</button></span></div>'
+    +'<div class="trk" id="sigTrk" role="group" aria-label="날짜별 AI 소식">'+list.map(sigSlide).join('')+'</div></div>';
+  return h;}
+var sigT=0;
+function sigIndex(){var trk=$('sigTrk');if(!trk)return 0;var w=trk.clientWidth||1;
+  var i=Math.round(trk.scrollLeft/w);return Math.max(0,Math.min(Math.max(0,sigCount()-1),i));}
+function sigPaint(){var n=sigCount();if(!n||!SIG)return;var i=sigIndex();
+  if($('sigPos'))$('sigPos').textContent=(i+1)+' / '+n;
+  if($('sigDate'))$('sigDate').textContent=sigDate(SIG.items[i].date);
+  var p=$('sigTrk')&&$('pai').querySelector('[data-sig="prev"]'),nx=$('sigTrk')&&$('pai').querySelector('[data-sig="next"]');
+  if(p)p.disabled=i<=0;if(nx)nx.disabled=i>=n-1;}
+function sigGo(d){var trk=$('sigTrk');if(!trk)return;var n=sigCount();if(n<2)return;
+  var i=Math.max(0,Math.min(n-1,sigIndex()+d));
+  trk.scrollTo({left:i*trk.clientWidth,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  setTimeout(sigPaint,120);}
+function sigBind(){var trk=$('sigTrk');if(!trk)return;
+  trk.addEventListener('scroll',function(){if(sigT)return;sigT=setTimeout(function(){sigT=0;sigPaint();},90);},{passive:true});
+  trk.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){sigGo(-1);e.preventDefault();}else if(e.key==='ArrowRight'){sigGo(1);e.preventDefault();}});
+  sigPaint();}
 function aiSignal(f){
   var h='<div class="sig-h"><b class="num">'+esc(f.headline.value)+'</b><span>'+esc(f.headline.label)+' · '+esc(f.headline.period)+(f.headline.delta?' · '+esc(f.headline.delta):'')+'</span></div><ul class="sig-list">';
   var rest=[];
@@ -1252,6 +1341,7 @@ function ai3(){var r=aRoute(A.route);if(!r)return ai2();
   h+='<div class="ai-acts" style="justify-content:flex-end"><button type="button" class="ai-mini" data-aireset>AI 환승 처음부터</button></div>';
   return h;}
 $('pai').addEventListener('click',function(e){var b;
+  if((b=e.target.closest('[data-sig]'))){sigGo(b.getAttribute('data-sig')==='next'?1:-1);return;}
   if((b=e.target.closest('[data-aistep]'))){aiGo(+b.getAttribute('data-aistep'));return;}
   if((b=e.target.closest('[data-afam]'))){var id=b.getAttribute('data-afam'),prev=A.from;A.from=(prev===id?'':id);if(A.from!==prev)A.route='';saveA();
     $('pai').querySelectorAll('[data-afam]').forEach(function(x){x.setAttribute('aria-checked',String(x.getAttribute('data-afam')===A.from));});
