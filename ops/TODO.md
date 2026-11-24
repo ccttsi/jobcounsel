@@ -8,7 +8,7 @@
   - [x] 공용 `assets/chart-labels.js`·`.css` — 이름표가 제 칸에 다 들어가면 그대로, 넘칠 때만 짧은 이름(괄호·기간 뗌, 같은 이름은 둘째 줄 설명) + 수납형 ⓘ. 막대 칸 전체와 아이콘이 같은 누름 자리(최소 44px), 말풍선은 전체 이름만(다시 누르기·바깥·Esc·스크롤로 닫힘, 화면 밖 보정, 데스크톱 호버).
   - [x] `/briefing/`·`/emerging/` 도표를 카드 실제 폭(px)으로 그리게 — `max-height`로 글자까지 줄던 것 폐기, 폭이 바뀌면 `ResizeObserver`로 한 번 다시 그림.
   - [x] 하단 규격 통일 — `.th-b`·`.chain`·`.emg`·`.labw`·`.pn button` 13px·높이 44·모서리 10·같은 간격, 무리 단위 `.jc-pop` 판정(`data-jc-pop`), 「이어 보기」 휴대폰 줄바꿈(잘린 칩 0).
-  - [ ] PR·CI·머지·라이브 390/1280 스크린샷 보고.
+  - [x] **PR #497 · 머지 `a7ffe90`** · CI(static-checks 24s·smoke-tests·Cloudflare Pages) 초록 · 라이브 `witw.pages.dev/briefing/`·`/emerging/` 390×844·1280×800 실측 — 이름표 겹침 0(카드 5장 전수, 신산업은 2026-11-19 지면 접힘 확인), 누름 자리 114×176·86×176·103×170px, 말풍선 화면 밖 0·다시/바깥 눌러 닫힘, 「이어 보기」 잘린 칩 0, 넘침 0·오류 0, 화면 분량 390 2.45 / 1280 1.65. 증빙 `downloads/briefing-chart-fix-*.png`·`downloads/emerging-chart-fix-390.png`.
 
 - **2026-11-24 (아침) 관리자 통계 — 방문자와 관리측(나·피클·클로드) 분리** — 「테스트를 차단하라는 게 아니라 나·피클·클로드의 접속 기록은 다른 곳으로 빼고, 관리측 접속 기록도 필요하다. 피클은 admin으로 로그인 후 작업」. 갈래는 둘 — `user`(방문자)와 `admin`(관리측).
   - [x] `assets/supabase-update-02-stats.sql`(멱등) — `jc_hits.scope`(기본 `user`, 값 검사·`jc_hits_scope_at` 인덱스), `jc_hit`이 `scope`를 받고 모르는 값은 `user`, `jc_admin_dash`가 방문자·관리측을 한 번에 계산해 `scopes`·`traffic.user`·`traffic.admin`으로 돌려준다(함수 서명 유지 — 화면 호환).
