@@ -291,7 +291,9 @@
     opts = opts || {};
     JC_AXL.close();
     var E = d.edition || {}, srcById = {};
-    arr(d.sources).forEach(function (s) { if (s && s.id) srcById[s.id] = s; });
+    /* 출처 색인 — 2026-09 이전 호는 sources[]에 id 없이 source_id만 있다. 그대로 두면 그 호의 카드가
+       통째로 그려지지 않아(지난 날짜 112일·카드 163장) 옛 형식도 받아 준다. 새 데이터는 id를 적는다(SCHEMA §8). */
+    arr(d.sources).forEach(function (s) { var k = s && (s.id || s.source_id); if (k) srcById[k] = s; });
     var ok = function (id, where) { if (srcById[id]) return true; console.warn('[briefing] 출처 id 없음:', id, where); return false; };
     var dates = archiveList(d);
 
