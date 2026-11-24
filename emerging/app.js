@@ -350,7 +350,7 @@
     var c = briefFor(it);
     if (!c) return '';
     return '<a class="bl" href="../briefing/' + (BRIEF.date ? '?date=' + esc(BRIEF.date) : '') + '">' +
-      '<span>오늘의 브리핑</span><b>' + esc(c.theme_label || c.category || '') + '</b><i aria-hidden="true">↗</i></a>';
+      '<span>Today’s Briefing</span><b>' + esc(c.theme_label || c.category || '') + '</b><i aria-hidden="true">↗</i></a>';
   }
 
   function renderArticle() {

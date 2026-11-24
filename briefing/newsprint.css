@@ -17,6 +17,14 @@
   text-align:center;text-wrap:balance;color:var(--ink);
 }
 @media (min-width:900px){.mast .nameplate{font-size:clamp(40px,4.2vw,54px);letter-spacing:.1em}}
+/* 영문 제호(Today's Briefing)는 옛 신문 제호 꼴 블랙레터 — 블랙레터는 자간을 벌리지 않는다(글자가 흩어져 보인다) */
+/* 공용 머리말 규칙(brand.css `.top :is(.brand,h1)` — 제목 20px·세리프 고정, !important)이 지면 안쪽 제호까지 덮으므로
+   제호만 더 구체적인 선택자로 되돌린다. 크기는 px 기준이라 화면 설정 「글자 크기」를 따라 커진다(28px 넘는 큰 글자는 그대로). */
+body[data-jc-tool] .top .mast h1.nameplate.bl{font-family:var(--blackletter,serif)!important;font-weight:400;letter-spacing:0;line-height:1.02;
+  font-size:clamp(40px,11.2vw,54px)!important;color:var(--ink)}
+@media (min-width:900px){body[data-jc-tool] .top .mast h1.nameplate.bl{font-size:clamp(56px,5vw,72px)!important}}
+body[data-jc-tool] .top .mast h1.nameplate.bl>span{font-family:inherit;font-weight:400;color:inherit}
+body[data-jc-tool] .top .mast h1.nameplate.bl small{font-family:var(--sans);letter-spacing:.2em}
 .mast .nameplate small{display:block;margin-top:5px;font-family:var(--sans);font-size:11.5px;font-weight:750;letter-spacing:.2em;color:var(--dim)}
 .mast-rule{height:0;border-top:1px solid var(--ink)}
 .mast-double{height:5px;border-top:3px solid var(--ink);border-bottom:1px solid var(--ink)}
@@ -412,3 +420,9 @@ html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html
 .mast-double{border-top-color:var(--mast-strong,var(--ink));border-bottom-color:var(--mast-strong,var(--ink))}
 @media (max-width:599px){.mast .nameplate .jc-seal{display:none}}
 @media (min-width:900px){.wrap{padding-bottom:24px}}
+/* 블랙레터 제호는 글자 폭이 넓어 모서리 소인이 마지막 글자(g)를 덮는다 — 제호 오른쪽 바깥에 비켜 앉힌다(2026-11-24) */
+body[data-jc-tool] .top .mast h1.nameplate.bl{width:max-content;max-width:100%;margin-inline:auto}
+body[data-jc-tool] .top .mast h1.nameplate.bl .jc-seal{right:auto;left:100%;bottom:.42em;margin-left:.12em;width:1.05em;height:.62em}
+@media (max-width:599px){body[data-jc-tool] .top .mast h1.nameplate.bl .jc-seal{display:none}}
+/* 큰 화면은 원래 짜임(제호 왼쪽 · 날짜 오른쪽)을 지키고, 작은 표기는 제호 폭의 가운데에 */
+@media (min-width:900px){body[data-jc-tool] .top .mast-toprow h1.nameplate.bl{margin-inline:0;text-align:center}}
