@@ -12,7 +12,7 @@ document.documentElement.setAttribute('data-theme',t);})();
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
-<meta name="description" content="성격·업무 태도 낱말 하나를 넣으면 자소서에 쓸 장점 3~5가지로 펼쳐 주고, 장점을 넣으면 면접에서 공격받을 지점과 방어 3단으로 뒤집어 줍니다. 낱말 98개·전환 368장을 자료실이 직접 설계한 어휘망입니다.">
+<meta name="description" content="성격·업무 태도 낱말 하나를 넣으면 자소서에 쓸 장점 3~5가지로 펼쳐 주고, 장점을 넣으면 면접에서 공격받을 지점과 방어 3단으로 뒤집어 줍니다. 낱말 500여 개·전환 1,800여 장을 자료실이 직접 설계한 어휘망입니다.">
 <title>장점 ↔ 단점 뒤집기</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -149,12 +149,12 @@ a{color:inherit}
 .als b{color:var(--muted);font-weight:750;margin-right:4px}
 
 /* 결과 */
-.res-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:14px 0 7px}
+.res-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:12px 0 6px}
 .res-h b{font-size:14.5px;font-weight:800;letter-spacing:-.02em}
 .res-h span{font-size:12.5px;color:var(--dim)}
-.res{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+.res{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 @media (min-width:900px){.res{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
-.rc{border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:var(--shadow);padding:11px 12px;min-width:0;contain:layout paint}
+.rc{border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:var(--shadow);padding:9px 12px;min-width:0;contain:layout paint}
 .rc.in{animation:flip .36s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(var(--i) * 36ms)}
 @keyframes flip{from{opacity:0;transform:perspective(900px) rotateY(-72deg) translateY(6px)}to{opacity:1;transform:none}}
 .rc-h{display:flex;align-items:center;gap:7px;min-width:0}
@@ -167,9 +167,9 @@ a{color:inherit}
 .logic{margin:6px 0 0;font-size:13.5px;line-height:1.6;color:var(--ink)}
 .ex{margin:7px 0 0;padding:7px 9px;border-left:2px solid color-mix(in srgb,var(--strong) 55%,var(--line));border-radius:0 9px 9px 0;background:var(--soft);font-size:12.5px;line-height:1.55;color:var(--muted)}
 .ex b,.qq b{display:block;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--dim);margin-bottom:1px}
-.qq{margin:6px 0 0;padding:7px 9px;border-left:2px solid color-mix(in srgb,var(--weak) 55%,var(--line));border-radius:0 9px 9px 0;background:var(--soft);font-size:13px;line-height:1.55;color:var(--ink)}
-.gd{margin:7px 0 0;padding:0;list-style:none;display:grid;gap:4px;counter-reset:gd}
-.gd li{display:grid;grid-template-columns:19px minmax(0,1fr);gap:7px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.qq{margin:5px 0 0;padding:5px 9px;border-left:2px solid color-mix(in srgb,var(--weak) 55%,var(--line));border-radius:0 9px 9px 0;background:var(--soft);font-size:13px;line-height:1.55;color:var(--ink)}
+.gd{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:3px;counter-reset:gd}
+.gd li{display:grid;grid-template-columns:19px minmax(0,1fr);gap:7px;font-size:12.5px;line-height:1.45;color:var(--muted)}
 .gd li::before{counter-increment:gd;content:counter(gd);width:19px;height:19px;margin-top:1px;border-radius:50%;background:var(--acc-soft);color:var(--acc);font-size:11px;font-weight:800;display:grid;place-items:center}
 .gd b{color:var(--ink);font-weight:750}
 .wr{margin-top:7px;border-top:1px dashed var(--line-2);padding-top:2px}
@@ -182,7 +182,9 @@ a{color:inherit}
 .wr .wn b{display:block;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--dim);margin-bottom:1px}
 
 /* 핑퐁 기록 */
-.trail{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:11px;font-size:12.5px;color:var(--dim)}
+.trail{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;margin-top:9px;padding-bottom:0;font-size:12.5px;color:var(--dim)}
+.trail::-webkit-scrollbar{display:none}
+.trail>*{flex:none}
 .trail .lb{font-weight:750;color:var(--muted)}
 .trail .tp{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:12.5px;font-weight:700;line-height:1.2;color:var(--muted)}
 .trail .tp.on{border-color:var(--acc);color:var(--ink);background:var(--acc-soft)}
@@ -206,6 +208,14 @@ a{color:inherit}
 .aw-w button:active{transform:scale(.98)}
 .aw-w button.w{color:var(--weak);border-color:color-mix(in srgb,var(--weak) 28%,var(--line))}
 .aw-w button.s{color:var(--strong);border-color:color-mix(in srgb,var(--strong) 28%,var(--line))}
+/* 전체 보기 안의 두 겹 거르개(분야 · 첫소리) — 500여 낱말에서 원하는 줄을 빨리 찾는다 */
+.awf{margin-top:8px;display:grid;gap:6px;padding-bottom:8px;border-bottom:1px dashed var(--line-2)}
+.awf .row{display:flex;flex-wrap:wrap;gap:4px}
+.awf button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);font-size:12px;font-weight:700;line-height:1.2;color:var(--muted);white-space:nowrap}
+.awf button:active{transform:scale(.98)}
+.awf button[aria-pressed="true"]{border-color:var(--acc);color:var(--acc);background:var(--acc-soft)}
+.awf .lb{display:flex;align-items:center;padding:0 2px;font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--dim)}
+.awf .row.ini button{min-width:44px;padding:0 6px}
 .links{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .links .chip{font-size:12.5px}
 
@@ -292,6 +302,7 @@ html[data-jc-imm] .chips,html[data-jc-imm] .trail{display:none}
         <p class="c-note" id="awNote"></p>
         <details class="allw" id="allw">
           <summary>분야별로 전체 보기</summary>
+          <div class="awf" id="awf"></div>
           <div id="awBody"></div>
         </details>
       </section>
@@ -309,7 +320,7 @@ html[data-jc-imm] .chips,html[data-jc-imm] .trail{display:none}
   </div>
 
   <p class="foot">
-    <b>만든 자료</b> 성격·업무 태도 낱말과 전환 문장·면접 방어 예시는 이 자료실이 직접 설계해 쓴 것입니다(외부 교재·자소서·채용 사이트 문장을 옮기지 않음). 낱말 <b id="fN1">98</b>개 · 전환 <b id="fN2">368</b>장. <b>주의</b> 지원 결과를 보장하지 않으며, 지원 직무와 본인 경험에 맞게 다시 쓰는 재료입니다. 2026-11-24 작성.
+    <b>만든 자료</b> 성격·업무 태도 낱말과 전환 문장·면접 방어 예시는 이 자료실이 직접 설계해 쓴 것입니다(외부 교재·자소서·채용 사이트 문장을 옮기지 않음). 낱말 <b id="fN1">506</b>개 · 전환 <b id="fN2">1,818</b>장. <b>주의</b> 지원 결과를 보장하지 않으며, 지원 직무와 본인 경험에 맞게 다시 쓰는 재료입니다. 2026-11-24 작성.
   </p>
 </div>
 
@@ -318,7 +329,12 @@ html[data-jc-imm] .chips,html[data-jc-imm] .trail{display:none}
   var $=function(s){return document.querySelector(s)};
   var D=null, BY={}, ALL=[], IDX=[];
   var st={mode:'w2s',node:null,trail:[],q:''};
+  var awG='',awI='';
+  var INI='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+  function initial(s){var c=String(s||'').charCodeAt(0);if(c<0xAC00||c>0xD7A3)return '';return INI.charAt(Math.floor((c-0xAC00)/588));}
+  function iniKey(ch){return {'ㄲ':'ㄱ','ㄸ':'ㄷ','ㅃ':'ㅂ','ㅆ':'ㅅ','ㅉ':'ㅈ'}[ch]||ch;}
 
+  function num(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,',')}
   function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n}
   function norm(s){return String(s==null?'':s).toLowerCase().replace(/[\s\u00b7.,'"“”‘’~!?()\[\]{}<>·ㆍ]/g,'')}
 
@@ -508,9 +524,36 @@ html[data-jc-imm] .chips,html[data-jc-imm] .trail{display:none}
     box.appendChild(back);
   }
 
+  function paintAwFilters(){
+    var box=$('#awf'); if(!box) return; box.innerHTML='';
+    var r1=el('div','row');
+    r1.appendChild(el('span','lb','분야'));
+    function chip(label,on,fn){
+      var b=el('button',null,label); b.type='button'; b.setAttribute('aria-pressed',on?'true':'false');
+      b.addEventListener('click',fn); r1.appendChild(b);
+    }
+    chip('전체',awG==='',function(){awG='';paintAll()});
+    D.groups.forEach(function(g){
+      chip(g.name,awG===g.id,function(){awG=(awG===g.id?'':g.id);paintAll()});
+    });
+    box.appendChild(r1);
+    var have={};
+    ALL.forEach(function(x){var k=iniKey(initial(x.label));if(k)have[k]=1});
+    var r2=el('div','row ini');
+    r2.appendChild(el('span','lb','첫소리'));
+    function chip2(label,key){
+      var b=el('button',null,label); b.type='button'; b.setAttribute('aria-pressed',awI===key?'true':'false');
+      b.addEventListener('click',function(){awI=(awI===key?'':key);paintAll()}); r2.appendChild(b);
+    }
+    chip2('전체','');
+    INI.split('').forEach(function(ch){var k=iniKey(ch);if(have[k]&&ch===k)chip2(ch,k)});
+    box.appendChild(r2);
+  }
+
   function paintAll(){
     var n=ALL.length, c=D?D.pairs.length*2:0;
     $('#awTag').textContent=n+'개';
+    if(D) paintAwFilters();
     $('#awNote').innerHTML='';
     $('#awNote').appendChild(document.createTextNode('단점 '));
     var w=el('b',null,String(ALL.filter(function(x){return x.side==='weak'}).length));
@@ -518,13 +561,18 @@ html[data-jc-imm] .chips,html[data-jc-imm] .trail{display:none}
     $('#awNote').appendChild(document.createTextNode(' · 장점 '));
     var s=el('b',null,String(ALL.filter(function(x){return x.side==='strong'}).length));
     $('#awNote').appendChild(s);
-    $('#awNote').appendChild(document.createTextNode(' · 전환 '+c+'장'));
+    $('#awNote').appendChild(document.createTextNode(' · 전환 '+num(c)+'장'));
     var body=$('#awBody'); body.innerHTML='';
+    var shown=0;
     D.groups.forEach(function(g){
+      if(awG&&awG!==g.id) return;
+      var list=ALL.filter(function(x){return x.g===g.id&&(!awI||iniKey(initial(x.label))===awI)});
+      if(!list.length) return;
+      shown+=list.length;
       var wrap=el('div','aw-g');
       wrap.appendChild(el('h4',null,g.name));
       var wbox=el('div','aw-w'); wbox.setAttribute('data-jc-still','');
-      ALL.filter(function(x){return x.g===g.id}).forEach(function(x){
+      list.forEach(function(x){
         var b=el('button',x.side==='weak'?'w':'s',x.label);
         b.type='button';
         b.addEventListener('click',function(){select(x.id,true);$('#allw').open=false});
@@ -532,8 +580,9 @@ html[data-jc-imm] .chips,html[data-jc-imm] .trail{display:none}
       });
       wrap.appendChild(wbox); body.appendChild(wrap);
     });
+    if(!shown) body.appendChild(el('p','c-note','고른 조건에 맞는 낱말이 없습니다. 분야나 첫소리를 «전체»로 되돌려 보세요.'));
     if($('#fN1')) $('#fN1').textContent=String(n);
-    if($('#fN2')) $('#fN2').textContent=String(c);
+    if($('#fN2')) $('#fN2').textContent=num(c);
   }
 
   /* ---------------- 고르기 ---------------- */
