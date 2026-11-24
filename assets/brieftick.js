@@ -27,7 +27,15 @@
   }
 
   function build(d) {
-    cards = (d && d.cards || []).filter(function (c) { return c && c.id && c.title; }).sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+    /* 브리핑 지면이 실제로 보여 주는 카드만 흘린다 — 지면은 출처(source_id)가 sources에 없는 카드를 감추므로,
+       같은 기준으로 거르지 않으면 띠의 제목을 눌렀을 때 없는 카드로 간다(2026-11-24 결함). 기준은 briefing/app.js render()와 같다. */
+    var src = {};
+    (d && d.sources || []).forEach(function (s) { var k = s && (s.id || s.source_id); if (k) src[k] = 1; });
+    cards = (d && d.cards || []).filter(function (c) {
+      if (!c || !c.id || !c.title) return false;
+      var sid = c.source && c.source.source_id, ch = c.chart_data && c.chart_data.source_id;
+      return !!(sid && src[sid]) && (!ch || !!src[ch]);
+    }).sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
     if (!cards.length) { sec.hidden = true; return; }
     layout();
     var re = function () { var w = setW; layout(); if (Math.abs(w - setW) > 1) restart(); };

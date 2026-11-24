@@ -769,6 +769,38 @@ def check_onboarding(page):
     return issues
 
 
+def check_brief_links(page):
+    """대문 브리핑 소식 띠 → 브리핑 지면 연동(2026-11-24 태화님 지시 「확실하게 연동되도록」).
+
+    띠의 제목을 하나씩 실제로 열어, 브리핑 지면이 **그 id의 카드**를 펼치는지 잰다.
+    2026-11-24 결함: 지면이 출처 칸을 `id`로만 찾아 국내 카드 3장을 감추고, 주소 해시를 걸러지기 전 번호로 풀어
+    「중국 구인공고(#c04)」를 누르면 「가나 청년 실업(#c07)」이 열렸다. 띠에 있는 카드가 지면에서 빠져도 여기서 걸린다.
+    """
+    issues = []
+    links = page.evaluate("""() => [...document.querySelectorAll('#tkTrack li:not([aria-hidden]) a.a-tk-i')]
+        .map(a => ({href: a.href, title: a.title}))""")
+    if not links:
+        return ["대문 브리핑 소식 띠에 소식이 하나도 없다(자료를 읽지 못했거나 띠가 감춰졌다)"]
+    # 소식마다 새 탭으로 연다 — 같은 탭에서 #만 바꾸면 «처음 열 때» 해시를 푸는 길을 지나지 않아 결함을 놓친다
+    for ln in links:
+        want = ln["href"].split("#", 1)[1] if "#" in ln["href"] else ""
+        other = page.context.new_page()
+        try:
+            other.goto(ln["href"], wait_until="domcontentloaded")
+            other.wait_for_function("() => document.querySelectorAll('[data-card]').length > 0", timeout=8000)
+            got = other.evaluate("""() => { const v = [...document.querySelectorAll('article.card[id]')]
+                .filter(e => !e.hidden && e.getBoundingClientRect().height > 0);
+                return {ids: v.map(e => e.id), h3: v.length ? (v[0].querySelector('h3') || {}).textContent || '' : '',
+                        all: [...document.querySelectorAll('article.card[id]')].map(e => e.id)}; }""")
+            if want not in got["all"]:
+                issues.append(f"소식 띠의 「{ln['title'][:24]}」(#{want})가 브리핑 지면에 없다 — 지면이 감춘 카드를 띠가 흘리고 있다")
+            elif got["ids"] != [want]:
+                issues.append(f"소식 띠의 「{ln['title'][:24]}」(#{want})를 누르면 다른 카드 {got['ids']}가 열린다")
+        finally:
+            other.close()
+    return issues
+
+
 def check_panels(page):
     """⑤ 시트 잘림 · ⑦ 비서 3탭 실제 클릭 검수.
 
@@ -1029,6 +1061,8 @@ def run(args):
                     if page_path == "/":
                         issues.extend(check_onboarding(page))
                         issues.extend(check_panels(page))
+                        if width >= 1000:   # 링크 목록은 화면 폭과 무관 — 한 번만 연다
+                            issues.extend(check_brief_links(page))
                     if page_path == "/flow/":
                         issues.extend(check_flow(page))
                     if page_path == "/mydeck/":
