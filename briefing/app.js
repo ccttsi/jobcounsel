@@ -141,7 +141,7 @@
     var g = '';
 
     if (barLike) {
-      var base = y(Math.max(lo, Math.min(hi, 0)));
+      var base = y(Math.max(lo, Math.min(hi, 0))), yRef = ref != null ? y(ref) : null;
       var k = S.length, bw = Math.min(34, slot * 0.62 / k);
       labels.forEach(function (lb, i) {
         var cx = xOf(i);
@@ -150,6 +150,7 @@
           var x = cx - (bw * k) / 2 + bw * j + (k > 1 ? 1 : 0), yv = y(v), top = Math.min(yv, base), h = Math.max(1, Math.abs(yv - base));
           g += '<rect x="' + x.toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + (bw - (k > 1 ? 2 : 0)).toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2" fill="' + col(s) + '"/>';
           var ly = v >= 0 ? top - 4 : top + h + 11;
+          if (v >= 0 && yRef != null && Math.abs(top - yRef) < 9) ly = top - 9;   /* 기준선이 숫자를 긋지 않게 */
           if (v < 0) lowLab = Math.max(lowLab, ly);   /* 0 아래로 내려간 값 라벨 — 축 이름표 줄을 밀아낸다 */
           g += label(x + bw / 2 - (k > 1 ? 1 : 0), ly, v);
         });
