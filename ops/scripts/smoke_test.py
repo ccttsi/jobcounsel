@@ -13,6 +13,7 @@
   · 문서 가로 넘침 0px
   · 44px 터치 미달 0개 (글 안의 인라인 링크는 제외)
   · 화면이 실제로 그려졌는가(섹터 장부·카드·기사) — JS가 죽으면 0이 되어 잡힌다
+  · 도표 숫자의 폰트·고정폭·자간 — 브리핑·신산업의 「도표숫자」가 0인가(2026-11-24, 500이 「5 00」으로 벌어지던 결함)
   · 기초 배치 4종 — ① 카드 밖으로 밀린 컨트롤·글 ② 표 칸 아래끝 단차 ③ 짧은 뱃지 줄바꿈 ④ 카드 안 좌우 쏠림
   · 어느 섹터도 «재지 않는 화면»으로 남지 않았는가(장부·폴더와 견준다)
 
@@ -45,6 +46,47 @@ NON_SCREEN = {
 }
 VIEWPORTS = [(390, 844, "휴대폰"), (1280, 800, "데스크톱")]
 
+# 도표 숫자 점검 — probe 안에서 정의해 쓴다(evaluate는 문자열로 넘어간다).
+#   도표(SVG)의 숫자는 상속에 맡기지 않고 `svg.chs text` 규칙으로 폰트·고정폭·자간을 못 박는다.
+#   상속에 맡기면 본문 letter-spacing(-.16px)이 10.5px 숫자까지 내려가고, Pretendard 숫자 커닝으로
+#   「00」이 2px쯤 좁아져 Y축 500이 「5 00」처럼 벌어진다(2026-11-24 태화님 「250과 500도 숫자간 간격이 이상하다」).
+#   1px 안쪽 차이는 글자 위치의 소수점 반올림이라 문제가 아니다 — 1.2px을 넘을 때만 실패로 본다.
+CHART_NUMBERS_JS = """function chartNumbers() {
+    const bad = [];
+    const NS = 'http://www.w3.org/2000/svg';
+    /* ① 규칙 자체 — 그날 지면에 도표가 없어도 「도표 글자」 규칙이 살아 있는지 한 조각으로 잰다. */
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'chs');
+    svg.setAttribute('style', 'position:absolute;left:-9999px;top:0;width:80px;height:20px');
+    const t0 = document.createElementNS(NS, 'text');
+    t0.setAttribute('font-size', '10.5');
+    t0.textContent = '500';
+    svg.appendChild(t0);
+    document.body.appendChild(svg);
+    const s0 = getComputedStyle(t0);
+    if (!/Pretendard/.test(s0.fontFamily)) bad.push('규칙 — 폰트 ' + s0.fontFamily.slice(0, 16));
+    if (!/tabular-nums/.test(s0.fontVariantNumeric)) bad.push('규칙 — tabular-nums 없음');
+    if (!/^(normal|0px|0)$/.test(s0.letterSpacing)) bad.push('규칙 — 자간 ' + s0.letterSpacing);
+    svg.remove();
+    /* ② 실제 눈금 — 숫자만 있는 이름표의 글자 사이 간격이 고른가. */
+    document.querySelectorAll('svg.chs text').forEach(el => {
+        const s = getComputedStyle(el), txt = (el.textContent || '').trim();
+        if (!/\\d/.test(txt)) return;
+        const who = '「' + txt.slice(0, 12) + '」';
+        if (!/Pretendard/.test(s.fontFamily)) bad.push(who + ' 폰트 ' + s.fontFamily.slice(0, 18));
+        if (!/tabular-nums/.test(s.fontVariantNumeric)) bad.push(who + ' tabular-nums 없음');
+        if (!/^(normal|0px|0)$/.test(s.letterSpacing)) bad.push(who + ' 자간 ' + s.letterSpacing);
+        if (!/^\\d{2,}$/.test(txt)) return;
+        const adv = [];
+        for (let i = 1; i < txt.length; i++) {
+            try { adv.push(+(el.getStartPositionOfChar(i).x - el.getStartPositionOfChar(i - 1).x).toFixed(2)); } catch (e) {}
+        }
+        if (adv.length > 1 && Math.max(...adv) - Math.min(...adv) > 1.2) bad.push(who + ' 자간 불균일 ' + adv.join('/'));
+    });
+    return bad;
+}
+"""
+
 # 페이지마다 「이게 없으면 화면이 안 그려진 것」을 하나씩 정한다.
 PROBES = {
     "/": """() => {
@@ -58,7 +100,9 @@ PROBES = {
         const cards = document.querySelectorAll('[data-card]').length;
         const tabs = document.querySelectorAll('[data-tab]').length;
         const broken = /불러오지 못했습니다/.test(document.body.innerText);
-        return {ok: cards >= 1 && tabs >= 2 && !broken, detail: `카드 ${cards} · 탭 ${tabs}${broken ? ' · 불러오기 실패' : ''}`};
+        const num = chartNumbers();
+        return {ok: cards >= 1 && tabs >= 2 && !broken && !num.length,
+                detail: `카드 ${cards} · 탭 ${tabs} · 도표숫자 ${num.length}${num.length ? ' — ' + num.slice(0, 3).join(' / ') : ''}${broken ? ' · 불러오기 실패' : ''}`};
     }""",
     "/thermometer/": """() => {
         // 산업 목록과 두 온도계가 그려졌는가. 온도는 자료에 따라 달라지므로 게이트로 삼지 않는다.
@@ -214,9 +258,15 @@ PROBES = {
         const art = (document.querySelector('#art') || {innerText: ''}).innerText.trim().length;
         const chips = document.querySelectorAll('[data-sector]').length;
         const broken = /불러오지 못했습니다|이 날의 지면이 없습니다/.test(document.body.innerText);
-        return {ok: art >= 100 && chips >= 1 && !broken, detail: `기사 본문 ${art}자 · 분류 칩 ${chips}${broken ? ' · 지면 없음' : ''}`};
+        const num = chartNumbers();
+        return {ok: art >= 100 && chips >= 1 && !broken && !num.length,
+                detail: `기사 본문 ${art}자 · 분류 칩 ${chips} · 도표숫자 ${num.length}${num.length ? ' — ' + num.slice(0, 3).join(' / ') : ''}${broken ? ' · 지면 없음' : ''}`};
     }""",
 }
+
+# 도표가 있는 두 지면은 probe 안에 도표 숫자 점검(chartNumbers)을 심어 함께 잰다.
+for _p in ("/briefing/", "/emerging/"):
+    PROBES[_p] = PROBES[_p].replace("() => {", "() => {" + CHART_NUMBERS_JS, 1)
 
 # 섹터마다 화면이 «실제로 그려졌는가»를 재는 개별 지시가 없을 때 쓰는 공통 지시.
 #   빈 화면·자료 불러오기 실패를 잡고, 지면마다 다른 내용은 보지 않는다.
