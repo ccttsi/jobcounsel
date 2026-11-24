@@ -319,6 +319,8 @@
 
 `sources[]`는 위 객체를 `id` 필드로 나열한 배열입니다(카드와 같은 객체 재사용, `id`만 추가).
 
+- `sources[].id`는 **필수**입니다. 화면 엔진은 `sources[].id`로만 카드·지표·레이더를 잇고, `id`가 없는 출처를 쓰는 카드는 **그리지 않습니다**(그만큼 카드 수가 줄어 `01 / 08`이 `01 / 05`가 됩니다). 카드 쪽 `source.source_id`를 적었다면 `sources[]` 항목에도 같은 값을 `id`에 적습니다. `python3 ops/scripts/validate_repo.py --only json`이 이 짝을 검사합니다.
+
 ```json
 "sources": [ { "id": "src_mods_202610", "source_name": "국가데이터처", ... } ]
 ```
