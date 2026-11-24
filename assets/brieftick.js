@@ -12,7 +12,7 @@
   'use strict';
   var sec = document.getElementById('tick'); if (!sec) return;
   var vp = document.getElementById('tkVp'), track = document.getElementById('tkTrack');
-  var dEl = document.getElementById('tkDate'), pz = document.getElementById('tkPause'), root = document.documentElement;
+  var pz = document.getElementById('tkPause'), root = document.documentElement;
   var SPEED = 46, LAPS = 3;
   var mq = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
   var cards = [], paused = false, ended = false, press = false, vis = false, setW = 0;
@@ -29,8 +29,6 @@
   function build(d) {
     cards = (d && d.cards || []).filter(function (c) { return c && c.id && c.title; }).sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
     if (!cards.length) { sec.hidden = true; return; }
-    var ed = d.edition || {}, m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(ed.date || '');
-    if (m) dEl.textContent = (+m[2]) + '.' + m[3] + (ed.weekday ? ' ' + ed.weekday : '');
     layout();
     var re = function () { var w = setW; layout(); if (Math.abs(w - setW) > 1) restart(); };
     if (window.ResizeObserver) new ResizeObserver(re).observe(vp);
