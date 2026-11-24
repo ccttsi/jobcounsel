@@ -110,6 +110,14 @@
     /* X축 이름표 — 다 들어가면 그대로, 넘치면 짧은 이름 1줄 + ⓘ(부가설명은 말풍선에서만) */
     /* 접었을 때 ⓘ는 «보이는 이름에서 빠진 것이 있는 칸»에만 — 숨긴 게 없는 칸(예: 2022)은 눌러도 같은 글자만 떠서 중복이었다
        (2026-11-24 태화님 「말풍선 내용과 아래 이름표가 중복」). */
+    /* 말풍선에는 «아래에 보이지 않는 것»만 — 이름이 그대로 보이면 괄호 설명(note)만(예: 신규 채용 → 「상하이과기대, 2023~2026초」),
+       이름까지 …로 잘렸으면 전체 이름(2026-11-24 태화님 IMG_7876). 읽기 프로그램 이름표(aria-label)는 전체 이름 그대로. */
+    var tip = function (it) {
+      if (!it.note || it.coreText !== it.core) return it.full;
+      /* 괄호 설명이 아니라 이름 끝 숫자만 떨어진 경우(「Motif 3」「포스코에너지 15~20」)는 숫자만으로 뜻이 안 통해 전체 이름 */
+      if (!/[（(]/.test(it.full) && /^[\d.,~\-–\s]+$/.test(it.note)) return it.full;
+      return it.note;
+    };
     var hid = function (it) { var f = function (t) { return String(t || '').replace(/\s+/g, ' ').trim(); }; return f(it.full) !== f(it.coreText); };
     var axs = '';
     if (!fold) {
@@ -125,7 +133,7 @@
       ax.items.forEach(function (it, i) {
         if (!hid(it)) return;   /* 숨긴 내용이 없는 칸은 누를 거리가 없다 */
         var x = Math.max(0, xOf(i) - slot / 2), wd = Math.min(w - x, slot);
-        g += '<rect class="axh" x="' + x.toFixed(1) + '" y="0" width="' + wd.toFixed(1) + '" height="' + H + '" pointer-events="all" data-ax="' + i + '" data-axl="' + esc(it.full) + '" role="button" tabindex="0" aria-expanded="false" aria-label="' + esc(it.full) + ' 전체 이름 보기"/>';
+        g += '<rect class="axh" x="' + x.toFixed(1) + '" y="0" width="' + wd.toFixed(1) + '" height="' + H + '" pointer-events="all" data-ax="' + i + '" data-axl="' + esc(tip(it)) + '" role="button" tabindex="0" aria-expanded="false" aria-label="' + esc(it.full) + ' 전체 이름 보기"/>';
       });
     }
 
