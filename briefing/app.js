@@ -108,6 +108,14 @@
   }
   function chart(cd, id) { return '<figure class="ch" data-cv="' + esc(id) + '"></figure>'; }
 
+  /* 도표 각주: 문장마다 한 줄로 끊고(폭에 따라 아무 데서나 끊기지 않게), 괄호 묶음·날짜는 중간에서 끊지 않는다.
+     예) 「국가데이터처 마이크로데이터 분석(매일경제 2026.11.23 보도).」 / 「2026년은 1~10월 값.」 (2026-11-24 태화님) */
+  function capHtml(t) {
+    return String(t || '').split(/(?<=[.!?。])\s+(?=\S)/).map(function (sen) {
+      var h = esc(sen).replace(/\(([^()]{1,30})\)/g, '<span class="nw">($1)</span>').replace(/(\d{4}\.\d{1,2}\.\d{1,2})/g, '<span class="nw">$1</span>');
+      return '<span class="cs">' + h + '</span>';
+    }).join('');
+  }
   function chartInner(cd, w) {
     var type = cd.type, labels = arr(cd.labels), S = arr(cd.series).slice(0, 2), n = labels.length;
     if (!n || !S.length) return '';
@@ -228,7 +236,7 @@
     var aria = S.map(function (s) { return s.name + ': ' + labels.map(function (lb, i) { var v = arr(s.values)[i]; return lb + ' ' + (v == null ? '값 없음' : fmt(v)); }).join(', '); }).join(' / ');
     var legend = '<p class="lg">' + S.map(function (s) { return '<span><i style="background:' + col(s) + '"></i>' + esc(s.name) + '</span>'; }).join('') + '<span>단위 ' + esc(cd.unit) + '</span></p>';
     return legend + '<svg class="chs" viewBox="0 0 ' + Math.round(w) + ' ' + H + '" width="' + Math.round(w) + '" height="' + H + '" role="img" aria-label="' + esc(aria + ' (단위 ' + cd.unit + ')') + '">' + axs + g + '</svg>' +
-      (cd.note ? '<figcaption>' + esc(cd.note) + '</figcaption>' : '');
+      (cd.note ? '<figcaption>' + capHtml(cd.note) + '</figcaption>' : '');
   }
 
   /* 카드가 화면에 그려진 뒤 실제 폭으로 도표를 그린다. 폭이 바뀌면 다시 그린다. */
