@@ -304,7 +304,7 @@
     'html[data-jc-imm] .jc-seal{display:none}' +
     '@media (prefers-reduced-motion:reduce){.jc-boing,.jc-in,.jc-seal.jc-new{animation:none!important}.jc-track i{display:none}}';
 
-  var popSeen = typeof WeakSet === 'function' ? new WeakSet() : null, popT = 0, sealed = false, sealDone = false, reduce = null;
+  var popSeen = typeof WeakSet === 'function' ? new WeakSet() : null, popT = 0, popRetry = 0, sealed = false, sealDone = false, reduce = null;
   var BLOCK = /^(DIV|SECTION|ARTICLE|LI|A|BUTTON|P|H1|H2|H3|H4|UL|OL|DL|HEADER|FIGURE|DETAILS|NAV|TABLE|TR|FORM|ASIDE|BLOCKQUOTE)$/;
   function still() { return immersive || (reduce && reduce.matches); }
   function popRoot() { return contentEl() || d.body; }
@@ -312,30 +312,61 @@
   // 예전에는 한 바퀴 안에서 재기(getBoundingClientRect·getComputedStyle)와 쓰기(classList.add)를 번갈아 했다.
   // 쓰기가 스타일을 더럽히면 다음 재기가 처음부터 다시 계산해서, 300개짜리 화면에서 0.2초 넘게 멈췄다.
   // 재기는 한 번에 몰아 하고, 클래스는 마지막에 한꺼번에 단다.
+  // 무리 판정: 같은 자리(부모)에 같은 모양으로 나란한 단추는 «한꺼번에» 그림자를 얻거나 잃는다.
+  //  2026-11-24: 폭 120px 미만이면 혼자 빠지던 규칙 때문에 「AI 직무 재편」만 그림자가 없고
+  //  바로 옆 「청년 고용 사각지대」에는 있는 식으로 같은 줄에서 그림자가 갈렸다. 이제는 무리 안에
+  //  폭 120px 이상이 하나라도 있으면 무리 전체가 같은 그림자를 쓴다(무리 전체가 작으면 아무도 안 쓴다).
+  //  상태 클래스(on·active·sel…)는 모양이 아니라 «지금 골라져 있다»는 표시라 서명에서 뺀다.
+  var popPid = 0;
+  function popSig(el) {
+    var c = typeof el.className === 'string' ? el.className : '';
+    return c.replace(/\s*jc-(pop|pop-l|in|boing)\b/g, ' ').replace(/\s*(on|active|sel|selected|current|now|open|done|checked|is-[\w-]+)\b/g, ' ').trim();
+  }
+  function pidOf(el) {
+    if (!el) return 0;
+    if (!el.__jcpid) { try { Object.defineProperty(el, '__jcpid', { value: ++popPid, configurable: true }); } catch (e) { el.__jcpid = ++popPid; } }
+    return el.__jcpid;
+  }
   function scanPop() {
     if (!popSeen) return;
     var list = popRoot().querySelectorAll('a,button,summary,[role="button"]'), vh = window.innerHeight, n = 0;
-    var pick = [], i, el, r, cs, bg, hasBg;
+    var cand = [], i, el, r, cs, bg, hasBg, late = 0;
     for (i = 0; i < list.length && n < 300; i++) {
       el = list[i]; if (popSeen.has(el)) continue;
-      r = el.getBoundingClientRect(); if (!r.width) continue; // 아직 안 보이면 다음에 다시 본다
+      r = el.getBoundingClientRect(); if (!r.width) { late++; continue; } // 아직 안 보이면 다음에 다시 본다
       // 모습이 «잠깐» 다른 순간에는 심사하지 않고 다음 바퀴로 미뤄 둔다 — 등장 모션(.jc-in)·누름 반동(.jc-boing)·
       // 마우스가 얹힌 상태. 이때 «아니다»로 확정해 버리면 같은 무리의 단추 일부만 그림자·눌림이 빠져
       // 통일성이 깨진다(2026-11-22, 공고 점검대 예시 공고 2×2 — 한 줄만 그림자가 없던 결함).
-      if (el.classList.contains('jc-in') || el.classList.contains('jc-boing')) continue;
+      if (el.classList.contains('jc-in') || el.classList.contains('jc-boing')) { late++; continue; }
       // 한 무리(예: 메인테마 칩 줄·카드 하단 단추 줄)는 폭이 조금 다르다고 일부만 빠지면 통일성이 깨진다.
-      // `data-jc-pop`을 단 그릇 안에서는 «손가락이 닿는 최소 폭»만 보고 같은 무리를 같은 모습으로 만든다.
+      // `data-jc-pop`을 단 그릇 안에서는 «손가락이 닿는 최소 폭»만 보고 그릇 안 단추를 모두 같은 모습으로 만든다(#497).
       var grp = el.closest && el.closest('[data-jc-pop]');
-      if (r.width < (grp ? 44 : 120) || r.height < 44 || r.height > vh * .8 || el.closest('[data-jc-still],[data-jc-ignore]')) { popSeen.add(el); n++; continue; }
+      if (r.height < 44 || r.height > vh * .8 || el.closest('[data-jc-still],[data-jc-ignore]')) { popSeen.add(el); continue; }
+      if (grp && r.width < 44) { popSeen.add(el); continue; }
       cs = getComputedStyle(el);
-      if (cs.transform !== 'none' && el.matches(':hover,:active')) continue; // 마우스가 얹힌 순간 — 다음 바퀴
-      popSeen.add(el); n++; // 여기서부터는 확정 — 다시 보지 않는다
-      if (parseFloat(cs.borderTopLeftRadius) < 8 || cs.transform !== 'none' || /fixed|sticky|absolute/.test(cs.position) || /inline$/.test(cs.display)) continue;
+      if (cs.transform !== 'none' && el.matches(':hover,:active')) { late++; continue; } // 마우스가 얹힌 순간 — 다음 바퀴
+      if (parseFloat(cs.borderTopLeftRadius) < 8 || cs.transform !== 'none' || /fixed|sticky|absolute/.test(cs.position) || /inline$/.test(cs.display)) { popSeen.add(el); continue; }
       bg = cs.backgroundColor; hasBg = bg && bg !== 'transparent' && !/rgba\(\s*0,\s*0,\s*0,\s*0\s*\)/.test(bg);
-      if (!hasBg && !(parseFloat(cs.borderTopWidth) >= 1 && cs.borderTopStyle !== 'none')) continue;
-      pick.push(el, r.width > 420 ? 1 : 0);
+      if (!hasBg && !(parseFloat(cs.borderTopWidth) >= 1 && cs.borderTopStyle !== 'none')) { popSeen.add(el); continue; }
+      // 여기까지 온 것은 «모양»이 맞는 단추 — 폭만으로 혼자 정하지 않고 무리 단위로 모아 둔다
+      cand.push({ el: el, w: r.width, boost: !!grp, key: pidOf(el.parentElement) + '|' + popSig(el) + '|' + Math.round(r.height / 4) });
+      n++;
     }
-    for (i = 0; i < pick.length; i += 2) { pick[i].classList.add('jc-pop'); if (pick[i + 1]) pick[i].classList.add('jc-pop-l'); }
+    var groups = {}, k, j, g;
+    for (i = 0; i < cand.length; i++) (groups[cand[i].key] = groups[cand[i].key] || []).push(cand[i]);
+    for (k in groups) {
+      g = groups[k];
+      var big = false;
+      for (j = 0; j < g.length; j++) if (g[j].w >= 120 || g[j].boost) { big = true; break; }
+      for (j = 0; j < g.length; j++) {
+        popSeen.add(g[j].el);
+        if (!big) continue; // 무리 전체가 작으면 그림자를 쓰지 않는다(무리 안에서는 여전히 통일)
+        g[j].el.classList.add('jc-pop');
+        if (g[j].w > 420) g[j].el.classList.add('jc-pop-l');
+      }
+    }
+    // 미뤄 둔 단추가 있으면 한 바퀴 뒤에 다시 본다(등장 모션이 끝난 뒤 확정)
+    if (late && popRetry < 2) { popRetry++; clearTimeout(popT); popT = setTimeout(function () { popRetry = 0; scanPop(); }, 450); }
   }
   // 위에 붙어 있는 머리말·탭 줄의 높이만큼 스크롤 여백을 준다. 항목으로 건너뛸 때(scrollIntoView·# 링크) 제목이 그 밑에 가려지지 않게.
   // 값은 머리말 높이가 바뀔 때만 달라지므로 매번 240개를 다시 재지 않고 1.5초에 한 번, 화면 폭이 바뀔 때만 잰다.
@@ -411,6 +442,15 @@
     var opt = window.JC_DESIGN || {};
     reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion:reduce)') : null;
     var st = d.createElement('style'); st.id = 'jc-pop'; st.textContent = POP_CSS; d.head.appendChild(st);
+    // 칩·필 안의 한 줄 글자를 상자 한가운데에 정확히 앉힌다(2026-11-24 태화님 지시: 위/아래/좌/우 어느 쪽도 치우치면 안 됨).
+    // 줄 높이가 남으면 글자 잉크가 상자 가운데에서 위아래로 1.5px씩 어긋나 보인다 — 한 줄짜리 칩만 줄 높이를 글자 크기에 맞춘다.
+    // 여러 줄이 될 수 있는 칩은 1.05~1.1로만 조인다(줄끼리 붙지 않게).
+    var st2 = d.createElement('style'); st2.id = 'jc-chipline';
+    st2.textContent =
+      '.th-b,.fb,.fb-s,.chain,.navl,.pchip,.pill{line-height:1!important}' +
+      '.chip,.tab{line-height:1.05!important}' +
+      '.pg button,.idx-chip,.badge,.btn,.step,.bl,.p-who,.nl-btn,.guideBtn,.tag{line-height:1.2!important}';
+    d.head.appendChild(st2);
     // 진행 띠: 스크롤을 rAF로 묶어 scaleX만 바꾼다(아이폰 사파리 포함 전 기종)
     if (opt.progress !== false) {
       var tr = layer('jc-track'), fill = d.createElement('i'), raf = 0; tr.appendChild(fill);

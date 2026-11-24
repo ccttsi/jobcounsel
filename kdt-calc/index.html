@@ -122,7 +122,8 @@ body[data-jc-tool="kdt-calc"]{--jc-acc:var(--acc)}
 .chip{min-height:44px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 8px;
   border:1px solid var(--line2);border-radius:11px;background:var(--panel);font-size:13px;font-weight:600;
   color:var(--muted);text-align:center;line-height:1.25;letter-spacing:-.02em}
-.chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0;flex:none}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:transparent;box-shadow:inset 0 0 0 1.5px currentColor;opacity:.4;flex:none}
+.chip[aria-pressed="true"] .dot{background:currentColor;box-shadow:none}
 .chip[aria-pressed="true"]{border-color:var(--acc-line);background:var(--acc-soft);color:var(--acc);font-weight:800}
 .chip[aria-pressed="true"] .dot{opacity:1}
 .chip[disabled]{opacity:.4;cursor:not-allowed}
