@@ -132,12 +132,15 @@
     /* 값 라벨 자리를 기억해 둔다 — 기준선 이름표가 겹칠 자리를 피해 앉도록 */
     var vboxes = [], lowLab = 0;
     var label = function (x, yy, v, anchor) {
-      var t = String(fmt(v)), wv = JC_AXL.measure(t, 10.5, 700), an = anchor || 'middle';
+      var t = String(fmt(v)), an = anchor || 'middle';
+      var wv = JC_AXL.numW(t, 10.5, 700);
+      if (an === 'end') { if (x - wv < 1) x = 1 + wv; }
+      else if (an === 'middle') { if (x - wv / 2 < 1) x = 1 + wv / 2; else if (x + wv / 2 > w - 1) x = w - 1 - wv / 2; }
+      else { if (x + wv > w - 1) x = w - 1 - wv; }
       var left = an === 'end' ? x - wv : an === 'middle' ? x - wv / 2 : x;
-      if (left < 1) x += 1 - left; else if (left + wv > w - 1) x -= left + wv - (w - 1);   /* 도표 오른쪽·왼쪽 밖으로 넘치지 않게 */
-      left = an === 'end' ? x - wv : an === 'middle' ? x - wv / 2 : x;
-      vboxes.push([left, yy - 11, left + wv, yy + 3]);
-      return '<text x="' + x.toFixed(1) + '" y="' + yy.toFixed(1) + '" text-anchor="' + an + '" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(fmt(v)) + '</text>';
+      vboxes.push([left, yy - 9, left + wv, yy + 2]);
+      /* 빼기 부호는 글꼴에 맡기지 않고 짧은 선으로 — iOS에서 「- 5.2」처럼 벌어지지 않게(공용 규칙) */
+      return JC_AXL.num(t, { x: x, y: yy, anchor: an, fs: 10.5, weight: 700, fill: 'var(--ink)' }).html;
     };
     var xOf = function (i) { return type === 'slope' ? (i === 0 ? pl + 48 : w - pr - 48) : pl + slot * i + slot / 2; };
     /* 글자 폭만큼 도표 밖으로 나가지 않게 가운데를 당긴다(선그래프의 양끝 이름표) */
@@ -166,12 +169,45 @@
       g = '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + base.toFixed(1) + '" y2="' + base.toFixed(1) + '" stroke="var(--line-2)" stroke-width="1"/>' + g;
     } else if (type === 'slope' || type === 'line') {
       var xs = labels.map(function (lb, i) { return xOf(i); });
-      S.forEach(function (s) {
-        var pts = []; arr(s.values).forEach(function (v, i) { if (v != null && !isNaN(v)) pts.push([xs[i], y(v), v]); });
+      /* 선과 점을 먼저 다 그리고, 값 라벨은 마지막에 «선·점에서 비킨 자리»를 골라 앉힌다.
+         2026-11-24 태화님 사진: c01 2026 「33.2」가 꺾이는 선에 걸리고 2024 「38」도 선에 닿았다.
+         자리 후보는 점 기준 위·아래·좌위·우위·좌아래·우아래 순서로 보고, 이웃 점을 잇는 기울기 선·
+         점(●)·이미 앉힌 라벨·도표 테두리와 겹치지 않는 첫 자리를 쓴다(다 안 되면 위). */
+      var PP = S.map(function (s) {
+        var pts = [];
+        arr(s.values).forEach(function (v, i) { if (v != null && !isNaN(v)) pts.push([xs[i], y(v), v]); });
         if (pts.length > 1) g += '<polyline fill="none" stroke="' + col(s) + '" stroke-width="' + (s.emphasis ? 2.4 : 1.6) + '" points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '"/>';
-        pts.forEach(function (p, i) {
-          g += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.2" fill="' + col(s) + '"/>';
-          g += type === 'slope' ? label(p[0] + (i === 0 ? -8 : 8), p[1] + 3.5, p[2], i === 0 ? 'end' : 'start') : label(p[0], p[1] - 7, p[2]);
+        return pts;
+      });
+      var segs = [], dots = [];
+      PP.forEach(function (pts, si) {
+        pts.forEach(function (p) {
+          g += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.2" fill="' + col(S[si]) + '"/>';
+          dots.push([p[0], p[1], 3.2]);
+        });
+        for (var i = 1; i < pts.length; i++) segs.push([pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]]);
+      });
+      var ord = PP.map(function (_, i) { return i; }).sort(function (a, b) { return (S[b].emphasis ? 1 : 0) - (S[a].emphasis ? 1 : 0); });
+      ord.forEach(function (si) {
+        PP[si].forEach(function (p, pi) {
+          var cands = type === 'slope'
+            ? (pi === 0 ? [[-8, 3.5, 'end'], [0, -7, 'middle'], [0, 15, 'middle'], [-8, -4, 'end'], [8, -4, 'start']]
+                        : [[8, 3.5, 'start'], [0, -7, 'middle'], [0, 15, 'middle'], [8, -4, 'start'], [-8, -4, 'end']])
+            : [[0, -7, 'middle'], [0, 15, 'middle'], [-7, -4, 'end'], [7, -4, 'start'], [-7, 11, 'end'], [7, 11, 'start']];
+          var t = String(fmt(p[2])), wv = JC_AXL.numW(t, 10.5, 700), pick = null;
+          for (var k = 0; k < cands.length && !pick; k++) {
+            var c = cands[k], ax2 = p[0] + c[0], ay2 = p[1] + c[1], an2 = c[2];
+            var lf = an2 === 'end' ? ax2 - wv : an2 === 'middle' ? ax2 - wv / 2 : ax2;
+            var box = [lf, ay2 - 9, lf + wv, ay2 + 2];
+            if (box[0] < 1 || box[2] > w - 1 || box[1] < 1 || box[3] > pt + CW.H + 3) continue;
+            var bad = false, q;
+            for (q = 0; q < segs.length && !bad; q++) if (JC_AXL.hitSeg(box, segs[q])) bad = true;
+            for (q = 0; q < dots.length && !bad; q++) if (JC_AXL.hitDot(box, dots[q])) bad = true;
+            for (q = 0; q < vboxes.length && !bad; q++) if (JC_AXL.hitBox(box, vboxes[q])) bad = true;
+            if (!bad) pick = [ax2, ay2, an2];
+          }
+          if (!pick) pick = [p[0], p[1] - 7, 'middle'];
+          g += label(pick[0], pick[1], p[2], pick[2]);
         });
       });
     }
@@ -234,6 +270,8 @@
     }
 
     var aria = S.map(function (s) { return s.name + ': ' + labels.map(function (lb, i) { var v = arr(s.values)[i]; return lb + ' ' + (v == null ? '값 없음' : fmt(v)); }).join(', '); }).join(' / ');
+    /* 값 라벨 자리 — ⓘ 말풍선이 열릴 때 이 자리를 가리지 않게 공용 모듈에 넘긴다 */
+    chartInner.boxes = vboxes;
     var legend = '<p class="lg">' + S.map(function (s) { return '<span><i style="background:' + col(s) + '"></i>' + esc(s.name) + '</span>'; }).join('') + '<span>단위 ' + esc(cd.unit) + '</span></p>';
     return legend + '<svg class="chs" viewBox="0 0 ' + Math.round(w) + ' ' + H + '" width="' + Math.round(w) + '" height="' + H + '" role="img" aria-label="' + esc(aria + ' (단위 ' + cd.unit + ')') + '">' + axs + g + '</svg>' +
       (cd.note ? '<figcaption>' + capHtml(cd.note) + '</figcaption>' : '');
@@ -251,6 +289,7 @@
     JC_AXL.close();
     JC_AXL.font(st.fontFamily);
     fig.innerHTML = chartInner(cd, w);
+    fig._vlab = chartInner.boxes || [];
     fig._w = w;
     if (fig.firstChild) JC_AXL.bind(fig); else fig.hidden = true;
   }
@@ -263,6 +302,13 @@
   var chartRO = window.ResizeObserver ? new ResizeObserver(function (list) {
     for (var i = 0; i < list.length; i++) paintChart(list[i].target);
   }) : null;
+  /* 글꼴이 늦게 오면 첫 그리기가 대체 글꼴 폭으로 이름표를 접지 못한다(넘치는 이름표가 한 줄에 겹친다).
+     글꼴이 준비되면 한 번 다시 그려 실제 글꼴 폭으로 접는다. */
+  function repaintAll() {
+    Array.prototype.forEach.call(main.querySelectorAll('figure.ch[data-cv]'), function (fig) { fig._w = 0; });
+    paintCharts();
+  }
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(repaintAll);
   window.addEventListener('resize', paintCharts);
 
   function spark(sp) {
