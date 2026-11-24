@@ -48,6 +48,50 @@ function serve() {
       await p.goto(base + pg, { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(1800);
       const r = await p.evaluate(() => {
         const small = [];
+        /* ── 칩·단추 안 글자 중앙 오차 + 같은 줄 그림자 일관성 (2026-11-24) ──
+           · 글자 상자(잉크)와 단추 상자의 위/아래·좌/우 여백이 1.5px 넘게 갈리면 «치우침»
+           · 같은 부모에 같은 모양으로 나란한 단추의 손맛 그림자(.jc-pop) 유무가 갈리면 «불일치»
+           · 글꼴 잉크는 줄 상자 안에서 1px 남짓 비대칭이라 허용치는 1.5px로 둔다 */
+        const chipBad = [];
+        const _vis = el => { const s = getComputedStyle(el); if (s.display === 'none' || s.visibility === 'hidden' || parseFloat(s.opacity) < .05) return false; const q = el.getBoundingClientRect(); return q.width > 1 && q.height > 1; };
+        const _rad = v => (String(v).indexOf('%') >= 0 ? 99 : parseFloat(v) || 0);
+        const _pad = v => { const a = v.split(' ').map(x => parseFloat(x) || 0); return a.length === 1 ? [a[0], a[0], a[0], a[0]] : a.length === 2 ? [a[0], a[1], a[0], a[1]] : a.length === 3 ? [a[0], a[1], a[2], a[1]] : a; };
+        const _ink = el => {
+          let l = 1e9, t = 1e9, r = -1e9, b = -1e9, lines = 0;
+          const add = q => { if (q.width < 1 || q.height < 1) return; l = Math.min(l, q.left); t = Math.min(t, q.top); r = Math.max(r, q.right); b = Math.max(b, q.bottom); };
+          const walk = n => n.childNodes.forEach(k => {
+            if (k.nodeType === 3) { if (!k.textContent.trim()) return; lines++; const rg = document.createRange(); rg.selectNodeContents(k); [...rg.getClientRects()].forEach(add); }
+            else if (k.nodeType === 1) {
+              const s2 = getComputedStyle(k); if (s2.display === 'none' || s2.visibility === 'hidden' || s2.position === 'absolute') return;
+              const hasText = [...k.childNodes].some(x => x.nodeType === 3 && x.textContent.trim());
+              if (!hasText && !k.children.length) { add(k.getBoundingClientRect()); return; }
+              walk(k);
+            }
+          });
+          walk(el); return r < l ? null : { l, t, r, b, lines };
+        };
+        const _rows = {};
+        document.querySelectorAll('a,button,summary,[role=button]').forEach(el => {
+          if (el.closest('#jc-marker-ui,#jc-imm-dock,[data-jc-ignore]') || !_vis(el)) return;
+          const q = el.getBoundingClientRect(); const cs = getComputedStyle(el);
+          if (cs.position === 'fixed' || cs.position === 'sticky') return;
+          const bg = cs.backgroundColor && cs.backgroundColor !== 'rgba(0, 0, 0, 0)';
+          const bd = (parseFloat(cs.borderTopWidth) || 0) > 0;
+          const name = el.id || String(el.className).split(' ')[0] || el.tagName;
+          /* 그림자 무리: 같은 부모 + 같은 모양 */
+          const pKey = (el.parentElement ? (el.parentElement.id || String(el.parentElement.className).split(' ')[0] || el.parentElement.tagName) : 'body') + '|' + String(el.className).replace(/\s*jc-(pop|pop-l|in|boing)\b/g, '') + '|' + bg + bd;
+          (_rows[pKey] = _rows[pKey] || []).push(el.classList.contains('jc-pop'));
+          /* 글자 중앙 */
+          if (_rad(cs.borderTopLeftRadius) < 6 || !(bg || bd) || q.height < 24 || q.height > 64) return;
+          const ink = _ink(el); if (!ink || ink.b - ink.t > 28) return;
+          const pd = _pad(cs.padding);
+          const top = ink.t - q.top - (parseFloat(cs.borderTopWidth) || 0), bot = q.bottom - (parseFloat(cs.borderBottomWidth) || 0) - ink.b;
+          const lf = ink.l - q.left - (parseFloat(cs.borderLeftWidth) || 0), rt = q.right - (parseFloat(cs.borderRightWidth) || 0) - ink.r;
+          const leftish = /^(left|start|right|end)/.test(cs.textAlign || '');
+          if (Math.abs(pd[0] - pd[2]) < .6 && Math.abs(top - bot) > 1.5) chipBad.push('세로 ' + Math.round(Math.abs(top - bot) * 10) / 10 + 'px ' + name + ' 「' + (el.textContent || '').trim().slice(0, 10) + '」');
+          else if (Math.abs(pd[1] - pd[3]) < .6 && !leftish && Math.abs(lf - rt) > 1.5) chipBad.push('가로 ' + Math.round(Math.abs(lf - rt) * 10) / 10 + 'px ' + name + ' 「' + (el.textContent || '').trim().slice(0, 10) + '」');
+        });
+        Object.keys(_rows).forEach(k => { const a = _rows[k]; if (a.length > 1 && a.some(Boolean) && a.some(x => !x)) chipBad.push('그림자 불일치 ' + k.split('|')[1] + ' ' + a.filter(x => !x).length + '/' + a.length); });
         document.querySelectorAll('a,button,select,input,summary,[role=button],[role=tab]').forEach(el => {
           if (el.closest('#jc-marker-ui,#jc-imm-dock')) return; const q = el.getBoundingClientRect(); if (!q.width || !q.height) return;
           const inline = el.tagName === 'A' && getComputedStyle(el).display === 'inline';
@@ -55,13 +99,13 @@ function serve() {
           const lab = el.tagName === 'INPUT' && /^(checkbox|radio)$/.test(el.type) && el.closest('label'); if (lab) { const lq = lab.getBoundingClientRect(); if (lq.width >= 43.5 && lq.height >= 43.5) return; }
           if (!inline && (q.width < 43.5 || q.height < 43.5)) small.push((el.id || String(el.className).split(' ')[0] || el.tagName) + ' ' + Math.round(q.width) + 'x' + Math.round(q.height));
         });
-        return { screens: +(document.documentElement.scrollHeight / innerHeight).toFixed(1), overflow: document.documentElement.scrollWidth - innerWidth, small: small.slice(0, 6), smallCount: small.length };
+        return { screens: +(document.documentElement.scrollHeight / innerHeight).toFixed(1), overflow: document.documentElement.scrollWidth - innerWidth, small: small.slice(0, 6), smallCount: small.length, chip: chipBad.slice(0, 6), chipCount: chipBad.length };
       });
       const idle = await p.evaluate(() => new Promise(res => { let n = 0; const o = requestAnimationFrame; window.requestAnimationFrame = f => { n++; return o(f); }; setTimeout(() => { window.requestAnimationFrame = o; res(n); }, 3000); }));
-      const bad = errs.length || r.overflow > 0 || r.smallCount || r.screens > LIMIT[kind] || idle > 10;
+      const bad = errs.length || r.overflow > 0 || r.smallCount || r.chipCount || r.screens > LIMIT[kind] || idle > 10;
       if (bad) fail++;
-      console.log(`${bad ? '✗' : '✓'} /${pg} ${w}x${h} ${theme}  오류 ${errs.length} · 넘침 ${r.overflow} · 44px 미달 ${r.smallCount} · 화면 ${r.screens}(기준 ${LIMIT[kind]}) · 대기 rAF ${idle}` +
-        (errs.length ? '\n    ' + errs.join('\n    ') : '') + (r.smallCount ? '\n    ' + r.small.join(' | ') : ''));
+      console.log(`${bad ? '✗' : '✓'} /${pg} ${w}x${h} ${theme}  오류 ${errs.length} · 넘침 ${r.overflow} · 44px 미달 ${r.smallCount} · 칩 정렬 ${r.chipCount} · 화면 ${r.screens}(기준 ${LIMIT[kind]}) · 대기 rAF ${idle}` +
+        (errs.length ? '\n    ' + errs.join('\n    ') : '') + (r.smallCount ? '\n    ' + r.small.join(' | ') : '') + (r.chipCount ? '\n    ' + r.chip.join(' | ') : ''));
       await c.close();
     }
   }

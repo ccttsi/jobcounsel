@@ -131,6 +131,10 @@ a{color:inherit}
 .idx button{min-width:44px;min-height:44px;padding:0 6px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel);font-weight:850;font-size:14px;font-variant-numeric:tabular-nums;text-align:center;line-height:1}
 .idx button[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .idx .ca,.idx .ti{display:none}
+/* 좁은 화면: 이슈가 많아도 색인 번호가 한 줄에 앉게(8장이면 08만 둘째 줄로 떨어지던 것) */
+@media (max-width:520px){.idx{flex-wrap:nowrap;gap:2px}.idx>li{flex:1 1 44px;min-width:0}.idx button{width:100%;min-width:0;padding:0 2px}}
+/* 아주 좁은 화면(360 이하)은 한 줄에 4개씩 두 줄 — 44px 손가락 칸을 지킨다 */
+@media (max-width:370px){.idx{flex-wrap:wrap}.idx>li{flex:1 1 calc(25% - 2px)}}
 @media (min-width:1100px){
   .idx{flex-direction:column;flex-wrap:nowrap;gap:2px}
   .idx button{display:grid;grid-template-columns:24px minmax(0,1fr);gap:0 8px;width:100%;padding:8px 10px;border:0;background:none;text-align:left;font-weight:700}
