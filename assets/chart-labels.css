@@ -1,0 +1,23 @@
+/* 도표 X축 라벨 — 접힌 이름(.axi 트리거 아이콘)과 말풍선(.axp).
+   briefing·emerging 공용. 색은 각 지면의 토큰을 그대로 쓴다. */
+
+/* 도표 안의 누를 수 있는 칸: 보이지 않는 사각형이 넓은 손가락 자리를 만든다 */
+.axh{fill:none;stroke:none;cursor:pointer}
+.axh:focus{outline:0}
+.axh:focus-visible{outline:0;stroke:var(--acc,#a33a1f);stroke-width:1.2;stroke-dasharray:4 3}
+.axi{color:var(--dim,#6e645b);transition:color .12s linear}
+.axi.on{color:var(--acc,#a33a1f)}
+
+/* 말풍선: 화면 위에 떠서 지면 테두리에 잘리지 않는다 */
+.axp{position:fixed;z-index:90;left:0;top:0;max-width:min(268px,calc(100vw - 28px));padding:9px 12px 10px;
+  border:1px solid var(--line-2,#d8ccb9);border-radius:10px;background:var(--panel,#fffdf8);color:var(--ink,#2a2521);
+  box-shadow:0 10px 24px -12px rgba(30,20,10,.42);font-size:12.5px;line-height:1.5;font-weight:650;letter-spacing:-.01em;
+  word-break:keep-all;overflow-wrap:anywhere;opacity:0;transform:translateY(3px);pointer-events:none;
+  transition:opacity .13s linear,transform .16s cubic-bezier(.2,.9,.3,1)}
+.axp.up{transform:translateY(-3px)}
+.axp.on{opacity:1;transform:translateY(0)}
+.axp-c{position:absolute;width:9px;height:9px;background:var(--panel,#fffdf8);
+  border:1px solid var(--line-2,#d8ccb9);transform:rotate(45deg);border-width:0 1px 1px 0}
+.axp-t{display:block}
+@media (prefers-reduced-motion:reduce){.axp,.axi{transition:none}}
+html[data-jc-imm] .axp,html[data-jc-imm] .axi{transition:none}

@@ -19,7 +19,6 @@
   var BRIEF = null;                       /* 오늘의 브리핑(briefing/data/briefing.json) — 연결 칩에만 쓴다 */
 
   /* ───────── 도표 ───────── */
-  var W = 340, H = 152, PL = 42, PR = 12, PT = 14, PB = 24;
 
   function ticks(lo, hi, n) {
     var span = hi - lo || 1, raw = span / Math.max(1, n), mag = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10));
@@ -28,8 +27,14 @@
     for (; v <= hi + step * 1e-6; v += step) out.push(+v.toFixed(6));
     return out;
   }
+  /* 도표 — 카드가 실제로 그려진 폭(px)에 맞춰 그린다. X축 이름표가 제 칸에 다 들어가면 그대로 두고,
+     하나라도 넘칠 때만 짧은 이름 + ⓘ(말풍선)로 접는다(briefing과 같은 규칙·같은 공용 모듈). */
+  var CW = { PL: 42, PR: 12, PT: 14, H: 110 };
   function chart(m) {
     if (!m || !arr(m.labels).length || !arr(m.series).length) return '';
+    return '<figure class="fig" data-cvm></figure>';
+  }
+  function chartInner(m, w) {
     var labels = arr(m.labels), S = arr(m.series).slice(0, 3), n = labels.length;
     var all = []; S.forEach(function (s) { all = all.concat(arr(s.values).filter(function (v) { return v != null && !isNaN(v); })); });
     if (!all.length) return '';
@@ -41,50 +46,96 @@
     hi += pad; if (!zero) lo -= pad;
     var tk = ticks(lo, hi, 3);
     lo = Math.min(lo, tk[0]); hi = Math.max(hi, tk[tk.length - 1]);
-    var y = function (v) { return PT + (hi - v) / (hi - lo || 1) * (H - PT - PB); };
-    var iw = W - PL - PR, slot = iw / n, g = '';
+    var pl = CW.PL, pr = CW.PR, pt = CW.PT;
+    var iw = Math.max(60, w - pl - pr), slot = iw / n;
+    var ax = JC_AXL.plan(labels, { width: iw, font: 11, gap: 9 });
+    var fold = ax.fold, noteLine = fold && ax.items.some(function (x) { return x.showNote; });
+    var PB = fold ? (noteLine ? 46 : 34) : 24, H = pt + CW.H + PB;
+    var y = function (v) { return pt + (hi - v) / (hi - lo || 1) * CW.H; };
+    var g = '';
 
     tk.forEach(function (t) {
-      g += '<line x1="' + PL + '" x2="' + (W - PR) + '" y1="' + y(t).toFixed(1) + '" y2="' + y(t).toFixed(1) + '" stroke="var(--line)" stroke-width="1"/>' +
-        '<text x="' + (PL - 6) + '" y="' + (y(t) + 3.2).toFixed(1) + '" text-anchor="end" font-size="9.5" fill="var(--dim)">' + esc(fmt(t, 2)) + '</text>';
+      g += '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + y(t).toFixed(1) + '" y2="' + y(t).toFixed(1) + '" stroke="var(--line)" stroke-width="1"/>' +
+        '<text x="' + (pl - 6) + '" y="' + (y(t) + 3.4).toFixed(1) + '" text-anchor="end" font-size="10.5" fill="var(--dim)">' + esc(fmt(t, 2)) + '</text>';
     });
 
+    var xOf;
     if (m.chart === 'line') {
-      var xs = labels.map(function (_, i) { return n === 1 ? PL + iw / 2 : PL + (iw / (n - 1)) * i; });
+      xOf = function (i) { return n === 1 ? pl + iw / 2 : pl + (iw / (n - 1)) * i; };
       S.forEach(function (s, si) {
-        var pts = [];
-        arr(s.values).forEach(function (v, i) { if (v != null && !isNaN(v)) pts.push([xs[i], y(v), v]); });
+        var pts = []; arr(s.values).forEach(function (v, i) { if (v != null && !isNaN(v)) pts.push([xOf(i), y(v), v]); });
         if (pts.length > 1) g += '<polyline fill="none" stroke="' + (s.emphasis ? 'var(--acc)' : 'var(--c-sub)') + '" stroke-width="' + (s.emphasis ? 2.2 : 1.5) + '" stroke-linejoin="round" points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '"/>';
         pts.forEach(function (p) {
           g += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (s.emphasis ? 3 : 2.4) + '" fill="' + (s.emphasis ? 'var(--acc)' : 'var(--c-sub)') + '"/>';
-          if (si === 0) g += '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] - 7).toFixed(1) + '" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)">' + esc(fmt(p[2], 2)) + '</text>';
+          if (si === 0) g += '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] - 7).toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(fmt(p[2], 2)) + '</text>';
         });
       });
-      labels.forEach(function (lb, i) {
-        g += '<text x="' + xs[i].toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10" fill="var(--muted)">' + esc(lb) + '</text>';
-      });
     } else {
+      xOf = function (i) { return pl + slot * i + slot / 2; };
       var base = y(Math.max(lo, Math.min(hi, 0))), k = S.length;
-      var bw = Math.min(38, (slot * 0.62) / k);
+      var bw = Math.min(40, (slot * 0.62) / k);
       labels.forEach(function (lb, i) {
-        var cx = PL + slot * i + slot / 2;
+        var cx = xOf(i);
         S.forEach(function (s, j) {
           var v = arr(s.values)[i]; if (v == null || isNaN(v)) return;
           var x = cx - (bw * k + (k - 1) * 4) / 2 + (bw + 4) * j;
           var yv = y(v), top = Math.min(yv, base), h = Math.max(1.5, Math.abs(yv - base));
           g += '<rect x="' + x.toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="1.5" fill="' + (s.emphasis ? 'var(--acc)' : 'var(--c-sub)') + '"/>';
-          g += '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (v >= 0 ? top - 4 : top + h + 10).toFixed(1) + '" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)">' + esc(fmt(v, 2)) + '</text>';
+          g += '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (v >= 0 ? top - 4 : top + h + 10).toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(fmt(v, 2)) + '</text>';
         });
-        g += '<text x="' + cx.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10" fill="var(--muted)">' + esc(lb) + '</text>';
       });
-      g += '<line x1="' + PL + '" x2="' + (W - PR) + '" y1="' + base.toFixed(1) + '" y2="' + base.toFixed(1) + '" stroke="var(--line-2)" stroke-width="1"/>';
+      g += '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + base.toFixed(1) + '" y2="' + base.toFixed(1) + '" stroke="var(--line-2)" stroke-width="1"/>';
+    }
+
+    /* X축 이름표 — 다 들어가면 그대로, 넘치면 짧은 이름 + ⓘ */
+    var axs = '';
+    if (!fold) {
+      labels.forEach(function (lb, i) {
+        axs += '<text x="' + xOf(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11" fill="var(--muted)">' + esc(lb) + '</text>';
+      });
+    } else {
+      ax.items.forEach(function (it, i) {
+        var cx = xOf(i).toFixed(1), y1 = it.showNote ? H - 32 : H - 22;
+        axs += '<text x="' + cx + '" y="' + y1 + '" text-anchor="middle" font-size="11" font-weight="600" fill="var(--muted)">' + esc(it.coreText) + '</text>';
+        if (it.showNote) axs += '<text x="' + cx + '" y="' + (H - 20) + '" text-anchor="middle" font-size="10.5" fill="var(--dim)">' + esc(it.noteText) + '</text>';
+        axs += JC_AXL.icon(+cx, H - 9, i);
+      });
+      ax.items.forEach(function (it, i) {
+        var x = Math.max(0, xOf(i) - slot / 2), wd = Math.min(w - x, slot);
+        g += '<rect class="axh" x="' + x.toFixed(1) + '" y="0" width="' + wd.toFixed(1) + '" height="' + H + '" pointer-events="all" data-ax="' + i + '" data-axl="' + esc(it.full) + '" role="button" tabindex="0" aria-expanded="false" aria-label="' + esc(it.full) + ' 전체 이름 보기"/>';
+      });
     }
 
     var aria = S.map(function (s) { return s.name + ': ' + labels.map(function (lb, i) { var v = arr(s.values)[i]; return lb + ' ' + (v == null ? '값 없음' : fmt(v, 2)); }).join(', '); }).join(' / ');
     var legend = S.length > 1 ? '<span>' + S.map(function (s) { return esc(s.name); }).join(' · ') + '</span>' : '';
-    return '<figure class="fig"><div class="fig-h"><b>' + esc(m.label) + '</b><span>' + esc(m.unit || '') + (m.cagr != null ? ' · 연평균 ' + esc(fmt(m.cagr, 1)) + '%' : '') + '</span></div>' +
-      '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(aria + ' (단위 ' + (m.unit || '') + ')') + '">' + g + '</svg>' +
-      '<figcaption>' + (legend ? legend + ' · ' : '') + (m.note ? esc(m.note) : '') + '</figcaption></figure>';
+    return '<div class="fig-h"><b>' + esc(m.label) + '</b><span>' + esc(m.unit || '') + (m.cagr != null ? ' · 연평균 ' + esc(fmt(m.cagr, 1)) + '%' : '') + '</span></div>' +
+      '<svg class="chs" viewBox="0 0 ' + Math.round(w) + ' ' + H + '" width="' + Math.round(w) + '" height="' + H + '" role="img" aria-label="' + esc(aria + ' (단위 ' + (m.unit || '') + ')') + '">' + axs + g + '</svg>' +
+      '<figcaption>' + (legend ? legend + ' · ' : '') + (m.note ? esc(m.note) : '') + '</figcaption>';
+  }
+
+  /* 기사가 그려진 뒤 실제 폭으로 도표를 그린다. 폭이 바뀌면 다시 그린다. */
+  function paintFig(fig) {
+    if (!fig || !fig._m) return;
+    var st = window.getComputedStyle(fig);
+    var w = Math.round(fig.clientWidth - (parseFloat(st.paddingLeft) || 0) - (parseFloat(st.paddingRight) || 0));
+    if (w < 80) return;
+    if (fig._w === w && fig.firstChild) return;
+    JC_AXL.close();
+    JC_AXL.font(st.fontFamily);
+    fig.innerHTML = chartInner(fig._m, w);
+    fig._w = w;
+    if (fig.firstChild) JC_AXL.bind(fig);
+  }
+  var figRO = window.ResizeObserver ? new ResizeObserver(function (list) {
+    for (var i = 0; i < list.length; i++) paintFig(list[i].target);
+  }) : null;
+  function paintCharts(root, it) {
+    var fig = root.querySelector('figure.fig[data-cvm]');
+    if (!fig) return;
+    if (it && it.market) fig._m = it.market;
+    if (!fig._m) return;
+    if (figRO && !fig._ro) { fig._ro = 1; figRO.observe(fig); }
+    paintFig(fig);
   }
 
   /* ───────── 달력 ───────── */
@@ -303,6 +354,7 @@
   }
 
   function renderArticle() {
+    if (window.JC_AXL) JC_AXL.close();
     var items = arr(DAY && DAY.items).slice().sort(function (a, b) { return a.order - b.order; });
     if (!items.length) { $('art').innerHTML = '<p class="empty">이 날의 지면이 없습니다.</p>'; return; }
     UI.item = Math.max(0, Math.min(items.length - 1, UI.item));
@@ -329,6 +381,7 @@
       briefChip(it) +
       chainBtn(it) +
       '<div class="art-f">' + sourceLine(it) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 기사"' + (UI.item ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 기사"' + (UI.item < items.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div>';
+    paintCharts($('art'), it);
   }
 
   function renderSide() {

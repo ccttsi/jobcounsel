@@ -14,13 +14,13 @@
   var CSS = '.jc-next{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:16px auto 8px;padding-top:10px;box-sizing:border-box;' +
     'border-top:1px solid rgba(127,127,127,.22);border-top-color:color-mix(in srgb,currentColor 12%,transparent);letter-spacing:-.02em;line-height:1.3}' +
     '.jc-next-k{flex:none;margin-right:4px;font-size:12.5px;font-weight:700;opacity:.66}' +
-    '.jc-next a{display:inline-flex;align-items:center;min-height:44px;box-sizing:border-box;padding:0 14px;border-radius:12px;color:inherit;text-decoration:none;font-size:14px;font-weight:700;' +
+    '.jc-next a{display:inline-flex;align-items:center;min-height:44px;box-sizing:border-box;padding:0 13px;border-radius:10px;color:inherit;text-decoration:none;font-size:13px;font-weight:750;' +
     'border:1px solid rgba(127,127,127,.28);border-color:color-mix(in srgb,currentColor 16%,transparent);background:color-mix(in srgb,currentColor 3%,transparent);-webkit-tap-highlight-color:transparent}' +
     '.jc-next a:focus-visible{outline:2px solid currentColor;outline-offset:2px}' +
     '@media (hover:hover){.jc-next a:hover{background:color-mix(in srgb,currentColor 7%,transparent)}}' +
-    /* 휴대폰(≤599px): 짝이 많은 섹터에서 칩이 3~4줄(최대 205px)로 쌓이던 것 → 한 줄로 두고 옆으로 민다(CP2).
-       세로 손짓은 그대로 화면을 넘기도록 pan-x pan-y를 둘 다 허용하고, 끝 칩이 화면 끝에 붙지 않게 꼬리 여백을 둔다. */
-    '@media (max-width:599px){.jc-next{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}.jc-next::-webkit-scrollbar{display:none}.jc-next a{flex:none;white-space:nowrap}.jc-next::after{content:"";flex:0 0 8px}}' +
+    /* 휴대폰(≤599px): CP2에서 한 줄 가로 밀기로 두었더니 화면 끝에서 칩이 잘려 «빠진 칩»처럼 보였다
+       (2026-11-24 지적). 잘린 글자 대신 줄바꿈으로 내려 앉히고, 끝 칩이 화면 끝에 붙지 않게 오른쪽 여백을 준다. */
+    '@media (max-width:599px){.jc-next{flex-wrap:wrap;padding-right:16px;row-gap:4px}.jc-next-k{flex:0 0 100%;margin:0 0 -4px}.jc-next a{max-width:100%;white-space:normal;word-break:keep-all}}' +
     '.jc-next-one{flex-wrap:nowrap;overflow-x:auto;margin:0;padding-top:8px;padding-bottom:8px;scrollbar-width:none;flex:none}.jc-next-one::-webkit-scrollbar{display:none}.jc-next-one a{flex:none;white-space:nowrap}.jc-next-one::after{content:"";flex:0 0 56px}' +
     'html[data-jc-imm] .jc-next{display:none}';
   function run() {
