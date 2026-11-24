@@ -1,7 +1,7 @@
 /* Career Consultant Tutorial (CCTT) · 기기 간 연동(로그인)
    - marker.js가 자동으로 불러온다. 설정(주소·공개 키)이 비어 있으면 아무것도 하지 않는다.
    - 받는 정보는 아이디와 비밀번호뿐. 비밀번호는 서버에서 bcrypt로만 저장된다(assets/supabase-setup.sql).
-   - 이용 통계: 페이지마다 익명 한 줄(꼭지·로그인 여부·기기 종류·들어온 도메인·앞 꼭지·보고 있던 시간)만 보낸다. 아래 "사이트 이용 통계" 참고.
+   - 이용 통계: 페이지마다 익명 한 줄(꼭지·로그인 여부·기기 종류·들어온 도메인·앞 꼭지·보고 있던 시간·방문자/관리측)만 보낸다. 아래 "사이트 이용 통계" 참고.
    - 연동하는 것: 탐색 진도, 형광펜·포스트잇, 도구함 설정, 화면 테마, 이론 위키 학습 기록, 매뉴얼 마지막 쪽.
    - 연동 단위는 localStorage 항목. 항목마다 마지막으로 바꾼 시각(t)을 두고 더 최근 것을 남긴다.
      형광펜·포스트잇과 탐색 진도는 덮어쓰지 않고 합친다. */
@@ -361,18 +361,33 @@
      오늘 처음인지·전에 온 적 있는지, 탭에서 처음 연 페이지라면 들어온 곳(도메인 이름만).
      IP·아이디·쿠키·기기 번호·전체 주소·검색어·입력 내용은 보내지 않는다.
      이 기기에 남기는 것은 마지막 방문 날짜 한 줄(jc-seen-day)과 탭 표시(sessionStorage)뿐이다.
-     보내지 않는 경우: 관리자 로그인, '추적 안 함'·GPC 설정, 이 기기 제외(jc-stats-off), 관리 페이지. */
+
+     두 갈래로 나눠 남긴다(2026-11-24). 관리 화면의 「방문자」/「관리측」 탭이 이 갈래다.
+       user  — 방문자: 외부에서 온 실질 이용자
+       admin — 관리측: 관리자 로그인, 이 기기 관리측 표시(jc-stats-off), 피클·클로드 같은 자동화 브라우저
+     보내지 않는 경우: '추적 안 함'·GPC 설정, 이 컴퓨터에서 직접 연 것(localhost·file:), 관리 페이지. */
   var STATS_OFF = 'jc-stats-off', SEEN = 'jc-seen-day';
   var SOCIAL = ['facebook.com', 'instagram.com', 'threads.net', 'threads.com', 'x.com', 'twitter.com', 't.co', 'band.us', 'kakao.com', 'youtube.com', 'youtu.be', 'linkedin.com', 'lnkd.in', 'tiktok.com', 'pinterest.com', 'reddit.com'];
   var SEARCH = /(^|\.)google\.[a-z.]+$|(^|\.)bing\.com$|(^|\.)search\.naver\.com$|(^|\.)search\.daum\.net$|(^|\.)duckduckgo\.com$|(^|\.)search\.zum\.com$|(^|\.)search\.nate\.com$|(^|\.)search\.yahoo\.[a-z.]+$|(^|\.)ecosia\.org$|(^|\.)baidu\.com$|(^|\.)yandex\.[a-z.]+$/;
   function ends(h, dm) { return h === dm || h.slice(-dm.length - 1) === '.' + dm; }
-  function statsBlocked() {
+  /* 어느 갈래로 남길지. null이면 보내지 않는다. */
+  function statsScope() {
     var n = window.navigator || {};
-    if (n.globalPrivacyControl === true || n.doNotTrack === '1' || window.doNotTrack === '1') return true;
-    if (get(STATS_OFF) === '1') return true;
-    if (sess && sess.admin) return true;
-    if (!window.JC_STATS_TEST && (/^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) || location.protocol === 'file:')) return true;
-    return false;
+    if (n.globalPrivacyControl === true || n.doNotTrack === '1' || window.doNotTrack === '1') return null;
+    if (!window.JC_STATS_TEST && (/^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) || location.protocol === 'file:')) return null;
+    // 피클·클로드·MCP가 여는 자동화 브라우저(Playwright·웹드라이버)는 사람의 방문과 섞지 않는다
+    if (navigator.webdriver === true || /HeadlessChrome|Playwright|Puppeteer/i.test(navigator.userAgent || '')) return 'admin';
+    if ((sess && sess.admin) || get(STATS_OFF) === '1') return 'admin';
+    return 'user';
+  }
+  /* ?team=1 로 열면 이 브라우저도 관리측으로 남긴다(아이패드처럼 로그인 없이 쓰는 기기용). 주소에서 표시만 지운다. */
+  function teamMark() {
+    if (!/[?&](?:team|internal)=1(?:&|$)/.test(location.search)) return;
+    put(STATS_OFF, '1');
+    try {
+      var q = location.search.replace(/[?&](?:team|internal)=1(?=&|$)/, '').replace(/^&/, '?');
+      history.replaceState(null, '', location.pathname + (q.length > 1 ? q : '') + location.hash);
+    } catch (e) {}
   }
   function pageName(url) {
     var base = hubURL().replace(/[?#].*$/, ''), here = String(url || location.href).replace(/[?#].*$/, '');
@@ -389,7 +404,7 @@
   }
   function localDay() { var t = new Date(); return t.getFullYear() + '-' + ('0' + (t.getMonth() + 1)).slice(-2) + '-' + ('0' + t.getDate()).slice(-2); }
   function hit() {
-    if (statsBlocked()) return;
+    var scope = statsScope(); if (!scope) return;
     var page = pageName(); if (!page || page === 'admin') return;
     var entry = false, src = null, h = null;
     try { var SS = window.sessionStorage; if (!SS.getItem('jc-hit-s')) { entry = true; SS.setItem('jc-hit-s', '1'); } } catch (e) {}
@@ -403,7 +418,7 @@
     }
     var last = get(SEEN), today = localDay(), daily = last !== today, ret = !!last && last !== today;
     if (daily) put(SEEN, today);
-    var p = { page: page, auth: !!sess, entry: entry, daily: daily, ret: ret, dev: devKind() };
+    var p = { page: page, auth: !!sess, entry: entry, daily: daily, ret: ret, dev: devKind(), scope: scope };
     if (entry) { p.src = src; if (h) p.host = h; }
     var via = null; try { if (d.referrer && new URL(d.referrer).hostname === location.hostname) via = pageName(d.referrer); } catch (e) {}
     if (via && via !== 'admin') p.via = via;
@@ -442,6 +457,7 @@
 
   function start() {
     d.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-jc-login]'); if (b) { e.preventDefault(); open(); } });
+    teamMark();
     paint();
     if (location.hash === '#login') open();
     if (sess) sync('load');
