@@ -480,7 +480,7 @@ html[data-jc-imm] .pl-in{position:static}
 .pl-k small{margin-left:auto;font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:0}
 .pl-gr{display:flex;flex-wrap:wrap;gap:6px}
 @media (max-width:639px){.pl-gr{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:2px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 18px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 18px),transparent)}.pl-gr::-webkit-scrollbar{display:none}}
-.pl-gr button{flex:none;min-height:44px;padding:6px 14px;border:1px solid var(--line-2);border-radius:12px;background:var(--panel);font-size:15.5px;font-weight:750;white-space:nowrap}
+.pl-gr button{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;line-height:1.15;border:1px solid var(--line-2);border-radius:12px;background:var(--panel);font-size:15.5px;font-weight:750;white-space:nowrap}
 .pl-gr button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 .pl-sb{position:relative;margin-top:10px}
 .pl-sb input{width:100%;height:48px;padding:0 14px 0 40px;border:1px solid var(--line-2);border-radius:12px;background:var(--bg);font-family:inherit;font-size:16px;color:var(--ink);-webkit-appearance:none;appearance:none}
@@ -499,11 +499,11 @@ html[data-jc-imm] .pl-in{position:static}
 .pl-empty{padding:14px 0 2px;font-size:14.5px;line-height:1.6;color:var(--muted)}
 .pl-date{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
 .pl-date input{flex:1;min-width:0;height:44px;padding:0 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--bg);font-family:inherit;font-size:16px;color:var(--ink)}
-.pl-date button{flex:none;min-height:44px;padding:0 14px;border:1px solid var(--line-2);border-radius:10px;background:none;font-size:14.5px;font-weight:750;color:var(--muted)}
+.pl-date button{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;line-height:1.15;border:1px solid var(--line-2);border-radius:10px;background:none;font-size:14.5px;font-weight:750;color:var(--muted)}
 .pl-r{display:flex;flex-wrap:wrap;gap:6px}
 #plRounds{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
 #plRounds[hidden]{display:none}
-.pl-r button{min-height:44px;padding:6px 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-family:var(--mono);font-size:13.5px;font-weight:700;white-space:nowrap}
+.pl-r button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 12px;line-height:1.15;border:1px solid var(--line-2);border-radius:10px;background:var(--panel);font-family:var(--mono);font-size:13.5px;font-weight:700;white-space:nowrap}
 .pl-r button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc);color:var(--on-acc)}
 .pl-out{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start}
 .pl-out>.pl-col,.pl-out>.pl-wide{display:contents}
