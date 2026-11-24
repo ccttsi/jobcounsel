@@ -104,6 +104,10 @@
 - **실시간이 필요한 앞단만 Cloudflare 환경변수에 키를 꽂는다** — Turnstile·Workers AI·Upstash·Groq.
 - **보안(헌법 제3조 3-2)**: `GROQ_API_KEY`·`FIRECRAWL_API_KEY`·`kaggle.json`·Upstash/Neon 토큰은 **공개 저장소에 절대 커밋하지 않는다.** GitHub Secrets(배치·CI) · Cloudflare Secrets(앞단) · 로컬 `/workspace/.secrets/`(손으로 도는 CLI) 세 곳에만 둔다. PR 본문·커밋 메시지·화면·문서에 값이 아니라 **이름만** 적는다.
 
+## 라이브 확인은 관리측으로 — 피클·클로드·MCP (2026-11-24 태화님 지시)
+
+라이브(`https://witw.pages.dev`)에서 화면을 확인할 때는 **가능하면 관리자 계정으로 로그인한 뒤** 본다. 자동화 브라우저(Playwright·webdriver·HeadlessChrome·Puppeteer)로 연 접속은 로그인하지 않아도 통계에서 「관리측」으로 잡히지만, 로그인해 두면 사람이 쓴 접속과 같은 줄로 남아 나중에 가려낼 수 있다. 어느 쪽도 방문자 통계에는 섞이지 않는다(`assets/sync.js`의 갈래 분류, `/admin/`의 「관리측」 탭).
+
 ## 화면을 만들 때 꼭 지킬 것 (요약 — 상세는 CLAUDE.md·DESIGN.md)
 
 - 지재권 최우선(DESIGN §0), 내보내기(저장·인쇄·PDF·복사) 금지, 확인 안 된 값은 항목째 생략

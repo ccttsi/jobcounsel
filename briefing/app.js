@@ -57,7 +57,7 @@
     if (!T.length) return '';
     var cardByIssue = {}; cards.forEach(function (c) { if (c.issue_id) cardByIssue[c.issue_id] = c.id; });
     UI.themeData = T; UI.cardByIssue = cardByIssue;
-    return '<section class="themes" id="themes" aria-labelledby="thH"><h2 id="thH">메인테마</h2><small>날짜와 무관하게 계속 보는 핵심</small><div class="th-list">' + T.map(function (x, i) {
+    return '<section class="themes" id="themes" aria-labelledby="thH"><h2 id="thH">메인테마</h2><small>날짜와 무관하게 계속 보는 핵심</small><div class="th-list" data-jc-pop>' + T.map(function (x, i) {
       return '<button type="button" class="th-b" data-theme="' + i + '" aria-haspopup="dialog"><b>' + esc(x.t.title) + '</b><span class="num">' + x.items.length + '건</span></button>';
     }).join('') + '</div></section>';
   }
@@ -96,42 +96,51 @@
       (url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener">원문 보기</a>' : '') + (extra || '') + '</div>';
   }
 
-  /* ---------- 도표 (SVG, 카드당 하나) ---------- */
-  var W = 320, H = 156, PL = 8, PR = 8, PT = 18, PB = 26;
+  /* ---------- 도표 (SVG, 카드당 하나) ----------
+     그림은 카드가 실제로 그려진 폭(px)에 맞춰 그린다 — 화면 폭에 따라 글자가 작아지거나 커지지 않는다.
+     X축 이름표가 제 칸에 다 들어가면 그대로 두고, 하나라도 넘칠 때만 짧은 이름 + ⓘ(말풍선)로 접는다. */
+  var CW = { PL: 10, PR: 10, PT: 18, H: 112 };
   function domain(vals, extra) {
     var v = vals.filter(function (x) { return x != null && !isNaN(x); }).concat(extra.filter(function (x) { return x != null; }));
     var lo = Math.min.apply(null, v), hi = Math.max.apply(null, v);
     if (lo === hi) { lo -= 1; hi += 1; }
     var pad = (hi - lo) * 0.12; return [lo - (lo < 0 ? pad : 0), hi + (hi > 0 ? pad : 0)];
   }
-  function chart(cd) {
+  function chart(cd, id) { return '<figure class="ch" data-cv="' + esc(id) + '"></figure>'; }
+
+  function chartInner(cd, w) {
     var type = cd.type, labels = arr(cd.labels), S = arr(cd.series).slice(0, 2), n = labels.length;
     if (!n || !S.length) return '';
     var all = []; S.forEach(function (s) { all = all.concat(arr(s.values)); });
     var ref = cd.reference_value != null ? +cd.reference_value : null;
     var barLike = /bar/.test(type);
     var dm = domain(all, barLike ? [0, ref] : [ref]), lo = dm[0], hi = dm[1];
-    var y = function (v) { return PT + (hi - v) / (hi - lo) * (H - PT - PB); };
-    var iw = W - PL - PR, slot = iw / n, g = '';
+    var pl = CW.PL, pr = CW.PR, pt = CW.PT;
+    var iw = Math.max(60, w - pl - pr), slot = iw / n;
+    var ax = JC_AXL.plan(labels, { width: iw, font: 11, gap: 9 });
+    var fold = ax.fold, noteLine = fold && ax.items.some(function (x) { return x.showNote; });
+    var PB = fold ? (noteLine ? 46 : 34) : 24, H = pt + CW.H + PB;
+    var y = function (v) { return pt + (hi - v) / (hi - lo) * CW.H; };
     var col = function (s) { return s.emphasis ? 'var(--c-main)' : 'var(--c-sub)'; };
-    var label = function (x, yy, v, anchor) { return '<text x="' + x.toFixed(1) + '" y="' + yy.toFixed(1) + '" text-anchor="' + (anchor || 'middle') + '" font-size="10" font-weight="700" fill="var(--ink)">' + esc(fmt(v)) + '</text>'; };
+    var label = function (x, yy, v, anchor) { return '<text x="' + x.toFixed(1) + '" y="' + yy.toFixed(1) + '" text-anchor="' + (anchor || 'middle') + '" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(fmt(v)) + '</text>'; };
+    var xOf = function (i) { return type === 'slope' ? (i === 0 ? pl + 48 : w - pr - 48) : pl + slot * i + slot / 2; };
+    var g = '';
 
     if (barLike) {
       var base = y(Math.max(lo, Math.min(hi, 0)));
-      var k = S.length, bw = Math.min(30, slot * 0.62 / k);
+      var k = S.length, bw = Math.min(34, slot * 0.62 / k);
       labels.forEach(function (lb, i) {
-        var cx = PL + slot * i + slot / 2;
+        var cx = xOf(i);
         S.forEach(function (s, j) {
           var v = arr(s.values)[i]; if (v == null || isNaN(v)) return;
           var x = cx - (bw * k) / 2 + bw * j + (k > 1 ? 1 : 0), yv = y(v), top = Math.min(yv, base), h = Math.max(1, Math.abs(yv - base));
           g += '<rect x="' + x.toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + (bw - (k > 1 ? 2 : 0)).toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2" fill="' + col(s) + '"/>';
           g += label(x + bw / 2 - (k > 1 ? 1 : 0), v >= 0 ? top - 4 : top + h + 11, v);
         });
-        g += '<text x="' + cx.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10.5" fill="var(--muted)">' + esc(lb) + '</text>';
       });
-      g = '<line x1="' + PL + '" x2="' + (W - PR) + '" y1="' + base.toFixed(1) + '" y2="' + base.toFixed(1) + '" stroke="var(--line-2)" stroke-width="1"/>' + g;
+      g = '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + base.toFixed(1) + '" y2="' + base.toFixed(1) + '" stroke="var(--line-2)" stroke-width="1"/>' + g;
     } else if (type === 'slope' || type === 'line') {
-      var xs = labels.map(function (lb, i) { return type === 'slope' ? (i === 0 ? PL + 48 : W - PR - 48) : PL + slot * i + slot / 2; });
+      var xs = labels.map(function (lb, i) { return xOf(i); });
       S.forEach(function (s) {
         var pts = []; arr(s.values).forEach(function (v, i) { if (v != null && !isNaN(v)) pts.push([xs[i], y(v), v]); });
         if (pts.length > 1) g += '<polyline fill="none" stroke="' + col(s) + '" stroke-width="' + (s.emphasis ? 2.4 : 1.6) + '" points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '"/>';
@@ -140,18 +149,66 @@
           g += type === 'slope' ? label(p[0] + (i === 0 ? -8 : 8), p[1] + 3.5, p[2], i === 0 ? 'end' : 'start') : label(p[0], p[1] - 7, p[2]);
         });
       });
-      labels.forEach(function (lb, i) { g += '<text x="' + xs[i].toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10.5" fill="var(--muted)">' + esc(lb) + '</text>'; });
     }
     if (ref != null && !(barLike && ref === 0)) {
       var yr = y(ref);
-      g += '<line x1="' + PL + '" x2="' + (W - PR) + '" y1="' + yr.toFixed(1) + '" y2="' + yr.toFixed(1) + '" stroke="var(--c-ref)" stroke-width="1" stroke-dasharray="3 3"/>' +
-        '<text x="' + (W - PR) + '" y="' + (yr - 3).toFixed(1) + '" text-anchor="end" font-size="9.5" fill="var(--c-ref)">기준 ' + esc(fmt(ref)) + '</text>';
+      g += '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + yr.toFixed(1) + '" y2="' + yr.toFixed(1) + '" stroke="var(--c-ref)" stroke-width="1" stroke-dasharray="3 3"/>' +
+        '<text x="' + (w - pr) + '" y="' + (yr - 3).toFixed(1) + '" text-anchor="end" font-size="10" fill="var(--c-ref)">기준 ' + esc(fmt(ref)) + '</text>';
     }
+
+    /* X축 이름표 — 제 칸에 다 들어가면 그대로, 하나라도 넘치면 짧은 이름 + ⓘ로 접는다 */
+    var axs = '';
+    if (!fold) {
+      labels.forEach(function (lb, i) {
+        axs += '<text x="' + xOf(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11" fill="var(--muted)">' + esc(lb) + '</text>';
+      });
+    } else {
+      ax.items.forEach(function (it, i) {
+        var cx = xOf(i).toFixed(1), y1 = it.showNote ? H - 32 : H - 22;
+        axs += '<text x="' + cx + '" y="' + y1 + '" text-anchor="middle" font-size="11" font-weight="600" fill="var(--muted)">' + esc(it.coreText) + '</text>';
+        if (it.showNote) axs += '<text x="' + cx + '" y="' + (H - 20) + '" text-anchor="middle" font-size="10.5" fill="var(--dim)">' + esc(it.noteText) + '</text>';
+        axs += JC_AXL.icon(+cx, H - 9, i);
+      });
+      /* 막대·이름표를 함께 덮는 누름 자리 — 손가락이 닿는 넓이(칸 전체) */
+      ax.items.forEach(function (it, i) {
+        var hw = type === 'slope' ? Math.min(iw / 2, 140) : slot;
+        var x = Math.max(0, xOf(i) - hw / 2), wd = Math.min(w - x, hw);
+        g += '<rect class="axh" x="' + x.toFixed(1) + '" y="0" width="' + wd.toFixed(1) + '" height="' + H + '" pointer-events="all" data-ax="' + i + '" data-axl="' + esc(it.full) + '" role="button" tabindex="0" aria-expanded="false" aria-label="' + esc(it.full) + ' 전체 이름 보기"/>';
+      });
+    }
+
     var aria = S.map(function (s) { return s.name + ': ' + labels.map(function (lb, i) { var v = arr(s.values)[i]; return lb + ' ' + (v == null ? '값 없음' : fmt(v)); }).join(', '); }).join(' / ');
     var legend = '<p class="lg">' + S.map(function (s) { return '<span><i style="background:' + col(s) + '"></i>' + esc(s.name) + '</span>'; }).join('') + '<span>단위 ' + esc(cd.unit) + '</span></p>';
-    return '<figure class="ch">' + legend + '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(aria + ' (단위 ' + cd.unit + ')') + '">' + g + '</svg>' +
-      (cd.note ? '<figcaption>' + esc(cd.note) + '</figcaption>' : '') + '</figure>';
+    return legend + '<svg class="chs" viewBox="0 0 ' + Math.round(w) + ' ' + H + '" width="' + Math.round(w) + '" height="' + H + '" role="img" aria-label="' + esc(aria + ' (단위 ' + cd.unit + ')') + '">' + axs + g + '</svg>' +
+      (cd.note ? '<figcaption>' + esc(cd.note) + '</figcaption>' : '');
   }
+
+  /* 카드가 화면에 그려진 뒤 실제 폭으로 도표를 그린다. 폭이 바뀌면 다시 그린다. */
+  function paintChart(fig) {
+    var id = fig.getAttribute('data-cv'), cs = (current && current._cards) || [], cd = null;
+    for (var i = 0; i < cs.length; i++) if (String(cs[i].id) === id) { cd = cs[i].chart_data; break; }
+    if (!cd) return;
+    var st = window.getComputedStyle(fig);
+    var w = Math.round(fig.clientWidth - (parseFloat(st.paddingLeft) || 0) - (parseFloat(st.paddingRight) || 0));
+    if (w < 80) return;                                   /* 아직 숨은 카드 — 보이면 ResizeObserver가 다시 부른다 */
+    if (fig._w === w && fig.firstChild) return;
+    JC_AXL.close();
+    JC_AXL.font(st.fontFamily);
+    fig.innerHTML = chartInner(cd, w);
+    fig._w = w;
+    if (fig.firstChild) JC_AXL.bind(fig); else fig.hidden = true;
+  }
+  function paintCharts() {
+    Array.prototype.forEach.call(main.querySelectorAll('figure.ch[data-cv]'), function (fig) {
+      if (chartRO && !fig._ro) { fig._ro = 1; chartRO.observe(fig); }
+      paintChart(fig);
+    });
+  }
+  var chartRO = window.ResizeObserver ? new ResizeObserver(function (list) {
+    for (var i = 0; i < list.length; i++) paintChart(list[i].target);
+  }) : null;
+  window.addEventListener('resize', paintCharts);
+
   function spark(sp) {
     var v = arr(sp && sp.values).filter(function (x) { return x != null && !isNaN(x); });
     if (v.length < 2) return '';
@@ -232,6 +289,7 @@
   function calLabel(s) { return fmtDate(s) + ' (' + WEEKDAY[weekdayNum(s)] + ')'; }
   function render(d, opts) {
     opts = opts || {};
+    JC_AXL.close();
     var E = d.edition || {}, srcById = {};
     arr(d.sources).forEach(function (s) { if (s && s.id) srcById[s.id] = s; });
     var ok = function (id, where) { if (srcById[id]) return true; console.warn('[briefing] 출처 id 없음:', id, where); return false; };
@@ -291,12 +349,12 @@
             return '<li>' + esc(k.label) + ' <b>' + esc(k.value) + '</b>' + (k.delta ? '<i>' + esc(k.delta) + '</i>' : '') + '</li>';
           }).join('') + '</ul>' : '') +
           (c.counselor_question ? '<p class="q"><b>내담자에게 물어볼 질문</b>' + esc(c.counselor_question) + '</p>' : '') + '</div>' +
-          (c.chart_data ? chart(c.chart_data) : '') + '</div>' +
+          (c.chart_data ? chart(c.chart_data, c.id) : '') + '</div>' +
           '<div class="stp" role="tablist" aria-label="3단 읽기">' + STEP_TABS.map(function (n, k) {
             return '<button type="button" role="tab" data-step="' + k + '" aria-selected="' + (st === k) + '" aria-label="' + ['①', '②', '③'][k] + ' ' + STEP_NAMES[k] + '">' + ['①', '②', '③'][k] + ' ' + n + '</button>';
           }).join('') + '</div>' +
           '<ol class="st"><li><b>무슨 일인가</b>' + esc(t.what) + '</li><li><b>수치·근거</b>' + esc(t.evidence) + '</li><li><b>상담·구직 시사점</b>' + esc(t.implication) + '</li></ol>' +
-          '<div class="card-f">' + (c.theme_key ? chainBtn(c.theme_key, c.theme_label, c.region) : '') + emgLink(c) + laborWalk(c, E.date) + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
+          '<div class="card-f" data-jc-pop>' + (c.theme_key ? chainBtn(c.theme_key, c.theme_label, c.region) : '') + emgLink(c) + laborWalk(c, E.date) + srcLine(c.track, c.source) + edStamp(c) + '<span class="pn"><button type="button" data-go="-1" aria-label="이전 이슈"' + (i ? '' : ' disabled') + '>←</button><button type="button" data-go="1" aria-label="다음 이슈"' + (i < cards.length - 1 ? '' : ' disabled') + '>다음 →</button></span></div></article>';
       }).join('') + '</div></div></section>';
 
     /* 레이더 */
@@ -331,6 +389,7 @@
     main.innerHTML = html;
     current = d; current._cards = cards; current._rows = rows;
     initCalendar(E.date, dates);
+    paintCharts();
     countChains();
     linkNews(d);
     if (location.hash === '#themes' && $('themes')) $('themes').scrollIntoView({ block: 'start' });
@@ -342,6 +401,7 @@
     try { history.replaceState(null, '', location.pathname + location.search + h); } catch (e) {}
   }
   function showTab(t, focus) {
+    JC_AXL.close();
     UI.tab = t;
     Array.prototype.forEach.call(main.querySelectorAll('[data-tab]'), function (b) { var on = b.getAttribute('data-tab') === t; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
     Array.prototype.forEach.call(main.querySelectorAll('.pane'), function (p) { p.hidden = p.id !== 'pane-' + t; });
@@ -349,10 +409,12 @@
   }
   function showCard(i, focus) {
     var cs = current._cards; if (!cs.length) return;
+    JC_AXL.close();
     UI.card = Math.max(0, Math.min(cs.length - 1, i));
     cs.forEach(function (c, k) { var el = document.getElementById(c.id); if (el) el.hidden = k !== UI.card; });
     Array.prototype.forEach.call(main.querySelectorAll('[data-card]'), function (b) { b.setAttribute('aria-current', String(+b.getAttribute('data-card') === UI.card)); });
     var el = document.getElementById(cs[UI.card].id);
+    paintCharts();
     var top = main.querySelector('.tabs'); if (top && top.getBoundingClientRect().top < 0) top.scrollIntoView({ block: 'start' });
     if (focus && el) { var h = el.querySelector('h3'); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); } }
     setHash();

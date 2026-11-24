@@ -164,21 +164,21 @@ ol.st li:last-child{font-weight:500}
 
 /* ── 체인(연결고리) 단추 ──────────────────────────────────── */
 .chain{
-  display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;margin-right:2px;
-  border:1px solid var(--line-2);border-radius:8px;background:var(--panel);
-  font-size:12.5px;font-weight:800;color:var(--muted);
+  display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;
+  border:1px solid var(--line-2);border-radius:10px;background:var(--panel);
+  font-size:13px;font-weight:800;color:var(--muted);
 }
 .chain svg{width:17px;height:17px;color:var(--news-acc)}
 .chain .n{font-variant-numeric:tabular-nums;color:var(--dim);font-weight:750}
 .chain[aria-expanded="true"]{border-color:var(--ink);color:var(--ink)}
 /* ── 신산업 연결(카드 하단 텍스트 링크) ──────────────────── */
-.emg{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 8px;margin-right:2px;order:1;flex:0 0 auto;border-radius:8px;font-size:12.5px;font-weight:750;color:var(--muted);text-decoration:none;white-space:nowrap}
+.emg{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 12px;order:1;flex:0 0 auto;border-radius:10px;font-size:13px;font-weight:750;color:var(--muted);text-decoration:none;white-space:nowrap}
 .emg span{font-size:11px;letter-spacing:.05em;color:var(--dim)}
 .emg b{color:var(--acc);font-weight:850}
 .emg i{font-style:normal;font-size:11px;color:var(--acc)}
 .emg:hover{background:var(--soft);color:var(--ink)}
 /* ── 노동시장 산책 연결(카드 하단 칩) — 실기사로 표시된 카드에만 ── */
-.labw{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 8px;margin-right:2px;order:1;flex:0 0 auto;border-radius:8px;font-size:12.5px;font-weight:750;color:var(--muted);text-decoration:none;white-space:nowrap}
+.labw{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 12px;order:1;flex:0 0 auto;border-radius:10px;font-size:13px;font-weight:750;color:var(--muted);text-decoration:none;white-space:nowrap}
 .labw span{font-size:11px;letter-spacing:.05em;color:var(--dim)}
 .labw b{color:var(--acc);font-weight:850}
 .labw i{font-style:normal;font-size:11px;color:var(--acc)}
@@ -274,7 +274,6 @@ html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html
   .mast .nameplate{font-size:clamp(38px,3.6vw,46px)}
   .mast-meta{padding:5px 0}
   .card-top{gap:8px}
-  figure.ch svg{max-height:148px}
   .card-f{padding-top:5px;margin-top:8px}
 }
 @media (max-width:599px){
@@ -337,7 +336,9 @@ html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html
 .mast .nameplate{display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.08}
 .mast .nameplate small{line-height:1.25}
 /* 출처 줄: 연결고리·쪽 넘김을 한 줄에 두고 출처 문장은 아래 한 줄로 */
-.card-f{display:flex;align-items:center;gap:4px 8px;justify-content:flex-start}
+.card-f{display:flex;align-items:center;gap:6px 8px;justify-content:flex-start}
+/* 한 무리로 보이는 단추는 같은 높이·모서리·글자 크기를 쓴다(2026-11-24) */
+.card-f .pn button[disabled].jc-pop{box-shadow:none}
 .card-f .pn{order:2;margin-left:0}
 .card-f .pn{margin-left:0}
 .card-f .src{order:3;flex:1 1 100%;margin-top:2px}
@@ -347,7 +348,6 @@ html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html
   .card-f .eds{flex:0 0 auto}
 }
 @media (max-width:599px){
-  figure.ch svg{max-height:118px}
   .wrap{padding-bottom:44px}
   .pv{margin-bottom:2px}
 }
@@ -377,7 +377,6 @@ html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html
   .mast .nameplate{font-size:clamp(30px,2.7vw,36px)}
 }
 @media (min-width:1100px){
-  figure.ch svg{max-height:130px}
   .card h3{font-size:23px}
   ol.st li{font-size:13.5px;line-height:1.62}
   .card-f .src{font-size:11.5px}
@@ -392,7 +391,6 @@ html[data-jc-imm] .cal,html[data-jc-imm] .cn-sheet,html[data-jc-imm] .cn-in,html
   .mast-body{padding-top:10px}
 }
 @media (min-width:1100px){
-  figure.ch svg{max-height:112px}
   ol.st li{line-height:1.55}
   .card-f .src{font-size:11px}
   .card{padding:12px 0 10px}

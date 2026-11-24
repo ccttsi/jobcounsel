@@ -323,7 +323,10 @@
       // 마우스가 얹힌 상태. 이때 «아니다»로 확정해 버리면 같은 무리의 단추 일부만 그림자·눌림이 빠져
       // 통일성이 깨진다(2026-11-22, 공고 점검대 예시 공고 2×2 — 한 줄만 그림자가 없던 결함).
       if (el.classList.contains('jc-in') || el.classList.contains('jc-boing')) continue;
-      if (r.width < 120 || r.height < 44 || r.height > vh * .8 || el.closest('[data-jc-still],[data-jc-ignore]')) { popSeen.add(el); n++; continue; }
+      // 한 무리(예: 메인테마 칩 줄·카드 하단 단추 줄)는 폭이 조금 다르다고 일부만 빠지면 통일성이 깨진다.
+      // `data-jc-pop`을 단 그릇 안에서는 «손가락이 닿는 최소 폭»만 보고 같은 무리를 같은 모습으로 만든다.
+      var grp = el.closest && el.closest('[data-jc-pop]');
+      if (r.width < (grp ? 44 : 120) || r.height < 44 || r.height > vh * .8 || el.closest('[data-jc-still],[data-jc-ignore]')) { popSeen.add(el); n++; continue; }
       cs = getComputedStyle(el);
       if (cs.transform !== 'none' && el.matches(':hover,:active')) continue; // 마우스가 얹힌 순간 — 다음 바퀴
       popSeen.add(el); n++; // 여기서부터는 확정 — 다시 보지 않는다
