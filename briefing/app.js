@@ -118,16 +118,30 @@
     var pl = CW.PL, pr = CW.PR, pt = CW.PT;
     var iw = Math.max(60, w - pl - pr), slot = iw / n;
     var ax = JC_AXL.plan(labels, { width: iw, font: 11, gap: 9 });
-    var fold = ax.fold, noteLine = fold && ax.items.some(function (x) { return x.showNote; });
-    var PB = fold ? (noteLine ? 46 : 34) : 24, H = pt + CW.H + PB;
+    var fold = ax.fold, PB = fold ? 34 : 24, H = pt + CW.H + PB;
     var y = function (v) { return pt + (hi - v) / (hi - lo) * CW.H; };
     var col = function (s) { return s.emphasis ? 'var(--c-main)' : 'var(--c-sub)'; };
-    var label = function (x, yy, v, anchor) { return '<text x="' + x.toFixed(1) + '" y="' + yy.toFixed(1) + '" text-anchor="' + (anchor || 'middle') + '" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(fmt(v)) + '</text>'; };
+    /* 값 라벨 자리를 기억해 둔다 — 기준선 이름표가 겹칠 자리를 피해 앉도록 */
+    var vboxes = [], lowLab = 0;
+    var label = function (x, yy, v, anchor) {
+      var t = String(fmt(v)), wv = JC_AXL.measure(t, 10.5, 700), an = anchor || 'middle';
+      var left = an === 'end' ? x - wv : an === 'middle' ? x - wv / 2 : x;
+      if (left < 1) x += 1 - left; else if (left + wv > w - 1) x -= left + wv - (w - 1);   /* 도표 오른쪽·왼쪽 밖으로 넘치지 않게 */
+      left = an === 'end' ? x - wv : an === 'middle' ? x - wv / 2 : x;
+      vboxes.push([left, yy - 11, left + wv, yy + 3]);
+      return '<text x="' + x.toFixed(1) + '" y="' + yy.toFixed(1) + '" text-anchor="' + an + '" font-size="10.5" font-weight="700" fill="var(--ink)">' + esc(fmt(v)) + '</text>';
+    };
     var xOf = function (i) { return type === 'slope' ? (i === 0 ? pl + 48 : w - pr - 48) : pl + slot * i + slot / 2; };
+    /* 글자 폭만큼 도표 밖으로 나가지 않게 가운데를 당긴다(선그래프의 양끝 이름표) */
+    var midX = function (x, t, fs, wt) {
+      var hw = JC_AXL.measure(t, fs, wt) / 2;
+      if (x - hw < 1) x = 1 + hw; if (x + hw > w - 1) x = w - 1 - hw;
+      return x;
+    };
     var g = '';
 
     if (barLike) {
-      var base = y(Math.max(lo, Math.min(hi, 0)));
+      var base = y(Math.max(lo, Math.min(hi, 0))), yRef = ref != null ? y(ref) : null;
       var k = S.length, bw = Math.min(34, slot * 0.62 / k);
       labels.forEach(function (lb, i) {
         var cx = xOf(i);
@@ -135,7 +149,10 @@
           var v = arr(s.values)[i]; if (v == null || isNaN(v)) return;
           var x = cx - (bw * k) / 2 + bw * j + (k > 1 ? 1 : 0), yv = y(v), top = Math.min(yv, base), h = Math.max(1, Math.abs(yv - base));
           g += '<rect x="' + x.toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + (bw - (k > 1 ? 2 : 0)).toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2" fill="' + col(s) + '"/>';
-          g += label(x + bw / 2 - (k > 1 ? 1 : 0), v >= 0 ? top - 4 : top + h + 11, v);
+          var ly = v >= 0 ? top - 4 : top + h + 11;
+          if (v >= 0 && yRef != null && Math.abs(top - yRef) < 9) ly = top - 9;   /* 기준선이 숫자를 긋지 않게 */
+          if (v < 0) lowLab = Math.max(lowLab, ly);   /* 0 아래로 내려간 값 라벨 — 축 이름표 줄을 밀아낸다 */
+          g += label(x + bw / 2 - (k > 1 ? 1 : 0), ly, v);
         });
       });
       g = '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + base.toFixed(1) + '" y2="' + base.toFixed(1) + '" stroke="var(--line-2)" stroke-width="1"/>' + g;
@@ -152,21 +169,40 @@
     }
     if (ref != null && !(barLike && ref === 0)) {
       var yr = y(ref);
-      g += '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + yr.toFixed(1) + '" y2="' + yr.toFixed(1) + '" stroke="var(--c-ref)" stroke-width="1" stroke-dasharray="3 3"/>' +
-        '<text x="' + (w - pr) + '" y="' + (yr - 3).toFixed(1) + '" text-anchor="end" font-size="10" fill="var(--c-ref)">기준 ' + esc(fmt(ref)) + '</text>';
+      g += '<line x1="' + pl + '" x2="' + (w - pr) + '" y1="' + yr.toFixed(1) + '" y2="' + yr.toFixed(1) + '" stroke="var(--c-ref)" stroke-width="1" stroke-dasharray="3 3"/>';
+      /* 기준선 이름표 — 값 라벨과 겹치지 않는 자리(오른쪽 위 → 아래 → 왼쪽)를 골라 앉힌다. */
+      var rt = '기준 ' + fmt(ref), rw = JC_AXL.measure(rt, 10, 400);
+      var cand = [[w - pr, yr - 3, 'end'], [w - pr, yr + 11, 'end'], [w - pr, yr - 16, 'end'], [w - pr, yr + 24, 'end'],
+                  [pl, yr - 3, 'start'], [pl, yr + 11, 'start'], [pl, yr - 16, 'start'], [pl, yr + 24, 'start']];
+      var hitBox = function (l, t, r2, b) {
+        return vboxes.some(function (q) { return !(r2 <= q[0] - 2 || l >= q[2] + 2 || b <= q[1] - 2 || t >= q[3] + 2); });
+      };
+      var pick = cand[0];
+      for (var ci = 0; ci < cand.length; ci++) {
+        var c = cand[ci], cl = c[2] === 'end' ? c[0] - rw : c[0], cr = cl + rw, ct = c[1] - 10, cb = c[1] + 3;
+        if (cl < 0 || cr > w || ct < 0 || cb > H) continue;
+        if (hitBox(cl, ct, cr, cb)) continue;
+        pick = c; break;
+      }
+      g += '<text x="' + pick[0] + '" y="' + pick[1].toFixed(1) + '" text-anchor="' + pick[2] + '" font-size="10" fill="var(--c-ref)">' + esc(rt) + '</text>';
     }
 
-    /* X축 이름표 — 제 칸에 다 들어가면 그대로, 하나라도 넘치면 짧은 이름 + ⓘ로 접는다 */
+    /* 0 아래 값 라벨이 축 이름표 줄을 침범하면 도표 아래를 그만큼 늘린다(라벨을 지우지 않는다). */
+    if (lowLab > pt + CW.H) {
+      PB = Math.max(PB, Math.ceil(lowLab + 25 - pt - CW.H));
+      H = pt + CW.H + PB;
+    }
+
+    /* X축 이름표 — 제 칸에 다 들어가면 그대로, 하나라도 넘치면 짧은 이름 1줄 + ⓘ로 접는다(부가설명은 말풍선에서만) */
     var axs = '';
     if (!fold) {
       labels.forEach(function (lb, i) {
-        axs += '<text x="' + xOf(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11" fill="var(--muted)">' + esc(lb) + '</text>';
+        axs += '<text x="' + midX(xOf(i), lb, 11, 400).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11" fill="var(--muted)">' + esc(lb) + '</text>';
       });
     } else {
       ax.items.forEach(function (it, i) {
-        var cx = xOf(i).toFixed(1), y1 = it.showNote ? H - 32 : H - 22;
-        axs += '<text x="' + cx + '" y="' + y1 + '" text-anchor="middle" font-size="11" font-weight="600" fill="var(--muted)">' + esc(it.coreText) + '</text>';
-        if (it.showNote) axs += '<text x="' + cx + '" y="' + (H - 20) + '" text-anchor="middle" font-size="10.5" fill="var(--dim)">' + esc(it.noteText) + '</text>';
+        var cx = midX(xOf(i), it.coreText, 11, 600).toFixed(1);
+        axs += '<text x="' + cx + '" y="' + (H - 22) + '" text-anchor="middle" font-size="11" font-weight="600" fill="var(--muted)">' + esc(it.coreText) + '</text>';
         axs += JC_AXL.icon(+cx, H - 9, i);
       });
       /* 막대·이름표를 함께 덮는 누름 자리 — 손가락이 닿는 넓이(칸 전체) */
