@@ -1208,7 +1208,7 @@ function ai1(){var f=aFam(A.from),h=aiToday();
   h+='<div class="rv2 ai2"><div class="box"><h3>출발 직무</h3><div class="ai-fams" role="radiogroup" aria-label="출발 직무">';
   AI.families.forEach(function(x){h+='<button type="button" role="radio" data-afam="'+x.id+'" aria-checked="'+(A.from===x.id)+'"><span class="tx"><span>'+esc(x.tag)+'</span><b>'+esc(x.name)+'</b></span><span class="mt"><span class="v">'+esc(x.headline.value)+'</span><span class="n">노선 '+aRoutes(x.id).length+'</span></span></button>';});
   h+='</div></div>'+aiSigBox(f);
-  h+='</div><div class="rnav"><button type="button" class="btn btn-p" data-aistep="2"'+(A.from?'':' disabled')+'>인접 노선 보기 →</button></div>';
+  h+='</div><div class="rnav"><button type="button" class="btn btn-p" data-aistep="2" id="aiNext"'+(A.from?'':' disabled')+'>인접 노선 보기 →</button></div>';
   return h;}
 function aiNode(kind,c,k,t,sm){return '<li class="vn'+(kind!=='st'?' big':'')+(kind==='start'?' start':'')+'" style="--c:'+c+';--cn:'+c+'"><span class="vd"></span><span class="vt"><span class="k2">'+esc(k)+'</span><b>'+esc(t)+'</b>'+(sm?'<small>'+esc(sm)+'</small>':'')+'</span></li>';}
 function tierName(id){return TIER[id]?TIER[id].name:'';}
@@ -1235,7 +1235,7 @@ function ai2(){var f=aFam(A.from);if(!f)return ai1();
   h+='<div class="rv2 ai2"><div class="box"><h3>노선 고르기</h3><div class="sts ai-routes" role="radiogroup" aria-label="인접 직무 노선">';
   rs.forEach(function(x){h+='<button type="button" role="radio" data-aroute="'+x.id+'" aria-checked="'+(A.route===x.id)+'" style="--c:var(--acc)"><i aria-hidden="true"></i><span class="nm">'+esc(x.name)+'<small>'+esc(x.to.name)+' · '+wk(x.weeks[0])+'~'+wk(x.weeks[1])+' · 난이도 '+x.diff+'/3</small></span></button>';});
   h+='</div><p class="hint">'+esc(AI.station_note)+'</p></div><div class="box" id="aiDetail">'+aiDetail(r)+'</div></div>';
-  h+='<div class="rnav"><button type="button" class="btn btn-g" data-aistep="1">← 출발 직무</button><button type="button" class="btn btn-p" data-aistep="3"'+(r?'':' disabled')+'>상담 가이드 보기 →</button></div>';
+  h+='<div class="rnav"><button type="button" class="btn btn-g" data-aistep="1">← 출발 직무</button><button type="button" class="btn btn-p" data-aistep="3" id="aiNext3"'+(r?'':' disabled')+'>상담 가이드 보기 →</button></div>';
   return h;}
 function ai3(){var r=aRoute(A.route);if(!r)return ai2();
   var f=aFam(r.from),to=r.to,st=BY[r.station],on=st&&S.boarded.indexOf(r.station)>=0;
@@ -1257,11 +1257,13 @@ $('pai').addEventListener('click',function(e){var b;
   if((b=e.target.closest('[data-afam]'))){var id=b.getAttribute('data-afam'),prev=A.from;A.from=(prev===id?'':id);if(A.from!==prev)A.route='';saveA();
     $('pai').querySelectorAll('[data-afam]').forEach(function(x){x.setAttribute('aria-checked',String(x.getAttribute('data-afam')===A.from));});
     var sb=$('aiSig');if(sb)sb.outerHTML=aiSigBox(aFam(A.from));
-    var nb=$('pai').querySelector('[data-aistep="2"]');if(nb)nb.disabled=!A.from;return;}
+    var nb=$('aiNext');if(nb)nb.disabled=!A.from;
+    var rb=$('pai').querySelector('.rr [data-aistep="2"]');if(rb)rb.disabled=!A.from;return;}
   if((b=e.target.closest('[data-aroute]'))){var rid=b.getAttribute('data-aroute');A.route=(A.route===rid?'':rid);saveA();
     $('pai').querySelectorAll('[data-aroute]').forEach(function(x){x.setAttribute('aria-checked',String(x.getAttribute('data-aroute')===A.route));});
     var rtd=$('aiDetail');if(rtd)rtd.outerHTML='<div class="box" id="aiDetail">'+aiDetail(aRoute(A.route))+'</div>';
-    var n3=$('pai').querySelector('[data-aistep="3"]');if(n3)n3.disabled=!A.route;return;}
+    var n3=$('aiNext3');if(n3)n3.disabled=!A.route;
+    var r3=$('pai').querySelector('.rr [data-aistep="3"]');if(r3)r3.disabled=!A.route;return;}
   if((b=e.target.closest('[data-station]'))){openSheet(b.getAttribute('data-station'));return;}
   if((b=e.target.closest('[data-aiboard]'))){var sid=b.getAttribute('data-aiboard');toggleIn(S.boarded,sid);save();var on2=S.boarded.indexOf(sid)>=0;
     b.setAttribute('aria-pressed',String(on2));b.textContent=on2?'탑승함 · 내리기':'이 역 탑승';
