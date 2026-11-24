@@ -1,7 +1,7 @@
 {
  "schema": "jobcounsel.openapi.v1",
  "kind": "manifest",
- "generated_at": "2026-11-24T06:37:50+09:00",
+ "generated_at": "2026-11-25T06:43:47+09:00",
  "tiers": {
   "daily": [
    "alio_recruitment",
@@ -25,7 +25,7 @@
    "qnet_stats"
   ]
  },
- "total_bytes": 26239305,
+ "total_bytes": 26378409,
  "sources": [
   {
    "key": "alio_recruitment",
@@ -33,10 +33,10 @@
    "service_id": "15125273",
    "tier": "daily",
    "path": "data/openapi/alio/recruitment.json",
-   "count": 514,
-   "fetched_at": "2026-11-24T06:37:39+09:00",
-   "bytes": 2376238,
-   "sha256": "06465451514f1fccf0e499c575bb2ab2bdd02be2b890afade31dfe27399ddf11",
+   "count": 540,
+   "fetched_at": "2026-11-25T06:43:34+09:00",
+   "bytes": 2515342,
+   "sha256": "b5343f6e349e0ba410947761e98c6c3deb02b88c4e2bb059b3d15260575c526b",
    "license": "이용허락범위 제한 없음",
    "official_url": "https://www.data.go.kr/data/15125273/openapi.do"
   },
