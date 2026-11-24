@@ -57,7 +57,15 @@ button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit;-web
 .hd>[data-jc-prefs]{margin-left:auto}
 .rst{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px 0 10px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel);font-size:14px;font-weight:750}
 .rst svg{width:18px;height:18px;color:var(--acc)}
-@media (max-width:420px){.rst span{display:none}.rst{width:44px;padding:0;justify-content:center}}
+/* 휴대폰(글자 없는 아이콘 단추): 누르는 칸 44px는 그대로, 보이는 상자만 34px — 홈 단추(44px)보다 한 단계 작게.
+   분류 교차 사전과 같은 규격(2026-11-24 태화님 「홈-제목-새로고침이 있는 모든 섹터를 같은 규격으로」) */
+@media (max-width:420px){
+  .rst span{display:none}
+  .rst{position:relative;width:44px;padding:0;justify-content:center;border-color:transparent;background:transparent}
+  .rst::before{content:"";position:absolute;inset:5px;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);transition:border-color .15s}
+  .rst:hover{border-color:transparent}.rst:hover::before{border-color:var(--acc)}
+  .rst svg{position:relative;width:16px;height:16px}
+}
 
 .pv{margin:0 0 4px}
 .pv-t{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:4px 2px;border-radius:12px}
