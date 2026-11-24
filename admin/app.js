@@ -19,8 +19,19 @@
   var WD = ['일', '월', '화', '수', '목', '금', '토'];
   var RANGES = [[1, '오늘'], [7, '7일'], [30, '30일'], [90, '90일']];
 
-  var st = { days: 30, data: null, busy: false, pgPage: 1, pgHost: 1, pgStay: 1 };
+  var st = { days: 30, scope: 'user', data: null, legacy: false, busy: false, pgPage: 1, pgHost: 1, pgStay: 1 };
   var hm = /(?:^|[#&])d=(\d+)/.exec(location.hash); if (hm && [1, 7, 30, 90].indexOf(+hm[1]) >= 0) st.days = +hm[1];
+  if (/(?:^|[#&])s=admin(?:&|$)/.test(location.hash)) st.scope = 'admin';
+  /* 접속 갈래 — 방문자(외부 실질 이용자)와 관리측(나·피클·클로드). 분류는 assets/sync.js가 보낸다. */
+  var SCOPES = { user: { name: '방문자', desk: '외부 실질 이용자' }, admin: { name: '관리측', desk: '나·피클·클로드' } };
+  var TXT = {
+    user: { visitors: '방문자', visits: '방문', newv: '처음 온 브라우저', perVisit: '방문당', todayN: '방문자', anon: '비로그인', on: '로그인',
+      authTitle: '로그인 · 비로그인 이용',
+      authLede: '로그인은 선택 기능이라, 대부분은 로그인 없이 이용합니다. 나·피클·클로드의 접속은 「관리측」 탭에 따로 있습니다.' },
+    admin: { visitors: '접속 브라우저', visits: '접속', newv: '처음 연 브라우저', perVisit: '접속당', todayN: '브라우저', anon: '로그아웃 상태', on: '로그인 상태',
+      authTitle: '로그인 상태로 들어온 접속',
+      authLede: '관리자로 로그인한 채 연 접속과, 로그아웃한 채 연 접속(자동화 브라우저 포함)을 나눠 봅니다. 이 갈래는 방문자 통계에 섞이지 않습니다.' }
+  };
 
   /* ---------- 도움 함수 ---------- */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -73,6 +84,10 @@
       if (!r || r.error === 'session') return check();
       if (r.error === 'forbidden') return check();
       if (r.error) throw r;
+      /* 새 통계 함수(2026-11-24, 갈래 분리)가 아직 없으면 예전 모양(합친 숫자)이 온다.
+         그때도 화면은 그대로 열어 두고, 위에 설정 한 번이 필요하다는 줄만 남긴다. */
+      st.legacy = !(r.traffic && r.traffic.user && r.traffic.admin);
+      if (st.legacy && !(r.traffic && r.traffic.pages)) return gate('불러오지 못했습니다', '통계 응답의 모양이 예상과 다릅니다. 새로 고침해 주세요.', '<button class="go" id="retry">다시 시도</button>');
       st.data = r; st.pgPage = 1; st.pgHost = 1; st.pgStay = 1; render();
     }).catch(function (e) {
       st.busy = false;
@@ -154,8 +169,21 @@
   }
 
   /* ---------- 화면 ---------- */
+  /* 갈래 탭 — 둘을 나란히 두고 지금 보는 쪽만 켜 둔다. 작은 숫자는 그 기간의 방문자(브라우저) 수. */
+  function scopeTabs(D) {
+    var S0 = D.scopes || {};
+    return '<nav class="scope" id="scopeTop" role="tablist" aria-label="접속 갈래">' + ['user', 'admin'].map(function (k) {
+      var c = (S0[k] || {}).visitors, on = st.scope === k;
+      return '<button role="tab" data-scope="' + k + '" aria-selected="' + on + '">' +
+        '<span class="nm">' + esc(SCOPES[k].name) + '</span>' +
+        '<span class="ds">' + esc(SCOPES[k].desk) + '</span>' +
+        '<span class="ct">' + (c == null ? '–' : n(c)) + '</span></button>';
+    }).join('') + '</nav>';
+  }
   function render() {
-    var D = st.data, A = D.accounts, T = D.traffic, P = T.prev || {};
+    var D = st.data, A = D.accounts;
+    var T = st.legacy ? D.traffic : D.traffic[st.scope], P = T.prev || {};
+    var TX = TXT[st.legacy ? 'user' : st.scope];
     tipSets = [];
     var anonPv = T.pv - T.auth_pv, anonVis = T.visitors - T.auth_visitors, anonVisit = T.visits - T.auth_visits;
     var at = new Date(D.at), atS = at.toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' });
@@ -167,22 +195,26 @@
       '<button class="re" id="reBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4h-4"/></svg>새로 고침</button>' +
       '<span class="at">' + esc(atS) + ' 기준</span></div></section>';
 
+    // 갈래 탭 (방문자 / 관리측) — 설정 전에는 합친 숫자와 안내 한 줄
+    if (st.legacy) h += '<p class="legacy">아직 갈래를 나누는 설정 전이라 <b>아래 숫자는 방문자와 관리측이 섞인 전체</b>입니다. Supabase에서 통계 설정 SQL을 한 번 실행하면 「방문자」와 「관리측」 두 탭으로 나뉩니다.</p>';
+    else h += scopeTabs(D);
+
     // 큰 숫자 넷
     h += '<section class="kpis" aria-label="한눈에 보기">' +
       '<div class="kpi lead"><h3>가입 계정</h3><span class="v">' + n(A.members) + '<small>개</small></span><p>일반 회원 · 관리자 ' + n(A.admins) + '개 별도<br>' + esc(rangeName()) + ' 새 가입 ' + n(A.new_range) + '</p><a class="more" href="#acct">계정 자세히 ↓</a></div>' +
-      '<div class="kpi"><h3>방문자</h3><span class="v">' + n(T.visitors) + '</span><p>' + delta(T.visitors, P.visitors) + ' ' + esc(prevName()) + ' 대비<br>처음 온 브라우저 ' + n(T.new_visitors) + '</p></div>' +
-      '<div class="kpi"><h3>방문</h3><span class="v">' + n(T.visits) + '</span><p>' + delta(T.visits, P.visits) + ' ' + esc(prevName()) + ' 대비<br>방문당 ' + (T.visits ? (T.pv / T.visits).toFixed(1) : '0') + '쪽</p></div>' +
-      '<div class="kpi"><h3>페이지 보기</h3><span class="v">' + n(T.pv) + '</span><p>' + delta(T.pv, P.pv) + ' ' + esc(prevName()) + ' 대비<br>오늘 ' + n(T.today_pv) + '쪽 · 방문자 ' + n(T.today_visitors) + '</p></div>' +
+      '<div class="kpi"><h3>' + esc(TX.visitors) + '</h3><span class="v">' + n(T.visitors) + '</span><p>' + delta(T.visitors, P.visitors) + ' ' + esc(prevName()) + ' 대비<br>' + esc(TX.newv) + ' ' + n(T.new_visitors) + '</p></div>' +
+      '<div class="kpi"><h3>' + esc(TX.visits) + '</h3><span class="v">' + n(T.visits) + '</span><p>' + delta(T.visits, P.visits) + ' ' + esc(prevName()) + ' 대비<br>' + esc(TX.perVisit) + ' ' + (T.visits ? (T.pv / T.visits).toFixed(1) : '0') + '쪽</p></div>' +
+      '<div class="kpi"><h3>페이지 보기</h3><span class="v">' + n(T.pv) + '</span><p>' + delta(T.pv, P.pv) + ' ' + esc(prevName()) + ' 대비<br>오늘 ' + n(T.today_pv) + '쪽 · ' + esc(TX.todayN) + ' ' + n(T.today_visitors) + '</p></div>' +
       '</section>';
 
     h += '<div class="grid">';
 
     // 로그인 vs 비로그인
-    h += '<section class="card" id="auth"><h2>로그인 · 비로그인 이용 <small>' + esc(rangeName()) + '</small></h2>' +
-      '<p class="lede">로그인은 선택 기능이라, 대부분은 로그인 없이 이용합니다. 관리자 방문은 세지 않습니다.</p>' +
-      split('방문자', [['비로그인', anonVis, 'c1'], ['로그인', T.auth_visitors, 'c2']]) +
-      split('방문', [['비로그인', anonVisit, 'c1'], ['로그인', T.auth_visits, 'c2']]) +
-      split('페이지 보기', [['비로그인', anonPv, 'c1'], ['로그인', T.auth_pv, 'c2']]) + '</section>';
+    h += '<section class="card" id="auth"><h2>' + esc(TX.authTitle) + ' <small>' + esc(rangeName()) + '</small></h2>' +
+      '<p class="lede">' + esc(TX.authLede) + '</p>' +
+      split(TX.visitors, [[TX.anon, anonVis, 'c1'], [TX.on, T.auth_visitors, 'c2']]) +
+      split(TX.visits, [[TX.anon, anonVisit, 'c1'], [TX.on, T.auth_visits, 'c2']]) +
+      split('페이지 보기', [[TX.anon, anonPv, 'c1'], [TX.on, T.auth_pv, 'c2']]) + '</section>';
 
     // 계정
     var sg = A.signups || [], sgTot = 0; sg.forEach(function (x) { sgTot += x.n; });
@@ -263,14 +295,17 @@
 
     // 기기
     var dv = T.devices || {};
-    h += '<section class="card" id="dev"><h2>기기 <small>방문자 기준</small></h2>' +
-      split('방문자', [[DEV.m, dv.m || 0, 'c1'], [DEV.d, dv.d || 0, 'c2'], [DEV.t, dv.t || 0, 'c3']]) +
+    h += '<section class="card" id="dev"><h2>기기 <small>' + esc(TX.visitors) + ' 기준</small></h2>' +
+      split(TX.visitors, [[DEV.m, dv.m || 0, 'c1'], [DEV.d, dv.d || 0, 'c2'], [DEV.t, dv.t || 0, 'c3']]) +
       '<p class="lede" style="margin:10px 0 0">기기 종류는 브라우저가 알려 주는 종류(휴대폰·태블릿·PC)만 봅니다. 기종·화면 크기는 남기지 않습니다.</p></section>';
 
-    // 이 기기 제외
-    h += '<section class="card"><h2>통계에서 빼기</h2><p class="lede">관리자로 로그인한 동안의 방문은 저절로 빠집니다. 로그아웃한 채로 둘러볼 때도 빼려면 아래를 켜 두세요(이 기기·이 브라우저에만 적용).</p>' +
-      '<label class="opt"><input type="checkbox" id="offChk"' + (S().statsOff() ? ' checked' : '') + '><span><b>이 기기의 방문은 통계에 넣지 않기</b><br>설정은 이 브라우저에만 저장되고 다른 기기와 연동하지 않습니다.</span></label>' +
-      '<p class="lede" style="margin:12px 0 0">' + (T.since ? '방문 기록은 ' + new Date(T.since).toLocaleDateString('ko-KR') + '부터 쌓였습니다. ' : '아직 쌓인 방문 기록이 없습니다. ') + '400일이 지난 기록은 이 화면을 열 때 지웁니다.</p></section>';
+    // 이 기기 관리측 표시
+    var sinceTxt = T.since ? ((st.legacy ? '방문 기록은 ' : '이 갈래의 기록은 ') + new Date(T.since).toLocaleDateString('ko-KR') + '부터 쌓였습니다. ')
+      : (st.legacy ? '아직 쌓인 방문 기록이 없습니다. ' : '이 갈래에 쌓인 기록이 아직 없습니다. ');
+    h += '<section class="card"><h2>이 기기를 관리측으로</h2><p class="lede">관리자로 로그인한 동안의 방문은 저절로 「관리측」으로 갑니다. 로그아웃한 채로 둘러볼 때도 관리측으로 남기려면 아래를 켜 두세요(이 기기·이 브라우저에만 적용). 피클·클로드가 여는 자동화 브라우저는 설정 없이도 관리측으로 잡힙니다.</p>' +
+      '<label class="opt"><input type="checkbox" id="offChk"' + (S().statsOff() ? ' checked' : '') + '><span><b>이 기기의 방문은 「관리측」으로 따로 남기기</b><br>설정은 이 브라우저에만 저장되고 다른 기기와 연동하지 않습니다.</span></label>' +
+      '<p class="lede" style="margin:12px 0 0">로그인하지 않고 쓰는 기기(아이패드 등)는 주소 끝에 <code>?team=1</code>을 붙여 한 번 열면 같은 설정이 됩니다.</p>' +
+      '<p class="lede" style="margin:8px 0 0">' + sinceTxt + '400일이 지난 기록은 이 화면을 열 때 지웁니다.</p></section>';
 
     h += '</div>';
     main.innerHTML = h;
@@ -283,7 +318,13 @@
     var b = e.target.closest('button'); if (!b) return;
     if (b.hasAttribute('data-days')) {
       var v = +b.getAttribute('data-days'); if (v === st.days || st.busy) return;
-      st.days = v; history.replaceState(null, '', '#d=' + v); load();
+      st.days = v; history.replaceState(null, '', '#d=' + v + (st.scope === 'admin' ? '&s=admin' : '')); load();
+    } else if (b.hasAttribute('data-scope')) {
+      var sp = b.getAttribute('data-scope'); if (sp === st.scope) return;
+      st.scope = sp; st.pgPage = 1; st.pgHost = 1; st.pgStay = 1;
+      history.replaceState(null, '', '#d=' + st.days + (st.scope === 'admin' ? '&s=admin' : ''));
+      render();
+      var sc0 = $('#scopeTop'); if (sc0) sc0.scrollIntoView({ block: 'start' });
     } else if (b.id === 'reBtn') load();
     else if (b.hasAttribute('data-pg')) {
       var k = b.getAttribute('data-pg'), card = b.closest('.card');
@@ -293,6 +334,9 @@
     }
   });
   main.addEventListener('change', function (e) {
-    if (e.target.id === 'offChk') { S().statsOff(e.target.checked); toast(e.target.checked ? '이 기기의 방문은 이제 세지 않습니다.' : '이 기기의 방문도 다시 셉니다.'); }
+    if (e.target.id === 'offChk') {
+      S().statsOff(e.target.checked);
+      toast(e.target.checked ? '이 기기의 방문은 이제 「관리측」으로 남습니다.' : '이 기기의 방문은 다시 「방문자」로 남습니다.');
+    }
   });
 })();
