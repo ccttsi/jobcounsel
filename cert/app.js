@@ -37,11 +37,11 @@
     out: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
     search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
     x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
-    filt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>'
+    filt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
+    plan: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3.5v3M16 3.5v3"/></svg>'
   };
   var META, ITEMS = [], BYID = {}, FAM = {};
   var st = blank(), view = '', listY = 0, lastList = '';
-
   function blank() { return { c: '', g: '', f: '', mo: '', m: '', a: '', has: '', q: '', p: 1 }; }
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function has(v) {
@@ -124,6 +124,18 @@
     var h = decodeURIComponent(location.hash.replace(/^#/, ''));
     if (/^K[TPNA]-\d{4}$/.test(h) && BYID[h]) return { v: 'item', id: h };
     if (h === 'about') return { v: 'about' };
+    if (/^plan(\?|$)/.test(h)) {
+      var ps = { c: '', g: '', r: '', d: '' }, qp = h.indexOf('?');
+      if (qp > -1) h.slice(qp + 1).split('&').forEach(function (kv) {
+        var i = kv.indexOf('='); if (i < 0) return;
+        var k = kv.slice(0, i), v = kv.slice(i + 1);
+        try { v = decodeURIComponent(v.replace(/\+/g, ' ')); } catch (e) {}
+        if (k in ps) ps[k] = v;
+      });
+      if (ps.c && !BYID[ps.c]) ps.c = '';
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(ps.d)) ps.d = '';
+      return { v: 'plan', s: ps };
+    }
     var s = blank(), q = h.indexOf('?');
     if (/^list/.test(h) && q > -1) {
       h.slice(q + 1).split('&').forEach(function (kv) {
@@ -228,6 +240,7 @@
   function tabs(cur) {
     var h = '<a href="#list" ' + (cur === 'all' ? 'aria-current="page"' : '') + '>전체 <small>' + fmt(ITEMS.length) + '</small></a>';
     CATS.forEach(function (c) { h += '<a class="k-' + c.k + '" href="#list?c=' + c.k + '" ' + (cur === c.k ? 'aria-current="page"' : '') + '><i aria-hidden="true"></i>' + c.short + ' <small>' + fmt(c.n) + '</small></a>'; });
+    h += '<a class="pl-tab" href="#plan" ' + (cur === 'plan' ? 'aria-current="page"' : '') + '><i aria-hidden="true"></i>Ready for 2027</a>';
     h += '<a class="sm" href="#about" ' + (cur === 'about' ? 'aria-current="page"' : '') + '>출처와 한계</a>';
     d.getElementById('tabsIn').innerHTML = h;
     var a = d.querySelector('#tabsIn [aria-current]'); if (a && a.scrollIntoView && a.offsetLeft) { var box = d.getElementById('tabsIn'); box.scrollLeft = Math.max(0, a.offsetLeft - 16); }
@@ -482,7 +495,12 @@
     if (S.length && (S.length > 1 || S[0].k)) tiles.push(['exam', '단계', '<b class="flow">' + S.slice(0, 3).map(function (s) { return esc(stageName(s.k).split(' · ')[0]); }).join('<i>›</i>') + (S.length > 3 ? '<i>›</i>…' : '') + '</b>']);
     if (nSubj) tiles.push(['exam', '과목', '<b>' + nSubj + '<small>개</small></b>']);
     if (g0) tiles.push(['exam', '합격선', '<b>' + (g0.avg != null ? g0.avg : g0.per) + '<small>점↑</small></b>' + gaugeHtml(g0)]);
-    var glance = tiles.length ? '<div class="glance">' + tiles.map(function (t) { return '<button type="button" class="tile" data-go="' + t[0] + '"><span>' + t[1] + '</span>' + t[2] + '</button>'; }).join('') + '</div>' : '';
+    var pl0 = planEntry(x.id);
+    if (pl0 && pl0.rounds && pl0.rounds.length) tiles.push(['#plan?c=' + x.id, '2027 회차 · 역산', '<b>' + pl0.rounds.length + '<small>회</small></b>']);
+    var glance = tiles.length ? '<div class="glance">' + tiles.map(function (t) {
+      return t[0].charAt(0) === '#' ? '<a class="tile" href="' + t[0] + '"><span>' + t[1] + '</span>' + t[2] + '</a>'
+        : '<button type="button" class="tile" data-go="' + t[0] + '"><span>' + t[1] + '</span>' + t[2] + '</button>';
+    }).join('') + '</div>' : '';
     /* 패널: 시험 */
     var P = {}, T = [];
     if (S.length) {
@@ -513,7 +531,7 @@
           }).join('') + '</div>';
       } else miss.push('시행 월');
       P.sched = (has(sp.frequency) ? '<p class="freq"><b>' + esc(sp.frequency) + '</b>' + (x._c === 'KT' && x._gi > -1 ? '<span>' + esc(x.grade_or_field) + ' 등급 표준 일정</span>' : '<span>최근 공식 일정 기준</span>') + '</p>' : '') + cal +
-        (has(sp.note) ? '<details class="more"><summary>이 일정의 기준</summary><p class="note">' + esc(sp.note) + '</p></details>' : '');
+        (has(sp.note) ? '<details class="more"><summary>이 일정의 기준</summary><p class="note">' + esc(sp.note) + '</p></details>' : '') + planLink(x);
       T.push(['sched', '일정']);
     } else miss.push('시행 횟수·시기');
     /* 패널: 소개 — 진출은 그림 칸, 긴 글은 세 줄 */
@@ -608,6 +626,372 @@
 
   var SRCLAB = { primary: '기본 자료', listing: '종목 목록', ministry: '주무부처', schedule: '일정', license: '이용 조건', subjects: '과목', exam_method: '시험방식', pass_criteria: '합격기준', duty: '직무', exam_rule: '시험 규정', frequency: '시행 횟수' };
 
+  /* ---------- Ready for 2027 — 2027년 정기검정 역산 ---------- */
+  var SRC_URL = 'https://www.moel.go.kr/news/notice/noticeView.do?bbs_seq=20261100752';
+  var PLAN = null, PLAN_FAIL = false;
+  var pl = { c: '', g: '', r: '', d: '' };
+  var DOW = '일월화수목금토';
+  var GNAMES = ['기술사', '기능장', '기사', '산업기사', '기능사'];
+
+  function ymd(n) { return n.getFullYear() + '-' + ('0' + (n.getMonth() + 1)).slice(-2) + '-' + ('0' + n.getDate()).slice(-2); }
+  function isoToday() { return ymd(new Date()); }
+  function dt(s) { var p = String(s).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function md(s) { var t = dt(s); return (t.getMonth() + 1) + '.' + t.getDate() + '.'; }
+  function mdw(s) { var t = dt(s); return (t.getMonth() + 1) + '.' + t.getDate() + '.(' + DOW.charAt(t.getDay()) + ')'; }
+  function span(a, b) { return a === b ? mdw(a) : mdw(a) + '~' + md(b); }
+  function dd(a, b) { return Math.round((dt(b) - dt(a)) / 864e5); }
+  function addD(s, n) { var t = dt(s); t.setDate(t.getDate() + n); return ymd(t); }
+  function dayLbl(n) { return n === 0 ? 'D-DAY' : n > 0 ? 'D-' + n : '끝남'; }
+  function dayCell(n, past) { return past ? '지남' : n === 0 ? 'D-DAY' : n > 0 ? 'D-' + n : '지남'; }
+
+  function planLink(x) {
+    if (!PLAN) return '';
+    var e = planEntry(x.id);
+    if (!e || !e.rounds || !e.rounds.length) return '';
+    var names = e.rounds.map(function (r) { return r.round; }).join(' · ');
+    return '<a class="pl-go" href="#plan?c=' + x.id + '">' + IC.plan + '<span>Ready for 2027 · ' + esc(names) + ' 일정으로 역산</span></a>';
+  }
+  function planEntry(id) {
+    if (!PLAN || !PLAN.certs) return null;
+    var v = PLAN.certs[id];
+    if (!v) return { status: 'absent' };
+    if (typeof v === 'string') return { rounds: (PLAN.roundSets || {})[v] || [] };
+    if (v.set) return { rounds: (PLAN.roundSets || {})[v.set] || [], noWritten: !!v.noWritten };
+    return { status: v.status };
+  }
+  function gradeSet(g) {
+    if (!PLAN || !PLAN.grades) return null;
+    var G = PLAN.grades[g === '산업기사' ? '기사' : g];
+    if (!G) return null;
+    return { name: G.name, rounds: (PLAN.roundSets || {})[G.set] || [] };
+  }
+  function targetRounds() {
+    if (pl.c && BYID[pl.c]) { var e = planEntry(pl.c); return e && e.rounds ? e.rounds : null; }
+    if (pl.g) { var gs = gradeSet(pl.g); return gs ? gs.rounds : null; }
+    return null;
+  }
+  function nextRound(rs) {
+    var t = pl.d, f = null;
+    rs.forEach(function (r) {
+      if (f) return;
+      var last = r.stages[r.stages.length - 1];
+      if ((last.exam_end || last.exam_start) >= t) f = r;
+    });
+    return f || rs[rs.length - 1];
+  }
+  function resolveRound() {
+    var rs = targetRounds(); if (!rs || !rs.length) return null;
+    var cur = null;
+    rs.forEach(function (r) { if (r.round === pl.r) cur = r; });
+    if (!cur) { cur = nextRound(rs); pl.r = cur.round; }
+    return cur;
+  }
+  function planHash() {
+    var o = [];
+    if (pl.c) o.push('c=' + pl.c); else if (pl.g) o.push('g=' + encodeURIComponent(pl.g));
+    if (pl.r) o.push('r=' + encodeURIComponent(pl.r));
+    if (pl.d && pl.d !== isoToday()) o.push('d=' + pl.d);
+    return '#plan' + (o.length ? '?' + o.join('&') : '');
+  }
+  function planUrl() { try { history.replaceState(null, '', planHash()); } catch (e) {} }
+
+  function planShell() {
+    return '<div class="pl">' +
+      '<div class="pl-top"><h1>Ready for 2027</h1>' +
+      '<p>2027년 국가기술자격 정기검정 일정에서 거꾸로 계산합니다. 원서접수까지 남은 날, 시험까지 준비할 주수, 국취 훈련을 끼워 넣을 시점까지 한 화면에 모읍니다.</p></div>' +
+      '<p class="pl-src">출처 · 고용노동부 공고 제2026-518호(2026-11-23) <a href="' + SRC_URL + '" target="_blank" rel="noopener noreferrer">원문 보기</a></p>' +
+      '<div class="pl-grid"><div class="pl-in">' +
+        '<section class="pl-card"><h2 class="pl-k">응시할 시험</h2><div class="pl-gr" id="plGrades"></div>' +
+          '<div class="pl-sb">' + IC.search + '<input id="plQ" type="search" autocomplete="off" placeholder="종목 이름으로 찾기 (정보처리, 직업상담)" aria-label="종목 찾기"></div>' +
+          '<div id="plList"></div>' +
+          '<div class="pl-date"><input id="plD" type="date" aria-label="기준일"><button type="button" id="plNow">오늘</button></div>' +
+          '<div id="plRounds" hidden></div>' +
+        '</section>' +
+      '</div><div class="pl-out" id="plOut"></div></div></div>';
+  }
+
+  function bindPlan() {
+    var q = d.getElementById('plQ'), di = d.getElementById('plD');
+    q.value = '';
+    di.value = pl.d;
+    q.addEventListener('input', paintList);
+    di.addEventListener('change', function () { pl.d = di.value || isoToday(); planUrl(); paintRounds(); paintOut(); });
+    d.getElementById('plNow').addEventListener('click', function () { pl.d = isoToday(); di.value = pl.d; planUrl(); paintRounds(); paintOut(); });
+    main.addEventListener('click', onPlanClick);
+  }
+  function onPlanClick(e) {
+    if (view !== 'plan') return;
+    var g = e.target.closest('#plGrades button');
+    if (g) {
+      var gv = g.getAttribute('data-g');
+      if (pl.g === gv && !pl.c) pl.g = ''; else { pl.g = gv; pl.c = ''; }
+      pl.r = ''; planUrl(); paintPlan(); return;
+    }
+    var c = e.target.closest('#plList button');
+    if (c) {
+      var id = c.getAttribute('data-id');
+      pl.c = (pl.c === id ? '' : id); pl.r = '';
+      if (pl.c && BYID[id]) pl.g = BYID[id].grade_or_field;
+      planUrl(); paintPlan(); return;
+    }
+    var r = e.target.closest('#plRounds button');
+    if (r) { pl.r = r.getAttribute('data-r'); planUrl(); paintRounds(); paintOut(); return; }
+    var jump = e.target.closest('[data-plan-g]');
+    if (jump) { pl.g = jump.getAttribute('data-plan-g'); pl.r = jump.getAttribute('data-plan-r') || ''; pl.c = ''; planUrl(); paintPlan(); }
+  }
+
+  function paintPlan() { paintGrades(); paintList(); paintRounds(); paintOut(); }
+
+  function paintGrades() {
+    var box = d.getElementById('plGrades'); if (!box) return;
+    var h = '';
+    GNAMES.forEach(function (g) { h += '<button type="button" data-g="' + g + '" aria-pressed="' + (pl.g === g) + '">' + g + '</button>'; });
+    box.innerHTML = h;
+  }
+
+  function roundsBadge(e) {
+    if (!e) return ['자료 없음', 'off'];
+    if (e.status) return [{ not_run: '미시행', abolished: '폐지', always: '상시', absent: '확인 안 됨' }[e.status] || '—', 'off'];
+    return [e.rounds.length + '회', ''];
+  }
+
+  function paintList() {
+    var box = d.getElementById('plList'); if (!box) return;
+    var q = sq(d.getElementById('plQ').value || ''), rows = [], total = 0;
+    if (pl.c && !q) { box.innerHTML = ''; return; }
+    if (!q && !pl.g) {
+      box.innerHTML = '<p class="pl-empty">등급을 고르거나 종목 이름을 적으면 그 종목의 2027년 회차가 나옵니다.</p>';
+      return;
+    }
+    ITEMS.forEach(function (x) {
+      if (x._c !== 'KT') return;
+      if (pl.g && x.grade_or_field !== pl.g) return;
+      if (q && sq(x.name).indexOf(q) < 0) return;
+      total++;
+      if (rows.length < 24) rows.push(x);
+    });
+    if (!total) {
+      box.innerHTML = '<p class="pl-empty">맞는 국가기술자격 종목이 없습니다. 「정보처리」처럼 이름 일부로 찾아보세요.</p>';
+      return;
+    }
+    var h = '<div class="pl-list">';
+    rows.forEach(function (x) {
+      var b = roundsBadge(planEntry(x.id));
+      h += '<button type="button" data-id="' + x.id + '" aria-pressed="' + (pl.c === x.id) + '"><span class="n">' + esc(x.name) + '</span>' +
+        '<span class="g">' + esc(x.grade_or_field) + '</span><span class="s' + (b[1] ? ' ' + b[1] : '') + '">' + esc(b[0]) + '</span></button>';
+    });
+    h += '</div>';
+    if (total > rows.length) h += '<p class="pl-empty">' + fmt(total) + '종목 가운데 ' + rows.length + '개만 보입니다. 이름을 더 적어 좁히세요.</p>';
+    box.innerHTML = h;
+  }
+
+  function paintRounds() {
+    var box = d.getElementById('plRounds'); if (!box) return;
+    var rs = targetRounds();
+    if (!pl.c || !rs || rs.length < 2) { box.hidden = true; box.innerHTML = ''; return; }
+    var cur = resolveRound();
+    box.hidden = false;
+    box.innerHTML = '<h2 class="pl-k">회차<small>' + rs.length + '회</small></h2><div class="pl-r">' + rs.map(function (r) {
+      return '<button type="button" data-r="' + esc(r.round) + '" aria-pressed="' + (cur && cur.round === r.round) + '">' + esc(r.round) + '</button>';
+    }).join('') + '</div>';
+  }
+
+  function paintOut() {
+    var out = d.getElementById('plOut'); if (!out) return;
+    if (PLAN_FAIL) { out.innerHTML = '<p class="pl-hold">2027년 일정 자료를 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.</p>'; return; }
+    if (!PLAN) { out.innerHTML = '<p class="pl-hold">2027년 일정을 불러오는 중입니다…</p>'; return; }
+    if (pl.c && !BYID[pl.c]) pl.c = '';
+    if (pl.c) { out.innerHTML = certView(BYID[pl.c]); return; }
+    if (pl.g) { out.innerHTML = gradeView(pl.g); return; }
+    out.innerHTML = idleView();
+  }
+
+  function idleView() {
+    var t = pl.d, best = null;
+    Object.keys(PLAN.grades).forEach(function (k) {
+      var G = PLAN.grades[k];
+      (PLAN.roundSets[G.set] || []).forEach(function (r) {
+        r.stages.forEach(function (s) {
+          if (s.reg_start >= t && (!best || s.reg_start < best.date)) best = { date: s.reg_start, g: k, r: r.round, stage: s.kind };
+        });
+      });
+    });
+    var h = '';
+    if (best) {
+      h += '<section class="pl-board"><p class="pl-eye"><b>NEXT</b> · 다음 원서접수</p>' +
+        '<p class="pl-nm">' + esc(best.g) + ' ' + esc(best.r) + ' <span>' + esc(best.stage) + ' 접수</span></p>' +
+        '<p class="pl-dday"><b>' + dayLbl(dd(t, best.date)) + '</b><em>' + mdw(best.date) + ' 10:00<i>에 열립니다</i></em></p>' +
+        '<p class="pl-sub">종목을 고르면 그 종목이 실제로 보는 회차로 계산합니다.</p><span class="pl-seal">2027<br>PLAN</span></section>' +
+        '<p><button type="button" class="go" data-plan-g="' + esc(best.g) + '" data-plan-r="' + esc(best.r) + '">' + esc(best.g) + ' ' + esc(best.r) + ' 일정 보기</button></p>';
+    }
+    h = '<div class="pl-wide">' + h;
+    h += '<section class="pl-card"><h2 class="pl-k">쓰는 법</h2><ul class="pl-ju">' +
+      '<li><b>종목</b><span>종목을 누르면 그 종목이 실제로 보는 회차로 계산합니다. 예를 들어 광학기사는 제2회, 가스기술사는 제141회만 봅니다.</span></li>' +
+      '<li><b>등급</b><span>등급만 고르면 2027년 그 등급의 회차 전체를 표로 보여 줍니다.</span></li>' +
+      '<li><b>기준일</b><span>기준일을 바꾸면 남은 날과 준비 주수가 다시 계산됩니다.</span></li></ul></section>' + notesCard() + '</div>';
+    return h;
+  }
+
+  function gradeView(g) {
+    var gs = gradeSet(g);
+    if (!gs) return '<p class="pl-hold">이 등급의 2027년 일정이 없습니다.</p>';
+    var second = g === '기술사' ? '면접' : '실기';
+    var rows = gs.rounds.map(function (r) {
+      var f = null, s = null;
+      r.stages.forEach(function (x) { if (x.kind === '필기') f = x; else if (!s) s = x; });
+      return '<tr><td>' + esc(r.round) + '</td>' +
+        '<td>' + (f ? span(f.reg_start, f.reg_end) + '<br><small>' + span(f.exam_start, f.exam_end) + '</small>' : '—') + '</td>' +
+        '<td>' + (s ? span(s.reg_start, s.reg_end) + '<br><small>' + span(s.exam_start, s.exam_end) + '</small>' : '—') + '</td></tr>';
+    }).join('');
+    return '<div class="pl-wide"><section class="pl-card"><h2 class="pl-k">' + esc(gs.name) + ' · 2027년 정기검정<small>' + gs.rounds.length + '회</small></h2>' +
+      '<table class="pl-tb"><thead><tr><th>회차</th><th>필기 접수 / 시험</th><th>' + second + ' 접수 / 시험</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<p class="pl-cav">등급 일정은 종목 공통 틀입니다. 종목마다 실제로 보는 회차가 다르니 위에서 종목을 골라 확인하세요.</p></section>' + notesCard() + '</div>';
+  }
+
+  function statusCard(x, status) {
+    var notes = (PLAN && PLAN.statusNotes) || {};
+    var label = { not_run: '미시행', abolished: '폐지', always: '상시검정', absent: '계획에서 확인 안 됨' }[status] || '자료 없음';
+    var h = '<section class="pl-board"><p class="pl-eye"><b>READY 2027</b> · ' + esc(label) + '</p>' +
+      '<p class="pl-nm">' + esc(x.name) + ' <span>' + esc(x.grade_or_field) + '</span></p>' +
+      '<p class="pl-sub">' + esc(notes[status] || '') + '</p></section>';
+    if (status === 'always' || status === 'not_run' || status === 'absent') {
+      h += '<p><a class="go line" href="' + esc((PLAN.source && PLAN.source.qnet_url) || 'https://www.q-net.or.kr') + '" target="_blank" rel="noopener noreferrer">' + IC.out + '<span>Q-Net에서 확인</span></a></p>';
+    }
+    h += '<p class="pl-cav"><a href="#' + esc(x.id) + '">' + esc(x.name) + ' 상세로 돌아가기</a></p>';
+    return '<div class="pl-wide">' + h + notesCard() + '</div>';
+  }
+
+  function stageState(s, t) {
+    if (t < s.reg_start) return { k: 'before', d: dd(t, s.reg_start) };
+    if (t <= s.reg_end) return { k: 'open', d: dd(t, s.reg_end) };
+    if (t <= (s.exam_end || s.exam_start)) return { k: 'closed', d: dd(t, (s.exam_end || s.exam_start)) };
+    return { k: 'past', d: dd((s.exam_end || s.exam_start), t) };
+  }
+
+  function certView(x) {
+    var e = planEntry(x.id);
+    if (e && e.status) return statusCard(x, e.status);
+    var cur = resolveRound();
+    if (!cur) return '<p class="pl-hold">이 종목의 2027년 회차를 찾지 못했습니다.</p>';
+    var t = pl.d, stages = cur.stages, tgt = null, h = '';
+    if (!e.noWritten) stages.forEach(function (s) { if (!tgt && (s.exam_end || s.exam_start) >= t) tgt = s; });
+    var dday, lbl;
+    if (tgt) {
+      var ts = stageState(tgt, t);
+      if (ts.k === 'before') { dday = dayLbl(ts.d); lbl = tgt.kind + ' 원서접수 시작까지'; }
+      else if (ts.k === 'open') { dday = dayLbl(ts.d); lbl = tgt.kind + ' 원서접수 마감까지'; }
+      else { dday = '마감'; lbl = tgt.kind + ' 시험까지 ' + dd(t, tgt.exam_start) + '일'; }
+    } else { dday = '끝남'; lbl = '2027년 이 회차는 지났습니다'; }
+    h += '<section class="pl-board"><p class="pl-eye"><b>READY 2027</b> · ' + esc(cur.round) + '</p>' +
+      '<p class="pl-nm">' + esc(x.name) + ' <span>' + esc(x.grade_or_field) + '</span></p>' +
+      '<p class="pl-dday"><b>' + esc(dday) + '</b><em>' + esc(lbl) + '</em></p>' +
+      '<p class="pl-sub">' + (tgt ? '접수 ' + span(tgt.reg_start, tgt.reg_end) + (tgt.reg_note ? ' · ' + esc(tgt.reg_note) : '') + ' · 첫날 10:00부터' : '다른 회차를 고르면 다시 계산합니다.') + '</p>' +
+      '<span class="pl-seal">2027<br>PLAN</span></section>';
+
+    var rows = '';
+    stages.forEach(function (s) {
+      var a = stageState(s, t), on = tgt === s;
+      rows += '<li class="' + (on ? 'on' : '') + (a.k === 'past' ? ' past' : '') + '"><b>' + esc(s.kind) + ' 접수</b><span>' +
+        (s.reg_alts ? s.reg_alts.map(function (r) { return span(r[0], r[1]); }).join(' · ') : span(s.reg_start, s.reg_end)) +
+        '</span><em>' + dayCell(a.d, a.k === 'past') + '</em></li>';
+      var ex = stageState({ reg_start: s.exam_start, reg_end: s.exam_start, exam_start: s.exam_start, exam_end: s.exam_end }, t);
+      rows += '<li class="' + (on ? 'on' : '') + (ex.k === 'past' ? ' past' : '') + '"><b>' + esc(s.kind) + ' 시험</b><span>' +
+        span(s.exam_start, s.exam_end) + (s.exam_note && s.exam_note !== 'CBT' ? ' · ' + esc(s.exam_note) : '') + '</span><em>' + dayCell(ex.d, ex.k === 'past') + '</em></li>';
+      if (s.pass) {
+        var p2 = s.pass2 ? '1차 ' + mdw(s.pass) + ' · 2차 ' + mdw(s.pass2) : mdw(s.pass);
+        var lastP = s.pass2 || s.pass;
+        rows += '<li class="' + (t > lastP ? ' past' : '') + '"><b>' + (s.kind === '필기' ? '필기 발표' : '최종 발표') + '</b><span>' + p2 + '</span><em>' + dayCell(dd(t, s.pass), t > lastP) + '</em></li>';
+      }
+    });
+    if (cur.docs) {
+      rows += '<li class="' + (t > cur.docs.to ? ' past' : '') + '"><b>서류 제출</b><span>' + span(cur.docs['from'], cur.docs.to) + '</span><em>' + dayCell(dd(t, cur.docs['from']), t > cur.docs.to) + '</em></li>';
+    }
+    h += '<section class="pl-card"><h2 class="pl-k">2027년 일정<small>' + esc(cur.round) + '</small></h2><ol class="pl-tl">' + rows + '</ol></section>';
+
+    var right = (tgt ? phaseCard(tgt, t, x, e) : '') + juCard(tgt, t);
+    return '<div class="pl-col">' + h + '</div><div class="pl-col">' + right + '</div><div class="pl-wide">' + notesCard() + '</div>';
+  }
+
+  function phaseCard(tgt, t, x, e) {
+    var days = dd(t, tgt.exam_start);
+    if (days < 7) return '';
+    var parts;
+    if (days >= 42) parts = [['기초', 0.45, '과목 훑기 · 기본서 1회독'], ['기출', 0.35, '기출 5개년 2회독 · 오답 정리'], ['마무리', 0.2, '모의고사 · 취약 과목']];
+    else if (days >= 21) parts = [['기출', 0.5, '기출부터 · 유형 익히기'], ['마무리', 0.5, '모의고사 · 오답 정리']];
+    else parts = [['마무리', 1, '기출 한 회차 · 시험 형식']];
+    var last = addD(tgt.exam_start, -1), s0 = t, acc = 0, h = '<ol class="pl-ph">';
+    parts.forEach(function (p, i) {
+      var len = i === parts.length - 1 ? dd(s0, last) + 1 : Math.max(1, Math.round(days * p[1]));
+      var a = s0, b = addD(a, len - 1);
+      if (b > last) b = last;
+      h += '<li><b>' + p[0] + '</b><span>' + md(a) + '~' + md(b) + '</span><em>' + Math.round(len / 7) + '주</em><p>' + p[2] + '</p></li>';
+      s0 = addD(b, 1);
+    });
+    h += '</ol>';
+    return '<section class="pl-card"><h2 class="pl-k">준비 역산<small>' + tgt.kind + '까지 ' + Math.floor(days / 7) + '주</small></h2>' + h +
+      (e.noWritten ? '<p class="pl-cav">필기시험 없이 실기만 보는 종목이라 실기까지의 날수로 나눴습니다.</p>' : '') + '</section>';
+  }
+
+  function juCard(tgt, t) {
+    if (!tgt) return '';
+    var exam = tgt.exam_start, c = addD(exam, -18 * 7), m3 = addD(exam, -14 * 7), m6 = addD(exam, -27 * 7);
+    var row = function (k, date, txt) {
+      var late = date < t;
+      return '<li><b>' + k + '</b><span><i>' + mdw(date) + '</i> ' + (late ? '<span class="late">지났습니다 · </span>' : '까지 · ') + txt + '</span></li>';
+    };
+    return '<section class="pl-card"><details class="pl-fold" data-jc-still><summary><b>국취와 함께 간다면</b><span>상담 <i>' + md(c) + '</i> · 훈련 <i>' + md(m3) + '</i></span></summary>' +
+      '<ul class="pl-ju">' +
+      row('상담·IAP', c, '고용24나 고용센터에서 취업활동계획 상담') +
+      row('훈련 시작', m3, '3개월 과정이 시험 1주 전에 끝나는 날') +
+      '</ul><p class="pl-cav">6개월 과정이면 <i>' + mdw(m6) + '</i>까지. 지원 요건·훈련비는 고용24에서 확인하세요. <a href="https://www.work24.go.kr/" target="_blank" rel="noopener noreferrer">고용24</a></p></details></section>';
+  }
+
+  function notesCard() {
+    if (!PLAN) return '';
+    var S = PLAN.source || {};
+    var li = (PLAN.notes || []).concat([
+      '실기 최종합격은 현지채점 종목이 1차, 중앙채점(복합형 포함) 종목이 2차에 발표됩니다.',
+      '국가기술자격 정기검정의 필기시험은 컴퓨터기반시험(CBT)으로 치릅니다.'
+    ]);
+    return '<section class="pl-card"><details class="pl-more" data-jc-still><summary>일정을 읽는 기준 · 출처 · 다른 시행기관</summary>' +
+      '<ul class="pl-nl">' + li.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>' +
+      '<p class="pl-cav">출처 · ' + esc(S.publisher || '') + ' ' + esc(S.notice || '') + ' 「' + esc(S.title || '') + '」(' + esc(S.published || '') + ') <a href="' + esc(S.official_url || SRC_URL) + '" target="_blank" rel="noopener noreferrer">원문</a> · ' + esc(S.license || '') + '</p>' +
+      agencyList() + '</details></section>';
+  }
+
+  function agencyList() {
+    var ags = (PLAN.agencies || []);
+    if (!ags.length) return '';
+    var h = '<div class="pl-ag">';
+    ags.forEach(function (a) {
+      var lines = (a.items || []).map(function (it) {
+        var rs = (PLAN.roundSets[it.set] || []).map(function (r) {
+          var f = null, s2 = null;
+          r.stages.forEach(function (x) { if (!f) f = x; else if (!s2) s2 = x; });
+          return r.round + ' ' + (f ? md(f.reg_start) + '→' + md(f.exam_start) : '—') + (s2 ? ' / ' + md(s2.reg_start) + '→' + md(s2.exam_start) : '');
+        }).join(' · ');
+        return '<li>' + esc(it.name) + ' — ' + esc(rs) + '</li>';
+      }).join('');
+      h += '<div><b>' + esc(a.name) + '</b><p>' + esc(a.note || '') + '</p><ul>' + lines + '</ul></div>';
+    });
+    return h + '</div>';
+  }
+
+  function renderPlan(ps) {
+    view = 'plan';
+    pl = { c: ps.c || '', g: ps.g || '', r: ps.r || '', d: ps.d || '' };
+    if (!pl.d) pl.d = isoToday();
+    if (pl.c && BYID[pl.c] && !ps.g) pl.g = BYID[pl.c].grade_or_field;
+    if (pl.g && GNAMES.indexOf(pl.g) < 0) pl.g = '';
+    d.body.removeAttribute('data-home');
+    try { d.title = 'Ready for 2027 · 2027년 시험 역산 · 자격증 도감'; } catch (e) {}
+    tabs('plan');
+    main.innerHTML = planShell();
+    bindPlan();
+    paintPlan();
+    window.scrollTo(0, 0);
+  }
+
   /* ---------- 출처와 한계 ---------- */
   function renderAbout() {
     view = 'about'; d.body.removeAttribute('data-home'); tabs('about');
@@ -643,6 +1027,7 @@
     if (r.v === 'item') { renderItem(r.id); return; }
     try { d.title = '자격증 도감 · 4대 분류 자격증 위키'; } catch (e) {}
     if (r.v === 'about') { renderAbout(); return; }
+    if (r.v === 'plan') { renderPlan(r.s); return; }
     var wasList = view === 'list', from = view;
     st = r.s;
     if (!wasList) { renderList(); if (from === 'item' && listHash(st) === lastList) window.scrollTo(0, listY); else if (from) window.scrollTo(0, 0); }
@@ -650,6 +1035,10 @@
   }
 
   function load() {
+    fetch('./data/schedule-2027.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (S) {
+      PLAN = S;
+      if (view === 'plan') paintOut();
+    }).catch(function () { PLAN_FAIL = true; if (view === 'plan') paintOut(); });
     fetch('./data/certifications.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (D) {
       META = D.metadata || {}; ITEMS = D.items || [];
       ITEMS.forEach(function (x) { BYID[x.id] = x; prep(x); });
