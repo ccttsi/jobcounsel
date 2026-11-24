@@ -1664,7 +1664,7 @@ function drawSum(){
   else if(sc==='mid'){companyHref='../company/#list?c=MID';companyTxt='기업 명함첩 \u2014 중견기업 목록';}
   else if(sc==='pub'){companyHref='../company/#list?c=PUB';companyTxt='기업 명함첩 \u2014 공공기관 목록';}
   [{u:companyHref,k:'기업',t:companyTxt},{u:'../interview/',k:'면접',t:'면접 전술 덱 \u2014 재무 꼬리질문'},
-   {u:'../taxonomy/',k:'분류',t:'직무 분류 \u2014 직무 맞대기'},{u:'../portals/',k:'공시',t:'채용 사이트 안내판 \u2014 DART·알리오'}].forEach(function(x){
+   {u:'../taxonomy/',k:'분류',t:'직무 분류 \u2014 직무 맞대기'},{u:'../portals/',k:'공시',t:'고용 사이트 안내판 \u2014 DART·알리오'}].forEach(function(x){
     var a=document.createElement('a');a.className='link';a.href=x.u;
     a.appendChild(h('span','lk',x.k));a.appendChild(h('span',null,x.t));
     ln.appendChild(a);

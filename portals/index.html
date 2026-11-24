@@ -12,8 +12,8 @@ document.documentElement.setAttribute('data-theme',t);})();
 <script src="../assets/core.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf6ef" id="metaTheme">
-<meta name="description" content="내 조건에 맞는 채용 사이트를 한 화면에서 찾는 디렉토리. 공공·민간·IT·헤드헌팅·산업별·대상별 채용 사이트를 직무와 대상으로 교차해 추리고, 상담 활용 팁과 검증일을 함께 봅니다.">
-<title>채용 사이트 안내판 · 내 조건에 맞는 곳 찾기</title>
+<meta name="description" content="채용·직업훈련·자격·기업정보·고용 행정·진로 정보까지 일과 관련된 공식 사이트를 한 화면에서 찾는 안내판. 대분류와 직무·대상으로 교차해 추리고, 상담 활용 팁과 검증일을 함께 봅니다.">
+<title>고용 사이트 안내판 · 채용·훈련·기업정보·고용 행정</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -21,7 +21,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   --bg:#faf6ef;--panel:#fffdf8;--soft:#f3ede2;--line:#e9e0d2;--line-2:#d8ccb9;
   --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
   --acc:#8a3b12;--acc-soft:rgba(138,59,18,.08);--stamp:#be123c;
-  --s-pub:#1f5f8b;--s-general:#5f5a54;--s-tech:#2f6b3a;--s-expert:#6b4a8a;--s-industry:#8a5a00;--s-target:#a33a5f;--s-disclosure:#1f6b63;
+  --s-pub:#1f5f8b;--s-general:#5f5a54;--s-tech:#2f6b3a;--s-expert:#6b4a8a;--s-industry:#8a5a00;--s-target:#a33a5f;--s-disclosure:#1f6b63;--s-train:#7a4f1f;--s-service:#3d5a80;--s-info:#5b6b2f;
   --shadow:0 1px 2px rgba(70,50,25,.05),0 10px 28px -18px rgba(70,50,25,.30);
   --edge:rgba(42,37,33,.14);
   --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
@@ -31,7 +31,7 @@ document.documentElement.setAttribute('data-theme',t);})();
   --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
   --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
   --acc:#f0a57a;--acc-soft:rgba(240,165,122,.10);--stamp:#fb7185;
-  --s-pub:#7cc4f0;--s-general:#b4bac6;--s-tech:#8fd19e;--s-expert:#c4a7e7;--s-industry:#f0c070;--s-target:#f39ab8;--s-disclosure:#7fd8cc;
+  --s-pub:#7cc4f0;--s-general:#b4bac6;--s-tech:#8fd19e;--s-expert:#c4a7e7;--s-industry:#f0c070;--s-target:#f39ab8;--s-disclosure:#7fd8cc;--s-train:#e7b98a;--s-service:#9fbce6;--s-info:#c7d68f;
   --shadow:none;--edge:rgba(230,233,239,.10);color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -211,7 +211,7 @@ html[data-jc-imm] .pv-b li{animation:none}
 <div class="wrap">
   <header class="hd">
     <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
-    <a class="brand" href="./" id="brand"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 6h11l3 3-3 3H5z"/><path d="M19 13H9l-3 3 3 3h10z"/></svg>채용 사이트 <span>안내판</span></a>
+    <a class="brand" href="./" id="brand"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 6h11l3 3-3 3H5z"/><path d="M19 13H9l-3 3 3 3h10z"/></svg>고용 사이트 <span>안내판</span></a>
     <button type="button" class="rst" id="rst" aria-label="처음으로 — 진단·필터·검색을 모두 비웁니다"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>처음으로</span></button>
     <span data-jc-prefs></span>
   </header>
@@ -222,7 +222,7 @@ html[data-jc-imm] .pv-b li{animation:none}
       <span class="pv-c" id="pvL">펼치기</span>
     </button>
     <div class="pv-b" id="pvB" hidden><ul>
-      <li><b>공고를 모아 오는 곳이 아니라, 사이트로 보내는 안내판입니다.</b> 최신 공고와 조건은 각 사이트에서 확인하세요.</li>
+      <li><b>공고·자료를 모아 오는 곳이 아니라, 공식 사이트로 보내는 안내판입니다.</b> 최신 공고·훈련 과정·제도는 각 사이트에서 확인하세요.</li>
       <li><b>설명과 활용 팁은 자료실이 직접 쓴 문장입니다.</b> 공고 본문·로고·슬로건은 옮기지 않았고, 공고 수·평점처럼 바뀌는 값은 싣지 않습니다.</li>
       <li><b>모든 주소는 검증일에 실제로 접속해 확인했습니다.</b> 카드마다 검증일을 표시하고, 접속되지 않던 곳은 아래 「제외한 곳」에 사유와 함께 남겼습니다.</li>
       <li><b>사이트 이름 대신 도메인·영문 약어로 찾아도 됩니다.</b> gosi·dart·alio·cleaneye·npas 같은 낱말을 그대로 검색해 보세요.</li>
