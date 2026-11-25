@@ -132,45 +132,51 @@ let judgeUsed = 0, normNew = 0;
 /* ---------------------------------------------------------------- Groq (정규화·보조 채점) */
 const NORM_PATH = path.join(ROOT, 'assistant', 'eval', 'cache', 'norm.json');
 const NORM = fs.existsSync(NORM_PATH) ? JSON.parse(fs.readFileSync(NORM_PATH, 'utf8')) : { v: 1, items: {} };
-let groqUsed = 0, groqModel = '', groqLast = 0, groqDown = '', groqModels = [], groqTried = [];
-const GROQ_PREF = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3-32b', 'llama-3.3-70b-versatile'];
-
-async function groqPick() {
-  if (groqModel || !GROQ_KEY || OPT.dry) return groqModel;
+/* 모델 배정 — ops/model-routing.json 하나만 읽는다(2026-11-25 태화님 결정).
+   일(task)마다 모델 사슬(chain)이 따로다: 보조 채점 = Qwen 27B → 20b · 질문 다듬기 = 20b → Qwen 27B.
+   120b 는 피클 수집 전용이라 여기서 쓰지 않는다. 한 모델이 연속 429면 그 일만 다음 모델로 넘어간다. */
+const ROUTING = JSON.parse(fs.readFileSync(path.join(ROOT, 'ops', 'model-routing.json'), 'utf8'));
+let groqUsed = 0, groqDown = '', groqIds = null;
+const lastCall = {};                       // 모델마다 마지막 호출 시각 — 분당 한도는 모델마다 따로다
+const taskState = {};                      // task → { chain, i, down }
+async function groqAvailable() {
+  if (groqIds || !GROQ_KEY || OPT.dry) return groqIds;
   try {
     const r = await realFetch('https://api.groq.com/openai/v1/models', { headers: { authorization: 'Bearer ' + GROQ_KEY } });
-    if (!r.ok) { groqDown = 'models ' + r.status; return ''; }
-    const ids = new Set(((await r.json()).data || []).map((m) => m.id));
-    /* Groq 한도는 모델마다 따로다 — 한 모델이 하루 한도에 닿으면 다음 모델로 넘어간다(groqNext).
-       2026-11-25 재측정은 첫 모델이 브리핑·이머징 수집과 한도를 나눠 써 5회 만에 막혀 보조 채점이 0문이었다. */
-    groqModels = [ENV.GROQ_MODEL, ...GROQ_PREF].filter((m, i, a) => m && ids.has(m) && a.indexOf(m) === i);
-    groqModel = groqModels[0] || '';
-    if (!groqModel) groqDown = 'no-model';
+    if (!r.ok) { groqDown = 'models ' + r.status; return null; }
+    groqIds = new Set(((await r.json()).data || []).map((m) => m.id));
   } catch { groqDown = 'network'; }
-  return groqModel;
+  return groqIds;
 }
-async function groqJSON(system, user) {
+async function taskOf(task) {
+  if (taskState[task]) return taskState[task];
+  const ids = await groqAvailable();
+  const chain = ((ROUTING.tasks[task] || {}).chain || []).filter((m) => m !== 'openai/gpt-oss-120b' && ids && ids.has(m));
+  taskState[task] = { chain, i: 0, down: chain.length ? '' : 'no-model' };
+  return taskState[task];
+}
+async function groqJSON(system, user, task) {
   if (!GROQ_KEY || OPT.dry || groqDown) return null;
   if (groqUsed >= GROQ_BUDGET) { groqDown = 'budget'; return null; }
-  if (!(await groqPick())) return null;
+  const st = await taskOf(task);
+  if (!st || st.down) return null;
   for (let attempt = 0; attempt < 4; attempt++) {
     if (outOfTime()) { groqDown = 'time'; return null; }
-    const wait = groqLast + GROQ_GAP_MS - Date.now(); if (wait > 0) await sleep(wait);
-    groqLast = Date.now(); groqUsed++;
+    const model = st.chain[st.i];
+    const wait = (lastCall[model] || 0) + GROQ_GAP_MS - Date.now(); if (wait > 0) await sleep(wait);
+    lastCall[model] = Date.now(); groqUsed++;
     try {
       const r = await realFetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: { 'content-type': 'application/json', authorization: 'Bearer ' + GROQ_KEY },
-        body: JSON.stringify({ model: groqModel, temperature: 0, response_format: { type: 'json_object' },
+        body: JSON.stringify({ model, temperature: 0, response_format: { type: 'json_object' },
           messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
       });
       if (r.status === 429) {
         waited429.groq++;
         if (attempt === 3) {
-          groqTried.push(groqModel);
-          const next = groqModels.find((m) => !groqTried.includes(m));
-          if (!next) { groqDown = 'quota(429 연속, 모델 ' + groqTried.length + '개 모두)'; return null; }
-          groqModel = next; attempt = -1;          // 다음 모델로 처음부터
+          if (st.i + 1 >= st.chain.length) { st.down = 'quota(429 연속, 모델 ' + st.chain.length + '개 모두)'; return null; }
+          st.i++; attempt = -1;              // 이 일만 다음 모델로 처음부터
           continue;
         }
         await waitFor429(r, attempt); continue;
@@ -192,7 +198,7 @@ async function normalize(it) {
   if (NORM.items[key]) return NORM.items[key].q;
   if (!OPT.norm || normNew >= NORM_MAX) return '';
   normNew++;
-  const out = await groqJSON(NORM_SYS, JSON.stringify({ ctx: it.ctx, q: it.q }));
+  const out = await groqJSON(NORM_SYS, JSON.stringify({ ctx: it.ctx, q: it.q }), 'rewrite');
   if (!out || typeof out.q !== 'string' || !out.q.trim()) return '';
   NORM.items[key] = { q: out.q.trim().slice(0, 200), tags: Array.isArray(out.tags) ? out.tags.slice(0, 3) : [] };
   return NORM.items[key].q;
@@ -306,7 +312,7 @@ async function runItem(it) {
   // ⑥ 보조 채점
   if (OPT.judge && GROQ_KEY && !OPT.dry && judgeUsed < JUDGE_MAX) {
     judgeUsed++;
-    const j = await groqJSON(JUDGE_SYS, JSON.stringify({ question: asked, evidence: ev.map((e) => ({ id: e.id, title: e.title, snippet: e.snippet })), answer }));
+    const j = await groqJSON(JUDGE_SYS, JSON.stringify({ question: asked, evidence: ev.map((e) => ({ id: e.id, title: e.title, snippet: e.snippet })), answer }), 'judge');
     if (j && typeof j === 'object') {
       const pick = (k) => (Number.isFinite(Number(j[k])) ? Math.max(0, Math.min(2, Number(j[k]))) : null);
       r.judge = { conclusion_first: pick('conclusion_first'), counselor_tone: pick('counselor_tone'), grounded: pick('grounded'), concise: pick('concise') };
@@ -365,7 +371,7 @@ for (const it of items) {
 const sum = summarize(rows);
 const report = {
   schema: 'witw-aup-eval-report/1.0.0', at: started.toISOString(),
-  commit: ENV.GITHUB_SHA || '', model: GEMINI_KEY && !OPT.dry ? GEMINI_MODEL : '(없음)', groq_model: groqModel || '(없음)', groq_models_exhausted: groqTried,
+  commit: ENV.GITHUB_SHA || '', model: GEMINI_KEY && !OPT.dry ? GEMINI_MODEL : '(없음)', groq_tasks: Object.fromEntries(Object.entries(taskState).map(([k, v]) => [k, { used: v.chain[v.i] || null, chain: v.chain, stopped: v.down || null }])),
   calls: { gemini: geminiUsed, groq: groqUsed }, waited_429: waited429, minutes: Math.round((Date.now() - T0) / 6000) / 10,
   stopped: { gemini: geminiDown || null, groq: groqDown || null },
   options: OPT, summary: sum, rows,
@@ -381,7 +387,7 @@ fs.writeFileSync(out, JSON.stringify(report, null, 1) + '\n');
 const line = (k, v) => `| ${k} | ${v ?? '—'} |`;
 const md = [
   '## AUP-2 성적표', '',
-  `- 커밋 \`${(ENV.GITHUB_SHA || '').slice(0, 8) || '로컬'}\` · 답 모델 \`${report.model}\` · 보조 채점 \`${report.groq_model}\``,
+  `- 커밋 \`${(ENV.GITHUB_SHA || '').slice(0, 8) || '로컬'}\` · 답 모델 \`${report.model}\` · Groq ${Object.entries(report.groq_tasks).map(([k, v]) => k + '=' + (v.used || '없음') + (v.stopped ? '(멈춤)' : '')).join(' · ') || '(없음)'}`,
   `- 호출: Gemini ${geminiUsed} · Groq ${groqUsed} · 한도 대기(429) Gemini ${waited429.gemini}·Groq ${waited429.groq} · ${report.minutes}분` + (geminiDown || groqDown ? ` · 멈춤: ${[geminiDown && 'Gemini ' + geminiDown, groqDown && 'Groq ' + groqDown].filter(Boolean).join(', ')}` : ''),
   '', '| 항목 | 값 |', '| --- | --- |',
   line('문항', sum.items), line('검색 1순위 적중(%)', sum.retrieval_hit1), line('검색 3순위 안(%)', sum.retrieval_hit3),
