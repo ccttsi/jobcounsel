@@ -79,10 +79,11 @@ a{color:inherit}
 .hero h1{margin:0;font-size:clamp(27px,6.4vw,40px);line-height:1.15;letter-spacing:-.045em;font-weight:850;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--acc)}
 .hero .lead{margin:0;font-size:15px;line-height:1.6;color:var(--muted);max-width:46em}
+/* 세로 간격 한 기준(모든 폭) — 같은 묶음 안 10px(검색창·칩·책 단추) · 묶음 사이 12px(.hero gap) · 구역 사이 24px 안팎(.res).
+   예전에는 이 gap 이 900px 이상에만 있어서 휴대폰에서 검색창·칩·책 단추가 0px로 붙었다(태화님 IMG_7878, 2026-11-25). */
+.hero .h-l,.hero .h-r{display:grid;gap:10px}
 @media (min-width:900px){
   .hero{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);column-gap:32px;align-items:start;padding:22px 0 10px}
-  .hero .h-l{display:grid;gap:10px}
-  .hero .h-r{display:grid;gap:10px}
 }
 .qbar{display:flex;min-width:0;align-items:center;gap:6px;min-height:60px;padding:0 6px 0 14px;border:1.5px solid var(--line-2);border-radius:16px;background:var(--panel);box-shadow:var(--shadow-bar)}
 .qbar:focus-within{border-color:var(--acc)}
@@ -91,20 +92,20 @@ a{color:inherit}
 .qbar input::placeholder{font-weight:500;color:var(--dim)}
 .qbar .q-x{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
 .qbar .q-x svg{width:18px;height:18px;color:currentColor}
-.qbar .q-go{flex:none;min-height:46px;padding:0 16px;border-radius:12px;background:var(--acc);color:var(--on-acc);font-size:15.5px;font-weight:800}
+.qbar .q-go{flex:none;min-height:46px;padding:0 16px;line-height:1.05;border-radius:12px;background:var(--acc);color:var(--on-acc);font-size:15.5px;font-weight:800}
 @media (max-width:420px){.qbar .q-go{padding:0 12px;font-size:15px}}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chips button{min-height:44px;padding:0 14px;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:14.5px;font-weight:650;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.chips button{min-height:44px;padding:0 14px;line-height:1.05;border:1px solid var(--line-2);border-radius:99px;background:var(--panel);font-size:14.5px;font-weight:650;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
 .chips button::before{content:"#";font-size:13px;color:var(--acc);opacity:.75}
 .chips button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft);color:var(--acc)}
 .chips-law{margin-bottom:2px}
 .chips-law button{min-height:44px;font-size:13.5px;padding:0 12px}
-.bookBtn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 16px;border-radius:14px;background:var(--ink);color:var(--bg);font-size:15.5px;font-weight:800}
+.bookBtn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 16px;line-height:1.05;border-radius:14px;background:var(--ink);color:var(--bg);font-size:15.5px;font-weight:800}
 .bookBtn svg{width:19px;height:19px;flex:none}
 .bookBtn small{font-size:13px;font-weight:600;opacity:.7}
 
 /* 결과 한 줄 */
-.res{margin-top:14px}
+.res{margin-top:4px}
 .res-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:12px 0 8px}
 .res-h b{font-size:16px;font-weight:800;letter-spacing:-.02em}
 .res-h b i{font-style:normal;margin-left:2px;color:var(--acc)}
