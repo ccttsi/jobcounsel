@@ -18,6 +18,7 @@ DATA = os.path.join(ROOT, 'trait-flip', 'data', 'traits.json')
 BASE = os.path.join(HERE, 'base', 'traits.json')
 SRC = os.path.join(HERE, 'src')
 SEEDS = os.path.join(HERE, 'seeds.txt')
+BANS = os.path.join(HERE, 'bans.txt')
 
 AXIS_ALIAS = {
     'check': 'detail', 'estimate': 'plan', 'chunk': 'plan', 'trust': 'honest',
@@ -84,6 +85,20 @@ def parse():
     return weak, strong
 
 
+def load_bans():
+    """«같은 뜻이라 뒤집기가 아닌» 짝 — 검수에서 확인한 것만 적는다."""
+    if not os.path.exists(BANS):
+        return set()
+    out = set()
+    for line in open(BANS, encoding='utf-8'):
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        wid, sid = [x.strip() for x in line.split('|')]
+        out.add((wid, sid))
+    return out
+
+
 def load_seeds(weak, strong):
     """사람이(검수로) 정해 둔 짝 — seeds.txt 의 «단점id|장점id» 줄.
 
@@ -141,7 +156,7 @@ def make_pairs(weak, strong):
     def pick(w, k, primary_only=False):
         cands = []
         for s in strong:
-            if (w['id'], s['id']) in seen:
+            if (w['id'], s['id']) in seen or (w['id'], s['id']) in banned:
                 continue
             n = shared(w, s)
             if not n:
@@ -160,13 +175,18 @@ def make_pairs(weak, strong):
 
     by_id_w = {w['id']: w for w in weak}
     by_id_s = {s['id']: s for s in strong}
+    banned = load_bans()
+    seeded_full = set()     # 검수에서 짝 셋을 다 고른 낱말 — 네 번째 갈래를 억지로 더하지 않는다
     for wid, sid in load_seeds(weak, strong):
-        if (wid, sid) in seen:
+        if (wid, sid) in seen or (wid, sid) in banned:
             continue
         pairs.append((by_id_w[wid], by_id_s[sid]))
         seen.add((wid, sid))
         deg_s[sid] += 1
         deg_w[wid] += 1
+    for wid, deg in deg_w.items():
+        if deg >= 3:
+            seeded_full.add(wid)
 
     order = sorted(weak, key=lambda w: (sum(1 for s in strong if shared(w, s)), w['id']))
     for w in order:
@@ -179,7 +199,7 @@ def make_pairs(weak, strong):
             deg_w[w['id']] += 1
     # 네 번째 갈래는 축이 꼭 맞는 장점만 더한다(어설픈 짝을 늘리지 않는다).
     for w in order:
-        if deg_w[w['id']] >= 4:
+        if deg_w[w['id']] >= 4 or w['id'] in seeded_full:
             continue
         for s in pick(w, 4, primary_only=True):
             if deg_w[w['id']] >= 4:
@@ -190,6 +210,8 @@ def make_pairs(weak, strong):
             deg_w[w['id']] += 1
     # 장점이 3갈래에 못 미친 낱말을 메운다(같은 축 → 같은 묶음 → 빈자리 순).
     def add(w, s):
+        if (w['id'], s['id']) in banned:
+            return
         pairs.append((w, s))
         seen.add((w['id'], s['id']))
         deg_s[s['id']] += 1
@@ -331,7 +353,7 @@ def main():
     doc['nodes'] = nodes
     doc['pairs'] = old_pairs + new_pairs
     doc['groups'] = [{'id': g, 'name': GROUP_NAME[g]} for g in GROUP_ORDER if any(n['g'] == g for n in nodes.values())]
-    doc['built'] = '2026-11-24'
+    doc['built'] = '2026-11-25'
     json.dump(doc, open(DATA, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     print(f'낱말 {len(nodes)} (단점 {sum(1 for n in nodes.values() if n["side"]=="weak")} · 장점 {sum(1 for n in nodes.values() if n["side"]=="strong")})'
           f' · 전환 짝 {len(doc["pairs"])} · 카드 {len(doc["pairs"])*2}')

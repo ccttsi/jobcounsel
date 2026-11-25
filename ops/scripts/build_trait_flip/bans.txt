@@ -1,0 +1,7 @@
+# trait-flip 짝 금지 — 2026-11-25 전수 검수에서 «같은 뜻이라 뒤집기가 아니다»로 확인된 짝.
+# 형식: 단점id|장점id — build.py가 시드·규칙 어느 쪽에서도 이 짝을 만들지 않는다.
+jest|humor
+formal|courtesy
+nomemo|maintain
+jest|courtesy
+formal|humor
