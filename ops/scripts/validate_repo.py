@@ -1771,6 +1771,9 @@ def run_guard_checks():
     clean = scope_clean_queries() + scope_in
     index = load_json(os.path.join(ROOT, "assistant", "data", "index.json"))[0] or {}
     docs = [str(d.get(k)) for d in index.get("docs", []) for k in ("t", "x") if d.get(k)]
+    # 근거 조각도 서버에서 guard 를 지난다 — 막히면 근거에서 빠진다
+    chunk_doc = load_json(os.path.join(ROOT, "assistant", "data", "chunks.json"))[0] or {}
+    docs += [str(c.get("t", "")) + "\n" + str(c.get("x", "")) for c in chunk_doc.get("chunks", [])]
     try:
         result = subprocess.run(["node", "-e", GUARD_RUNNER, src],
                                 input=json.dumps({"cases": cases, "clean": clean, "docs": docs}),
@@ -1846,6 +1849,21 @@ def run_eval_items_checks():
             if EVAL_PII.search(json.dumps(it, ensure_ascii=False)):
                 fail("eval", f"{EVAL_ITEMS}:{line_no} 개인정보 모양이 들어 있다")
     note(f"AUP-2 성적표 문항 — {n}문 (원천 동기·번호/질문 중복·섹터·수치 경로·개인정보 모양)")
+
+    # AUP-3 근거 조각 — 원천 동기 · 길이(서버 근거 상한 400자) · 자료실 안 주소 · 섹터 장부
+    result = subprocess.run([sys.executable, os.path.join(ROOT, "ops", "scripts", "build_chunks.py"), "--check"],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("eval", result.stdout.strip() or result.stderr.strip()[:200])
+    chunks = (load_json(os.path.join(ROOT, "assistant", "data", "chunks.json"))[0] or {}).get("chunks", [])
+    for c in chunks:
+        if len(c.get("x", "")) > 400:
+            fail("eval", f"근거 조각 {c.get('i')} 이 400자를 넘는다(서버가 잘라 숫자가 빠질 수 있다)")
+        if not re.match(r"^\./[a-z0-9-]+/", c.get("u", "")):
+            fail("eval", f"근거 조각 {c.get('i')} 주소가 자료실 안 주소가 아니다 «{c.get('u')}»")
+        if c.get("s") not in sector_ids:
+            fail("eval", f"근거 조각 {c.get('i')} 섹터 «{c.get('s')}» 가 장부에 없다")
+    note(f"AUP-3 근거 조각 — {len(chunks)}개 (원천 동기·400자·주소·섹터)")
 
 
 # ---------------------------------------------------------------- 3-9) 공용 법정 수치 단일 원천 (2026-11-22)
