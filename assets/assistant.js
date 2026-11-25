@@ -72,6 +72,33 @@
     return null;
   }
 
+  /* 보내기 전 거르개 둘 — 네트워크 0. 아직 못 불러왔으면 그냥 보낸다(서버가 같은 파일로 다시 거르는 최종 관문이다).
+     · assistant/guard.js  프롬프트 주입·탈옥(지침 무시·지침 빼내기·제한 없는 모드) → 먼저 본다
+     · assistant/scope.js  자료실과 관계없는 요청(코드·주가·날씨 …) */
+  var gateLoading = {};
+  function loadGate(name, glob) {
+    if (window[glob] || gateLoading[name]) return;
+    gateLoading[name] = true;
+    var sc = document.createElement('script');
+    sc.src = BASE + 'assistant/' + name;
+    sc.onerror = function () { gateLoading[name] = false; };
+    document.head.appendChild(sc);
+  }
+  function loadScope() {
+    loadGate('guard.js', 'JCAssistGuard');
+    loadGate('scope.js', 'JCAssistScope');
+  }
+  /* { kind:'guard'|'off', message } 또는 null */
+  function scopeOf(q) {
+    try {
+      var g = window.JCAssistGuard ? window.JCAssistGuard.check(q) : null;
+      if (g && g.verdict === 'attack') return { kind: 'guard', message: window.JCAssistGuard.message };
+      var sv = window.JCAssistScope ? window.JCAssistScope.check(q) : null;
+      if (sv && sv.verdict === 'off') return { kind: 'off', message: sv.message };
+    } catch (e) {}
+    return null;
+  }
+
   /* ---------- 상태 ---------- */
   /* 키는 Google Gemini 하나만 쓴다 — 외부 임의 주소 호출이 없어 안전하고, 웹 교차 확인을 모두가 쓸 수 있다. */
   var PROVIDER = { id: 'gemini', name: 'Google Gemini' };
@@ -181,6 +208,7 @@
       web: Array.isArray(x.web) ? x.web.slice(0, 5) : [],
       mode: String(x.mode || ''),
       websearch: !!x.websearch,
+      scope: (x.scope === 'off' || x.scope === 'guard') ? x.scope : '',
       err: !!x.err
     };
   }
@@ -1107,6 +1135,7 @@
   /* ---------- 색인 ---------- */
 
   function loadIndex() {
+    loadScope();
     withSearch(function () {
       window.JCAssistSearch.load().then(function () {
         st.sug = buildSuggestion();
@@ -1740,7 +1769,10 @@
       ab.appendChild(renderStage(turn));
     }
     if (!turn.wait || turn.live) {
-      if (turn.mode || turn.websearch) {
+      if (turn.scope === 'off' || turn.scope === 'guard') {
+        ab.classList.add('jca-a-scope');
+        ab.appendChild(t('span', 'jca-a-tag', turn.scope === 'guard' ? '답할 수 없는 요청' : '자료실 범위 밖'));
+      } else if (turn.mode || turn.websearch) {
         var tag = [];
         if (turn.mode) {
           var mm = MODES.filter(function (m) { return m.id === turn.mode; })[0];
@@ -1811,6 +1843,8 @@
     if (st.busy) return;
     var q = (el.chatInput.value || '').trim();
     if (q.length < 2) { el.chatInput.focus(); return; }
+    /* 범위 밖 요청은 로그인·키가 없어도 바로 안내한다 — 모델을 부르지 않는다. */
+    if (scopeBlock(q)) { el.chatInput.value = ''; return; }
     if (!loggedIn()) { st.tab = 'find'; render(); if (window.JCSync) window.JCSync.open('login'); return; }
     if (!hasKey()) { st.tab = 'key'; render(); return; }
     ask(q, true);
@@ -1824,7 +1858,17 @@
     });
   }
 
+  /* 범위 밖이면 안내 한 턴을 남기고 true. 질문을 서버로 보내지 않는다. */
+  function scopeBlock(q) {
+    var sv = scopeOf(q);
+    if (!sv) return false;
+    st.thread.push({ id: newId(), ts: Date.now(), q: q, a: sv.message, refs: [], web: [], mode: '', websearch: false, scope: sv.kind });
+    render(); saveChat(); scrollThread();
+    return true;
+  }
+
   function ask(q, clearInput) {
+    if (scopeBlock(q)) { if (clearInput && el.chatInput) el.chatInput.value = ''; return; }
     var turn = { id: newId(), ts: Date.now(), q: q, a: '', refs: [], web: [], wait: true, stage: 'search',
                  mode: st.mode || '', websearch: st.webOn };
     st.thread.push(turn);
@@ -1880,6 +1924,8 @@
       turn.refs = j.references || [];
       turn.web = j.web || [];
       turn.websearch = !!j.websearch;
+      if (j.scope === 'off' || j.scope === 'guard') { turn.scope = j.scope; turn.websearch = false; }
+      if (j.guard === 'leak') { turn.scope = 'guard'; turn.websearch = false; turn.refs = []; turn.web = []; }
       if (j.model) turn.model = j.model;
       delete turn.live;
     }
