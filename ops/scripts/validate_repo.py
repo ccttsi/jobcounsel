@@ -1791,6 +1791,63 @@ def run_guard_checks():
     note(f"비서 주입·탈옥 분류기 — 시험 {len(cases)}문 · 오탐 확인 질의 {len(clean)}문 · 색인 문장 {len(docs)}개 (서버 사본 동기 포함)")
 
 
+# ---------------------------------------------------------------- 3-8d) AUP-2 성적표 문항 (2026-11-25)
+#   assistant/eval/items.jsonl — 비서 주간 시험 문항. 모델 호출 없이 모양만 본다(CI 무료).
+#     ① 원천(사연셋·seed·범위/보안 시험)에서 다시 만든 것과 같은가(ops/eval/build_items.py --check)
+#     ② 문항 번호 중복 0 · 같은 질문 중복 0 · 필수 칸 · 정답 섹터가 장부에 있는가
+#     ③ 수치 문항의 must 가 data/legal-constants.json 에 실제로 있는 경로인가
+#     ④ 개인정보 모양(전화·메일·주민등록번호) 0 — 문항은 전부 합성 문장이어야 한다
+EVAL_ITEMS = "assistant/eval/items.jsonl"
+EVAL_PII = re.compile(r"01[016789]-?\d{3,4}-?\d{4}|[\w.+-]+@[\w-]+\.[\w.]+|\d{6}-?[1-4]\d{6}")
+
+
+def run_eval_items_checks():
+    path = os.path.join(ROOT, EVAL_ITEMS)
+    if not os.path.exists(path):
+        fail("eval", f"{EVAL_ITEMS} 이 없다 — python3 ops/eval/build_items.py")
+        return
+    result = subprocess.run([sys.executable, os.path.join(ROOT, "ops", "eval", "build_items.py"), "--check"],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("eval", result.stdout.strip() or result.stderr.strip()[:200])
+    tools = open(os.path.join(ROOT, "assets", "tools.js"), encoding="utf-8").read()
+    sector_ids = set(re.findall(r"\bid\s*:\s*'([a-z0-9-]+)'", tools))
+    legal = load_json(os.path.join(ROOT, LEGAL_SOURCE))[0] or {}
+    groups = legal.get("groups", {})
+    ids, qs, n = set(), set(), 0
+    with open(path, encoding="utf-8") as fh:
+        for line_no, line in enumerate(fh, 1):
+            if not line.strip():
+                continue
+            n += 1
+            try:
+                it = json.loads(line)
+            except json.JSONDecodeError as exc:
+                fail("eval", f"{EVAL_ITEMS}:{line_no} JSON 오류 — {exc.msg}")
+                continue
+            for key in ("id", "type", "q", "expect_sectors", "must", "refuse", "split"):
+                if key not in it:
+                    fail("eval", f"{EVAL_ITEMS}:{line_no} «{key}» 칸이 없다")
+            if it.get("id") in ids:
+                fail("eval", f"{EVAL_ITEMS}:{line_no} 문항 번호 {it.get('id')} 중복")
+            ids.add(it.get("id"))
+            q = re.sub(r"\s+", " ", str(it.get("q", ""))).strip()
+            key = (q, tuple(it.get("ctx") or []))
+            if key in qs:
+                fail("eval", f"{EVAL_ITEMS}:{line_no} 같은 질문이 두 번 — «{q[:30]}»")
+            qs.add(key)
+            for sid in it.get("expect_sectors", []) + it.get("exclude", []) + it.get("support", []):
+                if sid not in sector_ids:
+                    fail("eval", f"{EVAL_ITEMS}:{line_no} 장부에 없는 섹터 «{sid}»")
+            for ptr in it.get("must", []):
+                g, _, k = str(ptr).partition(".")
+                if k not in (groups.get(g, {}).get("values") or {}):
+                    fail("eval", f"{EVAL_ITEMS}:{line_no} 법정 수치 원천에 없는 경로 «{ptr}»")
+            if EVAL_PII.search(json.dumps(it, ensure_ascii=False)):
+                fail("eval", f"{EVAL_ITEMS}:{line_no} 개인정보 모양이 들어 있다")
+    note(f"AUP-2 성적표 문항 — {n}문 (원천 동기·번호/질문 중복·섹터·수치 경로·개인정보 모양)")
+
+
 # ---------------------------------------------------------------- 3-9) 공용 법정 수치 단일 원천 (2026-11-22)
 #   최저임금·구직급여 상한·4대보험 요율처럼 여러 섹터가 함께 쓰는 수치가 섹터마다 따로 박혀 있으면,
 #   해가 바뀔 때 한 곳만 고치고 나머지가 옛 숫자로 남는다 — 상담에서 그대로 잘못 안내된다.
@@ -2371,6 +2428,8 @@ def main():
         run_scope_checks()    # 비서 질문 범위 판정기 — 서버 사본 동기·시험 문장·오탐 0
     if "json" in selected or "guard" in selected:
         run_guard_checks()    # 비서 프롬프트 주입·탈옥 분류기 — 서버 사본 동기·시험 문장·오탐 0
+    if "json" in selected or "eval" in selected:
+        run_eval_items_checks()  # AUP-2 성적표 문항 — 원천 동기·중복·섹터·수치 경로·개인정보
     if "license" in selected:
         run_license_checks()
     if "js" in selected:
@@ -2404,8 +2463,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
-        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "role", "expose"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "eval": "AUP-2 성적표 문항", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
+        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "eval", "role", "expose"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")

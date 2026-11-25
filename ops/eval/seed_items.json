@@ -1,0 +1,23 @@
+{
+  "v": "witw-aup-eval-seed/1.0.0",
+  "note": "AUP-2 성적표의 손으로 쓴 문항(합성 문장). 수치 문항의 must 는 값이 아니라 data/legal-constants.json 의 경로(group.key)를 가리킨다 — 값을 두 곳에 적지 않는다. 연결 질문(ctx)은 AUP-4(질문 다시 쓰기)의 기준선이다. build_items.py 가 이 파일과 사연 학습셋·범위/보안 시험 문장을 합쳐 assistant/eval/items.jsonl 을 만든다.",
+  "numeric": [
+    { "id": "NUM-001", "q": "올해 최저임금 시급이 얼마예요?", "must": ["minimumWage.hourly"], "expect_sectors": ["pay-calc", "law", "labor"] },
+    { "id": "NUM-002", "q": "최저임금으로 주 40시간 일하면 한 달 월급이 얼마인가요?", "must": ["minimumWage.monthly"], "expect_sectors": ["pay-calc", "labor"] },
+    { "id": "NUM-003", "q": "최저임금 기준으로 하루 8시간 일당은 얼마예요?", "must": ["minimumWage.daily8h"], "expect_sectors": ["pay-calc", "labor"] },
+    { "id": "NUM-004", "q": "수습 기간에는 최저임금을 얼마까지 깎을 수 있어요? 시급으로요", "must": ["minimumWage.probationHourly"], "expect_sectors": ["pay-calc", "first-year", "law"] },
+    { "id": "NUM-005", "q": "구직급여 하루 상한액이 얼마인가요?", "must": ["jobSeeking.dailyCap"], "expect_sectors": ["pay-calc", "law"] },
+    { "id": "NUM-006", "q": "실업급여 하루 최소로 받는 금액(하한액)은 얼마예요?", "must": ["jobSeeking.floorDaily8h"], "expect_sectors": ["pay-calc", "law"] },
+    { "id": "NUM-007", "q": "국민연금 근로자 부담 요율이 몇 퍼센트예요?", "must": ["socialInsurance.pensionRateWorker"], "expect_sectors": ["pay-calc", "labor"] },
+    { "id": "NUM-008", "q": "건강보험료 근로자 부담률은 얼마인가요?", "must": ["socialInsurance.healthRateWorker"], "expect_sectors": ["pay-calc", "labor"] },
+    { "id": "NUM-009", "q": "최저임금 월 환산할 때 몇 시간으로 계산해요?", "must": ["minimumWage.monthlyHours"], "expect_sectors": ["pay-calc", "labor"] },
+    { "id": "NUM-010", "q": "실업급여는 평균임금의 몇 퍼센트를 받아요?", "must": ["jobSeeking.rate"], "expect_sectors": ["pay-calc", "law"] }
+  ],
+  "followup": [
+    { "id": "CTX-001", "ctx": ["최저임금이 올해 얼마예요?"], "q": "그럼 수습 기간엔요?", "must": ["minimumWage.probationHourly"], "expect_sectors": ["pay-calc", "first-year", "law"] },
+    { "id": "CTX-002", "ctx": ["실업급여 받으려면 조건이 뭐예요?"], "q": "자발적으로 그만둔 경우는요?", "expect_sectors": ["pay-calc", "law", "policy-match"] },
+    { "id": "CTX-003", "ctx": ["직업선호도검사 L형 결과 해석을 도와주세요."], "q": "그거 흥미 유형이 R이면요?", "expect_sectors": ["vpi"] },
+    { "id": "CTX-004", "ctx": ["국민내일배움카드 자부담이 얼마나 돼요?"], "q": "국민취업지원제도 참여 중이면 달라져요?", "expect_sectors": ["kdt-calc", "policy-match"] },
+    { "id": "CTX-005", "ctx": ["입사한 지 두 달 됐는데 근로계약서를 안 썼어요."], "q": "이거 신고하면 어떻게 돼요?", "expect_sectors": ["first-year", "law", "labor"] }
+  ]
+}

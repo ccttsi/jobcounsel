@@ -11,6 +11,18 @@
      질문 한 마디로 나와야 하는 자료는 `RULES`(직행 패턴)에 `dom`·`act`·`not`을 넣는다.
    - 재생성: `python3 assistant/build_index.py` · `python3 ops/scripts/build_flow_graph.py` → `validate_repo.py`.
 
+## 2026-11-25 — [AUP-2] 비서 성적표(주간 자동 채점) — MCL Goal 1단계
+- **지시**(태화님): AUP-2에 Groq을 쓰라는 지침(피클 기록) 숙지·파이프라인. 필요한 무료 키 6건은 피클이 「필요연동」으로 연결 완료.
+- [x] **AUP-1 마무리** — deploy-edge(피클 실행 run 45526530248)로 라이브 assistant-proxy **v8**. 임시 계정·15분 세션으로 라이브 실측: 주입 2문 → `guard`, 범위 밖 2문 → `scope`(모델 미호출), 자료실 질문 2문 → 키 확인 단계로 통과(`no_key`). 시험 계정·세션은 바로 삭제(잔여 0 확인).
+- [x] **지침 한 벌**: `supabase/functions/assistant-proxy/prompt.ts`로 지침·형식·모드·딸린 글 정리·프롬프트 조립을 떼어 서버와 러너가 함께 import(바꾸기 전후 코드 줄 비교 누락 0). Deno 전용 API를 쓰지 않아 Node 22 `--experimental-strip-types`로도 읽힌다.
+- [x] **문항** `assistant/eval/items.jsonl` 237문 = 사연 168(route) + 법정 수치 10(numeric, `must`는 legal-constants 경로) + 이어지는 질문 5(followup) + 범위 밖 25 + 공격 29. 생성기 `ops/eval/build_items.py`(원천: 사연셋·`ops/eval/seed_items.json`·범위/보안 시험).
+- [x] **러너** `ops/eval/aup_eval.mjs` — 라이브와 같은 차례(거르개 → 검색(search.js 헤드리스) → prompt.ts 조립 → Gemini 평가용 Flash-Lite) → 규칙 채점(인용·수치·링크·유출·거절·빼야 할 자료) → Groq 보조 채점(결론·말투·근거·간결 0~2, 참고용) · Groq 정규화(검색 비교만 — AUP-4 기준선, 캐시) · 진행일지 자동 한 줄.
+- [x] **워크플로** `.github/workflows/aup-eval.yml` — 매주 수 15:17 KST + 손 실행. 키 없는 단계는 건너뜀. 보고서·정규화 캐시는 아티팩트(90일).
+- [x] **검사** `validate_repo.py --only eval`(json 단계) — 원천 동기·번호/질문 중복·섹터 장부·수치 경로·개인정보 모양. 일부러 중복을 넣어 실패 확인.
+- [x] 키 없이(`--dry`) 237문: 검색 1순위 66.7% · 3순위 안 85.2% · 거절 100% · 잘못 거절 0. 모의 응답으로 채점 경로(수치 정확·없는 링크·지침 유출·Notion 200) 확인.
+- **남은 일**: 머지 뒤 Actions → aup-eval 손 실행으로 **기준선** 첫 측정 → 진행일지·노션 AUP 페이지에 숫자. 정규화 캐시 아티팩트를 저장소에 들일지 결정. 피클 몫 «현장 말투» 50문 추가(seed에).
+- **다음 시작 파일**: `ops/eval/aup_eval.mjs` · `ops/eval/seed_items.json` · `supabase/functions/assistant-proxy/prompt.ts`.
+
 ## 2026-11-25 — 자료실 비서 «관계없는 요청 거르개» + «프롬프트 주입·탈옥 분류기» (태화님 「코드 짜 줘·주가 알려 줘처럼 자료실과 무관한 요청을 웹검색 켜짐/꺼짐과 상관없이 걸러라」)
 - [x] **판정기 하나**(`assistant/scope.js`) — 판정 셋: `in`(그대로) · `mixed`(관계없는 부분만 빼고 답, 웹 확인 강제 끔) · `off`(모델을 부르지 않고 안내). 갈래: 코드 작성·주가/시세·로또(hard — 자료실 낱말이 있어도 그 부분은 답하지 않음) / 날씨·연예·요리·여행·숙제·창작·일반 번역(soft — 자료실 낱말이 있으면 자료실 질문) / 지침 무시·공개 요구(언제나 off).
 - [x] **세 겹** — ① 브라우저가 보내기 전에 거름(네트워크 0, 로그인·키 없이도 안내) ② 서버(`assistant-proxy`)가 같은 파일의 **바이트 동일 사본**(`supabase/functions/assistant-proxy/scope.js`)으로 최종 판정(키 한도 0 소모) ③ 모델 지침 7번 «범위»(판정기가 놓친 것).

@@ -1,0 +1,79 @@
+# AUP-2 성적표 — 자료실 비서 주간 시험 (MCL Goal · 2026-11-25)
+#   문항 assistant/eval/items.jsonl 을 라이브와 같은 거르개·검색·지침으로 풀게 하고 채점한다.
+#   비밀값(이름만): GEMINI_EVAL_API_KEY(답) · GROQ_API_KEY(정규화·보조 채점) · NOTION_TOKEN_MCL(진행일지 한 줄)
+#   — 없는 키의 단계만 건너뛴다. 사실·수치 판정은 규칙 채점기가 하고, Groq 점수는 참고용이다.
+#   무료 한도: Gemini 평가용은 Flash-Lite(피클 실측 하루 500회)로 183문, Groq 은 한 번에 최대 400회
+#   (브리핑·이머징 수집과 하루 한도를 나눠 쓰므로 수집이 끝난 오후에 돈다).
+name: aup-eval
+
+on:
+  schedule:
+    - cron: '17 6 * * 3'      # 매주 수요일 15:17 KST
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: '문항 수 제한(0 = 전부)'
+        required: false
+        default: '0'
+      type:
+        description: '문항 종류만(route,numeric,followup,out_of_scope,attack — 쉼표)'
+        required: false
+        default: ''
+      judge:
+        description: 'Groq 보조 채점(yes/no)'
+        required: false
+        default: 'yes'
+      notion:
+        description: '진행일지에 한 줄 남기기(yes/no)'
+        required: false
+        default: 'yes'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aup-eval
+  cancel-in-progress: false
+
+jobs:
+  eval:
+    name: aup-eval
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 문항이 원천과 같은지
+        run: python3 ops/eval/build_items.py --check
+
+      - name: 성적표 돌리기
+        env:
+          GEMINI_EVAL_API_KEY: ${{ secrets.GEMINI_EVAL_API_KEY }}
+          GEMINI_EVAL_MODEL: gemini-3.5-flash-lite
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          NOTION_TOKEN_MCL: ${{ secrets.NOTION_TOKEN_MCL }}
+          AUP_GEMINI_RPM: '12'
+          AUP_GROQ_RPM: '25'
+          AUP_GROQ_BUDGET: '400'
+        run: |
+          args="--out assistant/eval/reports/run.json"
+          [ "${{ github.event.inputs.limit || '0' }}" != "0" ] && args="$args --limit ${{ github.event.inputs.limit }}"
+          [ -n "${{ github.event.inputs.type }}" ] && args="$args --type ${{ github.event.inputs.type }}"
+          [ "${{ github.event.inputs.judge || 'yes' }}" = "no" ] && args="$args --no-judge"
+          [ "${{ github.event.inputs.notion || 'yes' }}" = "yes" ] && args="$args --notion"
+          node --experimental-strip-types --no-warnings ops/eval/aup_eval.mjs $args
+
+      - name: 보고서·정규화 캐시 보관
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aup-eval-${{ github.run_id }}
+          path: |
+            assistant/eval/reports/run.json
+            assistant/eval/cache/norm.json
+          if-no-files-found: ignore
+          retention-days: 90
