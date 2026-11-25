@@ -129,7 +129,7 @@ let judgeUsed = 0, normNew = 0;
 /* ---------------------------------------------------------------- Groq (정규화·보조 채점) */
 const NORM_PATH = path.join(ROOT, 'assistant', 'eval', 'cache', 'norm.json');
 const NORM = fs.existsSync(NORM_PATH) ? JSON.parse(fs.readFileSync(NORM_PATH, 'utf8')) : { v: 1, items: {} };
-let groqUsed = 0, groqModel = '', groqLast = 0, groqDown = '';
+let groqUsed = 0, groqModel = '', groqLast = 0, groqDown = '', groqModels = [], groqTried = [];
 const GROQ_PREF = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3-32b', 'llama-3.3-70b-versatile'];
 
 async function groqPick() {
@@ -138,7 +138,10 @@ async function groqPick() {
     const r = await realFetch('https://api.groq.com/openai/v1/models', { headers: { authorization: 'Bearer ' + GROQ_KEY } });
     if (!r.ok) { groqDown = 'models ' + r.status; return ''; }
     const ids = new Set(((await r.json()).data || []).map((m) => m.id));
-    groqModel = ENV.GROQ_MODEL && ids.has(ENV.GROQ_MODEL) ? ENV.GROQ_MODEL : (GROQ_PREF.find((m) => ids.has(m)) || '');
+    /* Groq 한도는 모델마다 따로다 — 한 모델이 하루 한도에 닿으면 다음 모델로 넘어간다(groqNext).
+       2026-11-25 재측정은 첫 모델이 브리핑·이머징 수집과 한도를 나눠 써 5회 만에 막혀 보조 채점이 0문이었다. */
+    groqModels = [ENV.GROQ_MODEL, ...GROQ_PREF].filter((m, i, a) => m && ids.has(m) && a.indexOf(m) === i);
+    groqModel = groqModels[0] || '';
     if (!groqModel) groqDown = 'no-model';
   } catch { groqDown = 'network'; }
   return groqModel;
@@ -158,7 +161,17 @@ async function groqJSON(system, user) {
         body: JSON.stringify({ model: groqModel, temperature: 0, response_format: { type: 'json_object' },
           messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
       });
-      if (r.status === 429) { waited429.groq++; if (attempt === 3) { groqDown = 'quota(429 연속)'; return null; } await waitFor429(r, attempt); continue; }
+      if (r.status === 429) {
+        waited429.groq++;
+        if (attempt === 3) {
+          groqTried.push(groqModel);
+          const next = groqModels.find((m) => !groqTried.includes(m));
+          if (!next) { groqDown = 'quota(429 연속, 모델 ' + groqTried.length + '개 모두)'; return null; }
+          groqModel = next; attempt = -1;          // 다음 모델로 처음부터
+          continue;
+        }
+        await waitFor429(r, attempt); continue;
+      }
       if (!r.ok) return null;
       const j = await r.json();
       return JSON.parse(j.choices?.[0]?.message?.content || 'null');
@@ -338,7 +351,7 @@ for (const it of items) {
 const sum = summarize(rows);
 const report = {
   schema: 'witw-aup-eval-report/1.0.0', at: started.toISOString(),
-  commit: ENV.GITHUB_SHA || '', model: GEMINI_KEY && !OPT.dry ? GEMINI_MODEL : '(없음)', groq_model: groqModel || '(없음)',
+  commit: ENV.GITHUB_SHA || '', model: GEMINI_KEY && !OPT.dry ? GEMINI_MODEL : '(없음)', groq_model: groqModel || '(없음)', groq_models_exhausted: groqTried,
   calls: { gemini: geminiUsed, groq: groqUsed }, waited_429: waited429, minutes: Math.round((Date.now() - T0) / 6000) / 10,
   stopped: { gemini: geminiDown || null, groq: groqDown || null },
   options: OPT, summary: sum, rows,
