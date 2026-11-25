@@ -34,6 +34,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2      # 스쿼시 머지는 부모 하나와만 비교하면 된다(얕은 받기에서 이전 커밋이 없어 git diff 가 128로 끝났다 — 2026-11-25)
 
       - name: 비밀값 확인 (값은 찍지 않는다)
         id: tok
@@ -52,8 +54,11 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "list=${{ github.event.inputs.fn || 'assistant-proxy' }}" >> "$GITHUB_OUTPUT"
           else
-            # 이번 push 에서 바뀐 함수 폴더만
-            list=$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" -- supabase/functions/ 2>/dev/null \
+            # 이번 push 에서 바뀐 함수 폴더만 — 이전 커밋이 없으면 받아 오고, 그래도 없으면 바로 앞 커밋과 비교한다
+            before="${{ github.event.before }}"
+            git fetch -q --depth=1 origin "$before" 2>/dev/null || true
+            if git cat-file -e "${before}^{commit}" 2>/dev/null; then base="$before"; else base="HEAD~1"; fi
+            list=$( { git diff --name-only "$base" "${{ github.sha }}" -- supabase/functions/ 2>/dev/null || true; } \
               | awk -F/ 'NF>=3 {print $3}' | sort -u | tr '\n' ' ')
             echo "list=${list:-assistant-proxy}" >> "$GITHUB_OUTPUT"
           fi
