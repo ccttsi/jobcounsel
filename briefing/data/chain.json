@@ -1,8 +1,9 @@
 {
- "generated_at": "2026-11-25T07:49:10+09:00",
+ "generated_at": "2026-11-26T07:22:10+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
+  "2026-11-26",
   "2026-11-25",
   "2026-11-24",
   "2026-11-23",
@@ -2688,6 +2689,17 @@
      "source_name": "성평등가족부(정책브리핑)",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790521",
      "published_at": "2026-11-24"
+    },
+    {
+     "date": "2026-11-26",
+     "card_id": "c02",
+     "title": "고용센터 심층상담 47점 — AI가 먼저 구직자 고른다",
+     "kicker": "우수사례 47점·수상자 52명 · 알선 123건이 면접 22명으로",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20302",
+     "published_at": "2026-11-25"
     }
    ]
   },
@@ -3644,6 +3656,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20295",
      "published_at": "2026-11-24"
+    },
+    {
+     "date": "2026-11-26",
+     "card_id": "c01",
+     "title": "AI 부트캠프 40개교, 기업이 낸 문제로 160명 겨뤄",
+     "kicker": "전국 40개교·40개 팀 160명 · 사업 예산 1,341.8억원",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "교육부",
+     "source_url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=107836&lev=0&m=020402&opType=N&page=1&s=moe&searchType=null&statusYN=W",
+     "published_at": "2026-11-25"
     }
    ]
   },
@@ -5122,6 +5145,17 @@
      "source_name": "HEC Paris (LIFT·INSEAD·프랑스 중앙은행 공동 연구)",
      "source_url": "https://www.hec.edu/en/dare/economics-finance/63-france-s-most-ai-exposed-workers-are-women",
      "published_at": "2026-11-23"
+    },
+    {
+     "date": "2026-11-26",
+     "card_id": "c03",
+     "title": "공인회계사 1,100명 — 3년 연속 50명씩 줄인다",
+     "kicker": "2027년 최소선발 1,100명·1차 합격 2,600명 · 이유에 AI 대체",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "금융위원회",
+     "source_url": "https://www.fsc.go.kr/no010101/88212",
+     "published_at": "2026-11-24"
     }
    ]
   },
