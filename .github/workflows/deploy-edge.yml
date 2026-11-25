@@ -88,7 +88,7 @@ jobs:
           for fn in ${{ steps.fns.outputs.list }}; do
             [ -f "supabase/functions/$fn/index.ts" ] || continue
             # 세션 확인은 함수가 직접 한다 — Supabase JWT 검사는 끈다(README 「함수 배포」와 같다).
-            supabase functions deploy "$fn" --project-ref "$PROJECT_REF" --no-verify-jwt
+            supabase functions deploy "$fn" --project-ref "$PROJECT_REF" --no-verify-jwt --yes
             echo "- $fn 배포함" >> "$GITHUB_STEP_SUMMARY"
           done
 
