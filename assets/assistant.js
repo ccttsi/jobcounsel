@@ -87,6 +87,24 @@
   function loadScope() {
     loadGate('guard.js', 'JCAssistGuard');
     loadGate('scope.js', 'JCAssistScope');
+    loadChunks();
+  }
+  /* AUP-3 근거 조각(assistant/chunks.js + assistant/data/chunks.json, 약 44KB) — 대화 탭이 열릴 때 한 번 받는다.
+     못 받으면 예전처럼 검색 결과만 근거로 보낸다. */
+  var chunksLoading = false;
+  function loadChunks() {
+    if (chunksLoading || (window.JCAssistChunks && window.JCAssistChunks.ready())) return;
+    chunksLoading = true;
+    var sc = document.createElement('script');
+    sc.src = BASE + 'assistant/chunks.js';
+    sc.onload = function () {
+      fetch(BASE + 'assistant/data/chunks.json', { cache: 'default' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) { if (j && window.JCAssistChunks) window.JCAssistChunks.use(j); })
+        .catch(function () { chunksLoading = false; });
+    };
+    sc.onerror = function () { chunksLoading = false; };
+    document.head.appendChild(sc);
   }
   /* { kind:'guard'|'off', message } 또는 null */
   function scopeOf(q) {
@@ -1850,12 +1868,20 @@
     ask(q, true);
   }
 
+  /* 비서에게 건네는 근거 — 근거 조각(법정 수치·법령 풀이·조문, 최대 2)을 앞에, 검색 결과를 뒤에 붙여 5개.
+     조각 고르는 규칙은 assistant/chunks.js 하나 — AUP-2 성적표 러너도 같은 파일을 쓴다. */
   function evidence(q) {
-    if (!window.JCAssistSearch || !window.JCAssistSearch.ready()) return [];
-    var r = window.JCAssistSearch.search(q, { limit: 5 });
-    return r.map(function (x) {
-      return { title: x.title, sector: x.sectorTitle || x.sector, url: x.url, snippet: x.snippet || '' };
-    });
+    var hits = [];
+    if (window.JCAssistSearch && window.JCAssistSearch.ready()) {
+      hits = window.JCAssistSearch.search(q, { limit: 5 }).map(function (x) {
+        return { title: x.title, sector: x.sectorTitle || x.sector, url: x.url, snippet: x.snippet || '' };
+      });
+    }
+    var C = window.JCAssistChunks;
+    if (C && C.ready()) {
+      try { return C.evidence(q, hits).map(function (e) { return { title: e.title, sector: e.sector, url: e.url, snippet: e.snippet }; }); } catch (e) {}
+    }
+    return hits;
   }
 
   /* 범위 밖이면 안내 한 턴을 남기고 true. 질문을 서버로 보내지 않는다. */

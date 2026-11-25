@@ -69,6 +69,9 @@ const localFetch = async (u) => {
 globalThis.fetch = (u, o) => (/^https?:/i.test(String(u)) ? realFetch(u, o) : localFetch(u));
 require(path.join(ROOT, 'assistant', 'search.js'));
 require(path.join(ROOT, 'assistant', 'scope.js'));
+// AUP-3 근거 조각 — 브라우저(assets/assistant.js)와 같은 파일·같은 규칙으로 근거를 고른다
+const CHUNKS = require(path.join(ROOT, 'assistant', 'chunks.js'));
+CHUNKS.use(JSON.parse(fs.readFileSync(path.join(ROOT, 'assistant', 'data', 'chunks.json'), 'utf8')));
 const SEARCH = globalThis.window.JCAssistSearch;
 const SCOPE = globalThis.JCAssistScope || globalThis.window.JCAssistScope;
 const P = await import(path.join(ROOT, 'supabase', 'functions', 'assistant-proxy', 'prompt.ts'));
@@ -265,7 +268,14 @@ async function runItem(it) {
   // ④ 답 — 라이브(assets/assistant.js runAsk → index.ts ask)와 같은 조립
   const map = SEARCH.map ? SEARCH.map(30) : [];
   const route = SEARCH.route ? SEARCH.route(it.q, { limit: 3 }).map((x) => ({ no: x.no || '', title: x.title, url: x.url, why: x.why || [] })) : [];
-  const ev = P.cleanEvidence(raw);
+  // 비서에게 건네는 근거 = 근거 조각(최대 2) + 검색 결과 — 검색 적중률(위)은 기준선과 같게 검색만으로 잰다
+  const handed = CHUNKS.evidence(it.q, raw);
+  r.chunks = handed.filter((e) => e.kind === 'chunk').length;
+  if (it.must && it.must.length) {
+    const txt = handed.map((e) => e.snippet).join(' ');
+    r.ev_numbers = it.must.every((ptr) => numberForms(legalValue(ptr)).some((f) => txt.includes(f)));
+  }
+  const ev = P.cleanEvidence(handed);
   let system = P.SYS;
   if (s.verdict === 'mixed') system += '\n\n■ 이번 질문의 범위\n' + s.note;
   if (g.verdict === 'suspect') system += '\n\n■ 보안 주의\n' + GUARD.caution;
@@ -323,6 +333,8 @@ function summarize(rows) {
   const refusedOk = refuseRows.filter((r) => r.refused).length;
   const falseRefuse = answerable.filter((r) => r.refused).length;
   const judged = answered.filter((r) => r.judge);
+  const evn = answerable.filter((r) => r.ev_numbers != null);
+  const withChunk = answerable.filter((r) => r.chunks > 0).length;
   const avg = (k) => { const v = judged.map((r) => r.judge[k]).filter((x) => x != null); return v.length ? Math.round((v.reduce((a, b) => a + b, 0) / v.length) * 100) / 100 : null; };
   return {
     items: rows.length,
@@ -335,6 +347,8 @@ function summarize(rows) {
     cite_rate: pct(cA, cN), numbers_rate: pct(nA, nN), numbers_n: nN,
     links_ok_rate: pct(lA, lN), leak_free_rate: pct(kA, kN), exclude_ok_rate: pct(xA, xN),
     refuse_rate: pct(refusedOk, refuseRows.length), false_refuse: falseRefuse,
+    ev_numbers_rate: pct(evn.filter((r) => r.ev_numbers).length, evn.length), ev_numbers_n: evn.length,
+    chunk_rate: pct(withChunk, answerable.length),
     judge_n: judged.length,
     judge: { conclusion_first: avg('conclusion_first'), counselor_tone: avg('counselor_tone'), grounded: avg('grounded'), concise: avg('concise') },
   };
@@ -373,6 +387,7 @@ const md = [
   line('문항', sum.items), line('검색 1순위 적중(%)', sum.retrieval_hit1), line('검색 3순위 안(%)', sum.retrieval_hit3),
   line(`정규화 질문 검색 1순위(%) · ${sum.norm_compared}문`, sum.norm_retrieval_hit1), line('정규화 질문 검색 3순위 안(%)', sum.norm_retrieval_hit3),
   line('답한 문항 / 답해야 할 문항', `${sum.answered} / ${sum.answerable}`),
+  line('근거 조각이 붙은 문항(%)', sum.chunk_rate), line(`근거에 정답 수치가 들어 있음(%) · ${sum.ev_numbers_n}문`, sum.ev_numbers_rate),
   line('답이 맞는 자료를 인용(%)', sum.cite_rate), line(`법정 수치 정확(%) · ${sum.numbers_n}문`, sum.numbers_rate),
   line('없는 링크 0(%)', sum.links_ok_rate), line('지침 유출 0(%)', sum.leak_free_rate), line('빼야 할 자료 인용 0(%)', sum.exclude_ok_rate),
   line('거절해야 할 것 거절(%)', sum.refuse_rate), line('잘못 거절(건)', sum.false_refuse),
