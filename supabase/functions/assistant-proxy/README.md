@@ -78,6 +78,10 @@ supabase secrets set JC_KEY_MASTER_SECRET='<길고 무작위한 문자열>' \
 supabase functions deploy assistant-proxy --no-verify-jwt
 ```
 
+**자동 배포(2026-11-25~)**: `main`에 `supabase/functions/**`가 바뀌어 머지되면 GitHub Actions `deploy-edge`가 바뀐 함수만 그대로 올리고,
+타입 검사(참고)·부팅 확인(5xx면 실패)까지 한다. 손으로 다시 올릴 때는 Actions → deploy-edge → Run workflow(함수 이름).
+비밀값 `SUPABASE_ACCESS_TOKEN`(GitHub Secrets, 이름만 기록)이 없으면 배포를 건너뛰고 요약에 알린다 — 연결은 노션 「🔌 필요연동」.
+
 `SUPABASE_URL` · `SUPABASE_SERVICE_ROLE_KEY` 는 Supabase 가 함수에 자동으로 넣어 줍니다.
 Service Role 키는 **함수 안에서만** 쓰이고 브라우저로 나가지 않습니다.
 
