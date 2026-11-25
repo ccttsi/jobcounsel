@@ -17,6 +17,8 @@ ROOT = os.environ.get('TFROOT', '/workspace/tf500')
 DATA = os.path.join(ROOT, 'trait-flip', 'data', 'traits.json')
 BASE = os.path.join(HERE, 'base', 'traits.json')
 SRC = os.path.join(HERE, 'src')
+SEEDS = os.path.join(HERE, 'seeds.txt')
+BANS = os.path.join(HERE, 'bans.txt')
 
 AXIS_ALIAS = {
     'check': 'detail', 'estimate': 'plan', 'chunk': 'plan', 'trust': 'honest',
@@ -83,6 +85,48 @@ def parse():
     return weak, strong
 
 
+def load_bans():
+    """«같은 뜻이라 뒤집기가 아닌» 짝 — 검수에서 확인한 것만 적는다."""
+    if not os.path.exists(BANS):
+        return set()
+    out = set()
+    for line in open(BANS, encoding='utf-8'):
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        wid, sid = [x.strip() for x in line.split('|')]
+        out.add((wid, sid))
+    return out
+
+
+def load_seeds(weak, strong):
+    """사람이(검수로) 정해 둔 짝 — seeds.txt 의 «단점id|장점id» 줄.
+
+    전수 검수에서 «느슨한 짝»으로 걸린 낱말은 축 표지 순위만으로는 제 장점을 못 만난다.
+    검수에서 살아남은 짝은 그대로 두고, 모자란 자리만 여기 적어 둔 짝으로 채운다.
+    """
+    if not os.path.exists(SEEDS):
+        return []
+    ok_w, ok_s = {w['id'] for w in weak}, {s['id'] for s in strong}
+    out, seen, skipped = [], set(), set()
+    for no, line in enumerate(open(SEEDS, encoding='utf-8'), 1):
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        wid, sid = [x.strip() for x in line.split('|')]
+        if wid not in ok_w or sid not in ok_s:
+            # 손으로 쓴 낱말(기존 98개)은 조각(core·how)이 없어 새 카드를 만들 수 없다 — 건너뛴다.
+            skipped.add(f'{wid}|{sid}')
+            continue
+        if (wid, sid) in seen:
+            continue
+        seen.add((wid, sid))
+        out.append((wid, sid))
+    if skipped:
+        print(f'  seeds.txt: 원본에 없는 낱말 {len(skipped)}줄은 건너뛴다 {sorted(skipped)[:4]}')
+    return out
+
+
 def make_pairs(weak, strong):
     """축이 겹치는 장점으로 3~4갈래. 착수 순서는 후보가 적은 낱말부터."""
     by_axis = defaultdict(list)
@@ -112,7 +156,7 @@ def make_pairs(weak, strong):
     def pick(w, k, primary_only=False):
         cands = []
         for s in strong:
-            if (w['id'], s['id']) in seen:
+            if (w['id'], s['id']) in seen or (w['id'], s['id']) in banned:
                 continue
             n = shared(w, s)
             if not n:
@@ -129,6 +173,21 @@ def make_pairs(weak, strong):
             out.append(s)
         return out
 
+    by_id_w = {w['id']: w for w in weak}
+    by_id_s = {s['id']: s for s in strong}
+    banned = load_bans()
+    seeded_full = set()     # 검수에서 짝 셋을 다 고른 낱말 — 네 번째 갈래를 억지로 더하지 않는다
+    for wid, sid in load_seeds(weak, strong):
+        if (wid, sid) in seen or (wid, sid) in banned:
+            continue
+        pairs.append((by_id_w[wid], by_id_s[sid]))
+        seen.add((wid, sid))
+        deg_s[sid] += 1
+        deg_w[wid] += 1
+    for wid, deg in deg_w.items():
+        if deg >= 3:
+            seeded_full.add(wid)
+
     order = sorted(weak, key=lambda w: (sum(1 for s in strong if shared(w, s)), w['id']))
     for w in order:
         for s in pick(w, 3):
@@ -140,7 +199,7 @@ def make_pairs(weak, strong):
             deg_w[w['id']] += 1
     # 네 번째 갈래는 축이 꼭 맞는 장점만 더한다(어설픈 짝을 늘리지 않는다).
     for w in order:
-        if deg_w[w['id']] >= 4:
+        if deg_w[w['id']] >= 4 or w['id'] in seeded_full:
             continue
         for s in pick(w, 4, primary_only=True):
             if deg_w[w['id']] >= 4:
@@ -151,6 +210,8 @@ def make_pairs(weak, strong):
             deg_w[w['id']] += 1
     # 장점이 3갈래에 못 미친 낱말을 메운다(같은 축 → 같은 묶음 → 빈자리 순).
     def add(w, s):
+        if (w['id'], s['id']) in banned:
+            return
         pairs.append((w, s))
         seen.add((w['id'], s['id']))
         deg_s[s['id']] += 1
@@ -185,35 +246,62 @@ def _dot(x):
 
 
 def make_text(w, s, idx):
+    """카드 한 장의 문장을 조립한다.
+
+    네 칸(머리·논리·사례·질문)과 방어 3단이 서로 같은 말을 겹쳐 말하지 않게 나눠 맡긴다:
+    위험(risk)은 «무엇이 잘못되는지», 방어 1단은 «그 말을 들은 자리», 2단은 «지금 바꾼 것»,
+    3단은 «그래서 달라진 것». (2026-11-25 전수 검수에서 같은 비용 문장이 카드 안에 세 번
+    되풀이되던 것과, 낱말마다 적어 둔 행동 꼴이 모자랄 때 «…소리를 듣지만 …하는 사람»으로
+    같은 말을 두 번 쓰던 것을 고쳤다.)
+    """
     sl, wl = s['label'], w['label']
     h = idx
-    cost, over, gain = _dot(w['cost']), _dot(s['over']), w['gain']
+    scene = w['scene']
+    # «연속 야근 뒤»처럼 때를 가리키는 장면은 «에서»가 아니라 «에»로 잇는다.
+    at = scene + ('에' if scene.endswith(('뒤', '후')) else '에서')
+    cost, over = _dot(w['cost']), _dot(s['over'])
+    gain = w['gain']            # 사례·방어 3단은 마침표까지 그대로 쓴다
+    core, how = s['core'], s['how']
     st = w['stems']
-    wk = (st[idx % len(st)] + ' 사람') if idx < len(st) else ('「' + wl + '」는 소리를 듣지만 ' + st[idx % len(st)] + ' 사람')
+    if idx < len(st):
+        wk = st[idx] + ' 사람'
+    else:
+        # 행동 꼴이 모자랄 때 — 낱말을 그대로 되풀이하지 않고 «어디서 들었는지»로 바꾼다.
+        wk = [
+            f'「{wl}」는 말을 자주 듣는 사람',
+            f'{at} 「{wl}」는 말을 들은 사람',
+            f'「{wl}」는 소리를 자주 듣는 사람',
+        ][(idx - len(st)) % 3]
     logic = [
-        f'「{wl}」라는 말은 약점처럼 들리지만, 실제로는 {s["core"]} 그 점이 「{sl}」라는 강점으로 읽힙니다.',
-        f'{cost}. 다만 {s["how"]} 습관이 붙으면 「{sl}」라는 강점으로 바뀝니다.',
-        f'겉으로는 「{wl}」 쪽으로 보입니다. 실제로는 {s["core"]} 그래서 {w["scene"]}에서 「{sl}」라는 강점이 드러납니다.',
-        f'「{wl}」라는 말은 그냥 약점입니다. 그런데 {s["how"]} 방식으로 쓰이면 「{sl}」라는 강점이 됩니다. {s["core"]}',
-        f'{cost}. 이 습관이 「{sl}」라는 강점으로 읽히는 이유는 {s["how"]} 방식으로 쓰이기 때문입니다.',
+        f'「{wl}」라는 말은 약점처럼 들리지만, 실제로는 {core} 그 점이 「{sl}」라는 강점으로 읽힙니다.',
+        f'{cost}. 다만 {how} 습관이 붙으면 「{sl}」라는 강점으로 바뀝니다.',
+        f'겉으로는 「{wl}」 쪽으로 보입니다. 실제로는 {core} 그래서 {at} 「{sl}」라는 강점이 드러납니다.',
+        f'「{wl}」라는 말은 그냥 약점으로 들립니다. 그런데 {how} 방식으로 쓰이면 「{sl}」라는 강점이 됩니다.',
+        f'{cost}. 그 행동이 「{sl}」라는 강점으로 읽히는 이유는 {how} 방식으로 쓰이기 때문입니다.',
     ][h]
     ex = [
-        f'{w["scene"]}에서 {s["how"]} 방식으로 일해 {gain}',
-        f'{w["scene"]}에서 {w["fix"]} 습관을 들인 뒤 {gain}',
-        f'{w["scene"]}에서 {s["how"]} 순서를 지켜 {gain}',
+        f'{at} {how} 방식으로 일해 {gain}',
+        f'{at} {w["fix"]} 습관을 들인 뒤 {gain}',
+        f'{at} {how} 방식을 택해 {gain}',
     ][h % 3]
     warn = [
         f'다만 {over}. 그래서 「{sl}」라는 강점을 말할 때는 확인한 근거를 한 줄 붙여야 합니다.',
         f'{over}. 상대가 그렇게 느끼지 않도록 「{wl}」라는 말 뒤에 이유를 한 줄 붙이면 안전합니다.',
-        f'{over}. 강점을 내세울 때는 «얼마나 줄였는지»를 숫자로 붙이는 편이 좋습니다.',
+        f'{over}. 「{sl}」라는 강점으로 풀어 말할 때는 {at} 무엇이 달라졌는지를 한 문장으로 붙이면 좋습니다.',
     ][h % 3]
     guard = [
-        f'{cost}. 그런 지적을 받은 적이 있습니다.',
+        f'「{wl}」는 말을 들은 적이 있습니다.',
         f'지금은 {w["fix"]} 방식으로 바꿔 두었습니다.',
         f'그 결과 {gain}',
     ]
+    q = [
+        f'「{wl}」라는 말을 들어 본 적이 있습니까?',
+        f'「{wl}」는 지적을 받은 적이 있습니까?',
+        f'「{wl}」라는 소리를 들은 적이 있습니까?',
+        f'「{wl}」는 말로 손해를 본 적이 있습니까?',
+    ][h % 4]
     return dict(w=w['id'], s=s['id'], wk=wk, logic=logic, ex=ex, warn=warn,
-                risk=w['cost'], q=f'「{w["label"]}」라는 말을 들어 본 적이 있습니까?', guard=guard)
+                risk=w['cost'], q=q, guard=guard)
 
 
 def main():
@@ -265,7 +353,7 @@ def main():
     doc['nodes'] = nodes
     doc['pairs'] = old_pairs + new_pairs
     doc['groups'] = [{'id': g, 'name': GROUP_NAME[g]} for g in GROUP_ORDER if any(n['g'] == g for n in nodes.values())]
-    doc['built'] = '2026-11-24'
+    doc['built'] = '2026-11-25'
     json.dump(doc, open(DATA, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     print(f'낱말 {len(nodes)} (단점 {sum(1 for n in nodes.values() if n["side"]=="weak")} · 장점 {sum(1 for n in nodes.values() if n["side"]=="strong")})'
           f' · 전환 짝 {len(doc["pairs"])} · 카드 {len(doc["pairs"])*2}')
