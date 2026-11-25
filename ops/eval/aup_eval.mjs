@@ -47,6 +47,9 @@ const NOTION_KEY = ENV.NOTION_TOKEN_MCL || '';
 const GEMINI_GAP_MS = Math.ceil(60000 / (Number(ENV.AUP_GEMINI_RPM) || 12));
 const GROQ_GAP_MS = Math.ceil(60000 / (Number(ENV.AUP_GROQ_RPM) || 25));
 const GROQ_BUDGET = Number(ENV.AUP_GROQ_BUDGET) || 400;
+const JUDGE_MAX = Number(ENV.AUP_JUDGE_MAX) || 60;
+const NORM_MAX = Number(ENV.AUP_NORM_MAX) || 80;                // 새 정규화는 한 번에 이만큼만 — 캐시가 쌓이면 다음 실행이 이어 간다              // 보조 채점은 한 번에 이만큼만(참고 점수라 표본이면 된다)
+const TIME_BUDGET_MS = (Number(ENV.AUP_TIME_BUDGET_MIN) || 50) * 60000;   // 이 시간이 지나면 모델 호출을 멈추고 보고서를 쓴다
 const NOTION_DB = '42214d0ef550812d8ebbdbf845d34b38';   // 📓 MCL Goal 진행일지
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -98,7 +101,30 @@ let items = fs.readFileSync(path.join(ROOT, 'assistant', 'eval', 'items.jsonl'),
   .split('\n').filter(Boolean).map((l) => JSON.parse(l));
 if (OPT.types.length) items = items.filter((i) => OPT.types.includes(i.type));
 if (OPT.split) items = items.filter((i) => i.split === OPT.split);
+/* 종류를 번갈아 세운다(route·numeric·field·followup …) — 한도에 걸려 중간에 멈춰도 모든 종류가 채점되게.
+   2026-11-25 첫 실행은 사연 168문이 앞에 몰려 있어 수치 문항까지 차례가 오지 않았다. */
+{
+  const byType = new Map();
+  for (const it of items) { if (!byType.has(it.type)) byType.set(it.type, []); byType.get(it.type).push(it); }
+  const queues = [...byType.values()], mixed = [];
+  while (queues.some((q) => q.length)) for (const q of queues) if (q.length) mixed.push(q.shift());
+  items = mixed;
+}
 if (OPT.limit) items = items.slice(0, OPT.limit);
+const T0 = Date.now();
+const outOfTime = () => Date.now() - T0 > TIME_BUDGET_MS;
+/* 한도 초과(429) — 분당 한도면 기다렸다가 다시 시도한다. 하루 한도로 보이면(연달아 막힘) 그때 멈춘다.
+   첫 실행은 분당 한도 한 번에 «오늘 끝»으로 처리해 Gemini 24회·Groq 4회에서 멈췄다. */
+async function waitFor429(r, attempt) {
+  let sec = Number(r.headers.get('retry-after')) || 0;
+  if (!sec) {
+    try { const j = await r.clone().json(); const d = JSON.stringify(j).match(/"retryDelay"\s*:\s*"(\d+(?:\.\d+)?)s"/); if (d) sec = Number(d[1]); } catch {}
+  }
+  if (!sec) sec = 15 * (attempt + 1);
+  await sleep(Math.min(70, Math.ceil(sec) + 1) * 1000);
+}
+let waited429 = { gemini: 0, groq: 0 };
+let judgeUsed = 0, normNew = 0;
 
 /* ---------------------------------------------------------------- Groq (정규화·보조 채점) */
 const NORM_PATH = path.join(ROOT, 'assistant', 'eval', 'cache', 'norm.json');
@@ -121,20 +147,24 @@ async function groqJSON(system, user) {
   if (!GROQ_KEY || OPT.dry || groqDown) return null;
   if (groqUsed >= GROQ_BUDGET) { groqDown = 'budget'; return null; }
   if (!(await groqPick())) return null;
-  const wait = groqLast + GROQ_GAP_MS - Date.now(); if (wait > 0) await sleep(wait);
-  groqLast = Date.now(); groqUsed++;
-  try {
-    const r = await realFetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', authorization: 'Bearer ' + GROQ_KEY },
-      body: JSON.stringify({ model: groqModel, temperature: 0, response_format: { type: 'json_object' },
-        messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
-    });
-    if (r.status === 429) { groqDown = 'quota'; return null; }
-    if (!r.ok) return null;
-    const j = await r.json();
-    return JSON.parse(j.choices?.[0]?.message?.content || 'null');
-  } catch { return null; }
+  for (let attempt = 0; attempt < 4; attempt++) {
+    if (outOfTime()) { groqDown = 'time'; return null; }
+    const wait = groqLast + GROQ_GAP_MS - Date.now(); if (wait > 0) await sleep(wait);
+    groqLast = Date.now(); groqUsed++;
+    try {
+      const r = await realFetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', authorization: 'Bearer ' + GROQ_KEY },
+        body: JSON.stringify({ model: groqModel, temperature: 0, response_format: { type: 'json_object' },
+          messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
+      });
+      if (r.status === 429) { waited429.groq++; if (attempt === 3) { groqDown = 'quota(429 연속)'; return null; } await waitFor429(r, attempt); continue; }
+      if (!r.ok) return null;
+      const j = await r.json();
+      return JSON.parse(j.choices?.[0]?.message?.content || 'null');
+    } catch { return null; }
+  }
+  return null;
 }
 const NORM_SYS = [
   '직업상담 자료실의 검색 도우미입니다. 사용자의 구어·은어·줄임말 질문을 검색하기 좋은 표준 한국어 질문 한 문장으로 바꿉니다.',
@@ -144,7 +174,8 @@ const NORM_SYS = [
 async function normalize(it) {
   const key = sha(JSON.stringify([it.ctx, it.q]));
   if (NORM.items[key]) return NORM.items[key].q;
-  if (!OPT.norm) return '';
+  if (!OPT.norm || normNew >= NORM_MAX) return '';
+  normNew++;
   const out = await groqJSON(NORM_SYS, JSON.stringify({ ctx: it.ctx, q: it.q }));
   if (!out || typeof out.q !== 'string' || !out.q.trim()) return '';
   NORM.items[key] = { q: out.q.trim().slice(0, 200), tags: Array.isArray(out.tags) ? out.tags.slice(0, 3) : [] };
@@ -156,24 +187,26 @@ const JUDGE_SYS = fs.readFileSync(path.join(ROOT, 'ops', 'eval', 'judge_rubric.m
 let geminiLast = 0, geminiUsed = 0, geminiDown = '';
 async function gemini(system, user) {
   if (!GEMINI_KEY || OPT.dry || geminiDown) return null;
-  const wait = geminiLast + GEMINI_GAP_MS - Date.now(); if (wait > 0) await sleep(wait);
-  geminiLast = Date.now(); geminiUsed++;
   const body = {
     systemInstruction: { parts: [{ text: system }] },
     contents: [{ role: 'user', parts: [{ text: user }] }],
     generationConfig: { temperature: 0.3, maxOutputTokens: 1100, responseMimeType: 'application/json' },
   };
-  for (let attempt = 0; attempt < 2; attempt++) {
+  let fails = 0;
+  for (let attempt = 0; attempt < 6; attempt++) {
+    if (outOfTime()) { geminiDown = 'time'; return null; }
+    const wait = geminiLast + GEMINI_GAP_MS - Date.now(); if (wait > 0) await sleep(wait);
+    geminiLast = Date.now(); geminiUsed++;
     try {
       const r = await realFetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(GEMINI_MODEL) + ':generateContent', {
         method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': GEMINI_KEY }, body: JSON.stringify(body),
       });
-      if (r.status === 429) { geminiDown = 'quota'; return null; }
+      if (r.status === 429) { waited429.gemini++; if (attempt >= 4) { geminiDown = 'quota(429 연속)'; return null; } await waitFor429(r, attempt); continue; }
       if (r.status === 401 || r.status === 403) { geminiDown = 'key ' + r.status; return null; }
-      if (!r.ok) { await sleep(3000); continue; }
+      if (!r.ok) { if (++fails >= 2) return null; await sleep(3000); continue; }
       const j = await r.json();
       return (j.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
-    } catch { await sleep(3000); }
+    } catch { if (++fails >= 2) return null; await sleep(3000); }
   }
   return null;
 }
@@ -248,7 +281,8 @@ async function runItem(it) {
   pass.refuse = it.refuse ? false : true;        // 거절해야 하는데 답했으면 실패, 답해야 하는데 답했으면 통과
   r.pass = pass;
   // ⑥ 보조 채점
-  if (OPT.judge && GROQ_KEY && !OPT.dry) {
+  if (OPT.judge && GROQ_KEY && !OPT.dry && judgeUsed < JUDGE_MAX) {
+    judgeUsed++;
     const j = await groqJSON(JUDGE_SYS, JSON.stringify({ question: asked, evidence: ev.map((e) => ({ id: e.id, title: e.title, snippet: e.snippet })), answer }));
     if (j && typeof j === 'object') {
       const pick = (k) => (Number.isFinite(Number(j[k])) ? Math.max(0, Math.min(2, Number(j[k]))) : null);
@@ -305,7 +339,8 @@ const sum = summarize(rows);
 const report = {
   schema: 'witw-aup-eval-report/1.0.0', at: started.toISOString(),
   commit: ENV.GITHUB_SHA || '', model: GEMINI_KEY && !OPT.dry ? GEMINI_MODEL : '(없음)', groq_model: groqModel || '(없음)',
-  calls: { gemini: geminiUsed, groq: groqUsed }, stopped: { gemini: geminiDown || null, groq: groqDown || null },
+  calls: { gemini: geminiUsed, groq: groqUsed }, waited_429: waited429, minutes: Math.round((Date.now() - T0) / 6000) / 10,
+  stopped: { gemini: geminiDown || null, groq: groqDown || null },
   options: OPT, summary: sum, rows,
 };
 if (Object.keys(NORM.items).length && !ENV.AUP_NO_CACHE_WRITE) {
@@ -320,7 +355,7 @@ const line = (k, v) => `| ${k} | ${v ?? '—'} |`;
 const md = [
   '## AUP-2 성적표', '',
   `- 커밋 \`${(ENV.GITHUB_SHA || '').slice(0, 8) || '로컬'}\` · 답 모델 \`${report.model}\` · 보조 채점 \`${report.groq_model}\``,
-  `- 호출: Gemini ${geminiUsed} · Groq ${groqUsed}` + (geminiDown || groqDown ? ` · 멈춤: ${[geminiDown && 'Gemini ' + geminiDown, groqDown && 'Groq ' + groqDown].filter(Boolean).join(', ')}` : ''),
+  `- 호출: Gemini ${geminiUsed} · Groq ${groqUsed} · 한도 대기(429) Gemini ${waited429.gemini}·Groq ${waited429.groq} · ${report.minutes}분` + (geminiDown || groqDown ? ` · 멈춤: ${[geminiDown && 'Gemini ' + geminiDown, groqDown && 'Groq ' + groqDown].filter(Boolean).join(', ')}` : ''),
   '', '| 항목 | 값 |', '| --- | --- |',
   line('문항', sum.items), line('검색 1순위 적중(%)', sum.retrieval_hit1), line('검색 3순위 안(%)', sum.retrieval_hit3),
   line(`정규화 질문 검색 1순위(%) · ${sum.norm_compared}문`, sum.norm_retrieval_hit1), line('정규화 질문 검색 3순위 안(%)', sum.norm_retrieval_hit3),

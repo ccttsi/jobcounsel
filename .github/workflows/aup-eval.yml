@@ -2,8 +2,10 @@
 #   문항 assistant/eval/items.jsonl 을 라이브와 같은 거르개·검색·지침으로 풀게 하고 채점한다.
 #   비밀값(이름만): GEMINI_EVAL_API_KEY(답) · GROQ_API_KEY(정규화·보조 채점) · NOTION_TOKEN_MCL(진행일지 한 줄)
 #   — 없는 키의 단계만 건너뛴다. 사실·수치 판정은 규칙 채점기가 하고, Groq 점수는 참고용이다.
-#   무료 한도: Gemini 평가용은 Flash-Lite(피클 실측 하루 500회)로 183문, Groq 은 한 번에 최대 400회
-#   (브리핑·이머징 수집과 하루 한도를 나눠 쓰므로 수집이 끝난 오후에 돈다).
+#   무료 한도: Gemini 평가용은 Flash-Lite(피클 실측 하루 500회) — 답해야 할 문항 전부(약 230회).
+#   Groq 은 새 정규화 80 + 보조 채점 60(표본)까지 — 브리핑·이머징 수집과 하루 한도를 나눠 쓰므로 오후에 돈다.
+#   한도 초과(429)는 기다렸다가 다시 시도하고, 연달아 막힐 때만 멈춘다(2026-11-25 첫 실행은 분당 한도에 바로 멈췄다).
+#   문항은 종류를 번갈아 세워 중간에 멈춰도 모든 종류가 채점된다. 정규화 결과는 actions/cache 로 실행 사이에 이어진다.
 name: aup-eval
 
 on:
@@ -16,7 +18,7 @@ on:
         required: false
         default: '0'
       type:
-        description: '문항 종류만(route,numeric,followup,out_of_scope,attack — 쉼표)'
+        description: '문항 종류만(route,numeric,field,followup,out_of_scope,attack — 쉼표)'
         required: false
         default: ''
       judge:
@@ -39,13 +41,20 @@ jobs:
   eval:
     name: aup-eval
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: 정규화 캐시 이어 받기
+        uses: actions/cache@v4
+        with:
+          path: assistant/eval/cache
+          key: aup-norm-${{ github.run_id }}
+          restore-keys: aup-norm-
 
       - name: 문항이 원천과 같은지
         run: python3 ops/eval/build_items.py --check
@@ -56,9 +65,12 @@ jobs:
           GEMINI_EVAL_MODEL: gemini-3.5-flash-lite
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           NOTION_TOKEN_MCL: ${{ secrets.NOTION_TOKEN_MCL }}
-          AUP_GEMINI_RPM: '12'
-          AUP_GROQ_RPM: '25'
+          AUP_GEMINI_RPM: '8'
+          AUP_GROQ_RPM: '5'
           AUP_GROQ_BUDGET: '400'
+          AUP_JUDGE_MAX: '60'
+          AUP_NORM_MAX: '80'
+          AUP_TIME_BUDGET_MIN: '50'
         run: |
           args="--out assistant/eval/reports/run.json"
           [ "${{ github.event.inputs.limit || '0' }}" != "0" ] && args="$args --limit ${{ github.event.inputs.limit }}"
