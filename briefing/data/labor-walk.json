@@ -1,8 +1,9 @@
 {
  "schema_version": "1.4.0",
- "generated_at": "2026-11-25T07:49:10+09:00",
+ "generated_at": "2026-11-26T07:22:10+09:00",
  "note": "briefing.json·archive/*.json의 카드 중 labor_walk:true(고용·임금·직무·정책 등)를 모은 실기사 색인. 본문은 카드의 「무슨 일·수치·근거」를 그대로 옮긴 우리 말 요약이며 원문 문장이 아니다.",
  "dates": [
+  "2026-11-26",
   "2026-11-25",
   "2026-11-24",
   "2026-11-23",
@@ -267,6 +268,7 @@
   "2025-05-15"
  ],
  "counts": {
+  "2026-11-26": 8,
   "2026-11-25": 8,
   "2026-11-24": 8,
   "2026-11-23": 8,
@@ -531,6 +533,342 @@
   "2025-05-15": 1
  },
  "articles": [
+  {
+   "date": "2026-11-26",
+   "card_id": "c01",
+   "order": 1,
+   "title": "AI 부트캠프 40개교, 기업이 낸 문제로 160명 겨뤄",
+   "kicker": "전국 40개교·40개 팀 160명 · 사업 예산 1,341.8억원",
+   "category": "AI·직무",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
+   "region": "kr",
+   "track": "A",
+   "source_name": "교육부",
+   "source_title": "전국 인공지능(AI) 인재가 한자리에, 인공지능(AI) 부트캠프 학생 교류의 장 마련",
+   "source_url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=107836&lev=0&m=020402&opType=N&page=1&s=moe&searchType=null&statusYN=W",
+   "published_at": "2026-11-25",
+   "license_type": "KOGL-1",
+   "key_numbers": [
+    {
+     "label": "AI 부트캠프 참여 대학",
+     "value": "40개교",
+     "delta": "6개 권역",
+     "period": "2026년"
+    },
+    {
+     "label": "경진대회 참가",
+     "value": "160명",
+     "delta": "40개 팀·기업 5곳 출제",
+     "period": "2026년 11월 25일"
+    },
+    {
+     "label": "부트캠프 사업 예산",
+     "value": "1,341.8억원",
+     "delta": "2023년 150억원",
+     "period": "2026년(88개교)"
+    },
+    {
+     "label": "분과 1위 상금",
+     "value": "500만원",
+     "delta": "교육부 장관상",
+     "period": "2026년 11월 27일"
+    }
+   ],
+   "text": "교육부와 한국산업기술진흥원이 11월 25일부터 27일까지 부여 롯데리조트에서 인공지능(AI) 분야 첨단산업 인재양성 부트캠프 학생 행사(라운드업)를 연다. 기업이 실제 현안을 문제로 내고 학생 팀이 이를 풀어 결과물을 평가받는 경진대회와 취업 지원 프로그램을 함께 운영한다.\n\nAI 부트캠프는 2026년 권역별로 40개교가 운영 중이다(수도권 9개교, 강원·전북·제주 7개교, 대경·동남·충청·호남 각 6개교). 경진대회에는 학교당 4인 1팀씩 40개 팀·160명이 참가해 아마존웹서비스·한국마이크로소프트·네이버클라우드·업스테이지·엘리스그룹이 낸 5개 문제를 9월 28일부터 11월 25일까지 수행했다. 첨단산업 인재양성 부트캠프 예산은 2023년 150억원(10개교) → 2024년 630억원(42개교) → 2025년 682억5,000만원(47개교) → 2026년 1,341억7,500만원(88개교)으로 늘었다. 행사 참석자는 300명 내외이고, 분과 1위 팀에는 11월 27일 교육부 장관상과 상금 500만원이 주어진다."
+  },
+  {
+   "date": "2026-11-26",
+   "card_id": "c02",
+   "order": 2,
+   "title": "고용센터 심층상담 47점 — AI가 먼저 구직자 고른다",
+   "kicker": "우수사례 47점·수상자 52명 · 알선 123건이 면접 22명으로",
+   "category": "국내 고용행정",
+   "topic": "고용서비스·채용",
+   "theme_key": "th-employment-service",
+   "theme_label": "고용서비스와 상담",
+   "region": "kr",
+   "track": "B",
+   "source_name": "고용노동부",
+   "source_title": "구직자에게는 새로운 도약을, 기업에는 성장의 기회를! 맞춤형 고용서비스가 함께합니다",
+   "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20302",
+   "published_at": "2026-11-25",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "시상 우수사례",
+     "value": "47점",
+     "delta": "수상자 52명",
+     "period": "2026년 11월 25일"
+    },
+    {
+     "label": "행사 참석",
+     "value": "160여 명",
+     "delta": "전국 고용센터 담당자 포함",
+     "period": "2026년 11월 25일"
+    },
+    {
+     "label": "기업 사례 알선",
+     "value": "123건",
+     "delta": "면접 22명 연결",
+     "period": "2026년"
+    }
+   ],
+   "text": "고용노동부와 한국고용노동교육원이 11월 25일 2026년 맞춤형 고용서비스 성과공유회를 열고, 구직자 도약보장 패키지와 기업지원종합서비스로 취업과 채용을 이끈 사례를 공유했다. 두 서비스는 앞으로 AI를 활용한 초기 상담과 연계해 심층 지원이 필요한 구직자를 먼저 가려내는 쪽으로 고도화된다.\n\n행사에서는 고용+성장사례 공모전 수상작 47점이 시상됐다(구직자 도약보장 패키지 22점, 기업지원종합서비스 25점). 수상자는 구직자 9명·기업 7명·고용센터 담당자 36명 등 52명이고, 구직자·기업 관계자·전국 고용센터 담당자 등 160여 명이 참석했다. 사례로 소개된 한 손해사정사는 기업설명회 4회와 일자리 수요데이 4회, 알선 123건을 거쳐 구직자 22명과 면접을 봤다. 행사에서는 'AI 시대, 변화하는 채용환경과 고용서비스의 역할' 특강도 열렸다."
+  },
+  {
+   "date": "2026-11-26",
+   "card_id": "c03",
+   "order": 3,
+   "title": "공인회계사 1,100명 — 3년 연속 50명씩 줄인다",
+   "kicker": "2027년 최소선발 1,100명·1차 합격 2,600명 · 이유에 AI 대체",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "kr",
+   "track": "B",
+   "source_name": "금융위원회",
+   "source_title": "공인회계사 자격·징계위원회 개최 결과 — 2027년 공인회계사 최소선발예정인원 결정",
+   "source_url": "https://www.fsc.go.kr/no010101/88212",
+   "published_at": "2026-11-24",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "2027년 최소선발",
+     "value": "1,100명",
+     "delta": "-50명",
+     "period": "2027년도"
+    },
+    {
+     "label": "1차 시험 합격자",
+     "value": "2,600명",
+     "delta": "",
+     "period": "2027년도"
+    },
+    {
+     "label": "실제 선발인원",
+     "value": "1,150명",
+     "delta": "2022년 1,237명",
+     "period": "2026년"
+    }
+   ],
+   "text": "금융위원회 공인회계사 자격·징계위원회가 2027년도 공인회계사 최소선발예정인원을 1,100명으로 정했다. 2024년 1,250명으로 늘린 뒤 3년 연속 50명씩 줄이는 흐름이고, 감축 사유에 AI 활용에 따른 저연차 회계사 업무 대체가 포함됐다.\n\n2027년 최소선발예정인원은 1,100명, 제1차 시험 합격자 수는 2,600명이다. 최소선발예정인원은 2024년 1,250명 → 2025년 1,200명 → 2026년 1,150명 → 2027년 1,100명으로 3년 연속 50명씩 줄었다. 실제 선발인원은 2020년 1,110명, 2022년 1,237명, 2026년 1,150명이었다. 위원회는 회계법인·비회계법인 채용 수요, 미지정 회계사 누적, AI 확산에 따른 단순 회계업무 대체 효과를 함께 고려했다고 밝혔다."
+  },
+  {
+   "date": "2026-11-26",
+   "card_id": "c04",
+   "order": 4,
+   "title": "AI 에이전트에 많이 노출된 기업, 구인공고 2.11% 덜 늘었다",
+   "kicker": "구인공고 3,480만건 · 6개월 -2.11% / 9개월 -3.20%",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "track": "A",
+   "source_name": "arXiv (LUISS대·댈러스 연준·로체스터대·예일대)",
+   "source_title": "The Rise of Agents and the Labor Market",
+   "source_url": "https://arxiv.org/abs/2611.27210",
+   "published_at": "2026-11-23",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "6개월 구인공고 증가율",
+     "value": "-2.11%",
+     "delta": "노출 1표준편차당",
+     "period": "2026-11-23 논문"
+    },
+    {
+     "label": "9개월 구인공고 증가율",
+     "value": "-3.20%",
+     "delta": "노출 1표준편차당",
+     "period": "2026-11-23 논문"
+    },
+    {
+     "label": "Claude Code 2.0 이후 6개월",
+     "value": "-4.73%",
+     "delta": "출시 전 노출 1표준편차당",
+     "period": "2026-11-23 논문"
+    },
+    {
+     "label": "분석한 구인공고",
+     "value": "3,480만건",
+     "delta": "상장기업",
+     "period": "2026-11-23 논문"
+    }
+   ],
+   "text": "미국 상장기업 구인공고 3,480만 건과 AI 토큰 사용량 자료를 붙여, 기업이 에이전트형 AI에 얼마나 노출됐는지(주가가 AI 사용량과 함께 움직인 정도)를 계산한 연구가 11월 23일 arXiv에 개정판을 올렸다. 노출이 큰 기업일수록 이후 구인공고가 덜 늘었다.\n\n에이전트 AI 노출도가 1표준편차 높은 기업은 이후 6개월 구인공고 증가율이 2.11%, 9개월은 3.20% 낮았다. Claude Code 2.0 출시 전 노출이 1표준편차 높았던 기업은 출시 후 6개월 공고 증가율이 4.73% 낮았다. 감소는 비시니어 일자리에 집중됐고 시니어 일자리는 유의하지 않았다(2026-11-23, arXiv:2611.27210v2)."
+  },
+  {
+   "date": "2026-11-26",
+   "card_id": "c05",
+   "order": 5,
+   "title": "미국 근로자 근속 중앙값 4.1년 — 숙박·음식점은 2.4년",
+   "kicker": "공공 5.6년 vs 민간 3.9년 · 연방정부 7.0년",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 노동통계국(BLS) The Economics Daily",
+   "source_title": "Median tenure with current employer was 4.1 years in January 2026",
+   "source_url": "https://www.bls.gov/opub/ted/2026/median-tenure-with-current-employer-was-4-1-years-in-january-2026.htm",
+   "published_at": "2026-11-23",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "전체 근속 중앙값",
+     "value": "4.1년",
+     "delta": "",
+     "period": "2026년 1월"
+    },
+    {
+     "label": "민간부문",
+     "value": "3.9년",
+     "delta": "-1.7년(공공 대비)",
+     "period": "2026년 1월"
+    },
+    {
+     "label": "공공부문",
+     "value": "5.6년",
+     "delta": "",
+     "period": "2026년 1월"
+    },
+    {
+     "label": "숙박·음식점",
+     "value": "2.4년",
+     "delta": "업종 중 최저",
+     "period": "2026년 1월"
+    }
+   ],
+   "text": "미국 노동통계국이 현재인구조사(CPS)로 2026년 1월 기준 임금·급여 근로자의 현 직장 근속연수를 정리해 11월 23일 공표했다. 근로자 절반은 4.1년을 넘게, 절반은 그보다 짧게 한 직장에 머물렀다.\n\n전체 중앙값 4.1년, 공공부문 5.6년·민간 3.9년. 업종별로는 연방정부 7.0년, 금융 5.0년, 제조·정보·광업 4.9년이 길고 숙박·음식점 2.4년, 도소매 3.4년이 짧았다(2026년 1월 기준, 미국 노동통계국)."
+  },
+  {
+   "date": "2026-11-26",
+   "card_id": "c06",
+   "order": 6,
+   "title": "AI 코딩 도구 도입 1년, 기술직 분기 채용 29% 줄었다",
+   "kicker": "다국적기업 5,414곳 · 신입·코딩 비중 높은 직무에 집중",
+   "category": "채용시장",
+   "topic": "청년·중장년 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "global",
+   "track": "A",
+   "source_name": "arXiv (MIT·마이크로소프트 리서치)",
+   "source_title": "AI-Assisted Programming and Labor Demand",
+   "source_url": "https://arxiv.org/abs/2611.31083",
+   "published_at": "2026-11-23",
+   "license_type": "CC-BY-4.0",
+   "key_numbers": [
+    {
+     "label": "분기 기술직 채용",
+     "value": "-29%",
+     "delta": "도입 1년 뒤",
+     "period": "2026-11-23 논문"
+    },
+    {
+     "label": "분석 기업",
+     "value": "5,414곳",
+     "delta": "다국적기업",
+     "period": "2026-11-23 논문"
+    },
+    {
+     "label": "미국 프로그래밍 인력 커버",
+     "value": "38%",
+     "delta": "분석 기업 합계",
+     "period": "2026-11-23 논문"
+    }
+   ],
+   "text": "MIT·마이크로소프트 연구진이 다국적기업 5,414곳의 GitHub Copilot 도입을 기업의 소프트웨어 조달 주기를 이용해 분석한 논문을 11월 23일 arXiv에 올렸다. 도입 1년 뒤 분기 기술직 채용이 29% 줄었다.\n\n분석 대상 기업은 미국 프로그래밍 인력의 38%를 덮는다. 채용 감소는 조달 주기에 따라 도입이 이뤄진 기업에서 나타났고, 이직·전체 기술직 인원·공석 채움 기간에는 영향이 없었다. 감소는 코딩 업무 비중이 가장 높은 신입 기술직에 집중됐다(2026-11-23, arXiv:2611.31083)."
+  },
+  {
+   "date": "2026-11-26",
+   "card_id": "c07",
+   "order": 7,
+   "title": "AI 노출 10%p 높은 전공, 첫해 소득 10% 적었다",
+   "kicker": "텍사스 공립대 졸업생 전체 · 대학원 진학은 늘었지만 소득 회복은 못 봐",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
+   "track": "B",
+   "source_name": "미국 댈러스 연방준비은행(Federal Reserve Bank of Dallas)",
+   "source_title": "Degrees for GPTs: The Effects of Generative AI on Skill Demand and Supply (Working Paper 2642)",
+   "source_url": "https://www.dallasfed.org/research/papers/2026/wp2642",
+   "published_at": "2026-11-24",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "첫해 소득",
+     "value": "-10%",
+     "delta": "노출 10%p 높은 전공",
+     "period": "ChatGPT 공개 이후"
+    },
+    {
+     "label": "분석 모집단",
+     "value": "텍사스 공립 4년제 전체",
+     "delta": "행정자료 연결",
+     "period": "2026-11-24"
+    },
+    {
+     "label": "석사 진학",
+     "value": "증가",
+     "delta": "주로 같은 분야",
+     "period": "ChatGPT 공개 이후"
+    }
+   ],
+   "text": "미국 댈러스 연방준비은행 연구진이 텍사스 공립 4년제 대학 졸업생 전체의 행정자료를 주(州) 소득자료·구인공고와 연결해, 전공의 AI 자동화 노출도가 졸업 후 첫 소득과 진학 결정에 미친 영향을 분석해 11월 24일 공개했다.\n\nAI 노출도가 10%포인트 높은 전공 졸업생은 ChatGPT 공개(2022년 11월) 이후 첫해 소득이 10% 낮았다. 고용률 하락과 조건부 소득 감소가 함께 작용했다. 노출이 큰 전공자는 대학원 진학을 늘렸지만 주로 같은 분야를 골랐고, 그 분야 석사 졸업생에게서도 소득 감소가 나타났다(2026-11-24, 댈러스 연준 WP 2642)."
+  },
+  {
+   "date": "2026-11-26",
+   "card_id": "c08",
+   "order": 8,
+   "title": "프랑스 AI 노출 최상위 5분위, 62.7%가 여성",
+   "kicker": "사무·회계 직무가 최상위 · AI 교육 지원은 31%, 미국은 56%",
+   "category": "해외 노동시장",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
+   "region": "global",
+   "track": "B",
+   "source_name": "HEC Paris (LIFT·INSEAD·프랑스 중앙은행 공동 연구)",
+   "source_title": "63% of France's Most AI-Exposed Workers Are Women",
+   "source_url": "https://www.hec.edu/en/dare/economics-finance/63-france-s-most-ai-exposed-workers-are-women",
+   "published_at": "2026-11-23",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "최상위 노출 5분위 여성 비중",
+     "value": "62.7%",
+     "delta": "전체 49.5%",
+     "period": "2026-11-23 발표"
+    },
+    {
+     "label": "최상위 노출 5분위 견습생",
+     "value": "5.4%",
+     "delta": "전체 3.4%",
+     "period": "2026-11-23 발표"
+    },
+    {
+     "label": "회사 AI 지원",
+     "value": "31%",
+     "delta": "미국 56%",
+     "period": "2026-11-23 발표"
+    },
+    {
+     "label": "분석한 근로자",
+     "value": "2,270만명",
+     "delta": "공공부문 포함",
+     "period": "2026-11-23 발표"
+    }
+   ],
+   "text": "HEC 파리 노동혁신미래연구소(LIFT)가 INSEAD·프랑스 중앙은행 연구자와 함께 프랑스 근로자 2,270만 명의 행정자료와 1만6,740개 스킬 평가를 결합해 생성AI 노출 상위 직업을 정리했고, HEC 파리가 11월 23일 그 결과를 소개했다.\n\n노출 최상위 5분위(약 450만 명)의 62.7%가 여성으로 전체(49.5%)보다 높았고, 견습생 비중도 5.4%로 전체(3.4%)보다 컸다. 회계 사원은 노출 99번째 백분위, 행정·사무 관리직은 96번째였다. 프랑스 근로자는 31%만 회사에서 AI 사용 독려·도구·교육을 받는 반면 미국은 56%였다(2026-11-23 소개)."
+  },
   {
    "date": "2026-11-25",
    "card_id": "c01",
