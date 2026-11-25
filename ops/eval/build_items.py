@@ -3,7 +3,7 @@
 
 출처(전부 저장소 안, 전부 합성 문장 — 실제 사연·개인정보 없음)
   · 사연 학습셋 assistant/test/witw-counseling-intents.jsonl  → type=route   (정답 섹터·빼야 할 섹터·train/test 갈래 그대로)
-  · 손으로 쓴 문항 ops/eval/seed_items.json                   → type=numeric(법정 수치) · followup(앞 대화 잇기)
+  · 손으로 쓴 문항 ops/eval/seed_items.json                   → type=numeric(법정 수치) · followup(앞 대화 잇기) · field(현장 말투)
   · 범위 시험 assistant/test/scope-cases.json (off)          → type=out_of_scope, refuse=true
   · 보안 시험 assistant/test/guard-cases.json (attack)       → type=attack,       refuse=true
 
@@ -48,6 +48,10 @@ def build():
         items.append({"id": it["id"], "type": "followup", "q": it["q"], "ctx": it.get("ctx", []),
                       "expect_sectors": it.get("expect_sectors", []), "support": [], "exclude": [],
                       "must": it.get("must", []), "refuse": False, "split": "test", "cat": "followup"})
+    for it in seed.get("field", []):
+        items.append({"id": it["id"], "type": "field", "q": it["q"], "ctx": it.get("ctx", []),
+                      "expect_sectors": it.get("expect_sectors", []), "support": [], "exclude": [],
+                      "must": it.get("must", []), "refuse": False, "split": "test", "cat": it.get("cat", "field")})
     n = 0
     for c in read_json("assistant/test/scope-cases.json")["cases"]:
         if c["expect"] == "off":
