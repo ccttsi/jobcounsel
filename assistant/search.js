@@ -727,6 +727,8 @@
   function gapCandidate(q, res) {
     var chk = gapCheck(q);
     if (!chk.ok) return null;
+    /* 자료실 범위 밖 질의(주가·코드·날씨 …)는 빈틈이 아니다 — 자가질문 재료로 넘기지 않는다(assistant/scope.js). */
+    try { if (window.JCAssistScope && window.JCAssistScope.check(chk.q).verdict === 'off') return null; } catch (e) {}
     var list = res || [], top = list.length ? (Number(list[0].score) || 0) : 0;
     var signal = list.length ? (top < GAP.weak ? 'weak' : (top < GAP.unsure ? 'dim' : '')) : 'zero';
     if (!signal) return null;
