@@ -1738,6 +1738,59 @@ def run_scope_checks():
     note(f"비서 질문 범위 — 시험 {len(cases)}문 · 오탐 확인 {len(clean)}문 (서버 사본 동기 포함)")
 
 
+# ---------------------------------------------------------------- 3-8c) 비서 프롬프트 주입·탈옥 분류기 (2026-11-25)
+#   assistant/guard.js — 지침 무시(주입)·제한 없는 모드(탈옥)·지침 빼내기(추출)를 질문과 딸린 글에서 가려낸다.
+#     ① 서버 사본(supabase/functions/assistant-proxy/guard.js)이 원본과 바이트까지 같은가
+#     ② 시험 문장(assistant/test/guard-cases.json)의 판정이 기대값(attack·suspect·clean)과 같은가
+#     ③ 오탐 0 — 자료실 질의(사연·검색·동의어·범위 시험의 in)가 clean인가, 색인 문장(근거 조각으로 실리는 글)이 clean인가
+GUARD_JS = "assistant/guard.js"
+GUARD_SERVER = "supabase/functions/assistant-proxy/guard.js"
+GUARD_CASES = "assistant/test/guard-cases.json"
+GUARD_RUNNER = r"""
+const G = require(process.argv[1]);
+const input = JSON.parse(require('fs').readFileSync(0, 'utf8'));
+const out = { cases: [], clean: [], docs: [] };
+for (const c of input.cases) { const r = G.check(c.q); if (r.verdict !== c.expect) out.cases.push([c.q, c.expect, r.verdict, r.signals.join(',')]); }
+for (const q of input.clean) { const r = G.check(q); if (r.verdict !== 'clean') out.clean.push([q, r.verdict, r.signals.join(',')]); }
+for (const q of input.docs) { const r = G.check(q); if (r.verdict === 'attack') out.docs.push([q, r.verdict, r.signals.join(',')]); }
+process.stdout.write(JSON.stringify(out));
+"""
+
+
+def run_guard_checks():
+    src, server = os.path.join(ROOT, GUARD_JS), os.path.join(ROOT, GUARD_SERVER)
+    if not os.path.exists(src) or not os.path.exists(server):
+        fail("guard", f"{GUARD_JS} 또는 서버 사본 {GUARD_SERVER} 이 없다")
+        return
+    with open(src, "rb") as a, open(server, "rb") as b:
+        if a.read() != b.read():
+            fail("guard", f"{GUARD_SERVER} 이 {GUARD_JS} 와 다르다 — cp {GUARD_JS} {GUARD_SERVER}")
+    cases = (load_json(os.path.join(ROOT, GUARD_CASES))[0] or {}).get("cases", [])
+    scope_in = [c.get("q", "") for c in (load_json(os.path.join(ROOT, SCOPE_CASES))[0] or {}).get("cases", [])
+                if c.get("expect") != "off"]
+    clean = scope_clean_queries() + scope_in
+    index = load_json(os.path.join(ROOT, "assistant", "data", "index.json"))[0] or {}
+    docs = [str(d.get(k)) for d in index.get("docs", []) for k in ("t", "x") if d.get(k)]
+    try:
+        result = subprocess.run(["node", "-e", GUARD_RUNNER, src],
+                                input=json.dumps({"cases": cases, "clean": clean, "docs": docs}),
+                                capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        fail("guard", f"분류기 시험을 돌리지 못했다 ({exc})")
+        return
+    if result.returncode != 0:
+        fail("guard", f"분류기 실행 오류 — {result.stderr.strip()[:200]}")
+        return
+    got = json.loads(result.stdout or "{}")
+    for q, want, verdict, sig in got.get("cases", []):
+        fail("guard", f"시험 문장 «{q[:40]}» — 기대 {want}, 판정 {verdict}({sig})")
+    for q, verdict, sig in got.get("clean", []):
+        fail("guard", f"오탐 — 자료실 질의 «{q[:40]}» 가 {verdict}({sig})")
+    for q, verdict, sig in got.get("docs", []):
+        fail("guard", f"오탐 — 색인 문장 «{q[:40]}» 이 {verdict}({sig})로 근거에서 빠진다")
+    note(f"비서 주입·탈옥 분류기 — 시험 {len(cases)}문 · 오탐 확인 질의 {len(clean)}문 · 색인 문장 {len(docs)}개 (서버 사본 동기 포함)")
+
+
 # ---------------------------------------------------------------- 3-9) 공용 법정 수치 단일 원천 (2026-11-22)
 #   최저임금·구직급여 상한·4대보험 요율처럼 여러 섹터가 함께 쓰는 수치가 섹터마다 따로 박혀 있으면,
 #   해가 바뀔 때 한 곳만 고치고 나머지가 옛 숫자로 남는다 — 상담에서 그대로 잘못 안내된다.
@@ -2316,6 +2369,8 @@ def main():
         run_gate_checks()     # 수집 게이트의 불량 샘플 시험도 같은 이유로 json에 붙여 돈다
     if "json" in selected or "scope" in selected:
         run_scope_checks()    # 비서 질문 범위 판정기 — 서버 사본 동기·시험 문장·오탐 0
+    if "json" in selected or "guard" in selected:
+        run_guard_checks()    # 비서 프롬프트 주입·탈옥 분류기 — 서버 사본 동기·시험 문장·오탐 0
     if "license" in selected:
         run_license_checks()
     if "js" in selected:
@@ -2349,8 +2404,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
-        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "role", "expose"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
+        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "role", "expose"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")

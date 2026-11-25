@@ -157,7 +157,8 @@ curl -s -X POST 'https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant
 - 질의는 `stream: true` 면 **SSE** 로 글자를 바로 흘려보냅니다(첫 글자 전 `429·404·5xx` 면 다음 무료 모델로 갈아탐). 스트리밍 답은 평문이고 마지막 줄 `[[REFS:e1,e2]]` 만 근거 번호로 떼어 봅니다. `stream` 이 없으면 기존 JSON 응답 그대로입니다.
 - 속도: `thinkingConfig.thinkingLevel='low'`, 웹 교차 확인이 꺼져 있으면 `google_search` 를 붙이지 않습니다(미지원 모델이 400 을 주면 그 설정만 빼고 재시도).
 - CORS 는 `JC_ALLOW_ORIGINS`(기본 `https://witw.pages.dev,https://ccttsi.github.io,https://ccttsi.pages.dev`)에 적은 출처만 허용합니다.
-- **질문 범위**: `scope.js`(원본 `assistant/scope.js`와 바이트 동일 사본)로 질문을 먼저 판정합니다. `off`(코드 작성·주가·날씨·지침 무시 등 자료실과 무관)면 Gemini를 부르지 않고 안내문을 `scope: 'off'`로 돌려주고, `mixed`(무관한 요청이 섞임)면 웹 확인을 끄고 «그 부분은 답하지 않는다»는 지시를 붙입니다. **배포할 때 `index.ts`와 `scope.js`가 함께 올라가야 합니다**(같은 폴더라 `supabase functions deploy`가 같이 묶습니다).
+- **질문 범위**: `scope.js`(원본 `assistant/scope.js`와 바이트 동일 사본)로 질문을 먼저 판정합니다. `off`(코드 작성·주가·날씨·지침 무시 등 자료실과 무관)면 Gemini를 부르지 않고 안내문을 `scope: 'off'`로 돌려주고, `mixed`(무관한 요청이 섞임)면 웹 확인을 끄고 «그 부분은 답하지 않는다»는 지시를 붙입니다. **배포할 때 `index.ts`·`scope.js`·`guard.js`가 함께 올라가야 합니다**(같은 폴더라 `supabase functions deploy`가 같이 묶습니다).
+- **지침 보호**: `guard.js`(원본 `assistant/guard.js`와 바이트 동일 사본)로 질문을 범위 판정보다 먼저 봅니다. `attack`이면 Gemini를 부르지 않고 `scope: 'guard'` 안내를, `suspect`면 웹 확인을 끄고 «보안 주의» 지시를 붙입니다. 근거 조각·열린 화면 글에 숨은 지시가 있으면 그 조각을 버리고, 나머지는 칸 이름 흉내를 깨뜨려 넣습니다. 요청마다 새 보안 표식을 지침에 넣고, 답에 그 표식이나 지침 문장 조각 둘 이상이 보이면 답 전체를 안내문으로 바꿉니다(`guard: 'leak'`, 스트리밍은 끝 48자를 잡아 두고 봅니다).
 - **질문·대화·검색어를 찍는 로그가 이 함수에 없습니다.** 오류도 내용 없이 코드로만 돌려줍니다.
 
 ---

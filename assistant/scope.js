@@ -19,7 +19,7 @@
      · 확실한 것만 거른다. 애매하면 in — 모델 지침(SYS ■ 범위)이 두 번째 그물이다.
      · 자료실 낱말(직업·취업·채용·자격·훈련·근로·상담 …)이 있으면 함부로 off 하지 않는다.
        「개발자 되려면 파이썬 배워야 하나요」·「증권사 채용 일정」·「자기소개서 써 줘」는 자료실 질문이다.
-     · 지시 무시·지침 공개 요구(프롬프트 주입)는 자료실 낱말이 있어도 off.
+     · 지시 무시·지침 공개 요구(프롬프트 주입·탈옥)는 assistant/guard.js 몫이다(이 판정보다 먼저 돈다).
      · 질문 내용을 어디에도 남기지 않는다(판정 결과만 돌려준다). */
 (function (root) {
   'use strict';
@@ -41,10 +41,8 @@
   /* 관계없는 요청의 갈래.
      hard  자료실 낱말이 있어도 그 부분은 답하지 않는다(섞이면 mixed).
      soft  자료실 낱말이 있으면 자료실 질문으로 본다(「영문 이력서 번역」·「면접 답변 써 줘」).
-     inject  언제나 off — 지침을 무시하거나 드러내라는 요구. */
+     지침 무시·공개 요구(프롬프트 주입·탈옥)는 이 파일이 아니라 assistant/guard.js 가 따로 본다. */
   var CATS = [
-    { id: 'inject', kind: 'inject', label: '비서 지침을 바꾸거나 보여 달라는 요청',
-      re: /(이전|위의?|앞의?|모든|기존)\s*(지시|지침|명령|규칙|프롬프트)[^.?!]{0,12}(무시|잊어|버려|어겨|해제)|ignore\s+(all\s+|the\s+)?(previous|prior|above)\s+(instructions|prompts?)|(시스템|system)\s*(프롬프트|prompt|지침|메시지)[^.?!]{0,10}(보여|알려|출력|공개|말해|reveal|show|print)|(너의?|당신의?|네)\s*(지침|프롬프트|시스템\s*메시지)[^.?!]{0,8}(보여|알려|출력|공개)|탈옥|jailbreak|\bdan\s*모드|개발자\s*모드로/i },
     /* 코드 — 프로그래밍 언어·도구 이름 + 만들기 동사, 또는 «코드/코딩» + 짜기 동사.
        「면접 스크립트 짜 줘」·「집단 프로그램 만들어 줘」·「직업 코드 알려 줘」는 상담 일이라 이름 목록에서 뺐다. */
     { id: 'code', kind: 'hard', label: '코드 작성·수정',
@@ -73,7 +71,6 @@
 
   /* 갈래별 안내 — 기능적인 문구만(드립·위트 없이). 자료실로 이어 묻는 예를 하나씩 붙인다. */
   var TRY = {
-    inject: '진로·취업·고용 제도처럼 자료실과 관련된 질문을 적어 주세요.',
     code: '개발 직무나 코딩 훈련이 궁금하시면 「개발자 국비 훈련 어떻게 찾아요?」처럼 물어봐 주세요.',
     market: '금융권 채용이나 금융 직무가 궁금하시면 「증권사 애널리스트가 되려면?」처럼 물어봐 주세요.',
     gamble: '진로·취업·고용 제도처럼 자료실과 관련된 질문을 적어 주세요.',
@@ -111,19 +108,17 @@
     var out = { v: VERSION, verdict: 'in', cats: [], label: '', anchor: anchor, message: '', note: '' };
     if (!hits.length) return out;
 
-    var inject = hits.filter(function (h) { return h.kind === 'inject'; });
     var hard = hits.filter(function (h) { return h.kind === 'hard'; });
-    var pick = inject.length ? inject : (hard.length ? hard : hits);
+    var pick = hard.length ? hard : hits;
     out.cats = pick.map(function (h) { return h.id; });
     out.label = pick.map(function (h) { return h.label; }).join(' · ');
 
-    if (inject.length) out.verdict = 'off';
-    else if (!anchor) out.verdict = 'off';
+    if (!anchor) out.verdict = 'off';
     else if (hard.length) out.verdict = 'mixed';
     else { out.verdict = 'in'; out.cats = []; out.label = ''; return out; }
 
     if (out.verdict === 'off') {
-      out.message = SCOPE_LINE + '\n' + topic(out.label) + ' 답하지 않아요.\n' + (TRY[pick[0].id] || TRY.inject);
+      out.message = SCOPE_LINE + '\n' + topic(out.label) + ' 답하지 않아요.\n' + (TRY[pick[0].id] || TRY.gamble);
     } else {
       /* 서버가 모델 지시에 붙이는 한 줄 — 관계없는 부분은 답하지 않고 그 사실을 한 문장으로만 알린다. */
       out.note = '이 질문에는 자료실과 관계없는 요청(' + out.label + ')이 섞여 있습니다. ' +
