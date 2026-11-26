@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-26T07:22:10+09:00",
+ "generated_at": "2026-11-26T23:13:48+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -3667,6 +3667,17 @@
      "source_name": "교육부",
      "source_url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=107836&lev=0&m=020402&opType=N&page=1&s=moe&searchType=null&statusYN=W",
      "published_at": "2026-11-25"
+    },
+    {
+     "date": "2026-11-26",
+     "card_id": "c08",
+     "title": "가나 도제 18명에서 500명으로 — ILO \"직장 훈련 교사가 품질 가른다\"",
+     "kicker": "칸탄카자동차 도제 18명 · 노스쇼어에 500명 추가 등록 계획",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "국제노동기구(ILO)",
+     "source_url": "https://www.ilo.org/resource/article/strengthening-quality-apprenticeships-through-enterprise-engagement-ghana",
+     "published_at": "2026-11-25"
     }
    ]
   },
@@ -4733,6 +4744,17 @@
      "source_name": "arXiv (MIT·마이크로소프트 리서치)",
      "source_url": "https://arxiv.org/abs/2611.31083",
      "published_at": "2026-11-23"
+    },
+    {
+     "date": "2026-11-26",
+     "card_id": "c06",
+     "title": "AI가 신입 자리 대신할까 — 과업이 복잡하면 대체 의향 0.54점 낮아져",
+     "kicker": "독일 기업 관리자 1,435명 실험 · 표준화 과업 대비 -0.54점(5점 척도)",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (ZEW 만하임·옥스퍼드 인터넷연구소)",
+     "source_url": "https://arxiv.org/abs/2611.34099",
+     "published_at": "2026-11-25"
     }
    ]
   },
@@ -5156,6 +5178,17 @@
      "source_name": "금융위원회",
      "source_url": "https://www.fsc.go.kr/no010101/88212",
      "published_at": "2026-11-24"
+    },
+    {
+     "date": "2026-11-26",
+     "card_id": "c07",
+     "title": "영국 공무원 공고 28만건 분석 — 팀 단위 재설계로 직무 17.7% 줄어",
+     "kicker": "공고 283,484건·과업 270만개 · 정원 감소는 6.4%에 그쳐",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "arXiv (Ledingham·Hollins·Lyon 외)",
+     "source_url": "https://arxiv.org/abs/2512.05659",
+     "published_at": "2026-11-25"
     }
    ]
   },
@@ -5414,6 +5447,28 @@
      "source_name": "미국 노동통계국(BLS) The Economics Daily",
      "source_url": "https://www.bls.gov/opub/ted/2026/median-tenure-with-current-employer-was-4-1-years-in-january-2026.htm",
      "published_at": "2026-11-23"
+    },
+    {
+     "date": "2026-11-26",
+     "card_id": "c04",
+     "title": "미국 신규 실업수당 청구 18.9만건 — 1년 전보다 2.9만건 적다",
+     "kicker": "신규 청구 18만9천건(-1만3천) · 계속 수급 169만7천건(-9만5천)",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 노동부 고용훈련청(DOL ETA)",
+     "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261125",
+     "published_at": "2026-11-25"
+    },
+    {
+     "date": "2026-11-26",
+     "card_id": "c05",
+     "title": "미 연준 베이지북 \"채용은 퇴사 대체뿐\" — 12개 지역 중 8곳 완만한 성장",
+     "kicker": "8개 지역 성장·4개 보합 · 임금·복리후생 상승은 '완만'에서 '보통'으로",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "미국 연방준비제도 이사회(Federal Reserve Board)",
+     "source_url": "https://www.federalreserve.gov/monetarypolicy/beigebook202611-summary.htm",
+     "published_at": "2026-11-25"
     }
    ]
   }
