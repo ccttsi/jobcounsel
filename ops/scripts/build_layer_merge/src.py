@@ -546,6 +546,23 @@ EXP_CAPS = {
     'tr_kindness': ['cs', 'adapt'],
 }
 
+# 경험별 «역량 → 행동»이 lexicon 의 행동 목록 순서와 어긋나는 곳만 손으로 맞춘다(화면 문장이 어색해지는 자리).
+EXP_VERB = {
+    'svc_convenience': {'money': '마감 정산', 'sched': '교대 인수인계', 'ops': '매장 마감'}, 
+    'svc_cafe': {'ops': '오픈·마감', 'quality': '위생 점검'},
+    'svc_cs': {'doc': '상담 기록', 'quality': '절차 확인'},
+    'svc_call': {'doc': '상담 기록', 'quality': '스크립트 준수'},
+    'off_hr': {'doc': '채용 서류 정리', 'cs': '지원자 안내', 'quality': '민감정보 관리'},
+    'ext_team': {'sched': '일정 조율', 'plan': '자료 통합'},
+    'ext_leadership': {'lead': '팀 운영', 'team': '역할 배분'},
+    'ext_council': {'sales': '행사 홍보', 'money': '예산 관리'},
+    'off_schedule': {'plan': '우선순위 정리'},
+    'tech_marketing': {'sales': '캠페인 운영', 'research': '성과 분석'},
+    'tech_sns': {'sales': '반응 정리', 'research': '반응 분석'},
+    'tr_pressure': {'sched': '우선순위 정리'},
+    'tr_diligence': {'sched': '마감 관리'},
+}
+
 # 범주 폴백 — lexicon.json 의 categories.code
 CAT_CAPS = {
     'service': ['cs', 'ops', 'quality'],

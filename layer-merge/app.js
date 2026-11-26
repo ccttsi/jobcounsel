@@ -151,15 +151,26 @@
     return { exp: best, score: bs };
   }
 
-  /* 경험의 행동 중 요구의 역량 자리에 맞는 것을 고른다 — 없으면 역량의 기본 행동 */
-  function verbOf(e, cap) {
+  /* 경험의 행동 중 이 요구에 가장 가까운 것을 고른다
+     ① 역량 자리가 맞는 행동 ② 요구 낱말이 들어 있는 행동(교대·인수인계 ↔ 「교대 인수인계」) ③ 역량의 기본 행동 */
+  function verbOf(e, cap, req) {
+    if (e.verbmap && e.verbmap[cap]) return e.verbmap[cap];
     var i = (e.caps || []).indexOf(cap);
     if (i >= 0 && (e.verb || [])[i]) return e.verb[i];
+    var best = '', bl = 0;
+    (e.verb || []).forEach(function (v) {
+      var flat = v.replace(/\s+/g, '');
+      ((req && req.kw) || []).forEach(function (k) {
+        var kk = k.replace(/\s+/g, '');
+        if (kk.length >= 2 && flat.indexOf(kk) > -1 && flat.length > bl) { best = v; bl = flat.length; }
+      });
+    });
+    if (best) return best;
     return ((D && D.caps[cap]) || {}).verb || (e.verb || ['정리'])[0];
   }
   function fillWhy(cap, exp, req) {
     var s = (D.caps[cap] || {}).why || '{req}에 닿는 경험입니다.';
-    return fixParticles(s.split('{context}').join(exp.label).split('{verb}').join(verbOf(exp, cap)).split('{req}').join(req.label));
+    return fixParticles(s.split('{context}').join(exp.label).split('{verb}').join(verbOf(exp, cap, req)).split('{req}').join(req.label));
   }
   function fillNums(s, nums) {
     (nums || []).forEach(function (n) {
@@ -181,7 +192,7 @@
       /* 역량이 겹치지 않는 경험에 억지로 행동을 붙이지 않는다 — 약하면 «넣어 볼 장면»을 대신 보여 준다 */
       var e = pick.score >= 2 ? pick.exp : null;
       var fit = pick.score >= 4 ? 'good' : e ? 'mid' : 'low';
-      var verb = e ? verbOf(e, req.cap) : '';
+      var verb = e ? verbOf(e, req.cap, req) : '';
       var metric = e ? (e.metric || ['[숫자]건 처리'])[0] : '[숫자]건 처리';
       return {
         id: req.id, no: (i + 1 < 10 ? '0' : '') + (i + 1), req: req, hit: hit, exp: e, fit: fit, score: pick.score,

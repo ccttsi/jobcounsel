@@ -93,6 +93,7 @@ def experiences(lex):
             'verb': entry['action_verbs'],
             'metric': entry['metric_prompts'],
             'caps': caps,
+            'verbmap': src.EXP_VERB.get(eid, {}),
         })
     extra = [k for k in src.EXP_CAPS if k not in seen]
     if extra:
