@@ -6,7 +6,7 @@
 
 네트워크를 쓰지 않는다(오프라인 검증). 실제 접속 검증 결과가 각 항목의
 http_status·verified_at 에 들어 있다. 마지막 전수 재확인은 2026-11-23(주간 점검)이고, 2026-11-24에 제외 20곳을 다시
-확인해 16곳을 더했으며, 2026-11-26에 새 후보를 훑어 17곳을 더하고 「내담자 상황·목표(needs)」·「운영 주체(owner)」 축을 붙였다.
+확인해 16곳을 더했으며, 2026-11-26에 새 후보를 훑어 17곳을 더하고 「내담자 상황·목표(needs)」·「운영 주체(owner)」 축을 붙였으며, 2026-11-27에 12개 시·도 지역 일자리 창구를 더했다.
 사이트가 폐쇄되면 verified_at 을 올릴 때 해당 항목을 빼거나 주소를 고친다.
 """
 import json
@@ -19,14 +19,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, "portals.json")
 
 EXPECTED = {
-    "total": 124,
-    "by_sector": {"pub": 9, "disclosure": 15, "general": 17, "tech": 12, "expert": 5,
+    "total": 136,
+    "by_sector": {"pub": 21, "disclosure": 15, "general": 17, "tech": 12, "expert": 5,
                   "industry": 9, "target": 19, "train": 16, "service": 15, "info": 7},
 }
 # 항목마다 실제로 접속을 확인한 날을 적는다. 한 날짜로 통일하지 않는다 —
 # 자동 접속 차단(403) 사이트는 마지막으로 확인한 날짜를 그대로 둔다.
-ALLOWED_DATES = {"2026-11-16", "2026-11-19", "2026-11-20", "2026-11-23", "2026-11-24", "2026-11-26"}
-VERIFIED_AT = "2026-11-26"
+ALLOWED_DATES = {"2026-11-16", "2026-11-19", "2026-11-20", "2026-11-23", "2026-11-24", "2026-11-26", "2026-11-27"}
+VERIFIED_AT = "2026-11-27"
 METHODS = {"curl", "curl-mobile", "browser", "official"}
 REQUIRED = ["id", "name", "url", "sector", "operator", "roles", "eligibility",
             "strengths", "tips", "shows", "needs", "owner", "verified_at", "final_url", "verify_method"]
@@ -74,8 +74,8 @@ def main():
             err("meta.%s 누락" % k)
     if meta.get("built_at") != VERIFIED_AT:
         warn("meta.built_at=%r (기대 %s)" % (meta.get("built_at"), VERIFIED_AT))
-    if meta.get("version") != "1.4.0":
-        warn("meta.version=%r (기대 1.4.0)" % (meta.get("version"),))
+    if meta.get("version") != "1.5.0":
+        warn("meta.version=%r (기대 1.5.0)" % (meta.get("version"),))
 
     # ---- sectors / vocabulary ----
     codes = [s.get("code") for s in sectors]

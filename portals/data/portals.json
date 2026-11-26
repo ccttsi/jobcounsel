@@ -1,15 +1,15 @@
 {
  "meta": {
   "dataset": "job-portals-directory",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "sector": "고용 사이트 안내판 — 채용·직업훈련·자격·기업정보·고용 행정·진로 정보 총망라",
-  "built_at": "2026-11-26",
+  "built_at": "2026-11-27",
   "repository": "ccttsi/jobcounsel",
-  "notice": "채용·직업훈련·자격·공시·기업정보·고용 행정·진로 정보 사이트의 이름·공식 주소·객관적 특징 요약만 담았습니다. 공고 본문·공시 자료·로고·슬로건을 복제해 싣지 않았고, 화면은 공식 페이지로 보내는 안내판입니다. 수록 124곳 가운데 2026-11-26에 새로 넣은 17곳은 그날 직접 접속해 첫 화면 메뉴와 운영 기관을 확인했고, 사이버진로교육센터 1곳은 공식 공표로 주소만 확인했습니다(검증 환경에서 접속 차단). 접속되지 않거나 메뉴를 확인하지 못한 곳은 제외 목록에 사유와 함께 남겼습니다.",
+  "notice": "채용·직업훈련·자격·공시·기업정보·고용 행정·진로 정보 사이트의 이름·공식 주소·객관적 특징 요약만 담았습니다. 공고 본문·공시 자료·로고·슬로건을 복제해 싣지 않았고, 화면은 공식 페이지로 보내는 안내판입니다. 수록 136곳 가운데 2026-11-27에 새로 넣은 12곳(12개 시·도 지역 일자리 창구)은 그날 직접 접속해 첫 화면 메뉴와 운영 기관을 확인했습니다. 광주는 2026-10-01부터 전남·광주 통합 일자리정보망으로 통합 운영되어 별도 항목을 두지 않고 그 항목의 검색 별칭으로 갈음합니다. 접속되지 않거나 메뉴를 확인하지 못한 곳은 제외 목록에 사유와 함께 남겼습니다.",
   "counts": {
-   "total": 124,
+   "total": 136,
    "by_sector": {
-    "pub": 9,
+    "pub": 21,
     "general": 17,
     "tech": 12,
     "expert": 5,
@@ -21,21 +21,21 @@
     "info": 7
    },
    "by_method": {
-    "curl": 96,
-    "browser": 25,
+    "curl": 101,
     "curl-mobile": 2,
+    "browser": 32,
     "official": 1
    },
    "by_owner": {
-    "gov": 66,
+    "gov": 78,
     "corp": 19,
     "biz": 39
    }
   },
   "verification": {
-   "checked_at": "2026-11-26",
-   "method": "curl GET(리다이렉트 추적, 데스크톱 UA)로 최종 200 확인 + 스크립트로만 그려지는 사이트는 실제 브라우저에서 첫 화면 메뉴와 운영 기관 확인. 2026-11-26: 새 후보 60여 곳을 훑어 17곳 추가(그중 1곳은 공식 공표로만 확인)",
-   "passed": 124,
+   "checked_at": "2026-11-27",
+   "method": "curl GET(리다이렉트 추적, 데스크톱 UA)로 최종 200 확인 + 스크립트로만 그려지거나 자동 접속이 막힌 사이트는 실제 브라우저(국내망)로 첫 화면 메뉴와 운영 기관 확인. 2026-11-27: 13개 시·도 일자리포털의 실제 공식 주소를 새로 확인해 12곳 추가(광주는 전남·광주 통합 일자리정보망으로 통합되어 기존 항목 별칭으로 갈음)",
+   "passed": 136,
    "excluded": [
     {
      "name": "메디잡(www.medijob.co.kr)",
@@ -173,69 +173,9 @@
      "reason": "국문 첫 화면 대신 영문(/en)으로 이동해 국문 메뉴를 확인하지 못함"
     },
     {
-     "name": "부산일자리정보망",
-     "url": "https://job.busan.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "인천일자리포털",
-     "url": "https://job.incheon.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "광주일자리포털",
-     "url": "https://job.gwangju.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "대전일자리포털",
-     "url": "https://job.daejeon.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "울산일자리포털",
-     "url": "https://job.ulsan.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "세종일자리포털",
-     "url": "https://job.sejong.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "충북일자리포털",
-     "url": "https://job.chungbuk.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "충남일자리포털",
-     "url": "https://job.chungnam.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "전북일자리포털",
-     "url": "https://job.jeonbuk.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "경북일자리포털",
-     "url": "https://job.gyeongbuk.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "경남일자리포털",
-     "url": "https://job.gyeongnam.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "제주일자리포털",
-     "url": "https://job.jeju.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
-    },
-    {
-     "name": "강원일자리포털",
-     "url": "https://job.gwd.go.kr/",
-     "reason": "검증 환경(해외·클라우드망)에서 연결이 막혀(TCP 터널 실패) 첫 화면을 확인하지 못함 — 국내망에서는 열리는 지자체 일자리 창구"
+     "name": "광주일자리플랫폼",
+     "url": "https://gjjobgo.com/",
+     "reason": "2026-10-01부터 전남일자리정보망과 함께 「전남·광주 통합 일자리정보망」으로 통합 운영 — 이미 수록한 항목(job.jeonnam-gwangju.go.kr)의 검색 별칭으로 갈음 (2026-11-27 확인)"
     }
    ]
   },
@@ -714,7 +654,10 @@
     "전남광주",
     "전남 일자리",
     "광주 일자리",
-    "jeonnam"
+    "jeonnam",
+    "광주일자리플랫폼",
+    "gjjobgo.com",
+    "전남일자리정보망"
    ],
    "needs": [
     "job_local",
@@ -725,6 +668,512 @@
    "http_status": 200,
    "final_url": "https://job.jeonnam-gwangju.go.kr/www",
    "verify_method": "curl"
+  },
+  {
+   "id": "busan_job_info",
+   "name": "부산일자리정보망",
+   "url": "https://busanjob.net/",
+   "sector": "pub",
+   "operator": "부산광역시·부산경제진흥원",
+   "roles": [
+    "전 직종",
+    "공공·행정",
+    "서비스"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년",
+    "노인",
+    "장애인",
+    "경력단절여성"
+   ],
+   "strengths": "부산광역시가 지원하고 부산경제진흥원이 운영하는 부산 지역 일자리 통합 창구다. 기업·공공·해외 채용과 청년·시니어 전용관을 한 사이트에서 안내한다.",
+   "tips": "부산 거주 내담자에게는 구인공고와 함께 청년부산잡스·시니어부산잡스·드림옷장 같은 지원사업을 같이 보여 주면 좋다.",
+   "shows": [
+    "기업·공공·해외 채용",
+    "부산기업관",
+    "JOB프로그램·교육훈련",
+    "채용행사·취업상담"
+   ],
+   "aliases": [
+    "부산일자리",
+    "busanjob.net",
+    "부산 일자리",
+    "부산시"
+   ],
+   "needs": [
+    "job_local",
+    "aud_youth"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://busanjob.net/index.do",
+   "verify_method": "curl"
+  },
+  {
+   "id": "incheon_job_platform",
+   "name": "인천일자리플랫폼",
+   "url": "https://www.incheon.go.kr/jobs",
+   "sector": "pub",
+   "operator": "인천광역시",
+   "roles": [
+    "전 직종",
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년",
+    "노인",
+    "장애인",
+    "경력단절여성"
+   ],
+   "strengths": "인천광역시가 운영하는 일자리 통합 플랫폼이다. 공공·민간 채용정보와 정책·지원사업, 교육·훈련, 복지 정보를 한 화면에 모았다.",
+   "tips": "인천 거주 내담자는 「내게 맞는 정책·지원」의 간편검색(청년·은퇴·장애·경력단절)으로 먼저 좁히게 하면 빠르다.",
+   "shows": [
+    "채용 통합검색",
+    "공공·민간 채용정보",
+    "정책·지원사업",
+    "교육·훈련 정보"
+   ],
+   "aliases": [
+    "인천일자리포털",
+    "incheon.go.kr/jobs",
+    "인천 일자리",
+    "잡스인천"
+   ],
+   "needs": [
+    "job_local",
+    "job_pub"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://www.incheon.go.kr/jobs/main/main.do",
+   "verify_method": "curl"
+  },
+  {
+   "id": "daejeon_job_info",
+   "name": "대전일자리정보망",
+   "url": "https://www.jobdaejeon.or.kr/",
+   "sector": "pub",
+   "operator": "대전광역시·대전일자리경제진흥원",
+   "roles": [
+    "전 직종",
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년"
+   ],
+   "strengths": "대전일자리경제진흥원이 운영하는 대전 지역 일자리 창구다. 채용공고와 구인·구직 신청, 청년인턴·코업 뉴리더 같은 대전형 청년 사업을 함께 안내한다.",
+   "tips": "대전 청년 내담자에게는 채용공고와 청년인턴·일자리카페 꿈터 프로그램을 함께 보여 주고, AI 모의면접으로 면접 연습을 붙여 주면 좋다.",
+   "shows": [
+    "채용공고 검색",
+    "구인·구직 신청",
+    "청년인턴·코업 뉴리더",
+    "AI 모의면접"
+   ],
+   "aliases": [
+    "대전일자리시스템",
+    "jobdaejeon",
+    "대전 일자리",
+    "대전일자리지원센터"
+   ],
+   "needs": [
+    "job_local",
+    "aud_youth"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://www.jobdaejeon.or.kr/main/index.do",
+   "verify_method": "curl"
+  },
+  {
+   "id": "ulsan_job",
+   "name": "울산일자리포털",
+   "url": "https://job.ubpi.or.kr/job/main.do",
+   "sector": "pub",
+   "operator": "울산광역시·울산경제일자리진흥원",
+   "roles": [
+    "전 직종",
+    "공공·행정",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년",
+    "노인",
+    "장애인"
+   ],
+   "strengths": "울산경제일자리진흥원이 운영하는 울산광역시 일자리정보포털이다. 민간·공공·해외·다이렉트 채용을 한곳에서 검색하고 구군별 채용도 모아 본다.",
+   "tips": "울산 내담자는 공공일자리예고로 한 해 공공 일자리 계획을 미리 확인하게 하고, 공고마다 접수 방법이 달라 상세 화면을 함께 보게 한다.",
+   "shows": [
+    "민간·공공·해외 채용",
+    "공공일자리예고",
+    "울산기업관",
+    "취업지원기관"
+   ],
+   "aliases": [
+    "울산일자리",
+    "ubpi",
+    "울산 일자리",
+    "울산일자리재단"
+   ],
+   "needs": [
+    "job_local",
+    "job_pub"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://job.ubpi.or.kr/job/main.do",
+   "verify_method": "browser"
+  },
+  {
+   "id": "sejong_jobaram",
+   "name": "세종 일자리 종합 플랫폼 잡아람",
+   "url": "https://www.jobaram.com/",
+   "sector": "pub",
+   "operator": "세종일자리경제진흥원",
+   "roles": [
+    "전 직종",
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년"
+   ],
+   "strengths": "세종일자리경제진흥원이 운영하는 세종 일자리 종합 플랫폼이다. 채용공고와 청년 취업역량강화·취업연계·정착지원 사업을 한곳에서 안내한다.",
+   "tips": "세종은 지역 기업이 적어 인근 대전·청주 통근 조건을 함께 보게 하고, 청년 지원사업은 신청 기간이 짧아 공지사항을 같이 확인하게 한다.",
+   "shows": [
+    "채용정보 전체보기",
+    "청년 취업역량강화",
+    "취업연계·정착지원",
+    "세종일자리맵"
+   ],
+   "aliases": [
+    "잡아람",
+    "jobaram",
+    "세종일자리",
+    "세종 일자리"
+   ],
+   "needs": [
+    "job_local",
+    "aud_youth"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://www.jobaram.com/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "chungbuk_job",
+   "name": "충북일자리포털",
+   "url": "https://www.chungbuk.go.kr/jobinfo/index.do",
+   "sector": "pub",
+   "operator": "충청북도",
+   "roles": [
+    "전 직종",
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년"
+   ],
+   "strengths": "충청북도가 운영하는 도 단위 일자리포털이다. 일반·공공 채용정보와 기업 정보, 상설 현장면접·취업특강 같은 채용행사를 함께 안내한다.",
+   "tips": "청주·충주 등 시군 일자리센터와 함께 보게 하고, 상설 만남의 날(현장면접) 일정을 확인해 바로 면접으로 이어지게 한다.",
+   "shows": [
+    "일반채용·공공채용",
+    "기업·기관 정보",
+    "채용행사·취업특강",
+    "일자리 지원사업"
+   ],
+   "aliases": [
+    "충북일자리",
+    "chungbuk.go.kr/jobinfo",
+    "충북 일자리",
+    "충북일자리지원센터"
+   ],
+   "needs": [
+    "job_local",
+    "job_pub"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://www.chungbuk.go.kr/jobinfo/index.do",
+   "verify_method": "browser"
+  },
+  {
+   "id": "chungnam_job",
+   "name": "충남일자리종합센터",
+   "url": "https://chungnam.work.go.kr/",
+   "sector": "pub",
+   "operator": "충청남도·충남경제진흥원",
+   "roles": [
+    "전 직종",
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년"
+   ],
+   "strengths": "충남경제진흥원이 운영하는 충남일자리종합센터의 지역 고용 창구다. 충남 지역 채용정보와 우리지역 인증기업, 지역게시판을 함께 보여 준다.",
+   "tips": "충남 내담자는 시군 취업정보센터와 함께 보게 하고, 실업급여·국민취업지원 같은 고용24 서비스는 이 화면에서 바로 넘어가게 한다.",
+   "shows": [
+    "지역 채용정보",
+    "우리지역 인증기업",
+    "지역게시판",
+    "고용24 연계 서비스"
+   ],
+   "aliases": [
+    "충남일자리",
+    "chungnam.work.go.kr",
+    "충남 일자리",
+    "지역워크넷"
+   ],
+   "needs": [
+    "job_local",
+    "job_new"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://chungnam.work.go.kr/main.do/main.do",
+   "verify_method": "browser"
+  },
+  {
+   "id": "jeonbuk_job",
+   "name": "전북특별자치도 일자리센터",
+   "url": "https://www.1577-0365.or.kr/",
+   "sector": "pub",
+   "operator": "전북특별자치도경제통상진흥원",
+   "roles": [
+    "전 직종",
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년",
+    "경력단절여성"
+   ],
+   "strengths": "전북특별자치도경제통상진흥원이 운영하는 도 일자리센터다. 고용24·공공기관 채용정보와 구직자·구인기업 지원사업을 한곳에서 안내한다.",
+   "tips": "전북 내담자는 채용정보와 함께 구직활동비·면접비 같은 지원사업을 같이 확인하게 하고, 방문 전에 공지사항을 보게 한다.",
+   "shows": [
+    "고용24 채용정보",
+    "공공기관 채용정보",
+    "채용정보 알선",
+    "구직자·기업 지원사업"
+   ],
+   "aliases": [
+    "전북일자리",
+    "1577-0365",
+    "전북 일자리",
+    "전라북도 일자리센터"
+   ],
+   "needs": [
+    "job_local",
+    "aud_mid"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://www.1577-0365.or.kr/",
+   "verify_method": "curl"
+  },
+  {
+   "id": "gyeongbuk_job",
+   "name": "경상북도 일자리포털",
+   "url": "https://www.jobgb.co.kr/",
+   "sector": "pub",
+   "operator": "경상북도",
+   "roles": [
+    "전 직종",
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년"
+   ],
+   "strengths": "경상북도가 운영하는 도 일자리포털이다. 채용공고와 경북기업관, 취업·재직·창업·장려금 지원사업을 한 화면에서 안내한다.",
+   "tips": "경북은 시군 간 거리가 멀어 근무지역을 먼저 좁히게 하고, 도 산하 출자·출연기관 채용은 경상북도청 채용 게시판을 함께 보게 한다.",
+   "shows": [
+    "채용공고 검색",
+    "경북기업관",
+    "일자리 정책·지원사업",
+    "채용박람회"
+   ],
+   "aliases": [
+    "경북일자리",
+    "jobgb",
+    "경북 일자리",
+    "경상북도일자리종합센터"
+   ],
+   "needs": [
+    "job_local",
+    "job_new"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://www.jobgb.co.kr/",
+   "verify_method": "browser"
+  },
+  {
+   "id": "gyeongnam_job",
+   "name": "경남일자리포털",
+   "url": "https://job.giba.or.kr/",
+   "sector": "pub",
+   "operator": "경남투자경제진흥원",
+   "roles": [
+    "전 직종",
+    "공공·행정",
+    "생산·기술"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년",
+    "석·박사"
+   ],
+   "strengths": "경남투자경제진흥원이 운영하는 경남 통합 일자리 포털이다. 기업·공공 채용정보와 지원정책, 지도 기반 채용정보를 함께 제공한다.",
+   "tips": "창원·김해 등 통근권을 지도에서 확인하게 하고, AI 모의면접·자소서 컨설팅 같은 무료 취업지원을 함께 안내하면 좋다.",
+   "shows": [
+    "채용정보 검색",
+    "지도기반 채용정보",
+    "일자리지원정책·통계",
+    "교육·행사"
+   ],
+   "aliases": [
+    "경남일자리",
+    "giba",
+    "경남 일자리",
+    "경남투자경제진흥원"
+   ],
+   "needs": [
+    "job_local",
+    "job_new"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://job.giba.or.kr/",
+   "verify_method": "browser"
+  },
+  {
+   "id": "jeju_job",
+   "name": "제주특별자치도 일자리 종합정보",
+   "url": "https://jeju.work.go.kr/",
+   "sector": "pub",
+   "operator": "제주특별자치도·고용노동부",
+   "roles": [
+    "전 직종",
+    "공공·행정",
+    "서비스"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년"
+   ],
+   "strengths": "제주특별자치도와 고용노동부가 함께 운영하는 제주 지역 일자리 종합정보 창구다. 제주 채용정보와 우리지역 인증기업, 지역일자리 사업을 함께 보여 준다.",
+   "tips": "제주 내담자는 직종을 넓게 잡아 검색하게 하고, 도외 취업을 원하면 월드잡플러스·고용24를 함께 보게 한다.",
+   "shows": [
+    "제주 채용정보",
+    "우리지역 인증기업",
+    "지역일자리 사업",
+    "고용24 연계 서비스"
+   ],
+   "aliases": [
+    "제주일자리",
+    "jeju.work.go.kr",
+    "제주 일자리",
+    "제주일자리종합정보"
+   ],
+   "needs": [
+    "job_local",
+    "job_new"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://jeju.work.go.kr/main.do/main.do",
+   "verify_method": "browser"
+  },
+  {
+   "id": "gangwon_job",
+   "name": "강원일자리정보망",
+   "url": "https://job.gwd.go.kr/",
+   "sector": "pub",
+   "operator": "강원특별자치도·강원특별자치도경제진흥원",
+   "roles": [
+    "전 직종",
+    "공공·행정"
+   ],
+   "eligibility": [
+    "신입",
+    "경력",
+    "무관",
+    "청년",
+    "중장년"
+   ],
+   "strengths": "강원특별자치도경제진흥원이 운영하는 강원 지역 일자리정보망이다. 구인구직과 기업홍보, 취업지원·교육훈련·창업지원을 한곳에서 안내한다.",
+   "tips": "춘천·원주·강릉 등 생활권별로 근무지를 먼저 좁히게 하고, 지원정책·교육훈련 메뉴에서 지역 사업을 함께 확인하게 한다.",
+   "shows": [
+    "구인구직 검색",
+    "기업홍보관",
+    "취업지원·교육훈련",
+    "지원정책·창업지원"
+   ],
+   "aliases": [
+    "강원일자리",
+    "gwd.go.kr",
+    "강원 일자리",
+    "강원도 일자리통합정보시스템"
+   ],
+   "needs": [
+    "job_local",
+    "job_new"
+   ],
+   "owner": "gov",
+   "verified_at": "2026-11-27",
+   "http_status": 200,
+   "final_url": "https://job.gwd.go.kr/gwjob",
+   "verify_method": "browser"
   },
   {
    "id": "saramin",
