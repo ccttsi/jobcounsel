@@ -34,6 +34,7 @@
   var DIRS_URL = BASE + 'assistant/data/index-dirs.json';
   var PREFACE_URL = BASE + 'assistant/data/rag-preface.json';
   var COMPANIES_URL = BASE + 'assistant/data/index-companies.json';
+  var VECTORS_URL = BASE + 'assistant/data/semantic-vectors.json';
 
   /* ---------- 글자 다루기 ---------- */
 
@@ -347,6 +348,7 @@
       S.index = res[0];
       S.dirs = res[1];
       PREF = res[2] || null;
+      try { loadVectors(); } catch (e) {}      // 뜻 벡터는 늦게 도착해도 된다(없으면 지금과 똑같이)
       D = (S.index.docs || []).map(prepDoc);
       DIRROWS = [];
       if (S.dirs) {
@@ -383,6 +385,89 @@
     var arr = (S.index && S.index.sectors) || [];
     for (var i = 0; i < arr.length; i++) if (arr[i].id === id) return arr[i];
     return { id: id, title: id, url: './' + id + '/', no: '' };
+  }
+
+  /* ---------- 뜻 벡터(AUP-7) — 섹터 하나를 384차원 벡터로 견준다 ----------
+     assistant/data/semantic-vectors.json 은 라이선스가 확인된 공개 임베딩 모델로 섹터·조각을
+     미리 임베딩해 둔 정적 파일이다(ops/scripts/build_semantic_vectors.py).
+     **질문 벡터는 여기서 만들지 않는다** — 만드는 곳(경량 질의 임베딩 경로)이 있을 때만
+     setQueryVector 로 받아 «뜻이 가까운 섹터»를 조금 밀어 준다. 경로가 없거나 실패하면
+     이 절은 통째로 잠들고 검색은 지금과 똑같이 돈다(무중단 폴백). */
+  var SEM = { url: VECTORS_URL, secs: null, chunks: null, model: '', dim: 0, q: '', v: null, loading: null, err: '',
+    provider: '', providerModel: '' };
+  var SEM_LO = 0.55;        // 이 아래 코사인은 «같은 분야»일 뿐이라 밀지 않는다
+  var SEM_HI = 0.665;       // 여기부터는 뜻이 확실히 가깝다 — 이 구간에서 0→최대로 오른다
+  var SEM_W = 2.0;          // 섹터를 미는 최대 세기(×3.0 = 점수 세 배까지) — 문턱 위에서만
+
+  /* int8(base64) → 길이 1로 맞춘 Float32Array. 미리 맞춰 두면 검색할 때 나눗셈이 없다. */
+  function b64unit(s) {
+    try {
+      var bin = atob(String(s || '')), n = bin.length;
+      if (!n) return null;
+      var out = new Float32Array(n), i, x, sum = 0;
+      for (i = 0; i < n; i++) { x = (bin.charCodeAt(i) << 24) >> 24; out[i] = x; sum += x * x; }
+      sum = Math.sqrt(sum);
+      if (!sum) return null;
+      for (i = 0; i < n; i++) out[i] /= sum;
+      return out;
+    } catch (e) { return null; }
+  }
+
+  function loadVectors() {
+    if (SEM.secs || SEM.loading) return SEM.loading || Promise.resolve(SEM);
+    SEM.loading = fetch(SEM.url, { cache: 'default' })
+      .then(function (r) { if (!r.ok) throw new Error('vectors ' + r.status); return r.json(); })
+      .then(function (d) {
+        if (!d || !d.sectors) throw new Error('vectors shape');
+        SEM.model = String(d.model || '');
+        SEM.dim = Number(d.dim) || 0;
+        SEM.provider = String(d.provider || '');
+        SEM.providerModel = String(d.provider_model || '');
+        SEM.secs = {};
+        Object.keys(d.sectors).forEach(function (k) { var v = b64unit(d.sectors[k]); if (v) SEM.secs[k] = v; });
+        SEM.chunks = {};
+        Object.keys(d.chunks || {}).forEach(function (k) { var v = b64unit(d.chunks[k]); if (v) SEM.chunks[k] = v; });
+        return SEM;
+      })
+      .catch(function (e) { SEM.err = String(e && e.message || e); SEM.loading = null; return SEM; });
+    return SEM.loading;
+  }
+
+  /* 질문 벡터를 받는다 — 부르는 쪽(경량 질의 임베딩 경로)이 있다면. 없으면 null 을 넘겨 끈다.
+     두 번째 칸으로 그 벡터를 만든 모델 이름을 받아, 정적 벡터와 같은 모델일 때만 쓴다
+     (다른 모델의 벡터를 섞으면 코사인이 뜻을 잃는다). */
+  function setQueryVector(q, vec, model) {
+    if (!vec || !vec.length) { SEM.q = ''; SEM.v = null; return false; }
+    var n = 0, i;
+    for (i = 0; i < vec.length; i++) n += vec[i] * vec[i];
+    n = Math.sqrt(n);
+    if (!n) { SEM.q = ''; SEM.v = null; return false; }
+    if (SEM.dim && vec.length !== SEM.dim) { SEM.q = ''; SEM.v = null; return false; }
+    if (model && SEM.model && String(model) !== SEM.model) { SEM.q = ''; SEM.v = null; return false; }
+    var v = new Float32Array(vec.length);
+    for (i = 0; i < vec.length; i++) v[i] = vec[i] / n;
+    SEM.v = v; SEM.q = compact(String(q || ''));
+    return true;
+  }
+
+  /* 섹터 하나의 뜻 가까움(코사인, -1~1). 둘 다 길이 1로 맞춰 두어 내적이 곧 코사인이다. */
+  function semOf(sector) {
+    if (!SEM.v || !SEM.secs) return null;
+    var sv = SEM.secs[sector];
+    if (!sv || sv.length !== SEM.v.length) return null;
+    var dot = 0;
+    for (var i = 0; i < sv.length; i++) dot += sv[i] * SEM.v[i];
+    return dot;
+  }
+
+  /* 뜻이 가까운 만큼만 민다 — 문턱(LO) 아래는 1.0(그대로), 문턱 위에서 HI 까지 오르면 1+SEM_W. */
+  function semBoost(sector) {
+    var c = semOf(sector);
+    if (c == null) return 1;
+    var g = (c - SEM_LO) / (SEM_HI - SEM_LO);
+    if (g <= 0) return 1;
+    if (g > 1) g = 1;
+    return 1 + SEM_W * g;
   }
 
   /* ---------- 점수 ---------- */
@@ -852,6 +937,8 @@
       });
     }
     var w = weightsOf(all);
+    /* 뜻으로 미는 힘 — 질문 벡터가 지금 질문의 것이고 정적 벡터가 준비됐을 때만 산다. */
+    var semLive = !!(SEM.v && SEM.secs && SEM.q === phrase);
     /* 펼쳐서 더한 말은 살짝 낮춘다 — 사용자가 적은 말과 같은 무게는 아니다. */
     var addedFrom = all.length - a.added.length;
     for (var wi = addedFrom; wi < all.length; wi++) w[wi] *= 0.62;
@@ -870,6 +957,7 @@
         /* 섹터를 콕 집은 말이면 그 섹터의 «문»(섹터 문서)을 앞에 세운다 — 들어가서 더 찾도록 */
         if (d.id && d.id.indexOf('sector:') === 0) sc *= 1.3;
       }
+      if (semLive) sc *= semBoost(d.sector);
       out.push({ d: d, s: sc, why: r0.why, mw: r0.mw });
     }
     for (i = 0; i < DIRROWS.length; i++) {
@@ -878,6 +966,7 @@
       if (!r1.s) continue;
       var s1 = r1.s;
       if (boost[r.sector]) s1 *= boost[r.sector];
+      if (semLive) s1 *= semBoost(r.sector);
       /* 「공기업」처럼 섹터를 콕 집은 말이면 그 섹터의 해당 갈래를 더 위로 */
       if (r.kind === 'company' && r.cat === 2 && boost.company) s1 *= 1.5;
       if (r.kind === 'company' && r.emp) s1 += Math.log10(1 + r.emp) * 0.7;   // 같은 이름값이면 큰 기관이 위로
@@ -890,6 +979,7 @@
       var r2 = scoreCompany(c, all, phrase, w);
       if (!r2.s) continue;
       if (boost.company) r2.s *= boost.company;
+      if (semLive) r2.s *= semBoost('company');
       out.push({ d: c, s: r2.s, why: r2.why, mw: r2.mw });
     }
     out.sort(function (x, y) { return y.s - x.s || x.d.title.length - y.d.title.length; });
@@ -960,6 +1050,24 @@
     /* 기업 색인이 늦게 도착하면 화면을 다시 그린다 — hub 팔레트·비서 찾기가 같이 쓴다. */
     onUpdate: function (fn) { if (typeof fn === 'function') UPD.push(fn); },
     search: search,
+    /* AUP-7 뜻으로 찾는 검색 — 질문 벡터를 받아 섹터를 «뜻»으로 조금 민다.
+       부르는 쪽이 없으면(키·경로 없음) 아무 일도 일어나지 않는다(지금과 100% 같은 결과). */
+    setQueryVector: setQueryVector,
+    vectors: function () {
+      return SEM.secs ? { model: SEM.model, dim: SEM.dim, sectors: Object.keys(SEM.secs).length,
+        chunks: Object.keys(SEM.chunks || {}).length, query: !!SEM.v, provider: SEM.provider } : null;
+    },
+    /* 질의 임베딩 주소 — semantic-vectors.json 의 provider 가 비어 있으면 ''(꺼짐). */
+    provider: function () { return SEM.provider || ''; },
+    providerModel: function () { return SEM.providerModel || SEM.model || ''; },
+    loadVectors: loadVectors,
+    /* 시험·조율용 — 문턱과 세기를 바꿔 본다(화면에서는 쓰지 않는다). */
+    semCfg: function (lo, hi, w) {
+      if (typeof lo === 'number') SEM_LO = lo;
+      if (typeof hi === 'number') SEM_HI = hi;
+      if (typeof w === 'number') SEM_W = w;
+      return { lo: SEM_LO, hi: SEM_HI, w: SEM_W };
+    },
     ready: function () { return S.ready; },
     error: function () { return S.err; },
     count: function () { return D.length + DIRROWS.length + COMP.rows.length; },
