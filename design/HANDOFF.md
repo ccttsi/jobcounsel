@@ -1,3 +1,11 @@
+## 2026-11-26 — `/layer-merge/` 전수 검사 · 서버 AI 보조 fallback 원인 수정
+- **지시**(태화님): 「피클이 만든 `/layer-merge/` 디자인·구조·내용 전수 검사, `gpt-oss-20b`가 `max_tokens: 700` 때문에 fallback 되는 문제 수정」.
+- [x] **서버 AI 보조** `functions/api/layer-merge.js` — gpt-oss-20b는 «생각» 토큰도 출력 한도에 세서 700을 생각에 다 써 본문(JSON)이 비었다. `reasoning_effort: 'low'` · `include_reasoning: false` · `max_completion_tokens: 1600`, 잘린 응답(`finish_reason: length`)은 믿지 않고 내장 엔진으로. 시간 상한 서버 9초 · 화면 10초(예전 화면 4.5초가 서버 6초보다 먼저 끊었다). `ops/model-routing.json`에 `layer_merge` 일감(20b 전용) 기록.
+- [x] **내용(KSA 연결)** `layer-merge/app.js` — ① «응답 120명명»처럼 단위가 겹치던 것 ② 설문 120명이 «[숫자]명 팀» 같은 다른 경험 칸으로 새던 것(숫자는 그 숫자를 적은 토막의 경험에만) ③ 근무 기간 2년이 «[기간] 무결점 마감»에 자동으로 들어가 성과를 단정하던 것(기간은 칸으로 남김) ④ 경험 칸에 없는 행동(«민감정보 관리»·«근태 정리»)을 «강한 연결»로 단정하던 것 → «연결 가능» + «경험 칸에 적힌 일은 아닙니다 — 실제로 했을 때만» 안내 ⑤ 행동과 무관한 수치 칸(«근태 정리 — [숫자]명 채용 진행») → 행동·요구와 낱말이 겹치는 수치, 없으면 중립 «[숫자]건 처리». 자료(D.experiences)를 직접 고치던 것도 사본으로.
+- [x] **디자인** — 390·360·820·1024·1280·1600 × 밝게·어둡게 `audit.js` 전부 통과(오류 0·넘침 0·44px 미달 0·칩 정렬 0·분량 390 2.1/1280 1.1), 세피아 포함 3테마 캡처 직접 확인. 고칠 것 없음. ※ 이 검사 환경엔 Pretendard가 없어(jsdelivr 차단) 한 줄 칩이 세로 1.7px로 잡힌다 — 글꼴을 깔고 재면 0(다른 섹터도 같음).
+- **남은 일**: Cloudflare `GROQ_API_KEY` 설정 뒤 라이브에서 «서버 AI 보조» 줄이 실제로 뜨는지 한 번 확인.
+- **다음 시작 파일**: `functions/api/layer-merge.js` · `layer-merge/app.js`(`metricOf`·`stated`·`fillNums`).
+
 ## 2026-11-26 — 경험×공고 레이어(`/layer-merge/`) 신설 — 서류 해부실 4번 탭을 독립 섹터로
 - **지시**(태화님): 「서류 해부실 4번 탭(문장 수술실)을 독립 섹터로 — 경험 칸·공고 칸 두 레이어를 병합해 K·S·A로 솔루션을 뽑되, **AI 키 삽입은 빼고** 완성 문장 대신 «왜 이렇게 연결되는지»와 전개 방향만. 고지 문구 필수」.
 - [x] 새 섹터 매치 20 · no 36(서류 해부실 36 다음·장점 단점 뒤집기 앞) — 뒤 번호 재배치(trait-flip 37 · interview 38 · portfolio 39 · transit 40). `tools.js`·`brand.css`·`mydeck/assemble.js`(티어·그룹·STAGE·RULES)·`synonym-map.json`·비서 색인·`flow/data/graph.json`·`presets.js` 「서류 탈락 반복」 2단계에 「연결」 삽입.

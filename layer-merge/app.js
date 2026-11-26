@@ -58,6 +58,7 @@
     }
     return { e: { id: 'generic', label: '맡은 일', comp: ['기초 역량'], verb: ['정리'], metric: ['[숫자]건 처리'], caps: (D.genericCaps || ['adapt']) }, how: 'generic' };
   }
+  function copyExp(e) { var o = {}; for (var k in e) if (Object.prototype.hasOwnProperty.call(e, k)) o[k] = e[k]; return o; }
   function catExp(code, c) { return { id: 'cat_' + code, label: c.label, comp: c.comp, verb: c.verb, metric: c.metric, caps: c.caps }; }
 
   function parseExp(text) {
@@ -68,7 +69,12 @@
       if (m) nums.push(m[0].trim());
       var host = tok.replace(/\d+(?:\.\d+)?\s*(년|개월|달|주|일|시간|건|명|회|%|곳|개|점)?/g, '').trim() || tok;
       var f = findExp(host);
-      if (f && !picks.some(function (p) { return p.id === f.e.id; })) { f.e.how = f.how; picks.push(f.e); }
+      if (!f) return;
+      /* 자료(D.experiences)는 고치지 않고 사본에 담는다. 숫자는 그 숫자가 적힌 토막의 경험에만 붙인다
+         — «설문 120명»의 120이 «[숫자]명 팀» 같은 다른 경험의 칸으로 새지 않게. */
+      var have = picks.filter(function (p) { return p.id === f.e.id; })[0];
+      if (!have) { have = copyExp(f.e); have.how = f.how; have.nums = []; picks.push(have); }
+      if (m) have.nums.push(m[0].trim());
     });
     return { picks: picks, nums: nums, raw: raw };
   }
@@ -172,15 +178,49 @@
     var s = (D.caps[cap] || {}).why || '{req}에 닿는 경험입니다.';
     return fixParticles(s.split('{context}').join(exp.label).split('{verb}').join(verbOf(exp, cap, req)).split('{req}').join(req.label));
   }
+  /* [숫자] 칸만 채운다. 칸 바로 뒤에 단위가 이미 있으면(«[숫자]명») 숫자만 넣고, 단위가 다르면(«[숫자]건» ← 120명) 넣지 않는다 */
+  var UNIT = /^(년|개월|달|주|일|시간|건|명|회|%|곳|개|점)/;
   function fillNums(s, nums) {
     (nums || []).forEach(function (n) {
       var m = String(n).match(/^(\d+(?:\.\d+)?)\s*(년|개월|달|주|일|시간|건|명|회|%|곳|개|점)?$/);
       if (!m) return;
-      var period = /^(년|개월|달|주|일|시간)$/.test(m[2] || '');
-      if (period) { if (s.indexOf('[기간]') > -1) s = s.replace('[기간]', m[1] + (m[2] || '')); }
-      else if (s.indexOf('[숫자]') > -1) s = s.replace('[숫자]', m[1] + (m[2] && m[2] !== '개' && m[2] !== '점' ? m[2] : ''));
+      var unit = m[2] || '';
+      /* 기간(2년 등)은 근무 기간일 뿐 «[기간] 무결점 마감» 같은 성과 칸의 사실이 아니다 — 자동으로 넣지 않는다 */
+      if (/^(년|개월|달|주|일|시간)$/.test(unit)) return;
+      var slot = '[숫자]', at = s.indexOf(slot);
+      if (at < 0) return;
+      var after = (s.slice(at + slot.length).match(UNIT) || [''])[0];
+      if (after && unit && after !== unit) return;
+      s = s.slice(0, at) + m[1] + (after || unit === '개' || unit === '점' ? '' : unit) + s.slice(at + slot.length);
     });
     return s;
+  }
+  /* 이력서 한 줄의 수치 칸 — 행동과 낱말이 겹치는 것 → 요구 이름과 겹치는 것 → 중립 칸.
+     경험 묶음의 첫 수치를 아무 행동에나 붙이면 «근태 정리 — [숫자]명 채용 진행»처럼 어긋난다. */
+  var VAGUE = { '진행': 1, '처리': 1, '관리': 1, '운영': 1, '정리': 1, '완료': 1 };
+  function metricOf(e, verb, req) {
+    var list = e.metric || [];
+    function words(t) { return String(t || '').replace(/\[[^\]]*\]/g, ' ').split(/[\s·,]+/).map(compact).filter(function (w) { return w.length >= 2 && !VAGUE[w]; }); }
+    function hit(src) {
+      var ws = words(src);
+      for (var i = 0; i < list.length; i++) { var mw = words(list[i]); if (ws.some(function (w) { return mw.some(function (x) { return x.indexOf(w) > -1 || w.indexOf(x) > -1; }); })) return list[i]; }
+      return '';
+    }
+    /* 겹치는 낱말이 없으면: 대표 행동이면 대표 수치, 입력에 숫자가 있으면 그 단위를 받는 수치 */
+    var unitFit = '';
+    (e.nums || []).some(function (n) {
+      var u = (String(n).match(/(년|개월|달|주|일|시간|건|명|회|%|곳|개|점)$/) || [''])[0];
+      if (/^(년|개월|달|주|일|시간)$/.test(u)) return false;
+      var slot = '[숫자]' + u;
+      unitFit = list.filter(function (m) { return m.indexOf(slot) > -1; })[0] || '';
+      return !!unitFit;
+    });
+    return hit(verb) || hit(req && req.label) || (verb === (e.verb || [])[0] && list[0]) || unitFit || '[숫자]건 처리';
+  }
+  /* 행동이 경험 칸에 실제로 적혀 있는가 — 낱말(2자 이상) 하나라도 입력에 있으면 적힌 것으로 본다 */
+  function stated(verb, text) {
+    var t = compact(text);
+    return String(verb || '').split(/[\s·,]+/).some(function (w) { w = compact(w); return w.length >= 2 && t.indexOf(w) > -1; });
   }
 
   function merge() {
@@ -193,10 +233,13 @@
       var e = pick.score >= 2 ? pick.exp : null;
       var fit = pick.score >= 4 ? 'good' : e ? 'mid' : 'low';
       var verb = e ? verbOf(e, req.cap, req) : '';
-      var metric = e ? (e.metric || ['[숫자]건 처리'])[0] : '[숫자]건 처리';
+      /* 입력에 없는 행동은 경험 묶음에서 짐작한 것이다 — «강한 연결»로 단정하지 않는다 */
+      var guess = !!e && !stated(verb, UI.l1);
+      if (guess && fit === 'good') fit = 'mid';
+      var metric = e ? metricOf(e, verb, req) : '[숫자]건 처리';
       return {
         id: req.id, no: (i + 1 < 10 ? '0' : '') + (i + 1), req: req, hit: hit, exp: e, fit: fit, score: pick.score,
-        verb: verb, metric: metric,
+        verb: verb, metric: metric, guess: guess,
         why: e ? fillWhy(req.cap, e, req) : '',
         resume: e ? e.label + ' · ' + verb + ' — ' + metric : '',
         steps: e ? [
@@ -319,10 +362,11 @@
       '<div style="--c:var(--a)"><b>A</b><span>' + esc(req.a) + '</span></div>' +
       '</div>';
     if (r.exp) {
+      if (r.guess) h += '<p class="add guess"><b>경험 칸에 적힌 일은 아닙니다</b> ' + esc(fixParticles('「' + r.verb + '」은(는) ' + r.exp.label + ' 경험에서 흔히 맡는 일로 짐작한 것입니다. 실제로 했을 때만 쓰세요.')) + '</p>';
       h += '<p class="why"><b>왜 연결되는가</b> ' + esc(r.why) + '</p>';
       h += '<div class="flow"><h4>전개 방향 — 문장은 직접</h4><ol>' +
         r.steps.map(function (s, i) { return '<li><i>' + '①②③'[i] + '</i><span><b>' + s.k + '</b> · ' + esc(s.v) + '</span></li>'; }).join('') +
-        '</ol><p class="resume"><b>이력서 한 줄 포인트</b> ' + slots(fillNums(r.resume, (UI.exp || {}).nums)) + '</p></div>';
+        '</ol><p class="resume"><b>이력서 한 줄 포인트</b> ' + slots(fillNums(r.resume, (r.exp && r.exp.nums) || [])) + '</p></div>';
       if (ai) h += '<p class="ai"><b>서버 AI 보조</b> ' + esc(ai) + '</p>';
     } else {
       h += '<p class="add"><b>붙일 경험이 아직 뚜렷하지 않습니다</b> ' + esc(req.label) + '에 닿는 장면을 경험 칸에 한 줄 더 넣어 보세요. 예: ' + esc(req.add) + '</p>';
@@ -342,7 +386,7 @@
       caps: UI.rows.map(function (r) { return r.req.cap; })
     };
     var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
-    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 4500) : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 10000) : null;
     fetch('/api/layer-merge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
