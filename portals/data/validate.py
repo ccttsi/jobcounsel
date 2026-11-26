@@ -5,7 +5,8 @@
 종료 코드 0 = 오류 0건(경고는 있어도 무관), 1 = 오류 있음.
 
 네트워크를 쓰지 않는다(오프라인 검증). 실제 접속 검증 결과가 각 항목의
-http_status·verified_at 에 들어 있다. 마지막 전수 재확인은 2026-11-23(주간 점검)이고, 2026-11-24에 제외 20곳을 다시 확인해 16곳을 더했다.
+http_status·verified_at 에 들어 있다. 마지막 전수 재확인은 2026-11-23(주간 점검)이고, 2026-11-24에 제외 20곳을 다시
+확인해 16곳을 더했으며, 2026-11-26에 새 후보를 훑어 17곳을 더하고 「내담자 상황·목표(needs)」·「운영 주체(owner)」 축을 붙였다.
 사이트가 폐쇄되면 verified_at 을 올릴 때 해당 항목을 빼거나 주소를 고친다.
 """
 import json
@@ -18,17 +19,18 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, "portals.json")
 
 EXPECTED = {
-    "total": 107,
-    "by_sector": {"pub": 8, "disclosure": 13, "general": 15, "tech": 12, "expert": 5,
-                  "industry": 8, "target": 17, "train": 12, "service": 13, "info": 4},
+    "total": 124,
+    "by_sector": {"pub": 9, "disclosure": 15, "general": 17, "tech": 12, "expert": 5,
+                  "industry": 9, "target": 19, "train": 16, "service": 15, "info": 7},
 }
 # 항목마다 실제로 접속을 확인한 날을 적는다. 한 날짜로 통일하지 않는다 —
 # 자동 접속 차단(403) 사이트는 마지막으로 확인한 날짜를 그대로 둔다.
-ALLOWED_DATES = {"2026-11-16", "2026-11-19", "2026-11-20", "2026-11-23", "2026-11-24"}
-VERIFIED_AT = "2026-11-24"
+ALLOWED_DATES = {"2026-11-16", "2026-11-19", "2026-11-20", "2026-11-23", "2026-11-24", "2026-11-26"}
+VERIFIED_AT = "2026-11-26"
 METHODS = {"curl", "curl-mobile", "browser", "official"}
 REQUIRED = ["id", "name", "url", "sector", "operator", "roles", "eligibility",
-            "strengths", "tips", "shows", "verified_at", "final_url", "verify_method"]
+            "strengths", "tips", "shows", "needs", "owner", "verified_at", "final_url", "verify_method"]
+OWNERS = {"gov", "corp", "biz"}
 # http_status 는 아래 verify_method 검사에서 함께 본다(official 은 null 이 정상).
 OPTIONAL = ["aliases", "verify_note"]
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -72,8 +74,8 @@ def main():
             err("meta.%s 누락" % k)
     if meta.get("built_at") != VERIFIED_AT:
         warn("meta.built_at=%r (기대 %s)" % (meta.get("built_at"), VERIFIED_AT))
-    if meta.get("version") != "1.3.0":
-        warn("meta.version=%r (기대 1.3.0)" % (meta.get("version"),))
+    if meta.get("version") != "1.4.0":
+        warn("meta.version=%r (기대 1.4.0)" % (meta.get("version"),))
 
     # ---- sectors / vocabulary ----
     codes = [s.get("code") for s in sectors]
@@ -85,6 +87,30 @@ def main():
                 err("sectors[%s].%s 누락" % (s.get("code"), k))
     if set(codes) != set(EXPECTED["by_sector"]):
         err("sectors 코드가 기대와 다릅니다: %s" % sorted(set(codes) ^ set(EXPECTED["by_sector"])))
+
+    # ---- goals(내담자 상황·목표) 사전 ----
+    goals = d.get("goals")
+    if not isinstance(goals, list) or len(goals) < 5:
+        err("goals 가 없거나 너무 적습니다")
+        goals = []
+    g_codes, kid_codes = [], {}
+    for g in goals:
+        for k in ["code", "name", "desc"]:
+            if not g.get(k):
+                err("goals[%s].%s 누락" % (g.get("code"), k))
+        if g.get("code") in g_codes:
+            err("goals.code 중복: %s" % g.get("code"))
+        g_codes.append(g.get("code"))
+        kids = g.get("kids") or []
+        if len(kids) < 2:
+            err("goals[%s].kids 가 너무 적습니다" % g.get("code"))
+        for kid in kids:
+            for k in ["code", "name", "desc"]:
+                if not kid.get(k):
+                    err("goals[%s].kids[%s].%s 누락" % (g.get("code"), kid.get("code"), k))
+            if kid.get("code") in kid_codes:
+                err("goals 하위 code 중복: %s" % kid.get("code"))
+            kid_codes[kid.get("code")] = g.get("code")
 
     v_roles = set(vocab.get("roles") or [])
     v_elig = set(vocab.get("eligibility") or [])
@@ -132,6 +158,19 @@ def main():
         for e in p.get("eligibility") or []:
             if e not in v_elig:
                 err("%s: vocabulary.eligibility 에 없는 값 %r" % (where, e))
+
+        own = p.get("owner")
+        if own not in OWNERS:
+            err("%s: owner %r (허용 %s)" % (where, own, sorted(OWNERS)))
+        nd = p.get("needs")
+        if not isinstance(nd, list) or not (1 <= len(nd) <= 4):
+            err("%s: needs 는 1~4개 배열이어야 합니다 (%r)" % (where, nd))
+        else:
+            if len(set(nd)) != len(nd):
+                err("%s: needs 에 같은 값이 겹칩니다" % where)
+            for x in nd:
+                if x not in kid_codes:
+                    err("%s: goals 에 없는 needs %r" % (where, x))
 
         method = p.get("verify_method")
         if method not in METHODS:
@@ -209,6 +248,14 @@ def main():
         err("meta.counts.by_sector 가 실제와 다릅니다: %r vs %r" % (counts.get("by_sector"), dict(by_sector)))
     if counts.get("by_method") != dict(Counter(p.get("verify_method") for p in portals)):
         err("meta.counts.by_method 가 실제와 다릅니다")
+    if counts.get("by_owner") != dict(Counter(p.get("owner") for p in portals)):
+        err("meta.counts.by_owner 가 실제와 다릅니다")
+
+    # 어떤 목표 묶음에도 사이트가 없으면 화면에서 빈 묶음이 생긴다.
+    used_kids = Counter(x for p in portals for x in (p.get("needs") or []))
+    for kid, gcode in kid_codes.items():
+        if used_kids.get(kid, 0) == 0:
+            err("goals[%s].kids[%s] 에 해당하는 사이트가 없습니다" % (gcode, kid))
     for code, n in EXPECTED["by_sector"].items():
         if by_sector.get(code, 0) != n:
             err("sector %s 실제 %d건 (기대 %d)" % (code, by_sector.get(code, 0), n))
@@ -230,6 +277,10 @@ def main():
     for s in sectors:
         print("   %-9s %-28s %d" % (s["code"], s["name"], by_sector.get(s["code"], 0)))
     print("   검증 방식:", dict(Counter(p.get("verify_method") for p in portals)))
+    print("   운영 주체:", dict(Counter(p.get("owner") for p in portals)))
+    for g in goals:
+        print("   [%s] %s — %s" % (g.get("code"), g.get("name"), ", ".join(
+            "%s %d" % (k["name"], used_kids.get(k["code"], 0)) for k in g.get("kids") or [])))
     print("   제외:", len(ver.get("excluded") or []), "곳")
     print("오류 %d건, 경고 %d건" % (len(errors), len(warnings)))
     for m in warnings:

@@ -142,8 +142,8 @@ a{color:inherit}
 .act{display:flex;flex-wrap:wrap;gap:4px}
 .act button{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 10px;border-radius:12px;border:1px solid var(--line);font-size:13px;font-weight:650;color:var(--ink)}
 .act button::after{content:"×";color:var(--dim);font-size:15px}
-.scroller{height:calc(100vh - 330px);height:calc(100dvh - 330px);min-height:320px;overflow:auto;overscroll-behavior:contain;margin:0 -6px;padding:4px 6px 12px;border-radius:14px}
-@media (min-width:900px){.scroller{height:calc(100vh - 210px);height:calc(100dvh - 210px)}}
+.scroller{height:calc(100vh - 374px);height:calc(100dvh - 374px);min-height:320px;overflow:auto;overscroll-behavior:contain;margin:0 -6px;padding:4px 6px 12px;border-radius:14px}
+@media (min-width:900px){.scroller{height:calc(100vh - 254px);height:calc(100dvh - 254px)}}
 .grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 @media (min-width:640px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:1500px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -198,6 +198,36 @@ a{color:inherit}
 @media (min-width:900px){#fSheet{display:contents;pointer-events:auto}#fSheet>.box{transform:none;max-height:calc(100vh - 150px);max-height:calc(100dvh - 150px);border-radius:18px;border-bottom:1px solid var(--line);padding-bottom:14px}#fSheet .sh-x{display:none}}
 @media (min-width:1240px){#dSheet{display:contents;pointer-events:auto}#dSheet>.box{transform:none;max-height:calc(100vh - 150px);max-height:calc(100dvh - 150px);border-radius:18px;border-bottom:1px solid var(--line)}#dSheet .sh-x{display:none}}
 
+/* 묶어 보기 */
+.gb{display:flex;align-items:center;gap:8px;margin:0 -16px 4px;padding:0 16px;overflow-x:auto;scrollbar-width:none;min-height:44px}
+.gb::-webkit-scrollbar{display:none}
+@media (min-width:900px){.gb{margin:0 0 4px;padding:0;flex-wrap:wrap}}
+.gb-l{flex:none;font-size:12.5px;font-weight:800;color:var(--dim);letter-spacing:0}
+@media (max-width:899px){.gb-l{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+.gb-c{display:flex;gap:6px}
+.gb-c button{flex:none;display:inline-flex;align-items:center;justify-content:center;line-height:1.2;min-height:44px;padding:4px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-size:14px;font-weight:700;white-space:nowrap;color:var(--muted);transition:border-color .15s,background .15s,color .15s,transform .12s}
+.gb-c button:active{transform:scale(.97)}
+@media (max-width:420px){.gb-c button{font-size:13px;padding:4px 9px}}
+.gb-c button[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft);color:var(--ink);box-shadow:inset 0 0 0 1px var(--acc)}
+
+/* 묶음 머리글 — 기준을 고르면 목록이 묶음별로 나뉜다 */
+.grid[data-g]{display:block}
+.gs+.gs{margin-top:14px}
+.gs-h{display:flex;align-items:center;gap:8px;width:100%;min-height:48px;padding:6px 10px;border-radius:12px;background:var(--soft);text-align:left}
+.gs-h i{flex:none;width:9px;height:9px;border-radius:2px;background:var(--c,var(--acc));transform:rotate(45deg)}
+.gs-h b{flex:1;min-width:0;font-size:14.5px;font-weight:800;letter-spacing:-.02em}
+.gs-h .gs-n{flex:none;font-size:12.5px;color:var(--dim)}
+.gs-h svg{flex:none;width:16px;height:16px;color:var(--dim);transition:transform .2s cubic-bezier(.2,.9,.3,1)}
+.gs[data-closed="1"] .gs-h svg{transform:rotate(-90deg)}
+.gs[data-closed="1"] .gs-b{display:none}
+.gs-d{margin:4px 2px 0;font-size:12.5px;line-height:1.5;color:var(--dim)}
+.gs-b{padding-top:8px}
+.gs2+.gs2{margin-top:10px}
+.gs2>h4{display:flex;align-items:baseline;gap:6px;margin:2px 2px 6px;font-size:13px;font-weight:750;color:var(--muted)}
+.gs2>h4 .n{font-size:11.5px;color:var(--dim)}
+.cards{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+@media (min-width:640px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1500px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .foot{margin:10px 0 0;font-size:12.5px;color:var(--dim);line-height:1.6}
 .foot details summary{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--acc);cursor:pointer}
 .foot ul{margin:0 0 8px;padding-left:18px}
@@ -228,6 +258,7 @@ html[data-jc-imm] .pv-b li{animation:none}
       <li><b>사이트 이름 대신 도메인·영문 약어로 찾아도 됩니다.</b> gosi·dart·alio·cleaneye·npas 같은 낱말을 그대로 검색해 보세요.</li>
       <li><b>공시·기업정보는 공식 원문으로 보내기만 합니다.</b> 공시 자료나 기업 정보를 복제해 싣지 않고, 「가서 볼 수 있는 것」 요약과 링크만 둡니다.</li>
       <li><b>대상(청년·중장년 등)은 그 사이트가 해당 사업을 운영한다는 뜻입니다.</b> 다른 연령은 지원할 수 없다는 뜻이 아닙니다.</li>
+      <li><b>「묶어 보기」로 같은 목록을 여러 기준으로 묶어 봅니다.</b> 내담자 상황·목표·대분류·직무·대상·운영 주체를 고르면 묶음 머리글과 건수가 함께 나오고, 머리글을 눌러 접고 펼칩니다. 한 사이트는 대표 목적 한 묶음에 놓입니다.</li>
     </ul></div>
   </section>
 
@@ -245,6 +276,7 @@ html[data-jc-imm] .pv-b li{animation:none}
         <button type="button" class="fbtn" id="fbtn" aria-controls="fSheet">조건 고르기 <b id="fcnt" hidden>0</b></button>
       </div>
       <div class="dxm" id="dxm" role="group" aria-label="3초 진단"></div>
+      <div class="gb" id="gb" hidden><span class="gb-l">묶어 보기</span><div class="gb-c" id="gbC" role="group" aria-label="묶어 보기 기준"></div></div>
       <div class="cnt" aria-live="polite"><span class="odo" id="odo"><span>0</span></span><span id="cntL">곳</span><span class="act" id="act"></span></div>
       <div class="scroller" id="scroller" data-jc-still><div class="grid" id="grid"><p class="empty">사이트 목록을 불러오고 있습니다…</p></div></div>
     </section>
