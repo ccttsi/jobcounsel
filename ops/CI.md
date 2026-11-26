@@ -23,6 +23,7 @@
 | | **자료 개수** — 대문 `index.html`의 「N가지 … 자료」와 `data-count` 칸에 그려 둔 수가 `assets/tools.js`의 `JC_TOOLS` 길이와 같은지, 개수를 장부에서 세는 치환(`renderCounts`·`[data-count]`)이 살아 있는지. 주석의 `01~N`이 어긋나면 참고로만 알린다 | 숫자를 손으로 적지 말고 `<span data-count>`로 두어 장부 길이를 따르게 한다 |
 | | **법령 시행일** — 법령 데이터(`efYd`·`effective`·`시행일자`)가 날짜 모양인지, 오늘(KST)보다 뒤(아직 시행되지 않은 개정본)는 아닌지. 수집 원문(`data/openapi/` 등)의 미래 날짜는 경고, 우리가 옮겨 적은 조문(`law/`·`posting/`·`first-year/`)의 미래 날짜는 실패 | 현행 시행본으로 바꾸거나 그 조문을 뺀다. 30일 안에 시행되는 날짜는 참고로 알린다 |
 | | **수집 게이트 단위 검사** (`json`에 함께 돈다 — `--only gate`로 따로) — 자료를 적재하기 전에 도는 관문(`ops/scripts/collect_gate.py`)이 정상 자료를 통과시키고, 일부러 만든 불량 샘플(라이선스 미표기·공공누리 제4유형을 Track A로·미래 시행일 `20280101`·출처 URL 누락)을 실제로 막는지 | 게이트 규칙을 고친다. 저장소의 실제 자료를 막기 시작하면(오탐) 규칙이 너무 좁은 것이므로 정책표부터 다시 본다 |
+| | **비서 답 검사기** (`json`에 함께 돈다 — `--only answercheck`로 따로) — 서버가 답을 내보내기 전에 쓰는 규칙(`supabase/functions/assistant-proxy/check-data.js`)이 원천(`data/legal-constants.json`·`assets/tools.js`)과 같은지, `assistant/answer-check.js`와 서버 사본이 바이트까지 같은지, 시험 문항 21개(고쳐야 할 것·건드리면 안 되는 것)가 기대대로인지, 자료실 지면 글 8천여 문장이 하나도 바뀌지 않는지(오탐 0) | 규칙을 고쳤으면 `python3 ops/scripts/build_answer_check.py`로 다시 만들고, 사본은 `cp assistant/answer-check.js supabase/functions/assistant-proxy/answer-check.js` |
 | | **내부 문서 노출 차단** (`js`에 함께 돈다 — `--only expose`로 따로) — 배포 루트에 있는 것이 «공개 화면»인지 «내부 문서»인지 정해져 있는지, `functions/_middleware.js`의 규칙(`INTERNAL_DIRS`·`INTERNAL_EXTS`)이 내부 파일 **80곳**을 빠짐없이 막고 화면이 받는 공개 파일 **187곳**은 막지 않는지, `_routes.json`이 모든 요청을 함수로 보내는지. 판정은 middleware를 **node로 실제로 불러** 받고, 검사 쪽 사본과 어긋나면 실패한다 | 규칙을 고치거나 새 폴더를 `INTERNAL_DIRS`에 넣는다(화면이면 `assets/tools.js` 장부에). §1-3 |
 | `smoke-tests` | 대문·`/briefing/`·`/emerging/` 을 Chromium으로 390·1280에서 열어 콘솔 오류 0 · 같은 사이트 404 0 · 가로 넘침 0 · 44px 미달 0 · 화면이 실제로 그려졌는지 | 실패한 화면 그림(Actions artifact `smoke-failure-shots`)을 보고 고친다 |
 | | **공통 UI·모션 실증**(`ops/qa/shared_ui_probe.py`가 같은 게이트에서 돈다) — 대문 **기본·시드·매치** 세 보기에서 방치 유도 트리거(`JC_HINT.run`)가 걸리고 로고가 **실제로 움직이는지**, 시드·매치 대표 섹터(`/theory/`·`/talk/`)에서 테마 단추를 눌러 `data-theme`이 바뀌고 카드덱 단추·도구함이 붙는지, 카드 보조 액션의 좌표가 항목 전환에서 흔들리지 않는지 | 게이트가 선 사례(`gate`)가 어긋나면 실패한다. 숫자·이유·재는 법은 아래 §1-2 |
@@ -131,6 +132,7 @@ python3 ops/scripts/validate_repo.py --only gate                    # 수집 게
 python3 ops/scripts/validate_repo.py --only expose                   # 내부 문서 차단 규칙·공개 파일 대조(2초)
 python3 ops/qa/internal_exposure_probe.py --base https://witw.pages.dev/   # 배포본에서 막혀야 할 곳 404·열려야 할 곳 200
 python3 ops/scripts/validate_repo.py --only shell,motion,anchor     # 공통 셸·금지 모션·정렬 기준점(2초)
+python3 ops/scripts/validate_repo.py --only answercheck             # 비서 답 검사기 — 규칙 동기·시험 문항·지면 글 오탐 0(3초)
 python3 ops/qa/shared_ui_probe.py                    # 공통 UI·모션 실증(방치 모션·대표 섹터·보조 액션 좌표)
 python3 -m unittest ops/tests/test_ui_checks.py -v   # 위 세 검사가 «고의 위반»을 실제로 잡는지
 python3 -m unittest discover -s ops/tests -p "test_*.py" -v      # 같은 검사를 unittest로 자세히
