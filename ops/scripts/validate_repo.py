@@ -1904,8 +1904,29 @@ def run_qtype_checks():
         fail("qtype", f"정답표에 빠진 문항 {len(missing)}개: {', '.join(missing[:5])}")
     if extra:
         fail("qtype", f"문항에 없는 정답표 항목 {len(extra)}개: {', '.join(extra[:5])}")
+    # CI 의 정적 검사 노드는 20 — TypeScript 를 불러오는 옵션이 없으므로 러너는 판정기(JS)만 돌리고,
+    # prompt.ts 배선은 아래에서 글자로 본다.
+    prompt_ts = os.path.join(ROOT, "supabase", "functions", "assistant-proxy", "prompt.ts")
+    prompt_txt = open(prompt_ts, encoding="utf-8").read() if os.path.exists(prompt_ts) else ""
+    index_ts = os.path.join(ROOT, "supabase", "functions", "assistant-proxy", "index.ts")
+    index_txt = open(index_ts, encoding="utf-8").read() if os.path.exists(index_ts) else ""
+    eval_mjs = os.path.join(ROOT, "ops", "eval", "aup_eval.mjs")
+    eval_txt = open(eval_mjs, encoding="utf-8").read() if os.path.exists(eval_mjs) else ""
+    if "import './qtype.js';" not in prompt_txt:
+        fail("qtype", "prompt.ts 가 qtype.js(서버 사본)를 부르지 않는다")
+    for t in QTYPE_TYPES:
+        if not re.search(r"\n  " + t + r": \[", prompt_txt):
+            fail("qtype", f"prompt.ts 의 TYPE_TXT 에 «{t}» 답 틀이 없다")
+    if "결론·핵심 숫자·한 줄 답을 첫 문장에 먼저" not in prompt_txt:
+        fail("qtype", "prompt.ts 의 SYS 에 «첫 문장에 결론» 원칙이 없다")
+    if "export function typeBrief" not in prompt_txt or "QTYPE.check(question, prev)" not in prompt_txt:
+        fail("qtype", "prompt.ts 에 typeBrief(질문·앞 질문 → 유형) 가 없다")
+    if "typeBrief(question, prev)" not in index_txt:
+        fail("qtype", "index.ts(라이브 서버)가 typeBrief 로 유형별 답 틀을 붙이지 않는다")
+    if "P.typeBrief(" not in eval_txt:
+        fail("qtype", "성적표 러너(aup_eval.mjs)가 라이브와 같은 typeBrief 를 쓰지 않는다")
     try:
-        result = subprocess.run(["node", "--experimental-strip-types", os.path.join(ROOT, QTYPE_PROBE), ROOT],
+        result = subprocess.run(["node", os.path.join(ROOT, QTYPE_PROBE), ROOT],
                                 capture_output=True, text=True, timeout=180)
     except (OSError, subprocess.TimeoutExpired) as exc:
         fail("qtype", f"판정기 시험을 돌리지 못했다 ({exc})")
@@ -1933,21 +1954,9 @@ def run_qtype_checks():
         value = rate("type:" + t)
         if value is not None and value < QTYPE_MIN["type"]:
             fail("qtype", f"«{t}» 유형 판정 정확도 {round(value, 1)}% < {QTYPE_MIN['type']}%")
-    pr = got.get("prompt") or {}
-    if pr.get("error"):
-        fail("qtype", f"prompt.ts 배선을 확인하지 못했다 — {pr['error']}")
-    else:
-        if pr.get("keys") != sorted(QTYPE_TYPES):
-            fail("qtype", f"prompt.ts 의 TYPE_TXT 유형이 {pr.get('keys')} — {sorted(QTYPE_TYPES)} 여야 한다")
-        if not pr.get("principle"):
-            fail("qtype", "prompt.ts 의 SYS 에 «첫 문장에 먼저» 원칙이 없다")
-        if not (pr.get("calc") and pr.get("counsel") and pr.get("prev")):
-            fail("qtype", "typeBrief 가 유형(계산·상담)·앞 질문을 따라 지시를 고르지 못한다")
-        if not pr.get("same"):
-            fail("qtype", "prompt.ts 가 서버 사본 qtype.js 가 아닌 다른 판정기를 쓴다")
     note(f"질문 유형 판정기 — 시험 {len(cases)}문 · 성적표 {n_all}문 정확도 훈련 {round(train, 1) if train is not None else '—'}%"
          f"·시험 {round(test, 1) if test is not None else '—'}%·전체 {round(all_rate, 1) if all_rate is not None else '—'}%"
-         f" (서버 사본 동기·prompt.ts 배선 포함)")
+         f" (서버 사본 동기·prompt.ts 배선 글자 확인 포함)")
 
 
 # ---------------------------------------------------------------- 3-8d) AUP-2 성적표 문항 (2026-11-25)
