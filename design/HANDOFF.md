@@ -5,6 +5,7 @@
 - [x] 자료 `layer-merge/data/lm-core.json`(72KB) — 경험 45(lexicon 파생) · 직무군 14 · 요구 72 + 공통 5 · 역량 20 · NCS 능력단위 14(이름·요소·KSA 원문). 생성 `ops/scripts/build_layer_merge/build.py`, 원천 `src.py`(겹치는 낱말이면 생성이 멈춘다).
 - [x] 서버 보조 `functions/api/layer-merge.js` — `GROQ_API_KEY`가 있을 때만 `openai/gpt-oss-20b`로 «연결 설명»만 받고, 없거나 실패하면 `{ ok:false, fallback:true }`로 조용히 내장 엔진. **원문은 보내지 않고 화면이 뽑은 라벨만** 보낸다(6초 상한·id 화이트리스트·길이 상한·저장 0).
 - [x] 검수 — 390·360·820·1024·1280·1440·1600 × 밝게·세피아·어둡게: 콘솔 오류 0 · 가로 넘침 0 · 44px 미달 0 · 화면 분량 390 1.66 / 820 1.0 / 1024 1.0 / 1280 1.0(결과판 안쪽 스크롤). 샘플 4쌍 병합 카드 5~6장·KSA 요약·전개 3단·NCS 카드 출력 확인. 딥링크 `?q=편의점` → 경험 칸 자동 입력.
+- **머지**: PR #541 · 머지 `9a1e81df` · 라이브 `https://witw.pages.dev/layer-merge/` 200(390 1.95 / 1280 1.06, 콘솔 오류 0). `/api/layer-merge` 200 — 키가 없어 `{ok:false,fallback:true}`로 내장 엔진 결과를 그대로 쓴다.
 - **남은 일**: Cloudflare Pages 환경변수 `GROQ_API_KEY` 설정(설정 전에는 내장 엔진). 상담사용 «약한 연결을 질문으로 바꾸기»는 다음 개정 후보.
 - **다음 시작 파일**: `layer-merge/app.js` · `ops/scripts/build_layer_merge/src.py`.
 
