@@ -289,7 +289,7 @@
     $('bhT').innerHTML = '요구 ' + rows.length + '개 <span class="pill">연결 ' + linked + '</span>' + (strong ? '<span class="pill">강한 연결 ' + strong + '</span>' : '');
     $('bhS').textContent = (UI.post.fam ? UI.post.fam.name + ' · ' : '') + (UI.post.guessed ? '공고에서 요구 표현을 찾지 못해 이 직무군에서 흔한 요구로 채웠습니다.' : '공고에서 잡은 요구를 기준으로 정리했습니다.') + (mq.matches ? ' 문장은 직접 씁니다.' : ' 카드를 누르면 펼쳐집니다.');
     out.innerHTML = rows.map(function (r) { return card(r); }).join('') + ncsCard() +
-      '<p class="note" style="margin:2px 2px 0;font-size:12px;color:var(--dim);line-height:1.6">K·S·A는 요구를 나눈 해석틀입니다. 숫자와 장면은 내 사실로 채우고, 완성 문장은 직접 쓰세요.</p>';
+      '<p class="note" style="margin:2px 2px 0;font-size:12px;color:var(--dim);line-height:1.6">자동으로 계산된 참고용 결과입니다. K·S·A는 요구를 나눈 해석틀이니 숫자와 장면은 내 사실로 채우고, 완성 문장은 직접 쓰세요.</p>';
     if (anim && !still()) { board.classList.remove('go'); void board.offsetWidth; board.classList.add('go'); }
   }
 
