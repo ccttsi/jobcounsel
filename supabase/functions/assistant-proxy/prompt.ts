@@ -6,6 +6,8 @@
 
 /* 프롬프트 주입·탈옥 분류기 — assistant/guard.js 와 바이트까지 같은 사본. 질문·근거 조각·열린 화면 글을 모두 본다. */
 import './guard.js';
+/* AUP-6 질문 유형 판정기 — assistant/qtype.js 와 바이트까지 같은 사본. 유형별 «답 틀» 지시를 고르는 데 쓴다. */
+import './qtype.js';
 export type GuardVerdict = { verdict: 'attack' | 'suspect' | 'clean'; score: number; signals: string[] };
 export type GuardApi = {
   check: (q: string) => GuardVerdict; defuse: (t: string) => string;
@@ -13,6 +15,12 @@ export type GuardApi = {
   message: string; leakMessage: string; caution: string;
 };
 export const GUARD = (globalThis as unknown as { JCAssistGuard: GuardApi }).JCAssistGuard;
+
+/* 질문 유형 — 계산·제도·안내·상담 진행. 판정은 qtype.js 가 규칙으로만 한다(모델 호출 0). */
+export type QType = 'calc' | 'policy' | 'guide' | 'counsel';
+export type QTypeVerdict = { type: QType; scores: Record<QType, number>; margin: number; why: string[] };
+type QTypeApi = { VERSION: string; TYPES: QType[]; check: (q: string, prev?: string[]) => QTypeVerdict };
+export const QTYPE = (globalThis as unknown as { JCAssistQType: QTypeApi }).JCAssistQType;
 
 export const MAX_EVIDENCE = 6;      // 근거 개수 상한
 export const MODES = ['easy3', 'mock', 'compare', 'opening'];
@@ -24,6 +32,11 @@ export const SYS = [
   '   요청에는 <map> 블록(자료실 지도)과 후보 섹터가 함께 옵니다. 답하기 전에 후보 섹터를 먼저 보고, 그 섹터의 근거부터 읽습니다.',
   '   지도와 근거가 어긋나면 근거를 따릅니다. 근거가 비어 있으면 <map>에서 가장 가까운 섹터·경로를 한 줄로 안내합니다.',
   '   사용자가 약어·줄임말(경단녀·국취제·내배카·실급·고보)로 물으면 정식 용어(경력단절여성·국민취업지원제도·국민내일배움카드·구직급여·고용보험)로 풀어 답합니다.',
+  '',
+  '■ 답의 첫 문장 (모든 유형 공통 — 맨 먼저)',
+  '   결론·핵심 숫자·한 줄 답을 첫 문장에 먼저 씁니다. 배경·이유·조건은 그 뒤에 붙입니다.',
+  '   「확인해 보니」·「말씀하신 경우에는」 같은 머리말로 시작하지 않고 바로 답으로 시작합니다.',
+  '   첫 문장만 읽어도 사용자가 무엇을 물었고 답이 무엇인지 알 수 있어야 합니다.',
   '',
   '■ 지켜야 할 것 (가장 중요)',
   '1. 근거에 적힌 내용만 "자료실 기준"으로 말합니다. 근거에 없는 수치·법령·직업 정보는 절대 지어내지 않습니다.',
@@ -66,6 +79,41 @@ export const FMT_PLAIN = [
   '답변을 마친 뒤 맨 마지막 줄에만 [[REFS:e1,e2]] 처럼 실제로 답에 쓴 근거 번호를 적습니다. 쓴 근거가 없으면 [[REFS:]] 입니다.',
 ].join('\n');
 
+
+/* 유형별 답 틀 — AUP-6. 맨 끝(Recency) 가까이에 붙여 모델이 가장 잘 따르게 한다.
+   공통 원칙(첫 문장에 결론)은 SYS 안에 있고, 여기서는 «그다음 구조»만 유형별로 바꾼다. */
+export const TYPE_TXT: Record<QType, string> = {
+  calc: [
+    '■ 이번 질문의 답 틀 — 계산',
+    '   ① 첫 문장: 계산 결과와 핵심 수치부터 (예: "주 40시간·월 209시간 기준 세전 월급은 …원입니다.")',
+    '   ② 그다음: 계산 공식과 대입한 값을 한 줄씩. 근거에 적힌 숫자 표기 그대로 옮깁니다.',
+    '   ③ 마지막: 근거에 있는 계산기 화면 주소(/pay-calc/·/hud/·/kdt-calc/ 등) 한 줄. 없는 주소는 만들지 않습니다.',
+    '   근거에 없는 값을 대입하지 않습니다. 값이 근거에 없으면 "자료실 자료에서는 확인하지 못했어요"로 시작합니다.',
+  ].join('\n'),
+  policy: [
+    '■ 이번 질문의 답 틀 — 제도',
+    '   ① 첫 문장: 가능 여부와 핵심 금액·기간부터 (예: "받을 수 있습니다. 하루 상한은 …원입니다.")',
+    '   ② 그다음: 대상 · 핵심 요건 · 신청처(근거에 적힌 주소)를 짧은 목록으로.',
+    '   ③ 조건이 갈리면 «경우»별로 나눠 쓰고, 근거에 조문·고시가 있으면 함께 밝힙니다.',
+  ].join('\n'),
+  guide: [
+    '■ 이번 질문의 답 틀 — 안내',
+    '   ① 첫 문장: 무엇을 보면 되는지(어느 자료인지) 한 줄 결론부터.',
+    '   ② 그다음: 추천 자료 2~3개와 각각 왜 보는지 한 줄씩 (근거에 있는 주소만).',
+    '   ③ 마지막: 첫 번째로 누를 화면 하나를 한 줄로.',
+  ].join('\n'),
+  counsel: [
+    '■ 이번 질문의 답 틀 — 상담 진행',
+    '   ① 첫 문장: 접근 방향 한 줄 (무엇을 먼저 볼지).',
+    '   ② 그다음: 상담 단계 2~3개 — 각 단계에서 무엇을 확인하고 무엇을 정하는지.',
+    '   ③ 내담자에게 바로 쓸 질문 예시 1~2개를 따옴표로. 근거에 있는 상담 도구·자료 주소를 함께 붙입니다.',
+  ].join('\n'),
+};
+
+/* 질문 → 유형별 답 틀 지시문. 앞 질문(prev)이 있으면 이어지는 질문의 유형을 앞 질문에서 잇는다. */
+export function typeBrief(question: string, prev: string[] = []): string {
+  return '\n\n' + TYPE_TXT[QTYPE.check(question, prev).type];
+}
 
 /* 실무 활용 모드 — 화면의 빠른 버튼이 이 값을 보낸다. */
 export const MODE_TXT: Record<string, string> = {

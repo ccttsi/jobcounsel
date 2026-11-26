@@ -21,10 +21,11 @@
   legal    — 공용 법정 수치(최저임금·구직급여 상한·4대보험 요율)의 단일 원천(data/legal-constants.json)과
              생성 사본(assets/legal-constants.js)·섹터의 참조·화면에 박힌 금액이 모두 같은지
   answercheck — 비서 답 검사기(AUP-5) — 규칙 생성물이 원천과 같은지·서버 사본 동기·시험 문항·지면 글 오탐 0
+  qtype    — 비서 질문 유형 판정기(AUP-6) — 서버 사본 동기·시험 문장·성적표 정답표 정확도·prompt.ts 배선
   role     — PR 제목/라벨 기반 역할 분리 가드레일 ([data-only] PR이 화면 코드를 건드리면 실패)
   expose   — 내부 운영·설계 문서가 배포본에서 열리지 않는지(functions/_middleware.js·_routes.json). js와 함께 돈다
 
-  text·count·dates·legal·answercheck은 --only 에 넣지 않아도 json과 함께 돈다(CI 워크플로를 고치지 않아도 되게).
+  text·count·dates·legal·answercheck·qtype은 --only 에 넣지 않아도 json과 함께 돈다(CI 워크플로를 고치지 않아도 되게).
   shell·motion·anchor·expose는 js와 함께 돈다(같은 이유). 예외는 ops/css-allow.tsv에 한 줄씩 남긴다.
 
 종료 코드 0 = 통과, 1 = 실패. 실패 항목은 전부 모아서 한 번에 보여 준다(첫 오류에서 멈추지 않는다).
@@ -1858,6 +1859,106 @@ def run_answer_check_checks():
     note(f"비서 답 검사기 — 시험 {len(cases)}문 · 지면 글 {corpus.get('total', 0)}문 오탐 0 (규칙 원천 동기·서버 사본 동기 포함)")
 
 
+# ---------------------------------------------------------------- 3-8f) AUP-6 질문 유형 판정기 (2026-11-26)
+#   assistant/qtype.js — 질문을 계산·제도·안내·상담 진행 네 «답 틀» 로 나누고, prompt.ts 가 그 유형의 지시를 붙인다.
+#     ① 서버 사본(supabase/functions/assistant-proxy/qtype.js)이 원본과 바이트까지 같은가
+#     ② 시험 문장(assistant/test/qtype-cases.json)의 판정이 기대값(calc·policy·guide·counsel)과 같은가
+#     ③ 성적표 문항(assistant/eval/items.jsonl)의 qtype 정답표와 견준 정확도 — 아래 문턱 아래면 실패
+#     ④ 정답표(ops/eval/qtype-labels.json)가 문항과 1:1 인가(빠진 문항·없는 문항 0)
+#     ⑤ prompt.ts 배선 — 네 유형이 다 있고, typeBrief 가 질문·앞 질문으로 유형을 골라 주는가
+QTYPE_JS = "assistant/qtype.js"
+QTYPE_SERVER = "supabase/functions/assistant-proxy/qtype.js"
+QTYPE_CASES = "assistant/test/qtype-cases.json"
+QTYPE_LABELS = "ops/eval/qtype-labels.json"
+QTYPE_PROBE = "ops/scripts/qtype_probe.mjs"
+QTYPE_TYPES = ("calc", "policy", "guide", "counsel")
+QTYPE_MIN = {"train": 98.0, "test": 85.0, "all": 90.0, "type": 80.0}
+
+
+def run_qtype_checks():
+    src, server = os.path.join(ROOT, QTYPE_JS), os.path.join(ROOT, QTYPE_SERVER)
+    if not os.path.exists(src) or not os.path.exists(server):
+        fail("qtype", f"{QTYPE_JS} 또는 서버 사본 {QTYPE_SERVER} 이 없다")
+        return
+    with open(src, "rb") as a, open(server, "rb") as b:
+        if a.read() != b.read():
+            fail("qtype", f"{QTYPE_SERVER} 이 {QTYPE_JS} 와 다르다 — cp {QTYPE_JS} {QTYPE_SERVER}")
+    cases = (load_json(os.path.join(ROOT, QTYPE_CASES))[0] or {}).get("cases", [])
+    if len(cases) < 20:
+        fail("qtype", f"시험 문장이 {len(cases)}개뿐이다 — 20개 이상 있어야 판정기를 지킬 수 있다")
+    labels_path = os.path.join(ROOT, QTYPE_LABELS)
+    labels = (load_json(labels_path)[0] or {}).get("labels") or {}
+    items_path = os.path.join(ROOT, EVAL_ITEMS)
+    if not os.path.exists(items_path):
+        fail("qtype", f"{EVAL_ITEMS} 이 없다 — python3 ops/eval/build_items.py")
+        return
+    with open(items_path, encoding="utf-8") as fh:
+        items = [json.loads(line) for line in fh if line.strip()]
+    answerable = {it["id"] for it in items if not it.get("refuse")}
+    bad_types = {k: v for k, v in labels.items() if v not in QTYPE_TYPES}
+    if bad_types:
+        fail("qtype", f"정답표에 없는 유형이 있다: {', '.join(f'{k}={v}' for k, v in list(bad_types.items())[:3])}")
+    missing = sorted(answerable - set(labels))
+    extra = sorted(set(labels) - answerable)
+    if missing:
+        fail("qtype", f"정답표에 빠진 문항 {len(missing)}개: {', '.join(missing[:5])}")
+    if extra:
+        fail("qtype", f"문항에 없는 정답표 항목 {len(extra)}개: {', '.join(extra[:5])}")
+    # CI 의 정적 검사 노드는 20 — TypeScript 를 불러오는 옵션이 없으므로 러너는 판정기(JS)만 돌리고,
+    # prompt.ts 배선은 아래에서 글자로 본다.
+    prompt_ts = os.path.join(ROOT, "supabase", "functions", "assistant-proxy", "prompt.ts")
+    prompt_txt = open(prompt_ts, encoding="utf-8").read() if os.path.exists(prompt_ts) else ""
+    index_ts = os.path.join(ROOT, "supabase", "functions", "assistant-proxy", "index.ts")
+    index_txt = open(index_ts, encoding="utf-8").read() if os.path.exists(index_ts) else ""
+    eval_mjs = os.path.join(ROOT, "ops", "eval", "aup_eval.mjs")
+    eval_txt = open(eval_mjs, encoding="utf-8").read() if os.path.exists(eval_mjs) else ""
+    if "import './qtype.js';" not in prompt_txt:
+        fail("qtype", "prompt.ts 가 qtype.js(서버 사본)를 부르지 않는다")
+    for t in QTYPE_TYPES:
+        if not re.search(r"\n  " + t + r": \[", prompt_txt):
+            fail("qtype", f"prompt.ts 의 TYPE_TXT 에 «{t}» 답 틀이 없다")
+    if "결론·핵심 숫자·한 줄 답을 첫 문장에 먼저" not in prompt_txt:
+        fail("qtype", "prompt.ts 의 SYS 에 «첫 문장에 결론» 원칙이 없다")
+    if "export function typeBrief" not in prompt_txt or "QTYPE.check(question, prev)" not in prompt_txt:
+        fail("qtype", "prompt.ts 에 typeBrief(질문·앞 질문 → 유형) 가 없다")
+    if "typeBrief(question, prev)" not in index_txt:
+        fail("qtype", "index.ts(라이브 서버)가 typeBrief 로 유형별 답 틀을 붙이지 않는다")
+    if "P.typeBrief(" not in eval_txt:
+        fail("qtype", "성적표 러너(aup_eval.mjs)가 라이브와 같은 typeBrief 를 쓰지 않는다")
+    try:
+        result = subprocess.run(["node", os.path.join(ROOT, QTYPE_PROBE), ROOT],
+                                capture_output=True, text=True, timeout=180)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        fail("qtype", f"판정기 시험을 돌리지 못했다 ({exc})")
+        return
+    if result.returncode != 0:
+        fail("qtype", f"판정기 시험 실행 오류 — {result.stderr.strip()[:200]}")
+        return
+    got = json.loads(result.stdout or "{}")
+    for q, want, verdict, scores in got.get("cases", []):
+        fail("qtype", f"시험 문장 «{q[:40]}» — 기대 {want}, 판정 {verdict} ({scores})")
+    sp = got.get("splits") or {}
+
+    def rate(key):
+        s = sp.get(key) or {}
+        return (100.0 * s["ok"] / s["n"]) if s.get("n") else None
+    train, test = rate("train"), rate("test")
+    n_all = (sp.get("train") or {}).get("n", 0) + (sp.get("test") or {}).get("n", 0)
+    ok_all = (sp.get("train") or {}).get("ok", 0) + (sp.get("test") or {}).get("ok", 0)
+    all_rate = (100.0 * ok_all / n_all) if n_all else None
+    for key, value, floor in (("훈련", train, QTYPE_MIN["train"]), ("시험", test, QTYPE_MIN["test"]), ("전체", all_rate, QTYPE_MIN["all"])):
+        if value is not None and value < floor:
+            miss = (sp.get("train" if key == "훈련" else "test") or {}).get("miss") or []
+            fail("qtype", f"{key} 갈래 판정 정확도 {round(value, 1)}% < {floor}% — " + ", ".join(f"{m[0]} 기대 {m[1]}·판정 {m[2]}" for m in miss[:3]))
+    for t in QTYPE_TYPES:
+        value = rate("type:" + t)
+        if value is not None and value < QTYPE_MIN["type"]:
+            fail("qtype", f"«{t}» 유형 판정 정확도 {round(value, 1)}% < {QTYPE_MIN['type']}%")
+    note(f"질문 유형 판정기 — 시험 {len(cases)}문 · 성적표 {n_all}문 정확도 훈련 {round(train, 1) if train is not None else '—'}%"
+         f"·시험 {round(test, 1) if test is not None else '—'}%·전체 {round(all_rate, 1) if all_rate is not None else '—'}%"
+         f" (서버 사본 동기·prompt.ts 배선 글자 확인 포함)")
+
+
 # ---------------------------------------------------------------- 3-8d) AUP-2 성적표 문항 (2026-11-25)
 #   assistant/eval/items.jsonl — 비서 주간 시험 문항. 모델 호출 없이 모양만 본다(CI 무료).
 #     ① 원천(사연셋·seed·범위/보안 시험)에서 다시 만든 것과 같은가(ops/eval/build_items.py --check)
@@ -2547,6 +2648,8 @@ def main():
         run_eval_items_checks()  # AUP-2 성적표 문항 — 원천 동기·중복·섹터·수치 경로·개인정보
     if "json" in selected or "answercheck" in selected:
         run_answer_check_checks()  # AUP-5 답 검사기 — 규칙 원천 동기·서버 사본·시험 문항·지면 글 오탐 0
+    if "json" in selected or "qtype" in selected:
+        run_qtype_checks()         # AUP-6 질문 유형 판정기 — 서버 사본 동기·시험 문장·정답표 정확도·prompt.ts 배선
     if "license" in selected:
         run_license_checks()
     if "js" in selected:
@@ -2580,8 +2683,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "eval": "AUP-2 성적표 문항", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
-        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "eval", "role", "expose"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "eval": "AUP-2 성적표 문항", "answercheck": "AUP-5 답 검사기", "qtype": "AUP-6 질문 유형 판정기", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
+        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "eval", "answercheck", "qtype", "role", "expose"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
