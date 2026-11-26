@@ -21,13 +21,19 @@
     ['support', '지원이 필요해요', '장애인·외국인 등', ['장애인', '외국인', '다문화가족', '북한이탈주민']],
     ['flex', '일하는 방식', '프리랜서·단기', ['프리랜서', '단기·아르바이트', '계약직', '파견']]
   ];
-  var D = null, BY = {}, SEC = {}, CARDS = {};
-  var S = { s: '', r: [], e: [], q: '', dx: '', p: '' };
+  var D = null, BY = {}, SEC = {}, CARDS = {}, KID2GOAL = {}, NONE = null;
+  var S = { s: '', r: [], e: [], q: '', dx: '', p: '', g: '' };
+  /* 묶어 보기 기준 — 화면이 주는 것: 내담자 상황·목표 / 대분류 / 직무 / 대상 / 운영 주체 */
+  var GB = [['goal', '상황·목표'], ['sector', '대분류'], ['role', '직무'], ['elig', '대상'], ['owner', '운영 주체']];
+  var GB_CODES = GB.map(function (x) { return x[0]; });
+  var OWNER_LABEL = { gov: '정부·공공기관', corp: '기업·그룹·단체', biz: '민간 포털·서비스' };
+  var OWNER_ORDER = ['gov', 'corp', 'biz'];
+  var CLOSED = {};   /* 접어 둔 묶음 — '기준:묶음키' */
 
   /* 주소(hash)에 상태를 남긴다: #s=tech&r=IT·개발&e=신입&q=…&dx=first&p=work24 */
   function readHash() {
     var raw = String(location.hash || '').replace(/^#/, '');
-    var o = { s: '', r: [], e: [], q: '', dx: '', p: '' };
+    var o = { s: '', r: [], e: [], q: '', dx: '', p: '', g: '' };
     /* `#work24`처럼 아이디만 붙인 짧은 딥링크도 `#p=work24`와 같게 받는다. */
     if (raw && raw.indexOf('=') < 0) {
       try { o.p = decodeURIComponent(raw).trim(); } catch (e) { o.p = raw.trim(); }
@@ -52,6 +58,7 @@
     if (S.e.length) a.push('e=' + encodeURIComponent(S.e.join(',')));
     if (S.q) a.push('q=' + encodeURIComponent(S.q));
     if (S.dx) a.push('dx=' + S.dx);
+    if (S.g) a.push('g=' + S.g);
     if (S.p) a.push('p=' + encodeURIComponent(S.p));
     var h = a.length ? '#' + a.join('&') : location.pathname + location.search;
     if (h.charAt(0) === '#') {
@@ -63,6 +70,7 @@
 
   fetch('./data/portals.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
     D = j; j.sectors.forEach(function (s) { SEC[s.code] = s; });
+    (j.goals || []).forEach(function (g) { (g.kids || []).forEach(function (k) { KID2GOAL[k.code] = g.code; }); });
     j.portals.forEach(function (p, i) {
       p._i = i;
       p._n = nz([p.name, p.operator, p.strengths, p.tips, p.roles.join(' '), p.eligibility.join(' '),
@@ -73,7 +81,7 @@
     if (qp && !h.q) h.q = qp;
     if (pp && !h.p) h.p = pp;
     S = h; clean();
-    buildCards(); renderFilters(); renderFoot(); apply(true);
+    buildCards(); renderFilters(); renderGroups(); renderFoot(); apply(true);
     if (qp) writeHash(false);   // ?q= 로 들어온 검색어는 해시로 옮기고 주소창의 ?q= 는 지운다
     if (S.p && BY[S.p]) {
       openDet(S.p, true, true);
@@ -81,12 +89,13 @@
     } else if (qp) {
       var r0 = results()[0]; if (r0) markDL(r0.id);
     }
-  }).catch(function () { $('grid').innerHTML = '<p class="empty">사이트 목록을 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>'; });
+  }).catch(function (e) { console.error('portals init', e && e.message, e && e.stack); $('grid').innerHTML = '<p class="empty">사이트 목록을 불러오지 못했습니다. 잠시 뒤 새로 고쳐 주세요.</p>'; });
   function clean() {
     var R = D.vocabulary.roles, E = D.vocabulary.eligibility;
     S.r = S.r.filter(function (x) { return R.indexOf(x) >= 0; }); S.e = S.e.filter(function (x) { return E.indexOf(x) >= 0; });
     if (S.s && !SEC[S.s]) S.s = ''; if (S.p && !BY[S.p]) S.p = '';
     if (S.dx && !DX.some(function (x) { return x[0] === S.dx; })) S.dx = '';
+    if (S.g && GB_CODES.indexOf(S.g) < 0) S.g = '';
   }
 
   /* ───── 판정 ───── */
@@ -147,7 +156,7 @@
       b.innerHTML = '<span class="t"><span class="nm">' + esc(p.name) + '</span><span class="no num">' + String(i + 1).padStart(2, '0') + '</span></span><span class="op">' + esc(p.operator) + (p.verify_method === 'official' ? ' <em class="ict">국내 접속</em>' : '') + '</span><span class="kw"></span>';
       CARDS[p.id] = b; g.appendChild(b);
     });
-    var em = d.createElement('div'); em.className = 'empty'; em.id = 'none'; em.hidden = true;
+    var em = d.createElement('div'); em.className = 'empty'; em.id = 'none'; em.hidden = true; NONE = em;
     em.innerHTML = '조건에 맞는 사이트가 없습니다. 조건을 하나씩 풀어 보세요.<br><button type="button" data-clear>조건 모두 풀기</button>';
     g.appendChild(em);
   }
@@ -171,16 +180,91 @@
       (more > 0 ? '<span class="more">+' + more + '</span>' : '');
   }
 
+  /* ───── 묶어 보기: 기준 하나 → 묶음 머리글 + 하위 묶음 ───── */
+  function groupKey(p) {
+    if (S.g === 'goal') return KID2GOAL[p.needs[0]] || '';
+    if (S.g === 'sector') return p.sector;
+    if (S.g === 'role') return p.roles[0] || '';
+    if (S.g === 'elig') return p.eligibility[0] || '';
+    if (S.g === 'owner') return p.owner || '';
+    return '';
+  }
+  /* 목록을 지금 고른 기준의 묶음으로 나눈다. 사이트 하나는 대표 목적 한 묶음에만 놓는다. */
+  function groupTree(list) {
+    var out = [], index = {};
+    function mk(key, label, desc, kids) {
+      var s = { key: key, label: label, desc: desc, kids: kids || null, items: [], byKid: {} };
+      out.push(s); index[key] = s;
+      if (kids) kids.forEach(function (k) { s.byKid[k.key] = k; });
+    }
+    if (S.g === 'goal') {
+      D.goals.forEach(function (g) {
+        mk(g.code, g.name, g.desc, (g.kids || []).map(function (k) { return { key: k.code, label: k.name, desc: k.desc, items: [] }; }));
+      });
+    } else if (S.g === 'sector') {
+      D.sectors.forEach(function (x) { mk(x.code, x.name, x.desc); });
+    } else if (S.g === 'role') {
+      D.vocabulary.roles.forEach(function (x) { mk(x, x, ''); });
+    } else if (S.g === 'elig') {
+      D.vocabulary.eligibility.forEach(function (x) { mk(x, x, ''); });
+    } else if (S.g === 'owner') {
+      OWNER_ORDER.forEach(function (x) { mk(x, OWNER_LABEL[x], ''); });
+    }
+    list.forEach(function (p) {
+      var g = index[groupKey(p)]; if (!g) return;
+      g.items.push(p);
+      if (g.kids) { var k = g.byKid[S.g === 'goal' ? (p.needs[0] || '') : '']; if (k) k.items.push(p); }
+    });
+    return out.filter(function (g) { return g.items.length; });
+  }
+  function cardBox(items) {
+    var c = d.createElement('div'); c.className = 'cards';
+    items.forEach(function (p) { c.appendChild(CARDS[p.id]); });
+    return c;
+  }
+  function groupHead(g, n) {
+    var shut = !!CLOSED[S.g + ':' + g.key];
+    return '<button type="button" class="gs-h" data-g="' + esc(g.key) + '" aria-expanded="' + String(!shut) + '">' +
+      '<i' + (S.g === 'sector' ? ' style="--c:var(--s-' + esc(g.key) + ')"' : '') + '></i><b>' + esc(g.label) + '</b>' +
+      '<span class="gs-n num">' + n + '</span>' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>' +
+      (g.desc ? '<p class="gs-d">' + esc(g.desc) + '</p>' : '');
+  }
+
   /* ───── 적용: FLIP ───── */
   var lastN = -1;
   function apply(first) {
-    var list = results(), g = $('grid'), keep = {}, before = {};
+    var list = results(), g = $('grid'), before = {};
     var anim = !first && !still() && typeof Element.prototype.animate === 'function';
-    if (anim) Object.keys(CARDS).forEach(function (id) { var c = CARDS[id]; if (!c.hidden) before[id] = c.getBoundingClientRect(); });
+    if (anim) Object.keys(CARDS).forEach(function (id) { var c = CARDS[id]; if (!c.hidden && c.isConnected) before[id] = c.getBoundingClientRect(); });
+    var keep = {};
     list.forEach(function (p) { keep[p.id] = 1; });
     Object.keys(CARDS).forEach(function (id) { CARDS[id].hidden = !keep[id]; });
-    list.forEach(function (p) { var c = CARDS[p.id]; c.querySelector('.kw').innerHTML = kwHtml(p); c.setAttribute('aria-current', String(S.p === p.id)); g.appendChild(c); });
-    var none = $('none'); none.hidden = list.length > 0; g.appendChild(none);
+    list.forEach(function (p) { var c = CARDS[p.id]; c.querySelector('.kw').innerHTML = kwHtml(p); c.setAttribute('aria-current', String(S.p === p.id)); });
+    while (g.firstChild) g.removeChild(g.firstChild);
+    if (S.g) {
+      g.setAttribute('data-g', S.g);
+      groupTree(list).forEach(function (gr) {
+        var sec = d.createElement('section'); sec.className = 'gs'; sec.setAttribute('data-k', gr.key);
+        sec.setAttribute('data-closed', CLOSED[S.g + ':' + gr.key] ? '1' : '0');
+        sec.innerHTML = groupHead(gr, gr.items.length);
+        var body = d.createElement('div'); body.className = 'gs-b';
+        if (gr.kids) {
+          gr.kids.forEach(function (k) {
+            if (!k.items.length) return;
+            var sub = d.createElement('div'); sub.className = 'gs2'; sub.setAttribute('data-k', k.key);
+            var h = d.createElement('h4');
+            h.innerHTML = '<span>' + esc(k.label) + '</span><span class="n num">' + k.items.length + '</span>';
+            sub.appendChild(h); sub.appendChild(cardBox(k.items)); body.appendChild(sub);
+          });
+        } else body.appendChild(cardBox(gr.items));
+        sec.appendChild(body); g.appendChild(sec);
+      });
+    } else {
+      g.removeAttribute('data-g');
+      list.forEach(function (p) { g.appendChild(CARDS[p.id]); });
+    }
+    NONE.hidden = list.length > 0; g.appendChild(NONE);
     if (anim) {
       var k = 0, sc = $('scroller').getBoundingClientRect();
       list.forEach(function (p) {
@@ -191,7 +275,7 @@
       });
     }
     roll(list.length, first);
-    renderAct(); syncFilters();
+    renderAct(); syncFilters(); syncGroups();
   }
   function roll(n, first) {
     var o = $('odo'); if (n === lastN) return;
@@ -219,6 +303,19 @@
     $('elig').innerHTML = D.vocabulary.eligibility.map(function (x) { return '<button type="button" data-e="' + esc(x) + '" aria-pressed="false">' + esc(x) + '<span class="n num">' + counts('eligibility', x) + '</span></button>'; }).join('');
     $('q').value = S.q;
   }
+  /* 묶어 보기 단추 — 기준 하나를 누르면 목록이 그 기준의 묶음으로 나뉜다. */
+  function renderGroups() {
+    $('gbC').innerHTML = GB.map(function (x) {
+      return '<button type="button" data-gm="' + x[0] + '" aria-pressed="false">' + esc(x[1]) + '</button>';
+    }).join('') + '<button type="button" data-gm="" aria-pressed="false">풀기</button>';
+    $('gb').hidden = false;
+  }
+  function syncGroups() {
+    $('gbC').querySelectorAll('[data-gm]').forEach(function (b) {
+      var v = b.getAttribute('data-gm');
+      b.setAttribute('aria-pressed', String(v === S.g || (v === '' && !S.g)));
+    });
+  }
   function syncFilters() {
     d.querySelectorAll('[data-dx]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-dx') === S.dx)); });
     $('sec').querySelectorAll('[data-sec]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-sec') === S.s)); });
@@ -233,13 +330,21 @@
     if (S.s) h += '<button type="button" data-un="s" aria-label="대분류 풀기">' + esc(SEC[S.s].name.split('·')[0]) + '</button>';
     S.r.forEach(function (v) { h += '<button type="button" data-un="r|' + esc(v) + '" aria-label="' + esc(v) + ' 풀기">' + esc(v) + '</button>'; });
     $('act').innerHTML = h;
-    $('cntL').textContent = (S.s || S.r.length || S.e.length || S.q) ? '곳이 조건에 맞습니다' : '곳 · 전체';
+    var gname = '';
+    if (S.g) { for (var i = 0; i < GB.length; i++) if (GB[i][0] === S.g) gname = GB[i][1] + '별'; }
+    $('cntL').textContent = (S.s || S.r.length || S.e.length || S.q) ? ('곳이 조건에 맞습니다' + (gname ? ' · ' + gname : '')) : ('곳 · ' + (gname || '전체'));
   }
   function toggle(arr, v) { var i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); }
   function changed() { clearDL(); if (S.p && !hit(BY[S.p])) closeDet(true); writeHash(false); apply(false); }
 
   d.addEventListener('click', function (e) {
     if (!D) return; var b = e.target.closest('button,a'); if (!b) return;
+    if (b.hasAttribute('data-gm')) { var gm = b.getAttribute('data-gm'); S.g = (gm && S.g !== gm) ? gm : ''; CLOSED = {}; changed(); return; }
+    if (b.hasAttribute('data-g') && b.classList.contains('gs-h')) {
+      var sec = b.parentNode, k = S.g + ':' + b.getAttribute('data-g'), shut = sec.getAttribute('data-closed') === '1';
+      if (shut) { delete CLOSED[k]; sec.setAttribute('data-closed', '0'); } else { CLOSED[k] = 1; sec.setAttribute('data-closed', '1'); }
+      b.setAttribute('aria-expanded', String(shut)); return;
+    }
     if (b.hasAttribute('data-dx')) { var id = b.getAttribute('data-dx'); if (S.dx === id) { S.dx = ''; S.e = []; } else { S.dx = id; S.e = DX.filter(function (x) { return x[0] === id; })[0][3].slice(); } changed(); return; }
     if (b.hasAttribute('data-sec')) { var s = b.getAttribute('data-sec'); S.s = S.s === s ? '' : s; changed(); return; }
     if (b.hasAttribute('data-r')) { toggle(S.r, b.getAttribute('data-r')); changed(); return; }
@@ -252,7 +357,7 @@
   });
   var qT = 0;
   $('q').addEventListener('input', function () { var v = this.value; clearTimeout(qT); qT = setTimeout(function () { S.q = v.trim(); changed(); }, 200); });
-  $('rst').addEventListener('click', function () { if (!D) return; closeSheet('fSheet'); clearDL(); S = { s: '', r: [], e: [], q: '', dx: '', p: '' }; $('q').value = ''; closeDet(true); writeHash(false); apply(false); $('scroller').scrollTop = 0; window.scrollTo(0, 0); });
+  $('rst').addEventListener('click', function () { if (!D) return; closeSheet('fSheet'); clearDL(); S = { s: '', r: [], e: [], q: '', dx: '', p: '', g: '' }; CLOSED = {}; $('q').value = ''; closeDet(true); writeHash(false); apply(false); $('scroller').scrollTop = 0; window.scrollTo(0, 0); });
   $('pvT').addEventListener('click', function () { var o = $('pvB').hidden; $('pvB').hidden = !o; this.setAttribute('aria-expanded', String(o)); $('pvL').textContent = o ? '접기' : '펼치기'; });
   window.addEventListener('popstate', function () { if (!D) return; var h = readHash(); var wasP = S.p; S = h; clean(); $('q').value = S.q; apply(false); if (S.p) { openDet(S.p, true, true); revealCard(S.p, true); } else if (wasP) closeDet(true); });
 
