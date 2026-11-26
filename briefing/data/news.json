@@ -1,6 +1,6 @@
 {
  "schema_version": "1.1.0",
- "updated_at": "2026-11-26T07:22:09+09:00",
+ "updated_at": "2026-11-26T23:13:00+09:00",
  "date": "2026-11-26",
  "data_status": "ok",
  "data_status_note": null,
@@ -13,9 +13,9 @@
   },
   "global-2300": {
    "status": "ok",
-   "updated_at": "2026-11-25T07:34:00+09:00",
-   "last_ok": "2026-11-25",
-   "run_id": "br-20261125-0734"
+   "updated_at": "2026-11-26T23:13:00+09:00",
+   "last_ok": "2026-11-26",
+   "run_id": "br-20261126-2313"
   }
  },
  "main_themes": [
@@ -178,8 +178,32 @@
    "theme_id": "th-youth-employment-gap",
    "title": "청년 고용 사각지대",
    "summary": "취업자 총수는 늘어도 청년층만 빠지는 구조가 이어진다. 청년 고용률·구직단념·첫 일자리 정책을 한 묶음으로 보고, 상담에서는 \"몇 살이라서\"가 아니라 \"어느 업종·직무에서 빠졌는지\"를 먼저 확인한다.",
-   "updated_at": "2026-11-24T07:05:00+09:00",
+   "updated_at": "2026-11-26T23:13:00+09:00",
    "items": [
+    {
+     "issue_id": "iss-ai-junior-task-complexity-2026",
+     "title": "AI가 신입 자리 대신할까 — 과업이 복잡하면 대체 의향 0.54점 낮아져(arXiv:2611.34099)",
+     "source": {
+      "source_name": "arXiv (ZEW 만하임·옥스퍼드 인터넷연구소)",
+      "source_url": "https://arxiv.org/abs/2611.34099"
+     },
+     "license": {
+      "name": "CC BY 4.0 (Attribution 4.0 International)",
+      "type": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "scope": "논문 초록·본문 텍스트",
+      "attribution_required": true,
+      "commercial_use": "allowed",
+      "modification": "allowed",
+      "verified": true,
+      "verified_at": "2026-11-26",
+      "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.34099)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-26). arXiv 기본 라이선스(재배포 제한)·CC BY-NC 계열 논문은 수록에서 뺐습니다.",
+      "attribution_text": "Rost, V., & Stephany, F. (2026), Will AI Replace Juniors? How Task Complexity Reduces Automation Risk, arXiv:2611.34099, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록)."
+     },
+     "first_seen": "2026-11-26",
+     "last_updated": "2026-11-26",
+     "track": "A"
+    },
     {
      "issue_id": "iss-ict-youth-entry-2026",
      "title": "AI 코딩 확산 — ICT 전공 20대 정보통신업 취업 비중 47.6%→33.2%, 30대는 +6.6%",
@@ -291,30 +315,6 @@
      "first_seen": "2026-11-16",
      "last_updated": "2026-11-16",
      "track": "A"
-    },
-    {
-     "issue_id": null,
-     "title": "청년이 빠진 자리 94%가 AI 고노출 업종, 빈자리는 50대가 채웠다(한국은행 분석 보도)",
-     "source": {
-      "source_name": "조선비즈",
-      "source_url": "https://biz.chosun.com/stock/stock_general/2026/11/12/MJRTANRQMFTDKNZYMEYTSMBTGU/"
-     },
-     "license": {
-      "name": "언론사 저작권 — 본문 복제·번역 금지",
-      "type": "PRESS",
-      "url": null,
-      "scope": "기사 본문·제목·이미지",
-      "attribution_required": true,
-      "commercial_use": "not_allowed",
-      "modification": "not_allowed",
-      "verified": true,
-      "verified_at": "2026-11-16",
-      "evidence": "언론사 기사로 재가공 허락 없음. 수치·사실만 새로 서술",
-      "attribution_text": "수치 출처: 한국은행 조사국 분석(조선비즈 2026-11-12 보도)"
-     },
-     "first_seen": "2026-11-16",
-     "last_updated": "2026-11-16",
-     "track": "B"
     },
     {
      "issue_id": "iss-youth-nonregular-2026",
@@ -491,31 +491,31 @@
  ],
  "keywords": [
   {
-   "word": "구인공고",
-   "count": 2
+   "word": "직업훈련",
+   "count": 3
   },
   {
    "word": "스마트공장",
    "count": 2
   },
   {
-   "word": "직업훈련",
-   "count": 2
-  },
-  {
-   "word": "AI 인재",
+   "word": "실업수당",
    "count": 1
   },
   {
-   "word": "근속연수",
+   "word": "신입",
    "count": 1
   },
   {
-   "word": "여성 고용",
+   "word": "AI 대체",
    "count": 1
   },
   {
-   "word": "중소기업 AI",
+   "word": "직무 재설계",
+   "count": 1
+  },
+  {
+   "word": "도제",
    "count": 1
   }
  ],
@@ -702,165 +702,6 @@
    }
   },
   {
-   "id": "n20261125-05",
-   "issue_id": "iss-us-tenure-2026",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-25T07:34:00+09:00",
-   "run_id": "br-20261125-0734",
-   "headline": true,
-   "published_at": "2026-11-23",
-   "source": {
-    "source_name": "미국 노동통계국(BLS) The Economics Daily",
-    "source_url": "https://www.bls.gov/opub/ted/2026/median-tenure-with-current-employer-was-4-1-years-in-january-2026.htm",
-    "country": "US",
-    "license": {
-     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
-     "type": "PUBLIC-DOMAIN",
-     "url": "https://www.bls.gov/opub/copyright-information.htm",
-     "scope": "본문 텍스트·도표 수치(기존 저작권 사진·삽화 제외)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-25",
-     "evidence": "미국 노동통계국 저작권 안내(https://www.bls.gov/opub/copyright-information.htm)를 직접 확인(2026-11-25): 'BLS가 발행하는 모든 자료(인쇄·전자)는 기존 저작권이 있는 사진·삽화를 제외하고 퍼블릭 도메인이며, 별도 허가 없이 사용할 수 있다'. 도표는 글자 표로만 옮기고 그림은 싣지 않았습니다.",
-     "attribution_text": "Source: U.S. Bureau of Labor Statistics, The Economics Daily, “Median tenure with current employer was 4.1 years in January 2026” (November 23, 2026). AI 한국어 번역, 내용 변경 없음."
-    }
-   },
-   "title_original": "Median tenure with current employer was 4.1 years in January 2026",
-   "title_ko": "현 직장 근속연수 중앙값 4.1년(2026년 1월) — 미국 노동통계국",
-   "body_original": "The median number of years that wage and salary workers had been with their current employer was 4.1 years in January 2026. This means that half of all wage and salary workers had more than 4.1 years of tenure and half had less. Workers in the public sector had a median tenure of 5.6 years, considerably higher than the median for private-sector employees (3.9 years). One factor behind this difference is age, as government workers tend to be older on average than those in the private sector.\n\nWithin the private sector, workers in financial activities (5.0 years); mining, quarrying, and oil and gas extraction (4.9 years); manufacturing (4.9 years); and information (4.9 years) had the highest tenure among major industries. By contrast, workers in leisure and hospitality had the lowest median tenure (2.4 years). These differences in tenure reflect many factors, one of which is varying age distributions across the industries; workers in the major industries with the highest tenure tend to be older than those in leisure and hospitality.\n\nWithin the public sector, federal government employees had a higher median tenure (7.0 years) than state and local government employees (5.4 years each).\n\nThese data are from the Current Population Survey. To learn more, see Employee Tenure in 2026.\n\n[표: 업종별 현 직장 근속연수 중앙값(2026년 1월)] 전체 4.1 / 민간 3.9 / 농림어업 4.8 / 광업·채석·석유가스 4.9 / 건설 3.9 / 제조 4.9 / 도소매 3.4 / 운수·유틸리티 4.4 / 정보 4.9 / 금융 5.0 / 전문·사업서비스 3.8 / 교육·보건 3.9 / 숙박·음식점 2.4 / 기타서비스 4.2 / 공공 5.6 / 연방정부 7.0 / 주정부 5.4 / 지방정부 5.4 (단위: 년)",
-   "body_ko_ai": "2026년 1월 기준, 임금·급여 근로자가 현 직장에서 일한 기간의 중앙값은 4.1년이었다. 이는 임금·급여 근로자의 절반은 근속 4.1년을 넘고 절반은 그보다 짧다는 뜻이다. 공공부문 근로자의 근속 중앙값은 5.6년으로 민간부문 근로자(3.9년)의 중앙값보다 상당히 높았다. 이 차이의 한 요인은 연령이다. 정부 부문 근로자가 평균적으로 민간부문 근로자보다 나이가 많기 때문이다.\n\n민간부문 안에서는 금융업(5.0년), 광업·채석·석유 및 가스 추출(4.9년), 제조업(4.9년), 정보업(4.9년) 근로자의 근속이 주요 업종 가운데 가장 길었다. 반대로 숙박·음식점업 근로자의 근속 중앙값(2.4년)이 가장 짧았다. 근속의 이런 차이는 여러 요인을 반영하는데, 그중 하나는 업종별 연령 분포의 차이다. 근속이 가장 긴 주요 업종의 근로자는 숙박·음식점업 근로자보다 나이가 많은 편이다.\n\n공공부문 안에서는 연방정부 근로자의 근속 중앙값(7.0년)이 주정부·지방정부 근로자(각 5.4년)보다 높았다.\n\n이 자료는 현재인구조사(Current Population Survey)에서 나왔다. 자세한 내용은 「Employee Tenure in 2026」을 참고하라.\n\n[표: 업종별 현 직장 근속연수 중앙값(2026년 1월)] 전체 4.1 / 민간 3.9 / 농림어업 4.8 / 광업·채석·석유가스 4.9 / 건설 3.9 / 제조 4.9 / 도소매 3.4 / 운수·유틸리티 4.4 / 정보 4.9 / 금융 5.0 / 전문·사업서비스 3.8 / 교육·보건 3.9 / 숙박·음식점 2.4 / 기타서비스 4.2 / 공공 5.6 / 연방정부 7.0 / 주정부 5.4 / 지방정부 5.4 (단위: 년)",
-   "translation": {
-    "mode": "ai",
-    "engine": "pickle-ai-translation",
-    "translated_at": "2026-11-25T07:34:00+09:00"
-   },
-   "topics": [
-    "고용·정책",
-    "글로벌"
-   ],
-   "keywords": [
-    "근속연수"
-   ],
-   "related_jobs": [
-    "직업상담사",
-    "노동시장 분석"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
-  },
-  {
-   "id": "n20261125-04",
-   "issue_id": "iss-agents-labor-2026",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-25T07:34:00+09:00",
-   "run_id": "br-20261125-0734",
-   "headline": true,
-   "published_at": "2026-11-23T21:23:41+09:00",
-   "source": {
-    "source_name": "arXiv (LUISS대·댈러스 연준·로체스터대·예일대)",
-    "source_url": "https://arxiv.org/abs/2611.27210",
-    "country": "US",
-    "license": {
-     "name": "CC BY 4.0 (Attribution 4.0 International)",
-     "type": "CC-BY-4.0",
-     "url": "https://creativecommons.org/licenses/by/4.0/",
-     "scope": "논문 본문(초록·본문 텍스트)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-25",
-     "evidence": "arXiv 초록 페이지의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-25). arXiv 기본 라이선스(재배포 제한)·CC BY-NC 계열 논문은 수록에서 뺐습니다.",
-     "attribution_text": "Borri, N., Cheremukhin, A., Liu, Y., & Tsyvinski, A. (2026), The Rise of Agents and the Labor Market, arXiv:2611.27210v2, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록)."
-    }
-   },
-   "title_original": "The Rise of Agents and the Labor Market",
-   "title_ko": "에이전트의 부상과 노동시장",
-   "body_original": "We provide the first economy-wide and cross-AI model evidence on the effects of agentic AI on labor demand. We combine proprietary OpenRouter data covering about two quadrillion tokens of realized AI consumption (2 percent of global AI token consumption) across more than 400 AI models, including 1.1 quadrillion agentic tokens, with the full text of 34.8 million U.S. job postings for public firms from Lightcast. We compute our measure of firm-level exposure to aggregate agentic AI consumption (agentic beta) using the comovement of U.S. public firms' stock returns with realized weekly aggregate agentic AI token consumption. We find that a one-standard-deviation increase in a firm's exposure to agentic AI predicts 2.11 percent lower growth in job postings over the next six months and 3.20 percent over nine months. We then conduct an event study based on the release of Claude Code 2.0, which significantly expanded the capabilities of AI agents, and show that a one-standard-deviation higher pre-release exposure to agentic AI predicts 4.73 percent lower posting growth over six months post the release. Furthermore, we show that the decrease in job postings is concentrated among non-senior jobs and is statistically insignificant for senior jobs. In contrast, we find no statistically significant relation between broad AI realized consumption exposure and subsequent job posting growth once agentic exposure is controlled for. Finally, we validate our market-implied agentic exposure measure using independent evidence from firms' mentions of AI deployment in securities filings and earnings calls.",
-   "body_ko_ai": "우리는 에이전트형 AI가 노동수요에 미치는 영향에 관한 첫 경제 전체·AI 모델 횡단 증거를 제시한다. 우리는 400개가 넘는 AI 모델에 걸친 약 2,000조 개(2 quadrillion) 토큰의 실제 AI 사용량(전 세계 AI 토큰 사용량의 2%) 중 1,100조 개의 에이전트 토큰을 포함한 OpenRouter 독점 데이터를, Lightcast의 미국 상장기업 구인공고 3,480만 건 전문과 결합했다. 우리는 미국 상장기업 주가수익률이 주간 집계 에이전트형 AI 토큰 사용량과 함께 움직이는 정도를 이용해, 기업의 집계 에이전트형 AI 사용량에 대한 노출도(에이전트 베타)를 계산한다. 기업의 에이전트형 AI 노출도가 1표준편차 높아지면 이후 6개월 동안 구인공고 증가율이 2.11% 낮아지고 9개월 동안은 3.20% 낮아진다는 것을 확인했다. 이어 AI 에이전트의 역량을 크게 확장한 Claude Code 2.0 출시를 사건연구로 삼아, 출시 전 에이전트형 AI 노출도가 1표준편차 높았던 기업은 출시 후 6개월 동안 공고 증가율이 4.73% 낮았다. 또한 구인공고 감소는 비(非)시니어 일자리에 집중되며 시니어 일자리에서는 통계적으로 유의하지 않다. 반대로 에이전트 노출도를 통제하면, 폭넓은 AI 실사용 노출도와 이후 구인공고 증가 사이에는 통계적으로 유의한 관계가 없다. 마지막으로 우리는 시장이 함의한 에이전트 노출도 지표를, 기업이 증권 신고서와 실적발표에서 AI 도입을 언급한 독립적 증거로 검증한다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "pickle-ai-translation",
-    "translated_at": "2026-11-25T07:34:00+09:00"
-   },
-   "topics": [
-    "AI·직무",
-    "글로벌"
-   ],
-   "keywords": [
-    "구인공고"
-   ],
-   "related_jobs": [
-    "직업상담사",
-    "노동시장 분석"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
-  },
-  {
-   "id": "n20261125-03",
-   "issue_id": "iss-copilot-hiring-2026",
-   "theme_id": null,
-   "edition": "global-2300",
-   "updated_at": "2026-11-25T07:34:00+09:00",
-   "run_id": "br-20261125-0734",
-   "headline": true,
-   "published_at": "2026-11-24T02:33:22+09:00",
-   "source": {
-    "source_name": "arXiv (MIT·마이크로소프트 리서치)",
-    "source_url": "https://arxiv.org/abs/2611.31083",
-    "country": "US",
-    "license": {
-     "name": "CC BY 4.0 (Attribution 4.0 International)",
-     "type": "CC-BY-4.0",
-     "url": "https://creativecommons.org/licenses/by/4.0/",
-     "scope": "논문 본문(초록·본문 텍스트)",
-     "attribution_required": true,
-     "commercial_use": "allowed",
-     "modification": "allowed",
-     "verified": true,
-     "verified_at": "2026-11-25",
-     "evidence": "arXiv 초록 페이지의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-25). arXiv 기본 라이선스(재배포 제한)·CC BY-NC 계열 논문은 수록에서 뺐습니다.",
-     "attribution_text": "Raymond, L. & Dillon, E. (2026), AI-Assisted Programming and Labor Demand, arXiv:2611.31083, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록)."
-    }
-   },
-   "title_original": "AI-Assisted Programming and Labor Demand",
-   "title_ko": "AI 코딩 보조와 노동수요",
-   "body_original": "Generative AI has demonstrated human-level performance on technical work tasks, yet evidence on how these task-level capabilities are changing labor demand remains scarce. We study the firm-level adoption of GitHub Copilot, an AI coding assistant, across 5,414 multinational firms accounting for 38% of the U.S. programming workforce. To identify causal effects, we exploit a natural experiment generated by firms' predetermined software procurement cycles. Early AI-adopting firms hired more workers before the launch of GitHub Copilot and had larger, more technical, and older workforces. After one year, GitHub Copilot adoption reduces quarterly technical hiring by 29% among review-induced adopters, with no effect on separations, overall technical headcount, or vacancy duration. The hiring slowdown is concentrated in the subset of junior technical roles that involve the highest share of coding work. Overall, AI coding assistance causes firms to shift demand towards more experienced workers and roles that pair some coding with broader design responsibilities.",
-   "body_ko_ai": "생성형 AI는 기술적 업무 과업에서 인간 수준의 성과를 보여 왔지만, 이런 과업 수준 역량이 노동수요를 어떻게 바꾸는지에 대한 증거는 아직 드물다. 우리는 미국 프로그래밍 인력의 38%를 차지하는 다국적기업 5,414곳에서 AI 코딩 보조 도구인 GitHub Copilot의 기업 단위 도입을 연구한다. 인과 효과를 확인하기 위해 우리는 기업이 미리 정해 둔 소프트웨어 조달 주기가 만든 자연실험을 이용한다. AI를 먼저 도입한 기업은 GitHub Copilot 출시 전에 근로자를 더 많이 채용했고, 규모가 크고 기술 인력 비중이 높으며 연령대가 높은 인력 구조를 갖고 있었다. 1년 뒤 조달 주기에 따라 도입이 이뤄진 기업에서는 GitHub Copilot 도입으로 분기 기술직 채용이 29% 줄었으며, 이직(퇴사)·전체 기술직 인원·공석 채움 기간에는 영향이 없었다. 채용 둔화는 코딩 업무 비중이 가장 높은 신입 기술직 일부에 집중됐다. 종합하면 AI 코딩 보조는 기업의 수요를 더 경력이 많은 근로자와, 코딩과 더 넓은 설계 책임을 함께 맡는 직무 쪽으로 옮기게 한다.",
-   "translation": {
-    "mode": "ai",
-    "engine": "pickle-ai-translation",
-    "translated_at": "2026-11-25T07:34:00+09:00"
-   },
-   "topics": [
-    "AI·직무",
-    "취업시장"
-   ],
-   "keywords": [
-    "구인공고"
-   ],
-   "related_jobs": [
-    "직업상담사",
-    "취업지원"
-   ],
-   "track": "A",
-   "rights": {
-    "full_text_allowed": true,
-    "ai_translation_allowed": true
-   }
-  },
-  {
    "id": "n20261120-01",
    "issue_id": "iss-sme-ai-alliance",
    "theme_id": null,
@@ -902,17 +743,280 @@
     "full_text_allowed": true,
     "ai_translation_allowed": true
    }
+  },
+  {
+   "id": "n20261126-02",
+   "issue_id": "iss-us-ui-claims-20261121",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-26T23:13:00+09:00",
+   "run_id": "br-20261126-2313",
+   "headline": true,
+   "published_at": "2026-11-25T08:30:00-05:00",
+   "source": {
+    "source_name": "미국 노동부 고용훈련청(DOL ETA)",
+    "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261125",
+    "country": "US",
+    "license": {
+     "name": "미국 연방정부 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.dol.gov/general/aboutdol/copyright",
+     "scope": "보도자료 본문 텍스트·통계 수치(제3자 저작물 사진·삽화 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-26",
+     "evidence": "미국 노동부 「Public Domain Copyright Trademark & Patent Information Schedule」(https://www.dol.gov/general/aboutdol/copyright) 직접 확인(2026-11-26): 연방정부가 만든 자료는 원칙적으로 퍼블릭 도메인이라 허가 없이 사용·복제·배포할 수 있고, 출처를 미국 노동부로 표기하면 된다. 제3자 저작물은 별도 표기가 있다고 안내되어 있어 본문 텍스트와 수치만 실었습니다.",
+     "attribution_text": "Source: U.S. Department of Labor, Employment and Training Administration, “Unemployment Insurance Weekly Claims” (USDL 26-1732-NAT, November 25, 2026). AI 한국어 번역, 내용 변경 없음."
+    }
+   },
+   "title_original": "Unemployment Insurance Weekly Claims (USDL 26-1732-NAT)",
+   "title_ko": "실업보험 주간 청구 — 신규 청구 18만9천건(2026년 11월 21일 주)",
+   "body_original": "UNEMPLOYMENT INSURANCE WEEKLY CLAIMS\n\nSEASONALLY ADJUSTED DATA\n\nIn the week ending November 21, the advance figure for seasonally adjusted initial claims was 189,000, a decrease of 13,000 from the previous week's revised level. The previous week's level was revised down by 1,000 from 203,000 to 202,000. The 4-week moving average was 196,000, a decrease of 1,500 from the previous week's revised average. The previous week's average was revised down by 250 from 197,750 to 197,500.\n\nThe advance seasonally adjusted insured unemployment rate was 1.1 percent for the week ending November 14, a decrease of 0.1 percentage point from the previous week's revised rate. The previous week's rate was revised up by 0.1 from 1.1 to 1.2 percent. The advance number for seasonally adjusted insured unemployment during the week ending November 14 was 1,697,000, a decrease of 95,000 from the previous week's revised level. The previous week's level was revised up 29,000 from 1,763,000 to 1,792,000. The 4-week moving average was 1,724,750, an increase of 500 from the previous week's revised average. The previous week's average was revised up by 7,250 from 1,717,000 to 1,724,250.\n\nUNADJUSTED DATA\n\nThe advance number of actual initial claims under state programs, unadjusted, totaled 212,945 in the week ending November 21, an increase of 15,894 (or 8.1 percent) from the previous week. The seasonal factors had expected an increase of 30,549 (or 15.5 percent) from the previous week. There were 244,713 initial claims in the comparable week in 2025.\n\nThe advance unadjusted insured unemployment rate was 1.0 percent during the week ending November 14, unchanged from the prior week. The advance unadjusted level of insured unemployment in state programs totaled 1,562,814, a decrease of 5,578 (or -0.4 percent) from the preceding week. The seasonal factors had expected an increase of 82,453 (or 5.3 percent) from the previous week. A year earlier the rate was 1.2 percent and the volume was 1,781,543.\n\nThe total number of continued weeks claimed for benefits in all programs for the week ending November 7 was 1,593,243, an increase of 68,593 from the previous week. There were 1,765,719 weekly claims filed for benefits in all programs in the comparable week in 2025.\n\nNo state was triggered \"on\" the Extended Benefits program during the week ending November 7.\n\nThe highest insured unemployment rates in the week ending November 7 were in New Jersey (2.1), Washington (2.0), Massachusetts (1.8), California (1.7), Michigan (1.6), Nevada (1.6), Oregon (1.6), Puerto Rico (1.6), Rhode Island (1.6), and Alaska (1.5).\n\nThe largest increases in initial claims for the week ending November 14 were in Michigan (+6,036), Wisconsin (+210), Kentucky (+106), Minnesota (+101), and Oklahoma (+87), while the largest decreases were in Missouri (-3,286), New Jersey (-2,717), Texas (-2,069), California (-1,787), and North Carolina (-1,357).\n\n[State-by-state and program tables are omitted here; see the original release.]",
+   "body_ko_ai": "실업보험 주간 청구\n\n계절조정 자료\n\n11월 21일로 끝난 주의 계절조정 신규 청구 속보치는 18만9,000건으로, 직전 주 수정치보다 13,000건 줄었다. 직전 주 수치는 20만3,000건에서 20만2,000건으로 1,000건 하향 수정됐다. 4주 이동평균은 19만6,000건으로 직전 주 수정된 평균보다 1,500건 줄었다. 직전 주 평균은 19만7,750건에서 19만7,500건으로 250건 하향 수정됐다.\n\n11월 14일로 끝난 주의 계절조정 피보험 실업률 속보치는 1.1%로, 직전 주 수정치보다 0.1%포인트 낮아졌다. 직전 주 실업률은 1.1%에서 1.2%로 0.1%포인트 상향 수정됐다. 11월 14일로 끝난 주의 계절조정 피보험 실업자 수 속보치는 169만7,000명으로 직전 주 수정치보다 9만5,000명 줄었다. 직전 주 수치는 176만3,000명에서 179만2,000명으로 2만9,000명 상향 수정됐다. 4주 이동평균은 172만4,750명으로 직전 주 수정된 평균보다 500명 늘었다. 직전 주 평균은 171만7,000명에서 172만4,250명으로 7,250명 상향 수정됐다.\n\n계절조정 전 자료\n\n11월 21일로 끝난 주의 주정부 프로그램 신규 청구 실제 수(계절조정 전)는 21만2,945건으로 직전 주보다 1만5,894건(8.1%) 늘었다. 계절요인은 직전 주보다 3만549건(15.5%) 늘어날 것으로 예상했다. 2025년 같은 주에는 24만4,713건이었다.\n\n11월 14일로 끝난 주의 피보험 실업률 속보치(계절조정 전)는 1.0%로 직전 주와 같았다. 주정부 프로그램의 피보험 실업자 수 속보치(계절조정 전)는 156만2,814명으로 직전 주보다 5,578명(-0.4%) 줄었다. 계절요인은 직전 주보다 8만2,453명(5.3%) 늘어날 것으로 예상했다. 1년 전 실업률은 1.2%, 규모는 178만1,543명이었다.\n\n11월 7일로 끝난 주의 전 프로그램 계속 수급 청구 주수 총계는 159만3,243건으로 직전 주보다 6만8,593건 늘었다. 2025년 같은 주에 전 프로그램 수급 청구는 176만5,719건이었다.\n\n11월 7일로 끝난 주에 연장급여(EB) 프로그램이 발동된 주는 없었다.\n\n11월 7일로 끝난 주의 피보험 실업률 상위 지역은 뉴저지(2.1), 워싱턴(2.0), 매사추세츠(1.8), 캘리포니아(1.7), 미시간(1.6), 네바다(1.6), 오리건(1.6), 푸에르토리코(1.6), 로드아일랜드(1.6), 알래스카(1.5)였다.\n\n11월 14일로 끝난 주의 신규 청구 증가폭이 큰 주는 미시간(+6,036), 위스콘신(+210), 켄터키(+106), 미네소타(+101), 오클라호마(+87)였고, 감소폭이 큰 주는 미주리(-3,286), 뉴저지(-2,717), 텍사스(-2,069), 캘리포니아(-1,787), 노스캐롤라이나(-1,357)였다.\n\n[주별·프로그램별 상세 통계표는 이 번역에서 옮기지 않았습니다. 원문을 참고하세요.]",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-26T23:13:00+09:00"
+   },
+   "topics": [
+    "고용·정책",
+    "글로벌"
+   ],
+   "keywords": [
+    "실업수당"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "노동시장 분석"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261126-03",
+   "issue_id": "iss-fed-beige-20261125",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-26T23:13:00+09:00",
+   "run_id": "br-20261126-2313",
+   "headline": true,
+   "published_at": "2026-11-25T14:00:00-05:00",
+   "source": {
+    "source_name": "미국 연방준비제도 이사회(Federal Reserve Board)",
+    "source_url": "https://www.federalreserve.gov/monetarypolicy/beigebook202611-summary.htm",
+    "country": "US",
+    "license": {
+     "name": "미국 연방준비제도 이사회 저작물 — 퍼블릭 도메인",
+     "type": "PUBLIC-DOMAIN",
+     "url": "https://www.federalreserve.gov/disclaimer.htm",
+     "scope": "베이지북 본문 텍스트(제3자 사진·그래픽 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-26",
+     "evidence": "연방준비제도 이사회 「Disclaimer」 저작권·상표 항목(https://www.federalreserve.gov/disclaimer.htm) 직접 확인(2026-11-26): '별도 표시가 없는 한 이사회 웹사이트의 정보는 퍼블릭 도메인이며 허가 없이 복사·배포할 수 있다. 출처를 이사회로 표기하라'. 베이지북은 이사회 발간물이라 본문 텍스트와 수치를 그대로 실었습니다.",
+     "attribution_text": "Source: Board of Governors of the Federal Reserve System, “Beige Book — November 2026” (November 25, 2026). AI 한국어 번역, 내용 변경 없음."
+    }
+   },
+   "title_original": "Beige Book — November 2026 (Summary)",
+   "title_ko": "베이지북(2026년 11월) — 8개 지역 완만한 성장, 채용은 퇴사 대체 위주",
+   "body_original": "Overall Economic Activity\n\nEight of the twelve Federal Reserve Districts reported growth in the slight to moderate range, while four Districts reported no change. Consumer spending was little changed, as households remained price sensitive and were increasingly selective in discretionary purchases. Tourism and travel activity was solid while entertainment and hospitality spending was mixed overall. Auto sales softened, which contacts attributed to elevated fuel prices and higher interest rates. Residential real estate activity weakened as affordability challenges suppressed demand, while commercial real estate activity was mixed. Construction activity declined amid higher borrowing costs and elevated construction costs. Manufacturing activity grew modestly overall, as robust demand in several industrial segments offset weakness in consumer-facing and housing-related goods. Overall transportation activity grew modestly despite uneven demand, persistent capacity and infrastructure constraints, and rising cost pressures. Port volumes were slightly lower due to weather-driven disruptions, even as data center-related imports rose. Energy activity grew modestly but investment in this sector remained restrained by elevated geopolitical, policy, and cost uncertainties. Banking conditions were little changed overall, as loan demand remained subdued, while nonfinancial services activity increased slightly. High costs for housing and other essentials strained household budgets, increased demand for social services, and stretched nonprofit capacity. Overall, the majority of Districts expected slight to moderate growth.\n\nLabor Markets\n\nEmployment levels rose slightly on balance, with many firms reporting stable head counts and hiring primarily to replace for attrition, while only a minority noted meaningful increases. Contacts across several sectors cited steady or rising labor demand, though many also described hesitancy to hire amid uncertainty and weakened consumer spending. Labor supply generally remained stable, and while it was often relatively easy to find workers, persistent hiring difficulties continued for skilled and technical roles. Employers focused on utilizing existing staff more efficiently, even as some added workers to support expansion. Wages and benefits rose moderately, an uptick from modest increases in the previous report, driven by upward pressure concentrated in hard-to-fill positions and influenced by cost-of-living adjustments and increases in benefit costs.\n\nPrices\n\nPrices increased moderately overall, as in the prior reporting period. Contacts across a range of sectors reported sustained cost pressure from energy, transportation, healthcare, insurance, and tariff-related expenses. Raw materials, metals, freight, and specialized imports also contributed to operating cost pressures. Input cost growth generally outpaced increases in selling prices, as competitive pressures and customer price sensitivity limited firms' ability to fully pass through higher costs. Contacts expected both expenses and prices to continue rising in the coming months.",
+   "body_ko_ai": "전체 경제 활동\n\n12개 연방준비제도 지역 가운데 8곳은 '약간에서 보통' 범위의 성장을, 4곳은 변화가 없다고 보고했다. 소비 지출은 거의 변동이 없었는데, 가계가 가격에 민감해지고 재량 지출에서 더 선별적으로 변했기 때문이다. 관광·여행 활동은 견조했고 엔터테인먼트·숙박 지출은 전반적으로 엇갈렸다. 자동차 판매는 둔화됐는데, 접촉 창구들은 연료비 상승과 높은 금리를 이유로 들었다. 주택 부동산 활동은 구매력 부담이 수요를 억눌러 약해졌고, 상업용 부동산은 혼조였다. 건설 활동은 차입 비용과 건설비 상승 속에 줄었다. 제조업 활동은 여러 산업 부문의 견조한 수요가 소비재·주택 관련 품목의 부진을 상쇄하며 전반적으로 완만히 성장했다. 운송 활동은 고르지 않은 수요, 지속된 운송능력·기반시설 제약, 비용 압력 상승에도 완만히 성장했다. 항만 물동량은 날씨로 인한 차질로 소폭 줄었지만 데이터센터 관련 수입은 늘었다. 에너지 활동은 완만히 성장했으나 이 부문 투자는 지정학·정책·비용 불확실성으로 억제됐다. 은행 여건은 대출 수요가 부진한 가운데 전반적으로 거의 변화가 없었고, 비금융 서비스 활동은 소폭 늘었다. 주거비와 기타 필수품의 높은 비용은 가계 예산을 압박하고 사회서비스 수요를 늘렸으며 비영리단체의 역량을 한계까지 밀어붙였다. 전반적으로 대부분 지역은 약간에서 보통의 성장을 예상했다.\n\n노동시장\n\n고용 수준은 전반적으로 소폭 늘었는데, 많은 기업이 인원을 안정적으로 유지하고 주로 퇴사자 대체를 위해 채용했다고 보고했으며, 의미 있는 증가를 언급한 곳은 소수였다. 여러 부문의 접촉 창구들은 노동 수요가 안정적이거나 늘고 있다고 했지만, 다수는 불확실성과 소비 지출 약화 속에 채용을 망설인다고도 했다. 노동 공급은 대체로 안정적이었고, 근로자를 찾는 일이 비교적 쉬운 경우가 많았지만 숙련·기술 직무에서는 구인난이 계속됐다. 기업은 일부 확장을 위해 인력을 더하면서도 기존 인력을 더 효율적으로 활용하는 데 초점을 맞췄다. 임금과 복리후생은 '보통' 수준으로 올랐는데, 이는 직전 보고서의 '완만한' 증가에서 한 단계 오른 것으로, 채우기 어려운 직무에 상승 압력이 집중되고 생활비 조정과 복리후생 비용 상승이 영향을 준 결과다.\n\n물가\n\n물가는 직전 보고 기간과 마찬가지로 전반적으로 '보통' 수준으로 올랐다. 여러 부문의 접촉 창구들은 에너지, 운송, 의료, 보험, 관세 관련 비용에서 비용 압력이 지속된다고 보고했다. 원자재, 금속, 화물, 특수 수입품도 운영비 압력을 키웠다. 경쟁 압력과 고객의 가격 민감성 때문에 높아진 비용을 판매가격에 완전히 전가하기 어려워, 투입비 상승이 대체로 판매가격 상승을 앞질렀다. 접촉 창구들은 앞으로 몇 달간 비용과 가격이 모두 계속 오를 것으로 예상했다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-26T23:13:00+09:00"
+   },
+   "topics": [
+    "고용·정책",
+    "글로벌"
+   ],
+   "keywords": [
+    "채용"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "노동시장 분석"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261126-04",
+   "issue_id": "iss-ai-junior-task-complexity-2026",
+   "theme_id": "th-youth-employment-gap",
+   "edition": "global-2300",
+   "updated_at": "2026-11-26T23:13:00+09:00",
+   "run_id": "br-20261126-2313",
+   "headline": true,
+   "published_at": "2026-11-25T10:05:56+00:00",
+   "source": {
+    "source_name": "arXiv (ZEW 만하임·옥스퍼드 인터넷연구소)",
+    "source_url": "https://arxiv.org/abs/2611.34099",
+    "country": "DE",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 초록·본문 텍스트",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-26",
+     "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2611.34099)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-26). arXiv 기본 라이선스(재배포 제한)·CC BY-NC 계열 논문은 수록에서 뺐습니다.",
+     "attribution_text": "Rost, V., & Stephany, F. (2026), Will AI Replace Juniors? How Task Complexity Reduces Automation Risk, arXiv:2611.34099, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록)."
+    }
+   },
+   "title_original": "Will AI Replace Juniors? How Task Complexity Reduces Automation Risk",
+   "title_ko": "AI가 신입을 대체할까 — 과업 복잡성이 자동화 위험을 낮춘다",
+   "body_original": "How does task complexity shape firms' willingness to substitute entry-level labour with artificial intelligence (AI) tools? We study this question using a pre-registered survey experiment with managers from 1,435 German firms in the information economy and manufacturing industry. Managers are randomly assigned to consider a long lasting need for additional capacity involving either well-structured and standardised tasks, or more complex tasks that require professional judgement, contextual knowledge and independent problem-solving. Relative to standardised tasks, complex tasks reduce willingness to use AI rather than hire an entry-level employee by 0.54 points on a five-point scale and increase the importance attached to human oversight by 0.15 points. Further, pre-treatment responses indicate that managers expect the availability of AI applications to reduce hiring of both entry-level employees and experienced workers, but significantly more strongly for entry-level workers.",
+   "body_ko_ai": "과업의 복잡성은 기업이 신입(엔트리 레벨) 노동을 인공지능(AI) 도구로 대체하려는 의향을 어떻게 만드는가? 이 질문을 독일 정보경제·제조업 기업 관리자 1,435명을 대상으로 한 사전등록 설문실험으로 연구했다. 관리자들은 장기적인 추가 업무역량 필요 상황을 제시받는데, 한쪽은 잘 정돈되고 표준화된 과업이고 다른 쪽은 전문적 판단, 맥락 지식, 독립적 문제 해결이 필요한 더 복잡한 과업이다. 표준화된 과업에 비해 복잡한 과업은 신입 사원을 채용하는 대신 AI를 사용하려는 의향을 5점 척도에서 0.54점 낮추고, 사람의 감독에 부여하는 중요성을 0.15점 높인다. 또한 사전 응답에 따르면 관리자들은 AI 애플리케이션의 가용성이 신입 근로자와 경력 근로자 모두의 채용을 줄일 것으로 예상했지만, 신입 근로자에 대해서는 그 정도가 유의하게 더 컸다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-26T23:13:00+09:00"
+   },
+   "topics": [
+    "AI·직무",
+    "취업시장"
+   ],
+   "keywords": [
+    "신입",
+    "AI 대체"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "취업지원"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261126-05",
+   "issue_id": "iss-ai-role-redesign-public-2026",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-26T23:13:00+09:00",
+   "run_id": "br-20261126-2313",
+   "headline": true,
+   "published_at": "2026-11-25T14:22:39+00:00",
+   "source": {
+    "source_name": "arXiv (Ledingham·Hollins·Lyon 외)",
+    "source_url": "https://arxiv.org/abs/2512.05659",
+    "country": "GB",
+    "license": {
+     "name": "CC BY 4.0 (Attribution 4.0 International)",
+     "type": "CC-BY-4.0",
+     "url": "https://creativecommons.org/licenses/by/4.0/",
+     "scope": "논문 초록·본문 텍스트",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-26",
+     "evidence": "arXiv 초록 페이지(https://arxiv.org/abs/2512.05659)의 'view license' 링크가 creativecommons.org/licenses/by/4.0/로 열리는 것을 직접 확인(2026-11-26). arXiv 기본 라이선스(재배포 제한)·CC BY-NC 계열 논문은 수록에서 뺐습니다.",
+     "attribution_text": "Ledingham, A., Hollins, M., Lyon, M., Gillespie, D., Yunis-Guerra, U., Siviter, J., Duncan, D., & Hauser, O. P. (2026), AI and the Division of Labor in Public Sector Jobs and Teams, arXiv:2512.05659v2, CC BY 4.0. AI 한국어 번역, 내용 변경 없음(초록)."
+    }
+   },
+   "title_original": "AI and the Division of Labor in Public Sector Jobs and Teams",
+   "title_ko": "AI와 공공부문 일자리의 분업 — 역할·팀 단위 재설계",
+   "body_original": "How artificial intelligence (AI) affects an organization depends not only on which jobs are exposed, but on how more (versus less) exposed tasks are combined within roles. Using 283,484 UK Civil Service vacancies, we extract 2.7 million tasks and estimate their automation potential with an ensemble of eight foundation models. We find that differences among tasks within roles account for 65.3 percent of total exposure variance, while profession and grade together explain only 4.0 percent, suggesting that seemingly similar roles often differ substantially in their exposure and potential for redesign. Combining roles' mean exposure with their within-role dispersion distinguishes where workforce adjustment, job redesign, targeted task automation, or limited intervention may be most relevant. Taking account of which tasks can change as AI expands into a role, we simulate redesign at the role and team level. Role redesign cuts administration from 30.0 to 24.6 percent of working time and raises assurance tasks from 8.7 to 14.5 percent. When conducted at the team level, redesign merges overlapping roles, cutting the number of distinct roles by 17.7 percent while headcount falls by only 6.4 percent; the posts removed come from junior and middle grades, so restructured teams become weighted toward senior staff. We contribute to the automation, augmentation and productivity debates and advance our understanding of job redesign in the age of AI.",
+   "body_ko_ai": "인공지능(AI)이 조직에 미치는 영향은 어떤 일자리가 노출됐는지뿐 아니라, 더 많이 노출된 과업과 덜 노출된 과업이 역할 안에서 어떻게 결합되는지에 달려 있다. 영국 공무원 채용공고 283,484건을 사용해 270만 개의 과업을 추출하고, 8개 파운데이션 모델 앙상블로 그 자동화 가능성을 추정했다. 역할 내 과업 간 차이가 전체 노출도 분산의 65.3%를 설명한 반면, 직군과 직급을 합쳐도 4.0%만 설명했다. 이는 비슷해 보이는 역할도 노출도와 재설계 가능성에서 크게 다를 수 있음을 시사한다. 역할의 평균 노출도와 역할 내 분산을 결합하면 인력 조정, 직무 재설계, 표적 과업 자동화, 제한적 개입 가운데 어디가 가장 관련이 깊은지 구분할 수 있다. AI가 역할로 확장되면서 바뀔 수 있는 과업을 고려해 역할·팀 수준에서 재설계를 모의실험했다. 역할 재설계는 근로시간에서 행정이 차지하는 비중을 30.0%에서 24.6%로 줄이고, 확인(보증) 과업 비중을 8.7%에서 14.5%로 높인다. 팀 수준에서 재설계하면 겹치는 역할이 합쳐져 서로 다른 역할 수는 17.7% 줄지만 정원은 6.4%만 줄어든다. 없어지는 자리는 하위·중간 직급에서 나오므로 재편된 팀은 고위 인력 쪽으로 무게가 옮겨 간다. 이 연구는 자동화·보강·생산성 논쟁에 기여하고 AI 시대의 직무 재설계에 대한 이해를 넓힌다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-26T23:13:00+09:00"
+   },
+   "topics": [
+    "AI·직무",
+    "글로벌"
+   ],
+   "keywords": [
+    "직무 재설계"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "노동시장 분석"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
+  },
+  {
+   "id": "n20261126-06",
+   "issue_id": "iss-ilo-ghana-apprenticeship-2026",
+   "theme_id": null,
+   "edition": "global-2300",
+   "updated_at": "2026-11-26T23:13:00+09:00",
+   "run_id": "br-20261126-2313",
+   "headline": true,
+   "published_at": "2026-11-25T12:00:11+00:00",
+   "source": {
+    "source_name": "국제노동기구(ILO)",
+    "source_url": "https://www.ilo.org/resource/article/strengthening-quality-apprenticeships-through-enterprise-engagement-ghana",
+    "country": "GH",
+    "license": {
+     "name": "CC BY 4.0 (ILO Open Access 기본 라이선스)",
+     "type": "CC-BY-4.0",
+     "url": "https://www.ilo.org/rights-and-permissions",
+     "scope": "기사 본문 텍스트(사진·영상 제외)",
+     "attribution_required": true,
+     "commercial_use": "allowed",
+     "modification": "allowed",
+     "verified": true,
+     "verified_at": "2026-11-26",
+     "evidence": "ILO 「Rights and permissions」 직접 확인(2026-11-26): 2023년 5월 3일 이후 발간된 ILO 지식생산물(보도자료·뉴스 기사 포함)은 별도 표시가 없으면 CC BY 4.0으로 제공되며, 출처를 ILO로 밝히면 복제·배포·번역이 허용된다. 같은 페이지에 'ILO 웹사이트의 보도자료·프레스킷 자료는 자유롭게 재생산할 수 있고 ILO를 출처로 밝혀 달라'고 적혀 있습니다.",
+     "attribution_text": "Source: International Labour Organization, “Strengthening quality apprenticeships through enterprise engagement in Ghana” (25 November 2026), CC BY 4.0. AI 한국어 번역, 내용 변경 없음."
+    }
+   },
+   "title_original": "Strengthening quality apprenticeships through enterprise engagement in Ghana",
+   "title_ko": "가나, 기업 참여로 양질의 도제 강화 — 직장 내 교사가 관건",
+   "body_original": "Accra, Ghana (ILO News) - Enterprises are central to this process. They provide access to real work environments, equipment and experienced professionals, yet they also need the capacity and support to deliver effective training. Strengthening apprenticeship systems therefore requires investment in workplace instructors, appropriate quality assurance and partnerships that enable more enterprises to participate.\n\nThe International Labour Organization's (ILO) Recommendation No. 208 on Quality Apprenticeships (R208) provides a framework for advancing these priorities.\n\nSupporting enterprises to deliver quality training\n\nThe ILO Global Skills Programme is applying these principles through enterprise engagement in Ghana, combining instructor development with efforts to expand access to recognised apprenticeship opportunities.\n\nAt Kantanka Automobile Company Limited, 18 learners are undertaking apprenticeships under the R208 Model. To strengthen the quality of their workplace learning, the programme supported a capacity-building session for company instructors responsible for training the apprentices.\n\nThese instructors play a critical role in helping learners understand work processes, practise occupational skills and connect daily tasks with defined learning objectives. Strengthening their capacity supports a more structured approach to workplace training.\n\nAlongside this intervention, the programme is collaborating with the Commission for Technical and Vocational Education and Training (CTVET) and Entrepreneurship for Impact (E4IMPACT) project to enrol: an additional 500 learners in quality apprenticeships with Northshore Apparel Limited.\n\nProgress and next steps\n\nThe instructor capacity-building session at Kantanka represents a concrete step towards strengthening workplace supervision for the 18 apprentices. It highlights the importance of equipping instructors to guide learning, rather than relying exclusively on informal knowledge transfer.\n\nAt Northshore Apparel Limited, the enrolment target remains a planned objective. Progress will depend on advancing these activities in collaboration with CTVET and E4IMPACT and establishing appropriate arrangements for training delivery and quality assurance.\n\nMonitoring implementation, learners' skills development, completion and subsequent employment outcomes will be important for assessing the longer-term impact of these interventions.\n\nGrowing access without compromising quality\n\nThe Ghana initiatives demonstrate the importance of aligning apprenticeship expansion with the capacity to deliver effective training. Developing workplace instructors can strengthen day-to-day learning, while collaboration with public institutions and implementation partners can help enterprises establish the arrangements needed to train apprentices within a recognised framework.\n\nThis approach reflects the principles of ILO Recommendation No. 208 by addressing not only access to apprenticeships but also the conditions that make them valuable for learners and employers.\n\nLessons for scaling quality apprenticeship\n\nThe Ghana experience offers three key lessons for apprenticeship systems:\n\n- Invest in workplace instructors. Equip those who train apprentices with the capacity to guide practical learning effectively.\n- Build strong partnerships. Bring enterprises, public institutions and implementation partners together to support training quality and wider access.\n- Strong employer engagement. Apprenticeship training can significantly increase the likelihood of successful transitions from learning to employment, making apprenticeships an effective tool for addressing skills gaps and youth unemployment.\n\nThe central lesson is that quality apprenticeship requires both capable enterprises and systems that support them. Through instructor development at Kantanka and the planned collaboration with CTVET, E4IMPACT and Northshore Apparel Limited, the ILO Global Skills Programme is supporting an approach that combines workplace learning, enterprise capacity and quality assurance. This offers a practical pathway to strengthen apprenticeship opportunities in Ghana while putting the principles of Recommendation No. 208 into action.",
+   "body_ko_ai": "가나 아크라(ILO 뉴스) — 기업은 이 과정의 중심에 있다. 기업은 실제 업무 환경, 장비, 경험 많은 전문가에 대한 접근을 제공하지만, 효과적으로 훈련을 제공할 역량과 지원도 함께 필요하다. 따라서 도제 제도를 강화하려면 직장 내 교사에 대한 투자, 적절한 품질 보증, 더 많은 기업이 참여할 수 있게 하는 파트너십이 필요하다.\n\n국제노동기구(ILO)의 양질의 도제에 관한 권고 제208호(R208)는 이런 우선순위를 진전시키기 위한 틀을 제공한다.\n\n기업이 양질의 훈련을 제공하도록 지원\n\nILO 글로벌 스킬 프로그램은 가나에서 기업 참여를 통해 이 원칙을 적용하며, 교사 역량 개발과 인정된 도제 기회 확대 노력을 결합하고 있다.\n\n칸탄카 자동차 회사에서는 18명의 학습자가 R208 모형에 따라 도제 훈련을 받고 있다. 이들의 직장 학습 품질을 높이기 위해 프로그램은 도제를 가르치는 회사 교사들을 대상으로 한 역량 강화 세션을 지원했다.\n\n이 교사들은 학습자가 업무 과정을 이해하고, 직업 기술을 연습하며, 일상 과업을 정해진 학습 목표와 연결하도록 돕는 핵심 역할을 한다. 이들의 역량을 강화하는 것은 더 체계적인 직장 훈련 방식으로 이어진다.\n\n이와 함께 프로그램은 직업기술교육훈련위원회(CTVET)와 E4IMPACT(Entrepreneurship for Impact) 사업과 협력해 노스쇼어 의류 회사(Northshore Apparel Limited)에서 양질의 도제에 학습자 500명을 추가 등록하려 하고 있다.\n\n진전과 다음 단계\n\n칸탄카의 교사 역량 강화 세션은 18명의 도제에 대한 직장 내 감독을 강화하기 위한 구체적 걸음이다. 이는 비공식적 지식 전수에만 의존하지 않고 학습자를 지도할 교사를 갖추는 것의 중요성을 보여 준다.\n\n노스쇼어 의류 회사에서 500명 등록은 여전히 계획된 목표다. 진전은 CTVET·E4IMPACT와의 협력으로 이런 활동을 진척시키고, 훈련 전달과 품질 보증을 위한 적절한 준비를 갖추는지에 달려 있다.\n\n이행 과정, 학습자의 기술 개발, 수료와 이후 고용 성과를 모니터링하는 것이 이런 개입의 장기적 영향을 평가하는 데 중요할 것이다.\n\n품질을 타협하지 않고 접근을 넓히기\n\n가나의 사업들은 도제 확대를 효과적 훈련 전달 역량과 정합시키는 것의 중요성을 보여 준다. 직장 내 교사를 키우면 일상 학습을 강화할 수 있고, 공공기관·이행 파트너와의 협력은 기업이 인정된 틀 안에서 도제를 훈련하는 데 필요한 준비를 갖추도록 도울 수 있다.\n\n이 접근은 도제에 대한 접근성뿐 아니라 학습자와 고용주에게 도제를 가치 있게 만드는 조건도 다룬다는 점에서 ILO 권고 제208호의 원칙을 반영한다.\n\n양질의 도제를 확대하기 위한 교훈\n\n가나의 경험은 도제 제도에 세 가지 핵심 교훈을 준다.\n\n- 직장 내 교사에 투자하라. 도제를 가르치는 사람이 실무 학습을 효과적으로 이끌 역량을 갖추게 하라.\n- 강한 파트너십을 구축하라. 기업, 공공기관, 이행 파트너를 모아 훈련 품질과 폭넓은 접근을 지원하라.\n- 강한 고용주 참여. 도제 훈련은 학습에서 고용으로의 성공적 전환 가능성을 크게 높여, 기술 격차와 청년 실업에 대응하는 효과적인 수단이 될 수 있다.\n\n핵심 교훈은 양질의 도제가 유능한 기업과 그 기업을 지원하는 제도를 모두 필요로 한다는 것이다. 칸탄카의 교사 개발과 CTVET·E4IMPACT·노스쇼어 의류 회사와의 계획된 협력을 통해, ILO 글로벌 스킬 프로그램은 직장 학습, 기업 역량, 품질 보증을 결합한 접근을 지원하고 있다. 이는 권고 제208호의 원칙을 실행에 옮기면서 가나의 도제 기회를 강화하는 실질적 경로를 제시한다.",
+   "translation": {
+    "mode": "ai",
+    "engine": "pickle-ai-translation",
+    "translated_at": "2026-11-26T23:13:00+09:00"
+   },
+   "topics": [
+    "고용·정책",
+    "글로벌"
+   ],
+   "keywords": [
+    "도제",
+    "직업훈련"
+   ],
+   "related_jobs": [
+    "직업상담사",
+    "취업지원"
+   ],
+   "track": "A",
+   "rights": {
+    "full_text_allowed": true,
+    "ai_translation_allowed": true
+   }
   }
  ],
  "excluded": {
-  "count": 5,
+  "count": 2,
   "reasons": [
    {
-    "reason": "언론사 보도(PRESS) — 본문 재게시·번역 불가",
-    "count": 3
-   },
-   {
-    "reason": "공공누리 미부착 공공 보도자료(KOGL-NONE) — 사실·수치만 사용",
+    "reason": "arXiv 기본(비독점 배포) 라이선스 논문 — 재게시·번역 불가",
     "count": 2
    }
   ]

@@ -1,6 +1,6 @@
 {
  "schema_version": "1.4.0",
- "generated_at": "2026-11-26T07:22:10+09:00",
+ "generated_at": "2026-11-26T23:13:48+09:00",
  "note": "briefing.json·archive/*.json의 카드 중 labor_walk:true(고용·임금·직무·정책 등)를 모은 실기사 색인. 본문은 카드의 「무슨 일·수치·근거」를 그대로 옮긴 우리 말 요약이며 원문 문장이 아니다.",
  "dates": [
   "2026-11-26",
@@ -660,214 +660,208 @@
    "date": "2026-11-26",
    "card_id": "c04",
    "order": 4,
-   "title": "AI 에이전트에 많이 노출된 기업, 구인공고 2.11% 덜 늘었다",
-   "kicker": "구인공고 3,480만건 · 6개월 -2.11% / 9개월 -3.20%",
-   "category": "AI·직무",
-   "topic": "AI와 직무",
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
-   "region": "global",
-   "track": "A",
-   "source_name": "arXiv (LUISS대·댈러스 연준·로체스터대·예일대)",
-   "source_title": "The Rise of Agents and the Labor Market",
-   "source_url": "https://arxiv.org/abs/2611.27210",
-   "published_at": "2026-11-23",
-   "license_type": "CC-BY-4.0",
-   "key_numbers": [
-    {
-     "label": "6개월 구인공고 증가율",
-     "value": "-2.11%",
-     "delta": "노출 1표준편차당",
-     "period": "2026-11-23 논문"
-    },
-    {
-     "label": "9개월 구인공고 증가율",
-     "value": "-3.20%",
-     "delta": "노출 1표준편차당",
-     "period": "2026-11-23 논문"
-    },
-    {
-     "label": "Claude Code 2.0 이후 6개월",
-     "value": "-4.73%",
-     "delta": "출시 전 노출 1표준편차당",
-     "period": "2026-11-23 논문"
-    },
-    {
-     "label": "분석한 구인공고",
-     "value": "3,480만건",
-     "delta": "상장기업",
-     "period": "2026-11-23 논문"
-    }
-   ],
-   "text": "미국 상장기업 구인공고 3,480만 건과 AI 토큰 사용량 자료를 붙여, 기업이 에이전트형 AI에 얼마나 노출됐는지(주가가 AI 사용량과 함께 움직인 정도)를 계산한 연구가 11월 23일 arXiv에 개정판을 올렸다. 노출이 큰 기업일수록 이후 구인공고가 덜 늘었다.\n\n에이전트 AI 노출도가 1표준편차 높은 기업은 이후 6개월 구인공고 증가율이 2.11%, 9개월은 3.20% 낮았다. Claude Code 2.0 출시 전 노출이 1표준편차 높았던 기업은 출시 후 6개월 공고 증가율이 4.73% 낮았다. 감소는 비시니어 일자리에 집중됐고 시니어 일자리는 유의하지 않았다(2026-11-23, arXiv:2611.27210v2)."
-  },
-  {
-   "date": "2026-11-26",
-   "card_id": "c05",
-   "order": 5,
-   "title": "미국 근로자 근속 중앙값 4.1년 — 숙박·음식점은 2.4년",
-   "kicker": "공공 5.6년 vs 민간 3.9년 · 연방정부 7.0년",
+   "title": "미국 신규 실업수당 청구 18.9만건 — 1년 전보다 2.9만건 적다",
+   "kicker": "신규 청구 18만9천건(-1만3천) · 계속 수급 169만7천건(-9만5천)",
    "category": "해외 노동시장",
    "topic": "해외 노동시장",
    "theme_key": "th-global-labor",
    "theme_label": "해외 노동시장",
    "region": "global",
    "track": "A",
-   "source_name": "미국 노동통계국(BLS) The Economics Daily",
-   "source_title": "Median tenure with current employer was 4.1 years in January 2026",
-   "source_url": "https://www.bls.gov/opub/ted/2026/median-tenure-with-current-employer-was-4-1-years-in-january-2026.htm",
-   "published_at": "2026-11-23",
+   "source_name": "미국 노동부 고용훈련청(DOL ETA)",
+   "source_title": "Unemployment Insurance Weekly Claims (USDL 26-1732-NAT)",
+   "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261125",
+   "published_at": "2026-11-25",
    "license_type": "PUBLIC-DOMAIN",
    "key_numbers": [
     {
-     "label": "전체 근속 중앙값",
-     "value": "4.1년",
-     "delta": "",
-     "period": "2026년 1월"
+     "label": "신규 청구(계절조정)",
+     "value": "18만9천건",
+     "delta": "-1만3천건",
+     "period": "2026년 11월 21일 주"
     },
     {
-     "label": "민간부문",
-     "value": "3.9년",
-     "delta": "-1.7년(공공 대비)",
-     "period": "2026년 1월"
+     "label": "4주 이동평균",
+     "value": "19만6천건",
+     "delta": "-1,500건",
+     "period": "2026년 11월 21일 주"
     },
     {
-     "label": "공공부문",
-     "value": "5.6년",
-     "delta": "",
-     "period": "2026년 1월"
+     "label": "계속 수급",
+     "value": "169만7천건",
+     "delta": "-9만5천건",
+     "period": "2026년 11월 14일 주"
     },
     {
-     "label": "숙박·음식점",
-     "value": "2.4년",
-     "delta": "업종 중 최저",
-     "period": "2026년 1월"
+     "label": "피보험 실업률",
+     "value": "1.1%",
+     "delta": "-0.1%p",
+     "period": "2026년 11월 14일 주"
     }
    ],
-   "text": "미국 노동통계국이 현재인구조사(CPS)로 2026년 1월 기준 임금·급여 근로자의 현 직장 근속연수를 정리해 11월 23일 공표했다. 근로자 절반은 4.1년을 넘게, 절반은 그보다 짧게 한 직장에 머물렀다.\n\n전체 중앙값 4.1년, 공공부문 5.6년·민간 3.9년. 업종별로는 연방정부 7.0년, 금융 5.0년, 제조·정보·광업 4.9년이 길고 숙박·음식점 2.4년, 도소매 3.4년이 짧았다(2026년 1월 기준, 미국 노동통계국)."
+   "text": "미국 노동부가 추수감사절 연휴를 앞두고 하루 앞당겨 11월 25일 실업보험 주간 청구를 발표했다. 11월 21일로 끝난 주의 계절조정 신규 청구는 18만9천건으로, 직전 주 수정치(20만2천건)보다 1만3천건 줄었다.\n\n4주 이동평균은 19만6천건으로 1,500건 줄었고, 1년 전 같은 주(21만8천건)보다 2만9천건 적다. 11월 14일로 끝난 주의 계속 수급은 169만7천건으로 9만5천건 감소했고, 피보험 실업률은 1.2%에서 1.1%로 0.1%포인트 내렸다. 계절조정 전 신규 청구는 21만2,945건으로 직전 주보다 8.1% 늘었으나 계절요인이 예상한 15.5% 증가에는 못 미쳤다(2026-11-25, USDL 26-1732-NAT)."
+  },
+  {
+   "date": "2026-11-26",
+   "card_id": "c05",
+   "order": 5,
+   "title": "미 연준 베이지북 \"채용은 퇴사 대체뿐\" — 12개 지역 중 8곳 완만한 성장",
+   "kicker": "8개 지역 성장·4개 보합 · 임금·복리후생 상승은 '완만'에서 '보통'으로",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "A",
+   "source_name": "미국 연방준비제도 이사회(Federal Reserve Board)",
+   "source_title": "Beige Book — November 2026 (Summary)",
+   "source_url": "https://www.federalreserve.gov/monetarypolicy/beigebook202611-summary.htm",
+   "published_at": "2026-11-25",
+   "license_type": "PUBLIC-DOMAIN",
+   "key_numbers": [
+    {
+     "label": "성장 보고 지역",
+     "value": "8곳",
+     "delta": "12곳 중",
+     "period": "2026-11-25 베이지북"
+    },
+    {
+     "label": "변화 없음 지역",
+     "value": "4곳",
+     "delta": "12곳 중",
+     "period": "2026-11-25 베이지북"
+    },
+    {
+     "label": "임금·복리후생",
+     "value": "보통 상승",
+     "delta": "직전 '완만'에서 상향",
+     "period": "2026-11-25 베이지북"
+    }
+   ],
+   "text": "미국 연방준비제도가 11월 25일 베이지북(10월 중순 이후 지역 조사)을 공개했다. 12개 지역 가운데 8곳이 '약간에서 보통' 범위의 성장을, 4곳이 변화 없음을 보고했다. 고용은 전반적으로 소폭 늘었지만 많은 기업이 인원을 그대로 두고 퇴사자 대체 위주로 뽑았다.\n\n의미 있는 채용 증가를 보고한 기업은 소수였고, 여러 부문이 불확실성과 소비 둔화로 채용을 망설인다고 답했다. 숙련·기술 직무의 구인난은 계속됐다. 임금·복리후생은 '보통' 상승으로 직전 보고서의 '완만한' 증가보다 한 단계 올랐고, 채우기 어려운 직무와 생활비 조정·복리후생 비용이 압력으로 지목됐다(2026-11-25, 베이지북)."
   },
   {
    "date": "2026-11-26",
    "card_id": "c06",
    "order": 6,
-   "title": "AI 코딩 도구 도입 1년, 기술직 분기 채용 29% 줄었다",
-   "kicker": "다국적기업 5,414곳 · 신입·코딩 비중 높은 직무에 집중",
-   "category": "채용시장",
+   "title": "AI가 신입 자리 대신할까 — 과업이 복잡하면 대체 의향 0.54점 낮아져",
+   "kicker": "독일 기업 관리자 1,435명 실험 · 표준화 과업 대비 -0.54점(5점 척도)",
+   "category": "AI·직무",
    "topic": "청년·중장년 고용",
    "theme_key": "th-youth-employment",
    "theme_label": "청년 고용",
    "region": "global",
    "track": "A",
-   "source_name": "arXiv (MIT·마이크로소프트 리서치)",
-   "source_title": "AI-Assisted Programming and Labor Demand",
-   "source_url": "https://arxiv.org/abs/2611.31083",
-   "published_at": "2026-11-23",
+   "source_name": "arXiv (ZEW 만하임·옥스퍼드 인터넷연구소)",
+   "source_title": "Will AI Replace Juniors? How Task Complexity Reduces Automation Risk",
+   "source_url": "https://arxiv.org/abs/2611.34099",
+   "published_at": "2026-11-25",
    "license_type": "CC-BY-4.0",
    "key_numbers": [
     {
-     "label": "분기 기술직 채용",
-     "value": "-29%",
-     "delta": "도입 1년 뒤",
-     "period": "2026-11-23 논문"
+     "label": "AI 대체 의향 차이",
+     "value": "-0.54점",
+     "delta": "표준화 과업 대비",
+     "period": "2026-11-25 논문"
     },
     {
-     "label": "분석 기업",
-     "value": "5,414곳",
-     "delta": "다국적기업",
-     "period": "2026-11-23 논문"
+     "label": "사람 감독 중요도",
+     "value": "+0.15점",
+     "delta": "표준화 과업 대비",
+     "period": "2026-11-25 논문"
     },
     {
-     "label": "미국 프로그래밍 인력 커버",
-     "value": "38%",
-     "delta": "분석 기업 합계",
-     "period": "2026-11-23 논문"
+     "label": "실험 참여 관리자",
+     "value": "1,435명",
+     "delta": "독일 정보경제·제조업",
+     "period": "2026-11-25 논문"
     }
    ],
-   "text": "MIT·마이크로소프트 연구진이 다국적기업 5,414곳의 GitHub Copilot 도입을 기업의 소프트웨어 조달 주기를 이용해 분석한 논문을 11월 23일 arXiv에 올렸다. 도입 1년 뒤 분기 기술직 채용이 29% 줄었다.\n\n분석 대상 기업은 미국 프로그래밍 인력의 38%를 덮는다. 채용 감소는 조달 주기에 따라 도입이 이뤄진 기업에서 나타났고, 이직·전체 기술직 인원·공석 채움 기간에는 영향이 없었다. 감소는 코딩 업무 비중이 가장 높은 신입 기술직에 집중됐다(2026-11-23, arXiv:2611.31083)."
+   "text": "독일 ZEW 만하임과 옥스퍼드 인터넷연구소 연구진이 정보경제·제조업 기업 관리자 1,435명을 대상으로 사전등록 설문실험을 하고 11월 25일 arXiv에 올렸다. 같은 '추가 인력 필요' 상황에서 과업이 표준화돼 있는지, 전문적 판단과 맥락 지식이 필요한지를 무작위로 나눠 AI 대체 의향을 물었다.\n\n과업이 복잡할수록 신입을 뽑는 대신 AI를 쓰겠다는 의향이 5점 척도에서 0.54점 낮았고, 사람의 감독이 중요하다는 응답은 0.15점 높았다. 향후 2년 고용 전망에서는 신입과 경력 모두 AI로 채용이 줄 것으로 봤지만, 신입 쪽 감소가 유의하게 더 컸다(2026-11-25, arXiv:2611.34099)."
   },
   {
    "date": "2026-11-26",
    "card_id": "c07",
    "order": 7,
-   "title": "AI 노출 10%p 높은 전공, 첫해 소득 10% 적었다",
-   "kicker": "텍사스 공립대 졸업생 전체 · 대학원 진학은 늘었지만 소득 회복은 못 봐",
-   "category": "해외 노동시장",
-   "topic": "임금·물가",
-   "theme_key": "th-wage-income",
-   "theme_label": "임금과 소득",
+   "title": "영국 공무원 공고 28만건 분석 — 팀 단위 재설계로 직무 17.7% 줄어",
+   "kicker": "공고 283,484건·과업 270만개 · 정원 감소는 6.4%에 그쳐",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
    "region": "global",
-   "track": "B",
-   "source_name": "미국 댈러스 연방준비은행(Federal Reserve Bank of Dallas)",
-   "source_title": "Degrees for GPTs: The Effects of Generative AI on Skill Demand and Supply (Working Paper 2642)",
-   "source_url": "https://www.dallasfed.org/research/papers/2026/wp2642",
-   "published_at": "2026-11-24",
-   "license_type": "KOGL-NONE",
+   "track": "A",
+   "source_name": "arXiv (Ledingham·Hollins·Lyon 외)",
+   "source_title": "AI and the Division of Labor in Public Sector Jobs and Teams",
+   "source_url": "https://arxiv.org/abs/2512.05659",
+   "published_at": "2026-11-25",
+   "license_type": "CC-BY-4.0",
    "key_numbers": [
     {
-     "label": "첫해 소득",
-     "value": "-10%",
-     "delta": "노출 10%p 높은 전공",
-     "period": "ChatGPT 공개 이후"
+     "label": "역할 내 과업 차이 설명력",
+     "value": "65.3%",
+     "delta": "직군·직급은 4.0%",
+     "period": "2026-11-25 논문"
     },
     {
-     "label": "분석 모집단",
-     "value": "텍사스 공립 4년제 전체",
-     "delta": "행정자료 연결",
-     "period": "2026-11-24"
+     "label": "팀 재설계 후 역할 수",
+     "value": "-17.7%",
+     "delta": "겹치는 역할 통합",
+     "period": "2026-11-25 논문"
     },
     {
-     "label": "석사 진학",
-     "value": "증가",
-     "delta": "주로 같은 분야",
-     "period": "ChatGPT 공개 이후"
+     "label": "같은 재설계의 정원",
+     "value": "-6.4%",
+     "delta": "하위·중간 직급 중심",
+     "period": "2026-11-25 논문"
+    },
+    {
+     "label": "분석한 채용공고",
+     "value": "283,484건",
+     "delta": "영국 공무원",
+     "period": "2026-11-25 논문"
     }
    ],
-   "text": "미국 댈러스 연방준비은행 연구진이 텍사스 공립 4년제 대학 졸업생 전체의 행정자료를 주(州) 소득자료·구인공고와 연결해, 전공의 AI 자동화 노출도가 졸업 후 첫 소득과 진학 결정에 미친 영향을 분석해 11월 24일 공개했다.\n\nAI 노출도가 10%포인트 높은 전공 졸업생은 ChatGPT 공개(2022년 11월) 이후 첫해 소득이 10% 낮았다. 고용률 하락과 조건부 소득 감소가 함께 작용했다. 노출이 큰 전공자는 대학원 진학을 늘렸지만 주로 같은 분야를 골랐고, 그 분야 석사 졸업생에게서도 소득 감소가 나타났다(2026-11-24, 댈러스 연준 WP 2642)."
+   "text": "영국 공무원 채용공고 283,484건에서 과업 270만개를 뽑아 8개 파운데이션 모델 앙상블로 자동화 가능성을 매긴 연구가 11월 25일 arXiv에 개정판(v2)을 올렸다. 직업·직급 차이보다 같은 역할 안의 과업 구성 차이가 노출도를 더 크게 갈랐다.\n\n노출도 분산의 65.3%가 역할 내 과업 차이에서 나왔고, 직군과 직급을 합쳐도 4.0%만 설명했다. 팀 단위 재설계를 모의실험하면 행정 업무 비중이 30.0%에서 24.6%로 줄고 확인(보증) 업무는 8.7%에서 14.5%로 늘며, 겹치는 역할을 합쳐 역할 수는 17.7% 줄지만 정원은 6.4%만 줄었다. 없어지는 자리는 주로 하위·중간 직급이었다(2026-11-25, arXiv:2512.05659v2)."
   },
   {
    "date": "2026-11-26",
    "card_id": "c08",
    "order": 8,
-   "title": "프랑스 AI 노출 최상위 5분위, 62.7%가 여성",
-   "kicker": "사무·회계 직무가 최상위 · AI 교육 지원은 31%, 미국은 56%",
+   "title": "가나 도제 18명에서 500명으로 — ILO \"직장 훈련 교사가 품질 가른다\"",
+   "kicker": "칸탄카자동차 도제 18명 · 노스쇼어에 500명 추가 등록 계획",
    "category": "해외 노동시장",
-   "topic": "AI와 직무",
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
    "region": "global",
-   "track": "B",
-   "source_name": "HEC Paris (LIFT·INSEAD·프랑스 중앙은행 공동 연구)",
-   "source_title": "63% of France's Most AI-Exposed Workers Are Women",
-   "source_url": "https://www.hec.edu/en/dare/economics-finance/63-france-s-most-ai-exposed-workers-are-women",
-   "published_at": "2026-11-23",
-   "license_type": "PRESS",
+   "track": "A",
+   "source_name": "국제노동기구(ILO)",
+   "source_title": "Strengthening quality apprenticeships through enterprise engagement in Ghana",
+   "source_url": "https://www.ilo.org/resource/article/strengthening-quality-apprenticeships-through-enterprise-engagement-ghana",
+   "published_at": "2026-11-25",
+   "license_type": "CC-BY-4.0",
    "key_numbers": [
     {
-     "label": "최상위 노출 5분위 여성 비중",
-     "value": "62.7%",
-     "delta": "전체 49.5%",
-     "period": "2026-11-23 발표"
+     "label": "현재 도제 학습자",
+     "value": "18명",
+     "delta": "칸탄카자동차",
+     "period": "2026-11-25 ILO"
     },
     {
-     "label": "최상위 노출 5분위 견습생",
-     "value": "5.4%",
-     "delta": "전체 3.4%",
-     "period": "2026-11-23 발표"
+     "label": "추가 등록 계획",
+     "value": "500명",
+     "delta": "노스쇼어(계획)",
+     "period": "2026-11-25 ILO"
     },
     {
-     "label": "회사 AI 지원",
-     "value": "31%",
-     "delta": "미국 56%",
-     "period": "2026-11-23 발표"
-    },
-    {
-     "label": "분석한 근로자",
-     "value": "2,270만명",
-     "delta": "공공부문 포함",
-     "period": "2026-11-23 발표"
+     "label": "적용 기준",
+     "value": "권고 제208호",
+     "delta": "양질의 도제",
+     "period": "2026-11-25 ILO"
     }
    ],
-   "text": "HEC 파리 노동혁신미래연구소(LIFT)가 INSEAD·프랑스 중앙은행 연구자와 함께 프랑스 근로자 2,270만 명의 행정자료와 1만6,740개 스킬 평가를 결합해 생성AI 노출 상위 직업을 정리했고, HEC 파리가 11월 23일 그 결과를 소개했다.\n\n노출 최상위 5분위(약 450만 명)의 62.7%가 여성으로 전체(49.5%)보다 높았고, 견습생 비중도 5.4%로 전체(3.4%)보다 컸다. 회계 사원은 노출 99번째 백분위, 행정·사무 관리직은 96번째였다. 프랑스 근로자는 31%만 회사에서 AI 사용 독려·도구·교육을 받는 반면 미국은 56%였다(2026-11-23 소개)."
+   "text": "국제노동기구(ILO)가 11월 25일 가나 현장 소식을 전했다. ILO 권고 제208호(양질의 도제) 모형으로 칸탄카 자동차에서 18명이 도제 훈련을 받고 있고, 직업기술교육훈련위원회(CTVET)·E4IMPACT와 함께 의류업체 노스쇼어에 500명을 추가 등록할 계획이다.\n\nILO는 훈련 품질을 좌우하는 요인으로 직장 내 교사(인스트럭터) 역량을 꼽았다. 칸탄카에서는 도제를 가르치는 회사 교사를 대상으로 역량 강화 교육을 했고, 500명 등록은 아직 계획 단계다. ILO는 교사 투자, 기관·기업 파트너십, 기업 참여를 확대 교훈으로 제시했다(2026-11-25, ILO)."
   },
   {
    "date": "2026-11-25",
