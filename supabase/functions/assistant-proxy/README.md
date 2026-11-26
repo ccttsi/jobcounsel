@@ -164,6 +164,13 @@ curl -s -X POST 'https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant
 - CORS 는 `JC_ALLOW_ORIGINS`(기본 `https://witw.pages.dev,https://ccttsi.github.io,https://ccttsi.pages.dev`)에 적은 출처만 허용합니다.
 - **질문 범위**: `scope.js`(원본 `assistant/scope.js`와 바이트 동일 사본)로 질문을 먼저 판정합니다. `off`(코드 작성·주가·날씨·지침 무시 등 자료실과 무관)면 Gemini를 부르지 않고 안내문을 `scope: 'off'`로 돌려주고, `mixed`(무관한 요청이 섞임)면 웹 확인을 끄고 «그 부분은 답하지 않는다»는 지시를 붙입니다. **배포할 때 `index.ts`·`scope.js`·`guard.js`가 함께 올라가야 합니다**(같은 폴더라 `supabase functions deploy`가 같이 묶습니다).
 - **지침 보호**: `guard.js`(원본 `assistant/guard.js`와 바이트 동일 사본)로 질문을 범위 판정보다 먼저 봅니다. `attack`이면 Gemini를 부르지 않고 `scope: 'guard'` 안내를, `suspect`면 웹 확인을 끄고 «보안 주의» 지시를 붙입니다. 근거 조각·열린 화면 글에 숨은 지시가 있으면 그 조각을 버리고, 나머지는 칸 이름 흉내를 깨뜨려 넣습니다. 요청마다 새 보안 표식을 지침에 넣고, 답에 그 표식이나 지침 문장 조각 둘 이상이 보이면 답 전체를 안내문으로 바꿉니다(`guard: 'leak'`, 스트리밍은 끝 48자를 잡아 두고 봅니다).
+- **답 검사기(AUP-5)**: 모델이 답을 다 쓴 뒤 `answer-check.js`(원본 `assistant/answer-check.js`와 바이트 동일 사본)가 한 번 더 봅니다.
+  ① 답 속 금액·요율을 공용 법정 수치(`data/legal-constants.json`)와 대조합니다. 이름표가 숫자 바로 앞에 붙은 값(「최저임금 시급 9,860원」)은
+  원천 값으로 고치고, 계산 중간값·예시 금액·기간(3개월·180일)·지난 연도 값은 건드리지 않습니다. 고치지 못한 어긋남이 보이면 답 끝에
+  「※ 자료실 기준 값 — …」 한 줄을 붙입니다(값·적용 연도가 함께 남습니다). ② 자료실 장부(`assets/tools.js`)에 없는 섹터 주소는
+  본문·`references` 에서 지웁니다. 검사에 쓴 값은 `check-data.js`(생성물 — 원천은 `data/legal-constants.json`·`assets/tools.js`)만 읽고,
+  다시 만들 때는 `python3 ops/scripts/build_answer_check.py`(대조는 `--check`)입니다. 응답의 `checked` 칸에는 **고친 개수만** 담습니다(내용 없음).
+  **배포할 때 `index.ts`·`answer-check.js`·`check-data.js` 가 함께 올라가야 합니다**(같은 폴더라 같이 묶입니다).
 - **질문·대화·검색어를 찍는 로그가 이 함수에 없습니다.** 오류도 내용 없이 코드로만 돌려줍니다.
 
 ---

@@ -9,6 +9,8 @@
 //   3) 질의(ask)는 서버 안에서만 키를 풀어 Gemini 를 부르고, 답변 JSON 만 돌려준다.
 //      웹 교차 확인을 켜면 google_search 로 확인한 출처를 함께 돌려준다.
 //      stream:true 면 :streamGenerateContent(SSE)로 글자를 바로 흘려보내고, 끝에 done 이벤트로 답·모델·근거·웹 출처를 보낸다.
+//      답을 내보내기 전에 AUP-5 답 검사기(answer-check.js)가 법정 수치를 data/legal-constants.json 과 대조하고,
+//      자료실 장부(tools.js)에 없는 주소를 지운다 — 스트리밍은 done 의 answer 가 마지막 답이므로 화면이 그 값으로 덮인다.
 //      스트림이 열리는 순간 stage 이벤트({stage:'thinking'})를 한 번 보내, 기다리는 사람에게 「추론 중」을 알린다.
 //   4) 내 대화 기록함(history_*) — 스레드 목록·메시지의 저장·조회·이름변경·삭제·전체비우기.
 //      user_id 는 언제나 session_token 에서만 정하고, 모든 쿼리에 user_id 조건을 붙인다.
@@ -43,6 +45,14 @@ import {
   cleanEvidence, cleanPage, cleanMap, cleanRoute, cleanPrev, buildUser,
 } from './prompt.ts';
 import type { Evidence } from './prompt.ts';
+
+/* AUP-5 답 검사기 — 답을 내보내기 전에 ① 법정 수치를 원천(data/legal-constants.json)과 대조해 고치거나
+   「자료실 기준 값」 한 줄을 붙이고 ② 자료실 장부(assets/tools.js)에 없는 주소를 지운다.
+   answer-check.js 는 assistant/answer-check.js 와 바이트까지 같은 사본이고, 값은 check-data.js(생성물)만 읽는다. */
+import './check-data.js';
+import './answer-check.js';
+type Checked = { answer: string; references: unknown[]; fixed: { numbers: number; links: number } };
+const CHECK = (globalThis as unknown as { JCAssistCheck: { check: (a: string, r: unknown[]) => Checked } }).JCAssistCheck;
 
 const enc = new TextEncoder();
 
@@ -773,15 +783,18 @@ function streamAnswer(
         } else if ('reply' in out) {
           const { answer, refs } = splitRefs(out.reply.text);
           const picked = refs.length ? ev.filter((e) => refs.includes(e.id)) : ev.slice(0, 2);
+          /* 답 검사기 — 스트리밍의 done.answer 가 화면의 마지막 답이므로, 고친 답이 그대로 사용자에게 간다. */
+          const checked = CHECK.check(answer, picked.map((e) => ({ title: e.title, sector: e.sector, url: e.url, snippet: e.snippet })));
           send('done', {
             ok: true,
-            answer: answer.slice(0, 4000),
+            answer: checked.answer.slice(0, 4000),
             model: out.reply.model,
-            references: picked.map((e) => ({ title: e.title, sector: e.sector, url: e.url, snippet: e.snippet })),
+            references: checked.references,
             web: webOn ? out.reply.web : [],
             websearch: webOn,
             mode: mode || null,
             provider: 'gemini',
+            checked: checked.fixed,
           });
         } else if (out.fail === 'key') {
           send('error', { ok: false, error: 'bad_key', message: '키가 거부되었습니다. 키를 다시 확인해 주세요.' });
@@ -955,10 +968,12 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
     }
     const { answer, refs } = parseJsonAnswer(reply.text);
     const picked = refs.length ? ev.filter((e) => refs.includes(e.id)) : ev.slice(0, 2);
+    const checked = CHECK.check(answer, picked.map((e) => ({ title: e.title, sector: e.sector, url: e.url, snippet: e.snippet })));
     return out(200, {
       ok: true,
-      answer: answer.slice(0, 4000),
-      references: picked.map((e) => ({ title: e.title, sector: e.sector, url: e.url, snippet: e.snippet })),
+      answer: checked.answer.slice(0, 4000),
+      references: checked.references,
+      checked: checked.fixed,
       web: webOn ? reply.web : [],
       websearch: webOn,
       mode: mode || null,
