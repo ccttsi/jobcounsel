@@ -278,25 +278,37 @@
   "note": "산업+단계 딥링크(C3-21 ①)"
  },
  {
-  "sector": "36 trait-flip",
+  "sector": "37 trait-flip",
   "url": "./trait-flip/?q=조급하다",
   "want": "「조급하다」에서 펼친 장점"
  },
  {
-  "sector": "36 trait-flip",
+  "sector": "37 trait-flip",
   "url": "./trait-flip/?q=완벽주의",
   "want": "완벽주의다"
  },
  {
-  "sector": "36 trait-flip",
+  "sector": "37 trait-flip",
   "url": "./trait-flip/?q=미적거린다",
   "want": "「미적거린다」에서 펼친 장점",
   "note": "2026-11-24 확장 낱말(단점) — 딥링크가 새 낱말로도 걸린다"
  },
  {
-  "sector": "36 trait-flip",
+  "sector": "37 trait-flip",
   "url": "./trait-flip/?q=옛 방식만 쓴다",
   "want": "새 도구를 안 쓴다",
   "note": "비슷한 말(별칭)만으로도 낱말을 찾아 도착한다"
+ },
+ {
+  "sector": "36 layer-merge",
+  "url": "./layer-merge/?q=편의점",
+  "want": "편의점 매장",
+  "note": "대문·비서 검색이 넘긴 낱말이 경험 칸(L1)에 들어간다"
+ },
+ {
+  "sector": "36 layer-merge",
+  "url": "./layer-merge/?q=조별과제",
+  "want": "팀 과제",
+  "note": "낱말 → 경험 확장이 딥링크에서도 걸린다"
  }
 ]
