@@ -67,7 +67,7 @@
 "categories": [ { "id": "smartfarm", "sector": "s1", "name": "스마트팜" } ]
 ```
 
-카테고리 id는 고정 목록을 쓴다: `smartfarm` `agri-robot` `resource` `robotics` `battery` `semicon` `material` `bio-mfg` `fintech` `health` `logistics` `content` `edu` `ai` `quantum` `space` `climate` `energy` `security`. 새 카테고리는 여기에 먼저 추가한 뒤 기사에서 쓴다(기사가 참조하는 카테고리가 없으면 화면에서 라벨을 비운다).
+카테고리 id는 고정 목록을 쓴다: `smartfarm` `agri-robot` `resource` `robotics` `battery` `semicon` `material` `bio-mfg` `fintech` `health` `logistics` `content` `edu` `ai` `quantum` `space` `climate` `energy` `security` `telecom`(통신·네트워크, 2026-11-27 추가). 새 카테고리는 여기에 먼저 추가한 뒤 기사에서 쓴다(기사가 참조하는 카테고리가 없으면 화면에서 라벨을 비운다).
 
 ## 5. `items` (기사)
 
