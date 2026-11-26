@@ -10,6 +10,8 @@
 //              «질문을 고쳐 쓰면 검색이 얼마나 좋아지나»(AUP-4 기준선)를 잰다.
 //   ③ 근거     assistant/search.js 를 브라우저 없이 그대로 돌린다(사용자와 같은 검색·같은 선참조 지도).
 //   ④ 답       Gemini 평가용 키 + supabase/functions/assistant-proxy/prompt.ts(라이브와 같은 지침·조립).
+//              AUP-6 — 질문 유형(계산·제도·안내·상담 진행)을 라이브와 같은 판정기(qtype.js)로 정하고 그 유형의 답 틀을 붙인다.
+//              문항의 qtype 칸(정답표 ops/eval/qtype-labels.json)과 견줘 판정 정확도도 같이 낸다.
 //   ⑤ 규칙 채점(관문 판정) — 맞는 자료 · 법정 수치(data/legal-constants.json) · 없는 링크 · 거절 · 지침 유출.
 //   ⑥ 보조 채점 Groq — 말투·결론 먼저·근거 사용·간결 0~2점. 참고 점수일 뿐 관문 기준이 아니다
 //              (사실·수치 판정은 무료 팀원에게 넘기지 않는다 — ops/ROLES.md).
@@ -272,6 +274,11 @@ async function runItem(it) {
   r.retrieval_hit3 = hitAt(r.retrieval_sectors, it.expect_sectors, 3);
   // AUP-4 — 앞 질문(ctx)이 있으면 라이브처럼 이어 붙인 질문으로 검색·근거를 고른다. 위 적중률(원문)은 기준선 비교용으로 남긴다.
   const prev = Array.isArray(it.ctx) ? it.ctx : [];
+  const safePrev = P.cleanPrev(prev);
+  /* AUP-6 — 라이브와 같은 판정기·같은 자리(지침 맨 뒤 형식 지시 앞). 정답표(qtype)와 견준다. */
+  const qt = P.QTYPE.check(it.q, safePrev);
+  r.qtype = qt.type;
+  r.qtype_ok = it.qtype ? qt.type === it.qtype : null;
   const rw = prev.length ? REWRITE.rewrite(it.q, prev) : { q: it.q, follow: false };
   const sq = rw.q || it.q;
   const searched = sq === it.q ? raw : evidenceOf(sq);
@@ -299,6 +306,8 @@ async function runItem(it) {
   }
   const ev = P.cleanEvidence(handed);
   let system = P.SYS;
+  /* AUP-6 — 서버(index.ts)와 같은 자리: SYS 바로 뒤에 유형별 답 틀. */
+  system += P.typeBrief(it.q, safePrev);
   if (s.verdict === 'mixed') system += '\n\n■ 이번 질문의 범위\n' + s.note;
   if (g.verdict === 'suspect') system += '\n\n■ 보안 주의\n' + GUARD.caution;
   const canary = 'JC-' + crypto.randomUUID().replace(/-/g, '').slice(0, 10).toUpperCase();
@@ -366,6 +375,15 @@ function summarize(rows) {
   const fixLinks = answered.reduce((a, r) => a + ((r.check && r.check.links) || 0), 0);
   const evn = answerable.filter((r) => r.ev_numbers != null);
   const withChunk = answerable.filter((r) => r.chunks > 0).length;
+  /* AUP-6 — 유형 판정 정확도와 유형별 «결론 먼저» 점수(고친 효과를 어느 유형에서 봤는지) */
+  const typed = rows.filter((r) => r.qtype_ok != null);
+  const qmix = {};
+  rows.filter((r) => r.qtype).forEach((r) => { qmix[r.qtype] = (qmix[r.qtype] || 0) + 1; });
+  const qjudge = {};
+  for (const t of ['calc', 'policy', 'guide', 'counsel']) {
+    const v = answered.filter((r) => r.judge && r.qtype === t).map((r) => r.judge.conclusion_first).filter((x) => x != null);
+    qjudge[t] = v.length ? Math.round((v.reduce((a, b) => a + b, 0) / v.length) * 100) / 100 : null;
+  }
   const avg = (k) => { const v = judged.map((r) => r.judge[k]).filter((x) => x != null); return v.length ? Math.round((v.reduce((a, b) => a + b, 0) / v.length) * 100) / 100 : null; };
   return {
     items: rows.length,
@@ -386,6 +404,8 @@ function summarize(rows) {
     refuse_rate: pct(refusedOk, refuseRows.length), false_refuse: falseRefuse,
     ev_numbers_rate: pct(evn.filter((r) => r.ev_numbers).length, evn.length), ev_numbers_n: evn.length,
     chunk_rate: pct(withChunk, answerable.length),
+    qtype_n: typed.length, qtype_accuracy: pct(typed.filter((r) => r.qtype_ok).length, typed.length),
+    qtype_mix: qmix, qtype_judge: qjudge,
     judge_n: judged.length,
     judge: { conclusion_first: avg('conclusion_first'), counselor_tone: avg('counselor_tone'), grounded: avg('grounded'), concise: avg('concise') },
   };
@@ -421,7 +441,9 @@ const md = [
   `- 커밋 \`${(ENV.GITHUB_SHA || '').slice(0, 8) || '로컬'}\` · 답 모델 \`${report.model}\` · Groq ${Object.entries(report.groq_tasks).map(([k, v]) => k + '=' + (v.used || '없음') + (v.stopped ? '(멈춤)' : '')).join(' · ') || '(없음)'}`,
   `- 호출: Gemini ${geminiUsed} · Groq ${groqUsed} · 한도 대기(429) Gemini ${waited429.gemini}·Groq ${waited429.groq} · ${report.minutes}분` + (geminiDown || groqDown ? ` · 멈춤: ${[geminiDown && 'Gemini ' + geminiDown, groqDown && 'Groq ' + groqDown].filter(Boolean).join(', ')}` : ''),
   '', '| 항목 | 값 |', '| --- | --- |',
-  line('문항', sum.items), line('검색 1순위 적중(%)', sum.retrieval_hit1), line('검색 3순위 안(%)', sum.retrieval_hit3),
+  line(`문항`, sum.items), line('검색 1순위 적중(%)', sum.retrieval_hit1), line('검색 3순위 안(%)', sum.retrieval_hit3),
+  line(`질문 유형 판정 정확(%) · ${sum.qtype_n}문`, `${sum.qtype_accuracy} (${Object.entries(sum.qtype_mix).map(([k, v]) => k + ' ' + v).join(' · ')})`),
+  line('유형별 «결론 먼저» 평균(계산·제도·안내·상담)', ['calc', 'policy', 'guide', 'counsel'].map((t) => sum.qtype_judge[t] ?? '—').join(' · ')),
   line(`정규화 질문 검색 1순위(%) · ${sum.norm_compared}문`, sum.norm_retrieval_hit1), line('정규화 질문 검색 3순위 안(%)', sum.norm_retrieval_hit3),
   line(`이어지는 질문 검색 1순위 · 원문 → 다시 쓴 질문(%) · ${sum.followup_n}문(다시 씀 ${sum.followup_rewritten})`, `${sum.followup_raw_hit1 ?? '—'} → ${sum.followup_rw_hit1 ?? '—'}`),
   line('이어지는 질문 검색 3순위 안 · 원문 → 다시 쓴 질문(%)', `${sum.followup_raw_hit3 ?? '—'} → ${sum.followup_rw_hit3 ?? '—'}`),
@@ -439,7 +461,7 @@ if (ENV.GITHUB_STEP_SUMMARY) fs.appendFileSync(ENV.GITHUB_STEP_SUMMARY, md + '\n
 /* ---------------------------------------------------------------- 진행일지 한 줄 */
 if (OPT.notion && NOTION_KEY && !OPT.dry) {
   const text = (s) => [{ type: 'text', text: { content: String(s).slice(0, 1900) } }];
-  const result = `검색 1순위 ${sum.retrieval_hit1}% · 3순위 ${sum.retrieval_hit3}% · 인용 ${sum.cite_rate}% · 수치 ${sum.numbers_rate}% · 링크 ${sum.links_ok_rate}% · 검사기 ${sum.check_numbers}/${sum.check_links} · 유출0 ${sum.leak_free_rate}% · 거절 ${sum.refuse_rate}% · 잘못 거절 ${sum.false_refuse} · 보조 ${Object.values(sum.judge).join('/')} (모델 ${report.model}, 커밋 ${(ENV.GITHUB_SHA || '').slice(0, 8)})`;
+  const result = `검색 1순위 ${sum.retrieval_hit1}% · 3순위 ${sum.retrieval_hit3}% · 인용 ${sum.cite_rate}% · 수치 ${sum.numbers_rate}% · 링크 ${sum.links_ok_rate}% · 검사기 ${sum.check_numbers}/${sum.check_links} · 유출0 ${sum.leak_free_rate}% · 거절 ${sum.refuse_rate}% · 잘못 거절 ${sum.false_refuse} · 유형 ${sum.qtype_accuracy}%(${sum.qtype_n}문) · 보조 ${Object.values(sum.judge).join('/')} (모델 ${report.model}, 커밋 ${(ENV.GITHUB_SHA || '').slice(0, 8)})`;
   try {
     const r = await realFetch('https://api.notion.com/v1/pages', {
       method: 'POST',

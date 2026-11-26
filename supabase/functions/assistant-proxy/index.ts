@@ -11,6 +11,7 @@
 //      stream:true 면 :streamGenerateContent(SSE)로 글자를 바로 흘려보내고, 끝에 done 이벤트로 답·모델·근거·웹 출처를 보낸다.
 //      답을 내보내기 전에 AUP-5 답 검사기(answer-check.js)가 법정 수치를 data/legal-constants.json 과 대조하고,
 //      자료실 장부(tools.js)에 없는 주소를 지운다 — 스트리밍은 done 의 answer 가 마지막 답이므로 화면이 그 값으로 덮인다.
+//      AUP-6 질문 유형(qtype.js)에 따라 답의 틀(계산·제도·안내·상담 진행)을 지침에 붙인다 — 첫 문장에 결론부터.
 //      스트림이 열리는 순간 stage 이벤트({stage:'thinking'})를 한 번 보내, 기다리는 사람에게 「추론 중」을 알린다.
 //   4) 내 대화 기록함(history_*) — 스레드 목록·메시지의 저장·조회·이름변경·삭제·전체비우기.
 //      user_id 는 언제나 session_token 에서만 정하고, 모든 쿼리에 user_id 조건을 붙인다.
@@ -41,7 +42,7 @@ const SCOPE = (globalThis as unknown as { JCAssistScope: { check: (q: string) =>
 /* 지침·프롬프트 조립·딸린 글 정리 — prompt.ts 하나를 서버와 성적표 러너(ops/eval/aup_eval.mjs)가 함께 쓴다.
    주입·탈옥 분류기(guard.js, assistant/guard.js 와 바이트까지 같은 사본)도 prompt.ts 가 불러 GUARD 로 내보낸다. */
 import {
-  GUARD, SYS, SYS_SIGS, FMT_JSON, FMT_PLAIN, MODES, MODE_TXT,
+  GUARD, SYS, SYS_SIGS, FMT_JSON, FMT_PLAIN, MODES, MODE_TXT, QTYPE, typeBrief,
   cleanEvidence, cleanPage, cleanMap, cleanRoute, cleanPrev, buildUser,
 } from './prompt.ts';
 import type { Evidence } from './prompt.ts';
@@ -166,8 +167,9 @@ async function seal(plain: string, aad: string): Promise<{ ct: string; iv: strin
 async function open_(ct: string, iv: string, aad: string): Promise<string> {
   const key = await masterKey();
   const pt = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv: unb64(iv), additionalData: enc.encode(aad), tagLength: 128 },
-    key, unb64(ct),
+    /* Deno 2.9·TS 6 의 BufferSource 타입이 ArrayBufferLike 를 받지 않아 형만 맞춘다(값·동작 변화 0). */
+    { name: 'AES-GCM', iv: unb64(iv) as unknown as BufferSource, additionalData: enc.encode(aad), tagLength: 128 },
+    key, unb64(ct) as unknown as BufferSource,
   );
   return new TextDecoder().decode(pt);
 }
@@ -941,6 +943,8 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
     /* 형식 지시는 프롬프트 맨 끝(Recency)에 둔다 — 모델이 마지막 지시를 가장 잘 따른다. */
     let system = SYS;
     if (mode) system += '\n\n' + MODE_TXT[mode];
+    /* AUP-6 — 유형별 답 틀(계산·제도·안내·상담 진행). 빠른 버튼 모드가 있으면 그 모드의 틀이 이미 있으므로 붙이지 않는다. */
+    else system += typeBrief(question, prev);
     if (scope.verdict === 'mixed') system += '\n\n■ 이번 질문의 범위\n' + scope.note;
     if (guard.verdict === 'suspect') system += '\n\n■ 보안 주의\n' + GUARD.caution;
     const canary = newCanary();

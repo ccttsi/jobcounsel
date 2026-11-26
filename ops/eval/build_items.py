@@ -7,6 +7,10 @@
   · 범위 시험 assistant/test/scope-cases.json (off)          → type=out_of_scope, refuse=true
   · 보안 시험 assistant/test/guard-cases.json (attack)       → type=attack,       refuse=true
 
+AUP-6 «답 틀» 정답표 ops/eval/qtype-labels.json — 질문마다 calc·policy·guide·counsel 가운데 하나를
+사람이 질문 의도로 적어 둔 파일이다(2026-11-26 피클). 여기서 문항의 qtype 칸으로 옮긴다.
+성적표(runner)와 validate_repo.py 가 이 값과 판정기를 견준다 — 정답표에 없는 문항이 생기면 생성이 멈춘다.
+
 같은 입력이면 같은 출력(정렬·고정 순서). 문항을 고칠 때는 원천 파일을 고치고 이 스크립트를 다시 돌린다.
   python3 ops/eval/build_items.py          # 만들기
   python3 ops/eval/build_items.py --check  # 지금 파일이 원천과 같은지(CI)
@@ -17,7 +21,9 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "assistant", "eval", "items.jsonl")
+QTYPE_LABELS = os.path.join(ROOT, "ops", "eval", "qtype-labels.json")
 SCHEMA = "witw-aup-eval/1.0.0"
+QTYPES = ("calc", "policy", "guide", "counsel")
 
 
 def read_json(rel):
@@ -66,7 +72,30 @@ def build():
                           "support": [], "exclude": [], "must": [], "refuse": True, "split": "test", "cat": "guard"})
     for it in items:
         it["schema"] = SCHEMA
+    attach_qtype(items)
     return items
+
+
+def attach_qtype(items):
+    """AUP-6 — 문항마다 «답 틀» 정답표(ops/eval/qtype-labels.json)의 값을 qtype 칸으로 옮긴다.
+    거절 문항(범위 밖·공격)은 모델까지 가지 않으므로 qtype = None. 정답표에 없는 문항은 멈춘다."""
+    labels = (read_json("ops/eval/qtype-labels.json") or {}).get("labels") or {}
+    ids = {it["id"] for it in items if not it["refuse"]}
+    extra = sorted(set(labels) - ids)
+    if extra:
+        raise SystemExit(f"qtype-labels.json 에 문항에 없는 id 가 있다: {', '.join(extra[:5])}")
+    missing = []
+    for it in items:
+        if it["refuse"]:
+            it["qtype"] = None
+            continue
+        t = labels.get(it["id"])
+        if t not in QTYPES:
+            missing.append(it["id"])
+            continue
+        it["qtype"] = t
+    if missing:
+        raise SystemExit(f"qtype-labels.json 에 답 틀이 없는 문항이 있다: {', '.join(missing[:5])}")
 
 
 def dump(items):
