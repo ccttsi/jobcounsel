@@ -1,3 +1,13 @@
+## 2026-11-26 — [AUP-4] 이어지는 질문 다시 쓰기
+- **지시**(태화님): 「AUP-4 — 노션 AUP 계획 및 HANDOFF 확인해 이어서」. 계획: 직전 2턴을 보고 «혼자 읽어도 통하는 질문»으로 바꿔 검색, 1차 규칙 · 부족하면 모델 1회.
+- [x] `assistant/rewrite.js`(새 파일, UMD — 브라우저 `window.JCAssistRewrite` · 성적표 러너 공용) — 시작어(«그럼·그거·거기·그 중에»)나 짧은 꼬리(«~는요?·달라져요?»)로 이어지는 질문을 가리고, 앞 질문의 주제어(서술어·조사·의문사 뺀 낱말 ≤4)를 앞에 잇는다. 앞 질문이 금액·요율을 물었으면 «얼마»도 옮긴다(법정 수치 조각이 앞서게). 사실·수치를 새로 보태지 않고, 화면·비서에게 가는 질문은 사용자가 쓴 그대로 — 다시 쓴 문장은 검색·근거 고르기에만.
+- [x] `assets/assistant.js` — 앞 질문(최근 2개, 범위 밖·막힌 턴 제외)을 `prev`로 싣고, `evidence()`·`route()`는 다시 쓴 질문으로. 서버 `prompt.ts` `cleanPrev()`(주입 막힐 문장 버림·defuse·200자) + `buildUser(…, prev)` «[앞 질문 — 맥락일 뿐 사실의 근거가 아님]» 칸. `index.ts`가 `body.prev`를 받는다(머지되면 deploy-edge가 자동 배포).
+- [x] 성적표 — 이어지는 질문 문항 5→20(`ops/eval/seed_items.json` CTX-006~020, 수치 6문은 `legal-constants` 경로), 러너가 라이브처럼 다시 쓴 질문으로 근거를 고르고 «원문 → 다시 쓴 질문» 적중을 따로 적는다. `validate_repo.py` — 이어지는 질문 90% 이상 이어 붙음 · 혼자 서는 282문 오탐 0.
+- **측정(키 없이 `--dry`)**: 이어지는 질문 20문 검색 1순위 **35→60%** · 3순위 안 **35→90%** · 근거에 정답 수치 **85.7→100%**(7문). 전체 원문 검색은 문항이 287→302로 늘어 69.8/85.1(새 15문이 원문으로는 거의 못 찾는 문항이라 — 같은 문항끼리 비교).
+- 실화면: 가짜 서버로 비서에 두 번 물어 «그럼 수습 기간엔요?»가 `prev`를 싣고 근거에 «2026년 최저임금»·«수습 3개월 10% 감액의 조건»이 들어감, 콘솔 오류 0.
+- **남은 일**: 다음 주간 aup-eval에서 답 기준(인용·수치) 확인 · 규칙이 못 잇는 문항(CTX-011처럼 혼자 서지만 검색이 약한 것)은 AUP-7 뜻 검색 몫 · 모델 1회 다시 쓰기는 Groq 키를 서버(Supabase)에 둘지 결정 뒤.
+- **다음 시작 파일**: `assistant/rewrite.js` · `ops/eval/aup_eval.mjs`(`rw_hit1`) · 다음 단계 AUP-5 답 검사기(`supabase/functions/assistant-proxy/index.ts` 뒷단).
+
 ## 2026-11-26 — `/layer-merge/` 전수 검사 · 서버 AI 보조 fallback 원인 수정
 - **지시**(태화님): 「피클이 만든 `/layer-merge/` 디자인·구조·내용 전수 검사, `gpt-oss-20b`가 `max_tokens: 700` 때문에 fallback 되는 문제 수정」.
 - [x] **서버 AI 보조** `functions/api/layer-merge.js` — gpt-oss-20b는 «생각» 토큰도 출력 한도에 세서 700을 생각에 다 써 본문(JSON)이 비었다. `reasoning_effort: 'low'` · `include_reasoning: false` · `max_completion_tokens: 1600`, 잘린 응답(`finish_reason: length`)은 믿지 않고 내장 엔진으로. 시간 상한 서버 9초 · 화면 10초(예전 화면 4.5초가 서버 6초보다 먼저 끊었다). `ops/model-routing.json`에 `layer_merge` 일감(20b 전용) 기록.

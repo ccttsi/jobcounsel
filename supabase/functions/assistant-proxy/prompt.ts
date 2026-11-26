@@ -185,8 +185,22 @@ export function cleanRoute(input: unknown): RouteHit[] {
   return out;
 }
 
+/* AUP-4 — 같은 대화의 앞 질문(최근 2개). 이어지는 질문(«그럼 수습 기간엔요?»)이 무엇을 잇는지 알려 주는 «참고»일 뿐,
+   사실의 근거가 아니다. 주입으로 막힐 문장은 버리고, 나머지도 무력화(defuse)해 한 줄로. */
+export const MAX_PREV = 2;
+export function cleanPrev(input: unknown): string[] {
+  if (!Array.isArray(input)) return [];
+  const out: string[] = [];
+  for (const raw of input.slice(-MAX_PREV)) {
+    const s = String(raw || '').replace(/\s+/g, ' ').trim().slice(0, 200);
+    if (s.length < 2 || GUARD.check(s).verdict === 'attack') continue;
+    out.push(GUARD.defuse(s));
+  }
+  return out;
+}
+
 export function buildUser(question: string, ev: Evidence[], page: Page | null, plain: boolean,
-                   map: MapSector[], route: RouteHit[]): string {
+                   map: MapSector[], route: RouteHit[], prev: string[] = []): string {
   const attr = (s: string) => String(s || '').replace(/[<>&"]/g, ' ').replace(/\s+/g, ' ').trim();
   const lines: string[] = [];
   if (map.length || route.length) {
@@ -218,6 +232,10 @@ export function buildUser(question: string, ev: Evidence[], page: Page | null, p
     lines.push('</current_page>');
   }
   /* 맨 끝(Recency) — 실제 질문과 제약을 마지막에 다시 앉힌다. */
+  if (prev.length) {
+    lines.push('', '[앞 질문 — 이번 질문이 이어받는 맥락일 뿐 사실의 근거가 아닙니다]');
+    prev.forEach((p) => lines.push('- ' + p));
+  }
   lines.push('', '[질문]', GUARD.defuse(question));
   lines.push('', '위 <evidence> 의 내용과 확인된 사실만 근거로 답하세요. 근거에 없는 내용은 지어내지 마세요.');
   lines.push(plain

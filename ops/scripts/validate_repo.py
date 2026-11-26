@@ -1804,6 +1804,20 @@ EVAL_ITEMS = "assistant/eval/items.jsonl"
 EVAL_PII = re.compile(r"01[016789]-?\d{3,4}-?\d{4}|[\w.+-]+@[\w-]+\.[\w.]+|\d{6}-?[1-4]\d{6}")
 
 
+REWRITE_RUNNER = r"""
+const R = require(process.argv[1]); const fs = require('fs');
+const rows = fs.readFileSync(process.argv[2], 'utf8').split('\n').filter(Boolean).map(JSON.parse);
+const out = { changed: [], followup: 0, rewritten: 0, alone: 0 };
+for (const it of rows) {
+  if (it.type === 'followup' && (it.ctx || []).length) { out.followup++; if (R.rewrite(it.q, it.ctx).q !== it.q) out.rewritten++; continue; }
+  if ((it.ctx || []).length) continue;
+  out.alone++;
+  if (R.rewrite(it.q, ['최저임금이 올해 얼마예요?']).q !== it.q) out.changed.push(it.q);
+}
+process.stdout.write(JSON.stringify(out));
+"""
+
+
 def run_eval_items_checks():
     path = os.path.join(ROOT, EVAL_ITEMS)
     if not os.path.exists(path):
@@ -1864,6 +1878,25 @@ def run_eval_items_checks():
         if c.get("s") not in sector_ids:
             fail("eval", f"근거 조각 {c.get('i')} 섹터 «{c.get('s')}» 가 장부에 없다")
     note(f"AUP-3 근거 조각 — {len(chunks)}개 (원천 동기·400자·주소·섹터)")
+
+    # AUP-4 이어지는 질문 다시 쓰기(assistant/rewrite.js) — ① 이어지는 질문 문항은 앞 질문 낱말로 이어 붙는가
+    # ② 혼자 서는 문항(그 밖 전부)은 앞 질문이 있어도 한 글자도 바뀌지 않는가(오탐 0 — 잘못 붙이면 검색이 흐려진다)
+    try:
+        result = subprocess.run(["node", "-e", REWRITE_RUNNER, os.path.join(ROOT, "assistant", "rewrite.js"), path],
+                                capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        fail("eval", f"이어지는 질문 다시 쓰기 시험을 돌리지 못했다 ({exc})")
+        return
+    if result.returncode != 0:
+        fail("eval", f"다시 쓰기 실행 오류 — {result.stderr.strip()[:200]}")
+        return
+    got = json.loads(result.stdout or "{}")
+    for q in got.get("changed", []):
+        fail("eval", f"다시 쓰기 오탐 — 혼자 서는 질문 «{q[:40]}» 에 앞 질문 낱말이 붙는다")
+    fol, done = got.get("followup", 0), got.get("rewritten", 0)
+    if fol and done * 10 < fol * 9:
+        fail("eval", f"이어지는 질문 {fol}문 중 {done}문만 다시 써진다(90% 미만) — assistant/rewrite.js")
+    note(f"AUP-4 다시 쓰기 — 이어지는 질문 {done}/{fol}문 이어 붙음 · 혼자 서는 질문 {got.get('alone', 0)}문 오탐 0")
 
 
 # ---------------------------------------------------------------- 3-9) 공용 법정 수치 단일 원천 (2026-11-22)
