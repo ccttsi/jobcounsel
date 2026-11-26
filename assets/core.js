@@ -246,7 +246,7 @@
     if (location.href.split(/[?#]/)[0] !== BASE) {   // 「이어 보기」는 대문이 아닌 화면에만
       if (window.JC_TOOLS) load(BASE + 'assets/next.js'); else load(BASE + 'assets/tools.js', function () { load(BASE + 'assets/next.js'); });
     }
-    /* 카드덱 단추는 대문에도 있다 — 자료 목록(01~39)에서 빠진 상담 플로우로 가는 유일한 상시 동선이다. */
+    /* 카드덱 단추는 대문에도 있다 — 자료 목록(01~40)에서 빠진 상담 플로우로 가는 유일한 상시 동선이다. */
     load(BASE + 'assets/deckfab.js');
   });
 

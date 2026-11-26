@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="경험 한 줄과 채용공고를 두 레이어로 겹쳐, 이력서·자소서에 쓸 K(지식)·S(기술)·A(태도) 연결 근거와 문장 전개 순서를 뽑습니다. 완성 문장을 대신 써 주지 않고, 왜 그렇게 연결되는지만 설명합니다.">
+<title>경험×공고 레이어 · KSA 연결</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f3ede2;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#2e4e74;--acc-soft:rgba(46,78,116,.09);
+  --k:#1f6a4d;--s:#2e4e74;--a:#8a5a12;
+  --shadow:0 1px 2px rgba(70,50,25,.05),0 10px 28px -18px rgba(70,50,25,.30);--edge:rgba(42,37,33,.14);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#8db4e2;--acc-soft:rgba(141,180,226,.12);
+  --k:#6fd0a4;--s:#8db4e2;--a:#e8bd72;
+  --shadow:none;--edge:rgba(230,233,239,.10);color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+@supports not (overflow-x:clip){body{overflow-x:hidden}}
+body{font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 24px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media (min-width:900px){.wrap{max-width:1280px;padding:0 28px 28px}}
+
+.hd{display:flex;align-items:center;gap:8px;min-height:68px;padding:12px 0}
+.ib{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;place-items:center;color:var(--muted);text-decoration:none}
+.ib svg{width:20px;height:20px}
+.brand{flex:0 1 auto;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.04em;text-decoration:none;white-space:nowrap;overflow:hidden;color:inherit}
+.brand svg{width:24px;height:24px;flex:none;color:var(--acc)}
+.brand span{color:var(--acc)}
+.hd>[data-jc-prefs]{margin-left:auto}
+.rst{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px 0 10px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel);font-size:14px;font-weight:750}
+.rst svg{width:18px;height:18px;color:var(--acc)}
+@media (max-width:420px){
+  .rst span{display:none}
+  .rst{position:relative;width:44px;padding:0;justify-content:center;border-color:transparent;background:transparent}
+  .rst::before{content:"";position:absolute;inset:5px;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);transition:border-color .15s}
+  .rst:hover{border-color:transparent}.rst:hover::before{border-color:var(--acc)}
+  .rst svg{position:relative;width:16px;height:16px}
+}
+
+/* 이용 안내 — 접힌 한 줄 */
+.pv{margin:0 0 6px}
+.pv-t{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:4px 2px;border-radius:12px}
+.pv-t svg{flex:none;width:20px;height:20px;color:var(--acc)}
+.pv-tt{flex:1;min-width:0;font-size:14px;line-height:1.5;color:var(--muted)}
+.pv-tt b{color:var(--ink);font-weight:750;margin-right:8px;white-space:nowrap}
+.pv-c{flex:none;font-size:14px;font-weight:700;color:var(--acc)}
+.pv-b ul{margin:4px 0 12px;padding:0 0 0 2px;list-style:none;display:grid;gap:6px}
+@media (min-width:900px){.pv-b ul{grid-template-columns:1fr 1fr;column-gap:24px}}
+.pv-b li{position:relative;padding-left:16px;font-size:14px;line-height:1.65;color:var(--muted)}
+.pv-b li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.pv-b li b{color:var(--ink)}
+
+/* 작업대 — 왼쪽 레이어 더미 · 오른쪽 솔루션 */
+.bench{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:2px}
+/* 태블릿 세로(768~899): 두 단으로 나누되 높이를 못 박지 않는다 — 카드는 접힌 채로 */
+@media (min-width:768px){
+  .bench{grid-template-columns:minmax(0,4.2fr) minmax(0,5.8fr);gap:14px;align-items:start}
+}
+/* 큰 화면(900~): 좌우 두 판의 높이를 창에 맞춰 못 박고, 카드는 늘 펼침 */
+@media (min-width:900px){
+  .bench{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:18px;align-items:stretch}
+  .layers,.board{height:calc(100vh - 198px);height:calc(100dvh - 198px);min-height:460px}
+  .sol-b{display:block}
+}
+@media (min-width:900px){.layers{overflow-y:auto;overscroll-behavior:contain;padding-right:3px}}
+.layers{display:flex;flex-direction:column;gap:7px;min-width:0}
+.layers>*{flex:0 0 auto}
+.samples{display:flex;flex-wrap:nowrap;gap:6px;align-items:center;overflow-x:auto;overscroll-behavior-x:contain;padding-bottom:1px;scrollbar-width:thin;mask-image:linear-gradient(90deg,#000 92%,transparent)}
+.samples .lbl{font-size:12.5px;font-weight:800;color:var(--dim);margin-right:2px;white-space:nowrap}
+.samples button{flex:none;min-height:44px;padding:4px 11px;border-radius:12px;background:var(--soft);font-size:13px;font-weight:700;color:var(--muted);border:1px solid transparent}
+.samples button:hover{border-color:var(--line-2);color:var(--ink)}
+.samples button[aria-pressed="true"]{background:var(--acc-soft);border-color:var(--acc);color:var(--ink)}
+
+/* 레이어 카드 — 겹쳐 쌓인 판 */
+.layer{position:relative;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);min-width:0;transition:transform .32s cubic-bezier(.2,.9,.3,1),border-color .2s}
+.layer.l2{margin-left:7px}
+.layer.l1 textarea{min-height:64px}
+.layer.l1{margin-right:7px}
+.lh{display:flex;align-items:center;gap:8px;padding:4px 8px 4px 12px}
+.lnum{flex:none;display:inline-grid;place-items:center;min-width:34px;height:24px;padding:0 6px;border-radius:7px;background:var(--acc);color:var(--bg);font-size:12px;font-weight:850;letter-spacing:.02em}
+.l2 .lnum{background:var(--s);color:var(--panel)}
+:root[data-theme="dark"] .l2 .lnum{color:#0b0f16}
+.lt{flex:1;min-width:0;display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+.lt b{font-size:14.5px;font-weight:800;letter-spacing:-.02em}
+.lt small{font-size:12px;color:var(--dim);font-weight:650}
+.eye{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:10px;color:var(--dim)}
+.eye:hover{background:var(--soft);color:var(--ink)}
+.eye svg{width:18px;height:18px}
+.eye[aria-pressed="true"] .slash{opacity:1}
+.eye .slash{opacity:0}
+.lb-body{padding:0 12px 11px}
+.lb-body.fold{display:none}
+textarea{display:block;width:100%;min-width:0;min-height:64px;max-height:34vh;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line-2);background:var(--bg);font-size:16px;line-height:1.6;resize:vertical;outline:none}
+textarea:focus{border-color:var(--acc)}
+textarea::placeholder{color:var(--dim)}
+.l2 textarea{min-height:84px}
+.lfoot{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:5px;min-height:22px}
+.lfoot .tag{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:9px;background:var(--soft);font-size:12px;font-weight:700;color:var(--muted);max-width:100%}
+.lfoot .tag b{color:var(--acc)}
+.lfoot .emptyline{font-size:12.5px;color:var(--dim)}
+
+/* 병합 단추 — 두 판 사이 */
+.mergebar{display:flex;flex-direction:column;align-items:center;gap:2px;margin:0}
+.merge{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 22px;border-radius:14px;background:var(--acc);color:var(--bg);font-size:15.5px;font-weight:800;box-shadow:3px 3px 0 var(--edge);transition:transform .12s,box-shadow .12s,background .15s}
+:root[data-theme="dark"] .merge{color:#0a0d13}
+.merge:hover{background:color-mix(in srgb,var(--acc) 88%,var(--ink))}
+.merge:active{transform:translateY(2px);box-shadow:1px 1px 0 var(--edge)}
+.merge svg{width:20px;height:20px}
+.merge kbd{font:inherit;font-size:11.5px;font-weight:700;opacity:.8;border:1px solid currentColor;border-radius:6px;padding:0 5px;line-height:1.5}
+.merge[disabled]{opacity:.55;cursor:default;box-shadow:none}
+.mergebar p{margin:0;font-size:12.5px;color:var(--dim);text-align:center}
+
+/* L3 — 병합 결과판 */
+.layer.l3{border-style:dashed;border-color:var(--line-2);background:color-mix(in srgb,var(--panel) 82%,var(--acc-soft))}
+.layer.l3.on{border-style:solid;border-color:var(--acc);box-shadow:0 1px 2px rgba(70,50,25,.05),3px 3px 0 var(--edge)}
+.layer.l3 .lb-body{padding-bottom:12px}
+.ksa3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0 0 8px}
+/* 좁은 화면은 한 줄에 하나씩 — 세 칸으로 나누면 이름이 «조사 방법과 표…»처럼 잘려 못 읽는다 */
+@media (max-width:600px){.ksa3{grid-template-columns:minmax(0,1fr)}}
+.ksa3 div{border:1px solid var(--line);border-radius:11px;background:var(--panel);padding:6px 9px;min-width:0}
+.ksa3 b{display:block;font-size:11.5px;font-weight:850;color:var(--c,var(--acc));letter-spacing:.03em}
+.ksa3 span{display:block;font-size:12.5px;line-height:1.45;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.l3 .ncs{margin:0;border-top:1px solid var(--line);padding-top:7px}
+.l3 .ncs summary{list-style:none;display:flex;align-items:center;gap:6px;min-height:44px;cursor:pointer;font-size:12.5px;font-weight:800;color:var(--muted)}
+.l3 .ncs summary::-webkit-details-marker{display:none}
+.l3 .ncs summary::after{content:"+";margin-left:auto;font-size:16px;color:var(--dim)}
+.l3 .ncs[open] summary::after{content:"–"}
+.ncs-b{padding:2px 0 0;font-size:12.5px;line-height:1.6;color:var(--muted)}
+.ncs-b .el{margin:0 0 6px}
+.ncs-b .el b{color:var(--ink);font-weight:750}
+.ncs-b .el span{display:block}
+.ncs-b .src{margin:6px 0 0;font-size:11.5px;color:var(--dim)}
+.l3 .lfoot .emptyline{font-size:12.5px}
+
+/* 결과판 */
+.board{border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow);min-width:0;display:flex;flex-direction:column;overflow:hidden}
+@media (max-width:899px){.board{margin-top:4px}}
+.bh{flex:none;padding:12px 14px 10px;border-bottom:1px solid var(--line)}
+.bh h2{margin:0;font-size:15.5px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bh h2 .pill{font-size:12px;font-weight:800;color:var(--acc);background:var(--acc-soft);border-radius:9px;padding:2px 9px}
+.bh p{margin:3px 0 0;font-size:12.5px;color:var(--dim)}
+.scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:10px 12px 14px;display:flex;flex-direction:column;gap:8px}
+.scroll>.sol,.scroll>.blank,.scroll>.note{flex:0 0 auto}
+@media (max-width:899px){.scroll{overflow:visible;padding:10px 12px 14px}}
+
+.blank{padding:6px 2px 10px}
+.blank h3{margin:2px 0 8px;font-size:15px;font-weight:800;letter-spacing:-.02em}
+.steps3{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:6px}
+@media (min-width:600px){.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}}
+.steps3 li{border:1px solid var(--line);border-radius:13px;background:var(--bg);padding:9px 11px;font-size:13px;line-height:1.55;color:var(--muted);min-width:0}
+.steps3 li b{display:block;font-size:12px;font-weight:850;color:var(--acc);margin-bottom:2px}
+.blank .note{margin:0;font-size:12.5px;line-height:1.65;color:var(--dim)}
+.ksa-def{display:grid;gap:5px;margin:0 0 12px;padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:var(--bg)}
+@media (min-width:600px){.ksa-def{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}}
+.ksa-def div{display:grid;grid-template-columns:22px minmax(0,1fr);gap:7px;align-items:start;min-width:0}
+.ksa-def b{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--acc-soft);color:var(--acc);font-size:12px;font-weight:850}
+.ksa-def span{font-size:12.5px;line-height:1.55;color:var(--muted)}
+.ksa3 b i{font-style:normal;font-size:11px;font-weight:800;color:var(--dim);margin-left:2px}
+
+/* NCS 참고 카드 — 결과판 맨 끝 */
+.ncs-card{background:var(--bg)}
+.ncs-s{list-style:none;display:flex;align-items:center;gap:8px;min-height:52px;padding:8px 12px;cursor:pointer}
+.ncs-s::-webkit-details-marker{display:none}
+.ncs-s .ncs-t{flex:1;min-width:0;font-size:14px;font-weight:750;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ncs-card .ncs-b{padding:0 12px 12px}
+.ncs-l{margin:0 0 6px;font-size:11.5px;line-height:1.6;color:var(--dim)}
+.ncs-card .el{margin:0 0 6px;padding:7px 9px;border-radius:10px;background:var(--panel);border:1px solid var(--line);font-size:12.5px;line-height:1.55}
+.ncs-card .el b{display:block;font-weight:800;color:var(--ink);margin-bottom:2px}
+.ncs-card .el span{display:block;color:var(--muted)}
+
+/* 솔루션 카드 */
+.sol{border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:2px 2px 0 var(--edge);overflow:hidden;min-width:0}
+.sol.dim{box-shadow:none;border-style:dashed}
+.sol-t{display:flex;align-items:center;gap:8px;width:100%;min-height:52px;padding:8px 12px;text-align:left}
+.sol-t:hover{background:var(--soft)}
+.sol-t .no{flex:none;font-size:11.5px;font-weight:850;color:var(--dim);letter-spacing:.04em}
+.sol-t h3{flex:1;min-width:0;margin:0;font-size:15px;font-weight:800;letter-spacing:-.02em;line-height:1.35}
+.fit{flex:none;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:9px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.fit.good{background:color-mix(in srgb,var(--k) 14%,transparent);color:var(--k)}
+.fit.mid{background:color-mix(in srgb,var(--a) 15%,transparent);color:var(--a)}
+.fit.low{background:var(--soft);color:var(--dim)}
+.chev{flex:none;width:18px;height:18px;color:var(--line-2);transition:transform .2s}
+.sol.open .chev{transform:rotate(90deg)}
+.sol-b{padding:0 12px 12px}
+@media (max-width:899px){.sol-b{display:none}.sol.open .sol-b{display:block}}
+.quote{margin:0 0 8px;padding:7px 10px;border-left:3px solid var(--acc);border-radius:0 9px 9px 0;background:var(--soft);font-size:12.5px;line-height:1.6;color:var(--muted)}
+.quote b{color:var(--ink);font-weight:750}
+.ksa{display:grid;grid-template-columns:minmax(0,1fr);gap:5px;margin:0 0 8px}
+@media (min-width:600px){.ksa{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ksa div{display:grid;grid-template-columns:20px minmax(0,1fr);gap:6px;align-items:start;padding:7px 9px;border-radius:10px;background:var(--bg);border:1px solid var(--line);min-width:0}
+.ksa b{display:grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--c);color:var(--panel);font-size:11px;font-weight:850}
+.ksa span{font-size:12.5px;line-height:1.5;color:var(--ink)}
+.why{margin:0 0 8px;font-size:13.5px;line-height:1.7}
+.why b{color:var(--acc);font-weight:800;margin-right:4px}
+.flow{border-top:1px dashed var(--line-2);padding-top:8px}
+.flow h4{margin:0 0 5px;font-size:11.5px;font-weight:850;color:var(--dim);letter-spacing:.02em}
+.flow ol{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.flow li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:6px;font-size:12.5px;line-height:1.55;color:var(--muted)}
+.flow li i{font-style:normal;font-weight:850;color:var(--acc);font-size:11.5px;padding-top:1px}
+.flow li b{color:var(--ink);font-weight:750}
+.resume{margin:8px 0 0;padding:7px 10px;border-radius:9px;background:var(--acc-soft);font-size:12.5px;line-height:1.6}
+.resume b{color:var(--acc);font-weight:850;margin-right:4px}
+.resume .slot{color:var(--a);font-weight:800;border-bottom:1px dashed var(--a);white-space:nowrap}
+.ai{margin:8px 0 0;padding:7px 10px;border-radius:9px;border:1px dashed var(--line-2);font-size:12.5px;line-height:1.6;color:var(--muted)}
+.ai b{color:var(--acc);font-weight:800;margin-right:4px}
+.add{margin:8px 0 0;padding:7px 10px;border-radius:9px;background:var(--soft);font-size:12.5px;line-height:1.6;color:var(--muted)}
+.add b{color:var(--ink);font-weight:800;margin-right:4px}
+.nums{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 8px}
+.nums span{font-size:12px;font-weight:800;color:var(--a);background:color-mix(in srgb,var(--a) 12%,transparent);border-radius:8px;padding:2px 8px}
+
+.foot{margin:12px 0 0;font-size:12.5px;color:var(--dim);line-height:1.6}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@keyframes settle{from{opacity:0;transform:translateY(-8px) scale(.99)}to{opacity:1;transform:none}}
+.board.go .sol{animation:rise .32s cubic-bezier(.2,.9,.3,1) both}
+.board.go .sol:nth-child(2){animation-delay:32ms}.board.go .sol:nth-child(3){animation-delay:64ms}
+.board.go .sol:nth-child(4){animation-delay:96ms}.board.go .sol:nth-child(5){animation-delay:128ms}
+.layers.go .l3.on{animation:settle .34s cubic-bezier(.2,.9,.3,1) both}
+/* 화면 높이가 낮은 노트북(≤860px): 두 칸을 줄여 L3까지 한눈에 들어오게 한다 */
+@media (min-width:900px) and (max-height:860px){
+  .l2 textarea{min-height:58px}
+  .layer.l1 textarea{min-height:44px}
+  .mergebar p{display:none}
+  .merge{min-height:48px}
+  .l3 .ksa3 div{padding:4px 8px}
+  .layer.l3 .lb-body{padding-bottom:8px}
+}
+/* 아주 낮은 화면(≤780px): L3 판을 아래에 붙여 두어 스크롤해도 결과 요약이 보이게 한다 */
+@media (min-width:900px) and (max-height:780px){
+  .layer.l3{position:sticky;bottom:0;z-index:2}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html[data-jc-imm] .board.go .sol,html[data-jc-imm] .layers.go .l3.on{animation:none}
+</style>
+<link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/core.css">
+</head>
+<body data-jc-tool="layer-merge">
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <a class="brand" href="./">
+      <svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 8l-9 5-9-5 9-5Z"/><path d="M3 12.5 12 17.5 21 12.5"/><path d="M3 17 12 22 21 17"/></svg>
+      경험×공고 <span>레이어</span>
+    </a>
+    <button type="button" class="rst" id="rst" aria-label="처음으로 — 두 칸과 병합 결과를 모두 비웁니다"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>처음으로</span></button>
+    <span data-jc-prefs></span>
+  </header>
+
+  <section class="pv" id="pv">
+    <button type="button" class="pv-t" id="pvT" aria-expanded="false" aria-controls="pvB">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 7.5 12 3.5l8 4-8 4-8-4Z"/><path d="M4 12.5l8 4 8-4"/><path d="M4 17l8 4 8-4"/></svg>
+      <span class="pv-tt"><b>이용 안내</b>로그인 없이 사용 <span aria-hidden="true">·</span> <span style="white-space:nowrap">참고·실습용 자료</span></span>
+      <span class="pv-c" id="pvL">펼치기</span>
+    </button>
+    <div class="pv-b" id="pvB" hidden><ul>
+      <li><b>완성 문장을 대신 써 주지 않습니다.</b> 문장을 정하는 사람의 아이디어를 막지 않도록, 왜 이 경험이 이 요구와 닿는지와 전개 순서만 적습니다.</li>
+      <li><b>K·S·A는 지식·기술·태도의 준말입니다.</b> 요구를 세 갈래로 나눈 문장은 자료실이 새로 쓴 해석틀이고, NCS 능력단위의 KSA 항목만 원문 그대로입니다.</li>
+      <li><b>입력한 글은 이 화면에서만 계산됩니다.</b> 문장은 저장하지도 보내지도 않습니다. 연결 설명을 서버 AI가 다듬을 때도 뽑아낸 낱말과 역량 이름만 보냅니다.</li>
+      <li><b>모든 공고·경험 예시는 자료실이 쓴 것입니다.</b> 특정 회사 공고문이나 다른 사람의 합격 자소서를 옮기지 않았습니다.</li>
+    </ul></div>
+  </section>
+
+  <main class="bench" id="main">
+    <section class="layers" id="layers" aria-label="두 레이어와 병합 결과">
+      <div class="samples" id="samples" aria-label="예시로 채우기"></div>
+
+      <section class="layer l2" data-layer="l2">
+        <div class="lh">
+          <span class="lnum">L2</span>
+          <span class="lt"><b>직무·공고</b><small>지원하려는 공고문을 붙여넣으세요</small></span>
+          <button type="button" class="eye" data-eye="l2" aria-pressed="false" aria-label="L2 직무·공고 칸 접기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.6"/><path class="slash" d="M4 20 20 4"/></svg></button>
+        </div>
+        <div class="lb-body" id="l2b">
+          <label class="sr" for="l2in">지원하려는 직무의 채용공고</label>
+          <textarea id="l2in" maxlength="2000" enterkeyhint="done" placeholder="예) 매장관리 담당 / 매출 마감과 재고 실사 / 고객 응대와 클레임 처리 / 교대 근무"></textarea>
+          <div class="lfoot" id="l2f"><span class="emptyline">공고를 넣으면 직무군과 요구를 먼저 잡습니다.</span></div>
+        </div>
+      </section>
+
+      <div class="mergebar">
+        <button type="button" class="merge" id="merge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v6"/><path d="M12 15v6"/><path d="m8 6 4 3 4-3"/><path d="m8 18 4-3 4 3"/><path d="M4 12h16"/></svg>
+          <span>레이어 병합</span><kbd>⌘↵</kbd>
+        </button>
+        <p id="mergeHint">두 칸을 채우면 K·S·A 연결 근거와 전개 순서를 뽑습니다.</p>
+      </div>
+
+      <section class="layer l1" data-layer="l1">
+        <div class="lh">
+          <span class="lnum">L1</span>
+          <span class="lt"><b>경험·경력</b><small>단어 하나만 넣어도 됩니다</small></span>
+          <button type="button" class="eye" data-eye="l1" aria-pressed="false" aria-label="L1 경험·경력 칸 접기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.6"/><path class="slash" d="M4 20 20 4"/></svg></button>
+        </div>
+        <div class="lb-body" id="l1b">
+          <label class="sr" for="l1in">내 경험·경력</label>
+          <textarea id="l1in" maxlength="300" enterkeyhint="done" placeholder="예) 편의점 2년, 카페 알바, 조별과제 팀장"></textarea>
+          <div class="lfoot" id="l1f"><span class="emptyline">단어를 넣으면 역량·행동·수치로 넓혀 봅니다.</span></div>
+        </div>
+      </section>
+
+      <section class="layer l3" id="l3" aria-label="KSA 솔루션 요약">
+        <div class="lh">
+          <span class="lnum">L3</span>
+          <span class="lt"><b>KSA 솔루션</b><small id="l3sub">병합하면 여기에 겹쳐집니다</small></span>
+        </div>
+        <div class="lb-body">
+          <div class="ksa3" id="l3ksa">
+            <div style="--c:var(--k)"><b>K 지식</b><span>—</span></div>
+            <div style="--c:var(--s)"><b>S 기술</b><span>—</span></div>
+            <div style="--c:var(--a)"><b>A 태도</b><span>—</span></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="board" id="board" aria-label="병합 결과">
+      <div class="bh">
+        <h2 id="bhT">무엇이 나오는지</h2>
+        <p id="bhS">경험 한 줄 × 공고 한 장 → K·S·A 연결 근거 · 이력서 한 줄 · 자소서 뼈대</p>
+      </div>
+      <div class="scroll" id="out" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <p class="foot" id="foot"></p>
+</div>
+<script src="./app.js" defer></script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>

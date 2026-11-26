@@ -151,7 +151,9 @@
   /* ───── ④ 문장 수술실 ───── */
   var TONES = [['', '네 가지 톤'], ['achievement', '성과·수치형'], ['problem', '문제해결·논리형'], ['collaboration', '협업·조율형'], ['stability', '성실·안정형']];
   function opHtml() {
-    var h = '<div class="two"><section class="box op" aria-label="단어 넣기"><p style="margin:0 0 8px;font-size:15px;font-weight:800">경험을 떠올리게 하는 단어 하나</p>';
+    var h = '<div class="two"><section class="box op" aria-label="단어 넣기">' +
+      '<a class="lm-link" href="../layer-merge/"><span class="lm-k">경험×공고 레이어</span><span class="lm-d">공고와 내 경험을 겹쳐 K(지식)·S(기술)·A(태도) 연결 근거와 전개 순서를 봅니다</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a>' +
+      '<p style="margin:0 0 8px;font-size:15px;font-weight:800">경험을 떠올리게 하는 단어 하나</p>';
     h += '<div class="in"><label class="sr" for="opIn">단어</label><input id="opIn" type="text" maxlength="40" autocomplete="off" enterkeyhint="done" placeholder="예: 편의점, 엑셀, 조별과제, 갈등" value="' + esc(UI.op) + '"></div>';
     h += '<p class="hint">쉼표로 몇 개를 함께 넣어도 됩니다. 숫자를 같이 적으면(예: 편의점 2년) 그 자리에 들어갑니다.</p>';
     h += '<div class="ctl"><span class="seg" role="group" aria-label="용도">' + [['cover_para', '자소서 문단'], ['resume_line', '이력서 한 줄']].map(function (p) { return '<button type="button" data-pur="' + p[0] + '" aria-pressed="' + (UI.pur === p[0]) + '">' + p[1] + '</button>'; }).join('') + '</span></div>';

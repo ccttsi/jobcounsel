@@ -63,6 +63,11 @@
  *   뒤 번호를 그 자리에서 다시 매겼다 — interview(매치 21·37) · portfolio(매치 22·38) · transit(매치 23·39). 폴더 주소는 그대로다.
  *   JC_LINKS: surgery · interview · portfolio · translator · talk.
  *
+ * 2026-11-26: 「경험×공고 레이어」(layer-merge)를 **서류 해부실(36) 바로 뒤·장점 단점 뒤집기 앞**에 매치 20 · no 36으로 넣었다.
+ *   서류를 뜯어 본 다음, 내 경험과 공고를 겹쳐 K(지식)·S(기술)·A(태도) 연결 근거와 전개 순서를 잡는 자리다(기존 surgery 4번 탭 「문장 수술실」의 확장).
+ *   뒤 번호를 그 자리에서 다시 매겼다 — trait-flip(매치 21·37) · interview(매치 22·38) · portfolio(매치 23·39) · transit(매치 24·40). 폴더 주소는 그대로다.
+ *   JC_LINKS: surgery · taxonomy · posting · trait-flip · interview · portfolio.
+ *
  * 2026-11-22 (태화님 지시 — 신규 섹터를 맨 뒤에 붙이지 말 것): 지난 몇 달 «번호를 밀지 않는다»는 이유로
  *   intake·pay-calc·posting·first-year·casecon이 차례로 끝에 붙어, 시드와 매치가 섞이고(매치 15~36 사이에
  *   시드가 37번) 연관 섹터끼리 떨어져 있었다. 원인은 «번호를 밀지 않는다»는 규칙 자체였다 — 그래서 이번에
@@ -300,25 +305,31 @@ window.JC_TOOLS=[
   list:'공고 문구의 숨은 의도와 감점 문장의 원인을 갈라 봅니다.',
   meta:['공고 문구 28','탈락 문장 22','이력서 6상황','키워드 225'],
   tags:['서류 해부실','자소서','자기소개서','이력서','채용공고','공고','첨삭','면접','문장','서류','지원동기','STAR','경력 공백','공백기','경력단절','직무전환','레드플래그','신호등','역공 질문','surgery']},
- {id:'trait-flip',gi:'장점·단점 뒤집어 보기',mode:'match',mo:20,no:'36',badge:'장단점 뒤집기',short:'장단점',color:'trait-flip',icon:'flip-horizontal-2',
+ {id:'layer-merge',gi:'경험과 공고 겹쳐 보기',mode:'match',mo:20,no:'36',badge:'경험×공고',short:'레이어',color:'layer-merge',icon:'layers',
+  title:'경험×공고 레이어',path:'./layer-merge/',
+  desc:'경험 한 줄과 채용공고를 두 레이어로 겹쳐, 이력서·자소서에 쓸 K(지식)·S(기술)·A(태도) 연결 근거와 문장 전개 순서를 뽑습니다. 완성 문장을 대신 쓰지 않고 왜 그렇게 연결되는지만 적으며, 공고에서 직무군이 잡히면 그 직무군의 NCS 능력단위 원문 KSA를 결과 맨 끝에 붙입니다.',
+  list:'경험과 공고를 겹쳐 K·S·A 연결 근거와 전개 순서를 뽑습니다.',
+  meta:['경험 넓히기','K·S·A 연결','NCS 능력단위'],
+  tags:['경험','경력','공고','채용공고','자소서','자기소개서','이력서','KSA','지식 기술 태도','레이어','병합','역량','직무','JD','직무기술서','경험 살리기','알바','인턴','과제','NCS','능력단위','layer-merge']},
+ {id:'trait-flip',gi:'장점·단점 뒤집어 보기',mode:'match',mo:21,no:'37',badge:'장단점 뒤집기',short:'장단점',color:'trait-flip',icon:'flip-horizontal-2',
   title:'장점 ↔ 단점 뒤집기',path:'./trait-flip/',
   desc:'성격·업무 태도 낱말 하나를 넣으면 3~5갈래로 뒤집습니다. 단점은 자소서에 쓸 강점 키워드와 핵심 논리·적용 한 줄·주의점으로, 장점은 면접에서 지적받을 지점과 예상 압박 질문·방어 3단(인정·보완 기준·균형 잡힌 결과)으로 펼칩니다. 결과 키워드를 누르면 그 낱말이 출발점이 되어 반대 방향으로 이어지는 핑퐁 탐색입니다.',
   list:'낱말 하나를 넣어 장점·단점을 3~5갈래로 뒤집습니다.',
   meta:['낱말 98','전환 368장','단점 45','장점 53'],
   tags:['장점','단점','약점','강점','뒤집기','장단점','자기소개서','자소서','면접','압박면접','약점 방어','성격','성향','업무 태도','완벽주의','우유부단','고집','내성적','조급하다','느긋하다','꼼꼼하다','책임감','리더십','협업','소통','배려','신중','추진력','실행력','문제 해결','갈등','역량','강점 개발','trait-flip']},
- {id:'interview',gi:'면접 전술 익히기',mode:'match',mo:21,no:'37',badge:'면접 전술 덱',short:'면접',color:'interview',icon:'layers',
+ {id:'interview',gi:'면접 전술 익히기',mode:'match',mo:22,no:'38',badge:'면접 전술 덱',short:'면접',color:'interview',icon:'layers',
   title:'면접 전술 덱',path:'./interview/',
   desc:'면접 질문 38장을 카드 대전처럼 한 턴씩 연습합니다. 숨은 의도와 법적 신호를 먼저 보고, 함정 카드부터 읽은 뒤 방어·실드·카운터 카드를 뒤집어 답의 뼈대를 세우고, 도입·사례·연결 구간이 표시된 타이머로 말하기 리듬을 맞춥니다. 기업 유형별 역질문, 약점 방어 조립기, 2026년 전형 변화도 함께 봅니다.',
   list:'질문 38장을 카드 대전처럼 한 턴씩 돌려 가며 연습합니다.',
   meta:['질문 38','핸드 120','역질문 16','약점 8'],
   tags:['면접 전술 덱','면접','TCG','카드','질문','역질문','압박','압박면접','AI면접','영상면접','AI 역량검사','토론','토론면접','PT','PT면접','경험면접','공백기','약점','채용절차법','인권','interview']},
- {id:'portfolio',gi:'포트폴리오 편집하기',mode:'match',mo:22,no:'38',badge:'포트폴리오',short:'포트폴리오',color:'portfolio',icon:'clapperboard',
+ {id:'portfolio',gi:'포트폴리오 편집하기',mode:'match',mo:23,no:'39',badge:'포트폴리오',short:'포트폴리오',color:'portfolio',icon:'clapperboard',
   title:'포트폴리오 편집실',path:'./portfolio/',
   desc:'포트폴리오를 영상 편집대처럼 다룹니다. 90초 스캔 모니터로 채용 담당자의 시선을 재현하고, 소재를 3~5개로 컷하고, 6트랙 스토리보드로 조립하고, 보안·윤리 검문소와 면접 꼬리질문까지 확인합니다. 상담사·강사용 4~6회 설계표도 함께 있습니다.',
   list:'90초 스캔으로 소재를 골라 6트랙으로 엮어 봅니다.',
   meta:['90초 스캔 5장면','소재 12종','6트랙 조립','검문 8항목'],
   tags:['포트폴리오','포트폴리오 편집실','편집실','취업 포트폴리오','포트폴리오 첨삭','스토리보드','6트랙','90초','채용 담당자','서류','자기소개서','이력서','직무 분석','JD','기여도','정량 성과','의사결정','소재 선별','컷','무경험','경력 전환','신입','비전공자','Before After','전후 비교','파일 형식','PDF','노션','피그마','Figma','깃허브','GitHub','보안','윤리','NDA','기밀','저작권','허위','과장','꼬리질문','3분 발표','강사','커리큘럼','상담사','portfolio']},
- {id:'transit',gi:'커리어 노선 그리기',mode:'match',mo:23,no:'39',badge:'커리어 전환',short:'노선',color:'transit',icon:'route',
+ {id:'transit',gi:'커리어 노선 그리기',mode:'match',mo:24,no:'40',badge:'커리어 전환',short:'노선',color:'transit',icon:'route',
   title:'환승노선도',path:'./transit/',
   desc:'첫 진입·휴식 후 재진입·비자발적 전환·2막 설계 가운데 출발역을 고르고, 지원제도·훈련·자격 22개 환승역을 넘기며 탑승해 나만의 커리어 노선도를 완성합니다.',
   list:'출발역에서 환승역을 골라 타며 커리어 노선을 그립니다.',
@@ -351,10 +362,11 @@ window.JC_LINKS=[
  ['first-year','law'],['first-year','pay-calc'],['first-year','posting'],['first-year','manual'],['first-year','hud'],['first-year','transit'],
  ['casecon','theory'],['casecon','vpi'],['casecon','talk'],['casecon','intake'],['casecon','triage'],['casecon','first-year'],
  ['trait-flip','surgery'],['trait-flip','interview'],['trait-flip','portfolio'],['trait-flip','translator'],['trait-flip','talk'],
+ ['layer-merge','surgery'],['layer-merge','taxonomy'],['layer-merge','posting'],['layer-merge','trait-flip'],['layer-merge','interview'],['layer-merge','portfolio'],
 ];
 
 /* ── 자료가 아닌 «앱» 장부 ────────────────────────────────────────────────
- * 여기 있는 것은 대문의 자료 목록(01~39)·목차·롤링·시드·매치 선반·프리셋에 들어가지 않는다.
+ * 여기 있는 것은 대문의 자료 목록(01~40)·목차·롤링·시드·매치 선반·프리셋에 들어가지 않는다.
  * 화면은 있지만 «읽는 자료»가 아니라 «다른 자료로 무언가를 만드는 도구»이기 때문이다.
  * 쓰는 곳: 왼쪽 아래 카드덱 단추(assets/deckfab.js) · 대문 빠른 검색(index.html) ·
  *          「이어 보기」(assets/next.js) · 비서 색인(assistant/build_index.py).

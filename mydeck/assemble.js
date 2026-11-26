@@ -52,7 +52,7 @@
      상담 장면의 상시 계산·판단 도구는 아니므로 2티어(상황 보강)에 두었다 — 질문이 사례·사정·
      상담목표를 꺼내면 후보에 들어온다. 새 섹터를 넣을 때도 이 두 줄(티어·차례·그룹)을 함께 본다. */
   var TIER1 = ['triage', 'intake', 'policy-match', 'pay-calc', 'hud', 'kdt-calc', 'talk', 'translator',
-    'work-filter', 'manual', 'law', 'company', 'portals', 'surgery', 'trait-flip', 'interview', 'portfolio', 'transit',
+    'work-filter', 'manual', 'law', 'company', 'portals', 'surgery', 'layer-merge', 'trait-flip', 'interview', 'portfolio', 'transit',
     'reality', 'vpi', 'cert', 'posting', 'first-year'];
   var STUDY = ['dacum', 'parsons', 'theory', 'library', 'grad'];
   function tierOf(id) {
@@ -87,7 +87,7 @@
     { id: 'policy', name: '제도·훈련', ids: ['manual', 'law', 'kdt-calc', 'cert', 'posting', 'first-year'] },
     { id: 'corp', name: '기업·직무', ids: ['company', 'fin-lab', 'taxonomy', 'careernet', 'valuechain', 'univ'] },
     { id: 'trend', name: '산업·동향', ids: ['thermometer', 'labor', 'briefing', 'emerging'] },
-    { id: 'field', name: '실전', ids: ['portals', 'surgery', 'trait-flip', 'interview', 'portfolio', 'transit'] },
+    { id: 'field', name: '실전', ids: ['portals', 'surgery', 'layer-merge', 'trait-flip', 'interview', 'portfolio', 'transit'] },
     { id: 'study', name: '학습·연구', ids: ['theory', 'casecon', 'parsons', 'dacum', 'library', 'grad', 'decalcomania'] }
   ];
   var CAT_OF = {}, CATS = {}, GROUP_NAME = { all: '전체' };
@@ -109,8 +109,8 @@
     manual: 40, law: 41, 'first-year': 42, hud: 44, 'kdt-calc': 45, cert: 46,
     company: 50, labor: 51, taxonomy: 52, careernet: 53, valuechain: 54, 'fin-lab': 55,
     thermometer: 56, briefing: 57, emerging: 58, univ: 59,
-    portals: 60, surgery: 61, 'trait-flip': 62, interview: 63, portfolio: 64, transit: 65,
-    dacum: 66, library: 67, grad: 68, decalcomania: 69
+    portals: 60, surgery: 61, 'layer-merge': 62, 'trait-flip': 63, interview: 64, portfolio: 65, transit: 66,
+    dacum: 67, library: 68, grad: 69, decalcomania: 70
   };
   function stageOf(id) { return STAGE[id] || 99; }
   var ORDER = Object.keys(STAGE).sort(function (a, b) { return STAGE[a] - STAGE[b]; });
@@ -191,6 +191,7 @@
     { id: 'pay-calc', dom: /(퇴직금|연봉|실수령|주휴수당|최저임금|월급|급여|수당)/, act: /(계산|얼마|실수령|알려|조회|공제|떼)/, not: /(실업급여|구직급여|국취|취업성공수당|수급|훈련|내일배움)/, why: '급여·퇴직금 숫자를 바로 계산하는 도구' },
     { id: 'hud', dom: /(실업급여|구직급여|국취\s*수당|취업성공수당|수급)/, act: /(얼마|계산|금액|지급|받|기간|언제|모의)/, why: '지급액·기간을 숫자로 계산하는 도구' },
     { id: 'kdt-calc', dom: /(국비|내일배움카드|국민내일배움|kdt|훈련비|자부담|훈련장려금)/, act: /(계산|얼마|자부담|비용|지원|한도|부담)/, why: '훈련비 자부담과 지원액을 계산하는 도구' },
+    { id: 'layer-merge', dom: /(경험|경력|알바|아르바이트|인턴|과제|공고|채용\s*공고|직무)/, act: /(연결|병합|레이어|살리|풀어|KSA|지식.*기술.*태도|어떻게\s*쓸|뭘\s*쓸|뭘\s*넣)/, not: /(자격증|훈련|급여|수당|법령|면접\s*질문)/, why: '경험과 공고를 겹쳐 K·S·A 연결 근거를 잡는 레이어' },
     { id: 'trait-flip', dom: /(장단점|장점|단점|약점|강점)/, act: /(뒤집|바꿔|바꾸|자소서|자기소개서|면접|표현|방어|어떻게\s*말)/, why: '성격 낱말을 장점·단점으로 뒤집어 보는 어휘망' },
     { id: 'interview', dom: /면접/, act: /(압박|질문|답변|대비|전술|꼬리|돌발|준비)/, why: '면접 질문의 의도와 답변을 준비하는 덱' },
     { id: 'company', dom: /(회사|기업|업체|공기업|중견기업|대기업)/, act: /(매출|직원\s*수|규모|정보|재무|소재|확인|어떤|괜찮)/, why: '기업의 규모·매출·최근 소식을 확인하는 명함첩' },
