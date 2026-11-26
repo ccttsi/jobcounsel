@@ -1,7 +1,7 @@
 {
  "schema": "jobcounsel.openapi.v1",
  "kind": "manifest",
- "generated_at": "2026-11-26T06:44:48+09:00",
+ "generated_at": "2026-11-27T06:41:22+09:00",
  "tiers": {
   "daily": [
    "alio_recruitment",
@@ -25,7 +25,7 @@
    "qnet_stats"
   ]
  },
- "total_bytes": 26421724,
+ "total_bytes": 26498076,
  "sources": [
   {
    "key": "alio_recruitment",
@@ -33,10 +33,10 @@
    "service_id": "15125273",
    "tier": "daily",
    "path": "data/openapi/alio/recruitment.json",
-   "count": 551,
-   "fetched_at": "2026-11-26T06:44:39+09:00",
-   "bytes": 2558657,
-   "sha256": "6d18423e0ffeb3d6bb1f6122d585490a4b0ee276c76ad223d49ae1fa0b76c569",
+   "count": 574,
+   "fetched_at": "2026-11-27T06:41:11+09:00",
+   "bytes": 2634964,
+   "sha256": "52267d96ac80335988a9345c3dad4bef47d012bd763828f5bec3fe07ea1a87f7",
    "license": "이용허락범위 제한 없음",
    "official_url": "https://www.data.go.kr/data/15125273/openapi.do"
   },
@@ -47,9 +47,9 @@
    "tier": "daily",
    "path": "data/openapi/qnet/exam-schedule.json",
    "count": 158,
-   "fetched_at": "2026-11-21T01:21:37+09:00",
-   "bytes": 72786,
-   "sha256": "1af07ffe56eaff1be7c9588a15c621f5e4551691afaf0a44a8476ab9dbd1bc15",
+   "fetched_at": "2026-11-27T06:41:21+09:00",
+   "bytes": 72831,
+   "sha256": "5e501ec7fdbd70d7f621717698b4d335a527e9aab07975c33f5433bd485dbebf",
    "license": "이용허락범위 제한 없음",
    "official_url": "https://www.data.go.kr/data/15074408/openapi.do"
   },

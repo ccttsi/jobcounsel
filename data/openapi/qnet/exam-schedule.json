@@ -8,10 +8,11 @@
   "endpoint": "https://apis.data.go.kr/B490007/qualExamSchd/getQualExamSchdList",
   "license": "이용허락범위 제한 없음",
   "license_note": "공공데이터포털 이용허락범위 제한 없음 / 공공누리 제1유형 / OpenDART 공식 OpenAPI",
+  "checked_at": "2026-11-27T06:41:21+09:00",
   "official_url": "https://www.data.go.kr/data/15074408/openapi.do",
   "update_cycle": "실시간"
  },
- "fetched_at": "2026-11-21T01:21:37+09:00",
+ "fetched_at": "2026-11-27T06:41:21+09:00",
  "count": 158,
  "items": [
   {
@@ -2214,7 +2215,7 @@
    "qualgbNm": "국가기술자격",
    "description": "국가기술자격 기능사 (2026년도 제38회)",
    "docRegStartDt": "20261124",
-   "docRegEndDt": "20261125",
+   "docRegEndDt": "20261124",
    "docExamStartDt": "20261130",
    "docExamEndDt": "20261204",
    "docPassDt": "20261130",
