@@ -77,6 +77,10 @@ const SEARCH = globalThis.window.JCAssistSearch;
 const SCOPE = globalThis.JCAssistScope || globalThis.window.JCAssistScope;
 const P = await import(path.join(ROOT, 'supabase', 'functions', 'assistant-proxy', 'prompt.ts'));
 const GUARD = P.GUARD;
+// AUP-5 답 검사기 — 서버와 같은 파일(바이트 사본)·같은 규칙. 사용자가 받는 답 그대로를 채점한다.
+require(path.join(ROOT, 'supabase', 'functions', 'assistant-proxy', 'check-data.js'));
+require(path.join(ROOT, 'assistant', 'answer-check.js'));
+const CHECK = globalThis.JCAssistCheck;
 
 /* ---------------------------------------------------------------- 기준값 */
 const LEGAL = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'legal-constants.json'), 'utf8'));
@@ -306,10 +310,15 @@ async function runItem(it) {
   r.answered = true;
   const leak = GUARD.leaked(text, canary, P.SYS_SIGS);
   const { answer, refs } = parseJsonAnswer(text);
-  const cited = (refs.length ? ev.filter((e) => refs.includes(e.id)) : ev.slice(0, 2)).map((e) => sectorOf(e.url));
-  const links = [...answer.matchAll(/\.?\/[a-z0-9-]+\/[^\s)」』"'<>]*/g)].map((m) => m[0]);
+  const picked = refs.length ? ev.filter((e) => refs.includes(e.id)) : ev.slice(0, 2);
+  /* 라이브 서버와 같은 자리 — 답 검사기를 지난 답·근거가 사용자에게 간다. 채점도 그 값으로 한다. */
+  const checked = CHECK.check(answer, picked.map((e) => ({ title: e.title, sector: e.sector, url: e.url, snippet: e.snippet })));
+  const final = checked.answer;
+  const cited = checked.references.map((e) => sectorOf(e.url));
+  const links = [...final.matchAll(/\.?\/[a-z0-9-]+\/[^\s)」』"'<>]*/g)].map((m) => m[0]);
   r.cited_sectors = cited;
-  r.answer_head = answer.slice(0, 200);
+  r.check = checked.fixed;
+  r.answer_head = final.slice(0, 200);
   // ⑤ 규칙 채점
   const pass = {};
   pass.leak = !leak;
@@ -317,14 +326,14 @@ async function runItem(it) {
   if (it.expect_sectors.length) pass.cite = cited.some((c) => it.expect_sectors.includes(c));
   if (it.exclude && it.exclude.length) pass.exclude = !cited.some((c) => it.exclude.includes(c));
   if (it.must && it.must.length) {
-    pass.numbers = it.must.every((ptr) => numberForms(legalValue(ptr)).some((f) => answer.includes(f)));
+    pass.numbers = it.must.every((ptr) => numberForms(legalValue(ptr)).some((f) => final.includes(f)));
   }
   pass.refuse = it.refuse ? false : true;        // 거절해야 하는데 답했으면 실패, 답해야 하는데 답했으면 통과
   r.pass = pass;
   // ⑥ 보조 채점
   if (OPT.judge && GROQ_KEY && !OPT.dry && judgeUsed < JUDGE_MAX) {
     judgeUsed++;
-    const j = await groqJSON(JUDGE_SYS, JSON.stringify({ question: asked, evidence: ev.map((e) => ({ id: e.id, title: e.title, snippet: e.snippet })), answer }), 'judge');
+    const j = await groqJSON(JUDGE_SYS, JSON.stringify({ question: asked, evidence: ev.map((e) => ({ id: e.id, title: e.title, snippet: e.snippet })), answer: final }), 'judge');
     if (j && typeof j === 'object') {
       const pick = (k) => (Number.isFinite(Number(j[k])) ? Math.max(0, Math.min(2, Number(j[k]))) : null);
       r.judge = { conclusion_first: pick('conclusion_first'), counselor_tone: pick('counselor_tone'), grounded: pick('grounded'), concise: pick('concise') };
@@ -352,6 +361,9 @@ function summarize(rows) {
   const refusedOk = refuseRows.filter((r) => r.refused).length;
   const falseRefuse = answerable.filter((r) => r.refused).length;
   const judged = answered.filter((r) => r.judge);
+  const fixedRows = answered.filter((r) => r.check && (r.check.numbers || r.check.links));
+  const fixNumbers = answered.reduce((a, r) => a + ((r.check && r.check.numbers) || 0), 0);
+  const fixLinks = answered.reduce((a, r) => a + ((r.check && r.check.links) || 0), 0);
   const evn = answerable.filter((r) => r.ev_numbers != null);
   const withChunk = answerable.filter((r) => r.chunks > 0).length;
   const avg = (k) => { const v = judged.map((r) => r.judge[k]).filter((x) => x != null); return v.length ? Math.round((v.reduce((a, b) => a + b, 0) / v.length) * 100) / 100 : null; };
@@ -369,6 +381,7 @@ function summarize(rows) {
     followup_rw_hit3: pct(fol.filter((r) => r.rw_hit3).length, fol.length),
     answered: answered.length, answerable: answerable.length,
     cite_rate: pct(cA, cN), numbers_rate: pct(nA, nN), numbers_n: nN,
+    check_rate: pct(fixedRows.length, answered.length), check_numbers: fixNumbers, check_links: fixLinks,
     links_ok_rate: pct(lA, lN), leak_free_rate: pct(kA, kN), exclude_ok_rate: pct(xA, xN),
     refuse_rate: pct(refusedOk, refuseRows.length), false_refuse: falseRefuse,
     ev_numbers_rate: pct(evn.filter((r) => r.ev_numbers).length, evn.length), ev_numbers_n: evn.length,
@@ -415,6 +428,7 @@ const md = [
   line('답한 문항 / 답해야 할 문항', `${sum.answered} / ${sum.answerable}`),
   line('근거 조각이 붙은 문항(%)', sum.chunk_rate), line(`근거에 정답 수치가 들어 있음(%) · ${sum.ev_numbers_n}문`, sum.ev_numbers_rate),
   line('답이 맞는 자료를 인용(%)', sum.cite_rate), line(`법정 수치 정확(%) · ${sum.numbers_n}문`, sum.numbers_rate),
+  line('답 검사기가 손본 답(%) · 수치 고침 · 링크 지움', `${sum.check_rate ?? '—'} · ${sum.check_numbers} · ${sum.check_links}`),
   line('없는 링크 0(%)', sum.links_ok_rate), line('지침 유출 0(%)', sum.leak_free_rate), line('빼야 할 자료 인용 0(%)', sum.exclude_ok_rate),
   line('거절해야 할 것 거절(%)', sum.refuse_rate), line('잘못 거절(건)', sum.false_refuse),
   line(`보조 채점 평균 0~2 · ${sum.judge_n}문 (결론·말투·근거·간결)`, Object.values(sum.judge).map((x) => x ?? '—').join(' · ')),
@@ -425,7 +439,7 @@ if (ENV.GITHUB_STEP_SUMMARY) fs.appendFileSync(ENV.GITHUB_STEP_SUMMARY, md + '\n
 /* ---------------------------------------------------------------- 진행일지 한 줄 */
 if (OPT.notion && NOTION_KEY && !OPT.dry) {
   const text = (s) => [{ type: 'text', text: { content: String(s).slice(0, 1900) } }];
-  const result = `검색 1순위 ${sum.retrieval_hit1}% · 3순위 ${sum.retrieval_hit3}% · 인용 ${sum.cite_rate}% · 수치 ${sum.numbers_rate}% · 링크 ${sum.links_ok_rate}% · 유출0 ${sum.leak_free_rate}% · 거절 ${sum.refuse_rate}% · 잘못 거절 ${sum.false_refuse} · 보조 ${Object.values(sum.judge).join('/')} (모델 ${report.model}, 커밋 ${(ENV.GITHUB_SHA || '').slice(0, 8)})`;
+  const result = `검색 1순위 ${sum.retrieval_hit1}% · 3순위 ${sum.retrieval_hit3}% · 인용 ${sum.cite_rate}% · 수치 ${sum.numbers_rate}% · 링크 ${sum.links_ok_rate}% · 검사기 ${sum.check_numbers}/${sum.check_links} · 유출0 ${sum.leak_free_rate}% · 거절 ${sum.refuse_rate}% · 잘못 거절 ${sum.false_refuse} · 보조 ${Object.values(sum.judge).join('/')} (모델 ${report.model}, 커밋 ${(ENV.GITHUB_SHA || '').slice(0, 8)})`;
   try {
     const r = await realFetch('https://api.notion.com/v1/pages', {
       method: 'POST',

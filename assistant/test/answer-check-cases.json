@@ -1,0 +1,169 @@
+{
+  "v": "witw-answer-check-cases/1.0.0",
+  "cases": [
+    {
+      "id": "ok-legal-answer",
+      "note": "법정 수치·링크가 모두 맞는 답은 한 글자도 바뀌지 않는다",
+      "answer": "자료실 기준, 2026년 최저임금 시급은 10,320 원/시간입니다. 1일 8시간 기준 일급은 82,560 원/일이고, 월 환산액은 2,156,880 원입니다. 구직급여일액 상한은 68,100 원/일, 하한은 66,048 원/일입니다. 국민연금 근로자 부담 요율은 4.75%이고 건강보험료율은 노사 합산 7.19%입니다. 자세한 계산은 [실업급여·근로조건 계산기](./pay-calc/)에서 확인하실 수 있습니다.",
+      "references": [{ "title": "실업급여·근로조건 계산기", "url": "./pay-calc/" }],
+      "expect": { "unchanged": true, "numbers": 0, "links": 0, "refs": ["./pay-calc/"] }
+    },
+    {
+      "id": "fix-hourly",
+      "note": "「최저임금 … 시급 9,860원」 — 이름표가 숫자 앞에 있으니 원천 값으로 고친다(9,860은 2025년 값)",
+      "answer": "최저임금은 시급 9,860원입니다.",
+      "expect": {
+        "contains": ["최저임금은 시급 10,320원입니다.", "※ 자료실 기준 값 — 최저임금: 시급 10,320원"],
+        "absent": ["9,860"],
+        "numbers": 1, "links": 0
+      }
+    },
+    {
+      "id": "fix-probation",
+      "note": "수습 시급 9,000원 → 9,288원",
+      "answer": "수습 기간에는 시급 9,000원을 받습니다.",
+      "expect": {
+        "contains": ["수습 기간에는 시급 9,288원을 받습니다.", "※ 자료실 기준 값 — 최저임금"],
+        "absent": ["9,000"],
+        "numbers": 1
+      }
+    },
+    {
+      "id": "fix-monthly",
+      "note": "최저임금 월급 2,000,000원 → 2,156,880원",
+      "answer": "최저임금 월급은 2,000,000원입니다.",
+      "expect": {
+        "contains": ["최저임금 월급은 2,156,880원입니다."],
+        "absent": ["2,000,000"],
+        "numbers": 1
+      }
+    },
+    {
+      "id": "fix-daily-cap",
+      "note": "구직급여 일액 상한 66,000원(2025년 값) → 68,100원",
+      "answer": "구직급여 일액 상한은 66,000원입니다.",
+      "expect": {
+        "contains": ["구직급여 일액 상한은 68,100원입니다."],
+        "absent": ["66,000"],
+        "numbers": 1
+      }
+    },
+    {
+      "id": "fix-base-daily-cap",
+      "note": "급여기초임금일액 상한 110,000원 → 113,500원",
+      "answer": "급여기초임금일액 상한은 110,000원입니다.",
+      "expect": {
+        "contains": ["급여기초임금일액 상한은 113,500원입니다."],
+        "numbers": 1
+      }
+    },
+    {
+      "id": "fix-floor",
+      "note": "최저구직급여일액 하한 60,000원 → 66,048원",
+      "answer": "최저구직급여일액 하한은 60,000원입니다.",
+      "expect": {
+        "contains": ["최저구직급여일액 하한은 66,048원입니다."],
+        "numbers": 1
+      }
+    },
+    {
+      "id": "rate-wrong-basis-only",
+      "note": "요율은 고치지 않고 기준 값 줄만 붙인다(고치면 문장이 어색해질 수 있다)",
+      "answer": "국민연금 근로자 부담 요율은 4.5%입니다.",
+      "expect": {
+        "contains": ["국민연금 근로자 부담 요율은 4.5%입니다.", "국민연금 4.75%"],
+        "numbers": 0
+      }
+    },
+    {
+      "id": "old-year-untouched",
+      "note": "연도를 밝힌 지난 값은 건드리지 않는다",
+      "answer": "2025년 최저임금은 9,860원이었고 2026년은 10,320원입니다. 2025.12.31. 이전 이직자는 상한 66,000원입니다.",
+      "expect": { "unchanged": true, "numbers": 0 }
+    },
+    {
+      "id": "intermediate-untouched",
+      "note": "계산 중간값(월급 200만원의 4.75% = 95,000원)은 그대로 둔다",
+      "answer": "월급 2,000,000원에서 국민연금 4.75%를 떼면 95,000원입니다.",
+      "expect": { "unchanged": true, "numbers": 0 }
+    },
+    {
+      "id": "periods-untouched",
+      "note": "3개월·1년·180일 같은 기간은 수치 검사 대상이 아니다",
+      "answer": "3개월 수습 뒤 1년 계약이면 180일이 지나야 하고, 14일 안에 금품을 청산해야 합니다.",
+      "expect": { "unchanged": true, "numbers": 0 }
+    },
+    {
+      "id": "example-wage-untouched",
+      "note": "내담자 예시 시급 12,000원은 최저임금이 아니다",
+      "answer": "알바 시급이 12,000원인데 최저임금 위반인가요? 내담자 급여는 월 250만원입니다.",
+      "expect": { "unchanged": true, "numbers": 0 }
+    },
+    {
+      "id": "man-notation-basis",
+      "note": "만 단위로 반올림한 값은 고치지 않고 기준 값 줄만 붙인다",
+      "answer": "최저임금 월급은 215만원입니다.",
+      "expect": {
+        "contains": ["최저임금 월급은 215만원입니다.", "월 환산 2,156,880원"],
+        "numbers": 0
+      }
+    },
+    {
+      "id": "hours-wrong-basis",
+      "note": "209시간을 208시간으로 쓴 경우 — 기준 값 줄로 바로잡는다",
+      "answer": "최저임금 월 기준시간은 208시간입니다.",
+      "expect": { "contains": ["월 기준시간은 208시간입니다.", "월 기준시간 209시간"], "numbers": 0 }
+    },
+    {
+      "id": "missing-markdown-link",
+      "note": "없는 폴더를 가리키는 마크다운 링크는 이름만 남긴다",
+      "answer": "자세한 내용은 [안내](/nowhere/)에서 보세요.",
+      "expect": { "exact": "자세한 내용은 안내에서 보세요.", "links": 1 }
+    },
+    {
+      "id": "missing-bare-link",
+      "note": "맨 주소가 없으면 「자료실」로 바꾸고 조사를 맞춘다",
+      "answer": "자세한 내용은 https://witw.pages.dev/nowhere/ 를 보세요.",
+      "expect": { "exact": "자세한 내용은 자료실을 보세요.", "links": 1 }
+    },
+    {
+      "id": "mixed-links",
+      "note": "맞는 주소는 그대로, 없는 주소만 지운다",
+      "answer": "계산기는 [계산기](./pay-calc/)에 있고 정리는 /nope/ 에 있습니다.",
+      "expect": {
+        "contains": ["[계산기](./pay-calc/)", "정리는 자료실에 있습니다."],
+        "absent": ["/nope/"],
+        "links": 1
+      }
+    },
+    {
+      "id": "external-link-untouched",
+      "note": "자료실 밖 주소는 이 검사기가 건드리지 않는다",
+      "answer": "최저임금위원회(https://www.minimumwage.go.kr/)에서 확인하세요.",
+      "expect": { "unchanged": true, "links": 0 }
+    },
+    {
+      "id": "refs-filtered",
+      "note": "근거 목록에서도 없는 주소는 뺀다",
+      "answer": "자료실의 [법전](./law/)을 보세요.",
+      "references": [
+        { "title": "법전", "url": "./law/" },
+        { "title": "없는 자료", "url": "./nowhere/" }
+      ],
+      "expect": { "unchanged": true, "links": 1, "refs": ["./law/"] }
+    },
+    {
+      "id": "refs-all-bad",
+      "note": "근거가 모두 없으면 빈 목록",
+      "answer": "자료실 자료에서는 확인하지 못했어요.",
+      "references": [{ "title": "x", "url": "./nope1/" }, { "title": "y", "url": "./nope2/" }],
+      "expect": { "unchanged": true, "links": 2, "refs": [] }
+    },
+    {
+      "id": "legacy-token-link",
+      "note": "witw.pages.dev 주소도 섹터 장부로 본다",
+      "answer": "법전은 https://witw.pages.dev/law/?q=해고 에 있습니다.",
+      "expect": { "unchanged": true, "links": 0 }
+    }
+  ]
+}

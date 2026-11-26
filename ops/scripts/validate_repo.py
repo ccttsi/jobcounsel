@@ -20,10 +20,11 @@
   dates    — 법령 데이터의 시행일(efYd)이 잘못된 모양이거나 오늘(KST)보다 뒤(미시행 개정본)인지
   legal    — 공용 법정 수치(최저임금·구직급여 상한·4대보험 요율)의 단일 원천(data/legal-constants.json)과
              생성 사본(assets/legal-constants.js)·섹터의 참조·화면에 박힌 금액이 모두 같은지
+  answercheck — 비서 답 검사기(AUP-5) — 규칙 생성물이 원천과 같은지·서버 사본 동기·시험 문항·지면 글 오탐 0
   role     — PR 제목/라벨 기반 역할 분리 가드레일 ([data-only] PR이 화면 코드를 건드리면 실패)
   expose   — 내부 운영·설계 문서가 배포본에서 열리지 않는지(functions/_middleware.js·_routes.json). js와 함께 돈다
 
-  text·count·dates·legal은 --only 에 넣지 않아도 json과 함께 돈다(CI 워크플로를 고치지 않아도 되게).
+  text·count·dates·legal·answercheck은 --only 에 넣지 않아도 json과 함께 돈다(CI 워크플로를 고치지 않아도 되게).
   shell·motion·anchor·expose는 js와 함께 돈다(같은 이유). 예외는 ops/css-allow.tsv에 한 줄씩 남긴다.
 
 종료 코드 0 = 통과, 1 = 실패. 실패 항목은 전부 모아서 한 번에 보여 준다(첫 오류에서 멈추지 않는다).
@@ -1794,6 +1795,69 @@ def run_guard_checks():
     note(f"비서 주입·탈옥 분류기 — 시험 {len(cases)}문 · 오탐 확인 질의 {len(clean)}문 · 색인 문장 {len(docs)}개 (서버 사본 동기 포함)")
 
 
+# ---------------------------------------------------------------- 3-8e) AUP-5 답 검사기 (2026-11-26)
+#   assistant/answer-check.js — 답을 내보내기 전에 법정 수치를 data/legal-constants.json 과 대조하고,
+#   자료실 장부(assets/tools.js)에 없는 주소를 지운다. 네 가지를 본다.
+#     ① 규칙 생성물(supabase/functions/assistant-proxy/check-data.js)이 원천과 같은가(build_answer_check.py --check)
+#        — legal-constants.json 에 새 값이 생겼는데 규칙 분류가 없으면 생성이 멈춘다(조용히 빠지지 않는다)
+#     ② 서버 사본이 원본과 바이트까지 같은가
+#     ③ 시험 문항(assistant/test/answer-check-cases.json) — 고쳐야 할 것은 고치고, 맞는 답·계산 중간값·기간은 그대로
+#     ④ 오탐 0 — 자료실 지면 글(근거 조각·색인 글·법전) 8천여 문장이 하나도 바뀌지 않는가
+ANSWER_CHECK_JS = "assistant/answer-check.js"
+ANSWER_CHECK_SERVER = "supabase/functions/assistant-proxy/answer-check.js"
+ANSWER_CHECK_CASES = "assistant/test/answer-check-cases.json"
+ANSWER_CHECK_BUILDER = "ops/scripts/build_answer_check.py"
+ANSWER_CHECK_RUNNER = "ops/scripts/answer_check_runner.cjs"
+
+
+def answer_check_node() -> str:
+    """node 실행 파일 — 다른 검사(scope·guard)와 같이 PATH 의 node 를 쓴다."""
+    import shutil
+    return shutil.which("node") or "node"
+
+
+def run_answer_check_checks():
+    src, server = os.path.join(ROOT, ANSWER_CHECK_JS), os.path.join(ROOT, ANSWER_CHECK_SERVER)
+    if not os.path.exists(src) or not os.path.exists(server):
+        fail("answercheck", f"{ANSWER_CHECK_JS} 또는 서버 사본 {ANSWER_CHECK_SERVER} 이 없다")
+        return
+    result = subprocess.run([sys.executable, os.path.join(ROOT, ANSWER_CHECK_BUILDER), "--check"],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("answercheck", result.stdout.strip() or result.stderr.strip()[:300])
+    with open(src, "rb") as a, open(server, "rb") as b:
+        if a.read() != b.read():
+            fail("answercheck", f"{ANSWER_CHECK_SERVER} 이 {ANSWER_CHECK_JS} 와 다르다 — cp {ANSWER_CHECK_JS} {ANSWER_CHECK_SERVER}")
+    cases = (load_json(os.path.join(ROOT, ANSWER_CHECK_CASES))[0] or {}).get("cases", [])
+    seen, bad_cases = set(), []
+    for case in cases:
+        cid = str(case.get("id") or "")
+        if not cid or cid in seen:
+            bad_cases.append(f"id 없음·중복: {cid or '(빈 값)'}")
+        seen.add(cid)
+        if not isinstance(case.get("answer"), str) or not isinstance(case.get("expect"), dict):
+            bad_cases.append(f"{cid}: answer·expect 모양이 아니다")
+    for one in bad_cases:
+        fail("answercheck", one)
+    try:
+        result = subprocess.run([answer_check_node(), os.path.join(ROOT, ANSWER_CHECK_RUNNER), ROOT],
+                                input=json.dumps({"cases": cases}), capture_output=True, text=True, timeout=180)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        fail("answercheck", f"시험을 돌리지 못했다 ({exc})")
+        return
+    if result.returncode != 0:
+        fail("answercheck", f"시험 실행 오류 — {result.stderr.strip()[:200]}")
+        return
+    got = json.loads(result.stdout or "{}")
+    for cid, why in got.get("caseBad", []):
+        fail("answercheck", f"문항 {cid} — {', '.join(why)}")
+    corpus = got.get("corpus") or {}
+    if corpus.get("changed"):
+        sample = (corpus.get("sample") or [[]])[0]
+        fail("answercheck", f"오탐 — 지면 글 {corpus.get('changed')}건이 바뀐다: {str(sample)[:120]}")
+    note(f"비서 답 검사기 — 시험 {len(cases)}문 · 지면 글 {corpus.get('total', 0)}문 오탐 0 (규칙 원천 동기·서버 사본 동기 포함)")
+
+
 # ---------------------------------------------------------------- 3-8d) AUP-2 성적표 문항 (2026-11-25)
 #   assistant/eval/items.jsonl — 비서 주간 시험 문항. 모델 호출 없이 모양만 본다(CI 무료).
 #     ① 원천(사연셋·seed·범위/보안 시험)에서 다시 만든 것과 같은가(ops/eval/build_items.py --check)
@@ -2481,6 +2545,8 @@ def main():
         run_guard_checks()    # 비서 프롬프트 주입·탈옥 분류기 — 서버 사본 동기·시험 문장·오탐 0
     if "json" in selected or "eval" in selected:
         run_eval_items_checks()  # AUP-2 성적표 문항 — 원천 동기·중복·섹터·수치 경로·개인정보
+    if "json" in selected or "answercheck" in selected:
+        run_answer_check_checks()  # AUP-5 답 검사기 — 규칙 원천 동기·서버 사본·시험 문항·지면 글 오탐 0
     if "license" in selected:
         run_license_checks()
     if "js" in selected:
