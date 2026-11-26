@@ -1,8 +1,9 @@
 {
- "generated_at": "2026-11-26T23:13:48+09:00",
+ "generated_at": "2026-11-27T07:09:53+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
+  "2026-11-27",
   "2026-11-26",
   "2026-11-25",
   "2026-11-24",
@@ -3112,6 +3113,17 @@
      "source_name": "연합뉴스",
      "source_url": "https://www.yna.co.kr/view/AKR20261122019051530",
      "published_at": "2026-11-22"
+    },
+    {
+     "date": "2026-11-27",
+     "card_id": "c02",
+     "title": "노인일자리 118만 개 — 27일부터 2027년 신청",
+     "kicker": "2027년 118.0만 개·예산 2조 5,121억원 · 모집 11월 27일~12월 24일",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "보건복지부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790949",
+     "published_at": "2026-11-26"
     }
    ]
   },
@@ -3678,6 +3690,28 @@
      "source_name": "국제노동기구(ILO)",
      "source_url": "https://www.ilo.org/resource/article/strengthening-quality-apprenticeships-through-enterprise-engagement-ghana",
      "published_at": "2026-11-25"
+    },
+    {
+     "date": "2026-11-27",
+     "card_id": "c01",
+     "title": "AI 부정행위 막는다 — 기후부, 소관 시험 19종 점검",
+     "kicker": "소관 시험 19종(국가자격 10·민간자격 8) · 11월 24일 범정부 대책반 출범",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "기후에너지환경부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156791100",
+     "published_at": "2026-11-27"
+    },
+    {
+     "date": "2026-11-27",
+     "card_id": "c03",
+     "title": "AI 훈련이 현장 성과로 — 도면 25분이 1분으로",
+     "kicker": "중소기업 2,000개사 진단·600개사 현장훈련 · 노동자 4,800명 AI 특화훈련",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790918",
+     "published_at": "2026-11-26"
     }
    ]
   },
