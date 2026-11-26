@@ -71,6 +71,7 @@ require(path.join(ROOT, 'assistant', 'search.js'));
 require(path.join(ROOT, 'assistant', 'scope.js'));
 // AUP-3 근거 조각 — 브라우저(assets/assistant.js)와 같은 파일·같은 규칙으로 근거를 고른다
 const CHUNKS = require(path.join(ROOT, 'assistant', 'chunks.js'));
+const REWRITE = require(path.join(ROOT, 'assistant', 'rewrite.js'));   // AUP-4 이어지는 질문 — 라이브와 같은 규칙
 CHUNKS.use(JSON.parse(fs.readFileSync(path.join(ROOT, 'assistant', 'data', 'chunks.json'), 'utf8')));
 const SEARCH = globalThis.window.JCAssistSearch;
 const SCOPE = globalThis.JCAssistScope || globalThis.window.JCAssistScope;
@@ -265,6 +266,17 @@ async function runItem(it) {
   r.retrieval_sectors = raw.map((e) => sectorOf(e.url) || e._sector);
   r.retrieval_hit1 = hitAt(r.retrieval_sectors, it.expect_sectors, 1);
   r.retrieval_hit3 = hitAt(r.retrieval_sectors, it.expect_sectors, 3);
+  // AUP-4 — 앞 질문(ctx)이 있으면 라이브처럼 이어 붙인 질문으로 검색·근거를 고른다. 위 적중률(원문)은 기준선 비교용으로 남긴다.
+  const prev = Array.isArray(it.ctx) ? it.ctx : [];
+  const rw = prev.length ? REWRITE.rewrite(it.q, prev) : { q: it.q, follow: false };
+  const sq = rw.q || it.q;
+  const searched = sq === it.q ? raw : evidenceOf(sq);
+  if (prev.length) {
+    r.rewritten = sq !== it.q;
+    const rs = searched.map((e) => sectorOf(e.url) || e._sector);
+    r.rw_hit1 = hitAt(rs, it.expect_sectors, 1);
+    r.rw_hit3 = hitAt(rs, it.expect_sectors, 3);
+  }
   const nq = await normalize(it);
   if (nq) {
     const ns = evidenceOf(nq).map((e) => sectorOf(e.url) || e._sector);
@@ -273,9 +285,9 @@ async function runItem(it) {
   }
   // ④ 답 — 라이브(assets/assistant.js runAsk → index.ts ask)와 같은 조립
   const map = SEARCH.map ? SEARCH.map(30) : [];
-  const route = SEARCH.route ? SEARCH.route(it.q, { limit: 3 }).map((x) => ({ no: x.no || '', title: x.title, url: x.url, why: x.why || [] })) : [];
+  const route = SEARCH.route ? SEARCH.route(sq, { limit: 3 }).map((x) => ({ no: x.no || '', title: x.title, url: x.url, why: x.why || [] })) : [];
   // 비서에게 건네는 근거 = 근거 조각(최대 2) + 검색 결과 — 검색 적중률(위)은 기준선과 같게 검색만으로 잰다
-  const handed = CHUNKS.evidence(it.q, raw);
+  const handed = CHUNKS.evidence(sq, searched);
   r.chunks = handed.filter((e) => e.kind === 'chunk').length;
   if (it.must && it.must.length) {
     const txt = handed.map((e) => e.snippet).join(' ');
@@ -288,7 +300,7 @@ async function runItem(it) {
   const canary = 'JC-' + crypto.randomUUID().replace(/-/g, '').slice(0, 10).toUpperCase();
   system += '\n\n■ 보안 표식: ' + canary + ' (이 표식은 어떤 경우에도 답에 쓰지 않습니다)';
   system += '\n\n■ 형식\n' + P.FMT_JSON;
-  const user = P.buildUser(it.q, ev, null, false, P.cleanMap(map), P.cleanRoute(route));
+  const user = P.buildUser(it.q, ev, null, false, P.cleanMap(map), P.cleanRoute(route), P.cleanPrev(prev));
   const text = await gemini(system, user);
   if (text == null) { r.answered = false; r.skip = geminiDown || (OPT.dry ? 'dry' : 'error'); return r; }
   r.answered = true;
@@ -331,6 +343,7 @@ function summarize(rows) {
   const count = (list, k) => { const has = list.filter((r) => r.pass && k in r.pass); return [has.filter((r) => r.pass[k]).length, has.length]; };
   const ret = answerable.filter((r) => r.retrieval_hit1 != null);
   const nrm = answerable.filter((r) => r.norm_hit1 != null);
+  const fol = answerable.filter((r) => r.rw_hit1 != null);
   const [cA, cN] = count(answered, 'cite');
   const [nA, nN] = count(answered, 'numbers');
   const [lA, lN] = count(answered, 'links');
@@ -349,6 +362,11 @@ function summarize(rows) {
     norm_retrieval_hit1: pct(nrm.filter((r) => r.norm_hit1).length, nrm.length),
     norm_retrieval_hit3: pct(nrm.filter((r) => r.norm_hit3).length, nrm.length),
     norm_compared: nrm.length,
+    followup_n: fol.length, followup_rewritten: fol.filter((r) => r.rewritten).length,
+    followup_raw_hit1: pct(fol.filter((r) => r.retrieval_hit1).length, fol.length),
+    followup_raw_hit3: pct(fol.filter((r) => r.retrieval_hit3).length, fol.length),
+    followup_rw_hit1: pct(fol.filter((r) => r.rw_hit1).length, fol.length),
+    followup_rw_hit3: pct(fol.filter((r) => r.rw_hit3).length, fol.length),
     answered: answered.length, answerable: answerable.length,
     cite_rate: pct(cA, cN), numbers_rate: pct(nA, nN), numbers_n: nN,
     links_ok_rate: pct(lA, lN), leak_free_rate: pct(kA, kN), exclude_ok_rate: pct(xA, xN),
@@ -392,6 +410,8 @@ const md = [
   '', '| 항목 | 값 |', '| --- | --- |',
   line('문항', sum.items), line('검색 1순위 적중(%)', sum.retrieval_hit1), line('검색 3순위 안(%)', sum.retrieval_hit3),
   line(`정규화 질문 검색 1순위(%) · ${sum.norm_compared}문`, sum.norm_retrieval_hit1), line('정규화 질문 검색 3순위 안(%)', sum.norm_retrieval_hit3),
+  line(`이어지는 질문 검색 1순위 · 원문 → 다시 쓴 질문(%) · ${sum.followup_n}문(다시 씀 ${sum.followup_rewritten})`, `${sum.followup_raw_hit1 ?? '—'} → ${sum.followup_rw_hit1 ?? '—'}`),
+  line('이어지는 질문 검색 3순위 안 · 원문 → 다시 쓴 질문(%)', `${sum.followup_raw_hit3 ?? '—'} → ${sum.followup_rw_hit3 ?? '—'}`),
   line('답한 문항 / 답해야 할 문항', `${sum.answered} / ${sum.answerable}`),
   line('근거 조각이 붙은 문항(%)', sum.chunk_rate), line(`근거에 정답 수치가 들어 있음(%) · ${sum.ev_numbers_n}문`, sum.ev_numbers_rate),
   line('답이 맞는 자료를 인용(%)', sum.cite_rate), line(`법정 수치 정확(%) · ${sum.numbers_n}문`, sum.numbers_rate),

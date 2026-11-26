@@ -11,11 +11,15 @@
 //   · 실패·시간 초과·형식 오류도 같은 모양으로 돌려주고, 화면은 내장 엔진 결과를 그대로 보여 준다.
 //   · 받은 값을 저장하지 않고, 응답에 요청 내용을 되비추지 않는다.
 //
-// 무료 한도(ops/ROLES.md): Groq은 모델마다 하루 1,000회·분당 30회. 연결 설명은 병합할 때 한 번만 부른다.
+// 무료 한도(ops/ROLES.md · ops/model-routing.json «layer_merge»): Groq은 모델마다 하루 1,000회·분당 30회.
+// 연결 설명은 병합할 때 한 번만 부른다. 120b는 수집 전용이라 쓰지 않는다.
 
 const MODEL = 'openai/gpt-oss-20b';
 const ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
-const TIMEOUT_MS = 6000;
+const TIMEOUT_MS = 9000;      // 생각하는 모델이라 첫 글자까지 시간이 든다 — 화면 쪽 기다림(10초)보다 짧게
+// gpt-oss-20b 는 «생각(reasoning)» 토큰도 출력 한도에 함께 센다. 예전 max_tokens: 700 은 생각에 다 써 버려
+// 본문(JSON)이 비거나 잘려 늘 fallback 됐다 → 생각은 낮게(low)·응답에 싣지 않고, 한도는 생각 몫까지 넉넉히.
+const MAX_OUT = 1600;
 const MAX_REQS = 6;
 const MAX_TEXT = 60;          // 라벨 한 칸 길이 상한
 const MAX_WHY = 240;          // 돌려줄 설명 길이 상한
@@ -27,7 +31,7 @@ const SYSTEM = [
   '규칙',
   '1. 완성된 자기소개서·이력서 문장을 쓰지 않는다. 사용자가 직접 쓸 수 있도록 «왜 연결되는지»와 «무엇을 확인하면 좋은지»만 적는다.',
   '2. 요구마다 두 문장 이내, 90자 안팎. 감탄·과장·면접 합격 예측·점수는 쓰지 않는다.',
-  '3. 주어진 라벨에 없는 경험·수치·회사명·자격을 만들어 내지 않는다.',
+  '3. 주어진 라벨에 없는 경험·수치·회사명·자격을 만들어 내지 않는다. 경험의 행동 라벨은 짐작일 수 있으니 «했다고» 단정하지 말고 «~했다면»처럼 조건으로 쓴다.',
   '4. 딱딱한 보고서 말투 대신, 옆에서 짚어 주는 담백한 한국어로 쓴다.',
   '5. 출력은 JSON 하나뿐이다. 형식: {"notes":{"<요구 id>":{"why":"..."}}}',
   '',
@@ -106,7 +110,9 @@ export async function onRequestPost(context) {
       body: JSON.stringify({
         model: MODEL,
         temperature: 0.3,
-        max_tokens: 700,
+        reasoning_effort: 'low',
+        include_reasoning: false,
+        max_completion_tokens: MAX_OUT,
         response_format: { type: 'json_object' },
         messages: [
           { role: 'system', content: SYSTEM },
@@ -117,8 +123,9 @@ export async function onRequestPost(context) {
     });
     if (!res.ok) return fallback();                          // 429·5xx도 화면에는 조용히
     const data = await res.json();
-    const text = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-    if (!text) return fallback();
+    const choice = data && data.choices && data.choices[0];
+    const text = choice && choice.message && choice.message.content;
+    if (!text || (choice && choice.finish_reason === 'length')) return fallback();   // 잘린 JSON은 믿지 않는다
     const parsed = JSON.parse(text);
     const raw = (parsed && parsed.notes) || {};
     const allowed = new Set(items.map((r) => r.id));

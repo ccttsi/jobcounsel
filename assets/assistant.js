@@ -87,6 +87,7 @@
   function loadScope() {
     loadGate('guard.js', 'JCAssistGuard');
     loadGate('scope.js', 'JCAssistScope');
+    loadGate('rewrite.js', 'JCAssistRewrite');
     loadChunks();
   }
   /* AUP-3 근거 조각(assistant/chunks.js + assistant/data/chunks.json, 약 44KB) — 대화 탭이 열릴 때 한 번 받는다.
@@ -1916,15 +1917,34 @@
     render();
   }
 
+  /* AUP-4 이어지는 질문 — 이 대화의 앞 질문(최근 2개, 범위 밖·막힌 턴 제외).
+     «그럼 수습 기간엔요?»를 «최저임금 수습 기간엔요?»로 이어 붙여 검색·근거 조각을 고르고(assistant/rewrite.js),
+     비서에게는 사용자가 쓴 질문 그대로 + 앞 질문을 «참고» 칸으로 함께 보낸다. */
+  function prevOf(turn) {
+    var i = st.thread.indexOf(turn), out = [];
+    for (var k = (i < 0 ? st.thread.length : i) - 1; k >= 0 && out.length < 2; k--) {
+      var t = st.thread[k];
+      if (t && t.q && !t.scope) out.unshift(String(t.q).slice(0, 200));
+    }
+    return out;
+  }
+  function searchQ(q, prev) {
+    var R = window.JCAssistRewrite;
+    if (!R || !prev.length) return q;
+    try { return R.rewrite(q, prev).q || q; } catch (e) { return q; }
+  }
+
   function runAsk(turn, q) {
-    var body = { question: q, evidence: evidence(q), provider: st.provider, stream: true };
+    var prev = prevOf(turn), sq = searchQ(q, prev);
+    var body = { question: q, evidence: evidence(sq), provider: st.provider, stream: true };
+    if (prev.length) body.prev = prev;
     if (st.mode) body.mode = st.mode;
     if (st.webOn) body.websearch = true;
     /* 선참조 지도 — 비서 지침이 「먼저 보는」 섹터 지도와, 지도가 집은 후보 섹터를 함께 받는다. */
     var S = window.JCAssistSearch;
     if (S && S.map && S.preface && S.preface()) {
       body.map = S.map(30);
-      var rt0 = S.route ? S.route(q, { limit: 3 }) : [];
+      var rt0 = S.route ? S.route(sq, { limit: 3 }) : [];
       if (rt0.length) {
         body.route = rt0.map(function (r) { return { no: r.no || '', title: r.title, url: r.url, why: r.why || [] }; });
       }

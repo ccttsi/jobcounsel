@@ -31,6 +31,13 @@
       "owner": "클로드(ops/eval/aup_eval.mjs, 이후 서버)",
       "chain": ["openai/gpt-oss-20b", "qwen/qwen3.8-27b"],
       "on_block": "질문을 그대로 검색한다"
+    },
+    "layer_merge": {
+      "label": "경험×공고 레이어 — 요구별 «왜 연결되는가» 두 문장(화면이 뽑은 라벨만 받음)",
+      "owner": "클로드(functions/api/layer-merge.js · Cloudflare 환경변수 GROQ_API_KEY)",
+      "chain": ["openai/gpt-oss-20b"],
+      "settings": "reasoning_effort low · include_reasoning false · max_completion_tokens 1600 — 생각 토큰도 출력 한도에 함께 세진다",
+      "on_block": "화면 내장 엔진 결과를 그대로 둔다(오류를 드러내지 않는다)"
     }
   }
 }

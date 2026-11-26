@@ -18,7 +18,22 @@
     { "id": "CTX-002", "ctx": ["실업급여 받으려면 조건이 뭐예요?"], "q": "자발적으로 그만둔 경우는요?", "expect_sectors": ["pay-calc", "law", "policy-match"] },
     { "id": "CTX-003", "ctx": ["직업선호도검사 L형 결과 해석을 도와주세요."], "q": "그거 흥미 유형이 R이면요?", "expect_sectors": ["vpi"] },
     { "id": "CTX-004", "ctx": ["국민내일배움카드 자부담이 얼마나 돼요?"], "q": "국민취업지원제도 참여 중이면 달라져요?", "expect_sectors": ["kdt-calc", "policy-match"] },
-    { "id": "CTX-005", "ctx": ["입사한 지 두 달 됐는데 근로계약서를 안 썼어요."], "q": "이거 신고하면 어떻게 돼요?", "expect_sectors": ["first-year", "law", "labor"] }
+    { "id": "CTX-005", "ctx": ["입사한 지 두 달 됐는데 근로계약서를 안 썼어요."], "q": "이거 신고하면 어떻게 돼요?", "expect_sectors": ["first-year", "law", "labor"] },
+    { "id": "CTX-006", "ctx": ["최저임금 시급이 얼마예요?"], "q": "그럼 하루 8시간이면요?", "expect_sectors": ["pay-calc", "labor"], "must": ["minimumWage.daily8h"] },
+    { "id": "CTX-007", "ctx": ["최저임금 시급이 얼마예요?"], "q": "월급으로 치면요?", "expect_sectors": ["pay-calc", "labor"], "must": ["minimumWage.monthly"] },
+    { "id": "CTX-008", "ctx": ["실업급여는 평균임금의 몇 퍼센트를 받아요?"], "q": "그럼 하루 상한은 얼마예요?", "expect_sectors": ["pay-calc", "law"], "must": ["jobSeeking.dailyCap"] },
+    { "id": "CTX-009", "ctx": ["구직급여 하루 상한액이 얼마인가요?"], "q": "하한액은요?", "expect_sectors": ["pay-calc", "law"], "must": ["jobSeeking.floorDaily8h"] },
+    { "id": "CTX-010", "ctx": ["국민연금 근로자 부담 요율이 몇 퍼센트예요?"], "q": "건강보험은요?", "expect_sectors": ["pay-calc", "labor"], "must": ["socialInsurance.healthRateWorker"] },
+    { "id": "CTX-011", "ctx": ["4대보험 중에 국민연금은 얼마나 떼요?"], "q": "고용보험은 몇 퍼센트예요?", "expect_sectors": ["pay-calc", "labor"], "must": ["socialInsurance.employmentRateWorker"] },
+    { "id": "CTX-012", "ctx": ["정보처리기사 시험 과목이 뭐예요?"], "q": "그거 시행처는 어디예요?", "expect_sectors": ["cert"] },
+    { "id": "CTX-013", "ctx": ["커리어넷 직업흥미검사 결과를 어떻게 봐요?"], "q": "그럼 거기 나온 직업을 더 찾아보려면요?", "expect_sectors": ["careernet", "taxonomy"] },
+    { "id": "CTX-014", "ctx": ["구인공고에 포괄임금이라고 적혀 있는데 괜찮은 건가요?"], "q": "이거 법에 걸리는 표현이면 어떻게 해요?", "expect_sectors": ["posting", "law"] },
+    { "id": "CTX-015", "ctx": ["면접에서 1분 자기소개 어떻게 준비해요?"], "q": "그럼 예상 질문은요?", "expect_sectors": ["interview"] },
+    { "id": "CTX-016", "ctx": ["자소서에 단점 쓰는 칸이 있는데 뭐라고 써요?"], "q": "그걸 장점으로 바꿔 말하려면요?", "expect_sectors": ["trait-flip", "surgery"] },
+    { "id": "CTX-017", "ctx": ["회사 매출이랑 직원 수를 어디서 확인해요?"], "q": "거기서 중견기업인지도 나와요?", "expect_sectors": ["company"] },
+    { "id": "CTX-018", "ctx": ["대학원 진학을 고민 중인데 정보를 어디서 봐요?"], "q": "그럼 학과별로 비교하려면요?", "expect_sectors": ["grad", "univ"] },
+    { "id": "CTX-019", "ctx": ["국민내일배움카드로 훈련 들으면 자부담이 얼마예요?"], "q": "K-디지털 트레이닝이면요?", "expect_sectors": ["kdt-calc"] },
+    { "id": "CTX-020", "ctx": ["입사 첫해에 챙겨야 할 게 뭐예요?"], "q": "그 중에 연차는 언제 생겨요?", "expect_sectors": ["first-year", "law"] }
   ],
   "field": [
     { "id": "FW-001", "cat": "wage", "q": "사장이 시급 만 원 준다는데 이거 최저임금보다 낮은 거 아니에요?", "must": ["minimumWage.hourly"], "expect_sectors": ["pay-calc", "law", "labor"] },
