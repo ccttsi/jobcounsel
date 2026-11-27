@@ -103,6 +103,10 @@
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (j) { if (j && window.JCAssistChunks) window.JCAssistChunks.use(j); })
         .catch(function () { chunksLoading = false; });
+      /* AUP-7 뜻 벡터(63KB) — 조각과 같은 때 받아 둔다. 못 받아도 검색은 그대로 돈다. */
+      if (window.JCAssistSearch && window.JCAssistSearch.loadVectors) {
+        try { window.JCAssistSearch.loadVectors(); } catch (e) {}
+      }
     };
     sc.onerror = function () { chunksLoading = false; };
     document.head.appendChild(sc);
@@ -1869,6 +1873,26 @@
     ask(q, true);
   }
 
+  /* AUP-7 — 질문 벡터. 경량 질의 임베딩 경로가 켜져 있을 때(assistant/data/semantic-vectors.json 의
+     provider 가 채워졌을 때)만 부른다. 꺼져 있으면 네트워크 요청 0 — 검색은 지금과 100% 같다.
+     받은 벡터는 검색·조각에 앉히고, 이 질문의 벡터와 모델이 다르면 붙이지 않는다(assistant/search.js). */
+  function queryVectorFor(q) {
+    var S = window.JCAssistSearch;
+    if (!S || !S.provider) return Promise.resolve(false);
+    var p = S.provider();
+    if (!p) { try { S.setQueryVector(q, null); } catch (e) {} return Promise.resolve(false); }
+    var url = p + (p.indexOf('?') < 0 ? '?' : '&') + 'q=' + encodeURIComponent(q);
+    return fetch(url, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var v = j && (j.vector || j.embedding);
+        var ok = !!(v && S.setQueryVector(q, v, (j && j.model) || S.providerModel()));
+        if (window.JCAssistChunks && window.JCAssistChunks.setQueryVector) window.JCAssistChunks.setQueryVector(ok ? v : null, j && j.model);
+        return ok;
+      })
+      .catch(function () { try { S.setQueryVector(q, null); } catch (e) {} return false; });
+  }
+
   /* 비서에게 건네는 근거 — 근거 조각(법정 수치·법령 풀이·조문, 최대 2)을 앞에, 검색 결과를 뒤에 붙여 5개.
      조각 고르는 규칙은 assistant/chunks.js 하나 — AUP-2 성적표 러너도 같은 파일을 쓴다. */
   function evidence(q) {
@@ -1906,7 +1930,11 @@
     render(); saveChat();
 
     /* 「검색 중」을 먼저 한 프레임 그리고서 실제 일을 시작한다 — 같은 틱에 끝나면 단계가 보이지 않는다. */
-    setTimeout(function () { runAsk(turn, q); }, 60);
+    setTimeout(function () {
+      /* 뜻 벡터가 오면 검색에 앉힌 뒤 답을 부른다 — 없으면(꺼짐·실패) 그대로 진행한다. */
+      var sq = searchQ(q, prevOf(turn));
+      queryVectorFor(sq).then(function () { runAsk(turn, q); });
+    }, 60);
   }
 
   /* 단계를 바꾸고 그 자리만 다시 그린다(답이 흐르는 중에는 글자를 다시 그리지 않는다). */

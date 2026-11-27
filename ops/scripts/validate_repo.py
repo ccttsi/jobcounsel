@@ -2044,6 +2044,19 @@ def run_eval_items_checks():
             fail("eval", f"근거 조각 {c.get('i')} 섹터 «{c.get('s')}» 가 장부에 없다")
     note(f"AUP-3 근거 조각 — {len(chunks)}개 (원천 동기·400자·주소·섹터)")
 
+    # AUP-7 뜻 벡터 — 섹터·조각을 공개 임베딩 모델로 미리 임베딩한 정적 파일.
+    #   모델이 없어도 볼 수 있는 것만 본다: 지금 색인·조각과 번호가 맞는가, 차원·라이선스·크기,
+    #   질의 임베딩 주소(provider)의 모양. 만든 뒤 색인을 고치고 다시 만들지 않으면 여기서 걸린다.
+    result = subprocess.run([sys.executable, os.path.join(ROOT, "ops", "scripts", "build_semantic_vectors.py"), "--check"],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("eval", result.stdout.strip() or result.stderr.strip()[:200])
+    vec_doc = load_json(os.path.join(ROOT, "assistant", "data", "semantic-vectors.json"))[0] or {}
+    if vec_doc and str(vec_doc.get("license", "")) not in ("MIT", "Apache-2.0", "CC-BY-4.0", "CC0-1.0"):
+        fail("eval", f"뜻 벡터의 모델 라이선스 «{vec_doc.get('license')}» 는 재가공 허용으로 확인된 것이 아니다")
+    note(f"AUP-7 뜻 벡터 — 섹터 {len(vec_doc.get('sectors') or {})} · 조각 {len(vec_doc.get('chunks') or {})} "
+         f"({vec_doc.get('model')}, {vec_doc.get('license')}, 질의 경로 {'켜짐' if vec_doc.get('provider') else '꺼짐'})")
+
     # AUP-4 이어지는 질문 다시 쓰기(assistant/rewrite.js) — ① 이어지는 질문 문항은 앞 질문 낱말로 이어 붙는가
     # ② 혼자 서는 문항(그 밖 전부)은 앞 질문이 있어도 한 글자도 바뀌지 않는가(오탐 0 — 잘못 붙이면 검색이 흐려진다)
     try:

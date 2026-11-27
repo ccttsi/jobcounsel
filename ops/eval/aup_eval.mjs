@@ -40,6 +40,7 @@ const OPT = {
   judge: !flag('--no-judge'),
   notion: flag('--notion'),
   out: arg('--out', ''),
+  vectors: arg('--vectors', ''),
 };
 const ENV = process.env;
 const GEMINI_KEY = ENV.GEMINI_EVAL_API_KEY || '';
@@ -248,7 +249,19 @@ function parseJsonAnswer(text) {          // 서버 index.ts 의 parseJsonAnswer
 }
 
 /* ---------------------------------------------------------------- 한 문항 */
+/* AUP-7 — 질문 벡터 파일(--vectors)이 있으면 검색에 넘긴다.
+   파일은 {model, dim, queries:{문항 id: base64 int8}} — 저장소 밖에서 만든 시험용 벡터다.
+   이 벡터를 만든 모델 이름을 같이 넘겨, 정적 섹터 벡터와 같은 모델일 때만 쓰게 한다. */
+const QVEC = OPT.vectors ? JSON.parse(fs.readFileSync(OPT.vectors, 'utf8')) : null;
+const QBYQ = {};
+if (QVEC && QVEC.queries) {
+  const dec = (b64) => { const u = Buffer.from(String(b64), 'base64'); const f = new Float32Array(u.length); for (let i = 0; i < u.length; i++) f[i] = (u[i] << 24) >> 24; return f; };
+  const raw = fs.readFileSync(path.join(ROOT, 'assistant', 'eval', 'items.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+  for (const it of raw) if (QVEC.queries[it.id]) QBYQ[it.q] = dec(QVEC.queries[it.id]);
+}
 function evidenceOf(q) {                  // assets/assistant.js 의 evidence() 와 같다
+  if (SEARCH.setQueryVector) SEARCH.setQueryVector(q, QBYQ[q] || null, QVEC && QVEC.model);
+  if (CHUNKS.setQueryVector) CHUNKS.setQueryVector(QBYQ[q] || null, QVEC && QVEC.model);
   return SEARCH.search(q, { limit: 5 }).map((x) => ({ title: x.title, sector: x.sectorTitle || x.sector, url: x.url, snippet: x.snippet || '', _sector: x.sector }));
 }
 const sectorOf = (u) => { const m = /^\.?\/([a-z0-9-]+)\//.exec(String(u || '')); return m ? m[1] : ''; };
@@ -414,6 +427,8 @@ function summarize(rows) {
 /* ---------------------------------------------------------------- 실행 */
 const started = new Date();
 await SEARCH.load();
+if (SEARCH.loadVectors) await SEARCH.loadVectors();   // AUP-7 정적 뜻 벡터(없으면 그냥 넘어간다)
+if (QVEC && QVEC.chunks && CHUNKS.useVectors) CHUNKS.useVectors(QVEC);
 const rows = [];
 for (const it of items) {
   rows.push(await runItem(it));
