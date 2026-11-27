@@ -1,8 +1,9 @@
 {
- "generated_at": "2026-11-28T02:24:52+09:00",
+ "generated_at": "2026-11-28T07:16:21+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
+  "2026-11-28",
   "2026-11-27",
   "2026-11-26",
   "2026-11-25",
@@ -2306,6 +2307,17 @@
      "source_name": "국제노동기구(ILO)",
      "source_url": "https://www.ilo.org/resource/article/can-philippines-make-its-poverty-gains-last",
      "published_at": "2026-11-26"
+    },
+    {
+     "date": "2026-11-28",
+     "card_id": "c01",
+     "title": "공무직 23.2만명, 정액급여 316.8만원",
+     "kicker": "기간제 279.8만원 · 지자체·중앙행정기관 76.1만원 차",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부·공무직위원회",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156791241",
+     "published_at": "2026-11-27"
     }
    ]
   },
@@ -2784,6 +2796,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20302",
      "published_at": "2026-11-25"
+    },
+    {
+     "date": "2026-11-28",
+     "card_id": "c02",
+     "title": "고용24 AI 서비스 531건 접수, 10팀 결선",
+     "kicker": "서면 20팀 → 본선 10팀 · 상금 1,000만원",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156791216",
+     "published_at": "2026-11-27"
     }
    ]
   },
@@ -5415,6 +5438,17 @@
      "region": "global",
      "source_name": "CNBC",
      "source_url": "https://www.cnbc.com/2026/11/27/sap-job-cuts-ai-restructuring.html",
+     "published_at": "2026-11-27"
+    },
+    {
+     "date": "2026-11-28",
+     "card_id": "c03",
+     "title": "AI 전환 인재 역량 다시 정의 — 11회째 발표회",
+     "kicker": "인사담당자 150명 · 2개 분과 4건 발표",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "인사혁신처",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156791178",
      "published_at": "2026-11-27"
     }
    ]
