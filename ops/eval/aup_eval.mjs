@@ -1,6 +1,6 @@
 // AUP-2 성적표 러너 — 자료실 비서에게 시험을 보이고 채점한다.
 //
-//   node --experimental-strip-types ops/eval/aup_eval.mjs [--limit N] [--type route,numeric] [--qtype policy] [--split test]
+//   node --experimental-strip-types ops/eval/aup_eval.mjs [--limit N] [--type route,numeric] [--qtype policy] [--ids INT-001,CTX-002] [--split test]
 //        [--dry] [--no-norm] [--no-judge] [--out 파일] [--notion]
 //
 // 흐름(문항 하나)
@@ -36,6 +36,7 @@ const OPT = {
   limit: Number(arg('--limit', '0')) || 0,
   types: (arg('--type', '') || '').split(',').filter(Boolean),
   qtypes: (arg('--qtype', '') || '').split(',').filter(Boolean),   // 답 틀 갈래(calc·policy·guide·counsel) — 성적표의 «유형별» 칸과 같은 기준(판정기 결과)
+  ids: (arg('--ids', '') || '').split(',').filter(Boolean),        // 문항 번호만 골라 다시 잰다 — 고친 뒤 «같은 문항» 전후 비교용
   split: arg('--split', ''),
   dry: flag('--dry'),
   norm: !flag('--no-norm'),
@@ -114,6 +115,7 @@ let items = fs.readFileSync(path.join(ROOT, 'assistant', 'eval', 'items.jsonl'),
   .split('\n').filter(Boolean).map((l) => JSON.parse(l));
 if (OPT.types.length) items = items.filter((i) => OPT.types.includes(i.type));
 if (OPT.qtypes.length) items = items.filter((i) => OPT.qtypes.includes(P.QTYPE.check(i.q, P.cleanPrev(Array.isArray(i.ctx) ? i.ctx : [])).type));
+if (OPT.ids.length) items = items.filter((i) => OPT.ids.includes(i.id));
 if (OPT.split) items = items.filter((i) => i.split === OPT.split);
 /* 종류를 번갈아 세운다(route·numeric·field·followup …) — 한도에 걸려 중간에 멈춰도 모든 종류가 채점되게.
    2026-11-25 첫 실행은 사연 168문이 앞에 몰려 있어 수치 문항까지 차례가 오지 않았다. */
