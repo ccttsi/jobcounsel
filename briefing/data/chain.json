@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-27T07:09:53+09:00",
+ "generated_at": "2026-11-27T23:29:01+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -1734,6 +1734,28 @@
      "source_name": "그리스 노동사회보장부",
      "source_url": "https://ypergasias.gov.gr/ypeka-anthropini-epopteia-stous-algorithmous-kai-mitroo-apascholisis-se-platformes-fernei-to-neo-nomoschedio/",
      "published_at": "2026-11-21"
+    },
+    {
+     "date": "2026-11-27",
+     "card_id": "c06",
+     "title": "인도 IT 노동자, AI 해고 기준 요구 — 기술직 30% 압축 전망",
+     "kicker": "기술직 30% 압축·45% 증강 전망 / 사전고지·위로금·재배치 기준 요구",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "The Times of India",
+     "source_url": "https://timesofindia.indiatimes.com/business/india-business/it-sector-employees-seek-national-ai-layoff-policy-as-automation-threatens-jobs-unions-and-experts-want-nasscom-and-government-to-set-minimum-severance-advance-notice-redeployment-and-reskilling-rules-for-employees-who-lose-work/articleshow/136185743.cms",
+     "published_at": "2026-11-26"
+    },
+    {
+     "date": "2026-11-27",
+     "card_id": "c08",
+     "title": "파푸아뉴기니, 동등임금·차별금지 교육 43명 — 고용법 개정",
+     "kicker": "참가자 43명(여성 19명) · ILO 협약 제100·111·190호 / 2027년 2월 시범 정책",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "국제노동기구(ILO)",
+     "source_url": "https://www.ilo.org/resource/news/papua-new-guinea-advances-gender-equality-and-non-discrimination-through",
+     "published_at": "2026-11-26"
     }
    ]
   },
@@ -2234,6 +2256,17 @@
      "source_name": "미국 댈러스 연방준비은행(Federal Reserve Bank of Dallas)",
      "source_url": "https://www.dallasfed.org/research/papers/2026/wp2642",
      "published_at": "2026-11-24"
+    },
+    {
+     "date": "2026-11-27",
+     "card_id": "c07",
+     "title": "필리핀 빈곤율 15.5%→9.7% — ILO \"일자리 질이 관건\"",
+     "kicker": "빈곤율 9.7%(2025) · 18개 지역 모두 하락 / ILO \"탈출보다 유지가 어렵다\"",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "국제노동기구(ILO)",
+     "source_url": "https://www.ilo.org/resource/article/can-philippines-make-its-poverty-gains-last",
+     "published_at": "2026-11-26"
     }
    ]
   },
@@ -4789,6 +4822,17 @@
      "source_name": "arXiv (ZEW 만하임·옥스퍼드 인터넷연구소)",
      "source_url": "https://arxiv.org/abs/2611.34099",
      "published_at": "2026-11-25"
+    },
+    {
+     "date": "2026-11-27",
+     "card_id": "c05",
+     "title": "AI가 신입 사다리 걷어냈다 — 사무·행정 2년 새 78만개 감소",
+     "kicker": "사무·행정 -78만개(2023~2025) · AI 고노출 업종 신입 공고 3~8% 적어",
+     "category": "채용시장",
+     "region": "global",
+     "source_name": "Yahoo Finance",
+     "source_url": "https://finance.yahoo.com/technology/ai/articles/ai-squeezing-entry-level-office-151520271.html",
+     "published_at": "2026-11-26"
     }
    ]
   },
@@ -5223,6 +5267,17 @@
      "source_name": "arXiv (Ledingham·Hollins·Lyon 외)",
      "source_url": "https://arxiv.org/abs/2512.05659",
      "published_at": "2026-11-25"
+    },
+    {
+     "date": "2026-11-27",
+     "card_id": "c04",
+     "title": "SAP, AI 전환에 최소 1만명 감원 검토 — 전체 인력의 9%",
+     "kicker": "최소 1만명 · 전체 인력 9% / 사내 11만명 이상",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "CNBC",
+     "source_url": "https://www.cnbc.com/2026/11/27/sap-job-cuts-ai-restructuring.html",
+     "published_at": "2026-11-27"
     }
    ]
   },
