@@ -25,6 +25,8 @@
 | 로그아웃 때의 대화 | **사용자 브라우저(localStorage)** | 사용자가 직접 수정·삭제·전체 삭제 |
 | 검색어 | 어디에도 저장하지 않음 | `console.log` 없음 |
 | 호출 횟수 | `jc_assistant_usage` | `user_id`, 분 단위 시각, 횟수 (내용 칸 없음) |
+| 답 평가(켠 사람만) | `jc_assistant_feedback` | 날짜·👍/👎·질문 유형·인용 섹터·이유(고정 4종)·모드 표시. **질문·답 문장, 사용자 번호, 시각 없음** · 90일 보관 |
+| 평가 하루 상한 | `jc_assistant_feedback_quota` | `user_id`, 날짜, 횟수 — 평가 줄과 잇는 칸 없음 · 2일 보관 |
 
 `jc_user_api_keys`·`jc_assistant_usage`·`jc_assistant_threads`·`jc_assistant_messages` 는 **RLS 를 켜고
 anon·authenticated 권한을 전부 회수**합니다. 사이트 코드(공개 키)로는 읽을 수도 쓸 수도 없고,
@@ -108,6 +110,7 @@ https://vzxwdfswlolhcluljkgi.supabase.co/functions/v1/assistant-proxy
 | `history_rename` | 제목 바꾸기(80자) |
 | `history_delete` | 대화방 하나 지우기(메시지는 cascade) |
 | `history_clear` | 내 대화 전부 비우기 |
+| `feedback` | 답 평가(AUP-8) — `fid`·`vote`(1·-1·0=취소)·`reason`(wrong·offtopic·hard·long)·`qtype`·`sectors`(≤3)·`mode`·`websearch`·`followup`·`fixed`·`model`만 받는다. 하루 60회. 질문·답 문장 칸 없음 |
 
 ---
 

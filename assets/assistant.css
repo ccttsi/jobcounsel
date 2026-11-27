@@ -496,6 +496,41 @@ html[data-jc-tone="sepia"][data-theme="light"] .jca-panel {
 .jca-mini:hover { background: var(--_paper); color: var(--_ink); }
 .jca-mini:focus-visible { outline: 2px solid var(--_acc); outline-offset: -2px; }
 
+/* AUP-8 답 평가 — 보이는 알약은 낮게, 누르는 칸은 44px */
+.jca-fb { margin-top: 10px; padding-top: 6px; border-top: 1px dashed var(--_line); }
+.jca-fb-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px; }
+.jca-fb-q { margin-right: auto; font-size: 11.5px; font-weight: 600; color: var(--_dim); }
+.jca-fb-b, .jca-fb-r {
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  min-height: 44px; min-width: 44px; padding: 0 11px;
+  border: 0; border-radius: 999px; background: transparent; color: var(--_muted);
+  font: 650 12px/1.05 var(--_sans); letter-spacing: -.01em; cursor: pointer;
+  transition: color .15s;
+}
+/* 보이는 알약 34px · 누르는 칸 44px(사이트 규격) */
+.jca-fb-b::before, .jca-fb-r::before {
+  content: ""; position: absolute; inset: 5px 0; z-index: -1; border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--_line2); background: transparent;
+  transition: background-color .15s, box-shadow .15s;
+}
+.jca-fb-b svg { width: 15px; height: 15px; flex: none; }
+.jca-fb-down svg { transform: scaleY(-1); }
+.jca-fb-b:hover, .jca-fb-r:hover { color: var(--_ink); }
+.jca-fb-b:hover::before, .jca-fb-r:hover::before { background: var(--_paper); }
+.jca-fb-b[aria-pressed="true"], .jca-fb-r[aria-pressed="true"] { color: var(--_ink); }
+.jca-fb-b[aria-pressed="true"]::before, .jca-fb-r[aria-pressed="true"]::before {
+  background: color-mix(in srgb, var(--_acc) 12%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--_acc);
+}
+.jca-fb-b:focus-visible, .jca-fb-r:focus-visible { outline: 2px solid var(--_acc); outline-offset: -3px; }
+.jca-fb-why { display: flex; flex-wrap: wrap; gap: 0 6px; }
+.jca-fb-r { font-size: 11.5px; padding: 0 10px; }
+.jca-fb-st { margin: 4px 0 0; font-size: 11.5px; line-height: 1.5; color: var(--_dim); }
+.jca-fb-st:empty { display: none; }
+.jca-fbset { margin: 12px 0 4px; }
+.jca-fbset .jca-hint { margin: 2px 0 0; }
+
 .jca-a {
   padding: 11px 13px;
   border: 1px solid var(--_line);
