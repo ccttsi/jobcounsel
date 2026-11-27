@@ -50,15 +50,26 @@ export function markdown(week, cands) {
 async function fetchWeek() {
   const token = ENV.SUPABASE_ACCESS_TOKEN;
   if (!token) return { skip: 'SUPABASE_ACCESS_TOKEN 없음' };
-  const r = await fetch(`https://api.supabase.com/v1/projects/${PROJECT}/database/query`, {
-    method: 'POST',
-    headers: { authorization: 'Bearer ' + token, 'content-type': 'application/json' },
-    body: JSON.stringify({ query: `select public.jc_assistant_feedback_week(${DAYS}) as w` }),
-  });
-  if (!r.ok) return { skip: 'Supabase 응답 ' + r.status };
-  const rows = await r.json();
-  const w = Array.isArray(rows) && rows[0] ? rows[0].w : null;
-  return w && typeof w === 'object' ? { week: w } : { skip: '집계 모양이 다름' };
+  // 읽기 전용 SQL 길을 먼저 쓴다(권한이 더 좁다). 집계 함수는 select 만 한다.
+  const query = `select public.jc_assistant_feedback_week(${DAYS}) as w`;
+  const codes = [];
+  for (const tail of ['database/query/read-only', 'database/query']) {
+    let r;
+    try {
+      r = await fetch(`https://api.supabase.com/v1/projects/${PROJECT}/${tail}`, {
+        method: 'POST',
+        headers: { authorization: 'Bearer ' + token, 'content-type': 'application/json' },
+        body: JSON.stringify({ query }),
+      });
+    } catch { codes.push(tail.split('/').pop() + ' 네트워크'); continue; }
+    codes.push(tail.split('/').pop() + ' ' + r.status);
+    if (!r.ok) continue;
+    const rows = await r.json();
+    const w = Array.isArray(rows) && rows[0] ? rows[0].w : null;
+    return w && typeof w === 'object' ? { week: w } : { fail: '집계 모양이 다름' };
+  }
+  // 토큰은 있는데 거절됐다 — 조용히 넘기면 매주 빈 집계가 «성공»으로 남는다. 실패로 드러낸다.
+  return { fail: `Supabase가 SQL 실행을 거절(${codes.join(' · ')}) — SUPABASE_ACCESS_TOKEN에 데이터베이스 읽기 권한이 필요하다` };
 }
 
 async function notion(week, cands) {
@@ -107,8 +118,10 @@ else {
   const cands = candidates(week);
   let md = markdown(week, cands);
   if (got.skip) md = `## AUP-8 답 평가 주간 집계\n\n건너뜀 — ${got.skip}`;
+  if (got.fail) md = `## AUP-8 답 평가 주간 집계\n\n실패 — ${got.fail}`;
   console.log(md);
   if (ENV.GITHUB_STEP_SUMMARY) fs.appendFileSync(ENV.GITHUB_STEP_SUMMARY, md + '\n');
-  fs.writeFileSync('feedback-week.json', JSON.stringify({ days: DAYS, skip: got.skip || '', week, candidates: cands }, null, 1) + '\n');
+  fs.writeFileSync('feedback-week.json', JSON.stringify({ days: DAYS, skip: got.skip || '', fail: got.fail || '', week, candidates: cands }, null, 1) + '\n');
+  if (got.fail) process.exit(1);
   if (!got.skip) console.log(await notion(week, cands).catch(() => 'notion 실패(네트워크)'));
 }
