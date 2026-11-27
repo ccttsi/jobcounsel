@@ -117,16 +117,6 @@ if (OPT.types.length) items = items.filter((i) => OPT.types.includes(i.type));
 if (OPT.qtypes.length) items = items.filter((i) => OPT.qtypes.includes(P.QTYPE.check(i.q, P.cleanPrev(Array.isArray(i.ctx) ? i.ctx : [])).type));
 if (OPT.ids.length) items = items.filter((i) => OPT.ids.includes(i.id));
 if (OPT.split) items = items.filter((i) => i.split === OPT.split);
-/* 좁혀 재기 — 저장소에 ops/eval/rerun-ids.json({"ids":[…]})이 있으면 그 문항만 잰다.
-   워크플로 입력으로는 문항 번호를 넘길 수 없어, 고친 지침의 전후를 «같은 문항»으로 견줄 때 이 파일을 쓴다(다 쓰면 지운다). */
-const RERUN_JSON = path.join(ROOT, 'ops', 'eval', 'rerun-ids.json');
-if (!OPT.ids.length && fs.existsSync(RERUN_JSON)) {
-  const rj = JSON.parse(fs.readFileSync(RERUN_JSON, 'utf8'));
-  if (Array.isArray(rj.ids) && rj.ids.length) {
-    items = items.filter((i) => rj.ids.includes(i.id));
-    console.log(`· 좁힌 재기 — ops/eval/rerun-ids.json ${items.length}문`);
-  }
-}
 /* 종류를 번갈아 세운다(route·numeric·field·followup …) — 한도에 걸려 중간에 멈춰도 모든 종류가 채점되게.
    2026-11-25 첫 실행은 사연 168문이 앞에 몰려 있어 수치 문항까지 차례가 오지 않았다. */
 {
