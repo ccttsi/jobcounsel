@@ -5,6 +5,7 @@
 #   python3 ops/eval/gaup_gate.py --report <보고서.json> [--baseline 72.5]
 #                                 [--skip-guard] [--json] [--md 출력.md]
 #   python3 ops/eval/gaup_gate.py --self-test
+#   python3 ops/eval/gaup_gate.py --keys <보고서.json>   # 러너와의 칸 계약 확인
 #
 # 종료 코드: 통과(pass) 0 · 불합격(fail) 1 · 보류(hold) 2
 # 파이썬 표준 라이브러리만 쓴다. 네트워크 호출 0, 모델 호출 0.
@@ -19,12 +20,34 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]  # 저장소 뿌리 (ops/eval/gaup_gate.py 기준)
 GUARD_CMD = ["ops/scripts/validate_repo.py", "--only", "guard,scope"]
 
+# 판정기가 보고서에서 읽는 칸 — 성적표 러너(ops/eval/aup_eval.mjs 의 summarize)와의 계약.
+# 러너가 이 칸들의 이름을 바꾸면 판정기는 조용히 «재지 않음»으로 흘러 보류(hold)가 된다.
+# 그래서 validate_repo.py 가 이 목록과 러너의 summarize 반환 칸을 맞대어 본다(한쪽 이름이 바뀌면 빨강).
+REPORT_KEYS = (
+    "retrieval_hit1",   # 1) 맞는 자료 1순위 비율
+    "numbers_rate",     # 2) 법정 수치 정확
+    "refuse_rate",      # 3) 거절할 것 거절
+    "false_refuse",     # 3) 잘못 거절
+    "links_ok_rate",    # 4) 없는 링크 0
+    "leak_free_rate",   # 참고) 지침 유출 0
+    "exclude_ok_rate",  # 참고) 빼야 할 자료 인용 0
+    "answered",         # 참고) 답한 문항
+    "answerable",       # 참고) 답해야 할 문항
+)
+
 # 판정 기호
 O, X, NONE = "O", "X", "재지 않음"
 
 
 def _is_num(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def missing_keys(summary):
+    """보고서 summary 에서 빠진 칸 목록. 빈 목록이면 계약을 지킨 보고서다."""
+    if not isinstance(summary, dict):
+        return list(REPORT_KEYS)
+    return [k for k in REPORT_KEYS if k not in summary]
 
 
 def _fmt(v):
@@ -172,6 +195,12 @@ def self_test():
              ("불합격", bad, True, "fail"),
              ("보류", sparse, True, "hold")]
     ok_all = True
+    # 가상 summary 가 계약 칸을 모두 갖는지도 본다 — 칸을 늘리고 시험 자료를 안 고치는 실수를 잡는다.
+    for name, summary, _guard, _want in cases:
+        miss = missing_keys(summary)
+        if miss:
+            print(X + "  " + name + " 케이스에 칸이 빠졌다: " + ", ".join(miss))
+            ok_all = False
     for name, summary, guard_ok, want in cases:
         verdict, rows = evaluate(summary, guard_ok)
         mark = O if verdict == want else X
@@ -197,10 +226,24 @@ def main(argv=None):
     ap.add_argument("--md", metavar="출력.md", help="결과를 마크다운 파일로 저장")
     ap.add_argument("--self-test", action="store_true",
                     help="스크립트 안의 가상 summary 세 개로 자기시험")
+    ap.add_argument("--keys", metavar="보고서.json",
+                    help="보고서 summary 가 판정기와 같은 칸을 갖는지(러너와의 계약) 확인")
     args = ap.parse_args(argv)
 
     if args.self_test:
         return 0 if self_test() else 1
+    if args.keys:
+        try:
+            data = json.loads(Path(args.keys).read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            print("X  보고서를 읽지 못했다 — " + str(exc))
+            return 1
+        miss = missing_keys(data.get("summary"))
+        if miss:
+            print("X  판정기가 읽는 칸이 보고서에 없다: " + ", ".join(miss))
+            return 1
+        print("O  보고서 계약 통과 — 판정기와 같은 칸 " + str(len(REPORT_KEYS)) + "개")
+        return 0
     if not args.report:
         ap.error("--report 가 필요합니다 (또는 --self-test)")
 

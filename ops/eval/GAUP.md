@@ -27,6 +27,9 @@ O/X로 판정하는 독립 스크립트입니다. 비서를 고칠 때마다 「
 # 자기시험 — 스크립트 안의 가상 summary 세 개(통과·불합격·보류)로 판정을 확인
 python3 ops/eval/gaup_gate.py --self-test
 
+# 보고서가 판정기와 같은 칸을 갖는가 — 성적표 러너(aup_eval.mjs)와의 계약
+python3 ops/eval/gaup_gate.py --keys assistant/eval/reports/2026-11-27.json
+
 # 판정 — 보고서를 읽어 다섯 칸을 O/X로
 python3 ops/eval/gaup_gate.py --report assistant/eval/reports/2026-11-27.json
 
@@ -38,6 +41,21 @@ python3 ops/eval/gaup_gate.py --report 보고서.json --md 결과.md     # 마�
 ```
 
 종료 코드: 통과 0 · 불합격 1 · 보류 2 (워크플로에서 그대로 관문으로 쓸 수 있습니다).
+
+## 러너와의 칸 계약 (조용한 고장 막기)
+
+판정기는 보고서의 `summary` 에서 아홉 칸을 읽습니다(`REPORT_KEYS`): `retrieval_hit1`·
+`numbers_rate`·`refuse_rate`·`false_refuse`·`links_ok_rate`·`leak_free_rate`·`exclude_ok_rate`·
+`answered`·`answerable`.
+
+칸 이름이 러너 쪽에서 바뀌면 판정기는 오류를 내지 않고 그 칸을 «재지 않음»으로 두어
+판정이 **보류(hold)** 로 흘러갑니다 — 아무도 모르게 관문이 느슥해지는 자리입니다.
+그래서 두 겹으로 막습니다.
+
+- `python3 ops/scripts/validate_repo.py --only gaup` (json 검사에도 함께 돕니다)
+  → ① 이 스크립트의 `--self-test`
+  → ② `REPORT_KEYS` 와 러너 `summarize()` 가 내는 칸을 맞대어 봄(이름이 바뀌면 빨강)
+- `--keys <보고서.json>` → 실제 보고서 한 장이 계약을 지켰는지 바로 확인
 
 ## 읽는 법 (출력 예)
 

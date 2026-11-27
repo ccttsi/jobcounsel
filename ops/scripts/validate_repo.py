@@ -22,6 +22,7 @@
              생성 사본(assets/legal-constants.js)·섹터의 참조·화면에 박힌 금액이 모두 같은지
   answercheck — 비서 답 검사기(AUP-5) — 규칙 생성물이 원천과 같은지·서버 사본 동기·시험 문항·지면 글 오탐 0
   qtype    — 비서 질문 유형 판정기(AUP-6) — 서버 사본 동기·시험 문장·성적표 정답표 정확도·prompt.ts 배선
+  gaup     — G-AUP 판정기(관문) — 자기시험·성적표 러너와의 칸 계약
   role     — PR 제목/라벨 기반 역할 분리 가드레일 ([data-only] PR이 화면 코드를 건드리면 실패)
   expose   — 내부 운영·설계 문서가 배포본에서 열리지 않는지(functions/_middleware.js·_routes.json). js와 함께 돈다
 
@@ -2119,6 +2120,69 @@ def run_eval_items_checks():
     note(f"AUP-4 다시 쓰기 — 이어지는 질문 {done}/{fol}문 이어 붙음 · 혼자 서는 질문 {got.get('alone', 0)}문 오탐 0")
 
 
+# ---------------------------------------------------------------- 3-8e) G-AUP 판정기 (2026-11-27)
+#   ops/eval/gaup_gate.py — 성적표(보고서 JSON)를 다섯 기준으로 판정하는 독립 스크립트.
+#   판정기가 조용히 고장나면 «관문을 넘었나»를 아무도 모른 채 지나간다 — 두 가지만 본다.
+#     ① 자기시험(--self-test)이 통과하는가 — 스크립트 안의 통과·불합격·보류 세 케이스
+#     ② 러너와의 칸 계약 — 판정기가 읽는 칸(REPORT_KEYS)이 성적표 러너(aup_eval.mjs summarize)가
+#        내는 칸에 전부 있는가. 러너가 이름을 바꾸면 판정기는 조용히 «재지 않음»으로 흘러 보류(hold)가 된다.
+GAUP_GATE = os.path.join("ops", "eval", "gaup_gate.py")
+
+
+def run_gaup_checks():
+    gate = os.path.join(ROOT, GAUP_GATE)
+    if not os.path.exists(gate):
+        fail("gaup", f"{GAUP_GATE} 이 없다 — 관문 판정을 사람이 숫자로 대조하게 된다")
+        return
+    try:
+        result = subprocess.run([sys.executable, gate, "--self-test"],
+                                capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        fail("gaup", f"판정기 자기시험을 돌리지 못했다 ({exc})")
+        return
+    if result.returncode != 0:
+        last = (result.stdout.strip().splitlines() or ["(출력 없음)"])[-1]
+        fail("gaup", f"판정기 자기시험이 실패했다 — {last[:200]}")
+
+    # 칸 계약 — 판정기의 REPORT_KEYS 를 그 스크립트에서 그대로 읽어(사본을 두지 않는다) 러너의 집계와 맞대어 본다.
+    keys = []
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("gaup_gate", gate)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        keys = list(getattr(mod, "REPORT_KEYS", ()) or ())
+    except Exception as exc:  # 판정기 자체가 불러지지 않는 경우
+        fail("gaup", f"판정기를 불러 칸 목록을 읽지 못했다 ({exc})")
+        return
+    if not keys:
+        fail("gaup", "판정기에 REPORT_KEYS(읽는 칸 목록)가 없다")
+        return
+    eval_path = os.path.join(ROOT, "ops", "eval", "aup_eval.mjs")
+    if not os.path.exists(eval_path):
+        fail("gaup", "성적표 러너(ops/eval/aup_eval.mjs)가 없다 — 계약을 확인할 수 없다")
+        return
+    txt = open(eval_path, encoding="utf-8").read()
+    m = re.search(r"function summarize\(rows\) \{(?P<body>.*?)\n\}\n", txt, re.S)
+    if not m:
+        fail("gaup", "성적표 러너에서 summarize 집계를 찾지 못했다 — 계약을 확인하지 못한다")
+        return
+    ret = re.search(r"return \{(?P<ret>.*?)\n  \};", m.group("body"), re.S)
+    if not ret:
+        fail("gaup", "성적표 러너 summarize 의 반환(칸 목록)을 찾지 못했다")
+        return
+    # 칸 이름은 한 줄에 여러 개씩 오기도 한다(예: `cite_rate: …, numbers_rate: …, numbers_n: …`).
+    # 그래서 줄 머리만이 아니라 «이름 + 콜론»을 전부 줍는다 — 있는지만 보면 되므로 안쪽 사전 칸이 섞여도 무해하다.
+    have = set(re.findall(r"([a-z0-9_]+):", ret.group("ret")))
+    if len(have) < 20:
+        fail("gaup", f"성적표 러너의 칸을 {len(have)}개만 읽었다 — 집계 모양이 바뀌었으면 이 검사를 함께 고친다")
+        return
+    missing = [k for k in keys if k not in have]
+    if missing:
+        fail("gaup", "판정기가 읽는 칸이 성적표 러너에 없다: " + ", ".join(missing))
+    note(f"G-AUP 판정기 — 자기시험 통과 · 러너와 같은 칸 {len(keys)}개(러너 집계 칸 {len(have)}개 중)")
+
+
 # ---------------------------------------------------------------- 3-9) 공용 법정 수치 단일 원천 (2026-11-22)
 #   최저임금·구직급여 상한·4대보험 요율처럼 여러 섹터가 함께 쓰는 수치가 섹터마다 따로 박혀 있으면,
 #   해가 바뀔 때 한 곳만 고치고 나머지가 옛 숫자로 남는다 — 상담에서 그대로 잘못 안내된다.
@@ -2705,8 +2769,8 @@ def main():
         run_eval_items_checks()  # AUP-2 성적표 문항 — 원천 동기·중복·섹터·수치 경로·개인정보
     if "json" in selected or "answercheck" in selected:
         run_answer_check_checks()  # AUP-5 답 검사기 — 규칙 원천 동기·서버 사본·시험 문항·지면 글 오탐 0
-    if "json" in selected or "qtype" in selected:
-        run_qtype_checks()         # AUP-6 질문 유형 판정기 — 서버 사본 동기·시험 문장·정답표 정확도·prompt.ts 배선
+    if "json" in selected or "gaup" in selected:
+        run_gaup_checks()          # G-AUP 판정기 — 자기시험·성적표 러너와의 칸 계약
     if "license" in selected:
         run_license_checks()
     if "js" in selected:
@@ -2740,8 +2804,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "eval": "AUP-2 성적표 문항", "answercheck": "AUP-5 답 검사기", "qtype": "AUP-6 질문 유형 판정기", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
-        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "eval", "answercheck", "qtype", "role", "expose"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "eval": "AUP-2 성적표 문항", "answercheck": "AUP-5 답 검사기", "qtype": "AUP-6 질문 유형 판정기", "gaup": "G-AUP 판정기", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
+        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "eval", "answercheck", "qtype", "gaup", "role", "expose"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
