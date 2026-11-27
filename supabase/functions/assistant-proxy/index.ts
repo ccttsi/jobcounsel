@@ -15,6 +15,7 @@
 //      스트림이 열리는 순간 stage 이벤트({stage:'thinking'})를 한 번 보내, 기다리는 사람에게 「추론 중」을 알린다.
 //   4) 내 대화 기록함(history_*) — 스레드 목록·메시지의 저장·조회·이름변경·삭제·전체비우기.
 //      user_id 는 언제나 session_token 에서만 정하고, 모든 쿼리에 user_id 조건을 붙인다.
+//   6) 답 평가(feedback, AUP-8) — 👍/👎·유형·인용 섹터·고정 이유만. 질문·답 문장과 사용자 번호는 평가 줄에 없다.
 //   5) 연결 테스트(ping) — 9초 안에 끝난다. 건너뛴 모델은 모델명·사유·HTTP 코드만 `skipped` 로 돌려주고,
 //      타임아웃·5xx로 밀렸을 때만 구글 공식 상태 피드를 2초 안에 확인해 `google_status` 로 붙인다.
 //
@@ -68,6 +69,7 @@ const MAX_BODY = 256000;     // 요청 본문 상한(바이트) — 대화 한 �
 const MAX_ASK_BODY = 32000;  // 질의(ask) 요청 상한 — 질문 1,200자·근거 6건이면 넉넉하다
 const MAX_Q = 1200;          // 질문 길이 상한
 const RATE_LIMIT = 12;       // 분당 호출 수
+const FEEDBACK_DAY_LIMIT = 60; // 답 평가 하루 상한(한 사람)
 
 /* 무료 폴백 체인 — 2026-11 Google AI Studio 문서 확인 기준.
    모델별 무료 한도는 따로 잡히고(429 RESOURCE_EXHAUSTED), 한 모델이 차면 다음 모델로 넘어간다.
@@ -229,6 +231,27 @@ async function overRate(userId: number): Promise<boolean> {
 }
 
 /* ---------------------------------------------------------------- 내 대화 기록함 */
+
+/* AUP-8 답 평가 — 화면이 보낸 값을 흰 목록으로만 받는다. 어떤 칸도 자유 문장을 싣지 못한다. */
+const FB_QTYPES = ['calc', 'policy', 'guide', 'counsel'];
+const FB_REASONS = ['wrong', 'offtopic', 'hard', 'long'];
+
+function cleanFeedback(b: Record<string, unknown>): Record<string, unknown> | null {
+  const fid = cleanUuid(b.fid);
+  const vote = Number(b.vote);
+  if (!fid || ![-1, 0, 1].includes(vote)) return null;
+  const qtype = FB_QTYPES.includes(String(b.qtype || '')) ? String(b.qtype) : '';
+  const sectors = (Array.isArray(b.sectors) ? b.sectors : [])
+    .map((x) => String(x || '')).filter((x) => /^[a-z0-9-]{2,24}$/.test(x))
+    .filter((x, i, a) => a.indexOf(x) === i).slice(0, 3);
+  const reason = vote === -1 && FB_REASONS.includes(String(b.reason || '')) ? String(b.reason) : '';
+  const mode = MODES.includes(String(b.mode || '')) ? String(b.mode) : '';
+  const model = /^[a-z0-9.-]{1,40}$/.test(String(b.model || '')) ? String(b.model) : '';
+  return {
+    p_fid: fid, p_vote: vote, p_qtype: qtype, p_sectors: sectors, p_reason: reason, p_mode: mode,
+    p_websearch: b.websearch === true, p_followup: b.followup === true, p_fixed: b.fixed === true, p_model: model,
+  };
+}
 
 /* 한 스레드에 담는 양 — 화면(assets/assistant.js)의 상한과 같은 값이어야 한다. */
 const HIST_THREADS_MAX = 60;
@@ -739,7 +762,7 @@ function sseHeaders(origin: string | null): Headers {
 
 function streamAnswer(
   key: string, chat: Chat, ask: Ask, ev: Evidence[], webOn: boolean, mode: string, origin: string | null,
-  canary = '',
+  canary = '', qtype = '',
 ): Response {
   const encoder = new TextEncoder();
   const body = new ReadableStream<Uint8Array>({
@@ -797,6 +820,7 @@ function streamAnswer(
             mode: mode || null,
             provider: 'gemini',
             checked: checked.fixed,
+            qtype,
           });
         } else if (out.fail === 'key') {
           send('error', { ok: false, error: 'bad_key', message: '키가 거부되었습니다. 키를 다시 확인해 주세요.' });
@@ -945,6 +969,8 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
     if (mode) system += '\n\n' + MODE_TXT[mode];
     /* AUP-6 — 유형별 답 틀(계산·제도·안내·상담 진행). 빠른 버튼 모드가 있으면 그 모드의 틀이 이미 있으므로 붙이지 않는다. */
     else system += typeBrief(question, prev);
+    /* AUP-8 — 답 평가(👍/👎)가 유형별로 모이도록 판정한 유형을 응답에 싣는다(빠른 버튼 모드면 비움). */
+    const qtype = mode ? '' : QTYPE.check(question, prev).type;
     if (scope.verdict === 'mixed') system += '\n\n■ 이번 질문의 범위\n' + scope.note;
     if (guard.verdict === 'suspect') system += '\n\n■ 보안 주의\n' + GUARD.caution;
     const canary = newCanary();
@@ -954,7 +980,7 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
     const chat: Chat = { system, user: buildUser(question, ev, page, stream, map, route, prev) };
 
     if (stream) {
-      return streamAnswer(key, chat, { web: webOn, json: false, maxTokens: 800, thinking: true }, ev, webOn, mode, origin, canary);
+      return streamAnswer(key, chat, { web: webOn, json: false, maxTokens: 800, thinking: true }, ev, webOn, mode, origin, canary, qtype);
     }
 
     let reply: Reply;
@@ -978,6 +1004,7 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
       answer: checked.answer.slice(0, 4000),
       references: checked.references,
       checked: checked.fixed,
+      qtype,
       web: webOn ? reply.web : [],
       websearch: webOn,
       mode: mode || null,
@@ -1122,6 +1149,23 @@ async function handle(req: Request, origin: string | null): Promise<Response> {
       headers: { prefer: 'return=minimal' },
     });
     if (!r.ok) return bad(origin, 'server', '대화를 지우지 못했습니다.', 500);
+    return out(200, { ok: true }, origin);
+  }
+
+  /* --- AUP-8 답 평가(👍/👎) — 질문·답 문장은 받지 않는다. 날짜·유형·인용 섹터·고정 이유만 남긴다.
+         평가 줄에는 사용자 번호가 들어가지 않고(jc_assistant_feedback), 하루 상한만 따로 센다(…_quota).
+         설계: ops/feedback/DESIGN.md --- */
+  if (action === 'feedback') {
+    const f = cleanFeedback(body);
+    if (!f) return bad(origin, 'bad_request', '평가를 알아보지 못했습니다.');
+    const r = await sb('rpc/jc_assistant_feedback_put', {
+      method: 'POST',
+      body: JSON.stringify({ p_user: userId, ...f, p_limit: FEEDBACK_DAY_LIMIT }),
+    });
+    if (!r.ok) return bad(origin, 'server', '평가를 저장하지 못했습니다. 잠시 뒤 다시 눌러 주세요.', 502);
+    const res = await r.json().catch(() => '');
+    if (res === 'limit') return bad(origin, 'rate', '오늘은 평가를 충분히 보내 주셨어요. 내일 다시 눌러 주세요.', 429);
+    if (res !== 'ok') return bad(origin, 'bad_request', '평가를 알아보지 못했습니다.');
     return out(200, { ok: true }, origin);
   }
 

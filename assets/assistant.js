@@ -232,7 +232,12 @@
       mode: String(x.mode || ''),
       websearch: !!x.websearch,
       scope: (x.scope === 'off' || x.scope === 'guard') ? x.scope : '',
-      err: !!x.err
+      err: !!x.err,
+      /* AUP-8 답 평가에 쓰는 칸 — 이 브라우저 사본에만 둔다(계정 기록함 plainTurn 에는 싣지 않는다) */
+      qtype: /^(calc|policy|guide|counsel)$/.test(String(x.qtype || '')) ? x.qtype : '',
+      model: String(x.model || '').slice(0, 40),
+      followup: !!x.followup, fixed: !!x.fixed,
+      fb: (x.fb && /^[0-9a-f-]{36}$/.test(String(x.fb.fid || ''))) ? { fid: x.fb.fid, vote: Number(x.fb.vote) || 0, reason: String(x.fb.reason || '') } : null
     };
   }
   function normTurns(list) {
@@ -325,6 +330,7 @@
       if (typeof p.webOn === 'boolean') st.webOn = p.webOn;
       if (typeof p.suggestOn === 'boolean') st.suggestOn = p.suggestOn;
       if (typeof p.welcome === 'boolean') st.welcome = p.welcome;
+      if (typeof p.fbOn === 'boolean') st.fbOn = p.fbOn;
       if (p.provider) st.provider = p.provider;
       if (p.mode) st.mode = p.mode;
       if (p.lastQ) st.lastQ = p.lastQ;
@@ -428,7 +434,7 @@
       localStorage.setItem(PREF_KEY, JSON.stringify({
         autoOpen: st.autoOpen, webOn: st.webOn,
         suggestOn: st.suggestOn, welcome: st.welcome, provider: st.provider, mode: st.mode,
-        lastQ: st.lastQ
+        lastQ: st.lastQ, fbOn: !!st.fbOn
       }));
     } catch (e) {}
   }
@@ -1051,6 +1057,19 @@
     el.ktestOut.setAttribute('aria-live', 'polite');
     kt.appendChild(el.ktestOut);
     keys.appendChild(kt);
+
+    /* AUP-8 답 평가 — 기본 꺼짐. 켠 사람에게만 답 밑에 «도움 됨 / 아쉬움»이 나온다. */
+    var fbWrap = t('div', 'jca-fbset');
+    var fbTog = t('label', 'jca-tog');
+    el.fbBox = t('input');
+    el.fbBox.type = 'checkbox';
+    el.fbBox.checked = !!st.fbOn;
+    el.fbBox.addEventListener('change', function () { st.fbOn = el.fbBox.checked; savePref(); render(); });
+    fbTog.appendChild(el.fbBox);
+    fbTog.appendChild(t('span', null, '답 평가 단추 보이기'));
+    fbWrap.appendChild(fbTog);
+    fbWrap.appendChild(t('p', 'jca-hint', '켜면 답 밑에 «도움 됨 / 아쉬움»이 생겨요. 보내는 것은 질문 유형·인용한 자료·평가뿐이고, 질문·답 문장과 내 아이디는 보내지 않아요. 모인 평가는 비서를 고치는 데만 씁니다.'));
+    keys.appendChild(fbWrap);
 
     el.privacy = t('p', 'jca-note');
     el.privacy.innerHTML = '<b>대화는 나만 볼 수 있습니다.</b> ' +
@@ -1847,9 +1866,86 @@
         });
         ab.appendChild(wl);
       }
+      if (st.fbOn && canRate(turn)) ab.appendChild(renderFb(turn));
     }
     wrap.appendChild(ab);
     return wrap;
+  }
+
+  /* ---------- AUP-8 답 평가(👍/👎) — 켠 사람에게만. 보내는 것: 유형·인용 섹터·평가·이유(고정 4종).
+     질문·답 문장과 내 아이디는 보내지 않는다(서버도 받지 않는다). 설계 ops/feedback/DESIGN.md ---------- */
+  var FB_WHY = [['wrong', '내용이 틀림'], ['offtopic', '질문과 다름'], ['hard', '이해하기 어려움'], ['long', '너무 김']];
+  var THUMB = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H4V10z"/><path d="M7 10l4-7c1.7 0 2.8 1.3 2.4 3L13 9h5.6a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 17 21H7"/></svg>';
+
+  function canRate(turn) {
+    return !!(turn && turn.a && !turn.wait && !turn.live && !turn.err && !turn.scope && loggedIn());
+  }
+  function newFid() {
+    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+    var b = new Uint8Array(16);
+    try { crypto.getRandomValues(b); } catch (e) { for (var i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256); }
+    b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+    var h = Array.prototype.map.call(b, function (x) { return (x + 256).toString(16).slice(1); }).join('');
+    return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+  }
+  function sectorsOf(refs) {
+    var out = [];
+    (refs || []).forEach(function (r) {
+      var m = /^\.?\/([a-z0-9-]+)\//.exec(String(r && r.url || ''));
+      if (m && out.indexOf(m[1]) < 0) out.push(m[1]);
+    });
+    return out.slice(0, 3);
+  }
+  function renderFb(turn) {
+    var fb = turn.fb || { vote: 0, reason: '' };
+    var box = t('div', 'jca-fb');
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', '이 답 평가');
+    var row = t('div', 'jca-fb-row');
+    row.appendChild(t('span', 'jca-fb-q', '이 답이 도움이 됐나요?'));
+    [[1, '도움 됨', 'up'], [-1, '아쉬움', 'down']].forEach(function (v) {
+      var b = t('button', 'jca-fb-b jca-fb-' + v[2]);
+      b.type = 'button';
+      b.innerHTML = THUMB + '<span></span>';
+      b.lastChild.textContent = v[1];
+      b.setAttribute('aria-pressed', String(fb.vote === v[0]));
+      b.addEventListener('click', function () { sendFb(turn, fb.vote === v[0] ? 0 : v[0], ''); });
+      row.appendChild(b);
+    });
+    box.appendChild(row);
+    if (fb.vote === -1) {
+      var why = t('div', 'jca-fb-why');
+      FB_WHY.forEach(function (w) {
+        var c = t('button', 'jca-fb-r', w[1]);
+        c.type = 'button';
+        c.setAttribute('aria-pressed', String(fb.reason === w[0]));
+        c.addEventListener('click', function () { sendFb(turn, -1, fb.reason === w[0] ? '' : w[0]); });
+        why.appendChild(c);
+      });
+      box.appendChild(why);
+    }
+    var stt = t('p', 'jca-fb-st', turn.fbMsg || (fb.vote ? '고맙습니다. 질문·답 문장 없이 평가만 보냈어요.' : ''));
+    stt.setAttribute('aria-live', 'polite');
+    box.appendChild(stt);
+    return box;
+  }
+  function sendFb(turn, vote, reason) {
+    if (turn.fbBusy) return;
+    if (!turn.fb) turn.fb = { fid: newFid(), vote: 0, reason: '' };
+    turn.fbBusy = true;
+    call('feedback', {
+      fid: turn.fb.fid, vote: vote, reason: vote === -1 ? reason : '',
+      qtype: turn.qtype || '', sectors: sectorsOf(turn.refs), mode: turn.mode || '',
+      websearch: !!turn.websearch, followup: !!turn.followup, fixed: !!turn.fixed, model: turn.model || ''
+    }).then(function () {
+      turn.fb.vote = vote; turn.fb.reason = vote === -1 ? reason : '';
+      turn.fbMsg = '';
+    }).catch(function (e) {
+      turn.fbMsg = (e && e.message) || '평가를 보내지 못했습니다. 잠시 뒤 다시 눌러 주세요.';
+    }).then(function () {
+      turn.fbBusy = false;
+      saveChat(); render();
+    });
   }
 
   function scrollThread() {
@@ -1964,6 +2060,7 @@
 
   function runAsk(turn, q) {
     var prev = prevOf(turn), sq = searchQ(q, prev);
+    turn.followup = prev.length > 0;
     var body = { question: q, evidence: evidence(sq), provider: st.provider, stream: true };
     if (prev.length) body.prev = prev;
     if (st.mode) body.mode = st.mode;
@@ -2001,6 +2098,8 @@
       if (j.scope === 'off' || j.scope === 'guard') { turn.scope = j.scope; turn.websearch = false; }
       if (j.guard === 'leak') { turn.scope = 'guard'; turn.websearch = false; turn.refs = []; turn.web = []; }
       if (j.model) turn.model = j.model;
+      turn.qtype = j.qtype || '';
+      turn.fixed = !!(j.checked && (j.checked.numbers || j.checked.links));
       delete turn.live;
     }
 
