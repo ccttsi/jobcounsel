@@ -45,6 +45,7 @@
   --tc-manual:#506094;
   --tc-law:#236c8a;
   --tc-vpi:#466394;
+  --tc-values:#43598f;
   --tc-hud:#3d7149;
   --tc-talk:#8c523d;
   --tc-translator:#06726e;
@@ -88,6 +89,7 @@
   --tc-manual:#48598f;
   --tc-law:#0f6585;
   --tc-vpi:#3d5c8f;
+  --tc-values:#3d5285;
   --tc-hud:#326a40;
   --tc-talk:#864933;
   --tc-translator:#006c67;
@@ -131,6 +133,7 @@
   --tc-manual:#96b2ff;
   --tc-law:#43c7fd;
   --tc-vpi:#84b8ff;
+  --tc-values:#a9bdf2;
   --tc-hud:#72cf88;
   --tc-talk:#ff9873;
   --tc-translator:#00d2ca;
@@ -175,6 +178,7 @@ body[data-jc-tool="triage"]{--jc-acc:var(--tc-triage)}
 body[data-jc-tool="manual"]{--jc-acc:var(--tc-manual)}
 body[data-jc-tool="law"]{--jc-acc:var(--tc-law)}
 body[data-jc-tool="vpi"]{--jc-acc:var(--tc-vpi)}
+body[data-jc-tool="values"]{--jc-acc:var(--tc-values)}
 body[data-jc-tool="hud"]{--jc-acc:var(--tc-hud)}
 body[data-jc-tool="talk"]{--jc-acc:var(--tc-talk)}
 body[data-jc-tool="translator"]{--jc-acc:var(--tc-translator)}

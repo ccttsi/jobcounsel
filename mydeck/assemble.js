@@ -53,7 +53,7 @@
      상담목표를 꺼내면 후보에 들어온다. 새 섹터를 넣을 때도 이 두 줄(티어·차례·그룹)을 함께 본다. */
   var TIER1 = ['triage', 'intake', 'policy-match', 'pay-calc', 'hud', 'kdt-calc', 'talk', 'translator',
     'work-filter', 'manual', 'law', 'company', 'portals', 'surgery', 'layer-merge', 'trait-flip', 'interview', 'portfolio', 'transit',
-    'reality', 'vpi', 'cert', 'posting', 'first-year'];
+    'reality', 'vpi', 'values', 'cert', 'posting', 'first-year'];
   var STUDY = ['dacum', 'parsons', 'theory', 'library', 'grad'];
   function tierOf(id) {
     if (TIER1.indexOf(id) >= 0) return 1;
@@ -83,7 +83,7 @@
      GROUPS — 편집 화면의 「자료 고르기」 분류. 없는 섹터는 그냥 빠진다.
      STAGE  — 상담이 실제로 흐르는 차례. 유동 덱은 이 차례로 줄을 세운다(억지로 채우지 않는다). */
   var GROUPS = [
-    { id: 'intake', name: '접수·진단', ids: ['triage', 'intake', 'talk', 'translator', 'vpi', 'reality', 'hud', 'policy-match', 'pay-calc', 'work-filter'] },
+    { id: 'intake', name: '접수·진단', ids: ['triage', 'intake', 'talk', 'translator', 'vpi', 'values', 'reality', 'hud', 'policy-match', 'pay-calc', 'work-filter'] },
     { id: 'policy', name: '제도·훈련', ids: ['manual', 'law', 'kdt-calc', 'cert', 'posting', 'first-year'] },
     { id: 'corp', name: '기업·직무', ids: ['company', 'fin-lab', 'taxonomy', 'careernet', 'valuechain', 'univ'] },
     { id: 'trend', name: '산업·동향', ids: ['thermometer', 'labor', 'briefing', 'emerging'] },
@@ -104,7 +104,7 @@
 
   var STAGE = {
     triage: 10, intake: 11, talk: 12, translator: 13,
-    vpi: 20, reality: 21, theory: 22, parsons: 23, casecon: 24,
+    vpi: 20, reality: 21, theory: 22, parsons: 23, casecon: 24, values: 25,
     'work-filter': 30, 'pay-calc': 31, 'policy-match': 32, posting: 33,
     manual: 40, law: 41, 'first-year': 42, hud: 44, 'kdt-calc': 45, cert: 46,
     company: 50, labor: 51, taxonomy: 52, careernet: 53, valuechain: 54, 'fin-lab': 55,
@@ -199,6 +199,7 @@
     { id: 'surgery', dom: /(자기소개서|이력서|지원서|서류|입사지원)/, act: /(탈락|이유|첨삭|고치|해부|문장|문제|안\s*쓰|왜)/, why: '서류 문장을 뜯어 보고 고치는 해부실' },
     { id: 'portfolio', dom: /포트폴리오/, act: /(구조|정리|만들|편집|채용|어떻게)/, why: '채용 담당자가 보는 순서로 정리하는 편집실' },
     { id: 'vpi', dom: /(심리검사|직업선호도|흥미검사|적성검사|vpi|l형|검사)/, act: /(해석|결과|읽|보고|진로|어떻게|풀)/, why: '검사 결과를 내담자와 함께 읽는 해석 도구' },
+    { id: 'values', dom: /(가치관|가치\s*소트|가치\s*카드|카드\s*소트|가치\s*저울)/, act: /(정리|나눠|저울|고르|뽑|명료|우선순위|소트|다섯)/, why: '가치 카드 스물네 장을 세 더미로 나누고 저울질해 다섯 장으로 좁히는 소트' },
     { id: 'work-filter', dom: /(근무\s*환경|교대|야간|출장|근무\s*조건)/, act: /(견딜|버틸|힘들|확인|걸러|맞)/, why: '견딜 수 있는 근무 조건을 걸러 보는 필터' },
     { id: 'talk', dom: /(대화|발문|경청|공감)/, act: /(연습|피드백|어떻게|훈련|배우)/, why: '발문·경청을 직접 연습하는 대화 도구' },
     { id: 'translator', dom: /(용어|은어|줄임말|무슨\s*말|쉬운\s*말|번역)/, act: /(알아|풀|바꿔|뜻|모르)/, why: '내담자 말을 정식 용어로 풀어 주는 번역기' },

@@ -604,6 +604,48 @@ def check_trait_flip(document, path):
     note(f"장점↔단점 뒤집기 — 단점 {len(weak)} · 장점 {len(strong)}개 낱말 · 전환 짝 {len(seen)} · 카드 {len(seen) * 2}장")
 
 
+def run_values_checks():
+    """가치 저울(values) — 카드 스물네 장·여섯 축·모티프 스물네 개의 계약.
+
+    수가 어긋나도 화면은 그대로 뜨고 소트·레이더만 조용히 깨진다. 「결과 복사」 같은
+    내보내기 장치는 헌법 3-1 · §7 #7이 금하므로 같은 자리에서 센다.
+    """
+    path = os.path.join(ROOT, "values", "index.html")
+    if not os.path.exists(path):
+        fail("json", "values/index.html 이 없다 — 장부(tools.js)에는 values가 있다")
+        return
+    text = open(path, encoding="utf-8").read()
+    m = re.search(r"const AXES=\[([^\]]*)\]", text)
+    axes = re.findall(r"'([^']+)'", m.group(1) if m else "")
+    if len(axes) != 6:
+        fail("json", f"values: 가치 축이 {len(axes)}개 — 여섯 개여야 한다")
+    m = re.search(r"const CARDS=\[(.*?)\];", text, re.S)
+    body = m.group(1) if m else ""
+    cards = re.findall(r"\{n:'([^']*)',m:'([^']*)',a:\{([^}]*)\},q:'([^']*)'\}", body)
+    if len(cards) != 24:
+        fail("json", f"values: 가치 카드가 {len(cards)}장 — 스물네 장이어야 한다")
+    names = set()
+    for name, mean, axx, q in cards:
+        if not name.strip() or not mean.strip() or not q.strip() or not axx.strip():
+            fail("json", f"values: 카드 «{name or '?'}» 의 칸(낱말·뜻·축·발문)이 비었다")
+        if name in names:
+            fail("json", f"values: 카드 낱말이 중복된다 — «{name}»")
+        names.add(name)
+        for kv in re.findall(r"([가-힣]+):(\d+)", axx):
+            if kv[0] not in axes:
+                fail("json", f"values: 카드 «{name}» 의 축 «{kv[0]}» 이 여섯 축에 없다")
+    m = re.search(r"const MO=\[(.*?)\];", text, re.S)
+    motifs = m.group(1).count('", "') + 1 if m and m.group(1).strip() else 0
+    if motifs != 24:
+        fail("json", f"values: 카드 모티프가 {motifs}개 — 스물네 개여야 한다")
+    if "clipboard" in text or 'id="copy"' in text or "id='copy'" in text:
+        fail("json", "values: 클립보드 복사 장치가 들어 있다(헌법 3-1 · §7 #7 — 내보내기·복사 금지)")
+    for shell in ("../assets/core.js", "../assets/prefs.js", "../assets/marker.js", "data-jc-prefs"):
+        if shell not in text:
+            fail("json", f"values: 공통 셸 연결 «{shell}» 이 빠졌다")
+    note(f"가치 저울 — 카드 {len(cards)} · 축 {len(axes)} · 모티프 {motifs} · 복사 장치 없음")
+
+
 CURRENT_CHECKERS = {
     "briefing/data/briefing.json": check_briefing,
     "briefing/data/news.json": check_news,
@@ -2653,6 +2695,8 @@ def main():
         run_preset_checks()   # 프리셋 장부도 데이터다 — json 검사에 함께 돌려 CI 워크플로를 고치지 않아도 되게 한다
     if "json" in selected or "gate" in selected:
         run_gate_checks()     # 수집 게이트의 불량 샘플 시험도 같은 이유로 json에 붙여 돈다
+    if "json" in selected or "values" in selected:
+        run_values_checks()   # 가치 저울 — 카드·축·모티프 수와 내보내기 금지
     if "json" in selected or "scope" in selected:
         run_scope_checks()    # 비서 질문 범위 판정기 — 서버 사본 동기·시험 문장·오탐 0
     if "json" in selected or "guard" in selected:
