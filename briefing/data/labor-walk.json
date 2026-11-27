@@ -1,6 +1,6 @@
 {
  "schema_version": "1.4.0",
- "generated_at": "2026-11-27T07:09:53+09:00",
+ "generated_at": "2026-11-27T23:29:01+09:00",
  "note": "briefing.json·archive/*.json의 카드 중 labor_walk:true(고용·임금·직무·정책 등)를 모은 실기사 색인. 본문은 카드의 「무슨 일·수치·근거」를 그대로 옮긴 우리 말 요약이며 원문 문장이 아니다.",
  "dates": [
   "2026-11-27",
@@ -668,208 +668,202 @@
    "date": "2026-11-27",
    "card_id": "c04",
    "order": 4,
-   "title": "미국 신규 실업수당 청구 18.9만건 — 1년 전보다 2.9만건 적다",
-   "kicker": "신규 청구 18만9천건(-1만3천) · 계속 수급 169만7천건(-9만5천)",
-   "category": "해외 노동시장",
-   "topic": "해외 노동시장",
-   "theme_key": "th-global-labor",
-   "theme_label": "해외 노동시장",
-   "region": "global",
-   "track": "A",
-   "source_name": "미국 노동부 고용훈련청(DOL ETA)",
-   "source_title": "Unemployment Insurance Weekly Claims (USDL 26-1732-NAT)",
-   "source_url": "https://www.dol.gov/newsroom/releases/eta/eta20261125",
-   "published_at": "2026-11-25",
-   "license_type": "PUBLIC-DOMAIN",
-   "key_numbers": [
-    {
-     "label": "신규 청구(계절조정)",
-     "value": "18만9천건",
-     "delta": "-1만3천건",
-     "period": "2026년 11월 21일 주"
-    },
-    {
-     "label": "4주 이동평균",
-     "value": "19만6천건",
-     "delta": "-1,500건",
-     "period": "2026년 11월 21일 주"
-    },
-    {
-     "label": "계속 수급",
-     "value": "169만7천건",
-     "delta": "-9만5천건",
-     "period": "2026년 11월 14일 주"
-    },
-    {
-     "label": "피보험 실업률",
-     "value": "1.1%",
-     "delta": "-0.1%p",
-     "period": "2026년 11월 14일 주"
-    }
-   ],
-   "text": "미국 노동부가 추수감사절 연휴를 앞두고 하루 앞당겨 11월 25일 실업보험 주간 청구를 발표했다. 11월 21일로 끝난 주의 계절조정 신규 청구는 18만9천건으로, 직전 주 수정치(20만2천건)보다 1만3천건 줄었다.\n\n4주 이동평균은 19만6천건으로 1,500건 줄었고, 1년 전 같은 주(21만8천건)보다 2만9천건 적다. 11월 14일로 끝난 주의 계속 수급은 169만7천건으로 9만5천건 감소했고, 피보험 실업률은 1.2%에서 1.1%로 0.1%포인트 내렸다. 계절조정 전 신규 청구는 21만2,945건으로 직전 주보다 8.1% 늘었으나 계절요인이 예상한 15.5% 증가에는 못 미쳤다(2026-11-25, USDL 26-1732-NAT)."
-  },
-  {
-   "date": "2026-11-27",
-   "card_id": "c05",
-   "order": 5,
-   "title": "미 연준 베이지북 \"채용은 퇴사 대체뿐\" — 12개 지역 중 8곳 완만한 성장",
-   "kicker": "8개 지역 성장·4개 보합 · 임금·복리후생 상승은 '완만'에서 '보통'으로",
-   "category": "해외 노동시장",
-   "topic": "해외 노동시장",
-   "theme_key": "th-global-labor",
-   "theme_label": "해외 노동시장",
-   "region": "global",
-   "track": "A",
-   "source_name": "미국 연방준비제도 이사회(Federal Reserve Board)",
-   "source_title": "Beige Book — November 2026 (Summary)",
-   "source_url": "https://www.federalreserve.gov/monetarypolicy/beigebook202611-summary.htm",
-   "published_at": "2026-11-25",
-   "license_type": "PUBLIC-DOMAIN",
-   "key_numbers": [
-    {
-     "label": "성장 보고 지역",
-     "value": "8곳",
-     "delta": "12곳 중",
-     "period": "2026-11-25 베이지북"
-    },
-    {
-     "label": "변화 없음 지역",
-     "value": "4곳",
-     "delta": "12곳 중",
-     "period": "2026-11-25 베이지북"
-    },
-    {
-     "label": "임금·복리후생",
-     "value": "보통 상승",
-     "delta": "직전 '완만'에서 상향",
-     "period": "2026-11-25 베이지북"
-    }
-   ],
-   "text": "미국 연방준비제도가 11월 25일 베이지북(10월 중순 이후 지역 조사)을 공개했다. 12개 지역 가운데 8곳이 '약간에서 보통' 범위의 성장을, 4곳이 변화 없음을 보고했다. 고용은 전반적으로 소폭 늘었지만 많은 기업이 인원을 그대로 두고 퇴사자 대체 위주로 뽑았다.\n\n의미 있는 채용 증가를 보고한 기업은 소수였고, 여러 부문이 불확실성과 소비 둔화로 채용을 망설인다고 답했다. 숙련·기술 직무의 구인난은 계속됐다. 임금·복리후생은 '보통' 상승으로 직전 보고서의 '완만한' 증가보다 한 단계 올랐고, 채우기 어려운 직무와 생활비 조정·복리후생 비용이 압력으로 지목됐다(2026-11-25, 베이지북)."
-  },
-  {
-   "date": "2026-11-27",
-   "card_id": "c06",
-   "order": 6,
-   "title": "AI가 신입 자리 대신할까 — 과업이 복잡하면 대체 의향 0.54점 낮아져",
-   "kicker": "독일 기업 관리자 1,435명 실험 · 표준화 과업 대비 -0.54점(5점 척도)",
-   "category": "AI·직무",
-   "topic": "청년·중장년 고용",
-   "theme_key": "th-youth-employment",
-   "theme_label": "청년 고용",
-   "region": "global",
-   "track": "A",
-   "source_name": "arXiv (ZEW 만하임·옥스퍼드 인터넷연구소)",
-   "source_title": "Will AI Replace Juniors? How Task Complexity Reduces Automation Risk",
-   "source_url": "https://arxiv.org/abs/2611.34099",
-   "published_at": "2026-11-25",
-   "license_type": "CC-BY-4.0",
-   "key_numbers": [
-    {
-     "label": "AI 대체 의향 차이",
-     "value": "-0.54점",
-     "delta": "표준화 과업 대비",
-     "period": "2026-11-25 논문"
-    },
-    {
-     "label": "사람 감독 중요도",
-     "value": "+0.15점",
-     "delta": "표준화 과업 대비",
-     "period": "2026-11-25 논문"
-    },
-    {
-     "label": "실험 참여 관리자",
-     "value": "1,435명",
-     "delta": "독일 정보경제·제조업",
-     "period": "2026-11-25 논문"
-    }
-   ],
-   "text": "독일 ZEW 만하임과 옥스퍼드 인터넷연구소 연구진이 정보경제·제조업 기업 관리자 1,435명을 대상으로 사전등록 설문실험을 하고 11월 25일 arXiv에 올렸다. 같은 '추가 인력 필요' 상황에서 과업이 표준화돼 있는지, 전문적 판단과 맥락 지식이 필요한지를 무작위로 나눠 AI 대체 의향을 물었다.\n\n과업이 복잡할수록 신입을 뽑는 대신 AI를 쓰겠다는 의향이 5점 척도에서 0.54점 낮았고, 사람의 감독이 중요하다는 응답은 0.15점 높았다. 향후 2년 고용 전망에서는 신입과 경력 모두 AI로 채용이 줄 것으로 봤지만, 신입 쪽 감소가 유의하게 더 컸다(2026-11-25, arXiv:2611.34099)."
-  },
-  {
-   "date": "2026-11-27",
-   "card_id": "c07",
-   "order": 7,
-   "title": "영국 공무원 공고 28만건 분석 — 팀 단위 재설계로 직무 17.7% 줄어",
-   "kicker": "공고 283,484건·과업 270만개 · 정원 감소는 6.4%에 그쳐",
+   "title": "SAP, AI 전환에 최소 1만명 감원 검토 — 전체 인력의 9%",
+   "kicker": "최소 1만명 · 전체 인력 9% / 사내 11만명 이상",
    "category": "AI·직무",
    "topic": "AI와 직무",
    "theme_key": "th-ai-labor",
    "theme_label": "AI와 직무 재편",
    "region": "global",
+   "track": "B",
+   "source_name": "CNBC",
+   "source_title": "SAP weighs cutting at least 10,000 jobs in AI push: Bloomberg",
+   "source_url": "https://www.cnbc.com/2026/11/27/sap-job-cuts-ai-restructuring.html",
+   "published_at": "2026-11-27",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "감원 검토 규모",
+     "value": "최소 1만명",
+     "delta": "",
+     "period": "2026-11-26 블룸버그 보도"
+    },
+    {
+     "label": "전체 인력 대비",
+     "value": "9%",
+     "delta": "최소",
+     "period": "2026-11-26"
+    },
+    {
+     "label": "전체 인력",
+     "value": "11만명 이상",
+     "delta": "2024년 감원 뒤 비슷한 수준",
+     "period": "2026-11-27 SAP"
+    }
+   ],
+   "text": "독일 소프트웨어 기업 SAP가 인공지능(AI) 중심으로 사업 구조를 바꾸면서 최소 1만개 일자리를 줄이는 방안을 검토하고 있다고 블룸버그가 11월 26일 보도했다. SAP는 확인 요청에 \"AI로 사업 환경이 빠르게 변하고 있어 조직과 인력이 어떻게 변해야 하는지 계속 점검하고 있다\"고 답했고, \"이와 별도로 추가 조치에 대해 결정된 것은 없다\"고 덧붙였다.\n\n감원 규모는 SAP 전체 인력(11만명 이상)의 최소 9%다. 모든 부서에 감축안 제출이 요청됐고 제품·엔지니어링·영업이 특히 거론됐으며, 최종 규모는 노사 협의에 따라 달라질 수 있다. SAP는 2024년에도 약 1만개 일자리를 줄이는 개편을 했지만 신규 직무 채용으로 전체 인력은 거의 비슷한 수준을 유지했다(2026-11-26 블룸버그 보도, 11-27 SAP 답변)."
+  },
+  {
+   "date": "2026-11-27",
+   "card_id": "c05",
+   "order": 5,
+   "title": "AI가 신입 사다리 걷어냈다 — 사무·행정 2년 새 78만개 감소",
+   "kicker": "사무·행정 -78만개(2023~2025) · AI 고노출 업종 신입 공고 3~8% 적어",
+   "category": "채용시장",
+   "topic": "청년·중장년 고용",
+   "theme_key": "th-youth-employment",
+   "theme_label": "청년 고용",
+   "region": "global",
+   "track": "B",
+   "source_name": "Yahoo Finance",
+   "source_title": "AI is squeezing entry-level office jobs, and workers without degrees are most exposed",
+   "source_url": "https://finance.yahoo.com/technology/ai/articles/ai-squeezing-entry-level-office-151520271.html",
+   "published_at": "2026-11-26",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "사무·행정 지원 감소",
+     "value": "-78만개",
+     "delta": "2023~2025년",
+     "period": "2026-11 보고서"
+    },
+    {
+     "label": "AI 취약 직무",
+     "value": "-82만개",
+     "delta": "같은 기간",
+     "period": "2026-11 보고서"
+    },
+    {
+     "label": "AI 활용 직무",
+     "value": "+140만개",
+     "delta": "같은 기간",
+     "period": "2026-11 보고서"
+    },
+    {
+     "label": "성장 경로 대비 고용 격차",
+     "value": "-150만명",
+     "delta": "2026년 8월",
+     "period": "금융·보험·정보·전문서비스"
+    }
+   ],
+   "text": "미국 연구기관 버닝글래스연구소와 RAISE US가 공개한 보고서 「Fewer Rungs, New Bridges」는 AI 확산이 초임 일자리의 사다리를 줄이고 있다고 분석했다. 저자들은 \"줄어든 사람들은 해고된 것이 아니라 애초에 채용되지 않은 것\"이라고 썼다.\n\n2026년 8월 금융·보험·정보·전문서비스 고용은 3,190만명으로 2005~2019년 성장 경로에 약 150만명 못 미친다. 2023~2025년 사무·행정 지원 직무는 78만개 줄었고, AI에 취약한 직무는 82만개 감소한 반면 AI 활용 직무는 140만개 늘었다. AI 활용도가 높은 업종에서 경력 3년 이하 채용 공고 비중은 2021~2026년 평균보다 3~8% 낮았다(2026년 6월까지 1년)."
+  },
+  {
+   "date": "2026-11-27",
+   "card_id": "c06",
+   "order": 6,
+   "title": "인도 IT 노동자, AI 해고 기준 요구 — 기술직 30% 압축 전망",
+   "kicker": "기술직 30% 압축·45% 증강 전망 / 사전고지·위로금·재배치 기준 요구",
+   "category": "AI·직무",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
+   "region": "global",
+   "track": "B",
+   "source_name": "The Times of India",
+   "source_title": "IT sector employees seek national AI layoff policy as automation threatens jobs",
+   "source_url": "https://timesofindia.indiatimes.com/business/india-business/it-sector-employees-seek-national-ai-layoff-policy-as-automation-threatens-jobs-unions-and-experts-want-nasscom-and-government-to-set-minimum-severance-advance-notice-redeployment-and-reskilling-rules-for-employees-who-lose-work/articleshow/136185743.cms",
+   "published_at": "2026-11-26",
+   "license_type": "PRESS",
+   "key_numbers": [
+    {
+     "label": "기술직 압축 전망",
+     "value": "30%",
+     "delta": "18~24개월",
+     "period": "팀리스디지털 추정"
+    },
+    {
+     "label": "AI로 강화되는 직무",
+     "value": "45%",
+     "delta": "같은 기간",
+     "period": "팀리스디지털 추정"
+    },
+    {
+     "label": "고부가 업무로 이동",
+     "value": "25%",
+     "delta": "AI·데이터·클라우드·보안",
+     "period": "팀리스디지털 추정"
+    }
+   ],
+   "text": "인도 IT 노동자 단체와 전문가들이 AI로 인한 감원에 대비해 사전 고지, 위로금, 사내 재배치, 재교육의 최소 기준을 담은 국가 정책을 요구하고 있다고 타임스오브인디아가 11월 26일 보도했다. IT 직원 단체(NITES)는 AI로 줄어든 일자리 수와 재배치·재교육 실적을 기업이 공개하도록 하는 별도 정책 틀을 정부에 요청했다.\n\n채용기업 팀리스디지털은 18~24개월 안에 기술직 일자리의 30%가 압축되고 45%는 AI로 강화되며 25%는 AI·데이터·클라우드·보안 같은 고부가 업무로 옮겨갈 것으로 추정했다. 노동자 단체는 마이크로소프트·캔바의 퇴직 패키지(근속 1년당 기본급 1개월 등)를 기준으로 삼자고 했고, 전문가들은 AI 감원 규모를 가늠할 공개 자료가 없다고 지적했다(2026-11-26 타임스오브인디아)."
+  },
+  {
+   "date": "2026-11-27",
+   "card_id": "c07",
+   "order": 7,
+   "title": "필리핀 빈곤율 15.5%→9.7% — ILO \"일자리 질이 관건\"",
+   "kicker": "빈곤율 9.7%(2025) · 18개 지역 모두 하락 / ILO \"탈출보다 유지가 어렵다\"",
+   "category": "해외 노동시장",
+   "topic": "임금·물가",
+   "theme_key": "th-wage-income",
+   "theme_label": "임금과 소득",
+   "region": "global",
    "track": "A",
-   "source_name": "arXiv (Ledingham·Hollins·Lyon 외)",
-   "source_title": "AI and the Division of Labor in Public Sector Jobs and Teams",
-   "source_url": "https://arxiv.org/abs/2512.05659",
-   "published_at": "2026-11-25",
+   "source_name": "국제노동기구(ILO)",
+   "source_title": "Can the Philippines make its poverty gains last?",
+   "source_url": "https://www.ilo.org/resource/article/can-philippines-make-its-poverty-gains-last",
+   "published_at": "2026-11-26",
    "license_type": "CC-BY-4.0",
    "key_numbers": [
     {
-     "label": "역할 내 과업 차이 설명력",
-     "value": "65.3%",
-     "delta": "직군·직급은 4.0%",
-     "period": "2026-11-25 논문"
+     "label": "빈곤율",
+     "value": "9.7%",
+     "delta": "15.5%→9.7%",
+     "period": "2023→2025년"
     },
     {
-     "label": "팀 재설계 후 역할 수",
-     "value": "-17.7%",
-     "delta": "겹치는 역할 통합",
-     "period": "2026-11-25 논문"
+     "label": "2년 하락폭",
+     "value": "-5.8%p",
+     "delta": "",
+     "period": "2023~2025년"
     },
     {
-     "label": "같은 재설계의 정원",
-     "value": "-6.4%",
-     "delta": "하위·중간 직급 중심",
-     "period": "2026-11-25 논문"
-    },
-    {
-     "label": "분석한 채용공고",
-     "value": "283,484건",
-     "delta": "영국 공무원",
-     "period": "2026-11-25 논문"
+     "label": "하락 지역",
+     "value": "18개 지역",
+     "delta": "전 지역",
+     "period": "2025년"
     }
    ],
-   "text": "영국 공무원 채용공고 283,484건에서 과업 270만개를 뽑아 8개 파운데이션 모델 앙상블로 자동화 가능성을 매긴 연구가 11월 25일 arXiv에 개정판(v2)을 올렸다. 직업·직급 차이보다 같은 역할 안의 과업 구성 차이가 노출도를 더 크게 갈랐다.\n\n노출도 분산의 65.3%가 역할 내 과업 차이에서 나왔고, 직군과 직급을 합쳐도 4.0%만 설명했다. 팀 단위 재설계를 모의실험하면 행정 업무 비중이 30.0%에서 24.6%로 줄고 확인(보증) 업무는 8.7%에서 14.5%로 늘며, 겹치는 역할을 합쳐 역할 수는 17.7% 줄지만 정원은 6.4%만 줄었다. 없어지는 자리는 주로 하위·중간 직급이었다(2026-11-25, arXiv:2512.05659v2)."
+   "text": "국제노동기구(ILO) 필리핀 사무소장 칼리드 하산이 11월 26일 기고에서 필리핀 빈곤율이 2023년 15.5%에서 2025년 9.7%로 낮아진 배경과 지속 조건을 짚었다. 그는 \"일자리 하나를 잃거나 큰 재난·질병이 닥치면 가족이 다시 빈곤으로 밀려날 수 있다\"고 썼다.\n\n필리핀 통계청 기준 빈곤율은 2년 만에 5.8%포인트 내렸고 18개 지역 모두에서 하락했으며, 바르삼모로(BARMM)와 삼보앙가반도가 가장 크게 줄었다. ILO는 같은 날 낸 연구 브리프에서 성장만으로는 이 성과가 유지되지 않는다며 일자리의 양과 질, 기업 생산성, 사회보호를 함께 키워야 한다고 제안했다(2026-11-26 ILO)."
   },
   {
    "date": "2026-11-27",
    "card_id": "c08",
    "order": 8,
-   "title": "가나 도제 18명에서 500명으로 — ILO \"직장 훈련 교사가 품질 가른다\"",
-   "kicker": "칸탄카자동차 도제 18명 · 노스쇼어에 500명 추가 등록 계획",
+   "title": "파푸아뉴기니, 동등임금·차별금지 교육 43명 — 고용법 개정",
+   "kicker": "참가자 43명(여성 19명) · ILO 협약 제100·111·190호 / 2027년 2월 시범 정책",
    "category": "해외 노동시장",
-   "topic": "훈련·재취업",
-   "theme_key": "th-skills-training",
-   "theme_label": "재취업과 직업훈련",
+   "topic": "고용정책·감독",
+   "theme_key": "th-labor-policy",
+   "theme_label": "고용정책과 감독",
    "region": "global",
    "track": "A",
    "source_name": "국제노동기구(ILO)",
-   "source_title": "Strengthening quality apprenticeships through enterprise engagement in Ghana",
-   "source_url": "https://www.ilo.org/resource/article/strengthening-quality-apprenticeships-through-enterprise-engagement-ghana",
-   "published_at": "2026-11-25",
+   "source_title": "Papua New Guinea advances gender equality and non-discrimination through labour law reform",
+   "source_url": "https://www.ilo.org/resource/news/papua-new-guinea-advances-gender-equality-and-non-discrimination-through",
+   "published_at": "2026-11-26",
    "license_type": "CC-BY-4.0",
    "key_numbers": [
     {
-     "label": "현재 도제 학습자",
-     "value": "18명",
-     "delta": "칸탄카자동차",
-     "period": "2026-11-25 ILO"
+     "label": "교육 참가자",
+     "value": "43명",
+     "delta": "여성 19명",
+     "period": "2026년 10월 26~30일"
     },
     {
-     "label": "추가 등록 계획",
-     "value": "500명",
-     "delta": "노스쇼어(계획)",
-     "period": "2026-11-25 ILO"
+     "label": "중심 협약",
+     "value": "3건",
+     "delta": "제100·111·190호",
+     "period": "ILO"
     },
     {
-     "label": "적용 기준",
-     "value": "권고 제208호",
-     "delta": "양질의 도제",
-     "period": "2026-11-25 ILO"
+     "label": "직장 정책 시범",
+     "value": "2027년 2월",
+     "delta": "양성평등·사회포용",
+     "period": "합의 사항"
     }
    ],
-   "text": "국제노동기구(ILO)가 11월 25일 가나 현장 소식을 전했다. ILO 권고 제208호(양질의 도제) 모형으로 칸탄카 자동차에서 18명이 도제 훈련을 받고 있고, 직업기술교육훈련위원회(CTVET)·E4IMPACT와 함께 의류업체 노스쇼어에 500명을 추가 등록할 계획이다.\n\nILO는 훈련 품질을 좌우하는 요인으로 직장 내 교사(인스트럭터) 역량을 꼽았다. 칸탄카에서는 도제를 가르치는 회사 교사를 대상으로 역량 강화 교육을 했고, 500명 등록은 아직 계획 단계다. ILO는 교사 투자, 기관·기업 파트너십, 기업 참여를 확대 교훈으로 제시했다(2026-11-25, ILO)."
+   "text": "국제노동기구(ILO)가 파푸아뉴기니 노동산업관계부와 함께 10월 26~30일 닷새 교육을 열어 정부·사용자·노동자 대표 43명에게 동등임금과 차별금지, 직장 내 폭력·괴롭힘 대응을 가르쳤다고 11월 26일 밝혔다. 이 나라는 1978년 고용법을 검토하는 중이다.\n\n교육은 파푸아뉴기니가 비준한 ILO 협약 제100호(동등보수), 제111호(차별금지), 제190호(폭력·괴롭힘)를 중심으로 했고 참가자 43명 가운데 19명이 여성이다. 노사정은 개정 고용법 초안을 마련해 협의에 부치고 2027년 2월부터 양성평등·사회포용 직장 정책을 시범 적용하는 것을 다음 단계로 합의했다(2026-11-26 ILO)."
   },
   {
    "date": "2026-11-26",
