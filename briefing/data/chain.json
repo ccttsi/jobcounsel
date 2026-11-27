@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-27T23:29:01+09:00",
+ "generated_at": "2026-11-28T02:24:52+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -67,6 +67,7 @@
   "2026-09-27",
   "2026-09-26",
   "2026-09-25",
+  "2026-09-24",
   "2026-09-23",
   "2026-09-22",
   "2026-09-21",
@@ -84,16 +85,21 @@
   "2026-09-09",
   "2026-09-08",
   "2026-09-07",
+  "2026-09-06",
   "2026-09-05",
   "2026-09-04",
   "2026-09-03",
   "2026-09-02",
   "2026-09-01",
   "2026-08-31",
+  "2026-08-30",
   "2026-08-29",
+  "2026-08-28",
   "2026-08-27",
+  "2026-08-26",
   "2026-08-25",
   "2026-08-24",
+  "2026-08-23",
   "2026-08-21",
   "2026-08-20",
   "2026-08-19",
@@ -1186,6 +1192,17 @@
      "published_at": "2026-08-20"
     },
     {
+     "date": "2026-08-23",
+     "card_id": "c01",
+     "title": "난임치료휴가 유급 4일, 급여 상한 33만7천원으로",
+     "kicker": "11월 27일 시행 · 연 6일 중 유급 2→4일",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775189",
+     "published_at": "2026-08-23"
+    },
+    {
      "date": "2026-08-31",
      "card_id": "c01",
      "title": "지게차·크레인 쓰는 제조업 1,000곳, 9월 첫 주 불시점검",
@@ -1239,6 +1256,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780330",
      "published_at": "2026-09-04"
+    },
+    {
+     "date": "2026-09-06",
+     "card_id": "c01",
+     "title": "건설 추락사고 예방 아이디어에 16점 시상, 대상 500만원",
+     "kicker": "9.14~10.13 접수 · 숏폼·정책제안 2개 부문",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·국토교통부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780401",
+     "published_at": "2026-09-06"
     },
     {
      "date": "2026-09-08",
@@ -1338,6 +1366,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156782832",
      "published_at": "2026-09-22"
+    },
+    {
+     "date": "2026-09-24",
+     "card_id": "c02",
+     "title": "야생조류 조류인플루엔자 2,957건, 구제역은 13건",
+     "kicker": "충남 방역 현장 점검 · 거점 소독시설 무인화",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "농림축산식품부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783248",
+     "published_at": "2026-09-24"
     },
     {
      "date": "2026-09-29",
@@ -2428,6 +2467,17 @@
      "published_at": "2026-08-20"
     },
     {
+     "date": "2026-08-26",
+     "card_id": "c01",
+     "title": "전공 10개에 직업 290개 — 전공별 경력가이드 나왔다",
+     "kicker": "직업인 인터뷰 302건 · 2023~2027년 50여 전공",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "한국고용정보원",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775559",
+     "published_at": "2026-08-26"
+    },
+    {
      "date": "2026-08-27",
      "card_id": "c02",
      "title": "전공별 경력가이드 10종, 진출 직업 290개를 담았다",
@@ -3027,6 +3077,17 @@
      "published_at": "2026-08-26"
     },
     {
+     "date": "2026-08-30",
+     "card_id": "c01",
+     "title": "푸른씨앗 적립금 1.9조원, 제2기 운용기관 다시 선정",
+     "kicker": "사업장 4.2만곳 · 누적수익률 34.48%",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "근로복지공단",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775998",
+     "published_at": "2026-08-30"
+    },
+    {
      "date": "2026-08-31",
      "card_id": "c02",
      "title": "의료비 본인부담 초과금 226만명에게 3조760억원 돌려준다",
@@ -3417,6 +3478,17 @@
      "published_at": "2026-08-04"
     },
     {
+     "date": "2026-08-23",
+     "card_id": "c02",
+     "title": "STEP 학습 수기 8점 뽑는다, AI 과정 활용 사례도",
+     "kicker": "8.24~9.20 접수 · 5개 분야",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "고용노동부·한국기술교육대",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775190",
+     "published_at": "2026-08-23"
+    },
+    {
      "date": "2026-09-03",
      "card_id": "c03",
      "title": "340개 공동훈련센터가 4만 개 중소기업 26만 명을 가르친다",
@@ -3426,6 +3498,17 @@
      "source_name": "고용노동부·한국산업인력공단",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780078",
      "published_at": "2026-09-03"
+    },
+    {
+     "date": "2026-09-06",
+     "card_id": "c02",
+     "title": "드론 80팀 겨뤄 12팀 본선, 인하대 DOK4 대상",
+     "kicker": "9.5 진주 공군교육사령부 · AAM 조난자 구조 임무",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "우주항공청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156780417",
+     "published_at": "2026-09-06"
     },
     {
      "date": "2026-09-11",
@@ -4082,6 +4165,17 @@
      "published_at": "2026-09-16"
     },
     {
+     "date": "2026-09-24",
+     "card_id": "c01",
+     "title": "추석 연휴 철도 317만명, 통합 첫 명절에 좌석 11.5만석 늘렸다",
+     "kicker": "9.24~27 나흘 · KTX 운임 평균 10% 인하",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "국무조정실",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156783165",
+     "published_at": "2026-09-24"
+    },
+    {
      "date": "2026-10-05",
      "card_id": "c01",
      "title": "에너지절약 융자금리 2.5%→2.0% — 중소기업 이자 연 50억 준다",
@@ -4582,6 +4676,17 @@
      "published_at": "2026-08-24"
     },
     {
+     "date": "2026-08-28",
+     "card_id": "c01",
+     "title": "청년 30만명 키우고 일자리 30만개, 구직수당은 65만원",
+     "kicker": "2030년까지 · 20~24세 고용률 42.6%",
+     "category": "국내 고용지표",
+     "region": "kr",
+     "source_name": "고용노동부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775942",
+     "published_at": "2026-08-28"
+    },
+    {
      "date": "2026-08-29",
      "card_id": "c01",
      "title": "청년일자리 회복방안 — 2030년까지 전문인력·일자리 각 30만",
@@ -4893,6 +4998,39 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772576",
      "published_at": "2026-07-29"
+    },
+    {
+     "date": "2026-08-26",
+     "card_id": "c02",
+     "title": "AI로 국민 서비스 직접 만드는 추진단, 민간 26명 뽑는다",
+     "kicker": "정원 61명 · 단장 포함 전문임기제",
+     "category": "국내 고용행정",
+     "region": "kr",
+     "source_name": "과학기술정보통신부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775573",
+     "published_at": "2026-08-26"
+    },
+    {
+     "date": "2026-08-28",
+     "card_id": "c02",
+     "title": "드론이 싣고 로봇이 나른다, 진주 아파트까지 50회 실증",
+     "kicker": "최대 40kg급 · 4개 지역 누적 검증",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "우주항공청",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775876",
+     "published_at": "2026-08-28"
+    },
+    {
+     "date": "2026-08-30",
+     "card_id": "c02",
+     "title": "농산물 유통에 AI 붙인 스타트업, 매출 1년에 85.6% 늘었다",
+     "kicker": "거래 농가 300곳 · 2024년 15.9억→2025년 29.6억",
+     "category": "AI·직무",
+     "region": "kr",
+     "source_name": "농림축산식품부",
+     "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775983",
+     "published_at": "2026-08-30"
     },
     {
      "date": "2026-09-07",
