@@ -29,6 +29,7 @@ globalThis.JCAssistCheckData = {
   "talk",
   "translator",
   "vpi",
+  "values",
   "policy-match",
   "hud",
   "pay-calc",

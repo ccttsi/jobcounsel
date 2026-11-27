@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ko" data-jc-deep="off">
+<head>
+<script>
+/* 사이트 공통 테마: 첫 화면 설정(jc-theme)을 따른다. 자동이면 오전 7시~오후 7시는 밝게, 그 밖에는 어둡게. */
+(function(){var m='auto';try{m=localStorage.getItem('jc-theme')||'auto';}catch(e){}
+var h=new Date().getHours(),t=(m==='light'||m==='dark')?m:(h>=7&&h<19?'light':'dark');
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">    <!-- 검색엔진 비노출: 공개로 전환할 때 이 줄과 robots.txt의 Disallow를 지운다 -->
+<script src="../assets/core.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" id="metaTheme">
+<meta name="description" content="일에서 무엇을 지키고 싶은지, 스물네 장의 가치 카드를 세 더미로 나누고 저울질해 다섯 장으로 좁히는 커리어 가치관 카드 소트. 상담에서 쓰는 가치 명료화 기법을 자료실 문장으로 새로 썼습니다.">
+<title>가치 저울 — 커리어 가치관 카드 소트</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#faf6ef;--panel:#fffdf8;--soft:#f5efe4;--line:#e9e0d2;--line-2:#d8ccb9;
+  --ink:#2a2521;--muted:#655c53;--dim:#6e645b;
+  --acc:#43598f;--acc-soft:rgba(67,89,143,.10);--on-acc:#fffdf8;
+  --weak:#8a5a1e;--weak-soft:rgba(138,90,30,.10);
+  --strong:#1f6152;--strong-soft:rgba(31,97,82,.10);
+  --shadow:0 1px 2px rgba(50,45,60,.06),0 12px 30px -20px rgba(50,45,60,.34);
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#08090c;--panel:#10141d;--soft:#141a26;--line:#1e232f;--line-2:#2c3445;
+  --ink:#e6e9ef;--muted:#9aa2b4;--dim:#8a93a8;
+  --acc:#a9bdf2;--acc-soft:rgba(169,189,242,.14);--on-acc:#0b1024;
+  --weak:#f0c07c;--weak-soft:rgba(240,192,124,.13);
+  --strong:#7fd0b3;--strong-soft:rgba(127,208,179,.13);
+  --shadow:none;
+  color-scheme:dark;
+}
+:root[data-jc-tone="sepia"]{
+  --acc:#3d5285;--acc-soft:rgba(61,82,133,.10);
+  --weak:#7c4a1a;--weak-soft:rgba(124,74,26,.10);
+  --strong:#1d584a;--strong-soft:rgba(29,88,74,.10);
+}
+body[data-jc-tool="values"]{--jc-acc:var(--acc)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;max-width:100%}
+body{font-family:var(--sans);font-size:16px;line-height:1.64;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit;cursor:pointer;background:none;border:0;text-align:left;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px 18px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media (min-width:900px){.wrap{padding:0 28px 24px}}
+
+/* ── 머리말 (공통 패턴) ── */
+.hd{display:flex;align-items:center;gap:10px;padding:14px 0 12px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.hd .ib{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;color:var(--muted)}
+.hd .ib svg{width:22px;height:22px}
+.hd .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;letter-spacing:-.02em;color:var(--ink);text-decoration:none;min-height:44px}
+.hd .brand svg{width:24px;height:24px;color:var(--acc)}
+.hd .brand .jc-tt span{color:var(--acc)}
+.hd .rst{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:14px;font-weight:600}
+.hd .rst svg{width:16px;height:16px}
+.hd>[data-jc-prefs]{margin-left:auto}
+
+/* ── 소개 ── */
+.intro{margin:0 0 18px}
+.intro .kick{display:inline-block;font-size:12.5px;font-weight:700;color:var(--acc);background:var(--acc-soft);border-radius:8px;padding:3px 9px;margin-bottom:8px}
+.intro h2{margin:0 0 6px;font-size:clamp(21px,3.4vw,27px);font-weight:800;letter-spacing:-.02em;line-height:1.35}
+.intro p{margin:0;color:var(--muted);font-size:15px;max-width:56ch}
+.steps{display:flex;gap:6px;margin:14px 0 0;padding:0;list-style:none}
+.steps li{flex:1;display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--dim);background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:9px 11px}
+.steps li b{display:grid;place-items:center;width:20px;height:20px;border-radius:7px;background:var(--panel);border:1px solid var(--line-2);font-size:11.5px;color:var(--muted);flex:none}
+.steps li.on{color:var(--acc);border-color:var(--acc);background:var(--acc-soft)}
+.steps li.on b{color:var(--on-acc);background:var(--acc);border-color:var(--acc)}
+
+/* ── 1단계: 나누기 ── */
+.stage{display:grid;gap:16px}
+@media (min-width:900px){.stage{grid-template-columns:minmax(0,1fr) 300px;align-items:start}}
+.table{position:relative;border:1px solid var(--line);border-radius:20px;background:
+  repeating-linear-gradient(0deg,transparent 0 34px,rgba(120,110,95,.045) 34px 35px),var(--panel);
+  box-shadow:var(--shadow);padding:18px;min-height:430px}
+.deckzone{position:relative;display:grid;place-items:center;min-height:340px}
+.deck{position:relative;width:min(300px,82vw);height:176px}
+.ghost{position:absolute;inset:0;border-radius:16px;background:var(--soft);border:1px solid var(--line-2)}
+.ghost.g1{transform:translate3d(6px,5px,0) rotate(1.4deg)}
+.ghost.g2{transform:translate3d(-5px,2px,0) rotate(-1.1deg)}
+.card{position:absolute;inset:0;border-radius:16px;background:var(--bg);border:1.5px solid var(--line-2);
+  box-shadow:3px 5px 0 rgba(90,80,70,.14);
+  display:grid;place-items:center;padding:18px;touch-action:none;user-select:none;-webkit-user-select:none;
+  transition:transform .18s cubic-bezier(.3,.9,.35,1.2),opacity .18s ease}
+.card .face{text-align:center;display:grid;gap:8px;justify-items:center}
+.card .nm{font-size:21px;font-weight:800;letter-spacing:-.02em}
+.card .hint{font-size:12px;color:var(--dim);font-weight:600}
+.card .mn{font-size:14px;color:var(--muted);line-height:1.55}
+.card.flip .front{display:none}
+.card:not(.flip) .back{display:none}
+.card.drag{transition:none;z-index:5;cursor:grabbing}
+.card.settle{transition:transform .34s cubic-bezier(.25,1.4,.4,1),opacity .25s ease}
+.cardnum{position:absolute;top:10px;left:12px;font-size:11px;font-weight:700;color:var(--dim);transform:rotate(-3deg);background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.deckmeta{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;color:var(--dim);font-size:13px;font-weight:600}
+.deckmeta .bar{position:relative;width:120px;height:6px;border-radius:3px;background:var(--soft);border:1px solid var(--line);overflow:hidden}
+.deckmeta .bar i{position:absolute;inset:0;background:var(--acc);transform-origin:left center;transition:transform .3s ease;display:block}
+/* 더미(빈) */
+.bins{display:grid;gap:10px}
+@media (max-width:899px){.bins{grid-template-columns:repeat(3,1fr);position:sticky;bottom:max(10px,env(safe-area-inset-bottom));z-index:6}}
+.bin{position:relative;display:grid;gap:3px;align-content:center;min-height:74px;padding:12px 12px 10px;border-radius:16px;border:1.5px dashed var(--line-2);background:var(--panel);text-align:center}
+.bin .bn{font-size:14.5px;font-weight:800}
+.bin .bc{font-size:12px;color:var(--dim);font-weight:600}
+.bin .cnt{position:absolute;top:-9px;right:10px;font-size:11.5px;font-weight:800;background:var(--bg);border:1px solid var(--line-2);color:var(--muted);border-radius:8px;padding:1px 7px}
+.bin.b-must .bn{color:var(--acc)}
+.bin.b-must.hot{background:var(--acc-soft);border-color:var(--acc);border-style:solid}
+.bin.b-nice.hot{background:var(--weak-soft);border-color:var(--weak);border-style:solid}
+.bin.b-no.hot{background:var(--soft);border-color:var(--dim);border-style:solid}
+@media (min-width:900px){.bins{position:sticky;top:16px}}
+.tap-note{font-size:12.5px;color:var(--dim);text-align:center;margin:2px 0 0}
+@media (min-width:900px){.tap-note{display:none}}
+
+/* ── 2단계: 저울질 ── */
+.scale{position:relative;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:var(--shadow);padding:20px 16px 18px;min-height:430px;display:grid;align-content:start;gap:14px}
+.scale .sc-hd{text-align:center;display:grid;gap:4px}
+.scale .sc-hd .t{font-size:17px;font-weight:800}
+.scale .sc-hd .s{font-size:13px;color:var(--dim);font-weight:600}
+.beam{display:block;width:min(300px,100%);height:auto;margin:0 auto -6px;overflow:visible;color:var(--line-2)}
+.beam .bm{transform-box:view-box;transform-origin:150px 22px;transition:transform .5s cubic-bezier(.25,1.5,.4,1)}
+.beam .stand{stroke:currentColor}
+.beam .pan{fill:var(--soft);stroke:var(--acc);stroke-width:1.5}
+.beam .wt{fill:var(--acc);opacity:0;transition:opacity .3s ease}
+.beam.l .bm{transform:rotate(-7deg)}.beam.r .bm{transform:rotate(7deg)}
+.beam.l .wt.a,.beam.r .wt.b{opacity:1}
+.duel{position:relative;display:grid;grid-template-columns:1fr 1fr;align-items:stretch;gap:12px;min-height:250px}
+.dcard{position:relative;border-radius:18px;background:var(--bg);border:1.5px solid var(--line-2);box-shadow:3px 5px 0 rgba(90,80,70,.14);
+  min-height:216px;display:flex;flex-direction:column;align-items:center;padding:16px 12px 12px;text-align:center;
+  transition:transform .22s cubic-bezier(.3,.9,.35,1.15),opacity .22s ease}
+.dcard>span:first-of-type{display:block;margin:auto 0;min-width:0;max-width:100%}
+.dcard .nm{display:block;font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.35}
+.dcard .mn{display:block;margin-top:8px;font-size:13.5px;color:var(--muted);line-height:1.55}
+.dcard .pick{flex:none;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--acc);background:var(--acc-soft);border-radius:8px;padding:6px 10px;white-space:nowrap;min-height:32px}
+@media (max-width:420px){.duel{gap:10px}.dcard{padding:14px 8px 12px}.dcard .nm{font-size:17.5px}.dcard .mn{font-size:13px}.dcard .pick{font-size:12px;padding:6px 8px}}
+.dcard:active{transform:translate3d(0,-2px,0)}
+.dcard.win{transform:translate3d(0,-6px,0) scale(1.03);opacity:1}
+.dcard.lose{transform:translate3d(0,26px,0) scale(.94) rotate(1.5deg);opacity:0}
+.vsrow{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--dim);margin-top:-4px}
+.vsrow::before,.vsrow::after{content:"";height:1px;width:34px;background:var(--line-2)}
+.sc-prog{display:flex;justify-content:center;gap:5px;flex-wrap:wrap}
+.sc-prog i{width:8px;height:8px;border-radius:4px;background:var(--line-2);display:block;transition:transform .2s ease,opacity .2s ease}
+.sc-prog i.done{background:var(--acc);transform:scale(1.15)}
+.sc-round{text-align:center;font-size:12.5px;font-weight:700;color:var(--dim)}
+
+/* ── 3단계: 순서 매기기 + 결과 ── */
+.rank{border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:var(--shadow);padding:20px 16px;display:grid;gap:12px}
+.rank .t{font-size:17px;font-weight:800;text-align:center}
+.rank .s{font-size:13px;color:var(--dim);font-weight:600;text-align:center;margin-top:-8px}
+.rlist{display:grid;gap:8px;margin:6px auto 0;width:min(440px,100%)}
+.ritem{display:flex;align-items:center;gap:10px;background:var(--bg);border:1.5px solid var(--line-2);border-radius:14px;padding:10px 12px;transition:transform .25s ease,opacity .2s ease}
+.ritem .no{display:grid;place-items:center;width:26px;height:26px;border-radius:9px;background:var(--acc);color:var(--on-acc);font-size:13px;font-weight:800;transform:rotate(-3deg);flex:none}
+.ritem .nm{font-weight:800;font-size:15.5px}
+.ritem .mv{margin-left:auto;display:grid;gap:4px}
+.ritem .mv button{display:grid;place-items:center;width:44px;height:32px;border:1px solid var(--line);border-radius:9px;color:var(--muted);background:var(--panel)}
+.ritem .mv button:disabled{opacity:.32;cursor:default}
+.ritem .mv svg{width:14px;height:14px}
+.go{display:grid;place-items:center;margin-top:6px}
+.go button{min-height:52px;padding:0 26px;border-radius:14px;background:var(--acc);color:var(--on-acc);font-size:15.5px;font-weight:800;box-shadow:3px 4px 0 rgba(90,80,70,.2);transition:transform .15s ease}
+.go button:active{transform:translate3d(1px,2px,0)}
+.go button:disabled{opacity:.4;box-shadow:none;cursor:default}
+
+.result{border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:var(--shadow);padding:22px 16px;display:grid;gap:16px;justify-items:center}
+.result .tape{position:relative;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:4px 14px;font-size:12.5px;font-weight:700;color:var(--muted);transform:rotate(-1.6deg)}
+.result h3{margin:0;font-size:19px;font-weight:800;letter-spacing:-.02em}
+.radar{width:min(340px,86vw);height:auto;overflow:visible}
+.radar .poly{fill:var(--acc-soft);stroke:var(--acc);stroke-width:2;transform-box:fill-box;transform-origin:center;transition:transform .55s cubic-bezier(.25,1.3,.4,1),opacity .4s ease}
+.radar .grid{fill:none;stroke:var(--line-2);stroke-width:1}
+.radar .axis{stroke:var(--line-2);stroke-width:1}
+.radar .lb{font-size:12px;font-weight:700;fill:var(--muted)}
+.radar .dt{fill:var(--acc);transform-box:fill-box;transform-origin:center}
+.top5{display:grid;gap:10px;width:min(560px,100%)}
+.t5{display:grid;gap:4px;background:var(--bg);border:1px solid var(--line-2);border-left:4px solid var(--acc);border-radius:12px;padding:11px 14px;opacity:0;transform:translate3d(0,10px,0);transition:transform .4s ease,opacity .4s ease}
+.t5.in{opacity:1;transform:translate3d(0,0,0)}
+.t5 .h{display:flex;align-items:baseline;gap:8px}
+.t5 .h .n{font-size:12px;font-weight:800;color:var(--acc)}
+.t5 .h .v{font-size:15.5px;font-weight:800}
+.t5 .q{font-size:13.5px;color:var(--muted);line-height:1.55}
+.next{display:grid;gap:8px;width:min(560px,100%);margin-top:2px}
+.next .nt{font-size:13px;font-weight:700;color:var(--dim)}
+.next a{display:block;position:relative;padding-right:36px!important;border:1px solid var(--line);border-radius:12px;padding:11px 13px;background:var(--bg);color:var(--ink);text-decoration:none;font-size:14px;font-weight:600}
+.next a b{color:var(--acc)}
+.next a b{display:block;margin-bottom:2px}.next a svg{position:absolute;right:12px;top:50%;margin-top:-7.5px;width:15px;height:15px;color:var(--dim)}
+.foot{color:var(--dim);font-size:12.5px;text-align:center;margin:16px 0 4px;line-height:1.6}
+
+
+/* ── 좁은 화면 다듬기 ── */
+.hd .rst{white-space:nowrap}.hd .brand{min-width:0}
+@media (max-width:380px){.hd{gap:6px}.hd .brand{font-size:16.5px;gap:6px}.hd .brand .jc-tt span{display:none}.hd .rst{padding:0 11px;font-size:13px}
+ .steps{gap:5px}.steps li{flex-direction:column;justify-content:flex-start;text-align:center;gap:5px;padding:9px 4px;font-size:12px;line-height:1.35}}
+@media (min-width:381px) and (max-width:480px){.steps li{padding:9px 8px;gap:6px}}
+.beam{margin-bottom:12px}
+@media (max-width:899px){body:not([data-step="1"]):not([data-step=""]) .intro h2,body[data-step="2"] .introtog,body[data-step="3"] .introtog,body[data-step="4"] .introtog,body[data-step="2"] #introp,body[data-step="3"] #introp,body[data-step="4"] #introp{display:none}.scale{min-height:0;padding:16px 12px 14px;gap:10px}.sc-hd .t{font-size:16px}}
+.introtog{display:none;align-items:center;gap:4px;min-height:44px;padding:0 4px;font-size:13.5px;font-weight:700;color:var(--acc)}
+.introtog svg{width:14px;height:14px;transition:transform .2s ease}.introtog[aria-expanded="true"] svg{transform:rotate(180deg)}
+@media (max-width:899px){.introtog{display:inline-flex}#introp{display:none}#introp.open{display:block}
+ .table{min-height:0;padding:14px}.deckzone{min-height:250px;padding-top:34px}.intro{margin-bottom:14px}.hd{margin-bottom:16px}}
+@media (max-width:899px) and (max-height:640px){.deck{height:150px}.deckzone{min-height:200px;padding-top:30px}.intro .kick{display:none}.intro h2{font-size:20px;margin-bottom:0}.steps{margin-top:6px}.steps li{padding:7px 4px}.introtog{min-height:40px}.bin{min-height:58px;padding:10px 6px 8px}.bin .bc{display:none}.hd{padding:8px 0 8px;margin-bottom:10px}.bins{bottom:max(8px,env(safe-area-inset-bottom))}}.bin .bn,.bin .bc,.insight .ib2,.head-sum .big{text-wrap:balance}
+@media (max-width:380px){.bin{padding:12px 6px 10px}.bin .bn{font-size:13.5px}.bin .bc{font-size:11.5px}}
+.undo{position:absolute;top:8px;right:8px;z-index:2;display:flex;align-items:center;justify-content:center;gap:5px;min-height:44px;margin:0;padding:0 16px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:13.5px;font-weight:700;background:var(--panel)}
+.undo svg{width:15px;height:15px}.undo:disabled{opacity:.35;cursor:default}
+.mustnote{margin:8px 0 0;text-align:center;font-size:12.5px;font-weight:700;color:var(--dim);min-height:20px}
+.mustnote.over{color:var(--weak)}
+.bin.b-must.full{border-color:var(--weak)}
+.head-sum{text-align:center;display:grid;gap:6px;width:min(560px,100%)}
+.head-sum .big{font-size:18px;font-weight:800;line-height:1.45;letter-spacing:-.02em}
+.head-sum .big b{color:var(--acc)}
+.head-sum .sub{font-size:13.5px;color:var(--muted)}
+.legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:12px;font-weight:700;color:var(--dim)}
+.legend i{display:inline-block;width:14px;height:8px;border-radius:3px;vertical-align:middle;margin-right:5px}
+.radar .poly2{fill:none;stroke:var(--dim);stroke-width:1.4;stroke-dasharray:4 4;opacity:.8}
+.insight{width:min(560px,100%);border:1px dashed var(--line-2);border-radius:14px;padding:13px 14px;display:grid;gap:6px;background:var(--bg)}
+.insight .it{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--weak)}
+.insight .it svg{width:16px;height:16px;flex:none}
+.insight .ib2{font-size:14px;line-height:1.6;color:var(--ink)}
+.insight .iq{font-size:13.5px;color:var(--muted);line-height:1.55}
+.insight.calm .it{color:var(--strong)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;font-weight:700;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 10px;text-decoration:line-through;text-decoration-color:var(--line-2)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:min(560px,100%)}
+.acts button{min-height:46px;padding:0 16px;border-radius:12px;border:1px solid var(--line-2);background:var(--bg);font-size:14px;font-weight:700;color:var(--ink);text-align:center;flex:1 1 140px}
+.acts button.pri{background:var(--acc);color:var(--on-acc);border-color:var(--acc)}
+.t5 .q.q2{margin-top:2px}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+
+/* ── PC 밀도 (900px 이상) — 가로 공간을 쓰고 세로 스크롤을 줄인다. 모바일은 위 규칙 그대로. ── */
+.rc{display:contents}.rh{display:contents}.introtx{display:contents}
+@media (min-width:900px){
+  .wrap{max-width:1320px;padding:0 32px 18px}
+  .hd{padding:10px 0;margin-bottom:16px}
+  .intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(420px,520px);gap:8px 40px;align-items:center;margin-bottom:16px}
+  .introtx{display:block}
+  .intro .kick{margin-bottom:6px}
+  .intro h2{margin:0 0 4px}
+  .intro p{max-width:62ch;font-size:14.5px;line-height:1.6}
+  .steps{margin:0}
+  body:not([data-step="1"]):not([data-step=""]) .intro .kick,body:not([data-step="1"]):not([data-step=""]) #introp{display:none}
+  body:not([data-step="1"]):not([data-step=""]) .intro h2{margin:0}
+  /* 1단계: 카드 + 더미 세 칸을 한 화면에 */
+  .stage{grid-template-columns:minmax(0,1fr) minmax(280px,340px);grid-template-areas:"table bins" "table note";gap:12px 20px;align-content:start}
+  .table{grid-area:table;min-height:0;padding:16px 20px 14px}
+  .bins{grid-area:bins;position:static;align-self:start;gap:12px}
+  .mustnote{grid-area:note;margin:0;text-align:left;align-self:start}
+  .deckzone{min-height:clamp(230px,36vh,330px)}
+  .deck{width:min(360px,70%);height:clamp(170px,26vh,220px)}
+  .card .nm{font-size:24px}.card .mn{font-size:15px}
+  .bin{min-height:clamp(70px,11vh,96px)}
+  .deckmeta{margin-top:10px}
+  /* 2단계: 저울은 왼쪽, 두 장은 오른쪽 */
+  .scale{min-height:0;padding:16px 24px 18px;grid-template-columns:minmax(220px,300px) minmax(0,1fr);column-gap:32px;row-gap:8px;align-content:center}
+  .scale .sc-hd{grid-column:1/-1;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .scale .beam{grid-column:1;margin:0 auto 4px;width:min(260px,100%)}
+  .scale .duel{grid-column:2;grid-row:2/6;min-height:0;align-self:center}
+  .scale .vsrow,.scale .sc-prog,.scale .sc-round{grid-column:1}
+  .dcard{min-height:clamp(180px,30vh,240px)}
+  .dcard .nm{font-size:22px}.dcard .mn{font-size:14.5px}
+  /* 3단계: 안내 왼쪽, 다섯 장 오른쪽 */
+  .rank{grid-template-columns:minmax(240px,320px) minmax(0,1fr);grid-template-areas:"t list" "s list" "go list";column-gap:36px;row-gap:6px;padding:20px 28px;align-content:center;align-items:start}
+  .rank .t{grid-area:t;text-align:left;align-self:end}.rank .s{grid-area:s;text-align:left;margin-top:0}
+  .rank .go{grid-area:go;place-items:start;margin-top:10px}
+  .rank .rlist{grid-area:list;width:100%;margin:0;gap:6px}
+  .ritem{padding:7px 12px}.ritem .mv{display:flex;gap:6px}.ritem .mv button{height:30px}
+  /* 결과: 세 칸 (모양 | 다섯 가지 | 마주 선 가치·이어 보기) */
+  .result{grid-template-columns:minmax(300px,360px) minmax(0,1fr) minmax(260px,320px);column-gap:24px;row-gap:12px;padding:16px 24px 14px;justify-items:stretch;align-items:start}
+  .rh{display:flex;grid-column:1/-1;align-items:center;gap:12px;justify-content:flex-start}
+  .rh h3{font-size:18px}
+  .rc{display:flex;flex-direction:column;gap:12px;min-width:0;align-items:stretch}
+  .rc1{align-items:center}
+  .result .head-sum,.result .acts{width:100%}
+  .head-sum{text-align:left;gap:4px}.head-sum .big{font-size:16.5px}.head-sum .sub{font-size:13px}
+  .radar{width:min(320px,100%)}
+  .rc1 .legend{justify-content:center}
+  .top5,.next,.insight{width:100%}
+  .top5{gap:8px}.t5{padding:9px 14px}
+  .acts button{flex:1 1 120px;min-height:42px}
+  .result .foot{grid-column:1/-1;margin:2px 0 0;font-size:12px}
+  .result .foot br{display:none}
+  .next a{padding:9px 36px 9px 13px;font-size:13.5px}
+  .insight{padding:11px 13px}
+}
+@media (min-width:900px) and (max-width:1179px){
+  .result{grid-template-columns:minmax(280px,340px) minmax(0,1fr)}
+  .rc3{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .rc3 .next{grid-column:1/-1}
+}
+@media (min-width:900px) and (max-height:700px){
+  .intro p{display:none}.intro{margin-bottom:10px}.hd{margin-bottom:10px}
+}
+
+/* 타로 카드 아이디어: 안쪽 가는 테두리 + 키워드마다 굵고 단순한 선 상징 하나 */
+.mo{position:absolute;z-index:0;pointer-events:none;color:var(--acc);opacity:.15;stroke-width:1.5;width:min(62%,190px);height:auto;left:50%;top:50%;transform:translate(-50%,-50%)}
+:root[data-theme="dark"] .mo{opacity:.2}
+.card,.dcard,.t5{overflow:hidden}
+.card::before,.dcard::before,.t5::before{content:"";position:absolute;inset:6px;border:1px solid var(--line-2);border-radius:11px;opacity:.7;pointer-events:none;z-index:0}
+.t5::before{inset:4px 4px 4px 2px;border-radius:9px}
+.card>.face,.dcard>span,.t5>span,.cardnum{position:relative;z-index:1}
+.cardnum{position:absolute}
+.card .face{position:relative}
+.t5 .mo{left:auto;right:6px;transform:translateY(-50%);width:min(34%,130px);opacity:.14}
+:root[data-theme="dark"] .t5 .mo{opacity:.2}
+.dcard .mo{width:min(70%,150px)}
+@media (max-width:420px){.dcard .mo{opacity:.11}.dcard::before{inset:4px}}
+
+@media (min-width:900px){
+  body:not([data-step="1"]):not([data-step=""]) .intro h2{display:none}
+  body:not([data-step="1"]):not([data-step=""]) .intro{grid-template-columns:1fr}
+  body:not([data-step="1"]):not([data-step=""]) .hd{margin-bottom:12px}
+  .t5{gap:2px;padding:7px 14px}.t5 .q{line-height:1.45;font-size:13px}
+  .result{row-gap:8px}
+  .radar{width:min(290px,100%)}
+}
+</style>
+</head>
+<body data-jc-tool="values">
+<div class="wrap">
+  <header class="hd">
+    <a class="ib" href="../" aria-label="자료실 첫 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a>
+    <a class="brand" href="./"><svg class="jc-hic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3"/><path d="M5 6h14"/><path d="m5 6-2.5 6a3.5 3.5 0 0 0 7 0L7 6"/><path d="m19 6-2.5 6a3.5 3.5 0 0 0 7 0L21 6"/><path d="M12 6v15"/><path d="M8 21h8"/></svg><span class="jc-tt">가치 저울 <span>카드 소트</span></span></a>
+    <button type="button" class="rst" id="rst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>처음으로</span></button>
+    <span data-jc-prefs></span>
+  </header>
+
+  <h1 class="sr">가치 저울 — 커리어 가치관 카드 소트</h1>
+
+  <section class="intro">
+    <div class="introtx">
+    <span class="kick">상담 도구(매치)</span>
+    <h2>일에서 무엇을 지키고 싶은가, 스물네 장으로 저울질하기</h2>
+    <button type="button" class="introtog" id="introtog" aria-expanded="false">이 도구는? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 10 6 6 6-6"/></svg></button>
+    <p id="introp">상담실의 가치 명료화 카드 정리를 화면으로 옮겼습니다. 카드를 세 더미로 나누고, 「꼭」이 다섯 장이 넘으면 둘씩 맞대어 좁히고, 마지막 다섯 장의 순서를 정하면 내 가치 모양이 그려집니다. 내려놓은 카드와 마주 선 가치까지 짚어 드립니다.</p>
+    </div>
+    <ol class="steps" id="steps">
+      <li class="on"><b>1</b> 세 더미로 나누기</li>
+      <li><b>2</b> 「꼭」 저울질</li>
+      <li><b>3</b> 다섯 장 순서와 결과</li>
+    </ol>
+  </section>
+
+  <!-- 1단계 -->
+  <section class="stage" id="step1">
+    <div class="table">
+      <button type="button" class="undo" id="undo" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>되돌리기</button>
+
+      <div class="deckzone">
+        <div class="deck" id="deck">
+          <div class="ghost g2"></div>
+          <div class="ghost g1"></div>
+          <div class="card" id="card" style="cursor:grab">
+            <span class="cardnum" id="cardnum">1 / 24</span>
+            <div class="face front">
+              <span class="nm" id="cname"></span>
+              <span class="hint">누르면 뜻 · 끌어서 더미에 놓기</span>
+            </div>
+            <div class="face back">
+              <span class="mn" id="cmean"></span>
+              <span class="hint">다시 누르면 앞면</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="deckmeta">
+        <span id="left">남은 카드 24장</span>
+        <span class="bar"><i id="bar"></i></span>
+      </div>
+    </div>
+    <div class="bins" id="bins">
+      <button type="button" class="bin b-no" data-bin="no"><span class="bn">없어도 된다</span><span class="bc">밀어내도 후회 없는 것</span><span class="cnt" id="cnt-no">0</span></button>
+      <button type="button" class="bin b-nice" data-bin="nice"><span class="bn">있으면 좋다</span><span class="bc">되면 반가운 것</span><span class="cnt" id="cnt-nice">0</span></button>
+      <button type="button" class="bin b-must" data-bin="must"><span class="bn">꼭 있어야 한다</span><span class="bc">없으면 못 견디는 것</span><span class="cnt" id="cnt-must">0</span></button>
+    </div>
+          <p class="mustnote" id="mustnote">「꼭」은 다섯 장까지가 가장 또렷합니다</p>
+    <p class="tap-note">끌어 놓기 어려우면 카드를 보고 아래 더미를 눌러 주세요.</p>
+  </section>
+
+  <!-- 2단계 -->
+  <section class="scale" id="step2" hidden>
+    <div class="sc-hd">
+      <span class="t">「꼭」이 다섯 장을 넘었습니다 — 저울질로 좁힙니다</span>
+      <span class="s" id="sc-sub">둘 중 지금 더 지키고 싶은 하나를 골라 주세요</span>
+    </div>
+    <svg class="beam" id="beam" viewBox="0 0 300 78" aria-hidden="true">
+      <path class="stand" d="M150 22v50M122 74h56" fill="none" stroke-width="2.4" stroke-linecap="round"/>
+      <g class="bm"><path d="M44 22h212" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="150" cy="22" r="5" fill="var(--acc)"/>
+        <path d="M44 22 24 52M44 22l20 30M256 22l-20 30M256 22l20 30" stroke="currentColor" stroke-width="1.3" fill="none"/>
+        <path class="pan" d="M18 52h52a26 8 0 0 1-52 0Z"/><path class="pan" d="M230 52h52a26 8 0 0 1-52 0Z"/>
+        <circle class="wt a" cx="44" cy="48" r="4"/><circle class="wt b" cx="256" cy="48" r="4"/></g>
+    </svg>
+    <div class="duel">
+      <button type="button" class="dcard" id="dl"><span><span class="nm"></span><span class="mn"></span></span><span class="pick">이쪽을 지킨다</span></button>
+      <button type="button" class="dcard" id="dr"><span><span class="nm"></span><span class="mn"></span></span><span class="pick">이쪽을 지킨다</span></button>
+    </div>
+    <div class="vsrow" aria-hidden="true">둘 중 하나만 지킬 수 있다면</div>
+    <div class="sc-prog" id="scprog"></div>
+    <div class="sc-round" id="scround"></div>
+  </section>
+
+  <!-- 3단계: 순서 -->
+  <section class="rank" id="step3" hidden>
+    <span class="t">다섯 장이 정해졌습니다</span>
+    <span class="s">위가 가장 지키고 싶은 것 — 단추로 순서를 맞춰 주세요</span>
+    <div class="rlist" id="rlist"></div>
+    <div class="go"><button type="button" id="fin">이 순서로 결과 보기</button></div>
+  </section>
+
+  <!-- 결과 -->
+  <section class="result" id="result" hidden>
+    <div class="rh"><span class="tape">상담 메모 · 가치 명료화 소트</span>
+    <h3>내가 지키고 싶은 다섯 가지</h3></div>
+    <div class="rc rc1">
+    <div class="head-sum" id="headsum"></div>
+    <svg class="radar" id="radar" viewBox="0 0 340 300" role="img" aria-label="가치 여섯 축의 모양"></svg>
+    <div class="legend"><span><i style="background:var(--acc)"></i>다섯 장(순서 가중)</span><span><i style="border-top:2px dashed var(--dim);height:0"></i>「있으면 좋다」 더미</span></div>
+    <div class="acts"><button type="button" class="pri" id="again">다시 해 보기</button></div>
+    </div>
+    <div class="rc rc2"><div class="top5" id="top5"></div></div>
+    <div class="rc rc3"><div class="insight" id="tension"></div>
+    <div class="insight calm" id="dropped" hidden></div>
+    <div class="next">
+      <span class="nt">이어 보기 — 이 결과와 이어지는 자료</span>
+      <a href="../vpi/"><b>직업선호도검사 해석 시뮬레이터</b> 지킨 가치와 흥미 유형을 맞대어 봅니다<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></a>
+      <a href="../work-filter/"><b>직업 현실 리얼 필터</b> 가치가 요구하는 근무 조건을 직무별로 점검합니다<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></a>
+      <a href="../transit/"><b>환승노선도</b> 지금 자리에서 그 가치가 사는 직무로 가는 노선을 그립니다<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div></div>
+    <p class="foot">가치 카드 스물네 장과 여섯 축은 자료실이 직접 설계했습니다. 수퍼(Donald E. Super)의 직업가치 분류 같은 공개된 이론의 개념만 참고하고, 문장은 자료실이 새로 썼습니다.<br>서버 저장 없이 이 화면 안에서만 계산합니다. 결과는 상담 재료이며 진단이 아닙니다.</p>
+  </section>
+</div>
+
+<script>
+'use strict';
+/* ── 데이터: 가치 카드 24장 (자료실 자체 설계 — 수퍼의 직업가치 분류 개념 참고, 문장 새로 작성) ── */
+const AXES=['성취','사람','안정','자율','보상','의미'];
+const CARDS=[
+ {n:'성취감',m:'해낸 일이 눈에 보일 때 힘이 나는가',a:{성취:2},q:'최근에 「해냈다」고 느낀 순간은 어떤 일이었나요?'},
+ {n:'전문성',m:'한 분야를 깊이 파고들어 알아주는 사람이 되고 싶은가',a:{성취:1,의미:1},q:'깊이 파고 싶은 분야를 하나 꼽는다면 무엇인가요?'},
+ {n:'배움·성장',m:'새것을 익혀 어제보다 나아지고 싶은가',a:{성취:1,의미:1},q:'요즘 배우는 것이 있나요? 없다면 배우고 싶은 것은요?'},
+ {n:'도움·돌봄',m:'내 일이 누군가의 짐을 덜어 주면 좋겠는가',a:{사람:2},q:'누구를 돕는 일이 가장 마음에 남나요?'},
+ {n:'관계·동료',m:'좋은 사람들과 어울려 일하고 싶은가',a:{사람:2},q:'같이 일하고 싶은 동료는 어떤 사람인가요?'},
+ {n:'인정·존중',m:'한 일을 사람들이 알아봐 주면 좋겠는가',a:{사람:1,보상:1},q:'인정받지 못했다고 느낀 적이 있나요? 그때 어땠나요?'},
+ {n:'고용 안정',m:'흔들리지 않는 자리가 든든한가',a:{안정:2},q:'「불안정해도 괜찮다」고 느끼는 정도는 어느 선인가요?'},
+ {n:'생활의 균형',m:'일과 삶이 서로 먹어치우지 않으면 좋겠는가',a:{안정:1,의미:1},q:'일 밖에서 꼭 지키고 싶은 시간이 있나요?'},
+ {n:'건강',m:'일하다 몸과 마음이 상하지 않으면 좋겠는가',a:{안정:2},q:'지금 일(또는 구직 활동)이 몸이나 마음에 무리를 주고 있나요?'},
+ {n:'정주·지역',m:'살고 싶은 곳에 뿌리내리고 싶은가',a:{안정:1,사람:1},q:'일 때문에 살 곳을 옮길 수 있나요? 어디까지 가능한가요?'},
+ {n:'자율·재량',m:'내 방식과 속도를 스스로 정하고 싶은가',a:{자율:2},q:'누가 시킨 일과 스스로 정한 일, 어느 쪽에서 힘이 나나요?'},
+ {n:'독립·창업',m:'내 이름의 일을 세우고 싶은가',a:{자율:1,보상:1},q:'혼자 책임지는 일을 상상하면 설레나요, 겁나나요?'},
+ {n:'다양성·새로움',m:'매일 다른 자극이 있으면 좋겠는가',a:{자율:1,성취:1},q:'같은 일의 반복이 편한가요, 지루한가요?'},
+ {n:'권한·리더십',m:'사람과 일을 이끄는 자리에 서고 싶은가',a:{자율:1,사람:1},q:'앞장서 본 경험이 있나요? 그때 기분은 어땠나요?'},
+ {n:'소득·보상',m:'벌이가 노력만큼 따라와 주면 좋겠는가',a:{보상:2},q:'생활을 위해 필요한 소득의 선은 어느 정도인가요?'},
+ {n:'지위·명예',m:'맡은 역할에 어울리는 자리와 이름이 좋은가',a:{보상:1,성취:1},q:'이름표나 직함이 마음에 걸린 적이 있나요?'},
+ {n:'복지·대우',m:'급여 밖의 대우도 두루 갖춰지면 좋겠는가',a:{보상:1,안정:1},q:'꼭 필요하다고 느끼는 대우가 있나요?'},
+ {n:'의미·공익',m:'사회에 보탬이 되는 일이면 좋겠는가',a:{의미:2},q:'「이건 의미 있다」고 느낀 일은 무엇이었나요?'},
+ {n:'소신·윤리',m:'내 양심에 어긋나지 않는 일이면 좋겠는가',a:{의미:2},q:'하기 싫어서 거절한 일이 있나요? 이유는 무엇이었나요?'},
+ {n:'창의·표현',m:'내 생각과 솜씨를 담아내고 싶은가',a:{의미:1,자율:1},q:'만들거나 표현해 본 것 중 손에 남는 것이 있나요?'},
+ {n:'규칙·질서',m:'정해진 틀 안에서 정확하게 하고 싶은가',a:{안정:1,성취:1},q:'매뉴얼이 있는 일과 없는 일, 어느 쪽이 편한가요?'},
+ {n:'환경·조건',m:'공간·장비·통근 같은 조건이 맞으면 좋겠는가',a:{안정:1,보상:1},q:'견디기 힘든 작업 환경이 있나요?'},
+ {n:'여가·취미',m:'일 밖의 시간에도 내가 있으면 좋겠는가',a:{의미:1,안정:1},q:'쉬는 날 무엇을 할 때 가장 쉬는 것 같나요?'},
+ {n:'시간·속도',m:'일하는 시간과 강도를 내가 맞추면 좋겠는가',a:{자율:1,안정:1},q:'밤낮이 바뀌거나 몰아치는 일은 견딜 수 있나요?'}
+];
+
+const MO=["<path d=\"M8 90H152M18 90 62 30 88 64 108 44 148 90\"/><path d=\"M62 30V10M62 10l20 6-20 6\"/>", "<circle cx=\"108\" cy=\"52\" r=\"14\"/><circle cx=\"108\" cy=\"52\" r=\"28\"/><circle cx=\"108\" cy=\"52\" r=\"42\"/><path d=\"M108 4v96M56 52h104\"/>", "<path d=\"M10 92H42V74H72V56H102V38H132V20H152\"/>", "<path d=\"M80 88C28 56 38 18 80 38c42-20 52 18 0 50Z\"/><path d=\"M80 38v22M69 49h22\"/>", "<circle cx=\"40\" cy=\"66\" r=\"10\"/><circle cx=\"120\" cy=\"66\" r=\"10\"/><circle cx=\"80\" cy=\"26\" r=\"10\"/><path d=\"M49 60 72 34M88 34l23 26M50 66h60\"/>", "<path d=\"m80 8 17 34 38 5-28 26 7 37-34-18-34 18 7-37-28-26 38-5Z\"/>", "<path d=\"M80 8l46 16v30c0 22-24 36-46 42-22-6-46-20-46-42V24Z\"/><path d=\"m58 52 16 16 30-32\"/>", "<path d=\"M80 12v76M44 88h72M28 32h104\"/><path d=\"M28 32 14 62h28ZM132 32l-14 30h28Z\"/>", "<path d=\"M4 56h40l10-30 16 56 14-72 14 58 8-12h50\"/>", "<path d=\"M30 92V50L80 14l50 36v42Z\"/><path d=\"M66 92V64h28v28M4 92h152\"/><path d=\"M104 28V16h12v22\"/>", "<path d=\"M8 78C60 82 70 30 148 24\"/><path d=\"m122 12 26 12-22 18\"/><path d=\"M8 78c20-30 40-8 60-26\" stroke-dasharray=\"3 6\"/>", "<path d=\"M80 6c24 22 26 54 0 74-26-20-24-52 0-74Z\"/><circle cx=\"80\" cy=\"40\" r=\"8\"/><path d=\"m60 62-14 18 20-4M100 62l14 18-20-4M80 84v14\"/>", "<path d=\"m80 6 12 38 38 12-38 12-12 38-12-38-38-12 38-12Z\"/>", "<path d=\"M26 80 18 34l34 24 28-38 28 38 34-24-8 46Z\"/><path d=\"M26 92h108\"/>", "<circle cx=\"80\" cy=\"50\" r=\"40\"/><circle cx=\"80\" cy=\"50\" r=\"28\"/><path d=\"M80 32v36M70 40h14a6 6 0 0 1 0 12H72a6 6 0 0 0 0 12h14\"/>", "<circle cx=\"80\" cy=\"40\" r=\"28\"/><path d=\"M64 62 52 94l28-14 28 14-12-32\"/>", "<path d=\"M20 54h120M20 54c0 30 120 30 120 0\"/><path d=\"M80 26v28M20 54C20 24 140 24 140 54\"/><path d=\"M80 82v10c0 8-12 8-12 2\"/>", "<circle cx=\"80\" cy=\"50\" r=\"42\"/><ellipse cx=\"80\" cy=\"50\" rx=\"18\" ry=\"42\"/><path d=\"M38 50h84M46 28h68M46 72h68\"/>", "<circle cx=\"80\" cy=\"50\" r=\"40\"/><path d=\"m80 18 10 32-10 32-10-32Z\"/><path d=\"M80 4v8M80 88v8M30 50h-8M138 50h-8\"/>", "<path d=\"M8 74C28 20 48 20 54 56s32 36 46-12 32-30 52-6\"/>", "<path d=\"M20 20h120v60H20ZM60 20v60M100 20v60M20 50h120\"/><path d=\"M28 28h24v14H28Z\"/>", "<circle cx=\"120\" cy=\"28\" r=\"14\"/><path d=\"M120 4v6M120 46v6M96 28h-6M150 28h6M103 11l-4-4M137 11l4-4\"/><path d=\"M4 90C30 50 60 50 84 90M60 90c20-30 50-40 96 0\"/>", "<path d=\"M30 40h70v30a22 22 0 0 1-22 22H52a22 22 0 0 1-22-22ZM100 48h10a12 12 0 0 1 0 24h-10\"/>", "<circle cx=\"80\" cy=\"50\" r=\"42\"/><path d=\"M80 50V22M80 50l20 12\"/>"];
+function motif(i){return '<svg class="mo" viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+MO[i]+'</svg>';}
+function setMotif(el,i){const o=el.querySelector(':scope>.mo');if(o)o.remove();el.insertAdjacentHTML('afterbegin',motif(i));}
+/* ── 상태 ── */
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let order=[...CARDS.keys()];
+let bins={no:[],nice:[],must:[]};
+let cur=0;
+let dragMoved=false;
+let hist=[];let dropped=[];
+
+const $=s=>document.querySelector(s);
+const card=$('#card');
+
+/* ── 1단계 렌더 ── */
+function showCard(){
+  const c=CARDS[order[cur]];
+  setMotif(card,order[cur]);
+  $('#cname').textContent=c.n;
+  $('#cmean').textContent=c.m;
+  $('#cardnum').textContent=(cur+1)+' / '+CARDS.length;
+  $('#left').textContent='남은 카드 '+(CARDS.length-cur)+'장';
+  $('#bar').style.transform='scaleX('+(cur/CARDS.length)+')';
+  card.classList.remove('flip');
+  card.style.transform='translate3d(0,0,0)';
+}
+function ghostVisible(){
+  const left=CARDS.length-cur-1;
+  document.querySelector('.ghost.g1').style.opacity=left>=1?1:0;
+  document.querySelector('.ghost.g2').style.opacity=left>=2?1:0;
+}
+function refreshBins(){
+  for(const k of ['no','nice','must']) document.querySelector('#cnt-'+k).textContent=bins[k].length;
+  const n=bins.must.length,mn=$('#mustnote');
+  mn.classList.toggle('over',n>5);document.querySelector('.bin.b-must').classList.toggle('full',n>5);
+  mn.textContent=n===0?'「꼭」은 다섯 장까지가 가장 또렷합니다':n<=5?'「꼭」 '+n+'장 · 다섯 장까지 괜찮아요':'「꼭」 '+n+'장 · 다섯 장을 넘으면 저울질로 좁혀요';
+  $('#undo').disabled=hist.length===0;
+}
+function undo(){
+  if(!hist.length||card.classList.contains('settle'))return;
+  const h=hist.pop();bins[h.bin].pop();cur--;
+  ghostVisible();refreshBins();showCard();
+  card.style.opacity='1';card.style.transform='translate3d(0,0,0)';
+}
+$('#undo').addEventListener('click',undo);
+$('#introtog').addEventListener('click',e=>{const o=$('#introp').classList.toggle('open');e.currentTarget.setAttribute('aria-expanded',o);});
+function place(bin){
+  const id=order[cur];
+  bins[bin].push(id);hist.push({id:id,bin:bin});
+  cur++;
+  ghostVisible();refreshBins();
+  card.classList.add('settle');
+  const r=card.getBoundingClientRect(),b=document.querySelector('[data-bin="'+bin+'"]').getBoundingClientRect();
+  card.style.transform='translate3d('+(b.left+b.width/2-(r.left+r.width/2))+'px,'+(b.top+b.height/2-(r.top+r.height/2))+'px,0) scale(.22) rotate(4deg)';
+  card.style.opacity='0';
+  setTimeout(()=>{
+    card.classList.remove('settle','flip');
+    card.style.transition='none';card.style.transform='translate3d(0,-8px,0)';card.style.opacity='0';
+    if(cur>=CARDS.length){finishStep1();return;}
+    showCard();ghostVisible();
+    requestAnimationFrame(()=>{requestAnimationFrame(()=>{card.style.transition='';card.style.opacity='1';card.style.transform='translate3d(0,0,0)';});});
+  },REDUCED?0:260);
+}
+
+/* 끌어 놓기 — 레이아웃 읽기는 끌기 시작 때 한 번만 (모션 가드레일) */
+let binRects=null;
+card.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse'&&e.button!==0)return;
+  binRects=[...document.querySelectorAll('.bin')].map(b=>{const r=b.getBoundingClientRect();return{k:b.dataset.bin,l:r.left,t:r.top,w:r.width,h:r.height};});
+  card.setPointerCapture(e.pointerId);
+  card.classList.add('drag');
+  card.dataset.dx=e.clientX;card.dataset.dy=e.clientY;
+  dragMoved=false;
+});
+card.addEventListener('pointermove',e=>{
+  if(!card.classList.contains('drag'))return;
+  const dx=e.clientX-card.dataset.dx,dy=e.clientY-card.dataset.dy;
+  if(Math.abs(dx)+Math.abs(dy)>6){if(!dragMoved)card.classList.remove('flip');dragMoved=true;}
+  const rot=Math.max(-9,Math.min(9,dx/14));
+  card.style.transform='translate3d('+dx+'px,'+dy+'px,0) rotate('+rot+'deg) scale(1.03)';
+  const hot=binRects.find(r=>e.clientX>=r.l-8&&e.clientX<=r.l+r.w+8&&e.clientY>=r.t-8&&e.clientY<=r.t+r.h+8);
+  document.querySelectorAll('.bin').forEach(b=>b.classList.toggle('hot',!!hot&&hot.k===b.dataset.bin));
+});
+card.addEventListener('pointerup',e=>{
+  if(!card.classList.contains('drag'))return;
+  card.classList.remove('drag');
+  document.querySelectorAll('.bin').forEach(b=>b.classList.remove('hot'));
+  if(!dragMoved){card.classList.toggle('flip');card.style.transform='translate3d(0,0,0)';return;}
+  const hit=binRects.find(r=>e.clientX>=r.l&&e.clientX<=r.l+r.w&&e.clientY>=r.t&&e.clientY<=r.t+r.h);
+  if(hit){place(hit.k);}
+  else{card.style.transform='translate3d(0,0,0)';}
+});
+card.addEventListener('pointercancel',()=>{card.classList.remove('drag');card.style.transform='translate3d(0,0,0)';document.querySelectorAll('.bin').forEach(b=>b.classList.remove('hot'));});
+document.querySelectorAll('.bin').forEach(b=>b.addEventListener('click',()=>{if(cur<CARDS.length&&!card.classList.contains('drag'))place(b.dataset.bin);}));
+
+/* ── 단계 전환 ── */
+function finishStep1(){
+  if(bins.must.length>5){setStep(2);startScale();}
+  else{startRank(bins.must.slice());}
+}
+function setStep(n){
+  document.body.dataset.step=n;
+  $('#step1').hidden=n!==1;$('#step2').hidden=n!==2;$('#step3').hidden=n!==3;$('#result').hidden=n!==4;
+  document.querySelectorAll('#steps li').forEach((li,i)=>li.classList.toggle('on',(n===4&&i===2)||i===n-1));
+  window.scrollTo({top:0,behavior:REDUCED?'auto':'smooth'});
+}
+
+/* ── 2단계: 저울질 (스위스 3라운드) ── */
+let pool=[],round=0,pairs=[],pairIdx=0,scores={},tiebreak=false;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startScale(){
+  pool=bins.must.slice();scores={};pool.forEach(id=>scores[id]=0);
+  round=1;tiebreak=false;
+  $('#sc-sub').textContent='둘 중 지금 더 지키고 싶은 하나를 골라 주세요 (라운드 1 / 3)';
+  nextRound();
+}
+function nextRound(){
+  const s=shuffle(pool.slice());
+  pairs=[];for(let i=0;i+1<s.length;i+=2)pairs.push([s[i],s[i+1]]);
+  if(s.length%2===1){scores[s[s.length-1]]+=0.5;}
+  pairIdx=0;renderPair();renderProg();
+}
+function resetBeam(){$('#beam').classList.remove('l','r');}
+function renderProg(){
+  const total=pairs.length,el=$('#scprog');el.innerHTML='';
+  for(let i=0;i<total;i++){const d=document.createElement('i');if(i<pairIdx)d.className='done';el.appendChild(d);}
+  $('#scround').textContent=tiebreak?'동점 결승':('라운드 '+round+' · '+pairIdx+' / '+total+' 맞대결');
+}
+function renderPair(){
+  if(pairIdx>=pairs.length){
+    if(tiebreak){endScale();return;}
+    if(round<3){round++;$('#sc-sub').textContent='둘 중 지금 더 지키고 싶은 하나를 골라 주세요 (라운드 '+round+' / 3)';nextRound();return;}
+    endScale();return;
+  }
+  const l=pairs[pairIdx][0],r=pairs[pairIdx][1];
+  const dl=$('#dl'),dr=$('#dr');
+  dl.classList.remove('win','lose');dr.classList.remove('win','lose');resetBeam();
+  dl.querySelector('.nm').textContent=CARDS[l].n;dl.querySelector('.mn').textContent=CARDS[l].m;
+  dr.querySelector('.nm').textContent=CARDS[r].n;dr.querySelector('.mn').textContent=CARDS[r].m;
+  dl.dataset.id=l;dr.dataset.id=r;setMotif(dl,l);setMotif(dr,r);
+}
+let picking=false;
+function duelPick(winEl,loseEl){
+  if(picking)return;picking=true;
+  const w=+winEl.dataset.id,l=+loseEl.dataset.id;
+  scores[w]+=1;scores[l]-=0.25;
+  winEl.classList.add('win');loseEl.classList.add('lose');
+  $('#beam').classList.add(winEl.id==='dl'?'l':'r');
+  pairIdx++;renderProg();
+  setTimeout(()=>{picking=false;renderPair();},REDUCED?0:380);
+}
+$('#dl').addEventListener('click',()=>duelPick($('#dl'),$('#dr')));
+$('#dr').addEventListener('click',()=>duelPick($('#dr'),$('#dl')));
+function endScale(){
+  const ranked=pool.slice().sort((a,b)=>scores[b]-scores[a]);
+  if(!tiebreak&&ranked.length>5&&scores[ranked[4]]===scores[ranked[5]]){
+    tiebreak=true;
+    pairs=[[ranked[4],ranked[5]]];pairIdx=0;
+    $('#sc-sub').textContent='다섯 번째 자리가 비겼습니다 — 마지막 한 번만 더 골라 주세요';
+    renderPair();renderProg();
+    return;
+  }
+  startRank(ranked.slice(0,5));
+  dropped=ranked.slice(5);
+}
+
+/* ── 3단계: 순서 매기기 ── */
+let top5=[];
+function startRank(ids){
+  dropped=[];
+  top5=ids.slice(0,5);
+  while(top5.length<5&&bins.nice.length){top5.push(bins.nice.shift());}
+  setStep(3);renderRank();
+}
+function renderRank(){
+  const el=$('#rlist');el.innerHTML='';
+  top5.forEach((id,i)=>{
+    const d=document.createElement('div');d.className='ritem';
+    d.innerHTML='<span class="no">'+(i+1)+'</span><span class="nm">'+CARDS[id].n+'</span>'+
+      '<span class="mv"><button type="button" data-mv="-1" aria-label="한 칸 위로"'+(i===0?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 14 6-6 6 6"/></svg></button>'+
+      '<button type="button" data-mv="1" aria-label="한 칸 아래로"'+(i===top5.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 10 6 6 6-6"/></svg></button></span>';
+    d.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      const mv=+b.dataset.mv;const j=i+mv;if(j<0||j>=top5.length)return;
+      const t=top5[i];top5[i]=top5[j];top5[j]=t;renderRank();
+    }));
+    el.appendChild(d);
+  });
+}
+$('#fin').addEventListener('click',showResult);
+
+/* ── 결과: 육각 레이더 + 한 줄 요약 + 마주 선 가치 + 발문 ── */
+const jo=(w,a,b)=>{const c=w.charCodeAt(w.length-1)-44032;return (c>=0&&c<11172&&c%28!==0)?a:b;};
+const DESC={성취:'해낸 만큼 눈에 보이는 일',사람:'사람 곁에서 하는 일',안정:'흔들리지 않는 터',자율:'내 손으로 정하는 일',보상:'수고가 값으로 돌아오는 일',의미:'뜻이 있다고 믿는 일'};
+const OPP=[['안정','자율','안정을 지키려면 자율은 얼마쯤 내놓아야 하고, 자율을 지키려면 안정은 얼마쯤 흔들려도 되는가'],
+ ['보상','의미','벌이를 위해 뜻을 미뤄도 되는 선, 뜻을 위해 벌이를 덜어도 되는 선은 어디인가'],
+ ['성취','사람','내 성과와 곁의 사람 중 하나를 택해야 하는 날, 무엇이 먼저인가']];
+function weights(ids,base,step){const w=[0,0,0,0,0,0];ids.forEach((id,rank)=>{const c=CARDS[id],g=base-rank*step;for(const k in c.a)w[AXES.indexOf(k)]+=c.a[k]*g;});return w;}
+function showResult(){
+  setStep(4);
+  const cx=170,cy=150,R=96;
+  const pt=(i,r)=>{const a=-Math.PI/2+i*Math.PI/3;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+  const w=weights(top5,2.6,0.4);
+  const w2=weights(bins.nice,1,0);
+  const mx=Math.max.apply(null,w.concat([1]));
+  const mx2=Math.max.apply(null,w2.concat([1]));
+  const svg=$('#radar');let s='';
+  [1/3,2/3,1].forEach(rr=>{s+='<polygon class="grid" points="'+AXES.map((_,i)=>pt(i,R*rr).join(',')).join(' ')+'"/>';});
+  AXES.forEach((ax,i)=>{const xy=pt(i,R);s+='<line class="axis" x1="'+cx+'" y1="'+cy+'" x2="'+xy[0]+'" y2="'+xy[1]+'"/>';
+    const lp=pt(i,R+22);s+='<text class="lb" x="'+lp[0]+'" y="'+lp[1]+'" text-anchor="middle" dominant-baseline="middle">'+ax+'</text>';});
+  if(bins.nice.length)s+='<polygon class="poly2" points="'+AXES.map((_,i)=>pt(i,R*(0.15+0.7*w2[i]/mx2)).join(',')).join(' ')+'"/>';
+  const pts=AXES.map((_,i)=>pt(i,R*(w[i]/mx)).join(',')).join(' ');
+  s+='<polygon class="poly" id="poly" points="'+pts+'" style="transform:scale(0);opacity:0"/>';
+  AXES.forEach((_,i)=>{const xy=pt(i,R*(w[i]/mx));s+='<circle class="dt" cx="'+xy[0]+'" cy="'+xy[1]+'" r="3.4"/>';});
+  svg.innerHTML=s;
+  setTimeout(()=>{const p=document.getElementById('poly');p.style.transform='scale(1)';p.style.opacity='1';},60);
+
+  const o=AXES.map((a,i)=>[a,w[i]]).sort((x,y)=>y[1]-x[1]);
+  $('#headsum').innerHTML='<span class="big">당신의 저울은 <b>'+o[0][0]+'</b>'+jo(o[0][0],'과','와')+' <b>'+o[1][0]+'</b> 쪽으로 기웁니다</span><span class="sub">「'+DESC[o[0][0]]+'」, 그리고 「'+DESC[o[1][0]]+'」'+jo(DESC[o[1][0]],'을','를')+' 지키고 싶어 하는 모양입니다.</span>';
+
+  /* 마주 선 가치: 반대 축 두 개가 모두 무거울 때 */
+  let hit=null,gap=9;
+  OPP.forEach(p=>{const a=w[AXES.indexOf(p[0])]/mx,b=w[AXES.indexOf(p[1])]/mx;if(a>=.5&&b>=.5&&Math.abs(a-b)<gap){gap=Math.abs(a-b);hit=p;}});
+  const tn=$('#tension');
+  const ic='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 8h14"/><path d="m5 8-2 6a2.5 2.5 0 0 0 4 0L5 8Z"/><path d="m19 8-2 6a2.5 2.5 0 0 0 4 0L19 8Z"/></svg>';
+  if(hit){tn.className='insight';tn.innerHTML='<span class="it">'+ic+'마주 선 가치 · '+hit[0]+' ↔ '+hit[1]+'</span><span class="ib2">두 축이 함께 무겁습니다. 저울이 가장 흔들리는 지점입니다.</span><span class="iq">상담 발문 — '+hit[2]+'?</span>';}
+  else{tn.className='insight calm';tn.innerHTML='<span class="it">'+ic+'한쪽으로 모인 저울</span><span class="ib2">다섯 장이 서로 부딪히지 않고 비슷한 방향을 향합니다.</span><span class="iq">상담 발문 — 이 방향을 해치는 일이 지금 하루 중 어디에 끼어 있나요?</span>';}
+
+  const t5=$('#top5');t5.innerHTML='';
+  top5.forEach((id,i)=>{
+    const c=CARDS[id];const d=document.createElement('div');d.className='t5';
+    d.innerHTML='<span class="h"><span class="n">'+['첫째','둘째','셋째','넷째','다섯째'][i]+'</span><span class="v">'+c.n+'</span></span><span class="q">'+c.m+'</span><span class="q q2">상담 발문 — '+c.q+'</span>';
+    setMotif(d,id);t5.appendChild(d);
+    setTimeout(()=>{d.classList.add('in');},REDUCED?0:150+i*130);
+  });
+
+  const dr=$('#dropped');
+  if(dropped.length){dr.hidden=false;dr.innerHTML='<span class="it">저울에서 내려놓은 카드</span><span class="chips">'+dropped.map(i=>'<span class="chip">'+CARDS[i].n+'</span>').join('')+'</span><span class="iq">상담 발문 — 「꼭」이라 했지만 내려놓은 카드들입니다. 이 중 하나를 되찾는다면, 다섯 장 가운데 무엇을 내놓겠나요?</span>';}
+  else dr.hidden=true;
+}
+$('#again').addEventListener('click',()=>$('#rst').click());
+
+/* ── 처음으로 ── */
+$('#rst').addEventListener('click',()=>{
+  order=[...CARDS.keys()];bins={no:[],nice:[],must:[]};cur=0;picking=false;tiebreak=false;hist=[];dropped=[];
+  setStep(1);showCard();ghostVisible();refreshBins();
+});
+
+showCard();ghostVisible();refreshBins();
+</script>
+<script src="../assets/marker.js" defer></script>
+<script src="../assets/prefs.js" defer></script>
+</body>
+</html>

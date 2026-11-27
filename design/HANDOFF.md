@@ -1,3 +1,11 @@
+## 2026-11-27 — 가치 저울 섹터 신설(`/values/`, 매치 6 · no 22) (태화님 승인 가안-4, 누가: 인스팅트)
+- **무엇**: 상담실의 가치 명료화 카드 정리를 화면으로. 카드 스물네 장을 「없어도 된다 · 있으면 좋다 · 꼭 있어야 한다」 세 더미로 나누고, 「꼭」이 다섯 장을 넘으면 둘씩 저울에 맞대어 좁힌 뒤, 다섯 장의 순서를 정하면 여섯 축(성취·사람·안정·자율·보상·의미) 레이더와 마주 선 가치·내려놓은 카드 해석이 나온다.
+- **자리**: vpi(심리검사 해석) 바로 뒤 — 검사를 읽은 다음 «무엇을 지키고 싶은가»를 저울질하는 차례. 뒤 번호는 그 자리에서 다시 매겼다(policy-match 매치 7·no 23 … transit 매치 25·no 41). 폴더 주소·색은 그대로.
+- **공용에 함께 넣은 것**: `assets/tools.js`(칸·`JC_LINKS` 4쌍 — vpi·work-filter·transit·intake), `assets/brand.css`(`--tc-values` 3테마), `mydeck/assemble.js`(TIER1 · STAGE 25 · GROUPS `intake` · RULES 직행), `assistant/data/synonym-map.json` 1항목, 재생성 `assistant/build_index.py`·`ops/scripts/build_flow_graph.py`·`build_semantic_vectors.py`, 검사 `validate_repo.py`(`run_values_checks` — 카드 24·축 6·모티프 24·복사 장치 금지·공통 셸).
+- **가안-4에서 바꾼 것**: 「결과 글로 복사」 제거(헌법 3-1 · §7 #7 — 내보내기·복사 금지, 섹터 전체에 클립보드 사용 전례 없음) · 1단계 카드 뒤집기 되돌림 오류 수정(누를 때마다 뒷면에 고정되던 것 — pointerdown에서 flip을 지우던 탓에 toggle이 항상 켜지기만 했다. 끌기가 시작될 때만 지우도록 고침) · 비노출 주석·공통 셸(core.js·도구함 자리·prefs·marker)·세피아 억센트 보강.
+- **실측**: 390·1280 × 밝게·세피아·어둡게 — 뒤집기 왕복 동작 · 콘솔 오류 0.
+- **남은 일**: 없음(머지·라이브 확인은 피클).
+
 ## 2026-11-27 — [AUP-8] 피드백 고리 (진행 중 · 체크포인트 기록)
 - **지시**(태화님): 남은 AUP 3분할 — 클로드 = AUP-8 → 피클·인스팅트 모듈 조립 → G-AUP. 설계 `ops/feedback/DESIGN.md`(남기는 것·남기지 않는 것·체크포인트 표).
 - [x] CP0 노션 대화실 뭉텅이 등록 · [x] CP1 설계 문서
