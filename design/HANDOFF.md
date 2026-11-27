@@ -2,7 +2,8 @@
 - **지시**(태화님): 남은 AUP 3분할 — 클로드 = AUP-8 → 피클·인스팅트 모듈 조립 → G-AUP. 설계 `ops/feedback/DESIGN.md`(남기는 것·남기지 않는 것·체크포인트 표).
 - [x] CP0 노션 대화실 뭉텅이 등록 · [x] CP1 설계 문서
 - [x] CP2 DB 표·함수 — `assets/supabase-update-07-feedback.sql` 적용(마이그레이션 `assistant_feedback_aup8`) · RLS 켬·공개 권한 0 · 되돌리기 시험: 넣기/바꾸기/잘못된 유형 거절/하루 상한/주간 묶음/취소 모두 기대대로, 남은 줄 0
-- [ ] CP3 서버 `feedback` 동작 · [ ] CP4 화면 👍/👎 · [ ] CP5 주간 집계·시험 줄 0 · [ ] CP6 모듈 조립 · [ ] CP7 G-AUP
+- [~] CP3 서버 `feedback` 동작 — `index.ts` 코드·Deno 타입 검사 통과, 커밋됨. **배포는 C4 화면과 한 PR로 머지할 때**(deploy-edge)
+- [ ] CP4 화면 👍/👎 · [ ] CP5 주간 집계·시험 줄 0 · [ ] CP6 모듈 조립 · [ ] CP7 G-AUP
 - **다음 시작 파일**: `ops/feedback/DESIGN.md` → 체크 안 된 첫 CP.
 
 ## 2026-11-27 — [AUP-7] 뜻으로 찾는 검색 — 질문 벡터 경로(Cloudflare Workers AI bge-m3)까지 라이브
