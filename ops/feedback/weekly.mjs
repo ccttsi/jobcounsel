@@ -62,8 +62,14 @@ async function fetchWeek() {
         body: JSON.stringify({ query }),
       });
     } catch { codes.push(tail.split('/').pop() + ' 네트워크'); continue; }
+    if (!r.ok) {
+      // 거절 이유를 남긴다 — 상태 코드만으로는 «권한 없음»과 «SQL 오류»를 가릴 수 없다.
+      let why = '';
+      try { why = (await r.text() || '').replace(/\s+/g, ' ').trim().slice(0, 160); } catch {}
+      codes.push(tail.split('/').pop() + ' ' + r.status + (why ? ' «' + why + '»' : ''));
+      continue;
+    }
     codes.push(tail.split('/').pop() + ' ' + r.status);
-    if (!r.ok) continue;
     const rows = await r.json();
     const w = Array.isArray(rows) && rows[0] ? rows[0].w : null;
     return w && typeof w === 'object' ? { week: w } : { fail: '집계 모양이 다름' };
