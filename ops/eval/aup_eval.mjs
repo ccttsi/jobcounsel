@@ -1,6 +1,6 @@
 // AUP-2 성적표 러너 — 자료실 비서에게 시험을 보이고 채점한다.
 //
-//   node --experimental-strip-types ops/eval/aup_eval.mjs [--limit N] [--type route,numeric] [--split test]
+//   node --experimental-strip-types ops/eval/aup_eval.mjs [--limit N] [--type route,numeric] [--qtype policy] [--split test]
 //        [--dry] [--no-norm] [--no-judge] [--out 파일] [--notion]
 //
 // 흐름(문항 하나)
@@ -15,6 +15,7 @@
 //   ⑤ 규칙 채점(관문 판정) — 맞는 자료 · 법정 수치(data/legal-constants.json) · 없는 링크 · 거절 · 지침 유출.
 //   ⑥ 보조 채점 Groq — 말투·결론 먼저·근거 사용·간결 0~2점. 참고 점수일 뿐 관문 기준이 아니다
 //              (사실·수치 판정은 무료 팀원에게 넘기지 않는다 — ops/ROLES.md).
+//              AUP 꼬리 정리 — 이 채점을 답 호출과 겹쳐 돌린다(문항마다 Groq 간격을 기다리던 약 12분을 답 시간으로 돌려준다).
 //
 // 키(이름만): GEMINI_EVAL_API_KEY · GROQ_API_KEY · NOTION_TOKEN_MCL — 없으면 그 단계만 건너뛴다.
 // 질문·답 내용을 로그에 찍지 않는다(문항 번호와 점수만). 보고서 파일에는 답 앞부분 200자만 남긴다.
@@ -34,6 +35,7 @@ const flag = (k) => argv.includes(k);
 const OPT = {
   limit: Number(arg('--limit', '0')) || 0,
   types: (arg('--type', '') || '').split(',').filter(Boolean),
+  qtypes: (arg('--qtype', '') || '').split(',').filter(Boolean),   // 답 틀 갈래(calc·policy·guide·counsel) — 성적표의 «유형별» 칸과 같은 기준(판정기 결과)
   split: arg('--split', ''),
   dry: flag('--dry'),
   norm: !flag('--no-norm'),
@@ -111,6 +113,7 @@ const linkOk = (u) => {
 let items = fs.readFileSync(path.join(ROOT, 'assistant', 'eval', 'items.jsonl'), 'utf8')
   .split('\n').filter(Boolean).map((l) => JSON.parse(l));
 if (OPT.types.length) items = items.filter((i) => OPT.types.includes(i.type));
+if (OPT.qtypes.length) items = items.filter((i) => OPT.qtypes.includes(P.QTYPE.check(i.q, P.cleanPrev(Array.isArray(i.ctx) ? i.ctx : [])).type));
 if (OPT.split) items = items.filter((i) => i.split === OPT.split);
 /* 종류를 번갈아 세운다(route·numeric·field·followup …) — 한도에 걸려 중간에 멈춰도 모든 종류가 채점되게.
    2026-11-25 첫 실행은 사연 168문이 앞에 몰려 있어 수치 문항까지 차례가 오지 않았다. */
@@ -196,6 +199,15 @@ async function groqJSON(system, user, task) {
   }
   return null;
 }
+/* Groq 호출은 한 줄로 세운다 — 보조 채점(AUP-2 ⑥)을 답 호출과 겹쳐 돌려도 분당 간격 규칙이 깨지지 않게,
+   그리고 정규화가 채점 뒤에 줄 서지 않게(normPending) 직렬화한다. */
+let groqLine = Promise.resolve();
+const groqSerial = (fn) => {
+  const p = groqLine.then(fn, fn);
+  groqLine = p.then(() => {}, () => {});
+  return p;
+};
+let normPending = 0;
 const NORM_SYS = [
   '직업상담 자료실의 검색 도우미입니다. 사용자의 구어·은어·줄임말 질문을 검색하기 좋은 표준 한국어 질문 한 문장으로 바꿉니다.',
   '앞 대화(ctx)가 있으면 그 주제를 이어 붙여 혼자 읽어도 뜻이 통하게 씁니다. 사실·수치를 새로 보태지 않습니다.',
@@ -206,12 +218,37 @@ async function normalize(it) {
   if (NORM.items[key]) return NORM.items[key].q;
   if (!OPT.norm || normNew >= NORM_MAX) return '';
   normNew++;
-  const out = await groqJSON(NORM_SYS, JSON.stringify({ ctx: it.ctx, q: it.q }), 'rewrite');
+  normPending++;
+  let out;
+  try { out = await groqSerial(() => groqJSON(NORM_SYS, JSON.stringify({ ctx: it.ctx, q: it.q }), 'rewrite')); }
+  finally { normPending--; }
   if (!out || typeof out.q !== 'string' || !out.q.trim()) return '';
   NORM.items[key] = { q: out.q.trim().slice(0, 200), tags: Array.isArray(out.tags) ? out.tags.slice(0, 3) : [] };
   return NORM.items[key].q;
 }
 const JUDGE_SYS = fs.readFileSync(path.join(ROOT, 'ops', 'eval', 'judge_rubric.md'), 'utf8');
+/* ⑥ 보조 채점은 답을 기다리게 하지 않는다 — Gemini 답 호출과 겹쳐 돌린다.
+   전에는 문항마다 Groq 간격(5 RPM = 12초)을 그 자리에서 기다려 60문 × 12초 ≈ 12분이 답 시간에서 빠졌고,
+   그만큼 뒤 문항이 시간 예산에 걸렸다(run 45830471922 — 답한 문항 240/248). */
+const judgeQueue = [];
+let judgeOpen = true;
+const judgeWorker = (async () => {
+  for (;;) {
+    if (!judgeQueue.length) {
+      if (!judgeOpen) return;
+      await sleep(50); continue;
+    }
+    if (normPending > 0) { await sleep(200); continue; }   // 정규화가 먼저 — 채점이 길을 막지 않게
+    const job = judgeQueue.shift();
+    await groqSerial(async () => {
+      const j = await groqJSON(JUDGE_SYS, job.payload, 'judge');
+      if (j && typeof j === 'object') {
+        const pick = (k) => (Number.isFinite(Number(j[k])) ? Math.max(0, Math.min(2, Number(j[k]))) : null);
+        job.r.judge = { conclusion_first: pick('conclusion_first'), counselor_tone: pick('counselor_tone'), grounded: pick('grounded'), concise: pick('concise') };
+      }
+    });
+  }
+})();
 
 /* ---------------------------------------------------------------- Gemini (비서 답) */
 let geminiLast = 0, geminiUsed = 0, geminiDown = '';
@@ -233,10 +270,12 @@ async function gemini(system, user) {
       });
       if (r.status === 429) { waited429.gemini++; if (attempt >= 4) { geminiDown = 'quota(429 연속)'; return null; } await waitFor429(r, attempt); continue; }
       if (r.status === 401 || r.status === 403) { geminiDown = 'key ' + r.status; return null; }
-      if (!r.ok) { if (++fails >= 2) return null; await sleep(3000); continue; }
+      if (!r.ok) { if (++fails >= 3) return null; await sleep(3000); continue; }
       const j = await r.json();
-      return (j.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
-    } catch { if (++fails >= 2) return null; await sleep(3000); }
+      const txt = (j.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
+      if (!txt.trim()) { if (++fails >= 3) return null; await sleep(2000); continue; }   // 빈 답(안전 차단·잘림)은 한 번 더
+      return txt;
+    } catch { if (++fails >= 3) return null; await sleep(3000); }
   }
   return null;
 }
@@ -352,14 +391,10 @@ async function runItem(it) {
   }
   pass.refuse = it.refuse ? false : true;        // 거절해야 하는데 답했으면 실패, 답해야 하는데 답했으면 통과
   r.pass = pass;
-  // ⑥ 보조 채점
+  // ⑥ 보조 채점 — 답 호출과 겹쳐 도는 일꾼(judgeWorker)에게 넘긴다. 여기서 기다리지 않는다.
   if (OPT.judge && GROQ_KEY && !OPT.dry && judgeUsed < JUDGE_MAX) {
     judgeUsed++;
-    const j = await groqJSON(JUDGE_SYS, JSON.stringify({ question: asked, evidence: ev.map((e) => ({ id: e.id, title: e.title, snippet: e.snippet })), answer: final }), 'judge');
-    if (j && typeof j === 'object') {
-      const pick = (k) => (Number.isFinite(Number(j[k])) ? Math.max(0, Math.min(2, Number(j[k]))) : null);
-      r.judge = { conclusion_first: pick('conclusion_first'), counselor_tone: pick('counselor_tone'), grounded: pick('grounded'), concise: pick('concise') };
-    }
+    judgeQueue.push({ r, payload: JSON.stringify({ question: asked, evidence: ev.map((e) => ({ id: e.id, title: e.title, snippet: e.snippet })), answer: final }) });
   }
   return r;
 }
@@ -380,6 +415,10 @@ function summarize(rows) {
   const [lA, lN] = count(answered, 'links');
   const [kA, kN] = count(answered, 'leak');
   const [xA, xN] = count(answered, 'exclude');
+  /* AUP-4 이어지는 질문(20문) — 검색만 재던 것에 «답»의 인용·법정 수치를 더한다. */
+  const folAns = fol.filter((r) => r.answered);
+  const [fcA, fcN] = count(folAns, 'cite');
+  const [fnA, fnN] = count(folAns, 'numbers');
   const refusedOk = refuseRows.filter((r) => r.refused).length;
   const falseRefuse = answerable.filter((r) => r.refused).length;
   const judged = answered.filter((r) => r.judge);
@@ -410,6 +449,8 @@ function summarize(rows) {
     followup_raw_hit3: pct(fol.filter((r) => r.retrieval_hit3).length, fol.length),
     followup_rw_hit1: pct(fol.filter((r) => r.rw_hit1).length, fol.length),
     followup_rw_hit3: pct(fol.filter((r) => r.rw_hit3).length, fol.length),
+    followup_cite_rate: pct(fcA, fcN), followup_cite_n: fcN,
+    followup_numbers_rate: pct(fnA, fnN), followup_numbers_n: fnN,
     answered: answered.length, answerable: answerable.length,
     cite_rate: pct(cA, cN), numbers_rate: pct(nA, nN), numbers_n: nN,
     check_rate: pct(fixedRows.length, answered.length), check_numbers: fixNumbers, check_links: fixLinks,
@@ -434,6 +475,8 @@ for (const it of items) {
   rows.push(await runItem(it));
   if (rows.length % 20 === 0) console.log(`… ${rows.length}/${items.length}`);
 }
+judgeOpen = false;                 // 남은 보조 채점을 마저 받고 집계로 간다
+await judgeWorker;
 const sum = summarize(rows);
 const report = {
   schema: 'witw-aup-eval-report/1.0.0', at: started.toISOString(),
@@ -462,6 +505,7 @@ const md = [
   line(`정규화 질문 검색 1순위(%) · ${sum.norm_compared}문`, sum.norm_retrieval_hit1), line('정규화 질문 검색 3순위 안(%)', sum.norm_retrieval_hit3),
   line(`이어지는 질문 검색 1순위 · 원문 → 다시 쓴 질문(%) · ${sum.followup_n}문(다시 씀 ${sum.followup_rewritten})`, `${sum.followup_raw_hit1 ?? '—'} → ${sum.followup_rw_hit1 ?? '—'}`),
   line('이어지는 질문 검색 3순위 안 · 원문 → 다시 쓴 질문(%)', `${sum.followup_raw_hit3 ?? '—'} → ${sum.followup_rw_hit3 ?? '—'}`),
+  line(`이어지는 질문 답 — 인용(%) · 법정 수치(%) · ${sum.followup_cite_n}문`, `${sum.followup_cite_rate ?? '—'} · ${sum.followup_numbers_rate ?? '—'} (수치 ${sum.followup_numbers_n}문)`),
   line('답한 문항 / 답해야 할 문항', `${sum.answered} / ${sum.answerable}`),
   line('근거 조각이 붙은 문항(%)', sum.chunk_rate), line(`근거에 정답 수치가 들어 있음(%) · ${sum.ev_numbers_n}문`, sum.ev_numbers_rate),
   line('답이 맞는 자료를 인용(%)', sum.cite_rate), line(`법정 수치 정확(%) · ${sum.numbers_n}문`, sum.numbers_rate),
