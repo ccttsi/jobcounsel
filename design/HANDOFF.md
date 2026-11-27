@@ -1,3 +1,9 @@
+## 2026-11-27 — [AUP-8] 피드백 고리 (진행 중 · 체크포인트 기록)
+- **지시**(태화님): 남은 AUP 3분할 — 클로드 = AUP-8 → 피클·인스팅트 모듈 조립 → G-AUP. 설계 `ops/feedback/DESIGN.md`(남기는 것·남기지 않는 것·체크포인트 표).
+- [x] CP0 노션 대화실 뭉텅이 등록 · [x] CP1 설계 문서
+- [ ] CP2 DB 표·함수 · [ ] CP3 서버 `feedback` 동작 · [ ] CP4 화면 👍/👎 · [ ] CP5 주간 집계·시험 줄 0 · [ ] CP6 모듈 조립 · [ ] CP7 G-AUP
+- **다음 시작 파일**: `ops/feedback/DESIGN.md` → 체크 안 된 첫 CP.
+
 ## 2026-11-27 — [AUP-7] 뜻으로 찾는 검색 — 질문 벡터 경로(Cloudflare Workers AI bge-m3)까지 라이브
 - **왜**: AUP-7 1차(#553)에서 섹터·근거 조각의 정적 뜻 벡터와 하이브리드 순위를 넣었지만 **질문 벡터를 만드는 경로가 없어** 라이브에서는 잠들어 있었다. 태화님이 경로로 **Cloudflare Workers AI `@cf/baai/bge-m3`**(사이트가 이미 Cloudflare Pages 위에 있다)를 골랐고, Pages `witw` Production 에 Workers AI 바인딩(`AI`)을 붙였다.
 - [x] **질문 벡터 엔드포인트** `functions/api/embed.js`(새) — `GET /api/embed?q=` → `{ok:true, model:'@cf/baai/bge-m3', dim:1024, vector:[…]}`. 바인딩이 없으면 부르지 않고 조용히 `{ok:false, fallback:true}`, 빈 질문은 400, 실패·시간 초과(8초)·모양 오류는 같은 폴백 — 화면은 그때 글자 검색 그대로. 질문은 태그 제거·공백 정리·200자 상한 후 한 번만 임베딩하고 **저장·기록하지 않는다**(`no-store`). e5와 달리 `query:`/`passage:` 접두사 없음.
