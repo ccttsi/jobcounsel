@@ -18,7 +18,7 @@
 //     Pages 설정 파일은 배포 뒤에도 `/_headers`·`/_routes.json`으로 200이 되어 그대로 읽혔다)
 // 막지 않는 것 — 화면(`.html`·`.css`·`.js`)과 화면이 읽는 공개 데이터(`.json`·이미지·글꼴),
 //   `robots.txt`. 37개 섹터·대문·비서·마이덱은 이 함수를 지나 `context.next()`로 그대로 나간다.
-export const INTERNAL_DIRS = ["ops", "design", "docs", "drafts", ".claude", ".github", "supabase", "functions", "android"];
+export const INTERNAL_DIRS = ["ops", "design", "docs", "drafts", "mlc", ".claude", ".github", "supabase", "functions", "android"];
 export const INTERNAL_EXTS = ["md", "py", "sql", "tsv", "yml", "yaml", "sh", "toml", "cfg", "ini"];
 export const ALWAYS_PUBLIC = ["/robots.txt"];
 
