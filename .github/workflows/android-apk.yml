@@ -1,0 +1,75 @@
+# 갤럭시 홈 위젯 앱(android/) 설치 파일 만들기
+#   android/ 가 바뀌면 APK를 빌드한다.
+#   - PR: 빌드만 확인하고 결과 파일을 Actions 산출물로 남긴다.
+#   - main: GitHub 릴리스 «widget-latest»의 witw-widget.apk 를 새 파일로 바꾼다.
+#     폰에서 받는 주소(고정): https://github.com/ccttsi/jobcounsel/releases/download/widget-latest/witw-widget.apk
+#   서명 열쇠는 GitHub Secrets(ANDROID_KEYSTORE_B64 · ANDROID_KEYSTORE_PASS)에만 둔다.
+#   없으면 실행마다 새 디버그 열쇠로 서명된다(그때는 업데이트 전에 앱을 지우고 다시 깔아야 한다).
+name: android-apk
+
+on:
+  pull_request:
+    paths: ['android/**', '.github/workflows/android-apk.yml']
+  push:
+    branches: [main]
+    paths: ['android/**', '.github/workflows/android-apk.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: 서명 열쇠 풀기 (Secrets가 있을 때만)
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/witw.jks"
+            echo "WITW_KEYSTORE=$RUNNER_TEMP/witw.jks" >> "$GITHUB_ENV"
+          else
+            echo "::notice::ANDROID_KEYSTORE_B64 가 없어 디버그 열쇠로 서명합니다."
+          fi
+
+      - name: 빌드
+        env:
+          WITW_KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleRelease lintRelease
+          cp app/build/outputs/apk/release/app-release.apk "$RUNNER_TEMP/witw-widget.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: witw-widget-apk
+          path: ${{ runner.temp }}/witw-widget.apk
+          retention-days: 14
+
+      - name: 릴리스 widget-latest 에 올리기 (main만)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view widget-latest >/dev/null 2>&1 || \
+            gh release create widget-latest --title "자료실 위젯 (최신)" --latest=false \
+              --notes "갤럭시 홈 화면·알림창용 브리핑·이머징 위젯. 폰에서 witw-widget.apk 를 받아 설치합니다."
+          gh release upload widget-latest "$RUNNER_TEMP/witw-widget.apk" --clobber
