@@ -64,17 +64,27 @@ ZeroGPU 학습·서빙 시간이 감당되면 1·2순위를 뒤집습니다. 판
 | 모델 | 부른 곳 | 결과 |
 |---|---|---|
 | **Llama-3.2-3B-Instruct** | 공개 ZeroGPU 스페이스 `huggingface-projects/llama-3.2-3B-Instruct` (zero-a10g, 2026-11-29 00:15~00:25 KST) | p1 **9.9초·1,112자·한글 비율 0.43**(상한 400토큰) · p2 **7.7초·1,124자·한글 비율 0.44**(다른 문자권 12자 · 400토큰) · p4 8.0초·300토큰 상한. **p3 이후는 ZeroGPU 무료 한도(5분/일) 소진으로 못 잼**(`You have exceeded your ZeroGPU quota (135s)`) |
-| **Qwen3-4B-Instruct-2507** | Kaggle 무료 GPU(T4) — `train/measure_base.py` 커널 `ccttsi/ftn-2-base-ko-measure` | §3.2-1 참고 |
-| **Kanana-1.5-8B-Instruct** | 같음(같은 커널이 두 모델을 차례로) | §3.2-1 참고 |
+| **Qwen3-4B-Instruct-2507** | Kaggle 무료 GPU(T4) — `train/measure_base.py` 커널 `ccttsi/ftn-2-base-ko-measure` | **이번 판 결과 없음** — GPU 대기열(§3.2-1). 공식 카드에 한국어 단독 점수 없음 |
+| **Kanana-1.5-8B-Instruct** | 같음(같은 커널이 두 모델을 차례로) | **이번 판 결과 없음** — GPU 대기열(§3.2-1). 제조사 공식 한국어 벤치만 있음(KoMT-Bench 7.63 · KMMLU 48.28) |
 | **Gemma-3-4B-it** | — | **못 부름.** gated(HF 약관 동의 전)라 가중치를 받을 수 없고, 공개 ZeroGPU 스페이스는 당일 한도를 다 써서 호출 불가. 공식 카드의 언어 범위(140+)만 확인 |
 
 - Cloudflare Workers AI 비교군(이미 잰 값, 인스팅트 2026-11-28): `@cf/qwen/qwen3.8-27b` 사고 끄기 6.2초·608자 완결.
   같은 계열(27B)이라 «4B 가 27B 대비 얼마나 처지는가»의 기준선으로 씁니다.
 - Workers AI 를 이번에 직접 부르지는 못했습니다 — 자료실 계정의 Workers AI 토큰은 **볼트에만** 있고(값을 꺼내 쓰는 통로가 없음), REST 직접 호출에는 그 토큰이 필요합니다.
 
-### 3.2-1 Kaggle 실측 (Qwen3-4B-Instruct-2507 · Kanana-1.5-8B)
+### 3.2-1 Qwen3-4B-Instruct-2507 · Kanana-1.5-8B — 이번 판에서는 결과가 없다 (GPU 대기열)
 
-KAGGLE_RESULTS_PLACEHOLDER
+- 두 모델은 공개(gated 아님, Apache-2.0)라 Kaggle 무료 GPU 에서 그대로 잴 수 있습니다. 실측 러너를 커널
+  `ccttsi/ftn-2-base-ko-measure` 로 올려 두었지만, 올린 뒤 **GPU 대기열에서 한 시간 넘게 시작되지 않아**
+  (`QUEUED`, 2026-11-29 00:05 KST 푸시) 결과 파일이 아직 없습니다.
+- 결과가 나오면 받는 방법:
+  ```
+  kaggle kernels output ccttsi/ftn-2-base-ko-measure -p ./measure-out     # ftn2_measure.json
+  ```
+  같은 조건으로 다시 재려면: `python3 ops/ftn/train/measure_base.py --models qwen3-4b-instruct,kanana-1.5-8b --out measure.json`
+  (4비트·greedy·프롬프트 9건·응답 시간/토큰 수/한글 비율/다른 문자권/정답 수치를 기계로 센다).
+- **값을 추정해 채우지 않았습니다.** §4 의 판정은 라이선스·크기·올릴 곳 지원·제조사 공식 벤치로만 했고,
+  한국어 실측은 Llama-3.2-3B 1건과 Kanana 의 공식 한국어 벤치(KoMT-Bench·KMMLU)가 전부입니다.
 
 ### 3.3 실제 답 (증거)
 
@@ -98,7 +108,8 @@ KAGGLE_RESULTS_PLACEHOLDER
 ## 5. 미확인·한계
 
 - Gemma-3-4B-it 은 **한국어 실측 0** — gated(약관 동의) + 당일 ZeroGPU 한도 소진. 필요하면 태화님이 HF 에서 약관에 동의한 뒤 `HF_TOKEN` 으로 같은 러너를 돌리면 됩니다.
-- Qwen3·Kanana 의 한국어 «자연스러움»은 기계 점수(한글 비율·수치 적중)와 피클의 눈으로만 판정했습니다. AUP-2 전체 성적표(302문)를 기본 모델에 돌리는 것은 FTN-4 맞대기에서 합니다.
+- Qwen3·Kanana 는 **이번 판 실측 0** 입니다. 1순위 판단은 라이선스·크기·올릴 곳 지원·제조사 공식 벤치로만 했고,
+  실제 한국어 답의 질은 §3.2-1 의 측정이 나온 뒤에 확인해야 합니다. AUP-2 전체 성적표(302문)를 기본 모델에 돌리는 것은 FTN-4 맞대기에서 합니다.
 - ZeroGPU 무료 한도(5분/일)는 한 번 쓰면 24시간 뒤 리셋이라, 하루에 여러 모델을 비교하려면 Kaggle 쪽에서 재는 편이 낫습니다(그래서 실측 러너를 Kaggle 커널로도 돌립니다).
 - 모델 카드의 한국어 벤치가 서로 다른 시험(KoMT-Bench vs MMLU-ProX 등)이라 **제조사 수치끼리 직접 비교하지 않았습니다**.
 
