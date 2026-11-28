@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0.0",
- "generated_at": "2026-11-21T09:05:04+09:00",
+ "generated_at": "2026-11-28T09:05:35+09:00",
  "industry_count": 24,
  "method": {
   "baseline": {
@@ -216,19 +216,19 @@
    "usage": "2026년 세계 반도체 시장 성장률 전망과 제품군별(메모리·로직) 성장률."
   },
   {
-   "source_id": "src_worldsteel_2609",
+   "source_id": "src_worldsteel_2610",
    "name": "세계철강협회(worldsteel)",
-   "title": "September 2026 crude steel production",
-   "url": "https://worldsteel.org/media/press-releases/2026/september-2026-crude-steel-production/",
-   "published": "2026-10-23",
+   "title": "October 2026 crude steel production",
+   "url": "https://worldsteel.org/media/press-releases/2026/october-2026-crude-steel-production/",
+   "published": "2026-11-24",
    "license": {
     "type": "FACTS-ONLY",
     "name": "보도자료 — 사실·수치만 인용",
     "verified": true,
-    "verified_at": "2026-11-19"
+    "verified_at": "2026-11-28"
    },
    "track": "B",
-   "usage": "세계 70개국 조강 생산량과 전년동월비(2026-09)."
+   "usage": "세계 70개국 조강 생산량과 전년동월비(2026-10)."
   },
   {
    "source_id": "src_clarksons_2610",
@@ -1364,18 +1364,18 @@
       ]
      },
      "prod": {
-      "score": -0.04,
+      "score": -0.217,
       "items": [
        {
         "label": "세계 조강 생산",
-        "yoy": -0.2,
+        "yoy": -1.1,
         "value": "1억 4,240만 톤",
-        "period": "2026-09",
-        "source_id": "src_worldsteel_2609",
-        "note": "70개국 기준. 1~9월 누계 -0.7%",
+        "period": "2026-10",
+        "source_id": "src_worldsteel_2610",
+        "note": "70개국 기준. 1~10월 누계 -0.8%",
         "dir": 1,
-        "ratio": -0.04,
-        "score": -0.04
+        "ratio": -0.22,
+        "score": -0.217
        }
       ]
      },
@@ -1388,15 +1388,15 @@
       "items": []
      }
     },
-    "composite": 0.064,
-    "temperature": 2.5,
-    "band": "따뜻함",
-    "band_raw": "따뜻함",
+    "composite": -0.005,
+    "temperature": -0.1,
+    "band": "평년",
+    "band_raw": "평년",
     "axes_used": 2,
     "axes_total": 4,
     "weight_covered": 0.6
    },
-   "gap": -1.9,
+   "gap": 0.7,
    "info": []
   },
   {
