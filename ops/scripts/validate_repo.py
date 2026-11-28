@@ -2183,6 +2183,58 @@ def run_gaup_checks():
     note(f"G-AUP 판정기 — 자기시험 통과 · 러너와 같은 칸 {len(keys)}개(러너 집계 칸 {len(have)}개 중)")
 
 
+# ---------------------------------------------------------------- 3-8b) FTN-1 문답집 후보 (2026-11-28)
+#   FTN-1 재료(학습 후보)는 ① 원천과 동기된 생성 파일인가 ② 시험(test) 문항과 2-gram으로
+#   겹치지 않는가 ③ 개인정보 모양 0 인가를 배포 전에 본다. 모양·판정 기준은 ops/ftn/README.md.
+FTN_COLLECT = os.path.join("ops", "ftn", "collect.py")
+FTN_OVERLAP = os.path.join("ops", "ftn", "overlap_check.py")
+FTN_CANDIDATES = os.path.join("ops", "ftn", "dataset", "candidates.jsonl")
+
+
+def run_ftn_checks():
+    if not os.path.exists(os.path.join(ROOT, FTN_COLLECT)):
+        fail("ftn", f"{FTN_COLLECT} 이 없다 — FTN-1 재료 수집기")
+        return
+    result = subprocess.run([sys.executable, os.path.join(ROOT, FTN_COLLECT), "--check"],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("ftn", (result.stdout.strip() or result.stderr.strip())[:200])
+        return
+    result = subprocess.run([sys.executable, os.path.join(ROOT, FTN_OVERLAP), "--self-test"],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        last = (result.stdout.strip().splitlines() or ["(출력 없음)"])[-1]
+        fail("ftn", f"겹침 검사기 자기시험 실패 — {last[:200]}")
+    result = subprocess.run([sys.executable, os.path.join(ROOT, FTN_OVERLAP)],
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        fail("ftn", (result.stdout.strip().splitlines() or ["(겹침 검사 실패)"])[-1][:200])
+    n = 0
+    ids = set()
+    with open(os.path.join(ROOT, FTN_CANDIDATES), encoding="utf-8") as fh:
+        for line_no, line in enumerate(fh, 1):
+            if not line.strip():
+                continue
+            n += 1
+            try:
+                it = json.loads(line)
+            except json.JSONDecodeError as exc:
+                fail("ftn", f"{FTN_CANDIDATES}:{line_no} JSON 오류 — {exc.msg}")
+                continue
+            for key in ("schema", "id", "source", "q", "expect_sectors", "evidence", "needs"):
+                if key not in it:
+                    fail("ftn", f"{FTN_CANDIDATES}:{line_no} «{key}» 칸이 없다")
+            if it.get("schema") != "witw-ftn-candidates/1.0.0":
+                fail("ftn", f"{FTN_CANDIDATES}:{line_no} schema 값이 다르다 — {it.get('schema')}")
+            if it.get("id") in ids:
+                fail("ftn", f"{FTN_CANDIDATES}:{line_no} 후보 번호 {it.get('id')} 중복")
+            ids.add(it.get("id"))
+            if EVAL_PII.search(json.dumps(it, ensure_ascii=False)):
+                fail("ftn", f"{FTN_CANDIDATES}:{line_no} 개인정보 모양이 들어 있다")
+    note(f"FTN-1 문답집 후보 — {n}건 (원천 동기·시험 문항 겹침 0·칸·개인정보 모양)")
+
+
+
 # ---------------------------------------------------------------- 3-9) 공용 법정 수치 단일 원천 (2026-11-22)
 #   최저임금·구직급여 상한·4대보험 요율처럼 여러 섹터가 함께 쓰는 수치가 섹터마다 따로 박혀 있으면,
 #   해가 바뀔 때 한 곳만 고치고 나머지가 옛 숫자로 남는다 — 상담에서 그대로 잘못 안내된다.
@@ -2771,6 +2823,8 @@ def main():
         run_answer_check_checks()  # AUP-5 답 검사기 — 규칙 원천 동기·서버 사본·시험 문항·지면 글 오탐 0
     if "json" in selected or "gaup" in selected:
         run_gaup_checks()          # G-AUP 판정기 — 자기시험·성적표 러너와의 칸 계약
+    if "json" in selected or "ftn" in selected:
+        run_ftn_checks()           # FTN-1 문답집 후보 — 원천 동기·시험 문항 겹침 0·개인정보 0
     if "license" in selected:
         run_license_checks()
     if "js" in selected:
@@ -2804,8 +2858,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "eval": "AUP-2 성적표 문항", "answercheck": "AUP-5 답 검사기", "qtype": "AUP-6 질문 유형 판정기", "gaup": "G-AUP 판정기", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
-        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "eval", "answercheck", "qtype", "gaup", "role", "expose"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "eval": "AUP-2 성적표 문항", "answercheck": "AUP-5 답 검사기", "qtype": "AUP-6 질문 유형 판정기", "gaup": "G-AUP 판정기", "ftn": "FTN-1 문답집 후보", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
+        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "eval", "answercheck", "qtype", "gaup", "ftn", "role", "expose"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")
