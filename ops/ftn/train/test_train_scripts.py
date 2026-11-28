@@ -187,6 +187,11 @@ class MeasureTest(unittest.TestCase):
         bad = measure_base.answer_stats("以下은 brief한 方法입니다. ポートフォリオ", prompt)
         self.assertFalse(bad["number_hit"])
         self.assertGreater(bad["foreign_script"], 0)
+        # 데바나가리도 «다른 문자권» 으로 센다 — Llama-3.2-3B 실측에서 실제로 섞여 나왔다.
+        deva = measure_base.answer_stats("먼저, अपने 현재의 경력을 정리해 보세요. 等", {})
+        self.assertGreaterEqual(deva["foreign_script"], 5)
+        # 한글은 세지 않는다(한국어이므로).
+        self.assertEqual(measure_base.answer_stats("안녕하세요. 반갑습니다.", {})["foreign_script"], 0)
         rate = measure_base.answer_stats("근로자 부담은 4.75%입니다.", {"pointer_value": 0.0475, "unit": "비율"})
         self.assertTrue(rate["number_hit"])
 
