@@ -51,8 +51,11 @@ def write_jsonl(path, rows):
 
 
 def guide_text():
+    """지침 요약 — 머리말(«이 문서는 …»)은 뺀다. 학습 입력에 내부 설명이 섞이면 안 된다."""
     with open(GUIDE, encoding="utf-8") as fh:
-        return fh.read().strip()
+        lines = fh.read().splitlines()
+    start = next((i for i, line in enumerate(lines) if line.startswith("당신은")), 0)
+    return "\n".join(lines[start:]).strip()
 
 
 def evidence_index():
