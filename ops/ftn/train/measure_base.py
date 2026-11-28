@@ -133,8 +133,14 @@ NUMERIC = [
 ]
 
 HANGUL = re.compile(r"[가-힣]")
-# 한국어 문장에 섞이면 «다른 문자권» — Llama-3.2-3B 가 보인 한자·가나·태국문자 같은 것.
-FOREIGN_SCRIPT = re.compile(r"[\u4e00-\u9fff\u3040-\u30ff\u0e00-\u0e7f\u0400-\u04ff]")
+# 한국어 문장에 섞이면 «다른 문자권» — Llama-3.2-3B 실측에서 한자·가나에 데바나가리까지 섞였다.
+# 한글 음절(AC00~D7A3)은 한국어라 넣지 않는다. 범위: 한자·가나·태국·키릴·데바나가리·아랍·히브리·
+#   타밀·텔루구·칸나다·라오·크메르·조지아.
+FOREIGN_SCRIPT = re.compile(
+    r"[\u4e00-\u9fff\u3040-\u30ff\u0e00-\u0e7f\u0400-\u04ff\u0900-\u097f"
+    r"\u0600-\u06ff\u0590-\u05ff\u0b80-\u0bff\u0c00-\u0cff\u0d00-\u0d7f"
+    r"\u0e80-\u0eff\u1780-\u17ff\u10a0-\u10ff]"
+)
 
 
 def load_prompts(path=""):
