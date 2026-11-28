@@ -47,7 +47,10 @@ const OPT = {
   notion: flag('--notion'),
   out: arg('--out', ''),
   vectors: arg('--vectors', ''),      // 저장소 밖에서 만들어 둔 질문 벡터 파일(모양은 아래 QVEC)
-  embed: arg('--embed', '') || process.env.AUP_EMBED_URL || '',   // 라이브 질의 임베딩 주소(예: https://witw.pages.dev/api/embed)
+  embed: flag('--no-embed') ? '' : (arg('--embed', '') || process.env.AUP_EMBED_URL || 'https://witw.pages.dev/api/embed'),
+  // 기본값은 라이브 화면이 쓰는 주소 그대로 — «성적표는 라이브로 재는 것»이 기본이다.
+  // 엔드포인트가 죽어 있으면 첫 몇 번 실패 뒤 스스로 꺼지고 글자 검색으로 돈다(라이브의 폴백과 같은 모양).
+  // 끄기: --no-embed · 저장소 밖에서 만든 벡터를 쓸 때는 --vectors 가 이긴다.
 };
 const ENV = process.env;
 const GEMINI_KEY = ENV.GEMINI_EVAL_API_KEY || '';
@@ -306,7 +309,7 @@ function parseJsonAnswer(text) {          // 서버 index.ts 의 parseJsonAnswer
    질문 원문은 저장하지 않는다 — 캐시(assistant/eval/cache/qvec.json)에는 해시와 int8 벡터만 남는다.
    문항은 우리가 쓴 시험 문항이라 /api/embed 로 보내도 사용자 질문이 아니다. */
 const EMBED = { url: OPT.vectors ? '' : String(OPT.embed || ''), on: false, model: '', dim: 0,
-  asked: 0, ok: 0, fail: 0, hit: 0, err: '', ms: 0 };
+  asked: 0, ok: 0, fail: 0, hit: 0, err: '', ms: 0, netFail: 0, down: '' };
 EMBED.on = !!EMBED.url;
 const QVEC_PATH = path.join(ROOT, 'assistant', 'eval', 'cache', 'qvec.json');
 const QVEC_V = 2;                 // 2 = float32 base64 (1은 int8 — 모양이 달라 버린다)
@@ -335,6 +338,7 @@ function b64enc(vec) {
 const QV = new Map();            // 이번 실행에서 쓸 «검색어 → 벡터»
 const QINFLIGHT = new Map();
 async function embedQuery(q) {
+  if (!EMBED.url || EMBED.down) return null;
   const key = qhash(q);
   if (QCACHE.q[key]) { EMBED.hit++; return b64dec(QCACHE.q[key]); }
   if (QINFLIGHT.has(key)) return QINFLIGHT.get(key);
@@ -354,11 +358,15 @@ async function embedQuery(q) {
           if (!EMBED.model) { EMBED.model = String(j.model); EMBED.dim = v.length; }
           else if (String(j.model) !== EMBED.model) break;   // 다른 모델 벡터는 섞지 않는다(라이브와 같은 규칙)
         } else if (!EMBED.dim) EMBED.dim = v.length;
-        EMBED.ok++; EMBED.ms += Date.now() - t0;
+        EMBED.ok++; EMBED.netFail = 0; EMBED.ms += Date.now() - t0;
         QCACHE.q[key] = b64enc(v);
         if (!QCACHE.model) { QCACHE.model = EMBED.model; QCACHE.dim = v.length; }
         return Float32Array.from(v);
-      } catch { await sleep(700 * (a + 1)); }
+      } catch {
+        /* 네트워크가 통째로 막혔을 때(오프라인·DNS) 문항마다 재시도하지 않는다 — 5번 연달아면 그만 둔다. */
+        if (++EMBED.netFail >= 5) { EMBED.down = 'network'; EMBED.fail++; return null; }
+        await sleep(700 * (a + 1));
+      }
     }
     EMBED.fail++;
     return null;
@@ -583,7 +591,8 @@ if (EMBED.on) {
   }
   const t0 = Date.now();
   await pool([...qs], 6, async (q) => { const v = await ensureVector(q); if (v) QV.set(q, v); });
-  EMBED.err = EMBED.fail ? ('임베딩 실패 ' + EMBED.fail + '/' + EMBED.asked + ' — 그 검색어만 글자 검색') : '';
+  EMBED.err = EMBED.down ? ('뜻 벡터 경로가 막혔다(' + EMBED.down + ') — 글자 검색으로 돕니다')
+    : (EMBED.fail ? ('임베딩 실패 ' + EMBED.fail + '/' + EMBED.asked + ' — 그 검색어만 글자 검색') : '');
   console.log(`… 뜻 벡터 ${EMBED.ok}/${EMBED.asked} (캐시 ${EMBED.hit}, ${EMBED.model || '-'} ${EMBED.dim}차원, ${((Date.now() - t0) / 1000).toFixed(1)}초)` + (EMBED.err ? ' · ' + EMBED.err : ''));
 }
 const rows = [];
