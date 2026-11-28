@@ -1,7 +1,7 @@
 // AUP-2 성적표 러너 — 자료실 비서에게 시험을 보이고 채점한다.
 //
 //   node --experimental-strip-types ops/eval/aup_eval.mjs [--limit N] [--type route,numeric] [--qtype policy] [--ids INT-001,CTX-002] [--split test]
-//        [--dry] [--no-norm] [--no-judge] [--out 파일] [--notion]
+//        [--dry] [--no-norm] [--no-judge] [--out 파일] [--notion] [--vectors 파일 | --embed 주소]
 //
 // 흐름(문항 하나)
 //   ① 거르개   assistant/guard.js → assistant/scope.js — 라이브 서버와 같은 차례. 막히면 모델을 부르지 않는다.
@@ -9,6 +9,9 @@
 //              비서에게는 원문 질문을 그대로 준다(라이브와 같게). 정규화 질문으로는 «검색만» 한 번 더 해서
 //              «질문을 고쳐 쓰면 검색이 얼마나 좋아지나»(AUP-4 기준선)를 잰다.
 //   ③ 근거     assistant/search.js 를 브라우저 없이 그대로 돌린다(사용자와 같은 검색·같은 선참조 지도).
+//              G-AUP — 라이브 화면은 검색어를 /api/embed 에 보내 bge-m3 벡터를 받아 하이브리드로 찾는다.
+//              성적표도 --embed(또는 --vectors)가 있으면 **같은 경로로 질문 벡터를 받아** 같은 검색을 잰다.
+//              없으면 지금처럼 글자 검색만 — 보고서 hybrid 칸에 어느 쪽이었는지 남긴다.
 //   ④ 답       Gemini 평가용 키 + supabase/functions/assistant-proxy/prompt.ts(라이브와 같은 지침·조립).
 //              AUP-6 — 질문 유형(계산·제도·안내·상담 진행)을 라이브와 같은 판정기(qtype.js)로 정하고 그 유형의 답 틀을 붙인다.
 //              문항의 qtype 칸(정답표 ops/eval/qtype-labels.json)과 견줘 판정 정확도도 같이 낸다.
@@ -43,7 +46,8 @@ const OPT = {
   judge: !flag('--no-judge'),
   notion: flag('--notion'),
   out: arg('--out', ''),
-  vectors: arg('--vectors', ''),
+  vectors: arg('--vectors', ''),      // 저장소 밖에서 만들어 둔 질문 벡터 파일(모양은 아래 QVEC)
+  embed: arg('--embed', '') || process.env.AUP_EMBED_URL || '',   // 라이브 질의 임베딩 주소(예: https://witw.pages.dev/api/embed)
 };
 const ENV = process.env;
 const GEMINI_KEY = ENV.GEMINI_EVAL_API_KEY || '';
@@ -289,6 +293,97 @@ function parseJsonAnswer(text) {          // 서버 index.ts 의 parseJsonAnswer
   return { answer: String(text || '').trim().slice(0, 4000), refs: [] };
 }
 
+/* ---------------------------------------------------------------- 뜻 벡터(하이브리드 검색)
+   G-AUP — 라이브 비서(assets/assistant.js 의 queryVectorFor)는 검색어를 /api/embed 에 보내
+   bge-m3 벡터를 받고, 정적 섹터 벡터와 코사인으로 «뜻이 가까운 섹터»를 민다(assistant/search.js).
+   성적표가 --vectors 없이 돌면 질문 벡터가 없어 **라이브보다 낮은(글자 검색만의) 성적**이 나온다
+   (2026-11-27 run 45962518680: 69.8% — 같은 302문에 벡터를 넣으면 77.0%).
+   그래서 --embed 주소(또는 AUP_EMBED_URL)가 있으면 러너가 **라이브와 같은 엔드포인트**로 검색어마다
+   벡터를 받아 그대로 쓴다. 라이브와 맞춘 것:
+     · 검색어는 화면과 같은 것 — 이어지는 질문이면 다시 쓴 질문(rewrite.js), 아니면 원문.
+     · 모델 이름이 정적 벡터의 model 과 다르면 쓰지 않는다(search.js 가 이미 건다).
+     · 실패·시간 초과는 그 검색어만 글자 검색으로 — 라이브의 조용한 폴백과 같은 모양.
+   질문 원문은 저장하지 않는다 — 캐시(assistant/eval/cache/qvec.json)에는 해시와 int8 벡터만 남는다.
+   문항은 우리가 쓴 시험 문항이라 /api/embed 로 보내도 사용자 질문이 아니다. */
+const EMBED = { url: OPT.vectors ? '' : String(OPT.embed || ''), on: false, model: '', dim: 0,
+  asked: 0, ok: 0, fail: 0, hit: 0, err: '', ms: 0 };
+EMBED.on = !!EMBED.url;
+const QVEC_PATH = path.join(ROOT, 'assistant', 'eval', 'cache', 'qvec.json');
+const QVEC_V = 2;                 // 2 = float32 base64 (1은 int8 — 모양이 달라 버린다)
+let QCACHE = { v: QVEC_V, model: '', dim: 0, q: {} };
+try {
+  if (fs.existsSync(QVEC_PATH)) {
+    const d = JSON.parse(fs.readFileSync(QVEC_PATH, 'utf8'));
+    if (d && d.q && Number(d.v) === QVEC_V) QCACHE = d;
+  }
+} catch { QCACHE = { v: QVEC_V, model: '', dim: 0, q: {} }; }
+if (QCACHE.model) { EMBED.model = String(QCACHE.model); EMBED.dim = Number(QCACHE.dim) || 0; }
+const qhash = (s) => crypto.createHash('sha256').update(String(s)).digest('hex').slice(0, 16);
+/* 캐시에는 받은 그대로(float32)를 둔다 — 라이브 화면도 float 벡터로 코사인을 낸다.
+   질문 원문은 남기지 않고 해시만 열쇠로 쓴다. */
+function b64dec(b64) {
+  const b = Buffer.from(String(b64), 'base64'), n = b.length >> 2;
+  const f = new Float32Array(n);
+  for (let i = 0; i < n; i++) f[i] = b.readFloatLE(i * 4);
+  return f;
+}
+function b64enc(vec) {
+  const b = Buffer.alloc(vec.length * 4);
+  for (let i = 0; i < vec.length; i++) b.writeFloatLE(vec[i], i * 4);
+  return b.toString('base64');
+}
+const QV = new Map();            // 이번 실행에서 쓸 «검색어 → 벡터»
+const QINFLIGHT = new Map();
+async function embedQuery(q) {
+  const key = qhash(q);
+  if (QCACHE.q[key]) { EMBED.hit++; return b64dec(QCACHE.q[key]); }
+  if (QINFLIGHT.has(key)) return QINFLIGHT.get(key);
+  const p = (async () => {
+    const u = EMBED.url + (EMBED.url.includes('?') ? '&' : '?') + 'q=' + encodeURIComponent(String(q).slice(0, 200));
+    EMBED.asked++;
+    const t0 = Date.now();
+    for (let a = 0; a < 3; a++) {
+      try {
+        const r = await realFetch(u, { headers: { 'user-agent': 'witw-aup-eval/1.0' }, signal: AbortSignal.timeout(15000) });
+        if (r.status === 429 || r.status >= 500) { await sleep(700 * (a + 1)); continue; }
+        if (!r.ok) break;
+        const j = await r.json();
+        const v = j && (j.vector || j.embedding);
+        if (!Array.isArray(v) || !v.length) break;
+        if (j.model) {
+          if (!EMBED.model) { EMBED.model = String(j.model); EMBED.dim = v.length; }
+          else if (String(j.model) !== EMBED.model) break;   // 다른 모델 벡터는 섞지 않는다(라이브와 같은 규칙)
+        } else if (!EMBED.dim) EMBED.dim = v.length;
+        EMBED.ok++; EMBED.ms += Date.now() - t0;
+        QCACHE.q[key] = b64enc(v);
+        if (!QCACHE.model) { QCACHE.model = EMBED.model; QCACHE.dim = v.length; }
+        return Float32Array.from(v);
+      } catch { await sleep(700 * (a + 1)); }
+    }
+    EMBED.fail++;
+    return null;
+  })();
+  QINFLIGHT.set(key, p);
+  return p;
+}
+/* 이 검색어의 벡터를 확보 — 이미 받았거나 파일에서 왔으면 그대로, 실패하면 null(글자 검색). */
+async function ensureVector(q) {
+  if (QVEC && QBYQ[q]) return QBYQ[q];
+  if (!EMBED.on) return null;
+  if (QV.has(q)) return QV.get(q);
+  const v = await embedQuery(q);
+  if (v) QV.set(q, v);
+  return v;
+}
+/* 동시 요청 수를 정해 두고 일감을 돌린다(Workers AI 무료 한도를 넘기지 않는 선). */
+async function pool(list, n, fn) {
+  let i = 0;
+  const workers = Array.from({ length: Math.min(n, list.length) }, async () => {
+    while (i < list.length) { const k = i++; await fn(list[k]); }
+  });
+  await Promise.all(workers);
+}
+
 /* ---------------------------------------------------------------- 한 문항 */
 /* AUP-7 — 질문 벡터 파일(--vectors)이 있으면 검색에 넘긴다.
    파일은 {model, dim, queries:{문항 id: base64 int8}} — 저장소 밖에서 만든 시험용 벡터다.
@@ -301,8 +396,10 @@ if (QVEC && QVEC.queries) {
   for (const it of raw) if (QVEC.queries[it.id]) QBYQ[it.q] = dec(QVEC.queries[it.id]);
 }
 function evidenceOf(q) {                  // assets/assistant.js 의 evidence() 와 같다
-  if (SEARCH.setQueryVector) SEARCH.setQueryVector(q, QBYQ[q] || null, QVEC && QVEC.model);
-  if (CHUNKS.setQueryVector) CHUNKS.setQueryVector(QBYQ[q] || null, QVEC && QVEC.model);
+  const v = QV.get(q) || (QVEC && QBYQ[q]) || null;
+  const vmodel = v ? ((QVEC && QVEC.model) || EMBED.model || '') : '';
+  if (SEARCH.setQueryVector) SEARCH.setQueryVector(q, v, vmodel);
+  if (CHUNKS.setQueryVector) CHUNKS.setQueryVector(v, vmodel);
   return SEARCH.search(q, { limit: 5 }).map((x) => ({ title: x.title, sector: x.sectorTitle || x.sector, url: x.url, snippet: x.snippet || '', _sector: x.sector }));
 }
 const sectorOf = (u) => { const m = /^\.?\/([a-z0-9-]+)\//.exec(String(u || '')); return m ? m[1] : ''; };
@@ -322,6 +419,7 @@ async function runItem(it) {
   }
   r.refused = false;
   // ② 정규화(검색 비교용) · ③ 근거
+  await ensureVector(it.q);
   const raw = evidenceOf(it.q);
   r.retrieval_sectors = raw.map((e) => sectorOf(e.url) || e._sector);
   r.retrieval_hit1 = hitAt(r.retrieval_sectors, it.expect_sectors, 1);
@@ -335,6 +433,7 @@ async function runItem(it) {
   r.qtype_ok = it.qtype ? qt.type === it.qtype : null;
   const rw = prev.length ? REWRITE.rewrite(it.q, prev) : { q: it.q, follow: false };
   const sq = rw.q || it.q;
+  if (sq !== it.q) await ensureVector(sq);
   const searched = sq === it.q ? raw : evidenceOf(sq);
   if (prev.length) {
     r.rewritten = sq !== it.q;
@@ -344,6 +443,7 @@ async function runItem(it) {
   }
   const nq = await normalize(it);
   if (nq) {
+    await ensureVector(nq);
     const ns = evidenceOf(nq).map((e) => sectorOf(e.url) || e._sector);
     r.norm_hit1 = hitAt(ns, it.expect_sectors, 1);
     r.norm_hit3 = hitAt(ns, it.expect_sectors, 3);
@@ -472,6 +572,20 @@ const started = new Date();
 await SEARCH.load();
 if (SEARCH.loadVectors) await SEARCH.loadVectors();   // AUP-7 정적 뜻 벡터(없으면 그냥 넘어간다)
 if (QVEC && QVEC.chunks && CHUNKS.useVectors) CHUNKS.useVectors(QVEC);
+/* G-AUP — 시작할 때 문항의 검색어(원문 + 이어지는 질문을 다시 쓴 것) 벡터를 한꺼번에 받아 둔다.
+   검색 사이사이에 네트워크를 기다리지 않게 하고, 실패가 몇 건인지도 한 번에 드러낸다. */
+if (EMBED.on) {
+  const qs = new Set();
+  for (const it of items) {
+    qs.add(it.q);
+    const p = Array.isArray(it.ctx) ? it.ctx : [];
+    if (p.length) { try { qs.add(REWRITE.rewrite(it.q, p).q || it.q); } catch {} }
+  }
+  const t0 = Date.now();
+  await pool([...qs], 6, async (q) => { const v = await ensureVector(q); if (v) QV.set(q, v); });
+  EMBED.err = EMBED.fail ? ('임베딩 실패 ' + EMBED.fail + '/' + EMBED.asked + ' — 그 검색어만 글자 검색') : '';
+  console.log(`… 뜻 벡터 ${EMBED.ok}/${EMBED.asked} (캐시 ${EMBED.hit}, ${EMBED.model || '-'} ${EMBED.dim}차원, ${((Date.now() - t0) / 1000).toFixed(1)}초)` + (EMBED.err ? ' · ' + EMBED.err : ''));
+}
 const rows = [];
 for (const it of items) {
   rows.push(await runItem(it));
@@ -485,8 +599,23 @@ const report = {
   commit: ENV.GITHUB_SHA || '', model: GEMINI_KEY && !OPT.dry ? GEMINI_MODEL : '(없음)', groq_tasks: Object.fromEntries(Object.entries(taskState).map(([k, v]) => [k, { used: v.chain[v.i] || null, chain: v.chain, stopped: v.down || null }])),
   calls: { gemini: geminiUsed, groq: groqUsed }, waited_429: waited429, minutes: Math.round((Date.now() - T0) / 6000) / 10,
   stopped: { gemini: geminiDown || null, groq: groqDown || null },
+  /* G-AUP — 이 보고서가 «라이브와 같은 하이브리드 검색»으로 쟀는지. 꺼져 있으면 글자 검색만이다. */
+  hybrid: {
+    on: !!(QVEC || (EMBED.on && (EMBED.ok + EMBED.hit) > 0)),
+    source: QVEC ? 'vectors-file' : (EMBED.on ? EMBED.url : 'off'),
+    model: (QVEC && QVEC.model) || EMBED.model || '',
+    dim: (QVEC && QVEC.dim) || EMBED.dim || 0,
+    queries: { asked: EMBED.asked, ok: EMBED.ok, fail: EMBED.fail, cached: EMBED.hit },
+    ms_avg: EMBED.ok ? Math.round(EMBED.ms / EMBED.ok) : null,
+  },
   options: OPT, summary: sum, rows,
 };
+if (EMBED.on && Object.keys(QCACHE.q).length && !ENV.AUP_NO_CACHE_WRITE) {
+  try {
+    fs.mkdirSync(path.dirname(QVEC_PATH), { recursive: true });
+    fs.writeFileSync(QVEC_PATH, JSON.stringify({ ...QCACHE, v: QVEC_V }) + '\n');
+  } catch {}
+}
 if (Object.keys(NORM.items).length && !ENV.AUP_NO_CACHE_WRITE) {
   fs.mkdirSync(path.dirname(NORM_PATH), { recursive: true });
   fs.writeFileSync(NORM_PATH, JSON.stringify(NORM, null, 1) + '\n');
@@ -500,6 +629,7 @@ const md = [
   '## AUP-2 성적표', '',
   `- 커밋 \`${(ENV.GITHUB_SHA || '').slice(0, 8) || '로컬'}\` · 답 모델 \`${report.model}\` · Groq ${Object.entries(report.groq_tasks).map(([k, v]) => k + '=' + (v.used || '없음') + (v.stopped ? '(멈춤)' : '')).join(' · ') || '(없음)'}`,
   `- 호출: Gemini ${geminiUsed} · Groq ${groqUsed} · 한도 대기(429) Gemini ${waited429.gemini}·Groq ${waited429.groq} · ${report.minutes}분` + (geminiDown || groqDown ? ` · 멈춤: ${[geminiDown && 'Gemini ' + geminiDown, groqDown && 'Groq ' + groqDown].filter(Boolean).join(', ')}` : ''),
+  `- 검색: ${report.hybrid.on ? '뜻 벡터(하이브리드) `' + (report.hybrid.model || '-') + '` · 질문 ' + report.hybrid.queries.ok + '/' + report.hybrid.queries.asked + ' (캐시 ' + report.hybrid.queries.cached + ')' : '**글자 검색만** (라이브보다 낮게 잼 — --embed 로 켠다)'}`,
   '', '| 항목 | 값 |', '| --- | --- |',
   line(`문항`, sum.items), line('검색 1순위 적중(%)', sum.retrieval_hit1), line('검색 3순위 안(%)', sum.retrieval_hit3),
   line(`질문 유형 판정 정확(%) · ${sum.qtype_n}문`, `${sum.qtype_accuracy} (${Object.entries(sum.qtype_mix).map(([k, v]) => k + ' ' + v).join(' · ')})`),
@@ -522,7 +652,7 @@ if (ENV.GITHUB_STEP_SUMMARY) fs.appendFileSync(ENV.GITHUB_STEP_SUMMARY, md + '\n
 /* ---------------------------------------------------------------- 진행일지 한 줄 */
 if (OPT.notion && NOTION_KEY && !OPT.dry) {
   const text = (s) => [{ type: 'text', text: { content: String(s).slice(0, 1900) } }];
-  const result = `검색 1순위 ${sum.retrieval_hit1}% · 3순위 ${sum.retrieval_hit3}% · 인용 ${sum.cite_rate}% · 수치 ${sum.numbers_rate}% · 링크 ${sum.links_ok_rate}% · 검사기 ${sum.check_numbers}/${sum.check_links} · 유출0 ${sum.leak_free_rate}% · 거절 ${sum.refuse_rate}% · 잘못 거절 ${sum.false_refuse} · 유형 ${sum.qtype_accuracy}%(${sum.qtype_n}문) · 보조 ${Object.values(sum.judge).join('/')} (모델 ${report.model}, 커밋 ${(ENV.GITHUB_SHA || '').slice(0, 8)})`;
+  const result = `검색 1순위 ${sum.retrieval_hit1}% · 3순위 ${sum.retrieval_hit3}%${report.hybrid.on ? ` (뜻 벡터 ${report.hybrid.model})` : ' (글자 검색만)'} · 인용 ${sum.cite_rate}% · 수치 ${sum.numbers_rate}% · 링크 ${sum.links_ok_rate}% · 검사기 ${sum.check_numbers}/${sum.check_links} · 유출0 ${sum.leak_free_rate}% · 거절 ${sum.refuse_rate}% · 잘못 거절 ${sum.false_refuse} · 유형 ${sum.qtype_accuracy}%(${sum.qtype_n}문) · 보조 ${Object.values(sum.judge).join('/')} (모델 ${report.model}, 커밋 ${(ENV.GITHUB_SHA || '').slice(0, 8)})`;
   try {
     const r = await realFetch('https://api.notion.com/v1/pages', {
       method: 'POST',

@@ -132,8 +132,32 @@ def run_gate(report_path, baseline=72.5, skip_guard=False):
         summary = {}
     guard_ok = None if skip_guard else run_guard()
     verdict, rows = evaluate(summary, guard_ok, baseline)
+    hybrid = data.get("hybrid") if isinstance(data.get("hybrid"), dict) else None
     return {"verdict": verdict, "rows": rows,
-            "report": str(report_path), "commit": data.get("commit", "")}
+            "report": str(report_path), "commit": data.get("commit", ""),
+            "hybrid": hybrid}
+
+
+def hybrid_line(hybrid):
+    """보고서가 «라이브와 같은 하이브리드 검색»으로 쟀는지 한 줄로. 판정에는 쓰지 않는다.
+    2026-11-27 run 45962518680 은 질문 벡터가 꺼진 채(글자 검색만) 재어 라이브보다 낮은 69.8%가 났다 —
+    그런 보고서를 보면 «검색이 나빠졌나»가 아니라 «재는 조건이 라이브와 달랐나»를 먼저 보게 하려는 줄이다."""
+    if not hybrid:
+        return "뜻 벡터(하이브리드)  기록 없음 — 이 보고서에는 hybrid 칸이 없다(예전 보고서)"
+    if not hybrid.get("on"):
+        return "뜻 벡터(하이브리드)  **꺼짐** — 글자 검색만 잰 보고서(라이브보다 낮게 잴 수 있음)"
+    q = hybrid.get("queries") or {}
+    desc = str(hybrid.get("model") or "-")
+    if q:
+        desc += " · 질문 " + str(q.get("ok", 0)) + "/" + str(q.get("asked", 0))
+        if q.get("fail"):
+            desc += "(실패 " + str(q.get("fail")) + ")"
+        if q.get("cached"):
+            desc += " · 캐시 " + str(q.get("cached"))
+    extra = hybrid.get("source")
+    if extra == "vectors-file":
+        desc += " · 질문 벡터 파일"
+    return "뜻 벡터(하이브리드)  " + desc
 
 
 VERDICT_KO = {"pass": "통과", "fail": "불합격", "hold": "보류"}
@@ -159,6 +183,7 @@ def render_text(result):
     if notes:
         lines.append("참고: " + " · ".join(
             n["label"].replace("참고 · ", "") + " " + str(n["value"]) for n in notes))
+    lines.append("재는 조건: " + hybrid_line(result.get("hybrid")).replace("**", ""))
     lines.append("판정: " + VERDICT_KO[result["verdict"]] + " (" + result["verdict"] + ")")
     return "\n".join(lines)
 
@@ -179,6 +204,7 @@ def render_md(result):
     if notes:
         lines += ["", "참고(판정에는 안 씀): " + " · ".join(
             n["label"].replace("참고 · ", "") + " " + str(n["value"]) for n in notes)]
+    lines += ["", "- " + hybrid_line(result.get("hybrid"))]
     return "\n".join(lines) + "\n"
 
 
