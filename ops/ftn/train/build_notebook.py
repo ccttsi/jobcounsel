@@ -134,6 +134,7 @@ CONFIG = {
     "save_every": 100,
     "seed": 42,
     "time_budget_min": 150,         # 2시간 30분 — 넘으면 멈춘다
+    "allow_draft": False,           # 연습용: draft(눈검수 전)로도 돌려 보려면 True (기록에 남는다)
 
     # ── 자리 ─────────────────────────────────────────────
     "input_root": "/kaggle/input",  # Dataset 을 붙이면 여기 아래에 풀린다
@@ -154,10 +155,22 @@ code(r'''
 import hashlib
 
 def find_sft(root):
-    """train/valid/manifest 가 같이 있는 폴더를 찾는다. 없으면 어떻게 만들지 알려 준다."""
+    """데이터 폴더(train/valid/manifest)와 스크립트 폴더(sft_format.py)를 각각 찾는다. 없으면 어떻게 만들지 알려 준다."""
+    data_dir = script_dir = ""
     for base, _dirs, files in os.walk(root):
-        if {"train.jsonl", "valid.jsonl", "manifest.json"} <= set(files):
-            return base
+        if not data_dir and {"train.jsonl", "valid.jsonl", "manifest.json"} <= set(files):
+            data_dir = base
+        if not script_dir and "sft_format.py" in files:
+            script_dir = base
+        if data_dir and script_dir:
+            break
+    if data_dir and script_dir:
+        return data_dir, script_dir
+    if data_dir:
+        raise SystemExit(
+            "학습 입력은 찾았는데 `sft_format.py` 가 없다 — 조립 규칙을 한 벌만 쓰기 위해 스크립트가 필요하다.\n"
+            "Dataset 을 `ops/ftn/train/` 폴더 **째** 올리고(스크립트 + data/) Add Data 에 붙인다."
+        )
     raise SystemExit(
         "학습 입력을 못 찾았다.\n"
         "① 로컬에서 `python3 ops/ftn/train/prepare_sft.py --from mlc/qa --out ops/ftn/train/data`\n"
@@ -165,9 +178,11 @@ def find_sft(root):
         "③ 다시 실행"
     )
 
-SFT_DIR = find_sft(CONFIG["input_root"])
-sys.path.insert(0, SFT_DIR)          # sft_format.py·prepare_sft.py 를 같이 쓴다(모양 한 벌)
-print("학습 입력:", SFT_DIR)
+SFT_DIR, SCRIPT_DIR = find_sft(CONFIG["input_root"])
+for path in (SCRIPT_DIR, SFT_DIR):
+    if path not in sys.path:
+        sys.path.insert(0, path)
+print("학습 입력:", SFT_DIR, "| 스크립트:", SCRIPT_DIR)
 
 import sft_format, prepare_sft          # noqa: E402 — 데이터셋에 들어 있는 같은 파일
 
@@ -184,9 +199,14 @@ def digest(rows):
     return hashlib.sha256(raw).hexdigest()[:16]
 
 print(f"train {len(train_rows)} · valid {len(valid_rows)}")
-print("지문", digest(train_rows), "| manifest", manifest.get("fingerprint"))
-assert digest(train_rows) == manifest.get("fingerprint"), "학습 입력이 manifest 와 다르다 — prepare_sft 를 다시 돌린다"
-assert all(r["meta"]["status"] != "draft" for r in train_rows + valid_rows), "draft(눈검수 전)가 섞여 있다 — 승격 먼저"
+# 지문은 «train + valid 전체»로 센다(prepare_sft.py 가 그렇게 남긴다).
+data_fingerprint = digest(train_rows + valid_rows)
+print("지문", data_fingerprint, "| manifest", manifest.get("fingerprint"))
+assert data_fingerprint == manifest.get("fingerprint"), "학습 입력이 manifest 와 다르다 — prepare_sft 를 다시 돌린다"
+drafts = [r["id"] for r in train_rows + valid_rows if r["meta"]["status"] == "draft"]
+if drafts:
+    assert CONFIG["allow_draft"], f"draft(눈검수 전) {len(drafts)}건이 섞여 있다 — split.py --promote 먼저. 연습이면 CONFIG['allow_draft']=True"
+    print(f"!! 연습 실행 — draft {len(drafts)}건으로 학습한다(채택하면 안 됨)")
 print("답 유형:", manifest.get("style"))
 print("거절 비중:", manifest.get("refusal_share"))
 ''')
@@ -264,7 +284,7 @@ from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 
 compute_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
 bnb = BitsAndBytesConfig(
-    load_in_4bit=True,
+    load_in_4bit=CONFIG["load_bits"] == 4,
     bnb_4bit_quant_type="nf4",
     bnb_4bit_use_double_quant=True,
     bnb_4bit_compute_dtype=compute_dtype,
@@ -311,37 +331,50 @@ class TimeGuard(TrainerCallback):
             control.should_training_stop = True
 
 import inspect
-def build_sft_config(**wanted):
-    """trl 판마다 이름이 달라서(예: max_seq_length → max_length) 있는 이름만 넘긴다."""
-    allowed = set(inspect.signature(SFTConfig.__init__).parameters)
-    kwargs = {k: v for k, v in wanted.items() if k in allowed}
-    skipped = sorted(set(wanted) - set(kwargs))
-    if skipped:
-        print("이 trl 판에 없는 설정은 건너뛴다:", skipped)
-    return SFTConfig(**kwargs)
+def build_sft_config(common, variants):
+    """trl·transformers 판마다 이름이 다르다(`max_length`↔`max_seq_length`, `eval_strategy`↔`evaluation_strategy`).
+    되는 조합을 차례로 시도하고, 다 안 되면 마지막 오류를 띄운다."""
+    last = None
+    for extra in variants:
+        try:
+            return SFTConfig(**{**common, **extra})
+        except TypeError as exc:
+            last = exc
+    raise last
 
+LEN = CONFIG["max_seq_len"]
 sft_cfg = build_sft_config(
-    output_dir=os.path.join(CONFIG["out_dir"], "checkpoints"),
-    max_seq_length=CONFIG["max_seq_len"], max_length=CONFIG["max_seq_len"],
-    dataset_text_field="text",
-    per_device_train_batch_size=CONFIG["batch_size"],
-    gradient_accumulation_steps=CONFIG["grad_accum"],
-    num_train_epochs=CONFIG["epochs"],
-    learning_rate=CONFIG["lr"],
-    warmup_ratio=CONFIG["warmup_ratio"],
-    weight_decay=CONFIG["weight_decay"],
-    lr_scheduler_type="cosine",
-    optim="paged_adamw_8bit",
-    fp16=not torch.cuda.is_bf16_supported(),
-    bf16=torch.cuda.is_bf16_supported(),
-    gradient_checkpointing=True,
-    logging_steps=10,
-    logging_first_step=True,
-    eval_strategy="steps", evaluation_strategy="steps", eval_steps=CONFIG["eval_every"],
-    save_steps=CONFIG["save_every"], save_total_limit=2,
-    report_to="none", seed=CONFIG["seed"],
-    packing=False,
+    dict(
+        output_dir=os.path.join(CONFIG["out_dir"], "checkpoints"),
+        dataset_text_field="text",
+        per_device_train_batch_size=CONFIG["batch_size"],
+        gradient_accumulation_steps=CONFIG["grad_accum"],
+        num_train_epochs=CONFIG["epochs"],
+        learning_rate=CONFIG["lr"],
+        warmup_ratio=CONFIG["warmup_ratio"],
+        weight_decay=CONFIG["weight_decay"],
+        lr_scheduler_type="cosine",
+        optim="paged_adamw_8bit",
+        fp16=not torch.cuda.is_bf16_supported(),
+        bf16=torch.cuda.is_bf16_supported(),
+        gradient_checkpointing=True,
+        logging_steps=10,
+        logging_first_step=True,
+        eval_steps=CONFIG["eval_every"],
+        save_steps=CONFIG["save_every"],
+        save_total_limit=2,
+        report_to="none",
+        seed=CONFIG["seed"],
+        packing=False,
+    ),
+    [
+        {"max_length": LEN, "eval_strategy": "steps"},
+        {"max_seq_length": LEN, "eval_strategy": "steps"},
+        {"max_length": LEN, "evaluation_strategy": "steps"},
+        {"max_seq_length": LEN, "evaluation_strategy": "steps"},
+    ],
 )
+print("max seq:", getattr(sft_cfg, "max_length", None) or getattr(sft_cfg, "max_seq_length", None))
 
 # 답 토큰에만 손실 — 템플릿에서 assistant 차례 앞 표지를 찾아 쓴다.
 collator = None
@@ -360,7 +393,7 @@ except Exception as exc:
 
 trainer_kwargs = dict(
     model=model, train_dataset=train_ds, eval_dataset=valid_ds,
-    args=sft_cfg, peft_config=lora, callbacks=[TimeGuard(CONFIG["time_budget_min"])],
+    args=sft_cfg, callbacks=[TimeGuard(CONFIG["time_budget_min"])],
 )
 if collator is not None:
     trainer_kwargs["data_collator"] = collator
@@ -393,7 +426,7 @@ run = {
     "schema": "witw-ftn3-run/1.0.0",
     "trained_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
     "base_model": CONFIG["base_model"],
-    "data_fingerprint": digest(train_rows),
+    "data_fingerprint": data_fingerprint,
     "data": {"train": len(train_ds), "valid": len(valid_ds), "manifest_style": manifest.get("style")},
     "lora": {k: CONFIG[k] for k in ("lora_r", "lora_alpha", "lora_dropout", "target_modules")},
     "train": {k: CONFIG[k] for k in ("epochs", "lr", "batch_size", "grad_accum", "max_seq_len")},
