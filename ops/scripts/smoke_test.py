@@ -944,6 +944,95 @@ def check_onboarding(page):
     return issues
 
 
+DECK_PRESET_JS = r"""() => {
+  const row = document.querySelector('.a-deck-tools');
+  const lab = document.getElementById('deckTool') || (row && row.querySelector('.a-dt'));
+  const btn = document.querySelector('.a-deck-tools [data-act="unpreset"]');
+  const rowH = row ? +row.getBoundingClientRect().height.toFixed(1) : 0;
+  if (!row || !lab || !btn) return {missing: true, rowHis: rowH, lab: !!lab, btn: !!btn};
+  /* 라벨 «글자»의 실제 끝을 잰다 — 단추가 라벨 안에 그려져 있으면 라벨 상자의 오른끝은
+     단추 끝과 같아져 간격이 0으로 보이지 않는다(2026-11-29 결함이 그렇게 숨었다). */
+  const nodes = [...lab.childNodes].filter(n => n.nodeType === 3 || (n.nodeType === 1 && n.tagName !== 'BUTTON'));
+  let ink = null;
+  if (nodes.length) {
+    const rg = document.createRange();
+    rg.setStartBefore(nodes[0]); rg.setEndAfter(nodes[nodes.length - 1]);
+    const rs = [...rg.getClientRects()].filter(q => q.width > 1 && q.height > 1);
+    if (rs.length) ink = {left: Math.min(...rs.map(q => q.left)), right: Math.max(...rs.map(q => q.right)),
+                          top: Math.min(...rs.map(q => q.top)), bottom: Math.max(...rs.map(q => q.bottom))};
+  }
+  const l = lab.getBoundingClientRect(), b = btn.getBoundingClientRect();
+  const rr = row.getBoundingClientRect();
+  const edge = ink ? ink.right : l.right;
+  const labelText = nodes.map(n => n.textContent || '').join('').trim();
+  return {label: labelText || lab.textContent.trim(), btnText: btn.textContent.trim(),
+          hidden: btn.hidden || b.width < 1, gap: +(b.left - edge).toFixed(1),
+          overlap: +(Math.min(b.right, edge) - Math.max(b.left, ink ? ink.left : l.left)).toFixed(1),
+          btnW: +b.width.toFixed(1), btnH: +b.height.toFixed(1), rowH: +rr.height.toFixed(1), rowHis: +rr.height.toFixed(1),
+          sameRow: ink ? Math.abs((b.top + b.height / 2) - ((ink.top + ink.bottom) / 2)) < 8 : true};
+}
+"""
+
+
+def check_deck_preset_row(browser, base, results):
+    """덱 도구 줄 — 프리셋을 꽂았을 때 「N / M칸 꽂음」과 「프리셋 풀기」가 붙어 있지 않은가.
+
+    2026-11-29 결함(태화님 실기기 사진): 단추를 라벨 span **안에** 그려 flex 사이가 먹지 않아
+    두 요소가 0px로 맞붙었다. 라벨과 단추가 형제인지, 사이가 기준(8px) 이상인지, 단추가 44px인지,
+    같은 줄에 서는지, 「프리셋 풀기」가 실제로 먹는지(단추를 옮기며 처리기가 떨어져 나가는 일)를
+    시드·매치 두 보기에서 잰다. 단추가 사라진 뒤에도 도구 줄 높이가 그대로인지(C1-39: 덱 창이
+    내려앉지 않게 44px 고정) 함께 본다.
+    """
+    issues = []
+    GAP_MIN = 8
+    for width, height in ((390, 844), (1280, 800)):
+        for mode, pid in (("seed", "morning"), ("match", "switch")):
+            case = []
+            detail = ""
+            context = browser.new_context(viewport={"width": width, "height": height})
+            page = context.new_page()
+            # 첫 화면 안내가 덮으면 덱을 잴 수 없다 — 이 탭에서는 안내를 건너뛴다
+            page.add_init_script("try{sessionStorage.setItem('jc-onb-session','1');}catch(e){}")
+            try:
+                page.goto(f"{base}?mode={mode}&preset={pid}", wait_until="domcontentloaded", timeout=45000)
+                page.wait_for_timeout(2200)
+                m = page.evaluate(DECK_PRESET_JS)
+                where = f"{mode}/{pid} {width}px"
+                if m.get("missing"):
+                    case.append(f"덱 도구 줄 — 「칸 꽂음」 라벨이나 「프리셋 풀기」 단추를 찾지 못했다({where})")
+                else:
+                    detail = f"간격 {m['gap']}px · 단추 {m['btnW']}×{m['btnH']} · 줄 {m['rowH']}px"
+                    if m["hidden"]:
+                        case.append(f"덱 도구 줄 — 프리셋을 꽂았는데 「프리셋 풀기」가 보이지 않는다({where})")
+                    if m["gap"] < GAP_MIN:
+                        case.append(f"덱 도구 줄 — 「{m['label']}」와 「{m['btnText']}」가 {m['gap']}px로 붙어 있다"
+                                    f"(기준 {GAP_MIN}px 이상, {where})")
+                    if m["overlap"] > .5:
+                        case.append(f"덱 도구 줄 — 라벨과 단추가 {m['overlap']}px 겹친다({where})")
+                    if m["sameRow"] is False:
+                        case.append(f"덱 도구 줄 — 라벨과 단추가 한 줄에 서지 못한다({where})")
+                    if m["btnH"] < 43.5 or m["btnW"] < 43.5:
+                        case.append(f"덱 도구 줄 — 「프리셋 풀기」가 44px보다 작다({m['btnW']}x{m['btnH']}, {where})")
+                    # 단추를 실제로 눌러 본다 — 처리기가 라벨이 아니라 단추에 붙어 있는가,
+                    # 그리고 단추가 사라져도 도구 줄 높이(44px)가 그대로인가
+                    page.click('.a-deck-tools [data-act="unpreset"]')
+                    page.wait_for_timeout(600)
+                    after = page.evaluate(DECK_PRESET_JS)
+                    # 단추가 화면에서 사라졌으면(감춤이든 지움) 풀린 것으로 본다
+                    if not after.get("missing") and not after.get("hidden"):
+                        case.append(f"덱 도구 줄 — 「프리셋 풀기」를 눌러도 단추가 남아 있다({where})")
+                    gone_h = after.get("rowH") if not after.get("missing") else after.get("rowHis")
+                    if gone_h is not None and abs(gone_h - m["rowH"]) > .5:
+                        case.append(f"덱 도구 줄 — 프리셋을 풀자 도구 줄 높이가 {m['rowH']}px → {gone_h}px로 흔들린다({where})")
+            except Exception as exc:                    # noqa: BLE001 — 실패 사유를 그대로 보여 준다
+                case.append(f"덱 프리셋 줄 검수 실패({mode} {width}px): {str(exc).splitlines()[0][:110]}")
+            finally:
+                context.close()
+            issues.extend(case)
+            results.append(("덱 프리셋 줄", f"{width}×{height} · {mode}", case, detail))
+    return issues
+
+
 def check_brief_links(page):
     """대문 브리핑 소식 띠 → 브리핑 지면 연동(2026-11-24 태화님 지시 「확실하게 연동되도록」).
 
@@ -1284,6 +1373,10 @@ def run(args):
                     context.close()
             if sweep:
                 run_sweep(browser, base, sweep, args, results)
+            # 덱 도구 줄 — 프리셋을 꽂은 상태의 간격(2026-11-29). 지면 기본 상태만 재면
+            # 프리셋이 켜졌을 때만 나타나는 「프리셋 풀기」 단추 자리는 어느 게이트에도 걸리지 않는다.
+            if "/" in args.pages:
+                check_deck_preset_row(browser, base, results)
             browser.close()
     finally:
         if httpd:

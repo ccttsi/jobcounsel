@@ -234,10 +234,14 @@
       + '</div>';
     box.hidden = false;
   }
+  /* 2026-11-29(태화님 실기기 사진): 「N / M칸 꽂음」 라벨과 「프리셋 풀기」 단추가 0px로 붙어 있었다.
+     단추를 라벨 span 안에 넣어 그리던 탓에 flex 사이(gap)·오른쪽 붙임(margin-left:auto)이 먹지 않았다.
+     단추는 index.html에 형제로 두고 여기서는 보이기만 바꾼다 — 도구 줄 flex가 둘 사이를 띄운다. */
   function renderTools() {
     var p = pre[mode] ? presetOf(mode, pre[mode]) : null;
-    $('deckTool').innerHTML = '<b class="a-num">' + placedN() + '</b> / ' + maxOf(mode) + '칸 꽂음'
-      + (p ? '<button type="button" class="a-dt-x" data-act="unpreset" aria-label="프리셋을 풀고 꽂기 전 배치로 되돌리기">프리셋 풀기</button>' : '');
+    $('deckTool').innerHTML = '<b class="a-num">' + placedN() + '</b> / ' + maxOf(mode) + '칸 꽂음';
+    var x = $('deckUnpreset');
+    if (x) x.hidden = !p;
   }
   /* ---------- 프리셋 진행판: 단계 → 질문 → 확인 ---------- */
   var stepSel = 0;
@@ -475,7 +479,7 @@
       var b = e.target.closest('[data-act="unpreset"]'); if (!b) return;
       clearPreset();
     });
-    var tools = $('deckTool');
+    var tools = $('deckUnpreset');
     if (tools) tools.addEventListener('click', function (e) {
       var b = e.target.closest('[data-act="unpreset"]'); if (!b) return;
       clearPreset();
