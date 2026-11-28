@@ -54,6 +54,7 @@ python3 ops/ftn/train/measure_base.py --models qwen3-4b-instruct,kanana-1.5-8b -
 - **개인정보 0** — 전화·메일·주민번호 모양이 있으면 그 레코드를 뺀다.
 - **비밀값 0** — 노트북은 키를 `kaggle_secrets`(이름 `HF_TOKEN`)에서만 읽고 출력하지 않는다.
   공개 후보(Qwen3·Kanana, 둘 다 Apache-2.0)는 토큰 없이 받는다. gated(Gemma·Llama)로 바꿀 때만 필요.
+  `kaggle.json` 은 **로컬 CLI 로 커널을 올릴 때만** 쓰고(`~/.kaggle/kaggle.json`), 노트북·저장소에는 넣지 않는다.
 - **원문 저작물 0** — 재료는 자체 합성 문장이고, 법령 조문 인용은 저작권법 제7조.
 
 ## 4. 학습·서빙이 «같은 모양» 인 이유

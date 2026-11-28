@@ -55,7 +55,7 @@ ZeroGPU 학습·서빙 시간이 감당되면 1·2순위를 뒤집습니다. 판
 
 - 프롬프트 9건: `p1`~`p4` 상담 문답(무근거) · `p5`·`p6` 근거를 주고 계산·제도 판단 · `NUM-001`·`NUM-005`·`NUM-007` = AUP-2 시험 문항(최저임금 시급 · 구직급여 상한 · 국민연금 요율, 기대값은 `data/legal-constants.json`).
   `p1`~`p4` 문장은 `ops/serve/zerogpu/prompts/measure_prompts.json` 과 **같은 문장**이라 이미 잰 Cloudflare Workers AI(6.2초·608자)·ZeroGPU 27B(웜 5.6초) 수치와 나란히 놓을 수 있습니다.
-- 조건: greedy(do_sample=False), 같은 `max_new_tokens`, 가능하면 4비트.
+- 조건: 같은 `max_new_tokens`, 가능하면 4비트, 가능하면 greedy. 다만 **공개 ZeroGPU 스페이스는 temperature 최소값이 0.1** 이라 그 스페이스로 잰 Llama 값은 0.1 로 돌린 것이고(완전 greedy 아님), p1·p2 는 400토큰·p4 는 300토큰 상한입니다.
 - 기계로 잰 것: 응답 시간·글자 수·**한글 비율**(글자 중 한글 비중)·**다른 문자권 글자 수**(한자·가나·태국문자·키릴)·**정답 수치 포함 여부**.
 - 사람(피클)이 본 것: 한국어 자연스러움·지시 이행. 주관이라 §3.3 에 실제 답을 그대로 붙였습니다.
 
@@ -63,7 +63,7 @@ ZeroGPU 학습·서빙 시간이 감당되면 1·2순위를 뒤집습니다. 판
 
 | 모델 | 부른 곳 | 결과 |
 |---|---|---|
-| **Llama-3.2-3B-Instruct** | 공개 ZeroGPU 스페이스 `huggingface-projects/llama-3.2-3B-Instruct` (zero-a10g, 2026-11-29 00:15~00:25 KST) | p1 **9.9초·1,112자·한글 비율 0.43** · p2 **7.7초·1,124자·한글 비율 0.44**(다른 문자권 12자) · p4 8.0초. **p3 이후는 ZeroGPU 무료 한도(5분/일) 소진으로 못 잼**(`You have exceeded your ZeroGPU quota (135s`) |
+| **Llama-3.2-3B-Instruct** | 공개 ZeroGPU 스페이스 `huggingface-projects/llama-3.2-3B-Instruct` (zero-a10g, 2026-11-29 00:15~00:25 KST) | p1 **9.9초·1,112자·한글 비율 0.43**(상한 400토큰) · p2 **7.7초·1,124자·한글 비율 0.44**(다른 문자권 12자 · 400토큰) · p4 8.0초·300토큰 상한. **p3 이후는 ZeroGPU 무료 한도(5분/일) 소진으로 못 잼**(`You have exceeded your ZeroGPU quota (135s)`) |
 | **Qwen3-4B-Instruct-2507** | Kaggle 무료 GPU(T4) — `train/measure_base.py` 커널 `ccttsi/ftn-2-base-ko-measure` | §3.2-1 참고 |
 | **Kanana-1.5-8B-Instruct** | 같음(같은 커널이 두 모델을 차례로) | §3.2-1 참고 |
 | **Gemma-3-4B-it** | — | **못 부름.** gated(HF 약관 동의 전)라 가중치를 받을 수 없고, 공개 ZeroGPU 스페이스는 당일 한도를 다 써서 호출 불가. 공식 카드의 언어 범위(140+)만 확인 |
