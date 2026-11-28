@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 홈 화면 카드 한 장. RemoteViews가 허용하는 뷰만 쓴다(LinearLayout·TextView·ImageButton).
+     위: 갈래 표지 + 차례 + 새로 받기 / 가운데: 제목·부제·요약(남는 높이만큼만 보이고 잘림) /
+     아래: 이전 · 핵심 수치 · 다음. 가운데를 누르면 자료실의 그 카드가 열린다. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg"
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/feed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/acc_briefing"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFeatureSettings="tnum"
+            android:paddingStart="8dp"
+            android:paddingEnd="2dp"
+            android:textColor="@color/muted"
+            android:textSize="12sp" />
+
+        <ImageButton
+            android:id="@+id/refresh"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/refresh"
+            android:src="@drawable/ic_refresh" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingEnd="6dp">
+
+        <TextView
+            android:id="@+id/cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/muted"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.12"
+            android:maxLines="2"
+            android:textColor="@color/ink"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/muted"
+            android:textSize="12.5sp" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="6dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.18"
+            android:textColor="@color/ink"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/prev"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/btn_bg"
+            android:contentDescription="@string/prev"
+            android:src="@drawable/ic_prev" />
+
+        <LinearLayout
+            android:id="@+id/numbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <TextView
+                android:id="@+id/num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:maxLines="1"
+                android:textColor="@color/acc_briefing"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/numlabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingStart="6dp"
+                android:textColor="@color/muted"
+                android:textSize="11.5sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/btn_bg"
+            android:contentDescription="@string/next"
+            android:src="@drawable/ic_next" />
+    </LinearLayout>
+</LinearLayout>
