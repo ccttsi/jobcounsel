@@ -2222,6 +2222,10 @@ def run_gaup_checks():
 FTN_COLLECT = os.path.join("ops", "ftn", "collect.py")
 FTN_OVERLAP = os.path.join("ops", "ftn", "overlap_check.py")
 FTN_CANDIDATES = os.path.join("ops", "ftn", "dataset", "candidates.jsonl")
+FTN_SPLIT = os.path.join("ops", "ftn", "split.py")
+FTN_DRAFTS = os.path.join("ops", "ftn", "work", "drafts.jsonl")
+FTN_MIN_ITEMS = 600      # FTN-1 목표 600~1,000문의 아래끝
+FTN_MIN_REFUSAL = 0.12   # 거절 유형 최소 비율(초안 배분 15%)
 
 
 def run_ftn_checks():
@@ -2264,7 +2268,29 @@ def run_ftn_checks():
             ids.add(it.get("id"))
             if EVAL_PII.search(json.dumps(it, ensure_ascii=False)):
                 fail("ftn", f"{FTN_CANDIDATES}:{line_no} 개인정보 모양이 들어 있다")
-    note(f"FTN-1 문답집 후보 — {n}건 (원천 동기·시험 문항 겹침 0·칸·개인정보 모양)")
+    styles = {}
+    with open(os.path.join(ROOT, FTN_CANDIDATES), encoding="utf-8") as fh:
+        for line in fh:
+            if line.strip():
+                styles[json.loads(line).get("style")] = styles.get(json.loads(line).get("style"), 0) + 1
+    if n < FTN_MIN_ITEMS:
+        fail("ftn", f"후보가 {n}건뿐이다 — FTN-1 목표 600~1,000문(지금 기준 {FTN_MIN_ITEMS}건 이상)")
+    refusal_ratio = styles.get("거절", 0) / max(n, 1)
+    if refusal_ratio < FTN_MIN_REFUSAL:
+        fail("ftn", f"거절 유형이 {refusal_ratio:.1%} — 초안 배분 15%에 맞춰 {FTN_MIN_REFUSAL:.0%} 이상이어야 한다")
+    missing = [s for s in ("설명", "계산", "자료 안내", "상담 진행", "거절") if not styles.get(s)]
+    if missing:
+        fail("ftn", "후보에 없는 답 유형: " + ", ".join(missing))
+    # 초안 미리보기 — 초안(work/drafts.jsonl)이 있으면 지금 상태와 같은지 본다(없으면 건너뛴다).
+    split_py = os.path.join(ROOT, FTN_SPLIT)
+    drafts = os.path.join(ROOT, FTN_DRAFTS)
+    if os.path.exists(drafts) and os.path.exists(split_py):
+        result = subprocess.run([sys.executable, split_py, "--check"], capture_output=True, text=True)
+        if result.returncode != 0:
+            fail("ftn", (result.stdout.strip().splitlines() or ["(분할 미리보기 검사 실패)"])[-1][:220])
+        else:
+            note("FTN-1 초안 미리보기 — train/valid/눈검수 표본이 초안과 동기(모두 status=draft)")
+    note(f"FTN-1 문답집 후보 — {n}건 (원천 동기·시험 문항 겹침 0·칸·개인정보 모양·유형 균형)")
 
 
 
