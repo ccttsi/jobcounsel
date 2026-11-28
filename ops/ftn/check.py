@@ -43,6 +43,49 @@ BARE_NUMBER = re.compile(r"(?<![\d,.])(\d{5,})(?![\d,.])")
 def tidy_numbers(text):
     return BARE_NUMBER.sub(lambda m: f"{int(m.group(1)):,}", text)
 
+# «기초일액 상한(68,100원)» 처럼 이름표에 수를 붙여 쓴 답이 «※ 자료실 기준 값» 표와 어긋나는지.
+# 2026-11-28: 모델이 «기초일액 상한(68100원)» 이라고 쓴 답을 검사기는 수 표기만 고쳐(68,100) 통과시켰다 — 값은 틀렸다.
+FOOTER_PAIR = re.compile(r"(?m)^\s*※\s*자료실 기준 값[^—\n]*—\s*([^\n]*)$")
+PAIR_CHUNK = re.compile(r"^(?:([^:]{1,12}):\s*)?(.+?)\s+([\d,.]+)\s*(원|시간|%|일)?$")
+
+
+def label_value_mismatch(text):
+    """이름표 바로 뒤에 붙은 수가 기준 값 표와 다른 자리를 모은다. (예시 값을 쓰는 «시급» 같은 한 낱말 이름표는 건너뛴다.)"""
+    m = FOOTER_PAIR.search(text)
+    if not m:
+        return []
+    pairs = []
+    for chunk in re.split(r"\s·\s", m.group(1).strip()):
+        mm = PAIR_CHUNK.match(chunk.strip())
+        if not mm:
+            continue
+        label = mm.group(2).strip()
+        if " " not in label or len(label) < 4:
+            continue
+        pairs.append((label, mm.group(3)))
+    body = FOOTER.sub("", text)
+    out, used = [], []
+    for label, shown in sorted(pairs, key=lambda p: -len(p[0])):
+        try:
+            target = float(shown.replace(",", ""))
+        except ValueError:
+            continue
+        for occ in re.finditer(re.escape(label), body):
+            s, e = occ.span()
+            if any(a <= s < b for a, b in used):
+                continue
+            used.append((s, e))
+            got = re.match(r"[\s(]*(\d[\d,]*(?:\.\d+)?)", body[e:e + 14])
+            if not got:
+                continue
+            try:
+                value = float(got.group(1).replace(",", ""))
+            except ValueError:
+                continue
+            if abs(value - target) > 1e-6:
+                out.append(f"{label} {got.group(1)}≠{shown}")
+    return out
+
 
 def load_jsonl(path):
     with open(path, encoding="utf-8") as fh:
@@ -143,15 +186,20 @@ def main():
         fixed = r.get("fixed") or {"numbers": 0, "links": 0}
         answer = r.get("answer") or d.get("answer", "")
         before = tidy_numbers(FOOTER.sub("", d.get("answer", "")).strip())
-        changed = answer.strip() != before  # 검사기가 실제로 고친 것이 있는가(꼬리 겹침은 빼고)
+        # 검사기가 실제로 고친 것이 있는가 — 꼬리 겹침(«※ 자료실 기준 값» 안내줄)·쉼표 표기 차이는 고침으로 세지 않는다.
+        # (검사기는 자기 값 표에 있는 수만 고치고, 표에 없는 «113500원» 같은 수는 그대로 둔다. 안내줄은 고침이 아니라 덧붙임.)
+        after_plain = tidy_numbers(FOOTER.sub("", answer).strip())
+        changed = after_plain != before
+        mismatch = label_value_mismatch(answer)
         ev = (cands.get(d["id"]) or {}).get("evidence") or []
         cited = [ev[n - 1] for n in (d.get("refs") or []) if 1 <= int(n) <= len(ev)]
         evtext = " ".join((chunks.get(("chunk", ref.get("i"))) or docs.get(ref.get("i")) or "") for ref in cited)
         outside = sorted(set(ARTICLE.findall(answer)) - set(ARTICLE.findall(evtext)), key=int)
-        passed = bool(answer) and not changed and not outside
-        d["answer"] = answer
+        passed = bool(answer) and not changed and not outside and not mismatch
+        d["answer"] = tidy_numbers(answer)
         d["checked"] = {"numbers": fixed.get("numbers", 0), "links": fixed.get("links", 0),
-                        "changed": changed, "articles_outside": outside, "ok": passed, "engine": engine}
+                        "changed": changed, "articles_outside": outside, "label_mismatch": mismatch,
+                        "ok": passed, "engine": engine}
         d["status"] = "checked" if passed else "needs-fix"
         ok += 1 if passed else 0
         bad += 0 if passed else 1

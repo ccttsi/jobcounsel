@@ -199,16 +199,20 @@ def groq_answer(prompt, model, key, temperature=0.2, max_tokens=700):
     if not text:
         # 추론 모델이 본문을 비우고 reasoning 만 채우는 경우 — 다시 요청하지 않고 표시만 남긴다.
         text = ""
-    return text, data.get("usage", {})
+    finish = data["choices"][0].get("finish_reason")
+    return text, data.get("usage", {}), finish
 
 
 def ask_with_retry(prompt, model, key, pace=0.0, retry=2, n=0, total=0, ident="", max_tokens=700):
-    """한 건 부르기 — 429(분당·일일 한도)는 쉬었다 다시, 일일 한도면 fatal 로 알린다."""
+    """한 건 부르기 — 429(분당·일일 한도)는 쉬었다 다시, 일일 한도면 fatal 로 알린다.
+    돌려주는 넷째 값 cut 은 «max_tokens 에서 잘렸다»는 표시다(추론 모델은 생각 토큰까지 세진다)."""
     last = ""
     for attempt in range(retry + 1):
         started = time.time()
+        cut = False
         try:
-            answer, _usage = groq_answer(prompt, model, key, max_tokens=max_tokens)
+            answer, _usage, finish = groq_answer(prompt, model, key, max_tokens=max_tokens)
+            cut = finish == "length"
         except urllib.error.HTTPError as exc:
             last = f"HTTP {exc.code}"
             if exc.code == 429:
@@ -224,19 +228,19 @@ def ask_with_retry(prompt, model, key, pace=0.0, retry=2, n=0, total=0, ident=""
                     print(f"· {ident} 한도(429) — {wait:.0f}초 쉬고 다시 부른다 ({n}/{total})", flush=True)
                     time.sleep(wait)
                     continue
-                return "", last, True
-            return "", last, False
+                return "", last, True, False
+            return "", last, False, False
         except Exception as exc:  # 네트워크·시간 초과
             last = type(exc).__name__
             if attempt < retry:
                 time.sleep(5)
                 continue
-            return "", last, False
+            return "", last, False, False
         spent = time.time() - started
         if pace > spent:
             time.sleep(pace - spent)
-        return answer, "", False
-    return "", last, False
+        return answer, "", False, cut
+    return "", last, False, False
 
 
 def load_key(name="GROQ_API_KEY"):
@@ -326,7 +330,7 @@ def main():
             prompt = build_input(c, chunks, docs, guide)
             answer, err, model_used = "", "", models[mi]
             while True:
-                answer, err, fatal = ask_with_retry(prompt, models[mi], key, args.pace, args.retry, n, len(todo), c["id"], args.max_tokens)
+                answer, err, fatal, cut = ask_with_retry(prompt, models[mi], key, args.pace, args.retry, n, len(todo), c["id"], args.max_tokens)
                 if err and fatal and mi + 1 < len(models):
                     mi += 1
                     print(f"· {models[mi-1]} 하루 한도 끝 — {models[mi]} 로 이어 부른다", flush=True)
@@ -338,6 +342,10 @@ def main():
                 if fatal:
                     print("· 한도가 끝나 여기까지 저장하고 멈춘다", flush=True)
                     break
+                continue
+            if cut:
+                # max_tokens 에서 잘린 답은 저장하지 않는다 — 2026-11-28 qwen 10건이 문장 중간에서 끊겼다.
+                failed.append({"id": c["id"], "error": "잘림(max_tokens)"})
                 continue
             if not answer:
                 failed.append({"id": c["id"], "error": "빈 답"})
