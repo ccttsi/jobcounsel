@@ -71,21 +71,21 @@ python3 ops/ftn/split.py --promote --approved mlc/qa/review-approved.json
 남은 4문(지방 거주·생산직 전직·첫 상담 위기·「열정만 있으면」)은 **시험 문항과 같은 문장**이었다
 (`overlap_check.py` exact 4건). 시험 문항 재사용 금지 원칙에 따라 넣지 않았다.
 
-## 4. 답 초안 (2026-11-28 2차 실행 — 455건)
+## 4. 답 초안 (2026-11-28 2차 실행 — 469건)
 
-- 초안 **455건** = 규칙 기반 거절 120 + Groq `openai/gpt-oss-120b` 129 + `openai/gpt-oss-20b` 206.
+- 초안 **469건** = 규칙 기반 거절 120 + Groq `openai/gpt-oss-120b` + `openai/gpt-oss-20b` (초안마다 `model` 칸에 남는다).
   - 1차(199건) 뒤 이어서 채웠다. 120b 는 하루 토큰 한도(TPD 200,000)에 닿아 20b 로 사슬을 넘겼다
     (`--model a,b` — 앞 모델이 하루 한도에 닿으면 다음으로). 초안마다 `model` 칸에 어느 모델이 썼는지 남는다.
   - `qwen/qwen3.8-27b` 로도 10건을 받았으나, 출력 토큰 한도(1,000/분)에 걸려 답이 `max_tokens`(700)에서 잘린 것이 있어
     **그 10건은 버리고 재초안 대상**으로 돌렸다.
-- AUP-5 검사기 대조: **통과 448 · 고침 필요 7** (미검사 0).
+- AUP-5 검사기 대조: **통과 462 · 고침 필요 7** (미검사 0).
   - 고침 필요 7건: 답이 가리킨 근거에 없는 조문을 인용한 5건(`FTN1-CS-0031·0056·0078·0119·0122`)과,
     «기초일액 상한» 문장 안의 `68,100원` 을 검사기가 다른 값으로 되돌리는 2건(`FTN1-CS-0055·0057`) — 모두 재초안 대상.
   - `check.py` 는 이제 ① «※ 자료실 기준 값» 꼬리를 떼고 검사해 두 번 돌려도 같은 결과(멱등) ② 쉼표 없는 다섯 자리 수를 먼저 맞춤
     ③ **답이 «제12조» 처럼 인용한 조문이 답이 가리킨 근거(`refs`) 안에 없으면 `needs-fix`** 로 남긴다(법 조각을 안 가리키고 조문 번호를 지어낸 답 차단).
 - 초안은 전부 `status: draft`. train 확정 0건 — 태화님 10% 눈검수를 아직 거치지 않았다.
-- 미리보기: `mlc/qa/preview/train.jsonl` 399 · `valid.jsonl` 49 · `review-sample.jsonl` 47(눈검수 표본).
-- 남은 초안(310건)은 다음 날 무료 한도가 돌아오면 `python3 ops/ftn/draft.py --provider groq --model openai/gpt-oss-120b,openai/gpt-oss-20b` 로 이어서 만든다(이미 있는 번호는 건너뜀).
+- 미리보기: `mlc/qa/preview/train.jsonl` 412 · `valid.jsonl` 50 · `review-sample.jsonl` 49(눈검수 표본).
+- 남은 초안(296건)은 다음 날 무료 한도가 돌아오면 `python3 ops/ftn/draft.py --provider groq --model openai/gpt-oss-120b,openai/gpt-oss-20b` 로 이어서 만든다(이미 있는 번호는 건너뜀).
 
 ### 4-1. 이번에 고친 파이프라인 (2026-11-28 2차)
 

@@ -202,13 +202,13 @@ def groq_answer(prompt, model, key, temperature=0.2, max_tokens=700):
     return text, data.get("usage", {})
 
 
-def ask_with_retry(prompt, model, key, pace=0.0, retry=2, n=0, total=0, ident=""):
+def ask_with_retry(prompt, model, key, pace=0.0, retry=2, n=0, total=0, ident="", max_tokens=700):
     """한 건 부르기 — 429(분당·일일 한도)는 쉬었다 다시, 일일 한도면 fatal 로 알린다."""
     last = ""
     for attempt in range(retry + 1):
         started = time.time()
         try:
-            answer, _usage = groq_answer(prompt, model, key)
+            answer, _usage = groq_answer(prompt, model, key, max_tokens=max_tokens)
         except urllib.error.HTTPError as exc:
             last = f"HTTP {exc.code}"
             if exc.code == 429:
@@ -264,6 +264,8 @@ def main():
     ap.add_argument("--ids", default="", help="쉼표로 후보 번호 지정")
     ap.add_argument("--dry-run", action="store_true", help="부를 대상만 세어 본다")
     ap.add_argument("--redo", default="", help="이미 초안이 있어도 다시 쓰게 할 번호(쉼표)")
+    ap.add_argument("--max-tokens", type=int, default=700,
+                    help="답 최대 토큰. 추론 모델(qwen)은 생각 토큰도 여기 함께 세져 1200쯤 줘야 답이 잘리지 않는다")
     ap.add_argument("--pace", type=float, default=0.0, help="건 사이 대기(초) — Groq 분당 토큰 한도에 맞춤")
     ap.add_argument("--retry", type=int, default=2, help="429·네트워크 실패 때 재시도 횟수")
     ap.add_argument("--out", default=DRAFTS)
@@ -324,7 +326,7 @@ def main():
             prompt = build_input(c, chunks, docs, guide)
             answer, err, model_used = "", "", models[mi]
             while True:
-                answer, err, fatal = ask_with_retry(prompt, models[mi], key, args.pace, args.retry, n, len(todo), c["id"])
+                answer, err, fatal = ask_with_retry(prompt, models[mi], key, args.pace, args.retry, n, len(todo), c["id"], args.max_tokens)
                 if err and fatal and mi + 1 < len(models):
                     mi += 1
                     print(f"· {models[mi-1]} 하루 한도 끝 — {models[mi]} 로 이어 부른다", flush=True)
