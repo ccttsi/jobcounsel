@@ -1,6 +1,6 @@
 {
  "schema_version": "1.4.0",
- "generated_at": "2026-11-28T07:16:21+09:00",
+ "generated_at": "2026-11-28T23:09:21+09:00",
  "note": "briefing.json·archive/*.json의 카드 중 labor_walk:true(고용·임금·직무·정책 등)를 모은 실기사 색인. 본문은 카드의 「무슨 일·수치·근거」를 그대로 옮긴 우리 말 요약이며 원문 문장이 아니다.",
  "dates": [
   "2026-11-28",
@@ -688,131 +688,143 @@
    "date": "2026-11-28",
    "card_id": "c04",
    "order": 4,
-   "title": "SAP, AI 전환에 최소 1만명 감원 검토 — 전체 인력의 9%",
-   "kicker": "최소 1만명 · 전체 인력 9% / 사내 11만명 이상",
-   "category": "AI·직무",
-   "topic": "AI와 직무",
-   "theme_key": "th-ai-labor",
-   "theme_label": "AI와 직무 재편",
-   "region": "global",
-   "track": "B",
-   "source_name": "CNBC",
-   "source_title": "SAP weighs cutting at least 10,000 jobs in AI push: Bloomberg",
-   "source_url": "https://www.cnbc.com/2026/11/27/sap-job-cuts-ai-restructuring.html",
-   "published_at": "2026-11-27",
-   "license_type": "PRESS",
-   "key_numbers": [
-    {
-     "label": "감원 검토 규모",
-     "value": "최소 1만명",
-     "delta": "",
-     "period": "2026-11-26 블룸버그 보도"
-    },
-    {
-     "label": "전체 인력 대비",
-     "value": "9%",
-     "delta": "최소",
-     "period": "2026-11-26"
-    },
-    {
-     "label": "전체 인력",
-     "value": "11만명 이상",
-     "delta": "2024년 감원 뒤 비슷한 수준",
-     "period": "2026-11-27 SAP"
-    }
-   ],
-   "text": "독일 소프트웨어 기업 SAP가 인공지능(AI) 중심으로 사업 구조를 바꾸면서 최소 1만개 일자리를 줄이는 방안을 검토하고 있다고 블룸버그가 11월 26일 보도했다. SAP는 확인 요청에 \"AI로 사업 환경이 빠르게 변하고 있어 조직과 인력이 어떻게 변해야 하는지 계속 점검하고 있다\"고 답했고, \"이와 별도로 추가 조치에 대해 결정된 것은 없다\"고 덧붙였다.\n\n감원 규모는 SAP 전체 인력(11만명 이상)의 최소 9%다. 모든 부서에 감축안 제출이 요청됐고 제품·엔지니어링·영업이 특히 거론됐으며, 최종 규모는 노사 협의에 따라 달라질 수 있다. SAP는 2024년에도 약 1만개 일자리를 줄이는 개편을 했지만 신규 직무 채용으로 전체 인력은 거의 비슷한 수준을 유지했다(2026-11-26 블룸버그 보도, 11-27 SAP 답변)."
-  },
-  {
-   "date": "2026-11-28",
-   "card_id": "c05",
-   "order": 5,
-   "title": "AI가 신입 사다리 걷어냈다 — 사무·행정 2년 새 78만개 감소",
-   "kicker": "사무·행정 -78만개(2023~2025) · AI 고노출 업종 신입 공고 3~8% 적어",
-   "category": "채용시장",
+   "title": "독일 청년 실업 28.1만명 — 도제 자리는 지원자보다 적다",
+   "kicker": "25세 미만 +1.6만명 / 11월 실업률 6.2%",
+   "category": "해외 노동시장",
    "topic": "청년·중장년 고용",
    "theme_key": "th-youth-employment",
    "theme_label": "청년 고용",
    "region": "global",
    "track": "B",
-   "source_name": "Yahoo Finance",
-   "source_title": "AI is squeezing entry-level office jobs, and workers without degrees are most exposed",
-   "source_url": "https://finance.yahoo.com/technology/ai/articles/ai-squeezing-entry-level-office-151520271.html",
-   "published_at": "2026-11-26",
+   "source_name": "독일 연방노동청(Bundesagentur für Arbeit)",
+   "source_title": "Arbeitsmarkt im November 2026 (Presseinfo Nr. 47)",
+   "source_url": "https://www.arbeitsagentur.de/presse/2026-47-arbeitsmarkt-im-november-2026",
+   "published_at": "2026-11-27",
+   "license_type": "KOGL-NONE",
+   "key_numbers": [
+    {
+     "label": "11월 실업자",
+     "value": "293.6만명",
+     "delta": "-1.9만명",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "실업률",
+     "value": "6.2%",
+     "delta": "-0.1%p",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "25세 미만 실업자",
+     "value": "28.1만명",
+     "delta": "+1.6만명",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "사회보험 가입 근로",
+     "value": "3,516만명",
+     "delta": "-6.1만명",
+     "period": "2026년 9월"
+    }
+   ],
+   "text": "독일 연방노동청(BA)이 11월 27일 낸 11월 노동시장 보도자료에서 실업자는 293만6천명으로 한 달 전보다 1만9천명 줄고 실업률은 6.2%로 0.1%포인트 내렸다. 연방노동사회부(BMAS)가 같은 날 낸 발표에서는 25세 미만 실업자가 28만1천명으로 1년 전보다 1만6천명 늘었고, 도제(직업교육) 시장의 지원자에게 불리한 흐름이 이어지고 있다고 짚었다.\n\n노동시장 지표는 방향이 엇갈린다. 사회보험 가입 근로자는 9월 3,516만명으로 1년 전보다 6만1천명 줄었다. 실업자 수는 실업보험(제3편) 쪽이 1년 전보다 8만3천명 늘어난 반면 기초보장(제2편) 쪽은 16만2천명 줄었다. 세부 지표는 2026년 11월(실업률·청년 실업자)과 9월(사회보험 가입자) 기준이다."
+  },
+  {
+   "date": "2026-11-28",
+   "card_id": "c05",
+   "order": 5,
+   "title": "유럽 청년 실업 15.6%, 장년의 3배 — '3배 넘으면 특별한 장벽'",
+   "kicker": "EU 15.6% vs 25~74세 5.2% / 루마니아 5.9배",
+   "category": "해외 노동시장",
+   "topic": "해외 노동시장",
+   "theme_key": "th-global-labor",
+   "theme_label": "해외 노동시장",
+   "region": "global",
+   "track": "B",
+   "source_name": "유로뉴스(Euronews)",
+   "source_title": "Best and worst places in Europe for young people to find a job",
+   "source_url": "https://www.euronews.com/2026/11/28/best-and-worst-places-in-europe-for-young-people-to-find-a-job",
+   "published_at": "2026-11-28",
    "license_type": "PRESS",
    "key_numbers": [
     {
-     "label": "사무·행정 지원 감소",
-     "value": "-78만개",
-     "delta": "2023~2025년",
-     "period": "2026-11 보고서"
+     "label": "EU 청년 실업률",
+     "value": "15.6%",
+     "delta": "장년 5.2%의 3배",
+     "period": "2026년 2분기"
     },
     {
-     "label": "AI 취약 직무",
-     "value": "-82만개",
-     "delta": "같은 기간",
-     "period": "2026-11 보고서"
+     "label": "루마니아 배수",
+     "value": "5.9배",
+     "delta": "25.5%p 차이",
+     "period": "2026년 2분기"
     },
     {
-     "label": "AI 활용 직무",
-     "value": "+140만개",
-     "delta": "같은 기간",
-     "period": "2026-11 보고서"
+     "label": "독일 청년 실업률",
+     "value": "7.3%",
+     "delta": "몰타 6.8%에 이어 낮음",
+     "period": "2026년 2분기"
     },
     {
-     "label": "성장 경로 대비 고용 격차",
-     "value": "-150만명",
-     "delta": "2026년 8월",
-     "period": "금융·보험·정보·전문서비스"
+     "label": "비교 대상국",
+     "value": "35개국",
+     "delta": "",
+     "period": "2026년 2분기"
     }
    ],
-   "text": "미국 연구기관 버닝글래스연구소와 RAISE US가 공개한 보고서 「Fewer Rungs, New Bridges」는 AI 확산이 초임 일자리의 사다리를 줄이고 있다고 분석했다. 저자들은 \"줄어든 사람들은 해고된 것이 아니라 애초에 채용되지 않은 것\"이라고 썼다.\n\n2026년 8월 금융·보험·정보·전문서비스 고용은 3,190만명으로 2005~2019년 성장 경로에 약 150만명 못 미친다. 2023~2025년 사무·행정 지원 직무는 78만개 줄었고, AI에 취약한 직무는 82만개 감소한 반면 AI 활용 직무는 140만개 늘었다. AI 활용도가 높은 업종에서 경력 3년 이하 채용 공고 비중은 2021~2026년 평균보다 3~8% 낮았다(2026년 6월까지 1년)."
+   "text": "유로뉴스가 11월 28일 유로스타트 2026년 2분기 자료로 유럽 35개국의 15~24세 실업률을 비교했다. EU 전체 청년 실업률은 15.6%로 25~74세(5.2%)의 세 배였다.\n\n국가별로는 보스니아헤르체고비나 32.2%, 루마니아 30.7%, 북마케도니아 29%로 높고 몰타 6.8%, 독일 7.3%로 낮았다. 청년·장년 실업률의 배수로 보면 루마니아가 25.5%포인트 차이에 5.9배로 가장 컸고 크로아티아와 영국도 5배를 넘었다. 폴란드(11.8%)와 체코(10.4%)는 청년 실업률이 EU 평균보다 낮아도 장년(2.8%·2.6%)의 약 4배였다(2026년 2분기)."
   },
   {
    "date": "2026-11-28",
    "card_id": "c06",
    "order": 6,
-   "title": "인도 IT 노동자, AI 해고 기준 요구 — 기술직 30% 압축 전망",
-   "kicker": "기술직 30% 압축·45% 증강 전망 / 사전고지·위로금·재배치 기준 요구",
-   "category": "AI·직무",
-   "topic": "고용정책·감독",
-   "theme_key": "th-labor-policy",
-   "theme_label": "고용정책과 감독",
+   "title": "에티오피아 직업훈련 7년 — 남은 것은 '경력 인정' 제도",
+   "kicker": "선행학습인정(RPL) 지침 전국 시행 / 자금 지원 12월 31일 종료",
+   "category": "해외 노동시장",
+   "topic": "훈련·재취업",
+   "theme_key": "th-skills-training",
+   "theme_label": "재취업과 직업훈련",
    "region": "global",
-   "track": "B",
-   "source_name": "The Times of India",
-   "source_title": "IT sector employees seek national AI layoff policy as automation threatens jobs",
-   "source_url": "https://timesofindia.indiatimes.com/business/india-business/it-sector-employees-seek-national-ai-layoff-policy-as-automation-threatens-jobs-unions-and-experts-want-nasscom-and-government-to-set-minimum-severance-advance-notice-redeployment-and-reskilling-rules-for-employees-who-lose-work/articleshow/136185743.cms",
-   "published_at": "2026-11-26",
-   "license_type": "PRESS",
+   "track": "A",
+   "source_name": "국제노동기구(ILO)",
+   "source_title": "ILO Global Skills Programme leaves lasting foundations for Ethiopia's workforce",
+   "source_url": "https://www.ilo.org/resource/news/ilo-global-skills-programme-leaves-lasting-foundations-ethiopias-workforce",
+   "published_at": "2026-11-27",
+   "license_type": "CC-BY-4.0",
    "key_numbers": [
     {
-     "label": "기술직 압축 전망",
-     "value": "30%",
-     "delta": "18~24개월",
-     "period": "팀리스디지털 추정"
+     "label": "프로그램 기간",
+     "value": "7년",
+     "delta": "",
+     "period": "에티오피아 GSP"
     },
     {
-     "label": "AI로 강화되는 직무",
-     "value": "45%",
-     "delta": "같은 기간",
-     "period": "팀리스디지털 추정"
+     "label": "참여국",
+     "value": "6개국",
+     "delta": "에티오피아·가나·말라위·말리·세네갈·탄자니아",
+     "period": "ILO GSP"
     },
     {
-     "label": "고부가 업무로 이동",
-     "value": "25%",
-     "delta": "AI·데이터·클라우드·보안",
-     "period": "팀리스디지털 추정"
+     "label": "자금 지원 종료",
+     "value": "2026년 12월 31일",
+     "delta": "",
+     "period": "NORAD 지원"
+    },
+    {
+     "label": "핵심 제도",
+     "value": "선행학습인정(RPL)",
+     "delta": "지침 전국 시행",
+     "period": "에티오피아"
     }
    ],
-   "text": "인도 IT 노동자 단체와 전문가들이 AI로 인한 감원에 대비해 사전 고지, 위로금, 사내 재배치, 재교육의 최소 기준을 담은 국가 정책을 요구하고 있다고 타임스오브인디아가 11월 26일 보도했다. IT 직원 단체(NITES)는 AI로 줄어든 일자리 수와 재배치·재교육 실적을 기업이 공개하도록 하는 별도 정책 틀을 정부에 요청했다.\n\n채용기업 팀리스디지털은 18~24개월 안에 기술직 일자리의 30%가 압축되고 45%는 AI로 강화되며 25%는 AI·데이터·클라우드·보안 같은 고부가 업무로 옮겨갈 것으로 추정했다. 노동자 단체는 마이크로소프트·캔바의 퇴직 패키지(근속 1년당 기본급 1개월 등)를 기준으로 삼자고 했고, 전문가들은 AI 감원 규모를 가늠할 공개 자료가 없다고 지적했다(2026-11-26 타임스오브인디아)."
+   "text": "ILO의 글로벌 기량 프로그램(GSP)이 7년 만에 에티오피아에서 마무리되면서, 정부·사용자·노동자 대표가 11월 26일 아디스아바바에서 지속가능성 회의를 열었다. 프로그램의 대표 성과로 선행학습인정(RPL) 지침의 전국 시행이 꼽혔다.\n\n노르웨이 정부(NORAD)가 지원한 GSP는 에티오피아·가나·말라위·말리·세네갈·탄자니아 6개국에서 7년간 운영됐다. 에티오피아에서는 하와사·월라이타소도·아르바민치·아디스아바바 대학과 바히르다르 직업전문대학 등이 훈련교사 양성에 참여했고, 지역 자격평가 기구가 RPL 평가를 시작했다. 자금 주기는 2026년 12월 31일 끝나며, RPL·핵심역량·녹색기술을 정규 교육과정과 예산에 넣는 일이 남은 과제다."
   },
   {
    "date": "2026-11-28",
    "card_id": "c07",
    "order": 7,
-   "title": "필리핀 빈곤율 15.5%→9.7% — ILO \"일자리 질이 관건\"",
-   "kicker": "빈곤율 9.7%(2025) · 18개 지역 모두 하락 / ILO \"탈출보다 유지가 어렵다\"",
+   "title": "라틴아메리카 성별 임금격차 15~21% — ILO, '직무평가' 도구",
+   "kicker": "시간당 임금격차 15~21% / 브라질리아 포럼 7개국 35명",
    "category": "해외 노동시장",
    "topic": "임금·물가",
    "theme_key": "th-wage-income",
@@ -820,70 +832,82 @@
    "region": "global",
    "track": "A",
    "source_name": "국제노동기구(ILO)",
-   "source_title": "Can the Philippines make its poverty gains last?",
-   "source_url": "https://www.ilo.org/resource/article/can-philippines-make-its-poverty-gains-last",
-   "published_at": "2026-11-26",
+   "source_title": "Closing the gender pay gap in Latin America requires comprehensive policies",
+   "source_url": "https://www.ilo.org/resource/news/closing-gender-pay-gap-latin-america-requires-comprehensive-policies",
+   "published_at": "2026-11-27",
    "license_type": "CC-BY-4.0",
    "key_numbers": [
     {
-     "label": "빈곤율",
-     "value": "9.7%",
-     "delta": "15.5%→9.7%",
-     "period": "2023→2025년"
+     "label": "시간당 성별 임금격차",
+     "value": "15~21%",
+     "delta": "지역 다수 국가",
+     "period": "ILO 최신 자료"
     },
     {
-     "label": "2년 하락폭",
-     "value": "-5.8%p",
-     "delta": "",
-     "period": "2023~2025년"
+     "label": "포럼 참가국",
+     "value": "7개국",
+     "delta": "브라질·코스타리카·칠레·멕시코·파나마·페루·우루과이",
+     "period": "2026년 11월 24~27일"
     },
     {
-     "label": "하락 지역",
-     "value": "18개 지역",
-     "delta": "전 지역",
-     "period": "2025년"
+     "label": "참가 대표",
+     "value": "35명",
+     "delta": "정부·사용자·노동자",
+     "period": "2026년 11월"
+    },
+    {
+     "label": "기준 협약",
+     "value": "제100호",
+     "delta": "동일임금 협약(1951)",
+     "period": "ILO"
     }
    ],
-   "text": "국제노동기구(ILO) 필리핀 사무소장 칼리드 하산이 11월 26일 기고에서 필리핀 빈곤율이 2023년 15.5%에서 2025년 9.7%로 낮아진 배경과 지속 조건을 짚었다. 그는 \"일자리 하나를 잃거나 큰 재난·질병이 닥치면 가족이 다시 빈곤으로 밀려날 수 있다\"고 썼다.\n\n필리핀 통계청 기준 빈곤율은 2년 만에 5.8%포인트 내렸고 18개 지역 모두에서 하락했으며, 바르삼모로(BARMM)와 삼보앙가반도가 가장 크게 줄었다. ILO는 같은 날 낸 연구 브리프에서 성장만으로는 이 성과가 유지되지 않는다며 일자리의 양과 질, 기업 생산성, 사회보호를 함께 키워야 한다고 제안했다(2026-11-26 ILO)."
+   "text": "ILO가 11월 24~27일 브라질 브라질리아에서 '동일노동·동일가치 노동' 지역 포럼을 열고, 성별 임금격차를 줄이는 법적 조치와 직무평가 도구를 7개국 대표 35명과 논의했다.\n\nILO는 최신 자료에서 라틴아메리카 여러 나라의 시간당 성별 임금격차가 15~21% 수준이라고 밝혔다. 포럼에서는 기술·노력·책임·근로조건 같은 객관적 기준으로 직무를 비교해 기업 안의 임금격차를 찾아내는 ILO 직무평가 도구가 소개됐고, 7개국 법제가 동일가치 노동 원칙(제100호 협약)을 어떻게 반영하는지 비교 분석이 제시됐다(2026년 11월)."
   },
   {
    "date": "2026-11-28",
    "card_id": "c08",
    "order": 8,
-   "title": "파푸아뉴기니, 동등임금·차별금지 교육 43명 — 고용법 개정",
-   "kicker": "참가자 43명(여성 19명) · ILO 협약 제100·111·190호 / 2027년 2월 시범 정책",
-   "category": "해외 노동시장",
-   "topic": "고용정책·감독",
-   "theme_key": "th-labor-policy",
-   "theme_label": "고용정책과 감독",
+   "title": "AI로 업무시간 21% 사라지면 — 흑인·라틴계 '새 직업' 필요 20% 더",
+   "kicker": "2035년 업무시간 21% 자동화 / 전직 1,100만명 중 14%만 직행",
+   "category": "AI·직무",
+   "topic": "AI와 직무",
+   "theme_key": "th-ai-labor",
+   "theme_label": "AI와 직무 재편",
    "region": "global",
-   "track": "A",
-   "source_name": "국제노동기구(ILO)",
-   "source_title": "Papua New Guinea advances gender equality and non-discrimination through labour law reform",
-   "source_url": "https://www.ilo.org/resource/news/papua-new-guinea-advances-gender-equality-and-non-discrimination-through",
-   "published_at": "2026-11-26",
-   "license_type": "CC-BY-4.0",
+   "track": "B",
+   "source_name": "포춘(Fortune)",
+   "source_title": "Black and Latino workers are about 20% likelier than White workers to need a new career by 2035 as AI reshapes work, McKinsey says",
+   "source_url": "https://fortune.com/2026/11/27/mckinsey-ai-jobs-displacement-black-latino-workers-economic-mobility/",
+   "published_at": "2026-11-27",
+   "license_type": "PRESS",
    "key_numbers": [
     {
-     "label": "교육 참가자",
-     "value": "43명",
-     "delta": "여성 19명",
-     "period": "2026년 10월 26~30일"
+     "label": "자동화로 줄어드는 업무시간",
+     "value": "21%",
+     "delta": "2035년 평균",
+     "period": "미국 전망"
     },
     {
-     "label": "중심 협약",
-     "value": "3건",
-     "delta": "제100·111·190호",
-     "period": "ILO"
+     "label": "직업 전환 필요",
+     "value": "1,100만명",
+     "delta": "일자리 -3,600만·+4,100만",
+     "period": "2025~2035년"
     },
     {
-     "label": "직장 정책 시범",
-     "value": "2027년 2월",
-     "delta": "양성평등·사회포용",
-     "period": "합의 사항"
+     "label": "재교육 없이 갈 수 있는 비율",
+     "value": "14%",
+     "delta": "저임금 10% vs 고임금 40%",
+     "period": "보고서 추정"
+    },
+    {
+     "label": "저임금 노동자 전환 확률",
+     "value": "7.6배",
+     "delta": "고임금 대비",
+     "period": "보고서 추정"
     }
    ],
-   "text": "국제노동기구(ILO)가 파푸아뉴기니 노동산업관계부와 함께 10월 26~30일 닷새 교육을 열어 정부·사용자·노동자 대표 43명에게 동등임금과 차별금지, 직장 내 폭력·괴롭힘 대응을 가르쳤다고 11월 26일 밝혔다. 이 나라는 1978년 고용법을 검토하는 중이다.\n\n교육은 파푸아뉴기니가 비준한 ILO 협약 제100호(동등보수), 제111호(차별금지), 제190호(폭력·괴롭힘)를 중심으로 했고 참가자 43명 가운데 19명이 여성이다. 노사정은 개정 고용법 초안을 마련해 협의에 부치고 2027년 2월부터 양성평등·사회포용 직장 정책을 시범 적용하는 것을 다음 단계로 합의했다(2026-11-26 ILO)."
+   "text": "맥킨지 경제이동성연구소가 11월 20일 낸 보고서를 포춘이 11월 27일 보도했다. 2035년까지 미국 업무시간의 평균 21%가 AI·자동화로 대체되는데, 대체된 시간이 실제 '일자리 감소'로 이어지는 비율이 인종집단별로 갈린다는 전망이다.\n\n대체된 시간 가운데 일자리가 줄어드는 비율은 흑인 40%·라틴계 41%로 백인 37%·아시아계 36%보다 높다. 보고서는 자동화로 2035년까지 일자리 수요 3,600만개가 줄고 다른 곳에서 4,100만개가 늘며 약 1,100만명이 완전히 다른 직업으로 옮겨야 한다고 본다. 임금이 낮은 노동자가 그럴 확률이 높은 임금 노동자의 7.6배이고, 전환해야 하는 사람 가운데 재교육 없이 바로 갈 수 있는 경로가 있는 사람은 14%뿐이다(2026년 11월 보고서, 전망치)."
   },
   {
    "date": "2026-11-27",
