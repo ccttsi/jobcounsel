@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 보이는 원 36dp, 누르는 칸 44dp -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android" android:inset="4dp">
+    <shape android:shape="oval"><solid android:color="@color/btn" /></shape>
+</inset>

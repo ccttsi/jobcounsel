@@ -28,9 +28,9 @@ class ActionReceiver : BroadcastReceiver() {
                 val n = Store.edition(c, f)?.cards?.size ?: return
                 val d = if (i.action == NEXT) 1 else -1
                 Store.setIndex(c, f, ((Store.index(c, f) + d) % n + n) % n)   // 끝에서 처음으로 돈다
-                Render.all(c)
+                Render.move(c, f)
             }
-            SWAP -> { c.notifyFeed = f.other(); Render.all(c) }
+            SWAP -> { c.notifyFeed = f.other(); Notifier.show(c) }
             HIDE -> { Store.edition(c, f)?.let { c.notifyHidden = f.key + ":" + it.date } }
             REFRESH -> {
                 val p = goAsync()

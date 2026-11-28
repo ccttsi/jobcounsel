@@ -10,7 +10,7 @@
     android:maxResizeHeight="400dp"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
-    android:initialLayout="@layout/widget_card"
-    android:previewLayout="@layout/widget_card"
+    android:initialLayout="@layout/widget_root"
+    android:previewLayout="@layout/widget_preview_em"
     android:description="@string/widget_emerging_desc"
     android:widgetCategory="home_screen|keyguard" />

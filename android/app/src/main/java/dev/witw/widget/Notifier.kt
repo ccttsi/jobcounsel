@@ -53,7 +53,7 @@ object Notifier {
             .filter { it.isNotBlank() }.joinToString("\n")
         val b = Notification.Builder(c, CH)
             .setSmallIcon(R.drawable.ic_stat)
-            .setColor(c.getColor(if (e.feed == Feed.BRIEFING) R.color.acc_briefing else R.color.acc_emerging))
+            .setColor(c.getColor(if (e.feed == Feed.BRIEFING) R.color.acc_br else R.color.acc_em))
             .setSubText("${e.head} · ${i + 1}/$n")
             .setContentTitle(card.title)
             .setContentText(listOf(card.cat, card.sub).filter { it.isNotBlank() }.joinToString(" · "))

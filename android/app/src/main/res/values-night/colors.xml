@@ -1,9 +1,14 @@
 <resources>
-    <color name="bg">#10141D</color>
-    <color name="soft">#141A26</color>
-    <color name="line">#1E232F</color>
-    <color name="ink">#E6E9EF</color>
-    <color name="muted">#9AA2B4</color>
-    <color name="acc_briefing">#FF9293</color>
-    <color name="acc_emerging">#D89CF3</color>
+    <!-- 밤(D · 해질녘 시네마): 밤하늘 바탕 아래로 번지는 노을빛, 흰 글자 -->
+    <color name="ink">#FFFFFF</color>
+    <color name="muted">#C2BCCF</color>
+    <color name="label_br">#FFB3C4</color>
+    <color name="label_em">#8EEAF2</color>
+    <color name="btn">#1FFFFFFF</color>
+    <color name="track">#2EFFFFFF</color>
+    <color name="app_bg">#0E0F15</color>
+    <color name="app_card">#171925</color>
+    <color name="app_line">#262938</color>
+    <color name="acc_br">#FF6B8B</color>
+    <color name="acc_em">#3ED3E0</color>
 </resources>
