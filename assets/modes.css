@@ -102,11 +102,14 @@
 .a-ecg-num{position:absolute;z-index:0;left:0;right:0;top:1px;height:18px;display:flex;align-items:center;justify-content:center;
   font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono","Courier New",monospace;
   font-size:13px;font-weight:700;line-height:18px;letter-spacing:.09em;
-  font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"zero" 1;
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"zero" 1;white-space:nowrap;
   color:var(--ecg-b);opacity:0;transform:scale(.96);
   transition:opacity .30s linear,transform .38s cubic-bezier(.2,.9,.3,1);
   text-shadow:0 0 7px color-mix(in srgb,currentColor 34%,transparent),0 0 2px color-mix(in srgb,var(--bg) 55%,transparent)}
-.a-ecg-num i{font-style:normal;display:block;width:3ch;text-align:right}   /* 000→100 자릿수 글자 폭이 달라도 「%」와 가운데 맞춤이 흔들리지 않는다(C1-22, 1.08px → 0) */
+/* 2026-11-28(태화님 갤럭시 제보): 위치 카운터와 같은 이유로 폭을 3ch로 *고정*하던 자리.
+   000→100의 세 자리는 letter-spacing만큼 3ch를 넘어(13px 모노에서 0.45ch) 「10 / 0」으로 줄이 바뀌었다.
+   3.5ch를 최소 폭으로 두어 세 자리가 늘 그 안에 들어오고(흔들림 0), 그보다 긴 숫자만 칸이 넓어진다. */
+.a-ecg-num i{font-style:normal;display:block;min-width:3.5ch;width:auto;text-align:right;white-space:nowrap;overflow-wrap:normal;word-break:normal}
 .a-ecg-num em{font-style:normal;display:block;font-size:10.5px;opacity:.85;margin-left:.25em;transform:translateY(.5px)}
 .a-ecgrow[data-st="armed"] .a-ecg-num{opacity:.55;transform:none}
 .a-ecgrow[data-st="pulled"] .a-ecg-num{opacity:.96;transform:none}

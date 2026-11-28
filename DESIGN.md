@@ -161,6 +161,7 @@
 - 글꼴: `"Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif`. 웹폰트 파일을 저장소에 넣지 않는다.
 - 크기: 본문 16, 보조 14–15, 캡션 12.5–13, 최소 11(장식 8.5). 제목은 `clamp()` — 대문 히어로 `clamp(36px, 9.4vw, 52px)` → 768px 이상 `clamp(40px, 5.4vw, 84px)`.
 - 자간 제목 `-.03~-.05em`, 본문 `-.01em`. 숫자는 `tabular-nums`. 제목 `text-wrap:balance`, 문단 `pretty`(공용 층).
+- 숫자 자리를 글자 폭으로 잡을 때는 `min-width:Nch` + `white-space:nowrap` — 고정 `width:Nch`는 기기 기본 글꼴에서 두 자리가 넘치는 순간 두 줄이 된다(§10, 2026-11-28).
 - 글자 크기 단계(가/a): 0·1·2, `prefs.js`가 시트를 비례 확대.
 
 ### 3-5. 여백·모양
@@ -364,6 +365,7 @@ Playwright가 실제 사용자 동선을 재현한다: 한 손 터치(엄지 반
 | `.inp`·`.sel`을 `min-width:0` 없이 `1fr` 격자에 넣기 | 내용이 넓으면 칸이 카드를 밀어내고, `overflow-x: clip`이 잘라 가려 아무도 못 본다(트리아지 월 가구소득) | `.inp,.sel{min-width:0;max-width:100%}` + `repeat(n,minmax(0,1fr))` | 2026-11-20 |
 | 표 칸마다 테두리를 그리면서 `border-collapse`를 안 주기 | 같은 줄 선이 1px씩 어긋나 계단처럼 보임(3표) | `table{border-collapse:collapse}` + 칸 테두리는 `box-shadow: inset 0 -1px` | 2026-11-20 |
 | 좁은 상자에서 짧은 뱃지·단계 표시 줄바꿈을 그냥 두기 | `1 / 4`가 `1 /`·`4`로 쪼개져 단계가 안 읽힌다 | 뱃지·칩·단계 표시는 `white-space:nowrap`, 좁으면 글자·자간·간격을 함께 줄인다 | 2026-11-20 |
+| 숫자 자리 폭을 `width:Nch`로 못 박고 `nowrap`을 빼기 | 대문 「37 / 41」이 「3」·「7 / 41」두 줄로 갈라져 위아래로 겹친다 — 본문이 물려준 `overflow-wrap:anywhere`가 ch를 넘친 숫자를 «숫자 사이에서» 끊는다(2026-11-28 갤럭시 S26 울트라 실기기 제보) | 숫자 칸은 `min-width:Nch` + `width:auto` + `white-space:nowrap`(한 자리일 때 폭이 고정되어 「/ 41」이 흔들리지 않고, 두 자리 이상은 칸이 글자만큼 넓어진다). `validate_repo.py --only js`의 `numflow`가 고정 `width:Nch`에 `nowrap`이 없는 규칙을 실패로 잡는다 | 2026-11-28 |
 
 ### 10-b. 기초 배치 — CI가 매번 재는 기준 (2026-11-20)
 

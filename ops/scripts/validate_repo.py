@@ -961,6 +961,39 @@ def run_css_checks():
     note(f"CSS {count}곳(.css 파일 + .html 안 <style>)의 괄호 짝·고아 선언을 검사했다" + (f" (문제 {bad})" if bad else ""))
 
 
+# ---------------------------------------------------------------- 3-1-b) 숫자 칸 고정 폭 (2026-11-28 태화님 갤럭시 제보)
+#   대문의 위치 숫자(`37 / 41`)가 두 줄로 쪼개져 「3」이 위, 「7 / 41」이 아래에 겹쳤다.
+#   원인은 두 가지가 겹친 것이다.
+#     (1) 숫자 칸 폭을 `width:2.6ch`로 «못 박았다» — 기기 기본 글꼴(삼성 One UI)·글꼴 크기 확대에서는
+#         두 자리가 2.6ch보다 넓어 상자가 넘쳤다.
+#     (2) 본문이 물려준 `overflow-wrap:anywhere`가 그 넘침을 «숫자 사이에서» 줄바꿈으로 풀었다.
+#   ch 폭으로 자리를 잡는 것은 1→37에서 「/ 41」이 흔들리지 않게 하려는 좋은 수단이지만,
+#   *고정* 폭(width)이면 넘치는 순간이 오고, 그때 줄이 갈리지 않게 막는 것은 `white-space:nowrap`뿐이다.
+#   그래서 «고정 ch 폭을 쓰는 규칙은 같은 블록에 nowrap을 함께 적는다»만 기계로 잰다.
+NUM_BOX = re.compile(r"(?:^|;)\s*width\s*:\s*[\d.]+ch\b")
+NOWRAP = re.compile(r"white-space\s*:\s*nowrap")
+CSS_RULE = re.compile(r"([^{}]+)\{([^{}]*)\}")
+
+
+def run_number_box_checks():
+    count = 0
+    for name, text in css_sources():
+        clean = strip_css(text)
+        for m in CSS_RULE.finditer(clean):
+            body = m.group(2)
+            box = NUM_BOX.search(body)
+            if not box:
+                continue
+            count += 1
+            if NOWRAP.search(body):
+                continue
+            line = clean.count("\n", 0, m.start()) + 1
+            fail("numflow", f"{name}:{line}: 숫자 칸 폭을 '{box.group(0).lstrip('; ')}'로 고정하고 "
+                            f"white-space:nowrap이 없다 — 기기 글꼴에서 두 자리 숫자가 두 줄로 쪼개진다"
+                            f"(2026-11-28 갤럭시 제보). min-width:Nch + nowrap로 둔다")
+    note(f"숫자 칸 고정 폭(ch) {count}곳 — nowrap 짝을 확인했다")
+
+
 # ---------------------------------------------------------------- 3-2-b) 공통 셸·모션·정렬 기준점 (2026-11-22 태화님 지시)
 #   "이런걸 헌법에서 거를 수 있게 하란말이야" — 연달아 나온 두 결함이 같은 뿌리였다.
 #     (1) 공통 로고 방치 모션이 대문의 한 보기에서만 돌고 시드·매치에서 빠졌다 → 공통 요소를 «한 지면/한 보기»에서만 확인했다.
@@ -2830,6 +2863,7 @@ def main():
     if "js" in selected:
         run_js_checks()
         run_css_checks()      # CSS 문법도 같은 단계에서 돈다(CI 워크플로를 고치지 않아도 되게)
+        run_number_box_checks()  # 숫자 칸 고정 ch 폭 + nowrap 짝 — 갤럭시에서 37 / 41이 쪼개진 결함(11-28)
         run_ecg_checks()      # 심전도 60분 표의 약속(이웃한 분 중복 금지)도 함께 센다
     if "js" in selected or "expose" in selected:
         run_exposure_checks()  # 내부 문서가 라이브에서 열리지 않는가(functions/_middleware.js·_routes.json)
@@ -2858,8 +2892,8 @@ def main():
         print(f"· {line}")
     print("-" * 72)
     if problems:
-        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "eval": "AUP-2 성적표 문항", "answercheck": "AUP-5 답 검사기", "qtype": "AUP-6 질문 유형 판정기", "gaup": "G-AUP 판정기", "ftn": "FTN-1 문답집 후보", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
-        for check in ("json", "license", "js", "css", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "eval", "answercheck", "qtype", "gaup", "ftn", "role", "expose"):
+        labels = {"json": "데이터·스키마", "license": "저작권 가드레일", "js": "JS·CSS 문법", "css": "CSS 문법", "numflow": "숫자 칸 줄바꿈", "ecg": "심전도 60분 표", "shell": "공통 셸(전 지면)", "motion": "금지 모션 속성", "anchor": "보조 액션 정렬 기준점", "presets": "상담 프리셋 장부", "gate": "수집 게이트 단위 검사", "sectors": "섹터 장부·색", "flow": "27번 플로우·마이덱", "text": "화면 문구(맞춤법·중복)", "count": "자료 개수 수치", "dates": "법령 시행일", "legal": "공용 법정 수치", "scope": "비서 질문 범위", "guard": "비서 주입·탈옥 분류기", "eval": "AUP-2 성적표 문항", "answercheck": "AUP-5 답 검사기", "qtype": "AUP-6 질문 유형 판정기", "gaup": "G-AUP 판정기", "ftn": "FTN-1 문답집 후보", "role": "역할 가드레일", "expose": "내부 문서 노출 차단"}
+        for check in ("json", "license", "js", "css", "numflow", "ecg", "shell", "motion", "anchor", "presets", "gate", "sectors", "flow", "text", "count", "dates", "legal", "scope", "guard", "eval", "answercheck", "qtype", "gaup", "ftn", "role", "expose"):
             if check not in by_check:
                 continue
             print(f"✗ {labels[check]} — {len(by_check[check])}건")

@@ -606,8 +606,10 @@ LAYOUT_JS = r"""
   /* ── ③ 짧은 뱃지·단계 번호 강제 줄바꿈 ────────────────────────────────────
      `1 / 4`·`2 / 4` 같은 짧은 표시가 두 줄로 쪼개지는 것을 잡는다. 요소의 높이가 아니라
      «이어진 글 한 덩어리»가 몇 줄로 그려졌는지로 잰다 — 44px 칩처럼 여백이 큰 상자도
-     오탐이 없고, 단계 번호 <b>1</b>과 이름표가 위아래로 놓인 설계도 줄바꿈으로 보지 않는다. */
-  document.querySelectorAll('.badge, .chip, .tag, .pill, .cnt, .step, .stage, [class*=badge], [class*=chip], [class*=tag], [class*=pill]').forEach(el => {
+     오탐이 없고, 단계 번호 <b>1</b>과 이름표가 위아래로 놓인 설계도 줄바꿈으로 보지 않는다.
+     2026-11-28(갤럭시 제보): 대문의 «위치 숫자 37 / 41»과 심전도 로딩 숫자 100%처럼
+     이름에 badge·chip이 없는 숫자 칸도 같은 결함을 앓을 수 있어 자리(#{id}·클래스)로 함께 넣는다. */
+  document.querySelectorAll('.badge, .chip, .tag, .pill, .cnt, .step, .stage, [class*=badge], [class*=chip], [class*=tag], [class*=pill], #navPosN, #navPosT, .a-orbit-n, #ecgNumV, #insightCount, #tourStepNo, .a-pg-n, [data-count]').forEach(el => {
     if (el.closest(IGN) || !vis(el)) return;
     const text = (el.textContent || '').trim();
     if (!text || text.length > 8) return;
