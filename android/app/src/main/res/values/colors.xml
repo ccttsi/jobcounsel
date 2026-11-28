@@ -1,10 +1,16 @@
 <resources>
-    <color name="bg">#FFFDF8</color>
-    <color name="soft">#F5EFE4</color>
-    <color name="line">#E9E0D2</color>
-    <color name="ink">#2A2521</color>
-    <color name="muted">#655C53</color>
-    <color name="acc_briefing">#8D4E4F</color>
-    <color name="acc_emerging">#755485</color>
-    <color name="launcher_bg">#FAF6EF</color>
+    <!-- 낮(F · 새벽 파스텔): 밝은 그라데이션 위에 짙은 잉크 글자 -->
+    <color name="ink">#1E1A24</color>
+    <color name="muted">#5B5263</color>
+    <color name="label_br">#7A3448</color>
+    <color name="label_em">#2F5F7A</color>
+    <color name="btn">#8CFFFFFF</color>
+    <color name="track">#241E1A24</color>
+    <color name="app_bg">#F6F1EC</color>
+    <color name="app_card">#FFFFFF</color>
+    <color name="app_line">#E7DFD8</color>
+    <color name="acc_br">#E2557A</color>
+    <color name="acc_em">#3AA8C1</color>
+    
+    <color name="launcher_bg">#1C1233</color>
 </resources>
