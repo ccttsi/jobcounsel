@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-28T07:16:21+09:00",
+ "generated_at": "2026-11-28T23:09:21+09:00",
  "schema_version": "1.4.0",
  "note": "날짜별 카드에서 만든 파생 색인. 날짜 JSON을 고친 뒤 이 도구를 다시 돌린다.",
  "dates": [
@@ -2318,6 +2318,17 @@
      "source_name": "고용노동부·공무직위원회",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156791241",
      "published_at": "2026-11-27"
+    },
+    {
+     "date": "2026-11-28",
+     "card_id": "c07",
+     "title": "라틴아메리카 성별 임금격차 15~21% — ILO, '직무평가' 도구",
+     "kicker": "시간당 임금격차 15~21% / 브라질리아 포럼 7개국 35명",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "국제노동기구(ILO)",
+     "source_url": "https://www.ilo.org/resource/news/closing-gender-pay-gap-latin-america-requires-comprehensive-policies",
+     "published_at": "2026-11-27"
     }
    ]
   },
@@ -3851,6 +3862,17 @@
      "source_name": "고용노동부",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156790918",
      "published_at": "2026-11-26"
+    },
+    {
+     "date": "2026-11-28",
+     "card_id": "c06",
+     "title": "에티오피아 직업훈련 7년 — 남은 것은 '경력 인정' 제도",
+     "kicker": "선행학습인정(RPL) 지침 전국 시행 / 자금 지원 12월 31일 종료",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "국제노동기구(ILO)",
+     "source_url": "https://www.ilo.org/resource/news/ilo-global-skills-programme-leaves-lasting-foundations-ethiopias-workforce",
+     "published_at": "2026-11-27"
     }
    ]
   },
@@ -4961,6 +4983,17 @@
      "source_name": "Yahoo Finance",
      "source_url": "https://finance.yahoo.com/technology/ai/articles/ai-squeezing-entry-level-office-151520271.html",
      "published_at": "2026-11-26"
+    },
+    {
+     "date": "2026-11-28",
+     "card_id": "c04",
+     "title": "독일 청년 실업 28.1만명 — 도제 자리는 지원자보다 적다",
+     "kicker": "25세 미만 +1.6만명 / 11월 실업률 6.2%",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "독일 연방노동청(Bundesagentur für Arbeit)",
+     "source_url": "https://www.arbeitsagentur.de/presse/2026-47-arbeitsmarkt-im-november-2026",
+     "published_at": "2026-11-27"
     }
    ]
   },
@@ -5450,6 +5483,17 @@
      "source_name": "인사혁신처",
      "source_url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156791178",
      "published_at": "2026-11-27"
+    },
+    {
+     "date": "2026-11-28",
+     "card_id": "c08",
+     "title": "AI로 업무시간 21% 사라지면 — 흑인·라틴계 '새 직업' 필요 20% 더",
+     "kicker": "2035년 업무시간 21% 자동화 / 전직 1,100만명 중 14%만 직행",
+     "category": "AI·직무",
+     "region": "global",
+     "source_name": "포춘(Fortune)",
+     "source_url": "https://fortune.com/2026/11/27/mckinsey-ai-jobs-displacement-black-latino-workers-economic-mobility/",
+     "published_at": "2026-11-27"
     }
    ]
   },
@@ -5730,6 +5774,17 @@
      "source_name": "미국 연방준비제도 이사회(Federal Reserve Board)",
      "source_url": "https://www.federalreserve.gov/monetarypolicy/beigebook202611-summary.htm",
      "published_at": "2026-11-25"
+    },
+    {
+     "date": "2026-11-28",
+     "card_id": "c05",
+     "title": "유럽 청년 실업 15.6%, 장년의 3배 — '3배 넘으면 특별한 장벽'",
+     "kicker": "EU 15.6% vs 25~74세 5.2% / 루마니아 5.9배",
+     "category": "해외 노동시장",
+     "region": "global",
+     "source_name": "유로뉴스(Euronews)",
+     "source_url": "https://www.euronews.com/2026/11/28/best-and-worst-places-in-europe-for-young-people-to-find-a-job",
+     "published_at": "2026-11-28"
     }
    ]
   }
