@@ -85,7 +85,11 @@ class MainActivity : Activity() {
         if (Store.edition(this, Feed.BRIEFING) == null) refresh()
     }
 
-    override fun onResume() { super.onResume(); sync() }
+    /* 미리보기의 ◀ ▶ 를 누르거나 새 판이 오면 저장값이 바뀐다 — 그때 화면도 다시 그린다. */
+    private val onPref = android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, _ -> runOnUiThread { sync() } }
+
+    override fun onResume() { super.onResume(); Store.sp(this).registerOnSharedPreferenceChangeListener(onPref); sync() }
+    override fun onPause() { Store.sp(this).unregisterOnSharedPreferenceChangeListener(onPref); super.onPause() }
 
     private fun sync() {
         for ((f, box) in previews) {

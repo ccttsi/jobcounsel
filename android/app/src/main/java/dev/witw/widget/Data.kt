@@ -43,7 +43,7 @@ data class Card(
 class Edition(val feed: Feed, val date: String, val head: String, val cards: List<Card>)
 
 object Store {
-    private fun sp(c: Context) = c.getSharedPreferences("witw", Context.MODE_PRIVATE)
+    fun sp(c: Context) = c.getSharedPreferences("witw", Context.MODE_PRIVATE)
 
     fun edition(c: Context, f: Feed): Edition? {
         val raw = sp(c).getString("ed_" + f.key, null) ?: return null
