@@ -86,27 +86,83 @@ def load_index_docs():
     return by_sector
 
 
-def evidence_for(sectors, chunks, index_docs):
-    """정답 섹터의 근거 참조를 고른다. 조각 본문은 싣지 않는다(답 초안 단계에서 푼다)."""
-    refs, seen = [], set()
+def _keywords(doc):
+    keys = doc.get("k") or []
+    if isinstance(keys, str):
+        keys = [k.strip() for k in keys.split(",")]
+    return [str(k).strip().lower() for k in keys if str(k).strip()]
+
+
+def _qgrams(text):
+    """글자 2-gram — «파슨스의» 와 «파슨스» 처럼 토막이 달라도 겹치게 한다."""
+    flat = "".join(_TOKEN.findall(str(text).lower()))
+    return {flat[n:n + 2] for n in range(len(flat) - 1)}
+
+
+def relevance(question, doc):
+    """질문과 근거의 관련도 — 색인 낱말(k)이 질문에 통째로 들어 있으면 길이만큼, 나머지는 글자 2-gram 겹침."""
+    q = norm_q(question)
+    score = 0.0
+    for key in _keywords(doc):
+        key_flat = norm_q(key)
+        if len(key_flat) >= 2 and key_flat in q:
+            score += len(key_flat)
+    body = f"{doc.get('t', '')} {' '.join(_keywords(doc))}"
+    shared = _qgrams(question) & _qgrams(body)
+    score += 0.25 * len(shared)
+    return score
+
+
+def evidence_for(sectors, chunks, index_docs, question="", note=""):
+    """정답 섹터 안에서 «질문과 가까운» 근거를 고른다. 조각 본문은 싣지 않는다(답 초안 단계에서 푼다).
+
+    섹터만 보고 앞에서부터 집으면, 법 조각 77개짜리 섹터에서 질문과 무관한 조각이 먼저 들어오고
+    (2026-11-28 구직촉진수당 사건) 뒤 섹터의 색인이 밀려난다(파슨스 사건). 그래서 관련도 순으로 고른다.
+    """
+    ask = f"{question} {note}".strip()
+    pool = []  # (관련도, 고정 순서, 종류, 문서)
+    order = 0
     for ch in chunks:
+        if ch.get("s") in sectors and ch.get("i") is not None:
+            pool.append((relevance(ask, ch), order, "chunk", ch))
+            order += 1
+    for sector in sectors:
+        for doc in index_docs.get(sector, []):
+            pool.append((relevance(ask, doc), order, "doc", doc))
+            order += 1
+    pool.sort(key=lambda row: (-row[0], row[1]))
+
+    def as_ref(kind, doc):
+        if kind == "chunk":
+            return {"i": doc.get("i"), "s": doc.get("s"), "t": doc.get("t", ""),
+                    "src": doc.get("src", ""), "as_of": doc.get("as_of", "")}
+        return {"i": doc.get("i"), "s": doc.get("s"), "t": doc.get("t", ""),
+                "src": f"assistant/data/index.json#{doc.get('i')}", "as_of": ""}
+
+    refs, seen = [], set()
+    # ① 관련도 높은 것부터 3건.
+    for _score, _n, kind, doc in pool:
         if len(refs) >= MAX_EVIDENCE - 1:
             break
-        if ch.get("s") in sectors and ch.get("i") not in seen:
-            refs.append({"i": ch.get("i"), "s": ch.get("s"), "t": ch.get("t", ""),
-                         "src": ch.get("src", ""), "as_of": ch.get("as_of", "")})
-            seen.add(ch.get("i"))
-    for sector in sectors:
+        if doc.get("i") in seen:
+            continue
+        refs.append(as_ref(kind, doc))
+        seen.add(doc.get("i"))
+    # ② 답이 «화면» 으로 이어지도록 색인 글 한 건은 남긴다.
+    for _score, _n, kind, doc in pool:
+        if kind != "doc" or doc.get("i") in seen:
+            continue
+        refs.append(as_ref(kind, doc))
+        seen.add(doc.get("i"))
+        break
+    # ③ 색인 글이 없는 섹터·자리가 남으면 나머지 근거로 채운다.
+    for _score, _n, kind, doc in pool:
         if len(refs) >= MAX_EVIDENCE:
             break
-        for doc in index_docs.get(sector, [])[:MAX_EVIDENCE]:
-            if doc.get("i") in seen:
-                continue
-            refs.append({"i": doc.get("i"), "s": sector, "t": doc.get("t", ""),
-                         "src": f"assistant/data/index.json#{doc.get('i')}", "as_of": ""})
-            seen.add(doc.get("i"))
-            if len(refs) >= MAX_EVIDENCE:
-                break
+        if doc.get("i") in seen:
+            continue
+        refs.append(as_ref(kind, doc))
+        seen.add(doc.get("i"))
     return refs[:MAX_EVIDENCE]
 
 
@@ -128,7 +184,7 @@ def candidate(ident, source, q, qtype, sectors, chunks, index_docs, ctx=None, no
         "qtype": qtype,
         "style": QTYPE_TO_STYLE[qtype],
         "expect_sectors": sectors,
-        "evidence": evidence if evidence is not None else evidence_for(sectors, chunks, index_docs),
+        "evidence": evidence if evidence is not None else evidence_for(sectors, chunks, index_docs, q, note),
         "needs": list(PIPELINE_NEEDS),
         **({"note": note} if note else {}),
     }

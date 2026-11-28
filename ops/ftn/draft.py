@@ -22,6 +22,7 @@ import os
 import random
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -120,6 +121,16 @@ CLOSE = [
     "궁금한 것이 취업 준비나 근로조건 쪽이라면 다시 물어 주세요.",
 ]
 REDIRECT_DEFAULT = "진로·취업 상담"
+# «이어 볼 자료» 가 비어 있거나 «없음» 이면 그 잇기 문장을 만들지 않는다(2026-11-28 FTN1-RF-0052 — «없음 쪽이라면 …»).
+NO_REDIRECT = {"", "없음", "없슴", "-", "null", "none"}
+
+# 모델이 흘리는 표기 오기 — 초안을 저장하기 전에 바로잡는다(2026-11-28 눈검수: FTN1-INT-YTH-011 «국가취업지원제도»).
+# 정규식으로 «이미 제도» 가 붙은 꼴은 건드리지 않는다(«국민취업지원제도제도» 방지).
+TERM_FIXES = [
+    (re.compile(r"국가취업지원제도"), "국민취업지원제도"),
+    (re.compile(r"국민취업지원(?!\s*제도)"), "국민취업지원제도"),
+    (re.compile(r"국민내일배움(?!\s*카드)"), "국민내일배움카드"),
+]
 
 
 def rule_refusal(cand):
@@ -135,7 +146,21 @@ def rule_refusal(cand):
         return f"{OPEN_ATTACK[n(1) % len(OPEN_ATTACK)]} {CLOSE[n(3) % len(CLOSE)]}"
     redirect = note.split("이어 볼 자료: ")[-1].strip() if "이어 볼 자료:" in note else REDIRECT_DEFAULT
     head = OPEN_OOS[n(1) % len(OPEN_OOS)]
-    return f"{head} {redirect} 쪽이라면 자료실 자료로 도와드릴 수 있어요. {CLOSE[n(4) % len(CLOSE)]}"
+    close = CLOSE[n(4) % len(CLOSE)]
+    if redirect.strip().lower() in NO_REDIRECT:
+        return f"{head} {close}"
+    return f"{head} {redirect} 쪽이라면 자료실 자료로 도와드릴 수 있어요. {close}"
+
+
+def clean_answer(text):
+    """초안 표기 정리 — 굵게(**)·마크다운 목록·두 칸 줄바꿈 같은 서식이 답에 섞이지 않게 한다(평문 답)."""
+    out = re.sub(r"\*\*|__", "", text)
+    out = re.sub(r"(?m)^[ \t]*[-*]\s+", "· ", out)
+    out = re.sub(r"[ \t]+\n", "\n", out)
+    out = re.sub(r"\n{3,}", "\n\n", out)
+    for pattern, right in TERM_FIXES:
+        out = pattern.sub(right, out)
+    return out.strip()
 
 
 def parse_refs(text, n_evidence):
@@ -177,6 +202,43 @@ def groq_answer(prompt, model, key, temperature=0.2, max_tokens=700):
     return text, data.get("usage", {})
 
 
+def ask_with_retry(prompt, model, key, pace=0.0, retry=2, n=0, total=0, ident=""):
+    """한 건 부르기 — 429(분당·일일 한도)는 쉬었다 다시, 일일 한도면 fatal 로 알린다."""
+    last = ""
+    for attempt in range(retry + 1):
+        started = time.time()
+        try:
+            answer, _usage = groq_answer(prompt, model, key)
+        except urllib.error.HTTPError as exc:
+            last = f"HTTP {exc.code}"
+            if exc.code == 429:
+                # Groq 는 «Please try again in 20.7s» 처럼 기다릴 시간을 알려 준다 — 그만큼 쉬고 다시 부른다.
+                hint = 0.0
+                try:
+                    found = re.search(r"try again in ([0-9.]+)s", exc.read().decode("utf-8", "replace"))
+                    hint = float(found.group(1)) if found else 0.0
+                except Exception:
+                    hint = 0.0
+                if attempt < retry:
+                    wait = max(20.0, pace, hint + 2.0) + 20.0 * attempt
+                    print(f"· {ident} 한도(429) — {wait:.0f}초 쉬고 다시 부른다 ({n}/{total})", flush=True)
+                    time.sleep(wait)
+                    continue
+                return "", last, True
+            return "", last, False
+        except Exception as exc:  # 네트워크·시간 초과
+            last = type(exc).__name__
+            if attempt < retry:
+                time.sleep(5)
+                continue
+            return "", last, False
+        spent = time.time() - started
+        if pace > spent:
+            time.sleep(pace - spent)
+        return answer, "", False
+    return "", last, False
+
+
 def load_key(name="GROQ_API_KEY"):
     if os.environ.get(name):
         return os.environ[name]
@@ -195,11 +257,15 @@ def main():
     ap.add_argument("--build-only", action="store_true", help="입력만 조립해 보여 준다")
     ap.add_argument("--rule", action="store_true", help="규칙 기반 초안(거절 유형)")
     ap.add_argument("--provider", choices=["groq"], help="모델 공급자")
-    ap.add_argument("--model", default="openai/gpt-oss-120b")
+    ap.add_argument("--model", default="openai/gpt-oss-120b",
+                    help="모델(쉼표로 사슬 — 앞 모델이 하루 한도에 닿으면 다음으로 넘어간다)")
     ap.add_argument("--limit", type=int, default=0, help="이번 실행에서 부를 최대 건수")
     ap.add_argument("--source", action="append", default=[], help="출처로 거르기(여러 번 가능)")
     ap.add_argument("--ids", default="", help="쉼표로 후보 번호 지정")
     ap.add_argument("--dry-run", action="store_true", help="부를 대상만 세어 본다")
+    ap.add_argument("--redo", default="", help="이미 초안이 있어도 다시 쓰게 할 번호(쉼표)")
+    ap.add_argument("--pace", type=float, default=0.0, help="건 사이 대기(초) — Groq 분당 토큰 한도에 맞춤")
+    ap.add_argument("--retry", type=int, default=2, help="429·네트워크 실패 때 재시도 횟수")
     ap.add_argument("--out", default=DRAFTS)
     args = ap.parse_args()
 
@@ -222,8 +288,11 @@ def main():
     existing = []
     if os.path.exists(args.out):
         existing = load_jsonl(args.out)
-    done = {d["id"] for d in existing if d.get("status") == "draft" and d.get("answer")}
-    todo = [c for c in cands if c["id"] not in done]
+    # 초안이 있고 검사를 거친 것도 «이미 있는 것» 이다 — 검사를 마치면 status 가 checked·needs-fix 가 되므로
+    # status=='draft' 만 보면 다 지우고 다시 부르게 된다(2026-11-28 수정). 다시 쓰려면 --redo 로 번호를 준다.
+    done = {d["id"] for d in existing if d.get("answer")}
+    redo = {x.strip() for x in args.redo.split(",") if x.strip()}
+    todo = [c for c in cands if c["id"] not in done or c["id"] in redo]
     if args.limit:
         todo = todo[:args.limit]
 
@@ -240,6 +309,8 @@ def main():
     if not (args.rule or args.provider):
         ap.error("--rule 또는 --provider groq 가 필요합니다")
 
+    models = [m.strip() for m in args.model.split(",") if m.strip()]
+    mi = 0
     key = load_key() if args.provider else ""
     if args.provider and not key:
         print("✗ GROQ_API_KEY 가 없다 — .secrets/free_tier_keys.env 또는 환경변수")
@@ -251,32 +322,40 @@ def main():
             answer, refs, provider, model = rule_refusal(c), [], "rule", ""
         elif args.provider:
             prompt = build_input(c, chunks, docs, guide)
-            try:
-                answer, usage = groq_answer(prompt, args.model, key)
-            except urllib.error.HTTPError as exc:
-                failed.append({"id": c["id"], "error": f"HTTP {exc.code}"})
-                if exc.code == 429:
-                    print(f"· {n}번째에서 한도(429) — 여기까지 저장하고 멈춘다")
+            answer, err, model_used = "", "", models[mi]
+            while True:
+                answer, err, fatal = ask_with_retry(prompt, models[mi], key, args.pace, args.retry, n, len(todo), c["id"])
+                if err and fatal and mi + 1 < len(models):
+                    mi += 1
+                    print(f"· {models[mi-1]} 하루 한도 끝 — {models[mi]} 로 이어 부른다", flush=True)
+                    continue
+                break
+            model_used = models[mi]
+            if err:
+                failed.append({"id": c["id"], "error": err})
+                if fatal:
+                    print("· 한도가 끝나 여기까지 저장하고 멈춘다", flush=True)
                     break
-                continue
-            except Exception as exc:  # 네트워크·시간 초과
-                failed.append({"id": c["id"], "error": type(exc).__name__})
                 continue
             if not answer:
                 failed.append({"id": c["id"], "error": "빈 답"})
                 continue
             answer, refs = parse_refs(answer, len(c.get("evidence") or []))
-            provider, model = "groq", args.model
+            provider, model = "groq", model_used
         else:
             continue
         made.append({
             "id": c["id"], "source": c["source"], "q": c["q"], "qtype": c["qtype"], "style": c["style"],
-            "expect_sectors": c["expect_sectors"],
-            "answer": answer, "refs": refs, "provider": provider, "model": model,
+            "expect_sectors": c["expect_sectors"], "evidence": [r.get("i") for r in (c.get("evidence") or [])],
+            "answer": clean_answer(answer), "refs": refs, "provider": provider, "model": model,
             "status": "draft", "checked": None, "reviewed": False,
         })
         if n % 10 == 0:
-            print(f"· {n}/{len(todo)}")
+            print(f"· {n}/{len(todo)}", flush=True)
+        if n % 5 == 0:  # 중간 저장 — 셸 제한 시간에 잘려도 여기까지는 남는다.
+            rows_now = {d["id"]: d for d in existing}
+            rows_now.update({row["id"]: row for row in made})
+            write_jsonl(args.out, [rows_now[k] for k in sorted(rows_now)])
 
     rows = {d["id"]: d for d in existing}
     for row in made:
