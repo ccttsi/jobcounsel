@@ -15,6 +15,7 @@
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -26,6 +27,21 @@ CANDIDATES = os.path.join(ROOT, "ops", "ftn", "dataset", "candidates.jsonl")
 RUNNER = os.path.join(ROOT, "ops", "ftn", "check_drafts.cjs")
 CHECK_DATA = os.path.join(ROOT, "supabase", "functions", "assistant-proxy", "check-data.js")
 ANSWER_CHECK = os.path.join(ROOT, "supabase", "functions", "assistant-proxy", "answer-check.js")
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import draft as draft_mod  # noqa: E402 — 근거 본문 푸는 함수를 한 벌만 쓴다
+
+# 답이 «제12조» 처럼 조문을 인용하면, 그 조문이 답이 가리킨 근거([[REFS:e…]]) 안에 있어야 한다.
+# 2026-11-28 눈검수: 법 조각을 안 가리키고 조문 번호를 지어낸 답(FTN1-CS-0119 근로기준법 제15·23조)이 나왔다.
+ARTICLE = re.compile(r"제\s?(\d+)조")
+# 검사기는 수치를 고칠 때 «※ 자료실 기준 값 —» 꼬리를 붙인다 — 다시 돌릴 때마다 겹치므로 떼고 검사한다(같은 답을 두 번 검사해도 같게).
+FOOTER = re.compile(r"(?m)^\s*※\s*자료실 기준 값[^\n]*\n?")
+# «68100원» 처럼 쉼표 없는 다섯 자리 이상 수 — 검사기가 꼬리만 붙이고 본문은 두는 경우가 있어 여기서 먼저 맞춘다.
+BARE_NUMBER = re.compile(r"(?<![\d,.])(\d{5,})(?![\d,.])")
+
+
+def tidy_numbers(text):
+    return BARE_NUMBER.sub(lambda m: f"{int(m.group(1)):,}", text)
 
 
 def load_jsonl(path):
@@ -91,7 +107,9 @@ def main():
         ok = sum(1 for d in drafts if (d.get("checked") or {}).get("ok"))
         bad = sum(1 for d in drafts if d.get("checked") and not d["checked"].get("ok"))
         todo = len(drafts) - ok - bad
-        print(f"초안 {len(drafts)}건 — 통과 {ok} · 고침 필요 {bad} · 미검사 {todo}")
+        arts = sum(1 for d in drafts if (d.get("checked") or {}).get("articles_outside"))
+        print(f"초안 {len(drafts)}건 — 통과 {ok} · 고침 필요 {bad} · 미검사 {todo}"
+              + (f" (그중 근거 밖 조문 인용 {arts})" if arts else ""))
         return 0
 
     payload = []
@@ -103,7 +121,7 @@ def main():
             if 1 <= int(n) <= len(ev):
                 ref = ev[int(n) - 1]
                 refs.append({"id": f"e{n}", "url": url_for(ref), "title": ref.get("t", "")})
-        payload.append({"id": d["id"], "answer": d.get("answer", ""), "references": refs})
+        payload.append({"id": d["id"], "answer": tidy_numbers(FOOTER.sub("", d.get("answer", "")).strip()), "references": refs})
 
     try:
         if shutil.which("node"):
@@ -116,16 +134,24 @@ def main():
         print(f"✗ 검사기를 실행하지 못했다 — {exc}")
         return 1
 
+    chunks, docs = draft_mod.evidence_index()
     ok = bad = 0
     for d in drafts:
         r = results.get(d["id"])
         if not r:
             continue
         fixed = r.get("fixed") or {"numbers": 0, "links": 0}
-        passed = fixed.get("numbers", 0) == 0 and fixed.get("links", 0) == 0 and bool(r.get("answer"))
-        d["answer"] = r.get("answer") or d.get("answer", "")
+        answer = r.get("answer") or d.get("answer", "")
+        before = tidy_numbers(FOOTER.sub("", d.get("answer", "")).strip())
+        changed = answer.strip() != before  # 검사기가 실제로 고친 것이 있는가(꼬리 겹침은 빼고)
+        ev = (cands.get(d["id"]) or {}).get("evidence") or []
+        cited = [ev[n - 1] for n in (d.get("refs") or []) if 1 <= int(n) <= len(ev)]
+        evtext = " ".join((chunks.get(("chunk", ref.get("i"))) or docs.get(ref.get("i")) or "") for ref in cited)
+        outside = sorted(set(ARTICLE.findall(answer)) - set(ARTICLE.findall(evtext)), key=int)
+        passed = bool(answer) and not changed and not outside
+        d["answer"] = answer
         d["checked"] = {"numbers": fixed.get("numbers", 0), "links": fixed.get("links", 0),
-                        "ok": passed, "engine": engine}
+                        "changed": changed, "articles_outside": outside, "ok": passed, "engine": engine}
         d["status"] = "checked" if passed else "needs-fix"
         ok += 1 if passed else 0
         bad += 0 if passed else 1
